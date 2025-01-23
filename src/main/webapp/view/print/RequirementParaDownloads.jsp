@@ -487,14 +487,7 @@ header: function (currentPage) {
 				}	 
 			   	$( document ).ready(function(){
 		    		generatePDF();
-		    		/* window.close(); */
-		    		
-		    		// Hide the current JSP page immediately after opening the PDF
-	    			document.body.style.display = "none";
-		    		
-		    		setTimeout(function () {
-				        window.close();
-				    }, 5000); // Adjust the delay time as needed
+		    	
 		    	});
         </script>
 </body>

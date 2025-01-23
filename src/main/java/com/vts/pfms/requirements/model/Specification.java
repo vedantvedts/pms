@@ -35,5 +35,6 @@ public class Specification  {
     private String ModifiedBy;
     private String ModifiedDate;
     private String LinkedSubSystem;
+    private String IsMasterData;
 	private int IsActive;
 }

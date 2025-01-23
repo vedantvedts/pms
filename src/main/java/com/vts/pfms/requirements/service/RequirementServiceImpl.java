@@ -1436,4 +1436,8 @@ public class RequirementServiceImpl implements RequirementService {
 	public List<TestPlanMaster> getAllTestPlans() throws Exception {
 		return dao.getAllTestPlans();
 	}
+	@Override
+	public List<SpecificationMaster> getAllSpecPlans() throws Exception {
+		return dao.getAllSpecPlans();
+	}
 }

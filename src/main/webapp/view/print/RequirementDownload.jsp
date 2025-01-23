@@ -1698,6 +1698,13 @@
                 subChapterNote: { margin: [15, 15, 0, 10] },
                 header: { alignment: 'center', bold: true},
             },
+            
+            info: {
+                title: 'Requirement_Document', // Set document title here
+                author: 'LRDE', // Optional metadata
+                subject: 'Subject of the PDF',       // Optional metadata
+                keywords: 'keyword1, keyword2',     // Optional metadata
+            },
             footer: function(currentPage, pageCount) {
                 if (currentPage > 2) {
                     return {

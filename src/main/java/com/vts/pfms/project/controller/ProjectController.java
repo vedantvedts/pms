@@ -9809,7 +9809,8 @@ public class ProjectController
 			req.setAttribute("specsList", reqService.getSpecsList(SpecsInitiationId));			
 			req.setAttribute("SpecsId", req.getParameter("SpecsId")==null?"0":req.getParameter("SpecsId") );
 			req.setAttribute("ParentId", req.getParameter("ParentId")==null?"0":req.getParameter("ParentId") );
-			List<Object[]> productTreeList = reqService.productTreeListByProjectId(projectId);
+			
+			List<Object[]> productTreeList =!projectId.equals("0")? reqService.productTreeListByProjectId(projectId):reqService.productTreeListByInitiationId(initiationId);
 			req.setAttribute("productTreeList", productTreeList);
 			
 			if(!productTreeMainId.equalsIgnoreCase("0")) {

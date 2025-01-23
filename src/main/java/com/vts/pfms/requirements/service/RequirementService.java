@@ -179,4 +179,6 @@ public interface RequirementService {
 	public List<Object[]> productTreeListByInitiationId(String initiationId)throws Exception;
 
 	public List<TestPlanMaster> getAllTestPlans()throws Exception;
+
+	public List<SpecificationMaster> getAllSpecPlans()throws Exception;
 }

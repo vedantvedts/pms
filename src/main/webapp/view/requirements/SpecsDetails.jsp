@@ -18,7 +18,10 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 <spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
 <spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
-
+<spring:url value="/resources/css/sweetalert2.min.css" var="sweetalertCss" />
+<spring:url value="/resources/js/sweetalert2.min.js" var="sweetalertJs" />
+	<link href="${sweetalertCss}" rel="stylesheet" />
+	<script src="${sweetalertJs}"></script>
 
 
 <script src="${SummernoteJs}"></script>
@@ -384,11 +387,11 @@ if(RequirementList!=null && RequirementList.size()>0){
 	RequirementLists=RequirementList.stream().filter(e->e[15]!=null && !e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
 	 jsonArray = objectMapper.writeValueAsString(RequirementLists);
 }
-
+int count=0;
 String reqInitiationId = (String) request.getAttribute("reqInitiationId");
 List<Object[]>productTreeList = (List<Object[]>)request.getAttribute("productTreeList");
 List<Object[]>systemSpecificationList = (List<Object[]>)request.getAttribute("systemSpecificationList");
-
+String count1="10";
 %>
 
 	<%String ses=(String)request.getParameter("result"); 
@@ -424,6 +427,9 @@ List<Object[]>systemSpecificationList = (List<Object[]>)request.getAttribute("sy
 									</h5>
 								</div>
 								<div class="col-md-6" id="addReqButton">
+								<%if ((systemSpecificationList != null) && (!systemSpecificationList.isEmpty())) {%>
+									<button class="btn btn-sm submit mr-2" style="margin-top: -1%;" onclick="showMasterModal()">CHOOSE FROM SPEC MASTER</button>
+									<%} %>
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 									<input type="hidden" name="projectId" value="<%=projectId%>">
 									<input type="hidden" name="initiationId" value="<%=initiationId%>"> 
@@ -455,15 +461,16 @@ List<Object[]>systemSpecificationList = (List<Object[]>)request.getAttribute("sy
 				</div>
 					<div class="requirementid" style="display:block; height:70vh;overflow: auto ;<%if(specsList==null || specsList.size()==0){%> display:none;<%}%>">
 					
-					<%if(specsList!=null && specsList.size()>0) {
-						int count=0;
-						List<Object[]>specsListMain=specsList.stream().filter(e->e[7].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+					<%
+					if(specsList!=null && specsList.size()>0) {
+						
+						List<Object[]>specsListMain=specsList.stream().filter(e->e[7].toString().equalsIgnoreCase("0") && e[13].toString().equalsIgnoreCase("N")).collect(Collectors.toList());
 						for(Object[]obj:specsListMain){
 					
 					%>
 					
 					<div  style="display: flex; align-items: center; margin-top: 8px; width: 100%">
-					<button style="text-decoration: underline" type="button" class="btn btn-secondary  mt-2" onclick="addData(<%=obj[0].toString() %>,<%=obj[8].toString() %>)" id="btn<%=obj[0].toString()%>"><%=(++count)+" . "+obj[1].toString() %> &nbsp;&nbsp;<i class="fa fa-plus-square" aria-hidden="true"></i> </button>
+					<button style="text-decoration: underline" type="button" class="btn btn-secondary  mt-2 btnM" onclick="addData(<%=obj[0].toString() %>,<%=obj[8].toString() %>)" id="btn<%=obj[0].toString()%>"><%=(++count)+" . "+obj[1].toString() %> &nbsp;&nbsp;<i class="fa fa-plus-square" aria-hidden="true"></i> </button>
 					<button class="btn btn-sm bg-transparent" type="button" onclick="deleteSpc(<%=obj[0].toString()%>)">
 							<i class="fa fa-trash-o" aria-hidden="true" style="color:red;"></i>
 					</button>
@@ -488,8 +495,24 @@ List<Object[]>systemSpecificationList = (List<Object[]>)request.getAttribute("sy
 					</div>
 					
 					
-					<%} %>
-					<%}}else{ %>
+					<%}}%>
+					<%
+					List<Object[]>specsListMainFromMaster=specsList.stream().filter(e->e[7].toString().equalsIgnoreCase("0") && e[13].toString().equalsIgnoreCase("Y")).collect(Collectors.toList());
+					 count1=specsListMainFromMaster!=null && specsListMainFromMaster.size()>0?
+							specsListMainFromMaster.get(specsListMainFromMaster.size()-1)[1].toString().split("_")[1]:"10";
+					for(Object[]obj:specsListMainFromMaster){
+						
+						%>
+						
+						<div  style="display: flex; align-items: center; margin-top: 8px; width: 100%">
+						<button style="" type="button" class="btn btn-secondary  mt-2 btnM" onclick="showDetails(<%=obj[0].toString() %>,'M')" id="btn<%=obj[0].toString()%>"><%=(++count)+" . "+obj[1].toString() %>  </button>
+						<button class="btn btn-sm bg-transparent" type="button" onclick="deleteSpc(<%=obj[0].toString()%>)">
+								<i class="fa fa-trash-o" aria-hidden="true" style="color:red;"></i>
+						</button>
+						</div>
+						<%} %>
+			
+					<% }else{ %>
 					<button  type="button" class="btn btn-secondary viewbtn mt-2" style="width:100%" >
 							No Data Available
 					</button>
@@ -675,7 +698,7 @@ List<Object[]>systemSpecificationList = (List<Object[]>)request.getAttribute("sy
 								<div id="row2" style="display: none;">
 								
 								<div class="row">
-								<div class="col-md-2">
+								<div class="col-md-3">
 								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Specification Id :</label>
 								</div>
 								<div class="col-md-8">
@@ -688,7 +711,7 @@ List<Object[]>systemSpecificationList = (List<Object[]>)request.getAttribute("sy
 								</div>
 									<hr>
 								<div class="row">
-								<div class="col-md-2">
+								<div class="col-md-3">
 								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Linked Requirements :</label>
 								</div>
 								<div class="col-md-8">
@@ -697,7 +720,7 @@ List<Object[]>systemSpecificationList = (List<Object[]>)request.getAttribute("sy
 								</div>
 									<hr>
 								<div class="row">
-								<div class="col-md-2">
+								<div class="col-md-3">
 								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Specification Parameter :</label>
 								</div>
 								<div class="col-md-8">
@@ -706,7 +729,7 @@ List<Object[]>systemSpecificationList = (List<Object[]>)request.getAttribute("sy
 								</div>
 								<hr>
 								<div class="row">
-									<div class="col-md-2">
+									<div class="col-md-3">
 								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Typical Value :</label>
 								</div>
 								<div class="col-md-8">
@@ -715,7 +738,7 @@ List<Object[]>systemSpecificationList = (List<Object[]>)request.getAttribute("sy
 								</div>
 								<hr>
 								<div class="row">
-								<div class="col-md-2">
+								<div class="col-md-3">
 								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Maximum Value :</label>
 								</div>
 								<div class="col-md-8">
@@ -724,7 +747,7 @@ List<Object[]>systemSpecificationList = (List<Object[]>)request.getAttribute("sy
 								</div>
 								<hr>
 								<div class="row">
-								<div class="col-md-2">
+								<div class="col-md-3">
 								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Minimum Value :</label>
 								</div>
 								<div class="col-md-8">
@@ -733,7 +756,7 @@ List<Object[]>systemSpecificationList = (List<Object[]>)request.getAttribute("sy
 								</div>
 								<hr>
 								<div class="row">
-									<div class="col-md-2">
+									<div class="col-md-3">
 								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Specification Unit :</label>
 								</div>
 								<div class="col-md-8">
@@ -742,7 +765,7 @@ List<Object[]>systemSpecificationList = (List<Object[]>)request.getAttribute("sy
 								</div>
 									<hr>
 								<div class="row">
-								<div class="col-md-2">
+								<div class="col-md-3">
 								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Description :</label>
 								</div>
 								
@@ -753,7 +776,7 @@ List<Object[]>systemSpecificationList = (List<Object[]>)request.getAttribute("sy
 									<%if(productTreeMainId.equalsIgnoreCase("0")){ %>
 								<hr>
 								<div class="row">
-								<div class="col-md-2" style="margin-top: 1%">
+								<div class="col-md-3" style="margin-top: 1%">
 										<h5
 											style="font-size: 20px; color: #005086; width: fit-content">Linked SubSystem:
 										</h5>
@@ -845,60 +868,51 @@ List<Object[]>systemSpecificationList = (List<Object[]>)request.getAttribute("sy
   </div>
 </div>
 
-		<!-- Div modal already Having for specification Master Data  -->
-<%-- 				
-<div class="modal" tabindex="-1" role="dialog" id="masterSelectionModal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content" style="width: 150%;margin-left: -30%;">
-      <div class="modal-header">
-        <h5 class="modal-title">Link Sub-System Specifications</h5>
+		<!-- Specification Details  -->
+	  <div class="modal fade bd-example-modal-lg" id="dataModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg modal-dialog-jump-pop">
+	  <div class="modal-content" style="margin-left:-20%;width: 120%;">
+	        <div class="modal-header bg-primary text-light">
+        <h5 class="modal-title" id="exampleModalLongTitle"> Specifications Available</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-       <table class="table table-bordered table-striped">
-       	<thead class="bg-primary text-light">
-       	<tr>
-       	<td style="width: 10%;text-align: center;">SN</td>
-       	<td>ID</td>
-       	<td>Parameter</td>
-       	</tr>
-       </thead>
-       <tbody>
-       <%if(systemSpecificationList!=null && systemSpecificationList.size()>0) {
-    	   for(Object[]obj:systemSpecificationList){
-    	   %>
-       <tr>
-       <td style="text-align: center;">
-       <input  type="checkbox" name="specMasterId" value="<%=obj[0].toString()%>">
-       </td>
-       <td>
-       <p><%=obj[5] %></p>
-       </td>
-       <td>
-       <p><%=obj[3] %></p>
-       </td>
-       </tr>
-       <%}} %>
-       </tbody>
-       </table>
+      
+       <div class="modal-body">
+       	<table class="table table-bordered table-striped">
+       		<thead>
+       		<tr style="font-size: 1rem">
+       		<td style="width: 5%;text-align: center;">
+       		 <input type="checkbox" id="ALLMasterIds">
+       		</td>
+       		
+       		<td style="width: 30%;">Specification Name</td>
+       		<td>Parameter</td>
+       		<td style="width: 30%;"> Description</td>
+       		</tr>
+       		</thead>
+       		<tbody>
+       		<%if(systemSpecificationList!=null && !systemSpecificationList.isEmpty()) {
+       		for(Object[]obj:systemSpecificationList){
+       		%>
+       		<tr style="font-size: 1rem !important;">
+       		<td style="text-align: center;"> <input type="checkbox" class="MasterIds" name="MasterIds" value="<%=obj[0] %>"></td>
+       		<td><%=obj[5] %></td>
+       		<td><%=obj[3] %></td>
+       		<td><%=obj[2] %></td>
+       		</tr>
+       		<%}} %>
+       		</tbody>
+       	</table>
+       	<div align="center">
+       	<button type="button" class="btn btn-sm submit mt-2" onclick="submitTestMaster()">SUBMIT</button>
+       	</div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-sm submit">Save</button>
-        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div> --%>
-				
-		
-		<!-- End -->	
-				<button onclick="scrollToTop()" id="scrollButton"
-			data-toggle="tooltip" data-placement="top" data-original-data=""
-			title="Go to Top">
-			<i class="fa fa-arrow-up" aria-hidden="true"></i>
-		</button>	
+	  </div>
+	  </div>
+	  </div>
+	  
 <script>
 var jsObjectLists=[];
 <%if(reqInitiationId!=null){%>
@@ -930,12 +944,18 @@ var productreelist = [];
 	productreelist.push(['<%= obj[0].toString() %>', '<%= obj[2].toString() %>']);
 
 <%}}%>
- function showDetails(value){
+ function showDetails(value,IsMain){
 	 $('#row1').hide();
 	 $('#row2').show();
 	 $('#btnedit').val(value);
 		$('.viewbtn').css("background","#055C9D");
+		
 		$('#btn'+value).css("background","green");
+		$('.btnM').css("background","#6c757d");
+		if(IsMain==='M'){
+			$('.subdivs').hide();
+			$('#btn'+value).css("background","green");
+		}
 	 $.ajax({
 		 type:'GET',
 		 url:'getSpecificationData.htm',
@@ -1047,6 +1067,8 @@ var productreelist = [];
 	 $('#specParentId').val(a);
 	 $('#specsDiv').hide();
 	 $('#Editor').summernote('code', "");
+	 $('.btnM').css("background","#6c757d");
+	
 	 editvalue="add";
 	/*  $('.subdivs').hide(); */
 	 $('#div' + a).toggle();
@@ -1127,14 +1149,7 @@ var productreelist = [];
 	});
 	
 	
-	/* 	  $('#Editor').summernote({
-			  width: 800,   //don't use px
-			
-			  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
-			 
-		      lineHeights: ['0.5']
-		
-		 });  */
+
 
 	$('#Editor').summernote({
 		width: 800,
@@ -1198,7 +1213,7 @@ var productreelist = [];
 	}
 
 	
-	window.onscroll = function() { scrollFunction() };
+/* 	window.onscroll = function() { scrollFunction() };
 		function scrollFunction() {
     var scrollButton = document.getElementById("scrollButton");
     if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
@@ -1211,7 +1226,7 @@ var productreelist = [];
 	function scrollToTop(){
 document.body.scrollTop = 0; // For Safari
 document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
-	}
+	} */
 	
 	
 	function submitData(){
@@ -1329,7 +1344,79 @@ document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
 			 }
 		 });
 	}
-
+	function showMasterModal(){
+		$('#dataModal').modal('show');
+	}
+	
+	$('#ALLMasterIds').change(function(){
+		if($(this).prop('checked')){
+			$('.MasterIds').prop('checked',true);
+		}else{
+			$('.MasterIds').prop('checked',false);
+		}
+		
+	});
+	
+	$('.MasterIds').change(function(){
+		
+		if($('.MasterIds:checked').length===$('.MasterIds').length){
+			$('#ALLMasterIds').prop('checked',true);
+		}else{
+			$('#ALLMasterIds').prop('checked',false);
+		}
+	});
+	
+	
+	function submitTestMaster(){
+		var MasterIds=[];
+	$('input:checkbox[class="MasterIds"]:checked').each(function(){
+		
+		MasterIds.push(this.value)
+	})
+	if(MasterIds.length==0){
+			Swal.fire({
+				  icon: "error",
+				  title: "Oops...",
+				  text: "Please select one of the Specification.!",
+				  
+				});
+		}else{
+	
+		if(confirm('Are you sure to submit?')){
+			
+				$.ajax({
+				type:'GET',
+				url:'AddSpecDetailsFromMaster.htm',
+				datatype:'json',
+				data:{
+					MasterIds:MasterIds+"",
+					projectId:<%=projectId%>,
+					initiationId:<%=initiationId%>,
+					productTreeMainId:<%=productTreeMainId%>,
+					SpecsInitiationId:<%=SpecsInitiationId%>,
+					count:<%= Integer.parseInt(count1)%>
+				},
+				success:function(result){
+					console.log(result);
+					
+					if(result>0){
+						Swal.fire({
+							  icon: "success",
+							  text: "Specification Added Successfully.",
+							   allowOutsideClick :false
+							});
+						 $('.swal2-confirm').click(function (){
+			    	        	console.log("hiiii")
+			    	            location.reload();
+			    	        	})
+					}
+				}
+				})
+				
+		}
+		
+	}
+	}
 </script>				
 </body>
 </html>

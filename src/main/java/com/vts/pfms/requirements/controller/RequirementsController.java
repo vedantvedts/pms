@@ -4707,4 +4707,78 @@ public class RequirementsController {
 		return json.toJson(result);
 	}
 	
+	
+	@RequestMapping(value="AddSpecDetailsFromMaster.htm",method=RequestMethod.GET)
+	public @ResponseBody String AddSpecDetailsFromMaster(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside AddSpecDetailsFromMaster.htm" + UserId);
+		long result=0;
+		Gson json = new Gson();
+		try {
+			
+			String MasterIds= req.getParameter("MasterIds");
+			String [] MasterId= MasterIds.split(",");
+			
+			String projectId= req.getParameter("projectId");
+			String initiationId= req.getParameter("initiationId");
+			String productTreeMainId= req.getParameter("productTreeMainId");
+			String SpecsInitiationId= req.getParameter("SpecsInitiationId");
+			String Speccount= req.getParameter("count");
+			
+			if (initiationId == null)initiationId = "0";
+			if (projectId == null)projectId = "0";
+			if (productTreeMainId == null)productTreeMainId = "0";
+			if(SpecsInitiationId.equals("0") ) {					
+				SpecsInitiationId = Long.toString(service.SpecificationInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId,null,null));
+			}
+			List<SpecificationMaster>sp= service.getAllSpecPlans();
+			
+			int count=Speccount!=null ? Integer.parseInt(Speccount)+10:10;
+			for(String id:MasterId) {
+				
+				Optional<SpecificationMaster>spMaster = sp.stream()
+														   .filter(e->e.getSpecsMasterId().toString().equalsIgnoreCase(id)).findFirst();
+				
+				SpecificationMaster spm = spMaster.orElse(null);
+				Specification s = new Specification();
+				
+				s.setDescription(spm.getDescription());
+				s.setSpecsInitiationId(Long.parseLong(SpecsInitiationId));
+				s.setLinkedRequirement("");
+				s.setLinkedSubSystem("");
+				s.setIsMasterData("Y");
+				s.setIsActive(1);
+				s.setSpecValue(spm.getSpecValue());
+				s.setMaximumValue(spm.getMaximumValue());
+				s.setMinimumValue(spm.getMinimumValue());
+				s.setSpecsParameter(spm.getSpecsParameter());
+				s.setSpecsUnit(spm.getSpecsUnit());
+				s.setSpecsParameter(spm.getSpecsParameter());
+				
+				String Spectype = "SPEC_";
+				String SpecDetailsId = "";
+				if (count < 90L) {
+					SpecDetailsId = Spectype + ("000" + (count));
+				} else if (count < 990L) {
+					SpecDetailsId = Spectype + ("00" + (count));
+				} else {
+					SpecDetailsId = Spectype + ("0" + (count));
+				}
+				count=count+10;
+				s.setSpecificationName(SpecDetailsId);
+				s.setMainId(0l);
+				s.setParentId(0l);
+				s.setCreatedBy(UserId);
+				s.setCreatedDate(sdf1.format(new Date()));
+				result=projectservice.addSpecification(s);
+			}
+			
+		}
+		catch (Exception e) {
+			logger.error(new Date() + " Inside AddSpecDetailsFromMaster.htm " + UserId, e);
+			return json.toJson(result);
+		}
+		return json.toJson(result);	
+	}
 }

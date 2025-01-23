@@ -1035,7 +1035,7 @@ public class RequirementDaoImpl implements RequirementDao {
 		
 	}
 	
-	private static final String SPECLIST="SELECT SpecsId,SpecificationName,Description,SpecsInitiationId,LinkedRequirement,SpecsParameter,SpecsUnit,ParentId,MainId,SpecValue,LinkedSubSystem,maximumValue,minimumValue FROM pfms_specification_details WHERE SpecsInitiationId=:specsInitiationId AND isactive='1'";
+	private static final String SPECLIST="SELECT SpecsId,SpecificationName,Description,SpecsInitiationId,LinkedRequirement,SpecsParameter,SpecsUnit,ParentId,MainId,SpecValue,LinkedSubSystem,maximumValue,minimumValue,IsMasterData FROM pfms_specification_details WHERE SpecsInitiationId=:specsInitiationId AND isactive='1'";
 	@Override
 	public List<Object[]> getSpecsList(String specsInitiationId) throws Exception {
 		
@@ -1394,6 +1394,19 @@ public class RequirementDaoImpl implements RequirementDao {
 				
 			}catch (Exception e) {
 			    logger.error(new Date() + " Inside DAO getAllTestPlans " + e);
+			        return null;
+			}
+		}
+		
+		@Override
+		public List<SpecificationMaster> getAllSpecPlans() throws Exception {
+				try {
+				
+				Query query = manager.createNativeQuery("SELECT * FROM pfms_specification_master where isActive='1'", SpecificationMaster.class);
+				 return query.getResultList();
+				
+			}catch (Exception e) {
+			    logger.error(new Date() + " Inside DAO getAllSpecPlans " + e);
 			        return null;
 			}
 		}

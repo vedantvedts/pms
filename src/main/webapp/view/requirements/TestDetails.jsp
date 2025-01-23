@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.requirements.model.TestPlanMaster"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
@@ -18,8 +19,10 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 <spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
 <spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
-
-
+<spring:url value="/resources/css/sweetalert2.min.css" var="sweetalertCss" />
+<spring:url value="/resources/js/sweetalert2.min.js" var="sweetalertJs" />
+	<link href="${sweetalertCss}" rel="stylesheet" />
+	<script src="${sweetalertJs}"></script>
 
 <script src="${SummernoteJs}"></script>
 <link href="${SummernoteCss}" rel="stylesheet" />
@@ -362,9 +365,15 @@ margin-left: -21px;
 	String jsonArrayTestTool =objectMapper.writeValueAsString(TestTypeList);
 	
 	List<Object[]> specificationList = (List<Object[]>)request.getAttribute("specificationList");
-	
+	//List<Object[]> TestPlanMasterList = (List<Object[]>)request.getAttribute("TestPlanMasterList");
+	List<TestPlanMaster>TestPlanMasterList=(List<TestPlanMaster>)request.getAttribute("TestPlanMasterList");
 	if(specificationList!=null && specificationList.size()>0){
 		specificationList=specificationList.stream().filter(e->!e[7].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+	}
+	Integer nextCount=0;
+	if(TestDetailsList!=null && TestDetailsList.size()>0){
+		
+		nextCount=Integer.parseInt(TestDetailsList.get(TestDetailsList.size()-1)[1].toString().substring(4)); 
 	}
 	
 	Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
@@ -390,7 +399,7 @@ margin-left: -21px;
 
 	</div>
 	<%} %>
-	
+
 	<%if(TestDetailsList==null ) {%>
 		<div
 			style="margin-top: 20%; display: flex; justify-content: center; align-items: center;">
@@ -404,7 +413,7 @@ margin-left: -21px;
 						<div class="card shadow-nohover" style="margin-top: -0px;">
 							<div class="row card-header"
 								style="background: #C4DDFF; box-shadow: 2px 2px 2px grey;">
-								<div class="col-md-9" id="projecthead">
+								<div class="col-md-7" id="projecthead">
 									<h5 style="margin-left: 1%;">
 										Test Details - 
 										<small>
@@ -414,6 +423,9 @@ margin-left: -21px;
 											<%} %>
 										</small>
 									</h5>
+								</div>
+								<div class="col-md-2">
+								<button class="btn btn-sm submit" type="button" style="margin-top: -3%;" onclick="showMasterModal()">TESTPLAN MASTER</button>
 								</div>
 								<div class="col-md-3" id="addReqButton">
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
@@ -722,6 +734,40 @@ margin-left: -21px;
 													</div>
 													
 												</div>
+										
+				<%-- 								<%if ((TestPlanMasterList != null) && (!TestPlanMasterList.isEmpty())) { %>
+							<div class="form-group row">
+								<div class="col-md-3">
+									<label style="font-size: 17px; margin-top: 5%; color: #07689f">
+										Choose from Test Plan Master </label>
+								</div>
+								<div class="col-md-6" style="margin-top: 1%;">
+									<div class="form-group">
+
+										<select class="form-control selectdee" data-width="80%" id="SpecsMasterId"
+											data-live-search="true" onchange="getSpecDetails()">
+											<option value="" disabled="disabled" selected="selected">SELECT</option>
+											<%
+											for (Object[] obj : TestPlanMasterList) {
+											%>
+											<option value="<%=obj[0]%>"><%=obj[1]%></option>
+											<%
+											}
+											%>
+										</select>
+
+									</div>
+								</div>
+							</div>
+							<%
+							} else {
+							%>
+
+							<%
+							}
+							%> --%>
+										
+										
 										
 												<div class="form-group row">
 													<div class="col-md-6">
@@ -1356,6 +1402,52 @@ margin-left: -21px;
     </div>
   </div>
 </div>
+
+	<!-- Modal for choosing from Master -->
+
+		
+	  <div class="modal fade bd-example-modal-lg" id="dataModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg modal-dialog-jump-pop">
+	  <div class="modal-content" style="margin-left:-30%;width: 170%;">
+	        <div class="modal-header bg-primary text-light">
+        <h5 class="modal-title" id="exampleModalLongTitle"> Tests Available</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+       <div class="modal-body">
+       	<table class="table table-bordered table-striped">
+       		<thead>
+       		<tr style="font-size: 1rem">
+       		<td style="width: 5%;text-align: center;">
+       		 <input type="checkbox" id="ALLTestMasterIds">
+       		</td>
+       		
+       		<td>Test Name</td>
+       		<td style="width: 60%;">Test Description</td>
+       		</tr>
+       		</thead>
+       		<tbody>
+       		<%if(TestPlanMasterList!=null && !TestPlanMasterList.isEmpty()) {
+       		for(TestPlanMaster tp:TestPlanMasterList){
+       		%>
+       		<tr style="font-size: 1rem !important;">
+       		<td style="text-align: center;"> <input type="checkbox" class="TestMasterIds" name="TestMasterIds" value="<%=tp.getTestMasterId() %>"></td>
+       		<td><%=tp.getName() %></td>
+       		<td><%=tp.getDescription() %></td>
+       		</tr>
+       		<%}} %>
+       		</tbody>
+       	</table>
+       	<div align="center">
+       	<button type="button" class="btn btn-sm submit mt-2" onclick="submitTestMaster()">SUBMIT</button>
+       	</div>
+      </div>
+	  </div>
+	  </div>
+	  </div>
+
 <script>
 	function showdata(TestId)
 		{
@@ -2171,6 +2263,68 @@ $('#myform1').submit(function() {
 				return false;
 			}
 		
+		}
+		
+		
+		function showMasterModal(){
+			$('#dataModal').modal('show');
+		}
+		$('#ALLTestMasterIds').change(function(){
+			if($(this).prop('checked')){
+				$('.TestMasterIds').prop('checked',true);
+			}else{
+				$('.TestMasterIds').prop('checked',false);
+			}
+			
+		});
+		
+		$('.TestMasterIds').change(function(){
+			
+			if($('.TestMasterIds:checked').length===$('.TestMasterIds').length){
+				$('#ALLTestMasterIds').prop('checked',true);
+			}else{
+				$('#ALLTestMasterIds').prop('checked',false);
+			}
+		});
+		
+		
+		function submitTestMaster(){
+			var MasterIds=[];
+		$('input:checkbox[class="TestMasterIds"]:checked').each(function(){
+			
+			MasterIds.push(this.value)
+		})
+		if(MasterIds.length==0){
+				Swal.fire({
+					  icon: "error",
+					  title: "Oops...",
+					  text: "Please select one of the test IDs.!",
+					  
+					});
+			}else{
+		
+			if(confirm('Are you sure to submit?')){
+				
+					$.ajax({
+					type:'GET',
+					url:'AddTestDetailsFromMaster.htm',
+					datatype:'json',
+					data:{
+						MasterIds:MasterIds+"",
+						projectId:<%=projectId%>,
+						initiationId:<%=initiationId%>,
+						productTreeMainId:<%=productTreeMainId%>,
+						testPlanInitiationId:<%=testPlanInitiationId%>,
+						nextCount :	<%=nextCount %>,
+					},
+					success:function(result){
+						
+					}
+					})
+					
+			}
+			
+		}
 		}
  </script>
 	
