@@ -1309,76 +1309,82 @@ var editor_config = {
 	
 	
 	var editor_config1 = {
-			maxlength: '4000',
-			toolbar: [
-			        {
-			          name: 'basicstyles',
-			          items: ['Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'Subscript', 'Superscript']
-			        },
-			        {
-			          name: 'insert',
-			          items: ['Image', 'Table']
-			        },
-			        {
-			          name: 'editing',
-			          items: ['Scayt']
-			        },
-			        
-			        {
-			          name: 'styles',
-			          items: ['Format', 'Font', 'FontSize']
-			        },
-			        {
-			          name: 'colors',
-			          items: ['TextColor', 'BGColor', 'CopyFormatting']
-			        },
-			        {
-			          name: 'align',
-			          items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
-			        },
-			     
-			      ],
-			    removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
-				customConfig: '',
-				disallowedContent: 'img{width,height,float}',
-				extraAllowedContent: 'img[width,height,align]',
-				height: 100,
-			 	contentsCss: [CKEDITOR.basePath +'mystyles.css' ], 
-				bodyClass: 'document-editor',
-				format_tags: 'p;h1;h2;h3;pre',
-				removeDialogTabs: 'image:advanced;link:advanced',
-				stylesSet: [
-					{ name: 'Marker', element: 'span', attributes: { 'class': 'marker' } },
-					{ name: 'Cited Work', element: 'cite' },
-					{ name: 'Inline Quotation', element: 'q' },
-					{
-						name: 'Special Container',
-						element: 'div',
-						styles: {
-							padding: '5px 10px',
-							background: '#eee',
-							border: '1px solid #ccc'
-						}
-					},
-					{
-						name: 'Compact table',
-						element: 'table',
-						attributes: {
-							cellpadding: '5',
-							cellspacing: '0',
-							border: '1',
-							bordercolor: '#ccc'
-						},
-						styles: {
-							'border-collapse': 'collapse'
-						}
-					},
-					{ name: 'Borderless Table', element: 'table', styles: { 'border-style': 'hidden', 'background-color': '#E6E6FA' } },
-					{ name: 'Square Bulleted List', element: 'ul', styles: { 'list-style-type': 'square' } },
+		    maxlength: '4000',
+		    toolbar: [
+		        {
+		            name: 'basicstyles',
+		            items: ['Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'Subscript', 'Superscript']
+		        },
+		        {
+		            name: 'insert',
+		            items: ['Image', 'Table']
+		        },
+		        {
+		            name: 'editing',
+		            items: ['Scayt']
+		        },
+		        {
+		            name: 'styles',
+		            items: ['Format', 'Font', 'FontSize']
+		        },
+		        {
+		            name: 'colors',
+		            items: ['TextColor', 'BGColor', 'CopyFormatting']
+		        },
+		        {
+		            name: 'align',
+		            items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
+		        },
+		    ],
+		    removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
+		    customConfig: '',
+		    disallowedContent: 'img{width,height,float}',
+		    extraAllowedContent: 'img[width,height,align]',
+		    height: 100,
+		    contentsCss: [CKEDITOR.basePath + 'mystyles.css'],
+		    bodyClass: 'document-editor',
+		    format_tags: 'p;h1;h2;h3;pre',
+		    removeDialogTabs: 'image:advanced;link:advanced',
+		    stylesSet: [
+		        { name: 'Marker', element: 'span', attributes: { 'class': 'marker' } },
+		        { name: 'Cited Work', element: 'cite' },
+		        { name: 'Inline Quotation', element: 'q' },
+		        {
+		            name: 'Special Container',
+		            element: 'div',
+		            styles: {
+		                padding: '5px 10px',
+		                background: '#eee',
+		                border: '1px solid #ccc'
+		            }
+		        },
+		        {
+		            name: 'Compact table',
+		            element: 'table',
+		            attributes: {
+		                cellpadding: '5',
+		                cellspacing: '0',
+		                border: '1',
+		                bordercolor: '#ccc'
+		            },
+		            styles: {
+		                'border-collapse': 'collapse'
+		            }
+		        },
+		        { name: 'Borderless Table', element: 'table', styles: { 'border-style': 'hidden', 'background-color': '#E6E6FA' } },
+		        { name: 'Square Bulleted List', element: 'ul', styles: { 'list-style-type': 'square' } },
+		    ],
+		    // Ensuring pressing "Enter" inserts <p> instead of <br>
+		    enterMode: CKEDITOR.ENTER_P,
+		    shiftEnterMode: CKEDITOR.ENTER_P,
+		    
+		    // Clean up unwanted <br> tags
+		    removeEmpty: ['br'],
+		    removeFormat: true,
 
-		]
-				
-			} ;
+		    // Optionally, define a specific class for paragraphs to remove unwanted margins
+		    contentsCss: [CKEDITOR.basePath + 'mystyles.css'],
+		};
 	 
 	 function update(ele){
 		 var MilestoneActivityId = ele.value;

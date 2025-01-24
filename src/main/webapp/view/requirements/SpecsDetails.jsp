@@ -608,14 +608,14 @@ String count1="10";
 								<div class="row mt-2">
 								 
 								<div class="col-md-2">
-								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Specification Parameter: <span class="mandatory" style="color: red;">*</span></label>
+								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Parameter: <span class="mandatory" style="color: red;">*</span></label>
 								</div>
 								<div class="col-md-2">
 								<input type="text" class="form-control" name="specParameter" id="specParameter" required="required">
 								</div>
 								
 								<div class="col-md-2">
-								<label style="font-size: 17px; margin-top: 5%;float:right; color: #07689f">Specification Unit: <span class="mandatory" style="color: red;">*</span></label>
+								<label style="font-size: 17px; margin-top: 5%;float:right; color: #07689f"> Unit: <span class="mandatory" style="color: red;">*</span></label>
 								</div>
 								<div class="col-md-2">
 								<input type="text" class="form-control" name="specUnit" id="specUnit" required="required">
@@ -721,7 +721,7 @@ String count1="10";
 									<hr>
 								<div class="row">
 								<div class="col-md-3">
-								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Specification Parameter :</label>
+								<label style="font-size: 17px; margin-top: 5%; color: #07689f"> Parameter :</label>
 								</div>
 								<div class="col-md-8">
 								<p style="font-size: 1rem;font-weight: bold;margin-top: 2%" id="specparam"></p>
@@ -757,7 +757,7 @@ String count1="10";
 								<hr>
 								<div class="row">
 									<div class="col-md-3">
-								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Specification Unit :</label>
+								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Unit :</label>
 								</div>
 								<div class="col-md-8">
 								<p style="font-size: 1rem;font-weight: bold;margin-top: 2%" id="specUnits"></p>

@@ -51,6 +51,11 @@
 .note-frame{
 margin-left:5%;
 }
+
+       @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
 </style>
 </head>
 <body>
@@ -134,7 +139,12 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
 		</div>
 
 	</div>
-	<%} %>	
+	<%} %>
+	
+	<div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white; font-size: 20px; font-weight: bold;">
+    <div class="spinner" style="border: 4px solid rgba(255, 255, 255, 0.3); border-top: 4px solid #021B79; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px;"></div>
+    Please wait while we are generating the PDF...
+</div>	
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
@@ -940,6 +950,8 @@ function DownloadDoc(){
 
 
 function DownloadDocPDF(){
+
+	 document.getElementById('loadingOverlay').style.display = 'flex';;
 	var chapterCount = 0;
     var mainContentCount = 0;
 	var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
@@ -1590,6 +1602,12 @@ function DownloadDocPDF(){
                 header: { alignment: 'center', bold: true},
                 chapterContent: {fontSize: 11.5, margin: [0, 5, 0, 5] },
             },
+            info: {
+                title: 'Specification_Document', // Set document title here
+                author: 'LRDE', // Optional metadata
+                subject: 'Subject of the PDF',       // Optional metadata
+                keywords: 'keyword1, keyword2',     // Optional metadata
+            },
             footer: function(currentPage, pageCount) {
                 if (currentPage > 2) {
                     return {
@@ -1661,7 +1679,17 @@ function DownloadDocPDF(){
             defaultStyle: { fontSize: 12, color: 'black', }
         };
 		
-        pdfMake.createPdf(docDefinition).open();
+	 pdfMake.createPdf(docDefinition).getBlob((blob) => {
+         // Create a URL for the blob
+         const url = URL.createObjectURL(blob);
+
+         // Open the PDF in a new tab
+         window.open(url, '_blank');
+
+         // Hide the loading spinner
+           document.getElementById('loadingOverlay').style.display='none';
+        
+     });
 }
 
 const setImagesWidth = (htmlString, width) => {
