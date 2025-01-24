@@ -53,7 +53,7 @@ public class PrintDaoImpl implements PrintDao {
 	private static final String LABLIST="select labcode, labname,labaddress, labcity,lablogo from lab_master where labcode=:labcode";
 	private static final String PFMSINITLIST="SELECT a.initiationid,a.projectprogramme,b.projecttypeshort,c.classification,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.isplanned,a.ismultilab,a.createddate,a.deliverable,a.ismain,d.projecttitle AS initiatedproject,a.remarks,a.fecost,a.recost,a.labcode ,a.classificationid , a.projecttypeid FROM pfms_initiation a,project_type b,pfms_security_classification c ,pfms_initiation d WHERE a.classificationid=c.classificationid  AND a.projecttypeid=b.projecttypeid AND a.isactive='1' AND a.initiationid=:initiationid AND a.mainid=d.initiationid UNION SELECT a.initiationid,a.projectprogramme,b.projecttypeshort,c.classification,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration, a.isplanned,a.ismultilab,a.createddate,a.deliverable,a.ismain,a.projecttitle AS initiatedproject,a.remarks,a.fecost,a.recost,a.labcode ,a.classificationid , a.projecttypeid FROM pfms_initiation a,project_type b,pfms_security_classification c WHERE a.classificationid=c.classificationid  AND a.projecttypeid=b.projecttypeid AND a.isactive='1' AND a.initiationid=:initiationid AND a.mainid=0";
 	private static final String PROJECTDETAILSLIST= "SELECT a.Requirements,a.Objective,a.Scope,a.MultiLabWorkShare,a.EarlierWork,a.CompentencyEstablished,a.NeedOfProject,a.TechnologyChallanges,a.RiskMitigation,a.Proposal,a.RealizationPlan,a.initiationid,a.worldscenario,a.ReqBrief,a.ObjBrief,a.ScopeBrief,a.MultiLabBrief,a.EarlierWorkBrief,a.CompentencyBrief,a.NeedOfProjectBrief,a.TechnologyBrief,a.RiskMitigationBrief,a.ProposalBrief,a.RealizationBrief,a.WorldScenarioBrief FROM pfms_initiation_detail a WHERE a.initiationid=:initiationid ";	
-	private static final String COSTDETAILSLIST="SELECT c.headofaccounts,CONCAT (c.majorhead,'-',c.minorhead,'-',c.subhead) AS headcode,a.itemdetail,a.itemcost,.c.sanctionitemid,c.refe  FROM pfms_initiation_cost a,budget_item_sanc c WHERE a.budgetsancid=c.sanctionitemid AND a.isactive='1' AND a.initiationid=:initiationid AND a.budgetheadid=c.budgetheadid  ORDER BY sanctionitemid";
+	private static final String COSTDETAILSLIST="SELECT c.headofaccounts,CONCAT (c.majorhead,'-',c.minorhead,'-',c.subhead) AS headcode,a.itemdetail,a.itemcost,c.sanctionitemid,c.refe  FROM pfms_initiation_cost a,budget_item_sanc c WHERE a.budgetsancid=c.sanctionitemid AND a.isactive='1' AND a.initiationid=:initiationid AND a.budgetheadid=c.budgetheadid  ORDER BY sanctionitemid";
 	private static final String PROJECTSCHEDULELIST="select milestoneno,milestoneactivity,milestonemonth,initiationscheduleid,milestoneremark,milestonestartedfrom,milestonetotalmonth from pfms_initiation_schedule where initiationid=:initiationid and isactive='1'";
 
 	private static final String PROJECTSLIST="SELECT projectid, projectcode, projectname FROM project_master";
@@ -950,7 +950,7 @@ public class PrintDaoImpl implements PrintDao {
 				+ "LEFT JOIN pfms_project_data g ON g.ProjectId=a.ProjectId\r\n"
 				+ "LEFT JOIN pfms_project_stage h ON g.CurrentStageId=h.ProjectStageId  \r\n"
 				+ "LEFT JOIN project_master_rev i ON i.ProjectId=a.ProjectId AND i.RevisionNo='0'\r\n"
-				+ "WHERE a.ProjectId=:ProjectId GROUP BY a.ProjectId,a.ProjectName";		
+				+ "WHERE a.ProjectId=:ProjectId LIMIT 1";		
 		@Override
 		public Object[] GetProjectdata(String projectid)throws Exception
 		{
@@ -1074,7 +1074,7 @@ public class PrintDaoImpl implements PrintDao {
 			List<Object[]> RiskTypes=(List<Object[]> )query.getResultList();
 			return RiskTypes;
 		}
-		private static final String COSTLIST="SELECT c.headofaccounts,CONCAT (c.majorhead,'-',c.minorhead,'-',c.subhead) AS headcode,SUM(a.itemcost)FROM pfms_initiation_cost a,budget_item_sanc c WHERE a.budgetsancid=c.sanctionitemid AND a.isactive='1' AND a.initiationid=:initiationId AND a.budgetheadid=c.budgetheadid  GROUP BY headofaccounts";
+		private static final String COSTLIST="SELECT c.headofaccounts,CONCAT (c.majorhead,'-',c.minorhead,'-',c.subhead) AS headcode,SUM(a.itemcost)FROM pfms_initiation_cost a,budget_item_sanc c WHERE a.budgetsancid=c.sanctionitemid AND a.isactive='1' AND a.initiationid=:initiationId AND a.budgetheadid=c.budgetheadid  GROUP BY headofaccounts,c.MajorHead,c.MinorHead,c.SubHead";
 	@Override
 		public List<Object[]> CostDetailsListSummary(String initiationId) throws Exception {
 			// TODO Auto-generated method stub

@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="pfms_System_product_tree")
+@Table(name="pfms_system_product_tree")
 public class SystemProductTree {
 
 	@Id
