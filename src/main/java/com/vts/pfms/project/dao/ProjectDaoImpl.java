@@ -2414,7 +2414,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
 		return pf.getDocId();
 	}
-	private static final String PROJECTFILES="SELECT DocId,initiationid,stepid,fileName,DocumentName,FilePath,MAX(VersionDoc)AS versiondoc,Description,DocumentId FROM pfms_initiation_file_upload WHERE initiationid=:initiationid AND stepid=:stepid GROUP BY DocumentId ";
+	private static final String PROJECTFILES="SELECT DocId,initiationid,stepid,fileName,DocumentName,FilePath,MAX(VersionDoc)AS versiondoc,Description,DocumentId FROM pfms_initiation_file_upload WHERE initiationid=:initiationid AND stepid=:stepid GROUP BY DocumentId,DocId ";
 	@Override
 	public List<Object[]> getProjectFilese(String initiationid, String stepid) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTFILES);
