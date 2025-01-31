@@ -4032,6 +4032,7 @@ public class RequirementsController {
 				specs.setSpecificationName(s[1]);
 				specs.setSpecsInitiationId(Long.parseLong(SpecsInitiationId));
 				specs.setIsActive(1);
+				specs.setIsMasterData("N");
 				count = projectservice.addSpecification(specs);
 			}
 			if (count > 0) {
@@ -4716,6 +4717,8 @@ public class RequirementsController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() + "Inside AddSpecDetailsFromMaster.htm" + UserId);
 		long result=0;
+		long result1=0;
+		long result2=0;
 		Gson json = new Gson();
 		try {
 			
@@ -4758,22 +4761,71 @@ public class RequirementsController {
 				s.setSpecsUnit(spm.getSpecsUnit());
 				s.setSpecsParameter(spm.getSpecsParameter());
 				
-				String Spectype = "SPEC_";
-				String SpecDetailsId = "";
-				if (count < 90L) {
-					SpecDetailsId = Spectype + ("000" + (count));
-				} else if (count < 990L) {
-					SpecDetailsId = Spectype + ("00" + (count));
-				} else {
-					SpecDetailsId = Spectype + ("0" + (count));
-				}
-				count=count+10;
-				s.setSpecificationName(SpecDetailsId);
+				s.setSpecificationName(spm.getSpecsInitiationId());
 				s.setMainId(0l);
 				s.setParentId(0l);
 				s.setCreatedBy(UserId);
 				s.setCreatedDate(sdf1.format(new Date()));
 				result=projectservice.addSpecification(s);
+				
+				List<SpecificationMaster>spLevel1=sp.stream()
+												.filter(e->e.getParentId().toString().equalsIgnoreCase(id))
+												.collect(Collectors.toList());
+				
+				
+				for(SpecificationMaster s1:spLevel1) {
+					Specification s1New = new Specification();
+					s1New.setDescription(s1.getDescription());
+					s1New.setSpecsInitiationId(Long.parseLong(SpecsInitiationId));
+					s1New.setLinkedRequirement("");
+					s1New.setLinkedSubSystem("");
+					s1New.setIsMasterData("Y");
+					s1New.setIsActive(1);
+					s1New.setSpecValue(s1.getSpecValue());
+					s1New.setMaximumValue(s1.getMaximumValue());
+					s1New.setMinimumValue(s1.getMinimumValue());
+					s1New.setSpecsParameter(s1.getSpecsParameter());
+					s1New.setSpecsUnit(s1.getSpecsUnit());
+					s1New.setSpecsParameter(s1.getSpecsParameter());
+					
+					s1New.setSpecificationName(s1.getSpecsInitiationId());
+					s1New.setMainId(0l);
+					s1New.setParentId(result);
+					s1New.setCreatedBy(UserId);
+					s1New.setCreatedDate(sdf1.format(new Date()));
+					
+					result1=projectservice.addSpecification(s1New);
+					
+					List<SpecificationMaster>spLevel2=sp.stream()
+							.filter(e->e.getParentId().equals( s1.getSpecsMasterId()))
+							.collect(Collectors.toList());
+					
+					System.out.println("s1.getSpecsMasterId()"+s1.getSpecsMasterId());
+					System.out.println(spLevel2.size()+"<------");
+					for(SpecificationMaster s2:spLevel2) {
+						Specification s2New = new Specification();
+						s2New.setDescription(s2.getDescription());
+						s2New.setSpecsInitiationId(Long.parseLong(SpecsInitiationId));
+						s2New.setLinkedRequirement("");
+						s2New.setLinkedSubSystem("");
+						s2New.setIsMasterData("Y");
+						s2New.setIsActive(1);
+						s2New.setSpecValue(s2.getSpecValue());
+						s2New.setMaximumValue(s2.getMaximumValue());
+						s2New.setMinimumValue(s2.getMinimumValue());
+						s2New.setSpecsParameter(s2.getSpecsParameter());
+						s2New.setSpecsUnit(s2.getSpecsUnit());
+						s2New.setSpecsParameter(s2.getSpecsParameter());
+						
+						s2New.setSpecificationName(s2.getSpecsInitiationId());
+						s2New.setMainId(0l);
+						s2New.setParentId(result1);
+						s2New.setCreatedBy(UserId);
+						s2New.setCreatedDate(sdf1.format(new Date()));
+						result2=projectservice.addSpecification(s2New);
+					}
+				}
+				
 			}
 			
 		}

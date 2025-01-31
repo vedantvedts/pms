@@ -52,7 +52,7 @@ int port=new URL(request.getRequestURL().toString()).getPort();
 String path=request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/";
 %>
 
-
+<div id="pdfContainer"></div>
 <div id="loadingOverlay" style="display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white; font-size: 20px; font-weight: bold;">
     <div class="spinner" style="border: 4px solid rgba(255, 255, 255, 0.3); border-top: 4px solid white; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px;"></div>
     Please wait while we are generating the PDF...
@@ -375,15 +375,25 @@ header: function (currentPage) {
 
      <%--    pdfMake.createPdf(docDefinition).download('QR_PARA_<%=projectDetails!=null && projectDetails[2]!=null?projectDetails[2]:"" %>.pdf'); --%>
      pdfMake.createPdf(docDefinition).getBlob((blob) => {
-         // Create a URL for the blob
-         const url = URL.createObjectURL(blob);
+    	    // Create a URL for the blob
+    	    const url = URL.createObjectURL(blob);
 
-         // Open the PDF in a new tab
-         window.open(url, '_blank');
+    	    // Create an iframe element to embed the PDF in the current window
+    	    const iframe = document.createElement('iframe');
+    	    iframe.src = url;
+    	    iframe.width = '100%';  // Adjust the width as needed
+    	    iframe.height = '100%';  // Adjust the height as needed
 
-         // Hide the loading spinner
-           document.getElementById('loadingOverlay').style.display='none';
-         window.close();
+    	    // Optionally, you can set other styles to make the iframe look nice
+    	    iframe.style.border = 'none';
+    	    iframe.style.margin = '0';
+
+    	    // Append the iframe to a container element (e.g., a div with id 'pdfContainer')
+    	    document.getElementById('pdfContainer').innerHTML = '';  // Clear any existing content
+    	    document.getElementById('pdfContainer').appendChild(iframe);
+
+    	    // Hide the loading spinner
+    	    document.getElementById('loadingOverlay').style.display = 'none';
      });
     }
 		  

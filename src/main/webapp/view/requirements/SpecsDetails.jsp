@@ -391,6 +391,10 @@ int count=0;
 String reqInitiationId = (String) request.getAttribute("reqInitiationId");
 List<Object[]>productTreeList = (List<Object[]>)request.getAttribute("productTreeList");
 List<Object[]>systemSpecificationList = (List<Object[]>)request.getAttribute("systemSpecificationList");
+
+List<String>SpecNames = specsList.stream().filter(e->e[13].toString().equalsIgnoreCase("Y"))
+							.map(e->e[1].toString()).collect(Collectors.toList());
+
 String count1="10";
 %>
 
@@ -398,6 +402,7 @@ String count1="10";
  	  String ses1=(String)request.getParameter("resultfail");
 	  if(ses1!=null){
 	%>
+	
 	<div align="center">
 
 		<div class="alert alert-danger" role="alert">
@@ -475,7 +480,7 @@ String count1="10";
 							<i class="fa fa-trash-o" aria-hidden="true" style="color:red;"></i>
 					</button>
 					</div>
-									<%
+					<%
 					List<Object[]>specsListSub = new ArrayList<>();
 					specsListSub=specsList.stream().filter(e->e[7].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
 					%>
@@ -491,18 +496,15 @@ String count1="10";
 					<i class="fa fa-trash-o" aria-hidden="true" style="color:red;"></i>
 					</button>
 					</div>
-					<%} %>
+					<% } %>
 					</div>
 					
 					
 					<%}}%>
 					<%
 					List<Object[]>specsListMainFromMaster=specsList.stream().filter(e->e[7].toString().equalsIgnoreCase("0") && e[13].toString().equalsIgnoreCase("Y")).collect(Collectors.toList());
-					 count1=specsListMainFromMaster!=null && specsListMainFromMaster.size()>0?
-							specsListMainFromMaster.get(specsListMainFromMaster.size()-1)[1].toString().split("_")[1]:"10";
 					for(Object[]obj:specsListMainFromMaster){
-						
-						%>
+					%>
 						
 						<div  style="display: flex; align-items: center; margin-top: 8px; width: 100%">
 						<button style="" type="button" class="btn btn-secondary  mt-2 btnM" onclick="showDetails(<%=obj[0].toString() %>,'M')" id="btn<%=obj[0].toString()%>"><%=(++count)+" . "+obj[1].toString() %>  </button>
@@ -510,6 +512,26 @@ String count1="10";
 								<i class="fa fa-trash-o" aria-hidden="true" style="color:red;"></i>
 						</button>
 						</div>
+						
+					<%
+					List<Object[]>specsListSubFromMain = new ArrayList<>();
+					specsListSubFromMain=specsList.stream().filter(e->e[7].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
+					%>
+					<div class="subdivs" id="div<%=obj[0]%>" style="display:none;">
+					<%
+					int subcount1=0;
+					for(Object[]obj1:specsListSubFromMain) {
+					%>
+					<div style="display: flex; align-items: center; margin-top: 8px; width: 90%">
+					<button type="button" class="btn btn-secondary viewbtn mt-2" onclick="showDetails(<%=obj1[0].toString() %>,'M',<%=obj[0].toString() %>)" id="btn<%=obj1[0].toString()%>"><%=count+"."+(++subcount1)+". "+obj1[1].toString() %> </button>
+					
+					<button class="btn btn-sm bg-transparent" type="button" onclick="deleteSpc(<%=obj1[0].toString()%>)">
+					<i class="fa fa-trash-o" aria-hidden="true" style="color:red;"></i>
+					</button>
+					</div>
+					<% } %>	
+					</div>	
+						
 						<%} %>
 			
 					<% }else{ %>
@@ -562,8 +584,8 @@ String count1="10";
 
 
 
-							<%if ((systemSpecificationList != null) && (!systemSpecificationList.isEmpty())) {%>
-							<div class="row">
+				<%-- 			<%if ((systemSpecificationList != null) && (!systemSpecificationList.isEmpty())) {%>
+							<div class="row" id="specMasterRow">
 								<div class="col-md-3">
 									<label style="font-size: 17px; margin-top: 5%; color: #07689f">
 										Choose from Linked Subsytem </label>
@@ -586,13 +608,7 @@ String count1="10";
 									</div>
 								</div>
 							</div>
-							<%
-							} else {
-							%>
-
-							<%
-							}
-							%>
+							<%} else {%><%}%> --%>
 
 							<div class="row">
 								<div class="col-md-3">
@@ -871,7 +887,7 @@ String count1="10";
 		<!-- Specification Details  -->
 	  <div class="modal fade bd-example-modal-lg" id="dataModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-lg modal-dialog-jump-pop">
-	  <div class="modal-content" style="margin-left:-20%;width: 120%;">
+	  <div class="modal-content" style="margin-left:-32%;width: 175%;">
 	        <div class="modal-header bg-primary text-light">
         <h5 class="modal-title" id="exampleModalLongTitle"> Specifications Available</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -883,26 +899,39 @@ String count1="10";
        	<table class="table table-bordered table-striped">
        		<thead>
        		<tr style="font-size: 1rem">
-       		<td style="width: 5%;text-align: center;">
+       		<th style="width: 5%;text-align: center;">
        		 <input type="checkbox" id="ALLMasterIds">
-       		</td>
+       		</th>
        		
-       		<td style="width: 30%;">Specification Name</td>
-       		<td>Parameter</td>
-       		<td style="width: 30%;"> Description</td>
+       		<th style="width: 30%;">Specification Name</th>
+       		<th>Parameter</th>
+       		<th style="width: 10%;"> Min Value</th>
+       		<th style="width: 10%;"> Typical Value</th>
+       		<th style="width: 10%;"> Max Value</th>
+       		<th style="width: 10%;"> Unit</th>
        		</tr>
        		</thead>
        		<tbody>
        		<%if(systemSpecificationList!=null && !systemSpecificationList.isEmpty()) {
        		for(Object[]obj:systemSpecificationList){
        		%>
-       		<tr style="font-size: 1rem !important;">
-       		<td style="text-align: center;"> <input type="checkbox" class="MasterIds" name="MasterIds" value="<%=obj[0] %>"></td>
-       		<td><%=obj[5] %></td>
-       		<td><%=obj[3] %></td>
-       		<td><%=obj[2] %></td>
-       		</tr>
-       		<%}} %>
+						
+						<%if(!SpecNames.contains(obj[5].toString())){ %>
+							<tr style="font-size: 1rem !important;">
+							<td style="text-align: center;">
+							<%if (obj[14].toString().equalsIgnoreCase("0")) {%>
+							<input type="checkbox" class="MasterIds" name="MasterIds" value="<%=obj[0]%>"> 
+							<%}%>
+							</td>
+							<td><%=obj[5]%></td>
+							<td><%=obj[3]%></td>
+							<td><%=obj[16]!= null ? obj[16]:"-"%></td>
+							<td><%=obj[6]!=null ? obj[6] :"-"%></td>
+							<td><%=obj[15]!=null ? obj[15]:"-"%></td>
+							<td><%=obj[4]!=null ? obj[4] :"-"%></td>
+							</tr>
+							<%}%>
+							<%}}%>
        		</tbody>
        	</table>
        	<div align="center">
@@ -944,7 +973,7 @@ var productreelist = [];
 	productreelist.push(['<%= obj[0].toString() %>', '<%= obj[2].toString() %>']);
 
 <%}}%>
- function showDetails(value,IsMain){
+ function showDetails(value,IsMain,parentId){
 	 $('#row1').hide();
 	 $('#row2').show();
 	 $('#btnedit').val(value);
@@ -952,9 +981,16 @@ var productreelist = [];
 		
 		$('#btn'+value).css("background","green");
 		$('.btnM').css("background","#6c757d");
+		$('#specMasterRow').show();
 		if(IsMain==='M'){
-			$('.subdivs').hide();
-			$('#btn'+value).css("background","green");
+			/* $('.subdivs').hide(); */
+			/* $('#btn'+value).css("background","green"); */
+			$('#specMasterRow').hide();
+			 $('#div' + value).toggle();
+		}
+		if (typeof parentId !== 'undefined') {
+			console.log("parentId"+parentId)
+			 $('#specParentId').val(parentId);
 		}
 	 $.ajax({
 		 type:'GET',

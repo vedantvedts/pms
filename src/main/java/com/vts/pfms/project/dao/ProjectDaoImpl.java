@@ -4156,8 +4156,12 @@ public class ProjectDaoImpl implements ProjectDao {
 	
 	
 	private static final String SYSSPECIFICLIST="SELECT a.SpecsMasterId , a.SpecificationName,a.Description,a.SpecsParameter,\r\n"
-			+ "a.SpecsUnit,a.SpecsInitiationId,a.SpecValue,a.maximumValue,a.minimumValue FROM pfms_specification_master a, pfms_product_tree b\r\n"
-			+ "WHERE a.mainid=b.SystemMainId AND b.MainId=:productTreeMainId  AND a.isactive='1' ORDER BY a.MainId,a.specCount";
+			+ "a.SpecsUnit,a.SpecsInitiationId,a.SpecValue,'EmpName' AS 'EMP',a.CreatedDate, \r\n"
+			+ "a.ModifiedBy, a.ModifiedDate, a.IsActive,a.sid,a.mainid,a.ParentId,\r\n"
+			+ "a.maximumValue,a.minimumValue,a.specCount,a.SpecificationType \r\n"
+			+ "FROM pfms_specification_master a, pfms_product_tree b\r\n"
+			+ "WHERE a.mainid=b.SystemMainId AND b.MainId=:productTreeMainId \r\n"
+			+ "AND a.isactive='1' ORDER BY a.MainId,a.specCount";
 	@Override
 	public List<Object[]> getsystemSpecificationList(String productTreeMainId) throws Exception {
 

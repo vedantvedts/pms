@@ -26,37 +26,8 @@
 	href="./webjars/bootstrap/4.0.0/css/bootstrap.min.css" />
 <link rel="stylesheet"
 	href="./webjars/font-awesome/4.7.0/css/font-awesome.min.css" />
-<script>
 
-	/*     function exportHTML(){
-	 var header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' "+
-            "xmlns:w='urn:schemas-microsoft-com:office:word' "+
-            "xmlns='http://www.w3.org/TR/REC-html40'>"+
-	 "<head><meta charset='utf-8'><title>Export HTML to Word Document with JavaScript</title></head><body>";
-	 var footer = "</body></html>";
-	 var sourceHTML = header+document.getElementById("source-html").innerHTML+footer;
-	
-	 var source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
-	 var fileDownload = document.createElement("a");
-	 document.body.appendChild(fileDownload);
-	 fileDownload.href = source;
-	 fileDownload.download = 'System Requirement.doc';
-	 fileDownload.click();
-	 document.body.removeChild(fileDownload);
-	 } */
- 	jQuery(document).ready(function($) {
-		$("#btn-export").click(function(event) {
-			$("#source-html").wordExport("System-Requirement");
-		});
-	}); 
- /* 	 $( document ).ready(function() {
-		 download();
-		}); */ 
-	/* 	 function download(){
-			$("#source-html").wordExport("System-Requirement");
-			window.close();
-	 } */
-</script>
+
 <spring:url value="/resources/js/FileSaver.min.js" var="FileSaver" />
 <script src="${FileSaver}"></script>
 <spring:url value="/resources/js/jquery.wordexport.js" var="wordexport" />
@@ -71,556 +42,61 @@
 <title>Requirement Document</title>
  <style>
         /* Loading spinner styling */
-        #loading {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 18px;
-            color: #333;
-        }
+     
            @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
     </style>
-	</head>		
+	</head>	
+	<%List<Object[]>MemberList=(List<Object[]>)request.getAttribute("MemberList");
+	 Object[]LabList=(Object[])request.getAttribute("LabList");
+	 List<Object[]> VerificationDataList=(List<Object[]>)request.getAttribute("VerificationDataList");
+	 Map<String, List<Object[]>> verificationDataListMap = VerificationDataList!=null && VerificationDataList.size()>0?VerificationDataList.stream()
+			  											.collect(Collectors.groupingBy(array -> array[1] + "", LinkedHashMap::new, Collectors.toList())) : new HashMap<>();
+	 String lablogo=(String)request.getAttribute("lablogo");
+	 String drdologo=(String)request.getAttribute("drdologo");
+	 Object[] DocTempAtrr=(Object[])request.getAttribute("DocTempAttributes");
+	 String FontFamily="Times New Roman";
+	 
+	 if(DocTempAtrr!=null && DocTempAtrr[11]!=null){
+        	FontFamily= DocTempAtrr[11].toString();
+        }
+	 List<Object[]> DocumentSummary = (List<Object[]>)request.getAttribute("DocumentSummary"); 
+		Object[] projectDetails = (Object[])request.getAttribute("projectDetails"); 
+		String projectShortName = (String)request.getAttribute("projectShortName");
+		String Classification = (String)request.getAttribute("Classification");
+		String docnumber = "-";
+		String version =(String)request.getAttribute("version");
+		
+		if(DocumentSummary!=null && DocumentSummary.size()>0) {
+			docnumber = "SRD-"+(DocumentSummary.get(0)[11]!=null?DocumentSummary.get(0)[11].toString().replaceAll("-", ""):"-")+"-"+session.getAttribute("labcode")+"-"+((projectDetails!=null && projectDetails[1]!=null)?projectDetails[1]:"")+"-V"+version;
+		}
+	Object[]ReqIntro=(Object[])request.getAttribute("ReqIntro");
+	LocalDate now = LocalDate.now();
+	Month month = now.getMonth();
+	int year = now.getYear();
+	List<Object[]>Verifications=(List<Object[]>)request.getAttribute("Verifications");
+	List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeList");
+	List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementList");
+	List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectParaDetails");
+	List<Object[]>AbbreviationDetails=(List<Object[]>)request.getAttribute("AbbreviationDetails");
+	%>	
 	<body >
-	
+	<div id="pdfContainer" style="height: 100%"></div>
 <div id="loadingOverlay" style="display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white; font-size: 20px; font-weight: bold;">
-    <div class="spinner" style="border: 4px solid rgba(255, 255, 255, 0.3); border-top: 4px solid white; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px;"></div>
+    <div class="spinner" style="border: 4px solid rgba(255, 255, 255, 0.3); border-top: 4px solid blue; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px;"></div>
     Please wait while we are generating the PDF...
 </div>
+
 		<button onclick="generatePDF()" id="generatePDF" style="background: none;border: none;"></button>
-		<div style="display: none">
-			<div id="verification">
-				<table>
-					<tbody>
-						 <%
-						 Object[]LabList=(Object[])request.getAttribute("LabList");
-						 List<Object[]> VerificationDataList=(List<Object[]>)request.getAttribute("VerificationDataList");
-						 Map<String, List<Object[]>> verificationDataListMap = VerificationDataList!=null && VerificationDataList.size()>0?VerificationDataList.stream()
-								  											.collect(Collectors.groupingBy(array -> array[1] + "", LinkedHashMap::new, Collectors.toList())) : new HashMap<>();
-						 String lablogo=(String)request.getAttribute("lablogo");
-						 String drdologo=(String)request.getAttribute("drdologo");
-						 Object[] DocTempAtrr=(Object[])request.getAttribute("DocTempAttributes");
-						 String FontFamily="Times New Roman";
-						 
-						 if(DocTempAtrr!=null && DocTempAtrr[11]!=null){
-			                	FontFamily= DocTempAtrr[11].toString();
-			                }
-						 if(VerificationDataList!=null) {
-							 int countSN=0;
-							 int SN=0;
-							 String data="";
-							 int subcount=0;
-			                   	for(Object[]obj:VerificationDataList){
-			                   	++SN;
-	                   		%>
-							<tr>
-								<td class="border-black">
-									<%if(!data.equalsIgnoreCase(obj[2].toString())){ %> <%=++countSN %><%} %>
-								</td>
-								<td class="border-black">
-								   <%if(!data.equalsIgnoreCase(obj[2].toString())){ %> <%=obj[2] %><%} %>
-								</td>
-								<%if(!data.equalsIgnoreCase(obj[2].toString())){
-									subcount=0;
-								} %> 
-								<td class="border-black"style="padding: 5px; text-align: justify;  border-collapse: collapse;">  <%=obj[2].toString().substring(0,1)+(++subcount)+". "+obj[3] %></td>
-								<td class="border-black"style="padding: 5px; text-align: justify;  border-collapse: collapse;"><%=obj[4]%></td>
-							</tr>
-					 		<%data = obj[2].toString();
-	                 		} }%>
-					</tbody>
-				</table>	
-			</div>
-
-			<%List<Object[]>MemberList=(List<Object[]>)request.getAttribute("MemberList"); %>
-			<div id="MemberList" style="width: 100% !important;">
-				<table style="width: 100% !important; border:1px solid black; border-collapse:collapse;margin: 1rem;"> 
-					<thead>
-						<tr >
-							<th style="width: 15% !important;">SN</th>
-							<th style="width: 35% !important;">Name</th>
-							<th style="width: 25% !important;">Designation</th>
-							<th style="width: 25% !important;">Division/Lab</th>
-						</tr>
-					</thead>
-					<tbody>
-           				<% 
-						    if (MemberList != null) {
-						        int i = 1;
-						        for (Object[] mlist : MemberList) {
-						%>
-							<tr>
-								<td style="width: 15% !important;"><%=i++ + "."%></td>
-								<td style="width: 35% !important;"><%=mlist[1]%></td>
-								<td style="width: 25% !important;"><%=mlist[2]%></td>
-								<td style="width: 25% !important;"><%=mlist[3]%></td>
-							</tr>
-						<% } } %>
-					</tbody>
-				</table>
-			</div>
-
-
-			<%List<Object[]> DocumentSummary = (List<Object[]>)request.getAttribute("DocumentSummary"); 
-			Object[] projectDetails = (Object[])request.getAttribute("projectDetails"); 
-			String projectShortName = (String)request.getAttribute("projectShortName");
-			String Classification = (String)request.getAttribute("Classification");
-			String docnumber = "-";
-			String version =(String)request.getAttribute("version");
-			
-			if(DocumentSummary!=null && DocumentSummary.size()>0) {
-				docnumber = "SRD-"+(DocumentSummary.get(0)[11]!=null?DocumentSummary.get(0)[11].toString().replaceAll("-", ""):"-")+"-"+session.getAttribute("labcode")+"-"+((projectDetails!=null && projectDetails[1]!=null)?projectDetails[1]:"")+"-V"+version;
-			}
-			LocalDate now = LocalDate.now();
-			Month month = now.getMonth();
-			int year = now.getYear();
-			%>
-			<div id="docSummary">
-				<table style="width: 635px; margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
-					<tr>
-						<td  class="text-darks" colspan="2" style="border:1px solid black;text-align:left;">1.&nbsp; Title: <span class="text-darks">System Requirements Document for </span></td>
-					</tr>
-					<tr >
-						<td class="text-darks" style="border:1px solid black;">2.&nbsp; Type of Document:<span class="text-darks">System Requirement Document</span></td>
-						<td class="text-darks" style="border:1px solid black;">3.&nbsp; Classification: <span class="text-darks"></span></td>
-					</tr>
-				    <tr >
-						<td class="text-darks" style="border:1px solid black;">4.&nbsp; Document Number:</td>
-						<td class="text-darks" style="border:1px solid black;">5.&nbsp; Month Year:&nbsp;<span style="font-weight: 600"></span> </td>
-					</tr>
-					<tr>
-						<td class="text-darks" style="border:1px solid black;">6.&nbsp; Number of Pages:  ${totalPages}</td>
-						<td class="text-darks" style="border:1px solid black;">7.&nbsp; Related Document:</td>
-					</tr>
-					<tr>
-						<td  class="text-darks" colspan="2" style="border:1px solid black;">8.&nbsp; Additional Information:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[0] %><%} %></span></td>
-					</tr>
-					<tr>
-						<td  class="text-darks" colspan="2" style="border:1px solid black;">9.&nbsp; Project Name: <span class="text-darks"> </span></td>
-					</tr>
-					<tr>
-						<td  class="text-darks" colspan="2" style="border:1px solid black;">10.&nbsp; Abstract:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[1] %><%} %></span>
-					</tr>
-					<tr>
-						<td  class="text-darks" colspan="2" style="border:1px solid black;">11.&nbsp; Keywords:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[2] %><%} %></span> </td>
-					</tr>
-					<tr>
-						<td  class="text-darks" colspan="2" style="border:1px solid black;">12.&nbsp; Organization and address:
-							<span class="text-darks" >		
-								<%
-								if (LabList!=null && LabList[1] != null) {%>
-									<%=LabList[1].toString() + "(" + LabList[0].toString() + ")"%>
-								<%} else {%>
-									-
-								<%}%>
-								Government of India, Ministry of Defence,Defence
-									Research & Development Organization
-								<%
-									if (LabList!=null && LabList[2] != null && LabList[3] != null && LabList[5] != null) {
-								%>
-									<%=LabList[2] + " , " + LabList[3].toString() + ", PIN-" + LabList[5].toString()+"."%>
-								<%}else{ %>
-									-
-								<%} %>
-							</span>
-						</td>
-					</tr>
-					<tr>
-						<td  class="text-darks" colspan="2" style="border:1px solid black; ">13.&nbsp; Distribution:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[3] %><%} %></span></td>
-					</tr>
-					<tr>
-						<td  class="text-darks" colspan="2" style="border:1px solid black; ">14.&nbsp; Revision:</td>
-					</tr>
-					<tr>
-						<td  class="text-darks" colspan="2" style="border:1px solid black;">15.&nbsp; Prepared by:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[10] %><%} %></span></td>
-					</tr>
-					<tr>
-						<td  class="text-darks" colspan="2" style="border:1px solid black; ">16.&nbsp; Reviewed by: <span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[7] %><%} %></span> </td>
-					</tr>
-					<tr>
-						<td  class="text-darks" colspan="2" style="border:1px solid black;">17.&nbsp; Approved by: <span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[6] %><%} %></span> </td>
-					</tr>
-				</table>
-			</div>
-
-
-			<%List<Object[]>AbbreviationDetails=(List<Object[]>)request.getAttribute("AbbreviationDetails");%>
-			<div id="abbreviationDiv">
+	
 		
-				<h4 style="font-size:16px;text-align: center;"> Abbreviations used in the Manual to be listed and arranged in alphabetical order</h4>
-				<%  if (AbbreviationDetails != null && !AbbreviationDetails.isEmpty()) { %>	
-    				<table style="margin-left:50px;">
-        				<thead>
-         					<tr>
-						        <th><span >S.No</span></th>
-						        <th><span >Abbreviations</span></th>
-						        <th><span >Full Forms</span></th>
-           					</tr>
-        				</thead>
-        				<tbody>
-                			<% int i = 1;
-        					for (Object[] alist : AbbreviationDetails) {
-							%>
-              					<tr>
-					                <td ><%=  i+++"."%></td>
-					                <td><%= alist[1] %></td>
-					                <td ><%= alist[2] %></td>
-            					</tr>
-              				<% } %>
-     					</tbody>
-    				</table>
-    			<%} %>
-			</div>
-		
+
 		
 			<!-- Scopediv -->
 	
-			<%Object[]ReqIntro=(Object[])request.getAttribute("ReqIntro"); %>
-			<div id="scopeDiv">
-			
-				<h2 style="font-size: 16px;margin-top:20px;font-weight: bold">1.1
-					&nbsp;System Identification
-				</h2>
-				<%if(ReqIntro!=null && ReqIntro[1]!=null) {%>
-					<%=ReqIntro[1]%>
-				<%}else {%>
-					Guidance: 
-					This paragraph should contain a full identification of the system to which this document applies.  
-				<%} %>
-				<h2 style="font-size: 16px;margin-top:20px;font-weight: bold">1.2
-					&nbsp;System Overview
-				</h2>
-				<%if(ReqIntro!=null && ReqIntro[3]!=null) {%>
-					<%=ReqIntro[3]%>
-				<%}else {%>
-					Guidance:  
-					This paragraph should briefly describe the general nature of the system required. It summarizes the objectives of the system from various perspectives (Operational, Maintenance, Deployment, Technological, Environmental and so on...), should give a brief description of the operating scenario and desired configuration of the system. It should also state the identified project sponsor, acquirer, developer, and support agencies; along with current and planned operating sites.
-				<%} %>
-		
-				<h2 style="font-size: 16px;margin-top:20px;font-weight: bold">1.3
-					&nbsp;Document Overview
-				</h2>
-				<%if(ReqIntro!=null && ReqIntro[4]!=null) {%>
-					<%=ReqIntro[4]%>
-				<%}else {%>
-					This document brings out the system requirements of the radar system. The document gives a brief overview of the system, states the modes of operation of the radar (operational, maintenance, training and so on..) along with types of operational modes. All requirements are classified under various categories and stated in a brief unambiguous manner after resolving all conflicts and identifying derived requirements. The various design and construction constraints imposed on the system either by the User or by the designer are clearly brought out. This document also brings out the precedence and criticality of the requirements. Verification methodologies such as Demonstration /Test / Analysis / Inspection / Special verification methods employed to validate the system requirements are clearly listed. This document also contains a tabularized verification matrix for every system requirement, Requirements Traceability matrix and states the key performance parameters/key system attributes. 
-				<%} %>
-			</div>
-		
-		
 			<!--Req Div  -->
-			<div id="reqDiv">
-				<%	List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementList");
-					List<Object[]>ProjectParaDetails=(List<Object[]>)request.getAttribute("ProjectParaDetails");
-				%>
-				<%if(!RequirementList.isEmpty()) {
-					List<Object[]> mainReqList = RequirementList.stream()
-												.filter(e->e[15]!=null && e[15].toString().equalsIgnoreCase("0"))
-												.sorted(Comparator.comparing(k -> Integer.parseInt(k[14].toString())))
-												.collect(Collectors.toList());
-					int mainReqCount=0;
-					for(Object[]obj:mainReqList){
-				%>
-						<div style="padding:none;"><h2  class="heading-colors" style="font-size: 16px;"> <%="2."+(++mainReqCount) %> &nbsp;<%=obj[3].toString() %></h2></div>
-						<%if(obj[4]!=null) {%>
-							<div style="padding:0px;" class="heading-colors"><%=obj[4].toString()%></div>
-						<%}else{ %>
-							<span></span>
-						<%} %>
-				<% List<Object[]> subMainReqList =  RequirementList.stream()
-													.filter(e->e[15]!=null&&e[15].toString().equalsIgnoreCase(obj[0].toString()))
-													.sorted(Comparator.comparing(k -> Integer.parseInt(k[14].toString())))
-													.collect(Collectors.toList());%>
-				<%
-				String ReqName="";
-				int subReqCount=0;
-				for(Object[]obj1:subMainReqList) {
-					int snCount=0;
-				%>
-					<%if(!ReqName.equalsIgnoreCase(obj1[3].toString()) && !obj1[3].toString().equalsIgnoreCase(obj[3].toString())) {%>
-						<h3 class="heading-colors" style="font-size: 15px;"><%="2."+(mainReqCount)+"."+(++subReqCount)%>&nbsp;<%=obj1[3].toString() %></h3>
-					<%} %> 
-	
-					<table class="border-black" style="margin-left: 10px;margin-top:7px;width: 635px;margin-right:20px; margin-bottom: 5px;">
-						<thead>
-							<tr class="border-black">
-								<th class="border-black"
-									style="width: 20px;  border: 1px solid black;text-align:center; border-collapse: collapse;">SN</th>
-								<th class="border-black"
-									style="width: 130px;  text-align: center; border: 1px solid black; border-collapse: collapse;">Attribute</th>
-								<th class="border-black"
-									style=" border: 1px solid black; border-collapse: collapse;">Content</th>
-							</tr>
-							</thead>
-							<tbody>
-								<tr class="border-black">
-									<td class="border-black"
-										style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %></td>
-									<td class="border-black"
-										style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;">ID</td>
-									<td class="border-black"
-										style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%=obj1[1].toString() %></td>
-								</tr>
-								<tr class="border-black">
-									<td class="border-black"
-										style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
-									<td class="border-black"
-										style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;"> QR Para </td>
-									<td class="border-black"
-										style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
-									
-										<%if(obj1[12]!=null) {
-											String [] a=obj1[12].toString().split(", ");
-											for(String s:a){
-										%> 
-									
-											<%=ProjectParaDetails.stream().filter(e->e[0].toString().equalsIgnoreCase(s)).map(e->e[3].toString()).collect(Collectors.joining("")) %> <br>
-										<%}}else{ %>
-											-
-										<%} %>
-									
-									</td>
-								</tr>
-							
-								<tr>
-									<td class="border-black"
-										style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
-									<td class="border-black"
-										style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;">Priority</td>
-									<td class="border-black"
-										style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
-										<%if(obj1[5]!=null) {%> <%=obj1[5].toString() %>
-										<%}else{%>-<%} %>
-									</td>
-								</tr>
-							
-								<tr>
-									<td class="border-black"
-										style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
-									<td class="border-black"
-										style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;">Criticality</td>
-									<td class="border-black"
-										style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
-										<%if(obj1[21]!=null) {%> <%=obj1[21].toString() %>
-										<%}else{%>-<%} %>
-									</td>
-								</tr>
-								<tr>
-									<td class="border-black"
-										style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
-									<td class="border-black"
-										style=" text-align: left; font-weight: 600; border: 1px solid black; border-collapse: collapse;">Type</td>
-									<td class="border-black"
-										style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
-										<%if(obj1[6]!=null) {%> <%if(obj1[6].toString().equalsIgnoreCase("D")) {%>Desirable<%} %>
-										<%if(obj1[6].toString().equalsIgnoreCase("E")) {%>Essential<%} %> <%}else {%>-<%} %>
-									</td>
-								</tr>
-								<%-- <tr>
-									<td class="border-black"
-										style="border: 1px solid black; border-collapse: collapse;  text-align: center; vertical-align: top;" ><%=++snCount %>.</td>
-									<td class="border-black"
-										style="border: 1px solid black; border-collapse: collapse;  text-align: left; vertical-align: top;font-weight: 600;"colspan="2">Description</td>
-									<td class="border-black"
-										style="text-align: justify; border: 1px solid black; border-collapse: collapse; vertical-align: top;">
-										<%if(obj1[4]!=null){ %> <%=obj1[4].toString() %> <%}else{ %>-<%} %>
-									</td>
-								</tr> --%>
-								<tr>
-									<td class="border-black" colspan="3" style="text-align: justify; border: 1px solid black; border-collapse: collapse; vertical-align: top;">
-										<div id="description<%=mainReqCount+"."+subReqCount %>">
-											<%=++snCount %> .Description: <%if(obj1[4]!=null){ %> <%=obj1[4].toString() %> <%}else{ %>-<%} %>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td class="border-black"
-										style="border: 1px solid black; border-collapse: collapse;  text-align: center; vertical-align: top;"><%=++snCount %>.</td>
-									<td class="border-black"
-										style="border: 1px solid black; border-collapse: collapse;  text-align: left; vertical-align: top;font-weight: 600;">Remarks</td>
-									<td class="border-black"
-										style="text-align: justify; border: 1px solid black; border-collapse: collapse; vertical-align: top;">
-										<%if(obj1[7]!=null){ %> <%=obj1[7].toString() %> <%}else{ %>-<%} %>
-									</td>
-								</tr>
-								<tr>
-									<td class="border-black"
-										style="border: 1px solid black; border-collapse: collapse;  text-align: center; vertical-align: top;"><%=++snCount %>.</td>
-									<td class="border-black"
-										style="border: 1px solid black; border-collapse: collapse;  text-align: left; vertical-align: top;font-weight: 600;">Constraints</td>
-									<td class="border-black"
-										style="text-align: justify; border: 1px solid black; border-collapse: collapse; vertical-align: top;">
-										<%if(obj1[9]!=null){ %> <%=obj1[9].toString() %> <%}else{ %>-<%} %>
-									</td>
-								</tr>
-								<tr>
-									<td class="border-black"
-										style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
-									<td class="border-black"
-										style=" text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Demonstration</td>
-										<td class="border-black" style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
-										
-										<%if(obj1[16]!=null) {
-										List<Object[]>DemonList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("1")).collect(Collectors.toList());
-										String [] a=obj1[16].toString().split(", ");
-										for(int i=0;i<a.length;i++){
-										%>
-										
-										<%=	a[i] +" . "+ DemonList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
-										<%} %>
-										<%}else{%>-<%} %>
-									   
-									</td>
-								</tr>
-							
-								<tr>
-									<td class="border-black"
-										style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
-									<td class="border-black"
-										style="text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Test</td>
-									<td class="border-black"
-										style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
-										<%if(obj1[17]!=null) {
-											List<Object[]>TestList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("2")).collect(Collectors.toList());
-											String [] a=obj1[17].toString().split(", ");
-											for(int i=0;i<a.length;i++){
-												%>
-												
-												<%=	a[i] +" . "+ TestList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
-												<%} %>
-												<%}else{%>-<%} %>
-									</td>
-								</tr>
-							
-								<tr>
-									<td class="border-black"
-										style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
-									<td class="border-black"
-										style=" text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Design/Analysis</td>
-									<td class="border-black"
-										style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
-										<%if(obj1[18]!=null) {
-											List<Object[]>AnalysisList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("3")).collect(Collectors.toList());
-											String [] a=obj1[18].toString().split(", ");
-											for(int i=0;i<a.length;i++){
-												%>
-												
-												<%=	a[i] +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
-												<%} %>
-												<%}else{%>-<%} %>
-									</td>
-								</tr>
-							
-								<tr>
-									<td class="border-black"
-										style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
-									<td class="border-black"
-										style=" text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Inspection</td>
-									<td class="border-black"
-										style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
-										<%if(obj1[19]!=null) {
-											List<Object[]>InspectionList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("4")).collect(Collectors.toList());
-											String [] a=obj1[19].toString().split(", ");
-										for(int i=0;i<a.length;i++){
-												%>
-												
-												<%=	a[i] +" . "+ InspectionList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
-												<%} %>
-												<%}else{%>-<%} %>
-									</td>
-								</tr>
-							
-							
-								<tr>
-									<td class="border-black"
-										style=" text-align: center; border: 1px solid black; border-collapse: collapse;"><%=++snCount %>.</td>
-									<td class="border-black"
-										style=" text-align: left; border: 1px solid black; border-collapse: collapse;font-weight: 600;">Special Methods</td>
-									<td class="border-black"
-										style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
-										<%if(obj1[20]!=null) {
-											List<Object[]>specialList=VerificationDataList.stream().filter(e->e[1].toString().equalsIgnoreCase("5")).collect(Collectors.toList());
-											String [] a=obj1[20].toString().split(", ");
-											for(int i=0;i<a.length;i++){
-												%>
-												
-												<%=	a[i] +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
-												<%} %>
-												<%}else{%>-<%} %>
-									</td>
-								</tr>
-							</tbody>
-						
-						</table>
-	
-				<%
-				ReqName=obj1[3].toString();
-				} %>
-				<%}%>
-	
-				<%
-				List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null&&!e[15].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
-				%>
-				<%if(nonMainReqList!=null && !nonMainReqList.isEmpty()) { %>
-					<div style="padding:none;"><h2 class="heading-colors" style="font-size: 16px;"><%="2."+(++mainReqCount) %>  &nbsp; Precedence and Criticality of Requirements</h2></div>
-						<table class="border-black"style="margin-left: 20px;;width: 400px; margin-bottom: 5px;">
-							<thead>
-								<tr>
-									<th class="border-black"style="width: 10px;  border: 1px solid black; border-collapse: collapse;">SN</th>
-									<th class="border-black"style="width: 150px;  text-align: center; border: 1px solid black; border-collapse: collapse;">Requirement ID</th>
-									<th class="border-black"style="width: 60px; border: 1px solid black; border-collapse: collapse;">Priority</th>
-									<th class="border-black"style="width: 60px; border: 1px solid black; border-collapse: collapse;">Criticality</th>
-								
-								</tr>
-							</thead>
-							<tbody>
-								<%int rcount=0;
-								for(Object[]obj:nonMainReqList) {
-								if(obj[21]!=null){
-								%>
-									<tr>
-										<td style="text-align:center;border: 1px solid black; border-collapse: collapse;"><%=++rcount %></td>
-										<td class="border-black" style="text-align:justify;border: 1px solid black; border-collapse: collapse;"><%=obj[1] %></td>
-										<td class="border-black" style="text-align:center;border: 1px solid black; border-collapse: collapse;"><%if(obj[5]!=null) {%><%=obj[5].toString()%><%}else{ %>-<%} %></td>
-										<td class="border-black" style="text-align:center;border: 1px solid black; border-collapse: collapse;"><%if(obj[21]!=null) {%> <%=obj[21].toString() %>
-											<%}else{%>-<%} %>
-										</td>
-									</tr>
-								<%}} %>
-							</tbody>
-						</table>
-					<% } %>
-	
-				<%} %>
-			</div>
-		
-		
-			<%List<Object[]>Verifications=(List<Object[]>)request.getAttribute("Verifications");
-			List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeList");
-			%>
-			<div id="verificationDiv">
-				<%if(Verifications!= null &&   !Verifications.isEmpty()) {
-					int verificationCount=1;
-					int j=0;
-					for(Object[]obj:Verifications){
-				%>
-					<h3 class="heading-colors" style="font-size: 16px; ">
-				   		<%="3"+"."+(verificationCount)%>.<%=++j %>
-						<%=obj[1] %>
-					</h3>
-					<%if(obj[3]!=null){ %>
-						<%=obj[3].toString()%>
-					<%}else{ %>
-						<p style="text-align: center;">-&nbsp;&nbsp;No details filled&nbsp;&nbsp;-</p>
-					<%}%>
-				<%}} %>
-			</div>
-			</div>
 	<%
 		List<Object[]> ParaDetails = (List<Object[]>)request.getAttribute("ParaDetails");
 		List<Object[]> AcronymsList = (List<Object[]>)request.getAttribute("AcronymsList");
@@ -801,7 +277,7 @@
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Additional Information', style: 'tableData' },
-                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[0] %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "").replaceAll("\r", "") %><%} %>', style: 'tableData' },
                             ],
                             
                             [
@@ -813,13 +289,13 @@
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Abstract', style: 'tableData' },
-                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[1] %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "").replaceAll("\r", "") %><%} %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Keywords', style: 'tableData' },
-                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[2] %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[2].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "").replaceAll("\r", "") %><%} %>', style: 'tableData' },
                             ],
                             
                             [
@@ -835,7 +311,7 @@
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Distribution', style: 'tableData' },
-                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[3] %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[3].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "").replaceAll("\r", "") %><%} %>', style: 'tableData' },
                             ],
                             
                             [
@@ -1347,7 +823,7 @@
 					                            <% } %>
 				                                <%if(!data.equalsIgnoreCase(obj[2].toString())){ subcount=0; } %> 
 				                                { text: '<%=obj[2].toString().substring(0,1)+(++subcount)+". "+obj[3] %>', style: 'tableData' },
-				                                { text: '<%=obj[4]%>', style: 'tableData' },
+				                                { text: '<%=obj[4].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "").replaceAll("\r", "")%>', style: 'tableData' },
 				                            ],
                             <% data = obj[2].toString();  ++index;} %>
                             <% } }%>
@@ -1787,15 +1263,26 @@
         };
 		
         pdfMake.createPdf(docDefinition).getBlob((blob) => {
-            // Create a URL for the blob
-            const url = URL.createObjectURL(blob);
+        	   // Create a URL for the blob
+    	    const url = URL.createObjectURL(blob);
 
-            // Open the PDF in a new tab
-            window.open(url, '_blank');
+    	    // Create an iframe element to embed the PDF in the current window
+    	    const iframe = document.createElement('iframe');
+    	    iframe.src = url;
+    	    iframe.width = '100%';  // Adjust the width as needed
+    	    iframe.height = '1000';  // Adjust the height as needed
 
-            // Hide the loading spinner
-              document.getElementById('loadingOverlay').style.display='none';
-            window.close();
+    	    // Optionally, you can set other styles to make the iframe look nice
+    	    iframe.style.border = 'none';
+    	    iframe.style.margin = '0';
+
+    	    // Append the iframe to a container element (e.g., a div with id 'pdfContainer')
+    	    document.getElementById('pdfContainer').innerHTML = '';  // Clear any existing content
+    	    document.getElementById('pdfContainer').appendChild(iframe);
+
+    	    // Hide the loading spinner
+    	    document.getElementById('loadingOverlay').style.display = 'none';
+
         });
         }
         catch (error) {

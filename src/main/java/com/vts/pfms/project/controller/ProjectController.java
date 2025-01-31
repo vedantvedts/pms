@@ -9926,7 +9926,7 @@ public class ProjectController
 				specs.setSpecificationName(spid);
 				specs.setCreatedBy(UserId);
 				specs.setCreatedDate(sdf1.format(new Date()));
-				
+				specs.setIsMasterData("N");
 			}else if(action.equalsIgnoreCase("Edit")) {
 				specs.setModifiedBy(UserId);
 				specs.setModifiedDate(sdf1.format(new Date()));

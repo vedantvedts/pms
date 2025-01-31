@@ -124,7 +124,7 @@ FormatConverter fc = new FormatConverter();
 		</div>
 	</div>
 							
-	<div class="container" id="container" style="height: 80%;">
+	<div class="container" id="container" style="height:84%;">
 		<div class="row" style="display: inline;height: 90%;">
 			<div class="requirementid mt-2 ml-2" style="height: 90%;">
 				<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="DownloadDoc()"><img alt="" src="view/images/worddoc.png" >&nbsp;Requirement Document</span> 

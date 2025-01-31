@@ -673,6 +673,7 @@ public class ProductTreeController {
 	{
 		String sid = req.getParameter("sid");
 		String projectId = req.getParameter("projectId");
+		String level = req.getParameter("level");
 		ProjectSlides ps = service.getProjectSlides(projectId)!=null ?service.getProjectSlides(projectId): new ProjectSlides();
 		if(ps.getSystemId()==null || ps.getSystemId()==0) {
 		ps.setSystemId(Long.parseLong(sid));
@@ -682,8 +683,11 @@ public class ProductTreeController {
 		}
 		List<Object[]>proList=service.getSystemProductTreeList(sid);
 		if(proList!=null && proList.size()>0) {
-			proList=proList.stream().filter(e->e[2].toString().equalsIgnoreCase("1")).collect(Collectors.toList());
+			proList=proList.stream().filter
+					(e->e[2].toString().equalsIgnoreCase(level))
+					.collect(Collectors.toList());
 		}
+		
 		Gson json = new Gson();
 		return json.toJson(proList);
 	}

@@ -734,7 +734,7 @@ p{
 						</tbody>				
 					</table>
 					  
-					<%if(actionlist.size()>=0 && labcode.equalsIgnoreCase("ADE")){ %>
+					<%if(actionlist.size()>=0 ){ %>
 						<h1 class="break"></h1>	
 					<div align="center">
 				 	<div style="text-align: center ; padding-right: 15px; " ><h3 style="text-decoration: underline;">Annexure - AI</h3></div> 

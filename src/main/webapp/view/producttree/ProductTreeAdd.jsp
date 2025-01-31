@@ -543,7 +543,7 @@ if(ses1!=null){	%>
 													     
 													      
 													              <div class="actions">
-																	       <button class="update" onclick="EditModal('<%=level2[0]%>','<%=level2[3]%>','<%=level2[6]%>','<%=level2[7]%>')" ><img src="view/images/edit.png" ></button>
+																	       <button class="update" onclick="EditModal('<%=level2[0]%>','<%=level2[3]%>','<%=level2[6]%>','<%=level2[7]%>','2','<%=level2[9] %>','<%=level2[10] %>')" ><img src="view/images/edit.png" ></button>
 																	          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 																		         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																			     <input type="hidden" name="Action" value="TD">
@@ -607,7 +607,7 @@ if(ses1!=null){	%>
 													              </div>
 													              
 													              <div class="actions">
-																	       <button class="update" onclick="EditModal('<%=level3[0]%>','<%=level3[3]%>','<%=level3[6]%>','<%=level3[7]%>')" ><img src="view/images/edit.png" ></button>
+																	       <button class="update" onclick="EditModal('<%=level3[0]%>','<%=level3[3]%>','<%=level3[6]%>','<%=level3[7]%>','3','<%=level3[9]%> %>','<%=level3[10]%> %>')" ><img src="view/images/edit.png" ></button>
 																	          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 																		         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																			     <input type="hidden" name="Action" value="TD">
@@ -677,7 +677,7 @@ if(ses1!=null){	%>
 																
 																 
 													              <div class="actions">
-																	       <button class="update" onclick="EditModal('<%=level4[0]%>','<%=level4[3]%>','<%=level4[6]%>','<%=level4[7]%>')" ><img src="view/images/edit.png" ></button>
+																	       <button class="update" onclick="EditModal('<%=level4[0]%>','<%=level4[3]%>','<%=level4[6]%>','<%=level4[7]%>','4','<%=level4[9]%> %>','<%=level4[10]%> %>')" ><img src="view/images/edit.png" ></button>
 																	          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 																		         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																			     <input type="hidden" name="Action" value="TD">
@@ -743,7 +743,7 @@ if(ses1!=null){	%>
 													                       
 													                        
 																              <div class="actions">
-																				       <button class="update" onclick="EditModal('<%=level5[0]%>','<%=level5[3]%>','<%=level5[6]%>','<%=level5[7]%>')" ><img src="view/images/edit.png" ></button>
+																				       <button class="update" onclick="EditModal('<%=level5[0]%>','<%=level5[3]%>','<%=level5[6]%>','<%=level5[7]%>','5','<%=level5[9]%>','<%=level5[10]%>')" ><img src="view/images/edit.png" ></button>
 																				          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 																					         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																						     <input type="hidden" name="Action" value="TD">
@@ -806,7 +806,7 @@ if(ses1!=null){	%>
 													                       
 													                        
 																              <div class="actions">
-																				       <button class="update" onclick="EditModal('<%=level6[0]%>','<%=level6[3]%>','<%=level6[6]%>','<%=level6[7]%>')" ><img src="view/images/edit.png" ></button>
+																				       <button class="update" onclick="EditModal('<%=level6[0]%>','<%=level6[3]%>','<%=level6[6]%>','<%=level6[7]%>','6','<%=level6[9]%>','<%=level6[10]%>')" ><img src="view/images/edit.png" ></button>
 																				          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 																					         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																						     <input type="hidden" name="Action" value="TD">
@@ -868,7 +868,7 @@ if(ses1!=null){	%>
 													                       
 													                        
 																              <div class="actions">
-																				       <button class="update" onclick="EditModal('<%=level7[0]%>','<%=level7[3]%>','<%=level7[6]%>','<%=level7[7]%>')" ><img src="view/images/edit.png" ></button>
+																				       <button class="update" onclick="EditModal('<%=level7[0]%>','<%=level7[3]%>','<%=level7[6]%>','<%=level7[7]%>','7','<%=level7[9]%>','<%=level7[10]%>')" ><img src="view/images/edit.png" ></button>
 																				          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 																					         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																						     <input type="hidden" name="Action" value="TD">
@@ -1248,16 +1248,38 @@ if(ses1!=null){	%>
   {
   	$('#Mainid').val(mainid);			
   	$('#levelname').val(levelname);
-	if(level==='1'){
-		$('#subsystemTr').show();
+  	
+  	
+    var sid = $('#sid').val();
+	  
+	  
+	  $.ajax({
+		  type:'GET',
+		  url:'setSystemIdForProject.htm',
+		  data:{
+			  sid:sid,
+			  projectId:<%=ProjectId%>,
+			  level:level
+		 	 },
+	  		datatype:'json',
+			success:function (result){
+		 	subSyestem =JSON.parse(result)
+		 	var html ='<option value="" disabled selected>SELECT</option>';
+		 	
+		 	for(var i=0;i<subSyestem.length;i++){
+		 		html= html+'<option value="'+subSyestem[i][0]+"#"+subSyestem[i][10]+ '">'+subSyestem[i][3]+'</option>'
+		 	}
+			
+		 	$('#subSystem').html(html);
 	
-		var code = sytemid+"#"+levelCode
-		console.log("codeInside"+code)
-	  	$('#subSystem').val(code).trigger('change');
-	}else{
-		$('#subsystemTr').hide();
-	}
-  
+				$('#subsystemTr').show();
+			
+				var code = sytemid+"#"+levelCode
+				console.log("codeInside"+code)
+			  	$('#subSystem').val(code).trigger('change');
+		
+		}
+	  })
   	
   var selectedstage=stage	
   var selectedModule = module;
@@ -1388,7 +1410,7 @@ if(ses1!=null){	%>
   
   function showSystemValue(){
 	  
-	  var sid = $('#sid').val();
+	<%--   var sid = $('#sid').val();
 	  
 	  
 	  $.ajax({
@@ -1397,6 +1419,7 @@ if(ses1!=null){	%>
 		  data:{
 			  sid:sid,
 			  projectId:<%=ProjectId%>,
+			  level:level
 		 	 },
 	  		datatype:'json',
 			success:function (result){
@@ -1410,7 +1433,7 @@ if(ses1!=null){	%>
 			
 		 	$('#subSystem').html(html);
 		}
-	  })
+	  }) --%>
 	  
 	  
   } 

@@ -77,7 +77,21 @@ background-color: transparent;
   z-index: 5;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
+.star {
+  font-size: 40px;
+  color: #ccc; /* Default star color */
+  cursor: pointer;
+}
 
+.star:hover,
+.star:hover ~ .star {
+  color: gold; /* Hover color */
+}
+
+.star.selected,
+.star.selected ~ .star {
+  color: gold; /* Selected stars */
+}
 
 </style>
 </head>
@@ -523,7 +537,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
   <div class="modal-dialog">
     <div class="modal-content" style="width:180%;margin-left:-30%;">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel">RFA Close</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -550,7 +564,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 		                      
 		                  </div>
 		            </div>
-		            
+		           
 		            <div align="center" class="mt-2 mb-2">
     <button class="btn btn-sm submit" name="rfaoptionby" value="ARC" type="submit"  onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
     <button id="retrunbtn" class="btn btn-sm btn-danger" name="rfaoptionby" value="RFR" type="submit"  onclick="return confirm('Are you sure to return?')">RETURN</button>

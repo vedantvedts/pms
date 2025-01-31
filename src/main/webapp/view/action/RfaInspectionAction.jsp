@@ -198,7 +198,7 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 													</div>
 												</button> 
 												<%if(obj[10].toString().equalsIgnoreCase("AV")){ %>
-														<button title="ADD"  data-original-title="ADD" class="editable-click" name="sub" type="button"
+													<button title="ADD"  data-original-title="ADD" class="editable-click" name="sub" type="button"
 													value="" style="background-color: transparent;"
 													onclick="showModel('<%=obj[3].toString()%>',<%=obj[0].toString()%>)">
 													<div class="cc-rockmenu">
@@ -211,12 +211,12 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 													</div>
 												</button>
 												<%} %>
-												 <input type="hidden"
+											<%-- 	 <input type="hidden"
 												name="${_csrf.parameterName}" value="${_csrf.token}" /> <input
 												type="hidden" name="projectid"
 												value="<%=obj[12].toString() %>"> <input
 												type="hidden" name="RfaStatus"
-												value="<%=obj[10].toString()%>">
+												value="<%=obj[10].toString()%>"> --%>
 											<%
 												if(forwardAllow.contains(obj[10].toString())){
 											%>
