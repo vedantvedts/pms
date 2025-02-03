@@ -155,14 +155,14 @@ p{
 	</table>
 	
 	<!-- -------------------------------------------members-------------------------------- -->
-	<table style=" margin-top: 10px; margin-bottom: 10px; margin-left: 15px; width: 650px; font-size: 16px; border-collapse:collapse; " >
+<!-- 	<table style=" margin-top: 10px; margin-bottom: 10px; margin-left: 15px; width: 650px; font-size: 16px; border-collapse:collapse; " >
 	<thead>
 	<tr >
 
 	</tr>
 	</thead>
-	</table>
-	<table style=" margin-top: 10px; margin-bottom: 10px; margin-left: 15px; width: 650px; font-size: 16px; border-collapse:collapse;border:1px solid black; " >
+	</table> -->
+	<table style=" margin-bottom: 10px; margin-left: 15px; width: 650px; font-size: 13px; border-collapse:collapse;border:1px solid black; " >
 		<tr >
 			<%-- <td colspan="5" style="text-align: center;padding-bottom:15px; ">Director,<%=labdetails[1].toString() %> has constituted the  following committee </td> --%>
 		</tr>
@@ -196,7 +196,7 @@ p{
 		<%} %>	
 	</table>
 	<!-- -------------------------------------------members-------------------------------- -->
-		<table style=" margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;" >
+		<table style=" margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;" >
 		<tr>
 			<td >				
 				<h3 style="margin-bottom: 2px; width: 650px; text-align:left;" >Terms of Reference </h3>
@@ -242,11 +242,8 @@ p{
 	<br>
 	<%=CommitteMainEnoteList!=null && CommitteMainEnoteList[14]!=null?CommitteMainEnoteList[14].toString():"" %>
 	<%} %>
-	
 	</div>
-	
 	<br><br>
-	
 	<div style="text-align: left;font-size: 13px;">
 	Initiated By : <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[18]!=null ){ %> <%=CommitteMainEnoteList[18].toString() %>, <%=CommitteMainEnoteList[19].toString() %>  <%}else{ %>  <%= constitutionapprovalflow.get(0)[0]%>,  <%= constitutionapprovalflow.get(0)[1]%> <%} %>
 	</div>
@@ -256,7 +253,6 @@ p{
 	<%
 	if (!email.equals("Y")) {
 	%>
-
 </body>
 </html>
 
