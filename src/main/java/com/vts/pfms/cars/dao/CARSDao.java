@@ -2,6 +2,7 @@ package com.vts.pfms.cars.dao;
 
 import java.util.List;
 
+import com.vts.pfms.cars.model.CARSAnnualReport;
 import com.vts.pfms.cars.model.CARSContract;
 import com.vts.pfms.cars.model.CARSContractConsultants;
 import com.vts.pfms.cars.model.CARSContractEquipment;
@@ -104,5 +105,8 @@ public interface CARSDao {
 	public List<CARSContract> getAllCARSContractList() throws Exception;
 	public List<CARSOtherDocDetails> getCARSOtherDocDetailsList() throws Exception;
 	public int carsCurrentStatusUpdate(String currentStatus, String carsInitiationId) throws Exception;
+	public List<CARSAnnualReport> getCARSAnnualReportListByYear(String annualYear) throws Exception;
+	public long addCARSAnnualReport(CARSAnnualReport carsAnnualReport) throws Exception;
+	public int deleteCARSAnnualReportRecordsByYear(String annualYear) throws Exception;
 	
 }

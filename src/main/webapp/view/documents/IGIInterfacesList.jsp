@@ -1,4 +1,10 @@
 
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.vts.pfms.documents.model.IGIInterfaceContent"%>
+<%@page import="com.vts.pfms.documents.model.IGIInterfaceTypes"%>
+<%@page import="java.util.LinkedHashMap"%>
+<%@page import="java.util.Map"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.documents.model.IGIInterface"%>
 <%@page import="java.util.List"%>
@@ -197,6 +203,8 @@ input,select,table,div,label,span {
 <body>
 	<%
 		List<IGIInterface> igiInterfaceList = (List<IGIInterface>)request.getAttribute("igiInterfaceList");
+		List<IGIInterfaceTypes> interfaceTypesList = (List<IGIInterfaceTypes>)request.getAttribute("interfaceTypesList");
+		List<IGIInterfaceContent> interfaceContentList = (List<IGIInterfaceContent>)request.getAttribute("interfaceContentList");
 		IGIInterface igiInterface = (IGIInterface)request.getAttribute("igiInterfaceData");
 		String interfaceId = (String)request.getAttribute("interfaceId");
 		String igiDocId = (String)request.getAttribute("igiDocId");
@@ -253,142 +261,61 @@ input,select,table,div,label,span {
   									</div>
    								</div>
     							
-   								<%if(igiInterfaceList!=null && igiInterfaceList.size()>0) {
-   									List<IGIInterface> physicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Physical Interface")).collect(Collectors.toList());
-   									//List<IGIInterface> electricalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Electrical Interface")).collect(Collectors.toList());
-   									//List<IGIInterface> opticalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Optical Interface")).collect(Collectors.toList());
-   									List<IGIInterface> logicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Logical Interface")).collect(Collectors.toList());
-   								%>
+   								<% 
+								    // Define interface types and corresponding variable names
+								    Map<String, List<IGIInterface>> interfaceMap = new LinkedHashMap<>();
    									
-   									<!-- Physical Interfaces List -->
-   									<div class="row">
-	   									<div class="col-md-12">
-	  										<button type="button" class="btn btn-outline-secondary fw-bold customeSidebarBtn" id="physicalInterfaceBtn" value="1" style="padding: 0.2rem;" data-toggle="tooltip" data-placement="top" title="Physical Interfaces">
-												<span style="font-weight: bold;">Physical Interfaces</span>
-												<%if(physicalInterfaceList.size()>0) {%>
-												&nbsp; <i class="fa fa-caret-up"></i>
-												<%} %>
-											</button>
-	  									</div>
-	  								</div>	
-	  								
-	  								<div id="physicalInterfaceList">
-	   									<%for(IGIInterface physicalInterface : physicalInterfaceList) {%>
-		   									<div class="row">
-		   										<div class="col-md-12 ml-4">
-		   											<form action="IGIInterfacesList.htm" method="GET">
-														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-														<input type="hidden" name="igiDocId" value="<%=igiDocId%>">
-			     										<button class="btn btn-sm btn-outline-primary fw-bold customeSidebarBtn" type="submit" name="interfaceId" value="<%=physicalInterface.getInterfaceId()%>"  
-			     										data-toggle="tooltip" data-placement="top" title="<%=physicalInterface.getInterfaceCode() %>" 
-			     										<%if(physicalInterface.getInterfaceId().equals(Long.parseLong(interfaceId))) {%> style="background-color: green;color: white;border-color: green;width: 86%;" <%} else{%>style="width: 86%;" <%} %> >
-			     											<%=physicalInterface.getInterfaceCode() %>
-			     										</button>
-			     									</form>
-		   										</div>
-		   									</div>
-		   								<%} %>	
-	   								</div>
-	   								
-	   								<!-- Electrical Interfaces List -->
-	   								<%-- <div class="row">
-	   									<div class="col-md-12">
-	  										<button type="button" class="btn btn-outline-secondary fw-bold customeSidebarBtn" id="electricalInterfaceBtn" value="1" style="padding: 0.2rem;" data-toggle="tooltip" data-placement="top" title="Electrical Interfaces">
-												<span style="font-weight: bold;">Electrical Interfaces</span>
-												<%if(electricalInterfaceList.size()>0) {%>
-												&nbsp; <i class="fa fa-caret-up"></i>
-												<%} %>
-											</button>
-	  									</div>
-	  								</div>	
-	  								
-	  								<div id="electricalInterfaceList">
-	   									<%for(IGIInterface electricalInterface : electricalInterfaceList) {%>
-		   									<div class="row">
-		   										<div class="col-md-12 ml-4">
-		   											<form action="IGIInterfacesList.htm" method="GET">
-														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-														<input type="hidden" name="igiDocId" value="<%=igiDocId%>">
-			     										<button class="btn btn-sm btn-outline-primary fw-bold customeSidebarBtn" type="submit" name="interfaceId" value="<%=electricalInterface.getInterfaceId()%>" 
-			     										data-toggle="tooltip" data-placement="top" title="<%=electricalInterface.getInterfaceCode() %>" 
-			     										<%if(electricalInterface.getInterfaceId().equals(Long.parseLong(interfaceId))) {%> style="background-color: green;color: white;border-color: green;width: 86%;" <%} else{%>style="width: 86%;" <%} %> >
-			     											<%=electricalInterface.getInterfaceCode() %>
-			     										</button>
-			     									</form>
-		   										</div>
-		   									</div>
-		   								<%} %>
-		   							</div> --%>		
-	   								
-	   								<!-- Optical Interfaces List -->
-	   								<%-- <div class="row">
-	   									<div class="col-md-12">
-	  										<button type="button" class="btn btn-outline-secondary fw-bold customeSidebarBtn" id="opticalInterfaceBtn" value="1" style="padding: 0.2rem;" data-toggle="tooltip" data-placement="top" title="Optical Interfaces">
-												<span style="font-weight: bold;">Optical Interfaces</span>
-												<%if(opticalInterfaceList.size()>0) {%>
-												&nbsp; <i class="fa fa-caret-up"></i>
-												<%} %>
-											</button>
-	  									</div>
-	  								</div>	
-	  								
-	  								<div id="opticalInterfaceList">
-	   									<%for(IGIInterface opticalInterface : opticalInterfaceList) {%>
-		   									<div class="row">
-		   										<div class="col-md-12 ml-4">
-		   											<form action="IGIInterfacesList.htm" method="GET">
-														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-														<input type="hidden" name="igiDocId" value="<%=igiDocId%>">
-			     										<button class="btn btn-sm btn-outline-primary fw-bold customeSidebarBtn" type="submit" name="interfaceId" value="<%=opticalInterface.getInterfaceId()%>" 
-			     										data-toggle="tooltip" data-placement="top" title="<%=opticalInterface.getInterfaceCode() %>" 
-			     										<%if(opticalInterface.getInterfaceId().equals(Long.parseLong(interfaceId))) {%> style="background-color: green;color: white;border-color: green;width: 86%;" <%} else{%>style="width: 86%;" <%} %> >
-			     											<%=opticalInterface.getInterfaceCode() %>
-			     										</button>
-			     									</form>
-		   										</div>
-		   									</div>
-		   								<%} %>
-		   							</div> --%>	
-	   								
-	   								<!-- Logical Interfaces List -->
-	   								<div class="row">
-	   									<div class="col-md-12">
-	  										<button type="button" class="btn btn-outline-secondary fw-bold customeSidebarBtn" id="logicalInterfaceBtn" value="1" style="padding: 0.2rem;" data-toggle="tooltip" data-placement="top" title="Logical Interfaces">
-												<span style="font-weight: bold;">Logical Interfaces</span>
-												<%if(logicalInterfaceList.size()>0) {%>
-												&nbsp; <i class="fa fa-caret-up"></i>
-												<%} %>
-											</button>
-	  									</div>
-	  								</div>	
-	  								
-	  								<div id="logicalInterfaceList">
-	   									<%for(IGIInterface logicalInterface : logicalInterfaceList) {%>
-		   									<div class="row">
-		   										<div class="col-md-12 ml-4">
-		   											<form action="IGIInterfacesList.htm" method="GET">
-														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-														<input type="hidden" name="igiDocId" value="<%=igiDocId%>">
-			     										<button class="btn btn-sm btn-outline-primary fw-bold customeSidebarBtn" type="submit" name="interfaceId" value="<%=logicalInterface.getInterfaceId()%>" 
-			     										data-toggle="tooltip" data-placement="top" title="<%=logicalInterface.getInterfaceCode() %>" 
-			     										<%if(logicalInterface.getInterfaceId().equals(Long.parseLong(interfaceId))) {%> style="background-color: green;color: white;border-color: green;width: 86%;" <%} else{%>style="width: 86%;" <%} %> >
-			     											<%=logicalInterface.getInterfaceCode() %>
-			     										</button>
-			     									</form>
-		   										</div>
-		   									</div>
-		   								<%} %>
-		   							</div>	
-		   								
-	   							<%} else{%>
-   									<div class="row">
-   										<div class="col-md-12">
-   											<button type="button" class="btn btn-outline-secondary fw-bold customeSidebarBtn" style="padding: 0.2rem;" data-toggle="tooltip" data-placement="top" title="No Interfaces">
-												<span style="font-weight: bold;">No Interfaces</span>
-											</button>
-   										</div>
-   									</div>
-	   							<%} %>
+   									for(IGIInterfaceTypes interfaceType : interfaceTypesList) {
+   										
+   										List<IGIInterface> igiinterfaceListByType = igiInterfaceList.stream().filter(e -> interfaceType.getInterfaceTypeId().equals(e.getInterfaceTypeId())).collect(Collectors.toList());
+   										
+   										interfaceMap.computeIfAbsent(interfaceType.getInterfaceType(), k -> new ArrayList<>()).addAll(igiinterfaceListByType);
+   									}
+   									
+									int interfaceMainCount = 0;
+								    for (Map.Entry<String, List<IGIInterface>> entry : interfaceMap.entrySet()) {
+								        String interfaceType = entry.getKey();
+								        List<IGIInterface> interfaceList = entry.getValue();
+								        String buttonId = interfaceType.replace(" ", "").toLowerCase() + "InterfaceBtn";
+								        String listId = interfaceType.replace(" ", "").toLowerCase() + "InterfaceList";
+								%>
+								    <!-- Interface List Section -->
+								    <div class="row">
+								        <div class="col-md-12">
+								            <button type="button" class="btn btn-outline-secondary fw-bold customeSidebarBtn left" 
+								                id="<%=buttonId%>" value="1" style="padding: 0.2rem;" 
+								                data-toggle="tooltip" data-placement="top" title="<%=interfaceType%> Interfaces">
+								                <span style="font-weight: bold;"><%=(++interfaceMainCount) + ". " + interfaceType%> Interfaces</span>
+								                <% if (interfaceList.size() > 0) { %>
+								                &nbsp; <i class="fa fa-caret-up"></i>
+								                <% } %>
+								            </button>
+								        </div>
+								    </div>
+								
+								    <div id="<%=listId%>">
+								        <% 
+								        int interfaceSubCount = 0;
+								        for (IGIInterface iface : interfaceList) { %>
+								        <div class="row">
+								            <div class="col-md-12 ml-4">
+								                <form action="IGIInterfacesList.htm" method="GET">
+								                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+								                    <input type="hidden" name="igiDocId" value="<%=igiDocId%>" />
+								                    <button type="submit" class="btn btn-sm btn-outline-primary fw-bold customeSidebarBtn left"
+								                        name="interfaceId" value="<%=iface.getInterfaceId()%>" 
+								                        data-toggle="tooltip" data-placement="top" title="<%=iface.getInterfaceCode()%>" 
+								                        <% if (iface.getInterfaceId().equals(Long.parseLong(interfaceId))) { %>
+								                        style="background-color: green; color: white; border-color: green; width: 86%;" 
+								                        <% } else { %> style="width: 86%;" <% } %>>
+								                        <%=(interfaceMainCount) + "." + (++interfaceSubCount) + ". " + iface.getInterfaceCode()%>
+								                    </button>
+								                </form>
+								            </div>
+								        </div>
+								        <% } %>
+								    </div>
+								<% } %>
    								
    							</div>
        					</div>
@@ -396,7 +323,7 @@ input,select,table,div,label,span {
        				<div style="width: 88%;">
        					<div class="card ml-3 mr-3">
        						<div class="card-header">
-       							<h4 class="text-dark">Interface Details <%if(igiInterface!=null) {%>- <%=igiInterface.getInterfaceCode() %><%} %> </h4>
+       							<h4 class="text-dark">Interface Details <%if(igiInterface!=null) {%>- <%=igiInterface.getInterfaceName() %><%} %> </h4>
        						</div>
        						<div class="card-body m-2">
        							<form action="IGIInterfaceDetailsSubmit.htm" method="post" id="myform">
@@ -406,36 +333,56 @@ input,select,table,div,label,span {
 	       							<div class="form-group">
 		       							<div class="row">
 		       								<div class="col-md-2">
+		       									<label class="form-lable">Interface Type <span class="mandatory">*</span></label>
+		       									<%-- <select class="form-control" id="interfaceType" name="interfaceType" required>
+		       										<option value="" selected disabled>----select----</option>
+		       										<option value="Power" <%if(igiInterface!=null && igiInterface.getInterfaceType()!=null && igiInterface.getInterfaceType().equalsIgnoreCase("Power")) {%>selected<%} %>>Power</option>
+		       										<option value="Analog" <%if(igiInterface!=null && igiInterface.getInterfaceType()!=null && igiInterface.getInterfaceType().equalsIgnoreCase("Analog")) {%>selected<%} %>>Analog</option>
+		       										<option value="Digital" <%if(igiInterface!=null && igiInterface.getInterfaceType()!=null && igiInterface.getInterfaceType().equalsIgnoreCase("Digital")) {%>selected<%} %>>Digital</option>
+		       										<option value="Optical" <%if(igiInterface!=null && igiInterface.getInterfaceType()!=null && igiInterface.getInterfaceType().equalsIgnoreCase("Optical")) {%>selected<%} %>>Optical</option>
+		       										<option value="Mechanical" <%if(igiInterface!=null && igiInterface.getInterfaceType()!=null && igiInterface.getInterfaceType().equalsIgnoreCase("Mechanical")) {%>selected<%} %>>Mechanical</option>
+		       										<option value="Liquid Cooling" <%if(igiInterface!=null && igiInterface.getInterfaceType()!=null && igiInterface.getInterfaceType().equalsIgnoreCase("Liquid Cooling")) {%>selected<%} %>>Liquid Cooling</option>
+		       									</select> --%>
+		       									<select class="form-control" id="interfaceType" name="interfaceType" <%if(igiInterface!=null) {%>disabled<%} %> required>
+		       										<option value="" selected disabled>----select----</option>
+		       										<%for(IGIInterfaceTypes interfaceType : interfaceTypesList) {%>
+		       											<option value="<%=interfaceType.getInterfaceTypeId()+"/"+interfaceType.getInterfaceTypeCode()+"/"+interfaceType.getInterfaceType() %>" <%if(igiInterface!=null && igiInterface.getInterfaceTypeId()!=null && igiInterface.getInterfaceTypeId().equals(interfaceType.getInterfaceTypeId())) {%>selected<%} %>><%=interfaceType.getInterfaceType() %></option>
+		       										<%} %>
+		       									</select>
+		       								</div>
+		       								
+		       								<div class="col-md-2">
+											    <label class="form-label">Interface Content <span class="mandatory">*</span></label>
+											    <select class="form-control " id="interfaceContent" name="interfaceContent" <%if(igiInterface!=null) {%>disabled<%} %> required>
+											        <option value="0/NA/NA" selected>----select----</option>
+											        <%if(igiInterface!=null) { 
+											        	IGIInterfaceTypes igiInterfaceType = interfaceTypesList.stream().filter(e -> igiInterface.getInterfaceTypeId().equals(e.getInterfaceTypeId())).findFirst().orElse(null);
+											        	//IGIInterfaceContent igiInterfaceContent = interfaceContentList.stream().filter(e -> igiInterface.getInterfaceContentId().equals(e.getInterfaceContentId())).findFirst().orElse(null);
+											        	List<IGIInterfaceContent> igiInterfaceContentList = interfaceContentList.stream().filter(e -> igiInterface.getInterfaceTypeId().equals(e.getInterfaceTypeId())).collect(Collectors.toList());
+											        	
+											        	for(IGIInterfaceContent interfaceContent : igiInterfaceContentList) {
+											        %>
+											        	<option value="<%=interfaceContent.getInterfaceContentId()+"/"+interfaceContent.getInterfaceContentCode()+"/"+interfaceContent.getInterfaceContent() %>" <%if(igiInterface!=null && igiInterface.getInterfaceContentId()!=null && igiInterface.getInterfaceContentId().equals(interfaceContent.getInterfaceContentId())) {%>selected<%} %>><%=interfaceContent.getInterfaceContent() %></option>
+											        <%} }%>
+											    </select>
+											</div>
+											<div class="col-md-3">
+		       									<label class="form-lable">Parameter</label>
+		       									<input type="text" class="form-control" name="parameterData" <%if(igiInterface!=null && igiInterface.getParameterData()!=null) {%> value="<%=igiInterface.getParameterData() %>" <%} %> placeholder="Enter Parameter" maxlength="255">
+		       								</div>
+		       								<%-- <div class="col-md-2">
 		       									<label class="form-lable">Interface ID <span class="mandatory">*</span></label>
 		       									<input type="text" class="form-control" name="interfaceCode" <%if(igiInterface!=null && igiInterface.getInterfaceCode()!=null) {%> value="<%=igiInterface.getInterfaceCode() %>" <%} %> placeholder="Enter Unique Id" onchange="checkDuplicateInterfaceCode(this)" required maxlength="10">
 		       								</div>
 		       								<div class="col-md-3">
 		       									<label class="form-lable">Interface Name <span class="mandatory">*</span></label>
 		       									<input type="text" class="form-control" name="interfaceName" <%if(igiInterface!=null && igiInterface.getInterfaceName()!=null) {%> value="<%=igiInterface.getInterfaceName() %>" <%} %> placeholder="Enter Interface Name" required maxlength="500">
-		       								</div>
-		       								<div class="col-md-3">
-		       									<label class="form-lable">Type of Data <span class="mandatory">*</span></label>
-		       									<input type="text" class="form-control" name="dataType" <%if(igiInterface!=null && igiInterface.getDataType()!=null) {%> value="<%=igiInterface.getDataType() %>" <%} %> placeholder="e.g., analog, digital, video, audio" required maxlength="255">
-		       								</div>
-		       								<div class="col-md-2">
-		       									<label class="form-lable">Type of Signal <span class="mandatory">*</span></label>
-		       									<input type="text" class="form-control" name="signalType" <%if(igiInterface!=null && igiInterface.getSignalType()!=null) {%> value="<%=igiInterface.getSignalType() %>" <%} %> placeholder="e.g., RF, optical, electrical" required maxlength="255">
-		       								</div>
-		       								<div class="col-md-2">
-		       									<label class="form-lable">Interface Type <span class="mandatory">*</span></label>
-		       									<select class="form-control" name="interfaceType" required>
-		       										<option value="" selected disabled>----select----</option>
-		       										<option value="Physical Interface" <%if(igiInterface!=null && igiInterface.getInterfaceType()!=null && igiInterface.getInterfaceType().equalsIgnoreCase("Physical Interface")) {%>selected<%} %>>Physical Interface</option>
-		       										<%-- <option value="Electrical Interface" <%if(igiInterface!=null && igiInterface.getInterfaceType()!=null && igiInterface.getInterfaceType().equalsIgnoreCase("Electrical Interface")) {%>selected<%} %>>Electrical Interface</option>
-		       										<option value="Optical Interface" <%if(igiInterface!=null && igiInterface.getInterfaceType()!=null && igiInterface.getInterfaceType().equalsIgnoreCase("Optical Interface")) {%>selected<%} %>>Optical Interface</option> --%>
-		       										<option value="Logical Interface" <%if(igiInterface!=null && igiInterface.getInterfaceType()!=null && igiInterface.getInterfaceType().equalsIgnoreCase("Logical Interface")) {%>selected<%} %>>Logical Interface</option>
-		       									</select>
-		       								</div>
-		       							</div>
+		       								</div> --%>
+		       							<!-- </div>
 		       						</div>
 		       						
 		       						<div class="form-group">
-		       							<div class="row">
+		       							<div class="row"> -->
 		       								<div class="col-md-2">
 		       									<label class="form-lable">Interface Speed <span class="mandatory">*</span></label>
 		       									<select class="form-control" name="interfaceSpeed" required>
@@ -446,17 +393,93 @@ input,select,table,div,label,span {
 		       										<option value="High" <%if(igiInterface!=null && igiInterface.getInterfaceSpeed()!=null && igiInterface.getInterfaceSpeed().equalsIgnoreCase("High")) {%>selected<%} %>>High</option>
 		       									</select>
 		       								</div>
-		       								<div class="col-md-3">
+		       								<%-- <div class="col-md-3">
 		       									<label class="form-lable">Connector </label>
 		       									<input type="text" class="form-control" name="connector" <%if(igiInterface!=null && igiInterface.getConnector()!=null) {%> value="<%=igiInterface.getConnector() %>" <%} %> placeholder="Enter Connector Details" maxlength="255">
 		       								</div>
 		       								<div class="col-md-3">
 		       									<label class="form-lable">Protection </label>
 		       									<input type="text" class="form-control" name="protection" <%if(igiInterface!=null && igiInterface.getProtection()!=null) {%> value="<%=igiInterface.getProtection() %>" <%} %> placeholder="Enter Protection Details" maxlength="255">
-		       								</div>
+		       								</div> --%>
 		       							</div>
 		       						</div>
 		       						
+		       						<div class="row">
+		                    		    <div class="col-md-6" style="text-align: left;">
+		                    		    	<label class="control-label" style="color: black;">End-1 Connector :</label>
+		                    		    </div>
+                  				 	</div>
+
+		       						
+		       						<div class="form-group">
+			       						<div class="row">
+			                    		    <div class="col-md-2">
+		       									<label class="form-lable">Part No </label>
+		       									<input type="text" class="form-control" name="partNoEOne" <%if(igiInterface!=null && igiInterface.getPartNoEOne()!=null) {%>value="<%=igiInterface.getPartNoEOne() %>"<%} %> placeholder="Enter Part No" maxlength="255">
+		       								</div>
+			                    		    <div class="col-md-2">
+		       									<label class="form-lable">Connector Make </label>
+		       									<input type="text" class="form-control" name="connectorMakeEOne" <%if(igiInterface!=null && igiInterface.getConnectorMakeEOne()!=null) {%>value="<%=igiInterface.getConnectorMakeEOne() %>"<%} %> placeholder="Enter Connector Make" maxlength="255">
+		       								</div>
+			                    		    <div class="col-md-2">
+		       									<label class="form-lable">Standard </label>
+		       									<input type="text" class="form-control" name="standardEOne" <%if(igiInterface!=null && igiInterface.getStandardEOne()!=null) {%>value="<%=igiInterface.getStandardEOne() %>"<%} %> placeholder="Enter Standard" maxlength="255">
+		       								</div>
+			                    		    <div class="col-md-2">
+		       									<label class="form-lable">Protection </label>
+		       									<input type="text" class="form-control" name="protectionEOne" <%if(igiInterface!=null && igiInterface.getProtectionEOne()!=null) {%>value="<%=igiInterface.getProtectionEOne() %>"<%} %> placeholder="Enter Protection" maxlength="255">
+		       								</div>
+			                    		    <div class="col-md-2">
+		       									<label class="form-lable">Ref Info </label>
+		       									<input type="text" class="form-control" name="refInfoEOne" <%if(igiInterface!=null && igiInterface.getRefInfoEOne()!=null) {%>value="<%=igiInterface.getRefInfoEOne() %>"<%} %> placeholder="Enter Ref Info" maxlength="255">
+		       								</div>
+			                    		    <div class="col-md-2">
+		       									<label class="form-lable">Remarks </label>
+		       									<input type="text" class="form-control" name="remarksEOne" <%if(igiInterface!=null && igiInterface.getRemarksEOne()!=null) {%>value="<%=igiInterface.getRemarksEOne() %>"<%} %> placeholder="Enter Remarks" maxlength="255">
+		       								</div>
+	                  				 	</div>
+                  				 	</div>
+                    				 
+                    				<hr class="mb-4">
+                    				 
+		       						<div class="row">
+		                    		    <div class="col-md-6" style="text-align: left;">
+		                    		    	<label class="control-label" style="color: black;">End-2 Connector :</label>
+		                    		    </div>
+                  				 	</div>
+
+                  				 	
+		       						<div class="form-group">
+			       						<div class="row">
+			                    		    <div class="col-md-2">
+		       									<label class="form-lable">Part No </label>
+		       									<input type="text" class="form-control" name="partNoETwo" <%if(igiInterface!=null && igiInterface.getPartNoETwo()!=null) {%>value="<%=igiInterface.getPartNoETwo() %>"<%} %> placeholder="Enter Part No" maxlength="255">
+		       								</div>
+			                    		    <div class="col-md-2">
+		       									<label class="form-lable">Connector Make </label>
+		       									<input type="text" class="form-control" name="connectorMakeETwo" <%if(igiInterface!=null && igiInterface.getConnectorMakeETwo()!=null) {%>value="<%=igiInterface.getConnectorMakeETwo() %>"<%} %> placeholder="Enter Connector Make" maxlength="255">
+		       								</div>
+			                    		    <div class="col-md-2">
+		       									<label class="form-lable">Standard </label>
+		       									<input type="text" class="form-control" name="standardETwo" <%if(igiInterface!=null && igiInterface.getStandardETwo()!=null) {%>value="<%=igiInterface.getStandardETwo() %>"<%} %> placeholder="Enter Standard" maxlength="255">
+		       								</div>
+			                    		    <div class="col-md-2">
+		       									<label class="form-lable">Protection </label>
+		       									<input type="text" class="form-control" name="protectionETwo" <%if(igiInterface!=null && igiInterface.getProtectionETwo()!=null) {%>value="<%=igiInterface.getProtectionETwo() %>"<%} %> placeholder="Enter Protection" maxlength="255">
+		       								</div>
+			                    		    <div class="col-md-2">
+		       									<label class="form-lable">Ref Info </label>
+		       									<input type="text" class="form-control" name="refInfoETwo" <%if(igiInterface!=null && igiInterface.getRefInfoETwo()!=null) {%>value="<%=igiInterface.getRefInfoETwo() %>"<%} %> placeholder="Enter Ref Info" maxlength="255">
+		       								</div>
+			                    		    <div class="col-md-2">
+		       									<label class="form-lable">Remarks </label>
+		       									<input type="text" class="form-control" name="remarksETwo" <%if(igiInterface!=null && igiInterface.getRemarksETwo()!=null) {%>value="<%=igiInterface.getRemarksETwo() %>"<%} %> placeholder="Enter Remarks" maxlength="255">
+		       								</div>
+	                  				 	</div>
+                  				 	</div>
+                    				
+                    				<hr class="mb-4">
+                    				 
 		       						<div class="form-group">
 		       							<div class="row">
 		       								
@@ -514,82 +537,20 @@ input,select,table,div,label,span {
 	
 	<script type="text/javascript">
 		
-		// Physical Interface Toggling
-		$('#physicalInterfaceBtn').on('click', function(){
-			var physicalInterfaceVal = $(this).val();
-			var htmlContent = $(this).html();
-
-			if(physicalInterfaceVal=='1') {
-				$('#physicalInterfaceBtn').val('0');
-				$('#physicalInterfaceList').hide();
-				// Change the icon to fa-caret-down
-		        $(this).find('i').removeClass('fa-caret-up').addClass('fa-caret-down');
-			}else{
-				$('#physicalInterfaceBtn').val('1');
-				$('#physicalInterfaceList').show();
-				 // Change the icon to fa-caret-up
-		        $(this).find('i').removeClass('fa-caret-down').addClass('fa-caret-up');
-			}
-			
-		});
+		function toggleInterface(buttonId, listId) {
+		    $('#'+buttonId).on('click', function () {
+		        const currentValue = $(this).val();
+		        $(this).val(currentValue === '1' ? '0' : '1');
+		        $('#'+listId).toggle();
+		        $(this).find('i').toggleClass('fa-caret-up fa-caret-down');
+		    });
+		}
 	
-		// Electrical Interface Toggling
-		/* $('#electricalInterfaceBtn').on('click', function(){
-			var electricalInterfaceVal = $(this).val();
-			var htmlContent = $(this).html();
-
-			if(electricalInterfaceVal=='1') {
-				$('#electricalInterfaceBtn').val('0');
-				$('#electricalInterfaceList').hide();
-				// Change the icon to fa-caret-down
-		        $(this).find('i').removeClass('fa-caret-up').addClass('fa-caret-down');
-			}else{
-				$('#electricalInterfaceBtn').val('1');
-				$('#electricalInterfaceList').show();
-				 // Change the icon to fa-caret-up
-		        $(this).find('i').removeClass('fa-caret-down').addClass('fa-caret-up');
-			}
-			
-		}); */
-	
-		// Optical Interface Toggling
-		/* $('#opticalInterfaceBtn').on('click', function(){
-			var opticalInterfaceVal = $(this).val();
-			var htmlContent = $(this).html();
-
-			if(opticalInterfaceVal=='1') {
-				$('#opticalInterfaceBtn').val('0');
-				$('#opticalInterfaceList').hide();
-				// Change the icon to fa-caret-down
-		        $(this).find('i').removeClass('fa-caret-up').addClass('fa-caret-down');
-			}else{
-				$('#opticalInterfaceBtn').val('1');
-				$('#opticalInterfaceList').show();
-				 // Change the icon to fa-caret-up
-		        $(this).find('i').removeClass('fa-caret-down').addClass('fa-caret-up');
-			}
-			
-		}); */
-	
-		// Logical Interface Toggling
-		$('#logicalInterfaceBtn').on('click', function(){
-			var logicalInterfaceVal = $(this).val();
-			var htmlContent = $(this).html();
-
-			if(logicalInterfaceVal=='1') {
-				$('#logicalInterfaceBtn').val('0');
-				$('#logicalInterfaceList').hide();
-				// Change the icon to fa-caret-down
-		        $(this).find('i').removeClass('fa-caret-up').addClass('fa-caret-down');
-			}else{
-				$('#logicalInterfaceBtn').val('1');
-				$('#logicalInterfaceList').show();
-				 // Change the icon to fa-caret-up
-		        $(this).find('i').removeClass('fa-caret-down').addClass('fa-caret-up');
-			}
-			
-		});
-	
+		// Initialize toggles
+		<%for(IGIInterfaceTypes interfaceType : interfaceTypesList) {%>
+			toggleInterface('<%=interfaceType.getInterfaceType().toLowerCase() %>InterfaceBtn', '<%=interfaceType.getInterfaceType().toLowerCase() %>InterfaceList');
+		<%} %>
+		
 		// Define a common Summernote configuration
 		var summernoteConfig = {
 		    width: 900,
@@ -676,6 +637,43 @@ input,select,table,div,label,span {
 			 $('textarea[name=interfaceDescription]').val(data2);
 			
 		});
+		
 	</script>	
+	
+	<script>
+	    var interfaceContentMap = {};
+	    <% for (IGIInterfaceTypes interfaceType : interfaceTypesList) { %>
+	        var contentList = [];
+	        <% for (IGIInterfaceContent content : interfaceContentList) { 
+	            if (content.getInterfaceTypeId().equals(interfaceType.getInterfaceTypeId())) { %>
+	                contentList.push({
+	                    value: "<%= content.getInterfaceContentId() +"/"+ content.getInterfaceContentCode() +"/"+ content.getInterfaceContent() %>",
+	                    text: "<%= content.getInterfaceContent() %>"
+	                });
+	        <% } } %>
+	        interfaceContentMap["<%= interfaceType.getInterfaceTypeId() +"/"+interfaceType.getInterfaceTypeCode() +"/"+ interfaceType.getInterfaceType() %>"] = contentList;
+	    <% } %>
+
+	    document.getElementById("interfaceType").addEventListener("change", function () {
+	        const selectedInterfaceType = this.value;
+	        const contentDropdown = document.getElementById("interfaceContent");
+	        
+	        // Clear existing options
+	        contentDropdown.innerHTML = '<option value="0/NA/NA" selected>----select----</option>';
+	        
+	        // Get the options for the selected interface type
+	        const contentList = interfaceContentMap[selectedInterfaceType] || [];
+	        
+	        // Append options to the content dropdown
+	        contentList.forEach(content => {
+	            const option = document.createElement("option");
+	            option.value = content.value;
+	            option.textContent = content.text;
+	            contentDropdown.appendChild(option);
+	        });
+	    });
+	    
+	</script>
+
 </body>
 </html>

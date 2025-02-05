@@ -1,3 +1,5 @@
+<%@page import="com.vts.pfms.documents.model.IGIInterfaceTypes"%>
+<%@page import="com.vts.pfms.documents.model.IGIInterfaceContent"%>
 <%@page import="java.util.function.Function"%>
 <%@page import="com.google.gson.GsonBuilder"%>
 <%@page import="com.google.gson.Gson"%>
@@ -150,10 +152,27 @@
     overflow-y: auto; /* Enable vertical scrolling */
     overflow-x: hidden; /* Enable vertical scrolling */
 }
+
+/* Loading spinner styling */
+#loading {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    color: #333;
+}
+
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
 </style>    
 
 </head>
-<body>
+<%	String isPdf = (String)request.getAttribute("isPdf"); %>
+<body <%if(isPdf!=null && isPdf.equalsIgnoreCase("Y")) {%> style="display:none;" <%} %>>
 
 	<%
 		List<Object[]> igiDocumentSummaryList = (List<Object[]>)request.getAttribute("icdDocumentSummaryList");
@@ -181,35 +200,90 @@
 		applicableDocsList = applicableDocsList.stream().filter(e -> !icdApplicableDocIds.contains(e.getApplicableDocId())).collect(Collectors.toList());
 		List<String> icdApplicableDocNames = applicableDocsList.stream().map(e -> e.getDocumentName().toLowerCase()).collect(Collectors.toList());
 
+		PfmsICDDocument icdDocument = (PfmsICDDocument)request.getAttribute("icdDocument");
+		
 		List<Object[]> productTreeList = (List<Object[]>)request.getAttribute("productTreeList"); 
 		List<Object[]> icdConnectionsList = (List<Object[]>)request.getAttribute("icdConnectionsList"); 
 		
+		String isSubSystem = icdDocument!=null && icdDocument.getProductTreeMainId()!=0? "Y": "N";
+		
+		List<Object[]> productTreeAllList = (List<Object[]>)request.getAttribute("productTreeAllList"); 
+		List<Object[]> productTreeSubList = productTreeAllList.stream().filter(e -> icdDocument.getProductTreeMainId()==Long.parseLong(e[9].toString()) && e[10].toString().equalsIgnoreCase("2")).collect(Collectors.toList());
+		
 		List<String> subsystems = productTreeList.stream().map(obj -> obj[7]+"").distinct().collect(Collectors.toList());
+		List<String> supersubsystems = productTreeSubList.stream().map(obj -> obj[7]+"").distinct().collect(Collectors.toList());
+		
+		Map<String, String> connectionMap = new LinkedHashMap<>();
+		Map<String, String> superSubConnectionMap = new HashMap<>();
 		
 		HashSet<String> interfaceCodeList = new HashSet<String>();
 		
-		Map<String, String> connectionMap = new HashMap<>();
+		Map<String, List<String>> codeValuesMap = new LinkedHashMap<>();
 		
-		Map<String, List<String>> codeValuesMap = new HashMap<>();
+		Map<String, List<String>> interfaceTypeValuesMap = new LinkedHashMap<>();
 		
+		Map<String, Set<String>> fwdTraceValuesMap = new LinkedHashMap<>();
+		Map<String, Set<String>> bwdTraceValuesMap = new LinkedHashMap<>();
+		
+		Map<String, Set<String>> fwdTraceValuesMapSuperSub = new LinkedHashMap<>();
+		Map<String, Set<String>> bwdTraceValuesMapSuperSub = new LinkedHashMap<>();
+
 		for (Object[] connection : icdConnectionsList) {
+			
+			 String interfaceCode = connection[8]!=null?connection[8].toString():"NA";
+			 
 		    String key = connection[4] + "_" + connection[5];
 		    int count = connectionMap.containsKey(key) ? connectionMap.get(key).split("<br>").length + 1 : 1;
 
-		    String seqNumber = (count >= 100) ? "_" + count : (count >= 10) ? "_0" + count : "_00" + count;
+		    //String seqNumber = (count >= 100) ? "_" + count : (count >= 10) ? "_0" + count : "_00" + count;
 		    
-		    String value = connection[4] + "_" + connection[5] + "_" + connection[8] + seqNumber;
+		    String value = count+". "+ connection[4] + "_" + connection[5] + "_" + interfaceCode;
 		    connectionMap.merge(key, value, (oldValue, newValue) -> oldValue + "<br>" + newValue);
 		    
 		 	// Unique Interface Codes
-		    String code = connection[8].toString();
-		    interfaceCodeList.add(code);
+		    interfaceCodeList.add(interfaceCode);
 		    
 		 	// Collecting values for each code
-		    codeValuesMap.computeIfAbsent(code, k -> new ArrayList<>()).add(value);
+		    codeValuesMap.computeIfAbsent(interfaceCode, k -> new ArrayList<>()).add(value);
+		 	
+		 	// Grouping the connections by Interface Type
+		    interfaceTypeValuesMap.computeIfAbsent(connection[10].toString(), k -> new ArrayList<>()).add(value);
+		    
+		    
+		    // Super Sub System Map
+		    String keysub = connection[16] + "_" + connection[17];
+
+		    int countsub = superSubConnectionMap.containsKey(keysub) ? superSubConnectionMap.get(keysub).split("<br>").length + 1 : 1;
+
+		    //String seqNumber = (countsub >= 100) ? "_" + countsub : (countsub >= 10) ? "_0" + countsub : "_00" + countsub;
+
+		    String valuesub = count+". "+ connection[16] + "_" + connection[17] + "_" + interfaceCode;
+		    superSubConnectionMap.merge(keysub, valuesub, (oldValue, newValue) -> oldValue + "<br>" + newValue);
+		
+		    
+		    /* Sub-System  */
+		    // Forward Traceability Values
+		    fwdTraceValuesMap.computeIfAbsent(connection[4].toString(), k -> new LinkedHashSet<>()).add(interfaceCode);
+		    fwdTraceValuesMap.computeIfAbsent(connection[5].toString(), k -> new LinkedHashSet<>()).add(interfaceCode);
+		    
+		 	// Backward Traceability Values
+		    bwdTraceValuesMap.computeIfAbsent(interfaceCode, k -> new LinkedHashSet<>()).add(connection[4].toString());
+		    bwdTraceValuesMap.computeIfAbsent(interfaceCode, k -> new LinkedHashSet<>()).add(connection[5].toString());
+		    
+		    /* Super Sub-System */
+		    if(isSubSystem.equalsIgnoreCase("Y") && connection[16]!=null && connection[17]!=null) {
+		    	// Forward Traceability Values
+		    	fwdTraceValuesMapSuperSub.computeIfAbsent(connection[16].toString(), k -> new LinkedHashSet<>()).add(interfaceCode);
+			    fwdTraceValuesMapSuperSub.computeIfAbsent(connection[17].toString(), k -> new LinkedHashSet<>()).add(interfaceCode);
+			    
+			 	// Backward Traceability Values
+			    bwdTraceValuesMapSuperSub.computeIfAbsent(interfaceCode, k -> new LinkedHashSet<>()).add(connection[16].toString());
+			    bwdTraceValuesMapSuperSub.computeIfAbsent(interfaceCode, k -> new LinkedHashSet<>()).add(connection[17].toString());
+		    }
+		    
 		}
 		
-		PfmsICDDocument icdDocument = (PfmsICDDocument)request.getAttribute("icdDocument");
+		
 		List<IGIInterface> igiInterfaceList = (List<IGIInterface>)request.getAttribute("igiInterfaceList");
 		
 		Map<String, IGIInterface> interfaceListToMap = igiInterfaceList.stream()
@@ -227,7 +301,6 @@
 		String drdologo = (String)request.getAttribute("drdologo");
 		String version =(String)request.getAttribute("version");
 		String projectType =(String)request.getAttribute("projectType");
-		String isPdf = (String)request.getAttribute("isPdf");
 		String projectShortName = (projectDetails!=null && projectDetails[2]!=null)?projectDetails[2]+"":"";
 		
 		LocalDate now = LocalDate.now();
@@ -238,6 +311,11 @@
 		
 		String documentNo = "ICD-" + (documentSummary!=null && documentSummary[11]!=null?documentSummary[11].toString().replaceAll("-", ""):"-") 
 							+ "-" + ((String)session.getAttribute("labcode")) + "-" +((projectDetails!=null && projectDetails[1]!=null)?projectDetails[1]:"") + "-V"+version;
+	
+		Object[] subSystemDetails = productTreeList.stream().filter(e -> icdDocument.getProductTreeMainId()==Long.parseLong(e[0].toString())).findFirst().orElse(null);
+		
+		List<IGIInterfaceTypes> interfaceTypesList = (List<IGIInterfaceTypes>)request.getAttribute("interfaceTypesList");
+		List<IGIInterfaceContent> interfaceContentList = (List<IGIInterfaceContent>)request.getAttribute("interfaceContentList");
 	%>
 
     <% String ses = (String) request.getParameter("result"); 
@@ -255,7 +333,12 @@
             </div>
         </div>
     <% } %>
-
+    
+	<div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white; font-size: 20px; font-weight: bold;">
+		<div class="spinner" style="border: 4px solid rgba(255, 255, 255, 0.3); border-top: 4px solid white; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px;"></div>
+	   	Please wait while we are generating the PDF...
+	</div>
+	
     <div class="container-fluid">
        
     	<div class="card shadow-nohover" style="margin-top: -0.6pc">
@@ -271,6 +354,7 @@
                     		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		        			<input type="hidden" name="projectId" value="<%=icdDocument.getProjectId() %>" />
 		        			<input type="hidden" name="initiationId" value="<%=icdDocument.getInitiationId() %>" />
+		        			<input type="hidden" name="productTreeMainId" value="<%=icdDocument.getProductTreeMainId() %>" />
 		        			<input type="hidden" name="projectType" value="<%=icdDocument.getProjectId()!=0?"M":"I" %>" />
 		        			<button class="btn btn-info btn-sm shadow-nohover back">
 		        				Back
@@ -789,6 +873,9 @@ $('#myform').submit(function() {
 </script>    
 <script type="text/javascript">
 function DownloadDocPDF(){
+
+	document.getElementById('loadingOverlay').style.display = 'flex';
+	
 	var chapterCount = 0;
     var mainContentCount = 0;
 	var leftSideNote = '<%if(docTempAtrr!=null && docTempAtrr[12]!=null) {%><%=docTempAtrr[12].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
@@ -1248,62 +1335,144 @@ function DownloadDocPDF(){
                     id: 'chapter'+(++chapterCount),
                     pageOrientation: 'landscape',
                     pageBreak: 'before',
-                    pageSize: { width: 841.89, height: 595.28 },
+                  	/* pageSize: { width: 1190.55, height: 841.89 }, */
+                    pageSize: { width: 1683.78, height: 1190.55 },
                 },
 				
                 {
                     table: {
                         headerRows: 1,
                         widths: [
-                            <% for (int i = 0; i <= subsystems.size(); i++) { %>
-                                '*',
-                            <% } %>
+                        	 
+                            <%-- <% for (int i = 0; i <subsystems.size()+2; i++) { %>
+                                'auto',
+                            <% } %> --%>
+                            '4%', '8%', 
+                            <% for (int i = 0; i <subsystems.size(); i++) { %>
+                            	'<%= (double)((double)88/(double)(subsystems.size())) %>%',
+                        	<% } %>
+                            
                         ],
                         body: [
                             // Table header
                             [
-                                { text: 'Sub-System', style: 'tableHeader' },
+                                { text: 'SN', style: 'tableHeader2' },
+                                { text: 'Sub-System', style: 'tableHeader2' },
                                 <% for (String subsystem : subsystems) { %>
-                                    { text: '<%= subsystem != null ? subsystem : "" %>', style: 'tableHeader' },
+                                    { text: '<%= subsystem != null ? subsystem : "" %>', style: 'tableHeader2' },
                                 <% } %>
                             ],
 
                             // Populate table rows
-                            <% for (String rowSubsystem : subsystems) { %>
+                            <% 
+                            List<String> colSubSystems = subsystems;
+                            if(isSubSystem.equalsIgnoreCase("Y")) {
+                            	subsystems = subsystems.stream().filter(e -> e.equalsIgnoreCase(subSystemDetails[7].toString())).collect(Collectors.toList());
+                            	
+                            }
+                            int slnoS = 0;
+                            for (String rowSubsystem : subsystems) { %>
                                 [
-                                    { text: '<%= rowSubsystem != null ? rowSubsystem : "" %>', style: 'tableData', alignment: 'center' },
-                                    <% for (String colSubsystem : subsystems) { %>
+                                    { text: '<%= ++slnoS%>', style: 'tableData2', alignment: 'center' },
+                                    { text: '<%= rowSubsystem != null ? rowSubsystem : "" %>', style: 'tableData2', alignment: 'center' },
+                                    <% for (String colSubsystem : colSubSystems) { %>
                                         { text: 
-                                            <% if (rowSubsystem.equalsIgnoreCase(colSubsystem)) { %>
-                                                'NA'
-                                            <% } else { 
+                                            <%-- <% if (rowSubsystem.equalsIgnoreCase(colSubsystem)) { %>
+                                                'NA' --%>
+                                            <% //} else { 
                                                 String key = rowSubsystem + "_" + colSubsystem;
                                                 String connections = connectionMap.getOrDefault(key, "-");
                                             %>
                                                 htmlToPdfmake('<%= connections != null ? connections : "-" %>')
-                                            <% } %>, 
-                                            style: 'tableData', alignment: 'center' },
+                                            <% //} %>, 
+                                            style: 'tableData2', alignment: 'center' },
                                     <% } %>
                                 ],
                             <% } %>
                         ]
                     },
                     layout: {
-                        hLineWidth: function(i, node) {
-                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
-                        },
-                        vLineWidth: function(i) {
-                            return 0.5;
-                        },
-                        hLineColor: function(i) {
-                            return '#aaaaaa';
-                        },
-                        vLineColor: function(i) {
-                            return '#aaaaaa';
-                        }
-                    }
+                        hLineWidth: function (i, node) { return 1; },
+                        vLineWidth: function (i, node) { return 1; },
+                        hLineColor: function (i, node) { return '#aaaaaa'; },
+                        vLineColor: function (i, node) { return '#aaaaaa'; },
+                        paddingLeft: function(i, node) { return 2; },
+                        paddingRight: function(i, node) { return 2; },
+                    },
+
                 },
 
+                <%
+	        	if(isSubSystem.equalsIgnoreCase("Y")) {
+	        		
+	        	%>
+	        	
+	        	{
+                	text: '',
+                    style: 'chapterHeader',
+                    tocItem: false,
+                    id: 'chapter'+(++chapterCount),
+                    pageOrientation: 'landscape',
+                    pageBreak: 'before',
+                    pageSize: { width: 841.89, height: 595.28 },
+                },
+                
+	        	{
+                    table: {
+                        headerRows: 1,
+                        widths: [
+                        	 
+                        	'4%', '8%', 
+                            <% for (int i = 0; i <supersubsystems.size(); i++) { %>
+                            	'<%= (double)((double)88/(double)(supersubsystems.size())) %>%',
+                        	<% } %>
+                        ],
+                        body: [
+                            // Table header
+                            [
+                                { text: 'SN', style: 'tableHeader2' },
+                                { text: 'Sub-System', style: 'tableHeader2' },
+                                <% for (String supersubsystem : supersubsystems) { %>
+                                    { text: '<%= supersubsystem != null ? supersubsystem : "" %>', style: 'tableHeader2' },
+                                <% } %>
+                            ],
+
+                            // Populate table rows
+                            <% 
+                            int slnoSS = 0;
+                            for (String rowSubsystem : supersubsystems) { %>
+                                [
+                                    { text: '<%= ++slnoSS%>', style: 'tableData2', alignment: 'center' },
+                                    { text: '<%= rowSubsystem != null ? rowSubsystem : "" %>', style: 'tableData2', alignment: 'center' },
+                                    <% for (String colSubsystem : supersubsystems) { %>
+                                        { text: 
+                                            <%-- <% if (rowSubsystem.equalsIgnoreCase(colSubsystem)) { %>
+                                                'NA' --%>
+                                            <% //} else { 
+                                                String key = rowSubsystem + "_" + colSubsystem;
+                                                String connections = superSubConnectionMap.getOrDefault(key, "-");
+                                            %>
+                                                htmlToPdfmake('<%= connections != null ? connections : "-" %>')
+                                            <% //} %>, 
+                                            style: 'tableData2', alignment: 'center' },
+                                    <% } %>
+                                ],
+                            <% } %>
+                        ]
+                    },
+                    layout: {
+                        hLineWidth: function (i, node) { return 1; },
+                        vLineWidth: function (i, node) { return 1; },
+                        hLineColor: function (i, node) { return '#aaaaaa'; },
+                        vLineColor: function (i, node) { return '#aaaaaa'; },
+                        paddingLeft: function(i, node) { return 2; },
+                        paddingRight: function(i, node) { return 2; },
+                    },
+
+                },
+                
+	        	<%} %>
+                
                 {
                 	text: '',
                     style: 'chapterHeader',
@@ -1316,68 +1485,72 @@ function DownloadDocPDF(){
                 {
                     table: {
                         headerRows: 1,
-                        widths: ['15%', '15%', '15%', '10%', '15%', '15%', '10%' ],
+                        /* widths: ['15%', '15%', '15%', '10%', '15%', '15%', '10%' ], */
+                        /* widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto' ], */
+                        widths: ['6%', '25%', '20%', '24%%', '25%' ],
                         body: [
                             // Table header
                             [
-                                { text: 'Connection ID', style: 'tableHeader' },
-                                { text: 'Sub-System 1', style: 'tableHeader' },
+                                { text: 'SN', style: 'tableHeader2' },
+                                { text: 'Connection ID', style: 'tableHeader2' },
+                                /* { text: 'Sub-System 1', style: 'tableHeader' },
                                 { text: 'Sub-System 2', style: 'tableHeader' },
                                 { text: 'Code', style: 'tableHeader' },
-                                { text: 'Interface Type', style: 'tableHeader' },
-                                { text: 'Transmission Speed', style: 'tableHeader' },
-                                { text: 'Data Format', style: 'tableHeader' },
+                                { text: 'Interface Type', style: 'tableHeader' }, */
+                                { text: 'Periodicity', style: 'tableHeader2' },
+                                { text: 'Transmission Speed', style: 'tableHeader2' },
+                                { text: 'Data Format', style: 'tableHeader2' },
                             ],
                             // Populate table rows
                             
                             <%if(icdConnectionsList!=null && icdConnectionsList.size()>0) {
-                    			int count = 0;
-                    			String systemOne1 = "";
-                				String systemTwo1 = "";
+                            	
+                            	int count = 0, slno = 0;
+                    			String systemOne1 = "", systemTwo1 = "", subSystemOne1 = "", subSystemTwo1 = "";
+                    			
                     			for(Object[] obj : icdConnectionsList) {
                     				
                     				String systemOne2 = obj[4]+"";
                     				String systemTwo2 = obj[5]+"";
+                    				String subSystemOne2 = obj[16]+"";
+                    				String subSystemTwo2 = obj[17]+"";
                     				
-                    				if(!systemOne1.equalsIgnoreCase(systemOne2) || !systemTwo1.equalsIgnoreCase(systemTwo2)) {
+                    				if(!systemOne1.equalsIgnoreCase(systemOne2) || !systemTwo1.equalsIgnoreCase(systemTwo2) ||
+                    				   !subSystemOne1.equalsIgnoreCase(subSystemOne2) || !subSystemTwo1.equalsIgnoreCase(subSystemTwo2)	) {
                     					systemOne1 = systemOne2;
                     					systemTwo1 = systemTwo2;
+                    					subSystemOne1 = subSystemOne2;
+                    					subSystemTwo1 = subSystemTwo2;
                     					count = 0;
                     				}
                     				
                     				++count;
                     		%>
 	                    		[
-	                                { text: '<%=obj[4]+"_"+obj[5]+"_"+obj[8]+((count>=100)?"_"+count:((count>=10)?"_0"+count:"_00"+count)) %>', style: 'tableData',alignment: 'center' }, 
-	                                <%-- { text: '<%=obj[4]+"_"+obj[5]+"_"+obj[8] %>', style: 'tableData',alignment: 'center' }, --%>
-	                                { text: '<%=obj[4] %>', style: 'tableData',alignment: 'center' },
+	                    			{ text: '<%=++slno %>', style: 'tableData2',alignment: 'center' },
+	                                <%-- { text: '<%=obj[4]+"_"+obj[5]+"_"+obj[8]+((count>=100)?"_"+count:((count>=10)?"_0"+count:"_00"+count)) %>', style: 'tableData',alignment: 'center' }, --%> 
+	                                { text: '<%=count +"."+ obj[4]+"_"+obj[5]+"_"+obj[8] %>', style: 'tableData2',alignment: 'center' },
+	                                <%-- { text: '<%=obj[4] %>', style: 'tableData',alignment: 'center' },
 	                                { text: '<%=obj[5] %>', style: 'tableData',alignment: 'center' },
 	                                { text: '<%=obj[8] %>', style: 'tableData',alignment: 'center' },
-	                                { text: '<%=obj[10] %>', style: 'tableData', },
-	                                { text: '<%=obj[13] %>', style: 'tableData', },
-	                                { text: '<%=obj[11] %>', style: 'tableData', },
+	                                { text: '<%=obj[10] %>', style: 'tableData', }, --%>
+	                                { text: '<%=obj[30]!=null?obj[30]:"-" %>', style: 'tableData2', },
+	                                { text: '<%=obj[13]!=null?obj[13]:"-" %>', style: 'tableData2', },
+	                                { text: '<%=obj[11]!=null?obj[11]:"-" %>', style: 'tableData2', },
 	                            ],
                     		<%} }%>
                         ]
                     },
                     layout: {
-                        /* fillColor: function(rowIndex) {
-                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
-                        }, */
-                        hLineWidth: function(i, node) {
-                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
-                        },
-                        vLineWidth: function(i) {
-                            return 0.5;
-                        },
-                        hLineColor: function(i) {
-                            return '#aaaaaa';
-                        },
-                        vLineColor: function(i) {
-                            return '#aaaaaa';
-                        }
-                    }
+                        hLineWidth: function (i, node) { return 1; },
+                        vLineWidth: function (i, node) { return 1; },
+                        hLineColor: function (i, node) { return '#aaaaaa'; },
+                        vLineColor: function (i, node) { return '#aaaaaa'; },
+                        paddingLeft: function(i, node) { return 2; },
+                        paddingRight: function(i, node) { return 2; },
+                    },
                 },
+                
                 /* ************************************** Connections End *********************************** */
                 
                 /* ************************************** Interface Details *********************************** */
@@ -1390,15 +1563,68 @@ function DownloadDocPDF(){
                     pageBreak: 'before',
                 },
                 
+                {
+                	text: '',
+                    style: 'chapterHeader',
+                    tocItem: false,
+                    id: 'chapter'+(++chapterCount),
+                    /* pageOrientation: 'landscape',
+                    pageBreak: 'before',
+                    pageSize: { width: 841.89, height: 595.28 }, */
+                },
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['9%', '19%', '12%', '60%' ],
+                        body: [
+                            // Table header
+                            [
+                                { text: 'SN', style: 'tableHeader' },
+                                { text: 'Interface Type', style: 'tableHeader' },
+                                { text: 'Count', style: 'tableHeader' },
+                                { text: 'Sub-Systems', style: 'tableHeader' },
+                            ],
+                            // Populate table rows
+                            <%if (interfaceTypeValuesMap != null && !interfaceTypeValuesMap.isEmpty()) {
+							    int slno = 0;
+							    for (Map.Entry<String, List<String>> entry : interfaceTypeValuesMap.entrySet()) {
+							        String type = entry.getKey();
+							        List<String> values = entry.getValue();
+							%>
+							        [
+							            { text: '<%= ++slno %>', style: 'tableData', alignment: 'center' },
+							            { text: '<%= type %>', style: 'tableData',  },
+							            { text: '<%= values.size() %>', style: 'tableData', alignment: 'center' },
+							            { text: '<%= values %>', style: 'tableData', },
+							        ],
+							<% } } else {%>
+								[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 4 },]
+                            <%} %>
+
+                        ]
+                    },
+                    layout: {
+                        hLineWidth: function (i, node) { return 1; },
+                        vLineWidth: function (i, node) { return 1; },
+                        hLineColor: function (i, node) { return '#aaaaaa'; },
+                        vLineColor: function (i, node) { return '#aaaaaa'; },
+                        paddingLeft: function(i, node) { return 2; },
+                        paddingRight: function(i, node) { return 2; },
+                    },
+                },
+                
                 <%if(interfaceCodeList!=null && interfaceCodeList.size()>0) {
                 	int slno = 0 ;
                 	for(String interfaceCode : interfaceCodeList) {
                 		int sn = 0;
-                		IGIInterface igiInterface = interfaceListToMap.get(interfaceCode);
-                		List<String> connectionCodes = codeValuesMap.getOrDefault(igiInterface.getInterfaceCode(), Collections.emptyList());
+                		IGIInterface iface = interfaceListToMap.get(interfaceCode);
+                		List<String> connectionCodes = codeValuesMap.getOrDefault(iface.getInterfaceCode(), Collections.emptyList());
+                		IGIInterfaceTypes igiinterfaceTypes = interfaceTypesList.stream().filter(e -> iface.getInterfaceTypeId().equals(e.getInterfaceTypeId())).findFirst().orElse(null);
+						IGIInterfaceContent igiInterfaceContent = interfaceContentList.stream().filter(e -> iface.getInterfaceContentId().equals(e.getInterfaceContentId())).findFirst().orElse(null);
+
                 %>
 	                {
-	                	text: mainContentCount+'.<%=++slno%>. <%=igiInterface.getInterfaceName() %>',	
+	                	text: mainContentCount+'.<%=++slno%>. <%=iface.getInterfaceName() %>',	
 	                	style: 'chapterSubHeader',
 	                    tocItem: true,
 	                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=slno%>',
@@ -1424,88 +1650,105 @@ function DownloadDocPDF(){
 	                                { text: 'Details', style: 'tableHeader' },
 	                            ],
 	                            // Populate table rows
-	                            [
+	                            <%-- [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Unique Interface Id', style: 'tableData', bold: true},
-	                                { text: '<%=igiInterface.getInterfaceSeqNo()+"_"+igiInterface.getInterfaceCode() %>', style: 'tableData' },
+	                                { text: '<%=iface.getInterfaceSeqNo()+"_"+iface.getInterfaceCode() %>', style: 'tableData' },
 	                            ],
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Interface Id', style: 'tableData', bold: true},
-	                                { text: '<%=igiInterface.getInterfaceSeqNo() %>', style: 'tableData' },
-	                            ],
+	                                { text: 'Interface Seq', style: 'tableData', bold: true},
+	                                { text: '<%=iface.getInterfaceSeqNo() %>', style: 'tableData' },
+	                            ], --%>
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Interface Code', style: 'tableData', bold: true},
-	                                { text: '<%=igiInterface.getInterfaceCode() %>', style: 'tableData' },
+	                                { text: '<%=iface.getInterfaceCode() %>', style: 'tableData' },
 	                            ],
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Interface Name', style: 'tableData', bold: true },
-	                                { text: '<%=igiInterface.getInterfaceName() %>', style: 'tableData' },
+	                                { text: '<%=iface.getInterfaceName() %>', style: 'tableData' },
 	                            ],
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Description', style: 'tableData', bold: true},
-	                                <%if(igiInterface.getInterfaceDescription()!=null && !igiInterface.getInterfaceDescription().isEmpty()) {%>
-	                                	{ stack: [htmlToPdfmake(setImagesWidth('<%=igiInterface.getInterfaceDescription().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))],},
+	                                <%if(iface.getInterfaceDescription()!=null && !iface.getInterfaceDescription().isEmpty()) {%>
+	                                	{ stack: [htmlToPdfmake(setImagesWidth('<%=iface.getInterfaceDescription().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))],},
 	                                <%}else {%>
 	                                	{ text: 'No Details Added!', style: 'tableData'},
 	                                <%} %>
 	                            ],
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Type of Signal', style: 'tableData', bold: true },
-	                                { text: '<%=igiInterface.getSignalType() %>', style: 'tableData' },
+	                                { text: 'Interface Type', style: 'tableData', bold: true },
+	                                { text: '<%=igiinterfaceTypes!=null?igiinterfaceTypes.getInterfaceType():"-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Interface Content', style: 'tableData', bold: true },
+	                                { text: '<%=igiInterfaceContent!=null?igiInterfaceContent.getInterfaceContent():"-" %>', style: 'tableData' },
 	                            ],
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Type of Data', style: 'tableData', bold: true },
-	                                { text: '<%=igiInterface.getDataType() %>', style: 'tableData' },
+	                                { text: '<%=iface.getParameterData() %>', style: 'tableData' },
 	                            ],
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Connector', style: 'tableData', bold: true },
-	                                { text: '<%=(igiInterface.getConnector()!=null && !igiInterface.getConnector().isEmpty())? igiInterface.getConnector():"-" %>', style: 'tableData' },
+	                                { text: 'End-1 Connector', style: 'tableData', bold: true },
+	                                { text: 'Part No : <%=(iface.getPartNoEOne()!=null && !iface.getPartNoEOne().isEmpty())? iface.getPartNoEOne():"-" %>'
+	                                		+'\n' + 'Connector Make : <%=(iface.getConnectorMakeEOne()!=null && !iface.getConnectorMakeEOne().isEmpty())? iface.getConnectorMakeEOne():"-" %>'
+	                                		+'\n' + 'Standard : <%=(iface.getStandardEOne()!=null && !iface.getStandardEOne().isEmpty())? iface.getStandardEOne():"-" %>'
+	                                		+'\n' + 'Protection : <%=(iface.getProtectionEOne()!=null && !iface.getProtectionEOne().isEmpty())? iface.getProtectionEOne():"-" %>'
+	                                		+'\n' + 'Ref Info : <%=(iface.getRefInfoEOne()!=null && !iface.getRefInfoEOne().isEmpty())? iface.getRefInfoEOne():"-" %>'
+	                                		+'\n' + 'Remarks : <%=(iface.getRemarksEOne()!=null && !iface.getRemarksEOne().isEmpty())? iface.getRemarksEOne():"-" %>'
+	                                		, style: 'tableData' },
 	                            ],
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Protection', style: 'tableData', bold: true },
-	                                { text: '<%=(igiInterface.getProtection()!=null && !igiInterface.getProtection().isEmpty())? igiInterface.getProtection():"-" %>', style: 'tableData' },
+	                                { text: 'End-2 Connector', style: 'tableData', bold: true },
+	                                { text: 'Part No : <%=(iface.getPartNoETwo()!=null && !iface.getPartNoETwo().isEmpty())? iface.getPartNoETwo():"-" %>'
+	                                		+'\n' + 'Connector Make : <%=(iface.getConnectorMakeETwo()!=null && !iface.getConnectorMakeETwo().isEmpty())? iface.getConnectorMakeETwo():"-" %>'
+	                                		+'\n' + 'Standard : <%=(iface.getStandardETwo()!=null && !iface.getStandardETwo().isEmpty())? iface.getStandardETwo():"-" %>'
+	                                		+'\n' + 'Protection : <%=(iface.getProtectionETwo()!=null && !iface.getProtectionETwo().isEmpty())? iface.getProtectionETwo():"-" %>'
+	                                		+'\n' + 'Ref Info : <%=(iface.getRefInfoETwo()!=null && !iface.getRefInfoETwo().isEmpty())? iface.getRefInfoETwo():"-" %>'
+	                                		+'\n' + 'Remarks : <%=(iface.getRemarksETwo()!=null && !iface.getRemarksETwo().isEmpty())? iface.getRemarksETwo():"-" %>'
+	                                		, style: 'tableData' },
 	                            ],
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Interface Speed', style: 'tableData', bold: true },
-	                                { text: '<%=igiInterface.getInterfaceSpeed() %>', style: 'tableData' },
+	                                { text: '<%=iface.getInterfaceSpeed() %>', style: 'tableData' },
 	                            ],
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Cable Information', style: 'tableData', bold: true },
-	                                { text: '<%=(igiInterface.getCableInfo()!=null && !igiInterface.getCableInfo().isEmpty())? igiInterface.getCableInfo():"-" %>', style: 'tableData' },
+	                                { text: '<%=(iface.getCableInfo()!=null && !iface.getCableInfo().isEmpty())? iface.getCableInfo():"-" %>', style: 'tableData' },
 	                            ],
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Cable Constraint', style: 'tableData', bold: true },
-	                                { text: '<%=(igiInterface.getCableConstraint()!=null && !igiInterface.getCableConstraint().isEmpty())? igiInterface.getCableConstraint():"-" %>', style: 'tableData' },
+	                                { text: '<%=(iface.getCableConstraint()!=null && !iface.getCableConstraint().isEmpty())? iface.getCableConstraint():"-" %>', style: 'tableData' },
 	                            ],
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Cable Diameter', style: 'tableData', bold: true },
-	                                { text: '<%=(igiInterface.getCableDiameter()!=null && !igiInterface.getCableDiameter().isEmpty())? igiInterface.getCableDiameter():"-" %>', style: 'tableData' },
+	                                { text: '<%=(iface.getCableDiameter()!=null && !iface.getCableDiameter().isEmpty())? iface.getCableDiameter():"-" %>', style: 'tableData' },
 	                            ],
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Cable Details', style: 'tableData', bold: true },
-	                                { text: '<%=(igiInterface.getCableDetails()!=null && !igiInterface.getCableDetails().isEmpty())? igiInterface.getCableDetails():"-" %>', style: 'tableData' },
+	                                { text: '<%=(iface.getCableDetails()!=null && !iface.getCableDetails().isEmpty())? iface.getCableDetails():"-" %>', style: 'tableData' },
 	                            ],
 	                            
-	                            <%if(igiInterface.getInterfaceDiagram()!=null && !igiInterface.getInterfaceDiagram().isEmpty()) {%>
+	                            <%if(iface.getInterfaceDiagram()!=null && !iface.getInterfaceDiagram().isEmpty()) {%>
 		                            [
 		                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 		                                { text: 'Diagram', style: 'tableData', bold: true, colSpan: 2 },
 		                            ],
 		                            [
-	                        			{ stack: [htmlToPdfmake(setImagesWidth('<%=igiInterface.getInterfaceDiagram().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))], colSpan: 3,},
+	                        			{ stack: [htmlToPdfmake(setImagesWidth('<%=iface.getInterfaceDiagram().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))], colSpan: 3,},
 	                            	],
 	                            <%} %>
 	                        ]
@@ -1532,6 +1775,229 @@ function DownloadDocPDF(){
                 
                 <%} }%>
                 /* ************************************** Interface Details End *********************************** */
+
+           		/* ************************************** Forward Traceability *********************************** */
+                {
+                	text: (++mainContentCount)+'. Forward Traceability',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    pageOrientation: 'potrait',
+                    pageBreak: 'before',
+                },
+                
+                /* ************************************* Sub-System ******************************************  */
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['10%', '30%', '60%'],
+                        body: [
+                        	[
+                        		{text: 'SN', style:'tableHeader'},
+                        		{text: 'Sub-System', style:'tableHeader'},
+                        		{text: 'Interfaces', style:'tableHeader'},
+                        	],
+                            // Populate table rows
+                            <%if (fwdTraceValuesMap != null && !fwdTraceValuesMap.isEmpty()) {
+							    int slno = 0;
+							    for (Map.Entry<String, Set<String>> entry : fwdTraceValuesMap.entrySet()) {
+							        String interfacecode = entry.getKey();
+							        Set<String> values = entry.getValue();
+							%>
+							        [
+							            { text: '<%= ++slno %>', style: 'tableData', alignment: 'center' },
+							            { text: '<%= interfacecode %>', style: 'tableData',  },
+							            { text: '<%= values %>', style: 'tableData', },
+							        ],
+							<% } } else {%>
+								[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 4 },]
+                            <%} %>
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }  
+                    }
+                },
+                
+                /* ************************************* Sub-System End ******************************************  */
+                
+                /* ************************************* Super Sub-System ******************************************  */
+                <% if(isSubSystem.equalsIgnoreCase("Y")) { %>
+                	{text: '\n\n'},
+	                {
+	                    table: {
+	                        headerRows: 1,
+	                        widths: ['10%', '30%', '60%'],
+	                        body: [
+	                        	[
+	                        		{text: 'SN', style:'tableHeader'},
+	                        		{text: 'Super Sub-System', style:'tableHeader'},
+	                        		{text: 'Interfaces', style:'tableHeader'},
+	                        	],
+	                            // Populate table rows
+	                            <%if (fwdTraceValuesMapSuperSub!= null && !fwdTraceValuesMapSuperSub.isEmpty()) {
+								    int slno = 0;
+								    for (Map.Entry<String, Set<String>> entry : fwdTraceValuesMapSuperSub.entrySet()) {
+								        String interfacecode = entry.getKey();
+								        Set<String> values = entry.getValue();
+								%>
+								        [
+								            { text: '<%= ++slno %>', style: 'tableData', alignment: 'center' },
+								            { text: '<%= interfacecode %>', style: 'tableData',  },
+								            { text: '<%= values %>', style: 'tableData', },
+								        ],
+								<% } } else {%>
+									[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 4 },]
+	                            <%} %>
+	                        ]
+	                    },
+	                    layout: {
+	                        /* fillColor: function(rowIndex) {
+	                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+	                        }, */
+	                        hLineWidth: function(i, node) {
+	                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+	                        },
+	                        vLineWidth: function(i) {
+	                            return 0.5;
+	                        },
+	                        hLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        },
+	                        vLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        }  
+	                    }
+	                },
+                <%} %>
+                /* ************************************* Super Sub-System End******************************************  */
+                
+ 				/* ************************************** Forward Traceability End *********************************** */
+                
+ 				
+           		/* ************************************** Backward Traceability *********************************** */
+                {
+                    text: (++mainContentCount)+'. Backward Traceability',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    pageBreak: 'before'
+                },
+                /* ************************************* Sub-System ******************************************  */
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['10%', '30%', '60%'],
+                        body: [
+                        	[
+                        		{text: 'SN', style:'tableHeader'},
+                        		{text: 'Interface', style:'tableHeader'},
+                        		{text: 'Sub-Systems', style:'tableHeader'},
+                        	],
+                            // Populate table rows
+                            <%if (bwdTraceValuesMap != null && !bwdTraceValuesMap.isEmpty()) {
+							    int slno = 0;
+							    for (Map.Entry<String, Set<String>> entry : bwdTraceValuesMap.entrySet()) {
+							        String subSystem = entry.getKey();
+							        Set<String> values = entry.getValue();
+							%>
+							        [
+							            { text: '<%= ++slno %>', style: 'tableData', alignment: 'center' },
+							            { text: '<%= subSystem %>', style: 'tableData',  },
+							            { text: '<%= values %>', style: 'tableData', },
+							        ],
+							<% } } else {%>
+								[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 4 },]
+                            <%} %>
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }  
+                    }
+                },
+                
+                /* ************************************* Sub-System End ******************************************  */
+                
+                /* ************************************* Super Sub-System ******************************************  */
+                
+                <% if(isSubSystem.equalsIgnoreCase("Y")) { %>
+            		{text: '\n\n'},
+	                {
+	                    table: {
+	                        headerRows: 1,
+	                        widths: ['10%', '30%', '60%'],
+	                        body: [
+	                        	[
+	                        		{text: 'SN', style:'tableHeader'},
+	                        		{text: 'Interface', style:'tableHeader'},
+	                        		{text: 'Super Sub-Systems', style:'tableHeader'},
+	                        	],
+	                            // Populate table rows
+	                            <%if (bwdTraceValuesMapSuperSub != null && !bwdTraceValuesMapSuperSub.isEmpty()) {
+								    int slno = 0;
+								    for (Map.Entry<String, Set<String>> entry : bwdTraceValuesMapSuperSub.entrySet()) {
+								        String subSystem = entry.getKey();
+								        Set<String> values = entry.getValue();
+								%>
+								        [
+								            { text: '<%= ++slno %>', style: 'tableData', alignment: 'center' },
+								            { text: '<%= subSystem %>', style: 'tableData',  },
+								            { text: '<%= values %>', style: 'tableData', },
+								        ],
+								<% } } else {%>
+									[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 4 },]
+	                            <%} %>
+	                        ]
+	                    },
+	                    layout: {
+	                        /* fillColor: function(rowIndex) {
+	                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+	                        }, */
+	                        hLineWidth: function(i, node) {
+	                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+	                        },
+	                        vLineWidth: function(i) {
+	                            return 0.5;
+	                        },
+	                        hLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        },
+	                        vLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        }  
+	                    }
+	                },
+	            <%} %>    
+	            /* ************************************* Super Sub-System End ******************************************  */
+                /* ************************************** Backward Traceability End *********************************** */
                 
 			],
 			styles: {
@@ -1541,6 +2007,8 @@ function DownloadDocPDF(){
                 chapterSubHeader: { fontSize: 13, bold: true, margin: [10, 10, 0, 10]},
                 tableHeader: { fontSize: 12, bold: true, fillColor: '#f0f0f0', alignment: 'center', margin: [10, 5, 10, 5], fontWeight: 'bold' },
                 tableData: { fontSize: 11.5, margin: [0, 5, 0, 5] },
+                tableHeader2: { fontSize: 9, bold: true, fillColor: '#f0f0f0', alignment: 'center', margin: [5, 0, 5, 0], fontWeight: 'bold' },
+                tableData2: { fontSize: 8.5, margin: [0, 5, 0, 5] },
                 chapterSubSubHeader: { fontSize: 12, bold: true, margin: [15, 10, 10, 10] },
                 chapterSubSubSubHeader: { fontSize: 12, bold: true, margin: [20, 10, 10, 10] },
                 subChapterNote: { margin: [15, 15, 0, 10] },
@@ -1638,7 +2106,18 @@ function DownloadDocPDF(){
             defaultStyle: { fontSize: 12, color: 'black', }
         };
 		
-        pdfMake.createPdf(docDefinition).open();
+	//pdfMake.createPdf(docDefinition).open();
+	pdfMake.createPdf(docDefinition).getBlob((blob) => {
+        // Create a URL for the blob
+        const url = URL.createObjectURL(blob);
+
+        // Open the PDF in a new tab
+        window.open(url, '_blank');
+
+        // Hide the loading spinner
+          document.getElementById('loadingOverlay').style.display='none';
+        window.close();
+    });
 }
 
 const setImagesWidth = (htmlString, width) => {
@@ -1758,15 +2237,21 @@ function generateRotatedTextImage(text) {
 
 <%if(isPdf!=null && isPdf.equalsIgnoreCase("Y")) {%>
 $( document ).ready(function(){
+
+	document.body.style.display="block"
+	document.body.innerHTML = '<div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white; font-size: 20px; font-weight: bold;">'+
+		    '<div class="spinner" style="border: 4px solid rgba(255, 255, 255, 0.3); border-top: 4px solid white; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px;"></div>'+
+		   ' Please wait while we are generating the PDF...</div>'
+		 
 	DownloadDocPDF();
 	/* window.close(); */
 	
 	// Hide the current JSP page immediately after opening the PDF
-	document.body.style.display = "none";
+	//document.body.style.display = "none";
 	
-	setTimeout(function () {
+	/* setTimeout(function () {
         window.close();
-    }, 8000); // Adjust the delay time as needed
+    }, 8000) */; // Adjust the delay time as needed
 });
 <%} %>
 </script> 

@@ -1,32 +1,51 @@
 package com.vts.pfms.documents.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name="pfms_igi_interfaces")
-public class IGIInterface {
-
+public class IGIInterface implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long InterfaceId;
 	private String LabCode;
-	private String InterfaceSeqNo;
+	//private String InterfaceSeqNo;
 	private String InterfaceCode;
 	private String InterfaceName;
+	@Transient
 	private String InterfaceType;
-	private String DataType;
-	private String SignalType;
+	private Long InterfaceTypeId;
+	private String ParameterData;
+	@Transient
+	private String InterfaceContent;
+	private Long InterfaceContentId;
 	private String InterfaceSpeed;
 	private String InterfaceDiagram;
-	private String Connector;
-	private String Protection;
+	private String partNoEOne;
+	private String connectorMakeEOne;
+	private String standardEOne;
+	private String protectionEOne;
+	private String refInfoEOne;
+	private String remarksEOne;
+	private String partNoETwo;
+	private String connectorMakeETwo;
+	private String standardETwo;
+	private String protectionETwo;
+	private String refInfoETwo;
+	private String remarksETwo;
 	private String InterfaceDescription;
 	private String CableInfo;
 	private String CableConstraint;

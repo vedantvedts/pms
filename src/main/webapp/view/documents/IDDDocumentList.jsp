@@ -9,22 +9,11 @@
     <meta charset="ISO-8859-1">
     <jsp:include page="../static/header.jsp"></jsp:include>
 <style type="text/css">
-label {
-	font-weight: bold;
-	font-size: 13px;
-}
-
-.table .font {
-	font-family: 'Muli', sans-serif !important;
-	font-style: normal;
-	font-size: 13px;
-	font-weight: 400 !important;
-}
 
 .card{
-box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 14px;
-border-radius: 10px;
-border: 0px;
+	box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 14px;
+	border-radius: 10px;
+	border: 0px;
 }
 
 .table button {
@@ -39,34 +28,6 @@ border: 0px;
 
 .table td {
 	padding: 5px !important;
-}
-
-.resubmitted {
-	color: green;
-}
-
-.fa-long-arrow-right {
-	font-size: 2.20rem;
-	padding: 0px 5px;
-}
-
-.datatable-dashv1-list table tbody tr td {
-	padding: 8px 10px !important;
-}
-
-.card-deck{
-display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-}
-
-.pagin{
-display: grid;
-float:left;
-  grid-template-columns: 1fr 1fr 1fr;
-}
-
-.table-project-n {
-	color: #005086;
 }
 
 #table thead tr th {
@@ -86,7 +47,7 @@ float:left;
 }
 
 .col-xl{
-height: 28px;
+	height: 28px;
 }
 
 .cc-rockmenu .rolling {
@@ -114,10 +75,6 @@ height: 28px;
 	margin: 0 5px 0 0;
 }
 
-.sameline{
-display: inline-block;
-}
-
 .cc-rockmenu .rolling .rolling_icon:hover .rolling {
 	width: 312px;
 }
@@ -137,43 +94,24 @@ display: inline-block;
 
 
 .editable-clicko{
-z-index: 9;
-white-space: nowrap;
-height: 28px;
-margin: 0 5px 0 0;
-box-sizing: border-box;
-display: inline-block;
-background: none;border-style: none;
+	z-index: 9;
+	white-space: nowrap;
+	height: 28px;
+	margin: 0 5px 0 0;
+	box-sizing: border-box;
+	display: inline-block;
+	background: none;border-style: none;
 }
 
 .cc-rockmenu .rolling p {
 	margin: 0;
 }
 
-.width {
-	width: 270px !important;
-}
 
 .label {
 	border-radius: 3px;
 	color: white;
 	padding: 1px 2px;
-}
-
-.label-primary {
-	background-color: #D62AD0; /* D62AD0 */
-}
-
-.label-warning {
-	background-color: #5C33F6;
-}
-
-.label-info {
-	background-color: #006400;
-}
-
-.label-success {
-	background-color: #4B0082;
 }
 
 .trup{
@@ -212,7 +150,12 @@ background: none;border-style: none;
 .left {
 	text-align: left !important;
 }
-</style>   
+
+.select2-container {
+	width: 100% !important;
+}
+
+</style>  
 <style>
    .toggle-switch {
        position: relative;
@@ -269,8 +212,12 @@ background: none;border-style: none;
 <%
 	List<Object[]> projectList = (List<Object[]>) request.getAttribute("projectList");
 	List<Object[]> preProjectList = (List<Object[]>) request.getAttribute("preProjectList");
+	List<Object[]> productTreeList = (List<Object[]>) request.getAttribute("productTreeList");
+	Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
+	
 	String projectId = (String)request.getAttribute("projectId");
 	String initiationId = (String)request.getAttribute("initiationId");
+	String productTreeMainId = (String)request.getAttribute("productTreeMainId");
 	String projectType = (String)request.getAttribute("projectType");
 
     List<Object[]> iddDocumentList = (List<Object[]>) request.getAttribute("iddDocumentList");
@@ -283,7 +230,7 @@ background: none;border-style: none;
 	String version = "1.0";
     version = iddDocumentList != null && iddDocumentList.size() > 0 ? iddDocumentList.get(0)[1].toString() : "1.0";
     
-    List<String> iddforwardstatus = Arrays.asList("RIN","RRR","RRA");
+    List<String> iddforwardstatus = Arrays.asList("RIN","RRR","RRA","REV");
     
     FormatConverter fc = new FormatConverter();
 %>
@@ -317,12 +264,10 @@ background: none;border-style: none;
 	            	<form action="IDDDocumentList.htm" method="POST">
         				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		            	<div class="row">
-		            		<div class="col-md-4">
+		            		<div class="col-md-3">
 		            			<h5 >IDD Document List</h5>
 		            		</div>
 		            		
-		            		<div class="col-md-2">
-		            		</div>
 		            		<div class="col-md-1">
 		          				<label class="control-label right" style="font-weight: bolder;font-size: 15px;float:right;color:#07689f;">Project Type:</label>
 		  					</div>
@@ -360,6 +305,23 @@ background: none;border-style: none;
 									</select>	
 								<%} %>
 							</div>
+							
+							<div class="col-md-1 right">
+								<label class="control-label" style="font-size: 15px; color: #07689f;"><b>System:</b></label>
+							</div>		
+							<div class="col-md-2" style="margin-top: -8px;">
+								<select class="form-control selectdee" id="productTreeMainId" name="productTreeMainId" onchange="this.form.submit()" style="width: 200px;">
+									<%if(projectDetails!=null) {%>
+										<option value="0"><%=projectDetails[1]+"( "+projectDetails[2]+")" %> </option>
+									<%} %>
+									<%if(productTreeList!=null && productTreeList.size()>0){
+										for (Object[] obj : productTreeList) { %>
+											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(productTreeMainId)){ %> selected <%} %>>
+												<%=obj[1]+" "+obj[2] %>
+											</option>
+										<%} }%>
+								</select>
+							</div>
 		            	</div>
 		            </form>	
 	            </div>
@@ -393,8 +355,8 @@ background: none;border-style: none;
 				                            	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				                            	<input type="hidden" name="docId" value="<%=obj[0] %>">
 				                            	<input type="hidden" name="docType" value="C">
-				                            	<button type="submit" class="btn btn-sm btn-link w-70 btn-status" formaction="IGIDocTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[13] %>; font-weight: 600;" formtarget="_blank">
-											    	<%=obj[12] %>&emsp;<i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+				                            	<button type="submit" class="btn btn-sm btn-link w-70 btn-status" formaction="IGIDocTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[15] %>; font-weight: 600;" formtarget="_blank">
+											    	<%=obj[14] %>&emsp;<i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 												</button>
 	                                        </form>
 		                      			</td>
@@ -441,6 +403,18 @@ background: none;border-style: none;
 															</div>
 														</button>
 													<%} %>
+													<%if(obj[5]!=null && "RFW".equalsIgnoreCase(obj[5].toString()) ) {%>
+														<button class="editable-clicko" name="revoke" formaction="IDDDocumentUserRevoke.htm" formmethod="post" onclick="return confirm('Are you sure to Revoke?')">
+															<div class="cc-rockmenu">
+																<div class="rolling">
+																	<figure class="rolling_icon">
+																		<img src="view/images/userrevoke.png" style="width: 22px !important;">
+																	</figure>
+																	<span>Revoke</span>
+																</div>
+															</div>
+													    </button>
+													<%} %>
 													<button class="editable-clicko" name="isPdf" value="Y" formaction="IDDDocumentDetails.htm" formtarget="blank" >
 														<div class="cc-rockmenu">
 															<div class="rolling">
@@ -452,6 +426,11 @@ background: none;border-style: none;
 														</div>
 													</button>
 										        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+										        <input type="hidden" name="projectId" value="<%=obj[12] %>">
+										        <input type="hidden" name="initiationId" value="<%=obj[13] %>">
+										        <input type="hidden" name="productTreeMainId" value="<%=obj[16] %>">
+										        <%-- <input type="hidden" name="projectType" value="<%=obj[13]!=null && !obj[13].toString().equalsIgnoreCase("0")?"I":"M"  %>"> --%>
+										        <input type="hidden" name="projectType" value="<%=projectType %>">
 										        <input type="hidden" name="iddDocId" value="<%=obj[0] %>">
 										        <input type="hidden" name="docId" value="<%=obj[0] %>">
 										        <input type="hidden" name="docType" value="A">
@@ -477,6 +456,7 @@ background: none;border-style: none;
 		                    		<input type="hidden" name="projectType" value="<%=projectType %>">
 		                        	<input type="hidden" name="projectId"value="<%=projectId %>">
 		                        	<input type="hidden" name="initiationId" value="<%=initiationId %>">
+		                        	<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId %>">
 		                        	<button class="btn btn-sm " type="submit" name="Action" id="addAction" value="Add" onclick="return confirm('Are You Sure to Create IDD Document?')" style="background-color: #428bca;border-color: #428bca;color: white;font-weight: bold;">Create IDD Doc v1</button>
 		                 		</form>
 		                    </div>
@@ -533,6 +513,7 @@ background: none;border-style: none;
      						<input type="hidden" name="projectType" value="<%=projectType %>">
                         	<input type="hidden" name="projectId"value="<%=projectId %>">
                         	<input type="hidden" name="initiationId" value="<%=initiationId %>">
+                        	<input type="hidden" name="productTreeMainId" value="<%=productTreeMainId %>">
                         	<input type="hidden" name="iddDocId" id="iddDocId" value="0">
                         	<input type="hidden" name="isAmend" value="Y">
                         	<input type="hidden" name="version" id="amendversion" value="<%=version%>">

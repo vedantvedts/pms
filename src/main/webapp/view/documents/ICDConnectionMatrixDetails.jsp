@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.documents.model.PfmsICDDocument"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.stream.Collectors"%>
@@ -68,7 +69,7 @@
 	List<IGIInterface> igiInterfaceList = (List<IGIInterface>)request.getAttribute("igiInterfaceList"); 
 	igiInterfaceList = igiInterfaceList.stream().filter(e -> e.getIsActive()==1).collect(Collectors.toList());
 	List<Object[]> icdConnectionsList = (List<Object[]>)request.getAttribute("icdConnectionsList"); 
-	
+	PfmsICDDocument icdDocument = (PfmsICDDocument)request.getAttribute("icdDocument");
 
 	List<String> subsystems = productTreeList.stream().map(obj -> obj[7].toString()).distinct().collect(Collectors.toList());
 
@@ -78,11 +79,15 @@
 	    String key = connection[4] + "_" + connection[5];
 	    int count = connectionMap.containsKey(key) ? connectionMap.get(key).split("<br>").length + 1 : 1;
 
-	    String seqNumber = (count >= 100) ? "_" + count : (count >= 10) ? "_0" + count : "_00" + count;
+	    //String seqNumber = (count >= 100) ? "_" + count : (count >= 10) ? "_0" + count : "_00" + count;
 
-	    String value = connection[4] + "_" + connection[5] + "_" + connection[8] + seqNumber;
+	    String value = count + ". " +connection[4] + "_" + connection[5] + "_" + connection[8];
 	    connectionMap.merge(key, value, (oldValue, newValue) -> oldValue + "<br>" + newValue);
 	}
+	
+	String isSubSystem = icdDocument!=null && icdDocument.getProductTreeMainId()!=0? "Y": "N";
+	
+	Object[] subSystemDetails = productTreeList.stream().filter(e -> icdDocument.getProductTreeMainId()==Long.parseLong(e[0].toString())).findFirst().orElse(null);
 	
 %>
 
@@ -131,11 +136,73 @@
         	</div>
         	<div class="card-body">
 	        	
+	        	<%
+	        	if(isSubSystem.equalsIgnoreCase("Y")) {
+	        		
+	        		List<Object[]> productTreeAllList = (List<Object[]>)request.getAttribute("productTreeAllList"); 
+	        		List<Object[]> productTreeSubList = productTreeAllList.stream().filter(e -> icdDocument.getProductTreeMainId()==Long.parseLong(e[9].toString()) && e[10].toString().equalsIgnoreCase("2")).collect(Collectors.toList());
+	        		List<String> supersubsystems = productTreeSubList.stream().map(obj -> obj[7].toString()).distinct().collect(Collectors.toList());
+	        	
+	        		Map<String, String> superSubConnectionMap = new HashMap<>();
+
+	        		for (Object[] connection : icdConnectionsList) {
+	        		    String key = connection[16] + "_" + connection[17];
+
+	        		    int count = superSubConnectionMap.containsKey(key) ? superSubConnectionMap.get(key).split("<br>").length + 1 : 1;
+
+	        		    //String seqNumber = (count >= 100) ? "_" + count : (count >= 10) ? "_0" + count : "_00" + count;
+
+	        		    String value = count + ". " +connection[16] + "_" + connection[17] + "_" + connection[8] ;
+	        		    superSubConnectionMap.merge(key, value, (oldValue, newValue) -> oldValue + "<br>" + newValue);
+	        		}
+	        	%>
+		        	<div class="table-responsive table-wrapper"> 
+	
+						<table class="customtable">
+						    <thead>
+						        <tr>
+						            <th width="5%">SN</th>
+						            <th width="8%">Super Sub-System</th>
+						            <% for (String supersubsystem : supersubsystems) { %>
+						                <th><%= supersubsystem %></th>
+						            <% } %>
+						        </tr>
+						    </thead>
+						    <tbody>
+						        <% 
+						        int slnoSS = 0;
+						        for (String rowSubsystem : supersubsystems) { 
+						        %>
+						            <tr>
+						                <td class="center"><%= ++slnoSS %></td>
+						                <td class="center"><%= rowSubsystem %></td>
+						                <% for (String colSubsystem : supersubsystems) { %>
+						                    <td class="center">
+						                        <% 
+						                        //if (rowSubsystem.equalsIgnoreCase(colSubsystem)) { 
+						                        //    out.print("NA");
+						                        //} else {
+						                            String key = rowSubsystem + "_" + colSubsystem;
+						                            String connections = superSubConnectionMap.getOrDefault(key, "-");
+						                            out.print(connections);
+						                        //}
+						                        %>
+						                    </td>
+						                <% } %>
+						            </tr>
+						        <% } %>
+						    </tbody>
+						</table>
+								
+					</div>
+	        	<%} %>
+	        	
         		<div class="table-responsive table-wrapper"> 
 
 					<table class="customtable">
 					    <thead>
 					        <tr>
+					            <th width="5%">SN</th>
 					            <th width="8%">Sub-System</th>
 					            <% for (String subsystem : subsystems) { %>
 					                <th><%= subsystem %></th>
@@ -144,20 +211,27 @@
 					    </thead>
 					    <tbody>
 					        <% 
+					        List<String> colSubSystems = subsystems;
+                            if(isSubSystem.equalsIgnoreCase("Y")) {
+                            	subsystems = subsystems.stream().filter(e -> e.equalsIgnoreCase(subSystemDetails[7].toString())).collect(Collectors.toList());
+                            	
+                            }
+                            int slnoSS = 0;
 					        for (String rowSubsystem : subsystems) { 
 					        %>
 					            <tr>
+					                <td class="center"><%= ++slnoSS %></td>
 					                <td class="center"><%= rowSubsystem %></td>
-					                <% for (String colSubsystem : subsystems) { %>
+					                <% for (String colSubsystem : colSubSystems) { %>
 					                    <td class="center">
 					                        <% 
-					                        if (rowSubsystem.equalsIgnoreCase(colSubsystem)) { 
-					                            out.print("NA");
-					                        } else {
+					                        //if (rowSubsystem.equalsIgnoreCase(colSubsystem)) { 
+					                        //    out.print("NA");
+					                        //} else {
 					                            String key = rowSubsystem + "_" + colSubsystem;
 					                            String connections = connectionMap.getOrDefault(key, "-");
 					                            out.print(connections);
-					                        }
+					                        //}
 					                        %>
 					                    </td>
 					                <% } %>

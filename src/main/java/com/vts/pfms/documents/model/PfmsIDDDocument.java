@@ -28,6 +28,7 @@ public class PfmsIDDDocument implements Serializable{
 	private Long IDDDocId;
 	private Long ProjectId;
 	private Long InitiationId;
+	private Long ProductTreeMainId;
 	private String IDDVersion;
 	private String LabCode;
 	private String InitiatedBy;

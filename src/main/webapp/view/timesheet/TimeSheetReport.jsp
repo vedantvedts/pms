@@ -321,11 +321,11 @@ FormatConverter fc = new FormatConverter();
 				    				<div class="nav-link active" style="text-align: center;" id="pills-tab-1" data-toggle="pill" data-target="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">
 					   					<span>Submitted Employees</span> 
 					   					<span class="badge badge-danger badge-counter count-badge" style="margin-left: 0px;">
-				   		 					<%if(timeSheetToListMap.size()>99){ %>
+				   		 					<%-- <%if(timeSheetToListMap.size()>99){ %>
 				   								99+
-				   							<%}else{ %>
+				   							<%}else{ %> --%>
 				   								<%=timeSheetToListMap.size() %>
-											<%} %>			   			
+											<%-- <%} %>	 --%>		   			
 				  						</span>
 				    				</div>
 				  				</li>
@@ -333,11 +333,11 @@ FormatConverter fc = new FormatConverter();
 				    				<div class="nav-link" style="text-align: center;" id="pills-tab-2" data-toggle="pill" data-target="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">
 				    	 				<span>Not Submitted Employees</span> 
 				    	 				<span class="badge badge-danger badge-counter count-badge" style="margin-left: 0px;">
-				   		 					<%if(notSubmittedEmployees.size()>99){ %>
+				   		 					<%-- <%if(notSubmittedEmployees.size()>99){ %>
 				   								99+
-				   							<%}else{ %>
+				   							<%}else{ %> --%>
 				   								<%=notSubmittedEmployees.size() %>
-											<%} %>				   			
+											<%-- <%} %> --%>				   			
 				  						</span>
 				    				</div>
 				  				</li>
@@ -375,8 +375,8 @@ FormatConverter fc = new FormatConverter();
 			                  							for (Object[] obj : values) {
 											%>
 												<tr>
-													<td class="center"><%=++slno%></td>
 													<%if(i==0) {%>
+														<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=++slno%></td>
 											    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;">
 											    			<%=obj[17]!=null?obj[17]+", "+(obj[18]!=null?obj[18]:"-"):"-" %>
 											    		</td>

@@ -324,10 +324,11 @@ public class DocumentsController {
 
 			if(isAmend!=null && isAmend.equalsIgnoreCase("Y")) {
 				service.igiDocumentApprovalForward(igiDocId, "A", "A", req.getParameter("remarks"), EmpId, labcode, UserId);
-			}else {
-				// Transaction 
-				service.addPfmsIGITransaction(result, "A", "RIN", null, Long.parseLong(EmpId));
 			}
+			
+			// Transaction 
+			service.addPfmsIGITransaction(result, "A", "RIN", null, Long.parseLong(EmpId));
+			
 			
 			if (result > 0) {
 				redir.addAttribute("result", "IGI Document Data Submitted Successfully");
@@ -375,6 +376,9 @@ public class DocumentsController {
 			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
 			req.setAttribute("applicableDocsList", service.getPfmsApplicableDocs());
 			req.setAttribute("igiApplicableDocsList", service.getIGIApplicableDocs(igiDocId, "A"));
+			
+			req.setAttribute("interfaceTypesList", service.getIGIInterfaceTypesList());
+			req.setAttribute("interfaceContentList", service.getIGIInterfaceContentList());
 			
 			req.setAttribute("isPdf", req.getParameter("isPdf"));
 			return "documents/IGIDocumentDetails";
@@ -1036,6 +1040,8 @@ public class DocumentsController {
 				Long interfaceid = Long.parseLong(interfaceId);
 				req.setAttribute("igiInterfaceData", igiInterfaceList.stream().filter(e -> e.getInterfaceId().equals(interfaceid)).findFirst().orElse(null) );
 			}
+			req.setAttribute("interfaceTypesList", service.getIGIInterfaceTypesList());
+			req.setAttribute("interfaceContentList", service.getIGIInterfaceContentList());
 			req.setAttribute("interfaceId", interfaceId);
 			req.setAttribute("documentNo", req.getParameter("documentNo"));
 
@@ -1061,14 +1067,24 @@ public class DocumentsController {
 		
 			IGIInterface igiInterface = interfaceId.equalsIgnoreCase("0")? new IGIInterface(): service.getIGIInterfaceById(interfaceId);
 			igiInterface.setLabCode(LabCode);
-			igiInterface.setInterfaceCode(req.getParameter("interfaceCode"));
-			igiInterface.setInterfaceName(req.getParameter("interfaceName"));
-			igiInterface.setDataType(req.getParameter("dataType"));
-			igiInterface.setSignalType(req.getParameter("signalType"));
+			//igiInterface.setInterfaceCode(req.getParameter("interfaceCode"));
+			//igiInterface.setInterfaceName(req.getParameter("interfaceName"));
+			igiInterface.setParameterData(req.getParameter("parameterData"));
+			igiInterface.setInterfaceContent(req.getParameter("interfaceContent"));
 			igiInterface.setInterfaceType(req.getParameter("interfaceType"));
 			igiInterface.setInterfaceSpeed(req.getParameter("interfaceSpeed"));
-			igiInterface.setConnector(req.getParameter("connector"));
-			igiInterface.setProtection(req.getParameter("protection"));
+			igiInterface.setPartNoEOne(req.getParameter("partNoEOne"));
+			igiInterface.setConnectorMakeEOne(req.getParameter("connectorMakeEOne"));
+			igiInterface.setStandardEOne(req.getParameter("standardEOne"));
+			igiInterface.setProtectionEOne(req.getParameter("protectionEOne"));
+			igiInterface.setRefInfoEOne(req.getParameter("refInfoEOne"));
+			igiInterface.setRemarksEOne(req.getParameter("remarksEOne"));
+			igiInterface.setPartNoETwo(req.getParameter("partNoETwo"));
+			igiInterface.setConnectorMakeETwo(req.getParameter("connectorMakeETwo"));
+			igiInterface.setStandardETwo(req.getParameter("standardETwo"));
+			igiInterface.setProtectionETwo(req.getParameter("protectionETwo"));
+			igiInterface.setRefInfoETwo(req.getParameter("refInfoETwo"));
+			igiInterface.setRemarksETwo(req.getParameter("remarksETwo"));
 			igiInterface.setInterfaceDiagram(req.getParameter("interfaceDiagram"));
 			igiInterface.setInterfaceDescription(req.getParameter("interfaceDescription"));
 			igiInterface.setIGIDocId(Long.parseLong(igiDocId));
@@ -1211,7 +1227,7 @@ public class DocumentsController {
 			String statusCode = igiDocument.getIGIStatusCode();
 
 
-			List<String> igiforwardstatus = Arrays.asList("RIN", "RRR", "RRA");
+			List<String> igiforwardstatus = Arrays.asList("RIN", "RRR", "RRA", "REV");
 
 			long result = service.igiDocumentApprovalForward(docId, docType, action, remarks, EmpId, labcode, UserId);
 
@@ -1260,6 +1276,33 @@ public class DocumentsController {
 			return "static/Error";
 		}
 	}
+
+	@RequestMapping(value="IGIDocumentUserRevoke.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String igiDocumentUserRevoke(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside IGIDocumentUserRevoke.htm "+UserId);
+		try {
+			String igiDocId = req.getParameter("igiDocId");
+            
+			long count = service.igiDocumentUserRevoke(igiDocId, UserId, EmpId);
+			
+			if (count > 0) {
+				redir.addAttribute("result", "IGI Document Revoked Successfully");
+			}
+			else {
+				redir.addAttribute("resultfail", "IGI Document Revoke Unsuccessful");	
+			}	
+
+			return "redirect:/IGIDocumentList.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside IGIDocumentUserRevoke.htm "+UserId, e);
+			return "static/Error";			
+		}
+
+	}
 	
 	/* ************************************************ IGI Document End ***************************************************** */
 	
@@ -1278,30 +1321,40 @@ public class DocumentsController {
 			projectType = projectType != null ? projectType : "M";
 			String initiationId = "0";
 			String projectId = "0";
+			String productTreeMainId = req.getParameter("productTreeMainId");
 			
 			if (projectType.equalsIgnoreCase("M")) {
 
 				projectId = req.getParameter("projectId");
+				//productTreeMainId = req.getParameter("productTreeMainId");
 				List<Object[]> projectList = projectservice.LoginProjectDetailsList(EmpId, LoginType, labcode);
-				projectId = projectId != null ? projectId
-						: (projectList.size() > 0 ? projectList.get(0)[0].toString() : "0");
-
+				
+				projectId = projectId != null ? projectId : (projectList.size() > 0 ? projectList.get(0)[0].toString() : "0");
+				productTreeMainId = productTreeMainId != null ? productTreeMainId : "0";
+				
 				req.setAttribute("projectDetails", projectservice.getProjectDetails(labcode, projectId, "E"));
 				req.setAttribute("projectList", projectList);
+				req.setAttribute("productTreeList", reqservice.productTreeListByProjectId(projectId));
+				
 			}else {
 				initiationId = req.getParameter("initiationId");
+				//productTreeMainId = req.getParameter("productTreeMainId");
 				List<Object[]> preProjectList = reqservice.getPreProjectList(LoginType, labcode, EmpId);
-				initiationId = initiationId != null ? initiationId
-						: (preProjectList.size() > 0 ? preProjectList.get(0)[0].toString() : "0");
+				initiationId = initiationId != null ? initiationId : (preProjectList.size() > 0 ? preProjectList.get(0)[0].toString() : "0");
+				productTreeMainId = productTreeMainId != null ? productTreeMainId : "0";
+				
+				req.setAttribute("projectDetails", projectservice.getProjectDetails(labcode, initiationId, "P"));
 				req.setAttribute("preProjectList", preProjectList);
+				req.setAttribute("productTreeList", reqservice.productTreeListByInitiationId(initiationId));
 			}
 			req.setAttribute("projectId", projectId);
 			req.setAttribute("initiationId", initiationId);
+			req.setAttribute("productTreeMainId", productTreeMainId);
 			req.setAttribute("projectType", projectType);
 			
-			List<Object[]> icdDocumentList = service.getICDDocumentList(projectId, initiationId);
+			List<Object[]> icdDocumentList = service.getICDDocumentList(projectId, initiationId, productTreeMainId);
 			req.setAttribute("icdDocumentList", icdDocumentList);
-			
+
 			if(icdDocumentList!=null && icdDocumentList.size()>0) {
 				req.setAttribute("icdDocumentSummaryList", service.getDocumentSummaryList(icdDocumentList.get(icdDocumentList.size()-1)[0].toString(), "B"));
 			}
@@ -1326,12 +1379,14 @@ public class DocumentsController {
 			String projectType = req.getParameter("projectType");
 			String projectId = req.getParameter("projectId");
 			String initiationId = req.getParameter("initiationId");
+			String productTreeMainId = req.getParameter("productTreeMainId");
 			String isAmend = req.getParameter("isAmend");
 			String icdDocId = req.getParameter("icdDocId");
 			
 			PfmsICDDocument icdDocument = PfmsICDDocument.builder()
-											.ProjectId(Long.parseLong(projectId!=null?projectId:"0"))
-											.InitiationId(Long.parseLong(initiationId!=null?initiationId:"0"))
+											.ProjectId(projectId!=null?Long.parseLong(projectId):0L)
+											.InitiationId(initiationId!=null?Long.parseLong(initiationId):0L)
+											.ProductTreeMainId(productTreeMainId!=null?Long.parseLong(productTreeMainId):0L)
 											.ICDVersion(req.getParameter("version"))
 											.LabCode(labcode)
 											.InitiatedBy(EmpId)
@@ -1347,10 +1402,11 @@ public class DocumentsController {
 			
 			if(isAmend!=null && isAmend.equalsIgnoreCase("Y")) {
 				service.icdDocumentApprovalForward(icdDocId, "B", "A", req.getParameter("remarks"), EmpId, labcode, UserId);
-			}else {
-				// Transaction 
-				service.addPfmsIGITransaction(result, "B", "RIN", null , Long.parseLong(EmpId));
 			}
+			
+			// Transaction 
+			service.addPfmsIGITransaction(result, "B", "RIN", null , Long.parseLong(EmpId));
+			
 			
 			
 			if (result > 0) {
@@ -1361,6 +1417,7 @@ public class DocumentsController {
 			redir.addAttribute("projectType", projectType);
 			redir.addAttribute("projectId", projectId);
 			redir.addAttribute("initiationId", initiationId);
+			redir.addAttribute("productTreeMainId", productTreeMainId);
 			return "redirect:/ICDDocumentList.htm";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1382,7 +1439,7 @@ public class DocumentsController {
 			req.setAttribute("icdDocument", icdDocument);
 			req.setAttribute("version", icdDocument!=null ?icdDocument.getICDVersion():"1.0");
 			
-			icdDocId = service.getFirstVersionICDDocId(icdDocument.getProjectId()+"", icdDocument.getInitiationId()+"")+"";
+			icdDocId = service.getFirstVersionICDDocId(icdDocument.getProjectId()+"", icdDocument.getInitiationId()+"", icdDocument.getProductTreeMainId()+"")+"";
 			
 			String projectType = icdDocument.getProjectId()!=0?"E":"M";
 			req.setAttribute("projectType", projectType);
@@ -1404,9 +1461,11 @@ public class DocumentsController {
 			req.setAttribute("icdApplicableDocsList", service.getIGIApplicableDocs(icdDocId, "B"));
 			req.setAttribute("productTreeList", reqservice.productTreeListByProjectId(icdDocument.getProjectId()!=0?icdDocument.getProjectId()+"":icdDocument.getInitiationId()+""));
 			req.setAttribute("icdConnectionsList", service.getICDConnectionsList(icdDocId));
-			
+			req.setAttribute("interfaceTypesList", service.getIGIInterfaceTypesList());
+			req.setAttribute("interfaceContentList", service.getIGIInterfaceContentList());
 			req.setAttribute("isPdf", req.getParameter("isPdf"));
-			
+			req.setAttribute("productTreeAllList", service.getProductTreeAllListByProjectId(icdDocument.getProjectId()+""));
+
 			return "documents/ICDDocumentDetails";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1460,6 +1519,7 @@ public class DocumentsController {
 			req.setAttribute("productTreeList", reqservice.productTreeListByProjectId(projectId));
 			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
 			req.setAttribute("icdConnectionsList", service.getICDConnectionsList(docId));
+			req.setAttribute("icdDocument", service.getPfmsICDDocumentById(docId));
 			
 			return "documents/ICDConnectionsDetails";
 		} catch (Exception e) {
@@ -1502,6 +1562,10 @@ public class DocumentsController {
 					connections.setSuperSubSysMainIdTwo(superSubSystemTwos!=null?Long.parseLong(superSubSystemTwos[0]):0);
 					connections.setSuperSubSystemTwo(superSubSystemTwos!=null?superSubSystemTwos[1]:"NA");
 					connections.setInterfaceId(Long.parseLong(interfaceId[i]));
+					connections.setPurpose(req.getParameter("purpose"));
+					connections.setConstraints(req.getParameter("constraints"));
+					connections.setPeriodicity(req.getParameter("periodicity"));
+					connections.setDescription(req.getParameter("description"));
 					connections.setCreatedBy(UserId);
 					connections.setCreatedDate(sdtf.format(new Date()));
 					connections.setIsActive(1);
@@ -1516,7 +1580,7 @@ public class DocumentsController {
 				}
 				
 			}
-			
+
 			redir.addAttribute("docId", docId);
 			redir.addAttribute("docType", req.getParameter("docType"));
 			redir.addAttribute("documentNo", req.getParameter("documentNo"));
@@ -1578,7 +1642,10 @@ public class DocumentsController {
 			req.setAttribute("productTreeList", reqservice.productTreeListByProjectId(projectId));
 			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
 			req.setAttribute("icdConnectionsList", service.getICDConnectionsList(docId));
-			
+			req.setAttribute("icdDocument", service.getPfmsICDDocumentById(docId));
+			req.setAttribute("icdDocument", service.getPfmsICDDocumentById(docId));
+			req.setAttribute("productTreeAllList", service.getProductTreeAllListByProjectId(projectId));
+
 			return "documents/ICDConnectionMatrixDetails";
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -1601,7 +1668,7 @@ public class DocumentsController {
 			PfmsICDDocument icdDocument = service.getPfmsICDDocumentById(docId);
 			String statusCode = icdDocument.getICDStatusCode();
 
-			List<String> icdforwardstatus = Arrays.asList("RIN", "RRR", "RRA");
+			List<String> icdforwardstatus = Arrays.asList("RIN", "RRR", "RRA", "REV");
 
 			long result = service.icdDocumentApprovalForward(docId, docType, action, remarks, EmpId, labcode, UserId);
 
@@ -1620,7 +1687,7 @@ public class DocumentsController {
 					redir.addAttribute("projectType", req.getParameter("projectType"));
 					redir.addAttribute("projectId", req.getParameter("projectId"));
 					redir.addAttribute("initiationId", req.getParameter("initiationId"));
-					
+					redir.addAttribute("productTreeMainId", req.getParameter("productTreeMainId"));
 					return "redirect:/ICDDocumentList.htm";
 				} else if (statusCode.equalsIgnoreCase("RFW")) {
 					if (result != 0) {
@@ -1677,7 +1744,74 @@ public class DocumentsController {
 		  
 		 return json.toJson(productTreeAllList);    
 	}
+
+	@RequestMapping(value="ICDDocumentUserRevoke.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String icdDocumentUserRevoke(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside ICDDocumentUserRevoke.htm "+UserId);
+		try {
+			String icdDocId = req.getParameter("icdDocId");
+            
+			long count = service.icdDocumentUserRevoke(icdDocId, UserId, EmpId);
+			
+			if (count > 0) {
+				redir.addAttribute("result", "ICD Document Revoked Successfully");
+			}
+			else {
+				redir.addAttribute("resultfail", "ICD Document Revoke Unsuccessful");	
+			}	
+
+			redir.addAttribute("projectType", req.getParameter("projectType"));
+			redir.addAttribute("projectId", req.getParameter("projectId"));
+			redir.addAttribute("initiationId", req.getParameter("initiationId"));
+			redir.addAttribute("productTreeMainId", req.getParameter("productTreeMainId"));
+			return "redirect:/ICDDocumentList.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ICDDocumentUserRevoke.htm "+UserId, e);
+			return "static/Error";			
+		}
+
+	}
 	
+	@RequestMapping(value="ICDConnectionEditSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String icdConnectionEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		
+		logger.info(new Date() + " Inside ICDConnectionEditSubmit.htm " + UserId);
+		
+		try {
+			ICDDocumentConnections connections = service.getICDDocumentConnectionsById(req.getParameter("icdConnectionId"));
+			connections.setPurpose(req.getParameter("purpose"));
+			connections.setConstraints(req.getParameter("constraints"));
+			connections.setPeriodicity(req.getParameter("periodicityEdit"));
+			connections.setDescription(req.getParameter("description"));
+			connections.setModifiedBy(UserId);
+			connections.setModifiedDate(sdtf.format(new Date()));
+			connections.setIsActive(1);
+			
+			long result = service.addICDDocumentConnections(connections);
+			
+			if (result > 0) {
+				redir.addAttribute("result", "ICD Connection Details Updated Successfully");
+			} else {
+				redir.addAttribute("resultfail", "ICD Connection Details Update Unsuccessful");
+			}
+
+			redir.addAttribute("docId", req.getParameter("docId"));
+			redir.addAttribute("docType", req.getParameter("docType"));
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			redir.addAttribute("projectId", req.getParameter("projectId"));
+			
+			return "redirect:/ICDConnectionsDetails.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside ICDConnectionEditSubmit.htm " + UserId, e);
+			return "static/Error";
+		}
+	}
 	/* ************************************************ ICD Document End ***************************************************** */
 	
 	/* ************************************************ IRS Document ***************************************************** */
@@ -1697,29 +1831,40 @@ public class DocumentsController {
 			projectType = projectType != null ? projectType : "M";
 			String initiationId = "0";
 			String projectId = "0";
+			String productTreeMainId = req.getParameter("productTreeMainId");
 			
 			if (projectType.equalsIgnoreCase("M")) {
 
 				projectId = req.getParameter("projectId");
+				//productTreeMainId = req.getParameter("productTreeMainId");
 				List<Object[]> projectList = projectservice.LoginProjectDetailsList(EmpId, LoginType, labcode);
-				projectId = projectId != null ? projectId
-						: (projectList.size() > 0 ? projectList.get(0)[0].toString() : "0");
-
+				
+				projectId = projectId != null ? projectId : (projectList.size() > 0 ? projectList.get(0)[0].toString() : "0");
+				productTreeMainId = productTreeMainId != null ? productTreeMainId : "0";
+				
 				req.setAttribute("projectDetails", projectservice.getProjectDetails(labcode, projectId, "E"));
 				req.setAttribute("projectList", projectList);
+				req.setAttribute("productTreeList", reqservice.productTreeListByProjectId(projectId));
+				
 			}else {
 				initiationId = req.getParameter("initiationId");
+				//productTreeMainId = req.getParameter("productTreeMainId");
 				List<Object[]> preProjectList = reqservice.getPreProjectList(LoginType, labcode, EmpId);
-				initiationId = initiationId != null ? initiationId
-						: (preProjectList.size() > 0 ? preProjectList.get(0)[0].toString() : "0");
+				initiationId = initiationId != null ? initiationId : (preProjectList.size() > 0 ? preProjectList.get(0)[0].toString() : "0");
+				productTreeMainId = productTreeMainId != null ? productTreeMainId : "0";
+				
+				req.setAttribute("projectDetails", projectservice.getProjectDetails(labcode, initiationId, "P"));
 				req.setAttribute("preProjectList", preProjectList);
+				req.setAttribute("productTreeList", reqservice.productTreeListByInitiationId(initiationId));
 			}
 			req.setAttribute("projectId", projectId);
 			req.setAttribute("initiationId", initiationId);
+			req.setAttribute("productTreeMainId", productTreeMainId);
 			req.setAttribute("projectType", projectType);
 			
-			List<Object[]> irsDocumentList = service.getIRSDocumentList(projectId, initiationId);
+			List<Object[]> irsDocumentList = service.getIRSDocumentList(projectId, initiationId, productTreeMainId);
 			req.setAttribute("irsDocumentList", irsDocumentList);
+			
 			if(irsDocumentList!=null && irsDocumentList.size()>0) {
 				req.setAttribute("irsDocumentSummaryList", service.getDocumentSummaryList(irsDocumentList.get(irsDocumentList.size()-1)[0].toString(), "C"));
 			}
@@ -1746,12 +1891,14 @@ public class DocumentsController {
 			String projectType = req.getParameter("projectType");
 			String projectId = req.getParameter("projectId");
 			String initiationId = req.getParameter("initiationId");
+			String productTreeMainId = req.getParameter("productTreeMainId");
 			String isAmend = req.getParameter("isAmend");
 			String irsDocId = req.getParameter("irsDocId");
 			
 			PfmsIRSDocument pfmsIRSDocument = PfmsIRSDocument.builder()
-												.ProjectId(Long.parseLong(projectId!=null?projectId:"0"))
-												.InitiationId(Long.parseLong(initiationId!=null?initiationId:"0"))
+												.ProjectId(projectId!=null?Long.parseLong(projectId):0L)
+												.InitiationId(initiationId!=null?Long.parseLong(initiationId):0L)
+												.ProductTreeMainId(productTreeMainId!=null?Long.parseLong(productTreeMainId):0L)
 												.IRSVersion(req.getParameter("version"))
 												.LabCode(labcode)
 												.InitiatedBy(EmpId)
@@ -1767,10 +1914,11 @@ public class DocumentsController {
 
 			if(isAmend!=null && isAmend.equalsIgnoreCase("Y")) {
 				service.irsDocumentApprovalForward(irsDocId, "C", "A", req.getParameter("remarks"), EmpId, labcode, UserId);
-			}else {
-				// Transaction 
-				service.addPfmsIGITransaction(result, "C", "RIN", null, Long.parseLong(EmpId));
 			}
+			
+			// Transaction 
+			service.addPfmsIGITransaction(result, "C", "RIN", null, Long.parseLong(EmpId));
+			
 			
 			if (result > 0) {
 				redir.addAttribute("result", "IRS Document Data Submitted Successfully");
@@ -1781,6 +1929,7 @@ public class DocumentsController {
 			redir.addAttribute("projectType", projectType);
 			redir.addAttribute("projectId", projectId);
 			redir.addAttribute("initiationId", initiationId);
+			redir.addAttribute("productTreeMainId", productTreeMainId);
 			return "redirect:/IRSDocumentList.htm";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1805,7 +1954,7 @@ public class DocumentsController {
 			req.setAttribute("irsDocument", irsDocument);
 			req.setAttribute("version", irsDocument!=null ?irsDocument.getIRSVersion():"1.0");
 			
-			irsDocId = service.getFirstVersionIRSDocId(irsDocument.getProjectId()+"", irsDocument.getInitiationId()+"")+"";
+			irsDocId = service.getFirstVersionIRSDocId(irsDocument.getProjectId()+"", irsDocument.getInitiationId()+"", irsDocument.getProductTreeMainId()+"")+"";
 			
 			String projectType = irsDocument.getProjectId()!=0?"E":"M";
 			req.setAttribute("projectType", projectType);
@@ -1845,11 +1994,13 @@ public class DocumentsController {
 		try {
 			String docId = req.getParameter("docId");
 			String docType = req.getParameter("docType");
+			String projectId = req.getParameter("projectId");
 
 			req.setAttribute("docId", docId);
 			req.setAttribute("docType", docType);
 			req.setAttribute("documentNo", req.getParameter("documentNo"));
 			req.setAttribute("projectId", req.getParameter("projectId"));
+			req.setAttribute("productTreeList", reqservice.productTreeListByProjectId(projectId));
 			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
 			req.setAttribute("irsSpecificationsList", service.getIRSDocumentSpecificationsList(docId));
 			
@@ -1869,17 +2020,30 @@ public class DocumentsController {
 		try {
 			
 			String docId = req.getParameter("docId");
-			String csciOne = req.getParameter("csciOne");
-			String csciTwo = req.getParameter("csciTwo");
+			String subSystemOne = req.getParameter("subSystemOne");
+			String subSystemTwo = req.getParameter("subSystemTwo");
+			String superSubSystemOne = req.getParameter("superSubSystemOne");
+			String superSubSystemTwo = req.getParameter("superSubSystemTwo");
 			String[] interfaceId = req.getParameterValues("interfaceId");
+			
+			String[] subSystemOnes  = subSystemOne!=null?subSystemOne.split("/"): null;
+			String[] subSystemTwos  = subSystemTwo!=null?subSystemTwo.split("/"): null;
+			String[] superSubSystemOnes  = superSubSystemOne!=null?superSubSystemOne.split("/"): null;
+			String[] superSubSystemTwos  = superSubSystemTwo!=null?superSubSystemTwo.split("/"): null;
 			
 			if(interfaceId!=null && interfaceId.length>0) {
 				long result = 0;
 				for(int i=0; i<interfaceId.length; i++) {
 					IRSDocumentSpecifications specifications = IRSDocumentSpecifications.builder()
 																.IRSDocId(Long.parseLong(docId))
-																.CSCIOne(csciOne!=null?Long.parseLong(csciOne):0)
-																.CSCITwo(csciTwo!=null?Long.parseLong(csciTwo):0)
+																.SubSystemMainIdOne(subSystemOnes!=null?Long.parseLong(subSystemOnes[0]):0)
+																.SubSystemOne(subSystemOnes!=null?subSystemOnes[1]:"NA")
+																.SubSystemMainIdTwo(subSystemTwos!=null?Long.parseLong(subSystemTwos[0]):0)
+																.SubSystemTwo(subSystemTwos!=null?subSystemTwos[1]:"NA")
+																.SuperSubSysMainIdOne(superSubSystemOnes!=null?Long.parseLong(superSubSystemOnes[0]):0)
+																.SuperSubSystemOne(superSubSystemOnes!=null?superSubSystemOnes[1]:"NA")
+																.SuperSubSysMainIdTwo(superSubSystemTwos!=null?Long.parseLong(superSubSystemTwos[0]):0)
+																.SuperSubSystemTwo(superSubSystemTwos!=null?superSubSystemTwos[1]:"NA")
 																.InterfaceId(interfaceId[i]!=null?Long.parseLong(interfaceId[i]):0)
 																.MessageType(req.getParameter("messageType"))
 																.CreatedBy(UserId)
@@ -1955,7 +2119,7 @@ public class DocumentsController {
 			PfmsIRSDocument irsDocument = service.getPfmsIRSDocumentById(docId);
 			String statusCode = irsDocument.getIRSStatusCode();
 
-			List<String> irsforwardstatus = Arrays.asList("RIN", "RRR", "RRA");
+			List<String> irsforwardstatus = Arrays.asList("RIN", "RRR", "RRA", "REV");
 
 			long result = service.irsDocumentApprovalForward(docId, docType, action, remarks, EmpId, labcode, UserId);
 
@@ -1974,6 +2138,7 @@ public class DocumentsController {
 					redir.addAttribute("projectType", req.getParameter("projectType"));
 					redir.addAttribute("projectId", req.getParameter("projectId"));
 					redir.addAttribute("initiationId", req.getParameter("initiationId"));
+					redir.addAttribute("productTreeMainId", req.getParameter("productTreeMainId"));
 					
 					return "redirect:/IRSDocumentList.htm";
 				} else if (statusCode.equalsIgnoreCase("RFW")) {
@@ -2006,6 +2171,38 @@ public class DocumentsController {
 			return "static/Error";
 		}
 	}
+
+	@RequestMapping(value="IRSDocumentUserRevoke.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String irsDocumentUserRevoke(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside IRSDocumentUserRevoke.htm "+UserId);
+		try {
+			String irsDocId = req.getParameter("irsDocId");
+            
+			long count = service.irsDocumentUserRevoke(irsDocId, UserId, EmpId);
+			
+			if (count > 0) {
+				redir.addAttribute("result", "IRS Document Revoked Successfully");
+			}
+			else {
+				redir.addAttribute("resultfail", "IRS Document Revoke Unsuccessful");	
+			}	
+
+			redir.addAttribute("projectType", req.getParameter("projectType"));
+			redir.addAttribute("projectId", req.getParameter("projectId"));
+			redir.addAttribute("initiationId", req.getParameter("initiationId"));
+			redir.addAttribute("productTreeMainId", req.getParameter("productTreeMainId"));
+			return "redirect:/IRSDocumentList.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside IRSDocumentUserRevoke.htm "+UserId, e);
+			return "static/Error";			
+		}
+
+	}
+	
 	/* ************************************************ IRS Document End ***************************************************** */
 	
 	/* ************************************************ IDD Document ***************************************************** */
@@ -2025,28 +2222,38 @@ public class DocumentsController {
 			projectType = projectType != null ? projectType : "M";
 			String initiationId = "0";
 			String projectId = "0";
+			String productTreeMainId = req.getParameter("productTreeMainId");
 			
 			if (projectType.equalsIgnoreCase("M")) {
 
 				projectId = req.getParameter("projectId");
+				//productTreeMainId = req.getParameter("productTreeMainId");
 				List<Object[]> projectList = projectservice.LoginProjectDetailsList(EmpId, LoginType, labcode);
-				projectId = projectId != null ? projectId
-						: (projectList.size() > 0 ? projectList.get(0)[0].toString() : "0");
-
+				
+				projectId = projectId != null ? projectId : (projectList.size() > 0 ? projectList.get(0)[0].toString() : "0");
+				productTreeMainId = productTreeMainId != null ? productTreeMainId : "0";
+				
 				req.setAttribute("projectDetails", projectservice.getProjectDetails(labcode, projectId, "E"));
 				req.setAttribute("projectList", projectList);
+				req.setAttribute("productTreeList", reqservice.productTreeListByProjectId(projectId));
+				
 			}else {
 				initiationId = req.getParameter("initiationId");
+				//productTreeMainId = req.getParameter("productTreeMainId");
 				List<Object[]> preProjectList = reqservice.getPreProjectList(LoginType, labcode, EmpId);
-				initiationId = initiationId != null ? initiationId
-						: (preProjectList.size() > 0 ? preProjectList.get(0)[0].toString() : "0");
+				initiationId = initiationId != null ? initiationId : (preProjectList.size() > 0 ? preProjectList.get(0)[0].toString() : "0");
+				productTreeMainId = productTreeMainId != null ? productTreeMainId : "0";
+				
+				req.setAttribute("projectDetails", projectservice.getProjectDetails(labcode, initiationId, "P"));
 				req.setAttribute("preProjectList", preProjectList);
+				req.setAttribute("productTreeList", reqservice.productTreeListByInitiationId(initiationId));
 			}
 			req.setAttribute("projectId", projectId);
 			req.setAttribute("initiationId", initiationId);
+			req.setAttribute("productTreeMainId", productTreeMainId);
 			req.setAttribute("projectType", projectType);
 			
-			List<Object[]> iddDocumentList = service.getIDDDocumentList(projectId, initiationId);
+			List<Object[]> iddDocumentList = service.getIDDDocumentList(projectId, initiationId, productTreeMainId);
 			req.setAttribute("iddDocumentList", iddDocumentList);
 			
 			if(iddDocumentList!=null && iddDocumentList.size()>0) {
@@ -2073,12 +2280,14 @@ public class DocumentsController {
 			String projectType = req.getParameter("projectType");
 			String projectId = req.getParameter("projectId");
 			String initiationId = req.getParameter("initiationId");
+			String productTreeMainId = req.getParameter("productTreeMainId");
 			String isAmend = req.getParameter("isAmend");
 			String iddDocId = req.getParameter("iddDocId");
 			
 			PfmsIDDDocument pfmsIDDDocument = PfmsIDDDocument.builder()
 												.ProjectId(Long.parseLong(projectId!=null?projectId:"0"))
 												.InitiationId(Long.parseLong(initiationId!=null?initiationId:"0"))
+												.ProductTreeMainId(productTreeMainId!=null?Long.parseLong(productTreeMainId):0L)
 												.IDDVersion(req.getParameter("version"))
 												.LabCode(labcode)
 												.InitiatedBy(EmpId)
@@ -2094,10 +2303,11 @@ public class DocumentsController {
 			
 			if(isAmend!=null && isAmend.equalsIgnoreCase("Y")) {
 				service.iddDocumentApprovalForward(iddDocId, "D", "A", req.getParameter("remarks"), EmpId, labcode, UserId);
-			}else {
-				// Transaction 
-				service.addPfmsIGITransaction(result, "D", "RIN", null, Long.parseLong(EmpId));
 			}
+			
+			// Transaction 
+			service.addPfmsIGITransaction(result, "D", "RIN", null, Long.parseLong(EmpId));
+			
 			
 			if (result > 0) {
 				redir.addAttribute("result", "IDD Document Data Submitted Successfully");
@@ -2108,6 +2318,7 @@ public class DocumentsController {
 			redir.addAttribute("projectType", projectType);
 			redir.addAttribute("projectId", projectId);
 			redir.addAttribute("initiationId", initiationId);
+			redir.addAttribute("productTreeMainId", productTreeMainId);
 			return "redirect:/IDDDocumentList.htm";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2132,7 +2343,7 @@ public class DocumentsController {
 			req.setAttribute("iddDocument", iddDocument);
 			req.setAttribute("version", iddDocument!=null ?iddDocument.getIDDVersion():"1.0");
 			
-			iddDocId = service.getFirstVersionIDDDocId(iddDocument.getProjectId()+"", iddDocument.getInitiationId()+"")+"";
+			iddDocId = service.getFirstVersionIDDDocId(iddDocument.getProjectId()+"", iddDocument.getInitiationId()+"", iddDocument.getProductTreeMainId()+"")+"";
 			
 			String projectType = iddDocument.getProjectId()!=0?"E":"M";
 			req.setAttribute("projectType", projectType);
@@ -2163,6 +2374,106 @@ public class DocumentsController {
 		}
 
 	}
+
+	@RequestMapping(value = "IDDDocumentApprovalSubmit.htm", method = { RequestMethod.GET, RequestMethod.POST })
+	public String iddDocumentApprovalSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() + "Inside IDDDocumentApprovalSubmit.htm" + UserId);
+		try {
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+			String action = req.getParameter("Action");
+			String remarks = req.getParameter("remarks");
+
+			PfmsIDDDocument iddDocument = service.getPfmsIDDDocumentById(docId);
+			String statusCode = iddDocument.getIDDStatusCode();
+
+			List<String> iddforwardstatus = Arrays.asList("RIN", "RRR", "RRA", "REV");
+
+			long result = service.iddDocumentApprovalForward(docId, docType, action, remarks, EmpId, labcode, UserId);
+
+//			if (result != 0 && reqInitiation.getReqStatusCode().equalsIgnoreCase("RFA") && reqInitiation.getReqStatusCodeNext().equalsIgnoreCase("RAM")) {
+//				// PDF Freeze
+//				service.igiDocPdfFreeze(req, resp, docId, labcode);
+//			}
+
+			if (action.equalsIgnoreCase("A")) {
+				if (iddforwardstatus.contains(statusCode)) {
+					if (result != 0) {
+						redir.addAttribute("result", "IRS Document Forwarded Successfully");
+					} else {
+						redir.addAttribute("resultfail", "IRS Document Forward Unsuccessful");
+					}
+					redir.addAttribute("projectType", req.getParameter("projectType"));
+					redir.addAttribute("projectId", req.getParameter("projectId"));
+					redir.addAttribute("initiationId", req.getParameter("initiationId"));
+					redir.addAttribute("productTreeMainId", req.getParameter("productTreeMainId"));
+					
+					return "redirect:/IDDDocumentList.htm";
+				} else if (statusCode.equalsIgnoreCase("RFW")) {
+					if (result != 0) {
+						redir.addAttribute("result", "IRS Document Recommende d Successfully");
+					} else {
+						redir.addAttribute("resultfail", "IRS Document Recommend Unsuccessful");
+					}
+					return "redirect:/DocumentApprovals.htm";
+				} else if (statusCode.equalsIgnoreCase("RFR")) {
+					if (result != 0) {
+						redir.addAttribute("result", "IRS Document Approved Successfully");
+					} else {
+						redir.addAttribute("resultfail", "IRS Document Approve Unsuccessful");
+					}
+					return "redirect:/DocumentApprovals.htm";
+				}
+			} else if (action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")) {
+				if (result != 0) {
+					redir.addAttribute("result", action.equalsIgnoreCase("R") ? "IRS Document Returned Successfully" : "IRS Document Disapproved Successfully");
+				} else {
+					redir.addAttribute("resultfail", action.equalsIgnoreCase("R") ? "IRS Document Return Unsuccessful" : "IRS Document Disapprove Unsuccessful");
+				}
+			}
+			return "redirect:/DocumentApprovals.htm";
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IDDDocumentApprovalSubmit.htm " + UserId, e);
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value="IDDDocumentUserRevoke.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String iddDocumentUserRevoke(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside IDDDocumentUserRevoke.htm "+UserId);
+		try {
+			String iddDocId = req.getParameter("iddDocId");
+            
+			long count = service.iddDocumentUserRevoke(iddDocId, UserId, EmpId);
+			
+			if (count > 0) {
+				redir.addAttribute("result", "IDD Document Revoked Successfully");
+			}
+			else {
+				redir.addAttribute("resultfail", "IDD Document Revoke Unsuccessful");	
+			}	
+
+			redir.addAttribute("projectType", req.getParameter("projectType"));
+			redir.addAttribute("projectId", req.getParameter("projectId"));
+			redir.addAttribute("initiationId", req.getParameter("initiationId"));
+			redir.addAttribute("productTreeMainId", req.getParameter("productTreeMainId"));
+			return "redirect:/IDDDocumentList.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside IDDDocumentUserRevoke.htm "+UserId, e);
+			return "static/Error";			
+		}
+
+	}
+	
 	/* ************************************************ IDD Document End ***************************************************** */
 	
 }

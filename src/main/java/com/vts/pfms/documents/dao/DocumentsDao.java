@@ -10,6 +10,8 @@ import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.IGIInterface;
+import com.vts.pfms.documents.model.IGIInterfaceContent;
+import com.vts.pfms.documents.model.IGIInterfaceTypes;
 import com.vts.pfms.documents.model.IRSDocumentSpecifications;
 import com.vts.pfms.documents.model.PfmsApplicableDocs;
 import com.vts.pfms.documents.model.PfmsICDDocument;
@@ -49,7 +51,8 @@ public interface DocumentsDao {
 	public List<Object[]> getIGIApplicableDocs(String docId, String docType) throws Exception;
 	public long addIGIApplicableDocs(IGIApplicableDocs igiApplicableDocs) throws Exception;
 	public int deleteIGIApplicableDocument(String igiApplicableDocId) throws Exception;
-	public int getInterfaceCountByType(String interfaceType) throws Exception;
+	public int getInterfaceTypeCountByinterfaceTypeId(String interfaceTypeId) throws Exception;
+	public int getInterfaceContentCountByinterfaceContentId(String interfaceTypeId, String interfaceContentId) throws Exception;
 	public Long getFirstVersionIGIDocId() throws Exception;
 	public long addIGIDocumentShortCodesLinked(IGIDocumentShortCodesLinked igiDocumentShortCodeLinked) throws Exception;
 	public List<Object[]> getIGIShortCodesLinkedListByType(String docId, String docType) throws Exception;
@@ -57,36 +60,42 @@ public interface DocumentsDao {
 	public BigInteger getDuplicateIGIShortCodeCount(String shortCode, String shortCodeType) throws Exception;
 	public long addApplicableDocs(PfmsApplicableDocs pfmsApplicableDocs) throws Exception;
 	public List<Object[]> igiTransactionList(String docId, String docType) throws Exception;
+	public List<IGIInterfaceTypes> getIGIInterfaceTypesList() throws Exception;
+	public List<IGIInterfaceContent> getIGIInterfaceContentList() throws Exception;
+	public int igiDocumentUserRevoke(String igiDocId) throws Exception;
+
 	/* ************************************************ IGI Document End***************************************************** */
 	
 	/* ************************************************ ICD Document ***************************************************** */
-	public List<Object[]> getICDDocumentList(String projectId, String initiationId) throws Exception;
+	public List<Object[]> getICDDocumentList(String projectId, String initiationId, String productTreeMainId) throws Exception;
 	public long addPfmsICDDocument(PfmsICDDocument pfmsIGIDocument) throws Exception;
 	public PfmsICDDocument getPfmsICDDocumentById(String icdDocId)throws Exception;
-	public Long getFirstVersionICDDocId(String projectId, String initiationId) throws Exception;
+	public Long getFirstVersionICDDocId(String projectId, String initiationId, String productTreeMainId) throws Exception;
 	public long addICDDocumentConnections(ICDDocumentConnections connection) throws Exception;
 	public List<Object[]> getICDConnectionsList(String icdDocId) throws Exception;
 	public int deleteICDConnectionById(String icdConnectionId) throws Exception;
 	public long addPfmsIGITransaction(PfmsIGITransaction transaction) throws Exception;
 	public List<Object[]> getProductTreeAllListByProjectId(String projectId) throws Exception;
+	public int icdDocumentUserRevoke(String icdDocId) throws Exception;
+	public ICDDocumentConnections getICDDocumentConnectionsById(String icdConnectionId) throws Exception;
 	/* ************************************************ ICD Document End***************************************************** */
 	
 	/* ************************************************ IRS Document ***************************************************** */
-	public List<Object[]> getIRSDocumentList(String projectId, String initiationId) throws Exception;
+	public List<Object[]> getIRSDocumentList(String projectId, String initiationId, String productTreeMainId) throws Exception;
 	public long addPfmsIRSDocument(PfmsIRSDocument pfmsIRSDocument) throws Exception;
 	public PfmsIRSDocument getPfmsIRSDocumentById(String irsDocId) throws Exception;
-	public Long getFirstVersionIRSDocId(String projectId, String initiationId) throws Exception;
+	public Long getFirstVersionIRSDocId(String projectId, String initiationId, String productTreeMainId) throws Exception;
 	public long addIRSDocumentSpecifications(IRSDocumentSpecifications irsDocumentSpecifications) throws Exception;
 	public List<Object[]> getIRSDocumentSpecificationsList(String irsDocId) throws Exception;
 	public int deleteIRSSpecifiactionById(String irsSpecificationId) throws Exception;
+	public int irsDocumentUserRevoke(String irsDocId) throws Exception;
 	/* ************************************************ IRS Document End***************************************************** */
 	
 	/* ************************************************ IDD Document ***************************************************** */
-	public List<Object[]> getIDDDocumentList(String projectId, String initiationId) throws Exception;
+	public List<Object[]> getIDDDocumentList(String projectId, String initiationId, String productTreeMainId) throws Exception;
 	public long addPfmsIDDDocument(PfmsIDDDocument pfmsIDDDocument) throws Exception;
 	public PfmsIDDDocument getPfmsIDDDocumentById(String irsDocId) throws Exception;
-	public Long getFirstVersionIDDDocId(String projectId, String initiationId) throws Exception;
-	
-	
+	public Long getFirstVersionIDDDocId(String projectId, String initiationId, String productTreeMainId) throws Exception;
+	public int iddDocumentUserRevoke(String iddDocId) throws Exception;
 	
 }

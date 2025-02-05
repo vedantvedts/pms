@@ -243,6 +243,7 @@
                     		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		        			<input type="hidden" name="projectId" value="<%=irsDocument.getProjectId() %>" />
 		        			<input type="hidden" name="initiationId" value="<%=irsDocument.getInitiationId() %>" />
+		        			<input type="hidden" name="productTreeMainId" value="<%=irsDocument.getProductTreeMainId() %>" />
 		        			<input type="hidden" name="projectType" value="<%=irsDocument.getProjectId()!=0?"M":"I" %>" />
 		        			<button class="btn btn-info btn-sm shadow-nohover back">
 		        				Back

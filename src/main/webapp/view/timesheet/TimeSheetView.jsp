@@ -249,6 +249,22 @@ font-weight: bold;
 .day.highlighted-date .day-number {
     color: #fff !important; /* Ensure active state color is applied */
 }
+
+.spinner {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999; /* Ensures it is above other elements */
+    text-align: center;
+    display: none; /* Initially hidden */
+}
+
+.spinner img {
+    width: 200px;
+    height: 200px;
+}
+
 </style> 
 </head>
 <body>
@@ -275,6 +291,7 @@ LocalDate endOfWeek = localdate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATU
 
 
 String empId = (String)request.getAttribute("empId");
+String empIdW = (String)request.getAttribute("empIdW");
 
 String activityDate = (String)request.getAttribute("activityDate");
 String activityDateSql = (String)request.getAttribute("activityDateSql");
@@ -310,7 +327,11 @@ FormatConverter fc = new FormatConverter();
 	<%} %>
 	
 	<div class="container-fluid">
-		<div class="row">
+		<div id="spinner" class="spinner">
+    		<img id="img-spinner" src="view/images/spinner1.gif" alt="Loading" />
+		</div>
+	
+		<div class="row" id="main" style="display: none;">
 			<div class="col-md-12">	
 				<div class="card shadow-nohover">
 					<div class="card-header">
@@ -351,7 +372,44 @@ FormatConverter fc = new FormatConverter();
 										<form action="TimeSheetView.htm" method="get">
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 											<input type="hidden" name="viewFlag" value="W">
-											<div class="row right" style="margin-top: -0.5rem;">
+											<table style="width: 100%;padding: 3px;">
+												<tr>
+													<td width="10%" class="right">
+														<label class="form-label mt-2">Employee: </label>
+													</td>
+													<td width="29%">
+														<select class="form-control selectdee" name="empIdW" onchange="this.form.submit()" >
+															<option selected disabled>---Select---</option>
+															<%if(employeeList!=null && employeeList.size()>0) {
+																for(Object[] obj : employeeList) {%>
+																	<option value="<%=obj[0]%>" <%if(empIdW.equalsIgnoreCase(obj[0]+"")) {%>selected<%} %> >
+																		<%=(obj[1]!=null?obj[1]:(obj[2]!=null?obj[2]:""))+""+obj[5]+", "+obj[6] %>
+																	</option>
+															<%} }%>
+														</select>
+													</td>
+													<td width="5%" class="right">
+														<label class="form-label mt-2">Date: </label>
+													</td>
+													<td width="12%">
+														<input type="text" class="form-control " name="activityWeekDate" id="activityWeekDate" value="<%=activityWeekDate%>" onchange="this.form.submit()">
+													</td>
+													<td width="10%" class="right">
+														<label class="form-label mt-2">Start Date: </label>
+													</td>
+													<td width="12%">
+														<input type="text" class="form-control " id="activityWeekStartDate" value="<%=fc.SqlToRegularDate(startOfWeek.toString()) %>" readonly>
+													</td>
+													<td width="10%" class="right">
+														<label class="form-label mt-2">End Date: </label>
+													</td>
+													<td width="12%">
+														<input type="text" class="form-control " id="activityWeekEndDate" value="<%=fc.SqlToRegularDate(endOfWeek.toString()) %>" readonly>
+													</td>
+												</tr>
+											</table>
+											
+											<%-- <div class="row right" style="margin-top: -0.5rem;">
 												<div class="col-md-1"></div>
 												<div class="col-md-1">
 													<label class="form-label mt-2">Date: </label>
@@ -371,7 +429,8 @@ FormatConverter fc = new FormatConverter();
 												<div class="col-md-2">
 													<input type="text" class="form-control " id="activityWeekEndDate" value="<%=fc.SqlToRegularDate(endOfWeek.toString()) %>" readonly>
 												</div>
-											</div>
+											</div> --%>
+											
 										</form>
 									</div>
 								</div>
@@ -397,7 +456,11 @@ FormatConverter fc = new FormatConverter();
 											<%
 											int  count=1;
 											if(employeeList!=null && employeeList.size()>0) {
-												for(Object[] obj : employeeList) {
+												
+												// Filter with selected employee
+												Object[] obj =  employeeList.stream().filter(e -> empIdW.equalsIgnoreCase(e[0].toString()) ).findFirst().orElse(null);
+												
+												//for(Object[] obj : employeeList) {
 													Map<LocalDate, TimeSheet> employeeTimesheet = timeSheetData.get(obj[0].toString());
 											%>
 												<tr>
@@ -537,7 +600,7 @@ FormatConverter fc = new FormatConverter();
 														
 													</td>
 												</tr>
-											<%count++;} } else{%>
+											<%count++; } else{%>
 												<tr>
 													<td class="center" colspan="10">No Data Available</td>
 												</tr>
@@ -639,8 +702,8 @@ FormatConverter fc = new FormatConverter();
 			                  							for (Object[] obj : values) {
 											%>
 												<tr>
-													<td class="center"><%=++slno%></td>
 													<%if(i==0) {%>
+														<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=++slno%></td>
 											    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=fc.sdfTordf(obj[2].toString()) %></td>
 			         								<%} %>
 			         								<td class="center"><%=obj[16]!=null?obj[16]:"-" %></td>
@@ -673,6 +736,20 @@ FormatConverter fc = new FormatConverter();
 	</form>
 <script type="text/javascript">
 
+//Show spinner when the DOM starts loading
+$(document).ready(function () {
+    $('#spinner').show(); // Display spinner
+    $('#main').hide();    // Hide content
+    $('body').css("filter", "blur(2px)"); // Optional: Add blur effect to the body
+});
+
+// Hide spinner when the page is fully loaded
+window.onload = function () {
+    $('#spinner').hide(); // Hide spinner
+    $('#main').fadeIn();  // Show content with fade-in effect
+    $('body').css("filter", "none"); // Remove blur effect
+};
+
 /* $(document).ready(function () {
     $('#searchBar').on('keyup', function () {
         const searchTerm = $(this).val().toLowerCase();
@@ -688,6 +765,8 @@ FormatConverter fc = new FormatConverter();
     });
 }); */
 
+ChangeButton('1');
+		
 function ChangeButton(id) {
 	  
 	//console.log($( "#btn"+id ).hasClass( "btn btn-sm btn-success" ).toString());

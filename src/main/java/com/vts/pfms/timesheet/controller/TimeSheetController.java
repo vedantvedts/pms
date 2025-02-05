@@ -1401,6 +1401,8 @@ public class TimeSheetController {
 		try {
 
 			// Weekly View
+			String empIdW = req.getParameter("empIdW");
+			empIdW = empIdW==null?EmpId:empIdW;
 			String activityWeekDate = req.getParameter("activityWeekDate");
 			activityWeekDate = activityWeekDate==null?rdf.format(new Date()):activityWeekDate;
 			String activityWeekDateSql = fc.rdfTosdf(activityWeekDate);
@@ -1414,6 +1416,8 @@ public class TimeSheetController {
 			req.setAttribute("designationlist", adminservice.DesignationList());
 			req.setAttribute("projectList", projectservice.LoginProjectDetailsList(EmpId,"A",labcode));
 			req.setAttribute("keywordsList", service.getTimesheetKeywordsList());
+			req.setAttribute("empIdW", empIdW);
+			
 			// Monthly View
 			String empId = req.getParameter("empId");
 			empId = empId==null?EmpId:empId;

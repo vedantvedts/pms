@@ -31,6 +31,10 @@ public class ICDDocumentConnections implements Serializable {
 	private String SuperSubSystemTwo;
 	private Long InterfaceId;
 	private String CreatedBy;
+	private String Purpose;
+	private String Constraints;
+	private String Periodicity;
+	private String Description;
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;

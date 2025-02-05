@@ -36,6 +36,8 @@ import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.IGIInterface;
+import com.vts.pfms.documents.model.IGIInterfaceContent;
+import com.vts.pfms.documents.model.IGIInterfaceTypes;
 import com.vts.pfms.documents.model.IRSDocumentSpecifications;
 import com.vts.pfms.documents.model.PfmsApplicableDocs;
 import com.vts.pfms.documents.model.PfmsICDDocument;
@@ -142,7 +144,21 @@ public class DocumentsServiceImpl implements DocumentsService{
 		return dao.StandardDocumentDelete(standardDocumentId);
 	}
 	
+	@Override
+	public List<IGIInterfaceTypes> getIGIInterfaceTypesList() throws Exception {
+
+		return dao.getIGIInterfaceTypesList();
+	}
+	
+	@Override
+	public List<IGIInterfaceContent> getIGIInterfaceContentList() throws Exception {
+		
+		return dao.getIGIInterfaceContentList();
+	}
+	
 	/* ************************************************ IGI Document ***************************************************** */
+	
+	
 	@Override
 	public List<Object[]> getIGIDocumentList() throws Exception
 	{
@@ -260,11 +276,47 @@ public class DocumentsServiceImpl implements DocumentsService{
 	@Override
 	public long addIGIInterface(IGIInterface igiInterface) throws Exception {
 		
+//		if(igiInterface.getInterfaceId()==null) {
+//			int count = dao.getInterfaceCountByType(igiInterface.getInterfaceType());
+//			String[] split = igiInterface.getInterfaceType().split(" ");
+//			String seqChars = "";
+//			if(split.length>1) {
+//				seqChars = split[0].charAt(0)+ "" + split[1].charAt(0);
+//			}else {
+//				seqChars = split[0].charAt(0)+ "" + split[0].charAt(1);
+//			}
+//			String seqCount = (count>=99)?("_"+(count+1)) : ((count>=9 && count<99)?("_0"+(count+1)) : ("_00"+(count+1)) );
+//			igiInterface.setInterfaceSeqNo(seqChars+seqCount);
+//		}
+		
 		if(igiInterface.getInterfaceId()==null) {
-			int count = dao.getInterfaceCountByType(igiInterface.getInterfaceType());
-			String[] split = igiInterface.getInterfaceType().split(" ");
-			String seqCount = (count>=99)?("_"+(count+1)) : ((count>=9 && count<99)?("_0"+(count+1)) : ("_00"+(count+1)) );
-			igiInterface.setInterfaceSeqNo((split[0].charAt(0)+""+split[1].charAt(0))+seqCount);
+			String interfaceType = igiInterface.getInterfaceType();
+			String interfaceContent = igiInterface.getInterfaceContent();
+			
+			String[] interfaceTypeSplit = interfaceType!=null?interfaceType.split("/") : null;
+			String[] interfaceContentSplit = interfaceContent!=null && !interfaceContent.equalsIgnoreCase("0")?interfaceContent.split("/") : null;
+			
+			
+				if(interfaceTypeSplit!=null && interfaceContentSplit!=null) {
+					
+					int countT = dao.getInterfaceTypeCountByinterfaceTypeId(interfaceTypeSplit[0]);
+					int countC = dao.getInterfaceContentCountByinterfaceContentId(interfaceTypeSplit[0], interfaceContentSplit[0]);
+					
+					String seqCount = (countC>=99)?("_"+(countC+1)) : ((countC>=9 && countC<99)?("_0"+(countC+1)) : ("_00"+(countC+1)) );
+					
+					String interfaceCode = (interfaceTypeSplit[1]!=null?interfaceTypeSplit[1]:"-")
+											+ "_" + (interfaceContentSplit[1]!=null?interfaceContentSplit[1]:"-")
+											+ seqCount + "-"+ (countT+1);
+					
+					String interfaceName = (interfaceTypeSplit[2]!=null?interfaceTypeSplit[2]:"-")
+											+ " " + (interfaceContentSplit[2]!=null?interfaceContentSplit[2]:"-")
+											+ " - " + interfaceCode;
+					igiInterface.setInterfaceCode(interfaceCode);
+					igiInterface.setInterfaceName(interfaceName);
+				}
+			
+			igiInterface.setInterfaceTypeId(interfaceTypeSplit!=null?Long.parseLong(interfaceTypeSplit[0]):0L);
+			igiInterface.setInterfaceContentId(interfaceContentSplit!=null?Long.parseLong(interfaceContentSplit[0]):0L);
 		}
 		return dao.addIGIInterface(igiInterface);
 	}
@@ -430,7 +482,7 @@ public class DocumentsServiceImpl implements DocumentsService{
 			String statusCode = igiDocument.getIGIStatusCode();
 			String statusCodeNext = igiDocument.getIGIStatusCodeNext();
 			
-			List<String> reqforwardstatus = Arrays.asList("RIN","RRR","RRA");
+			List<String> reqforwardstatus = Arrays.asList("RIN", "RRR", "RRA", "REV");
 			
 			// This is for the moving the approval flow in forward direction.
 			if(action.equalsIgnoreCase("A")) {
@@ -517,14 +569,31 @@ public class DocumentsServiceImpl implements DocumentsService{
 			return 0;
 		}
 	}
+	
+	@Override
+	public long igiDocumentUserRevoke(String igiDocId, String userId, String empId) throws Exception {
+		try {
+			// Revoke
+			dao.igiDocumentUserRevoke(igiDocId);
+			
+			// Handling Transaction
+			addPfmsIGITransaction(Long.parseLong(igiDocId), "A", "REV", "NIL", Long.parseLong(empId));
+			
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		
+	}
 	/* ************************************************ IGI Document End ***************************************************** */
 	
 	/* ************************************************ ICD Document ***************************************************** */
 
 	@Override
-	public List<Object[]> getICDDocumentList(String projectId, String initiationId) throws Exception {
+	public List<Object[]> getICDDocumentList(String projectId, String initiationId, String productTreeMainId) throws Exception {
 		
-		return dao.getICDDocumentList(projectId, initiationId);
+		return dao.getICDDocumentList(projectId, initiationId, productTreeMainId);
 	}
 	
 	@Override
@@ -540,9 +609,9 @@ public class DocumentsServiceImpl implements DocumentsService{
 	}
 	
 	@Override
-	public Long getFirstVersionICDDocId(String projectId, String initiationId) throws Exception {
+	public Long getFirstVersionICDDocId(String projectId, String initiationId, String productTreeMainId) throws Exception {
 		
-		return dao.getFirstVersionICDDocId(projectId, initiationId);
+		return dao.getFirstVersionICDDocId(projectId, initiationId, productTreeMainId);
 	}
 	
 	@Override
@@ -586,7 +655,7 @@ public class DocumentsServiceImpl implements DocumentsService{
 			String statusCode = icdDocument.getICDStatusCode();
 			String statusCodeNext = icdDocument.getICDStatusCodeNext();
 			
-			List<String> reqforwardstatus = Arrays.asList("RIN","RRR","RRA");
+			List<String> reqforwardstatus = Arrays.asList("RIN", "RRR", "RRA", "REV");
 			
 			// This is for the moving the approval flow in forward direction.
 			if(action.equalsIgnoreCase("A")) {
@@ -641,7 +710,7 @@ public class DocumentsServiceImpl implements DocumentsService{
 					notification.setNotificationMessage("ICD Document Doc request Forwarded");
 				}else if(reqStatusCode2.equalsIgnoreCase("RFA")) {
 					notification.setEmpId(documentSummary!=null && documentSummary[7]!=null?Long.parseLong(documentSummary[7].toString()):0);
-					notification.setNotificationUrl("ICDDocumentList.htm?projectId="+icdDocument.getProjectId()+"&initiationId="+icdDocument.getInitiationId()+"&projectType="+(icdDocument.getProjectId()!=0?"M":"I") );
+					notification.setNotificationUrl("ICDDocumentList.htm?projectId="+icdDocument.getProjectId()+"&initiationId="+icdDocument.getInitiationId()+"&productTreeMainId="+icdDocument.getProductTreeMainId()+"&projectType="+(icdDocument.getProjectId()!=0?"M":"I") );
 					notification.setNotificationMessage("ICD Document Doc Approved");
 				}
 				
@@ -655,7 +724,7 @@ public class DocumentsServiceImpl implements DocumentsService{
 				
 			}else if(action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")){
 				notification.setEmpId(documentSummary!=null && documentSummary[7]!=null?Long.parseLong(documentSummary[7].toString()):0);
-				notification.setNotificationUrl("ICDDocumentList.htm?projectId="+icdDocument.getProjectId()+"&initiationId="+icdDocument.getInitiationId()+"&projectType="+(icdDocument.getProjectId()!=0?"M":"I") );
+				notification.setNotificationUrl("ICDDocumentList.htm?projectId="+icdDocument.getProjectId()+"&initiationId="+icdDocument.getInitiationId()+"&productTreeMainId="+icdDocument.getProductTreeMainId()+"&projectType="+(icdDocument.getProjectId()!=0?"M":"I") );
 				notification.setNotificationMessage(action.equalsIgnoreCase("R")?"ICD Document Doc Request Returned":"ICD Document Doc Request Disapproved");
 				notification.setNotificationby(Long.parseLong(empId));
 				notification.setNotificationDate(LocalDate.now().toString());
@@ -680,14 +749,37 @@ public class DocumentsServiceImpl implements DocumentsService{
 		return dao.getProductTreeAllListByProjectId(projectId);
 	}
 	
+	@Override
+	public long icdDocumentUserRevoke(String icdDocId, String userId, String empId) throws Exception {
+		try {
+			// Revoke
+			dao.icdDocumentUserRevoke(icdDocId);
+			
+			// Handling Transaction
+			addPfmsIGITransaction(Long.parseLong(icdDocId), "B", "REV", "NIL", Long.parseLong(empId));
+			
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		
+	}
+	
+	@Override
+	public ICDDocumentConnections getICDDocumentConnectionsById(String icdConnectionId) throws Exception {
+		
+		return dao.getICDDocumentConnectionsById(icdConnectionId);
+	}
+	
 	/* ************************************************ ICD Document End***************************************************** */
 	
 	/* ************************************************ IRS Document ***************************************************** */
 	
 	@Override
-	public List<Object[]> getIRSDocumentList(String projectId, String initiationId) throws Exception {
+	public List<Object[]> getIRSDocumentList(String projectId, String initiationId, String productTreeMainId) throws Exception {
 		
-		return dao.getIRSDocumentList(projectId, initiationId);
+		return dao.getIRSDocumentList(projectId, initiationId, productTreeMainId);
 	}
 
 	@Override
@@ -703,9 +795,9 @@ public class DocumentsServiceImpl implements DocumentsService{
 	}
 	
 	@Override
-	public Long getFirstVersionIRSDocId(String projectId, String initiationId) throws Exception {
+	public Long getFirstVersionIRSDocId(String projectId, String initiationId, String productTreeMainId) throws Exception {
 		
-		return dao.getFirstVersionIRSDocId(projectId, initiationId);
+		return dao.getFirstVersionIRSDocId(projectId, initiationId, productTreeMainId);
 	}
 	
 	@Override
@@ -734,7 +826,7 @@ public class DocumentsServiceImpl implements DocumentsService{
 			String statusCode = irsDocument.getIRSStatusCode();
 			String statusCodeNext = irsDocument.getIRSStatusCodeNext();
 			
-			List<String> reqforwardstatus = Arrays.asList("RIN","RRR","RRA");
+			List<String> reqforwardstatus = Arrays.asList("RIN", "RRR", "RRA", "REV");
 			
 			// This is for the moving the approval flow in forward direction.
 			if(action.equalsIgnoreCase("A")) {
@@ -789,7 +881,7 @@ public class DocumentsServiceImpl implements DocumentsService{
 					notification.setNotificationMessage("IRS Document Doc request Forwarded");
 				}else if(reqStatusCode2.equalsIgnoreCase("RFA")) {
 					notification.setEmpId(documentSummary!=null && documentSummary[7]!=null?Long.parseLong(documentSummary[7].toString()):0);
-					notification.setNotificationUrl("IRSDocumentList.htm");
+					notification.setNotificationUrl("IRSDocumentList.htm?projectId="+irsDocument.getProjectId()+"&initiationId="+irsDocument.getInitiationId()+"&productTreeMainId="+irsDocument.getProductTreeMainId()+"&projectType="+(irsDocument.getProjectId()!=0?"M":"I") );
 					notification.setNotificationMessage("IRS Document Doc Approved");
 				}
 				
@@ -803,7 +895,7 @@ public class DocumentsServiceImpl implements DocumentsService{
 				
 			}else if(action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")){
 				notification.setEmpId(documentSummary!=null && documentSummary[7]!=null?Long.parseLong(documentSummary[7].toString()):0);
-				notification.setNotificationUrl("IRSDocumentList.htm");
+				notification.setNotificationUrl("IRSDocumentList.htm?projectId="+irsDocument.getProjectId()+"&initiationId="+irsDocument.getInitiationId()+"&productTreeMainId="+irsDocument.getProductTreeMainId()+"&projectType="+(irsDocument.getProjectId()!=0?"M":"I") );
 				notification.setNotificationMessage(action.equalsIgnoreCase("R")?"IRS Document Doc Request Returned":"IRS Document Doc Request Disapproved");
 				notification.setNotificationby(Long.parseLong(empId));
 				notification.setNotificationDate(LocalDate.now().toString());
@@ -822,14 +914,30 @@ public class DocumentsServiceImpl implements DocumentsService{
 		}
 	}
 	
+	@Override
+	public long irsDocumentUserRevoke(String irsDocId, String userId, String empId) throws Exception {
+		try {
+			// Revoke
+			dao.irsDocumentUserRevoke(irsDocId);
+			
+			// Handling Transaction
+			addPfmsIGITransaction(Long.parseLong(irsDocId), "C", "REV", "NIL", Long.parseLong(empId));
+			
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		
+	}
 	/* ************************************************ IRS Document End***************************************************** */
 	
 	/* ************************************************ IDD Document ***************************************************** */
 	
 	@Override
-	public List<Object[]> getIDDDocumentList(String projectId, String initiationId) throws Exception {
+	public List<Object[]> getIDDDocumentList(String projectId, String initiationId, String productTreeMainId) throws Exception {
 		
-		return dao.getIDDDocumentList(projectId, initiationId);
+		return dao.getIDDDocumentList(projectId, initiationId, productTreeMainId);
 	}
 	
 	@Override
@@ -845,9 +953,9 @@ public class DocumentsServiceImpl implements DocumentsService{
 	}
 	
 	@Override
-	public Long getFirstVersionIDDDocId(String projectId, String initiationId) throws Exception {
+	public Long getFirstVersionIDDDocId(String projectId, String initiationId, String productTreeMainId) throws Exception {
 		
-		return dao.getFirstVersionIDDDocId(projectId, initiationId);
+		return dao.getFirstVersionIDDDocId(projectId, initiationId, productTreeMainId);
 	}
 	
 	@Override
@@ -858,7 +966,7 @@ public class DocumentsServiceImpl implements DocumentsService{
 			String statusCode = iddDocument.getIDDStatusCode();
 			String statusCodeNext = iddDocument.getIDDStatusCodeNext();
 			
-			List<String> reqforwardstatus = Arrays.asList("RIN","RRR","RRA");
+			List<String> reqforwardstatus = Arrays.asList("RIN", "RRR", "RRA", "REV");
 			
 			// This is for the moving the approval flow in forward direction.
 			if(action.equalsIgnoreCase("A")) {
@@ -913,7 +1021,7 @@ public class DocumentsServiceImpl implements DocumentsService{
 					notification.setNotificationMessage("IDD Document Doc request Forwarded");
 				}else if(reqStatusCode2.equalsIgnoreCase("RFA")) {
 					notification.setEmpId(documentSummary!=null && documentSummary[7]!=null?Long.parseLong(documentSummary[7].toString()):0);
-					notification.setNotificationUrl("IDDDocumentList.htm");
+					notification.setNotificationUrl("IDDDocumentList.htm?projectId="+iddDocument.getProjectId()+"&initiationId="+iddDocument.getInitiationId()+"&productTreeMainId="+iddDocument.getProductTreeMainId()+"&projectType="+(iddDocument.getProjectId()!=0?"M":"I") );
 					notification.setNotificationMessage("IDD Document Doc Approved");
 				}
 				
@@ -927,7 +1035,7 @@ public class DocumentsServiceImpl implements DocumentsService{
 				
 			}else if(action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")){
 				notification.setEmpId(documentSummary!=null && documentSummary[7]!=null?Long.parseLong(documentSummary[7].toString()):0);
-				notification.setNotificationUrl("IDDDocumentList.htm");
+				notification.setNotificationUrl("IDDDocumentList.htm?projectId="+iddDocument.getProjectId()+"&initiationId="+iddDocument.getInitiationId()+"&productTreeMainId="+iddDocument.getProductTreeMainId()+"&projectType="+(iddDocument.getProjectId()!=0?"M":"I") );
 				notification.setNotificationMessage(action.equalsIgnoreCase("R")?"IDD Document Doc Request Returned":"IDD Document Doc Request Disapproved");
 				notification.setNotificationby(Long.parseLong(empId));
 				notification.setNotificationDate(LocalDate.now().toString());
@@ -945,4 +1053,23 @@ public class DocumentsServiceImpl implements DocumentsService{
 			return 0;
 		}
 	}
+	
+	@Override
+	public long iddDocumentUserRevoke(String iddDocId, String userId, String empId) throws Exception {
+		try {
+			// Revoke
+			dao.iddDocumentUserRevoke(iddDocId);
+			
+			// Handling Transaction
+			addPfmsIGITransaction(Long.parseLong(iddDocId), "D", "REV", "NIL", Long.parseLong(empId));
+			
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		
+	}
+	
+	
 }

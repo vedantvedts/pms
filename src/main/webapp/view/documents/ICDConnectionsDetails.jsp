@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.documents.model.PfmsICDDocument"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.stream.Collectors"%>
@@ -54,7 +55,15 @@
     overflow-x: hidden; /* Enable vertical scrolling */
 }
 
+.select2-container {
+	width: 100% !important;
+}
 
+label {
+	font-weight: 800;
+	font-size: 16px;
+	color: #07689f;
+}
 </style>
 </head>
 <body>
@@ -65,11 +74,12 @@
 	String documentNo = (String)request.getAttribute("documentNo");
 	String projectId = (String)request.getAttribute("projectId");
 	List<Object[]> productTreeList = (List<Object[]>)request.getAttribute("productTreeList"); 
+	PfmsICDDocument icdDocument = (PfmsICDDocument)request.getAttribute("icdDocument"); 
 	List<IGIInterface> igiInterfaceList = (List<IGIInterface>)request.getAttribute("igiInterfaceList"); 
 	igiInterfaceList = igiInterfaceList.stream().filter(e -> e.getIsActive()==1).collect(Collectors.toList());
 	List<Object[]> icdConnectionsList = (List<Object[]>)request.getAttribute("icdConnectionsList"); 
 	
-
+	String isSubSystem = icdDocument!=null && icdDocument.getProductTreeMainId()!=0? "Y": "N";
 	//List<String> subsystems = productTreeList.stream().map(obj -> obj[7].toString()).distinct().collect(Collectors.toList());
 
 	//Map<String, String> connectionMap = new HashMap<>();
@@ -131,64 +141,111 @@
             	</div>
         	</div>
         	<div class="card-body">
+        		
         		<form action="ICDConnectionMatrixSubmit.htm" method="post" id="connectionForm">
         			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         			<input type="hidden" name="docId" value="<%=docId %>" />
         			<input type="hidden" name="docType" value="<%=docType %>" />
         			<input type="hidden" name="documentNo" value="<%=documentNo %>" />
         			<input type="hidden" name="projectId" value="<%=projectId %>" />
-	        		<table class="customtable">
-	        			<thead>
-	        				<tr>
-	        					<th width="15%">Sub-System 1</th>
-	        					<th width="15%">Super Sub-System 1</th>
-	        					<th width="15%">Sub-System 2</th>
-	        					<th width="15%">Super Sub-System 2</th>
-	        					<th width="30%">Interface</th>
-	        					<th width="10%">Action</th>
-	        				</tr>
-	        			</thead>	
-	        			<tbody>
-	        				<tr>
-	        					<td>
-	        						<select class="form-control selectdee subSystem1" name="subSystemOne" id="subSystem1" onchange="getSuperSubLevelList('1')" data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
-								        <option value="" disabled selected>Choose...</option>
-								        <% for(Object[] obj : productTreeList){ %>
-								        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>"><%=obj[2]+" ("+obj[7]+")" %></option>
-								        <%} %>
-									</select>
-	        					</td>
-	        					<td>
-	        						<select class="form-control selectdee superSubSystem1" name="superSubSystemOne" id="superSubSystem1" data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
-									</select>
-	        					</td>
-	        					<td>
-	        						<select class="form-control selectdee subSystem2" name="subSystemTwo" id="subSystem2" onchange="getSuperSubLevelList('2')" data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
-										<option value="" disabled selected>Choose...</option>
-								        <% for(Object[] obj : productTreeList){ %>
-								        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>"><%=obj[2]+" ("+obj[7]+")" %></option>
-								        <%} %>
-									</select>
-	        					</td>
-	        					<td>
-	        						<select class="form-control selectdee superSubSystem2" name="superSubSystemTwo" id="superSubSystem2" data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
-									</select>
-	        					</td>
-	        					<td>
-	        						<select class="form-control selectdee interfaceId" name="interfaceId" id="interfaceId" multiple data-placeholder="Choose..." data-live-search="true" data-container="body" required>
-								        <% for(IGIInterface igiinterface : igiInterfaceList){ %>
-								        	<option value="<%=igiinterface.getInterfaceId() %>"><%=igiinterface.getInterfaceName() %> (<%=igiinterface.getInterfaceCode() %>)</option>
-								        <%} %>
-									</select>
-	        					</td>
-	        					<td>
-	        						<button type="submit" class="btn btn-sm submit" onclick="return validateConnectionsForm()">
-	        							SUBMIT
-	        						</button>
-	        					</td>
-	        				</tr>
-	        			</tbody>	
-	        		</table>
+	        		
+	        		<div class="card">
+	        			<div class="card-body">
+	        				<div class="form-group">
+	        					<div class="row">
+		        					<%if(isSubSystem.equalsIgnoreCase("N")) {%>
+		        						<div class="col-md-2"></div>
+		        					<%} %>
+	        						<div class="col-md-2">
+	        							<label class="form-lable">Sub-System 1<span class="mandatory">*</span></label>
+	        							<select class="form-control selectdee subSystem1" name="subSystemOne" id="subSystem1" <%if(isSubSystem.equalsIgnoreCase("Y")) {%> onchange="getSuperSubLevelList('1')" <%} %>
+		        						data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
+									        <%if(isSubSystem.equalsIgnoreCase("Y")) {
+									        	Object[] subsystem = productTreeList.stream().filter(e -> icdDocument.getProductTreeMainId().equals(Long.parseLong(e[0].toString()))).findFirst().orElse(null);
+									        %>
+									        	<option value="<%=subsystem[0]+"/"+subsystem[7] %>" data-id="<%=subsystem[0]%>" selected ><%=subsystem[2]+" ("+subsystem[7]+")" %></option>
+									        <%} else {%>
+									        	<option value="" disabled selected>Choose...</option>
+										        <%
+										        for(Object[] obj : productTreeList){ %>
+										        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>" ><%=obj[2]+" ("+obj[7]+")" %></option>
+										        <%} %>
+									        <%} %>
+										</select>
+	        						</div>
+	        						<%if(isSubSystem.equalsIgnoreCase("Y")) {%>
+		        						<div class="col-md-2">
+		        							<label class="form-lable">Super Sub-System 1<span class="mandatory">*</span></label>
+		        							<select class="form-control selectdee superSubSystem1" name="superSubSystemOne" id="superSubSystem1" data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
+											</select>
+		        						</div>	
+	        						<%} %>
+	        						
+	        						<div class="col-md-2">
+	        							<label class="form-lable">Sub-System 2<span class="mandatory">*</span></label>
+		        						<select class="form-control selectdee subSystem2" name="subSystemTwo" id="subSystem2" <%if(isSubSystem.equalsIgnoreCase("Y")) {%> onchange="getSuperSubLevelList('2')" <%} %>
+		        						data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
+											<option value="" disabled selected>Choose...</option>
+									        <% for(Object[] obj : productTreeList){ %>
+									        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>"><%=obj[2]+" ("+obj[7]+")" %></option>
+									        <%} %>
+										</select>
+	        						</div>
+	        						<%if(isSubSystem.equalsIgnoreCase("Y")) {%>
+			        					<div class="col-md-2">
+			        						<label class="form-lable">Super Sub-System 2<span class="mandatory">*</span></label>
+			        						<select class="form-control selectdee superSubSystem2" name="superSubSystemTwo" id="superSubSystem2" data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
+											</select>
+			        					</div>
+	        						<%} %>
+	        						<div class="col-md-4">
+	        							<label class="form-lable">Interface<span class="mandatory">*</span></label>
+		        						<select class="form-control selectdee interfaceId" name="interfaceId" id="interfaceId" multiple data-placeholder="Choose..." data-live-search="true" data-container="body" required>
+									        <% for(IGIInterface igiinterface : igiInterfaceList){ %>
+									        	<option value="<%=igiinterface.getInterfaceId() %>"><%=igiinterface.getInterfaceName() %></option>
+									        <%} %>
+										</select>
+	        						</div>
+	        					</div>
+	        				</div>
+	        				
+	        				<div class="form-group">
+	        					<div class="row">
+	        						<%if(isSubSystem.equalsIgnoreCase("N")) {%>
+		        						<div class="col-md-2"></div>
+		        					<%} %>
+	        						<div class="col-md-2">
+	        							<label class="form-lable">Purpose<span class="mandatory">*</span></label>
+	        							<!-- <textarea class="form-control" name="purpose" rows="2" cols="" placeholder="Enter Purpose" required></textarea> -->
+	        							<input class="form-control" name="purpose" placeholder="Enter Purpose" required>
+	        						</div>
+	        						<div class="col-md-2">
+	        							<label class="form-lable">Constraints<span class="mandatory">*</span></label>
+	        							<!-- <textarea class="form-control" name="constraints" rows="2" cols="" placeholder="Enter Constraints" required></textarea> -->
+	        							<input class="form-control" name="constraints" placeholder="Enter Constraints" required>
+	        						</div>
+	        						<div class="col-md-2">
+	        							<label class="form-lable">Periodicity<span class="mandatory">*</span></label> <br>
+	        							<input type="radio" name="periodicity" value="Periodic" required>Periodic&nbsp;
+	        							<input type="radio" name="periodicity" value="Non-Periodic" required>Non-Periodic&nbsp;
+	        							<input type="radio" name="periodicity" value="Descrete" required>Descrete
+	        						</div>
+	        						<div class="col-md-2">
+	        							<label class="form-lable">Description<span class="mandatory">*</span></label>
+	        							<!-- <textarea class="form-control" name="description" rows="2" cols="" placeholder="Enter Description" required></textarea> -->
+	        							<input class="form-control" name="description" placeholder="Enter Periodicity Description" required>
+	        						</div>
+	        					</div>
+	        				</div>	
+	        				
+	        				<div class="center">
+	        					<button type="submit" class="btn btn-sm submit" onclick="return confirm('Are you Sure to Submit?')">
+	        						SUBMIT
+	        					</button>
+	        				</div>	
+	        			</div>
+	        		</div>
+	        		
 	        	</form>
 	        	
 	        	<hr class="mt-4 mb-4">	
@@ -201,27 +258,38 @@
                     			<th>Connection ID</th>
                     			<th>Sub-System 1</th>
                     			<th>Sub-System 2</th>
-                    			<th>Interface Code</th>
-                    			<th>Interface Type</th>
-                    			<th>Transmission Speed</th>
-                    			<th>Data Format</th>
+                    			<%if(isSubSystem.equalsIgnoreCase("Y")) {%>
+	                    			<th>Super Sub-System 1</th>
+	                    			<th>Super Sub-System 2</th>
+                    			<%} %>
+                    			<!-- <th>Interface Code</th>
+                    			<th>Interface Type</th> -->
+                    			<!-- <th>Transmission Speed</th>
+                    			<th>Data Format</th> -->
+                    			<th>Purpose</th>
+                    			<th>Constraints</th>
+                    			<th>Periodicity</th>
+                    			<th>Description</th>
                     			<th>Action</th>
 	                    	</tr>
                     	</thead>
                     	<tbody>
                     		<%if(icdConnectionsList!=null && icdConnectionsList.size()>0) {
-                    			int count = 0;
-                    			int slno = 0;
-                    			String systemOne1 = "";
-                				String systemTwo1 = "";
+                    			int count = 0, slno = 0;
+                    			String systemOne1 = "", systemTwo1 = "", subSystemOne1 = "", subSystemTwo1 = "";
                     			for(Object[] obj : icdConnectionsList) {
                     				
                     				String systemOne2 = obj[4]+"";
                     				String systemTwo2 = obj[5]+"";
+                    				String subSystemOne2 = obj[16]+"";
+                    				String subSystemTwo2 = obj[17]+"";
                     				
-                    				if(!systemOne1.equalsIgnoreCase(systemOne2) || !systemTwo1.equalsIgnoreCase(systemTwo2)) {
+                    				if(!systemOne1.equalsIgnoreCase(systemOne2) || !systemTwo1.equalsIgnoreCase(systemTwo2) ||
+                    				   !subSystemOne1.equalsIgnoreCase(subSystemOne2) || !subSystemTwo1.equalsIgnoreCase(subSystemTwo2)	) {
                     					systemOne1 = systemOne2;
                     					systemTwo1 = systemTwo2;
+                    					subSystemOne1 = subSystemOne2;
+                    					subSystemTwo1 = subSystemTwo2;
                     					count = 0;
                     				}
                     				
@@ -229,27 +297,43 @@
                     		%>
                     			<tr>
                     				<td class="center"><%=++slno %></td>
-                    				<td class="center">
-                    					<%=obj[4] + "_" + obj[5] + "_" + obj[8] + ((count>=100)?"_"+count:((count>=10)?"_0"+count:"_00"+count)) %>
-                    					<%-- <%=obj[4]+"_"+obj[5] %> --%>
+                    				<td class="center" id="connectionId_<%=slno%>">
+                    					<%-- <%=obj[4] + "_" + obj[5] + "_" + obj[8] + ((count>=100)?"_"+count:((count>=10)?"_0"+count:"_00"+count)) %> --%>
+                    					<%=count + ". " +obj[4] + "_" + obj[5] + "_" + obj[8]  %>
                     				</td>
                     				<td class="center"><%=obj[4] %></td>
                     				<td class="center"><%=obj[5] %></td>
-                    				<td class="center"><%=obj[8] %></td>
-                    				<td><%=obj[10] %></td>
-                    				<td><%=obj[13] %></td>
-                    				<td><%=obj[11] %></td>
+                    				<%if(isSubSystem.equalsIgnoreCase("Y")) {%>
+	                    				<td class="center"><%=obj[16] %></td>
+	                    				<td class="center"><%=obj[17] %></td>
+	                    			<%} %>	
+                    				<%-- <td class="center"><%=obj[8] %></td>
+                    				<td><%=obj[10] %></td> --%>
+                    				<%-- <td><%=obj[13] %></td>
+                    				<td><%=obj[11] %></td> --%>
+                    				<td><%=obj[28]!=null?obj[28]:"-" %></td>
+                    				<td><%=obj[29]!=null?obj[29]:"-"  %></td>
+                    				<td><%=obj[30]!=null?obj[30]:"-"  %></td>
+                    				<td><%=obj[31]!=null?obj[31]:"-"  %></td>
                     				<td class="center">
-						      			 <form action="ICDConnectionDelete.htm" method="POST" id="inlineapprform<%=count%>">
-									        <button type="submit" class="editable-clicko" onclick="return confirm('Are you sure to delete?')">
+						      			 <form action="ICDConnectionDelete.htm" method="POST" id="inlineapprform<%=slno%>">
+						      			 
+									        <button type="button" onclick="openConnectionEditModal('<%=slno%>')">
+									            <img src="view/images/edit.png" alt="Edit">
+									        </button>
+									        <button type="submit" class="editable-clicko" onclick="return confirm('Are you sure to Delete?')">
 									            <img src="view/images/delete.png" alt="Delete">
 									        </button>
 									        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-									        <input type="hidden" name="icdConnectionId" value="<%=obj[0] %>">
+									        <input type="hidden" name="icdConnectionId" id="icdConnectionId_<%=slno%>" value="<%=obj[0] %>">
 									        <input type="hidden" name="docId" value="<%=docId%>"> 
 											<input type="hidden" name="docType" value="<%=docType%>"> 
 											<input type="hidden" name="documentNo" value="<%=documentNo%>">
 											<input type="hidden" name="projectId" value="<%=projectId%>">
+											<input type="hidden" id="purpose_<%=slno%>" value="<%=obj[28]%>">
+											<input type="hidden" id="constraints_<%=slno%>" value="<%=obj[29]%>">
+											<input type="hidden" id="periodicity_<%=slno%>" value="<%=obj[30]%>">
+											<input type="hidden" id="description_<%=slno%>" value="<%=obj[31]%>">
 									    </form>
 						      		</td>
                     			</tr>
@@ -261,63 +345,64 @@
         	</div>
         </div>
  	</div>
- 	
- 	<!-- ----------------------------------------------- Add New Applicable Documents Modal --------------------------------------------------------------- -->
-	<%-- <div class="modal fade " id="connectinoMatrixModal" tabindex="-1" role="dialog" aria-labelledby="connectinoMatrixModal" aria-hidden="true" style="">
-		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
-			<div class="modal-content" style="width: 200%;margin-left: -50%;">
-				<div class="modal-header" style="background: #055C9D;color: white;">
-		        	<h5 class="modal-title ">ICD Connection Matrix</h5>
-			        <button type="button" class="close" style="text-shadow: none !important" data-dismiss="modal" aria-label="Close">
-			          <span class="text-light" aria-hidden="true">&times;</span>
+	
+	<!-- -------------------------------------------- Connection Edit Modal -------------------------------------------- -->
+	<div class="modal fade" id="connectionEditModal" tabindex="-1" role="dialog" aria-labelledby="connectionEditModal" aria-hidden="true">
+  		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
+    		<div class="modal-content" style="width: 150%;margin-left:-20%;margin-top: 30%;">
+      			<div class="modal-header" id="ModalHeader" style="background: #055C9D ;color: white;">
+			        <h5 class="modal-title" >Connection Edit - <span id="connectionid"></span> </h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true" class="text-light">&times;</span>
 			        </button>
-		      	</div>
-     			<div class="modal-body">
-     				<div class="container-fluid">
-     					<div class="row">
-							<div class="col-md-12 " align="left">
-
-								<table class="customtable">
-								    <thead>
-								        <tr>
-								            <th width="8%">Sub-System</th>
-								            <% for (String subsystem : subsystems) { %>
-								                <th><%= subsystem %></th>
-								            <% } %>
-								        </tr>
-								    </thead>
-								    <tbody>
-								        <% 
-								        for (String rowSubsystem : subsystems) { 
-								        %>
-								            <tr>
-								                <td class="center"><%= rowSubsystem %></td>
-								                <% for (String colSubsystem : subsystems) { %>
-								                    <td class="center">
-								                        <% 
-								                        if (rowSubsystem.equalsIgnoreCase(colSubsystem)) { 
-								                            out.print("NA");
-								                        } else {
-								                            String key = rowSubsystem + "_" + colSubsystem;
-								                            String connections = connectionMap.getOrDefault(key, "-");
-								                            out.print(connections);
-								                        }
-								                        %>
-								                    </td>
-								                <% } %>
-								            </tr>
-								        <% } %>
-								    </tbody>
-								</table>
-
-							</div>
-						</div>
-     				</div>
-     			</div>
-     		</div>
-		</div>
-	</div> --%>				
-	<!-- ----------------------------------------------- Add New Short Codes Modal End-------------------------------------------------------- -->
+      			</div>
+      			
+      			<div class="modal-body">
+       				<form action="ICDConnectionEditSubmit.htm" method="post">
+       					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+       					<input type="hidden" name="icdConnectionId" id="icdConnectionId">
+       					<input type="hidden" name="docId" value="<%=docId%>"> 
+						<input type="hidden" name="docType" value="<%=docType%>"> 
+						<input type="hidden" name="documentNo" value="<%=documentNo%>">
+						<input type="hidden" name="projectId" value="<%=projectId%>">
+      					<div class="form-group">
+        					<div class="row">
+	        					
+        						<div class="col-md-3">
+        							<label class="form-lable">Purpose<span class="mandatory">*</span></label>
+        							<!-- <textarea class="form-control" name="purpose" rows="2" cols="" placeholder="Enter Purpose" required></textarea> -->
+        							<input class="form-control" name="purpose" id="purpose" placeholder="Enter Purpose" required>
+        						</div>
+        						<div class="col-md-3">
+        							<label class="form-lable">Constraints<span class="mandatory">*</span></label>
+        							<!-- <textarea class="form-control" name="constraints" rows="2" cols="" placeholder="Enter Constraints" required></textarea> -->
+        							<input class="form-control" name="constraints" id="constraints" placeholder="Enter Constraints" required>
+        						</div>
+        						<div class="col-md-3">
+        							<label class="form-lable">Periodicity<span class="mandatory">*</span></label> <br>
+        							<input type="radio" name="periodicityEdit" value="Periodic" required>Periodic&nbsp;
+        							<input type="radio" name="periodicityEdit" value="Non-Periodic" required>Non-Periodic&nbsp;
+        							<input type="radio" name="periodicityEdit" value="Descrete" required>Descrete
+        						</div>
+        						<div class="col-md-3">
+        							<label class="form-lable">Description<span class="mandatory">*</span></label>
+        							<!-- <textarea class="form-control" name="description" rows="2" cols="" placeholder="Enter Description" required></textarea> -->
+        							<input class="form-control" name="description" id="description" placeholder="Enter Periodicity Description" required>
+        						</div>
+        					</div>
+        				</div>	
+        				
+        				<div class="center">
+        					<button type="submit" class="btn btn-sm submit" onclick="return confirm('Are you Sure to Submit?')">
+        						SUBMIT
+        					</button>
+        				</div>	
+      				</form>
+      			</div>
+    		</div>
+  		</div>
+	</div>
+	<!-- -------------------------------------------- Connection Edit Modal End -------------------------------------------- -->
 	
 <script type="text/javascript">
 	/* $(document).ready(function () {
@@ -354,6 +439,10 @@
         });
     });
 	
+	<%if(isSubSystem.equalsIgnoreCase("Y")) {%> 
+	
+	getSuperSubLevelList('1');
+	
 	function getSuperSubLevelList(rowId){
 
 		var projectId = '<%=projectId%>';
@@ -384,7 +473,8 @@
 		});
 	}
 	
-	function validateConnectionsForm() {
+	<%} %>
+	/* function validateConnectionsForm() {
 		
 		var subSystem1 = $('#subSystem1').val();
 		var subSystem2 = $('#subSystem2').val();
@@ -407,6 +497,30 @@
 				return false;
 			}
 		}
+	} */
+	
+	function openConnectionEditModal(rowId) {
+		var connectionId = $('#connectionId_'+rowId).text();
+		var purpose = $('#purpose_'+rowId).val();
+		var constraints = $('#constraints_'+rowId).val();
+		var periodicity = $('#periodicity_'+rowId).val();
+		var description = $('#description_'+rowId).val();
+		var icdConnectionId = $('#icdConnectionId_'+rowId).val();
+		
+		console.log(periodicity);
+		$('#connectionid').text(connectionId);
+		$('#purpose').val(purpose);
+		$('#constraints').val(constraints);
+		if(periodicity==null || periodicity=='null') {
+			$('input[name="periodicityEdit"]').prop('checked', false);
+		}else {
+			$('input[name="periodicityEdit"][value="'+periodicity+'"]').prop('checked', true);
+		}
+		
+		$('#description').val(description);
+		$('#icdConnectionId').val(icdConnectionId);
+		
+		$('#connectionEditModal').modal('show');
 	}
 </script> 	
 </body>

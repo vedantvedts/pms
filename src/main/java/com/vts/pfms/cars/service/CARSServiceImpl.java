@@ -38,6 +38,7 @@ import com.vts.pfms.cars.dao.CARSDao;
 import com.vts.pfms.cars.dto.CARSRSQRDetailsDTO;
 import com.vts.pfms.cars.dto.CARSApprovalForwardDTO;
 import com.vts.pfms.cars.dto.CARSContractDetailsDTO;
+import com.vts.pfms.cars.model.CARSAnnualReport;
 import com.vts.pfms.cars.model.CARSContract;
 import com.vts.pfms.cars.model.CARSContractConsultants;
 import com.vts.pfms.cars.model.CARSContractEquipment;
@@ -2241,4 +2242,23 @@ public class CARSServiceImpl implements CARSService{
 		
 		return dao.carsCurrentStatusUpdate(currentStatus, carsInitiationId);
 	}
+
+	@Override
+	public List<CARSAnnualReport> getCARSAnnualReportListByYear(String annualYear) throws Exception {
+		
+		return dao.getCARSAnnualReportListByYear(annualYear);
+	}
+
+	@Override
+	public long addCARSAnnualReport(CARSAnnualReport carsAnnualReport) throws Exception {
+		
+		return dao.addCARSAnnualReport(carsAnnualReport);
+	}
+	
+	@Override
+	public int deleteCARSAnnualReportRecordsByYear(String annualYear) throws Exception {
+		
+		return dao.deleteCARSAnnualReportRecordsByYear(annualYear);
+	}
+	
 }

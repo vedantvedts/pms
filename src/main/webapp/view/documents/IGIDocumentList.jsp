@@ -9,22 +9,11 @@
     <meta charset="ISO-8859-1">
     <jsp:include page="../static/header.jsp"></jsp:include>
 <style type="text/css">
-label {
-	font-weight: bold;
-	font-size: 13px;
-}
-
-.table .font {
-	font-family: 'Muli', sans-serif !important;
-	font-style: normal;
-	font-size: 13px;
-	font-weight: 400 !important;
-}
 
 .card{
-box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 14px;
-border-radius: 10px;
-border: 0px;
+	box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 14px;
+	border-radius: 10px;
+	border: 0px;
 }
 
 .table button {
@@ -39,34 +28,6 @@ border: 0px;
 
 .table td {
 	padding: 5px !important;
-}
-
-.resubmitted {
-	color: green;
-}
-
-.fa-long-arrow-right {
-	font-size: 2.20rem;
-	padding: 0px 5px;
-}
-
-.datatable-dashv1-list table tbody tr td {
-	padding: 8px 10px !important;
-}
-
-.card-deck{
-display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-}
-
-.pagin{
-display: grid;
-float:left;
-  grid-template-columns: 1fr 1fr 1fr;
-}
-
-.table-project-n {
-	color: #005086;
 }
 
 #table thead tr th {
@@ -86,7 +47,7 @@ float:left;
 }
 
 .col-xl{
-height: 28px;
+	height: 28px;
 }
 
 .cc-rockmenu .rolling {
@@ -114,10 +75,6 @@ height: 28px;
 	margin: 0 5px 0 0;
 }
 
-.sameline{
-display: inline-block;
-}
-
 .cc-rockmenu .rolling .rolling_icon:hover .rolling {
 	width: 312px;
 }
@@ -135,54 +92,26 @@ display: inline-block;
 	font-family: 'Muli', sans-serif;
 }
 
-.editable-click{
-float: left;
-z-index: 9;
-white-space: nowrap;
-height: 28px;
-margin: 0 5px 0 0;
-box-sizing: border-box;
-display: inline-block;
-}
 
 .editable-clicko{
-z-index: 9;
-white-space: nowrap;
-height: 28px;
-margin: 0 5px 0 0;
-box-sizing: border-box;
-display: inline-block;
-background: none;border-style: none;
+	z-index: 9;
+	white-space: nowrap;
+	height: 28px;
+	margin: 0 5px 0 0;
+	box-sizing: border-box;
+	display: inline-block;
+	background: none;border-style: none;
 }
 
 .cc-rockmenu .rolling p {
 	margin: 0;
 }
 
-.width {
-	width: 270px !important;
-}
 
 .label {
 	border-radius: 3px;
 	color: white;
 	padding: 1px 2px;
-}
-
-.label-primary {
-	background-color: #D62AD0; /* D62AD0 */
-}
-
-.label-warning {
-	background-color: #5C33F6;
-}
-
-.label-info {
-	background-color: #006400;
-}
-
-.label-success {
-	background-color: #4B0082;
 }
 
 .trup{
@@ -220,6 +149,10 @@ background: none;border-style: none;
 
 .left {
 	text-align: left !important;
+}
+
+.select2-container {
+	width: 100% !important;
 }
 </style>   
 <style>
@@ -286,7 +219,7 @@ background: none;border-style: none;
 	String version = "1.0";
     version = igiDocumentList != null && igiDocumentList.size() > 0 ? igiDocumentList.get(0)[1].toString() : "1.0";
     
-    List<String> igiforwardstatus = Arrays.asList("RIN","RRR","RRA");
+    List<String> igiforwardstatus = Arrays.asList("RIN","RRR","RRA", "REV");
     
     FormatConverter fc = new FormatConverter();
 %>
@@ -402,6 +335,18 @@ background: none;border-style: none;
 															</div>
 														</div>
 													</button>
+												<%} %>
+												<%if(obj[5]!=null && "RFW".equalsIgnoreCase(obj[5].toString()) ) {%>
+													<button class="editable-clicko" name="revoke" formaction="IGIDocumentUserRevoke.htm" formmethod="post" onclick="return confirm('Are you sure to Revoke?')">
+														<div class="cc-rockmenu">
+															<div class="rolling">
+																<figure class="rolling_icon">
+																	<img src="view/images/userrevoke.png" style="width: 22px !important;">
+																</figure>
+																<span>Revoke</span>
+															</div>
+														</div>
+												    </button>
 												<%} %>
 												<button class="editable-clicko" name="isPdf" value="Y" formaction="IGIDocumentDetails.htm" formtarget="blank" >
 													<div class="cc-rockmenu">

@@ -21,6 +21,8 @@ import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.IGIInterface;
+import com.vts.pfms.documents.model.IGIInterfaceContent;
+import com.vts.pfms.documents.model.IGIInterfaceTypes;
 import com.vts.pfms.documents.model.IRSDocumentSpecifications;
 import com.vts.pfms.documents.model.PfmsApplicableDocs;
 import com.vts.pfms.documents.model.PfmsICDDocument;
@@ -391,13 +393,30 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 	
-	public static final String GETINTERFACECOUNTBYTYPE = "SELECT COUNT(InterfaceId) AS InterfaceCount FROM pfms_igi_interfaces WHERE IsActive=1 AND InterfaceType=:InterfaceType";
+	public static final String GETINTERFACETYPECOUNTBYTYPEID = "SELECT COUNT(InterfaceId) AS InterfaceCount FROM pfms_igi_interfaces WHERE IsActive=1 AND InterfaceTypeId=:InterfaceTypeId";
 	@Override
-	public int getInterfaceCountByType(String interfaceType) throws Exception {
+	public int getInterfaceTypeCountByinterfaceTypeId(String interfaceTypeId) throws Exception {
 
 		try {
-			Query query =manager.createNativeQuery(GETINTERFACECOUNTBYTYPE);
-			query.setParameter("InterfaceType", interfaceType);
+			Query query =manager.createNativeQuery(GETINTERFACETYPECOUNTBYTYPEID);
+			query.setParameter("InterfaceTypeId", interfaceTypeId);
+			BigInteger maxCount = (BigInteger)query.getSingleResult();
+			return maxCount.intValue();
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside DocumentsDAOImpl getInterfaceCountByType "+ e);
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	public static final String GETINTERFACECONTENTCOUNTBYCONTENTID = "SELECT COUNT(InterfaceId) AS InterfaceCount FROM pfms_igi_interfaces WHERE IsActive=1 AND InterfaceTypeId=:InterfaceTypeId AND InterfaceContentId=:InterfaceContentId";
+	@Override
+	public int getInterfaceContentCountByinterfaceContentId(String interfaceTypeId, String interfaceContentId) throws Exception {
+		
+		try {
+			Query query =manager.createNativeQuery(GETINTERFACECONTENTCOUNTBYCONTENTID);
+			query.setParameter("InterfaceTypeId", interfaceTypeId);
+			query.setParameter("InterfaceContentId", interfaceContentId);
 			BigInteger maxCount = (BigInteger)query.getSingleResult();
 			return maxCount.intValue();
 		}catch (Exception e) {
@@ -509,18 +528,56 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 
 	}
+
+	@Override
+	public List<IGIInterfaceTypes> getIGIInterfaceTypesList() throws Exception {
+		try {
+			Query query = manager.createQuery("FROM IGIInterfaceTypes ORDER BY InterfaceTypeCode");
+			return (List<IGIInterfaceTypes>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<IGIInterfaceTypes>();
+		}
+	}
+	
+	@Override
+	public List<IGIInterfaceContent> getIGIInterfaceContentList() throws Exception {
+		try {
+			Query query = manager.createQuery("FROM IGIInterfaceContent ORDER BY InterfaceContentCode");
+			return (List<IGIInterfaceContent>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<IGIInterfaceContent>();
+		}
+	}
+	
+	private static final String IGIDOCUMENTUSERREVOKE = "UPDATE pfms_igi_document SET IGIStatusCode='REV', IGIStatusCodeNext='FWD' WHERE IGIDocId=:IGIDocId";
+	@Override
+	public int igiDocumentUserRevoke(String igiDocId) throws Exception {
+		try {
+			
+			Query query = manager.createNativeQuery(IGIDOCUMENTUSERREVOKE);
+			query.setParameter("IGIDocId", igiDocId);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
 	/* ************************************************ IGI Document End***************************************************** */
 	
 	/* ************************************************ ICD Document ***************************************************** */
 	private static final String ICDDOCUMENTLIST = "SELECT a.ICDDocId, a.ICDVersion, a.LabCode, a.InitiatedBy, a.InitiatedDate, a.ICDStatusCode, a.ICDStatusCodeNext, a.CreatedBy, a.CreatedDate, a.Remarks, \r\n"
-			+ "CONCAT(IFNULL(CONCAT(b.Title,' '),(IFNULL(CONCAT(b.Salutation, ' '), ''))), b.EmpName) AS 'EmpName', c.Designation, a.ProjectId, a.InitiationId, d.ReqStatus, d.ReqStatusColor \r\n"
-			+ "FROM pfms_icd_document a JOIN employee b ON a.InitiatedBy=b.EmpId LEFT JOIN employee_desig c ON b.DesigId=c.DesigId LEFT JOIN pfms_req_approval_status d ON a.ICDStatusCode=d.ReqStatusCode WHERE a.IsActive=1 AND a.ProjectId=:ProjectId AND a.InitiationId=:InitiationId ORDER BY a.ICDDocId DESC";
+			+ "CONCAT(IFNULL(CONCAT(b.Title,' '),(IFNULL(CONCAT(b.Salutation, ' '), ''))), b.EmpName) AS 'EmpName', c.Designation, a.ProjectId, a.InitiationId, d.ReqStatus, d.ReqStatusColor, a.productTreeMainId \r\n"
+			+ "FROM pfms_icd_document a JOIN employee b ON a.InitiatedBy=b.EmpId LEFT JOIN employee_desig c ON b.DesigId=c.DesigId LEFT JOIN pfms_req_approval_status d ON a.ICDStatusCode=d.ReqStatusCode WHERE a.IsActive=1 AND a.ProjectId=:ProjectId AND a.InitiationId=:InitiationId AND ProductTreeMainId=:ProductTreeMainId ORDER BY a.ICDDocId DESC";
 	@Override
-	public List<Object[]> getICDDocumentList(String projectId, String initiationId) throws Exception {
+	public List<Object[]> getICDDocumentList(String projectId, String initiationId, String productTreeMainId) throws Exception {
 		try {
 			Query query=manager.createNativeQuery(ICDDOCUMENTLIST);
 			query.setParameter("ProjectId", projectId);
 			query.setParameter("InitiationId", initiationId);
+			query.setParameter("ProductTreeMainId", productTreeMainId);
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -555,13 +612,14 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		
 	}
 
-	private static final String GETFIRSTVERSIONICDDOCID = "SELECT a.ICDDocId FROM pfms_icd_document a WHERE a.InitiationId=:InitiationId AND a.ProjectId=:ProjectId AND a.ICDVersion='1.0' AND a.IsActive=1 LIMIT 1";
+	private static final String GETFIRSTVERSIONICDDOCID = "SELECT a.ICDDocId FROM pfms_icd_document a WHERE a.InitiationId=:InitiationId AND a.ProjectId=:ProjectId AND ProductTreeMainId=:ProductTreeMainId AND a.ICDVersion='1.0' AND a.IsActive=1 LIMIT 1";
 	@Override
-	public Long getFirstVersionICDDocId(String projectId, String initiationId) throws Exception {
+	public Long getFirstVersionICDDocId(String projectId, String initiationId, String productTreeMainId) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(GETFIRSTVERSIONICDDOCID);
 			query.setParameter("InitiationId", initiationId);
 			query.setParameter("ProjectId", projectId);
+			query.setParameter("ProductTreeMainId", productTreeMainId);
 			BigInteger count = (BigInteger)query.getSingleResult();
 			return count.longValue();
 			
@@ -586,9 +644,20 @@ public class DocumentsDaoImpl implements DocumentsDao{
 	}
 	
 	private static final String GETICDCONEECTIONSLIST = "SELECT a.ICDConnectionId, a.ICDDocId, a.SubSystemMainIdOne, a.SubSystemMainIdTwo, a.SubSystemOne,  a.SubSystemTwo,  a.InterfaceId,\r\n"
-			+ "	b.InterfaceSeqNo, b.InterfaceCode, b.InterfaceName, b.InterfaceType, b.DataType, b.SignalType, b.InterfaceSpeed\r\n"
-			+ "FROM pfms_icd_document_connections a LEFT JOIN pfms_igi_interfaces b ON a.InterfaceId=b.InterfaceId\r\n"
-			+ "WHERE a.IsActive=1 AND ICDDocId=:ICDDocId ORDER BY a.SubSystemMainIdOne, a.SubSystemMainIdTwo";
+			+ "	'NA' AS InterfaceSeqNo, b.InterfaceCode, b.InterfaceName, g.InterfaceType, b.ParameterData, h.InterfaceContent, b.InterfaceSpeed, \r\n"
+			+ "	a.SuperSubSysMainIdOne, a.SuperSubSysMainIdTwo, a.SuperSubSystemOne, a.SuperSubSystemTwo,\r\n"
+			+ "	c.LevelName AS 'LevelNameS1', d.LevelName AS 'LevelNameS2', e.LevelName AS 'LevelNameSS1', f.LevelName AS 'LevelNameSS2',\r\n"
+			+ "	g.InterfaceTypeId, g.InterfaceTypeCode, g.InterfaceTypeCodeId, h.InterfaceContentId, h.InterfaceContentCode, h.InterfaceContentCodeId, \r\n"
+			+ "	a.Purpose, a.Constraints, a.Periodicity, a.Description  \r\n"
+			+ "FROM pfms_icd_document_connections a \r\n"
+			+ "LEFT JOIN pfms_igi_interfaces b ON a.InterfaceId=b.InterfaceId\r\n"
+			+ "LEFT JOIN pfms_product_tree c ON a.SubSystemMainIdOne = c.MainId\r\n"
+			+ "LEFT JOIN pfms_product_tree d ON a.SubSystemMainIdTwo = d.MainId\r\n"
+			+ "LEFT JOIN pfms_product_tree e ON a.SuperSubSysMainIdOne = e.MainId\r\n"
+			+ "LEFT JOIN pfms_product_tree f ON a.SuperSubSysMainIdTwo = f.MainId\r\n"
+			+ "LEFT JOIN pfms_igi_interface_types g ON b.InterfaceTypeId = g.InterfaceTypeId\r\n"
+			+ "LEFT JOIN pfms_igi_interface_content h ON b.InterfaceTypeId = h.InterfaceContentId\r\n"
+			+ "WHERE a.IsActive=1 AND ICDDocId=:ICDDocId ORDER BY a.SubSystemMainIdOne, a.SuperSubSysMainIdOne, a.SubSystemMainIdTwo, a.SuperSubSysMainIdTwo";
 	@Override
 	public List<Object[]> getICDConnectionsList(String icdDocId) throws Exception {
 		try {
@@ -644,19 +713,43 @@ public class DocumentsDaoImpl implements DocumentsDao{
 
 	}
 	
+	private static final String ICDDOCUMENTUSERREVOKE = "UPDATE pfms_icd_document SET ICDStatusCode='REV', ICDStatusCodeNext='FWD' WHERE ICDDocId=:ICDDocId";
+	@Override
+	public int icdDocumentUserRevoke(String icdDocId) throws Exception {
+		try {
+			
+			Query query = manager.createNativeQuery(ICDDOCUMENTUSERREVOKE);
+			query.setParameter("ICDDocId", icdDocId);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+	@Override
+	public ICDDocumentConnections getICDDocumentConnectionsById(String icdConnectionId) throws Exception {
+		try {
+			return manager.find(ICDDocumentConnections.class, icdConnectionId!=null?Long.parseLong(icdConnectionId):0);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	/* ************************************************ ICD Document End***************************************************** */
 	
 	/* ************************************************ IRS Document ***************************************************** */
 	
 	private static final String IRSDOCUMENTLIST = "SELECT a.IRSDocId, a.IRSVersion, a.LabCode, a.InitiatedBy, a.InitiatedDate, a.IRSStatusCode, a.IRSStatusCodeNext, a.CreatedBy, a.CreatedDate, a.Remarks, \r\n"
-			+ "CONCAT(IFNULL(CONCAT(b.Title,' '),(IFNULL(CONCAT(b.Salutation, ' '), ''))), b.EmpName) AS 'EmpName', c.Designation, d.ReqStatus, d.ReqStatusColor \r\n"
-			+ "FROM pfms_irs_document a JOIN employee b ON a.InitiatedBy=b.EmpId LEFT JOIN employee_desig c ON b.DesigId=c.DesigId LEFT JOIN pfms_req_approval_status d ON a.IRSStatusCode=d.ReqStatusCode WHERE a.IsActive=1 AND a.ProjectId=:ProjectId AND a.InitiationId=:InitiationId ORDER BY a.IRSDocId DESC";
+			+ "CONCAT(IFNULL(CONCAT(b.Title,' '),(IFNULL(CONCAT(b.Salutation, ' '), ''))), b.EmpName) AS 'EmpName', c.Designation, a.ProjectId, a.InitiationId, d.ReqStatus, d.ReqStatusColor, a.ProductTreeMainId \r\n"
+			+ "FROM pfms_irs_document a JOIN employee b ON a.InitiatedBy=b.EmpId LEFT JOIN employee_desig c ON b.DesigId=c.DesigId LEFT JOIN pfms_req_approval_status d ON a.IRSStatusCode=d.ReqStatusCode WHERE a.IsActive=1 AND a.ProjectId=:ProjectId AND a.InitiationId=:InitiationId AND a.ProductTreeMainId=:ProductTreeMainId ORDER BY a.IRSDocId DESC";
 	@Override
-	public List<Object[]> getIRSDocumentList(String projectId, String initiationId) throws Exception {
+	public List<Object[]> getIRSDocumentList(String projectId, String initiationId, String productTreeMainId) throws Exception {
 		try {
 			Query query=manager.createNativeQuery(IRSDOCUMENTLIST);
 			query.setParameter("ProjectId", projectId);
 			query.setParameter("InitiationId", initiationId);
+			query.setParameter("ProductTreeMainId", productTreeMainId);
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -690,13 +783,14 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 
-	private static final String GETFIRSTVERSIONIRSDOCID = "SELECT a.IRSDocId FROM pfms_irs_document a WHERE a.InitiationId=:InitiationId AND a.ProjectId=:ProjectId AND a.IRSVersion='1.0' AND a.IsActive=1 LIMIT 1";
+	private static final String GETFIRSTVERSIONIRSDOCID = "SELECT a.IRSDocId FROM pfms_irs_document a WHERE a.InitiationId=:InitiationId AND a.ProjectId=:ProjectId AND a.ProductTreeMainId=:ProductTreeMainId AND a.IRSVersion='1.0' AND a.IsActive=1 LIMIT 1";
 	@Override
-	public Long getFirstVersionIRSDocId(String projectId, String initiationId) throws Exception {
+	public Long getFirstVersionIRSDocId(String projectId, String initiationId, String productTreeMainId) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(GETFIRSTVERSIONIRSDOCID);
 			query.setParameter("InitiationId", initiationId);
 			query.setParameter("ProjectId", projectId);
+			query.setParameter("ProductTreeMainId", productTreeMainId);
 			BigInteger count = (BigInteger)query.getSingleResult();
 			return count.longValue();
 			
@@ -722,15 +816,10 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 	
-	private static final String IRSDOCUMENTSPECIFICATIONSLIST = "SELECT a.IRSSpecificationId, a.IRSDocId, a.CSCIOne, a.CSCITwo, a.InterfaceId, a.MessageType,   \r\n"
-			+ "b.InterfaceSeqNo AS 'InterfaceSeqNoC1', b.InterfaceCode AS 'InterfaceCodeC1', b.InterfaceName AS 'InterfaceNameC1', b.InterfaceType AS 'InterfaceTypeC1', b.DataType AS 'DataTypeC1', b.SignalType AS 'SignalTypeC1', b.InterfaceSpeed AS 'InterfaceSpeedC1',\r\n"
-			+ "c.InterfaceSeqNo AS 'InterfaceSeqNoC2', c.InterfaceCode AS 'InterfaceCodeC2', c.InterfaceName AS 'InterfaceNameC2', c.InterfaceType AS 'InterfaceTypeC2', c.DataType AS 'DataTypeC2', c.SignalType AS 'SignalTypeC2', c.InterfaceSpeed AS 'InterfaceSpeedC2',\r\n"
-			+ "d.InterfaceSeqNo, d.InterfaceCode, d.InterfaceName, d.InterfaceType, d.DataType, d.SignalType, d.InterfaceSpeed\r\n"
-			+ "FROM pfms_irs_document_specifications a \r\n"
-			+ "JOIN pfms_igi_interfaces b ON b.InterfaceId = a.CSCIOne \r\n"
-			+ "JOIN pfms_igi_interfaces c ON c.InterfaceId = a.CSCITwo\r\n"
-			+ "JOIN pfms_igi_interfaces d ON d.InterfaceId = a.InterfaceId\r\n"
-			+ "WHERE a.IsActive=1 AND a.IRSDocId = :IRSDocId";
+	private static final String IRSDOCUMENTSPECIFICATIONSLIST = "SELECT a.IRSSpecificationId, a.IRSDocId, a.SubSystemMainIdOne, a.SubSystemMainIdTwo, a.SubSystemOne,  a.SubSystemTwo,  a.InterfaceId,\r\n"
+			+ "       'NA' AS InterfaceSeqNo, b.InterfaceCode, b.InterfaceName, b.InterfaceType, b.ParameterData, b.InterfaceContent, b.InterfaceSpeed, a.SuperSubSysMainIdOne, a.SuperSubSysMainIdTwo, a.SuperSubSystemOne, a.SuperSubSystemTwo, a.MessageType\r\n"
+			+ "FROM pfms_irs_document_specifications a LEFT JOIN pfms_igi_interfaces b ON a.InterfaceId=b.InterfaceId\r\n"
+			+ "WHERE a.IsActive=1 AND IRSDocId=:IRSDocId ORDER BY a.SubSystemMainIdOne, a.SubSystemMainIdTwo";
 	@Override
 	public List<Object[]> getIRSDocumentSpecificationsList(String irsDocId) throws Exception {
 		try {
@@ -756,19 +845,35 @@ public class DocumentsDaoImpl implements DocumentsDao{
 			return 0;
 		}
 	}
+	
+	private static final String IRSDOCUMENTUSERREVOKE = "UPDATE pfms_irs_document SET IRSStatusCode='REV', IRSStatusCodeNext='FWD' WHERE IRSDocId=:IRSDocId";
+	@Override
+	public int irsDocumentUserRevoke(String irsDocId) throws Exception {
+		try {
+			
+			Query query = manager.createNativeQuery(IRSDOCUMENTUSERREVOKE);
+			query.setParameter("IRSDocId", irsDocId);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
 	/* ************************************************ IRS Document End***************************************************** */
 	
 	/* ************************************************ IDD Document ***************************************************** */
 	
 	private static final String IDDDOCUMENTLIST = "SELECT a.IDDDocId, a.IDDVersion, a.LabCode, a.InitiatedBy, a.InitiatedDate, a.IDDStatusCode, a.IDDStatusCodeNext, a.CreatedBy, a.CreatedDate, a.Remarks, \r\n"
-			+ "CONCAT(IFNULL(CONCAT(b.Title,' '),(IFNULL(CONCAT(b.Salutation, ' '), ''))), b.EmpName) AS 'EmpName', c.Designation, d.ReqStatus, d.ReqStatusColor \r\n"
-			+ "FROM pfms_idd_document a JOIN employee b ON a.InitiatedBy=b.EmpId LEFT JOIN employee_desig c ON b.DesigId=c.DesigId LEFT JOIN pfms_req_approval_status d ON a.IDDStatusCode=d.ReqStatusCode WHERE a.IsActive=1 AND a.ProjectId=:ProjectId AND a.InitiationId=:InitiationId ORDER BY a.IDDDocId DESC";
+			+ "CONCAT(IFNULL(CONCAT(b.Title,' '),(IFNULL(CONCAT(b.Salutation, ' '), ''))), b.EmpName) AS 'EmpName', c.Designation, a.ProjectId, a.InitiationId, d.ReqStatus, d.ReqStatusColor, a.ProductTreeMainId \r\n"
+			+ "FROM pfms_idd_document a JOIN employee b ON a.InitiatedBy=b.EmpId LEFT JOIN employee_desig c ON b.DesigId=c.DesigId LEFT JOIN pfms_req_approval_status d ON a.IDDStatusCode=d.ReqStatusCode WHERE a.IsActive=1 AND a.ProjectId=:ProjectId AND a.InitiationId=:InitiationId AND a.ProductTreeMainId=:ProductTreeMainId ORDER BY a.IDDDocId DESC";
 	@Override
-	public List<Object[]> getIDDDocumentList(String projectId, String initiationId) throws Exception {
+	public List<Object[]> getIDDDocumentList(String projectId, String initiationId, String productTreeMainId) throws Exception {
 		try {
 			Query query=manager.createNativeQuery(IDDDOCUMENTLIST);
 			query.setParameter("ProjectId", projectId);
 			query.setParameter("InitiationId", initiationId);
+			query.setParameter("ProductTreeMainId", productTreeMainId);
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -803,13 +908,14 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 
-	private static final String GETFIRSTVERSIONIDDDOCID = "SELECT a.IDDDocId FROM pfms_idd_document a WHERE a.InitiationId=:InitiationId AND a.ProjectId=:ProjectId AND a.IDDVersion='1.0' AND a.IsActive=1 LIMIT 1";
+	private static final String GETFIRSTVERSIONIDDDOCID = "SELECT a.IDDDocId FROM pfms_idd_document a WHERE a.InitiationId=:InitiationId AND a.ProjectId=:ProjectId AND a.ProductTreeMainId=:ProductTreeMainId AND a.IDDVersion='1.0' AND a.IsActive=1 LIMIT 1";
 	@Override
-	public Long getFirstVersionIDDDocId(String projectId, String initiationId) throws Exception {
+	public Long getFirstVersionIDDDocId(String projectId, String initiationId, String productTreeMainId) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(GETFIRSTVERSIONIDDDOCID);
 			query.setParameter("InitiationId", initiationId);
 			query.setParameter("ProjectId", projectId);
+			query.setParameter("ProductTreeMainId", productTreeMainId);
 			BigInteger count = (BigInteger)query.getSingleResult();
 			return count.longValue();
 			
@@ -819,4 +925,19 @@ public class DocumentsDaoImpl implements DocumentsDao{
 			return 0L;
 		}
 	}
+	
+	private static final String IDDDOCUMENTUSERREVOKE = "UPDATE pfms_idd_document SET IDDStatusCode='REV', IDDStatusCodeNext='FWD' WHERE IDDDocId=:IDDDocId";
+	@Override
+	public int iddDocumentUserRevoke(String iddDocId) throws Exception {
+		try {
+			
+			Query query = manager.createNativeQuery(IDDDOCUMENTUSERREVOKE);
+			query.setParameter("IDDDocId", iddDocId);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
 }

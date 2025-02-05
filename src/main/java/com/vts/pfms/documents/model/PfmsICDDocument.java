@@ -28,6 +28,7 @@ public class PfmsICDDocument implements Serializable{
 	private Long ICDDocId;
 	private Long ProjectId;
 	private Long InitiationId;
+	private Long ProductTreeMainId;
 	private String ICDVersion;
 	private String LabCode;
 	private String InitiatedBy;

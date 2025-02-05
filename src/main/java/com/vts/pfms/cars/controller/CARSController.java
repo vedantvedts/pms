@@ -56,6 +56,7 @@ import com.vts.pfms.FormatConverter;
 import com.vts.pfms.cars.dto.CARSRSQRDetailsDTO;
 import com.vts.pfms.cars.dto.CARSApprovalForwardDTO;
 import com.vts.pfms.cars.dto.CARSContractDetailsDTO;
+import com.vts.pfms.cars.model.CARSAnnualReport;
 import com.vts.pfms.cars.model.CARSContract;
 import com.vts.pfms.cars.model.CARSInitiation;
 import com.vts.pfms.cars.model.CARSInitiationTrans;
@@ -3378,4 +3379,65 @@ public class CARSController {
 		}
 	}
 
+	@RequestMapping(value = "CARSAnnualLabReport.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	public String carsAnnualLabReport(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CARSAnnualLabReport.htm "+UserId);
+		try {
+			String annualYear = req.getParameter("annualYear");
+			if(annualYear==null) {
+				annualYear = LocalDate.now().getYear()+"";
+			}
+			req.setAttribute("annualYear", annualYear);
+			req.setAttribute("annualReportList", service.getCARSAnnualReportListByYear(annualYear));
+			req.setAttribute("initiationList", service.carsInitiationList("A", EmpId));
+
+			return "cars/CARSAnnualLabReport";
+		}
+		catch (Exception e) {
+			logger.error(new Date() +" Inside CARSAnnualLabReport.htm "+UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		} 
+	}
+	
+	@RequestMapping(value="CARSAnnualReportSubmit.htm",method = {RequestMethod.GET})
+	public @ResponseBody String CARSAnnualReportSubmit(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside carsAnnualReportSubmit.htm "+UserId);
+		List<Object[]> initiationList = new ArrayList<>();
+		try {
+			String annualYear = req.getParameter("annualYear");
+			String carsInitiationIdList = req.getParameter("carsInitiationIdList");
+			
+			String[] carsInitiationIds = carsInitiationIdList.split(",");
+			
+			// Delete Existing Records
+			service.deleteCARSAnnualReportRecordsByYear(annualYear);
+			
+			for(int i = 0; i < carsInitiationIds.length; i++) {
+				CARSAnnualReport annualReport = new CARSAnnualReport();
+				annualReport.setAnnualYear(Integer.parseInt(annualYear));
+				annualReport.setCARSInitiationId(carsInitiationIds[i]!=null?Long.parseLong(carsInitiationIds[i]):0);
+				annualReport.setCreatedBy(UserId);
+				annualReport.setCreatedDate(sdtf.format(new Date()));
+				annualReport.setIsActive(1);
+				
+				service.addCARSAnnualReport(annualReport);
+			}
+			
+			initiationList = service.carsInitiationList("A", EmpId);
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSAnnualReportSubmit.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(initiationList);
+	}
+	
 }

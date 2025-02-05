@@ -1497,7 +1497,9 @@ input,select,table,div,label,span {
 																				<select class="form-control selectdee" id="labCodeCOG" name="labCode" onchange="this.form.submit()" required style="width: 200px;">
 																					<option value="0" disabled="disabled">---Select---</option>
 																					<%if(clusterLabList!=null && clusterLabList.size()>0) {
+																						
 																						for(Object[] obj : clusterLabList) {
+																							if(obj[3]!=null && obj[3].toString().equalsIgnoreCase("Y")) continue;
 																					%>
 																						<option value="<%=obj[2]%>" <%if(labCode.equalsIgnoreCase(obj[2].toString())) {%>selected<%} %> ><%=obj[2] %></option>
 																					<%} }%>
@@ -2037,9 +2039,8 @@ input,select,table,div,label,span {
     					<input type="hidden" name="achievementId" id="achievementId">
     					<input type="hidden" name="topicType" id="topicType">
     					<input type="hidden" name="action" id="achmntsAction">
-    					<%if(clusterLab.equalsIgnoreCase("N")) {%>
-    						<input type="hidden" id="labCode" name="labCode" value="<%=labcode%>">
-    					<%} else {%>
+    					<%if(clusterLab.equalsIgnoreCase("Y")) {%>
+
     						<div class="row">
     							<div class="col-md-1">
     								<label class="mt-2">Lab: </label>
@@ -2048,7 +2049,9 @@ input,select,table,div,label,span {
 									<select class="form-control selectdee" id="labCode" name="labCode" required style="width: 200px;">
 										<option value="0">---Select---</option>
 										<%if(clusterLabListFilter!=null && clusterLabListFilter.size()>0) {
+											
 											for(Object[] obj : clusterLabListFilter) {
+												if(obj[3]!=null && obj[3].toString().equalsIgnoreCase("Y")) continue;
 										%>
 											<option value="<%=obj[2]%>" ><%=obj[2] %></option>
 										<%} }%>
@@ -2060,8 +2063,9 @@ input,select,table,div,label,span {
     							<div class="col-md-8"></div>
     						</div>
 	     					
-	    				<%} %>
-	    					
+	    				<%} else{%>
+	    					<input type="hidden" id="labCode" name="labCode" value="<%=labcode%>">
+	    				<%} %>	
 	    				<textarea class="achievement" name="achievement" id="achievement" style="display: none;"></textarea>
 		         		
 		         		<div id="Editor" class="center"></div>

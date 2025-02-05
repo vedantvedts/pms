@@ -43,17 +43,17 @@ public class MSReqController {
 		}
 	}
 
-	@Scheduled(cron = "0 0 */4 * * *")
-	public void syncDataFromClusterLabsScheduler() throws Exception {
-		logger.info(new Date() +" Inside syncDataFromClusterLabsScheduler() ");
-		try {
-			
-			if(isClusterLab!=null && isClusterLab.equalsIgnoreCase("Y"))
-			service.syncDataFromClusterLabs();
-
-		}catch (Exception e) {
-			e.printStackTrace();
-			logger.error(new Date()+" Inside syncDataFromClusterLabsScheduler() "+ e);
-		}
-	}
+//	@Scheduled(cron = "0 0 */4 * * *")
+//	public void syncDataFromClusterLabsScheduler() throws Exception {
+//		logger.info(new Date() +" Inside syncDataFromClusterLabsScheduler() ");
+//		try {
+//			
+//			if(isClusterLab!=null && isClusterLab.equalsIgnoreCase("Y"))
+//			service.syncDataFromClusterLabs();
+//
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//			logger.error(new Date()+" Inside syncDataFromClusterLabsScheduler() "+ e);
+//		}
+//	}
 }

@@ -642,7 +642,7 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 						        			<input type="hidden" name="activityDate" value="<%=activityDate%>">
 							        		<%
 							        			LocalDate activityFromDate = LocalDate.parse(timeSheet.getActivityFromDate());
-							        			LocalDate afterFiveDays = activityFromDate.plusDays(5);
+							        			LocalDate afterFiveDays = activityFromDate.plusDays(40);
 							        		%>
 							        		<%if(now.isBefore(afterFiveDays) || now.isEqual(afterFiveDays)) {%>
 								        		<button type="button" class="btn btn-sm edit" onclick="AllowEdit('Y')" formnovalidate="formnovalidate" >
@@ -1451,7 +1451,7 @@ function toggleDiv(divId) {
 
 	        // Min date: 10 days before today
 	        var minDate = new Date(today);
-	        minDate.setDate(minDate.getDate() - 10);
+	        minDate.setDate(minDate.getDate() - 40);
 
 	        // Check if the date exists in empAllTimeSheetList
 	        var isDateExisting = empAllTimeSheetList.some(function (row) {

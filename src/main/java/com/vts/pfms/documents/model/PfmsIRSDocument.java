@@ -28,6 +28,7 @@ public class PfmsIRSDocument implements Serializable {
 	private Long IRSDocId;
 	private Long ProjectId;
 	private Long InitiationId;
+	private Long ProductTreeMainId;
 	private String IRSVersion;
 	private String LabCode;
 	private String InitiatedBy;

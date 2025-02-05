@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import com.vts.pfms.master.model.Employee;
 import com.vts.pfms.model.LabMaster;
+import com.vts.pfms.cars.model.CARSAnnualReport;
 import com.vts.pfms.cars.model.CARSContract;
 import com.vts.pfms.cars.model.CARSContractConsultants;
 import com.vts.pfms.cars.model.CARSContractEquipment;
@@ -1409,6 +1410,49 @@ public class CARSDaoImpl implements CARSDao{
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside DAO carsCurrentStatusUpdate "+e);
+			return 0;
+		}
+
+	}
+	
+	@Override
+	public List<CARSAnnualReport> getCARSAnnualReportListByYear(String annualYear) throws Exception {
+		logger.info(new Date() + "Inside the DaoImpl getCARSAnnualReportListByYear");
+		try {
+			Query query=manager.createQuery("FROM CARSAnnualReport WHERE AnnualYear=:AnnualYear AND IsActive=1");
+			query.setParameter("AnnualYear", annualYear!=null?Integer.parseInt(annualYear):0);
+			return (List<CARSAnnualReport>)query.getResultList();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside DaoImpl getCARSAnnualReportListByYear ", e);
+			return new ArrayList<CARSAnnualReport>();
+		}
+	}
+	
+	@Override
+	public long addCARSAnnualReport(CARSAnnualReport carsAnnualReport) throws Exception{
+		try {
+			manager.persist(carsAnnualReport);
+			manager.flush();
+			return carsAnnualReport.getCARSAnnualReportId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO addCARSAnnualReport "+e);
+			return 0;
+		}
+	}
+	
+	private static final String DELETECARSANNUALREPORTRECORDS = "DELETE FROM pfms_cars_annual_report WHERE AnnualYear=:AnnualYear";
+	@Override
+	public int deleteCARSAnnualReportRecordsByYear(String annualYear) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(DELETECARSANNUALREPORTRECORDS);
+			query.setParameter("AnnualYear", annualYear!=null?Integer.parseInt(annualYear):0);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO deleteCARSAnnualReportRecordsByYear "+e);
 			return 0;
 		}
 

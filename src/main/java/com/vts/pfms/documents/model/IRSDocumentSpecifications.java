@@ -27,8 +27,14 @@ public class IRSDocumentSpecifications implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long IRSSpecificationId;
 	private Long IRSDocId;
-	private Long CSCIOne;
-	private Long CSCITwo;
+	private Long SubSystemMainIdOne;
+	private Long SubSystemMainIdTwo;
+	private String SubSystemOne;
+	private String SubSystemTwo;
+	private Long SuperSubSysMainIdOne;
+	private Long SuperSubSysMainIdTwo;
+	private String SuperSubSystemOne;
+	private String SuperSubSystemTwo;
 	private Long InterfaceId;
 	private String MessageType;
 	private String CreatedBy;

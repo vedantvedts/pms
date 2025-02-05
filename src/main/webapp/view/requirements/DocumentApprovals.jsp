@@ -111,18 +111,26 @@ List<Object[]> igiDocPendingList = (List<Object[]>)request.getAttribute("igiDocP
 List<Object[]> igiDocApprovedList = (List<Object[]>)request.getAttribute("igiDocApprovedList");
 List<Object[]> icdDocPendingList = (List<Object[]>)request.getAttribute("icdDocPendingList");
 List<Object[]> icdDocApprovedList = (List<Object[]>)request.getAttribute("icdDocApprovedList");
+List<Object[]> irsDocPendingList = (List<Object[]>)request.getAttribute("irsDocPendingList");
+List<Object[]> irsDocApprovedList = (List<Object[]>)request.getAttribute("irsDocApprovedList");
+List<Object[]> iddDocPendingList = (List<Object[]>)request.getAttribute("iddDocPendingList");
+List<Object[]> iddDocApprovedList = (List<Object[]>)request.getAttribute("iddDocApprovedList");
 
 int pendingListSize = (reqPendingList!=null && reqPendingList.size()>0? reqPendingList.size(): 0)
 						+ (testPlanPendingList!=null && testPlanPendingList.size()>0? testPlanPendingList.size(): 0)
 						+ (specificationPendingList!=null && specificationPendingList.size()>0? specificationPendingList.size(): 0)
 						+ (igiDocPendingList!=null && igiDocPendingList.size()>0? igiDocPendingList.size(): 0)
-						+ (icdDocPendingList!=null && icdDocPendingList.size()>0? icdDocPendingList.size(): 0) ;
+						+ (icdDocPendingList!=null && icdDocPendingList.size()>0? icdDocPendingList.size(): 0) 
+						+ (irsDocPendingList!=null && irsDocPendingList.size()>0? irsDocPendingList.size(): 0)
+						+ (iddDocPendingList!=null && iddDocPendingList.size()>0? iddDocPendingList.size(): 0) ;
 
 int approvedListSize = (reqApprovedList!=null && reqApprovedList.size()>0? reqApprovedList.size(): 0)
 						+ (testPlanApprovedList!=null && testPlanApprovedList.size()>0? testPlanApprovedList.size(): 0)
 						+ (specificationApprovedList!=null && specificationApprovedList.size()>0? specificationApprovedList.size(): 0)
 						+ (igiDocApprovedList!=null && igiDocApprovedList.size()>0? igiDocApprovedList.size(): 0)
-						+ (icdDocApprovedList!=null && icdDocApprovedList.size()>0? icdDocApprovedList.size(): 0) ;
+						+ (icdDocApprovedList!=null && icdDocApprovedList.size()>0? icdDocApprovedList.size(): 0) 
+						+ (irsDocApprovedList!=null && irsDocApprovedList.size()>0? irsDocApprovedList.size(): 0) 
+						+ (iddDocApprovedList!=null && iddDocApprovedList.size()>0? iddDocApprovedList.size(): 0) ;
 
 String fromdate = (String)request.getAttribute("fromdate");
 String todate   = (String)request.getAttribute("todate");
@@ -529,6 +537,118 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                        									<%} }%>
                        									<!-- ICD Document Pending List End -->
                        									
+                       									<!-- IRS Document Pending List -->
+                       									<% 
+					   										if(irsDocPendingList!=null && irsDocPendingList.size()>0){
+                         							 			for(Object[] form : irsDocPendingList ){
+                      							 		%>
+                        									<tr>
+                            									<td class="center"><%=++SN%></td>
+                            									<td ><%=form[2]+", "+form[3]%></td>
+                            									<td class="center">
+                            										<%=form[11]!=null?form[11]:form[10] %>
+                            									</td>
+                            									<td class="center"><%=fc.SqlToRegularDate(form[5].toString())%></td>
+                            									<td class="center"><%=form[6]%></td>
+                            									<td class="center"> 
+                            										<form action="#" id="pendingform_status_<%=SN%>">
+																		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+																		<input type="hidden" name="irsDocId" value="<%=form[4]%>"> 
+																		<input type="hidden" name="isPdf" value="Y"> 
+																		<span id="downloadform">
+																			<button type="submit" class="btn btn-sm bg-transparent" formnovalidate="formnovalidate" formmethod="GET" formtarget="_blank" formaction="IRSDocumentDetails.htm"
+																				data-toggle="tooltip" data-placement="top" title="" data-original-title="IRS Document">
+																				&emsp;<i class="fa fa-download fa-lg" aria-hidden="true"></i>
+																			</button>
+																		</span>
+																	</form>
+                            									</td>
+                            									<td class="center">
+                            										<form action="IRSDocumentApprovalSubmit.htm" id="pendingform_action_<%=SN%>">
+                            											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            											<input type="hidden" name="docId" value="<%=form[4]%>"> 
+                            											<input type="hidden" name="docType" value="C"> 
+                            											<div class="d-flex ">
+                            												<div class="">
+                            													<textarea rows="2" cols="52" class="form-control" name="remarks" maxlength="1000" placeholder="Enter remarks here( max 1000 characters )" required></textarea>
+                            												</div>
+																			<div class="ml-2" align="right">
+																				<button class="btn btn-sm btn-success mt-1" name="Action" value="A" formmethod="GET" formnovalidate="formnovalidate"
+																					style="font-weight: 500" onclick="return confirm('Are You Sure To Forward this IRS Document?');">
+																					<%if (form[12].toString().equalsIgnoreCase("RFW")) {%>
+																						Forward
+																					<%} else {%>
+																						Approve
+																					<%}%>
+																				</button>
+																				<button class="btn btn-sm btn-danger mt-1" name="Action" value="R" formmethod="GET" style="font-weight: 500"
+																					onclick="return confirm('Are You Sure To return this IRS Document?');">
+																					Return
+																				</button>
+																			</div>
+																		</div>
+																	</form>
+						 										</td>
+                        									</tr>
+                       									<%} }%>
+                       									<!-- IRS Document Pending List End -->
+                       									
+                       									<!-- IDD Document Pending List -->
+                       									<% 
+					   										if(iddDocPendingList!=null && iddDocPendingList.size()>0){
+                         							 			for(Object[] form : iddDocPendingList ){
+                      							 		%>
+                        									<tr>
+                            									<td class="center"><%=++SN%></td>
+                            									<td ><%=form[2]+", "+form[3]%></td>
+                            									<td class="center">
+                            										<%=form[11]!=null?form[11]:form[10] %>
+                            									</td>
+                            									<td class="center"><%=fc.SqlToRegularDate(form[5].toString())%></td>
+                            									<td class="center"><%=form[6]%></td>
+                            									<td class="center"> 
+                            										<form action="#" id="pendingform_status_<%=SN%>">
+																		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+																		<input type="hidden" name="iddDocId" value="<%=form[4]%>"> 
+																		<input type="hidden" name="isPdf" value="Y"> 
+																		<span id="downloadform">
+																			<button type="submit" class="btn btn-sm bg-transparent" formnovalidate="formnovalidate" formmethod="GET" formtarget="_blank" formaction="IDDDocumentDetails.htm"
+																				data-toggle="tooltip" data-placement="top" title="" data-original-title="IDD Document">
+																				&emsp;<i class="fa fa-download fa-lg" aria-hidden="true"></i>
+																			</button>
+																		</span>
+																	</form>
+                            									</td>
+                            									<td class="center">
+                            										<form action="IDDDocumentApprovalSubmit.htm" id="pendingform_action_<%=SN%>">
+                            											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            											<input type="hidden" name="docId" value="<%=form[4]%>"> 
+                            											<input type="hidden" name="docType" value="D"> 
+                            											<div class="d-flex ">
+                            												<div class="">
+                            													<textarea rows="2" cols="52" class="form-control" name="remarks" maxlength="1000" placeholder="Enter remarks here( max 1000 characters )" required></textarea>
+                            												</div>
+																			<div class="ml-2" align="right">
+																				<button class="btn btn-sm btn-success mt-1" name="Action" value="A" formmethod="GET" formnovalidate="formnovalidate"
+																					style="font-weight: 500" onclick="return confirm('Are You Sure To Forward this IRS Document?');">
+																					<%if (form[12].toString().equalsIgnoreCase("RFW")) {%>
+																						Forward
+																					<%} else {%>
+																						Approve
+																					<%}%>
+																				</button>
+																				<button class="btn btn-sm btn-danger mt-1" name="Action" value="R" formmethod="GET" style="font-weight: 500"
+																					onclick="return confirm('Are You Sure To return this IRS Document?');">
+																					Return
+																				</button>
+																			</div>
+																		</div>
+																	</form>
+						 										</td>
+                        									</tr>
+                       									<%} }%>
+                       									<!-- IDD Document Pending List End -->
+                       									
                  									</tbody>  
             									</table>
           									</div>
@@ -853,6 +973,87 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                        												<%} }%>
                        												<!-- ICD Document Approved List End -->
                        												
+                       												<!-- IRS Document Approved List -->
+                       												<%	
+                      													if(irsDocApprovedList!=null && irsDocApprovedList.size()>0) {
+                          													for(Object[] form : irsDocApprovedList ) {
+                       												%>
+                        											<tr>
+                            											<td class="center"><%=++SNA%></td>
+                            											<td ><%=form[2]+", "+form[3]+" ("+form[1]+")"%></td>
+                            											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
+                            											<td class="center">
+                            												<%=form[15]!=null?form[15]:form[14] %>
+                            											</td>
+                            											<td class="center"><%=form[6] %> </td>
+                            											<td class="center">
+                            												<form action="#" id="approvalform_status_<%=SNA%>">
+																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+																				<input type="hidden" name="docId" value="<%=form[4]%>"> 
+																				<input type="hidden" name="docType" value="C"> 
+																				<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="IGIDocTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
+								    												<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    											</button>
+																			</form>
+                            												
+						 												</td>
+						 												<td class="center"> 
+		                            										<form action="#" id="approvalform_doc_<%=SNA%>">
+																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+																				<input type="hidden" name="irsDocId" value="<%=form[4]%>"> 
+																				<input type="hidden" name="isPdf" value="Y"> 
+																				<span id="downloadform">
+																					<button type="submit" class="btn btn-sm bg-transparent" formnovalidate="formnovalidate" formmethod="GET" formtarget="_blank" formaction="IRSDocumentDetails.htm"
+																						data-toggle="tooltip" data-placement="top" title="" data-original-title="IRS Document">
+																						&emsp;<i class="fa fa-download fa-lg" aria-hidden="true"></i>
+																					</button>
+																				</span>
+																			</form>
+		                            									</td>
+                        											</tr>
+                       												<%} }%>
+                       												<!-- IRS Document Approved List End -->
+                       												
+                       												<!-- IDD Document Approved List -->
+                       												<%	
+                      													if(iddDocApprovedList!=null && iddDocApprovedList.size()>0) {
+                          													for(Object[] form : iddDocApprovedList ) {
+                       												%>
+                        											<tr>
+                            											<td class="center"><%=++SNA%></td>
+                            											<td ><%=form[2]+", "+form[3]+" ("+form[1]+")"%></td>
+                            											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
+                            											<td class="center">
+                            												<%=form[15]!=null?form[15]:form[14] %>
+                            											</td>
+                            											<td class="center"><%=form[6] %> </td>
+                            											<td class="center">
+                            												<form action="#" id="approvalform_status_<%=SNA%>">
+																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+																				<input type="hidden" name="docId" value="<%=form[4]%>"> 
+																				<input type="hidden" name="docType" value="D"> 
+																				<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="IGIDocTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
+								    												<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    											</button>
+																			</form>
+                            												
+						 												</td>
+						 												<td class="center"> 
+		                            										<form action="#" id="approvalform_doc_<%=SNA%>">
+																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+																				<input type="hidden" name="irsDocId" value="<%=form[4]%>"> 
+																				<input type="hidden" name="isPdf" value="Y"> 
+																				<span id="downloadform">
+																					<button type="submit" class="btn btn-sm bg-transparent" formnovalidate="formnovalidate" formmethod="GET" formtarget="_blank" formaction="IDDDocumentDetails.htm"
+																						data-toggle="tooltip" data-placement="top" title="" data-original-title="IDD Document">
+																						&emsp;<i class="fa fa-download fa-lg" aria-hidden="true"></i>
+																					</button>
+																				</span>
+																			</form>
+		                            									</td>
+                        											</tr>
+                       												<%} }%>
+                       												<!-- IDD Document Approved List End -->
                        												
                    												</tbody>
                  											</table>
