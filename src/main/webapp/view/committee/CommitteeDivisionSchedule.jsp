@@ -1,3 +1,6 @@
+<%@page import="java.util.stream.Collectors"%>
+<%@page import="java.time.LocalDate"%>
+<%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.time.LocalTime"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
@@ -20,7 +23,44 @@
 .control-label{
 	font-weight: bold !important;
 }
+.meetingsp{
+  width:75%;
+  transition: background-color 3s ease;
+  background-image: linear-gradient(to right, green 50%, #f8f9fa 50%);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  transition: background-position 0.5s ease;
+  color:black;
+  padding:10px;
+  border-radius: 8px;
+  display: block;
+  font-weight: 600;
+  margin:1%;
+  margin-left:12%;
+}
+.meetingsp:hover{
+ 	/*  background-color: green;
+	 background-image: linear-gradient(to right, green, blue); */
+	 color:white;
+ background-position: 0 0;
+ box-shadow: 3px 3px 3px gray;
+	/* background-color:red; */
+color:white;
+font-weight: 600;	
+}
+#span{
+background: blue;
+}
+#span1{
+font-size: 10px;
+margin-left:10px
+}
 
+#span2{
+float:right;
+font-size: 10px;
+margin-right:10px
+}
 	
 </style>
 
@@ -31,6 +71,9 @@
 <%
 SimpleDateFormat sdf1=new SimpleDateFormat("dd-MM-yyyy");
 SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+FormatConverter fc=new FormatConverter(); 
+SimpleDateFormat sdf2=fc.getRegularDateFormat();
+SimpleDateFormat sdf3=fc.getSqlDateFormat();
 	
 List<Object[]> divisionslist=(List<Object[]>) request.getAttribute("divisionslist");
 List<Object[]>  divisionchedulelist=(List<Object[]>)request.getAttribute("divisionchedulelist");
@@ -39,6 +82,18 @@ Object[] committeedetails=(Object[])request.getAttribute("committeedetails");
 String divisionid=(String)request.getAttribute("divisionid");
 String committeeid=(String)request.getAttribute("committeeid");
 String initiationid=(String)request.getAttribute("initiationid");
+
+List<Object[]>PreviousmeetingList= new ArrayList<>();
+
+if(!divisionchedulelist.isEmpty()){
+	if(committeeid.equalsIgnoreCase("all")){
+		PreviousmeetingList=divisionchedulelist.stream().filter(i -> LocalDate.parse(i[3].toString()).isBefore(LocalDate.now())  ).collect(Collectors.toList());
+		
+	}else{
+		PreviousmeetingList=divisionchedulelist.stream().filter(i -> i[1].toString().equalsIgnoreCase(committeeid) &&  LocalDate.parse(i[3].toString()).isBefore(LocalDate.now())  ).collect(Collectors.toList());
+	
+	}
+}
 %>
 
 
@@ -150,8 +205,27 @@ if(ses1!=null){
 					
 					</div>
 					</div>
-					<div class="card-body">
-						<div id="calendar"></div>
+					<div class="card-body" style="display: flex;justify-content: space-around;">
+						<div id="calendar" style="width:79%;float:left"></div>
+						<div id="meetings" style="background-color: #216583;;width:20%;margin:5px;">
+						<div  style="font-size: 22px;font-weight: 600;color: white;text-align: center;">
+						<!-- <span class="badge badge-info p-2 " id="span1" onclick="showPreviousMeetings();">Previous Meetings</span>
+						<span class="badge badge-info p-2 " id="span2" >Future Meetings</span> -->
+						Earlier Meetings
+						</div>
+						<div class="mt-2" id="scrollclass" style="height:520px;overflow: auto">
+						<%if(!PreviousmeetingList.isEmpty()){
+							int i=0;
+							for(Object[]obj:PreviousmeetingList){
+							%>
+						 <a class="tag meetingsp" style="text-decoration: none;" href="CommitteeScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[6].toString()%>
+						&nbsp;&nbsp;Date: <%= sdf2.format(sdf3.parse(obj[3].toString())) %>
+							</a>
+						<%}}else{ %>
+						<p class="meetingsp ml-3 mr-3"> No Previous Meetings held !</p>
+						<%} %>
+						</div>
+						</div>
 					</div>
 				</div>
 			</div>
