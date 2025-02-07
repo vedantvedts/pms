@@ -105,8 +105,8 @@ String committeeId = (String) request.getAttribute("committeeId");
 		   
               		
 			<div class="row" style="">
-			<div class="col-md-1"></div>
-				<div class="col-md-10">
+			
+				<div class="col-md-12">
 
 				<div align="center">
 					<h5 style="color:#145374" >(Meeting Id : <%=committeescheduledata[12] %>) </h5>
@@ -121,6 +121,7 @@ String committeeId = (String) request.getAttribute("committeeId");
 			               			<th>Sl.No</th>			                    	
 			                    	<th>Member Type</th>
 			                    	<th >Participants</th>
+			                    	<th>Role</th>
 			                       	<th >Attendance</th> 
 			                    </tr>
 			              	</thead>                        
@@ -161,6 +162,12 @@ String committeeId = (String) request.getAttribute("committeeId");
 									<td><%=obj[6] %>, <%=obj[7]%> (<%=obj[11]%>)</td>        
 									
 									<td>
+									
+									<input class="form-control" name="Role" maxlength="255" id="<%=obj[1] %>"  value="<%= obj[15]!=null ? obj[15]: (obj[14]!=null ? obj[14]:"")%>">
+									<input type="hidden" name="LabCode"  id="LabCode<%=obj[1]%>" value="<%=obj[11]!=null?obj[11].toString():"-" %>">
+									<input type="hidden" name="EmpNo" id="EmpNo<%=obj[1]%>" value="<%=obj[5]!=null?obj[5].toString():"-" %>">
+									</td>
+									<td>
 											<input name="attendance"  onchange="FormNameEdit(<%=obj[1]%>)"  type="checkbox" <%if((obj[4]).toString().equalsIgnoreCase("P")){ %>checked<%}%> data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="112" data-height="15" data-on="<i class='fa fa-user' aria-hidden='true'></i> Present" data-off="<i class='fa fa-user-times' aria-hidden='true'></i> Absent" >
 											<input 	type="hidden" name="sample" value="attendance<%=count %>" >	
 											<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
@@ -169,12 +176,14 @@ String committeeId = (String) request.getAttribute("committeeId");
 										
 								</tr>
 							
-									<% count++;}%>
-								<%if(committeeinvitedlist.size()>1	){ %>
-									<tr>
-										<td> <button type="submit" class="btn btn-sm edit" onclick="return slnocheck('serialnoupdate');" >Update</button></td>
-									</tr>
-								<%} %>
+							<% count++;}%>
+						   <%if(committeeinvitedlist.size()>1	){ %>
+							<tr>
+						    <td> <button type="submit" class="btn btn-sm edit" onclick="return slnocheck('serialnoupdate');" >Update</button></td>
+							<td></td>
+							<td></td>
+							</tr>
+							<%} %>
 							</tbody>
 				    
 			             </table>
@@ -551,6 +560,46 @@ function employeename(){
 
 		}
 	}
+
+function getRoles() {
+    // Get all input elements with the name attribute "Role"
+    var  inputs = document.querySelectorAll('input[name="Role"]');
+    
+    // Retrieve the IDs of these input elements
+    var ids = Array.from(inputs).map(input => input.id);
+    
+
+    var EmpNo=[];
+    var LabCode = [];
+    var EmpRoles = [];
+    
+    for(var i=0;i<ids.length;i++){
+    	
+    	var EmpNos = $('#EmpNo'+ids[i]).val();
+    	EmpNo.push(EmpNos)
+    	
+    }
+    for(var i=0;i<ids.length;i++){
+    	
+    	var LabCodes = $('#LabCode'+ids[i]).val();
+    	LabCode.push(LabCodes)
+    	
+    }
+   for(var i=0;i<ids.length;i++){
+    	
+    	var EmpRole = $('#'+ids[i]).val();
+    	EmpRoles.push(EmpRole)
+    	
+    }
+ 
+    
+
+    console.log(ids);
+    console.log(EmpNo);
+    console.log(LabCode);
+    console.log(EmpRoles);
+}
+
 
 </script>
 

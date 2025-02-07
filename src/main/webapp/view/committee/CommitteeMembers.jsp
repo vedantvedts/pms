@@ -139,6 +139,7 @@ for(int i=0;i<committeemembersall.size();i++)
 }
 String CpLabCode = chairperson[9].toString();
 
+
 //Prudhvi - 27/03/2024 
 /* --------- start -------------- */
 List<IndustryPartner> industryPartnerList = (List<IndustryPartner>)request.getAttribute("industryPartnerList");
@@ -228,41 +229,8 @@ String ses=(String)request.getParameter("result");
 										</tr>
 										</table>
 								</div>
-							
-							
-<%-- 								<div class="col-md-3">
-									<div class="form-group">
-										<label class="control-label">Member Secretary<span class="mandatory" style="color: red;">*</span></label>
-										<select class="form-control selectdee" id="secretary" required="required" name="Secretary"style="margin-top: -5px">
-				    						<option disabled="true"  selected value="" >Choose...</option>
-				    						<% for (Object[] obj : EmployeeList1) {%>
-												<option value="<%=obj[0]%>" <%if(secretary!=null && secretary[5].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]%> (<%=obj[3] %>)</option>
-											<%} %>
-				  						</select>
-				  						<%if(secretary!=null){ %>
-				  						<input type="hidden" name="msmemberid" value="<%=secretary[0]%>">
-				  						<%} %>	
-									</div>
-								</div> --%>
-								<div class="col-md-3">
-									<div class="form-group">
-										<label class="control-label">Co-Chairperson</label>
-										<select class="form-control selectdee" id="co_chairperson" required="required" name="co_chairperson"style="margin-top: -5px">
-				    						<option selected value="0" >None</option>
-				    						<% for (Object[] obj : EmployeeList1) {%>
-												<option value="<%=obj[0]%>" <%if(co_chairperson !=null && co_chairperson[5].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]%>, <%=obj[3] %></option>
-											<%} %>
-				  						</select>
-				  						<%if(co_chairperson!=null){ %>
-				  						<input type="hidden" name="comemberid" value="<%=co_chairperson[0]%>">
-				  						<%} %>	
-									</div>
-								</div>
-							 
-							
-				
 							</div> 
-			<div class="row">
+							<div class="row">
 			
 											<div class="col-md-8" style="margin-top:5px; ">									 
 					                    	<label class="control-label" style="margin-bottom: 4px !important">Member Secretary<span class="mandatory" style="color: red;">*</span></label>
@@ -273,9 +241,9 @@ String ses=(String)request.getParameter("result");
 														<select class="form-control selectdee" name="msLabCode" tabindex="-1" required="required" style="width: 200px" id="mSLabCode" onchange="msfetch('1')">
 															<option disabled="disabled"  selected value="">Lab Name</option>
 														    <% for (Object[] obj : AllLabList) {%>
-															    <option <%if(secretary[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]%></option>
+															    <option <%if(secretary!=null&& secretary[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]%></option>
 														    <%} %>
-														    <option <%if(secretary[9].toString().equalsIgnoreCase("@EXP")){ %>selected <%} %>value="@EXP">Expert</option>
+														    <option <%if(secretary!=null && secretary[9].toString().equalsIgnoreCase("@EXP")){ %>selected <%} %>value="@EXP">Expert</option>
 														</select>
 																
 													</div>
@@ -294,11 +262,6 @@ String ses=(String)request.getParameter("result");
 										</table>
 								</div>
 			
-			
-			
-			
-			
-			
 									<div class="col-md-3">
 									<div class="form-group">
 										<label class="control-label">Member Secretary (Proxy)</label>
@@ -312,7 +275,51 @@ String ses=(String)request.getParameter("result");
 				  						<input type="hidden" name="psmemberid" value="<%=proxysecretary[0]%>">
 				  						<%}%> 
 									</div>
-								</div>	
+								</div>
+								
+												<div class="col-md-8" style="margin-top:5px; ">									 
+					                   <label class="control-label"> Co-Chairperson </label>
+					                    	<table style="width:100%">
+					                        <tr >
+												<td style="width:25%; border:0:">
+													 <div class="input select" id="cplab-col">
+														<select class="form-control selectdee" name="ccplabocode" tabindex="-1"  style="width: 200px" id="ccplabocode" onchange="ccchairpersonfetch('1')">
+															<option disabled="disabled"  selected value="">SELECT</option>
+														    <% for (Object[] obj : AllLabList) {%>
+															    <option <%if(co_chairperson!=null &&   co_chairperson[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]%></option>
+														    <%} %>
+														    <option <%if(co_chairperson!=null && co_chairperson[9].toString().equalsIgnoreCase("@EXP")){ %>selected <%} %>value="@EXP">Expert</option>
+														</select>
+																
+													</div>
+												</td>										
+												<td style="border:0;">
+												<div class="input select">
+														<select class="form-control selectdee" name="co_chairperson" id="co_chairperson" data-live-search="true"    data-placeholder="Select co-chairPerson" >
+												             
+														</select>	
+												<%if(co_chairperson!=null){ %>
+				  						<input type="hidden" name="comemberid" value="<%=co_chairperson[0]%>">
+				  						<%} %>									
+												</div>														
+											</td>						
+										</tr>
+										</table>
+								</div>
+							<%-- 	<div class="col-md-7">
+									<div class="form-group">
+										
+										<select class="form-control selectdee" id="co_chairperson" required="required" name="co_chairperson"style="margin-top: -5px">
+				    						<option selected value="0" >None</option>
+				    						<% for (Object[] obj : EmployeeList1) {%>
+												<option value="<%=obj[0]%>" <%if(co_chairperson !=null && co_chairperson[5].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]%>, <%=obj[3] %></option>
+											<%} %>
+				  						</select>
+				  						<%if(co_chairperson!=null){ %>
+				  						<input type="hidden" name="comemberid" value="<%=co_chairperson[0]%>">
+				  						<%} %>	
+									</div>
+								</div> --%>
 							</div>
 						
 									<!-- prakarsh -->
@@ -727,18 +734,21 @@ String ses=(String)request.getParameter("result");
 												<input type="hidden" name="divisionid" value="<%=divisionid%>"> 		
 												<input type="hidden" name="initiationid" value="<%=initiationid%>"> 
 												<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId %>"> 
-										</form>		
+										</form>	
+										</td>	
 											<td>
-										<form  method="post" action="ProjectCommitteeDescriptionTOREdit.htm">
+											<%if(Long.parseLong(divisionid)>0 || Long.parseLong(projectid)>0 ||Long.parseLong(initiationid)>0){ %>
+											<form  method="post" action="ProjectCommitteeDescriptionTOREdit.htm">
 											<button  type="submit" class="btn btn-sm edit">DESCRIPTION</button>
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
 											<input type="hidden" name="committeemainid" value="<%=committeemainid%>">		
 											<input type="hidden" name="operation" value="approve">								
-										</form>
-									</td>
+											</form>
+											<%} %>
+										</td>
 										<%} %>	
 										
-									</td>
+									
 									<td>
 									<form  method="post" action="CommitteeConstitutionLetterDownload.htm" target="_blank" >
 											<button  type="submit"  class="btn btn-sm edit"  ><i class="fa fa-download" style="   font-size: 0.90rem; " ></i></button>
@@ -1321,7 +1331,7 @@ function replacerepdd(){
 	 
 	chairpersonfetch('0');
 	msfetch('0');
-		
+	ccchairpersonfetch('0')
 }); 
 
 	
@@ -1395,18 +1405,58 @@ function replacerepdd(){
 										+values[i][1]+", " +  values[i][3]
 										+ '</option>';
 							} 
-							 
+							 <%if(secretary!=null){ %>
 							$('#secretary').html(s);
 							if(hint=='0' && $CpLabCode =='<%=secretary[9]%>'){
 								$('#secretary').val('<%=secretary[5]%>');
 							}
-														
+								<%}%>						
 						}
 					});
 	
 	}
 		}
-		
+		function ccchairpersonfetch(hint){
+			$('#co_chairperson').val("");
+			var $CpLabCode = $('#ccplabocode').val();
+					if($CpLabCode !=""){
+			
+					$.ajax({		
+						type : "GET",
+						url : "ChairpersonEmployeeListFormation.htm",
+						data : {
+							CpLabCode : $CpLabCode,
+							committeemainid : '<%= committeemainid %>',
+							   },
+						datatype : 'json',
+						success : function(result) {
+	
+						var result = JSON.parse(result);
+							
+						var values = Object.keys(result).map(function(e) {
+									 return result[e]
+								  
+						});
+							
+				var s = '';
+					s += '<option value="">'+"--Select--"+ '</option>';
+							 for (i = 0; i < values.length; i++) {									
+								s += '<option value="'+values[i][0]+'">'
+										+values[i][1]+", " +  values[i][3]
+										+ '</option>';
+							} 
+							 
+							$('#co_chairperson').html(s);
+							<%if(co_chairperson!=null){%>
+							if(hint=='0' && $CpLabCode =='<%=co_chairperson[9]%>'){
+								$('#co_chairperson').val('<%=co_chairperson[5]%>');
+							}
+							<%}%>							
+						}
+					});
+	
+	}
+		}	
 </script>
 
 <script>

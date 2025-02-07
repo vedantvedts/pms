@@ -73,10 +73,12 @@ import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
 import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.committee.model.CommitteeScheduleMinutesDetails;
 import com.vts.pfms.committee.model.CommitteeSubSchedule;
+import com.vts.pfms.committee.model.PfmsEmpRoles;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.committee.model.PmsEnote;
 import com.vts.pfms.committee.model.PmsEnoteTransaction;
 import com.vts.pfms.mail.CustomJavaMailSender;
+import com.vts.pfms.master.dao.MasterDao;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
@@ -88,6 +90,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Autowired CommitteeDao dao;
 	@Autowired AdminDao admindao;
 	@Autowired CARSDao carsdao;
+	@Autowired MasterDao masterDao;
 	
 //	@Autowired 	private JavaMailSender javaMailSender; 
 	
@@ -292,10 +295,10 @@ public class CommitteeServiceImpl implements CommitteeService{
 			}
 			else if(i==2)
 				{
-				if( Long.parseLong(committeemaindto.getCo_Chairperson())>0) 
+				if(  Long.parseLong(committeemaindto.getCo_Chairperson())>0) 
 				{
 					committeemember.setEmpId(Long.parseLong(committeemaindto.getCo_Chairperson()));
-					committeemember.setLabCode(committeemaindto.getLabCode());
+					committeemember.setLabCode(committeemaindto.getCcplabocode());
 					committeemember.setMemberType("CH");
 				}
 				else 
@@ -2321,7 +2324,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		// Update or Remove or add  co-chairperson based on update
 		model=new CommitteeMember();
 		
-		if(dto.getComemberid()!=null && Long.parseLong(dto.getCo_chairperson())==0)
+		if(dto.getComemberid()!=null && dto.getCo_chairperson()!=null && Long.parseLong(dto.getCo_chairperson())==0)
 		{
 			model.setCommitteeMemberId(Long.parseLong(dto.getComemberid()));
 			model.setModifiedBy(dto.getModifiedBy());
@@ -2331,16 +2334,16 @@ public class CommitteeServiceImpl implements CommitteeService{
 		else if(dto.getComemberid()!=null && Long.parseLong(dto.getCo_chairperson())>0)
 		{
 			model.setCommitteeMemberId(Long.parseLong(dto.getComemberid()));
-			model.setLabCode(dto.getSesLabCode());
+			model.setLabCode(cmd.getCcplabocode());
 			model.setEmpId(Long.parseLong(dto.getCo_chairperson()));
 			model.setModifiedBy(dto.getModifiedBy());
 			model.setModifiedDate(sdf1.format(new Date()));
 			ret=dao.CommitteeMemberUpdate(model);
 		}
-		else if(dto.getComemberid()==null && Long.parseLong(dto.getCo_chairperson())>0)
+		else if(dto.getComemberid()==null && dto.getCo_chairperson()!=null && !dto.getCo_chairperson().isEmpty() && Long.parseLong(dto.getCo_chairperson())>0)
 		{
 				CommitteeMember newmodel=new CommitteeMember();
-				newmodel.setLabCode(dto.getSesLabCode());
+				newmodel.setLabCode(cmd.getCcplabocode());
 				newmodel.setEmpId(Long.parseLong(dto.getCo_chairperson()));
 				newmodel.setMemberType("CH");
 				newmodel.setCommitteeMainId(Long.parseLong(dto.getCommitteemainid()));
@@ -3535,6 +3538,18 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 			EnoteStatusCodeNext="RC1";
 			pe.setEnoteStatusCode(EnoteStatusCode);
 			pe.setEnoteStatusCodeNext(EnoteStatusCodeNext);
+			if(pe.getInitiatedBy()==pe.getRecommend1()) {//If both the person is same
+				EnoteStatusCode="RC1";
+				if(pe.getRecommend2()!=null) {
+				EnoteStatusCodeNext="RC2";
+				}else if(pe.getRecommend3()!=null) {
+					EnoteStatusCodeNext="RC3";
+				}else {
+					EnoteStatusCodeNext="APR";
+				}
+				pe.setEnoteStatusCode(EnoteStatusCode);
+				pe.setEnoteStatusCodeNext(EnoteStatusCodeNext);
+			}
 		}
 		else if(EnoteStatusCode.equalsIgnoreCase("FWD")) {
 			EnoteStatusCode="RC1";
@@ -3604,7 +3619,7 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 		
 		dao.addPmsEnote(pe);
 		if(pe.getEnoteFrom().equalsIgnoreCase("C")&&  EnoteStatusCodeNext.equalsIgnoreCase("APR") && !pe.getSessionLabCode().equalsIgnoreCase(pe.getApprovingOfficerLabCode())) {
-			System.out.println("Hiiiii");
+			
 			pe.setEnoteStatusCode("APR");
 			pe.setEnoteStatusCodeNext("APR");
 			pe.setModifiedBy(Username);
@@ -3772,5 +3787,42 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 	public List<Object[]> carsScheduleList(String carsInitiationId) throws Exception {
 
 		return dao.carsScheduleList(carsInitiationId);
+	}
+	
+	@Override
+	public void InvitationRoleoUpdate(String[] role, String[] empNo, String[] labCode, String userId,String []invitationid) throws Exception {
+
+		List<PfmsEmpRoles>emps = masterDao.getAllEmpRoles();
+		
+		List<PfmsEmpRoles>subemps = new ArrayList<>();
+		for (int i=0;i<empNo.length;i++) {
+			  final int index = i;
+			
+			if (empNo[i] != null && labCode[i] != null) {
+		        // Declare filteredList inside the loop
+		        List<PfmsEmpRoles> filteredList = emps.stream()
+		            .filter(e -> e.getEmpNo().equalsIgnoreCase(empNo[index]) 
+		             && e.getOrganization().equalsIgnoreCase(labCode[index]))
+		            .collect(Collectors.toList());
+		        // Add the filtered results to subemps
+		        subemps.addAll(filteredList);
+		    }
+			if(subemps.size()==0) {
+				if(role[i]!=null && role[i].length()>0) {
+				PfmsEmpRoles pf = new PfmsEmpRoles();
+				pf.setEmpNo(empNo[i]);
+				pf.setOrganization(labCode[i]);
+				pf.setCreatedBy(userId);
+				pf.setCreatedDate(LocalDate.now()+"");	
+				pf.setEmpRole(role[i]);
+				pf.setIsActive(1);
+				masterDao.addPfmsEmpRoles(pf);
+				}
+			}
+			if(role[i]!=null && role[i].length()>0) {
+				dao.InvitationRoleoUpdate(role[i],invitationid[i]);
+			}
+		}
+		
 	}
 }

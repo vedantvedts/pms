@@ -300,5 +300,6 @@ public interface CommitteeService {
 	public List<Object[]> MomeNoteApprovalList(long empId, String fromDate, String toDate)throws Exception;
 	
 	public List<Object[]> carsScheduleList(String carsInitiationId) throws Exception;
+	public void InvitationRoleoUpdate(String[] role, String[] empNo, String[] labCode, String userId,String []invitationid)throws Exception;
 }
 

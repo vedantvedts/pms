@@ -28,6 +28,7 @@ public class CommitteeMainDto {
 	private String CreatedByEmpid;
 	private String CreatedByEmpidLabid;
 	private String PreApproved;
+	private String ccplabocode;
 	
 	private String msLabCode;
 	private String ReferenceNo;

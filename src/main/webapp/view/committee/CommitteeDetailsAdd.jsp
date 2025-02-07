@@ -251,16 +251,44 @@ String LabCode = (String)request.getAttribute("LabCode");
 							</tr>
 							</table>
 	                    </div>
-				     
-				     
-				     
-				     	
-				     	
-				     	
 				     </div>
+				     
+				     <div class="row">
+				                   <div class="col-md-10 ">
+	                    	<table class="" style="width:100%">
+	                        <tr>
+								<td style="width:35%; border:0:" >
+									<div id="cplab-col" >
+									<label class="control-label" style="margin-bottom: 4px !important">Lab<span class="mandatory" style="color: red;">*</span></label>
+									<div class="input select" >
+										 	
+										<select class=" form-control selectdee" name="ccplabocode" id="ccplabocode" required="required" style="margin-top: -5px" onchange="ccpEmpList()" >
+											<option disabled="disabled"  selected value="" >Choose...</option>
+											<%	for (Object[] obj  : AllLabsList) {%>
+										     	<option value="<%=obj[3]%>" <%if(LabCode.equalsIgnoreCase(obj[3].toString())){ %>selected <%} %> ><%=obj[3] %> </option>
+											<% } %>
+											<option value="@EXP"> Expert</option>
+										</select>			
+										</div>	
+									</div>
+								</td>
+								<td>&nbsp;</td>		<td>&nbsp;</td>	<td>&nbsp;</td>	<td>&nbsp;</td>	<td>&nbsp;</td>	<td>&nbsp;</td>									
+								<td style="border:0;">
+								<div class="input select">
+									<label class="control-label" style="margin-bottom: 4px !important">Co-Chairperson<span class="mandatory" style="color: red;">*</span></label>
+										<select class="form-control selectdee" name="cochairperson" id="cochairperson" data-live-search="true"   data-placeholder="Select Member" required="required" >
+								             
+										</select>															
+									</div>					
+								</td>						
+							</tr>
+							</table>
+	                    </div>
+				     </div>
+				     
                        <div class="row"> 
                        
-                        <div class="col-md-4">
+                   <%--      <div class="col-md-4">
 				         	<div class="form-group">
 				            	<label class="control-label" style="margin-bottom: 4px !important">Co-Chairperson</label>
 
@@ -271,7 +299,7 @@ String LabCode = (String)request.getAttribute("LabCode");
 										<% } %>
 									</select>			  			
 				        	</div>
-				     	</div>
+				     	</div> --%>
                        
                          <div class="col-md-4">
 				         	<div class="form-group">
@@ -389,6 +417,7 @@ String LabCode = (String)request.getAttribute("LabCode");
 	 
 	 ChaippersonEmpList();
 	 msEmpList();
+	 ccpEmpList();
 }); 	
  
  
@@ -399,8 +428,6 @@ String LabCode = (String)request.getAttribute("LabCode");
 			$('#chairperson').val("");
 			
 				var $LabCode = $('#CpLabCode').val();
-			
-				console.log( $LabCode );
 						if($LabCode!=""){
 				
 									$.ajax({
@@ -443,7 +470,51 @@ String LabCode = (String)request.getAttribute("LabCode");
 		}
 	}
 		
-	
+	function ccpEmpList(){
+		$('#cochairperson').val("");
+		
+		var $LabCode = $('#ccplabocode').val();
+				if($LabCode!=""){
+		
+							$.ajax({
+
+								type : "GET",
+								url : "ChairpersonEmployeeListFormation.htm",
+								data : {
+									CpLabCode : $LabCode,
+									committeemainid : '0'
+									   },
+								datatype : 'json',
+								success : function(result) {
+
+								var result = JSON.parse(result);
+						
+								var values = Object.keys(result).map(function(e) {
+							 				 return result[e]
+							  
+												});
+						
+									var s = '';
+									s += '<option value="">Choose ...</option>';
+									if($LabCode == '@EXP'){
+										
+									}
+									for (i = 0; i < values.length; i++) 
+									{
+										
+										s += '<option value="'+values[i][0]+'">'+values[i][1] + ', ' +values[i][3]+ '</option>';
+									} 
+									 
+									$('#cochairperson').html(s);
+									
+									
+									
+									
+								}
+							});
+
+}
+	}
 		
 		function msEmpList(){
 			$('#secretary').val("");
@@ -483,17 +554,9 @@ String LabCode = (String)request.getAttribute("LabCode");
 										} 
 										 
 										$('#secretary').html(s);
-										
-										
-										
-										
 									}
 								});
-	
-	}
-			
-			
-		}
+	}}
 		
 
 </script>
@@ -521,9 +584,9 @@ function Add(myfrm){
     var $cochairperson = $("#cochairperson").val();
     var $secretary = $("#secretary").val();
     var $proxysecretary=$("#proxysecretary").val();
+	var $ccplabocode = $('#ccplabocode').val();
     
-    
-    console.log(msLabCode+"======"+$cochairperson);
+ 
     
     
     if( $LabCode === $cplabCode)
@@ -535,13 +598,14 @@ function Add(myfrm){
 				return false;
 		}
     	}
+    	if($cplabCode===$ccplabocode){
 		if($cochairperson == $chairperson)
 		{
 			alert("Chairperson and Co-Chairperson Should Not Be The Same Person ");	   
 			 event.preventDefault();
 				return false;
 		}
-		
+    	}
 		
 		
 		if($proxysecretary==$chairperson)
@@ -553,13 +617,14 @@ function Add(myfrm){
 	}
     
     if(msLabCode===$LabCode){
+    	if($msLabCode===$ccplabocode){
     if($secretary==$cochairperson)
 	{
 		alert("Member Secretary and Co-Chairperson Should Not Be The Same Person ");	   
 		 event.preventDefault();
 			return false;
 	}
-    
+    	}
 	if($secretary == $proxysecretary)
 	{
 		alert("Member Secretary and Proxy Member Secretary Should Not Be The Same Person ");	   
@@ -567,12 +632,12 @@ function Add(myfrm){
 			return false;
 	}
     
-	if($cochairperson!=='0' && $proxysecretary!=='0' && $cochairperson == $proxysecretary)
+	/* if($cochairperson!=='0' && $proxysecretary!=='0' && $cochairperson == $proxysecretary)
 	{
 		alert("Co-Chairperson and Proxy Member Secretary Should Not Be The Same Person ");	   
 		 event.preventDefault();
 			return false;
-	}
+	} */
     }
 	
     for (var i = 0; i < fieldvalues.length; i++) {

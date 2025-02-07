@@ -497,6 +497,7 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 											<option value="@EXP"
 												<%if("@EXP".equalsIgnoreCase(labcode)){%>
 												selected="selected" <%}%>>Expert</option>
+											
 										</select>
 									</div>
 								</div>

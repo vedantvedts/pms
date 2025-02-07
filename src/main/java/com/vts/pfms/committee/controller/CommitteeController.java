@@ -193,8 +193,8 @@ public class CommitteeController {
 	@Autowired
 	CustomJavaMailSender cm;
 
-	@Value("${port}")
-	private String port;
+//	@Value("${port}")
+//	private String port;
 
 	@Autowired 
 	BCryptPasswordEncoder encoder;
@@ -612,7 +612,7 @@ public class CommitteeController {
 			committeemaindto.setCo_Chairperson(req.getParameter("cochairperson"));
 			committeemaindto.setReferenceNo(req.getParameter("refNo"));
 			committeemaindto.setFormationDate(req.getParameter("Formationdates"));;
-
+			committeemaindto.setCcplabocode(req.getParameter("ccplabocode"));
 			long mainid =service.CommitteeDetailsSubmit(committeemaindto);
 
 			if (mainid > 0) {
@@ -2066,8 +2066,10 @@ public class CommitteeController {
 			dto.setMsLabCode(req.getParameter("msLabCode"));
 			cmd.setFormationDate(!req.getParameter("Formationdates").isEmpty()?req.getParameter("Formationdates"):LocalDate.now().toString());
 			cmd.setReferenceNo(req.getParameter("Reference No."));
+			cmd.setCcplabocode(req.getParameter("ccplabocode"));
 
-
+			System.out.println("setCcplabocode---"+cmd.getCcplabocode());
+			
 			long count =service.CommitteeMainMemberUpdate(dto,cmd);			
 
 
@@ -3376,8 +3378,11 @@ public class CommitteeController {
 			{
 				req.setAttribute("initiationdetails", service.Initiationdetails(initiationid));
 			}
-
+			List<String>list = Arrays.asList("A","I","K");
+			
+			
 			List<Object[]> actionlist= service.MinutesViewAllActionList(committeescheduleid);
+			actionlist=actionlist.stream().filter(e->list.contains(e[2].toString())).collect(Collectors.toList());
 			HashMap< String, ArrayList<Object[]>> actionsdata=new LinkedHashMap<String, ArrayList<Object[]>>();
 
 			for(Object obj[] : actionlist) {
@@ -3412,10 +3417,10 @@ public class CommitteeController {
 			List<Object[]>ActionDetails=service.actionDetailsForNonProject(committeeId,scheduledate);
 			List<Object[]>actionSubDetails=new ArrayList();
 			if(ActionDetails.size()>0) {
-				actionSubDetails=ActionDetails.stream().filter(i -> LocalDate.parse(i[9].toString()).isBefore(LocalDate.parse(scheduledate))).collect(Collectors.toList());
-				if(actionSubDetails.size()>0) {
-					actionSubDetails=actionSubDetails.stream().filter(i -> i[15].toString().equalsIgnoreCase(projectid)).collect(Collectors.toList());
-				}
+		    actionSubDetails=ActionDetails.stream().filter(i -> LocalDate.parse(i[9].toString()).isBefore(LocalDate.parse(scheduledate))).collect(Collectors.toList());
+		    if(actionSubDetails.size()>0) {
+			actionSubDetails=actionSubDetails.stream().filter(i -> i[15].toString().equalsIgnoreCase(projectid) && i[16].toString().equalsIgnoreCase(initiationid) && i[17].toString().equalsIgnoreCase(divisionid)).collect(Collectors.toList());
+			}
 			}
 			Set<Integer>committeeCount=new TreeSet<>();
 			for(Object[]obj:ActionDetails) {
@@ -4136,7 +4141,7 @@ public class CommitteeController {
 			Path filepath = Paths.get(uploadpath, fileParts[0], fileParts[1], attachment.getAttachmentName());
 			File my_file=filepath.toFile();
 			//		my_file = new File(uploadpath+attachment.getFilePath()+File.separator+attachment.getAttachmentName()); 
-			res.setHeader("Content-disposition","attachment; filename="+attachment.getAttachmentName().toString()); 
+			res.setHeader("Content-disposition","inline; filename="+attachment.getAttachmentName().toString()); 
 			OutputStream out = res.getOutputStream();
 			FileInputStream in = new FileInputStream(my_file);
 			byte[] buffer = new byte[4096];
@@ -5207,10 +5212,11 @@ public class CommitteeController {
 			//			}
 			//			}
 			if(Email.length>0) {
+				System.out.println("SAy HIiiii");
 				count = cm.sendMessage(Email,subject,Message);
 			}
 			if(DronaEmail.length>0) {
-				long result = cm.sendMessage1(DronaEmail,subject,Message);
+				//long result = cm.sendMessage1(DronaEmail,subject,Message);
 			}
 			if (count>0) 
 			{
@@ -5397,7 +5403,7 @@ public class CommitteeController {
 					String subject=scheduledata[8] + " " +" Committee Invitation Letter";
 					count=cm.sendMessage(Email, subject, Message);
 					if(DronaEmail.length>0) {
-						long result=cm.sendMessage1(DronaEmail, subject, Message);
+						//long result=cm.sendMessage1(DronaEmail, subject, Message);
 					}
 					service.UpdateCommitteeInvitationEmailSent(committeescheduleid);
 					if(count>0) {
@@ -5406,22 +5412,22 @@ public class CommitteeController {
 
 				}catch (MailAuthenticationException e) {
 					System.out.println("committeescheduleid ---klsdjfkso "+committeescheduleid);
+					e.printStackTrace();
 					redir.addAttribute("committeescheduleid",committeescheduleid);
 					redir.addAttribute("resultfail", " Host Email Authentication Failed, Unable to Send Invitations !!");
 				}
 
 			} 
-
+			
+			
 
 
 		}
 		catch (Exception e) {
-
 			e.printStackTrace(); 
 			logger.error(new Date() +"Inside SendInvitationLetter.htm "+UserId,e);
 		}
-
-		System.out.println("count ----------"+count);
+		
 		if(count>0) {
 			redir.addAttribute("result", " Committee Invitation Letter Sent Successfully !! ");
 		}else {
@@ -5484,7 +5490,7 @@ public class CommitteeController {
 			}
 			List<Object[]> projapplicommitteelist = service.ProjectApplicableCommitteeList(projectid);
 			req.setAttribute("projapplicommitteelist", projapplicommitteelist);
-
+			
 			req.setAttribute("projectid", projectid);
 			req.setAttribute("committeeid", committeeid);
 		}
@@ -6379,7 +6385,15 @@ public class CommitteeController {
 
 			String[] newslno=req.getParameterValues("newslno");
 			String[] invitationid=req.getParameterValues("invitationid");
-
+			
+			String [] Role = req.getParameterValues("Role");
+			String [] EmpNo = req.getParameterValues("EmpNo");
+			String [] LabCode = req.getParameterValues("LabCode");
+			
+			System.out.println(Arrays.asList(Role));
+			System.out.println(Arrays.asList(LabCode));
+			System.out.println(Arrays.asList(EmpNo));
+			
 			Set<String> s = new HashSet<String>(Arrays.asList(newslno));
 
 			if (s.size() == newslno.length) 
@@ -6391,7 +6405,9 @@ public class CommitteeController {
 				redir.addAttribute("resultfail", "Agenda Priority Updated UnSuccessfull");
 
 			}	
-
+			
+			service.InvitationRoleoUpdate(Role,EmpNo,LabCode,UserId,invitationid);
+			
 			redir.addAttribute("committeescheduleid", committeescheduleid);
 			// Prudhvi - 06/03/2024
 			/* ------------------ start ----------------------- */
@@ -9661,7 +9677,7 @@ public class CommitteeController {
 				Properties properties = System.getProperties(); 
 				properties.setProperty("mail.smtp.host", hostAddress);
 				//properties.put("mail.smtp.starttls.enable", "true"); //TLS
-				properties.put("mail.smtp.port", port); 
+				properties.put("mail.smtp.port", mailAuthentication.getPort()); 
 				properties.put("mail.smtp.auth", "true"); 
 				properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory"); 
 				Session session = Session.getDefaultInstance(properties,
@@ -9734,7 +9750,6 @@ public class CommitteeController {
 		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside SendNonProjectMinutes.htm "+UserId);
 		int mailcount=0;
-
 		try
 		{
 			String committeescheduleid = req.getParameter("committeescheduleid");	
@@ -9875,8 +9890,8 @@ public class CommitteeController {
 
 			Properties properties = System.getProperties(); 
 			properties.setProperty("mail.smtp.host", hostAddress);
-			//properties.put("mail.smtp.starttls.enable", "true"); //TLS
-			properties.put("mail.smtp.port", port); 
+			properties.put("mail.smtp.starttls.enable", "true"); //TLS
+			properties.put("mail.smtp.port", mailAuthentication.getPort()); 
 			properties.put("mail.smtp.auth", "true"); 
 			properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory"); 
 			Session session = Session.getDefaultInstance(properties,
