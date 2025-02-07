@@ -327,11 +327,12 @@ FormatConverter fc = new FormatConverter();
 	<%} %>
 	
 	<div class="container-fluid">
-		<div id="spinner" class="spinner">
+		<!-- <div id="spinner" class="spinner">
     		<img id="img-spinner" src="view/images/spinner1.gif" alt="Loading" />
-		</div>
+		</div> -->
 	
-		<div class="row" id="main" style="display: none;">
+		<!-- <div class="row" id="main" style="display: none;"> -->
+		<div class="row">
 			<div class="col-md-12">	
 				<div class="card shadow-nohover">
 					<div class="card-header">
@@ -534,7 +535,7 @@ FormatConverter fc = new FormatConverter();
 																%>
 																<%if(timeSheetActivityList!=null && timeSheetActivityList.size()>0 ) { ++activitycount;%>
 																	<tr>
-																		<td colspan="7">
+																		<td colspan="8">
 																			<span style="font-weight: bold;font-size: 16px;color: <%if(timeSheet.getTimeSheetStatus().equalsIgnoreCase("ABS")) {%>green<%}else if(timeSheet.getTimeSheetStatus().equalsIgnoreCase("RBS")){%>red<%}%> ">
 																			<%=fc.SqlToRegularDate(date.toString()) %>
 																			</span>
@@ -592,7 +593,7 @@ FormatConverter fc = new FormatConverter();
 																<%} %>
 																<%if(activitycount==0) {%>
 																	<tr>
-																		<td class="center" colspan="7">No Data Available</td> 
+																		<td class="center" colspan="8">No Data Available</td> 
 																	</tr>
 																<%} %>
 															</tbody>
@@ -737,7 +738,7 @@ FormatConverter fc = new FormatConverter();
 <script type="text/javascript">
 
 //Show spinner when the DOM starts loading
-$(document).ready(function () {
+/* $(document).ready(function () {
     $('#spinner').show(); // Display spinner
     $('#main').hide();    // Hide content
     $('body').css("filter", "blur(2px)"); // Optional: Add blur effect to the body
@@ -748,7 +749,7 @@ window.onload = function () {
     $('#spinner').hide(); // Hide spinner
     $('#main').fadeIn();  // Show content with fade-in effect
     $('body').css("filter", "none"); // Remove blur effect
-};
+};  */
 
 /* $(document).ready(function () {
     $('#searchBar').on('keyup', function () {

@@ -919,7 +919,7 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 									</tr>
 								<% ++i; } } } else{%>
 									<tr>
-										<td colspan="8" style="text-align: center;">No Data Available</td>
+										<td colspan="10" style="text-align: center;">No Data Available</td>
 									</tr>
 								<%} %>
 							</tbody>
