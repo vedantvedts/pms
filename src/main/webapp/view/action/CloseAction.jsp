@@ -368,7 +368,7 @@ td {
 				<%
 						int startLevel = 0;
 						
-						if(actionslist.size()>0){
+						if(actionslist !=null && actionslist.size()>0){
 							startLevel = Integer.parseInt(actionslist.get(0)[3].toString());
 						} 
 						%>
@@ -454,6 +454,7 @@ td {
 											</div>
 										</div> <!-- --------------------------------------------------------   LEVEL 1 ---------------------------------------------------- -->
 										<ul class="active">
+										
 											<%for(Object[] action_L1 : actionslist){ %>
 											<% if(Integer.parseInt(action_L1[3].toString()) == startLevel+1 && Long.parseLong(action[0].toString()) == Long.parseLong(action_L1[1].toString())  
 								&&  action[18].toString().trim().equalsIgnoreCase(action_L1[16].toString().trim()) 

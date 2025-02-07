@@ -8,6 +8,7 @@ import com.vts.pfms.committee.dto.ActionAssignDto;
 import com.vts.pfms.committee.model.ActionAssign;
 import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.committee.model.ActionMain;
+import com.vts.pfms.committee.model.ActionMainAttachment;
 import com.vts.pfms.committee.model.ActionSelf;
 import com.vts.pfms.committee.model.ActionSub;
 import com.vts.pfms.committee.model.FavouriteList;
@@ -200,4 +201,6 @@ public interface ActionDao {
 	public int CommitteActionDelete(ActionAssignDto actionAssign) throws Exception;
 	public List<Object[]> getVendorList()throws Exception;
 	public RfaAttachment getAttachmentByRfaId(Long rfaId)throws Exception;
+	public void saveActionMainAttachment(ActionMainAttachment attachment)throws Exception;
+	public Object[] getActionMainAttachMent(String mainid)throws Exception;
 }

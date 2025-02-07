@@ -212,7 +212,7 @@ List<Object[]> expertList=(List<Object[]>)request.getAttribute("ExpertList");
 			                                               <td>
 			                                               <%
 			                                            
-			                                               if(Boolean.parseBoolean(expert[8].toString())) {%>
+			                                               if(Integer.parseInt(expert[8].toString())==1) {%>
 			                                                     <span class="badge badge-success">Active</span>  
 			                                               <%}else{ %>
 			                                               <span class="badge badge-danger">Inactive</span>

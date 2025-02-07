@@ -1,5 +1,9 @@
 package com.vts.pfms.committee.dto;
 
+import javax.persistence.Transient;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -32,4 +36,7 @@ public class ActionMainDto {
 	
 	private String CARSSoCMilestoneId;
 
+	
+	
+	private MultipartFile actionAttachment;
 }

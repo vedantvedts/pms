@@ -234,7 +234,7 @@ List<Object[]> AllOfficerlist =(List<Object[]>)request.getAttribute("AllOfficerL
 	             <td style="text-align: left"><%if(obj[4]!=null){%><%=obj[4] %><%}else{ %>-<%} %></td>
 	             <td><%if(obj[5]!=null){%><%=obj[5] %><%}else{ %>-<%} %></td>
 	   	         <td><%if(obj[6]!=null){%><%=obj[6] %><%}else{ %>-<%} %></td>
-	   			 <td><%if(Boolean.parseBoolean(obj[10].toString())){%>Active<%}else{ %><span style="color: red;">InActive</span><%} %></td>
+	   			 <td><%if(Integer.parseInt(obj[10].toString())==1){%>Active<%}else{ %><span style="color: red;">InActive</span><%} %></td>
 	      </tr>
 	    <%} %>
 	    </tbody>

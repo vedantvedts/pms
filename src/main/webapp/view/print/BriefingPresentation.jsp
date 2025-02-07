@@ -2682,7 +2682,7 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 									<a data-toggle="modal" data-target="#exampleModal1" data-id="milestonemodal<%=obj[0]%>" class="milestonemodal" data-whatever="@mdo" style=" cursor: pointer"> 
 										<i class="fa fa-info-circle fa-lg " style="color: #145374" aria-hidden="true"></i>
 									</a>
-		
+		<%=obj[0]%>
 								</td>
 							</tr>
 							<% count1++;
@@ -4032,7 +4032,7 @@ $( document).on("click", ".milestonemodal", function () {
 	var milId = $(this).data('id');
     $('.milestonemodalwhole').hide();
     $('.collapse').removeClass('show'); 
-    $('#row'+milId.charAt(milId.length-1)).click();
+   $('#row'+milId.substring(14)).click(); 
  	$('#'+milId).show();
 });
 function milactivitychange6(val){

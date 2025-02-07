@@ -10,10 +10,12 @@ import java.nio.file.StandardCopyOption;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
@@ -34,6 +36,7 @@ import com.vts.pfms.committee.dto.RfaActionDto;
 import com.vts.pfms.committee.model.ActionAssign;
 import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.committee.model.ActionMain;
+import com.vts.pfms.committee.model.ActionMainAttachment;
 import com.vts.pfms.committee.model.ActionSelf;
 import com.vts.pfms.committee.model.ActionSub;
 import com.vts.pfms.committee.model.FavouriteList;
@@ -420,6 +423,7 @@ public class ActionServiceImpl implements ActionService {
 	{
 		try {
 			logger.info(new Date() +"Inside SERVICE ActionMainInsert ");
+			System.out.println("Action Type -->"+main.getActionType());
 			long success=1;
 			long unsuccess=0;
 			Object[] lab=null;
@@ -514,12 +518,12 @@ public class ActionServiceImpl implements ActionService {
 			}
 			ActionMain actionmain=new ActionMain();
 			
-			if(main.getActionLinkId()!="" && main.getActionLinkId()!=null) {
+			if(main.getActionLinkId()!=null && !main.getActionLinkId().isEmpty() &&  main.getActionLinkId()!=""  ) {
 				actionmain.setActionLinkId(Long.parseLong(main.getActionLinkId()));
 			}else {
 				actionmain.setActionLinkId(unsuccess);
 			}
-			if(main.getMainId()!="" && main.getMainId()!=null ) {
+			if( main.getMainId()!=null && !main.getMainId().isEmpty() &&   main.getMainId()!=""  ) {
 				if("0".equalsIgnoreCase(main.getMainId())) {
 					actionmain.setMainId(Long.parseLong(main.getActionParentId()));
 				}else {
@@ -542,7 +546,7 @@ public class ActionServiceImpl implements ActionService {
 			actionmain.setCreatedBy(main.getCreatedBy());
 			actionmain.setCreatedDate(sdf1.format(new Date()));
 			actionmain.setIsActive(1);
-			if(main.getActionParentId()!="" && main.getActionParentId()!=null) {
+			if( main.getActionParentId()!=null && !main.getActionParentId().isEmpty() &&  main.getActionParentId()!=""  ) {
 				actionmain.setParentActionId(Long.parseLong(main.getActionParentId()));
 			}else{
 				actionmain.setParentActionId(0l);
@@ -615,55 +619,31 @@ public class ActionServiceImpl implements ActionService {
 					}	
 		
 			}
-			//end
-			/*
-			 * if(assign.getAssigneeList()!=null) { for(int
-			 * i=0;i<assign.getAssigneeList().length;i++) { ActionAssign actionassign = new
-			 * ActionAssign();
-			 * 
-			 * count=count+1;
-			 * 
-			 * if(lab!=null && main.getLabName()!=null) { Date meetingdate= new
-			 * SimpleDateFormat("yyyy-MM-dd").parse(main.getMeetingDate().toString());
-			 * 
-			 * actionassign.setActionNo(main.getLabName()+Project+sdf2.format(meetingdate).
-			 * toString().toUpperCase().replace("-", "")+"/"+count); }else { return
-			 * unsuccess; }
-			 * 
-			 * 
-			 * actionassign.setActionMainId(result);
-			 * actionassign.setPDCOrg(java.sql.Date.valueOf(sdf.format(rdf.parse(assign.
-			 * getPDCOrg()))));
-			 * actionassign.setEndDate(java.sql.Date.valueOf(sdf.format(rdf.parse(assign.
-			 * getPDCOrg()))));
-			 * actionassign.setAssigneeLabCode(assign.getAssigneeLabCode());
-			 * actionassign.setAssignee(Long.parseLong(assign.getAssigneeList()[i]));
-			 * actionassign.setAssignorLabCode(assign.getAssignorLabCode());
-			 * actionassign.setAssignor(assign.getAssignor()); actionassign.setRevision(0);
-			 * // actionassign.setActionFlag("N"); actionassign.setActionStatus("A");
-			 * actionassign.setCreatedBy(main.getCreatedBy());
-			 * actionassign.setCreatedDate(sdf1.format(new Date()));
-			 * actionassign.setIsActive(1); actionassign.setProgress(0); long assignid=
-			 * dao.ActionAssignInsert(actionassign); if(result>0) { Object[]
-			 * data=dao.ActionNotification(String.valueOf(result)
-			 * ,String.valueOf(assignid)).get(0); PfmsNotification notification=new
-			 * PfmsNotification();
-			 * notification.setEmpId(Long.parseLong(data[2].toString()));
-			 * notification.setNotificationby(Long.parseLong(data[5].toString()));
-			 * notification.setNotificationDate(sdf1.format(new Date()));
-			 * notification.setScheduleId(unsuccess);
-			 * notification.setCreatedBy(main.getCreatedBy());
-			 * notification.setCreatedDate(sdf1.format(new Date()));
-			 * notification.setIsActive(1); if("I".equalsIgnoreCase(actionmain.getType())) {
-			 * notification.setNotificationUrl("ActionIssue.htm");
-			 * notification.setNotificationMessage("An Issue No "+data[7]+" Assigned by "
-			 * +data[3]+", "+data[4]+"."); } else {
-			 * notification.setNotificationUrl("AssigneeList.htm");
-			 * notification.setNotificationMessage("An Action No "+data[7]+" Assigned by "
-			 * +data[3]+", "+data[4]+"."); } notification.setStatus("MAR");
-			 * dao.ActionNotificationInsert(notification); }else { return unsuccess; } } }
-			 */
-			return success;
+		
+			if( main.getActionAttachment()!=null &&  !main.getActionAttachment().isEmpty()) {
+				
+				Random random = new Random();
+				
+				int randomInt = random.nextInt();
+				
+				ActionMainAttachment attachment = new ActionMainAttachment();
+				 int dotIndex = main.getActionAttachment().getOriginalFilename().lastIndexOf(".");
+				String fileName = main.getActionAttachment().getOriginalFilename().substring(0,dotIndex)+"_"+randomInt;
+				
+				attachment.setActionMainId(result);
+				attachment.setFileName(fileName+"."+FilenameUtils.getExtension(main.getActionAttachment().getOriginalFilename()) );
+				attachment.setCreatedBy(main.getCreatedBy());
+				attachment.setCreatedDate(LocalDate.now().toString());
+				attachment.setIsActive(1);
+				
+				Path subPath = Paths.get(uploadpath, main.getLabName(), "ActionMain Attachment");
+				saveFile1(subPath, fileName+"."+FilenameUtils.getExtension(main.getActionAttachment().getOriginalFilename()), main.getActionAttachment());
+				
+				dao.saveActionMainAttachment(attachment);
+			}
+			
+			
+			return result;
 		} catch (Exception e) {
 			logger.info(new Date() +"Inside SERVICE ActionMainInsert "+ e);	
 			e.printStackTrace();
@@ -2080,6 +2060,8 @@ public Long RfaReturnList(String rfaStatus, String UserId, String rfa,String Emp
 	
 	String SetEmployee="";
 	
+	System.out.println(rfaStatus+"---->");
+	
 	if(ReturnStatus1.contains(rfaStatus)) {
 		SetEmployee=assignor;
 		Url="RfaAction.htm";
@@ -2679,5 +2661,10 @@ public Long rfaCloseForExternal(RfaActionDto rfa) throws Exception {
 	
 
 	return count;
+}
+
+@Override
+public Object[] getActionMainAttachMent(String mainid) throws Exception {
+	return dao.getActionMainAttachMent(mainid);
 }
 }

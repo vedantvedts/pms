@@ -103,6 +103,7 @@ import com.vts.pfms.committee.dao.ActionSelfDao;
 import com.vts.pfms.committee.dto.ActionAssignDto;
 import com.vts.pfms.committee.dto.ActionMainDto;
 import com.vts.pfms.committee.dto.ActionSubDto;
+import com.vts.pfms.committee.dto.CommitteeMinutesAttachmentDto;
 import com.vts.pfms.committee.dto.MeetingExcelDto;
 import com.vts.pfms.committee.dto.OldRfaUploadDto;
 import com.vts.pfms.committee.dto.RfaActionDto;
@@ -334,7 +335,9 @@ public class ActionController {
 	
 	
 	@RequestMapping(value = "ActionSubmit.htm", method = RequestMethod.POST)
-	public String ActionSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+	public String ActionSubmit(HttpServletRequest req, HttpSession ses,
+			RedirectAttributes redir, @RequestParam(value = "actionAttachment", required = false) MultipartFile file
+)throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		String LabCode = (String)ses.getAttribute("labcode");
@@ -354,7 +357,7 @@ public class ActionController {
 			mainDto.setPriority(req.getParameter("MainPriority"));
 			mainDto.setCategory(req.getParameter("MainCategory"));
 			
-			if(req.getParameter("Atype")!="" && req.getParameter("Atype")!=null) {
+			if(req.getParameter("Atype")!=null && !req.getParameter("Atype").isEmpty() && req.getParameter("Atype")!=""  ) {
 				mainDto.setActionType(req.getParameter("Atype"));
 			}else {
 				mainDto.setActionType("N");
@@ -365,7 +368,9 @@ public class ActionController {
 			mainDto.setMeetingDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 			String actionlevel = req.getParameter("ActionLevel");
 			
-			if(actionlevel !="" &&actionlevel!=null) {
+		
+			
+			if(actionlevel!=null && !actionlevel.isEmpty() &&  actionlevel !="") {
 				long level = Long.parseLong(actionlevel)+1;
 				mainDto.setActionLevel(level);
 				
@@ -379,6 +384,8 @@ public class ActionController {
 				emp.add(s);
 			}
 			mainDto.setActionParentId(req.getParameter("ActionParentid"));
+			
+			mainDto.setActionAttachment(file);
 			ActionAssignDto assign = new ActionAssignDto();
 			
 			assign.setActionDate(req.getParameter("MainPDC"));
@@ -395,6 +402,8 @@ public class ActionController {
 			assign.setPDCOrg(req.getParameter("MainPDC"));
 			assign.setMultipleAssigneeList(emp);
 			
+		
+		
 			
 			long count =service.ActionMainInsert(mainDto , assign);
 			
@@ -405,6 +414,9 @@ public class ActionController {
 				redir.addAttribute("resultfail", "Action Add Unsuccessful");
 			}
 		
+			
+			
+			
 		}catch (Exception e) {
 				e.printStackTrace();
 				logger.error(new Date() +" Inside ActionSubmit.htm "+UserId, e);
@@ -464,6 +476,8 @@ public class ActionController {
 			req.setAttribute("empId", req.getParameter("empId"));
 			req.setAttribute("type", req.getParameter("type"));
 			req.setAttribute("status", req.getParameter("status"));
+			
+			req.setAttribute("AttachmentList", service.getActionMainAttachMent(req.getParameter("ActionMainId")));
 			
 			req.setAttribute("MeetingNumbr", req.getParameter("Meeting"));
 		}
@@ -1553,7 +1567,9 @@ public class ActionController {
 //						return "action/CloseAction";
 						String LabCode = (String) ses.getAttribute("labcode");
 						String UserId =(String)ses.getAttribute("Username");
-						logger.info(new Date() +"Inside CloseAction.htm "+UserId);		
+						logger.info(new Date() +"Inside CloseAction.htm "+UserId);	
+						
+						System.out.println(req.getParameter("ActionMainId")+ "--"+ req.getParameter("ActionAssignId"));
 						try {
 						req.setAttribute("sub",req.getParameter("sub"));
 						req.setAttribute("ActionMainId",req.getParameter("ActionMainId"));
@@ -5216,4 +5232,88 @@ public class ActionController {
 		  
 		 return json.toJson(subList);    
 	}
+	@RequestMapping(value="MomAttachmentList.htm", method=RequestMethod.GET)
+	public @ResponseBody String MomAttachmentList(HttpSession ses, HttpServletRequest req) throws Exception {
+		
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside MomAttachmentList.htm "+UserId);
+		Gson json = new Gson();
+		List<Object[]> subList = new ArrayList<Object[]>();
+		String CommitteeScheduleId = req.getParameter("CommitteeScheduleId");
+		try
+		{	  
+			subList = committeservice.MinutesAttachmentList(CommitteeScheduleId);
+			
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside MomAttachmentList.htm "+UserId ,e);
+			e.printStackTrace(); 
+		}
+		
+		return json.toJson(subList);    
+	}
+	
+	
+	 @RequestMapping(value = "ActionMainAttachDownload.htm", method = RequestMethod.GET)
+	 public void ActionMainAttachDownload(HttpServletRequest	 req, HttpSession ses, HttpServletResponse res) throws Exception 
+	 {	 
+		 String UserId = (String) ses.getAttribute("Username");
+		 String labCode = (String)ses.getAttribute("labcode");
+			logger.info(new Date() +"Inside ActionMainAttachDownload "+UserId);		
+			try { 
+		 
+					Object[]getActionMainAttachMent=service.getActionMainAttachMent(req.getParameter("MainId" ));
+					Path pdfPath = Paths.get(uploadpath,labCode,"ActionMain Attachment",getActionMainAttachMent[1].toString());
+					File my_file=null;
+//					my_file = new File(uploadpath+attach.getAttachFilePath()+File.separator+attach.getAttachName()); 
+					my_file = pdfPath.toFile(); 
+					res.setContentType("Application/octet-stream");	
+					res.setHeader("Content-disposition","attachment; filename="+getActionMainAttachMent[1].toString()); 
+			        OutputStream out = res.getOutputStream();
+			        FileInputStream in = new FileInputStream(my_file);
+			        byte[] buffer = new byte[4096];
+			        int length;
+			        while ((length = in.read(buffer)) > 0){
+			           out.write(buffer, 0, length);
+			        }
+			        in.close();
+			        out.flush();
+			        out.close();
+
+			}
+			catch (Exception e) {
+					e.printStackTrace();
+					logger.error(new Date() +" Inside ActionMainAttachDownload.htm "+UserId, e);
+			}
+	 }
+	 
+	 
+	   @RequestMapping(value="momcopyadd.htm", method= {RequestMethod.POST, RequestMethod.GET})
+		public @ResponseBody String MoMSignedCopySubmit(HttpServletRequest req,
+				HttpSession ses, 
+				@RequestParam(name = "file", required = false) MultipartFile file,
+				@RequestParam("ScheduleId") String ScheduleId
+			
+				) throws Exception {
+		   String UserId  = (String) ses.getAttribute("Username");
+		   String labCode = (String)ses.getAttribute("labcode");
+			Gson json = new Gson();
+			Long count =0l; 
+			System.out.println("Inside coming");
+			try {
+				CommitteeMinutesAttachmentDto dto= new CommitteeMinutesAttachmentDto();
+				dto.setScheduleId(req.getParameter("ScheduleId"));
+				dto.setMinutesAttachment(file);
+				dto.setAttachmentName(file.getOriginalFilename());
+				dto.setCreatedBy(UserId);
+				dto.setMinutesAttachmentId(req.getParameter("attachmentid"));
+				dto.setLabCode(labCode);
+				count = committeservice.MinutesAttachmentAdd(dto);
+				
+				
+			}catch (Exception e) {
+				// TODO: handle exception
+			}
+			
+			return json.toJson(count);
+	   }
 }

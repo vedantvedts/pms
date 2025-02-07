@@ -169,4 +169,5 @@ public interface ActionService {
 	public int CommitteActionDelete(ActionAssignDto actionAssign)throws Exception;
 	public List<Object[]> getvendorList()throws Exception;
 	public Long rfaCloseForExternal(RfaActionDto rfa)throws Exception;
+	public Object[] getActionMainAttachMent(String mainid)throws Exception;
 }

@@ -21,6 +21,7 @@ import com.vts.pfms.committee.dto.ActionAssignDto;
 import com.vts.pfms.committee.model.ActionAssign;
 import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.committee.model.ActionMain;
+import com.vts.pfms.committee.model.ActionMainAttachment;
 import com.vts.pfms.committee.model.ActionSelf;
 import com.vts.pfms.committee.model.ActionSub;
 import com.vts.pfms.committee.model.FavouriteList;
@@ -167,12 +168,19 @@ public class ActionDaoImpl implements ActionDao{
 	
 	@Override
 	public List<Object[]> AssigneeData(String mainid ,String assignid) throws Exception {
-		
+		try {
 		Query query=manager.createNativeQuery(ASSIGNEEDATA);
 //		query.setParameter("mainid", mainid);
 		query.setParameter("actionassignid", assignid);
+		
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
+		
+		System.out.println("list---->"+mainid +" ==="+assignid+"---"+AssignedList.size());
 		return AssignedList;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
 	}
 
 	@Override
@@ -2065,5 +2073,30 @@ public class ActionDaoImpl implements ActionDao{
 		    } catch (Exception e) {
 		        return null; // Explicitly handle no result case
 		    }
+	}
+	
+	@Override
+	public void saveActionMainAttachment(ActionMainAttachment attachment) throws Exception {
+		// TODO Auto-generated method stub
+		manager.persist(attachment);
+		manager.flush();
+	}
+	
+	private static final String ACTIONMAINATTACH="SELECT AttachmentId,FileName FROM action_main_attachment WHERE ActionMainId=:ActionMainId AND isactive='1'";
+	
+	@Override
+	public Object[] getActionMainAttachMent(String mainid) throws Exception {
+
+			try {
+				Query query = manager.createNativeQuery(ACTIONMAINATTACH);
+				query.setParameter("ActionMainId", mainid);
+				
+				return (Object[])query.getSingleResult();
+				
+			}catch(Exception e){
+				
+			}
+		
+		return null;
 	}
 }

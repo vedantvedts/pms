@@ -4276,7 +4276,7 @@ public class ProjectController
 				protype.setCreatedDate(sdf1.format(new Date()));
 				protype.setLabCode(LabCode);
 				protype.setLabParticipating(nodallab);
-
+				protype.setIsCCS("N");;
 				count=service.ProjectMasterAdd(protype);
 				if(count>0) {
 					redir.addAttribute("result","Project  Added Successfully");

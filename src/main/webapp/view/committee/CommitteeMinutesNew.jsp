@@ -67,7 +67,7 @@
 	Map<Integer,String> mappmrc=(Map<Integer,String>)request.getAttribute("mappmrc");
 	Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 	List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envisagedDemandlist");
-	
+	String labcode= (String) session.getAttribute("labcode");
 	
 	
 	// new
@@ -364,8 +364,8 @@ for( Object[]obj:specialMembers){ %>
 	
 	 <tr>
 		 <th style="text-align: center ;padding: 5px;border: 1px solid black;width: 10px; ">SN</th>
-		 <th style="text-align: center ;padding: 5px;border: 1px solid black;width: 380px; ">Name, Designation</th>
-		 <th style="text-align: center ;padding: 5px;border: 1px solid black;width: 120px; ">Estt. / Agency</th>
+		 <th style="text-align: center ;padding: 5px;border: 1px solid black;width: 220px; ">Name</th>
+		 <th style="text-align: center ;padding: 5px;border: 1px solid black;width: 280px; "> Designation &  Estt. / Agency</th>
 		 <th style="text-align: center ;padding: 5px;border: 1px solid black;width: 140px; ">Role</th>
 	 </tr>
 	  <tr>
@@ -386,11 +386,11 @@ for( Object[]obj:specialMembers){ %>
 	 	 <td style="border: 1px solid black; padding: 5px;text-align: center"><%=j%> </td>
 	 	  	<td style="border: 1px solid black; padding: 5px;text-align: left">  
 	 	  	
-	 			<%= invitedlist.get(i)[6]%>,&nbsp;<%=invitedlist.get(i)[7] %>  
+	 			<%= invitedlist.get(i)[6]%> 
 		 	</td>
 		 	<td style="border: 1px solid black; padding: 5px;text-align: left;">  
 	 	  	
-	 			<%= invitedlist.get(i)[11]%>  
+	 			<%=invitedlist.get(i)[7] %> , <%=invitedlist.get(i)[15]!=null ?invitedlist.get(i)[15]+" , ":(invitedlist.get(i)[14]!=null ?invitedlist.get(i)[14]+" , ": "")  %> <%= invitedlist.get(i)[11]%>  
 		 	</td>	
 		 	<td style="border: 1px solid black;padding: 5px ;text-align: left">
 		 		<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
@@ -640,7 +640,7 @@ for( Object[]obj:specialMembers){ %>
 					<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%></th>
 				</tr>
 				<tr>
-						<%
+					<%
 							int count = 0;
 
 						for (Object[] speclist : speclists)
@@ -681,9 +681,64 @@ for( Object[]obj:specialMembers){ %>
 							<th colspan="8" style="text-align: left; font-weight: 700;">3 (a) Record of Discussions and Action Points of Current Meeting.</th>
 						</tr>
 						<tr>
-							<td colspan="8" style="text-align: center ;padding: 5px;">Item Code/Type : A: Action, C: Comment, D: Decision, R: Recommendation</td>
+							<td colspan="8" style="text-align: center ;padding: 5px;">Item Code/Type : A: Action, C: Comment, D: Decision, R: Recommendation,I:Issue,K:Risk</td>
 						</tr>
 					</table>	
+					<%if(labcode.equalsIgnoreCase("ADE")) { %>
+					<%if(actionlist.size()>=0){ %>
+							
+					<div align="center">
+					<table style="margin-top: 5px; margin-left: 25px;width: 650px; font-size: 16px; border-collapse: collapse ;border: 1px solid black ">
+						<tbody>
+							<tr>
+								<th  class="sth" style=" max-width: 30px"> SN </th>
+<!-- 								<th  class="sth" style=" max-width: 210px"> Action Id</th>	
+ -->							
+ 								<th  class="sth" style=" max-width: 280px"> Item</th>
+ 								<th  class="sth" style=" max-width: 70px"> Action Type</th>				
+								<th  class="sth" style=" max-width: 180px"> Responsibility </th>					
+								<th  class="sth" style=" width: 100px"> PDC</th>
+							</tr>
+							
+							<% 	int count =1;
+							  	Iterator actIterator = actionlist.entrySet().iterator();
+								while(actIterator.hasNext()){	
+								Map.Entry mapElement = (Map.Entry)actIterator.next();
+					            String key = ((String)mapElement.getKey());
+					            ArrayList<Object[]> values=(ArrayList<Object[]>)mapElement.getValue();
+								%>
+								<tr>
+									<td class="std" style="text-align: center;"> <%=count%></td>
+							
+								
+									<td  class="std" style="padding-left: 5px;padding-right: 5px;text-align: justify;"><%= values.get(0)[1] %></td>
+									<td  class="std" style="text-align: center;"> <%= values.get(0)[2]  %></td>
+									<td  class="std" >
+								<%	int count2=0;
+									Set<String>labCodes= new LinkedHashSet<>();
+										for(Object obj[]:values){
+									    if(obj[16]!=null ){
+										labCodes.add(obj[16].toString());	
+										}
+										if(obj[15]!=null ){
+											labCodes.add(obj[15].toString());	
+										}
+										
+											%>
+										
+									<%count2++;} %>
+									<%if(labCodes.toString().replace("[", "").replace("]", "") .length()>0){ %><%=labCodes.toString().replace("[", "").replace("]", "")  %> <%}else{ %> - <%} %>
+									</td>                       						
+									<td  class="std"><%if( values.get(0)[5]!=null){ %> <%=sdf.format(sdf1.parse(values.get(0)[5].toString()))%> <%}else{ %> - <%} %></td>
+								</tr>				
+							<% count++;} %>
+						</tbody>
+					</table>
+					</div>
+					<br>	
+				<%}%>
+					
+					<%}else{ %>
 					<table style="margin-top: 5px; margin-left: 25px;width: 650px; font-size: 16px; border-collapse: collapse ;border: 1px solid black ">
 					<thead>
 						<tr>
@@ -726,7 +781,7 @@ for( Object[]obj:specialMembers){ %>
 								</tr>
 							<%} %>
 						</table>	
-
+<%} %>
 							<table style="margin-top: 0px; margin-left: 10px; width: 650px; font-size: 16px; border-collapse: collapse;">
 								<tr>
 									<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]%> (b)&nbsp;<%=committeemin[1]%></th>
@@ -817,14 +872,8 @@ for( Object[]obj:specialMembers){ %>
 							<%i++;
 							}} %>
 							</tbody>
-								
 								</tbody>
-								
-								
 								</table>			
-				
-				
-				
 			<% } else if(committeemin[0].toString().equals("4") ) { %>
 				<br>
 					<table style="margin-top: -15px; margin-left: 10px; width: 650px; font-size: 16px; border-collapse: collapse;">
@@ -832,638 +881,27 @@ for( Object[]obj:specialMembers){ %>
 							<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%> (Annexure - A)</th>
 						</tr>
 					</table>	
-		<%-- 					<table style=" margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
-						     <thead>
-						     
-						         		 <tr>
-										 <th class="std"  style="width: 30px !important; ">MS</th>
-										 <th class="std"  style="width: 30px !important; ">L</th>
-										 <th class="std" style="max-width: 250px; ">System/ Subsystem/ Activities</th>
-										 <th class="std" style="max-width: 100px; ">  PDC</th>
-										 <th class="std" style="max-width: 100px; "> Progress</th>
-<!-- 										 <th class="std" style="max-width: 70px; "> Status</th>
- -->										 <th class="std" style="max-width: 170px; "> Remarks</th> 
-										 
-									</tr>
-								</thead>
-		
-								<tbody>
-									<% if(MilestoneDetails6 !=null){ if( MilestoneDetails6.size()>0){ 
-									long milcount1=1;
-									int milcountA=1;
-									int milcountB=1;
-									int milcountC=1;
-									int milcountD=1;
-									int milcountE=1;%>
-									<%for(Object[] obj:MilestoneDetails6){
-										
-										if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid) ){
-										%>
-										<tr>
-											<td class="std"  style="max-width: 50px;text-align: center;">M<%=obj[0] %></td>
-											<td class="std"  style="max-width: 50px;text-align: center;" >
-												<%
-												
-												if(obj[21].toString().equals("0")) {%>
-													
-												<%	milcountA=1;
-													milcountB=1;
-													milcountC=1;
-													milcountD=1;
-													milcountE=1;
-												}else if(obj[21].toString().equals("1")) { 
-												for(Map.Entry<Integer,String>entry:treeMapLevOne.entrySet()){
-													if(entry.getKey().toString().equalsIgnoreCase(obj[2].toString())){%>
-														<%=entry.getValue() %>
-												<%}}
-												%>
-												A-<%=milcountA %>
-												<% /* milcountA++;
-													milcountB=1;
-													milcountC=1;
-													milcountD=1;
-													milcountE=1; */
-												}else if(obj[21].toString().equals("2")) { 
-													for(Map.Entry<Integer,String>entry:treeMapLevTwo.entrySet()){
-														if(entry.getKey().toString().equalsIgnoreCase(obj[3].toString())){%>
-															<%=entry.getValue() %>
-													<%}}
-												
-												
-												%>
-													B-<%=milcountB %>
-												<%/* milcountB+=1;
-												milcountC=1;
-												milcountD=1;
-												milcountE=1; */
-												}else if(obj[21].toString().equals("3")) { %>
-													C-<%=milcountC %>
-												<%milcountC+=1;
-												milcountD=1;
-												milcountE=1;
-												}else if(obj[21].toString().equals("4")) { %>
-													D-<%=milcountD %>
-												<%
-												milcountD+=1;
-												milcountE=1;
-												}else if(obj[21].toString().equals("5")) { %>
-													E-<%=milcountE %>
-												<%milcountE++;
-												} %>
-											</td>
-
-											<td class="std"  style="max-width: 150px;text-align: left; <%if(obj[21].toString().equals("0")) {%>font-weight: bold;<%}%>">
-												<%if(obj[21].toString().equals("0")) {%>
-													<%=obj[10] %>
-												<%}else if(obj[21].toString().equals("1")) { %>
-													&nbsp;&nbsp;<%=obj[11] %>
-												<%}else if(obj[21].toString().equals("2")) { %>
-													&nbsp;&nbsp;<%=obj[12] %>
-												<%}else if(obj[21].toString().equals("3")) { %>
-													&nbsp;&nbsp;<%=obj[13] %>
-												<%}else if(obj[21].toString().equals("4")) { %>
-													&nbsp;&nbsp;<%=obj[14] %>
-												<%}else if(obj[21].toString().equals("5")) { %>
-													&nbsp;&nbsp;<%=obj[15] %>
-												<%} %>
-											</td>
-											<td class="std"  style="max-width: 110px;text-align: center;"><%=sdf.format(sdf1.parse(obj[9].toString())) %><br><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
-											<td class="std"  style="max-width: 110px;text-align: center;"><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
-											<td class="std"  style="max-width: 100px;text-align: center;"><%=obj[17] %>%</td>											
-
-											<td class="std"  style="max-width: 100px;text-align: left;"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
-										</tr>
-									<%milcount1++;}} %>
-								<%} else{ %>
-								<tr><td class="std" colspan="8" style="text-align: center;" > No SubSystems</td></tr>
-								<%}}else{ %>
-									<tr><td class="std" colspan="8" style="text-align: center;" > No SubSystems</td></tr>
-								<%} %>
-
-						</tbody>
-					</table> --%>
-				<!--  <h1 class="break"></h1>  -->
-				
 			<%}else if (committeemin[0].toString().equals("5") ){%>
-			
 					<table style="margin-top: 0px; margin-left: 10px; width: 650px; font-size: 16px; border-collapse: collapse;">
 						<tr>
 							<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%>  (Annexure - B)</th>
 						</tr>
 					</table>	
-						<%-- 	<table style=" margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
-										<thead>
-										<tr>
-											<th colspan="8" style="text-align: right;"> <span class="currency" >(In &#8377; Lakhs)</span></th>
-										</tr>
-										 <tr>
-										 	<th colspan="8" class="std">Demand Details ( > &#8377; <% if (projectdatadetails != null && projectdatadetails[13] != null) { %>
-													<%=projectdatadetails[13].toString().replaceAll("\\.\\d+$", "")%> ) <% } else { %> - )<% } %>
-												
-											</th>
-										</tr>
-										</thead>
-										
-										<tr>
-											<th class="std" style="width: 30px !important;">SN</th>
-											<th class="std" style="max-width: 90px;">Demand No</th>
-											<th class="std" style="max-width: 90px; ">Demand Date</th>
-											<th class="std" colspan="2" style="max-width: 150px;"> Nomenclature</th>
-											<th class="std" style="max-width: 90px;"> Est. Cost</th>
-											<th class="std" style="max-width: 80px; "> Status</th>
-											<th class="std" style="max-width: 200px;">Remarks</th>
-										</tr>
-										    <% int k=0;
-										    if(procurementOnDemand!=null &&  procurementOnDemand.size()>0){
-										    Double estcost=0.0;
-										    Double socost=0.0;
-										    for(Object[] obj : procurementOnDemand){ 
-										    	k++; %>
-											<tr>
-												<td class="std" ><%=k%></td>
-												<td class="std" ><%=obj[1]%></td>
-												<td class="std" ><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
-												<td class="std" colspan="2" ><%=obj[8]%></td>
-												<td class="std" style=" text-align:right;"> <%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
-												<td class="std" > <%=obj[10]%> </td>
-												<td class="std" ><%=obj[11]%> </td>		
-											</tr>		
-											<%
-											estcost += Double.parseDouble(obj[5].toString());
-										    }%>
-										    
-										    <tr>
-										    	<td class="std" colspan="5" style="text-align: right;"><b>Total</b></td>
-										    	<td class="std" style="text-align: right;"><b><%=df.format(estcost)%></b></td>
-										    	
-										    	<td class="std" colspan="2" style="text-align: right;"></td>
-
-										    </tr>
-										    
-										    
-										    <% }else{%>											
-												<tr><td colspan="8" class="std" style="text-align: center;">Nil </td></tr>
-											<%} %>
-											<!-- ********************************Future Demand Start *********************************** -->
-											<tr>
-											<th class="std" colspan="8"><span class="mainsubtitle">Future Demand</span></th>
-											</tr>
-											<tr>
-												 <th class="std" style="width: 15px !important;text-align: center;">SN</th>
-											 <!--  	 	 <th style="width: 150px;">Demand No </th>
-											  	 	 <th style="width: 80px;">Demand  Date</th> -->
-													 <th class="std"  colspan="3" style="width: 295px;"> Nomenclature</th>
-													 <th class="std" style="width: 80px;"> Est. Cost-Lakh &#8377;</th>
-													 <th class="std" style="max-width: 50px; "> Status</th>
-													 <th class="std" colspan="2" style="max-width: 310px;">Remarks</th>
-											</tr>
-										
-										    			    <% int a=0;
-										    if(envisagedDemandlist!=null &&  envisagedDemandlist.size()>0){
-										    Double estcost=0.0;
-										    Double socost=0.0;
-										    for(Object[] obj : envisagedDemandlist){ 
-										    	a++; %>
-											<tr>
-												<td class="std" ><%=a%></td>
-											<!-- 	<td >--</td>
-												<td  class="std">--</td> -->
-												<td class="std" colspan="3" ><%=obj[3]%></td>
-												<td class="std" style=" text-align:right;"> <%=format.format(new BigDecimal(obj[2].toString())).substring(1)%></td>
-												<td class="std" > <%=obj[6]%> </td>
-												<td class="std" colspan="2" ><%=obj[4]%> </td>		
-											</tr>		
-											<%
-												estcost += Double.parseDouble(obj[2].toString());
-										    }%>
-										    
-										    <tr>
-										    	<td  class="std"colspan="6" style="text-align: right;"><b>Total</b></td>
-										    	<td class="std" style="text-align: right;" colspan="4"><b><%=df.format(estcost)%></b></td>
-										    </tr>
-										    
-										    
-										    <% }else{%>											
-												<tr><td colspan="8" class="std" style="text-align: center;">Nil </td></tr>
-											<%} %>
-											
-									<!-- ********************************Future Demand End *********************************** -->
-											
-											 <tr >
-											 
-												<th  class="std"  colspan="8">Orders Placed ( > &#8377; <% if (projectdatadetails != null && projectdatadetails[13] != null) { %>
-													<%=projectdatadetails[13].toString().replaceAll("\\.\\d+$", "")%> ) <% } else { %> - )<% } %>
-												</th>
-											 </tr>
-										
-										  	 <tr>	
-										  	 	 <th class="std" rowspan="2" style="width: 30px !important;">SN</th>
-										  	 	 <th class="std">Demand No </th>
-										  	 	 <th class="std" >Demand  Date</th>
-												 <th class="std" colspan="2"> Nomenclature</th>
-												 <th class="std" > Est. Cost</th>
-												 <th class="std" style="max-width: 80px; "> Status</th>
-												 <th class="std" style="max-width: 310px;">Remarks</th>
-												</tr>
-											
-											<tr>
-												 <th class="std"  style="max-width: 150px;">Supply Order No</th>
-												 <th class="std" style="max-width: 90px;	">DP Date</th>
-												 <th class="std" colspan="2" style="max-width: 90px;">Vendor Name</th>
-												 <th class="std" style="max-width: 80px;">Rev DP</th>											 
-												 <th class="std"  colspan="2" >SO Cost-Lakh &#8377;</th>			
-											</tr>
-											
-										    <%
-										        if(procurementOnSanction!=null && procurementOnSanction.size()>0){
-										    	  k=0;
-										    	  Double estcost=0.0;
-												  Double socost=0.0;
-												  String demand="";
-										  	 	   for(Object[] obj:procurementOnSanction){ 
-										  	 		 if(obj[2]!=null){ 
-										  	 		    if(!obj[1].toString().equals(demand)){
-										  	 			k++;
-										  	 			
-										  	 		 	//list is to get a size so it can be used as rowspan value
-										  	 		 	  List<Object[]> list = procurementOnSanction.stream().filter(e-> e[0].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
-										  	 		 	
-										  	 		%>
-												
-											    <!-- 1st Row Label Values -->
-												<tr>
-													<td class="std" rowspan="<%=list.size()+1%>" ><%=k%></td>
-													<td class="std" ><%=obj[1]%> </td>
-													<td class="std"><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
-													<td class="std"  colspan="2"><%=obj[8]%></td>
-													<td class="std" style=" text-align:right;"> <%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
-												    <td class="std"> <%=obj[10]%> </td>
-												    <td class="std" ><%=obj[11]%></td>		
-													
-												</tr>
-												<%demand=obj[1].toString();} %>
-												
-												<!-- 2nd Row Label Values -->
-												<tr>
-													
-													<td class="std" ><% if(obj[2]!=null){%> <%=obj[2]%> <%}else{ %>-<%} %> </td>
-													<td class="std" ><%if(obj[4]!=null){%> <%=sdf.format(sdf1.parse(obj[4].toString()))%> <%}else{ %> - <%} %></td>
-													<td class="std" colspan="2"> <%=obj[12] %> </td>
-													<td class="std"><%if(obj[7]!=null){if(!obj[7].toString().equals("null")){%> <%=sdf.format(sdf1.parse(obj[7].toString()))%><%}}else{ %>-<%} %></td>
-				                                    <td class="std" colspan="2" style=" text-align: right;"><%if(obj[6]!=null){%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%> <%} else{ %> - <%} %> </td>	
-				                               										
-				
-												</tr>		
-												<% }
-										  	 		
-										  	 		Double value = 0.00;
-										  	 		if(obj[6]!=null){
-										  	 			value=Double.parseDouble(obj[6].toString());
-										  	 		}
-										  	 		
-										  	 		estcost += Double.parseDouble(obj[5].toString());
-										  	 		socost +=  value;
-										  	 		
-										  	 	 } 
-										   	%>
-										   	 
-										    <tr>
-										    	<td colspan="6" class="std" style="text-align: right;"><b>Total</b></td>
-										    	<td colspan="2" class="std" style="text-align: right;"><b><%=df.format(socost)%></b></td>
-										    	
-										    </tr>
-										     <% }else{%>
-											
-												<tr><td colspan="8" class="std"  style="text-align: center;">Nil </td></tr>
-											<%} %>
-									</table>  --%>
-									
-									
-									
-						<%-- 	<table style=" margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
-										<thead>
-											 <tr >
-												 <th class="std" colspan="8" ><span class="mainsubtitle">Total Summary of Procurement</span></th>
-											 </tr>
-										 </thead>
-									       <tr>
-												<th class="std" style="max-width: 150px;">No. of Demand</th>
-												<th class="std" style="max-width: 150px;">Est. Cost</th>
-												<th class="std" style="max-width: 150px;">No. of Orders</th>
-												<th class="std" style="max-width: 150px;">SO Cost</th>
-												<th class="std" style="max-width: 150px;">Expenditure</th>
-											</tr>
-									<%if(totalprocurementdetails!=null && totalprocurementdetails.size()>0){ 
-										 for(TotalDemand obj:totalprocurementdetails){
-											 if(obj.getProjectId().equalsIgnoreCase(projectid)){
-										 %>
-										   <tr>
-										      <td class="std" style="text-align: center;"><%=obj.getDemandCount() %></td>
-										      <td class="std" style="text-align: center;"><%=obj.getEstimatedCost() %></td>
-										      <td class="std" style="text-align: center;"><%=obj.getSupplyOrderCount()%></td>
-										      <td class="std" style="text-align: center;"><%=obj.getTotalOrderCost() %></td>
-										      <td class="std" style="text-align: center;"><%=obj.getTotalExpenditure()%></td>
-										   </tr>
-										   <%}}}else{%>
-										   <tr>
-										      <td class="std" colspan="5" style="text-align: center;">IBAS Server Could Not Be Connected</td>
-										   </tr>
-										   <%} %>
-									</table> --%>
-									
-					<!--  <h1 class="break"></h1>  -->
 			<%}else if (committeemin[0].toString().equals("6") ) 
 			{ %>
-			
 					<table style="margin-top: 0px; margin-left: 10px; width: 650px; font-size: 16px; border-collapse: collapse;">
 						<tr>
 							<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%> (Annexure - C)</th>
 						</tr>
-						 
 					</table>	
-			<%-- 		<%if(Long.parseLong(projectid) >0 && projectFinancialDetails!=null) { %>
-							
-							<table style=" margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
-								    <thead>
-								        <tr>
-								           	<td class="std" colspan="2" align="center"><b>Head</b></td>
-								           	<td class="std" colspan="2" align="center"><b>Sanction</b></td>
-									        <td class="std" colspan="2" align="center"><b>Expenditure</b></td>
-									        <td class="std" colspan="2" align="center"><b>Out Commitment</b> </td>
-								            <td class="std" colspan="2" align="center"><b>Balance</b></td>
-									        <td class="std" colspan="2" align="center"><b>DIPL</b></td>
-								            <td class="std" colspan="2" align="center"><b>Notional Balance</b></td>
-								        </tr>
-									    <tr>
-											<th class="std" >SN</th>
-										    <th class="std" >Head</th>
-										    <th class="std" >RE</th>
-										    <th class="std" >FE</th>
-										    <th class="std" >RE</th>
-										    <th class="std" >FE</th>
-									        <th class="std" >RE</th>
-									        <th class="std" >FE</th>
-								            <th class="std" >RE</th>
-										    <th class="std" >FE</th>
-										    <th class="std" >RE</th>
-										    <th class="std" >FE</th>
-										    <th class="std" >RE</th>
-										    <th class="std" >FE</th>
-								        </tr>
-									</thead>
-									<tbody>
-									<% 
-								    double totSanctionCost=0,totReSanctionCost=0,totFESanctionCost=0;
-									double totExpenditure=0,totREExpenditure=0,totFEExpenditure=0;
-									double totCommitment=0,totRECommitment=0,totFECommitment=0,totalDIPL=0,totalREDIPL=0,totalFEDIPL=0;
-									double totBalance=0,totReBalance=0,totFeBalance=0,btotalRe=0,btotalFe=0;
-									int count=1;
-									if(projectFinancialDetails!=null){
-										for(ProjectFinancialDetails projectFinancialDetail:projectFinancialDetails){    %>
-									 
-									    	<tr>
-												<td class="std"  align="center"><%=count++ %></td>
-												<td class="std"  style="text-align: left;"><%=projectFinancialDetail.getBudgetHeadDescription()%></td>
-												<td class="std"  align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReSanction()) %></td>
-												<%totReSanctionCost+=(projectFinancialDetail.getReSanction());%>
-													<td class="std"  align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeSanction())%></td>
-												<%totFESanctionCost+=(projectFinancialDetail.getFeSanction());%>
-													<td class="std"  align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReExpenditure()) %></td>
-												<%totREExpenditure+=(projectFinancialDetail.getReExpenditure());%>
-												    <td class="std"  align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeExpenditure())%></td>
-												<%totFEExpenditure+=(projectFinancialDetail.getFeExpenditure());%>
-												    <td class="std"  align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReOutCommitment())%></td>
-												<%totRECommitment+=(projectFinancialDetail.getReOutCommitment());%>
-												    <td class="std"  align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeOutCommitment())%></td>
-												<%totFECommitment+=(projectFinancialDetail.getFeOutCommitment());%>
-													<td class="std"  align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl())%></td>
-												<%btotalRe+=(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl());%>
-													<td class="std"  align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl())%></td>
-												<%btotalFe+=(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl());%>
-													 <td class="std"  align="right"style="text-align: right;"><%=df.format(projectFinancialDetail.getReDipl())%></td>
-												<%totalREDIPL+=(projectFinancialDetail.getReDipl());%>
-													 <td class="std"  align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeDipl())%></td>
-												<%totalFEDIPL+=(projectFinancialDetail.getFeDipl());%>
-													<td class="std"  align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance())%></td>
-												<%totReBalance+=(projectFinancialDetail.getReBalance());%>
-													<td class="std"  align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance())%></td>
-												<%totFeBalance+=(projectFinancialDetail.getFeBalance());%>
-											</tr>
-										<%} }%>
-																
-											<tr>
-												<td class="std"  colspan="2"><b>Total</b></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;"><%=df.format(totReSanctionCost)%></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;"><%=df.format(totFESanctionCost)%></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;"><%=df.format(totREExpenditure)%></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;"><%=df.format(totFEExpenditure)%></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;"><%=df.format(totRECommitment)%></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;"><%=df.format(totFECommitment)%></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;"><%=df.format(btotalRe)%></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;"><%=df.format(btotalFe)%></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;"><%=df.format(totalREDIPL)%></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;"><%=df.format(totalFEDIPL)%></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;"><%=df.format(totReBalance)%></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;"><%=df.format(totFeBalance)%></td>
-											</tr>
-											<tr>
-												<td class="std"  colspan="2"><b>GrandTotal</b></td>
-												<td class="std"  colspan="2"  style="text-align: right;font-weight: bold;"><%=df.format(totReSanctionCost+totFESanctionCost)%></td>
-												<td class="std"  colspan="2"  style="text-align: right;font-weight: bold;"><%=df.format(totREExpenditure+totFEExpenditure)%></td>
-												<td class="std"  colspan="2"  style="text-align: right;font-weight: bold;"><%=df.format(totRECommitment+totFECommitment)%></td>
-												<td class="std"  colspan="2"  style="text-align: right;font-weight: bold;"><%=df.format(btotalRe+btotalFe)%></td>
-												<td class="std"  colspan="2"  style="text-align: right;font-weight: bold;"><%=df.format(totalREDIPL+totalFEDIPL)%></td>
-												<td class="std"  colspan="2"  style="text-align: right;font-weight: bold;"><%=df.format(totReBalance+totFeBalance)%></td>
-											</tr>
-										</tbody>        
-									</table>
-														
-							
-					<% }else {  %>
-						
-						<table style="margin-top: -0px; margin-left: 10px; width: 650px; font-size: 16px; border-collapse: collapse;">
-							<tr>
-								<th colspan="8" style="text-align: center; font-weight: 700;padding-left: 30px;"><br> Data Unavailable</th>
-							</tr>
-						</table>		
-							
-					<% } %> --%>
-				
-				
-		<%}else if (committeemin[0].toString().equals("7") )
-		{ %>
+		<%}else if (committeemin[0].toString().equals("7") ){ %>
 			
 					<table style="margin-top: 0px; margin-left: 10px; width: 650px; font-size: 16px; border-collapse: collapse;">
 						<tr>
 							<th colspan="8" style="text-align: left; font-weight: 700; text-align: justify;padding-left: 15px;" ><br><%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%> (Annexure - D)</th>
 						</tr>
 					</table>	
-			<%-- 		<table style="margin-top: 5px; margin-bottom: 0px; margin-left: 5px; width: 700px; font-size: 16px; border-collapse: collapse;border: 1px solid black" >
-							 <thead>
-								<tr style="font-size:14px; ">
-									<th class="std"  style="width:20px !important;">SN</th>
-									<th class="std"  style="width:20px; ">MS</th>
-									<th class="std"  style="width:20px; ">L</th>
-									<th class="std"  style="width:250px;">Action Plan </th>	
-									<th class="std"  style="max-width:90px;">Responsibility </th>
-									<th class="std"  style="max-width:150px;">PDC</th>	
-									<th class="std"  style="max-width:55px;">Progress </th>
-					<!--                 <th class="std"  style="max-width:50px;">Status</th> -->
-					                 <th class="std"  style="max-width:80px;">Remarks</th>
-								</tr>
-							</thead>
-							<tbody style="font-size: 14px;">
-								<%if(ActionPlanSixMonths.size()>0){ 
-									long count1=1;
-									int countA=1;
-									int countB=1;
-									int countC=1;
-									int countD=1;
-									int countE=1;
-									String mainMileStone=null;
-									String mile=null;
-									String mileA=null;
-									String mileBid=null;
-									if(!ActionPlanSixMonths.isEmpty()){
-										mainMileStone=ActionPlanSixMonths.get(0)[0].toString();
-										mile=ActionPlanSixMonths.get(0)[2].toString();
-										mileA=ActionPlanSixMonths.get(0)[3].toString();
-										mileBid=ActionPlanSixMonths.get(0)[1].toString();
-									}
-									%>
-									<%for(Object[] obj:ActionPlanSixMonths){
-										
-										if(Integer.parseInt(obj[26].toString())<= Integer.parseInt(levelid) ){
-										/*  if(obj[26].toString().equals("0")||obj[26].toString().equals("1")){ */
-										%>
-										<tr>
-											<td class="std"  style="text-align: center"><%=count1 %></td>
-											<td>M <%=obj[22] %> <% if(!obj[26].toString().equals("0")) {%> L<%=obj[26] %> <%} %></td>
-											<td class="std"  style="text-align: center;<%if(!obj[0].toString().equalsIgnoreCase(mainMileStone)||count1==1){%>font-weight:bold;<%}%>">M<%=obj[22] %></td>
-											
-											<!-- Old Code -->
-											<td><% if(!obj[26].toString().equals("0")) {%> L<%=obj[26] %> <%} else {%> L <%} %></td>
-											<td>
-												<%if(!obj[10].toString().trim().equals("")){ %>
-													<%=obj[10] %>
-												<%}else if(!obj[9].toString().trim().equals("")){ %>
-													<%=obj[9] %>
-												<%}else if(!obj[8].toString().trim().equals("")){ %>
-													<%=obj[8] %>
-												<%}else if(!obj[7].toString().trim().equals("")){ %>
-													<%=obj[7] %>
-												<%} %>
-											</td>
-											
-											<!-- New Code (tharun)-->
-											
-											<td class="std"  style="text-align: center">
-												<%
-												
-												if(obj[26].toString().equals("0")) {%>
-													
-												<%countA=1;
-													countB=1;
-													countC=1;
-													countD=1;
-													countE=1;
-												}else if(obj[26].toString().equals("1")) {    
-												for (Map.Entry<Integer,String> entry : treeMapLevOne.entrySet()) {
-												if(entry.getKey().toString().equalsIgnoreCase(obj[2].toString())){%>
-													<%=entry.getValue() %>
-												<%}
-												}
-													
-												/* countA++; */
-												    countB=1;
-												    countC=1;
-													countD=1;
-													countE=1;
-												}else if(obj[26].toString().equals("2")) { 
-													/* if(!obj[1].toString().equalsIgnoreCase(mile)){
-														countB =1;
-													} */
-													for(Map.Entry<Integer, String>entry:treeMapLevTwo.entrySet()){
-													if(entry.getKey().toString().equalsIgnoreCase(obj[3].toString())){%>
-													<%=entry.getValue() %>
-													<%	}
-													}
-												%>
-												<%if(!obj[3].toString().equalsIgnoreCase(mileA)){
-													countB++;	
-													}
-												%>
-												<%/* countB+=1; */
-												countC=1;
-												countD=1;
-												countE=1;
-												}else if(obj[26].toString().equals("3")) { %>
-												C-<%=countC %>
-												<%countC+=1;
-												countD=1;
-												countE=1;
-												}else if(obj[26].toString().equals("4")) { %>
-												D-<%=countD %>
-												<%
-												countD+=1;
-												countE=1;
-												}else if(obj[26].toString().equals("5")) { %>
-													E-<%=countE %>
-												<%countE++;
-												} %>
-											</td>
-											<td class="std" style="<%if(obj[26].toString().equals("0")) {%>font-weight:bold;<%}%> text-align:left" >
-												<%if(obj[26].toString().equals("0")) {%>
-												<%=obj[9] %>
-												<%}else if(obj[26].toString().equals("1")) { %>
-												&nbsp;&nbsp;<%=obj[10]%>
-												<%}else if(obj[26].toString().equals("2")) { %>
-												&nbsp;&nbsp;<%=obj[11]%>
-												<%}else if(obj[26].toString().equals("3")) { %>
-												&nbsp;&nbsp;<%=obj[12]%>
-												<%}else if(obj[26].toString().equals("4")) { %>
-												&nbsp;&nbsp;<%=obj[13]%>
-												<%}else if(obj[26].toString().equals("5")) { %>
-												&nbsp;&nbsp;<%=obj[14]%>
-												<%}%>
-											</td>
-											<td class="std" ><%=obj[24] %>(<%=obj[25] %>)</td>
-											<td class="std" style="font-size: 12px;" >
-											<%=sdf.format(sdf1.parse(obj[8].toString())) %>
-											<%if(!LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[29].toString()))){ %>
-											<br><%=sdf.format(sdf1.parse(obj[29].toString())) %>
-											<%} %>
-											</td>
-											<td class="std"  style="text-align: center"><%=obj[16] %>%</td>											
-											<td class="std"  style="text-align: center">
-												<span class="<%if(obj[20].toString().equalsIgnoreCase("0")){%>assigned
-															<%}else if(obj[20].toString().equalsIgnoreCase("1")) {%> notyet
-															<%}else if(obj[20].toString().equalsIgnoreCase("2")) {%> ongoing
-															<%}else if(obj[20].toString().equalsIgnoreCase("3")) {%> completed
-															<%}else if(obj[20].toString().equalsIgnoreCase("4")) {%> delay 
-															<%}else if(obj[20].toString().equalsIgnoreCase("5")) {%> completeddelay
-															<%}else if(obj[20].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
-													<%=obj[27] %>	
-													<% if (obj[20].toString().equalsIgnoreCase("5") && obj[18] != null) { %>
-														(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.parse(obj[18].toString()))%>)
-													<%} else if (obj[20].toString().equalsIgnoreCase("4")) { %> 
-														(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.now())%>)
-													<% } %>
-												</span>
-											</td>
-											<td  class="std"  style="max-width: 80px;">
-												<%if(obj[28]!=null){ %> <%=obj[28] %> <%} %>
-											</td>
-										</tr>
-									<%count1++;mile=obj[2].toString();mileA=obj[3].toString();mainMileStone=obj[0].toString();mileBid=obj[1].toString();}} %>
-								<%} else{ %>
-								<tr><td class="std"  colspan="9" style="text-align:center; "> Nil</td></tr>
-								
-								
-								<%} %>
-						</tbody>				
-					</table> --%>
-							<!--  <h1 class="break"></h1>  -->
+		
 				
 		<%} else if (committeemin[0].toString().equals("8") || committeemin[0].toString().equals("9") || committeemin[0].toString().equals("10"))
 		{%>
@@ -1539,7 +977,7 @@ for( Object[]obj:specialMembers){ %>
 				<br><%if(membersec!=null){%><%= membersec[6].toString() %>,&nbsp;<%= membersec[7].toString() %><%} %>
 				 <br>
 				 (Member Secretary)
-				 <div align="left" ><b>NOTE : </b>Action item details are enclosed as Annexure - AI.</div>
+				<%if(!labcode.equalsIgnoreCase("ADE")) {%> <div align="left" ><b>NOTE : </b>Action item details are enclosed as Annexure - AI.</div><%} %>
 			</div>
 			<%} %>
 			</div>

@@ -1,7 +1,7 @@
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.master.model.IndustryPartner"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+    pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
 <%@page import="java.time.LocalTime"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 	<%@page import="com.vts.pfms.FormatConverter"%>
@@ -85,6 +85,8 @@ String scheduleid = (String)request.getAttribute("scheduleid");
 String ccmFlag = (String) request.getAttribute("ccmFlag");
 String committeeMainId = (String) request.getAttribute("committeeMainId");
 String committeeId = (String) request.getAttribute("committeeId");
+
+String attachmentid = (String)request.getAttribute("attachmentid");
 %>
 
 <%
@@ -284,7 +286,7 @@ String ses=(String)request.getParameter("result");
 					<input type="hidden" name="scheduleid" value="<%=scheduleid%>"> 
 					<input type="hidden" name="flag" id="flag" value="UpdateForward">
 					<input type="hidden" name="flow" value="A" id="flow">
-		<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[15].toString().equalsIgnoreCase("FWD") && EmpId.equalsIgnoreCase(CommitteMainEnoteList[17].toString())) {%>	<button type="submit" name="flow" value="Rev" class="btn btn-sm btn-danger delete" onclick="return Revoke('enotefrm')" >REVOKE</button> <%} %>
+					<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[15].toString().equalsIgnoreCase("FWD") && EmpId.equalsIgnoreCase(CommitteMainEnoteList[17].toString())) {%>	<button type="submit" name="flow" value="Rev" class="btn btn-sm btn-danger delete" onclick="return Revoke('enotefrm')" >REVOKE</button> <%} %>
 					
 					<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
 						<button type="submit" class="btn btn-sm back" formaction="CCMSchedule.htm" formnovalidate="formnovalidate">
@@ -300,13 +302,41 @@ String ses=(String)request.getParameter("result");
 						</button>
 					<%} %>
 					</div>
-					
 					</form>
 					
+	 <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[15].toString().equalsIgnoreCase("APR") ){ %>		
+		<div class="row border m-2 p-2 ">
+		
+		<div class="col-md-3">
+		<label class="control-label" style="margin-bottom: 4px !important;">
+			Upload Signed MoM: &nbsp;
+		<span class="mandatory" style="color: red;">*</span></label>
+		</div>
+		<div class="col-md-6">
+					<input class="form-control" type="file" name="attachment" accept="application/pdf" id="attachment">
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					<input type="hidden" name="ScheduleId" value="<%=scheduleid %>"> 
+					<input type="hidden" name="committeeId" value="<%=committeeId %>"> 
+					<input type="hidden" name="attachmentid" value="0"> 
+				
+		</div>
+		<div class="col-md-1">
+		<button class="btn btn-sm submit" onclick="submitProgress()"> submit</button>
+		</div>
+		<div class="col-md-2" id="attachmentDiv" style="display:none;">
+		<form action="#" method="get">
+		<input type="hidden" name="attachmentid" id="attachmentid">
+		<button class="btn btn-sm" formaction="MinutesAttachDownload.htm" formmethod="get" formtarget="blank">
+		<i class="fa fa-download"></i>
+		</button>
+		</form>
+		</div>
+		</div>
+		<%} %>
 					
-					<%if(CommitteMainEnoteList!=null){ %>
-				 	<div align="center" style="margin-top:1%;">
-				 	<form action="#">
+		<%if(CommitteMainEnoteList!=null){ %>
+		<div align="center" style="margin-top:1%;">
+		<form action="#">
 				<label class="control-label" style="margin-bottom: 4px !important;">Status History: &nbsp;</label>
 				<button type ="submit"  class="btn btn-sm btn-link w-100 btn-status" formaction="EnoteStatusTrack.htm" value="<%=CommitteMainEnoteList[0]%>" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="Transaction History" name="EnoteTrackId" style=" color: <%=CommitteMainEnoteList[21].toString()%>; font-weight: 600;display: contents" > <%=CommitteMainEnoteList[20].toString() %> 
 				<i class="fa fa-external-link" aria-hidden="true"></i></button>
@@ -363,6 +393,8 @@ String ses=(String)request.getParameter("result");
 					</div>
 					<%} %>
 
+	
+	
 				</div>
 					</div>
 					</div>
@@ -506,6 +538,84 @@ String ses=(String)request.getParameter("result");
 				            }
 				        });
 				}
+				
+	var attachmentid = '0';
+	
+	   $.ajax({
+			type : "GET",
+			url : "MomAttachmentList.htm",
+			datatype:'json',
+			data : {
+				CommitteeScheduleId:<%=scheduleid%>,
+				
+			},
+			success:function(result){
+				console.log(result);
+				var ajaxresult = JSON.parse(result);
+				if(ajaxresult.length!=0){
+					attachmentid=ajaxresult[0][0];
+					$('#attachmentid').val(attachmentid)
+					$('#attachmentDiv').show();
+				}
+				
+			}
+	   });	
+	    function submitProgress(){
+	    	 var file= $("#attachment")[0].files[0];
+	    	 if (!file) {
+	    		 Swal.fire({
+					  icon: "error",
+					  title: "Oops...",
+					  text: "Please upload a file.",
+					  allowOutsideClick :false
+					});
+		
+				return false;
+	    		}
+	    	 var formData = new FormData();
+	    	 formData.append("file", $("#attachment")[0].files[0]);
+	    	 formData.append("ScheduleId", <%=scheduleid%>);
+	    	 if(attachmentid!=='0'){
+	    		 formData.append("attachmentid", attachmentid); 
+	    	 }
+	    	 formData.append("${_csrf.parameterName}", "${_csrf.token}");
+	    	
+	    	    Swal.fire({
+		            title: 'Are you sure to submit?',
+		            icon: 'question',
+		            showCancelButton: true,
+		            confirmButtonColor: 'green',
+		            cancelButtonColor: '#d33',
+		            confirmButtonText: 'Yes'
+		        }).then((result) => {
+		            if (result.isConfirmed) {
+		            	$.ajax({
+		            		type: 'POST',
+		    				url:'momcopyadd.htm',
+		    				data: formData,
+		    	                contentType: false,
+		    	                processData: false,
+		    	                ${_csrf.parameterName}:	"${_csrf.token}",
+		    	                success:function(result){
+		    	                    Swal.fire({
+		    			    	       	title: "Success",
+		    			                text: "File Uploaded Successfully.",
+		    			                icon: "success",
+		    			                allowOutsideClick :false
+		    			         		});
+		    			    	        $('.swal2-confirm').click(function (){
+		    			    	        
+		    			    	            location.reload();
+		    			    	        	})
+		    	    	                }
+		    	                
+		            	});
+		            } else {
+		                // Optionally do something if cancelled
+		          
+		            }
+		        });
+	    }
 				</script>	
 </body>
 </html>

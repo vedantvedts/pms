@@ -189,9 +189,7 @@ List<Object[]> OfficerList=(List<Object[]>) request.getAttribute("OfficerList");
 	             <td><%if(obj[5]!=null){%><%=obj[5] %><%}else{ %>-<%} %></td>
 	   	          <%-- <td><%if(obj[5]!=null){%><%=obj[6] %><%}else{ %>-<%} %></td>  --%>
 	   	          <td><% if (obj[5] != null) { %><%= (obj[6] != null) ? obj[6] : '-' %><% } else { %>-<% } %></td>
-	   	          
-	   	         
-	   			 <td><%if(Boolean.parseBoolean(obj[10].toString())){%>Active<%}else{ %><span style="color: red;">InActive</span><%} %></td>
+	   			 <td><%if(Integer.parseInt(obj[10].toString())==1){%>Active<%}else{ %><span style="color: red;">InActive</span><%} %></td>
 	      </tr>
 	    <%} %>
 	    </tbody>

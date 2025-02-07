@@ -3684,6 +3684,8 @@ function charts(value){
 	
 $projectid=value;
 	
+	console.log("charts ->>"+value)
+	
 	$.ajax({
 		
 			type:"GET",
@@ -3696,6 +3698,8 @@ $projectid=value;
 			datatype : 'json',
 			success : function(result) {
 
+				console.log("charts ->>"+result)
+				
 				var result = JSON.parse(result);
 				var values = Object.values(result).map(function(key, value) {
 					  return result[key,value]

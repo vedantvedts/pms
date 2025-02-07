@@ -13,7 +13,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "Pfms_test_plan_Acceptance")
+@Table(name = "pfms_test_plan_acceptance")
 public class TestAcceptance {
 
 	@Id

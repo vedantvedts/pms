@@ -250,7 +250,7 @@ height:18px;
      String ProjectName="";
 	   
        if(ProjectDetail!=null && ProjectId!=null){	
-    	   ProjectName=ProjectDetail[1].toString();
+    	   ProjectName=ProjectDetail[2].toString()+"("+ ProjectDetail[1].toString()  +")";
        }else{
     	   ProjectName=preProjectList.stream().filter(e->e[0].toString().equalsIgnoreCase(initiationId)).collect(Collectors.toList()).get(0)[3].toString();
        }
@@ -490,6 +490,7 @@ if(ses1!=null){	%>
 													       <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
 												            <button class="delet" name="Mainid" value="<%=level1[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
 												      </form> 
+											
 												   </div>
 									</div>
 									

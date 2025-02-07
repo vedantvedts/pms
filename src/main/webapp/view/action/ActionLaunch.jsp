@@ -511,7 +511,7 @@ a:hover {
 							</button>
 						</div>
 						<div class="modal-body" >
-							<form name="specadd" id="specadd" action="ActionSubmit.htm" method="post">
+							<form name="specadd" id="specadd" action="ActionSubmit.htm" method="post" enctype="multipart/form-data">
   
 				   			<div class="row">
 									  <div class="col-1"></div>
@@ -541,6 +541,16 @@ a:hover {
 											</div>
 									</div>
 			 				</div>  
+			 				
+			 					<div class="row mb-2">
+			 					<div class="col-md-1"></div>
+								<div class="col-md-3">
+								<label >Attachment </label><br>
+								</div>
+								<div class="col-md-6">
+								<input class="form-control" type="file" id="actionAttachment" name="actionAttachment">
+								</div>
+							</div>
 			 				<div  align="center">
 			 								<input type="hidden" name="Atype" id="Atype">
 			 								<input type="hidden" name="scheduleminutesid" id="scheduleid">

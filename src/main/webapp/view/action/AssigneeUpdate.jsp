@@ -39,6 +39,7 @@ h6{
   List<Object[]> LinkList=(List<Object[]> ) request.getAttribute("LinkList");
   String AssignerName=(String) request.getAttribute("AssignerName");
   Object[] AssigneeDetails=(Object[]) request.getAttribute("AssigneeDetails");
+  Object[] AttachmentList=(Object[]) request.getAttribute("AttachmentList");
   String actiono=(String) request.getAttribute("actiono");
   String filesize=(String) request.getAttribute("filesize");
   String back = (String) request.getAttribute("back");
@@ -104,6 +105,15 @@ h6{
       				  
                      	<span style="float: right;font-size: 17px;margin-top: 5px">Assigner :<%if(Assignee!=null && Assignee[1]!=null){%> <%=Assignee[1] %><%}%> </span>
                       </h6>
+      				<%if(AttachmentList!=null){ %>
+      				<div class="row ml-2">
+      				<form>
+      				 <h6 style="color: white;font-weight: bold;font-size: 1.1rem !important " align="left"> Attachment: 
+      				&nbsp;&nbsp;<button formaction="ActionMainAttachDownload.htm" formmethod="get" class="btn" name="MainId" value="<%=Assignee[0] %>"><i class="fa fa-download"></i></button>
+      				</h6>
+      				</form>
+      				</div>
+      				 <%} %>
       				
       			</div>
       		
