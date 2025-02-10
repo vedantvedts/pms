@@ -390,7 +390,7 @@ for( Object[]obj:specialMembers){ %>
 		 	</td>
 		 	<td style="border: 1px solid black; padding: 5px;text-align: left;">  
 	 	  	
-	 			<%=invitedlist.get(i)[7] %> , <%=invitedlist.get(i)[15]!=null ?invitedlist.get(i)[15]+" , ":(invitedlist.get(i)[14]!=null ?invitedlist.get(i)[14]+" , ": "")  %> <%= invitedlist.get(i)[11]%>  
+	 			<%=invitedlist.get(i)[7] %> , <%=invitedlist.get(i)[15]!=null ?invitedlist.get(i)[15]+", ":(invitedlist.get(i)[14]!=null ?invitedlist.get(i)[14]+", ": "")  %> <%= invitedlist.get(i)[11]%>  
 		 	</td>	
 		 	<td style="border: 1px solid black;padding: 5px ;text-align: left">
 		 		<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}

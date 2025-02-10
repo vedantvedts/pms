@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -3768,7 +3769,26 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 	@Override
 	public List<Object[]> EnotePrintDetails(long enoteId,String type) throws Exception {
 		// TODO Auto-generated method stub
-		return dao.EnotePrintDetails(enoteId,type);
+		
+		List<Object[]>epdetails =  dao.EnotePrintDetails(enoteId,type);
+		
+		List<String>status = Arrays.asList("FWD","RFD","RC1","RC2","RC3","RC4","RC5","APR");
+		
+		
+		List<Object[]>newList= new ArrayList<>();
+		
+		for(String s:status) {
+			
+			List<Object[]>subList = epdetails.stream().filter(e->e[8].toString().equalsIgnoreCase(s)).collect(Collectors.toList());
+			
+			if(subList!=null && subList.size()>0) {
+				
+				newList.add(subList.get(subList.size()-1));
+			}
+			
+		}
+		
+		return newList;
 	}
 	@Override
 	public List<Object[]> getAgendaAttachId(String agendaid) throws Exception {

@@ -681,11 +681,24 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return CommitteeSubScheduleList;
 	}
 
+	
+	private static final String AGENDASPECLIST="SELECT  a.ScheduleMinutesId, a.Details,a.ScheduleId,a.MinutesId,a.ScheduleSubId,a.MinutesSubOfSubId,a.MinutesSubId,a.idarck,a.remarks,b.outcomename,c.agendaitem AS agenda, a.agendasubhead\r\n"
+			+ " FROM committee_schedules_minutes_details a,committee_schedules_minutes_outcome b,committee_schedules_agenda c\r\n"
+			+ " WHERE a.scheduleid =:InScheduleId  AND a.idarck=b.idarck AND c.scheduleagendaid=a.minutessubid AND a.minutesid='3'\r\n"
+			+ " \r\n"
+			+ " UNION\r\n"
+			+ " \r\n"
+			+ " SELECT  a.ScheduleMinutesId, a.Details,a.ScheduleId,a.MinutesId,a.ScheduleSubId,a.MinutesSubOfSubId,a.MinutesSubId,a.idarck,a.remarks,b.outcomename,\r\n"
+			+ " CASE WHEN a.minutesid='4' THEN 'Other Discussion' ELSE 'Other Outcomes' END AS agenda, a.agendasubhead\r\n"
+			+ " FROM committee_schedules_minutes_details a,committee_schedules_minutes_outcome b\r\n"
+			+ " WHERE a.scheduleid =:InScheduleId  AND a.idarck=b.idarck AND a.minutesid<>'3'\r\n"
+			+ " ORDER BY  CASE WHEN minutesid = '3' THEN 1  ELSE 2 END, agenda" ;
+	
 	@Override
 	public List<Object[]> CommitteeScheduleMinutes(String scheduleid) throws Exception
 	{
-		Query query=manager.createNativeQuery("CALL Pfms_Committee_Minutes_View_All(:scheduleid)");
-		query.setParameter("scheduleid", scheduleid);
+		Query query=manager.createNativeQuery(AGENDASPECLIST);
+		query.setParameter("InScheduleId", scheduleid);
 		List<Object[]> CommitteeScheduleMinutes =(List<Object[]>)query.getResultList();
 		return CommitteeScheduleMinutes;
 	}
@@ -3240,21 +3253,23 @@ public Object[] NewApprovalList(String EnoteId) throws Exception {
 	return null;
 }
 
-private static final String ENOTEAPPROVELIST="SELECT a.EnoteId,a.RefNo,a.RefDate,a.Subject,a.Comment,a.InitiatedBy,\r\n"
-		+ "c.ActionDate,d.EnoteStatus,d.EnoteStatusColor,d.EnoteStatusCode,cm.CommitteeShortName,\r\n"
-		+ "p.ProjectShortName,a.CommitteeMainId FROM pms_enote a,employee b,pms_enote_trans c,\r\n"
-		+ "dak_enote_status d, committee_main m ,committee cm, project_master p WHERE a.InitiatedBy=b.EmpId\r\n"
-		+ " AND a.EnoteStatusCode=d.EnoteStatusCode AND a.EnoteId=c.EnoteId AND  m.CommitteeMainId=a.CommitteeMainId\r\n"
-		+ "  AND m.CommitteeId =cm.CommitteeId AND m.projectid = p.projectid AND c.EnoteStatusCode IN ('RC1','RC2','RC3','RC4','RC5','EXT','APR')AND\r\n"
-		+ " c.ActionBy=:empId AND DATE(a.CreatedDate) BETWEEN :fromDate AND :tdate GROUP BY a.EnoteId \r\n"
-		+ " UNION\r\n"
-		+ " SELECT a.EnoteId,a.RefNo,a.RefDate,a.Subject,a.Comment,a.InitiatedBy,\r\n"
-		+ "c.ActionDate,d.EnoteStatus,d.EnoteStatusColor,d.EnoteStatusCode,cm.CommitteeShortName,\r\n"
-		+ "'Non-Project',a.CommitteeMainId FROM pms_enote a,employee b,pms_enote_trans c,\r\n"
-		+ "dak_enote_status d, committee_main m ,committee cm WHERE a.InitiatedBy=b.EmpId\r\n"
-		+ " AND a.EnoteStatusCode=d.EnoteStatusCode AND a.EnoteId=c.EnoteId AND  m.CommitteeMainId=a.CommitteeMainId\r\n"
-		+ "AND m.CommitteeId =cm.CommitteeId AND c.EnoteStatusCode IN ('RC1','RC2','RC3','RC4','RC5','EXT','APR')AND\r\n"
-		+ "c.ActionBy=:empId AND m.projectid='0' AND DATE(a.CreatedDate) BETWEEN :fromDate AND :tdate GROUP BY a.EnoteId ORDER BY EnoteId DESC ";
+private static final String ENOTEAPPROVELIST="SELECT MAX(a.EnoteId) AS EnoteId,MAX(a.RefNo) AS RefNo,MAX(a.RefDate) AS RefDate,MAX(a.Subject) AS SUBJECT,MAX(a.Comment) AS COMMENT,MAX(a.InitiatedBy) AS InitiatedBy,MAX(c.ActionDate) AS ActionDate,\r\n"
+		+ "MAX(d.EnoteStatus) AS EnoteStatus,MAX(d.EnoteStatusColor) AS EnoteStatusColor,MAX(d.EnoteStatusCode) AS EnoteStatusCode,MAX(cm.CommitteeShortName) AS CommitteeShortName,\r\n"
+		+ "MAX(p.projectShortName) AS ProjectShortName,a.CommitteeMainId\r\n"
+		+ "FROM pms_enote a,employee b,pms_enote_trans c,dak_enote_status d, committee_main m ,committee cm, project_master p \r\n"
+		+ "WHERE a.InitiatedBy=b.EmpId\r\n"
+		+ "AND a.EnoteStatusCode=d.EnoteStatusCode AND a.EnoteId=c.EnoteId AND  m.CommitteeMainId=a.CommitteeMainId AND m.CommitteeId =cm.CommitteeId AND m.projectid = p.projectid \r\n"
+		+ "AND c.EnoteStatusCode IN ('RC1','RC2','RC3','RC4','RC5','EXT','APR') AND c.ActionBy=:empId AND DATE(a.CreatedDate) \r\n"
+		+ "BETWEEN :fromDate AND :tdate GROUP BY a.EnoteId \r\n"
+		+ "UNION\r\n"
+		+ "SELECT MAX(a.EnoteId) AS EnoteId,MAX(a.RefNo) AS RefNo,MAX(a.RefDate) AS RefDate,MAX(a.Subject) AS SUBJECT,MAX(a.Comment) AS COMMENT,MAX(a.InitiatedBy) AS InitiatedBy,MAX(c.ActionDate) AS ActionDate,\r\n"
+		+ "MAX(d.EnoteStatus) AS EnoteStatus,MAX(d.EnoteStatusColor) AS EnoteStatusColor,MAX(d.EnoteStatusCode) AS EnoteStatusCode,MAX(cm.CommitteeShortName) AS CommitteeShortName,\r\n"
+		+ "'Non-Project' AS ProjectShortName ,a.CommitteeMainId \r\n"
+		+ "FROM pms_enote a,employee b,pms_enote_trans c,dak_enote_status d, committee_main m ,committee cm \r\n"
+		+ "WHERE a.InitiatedBy=b.EmpId\r\n"
+		+ "AND a.EnoteStatusCode=d.EnoteStatusCode AND a.EnoteId=c.EnoteId AND  m.CommitteeMainId=a.CommitteeMainId AND m.CommitteeId =cm.CommitteeId \r\n"
+		+ "AND c.EnoteStatusCode IN ('RC1','RC2','RC3','RC4','RC5','EXT','APR') AND c.ActionBy=:empId AND m.projectid='0' AND DATE(a.CreatedDate) \r\n"
+		+ "BETWEEN :fromDate AND :tdate GROUP BY a.EnoteId ORDER BY EnoteId DESC";
 	@Override
 	public List<Object[]> eNoteApprovalList(long empId, String fromDate, String tdate) throws Exception {
 	
@@ -3275,7 +3290,7 @@ private static final String ENOTEAPPROVELIST="SELECT a.EnoteId,a.RefNo,a.RefDate
 			+ " sta.EnoteStatus,sta.EnoteStatusColor,sta.EnoteStatusCode,par.InitiatedBy FROM \r\n"
 			+ " pms_enote_trans tra,dak_enote_status sta,employee emp,pms_enote par WHERE par.EnoteId=tra.EnoteId\r\n"
 			+ " AND tra.EnoteStatusCode =sta.EnoteStatusCode AND sta.EnoteStatusCode IN ('FWD','RFD','RC1','RC2','RC3','RC4','RC5','APR') \r\n"
-			+ " AND tra.Actionby=emp.EmpId AND par.EnoteId=:enoteId AND tra.EnoteFrom =:type GROUP BY tra.EnoteStatusCode ORDER BY ActionDate ASC";
+			+ " AND tra.Actionby=emp.EmpId AND par.EnoteId=:enoteId AND tra.EnoteFrom =:type GROUP BY tra.EnoteStatusCode,tra.EnoteTransId,sta.EnoteStatus,sta.EnoteStatusColor ORDER BY ActionDate ASC";
 	
 	@Override
 	public List<Object[]> EnotePrintDetails(long enoteId,String type) throws Exception {
@@ -3390,21 +3405,22 @@ private static final String ENOTEAPPROVELIST="SELECT a.EnoteId,a.RefNo,a.RefDate
 //		return null;
 //	}
 	
-	private static final String MOMAPRVLIST = "SELECT a.EnoteId,a.RefNo,a.RefDate,a.Subject,a.Comment,a.InitiatedBy,\r\n"
-			+ "c.ActionDate,d.EnoteStatus,d.EnoteStatusColor,d.EnoteStatusCode,\r\n"
-			+ "p.ProjectShortName,a.CommitteeMainId,a.ScheduleId FROM pms_enote a,employee b,pms_enote_trans c,\r\n"
-			+ "dak_enote_status d, committee_main m ,committee cm, project_master p,committee_schedule cs WHERE a.InitiatedBy=b.EmpId\r\n"
-			+ " AND a.EnoteStatusCode=d.EnoteStatusCode AND a.EnoteId=c.EnoteId  AND cs.ScheduleId=a.ScheduleId AND m.CommitteeMainId=cs.CommitteeMainId\r\n"
-			+ "AND m.projectid = p.projectid AND c.EnoteStatusCode IN ('RC1','RC2','RC3','RC4','RC5','EXT','APR')AND\r\n"
-			+ "c.ActionBy=:empId AND DATE(a.CreatedDate) BETWEEN :fromDate AND :tdate AND a.EnoteFrom='S'  GROUP BY a.EnoteId 	 \r\n"
+	private static final String MOMAPRVLIST = "SELECT MAX(a.EnoteId) AS EnoteId,MAX(a.RefNo) AS RefNo,MAX(a.RefDate) AS RefDate,MAX(a.Subject) AS SUBJECT,MAX(a.Comment) AS COMMENT,MAX(a.InitiatedBy) AS InitiatedBy,MAX(c.ActionDate) AS ActionDate,\r\n"
+			+ "MAX(d.EnoteStatus) AS EnoteStatus,MAX(d.EnoteStatusColor) AS EnoteStatusColor,MAX(d.EnoteStatusCode) AS EnoteStatusCode,MAX(cm.CommitteeShortName) AS CommitteeShortName,\r\n"
+			+ "MAX(p.projectShortName) AS ProjectShortName,a.CommitteeMainId,a.ScheduleId \r\n"
+			+ "FROM pms_enote a,employee b,pms_enote_trans c, dak_enote_status d, committee_main m ,committee cm, project_master p,committee_schedule cs \r\n"
+			+ "WHERE a.InitiatedBy=b.EmpId \r\n"
+			+ "AND a.EnoteStatusCode=d.EnoteStatusCode AND a.EnoteId=c.EnoteId  AND cs.ScheduleId=a.ScheduleId AND m.CommitteeMainId=cs.CommitteeMainId AND m.projectid = p.projectid \r\n"
+			+ "AND c.EnoteStatusCode IN ('RC1','RC2','RC3','RC4','RC5','EXT','APR') AND c.ActionBy='12' AND DATE(a.CreatedDate) BETWEEN '2024-01-01' AND '2024-12-31'  AND a.EnoteFrom='S' GROUP BY a.EnoteId 	\r\n"
 			+ "UNION\r\n"
-			+ "SELECT a.EnoteId,a.RefNo,a.RefDate,a.Subject,a.Comment,a.InitiatedBy,\r\n"
-			+ "c.ActionDate,d.EnoteStatus,d.EnoteStatusColor,d.EnoteStatusCode,\r\n"
-			+ "'Non-project',a.CommitteeMainId,a.ScheduleId FROM pms_enote a,employee b,pms_enote_trans c,\r\n"
-			+ "dak_enote_status d, committee_main m ,committee cm, committee_schedule cs WHERE a.InitiatedBy=b.EmpId\r\n"
-			+ "AND a.EnoteStatusCode=d.EnoteStatusCode AND a.EnoteId=c.EnoteId  AND cs.ScheduleId=a.ScheduleId AND m.CommitteeMainId=cs.CommitteeMainId\r\n"
-			+ "AND m.projectid = '0' AND c.EnoteStatusCode IN ('RC1','RC2','RC3','RC4','RC5','EXT','APR')AND\r\n"
-			+ "c.ActionBy=:empId AND DATE(a.CreatedDate) BETWEEN :fromDate AND :tdate AND a.EnoteFrom='S'  GROUP BY a.EnoteId";
+			+ "SELECT MAX(a.EnoteId) AS EnoteId,MAX(a.RefNo) AS RefNo,MAX(a.RefDate) AS RefDate,MAX(a.Subject) AS SUBJECT,MAX(a.Comment) AS COMMENT,MAX(a.InitiatedBy) AS InitiatedBy,MAX(c.ActionDate) AS ActionDate,\r\n"
+			+ "MAX(d.EnoteStatus) AS EnoteStatus,MAX(d.EnoteStatusColor) AS EnoteStatusColor,MAX(d.EnoteStatusCode) AS EnoteStatusCode,MAX(cm.CommitteeShortName) AS CommitteeShortName,\r\n"
+			+ "'Non-Project' AS ProjectShortName ,a.CommitteeMainId,a.ScheduleId \r\n"
+			+ "FROM pms_enote a,employee b,pms_enote_trans c,dak_enote_status d, committee_main m ,committee cm, committee_schedule cs \r\n"
+			+ "WHERE a.InitiatedBy=b.EmpId\r\n"
+			+ "AND a.EnoteStatusCode=d.EnoteStatusCode AND a.EnoteId=c.EnoteId  AND cs.ScheduleId=a.ScheduleId AND m.CommitteeMainId=cs.CommitteeMainId AND m.projectid = '0' \r\n"
+			+ "AND c.EnoteStatusCode IN ('RC1','RC2','RC3','RC4','RC5','EXT','APR') AND c.ActionBy='12' AND DATE(a.CreatedDate) \r\n"
+			+ "BETWEEN '2024-01-01' AND '2024-12-31' AND a.EnoteFrom='S'  GROUP BY a.EnoteId";
 	
 		@Override
 		public List<Object[]> MomeNoteApprovalList(long empId, String fromDate, String toDate) throws Exception {
