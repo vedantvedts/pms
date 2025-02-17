@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.documents.model.IGILogicalInterfaces"%>
 <%@page import="java.util.function.Function"%>
 <%@page import="com.google.gson.GsonBuilder"%>
 <%@page import="com.google.gson.Gson"%>
@@ -182,16 +183,10 @@
 		List<String> irsApplicableDocNames = applicableDocsList.stream().map(e -> e.getDocumentName().toLowerCase()).collect(Collectors.toList());
 
 		PfmsIRSDocument irsDocument = (PfmsIRSDocument)request.getAttribute("irsDocument");
-		List<IGIInterface> igiInterfaceList = (List<IGIInterface>)request.getAttribute("igiInterfaceList");
 		
-		Map<String, IGIInterface> interfaceListToMap = igiInterfaceList.stream()
-			    	.collect(Collectors.toMap(IGIInterface::getInterfaceCode, Function.identity(), (existing, replacement) -> existing ));
-
-		//List<IGIInterface> physicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Physical Interface")).collect(Collectors.toList());
-		//List<IGIInterface> electricalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Electrical Interface")).collect(Collectors.toList());
-		//List<IGIInterface> opticalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Optical Interface")).collect(Collectors.toList());
-		//List<IGIInterface> logicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Logical Interface")).collect(Collectors.toList());
-				
+		List<IGILogicalInterfaces> logicalInterfaceList = (List<IGILogicalInterfaces>)request.getAttribute("logicalInterfaceList"); 
+		List<Object[]> irsSpecificationsList = (List<Object[]>)request.getAttribute("irsSpecificationsList"); 
+		
 		Object[] projectDetails = (Object[])request.getAttribute("projectDetails");
 		Object[] labDetails = (Object[])request.getAttribute("labDetails");
 		Object[] docTempAtrr = (Object[])request.getAttribute("docTempAttributes");
@@ -1213,7 +1208,126 @@ function DownloadDocPDF(){
                 },
                 /* ************************************** Applicable Documents End *********************************** */
                 
+                /* ************************************** Specifications *********************************** */
+                {
+                    text: (++mainContentCount)+'. Specifications',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    pageBreak: 'before',
+                },
                 
+                <%if(irsSpecificationsList!=null && irsSpecificationsList.size()>0) {
+                	int specCount=0;
+                	for(Object[] obj : irsSpecificationsList) {
+                		int sn = 0;
+                		IGILogicalInterfaces iface = logicalInterfaceList.stream().filter(e -> e.getLogicalInterfaceId()==Long.parseLong(obj[3].toString())).findFirst().orElse(null);
+                		String[] split = obj[6].toString().split("_");
+                %>
+	                {
+	                	text: mainContentCount+'.<%=++specCount%>. <%=obj[6]%>',	
+	                	style: 'chapterSubHeader',
+	                    tocItem: true,
+	                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=specCount%>',
+	                    tocMargin: [20, 0, 0, 0],
+	                },
+	                
+
+	                {
+	                	table: {
+	                        headerRows: 1,
+	                        widths: ['10%', '25%', '65%'],
+	                        body: [
+	                            // Table header
+	                            [
+	                                { text: 'SN', style: 'tableHeader' },
+	                                { text: 'Section', style: 'tableHeader' },
+	                                { text: 'Details', style: 'tableHeader' },
+	                            ],
+	                            
+	                            // Populate table rows
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Msg Id', style: 'tableData', bold: true},
+	                                { text: '<%=iface.getMsgCode() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Msg Name', style: 'tableData', bold: true},
+	                                { text: '<%=iface.getMsgName() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Msg Title', style: 'tableData', bold: true},
+	                                { text: '<%=iface.getMsgTitle() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Msg Type', style: 'tableData', bold: true},
+	                                { text: '<%=iface.getMsgType() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Description', style: 'tableData', bold: true},
+	                                { text: '<%=(iface.getMsgDescription()!=null && !iface.getMsgDescription().isEmpty())? iface.getMsgDescription():"-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Data Rate', style: 'tableData', bold: true},
+	                                { text: '<%=(iface.getDataRate()!=null && !iface.getDataRate().isEmpty())? iface.getDataRate():"-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Source', style: 'tableData', bold: true},
+	                                { text: '<%=split[0].split("\\.")[1] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Destination', style: 'tableData', bold: true},
+	                                { text: '<%=split[1] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Action at Destination', style: 'tableData', bold: true},
+	                                { text: '<%=obj[5] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Info Name', style: 'tableData', bold: true},
+	                                { text: '<%=obj[4] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Underlying Protocals', style: 'tableData', bold: true},
+	                                { text: '<%=(iface.getProtocals()!=null && !iface.getProtocals().isEmpty())? iface.getProtocals():"-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Additional Info', style: 'tableData', bold: true},
+	                                { text: '<%=(iface.getAdditionalInfo()!=null && !iface.getAdditionalInfo().isEmpty())? iface.getAdditionalInfo():"-" %>', style: 'tableData' },
+	                            ],
+	                        ]
+	                    },
+	                    layout: {
+	                        /* fillColor: function(rowIndex) {
+	                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+	                        }, */
+	                        hLineWidth: function(i, node) {
+	                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+	                        },
+	                        vLineWidth: function(i) {
+	                            return 0.5;
+	                        },
+	                        hLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        },
+	                        vLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        }
+	                    }
+	                },
+                <%} }%>
+                /* ************************************** Specifications End *********************************** */
 			],
 			styles: {
                 DocumentName: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },

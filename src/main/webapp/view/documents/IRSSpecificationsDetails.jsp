@@ -1,7 +1,8 @@
+<%@page import="com.vts.pfms.documents.model.IRSDocumentSpecifications"%>
+<%@page import="com.vts.pfms.documents.model.IGILogicalInterfaces"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.stream.Collectors"%>
-<%@page import="com.vts.pfms.documents.model.IGIInterface"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -54,7 +55,41 @@
     overflow-x: hidden; /* Enable vertical scrolling */
 }
 
+.select2-container {
+	width: 100% !important;
+}
 
+label {
+	font-weight: 800;
+	font-size: 16px;
+	color: #07689f;
+}
+
+.activitytable{
+	border-collapse: collapse;
+	width: 100%;
+	border: 1px solid #0000002b; 
+	margin-top: 1.2rem;
+	overflow-y: auto; 
+	overflow-x: auto;  
+}
+.activitytable th, .activitytable td{
+	border: 1px solid #0000002b; 
+	padding: 20px;
+}
+.activitytable th{
+
+	vertical-align: middle;
+}
+.activitytable thead {
+	text-align: center;
+	background-color: #2883c0;
+	color: white;
+	position: sticky;
+	top: 0; /* Keeps the header at the top */
+	z-index: 10; /* Ensure the header stays on top of the body */
+	/* background-color: white; */ /* For visibility */
+}
 </style>
 </head>
 <body>
@@ -64,10 +99,11 @@
 	String docType = (String)request.getAttribute("docType");
 	String documentNo = (String)request.getAttribute("documentNo");
 	String projectId = (String)request.getAttribute("projectId");
-	List<Object[]> productTreeList = (List<Object[]>)request.getAttribute("productTreeList");
-	List<IGIInterface> igiInterfaceList = (List<IGIInterface>)request.getAttribute("igiInterfaceList"); 
-	List<IGIInterface> logicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Logical Interface") && e.getIsActive()==1).collect(Collectors.toList());
+	String irsSpecificationId = (String)request.getAttribute("irsSpecificationId");
+	List<IGILogicalInterfaces> logicalInterfaceList = (List<IGILogicalInterfaces>)request.getAttribute("logicalInterfaceList"); 
+	List<Object[]> dataCarryingConnectionList = (List<Object[]>)request.getAttribute("dataCarryingConnectionList"); 
 	List<Object[]> irsSpecificationsList = (List<Object[]>)request.getAttribute("irsSpecificationsList"); 
+	IRSDocumentSpecifications irsSpecifications = (IRSDocumentSpecifications)request.getAttribute("irsDocSpecifications"); 
 %>
 
 	<% String ses = (String) request.getParameter("result"); 
@@ -91,267 +127,168 @@
     	<div class="card shadow-nohover" style="margin-top: -0.6pc">
         	<div class="card-header" style="background: #C4DDFF; box-shadow: 2px 2px 2px grey;">
             	<div class="row">
-               		<div class="col-md-9" align="left">
+               		<div class="col-md-7" align="left">
 	                    <h5 id="text" style="margin-left: 1%; font-weight: 600">
 	                      Specification Details - <%=documentNo %>
 	                    </h5>
                 	</div>
                 	<div class="col-md-2"  align="right">
                 	</div>
-                    <div class="col-md-1" align="right">
-                        <a class="btn btn-info btn-sm shadow-nohover back" style="position: relative;" href="IRSDocumentDetails.htm?irsDocId=<%=docId %>">Back</a>
+                    <div class="col-md-3" align="right">
+	                    <form action="#" id="inlineapprform">
+							      			 
+					        <button type="submit" class="btn btn-info btn-sm shadow-nohover back" formaction="IRSSpecificationsDetails.htm" data-toggle="tooltip" title="Edit">
+								ADD NEW SPEC
+					        </button>
+					        <button type="submit" class="btn btn-info btn-sm shadow-nohover back" formaction="IRSDocumentDetails.htm" data-toggle="tooltip" title="Back">
+					        	BACK
+					        </button>
+					        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+					        <input type="hidden" name="irsSpecificationId" value="0">
+					        <input type="hidden" name="docId" value="<%=docId%>"> 
+							<input type="hidden" name="docType" value="<%=docType%>"> 
+							<input type="hidden" name="documentNo" value="<%=documentNo%>">
+							<input type="hidden" name="projectId" value="<%=projectId%>">
+							<input type="hidden" name="irsDocId" value="<%=docId%>">
+					    </form>
                     </div>
             	</div>
         	</div>
         	<div class="card-body">
-        		<form action="IRSSpecificationsSubmit.htm" method="post" id="connectionForm">
+        		<form action="IRSSpecificationsSubmit.htm" method="post">
         			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         			<input type="hidden" name="docId" value="<%=docId %>" />
         			<input type="hidden" name="docType" value="<%=docType %>" />
         			<input type="hidden" name="documentNo" value="<%=documentNo %>" />
         			<input type="hidden" name="projectId" value="<%=projectId %>" />
-	        		<table class="customtable">
-	        			<thead>
-	        				<tr>
-	        					<th width="15%">Sub-System 1</th>
-	        					<th width="15%">Super Sub-System 1</th>
-	        					<th width="15%">Sub-System 2</th>
-	        					<th width="15%">Super Sub-System 2</th>
-	        					<th width="20%">Interface</th>
-	        					<th width="10%">Message Type</th>
-	        					<th width="10%">Action</th>
-	        				</tr>
-	        			</thead>	
-	        			<tbody>
-	        				<tr>
-	        					<td>
-	        						<select class="form-control selectdee subSystem1" name="subSystemOne" id="subSystem1" onchange="getSuperSubLevelList('1')" data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
-								        <option value="" disabled selected>Choose...</option>
-								        <% for(Object[] obj : productTreeList){ %>
-								        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>"><%=obj[2]+" ("+obj[7]+")" %></option>
-								        <%} %>
-									</select>
-	        					</td>
-	        					<td>
-	        						<select class="form-control selectdee superSubSystem1" name="superSubSystemOne" id="superSubSystem1" data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
-									</select>
-	        					</td>
-	        					<td>
-	        						<select class="form-control selectdee subSystem2" name="subSystemTwo" id="subSystem2" onchange="getSuperSubLevelList('2')" data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
-										<option value="" disabled selected>Choose...</option>
-								        <% for(Object[] obj : productTreeList){ %>
-								        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>"><%=obj[2]+" ("+obj[7]+")" %></option>
-								        <%} %>
-									</select>
-	        					</td>
-	        					<td>
-	        						<select class="form-control selectdee superSubSystem2" name="superSubSystemTwo" id="superSubSystem2" data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
-									</select>
-	        					</td>
-	        					<td>
-	        						<select class="form-control selectdee interfaceId" name="interfaceId" id="interfaceId" multiple data-placeholder="Choose..." data-live-search="true" data-container="body" required>
-								        <% for(IGIInterface igiinterface : logicalInterfaceList){ %>
-								        	<option value="<%=igiinterface.getInterfaceId() %>"><%=igiinterface.getInterfaceName() %> (<%=igiinterface.getInterfaceCode() %>)</option>
-								        <%} %>
-									</select>
-	        					</td>
-	        					<td>
-	        						<select class="form-control" name="messageType" required>
-    									<option value="" selected disabled>----select----</option>
-    									<option value="Link Management">Link Management</option>
-    									<option value="Control Message">Control Message</option>
-    									<option value="Acknowledgement">Acknowledgement</option>
-    									<option value="Track Report">Track Report</option>
-    									<option value="Others">Others</option>
-    								</select>
-	        					</td>
-	        					<td>
-	        						<button type="submit" class="btn btn-sm submit" onclick="return validateConnectionsForm()">
-	        							SUBMIT
-	        						</button>
-	        					</td>
-	        				</tr>
-	        			</tbody>	
-	        		</table>
+        			<input type="hidden" name="irsSpecificationId" value="<%=irsSpecificationId %>" />
+	        		<div class="card">
+	        			<div class="card-body">
+	        				<div class="form-group">
+	        					<div class="row">
+	        						<div class="col-md-2">
+	        							<label class="form-lable">Connection<span class="mandatory">*</span></label>
+		        						<select class="form-control selectdee conInterfaceId" name="conInterfaceId" id="conInterfaceId"
+		        						data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
+											<option value="" disabled selected>Choose...</option>
+									        <% for(Object[] obj : dataCarryingConnectionList){ %>
+									        	<option value="<%=obj[0] %>" <%if(irsSpecifications!=null && irsSpecifications.getConInterfaceId()==Long.parseLong(obj[0].toString())) {%>selected<%} %> ><%=obj[3] %></option>
+									        <%} %>
+										</select>
+        							</div>
+	        						<div class="col-md-2">
+	        							<label class="form-lable">Message Id<span class="mandatory">*</span></label>
+		        						<select class="form-control selectdee logicalInterfaceId" name="logicalInterfaceId" id="logicalInterfaceId"
+		        						data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
+											<option value="" disabled selected>Choose...</option>
+									        <% for(IGILogicalInterfaces iface : logicalInterfaceList){ %>
+									        	<option value="<%=iface.getLogicalInterfaceId() %>" <%if(irsSpecifications!=null && irsSpecifications.getLogicalInterfaceId().equals(iface.getLogicalInterfaceId())) {%>selected<%} %>><%=iface.getMsgCode() %></option>
+									        <%} %>
+										</select>
+        							</div>
+        							<div class="col-md-2">
+	        							<label class="form-lable">Info Name<span class="mandatory">*</span></label>
+	        							<select class="form-control" name="infoName" id="infoName" required>
+											<option value="" disabled selected>Choose...</option>
+											<option value="Track Data" <%if(irsSpecifications!=null && irsSpecifications.getInfoName().equalsIgnoreCase("Track Data")) {%>selected<%} %> >Track Data</option>
+											<option value="Search" <%if(irsSpecifications!=null && irsSpecifications.getInfoName().equalsIgnoreCase("Search")) {%>selected<%} %>>Search</option>
+											<option value="Plot" <%if(irsSpecifications!=null && irsSpecifications.getInfoName().equalsIgnoreCase("Plot")) {%>selected<%} %>>Plot</option>
+											<option value="Command" <%if(irsSpecifications!=null && irsSpecifications.getInfoName().equalsIgnoreCase("Command")) {%>selected<%} %>>Command</option>
+										</select>
+	        						</div>
+        							<div class="col-md-3">
+	        							<label class="form-lable">Action at Destination<span class="mandatory">*</span></label>
+	        							<input type="text" class="form-control" name="actionAtDest" <%if(irsSpecifications!=null && irsSpecifications.getActionAtDest()!=null) {%>value="<%=irsSpecifications.getActionAtDest()%>"<%} %> placeholder="Enter Action at Destination" maxlength="255" required>
+	        						</div>
+	        					</div>
+	        				</div>
+	        				
+	        				<div class="center">
+	        					<%if(irsSpecificationId.equalsIgnoreCase("0")) {%>
+		        					<button type="submit" class="btn btn-sm submit" onclick="return confirm('Are you Sure to Submit?')">
+		        						SUBMIT
+		        					</button>
+	        					<%} else{%>
+	        						<button type="submit" class="btn btn-sm edit" onclick="return confirm('Are you Sure to Update?')">
+		        						UPDATE
+		        					</button>
+	        					<%} %>
+	        				</div>	
+	        				
+	        			</div>
+	        		</div>			
 	        	</form>
 	        	
 	        	<hr class="mt-4 mb-4">	
 	        	
         		<div class="table-responsive table-wrapper"> 
-                	<table class="table table-bordered table-hover table-striped table-condensed" id="myTable">
+        			<input type="text" id="searchBar" class="search-bar form-control" placeholder="Search..." style="float: right;width: auto;" />
+       				<br>
+                	<table class="table activitytable" id="dataTable">
                     	<thead class="center">
                     		<tr>
                     			<th>SN</th>
-                    			<th>Specification ID</th>
-                    			<th>Sub-System 1</th>
-                    			<th>Sub-System 2</th>
-	        					<th>Super Sub-System 1</th>
-                    			<th>Super Sub-System 2</th>
-                    			<th>Interface Code</th>
-                    			<th>Message Type</th>
-                    			<!-- <th>Interface Type</th> -->
-                    			<th>Transmission Speed</th>
-                    			<th>Data Format</th>
+                    			<th>Connection ID</th>
+                    			<th>Message Id</th>
+                    			<th>Info Name</th>
+                    			<th>Source</th>
+                    			<th>Destination</th>
+                    			<th>Action at Dest</th>
                     			<th>Action</th>
 	                    	</tr>
                     	</thead>
                     	<tbody>
-                    		<%-- <%if(irsSpecificationsList!=null && irsSpecificationsList.size()>0) {
-                    			int slno = 0;
-                    			for(Object[] obj : irsSpecificationsList) {
-                    				
-                    		%>
-                    			<tr>
-                    				<td class="center"><%=++slno %></td>
-                    				<!-- <td class="center">
-                    					
-                    				</td> -->
-                    				<td class="center"><%=obj[6]+"_"+obj[7] %></td>
-                    				<td class="center"><%=obj[13]+"_"+obj[14] %></td>
-                    				<td class="center"><%=obj[20] %></td>
-                    				<td class="center"><%=obj[5] %></td>
-                    				<td><%=obj[23] %></td>
-                    				<td><%=obj[26] %></td>
-                    				<td><%=obj[24] %></td>
-                    				<td class="center">
-						      			 <form action="IRSSpecificationDelete.htm" method="POST" id="inlineapprform<%=slno%>">
-									        <button type="submit" class="editable-clicko" onclick="return confirm('Are you sure to delete?')">
-									            <img src="view/images/delete.png" alt="Delete">
-									        </button>
-									        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-									        <input type="hidden" name="irsSpecificationId" value="<%=obj[0] %>">
-									        <input type="hidden" name="docId" value="<%=docId%>"> 
-											<input type="hidden" name="docType" value="<%=docType%>"> 
-											<input type="hidden" name="documentNo" value="<%=documentNo%>">
-											<input type="hidden" name="projectId" value="<%=projectId%>">
-									    </form>
-						      		</td>
-                    			</tr>
-                    		<%} }%> --%>
                     		<%if(irsSpecificationsList!=null && irsSpecificationsList.size()>0) {
-                    			int count = 0;
                     			int slno = 0;
-                    			String systemOne1 = "", systemTwo1 = "", subSystemOne1 = "", subSystemTwo1 = "";
-
                     			for(Object[] obj : irsSpecificationsList) {
-                    				
-                    				String systemOne2 = obj[4]+"";
-                    				String systemTwo2 = obj[5]+"";
-                    				String subSystemOne2 = obj[16]+"";
-                    				String subSystemTwo2 = obj[17]+"";
-                    				
-                    				if(!systemOne1.equalsIgnoreCase(systemOne2) || !systemTwo1.equalsIgnoreCase(systemTwo2) ||
-                    				   !subSystemOne1.equalsIgnoreCase(subSystemOne2) || !subSystemTwo1.equalsIgnoreCase(subSystemTwo2)	) {
-                    					systemOne1 = systemOne2;
-                    					systemTwo1 = systemTwo2;
-                    					subSystemOne1 = subSystemOne2;
-                    					subSystemTwo1 = subSystemTwo2;
-                    					count = 0;
-                    				}
-                    				
-                    				++count;
+                    				String[] split = obj[6].toString().split("_");
                     		%>
                     			<tr>
                     				<td class="center"><%=++slno %></td>
+                    				<td><%=obj[6] %></td>
+                    				<td><%=obj[7] %></td>
+                    				<td><%=obj[4] %></td>
+                    				<td><%=split[0].split("\\.")[1] %></td>
+                    				<td><%=split[1] %></td>
+                    				<td><%=obj[5] %></td>
                     				<td class="center">
-                    					<%=obj[4] + "_" + obj[5] + "_" + obj[8] + ((count>=100)?"_"+count:((count>=10)?"_0"+count:"_00"+count)) %>
-                    				</td>
-                    				<td class="center"><%=obj[4] %></td>
-                    				<td class="center"><%=obj[5] %></td>
-                    				<td class="center"><%=obj[16] %></td>
-                    				<td class="center"><%=obj[17] %></td>
-                    				<td class="center"><%=obj[8] %></td>
-                    				<td><%=obj[18] %></td>
-                    				<td><%=obj[13] %></td>
-                    				<td><%=obj[11] %></td>
-                    				<td class="center">
-						      			 <form action="IRSConnectionDelete.htm" method="POST" id="inlineapprform<%=count%>">
-									        <button type="submit" class="editable-clicko" onclick="return confirm('Are you sure to delete?')">
-									            <img src="view/images/delete.png" alt="Delete">
+                    					<form action="#" id="inlineapprform<%=slno%>">
+						      			 
+									        <%-- <button type="button" onclick="openConnectionEditModal('<%=slno%>')">
+									            <img src="view/images/edit.png" alt="Edit">
+									        </button> --%>
+									        <button type="submit" class="editable-clicko" formaction="IRSSpecificationsDetails.htm" data-toggle="tooltip" title="Edit">
+									            <i class="fa fa-lg fa-edit" style="padding: 0px;color: darkorange;font-size: 25px;" aria-hidden="true"></i>
+									        </button>
+									        <button type="submit" class="editable-clicko" formaction="IRSSpecificationDelete.htm" data-toggle="tooltip" title="Delete" onclick="return confirm('Are you sure to Delete?')">
+									            <i class="fa fa-lg fa-trash" style="padding: 0px;color: red;font-size: 25px;" aria-hidden="true"></i>
 									        </button>
 									        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-									        <input type="hidden" name="irsSpecificationId" value="<%=obj[0] %>">
+									        <input type="hidden" name="irsSpecificationId" id="irsSpecificationId_<%=slno%>" value="<%=obj[0] %>">
 									        <input type="hidden" name="docId" value="<%=docId%>"> 
 											<input type="hidden" name="docType" value="<%=docType%>"> 
 											<input type="hidden" name="documentNo" value="<%=documentNo%>">
 											<input type="hidden" name="projectId" value="<%=projectId%>">
 									    </form>
-						      		</td>
+                    				</td>
                     			</tr>
                     		<%} }%>
                     	</tbody>
-        			</table>
-				</div>
-	        	
+                    </table>	
+            	</div>        
         	</div>
         </div>
  	</div>
- 	
- 	
-<script type="text/javascript">
-$(document).ready(function() {
-    $('#myTable').DataTable({
-        "lengthMenu": [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 100],
-        "pagingType": "simple",
-        /* "pageLength": 5 */
-    });
-});
-
-function getSuperSubLevelList(rowId){
-
-	var projectId = '<%=projectId%>';
-	var subSystemId = $('.subSystem'+rowId+' option:selected').attr('data-id');
-	
-	$.ajax({
-		type : "GET",
-		url : "GetProductTreeListByLevel.htm",	
-		datatype : 'json',
-		data : {
-			subSystemId : subSystemId,				
-			levelId : 2,				
-			projectId : projectId,				
-		},
-		success : function(result) {
-			var result = JSON.parse(result);
-			var values = Object.keys(result).map(function(e) {return result[e]});
-			
-			var s = '';
-			s += '<option value="0">Not Applicable</option>';
-			for (i = 0; i < values.length; i++) {									
-				s += '<option value="'+values[i][0]+"/"+values[i][7]+'">'+values[i][2] + " (" +values[i][7]+ ")" + '</option>';
-			} 
-						 
-			$('#superSubSystem'+rowId).html(s);
-			
-		}
+ 
+ <script type="text/javascript">
+ 	$(document).ready(function () {
+	    $('#searchBar').on('keyup', function () {
+	        const searchTerm = $(this).val().toLowerCase();
+	        $('#dataTable tbody tr').filter(function () {
+	            $(this).toggle($(this).text().toLowerCase().indexOf(searchTerm) > -1);
+	        });
+	    });
 	});
-}
-
-function validateConnectionsForm() {
-	
-	var subSystem1 = $('#subSystem1').val();
-	var subSystem2 = $('#subSystem2').val();
-	var superSubSystem1 = $('#superSubSystem1').val();
-	var superSubSystem2 = $('#superSubSystem2').val();
-	
-	console.log('subSystem1', subSystem1);
-	console.log('superSubSystem1', superSubSystem1);
-	console.log('subSystem2', subSystem2);
-	console.log('superSubSystem2', subSystem2);
-	if((subSystem1!=null && subSystem2!=null && subSystem1 === subSystem2) && (superSubSystem1!=null && superSubSystem2!=null && superSubSystem1 === superSubSystem2) ) {
-		alert('Same System Connection is not allowed');
-		event.preventDefault();
-		return false;
-	}else {
-		if(confirm('Are You Sure to Submit?')){
-			$('#superSubSystem1').submit();
-		}else {
-			event.preventDefault();
-			return false;
-		}
-	}
-}
-	
-</script> 	
+ </script>	
 </body>
 </html>

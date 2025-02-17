@@ -77,12 +77,13 @@
 
 	for (Object[] connection : icdConnectionsList) {
 	    String key = connection[4] + "_" + connection[5];
-	    int count = connectionMap.containsKey(key) ? connectionMap.get(key).split("<br>").length + 1 : 1;
+	    //int count = connectionMap.containsKey(key) ? connectionMap.get(key).split("<br>").length + 1 : 1;
 
 	    //String seqNumber = (count >= 100) ? "_" + count : (count >= 10) ? "_0" + count : "_00" + count;
 
-	    String value = count + ". " +connection[4] + "_" + connection[5] + "_" + connection[8];
-	    connectionMap.merge(key, value, (oldValue, newValue) -> oldValue + "<br>" + newValue);
+	    //String value = count + ". " +connection[4] + "_" + connection[5] + "_" + connection[8];
+	    String value = connection[32].toString();
+	    connectionMap.merge(key, value, (oldValue, newValue) -> oldValue + " <br> " + newValue);
 	}
 	
 	String isSubSystem = icdDocument!=null && icdDocument.getProductTreeMainId()!=0? "Y": "N";
@@ -148,11 +149,13 @@
 	        		for (Object[] connection : icdConnectionsList) {
 	        		    String key = connection[16] + "_" + connection[17];
 
-	        		    int count = superSubConnectionMap.containsKey(key) ? superSubConnectionMap.get(key).split("<br>").length + 1 : 1;
+	        		    //int count = superSubConnectionMap.containsKey(key) ? superSubConnectionMap.get(key).split("<br>").length + 1 : 1;
 
 	        		    //String seqNumber = (count >= 100) ? "_" + count : (count >= 10) ? "_0" + count : "_00" + count;
 
-	        		    String value = count + ". " +connection[16] + "_" + connection[17] + "_" + connection[8] ;
+	        		   // String value = count + ". " +connection[16] + "_" + connection[17] + "_" + connection[8] ;
+	        		   	String value = connection[32].toString();
+
 	        		    superSubConnectionMap.merge(key, value, (oldValue, newValue) -> oldValue + "<br>" + newValue);
 	        		}
 	        	%>
@@ -177,7 +180,7 @@
 						                <td class="center"><%= ++slnoSS %></td>
 						                <td class="center"><%= rowSubsystem %></td>
 						                <% for (String colSubsystem : supersubsystems) { %>
-						                    <td class="center">
+						                    <td> &emsp;
 						                        <% 
 						                        //if (rowSubsystem.equalsIgnoreCase(colSubsystem)) { 
 						                        //    out.print("NA");
@@ -195,53 +198,49 @@
 						</table>
 								
 					</div>
+	        	<%} else {%>
+	        	
+	        		<div class="table-responsive table-wrapper"> 
+	
+						<table class="customtable">
+						    <thead>
+						        <tr>
+						            <th width="5%">SN</th>
+						            <th width="8%">Sub-System</th>
+						            <% for (String subsystem : subsystems) { %>
+						                <th><%= subsystem %></th>
+						            <% } %>
+						        </tr>
+						    </thead>
+						    <tbody>
+						        <% 
+	      
+	                            int slnoSS = 0;
+						        for (String rowSubsystem : subsystems) { 
+						        %>
+						            <tr>
+						                <td class="center"><%= ++slnoSS %></td>
+						                <td class="center"><%= rowSubsystem %></td>
+						                <% for (String colSubsystem : subsystems) { %>
+						                    <td>
+						                        <% 
+						                        //if (rowSubsystem.equalsIgnoreCase(colSubsystem)) { 
+						                        //    out.print("NA");
+						                        //} else {
+						                            String key = rowSubsystem + "_" + colSubsystem;
+						                            String connections = connectionMap.getOrDefault(key, "-");
+						                            out.print(connections);
+						                        //}
+						                        %>
+						                    </td>
+						                <% } %>
+						            </tr>
+						        <% } %>
+						    </tbody>
+						</table>
+								
+					</div>
 	        	<%} %>
-	        	
-        		<div class="table-responsive table-wrapper"> 
-
-					<table class="customtable">
-					    <thead>
-					        <tr>
-					            <th width="5%">SN</th>
-					            <th width="8%">Sub-System</th>
-					            <% for (String subsystem : subsystems) { %>
-					                <th><%= subsystem %></th>
-					            <% } %>
-					        </tr>
-					    </thead>
-					    <tbody>
-					        <% 
-					        List<String> colSubSystems = subsystems;
-                            if(isSubSystem.equalsIgnoreCase("Y")) {
-                            	subsystems = subsystems.stream().filter(e -> e.equalsIgnoreCase(subSystemDetails[7].toString())).collect(Collectors.toList());
-                            	
-                            }
-                            int slnoSS = 0;
-					        for (String rowSubsystem : subsystems) { 
-					        %>
-					            <tr>
-					                <td class="center"><%= ++slnoSS %></td>
-					                <td class="center"><%= rowSubsystem %></td>
-					                <% for (String colSubsystem : colSubSystems) { %>
-					                    <td class="center">
-					                        <% 
-					                        //if (rowSubsystem.equalsIgnoreCase(colSubsystem)) { 
-					                        //    out.print("NA");
-					                        //} else {
-					                            String key = rowSubsystem + "_" + colSubsystem;
-					                            String connections = connectionMap.getOrDefault(key, "-");
-					                            out.print(connections);
-					                        //}
-					                        %>
-					                    </td>
-					                <% } %>
-					            </tr>
-					        <% } %>
-					    </tbody>
-					</table>
-							
-				</div>
-	        	
         	</div>
         </div>
  	</div>

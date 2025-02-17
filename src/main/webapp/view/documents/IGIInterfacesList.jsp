@@ -82,14 +82,6 @@ label {
 	text-align: left;
 }
 
-body { 
-   font-family : "Lato", Arial, sans-serif !important;
-   overflow-x: hidden;
-}
-
-input,select,table,div,label,span {
-	font-family : "Lato", Arial, sans-serif !important;
-}
 .text-center{
 	text-align: left !imporatant;
 }
@@ -140,8 +132,8 @@ input,select,table,div,label,span {
 }
 
 .customSidebar {
-	min-height: 670px;
-    max-height: 670px;
+	min-height: 920px;
+    max-height: 920px;
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: thin;
@@ -232,7 +224,7 @@ input,select,table,div,label,span {
  			<div class="card-header" style="background-color: transparent;height: 3rem;">
  				<div class="row">
  					<div class="col-md-2">
- 						<h3 class="text-dark" style="font-weight: bold;">Interfaces</h3>
+ 						<h3 class="text-dark" style="font-weight: bold;">Physical Interfaces</h3>
  					</div>
  					<div class="col-md-8"></div>
  					<div class="col-md-2 right">
@@ -285,7 +277,7 @@ input,select,table,div,label,span {
 								            <button type="button" class="btn btn-outline-secondary fw-bold customeSidebarBtn left" 
 								                id="<%=buttonId%>" value="1" style="padding: 0.2rem;" 
 								                data-toggle="tooltip" data-placement="top" title="<%=interfaceType%> Interfaces">
-								                <span style="font-weight: bold;"><%=(++interfaceMainCount) + ". " + interfaceType%> Interfaces</span>
+								                <span style="font-weight: bold;"><%=(++interfaceMainCount) + ". " + interfaceType%></span>
 								                <% if (interfaceList.size() > 0) { %>
 								                &nbsp; <i class="fa fa-caret-up"></i>
 								                <% } %>
@@ -597,35 +589,7 @@ input,select,table,div,label,span {
 		var html1 = '<%=igiInterface!=null && igiInterface.getInterfaceDiagram()!=null?igiInterface.getInterfaceDiagram().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):""%>';
 		var html2 = '<%=igiInterface!=null && igiInterface.getInterfaceDescription()!=null?igiInterface.getInterfaceDescription().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):""%>';
 		$('#diagramEditor').summernote('code', html1);
-		$('#descriptionEditor').summernote('code', html2);
-
-		// Check Duplicate
-		function checkDuplicateInterfaceCode(field) {
-			var interfaceCode = $(field).val();
-			var interfaceId = $('#interfaceId').val();
-			console.log(interfaceCode);
-			
-			$.ajax({
-				type : "GET",
-				url : "DuplicateInterfaceCodeCheck.htm",	
-				datatype : 'json',
-				data : {
-					interfaceCode : interfaceCode,				
-					interfaceId : interfaceId,				
-				},
-				success : function(result) {
-					var ajaxresult = JSON.parse(result);
-					
-					if(ajaxresult>0){
-						alert('Interface Id Already Exists');
-						$(field).val('');
-						event.preventDefault();
-						return false;
-					}
-					
-				}
-			});
-		}
+		$('#descriptionEditor').summernote('code', html2);		
 		
 		// Set the values to the form when submitting.
 		$('#myform').submit(function() {
@@ -638,9 +602,7 @@ input,select,table,div,label,span {
 			
 		});
 		
-	</script>	
-	
-	<script>
+
 	    var interfaceContentMap = {};
 	    <% for (IGIInterfaceTypes interfaceType : interfaceTypesList) { %>
 	        var contentList = [];

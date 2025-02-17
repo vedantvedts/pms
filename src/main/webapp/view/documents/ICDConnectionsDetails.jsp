@@ -1,3 +1,5 @@
+<%@page import="java.util.LinkedHashMap"%>
+<%@page import="com.vts.pfms.documents.model.ICDPurpose"%>
 <%@page import="com.vts.pfms.documents.model.PfmsICDDocument"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
@@ -64,6 +66,32 @@ label {
 	font-size: 16px;
 	color: #07689f;
 }
+
+.activitytable{
+	border-collapse: collapse;
+	width: 100%;
+	border: 1px solid #0000002b; 
+	margin-top: 1.2rem;
+	overflow-y: auto; 
+	overflow-x: auto;  
+}
+.activitytable th, .activitytable td{
+	border: 1px solid #0000002b; 
+	padding: 20px;
+}
+.activitytable th{
+
+	vertical-align: middle;
+}
+.activitytable thead {
+	text-align: center;
+	background-color: #2883c0;
+	color: white;
+	position: sticky;
+	top: 0; /* Keeps the header at the top */
+	z-index: 10; /* Ensure the header stays on top of the body */
+	/* background-color: white; */ /* For visibility */
+}
 </style>
 </head>
 <body>
@@ -73,13 +101,28 @@ label {
 	String docType = (String)request.getAttribute("docType");
 	String documentNo = (String)request.getAttribute("documentNo");
 	String projectId = (String)request.getAttribute("projectId");
-	List<Object[]> productTreeList = (List<Object[]>)request.getAttribute("productTreeList"); 
 	PfmsICDDocument icdDocument = (PfmsICDDocument)request.getAttribute("icdDocument"); 
+	
+	List<Object[]> productTreeAllList = (List<Object[]>)request.getAttribute("productTreeAllList"); 
+	
+	List<Object[]> productTreeList = productTreeAllList.stream().filter(e -> icdDocument.getProductTreeMainId()==Long.parseLong(e[9].toString()) && e[10].toString().equalsIgnoreCase("1")).collect(Collectors.toList());
+	List<Object[]> productTreeSubList = productTreeAllList.stream().filter(e -> icdDocument.getProductTreeMainId()==Long.parseLong(e[9].toString()) && e[10].toString().equalsIgnoreCase("2")).collect(Collectors.toList());
+
+	
 	List<IGIInterface> igiInterfaceList = (List<IGIInterface>)request.getAttribute("igiInterfaceList"); 
 	igiInterfaceList = igiInterfaceList.stream().filter(e -> e.getIsActive()==1).collect(Collectors.toList());
+	
+	List<ICDPurpose> icdPurposeList = (List<ICDPurpose>)request.getAttribute("icdPurposeList"); 
+	icdPurposeList = icdPurposeList.stream().filter(e -> e.getIsActive()==1).collect(Collectors.toList());
+	
 	List<Object[]> icdConnectionsList = (List<Object[]>)request.getAttribute("icdConnectionsList"); 
 	
+	Map<String, List<Object[]>> icdConnectionsListToListMap = icdConnectionsList!=null && icdConnectionsList.size()>0?icdConnectionsList.stream()
+			  .collect(Collectors.groupingBy(e -> (e[2] + "_" + e[3] + "_" + e[14] + "_" + e[15] ), LinkedHashMap::new, Collectors.toList())) : new HashMap<>();
+	
 	String isSubSystem = icdDocument!=null && icdDocument.getProductTreeMainId()!=0? "Y": "N";
+	Object[] subsystem = productTreeAllList.stream().filter(e -> icdDocument.getProductTreeMainId().equals(Long.parseLong(e[0].toString()))).findFirst().orElse(null);
+
 	//List<String> subsystems = productTreeList.stream().map(obj -> obj[7].toString()).distinct().collect(Collectors.toList());
 
 	//Map<String, String> connectionMap = new HashMap<>();
@@ -142,59 +185,67 @@ label {
         	</div>
         	<div class="card-body">
         		
-        		<form action="ICDConnectionMatrixSubmit.htm" method="post" id="connectionForm">
+        		<form action="ICDConnectionMatrixSubmit.htm" method="post" id="connectionForm" enctype="multipart/form-data">
         			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         			<input type="hidden" name="docId" value="<%=docId %>" />
         			<input type="hidden" name="docType" value="<%=docType %>" />
         			<input type="hidden" name="documentNo" value="<%=documentNo %>" />
         			<input type="hidden" name="projectId" value="<%=projectId %>" />
-	        		
+        			<input type="hidden" name="isSubSystem" id="isSubSystem" value="<%=isSubSystem %>" />
+	        		<%if(isSubSystem.equalsIgnoreCase("Y")) {%>
+		        		<input type="hidden" name="subSystemOne" id="subSystem1" value="<%=subsystem[0]+"/"+subsystem[7] %>">
+		        		<input type="hidden" name="subSystemTwo" id="subSystem2" value="<%=subsystem[0]+"/"+subsystem[7] %>">
+		        	<%} %>
 	        		<div class="card">
 	        			<div class="card-body">
 	        				<div class="form-group">
 	        					<div class="row">
-		        					<%if(isSubSystem.equalsIgnoreCase("N")) {%>
-		        						<div class="col-md-2"></div>
-		        					<%} %>
-	        						<div class="col-md-2">
-	        							<label class="form-lable">Sub-System 1<span class="mandatory">*</span></label>
-	        							<select class="form-control selectdee subSystem1" name="subSystemOne" id="subSystem1" <%if(isSubSystem.equalsIgnoreCase("Y")) {%> onchange="getSuperSubLevelList('1')" <%} %>
-		        						data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
-									        <%if(isSubSystem.equalsIgnoreCase("Y")) {
-									        	Object[] subsystem = productTreeList.stream().filter(e -> icdDocument.getProductTreeMainId().equals(Long.parseLong(e[0].toString()))).findFirst().orElse(null);
-									        %>
-									        	<option value="<%=subsystem[0]+"/"+subsystem[7] %>" data-id="<%=subsystem[0]%>" selected ><%=subsystem[2]+" ("+subsystem[7]+")" %></option>
-									        <%} else {%>
+	        					
+		        					 <%if(isSubSystem.equalsIgnoreCase("N")) {%>
+		        						<div class="col-md-2">
+		        							<label class="form-lable">Sub-System 1<span class="mandatory">*</span></label>
+		        							<select class="form-control selectdee subSystem1" name="subSystemOne" id="subSystem1" onchange="checkConnectionExistence()"
+			        						data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
+										        
 									        	<option value="" disabled selected>Choose...</option>
 										        <%
 										        for(Object[] obj : productTreeList){ %>
 										        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>" ><%=obj[2]+" ("+obj[7]+")" %></option>
 										        <%} %>
-									        <%} %>
-										</select>
-	        						</div>
+											</select>
+		        						</div>
+		        						<div class="col-md-2">
+		        							<label class="form-lable">Sub-System 2<span class="mandatory">*</span></label>
+			        						<select class="form-control selectdee subSystem2" name="subSystemTwo" id="subSystem2" onchange="checkConnectionExistence()"
+			        						data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
+												<option value="" disabled selected>Choose...</option>
+										        <% for(Object[] obj : productTreeList){ %>
+										        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>"><%=obj[2]+" ("+obj[7]+")" %></option>
+										        <%} %>
+											</select>
+	        							</div>
+	        						<%} %>
 	        						<%if(isSubSystem.equalsIgnoreCase("Y")) {%>
 		        						<div class="col-md-2">
 		        							<label class="form-lable">Super Sub-System 1<span class="mandatory">*</span></label>
-		        							<select class="form-control selectdee superSubSystem1" name="superSubSystemOne" id="superSubSystem1" data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
+		        							<select class="form-control selectdee superSubSystem1" name="superSubSystemOne" id="superSubSystem1" onchange="checkConnectionExistence()" 
+		        							data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
+		        								<option value="" disabled selected>Choose...</option>
+										        <%
+										        for(Object[] obj : productTreeSubList){ %>
+										        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>" ><%=obj[2]+" ("+obj[7]+")" %></option>
+										        <%} %>
 											</select>
 		        						</div>	
-	        						<%} %>
-	        						
-	        						<div class="col-md-2">
-	        							<label class="form-lable">Sub-System 2<span class="mandatory">*</span></label>
-		        						<select class="form-control selectdee subSystem2" name="subSystemTwo" id="subSystem2" <%if(isSubSystem.equalsIgnoreCase("Y")) {%> onchange="getSuperSubLevelList('2')" <%} %>
-		        						data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
-											<option value="" disabled selected>Choose...</option>
-									        <% for(Object[] obj : productTreeList){ %>
-									        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>"><%=obj[2]+" ("+obj[7]+")" %></option>
-									        <%} %>
-										</select>
-	        						</div>
-	        						<%if(isSubSystem.equalsIgnoreCase("Y")) {%>
 			        					<div class="col-md-2">
 			        						<label class="form-lable">Super Sub-System 2<span class="mandatory">*</span></label>
-			        						<select class="form-control selectdee superSubSystem2" name="superSubSystemTwo" id="superSubSystem2" data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
+			        						<select class="form-control selectdee superSubSystem2" name="superSubSystemTwo" id="superSubSystem2" onchange="checkConnectionExistence()" 
+			        						data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
+			        							<option value="" disabled selected>Choose...</option>
+										        <%
+										        for(Object[] obj : productTreeSubList){ %>
+										        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>" ><%=obj[2]+" ("+obj[7]+")" %></option>
+										        <%} %>
 											</select>
 			        					</div>
 	        						<%} %>
@@ -202,27 +253,29 @@ label {
 	        							<label class="form-lable">Interface<span class="mandatory">*</span></label>
 		        						<select class="form-control selectdee interfaceId" name="interfaceId" id="interfaceId" multiple data-placeholder="Choose..." data-live-search="true" data-container="body" required>
 									        <% for(IGIInterface igiinterface : igiInterfaceList){ %>
-									        	<option value="<%=igiinterface.getInterfaceId() %>"><%=igiinterface.getInterfaceName() %></option>
+									        	<option value="<%=igiinterface.getInterfaceId()+"/"+igiinterface.getInterfaceCode() %>"><%=igiinterface.getInterfaceName() %></option>
 									        <%} %>
 										</select>
 	        						</div>
+	        						<div class="col-md-4">
+	        							<label class="form-lable">Purpose<span class="mandatory">*</span></label>
+		        						<select class="form-control selectdee purpose" name="purpose" id="purposeAdd" multiple data-placeholder="Choose..." data-live-search="true" data-container="body" required>
+									        <% for(ICDPurpose icdPurpose : icdPurposeList){ %>
+									        	<option value="<%=icdPurpose.getPurposeId() %>"><%=icdPurpose.getPurpose() %></option>
+									        <%} %>
+										</select>
+	        						</div>
+	        						
 	        					</div>
 	        				</div>
 	        				
 	        				<div class="form-group">
 	        					<div class="row">
-	        						<%if(isSubSystem.equalsIgnoreCase("N")) {%>
-		        						<div class="col-md-2"></div>
-		        					<%} %>
-	        						<div class="col-md-2">
-	        							<label class="form-lable">Purpose<span class="mandatory">*</span></label>
-	        							<!-- <textarea class="form-control" name="purpose" rows="2" cols="" placeholder="Enter Purpose" required></textarea> -->
-	        							<input class="form-control" name="purpose" placeholder="Enter Purpose" required>
-	        						</div>
+	        						
 	        						<div class="col-md-2">
 	        							<label class="form-lable">Constraints<span class="mandatory">*</span></label>
 	        							<!-- <textarea class="form-control" name="constraints" rows="2" cols="" placeholder="Enter Constraints" required></textarea> -->
-	        							<input class="form-control" name="constraints" placeholder="Enter Constraints" required>
+	        							<input type="text" class="form-control" name="constraints" placeholder="Enter Constraints" required>
 	        						</div>
 	        						<div class="col-md-2">
 	        							<label class="form-lable">Periodicity<span class="mandatory">*</span></label> <br>
@@ -233,8 +286,17 @@ label {
 	        						<div class="col-md-2">
 	        							<label class="form-lable">Description<span class="mandatory">*</span></label>
 	        							<!-- <textarea class="form-control" name="description" rows="2" cols="" placeholder="Enter Description" required></textarea> -->
-	        							<input class="form-control" name="description" placeholder="Enter Periodicity Description" required>
+	        							<input type="text" class="form-control" name="description" placeholder="Enter Periodicity Description" required>
 	        						</div>
+	        						<div class="col-md-2">
+	        							<label class="form-lable">Drawing No<span class="mandatory">*</span></label>
+	        							<input type="text" class="form-control" name="drawingNo" placeholder="Enter Drawing No" required>
+	        						</div>
+	        						<div class="col-md-4">
+	        							<label class="form-lable">Drawing Attachment<span class="mandatory">*</span></label>
+	        							<input type="file" class="form-control" name="drawingAttachment" accept="application/pdf" required>
+	        						</div>
+	        						
 	        					</div>
 	        				</div>	
 	        				
@@ -251,17 +313,19 @@ label {
 	        	<hr class="mt-4 mb-4">	
 	        	
         		<div class="table-responsive table-wrapper"> 
-                	<table class="table table-bordered table-hover table-striped table-condensed" id="myTable">
+        			<input type="text" id="searchBar" class="search-bar form-control" placeholder="Search..." style="float: right;width: auto;" />
+       				<br>
+                	<table class="table activitytable" id="dataTable">
                     	<thead class="center">
                     		<tr>
                     			<th>SN</th>
                     			<th>Connection ID</th>
-                    			<th>Sub-System 1</th>
+                    			<%-- <th>Sub-System 1</th>
                     			<th>Sub-System 2</th>
                     			<%if(isSubSystem.equalsIgnoreCase("Y")) {%>
 	                    			<th>Super Sub-System 1</th>
 	                    			<th>Super Sub-System 2</th>
-                    			<%} %>
+                    			<%} %> --%>
                     			<!-- <th>Interface Code</th>
                     			<th>Interface Type</th> -->
                     			<!-- <th>Transmission Speed</th>
@@ -271,61 +335,61 @@ label {
                     			<th>Periodicity</th>
                     			<th>Description</th>
                     			<th>Action</th>
+                    			<th>Delete</th>
 	                    	</tr>
                     	</thead>
                     	<tbody>
-                    		<%if(icdConnectionsList!=null && icdConnectionsList.size()>0) {
-                    			int count = 0, slno = 0;
-                    			String systemOne1 = "", systemTwo1 = "", subSystemOne1 = "", subSystemTwo1 = "";
-                    			for(Object[] obj : icdConnectionsList) {
-                    				
-                    				String systemOne2 = obj[4]+"";
-                    				String systemTwo2 = obj[5]+"";
-                    				String subSystemOne2 = obj[16]+"";
-                    				String subSystemTwo2 = obj[17]+"";
-                    				
-                    				if(!systemOne1.equalsIgnoreCase(systemOne2) || !systemTwo1.equalsIgnoreCase(systemTwo2) ||
-                    				   !subSystemOne1.equalsIgnoreCase(subSystemOne2) || !subSystemTwo1.equalsIgnoreCase(subSystemTwo2)	) {
-                    					systemOne1 = systemOne2;
-                    					systemTwo1 = systemTwo2;
-                    					subSystemOne1 = subSystemOne2;
-                    					subSystemTwo1 = subSystemTwo2;
-                    					count = 0;
-                    				}
-                    				
-                    				++count;
-                    		%>
+                    		<% if (icdConnectionsListToListMap!=null && icdConnectionsListToListMap.size() > 0) {
+								int slno = 0;
+								for (Map.Entry<String, List<Object[]>> map : icdConnectionsListToListMap.entrySet()) {
+                 							
+          							List<Object[]> values = map.getValue();
+          							int i=0;
+          							for (Object[] obj : values) {
+							%>
                     			<tr>
                     				<td class="center"><%=++slno %></td>
-                    				<td class="center" id="connectionId_<%=slno%>">
+                    				<td id="connectionId_<%=slno%>">
                     					<%-- <%=obj[4] + "_" + obj[5] + "_" + obj[8] + ((count>=100)?"_"+count:((count>=10)?"_0"+count:"_00"+count)) %> --%>
-                    					<%=count + ". " +obj[4] + "_" + obj[5] + "_" + obj[8]  %>
+                    					<%=obj[32] %>
                     				</td>
-                    				<td class="center"><%=obj[4] %></td>
+                    				<%-- <td class="center"><%=obj[4] %></td>
                     				<td class="center"><%=obj[5] %></td>
                     				<%if(isSubSystem.equalsIgnoreCase("Y")) {%>
 	                    				<td class="center"><%=obj[16] %></td>
 	                    				<td class="center"><%=obj[17] %></td>
-	                    			<%} %>	
+	                    			<%} %> --%>	
                     				<%-- <td class="center"><%=obj[8] %></td>
                     				<td><%=obj[10] %></td> --%>
                     				<%-- <td><%=obj[13] %></td>
                     				<td><%=obj[11] %></td> --%>
-                    				<td><%=obj[28]!=null?obj[28]:"-" %></td>
-                    				<td><%=obj[29]!=null?obj[29]:"-"  %></td>
-                    				<td><%=obj[30]!=null?obj[30]:"-"  %></td>
-                    				<td><%=obj[31]!=null?obj[31]:"-"  %></td>
+                    				<%if(i==0) {%>
+							    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;"><%=obj[28]!=null?obj[28]:"-" %></td>
+	                    				<td rowspan="<%=values.size() %>" style="vertical-align: middle;"><%=obj[29]!=null?obj[29]:"-"  %></td>
+	                    				<td rowspan="<%=values.size() %>" style="vertical-align: middle;"><%=obj[30]!=null?obj[30]:"-"  %></td>
+	                    				<td rowspan="<%=values.size() %>" style="vertical-align: middle;"><%=obj[31]!=null?obj[31]:"-"  %></td>
+	                    				<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center">
+									       	<button type="button" class="editable-clicko" onclick="openNewConnectionAddModal('<%=slno%>')" data-toggle="tooltip" title="Add New Connections">
+									            <i class="fa fa-plus-square fa-lg" style="padding: 0px;color: green;font-size: 25px;" aria-hidden="true"></i>
+									        </button>
+									        <button type="button" class="editable-clicko" onclick="openConnectionEditModal('<%=slno%>')" data-toggle="tooltip" title="Edit">
+									            <i class="fa fa-lg fa-edit" style="padding: 0px;color: darkorange;font-size: 25px;" aria-hidden="true"></i>
+									        </button>
+						      			</td>
+        							<%} %>
+                    				
                     				<td class="center">
 						      			 <form action="ICDConnectionDelete.htm" method="POST" id="inlineapprform<%=slno%>">
 						      			 
-									        <button type="button" onclick="openConnectionEditModal('<%=slno%>')">
+									        <%-- <button type="button" onclick="openConnectionEditModal('<%=slno%>')">
 									            <img src="view/images/edit.png" alt="Edit">
-									        </button>
-									        <button type="submit" class="editable-clicko" onclick="return confirm('Are you sure to Delete?')">
-									            <img src="view/images/delete.png" alt="Delete">
+									        </button> --%>
+									        <button type="submit" class="editable-clicko" data-toggle="tooltip" title="Delete" onclick="return confirm('Are you sure to Delete?')">
+									            <i class="fa fa-lg fa-trash" style="padding: 0px;color: red;font-size: 25px;" aria-hidden="true"></i>
 									        </button>
 									        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 									        <input type="hidden" name="icdConnectionId" id="icdConnectionId_<%=slno%>" value="<%=obj[0] %>">
+									        <input type="hidden" name="conInterfaceId" id="conInterfaceId_<%=slno%>" value="<%=obj[33] %>">
 									        <input type="hidden" name="docId" value="<%=docId%>"> 
 											<input type="hidden" name="docType" value="<%=docType%>"> 
 											<input type="hidden" name="documentNo" value="<%=documentNo%>">
@@ -334,10 +398,24 @@ label {
 											<input type="hidden" id="constraints_<%=slno%>" value="<%=obj[29]%>">
 											<input type="hidden" id="periodicity_<%=slno%>" value="<%=obj[30]%>">
 											<input type="hidden" id="description_<%=slno%>" value="<%=obj[31]%>">
+											<input type="hidden" id="drawingNo_<%=slno%>" value="<%=obj[34]%>">
+											<input type="hidden" id="drawingAttachment_<%=slno%>" value="<%=obj[35]%>">
+											<input type="hidden" id="purposeIds_<%=slno%>" value="<%=obj[36]%>">
+											<input type="hidden" id="modalTitle_<%=slno%>" 
+											<%if(isSubSystem.equalsIgnoreCase("Y")) {%>
+	 											value="<%=obj[16] %>_<%=obj[17] %>"
+	                    					<%} else{%>
+	                    						value="<%=obj[4] %>_<%=obj[5] %>"
+	                    					<%} %>
+											>
 									    </form>
 						      		</td>
                     			</tr>
-                    		<%} }%>
+                    		<% ++i; } } } else{%>
+								<tr>
+									<td colspan="12" style="text-align: center;">No Data Available</td>
+								</tr>
+							<%} %>
                     	</tbody>
         			</table>
 				</div>
@@ -346,12 +424,58 @@ label {
         </div>
  	</div>
 	
+	<!-- -------------------------------------------- Add Connections Modal -------------------------------------------- -->
+	<div class="modal fade" id="addNewConnectionModal" tabindex="-1" role="dialog" aria-labelledby="addNewConnectionModal" aria-hidden="true">
+  		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
+    		<div class="modal-content" style="width: 100%;margin-top: 25%;">
+      			<div class="modal-header" id="ModalHeader" style="background: #055C9D ;color: white;">
+			        <h5 class="modal-title" >Add New Connections - <span class="modalTitle"></span> </h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true" class="text-light">&times;</span>
+			        </button>
+      			</div>
+      			
+      			<div class="modal-body">
+       				<form action="ICDAddNewConnectionSubmit.htm" method="post">
+       					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+       					<input type="hidden" name="icdConnectionId" class="icdConnectionId">
+       					<input type="hidden" name="docId" value="<%=docId%>"> 
+						<input type="hidden" name="docType" value="<%=docType%>"> 
+						<input type="hidden" name="documentNo" value="<%=documentNo%>">
+						<input type="hidden" name="projectId" value="<%=projectId%>">
+						<input type="hidden" name="isSubSystem" value="<%=isSubSystem%>">
+      					<div class="form-group">
+        					<div class="row">
+	        					
+        						<div class="col-md-10">
+        							<label class="form-lable">Interface<span class="mandatory">*</span></label>
+	        						<select class="form-control selectdee interfaceId" name="interfaceId" id="interfaceIdEdit" multiple data-placeholder="Choose..." data-live-search="true" data-container="body" required>
+								        <% for(IGIInterface igiinterface : igiInterfaceList){ %>
+								        	<option value="<%=igiinterface.getInterfaceId()+"/"+igiinterface.getInterfaceCode() %>"><%=igiinterface.getInterfaceName() %></option>
+								        <%} %>
+									</select>
+        						</div>
+        					</div>	
+        				</div>		
+        				
+        				<div class="center">
+        					<button type="submit" class="btn btn-sm submit" onclick="return confirm('Are you Sure to Submit?')">
+        						SUBMIT
+        					</button>
+        				</div>	
+      				</form>
+      			</div>
+    		</div>
+  		</div>
+	</div>
+	<!-- -------------------------------------------- Add Connections Modal End -------------------------------------------- -->
+	
 	<!-- -------------------------------------------- Connection Edit Modal -------------------------------------------- -->
 	<div class="modal fade" id="connectionEditModal" tabindex="-1" role="dialog" aria-labelledby="connectionEditModal" aria-hidden="true">
   		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
-    		<div class="modal-content" style="width: 150%;margin-left:-20%;margin-top: 30%;">
+    		<div class="modal-content" style="width: 150%;margin-left: -20%;margin-top: 25%;">
       			<div class="modal-header" id="ModalHeader" style="background: #055C9D ;color: white;">
-			        <h5 class="modal-title" >Connection Edit - <span id="connectionid"></span> </h5>
+			        <h5 class="modal-title" >Connection Edit - <span class="modalTitle"></span> </h5>
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			          <span aria-hidden="true" class="text-light">&times;</span>
 			        </button>
@@ -360,7 +484,7 @@ label {
       			<div class="modal-body">
        				<form action="ICDConnectionEditSubmit.htm" method="post">
        					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-       					<input type="hidden" name="icdConnectionId" id="icdConnectionId">
+       					<input type="hidden" name="icdConnectionId" class="icdConnectionId">
        					<input type="hidden" name="docId" value="<%=docId%>"> 
 						<input type="hidden" name="docType" value="<%=docType%>"> 
 						<input type="hidden" name="documentNo" value="<%=documentNo%>">
@@ -368,16 +492,23 @@ label {
       					<div class="form-group">
         					<div class="row">
 	        					
-        						<div class="col-md-3">
+        						<div class="col-md-5">
         							<label class="form-lable">Purpose<span class="mandatory">*</span></label>
-        							<!-- <textarea class="form-control" name="purpose" rows="2" cols="" placeholder="Enter Purpose" required></textarea> -->
-        							<input class="form-control" name="purpose" id="purpose" placeholder="Enter Purpose" required>
-        						</div>
-        						<div class="col-md-3">
+	        						<select class="form-control selectdee purpose" name="purpose" id="purpose" multiple data-placeholder="Choose..." data-live-search="true" data-container="body" required>
+								        <% for(ICDPurpose icdPurpose : icdPurposeList){ %>
+								        	<option value="<%=icdPurpose.getPurposeId() %>"><%=icdPurpose.getPurpose() %></option>
+								        <%} %>
+									</select>
+	        					</div>
+        						<div class="col-md-4">
         							<label class="form-lable">Constraints<span class="mandatory">*</span></label>
         							<!-- <textarea class="form-control" name="constraints" rows="2" cols="" placeholder="Enter Constraints" required></textarea> -->
         							<input class="form-control" name="constraints" id="constraints" placeholder="Enter Constraints" required>
         						</div>
+        					</div>	
+        				</div>		
+        				<div class="form-group">
+        					<div class="row">	
         						<div class="col-md-3">
         							<label class="form-lable">Periodicity<span class="mandatory">*</span></label> <br>
         							<input type="radio" name="periodicityEdit" value="Periodic" required>Periodic&nbsp;
@@ -388,6 +519,17 @@ label {
         							<label class="form-lable">Description<span class="mandatory">*</span></label>
         							<!-- <textarea class="form-control" name="description" rows="2" cols="" placeholder="Enter Description" required></textarea> -->
         							<input class="form-control" name="description" id="description" placeholder="Enter Periodicity Description" required>
+        						</div>
+        						<div class="col-md-2">
+        							<label class="form-lable">Drawing No<span class="mandatory">*</span></label>
+        							<input type="text" class="form-control" name="drawingNo" id="drawingNo" placeholder="Enter Drawing No" required>
+        						</div>
+        						<div class="col-md-4">
+        							<label class="form-lable">Drawing Attachment </label>
+        							<button type="submit" class="btn btn-sm attachments" name="drawingAttach" id="drawingAttach" value="image" formaction="ICDConnectionDrawingAttachDownload.htm" formmethod="get" formnovalidate="formnovalidate" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Download">
+	                      				<i class="fa fa-download"></i>
+	                      			</button>
+        							<input type="file" class="form-control" name="drawingAttachment" id="drawingAttachment" accept="application/pdf">
         						</div>
         					</div>
         				</div>	
@@ -431,15 +573,23 @@ label {
 	    });
 	}); */
 	
-	$(document).ready(function() {
-        $('#myTable').DataTable({
-            "lengthMenu": [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 100],
-            "pagingType": "simple",
-            /* "pageLength": 5 */
-        });
-    });
 	
-	<%if(isSubSystem.equalsIgnoreCase("Y")) {%> 
+	
+	$(document).ready(function () {
+	    $('#searchBar').on('keyup', function () {
+	        const searchTerm = $(this).val().toLowerCase();
+	        $('#dataTable tbody tr').filter(function () {
+	            $(this).toggle($(this).text().toLowerCase().indexOf(searchTerm) > -1);
+	        });
+	    });
+	    /* $('#searchBar2').on('keyup', function () {
+	        const searchTerm = $(this).val().toLowerCase();
+	        $('#dataTable2 tbody tr').filter(function () {
+	            $(this).toggle($(this).text().toLowerCase().indexOf(searchTerm) > -1);
+	        });
+	    }); */
+	});
+	<%-- <%if(isSubSystem.equalsIgnoreCase("Y")) {%> 
 	
 	getSuperSubLevelList('1');
 	
@@ -473,7 +623,7 @@ label {
 		});
 	}
 	
-	<%} %>
+	<%} %> --%>
 	/* function validateConnectionsForm() {
 		
 		var subSystem1 = $('#subSystem1').val();
@@ -500,15 +650,21 @@ label {
 	} */
 	
 	function openConnectionEditModal(rowId) {
+		
 		var connectionId = $('#connectionId_'+rowId).text();
 		var purpose = $('#purpose_'+rowId).val();
 		var constraints = $('#constraints_'+rowId).val();
 		var periodicity = $('#periodicity_'+rowId).val();
 		var description = $('#description_'+rowId).val();
 		var icdConnectionId = $('#icdConnectionId_'+rowId).val();
-		
-		console.log(periodicity);
+		var drawingNo = $('#drawingNo_'+rowId).val();
+		var icdConnectionId = $('#icdConnectionId_'+rowId).val();
+		var drawingAttachment = $('#drawingAttachment_'+rowId).val();
+		var purposeIds = $('#purposeIds_'+rowId).val();
+		var modalTitle = $('#modalTitle_'+rowId).val();
+
 		$('#connectionid').text(connectionId);
+		$('.modalTitle').text(modalTitle);
 		$('#purpose').val(purpose);
 		$('#constraints').val(constraints);
 		if(periodicity==null || periodicity=='null') {
@@ -518,9 +674,70 @@ label {
 		}
 		
 		$('#description').val(description);
-		$('#icdConnectionId').val(icdConnectionId);
+		$('.icdConnectionId').val(icdConnectionId);
+		$('#drawingNo').val(drawingNo);
+		$('#drawingAttach').val(drawingAttachment);
+		
+		if (purposeIds) {
+	        // Split the purposeIds into an array
+	        var selectedIds = purposeIds.split(',').map(function(id) {
+	            return id.trim(); // Trim whitespace
+	        });
+
+	        // Select the matching options in the dropdown
+	        selectedIds.forEach(function(id) {
+	            $('#purpose option[value="' + id + '"]').prop('selected', true);
+	        });
+
+	        // Trigger the 'change' event to update the multi-select UI
+	        $('#purpose').trigger('change');
+	    }
 		
 		$('#connectionEditModal').modal('show');
+	}
+	
+	function checkConnectionExistence(){
+
+		var docId = '<%=docId%>';
+		var subSystem1 = $('#subSystem1').val();
+		var subSystem2 = $('#subSystem2').val();
+		var superSubSystem1 = $('#superSubSystem1').val();
+		var superSubSystem2 = $('#superSubSystem2').val();
+		
+		$.ajax({
+			type : "GET",
+			url : "CheckICDConnectionExistence.htm",	
+			datatype : 'json',
+			data : {
+				docId : docId,				
+				subSystem1 : subSystem1,				
+				subSystem2 : subSystem2,				
+				superSubSystem1 : superSubSystem1,				
+				superSubSystem2 : superSubSystem2,				
+			},
+			success : function(result) {
+				var result = JSON.parse(result);
+				
+				if(result>0) {
+					alert('System Connection is already Available. Please choose from the Connection list to add new Connections');
+					$('#subSystem1').val("").trigger("change");
+					$('#subSystem2').val("").trigger("change");
+					$('#superSubSystem1').val("").trigger("change");
+					$('#superSubSystem1').val("").trigger("change");
+				}
+			}
+		});
+	}
+	
+	function openNewConnectionAddModal(rowId) {
+		
+		var modalTitle = $('#modalTitle_'+rowId).val();
+		var icdConnectionId = $('#icdConnectionId_'+rowId).val();
+		$('.icdConnectionId').val(icdConnectionId);
+		$('.modalTitle').text(modalTitle);
+		
+		$('#addNewConnectionModal').modal('show');
+		
 	}
 </script> 	
 </body>

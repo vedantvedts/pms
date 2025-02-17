@@ -687,7 +687,7 @@ $('#fromdate').daterangepicker({
 	"linkedCalendars" : false,
 	"showCustomRangeLabel" : true,
 	/* "minDate" :datearray,   */
-	 "startDate" : new Date('<%=fromdate%>'), 
+	 <%-- "startDate" : new Date('<%=fromdate%>'), --%> 
 	"cancelClass" : "btn-default",
 	showDropdowns : true,
 	locale : {
@@ -700,7 +700,7 @@ $('#fromdate').daterangepicker({
 		"singleDatePicker" : true,
 		"linkedCalendars" : false,
 		"showCustomRangeLabel" : true,
-		"startDate" : new Date('<%=todate%>'), 
+		<%-- "startDate" : new Date('<%=todate%>'), --%> 
 		"minDate" :$("#fromdate").val(),  
 		"cancelClass" : "btn-default",
 		showDropdowns : true,
@@ -709,11 +709,11 @@ $('#fromdate').daterangepicker({
 		}
 	});
 
-	 $(document).ready(function(){
+	 /* $(document).ready(function(){
 		   $('#fromdate, #todate').change(function(){
 		       $('#myform').submit();
 		    });
-		}); 
+		});  */
 
 	<%if(tab!=null && tab.equals("closed")){%>
 	

@@ -6,8 +6,13 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.vts.pfms.documents.dto.StandardDocumentsDto;
+import com.vts.pfms.documents.model.ICDConnectionInterfaces;
+import com.vts.pfms.documents.model.ICDConnectionPurpose;
 import com.vts.pfms.documents.model.ICDDocumentConnections;
+import com.vts.pfms.documents.model.ICDPurpose;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
@@ -15,6 +20,7 @@ import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.IGIInterface;
 import com.vts.pfms.documents.model.IGIInterfaceContent;
 import com.vts.pfms.documents.model.IGIInterfaceTypes;
+import com.vts.pfms.documents.model.IGILogicalInterfaces;
 import com.vts.pfms.documents.model.IRSDocumentSpecifications;
 import com.vts.pfms.documents.model.PfmsApplicableDocs;
 import com.vts.pfms.documents.model.PfmsICDDocument;
@@ -62,6 +68,9 @@ public interface DocumentsService {
 	public List<IGIInterfaceTypes> getIGIInterfaceTypesList() throws Exception;
 	public List<IGIInterfaceContent> getIGIInterfaceContentList() throws Exception;
 	public long igiDocumentUserRevoke(String igiDocId, String userId, String empId) throws Exception;
+	public List<IGILogicalInterfaces> getIGILogicalInterfaces() throws Exception;
+	public IGILogicalInterfaces getIGILogicalInterfaceById(String logicalInterfaceId) throws Exception;
+	public long addIGILogicalInterfaces(IGILogicalInterfaces igiLogicalInterfaces) throws Exception;
 	/* ************************************************ IGI Document End***************************************************** */
 	
 	/* ************************************************ ICD Document ***************************************************** */
@@ -69,15 +78,22 @@ public interface DocumentsService {
 	public long addPfmsICDDocument(PfmsICDDocument pfmsIGIDocument) throws Exception;
 	public PfmsICDDocument getPfmsICDDocumentById(String icdDocId)throws Exception;
 	public Long getFirstVersionICDDocId(String projectId, String initiationId, String productTreeMainId) throws Exception;
-	public long addICDDocumentConnections(ICDDocumentConnections connection) throws Exception;
+	public long addICDDocumentConnections(ICDDocumentConnections connection, MultipartFile drawingAttach, String labcode) throws Exception;
 	public List<Object[]> getICDConnectionsList(String icdDocId) throws Exception;
-	public int deleteICDConnectionById(String icdConnectionId) throws Exception;
+	public int deleteICDConnectionById(String conInterfaceId) throws Exception;
 	public long addPfmsIGITransaction(Long docId, String docType, String statusCode, String remarks, Long actionBy) throws Exception;
 	public long igiDocumentApprovalForward(String docId, String docType, String action, String remarks, String EmpId, String labcode, String userId) throws Exception;
 	public long icdDocumentApprovalForward(String docId, String docType, String action, String remarks, String empId, String labcode, String userId) throws Exception;
-	public List<Object[]> getProductTreeAllListByProjectId(String projectId) throws Exception;
+	public List<Object[]> getProductTreeAllList(String projectId, String initiationId) throws Exception;
 	public long icdDocumentUserRevoke(String icdDocId, String userId, String empId) throws Exception;
 	public ICDDocumentConnections getICDDocumentConnectionsById(String icdConnectionId) throws Exception;
+	public List<ICDPurpose> getAllICDPurposeList() throws Exception;
+	public long addICDConnectionInterfaces(ICDConnectionInterfaces connectioInterfaces) throws Exception;
+	public long addICDConnectionPurpose(ICDConnectionPurpose icdConnectionPurpose) throws Exception;
+	public int getICDConnectionsCount(Long subSystemMainIdOne, Long subSystemMainIdTwo, Long superSubSysMainIdOne, 
+			Long superSubSysMainIdTwo, Long icdDocId) throws Exception;
+	public int deleteICDConnectionPurposeByICDConnectionId(String icdConnectionId) throws Exception;
+
 	/* ************************************************ ICD Document End***************************************************** */
 	
 	/* ************************************************ IRS Document ***************************************************** */
@@ -90,6 +106,8 @@ public interface DocumentsService {
 	public int deleteIRSSpecifiactionById(String irsSpecificationId) throws Exception;
 	public long irsDocumentApprovalForward(String docId, String docType, String action, String remarks, String empId, String labcode, String userId) throws Exception;
 	public long irsDocumentUserRevoke(String irsDocId, String userId, String empId) throws Exception;
+	public List<Object[]> getDataCarryingConnectionList(String icdDocId)throws Exception;
+	public IRSDocumentSpecifications getIRSDocumentSpecificationsById(String irsSpecificationId) throws Exception;
 	/* ************************************************ IRS Document End***************************************************** */
 	
 	/* ************************************************ IDD Document ***************************************************** */

@@ -8,29 +8,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 @Entity
-@Table(name="pfms_irs_document_specifications")
-public class IRSDocumentSpecifications implements Serializable {
+@Table(name="pfms_icd_purpose")
+public class ICDPurpose implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long IRSSpecificationId;
-	private Long IRSDocId;
-	private Long ConInterfaceId;
-	private Long LogicalInterfaceId;
-	private String InfoName;
-	private String ActionAtDest;
+	private Long PurposeId;
+	private String Purpose;
+	private String PurposeCode;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;

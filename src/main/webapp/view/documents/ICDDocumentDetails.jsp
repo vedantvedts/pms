@@ -233,12 +233,15 @@
 			 String interfaceCode = connection[8]!=null?connection[8].toString():"NA";
 			 
 		    String key = connection[4] + "_" + connection[5];
-		    int count = connectionMap.containsKey(key) ? connectionMap.get(key).split("<br>").length + 1 : 1;
+		    //int count = connectionMap.containsKey(key) ? connectionMap.get(key).split("<br>").length + 1 : 1;
 
 		    //String seqNumber = (count >= 100) ? "_" + count : (count >= 10) ? "_0" + count : "_00" + count;
 		    
-		    String value = count+". "+ connection[4] + "_" + connection[5] + "_" + interfaceCode;
-		    connectionMap.merge(key, value, (oldValue, newValue) -> oldValue + "<br>" + newValue);
+		    //String value = count+". "+ connection[4] + "_" + connection[5] + "_" + interfaceCode;
+		    
+		    String value = connection[32].toString();
+		    
+		    connectionMap.merge(key, value, (oldValue, newValue) -> oldValue + " <br> " + newValue);
 		    
 		 	// Unique Interface Codes
 		    interfaceCodeList.add(interfaceCode);
@@ -257,7 +260,7 @@
 
 		    //String seqNumber = (countsub >= 100) ? "_" + countsub : (countsub >= 10) ? "_0" + countsub : "_00" + countsub;
 
-		    String valuesub = count+". "+ connection[16] + "_" + connection[17] + "_" + interfaceCode;
+		    String valuesub = connection[32].toString();
 		    superSubConnectionMap.merge(keysub, valuesub, (oldValue, newValue) -> oldValue + "<br>" + newValue);
 		
 		    
@@ -1339,6 +1342,10 @@ function DownloadDocPDF(){
                     pageSize: { width: 1683.78, height: 1190.55 },
                 },
 				
+                <%
+	        	if(isSubSystem.equalsIgnoreCase("N")) {
+	        		
+	        	%>
                 {
                     table: {
                         headerRows: 1,
@@ -1365,17 +1372,13 @@ function DownloadDocPDF(){
 
                             // Populate table rows
                             <% 
-                            List<String> colSubSystems = subsystems;
-                            if(isSubSystem.equalsIgnoreCase("Y")) {
-                            	subsystems = subsystems.stream().filter(e -> e.equalsIgnoreCase(subSystemDetails[7].toString())).collect(Collectors.toList());
-                            	
-                            }
+   
                             int slnoS = 0;
                             for (String rowSubsystem : subsystems) { %>
                                 [
                                     { text: '<%= ++slnoS%>', style: 'tableData2', alignment: 'center' },
                                     { text: '<%= rowSubsystem != null ? rowSubsystem : "" %>', style: 'tableData2', alignment: 'center' },
-                                    <% for (String colSubsystem : colSubSystems) { %>
+                                    <% for (String colSubsystem : subsystems) { %>
                                         { text: 
                                             <%-- <% if (rowSubsystem.equalsIgnoreCase(colSubsystem)) { %>
                                                 'NA' --%>
@@ -1385,7 +1388,7 @@ function DownloadDocPDF(){
                                             %>
                                                 htmlToPdfmake('<%= connections != null ? connections : "-" %>')
                                             <% //} %>, 
-                                            style: 'tableData2', alignment: 'center' },
+                                            style: 'tableData2',  },
                                     <% } %>
                                 ],
                             <% } %>
@@ -1402,12 +1405,9 @@ function DownloadDocPDF(){
 
                 },
 
-                <%
-	        	if(isSubSystem.equalsIgnoreCase("Y")) {
-	        		
-	        	%>
+                <% }else { %>
 	        	
-	        	{
+	        	/* {
                 	text: '',
                     style: 'chapterHeader',
                     tocItem: false,
@@ -1415,7 +1415,7 @@ function DownloadDocPDF(){
                     pageOrientation: 'landscape',
                     pageBreak: 'before',
                     pageSize: { width: 841.89, height: 595.28 },
-                },
+                }, */
                 
 	        	{
                     table: {
@@ -1505,31 +1505,13 @@ function DownloadDocPDF(){
                             
                             <%if(icdConnectionsList!=null && icdConnectionsList.size()>0) {
                             	
-                            	int count = 0, slno = 0;
-                    			String systemOne1 = "", systemTwo1 = "", subSystemOne1 = "", subSystemTwo1 = "";
+                            	int slno = 0;
                     			
-                    			for(Object[] obj : icdConnectionsList) {
-                    				
-                    				String systemOne2 = obj[4]+"";
-                    				String systemTwo2 = obj[5]+"";
-                    				String subSystemOne2 = obj[16]+"";
-                    				String subSystemTwo2 = obj[17]+"";
-                    				
-                    				if(!systemOne1.equalsIgnoreCase(systemOne2) || !systemTwo1.equalsIgnoreCase(systemTwo2) ||
-                    				   !subSystemOne1.equalsIgnoreCase(subSystemOne2) || !subSystemTwo1.equalsIgnoreCase(subSystemTwo2)	) {
-                    					systemOne1 = systemOne2;
-                    					systemTwo1 = systemTwo2;
-                    					subSystemOne1 = subSystemOne2;
-                    					subSystemTwo1 = subSystemTwo2;
-                    					count = 0;
-                    				}
-                    				
-                    				++count;
-                    		%>
+                    			for(Object[] obj : icdConnectionsList) { %>
 	                    		[
 	                    			{ text: '<%=++slno %>', style: 'tableData2',alignment: 'center' },
 	                                <%-- { text: '<%=obj[4]+"_"+obj[5]+"_"+obj[8]+((count>=100)?"_"+count:((count>=10)?"_0"+count:"_00"+count)) %>', style: 'tableData',alignment: 'center' }, --%> 
-	                                { text: '<%=count +"."+ obj[4]+"_"+obj[5]+"_"+obj[8] %>', style: 'tableData2',alignment: 'center' },
+	                                { text: '<%=obj[32] %>', style: 'tableData2',alignment: 'center' },
 	                                <%-- { text: '<%=obj[4] %>', style: 'tableData',alignment: 'center' },
 	                                { text: '<%=obj[5] %>', style: 'tableData',alignment: 'center' },
 	                                { text: '<%=obj[8] %>', style: 'tableData',alignment: 'center' },
