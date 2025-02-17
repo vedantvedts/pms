@@ -1443,6 +1443,20 @@ public class RequirementServiceImpl implements RequirementService {
 	}
 	
 	@Override
+	public List<Object[]> iddDocumentPendingList(String empId, String labcode) throws Exception {
+		
+		return dao.iddDocumentPendingList(empId, labcode);
+	}
+	
+	@Override
+	public List<Object[]> iddDocumentApprovedList(String empId, String FromDate, String ToDate) throws Exception {
+		
+		return dao.iddDocumentApprovedList(empId, FromDate, ToDate);
+	}
+	
+	/* *************************************** IGI / ICD / IRS / IDD DOCUMENT END ********************************* */
+
+	@Override
 	public List<Object[]> productTreeListByInitiationId(String initiationId) throws Exception {
 
 		return dao.productTreeListByInitiationId(initiationId);

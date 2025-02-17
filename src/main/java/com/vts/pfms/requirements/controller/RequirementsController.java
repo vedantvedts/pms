@@ -2862,13 +2862,15 @@ public class RequirementsController {
 			req.setAttribute("specificationPendingList", service.projectSpecificationPendingList(EmpId, labcode));
 			req.setAttribute("specificationApprovedList", service.projectSpecificationApprovedList(EmpId, fromdate, todate));
 			
-			// IGI Doc
+			// IGI / ICD / IRS / IDD Doc
 			req.setAttribute("igiDocPendingList", service.igiDocumentPendingList(EmpId, labcode));
 			req.setAttribute("igiDocApprovedList", service.igiDocumentApprovedList(EmpId, fromdate, todate));
 			req.setAttribute("icdDocPendingList", service.icdDocumentPendingList(EmpId, labcode));
 			req.setAttribute("icdDocApprovedList", service.icdDocumentApprovedList(EmpId, fromdate, todate));
 			req.setAttribute("irsDocPendingList", service.irsDocumentPendingList(EmpId, labcode));
 			req.setAttribute("irsDocApprovedList", service.irsDocumentApprovedList(EmpId, fromdate, todate));
+			req.setAttribute("iddDocPendingList", service.iddDocumentPendingList(EmpId, labcode));
+			req.setAttribute("iddDocApprovedList", service.iddDocumentApprovedList(EmpId, fromdate, todate));
 			
 			return "requirements/DocumentApprovals";
 		} catch (Exception e) {

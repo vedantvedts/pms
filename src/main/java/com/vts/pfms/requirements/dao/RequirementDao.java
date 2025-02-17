@@ -163,14 +163,18 @@ public interface RequirementDao {
 	public TestPlanMaster getTestPlanById(long testMasterId);
 	public long testPlanMasterAdd(TestPlanMaster tp)throws Exception;
 
-	/* ********************************* IGI DOCUMENT ******************************************* */
+	/* *************************************** IGI / ICD / IRS / IDD DOCUMENT ************************************* */
 	public List<Object[]> igiDocumentPendingList(String empId, String labcode) throws Exception;
 	public List<Object[]> igiDocumentApprovedList(String empId, String FromDate, String ToDate) throws Exception;
 	public List<Object[]> icdDocumentPendingList(String empId, String labcode) throws Exception;
 	public List<Object[]> icdDocumentApprovedList(String empId, String FromDate, String ToDate) throws Exception;
 	public List<Object[]> irsDocumentPendingList(String empId, String labcode) throws Exception;
 	public List<Object[]> irsDocumentApprovedList(String empId, String FromDate, String ToDate) throws Exception;
+	public List<Object[]> iddDocumentPendingList(String empId, String labcode) throws Exception;
+	public List<Object[]> iddDocumentApprovedList(String empId, String FromDate, String ToDate) throws Exception;
 
+	/* *************************************** IGI / ICD / IRS / IDD DOCUMENT END ********************************* */
+	
 	public List<Object[]> productTreeListByInitiationId(String initiationId)throws Exception;
 	public List<TestPlanMaster> getAllTestPlans()throws Exception;
 

@@ -1304,9 +1304,9 @@ public class RequirementDaoImpl implements RequirementDao {
 	}
 
 
-	/* *************************************** IGI DOCUMENT ********************************* */
+	/* *************************************** IGI / ICD / IRS / IDD DOCUMENT ********************************* */
 
-	private static final String IGIDOCPENDINGLIST  ="CALL pfms_igi_doc_pending(:EmpId,:LabCode);";
+	private static final String IGIDOCPENDINGLIST  ="CALL pfms_igi_doc_pending(:EmpId,:LabCode)";
 	@Override
 	public List<Object[]> igiDocumentPendingList(String empId,String labcode) throws Exception {
 		try {			
@@ -1322,7 +1322,7 @@ public class RequirementDaoImpl implements RequirementDao {
 
 	}
 
-	private static final String IGIDOCAPPROVEDLIST  ="CALL pfms_igi_doc_approved(:EmpId,:FromDate,:ToDate);";
+	private static final String IGIDOCAPPROVEDLIST  ="CALL pfms_igi_doc_approved(:EmpId,:FromDate,:ToDate)";
 	@Override
 	public List<Object[]> igiDocumentApprovedList(String empId, String FromDate, String ToDate) throws Exception {
 
@@ -1339,7 +1339,7 @@ public class RequirementDaoImpl implements RequirementDao {
 		}
 	}
 
-	private static final String ICDDOCPENDINGLIST  ="CALL pfms_icd_doc_pending(:EmpId,:LabCode);";
+	private static final String ICDDOCPENDINGLIST  ="CALL pfms_icd_doc_pending(:EmpId,:LabCode)";
 	@Override
 	public List<Object[]> icdDocumentPendingList(String empId,String labcode) throws Exception {
 		try {			
@@ -1355,7 +1355,7 @@ public class RequirementDaoImpl implements RequirementDao {
 
 	}
 
-	private static final String ICDDOCAPPROVEDLIST  ="CALL pfms_icd_doc_approved(:EmpId,:FromDate,:ToDate);";
+	private static final String ICDDOCAPPROVEDLIST  ="CALL pfms_icd_doc_approved(:EmpId,:FromDate,:ToDate)";
 	@Override
 	public List<Object[]> icdDocumentApprovedList(String empId, String FromDate, String ToDate) throws Exception {
 
@@ -1372,7 +1372,7 @@ public class RequirementDaoImpl implements RequirementDao {
 		}
 	}
 	
-	private static final String IRSDOCPENDINGLIST  ="CALL pfms_irs_doc_pending(:EmpId,:LabCode);";
+	private static final String IRSDOCPENDINGLIST  ="CALL pfms_irs_doc_pending(:EmpId,:LabCode)";
 	@Override
 	public List<Object[]> irsDocumentPendingList(String empId,String labcode) throws Exception {
 		try {			
@@ -1388,7 +1388,7 @@ public class RequirementDaoImpl implements RequirementDao {
 		
 	}
 	
-	private static final String IRSDOCAPPROVEDLIST  ="CALL pfms_irs_doc_approved(:EmpId,:FromDate,:ToDate);";
+	private static final String IRSDOCAPPROVEDLIST  ="CALL pfms_irs_doc_approved(:EmpId,:FromDate,:ToDate)";
 	@Override
 	public List<Object[]> irsDocumentApprovedList(String empId, String FromDate, String ToDate) throws Exception {
 		
@@ -1404,7 +1404,42 @@ public class RequirementDaoImpl implements RequirementDao {
 			return new ArrayList<Object[]>();
 		}
 	}
+	
+	private static final String IDDDOCPENDINGLIST  ="CALL pfms_idd_doc_pending(:EmpId,:LabCode)";
+	@Override
+	public List<Object[]> iddDocumentPendingList(String empId,String labcode) throws Exception {
+		try {			
+			Query query= manager.createNativeQuery(IDDDOCPENDINGLIST);
+			query.setParameter("EmpId", Long.parseLong(empId));
+			query.setParameter("LabCode", labcode);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO iddDocumentPendingList " + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+		
+	}
+	
+	private static final String IDDDOCAPPROVEDLIST  ="CALL pfms_idd_doc_approved(:EmpId,:FromDate,:ToDate)";
+	@Override
+	public List<Object[]> iddDocumentApprovedList(String empId, String FromDate, String ToDate) throws Exception {
+		
+		try {			
+			Query query= manager.createNativeQuery(IDDDOCAPPROVEDLIST);
+			query.setParameter("EmpId", Long.parseLong(empId));
+			query.setParameter("FromDate", FromDate);
+			query.setParameter("ToDate", ToDate);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO iddDocumentApprovedList " + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+	}
 
+	/* *************************************** IGI / ICD / IRS / IDD DOCUMENT END********************************* */
+	
 	private static final String PRODUCTTREELISTBYINITID= "SELECT a.MainId, a.SubLevelId, a.LevelName, a.Stage, a.Module, a.RevisionNo, a.SystemMainId, a.LevelCode FROM pfms_product_tree a,pfms_initiation b WHERE a.MainId>0 AND a.InitiationId=b.InitiationId AND b.InitiationId=:InitiationId AND a.IsActive='1' AND a.LevelId='1' ORDER BY a.SubLevelId";
 
 	@Override
