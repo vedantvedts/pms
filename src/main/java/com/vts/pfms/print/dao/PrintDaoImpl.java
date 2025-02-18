@@ -1166,7 +1166,7 @@ public class PrintDaoImpl implements PrintDao {
 				}
 				return null;
 			}
-			private static final String GETDIRECTORNAME = "SELECT a.EmpId,a.empname FROM employee a,employee_desig b WHERE a.desigid= b.desigid AND b.designation='director' AND LabCode=:labCode";
+			private static final String GETDIRECTORNAME = "SELECT a.EmpId,a.empname FROM employee a,lab_master b WHERE a.labcode=b.labcode AND  b.LabCode=:labCode AND b.LabAuthorityId=a.empid";
 			@Override
 			public Object[] getDirectorName(String labCode) throws Exception {
 				Query query=manager.createNativeQuery(GETDIRECTORNAME);

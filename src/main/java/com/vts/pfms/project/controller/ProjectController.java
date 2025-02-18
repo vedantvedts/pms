@@ -9640,6 +9640,8 @@ public class ProjectController
 			req.setAttribute("RequirementList", RequirementList);
 			req.setAttribute("specsList", reqService.getSpecsList(SpecsInitiationId));
 			req.setAttribute("isPdf", req.getParameter("isPdf"));
+			
+			System.out.println("req.getParameter(\"isPdf\")---->"+req.getParameter("isPdf"));
 			List<Object[]> productTreeList = reqService.productTreeListByProjectId(projectId);
 			req.setAttribute("productTreeList", productTreeList);
 		}catch (Exception e) {
