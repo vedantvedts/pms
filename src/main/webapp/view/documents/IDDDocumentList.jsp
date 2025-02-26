@@ -354,7 +354,7 @@
 	                      					<form action="#">
 				                            	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				                            	<input type="hidden" name="docId" value="<%=obj[0] %>">
-				                            	<input type="hidden" name="docType" value="C">
+				                            	<input type="hidden" name="docType" value="D">
 				                            	<button type="submit" class="btn btn-sm btn-link w-70 btn-status" formaction="IGIDocTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[15] %>; font-weight: 600;" formtarget="_blank">
 											    	<%=obj[14] %>&emsp;<i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 												</button>
@@ -433,7 +433,7 @@
 										        <input type="hidden" name="projectType" value="<%=projectType %>">
 										        <input type="hidden" name="iddDocId" value="<%=obj[0] %>">
 										        <input type="hidden" name="docId" value="<%=obj[0] %>">
-										        <input type="hidden" name="docType" value="A">
+										        <input type="hidden" name="docType" value="D">
 										    </form>
 										</td>
 	                                </tr>

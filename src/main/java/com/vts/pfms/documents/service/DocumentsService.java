@@ -3,8 +3,8 @@ package com.vts.pfms.documents.service;
 import java.math.BigInteger;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.springframework.web.multipart.MultipartFile;
 

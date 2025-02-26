@@ -25,13 +25,14 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -95,9 +96,12 @@ public class CommitteeServiceImpl implements CommitteeService{
 	
 //	@Autowired 	private JavaMailSender javaMailSender; 
 	
-	@Autowired	BCryptPasswordEncoder encoder;
+	private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-	@Autowired CustomJavaMailSender cm;
+	@Autowired
+	@Lazy
+	CustomJavaMailSender cm;
+	
 	FormatConverter fc=new FormatConverter();
 	private SimpleDateFormat sdf1= fc.getSqlDateAndTimeFormat();  //new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private  SimpleDateFormat sdf= fc.getRegularDateFormat();     //new SimpleDateFormat("dd-MM-yyyy");

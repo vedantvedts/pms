@@ -41,8 +41,9 @@ public class AdminServiceImpl implements AdminService{
 
 	@Autowired
 	AdminDao dao;
-	@Autowired
-	BCryptPasswordEncoder encoder;
+	
+	//@Autowired
+	private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 	
 	@Autowired
 	ReversibleEncryptionAlg rea;

@@ -13,7 +13,7 @@ public class MyErrorController implements ErrorController  {
         return "static/Error";
     }
  
-    @Override
+
     public String getErrorPath() {
         return "/error";
     }

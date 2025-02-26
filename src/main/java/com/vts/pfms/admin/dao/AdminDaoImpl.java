@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -786,7 +786,7 @@ public class AdminDaoImpl implements AdminDao{
 		query.setParameter("logintype", logintype);
 		query.setParameter("detailsid",detailsid );
 
-		BigInteger result = (BigInteger) query.getSingleResult();
+		Long result = (Long) query.getSingleResult();
 		return result.intValue();
 	}
 	@Override

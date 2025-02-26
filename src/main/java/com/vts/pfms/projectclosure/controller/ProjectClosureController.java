@@ -21,10 +21,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -126,8 +126,7 @@ public class ProjectClosureController {
 	@Autowired
 	CARSService carsservice;
 	
-	@Autowired
-	RestTemplate restTemplate;
+	private static final RestTemplate restTemplate = new RestTemplate();
 	
 	@Autowired
 	private JasperJdbcConnection jdbcJasper;

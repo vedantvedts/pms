@@ -14,8 +14,7 @@ import org.springframework.stereotype.Service;
 public class LoginServiceImpl implements LoginService {
     @Autowired
     private LoginRepository loginRepository;
-    @Autowired
-  
+
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     
     private static final Logger logger=LogManager.getLogger(LoginServiceImpl.class);

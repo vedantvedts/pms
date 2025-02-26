@@ -7,10 +7,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,7 +29,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.tomcat.util.http.fileupload.FileItem;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -113,10 +112,9 @@ public class OnBoardingController {
 			            workbook.write(res.getOutputStream());
 				}else if("UploadExcel".equalsIgnoreCase(action)){
 			
-					if(ServletFileUpload.isMultipartContent(req)) {
+					if (req.getContentType() != null && req.getContentType().startsWith("multipart/")) {
 						try {
 							
-							List<FileItem> multiparts = new ServletFileUpload( new DiskFileItemFactory()).parseRequest(new ServletRequestContext(req));
 							Part filePart = req.getPart("filename");
 
 							 List<DivisionGroup> divisiongroup = new ArrayList<DivisionGroup>();
@@ -239,10 +237,9 @@ public class OnBoardingController {
 			            workbook.write(res.getOutputStream());
 				}else if("UploadExcel".equalsIgnoreCase(action)){
 					
-					if(ServletFileUpload.isMultipartContent(req)) {
+					if (req.getContentType() != null && req.getContentType().startsWith("multipart/")) {
 						try {
 							
-							List<FileItem> multiparts = new ServletFileUpload( new DiskFileItemFactory()).parseRequest(new ServletRequestContext(req));
 							Part filePart = req.getPart("filename");
 							Object[] empdata =adminservice.EmployeeData(String.valueOf((Long)ses.getAttribute("EmpId")));
 							 List<DivisionMaster> div = new ArrayList<DivisionMaster>();
@@ -380,10 +377,9 @@ public class OnBoardingController {
 			            workbook.write(res.getOutputStream());
 				}else if("UploadExcel".equalsIgnoreCase(action)){
 					
-					if(ServletFileUpload.isMultipartContent(req)) {
+					if (req.getContentType() != null && req.getContentType().startsWith("multipart/")) {
 						try {
 							
-							List<FileItem> multiparts = new ServletFileUpload( new DiskFileItemFactory()).parseRequest(new ServletRequestContext(req));
 							Part filePart = req.getPart("filename");
 
 							 List<Employee> employee = new ArrayList<Employee>();
@@ -589,10 +585,9 @@ public class OnBoardingController {
 			            workbook.write(res.getOutputStream());
 				}else if("UploadExcel".equalsIgnoreCase(action)){
 					
-					if(ServletFileUpload.isMultipartContent(req)) {
+					if (req.getContentType() != null && req.getContentType().startsWith("multipart/")) {
 						try {
 							
-							List<FileItem> multiparts = new ServletFileUpload( new DiskFileItemFactory()).parseRequest(new ServletRequestContext(req));
 							Part filePart = req.getPart("filename");
 
 							 List<ProjectMain> projectmain = new ArrayList<ProjectMain>();
@@ -883,10 +878,9 @@ public class OnBoardingController {
 			            workbook.write(res.getOutputStream());
 				}else if("UploadExcel".equalsIgnoreCase(action)){
 					
-					if(ServletFileUpload.isMultipartContent(req)) {
+					if (req.getContentType() != null && req.getContentType().startsWith("multipart/")) {
 						try {
 							
-							List<FileItem> multiparts = new ServletFileUpload( new DiskFileItemFactory()).parseRequest(new ServletRequestContext(req));
 							Part filePart = req.getPart("filename");
 
 							 Long count=0l;
@@ -1124,10 +1118,9 @@ public class OnBoardingController {
 			            workbook.write(res.getOutputStream());
 				}else if("UploadExcel".equalsIgnoreCase(action)){
 					
-					if(ServletFileUpload.isMultipartContent(req)) {
+					if (req.getContentType() != null && req.getContentType().startsWith("multipart/")) {
 						try {
 							
-							List<FileItem> multiparts = new ServletFileUpload( new DiskFileItemFactory()).parseRequest(new ServletRequestContext(req));
 							Part filePart = req.getPart("filename");
 
 							 Long count=0l;

@@ -1,6 +1,6 @@
 package com.vts.pfms.committee.dto;
 
-import javax.persistence.Transient;
+import jakarta.persistence.Transient;
 
 import org.springframework.web.multipart.MultipartFile;
 

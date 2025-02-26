@@ -20,8 +20,8 @@ import com.vts.pfms.header.model.ProjectDashBoardFavouriteProjetcts;
 public class HeaderServiceImpl implements HeaderService {
 	@Autowired
 	HeaderDao dao;
-	@Autowired
-	BCryptPasswordEncoder encoder;
+	 
+	private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 	
 	private static final Logger logger=LogManager.getLogger(HeaderServiceImpl.class);
 	

@@ -8,10 +8,10 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,7 +29,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.tomcat.util.http.fileupload.FileItem;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -70,8 +69,7 @@ public class PFTSController {
 	@Autowired
 	PFTSService service;
 	
-	@Autowired
-	RestTemplate restTemplate;
+	private static final RestTemplate restTemplate = new RestTemplate();
 	
 	@Value("${server_uri}")
     private String uri;
@@ -1029,8 +1027,7 @@ public class PFTSController {
 			
 				
 				try {
-					if(ServletFileUpload.isMultipartContent(req)) {
-						   List<FileItem> multiparts = new ServletFileUpload( new DiskFileItemFactory()).parseRequest(new ServletRequestContext(req));	
+					if (req.getContentType() != null && req.getContentType().startsWith("multipart/")) {
 						   Part filePart = req.getPart("filename");
 							List<ProjectOverallFinance>list = new ArrayList<>();
 							InputStream fileData = filePart.getInputStream();

@@ -9,11 +9,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -44,10 +45,10 @@ public class RODServiceImpl implements RODService{
 	@Autowired
 	CommitteeDao committeedao;
 	
-	@Autowired	
-	BCryptPasswordEncoder encoder;
+	private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 	@Autowired 
+	@Lazy
 	CustomJavaMailSender cm;
 	
 	@Override

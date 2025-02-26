@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -108,8 +108,7 @@ public class CARSDaoImpl implements CARSDao{
 
 		try {
 			Query query =  manager.createNativeQuery(MAXCARSINITIATIONID);
-			BigInteger carsInitiationId=(BigInteger)query.getSingleResult();
-			return carsInitiationId.longValue();
+			return (Long)query.getSingleResult();
 		}catch ( NoResultException e ) {
 			logger.error(new Date() +"Inside DAO getMaxCARSInitiationId "+ e);
 			return 0;

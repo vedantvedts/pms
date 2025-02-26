@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -691,12 +691,8 @@ public class RequirementDaoImpl implements RequirementDao {
 
 		Query query=manager.createNativeQuery(TESTTYPECOUNT);
 		query.setParameter("TestPlanInitiationId", testPlanInitiationId);
-		BigInteger x=(BigInteger)query.getSingleResult();
-
-		if(x==null) {
-			return 0;
-		}
-		return x.longValue();
+		return (Long)query.getSingleResult();
+		
 	}
 
 	//	private static final String TESTUPDATE="UPDATE  pfms_testdetails SET Name=:Name, Objective=:Objective,Description=:Description,PreConditions=:PreConditions,PostConditions=:PostConditions,Constraints=:Constraints,SafetyRequirements=:SafetyRequirements,Methodology=:Methodology,ToolsSetup=:ToolsSetup,PersonnelResources=:PersonnelResources,EstimatedTimeIteration=:EstimatedTimeIteration,Iterations=:Iterations,Schedule=:Schedule,StageApplicable=:StageApplicable,Pass_Fail_Criteria=:Pass_Fail_Criteria,Remarks=:Remarks,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate,IsActive='1' WHERE TestId=:TestId";
@@ -912,7 +908,7 @@ public class RequirementDaoImpl implements RequirementDao {
 		try {
 			Query query = manager.createNativeQuery(GETDUPLICATECOUNTOFTESTTYPE);
 			query.setParameter("TestType", testType);
-			BigInteger count = (BigInteger)query.getSingleResult();
+			Long count = (Long)query.getSingleResult();
 			return count.intValue();
 
 		}catch (Exception e) {
@@ -982,8 +978,7 @@ public class RequirementDaoImpl implements RequirementDao {
 			query.setParameter("InitiationId", initiationId);
 			query.setParameter("ProjectId", projectId);
 			query.setParameter("ProductTreeMainId", productTreeMainId);
-			BigInteger count = (BigInteger)query.getSingleResult();
-			return count.longValue();
+			return (Long)query.getSingleResult();
 
 		}catch (Exception e) {
 			logger.error(new Date()  + "Inside DAO getFirstVersionTestPlanInitiationId " + e);
@@ -1000,8 +995,7 @@ public class RequirementDaoImpl implements RequirementDao {
 			query.setParameter("InitiationId", initiationId);
 			query.setParameter("ProjectId", projectId);
 			query.setParameter("ProductTreeMainId", productTreeMainId);
-			BigInteger count = (BigInteger)query.getSingleResult();
-			return count.longValue();
+			return (Long)query.getSingleResult();
 
 		}catch (Exception e) {
 			logger.error(new Date()  + "Inside DAO getFirstVersionReqInitiationId " + e);
@@ -1052,8 +1046,7 @@ public class RequirementDaoImpl implements RequirementDao {
 			query.setParameter("InitiationId", initiationId);
 			query.setParameter("ProjectId", projectId);
 			query.setParameter("ProductTreeMainId", productTreeMainId);
-			BigInteger count = (BigInteger)query.getSingleResult();
-			return count.longValue();
+			return (Long)query.getSingleResult();
 
 		}catch (Exception e) {
 			logger.error(new Date()  + "Inside DAO getFirstVersionSpecsInitiationId " + e);

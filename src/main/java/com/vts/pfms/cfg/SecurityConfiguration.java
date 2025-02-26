@@ -1,185 +1,128 @@
 package com.vts.pfms.cfg;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.AccessDecisionManager;
-import org.springframework.security.access.AccessDecisionVoter;
-import org.springframework.security.access.ConfigAttribute;
-import org.springframework.security.access.vote.AuthenticatedVoter;
-import org.springframework.security.access.vote.RoleVoter;
-import org.springframework.security.access.vote.UnanimousBased;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.access.expression.WebExpressionVoter;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
-import com.vts.pfms.login.CustomAuthenticationFailureHandler;
 import com.vts.pfms.login.CustomLogoutHandler;
+import com.vts.pfms.login.LoginDetailsServiceImpl;
 import com.vts.pfms.login.LoginSuccessHandler;
+
+import jakarta.servlet.http.HttpSession;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter
-{
+@EnableMethodSecurity
+public class SecurityConfiguration{
 	
-	 @Autowired
-	 private UserDetailsService userDetailsService;
-
-	 @Autowired
-     private LoginSuccessHandler successHandler;
-	 
-	 @Autowired
-	 private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
-	 
-	 @Override
-	 @Bean
-	 public AuthenticationManager authenticationManagerBean() throws Exception {
-	     return super.authenticationManagerBean();
-	 }
-	 
-	 	 
-	 @Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		 auth.userDetailsService(userDetailsService).passwordEncoder(passwordencoder());
-	}
-	
-	 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		
-		  http.authorizeRequests()
-		
-		  .antMatchers("/").hasAnyRole("USER","ADMIN")
-		  .antMatchers("/webjars/**", "/resources/**", "/view/**", "/LoginPage/*", "/pfms-dg/*", "/api/sync/**", 
-				  "/login", "/wr", "/login?sessionInvalid", "/login?sessionExpired", "/wr?sessionInvalid", "/wr?sessionExpired",
-				  "/ProjectRequirementAttachmentDownload.htm", "/ProjectClosureChecklistFileDownload.htm", "/TimeSheetWorkFlowPdf.htm", "/CommitteeMinutesViewAllDownloadPdf.htm/**").permitAll()
-		  .anyRequest().authenticated().accessDecisionManager(adm())
-		  
-		  .and()
-			  .formLogin()
-	          .loginPage("/login") // Your custom login page
-	          .defaultSuccessUrl("/welcome", true) // Success URL after successful login
-	          .failureUrl("/login?error") // Failure URL after unsuccessful login
-	          .failureHandler(customAuthenticationFailureHandler) // Custom failure handler
-	          .permitAll()
-		    .usernameParameter("username").passwordParameter("password").successHandler(successHandler)
-		  .and()
-		  .logout()
-		  .logoutSuccessHandler((request, response, authentication) -> {
-		        HttpSession session = request.getSession(false);  // Get the current session without creating a new one
-		        if (session != null) {
-		            String loginPage = (String) session.getAttribute("loginPage");
-
-		            // Handle redirect based on session attributes
-		            if ("wr".equals(loginPage)) {
-		                response.sendRedirect(request.getContextPath() + "/wr?logout");
-		            } else {
-		                response.sendRedirect(request.getContextPath() + "/login?logout");
-		            }
-		        } else {
-		            response.sendRedirect(request.getContextPath() + "/login?logout");  // Fallback
-		        }
-		    })
-		    .invalidateHttpSession(false) 
-          .permitAll()
-
-		   .and()
-		   .exceptionHandling().accessDeniedPage("/login?accessDenied")
-		 
-		    
-		    .and()
-		    
-		    .csrf()
-		    .and().sessionManagement()
-		    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-		    .sessionFixation().migrateSession()
-			.invalidSessionUrl("/login?sessionInvalid")
-			//.invalidSessionStrategy(customInvalidSessionStrategy)
-			.maximumSessions(2)
-			.maxSessionsPreventsLogin(false)
-			.expiredUrl("/login?sessionExpired")
-			//.expiredSessionStrategy(customSessionExpiredStrategy)
-		    //.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).invalidSessionUrl("/login")
-		    
-		    ;
-		}
-	 
-	
-	
+	@Autowired
+    private LoginSuccessHandler successHandler;
 	
 	@Bean
-	public AccessDecisionManager  adm() {
-		List<AccessDecisionVoter<? extends Object>> DecisionVoter= Arrays.asList(new RoleVoter(),new AuthenticatedVoter(),new WebExpressionVoter(),new RealTimeLockVoter());
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		
-		return  new UnanimousBased(DecisionVoter);
+        http.authorizeHttpRequests(request -> 
+        		request.requestMatchers("/").hasAnyRole("USER", "ADMIN")
+	        		   .requestMatchers("/webjars/**", "/resources/**", "/view/**", "/LoginPage/*", "/pfms-dg/*", "/api/sync/**", 
+	        					  "/login", "/wr", "/login?sessionInvalid", "/login?sessionExpired", "/wr?sessionInvalid", "/wr?sessionExpired",
+	        					  "/ProjectRequirementAttachmentDownload.htm", "/ProjectClosureChecklistFileDownload.htm", "/TimeSheetWorkFlowPdf.htm", "/CommitteeMinutesViewAllDownloadPdf.htm/**").permitAll()
+	        		   .anyRequest()
+	        		   .authenticated()
+        		)
+        	.formLogin(login -> 
+        			login.loginPage("/login")
+        			   	 .defaultSuccessUrl("/welcome")
+        			   	 .failureUrl("/login?error=1")
+        			   	 .permitAll()
+        			   	 .usernameParameter("username")
+        			   	 .passwordParameter("password")
+        			   	 .successHandler(successHandler)
+        			)
+        	.logout(logout -> 
+        			logout.logoutSuccessUrl("/login?logout=1")
+        				  .invalidateHttpSession(true)
+        				  //.deleteCookies("JSESSIONID")
+        				  .logoutSuccessHandler((request, response, authentication) -> {
+        				        HttpSession session = request.getSession(false);  // Get the current session without creating a new one
+        				        if (session != null) {
+        				            String loginPage = (String) session.getAttribute("loginPage");
+
+        				            // Handle redirect based on session attributes
+        				            if ("wr".equals(loginPage)) {
+        				                response.sendRedirect(request.getContextPath() + "/wr?logout");
+        				            } else {
+        				                response.sendRedirect(request.getContextPath() + "/login?logout");
+        				            }
+        				        } else {
+        				            response.sendRedirect(request.getContextPath() + "/login?logout");  // Fallback
+        				        }
+        				    })
+        				    .invalidateHttpSession(false) 
+        			)
+        	.exceptionHandling(exception -> 
+        			exception.accessDeniedPage("/accessdenied")
+        			)
+        	.csrf(Customizer.withDefaults())
+        	.sessionManagement(session ->
+        			session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+        				   .invalidSessionUrl("/login?sessionInvalid")
+        				   .sessionFixation().migrateSession()
+        				   .maximumSessions(2)
+        				   .maxSessionsPreventsLogin(false)
+        			)
+        	.headers(header -> 
+        			header.cacheControl(Customizer.withDefaults()).disable()
+        			)
+        	;
+          return http.build();
+    }
+	
+	@Bean
+	AuthenticationProvider authenticationProvider() throws Exception {
+		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+		daoAuthenticationProvider.setUserDetailsService(userDetailsService());
+		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+		
+		return daoAuthenticationProvider;
 	}
 	
-	
+	@Bean
+	public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) throws Exception {
+	    return http.getSharedObject(AuthenticationManagerBuilder.class)
+	               .userDetailsService(userDetailsService)
+	               .passwordEncoder(passwordEncoder)
+	               .and()
+	               .build();
+	}
 
 	
-	class RealTimeLockVoter implements AccessDecisionVoter<Object>{
-
-		@Override
-		public boolean supports(ConfigAttribute attribute) {
-			// TODO Auto-generated method stub
-			return true;
-		}
-
-		@Override
-		public boolean supports(Class<?> clazz) {
-			// TODO Auto-generated method stub
-			return true;
-		}
-
-		@Override
-		public int vote(Authentication authentication, Object object, Collection<ConfigAttribute> attributes) {
-	
-
-			/*
-			 * if(url.equalsIgnoreCase("DemandInitiationList.htm")) { return ACCESS_GRANTED;
-			 * } }
-			 */
-			
-			return ACCESS_GRANTED;
-		}
-		
+	@Bean
+	UserDetailsService userDetailsService() {
+		return new LoginDetailsServiceImpl();
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-		public PasswordEncoder passwordencoder(){
-	     return new BCryptPasswordEncoder();
-	    }
+	@Bean
+	PasswordEncoder passwordEncoder() throws Exception{
 		
-		
-		
-		@Bean
-		public LogoutHandler  logoutSuccessHandler() {
-		return  new CustomLogoutHandler();
-		}
-		
+		return new BCryptPasswordEncoder();
+	}
 	
-		
-		
-		
+	@Bean
+	LogoutHandler logoutSuccessHandler() {
+		return new CustomLogoutHandler();
+	}
 }

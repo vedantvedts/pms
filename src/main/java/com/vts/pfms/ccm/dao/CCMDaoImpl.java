@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -91,8 +91,7 @@ public class CCMDaoImpl implements CCMDao{
 		try {
 			Query query =  manager.createNativeQuery(GETMAXCCMSCHEDULEIDFORMONTH);
 			query.setParameter("Month", sequence+"%");
-			BigInteger ccmScheduleId=(BigInteger)query.getSingleResult();
-			return ccmScheduleId.longValue();
+			return (Long)query.getSingleResult();
 		}catch ( NoResultException e ) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside CCMDaoImpl getMaxCCMScheduleIdForMonth "+ e);
@@ -152,7 +151,7 @@ public class CCMDaoImpl implements CCMDao{
 			Query query =  manager.createNativeQuery(GETMAXAGENDAPRIORITY);
 			query.setParameter("ScheduleId", ccmScheduleId);
 			query.setParameter("ParentScheduleAgendaId", parentScheduleAgendaId);
-			BigInteger agendaPriority=(BigInteger)query.getSingleResult();
+			Long agendaPriority=(Long)query.getSingleResult();
 			return agendaPriority.intValue();
 		}catch ( NoResultException e ) {
 			logger.error(new Date() +" Inside CCMDaoImpl getMaxAgendaPriority "+ e);
@@ -255,8 +254,7 @@ public class CCMDaoImpl implements CCMDao{
 			Query query = manager.createNativeQuery(GETCOMMITTEEMAINIDBYCOMMITTEECODE);
 			//query.setParameter("LabCode", labCode);
 			query.setParameter("CommitteeShortName", committeeCode);
-			BigInteger committeeMainId = (BigInteger)query.getSingleResult();
-			return committeeMainId.longValue();
+			return (Long)query.getSingleResult();
 		}catch ( Exception e ) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside CCMDaoImpl getCommitteeMainIdByCommitteeCode "+ e);
@@ -271,8 +269,7 @@ public class CCMDaoImpl implements CCMDao{
 			Query query = manager.createNativeQuery(GETCOMMITTEEMIDBYCOMMITTEECODE);
 			//query.setParameter("LabCode", labCode);
 			query.setParameter("CommitteeShortName", committeeCode);
-			BigInteger committeeMainId = (BigInteger)query.getSingleResult();
-			return committeeMainId.longValue();
+			return (Long)query.getSingleResult();
 		}catch ( Exception e ) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside CCMDaoImpl getCommitteeIdByCommitteeCode "+ e);
@@ -287,8 +284,7 @@ public class CCMDaoImpl implements CCMDao{
 		try {
 			Query query = manager.createNativeQuery(GETLATESTSCHEDULEID);
 			query.setParameter("ScheduleType", scheduleType);
-			BigInteger scheduleId =  (BigInteger)query.getSingleResult();
-			return scheduleId.longValue();
+			return (Long)query.getSingleResult();
 		}catch ( Exception e ) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside CCMDaoImpl getLatestScheduleId "+ e);
@@ -303,8 +299,7 @@ public class CCMDaoImpl implements CCMDao{
 		try {
 			Query query = manager.createNativeQuery(GETSECONDLATESTSCHEDULEID);
 			query.setParameter("ScheduleType", scheduleType);
-			BigInteger scheduleId =  (BigInteger)query.getSingleResult();
-			return scheduleId.longValue();
+			return (Long)query.getSingleResult();
 		}catch ( Exception e ) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside CCMDaoImpl getSecondLatestScheduleId "+ e);
@@ -503,8 +498,7 @@ public class CCMDaoImpl implements CCMDao{
 		try {
 			Query query = manager.createNativeQuery(GETLASTSCHEDULEIDFROMCURRENTSCHEDULEID);
 			query.setParameter("ScheduleId", ccmScheduleId);
-			BigInteger scheduleId =  (BigInteger)query.getSingleResult();
-			return scheduleId.longValue();
+			return (Long)query.getSingleResult();
 		}catch ( Exception e ) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside CCMDaoImpl getLastScheduleIdFromCurrentScheduleId "+ e);

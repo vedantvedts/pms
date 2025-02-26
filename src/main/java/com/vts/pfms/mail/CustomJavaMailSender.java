@@ -13,22 +13,21 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.mail.*;
-import javax.mail.internet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.mail.*;
+import jakarta.mail.internet.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.vts.pfms.committee.service.CommitteeService;
@@ -36,8 +35,11 @@ import com.vts.pfms.committee.service.CommitteeService;
 @Controller
 @EnableScheduling
 public class CustomJavaMailSender {
+	
 	@Autowired
+	@Lazy
 	CommitteeService committeeService;
+	
 	@Autowired
 	MailService mailService;
 	
@@ -196,11 +198,11 @@ public class CustomJavaMailSender {
 				// enable authentication
 				properties.put("mail.smtp.auth", "true");
 				// SSL Factory
-				properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+				properties.put("mail.smtp.socketFactory.class", "jakarta.net.ssl.SSLSocketFactory");
 			    
 				//properties.put("mail.smtp.starttls.enable", "true");
 
-			    Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
+			    Session session = Session.getDefaultInstance(properties, new jakarta.mail.Authenticator() {
 					// override the getPasswordAuthentication
 					// method
 					protected PasswordAuthentication getPasswordAuthentication() {
@@ -273,11 +275,11 @@ public class CustomJavaMailSender {
 				// enable authentication
 				properties.put("mail.smtp.auth", "true");
 				// SSL Factory
-				//properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+				//properties.put("mail.smtp.socketFactory.class", "jakarta.net.ssl.SSLSocketFactory");
 			    
 				properties.put("mail.smtp.starttls.enable", "true");
 
-			    Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
+			    Session session = Session.getDefaultInstance(properties, new jakarta.mail.Authenticator() {
 					// override the getPasswordAuthentication
 					// method
 					protected PasswordAuthentication getPasswordAuthentication() {
@@ -345,11 +347,11 @@ public class CustomJavaMailSender {
 			// enable authentication
 			properties.put("mail.smtp.auth", "true");
 			// SSL Factory
-			properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+			properties.put("mail.smtp.socketFactory.class", "jakarta.net.ssl.SSLSocketFactory");
 			// creating Session instance referenced to
 			// Authenticator object to pass in
 			// Session.getInstance argument
-			Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
+			Session session = Session.getDefaultInstance(properties, new jakarta.mail.Authenticator() {
 				// override the getPasswordAuthentication
 				// method
 				protected PasswordAuthentication getPasswordAuthentication() {
@@ -359,7 +361,7 @@ public class CustomJavaMailSender {
 			int mailSendresult = 0;
 			// compose the message
 			try {
-				// javax.mail.internet.MimeMessage class is mostly
+				// jakarta.mail.internet.MimeMessage class is mostly
 				// used for abstraction.
 				MimeMessage message = new MimeMessage(session);
 				// header field of the header.
@@ -411,11 +413,11 @@ public int sendMessage(String []Email, String subject, String msg)  {
 			// enable authentication
 			properties.put("mail.smtp.auth", "true");
 			// SSL Factory
-			properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+			properties.put("mail.smtp.socketFactory.class", "jakarta.net.ssl.SSLSocketFactory");
 			// creating Session instance referenced to
 			// Authenticator object to pass in
 			// Session.getInstance argument
-			Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
+			Session session = Session.getDefaultInstance(properties, new jakarta.mail.Authenticator() {
 				// override the getPasswordAuthentication
 				// method
 				protected PasswordAuthentication getPasswordAuthentication() {
@@ -425,7 +427,7 @@ public int sendMessage(String []Email, String subject, String msg)  {
 			int mailSendresult = 0;
 			// compose the message
 			try {
-				// javax.mail.internet.MimeMessage class is mostly
+				// jakarta.mail.internet.MimeMessage class is mostly
 				// used for abstraction.
 				MimeMessage message = new MimeMessage(session);
 				// header field of the header.
@@ -490,11 +492,11 @@ public int sendMessage1(String[] toEmail, String subject, String msg)  {
 				// enable authentication
 				properties.put("mail.smtp.auth", "true");
 				// SSL Factory
-				//properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+				//properties.put("mail.smtp.socketFactory.class", "jakarta.net.ssl.SSLSocketFactory");
 			    
 				properties.put("mail.smtp.starttls.enable", "true");
 
-			    Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
+			    Session session = Session.getDefaultInstance(properties, new jakarta.mail.Authenticator() {
 					// override the getPasswordAuthentication
 					// method
 					protected PasswordAuthentication getPasswordAuthentication() {

@@ -32,18 +32,18 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.FilenameUtils;
@@ -3955,9 +3955,9 @@ public class ActionController {
 					//	properties.put("mail.smtp.starttls.enable", "true"); //TLS
 						properties.put("mail.smtp.port", port); 
 						properties.put("mail.smtp.auth", "true"); 
-						properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory"); 
+						properties.put("mail.smtp.socketFactory.class","jakarta.net.ssl.SSLSocketFactory"); 
 						Session session = Session.getDefaultInstance(properties,
-							new javax.mail.Authenticator() {
+							new jakarta.mail.Authenticator() {
 								protected PasswordAuthentication getPasswordAuthentication() {
 									return new PasswordAuthentication(from,password);
 								}

@@ -9,15 +9,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+import jakarta.transaction.Transactional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -304,9 +304,8 @@ public class ProjectDaoImpl implements ProjectDao {
 		Query query=manager.createNativeQuery(PROJECTSHORTNAMECHECK);
 		query.setParameter("projectshortname", ProjectShortName);
 
-		BigInteger ProjectShortNameCount=(BigInteger)query.getSingleResult();		
+		return (Long)query.getSingleResult();		
 
-		return ProjectShortNameCount.longValue();
 	}
 
 	@Override
@@ -901,7 +900,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
 		Query query=manager.createNativeQuery(PROJECTDURMONTH);
 		query.setParameter("InitiationId", InitiationId);
-		Integer ProjectDurationeMonth=(Integer)query.getSingleResult();		
+		Long ProjectDurationeMonth=(Long)query.getSingleResult();		
 		if(ProjectDurationeMonth==null) {
 			return 0;
 		}
@@ -913,7 +912,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		Query query=manager.createNativeQuery(MILESCHMONTH);
 		query.setParameter("initiationscheduleid", initiationscheduleid);
 		query.setParameter("IntiationId", IntiationId);
-		Integer MilestoneScheduleMonth=(Integer)query.getSingleResult();		
+		Long MilestoneScheduleMonth=(Long)query.getSingleResult();		
 
 		if(MilestoneScheduleMonth==null) {
 			return 0;
@@ -926,7 +925,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public int ProjectMileStoneNo(String InitiationId) throws Exception {
 		Query query=manager.createNativeQuery(MILESTONENO);
 		query.setParameter("InitiationId", InitiationId);
-		Integer ProjectMileStoneNo=(Integer)query.getSingleResult();		
+		Long ProjectMileStoneNo=(Long)query.getSingleResult();		
 		if(ProjectMileStoneNo==null) {
 			return 0;
 		}
@@ -939,7 +938,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		Query query=manager.createNativeQuery(SCDULEMONTH);
 		query.setParameter("initiationscheduleid", InitiationScheduleId);
 
-		Integer ProjectScheduleMonth=(Integer)query.getSingleResult();		
+		Long ProjectScheduleMonth=(Long)query.getSingleResult();		
 		if(ProjectScheduleMonth==null) {
 			return 0;
 		}
@@ -1147,8 +1146,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public Long ProjectForwardStatus(String InitiationId) throws Exception {
 		Query query=manager.createNativeQuery("CALL ProjectForwardStatus(:InitiationId)");
 		query.setParameter("InitiationId", InitiationId);
-		BigInteger ProjectForwardStatus=(BigInteger)query.getSingleResult();	
-		return ProjectForwardStatus.longValue();
+		return (Long)query.getSingleResult();	
 	}
 
 	@Override

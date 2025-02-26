@@ -23,10 +23,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -43,7 +43,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.tomcat.util.http.fileupload.FileItem;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -8334,8 +8333,7 @@ public class ProjectController
 				res.setHeader("Content-Disposition", "attachment; filename=Abbreviation Details.xls");	
 				workbook.write(res.getOutputStream());
 			}else if("UploadExcel".equalsIgnoreCase(action)) {
-				if(ServletFileUpload.isMultipartContent(req)) {
-					List<FileItem> multiparts = new ServletFileUpload( new DiskFileItemFactory()).parseRequest(new ServletRequestContext(req));
+				if (req.getContentType() != null && req.getContentType().startsWith("multipart/")) {
 					Part filePart = req.getPart("filename");
 					List<InitiationAbbreviations>iaList=new ArrayList<>();
 					InputStream fileData = filePart.getInputStream();
@@ -8714,9 +8712,8 @@ public class ProjectController
 
 			else if("UploadExcel".equalsIgnoreCase(action)) {
 
-				if(ServletFileUpload.isMultipartContent(req)) {
+				if (req.getContentType() != null && req.getContentType().startsWith("multipart/")) {
 					try {
-						List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(new ServletRequestContext(req))	;
 						Part filePart = req.getPart("filenameA");
 
 						List<RequirementAcronyms> raList = new ArrayList<>();
@@ -8998,9 +8995,8 @@ public class ProjectController
 
 			else if("UploadExcel".equalsIgnoreCase(action)) {
 
-				if(ServletFileUpload.isMultipartContent(req)) {
+				if (req.getContentType() != null && req.getContentType().startsWith("multipart/")) {
 					try {
-						List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(new ServletRequestContext(req))	;
 						Part filePart = req.getPart("filenameB");
 
 						List<RequirementPerformanceParameters> raList = new ArrayList<>();

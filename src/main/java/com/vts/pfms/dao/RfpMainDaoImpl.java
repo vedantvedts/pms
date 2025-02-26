@@ -4,11 +4,11 @@ import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -143,7 +143,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	public String DesgId(String Empid) throws Exception {
 		Query query = manager.createNativeQuery(DESGID);
 		query.setParameter("empid", Empid);
-		BigInteger DesgId = (BigInteger) query.getSingleResult();
+		Long DesgId = (Long) query.getSingleResult();
 		return DesgId.toString();
 	}
 	

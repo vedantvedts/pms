@@ -32,10 +32,10 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 
 
@@ -58,7 +58,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.tomcat.util.http.fileupload.FileItem;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -140,8 +139,7 @@ public class PrintController {
 	
 	FormatConverter fc=new FormatConverter();
 	
-	@Autowired
-	RestTemplate restTemplate;
+	private static final RestTemplate restTemplate = new RestTemplate();
 	
 	@Autowired
 	MilestoneService milservice;
@@ -5387,8 +5385,7 @@ public class PrintController {
 					String projectCode=projectDetails[1].toString();
 				   try {
 					
-					   if(ServletFileUpload.isMultipartContent(req)) {
-						   List<FileItem> multiparts = new ServletFileUpload( new DiskFileItemFactory()).parseRequest(new ServletRequestContext(req));	
+					   if (req.getContentType() != null && req.getContentType().startsWith("multipart/")) {
 						   Part filePart = req.getPart("filename");
 							List<ProjectOverallFinance>list = new ArrayList<>();
 							InputStream fileData = filePart.getInputStream();

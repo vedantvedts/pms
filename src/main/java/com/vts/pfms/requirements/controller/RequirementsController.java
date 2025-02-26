@@ -20,11 +20,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,7 +43,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.tomcat.util.http.fileupload.FileItem;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -66,10 +65,6 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.font.FontProvider;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
-import com.vts.pfms.documents.model.IGIInterface;
-import com.vts.pfms.documents.model.IGIDocumentMembers;
-import com.vts.pfms.documents.model.IGIDocumentSummary;
-import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.producttree.service.ProductTreeService;
 import com.vts.pfms.project.controller.ProjectController;
 import com.vts.pfms.project.dto.PfmsInitiationRequirementDto;
@@ -1079,9 +1074,7 @@ public class RequirementsController {
 				res.setHeader("Content-Disposition", "attachment; filename=Abbreviation Details.xls");
 				workbook.write(res.getOutputStream());
 			} else if ("UploadExcel".equalsIgnoreCase(action)) {
-				if (ServletFileUpload.isMultipartContent(req)) {
-					List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory())
-							.parseRequest(new ServletRequestContext(req));
+				if (req.getContentType() != null && req.getContentType().startsWith("multipart/")) {
 					Part filePart = req.getPart("filename");
 					List<Abbreviations> iaList = new ArrayList<>();
 					InputStream fileData = filePart.getInputStream();

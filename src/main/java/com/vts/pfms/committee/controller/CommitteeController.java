@@ -13,11 +13,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.Format;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -32,22 +30,21 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.xml.bind.DatatypeConverter;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.xml.bind.DatatypeConverter;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
@@ -72,6 +69,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTblWidth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -191,19 +189,20 @@ public class CommitteeController {
 	//	private JavaMailSender javaMailSender;
 
 	@Autowired
+	@Lazy
 	CustomJavaMailSender cm;
 
 //	@Value("${port}")
 //	private String port;
 
-	@Autowired 
-	BCryptPasswordEncoder encoder;
+//	@Autowired 
+//	BCryptPasswordEncoder encoder;
 
 	@Autowired
 	PrintService printservice;
 
-	@Autowired 
-	RestTemplate restTemplate;
+	
+	private static final RestTemplate restTemplate = new RestTemplate();
 
 	@Value("${server_uri}")
 	private String uri;
@@ -242,6 +241,7 @@ public class CommitteeController {
 	PMSLogoUtil LogoUtil;
 
 	@Autowired
+	@Lazy
 	CCMService ccmservice;
 
 	@Autowired
@@ -9679,9 +9679,9 @@ public class CommitteeController {
 				//properties.put("mail.smtp.starttls.enable", "true"); //TLS
 				properties.put("mail.smtp.port", mailAuthentication.getPort()); 
 				properties.put("mail.smtp.auth", "true"); 
-				properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory"); 
+				properties.put("mail.smtp.socketFactory.class","jakarta.net.ssl.SSLSocketFactory"); 
 				Session session = Session.getDefaultInstance(properties,
-						new javax.mail.Authenticator() {
+						new jakarta.mail.Authenticator() {
 					protected PasswordAuthentication getPasswordAuthentication() {
 						return new PasswordAuthentication(from,password);
 					}
@@ -9893,9 +9893,9 @@ public class CommitteeController {
 			properties.put("mail.smtp.starttls.enable", "true"); //TLS
 			properties.put("mail.smtp.port", mailAuthentication.getPort()); 
 			properties.put("mail.smtp.auth", "true"); 
-			properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory"); 
+			properties.put("mail.smtp.socketFactory.class","jakarta.net.ssl.SSLSocketFactory"); 
 			Session session = Session.getDefaultInstance(properties,
-					new javax.mail.Authenticator() {
+					new jakarta.mail.Authenticator() {
 				protected PasswordAuthentication getPasswordAuthentication() {
 					return new PasswordAuthentication(from,password);
 				}

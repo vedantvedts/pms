@@ -1,4 +1,4 @@
-<%@page import="javax.persistence.criteria.CriteriaBuilder.In"%>
+<%@page import="jakarta.persistence.criteria.CriteriaBuilder.In"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>

@@ -431,7 +431,7 @@
 										        <input type="hidden" name="projectType" value="<%=projectType %>">
 										        <input type="hidden" name="irsDocId" value="<%=obj[0] %>">
 										        <input type="hidden" name="docId" value="<%=obj[0] %>">
-										        <input type="hidden" name="docType" value="A">
+										        <input type="hidden" name="docType" value="C">
 										    </form>
 										</td>
 	                                </tr>

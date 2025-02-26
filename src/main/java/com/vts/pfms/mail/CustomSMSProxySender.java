@@ -6,7 +6,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.client.RestTemplate;
 
 import com.vts.pfms.service.RfpMainService;
@@ -25,7 +24,6 @@ public class CustomSMSProxySender {
     @Autowired
 	Environment env;
     
-    @Autowired
     public CustomSMSProxySender(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
