@@ -84,9 +84,16 @@ public class SecurityConfiguration{
         				   .maximumSessions(2)
         				   .maxSessionsPreventsLogin(false)
         			)
-        	.headers(header -> 
-        			header.cacheControl(Customizer.withDefaults()).disable()
-        			)
+        	.headers(headers -> headers
+        		    .cacheControl(cache -> cache.disable()) // Disable default cache control
+        		    .frameOptions(frame -> frame.sameOrigin()) // Optional: Protect against clickjacking
+        		    .httpStrictTransportSecurity(hsts -> hsts.disable()) // Optional: Adjust as needed
+        		    .addHeaderWriter((request, response) -> {
+        		        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        		        response.setHeader("Pragma", "no-cache");
+        		        response.setDateHeader("Expires", 0);
+        		    })
+        		)
         	;
           return http.build();
     }
