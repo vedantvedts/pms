@@ -85,11 +85,8 @@ import com.vts.pfms.milestone.dto.MilestoneScheduleDto;
 import com.vts.pfms.milestone.model.FileDocMaster;
 import com.vts.pfms.milestone.model.FileRepMaster;
 import com.vts.pfms.milestone.model.FileRepNew;
-import com.vts.pfms.milestone.model.FileRepUploadNew;
 import com.vts.pfms.milestone.model.MilestoneActivitySub;
 import com.vts.pfms.milestone.service.MilestoneService;
-import com.vts.pfms.print.model.ProjectTechnicalWorkData;
-
 
 @Controller
 public class MilestoneController {

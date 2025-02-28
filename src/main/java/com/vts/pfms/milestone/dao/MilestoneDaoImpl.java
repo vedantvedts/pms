@@ -1,20 +1,12 @@
 	package com.vts.pfms.milestone.dao;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
 
 import org.apache.logging.log4j.LogManager;
@@ -185,8 +177,8 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		
 		Query query = manager.createNativeQuery(MILESTONECOUNT);
 		query.setParameter("ProjectId", ProjectId);
-		BigInteger count=(BigInteger)query.getSingleResult();
-			return count.intValue();
+		Long count = (Long)query.getSingleResult();
+		return count.intValue();
 	}
 
 	@Override
@@ -221,8 +213,8 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		
 		Query query = manager.createNativeQuery(MAREVISION);
 		query.setParameter("id", MileActivityId);
-		Integer count=(Integer)query.getSingleResult();
-			return count;
+		Long count = (Long)query.getSingleResult();
+		return count.intValue();
 	}
 
 	@Override
@@ -491,8 +483,8 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 		Query query=manager.createNativeQuery(MILESTONETOTALWEIGHTAGE);
 		query.setParameter("MilestoneActivityId", MilestoneActivityId);		
- 		int MilestoneTotalWeightage=Integer.parseInt(query.getSingleResult().toString());
-		return MilestoneTotalWeightage;
+		Long MilestoneTotalWeightage = (Long)query.getSingleResult();
+		return MilestoneTotalWeightage.intValue();
 	}
 
 	@Override
@@ -585,8 +577,8 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	Query query = manager.createNativeQuery(MILESUM);
 	query.setParameter("projectid", ActivityId);
 	query.setParameter("id", Id);
-	BigDecimal count=(BigDecimal)query.getSingleResult();
-		return count.intValue();
+	Long count=(Long)query.getSingleResult();
+	return count.intValue();
 	}
 
 	@Override
@@ -595,7 +587,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		query.setParameter("activityid", ActivityId);
 		query.setParameter("id", Id);
 		query.setParameter("levelid", LevelId);
-		BigDecimal count=(BigDecimal)query.getSingleResult();
+		Long count=(Long)query.getSingleResult();
 		return count.intValue();
 		}
 	
@@ -743,7 +735,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		
 		Query query = manager.createNativeQuery(MILESTONESCHEDULECOUNT);
 		query.setParameter("projectid", ProjectId);
-		BigInteger count=(BigInteger)query.getSingleResult();
+		Long count=(Long)query.getSingleResult();
 		return count.intValue();
 	}
 

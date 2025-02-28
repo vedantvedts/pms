@@ -1,6 +1,5 @@
 package com.vts.pfms.print.dao;
 
-import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,9 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.milestone.model.MilestoneActivityLevelConfiguration;
@@ -403,18 +400,17 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public long getLastPmrcId(String projectid,String committeeid,String scheduleId) throws Exception 
 	{
-		Query query=manager.createNativeQuery(LASTPRMC);
-		query.setParameter("projectid", projectid);
-		query.setParameter("committeeid", committeeid);
-		query.setParameter("scheduleId", scheduleId);
-		long result=0;
 		try {
-		BigInteger CommProScheduleList=(BigInteger)query.getSingleResult();
-		result=CommProScheduleList.longValue();
+			Query query=manager.createNativeQuery(LASTPRMC);
+			query.setParameter("projectid", projectid);
+			query.setParameter("committeeid", committeeid);
+			query.setParameter("scheduleId", scheduleId);
+			return (Long)query.getSingleResult();
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside DAO getLastPmrcId "+ e);
+			e.printStackTrace();
+			return 0;
 		}
-		return result;
 	}
 	@Override
 	public List<Object[]> LastPMRCActions1(String projectid ,String committeeid) throws Exception 
@@ -505,18 +501,17 @@ public class PrintDaoImpl implements PrintDao {
     @Override
 	public long getNextScheduleId(String projectid,String committeeid) throws Exception 
 	{
-		Query query=manager.createNativeQuery(NEXTSCHEDULEID);
-		query.setParameter("projectid", projectid);
-		query.setParameter("committeeid", committeeid);
-		long result=0;
 		try {
-		BigInteger CommProScheduleList=(BigInteger)query.getSingleResult();
-		result=CommProScheduleList.longValue();
+			Query query=manager.createNativeQuery(NEXTSCHEDULEID);
+			query.setParameter("projectid", projectid);
+			query.setParameter("committeeid", committeeid);
+			return (Long)query.getSingleResult();
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside DAO getNextScheduleId "+ e);
+			e.printStackTrace();
+			return 0;
 		}
 		
-		return result;
 	}
     
     private static final String NEXTSCHEDULEFROZEN="SELECT briefingpaperfrozen FROM  committee_schedule  where scheduleid=:schduleid ";	
@@ -759,7 +754,7 @@ public class PrintDaoImpl implements PrintDao {
 		}
 		
 		
-		private static final String TECHIMAGE="FROM TechImages WHERE ProjectId=:proId and IsActive='1'";
+		private static final String TECHIMAGE="FROM TechImages WHERE ProjectId=:proId and IsActive=1";
 		@Override
 		public List<TechImages> getTechList(String proId)throws Exception
 		{
@@ -776,15 +771,18 @@ public class PrintDaoImpl implements PrintDao {
 		@Override
 		public List<Object[]> SpecialCommitteesList(String LabCode)throws Exception
 		{
-			
-			String concat = String.join("','", SplCommitteeCodes.stream().collect(Collectors.toSet()));
-			
-			String SPECIALCOMMITTEESLIST="SELECT committeeid,committeeshortname, committeename FROM committee WHERE isactive=1 AND LabCode=:LabCode AND committeeshortname IN ( '"+concat+"') AND isactive=1;";
-			
-			Query query = manager.createNativeQuery(SPECIALCOMMITTEESLIST);
-			query.setParameter("LabCode", LabCode);
-			List<Object[]> list =(List<Object[]>)query.getResultList();
-			return list;
+			try {
+				String concat = String.join("','", SplCommitteeCodes.stream().collect(Collectors.toSet()));
+				
+				String SPECIALCOMMITTEESLIST="SELECT committeeid,committeeshortname, committeename FROM committee WHERE isactive=1 AND LabCode=:LabCode AND committeeshortname IN ( '"+concat+"')";
+				
+				Query query = manager.createNativeQuery(SPECIALCOMMITTEESLIST);
+				query.setParameter("LabCode", LabCode);
+				return (List<Object[]>)query.getResultList();
+			}catch (Exception e) {
+				e.printStackTrace();
+				return new ArrayList<>();
+			}
 		}
 		
 		//private static final String GETCOMMITTEEDATA="FROM Committee WHERE committeeid=:committeeid";

@@ -8,12 +8,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.vts.pfms.login.CCMView;
 
-@FeignClient(name = "PFMSServeFeignClient", url = "${server_uri}"+"/pfms_serv")
+@FeignClient(name = "PFMSServeFeignClient", url = "${pfms_serv_url}")
 public interface PFMSServeFeignClient {
-	
-	
-	@PostMapping("/getCCMViewData")
-    public List<CCMView> getCCMViewData(@RequestHeader(name = "labcode")String LabCode);
-    
-	
+
+    @PostMapping("/getCCMViewData")
+    List<CCMView> getCCMViewData(@RequestHeader(name = "labcode") String LabCode);
 }

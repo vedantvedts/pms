@@ -65,7 +65,6 @@ import com.vts.pfms.cars.service.CARSService;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
 
 
-import com.vts.pfms.pfts.controller.JasperJdbcConnection;
 import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.project.dto.ProjectOtherReqDto;
 import com.vts.pfms.project.model.ProjectMaster;
@@ -89,19 +88,6 @@ import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalDocSumary;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalSection;
 import com.vts.pfms.projectclosure.service.ProjectClosureService;
 import com.vts.pfms.utils.PMSLogoUtil;
-
-
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.JasperRunManager;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import net.sf.jasperreports.export.SimpleExporterInput;
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
-import net.sf.jasperreports.export.SimpleXlsxReportConfiguration;
 
 import com.vts.pfms.projectclosure.model.ProjectClosureCheckList;
 
@@ -127,9 +113,6 @@ public class ProjectClosureController {
 	CARSService carsservice;
 	
 	private static final RestTemplate restTemplate = new RestTemplate();
-	
-	@Autowired
-	private JasperJdbcConnection jdbcJasper;
 	
 	@Value("${server_uri}")
     private String uri;
@@ -2026,222 +2009,222 @@ public class ProjectClosureController {
 	
 	
 	
-	@RequestMapping(value = "ProjectExpenditureReportPrint.htm", method = {RequestMethod.GET,RequestMethod.POST})
-	public String ProjectExpenditureReportPrint(HttpServletRequest req,HttpServletResponse resp,HttpSession ses) throws Exception {
-		String UserName=(String)ses.getAttribute("Username");
-		String LabCode = (String) ses.getAttribute("labcode");
-		String ProjectIdDetails=req.getParameter("ProjectIdSel");
-		String BudgetHeadIdSel=req.getParameter("BudgetHeadIdSel");
-		String ItemTypeSel=req.getParameter("ItemTypeSel");
-		String FromDate=req.getParameter("FromDate");
-		
-		String ToDate=req.getParameter("toDate");
-		String Action=(String)req.getParameter("action");
-		int ProjectId=0;
-		String ProjectCode=null;
-		String itemTypeCode = "A";
-		String itemTypeDes =null;
-		int BudgetHeadIdSel1=0;
-		String BudgetHeadIdSelList=null;
-		String BudgetHeadDescription=null;
-		if(BudgetHeadIdSel!=null) {
-		String[] arr1=BudgetHeadIdSel.split("#");
-		BudgetHeadIdSelList=arr1[0];
-		BudgetHeadDescription="All";
-		}
-		BudgetHeadIdSel1=Integer.parseInt(BudgetHeadIdSelList);
-		if(ProjectIdDetails!=null)
-  			{
-  				String[] arr=ProjectIdDetails.split("#");
-  				ProjectId=Integer.parseInt(arr[0]);
-  				ProjectCode="PMS";
-  			}
-			if(ItemTypeSel!=null) {
-				 itemTypeCode = ItemTypeSel.split("#")[0];
-				 itemTypeDes = ItemTypeSel.split("#")[1];
-			}
-			BudgetHeadIdSel1=Integer.parseInt(BudgetHeadIdSelList);
-			String FromDate1=sdf.format(rdf.parse("01-03-2024"));
-			String ToDate1=sdf.format(rdf.parse("19-04-2024"));
-			//List<Object[]> ProjectExpenditureCardList=null;
-			
-			//List<Object[]> ProjectProgressive=reportService.ProjectProgressive(ProjectId,FromDate1,BudgetHeadIdSel1);
-			
-			
-			final String localUri2=uri+"/pfms_serv/GetIbasProjectProgressiveDetails.htm?projectId="+ProjectId+"&FromDate=2024-03-01+&BudgetHeadId=0";
-			HttpHeaders headers = new HttpHeaders();
-			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-	 		String jsonResult2=null;
-			try {
-				HttpEntity<String> entity = new HttpEntity<String>(headers);
-				ResponseEntity<String> response=restTemplate.exchange(localUri2, HttpMethod.GET, entity, String.class);
-				jsonResult2=response.getBody();						
-			}catch(Exception e) {
-				req.setAttribute("errorMsg", "errorMsg");
-			}
-			ObjectMapper mapper2 = new ObjectMapper();
-			mapper2.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-			mapper2.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
-			List<Object[]> ProjectProgressive=null;
-			//System.out.println("jsonResult2"+jsonResult2);
-			if(jsonResult2!=null) {
-				try {
-					ProjectProgressive = mapper2.readValue(jsonResult2, new TypeReference<List<Object[]>>(){});
-					
-				} catch (JsonProcessingException e) {
-				e.printStackTrace();
-			}
-		}
-			
-			BigDecimal REAmount=new BigDecimal(0.0);
-			BigDecimal FEAmount=new BigDecimal(0.0);
-			BigDecimal TotalReFe=new BigDecimal(0.0);
-			
-			
-			
-			
-			for(Object[] obj:ProjectProgressive) {
-				REAmount=REAmount.add(new BigDecimal(obj[0].toString()));
-				FEAmount=FEAmount.add(new BigDecimal(obj[1].toString()));
-				TotalReFe=REAmount.add(FEAmount);
-				
-			}
-		logger.info(new Date() + " Inside ProjectExpenditureReportPrint.htm " + UserName);
-		try {
-//			List<Object[]> labInfoList=reportService.GetLabInfo(Client_name);
-//			String labCode = null;
-//		    String labName = null;
-//		    String labUnitCode = null;
-//		    String labPin = null;
-//			String labAddress=null;
-//		    String labCity=null;
-//		    String  subtitle=null;
-//		    String projectDirector = null;
-//		    for(Object[] obj : labInfoList) {
-//			     labCode = String.valueOf(obj[0].toString());
-//			     labName = String.valueOf(obj[1].toString());
-//			     labUnitCode= String.valueOf(obj[2].toString());
-//			     labAddress = String.valueOf(obj[3].toString());
-//			     labCity = String.valueOf(obj[4].toString());
-//			     labPin = String.valueOf(obj[5].toString());
-		   // } 
-//		    projectDirector=reportService.GetProjectDirector(ProjectId);
-//		    if(projectDirector==null) {
-//				projectDirector="--";
+//	@RequestMapping(value = "ProjectExpenditureReportPrint.htm", method = {RequestMethod.GET,RequestMethod.POST})
+//	public String ProjectExpenditureReportPrint(HttpServletRequest req,HttpServletResponse resp,HttpSession ses) throws Exception {
+//		String UserName=(String)ses.getAttribute("Username");
+//		String LabCode = (String) ses.getAttribute("labcode");
+//		String ProjectIdDetails=req.getParameter("ProjectIdSel");
+//		String BudgetHeadIdSel=req.getParameter("BudgetHeadIdSel");
+//		String ItemTypeSel=req.getParameter("ItemTypeSel");
+//		String FromDate=req.getParameter("FromDate");
+//		
+//		String ToDate=req.getParameter("toDate");
+//		String Action=(String)req.getParameter("action");
+//		int ProjectId=0;
+//		String ProjectCode=null;
+//		String itemTypeCode = "A";
+//		String itemTypeDes =null;
+//		int BudgetHeadIdSel1=0;
+//		String BudgetHeadIdSelList=null;
+//		String BudgetHeadDescription=null;
+//		if(BudgetHeadIdSel!=null) {
+//		String[] arr1=BudgetHeadIdSel.split("#");
+//		BudgetHeadIdSelList=arr1[0];
+//		BudgetHeadDescription="All";
+//		}
+//		BudgetHeadIdSel1=Integer.parseInt(BudgetHeadIdSelList);
+//		if(ProjectIdDetails!=null)
+//  			{
+//  				String[] arr=ProjectIdDetails.split("#");
+//  				ProjectId=Integer.parseInt(arr[0]);
+//  				ProjectCode="PMS";
+//  			}
+//			if(ItemTypeSel!=null) {
+//				 itemTypeCode = ItemTypeSel.split("#")[0];
+//				 itemTypeDes = ItemTypeSel.split("#")[1];
 //			}
-//		    subtitle = "     From " + FromDate + "  To " + ToDate
-//					+ "                                                                                                                                                                                                                                                                               Project Director :  "
-//					+ projectDirector + " ";
-		    String fileName;
-			String initial="Initial of AO/SAO";
-			if (BudgetHeadIdSel1 == 0) 
-			{
-				//ProjectExpenditureCardList=reportService.ProjectExpenditureCardList(ProjectId,FromDate1,ToDate1,BudgetHeadIdSel1,itemTypeCode,Client_name);
-				
-				final String localUri3=uri+"/pfms_serv/GetIbasDateOfEntryPECD.htm?projectId="+ProjectId+"&FromDate=2024-03-01+&ToDate=2024-04-19+&BudgetHeadId=0+&progressivetotalRE"+REAmount+"&progressivetotalFE"+FEAmount+"&LabCode"+LabCode;
-				HttpHeaders headers1 = new HttpHeaders();
-				headers1.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		 		String jsonResult3=null;
-				try {
-					HttpEntity<String> entity = new HttpEntity<String>(headers1);
-					ResponseEntity<String> response=restTemplate.exchange(localUri3, HttpMethod.GET, entity, String.class);
-					jsonResult3=response.getBody();						
-				}catch(Exception e) {
-					req.setAttribute("errorMsg", "errorMsg");
-				}
-				ObjectMapper mapper3 = new ObjectMapper();
-				mapper3.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-				mapper3.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
-				List<Object[]> ProjectExpenditureCardList=null;
-				//System.out.println("jsonResult2"+jsonResult2);
-				if(jsonResult3!=null) {
-					try {
-						ProjectExpenditureCardList = mapper3.readValue(jsonResult3, new TypeReference<List<Object[]>>(){});
-						
-					} catch (JsonProcessingException e) {
-					e.printStackTrace();
-				}
-			}
-				
-				
-				
-				
-				
-				
-				if(ProjectExpenditureCardList!=null && ProjectExpenditureCardList.size()>0) 
-				{
-					if("A".equals(itemTypeCode)) 
-					{
-						//System.out.println("Inside **** projectExpenditureCard");
-						fileName = "/jasperReports/projectExpenditureCard1.jrxml";
-					}
-					else 
-					{
-						fileName = "/jasperReports/projectExpenditureCard1.jrxml";
-					}
-			    }
-				else 
-				{
-					fileName = "/jasperReports/projectExpenditureCard1.jrxml";
-			    }
-	
-				
-			InputStream ProjectExpenditureCardStream = getClass().getResourceAsStream(fileName);
-			JasperReport jasperDesign = JasperCompileManager.compileReport(ProjectExpenditureCardStream);
-			Connection conn = jdbcJasper.GetJasperJdbcConnection();
-			
-			  
-			  Map<String, Object> parameters = new HashMap<String,Object>();
-			  parameters.put("ReportTitle", "" + LabCode + "");
-			  parameters.put("ReportSubTitle", "");
-			  parameters.put("projectId", ProjectId);
-			  parameters.put("budgetHeadId", BudgetHeadIdSel1);
-			  parameters.put("fromdate", FromDate1);
-			  parameters.put("todate",ToDate1);
-			  parameters.put("budgetHeadSesc", BudgetHeadDescription);
-			  parameters.put("progressiveRE", REAmount);
-			  parameters.put("progressiveFE", FEAmount);
-			  parameters.put("progressivetotal", TotalReFe);
-			  parameters.put("labCode", LabCode);
-			 
-			  
-			  parameters.put("fdate", FromDate);
-			  parameters.put("tdate", ToDate);
-			  parameters.put("itemtype", itemTypeCode);
-			  parameters.put("Initial",initial);
-			 //JasperPrint print = JasperFillManager.fillReport(jasperDesign, parameters, conn);
-			 
-			 //if("pdf".equalsIgnoreCase(Action)) {
-				
-				 byte[] bytes = JasperRunManager.runReportToPdf(jasperDesign, parameters,  conn);
-				  resp.setContentType("application/pdf");
-		          resp.setContentLength(bytes.length);
-		          ServletOutputStream outStream = resp.getOutputStream();
-		          outStream.write(bytes, 0, bytes.length);
-		          outStream.flush();
-		          outStream.close();
-//			 }else if("Excel".equalsIgnoreCase(Action)) {
-//				 
-//				  JRXlsxExporter exporter = new JRXlsxExporter();
-//			        SimpleXlsxReportConfiguration reportConfigXLS = new SimpleXlsxReportConfiguration();
-//			        reportConfigXLS.setSheetNames(new String[] { "sheet1" });
-//			        exporter.setConfiguration(reportConfigXLS);
-//			        exporter.setExporterInput(new SimpleExporterInput(print));
-//			        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(resp.getOutputStream()));
-//			        resp.setHeader("Content-Disposition", "attachment;filename=PEC Report.xlsx");
-//			        resp.setContentType("application/octet-stream");
-//			        exporter.exportReport();
-//			 }
-			 
-			}
-			}catch (Exception e) {
-			e.printStackTrace();
-			logger.error(new Date() +" Inside ProjectExpenditureReportPrint.htm "+UserName, e);
-			return "static/error";
-		}
-			
-		return null;
-	}
+//			BudgetHeadIdSel1=Integer.parseInt(BudgetHeadIdSelList);
+//			String FromDate1=sdf.format(rdf.parse("01-03-2024"));
+//			String ToDate1=sdf.format(rdf.parse("19-04-2024"));
+//			//List<Object[]> ProjectExpenditureCardList=null;
+//			
+//			//List<Object[]> ProjectProgressive=reportService.ProjectProgressive(ProjectId,FromDate1,BudgetHeadIdSel1);
+//			
+//			
+//			final String localUri2=uri+"/pfms_serv/GetIbasProjectProgressiveDetails.htm?projectId="+ProjectId+"&FromDate=2024-03-01+&BudgetHeadId=0";
+//			HttpHeaders headers = new HttpHeaders();
+//			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+//	 		String jsonResult2=null;
+//			try {
+//				HttpEntity<String> entity = new HttpEntity<String>(headers);
+//				ResponseEntity<String> response=restTemplate.exchange(localUri2, HttpMethod.GET, entity, String.class);
+//				jsonResult2=response.getBody();						
+//			}catch(Exception e) {
+//				req.setAttribute("errorMsg", "errorMsg");
+//			}
+//			ObjectMapper mapper2 = new ObjectMapper();
+//			mapper2.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+//			mapper2.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
+//			List<Object[]> ProjectProgressive=null;
+//			//System.out.println("jsonResult2"+jsonResult2);
+//			if(jsonResult2!=null) {
+//				try {
+//					ProjectProgressive = mapper2.readValue(jsonResult2, new TypeReference<List<Object[]>>(){});
+//					
+//				} catch (JsonProcessingException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//			
+//			BigDecimal REAmount=new BigDecimal(0.0);
+//			BigDecimal FEAmount=new BigDecimal(0.0);
+//			BigDecimal TotalReFe=new BigDecimal(0.0);
+//			
+//			
+//			
+//			
+//			for(Object[] obj:ProjectProgressive) {
+//				REAmount=REAmount.add(new BigDecimal(obj[0].toString()));
+//				FEAmount=FEAmount.add(new BigDecimal(obj[1].toString()));
+//				TotalReFe=REAmount.add(FEAmount);
+//				
+//			}
+//		logger.info(new Date() + " Inside ProjectExpenditureReportPrint.htm " + UserName);
+//		try {
+////			List<Object[]> labInfoList=reportService.GetLabInfo(Client_name);
+////			String labCode = null;
+////		    String labName = null;
+////		    String labUnitCode = null;
+////		    String labPin = null;
+////			String labAddress=null;
+////		    String labCity=null;
+////		    String  subtitle=null;
+////		    String projectDirector = null;
+////		    for(Object[] obj : labInfoList) {
+////			     labCode = String.valueOf(obj[0].toString());
+////			     labName = String.valueOf(obj[1].toString());
+////			     labUnitCode= String.valueOf(obj[2].toString());
+////			     labAddress = String.valueOf(obj[3].toString());
+////			     labCity = String.valueOf(obj[4].toString());
+////			     labPin = String.valueOf(obj[5].toString());
+//		   // } 
+////		    projectDirector=reportService.GetProjectDirector(ProjectId);
+////		    if(projectDirector==null) {
+////				projectDirector="--";
+////			}
+////		    subtitle = "     From " + FromDate + "  To " + ToDate
+////					+ "                                                                                                                                                                                                                                                                               Project Director :  "
+////					+ projectDirector + " ";
+//		    String fileName;
+//			String initial="Initial of AO/SAO";
+//			if (BudgetHeadIdSel1 == 0) 
+//			{
+//				//ProjectExpenditureCardList=reportService.ProjectExpenditureCardList(ProjectId,FromDate1,ToDate1,BudgetHeadIdSel1,itemTypeCode,Client_name);
+//				
+//				final String localUri3=uri+"/pfms_serv/GetIbasDateOfEntryPECD.htm?projectId="+ProjectId+"&FromDate=2024-03-01+&ToDate=2024-04-19+&BudgetHeadId=0+&progressivetotalRE"+REAmount+"&progressivetotalFE"+FEAmount+"&LabCode"+LabCode;
+//				HttpHeaders headers1 = new HttpHeaders();
+//				headers1.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+//		 		String jsonResult3=null;
+//				try {
+//					HttpEntity<String> entity = new HttpEntity<String>(headers1);
+//					ResponseEntity<String> response=restTemplate.exchange(localUri3, HttpMethod.GET, entity, String.class);
+//					jsonResult3=response.getBody();						
+//				}catch(Exception e) {
+//					req.setAttribute("errorMsg", "errorMsg");
+//				}
+//				ObjectMapper mapper3 = new ObjectMapper();
+//				mapper3.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+//				mapper3.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
+//				List<Object[]> ProjectExpenditureCardList=null;
+//				//System.out.println("jsonResult2"+jsonResult2);
+//				if(jsonResult3!=null) {
+//					try {
+//						ProjectExpenditureCardList = mapper3.readValue(jsonResult3, new TypeReference<List<Object[]>>(){});
+//						
+//					} catch (JsonProcessingException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//				
+//				
+//				
+//				
+//				
+//				
+//				if(ProjectExpenditureCardList!=null && ProjectExpenditureCardList.size()>0) 
+//				{
+//					if("A".equals(itemTypeCode)) 
+//					{
+//						//System.out.println("Inside **** projectExpenditureCard");
+//						fileName = "/jasperReports/projectExpenditureCard1.jrxml";
+//					}
+//					else 
+//					{
+//						fileName = "/jasperReports/projectExpenditureCard1.jrxml";
+//					}
+//			    }
+//				else 
+//				{
+//					fileName = "/jasperReports/projectExpenditureCard1.jrxml";
+//			    }
+//	
+//				
+//			InputStream ProjectExpenditureCardStream = getClass().getResourceAsStream(fileName);
+//			JasperReport jasperDesign = JasperCompileManager.compileReport(ProjectExpenditureCardStream);
+//			Connection conn = jdbcJasper.GetJasperJdbcConnection();
+//			
+//			  
+//			  Map<String, Object> parameters = new HashMap<String,Object>();
+//			  parameters.put("ReportTitle", "" + LabCode + "");
+//			  parameters.put("ReportSubTitle", "");
+//			  parameters.put("projectId", ProjectId);
+//			  parameters.put("budgetHeadId", BudgetHeadIdSel1);
+//			  parameters.put("fromdate", FromDate1);
+//			  parameters.put("todate",ToDate1);
+//			  parameters.put("budgetHeadSesc", BudgetHeadDescription);
+//			  parameters.put("progressiveRE", REAmount);
+//			  parameters.put("progressiveFE", FEAmount);
+//			  parameters.put("progressivetotal", TotalReFe);
+//			  parameters.put("labCode", LabCode);
+//			 
+//			  
+//			  parameters.put("fdate", FromDate);
+//			  parameters.put("tdate", ToDate);
+//			  parameters.put("itemtype", itemTypeCode);
+//			  parameters.put("Initial",initial);
+//			 //JasperPrint print = JasperFillManager.fillReport(jasperDesign, parameters, conn);
+//			 
+//			 //if("pdf".equalsIgnoreCase(Action)) {
+//				
+//				 byte[] bytes = JasperRunManager.runReportToPdf(jasperDesign, parameters,  conn);
+//				  resp.setContentType("application/pdf");
+//		          resp.setContentLength(bytes.length);
+//		          ServletOutputStream outStream = resp.getOutputStream();
+//		          outStream.write(bytes, 0, bytes.length);
+//		          outStream.flush();
+//		          outStream.close();
+////			 }else if("Excel".equalsIgnoreCase(Action)) {
+////				 
+////				  JRXlsxExporter exporter = new JRXlsxExporter();
+////			        SimpleXlsxReportConfiguration reportConfigXLS = new SimpleXlsxReportConfiguration();
+////			        reportConfigXLS.setSheetNames(new String[] { "sheet1" });
+////			        exporter.setConfiguration(reportConfigXLS);
+////			        exporter.setExporterInput(new SimpleExporterInput(print));
+////			        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(resp.getOutputStream()));
+////			        resp.setHeader("Content-Disposition", "attachment;filename=PEC Report.xlsx");
+////			        resp.setContentType("application/octet-stream");
+////			        exporter.exportReport();
+////			 }
+//			 
+//			}
+//			}catch (Exception e) {
+//			e.printStackTrace();
+//			logger.error(new Date() +" Inside ProjectExpenditureReportPrint.htm "+UserName, e);
+//			return "static/error";
+//		}
+//			
+//		return null;
+//	}
 	
 	
 	@RequestMapping(value="TechClosureList.htm", method= {RequestMethod.POST,RequestMethod.GET})

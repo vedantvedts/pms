@@ -3,7 +3,6 @@ package com.vts.pfms.documents.service;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -306,8 +305,8 @@ public class DocumentsServiceImpl implements DocumentsService{
 			
 				if(interfaceTypeSplit!=null && interfaceContentSplit!=null) {
 					
-					int countT = dao.getInterfaceTypeCountByinterfaceTypeId(interfaceTypeSplit[0]);
-					int countC = dao.getInterfaceContentCountByinterfaceContentId(interfaceTypeSplit[0], interfaceContentSplit[0]);
+					long countT = dao.getInterfaceTypeCountByinterfaceTypeId(interfaceTypeSplit[0]);
+					long countC = dao.getInterfaceContentCountByinterfaceContentId(interfaceTypeSplit[0], interfaceContentSplit[0]);
 					
 					String seqCount = (countC>=99)?("_"+(countC+1)) : ((countC>=9 && countC<99)?("_0"+(countC+1)) : ("_00"+(countC+1)) );
 					
@@ -347,7 +346,7 @@ public class DocumentsServiceImpl implements DocumentsService{
 	}
 	
 	@Override
-	public BigInteger getDuplicateInterfaceCodeCount(String interfaceId, String interfaceCode) throws Exception {
+	public Long getDuplicateInterfaceCodeCount(String interfaceId, String interfaceCode) throws Exception {
 		
 		return dao.getDuplicateInterfaceCodeCount(interfaceId, interfaceCode);
 	}
@@ -447,7 +446,7 @@ public class DocumentsServiceImpl implements DocumentsService{
 	}
 	
 	@Override
-	public BigInteger getDuplicateIGIShortCodeCount(String shortCode, String shortCodeType) throws Exception {
+	public Long getDuplicateIGIShortCodeCount(String shortCode, String shortCodeType) throws Exception {
 		
 		return dao.getDuplicateIGIShortCodeCount(shortCode, shortCodeType);
 	}

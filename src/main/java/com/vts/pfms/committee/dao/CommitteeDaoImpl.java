@@ -1,7 +1,6 @@
 package com.vts.pfms.committee.dao;
 
 
-import java.math.BigInteger;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -1243,23 +1242,19 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 
 	@Override
-	public BigInteger MeetingCount(Date ScheduleDate,String ProjectId) throws Exception {
+	public Long MeetingCount(Date ScheduleDate,String ProjectId) throws Exception {
 
 		if(ProjectId.equalsIgnoreCase("0")) {
 			Query query=manager.createNativeQuery(MEETINGCOUNT);
 			query.setParameter("scheduledate", ScheduleDate );
 			query.setParameter("projectid", ProjectId );
-			BigInteger MeetingCount=(BigInteger) query.getSingleResult();
+			return (Long) query.getSingleResult();
 			
-			return MeetingCount;
 		}
 			
 			Query query=manager.createNativeQuery(MEETINGCOUNT1);
 			query.setParameter("projectid", ProjectId );
-			BigInteger MeetingCount=(BigInteger) query.getSingleResult();
-			
-			return MeetingCount;
-	
+			return (Long) query.getSingleResult();
 	}
 
 	
@@ -2724,7 +2719,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		query.setParameter("projectid", projectid);
 		query.setParameter("committeeid", committeeid);
 		query.setParameter("sdate", sdate);
-		BigInteger CommProScheduleList=(BigInteger)query.getSingleResult();
+		Long CommProScheduleList=(Long)query.getSingleResult();
 		return CommProScheduleList.intValue();
 	}
 	
@@ -2732,18 +2727,18 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public long getLastPmrcId(String projectid,String committeeid,String scheduleId) throws Exception 
 	{
-		Query query=manager.createNativeQuery(LASTPRMC);
-		query.setParameter("projectid", projectid);
-		query.setParameter("committeeid", committeeid);
-		query.setParameter("scheduleId", scheduleId);
-		long result=0;
+		
 		try {
-		BigInteger CommProScheduleList=(BigInteger)query.getSingleResult();
-		result=CommProScheduleList.longValue();
+			Query query=manager.createNativeQuery(LASTPRMC);
+			query.setParameter("projectid", projectid);
+			query.setParameter("committeeid", committeeid);
+			query.setParameter("scheduleId", scheduleId);
+			return (Long)query.getSingleResult();
 		}catch (Exception e) {
 			logger.error(new java.util.Date() +"Inside DAO getLastPmrcId "+ e);
+			e.printStackTrace();
+			return 0;
 		}
-		return result;
 	}
 
 	@Override
@@ -3360,14 +3355,14 @@ private static final String ENOTEAPPROVELIST="SELECT MAX(a.EnoteId) AS EnoteId,M
 		
 		private static final String CARSMEETINGCOUNT = "SELECT COUNT(*) FROM committee_schedule WHERE CARSInitiationId=:CARSInitiationId AND IsActive=1 ";
 		@Override
-		public BigInteger carsMeetingCount(String carsInitiationId) throws Exception {
+		public Long carsMeetingCount(String carsInitiationId) throws Exception {
 			try {
 				Query query=manager.createNativeQuery(CARSMEETINGCOUNT);
 				query.setParameter("CARSInitiationId", carsInitiationId );
-				return (BigInteger) query.getSingleResult();
+				return (Long) query.getSingleResult();
 			}catch (Exception e) {
 				e.printStackTrace();
-				return BigInteger.valueOf(0);
+				return 0L;
 			}
 		
 		}

@@ -1,6 +1,5 @@
 package com.vts.pfms.documents.dao;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -308,17 +307,17 @@ public class DocumentsDaoImpl implements DocumentsDao{
 	
 	public static final String DUPLICATEINTERFACECODECOUNT = "SELECT COUNT(InterfaceId) AS 'Count' FROM pfms_igi_interfaces WHERE CASE WHEN InterfaceId<>0 THEN InterfaceId!=:InterfaceId END AND InterfaceCode=:InterfaceCode AND IsActive=1";
 	@Override
-	public BigInteger getDuplicateInterfaceCodeCount(String interfaceId,String interfaceCode) throws Exception {
+	public Long getDuplicateInterfaceCodeCount(String interfaceId,String interfaceCode) throws Exception {
 
 		try {
 			Query query =manager.createNativeQuery(DUPLICATEINTERFACECODECOUNT);
 			query.setParameter("InterfaceId", interfaceId);
 			query.setParameter("InterfaceCode", interfaceCode);
-			return (BigInteger)query.getSingleResult();
+			return (Long)query.getSingleResult();
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside DocumentsDAOImpl getDuplicateInterfaceCodeCount "+ e);
 			e.printStackTrace();
-			return null;
+			return 0L;
 		}
 	}
 
@@ -399,34 +398,32 @@ public class DocumentsDaoImpl implements DocumentsDao{
 	
 	public static final String GETINTERFACETYPECOUNTBYTYPEID = "SELECT COUNT(InterfaceId) AS InterfaceCount FROM pfms_igi_interfaces WHERE IsActive=1 AND InterfaceTypeId=:InterfaceTypeId";
 	@Override
-	public int getInterfaceTypeCountByinterfaceTypeId(String interfaceTypeId) throws Exception {
+	public Long getInterfaceTypeCountByinterfaceTypeId(String interfaceTypeId) throws Exception {
 
 		try {
 			Query query =manager.createNativeQuery(GETINTERFACETYPECOUNTBYTYPEID);
 			query.setParameter("InterfaceTypeId", interfaceTypeId);
-			BigInteger maxCount = (BigInteger)query.getSingleResult();
-			return maxCount.intValue();
+			return (Long)query.getSingleResult();
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside DocumentsDAOImpl getInterfaceCountByType "+ e);
 			e.printStackTrace();
-			return 0;
+			return 0L;
 		}
 	}
 	
 	public static final String GETINTERFACECONTENTCOUNTBYCONTENTID = "SELECT COUNT(InterfaceId) AS InterfaceCount FROM pfms_igi_interfaces WHERE IsActive=1 AND InterfaceTypeId=:InterfaceTypeId AND InterfaceContentId=:InterfaceContentId";
 	@Override
-	public int getInterfaceContentCountByinterfaceContentId(String interfaceTypeId, String interfaceContentId) throws Exception {
+	public Long getInterfaceContentCountByinterfaceContentId(String interfaceTypeId, String interfaceContentId) throws Exception {
 		
 		try {
 			Query query =manager.createNativeQuery(GETINTERFACECONTENTCOUNTBYCONTENTID);
 			query.setParameter("InterfaceTypeId", interfaceTypeId);
 			query.setParameter("InterfaceContentId", interfaceContentId);
-			BigInteger maxCount = (BigInteger)query.getSingleResult();
-			return maxCount.intValue();
+			return (Long)query.getSingleResult();
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside DocumentsDAOImpl getInterfaceCountByType "+ e);
 			e.printStackTrace();
-			return 0;
+			return 0L;
 		}
 	}
 	
@@ -435,8 +432,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 	public Long getFirstVersionIGIDocId() throws Exception {
 		try {
 			Query query = manager.createNativeQuery(GETFIRSTVERSIONIGIDOCID);
-			BigInteger count = (BigInteger)query.getSingleResult();
-			return count.longValue();
+			return (Long)query.getSingleResult();
 			
 		}catch (Exception e) {
 			logger.error(new Date()  + "Inside DocumentsDAOImpl getFirstVersionIGIDocId " + e);
@@ -488,17 +484,17 @@ public class DocumentsDaoImpl implements DocumentsDao{
 
 	public static final String DUPLICATEIGISHORTCODECOUNT = "SELECT COUNT(ShortCodeId) AS 'Count' FROM pfms_igi_document_shortcodes WHERE ShortCode=:ShortCode AND ShortCodeType=:ShortCodeType AND IsActive=1";
 	@Override
-	public BigInteger getDuplicateIGIShortCodeCount(String shortCode,String shortCodeType) throws Exception {
+	public Long getDuplicateIGIShortCodeCount(String shortCode,String shortCodeType) throws Exception {
 
 		try {
 			Query query = manager.createNativeQuery(DUPLICATEIGISHORTCODECOUNT);
 			query.setParameter("ShortCode", shortCode);
 			query.setParameter("ShortCodeType", shortCodeType);
-			return (BigInteger)query.getSingleResult();
+			return (Long)query.getSingleResult();
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside DocumentsDAOImpl getDuplicateIGIShortCodeCount "+ e);
 			e.printStackTrace();
-			return null;
+			return 0L;
 		}
 	}
 
@@ -614,7 +610,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		try {
 			Query query = manager.createNativeQuery(LOGICALINTERFACECOUNTBYTYPE);
 			query.setParameter("MsgType", msgType);
-			BigInteger count = (BigInteger)query.getSingleResult();
+			Long count = (Long)query.getSingleResult();
 			return count.intValue();
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside DocumentsDAOImpl getDuplicateIGIShortCodeCount "+ e);
@@ -677,8 +673,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 			query.setParameter("InitiationId", initiationId);
 			query.setParameter("ProjectId", projectId);
 			query.setParameter("ProductTreeMainId", productTreeMainId);
-			BigInteger count = (BigInteger)query.getSingleResult();
-			return count.longValue();
+			return (Long)query.getSingleResult();
 			
 		}catch (Exception e) {
 			logger.error(new Date()  + "Inside DocumentsDAOImpl getFirstVersionICDDocId " + e);
@@ -848,7 +843,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 			query.setParameter("SuperSubSysMainIdOne", superSubSysMainIdOne);
 			query.setParameter("SuperSubSysMainIdTwo", superSubSysMainIdTwo);
 			query.setParameter("ICDDocId", icdDocId);
-			BigInteger maxCount = (BigInteger)query.getSingleResult();
+			Long maxCount = (Long)query.getSingleResult();
 			return maxCount.intValue();
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside DocumentsDAOImpl getICDConnectionsCount "+ e);
@@ -925,8 +920,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 			query.setParameter("InitiationId", initiationId);
 			query.setParameter("ProjectId", projectId);
 			query.setParameter("ProductTreeMainId", productTreeMainId);
-			BigInteger count = (BigInteger)query.getSingleResult();
-			return count.longValue();
+			return (Long)query.getSingleResult();
 			
 		}catch (Exception e) {
 			logger.error(new Date()  + "Inside DocumentsDAOImpl getFirstVersionIRSDocId " + e);
@@ -1071,8 +1065,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 			query.setParameter("InitiationId", initiationId);
 			query.setParameter("ProjectId", projectId);
 			query.setParameter("ProductTreeMainId", productTreeMainId);
-			BigInteger count = (BigInteger)query.getSingleResult();
-			return count.longValue();
+			return (Long)query.getSingleResult();
 			
 		}catch (Exception e) {
 			logger.error(new Date()  + "Inside DocumentsDAOImpl getFirstVersionIDDDocId " + e);

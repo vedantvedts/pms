@@ -1,7 +1,5 @@
 package com.vts.pfms.project.service;
 
-import java.math.BigInteger;
-import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -16,7 +14,6 @@ import com.vts.pfms.project.dto.PfmsInitiationDetailDto;
 import com.vts.pfms.project.dto.PfmsInitiationDto;
 import com.vts.pfms.project.dto.PfmsInitiationRequirementDto;
 import com.vts.pfms.project.dto.PfmsProjectDataDto;
-import com.vts.pfms.project.dto.PfmsProjectTccDto;
 import com.vts.pfms.project.dto.PfmsRiskDto;
 import com.vts.pfms.project.dto.PreprojectFileDto;
 import com.vts.pfms.project.dto.ProjectAssignDto;
@@ -39,7 +36,6 @@ import com.vts.pfms.project.model.PfmsInitiationMacroDetailsTwo;
 import com.vts.pfms.project.model.PfmsInitiationMilestone;
 import com.vts.pfms.project.model.PfmsInitiationMilestoneRev;
 import com.vts.pfms.project.model.PfmsInitiationSanctionData;
-import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.project.model.PfmsOtherReq;
 import com.vts.pfms.project.model.PfmsProcurementPlan;
 import com.vts.pfms.project.model.ProjectAssign;
@@ -62,7 +58,6 @@ import com.vts.pfms.requirements.model.SpecifcationProductTree;
 import com.vts.pfms.requirements.model.Specification;
 import com.vts.pfms.requirements.model.SpecificationContent;
 import com.vts.pfms.requirements.model.SpecificationIntro;
-import com.vts.pfms.requirements.model.SpecsInitiation;
 
 public interface ProjectService {
 
@@ -206,7 +201,7 @@ public interface ProjectService {
 	public Object[] Requirement(long InitiationReqId) throws Exception ;
 	public long RequirementUpdate(PfmsInitiationRequirementDto prd, String userId, String initiationReqId)throws Exception;
 	public long numberOfReqTypeId(String intiationId,String projectId) throws Exception;
-	public List<Object[]> BudgetHeadList(BigInteger projecttypeid)throws Exception;
+	public List<Object[]> BudgetHeadList(Long projecttypeid)throws Exception;
 	public List<Integer> reqcountList(String initiationId) throws Exception;
 	public int deleteRequirement(String initiationReqId) throws Exception;
 	public String getReqId(int i, String initiationId)throws Exception;

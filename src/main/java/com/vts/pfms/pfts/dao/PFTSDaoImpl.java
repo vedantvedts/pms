@@ -199,8 +199,8 @@ public  class PFTSDaoImpl implements PFTSDao{
 	public int getpftsFieldId(String pftsFileId) throws Exception {
 		Query query=manager.createNativeQuery(GETPFTSCOUNT);
 		query.setParameter("pftsFileId", pftsFileId);
-		int result =Integer.parseInt(query.getSingleResult().toString());
-		return result;
+		Long result = (Long)query.getSingleResult();
+		return result.intValue();
 	}
 	private static final String UPDATEENVI = "UPDATE pfts_file SET ItemNomenclature=:ItemNomenclature,EstimatedCost=:EstimatedCost,PrbDateOfInti=:PrbDateOfInti,Remarks=:Remarks,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE PftsFileId=:PftsFileId";
 	@Override

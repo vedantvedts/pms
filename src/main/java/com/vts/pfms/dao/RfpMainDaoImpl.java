@@ -1,6 +1,5 @@
 package com.vts.pfms.dao;
 
-import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
@@ -109,8 +108,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	public Long LastLoginStampingId(String LoginId) throws Exception {
 		Query query = manager.createNativeQuery(LASTLOGINEMPID);
 		query.setParameter("loginid", LoginId);
-		BigInteger LastLoginStampingId = (BigInteger) query.getSingleResult();
-		return LastLoginStampingId.longValue();
+		return (Long) query.getSingleResult();
 	}
 
 	@Override
@@ -613,8 +611,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 		try {
 		Query query = manager.createNativeQuery(SMSINTIATEDCOUNT);
 	    query.setParameter("smsTrackingType", smsTrackingType);
-	    BigInteger countResult = (BigInteger) query.getSingleResult();
-        return countResult.longValue();
+	    return (Long) query.getSingleResult();
 	  } catch (Exception e) {
 		 e.printStackTrace();
 			logger.error(new Date() + "Inside DaoImpl GetSMSInitiatedCount", e);
@@ -628,8 +625,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 		logger.info(new Date() + "Inside GetDailyExpectedPendingReplyCount");
 		try {
 		 Query query = manager.createNativeQuery(DAILYEXPECTEDPENDINGREPLYCOUNT);
-		 BigInteger countResult = (BigInteger) query.getSingleResult();
-	        return countResult.longValue();
+		 return (Long) query.getSingleResult();
 		 } catch (Exception e) {
 		    e.printStackTrace();
 			logger.error(new Date() + "Inside DaoImpl GetDailyExpectedPendingReplyCount", e);
@@ -788,8 +784,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 		try {
 		Query query = manager.createNativeQuery(COMMITTESMSINTIATEDCOUNT);
 	    query.setParameter("smsTrackingType", smsTrackingType);
-	    BigInteger countResult = (BigInteger) query.getSingleResult();
-        return countResult.longValue();
+	    return (Long) query.getSingleResult();
 	  } catch (Exception e) {
 		 e.printStackTrace();
 			logger.error(new Date() + "Inside DaoImpl GetCommitteSMSInitiatedCount", e);
@@ -805,8 +800,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 		try {
 		 Query query = manager.createNativeQuery(DAILYCOMMITTECOUNT);
 		 query.setParameter("ScheduleDate", ScheduleDate);
-		 BigInteger countResult = (BigInteger) query.getSingleResult();
-	        return countResult.longValue();
+		 return (Long) query.getSingleResult();
 		 } catch (Exception e) {
 			 e.printStackTrace();
 				logger.error(new Date() + "Inside DaoImpl dailyCommitteCount", e);

@@ -41,7 +41,6 @@ import jakarta.servlet.http.Part;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.jasper.tagplugins.jstl.core.ForEach;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
@@ -2279,6 +2278,8 @@ public class PrintController {
 	    	}
 	    	
 	    	String tempid=committeeid;
+	    	
+	    	
 	    	if(committeeid==null  ) 
 	    	{
 	    		
@@ -2303,6 +2304,7 @@ public class PrintController {
 	    			}
 	    		}
 	    	}
+	    	
 	    	if(LabCode.equalsIgnoreCase(LabCode)) {
 	    	List<Object[]>otherMeetingList = service.otherMeetingList(projectid);
 	    	req.setAttribute("otherMeetingList", otherMeetingList);
@@ -2705,21 +2707,23 @@ public class PrintController {
     				}
     			}
 
+    			return 1;
     		}
     		catch (Exception e) {
     			e.printStackTrace(); 
     			logger.error(new Date() +" Inside ProjectBriefingPaper.htm (Milestone ActivityLogic) "+UserId, e); 
+    			return 0;
     		}
     		
 			}	
 			catch (Exception e) {
     			e.printStackTrace(); 
     			logger.error(new Date() +" Inside ProjectBriefingPaper.htm (Milestone ActivityLogic) ", e); 
+    			return 0;
     		}
     		
     		
     		
-			return 1;
 		
 	}
 	

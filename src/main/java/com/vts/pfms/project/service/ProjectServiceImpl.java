@@ -3,7 +3,6 @@ package com.vts.pfms.project.service;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,7 +15,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
@@ -77,7 +75,6 @@ import com.vts.pfms.project.model.PfmsProjectData;
 import com.vts.pfms.project.model.PfmsProjectDataRev;
 import com.vts.pfms.project.model.PfmsReqStatus;
 import com.vts.pfms.project.model.PfmsRequirementApproval;
-import com.vts.pfms.project.model.PfmsRequirementAttachment;
 import com.vts.pfms.project.model.PfmsRisk;
 import com.vts.pfms.project.model.PfmsRiskRev;
 import com.vts.pfms.project.model.PreprojectFile;
@@ -1069,7 +1066,7 @@ public class ProjectServiceImpl implements ProjectService {
 		PfmsInitiation pfmsinitiation = new PfmsInitiation();
 		PfmsApproval pfmsapproval = new PfmsApproval();
 		PfmsNotification notification = new PfmsNotification();
-		BigInteger DivisionHeadId = dao.DivisionHeadId(EmpId);
+		Long DivisionHeadId = dao.DivisionHeadId(EmpId);
 		pfmsinitiation.setInitiationId(Long.parseLong(InitiationId));
 		pfmsinitiation.setProjectStatus("PST");
 		pfmsinitiation.setModifiedBy(UserId);
@@ -1077,13 +1074,13 @@ public class ProjectServiceImpl implements ProjectService {
 		
 		pfmsapproval.setInitiationId(Long.parseLong(InitiationId));
 		pfmsapproval.setProjectStatus("PST");
-		pfmsapproval.setEmpId(DivisionHeadId.longValue());
+		pfmsapproval.setEmpId(DivisionHeadId);
 		pfmsapproval.setActionBy(UserId);
 		pfmsapproval.setActionDate(sdf1.format(new Date()));
 		
 		
 		
-		notification.setEmpId(DivisionHeadId.longValue());
+		notification.setEmpId(DivisionHeadId);
 		notification.setNotificationby(Long.parseLong(EmpId));
 		notification.setNotificationDate(sdf1.format(new Date()));
 		notification.setNotificationMessage("Pending Project Approval for " + ProjectCode + " from User");
@@ -1277,14 +1274,14 @@ public class ProjectServiceImpl implements ProjectService {
 		} catch (Exception e) {
 			logger.error(new Date() + "Inside SERVICE ProjectApprovePd " + e);
 		}
-		BigInteger Empid = dao.EmpId(InitiationId);
-		BigInteger RtmddoId = dao.RtmddoId();
+		Long Empid = dao.EmpId(InitiationId);
+		Long RtmddoId = dao.RtmddoId();
 		if (Status.equalsIgnoreCase("DOR")) {
-			notification.setEmpId(RtmddoId.longValue());
+			notification.setEmpId(RtmddoId);
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from DO");
 			notification.setNotificationUrl("ProjectApprovalRtmddo.htm");
 		} else if (Status.equalsIgnoreCase("DOI")) {
-			notification.setEmpId(Empid.longValue());
+			notification.setEmpId(Empid);
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from DO");
 			notification.setNotificationUrl("ProjectIntiationList.htm");
 		}
@@ -1356,24 +1353,24 @@ public class ProjectServiceImpl implements ProjectService {
 		} catch (Exception e) {
 			logger.error(new Date() + "Inside SERVICE ProjectApproveAd " + e);
 		}
-		BigInteger Empid = dao.EmpId(InitiationId);
-		BigInteger DivisionHeadId = dao.DivisionHeadId(Empid.toString());
-		BigInteger DORTMTDId = dao.RtmddoId();
-		BigInteger TccChairpersonId = dao.TccChairpersonId(LabCode);
+		Long Empid = dao.EmpId(InitiationId);
+		Long DivisionHeadId = dao.DivisionHeadId(Empid.toString());
+		Long DORTMTDId = dao.RtmddoId();
+		Long TccChairpersonId = dao.TccChairpersonId(LabCode);
 		if(Status.equalsIgnoreCase("ADR")) {
 			notification.setEmpId(TccChairpersonId.longValue());
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from AD");
 			notification.setNotificationUrl("ProjectApprovalTcc.htm");
 		}else if (Status.equalsIgnoreCase("ADI")) {
-			notification.setEmpId(Empid.longValue());
+			notification.setEmpId(Empid);
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from AD");
 			notification.setNotificationUrl("ProjectIntiationList.htm");
 		}else if (Status.equalsIgnoreCase("ADO")) {
-			notification.setEmpId(DivisionHeadId.longValue());
+			notification.setEmpId(DivisionHeadId);
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from AD");
 			notification.setNotificationUrl("ProjectApprovalPd.htm");
 		}else if (Status.equalsIgnoreCase("ADT")) {
-			notification.setEmpId(DORTMTDId.longValue());
+			notification.setEmpId(DORTMTDId);
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from AD");
 			notification.setNotificationUrl("ProjectApprovalRtmddo.htm");
 		}
@@ -1413,19 +1410,19 @@ public class ProjectServiceImpl implements ProjectService {
 		} catch (Exception e) {
 			logger.error(new Date() + "Inside SERVICE ProjectApproveRtmddo " + e);
 		}
-		BigInteger Empid = dao.EmpId(InitiationId);
-		BigInteger DivisionHeadId = dao.DivisionHeadId(Empid.toString());
-		BigInteger TccChairpersonId = dao.AdId();
+		Long Empid = dao.EmpId(InitiationId);
+		Long DivisionHeadId = dao.DivisionHeadId(Empid.toString());
+		Long TccChairpersonId = dao.AdId();
 		if (Status.equalsIgnoreCase("RTR")) {
-			notification.setEmpId(TccChairpersonId.longValue());
+			notification.setEmpId(TccChairpersonId);
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from RTMDDO");
 			notification.setNotificationUrl("ProjectApprovalAd.htm");
 		} else if (Status.equalsIgnoreCase("RTI")) {
-			notification.setEmpId(Empid.longValue());
+			notification.setEmpId(Empid);
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from RTMDDO");
 			notification.setNotificationUrl("ProjectIntiationList.htm");
 		} else if (Status.equalsIgnoreCase("RTD")) {
-			notification.setEmpId(DivisionHeadId.longValue());
+			notification.setEmpId(DivisionHeadId);
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from RTMDDO");
 			notification.setNotificationUrl("ProjectApprovalPd.htm");
 		}
@@ -1475,29 +1472,29 @@ public class ProjectServiceImpl implements ProjectService {
 		} catch (Exception e) {
 			logger.error(new Date() + "Inside SERVICE ProjectApproveTcc " + e);
 		}
-		BigInteger Empid = dao.EmpId(InitiationId);
-		BigInteger DivisionHeadId = dao.DivisionHeadId(Empid.toString());
-		BigInteger TccChairpersonId = dao.AdId();
-		BigInteger CcmChairpersonId = dao.CcmChairpersonId(Labcode);
-		BigInteger DORTMTDId = dao.RtmddoId();
+		Long Empid = dao.EmpId(InitiationId);
+		Long DivisionHeadId = dao.DivisionHeadId(Empid.toString());
+		Long TccChairpersonId = dao.AdId();
+		Long CcmChairpersonId = dao.CcmChairpersonId(Labcode);
+		Long DORTMTDId = dao.RtmddoId();
 		if (Status.equalsIgnoreCase("PTA") || Status.equalsIgnoreCase("PDR")) {
-			notification.setEmpId(CcmChairpersonId.longValue());
+			notification.setEmpId(CcmChairpersonId);
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from TCM");
 			notification.setNotificationUrl("ProjectApprovalTcc.htm");
 		} else if (Status.equalsIgnoreCase("PTI") || Status.equalsIgnoreCase("DRI")) {
-			notification.setEmpId(Empid.longValue());
+			notification.setEmpId(Empid);
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from TCM");
 			notification.setNotificationUrl("ProjectIntiationList.htm");
 		} else if (Status.equalsIgnoreCase("PTD") || Status.equalsIgnoreCase("DRD")) {
-			notification.setEmpId(DivisionHeadId.longValue());
+			notification.setEmpId(DivisionHeadId);
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from TCM");
 			notification.setNotificationUrl("ProjectApprovalPd.htm");
 		} else if (Status.equalsIgnoreCase("PTR") || Status.equalsIgnoreCase("DRR")) {
-			notification.setEmpId(DORTMTDId.longValue());
+			notification.setEmpId(DORTMTDId);
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from TCM");
 			notification.setNotificationUrl("ProjectApprovalRtmddo.htm");
 		} else if (Status.equalsIgnoreCase("PTY") || Status.equalsIgnoreCase("DAD")) {
-			notification.setEmpId(TccChairpersonId.longValue());
+			notification.setEmpId(TccChairpersonId);
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from TCM");
 			notification.setNotificationUrl("ProjectApprovalAd.htm");
 		}
@@ -2503,7 +2500,7 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 
 		@Override
-		public List<Object[]> BudgetHeadList(BigInteger projecttypeid) throws Exception {
+		public List<Object[]> BudgetHeadList(Long projecttypeid) throws Exception {
 			
 			return dao.BudgetHeadList(projecttypeid);
 		}

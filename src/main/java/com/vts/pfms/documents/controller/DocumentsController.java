@@ -5,16 +5,13 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -854,7 +851,7 @@ public class DocumentsController {
 		String UserId=(String)ses.getAttribute("Username");
 		logger.info(new Date() +" Inside DuplicateShortCodeCheck.htm "+UserId);
 		Gson json = new Gson();
-		BigInteger duplicate=null;
+		Long duplicate=null;
 		try
 		{	  
 	          duplicate = service.getDuplicateIGIShortCodeCount(req.getParameter("shortCode"), req.getParameter("shortCodeType"));
@@ -1131,7 +1128,7 @@ public class DocumentsController {
 		String UserId=(String)ses.getAttribute("Username");
 		logger.info(new Date() +" Inside DuplicateInterfaceCodeCheck.htm "+UserId);
 		Gson json = new Gson();
-		BigInteger duplicate=null;
+		Long duplicate=null;
 		try
 		{	  
 	          duplicate = service.getDuplicateInterfaceCodeCount(req.getParameter("interfaceId"), req.getParameter("interfaceCode"));

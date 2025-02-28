@@ -1,12 +1,10 @@
 package com.vts.pfms.project.dao;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import com.vts.pfms.committee.model.CommitteeInitiation;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
-import com.vts.pfms.project.dto.PfmsInitiationRequirementDto;
 import com.vts.pfms.project.dto.PfmsRiskDto;
 import com.vts.pfms.project.model.InitiationAbbreviations;
 import com.vts.pfms.project.model.PfmsApproval;
@@ -128,15 +126,15 @@ public interface ProjectDao {
 	public int ProjectLabdelete(PfmsInitiationLab pfmsinitiationlab,PfmsInitiation pfmsinitiation) throws Exception;
 	public int ProjectIntiationCostDelete(PfmsInitiationCost pfmsinitiationcost) throws Exception;
 	public int ProjectIntiationStatusUpdate(PfmsInitiation pfmsinitiation,PfmsApproval pfmsapproval,PfmsNotification notification) throws Exception;
-	public BigInteger DivisionHeadId(String EmpId) throws Exception;
+	public Long DivisionHeadId(String EmpId) throws Exception;
 	public Long ProjectForwardStatus(String InitiationId) throws Exception;
 	public List<Object[]> ProjectActionList(String ProjectAuthorityId) throws Exception;
 	public List<Object[]> ProjectApprovePdList(String EmpId) throws Exception;
 	public int ProjectApprove(PfmsInitiation pfmsinitiation,PfmsApproval pfmsapproval,PfmsNotification notification) throws Exception;
-	public BigInteger RtmddoId() throws Exception;
-	public BigInteger TccChairpersonId(String LabCode) throws Exception;
-	public BigInteger CcmChairpersonId(String Labcode) throws Exception;
-	public BigInteger AdId() throws Exception;
+	public Long RtmddoId() throws Exception;
+	public Long TccChairpersonId(String LabCode) throws Exception;
+	public Long CcmChairpersonId(String Labcode) throws Exception;
+	public Long AdId() throws Exception;
 	public List<Object[]> EmployeeList(String LabCode) throws Exception;
 	public List<Object[]> ProjectStatusList(String EmpId, String LoginType,String LabCode)throws Exception;
 	public List<Object[]> ProjectApprovalTracking(String InitiationId) throws Exception;
@@ -177,7 +175,7 @@ public interface ProjectDao {
 	public Object[] ProjectDataRevData(String projectdatarevid) throws Exception;
 	public List<Object[]> SubProjectList(String InitiationId) throws Exception;
     public String StatusDetails(String Status)throws Exception;
-    public BigInteger EmpId(String InitiationId) throws Exception;
+    public Long EmpId(String InitiationId) throws Exception;
 	public List<Object[]> ProjectRiskDataList(String projectid,String LabCode) throws Exception;
 	public Object[] ProjectRiskData(String actionassignid) throws Exception;
 	public long CloseProjectRisk(PfmsRiskDto dto)throws Exception;
@@ -225,7 +223,7 @@ public interface ProjectDao {
 	public Object[] Requirement(long InitiationReqId) throws Exception;
 //	public long RequirementUpdate(PfmsInititationRequirement pir, String initiationReqId) throws Exception;
 	public long numberOfReqTypeId(String intiationId,String projectId)throws Exception;
-	public List<Object[]> BudgetHeadList(BigInteger projecttypeid) throws Exception;
+	public List<Object[]> BudgetHeadList(Long projecttypeid) throws Exception;
 	public List<Integer> reqcountList(String initiationId) throws Exception;
 	public int deleteRequirement(String initiationReqId)throws Exception;
 	public String getReqId(int i, String initiationId)throws Exception;

@@ -57,7 +57,7 @@ public class AdminDaoImpl implements AdminDao{
 	private static final String LOGINDELETE="update login set isactive=:isactive,modifiedby=:modifiedby,modifieddate=:modifieddate where loginid=:loginid";
 	private static final String AUDITSTAMPING="SELECT a.username,a.logindate, a.logindatetime,a.ipaddress, a.macaddress, ( CASE WHEN a.logouttype='L' THEN 'Logout' ELSE 'Session Expired' END ) AS logouttype, 	a.logoutdatetime FROM auditstamping a WHERE a.`LoginDate` BETWEEN :fromdate AND :todate AND a.loginid=:loginid ORDER BY a.`LoginDateTime` DESC ";
 	private static final String USERNAMELIST="SELECT l.loginid, l.empid,l.username, CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',e.labcode FROM login l , employee e WHERE e.isactive=1 AND l.isactive=1 AND l.EmpId=e.EmpId ORDER BY e.srno=0,e.srno"; 
-	private static final String LOGINEDITDATA="FROM Login WHERE LOGINID=:LoginId";
+	private static final String LOGINEDITDATA="FROM Login WHERE LoginId=:LoginId";
 	private static final String USERMANAGELIST = "SELECT a.loginid, a.username, b.divisionname,c.formrolename, a.Pfms , CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname', d.designation ,lt.logindesc ,e.empno ,e.labcode FROM login a , division_master b , form_role c , employee e, employee_desig d,  login_type lt WHERE a.divisionid=b.divisionid AND a.formroleid=c.formroleid AND a.isactive=1 AND a.empid=e.empid AND e.desigid=d.desigid AND a.logintype=lt.logintype ";
 	private static final String USERNAMEPRESENTCOUNT ="select count(*) from login where username=:username and isactive='1'";
 	private static final String EMPLOYEELIST1="SELECT empid,CONCAT(IFNULL(CONCAT(title,' '),''), empname) AS 'empname' FROM employee e WHERE e.isactive='1' AND labcode=:labcode AND empid NOT IN (SELECT empid FROM login WHERE isactive=1) ORDER BY srno ";
@@ -276,7 +276,7 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public long GetExpertsCount() throws Exception {
 		final Query query = manager.createNativeQuery(GETEXPERTSCOUNT);
-		BigInteger Expertcount = (BigInteger)query.getSingleResult();
+		Long Expertcount = (Long)query.getSingleResult();
 		return Expertcount.longValue()+1;
 	}
 
@@ -450,7 +450,7 @@ public class AdminDaoImpl implements AdminDao{
 		Query query = manager.createNativeQuery(USERNAMEPRESENTCOUNT);
 		query.setParameter("username", UserName);
 
-		BigInteger UserNamePresentCount = (BigInteger) query.getSingleResult();
+		Long UserNamePresentCount = (Long) query.getSingleResult();
 		return   UserNamePresentCount.intValue();
 	}
 
@@ -1090,7 +1090,7 @@ public class AdminDaoImpl implements AdminDao{
 		try {
 			Query query = manager.createNativeQuery(GETTYPEOFHOSTCOUNT);
 			query.setParameter("hostType", hostType);
-			BigInteger getTypeOfHostCount = (BigInteger) query.getSingleResult();
+			Long getTypeOfHostCount = (Long) query.getSingleResult();
 			return getTypeOfHostCount.longValue();
 		} catch (Exception e) {
 			e.printStackTrace();

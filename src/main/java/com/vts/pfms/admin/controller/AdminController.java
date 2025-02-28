@@ -496,29 +496,36 @@ public class AdminController {
 		String Option = req.getParameter("sub");
 		String LoginId = req.getParameter("Lid");
 		String LabCode = (String) ses.getAttribute("labcode");
-
-		if (Option.equalsIgnoreCase("add")) {
-			req.setAttribute("DivisionList", service.DivisionList());
-			req.setAttribute("RoleList", service.RoleList());
-			req.setAttribute("EmpList", service.EmployeeList1(LabCode));
-			req.setAttribute("LoginTypeList", service.LoginTypeList1());
-			return "admin/UserManagerAdd";
-		} else if (Option.equalsIgnoreCase("edit")) {
-			req.setAttribute("UserManagerEditData", service.UserManagerEditData(LoginId));
-			req.setAttribute("DivisionList", service.DivisionList());
-			req.setAttribute("RoleList", service.RoleList());
-			req.setAttribute("EmpList", service.LoginEditEmpList(LabCode));
-			req.setAttribute("LoginTypeList", service.LoginTypeList1());
-			return "admin/UserManagerEdit";
-		} else {
-			int count = service.UserManagerDelete(LoginId, Userid);
-			if (count > 0) {
-				redir.addAttribute("result", "USER DELETE SUCCESSFULLY");
+		try {
+			if (Option.equalsIgnoreCase("add")) {
+				req.setAttribute("DivisionList", service.DivisionList());
+				req.setAttribute("RoleList", service.RoleList());
+				req.setAttribute("EmpList", service.EmployeeList1(LabCode));
+				req.setAttribute("LoginTypeList", service.LoginTypeList1());
+				return "admin/UserManagerAdd";
+			} else if (Option.equalsIgnoreCase("edit")) {
+				req.setAttribute("UserManagerEditData", service.UserManagerEditData(LoginId));
+				req.setAttribute("DivisionList", service.DivisionList());
+				req.setAttribute("RoleList", service.RoleList());
+				req.setAttribute("EmpList", service.LoginEditEmpList(LabCode));
+				req.setAttribute("LoginTypeList", service.LoginTypeList1());
+				return "admin/UserManagerEdit";
 			} else {
-				redir.addAttribute("resultfail", "USER DELETE UNSUCCESSFUL");
+				int count = service.UserManagerDelete(LoginId, Userid);
+				if (count > 0) {
+					redir.addAttribute("result", "USER DELETE SUCCESSFULLY");
+				} else {
+					redir.addAttribute("resultfail", "USER DELETE UNSUCCESSFUL");
+				}
+				return "redirect:/UserManagerList.htm";
 			}
-			return "redirect:/UserManagerList.htm";
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside UserManager.htm "+ UserId, e);
+			return "static/Error";
 		}
+		
 
 	}
 

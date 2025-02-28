@@ -1,13 +1,10 @@
 package com.vts.pfms.project.dao;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -27,7 +24,6 @@ import org.springframework.stereotype.Repository;
 import com.vts.pfms.committee.model.CommitteeInitiation;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
-import com.vts.pfms.project.dto.PfmsInitiationRequirementDto;
 import com.vts.pfms.project.dto.PfmsRiskDto;
 import com.vts.pfms.project.model.InitiationAbbreviations;
 import com.vts.pfms.project.model.PfmsInitiationMilestone;
@@ -885,7 +881,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
 		Query query=manager.createNativeQuery(PROJECTSCHTOTALMONTH);
 		query.setParameter("InitiationId", InitiationId);
-		BigDecimal ProjectScheduleMonth=(BigDecimal)query.getSingleResult();		
+		Long ProjectScheduleMonth=(Long)query.getSingleResult();		
 		if(ProjectScheduleMonth==null) {
 			return 0;
 		}
@@ -954,7 +950,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		query.setParameter("IntiationId", IntiationId);
 		query.setParameter("milestoneno", milestoneno);
 
-		Integer PreviousMilestoneMonth=(Integer)query.getSingleResult();		
+		Long PreviousMilestoneMonth=(Long)query.getSingleResult();		
 		if(PreviousMilestoneMonth==null) {
 			return 0;
 		}
@@ -968,7 +964,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		Query query=manager.createNativeQuery(MILESTONENOTOTALMONTH);
 		query.setParameter("IntiationId", IntiationId);
 		query.setParameter("milestoneno", milestoneno);
-		Integer milestonenototalmonth=(Integer)query.getSingleResult();		
+		Long milestonenototalmonth=(Long)query.getSingleResult();		
 		if(milestonenototalmonth==null) {
 			return 0;
 		}
@@ -1313,41 +1309,37 @@ public class ProjectDaoImpl implements ProjectDao {
 
 
 	@Override
-	public BigInteger DivisionHeadId(String EmpId) throws Exception {
+	public Long DivisionHeadId(String EmpId) throws Exception {
 
 		Query query=manager.createNativeQuery(DIVISIONHEADID);
 		query.setParameter("empid", EmpId);
-		BigInteger  DivisionHeadId=(BigInteger)query.getSingleResult();
-		return DivisionHeadId;
+		return (Long)query.getSingleResult();
 	}
 
 	@Override
-	public BigInteger RtmddoId() throws Exception {
+	public Long RtmddoId() throws Exception {
 
 		Query query=manager.createNativeQuery(RTMDDOID);
 
-		BigInteger  RtmddoId=(BigInteger)query.getSingleResult();
-		return RtmddoId;
+		return (Long)query.getSingleResult();
 	}
 
 	@Override
-	public BigInteger TccChairpersonId(String Labcode) throws Exception {
+	public Long TccChairpersonId(String Labcode) throws Exception {
 
 		Query query=manager.createNativeQuery(TCCCHAIRPERSONID);
 		query.setParameter("labcode", Labcode);
 
-		BigInteger  TccChairpersonId=(BigInteger)query.getSingleResult();
-		return TccChairpersonId;
+		return (Long)query.getSingleResult();
 	}
 
 	@Override
-	public BigInteger CcmChairpersonId(String Labcode) throws Exception {
+	public Long CcmChairpersonId(String Labcode) throws Exception {
 
 		Query query=manager.createNativeQuery(CCMCHAIRPERSONID);
 		query.setParameter("labcode", Labcode);
 
-		BigInteger  CcmChairpersonId=(BigInteger)query.getSingleResult();
-		return CcmChairpersonId;
+		return (Long)query.getSingleResult();
 	}
 
 	@Override
@@ -1572,12 +1564,11 @@ public class ProjectDaoImpl implements ProjectDao {
 	}
 
 	@Override
-	public BigInteger AdId() throws Exception {
+	public Long AdId() throws Exception {
 
 		Query query=manager.createNativeQuery(ADID);
 
-		BigInteger  RtmddoId=(BigInteger)query.getSingleResult();
-		return RtmddoId;
+		return (Long)query.getSingleResult();
 	}
 
 	@Override
@@ -1744,12 +1735,11 @@ public class ProjectDaoImpl implements ProjectDao {
 
 
 	@Override
-	public BigInteger EmpId(String InitiationId) throws Exception {
+	public Long EmpId(String InitiationId) throws Exception {
 
 		Query query=manager.createNativeQuery(INTEMPID);
 		query.setParameter("id", InitiationId);
-		BigInteger  DivisionHeadId=(BigInteger)query.getSingleResult();
-		return DivisionHeadId;
+		return (Long)query.getSingleResult();
 	}
 
 
@@ -2296,15 +2286,11 @@ public class ProjectDaoImpl implements ProjectDao {
 		Query query=manager.createNativeQuery(REQTYPECOUNT);
 		query.setParameter("intiationId", intiationId);
 		query.setParameter("projectid", projectId);
-		BigInteger x=(BigInteger)query.getSingleResult();
-		if(x==null) {
-			return 0;
-		}
-		return x.longValue();
+		return (Long)query.getSingleResult();
 	}
 	private final static String BUDGETHEADLIST="SELECT DISTINCT(a.budgetheadid), a. budgetheaddescription FROM budget_head a , budget_item_sanc b WHERE isproject='Y' AND b.projecttypeid=:projecttypeid AND a.budgetheadid =b.budgetheadid  ORDER BY budgetheaddescription ASC ";
 	@Override
-	public List<Object[]> BudgetHeadList(BigInteger projecttypeid) throws Exception {
+	public List<Object[]> BudgetHeadList(Long projecttypeid) throws Exception {
 		Query query=manager.createNativeQuery(BUDGETHEADLIST);
 		query.setParameter("projecttypeid", projecttypeid);
 
@@ -2429,11 +2415,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		Query query =manager.createNativeQuery(FILECOUNT);
 		query.setParameter("initiationid", initiationid);
 		query.setParameter("stepid",stepid);
-		BigInteger x=(BigInteger)query.getSingleResult();
-		if(x==null) {
-			return 0;
-		}
-		return x.longValue();
+		return (Long)query.getSingleResult();
 	}
 
 
@@ -3200,7 +3182,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public String getEmpId(String pdd) throws Exception {
 		Query query =manager.createNativeQuery(EMPID);
 		query.setParameter("InitiationId", pdd);
-		BigInteger a=(BigInteger) query.getSingleResult();
+		Long a=(Long) query.getSingleResult();
 		return a+"";
 	}
 
@@ -3318,20 +3300,18 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String REQID="SELECT requirementid FROM pfms_initiation_otherreq_details  WHERE ReqInitiationId=:ReqInitiationId AND reqmainid=:reqmainid AND reqparentid=:reqparentid AND isactive='1'";
 	@Override
 	public String getRequirementId(Long reqInitiationId, Long reqMainId, int i) throws Exception {
-		// TODO Auto-generated method stub
-		Query query=manager.createNativeQuery(REQID);
-		query.setParameter("ReqInitiationId", reqInitiationId);
-		query.setParameter("reqmainid", reqMainId);
-		query.setParameter("reqparentid", i);
 
-		BigInteger getRequirementId=BigInteger.ZERO;
 		try {
-			getRequirementId=(BigInteger)query.getSingleResult();
+			Query query=manager.createNativeQuery(REQID);
+			query.setParameter("ReqInitiationId", reqInitiationId);
+			query.setParameter("reqmainid", reqMainId);
+			query.setParameter("reqparentid", i);
+			return (Long)query.getSingleResult()+"";
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+			return "0";
 		}
-		return getRequirementId.toString();
 	}
 	private static final String OTHREQDATA="SELECT Requirementid,initiationid,reqmainid,reqparentid,requirementname,requirementdetails FROM pfms_initiation_otherreq_details WHERE requirementid=:requirementid AND isactive='1'";
 	@Override
@@ -3512,8 +3492,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		Query query =manager.createNativeQuery(PRGCOUNT);
 		query.setParameter("ReqInitiationId", reqInitiationId);
 
-		BigInteger count=(BigInteger)query.getSingleResult();
-		return count.longValue();
+		return (Long)query.getSingleResult();
 	}
 	@Override
 	public long ProjectSqrSubmit(ProjectSqrFile psf) throws Exception {

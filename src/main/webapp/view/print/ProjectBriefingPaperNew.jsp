@@ -370,6 +370,8 @@ String projectLabCode=(String)request.getAttribute("projectLabCode");
 List<Object[]> projectslist=(List<Object[]>)request.getAttribute("projectslist");
 String projectid=(String)request.getAttribute("projectid");
 String committeeid=(String)request.getAttribute("committeeid");
+System.out.println("************************** committeeid: "+committeeid);
+System.out.println("************************** projectid: "+projectid);
 Committee committee=(Committee)request.getAttribute("committeeData");
 
 List<Object[]> projectattributeslist = (List<Object[]> )request.getAttribute("projectattributes");
@@ -408,7 +410,7 @@ List<Object[]> SpecialCommitteesList = (List<Object[]>)request.getAttribute("Spe
 LocalDate before6months = LocalDate.now().minusMonths(6);
 
 Committee committeeData=(Committee)request.getAttribute("committeeData");
-long ProjectCost = (long)request.getAttribute("ProjectCost"); 
+//long ProjectCost = (long)request.getAttribute("ProjectCost"); 
 String levelid= (String) request.getAttribute("levelid");
 
 String No2=null;

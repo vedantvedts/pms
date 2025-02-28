@@ -1,6 +1,5 @@
 package com.vts.pfms.committee.dao;
 
-import java.math.BigInteger;
 import java.sql.Date;
 import java.util.List;
 
@@ -124,7 +123,7 @@ public interface CommitteeDao {
 	public Object[] CommitteMainMembersData(String CommitteeScheduleId, String membertype) throws Exception;
 	//public List<Object[]> ProjectCommitee(String ProjectId) throws Exception;
 	public Object[] NotificationData(String ScheduleId,String EmpId,String Status) throws Exception;
-	public BigInteger MeetingCount(Date ScheduleDate,String ProjectId) throws Exception;
+	public Long MeetingCount(Date ScheduleDate,String ProjectId) throws Exception;
 	public int UpdateMeetingVenue(CommitteeScheduleDto csdto) throws Exception;
 	public Long MinutesAttachmentAdd(CommitteeMinutesAttachment attachment) throws Exception;
 	public List<Object[]> MinutesAttachmentList(String scheduleid) throws Exception;
@@ -324,7 +323,7 @@ public interface CommitteeDao {
 	//public Object createView(String projectId)throws Exception;
 	public List<Object[]> MomeNoteApprovalList(long empId, String fromDate, String toDate)throws Exception;
 	public List<Object[]> carsScheduleList(String carsInitiationId) throws Exception;
-	public BigInteger carsMeetingCount(String carsInitiationId) throws Exception;
+	public Long carsMeetingCount(String carsInitiationId) throws Exception;
 	public void InvitationRoleoUpdate(String role, String committeeinvitationid) throws Exception;
 	
 

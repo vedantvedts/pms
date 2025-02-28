@@ -1,6 +1,5 @@
 package com.vts.pfms.documents.dao;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import com.vts.pfms.documents.model.ICDConnectionInterfaces;
@@ -48,20 +47,20 @@ public interface DocumentsDao {
 	public List<IGIInterface> getIGIInterfaceListByLabCode(String labCode)throws Exception;
 	public PfmsIGIDocument getPfmsIGIDocumentById(String igiDocId)throws Exception;
 	public IGIInterface getIGIInterfaceById(String interfaceId) throws Exception;
-	public BigInteger getDuplicateInterfaceCodeCount(String interfaceId, String interfaceCode) throws Exception;
+	public Long getDuplicateInterfaceCodeCount(String interfaceId, String interfaceCode) throws Exception;
 	public List<IGIDocumentShortCodes> getIGIDocumentShortCodesList() throws Exception;
 	public long addIGIDocumentShortCodes(IGIDocumentShortCodes igiDocumentShortCodes) throws Exception;
 	public List<PfmsApplicableDocs> getPfmsApplicableDocs() throws Exception;
 	public List<Object[]> getIGIApplicableDocs(String docId, String docType) throws Exception;
 	public long addIGIApplicableDocs(IGIApplicableDocs igiApplicableDocs) throws Exception;
 	public int deleteIGIApplicableDocument(String igiApplicableDocId) throws Exception;
-	public int getInterfaceTypeCountByinterfaceTypeId(String interfaceTypeId) throws Exception;
-	public int getInterfaceContentCountByinterfaceContentId(String interfaceTypeId, String interfaceContentId) throws Exception;
+	public Long getInterfaceTypeCountByinterfaceTypeId(String interfaceTypeId) throws Exception;
+	public Long getInterfaceContentCountByinterfaceContentId(String interfaceTypeId, String interfaceContentId) throws Exception;
 	public Long getFirstVersionIGIDocId() throws Exception;
 	public long addIGIDocumentShortCodesLinked(IGIDocumentShortCodesLinked igiDocumentShortCodeLinked) throws Exception;
 	public List<Object[]> getIGIShortCodesLinkedListByType(String docId, String docType) throws Exception;
 	public int deleteIGIDocumentShortCodesLinked(String shortCodeLinkedId) throws Exception;
-	public BigInteger getDuplicateIGIShortCodeCount(String shortCode, String shortCodeType) throws Exception;
+	public Long getDuplicateIGIShortCodeCount(String shortCode, String shortCodeType) throws Exception;
 	public long addApplicableDocs(PfmsApplicableDocs pfmsApplicableDocs) throws Exception;
 	public List<Object[]> igiTransactionList(String docId, String docType) throws Exception;
 	public List<IGIInterfaceTypes> getIGIInterfaceTypesList() throws Exception;

@@ -1,6 +1,5 @@
 package com.vts.pfms.committee.dao;
 
-import java.math.BigInteger;
 import java.sql.Date;
 import java.util.List;
 
@@ -128,11 +127,8 @@ public interface ActionDao {
 	public List<String> ListEmps(String user,String projectid) throws Exception;
 	public long RfaActionForward(List<PfmsNotification> x, RfaAction rf, List<RfaTransaction> trans, String rfa) throws Exception;
 	public Object[] RfaList(String rfa,String EmpId) throws Exception;
-	public BigInteger GetDhTdList(String EmpId) throws Exception;
-	public BigInteger GetGhTdList(String EmpId) throws Exception;
 	public String getUserId(String rfa) throws Exception;
 	public String getAssineeId(String rfa) throws Exception;
-	public BigInteger GetPdTdList(String EmpId) throws Exception;
 	public Object[] getRfaAssign(String rfa) throws Exception;
 	public Long RfaModalSubmit(RfaInspection inspection)throws Exception;
 	public Object[] RfaAssignAjax(String rfaId) throws Exception;

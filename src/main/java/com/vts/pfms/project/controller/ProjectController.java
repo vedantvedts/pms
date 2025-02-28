@@ -1544,7 +1544,7 @@ public class ProjectController
 			List<Object[]> BudgetHead = service.BudgetHead();
 
 			Object[]bd=service.ProjectDetailes(Long.parseLong(IntiationId)).get(0);
-			BigInteger projecttypeid=(BigInteger)bd[21];
+			Long projecttypeid=(Long)bd[21];
 			List<Object[]>BudgetHeadList=service.BudgetHeadList(projecttypeid);
 
 			for (Object[] obj : BudgetHead) {
@@ -1601,7 +1601,7 @@ public class ProjectController
 			}
 
 			Object[] bd=service.ProjectDetailes(Long.parseLong(IntiationId)).get(0);
-			BigInteger projecttypeid=(BigInteger)bd[21];
+			Long projecttypeid=(Long)bd[21];
 			List<Object[]>BudgetHeadList=service.BudgetHeadList(projecttypeid);
 
 
@@ -6911,7 +6911,6 @@ public class ProjectController
 	public @ResponseBody String RequirementJsonValue(HttpSession ses, HttpServletRequest req) throws Exception {
 		Gson json = new Gson();
 		String UserId=(String)ses.getAttribute("Username");
-		BigInteger duplicate=null;
 
 		logger.info(new Date() +"Inside RequirementJsonValue.htm"+UserId);
 		try
@@ -7675,7 +7674,6 @@ public class ProjectController
 	public @ResponseBody String RequirementListJsonValue(HttpSession ses, HttpServletRequest req) throws Exception {
 		Gson json = new Gson();
 		String UserId=(String)ses.getAttribute("Username");
-		BigInteger duplicate=null;
 		Map<String, String> RequirementMapList = new LinkedHashMap<String, String>();
 		logger.info(new Date() +"Inside RequirementListJsonValue.htm"+UserId);
 		try

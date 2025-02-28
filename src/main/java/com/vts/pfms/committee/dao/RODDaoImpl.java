@@ -1,6 +1,5 @@
 package com.vts.pfms.committee.dao;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -212,7 +211,7 @@ public class RODDaoImpl implements RODDao{
 		query.setParameter("projectid", projectid);
 		query.setParameter("RODNameId", rodNameId);
 		query.setParameter("sdate", sdate);
-		BigInteger CommProScheduleList=(BigInteger)query.getSingleResult();
+		Long CommProScheduleList=(Long)query.getSingleResult();
 		return CommProScheduleList.intValue();
 	}
 	

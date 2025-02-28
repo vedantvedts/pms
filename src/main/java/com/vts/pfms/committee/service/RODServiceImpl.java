@@ -1,13 +1,10 @@
 package com.vts.pfms.committee.service;
 
-import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -107,7 +104,7 @@ public class RODServiceImpl implements RODService{
 		committeeschedule.setBriefingStatus("INI");
 		String RODName= dao.getRODMasterDetails(committeescheduledto.getRodNameId().toString())[2].toString();
 		String LabName=committeedao.LabDetails(committeeschedule.getLabCode())[1].toString();
-		BigInteger SerialNo=committeedao.MeetingCount(new java.sql.Date(sdf.parse(committeescheduledto.getScheduleDate()).getTime()),committeescheduledto.getProjectId());
+		Long SerialNo=committeedao.MeetingCount(new java.sql.Date(sdf.parse(committeescheduledto.getScheduleDate()).getTime()),committeescheduledto.getProjectId());
 		String ProjectName=null;
 		if(Long.parseLong(committeescheduledto.getProjectId())>0) 
 		{
@@ -127,7 +124,7 @@ public class RODServiceImpl implements RODService{
 			ProjectName="GEN";
 		}
 		Date ScheduledDate= (new java.sql.Date(sdf.parse(committeescheduledto.getScheduleDate()).getTime()));
-		committeeschedule.setMeetingId(LabName.trim()+"/"+ProjectName.trim()+"/"+RODName.trim()+"/"+sdf2.format(ScheduledDate).toString().toUpperCase().replace("-", "")+"/"+SerialNo.add(new BigInteger("1")));
+		committeeschedule.setMeetingId(LabName.trim()+"/"+ProjectName.trim()+"/"+RODName.trim()+"/"+sdf2.format(ScheduledDate).toString().toUpperCase().replace("-", "")+"/"+(SerialNo+1));
 		return committeedao.CommitteeScheduleAddSubmit(committeeschedule);
 	}
 

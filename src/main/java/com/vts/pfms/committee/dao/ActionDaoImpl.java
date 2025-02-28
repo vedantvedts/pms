@@ -356,8 +356,9 @@ public class ActionDaoImpl implements ActionDao{
 		Query query = manager.createNativeQuery(ACTIONGENCOUNT);
 		query.setParameter("projectid",ProjectId );
 		query.setParameter("type", type);
-		BigInteger count=(BigInteger)query.getSingleResult();
-			return count.intValue();
+		Long count=(Long)query.getSingleResult();
+		
+		return count.intValue();
 	}
 	
 	@Override
@@ -1035,14 +1036,7 @@ public class ActionDaoImpl implements ActionDao{
 		query.setParameter("projectId", projectId);
 		query.setParameter("TypeOfRfa", type);
 		query.setParameter("VendorCode", vendor);
-		Object Count = (Object)query.getSingleResult();
-		Long RfaCount=0l ;
-		if(Count==null) {
-			RfaCount=0l; 
-		}else {
-			RfaCount=Long.parseLong(Count.toString());
-		}
-		return RfaCount;
+		return (Long)query.getSingleResult();
 	}
 	
 	private static final String RFAEDITDATA="SELECT rfaid,labcode,projectid,rfano,rfadate,priorityid,statement,description,reference,rfastatus,createdby,createddate,modifiedby,modifieddate,isactive,TypeOfRfa FROM pfms_rfa_action WHERE rfaid=:rfaid";
@@ -1177,24 +1171,6 @@ public class ActionDaoImpl implements ActionDao{
 		query.setParameter("EmpId", EmpId);
 		return (Object[])query.getSingleResult();
 	}
-
-    private static final String DHTDLIST="SELECT DISTINCT a.tdheadid FROM division_td a,division_group b,division_master c,employee e WHERE a.tdid=b.tdid AND b.groupid=c.groupid  AND e.DivisionId=c.DivisionId AND e.EmpId=:EmpId";
-	@Override
-	public BigInteger GetDhTdList(String EmpId) throws Exception {
-		
-		Query query = manager.createNativeQuery(DHTDLIST);
-		query.setParameter("EmpId", EmpId);
-		return (BigInteger)query.getSingleResult();
-	}
-
-	private static final String GHTDLIST="SELECT a.tdheadid FROM division_td a,division_group b WHERE a.tdid=b.tdid AND b.groupheadid=:EmpId";
-	@Override
-	public BigInteger GetGhTdList(String EmpId) throws Exception {
-		
-		Query query = manager.createNativeQuery(GHTDLIST);
-		query.setParameter("EmpId", EmpId);
-		return (BigInteger)query.getSingleResult();
-	}
 	
 	private static final String GETUSERID="SELECT DISTINCT a.AssignorId  FROM pfms_rfa_action a,pfms_rfa_action_transaction b WHERE a.RfaId=b.RfaId  AND b.RfaId=:rfa";
 	@Override
@@ -1211,18 +1187,6 @@ public class ActionDaoImpl implements ActionDao{
 		query.setParameter("rfa", rfa);
 		return query.getSingleResult().toString();
 	}
-	
-	
-
-	private static final String PDTDLIST="SELECT a.tdheadid FROM division_td a,division_group b,division_master c,project_master d,employee e WHERE d.projectdirector=e.empid AND e.divisionid=c.divisionid AND c.groupid=b.groupid AND b.tdid=a.tdid AND d.projectdirector=:EmpId";
-	@Override
-	public BigInteger GetPdTdList(String EmpId) throws Exception {
-		
-		Query query = manager.createNativeQuery(PDTDLIST);
-		query.setParameter("EmpId", EmpId);
-		return (BigInteger)query.getSingleResult();
-	}
-	
 	
 	private static final String RFAACTION="SELECT RfaAssignId,LabCode,RfaId,RfaNo,CompletionDate,Observation,Clarification,ActionRequired,EmpId,RfaStatus,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate FROM pfms_rfa_inspection WHERE rfaid=:rfa AND isactive=1";	
 	@Override
@@ -1989,8 +1953,8 @@ public class ActionDaoImpl implements ActionDao{
 		query.setParameter("ProjectId",projectId );
 		query.setParameter("Type", type);
 		query.setParameter("CommitteeShortName", committeeShortName);
-		BigInteger count=(BigInteger)query.getSingleResult();
-			return count.intValue();
+		Long count=(Long)query.getSingleResult();
+		return count.intValue();
 	}
 	
 	

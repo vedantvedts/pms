@@ -17,7 +17,7 @@ public class ServletInitializer extends SpringBootServletInitializer {
 		static Properties getProperties() 
 		{
 			Properties props = new Properties();
-			props.put("spring.config.location","file:///C:/PMS/application.properties");
+			props.put("spring.config.location","file:///D:/PMS-DG/application.properties");
 			return props;
 		}
 		
