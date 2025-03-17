@@ -88,7 +88,6 @@ public class CCMController {
 	
 	FormatConverter fc = new FormatConverter();
 	private SimpleDateFormat sdtf = fc.getSqlDateAndTimeFormat();
-	private SimpleDateFormat sdf = fc.getSqlDateFormat();
 	private SimpleDateFormat rdf = fc.getRegularDateFormat();
 	
 	@Autowired
