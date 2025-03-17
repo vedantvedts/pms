@@ -20,7 +20,7 @@
 <head>
 	<link href="${sweetalertCss}" rel="stylesheet" />
 	<script src="${sweetalertJs}"></script>
-<script src="./webjars/jquery/3.4.0/jquery.min.js"></script>
+<script src="./webjars/jquery/3.6.0/jquery.min.js"></script>
 <script src="./webjars/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet"
 	href="./webjars/bootstrap/4.0.0/css/bootstrap.min.css" />

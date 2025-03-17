@@ -61,7 +61,8 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Image;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.PfmsFileUtils;
@@ -1354,7 +1355,7 @@ public class CCMController {
 	            ccmData.setProjectCode(getCellValue(cell, df));
 	            break;
 	        case 2:
-	            if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+	            if (cell.getCellType() == CellType.STRING) {
 	                ccmData.setBudgetHeadDescription(cell.getStringCellValue());
 	            }
 	            break;
@@ -1387,9 +1388,9 @@ public class CCMController {
 
 	private String getCellValue(Cell cell, DecimalFormat df) {
 	    switch (cell.getCellType()) {
-	        case Cell.CELL_TYPE_NUMERIC:
+	        case NUMERIC:
 	            return df.format(cell.getNumericCellValue());
-	        case Cell.CELL_TYPE_STRING:
+	        case STRING:
 	            return cell.getStringCellValue();
 	        default:
 	            return null;
@@ -1398,9 +1399,9 @@ public class CCMController {
 
 	private BigDecimal parseBigDecimal(Cell cell) {
 	    switch (cell.getCellType()) {
-	        case Cell.CELL_TYPE_NUMERIC:
+	        case NUMERIC:
 	            return BigDecimal.valueOf(cell.getNumericCellValue());
-	        case Cell.CELL_TYPE_STRING:
+	        case STRING:
 	            return BigDecimal.valueOf(Double.parseDouble(cell.getStringCellValue()));
 	        default:
 	            return null;
@@ -1812,20 +1813,35 @@ public class CCMController {
 	        ImageData leftLogo = ImageDataFactory.create(imageBytes);
             ImageData rightLogo = ImageDataFactory.create(imageBytes1);
             
-	        PdfDocument pdfDocMain = new PdfDocument(new PdfReader(path+File.separator+filename+".pdf"),new PdfWriter(path+File.separator+filename+"Maintemp.pdf"));
-	        Rectangle pageSizeMain;
-	        PdfCanvas canvasMAin;
-	        int main = pdfDocMain.getNumberOfPages();
-	        for (int i = 1; i <= main; i++) 
-	        {
-	            PdfPage pageMain = pdfDocMain.getPage(i);
-	            pageSizeMain = pageMain.getPageSize();
-	            canvasMAin = new PdfCanvas(pageMain);
-	            Rectangle rectaMain=new Rectangle(54,pageSizeMain.getHeight()-34,34,33);
-	            canvasMAin.addImage(leftLogo, rectaMain, false);
-	            Rectangle rectaMain2=new Rectangle(pageSizeMain.getWidth()-64,pageSizeMain.getHeight()-34,34,33);
-	            canvasMAin.addImage(rightLogo, rectaMain2, false);
-	        }
+            PdfDocument pdfDocMain = new PdfDocument(
+            	    new PdfReader(path + File.separator + filename + ".pdf"),
+            	    new PdfWriter(path + File.separator + filename + "Maintemp.pdf")
+            	);
+
+        	Document document = new Document(pdfDocMain); // Use Document for adding images
+
+        	int main = pdfDocMain.getNumberOfPages();
+        	for (int i = 1; i <= main; i++) {
+        	    PdfPage pageMain = pdfDocMain.getPage(i);
+        	    Rectangle pageSizeMain = pageMain.getPageSize();
+        	    
+        	    // Left Logo
+        	    Image leftImage = new Image(leftLogo);
+        	    leftImage.setFixedPosition(i, 54, pageSizeMain.getHeight() - 34);
+        	    leftImage.scaleToFit(34, 33);
+        	    
+        	    // Right Logo
+        	    Image rightImage = new Image(rightLogo);
+        	    rightImage.setFixedPosition(i, pageSizeMain.getWidth() - 64, pageSizeMain.getHeight() - 34);
+        	    rightImage.scaleToFit(34, 33);
+        	    
+        	    // Add images to the document
+        	    document.add(leftImage);
+        	    document.add(rightImage);
+        	}
+
+        	// Close document
+        	document.close();
 	        pdfDocMain.close();
 	        Path pathOfFileMain= Paths.get( path+File.separator+filename+".pdf");
 	        Files.delete(pathOfFileMain);	

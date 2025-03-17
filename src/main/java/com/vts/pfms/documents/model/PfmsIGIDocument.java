@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="pfms_igi_Document")
+@Table(name="pfms_igi_document")
 public class PfmsIGIDocument implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

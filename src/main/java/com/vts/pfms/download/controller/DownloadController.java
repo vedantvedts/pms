@@ -12,13 +12,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.xml.bind.DatatypeConverter;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -757,7 +757,7 @@ public class DownloadController {
 	   
 		
 		String lablogo=LogoUtil.getLabLogoAsBase64String(LabCode);
-		byte[] imageBytes=DatatypeConverter.parseBase64Binary(lablogo);
+		byte[] imageBytes = Base64.getDecoder().decode(lablogo);
 		ByteArrayInputStream imageStream = new ByteArrayInputStream(imageBytes);
 		ByteArrayInputStream imageStream1 = new ByteArrayInputStream(imageBytes);
 		int formatP = XWPFDocument.PICTURE_TYPE_PNG;

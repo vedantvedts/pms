@@ -25,9 +25,9 @@ label{
 	var="datatablejsflash" />
 <script src="${datatablejsflash}"></script>
 
-<spring:url value="/resources/js/jszip.min.js"
+<%-- <spring:url value="/resources/js/jszip.min.js"
 	var="datatablejszip" />
-<script src="${datatablejszip}"></script>
+<script src="${datatablejszip}"></script> --%>
 
 <spring:url value="/resources/js/pdfmake.min.js"
 	var="datatablejspdfmake" />

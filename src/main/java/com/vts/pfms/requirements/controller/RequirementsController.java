@@ -1105,13 +1105,13 @@ public class RequirementsController {
 							if (sheet.getRow(i).getCell(j) != null) {
 								if (j == 1) {
 									switch (sheet.getRow(i).getCell(j).getCellType()) {
-									case Cell.CELL_TYPE_BLANK:
+									case BLANK:
 										break;
-									case Cell.CELL_TYPE_NUMERIC:
+									case NUMERIC:
 										iA.setAbbreviations(String
 												.valueOf((long) sheet.getRow(i).getCell(j).getNumericCellValue()));
 										break;
-									case Cell.CELL_TYPE_STRING:
+									case STRING:
 										iA.setAbbreviations(sheet.getRow(i).getCell(j).getStringCellValue());
 										break;
 									}
@@ -1119,13 +1119,13 @@ public class RequirementsController {
 
 								if (j == 2) {
 									switch (sheet.getRow(i).getCell(j).getCellType()) {
-									case Cell.CELL_TYPE_BLANK:
+									case BLANK:
 										break;
-									case Cell.CELL_TYPE_NUMERIC:
+									case NUMERIC:
 										iA.setMeaning(String
 												.valueOf((long) sheet.getRow(i).getCell(j).getNumericCellValue()));
 										break;
-									case Cell.CELL_TYPE_STRING:
+									case STRING:
 										iA.setMeaning(sheet.getRow(i).getCell(j).getStringCellValue());
 										break;
 									}
@@ -1480,7 +1480,7 @@ public class RequirementsController {
 
 	private static boolean isRowEmpty(Row row) {
 		for (Cell cell : row) {
-			if (cell.getCellTypeEnum() != CellType.BLANK) {
+			if (cell.getCellType() != CellType.BLANK) {
 				return false;
 			}
 		}

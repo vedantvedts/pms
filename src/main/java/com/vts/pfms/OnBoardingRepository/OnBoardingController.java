@@ -139,24 +139,24 @@ public class OnBoardingController {
 					                	if(sheet.getRow(i).getCell(j)!=null) {
 					                		if(j==1) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	dgm.setGroupCode(String.valueOf((long) sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	dgm.setGroupCode(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 							                	}
 					                		}
 					                		if(j==2) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	 dgm.setGroupName(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	 break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	 dgm.setGroupName(sheet.getRow(i).getCell(j).getStringCellValue().toString());
 					                            	 break;
 							                	}
@@ -263,24 +263,24 @@ public class OnBoardingController {
 					                	if(sheet.getRow(i).getCell(j)!=null) {
 					                		if(j==1) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	dmo.setDivisionCode(String.valueOf((long) sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	dmo.setDivisionCode(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 							                	}
 					                		}
 					                		if(j==2) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	 dmo.setDivisionName(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	 break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	 dmo.setDivisionName(sheet.getRow(i).getCell(j).getStringCellValue().toString());
 					                            	 break;
 							                	}
@@ -405,84 +405,84 @@ public class OnBoardingController {
 					                	if(sheet.getRow(i).getCell(j)!=null) {
 					                		if(j==1) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	emp.setEmpNo(String.valueOf((long) sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	emp.setEmpNo(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 							                	}
 					                		}
 					                		if(j==2) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	 emp.setEmpName(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	 break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	 emp.setEmpName( sheet.getRow(i).getCell(j).getStringCellValue().toString());
 					                            	 break;
 							                	}
 					                		}
 					                		if(j==3) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	emp.setExtNo(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	emp.setExtNo(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 							                	}
 					                		}
 					                		if(j==4) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	emp.setMobileNo(Long.parseLong(NumberToTextConverter.toText(sheet.getRow(i).getCell(j).getNumericCellValue())));
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	emp.setMobileNo(Long.parseLong(sheet.getRow(i).getCell(j).getStringCellValue()));
 					                            	break;
 							                	}
 					                		}
 					                		if(j==5) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	emp.setEmail(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	emp.setEmail(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 					                			}
 					                		}
 					                		if(j==6) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	emp.setDronaEmail(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	emp.setDronaEmail(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 					                			}
 					                		}
 					                		if(j==7) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	emp.setInternetEmail(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	emp.setInternetEmail(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 					                			}
@@ -612,36 +612,36 @@ public class OnBoardingController {
 					                	if(sheet.getRow(i).getCell(j)!=null) {
 					                		if(j==1) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	protype.setProjectCode(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	protype.setProjectCode(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 							                	}
 					                		}
 					                		if(j==2) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	 protype.setProjectName(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	 break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	 protype.setProjectName( sheet.getRow(i).getCell(j).getStringCellValue().toString());
 					                            	 break;
 							                	}
 					                		}
 					                		if(j==3) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	protype.setProjectDescription(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	protype.setProjectDescription(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 							                	}
@@ -649,48 +649,48 @@ public class OnBoardingController {
 					                		
 					                		if(j==4) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	protype.setUnitCode(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	protype.setUnitCode(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 							                	}
 					                		}
 					                		if(j==5) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	protype.setSanctionNo(NumberToTextConverter.toText((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	protype.setSanctionNo(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 							                	}
 					                		}
 					                		if(j==6) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	protype.setTotalSanctionCost(sheet.getRow(i).getCell(j).getNumericCellValue());
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	protype.setTotalSanctionCost(Double.parseDouble(sheet.getRow(i).getCell(j).getStringCellValue()));
 					                            	break;
 					                			}
 					                		}
 					                		if(j==7) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	protype.setSanctionCostFE(sheet.getRow(i).getCell(j).getNumericCellValue());
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	protype.setSanctionCostFE(Double.parseDouble(sheet.getRow(i).getCell(j).getStringCellValue()));
 					                            	break;
 					                			}
@@ -698,48 +698,48 @@ public class OnBoardingController {
 					                		
 					                		if(j==8) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	protype.setLabParticipating(String.valueOf(NumberToTextConverter.toText((long)sheet.getRow(i).getCell(j).getNumericCellValue())));
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	protype.setLabParticipating(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 							                	}
 					                		}
 					                		if(j==9) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	protype.setScope(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	protype.setScope(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 					                			}
 					                		}
 					                		if(j==10) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	protype.setObjective(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	protype.setObjective(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 					                			}
 					                		}
 					                		if(j==11) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	protype.setDeliverable(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	protype.setDeliverable(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 					                			}
@@ -905,84 +905,84 @@ public class OnBoardingController {
 					                	if(sheet.getRow(i).getCell(j)!=null) {
 					                		if(j==1) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	actionmain.setActionItem(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	actionmain.setActionItem(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 							                	}
 					                		}
 					                		if(j==2){
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	actionmain.setProjectId(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	actionmain.setProjectId(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 							                	}
 					                		}
 					                		if(j==3) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	actionmain.setType(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	actionmain.setType(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 							                	}
 					                		}
 					                		if(j==4) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	actionmain.setActionDate(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	actionmain.setActionDate(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 							                	}
 					                		}
 					                		if(j==5) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	actionmain.setPDCDate(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	actionmain.setPDCDate(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 							                	}
 					                		}
 					                		if(j==6) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	actionmain.setPriority(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	actionmain.setPriority(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 							                	}
 					                		}
 					                		if(j==7) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
+					                            case BLANK:
 					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
+					                            case NUMERIC:
 					                            	actionmain.setCategory(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
+					                            case STRING:
 					                            	actionmain.setCategory(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 							                	}
@@ -1143,12 +1143,12 @@ public class OnBoardingController {
 					                for(int j=1;j<cellcount;j++){
 					                	if(j==1) {
 				                			switch (sheet.getRow(i).getCell(j).getCellType()){
-				                            case Cell.CELL_TYPE_BLANK:
+				                            case BLANK:
 				                            	break;
-				                            case Cell.CELL_TYPE_NUMERIC:
+				                            case NUMERIC:
 				                            	UserManageAdd.setUserName(NumberToTextConverter.toText((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 				                            	break;
-				                            case Cell.CELL_TYPE_STRING:
+				                            case STRING:
 				                            	UserManageAdd.setUserName(sheet.getRow(i).getCell(j).getStringCellValue());
 				                            	break;
 						                	}
@@ -1156,13 +1156,13 @@ public class OnBoardingController {
 					                	if(j==3) {
 					                		
 				                			switch (sheet.getRow(i).getCell(j).getCellType()){
-				                            case Cell.CELL_TYPE_BLANK:
+				                            case BLANK:
 				                            	break;
-				                            case Cell.CELL_TYPE_NUMERIC:
+				                            case NUMERIC:
 				                            	String logintype=NumberToTextConverter.toText((long)sheet.getRow(i).getCell(j).getNumericCellValue());
 				                            	UserManageAdd.setLoginType(logintype);
 				                            	break;
-				                            case Cell.CELL_TYPE_STRING:
+				                            case STRING:
 				                            	UserManageAdd.setLoginType(sheet.getRow(i).getCell(j).getStringCellValue());
 				                            	break;
 						                	}
@@ -1170,13 +1170,13 @@ public class OnBoardingController {
 					                	if(j==2) {
 					                		
 				                			switch (sheet.getRow(i).getCell(j).getCellType()){
-				                            case Cell.CELL_TYPE_BLANK:
+				                            case BLANK:
 				                            	break;
-				                            case Cell.CELL_TYPE_NUMERIC:
+				                            case NUMERIC:
 				                            	String empno=NumberToTextConverter.toText((long)sheet.getRow(i).getCell(j).getNumericCellValue());
 				                            	UserManageAdd.setEmployee(empno);
 				                            	break;
-				                            case Cell.CELL_TYPE_STRING:
+				                            case STRING:
 				                            	UserManageAdd.setEmployee(sheet.getRow(i).getCell(j).getStringCellValue());
 				                            	break;
 						                	}

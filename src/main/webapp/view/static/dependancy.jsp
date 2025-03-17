@@ -7,7 +7,7 @@
 <meta charset="ISO-8859-1">
 
 <!--JQUERY JS  -->
-<script src="./webjars/jquery/3.4.0/jquery.min.js"></script>
+<script src="./webjars/jquery/3.6.0/jquery.min.js"></script>
 
 <!--BootStrap Bundle JS  -->
 <script src="./webjars/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
@@ -152,12 +152,13 @@
 <link href="${bootstraptablecss}" rel="stylesheet" /> 
 
 <spring:url value="/resources/dataTables.bootstrap4.min.css" var="DataTableCss1" />
-      <link href="${DataTableCss1}" rel="stylesheet" />
-     <spring:url value="/resources/jquery.dataTables.min.js" var="DataTableJjs1" /> 
-     <script src="${DataTableJjs1}"></script>
+<link href="${DataTableCss1}" rel="stylesheet" />
+
+<spring:url value="/resources/jquery.dataTables.min.js" var="DataTableJjs1" /> 
+<script src="${DataTableJjs1}"></script>
         
-     <spring:url value="/resources/dataTables.bootstrap4.min.js" var="DataTablejs1" />   
-          <script src="${DataTablejs1}"></script> 
+<spring:url value="/resources/dataTables.bootstrap4.min.js" var="DataTablejs1" />   
+<script src="${DataTablejs1}"></script> 
 
 <%-- 
 <spring:url value="/resources/js/master.js" var="Masterjs" />

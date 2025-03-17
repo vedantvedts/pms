@@ -6480,7 +6480,7 @@ public class ProjectController
 	}
 	private static boolean isRowEmpty(Row row) {
 		for (Cell cell : row) {
-			if (cell.getCellTypeEnum() != CellType.BLANK) {
+			if (cell.getCellType() != CellType.BLANK) {
 				return false;
 			}
 		}
@@ -8238,11 +8238,11 @@ public class ProjectController
 	//						    		 if(sheet.getRow(i).getCell(j)!=null) {
 	//						    			 if(j==1) {
 	//						    				 switch(sheet.getRow(i).getCell(j).getCellType()) {
-	//						    				 case Cell.CELL_TYPE_BLANK:break;
-	//						    				 case Cell.CELL_TYPE_NUMERIC:
+	//						    				 case BLANK:break;
+	//						    				 case NUMERIC:
 	//						    					 iA.setAbbreviations(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 	//						    					 break;
-	//						    				 case Cell.CELL_TYPE_STRING:
+	//						    				 case STRING:
 	//					                            	iA.setAbbreviations(sheet.getRow(i).getCell(j).getStringCellValue());
 	//					                            	break;	 
 	//						    				 }
@@ -8250,11 +8250,11 @@ public class ProjectController
 	//						    			 
 	//						    			 if(j==2) {
 	//						    				 switch(sheet.getRow(i).getCell(j).getCellType()) {
-	//						    				 case Cell.CELL_TYPE_BLANK:break;
-	//						    				 case Cell.CELL_TYPE_NUMERIC:
+	//						    				 case BLANK:break;
+	//						    				 case NUMERIC:
 	//						    					 iA.setMeaning(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 	//						    					 break;
-	//						    				 case Cell.CELL_TYPE_STRING:
+	//						    				 case STRING:
 	//					                            	iA.setMeaning(sheet.getRow(i).getCell(j).getStringCellValue());
 	//					                            	break;	 
 	//						    				 }
@@ -8357,11 +8357,11 @@ public class ProjectController
 							if(sheet.getRow(i).getCell(j)!=null) {
 								if(j==1) {
 									switch(sheet.getRow(i).getCell(j).getCellType()) {
-									case Cell.CELL_TYPE_BLANK:break;
-									case Cell.CELL_TYPE_NUMERIC:
+									case BLANK:break;
+									case NUMERIC:
 										abbrevation.setAbbreviations(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 										break;
-									case Cell.CELL_TYPE_STRING:
+									case STRING:
 										abbrevation.setAbbreviations(sheet.getRow(i).getCell(j).getStringCellValue());
 										break;	 
 									}
@@ -8369,11 +8369,11 @@ public class ProjectController
 
 								if(j==2) {
 									switch(sheet.getRow(i).getCell(j).getCellType()) {
-									case Cell.CELL_TYPE_BLANK:break;
-									case Cell.CELL_TYPE_NUMERIC:
+									case BLANK:break;
+									case NUMERIC:
 										abbrevation.setMeaning(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 										break;
-									case Cell.CELL_TYPE_STRING:
+									case STRING:
 										abbrevation.setMeaning(sheet.getRow(i).getCell(j).getStringCellValue());
 										break;	 
 									}
@@ -8603,24 +8603,24 @@ public class ProjectController
 	//										
 	//										if(j==1) {
 	//											switch (sheet.getRow(i).getCell(j).getCellType()) {
-	//											case Cell.CELL_TYPE_BLANK:
+	//											case BLANK:
 	//												break;
-	//											case Cell.CELL_TYPE_NUMERIC:
+	//											case NUMERIC:
 	//												ra.setAcronyms(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 	//												break;
-	//											case Cell.CELL_TYPE_STRING:
+	//											case STRING:
 	//												ra.setAcronyms(sheet.getRow(i).getCell(j).getStringCellValue());
 	//												break;
 	//											}
 	//										}
 	//										if(j==2) {
 	//											switch (sheet.getRow(i).getCell(j).getCellType()){
-	//				                            case Cell.CELL_TYPE_BLANK:
+	//				                            case BLANK:
 	//				                            	break;
-	//				                            case Cell.CELL_TYPE_NUMERIC:
+	//				                            case NUMERIC:
 	//				                            	 ra.setDefinition(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 	//				                            	 break;
-	//				                            case Cell.CELL_TYPE_STRING:
+	//				                            case STRING:
 	//				                            	 ra.setDefinition(sheet.getRow(i).getCell(j).getStringCellValue().toString());
 	//				                            	 break;
 	//						                	}
@@ -8742,24 +8742,24 @@ public class ProjectController
 
 									if(j==1) {
 										switch (sheet.getRow(i).getCell(j).getCellType()) {
-										case Cell.CELL_TYPE_BLANK:
+										case BLANK:
 											break;
-										case Cell.CELL_TYPE_NUMERIC:
+										case NUMERIC:
 											ra.setAcronyms(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
-										case Cell.CELL_TYPE_STRING:
+										case STRING:
 											ra.setAcronyms(sheet.getRow(i).getCell(j).getStringCellValue());
 											break;
 										}
 									}
 									if(j==2) {
 										switch (sheet.getRow(i).getCell(j).getCellType()){
-										case Cell.CELL_TYPE_BLANK:
+										case BLANK:
 											break;
-										case Cell.CELL_TYPE_NUMERIC:
+										case NUMERIC:
 											ra.setDefinition(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
-										case Cell.CELL_TYPE_STRING:
+										case STRING:
 											ra.setDefinition(sheet.getRow(i).getCell(j).getStringCellValue().toString());
 											break;
 										}
@@ -8884,24 +8884,24 @@ public class ProjectController
 	//										
 	//										if(j==1) {
 	//											switch (sheet.getRow(i).getCell(j).getCellType()) {
-	//											case Cell.CELL_TYPE_BLANK:
+	//											case BLANK:
 	//												break;
-	//											case Cell.CELL_TYPE_NUMERIC:
+	//											case NUMERIC:
 	//												ra.setKeyEffectiveness(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 	//												break;
-	//											case Cell.CELL_TYPE_STRING:
+	//											case STRING:
 	//												ra.setKeyEffectiveness(sheet.getRow(i).getCell(j).getStringCellValue());
 	//												break;
 	//											}
 	//										}
 	//										if(j==2) {
 	//											switch (sheet.getRow(i).getCell(j).getCellType()){
-	//				                            case Cell.CELL_TYPE_BLANK:
+	//				                            case BLANK:
 	//				                            	break;
-	//				                            case Cell.CELL_TYPE_NUMERIC:
+	//				                            case NUMERIC:
 	//				                            	 ra.setKeyValues(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 	//				                            	 break;
-	//				                            case Cell.CELL_TYPE_STRING:
+	//				                            case STRING:
 	//				                            	 ra.setKeyValues(sheet.getRow(i).getCell(j).getStringCellValue().toString());
 	//				                            	 break;
 	//						                	}
@@ -9025,24 +9025,24 @@ public class ProjectController
 
 									if(j==1) {
 										switch (sheet.getRow(i).getCell(j).getCellType()) {
-										case Cell.CELL_TYPE_BLANK:
+										case BLANK:
 											break;
-										case Cell.CELL_TYPE_NUMERIC:
+										case NUMERIC:
 											ra.setKeyEffectiveness(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
-										case Cell.CELL_TYPE_STRING:
+										case STRING:
 											ra.setKeyEffectiveness(sheet.getRow(i).getCell(j).getStringCellValue());
 											break;
 										}
 									}
 									if(j==2) {
 										switch (sheet.getRow(i).getCell(j).getCellType()){
-										case Cell.CELL_TYPE_BLANK:
+										case BLANK:
 											break;
-										case Cell.CELL_TYPE_NUMERIC:
+										case NUMERIC:
 											ra.setKeyValues(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
-										case Cell.CELL_TYPE_STRING:
+										case STRING:
 											ra.setKeyValues(sheet.getRow(i).getCell(j).getStringCellValue().toString());
 											break;
 										}

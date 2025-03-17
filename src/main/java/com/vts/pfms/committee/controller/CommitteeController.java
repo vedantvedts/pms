@@ -44,15 +44,12 @@ import jakarta.mail.internet.MimeMultipart;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.xml.bind.DatatypeConverter;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFFooter;
-import org.apache.poi.xwpf.usermodel.XWPFHeader;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
@@ -77,9 +74,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailAuthenticationException;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -99,15 +93,10 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
 import com.google.gson.Gson;
-import com.ibm.icu.math.BigDecimal;
-import com.ibm.icu.text.DecimalFormat;
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
-import com.itextpdf.io.font.FontConstants;
-import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.io.font.constants.StandardFonts;
-import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.geom.Rectangle;
@@ -124,14 +113,9 @@ import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.WriterProperties;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
-import com.itextpdf.kernel.pdf.extgstate.PdfExtGState;
-import com.itextpdf.layout.Canvas;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Paragraph;
 
 import com.itextpdf.layout.font.FontProvider;
-import com.itextpdf.layout.property.TextAlignment;
-import com.itextpdf.layout.property.VerticalAlignment;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.Zipper;
@@ -172,10 +156,6 @@ import com.vts.pfms.print.controller.PrintController;
 import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.utils.PMSFileUtils;
 import com.vts.pfms.utils.PMSLogoUtil;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
-
-import org.apache.poi.util.Units;
-import org.apache.poi.wp.usermodel.HeaderFooterType;
 
 @Controller
 public class CommitteeController {
@@ -7190,7 +7170,7 @@ public class CommitteeController {
 								// Add content on the right side
 
 								canvas.beginText()
-								.setFontAndSize(PdfFontFactory.createFont(FontConstants.TIMES_ROMAN), 10)
+								.setFontAndSize(PdfFontFactory.createFont(StandardFonts.TIMES_ROMAN), 10)
 								.moveText(pageSize.getWidth()-200 , pageSize.getHeight() - 10)
 								.showText("Attachment to MoM - "+no[2]+"/"+(service.MeetingNo(committeescheduleeditdata)>0?service.MeetingNo(committeescheduleeditdata):"")+"/"+projectdetails[4].toString())
 								.endText();
@@ -9599,7 +9579,7 @@ public class CommitteeController {
 								// Add content on the right side
 
 								canvas.beginText()
-								.setFontAndSize(PdfFontFactory.createFont(FontConstants.TIMES_ROMAN), 10)
+								.setFontAndSize(PdfFontFactory.createFont(StandardFonts.TIMES_ROMAN), 10)
 								.moveText(pageSize.getWidth()-200 , pageSize.getHeight() - 10)
 								.showText("Attachment to MoM - "+no[2]+"/"+(service.MeetingNo(committeescheduleeditdata)>0?service.MeetingNo(committeescheduleeditdata):"")+"/"+projectdetails[4].toString())
 								.endText();

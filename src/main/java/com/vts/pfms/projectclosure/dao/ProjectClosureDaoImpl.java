@@ -182,7 +182,7 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 			+ "	(SELECT designation FROM pfms_closure_trans t , employee e,employee_desig des WHERE e.EmpId = t.ActionBy AND e.desigid=des.desigid AND t.ClosureStatusCode = b.ClosureStatusCode AND t.ClosureId=d.ClosureId ORDER BY t.ClosureTransId DESC LIMIT 1) AS 'Designation',\r\n"
 			+ "	MAX(a.ActionDate) AS ActionDate,a.Remarks,b.ClosureStatus,b.ClosureStatusColor,b.ClosureStatusCode\r\n"
 			+ "	FROM pfms_closure_trans a,pfms_closure_approval_status b,employee c,pfms_closure d\r\n"
-			+ "	WHERE a.ClosureId=d.ClosureId AND a.ClosureStatusCode =b.ClosureStatusCode  AND a.Actionby=c.EmpId AND b.ClosureForward=:ClosureForward AND a.ClosureForm=:ClosureForm AND d.ClosureId=:ClosureId GROUP BY b.ClosureStatusCode ORDER BY a.ClosureTransId ASC";
+			+ "	WHERE a.ClosureId=d.ClosureId AND a.ClosureStatusCode =b.ClosureStatusCode  AND a.Actionby=c.EmpId AND b.ClosureForward=:ClosureForward AND a.ClosureForm=:ClosureForm AND d.ClosureId=:ClosureId GROUP BY b.ClosureStatusCode,a.ClosureTransId,b.ClosureStatus,b.ClosureStatusColor ORDER BY a.ClosureTransId ASC";
 	@Override
 	public List<Object[]> projectClosureApprovalDataByType(String closureId, String closureForward, String closureForm) throws Exception{
 
@@ -607,7 +607,7 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 	public ProjectClosureCheckList getProjectClosureCheckListByProjectId(String closureId) throws Exception {
 		
 		try {
-			Query query = manager.createQuery("FROM ProjectClosureCheckList WHERE ClosureId=:ClosureId AND IsActive=1");
+			Query query = manager.createQuery("FROM ProjectClosureCheckList a WHERE projectClosure.ClosureId=:ClosureId AND a.IsActive=1");
 			query.setParameter("ClosureId", Long.parseLong(closureId));
 			List<ProjectClosureCheckList> list = (List<ProjectClosureCheckList>)query.getResultList();
 			if(list.size()>0) {

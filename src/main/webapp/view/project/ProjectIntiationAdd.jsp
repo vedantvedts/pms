@@ -5,12 +5,12 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<spring:url value="/resources/css/Multiselect1.css" var="Multiselect1Css" />     
-<link href="${Multiselect1Css}" rel="stylesheet" />
+<%-- <spring:url value="/resources/css/Multiselect1.css" var="Multiselect1Css" />     
+<link href="${Multiselect1Css}" rel="stylesheet" /> --%>
 <jsp:include page="../static/header.jsp"></jsp:include>
 
- <spring:url value="/resources/js/Multiselect1.js" var="Multiselect1js" />  
-<script src="${Multiselect1js}"></script> 
+<%--  <spring:url value="/resources/js/Multiselect1.js" var="Multiselect1js" />  
+<script src="${Multiselect1js}"></script>  --%>
 <%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
 <title>PROJECT INT  ADD</title>
 <style type="text/css">

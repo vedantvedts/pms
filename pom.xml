@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.1</version>
+		<version>3.3.9</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.vts</groupId>
@@ -100,7 +100,7 @@
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>jquery</artifactId>
-			<version>3.4.0</version>
+			<version>3.6.0</version>
 		</dependency>
 		
 		<dependency>
@@ -119,43 +119,45 @@
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.8.5</version>
 		</dependency>
 
-		<dependency>
+		<!--<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
 			<version>0.9.1</version>
-		</dependency>
+		</dependency>-->
 		
-		<dependency>
+		<!--<dependency>
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
 			<artifactId>jackson-dataformat-yaml</artifactId>
-		</dependency>
+		</dependency>-->
 
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
-			<version>3.17</version>
+			<version>5.3.0</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
-			<version>3.17</version>
+			<version>5.3.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.ibm.icu</groupId>
 			<artifactId>icu4j</artifactId>
-			<version>65.1</version>
+			<version>76.1</version>
 		</dependency>
 
- 		<dependency>
-			<groupId>org.codehaus.groovy</groupId>
-	        <artifactId>groovy-all</artifactId>
-	        <version>2.4.10</version>
-     	</dependency>
+ 		<!-- https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-all -->
+		<dependency>
+		    <groupId>org.codehaus.groovy</groupId>
+		    <artifactId>groovy-all</artifactId>
+		    <version>3.0.23</version>
+		    <type>pom</type>
+		</dependency>
+
      
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -166,7 +168,7 @@
 	    <dependency>
 	        <groupId>com.itextpdf</groupId>
 	        <artifactId>itext7-core</artifactId>
-	        <version>7.1.12</version>
+	        <version>7.2.5</version>
 	        <type>pom</type>
 	    </dependency>
 
@@ -174,44 +176,43 @@
 	    <dependency>
 		    <groupId>com.itextpdf</groupId>
 		    <artifactId>html2pdf</artifactId>
-		    <version>3.0.1</version>
+		    <version>4.0.5</version>
 		</dependency>
 		
 	    <dependency>
 		    <groupId>net.sourceforge.htmlunit</groupId>
 		    <artifactId>htmlunit</artifactId>
-		    <version>2.41.0</version>
 	    </dependency>
 
-		<dependency>
+		<!--<dependency>
 		    <groupId>org.xhtmlrenderer</groupId>
 		    <artifactId>flying-saucer-pdf-itext5</artifactId>
 		    <version>9.0.1</version>
-	    </dependency>
+	    </dependency>-->
 
 		<!-- https://mvnrepository.com/artifact/net.lingala.zip4j/zip4j -->
 		<dependency>
 		    <groupId>net.lingala.zip4j</groupId>
 		    <artifactId>zip4j</artifactId>
-		    <version>2.7.0</version>
+		    <version>2.11.5</version>
 		</dependency>
 
 		<dependency>
 		    <groupId>commons-io</groupId>
 		    <artifactId>commons-io</artifactId>
-		    <version>2.8.0</version>
+		    <version>2.18.0</version>
 		</dependency>
 		
-		<dependency>
+		<!--<dependency>
 		    <groupId>org.apache.pdfbox</groupId>
 		    <artifactId>pdfbox</artifactId>
-		    <version>2.0.24</version>
-		</dependency>
+		    <version>3.0.4</version>
+		</dependency>-->
     
 	    <dependency>  
 	    	<groupId>org.springframework.security</groupId>  
 	    	<artifactId>spring-security-taglibs</artifactId>  
-	    	<version>5.0.4.RELEASE</version>  
+	    	<!--<version>5.0.4.RELEASE</version>-->  
 		</dependency>  
     
    		 <dependency>
@@ -230,13 +231,13 @@
 	    <dependency>
 	        <groupId>jakarta.servlet.jsp.jstl</groupId>
 	        <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
-	        <version>2.0.0</version>
+	        <!--<version>2.0.0</version>-->
 	    </dependency>
 	
 	    <dependency>
 	        <groupId>org.glassfish.web</groupId>
 	        <artifactId>jakarta.servlet.jsp.jstl</artifactId>
-	        <version>2.0.0</version>
+	        <!--<version>2.0.0</version>-->
 	    </dependency>
     
 		<dependency>
@@ -250,7 +251,7 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 			
-		<dependency>
+		<!--<dependency>
     		<groupId>org.springframework.cloud</groupId>
 		    <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
 		    <version>2.2.8.RELEASE</version>
@@ -260,7 +261,7 @@
     		<groupId>org.springframework.cloud</groupId>
     		<artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
     		<version>2.2.8.RELEASE</version>
-		</dependency> 
+		</dependency>--> 
     
     	<dependency>
 		    <groupId>javax.xml.bind</groupId>
@@ -288,11 +289,11 @@
 		</dependency>
 		
 		
-		<dependency>
+		<!--<dependency>
 		    <groupId>org.webjars.bower</groupId>
 		    <artifactId>summernote</artifactId>
 		    <version>0.8.12</version>
-		</dependency>
+		</dependency>-->
 
 	</dependencies>
 	
@@ -314,8 +315,15 @@
 			    <groupId>org.springframework.boot</groupId>
 			    <artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-		</plugins>
-	</build>
+
+        <plugin>
+            <groupId>org.sonarsource.scanner.maven</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+            <version>3.11.0.3920</version>
+        </plugin>
+    </plugins>
+</build>
+
 	<repositories>
 		<repository>
 			<id>spring-milestones</id>

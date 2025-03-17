@@ -514,14 +514,14 @@ public class PrintDaoImpl implements PrintDao {
 		
 	}
     
-    private static final String NEXTSCHEDULEFROZEN="SELECT briefingpaperfrozen FROM  committee_schedule  where scheduleid=:schduleid ";	
+    private static final String NEXTSCHEDULEFROZEN="SELECT briefingpaperfrozen FROM committee_schedule where scheduleid=:schduleid ";	
     @Override
 	public String getNextScheduleFrozen(long schduleid) throws Exception 
 	{
 		Query query=manager.createNativeQuery(NEXTSCHEDULEFROZEN);
 		query.setParameter("schduleid", schduleid);
-		String getNextScheduleFrozen=(String)query.getSingleResult();
-		return getNextScheduleFrozen;
+		Object result = query.getSingleResult();
+	    return result != null ? result.toString() : null;
 	}
 
     private static final String UPDATEFROZEN="update committee_schedule set BriefingPaperFrozen='Y',PresentationFrozen='Y',MinutesFrozen='Y' where scheduleid=:schduleid";

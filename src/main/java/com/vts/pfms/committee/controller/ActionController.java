@@ -81,9 +81,7 @@ import com.google.gson.Gson;
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
-import com.itextpdf.io.font.FontConstants;
-import com.itextpdf.io.image.ImageData;
-import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.geom.Rectangle;
@@ -3621,7 +3619,7 @@ public class ActionController {
 	        		            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
 	        		            //canvas.addImage(rightLogo, recta2, false);
 	        		            canvas.beginText().setFontAndSize(
-	        		                PdfFontFactory.createFont(FontConstants.HELVETICA), 15)
+	        		                PdfFontFactory.createFont(StandardFonts.HELVETICA), 15)
 	        		                .moveText(pageSize.getWidth() / 3, pageSize.getHeight() - 45)
 	        		                 .showText("Closure Report (RFA)")
 	        		                  .endText();
@@ -3659,7 +3657,7 @@ public class ActionController {
 	        		            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
 	        		            //canvas.addImage(rightLogo, recta2, false);
 	        		            canvas.beginText().setFontAndSize(
-	        		                PdfFontFactory.createFont(FontConstants.HELVETICA), 20)
+	        		                PdfFontFactory.createFont(StandardFonts.HELVETICA), 20)
 	        		                .moveText(pageSize.getWidth() / 3  , pageSize.getHeight() - 25)
 	        		                 .showText("RFA Attachment")
 	        		                  .endText();
@@ -3697,7 +3695,7 @@ public class ActionController {
 	        		            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
 	        		            //canvas.addImage(rightLogo, recta2, false);
 	        		            canvas.beginText().setFontAndSize(
-	        		                PdfFontFactory.createFont(FontConstants.HELVETICA), 20)
+	        		                PdfFontFactory.createFont(StandardFonts.HELVETICA), 20)
 	        		                .moveText(pageSize.getWidth() / 3, pageSize.getHeight() - 25)
 	        		                 .showText("Closure Attachment")
 	        		                  .endText();
@@ -3862,7 +3860,7 @@ public class ActionController {
 			        		            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
 			        		            //canvas.addImage(rightLogo, recta2, false);
 			        		            canvas.beginText().setFontAndSize(
-			        		                PdfFontFactory.createFont(FontConstants.HELVETICA), 20)
+			        		                PdfFontFactory.createFont(StandardFonts.HELVETICA), 20)
 			        		                .moveText(pageSize.getWidth() / 3  , pageSize.getHeight() - 25)
 			        		                 .showText("RFA Attachment")
 			        		                  .endText();
@@ -3900,7 +3898,7 @@ public class ActionController {
 			        		            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
 			        		            //canvas.addImage(rightLogo, recta2, false);
 			        		            canvas.beginText().setFontAndSize(
-			        		                PdfFontFactory.createFont(FontConstants.HELVETICA), 20)
+			        		                PdfFontFactory.createFont(StandardFonts.HELVETICA), 20)
 			        		                .moveText(pageSize.getWidth() / 3, pageSize.getHeight() - 25)
 			        		                 .showText("Closure Attachment")
 			        		                  .endText();

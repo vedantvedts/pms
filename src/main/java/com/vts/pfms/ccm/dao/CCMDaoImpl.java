@@ -47,8 +47,8 @@ public class CCMDaoImpl implements CCMDao{
 	@Override
 	public List<CommitteeSchedule> getScheduleListByYear(String year) throws Exception {
 		try {
-			Query query = manager.createQuery("FROM CommitteeSchedule WHERE SUBSTR(ScheduleDate,1,4)=:Year AND ScheduleType='C' AND IsActive=1");
-			query.setParameter("Year", year);
+			Query query = manager.createQuery("FROM CommitteeSchedule WHERE YEAR(ScheduleDate)=:Year AND ScheduleType='C' AND IsActive=1");
+			query.setParameter("Year", Integer.parseInt(year));
 			return (List<CommitteeSchedule>)query.getResultList();
 			
 		}catch (Exception e) {

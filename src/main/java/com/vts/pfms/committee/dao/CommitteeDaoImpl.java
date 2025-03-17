@@ -267,11 +267,22 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] CommitteeDetails(String committeeid) throws Exception
 	{
-		Query query=manager.createNativeQuery(COMMITTEEDETAILS);
-		query.setParameter("committeeid", committeeid);		
-		Object[] CommitteeDetails = (Object[])query.getResultList().get(0);		
-		return CommitteeDetails;
+		try {
+			Query query=manager.createNativeQuery(COMMITTEEDETAILS);
+			query.setParameter("committeeid", committeeid);		
+			List<Object[]> list = (List<Object[]>)query.getResultList();	
+			if(list!=null && list.size()>0) {
+				return list.get(0);
+			}else {
+				return null;
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
 	}
+	
 	@Override
 	public Long CommitteeEditSubmit(Committee committeemodel) throws Exception
 	{

@@ -1049,12 +1049,12 @@ public class PFTSController {
 									if(cell!=null) {
 										if(j==1) {
 											switch(sheet.getRow(i).getCell(j).getCellType()) {
-											case Cell.CELL_TYPE_BLANK:
+											case BLANK:
 												break;
-											case Cell.CELL_TYPE_NUMERIC:
+											case NUMERIC:
 												pf.setDemandNo(df.format(sheet.getRow(i).getCell(j).getNumericCellValue()));
 												break;
-											case Cell.CELL_TYPE_STRING:
+											case STRING:
 												pf.setDemandNo(sheet.getRow(i).getCell(j).getStringCellValue());
 												break;	 
 											}
@@ -1064,15 +1064,15 @@ public class PFTSController {
 											System.out.println("sheet.getRow(i).getCell(j)"+sheet.getRow(i).getCell(j));
 											
 											switch(sheet.getRow(i).getCell(j).getCellType()) {
-											case Cell.CELL_TYPE_BLANK:
+											case BLANK:
 												break;
-											case Cell.CELL_TYPE_NUMERIC:
+											case NUMERIC:
 												 if (DateUtil.isCellDateFormatted(sheet.getRow(i).getCell(j))) {
 											            java.util.Date date = sheet.getRow(i).getCell(j).getDateCellValue();
 											            pf.setDemandDate(new java.sql.Date(date.getTime()));
 											        }
 												break;
-											case Cell.CELL_TYPE_STRING:
+											case STRING:
 												pf.setDemandDate(new java.sql.Date(inputFormat.parse((sheet.getRow(i).getCell(j).getStringCellValue())).getTime()));
 												break;	 
 											
@@ -1081,12 +1081,12 @@ public class PFTSController {
 										
 										if(j==3) {
 											switch(sheet.getRow(i).getCell(j).getCellType()) {
-											case Cell.CELL_TYPE_BLANK:
+											case BLANK:
 												break;
-											case Cell.CELL_TYPE_NUMERIC:
+											case NUMERIC:
 												pf.setEstimatedCost(sheet.getRow(i).getCell(j).getNumericCellValue());
 												break;
-											case Cell.CELL_TYPE_STRING:
+											case STRING:
 												pf.setEstimatedCost(Double.parseDouble(sheet.getRow(i).getCell(j).getStringCellValue()));
 												break;	 
 											}
@@ -1094,11 +1094,11 @@ public class PFTSController {
 										
 										if(j==4) {
 											switch(sheet.getRow(i).getCell(j).getCellType()) {
-											case Cell.CELL_TYPE_BLANK:
+											case BLANK:
 												break;
-											case Cell.CELL_TYPE_NUMERIC:
+											case NUMERIC:
 												break;
-											case Cell.CELL_TYPE_STRING:
+											case STRING:
 												pf.setItemNomenclature(sheet.getRow(i).getCell(j).getStringCellValue());
 												break;	 
 											}

@@ -63,13 +63,13 @@ import com.vts.pfms.model.Notice;
 import com.vts.pfms.pfmsserv.feign.PFMSServeFeignClient;
 import com.vts.pfms.service.RfpMainService;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
+//import io.jsonwebtoken.Claims;
+//import io.jsonwebtoken.ExpiredJwtException;
+//import io.jsonwebtoken.Jws;
+//import io.jsonwebtoken.Jwts;
+//import io.jsonwebtoken.MalformedJwtException;
+//import io.jsonwebtoken.SignatureException;
+//import io.jsonwebtoken.UnsupportedJwtException;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Controller
@@ -202,15 +202,15 @@ public class LoginController {
 		}
 		
 		// License Expiration Validation 
- 		boolean expstatus;
- 		try {
- 			Jws<Claims> claims = Jwts.parser().setSigningKey("vts-123").parseClaimsJws(env.getProperty("license"));
- 			expstatus = true;
- 		} catch (SignatureException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException ex) {
- 			expstatus = false;
- 		} catch (ExpiredJwtException ex) {
- 			expstatus = false;
- 		}
+ 		boolean expstatus = true;
+// 		try {
+// 			Jws<Claims> claims = Jwts.parser().setSigningKey("vts-123").parseClaimsJws(env.getProperty("license"));
+// 			expstatus = true;
+// 		} catch (SignatureException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException ex) {
+// 			expstatus = false;
+// 		} catch (ExpiredJwtException ex) {
+// 			expstatus = false;
+// 		}
  		req.setAttribute("expstatus", expstatus);
 		return "static/login";
 	}
@@ -272,15 +272,15 @@ public class LoginController {
 		}
 		
 		// License Expiration Validation 
-		boolean expstatus;
-		try {
-			Jws<Claims> claims = Jwts.parser().setSigningKey("vts-123").parseClaimsJws(env.getProperty("license"));
-			expstatus = true;
-		} catch (SignatureException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException ex) {
-			expstatus = false;
-		} catch (ExpiredJwtException ex) {
-			expstatus = false;
-		}
+		boolean expstatus = true;
+//		try {
+//			Jws<Claims> claims = Jwts.parser().setSigningKey("vts-123").parseClaimsJws(env.getProperty("license"));
+//			expstatus = true;
+//		} catch (SignatureException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException ex) {
+//			expstatus = false;
+//		} catch (ExpiredJwtException ex) {
+//			expstatus = false;
+//		}
 		
 		req.setAttribute("expstatus", expstatus);
 		return "static/login-wr";

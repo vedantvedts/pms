@@ -22,8 +22,6 @@ import com.vts.pfms.login.CustomLogoutHandler;
 import com.vts.pfms.login.LoginDetailsServiceImpl;
 import com.vts.pfms.login.LoginSuccessHandler;
 
-import jakarta.servlet.http.HttpSession;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -53,25 +51,12 @@ public class SecurityConfiguration{
         			   	 .successHandler(successHandler)
         			)
         	.logout(logout -> 
-        			logout.logoutSuccessUrl("/login?logout=1")
-        				  .invalidateHttpSession(true)
+        			logout
+        				  //.logoutSuccessUrl("/login?logout=1")
+        				  //.invalidateHttpSession(true)
         				  //.deleteCookies("JSESSIONID")
-        				  .logoutSuccessHandler((request, response, authentication) -> {
-        				        HttpSession session = request.getSession(false);  // Get the current session without creating a new one
-        				        if (session != null) {
-        				            String loginPage = (String) session.getAttribute("loginPage");
-
-        				            // Handle redirect based on session attributes
-        				            if ("wr".equals(loginPage)) {
-        				                response.sendRedirect(request.getContextPath() + "/wr?logout");
-        				            } else {
-        				                response.sendRedirect(request.getContextPath() + "/login?logout");
-        				            }
-        				        } else {
-        				            response.sendRedirect(request.getContextPath() + "/login?logout");  // Fallback
-        				        }
-        				    })
-        				    .invalidateHttpSession(false) 
+        				  .addLogoutHandler(logoutSuccessHandler())
+        				  .invalidateHttpSession(false) 
         			)
         	.exceptionHandling(exception -> 
         			exception.accessDeniedPage("/accessdenied")

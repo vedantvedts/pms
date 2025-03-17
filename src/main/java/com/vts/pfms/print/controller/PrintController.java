@@ -43,7 +43,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.pdfbox.multipdf.PDFMergerUtility;
+//import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -55,9 +55,6 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.tomcat.util.http.fileupload.FileItem;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -88,7 +85,7 @@ import com.google.gson.Gson;
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
-import com.itextpdf.io.font.FontConstants;
+import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.font.PdfFontFactory;
@@ -102,6 +99,7 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.kernel.utils.PdfMerger;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.font.FontProvider;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
@@ -127,8 +125,6 @@ import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.project.dto.ProjectSlideDto;
 import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.utils.PMSLogoUtil;
-
-import feign.Request;
 
 @Controller
 public class PrintController {
@@ -228,16 +224,25 @@ public class PrintController {
 	        
 	        PdfDocument pdfDocMain = new PdfDocument(new PdfReader(path+File.separator+filename+".pdf"),new PdfWriter(path+File.separator+filename+"Maintemp.pdf"));
 	        Rectangle pageSizeMain;
-	        PdfCanvas canvasMAin;
+	        
+	        Document document = new Document(pdfDocMain); // Use Document for adding images
+	        
 	        int main = pdfDocMain.getNumberOfPages();
 	        for (int i = 1; i <= main; i++) 
 	        {
 	            PdfPage pageMain = pdfDocMain.getPage(i);
 	            pageSizeMain = pageMain.getPageSize();
-	            canvasMAin = new PdfCanvas(pageMain);
-	            Rectangle rectaMain=new Rectangle(54,pageSizeMain.getHeight()-34,34,33);
-	            canvasMAin.addImage(leftLogo, rectaMain, false);
+	            
+	            // Left Logo
+        	    Image leftImage = new Image(leftLogo);
+        	    leftImage.setFixedPosition(i, 54, pageSizeMain.getHeight() - 34);
+        	    leftImage.scaleToFit(34, 33);
+        	    
+        	    // Add images to the document
+        	    document.add(leftImage);
 	        }
+	        // Close document
+        	document.close();
 	        pdfDocMain.close();
 	        Path pathOfFileMain= Paths.get( path+File.separator+filename+".pdf");
 	        Files.delete(pathOfFileMain);	
@@ -942,21 +947,32 @@ public class PrintController {
 	        PdfDocument pdfDocMain = new PdfDocument(new PdfReader(path+File.separator+filename+".pdf"),new PdfWriter(path+File.separator+filename+"Maintemp.pdf"));
 	        Document docMain = new Document(pdfDocMain,PageSize.A4);
 	        docMain.setMargins(50, 50, 50, 50);
+	        
 	        Rectangle pageSizeMain;
-	        PdfCanvas canvasMAin;
+
 	        int main = pdfDocMain.getNumberOfPages();
 	        for (int i = 1; i <= main; i++) 
 	        {
 	            PdfPage pageMain = pdfDocMain.getPage(i);
 	            pageSizeMain = pageMain.getPageSize();
-	            canvasMAin = new PdfCanvas(pageMain);
-	            Rectangle rectaMain=new Rectangle(54,pageSizeMain.getHeight()-34,34,33);
-	            canvasMAin.addImage(leftLogo, rectaMain, false);
-	            Rectangle rectaMain2=new Rectangle(pageSizeMain.getWidth()-64,pageSizeMain.getHeight()-34,34,33);
-	            canvasMAin.addImage(rightLogo, rectaMain2, false);
+	            
+	            // Left Logo
+        	    Image leftImage = new Image(leftLogo);
+        	    leftImage.setFixedPosition(i, 54, pageSizeMain.getHeight() - 34);
+        	    leftImage.scaleToFit(34, 33);
+        	    
+        	    // Right Logo
+        	    Image rightImage = new Image(rightLogo);
+        	    rightImage.setFixedPosition(i, pageSizeMain.getWidth() - 64, pageSizeMain.getHeight() - 34);
+        	    rightImage.scaleToFit(34, 33);
+        	    
+        	    // Add images to the document
+        	    docMain.add(leftImage);
+        	    docMain.add(rightImage);
 	        }
 	        docMain.close();
 	        pdfDocMain.close();
+	        
 	        Path pathOfFileMain= Paths.get( path+File.separator+filename+".pdf");
 	        Files.delete(pathOfFileMain);	
 	        
@@ -983,6 +999,7 @@ public class PrintController {
 		        		 	PdfDocument pdfDocument2 = new PdfDocument(pdfReader,new PdfWriter(path+File.separator+filename+"temp.pdf"));
 					        Document document5 = new Document(pdfDocument2,PageSize.A4);
 					        document5.setMargins(50, 50, 50, 50);
+					        
 					        Rectangle pageSize;
 					        PdfCanvas canvas;
 					        int n = pdfDocument2.getNumberOfPages();
@@ -990,12 +1007,23 @@ public class PrintController {
 					            PdfPage page = pdfDocument2.getPage(i);
 					            pageSize = page.getPageSize();
 					            canvas = new PdfCanvas(page);
-					            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
-					            canvas.addImage(leftLogo, recta, false);
-					            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
-					            canvas.addImage(rightLogo, recta2, false);
+					            
+					            // Left Logo
+				        	    Image leftImage = new Image(leftLogo);
+				        	    leftImage.setFixedPosition(i, 10, pageSize.getHeight() - 50);
+				        	    leftImage.scaleToFit(40, 40);
+				        	    
+				        	    // Right Logo
+				        	    Image rightImage = new Image(rightLogo);
+				        	    rightImage.setFixedPosition(i, pageSize.getWidth() - 50, pageSize.getHeight() - 50);
+				        	    rightImage.scaleToFit(40, 40);
+				        	    
+				        	    // Add images to the document
+				        	    document5.add(leftImage);
+				        	    document5.add(rightImage);
+				        	    
 					            canvas.beginText().setFontAndSize(
-					                    PdfFontFactory.createFont(FontConstants.HELVETICA), 11)
+					                    PdfFontFactory.createFont(StandardFonts.HELVETICA), 11)
 					                    .moveText(pageSize.getWidth() / 2 - 124, pageSize.getHeight() - 25)
 					                    .showText(objData[12]+" :-  Grantt Chart ")
 					                    .endText();
@@ -1040,12 +1068,23 @@ public class PrintController {
 		            PdfPage page = pdfDocument2.getPage(i);
 		            pageSize = page.getPageSize();
 		            canvas = new PdfCanvas(page);
-		            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
-		            canvas.addImage(leftLogo, recta, false);
-		            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
-		            canvas.addImage(rightLogo, recta2, false);
+		            
+		            // Left Logo
+	        	    Image leftImage = new Image(leftLogo);
+	        	    leftImage.setFixedPosition(i, 10, pageSize.getHeight() - 50);
+	        	    leftImage.scaleToFit(40, 40);
+	        	    
+	        	    // Right Logo
+	        	    Image rightImage = new Image(rightLogo);
+	        	    rightImage.setFixedPosition(i, pageSize.getWidth() - 50, pageSize.getHeight() - 50);
+	        	    rightImage.scaleToFit(40, 40);
+	        	    
+	        	    // Add images to the document
+	        	    document5.add(leftImage);
+	        	    document5.add(rightImage);
+	        	    
 		            canvas.beginText().setFontAndSize(
-		                    PdfFontFactory.createFont(FontConstants.HELVETICA), 11)
+		                    PdfFontFactory.createFont(StandardFonts.HELVETICA), 11)
 		                    .moveText(pageSize.getWidth() / 2 - 124, pageSize.getHeight() - 25)
 		                    .showText(objData[12]+" :-  System Configuration Annexure: ")
 		                    .endText();
@@ -1077,12 +1116,23 @@ public class PrintController {
 			            PdfPage page = pdfDocument2.getPage(i);
 			            pageSize = page.getPageSize();
 			            canvas = new PdfCanvas(page);
-			            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
-			            canvas.addImage(leftLogo, recta, false);
-			            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
-			            canvas.addImage(rightLogo, recta2, false);
+
+			            // Left Logo
+		        	    Image leftImage = new Image(leftLogo);
+		        	    leftImage.setFixedPosition(i, 10, pageSize.getHeight() - 50);
+		        	    leftImage.scaleToFit(40, 40);
+		        	    
+		        	    // Right Logo
+		        	    Image rightImage = new Image(rightLogo);
+		        	    rightImage.setFixedPosition(i, pageSize.getWidth() - 50, pageSize.getHeight() - 50);
+		        	    rightImage.scaleToFit(40, 40);
+		        	    
+		        	    // Add images to the document
+		        	    document5.add(leftImage);
+		        	    document5.add(rightImage);
+			            
 			            canvas.beginText().setFontAndSize(
-			                    PdfFontFactory.createFont(FontConstants.HELVETICA),11)
+			                    PdfFontFactory.createFont(StandardFonts.HELVETICA),11)
 			                    .moveText(pageSize.getWidth() / 2 - 130, pageSize.getHeight() - 25)
 			                    .showText(objData[12]+" :-  System Specification Annexure: ")
 			                    .endText();
@@ -1114,12 +1164,23 @@ public class PrintController {
 			            PdfPage page = pdfDocument2.getPage(i);
 			            pageSize = page.getPageSize();
 			            canvas = new PdfCanvas(page);
-			            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
-			            canvas.addImage(leftLogo, recta, false);
-			            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
-			            canvas.addImage(rightLogo, recta2, false);
+			            
+			            // Left Logo
+		        	    Image leftImage = new Image(leftLogo);
+		        	    leftImage.setFixedPosition(i, 10, pageSize.getHeight() - 50);
+		        	    leftImage.scaleToFit(40, 40);
+		        	    
+		        	    // Right Logo
+		        	    Image rightImage = new Image(rightLogo);
+		        	    rightImage.setFixedPosition(i, pageSize.getWidth() - 50, pageSize.getHeight() - 50);
+		        	    rightImage.scaleToFit(40, 40);
+		        	    
+		        	    // Add images to the document
+		        	    document5.add(leftImage);
+		        	    document5.add(rightImage);
+		        	    
 			            canvas.beginText().setFontAndSize(
-			                    PdfFontFactory.createFont(FontConstants.HELVETICA), 11)
+			                    PdfFontFactory.createFont(StandardFonts.HELVETICA), 11)
 			                    .moveText(pageSize.getWidth() / 2 - 140, pageSize.getHeight() - 25)
 			                    .showText(objData[12]+" :-  Overall Product tree/WBS Annexure: ")
 			                    .endText();
@@ -1151,12 +1212,23 @@ public class PrintController {
 			            PdfPage page = pdfDocument2.getPage(i);
 			            pageSize = page.getPageSize();
 			            canvas = new PdfCanvas(page);
-			            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
-			            canvas.addImage(leftLogo, recta, false);
-			            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
-			            canvas.addImage(rightLogo, recta2, false);
+
+			            // Left Logo
+		        	    Image leftImage = new Image(leftLogo);
+		        	    leftImage.setFixedPosition(i, 10, pageSize.getHeight() - 50);
+		        	    leftImage.scaleToFit(40, 40);
+		        	    
+		        	    // Right Logo
+		        	    Image rightImage = new Image(rightLogo);
+		        	    rightImage.setFixedPosition(i, pageSize.getWidth() - 50, pageSize.getHeight() - 50);
+		        	    rightImage.scaleToFit(40, 40);
+		        	    
+		        	    // Add images to the document
+		        	    document5.add(leftImage);
+		        	    document5.add(rightImage);
+		        	    
 			            canvas.beginText().setFontAndSize(
-			                    PdfFontFactory.createFont(FontConstants.HELVETICA), 11)
+			                    PdfFontFactory.createFont(StandardFonts.HELVETICA), 11)
 			                    .moveText(pageSize.getWidth() / 2 - 145, pageSize.getHeight() - 25)
 			                    .showText(objData[12]+" :-  TRL table with TRL at sanction stage Annexure ")
 			                    .endText();
@@ -1199,12 +1271,22 @@ public class PrintController {
 				            PdfPage page = pdfDocument2.getPage(i);
 				            pageSize = page.getPageSize();
 				            canvas = new PdfCanvas(page);
-				            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
-				            canvas.addImage(leftLogo, recta, false);
-				            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
-				            canvas.addImage(rightLogo, recta2, false);
+				            
+				            // Left Logo
+			        	    Image leftImage = new Image(leftLogo);
+			        	    leftImage.setFixedPosition(i, 10, pageSize.getHeight() - 50);
+			        	    leftImage.scaleToFit(40, 40);
+			        	    
+			        	    // Right Logo
+			        	    Image rightImage = new Image(rightLogo);
+			        	    rightImage.setFixedPosition(i, pageSize.getWidth() - 50, pageSize.getHeight() - 50);
+			        	    rightImage.scaleToFit(40, 40);
+			        	    
+			        	    // Add images to the document
+			        	    document5.add(leftImage);
+			        	    document5.add(rightImage);
 				            canvas.beginText().setFontAndSize(
-				                    PdfFontFactory.createFont(FontConstants.HELVETICA), 11)
+				                    PdfFontFactory.createFont(StandardFonts.HELVETICA), 11)
 				                    .moveText(pageSize.getWidth() / 2 - 80, pageSize.getHeight() - 25)
 				                    .showText(objData[12]+" :-  Technical Details ")
 				                    .endText();
@@ -1574,11 +1656,20 @@ public class PrintController {
 			            PdfPage pageMain = pdfDocMain.getPage(i);
 			            pageSizeMain = pageMain.getPageSize();
 			            canvasMAin = new PdfCanvas(pageMain);
-			            Rectangle rectaMain=new Rectangle(54,pageSizeMain.getHeight()-34,34,33);
-			            canvasMAin.addImage(leftLogo, rectaMain, false);
-			            Rectangle rectaMain2=new Rectangle(pageSizeMain.getWidth()-64,pageSizeMain.getHeight()-34,34,33);
-			            canvasMAin.addImage(rightLogo, rectaMain2, false);
-		
+
+		        	    // Left Logo
+		        	    Image leftImage = new Image(leftLogo);
+		        	    leftImage.setFixedPosition(i, 54, pageSizeMain.getHeight() - 34);
+		        	    leftImage.scaleToFit(34, 33);
+		        	    
+		        	    // Right Logo
+		        	    Image rightImage = new Image(rightLogo);
+		        	    rightImage.setFixedPosition(i, pageSizeMain.getWidth() - 64, pageSizeMain.getHeight() - 34);
+		        	    rightImage.scaleToFit(34, 33);
+		        	    
+		        	    // Add images to the document
+		        	    docMain.add(leftImage);
+		        	    docMain.add(rightImage);
 		
 			        }
 			        docMain.close();
@@ -1614,12 +1705,23 @@ public class PrintController {
 								            PdfPage page = pdfDocument2.getPage(i);
 								            pageSize = page.getPageSize();
 								            canvas = new PdfCanvas(page);
-								            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
-								            canvas.addImage(leftLogo, recta, false);
-								            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
-								            canvas.addImage(rightLogo, recta2, false);
+
+								            // Left Logo
+							        	    Image leftImage = new Image(leftLogo);
+							        	    leftImage.setFixedPosition(i, 10, pageSize.getHeight() - 50);
+							        	    leftImage.scaleToFit(40, 40);
+							        	    
+							        	    // Right Logo
+							        	    Image rightImage = new Image(rightLogo);
+							        	    rightImage.setFixedPosition(i, pageSize.getWidth() - 50, pageSize.getHeight() - 50);
+							        	    rightImage.scaleToFit(40, 40);
+							        	    
+							        	    // Add images to the document
+							        	    document5.add(leftImage);
+							        	    document5.add(rightImage);
+							        	    
 								            canvas.beginText().setFontAndSize(
-								                    PdfFontFactory.createFont(FontConstants.HELVETICA), 11)
+								                    PdfFontFactory.createFont(StandardFonts.HELVETICA), 11)
 								                    .moveText(pageSize.getWidth() / 2 - 124, pageSize.getHeight() - 25)
 								                    .showText(objData[12]+" :-  Grantt Chart ")
 								                    .endText();
@@ -1662,12 +1764,23 @@ public class PrintController {
 					            PdfPage page = pdfDocument2.getPage(i);
 					            pageSize = page.getPageSize();
 					            canvas = new PdfCanvas(page);
-					            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
-					            canvas.addImage(leftLogo, recta, false);
-					            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
-					            canvas.addImage(rightLogo, recta2, false);
+					            
+					            // Left Logo
+				        	    Image leftImage = new Image(leftLogo);
+				        	    leftImage.setFixedPosition(i, 10, pageSize.getHeight() - 50);
+				        	    leftImage.scaleToFit(40, 40);
+				        	    
+				        	    // Right Logo
+				        	    Image rightImage = new Image(rightLogo);
+				        	    rightImage.setFixedPosition(i, pageSize.getWidth() - 50, pageSize.getHeight() - 50);
+				        	    rightImage.scaleToFit(40, 40);
+				        	    
+				        	    // Add images to the document
+				        	    document5.add(leftImage);
+				        	    document5.add(rightImage);
+				        	    
 					            canvas.beginText().setFontAndSize(
-					                    PdfFontFactory.createFont(FontConstants.HELVETICA), 11)
+					                    PdfFontFactory.createFont(StandardFonts.HELVETICA), 11)
 					                    .moveText(pageSize.getWidth() / 2 - 124, pageSize.getHeight() - 25)
 					                    .showText(objData[12]+" :-  System Configuration Annexure: ")
 					                    .endText();
@@ -1697,12 +1810,23 @@ public class PrintController {
 						            PdfPage page = pdfDocument2.getPage(i);
 						            pageSize = page.getPageSize();
 						            canvas = new PdfCanvas(page);
-						            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
-						            canvas.addImage(leftLogo, recta, false);
-						            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
-						            canvas.addImage(rightLogo, recta2, false);
+
+						            // Left Logo
+					        	    Image leftImage = new Image(leftLogo);
+					        	    leftImage.setFixedPosition(i, 10, pageSize.getHeight() - 50);
+					        	    leftImage.scaleToFit(40, 40);
+					        	    
+					        	    // Right Logo
+					        	    Image rightImage = new Image(rightLogo);
+					        	    rightImage.setFixedPosition(i, pageSize.getWidth() - 50, pageSize.getHeight() - 50);
+					        	    rightImage.scaleToFit(40, 40);
+					        	    
+					        	    // Add images to the document
+					        	    document5.add(leftImage);
+					        	    document5.add(rightImage);
+					        	    
 						            canvas.beginText().setFontAndSize(
-						                    PdfFontFactory.createFont(FontConstants.HELVETICA),11)
+						                    PdfFontFactory.createFont(StandardFonts.HELVETICA),11)
 						                    .moveText(pageSize.getWidth() / 2 - 130, pageSize.getHeight() - 25)
 						                    .showText(objData[12]+" :-  System Specification Annexure: ")
 						                    .endText();
@@ -1732,12 +1856,23 @@ public class PrintController {
 						            PdfPage page = pdfDocument2.getPage(i);
 						            pageSize = page.getPageSize();
 						            canvas = new PdfCanvas(page);
-						            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
-						            canvas.addImage(leftLogo, recta, false);
-						            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
-						            canvas.addImage(rightLogo, recta2, false);
+
+						            // Left Logo
+					        	    Image leftImage = new Image(leftLogo);
+					        	    leftImage.setFixedPosition(i, 10, pageSize.getHeight() - 50);
+					        	    leftImage.scaleToFit(40, 40);
+					        	    
+					        	    // Right Logo
+					        	    Image rightImage = new Image(rightLogo);
+					        	    rightImage.setFixedPosition(i, pageSize.getWidth() - 50, pageSize.getHeight() - 50);
+					        	    rightImage.scaleToFit(40, 40);
+					        	    
+					        	    // Add images to the document
+					        	    document5.add(leftImage);
+					        	    document5.add(rightImage);
+					        	    
 						            canvas.beginText().setFontAndSize(
-						                    PdfFontFactory.createFont(FontConstants.HELVETICA), 11)
+						                    PdfFontFactory.createFont(StandardFonts.HELVETICA), 11)
 						                    .moveText(pageSize.getWidth() / 2 - 140, pageSize.getHeight() - 25)
 						                    .showText(objData[12]+" :-  Overall Product tree/WBS Annexure: ")
 						                    .endText();
@@ -1767,12 +1902,23 @@ public class PrintController {
 						            PdfPage page = pdfDocument2.getPage(i);
 						            pageSize = page.getPageSize();
 						            canvas = new PdfCanvas(page);
-						            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
-						            canvas.addImage(leftLogo, recta, false);
-						            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
-						            canvas.addImage(rightLogo, recta2, false);
+
+						            // Left Logo
+					        	    Image leftImage = new Image(leftLogo);
+					        	    leftImage.setFixedPosition(i, 10, pageSize.getHeight() - 50);
+					        	    leftImage.scaleToFit(40, 40);
+					        	    
+					        	    // Right Logo
+					        	    Image rightImage = new Image(rightLogo);
+					        	    rightImage.setFixedPosition(i, pageSize.getWidth() - 50, pageSize.getHeight() - 50);
+					        	    rightImage.scaleToFit(40, 40);
+					        	    
+					        	    // Add images to the document
+					        	    document5.add(leftImage);
+					        	    document5.add(rightImage);
+					        	    
 						            canvas.beginText().setFontAndSize(
-						                    PdfFontFactory.createFont(FontConstants.HELVETICA), 11)
+						                    PdfFontFactory.createFont(StandardFonts.HELVETICA), 11)
 						                    .moveText(pageSize.getWidth() / 2 - 145, pageSize.getHeight() - 25)
 						                    .showText(objData[12]+" :-  TRL table with TRL at sanction stage Annexure ")
 						                    .endText();
@@ -1797,7 +1943,11 @@ public class PrintController {
 				        	
 				        	 if(FilenameUtils.getExtension(TechWorkDataList.get(z)[8].toString()).equalsIgnoreCase("pdf")) {
 				        		 Zipper zip=new Zipper();
-				                 zip.unpack(env.getProperty("ApplicationFilesDrive")+TechWorkDataList.get(z)[6].toString()+TechWorkDataList.get(z)[7].toString()+TechWorkDataList.get(z)[11].toString()+"-"+TechWorkDataList.get(z)[10].toString()+".zip",path,TechWorkDataList.get(z)[9].toString());
+				        		 String tecdata = TechWorkDataList.get(z)[6].toString().replaceAll("[/\\\\]", ",");
+				        		 String[] fileParts = tecdata.split(",");
+				        		 String zipName = String.format(TechWorkDataList.get(z)[7].toString()+TechWorkDataList.get(z)[11].toString()+"-"+TechWorkDataList.get(z)[10].toString()+".zip");
+				        		 Path techPath = Paths.get(env.getProperty("ApplicationFilesDrive"), fileParts[0],fileParts[1],fileParts[2],fileParts[3],fileParts[4],zipName);
+				                 zip.unpack(techPath.toString(),path,TechWorkDataList.get(z)[9].toString());
 							    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(path+File.separator+TechWorkDataList.get(z)[8].toString()),new PdfWriter(path+File.separator+filename+"temp.pdf"));
 							        Document document5 = new Document(pdfDocument2,PageSize.A4);
 							        document5.setMargins(50, 50, 50, 50);
@@ -1808,12 +1958,23 @@ public class PrintController {
 							            PdfPage page = pdfDocument2.getPage(i);
 							            pageSize = page.getPageSize();
 							            canvas = new PdfCanvas(page);
-							            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
-							            canvas.addImage(leftLogo, recta, false);
-							            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
-							            canvas.addImage(rightLogo, recta2, false);
+
+							            // Left Logo
+						        	    Image leftImage = new Image(leftLogo);
+						        	    leftImage.setFixedPosition(i, 10, pageSize.getHeight() - 50);
+						        	    leftImage.scaleToFit(40, 40);
+						        	    
+						        	    // Right Logo
+						        	    Image rightImage = new Image(rightLogo);
+						        	    rightImage.setFixedPosition(i, pageSize.getWidth() - 50, pageSize.getHeight() - 50);
+						        	    rightImage.scaleToFit(40, 40);
+						        	    
+						        	    // Add images to the document
+						        	    document5.add(leftImage);
+						        	    document5.add(rightImage);
+						        	    
 							            canvas.beginText().setFontAndSize(
-							                    PdfFontFactory.createFont(FontConstants.HELVETICA), 11)
+							                    PdfFontFactory.createFont(StandardFonts.HELVETICA), 11)
 							                    .moveText(pageSize.getWidth() / 2 - 80, pageSize.getHeight() - 25)
 							                    .showText(objData[12]+" :-  Technical Details ")
 							                    .endText();
@@ -4384,43 +4545,43 @@ public class PrintController {
 			}
 	
 		 
-		 @RequestMapping(value = "FreezedSlidesInpdf.htm")
-		 public void FreezedSlidesInpdf(HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
-		 {
-			 String UserId = (String) ses.getAttribute("Username");
-			logger.info(new Date() +"Inside GetAllProjectSlide.htm "+UserId);	
-			 try {
-					List<Object[]> getAllProjectSlidedata= service.GetAllProjectSildedata("All");
-					 String path=req.getServletContext().getRealPath("/view/temp");
-					
-					 PDFMergerUtility utility = new PDFMergerUtility();
-					 utility.setDestinationFileName(path +File.separator+ "merged.pdf");
-					 for(Object[] obj : getAllProjectSlidedata) 
-					 {
-						File file = new File(ApplicationFilesDrive+ obj[1].toString()+obj[2].toString());			 
-				        utility.addSource(file);
-					 }
-					 utility.mergeDocuments();
-					
-					
-				        res.setContentType("application/pdf");
-				        res.setHeader("Content-disposition","attachment; filename=FreezedProjectSlides.pdf");
-				        File f=new File(path +File.separator+ "merged.pdf");
-
-					        OutputStream out = res.getOutputStream();
-							FileInputStream in = new FileInputStream(f);
-							byte[] buffer = new byte[4096];
-							int length;
-							while ((length = in.read(buffer)) > 0) {
-								out.write(buffer, 0, length);
-							}
-							in.close();
-							out.close();
-					       
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		 } 
+//		 @RequestMapping(value = "FreezedSlidesInpdf.htm")
+//		 public void FreezedSlidesInpdf(HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
+//		 {
+//			 String UserId = (String) ses.getAttribute("Username");
+//			logger.info(new Date() +"Inside GetAllProjectSlide.htm "+UserId);	
+//			 try {
+//					List<Object[]> getAllProjectSlidedata= service.GetAllProjectSildedata("All");
+//					 String path=req.getServletContext().getRealPath("/view/temp");
+//					
+//					 PDFMergerUtility utility = new PDFMergerUtility();
+//					 utility.setDestinationFileName(path +File.separator+ "merged.pdf");
+//					 for(Object[] obj : getAllProjectSlidedata) 
+//					 {
+//						File file = new File(ApplicationFilesDrive+ obj[1].toString()+obj[2].toString());			 
+//				        utility.addSource(file);
+//					 }
+//					 utility.mergeDocuments();
+//					
+//					
+//				        res.setContentType("application/pdf");
+//				        res.setHeader("Content-disposition","attachment; filename=FreezedProjectSlides.pdf");
+//				        File f=new File(path +File.separator+ "merged.pdf");
+//
+//					        OutputStream out = res.getOutputStream();
+//							FileInputStream in = new FileInputStream(f);
+//							byte[] buffer = new byte[4096];
+//							int length;
+//							while ((length = in.read(buffer)) > 0) {
+//								out.write(buffer, 0, length);
+//							}
+//							in.close();
+//							out.close();
+//					       
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		 } 
 		 
 		 @RequestMapping(value = "BriefingPointsUpdate.htm" ,method = RequestMethod.GET)
 			public @ResponseBody String BriefingPointsUpdate(HttpServletRequest req)throws Exception
@@ -5412,11 +5573,11 @@ public class PrintController {
 						                if (cell == null) continue;
 									if(j==1) {
 										switch(sheet.getRow(i).getCell(j).getCellType()) {
-										case Cell.CELL_TYPE_BLANK:break;
-										case Cell.CELL_TYPE_NUMERIC:
+										case BLANK:break;
+										case NUMERIC:
 											pof.setBudgetHead(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
-										case Cell.CELL_TYPE_STRING:
+										case STRING:
 											pof.setBudgetHead(sheet.getRow(i).getCell(j).getStringCellValue());
 											break;	 
 										}
@@ -5427,13 +5588,13 @@ public class PrintController {
 									if(j==2) {
 									
 										switch(sheet.getRow(i).getCell(j).getCellType()) {
-										case Cell.CELL_TYPE_BLANK:
+										case BLANK:
 											pof.setSanctionCostRE(0.00);
 											break;
-										case Cell.CELL_TYPE_NUMERIC:
+										case NUMERIC:
 											pof.setSanctionCostRE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
-										case Cell.CELL_TYPE_STRING:
+										case STRING:
 											pof.setSanctionCostRE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
 											break;	 
 										}
@@ -5445,13 +5606,13 @@ public class PrintController {
 									if(j==3) {
 								
 										switch(sheet.getRow(i).getCell(j).getCellType()) {
-										case Cell.CELL_TYPE_BLANK:
+										case BLANK:
 											pof.setSanctionCostFE(0.00);
 											break;
-										case Cell.CELL_TYPE_NUMERIC:
+										case NUMERIC:
 											pof.setSanctionCostFE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
-										case Cell.CELL_TYPE_STRING:
+										case STRING:
 											pof.setSanctionCostFE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
 											break;	 
 										}
@@ -5460,13 +5621,13 @@ public class PrintController {
 									
 									if(j==4) {
 										switch(sheet.getRow(i).getCell(j).getCellType()) {
-										case Cell.CELL_TYPE_BLANK:
+										case BLANK:
 											pof.setExpenditureRE(0.00);
 											break;
-										case Cell.CELL_TYPE_NUMERIC:
+										case NUMERIC:
 											pof.setExpenditureRE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
-										case Cell.CELL_TYPE_STRING:
+										case STRING:
 											pof.setExpenditureRE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
 											break;	 
 										}
@@ -5475,13 +5636,13 @@ public class PrintController {
 									
 									if(j==5) {
 										switch(sheet.getRow(i).getCell(j).getCellType()) {
-										case Cell.CELL_TYPE_BLANK:
+										case BLANK:
 											pof.setExpenditureFE(0.00);
 											break;
-										case Cell.CELL_TYPE_NUMERIC:
+										case NUMERIC:
 											pof.setExpenditureFE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
-										case Cell.CELL_TYPE_STRING:
+										case STRING:
 											pof.setExpenditureFE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
 											break;	 
 										}
@@ -5490,13 +5651,13 @@ public class PrintController {
 									
 									if(j==6) {
 										switch(sheet.getRow(i).getCell(j).getCellType()) {
-										case Cell.CELL_TYPE_BLANK:
+										case BLANK:
 											pof.setOutCommitmentRE(0.00);
 											break;
-										case Cell.CELL_TYPE_NUMERIC:
+										case NUMERIC:
 											pof.setOutCommitmentRE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
-										case Cell.CELL_TYPE_STRING:
+										case STRING:
 											pof.setOutCommitmentRE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
 											break;	 
 										}
@@ -5504,13 +5665,13 @@ public class PrintController {
 									}
 									if(j==7) {
 										switch(sheet.getRow(i).getCell(j).getCellType()) {
-										case Cell.CELL_TYPE_BLANK:
+										case BLANK:
 											pof.setOutCommitmentFE(0.00);
 											break;
-										case Cell.CELL_TYPE_NUMERIC:
+										case NUMERIC:
 											pof.setOutCommitmentFE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
-										case Cell.CELL_TYPE_STRING:
+										case STRING:
 											pof.setOutCommitmentFE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
 											break;	 
 										}
@@ -5519,13 +5680,13 @@ public class PrintController {
 									
 									if(j==8) {
 										switch(sheet.getRow(i).getCell(j).getCellType()) {
-										case Cell.CELL_TYPE_BLANK:
+										case BLANK:
 											pof.setBalanceRE(0.00);
 											break;
-										case Cell.CELL_TYPE_NUMERIC:
+										case NUMERIC:
 											pof.setBalanceRE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
-										case Cell.CELL_TYPE_STRING:
+										case STRING:
 											pof.setBalanceRE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
 											break;	 
 										}
@@ -5534,13 +5695,13 @@ public class PrintController {
 									
 									if(j==9) {
 										switch(sheet.getRow(i).getCell(j).getCellType()) {
-										case Cell.CELL_TYPE_BLANK:
+										case BLANK:
 											pof.setBalanceFE(0.00);
 											break;
-										case Cell.CELL_TYPE_NUMERIC:
+										case NUMERIC:
 											pof.setBalanceFE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
-										case Cell.CELL_TYPE_STRING:
+										case STRING:
 											pof.setBalanceFE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
 											break;	 
 										}
@@ -5549,13 +5710,13 @@ public class PrintController {
 									
 									if(j==10) {
 										switch(sheet.getRow(i).getCell(j).getCellType()) {
-										case Cell.CELL_TYPE_BLANK:
+										case BLANK:
 											pof.setDiplRE(0.00);
 											break;
-										case Cell.CELL_TYPE_NUMERIC:
+										case NUMERIC:
 											pof.setDiplRE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
-										case Cell.CELL_TYPE_STRING:
+										case STRING:
 											pof.setDiplRE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
 											break;	 
 										}
@@ -5563,13 +5724,13 @@ public class PrintController {
 									}
 									if(j==11) {
 										switch(sheet.getRow(i).getCell(j).getCellType()) {
-										case Cell.CELL_TYPE_BLANK:
+										case BLANK:
 											pof.setDiplFE(0.00);
 											break;
-										case Cell.CELL_TYPE_NUMERIC:
+										case NUMERIC:
 											pof.setDiplFE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
-										case Cell.CELL_TYPE_STRING:
+										case STRING:
 											pof.setDiplFE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
 											break;	 
 										}
@@ -5578,13 +5739,13 @@ public class PrintController {
 									
 									if(j==13) {
 										switch(sheet.getRow(i).getCell(j).getCellType()) {
-										case Cell.CELL_TYPE_BLANK:
+										case BLANK:
 											pof.setNotaionalBalFE(0.00);
 											break;
-										case Cell.CELL_TYPE_NUMERIC:
+										case NUMERIC:
 											pof.setNotaionalBalFE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
-										case Cell.CELL_TYPE_STRING:
+										case STRING:
 											pof.setNotaionalBalFE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
 											break;	 
 										}
@@ -5593,13 +5754,13 @@ public class PrintController {
 									
 									if(j==12) {
 										switch(sheet.getRow(i).getCell(j).getCellType()) {
-										case Cell.CELL_TYPE_BLANK:
+										case BLANK:
 											pof.setNotaionalBalRE(0.00);
 											break;
-										case Cell.CELL_TYPE_NUMERIC:
+										case NUMERIC:
 											pof.setNotaionalBalRE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
-										case Cell.CELL_TYPE_STRING:
+										case STRING:
 											pof.setNotaionalBalRE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
 											break;	 
 										}

@@ -105,7 +105,7 @@ public class ProjectClosureCheckList implements Serializable {
 	private   String CreatedDate;
 	private   String ModifiedBy;
 	private   String ModifiedDate;
-	private   int isActive;
+	private   int IsActive;
 	
 	@JoinColumn(name="ClosureId")
 	@OneToOne

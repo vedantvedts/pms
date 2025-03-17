@@ -42,7 +42,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.gson.Gson;
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
-import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
 import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
@@ -51,6 +50,7 @@ import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.font.FontProvider;
+import com.itextpdf.styledxmlparser.resolver.font.BasicFontProvider;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.cars.dto.CARSRSQRDetailsDTO;
@@ -808,14 +808,14 @@ public class CARSController {
 			//Path for Hindi font
 			String fontPath = req.getServletContext().getRealPath("/view/pfp/NotoSansDevanagari-Regular.ttf");
 			req.setAttribute("fontPath", fontPath);
-			PdfFont hindiFont = PdfFontFactory.createFont(fontPath, PdfEncodings.IDENTITY_H, true);
+			//PdfFont hindiFont = PdfFontFactory.createFont(fontPath, PdfEncodings.IDENTITY_H, true);
 			
 			req.getRequestDispatcher("/view/print/CARSInvForSoODownload.jsp").forward(req, customResponse);
 			String html = customResponse.getOutput();
 
 			// Hindi font converter
 			ConverterProperties converterProperties = new ConverterProperties();
-			FontProvider fontProvider = new DefaultFontProvider();
+			FontProvider fontProvider = new BasicFontProvider();
 			fontProvider.addFont(fontPath, PdfEncodings.IDENTITY_H);
 			converterProperties.setFontProvider(fontProvider);
 			
@@ -829,9 +829,13 @@ public class CARSController {
 //			pdf1.close();	       
 //			pdfw.close();
 
-			try (PdfWriter writer = new PdfWriter(path + File.separator + filename + ".pdf");
+			try (
+					PdfWriter writer = new PdfWriter(path + File.separator + filename + ".pdf");
 					PdfDocument pdfDoc = new PdfDocument(writer);
 					Document document = HtmlConverter.convertToDocument(html, pdfDoc, converterProperties)) {
+				
+				 	// Create font using PdfDocument
+			    	PdfFont hindiFont = PdfFontFactory.createFont(fontPath, PdfEncodings.IDENTITY_H, pdfDoc);
 	                document.setFont(hindiFont);
 	            }
 			
@@ -2975,20 +2979,23 @@ public class CARSController {
 			//Path for Hindi font
 			String fontPath = req.getServletContext().getRealPath("/view/pfp/NotoSansDevanagari-Regular.ttf");
 			req.setAttribute("fontPath", fontPath);
-			PdfFont hindiFont = PdfFontFactory.createFont(fontPath, PdfEncodings.IDENTITY_H, true);
 			
 			req.getRequestDispatcher("/view/print/CARSFinalSoOLetter.jsp").forward(req, customResponse);
 			String html = customResponse.getOutput();
 
 			// Hindi font converter
 			ConverterProperties converterProperties = new ConverterProperties();
-			FontProvider fontProvider = new DefaultFontProvider();
+			FontProvider fontProvider = new FontProvider();
 			fontProvider.addFont(fontPath, PdfEncodings.IDENTITY_H);
 			converterProperties.setFontProvider(fontProvider);
 			
 			try (PdfWriter writer = new PdfWriter(path + File.separator + filename + ".pdf");
 					PdfDocument pdfDoc = new PdfDocument(writer);
 					Document document = HtmlConverter.convertToDocument(html, pdfDoc, converterProperties)) {
+				
+				 	// Create font using PdfDocument
+			    	PdfFont hindiFont = PdfFontFactory.createFont(fontPath, PdfEncodings.IDENTITY_H, pdfDoc);
+			    	
 	                document.setFont(hindiFont);
 	            }
 			

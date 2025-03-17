@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html charset=ISO-8859-1">
 <!--JQUERY JS  -->
-<script src="./webjars/jquery/3.4.0/jquery.min.js"></script>
+<script src="./webjars/jquery/3.6.0/jquery.min.js"></script>
 <style type="text/css">
  @media print {
   #printPageButton {

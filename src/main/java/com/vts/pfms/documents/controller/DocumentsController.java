@@ -705,11 +705,11 @@ public class DocumentsController {
 						if(sheet.getRow(i).getCell(j)!=null) {
 							if(j==1) {
 								switch(sheet.getRow(i).getCell(j).getCellType()) {
-								case Cell.CELL_TYPE_BLANK:break;
-								case Cell.CELL_TYPE_NUMERIC:
+								case BLANK:break;
+								case NUMERIC:
 									igiDocumentShortCode.setShortCode(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 									break;
-								case Cell.CELL_TYPE_STRING:
+								case STRING:
 									igiDocumentShortCode.setShortCode(sheet.getRow(i).getCell(j).getStringCellValue());
 									break;	 
 								}
@@ -717,11 +717,11 @@ public class DocumentsController {
 
 							if(j==2) {
 								switch(sheet.getRow(i).getCell(j).getCellType()) {
-								case Cell.CELL_TYPE_BLANK:break;
-								case Cell.CELL_TYPE_NUMERIC:
+								case BLANK:break;
+								case NUMERIC:
 									igiDocumentShortCode.setFullName(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 									break;
-								case Cell.CELL_TYPE_STRING:
+								case STRING:
 									igiDocumentShortCode.setFullName(sheet.getRow(i).getCell(j).getStringCellValue());
 									break;	 
 								}

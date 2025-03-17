@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="pfms_irs_Document")
+@Table(name="pfms_irs_document")
 public class PfmsIRSDocument implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

@@ -1,4 +1,3 @@
-<%@page import="org.apache.xpath.operations.Plus"%>
 <%@page import="java.time.LocalTime"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.vts.pfms.FormatConverter"%>

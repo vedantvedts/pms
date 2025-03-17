@@ -281,7 +281,7 @@ label {
 	        							<label class="form-lable">Periodicity<span class="mandatory">*</span></label> <br>
 	        							<input type="radio" name="periodicity" value="Periodic" required>Periodic&nbsp;
 	        							<input type="radio" name="periodicity" value="Non-Periodic" required>Non-Periodic&nbsp;
-	        							<input type="radio" name="periodicity" value="Descrete" required>Descrete
+	        							<input type="radio" name="periodicity" value="Discrete" required>Discrete
 	        						</div>
 	        						<div class="col-md-2">
 	        							<label class="form-lable">Description<span class="mandatory">*</span></label>
