@@ -385,9 +385,9 @@ a:hover {
 															</td>
 															<td class="talign" >
 														
-																	<%if(obj[8].toString().equals("1")){ %>
+																	<%if(Integer.parseInt(obj[8].toString())==1){ %>
 																		<p style="color: green;">Seen</p>																		
-																	<%}else if(obj[8].toString().equals("0")){ %>
+																	<%}else if(Integer.parseInt(obj[8].toString())==0){ %>
 																		<p style="color: red; font-weight: bold;">UnSeen</p>
 																	<%} %>
 														</td>
@@ -407,7 +407,7 @@ a:hover {
 														    <input type="hidden" name="ActionAssignId" value="<%=obj[9]%>"/>
 														    <input type="hidden" name="ActionPath" value="A">
 														
-															<%if(obj[7]!=null && "0".equals(obj[7].toString()) && "0".equals(obj[10].toString())){%>
+															<%if(obj[7]!=null && Integer.parseInt(obj[7].toString()) == 0 && Integer.parseInt(obj[10].toString()) == 0 ){%>
 																<button class="btn btn-sm editable-click" type="button" onclick="Actioneditmodal('<%=obj[0]%>' , '<%=obj[9]%>'); ">
 																	<div class="cc-rockmenu">
 											                    	  <div class="rolling">
@@ -467,7 +467,7 @@ a:hover {
 											    for(Object[] lab : AllLabList){
 											    	if(clusterid!=null && clusterid.equalsIgnoreCase(lab[1].toString())){
 											 %>
-												<option  value="<%=lab[3] %>" <%if(LabCode.equals(lab[3].toString())){ %>selected <%} %>><%=lab[3] %></option>
+												<option  value="<%=lab[3] %>" <%if(LabCode.equalsIgnoreCase(lab[3].toString())){ %>selected <%} %>><%=lab[3] %></option>
 											<%}}}%> 
 											<option  value="@EXP">Expert</option>
 										</select>

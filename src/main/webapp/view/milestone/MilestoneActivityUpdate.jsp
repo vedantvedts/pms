@@ -24,7 +24,7 @@ String projectid=(String)request.getAttribute("projectid");
   <a class="navbar-brand"></a>
   <form class="form-inline"  method="POST" action="MilestoneUpdate.htm">
    <input type="submit" class="btn btn-primary btn-sm back "  value="Back" style="margin-left: 10px;"> 	
-      <input type="hidden" name="MilestoneActivityId"	value="<%=getMA[0] %>" /> 
+      <input type="hidden" name="MilestoneActivityId"	value="<%=getMA!=null?getMA[0]:0 %>" /> 
 
 <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 </form>
@@ -51,16 +51,16 @@ String projectid=(String)request.getAttribute("projectid");
 <div class="container-fluid">
 <div class="row" >
 <div class="col-md-12">
-<div  class="panel-group" style="  "><h5 class="text-white" style="font-weight: bold;font-size: large;background-color: #055C9D; text-align: center;"><%=getMA[1] %> Milestone Activity Details</h5>  
+<div  class="panel-group" style="  "><h5 class="text-white" style="font-weight: bold;font-size: large;background-color: #055C9D; text-align: center;"><%=getMA!=null?getMA[1]:"-" %> Milestone Activity Details</h5>  
 <div class="row container-fluid" >
                            <div class="col-md-1 " ><br><label class="control-label">Type</label>  <br>  <b >Main</b>                    		
                         	</div>
                     		<div class="col-md-5 " ><br>
-                    		<label class="control-label"> Activity Name:</label> <br>  <%=getMA[4] %> 
+                    		<label class="control-label"> Activity Name:</label> <br>  <%=getMA!=null?getMA[4]:"-" %> 
                         	</div>
                         	<div class="col-md-1 " align="center" ><br>
                     		<label class="control-label">Progress <br> </label>
-                    		<%if(!getMA[11].toString().equalsIgnoreCase("0")){ %>
+                    		<%if(getMA!=null && !getMA[11].toString().equalsIgnoreCase("0")){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=getMA[11] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=getMA[11] %>
@@ -74,14 +74,14 @@ String projectid=(String)request.getAttribute("projectid");
                     		 
                         	</div>
                         	<div class="col-md-2 " align="center" ><br>
-                        	<label class="control-label">PDC<br>From :  <%=sdf.format(getMA[2]) %> <br> To :  <%=sdf.format(getMA[3]) %> <br></label>
+                        	<label class="control-label">PDC<br>From :  <%=getMA!=null?sdf.format(getMA[2]):"-" %> <br> To :  <%=getMA!=null?sdf.format(getMA[3]):"-" %> <br></label>
                         	</div>
                         	<div class="col-md-2 " align="center" style="margin-left: -10px;">
                         	<br><label class="control-label">Completed On<br>
-                        	<%if(getMA[14]!=null){ %>
+                        	<%if(getMA!=null && getMA[14]!=null){ %>
                         	<%=sdf.format(getMA[14]) %>
                         	<%}else{ %>
-                        	<%=getMA[15] %>
+                        	<%=getMA!=null?getMA[15]:"-" %>
                         	<%} %>
                         	</label>
                         	</div>
@@ -96,8 +96,8 @@ String projectid=(String)request.getAttribute("projectid");
                         	 
                         	  
                          	  <input type="hidden" name="ProjectId"	value="<%=projectid %>" />	
-                              <input type="hidden" name="MilestoneActivityId"	value="<%=getMA[0] %>" /> 
-                              <input type="hidden" name="ActivityId"	value="<%=getMA[0] %>" /> 
+                              <input type="hidden" name="MilestoneActivityId"	value="<%=getMA!=null?getMA[0]:"0" %>" /> 
+                              <input type="hidden" name="ActivityId"	value="<%=getMA!=null?getMA[0]:"0" %>" /> 
                               <input type="hidden" name="ActivityType"	value="M" /> 
                               <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
                               </form>
@@ -169,7 +169,7 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
                         	 
                         	  
                            		 <input type="hidden" name="ProjectId"	value="<%=projectid %>" />	
-                              <input type="hidden" name="MilestoneActivityId"	value="<%=getMA[0] %>" /> 
+                              <input type="hidden" name="MilestoneActivityId"	value="<%=getMA!=null?getMA[0]:"0" %>" /> 
                               <input type="hidden" name="ActivityId"	value="<%=ActivityA[0] %>" /> 
                               <input type="hidden" name="ActivityType"	value="A" /> 
                               <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
@@ -243,7 +243,7 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
                         	 
                         	  
                                <input type="hidden" name="ProjectId"	value="<%=projectid %>" />	
-                              <input type="hidden" name="MilestoneActivityId"	value="<%=getMA[0] %>" /> 
+                              <input type="hidden" name="MilestoneActivityId"	value="<%=getMA!=null?getMA[0]:"0" %>" /> 
                               <input type="hidden" name="ActivityId"	value="<%=ActivityB[0] %>" /> 
                               <input type="hidden" name="ActivityType"	value="B" /> 
                               <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
@@ -311,7 +311,7 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
                         	 
                         	  
                               <input type="hidden" name="ProjectId"	value="<%=projectid %>" />	
-                              <input type="hidden" name="MilestoneActivityId"	value="<%=getMA[0] %>" /> 
+                              <input type="hidden" name="MilestoneActivityId"	value="<%=getMA!=null?getMA[0]:"0" %>" /> 
                               <input type="hidden" name="ActivityId"	value="<%=ActivityC[0] %>" /> 
                               <input type="hidden" name="ActivityType"	value="C" /> 
                               <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 

@@ -41,13 +41,10 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.tomcat.util.http.fileupload.FileItem;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -212,10 +209,6 @@ public class RequirementsController {
 		String project= req.getParameter("project");
 		try(XSSFWorkbook workbook = new XSSFWorkbook()){
 			String action = req.getParameter("Action"); 
-			String initiationId=req.getParameter("initiationid");
-			String projectId=req.getParameter("projectId");//bharath
-			String productTreeMainId=req.getParameter("productTreeMainId");
-			String reqInitiationId=req.getParameter("reqInitiationId");
 			String Type=req.getParameter("Type");
 			
 			if("GenerateExcel".equalsIgnoreCase(action)) {
@@ -272,7 +265,6 @@ public class RequirementsController {
 				int r=0;
 
 				List<Object[]> SpecificarionMasterList = service.SpecificationMasterList();
-				if(!Type.equalsIgnoreCase("A") )
 				
 				if(SpecificarionMasterList!=null && SpecificarionMasterList.size()>0 ) {
 					
@@ -4829,5 +4821,28 @@ public class RequirementsController {
 			return json.toJson(result);
 		}
 		return json.toJson(result);	
+	}
+	
+	@GetMapping(value="SpecificationMasterDelete.htm" )
+	public String specificationMasterDelete(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String userId = (String)ses.getAttribute("Username");
+		logger.info(new Date()+ " Inside SpecificationMasterDelete.htm "+userId);
+		try {
+			String specsMasterId = req.getParameter("Did");
+			
+			int result = service.deleteSpecificationMasterById(specsMasterId);
+			
+			if (result > 0) {
+				redir.addAttribute("result", "Specification(s) Deleted Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Specification(s) Delete Unsuccessful");
+			}
+			
+			return "redirect:/SpecificationMasters.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+ " Inside SpecificationMasterDelete.htm "+userId);
+			return "static/Error";
+		}
 	}
 }

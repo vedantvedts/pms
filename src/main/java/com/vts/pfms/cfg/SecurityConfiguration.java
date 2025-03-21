@@ -64,7 +64,7 @@ public class SecurityConfiguration{
         	.csrf(Customizer.withDefaults())
         	.sessionManagement(session ->
         			session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-        				   .invalidSessionUrl("/login?sessionInvalid")
+        				   .invalidSessionUrl("/sessionExpiredHandler")
         				   .sessionFixation().migrateSession()
         				   .maximumSessions(2)
         				   .maxSessionsPreventsLogin(false)
@@ -100,7 +100,6 @@ public class SecurityConfiguration{
 	               .and()
 	               .build();
 	}
-
 	
 	@Bean
 	UserDetailsService userDetailsService() {

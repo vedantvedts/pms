@@ -1470,4 +1470,10 @@ public class RequirementServiceImpl implements RequirementService {
 	public List<SpecificationMaster> getAllSpecPlans() throws Exception {
 		return dao.getAllSpecPlans();
 	}
+	
+	@Override
+	public int deleteSpecificationMasterById(String specsMasterId) {
+		
+		return dao.deleteSpecificationMasterById(specsMasterId);
+	}
 }

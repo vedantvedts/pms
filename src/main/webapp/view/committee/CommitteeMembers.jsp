@@ -145,7 +145,9 @@ String CpLabCode = chairperson[9].toString();
 List<IndustryPartner> industryPartnerList = (List<IndustryPartner>)request.getAttribute("industryPartnerList");
 /* --------- end -------------- */
 List<Object[]> constitutionapprovalflow=(List<Object[]>)request.getAttribute("constitutionapprovalflow");
+List<String>loginTypes = Arrays.asList("A","P");
 
+String logintype = (String)session.getAttribute("LoginType");
 %>
 
 <%
@@ -383,7 +385,7 @@ String ses=(String)request.getParameter("result");
 			               			<th style="width:170px;text-align: center"> Sl No.</th>
 			               			<th >Participants</th>			                    	
 			                    	<th>Member Type</th>
-			                    	<th>Action</th>
+			                   <%if(loginTypes.contains(logintype)) {%> 	<th>Action</th>  <%} %>
 			                    </tr>
 			              	</thead>
 			              	<tbody>
@@ -413,6 +415,7 @@ String ses=(String)request.getParameter("result");
 										%>
 										
 									</td>
+												                   <%if(loginTypes.contains(logintype)) {%> 
 									<td>
 
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
@@ -426,8 +429,10 @@ String ses=(String)request.getParameter("result");
 									
 									
 									</td>
+									<%} %>
 			              	</tr>
 			              	<%}%>
+			              	
 			              	<tr>
 			              	<td colspan=1 style="display: flex;justify-content: center;align-items: center">
 			              	<input type="hidden" name="committeemainid" value="<%=committeemainid%>">

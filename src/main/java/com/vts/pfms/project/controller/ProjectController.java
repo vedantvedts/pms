@@ -5436,7 +5436,7 @@ public class ProjectController
             String [] attachdata = data.split(",");
 			File my_file=null;
 //			my_file = new File(uploadpath+ attachmentdata[2]+File.separator+attachmentdata[3]);
-            Path attachPath = Paths.get(uploadpath, LabCode,attachdata[1],attachdata[2]); 
+            Path attachPath = Paths.get(uploadpath, LabCode,attachdata[1],attachdata[2], attachmentdata[3].toString()); 
             my_file=attachPath.toFile();
 			res.setContentType("Application/octet-stream");	
 			res.setHeader("Content-disposition","attachment; filename="+attachmentdata[3].toString()); 
@@ -5450,8 +5450,7 @@ public class ProjectController
 			in.close();
 			out.flush();
 			out.close();
-		}catch 
-		(Exception e) {
+		}catch (Exception e) {
 			e.printStackTrace(); 
 			logger.error(new Date() +"Inside ProjectMasterAttachDownload.htm "+UserId,e);
 		}

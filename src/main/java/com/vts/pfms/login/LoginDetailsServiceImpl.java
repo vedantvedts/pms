@@ -10,6 +10,7 @@ import java.util.Set;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.vts.pfms.dao.RfpMainDao;
 import com.vts.pfms.model.LoginStamping;
 
+@Primary
 @Service
 public class LoginDetailsServiceImpl implements UserDetailsService{
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
