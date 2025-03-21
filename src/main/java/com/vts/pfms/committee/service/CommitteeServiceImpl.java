@@ -298,7 +298,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			}
 			else if(i==2)
 				{
-				if(  Long.parseLong(committeemaindto.getCo_Chairperson())>0) 
+				if(committeemaindto.getCo_Chairperson().length()!=0 &&   Long.parseLong(committeemaindto.getCo_Chairperson())>0) 
 				{
 					committeemember.setEmpId(Long.parseLong(committeemaindto.getCo_Chairperson()));
 					committeemember.setLabCode(committeemaindto.getCcplabocode());
@@ -1105,7 +1105,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			committeeinvitation.setAttendance("P");
 			committeeinvitation.setCreatedDate(sdf1.format(new Date()));
 			committeeinvitation.setEmpId(Long.parseLong(MemberType[0]));
-			if(committeeinvitationdto.getReptype()!= null && !committeeinvitationdto.getReptype().equals("0")) 
+			if(committeeinvitationdto.getReptype()!= null && Integer.parseInt(committeeinvitationdto.getReptype())!=0) 
 			{
 				committeeinvitation.setMemberType(committeeinvitationdto.getReptype());
 			}
@@ -2874,7 +2874,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 				
 				if(ScheduleCommEmpCheck.size()>0)
 				{
-					if(confidential.equals("1") || confidential.equals("2")) 
+					if(confidential!=null && (Integer.parseInt(confidential)==1 || Integer.parseInt(confidential)==2)) 
 					{
 						if(memtypes.contains(ScheduleCommEmpCheck.get(0)[2].toString())) {
 							useraccess=2;

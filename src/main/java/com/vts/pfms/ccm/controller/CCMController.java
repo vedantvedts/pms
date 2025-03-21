@@ -38,7 +38,6 @@ import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
@@ -90,37 +89,38 @@ public class CCMController {
 	private SimpleDateFormat sdtf = fc.getSqlDateAndTimeFormat();
 	private SimpleDateFormat rdf = fc.getRegularDateFormat();
 	
-	@Autowired
-	CCMService service;
-	
-	@Autowired
-	@Lazy
-	CommitteeService committeeservice;
-	
-	@Autowired
-	PrintService printservice;
 
-	@Autowired
-	RoadMapService roadmapservice;
+	private final CCMService service;
+	private final CommitteeService committeeservice;
+	private final PrintService printservice;
+	private final RoadMapService roadmapservice;
+	private final ActionService actionservice;
+	private final Environment env;
 	
-	@Autowired
-	ActionService actionservice;
+	private final PfmsFileUtils pfmsFileUtils = new PfmsFileUtils();
 	
-	@Autowired
-	Environment env;
-	
-	@Autowired
-	PfmsFileUtils pfmsFileUtils;
-	
-	@Autowired
-	PMSLogoUtil LogoUtil;
+	private final PMSLogoUtil logoUtil = new PMSLogoUtil();
 	
 	@Value("${ApplicationFilesDrive}")
 	String uploadpath;
 	
 	@Value("${File_Size}")
-	String file_size;
+	String filesize;
 
+	// constructor dependency injection
+	public CCMController(CCMService service,
+			@Lazy CommitteeService committeeservice, 
+			RoadMapService roadmapservice, 
+			PrintService printservice, 
+			ActionService actionservice, Environment env) {
+		this.service = service;
+		this.committeeservice = committeeservice;
+		this.printservice = printservice;
+		this.roadmapservice = roadmapservice;
+		this.actionservice = actionservice;
+		this.env = env;
+	}
+	
     private String getMimeType(String filename) {
 	    String extension = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
 	    switch (extension) {
@@ -659,10 +659,10 @@ public class CCMController {
     		CommitteeSchedule ccmSchedule = service.getCCMScheduleById(ccmScheduleId);
     		req.setAttribute("ccmScheduleData", ccmSchedule);
 	    	req.setAttribute("labInfo", printservice.LabDetailes(clusterLabCode));
-	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(clusterLabCode));
-	    	req.setAttribute("drdologo", LogoUtil.getDRDOLogoAsBase64String());
-	    	req.setAttribute("clusterLabs", LogoUtil.getClusterLabsAsBase64String());
-	    	req.setAttribute("thankYouImg", LogoUtil.getThankYouImageAsBase64String());
+	    	req.setAttribute("lablogo", logoUtil.getLabLogoAsBase64String(clusterLabCode));
+	    	req.setAttribute("drdologo", logoUtil.getDRDOLogoAsBase64String());
+	    	req.setAttribute("clusterLabs", logoUtil.getClusterLabsAsBase64String());
+	    	req.setAttribute("thankYouImg", logoUtil.getThankYouImageAsBase64String());
 	    	req.setAttribute("agendaList", service.getCCMScheduleAgendaListByCCMScheduleId(ccmScheduleId));
 	    	req.setAttribute("ccmScheduleId", ccmScheduleId);
 	    	req.setAttribute("ccmCommitteeId", ccmCommitteeId);
@@ -945,7 +945,7 @@ public class CCMController {
     		req.setAttribute("clusterLabList", service.getClusterLabListByClusterId(clusterid));
     		req.setAttribute("committeeId", committeeId);
     		req.setAttribute("tabName", tabName);
-    		req.setAttribute("filesize",file_size);
+    		req.setAttribute("filesize",filesize);
     		req.setAttribute("ccmScheduleId", ccmScheduleId+"");
     		
     		return "ccm/CCMPresentation";
@@ -1669,10 +1669,10 @@ public class CCMController {
 			CommitteeSchedule ccmSchedule = service.getCCMScheduleById(ccmScheduleId);
     		req.setAttribute("ccmScheduleData", ccmSchedule);
 	    	req.setAttribute("labInfo", printservice.LabDetailes(clusterLabCode));
-	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(clusterLabCode));
-	    	req.setAttribute("drdologo", LogoUtil.getDRDOLogoAsBase64String());
-	    	req.setAttribute("clusterLabs", LogoUtil.getClusterLabsAsBase64String());
-	    	req.setAttribute("thankYouImg", LogoUtil.getThankYouImageAsBase64String());
+	    	req.setAttribute("lablogo", logoUtil.getLabLogoAsBase64String(clusterLabCode));
+	    	req.setAttribute("drdologo", logoUtil.getDRDOLogoAsBase64String());
+	    	req.setAttribute("clusterLabs", logoUtil.getClusterLabsAsBase64String());
+	    	req.setAttribute("thankYouImg", logoUtil.getThankYouImageAsBase64String());
 	    	req.setAttribute("agendaList", service.getCCMScheduleAgendaListByCCMScheduleId(ccmScheduleId));
 	    	req.setAttribute("ccmScheduleId", ccmScheduleId);
 	    	req.setAttribute("ccmCommitteeId", ccmCommitteeId);

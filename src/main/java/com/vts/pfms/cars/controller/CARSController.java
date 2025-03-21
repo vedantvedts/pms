@@ -28,10 +28,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -85,39 +83,36 @@ public class CARSController {
 	FormatConverter fc = new FormatConverter();
 	private SimpleDateFormat sdtf = fc.getSqlDateAndTimeFormat();
 	private SimpleDateFormat sdf = fc.getSqlDateFormat();
-	private SimpleDateFormat rdf=new SimpleDateFormat("dd-MM-yyyy");
+	private SimpleDateFormat rdf = fc.getRegularDateFormat();
 	
 //	@Autowired
 //	RestTemplate restTemplate;
 	
-	@Autowired
-	CARSService service;
+	private final CARSService service;
+	private final ProjectService projectservice;
+	private final ActionService actionservice;
+	private final CCMService ccmservice;
+	private final PrintService printservice;
 	
-	@Autowired
-	ProjectService projectservice;
-	
-	@Autowired
-	ActionService actionservice;
+	private final PMSLogoUtil logoUtil = new PMSLogoUtil();
 	
 	@Value("${ApplicationFilesDrive}")
-	private String LabLogoPath;
+	private String labLogoPath;
 	
-	@Autowired
-	Environment env;
-	
-	@Autowired
-	CCMService ccmservice;
-
-	@Autowired
-	PrintService printservice;
-	
-	@Autowired
-	PMSLogoUtil LogoUtil;
+	// constructor dependency injection
+	public CARSController(CARSService service, ProjectService projectservice, PrintService printservice, CCMService ccmservice, ActionService actionservice) {
+		this.service = service;
+		this.projectservice = projectservice;
+		this.actionservice = actionservice;
+		this.ccmservice = ccmservice;
+		this.printservice = printservice;
+		
+	}
 	
 	public String getLabLogoAsBase64() throws IOException {
 
-//		String path = LabLogoPath + "\\images\\lablogos\\lrdelogo.png";
-		Path logoPath = Paths.get(LabLogoPath,"images","lablogos","lrdelogo.png");
+//		String path = labLogoPath + "\\images\\lablogos\\lrdelogo.png";
+		Path logoPath = Paths.get(labLogoPath,"images","lablogos","lrdelogo.png");
 		try {
 			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(logoPath.toFile()));
 		} catch (FileNotFoundException e) {
@@ -128,8 +123,8 @@ public class CARSController {
 	
 	public String getSecondLabLogoAsBase64() throws IOException {
 		
-//		String path = LabLogoPath + "\\images\\lablogos\\lrdelogo2.png";
-		Path logoPath = Paths.get(LabLogoPath,"images","lablogos","lrdelogo2.png");
+//		String path = labLogoPath + "\\images\\lablogos\\lrdelogo2.png";
+		Path logoPath = Paths.get(labLogoPath,"images","lablogos","lrdelogo2.png");
 		try {
 			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(logoPath.toFile()));
 		} catch (FileNotFoundException e) {
@@ -1028,7 +1023,7 @@ public class CARSController {
 			String carsSocId=req.getParameter("carsSocId");
 			res.setContentType("Application/octet-stream");	
 			CARSSoC soc = service.getCARSSoCById(Long.parseLong(carsSocId));
-			Path carsPath = Paths.get(LabLogoPath, "CARS", "SoC");
+			Path carsPath = Paths.get(labLogoPath, "CARS", "SoC");
 			File my_file=null;
 			String file = ftype.equalsIgnoreCase("soofile")?soc.getSoOUpload():
 				         (ftype.equalsIgnoreCase("frfile")?soc.getFRUpload(): 
@@ -1062,7 +1057,7 @@ public class CARSController {
 			String sqr = carsRSQRDetails[10].toString();
 			String replacedSqr = sqr.replaceAll("[/\\\\]", ",");
 			String[] result = replacedSqr.split(",");
-			Path carsPath = Paths.get(LabLogoPath, result[0].toString(), result[1].toString(), result[2].toString());
+			Path carsPath = Paths.get(labLogoPath, result[0].toString(), result[1].toString(), result[2].toString());
 			
 			if(carsRSQRDetails[10]==null || carsRSQRDetails[10].toString().isEmpty()) {
 				service.carsRSQRFormFreeze(req, res, Long.parseLong(carsInitiationId));
@@ -2301,8 +2296,8 @@ public class CARSController {
 			String file = ftype.equalsIgnoreCase("flagAFile")?doc.getAttachFlagA():
 			         	  (ftype.equalsIgnoreCase("flagBFile")?doc.getAttachFlagB():
 			         	  (ftype.equalsIgnoreCase("flagCFile")?doc.getAttachFlagC(): doc.getUploadOtherDoc() ) );
-			Path carsPath = Paths.get(LabLogoPath, "CARS", "Other Docs");
-//			my_file = new File(LabLogoPath+"CARS\\Other Docs\\"+File.separator+file); 
+			Path carsPath = Paths.get(labLogoPath, "CARS", "Other Docs");
+//			my_file = new File(labLogoPath+"CARS\\Other Docs\\"+File.separator+file); 
 			my_file = carsPath.resolve(file).toFile();
 	        res.setHeader("Content-disposition","attachment; filename="+file); 
 	        OutputStream out = res.getOutputStream();
@@ -3293,7 +3288,7 @@ public class CARSController {
 		logger.info(new Date() +" Inside CARSReportPresentation.htm "+Username);
 		try {
 			req.setAttribute("labInfo", printservice.LabDetailes(labcode));
-	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));
+	    	req.setAttribute("lablogo", logoUtil.getLabLogoAsBase64String(labcode));
 	    	req.setAttribute("initiationList", service.carsInitiationList(LoginType, EmpId));
 	    	req.setAttribute("allCARSContractList", service.getAllCARSContractList());
 	    	req.setAttribute("allCARSSoCMilestonesList", service.getAllCARSSoCMilestonesList());
@@ -3316,7 +3311,7 @@ public class CARSController {
 		logger.info(new Date() +"Inside CARSPresentationDownload.htm "+Username);		
 		try {
 			req.setAttribute("labInfo", printservice.LabDetailes(labcode));
-	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));
+	    	req.setAttribute("lablogo", logoUtil.getLabLogoAsBase64String(labcode));
 	    	req.setAttribute("initiationList", service.carsInitiationList(LoginType, EmpId));
 	    	req.setAttribute("allCARSContractList", service.getAllCARSContractList());
 	    	req.setAttribute("allCARSSoCMilestonesList", service.getAllCARSSoCMilestonesList());

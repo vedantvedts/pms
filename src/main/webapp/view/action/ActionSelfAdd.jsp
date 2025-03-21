@@ -301,7 +301,7 @@ String todate=(String)request.getAttribute("todate");
 																	<td><span  <%if(LocalDate.now().toString().equals(obj[3].toString())){ %>style="color: red;font-weight: bold; " <%} %> ><%=obj[2] %></span></td>
 																	<td><span  <%if(LocalDate.now().toString().equals(obj[3].toString())){ %>style="color: red;font-weight: bold; " <%} %> ><%=sdf.format(obj[3])%></span></td>
 																	<td><%=obj[4] %></td>
-																	<td><%if(obj[5].toString().equals("M")){ %> Meeting<%}else if(obj[5].toString().equals("N")){ %> Normal <%} %>  </td>
+																	<td><%if(obj[5].toString().equalsIgnoreCase("M")){ %> Meeting<%}else if(obj[5].toString().equalsIgnoreCase("N")){ %> Normal <%} %>  </td>
 																	<td> 
 																		<form action="ActionSelfReminderDelete.htm" method="Post">
 																			<button type="submit" class="btn btn-danger btn-sm" name="action" value="delete" onclick="return confirm('Are you sure To Delete this Reminder?')" > <i class="fa fa-trash" aria-hidden="true" ></i></button>

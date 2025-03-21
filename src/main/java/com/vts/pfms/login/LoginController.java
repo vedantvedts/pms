@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
@@ -146,7 +147,9 @@ public class LoginController {
 
     
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login(@RequestHeader(name = "User-Agent") String userAgent, Model model, String error, String logout,
+	public String login(@RequestHeader(name = "User-Agent") String userAgent, Model model, 
+			@RequestParam(name = "error", required = false) String error,
+            @RequestParam(name = "logout", required = false) String logout,
 			HttpServletRequest req, HttpSession ses, HttpServletResponse response) {
 		
 		req.getSession().setAttribute("loginPage", "login");
@@ -216,7 +219,9 @@ public class LoginController {
 	}
     
 	@RequestMapping(value = "/wr", method = RequestMethod.GET)
-	public String loginWR(@RequestHeader(name = "User-Agent") String userAgent, Model model, String error, String logout,
+	public String loginWR(@RequestHeader(name = "User-Agent") String userAgent, Model model, 
+			@RequestParam(name = "error", required = false) String error,
+            @RequestParam(name = "logout", required = false) String logout,
 			HttpServletRequest req, HttpSession ses, HttpServletResponse response) {
 		
 		req.getSession().setAttribute("loginPage", "wr");
@@ -1537,14 +1542,16 @@ public class LoginController {
    		Gson convertedgson = new Gson();
    		return convertedgson.toJson(Project);
    	}
+    
+    @GetMapping(value="/sessionExpiredHandler")
+    public String handleSessionExpired(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false);
 
-    @RequestMapping(value="/invalid-session", method = {RequestMethod.GET, RequestMethod.POST})
-    public String handleInvalidSession(HttpSession session) {
-        String loginPage = (String) session.getAttribute("loginPage");
-        System.out.println("loginPage Invalid Session");
-        if (loginPage == null) {
-            loginPage = "login"; // fallback to default if session is invalid
-        }
-        return "redirect:/" + loginPage + "?error=session";
+        // Retrieve stored login page, defaulting to "/login"
+        String originalLoginPage = (session != null && session.getAttribute("loginPage") != null)
+                ? (String) session.getAttribute("loginPage")
+                : "login"; 
+
+        return "redirect:/" + originalLoginPage + "?sessionExpired";
     }
 }

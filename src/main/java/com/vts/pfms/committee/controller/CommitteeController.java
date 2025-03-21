@@ -1329,7 +1329,7 @@ public class CommitteeController {
 			}
 
 			if(fromDate==null) {
-				fromDate=LocalDate.now().minusDays(30).toString();
+				fromDate=LocalDate.now().minusYears(1).toString();
 			}else {
 				toDate=sdf2.format(rdf.parse(toDate));
 			}
@@ -6871,7 +6871,7 @@ public class CommitteeController {
 
 				res.setContentType("application/pdf"); res.setHeader("Content-Disposition",
 						"inline; name="+ dpfm.getDPFMFileName()+".pdf; filename"+dpfm.getDPFMFileName()); 
-				Path filepath = Paths.get(uploadpath, LabCode, "DPFM");
+				Path filepath = Paths.get(uploadpath, LabCode, "DPFM", dpfm.getDPFMFileName());
 				//						 File f=new File(uploadpath+dpfm.getFrozenDPFMPath()+dpfm.getDPFMFileName());
 				File f=filepath.toFile();
 

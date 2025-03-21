@@ -435,7 +435,7 @@ public class AdminServiceImpl implements AdminService{
 	{
 		logger.info(new Date() +"Inside SERVICE DesignationEditSubmit ");
 		long ret=dao.DesignationEditSubmit(dto);
-		if(!dto.getDesigSr().equals(dto.getOldDesigSr()))
+		if(!dto.getDesigSr().equalsIgnoreCase(dto.getOldDesigSr()))
 		{		
 			Long desigid=Long.parseLong(dto.getDesigId());
 			Long SeniorityNumber=Long.parseLong(dto.getDesigSr());
@@ -619,11 +619,11 @@ public class AdminServiceImpl implements AdminService{
 		@Override
 		public int updateformroleaccess(String formroleaccessid,String detailsid,String isactive,String logintype, String UserId)throws Exception{
 			
-				if(isactive!=null && isactive.equals("0")){
-					isactive="1";
-				}else {
-					isactive="0";
-				}
+			if(isactive!=null && isactive.equals("0")){
+				isactive="1";
+			}else {
+				isactive="0";
+			}
 			int result = dao.checkavaibility(logintype,detailsid);
 			
 			if(result == 0) {

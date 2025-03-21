@@ -326,7 +326,7 @@ String ses=(String)request.getParameter("result");
 		<div class="col-md-2" id="attachmentDiv" style="display:none;">
 		<form action="#" method="get">
 		<input type="hidden" name="attachmentid" id="attachmentid">
-		<button class="btn btn-sm" formaction="MinutesAttachDownload.htm" formmethod="get" formtarget="blank">
+		<button class="btn btn-sm" formaction="MinutesAttachDownload.htm" formmethod="get" formtarget="blank" data-toggle="tooltip" data-placement="right" title="MOM signed Copy">
 		<i class="fa fa-download"></i>
 		</button>
 		</form>
@@ -341,6 +341,17 @@ String ses=(String)request.getParameter("result");
 				<button type ="submit"  class="btn btn-sm btn-link w-100 btn-status" formaction="EnoteStatusTrack.htm" value="<%=CommitteMainEnoteList[0]%>" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="Transaction History" name="EnoteTrackId" style=" color: <%=CommitteMainEnoteList[21].toString()%>; font-weight: 600;display: contents" > <%=CommitteMainEnoteList[20].toString() %> 
 				<i class="fa fa-external-link" aria-hidden="true"></i></button>
 				</form>
+				
+				<form action="CommitteeEnotePrint.htm" target="_blank" style="margin-left:1%;">
+					<button type="submit" class="btn btn-sm edit" style="background: #088395;border-color: #088395" data-toggle="tooltip" data-placement="right" title="MOM ENote Letter">
+					<i class="fa fa-download" style="   font-size: 0.90rem;color:white "></i>
+					</button>
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
+					<input type="hidden" name="EnoteId" value="<%=CommitteMainEnoteList[0].toString()%>">
+					<input type="hidden" name="type" value="C">
+					<input type="hidden" name="scheduleid" value="<%=scheduleid %>">
+					<input type="hidden" name="committeemainid" value="0">
+					</form>
 					</div> 
 					<%} %>
 					</div>
@@ -377,18 +388,15 @@ String ses=(String)request.getParameter("result");
 									<img src="view/images/check.png"> <br> <%} %>
 									Recommended Officer 3 <br> <%=NewApprovalList[5].toString() %>
 								</td>
-								<%} %>
+								<% } %>
 								<%if(NewApprovalList!=null && NewApprovalList[8]!=null){ %>
 								<td rowspan="2"><b>----------&gt;</b></td>
-
 								<td class="trup" style="background: #F4A261;">&nbsp;<%if(Arrays.asList("APR").contains(CommitteMainEnoteList[15].toString())) {%>
 									<img src="view/images/check.png"> <br><%} %> 
 									Approving Officer <br> <%=NewApprovalList[7].toString() %>
 								</td>
 								<%} %>
-
 							</tr>
-
 						</table>
 					</div>
 					<%} %>
@@ -616,6 +624,10 @@ String ses=(String)request.getParameter("result");
 		            }
 		        });
 	    }
+	    
+	    $(function () {
+	    	$('[data-toggle="tooltip"]').tooltip()
+	    	})
 				</script>	
 </body>
 </html>

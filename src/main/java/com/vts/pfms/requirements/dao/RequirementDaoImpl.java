@@ -679,13 +679,17 @@ public class RequirementDaoImpl implements RequirementDao {
 		return requirementFiles;
 	}
 
-	private static final String TESTTYPECOUNT="SELECT MAX(TestCount) FROM pfms_testdetails WHERE TestPlanInitiationId=:TestPlanInitiationId AND isactive='1'";
+	private static final String TESTTYPECOUNT="SELECT IFNULL(MAX(TestCount),0) AS 'MAX' FROM pfms_testdetails WHERE TestPlanInitiationId=:TestPlanInitiationId AND isactive='1'";
 	@Override
 	public long numberOfTestTypeId(String testPlanInitiationId) throws Exception {
-
-		Query query=manager.createNativeQuery(TESTTYPECOUNT);
-		query.setParameter("TestPlanInitiationId", testPlanInitiationId);
-		return (Long)query.getSingleResult();
+		try {
+			Query query=manager.createNativeQuery(TESTTYPECOUNT);
+			query.setParameter("TestPlanInitiationId", testPlanInitiationId);
+			return (Long)query.getSingleResult();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
 		
 	}
 
@@ -1464,6 +1468,18 @@ public class RequirementDaoImpl implements RequirementDao {
 		}catch (Exception e) {
 			logger.error(new Date() + " Inside DAO getAllSpecPlans " + e);
 			return null;
+		}
+	}
+	
+	@Override
+	public int deleteSpecificationMasterById(String specsMasterId) {
+		try {
+			Query query = manager.createNativeQuery("UPDATE pfms_specification_master a SET a.IsActive = 0 WHERE a.SpecsMasterId =:SpecsMasterId OR a.ParentId =:SpecsMasterId OR a.ParentId IN ( SELECT SpecsMasterId FROM ( SELECT b.SpecsMasterId FROM pfms_specification_master b WHERE b.ParentId =:SpecsMasterId ) AS subquery )");
+			query.setParameter("SpecsMasterId", Long.parseLong(specsMasterId));
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
 		}
 	}
 }

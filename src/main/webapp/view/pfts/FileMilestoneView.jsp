@@ -107,6 +107,8 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 			    	    }
 			    	}
 			    	
+			    	sqlDate = sqlDate==null? new java.sql.Date(System.currentTimeMillis()):sqlDate;
+			    	
 			        java.util.Date probableDate = new java.util.Date(sqlDate.getTime());
 			        Calendar cal = Calendar.getInstance();
 			        cal.setTime(probableDate);

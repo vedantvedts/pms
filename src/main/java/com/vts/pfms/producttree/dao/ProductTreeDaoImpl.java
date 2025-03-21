@@ -183,8 +183,8 @@ public class ProductTreeDaoImpl implements ProductTreeDao{
 	@Override
 	public ProjectSlides getProjectSlides(String projectId) throws Exception {
 		try {
-			Query query = manager.createQuery("FROM ProjectSlides WHERE IsActive=1 AND projectId=:projectId");
-			query.setParameter("projectId", Long.parseLong(projectId));
+			Query query = manager.createQuery("FROM ProjectSlides WHERE IsActive=1 AND ProjectId=:ProjectId");
+			query.setParameter("ProjectId", Long.parseLong(projectId));
 			return (ProjectSlides)query.getSingleResult();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -192,8 +192,6 @@ public class ProductTreeDaoImpl implements ProductTreeDao{
 			return null;
 		}
 	}
-	
-	
 	
 	private static final String PRODUCTTREELISTSUB="SELECT a.MainId,a.parentlevelid,a.levelid,a.levelname,a.projectid,b.ProjectShortName,a.Stage,a.Module,a.SubLevelId,a.SystemMainId,a.LevelCode,a.InitiationId FROM pfms_product_tree a,pfms_initiation b WHERE a.MainId>0 AND a.InitiationId=b.InitiationId AND b.InitiationId=:InitiationId and a.isActive='1' ORDER BY parentlevelid";
 

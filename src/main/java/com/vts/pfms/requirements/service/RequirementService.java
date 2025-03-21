@@ -187,4 +187,5 @@ public interface RequirementService {
 	public List<TestPlanMaster> getAllTestPlans()throws Exception;
 
 	public List<SpecificationMaster> getAllSpecPlans()throws Exception;
+	public int deleteSpecificationMasterById(String specsMasterId);
 }

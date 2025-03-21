@@ -42,7 +42,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
     private static final String MILESTONECOUNT="Select count(*) from milestone_activity where isactive='1' and projectid=:ProjectId";
 	private static final String MA="select a.milestoneactivityid,b.projectname,a.startdate,a.enddate,a.activityname,a.milestoneno,c.empname,d.empname as emp,a.oicempid,a.oicempid1,a.projectid,a.progressstatus,a.revisionno,a.acceptedby,a.accepteddate,a.activitytype,a.Weightage,e.activitytype as type from milestone_activity a,project_master b, employee c,employee d, milestone_activity_type e where a.activitytype=e.activitytypeid and a.projectid=b.projectid and a.oicempid=c.empid and a.oicempid1=d.empid and a.milestoneactivityid=:id";
 	private static final String MILEACTIVITYLEVEL="CALL Pfms_Milestone_Level_List(:id,:levelid)";
-    private static final String MAREVISION="SELECT MAX(revisionno) FROM milestone_activity_rev WHERE milestoneactivityid=:id ";
+    private static final String MAREVISION="SELECT IFNULL(MAX(revisionno),0) AS 'MAX' FROM milestone_activity_rev WHERE milestoneactivityid=:id ";
 	private static final String MADETAILS="FROM MilestoneActivity WHERE MilestoneActivityId=:Id";
     private static final String MILEACTIVITYDATA="select a.milestoneactivityid,a.startdate,a.enddate,a.activityname,a.activitystatusid,a.progressstatus,a.statusremarks,a.oicempid,a.oicempid1,a.activitytype from milestone_activity a where  a.milestoneactivityid=:id";
     private static final String MILEACTIVITYLEVELDATA="select a.activityid,a.startdate,a.enddate,a.activityname,a.activitystatusid,a.progressstatus,a.statusremarks,a.Weightage from milestone_activity_level a where  a.activityid=:id";
@@ -56,7 +56,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	private static final String MILEACTIVITYCUPDATE="UPDATE milestone_activity_c SET startdate=:from,enddate=:to,Weightage=:Weightage,ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE activitycid=:id";
     private static final String MILELEVELCOMPARE="CALL Pfms_Milestone_Level_Compare(:id,:rev,:rev1,:levelid)";
 	private static final String MILECOMPAREMAIN="SELECT a.milestoneactivityid,b.projectname,e.startdate,e.enddate,e.activityname,e.progressstatus as ps,c.empname,d.empname AS emp,e.revisionno,e.progressstatus as ps1,e.progressstatus as ps2,e.progressstatus as ps3,DATEDIFF(e.enddate,e.startdate) AS actual,(SELECT DATEDIFF(f.enddate,f.startdate) FROM milestone_activity_rev f WHERE  f.milestoneactivityid=:id  AND f.revisionno=:rev1) AS diff,a.dateofcompletion,g.activitystatus  FROM milestone_activity a,project_master b, employee c,employee d,milestone_activity_rev e,milestone_activity_status g WHERE a.activitystatusid=g.activitystatusid and a.projectid=b.projectid AND a.oicempid=c.empid AND a.oicempid1=d.empid AND a.milestoneactivityid=e.milestoneactivityid   AND a.milestoneactivityid=:id AND e.revisionno=:rev";
-	private static final String MAEMPLIST="select a.milestoneactivityid,b.projectname,a.startdate,a.enddate,a.activityname,a.milestoneno,c.empname,d.empname as emp,(SELECT MAX(e.revisionno) FROM milestone_activity_rev e WHERE a.milestoneactivityid=e.milestoneactivityid) AS rev from milestone_activity a,project_master b, employee c,employee d,milestone_activity_rev e where  a.revisionno=e.revisionno  AND a.milestoneactivityid=e.milestoneactivityid and a.projectid=b.projectid and a.oicempid=c.empid and a.oicempid1=d.empid and (a.oicempid1=:EmpId or a.oicempid=:EmpId)";
+	private static final String MAEMPLIST="select a.milestoneactivityid,b.projectname,a.startdate,a.enddate,a.activityname,a.milestoneno,c.empname,d.empname as emp,(SELECT IFNULL(MAX(e.revisionno),0) AS 'MAX' FROM milestone_activity_rev e WHERE a.milestoneactivityid=e.milestoneactivityid) AS rev from milestone_activity a,project_master b, employee c,employee d,milestone_activity_rev e where  a.revisionno=e.revisionno  AND a.milestoneactivityid=e.milestoneactivityid and a.projectid=b.projectid and a.oicempid=c.empid and a.oicempid1=d.empid and (a.oicempid1=:EmpId or a.oicempid=:EmpId)";
 	private static final String STATUSLIST="select a.activitystatusid,a.activitystatus FROM milestone_activity_status a ";
 	private static final String PROACTIVITYUPDATE="UPDATE milestone_activity SET dateofcompletion=:doc,activitystatusid=:status,progressstatus=:progress,statusremarks=:remarks,ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE milestoneactivityid=:id";
 	private static final String PROACTIVITYLEVELUPDATE="UPDATE milestone_activity_level SET dateofcompletion=:doc,activitystatusid=:status,progressstatus=:progress,statusremarks=:remarks,ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE activityid=:id";
@@ -210,11 +210,15 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	
 	@Override
 	public int MilestoneRevisionCount(String MileActivityId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(MAREVISION);
+			query.setParameter("id", Long.parseLong(MileActivityId));
+			return (Integer)query.getSingleResult();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 		
-		Query query = manager.createNativeQuery(MAREVISION);
-		query.setParameter("id", MileActivityId);
-		Long count = (Long)query.getSingleResult();
-		return count.intValue();
 	}
 
 	@Override
@@ -394,9 +398,9 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> ActivityCompareMAin(String ActivityId,String Rev,String Rev1) throws Exception {
 		Query query=manager.createNativeQuery(MILECOMPAREMAIN);
-		query.setParameter("id", ActivityId);
-		query.setParameter("rev", Rev);
-		query.setParameter("rev1", Rev1);
+		query.setParameter("id", Long.parseLong(ActivityId));
+		query.setParameter("rev", Integer.parseInt(Rev));
+		query.setParameter("rev1", Integer.parseInt(Rev1));
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
 
 		return MilestoneActivityList;
@@ -480,11 +484,15 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	
 	@Override
 	public int MilestoneTotalWeightage(String MilestoneActivityId) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(MILESTONETOTALWEIGHTAGE);
+			query.setParameter("MilestoneActivityId", MilestoneActivityId);		
+			return (Integer)query.getSingleResult();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 
-		Query query=manager.createNativeQuery(MILESTONETOTALWEIGHTAGE);
-		query.setParameter("MilestoneActivityId", MilestoneActivityId);		
-		Long MilestoneTotalWeightage = (Long)query.getSingleResult();
-		return MilestoneTotalWeightage.intValue();
 	}
 
 	@Override
@@ -574,25 +582,31 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	}
 	@Override
 	public int ActivityMainSum(String Id,String ActivityId) throws Exception {
-	Query query = manager.createNativeQuery(MILESUM);
-	query.setParameter("projectid", ActivityId);
-	query.setParameter("id", Id);
-	Long count=(Long)query.getSingleResult();
-	return count.intValue();
+		try {
+			Query query = manager.createNativeQuery(MILESUM);
+			query.setParameter("projectid", ActivityId);
+			query.setParameter("id", Id);
+			return (Integer)query.getSingleResult();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 	@Override
 	public int ActivityLevelSum(String Id, String ActivityId,String LevelId) throws Exception {
-		Query query = manager.createNativeQuery(ACTIVITYLEVELSUM);
-		query.setParameter("activityid", ActivityId);
-		query.setParameter("id", Id);
-		query.setParameter("levelid", LevelId);
-		Long count=(Long)query.getSingleResult();
-		return count.intValue();
+		try {	
+			Query query = manager.createNativeQuery(ACTIVITYLEVELSUM);
+			query.setParameter("activityid", ActivityId);
+			query.setParameter("id", Id);
+			query.setParameter("levelid", LevelId);
+			return (Integer)query.getSingleResult();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
 		}
+	}
 	
-
-
 	@Override
 	public List<Object[]> BaseLineMain(String ActivityId) throws Exception {
 		Query query=manager.createNativeQuery(BASELINEMAIN);

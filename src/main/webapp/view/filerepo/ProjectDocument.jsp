@@ -250,15 +250,15 @@ if(ses1!=null){
 																		<li>
 																			<span>
 																				<span>
-																					<%if(obj2[5].equals("0")){ %>
+																					<%if(Integer.parseInt(obj2[5].toString())==0){ %>
 																						<input class="checkbox" type="checkbox" id="checkbox<%=obj2[0]%>" name="documentid" value="<%=obj2[0]%>_<%=obj2[1]%>" >
-																					<%}else if(obj2[5].equals("1")){ %>
+																					<%}else if(Integer.parseInt(obj2[5].toString())==1){ %>
 																						<input class="checkbox" type="checkbox" disabled="disabled" name="documentid" value="<%=obj2[0]%>_<%=obj2[1]%>" >
 																					<%} %>
 																				</span><!-- 	class="caret1" onclick="onclickchange(this);" -->
-																				<span class="noselect"	<%if(obj2[5].equals("0")){ %>														
+																				<span class="noselect"	<%if(Integer.parseInt(obj2[5].toString())==0){ %>														
 																						 style= "cursor: pointer;" onclick="onclickcheck('checkbox<%=obj2[0]%>');"
-																						<%}else if(obj2[5].equals("1")){ %>
+																						<%}else if(Integer.parseInt(obj2[5].toString())==1){ %>
 																						 style="font-weight: 700; color: black; cursor: pointer;" 
 																						<%} %> >
 																					<%=obj2[3] %>(<%=obj2[4] %>)
@@ -266,7 +266,7 @@ if(ses1!=null){
 																			</span>
 																			<span>
 																			<!-- prakarsh -------------------------------------------------------->
-																			<%if(obj2[5].equals("1")){ %>
+																			<%if(Integer.parseInt(obj2[5].toString())==1){ %>
 																	 	<button name="FileParentId"   type="button" id="activeButton"   class="btnx"  style="color: red;border:0px;background-color:white;font-size:16px;" formaction="IsActive.htm" value="<%=obj2[0]%>_<%=obj2[1]%>_<%=projectid%>">
 																	 	   <i class="fa fa-times" aria-hidden="true"></i></button> 
 																	 	<input type="hidden" name="projectid" value="<%=projectid%>">

@@ -180,5 +180,6 @@ public interface RequirementDao {
 
 
 	public List<SpecificationMaster> getAllSpecPlans()throws Exception;
+	public int deleteSpecificationMasterById(String specsMasterId);
 	
 }
