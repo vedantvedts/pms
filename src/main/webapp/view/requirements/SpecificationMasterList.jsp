@@ -122,25 +122,7 @@ label {
 }
 
 /* Container for the tabs */
-.tabs-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 20px;
-}
 
-/* Individual tab styling */
-.tab {
-    padding: 10px 20px;
-    margin: 5px;
-    background-color: #81D4FA;
-  /*   border: 1px solid #ccc; */
-    border-radius: 5px;
-    font-size:1rem;
-    font-weight:600;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
 
 /* Hover effect for tabs */
 .tab:hover {
@@ -176,6 +158,77 @@ label {
 .tab-content.active {
     display: block;
 }
+
+/* New sytles for tabs */
+.tabs-wrapper {
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+    width: 118%;
+    overflow: hidden;
+    /* position: relative;
+    padding: 10px 0; */
+}
+
+.tabs-container {
+    overflow: hidden;
+    flex-grow: 1;
+    white-space: nowrap;
+    max-width: 80%; /* Restrict width */
+}
+
+.tabs-track {
+    display: flex;
+    gap: 10px;
+    transition: scroll-left 0.3s ease-in-out;
+    overflow-x: auto;
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+
+.tabs-track::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Chrome, Safari */
+}
+
+.tab {
+    padding: 10px 15px;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    flex: 0 0 auto; /* Prevent shrinking */
+    text-align: center;
+    min-width: 160px;
+    font-weight: 500;
+    transition: background 0.3s, color 0.3s;
+}
+
+.tab:hover {
+    background: #007bff;
+    color: white;
+}
+
+.tab.active {
+    background: #007bff;
+    color: white;
+    border-color: #0056b3;
+}
+
+.tab-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    min-height: 40px;
+    font-size: 18px;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+
+.tab-btn:hover {
+    background: #0056b3 !important;
+}
+
+
 </style>
 </head>
 <body>
@@ -238,20 +291,33 @@ label {
 						</div>
 					</div>
 				</div>
-				<div class="tabs-container">
-				    <div class="tab active" data-target="A">Total List</div>
-				    <div class="tab" data-target="FS">Functional Specification</div>
-				    <div class="tab" data-target="OS">Operational Specification</div>
-				    <div class="tab" data-target="PS">Performance Specification</div>
-				    <div class="tab" data-target="DS">Deployment Specification</div>
-				    <div class="tab" data-target="IS">Interface Specification</div>
-				    <div class="tab" data-target="MS">Mechanical Specification</div>
-				    <div class="tab" data-target="ES">Electrical Specification</div>
-				    <div class="tab" data-target="MT">Maintenance Specification</div>
-				    <div class="tab" data-target="IN">Installation Specification</div>
-				    <div class="tab" data-target="CS">Constraints Specification</div>
-				</div>
 				
+				<div class="card-body">
+				    <div class="tabs-wrapper d-flex align-items-center">
+				        <button class="tab-btn prev btn btn-primary mr-2" onclick="scrollTabs(-1)">
+				            <i class="fa fa-chevron-left"></i>
+				        </button> 
+				        <div class="tabs-container">
+				            <div class="tabs-track d-flex">
+				                <div class="tab active" data-target="A">Total List</div>
+				                <div class="tab" data-target="FS">Functional Specification</div>
+				                <div class="tab" data-target="OS">Operational Specification</div>
+				                <div class="tab" data-target="PS">Performance Specification</div>
+				                <div class="tab" data-target="DS">Deployment Specification</div>
+				                <div class="tab" data-target="IS">Interface Specification</div>
+				                <div class="tab" data-target="MS">Mechanical Specification</div>
+				                <div class="tab" data-target="ES">Electrical Specification</div>
+				                <div class="tab" data-target="MT">Maintenance Specification</div>
+				                <div class="tab" data-target="IN">Installation Specification</div>
+				                <div class="tab" data-target="CS">Constraints Specification</div>
+				            </div>
+				        </div>
+				        <button class="tab-btn next btn btn-primary ml-2" onclick="scrollTabs(1)">
+				            <i class="fa fa-chevron-right"></i>
+				        </button> 
+				    </div>
+				</div>
+
 				<form action="SpecificationMasterAdd.htm" method="post" name="frm1">	
 				
 					<div class="card-body tab-content active" id="A">
@@ -455,6 +521,17 @@ label {
 			}
 		}
 		
+		
+		function scrollTabs(direction) {
+		    const container = document.querySelector(".tabs-container");
+		    const track = document.querySelector(".tabs-track");
+
+		    const scrollAmount = container.clientWidth * 0.8; // Scroll 60% of container width
+		    track.scrollLeft += direction * scrollAmount;
+		}
+
+
+
 	</script>
 </body>
 </html>

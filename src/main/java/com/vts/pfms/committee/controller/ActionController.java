@@ -3385,16 +3385,24 @@ public class ActionController {
 				String type=req.getParameter("type");
 				Object[] rfaAttachDownload = service.RfaAttachmentDownload(rfaid);
 				
+				String attachPath = "-";
+				String projectCode = "-";
+				
+				if(rfaAttachDownload!=null) {
+					attachPath = rfaAttachDownload[5].toString().replace("/", "_");
+					projectCode = rfaAttachDownload[5].toString().split("/")[1];
+				}
+				
 				File my_file=null;
 				if(type.equalsIgnoreCase("ARD")) {
-					Path filePath = Paths.get(uploadpath,LabCode,"RFAFiles",rfaAttachDownload[3].toString());
+					Path filePath = Paths.get(uploadpath,LabCode,"RFAFiles", projectCode, attachPath, rfaAttachDownload[3].toString());
 //					my_file = new File(uploadpath+ rfaAttachDownload[2]+File.separator+rfaAttachDownload[3]);
 					my_file = filePath.toFile();
 					res.setContentType("Application/octet-stream");	
 			        res.setHeader("Content-disposition","attachment; filename="+rfaAttachDownload[3].toString()); 
 					
 				}else {
-				  Path filePath1 = Paths.get(uploadpath,LabCode,"RFAFiles",rfaAttachDownload[4].toString());
+				  Path filePath1 = Paths.get(uploadpath,LabCode,"RFAFiles", projectCode, attachPath, rfaAttachDownload[4].toString());
 				  my_file = filePath1.toFile();
 //				   my_file = new File(uploadpath+ rfaAttachDownload[2]+File.separator+rfaAttachDownload[4]);
 				   res.setContentType("Application/octet-stream");	

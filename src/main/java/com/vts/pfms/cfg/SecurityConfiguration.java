@@ -54,7 +54,7 @@ public class SecurityConfiguration{
         			logout
         				  //.logoutSuccessUrl("/login?logout=1")
         				  //.invalidateHttpSession(true)
-        				  //.deleteCookies("JSESSIONID")
+        				  .deleteCookies("JSESSIONID")
         				  .addLogoutHandler(logoutSuccessHandler())
         				  .invalidateHttpSession(false) 
         			)
@@ -64,7 +64,7 @@ public class SecurityConfiguration{
         	.csrf(Customizer.withDefaults())
         	.sessionManagement(session ->
         			session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-        				   .invalidSessionUrl("/sessionExpiredHandler")
+        				   .invalidSessionUrl("/login?sessionInvalid")
         				   .sessionFixation().migrateSession()
         				   .maximumSessions(2)
         				   .maxSessionsPreventsLogin(false)

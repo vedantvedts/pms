@@ -1318,7 +1318,7 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	
 	
-	private static final String GETRFAREMARKS = "SELECT CONCAT (e.empname,',' ,c.designation) AS emp,t.Remarks,t.ActionDate,t.RfaStatus FROM pfms_rfa_action_transaction t,employee e,employee_desig c WHERE t.RfaId=:rfaId  AND t.actionby=e.EmpId AND e.desigid=c.desigid GROUP BY RfaStatus";
+	private static final String GETRFAREMARKS = "SELECT CONCAT (e.empname,',' ,c.designation) AS emp,t.Remarks,t.ActionDate,t.RfaStatus FROM pfms_rfa_action_transaction t,employee e,employee_desig c WHERE t.RfaId=:rfaId  AND t.actionby=e.EmpId AND e.desigid=c.desigid GROUP BY e.EmpName, c.Designation, t.Remarks, t.ActionDate, t.RfaStatus";
 	@Override
 	public List<Object[]> getrfaRemarks(String rfaId,String status) throws Exception {
 		Query query=manager.createNativeQuery(GETRFAREMARKS);

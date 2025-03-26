@@ -1584,7 +1584,7 @@ public class MilestoneController {
 
 	}
 
-	@RequestMapping(value = "MilestoneExcelFile.htm", method = RequestMethod.POST)
+	@RequestMapping(value = "MilestoneExcelFile.htm", method = {RequestMethod.POST, RequestMethod.GET})
 	public void MilestoneExcelFile(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception 
 	{
 

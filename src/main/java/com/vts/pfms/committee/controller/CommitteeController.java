@@ -165,9 +165,6 @@ public class CommitteeController {
 	@Autowired
 	MailService mailService;
 
-	//	@Autowired 
-	//	private JavaMailSender javaMailSender;
-
 	@Autowired
 	@Lazy
 	CustomJavaMailSender cm;

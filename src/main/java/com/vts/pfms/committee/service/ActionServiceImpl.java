@@ -1784,7 +1784,7 @@ public class ActionServiceImpl implements ActionService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() + "Inside Service RfaActionSubmit", e);
-			return null;
+			return 0L;
 		}
 
 	}
