@@ -162,7 +162,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 		logger.info(new Date() +"Inside SERVICE MilestoneRevisionCount ");
 		try
 		{
-			count=dao.MilestoneRevisionCount(MileActivityId);
+			count=dao.MilestoneRevisionCount(MileActivityId)+1;
 		}catch (Exception e) {
 			logger.error(new Date() +"Inside  MilestoneRevisionCount ",e);
 			count=0;

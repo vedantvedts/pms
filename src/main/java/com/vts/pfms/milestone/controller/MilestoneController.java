@@ -887,7 +887,7 @@ public class MilestoneController {
 		logger.info(new Date() +"Inside MilestoneActivityUpdate.htm "+UserId);
 
 		try {
-			int rev=service.MilestoneRevisionCount(req.getParameter("MilestoneActivityId"));
+			int rev=service.MilestoneRevisionCount(req.getParameter("MilestoneActivityId"))-1;
 
 			int countA=1; 
 			List<Object[]> activityCompareMAin = service.ActivityCompareMAin(req.getParameter("MilestoneActivityId"),String.valueOf(rev),String.valueOf(rev-1));

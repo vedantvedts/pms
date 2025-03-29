@@ -308,7 +308,7 @@ public class DocumentsServiceImpl implements DocumentsService{
 					long countT = dao.getInterfaceTypeCountByinterfaceTypeId(interfaceTypeSplit[0]);
 					long countC = dao.getInterfaceContentCountByinterfaceContentId(interfaceTypeSplit[0], interfaceContentSplit[0]);
 					
-					String seqCount = (countC>=99)?("_"+(countC+1)) : ((countC>=9 && countC<99)?("_0"+(countC+1)) : ("_00"+(countC+1)) );
+					String seqCount = String.format("%03d", countC + 1);
 					
 					String interfaceCode = (interfaceTypeSplit[1]!=null?interfaceTypeSplit[1]:"-")
 											+ "_" + (interfaceContentSplit[1]!=null?interfaceContentSplit[1]:"-")

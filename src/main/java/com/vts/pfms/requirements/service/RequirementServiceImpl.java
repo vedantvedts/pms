@@ -18,9 +18,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +31,6 @@ import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.cars.dao.CARSDao;
 import com.vts.pfms.committee.model.PfmsNotification;
-import com.vts.pfms.documents.model.IGIInterface;
-
-import com.vts.pfms.documents.model.IGIDocumentMembers;
-import com.vts.pfms.documents.model.IGIDocumentSummary;
-import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.project.dao.ProjectDao;
 import com.vts.pfms.project.dto.PfmsInitiationRequirementDto;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
@@ -47,24 +39,28 @@ import com.vts.pfms.requirements.dao.RequirementDao;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.DocumentFreeze;
-import com.vts.pfms.requirements.model.ReqDoc;
-import com.vts.pfms.requirements.model.RequirementInitiation;
-import com.vts.pfms.requirements.model.SpecificationMaster;
-import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.DocumentTrans;
 import com.vts.pfms.requirements.model.PfmsReqTypes;
 import com.vts.pfms.requirements.model.PfmsSpecTypes;
 import com.vts.pfms.requirements.model.PfmsTestTypes;
+import com.vts.pfms.requirements.model.ReqDoc;
+import com.vts.pfms.requirements.model.RequirementInitiation;
+import com.vts.pfms.requirements.model.SpecificationMaster;
+import com.vts.pfms.requirements.model.SpecificationTypes;
+import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
 import com.vts.pfms.requirements.model.TestDetails;
 import com.vts.pfms.requirements.model.TestPlanInitiation;
+import com.vts.pfms.requirements.model.TestPlanMaster;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.model.TestScopeIntro;
 import com.vts.pfms.requirements.model.TestTools;
 import com.vts.pfms.requirements.model.VerificationData;
 import com.vts.pfms.utils.PMSLogoUtil;
-import com.vts.pfms.requirements.model.TestPlanMaster;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Service
 public class RequirementServiceImpl implements RequirementService {
@@ -1476,4 +1472,11 @@ public class RequirementServiceImpl implements RequirementService {
 		
 		return dao.deleteSpecificationMasterById(specsMasterId);
 	}
+	
+	@Override
+	public List<SpecificationTypes> getSpecificationTypesList() {
+
+		return dao.getSpecificationTypesList();
+	}
+
 }

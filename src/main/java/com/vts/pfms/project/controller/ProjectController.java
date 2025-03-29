@@ -10309,10 +10309,11 @@ public class ProjectController
 			redir.addAttribute("projectType", req.getParameter("projectType"));
 			return "redirect:/ProjectSpecificationDetails.htm";
 		}catch(Exception e) {
-			
+			e.printStackTrace();
+			return "static/Error";
 		}
-		return null;
-		}
+
+	}
 	
 	@RequestMapping(value="SpecificationApproval.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String projectTestPlanApprovalSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir, HttpServletResponse resp) throws Exception {

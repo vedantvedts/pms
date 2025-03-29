@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.requirements.model.SpecificationTypes"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
@@ -234,9 +235,21 @@ label {
 <body>
 
 	<%
-	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-	List<Object[]> SpecificarionMasterList = (List<Object[]>) request.getAttribute("SpecificarionMasterList");
-	List<String> specTypesList = Arrays.asList("FS", "OS", "PS", "DS", "IS", "MS", "ES", "MT", "IN", "CS");
+	List<Object[]> specificarionMasterList = (List<Object[]>) request.getAttribute("specificarionMasterList");
+	List<SpecificationTypes> specificationTypesList = (List<SpecificationTypes>) request.getAttribute("specificationTypesList");
+	String specTypeId = (String) request.getAttribute("specTypeId");
+	specTypeId = specTypeId==null?"0":specTypeId;
+	
+    Map<String, List<Object[]>> specificationTypeMap = new LinkedHashMap<>();
+    specificationTypeMap.put("A", specificarionMasterList);
+    
+	for(SpecificationTypes specificationType : specificationTypesList) {
+		
+		List<Object[]> specificationListByType = specificarionMasterList.stream().filter(e -> Long.parseLong(e[19].toString())==(specificationType.getSpecTypeId())).collect(Collectors.toList());
+		
+		specificationTypeMap.computeIfAbsent(specificationType.getSpecTypeCode(), k -> new ArrayList<>()).addAll(specificationListByType);
+	}
+	
 	%>
 
 
@@ -285,6 +298,7 @@ label {
 								</div>
 								
 								<input type="hidden" name="Type" id="specType" value="A">
+								<input type="hidden" class="specTypeId" name="specTypeId" value="<%=specTypeId%>">
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
 							</form>
@@ -299,17 +313,16 @@ label {
 				        </button> 
 				        <div class="tabs-container">
 				            <div class="tabs-track d-flex">
-				                <div class="tab active" data-target="A">Total List</div>
-				                <div class="tab" data-target="FS">Functional Specification</div>
-				                <div class="tab" data-target="OS">Operational Specification</div>
-				                <div class="tab" data-target="PS">Performance Specification</div>
-				                <div class="tab" data-target="DS">Deployment Specification</div>
-				                <div class="tab" data-target="IS">Interface Specification</div>
-				                <div class="tab" data-target="MS">Mechanical Specification</div>
-				                <div class="tab" data-target="ES">Electrical Specification</div>
-				                <div class="tab" data-target="MT">Maintenance Specification</div>
-				                <div class="tab" data-target="IN">Installation Specification</div>
-				                <div class="tab" data-target="CS">Constraints Specification</div>
+				                <div class="tab <%if(Long.parseLong(specTypeId)==0) {%> active <%} %>" data-target="A" data-spectypeid="0">Total List</div>
+				                <%
+				                	if(specificationTypesList!=null && specificationTypesList.size()>0) {
+										for(SpecificationTypes specificationType : specificationTypesList) {
+				                %>
+				                	<div class="tab <%if(Long.parseLong(specTypeId)==specificationType.getSpecTypeId()) {%> active <%} %> " data-target="<%=specificationType.getSpecTypeCode()!=null?specificationType.getSpecTypeCode():"-" %>" 
+				                	 data-spectypeid="<%=specificationType.getSpecTypeId()%>">
+				                		<%=specificationType.getSpecType()!=null?specificationType.getSpecType():"-" %>
+				                	</div>
+				                <%} }%>
 				            </div>
 				        </div>
 				        <button class="tab-btn next btn btn-primary ml-2" onclick="scrollTabs(1)">
@@ -320,45 +333,11 @@ label {
 
 				<form action="SpecificationMasterAdd.htm" method="post" name="frm1">	
 				
-					<div class="card-body tab-content active" id="A">
-						<div class="table-responsive">
-							<table class="table table-bordered table-hover table-striped table-condensed mytable" id="myTable">
-								<thead style="text-align: center;">
-									<tr>
-										<th style="width:5%;">SN</th>
-										<!--<th>Specification Name</th> -->
-										<th style="width:20%;">Specification Code</th>
-									
-										<th style="width:20%;">Parameter</th>
-										<th style="width:10%;">Minimum Value</th>
-										<th style="width:10%;"> Typical Value</th>
-										<th style="width:10%;">Maximum Value</th>
-										<th style="width:10%;"> Unit</th>
-									</tr>
-								</thead>
-								<tbody>
-									<% for (Object[] obj : SpecificarionMasterList) { %>
-										<tr<%if(obj[14].toString().equalsIgnoreCase("0")){ %> style="background: #9ae59a;"	 <%} %>>
-								  	 		<td align="center">
-									   			<input type="radio" name="Did" value=<%=obj[0]%> <%if(!obj[14].toString().equalsIgnoreCase("0")){ %>class="subDid" <%} else {%>class="Did"<%} %> > 
-											</td>
-									
-											<td><%=obj[5]%></td>
-									
-											<td><%=obj[3]%></td>
-											<td><%=obj[16]!=null?obj[16]:"-"%></td>
-											<td><%=obj[6]!=null?obj[6]:"-"%></td>
-											<td><%=obj[15]!=null ? obj[15]:"-"%></td>
-										 	<td><%=obj[4]!=null?obj[4]:"" %></td> 
-										</tr>
-									<% } %>
-								</tbody>
-							</table>
-						</div>
-					</div>
-							
-	
-					<%for(String specType : specTypesList) {%>
+					<%for(Map.Entry<String, List<Object[]>> entry : specificationTypeMap.entrySet()) { 
+						String specType = entry.getKey();
+						List<Object[]> specTypeList = entry.getValue();
+						
+					%>
 						
 						<div class="card-body tab-content" id="<%=specType%>">
 							<div class="table-responsive">
@@ -380,12 +359,8 @@ label {
 									</thead>
 									<tbody>
 										<%
-										List<Object[]>fsList=SpecificarionMasterList!=null&&SpecificarionMasterList.size()>0
-															?SpecificarionMasterList.stream().filter(e->e[18]!=null &&  e[18].toString().equalsIgnoreCase(specType))
-																	.collect(Collectors.toList()):new ArrayList<>();
-																			
 										
-										for (Object[] obj : fsList) {
+										for (Object[] obj : specTypeList) {
 										%>
 											<tr<%if(obj[14].toString().equalsIgnoreCase("0")){ %> style="background: #9ae59a;"	 <%} %>>
 									   			<td align="center">
@@ -410,6 +385,7 @@ label {
 				
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					<input type="hidden" name="levelType" id="levelType">
+					<input type="hidden" class="specTypeId" name="specTypeId" value="<%=specTypeId%>">
 					<div align="center">
 
 						<div class="button-group mb-2">
@@ -447,7 +423,7 @@ label {
 			 var fields = $("input[name='Did']").serializeArray();
 
 			  if (fields.length === 0){
-			alert("Please Select A Record");
+			alert("Please select a record");
 			 event.preventDefault();
 			return false;
 			}
@@ -482,8 +458,10 @@ label {
 		    $('.tab-content').removeClass('active');
 		    // Show the content corresponding to the clicked tab
 		    const targetId = $(this).data('target');
+		    const spectypeid = $(this).data('spectypeid');
 			
-		    $('#specType').val(targetId)
+		    $('#specType').val(targetId);
+		    $('.specTypeId').val(spectypeid=='A'?'0':spectypeid);
 		    $('#' + targetId).addClass('active');
 		});
 		
@@ -507,7 +485,7 @@ label {
 			console.log("Class Name:", className);
 
 			if (fields.length === 0){
-				alert("Please Select A Record");
+				alert("Please select a record");
 				event.preventDefault();
 				return false;
 			}else {
@@ -526,11 +504,16 @@ label {
 		    const container = document.querySelector(".tabs-container");
 		    const track = document.querySelector(".tabs-track");
 
-		    const scrollAmount = container.clientWidth * 0.8; // Scroll 60% of container width
+		    const scrollAmount = container.clientWidth * 0.8;
 		    track.scrollLeft += direction * scrollAmount;
 		}
 
-
+		$(document).ready(function() {
+		    var activetab = $('.tab.active');
+		    var datatarget = activetab.data('target');
+		    
+		    $('#' + datatarget).addClass('active');
+		});
 
 	</script>
 </body>

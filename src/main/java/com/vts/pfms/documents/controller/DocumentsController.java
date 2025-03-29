@@ -2249,6 +2249,33 @@ public class DocumentsController {
 
 	} 
 
+	@RequestMapping(value = "IRSIntroductionSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String irsIntroductionSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IRSIntroductionSubmit.htm" + UserId);
+
+		try {
+			String irsDocId = req.getParameter("irsDocId");
+			PfmsIRSDocument pfmsIRSDocument = service.getPfmsIRSDocumentById(irsDocId);
+			pfmsIRSDocument.setIntroduction(req.getParameter("introduction"));
+			long result = service.addPfmsIRSDocument(pfmsIRSDocument);
+
+			if (result > 0) {
+				redir.addAttribute("result", "IRS Document Introduction Updated Successfully");
+			} else {
+				redir.addAttribute("resultfail", "IRS Document Introduction Update Unsuccessful");
+			}
+			redir.addAttribute("irsDocId", irsDocId);
+			return "redirect:/IRSDocumentDetails.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IRSIntroductionSubmit.htm " + UserId, e);
+			return "static/Error";
+
+		}
+
+	}
+	
 	@RequestMapping(value = "IRSSpecificationsDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String irsSpecificationsDetails(HttpServletRequest req, HttpSession ses) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
@@ -2586,6 +2613,33 @@ public class DocumentsController {
 		
 	}
 
+	@RequestMapping(value = "IDDIntroductionSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String iddIntroductionSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IDDIntroductionSubmit.htm" + UserId);
+
+		try {
+			String iddDocId = req.getParameter("iddDocId");
+			PfmsIDDDocument pfmsIDDDocument = service.getPfmsIDDDocumentById(iddDocId);
+			pfmsIDDDocument.setIntroduction(req.getParameter("introduction"));
+			long result = service.addPfmsIDDDocument(pfmsIDDDocument);
+
+			if (result > 0) {
+				redir.addAttribute("result", "IDD Document Introduction Updated Successfully");
+			} else {
+				redir.addAttribute("resultfail", "IDD Document Introduction Update Unsuccessful");
+			}
+			redir.addAttribute("iddDocId", iddDocId);
+			return "redirect:/IDDDocumentDetails.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IDDIntroductionSubmit.htm " + UserId, e);
+			return "static/Error";
+
+		}
+
+	}
+	
 	@RequestMapping(value = "IDDDocumentDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String iddDocumentDetails(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		

@@ -2,15 +2,8 @@ package com.vts.pfms.requirements.service;
 
 import java.util.List;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.web.multipart.MultipartFile;
 
-import com.vts.pfms.documents.model.IGIInterface;
-import com.vts.pfms.documents.model.IGIDocumentMembers;
-import com.vts.pfms.documents.model.IGIDocumentSummary;
-import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.project.dto.PfmsInitiationRequirementDto;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.requirements.model.Abbreviations;
@@ -19,17 +12,20 @@ import com.vts.pfms.requirements.model.DocumentFreeze;
 import com.vts.pfms.requirements.model.PfmsReqTypes;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
-import com.vts.pfms.requirements.model.Specification;
 import com.vts.pfms.requirements.model.SpecificationMaster;
+import com.vts.pfms.requirements.model.SpecificationTypes;
 import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
 import com.vts.pfms.requirements.model.TestDetails;
 import com.vts.pfms.requirements.model.TestPlanInitiation;
+import com.vts.pfms.requirements.model.TestPlanMaster;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.model.TestTools;
 import com.vts.pfms.requirements.model.VerificationData;
-import com.vts.pfms.requirements.model.TestPlanMaster;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public interface RequirementService {
 
@@ -188,4 +184,6 @@ public interface RequirementService {
 
 	public List<SpecificationMaster> getAllSpecPlans()throws Exception;
 	public int deleteSpecificationMasterById(String specsMasterId);
+	public List<SpecificationTypes> getSpecificationTypesList();
+	
 }

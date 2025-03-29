@@ -213,7 +213,8 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		try {
 			Query query = manager.createNativeQuery(MAREVISION);
 			query.setParameter("id", Long.parseLong(MileActivityId));
-			return (Integer)query.getSingleResult();
+			Long revCount = (Long)query.getSingleResult();
+			return revCount.intValue();
 		}catch (Exception e) {
 			e.printStackTrace();
 			return 0;
