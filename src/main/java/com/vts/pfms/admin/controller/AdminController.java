@@ -607,7 +607,7 @@ public class AdminController {
 					.filter(e -> LabCode.equalsIgnoreCase(e[3].toString())).collect(Collectors.toList()));
 			req.setAttribute("RtmddoList", service.Rtmddo());
 			req.setAttribute("presentEmpList", service.presentEmpList().stream()
-					.filter(e -> LabCode.equals(e[5].toString())).collect(Collectors.toList()));
+					.filter(e -> LabCode.equalsIgnoreCase(e[5].toString())).collect(Collectors.toList()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() + " Inside Rtmddo2.htm " + UserId, e);
@@ -1101,8 +1101,8 @@ public class AdminController {
 
 			int result = service.updateformroleaccess(formroleaccessid, detailsid, isactive, LoginType, UserId);
 
-			redir.addFlashAttribute("logintype", LoginType);
-			redir.addFlashAttribute("moduleid", moduleid);
+			redir.addAttribute("logintype", LoginType);
+			redir.addAttribute("moduleid", moduleid);
 		} catch (Exception e) {
 			logger.error(new Date() + "Inside UpdateRoleAcess.htm " + UserId, e);
 			e.printStackTrace();

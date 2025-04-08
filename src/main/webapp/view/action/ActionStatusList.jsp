@@ -219,19 +219,19 @@ h6{
 																		<td><%=obj[1]%>, <%=obj[2]%></td>
 																	  	<td><%=obj[7]%>, <%=obj[8]%></td>
 																		<td>
-																			<%if(obj[6]!=null && obj[6].toString().equals("A"))
+																			<%if(obj[6]!=null && obj[6].toString().equalsIgnoreCase("A"))
 																			{%>
 																				Assigned
 																			<%}
-																			else if(obj[6]!=null && obj[6].toString().equals("F"))
+																			else if(obj[6]!=null && obj[6].toString().equalsIgnoreCase("F"))
 																			{%>
 																				Forwarded
 																			<% }
-																			else if(obj[6]!=null && obj[6].toString().equals("B"))
+																			else if(obj[6]!=null && obj[6].toString().equalsIgnoreCase("B"))
 																			{%>
 																				Sent Back
 																			<%}
-																			else if(obj[6]!=null && obj[6].toString().equals("C"))
+																			else if(obj[6]!=null && obj[6].toString().equalsIgnoreCase("C"))
 																			{%>
 																				Completed
 																			<%}	%>												

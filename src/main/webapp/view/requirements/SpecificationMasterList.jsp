@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.requirements.model.SpecificationTypes"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
@@ -122,25 +123,7 @@ label {
 }
 
 /* Container for the tabs */
-.tabs-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 20px;
-}
 
-/* Individual tab styling */
-.tab {
-    padding: 10px 20px;
-    margin: 5px;
-    background-color: #81D4FA;
-  /*   border: 1px solid #ccc; */
-    border-radius: 5px;
-    font-size:1rem;
-    font-weight:600;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
 
 /* Hover effect for tabs */
 .tab:hover {
@@ -176,48 +159,116 @@ label {
 .tab-content.active {
     display: block;
 }
+
+/* New sytles for tabs */
+.tabs-wrapper {
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+    width: 118%;
+    overflow: hidden;
+    /* position: relative;
+    padding: 10px 0; */
+}
+
+.tabs-container {
+    overflow: hidden;
+    flex-grow: 1;
+    white-space: nowrap;
+    max-width: 80%; /* Restrict width */
+}
+
+.tabs-track {
+    display: flex;
+    gap: 10px;
+    transition: scroll-left 0.3s ease-in-out;
+    overflow-x: auto;
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+
+.tabs-track::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Chrome, Safari */
+}
+
+.tab {
+    padding: 10px 15px;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    flex: 0 0 auto; /* Prevent shrinking */
+    text-align: center;
+    min-width: 160px;
+    font-weight: 500;
+    transition: background 0.3s, color 0.3s;
+}
+
+.tab:hover {
+    background: #007bff;
+    color: white;
+}
+
+.tab.active {
+    background: #007bff;
+    color: white;
+    border-color: #0056b3;
+}
+
+.tab-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    min-height: 40px;
+    font-size: 18px;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+
+.tab-btn:hover {
+    background: #0056b3 !important;
+}
+
+
 </style>
 </head>
 <body>
 
 	<%
-	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-	List<Object[]> SpecificarionMasterList = (List<Object[]>) request.getAttribute("SpecificarionMasterList");
-	%>
-
-
-	<%
-	String ses = (String) request.getParameter("result");
-	String ses1 = (String) request.getParameter("resultfail");
-	if (ses1 != null) {
-	%>
-
-
-	<center>
-
-		<div class="alert alert-danger" role="alert">
-			<%=ses1%>
-		</div>
-	</center>
-	<%
+	List<Object[]> specificarionMasterList = (List<Object[]>) request.getAttribute("specificarionMasterList");
+	List<SpecificationTypes> specificationTypesList = (List<SpecificationTypes>) request.getAttribute("specificationTypesList");
+	String specTypeId = (String) request.getAttribute("specTypeId");
+	specTypeId = specTypeId==null?"0":specTypeId;
+	
+    Map<String, List<Object[]>> specificationTypeMap = new LinkedHashMap<>();
+    specificationTypeMap.put("A", specificarionMasterList);
+    
+	for(SpecificationTypes specificationType : specificationTypesList) {
+		
+		List<Object[]> specificationListByType = specificarionMasterList.stream().filter(e -> Long.parseLong(e[19].toString())==(specificationType.getSpecTypeId())).collect(Collectors.toList());
+		
+		specificationTypeMap.computeIfAbsent(specificationType.getSpecTypeCode(), k -> new ArrayList<>()).addAll(specificationListByType);
 	}
-	if (ses != null) {
+	
 	%>
-	<center>
-		<div class="alert alert-success" role="alert">
-			<%=ses%>
+
+
+	<% String ses=(String)request.getParameter("result");
+	 	String ses1=(String)request.getParameter("resultfail");
+		if(ses1!=null){
+		%>
+		<div align="center">
+			<div class="alert alert-danger" role="alert">
+		    <%=ses1 %>
+		    </div>
 		</div>
-
-	</center>
-
-
-	<%
-	}
-	%>
-
-
-
-
+		<%}if(ses!=null){ %>
+		<div align="center">
+			<div class="alert alert-success" role="alert" >
+		    	<%=ses %>
+			</div>
+		</div>
+	<%} %>
 
 	<div class="container-fluid">
 		<div class="col-md-12">
@@ -247,441 +298,108 @@ label {
 								</div>
 								
 								<input type="hidden" name="Type" id="specType" value="A">
-								<input type="hidden" name="${_csrf.parameterName}"
-									value="${_csrf.token}" />
+								<input type="hidden" class="specTypeId" name="specTypeId" value="<%=specTypeId%>">
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
 							</form>
 						</div>
 					</div>
 				</div>
-		<div class="tabs-container">
-    <div class="tab active" data-target="total-list">Total List</div>
-    <div class="tab" data-target="FS">Functional Specification</div>
-    <div class="tab" data-target="OS">Operational Specification</div>
-    <div class="tab" data-target="PS">Performance Specification</div>
-    <div class="tab" data-target="DS">Deployment Specification</div>
-    <div class="tab" data-target="IS">Interface Specification</div>
-    <div class="tab" data-target="MS">Mechanical Specification</div>
-    <div class="tab" data-target="ES">Electrical Specification</div>
-</div>
-				<form action="SpecificationMasterAdd.htm" method="post" name="frm1">
-					<div class="card-body tab-content active" id="total-list">
-						<div class="table-responsive">
-							<table
-								class="table table-bordered table-hover table-striped table-condensed mytable"
-								id="myTable">
-								<thead style="text-align: center;">
-								<tr>
-								<th style="width:5%;">SN</th>
-								<!--<th>Specification Name</th> -->
-								<th style="width:20%;">Specification Code</th>
-							
-								<th style="width:20%;">Parameter</th>
-								<th style="width:10%;">Minimum Value</th>
-								<th style="width:10%;"> Typical Value</th>
-								<th style="width:10%;">Maximum Value</th>
-								<th style="width:10%;"> Unit</th>
-								</tr>
-								</thead>
-								<tbody>
-									<%
-									for (Object[] obj : SpecificarionMasterList) {
-									%>
-									<tr<%if(obj[14].toString().equalsIgnoreCase("0")){ %> style="background: #9ae59a;"	 <%} %>>
-								   <td align="center"><input type="radio" name="Did"
-										<%if(!obj[14].toString().equalsIgnoreCase("0")){ %>disabled="disabled" <%}%>value=<%=obj[0]%>> </td>
-									
-										<td><%=obj[5]%></td>
-								
-										<td><%=obj[3]%></td>
-										<td><%=obj[16]!=null?obj[16]:"-"%></td>
-										<td><%=obj[6]!=null?obj[6]:"-"%></td>
-										<td><%=obj[15]!=null ? obj[15]:"-"%></td>
-										 <td><%=obj[4]!=null?obj[4]:"" %></td> 
-									</tr>
-									<%
-									}
-									%>
-								</tbody>
-							</table>
-						</div>
-						</div>
+				
+				<div class="card-body">
+				    <div class="tabs-wrapper d-flex align-items-center">
+				        <button class="tab-btn prev btn btn-primary mr-2" onclick="scrollTabs(-1)">
+				            <i class="fa fa-chevron-left"></i>
+				        </button> 
+				        <div class="tabs-container">
+				            <div class="tabs-track d-flex">
+				                <div class="tab <%if(Long.parseLong(specTypeId)==0) {%> active <%} %>" data-target="A" data-spectypeid="0">Total List</div>
+				                <%
+				                	if(specificationTypesList!=null && specificationTypesList.size()>0) {
+										for(SpecificationTypes specificationType : specificationTypesList) {
+				                %>
+				                	<div class="tab <%if(Long.parseLong(specTypeId)==specificationType.getSpecTypeId()) {%> active <%} %> " data-target="<%=specificationType.getSpecTypeCode()!=null?specificationType.getSpecTypeCode():"-" %>" 
+				                	 data-spectypeid="<%=specificationType.getSpecTypeId()%>">
+				                		<%=specificationType.getSpecType()!=null?specificationType.getSpecType():"-" %>
+				                	</div>
+				                <%} }%>
+				            </div>
+				        </div>
+				        <button class="tab-btn next btn btn-primary ml-2" onclick="scrollTabs(1)">
+				            <i class="fa fa-chevron-right"></i>
+				        </button> 
+				    </div>
+				</div>
+
+				<form action="SpecificationMasterAdd.htm" method="post" name="frm1">	
+				
+					<%for(Map.Entry<String, List<Object[]>> entry : specificationTypeMap.entrySet()) { 
+						String specType = entry.getKey();
+						List<Object[]> specTypeList = entry.getValue();
 						
-						<!--  FunctionalDiv -->
+					%>
 						
-					<div class="card-body tab-content" id="FS">
-						<div class="table-responsive">
-							<table
-								class="table table-bordered table-hover table-striped table-condensed mytable"
-								id="myTable1">
-								<thead style="text-align: center;">
-								<tr>
-								<th style="width:5%;">SN</th>
-								<!--<th>Specification Name</th> -->
-								<th style="width:20%;">Specification Code</th>
-								<!-- <th style="width:10%;">Specification Type</th> -->
-								<th style="width:20%;">Parameter</th>
-								<th style="width:10%;">Minimum Value</th>
-								<th style="width:10%;"> Typical Value</th>
-								<th style="width:10%;">Maximum Value</th>
-								<th style="width:10%;"> Unit</th>
-								</tr>
-								</thead>
-								<tbody>
-									<%
-									List<Object[]>fsList=SpecificarionMasterList!=null&&SpecificarionMasterList.size()>0
-														?SpecificarionMasterList.stream().filter(e->e[18]!=null &&  e[18].toString().equalsIgnoreCase("FS"))
-																.collect(Collectors.toList()):new ArrayList<>();
-																		
-									
-									for (Object[] obj : fsList) {
-									%>
-									<tr<%if(obj[14].toString().equalsIgnoreCase("0")){ %> style="background: #9ae59a;"	 <%} %>>
-								   <td align="center"><input type="radio" name="Did"
-										<%if(!obj[14].toString().equalsIgnoreCase("0")){ %>disabled="disabled" <%}%>value=<%=obj[0]%>> </td>
-										<%-- <td><%=obj[1]%></td> --%>
-										<td><%=obj[5]%></td>
-									
-										<td><%=obj[3]%></td>
-										<td><%=obj[16]!=null?obj[16]:"-"%></td>
-										<td><%=obj[6]!=null?obj[6]:"-"%></td>
-										<td><%=obj[15]!=null ? obj[15]:"-"%></td>
-										 <td><%=obj[4]!=null?obj[4]:"-" %></td> 
-									</tr>
-									<%
-									}
-									%>
-								</tbody>
-							</table>
-						</div>
-						</div>
-
-
-					<div class="tab-content" id="OS">
-
-						<div class="table-responsive">
-							<table
-								class="table table-bordered table-hover table-striped table-condensed mytable"
-								id="myTable1">
-								<thead style="text-align: center;">
-									<tr>
-										<th style="width: 5%;">SN</th>
-										<!--<th>Specification Name</th> -->
-										<th style="width: 20%;">Specification Code</th>
-										<!-- <th style="width:10%;">Specification Type</th> -->
-										<th style="width: 20%;">Parameter</th>
-										<th style="width: 10%;">Minimum Value</th>
-										<th style="width: 10%;">Typical Value</th>
-										<th style="width: 10%;">Maximum Value</th>
-										<th style="width: 10%;">Unit</th>
-									</tr>
-								</thead>
-								<tbody>
-									<%
-									List<Object[]> osList = SpecificarionMasterList != null && SpecificarionMasterList.size() > 0 ? SpecificarionMasterList
-											.stream().filter(e -> e[18] != null && e[18].toString().equalsIgnoreCase("OS")).collect(Collectors.toList())
-											: new ArrayList<>();
-
-									for (Object[] obj : osList) {
-									%>
-									<tr <%if (obj[14].toString().equalsIgnoreCase("0")) {%>
-										style="background: #9ae59a;" <%}%>>
-										<td align="center"><input type="radio" name="Did"
-											<%if (!obj[14].toString().equalsIgnoreCase("0")) {%>
-											disabled="disabled" <%}%> value=<%=obj[0]%>></td>
-										<%-- <td><%=obj[1]%></td> --%>
-										<td><%=obj[5]%></td>
-
-										<td><%=obj[3]%></td>
-										<td><%=obj[16]!=null?obj[16]:"-"%></td>
-										<td><%=obj[6]!=null?obj[6]:"-"%></td>
-										<td><%=obj[15]!=null ? obj[15]:"-"%></td>
-										 <td><%=obj[4]!=null?obj[4]:"-" %></td> 
-									</tr>
-									<%
-									}
-									%>
-								</tbody>
-							</table>
-						</div>
-					</div>
-
-
-					<div class="tab-content" id="PS">
-					
+						<div class="card-body tab-content" id="<%=specType%>">
 							<div class="table-responsive">
-							<table
-								class="table table-bordered table-hover table-striped table-condensed mytable"
-								id="myTable1">
-								<thead style="text-align: center;">
+								<table
+									class="table table-bordered table-hover table-striped table-condensed mytable"
+									id="myTable1">
+									<thead style="text-align: center;">
 									<tr>
-										<th style="width: 5%;">SN</th>
-										<!--<th>Specification Name</th> -->
-										<th style="width: 20%;">Specification Code</th>
-										<!-- <th style="width:10%;">Specification Type</th> -->
-										<th style="width: 20%;">Parameter</th>
-										<th style="width: 10%;">Minimum Value</th>
-										<th style="width: 10%;">Typical Value</th>
-										<th style="width: 10%;">Maximum Value</th>
-										<th style="width: 10%;">Unit</th>
+									<th style="width:5%;">SN</th>
+									<!--<th>Specification Name</th> -->
+									<th style="width:20%;">Specification Code</th>
+									<!-- <th style="width:10%;">Specification Type</th> -->
+									<th style="width:20%;">Parameter</th>
+									<th style="width:10%;">Minimum Value</th>
+									<th style="width:10%;"> Typical Value</th>
+									<th style="width:10%;">Maximum Value</th>
+									<th style="width:10%;"> Unit</th>
 									</tr>
-								</thead>
-								<tbody>
-									<%
-									List<Object[]> psList = SpecificarionMasterList != null && SpecificarionMasterList.size() > 0 ? SpecificarionMasterList
-											.stream().filter(e -> e[18] != null && e[18].toString().equalsIgnoreCase("PS")).collect(Collectors.toList())
-											: new ArrayList<>();
-
-									for (Object[] obj : psList) {
-									%>
-									<tr <%if (obj[14].toString().equalsIgnoreCase("0")) {%>
-										style="background: #9ae59a;" <%}%>>
-										<td align="center"><input type="radio" name="Did"
-											<%if (!obj[14].toString().equalsIgnoreCase("0")) {%>
-											disabled="disabled" <%}%> value=<%=obj[0]%>></td>
-										<%-- <td><%=obj[1]%></td> --%>
-										<td><%=obj[5]%></td>
-
-										<td><%=obj[3]%></td>
-										<td><%=obj[16]!=null?obj[16]:"-"%></td>
-										<td><%=obj[6]!=null?obj[6]:"-"%></td>
-										<td><%=obj[15]!=null ? obj[15]:"-"%></td>
-										 <td><%=obj[4]!=null?obj[4]:"-" %></td> 
-									</tr>
-									<%
-									}
-									%>
-								</tbody>
-							</table>
-						</div>
-					</div>
-			<div class="tab-content" id="DS">
-			
-					<div class="table-responsive">
-							<table
-								class="table table-bordered table-hover table-striped table-condensed mytable"
-								id="myTable1">
-								<thead style="text-align: center;">
-									<tr>
-										<th style="width: 5%;">SN</th>
-										<!--<th>Specification Name</th> -->
-										<th style="width: 20%;">Specification Code</th>
-										<!-- <th style="width:10%;">Specification Type</th> -->
-										<th style="width: 20%;">Parameter</th>
-										<th style="width: 10%;">Minimum Value</th>
-										<th style="width: 10%;">Typical Value</th>
-										<th style="width: 10%;">Maximum Value</th>
-										<th style="width: 10%;">Unit</th>
-									</tr>
-								</thead>
-								<tbody>
-									<%
-									List<Object[]> dsList = SpecificarionMasterList != null && SpecificarionMasterList.size() > 0 ? SpecificarionMasterList
-											.stream().filter(e -> e[18] != null && e[18].toString().equalsIgnoreCase("DS")).collect(Collectors.toList())
-											: new ArrayList<>();
-
-									for (Object[] obj : dsList) {
-									%>
-									<tr <%if (obj[14].toString().equalsIgnoreCase("0")) {%>
-										style="background: #9ae59a;" <%}%>>
-										<td align="center"><input type="radio" name="Did"
-											<%if (!obj[14].toString().equalsIgnoreCase("0")) {%>
-											disabled="disabled" <%}%> value=<%=obj[0]%>></td>
-										<%-- <td><%=obj[1]%></td> --%>
-										<td><%=obj[5]%></td>
-
-										<td><%=obj[3]%></td>
-										<td><%=obj[16]!=null?obj[16]:"-"%></td>
-										<td><%=obj[6]!=null?obj[6]:"-"%></td>
-										<td><%=obj[15]!=null ? obj[15]:"-"%></td>
-										 <td><%=obj[4]!=null?obj[4]:"-" %></td> 
-									</tr>
-									<%
-									}
-									%>
-								</tbody>
-							</table>
-						</div>
-			</div>
-						
-					
-							<div class="tab-content" id="IS">
-			
-					<div class="table-responsive">
-							<table
-								class="table table-bordered table-hover table-striped table-condensed mytable"
-								id="myTable1">
-								<thead style="text-align: center;">
-									<tr>
-										<th style="width: 5%;">SN</th>
-										<!--<th>Specification Name</th> -->
-										<th style="width: 20%;">Specification Code</th>
-										<!-- <th style="width:10%;">Specification Type</th> -->
-										<th style="width: 20%;">Parameter</th>
-										<th style="width: 10%;">Minimum Value</th>
-										<th style="width: 10%;">Typical Value</th>
-										<th style="width: 10%;">Maximum Value</th>
-										<th style="width: 10%;">Unit</th>
-									</tr>
-								</thead>
-								<tbody>
-									<%
-									List<Object[]> isList = SpecificarionMasterList != null && SpecificarionMasterList.size() > 0 ? SpecificarionMasterList
-											.stream().filter(e -> e[18] != null && e[18].toString().equalsIgnoreCase("IS")).collect(Collectors.toList())
-											: new ArrayList<>();
-
-									for (Object[] obj : isList) {
-									%>
-									<tr <%if (obj[14].toString().equalsIgnoreCase("0")) {%>
-										style="background: #9ae59a;" <%}%>>
-										<td align="center"><input type="radio" name="Did"
-											<%if (!obj[14].toString().equalsIgnoreCase("0")) {%>
-											disabled="disabled" <%}%> value=<%=obj[0]%>></td>
-										<%-- <td><%=obj[1]%></td> --%>
-										<td><%=obj[5]%></td>
-
-										<td><%=obj[3]%></td>
-										<td><%=obj[16]!=null?obj[16]:"-"%></td>
-										<td><%=obj[6]!=null?obj[6]:"-"%></td>
-										<td><%=obj[15]!=null ? obj[15]:"-"%></td>
-										 <td><%=obj[4]!=null?obj[4]:"-" %></td> 
-									</tr>
-									<%
-									}
-									%>
-								</tbody>
-							</table>
-						</div>
-			</div>
-						
-							<div class="tab-content" id="MS">
-			
-					<div class="table-responsive">
-							<table
-								class="table table-bordered table-hover table-striped table-condensed mytable"
-								id="myTable1">
-								<thead style="text-align: center;">
-									<tr>
-										<th style="width: 5%;">SN</th>
-										<!--<th>Specification Name</th> -->
-										<th style="width: 20%;">Specification Code</th>
-										<!-- <th style="width:10%;">Specification Type</th> -->
-										<th style="width: 20%;">Parameter</th>
-										<th style="width: 10%;">Minimum Value</th>
-										<th style="width: 10%;">Typical Value</th>
-										<th style="width: 10%;">Maximum Value</th>
-										<th style="width: 10%;">Unit</th>
-									</tr>
-								</thead>
-								<tbody>
-									<%
-									List<Object[]> msList = SpecificarionMasterList != null && SpecificarionMasterList.size() > 0 ? SpecificarionMasterList
-											.stream().filter(e -> e[18] != null && e[18].toString().equalsIgnoreCase("MS")).collect(Collectors.toList())
-											: new ArrayList<>();
-
-									for (Object[] obj : msList) {
-									%>
-									<tr <%if (obj[14].toString().equalsIgnoreCase("0")) {%>
-										style="background: #9ae59a;" <%}%>>
-										<td align="center"><input type="radio" name="Did"
-											<%if (!obj[14].toString().equalsIgnoreCase("0")) {%>
-											disabled="disabled" <%}%> value=<%=obj[0]%>></td>
-										<%-- <td><%=obj[1]%></td> --%>
-										<td><%=obj[5]%></td>
-
-										<td><%=obj[3]%></td>
-										<td><%=obj[16]!=null?obj[16]:"-"%></td>
-										<td><%=obj[6]!=null?obj[6]:"-"%></td>
-										<td><%=obj[15]!=null ? obj[15]:"-"%></td>
-										 <td><%=obj[4]!=null?obj[4]:"-" %></td> 
-									</tr>
-									<%
-									}
-									%>
-								</tbody>
-							</table>
-						</div>
-			</div>
-					
-					
-									<div class="tab-content" id="ES">
-			
-					<div class="table-responsive">
-							<table
-								class="table table-bordered table-hover table-striped table-condensed mytable"
-								id="myTable1">
-								<thead style="text-align: center;">
-									<tr>
-										<th style="width: 5%;">SN</th>
-										<!--<th>Specification Name</th> -->
-										<th style="width: 20%;">Specification Code</th>
-										<!-- <th style="width:10%;">Specification Type</th> -->
-										<th style="width: 20%;">Parameter</th>
-										<th style="width: 10%;">Minimum Value</th>
-										<th style="width: 10%;">Typical Value</th>
-										<th style="width: 10%;">Maximum Value</th>
-										<th style="width: 10%;">Unit</th>
-									</tr>
-								</thead>
-								<tbody>
-									<%
-									List<Object[]> esList = SpecificarionMasterList != null && SpecificarionMasterList.size() > 0 ? SpecificarionMasterList
-											.stream().filter(e -> e[18] != null && e[18].toString().equalsIgnoreCase("ES")).collect(Collectors.toList())
-											: new ArrayList<>();
-
-									for (Object[] obj : esList) {
-									%>
-									<tr <%if (obj[14].toString().equalsIgnoreCase("0")) {%>
-										style="background: #9ae59a;" <%}%>>
-										<td align="center"><input type="radio" name="Did"
-											<%if (!obj[14].toString().equalsIgnoreCase("0")) {%>
-											disabled="disabled" <%}%> value=<%=obj[0]%>></td>
-										<%-- <td><%=obj[1]%></td> --%>
-										<td><%=obj[5]%></td>
-
-										<td><%=obj[3]%></td>
-										<td><%=obj[16]!=null?obj[16]:"-"%></td>
-										<td><%=obj[6]!=null?obj[6]:"-"%></td>
-										<td><%=obj[15]!=null ? obj[15]:"-"%></td>
-										 <td><%=obj[4]!=null?obj[4]:"-" %></td> 
-									</tr>
-									<%
-									}
-									%>
-								</tbody>
-							</table>
-						</div>
-			</div>	
-						
-						<div align="center">
-
-							<input type="hidden" name="${_csrf.parameterName}"
-								value="${_csrf.token}" />
-							<div class="button-group mb-2">
-								<button type="submit" class="btn btn-primary btn-sm add"
-									name="sub" value="add">ADD</button>
-								<button type="submit" class="btn btn-primary btn-sm edit"
-									name="sub" value="edit" onclick="Edit(frm1)">EDIT</button>
-								<a class="btn btn-info btn-sm back" href="MainDashBoard.htm">Back</a>
+									</thead>
+									<tbody>
+										<%
+										
+										for (Object[] obj : specTypeList) {
+										%>
+											<tr<%if(obj[14].toString().equalsIgnoreCase("0")){ %> style="background: #9ae59a;"	 <%} %>>
+									   			<td align="center">
+									   				<input type="radio" name="Did" value=<%=obj[0]%> <%if(!obj[14].toString().equalsIgnoreCase("0")){ %>class="subDid" <%} else {%>class="Did"<%} %> > 
+									   			</td>
+												<%-- <td><%=obj[1]%></td> --%>
+												<td><%=obj[5]%></td>
+											
+												<td><%=obj[3]%></td>
+												<td><%=obj[16]!=null?obj[16]:"-"%></td>
+												<td><%=obj[6]!=null?obj[6]:"-"%></td>
+												<td><%=obj[15]!=null ? obj[15]:"-"%></td>
+												 <td><%=obj[4]!=null?obj[4]:"-" %></td> 
+											</tr>
+										<% } %>
+									</tbody>
+								</table>
 							</div>
 						</div>
+					<%} %>
 					
-					
-					
+				
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					<input type="hidden" name="levelType" id="levelType">
+					<input type="hidden" class="specTypeId" name="specTypeId" value="<%=specTypeId%>">
+					<div align="center">
+
+						<div class="button-group mb-2">
+							<button type="submit" class="btn btn-sm add" name="sub" value="add">ADD</button>
+							<button type="submit" class="btn btn-sm edit" name="sub" value="edit" onclick="Edit(frm1)">EDIT</button>
+							<button type="submit" class="btn btn-danger btn-sm delete" name="sub" value="delete" formaction="SpecificationMasterDelete.htm" formmethod="get" onclick="return deleteSpecification()">DELETE</button>
+						</div>
+					</div>
 				</form>
-
-
-
-
-
 
 			</div>
 		</div>
 
 	</div>
-
-
-
 
 
 
@@ -705,7 +423,7 @@ label {
 			 var fields = $("input[name='Did']").serializeArray();
 
 			  if (fields.length === 0){
-			alert("Please Select A Record");
+			alert("Please select a record");
 			 event.preventDefault();
 			return false;
 			}
@@ -740,10 +458,63 @@ label {
 		    $('.tab-content').removeClass('active');
 		    // Show the content corresponding to the clicked tab
 		    const targetId = $(this).data('target');
+		    const spectypeid = $(this).data('spectypeid');
 			
-		    $('#specType').val(targetId)
+		    $('#specType').val(targetId);
+		    $('.specTypeId').val(spectypeid=='A'?'0':spectypeid);
 		    $('#' + targetId).addClass('active');
 		});
+		
+		
+		// Disable and Enable Edit button based on main and sub-level
+		$('.subDid').on('click', function() {
+			$('.edit').prop('disabled', true);
+		});
+		$('.Did').on('click', function() {
+			$('.edit').prop('disabled', false);
+		});
+		
+		
+		function deleteSpecification() {
+
+			var fields = $("input[name='Did']").serializeArray();
+
+			var checkedInput = $("input[name='Did']:checked");
+			var className = checkedInput.attr("class");
+
+			console.log("Class Name:", className);
+
+			if (fields.length === 0){
+				alert("Please select a record");
+				event.preventDefault();
+				return false;
+			}else {
+				if(className=="Did") {
+					$('#levelType').val('M');
+					return confirm('Are you sure you want to Delete?\nDeleting a main level will also remove all its sub-levels.');
+				}else {
+					$('#levelType').val('S');
+					return confirm("Are you sure to Delete?");
+				}
+			}
+		}
+		
+		
+		function scrollTabs(direction) {
+		    const container = document.querySelector(".tabs-container");
+		    const track = document.querySelector(".tabs-track");
+
+		    const scrollAmount = container.clientWidth * 0.8;
+		    track.scrollLeft += direction * scrollAmount;
+		}
+
+		$(document).ready(function() {
+		    var activetab = $('.tab.active');
+		    var datatarget = activetab.data('target');
+		    
+		    $('#' + datatarget).addClass('active');
+		});
+
 	</script>
 </body>
 </html>

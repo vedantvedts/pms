@@ -47,21 +47,21 @@ CREATE TABLE `action_assign` (
   `ProgressRemark` varchar(255) DEFAULT NULL,
   `ActionFlag` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ActionAssignId`)
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `action_assign` */
 
 insert  into `action_assign`(`ActionAssignId`,`ActionMainId`,`ActionNo`,`EndDate`,`PDCOrg`,`PDC1`,`PDC2`,`Revision`,`AssignorLabCode`,`Assignor`,`AssigneeLabCode`,`Assignee`,`Remarks`,`ActionStatus`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`,`IsSeen`,`IsActive`,`ClosedDate`,`Progress`,`ProgressDate`,`ProgressRemark`,`ActionFlag`) values 
 (1,1,'LRDE/PRJ-1/23NOV2024/1-1','2024-11-30','2024-11-30',NULL,NULL,0,'LRDE',1,'LRDE',6,'completed','C','admin','2024-11-23 12:10:21','admin','2024-11-23 14:41:09',1,1,'2024-11-23',100,'2024-11-29','Required documents and designs are submitted',NULL),
-(2,2,'LRDE/PRJ-1/23NOV2024/2-1','2024-12-05','2024-12-05',NULL,NULL,0,'LRDE',1,'LRDE',17,'Good Job','C','admin','2024-11-23 12:12:01','admin','2024-11-23 14:40:50',1,1,'2024-11-23',100,'2024-11-30','completed',NULL),
+(2,2,'LRDE/PRJ-1/23NOV2024/2-1','2024-12-05','2024-12-05',NULL,NULL,0,'LRDE',1,'LRDE',17,'Closing the action item','C','admin','2024-11-23 12:12:01','admin','2025-03-20 16:38:29',1,1,'2025-03-20',100,'2024-11-30','completed',NULL),
 (3,3,'LRDE/PRJ-3/23NOV2024/1-1','2024-11-26','2024-11-23','2024-11-26',NULL,1,'LRDE',1,'LRDE',33,'Completed','C','admin','2024-11-23 12:13:54','admin','2024-11-23 14:47:31',1,1,'2024-11-23',100,'2024-11-26','All are resolved',NULL),
 (4,4,'LRDE/PRJ-1/23NOV2024/3-1','2024-12-12','2024-12-12',NULL,NULL,0,'LRDE',1,'LRDE',20,'completed','C','admin','2024-11-23 12:14:44','admin','2024-11-23 14:39:51',1,1,'2024-11-23',100,'2024-12-07','All the risks are resolved',NULL),
 (5,5,'LRDE/PRJ-1/23NOV2024/4-1','2024-11-30','2024-11-23','2024-11-30',NULL,1,'LRDE',1,'LRDE',28,'completed','C','admin','2024-11-23 12:17:06','admin','2024-11-23 14:39:14',1,1,'2024-11-23',100,'2024-11-29','completed',NULL),
 (6,6,'LRDE/PRJ-3/23NOV2024/2-1','2024-11-30','2024-11-30',NULL,NULL,0,'LRDE',1,'LRDE',1,NULL,'I','admin','2024-11-23 15:05:00','admin','2024-11-23 16:44:14',1,1,NULL,89,'2024-11-23','About to complete',NULL),
 (7,7,'LRDE/PRJ-3/23NOV2024/3-1','2024-12-05','2024-12-05',NULL,NULL,0,'LRDE',1,'LRDE',1,NULL,'I','admin','2024-11-23 15:05:41','admin','2024-11-23 16:43:57',1,1,NULL,76,'2024-11-23','In progress',NULL),
 (8,8,'LRDE/PRJ-3/23NOV2024/4-1','2024-12-20','2024-12-20',NULL,NULL,0,'LRDE',1,'LRDE',1,NULL,'I','admin','2024-11-23 15:06:25','admin','2024-11-23 16:43:31',1,1,NULL,46,'2024-11-23','On going ',NULL),
-(9,9,'LRDE/PRJ-2/23NOV2024/1-1','2024-11-23','2024-11-23',NULL,NULL,0,'LRDE',1,'LRDE',4,NULL,'I','admin','2024-11-23 15:31:01','admin','2024-11-23 16:52:40',0,1,NULL,100,'2024-11-23','resolved',NULL),
-(10,10,'LRDE/PRJ-1/23NOV2024/1-1','2024-11-23','2024-11-23',NULL,NULL,0,'LRDE',1,'LRDE',8,NULL,'I','admin','2024-11-23 15:31:36','admin','2024-11-23 16:54:10',0,1,NULL,86,'2024-11-23','Partially Resolved',NULL),
+(9,9,'LRDE/PRJ-2/23NOV2024/1-1','2024-11-23','2024-11-23',NULL,NULL,0,'LRDE',1,'LRDE',4,NULL,'I','admin','2024-11-23 15:31:01','admin','2024-11-23 16:52:40',1,1,NULL,100,'2024-11-23','resolved',NULL),
+(10,10,'LRDE/PRJ-1/23NOV2024/1-1','2024-11-23','2024-11-23',NULL,NULL,0,'LRDE',1,'LRDE',8,NULL,'I','admin','2024-11-23 15:31:36','admin','2024-11-23 16:54:10',1,1,NULL,86,'2024-11-23','Partially Resolved',NULL),
 (11,11,'LRDE/PRJ-3/23NOV2024/1-1','2024-11-30','2024-11-30',NULL,NULL,0,'LRDE',1,'LRDE',14,NULL,'I','admin','2024-11-23 15:32:57','admin','2024-11-23 16:55:28',0,1,NULL,50,'2024-11-23','partially resolved',NULL),
 (12,12,'LRDE/PRJ-1/23NOV2024/1-1','2024-11-30','2024-11-30',NULL,NULL,0,'LRDE',1,'LRDE',2,NULL,'C','admin','2024-11-23 15:34:40','admin','2024-11-25 12:23:52',1,1,'2024-11-25',100,'2024-11-29','resolved the risks',NULL),
 (13,13,'LRDE/PRJ-3/23NOV2024/1-1','2024-11-30','2024-11-30',NULL,NULL,0,'LRDE',1,'LRDE',2,NULL,'A','admin','2024-11-23 15:35:21',NULL,NULL,1,1,NULL,0,NULL,NULL,NULL),
@@ -69,10 +69,10 @@ insert  into `action_assign`(`ActionAssignId`,`ActionMainId`,`ActionNo`,`EndDate
 (15,15,'LRDE/PRJ-1/PMRC/23NOV2024/5-1','2024-12-04','2024-12-04',NULL,NULL,0,'LRDE',1,'LRDE',12,NULL,'I','admin','2024-11-23 16:16:07','1012','2024-11-23 16:33:28',1,1,NULL,100,'2024-11-23','Completed It',NULL),
 (16,16,'LRDE/PRJ-1/PMRC/23NOV2024/6-1','2024-12-25','2024-12-25',NULL,NULL,0,'LRDE',1,'LRDE',17,NULL,'F','admin','2024-11-23 16:16:17','1017','2024-11-23 16:33:59',1,1,NULL,100,'2024-11-23','Completed the action item',NULL),
 (17,17,'LRDE/PRJ-1/PMRC/23NOV2024/7-1','2024-11-23','2024-11-23',NULL,NULL,0,'LRDE',1,'LRDE',1,NULL,'I','admin','2024-11-23 16:16:25','admin','2024-11-23 16:43:43',1,1,NULL,12,'2024-11-23','On going ',NULL),
-(18,18,'LRDE/PRJ-1/23NOV2024/2-1','2024-11-30','2024-11-30',NULL,NULL,0,'LRDE',1,'LRDE',5,'close','C','admin','2024-11-23 16:56:52','1005','2024-11-23 17:02:40',0,1,'2024-11-23',100,'2024-11-23','Solved',NULL),
+(18,18,'LRDE/PRJ-1/23NOV2024/2-1','2024-11-30','2024-11-30',NULL,NULL,0,'LRDE',1,'LRDE',5,'close','C','admin','2024-11-23 16:56:52','1005','2024-11-23 17:02:40',1,1,'2024-11-23',100,'2024-11-23','Solved',NULL),
 (19,19,'LRDE/PRJ-1/23NOV2024/3-1','2024-12-10','2024-12-10',NULL,NULL,0,'LRDE',1,'LRDE',6,NULL,'I','admin','2024-11-23 16:57:29','admin','2024-11-23 17:14:33',1,1,NULL,50,'2024-11-23','',NULL),
 (20,20,'LRDE/PRJ-1/23NOV2024/4-1','2024-11-28','2024-11-28',NULL,NULL,0,'LRDE',1,'LRDE',3,NULL,'I','admin','2024-11-23 16:58:06','admin','2024-11-23 17:14:51',1,1,NULL,100,'2024-11-23','',NULL),
-(21,21,'LRDE/PRJ-1/23NOV2024/5-1','2024-11-23','2024-11-23',NULL,NULL,0,'LRDE',1,'LRDE',8,NULL,'I','admin','2024-11-23 16:58:52','admin','2024-11-23 17:15:33',0,1,NULL,80,'2024-11-23','Going to complete',NULL),
+(21,21,'LRDE/PRJ-1/23NOV2024/5-1','2024-11-23','2024-11-23',NULL,NULL,0,'LRDE',1,'LRDE',8,NULL,'I','admin','2024-11-23 16:58:52','admin','2024-11-23 17:15:33',1,1,NULL,80,'2024-11-23','Going to complete',NULL),
 (22,22,'LRDE/PRJ-1/EB/30SEP2024/8-1','2024-10-09','2024-10-09',NULL,NULL,0,'LRDE',1,'LRDE',3,'Closed','C','admin','2024-11-23 17:04:24','admin','2024-11-23 17:08:23',1,1,'2024-11-23',100,'2024-11-23','Completed It',NULL),
 (23,23,'LRDE/PRJ-1/EB/30SEP2024/9-1','2024-10-14','2024-10-14',NULL,NULL,0,'LRDE',1,'LRDE',7,'Closed','C','admin','2024-11-23 17:04:34','admin','2024-11-23 17:08:15',1,1,'2024-11-23',100,'2024-11-23','Completed It',NULL),
 (24,24,'LRDE/PRJ-1/EB/30SEP2024/10-1','2024-10-21','2024-10-21',NULL,NULL,0,'LRDE',1,'LRDE',11,'Closed','C','admin','2024-11-23 17:04:45','admin','2024-11-23 17:07:59',1,1,'2024-11-23',100,'2024-11-23','Completed It',NULL),
@@ -99,8 +99,19 @@ insert  into `action_assign`(`ActionAssignId`,`ActionMainId`,`ActionNo`,`EndDate
 (45,43,'LRDE/PRJ-4/DMS01/31JAN2025/3-2','2025-01-31','2025-01-31',NULL,NULL,0,'LRDE',1,'LRDE',50,'Completed','C','admin','2025-01-31 15:12:21','admin','2025-01-31 15:21:35',0,1,'2025-01-31',100,'2025-01-31','Completed',NULL),
 (46,44,'LRDE/PRJ-1/MIL/31JAN2025/14-1','2025-01-31','2025-01-31',NULL,NULL,0,'LRDE',1,'LRDE',21,'Completed','C','admin','2025-01-31 15:18:50','admin','2025-01-31 15:21:00',0,1,'2025-01-31',100,'2025-01-31','Done',NULL),
 (47,45,'LRDE/PRJ-1/12FEB2025/15-1','2025-02-12','2025-02-12',NULL,NULL,0,'LRDE',1,'LRDE',12,NULL,'I','admin','2025-02-12 18:20:44','1012','2025-02-12 18:21:57',1,1,NULL,10,'2025-02-12','on going',NULL),
-(48,46,'LRDE/PRJ-3/28FEB2025/9-1','2025-04-09','2025-04-09',NULL,NULL,0,'LRDE',1,'LRDE',3,NULL,'A','admin','2025-02-28 14:20:02',NULL,NULL,0,1,NULL,0,NULL,NULL,NULL),
-(49,46,'LRDE/PRJ-3/28FEB2025/9-2','2025-04-09','2025-04-09',NULL,NULL,0,'LRDE',1,'LRDE',5,NULL,'I','admin','2025-02-28 14:20:02','admin','2025-02-28 14:20:19',0,1,NULL,10,'2025-02-28','dfsdfsf',NULL);
+(48,46,'LRDE/PRJ-3/28FEB2025/9-1','2025-04-09','2025-04-09',NULL,NULL,0,'LRDE',1,'LRDE',3,NULL,'A','admin','2025-02-28 14:20:02',NULL,NULL,1,1,NULL,0,NULL,NULL,NULL),
+(49,46,'LRDE/PRJ-3/28FEB2025/9-2','2025-04-09','2025-04-09',NULL,NULL,0,'LRDE',1,'LRDE',5,NULL,'I','admin','2025-02-28 14:20:02','admin','2025-02-28 14:20:19',1,1,NULL,10,'2025-02-28','dfsdfsf',NULL),
+(50,47,'LRDE/PRJ-4/PMRC/05FEB2024/4-1','2024-04-10','2024-04-10',NULL,NULL,0,'LRDE',1,'LRDE',3,'Closing the action item','C','admin','2025-03-20 10:36:48','admin','2025-03-20 10:59:37',1,1,'2025-03-20',100,'2024-05-13','The assigned action item is completed',NULL),
+(51,48,'LRDE/PRJ-4/PMRC/05FEB2024/5-1','2024-04-29','2024-04-29',NULL,NULL,0,'LRDE',1,'LRDE',17,NULL,'A','admin','2025-03-20 10:37:03',NULL,NULL,0,1,NULL,0,NULL,NULL,NULL),
+(52,49,'LRDE/PRJ-2/MIL/20MAR2025/4-1','2025-03-20','2025-03-20',NULL,NULL,0,'LRDE',26,'LRDE',4,'Closing the action','C','1026','2025-03-20 14:46:43','1026','2025-03-20 14:49:48',1,1,'2025-03-20',100,'2025-03-20','Completed the action item',NULL),
+(53,50,'LRDE/PRJ-1/20MAR2025/16-1','2025-03-20','2025-03-20',NULL,NULL,0,'LRDE',1,'LRDE',3,NULL,'I','admin','2025-03-20 16:26:29','1003','2025-03-20 16:35:03',1,1,NULL,98,'2025-03-20','The assigned action item is about to be completed',NULL),
+(54,51,'LRDE/PRJ-1/20MAR2025/17-1','2025-03-20','2025-03-20',NULL,NULL,0,'LRDE',3,'LRDE',4,NULL,'I','1003','2025-03-20 16:28:06','1004','2025-03-20 16:30:32',1,1,NULL,56,'2025-03-20','In Progress',NULL),
+(55,52,'LRDE/PRJ-1/20MAR2025/18-1','2025-03-20','2025-03-20',NULL,NULL,0,'LRDE',4,'LRDE',5,NULL,'I','1004','2025-03-20 16:28:59','1005','2025-03-20 16:29:52',1,1,NULL,95,'2025-03-20','About to complete the action item',NULL),
+(56,53,'LRDE/PRJ-1/20MAR2025/19-1','2025-03-20','2025-03-20',NULL,NULL,0,'LRDE',5,'LRDE',6,'Closing Remarks','C','1005','2025-03-20 16:31:44','1005','2025-03-20 16:33:48',1,1,'2025-03-20',100,'2025-03-20','Completed the database schema for master tables',NULL),
+(57,53,'LRDE/PRJ-1/20MAR2025/19-2','2025-03-20','2025-03-20',NULL,NULL,0,'LRDE',5,'LRDE',7,'Closing Remarks','C','1005','2025-03-20 16:31:44','1005','2025-03-20 16:33:44',1,1,'2025-03-20',100,'2025-03-20','Prepared the database schema for tables',NULL),
+(58,54,'LRDE/PRJ-4/20MAR2025/6-1','2025-03-26','2025-03-24','2025-03-25','2025-03-25',4,'LRDE',1,'LRDE',8,NULL,'F','admin','2025-03-20 16:42:31','admin','2025-03-20 16:47:48',1,1,NULL,100,'2025-03-21','Completed the action point',NULL),
+(59,55,'DG-ECS/CCM/21MAR2025/1-1','2025-03-24','2025-03-24',NULL,NULL,0,'DG-ECS',3014,'LRDE',6,'Closing the action item','C','dgecs','2025-03-21 17:33:26','dgecs','2025-03-21 17:35:37',1,1,'2025-03-21',100,'2025-03-24','Completed It',NULL),
+(60,56,'DG-ECS/CCM/21MAR2025/2-1','2025-03-25','2025-03-25',NULL,NULL,0,'DG-ECS',3014,'LRDE',4,'Closing the action item','C','dgecs','2025-03-21 17:33:41','dgecs','2025-03-21 17:35:32',1,1,'2025-03-21',100,'2025-03-24','Completed It',NULL);
 
 /*Table structure for table `action_attachment` */
 
@@ -117,9 +128,13 @@ CREATE TABLE `action_attachment` (
   `ModifiedDate` datetime DEFAULT NULL,
   `AttachFilePath` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ActionAttachId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `action_attachment` */
+
+insert  into `action_attachment`(`ActionAttachId`,`ActionSubId`,`AttachName`,`ActionAttach`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`,`AttachFilePath`) values 
+(1,56,'Action202503201053580948265.pdf',NULL,'1003','2025-03-20 10:53:58',NULL,NULL,'LRDE\\ActionData'),
+(2,64,'Action202503201635038045154.pdf',NULL,'1003','2025-03-20 16:35:03',NULL,NULL,'LRDE\\ActionData');
 
 /*Table structure for table `action_main` */
 
@@ -151,7 +166,7 @@ CREATE TABLE `action_main` (
   `IsActive` tinyint(1) DEFAULT '1',
   `CARSSoCMilestoneId` bigint DEFAULT '0' COMMENT 'from pfms_cars_soc_milestones',
   PRIMARY KEY (`ActionMainId`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `action_main` */
 
@@ -201,7 +216,17 @@ insert  into `action_main`(`ActionMainId`,`MainId`,`ParentActionId`,`ActionLevel
 (43,0,0,1,'2025-01-31',NULL,NULL,'Technology and Tools:\r\nWere any issues with technology (e.g., video conferencing, presentation tools, etc.) encountered?\r\nWere all tools and resources used effectively to facilitate the meeting?',66,0,'A','S',4,0,'T','H',NULL,NULL,'admin','2025-01-31 15:12:21',NULL,NULL,1,NULL),
 (44,0,0,1,'2025-01-31',NULL,NULL,'Define mission requirements',1,2,'A','A',1,0,'T','H',NULL,NULL,'admin','2025-01-31 15:18:50',NULL,NULL,1,NULL),
 (45,0,0,1,'2025-02-12',NULL,NULL,'This is for test action',0,0,'A','N',1,0,'T','H',NULL,NULL,'admin','2025-02-12 18:20:44',NULL,NULL,1,NULL),
-(46,0,0,1,'2025-02-28',NULL,NULL,'dsfsdtsgs',0,0,'A','N',3,0,'T','H',NULL,NULL,'admin','2025-02-28 14:20:02',NULL,NULL,1,NULL);
+(46,0,0,1,'2025-02-28',NULL,NULL,'dsfsdtsgs',0,0,'A','N',3,0,'T','H',NULL,NULL,'admin','2025-02-28 14:20:02',NULL,NULL,1,NULL),
+(47,0,0,1,'2024-02-05',NULL,NULL,'Conduct feasibility studies and technological assessments to identify design constraints and opportunities.',93,0,'A','S',4,0,'T','H',NULL,NULL,'admin','2025-03-20 10:36:48',NULL,NULL,1,NULL),
+(48,0,0,1,'2024-02-05',NULL,NULL,'Design propulsion systems, including electric motors, diesel engines, or nuclear reactors, to meet performance and endurance requirements',94,0,'A','S',4,0,'T','H',NULL,NULL,'admin','2025-03-20 10:37:03',NULL,NULL,1,NULL),
+(49,0,0,1,'2025-03-20',NULL,NULL,'Get the approval of the design document',9,43,'A','A',2,0,'T','H',NULL,NULL,'1026','2025-03-20 14:46:43',NULL,NULL,1,NULL),
+(50,0,0,1,'2025-03-20',NULL,NULL,'Prepare the design document and get the necessary approval',0,0,'A','N',1,0,'T','H',NULL,NULL,'admin','2025-03-20 16:26:29',NULL,NULL,1,NULL),
+(51,50,50,2,'2025-03-20',NULL,NULL,'Prepare the system architecture for the design document',0,0,'A','N',1,0,'T','H',NULL,NULL,'1003','2025-03-20 16:28:06',NULL,NULL,1,NULL),
+(52,50,51,3,'2025-03-20',NULL,NULL,'Prepare the entity relationship diagram for the design document',0,0,'A','N',1,0,'T','H',NULL,NULL,'1004','2025-03-20 16:28:59',NULL,NULL,1,NULL),
+(53,50,52,4,'2025-03-20',NULL,NULL,'Prepare the Database Schema for design document',0,0,'A','N',1,0,'T','H',NULL,NULL,'1005','2025-03-20 16:31:44',NULL,NULL,1,NULL),
+(54,0,0,1,'2025-03-20',NULL,NULL,'Complete the inspection of the item received',0,0,'A','N',4,0,'T','H',NULL,NULL,'admin','2025-03-20 16:42:31',NULL,NULL,1,NULL),
+(55,0,0,1,'2025-03-21',NULL,NULL,'Design and develop radar systems for accurate and real-time tracking of aircraft within controlled airspace',97,0,'A','S',0,0,'T','H',NULL,NULL,'dgecs','2025-03-21 17:33:26',NULL,NULL,1,NULL),
+(56,0,0,1,'2025-03-21',NULL,NULL,'Implement advanced communication technologies to ensure seamless and secure exchanges between pilots and air traffic controllers',98,0,'A','S',0,0,'T','H',NULL,NULL,'dgecs','2025-03-21 17:33:41',NULL,NULL,1,NULL);
 
 /*Table structure for table `action_main_attachment` */
 
@@ -240,7 +265,7 @@ CREATE TABLE `action_sub` (
   `ModifiedDate` datetime DEFAULT NULL,
   `IsActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`ActionSubId`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `action_sub` */
 
@@ -297,7 +322,17 @@ insert  into `action_sub`(`ActionSubId`,`ActionAssignId`,`Progress`,`ProgressDat
 (52,45,100,'2025-01-31','Completed','admin','2025-01-31 15:21:29',NULL,NULL,1),
 (53,42,100,'2025-01-31','Completed','admin','2025-01-31 15:26:06',NULL,NULL,1),
 (54,47,10,'2025-02-12','on going','1012','2025-02-12 18:21:57',NULL,NULL,1),
-(55,49,10,'2025-02-28','dfsdfsf','admin','2025-02-28 14:20:19',NULL,NULL,1);
+(55,49,10,'2025-02-28','dfsdfsf','admin','2025-02-28 14:20:19',NULL,NULL,1),
+(56,50,100,'2024-05-13','The assigned action item is completed','1003','2025-03-20 10:53:58','1003','2025-03-20 10:54:17',1),
+(58,52,100,'2025-03-20','Completed the action item','1004','2025-03-20 14:49:18',NULL,NULL,1),
+(59,55,95,'2025-03-20','About to complete the action item','1005','2025-03-20 16:29:52',NULL,NULL,1),
+(60,54,56,'2025-03-20','In Progress','1004','2025-03-20 16:30:32',NULL,NULL,1),
+(61,56,100,'2025-03-20','Completed the database schema for master tables','1006','2025-03-20 16:32:22',NULL,NULL,1),
+(62,57,100,'2025-03-20','Prepared the database schema for tables','1007','2025-03-20 16:33:08',NULL,NULL,1),
+(64,53,98,'2025-03-20','The assigned action item is about to be completed','1003','2025-03-20 16:35:03',NULL,NULL,1),
+(65,58,100,'2025-03-21','Completed the action point','1008','2025-03-20 16:46:53',NULL,NULL,1),
+(66,59,100,'2025-03-24','Completed It','1006','2025-03-21 17:34:40',NULL,NULL,1),
+(67,60,100,'2025-03-24','Completed It','1004','2025-03-21 17:35:00',NULL,NULL,1);
 
 /*Table structure for table `auditstamping` */
 
@@ -314,7 +349,7 @@ CREATE TABLE `auditstamping` (
   `LogOutType` varchar(100) DEFAULT NULL,
   `LogOutDateTime` datetime DEFAULT NULL,
   PRIMARY KEY (`AuditStampingId`)
-) ENGINE=InnoDB AUTO_INCREMENT=535 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=731 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `auditstamping` */
 
@@ -852,7 +887,203 @@ insert  into `auditstamping`(`AuditStampingId`,`LoginId`,`UserName`,`LoginDate`,
 (531,'1','admin','2025-03-13','2025-03-13 12:35:45','192.168.1.20',NULL,NULL,NULL),
 (532,'1','admin','2025-03-13','2025-03-13 12:36:59','192.168.1.20',NULL,'L','2025-03-13 12:37:06'),
 (533,'1','admin','2025-03-13','2025-03-13 12:46:41','192.168.1.20',NULL,NULL,NULL),
-(534,'1','admin','2025-03-13','2025-03-13 17:03:58','192.168.1.20',NULL,NULL,NULL);
+(534,'1','admin','2025-03-13','2025-03-13 17:03:58','192.168.1.20',NULL,NULL,NULL),
+(535,'1','admin','2025-03-18','2025-03-18 12:15:37','192.168.1.17',NULL,NULL,NULL),
+(536,'1','admin','2025-03-18','2025-03-18 12:36:57','192.168.1.20',NULL,NULL,NULL),
+(537,'1','admin','2025-03-19','2025-03-19 10:09:09','192.168.1.17',NULL,NULL,NULL),
+(538,'1','admin','2025-03-19','2025-03-19 10:09:25','192.168.1.17',NULL,NULL,NULL),
+(539,'5','1005','2025-03-19','2025-03-19 10:09:42','192.168.1.17',NULL,NULL,NULL),
+(540,'1','admin','2025-03-19','2025-03-19 10:09:53','192.168.1.17',NULL,NULL,NULL),
+(541,'5','1005','2025-03-19','2025-03-19 10:10:14','192.168.1.17',NULL,NULL,NULL),
+(542,'1','admin','2025-03-19','2025-03-19 10:10:54','192.168.1.17',NULL,NULL,NULL),
+(543,'1','admin','2025-03-19','2025-03-19 10:11:27','192.168.1.20',NULL,NULL,NULL),
+(544,'5','1005','2025-03-19','2025-03-19 10:12:24','192.168.1.17',NULL,NULL,NULL),
+(545,'1','admin','2025-03-19','2025-03-19 10:37:17','192.168.1.51',NULL,NULL,NULL),
+(546,'1','admin','2025-03-19','2025-03-19 12:14:33','192.168.1.20',NULL,NULL,NULL),
+(547,'1','admin','2025-03-19','2025-03-19 14:01:47','192.168.1.20',NULL,NULL,NULL),
+(548,'1','admin','2025-03-19','2025-03-19 14:20:21','192.168.1.51',NULL,NULL,NULL),
+(549,'1','admin','2025-03-19','2025-03-19 16:45:34','192.168.1.17',NULL,NULL,NULL),
+(550,'1','admin','2025-03-19','2025-03-19 16:51:22','192.168.1.20',NULL,NULL,NULL),
+(551,'1','admin','2025-03-19','2025-03-19 16:59:21','192.168.1.51',NULL,NULL,NULL),
+(552,'1','admin','2025-03-19','2025-03-19 17:32:53','192.168.1.20',NULL,NULL,NULL),
+(553,'1','admin','2025-03-19','2025-03-19 17:43:00','192.168.1.17',NULL,NULL,NULL),
+(554,'1','admin','2025-03-19','2025-03-19 17:55:40','192.168.1.51',NULL,NULL,NULL),
+(555,'5','1005','2025-03-19','2025-03-19 18:24:47','127.0.0.1',NULL,NULL,NULL),
+(556,'9','1028','2025-03-19','2025-03-19 18:30:04','192.168.1.17',NULL,'L','2025-03-19 18:30:13'),
+(557,'20','1030','2025-03-19','2025-03-19 18:30:16','192.168.1.17',NULL,NULL,NULL),
+(558,'1','admin','2025-03-19','2025-03-19 18:31:56','192.168.1.80',NULL,NULL,NULL),
+(559,'1','admin','2025-03-19','2025-03-19 18:36:42','192.168.1.20',NULL,'L','2025-03-19 18:36:45'),
+(560,'1','admin','2025-03-19','2025-03-19 18:36:49','192.168.1.20',NULL,'L','2025-03-19 18:37:08'),
+(561,'1','admin','2025-03-19','2025-03-19 18:38:16','192.168.1.20',NULL,'L','2025-03-19 18:39:18'),
+(562,'1','admin','2025-03-19','2025-03-19 18:39:31','192.168.1.20',NULL,NULL,NULL),
+(563,'1','admin','2025-03-19','2025-03-19 19:13:26','192.168.1.27',NULL,NULL,NULL),
+(564,'1','admin','2025-03-19','2025-03-19 19:14:19','192.168.1.51',NULL,NULL,NULL),
+(565,'1','admin','2025-03-19','2025-03-19 19:23:32','192.168.1.80',NULL,NULL,NULL),
+(566,'1','admin','2025-03-19','2025-03-19 19:27:18','192.168.1.20',NULL,NULL,NULL),
+(567,'1','admin','2025-03-20','2025-03-20 09:31:38','192.168.1.51',NULL,NULL,NULL),
+(568,'1','admin','2025-03-20','2025-03-20 09:35:00','192.168.1.17',NULL,NULL,NULL),
+(569,'20','1030','2025-03-20','2025-03-20 09:43:06','127.0.0.1',NULL,'L','2025-03-20 09:45:00'),
+(570,'5','1005','2025-03-20','2025-03-20 09:44:20','192.168.1.17',NULL,'L','2025-03-20 09:45:39'),
+(571,'19','1004','2025-03-20','2025-03-20 09:45:02','127.0.0.1',NULL,NULL,NULL),
+(572,'2','1002','2025-03-20','2025-03-20 09:45:41','192.168.1.17',NULL,NULL,NULL),
+(573,'1','admin','2025-03-20','2025-03-20 10:23:34','192.168.1.51',NULL,NULL,NULL),
+(574,'1','admin','2025-03-20','2025-03-20 10:35:20','192.168.1.20',NULL,NULL,NULL),
+(575,'1','admin','2025-03-20','2025-03-20 10:35:36','192.168.1.51',NULL,NULL,NULL),
+(576,'3','1003','2025-03-20','2025-03-20 10:37:50','127.0.0.1',NULL,'L','2025-03-20 11:10:52'),
+(577,'1','admin','2025-03-20','2025-03-20 10:44:02','192.168.1.17',NULL,NULL,NULL),
+(578,'12','1024','2025-03-20','2025-03-20 11:10:54','127.0.0.1',NULL,NULL,NULL),
+(579,'1','admin','2025-03-20','2025-03-20 11:11:09','192.168.1.17',NULL,NULL,NULL),
+(580,'1','admin','2025-03-20','2025-03-20 11:23:03','192.168.1.17',NULL,NULL,NULL),
+(581,'5','1005','2025-03-20','2025-03-20 11:23:55','192.168.1.17',NULL,NULL,NULL),
+(582,'1','admin','2025-03-20','2025-03-20 11:42:49','192.168.1.17',NULL,NULL,NULL),
+(583,'12','1024','2025-03-20','2025-03-20 11:43:12','127.0.0.1',NULL,'L','2025-03-20 11:44:55'),
+(584,'5','1005','2025-03-20','2025-03-20 11:43:32','192.168.1.17',NULL,'L','2025-03-20 11:49:33'),
+(585,'20','1030','2025-03-20','2025-03-20 11:44:58','127.0.0.1',NULL,'L','2025-03-20 11:53:15'),
+(586,'1','admin','2025-03-20','2025-03-20 11:46:13','192.168.1.51',NULL,NULL,NULL),
+(587,'3','1003','2025-03-20','2025-03-20 11:49:36','192.168.1.17',NULL,'L','2025-03-20 12:07:27'),
+(588,'5','1005','2025-03-20','2025-03-20 11:54:02','127.0.0.1',NULL,'L','2025-03-20 11:54:42'),
+(589,'20','1030','2025-03-20','2025-03-20 11:54:47','127.0.0.1',NULL,'L','2025-03-20 11:55:24'),
+(590,'12','1024','2025-03-20','2025-03-20 11:55:31','127.0.0.1',NULL,'L','2025-03-20 11:57:17'),
+(591,'2','1002','2025-03-20','2025-03-20 11:57:22','127.0.0.1',NULL,'L','2025-03-20 12:06:41'),
+(592,'16','1026','2025-03-20','2025-03-20 12:06:43','127.0.0.1',NULL,'L','2025-03-20 12:09:23'),
+(593,'2','1002','2025-03-20','2025-03-20 12:07:30','192.168.1.17',NULL,NULL,NULL),
+(594,'2','1002','2025-03-20','2025-03-20 12:09:26','127.0.0.1',NULL,'L','2025-03-20 12:09:35'),
+(595,'4','1006','2025-03-20','2025-03-20 12:09:38','127.0.0.1',NULL,'L','2025-03-20 12:13:34'),
+(596,'7','1007','2025-03-20','2025-03-20 12:13:36','127.0.0.1',NULL,NULL,NULL),
+(597,'1','admin','2025-03-20','2025-03-20 12:48:43','192.168.1.17',NULL,NULL,NULL),
+(598,'1','admin','2025-03-20','2025-03-20 13:02:09','192.168.1.17',NULL,NULL,NULL),
+(599,'1','admin','2025-03-20','2025-03-20 13:05:18','192.168.1.17',NULL,NULL,NULL),
+(600,'1','admin','2025-03-20','2025-03-20 13:08:40','192.168.1.17',NULL,NULL,NULL),
+(601,'17','1008','2025-03-20','2025-03-20 13:10:36','127.0.0.1',NULL,NULL,NULL),
+(602,'1','admin','2025-03-20','2025-03-20 14:09:22','192.168.1.51',NULL,NULL,NULL),
+(603,'1','admin','2025-03-20','2025-03-20 14:18:04','192.168.1.17',NULL,NULL,NULL),
+(604,'17','1008','2025-03-20','2025-03-20 14:18:21','127.0.0.1',NULL,'L','2025-03-20 14:40:34'),
+(605,'16','1026','2025-03-20','2025-03-20 14:40:37','127.0.0.1',NULL,NULL,NULL),
+(606,'19','1004','2025-03-20','2025-03-20 14:48:47','192.168.1.17',NULL,NULL,NULL),
+(607,'1','admin','2025-03-20','2025-03-20 15:00:09','192.168.1.17',NULL,NULL,NULL),
+(608,'1','admin','2025-03-20','2025-03-20 15:06:13','192.168.1.17',NULL,NULL,NULL),
+(609,'1','admin','2025-03-20','2025-03-20 16:19:18','192.168.1.17',NULL,'L','2025-03-20 16:29:09'),
+(610,'3','1003','2025-03-20','2025-03-20 16:26:42','127.0.0.1',NULL,'L','2025-03-20 16:39:52'),
+(611,'19','1004','2025-03-20','2025-03-20 16:28:13','192.168.1.17',NULL,NULL,NULL),
+(612,'5','1005','2025-03-20','2025-03-20 16:29:11','192.168.1.17',NULL,'L','2025-03-20 16:31:47'),
+(613,'4','1006','2025-03-20','2025-03-20 16:31:49','192.168.1.17',NULL,'L','2025-03-20 16:32:28'),
+(614,'7','1007','2025-03-20','2025-03-20 16:32:31','192.168.1.17',NULL,'L','2025-03-20 16:33:26'),
+(615,'5','1005','2025-03-20','2025-03-20 16:33:28','192.168.1.17',NULL,'L','2025-03-20 16:35:14'),
+(616,'1','admin','2025-03-20','2025-03-20 16:35:17','192.168.1.17',NULL,'L','2025-03-20 16:50:34'),
+(617,'22','1017','2025-03-20','2025-03-20 16:39:54','127.0.0.1',NULL,'L','2025-03-20 16:40:09'),
+(618,'17','1008','2025-03-20','2025-03-20 16:43:39','127.0.0.1',NULL,'L','2025-03-20 16:50:41'),
+(619,'1','admin','2025-03-20','2025-03-20 16:50:37','192.168.1.17',NULL,NULL,NULL),
+(620,'3','1003','2025-03-20','2025-03-20 16:50:43','127.0.0.1',NULL,NULL,NULL),
+(621,'1','admin','2025-03-20','2025-03-20 17:35:16','192.168.1.17',NULL,NULL,NULL),
+(622,'1','admin','2025-03-20','2025-03-20 17:38:59','192.168.1.20',NULL,NULL,NULL),
+(623,'1','admin','2025-03-20','2025-03-20 17:40:07','192.168.1.20',NULL,NULL,NULL),
+(624,'1','admin','2025-03-20','2025-03-20 18:29:30','192.168.1.20',NULL,NULL,NULL),
+(625,'1','admin','2025-03-20','2025-03-20 18:32:48','192.168.1.20',NULL,NULL,NULL),
+(626,'1','admin','2025-03-20','2025-03-20 18:37:09','192.168.1.17',NULL,NULL,NULL),
+(627,'1','admin','2025-03-20','2025-03-20 18:51:26','192.168.1.17',NULL,NULL,NULL),
+(628,'1','admin','2025-03-20','2025-03-20 19:00:03','192.168.1.20',NULL,NULL,NULL),
+(629,'1','admin','2025-03-20','2025-03-20 19:19:38','192.168.1.20',NULL,NULL,NULL),
+(630,'1','admin','2025-03-20','2025-03-20 19:24:37','192.168.1.20',NULL,NULL,NULL),
+(631,'1','admin','2025-03-21','2025-03-21 09:44:12','192.168.1.17',NULL,NULL,NULL),
+(632,'1','admin','2025-03-21','2025-03-21 10:18:24','192.168.1.51',NULL,NULL,NULL),
+(633,'1','admin','2025-03-21','2025-03-21 11:23:04','192.168.1.20',NULL,NULL,NULL),
+(634,'1','admin','2025-03-21','2025-03-21 12:11:56','192.168.1.20',NULL,NULL,NULL),
+(635,'1','admin','2025-03-21','2025-03-21 12:12:24','192.168.1.20',NULL,NULL,NULL),
+(636,'1','admin','2025-03-21','2025-03-21 12:12:28','192.168.1.20',NULL,NULL,NULL),
+(637,'1','admin','2025-03-21','2025-03-21 12:17:45','192.168.1.51',NULL,NULL,NULL),
+(638,'1','admin','2025-03-21','2025-03-21 12:26:56','192.168.1.20',NULL,NULL,NULL),
+(639,'1','admin','2025-03-21','2025-03-21 12:35:46','192.168.1.20',NULL,NULL,NULL),
+(640,'1','admin','2025-03-21','2025-03-21 12:39:52','192.168.1.20',NULL,NULL,NULL),
+(641,'1','admin','2025-03-21','2025-03-21 12:46:48','192.168.1.20',NULL,NULL,NULL),
+(642,'1','admin','2025-03-21','2025-03-21 12:54:04','192.168.1.20',NULL,NULL,NULL),
+(643,'1','admin','2025-03-21','2025-03-21 13:05:45','192.168.1.17',NULL,NULL,NULL),
+(644,'1','admin','2025-03-21','2025-03-21 14:11:13','192.168.1.51',NULL,NULL,NULL),
+(645,'5','1005','2025-03-21','2025-03-21 14:31:51','192.168.1.20',NULL,'L','2025-03-21 14:32:30'),
+(646,'20','1030','2025-03-21','2025-03-21 14:32:37','192.168.1.20',NULL,'L','2025-03-21 14:33:15'),
+(647,'1','admin','2025-03-21','2025-03-21 14:33:20','192.168.1.20',NULL,NULL,NULL),
+(648,'1','admin','2025-03-21','2025-03-21 14:35:52','192.168.1.17',NULL,NULL,NULL),
+(649,'1','admin','2025-03-21','2025-03-21 14:36:36','192.168.1.20',NULL,'L','2025-03-21 14:39:49'),
+(650,'16','1026','2025-03-21','2025-03-21 14:39:53','192.168.1.20',NULL,NULL,NULL),
+(651,'1','admin','2025-03-21','2025-03-21 14:41:53','192.168.1.20',NULL,'L','2025-03-21 14:46:39'),
+(652,'1','admin','2025-03-21','2025-03-21 14:46:42','192.168.1.17',NULL,NULL,NULL),
+(653,'1','admin','2025-03-21','2025-03-21 14:53:13','192.168.1.20',NULL,NULL,NULL),
+(654,'1','admin','2025-03-21','2025-03-21 15:11:07','192.168.1.20',NULL,NULL,NULL),
+(655,'1','admin','2025-03-21','2025-03-21 15:18:56','192.168.1.20',NULL,NULL,NULL),
+(656,'1','admin','2025-03-21','2025-03-21 15:19:27','192.168.1.20',NULL,NULL,NULL),
+(657,'1','admin','2025-03-21','2025-03-21 15:25:29','192.168.1.17',NULL,'L','2025-03-21 15:33:29'),
+(658,'20','1030','2025-03-21','2025-03-21 15:33:33','192.168.1.17',NULL,'L','2025-03-21 15:33:45'),
+(659,'16','1026','2025-03-21','2025-03-21 15:33:49','192.168.1.17',NULL,NULL,NULL),
+(660,'1','admin','2025-03-21','2025-03-21 15:36:03','192.168.1.20',NULL,NULL,NULL),
+(661,'1','admin','2025-03-21','2025-03-21 15:46:18','192.168.1.20',NULL,NULL,NULL),
+(662,'1','admin','2025-03-21','2025-03-21 15:47:30','192.168.1.20',NULL,NULL,NULL),
+(663,'1','admin','2025-03-21','2025-03-21 16:05:47','192.168.1.20',NULL,NULL,NULL),
+(664,'1','admin','2025-03-21','2025-03-21 16:13:08','192.168.1.17',NULL,NULL,NULL),
+(665,'1','admin','2025-03-21','2025-03-21 16:42:09','192.168.1.20',NULL,'L','2025-03-21 16:43:10'),
+(666,'43','dgecs','2025-03-21','2025-03-21 16:43:13','192.168.1.17',NULL,'L','2025-03-21 16:44:08'),
+(667,'1','admin','2025-03-21','2025-03-21 16:44:11','192.168.1.17',NULL,'L','2025-03-21 16:45:02'),
+(668,'43','dgecs','2025-03-21','2025-03-21 16:45:06','192.168.1.17',NULL,'L','2025-03-21 16:46:11'),
+(669,'1','admin','2025-03-21','2025-03-21 16:46:15','192.168.1.17',NULL,'L','2025-03-21 16:47:20'),
+(670,'43','dgecs','2025-03-21','2025-03-21 16:47:23','192.168.1.17',NULL,'L','2025-03-21 17:25:18'),
+(671,'1','admin','2025-03-21','2025-03-21 17:09:46','192.168.1.20',NULL,NULL,NULL),
+(672,'1','admin','2025-03-21','2025-03-21 17:11:37','192.168.1.17',NULL,'L','2025-03-21 17:15:40'),
+(673,'1','admin','2025-03-21','2025-03-21 17:15:44','192.168.1.20',NULL,NULL,NULL),
+(674,'34','8480','2025-03-21','2025-03-21 17:25:22','192.168.1.17',NULL,NULL,NULL),
+(675,'34','8480','2025-03-21','2025-03-21 17:25:25','192.168.1.17',NULL,'L','2025-03-21 17:25:57'),
+(676,'43','dgecs','2025-03-21','2025-03-21 17:26:00','192.168.1.17',NULL,'L','2025-03-21 17:34:07'),
+(677,'4','1006','2025-03-21','2025-03-21 17:34:10','192.168.1.17',NULL,'L','2025-03-21 17:34:44'),
+(678,'19','1004','2025-03-21','2025-03-21 17:34:46','192.168.1.17',NULL,'L','2025-03-21 17:35:05'),
+(679,'43','dgecs','2025-03-21','2025-03-21 17:35:09','192.168.1.17',NULL,'L','2025-03-21 17:38:45'),
+(680,'44','2000','2025-03-21','2025-03-21 17:38:48','192.168.1.17',NULL,'L','2025-03-21 17:40:24'),
+(681,'4','1006','2025-03-21','2025-03-21 17:39:55','192.168.1.17',NULL,'L','2025-03-21 17:40:02'),
+(682,'5','1005','2025-03-21','2025-03-21 17:40:05','192.168.1.17',NULL,NULL,NULL),
+(683,'34','8480','2025-03-21','2025-03-21 17:40:29','192.168.1.17',NULL,'L','2025-03-21 17:40:34'),
+(684,'44','2000','2025-03-21','2025-03-21 17:40:36','192.168.1.17',NULL,'L','2025-03-21 17:40:46'),
+(685,'43','dgecs','2025-03-21','2025-03-21 17:40:51','192.168.1.17',NULL,'L','2025-03-21 17:41:30'),
+(686,'34','8480','2025-03-21','2025-03-21 17:41:33','192.168.1.17',NULL,'L','2025-03-21 17:41:52'),
+(687,'43','dgecs','2025-03-21','2025-03-21 17:41:57','192.168.1.17',NULL,'L','2025-03-21 17:46:23'),
+(688,'34','8480','2025-03-21','2025-03-21 17:46:26','192.168.1.17',NULL,'L','2025-03-21 17:46:35'),
+(689,'43','dgecs','2025-03-21','2025-03-21 17:46:40','192.168.1.17',NULL,'L','2025-03-21 17:51:50'),
+(690,'43','dgecs','2025-03-21','2025-03-21 17:51:56','192.168.1.17',NULL,'L','2025-03-21 17:57:09'),
+(691,'1','admin','2025-03-21','2025-03-21 17:57:13','192.168.1.17',NULL,'L','2025-03-21 18:21:41'),
+(692,'24','1033','2025-03-21','2025-03-21 18:21:44','192.168.1.17',NULL,'L','2025-03-21 18:22:46'),
+(693,'1','admin','2025-03-21','2025-03-21 18:23:53','192.168.1.17',NULL,'L','2025-03-21 18:24:06'),
+(694,'1','admin','2025-03-21','2025-03-21 18:24:09','192.168.1.17',NULL,'L','2025-03-21 18:24:12'),
+(695,'24','1033','2025-03-21','2025-03-21 18:24:14','192.168.1.17',NULL,'L','2025-03-21 18:27:18'),
+(696,'3','1003','2025-03-21','2025-03-21 18:27:21','192.168.1.17',NULL,'L','2025-03-21 18:28:04'),
+(697,'24','1033','2025-03-21','2025-03-21 18:28:06','192.168.1.17',NULL,'L','2025-03-21 18:38:27'),
+(698,'3','1003','2025-03-21','2025-03-21 18:38:30','192.168.1.17',NULL,'L','2025-03-21 18:39:11'),
+(699,'12','1024','2025-03-21','2025-03-21 18:39:13','192.168.1.17',NULL,'L','2025-03-21 18:39:40'),
+(700,'19','1004','2025-03-21','2025-03-21 18:39:43','192.168.1.17',NULL,'L','2025-03-21 18:54:08'),
+(701,'20','1030','2025-03-21','2025-03-21 18:56:09','192.168.1.17',NULL,'L','2025-03-21 18:56:20'),
+(702,'20','1030','2025-03-21','2025-03-21 18:56:25','192.168.1.17',NULL,'L','2025-03-21 18:56:39'),
+(703,'1','admin','2025-03-21','2025-03-21 18:56:42','192.168.1.17',NULL,'L','2025-03-21 18:56:50'),
+(704,'20','1030','2025-03-21','2025-03-21 18:56:54','192.168.1.17',NULL,'L','2025-03-21 18:58:17'),
+(705,'19','1004','2025-03-21','2025-03-21 18:58:20','192.168.1.17',NULL,'L','2025-03-21 18:58:37'),
+(706,'20','1030','2025-03-21','2025-03-21 18:58:41','192.168.1.17',NULL,'L','2025-03-21 18:58:54'),
+(707,'1','admin','2025-03-21','2025-03-21 18:58:57','192.168.1.17',NULL,'L','2025-03-21 18:59:22'),
+(708,'20','1030','2025-03-21','2025-03-21 18:59:24','192.168.1.17',NULL,NULL,NULL),
+(709,'20','1030','2025-03-21','2025-03-21 18:59:27','192.168.1.17',NULL,'L','2025-03-21 19:00:48'),
+(710,'5','1005','2025-03-21','2025-03-21 19:00:51','192.168.1.17',NULL,'L','2025-03-21 19:01:25'),
+(711,'24','1033','2025-03-21','2025-03-21 19:01:30','192.168.1.17',NULL,'L','2025-03-21 19:02:10'),
+(712,'1','admin','2025-03-21','2025-03-21 19:02:13','192.168.1.17',NULL,'L','2025-03-21 19:11:17'),
+(713,'19','1004','2025-03-21','2025-03-21 19:11:20','192.168.1.17',NULL,'L','2025-03-21 19:11:23'),
+(714,'2','1002','2025-03-21','2025-03-21 19:11:26','192.168.1.17',NULL,'L','2025-03-21 19:11:30'),
+(715,'4','1006','2025-03-21','2025-03-21 19:11:32','192.168.1.17',NULL,'L','2025-03-21 19:11:45'),
+(716,'1','admin','2025-03-21','2025-03-21 19:11:49','192.168.1.17',NULL,NULL,NULL),
+(717,'1','admin','2025-03-22','2025-03-22 09:39:58','192.168.1.51',NULL,NULL,NULL),
+(718,'1','admin','2025-03-22','2025-03-22 10:38:20','192.168.1.17',NULL,NULL,NULL),
+(719,'1','admin','2025-03-22','2025-03-22 10:43:20','192.168.1.57',NULL,NULL,NULL),
+(720,'1','admin','2025-03-22','2025-03-22 11:48:12','192.168.1.57',NULL,NULL,NULL),
+(721,'1','admin','2025-03-22','2025-03-22 11:49:17','192.168.1.57',NULL,NULL,NULL),
+(722,'1','admin','2025-03-22','2025-03-22 12:40:57','192.168.1.17',NULL,NULL,NULL),
+(723,'1','admin','2025-03-22','2025-03-22 14:28:25','192.168.1.51',NULL,NULL,NULL),
+(724,'1','admin','2025-03-22','2025-03-22 14:35:04','192.168.1.57',NULL,NULL,NULL),
+(725,'1','admin','2025-03-22','2025-03-22 16:19:23','192.168.1.17',NULL,NULL,NULL),
+(726,'1','admin','2025-03-24','2025-03-24 09:38:17','192.168.1.51',NULL,NULL,NULL),
+(727,'1','admin','2025-03-24','2025-03-24 09:53:45','192.168.1.51',NULL,NULL,NULL),
+(728,'1','admin','2025-03-24','2025-03-24 10:06:29','192.168.1.20',NULL,NULL,NULL),
+(729,'1','admin','2025-03-24','2025-03-24 10:17:46','192.168.1.20',NULL,NULL,NULL),
+(730,'1','admin','2025-03-24','2025-03-24 10:29:41','192.168.1.20',NULL,NULL,NULL);
 
 /*Table structure for table `budget_fund` */
 
@@ -1335,7 +1566,7 @@ CREATE TABLE `committee` (
   `ModifiedDate` datetime DEFAULT NULL,
   `IsActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`CommitteeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `committee` */
 
@@ -1346,9 +1577,10 @@ insert  into `committee`(`CommitteeId`,`LabCode`,`CommitteeShortName`,`Committee
 (4,'LRDE','HRCM','Human Resource Council Meeting','S','N','N','The Human Resource Council Meeting Committee is tasked with addressing key HR related matters, ensuring effective decision-making and strategic alignment with organizational goals.','N',0,'<p>Discussions should be focused, constructive, and aligned with the agenda to maximize productivity. Confidentiality must be maintained for sensitive HR issues, and members are expected to act with integrity and impartiality. Decisions should be data-driven and prioritize employee welfare while supporting organizational objectives.</p>\r\n','<p>The committee is responsible for overseeing HR policies, addressing workforce challenges, and ensuring compliance with labor laws and organizational standards. Its scope includes talent acquisition, employee engagement, training and development, and succession planning.</p>\r\n',0,'admin','2024-11-23 12:28:08','admin','2025-03-04 10:14:34',1),
 (5,'LRDE','DMC','DRDO Management Council','S','N','N','The DRDO Management Council Committee is tasked with steering the organization\'s strategic initiatives, ensuring alignment with its mission to advance defense technologies.','N',0,'<p>Discussions must remain focused on organizational goals, with emphasis on resolving challenges effectively and efficiently. Recommendations and decisions should be communicated clearly to relevant departments, with proper documentation for accountability and future reference. Regular follow-ups on action points and adherence to timelines are crucial to ensure progress and compliance with organizational priorities.</p>\r\n','<p>The committee is tasked with providing strategic guidance on key projects, reviewing progress, and ensuring optimal resource utilization. Its responsibilities include policy formulation, evaluation of critical defense initiatives, and fostering collaboration among stakeholders.</p>\r\n',0,'admin','2024-11-23 12:29:21','admin','2024-11-23 12:29:56',1),
 (6,'LRDE','SOB','Software Overview Board','S','N','T','The Software Overview Board Committee is tasked with overseeing the development, implementation, and governance of software solutions within the organization.','N',0,'<p>Discussions should be collaborative, fostering innovation while addressing potential risks or challenges. The committee should prioritize transparency in decision-making, documenting all deliberations, approvals, and recommendations. Regular follow-ups on approved actions and ongoing projects are essential to ensure progress and accountability.</p>\r\n','<p>The committee&rsquo;s primary objectives are to evaluate software proposals, monitor ongoing projects, ensure compliance with internal and external standards, and recommend improvements or changes as necessary. The ToR specifies that members are responsible for providing expert guidance on technology adoption, aligning software strategies with organizational objectives, and managing risks associated with software development and deployment.</p>\r\n',0,'admin','2024-11-23 12:30:34','admin','2024-11-23 12:31:10',1),
-(7,'LRDE','CARS','CARS Committee','S','N','T','CARS Committee','N',0,'<p>CARS Committee</p>','<p>CARS Committee</p>',0,'admin','2024-11-23 12:32:05',NULL,NULL,1),
+(7,'LRDE','CARS','CARS Committee','S','N','T','CARS Committee','N',0,'<p>CARS Committee</p>\r\n','<p>CARS Committee</p>\r\n',0,'admin','2024-11-23 12:32:05','admin','2025-03-20 13:07:23',1),
 (8,'LRDE','CCM','Cluster Council Meeting','S','N','T','he Cluster Council Meeting Committee should operate with a clear and strategic focus, ensuring that meetings are productive, goal-oriented, and aligned with organizational objectives.','N',0,'<p>Decisions should be data-driven and inclusive, with all viewpoints considered to foster collaboration. Effective communication and transparent reporting are essential to maintain clarity and track progress. Action items should be clearly assigned with deadlines, and follow-up should be conducted to ensure accountability. The committee should also prioritize continuous improvement, periodically reviewing processes to enhance meeting efficiency and outcomes.</p>\r\n','<p>The committee&rsquo;s primary responsibilities include reviewing cluster performance, ensuring alignment with organizational goals, and making recommendations for improvements or adjustments. It is tasked with coordinating between various stakeholders, including project managers and external partners, to resolve challenges and foster collaboration.</p>\r\n',0,'admin','2024-11-23 12:33:27','admin','2024-11-23 12:33:56',1),
-(9,'LRDE','PMB','Project Monitoring Board','S','P','T','Project Monitoring Board','N',0,'<p>Project Monitoring Board</p>','<p>Project Monitoring Board</p>',0,'admin','2024-11-23 13:00:15',NULL,NULL,1);
+(9,'LRDE','PMB','Project Monitoring Board','S','P','T','Project Monitoring Board','N',0,'<p>Project Monitoring Board</p>','<p>Project Monitoring Board</p>',0,'admin','2024-11-23 13:00:15',NULL,NULL,1),
+(11,'LRDE','PRC','Project Review Committee','S','P','T','Project Review Committee','N',0,'<p>Project Review Committee</p>','<p>Project Review Committee</p>',0,'admin','2025-03-19 17:33:46',NULL,NULL,1);
 
 /*Table structure for table `committee_constitution_approval` */
 
@@ -1366,12 +1598,14 @@ CREATE TABLE `committee_constitution_approval` (
   `ActionBy` varchar(255) DEFAULT NULL,
   `ActionDate` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ConstitutionApprovalId`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `committee_constitution_approval` */
 
 insert  into `committee_constitution_approval`(`ConstitutionApprovalId`,`CommitteeMainId`,`Empid`,`EmpLabid`,`Remarks`,`ConstitutionStatus`,`ApprovalAuthority`,`ConstitutedBy`,`ActionBy`,`ActionDate`) values 
-(1,3,1,1,NULL,'CCR','0',1,'admin','2024-11-23 12:42:49');
+(1,3,1,1,NULL,'CCR','0',1,'admin','2024-11-23 12:42:49'),
+(2,14,1,1,NULL,'CCR','0',1,'admin','2025-03-19 17:46:16'),
+(3,15,1,1,NULL,'CCR','0',1,'admin','2025-03-20 12:01:13');
 
 /*Table structure for table `committee_constitution_approval_status` */
 
@@ -1459,9 +1693,13 @@ CREATE TABLE `committee_division` (
   `ModifiedBy` varchar(100) DEFAULT NULL,
   `ModifiedDate` datetime DEFAULT NULL,
   PRIMARY KEY (`CommitteeDivisionId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `committee_division` */
+
+insert  into `committee_division`(`CommitteeDivisionId`,`DivisionId`,`CommitteeId`,`AutoSchedule`,`Description`,`TermsOfReference`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`) values 
+(1,11,6,'N','<p>Discussions should be collaborative, fostering innovation while addressing potential risks or challenges. The committee should prioritize transparency in decision-making, documenting all deliberations, approvals, and recommendations. Regular follow-ups on approved actions and ongoing projects are essential to ensure progress and accountability.</p>\r\n','<p>The committee&rsquo;s primary objectives are to evaluate software proposals, monitor ongoing projects, ensure compliance with internal and external standards, and recommend improvements or changes as necessary. The ToR specifies that members are responsible for providing expert guidance on technology adoption, aligning software strategies with organizational objectives, and managing risks associated with software development and deployment.</p>\r\n','admin','2025-03-20 11:59:45',NULL,NULL),
+(2,1,6,'N','<p>Discussions should be collaborative, fostering innovation while addressing potential risks or challenges. The committee should prioritize transparency in decision-making, documenting all deliberations, approvals, and recommendations. Regular follow-ups on approved actions and ongoing projects are essential to ensure progress and accountability.</p>\r\n','<p>The committee&rsquo;s primary objectives are to evaluate software proposals, monitor ongoing projects, ensure compliance with internal and external standards, and recommend improvements or changes as necessary. The ToR specifies that members are responsible for providing expert guidance on technology adoption, aligning software strategies with organizational objectives, and managing risks associated with software development and deployment.</p>\r\n','admin','2025-03-20 12:00:46',NULL,NULL);
 
 /*Table structure for table `committee_initiation` */
 
@@ -1479,13 +1717,14 @@ CREATE TABLE `committee_initiation` (
   `ModifiedBy` varchar(100) DEFAULT NULL,
   `ModifiedDate` datetime DEFAULT NULL,
   PRIMARY KEY (`CommitteeInitiationId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `committee_initiation` */
 
 insert  into `committee_initiation`(`CommitteeInitiationId`,`InitiationId`,`CommitteeId`,`AutoSchedule`,`Description`,`TermsOfReference`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`) values 
 (1,7,10,'N','<p>The Project Meeting Review Committee plays a critical role in ensuring the effective evaluation and progression of projects. Members of the committee are responsible for reviewing project proposals, assessing progress, and providing actionable feedback.</p>\r\n','<p>They outline the objectives, key deliverables, and the processes required to achieve the intended outcomes. The ToR specifies the roles and responsibilities of participants, the timelines for activities, and the resources available for implementation.</p>\r\n','admin','2025-01-31',NULL,NULL),
-(2,8,10,'N','<p>The Project Meeting Review Committee plays a critical role in ensuring the effective evaluation and progression of projects. Members of the committee are responsible for reviewing project proposals, assessing progress, and providing actionable feedback.</p>\r\n\r\n<p>&nbsp;</p>\r\n','<p>They outline the objectives, key deliverables, and the processes required to achieve the intended outcomes. The ToR specifies the roles and responsibilities of participants, the timelines for activities, and the resources available for implementation.</p>\r\n\r\n<p>&nbsp;</p>\r\n','admin','2025-01-31','admin','2025-01-31 14:21:22');
+(2,8,10,'N','<p>The Project Meeting Review Committee plays a critical role in ensuring the effective evaluation and progression of projects. Members of the committee are responsible for reviewing project proposals, assessing progress, and providing actionable feedback.</p>\r\n\r\n<p>&nbsp;</p>\r\n','<p>They outline the objectives, key deliverables, and the processes required to achieve the intended outcomes. The ToR specifies the roles and responsibilities of participants, the timelines for activities, and the resources available for implementation.</p>\r\n\r\n<p>&nbsp;</p>\r\n','admin','2025-01-31','admin','2025-01-31 14:21:22'),
+(3,7,1,'N','<p>The Project Meeting Review Committee plays a critical role in ensuring the effective evaluation and progression of projects. Members of the committee are responsible for reviewing project proposals, assessing progress, and providing actionable feedback.</p>\r\n','<p>They outline the objectives, key deliverables, and the processes required to achieve the intended outcomes. The ToR specifies the roles and responsibilities of participants, the timelines for activities, and the resources available for implementation.</p>\r\n','admin','2025-03-20',NULL,NULL);
 
 /*Table structure for table `committee_inivitationletter` */
 
@@ -1532,7 +1771,7 @@ CREATE TABLE `committee_main` (
   PRIMARY KEY (`CommitteeMainId`),
   KEY `CommitteeId_Fk` (`CommitteeId`),
   CONSTRAINT `CommitteeId_Fk` FOREIGN KEY (`CommitteeId`) REFERENCES `committee` (`CommitteeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `committee_main` */
 
@@ -1547,7 +1786,11 @@ insert  into `committee_main`(`CommitteeMainId`,`CommitteeId`,`ProjectId`,`Valid
 (10,1,4,'2025-01-31','2030-01-30',0,0,0,'admin','2025-01-31 17:14:56',NULL,NULL,'A','Y',1,'NP001','2025-01-31'),
 (11,2,3,'2025-01-31','2030-01-30',0,0,0,'admin','2025-01-31 17:35:13',NULL,NULL,'A','Y',1,'','2025-01-31'),
 (12,4,0,'2025-03-04','2030-03-03',0,0,0,'admin','2025-03-04 11:27:43',NULL,NULL,'A','Y',1,'','2025-03-04'),
-(13,8,0,'2025-03-10','2030-03-09',0,0,0,'8480','2025-03-10 14:19:02',NULL,NULL,'A','Y',1,NULL,'2025-03-10');
+(13,8,0,'2025-03-10','2030-03-09',0,0,0,'8480','2025-03-10 14:19:02',NULL,NULL,'A','Y',1,NULL,'2025-03-10'),
+(14,6,0,'2025-03-19','2030-03-18',0,0,0,'admin','2025-03-19 17:46:16','1002','2025-03-20 09:46:17','A','N',1,'REF_19032025','2025-03-19'),
+(15,6,0,'2025-03-20','2030-03-19',1,0,0,'admin','2025-03-20 12:01:13','1002','2025-03-20 12:07:37','A','N',1,'REF_20032025','2025-03-20'),
+(16,1,0,'2025-03-20','2030-03-19',0,7,0,'admin','2025-03-20 12:12:10',NULL,NULL,'A','Y',1,'','2025-03-20'),
+(17,7,0,'2025-03-20','2030-03-19',0,0,1,'admin','2025-03-20 13:07:45',NULL,NULL,'A','Y',1,'','2025-03-20');
 
 /*Table structure for table `committee_meeting_approval` */
 
@@ -1562,7 +1805,7 @@ CREATE TABLE `committee_meeting_approval` (
   `ActionBy` varchar(100) DEFAULT NULL,
   `ActionDate` datetime DEFAULT NULL,
   PRIMARY KEY (`MeetingApprovalId`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `committee_meeting_approval` */
 
@@ -1614,7 +1857,23 @@ insert  into `committee_meeting_approval`(`MeetingApprovalId`,`ScheduleId`,`EmpI
 (45,22,3,'','MAA','1003','2025-01-31 17:56:05'),
 (46,2,24,NULL,'MMA','1024','2025-02-12 18:46:38'),
 (47,23,1,NULL,'MAF','admin','2025-02-28 11:49:03'),
-(48,23,39,'','MAA','1039','2025-02-28 11:51:14');
+(48,23,39,'','MAA','1039','2025-02-28 11:51:14'),
+(49,28,1,NULL,'MAF','admin','2025-03-20 10:28:47'),
+(50,28,1,'','MAA','admin','2025-03-20 10:28:58'),
+(51,30,1,NULL,'MAF','admin','2025-03-20 11:49:20'),
+(52,30,3,'Approved the scheduled SOB Meeting','MAA','1003','2025-03-20 11:50:12'),
+(53,30,2,NULL,'MMA','1002','2025-03-20 11:57:34'),
+(54,31,1,NULL,'MAF','admin','2025-03-20 12:09:16'),
+(55,31,6,'Approved the Agenda for the SOB Meeting','MAA','1006','2025-03-20 12:10:16'),
+(56,32,1,NULL,'MAF','admin','2025-03-20 12:13:48'),
+(57,32,7,'Agenda Approved','MAA','1007','2025-03-20 12:14:33'),
+(58,35,1,NULL,'MAF','admin','2025-03-20 13:10:29'),
+(59,35,8,'Agenda approved for CARS Committee Meeting','MAA','1008','2025-03-20 14:18:48'),
+(60,36,3014,NULL,'MAF','dgecs','2025-03-21 17:24:51'),
+(61,36,48,'Agenda Approved for CCM Meeting','MAA','8480','2025-03-21 17:25:55'),
+(62,36,48,NULL,'MMA','8480','2025-03-21 17:41:40'),
+(63,37,3014,NULL,'MAF','dgecs','2025-03-21 17:46:20'),
+(64,37,48,'','MAA','8480','2025-03-21 17:46:33');
 
 /*Table structure for table `committee_meeting_dpfm_frozen` */
 
@@ -1629,9 +1888,13 @@ CREATE TABLE `committee_meeting_dpfm_frozen` (
   `DPFMFileName` varchar(255) DEFAULT NULL,
   `IsActive` int DEFAULT '1',
   PRIMARY KEY (`FrozenDPFMId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `committee_meeting_dpfm_frozen` */
+
+insert  into `committee_meeting_dpfm_frozen`(`FrozenDPFMId`,`ScheduleId`,`FreezeByEmpId`,`FreezeTime`,`FrozenDPFMPath`,`DPFMFileName`,`IsActive`) values 
+(1,28,1,'2025-03-20 11:03:16','LRDE\\DPFM','DPFM-LRDEPRJ-4PMRC05FEB20243.pdf',0),
+(2,22,1,'2025-03-20 19:12:55','LRDE\\DPFM','DPFM-LRDEPRJ-2PMRC20DEC20244.pdf',1);
 
 /*Table structure for table `committee_meeting_status` */
 
@@ -1677,7 +1940,7 @@ CREATE TABLE `committee_member` (
   `IsActive` tinyint(1) DEFAULT NULL,
   `SerialNo` bigint DEFAULT '1',
   PRIMARY KEY (`CommitteeMemberId`)
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `committee_member` */
 
@@ -1743,7 +2006,39 @@ insert  into `committee_member`(`CommitteeMemberId`,`CommitteeMainId`,`LabCode`,
 (59,13,'DG-ECS',3007,'CS','2025-03-10 14:19:02','8480',NULL,NULL,1,1),
 (60,13,'DG-ECS',3001,'PS','2025-03-10 14:19:03','8480',NULL,NULL,1,1),
 (61,13,'@EXP',3,'CO','2025-03-10 14:19:15','8480',NULL,NULL,1,0),
-(62,13,'@EXP',4,'CO','2025-03-10 14:19:15','8480',NULL,NULL,1,0);
+(62,13,'@EXP',4,'CO','2025-03-10 14:19:15','8480',NULL,NULL,1,0),
+(63,14,'LRDE',3,'CC','2025-03-19 17:46:16','admin','admin','2025-03-19 18:19:49',1,0),
+(64,14,'CABS',2995,'CH','2025-03-19 17:46:16','admin','admin','2025-03-19 18:19:49',1,0),
+(65,14,'LRDE',4,'CS','2025-03-19 17:46:16','admin','admin','2025-03-19 18:19:49',1,0),
+(66,14,'LRDE',44,'CI','2025-03-19 17:46:36','admin',NULL,NULL,1,1),
+(67,14,'LRDE',9,'CI','2025-03-19 17:46:36','admin',NULL,NULL,1,3),
+(68,14,'LRDE',13,'CI','2025-03-19 17:46:36','admin',NULL,NULL,1,2),
+(69,14,'ADE',2990,'CW','2025-03-19 17:46:45','admin',NULL,NULL,1,4),
+(70,14,'ADE',2991,'CW','2025-03-19 17:46:45','admin',NULL,NULL,1,5),
+(71,14,'@EXP',20,'CO','2025-03-19 17:46:51','admin','admin','2025-03-19 18:20:39',0,5),
+(72,14,'@EXP',22,'CO','2025-03-19 17:46:51','admin',NULL,NULL,1,6),
+(73,14,'@IP',2,'CIP','2025-03-19 17:47:02','admin',NULL,NULL,1,7),
+(74,15,'LRDE',6,'CC','2025-03-20 12:01:13','admin',NULL,NULL,1,0),
+(75,15,'LRDE',15,'CH','2025-03-20 12:01:13','admin',NULL,NULL,1,0),
+(76,15,'LRDE',3,'CS','2025-03-20 12:01:13','admin',NULL,NULL,1,0),
+(77,15,'LRDE',24,'CI','2025-03-20 12:01:22','admin',NULL,NULL,1,0),
+(78,15,'LRDE',30,'CI','2025-03-20 12:01:22','admin',NULL,NULL,1,0),
+(79,16,'LRDE',7,'CC','2025-03-20 12:12:10','admin',NULL,NULL,1,0),
+(80,16,'LRDE',22,'CH','2025-03-20 12:12:10','admin',NULL,NULL,1,0),
+(81,16,'LRDE',14,'CS','2025-03-20 12:12:10','admin',NULL,NULL,1,0),
+(82,16,'LRDE',5,'CI','2025-03-20 12:12:19','admin',NULL,NULL,1,0),
+(83,16,'LRDE',30,'CI','2025-03-20 12:12:19','admin',NULL,NULL,1,0),
+(84,16,'LRDE',4,'CI','2025-03-20 12:12:19','admin',NULL,NULL,1,0),
+(85,16,'CABS',2995,'CW','2025-03-20 12:12:26','admin',NULL,NULL,1,0),
+(86,16,'@EXP',30,'CO','2025-03-20 12:12:34','admin',NULL,NULL,1,0),
+(87,16,'@EXP',32,'CO','2025-03-20 12:12:34','admin',NULL,NULL,1,0),
+(88,17,'LRDE',8,'CC','2025-03-20 13:07:45','admin',NULL,NULL,1,0),
+(89,17,'LRDE',25,'CH','2025-03-20 13:07:45','admin',NULL,NULL,1,0),
+(90,17,'LRDE',14,'CS','2025-03-20 13:07:45','admin',NULL,NULL,1,0),
+(91,17,'LRDE',16,'CI','2025-03-20 13:07:51','admin',NULL,NULL,1,0),
+(92,17,'LRDE',27,'CI','2025-03-20 13:07:51','admin',NULL,NULL,1,0),
+(93,17,'ADE',2993,'CW','2025-03-20 13:07:57','admin',NULL,NULL,1,0),
+(94,17,'@EXP',21,'CO','2025-03-20 13:08:02','admin',NULL,NULL,1,0);
 
 /*Table structure for table `committee_member_rep` */
 
@@ -1811,13 +2106,16 @@ CREATE TABLE `committee_minutes_attachment` (
   `ModifiedDate` datetime DEFAULT NULL,
   `MinutesAttachment` tinyblob,
   PRIMARY KEY (`MinutesAttachmentId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `committee_minutes_attachment` */
 
 insert  into `committee_minutes_attachment`(`MinutesAttachmentId`,`ScheduleId`,`FilePath`,`AttachmentName`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`,`MinutesAttachment`) values 
 (1,2,'LRDE/CommitteeMinutesAttachmentFile','minutesAttach2025021218471062.pdf','admin','2025-02-12 18:47:10',NULL,NULL,NULL),
-(2,23,'LRDE\\CommitteeMinutesAttachmentFile','minutesAttach202502281200287255442.pdf','admin','2025-02-28 12:00:28',NULL,NULL,NULL);
+(2,23,'LRDE\\CommitteeMinutesAttachmentFile','minutesAttach202502281200287255442.pdf','admin','2025-02-28 12:00:28',NULL,NULL,NULL),
+(3,30,'LRDE\\CommitteeMinutesAttachmentFile','minutesAttach202503201158190289017.pdf','admin','2025-03-20 11:58:19',NULL,NULL,NULL),
+(4,32,'LRDE\\CommitteeMinutesAttachmentFile','minutesAttach202503201215135179891.pdf','admin','2025-03-20 12:15:13',NULL,NULL,NULL),
+(7,36,'DG-ECS\\CommitteeMinutesAttachmentFile','minutesAttach202503211742441518241.pdf','dgecs','2025-03-21 17:42:44',NULL,NULL,NULL);
 
 /*Table structure for table `committee_mom_attachment` */
 
@@ -1883,7 +2181,7 @@ CREATE TABLE `committee_project_briefing_frozen` (
   `PresentationName` varchar(255) DEFAULT NULL,
   `MoM` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`FrozenBriefingId`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `committee_project_briefing_frozen` */
 
@@ -1891,7 +2189,8 @@ insert  into `committee_project_briefing_frozen`(`FrozenBriefingId`,`ScheduleId`
 (1,10,1,'2025-02-12 18:59:55','LRDE/Briefing','Briefing-LRDEPRJ-1PMRC25NOV20246.pdf',1,'Briefing-LRDEPRJ-1PMRC25NOV20246-presentation.pdf',NULL),
 (2,25,1,'2025-03-10 17:12:32','LRDE\\Briefing','Briefing-LRDEPRJ-1PMRC11MAR202510.pdf',1,NULL,NULL),
 (3,26,1,'2025-03-10 17:36:43','LRDE\\Briefing','Briefing-LRDEPRJ-1EB12MAR202511.pdf',1,NULL,NULL),
-(4,27,1,'2025-03-10 17:55:17','LRDE\\Briefing','Briefing-LRDEPRJ-1EB10MAR202511.pdf',1,NULL,NULL);
+(4,27,1,'2025-03-10 17:55:17','LRDE\\Briefing','Briefing-LRDEPRJ-1EB10MAR202511.pdf',1,NULL,NULL),
+(5,28,1,'2025-03-20 12:51:55','LRDE\\Briefing','Briefing-LRDEPRJ-4PMRC05FEB20243.pdf',1,'Briefing-LRDEPRJ-4PMRC05FEB20243-presentation.pdf',NULL);
 
 /*Table structure for table `committee_rep` */
 
@@ -1948,7 +2247,7 @@ CREATE TABLE `committee_schedule` (
   `PresentationFrozen` varchar(255) DEFAULT NULL,
   `RODNameId` bigint DEFAULT '0',
   PRIMARY KEY (`ScheduleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `committee_schedule` */
 
@@ -1974,12 +2273,23 @@ insert  into `committee_schedule`(`ScheduleId`,`LabCode`,`CommitteeId`,`Committe
 (19,'LRDE',2,11,'LRDE/PRJ-3/EB/01APR2024/5',3,0,0,0,'2024-04-01','10:00:00','MKV','N',NULL,'Kalam Conference Hall','5','','','N','N','INI',NULL,'admin','2025-01-31 17:13:26','1004','2025-01-31 17:36:46',1,'N',NULL),
 (20,'LRDE',2,11,'LRDE/PRJ-3/EB/17SEP2024/6',3,0,0,0,'2024-09-17','11:35:00','MKV','N',NULL,'Kalam Conference Hall','5','','','N','N','INI',NULL,'admin','2025-01-31 17:36:04','1004','2025-01-31 17:36:49',1,'N',NULL),
 (21,'LRDE',1,4,'LRDE/PRJ-2/PMRC/08OCT2024/3',2,0,0,0,'2024-10-08','10:40:00','MKV','N',NULL,'Kalam Conference Hall','1','','','N','N','INI',NULL,'admin','2025-01-31 17:54:41','admin','2025-01-31 17:58:05',1,'N',NULL),
-(22,'LRDE',1,4,'LRDE/PRJ-2/PMRC/20DEC2024/4',2,0,0,0,'2024-12-20','12:00:00','MKV','N',NULL,'Conference Hall','1','','','N','N','INI',NULL,'admin','2025-01-31 17:55:25','1003','2025-01-31 17:56:05',1,'N',NULL),
+(22,'LRDE',1,4,'LRDE/PRJ-2/PMRC/20DEC2024/4',2,0,0,0,'2024-12-20','12:00:00','MKV','N',NULL,'Conference Hall','1','','','N','Y','INI',NULL,'admin','2025-01-31 17:55:25','1003','2025-01-31 17:56:05',1,'N',NULL),
 (23,'LRDE',1,1,'LRDE/PRJ-1/PMRC/28FEB2025/9',1,0,0,0,'2025-02-28','11:47:00','MKV','N','$2a$10$fwBsZNYhOYqU7nQDrmfyx.tS1gB/i27TwMQRUem23V8lUixvvRNiC','Test venue','3','','','N','N','INI',NULL,'admin','2025-02-28 11:47:15','1039','2025-02-28 11:51:14',1,'N',NULL),
 (24,'DG-ECS',8,13,'DG-ECS/CCM/2025/MAR/1',0,0,0,0,'2025-03-10','14:23:00','MSC',NULL,NULL,'TEST','4',NULL,NULL,'N','N','INI','C','8480','2025-03-10 14:24:08',NULL,NULL,1,'N',NULL),
 (25,'LRDE',1,1,'LRDE/PRJ-1/PMRC/11MAR2025/10',1,0,0,0,'2025-03-11','17:07:00','MSC','N',NULL,'prmrckljn kh','2','','','Y','N','INI',NULL,'admin','2025-03-10 17:07:15',NULL,NULL,1,'N',NULL),
 (26,'LRDE',2,2,'LRDE/PRJ-1/EB/12MAR2025/11',1,0,0,0,'2025-03-12','17:36:00','MSC','N',NULL,'Test venue','4','','sdffsdfsdfd','Y','N','INI',NULL,'admin','2025-03-10 17:36:09','admin','2025-03-10 17:37:55',0,'N',NULL),
-(27,'LRDE',2,2,'LRDE/PRJ-1/EB/10MAR2025/11',1,0,0,0,'2025-03-10','17:38:00','MSC','N',NULL,'prmrckljn kh','2','','','Y','N','INI',NULL,'admin','2025-03-10 17:38:02',NULL,NULL,1,'N',NULL);
+(27,'LRDE',2,2,'LRDE/PRJ-1/EB/10MAR2025/11',1,0,0,0,'2025-03-10','17:38:00','MSC','N',NULL,'prmrckljn kh','2','','','Y','N','INI',NULL,'admin','2025-03-10 17:38:02',NULL,NULL,1,'N',NULL),
+(28,'LRDE',1,10,'LRDE/PRJ-4/PMRC/05FEB2024/3',4,0,0,0,'2024-02-05','10:10:00','MKV','N',NULL,'Kalam Conference Hall','1','','','Y','N','INI',NULL,'admin','2025-03-20 10:25:48','admin','2025-03-20 10:28:58',1,'Y',NULL),
+(29,'LRDE',6,0,'LRDE/GEN/SOB/02SEP2024/1',0,0,0,0,'2024-09-02','11:20:00','MSC','N',NULL,NULL,'5',NULL,NULL,'N','N','INI',NULL,'admin','2025-03-20 11:46:47','admin','2025-03-20 11:47:25',0,'N',NULL),
+(30,'LRDE',6,14,'LRDE/GEN/SOB/20NOV2024/1',0,0,0,0,'2024-11-20','11:30:00','MMA','N',NULL,'Kalam Conference Hall','5','','','N','N','INI',NULL,'admin','2025-03-20 11:47:47','1002','2025-03-20 11:57:34',1,'N',NULL),
+(31,'LRDE',6,15,'LRDE/DIV/SOB/20JAN2025/4',0,1,0,0,'2025-01-20','10:10:00','MKV','N',NULL,'Kalam Conference Hall','5','','','N','N','INI',NULL,'admin','2025-03-20 12:08:16','1006','2025-03-20 12:10:16',1,'N',NULL),
+(32,'LRDE',1,16,'LRDE/INI/PMRC/10DEC2024/2',0,0,7,0,'2024-12-10','11:20:00','MKV','N',NULL,'Kalam Conference Hall','5','','','N','N','INI',NULL,'admin','2025-03-20 12:12:59','1007','2025-03-20 12:14:33',1,'N',NULL),
+(33,'LRDE',0,NULL,'LRDE/RDR-1/PMSR1/11NOV2024/3',0,0,7,NULL,'2024-11-11','10:30:00','MKV','N',NULL,'Kalam Conference Hall','N','',NULL,'N','N','INI',NULL,'admin','2025-03-20 12:57:30',NULL,NULL,1,'N',3),
+(34,'LRDE',7,0,'LRDE/CARS-2/CARS/10FEB2025/1',0,0,0,2,'2025-02-10','11:00:00','MSC','N',NULL,NULL,'5',NULL,NULL,'N','N','INI',NULL,'admin','2025-03-20 13:06:49',NULL,NULL,1,'N',NULL),
+(35,'LRDE',7,17,'LRDE/CARS-1/CARS/10FEB2025/1',0,0,0,1,'2025-02-10','10:15:00','MKV','N',NULL,'Kalam Conference Hall','5','','','N','N','INI',NULL,'admin','2025-03-20 13:09:31','1008','2025-03-20 14:18:48',1,'N',NULL),
+(36,'DG-ECS',8,13,'DG-ECS/CCM/2025/MAR/2',0,0,0,0,'2025-03-21','17:21:00','MMA',NULL,'$2a$10$YDINwfQi78kCGGidTolEUOik2w54BrICVPWA1AHh8SXwEvwZoldIq','Kalam Conference Hall 2','4',NULL,NULL,'N','N','INI','C','dgecs','2025-03-21 17:23:40','8480','2025-03-21 17:41:40',1,'N',NULL),
+(37,'DG-ECS',8,13,'DG-ECS/CCM/2025/MAR/3',0,0,0,0,'2025-03-21','17:45:00','MAA',NULL,NULL,'Kalam Conference Hall','4',NULL,NULL,'N','N','INI','C','dgecs','2025-03-21 17:45:45','8480','2025-03-21 17:46:33',1,'N',NULL),
+(38,'LRDE',2,11,'LRDE/PRJ-3/EB/24MAR2025/7',3,0,0,0,'2025-03-24','10:00:00','MSC','N',NULL,'Kalam Conference Hall','1','','','N','N','INI',NULL,'admin','2025-03-21 19:05:44',NULL,NULL,1,'N',NULL);
 
 /*Table structure for table `committee_schedule_agenda_docs` */
 
@@ -2046,7 +2356,7 @@ CREATE TABLE `committee_schedules_agenda` (
   `ModifiedDate` datetime DEFAULT NULL,
   `IsActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`ScheduleAgendaId`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `committee_schedules_agenda` */
 
@@ -2079,7 +2389,21 @@ insert  into `committee_schedules_agenda`(`ScheduleAgendaId`,`ScheduleId`,`Paren
 (27,24,0,NULL,2,'<p>Enter Agenda Item-2</p>\r\n',NULL,NULL,'CABS',2994,3,NULL,NULL,'8480','2025-03-10 14:24:09',NULL,NULL,1),
 (28,25,NULL,1,1,'AGENDA1',1,'DRDO','LRDE',1,20,NULL,NULL,'admin','2025-03-10 17:07:24',NULL,NULL,1),
 (29,26,NULL,1,1,'AGENDA',1,'remarks','LRDE',3,20,NULL,NULL,'admin','2025-03-10 17:36:21','admin','2025-03-10 17:37:55',0),
-(30,27,NULL,1,1,'AGENDA1',1,'remarks','LRDE',2,20,NULL,NULL,'admin','2025-03-10 17:38:14',NULL,NULL,1);
+(30,27,NULL,1,1,'AGENDA1',1,'remarks','LRDE',2,20,NULL,NULL,'admin','2025-03-10 17:38:14',NULL,NULL,1),
+(31,28,NULL,1,1,'Project Objectives Discussion',4,'Mandatory','LRDE',30,15,NULL,NULL,'admin','2025-03-20 10:26:06',NULL,NULL,1),
+(32,29,NULL,1,1,'General Meeting',0,'Mandatory','LRDE',13,15,NULL,NULL,'admin','2025-03-20 11:47:05','admin','2025-03-20 11:47:25',0),
+(33,30,NULL,1,1,'General Meeting',0,'Mandatory','LRDE',21,10,NULL,NULL,'admin','2025-03-20 11:48:04',NULL,NULL,1),
+(34,31,NULL,1,1,'Discussion on unresolved technical issues',0,'Important','LRDE',20,15,NULL,NULL,'admin','2025-03-20 12:08:40',NULL,NULL,1),
+(35,32,NULL,1,1,'Project Objectives Discussion',0,'Mandatory','LRDE',39,15,NULL,NULL,'admin','2025-03-20 12:13:10',NULL,NULL,1),
+(36,33,NULL,1,1,'Project Objectives Discussion',0,'Mandatory','LRDE',25,15,NULL,NULL,'admin','2025-03-20 12:57:40',NULL,NULL,1),
+(37,34,NULL,1,0,'Discussion on unresolved technical issues',0,'Important','LRDE',24,20,NULL,NULL,'admin','2025-03-20 13:07:07','admin','2025-03-20 13:08:13',0),
+(38,34,NULL,1,1,'Discussion on unresolved technical issues',0,'Mandatory','LRDE',26,10,NULL,NULL,'admin','2025-03-20 13:09:01',NULL,NULL,1),
+(39,35,NULL,1,1,'General Meeting',0,'Important','LRDE',22,10,NULL,NULL,'admin','2025-03-20 13:09:47',NULL,NULL,1),
+(40,36,0,NULL,1,'<p>Project Objectives Discussion</p>\r\n',NULL,NULL,'LRDE',3,15,NULL,'File-202503211723402359862.pdf','dgecs','2025-03-21 17:23:40',NULL,NULL,1),
+(41,36,40,NULL,1,'<p>Project Progress Discussion</p>\r\n',NULL,NULL,'LRDE',4,10,NULL,'File-20250321172340251412.pdf','dgecs','2025-03-21 17:23:40',NULL,NULL,1),
+(42,37,0,NULL,1,'<p>The development of Unmanned Aerial Vehicles (UAVs), commonly known as drones, has seen remarkable advancements in recent years, revolutionizing military operations and expanding into various civilian applications.</p>\r\n',NULL,NULL,'LRDE',3,25,NULL,'File-202503211745459353346.pdf','dgecs','2025-03-21 17:45:45',NULL,NULL,1),
+(43,37,42,NULL,1,'<p>Initially conceived for reconnaissance purposes, UAVs have evolved into versatile platforms capable of performing a wide range of missions, from intelligence gathering to precision strikes.</p>\r\n',NULL,NULL,'LRDE',22,15,NULL,'File-20250321174545953962.pdf','dgecs','2025-03-21 17:45:45',NULL,NULL,1),
+(44,38,NULL,1,1,'Project Objectives Discussion',3,'Mandatory','LRDE',22,10,NULL,NULL,'admin','2025-03-21 19:05:56',NULL,NULL,1);
 
 /*Table structure for table `committee_schedules_attachment` */
 
@@ -2119,7 +2443,7 @@ CREATE TABLE `committee_schedules_invitation` (
   `ModifiedDate` datetime DEFAULT NULL,
   `EmpMeetingRole` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`CommitteeInvitationId`)
-) ENGINE=InnoDB AUTO_INCREMENT=161 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=231 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `committee_schedules_invitation` */
 
@@ -2276,7 +2600,75 @@ insert  into `committee_schedules_invitation`(`CommitteeInvitationId`,`Committee
 (157,27,'LRDE',46,'CI',2,'P','N',4,'admin','2025-03-10 17:38:21',NULL,NULL,NULL),
 (158,27,'LRDE',74,'CI',10,'P','N',5,'admin','2025-03-10 17:38:21',NULL,NULL,NULL),
 (159,27,'DEBEL',2992,'CW',27,'P','N',6,'admin','2025-03-10 17:38:21',NULL,NULL,NULL),
-(160,27,'LRDE',2,'P',1,'P','N',7,'admin','2025-03-10 17:38:21',NULL,NULL,NULL);
+(160,27,'LRDE',2,'P',1,'P','N',7,'admin','2025-03-10 17:38:21',NULL,NULL,NULL),
+(161,28,'LRDE',1,'CC',6,'P','N',1,'admin','2025-03-20 10:28:12',NULL,NULL,'GD'),
+(162,28,'LRDE',21,'CS',3,'P','N',2,'admin','2025-03-20 10:28:12',NULL,NULL,NULL),
+(163,28,'LRDE',30,'P',3,'P','N',3,'admin','2025-03-20 10:28:12',NULL,NULL,NULL),
+(164,28,'LRDE',20,'I',2,'P','N',4,'admin','2025-03-20 10:28:19',NULL,NULL,'TD'),
+(165,28,'LRDE',37,'I',3,'P','N',5,'admin','2025-03-20 10:28:19',NULL,NULL,NULL),
+(166,28,'@EXP',8,'E',3,'N','N',6,'admin','2025-03-20 10:28:27',NULL,NULL,NULL),
+(167,30,'LRDE',3,'CC',3,'P','N',1,'admin','2025-03-20 11:48:23',NULL,NULL,NULL),
+(168,30,'LRDE',4,'CS',7,'P','N',2,'admin','2025-03-20 11:48:23',NULL,NULL,NULL),
+(169,30,'CABS',2995,'CH',5,'P','N',3,'admin','2025-03-20 11:48:23',NULL,NULL,NULL),
+(170,30,'LRDE',13,'CI',2,'P','N',4,'admin','2025-03-20 11:48:24',NULL,NULL,NULL),
+(171,30,'LRDE',9,'CI',2,'P','N',5,'admin','2025-03-20 11:48:24',NULL,NULL,NULL),
+(172,30,'LRDE',44,'CI',3,'P','N',6,'admin','2025-03-20 11:48:24',NULL,NULL,NULL),
+(173,30,'ADE',2991,'CW',4,'P','N',7,'admin','2025-03-20 11:48:24',NULL,NULL,NULL),
+(174,30,'ADE',2990,'CW',24,'P','N',8,'admin','2025-03-20 11:48:24',NULL,NULL,NULL),
+(175,30,'@EXP',22,'CO',25,'P','N',9,'admin','2025-03-20 11:48:24',NULL,NULL,NULL),
+(176,30,'@IP',2,'CIP',0,'P','N',10,'admin','2025-03-20 11:48:24',NULL,NULL,'Managing Director'),
+(177,30,'LRDE',21,'P',3,'P','N',11,'admin','2025-03-20 11:48:24',NULL,NULL,NULL),
+(179,31,'LRDE',6,'CC',4,'P','N',1,'admin','2025-03-20 12:09:11',NULL,NULL,NULL),
+(180,31,'LRDE',3,'CS',3,'P','N',2,'admin','2025-03-20 12:09:11',NULL,NULL,NULL),
+(181,31,'LRDE',15,'CH',4,'P','N',3,'admin','2025-03-20 12:09:11',NULL,NULL,NULL),
+(182,31,'LRDE',30,'CI',3,'P','N',4,'admin','2025-03-20 12:09:11',NULL,NULL,NULL),
+(183,31,'LRDE',24,'CI',3,'P','N',5,'admin','2025-03-20 12:09:11',NULL,NULL,NULL),
+(184,31,'LRDE',20,'P',2,'P','N',6,'admin','2025-03-20 12:09:11',NULL,NULL,NULL),
+(185,32,'LRDE',7,'CC',4,'P','N',1,'admin','2025-03-20 12:13:30',NULL,NULL,NULL),
+(186,32,'LRDE',14,'CS',4,'P','N',2,'admin','2025-03-20 12:13:30',NULL,NULL,NULL),
+(187,32,'LRDE',22,'CH',5,'P','N',3,'admin','2025-03-20 12:13:30',NULL,NULL,NULL),
+(188,32,'LRDE',4,'CI',7,'P','N',4,'admin','2025-03-20 12:13:30',NULL,NULL,NULL),
+(189,32,'LRDE',30,'CI',3,'P','N',5,'admin','2025-03-20 12:13:30',NULL,NULL,NULL),
+(190,32,'LRDE',5,'CI',2,'P','N',6,'admin','2025-03-20 12:13:30',NULL,NULL,NULL),
+(191,32,'CABS',2995,'CW',5,'P','N',7,'admin','2025-03-20 12:13:30',NULL,NULL,NULL),
+(192,32,'@EXP',30,'CO',14,'P','N',8,'admin','2025-03-20 12:13:30',NULL,NULL,NULL),
+(193,32,'@EXP',32,'CO',2,'P','N',9,'admin','2025-03-20 12:13:30',NULL,NULL,NULL),
+(194,32,'LRDE',39,'P',4,'P','N',10,'admin','2025-03-20 12:13:30',NULL,NULL,NULL),
+(195,33,'LRDE',23,'I',3,'P','N',1,'admin','2025-03-20 12:57:54',NULL,NULL,NULL),
+(196,33,'LRDE',40,'I',3,'P','N',2,'admin','2025-03-20 12:57:54',NULL,NULL,NULL),
+(197,33,'LRDE',70,'I',10,'P','N',3,'admin','2025-03-20 12:57:54',NULL,NULL,NULL),
+(198,33,'ACEM',2999,'W',8,'N','N',4,'admin','2025-03-20 12:58:10',NULL,NULL,NULL),
+(199,33,'CEMILAC',2998,'W',4,'P','N',5,'admin','2025-03-20 12:58:19',NULL,NULL,NULL),
+(200,33,'@EXP',16,'E',24,'P','N',6,'admin','2025-03-20 12:58:30',NULL,NULL,NULL),
+(201,33,'@EXP',17,'E',12,'P','N',7,'admin','2025-03-20 12:58:30',NULL,NULL,NULL),
+(203,35,'LRDE',8,'CC',5,'P','N',1,'admin','2025-03-20 13:10:26',NULL,NULL,NULL),
+(204,35,'LRDE',14,'CS',4,'P','N',2,'admin','2025-03-20 13:10:26',NULL,NULL,NULL),
+(205,35,'LRDE',25,'CH',4,'P','N',3,'admin','2025-03-20 13:10:26',NULL,NULL,NULL),
+(206,35,'LRDE',27,'CI',3,'P','N',4,'admin','2025-03-20 13:10:26',NULL,NULL,NULL),
+(207,35,'LRDE',16,'CI',14,'P','N',5,'admin','2025-03-20 13:10:26',NULL,NULL,NULL),
+(208,35,'ADE',2993,'CW',3,'P','N',6,'admin','2025-03-20 13:10:26',NULL,NULL,NULL),
+(209,35,'@EXP',21,'CO',4,'P','N',7,'admin','2025-03-20 13:10:26',NULL,NULL,NULL),
+(210,35,'LRDE',22,'P',5,'P','N',8,'admin','2025-03-20 13:10:26',NULL,NULL,NULL),
+(211,36,'DG-ECS',48,'CC',1,'P','N',1,'dgecs','2025-03-21 17:24:44',NULL,NULL,NULL),
+(212,36,'DG-ECS',3007,'CS',45,'P','N',2,'dgecs','2025-03-21 17:24:44',NULL,NULL,NULL),
+(213,36,'DG-ECS',2996,'CH',7,'P','N',3,'dgecs','2025-03-21 17:24:44',NULL,NULL,'AD'),
+(214,36,'@EXP',3,'CO',3,'P','N',4,'dgecs','2025-03-21 17:24:44',NULL,NULL,NULL),
+(215,36,'@EXP',4,'CO',3,'P','N',5,'dgecs','2025-03-21 17:24:44',NULL,NULL,NULL),
+(216,36,'LRDE',3,'P',3,'P','N',6,'dgecs','2025-03-21 17:24:44',NULL,NULL,NULL),
+(217,36,'LRDE',4,'P',7,'P','N',7,'dgecs','2025-03-21 17:24:44',NULL,NULL,NULL),
+(218,37,'DG-ECS',48,'CC',1,'P','N',1,'dgecs','2025-03-21 17:46:17',NULL,NULL,NULL),
+(219,37,'DG-ECS',3007,'CS',45,'P','N',2,'dgecs','2025-03-21 17:46:17',NULL,NULL,NULL),
+(220,37,'DG-ECS',2996,'CH',7,'P','N',3,'dgecs','2025-03-21 17:46:17',NULL,NULL,NULL),
+(221,37,'@EXP',3,'CO',3,'P','N',4,'dgecs','2025-03-21 17:46:17',NULL,NULL,NULL),
+(222,37,'@EXP',4,'CO',3,'P','N',5,'dgecs','2025-03-21 17:46:17',NULL,NULL,NULL),
+(223,37,'LRDE',3,'P',3,'P','N',6,'dgecs','2025-03-21 17:46:17',NULL,NULL,NULL),
+(224,37,'LRDE',22,'P',5,'P','N',7,'dgecs','2025-03-21 17:46:17',NULL,NULL,NULL),
+(225,38,'LRDE',4,'CC',7,'P','N',1,'admin','2025-03-21 19:06:06',NULL,NULL,NULL),
+(226,38,'LRDE',17,'CS',3,'P','N',2,'admin','2025-03-21 19:06:06',NULL,NULL,NULL),
+(227,38,'LRDE',9,'CI',2,'P','N',3,'admin','2025-03-21 19:06:06',NULL,NULL,NULL),
+(228,38,'LRDE',30,'CI',3,'P','N',4,'admin','2025-03-21 19:06:06',NULL,NULL,NULL),
+(229,38,'ADE',2991,'CW',4,'P','N',5,'admin','2025-03-21 19:06:06',NULL,NULL,NULL),
+(230,38,'LRDE',22,'P',5,'P','N',6,'admin','2025-03-21 19:06:06',NULL,NULL,NULL);
 
 /*Table structure for table `committee_schedules_minutes` */
 
@@ -2318,7 +2710,7 @@ CREATE TABLE `committee_schedules_minutes_details` (
   `ModifiedDate` datetime DEFAULT NULL,
   `Remarks` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ScheduleMinutesId`)
-) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `committee_schedules_minutes_details` */
 
@@ -2412,7 +2804,15 @@ insert  into `committee_schedules_minutes_details`(`ScheduleMinutesId`,`Schedule
 (87,23,1,1,0,0,'<p>Testg hgdfg dfgdfgdfgdfgdfgdfgdfgdfgddf</p>\r\n','C',NULL,'admin','2025-02-28 11:56:49',NULL,NULL,'nil'),
 (88,23,1,2,0,0,'<p>test hfj klhgfs</p>\r\n','C',NULL,'admin','2025-02-28 11:57:00',NULL,NULL,'Nil Test'),
 (89,23,1,3,24,7,'Test Action','C','Presentation 1','admin','2025-02-28 11:57:48',NULL,NULL,'DRDO'),
-(90,23,1,4,0,0,'<p>sdfsdsd gfs</p>\r\n','C',NULL,'admin','2025-02-28 12:00:18',NULL,NULL,'Nil');
+(90,23,1,4,0,0,'<p>sdfsdsd gfs</p>\r\n','C',NULL,'admin','2025-02-28 12:00:18',NULL,NULL,'Nil'),
+(91,28,1,1,0,0,'<p>Submarine development entails a meticulous process involving conceptualization, design, testing, manufacturing, and deployment to create advanced underwater vessels for military, scientific, or commercial purposes. Initially, the conceptualization phase focuses on defining the submarine&#39;s intended role, operational capabilities, and performance requirements, considering factors such as stealth, endurance, and payload capacity.</p>\r\n','C',NULL,'admin','2025-03-20 10:34:07',NULL,NULL,'Nil'),
+(92,28,1,2,0,0,'<p>This phase often involves extensive research and analysis to identify technological trends, potential threats, and operational needs. Subsequently, engineers embark on the design and engineering phase, where they develop detailed plans covering hull design, propulsion systems, navigation equipment, and weapons integration.</p>\r\n','C',NULL,'admin','2025-03-20 10:34:24',NULL,NULL,'Nil'),
+(93,28,1,5,0,0,'Conduct feasibility studies and technological assessments to identify design constraints and opportunities.','A','','admin','2025-03-20 10:35:18',NULL,NULL,'Nil'),
+(94,28,1,5,0,0,'Design propulsion systems, including electric motors, diesel engines, or nuclear reactors, to meet performance and endurance requirements','A','','admin','2025-03-20 10:35:38',NULL,NULL,'Nil'),
+(95,36,1,1,0,0,'<p>A surface-to-air missile (SAM) project involves the design, development, and deployment of advanced missile systems intended to detect, track, and engage airborne threats, such as enemy aircraft, drones, or incoming missiles. This project typically encompasses a range of activities, including the creation of highly accurate guidance systems, propulsion technologies, and warhead designs to ensure effective target neutralization.</p>\r\n','C',NULL,'dgecs','2025-03-21 17:31:07',NULL,NULL,'Nil'),
+(96,36,1,2,0,0,'<p>The project also integrates radar and sensor technologies for precise targeting and real-time threat assessment. Key phases include research and development, prototype testing, system integration, and field deployment. The SAM system must be capable of operating in various environmental conditions and against diverse threats, ensuring national airspace defense and contributing to broader military defense strategies. The ultimate goal is to deliver a reliable, agile, and effective missile defense solution that can be seamlessly integrated into existing defense infrastructures.</p>\r\n','C',NULL,'dgecs','2025-03-21 17:31:15',NULL,NULL,'Nil'),
+(97,36,1,4,0,0,'Design and develop radar systems for accurate and real-time tracking of aircraft within controlled airspace','A','','dgecs','2025-03-21 17:31:36',NULL,NULL,'Nil'),
+(98,36,1,4,0,0,'Implement advanced communication technologies to ensure seamless and secure exchanges between pilots and air traffic controllers','A','','dgecs','2025-03-21 17:31:50',NULL,NULL,'Nil');
 
 /*Table structure for table `committee_schedules_minutes_new` */
 
@@ -5671,7 +6071,7 @@ CREATE TABLE `division_employee` (
   `ModifiedDate` datetime DEFAULT NULL,
   `IsActive` int NOT NULL,
   PRIMARY KEY (`DivisionEmployeeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `division_employee` */
 
@@ -5690,7 +6090,12 @@ insert  into `division_employee`(`DivisionEmployeeId`,`EmpId`,`DivisionId`,`Crea
 (12,33,1,'admin','2024-11-21 15:24:57',NULL,NULL,1),
 (13,11,5,'admin','2024-11-23 17:06:48',NULL,NULL,1),
 (14,3013,5,'admin','2025-02-28 11:30:11',NULL,NULL,1),
-(15,50,11,'admin','2025-02-28 11:44:35',NULL,NULL,1);
+(15,50,11,'admin','2025-02-28 11:44:35',NULL,NULL,1),
+(16,3011,13,'admin','2025-03-20 16:56:22',NULL,NULL,1),
+(17,29,13,'admin','2025-03-20 16:56:22',NULL,NULL,1),
+(18,31,13,'admin','2025-03-20 16:56:22',NULL,NULL,1),
+(19,3014,1,'admin','2025-03-21 16:42:54',NULL,NULL,1),
+(20,3001,1,'dgecs','2025-03-21 17:38:02',NULL,NULL,1);
 
 /*Table structure for table `division_group` */
 
@@ -5709,7 +6114,7 @@ CREATE TABLE `division_group` (
   `ModifiedBy` varchar(100) DEFAULT NULL,
   `ModifiedDate` datetime DEFAULT NULL,
   PRIMARY KEY (`GroupId`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `division_group` */
 
@@ -5719,7 +6124,8 @@ insert  into `division_group`(`GroupId`,`LabCode`,`GroupCode`,`GroupName`,`Group
 (3,'LRDE','GR3','Group 3',46,3,1,'admin','2024-11-21 15:22:27','admin','2024-11-23 10:35:01'),
 (4,'LRDE','GR4','Group 4',51,4,1,'admin','2024-11-21 15:22:38','admin','2024-11-23 10:35:11'),
 (5,'LRDE','GR5','Group 5',7,5,1,'admin','2024-11-21 15:22:54','admin','2024-11-23 10:35:20'),
-(6,'LRDE','GGE','Dir Admin GRP E',3013,2,1,'admin','2025-02-28 11:43:50','admin','2025-02-28 11:43:56');
+(6,'LRDE','GGE','Dir Admin GRP E',3013,2,1,'admin','2025-02-28 11:43:50','admin','2025-02-28 11:43:56'),
+(7,'LRDE','GR6','Group 6',7,8,1,'admin','2025-03-20 16:55:22',NULL,NULL);
 
 /*Table structure for table `division_master` */
 
@@ -5738,7 +6144,7 @@ CREATE TABLE `division_master` (
   `ModifiedBy` varchar(100) DEFAULT NULL,
   `ModifiedDate` datetime DEFAULT NULL,
   PRIMARY KEY (`DivisionId`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `division_master` */
 
@@ -5754,7 +6160,8 @@ insert  into `division_master`(`DivisionId`,`LabCode`,`DivisionCode`,`DivisionNa
 (9,'LRDE','DV9','Division 9',4,4,1,'admin','2025-02-06 09:59:08',NULL,NULL),
 (10,'LRDE','DV10','Division 10',9,5,1,'admin','2025-02-06 09:59:10',NULL,NULL),
 (11,'LRDE','FFG','Admin',2,3,1,'admin','2025-02-28 11:44:18',NULL,NULL),
-(12,'LRDE','TRE','TEST DIVISION',1,1,1,'admin','2025-03-11 12:48:46',NULL,NULL);
+(12,'LRDE','TRE','TEST DIVISION',1,1,1,'admin','2025-03-11 12:48:46',NULL,NULL),
+(13,'LRDE','D11','Division 11',10,7,1,'admin','2025-03-20 16:56:08',NULL,NULL);
 
 /*Table structure for table `division_td` */
 
@@ -5772,7 +6179,7 @@ CREATE TABLE `division_td` (
   `ModifiedBy` varchar(100) DEFAULT NULL,
   `ModifiedDate` datetime DEFAULT NULL,
   PRIMARY KEY (`TdId`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `division_td` */
 
@@ -5783,7 +6190,8 @@ insert  into `division_td`(`TdId`,`LabCode`,`TdCode`,`TdName`,`TdHeadId`,`IsActi
 (4,'LRDE','TD4','Tech Div 4',17,1,'admin','2024-11-23 10:34:27',NULL,NULL),
 (5,'LRDE','TD5','Tech Div5',12,1,'admin','2024-11-23 10:34:41','admin','2025-01-31 11:25:11'),
 (6,'LRDE','TD10','Tech.Div10',3011,1,'admin','2025-01-31 11:24:45',NULL,NULL),
-(7,'LRDE','PRU','Test Name Edit',3,1,'admin','2025-02-28 11:43:11','admin','2025-02-28 11:43:29');
+(7,'LRDE','PRU','Test Name Edit',3,1,'admin','2025-02-28 11:43:11','admin','2025-02-28 11:43:29'),
+(8,'LRDE','TD6','Tech Div6',3013,1,'admin','2025-03-20 16:54:57',NULL,NULL);
 
 /*Table structure for table `dms_audit_patches` */
 
@@ -5916,7 +6324,7 @@ CREATE TABLE `employee` (
   `IsActive` int DEFAULT '1',
   `Photo` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`EmpId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3014 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3015 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `employee` */
 
@@ -5936,7 +6344,7 @@ insert  into `employee`(`EmpId`,`LabCode`,`Title`,`Salutation`,`SrNo`,`EmpNo`,`E
 (13,'LRDE','Lt.','',12,'1013','Prashanth Meher',2,'8146',9639622955,3,'anil.vedts@gmail.com','anil.vedts@gmail.com',NULL,'vidya@vedts.com',2,NULL,NULL,'admin','2023-01-13 11:13:39',1,NULL),
 (14,'LRDE',NULL,'Mr.',13,'1014','Justin Paul',4,'5676',8098098800,2,'venkataprasad.vedts@gmail.com','venkataprasad.vedts@gmail.com',NULL,'venkataprasad.vedts@gmail.com',8,'admin','2024-04-13 12:50:31','admin',NULL,1,NULL),
 (15,'LRDE','Prof.','Ms.',18,'1015','Nalina N',4,'8258',9449035635,4,'nalina.vedts@gmail.com','nalina.vedts@gmail.com',NULL,'nalina.vedts@gmail.com',1,NULL,NULL,'admin','2024-10-25 18:31:49',1,NULL),
-(16,'LRDE',NULL,'Mr.',19,'1016','Sandhya',14,'5676',8878787888,1,'venkataprasad.vedts@gmail.com','venkataprasad.vedts@gmail.com',NULL,NULL,1,NULL,NULL,'admin','2024-06-14 16:33:09',1,NULL),
+(16,'LRDE',NULL,'Ms.',19,'1016','Sandhya',14,'5676',8878787888,1,'venkataprasad.vedts@gmail.com','venkataprasad.vedts@gmail.com',NULL,'null',1,NULL,NULL,'admin','2025-03-20 12:04:13',1,NULL),
 (17,'LRDE',NULL,'Ms.',20,'1017','Rakshitha R',3,'8070',9448479172,3,'sdatta.vedts@gmail.com','sdatta.vedts@gmail.com',NULL,'vidya@vedts.com',5,NULL,NULL,NULL,NULL,1,NULL),
 (18,'LRDE','Dr','Mr.',21,'1018','Bhadrappa R',7,'8095',9444080163,3,'arjun.vedts@gmail.com','venkataprasad.vedts@gmail.com',NULL,'vidya@vedts.com',8,NULL,NULL,'1028','2022-01-13 16:20:44',1,NULL),
 (19,'LRDE','Prof.','Ms.',22,'1019','Lekshmi Pillai',6,'8251',9448950610,4,'vidya@vedts.com','anil.vedts@gmail.com','anil.vedts@gmail.com','vidya@vedts.com',5,NULL,NULL,'admin','2024-10-25 18:31:49',1,NULL),
@@ -5994,19 +6402,20 @@ insert  into `employee`(`EmpId`,`LabCode`,`Title`,`Salutation`,`SrNo`,`EmpNo`,`E
 (2998,'CEMILAC','','Mr.',0,'NOO58','Kumar',4,'254518',0,4,'vts@gmai.com','vts@gmai.com',NULL,'vts@gmai.com',NULL,'admin','2024-11-23 13:12:20','1020','2024-11-23 16:06:34',1,NULL),
 (2999,'ACEM','','Mr.',0,'NOO59','Kantha',8,'254519',0,5,'vts@gmai.com','vts@gmai.com',NULL,'vts@gmai.com',NULL,'admin','2024-11-23 13:13:06','1020','2024-11-23 16:06:18',1,NULL),
 (3000,'CVRDE','','Ms.',0,'NOO60','Vimitha',12,'254560',0,2,'vts@gmai.com','vts@gmai.com',NULL,'vts@gmai.com',NULL,'admin','2024-11-23 13:14:03','1020','2024-11-23 16:05:58',1,NULL),
-(3001,'DG-ECS','','Ms.',0,'NOO61','Kaviya',15,'254561',0,1,'vts@gmai.com','vts@gmai.com',NULL,'vts@gmai.com',NULL,'admin','2024-11-23 13:14:52','admin','2024-11-25 12:06:18',1,NULL),
+(3001,'DG-ECS','','Ms.',0,'NOO61','Kaviya',15,'254561',8798784165,1,'vts@gmai.com','vts@gmai.com',NULL,'vts@gmai.com',NULL,'admin','2024-11-23 13:14:52','admin','2025-03-21 16:45:00',1,NULL),
 (3002,'CABS','','Mr.',0,'NOO62','Gunal',12,'25462',0,1,'vts@gmai.com','vts@gmai.com',NULL,'vts@gmai.com',NULL,'admin','2024-11-23 14:08:29','1020','2024-11-23 16:05:27',1,NULL),
 (3003,'DEAL','','Ms.',0,'NOO63','Kantha',10,'254563',0,4,'vts@gmai.com','vts@gmai.com',NULL,'vts@gmai.com',NULL,'admin','2024-11-23 14:09:18','1020','2024-11-23 16:05:16',1,NULL),
 (3004,'HEMRL','','Mr.',0,'NOO64','Sunil das',20,'254564',0,3,'vts@gmai.com','vts@gmai.com',NULL,'vts@gmai.com',NULL,'admin','2024-11-23 14:10:10','1020','2024-11-23 16:05:01',1,NULL),
 (3005,'IRDE','','Mr.',0,'NOO65','Santhosh',16,'254565',0,3,'vts@gmai.com','vts@gmai.com',NULL,'vts@gmai.com',NULL,'admin','2024-11-23 14:10:57','admin','2024-11-25 12:09:56',1,NULL),
 (3006,'DARE','','Mr.',0,'NOO66','Sridhar',20,'25466',0,3,'vts@gmai.com','vts@gmai.com',NULL,'vts@gmai.com',NULL,'admin','2024-11-23 14:11:42','1020','2024-11-23 16:04:31',1,NULL),
-(3007,'DG-ECS','','Mr.',0,'NOO67','Subaramani',45,'254567',0,2,'vts@gmai.com','vts@gmai.com',NULL,'vts@gmai.com',NULL,'admin','2024-11-23 14:12:27','admin','2024-11-25 12:07:15',1,NULL),
+(3007,'DG-ECS','','Mr.',0,'NOO67','Subaramani',45,'254567',9798798498,2,'vts@gmai.com','vts@gmai.com',NULL,'vts@gmai.com',NULL,'admin','2024-11-23 14:12:27','admin','2025-03-21 16:44:45',1,NULL),
 (3008,'DRL','','Mr.',0,'NOO68','Vinoth',41,'25468',0,3,'vts@gmai.com','vts@gmai.com',NULL,'vts@gmai.com',NULL,'admin','2024-11-23 14:13:08','1020','2024-11-23 16:03:05',1,NULL),
 (3009,'DARE','','Mr.',0,'NOO69','Subash',29,'25468',4455367859,5,'vts@gmai.com','vts@gmai.com',NULL,'vts@gmai.com',NULL,'admin','2024-11-23 14:13:48','admin','2025-01-31 11:19:29',1,NULL),
 (3010,'DRDL','','Mr.',0,'NOO69','Sanjay',33,'25469',0,1,'vts@gmai.com','vts@gmai.com',NULL,'vts@gmai.com',NULL,'admin','2024-11-23 14:15:03','admin','2024-11-25 12:21:04',0,NULL),
 (3011,'LRDE','Dr.',NULL,0,'2211','Arman Panda ',2,'1001',785587687,4,'a@gmail.com','arman@gmail.com',NULL,'a@gmail.com',2,'admin','2024-11-23 16:22:00','admin','2025-01-31 11:08:51',1,NULL),
 (3012,'LRDE',NULL,'Mr.',0,'346346','Guru ',8,'3456546',7895644286,3,'vts@gmail.com','',NULL,'',1,'admin','2024-11-25 12:20:31','admin','2024-11-25 12:20:46',0,NULL),
-(3013,'LRDE','Lt.','',0,'NOO70','Sudhannd ',2,'25470',8788767789,5,'su.lrde@gmail.com','Sudhanand.pani.lrde',NULL,'su.ck.lrde',NULL,'admin','2025-01-31 11:23:09',NULL,NULL,1,NULL);
+(3013,'LRDE','Lt.','',0,'NOO70','Sudhannd ',2,'25470',8788767789,5,'su.lrde@gmail.com','Sudhanand.pani.lrde',NULL,'su.ck.lrde',NULL,'admin','2025-01-31 11:23:09',NULL,NULL,1,NULL),
+(3014,'DG-ECS','Dr.','',0,'9865','Surya ',1,'6818',9875846516,1,'vts@gmail.com','',NULL,'',NULL,'admin','2025-03-21 16:35:21',NULL,NULL,1,NULL);
 
 /*Table structure for table `employee_desig` */
 
@@ -7174,7 +7583,7 @@ CREATE TABLE `login` (
   `EmpNo` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`LoginId`),
   UNIQUE KEY `uk_username` (`UserName`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `login` */
 
@@ -7212,14 +7621,16 @@ insert  into `login`(`LoginId`,`UserName`,`Password`,`EmpId`,`DivisionId`,`FormR
 (31,'1001','$2y$12$QTTMcjGKiCVKNvNa242tVu8SPi0SytTAMpT3XRscxNXHHu1nY4Kui',25,4,2,'A','U','Y',1,'admin','2024-08-03 12:19:28',NULL,NULL,NULL,NULL,NULL),
 (32,'1027','$2y$12$QTTMcjGKiCVKNvNa242tVu8SPi0SytTAMpT3XRscxNXHHu1nY4Kui',27,4,2,'U','U','Y',1,'admin','2024-08-26 11:20:31',NULL,NULL,NULL,NULL,NULL),
 (33,'1012','$2y$12$QTTMcjGKiCVKNvNa242tVu8SPi0SytTAMpT3XRscxNXHHu1nY4Kui',12,4,1,'Y','U','Y',1,'admin','2024-08-26 18:07:48','1012','2024-11-23 16:32:56',NULL,NULL,NULL),
-(34,'8480','$2y$12$QTTMcjGKiCVKNvNa242tVu8SPi0SytTAMpT3XRscxNXHHu1nY4Kui',48,1,1,'X','U','Y',1,'admin','2024-08-28 12:02:00',NULL,NULL,NULL,NULL,NULL),
+(34,'8480','$2y$12$QTTMcjGKiCVKNvNa242tVu8SPi0SytTAMpT3XRscxNXHHu1nY4Kui',48,1,1,'Z','U','Y',1,'admin','2024-08-28 12:02:00','dgecs','2025-03-21 17:41:27',NULL,NULL,NULL),
 (35,'8490','$2y$12$QTTMcjGKiCVKNvNa242tVu8SPi0SytTAMpT3XRscxNXHHu1nY4Kui',49,1,2,'U','U','Y',1,'admin','2024-08-28 12:03:23',NULL,NULL,NULL,NULL,NULL),
 (36,'1050','$2y$12$QTTMcjGKiCVKNvNa242tVu8SPi0SytTAMpT3XRscxNXHHu1nY4Kui',14,2,2,'U','U','Y',1,'admin','2024-09-04 15:15:13',NULL,NULL,NULL,NULL,NULL),
 (37,'1800','$2y$12$QTTMcjGKiCVKNvNa242tVu8SPi0SytTAMpT3XRscxNXHHu1nY4Kui',69,1,1,'D','U','Y',1,'admin','2024-10-08 19:07:10','admin','2025-02-28 11:40:34',NULL,NULL,NULL),
 (38,'1060','$2y$12$QTTMcjGKiCVKNvNa242tVu8SPi0SytTAMpT3XRscxNXHHu1nY4Kui',11,5,2,'U','U','Y',1,'admin','2024-11-23 17:06:48',NULL,NULL,NULL,NULL,NULL),
 (39,'2012','$2y$12$QTTMcjGKiCVKNvNa242tVu8SPi0SytTAMpT3XRscxNXHHu1nY4Kui',73,2,2,'U','U','Y',1,'admin','2025-01-06 12:48:22',NULL,NULL,NULL,NULL,NULL),
 (40,'3050','$2y$12$QTTMcjGKiCVKNvNa242tVu8SPi0SytTAMpT3XRscxNXHHu1nY4Kui',40,5,2,'U','U','Y',1,'admin','2025-01-06 13:00:17',NULL,NULL,NULL,NULL,NULL),
-(41,'testuser','$2a$10$aNtGzJNi9yPRDzfssmz5Zu8/G5YzPdt5xH0Wx5/y6SYZdb1RF7do6',3013,5,2,'D','U','Y',0,'admin','2025-02-28 11:30:11','admin','2025-02-28 11:41:00',NULL,NULL,NULL);
+(41,'testuser','$2a$10$aNtGzJNi9yPRDzfssmz5Zu8/G5YzPdt5xH0Wx5/y6SYZdb1RF7do6',3013,5,2,'D','U','Y',0,'admin','2025-02-28 11:30:11','admin','2025-02-28 11:41:00',NULL,NULL,NULL),
+(43,'dgecs','$2y$12$QTTMcjGKiCVKNvNa242tVu8SPi0SytTAMpT3XRscxNXHHu1nY4Kui',3014,1,2,'X','U','Y',1,'admin','2025-03-21 16:42:54',NULL,NULL,NULL,NULL,NULL),
+(44,'2000','$2y$12$QTTMcjGKiCVKNvNa242tVu8SPi0SytTAMpT3XRscxNXHHu1nY4Kui',3001,1,1,'Y','U','Y',1,'dgecs','2025-03-21 17:38:02','dgecs','2025-03-21 17:41:16',NULL,NULL,NULL);
 
 /*Table structure for table `login_type` */
 
@@ -7318,7 +7729,7 @@ CREATE TABLE `milestone_activity` (
   `ModifiedBy` varchar(100) DEFAULT NULL,
   `IsActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`MilestoneActivityId`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `milestone_activity` */
 
@@ -7330,7 +7741,8 @@ insert  into `milestone_activity`(`MilestoneActivityId`,`ProjectId`,`MilestoneNo
 (5,3,1,8,'Milestone-01 : Guidance System Development','2024-02-05','2024-07-31','2024-02-05','2024-07-31',1,4,0,0,0,NULL,NULL,NULL,0,'N',NULL,NULL,'2024-11-23 15:53:12','admin',NULL,NULL,1),
 (6,4,1,4,'Milestone-01 : System Architecture Definition1','2025-01-31','2025-01-31','2025-01-31','2025-01-31',21,3011,100,10,5,'2025-01-31',NULL,NULL,1,'Y',21,'2025-01-31','2025-01-31 12:51:16','admin','2025-01-31 17:34:48','admin',1),
 (7,4,2,3,'Activity for PRJ-4','2025-01-31','2025-01-31','2025-01-31','2025-01-31',21,1,100,20,5,'2025-01-31',12000,'Completed',1,'Y',21,'2025-01-31','2025-01-31 16:28:40','admin','2025-01-31 00:00:00','1021',1),
-(8,1,4,2,'test','2025-03-04','2025-03-04','2025-03-04','2025-03-04',1,11,0,0,0,NULL,NULL,NULL,0,'N',NULL,NULL,'2025-03-04 16:51:54','admin',NULL,NULL,1);
+(8,1,4,2,'test','2025-03-04','2025-03-04','2025-03-04','2025-03-04',1,11,0,0,0,NULL,NULL,NULL,0,'N',NULL,NULL,'2025-03-04 16:51:54','admin',NULL,NULL,1),
+(9,2,2,8,'Milestone-02 : Develop the Model','2025-02-01','2025-03-20','2025-02-01','2025-03-20',26,28,68,20,4,NULL,15000,'Sample Remarks',0,'Y',26,'2025-03-20','2025-03-20 14:30:09','admin','2025-03-20 15:01:05','1026',1);
 
 /*Table structure for table `milestone_activity_a` */
 
@@ -7450,7 +7862,7 @@ CREATE TABLE `milestone_activity_level` (
   `point6` varchar(255) DEFAULT NULL,
   `point9` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ActivityId`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `milestone_activity_level` */
 
@@ -7491,7 +7903,17 @@ insert  into `milestone_activity_level`(`ActivityId`,`ParentActivityId`,`Activit
 (34,7,1,'main for PRJ-4',3,'2025-01-31','2025-01-31','2025-01-31','2025-01-31',21,1,1,100,5,NULL,NULL,50,'2025-01-31 16:29:20','admin','2025-01-31 00:00:00','admin',1,'Y','Y','Y'),
 (35,34,2,'Coordination',2,'2025-01-31','2025-01-31','2025-01-31','2025-01-31',21,1,1,100,5,'2025-01-31','Completed',100,'2025-01-31 16:29:50','admin','2025-01-31 00:00:00','1021',1,'Y','Y','Y'),
 (36,7,1,'Potential risks',10,'2025-01-31','2025-01-31','2025-01-31','2025-01-31',21,1,1,100,5,'2025-01-31','Completed',50,'2025-01-31 16:30:54','admin','2025-01-31 00:00:00','1021',1,'Y','Y','Y'),
-(37,8,1,'Test for RoadMap',3,'2025-03-04','2025-03-04','2025-03-04','2025-03-04',1,11,0,0,0,NULL,NULL,0,'2025-03-04 16:52:01','admin',NULL,NULL,1,'Y','Y','Y');
+(37,8,1,'Test for RoadMap',3,'2025-03-04','2025-03-04','2025-03-04','2025-03-04',1,11,0,0,0,NULL,NULL,0,'2025-03-04 16:52:01','admin',NULL,NULL,1,'Y','Y','Y'),
+(38,9,1,'Develop the system architecture',6,'2025-02-01','2025-02-28','2025-02-01','2025-02-28',26,28,0,64,4,NULL,NULL,37,'2025-03-20 14:31:11','admin','2025-03-20 00:00:00','admin',1,'Y','Y','Y'),
+(39,9,1,'Develop the prototype',8,'2025-03-01','2025-03-10','2025-03-01','2025-03-10',26,28,0,48,4,NULL,NULL,35,'2025-03-20 14:32:27','admin','2025-03-20 00:00:00','admin',1,'Y','Y','Y'),
+(40,9,1,'Integrate the model in system',13,'2025-03-11','2025-03-20','2025-03-11','2025-03-20',26,28,0,100,5,NULL,NULL,28,'2025-03-20 14:32:48','admin','2025-03-20 00:00:00','admin',1,'Y','Y','Y'),
+(41,38,2,'Prepare the design',6,'2025-02-01','2025-02-28','2025-02-01','2025-02-28',26,28,0,100,5,NULL,NULL,64,'2025-03-20 14:33:06','admin','2025-03-20 00:00:00','admin',1,'Y','Y','Y'),
+(42,38,2,'Get the necessary approval',6,'2025-02-01','2025-02-28','2025-02-01','2025-02-28',26,28,0,0,0,NULL,NULL,36,'2025-03-20 14:34:19','admin','2025-03-20 00:00:00','admin',1,'Y','Y','Y'),
+(43,41,3,'Get the approval of the design document',5,'2025-02-01','2025-02-28','2025-02-01','2025-02-28',26,28,0,100,5,'2025-03-20','Completed',100,'2025-03-20 14:35:02','admin','2025-03-20 00:00:00','1026',1,'Y','Y','Y'),
+(44,39,2,'Develop the interior design of the prototype',8,'2025-03-01','2025-03-10','2025-03-01','2025-03-10',26,28,0,100,5,'2025-03-20','Completed',48,'2025-03-20 14:36:01','admin','2025-03-20 00:00:00','1026',1,'Y','Y','Y'),
+(45,39,2,'Develop the exterior design of the proptotype',8,'2025-03-01','2025-03-10','2025-03-01','2025-03-10',26,28,0,0,0,NULL,NULL,52,'2025-03-20 14:36:30','admin','2025-03-20 00:00:00','admin',1,'Y','Y','Y'),
+(46,40,2,'Integrate the interior and exterior parts of the design',13,'2025-03-11','2025-03-20','2025-03-11','2025-03-20',26,28,0,100,5,'2025-03-20','Completed',50,'2025-03-20 14:37:28','admin','2025-03-20 00:00:00','1026',1,'Y','Y','Y'),
+(47,40,2,'Integrate the final model in the system and conducted the necessary testing',13,'2025-03-11','2025-03-20','2025-03-11','2025-03-20',26,28,0,100,5,'2025-03-20','Completed',50,'2025-03-20 14:38:08','admin','2025-03-20 00:00:00','1026',1,'Y','Y','Y');
 
 /*Table structure for table `milestone_activity_level_configuration` */
 
@@ -7532,7 +7954,7 @@ CREATE TABLE `milestone_activity_rev` (
   `CreatedBy` varchar(100) DEFAULT NULL,
   `IsActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`MilestoneActivityRevId`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `milestone_activity_rev` */
 
@@ -7542,7 +7964,9 @@ insert  into `milestone_activity_rev`(`MilestoneActivityRevId`,`MilestoneActivit
 (3,1,'Milestone-01 : Airframe Design and Development','2024-01-01','2024-03-31',1,12,100,5,25,NULL,2,'2024-11-23 15:21:31','admin',1),
 (4,6,'Milestone-01 : System Architecture Definition1','2025-01-31','2025-01-31',21,3011,0,0,10,NULL,1,'2025-01-31 12:51:16','admin',1),
 (5,7,'Activity for PRJ-4','2025-01-31','2025-01-31',21,1,0,0,20,NULL,1,'2025-01-31 16:28:40','admin',1),
-(6,2,'Milestone-02 : Propulsion System Integration','2024-04-01','2024-09-30',1,15,0,0,15,NULL,1,'2024-11-23 15:22:15','admin',1);
+(6,2,'Milestone-02 : Propulsion System Integration','2024-04-01','2024-09-30',1,15,0,0,15,NULL,1,'2024-11-23 15:22:15','admin',1),
+(7,9,'Milestone-02 : Develop the Model','2025-02-01','2025-03-20',26,28,0,0,20,NULL,1,'2025-03-20 14:30:09','admin',1),
+(8,9,'Milestone-02 : Develop the Model','2025-02-01','2025-03-20',26,28,68,4,20,'Sample Remarks',0,'2025-03-20 14:30:09','admin',1);
 
 /*Table structure for table `milestone_activity_status` */
 
@@ -7582,7 +8006,7 @@ CREATE TABLE `milestone_activity_sub` (
   `CreatedDate` datetime DEFAULT NULL,
   `IsActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`ActivitySubId`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `milestone_activity_sub` */
 
@@ -7596,7 +8020,11 @@ insert  into `milestone_activity_sub`(`ActivitySubId`,`ActivityId`,`Progress`,`P
 (7,36,100,'2025-01-31','','','Completed','1021','2025-01-31 16:36:18',1),
 (8,7,100,'2025-01-31','','','Completed It','admin','2025-01-31 18:00:33',1),
 (9,11,100,'2025-01-31','','','Completed It','admin','2025-01-31 18:01:25',1),
-(10,13,100,'2025-02-03','','','Completed It','admin','2025-01-31 18:01:37',1);
+(10,13,100,'2025-02-03','','','Completed It','admin','2025-01-31 18:01:37',1),
+(11,43,100,'2025-03-20','','','Completed','1026','2025-03-20 14:51:07',1),
+(12,44,100,'2025-03-20','','','Completed','1026','2025-03-20 14:51:57',1),
+(13,46,100,'2025-03-20','','','Completed','1026','2025-03-20 14:52:16',1),
+(14,47,100,'2025-03-20','','','Completed','1026','2025-03-20 14:52:30',1);
 
 /*Table structure for table `milestone_activity_sub_rev` */
 
@@ -7620,7 +8048,7 @@ CREATE TABLE `milestone_activity_sub_rev` (
   `CreatedBy` varchar(100) DEFAULT NULL,
   `IsActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`ActivityRevId`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `milestone_activity_sub_rev` */
 
@@ -7648,7 +8076,27 @@ insert  into `milestone_activity_sub_rev`(`ActivityRevId`,`ActivityId`,`Activity
 (21,5,'Engine Selection and Integration Plan',3,'2024-04-09','2024-08-14',1,15,1,0,0,30,NULL,'2024-11-23 15:33:38','admin',1),
 (22,7,'Evaluate engine options',4,'2024-04-09','2024-08-14',1,15,1,0,0,55,NULL,'2024-11-23 15:34:27','admin',1),
 (23,8,'Select optimal propulsion system',12,'2024-04-09','2024-08-14',1,15,1,0,0,45,NULL,'2024-11-23 15:34:41','admin',1),
-(24,6,'Engine Integration Testing',4,'2024-07-01','2024-08-14',1,15,1,0,0,70,NULL,'2024-11-23 15:34:01','admin',1);
+(24,6,'Engine Integration Testing',4,'2024-07-01','2024-08-14',1,15,1,0,0,70,NULL,'2024-11-23 15:34:01','admin',1),
+(25,38,'Develop the system architecture',6,'2025-02-01','2025-02-28',26,28,1,0,0,37,NULL,'2025-03-20 14:31:11','admin',1),
+(26,41,'Prepare the design',6,'2025-02-01','2025-02-28',26,28,1,0,0,64,NULL,'2025-03-20 14:33:06','admin',1),
+(27,43,'Get the approval of the design document',5,'2025-02-01','2025-02-28',26,28,1,0,0,100,NULL,'2025-03-20 14:35:02','admin',1),
+(28,42,'Get the necessary approval',6,'2025-02-01','2025-02-28',26,28,1,0,0,36,NULL,'2025-03-20 14:34:19','admin',1),
+(29,39,'Develop the prototype',8,'2025-03-01','2025-03-10',26,28,1,0,0,35,NULL,'2025-03-20 14:32:27','admin',1),
+(30,44,'Develop the interior design of the prototype',8,'2025-03-01','2025-03-10',26,28,1,0,0,48,NULL,'2025-03-20 14:36:01','admin',1),
+(31,45,'Develop the exterior design of the proptotype',8,'2025-03-01','2025-03-10',26,28,1,0,0,52,NULL,'2025-03-20 14:36:30','admin',1),
+(32,40,'Integrate the model in system',13,'2025-03-11','2025-03-20',26,28,1,0,0,28,NULL,'2025-03-20 14:32:48','admin',1),
+(33,46,'Integrate the interior and exterior parts of the design',13,'2025-03-11','2025-03-20',26,28,1,0,0,50,NULL,'2025-03-20 14:37:28','admin',1),
+(34,47,'Integrate the final model in the system and conducted the necessary testing',13,'2025-03-11','2025-03-20',26,28,1,0,0,50,NULL,'2025-03-20 14:38:08','admin',1),
+(35,38,'Develop the system architecture',6,'2025-02-01','2025-02-28',26,28,0,64,4,37,NULL,'2025-03-20 14:31:11','admin',1),
+(36,41,'Prepare the design',6,'2025-02-01','2025-02-28',26,28,0,100,5,64,NULL,'2025-03-20 14:33:06','admin',1),
+(37,43,'Get the approval of the design document',5,'2025-02-01','2025-02-28',26,28,0,100,5,100,NULL,'2025-03-20 14:35:02','admin',1),
+(38,42,'Get the necessary approval',6,'2025-02-01','2025-02-28',26,28,0,0,0,36,NULL,'2025-03-20 14:34:19','admin',1),
+(39,39,'Develop the prototype',8,'2025-03-01','2025-03-10',26,28,0,48,4,35,NULL,'2025-03-20 14:32:27','admin',1),
+(40,44,'Develop the interior design of the prototype',8,'2025-03-01','2025-03-10',26,28,0,100,5,48,NULL,'2025-03-20 14:36:01','admin',1),
+(41,45,'Develop the exterior design of the proptotype',8,'2025-03-01','2025-03-10',26,28,0,0,0,52,NULL,'2025-03-20 14:36:30','admin',1),
+(42,40,'Integrate the model in system',13,'2025-03-11','2025-03-20',26,28,0,100,5,28,NULL,'2025-03-20 14:32:48','admin',1),
+(43,46,'Integrate the interior and exterior parts of the design',13,'2025-03-11','2025-03-20',26,28,0,100,5,50,NULL,'2025-03-20 14:37:28','admin',1),
+(44,47,'Integrate the final model in the system and conducted the necessary testing',13,'2025-03-11','2025-03-20',26,28,0,100,5,50,NULL,'2025-03-20 14:38:08','admin',1);
 
 /*Table structure for table `milestone_activity_transaction` */
 
@@ -7666,7 +8114,7 @@ CREATE TABLE `milestone_activity_transaction` (
   `CreatedBy` varchar(100) DEFAULT NULL,
   `IsActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`ActivityTransactionId`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `milestone_activity_transaction` */
 
@@ -7680,7 +8128,9 @@ insert  into `milestone_activity_transaction`(`ActivityTransactionId`,`Milestone
 (7,6,'2025-01-31',21,NULL,'Y',NULL,'2025-01-31 16:34:06','1021',1),
 (8,7,'2025-01-31',21,NULL,'Y',NULL,'2025-01-31 16:34:09','1021',1),
 (9,2,'2025-01-31',1,NULL,'A',NULL,'2025-01-31 18:00:12','admin',1),
-(10,2,'2025-01-31',1,NULL,'Y',NULL,'2025-01-31 18:00:22','admin',1);
+(10,2,'2025-01-31',1,NULL,'Y',NULL,'2025-01-31 18:00:22','admin',1),
+(11,9,'2025-03-20',1,NULL,'A',NULL,'2025-03-20 14:40:07','admin',1),
+(12,9,'2025-03-20',26,NULL,'Y',NULL,'2025-03-20 14:40:58','1026',1);
 
 /*Table structure for table `milestone_activity_type` */
 
@@ -8530,9 +8980,13 @@ CREATE TABLE `pfms_ccm_achievements` (
   `ModifiedDate` datetime DEFAULT NULL,
   `IsActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`AchievementId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `pfms_ccm_achievements` */
+
+insert  into `pfms_ccm_achievements`(`AchievementId`,`ScheduleId`,`LabCode`,`TopicType`,`Achievement`,`ImageName`,`AttachmentName`,`VideoName`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`,`IsActive`) values 
+(1,37,'LRDE','A','<p>Inspection Request module within QMS is to facilitate the Inspection Process Approval mechanism. This functionality serves as a cornerstone in ensuring that all QA activities proceed smoothly and efficiently. Through a structured framework for review and authorization, stakeholders can seamlessly submit, track, and collaborate on inspection plans in real-time, fostering transparency and accountability.</p>\r\n',NULL,NULL,NULL,'dgecs','2025-03-21 17:52:55',NULL,NULL,1),
+(2,37,'MTRDC','A','<p>This functionality serves as a cornerstone in ensuring that all QA activities proceed smoothly and efficiently.&nbsp;</p>\r\n','Image-202503211753436403709.jpg','Attachment-202503211753436403709.pdf',NULL,'dgecs','2025-03-21 17:53:43',NULL,NULL,1);
 
 /*Table structure for table `pfms_ccm_asp_status` */
 
@@ -8573,9 +9027,12 @@ CREATE TABLE `pfms_ccm_closure` (
   `ModifiedDate` datetime DEFAULT NULL,
   `IsActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`CCMClosureId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `pfms_ccm_closure` */
+
+insert  into `pfms_ccm_closure`(`CCMClosureId`,`ScheduleId`,`LabCode`,`ProjectId`,`ProjectCode`,`Recommendation`,`TCRStatus`,`ACRStatus`,`ActivityStatus`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`,`IsActive`) values 
+(1,37,'LRDE',1,NULL,'<p>Sample Recommendations</p>\r\n','<p>Sample TCR Status</p>\r\n','<p>Sample ACR Status</p>\r\n','<p>Sample Status of Activities</p>\r\n','dgecs','2025-03-21 17:48:12','dgecs','2025-03-21 17:49:02',1);
 
 /*Table structure for table `pfms_ccm_data` */
 
@@ -8646,9 +9103,12 @@ CREATE TABLE `pfms_ccm_presentation_slides` (
   `ModifiedDate` datetime DEFAULT NULL,
   `IsActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`CCMPresSlideId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `pfms_ccm_presentation_slides` */
+
+insert  into `pfms_ccm_presentation_slides`(`CCMPresSlideId`,`ScheduleId`,`SlideName`,`FreezeStatus`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`,`IsActive`) values 
+(1,37,'ATR,DMC,EB Calendar,PMRC Calendar,ASP Status,Closure Status,Cash Out Go Status,Test & Trials,Achievements,Others','N','dgecs','2025-03-21 17:56:03',NULL,NULL,1);
 
 /*Table structure for table `pfms_closure` */
 
@@ -9563,7 +10023,7 @@ CREATE TABLE `pfms_doc_template_attributes` (
 /*Data for the table `pfms_doc_template_attributes` */
 
 insert  into `pfms_doc_template_attributes`(`AttributId`,`HeaderFontSize`,`HeaderFontWeight`,`SubHeaderFontsize`,`SubHeaderFontweight`,`SuperHeaderFontWeight`,`ParaFontSize`,`ParaFontWeight`,`SuperHeaderFontsize`,`FontFamily`,`MainTableWidth`,`subTableWidth`,`RestrictionOnUse`,`IsActive`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`) values 
-(1,12,'Bolder',12,'Bold','Normal',12,'Normal',12,'Arial Black',0,0,' This document contains information, which is the sole property of LRDE, DRDO. The document is submitted to the recipient for his use only. The recipient undertakes not to duplicate the document or to disclosure in part of or the whole of any of the information contained herein to any third party without receiving beforehand, written permission from the submitter. If you are not the intended recipient please notify the sender at director@lrde.gov.in immediately and destroy all copies of this document. ',1,'admin','2024-06-26','admin','2025-01-31');
+(1,12,'Bolder',12,'Bold','Normal',12,'Normal',12,'Arial Black',0,0,'This document contains information, which is the sole property of LRDE, DRDO. The document is submitted to the recipient for his use only. The recipient undertakes not to duplicate the document or to disclosure in part of or the whole of any of the information contained herein to any third party without receiving beforehand, written permission from the submitter. If you are not the intended recipient please notify the sender at director@lrde.gov.in immediately and destroy all copies of this document.   ',1,'admin','2024-06-26','admin','2025-03-21');
 
 /*Table structure for table `pfms_doc_trans` */
 
@@ -9605,12 +10065,15 @@ CREATE TABLE `pfms_emp_roles` (
   `ModifiedDate` datetime DEFAULT NULL,
   `IsActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`RoleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `pfms_emp_roles` */
 
 insert  into `pfms_emp_roles`(`RoleId`,`Organization`,`EmpNo`,`EmpRole`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`,`IsActive`) values 
-(1,'LRDE','1020','TD','admin','2025-02-12 00:00:00',NULL,NULL,1);
+(1,'LRDE','1020','TD','admin','2025-02-12 00:00:00',NULL,NULL,1),
+(2,'LRDE','1001','GD','admin','2025-03-20 00:00:00',NULL,NULL,1),
+(3,'Tech Solutions','00','Managing Director','admin','2025-03-20 00:00:00',NULL,NULL,1),
+(4,'DG-ECS','500452','AD','dgecs','2025-03-21 00:00:00',NULL,NULL,1);
 
 /*Table structure for table `pfms_favourite_list` */
 
@@ -9702,7 +10165,7 @@ CREATE TABLE `pfms_form_detail` (
   `ModifiedBy` varchar(100) DEFAULT NULL,
   `ModifiedDate` datetime DEFAULT NULL,
   PRIMARY KEY (`FormDetailId`)
-) ENGINE=InnoDB AUTO_INCREMENT=301 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=303 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `pfms_form_detail` */
 
@@ -9848,7 +10311,9 @@ insert  into `pfms_form_detail`(`FormDetailId`,`FormModuleId`,`FormName`,`FormUr
 (297,19,'IGI Document','IGIDocumentList.htm',7,1,NULL,NULL),
 (298,19,'ICD Document','ICDDocumentList.htm',8,1,NULL,NULL),
 (299,19,'IRS Document','IRSDocumentList.htm',9,1,NULL,NULL),
-(300,19,'IDD Document','IDDDocumentList.htm',10,1,NULL,NULL);
+(300,19,'IDD Document','IDDDocumentList.htm',10,1,NULL,NULL),
+(301,5,'System Product Tree','SystemProductTree.htm',6,1,NULL,NULL),
+(302,5,'MilestoneExcelFile','MilestoneExcelFile.htm',7,1,NULL,NULL);
 
 /*Table structure for table `pfms_form_module` */
 
@@ -9901,7 +10366,7 @@ CREATE TABLE `pfms_form_role_access` (
   `ModifiedBy` varchar(100) DEFAULT NULL,
   `ModifiedDate` datetime DEFAULT NULL,
   PRIMARY KEY (`FormRoleAccessId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1441 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=1446 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `pfms_form_role_access` */
 
@@ -10053,11 +10518,11 @@ insert  into `pfms_form_role_access`(`FormRoleAccessId`,`LoginType`,`FormDetailI
 (145,'E',19,0,'B',NULL,NULL,NULL,NULL),
 (146,'E',20,1,'B',NULL,NULL,NULL,NULL),
 (147,'E',21,1,'B',NULL,NULL,NULL,NULL),
-(148,'E',22,0,'B',NULL,NULL,NULL,NULL),
-(149,'E',23,0,'B',NULL,NULL,NULL,NULL),
-(150,'E',24,0,'B',NULL,NULL,NULL,NULL),
-(151,'E',25,0,'B',NULL,NULL,NULL,NULL),
-(152,'E',26,0,'B',NULL,NULL,NULL,NULL),
+(148,'E',22,1,'B',NULL,NULL,'admin','2025-03-19 10:10:06'),
+(149,'E',23,1,'B',NULL,NULL,'admin','2025-03-19 10:10:06'),
+(150,'E',24,1,'B',NULL,NULL,'admin','2025-03-19 10:10:07'),
+(151,'E',25,1,'B',NULL,NULL,'admin','2025-03-19 10:10:07'),
+(152,'E',26,1,'B',NULL,NULL,'admin','2025-03-19 10:10:07'),
 (153,'E',27,0,'B',NULL,NULL,NULL,NULL),
 (154,'E',28,1,'B',NULL,NULL,NULL,NULL),
 (155,'E',29,1,'B',NULL,NULL,NULL,NULL),
@@ -11278,7 +11743,12 @@ insert  into `pfms_form_role_access`(`FormRoleAccessId`,`LoginType`,`FormDetailI
 (1437,'A',297,1,'B','admin','2025-03-03 14:06:20',NULL,NULL),
 (1438,'A',298,1,'B','admin','2025-03-03 14:06:21',NULL,NULL),
 (1439,'A',300,1,'B','admin','2025-03-03 14:06:21',NULL,NULL),
-(1440,'A',299,1,'B','admin','2025-03-03 14:06:27',NULL,NULL);
+(1440,'A',299,1,'B','admin','2025-03-03 14:06:27',NULL,NULL),
+(1441,'E',279,1,'B','admin','2025-03-20 11:44:25',NULL,NULL),
+(1442,'U',279,1,'B','admin','2025-03-20 11:45:18',NULL,NULL),
+(1443,'A',301,1,'B','admin','2025-03-20 15:05:19',NULL,NULL),
+(1444,'A',302,1,'B','admin','2025-03-21 12:47:21',NULL,NULL),
+(1445,'U',236,1,'B','admin','2025-03-21 18:59:15',NULL,NULL);
 
 /*Table structure for table `pfms_form_url` */
 
@@ -12322,9 +12792,12 @@ CREATE TABLE `pfms_fracas_assign` (
   `ModifiedDate` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `IsActive` int DEFAULT '1',
   PRIMARY KEY (`FracasAssignId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `pfms_fracas_assign` */
+
+insert  into `pfms_fracas_assign`(`FracasAssignId`,`FracasAssignNo`,`FracasMainId`,`Remarks`,`PDC`,`Assigner`,`Assignee`,`AssignedDate`,`FracasStatus`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`,`IsActive`) values 
+(1,'LRDE/PRJ-5/Item-2/1',2,'Important','2025-03-21',1,24,'2025-03-21','A','admin','2025-03-21 15:27:50',NULL,NULL,1);
 
 /*Table structure for table `pfms_fracas_attach` */
 
@@ -12342,12 +12815,13 @@ CREATE TABLE `pfms_fracas_attach` (
   `ModifiedDate` datetime DEFAULT NULL,
   `FracasAttach` longblob,
   PRIMARY KEY (`FracasAttachId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `pfms_fracas_attach` */
 
 insert  into `pfms_fracas_attach`(`FracasAttachId`,`FracasMainId`,`FracasSubId`,`Filepath`,`AttachName`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`,`FracasAttach`) values 
-(1,1,0,'LRDE/FracasData','Fracas20250212190345838.pdf','admin','2025-02-12 19:03:45',NULL,NULL,NULL);
+(1,1,0,'LRDE/FracasData','Fracas20250212190345838.pdf','admin','2025-02-12 19:03:45',NULL,NULL,NULL),
+(2,2,0,'LRDE\\FracasData','Fracas202503211527274350662.pdf','admin','2025-03-21 15:27:27',NULL,NULL,NULL);
 
 /*Table structure for table `pfms_fracas_main` */
 
@@ -12366,12 +12840,13 @@ CREATE TABLE `pfms_fracas_main` (
   `ModifiedDate` datetime DEFAULT NULL,
   `IsActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`FracasMainId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `pfms_fracas_main` */
 
 insert  into `pfms_fracas_main`(`FracasMainId`,`LabCode`,`FracasTypeId`,`FracasItem`,`FracasDate`,`ProjectId`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`,`IsActive`) values 
-(1,'LRDE',1,'Test','2025-02-12',1,'admin','2025-02-12 19:03:45',NULL,NULL,1);
+(1,'LRDE',1,'Test','2025-02-12',1,'admin','2025-02-12 19:03:45',NULL,NULL,1),
+(2,'LRDE',2,'The radar is not accurately detecting certain types of targets, leading to concerns about its effectiveness in real-world situations.','2025-03-10',5,'admin','2025-03-21 15:27:27',NULL,NULL,1);
 
 /*Table structure for table `pfms_fracas_sub` */
 
@@ -13406,13 +13881,15 @@ CREATE TABLE `pfms_initiation_file_upload` (
   `IsActive` tinyint(1) DEFAULT '1',
   `DocumentCount` bigint DEFAULT NULL,
   PRIMARY KEY (`DocId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `pfms_initiation_file_upload` */
 
 insert  into `pfms_initiation_file_upload`(`DocId`,`InitiationId`,`stepId`,`FileName`,`DocumentName`,`DocumentId`,`FilePath`,`VersionDoc`,`Description`,`CreatedDate`,`CreatedBy`,`IsActive`,`DocumentCount`) values 
 (1,7,2,'notpdf.pdf','Note',1,'LRDE\\ProjectRequirement\\',1.00,'Test','2025-01-31','admin',1,NULL),
-(2,8,2,'notpdf.pdf','Note',1,'LRDE\\ProjectRequirement\\',1.00,'Test','2025-01-31','admin',1,NULL);
+(2,8,2,'notpdf.pdf','Note',1,'LRDE\\ProjectRequirement\\',1.00,'Test','2025-01-31','admin',1,NULL),
+(4,7,1,'pdf.pdf','Architecture Diagram',2,'LRDE\\ProjectRequirement\\',1.00,'Document Uploaded','2025-03-21','admin',1,NULL),
+(5,7,1,'WorkRegister.pdf','tttt',3,'LRDE\\ProjectRequirement\\',1.00,'Test fsfs','2025-03-21','admin',1,NULL);
 
 /*Table structure for table `pfms_initiation_lab` */
 
@@ -14448,12 +14925,15 @@ CREATE TABLE `pfms_labreport_milestone` (
   `CreatedBy` varchar(100) DEFAULT NULL,
   `CreatedDate` date DEFAULT NULL,
   PRIMARY KEY (`MilestoneId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `pfms_labreport_milestone` */
 
 insert  into `pfms_labreport_milestone`(`MilestoneId`,`ProjectId`,`MilestoneActivityId`,`ActivityName`,`ActivityFor`,`CreatedBy`,`CreatedDate`) values 
-(1,2,4,'Milestone-01 : System Architecture Definition','N','admin','2025-02-12');
+(1,2,4,'Milestone-01 : System Architecture Definition','N','admin','2025-02-12'),
+(2,2,9,'Milestone-02 : Develop the Model','P','admin','2025-03-21'),
+(3,1,1,'Milestone-01 : Airframe Design and Development','P','admin','2025-03-21'),
+(4,1,3,'Milestone-03 : Avionics and Systems Integration','N','admin','2025-03-21');
 
 /*Table structure for table `pfms_login_role_security` */
 
@@ -14606,7 +15086,7 @@ CREATE TABLE `pfms_notification` (
   `ModifiedBy` varchar(100) DEFAULT NULL,
   `ModifiedDate` datetime DEFAULT NULL,
   PRIMARY KEY (`NotificationId`)
-) ENGINE=InnoDB AUTO_INCREMENT=249 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=340 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `pfms_notification` */
 
@@ -14633,7 +15113,7 @@ insert  into `pfms_notification`(`NotificationId`,`EmpId`,`NotificationBy`,`Noti
 (20,6,1,'2024-11-23','An Action No LRDE/PRJ-1/23NOV2024/1-1 Closed by Mukesh Prasad Sahu, Sc C.','ActionStatusList.htm',0,0,'MAR','admin','2024-11-23 14:41:09',NULL,NULL),
 (21,33,1,'2024-11-23','An Action No LRDE/PRJ-3/23NOV2024/1-1 PDC Extended by Mukesh Prasad Sahu, Sc C.','ActionStatusList.htm',0,0,'MAR',NULL,'2024-11-23 14:43:52',NULL,NULL),
 (22,1,33,'2024-11-23','An Action No LRDE/PRJ-3/23NOV2024/1-1 Forwarded by Ganesh, Sc E.','ActionForwardList.htm',0,0,'MAR',NULL,'2024-11-23 14:46:21',NULL,NULL),
-(23,33,1,'2024-11-23','An Action No LRDE/PRJ-3/23NOV2024/1-1 Closed by Mukesh Prasad Sahu, Sc C.','ActionStatusList.htm',1,0,'MAR','admin','2024-11-23 14:47:32',NULL,NULL),
+(23,33,1,'2024-11-23','An Action No LRDE/PRJ-3/23NOV2024/1-1 Closed by Mukesh Prasad Sahu, Sc C.','ActionStatusList.htm',0,0,'MAR','admin','2024-11-23 14:47:32',NULL,NULL),
 (24,1,1,'2024-11-23','An Action No LRDE/PRJ-3/23NOV2024/2-1 Assigned by Mukesh Prasad Sahu, Sc C.','AssigneeList.htm',0,0,'MAR','admin','2024-11-23 15:05:00',NULL,NULL),
 (25,24,7,'2024-11-23','Project Closure SoC forwarded by Dinesh Udayshanker','ProjectClosureApprovals.htm',0,NULL,NULL,NULL,'2024-11-23 15:05:10',NULL,NULL),
 (26,1,1,'2024-11-23','An Action No LRDE/PRJ-3/23NOV2024/3-1 Assigned by Mukesh Prasad Sahu, Sc C.','AssigneeList.htm',0,0,'MAR','admin','2024-11-23 15:05:41',NULL,NULL),
@@ -14790,18 +15270,18 @@ insert  into `pfms_notification`(`NotificationId`,`EmpId`,`NotificationBy`,`Noti
 (177,3011,1,'2025-01-31','Action Pending On Milestone Assigned ','M-A-AssigneeList.htm?ProjectId=4',1,0,'MAR','admin','2025-01-31 13:02:26',NULL,NULL),
 (178,3011,1,'2025-01-31','An Action No LRDE/PRJ-4/31JAN2025/1-1 Assigned by Mukesh Prasad Sahu, Sc C.','AssigneeList.htm',1,0,'MAR','admin','2025-01-31 14:38:39',NULL,NULL),
 (179,1,1,'2025-01-31','Agenda Pending Approval For PMRC1','MeetingApprovalAgenda.htm',0,11,'MAF','admin','2025-01-31 14:50:54',NULL,NULL),
-(180,2,1,'2025-01-31','Agenda Pending Approval For PMRC1','MeetingApprovalAgenda.htm',1,11,'MAF','admin','2025-01-31 14:50:54',NULL,NULL),
+(180,2,1,'2025-01-31','Agenda Pending Approval For PMRC1','MeetingApprovalAgenda.htm',0,11,'MAF','admin','2025-01-31 14:50:54',NULL,NULL),
 (181,21,1,'2025-01-31','Agenda Pending Approval For PMRC1','MeetingApprovalAgenda.htm',0,13,'MAF','admin','2025-01-31 14:58:12',NULL,NULL),
 (182,1,1,'2025-01-31','Agenda Pending Approval For PMRC1','MeetingApprovalAgenda.htm',0,13,'MAF','admin','2025-01-31 14:58:12',NULL,NULL),
-(183,2,1,'2025-01-31','Agenda Pending Approval For PMRC1','MeetingApprovalAgenda.htm',1,13,'MAF','admin','2025-01-31 14:58:12',NULL,NULL),
+(183,2,1,'2025-01-31','Agenda Pending Approval For PMRC1','MeetingApprovalAgenda.htm',0,13,'MAF','admin','2025-01-31 14:58:12',NULL,NULL),
 (184,1,1,'2025-01-31','Agenda Approved for PMRC','CommitteeScheduleView.htm?scheduleid=7',0,7,'MAA','admin','2025-01-31 14:58:24',NULL,NULL),
 (185,1,1,'2025-01-31','Agenda Approved for PMRC1','CommitteeScheduleView.htm?scheduleid=11',0,11,'MAA','admin','2025-01-31 14:58:34',NULL,NULL),
 (186,1,1,'2025-01-31','Agenda Approved for PMRC1','CommitteeScheduleView.htm?scheduleid=13',0,13,'MAA','admin','2025-01-31 14:59:07',NULL,NULL),
 (187,21,1,'2025-01-31','Agenda Pending Approval For PMRC','MeetingApprovalAgenda.htm',0,15,'MAF','admin','2025-01-31 15:10:09',NULL,NULL),
-(188,26,1,'2025-01-31','Agenda Pending Approval For PMRC','MeetingApprovalAgenda.htm',1,15,'MAF','admin','2025-01-31 15:10:09',NULL,NULL),
+(188,26,1,'2025-01-31','Agenda Pending Approval For PMRC','MeetingApprovalAgenda.htm',0,15,'MAF','admin','2025-01-31 15:10:09',NULL,NULL),
 (189,1,21,'2025-01-31','Agenda Approved for PMRC','CommitteeScheduleView.htm?scheduleid=15',0,15,'MAA','1021','2025-01-31 15:10:42',NULL,NULL),
 (190,21,1,'2025-01-31','Agenda Pending Approval For PMRC','MeetingApprovalAgenda.htm',0,16,'MAF','admin','2025-01-31 15:11:31',NULL,NULL),
-(191,26,1,'2025-01-31','Agenda Pending Approval For PMRC','MeetingApprovalAgenda.htm',1,16,'MAF','admin','2025-01-31 15:11:31',NULL,NULL),
+(191,26,1,'2025-01-31','Agenda Pending Approval For PMRC','MeetingApprovalAgenda.htm',0,16,'MAF','admin','2025-01-31 15:11:31',NULL,NULL),
 (192,1,1,'2025-01-31','An Action No LRDE/PRJ-4/DMS01/31JAN2025/2-1 Assigned by Mukesh Prasad Sahu, Sc C.','AssigneeList.htm',0,0,'MAR','admin','2025-01-31 15:11:42',NULL,NULL),
 (193,21,1,'2025-01-31','An Action No LRDE/PRJ-4/DMS01/31JAN2025/2-2 Assigned by Mukesh Prasad Sahu, Sc C.','AssigneeList.htm',0,0,'MAR','admin','2025-01-31 15:11:42',NULL,NULL),
 (194,1,21,'2025-01-31','Agenda Approved for PMRC','CommitteeScheduleView.htm?scheduleid=16',0,16,'MAA','1021','2025-01-31 15:11:42',NULL,NULL),
@@ -14828,9 +15308,9 @@ insert  into `pfms_notification`(`NotificationId`,`EmpId`,`NotificationBy`,`Noti
 (215,1,20,'2025-01-31','Agenda Approved for EB','CommitteeScheduleView.htm?scheduleid=17',0,17,'MAA','1020','2025-01-31 17:11:48',NULL,NULL),
 (216,1,20,'2025-01-31','Agenda Approved for EB','CommitteeScheduleView.htm?scheduleid=18',0,18,'MAA','1020','2025-01-31 17:11:52',NULL,NULL),
 (217,4,1,'2025-01-31','Agenda Pending Approval For EB','MeetingApprovalAgenda.htm',0,19,'MAF','admin','2025-01-31 17:35:50',NULL,NULL),
-(218,17,1,'2025-01-31','Agenda Pending Approval For EB','MeetingApprovalAgenda.htm',1,19,'MAF','admin','2025-01-31 17:35:50',NULL,NULL),
+(218,17,1,'2025-01-31','Agenda Pending Approval For EB','MeetingApprovalAgenda.htm',0,19,'MAF','admin','2025-01-31 17:35:50',NULL,NULL),
 (219,4,1,'2025-01-31','Agenda Pending Approval For EB','MeetingApprovalAgenda.htm',0,20,'MAF','admin','2025-01-31 17:36:24',NULL,NULL),
-(220,17,1,'2025-01-31','Agenda Pending Approval For EB','MeetingApprovalAgenda.htm',1,20,'MAF','admin','2025-01-31 17:36:24',NULL,NULL),
+(220,17,1,'2025-01-31','Agenda Pending Approval For EB','MeetingApprovalAgenda.htm',0,20,'MAF','admin','2025-01-31 17:36:24',NULL,NULL),
 (221,1,4,'2025-01-31','Agenda Approved for EB','CommitteeScheduleView.htm?scheduleid=19',0,19,'MAA','1004','2025-01-31 17:36:46',NULL,NULL),
 (222,1,4,'2025-01-31','Agenda Approved for EB','CommitteeScheduleView.htm?scheduleid=20',0,20,'MAA','1004','2025-01-31 17:36:49',NULL,NULL),
 (223,3,1,'2025-01-31','Agenda Pending Approval For PMRC','MeetingApprovalAgenda.htm',0,21,'MAF','admin','2025-01-31 17:55:10',NULL,NULL),
@@ -14846,19 +15326,110 @@ insert  into `pfms_notification`(`NotificationId`,`EmpId`,`NotificationBy`,`Noti
 (233,12,1,'2025-02-12','An Action No LRDE/PRJ-1/12FEB2025/15-1 Assigned by Mukesh Prasad Sahu, Sc C.','AssigneeList.htm',0,0,'MAR','admin','2025-02-12 18:20:44',NULL,NULL),
 (234,24,1,'2025-02-12','MOM with RefNo LRDE/PRJ-1/EB/12JUN2024/2, Recommended by Mukesh Prasad Sahu','MoMApprovalList.htm',0,NULL,NULL,'admin','2025-02-12 18:41:18',NULL,NULL),
 (235,1,24,'2025-02-12','MOM with RefNo LRDE/PRJ-1/EB/12JUN2024/2, is Approved by Venkata Prasad Athikari','CommitteeScheduleView.htm?scheduleid=2',0,NULL,NULL,'1024','2025-02-12 18:46:38',NULL,NULL),
-(236,4,1,'2025-02-28','Agenda Pending Approval For PMRC','MeetingApprovalAgenda.htm',1,23,'MAF','admin','2025-02-28 11:49:03',NULL,NULL),
+(236,4,1,'2025-02-28','Agenda Pending Approval For PMRC','MeetingApprovalAgenda.htm',0,23,'MAF','admin','2025-02-28 11:49:03',NULL,NULL),
 (237,1,1,'2025-02-28','Agenda Pending Approval For PMRC','MeetingApprovalAgenda.htm',0,23,'MAF','admin','2025-02-28 11:49:03',NULL,NULL),
 (238,39,1,'2025-02-28','Agenda Pending Approval For PMRC','MeetingApprovalAgenda.htm',0,23,'MAF','admin','2025-02-28 11:49:03',NULL,NULL),
 (239,1,39,'2025-02-28','Agenda Approved for PMRC','CommitteeScheduleView.htm?scheduleid=23',0,23,'MAA','1039','2025-02-28 11:51:14',NULL,NULL),
 (240,3,1,'2025-02-28','An Action No LRDE/PRJ-3/28FEB2025/9-1 Assigned by Mukesh Prasad Sahu, Sc C.','AssigneeList.htm',1,0,'MAR','admin','2025-02-28 14:20:02',NULL,NULL),
-(241,5,1,'2025-02-28','An Action No LRDE/PRJ-3/28FEB2025/9-2 Assigned by Mukesh Prasad Sahu, Sc C.','AssigneeList.htm',1,0,'MAR','admin','2025-02-28 14:20:02',NULL,NULL),
+(241,5,1,'2025-02-28','An Action No LRDE/PRJ-3/28FEB2025/9-2 Assigned by Mukesh Prasad Sahu, Sc C.','AssigneeList.htm',0,0,'MAR','admin','2025-02-28 14:20:02',NULL,NULL),
 (242,20,1,'2025-03-04','CARS RSQR forwarded by Mukesh Prasad Sahu','CARSRSQRApprovals.htm',0,NULL,NULL,NULL,'2025-03-04 11:20:04',NULL,NULL),
 (243,20,1,'2025-03-04','CARS RSQR forwarded by Mukesh Prasad Sahu','CARSRSQRApprovals.htm',0,NULL,NULL,NULL,'2025-03-04 11:29:24',NULL,NULL),
 (244,1,20,'2025-03-04','CARS RSQR Request Returned','CARSInitiationList.htm',0,NULL,NULL,NULL,'2025-03-04 11:38:46',NULL,NULL),
 (245,20,1,'2025-03-04','CARS RSQR forwarded by Mukesh Prasad Sahu','CARSRSQRApprovals.htm',0,NULL,NULL,NULL,'2025-03-04 11:39:01',NULL,NULL),
 (246,1,20,'2025-03-04','CARS RSQR request approved','CARSInitiationList.htm',0,NULL,NULL,NULL,'2025-03-04 11:51:44',NULL,NULL),
-(247,5,20,'2025-03-04','CARS RSQR request approved for Mukesh Prasad Sahu','CARSRSQRApprovedList.htm',1,NULL,NULL,NULL,'2025-03-04 11:51:44',NULL,NULL),
-(248,5,20,'2025-03-04','CARS RSQR request approved for Mukesh Prasad Sahu','CARSRSQRApprovedList.htm',1,NULL,NULL,NULL,'2025-03-04 11:51:44',NULL,NULL);
+(247,5,20,'2025-03-04','CARS RSQR request approved for Mukesh Prasad Sahu','CARSRSQRApprovedList.htm',0,NULL,NULL,NULL,'2025-03-04 11:51:44',NULL,NULL),
+(248,5,20,'2025-03-04','CARS RSQR request approved for Mukesh Prasad Sahu','CARSRSQRApprovedList.htm',0,NULL,NULL,NULL,'2025-03-04 11:51:44',NULL,NULL),
+(249,5,1,'2025-03-19','Committee with RefNo REF_19032025, Forwarded by Mukesh Prasad Sahu','CommitteeApprovalList.htm',0,NULL,NULL,'admin','2025-03-19 18:24:30',NULL,NULL),
+(250,1,5,'2025-03-19','Committee with RefNo REF_19032025, Returned by Susant Sahu','CommitteeFlow.htm?committeemainid=14',0,NULL,NULL,'1005','2025-03-19 18:25:48',NULL,NULL),
+(251,5,1,'2025-03-19','Committee with RefNo REF_19032025, Forwarded by Mukesh Prasad Sahu','CommitteeApprovalList.htm',0,NULL,NULL,'admin','2025-03-19 18:26:08',NULL,NULL),
+(252,30,5,'2025-03-19','Committee with RefNo REF_19032025, Recommended by Susant Sahu','CommitteeApprovalList.htm',0,NULL,NULL,'1005','2025-03-19 18:29:25',NULL,NULL),
+(253,1,30,'2025-03-20','Committee with RefNo REF_19032025, Returned by Bharath Kumar','CommitteeFlow.htm?committeemainid=14',0,NULL,NULL,'1030','2025-03-20 09:43:40',NULL,NULL),
+(254,5,1,'2025-03-20','Committee with RefNo REF_19032025, Forwarded by Mukesh Prasad Sahu','CommitteeApprovalList.htm',0,NULL,NULL,'admin','2025-03-20 09:44:11',NULL,NULL),
+(255,30,5,'2025-03-20','Committee with RefNo REF_19032025, Recommended by Susant Sahu','CommitteeApprovalList.htm',0,NULL,NULL,'1005','2025-03-20 09:44:37',NULL,NULL),
+(256,4,30,'2025-03-20','Committee with RefNo REF_19032025,Recommended by Bharath Kumar','CommitteeApprovalList.htm',0,NULL,NULL,'1030','2025-03-20 09:44:48',NULL,NULL),
+(257,2,4,'2025-03-20','Committee with RefNo REF_19032025, Recommended by Hithesh Kumar','CommitteeApprovalList.htm',0,NULL,NULL,'1004','2025-03-20 09:45:32',NULL,NULL),
+(258,1,2,'2025-03-20','Committee with RefNo REF_19032025, is Approved by Veena MKS','CommitteeMainMembers.htm?committeemainid=14',0,NULL,NULL,'1002','2025-03-20 09:46:18',NULL,NULL),
+(259,1,1,'2025-03-20','Agenda Pending Approval For PMRC','MeetingApprovalAgenda.htm',0,28,'MAF','admin','2025-03-20 10:28:47',NULL,NULL),
+(260,21,1,'2025-03-20','Agenda Pending Approval For PMRC','MeetingApprovalAgenda.htm',1,28,'MAF','admin','2025-03-20 10:28:47',NULL,NULL),
+(261,1,1,'2025-03-20','Agenda Approved for PMRC','CommitteeScheduleView.htm?scheduleid=28',0,28,'MAA','admin','2025-03-20 10:28:58',NULL,NULL),
+(262,3,1,'2025-03-20','An Action No LRDE/PRJ-4/PMRC/05FEB2024/4-1 Assigned by Mukesh Prasad Sahu, Sc C.','AssigneeList.htm',1,0,'MAR','admin','2025-03-20 10:36:48',NULL,NULL),
+(263,17,1,'2025-03-20','An Action No LRDE/PRJ-4/PMRC/05FEB2024/5-1 Assigned by Mukesh Prasad Sahu, Sc C.','AssigneeList.htm',0,0,'MAR','admin','2025-03-20 10:37:03',NULL,NULL),
+(264,1,3,'2025-03-20','An Action No LRDE/PRJ-4/PMRC/05FEB2024/4-1 Forwarded by Subrat Kumar, Sc F.','ActionForwardList.htm',0,0,'MAR',NULL,'2025-03-20 10:54:50',NULL,NULL),
+(265,3,1,'2025-03-20','An Action No LRDE/PRJ-4/PMRC/05FEB2024/4-1 Send Back by Mukesh Prasad Sahu, Sc C.','AssigneeList.htm',1,0,'MAR','admin','2025-03-20 10:57:55',NULL,NULL),
+(266,1,3,'2025-03-20','An Action No LRDE/PRJ-4/PMRC/05FEB2024/4-1 Forwarded by Subrat Kumar, Sc F.','ActionForwardList.htm',0,0,'MAR',NULL,'2025-03-20 10:58:25',NULL,NULL),
+(267,3,1,'2025-03-20','An Action No LRDE/PRJ-4/PMRC/05FEB2024/4-1 Closed by Mukesh Prasad Sahu, Sc C.','ActionStatusList.htm',1,0,'MAR','admin','2025-03-20 10:59:37',NULL,NULL),
+(268,24,1,'2025-03-20','MOM with RefNo LRDE/PRJ-4/PMRC/05FEB2024/3, Forwarded by Mukesh Prasad Sahu','MoMApprovalList.htm',1,NULL,NULL,'admin','2025-03-20 11:11:34',NULL,NULL),
+(269,1,24,'2025-03-20','MOM with RefNo LRDE/PRJ-4/PMRC/05FEB2024/3, Returned by Venkata Prasad Athikari','MeetingMinutesApproval.htm?committeescheduleid=28',0,NULL,NULL,'1024','2025-03-20 11:22:55',NULL,NULL),
+(270,24,1,'2025-03-20','MOM with RefNo LRDE/PRJ-4/PMRC/05FEB2024/3, Forwarded by Mukesh Prasad Sahu','MoMApprovalList.htm',1,NULL,NULL,'admin','2025-03-20 11:23:22',NULL,NULL),
+(271,5,24,'2025-03-20','MOM with RefNo LRDE/PRJ-4/PMRC/05FEB2024/3, Recommended by Venkata Prasad Athikari','MoMApprovalList.htm',0,NULL,NULL,'1024','2025-03-20 11:23:46',NULL,NULL),
+(272,30,5,'2025-03-20','MOM with RefNo LRDE/PRJ-4/PMRC/05FEB2024/3,Recommended by Susant Sahu','MoMApprovalList.htm',0,NULL,NULL,'1005','2025-03-20 11:24:27',NULL,NULL),
+(273,3,1,'2025-03-20','Agenda Pending Approval For SOB','MeetingApprovalAgenda.htm',1,30,'MAF','admin','2025-03-20 11:49:20',NULL,NULL),
+(274,4,1,'2025-03-20','Agenda Pending Approval For SOB','MeetingApprovalAgenda.htm',0,30,'MAF','admin','2025-03-20 11:49:20',NULL,NULL),
+(275,1,3,'2025-03-20','Agenda Approved for SOB','CommitteeScheduleView.htm?scheduleid=30',0,30,'MAA','1003','2025-03-20 11:50:12',NULL,NULL),
+(276,24,1,'2025-03-20','MOM with RefNo LRDE/GEN/SOB/20NOV2024/1, Forwarded by Mukesh Prasad Sahu','MoMApprovalList.htm',1,NULL,NULL,'admin','2025-03-20 11:53:09',NULL,NULL),
+(277,2,24,'2025-03-20','MOM with RefNo LRDE/GEN/SOB/20NOV2024/1, Recommended by Venkata Prasad Athikari','MoMApprovalList.htm',0,NULL,NULL,'1024','2025-03-20 11:57:15',NULL,NULL),
+(278,1,2,'2025-03-20','MOM with RefNo LRDE/GEN/SOB/20NOV2024/1, is Approved by Veena MKS','CommitteeScheduleView.htm?scheduleid=30',0,NULL,NULL,'1002','2025-03-20 11:57:34',NULL,NULL),
+(279,16,1,'2025-03-20','Committee with RefNo REF_20032025, Forwarded by Mukesh Prasad Sahu','CommitteeApprovalList.htm',1,NULL,NULL,'admin','2025-03-20 12:05:27',NULL,NULL),
+(280,26,1,'2025-03-20','Committee with RefNo REF_20032025, Forwarded by Mukesh Prasad Sahu','CommitteeApprovalList.htm',0,NULL,NULL,'admin','2025-03-20 12:06:18',NULL,NULL),
+(281,2,26,'2025-03-20','Committee with RefNo REF_20032025, Recommended by Sankha Dutta','CommitteeApprovalList.htm',0,NULL,NULL,'1026','2025-03-20 12:07:16',NULL,NULL),
+(282,1,2,'2025-03-20','Committee with RefNo REF_20032025, is Approved by Veena MKS','CommitteeMainMembers.htm?committeemainid=15',0,NULL,NULL,'1002','2025-03-20 12:07:37',NULL,NULL),
+(283,6,1,'2025-03-20','Agenda Pending Approval For SOB','MeetingApprovalAgenda.htm',0,31,'MAF','admin','2025-03-20 12:09:16',NULL,NULL),
+(284,3,1,'2025-03-20','Agenda Pending Approval For SOB','MeetingApprovalAgenda.htm',1,31,'MAF','admin','2025-03-20 12:09:16',NULL,NULL),
+(285,1,6,'2025-03-20','Agenda Approved for SOB','CommitteeScheduleView.htm?scheduleid=31',0,31,'MAA','1006','2025-03-20 12:10:16',NULL,NULL),
+(286,7,1,'2025-03-20','Agenda Pending Approval For PMRC','MeetingApprovalAgenda.htm',1,32,'MAF','admin','2025-03-20 12:13:48',NULL,NULL),
+(287,14,1,'2025-03-20','Agenda Pending Approval For PMRC','MeetingApprovalAgenda.htm',1,32,'MAF','admin','2025-03-20 12:13:48',NULL,NULL),
+(288,1,7,'2025-03-20','Agenda Approved for PMRC','CommitteeScheduleView.htm?scheduleid=32',0,32,'MAA','1007','2025-03-20 12:14:33',NULL,NULL),
+(289,8,1,'2025-03-20','Agenda Pending Approval For CARS','MeetingApprovalAgenda.htm',1,35,'MAF','admin','2025-03-20 13:10:29',NULL,NULL),
+(290,14,1,'2025-03-20','Agenda Pending Approval For CARS','MeetingApprovalAgenda.htm',1,35,'MAF','admin','2025-03-20 13:10:29',NULL,NULL),
+(291,1,8,'2025-03-20','Agenda Approved for CARS','CommitteeScheduleView.htm?scheduleid=35',0,35,'MAA','1008','2025-03-20 14:18:48',NULL,NULL),
+(292,26,1,'2025-03-20','Action Pending On Milestone Assigned ','M-A-AssigneeList.htm?ProjectId=2',0,0,'MAR','admin','2025-03-20 14:40:07',NULL,NULL),
+(293,28,1,'2025-03-20','Action Pending On Milestone Assigned ','M-A-AssigneeList.htm?ProjectId=2',1,0,'MAR','admin','2025-03-20 14:40:07',NULL,NULL),
+(294,4,26,'2025-03-20','An Action No LRDE/PRJ-2/MIL/20MAR2025/4-1 Assigned by Sankha Dutta, Sc F.','AssigneeList.htm',0,0,'MAR','1026','2025-03-20 14:46:43',NULL,NULL),
+(295,26,4,'2025-03-20','An Action No LRDE/PRJ-2/MIL/20MAR2025/4-1 Forwarded by Hithesh Kumar, Sc B.','ActionForwardList.htm',0,0,'MAR',NULL,'2025-03-20 14:49:23',NULL,NULL),
+(296,4,26,'2025-03-20','An Action No LRDE/PRJ-2/MIL/20MAR2025/4-1 Closed by Sankha Dutta, Sc F.','ActionStatusList.htm',1,0,'MAR','1026','2025-03-20 14:49:48',NULL,NULL),
+(297,3,1,'2025-03-20','An Action No LRDE/PRJ-1/20MAR2025/16-1 Assigned by Mukesh Prasad Sahu, Sc C.','AssigneeList.htm',1,0,'MAR','admin','2025-03-20 16:26:29',NULL,NULL),
+(298,4,3,'2025-03-20','An Action No LRDE/PRJ-1/20MAR2025/17-1 Assigned by Subrat Kumar, Sc F.','AssigneeList.htm',1,0,'MAR','1003','2025-03-20 16:28:06',NULL,NULL),
+(299,5,4,'2025-03-20','An Action No LRDE/PRJ-1/20MAR2025/18-1 Assigned by Hithesh Kumar, Sc B.','AssigneeList.htm',0,0,'MAR','1004','2025-03-20 16:28:59',NULL,NULL),
+(300,6,5,'2025-03-20','An Action No LRDE/PRJ-1/20MAR2025/19-1 Assigned by Susant Sahu, Sc G.','AssigneeList.htm',0,0,'MAR','1005','2025-03-20 16:31:44',NULL,NULL),
+(301,7,5,'2025-03-20','An Action No LRDE/PRJ-1/20MAR2025/19-2 Assigned by Susant Sahu, Sc G.','AssigneeList.htm',1,0,'MAR','1005','2025-03-20 16:31:44',NULL,NULL),
+(302,5,6,'2025-03-20','An Action No LRDE/PRJ-1/20MAR2025/19-1 Forwarded by Tharun M, Sc E.','ActionForwardList.htm',0,0,'MAR',NULL,'2025-03-20 16:32:26',NULL,NULL),
+(303,5,7,'2025-03-20','An Action No LRDE/PRJ-1/20MAR2025/19-2 Forwarded by Dinesh Udayshanker, Sc E.','ActionForwardList.htm',0,0,'MAR',NULL,'2025-03-20 16:33:10',NULL,NULL),
+(304,7,5,'2025-03-20','An Action No LRDE/PRJ-1/20MAR2025/19-2 Closed by Susant Sahu, Sc G.','ActionStatusList.htm',1,0,'MAR','1005','2025-03-20 16:33:44',NULL,NULL),
+(305,6,5,'2025-03-20','An Action No LRDE/PRJ-1/20MAR2025/19-1 Closed by Susant Sahu, Sc G.','ActionStatusList.htm',0,0,'MAR','1005','2025-03-20 16:33:48',NULL,NULL),
+(306,17,1,'2025-03-20','An Action No LRDE/PRJ-1/23NOV2024/2-1 Closed by Mukesh Prasad Sahu, Sc C.','ActionStatusList.htm',0,0,'MAR','admin','2025-03-20 16:36:14',NULL,NULL),
+(307,17,1,'2025-03-20','An Action No LRDE/PRJ-1/23NOV2024/2-1 Closed by Mukesh Prasad Sahu, Sc C.','ActionStatusList.htm',0,0,'MAR','admin','2025-03-20 16:38:29',NULL,NULL),
+(308,8,1,'2025-03-20','An Action No LRDE/PRJ-4/20MAR2025/6-1 Assigned by Mukesh Prasad Sahu, Sc C.','AssigneeList.htm',1,0,'MAR','admin','2025-03-20 16:42:31',NULL,NULL),
+(309,1,8,'2025-03-20','An Action No LRDE/PRJ-4/20MAR2025/6-1 Forwarded by Gadilinga G Dhanush, Sc D.','ActionForwardList.htm',0,0,'MAR',NULL,'2025-03-20 16:46:56',NULL,NULL),
+(310,8,1,'2025-03-20','An Action No LRDE/PRJ-4/20MAR2025/6-1 PDC Extended by Mukesh Prasad Sahu, Sc C.','ActionStatusList.htm',1,0,'MAR',NULL,'2025-03-20 16:47:13',NULL,NULL),
+(311,8,1,'2025-03-20','An Action No LRDE/PRJ-4/20MAR2025/6-1 PDC Extended by Mukesh Prasad Sahu, Sc C.','ActionStatusList.htm',1,0,'MAR',NULL,'2025-03-20 16:47:27',NULL,NULL),
+(312,8,1,'2025-03-20','An Action No LRDE/PRJ-4/20MAR2025/6-1 PDC Extended by Mukesh Prasad Sahu, Sc C.','ActionStatusList.htm',1,0,'MAR',NULL,'2025-03-20 16:47:32',NULL,NULL),
+(313,8,1,'2025-03-20','An Action No LRDE/PRJ-4/20MAR2025/6-1 PDC Extended by Mukesh Prasad Sahu, Sc C.','ActionStatusList.htm',1,0,'MAR',NULL,'2025-03-20 16:47:48',NULL,NULL),
+(314,24,1,'2025-03-21','Action Pending For FRACAS Item LRDE/PRJ-5/Item-2/1 Assigned on2025-03-21 15:27:50','FracasAssigneeList.htm',1,0,'MAR','admin','2025-03-21 15:27:50',NULL,NULL),
+(315,48,3014,'2025-03-21','Agenda Pending Approval For CCM','MeetingApprovalAgenda.htm',0,36,'MAF','dgecs','2025-03-21 17:24:51',NULL,NULL),
+(316,3007,3014,'2025-03-21','Agenda Pending Approval For CCM','MeetingApprovalAgenda.htm',1,36,'MAF','dgecs','2025-03-21 17:24:51',NULL,NULL),
+(317,3001,3014,'2025-03-21','Agenda Pending Approval For CCM','MeetingApprovalAgenda.htm',1,36,'MAF','dgecs','2025-03-21 17:24:51',NULL,NULL),
+(318,3014,48,'2025-03-21','Agenda Approved for CCM','CCMSchedule.htm?ccmScheduleId=36&committeeMainId=13&committeeId=8',0,36,'MAA','8480','2025-03-21 17:25:55',NULL,NULL),
+(319,6,3014,'2025-03-21','An Action No DG-ECS/CCM/21MAR2025/1-1 Assigned by Surya , Director.','AssigneeList.htm',0,0,'MAR','dgecs','2025-03-21 17:33:26',NULL,NULL),
+(320,4,3014,'2025-03-21','An Action No DG-ECS/CCM/21MAR2025/2-1 Assigned by Surya , Director.','AssigneeList.htm',1,0,'MAR','dgecs','2025-03-21 17:33:41',NULL,NULL),
+(321,3014,6,'2025-03-21','An Action No DG-ECS/CCM/21MAR2025/1-1 Forwarded by Tharun M, Sc E.','ActionForwardList.htm',0,0,'MAR',NULL,'2025-03-21 17:34:42',NULL,NULL),
+(322,3014,4,'2025-03-21','An Action No DG-ECS/CCM/21MAR2025/2-1 Forwarded by Hithesh Kumar, Sc B.','ActionForwardList.htm',0,0,'MAR',NULL,'2025-03-21 17:35:03',NULL,NULL),
+(323,4,3014,'2025-03-21','An Action No DG-ECS/CCM/21MAR2025/2-1 Closed by Surya , Director.','ActionStatusList.htm',1,0,'MAR','dgecs','2025-03-21 17:35:32',NULL,NULL),
+(324,6,3014,'2025-03-21','An Action No DG-ECS/CCM/21MAR2025/1-1 Closed by Surya , Director.','ActionStatusList.htm',1,0,'MAR','dgecs','2025-03-21 17:35:37',NULL,NULL),
+(325,3001,3014,'2025-03-21','MOM with RefNo DG-ECS/CCM/2025/MAR/2, Forwarded by Surya ','MoMApprovalList.htm',1,NULL,NULL,'dgecs','2025-03-21 17:38:41',NULL,NULL),
+(326,48,3001,'2025-03-21','MOM with RefNo DG-ECS/CCM/2025/MAR/2, Recommended by Kaviya','MoMApprovalList.htm',0,NULL,NULL,'2000','2025-03-21 17:39:14',NULL,NULL),
+(327,3014,48,'2025-03-21','MOM with RefNo DG-ECS/CCM/2025/MAR/2, is Approved by Upendra ','CCMSchedule.htm?ccmScheduleId=36&committeeMainId=13&committeeId=8',0,NULL,NULL,'8480','2025-03-21 17:41:40',NULL,NULL),
+(328,48,3014,'2025-03-21','Agenda Pending Approval For CCM','MeetingApprovalAgenda.htm',0,37,'MAF','dgecs','2025-03-21 17:46:20',NULL,NULL),
+(329,3007,3014,'2025-03-21','Agenda Pending Approval For CCM','MeetingApprovalAgenda.htm',1,37,'MAF','dgecs','2025-03-21 17:46:20',NULL,NULL),
+(330,3001,3014,'2025-03-21','Agenda Pending Approval For CCM','MeetingApprovalAgenda.htm',1,37,'MAF','dgecs','2025-03-21 17:46:20',NULL,NULL),
+(331,3014,48,'2025-03-21','Agenda Approved for CCM','CCMSchedule.htm?ccmScheduleId=37&committeeMainId=13&committeeId=8',0,37,'MAA','8480','2025-03-21 17:46:33',NULL,NULL),
+(332,3,33,'2025-03-21','RFA No LRDE/PRJ-5/HW-AC/01 Forwarded By Ganesh,Sc E','RfaActionForwardList.htm',1,NULL,'MAR','1033','2025-03-21 18:27:11',NULL,NULL),
+(333,33,3,'2025-03-21','RFA No LRDE/PRJ-5/HW-AC/01 is returned by Subrat Kumar,Sc F','RfaAction.htm',0,NULL,'MAR','1003','2025-03-21 18:28:01',NULL,NULL),
+(334,3,33,'2025-03-21','RFA No LRDE/PRJ-5/HW-AC/01 Forwarded By Ganesh,Sc E','RfaActionForwardList.htm',1,NULL,'MAR','1033','2025-03-21 18:38:25',NULL,NULL),
+(335,24,3,'2025-03-21','RFA No LRDE/PRJ-5/HW-AC/01 Forwarded By Subrat Kumar,Sc F','RfaActionForwardList.htm',1,NULL,'MAR','1003','2025-03-21 18:38:53',NULL,NULL),
+(336,4,24,'2025-03-21','RFA No LRDE/PRJ-5/HW-AC/01 Approved By Venkata Prasad Athikari,Sc F','RfaInspection.htm',1,NULL,'MAR','1024','2025-03-21 18:39:25',NULL,NULL),
+(337,30,4,'2025-03-21','RFA No LRDE/PRJ-5/HW-AC/01 Forwarded By Hithesh Kumar,Sc B','RfaInspectionApproval.htm',0,NULL,'MAR','1004','2025-03-21 18:53:53',NULL,NULL),
+(338,5,30,'2025-03-21','RFA No LRDE/PRJ-5/HW-AC/01 Forwarded By Bharath Kumar,Sc F','RfaInspectionApproval.htm',0,NULL,'MAR','1030','2025-03-21 19:00:38',NULL,NULL),
+(339,33,5,'2025-03-21','RFA No LRDE/PRJ-5/HW-AC/01 Approved By Susant Sahu,Sc G','RfaAction.htm',1,NULL,'MAR','1005','2025-03-21 19:01:05',NULL,NULL);
 
 /*Table structure for table `pfms_overall_finance` */
 
@@ -15275,7 +15846,7 @@ insert  into `pfms_project_data`(`ProjectDataId`,`ProjectId`,`FilesPath`,`System
 (1,1,'LRDE\\ProjectData','configimg20250212180843897.png','specsfile20250212180925398.png','producttree20250212180925398.png','pearlimg20250212180925398.png',2,0,500000,'2024-11-25','2024-06-12','admin','2024-11-23 11:27:01','admin','2025-02-12 18:09:25'),
 (2,2,'LRDE\\ProjectData','configimg202411231127263504762.jpg','specsfile202411231127263504762.png','producttree202411231849506886111.png','pearlimg202411231127263504762.png',3,0,500000,'2024-10-08','2024-11-23','admin','2024-11-23 11:27:26','admin','2024-11-23 18:49:50'),
 (3,3,'LRDE\\ProjectData','configimg202411231128031326038.jpg','specsfile202411231128031326038.png',NULL,'pearlimg202411231128031326038.png',2,0,500000,'2024-12-30','2024-04-01','admin','2024-11-23 11:28:03',NULL,NULL),
-(4,4,'LRDE\\ProjectData',NULL,NULL,'producttree202501311104254906027.jpg',NULL,8,0,500000,'2025-01-31','2025-01-31','admin','2025-01-31 11:04:25',NULL,NULL);
+(4,4,'LRDE\\ProjectData',NULL,NULL,'producttree202501311104254906027.jpg',NULL,8,0,500000,'2024-02-05','2025-01-31','admin','2025-01-31 11:04:25',NULL,NULL);
 
 /*Table structure for table `pfms_project_data_rev` */
 
@@ -15629,12 +16200,13 @@ CREATE TABLE `pfms_rfa_action` (
   `VendorCode` varchar(255) DEFAULT NULL,
   `AssigneeId` bigint DEFAULT NULL,
   PRIMARY KEY (`RfaId`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=latin1;
 
 /*Data for the table `pfms_rfa_action` */
 
 insert  into `pfms_rfa_action`(`RfaId`,`LabCode`,`ProjectId`,`RfaNo`,`RfaDate`,`RfaTypeId`,`PriorityId`,`Statement`,`Description`,`Reference`,`AssignorId`,`RfaStatus`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`,`IsActive`,`TypeOfRfa`,`VendorCode`,`AssigneeId`) values 
-(41,'LRDE',3,'LRDE/PRJ-3/SW-AC/01','2025-03-10',1,4,'sdfsdaf hgsdfgfsfg','<p>&nbsp;fdsfasdfsdf sdf</p>\r\n','sdfsdfsdfsfd',1,'AA','admin','2025-03-10 00:00:00',NULL,NULL,1,'I','LRDE',NULL);
+(41,'LRDE',3,'LRDE/PRJ-3/SW-AC/01','2025-03-10',1,4,'sdfsdaf hgsdfgfsfg','<p>&nbsp;fdsfasdfsdf sdf</p>\r\n','sdfsdfsdfsfd',1,'AA','admin','2025-03-10 00:00:00',NULL,NULL,1,'I','LRDE',NULL),
+(42,'LRDE',5,'LRDE/PRJ-5/HW-AC/01','2025-03-21',3,2,'Sample Problem Statement','<p>Sample Description</p>\r\n','Sample Reference',33,'ARC','1033','2025-03-21 00:00:00',NULL,NULL,1,'I','LRDE',NULL);
 
 /*Table structure for table `pfms_rfa_action_transaction` */
 
@@ -15649,7 +16221,7 @@ CREATE TABLE `pfms_rfa_action_transaction` (
   `ActionBy` varchar(50) DEFAULT NULL,
   `ActionDate` datetime DEFAULT NULL,
   PRIMARY KEY (`RfaTransactionId`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
 
 /*Data for the table `pfms_rfa_action_transaction` */
 
@@ -15678,7 +16250,18 @@ insert  into `pfms_rfa_action_transaction`(`RfaTransactionId`,`RfaId`,`EmpId`,`R
 (22,7,1,NULL,'AA','1','2024-09-30 12:30:49'),
 (23,8,1,NULL,'AA','1','2024-09-30 13:16:35'),
 (24,9,1,NULL,'AA','1','2024-09-30 14:21:08'),
-(25,41,1,NULL,'AA','1','2025-03-10 15:01:04');
+(25,41,1,NULL,'AA','1','2025-03-10 15:01:04'),
+(26,42,33,NULL,'AA','33','2025-03-21 18:25:30'),
+(27,42,3,NULL,'AF','33','2025-03-21 18:27:11'),
+(28,42,33,'Returned the RFA Request','RC','3','2025-03-21 18:28:01'),
+(29,42,3,NULL,'AF','33','2025-03-21 18:38:25'),
+(30,42,24,NULL,'AC','3','2025-03-21 18:38:53'),
+(31,42,4,NULL,'AV','24','2025-03-21 18:39:25'),
+(32,42,4,NULL,'AAA','4','2025-03-21 18:48:12'),
+(33,42,30,NULL,'RFA','4','2025-03-21 18:53:53'),
+(34,42,5,NULL,'AR','30','2025-03-21 19:00:38'),
+(35,42,33,NULL,'AP','5','2025-03-21 19:01:05'),
+(36,42,33,'Closing RFA','ARC','33','2025-03-21 19:01:55');
 
 /*Table structure for table `pfms_rfa_assign` */
 
@@ -15695,7 +16278,7 @@ CREATE TABLE `pfms_rfa_assign` (
   `ModifiedDate` datetime DEFAULT NULL,
   `IsActive` int DEFAULT '1',
   PRIMARY KEY (`RfaAssignId`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 
 /*Data for the table `pfms_rfa_assign` */
 
@@ -15722,7 +16305,8 @@ insert  into `pfms_rfa_assign`(`RfaAssignId`,`LabCode`,`RfaId`,`AssigneeId`,`Cre
 (20,'VEDTS',7,24,'admin','2024-09-30 00:00:00',NULL,NULL,1),
 (21,'VEDTS',8,1,'admin','2024-09-30 00:00:00',NULL,NULL,1),
 (22,'VEDTS',9,24,'admin','2024-09-30 00:00:00',NULL,NULL,1),
-(23,'LRDE',41,2,'admin','2025-03-10 00:00:00',NULL,NULL,1);
+(23,'LRDE',41,2,'admin','2025-03-10 00:00:00',NULL,NULL,1),
+(24,'LRDE',42,4,'1033','2025-03-21 00:00:00',NULL,NULL,1);
 
 /*Table structure for table `pfms_rfa_attachment` */
 
@@ -15741,9 +16325,12 @@ CREATE TABLE `pfms_rfa_attachment` (
   `ModifiedDate` datetime DEFAULT NULL,
   `IsActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`RfaAttachmentId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Data for the table `pfms_rfa_attachment` */
+
+insert  into `pfms_rfa_attachment`(`RfaAttachmentId`,`RfaId`,`FilesPath`,`AssignorAttachment`,`AssigneeAttachment`,`CloseAttachment`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`,`IsActive`) values 
+(1,42,'LRDE\\RFAFiles\\PRJ-5\\LRDE_PRJ-5_HW-AC_01','Acronyms.pdf','Project Bar.pdf',NULL,'1033','2025-03-21 00:00:00','1004','2025-03-21 18:48:12',1);
 
 /*Table structure for table `pfms_rfa_cc` */
 
@@ -15797,13 +16384,14 @@ CREATE TABLE `pfms_rfa_inspection` (
   `ModifiedDate` datetime DEFAULT NULL,
   `IsActive` int DEFAULT '1',
   PRIMARY KEY (`RfaInspectionId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 /*Data for the table `pfms_rfa_inspection` */
 
 insert  into `pfms_rfa_inspection`(`RfaInspectionId`,`LabCode`,`RfaId`,`RfaNo`,`CompletionDate`,`Observation`,`Clarification`,`ActionRequired`,`EmpId`,`RfaStatus`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`,`IsActive`) values 
 (1,'VEDTS',3,'VEDTS/PRJ-02/SW-DFCC/02','2024-08-09','If this query performs well on your data, it\'s a solid implementation.','<ul>\r\n	<li>Your stored procedure should now be optimized for performance while retaining all the necessary conditions. If this query performs well on your data, it&#39;s a solid implementation.</li>\r\n	<li>Your stored procedure should now be optimized for performance while retaining all the necessary conditions. If this query performs well on your data, it&#39;s a solid implementation.</li>\r\n</ul>\r\n','Your stored procedure should now be optimized for performance while retaining all the necessary conditions.',17,'AAA','1017','2024-08-09 11:24:59',NULL,NULL,1),
-(2,'VEDTS',6,'VEDTS/PRJ-12/HW-DFCC/01','2024-09-16','test insp','<p>test n jkfdndf&nbsp; ljkf njkdfv&nbsp;</p>\r\n','fdfj jfgnjuif jkf jkrf',18,'AAA','1018','2024-09-16 15:25:22',NULL,NULL,1);
+(2,'VEDTS',6,'VEDTS/PRJ-12/HW-DFCC/01','2024-09-16','test insp','<p>test n jkfdndf&nbsp; ljkf njkdfv&nbsp;</p>\r\n','fdfj jfgnjuif jkf jkrf',18,'AAA','1018','2024-09-16 15:25:22',NULL,NULL,1),
+(3,'LRDE',42,'LRDE/PRJ-5/HW-AC/01','2025-03-21','Sample Visual Inspection and Observation','<p>Sample&nbsp;Clarification</p>\r\n','Sample Action Required',4,'AAA','1004','2025-03-21 18:48:12',NULL,NULL,1);
 
 /*Table structure for table `pfms_rfa_oldfile` */
 
@@ -15824,7 +16412,7 @@ CREATE TABLE `pfms_rfa_oldfile` (
   `ModifiedDate` datetime DEFAULT NULL,
   `IsActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`RfaFileUploadId`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 /*Data for the table `pfms_rfa_oldfile` */
 
@@ -15832,7 +16420,8 @@ insert  into `pfms_rfa_oldfile`(`RfaFileUploadId`,`LabCode`,`ProjectId`,`RfaNo`,
 (1,'VEDTS',11,'1234444','2024-08-24','PFMS Work Flow (4).pdf','NIV-NE_1 (3) (1).pdf','VEDTS\\OldRFAFiles\\PRJ-12\\1234444','admin','2024-08-24 14:39:24','admin','2024-08-27 12:00:07',1),
 (2,'VEDTS',11,'45886','2024-09-11','PFMS Work Flow (5).pdf',NULL,'VEDTS\\OldRFAFiles\\PRJ-12\\45886','admin','2024-09-10 18:22:07','admin','2024-09-16 12:10:05',1),
 (3,'VEDTS',18,'441111','2024-09-04','PFMS Work Flow.pdf',NULL,'VEDTS\\OldRFAFiles\\0001A\\441111','admin','2024-09-16 11:13:17',NULL,NULL,1),
-(4,'VEDTS',18,'458877','2024-09-06','NIV-NE_1 (3).pdf','PFMS Work Flow (1).pdf','VEDTS\\OldRFAFiles\\0001A\\458877','admin','2024-09-16 11:14:46','admin','2024-09-16 11:16:51',1);
+(4,'VEDTS',18,'458877','2024-09-06','NIV-NE_1 (3).pdf','PFMS Work Flow (1).pdf','VEDTS\\OldRFAFiles\\0001A\\458877','admin','2024-09-16 11:14:46','admin','2024-09-16 11:16:51',1),
+(5,'LRDE',5,'LRDE/PRJ-5/SW-AC/01','2025-03-21','DC.pdf','toad.pdf','LRDE\\OldRFAFiles\\PRJ-5\\LRDE_PRJ-5_SW-AC_01','admin','2025-03-21 19:03:36',NULL,NULL,1);
 
 /*Table structure for table `pfms_rfa_priority` */
 
@@ -15943,7 +16532,7 @@ CREATE TABLE `pfms_risk` (
 
 insert  into `pfms_risk`(`RiskId`,`LabCode`,`ProjectId`,`ActionMainId`,`Description`,`Severity`,`Probability`,`RPN`,`MitigationPlans`,`Impact`,`RevisionNo`,`Category`,`RiskTypeId`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`,`IsActive`,`Remarks`,`Status`,`StatusDate`) values 
 (1,'LRDE',1,12,'Adhering to emissions, noise, and sustainability requirements may require costly redesigns.',7,7,49,'Firstly, conducting a thorough assessment of current processes to identify redundancies, and areas of improvement is crucial. Once identified, implementing streamlined procedures and automation where possible can significantly enhance efficiency. This may involve leveraging technology solutions such as enterprise resource planning (ERP) systems or workflow automation tools to streamline tasks and improve data flow. Additionally, investing in employee training and development programs to enhance skills and competencies can increase productivity and reduce errors. Regular monitoring and performance measurement of key metrics are essential to track progress and identify further areas for optimization. Finally, fostering a culture of continuous improvement where employees are encouraged to suggest and implement process enhancements can further drive operational efficiency gains.','Increase in operating costs and reduction in productivity.',0,'I',1,'admin','2024-11-23 16:47:57','admin','2024-11-25 12:23:52',1,'Closing the risk','C','2024-11-25 12:23:52'),
-(2,'LRDE',1,14,'Delays or shortages in critical components, such as engines, avionics, or composites.',8,6,48,'Firstly, conducting a thorough assessment of current processes to identify redundancies, and areas of improvement is crucial. Once identified, implementing streamlined procedures and automation where possible can significantly enhance efficiency. This may involve leveraging technology solutions such as enterprise resource planning (ERP) systems or workflow automation tools to streamline tasks and improve data flow. Additionally, investing in employee training and development programs to enhance skills and competencies can increase productivity and reduce errors. Regular monitoring and performance measurement of key metrics are essential to track progress and identify further areas for optimization. Finally, fostering a culture of continuous improvement where employees are encouraged to suggest and implement process enhancements can further drive operational efficiency gains.','Increase in operating costs and reduction in productivity.',0,'E',3,'admin','2024-11-25 12:23:34',NULL,NULL,1,NULL,'O',NULL);
+(2,'LRDE',1,14,'Delays or shortages in critical components, such as engines, avionics, or composites.',8,9,72,'Firstly, conducting a thorough assessment of current processes to identify redundancies, and areas of improvement is crucial. Once identified, implementing streamlined procedures and automation where possible can significantly enhance efficiency. This may involve leveraging technology solutions such as enterprise resource planning (ERP) systems or workflow automation tools to streamline tasks and improve data flow. Additionally, investing in employee training and development programs to enhance skills and competencies can increase productivity and reduce errors. Regular monitoring and performance measurement of key metrics are essential to track progress and identify further areas for optimization. Finally, fostering a culture of continuous improvement where employees are encouraged to suggest and implement process enhancements can further drive operational efficiency gains.','Increase in operating costs and reduction in productivity.',0,'E',3,'admin','2024-11-25 12:23:34','admin','2025-03-21 16:16:09',1,NULL,'O',NULL);
 
 /*Table structure for table `pfms_risk_rev` */
 
@@ -16409,9 +16998,20 @@ CREATE TABLE `pfms_specification_master` (
   `ModifiedDate` datetime DEFAULT NULL,
   `IsActive` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`SpecsMasterId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `pfms_specification_master` */
+
+insert  into `pfms_specification_master`(`SpecsMasterId`,`SpecificationName`,`Description`,`SpecsParameter`,`SpecsUnit`,`SpecsInitiationId`,`SpecValue`,`maximumValue`,`minimumValue`,`ParentId`,`specCount`,`sid`,`MainId`,`SpecificationType`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`,`IsActive`) values 
+(1,NULL,'ytyfty','fgfdgdfg','g','RADAR_1','gdfgdgdf','','gfdg',0,1,1,0,'OS','admin','2025-03-19 00:00:00',NULL,NULL,1),
+(2,NULL,'sdfsdf','fd','dfd','RADAR_1_1','fsdfg','fsdf','dsf',1,1,1,0,'OS','admin','2025-03-19 00:00:00',NULL,NULL,1),
+(3,NULL,'dgfdgdf','5','tt','RADAR_2','4','7','2',0,2,1,0,'IN','admin','2025-03-19 00:00:00',NULL,NULL,1),
+(4,NULL,'fsdfsdfsdf','fsffsdf ','JJ','RADAR_2_1','2','3','2',3,2,1,0,'IN','admin','2025-03-19 00:00:00',NULL,NULL,1),
+(5,NULL,'Test Description','Test Parameter','Kg','RADAR_3','30','100','10',0,3,1,0,'CS','admin','2025-03-19 00:00:00',NULL,NULL,1),
+(6,NULL,'Test Description1','Parameter1','Kg','RADAR_3_1','25','30','20',5,3,1,0,'CS','admin','2025-03-19 00:00:00',NULL,NULL,1),
+(7,NULL,'Test Description2','Parameter2','Kg','RADAR_3_2','30','35','25',5,3,1,0,'CS','admin','2025-03-19 00:00:00',NULL,NULL,1),
+(8,NULL,'Test Description2.1','Parameter2.1','Kg','RADAR_3_2_1','28','33','25',7,3,1,0,'CS','admin','2025-03-19 00:00:00',NULL,NULL,1),
+(9,NULL,'Test Description2.2','Parameter2.2','Kg','RADAR_3_2_2','29','34','25',7,3,1,0,'CS','admin','2025-03-19 00:00:00',NULL,NULL,1);
 
 /*Table structure for table `pfms_specification_producttree` */
 
@@ -16522,12 +17122,13 @@ CREATE TABLE `pfms_standard_documents` (
   `ModifiedDate` datetime DEFAULT NULL,
   `IsActive` int DEFAULT NULL,
   PRIMARY KEY (`StandardDocumentId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `pfms_standard_documents` */
 
 insert  into `pfms_standard_documents`(`StandardDocumentId`,`DocumentName`,`Description`,`FilePath`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`,`IsActive`) values 
-(1,'ADF','-','StandardDocuments\\notpdf.pdf','admin','2025-01-31 17:11:57',NULL,NULL,1);
+(1,'ADF','-','StandardDocuments\\notpdf.pdf','admin','2025-01-31 17:11:57',NULL,NULL,0),
+(2,'IEEE','The IEEE is a standard document for all the electrical and electronic stanards','StandardDocuments\\DailyAccountsPrint.pdf','admin','2025-03-21 16:22:06','admin','2025-03-21 16:22:20',1);
 
 /*Table structure for table `pfms_statistics` */
 
@@ -16912,12 +17513,13 @@ CREATE TABLE `pfms_timesheet` (
   `ModifiedDate` datetime DEFAULT NULL,
   `IsActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`TimeSheetId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `pfms_timesheet` */
 
 insert  into `pfms_timesheet`(`TimeSheetId`,`EmpId`,`InitiationDate`,`ActivityFromDate`,`ActivityToDate`,`PunchInTime`,`PunchOutTime`,`TotalDuration`,`EmpStatus`,`TDRemarks`,`TimeSheetStatus`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`,`IsActive`) values 
-(1,1,NULL,'2025-02-24','2025-02-24','2025-02-24 00:00:00',NULL,'00:00',NULL,NULL,'ABS','admin','2025-02-24 16:52:26',NULL,NULL,1);
+(1,1,NULL,'2025-02-24','2025-02-24','2025-02-24 00:00:00',NULL,'00:00',NULL,NULL,'ABS','admin','2025-02-24 16:52:26',NULL,NULL,1),
+(2,1,NULL,'2025-03-21','2025-03-21','2025-03-21 00:00:00',NULL,'00:00',NULL,NULL,'ABS','admin','2025-03-21 16:24:11',NULL,NULL,1);
 
 /*Table structure for table `pfms_timesheet_activity` */
 
@@ -16945,12 +17547,13 @@ CREATE TABLE `pfms_timesheet_activity` (
   PRIMARY KEY (`TimeSheetActivityId`),
   KEY `FKg2a2hgknf5umcpqkmmomsl83u` (`TimeSheetId`),
   CONSTRAINT `FKg2a2hgknf5umcpqkmmomsl83u` FOREIGN KEY (`TimeSheetId`) REFERENCES `pfms_timesheet` (`TimeSheetId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `pfms_timesheet_activity` */
 
 insert  into `pfms_timesheet_activity`(`TimeSheetActivityId`,`TimeSheetId`,`ActivityId`,`ActivityType`,`ProjectId`,`ActivityTypeId`,`ActivitySeqNo`,`ActivityFromTime`,`ActivityToTime`,`ActivityDuration`,`Remarks`,`AssignedBy`,`KeywordId`,`WorkDone`,`WorkDoneon`,`CreatedBy`,`CreatedDate`,`IsActive`) values 
-(1,1,0,'N',4,14,'1001/2025/1',NULL,NULL,'00:00',NULL,24,1,'fsfsadf','L','admin','2025-02-24 16:52:26',1);
+(1,1,0,'N',4,14,'1001/2025/1',NULL,NULL,'00:00',NULL,24,1,'fsfsadf','L','admin','2025-02-24 16:52:26',1),
+(2,2,0,'N',1,14,'1001/2025/2',NULL,NULL,'00:00',NULL,30,1,'The Assigned work is completed','L','admin','2025-03-21 16:24:11',1);
 
 /*Table structure for table `pfms_timesheet_keywords` */
 
@@ -16985,12 +17588,13 @@ CREATE TABLE `pfms_timesheet_trans` (
   PRIMARY KEY (`TimeSheetTransId`),
   KEY `FK7iql49xnf3p6uvjwm31wev5ke` (`TimeSheetId`),
   CONSTRAINT `FK7iql49xnf3p6uvjwm31wev5ke` FOREIGN KEY (`TimeSheetId`) REFERENCES `pfms_timesheet` (`TimeSheetId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `pfms_timesheet_trans` */
 
 insert  into `pfms_timesheet_trans`(`TimeSheetTransId`,`TimeSheetStatusCode`,`Remarks`,`ActionBy`,`ActionDate`,`TimeSheetId`) values 
-(1,'ABS',NULL,'1','2025-02-24 16:52:26',1);
+(1,'ABS',NULL,'1','2025-02-24 16:52:26',1),
+(2,'ABS',NULL,'1','2025-03-21 16:24:11',2);
 
 /*Table structure for table `pfms_weekly_update` */
 
@@ -17009,9 +17613,12 @@ CREATE TABLE `pfms_weekly_update` (
   `riskdetails` varchar(255) NOT NULL,
   `updatedOn` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`update_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `pfms_weekly_update` */
+
+insert  into `pfms_weekly_update`(`update_id`,`empId`,`AcionPoints`,`UpdatedDate`,`Procurement`,`MileStone`,`Empno`,`meeting`,`projectid`,`riskdetails`,`updatedOn`) values 
+(1,'6','Yes','2025-03-21','Yes','Yes',1006,'Yes',4,'No','2025-03-21 19:11:43');
 
 /*Table structure for table `pfts_demandimms` */
 
@@ -17114,7 +17721,7 @@ CREATE TABLE `pfts_file` (
   `PrbDateOfInti` date DEFAULT NULL,
   `ProbableDate` date DEFAULT NULL,
   PRIMARY KEY (`PftsFileId`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `pfts_file` */
 
@@ -17145,7 +17752,11 @@ insert  into `pfts_file`(`PftsFileId`,`DemandType`,`ProjectId`,`DemandNo`,`Deman
 (24,'M',2,'5525','2024-05-28',50000.00,'IT Training',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Nil',1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'admin','2024-11-23',NULL,NULL,NULL,NULL,NULL,NULL),
 (25,'M',2,'5585','2024-06-01',1000000.00,'Flight Parts',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Nil',1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'admin','2024-11-23',NULL,NULL,NULL,NULL,NULL,NULL),
 (26,'M',2,'1819','2024-06-20',2000000.00,'Training in abroad',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Nil',1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'admin','2024-11-23',NULL,NULL,NULL,NULL,NULL,NULL),
-(27,'M',4,'RF001','2025-01-31',200000.00,'LapTop',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Nil',1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'admin','2025-01-31',NULL,NULL,NULL,NULL,NULL,NULL);
+(27,'M',4,'RF001','2025-01-31',200000.00,'LapTop',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Nil',1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'admin','2025-01-31',NULL,NULL,NULL,NULL,NULL,NULL),
+(28,'M',5,'DMD/21032025/01','2024-12-10',5500000.00,'High Power Transmitter','2024-12-30','2024-12-31','2025-01-10','2025-01-23','2025-02-03',NULL,NULL,NULL,NULL,'2025-03-21',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Nil',10,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'admin','2025-03-21',NULL,NULL,'admin','2025-03-21',NULL,NULL),
+(29,NULL,5,NULL,NULL,1250000.00,'High Power Receiver',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'The above item should be procured as part of the project',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'admin','2025-03-21','Y','Demand to be Initiated',NULL,NULL,'2025-04-14',NULL),
+(30,'M',5,'DMD/21032025/2','2024-10-19',349000.00,'Ceiling and Network Cable',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Nil',1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'admin','2025-03-21',NULL,NULL,NULL,NULL,NULL,NULL),
+(31,'M',5,'DMD/21032025/3','2024-09-16',543000.00,'Motherboard',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Nil',1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'admin','2025-03-21',NULL,NULL,NULL,NULL,NULL,NULL);
 
 /*Table structure for table `pfts_file_ms` */
 
@@ -17174,9 +17785,12 @@ CREATE TABLE `pfts_file_ms` (
   `ModifiedDate` datetime DEFAULT NULL,
   `IsActive` int DEFAULT '1',
   PRIMARY KEY (`PftsMileStoneId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `pfts_file_ms` */
+
+insert  into `pfts_file_ms`(`PftsMileStoneId`,`PftsFileId`,`EPCDate`,`TocDate`,`OrderDate`,`PDRDate`,`CriticalDate`,`DDRDate`,`CDRDate`,`AcceptanceDate`,`FATDate`,`DeliveryDate`,`SATDate`,`IntegrationDate`,`SetBaseline`,`Revision`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`,`IsActive`) values 
+(1,28,'2024-12-20','2024-12-31','2025-01-07','2025-02-03','2025-02-11','2025-02-17',NULL,NULL,NULL,NULL,NULL,NULL,'N',0,'admin','2025-03-21 14:56:22','admin','2025-03-21 16:46:56',1);
 
 /*Table structure for table `pfts_file_ms_rev` */
 
@@ -17226,9 +17840,12 @@ CREATE TABLE `pfts_file_order` (
   `ModifiedDate` datetime DEFAULT NULL,
   `IsActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`PftsFileOrderId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `pfts_file_order` */
+
+insert  into `pfts_file_order`(`PftsFileOrderId`,`PftsFileId`,`OrderNo`,`OrderDate`,`OrderCost`,`DpDate`,`ItemFor`,`RevisedDp`,`VendorName`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`,`IsActive`) values 
+(1,28,'20SO03149','2025-03-10',5500000.00,'2025-04-30','High Power Transmitter',NULL,'Avionics Solutuions','admin','2025-03-21 14:55:20','admin','2025-03-21 00:00:00',1);
 
 /*Table structure for table `pfts_filecurrentstatus` */
 
@@ -17638,7 +18255,7 @@ CREATE TABLE `pms_enote` (
   `ModifiedDate` datetime DEFAULT NULL,
   `IsActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`EnoteId`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `pms_enote` */
 
@@ -17646,7 +18263,13 @@ insert  into `pms_enote`(`EnoteId`,`RefNo`,`RefDate`,`Subject`,`Comment`,`Commit
 (1,'REF_003','2024-11-23','Formation of APEX Committee.','',3,0,5,'DH ',30,'GH ',4,'TD ',2,'DIRECTOR ','LRDE','C','APR','APR',1,'admin','2024-11-23 12:42:49','1002','2024-11-23 12:58:38',1),
 (2,'LRDE/PRJ-1/PMRC/01NOV2024/4','2024-11-01','Forwarding MoM','',0,4,26,'PROJECT DIRECTOR ',NULL,NULL,NULL,NULL,2,'DIRECTOR ','LRDE','S','APR','APR',1,'admin','2024-11-23 17:35:16','1002','2024-11-23 17:37:43',1),
 (3,'LRDE/PRJ-3/PMRC/18NOV2024/1','2024-11-18','Forwarding MoM',NULL,0,8,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'S','INI','INI',1,'admin','2024-11-23 18:29:32',NULL,NULL,1),
-(4,'LRDE/PRJ-1/EB/12JUN2024/2','2024-06-12','Forwarding MoM','For approval',0,2,1,'RC',NULL,NULL,NULL,NULL,24,'DIR','LRDE','S','APR','APR',1,'admin','2025-02-12 18:38:55','1024','2025-02-12 18:46:38',1);
+(4,'LRDE/PRJ-1/EB/12JUN2024/2','2024-06-12','Forwarding MoM','For approval',0,2,1,'RC',NULL,NULL,NULL,NULL,24,'DIR','LRDE','S','APR','APR',1,'admin','2025-02-12 18:38:55','1024','2025-02-12 18:46:38',1),
+(5,'REF_19032025','2025-03-19','Formation of SOB Committee.','This committee needs to be approved inorder to proceed further',14,0,5,'DH   ',30,'GH   ',4,'GD   ',2,'DIRECTOR   ','LRDE','C','APR','APR',1,'admin','2025-03-19 17:46:16','1002','2025-03-20 09:46:17',1),
+(6,'LRDE/PRJ-4/PMRC/05FEB2024/3','2024-02-05','Forwarding MoM','Testing the MoM approval flow',0,28,24,'DH  ',5,'GH  ',30,'GD  ',2,'DIRECTOR  ','LRDE','S','RC2','RC3',1,'admin','2025-03-20 11:03:37','1005','2025-03-20 11:24:27',1),
+(7,'LRDE/GEN/SOB/20NOV2024/1','2024-11-20','Forwarding MoM','',0,30,24,'DH ',NULL,NULL,NULL,NULL,2,'DIRECTOR ','LRDE','S','APR','APR',1,'admin','2025-03-20 11:51:51','1002','2025-03-20 11:57:34',1),
+(8,'REF_20032025','2025-03-20','Formation of SOB Committee.','',15,0,26,'DH   ',NULL,NULL,NULL,NULL,2,'DIRECTOR   ','LRDE','C','APR','APR',1,'admin','2025-03-20 12:01:13','1002','2025-03-20 12:07:37',1),
+(9,'LRDE/DIV/SOB/20JAN2025/4','2025-01-20','Forwarding MoM',NULL,0,31,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'S','INI','INI',1,'admin','2025-03-20 12:10:33',NULL,NULL,1),
+(10,'DG-ECS/CCM/2025/MAR/2','2025-03-21','Forwarding MoM','',0,36,3001,'AD ',NULL,NULL,NULL,NULL,48,'DIRECTOR ','DG-ECS','S','APR','APR',3014,'dgecs','2025-03-21 17:36:20','8480','2025-03-21 17:41:40',1);
 
 /*Table structure for table `pms_enote_trans` */
 
@@ -17661,7 +18284,7 @@ CREATE TABLE `pms_enote_trans` (
   `ActionBy` bigint DEFAULT NULL,
   `ActionDate` datetime DEFAULT NULL,
   PRIMARY KEY (`EnoteTransId`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `pms_enote_trans` */
 
@@ -17678,7 +18301,37 @@ insert  into `pms_enote_trans`(`EnoteTransId`,`EnoteId`,`EnoteStatusCode`,`Remar
 (10,3,'INI','','S',1,'2024-11-23 18:29:32'),
 (11,4,'INI','','S',1,'2025-02-12 18:38:55'),
 (12,4,'RC1',NULL,'S',1,'2025-02-12 18:41:18'),
-(13,4,'APR','','S',24,'2025-02-12 18:46:38');
+(13,4,'APR','','S',24,'2025-02-12 18:46:38'),
+(14,5,'FWD',NULL,'C',1,'2025-03-19 18:24:30'),
+(15,5,'RR1','Returned the request for testing purpose','C',5,'2025-03-19 18:25:48'),
+(16,5,'FWD',NULL,'C',1,'2025-03-19 18:26:08'),
+(17,5,'RC1','Recommended to the next officer','C',5,'2025-03-19 18:29:25'),
+(18,5,'RR2','Returned for testing purpose+','C',30,'2025-03-20 09:43:40'),
+(19,5,'FWD',NULL,'C',1,'2025-03-20 09:44:11'),
+(20,5,'RC1','','C',5,'2025-03-20 09:44:37'),
+(21,5,'RC2','','C',30,'2025-03-20 09:44:48'),
+(22,5,'RC3','','C',4,'2025-03-20 09:45:32'),
+(23,5,'APR','','C',2,'2025-03-20 09:46:17'),
+(24,6,'INI','','S',1,'2025-03-20 11:03:37'),
+(25,6,'FWD',NULL,'S',1,'2025-03-20 11:11:34'),
+(26,6,'RR1','Returning for testing purpose','S',24,'2025-03-20 11:22:55'),
+(27,6,'FWD',NULL,'S',1,'2025-03-20 11:23:22'),
+(28,6,'RC1','Recommending to the next officer for approval','S',24,'2025-03-20 11:23:46'),
+(29,6,'RC2','','S',5,'2025-03-20 11:24:27'),
+(30,7,'INI','','S',1,'2025-03-20 11:51:51'),
+(31,7,'FWD',NULL,'S',1,'2025-03-20 11:53:09'),
+(32,7,'RC1','','S',24,'2025-03-20 11:57:15'),
+(33,7,'APR','','S',2,'2025-03-20 11:57:34'),
+(34,8,'FWD',NULL,'C',1,'2025-03-20 12:05:27'),
+(35,8,'REV',NULL,'C',1,'2025-03-20 12:05:41'),
+(36,8,'FWD',NULL,'C',1,'2025-03-20 12:06:18'),
+(37,8,'RC1','','C',26,'2025-03-20 12:07:16'),
+(38,8,'APR','','C',2,'2025-03-20 12:07:37'),
+(39,9,'INI','','S',1,'2025-03-20 12:10:33'),
+(40,10,'INI','','S',3014,'2025-03-21 17:36:20'),
+(41,10,'FWD',NULL,'S',3014,'2025-03-21 17:38:41'),
+(42,10,'RC1','','S',3001,'2025-03-21 17:39:14'),
+(43,10,'APR','','S',48,'2025-03-21 17:41:40');
 
 /*Table structure for table `project_approval` */
 
@@ -17743,7 +18396,7 @@ CREATE TABLE `project_employee` (
   `ModifiedDate` datetime DEFAULT NULL,
   `IsActive` int DEFAULT '1',
   PRIMARY KEY (`ProjectEmployeeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `project_employee` */
 
@@ -17767,7 +18420,9 @@ insert  into `project_employee`(`ProjectEmployeeId`,`EmpId`,`ProjectId`,`Created
 (17,1,1,'admin','2024-11-23 15:20:40',NULL,NULL,1),
 (18,21,4,'admin','2025-01-31 11:01:42',NULL,NULL,1),
 (19,27,4,'admin','2025-01-31 11:01:42',NULL,NULL,1),
-(20,41,4,'admin','2025-01-31 11:01:42',NULL,NULL,1);
+(20,41,4,'admin','2025-01-31 11:01:42',NULL,NULL,1),
+(21,24,1,'admin','2025-03-20 11:55:52',NULL,NULL,1),
+(22,33,5,'admin','2025-03-21 18:24:03',NULL,NULL,1);
 
 /*Table structure for table `project_health` */
 
@@ -17825,15 +18480,15 @@ CREATE TABLE `project_health` (
   `ABTotal` bigint DEFAULT NULL,
   `ABTotalToBeHeld` bigint DEFAULT NULL,
   PRIMARY KEY (`ProjectHealthId`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `project_health` */
 
 insert  into `project_health`(`ProjectHealthId`,`LabCode`,`LabClusterId`,`ProjectId`,`ProjectCode`,`ProjectShortName`,`PDC`,`PMRCHeld`,`PMRCPending`,`PMRCTotal`,`EBHeld`,`EBPending`,`EBTotal`,`MilPending`,`MilDelayed`,`MilCompleted`,`ActionPending`,`ActionForwarded`,`ActionDelayed`,`ActionCompleted`,`RiskCompleted`,`RiskPending`,`Expenditure`,`OutCommitment`,`Dipl`,`Balance`,`ProjectType`,`EndUser`,`TodayChanges`,`WeeklyChanges`,`MonthlyChanges`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`,`EBTotalToBeHeld`,`PMRCTotalToBeHeld`,`SanctionDate`,`PJBHeld`,`PJBPending`,`PJBTotal`,`PJBTotalToBeHeld`,`PMBHeld`,`PMBPending`,`PMBTotal`,`PMBTotalToBeHeld`,`ABHeld`,`ABPending`,`ABTotal`,`ABTotalToBeHeld`) values 
-(1,'LRDE',NULL,1,'PRJ-1','PMS','2026-09-07',3,2,5,4,0,2,1,1,1,0,0,5,9,1,0,54346667.00,8080973.00,0.00,27572360.00,'IF','DRDO',5,7,11,'admin','2025-01-31 19:38:30',NULL,NULL,5,11,'2023-11-08',0,5,5,11,0,2,2,5,0,2,2,5),
-(2,'LRDE',NULL,2,'PRJ-2','IBAS','2026-08-22',4,2,6,0,3,3,0,1,0,0,0,3,0,0,0,8930000.00,20000.00,0.00,14050000.00,'MM','IN',2,2,4,'admin','2025-01-31 19:38:30',NULL,NULL,6,12,'2023-06-13',0,6,6,12,0,3,3,6,0,3,3,6),
-(3,'LRDE',NULL,3,'PRJ-3','PFTS','2026-09-26',3,3,6,2,1,3,0,1,0,0,0,7,1,0,1,9400000.00,6050000.00,8000000.00,36550000.00,'S&T','IAF',5,5,8,'admin','2025-01-31 19:38:30',NULL,NULL,6,13,'2023-07-03',0,6,6,13,0,3,3,6,0,3,3,6),
-(4,'LRDE',NULL,4,'PRJ-4','QMS','2025-12-30',0,5,5,0,2,2,0,0,2,1,0,0,4,0,0,175000000.00,126000.00,4500.00,314869500.00,'S&T','IH',8,8,9,'admin','2025-01-31 19:38:30',NULL,NULL,4,9,'2023-10-01',0,5,5,9,0,2,2,4,0,2,2,4);
+(5,'LRDE',NULL,1,'PRJ-1','PMS','2026-09-07',5,0,5,4,0,2,1,2,1,3,0,6,11,1,0,54346667.00,8080973.00,0.00,27572360.00,'IF','DRDO',5,7,14,'admin','2025-03-20 16:48:23',NULL,NULL,5,11,'2023-11-08',0,5,5,11,0,2,2,5,0,2,2,5),
+(6,'LRDE',NULL,2,'PRJ-2','IBAS','2026-08-22',4,3,7,0,3,3,0,1,0,0,0,3,1,0,0,8930000.00,20000.00,0.00,14050000.00,'MM','IN',1,1,3,'admin','2025-03-20 16:48:23',NULL,NULL,6,12,'2023-06-13',0,7,7,12,0,3,3,6,0,3,3,6),
+(7,'LRDE',NULL,3,'PRJ-3','PFTS','2026-09-26',3,3,6,2,1,3,0,1,0,2,0,7,1,0,1,9400000.00,6050000.00,8000000.00,36550000.00,'S&T','IAF',0,0,4,'admin','2025-03-20 16:48:23',NULL,NULL,6,13,'2023-07-03',0,6,6,13,0,3,3,6,0,3,3,6),
+(8,'LRDE',NULL,4,'PRJ-4','QMS','2025-12-30',1,4,5,0,2,2,0,0,2,0,1,2,5,0,0,175000000.00,126000.00,4500.00,314869500.00,'S&T','IH',3,3,4,'admin','2025-03-20 16:48:23',NULL,NULL,4,9,'2023-10-01',0,5,5,9,0,2,2,4,0,2,2,4);
 
 /*Table structure for table `project_hoa` */
 
@@ -17980,7 +18635,7 @@ CREATE TABLE `project_main` (
   `IsCCS` varchar(1) DEFAULT 'N',
   PRIMARY KEY (`ProjectMainId`),
   UNIQUE KEY `ukpm` (`ProjectCode`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `project_main` */
 
@@ -17989,7 +18644,8 @@ insert  into `project_main`(`ProjectMainId`,`ProjectTypeId`,`ProjectCode`,`Proje
 (2,1,'PRJ-2','Inventory Budget Accounting System','02','02',NULL,'2468','2023-06-13',78000000.00,56600000.00,21400000.00,'2026-08-22',20,'DIR','DMC',0,1,NULL,'The objective of the inventory budget accounting system is to improve the accuracy, efficiency, and transparency of managing inventory and budgeting processes. This system aims to streamline inventory tracking, budget planning, and financial reporting, ensuring real-time visibility into stock levels, budget utilization, and financial performance, thereby supporting informed decision-making and compliance with financial regulations.','Key deliverables for this project include a detailed project plan and system requirements specification to guide the development process. Architecture and design documentation will outline the system\'s structure and functionalities. A working prototype will demonstrate the core features, leading to the delivery of the fully developed system.',1,1,'The scope of the inventory budget accounting system includes developing a comprehensive web-based platform that integrates seamlessly with existing enterprise systems. The system will facilitate inventory tracking, budget creation, and financial accounting processes. Key features will include role-based access control, user authentication, real-time inventory updates, automated budget tracking, and detailed financial reporting.','admin','2024-11-23 11:00:07',NULL,NULL,'LRDE','Project IBAS','IN','IBAS','N'),
 (3,3,'PRJ-3','Procurement File Tracking System','03','03',NULL,'24680','2023-07-03',84500000.00,72200000.00,12300000.00,'2026-09-26',7,'DIR','CCM',0,1,NULL,'The objective of the procurement file tracking system is to enhance the efficiency, transparency, and accuracy of the procurement process by providing a centralized, automated system for tracking procurement files. This system aims to reduce manual errors, ensure compliance with procurement policies, and provide real-time visibility into the status of procurement activities.','Key deliverables for the project include a detailed project plan and system requirements specification to guide the development process. Architecture and design documentation will outline the system\'s structure and functionalities. A working prototype will demonstrate the core features, leading to the delivery of the fully developed system.',1,5,'The procurement file tracking system aims to streamline the procurement process by providing a centralized, automated solution to track and manage procurement files. The system\'s scope includes designing and developing a user-friendly web-based interface that integrates with existing enterprise systems, enabling efficient file creation, updating, searching, and archiving.','admin','2024-11-23 11:11:47',NULL,NULL,'LRDE','Project PFTS','IAF','PFTS','N'),
 (4,3,'PRJ-4','Civil Engineering Projects','04','04',NULL,'2469','2025-01-31',79000000.00,57500000.00,21500000.00,'2025-01-31',24,'DIR','CCM',0,1,NULL,'The objective of the inventory budget accounting system is to improve the accuracy, efficiency, and transparency of managing inventory and budgeting processes. This system aims to streamline inventory tracking, budget planning, and financial reporting, ensuring real-time visibility into stock levels, budget utilization, and financial performance, thereby supporting informed decision-making and compliance with financial regulations.','Key deliverables for this project include a detailed project plan and system requirements specification to guide the development process. Architecture and design documentation will outline the system\'s structure and functionalities. A working prototype will demonstrate the core features, leading to the delivery of the fully developed system.',1,1,'The scope of the inventory budget accounting system includes developing a comprehensive web-based platform that integrates seamlessly with existing enterprise systems. The system will facilitate inventory tracking, budget creation, and financial accounting processes. Key features will include role-based access control, user authentication, real-time inventory updates, automated budget tracking, and detailed financial reporting.','admin','2025-01-31 10:50:12',NULL,NULL,'LRDE',' Project CEP','IH','CEP','N'),
-(5,6,'TTT','TEXT TILE','TEY456','6455',NULL,'FDSDFDWFF43323','2025-02-28',5000000.00,-3000000.00,8000000.00,'2025-02-28',24,'SECY','CCM',0,0,NULL,'ETST','TEST',1,4,'TEST','admin','2025-02-28 11:46:07','admin','2025-02-28 11:46:29','TEST',' TEST ','OH','TEXT','N');
+(5,6,'TTT','TEXT TILE','TEY456','6455',NULL,'FDSDFDWFF43323','2025-02-28',5000000.00,-3000000.00,8000000.00,'2025-02-28',24,'SECY','CCM',0,0,NULL,'ETST','TEST',1,4,'TEST','admin','2025-02-28 11:46:07','admin','2025-02-28 11:46:29','TEST',' TEST ','OH','TEXT','N'),
+(6,1,'PRJ-5','Audit Management System','05','05',NULL,'56756','2024-03-04',79000000.00,46600000.00,32400000.00,'2026-04-30',4,'DIR','CCM',0,1,NULL,'Project AMS','Project AMS',1,4,'Project AMS','admin','2025-03-20 16:58:37',NULL,NULL,'LRDE','Project AMS','IN','AMS','N');
 
 /*Table structure for table `project_majaor_cars_details` */
 
@@ -18154,15 +18810,16 @@ CREATE TABLE `project_master` (
   `DivisionId` int NOT NULL DEFAULT '0',
   `IsCCS` varchar(1) DEFAULT 'N',
   PRIMARY KEY (`ProjectId`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `project_master` */
 
 insert  into `project_master`(`ProjectId`,`LabCode`,`ProjectMainId`,`ProjectCode`,`ProjectShortName`,`ProjectImmsCd`,`ProjectName`,`ProjectDescription`,`UnitCode`,`ProjectType`,`ProjectTypeId`,`ProjectCategory`,`SanctionNo`,`SanctionDate`,`TotalSanctionCost`,`SanctionCostRE`,`SanctionCostFE`,`PDC`,`ProjectDirector`,`ProjSancAuthority`,`BoardReference`,`RevisionNo`,`IsMainWC`,`WorkCenter`,`Objective`,`Deliverable`,`EndUser`,`CreatedBy`,`CreatedDate`,`ModifiedBy`,`ModifiedDate`,`IsActive`,`Application`,`LabParticipating`,`Scope`,`AuthorityDate`,`AuthorityNo`,`DivisionId`,`IsCCS`) values 
-(1,'LRDE',1,'PRJ-1','PMS',NULL,'Project Management System','01','01','4',NULL,2,'56789','2023-11-08',98700000.00,85200000.00,13500000.00,'2026-09-07',26,'DIR','CCM',0,1,NULL,'The objective of the project management system is to enhance the efficiency, transparency, and coordination of project activities by providing a centralized platform for planning, tracking, and managing projects. This system aims to streamline project workflows, improve collaboration among team members, ensure timely project completion, and provide real-time visibility into project progress and resource utilization.','Key deliverables for this project include a detailed project plan and system requirements specification to guide the development process. Architecture and design documentation will outline the system\'s structure and functionalities. A working prototype will demonstrate the core features, leading to the delivery of the fully developed system.','DRDO','admin','2024-11-23 11:11:58',NULL,NULL,1,'Project PMS','LRDE','The scope of the project management system includes developing a user-friendly web-based interface that integrates seamlessly with existing enterprise tools. The system will facilitate project planning, task assignment, progress tracking, and resource management. It will feature role-based access control, user authentication, real-time collaboration tools, and comprehensive reporting and analytics capabilities.',NULL,NULL,0,'N'),
-(2,'LRDE',2,'PRJ-2','IBAS',NULL,'Inventory Budget Accounting System','02','02','1',NULL,1,'2468','2023-06-13',78000000.00,56600000.00,21400000.00,'2026-08-22',20,'DIR','DMC',0,1,NULL,'The objective of the inventory budget accounting system is to improve the accuracy, efficiency, and transparency of managing inventory and budgeting processes. This system aims to streamline inventory tracking, budget planning, and financial reporting, ensuring real-time visibility into stock levels, budget utilization, and financial performance, thereby supporting informed decision-making and compliance with financial regulations.','Key deliverables for this project include a detailed project plan and system requirements specification to guide the development process. Architecture and design documentation will outline the system\'s structure and functionalities. A working prototype will demonstrate the core features, leading to the delivery of the fully developed system.','IN','admin','2024-11-23 11:14:15',NULL,NULL,1,'Project IBAS','LRDE','The scope of the inventory budget accounting system includes developing a comprehensive web-based platform that integrates seamlessly with existing enterprise systems. The system will facilitate inventory tracking, budget creation, and financial accounting processes. Key features will include role-based access control, user authentication, real-time inventory updates, automated budget tracking, and detailed financial reporting.',NULL,NULL,0,'N'),
-(3,'LRDE',3,'PRJ-3','PFTS',NULL,'Procurement File Tracking System','03','03','3',NULL,5,'24680','2023-07-03',84500000.00,72200000.00,12300000.00,'2026-09-26',7,'DIR','CCM',0,1,NULL,'The objective of the procurement file tracking system is to enhance the efficiency, transparency, and accuracy of the procurement process by providing a centralized, automated system for tracking procurement files. This system aims to reduce manual errors, ensure compliance with procurement policies, and provide real-time visibility into the status of procurement activities.','Key deliverables for the project include a detailed project plan and system requirements specification to guide the development process. Architecture and design documentation will outline the system\'s structure and functionalities. A working prototype will demonstrate the core features, leading to the delivery of the fully developed system.','IAF','admin','2024-11-23 11:14:20',NULL,NULL,1,'Project PFTS','LRDE','The procurement file tracking system aims to streamline the procurement process by providing a centralized, automated solution to track and manage procurement files. The system\'s scope includes designing and developing a user-friendly web-based interface that integrates with existing enterprise systems, enabling efficient file creation, updating, searching, and archiving.',NULL,NULL,0,'N'),
-(4,'LRDE',4,'PRJ-4','QMS',NULL,'Quality Management System','04','04','3',NULL,1,'2469','2023-10-01',490000000.00,260000000.00,230000000.00,'2025-12-30',6,'DIR','CCM',0,1,NULL,'The objective of the inventory budget accounting system is to improve the accuracy, efficiency, and transparency of managing inventory and budgeting processes. This system aims to streamline inventory tracking, budget planning, and financial reporting, ensuring real-time visibility into stock levels, budget utilization, and financial performance, thereby supporting informed decision-making and compliance with financial regulations.','Key deliverables for this project include a detailed project plan and system requirements specification to guide the development process. Architecture and design documentation will outline the system\'s structure and functionalities. A working prototype will demonstrate the core features, leading to the delivery of the fully developed system.','IH','admin','2025-01-31 11:00:35','admin','2025-01-31 19:37:58',1,' Project QMS','LRDE','The scope of the inventory budget accounting system includes developing a comprehensive web-based platform that integrates seamlessly with existing enterprise systems. The system will facilitate inventory tracking, budget creation, and financial accounting processes. Key features will include role-based access control, user authentication, real-time inventory updates, automated budget tracking, and detailed financial reporting.',NULL,NULL,0,'Y');
+(1,'LRDE',1,'PRJ-1','PMS',NULL,'Project Management System','01','01','4',NULL,2,'56789','2023-11-08',98700000.00,85200000.00,13500000.00,'2026-09-07',26,'DIR','CCM',0,1,NULL,'The objective of the project management system is to enhance the efficiency, transparency, and coordination of project activities by providing a centralized platform for planning, tracking, and managing projects. This system aims to streamline project workflows, improve collaboration among team members, ensure timely project completion, and provide real-time visibility into project progress and resource utilization.','Key deliverables for this project include a detailed project plan and system requirements specification to guide the development process. Architecture and design documentation will outline the system\'s structure and functionalities. A working prototype will demonstrate the core features, leading to the delivery of the fully developed system.','DRDO','admin','2024-11-23 11:11:58','admin','2025-03-19 12:13:31',1,'Project PMS','LRDE','The scope of the project management system includes developing a user-friendly web-based interface that integrates seamlessly with existing enterprise tools. The system will facilitate project planning, task assignment, progress tracking, and resource management. It will feature role-based access control, user authentication, real-time collaboration tools, and comprehensive reporting and analytics capabilities.',NULL,NULL,0,'N'),
+(2,'LRDE',2,'PRJ-2','IBAS',NULL,'Inventory Budget Accounting System','02','02','7',NULL,5,'2468','2023-06-13',8825878.00,6591333.00,2234545.00,'2026-08-22',2997,'DIR','CCM',5,1,NULL,'The objective of the inventory budget accounting system is to improve the accuracy, efficiency, and transparency of managing inventory and budgeting processes. This system aims to streamline inventory tracking, budget planning, and financial reporting, ensuring real-time visibility into stock levels, budget utilization, and financial performance, thereby supporting informed decision-making and compliance with financial regulations.','Key deliverables for this project include a detailed project plan and system requirements specification to guide the development process. Architecture and design documentation will outline the system\'s structure and functionalities. A working prototype will demonstrate the core features, leading to the delivery of the fully developed system.','IH','admin','2024-11-23 11:14:15','admin','2025-03-21 12:45:59',1,'Project IBAS','LRDE','The scope of the inventory budget accounting system includes developing a comprehensive web-based platform that integrates seamlessly with existing enterprise systems. The system will facilitate inventory tracking, budget creation, and financial accounting processes. Key features will include role-based access control, user authentication, real-time inventory updates, automated budget tracking, and detailed financial reporting.',NULL,NULL,0,'N'),
+(3,'LRDE',3,'PRJ-3','PFTS',NULL,'Procurement File Tracking System','03','03','6',NULL,1,'24680','2023-07-03',882564605784.00,882517089460.00,47516324.00,'2026-09-26',16,'DIR','DMC',1,1,NULL,'The objective of the procurement file tracking system is to enhance the efficiency, transparency, and accuracy of the procurement process by providing a centralized, automated system for tracking procurement files. This system aims to reduce manual errors, ensure compliance with procurement policies, and provide real-time visibility into the status of procurement activities.','Key deliverables for the project include a detailed project plan and system requirements specification to guide the development process. Architecture and design documentation will outline the system\'s structure and functionalities. A working prototype will demonstrate the core features, leading to the delivery of the fully developed system.','IAF','admin','2024-11-23 11:14:20','admin','2025-03-21 16:30:09',1,'Project PFTS','LRDE','The procurement file tracking system aims to streamline the procurement process by providing a centralized, automated solution to track and manage procurement files. The system\'s scope includes designing and developing a user-friendly web-based interface that integrates with existing enterprise systems, enabling efficient file creation, updating, searching, and archiving.',NULL,NULL,0,'N'),
+(4,'LRDE',4,'PRJ-4','QMS',NULL,'Quality Management System','04','04','3',NULL,1,'2469','2023-10-01',490000000.00,260000000.00,230000000.00,'2025-12-30',6,'DIR','CCM',0,1,NULL,'The objective of the inventory budget accounting system is to improve the accuracy, efficiency, and transparency of managing inventory and budgeting processes. This system aims to streamline inventory tracking, budget planning, and financial reporting, ensuring real-time visibility into stock levels, budget utilization, and financial performance, thereby supporting informed decision-making and compliance with financial regulations.','Key deliverables for this project include a detailed project plan and system requirements specification to guide the development process. Architecture and design documentation will outline the system\'s structure and functionalities. A working prototype will demonstrate the core features, leading to the delivery of the fully developed system.','IH','admin','2025-01-31 11:00:35','admin','2025-01-31 19:37:58',1,' Project QMS','LRDE','The scope of the inventory budget accounting system includes developing a comprehensive web-based platform that integrates seamlessly with existing enterprise systems. The system will facilitate inventory tracking, budget creation, and financial accounting processes. Key features will include role-based access control, user authentication, real-time inventory updates, automated budget tracking, and detailed financial reporting.',NULL,NULL,0,'Y'),
+(5,'LRDE',6,'PRJ-5','AMS',NULL,'Audit Management System','05','05','1',NULL,4,'56756','2024-03-04',79000000.00,46600000.00,32400000.00,'2026-04-30',4,'DIR','CCM',0,1,NULL,'Project AMS','Project AMS','IN','admin','2025-03-20 16:59:28',NULL,NULL,1,'Project AMS','LRDE','Project AMS',NULL,NULL,0,NULL);
 
 /*Table structure for table `project_master_attach` */
 
@@ -18177,12 +18834,14 @@ CREATE TABLE `project_master_attach` (
   `Path` varchar(255) DEFAULT NULL,
   `ProjectId` bigint DEFAULT NULL,
   PRIMARY KEY (`ProjectAttachId`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `project_master_attach` */
 
 insert  into `project_master_attach`(`ProjectAttachId`,`CreatedBy`,`CreatedDate`,`FileName`,`OriginalFileName`,`Path`,`ProjectId`) values 
-(1,'admin','2025-02-12 18:24:12','Test','AboutPMS.pdf','LRDE/ProjectMasterFiles/PRJ-1',1);
+(1,'admin','2025-02-12 18:24:12','Test','AboutPMS.pdf','LRDE/ProjectMasterFiles/PRJ-1',1),
+(2,'admin','2025-03-20 16:59:52','Architecture Diagram','DailyAccountsPrint.pdf','LRDE\\ProjectMasterFiles\\PRJ-5',5),
+(3,'admin','2025-03-20 18:46:31','Test Error','WorkRegister.pdf','LRDE\\ProjectMasterFiles\\PRJ-1',1);
 
 /*Table structure for table `project_master_rev` */
 
@@ -18220,9 +18879,16 @@ CREATE TABLE `project_master_rev` (
   `Application` varchar(255) DEFAULT NULL,
   `LabParticipating` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ProjectRevId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `project_master_rev` */
+
+insert  into `project_master_rev`(`ProjectRevId`,`BoardReference`,`CreatedBy`,`CreatedDate`,`Deliverable`,`IsMainWC`,`Objective`,`PDC`,`ProjSancAuthority`,`ProjectCategory`,`ProjectCode`,`ProjectDescription`,`ProjectDirector`,`ProjectId`,`ProjectImmsCd`,`ProjectMainId`,`ProjectName`,`ProjectType`,`Remarks`,`RevisionNo`,`SanctionCostFE`,`SanctionCostRE`,`SanctionDate`,`SanctionNo`,`TotalSanctionCost`,`UnitCode`,`WorkCenter`,`Scope`,`Application`,`LabParticipating`) values 
+(2,'DMC','admin','2025-03-20 17:39:59','Key deliverables for this project include a detailed project plan and system requirements specification to guide the development process. Architecture and design documentation will outline the system\'s structure and functionalities. A working prototype will demonstrate the core features, leading to the delivery of the fully developed system.',1,'The objective of the inventory budget accounting system is to improve the accuracy, efficiency, and transparency of managing inventory and budgeting processes. This system aims to streamline inventory tracking, budget planning, and financial reporting, ensuring real-time visibility into stock levels, budget utilization, and financial performance, thereby supporting informed decision-making and compliance with financial regulations.','2026-08-22','DIR',1,'PRJ-2','02',20,2,NULL,2,'Inventory Budget Accounting System',1,'okay',1,21400000.00,56600000.00,'2023-06-13','2468',78000000.00,'02',NULL,'The scope of the inventory budget accounting system includes developing a comprehensive web-based platform that integrates seamlessly with existing enterprise systems. The system will facilitate inventory tracking, budget creation, and financial accounting processes. Key features will include role-based access control, user authentication, real-time inventory updates, automated budget tracking, and detailed financial reporting.','Project IBAS','LRDE'),
+(3,'DMC','admin','2025-03-21 11:00:52','Key deliverables for this project include a detailed project plan and system requirements specification to guide the development process. Architecture and design documentation will outline the system\'s structure and functionalities. A working prototype will demonstrate the core features, leading to the delivery of the fully developed system.',1,'The objective of the inventory budget accounting system is to improve the accuracy, efficiency, and transparency of managing inventory and budgeting processes. This system aims to streamline inventory tracking, budget planning, and financial reporting, ensuring real-time visibility into stock levels, budget utilization, and financial performance, thereby supporting informed decision-making and compliance with financial regulations.','2026-08-22','DIR',3,'PRJ-2','02',20,2,NULL,2,'Inventory Budget Accounting System',1,' okay ',2,21400000.00,56600000.00,'2023-06-13','2468',78000000.00,'02',NULL,'The scope of the inventory budget accounting system includes developing a comprehensive web-based platform that integrates seamlessly with existing enterprise systems. The system will facilitate inventory tracking, budget creation, and financial accounting processes. Key features will include role-based access control, user authentication, real-time inventory updates, automated budget tracking, and detailed financial reporting.','Project IBAS','LRDE'),
+(4,'DMC','admin','2025-03-21 12:39:30','Key deliverables for this project include a detailed project plan and system requirements specification to guide the development process. Architecture and design documentation will outline the system\'s structure and functionalities. A working prototype will demonstrate the core features, leading to the delivery of the fully developed system.',1,'The objective of the inventory budget accounting system is to improve the accuracy, efficiency, and transparency of managing inventory and budgeting processes. This system aims to streamline inventory tracking, budget planning, and financial reporting, ensuring real-time visibility into stock levels, budget utilization, and financial performance, thereby supporting informed decision-making and compliance with financial regulations.','2026-08-22','DIR',5,'PRJ-2','02',20,2,NULL,2,'Inventory Budget Accounting System',7,' okay ',3,21400000.00,56600000.00,'2023-06-13','2468',78000000.00,'02',NULL,'The scope of the inventory budget accounting system includes developing a comprehensive web-based platform that integrates seamlessly with existing enterprise systems. The system will facilitate inventory tracking, budget creation, and financial accounting processes. Key features will include role-based access control, user authentication, real-time inventory updates, automated budget tracking, and detailed financial reporting.','Project IBAS','LRDE'),
+(5,'CCM','admin','2025-03-21 12:45:59','Key deliverables for this project include a detailed project plan and system requirements specification to guide the development process. Architecture and design documentation will outline the system\'s structure and functionalities. A working prototype will demonstrate the core features, leading to the delivery of the fully developed system.',1,'The objective of the inventory budget accounting system is to improve the accuracy, efficiency, and transparency of managing inventory and budgeting processes. This system aims to streamline inventory tracking, budget planning, and financial reporting, ensuring real-time visibility into stock levels, budget utilization, and financial performance, thereby supporting informed decision-making and compliance with financial regulations.','2026-08-22','DIR',5,'PRJ-2','02',2997,2,NULL,2,'Inventory Budget Accounting System',7,' okay ',4,2234545.00,10111133.00,'2023-06-13','2468',12345678.00,'02',NULL,'The scope of the inventory budget accounting system includes developing a comprehensive web-based platform that integrates seamlessly with existing enterprise systems. The system will facilitate inventory tracking, budget creation, and financial accounting processes. Key features will include role-based access control, user authentication, real-time inventory updates, automated budget tracking, and detailed financial reporting.','Project IBAS','LRDE'),
+(6,'CCM','admin','2025-03-21 16:30:09','Key deliverables for the project include a detailed project plan and system requirements specification to guide the development process. Architecture and design documentation will outline the system\'s structure and functionalities. A working prototype will demonstrate the core features, leading to the delivery of the fully developed system.',1,'The objective of the procurement file tracking system is to enhance the efficiency, transparency, and accuracy of the procurement process by providing a centralized, automated system for tracking procurement files. This system aims to reduce manual errors, ensure compliance with procurement policies, and provide real-time visibility into the status of procurement activities.','2026-09-26','DIR',5,'PRJ-3','03',7,3,NULL,3,'Procurement File Tracking System',3,'Need to revise',0,12300000.00,72200000.00,'2023-07-03','24680',84500000.00,'03',NULL,'The procurement file tracking system aims to streamline the procurement process by providing a centralized, automated solution to track and manage procurement files. The system\'s scope includes designing and developing a user-friendly web-based interface that integrates with existing enterprise systems, enabling efficient file creation, updating, searching, and archiving.','Project PFTS','LRDE');
 
 /*Table structure for table `project_req_doc` */
 
@@ -18473,37 +19139,6 @@ END IF;
 END */$$
 
 
-DELIMITER ;
-
-/* Procedure structure for procedure `Action_List` */
-
-/*!50003 DROP PROCEDURE IF EXISTS  `Action_List` */;
-
-DELIMITER $$
-
-/*!50003 CREATE DEFINER=`root`@`192.168.1.17` PROCEDURE `Action_List`(InMinutesId BIGINT(20))
-BEGIN
-SELECT a.scheduleminutesid,a.details,a.idarck,a.scheduleid,b.description,CAST('Not Required' AS CHAR) AS agennda,
-	CAST('Not Required' AS CHAR) AS sub,CAST('Not Required' AS CHAR) AS subofsub,a.minutesid AS mainid,0 AS subid,0 AS agenndaid,0 AS subofsubid
-	FROM committee_schedules_minutes_details a,committee_schedules_minutes b
-        WHERE a.minutesid=b.minutesid AND a.minutesid in (1,2) AND a.scheduleid=inMinutesId AND a.IDARCK IN ('A','K','I')
-        UNION
-        SELECT a.scheduleminutesid,a.details,a.idarck,a.scheduleid,b.description,c.agendaitem AS sub,
-        e.unitname AS agennda,d.subdescription AS subofsub, a.minutesid AS mainid,a.minutessubid AS subid,e.minutesspecunitid AS agenndaid,a.minutessubofsubid AS subofsubid
-	FROM committee_schedules_minutes_details a,committee_schedules_minutes b, committee_schedules_agenda c, committee_schedules_minutes_sub d 
-	, committee_schedules_minutes_unit e
-        WHERE a.minutesunitid=e.minutesspecunitid and
-        a.minutesid=b.minutesid AND a.minutesid=3 AND c.scheduleagendaid=a.minutessubid AND d.agendasubid=a.minutessubofsubid
-        AND a.scheduleid=inMinutesId AND a.IDARCK in ('A','K','I')
-        union
-        SELECT a.scheduleminutesid,a.details,a.idarck,a.scheduleid,b.description,CAST('Not Required' AS CHAR) AS sub,
-        e.unitname AS agennda,d.subdescription AS subofsub, a.minutesid AS mainid,0 AS subid,e.minutesspecunitid AS agenndaid,a.minutessubofsubid AS subofsubid
-	FROM committee_schedules_minutes_details a,committee_schedules_minutes b,  committee_schedules_minutes_sub d 
-	, committee_schedules_minutes_unit e
-        WHERE a.minutesunitid=e.minutesspecunitid AND
-        a.minutesid=b.minutesid AND a.minutesid in(4,5,6 ) AND d.agendasubid=a.minutessubofsubid
-        AND a.scheduleid=inMinutesId AND a.IDARCK IN ('A','K','I') ORDER BY  mainid,subid,agenndaid,subofsubid asc;
-END */$$
 DELIMITER ;
 
 /* Procedure structure for procedure `Action_Monitoring` */
@@ -30139,30 +30774,6 @@ BEGIN
 	END */$$
 DELIMITER ;
 
-/* Procedure structure for procedure `pfms_rolewise_emplist` */
-
-/*!50003 DROP PROCEDURE IF EXISTS  `pfms_rolewise_emplist` */;
-
-DELIMITER $$
-
-/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `pfms_rolewise_emplist`(IN InLabCode VARCHAR(50), IN InLoginType VARCHAR(10), IN InEmpId VARCHAR(20))
-BEGIN
-		SELECT a.EmpId,a.Title,a.Salutation,a.SrNo,a.EmpNo,a.EmpName,b.Designation 
-		FROM employee a, employee_desig b 
-		WHERE a.IsActive=1 AND a.DesigId=b.DesigId AND a.LabCode=InLabCode and
-		((CASE
-			WHEN InEmpId IN (SELECT c.DivisionHeadId FROM division_master c WHERE c.DivisionId=a.DivisionId) THEN a.EmpId
-			WHEN InEmpId IN (SELECT d.GroupHeadId FROM division_master c, division_group d WHERE d.GroupId = c.GroupId AND c.DivisionId=a.DivisionId) THEN a.EmpId
-			WHEN InLoginType IN ('Z', 'A', 'Y', 'E', 'L') THEN 1=1
-			WHEN InEmpId = a.SuperiorOfficer THEN a.EmpId
-		END)
-		or a.EmpId = InEmpId)
-		
-		ORDER BY CASE WHEN a.SrNo=0 THEN 1 ELSE 0 END,a.SrNo
-		;
-	END */$$
-DELIMITER ;
-
 /* Procedure structure for procedure `pfms_Rfa_Mail` */
 
 /*!50003 DROP PROCEDURE IF EXISTS  `pfms_Rfa_Mail` */;
@@ -30440,6 +31051,66 @@ CASE WHEN 'A'=InprojectId THEN 1=1 ELSE a.projectid=InprojectId END
 
 ORDER BY rfaid DESC;
 
+END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `Action_List` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `Action_List` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`192.168.1.17` PROCEDURE `Action_List`(InMinutesId BIGINT(20))
+BEGIN
+SELECT a.scheduleminutesid,a.details,a.idarck,a.scheduleid,b.description,CAST('Not Required' AS CHAR) AS agennda,
+	CAST('Not Required' AS CHAR) AS sub,CAST('Not Required' AS CHAR) AS subofsub,a.minutesid AS mainid,0 AS subid,0 AS agenndaid,0 AS subofsubid
+	FROM committee_schedules_minutes_details a,committee_schedules_minutes b
+        WHERE a.minutesid=b.minutesid AND a.minutesid IN (1,2) AND a.scheduleid=inMinutesId AND a.IDARCK IN ('A','K','I')
+        UNION
+        SELECT a.scheduleminutesid,a.details,a.idarck,a.scheduleid,b.description,c.agendaitem AS sub,
+        e.unitname AS agennda,d.subdescription AS subofsub, a.minutesid AS mainid,a.minutessubid AS subid,e.minutesspecunitid AS agenndaid,a.minutessubofsubid AS subofsubid
+	FROM committee_schedules_minutes_details a,committee_schedules_minutes b, committee_schedules_agenda c, committee_schedules_minutes_sub d 
+	, committee_schedules_minutes_unit e
+        WHERE a.minutesunitid=e.minutesspecunitid AND
+        a.minutesid=b.minutesid AND a.minutesid=3 AND c.scheduleagendaid=a.minutessubid AND d.agendasubid=a.minutessubofsubid
+        AND a.scheduleid=inMinutesId AND a.IDARCK IN ('A','K','I')
+        UNION
+        SELECT a.scheduleminutesid,a.details,a.idarck,a.scheduleid,b.description,CAST('Not Required' AS CHAR) AS sub,
+        e.unitname AS agennda,d.subdescription AS subofsub, a.minutesid AS mainid,0 AS subid,e.minutesspecunitid AS agenndaid,a.minutessubofsubid AS subofsubid
+	FROM committee_schedules_minutes_details a,committee_schedules_minutes b,  committee_schedules_minutes_sub d 
+	, committee_schedules_minutes_unit e
+        WHERE a.minutesunitid=e.minutesspecunitid AND
+        a.minutesid=b.minutesid AND a.minutesid IN(4,5,6 ) AND d.agendasubid=a.minutessubofsubid
+        AND a.scheduleid=inMinutesId AND a.IDARCK IN ('A','K','I') ORDER BY  mainid,subid,agenndaid,subofsubid ASC;
+END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `pfms_rolewise_emplist` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `pfms_rolewise_emplist` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `pfms_rolewise_emplist`(
+    IN InLabCode VARCHAR(50), 
+    IN InLoginType VARCHAR(10), 
+    IN InEmpId VARCHAR(20)
+)
+BEGIN
+    SELECT a.EmpId, a.Title, a.Salutation, a.SrNo, a.EmpNo, a.EmpName, b.Designation 
+    FROM employee a
+    JOIN employee_desig b ON a.DesigId = b.DesigId
+    LEFT JOIN division_master c ON c.DivisionId = a.DivisionId
+    LEFT JOIN division_group d ON d.GroupId = c.GroupId
+    WHERE a.IsActive = 1 AND a.LabCode = InLabCode
+        AND (
+            InEmpId = a.EmpId
+            OR InEmpId = a.SuperiorOfficer
+            OR InEmpId = c.DivisionHeadId
+            OR InEmpId = d.GroupHeadId
+            OR InLoginType IN ('Z', 'A', 'Y', 'E', 'L')
+        )
+    ORDER BY CASE WHEN a.SrNo = 0 THEN 1 ELSE 0 END, a.SrNo;
 END */$$
 DELIMITER ;
 

@@ -128,6 +128,9 @@ List<Object[]> ProjectList=(List<Object[]>) request.getAttribute("ProjectList");
 
 DecimalFormat df=new DecimalFormat("0.00");
 NFormatConvertion nfc=new NFormatConvertion();
+List<String>loginTypes = Arrays.asList("A","P");
+
+String logintype = (String)session.getAttribute("LoginType");
 %>
 
 
@@ -229,11 +232,14 @@ NFormatConvertion nfc1=new NFormatConvertion();
 </table>
 <table align="center">
 	<tr>
+		<%if(loginTypes.contains(logintype)) {%>
 		<td> <button name="action" class="btn btn-sm  btn-success add" type="submit" value="add" >ADD</button>&nbsp;&nbsp;</td>
 		<td> <button name="action" class="btn btn-sm  btn-warning edit" type="submit" value="edit" id="editbtn" Onclick="Edit(frm1)">EDIT</button>&nbsp;&nbsp;</td>
-		<td> <button name="action" class="btn btn-sm  back" formaction="ProjectMasterRevView.htm" style="background-color: #22577E;color: white; border: 0" type="submit" value="revise" Onclick="Edit(frm1)">VIEW</button>&nbsp;&nbsp;</td>
 		<td> <button name="action" class="btn btn-sm  back" formaction="ProjectMasterRev.htm" style="background-color: #FF7800;color: black; border: 0" type="submit" value="revise" Onclick="Edit(frm1)">REVISE</button>&nbsp;&nbsp;</td>
-		<td> <button name="action" class="btn btn-sm  back" formaction="ProjectMasterAttach.htm" style="background-color: #7CD1B8;color: black; border: 0" type="submit" value="revise" Onclick="Edit(frm1)">ATTACHMENTS</button>&nbsp;&nbsp;</td> 	
+		<td> <button name="action" class="btn btn-sm  back" formaction="ProjectMasterAttach.htm" style="background-color: #7CD1B8;color: black; border: 0" type="submit" value="revise" Onclick="Edit(frm1)">ATTACHMENTS</button>&nbsp;&nbsp;</td>
+		<%} %>
+		<td> <button name="action" class="btn btn-sm  back" formaction="ProjectMasterRevView.htm" style="background-color: #22577E;color: white; border: 0" type="submit" value="revise" Onclick="Edit(frm1)">VIEW</button>&nbsp;&nbsp;</td>
+ 	
 		<td> <a  class="btn  btn-sm  back"  href="MainDashBoard.htm"  >BACK</a>&nbsp;&nbsp;</td>
 	</tr>
 </table>

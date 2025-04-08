@@ -54,7 +54,7 @@ public class SecurityConfiguration{
         			logout
         				  //.logoutSuccessUrl("/login?logout=1")
         				  //.invalidateHttpSession(true)
-        				  //.deleteCookies("JSESSIONID")
+        				  .deleteCookies("JSESSIONID")
         				  .addLogoutHandler(logoutSuccessHandler())
         				  .invalidateHttpSession(false) 
         			)
@@ -100,7 +100,6 @@ public class SecurityConfiguration{
 	               .and()
 	               .build();
 	}
-
 	
 	@Bean
 	UserDetailsService userDetailsService() {

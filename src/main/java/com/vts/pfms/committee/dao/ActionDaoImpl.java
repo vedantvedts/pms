@@ -1318,7 +1318,7 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	
 	
-	private static final String GETRFAREMARKS = "SELECT CONCAT (e.empname,',' ,c.designation) AS emp,t.Remarks,t.ActionDate,t.RfaStatus FROM pfms_rfa_action_transaction t,employee e,employee_desig c WHERE t.RfaId=:rfaId  AND t.actionby=e.EmpId AND e.desigid=c.desigid GROUP BY RfaStatus";
+	private static final String GETRFAREMARKS = "SELECT CONCAT (e.empname,',' ,c.designation) AS emp,t.Remarks,t.ActionDate,t.RfaStatus FROM pfms_rfa_action_transaction t,employee e,employee_desig c WHERE t.RfaId=:rfaId  AND t.actionby=e.EmpId AND e.desigid=c.desigid GROUP BY e.EmpName, c.Designation, t.Remarks, t.ActionDate, t.RfaStatus";
 	@Override
 	public List<Object[]> getrfaRemarks(String rfaId,String status) throws Exception {
 		Query query=manager.createNativeQuery(GETRFAREMARKS);
@@ -1629,7 +1629,7 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> getRiskDetails(String LabCode, int pid)throws Exception {
 		// TODO Auto-generated method stub
-		Query query = manager.createNativeQuery("SELECT MAX(aas.progressdate), MAX(am.projectid) FROM action_assign aas, action_main am WHERE aas.actionmainid = am.actionmainid AND am.type='K' AND am.projectid=:projectid");
+		Query query = manager.createNativeQuery("SELECT MAX(aas.progressdate) AS 'MAXprogressdate', IFNULL(MAX(am.projectid),0) AS 'MAXprojectid' FROM action_assign aas, action_main am WHERE aas.actionmainid = am.actionmainid AND am.type='K' AND am.projectid=:projectid");
 		query.setParameter("projectid", pid );
 		return query.getResultList();
 	}
@@ -1637,7 +1637,7 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> getMilestoneDate( int pid)throws Exception {
 		// TODO Auto-generated method stub
-		Query query = manager.createNativeQuery("SELECT MAX(modifieddate), max(projectid) FROM milestone_activity WHERE projectid=:projectid");
+		Query query = manager.createNativeQuery("SELECT MAX(modifieddate),IFNULL( max(projectid),0) AS 'MAXprojectid' FROM milestone_activity WHERE projectid=:projectid");
 		query.setParameter("projectid", pid );
 		return query.getResultList();
 	}

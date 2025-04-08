@@ -4,11 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
-import jakarta.transaction.Transactional;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
@@ -18,23 +13,29 @@ import com.vts.pfms.project.model.RequirementSummary;
 import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.DocumentFreeze;
-import com.vts.pfms.requirements.model.ReqDoc;
-import com.vts.pfms.requirements.model.RequirementInitiation;
-import com.vts.pfms.requirements.model.SpecificationMaster;
-import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.DocumentTrans;
 import com.vts.pfms.requirements.model.PfmsReqTypes;
 import com.vts.pfms.requirements.model.PfmsSpecTypes;
 import com.vts.pfms.requirements.model.PfmsTestTypes;
+import com.vts.pfms.requirements.model.ReqDoc;
+import com.vts.pfms.requirements.model.RequirementInitiation;
+import com.vts.pfms.requirements.model.SpecificationMaster;
+import com.vts.pfms.requirements.model.SpecificationTypes;
+import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
 import com.vts.pfms.requirements.model.TestDetails;
 import com.vts.pfms.requirements.model.TestPlanInitiation;
+import com.vts.pfms.requirements.model.TestPlanMaster ;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.model.TestScopeIntro;
 import com.vts.pfms.requirements.model.TestTools;
 import com.vts.pfms.requirements.model.VerificationData;
-import com.vts.pfms.requirements.model.TestPlanMaster ;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 @Transactional
 @Repository
 public class RequirementDaoImpl implements RequirementDao {
@@ -55,9 +56,14 @@ public class RequirementDaoImpl implements RequirementDao {
 		return RequirementList;
 	}
 
-	private static final String SPECIFICATIONMASTERLIST="SELECT a.SpecsMasterId, a.SpecificationName, \r\n"
-			+ "a.Description, a.SpecsParameter, a.SpecsUnit, a.SpecsInitiationId, a.SpecValue, CONCAT(IFNULL(CONCAT(c.title,' '),IFNULL(CONCAT(c.salutation,' '),'')), c.empname) AS 'empname',\r\n"
-			+ " a.CreatedDate, a.ModifiedBy, a.ModifiedDate, a.IsActive,a.sid,a.mainid,a.ParentId,a.maximumValue,a.minimumValue,a.specCount,a.SpecificationType FROM pfms_specification_master a,login b,employee c WHERE  a.CreatedBy=b.UserName AND b.empid=c.empid AND a.IsActive = '1' ORDER BY a.MainId,a.specCount,a.SpecsMasterId";
+	private static final String SPECIFICATIONMASTERLIST="SELECT a.SpecsMasterId, a.SpecificationName,a.Description, a.SpecsParameter, a.SpecsUnit, a.SpecsInitiationId, a.SpecValue,\r\n"
+			+ "CONCAT(IFNULL(CONCAT(c.title,' '),IFNULL(CONCAT(c.salutation,' '),'')), c.empname) AS 'empname',\r\n"
+			+ "a.CreatedDate, a.ModifiedBy, a.ModifiedDate, a.IsActive,a.sid,a.mainid,a.ParentId,a.maximumValue,a.minimumValue,a.specCount,d.SpecTypeCode, a.SpecTypeId, d.SpecType \r\n"
+			+ "FROM pfms_specification_master a\r\n"
+			+ "JOIN login b ON a.CreatedBy=b.UserName\r\n"
+			+ "JOIN employee c ON b.empid=c.empid \r\n"
+			+ "LEFT JOIN pfms_spec_types d ON d.SpecTypeId = a.SpecTypeId\r\n"
+			+ "WHERE a.IsActive = '1' ORDER BY a.MainId,a.specCount,a.SpecsMasterId";
 	@Override
 	public List<Object[]> SpecificationMasterList() throws Exception 
 	{
@@ -679,13 +685,17 @@ public class RequirementDaoImpl implements RequirementDao {
 		return requirementFiles;
 	}
 
-	private static final String TESTTYPECOUNT="SELECT MAX(TestCount) FROM pfms_testdetails WHERE TestPlanInitiationId=:TestPlanInitiationId AND isactive='1'";
+	private static final String TESTTYPECOUNT="SELECT IFNULL(MAX(TestCount),0) AS 'MAX' FROM pfms_testdetails WHERE TestPlanInitiationId=:TestPlanInitiationId AND isactive='1'";
 	@Override
 	public long numberOfTestTypeId(String testPlanInitiationId) throws Exception {
-
-		Query query=manager.createNativeQuery(TESTTYPECOUNT);
-		query.setParameter("TestPlanInitiationId", testPlanInitiationId);
-		return (Long)query.getSingleResult();
+		try {
+			Query query=manager.createNativeQuery(TESTTYPECOUNT);
+			query.setParameter("TestPlanInitiationId", testPlanInitiationId);
+			return (Long)query.getSingleResult();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
 		
 	}
 
@@ -1466,4 +1476,27 @@ public class RequirementDaoImpl implements RequirementDao {
 			return null;
 		}
 	}
+	
+	@Override
+	public int deleteSpecificationMasterById(String specsMasterId) {
+		try {
+			Query query = manager.createNativeQuery("UPDATE pfms_specification_master a SET a.IsActive = 0 WHERE a.SpecsMasterId =:SpecsMasterId OR a.ParentId =:SpecsMasterId OR a.ParentId IN ( SELECT SpecsMasterId FROM ( SELECT b.SpecsMasterId FROM pfms_specification_master b WHERE b.ParentId =:SpecsMasterId ) AS subquery )");
+			query.setParameter("SpecsMasterId", Long.parseLong(specsMasterId));
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	@Override
+	public List<SpecificationTypes> getSpecificationTypesList() {
+		try {
+			Query query = manager.createQuery("FROM SpecificationTypes");
+			return (List<SpecificationTypes>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<SpecificationTypes>();
+		}
+	}
+
 }

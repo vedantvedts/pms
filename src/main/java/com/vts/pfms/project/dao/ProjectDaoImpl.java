@@ -135,9 +135,9 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTDETAILSREALIZATIONUPDATE="update pfms_initiation_detail set realizationplan=:realization, realizationbrief=:realizationbrief, modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
 	private static final String PROJECTDETAILSWORLDUPDATE="update pfms_initiation_detail set worldscenario=:worldscenario,worldscenariobrief=:worldbrief, modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";	
 	private static final String PROJECTSCHTOTALMONTH="select sum(milestonemonth) from pfms_initiation_schedule where InitiationId=:InitiationId and isactive='1'";
-	/*L.A*/private static final String PROJECTDURMONTH="SELECT MAX(MilestoneTotalMonth) FROM pfms_initiation_schedule WHERE InitiationId=:InitiationId AND isactive='1'";
-	/*L.A*/ private static final String MILESCHMONTH="SELECT MAX(MilestoneTotalMonth) FROM pfms_initiation_schedule WHERE MilestoneTotalMonth !=(SELECT MilestoneTotalMonth FROM pfms_initiation_schedule WHERE InitiationScheduleId=:initiationscheduleid AND IsActive='1') AND InitiationId=:IntiationId AND IsActive='1';";	
-	private static final String MILESTONENO="select max(MilestoneNo) from pfms_initiation_schedule where InitiationId=:InitiationId and isactive='1'";
+	/*L.A*/private static final String PROJECTDURMONTH="SELECT IFNULL(MAX(MilestoneTotalMonth),0) AS 'MAX' FROM pfms_initiation_schedule WHERE InitiationId=:InitiationId AND isactive='1'";
+	/*L.A*/ private static final String MILESCHMONTH="SELECT IFNULL(MAX(MilestoneTotalMonth),0) AS 'MAX' FROM pfms_initiation_schedule WHERE MilestoneTotalMonth !=(SELECT MilestoneTotalMonth FROM pfms_initiation_schedule WHERE InitiationScheduleId=:initiationscheduleid AND IsActive='1') AND InitiationId=:IntiationId AND IsActive='1';";	
+	private static final String MILESTONENO="select IFNULL(MAX(MilestoneNo),0) AS 'MAX' from pfms_initiation_schedule where InitiationId=:InitiationId and isactive='1'";
 	private static final String SCDULEMONTH="select milestonemonth from pfms_initiation_schedule where initiationscheduleid=:initiationscheduleid and isactive='1'";
 	/*L.A*/private static final String PREVIOUSMONTH="SELECT milestonemonth FROM pfms_initiation_schedule WHERE milestoneno=:milestoneno AND initiationid=:IntiationId AND isactive='1'";
 	/*L.A*/private static final String MILESTONENOTOTALMONTH="SELECT MilestoneTotalMonth FROM pfms_initiation_schedule WHERE milestoneno=:milestoneno AND initiationid=:IntiationId AND isactive='1'";
@@ -296,11 +296,15 @@ public class ProjectDaoImpl implements ProjectDao {
 
 	@Override
 	public Long ProjectShortNameCount(String ProjectShortName) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(PROJECTSHORTNAMECHECK);
+			query.setParameter("projectshortname", ProjectShortName);
 
-		Query query=manager.createNativeQuery(PROJECTSHORTNAMECHECK);
-		query.setParameter("projectshortname", ProjectShortName);
-
-		return (Long)query.getSingleResult();		
+			return (Long)query.getSingleResult();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
 
 	}
 
@@ -878,97 +882,95 @@ public class ProjectDaoImpl implements ProjectDao {
 
 	@Override
 	public Integer ProjectScheduleMonth(String InitiationId) throws Exception {
-
-		Query query=manager.createNativeQuery(PROJECTSCHTOTALMONTH);
-		query.setParameter("InitiationId", InitiationId);
-		Long ProjectScheduleMonth=(Long)query.getSingleResult();		
-		if(ProjectScheduleMonth==null) {
+		try {
+			Query query=manager.createNativeQuery(PROJECTSCHTOTALMONTH);
+			query.setParameter("InitiationId", InitiationId);
+			return (Integer)query.getSingleResult();
+		}catch (Exception e) {
+			e.printStackTrace();
 			return 0;
 		}
-		return ProjectScheduleMonth.intValue();
 	}
-
-
 
 	@Override/*L.A*/
 	public Integer ProjectDurationMonth(String InitiationId) throws Exception {
-		// TODO Auto-generated method stub
 
-		Query query=manager.createNativeQuery(PROJECTDURMONTH);
-		query.setParameter("InitiationId", InitiationId);
-		Long ProjectDurationeMonth=(Long)query.getSingleResult();		
-		if(ProjectDurationeMonth==null) {
+		try {
+			Query query=manager.createNativeQuery(PROJECTDURMONTH);
+			query.setParameter("InitiationId", InitiationId);
+			return (Integer)query.getSingleResult();	
+		}catch (Exception e) {
+			e.printStackTrace();
 			return 0;
 		}
-		return ProjectDurationeMonth.intValue();
+			
+
 	}
 	@Override/*L.A*/
 	public Integer MilestoneScheduleMonth(String initiationscheduleid,String IntiationId) throws Exception {
-		// TODO Auto-generated method stub
-		Query query=manager.createNativeQuery(MILESCHMONTH);
-		query.setParameter("initiationscheduleid", initiationscheduleid);
-		query.setParameter("IntiationId", IntiationId);
-		Long MilestoneScheduleMonth=(Long)query.getSingleResult();		
-
-		if(MilestoneScheduleMonth==null) {
+		
+		try {
+			Query query=manager.createNativeQuery(MILESCHMONTH);
+			query.setParameter("initiationscheduleid", initiationscheduleid);
+			query.setParameter("IntiationId", IntiationId);
+			return (Integer)query.getSingleResult();	
+		}catch (Exception e) {
+			e.printStackTrace();
 			return 0;
 		}
-		return MilestoneScheduleMonth.intValue();
 	}
 
 
 	@Override
 	public int ProjectMileStoneNo(String InitiationId) throws Exception {
-		Query query=manager.createNativeQuery(MILESTONENO);
-		query.setParameter("InitiationId", InitiationId);
-		Long ProjectMileStoneNo=(Long)query.getSingleResult();		
-		if(ProjectMileStoneNo==null) {
+		try {
+			Query query=manager.createNativeQuery(MILESTONENO);
+			query.setParameter("InitiationId", InitiationId);
+			return (Integer)query.getSingleResult();	
+		}catch (Exception e) {
+			e.printStackTrace();
 			return 0;
 		}
-
-
-		return ProjectMileStoneNo.intValue();
 	}
 
 	public int ProjectScheduleEditData(String InitiationScheduleId) throws Exception {
-		Query query=manager.createNativeQuery(SCDULEMONTH);
-		query.setParameter("initiationscheduleid", InitiationScheduleId);
-
-		Long ProjectScheduleMonth=(Long)query.getSingleResult();		
-		if(ProjectScheduleMonth==null) {
+		try {
+			Query query=manager.createNativeQuery(SCDULEMONTH);
+			query.setParameter("initiationscheduleid", InitiationScheduleId);
+			return (Integer)query.getSingleResult();	
+		}catch (Exception e) {
+			e.printStackTrace();
 			return 0;
 		}
-		return ProjectScheduleMonth.intValue();
 	}
-
-
 
 	@Override/*L.A*/
 	public int mileStonemonthprevious(String IntiationId, String milestoneno) throws Exception {
+		try {
 
-		Query query=manager.createNativeQuery(PREVIOUSMONTH);
-		query.setParameter("IntiationId", IntiationId);
-		query.setParameter("milestoneno", milestoneno);
-
-		Long PreviousMilestoneMonth=(Long)query.getSingleResult();		
-		if(PreviousMilestoneMonth==null) {
+			Query query=manager.createNativeQuery(PREVIOUSMONTH);
+			query.setParameter("IntiationId", IntiationId);
+			query.setParameter("milestoneno", milestoneno);
+			return (Integer)query.getSingleResult();	
+		}catch (Exception e) {
+			e.printStackTrace();
 			return 0;
 		}
-		return PreviousMilestoneMonth.intValue();
 	}
 
 
 	@Override/*L.A*/
 	public int milestonenototalmonth(String IntiationId, String milestoneno) throws Exception {
-		// TODO Auto-generated method stub
-		Query query=manager.createNativeQuery(MILESTONENOTOTALMONTH);
-		query.setParameter("IntiationId", IntiationId);
-		query.setParameter("milestoneno", milestoneno);
-		Long milestonenototalmonth=(Long)query.getSingleResult();		
-		if(milestonenototalmonth==null) {
+		try {
+			
+			Query query=manager.createNativeQuery(MILESTONENOTOTALMONTH);
+			query.setParameter("IntiationId", IntiationId);
+			query.setParameter("milestoneno", milestoneno);
+			return (Integer)query.getSingleResult();	
+		}catch (Exception e) {
+			e.printStackTrace();
 			return 0;
 		}
-		return milestonenototalmonth.intValue();
 	}
 
 	@Override
@@ -1140,9 +1142,15 @@ public class ProjectDaoImpl implements ProjectDao {
 
 	@Override
 	public Long ProjectForwardStatus(String InitiationId) throws Exception {
-		Query query=manager.createNativeQuery("CALL ProjectForwardStatus(:InitiationId)");
-		query.setParameter("InitiationId", InitiationId);
-		return (Long)query.getSingleResult();	
+		try {
+			Query query=manager.createNativeQuery("CALL ProjectForwardStatus(:InitiationId)");
+			query.setParameter("InitiationId", InitiationId);
+			return (Long)query.getSingleResult();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
+			
 	}
 
 	@Override
@@ -1310,36 +1318,51 @@ public class ProjectDaoImpl implements ProjectDao {
 
 	@Override
 	public Long DivisionHeadId(String EmpId) throws Exception {
-
-		Query query=manager.createNativeQuery(DIVISIONHEADID);
-		query.setParameter("empid", EmpId);
-		return (Long)query.getSingleResult();
+		try {
+			Query query=manager.createNativeQuery(DIVISIONHEADID);
+			query.setParameter("empid", EmpId);
+			return (Long)query.getSingleResult();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
+		
 	}
 
 	@Override
 	public Long RtmddoId() throws Exception {
-
-		Query query=manager.createNativeQuery(RTMDDOID);
-
-		return (Long)query.getSingleResult();
+		try {
+			Query query=manager.createNativeQuery(RTMDDOID);
+			return (Long)query.getSingleResult();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
 	}
 
 	@Override
 	public Long TccChairpersonId(String Labcode) throws Exception {
-
-		Query query=manager.createNativeQuery(TCCCHAIRPERSONID);
-		query.setParameter("labcode", Labcode);
-
-		return (Long)query.getSingleResult();
+		try {
+			Query query=manager.createNativeQuery(TCCCHAIRPERSONID);
+			query.setParameter("labcode", Labcode);
+			return (Long)query.getSingleResult();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
 	}
 
 	@Override
 	public Long CcmChairpersonId(String Labcode) throws Exception {
-
-		Query query=manager.createNativeQuery(CCMCHAIRPERSONID);
-		query.setParameter("labcode", Labcode);
-
-		return (Long)query.getSingleResult();
+		try {
+			Query query=manager.createNativeQuery(CCMCHAIRPERSONID);
+			query.setParameter("labcode", Labcode);
+	
+			return (Long)query.getSingleResult();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
 	}
 
 	@Override
@@ -1351,13 +1374,18 @@ public class ProjectDaoImpl implements ProjectDao {
 
 	@Override
 	public Long ProjectMainClose(ProjectMain proType) throws Exception {
-		Query query=manager.createNativeQuery(PROJECTMAINCLOSE);
-		query.setParameter("projectmainid",proType.getProjectMainId());
-		query.setParameter("modifiedby", proType.getModifiedBy());
-		query.setParameter("modifieddate",proType.getModifiedDate());
-		int ProjectTypeEdit=(int)query.executeUpdate();	
+		try {
+			Query query=manager.createNativeQuery(PROJECTMAINCLOSE);
+			query.setParameter("projectmainid",proType.getProjectMainId());
+			query.setParameter("modifiedby", proType.getModifiedBy());
+			query.setParameter("modifieddate",proType.getModifiedDate());
+			int ProjectTypeEdit=(int)query.executeUpdate();	
 
-		return Long.valueOf(ProjectTypeEdit) ;
+			return Long.valueOf(ProjectTypeEdit) ;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
 
 	}
 	@Override
@@ -1736,14 +1764,16 @@ public class ProjectDaoImpl implements ProjectDao {
 
 	@Override
 	public Long EmpId(String InitiationId) throws Exception {
-
-		Query query=manager.createNativeQuery(INTEMPID);
-		query.setParameter("id", InitiationId);
-		return (Long)query.getSingleResult();
+		try {
+			Query query=manager.createNativeQuery(INTEMPID);
+			query.setParameter("id", InitiationId);
+			return (Long)query.getSingleResult();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
+		
 	}
-
-
-
 
 	@Override
 	public List<Object[]> ProjectRiskDataList(String projectid,String LabCode) throws Exception 
@@ -1754,8 +1784,6 @@ public class ProjectDaoImpl implements ProjectDao {
 		List<Object[]>  ProjectRiskDataList=(List<Object[]>)query.getResultList();
 		return ProjectRiskDataList;
 	}
-
-
 
 	@Override
 	public Object[] ProjectRiskData(String actionassignid) throws Exception 
@@ -2279,7 +2307,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		query.setParameter("initiationid", pf.getInitiationId());
 		return query.executeUpdate();
 	}
-	private static final String REQTYPECOUNT="SELECT MAX(ReqCount) FROM pfms_initiation_req WHERE initiationid=:intiationId AND projectid=:projectid AND isactive='1'";
+	private static final String REQTYPECOUNT="SELECT IFNULL(MAX(ReqCount),0) AS 'MAX' FROM pfms_initiation_req WHERE initiationid=:intiationId AND projectid=:projectid AND isactive='1'";
 	@Override
 	public long numberOfReqTypeId(String intiationId,String projectId) throws Exception {
 
@@ -2398,7 +2426,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
 		return pf.getDocId();
 	}
-	private static final String PROJECTFILES="SELECT DocId,initiationid,stepid,fileName,DocumentName,FilePath,MAX(VersionDoc)AS versiondoc,Description,DocumentId FROM pfms_initiation_file_upload WHERE initiationid=:initiationid AND stepid=:stepid GROUP BY DocumentId,DocId ";
+	private static final String PROJECTFILES="SELECT DocId,initiationid,stepid,fileName,DocumentName,FilePath,IFNULL(MAX(VersionDoc),0) AS 'MAXversiondoc',Description,DocumentId FROM pfms_initiation_file_upload WHERE initiationid=:initiationid AND stepid=:stepid GROUP BY DocumentId,DocId ";
 	@Override
 	public List<Object[]> getProjectFilese(String initiationid, String stepid) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTFILES);
@@ -2409,13 +2437,19 @@ public class ProjectDaoImpl implements ProjectDao {
 	}
 
 
-	private static final String FILECOUNT="SELECT MAX(DocumentId) FROM pfms_initiation_file_upload WHERE initiationid=:initiationid AND stepid=:stepid ";
+	private static final String FILECOUNT="SELECT IFNULL(MAX(DocumentId),0) AS 'MAX' FROM pfms_initiation_file_upload WHERE initiationid=:initiationid AND stepid=:stepid ";
 	@Override
 	public long filecount(String stepid, String initiationid) throws Exception {
-		Query query =manager.createNativeQuery(FILECOUNT);
-		query.setParameter("initiationid", initiationid);
-		query.setParameter("stepid",stepid);
-		return (Long)query.getSingleResult();
+		try {
+			Query query =manager.createNativeQuery(FILECOUNT);
+			query.setParameter("initiationid", initiationid);
+			query.setParameter("stepid",stepid);
+			return (Long)query.getSingleResult();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
+		
 	}
 
 
@@ -2472,7 +2506,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		List<Object[]>projectfiles=(List<Object[]>)query.getResultList();
 		return projectfiles;
 	}
-	private static final String PROFILES="SELECT DocId,initiationid,stepid,fileName,DocumentName,FilePath,MAX(VersionDoc)AS versiondoc,Description,DocumentId FROM pfms_initiation_file_upload WHERE initiationid=:initiationid AND stepid=:stepid AND Documentid=:documentid GROUP BY DocumentId ";
+	private static final String PROFILES="SELECT DocId,initiationid,stepid,fileName,DocumentName,FilePath,IFNULL(MAX(VersionDoc), 0) AS versiondoc,Description,DocumentId FROM pfms_initiation_file_upload WHERE initiationid=:initiationid AND stepid=:stepid AND Documentid=:documentid GROUP BY DocumentId ";
 	@Override
 	public Object[] projectfile(String initiationid, String stepid, String documentid) throws Exception {
 		// TODO Auto-generated method stub
@@ -3165,7 +3199,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		try {
 			reqStatus=(Object[])query.getSingleResult();	
 		}catch (Exception e) {
-
+			e.printStackTrace();
 		}
 		return reqStatus;
 	}
@@ -3180,10 +3214,15 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String EMPID="SELECT EmpId FROM pfms_initiation WHERE InitiationId=:InitiationId";
 	@Override
 	public String getEmpId(String pdd) throws Exception {
-		Query query =manager.createNativeQuery(EMPID);
-		query.setParameter("InitiationId", pdd);
-		Long a=(Long) query.getSingleResult();
-		return a+"";
+		try {
+			Query query =manager.createNativeQuery(EMPID);
+			query.setParameter("InitiationId", pdd);
+			return (Long) query.getSingleResult()+"";
+		}catch (Exception e) {
+			e.printStackTrace();
+			return "0";
+		}
+		
 	}
 
 	private static final String DOCFLWDATA="SELECT pr.empid ,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname' ,ed.designation ,pr.type  FROM pfms_initiation_approver pr, employee e ,employee_desig ed WHERE pr.empid=e.empid AND e.desigid=ed.desigid AND pr.isactive='1' AND pr.LabCode=:labcode AND pr.initiationid=:initiationid ORDER BY FIELD (pr.type,'Reviewer','Approver')";
@@ -3196,7 +3235,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		return DocumentApprovalFlowData;
 	}
 
-	private static final String MAXREQ="SELECT MAX(a.version) FROM pfms_initiation_req_status a WHERE ReqInitiationId=:ReqInitiationId AND isactive=1";
+	private static final String MAXREQ="SELECT IFNULL(MAX(a.version),0) AS 'MAX' FROM pfms_initiation_req_status a WHERE ReqInitiationId=:ReqInitiationId AND isactive=1";
 	@Override
 	public String maxRequirementVersion(Long reqInitiationId) throws Exception {
 		Query query =manager.createNativeQuery(MAXREQ);
@@ -3307,8 +3346,7 @@ public class ProjectDaoImpl implements ProjectDao {
 			query.setParameter("reqmainid", reqMainId);
 			query.setParameter("reqparentid", i);
 			return (Long)query.getSingleResult()+"";
-		}
-		catch(Exception e) {
+		}catch(Exception e) {
 			e.printStackTrace();
 			return "0";
 		}
@@ -3489,11 +3527,18 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PRGCOUNT="SELECT COUNT(a.ReqInitiationId) FROM pfms_initiation_req a,pfms_initiation_otherreq_details b ,pfms_initiation_req_intro c WHERE a.ReqInitiationId=b.ReqInitiationId AND a.ReqInitiationId=c.ReqInitiationId AND a.ReqInitiationId=:ReqInitiationId";
 	@Override
 	public Long ReqForwardProgress(String reqInitiationId) throws Exception {
-		Query query =manager.createNativeQuery(PRGCOUNT);
-		query.setParameter("ReqInitiationId", reqInitiationId);
+		try {
+			Query query =manager.createNativeQuery(PRGCOUNT);
+			query.setParameter("ReqInitiationId", reqInitiationId);
 
-		return (Long)query.getSingleResult();
+			return (Long)query.getSingleResult();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
+		
 	}
+	
 	@Override
 	public long ProjectSqrSubmit(ProjectSqrFile psf) throws Exception {
 		String Update="UPDATE pfms_initiation_sqr SET isactive='0' WHERE ReqInitiationId=:ReqInitiationId";
@@ -4135,10 +4180,9 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String SYSSPECIFICLIST="SELECT a.SpecsMasterId , a.SpecificationName,a.Description,a.SpecsParameter,\r\n"
 			+ "a.SpecsUnit,a.SpecsInitiationId,a.SpecValue,'EmpName' AS 'EMP',a.CreatedDate, \r\n"
 			+ "a.ModifiedBy, a.ModifiedDate, a.IsActive,a.sid,a.mainid,a.ParentId,\r\n"
-			+ "a.maximumValue,a.minimumValue,a.specCount,a.SpecificationType \r\n"
-			+ "FROM pfms_specification_master a, pfms_product_tree b\r\n"
-			+ "WHERE a.mainid=b.SystemMainId AND b.MainId=:productTreeMainId \r\n"
-			+ "AND a.isactive='1' ORDER BY a.MainId,a.specCount";
+			+ "a.maximumValue,a.minimumValue,a.specCount,c.SpecTypeCode, a.SpecTypeId, c.SpecType \r\n"
+			+ "FROM pfms_specification_master a, pfms_product_tree b, pfms_spec_types c \r\n"
+			+ "WHERE a.mainid=b.SystemMainId AND b.MainId=:productTreeMainId AND C.SpecTypeId = a.SpecTypeId AND a.isactive=1 ORDER BY a.MainId,a.specCount";
 	@Override
 	public List<Object[]> getsystemSpecificationList(String productTreeMainId) throws Exception {
 

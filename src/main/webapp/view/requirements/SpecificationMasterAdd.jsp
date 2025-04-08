@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.requirements.model.SpecificationTypes"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.requirements.model.SpecificationMaster"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
@@ -107,238 +108,220 @@ body {
 <body>
 
 <%
-SpecificationMaster sp = (SpecificationMaster)request.getAttribute("SpecificationMaster");
-List<Object[]>systemList = (List<Object[]>)request.getAttribute("systemList");
-List<Object[]>productTreeList = (List<Object[]>)request.getAttribute("productTreeList");
-List<Object[]>subSpecificationList = (List<Object[]>)request.getAttribute("subSpecificationList");
-String mainId = sp.getMainId()!=null ?sp.getMainId().toString():"0";
-String specid = sp.getSpecsInitiationId()!=null ?sp.getSpecsInitiationId().split("_")[0].toString():"0";
-List<Object[]>subLevel1Child=new ArrayList<>();
-int NumberOfChild=subLevel1Child.size();
-String HasChild = "N";//for edit I am taking this value
-String hasUnit = sp.getSpecsUnit()!=null&& sp.getSpecsUnit().length()>0 ?"Y":"N";
-if(subSpecificationList!=null && subSpecificationList.size()>0 && sp.getSpecsMasterId()!=null){
-	subLevel1Child=subSpecificationList.stream().filter(e->e[14].toString().equalsIgnoreCase(sp.getSpecsMasterId()+"")).collect(Collectors.toList());
-	NumberOfChild=subLevel1Child.size();
-	if(NumberOfChild>0){
-		HasChild="Y";
+	SpecificationMaster sp = (SpecificationMaster)request.getAttribute("SpecificationMaster");
+	List<Object[]>systemList = (List<Object[]>)request.getAttribute("systemList");
+	List<Object[]>productTreeList = (List<Object[]>)request.getAttribute("productTreeList");
+	List<Object[]>subSpecificationList = (List<Object[]>)request.getAttribute("subSpecificationList");
+	String mainId = sp.getMainId()!=null ?sp.getMainId().toString():"0";
+	String specid = sp.getSpecsInitiationId()!=null ?sp.getSpecsInitiationId().split("_")[0].toString():"0";
+	List<Object[]>subLevel1Child=new ArrayList<>();
+	int NumberOfChild=subLevel1Child.size();
+	String HasChild = "N";//for edit I am taking this value
+	String hasUnit = sp.getSpecsUnit()!=null&& sp.getSpecsUnit().length()>0 ?"Y":"N";
+	if(subSpecificationList!=null && subSpecificationList.size()>0 && sp.getSpecsMasterId()!=null){
+		subLevel1Child=subSpecificationList.stream().filter(e->e[14].toString().equalsIgnoreCase(sp.getSpecsMasterId()+"")).collect(Collectors.toList());
+		NumberOfChild=subLevel1Child.size();
+		if(NumberOfChild>0){
+			HasChild="Y";
+		}
 	}
-}
+	
+	List<SpecificationTypes> specificationTypesList = (List<SpecificationTypes>) request.getAttribute("specificationTypesList");
+	String specTypeId = (String) request.getAttribute("specTypeId");
 %>
-			<div class="container" id="container" style="max-width:95%">
-			<form action="specificationMasterAddSubmit.htm" method="POST">
+	<div class="container" id="container" style="max-width:95%">
+		<form action="specificationMasterAddSubmit.htm" method="POST">
 			<div class="row" id="row1">
 			
 				<div class="col-md-12" id="reqdiv" style="background: white;">
 					<div class="card-body" id="cardbody">
-							<div class="row">
-							      <div class="col-md-2">
-                            		<label style="font-size: 17px; margin-top: 2%; color: #07689f">System Name :<span class="mandatory" style="color: red;">*</span></label>
-                            		</div>
-                            		<div class="col-md-1" >
-                              		<select class="form-control selectdee" id="sid" required="required" name="sid" onchange="getSubSystem()" >
-    									<option disabled selected value="">Choose...</option>
-    										<% for (Object[] obj : systemList) {
-    										%>
-											<option value="<%=obj[0]%>" data-system="<%=obj[2].toString() %>" <%if(sp.getSid()!=null && sp.getSid().toString().equalsIgnoreCase(obj[0].toString())) {%> selected <%} %> > <%=obj[2]%>  </option>
-											<%} %>
-  									</select>
-  									</div>
-  									
-  									 <div class="col-md-2">
-                            		<label style="font-size: 17px; margin-top: 2%; color: #07689f;float: right">Sub-System Name :<span class="mandatory" style="color: red;">*</span></label>
-                            		</div>
-                            		<div class="col-md-3" >
-                              		<select class="form-control selectdee" id="subid" required="required" name="subid" onchange="" >
-    								
-  									</select>
-  									</div>
-  									
-  									 <div class="col-md-2">
-                            		<label style="font-size: 17px; margin-top: 2%; color: #07689f;float: right">Specification Type :<span class="mandatory" style="color: red;">*</span></label>
-                            		</div>
-  									
-  									<div class="col-md-2" >
-                              		<select class="form-control selectdee" id="specType" required="required" name="SpecType" onchange="" >
+						<div class="row">
+							<div class="col-md-2">
+                            	<label style="font-size: 17px; margin-top: 2%; color: #07689f">System Name :<span class="mandatory" style="color: red;">*</span></label>
+                         	</div>
+                            <div class="col-md-1" >
+                              	<select class="form-control selectdee" id="sid" required="required" name="sid" onchange="getSubSystem()" >
     								<option disabled selected value="">Choose...</option>
-    								<option  value="FS" <%if(sp.getSpecificationType()!=null && sp.getSpecificationType().equalsIgnoreCase("FS")) {%> selected <%} %>>Functional</option>
-    								<option value="OS" <%if(sp.getSpecificationType()!=null && sp.getSpecificationType().equalsIgnoreCase("OS")) {%> selected <%} %>>Operational</option>
-    								<option  value="DS" <%if(sp.getSpecificationType()!=null && sp.getSpecificationType().equalsIgnoreCase("DS")) {%> selected <%} %>>Deployment</option>
-    								<option  value="PS" <%if(sp.getSpecificationType()!=null && sp.getSpecificationType().equalsIgnoreCase("PS")) {%> selected <%} %>>Performance</option>
-    								<option  value="MS" <%if(sp.getSpecificationType()!=null && sp.getSpecificationType().equalsIgnoreCase("MS")) {%> selected <%} %>>Mechanical</option>
-    								<option  value="ES" <%if(sp.getSpecificationType()!=null && sp.getSpecificationType().equalsIgnoreCase("ES")) {%> selected <%} %>>Electrical</option>
-    								<option  value="IS" <%if(sp.getSpecificationType()!=null && sp.getSpecificationType().equalsIgnoreCase("IS")) {%> selected <%} %>>Interface</option>
-  									</select>
-  									</div>
+   									<% for (Object[] obj : systemList) {%>
+										<option value="<%=obj[0]%>" data-system="<%=obj[2].toString() %>" <%if(sp.getSid()!=null && sp.getSid().toString().equalsIgnoreCase(obj[0].toString())) {%> selected <%} %> > <%=obj[2]%>  </option>
+									<%} %>
+  								</select>
+  							</div>
+  									
+  							<div class="col-md-2">
+                            	<label style="font-size: 17px; margin-top: 2%; color: #07689f;float: right">Sub-System Name :<span class="mandatory" style="color: red;">*</span></label>
+                            </div>
+                            <div class="col-md-3" >
+                              	<select class="form-control selectdee" id="subid" required="required" name="subid" onchange="" >
+    								
+  								</select>
+  							</div>
+  									
+  							<div class="col-md-2">
+                            	<label style="font-size: 17px; margin-top: 2%; color: #07689f;float: right">Specification Type :<span class="mandatory" style="color: red;">*</span></label>
+                            </div>
+  									
+  							<div class="col-md-2" >
+                              	<select class="form-control selectdee" id="specType" required="required" name="SpecType" onchange="" >
+    								<option disabled selected value="">Choose...</option>
+    								<%if(specificationTypesList!=null && specificationTypesList.size()>0) {
+    									specificationTypesList = specificationTypesList.stream().filter(e -> e.getIsActive()!=0).collect(Collectors.toList());
+    									for(SpecificationTypes specificationType : specificationTypesList) {
+    								%>
+    									<option value="<%=specificationType.getSpecTypeId()+"/"+specificationType.getSpecTypeCode() %>" 
+    									<%if(sp.getSpecTypeId()!=null && sp.getSpecTypeId().equals(specificationType.getSpecTypeId()) || 
+    									(specTypeId!=null && Long.parseLong(specTypeId)==specificationType.getSpecTypeId())) {%> selected <%} %>>
+    										<%=specificationType.getSpecType() %>
+    									</option>
+    								<%} }%>
+  								</select>
+  							</div>
+						</div>
+						
+						<br>
+						<hr>
+							
+						<div class="row">
+							<div class="col-md-3">
+								<span> <label style="font-size: 17px; margin-top: 2%; color: #07689f;">Contain child?</label></span>
+					   			<span><input type="radio" name="IsChild" onchange="getValue('Y')"  <%if(NumberOfChild>0) {%> checked="checked" <%} %>>&nbsp; YES  &nbsp;&nbsp; 
+					     		<input type="radio" name="IsChild" onchange="getValue('N')" <%if(NumberOfChild==0) {%> checked="checked" <%} %>>&nbsp;&nbsp;&nbsp; NO &nbsp;&nbsp;&nbsp;   </span>                  
 							</div>
-							<br><hr>
-								<div class="row">
-								<div class="col-md-3">
-								   <span> <label style="font-size: 17px; margin-top: 2%; color: #07689f;">Contain child?</label></span>
-					               <span><input type="radio" name="IsChild" onchange="getValue('Y')"  <%if(NumberOfChild>0) {%> checked="checked" <%} %>>&nbsp; YES  &nbsp;&nbsp; 
-					               <input type="radio" name="IsChild" onchange="getValue('N')" <%if(NumberOfChild==0) {%> checked="checked" <%} %>>&nbsp;&nbsp;&nbsp; NO &nbsp;&nbsp;&nbsp;   </span>                  
-								</div>
-								<div class="col-md-4" id="childdiv" >
+							<div class="col-md-4" id="childdiv" >
 								<span><label style="font-size: 17px; margin-top: 2%; color: #07689f;">Number of Child :</label></span>
 								<input type="number" name="numberOfChild" id="childNo" class="form-control" style="width:20%;display: inline" max="50" min="0" value="<%=NumberOfChild %>"oninput="handleChildNoChange(this)">
-								</div>
-								<div class="col-md-4" id="unitDiv">
-								 <span> <label style="font-size: 17px; margin-top: 2%; color: #07689f;">Units Required?</label></span>
-					             <span><input type="radio" name="IsUnit" value="Y"  <%if(hasUnit.equalsIgnoreCase("Y")) {%>  checked="checked" <%} %> onchange="getUnits('Y')" >&nbsp; YES  &nbsp;&nbsp; 
-					             <input type="radio" name="IsUnit"  value="N" <%if(hasUnit.equalsIgnoreCase("N")) {%>  checked="checked" <%} %> onchange="getUnits('N')" >&nbsp;&nbsp;&nbsp; NO &nbsp;&nbsp;&nbsp;   </span>                  
-								</div>
-								</div>
+							</div>
+							<div class="col-md-4" id="unitDiv">
+								<span> <label style="font-size: 17px; margin-top: 2%; color: #07689f;">Units Required?</label></span>
+					        	<span><input type="radio" name="IsUnit" value="Y"  <%if(hasUnit.equalsIgnoreCase("Y")) {%>  checked="checked" <%} %> onchange="getUnits('Y')" >&nbsp; YES  &nbsp;&nbsp; 
+					            <input type="radio" name="IsUnit"  value="N" <%if(hasUnit.equalsIgnoreCase("N")) {%>  checked="checked" <%} %> onchange="getUnits('N')" >&nbsp;&nbsp;&nbsp; NO &nbsp;&nbsp;&nbsp;   </span>                  
+							</div>
+						</div>
 								
 							
-								<div id="mainDiv" >
-							<%-- 	<div class="row">
-								<div class="col-md-3">
-								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Description: <span class="mandatory" style="color: red;">*</span></label>
-								</div>
-								<div class="col-md-9" id="Editor">
-			   					<%=sp.getDescription()!=null?sp.getDescription():"" %>
-
-								</div>
-    								<textarea name="description" style="display: none;"  id="ConclusionDetails"></textarea>	
-								</div> --%>
-								
-						
-						<%-- 	<div class="row mt-2" id="onlyParameterDiv" style="display: none;">
-							<div class="col-md-1">
-							<label style="font-size: 15px; margin-top: 5%; color: #07689f">Parameter: <span class="mandatory" style="color: red;">*</span></label>
-							</div>
-							<div class="col-md-4">
-							<input type="text" class="form-control" name="specParameter" id="specParameter" required="required" value="<%=sp.getSpecsParameter()!=null?sp.getSpecsParameter():"" %>">
-							</div>
-							<div class="col-md-2">
-							<label style="font-size: 15px; margin-top: 5%; color: #07689f">Parameter value: <span class="mandatory" style="color: red;">*</span></label>
-							</div>
-							<div class="col-md-3">
-							<input type="text" class="form-control" name="specValue" id="specParameterMainValue" required="required" value="">
-							</div>
-							</div> --%>
+						<div id="mainDiv" >
 							<hr class="mt-2">
-								<div class="row mt-2">
+							<div class="row mt-2">
 								<div class="col-md-2">
-								<label style="font-size: 17px; margin-top: 5%; color: #07689f">Description: <span class="mandatory" style="color: red;">*</span></label>
+									<label style="font-size: 17px; margin-top: 5%; color: #07689f">Description: <span class="mandatory" style="color: red;">*</span></label>
 								</div>
 								<div class="col-md-9">
-			   					<textarea class="form-control" name="description"   id="ConclusionDetails" rows="4" maxlength="1000" placeholder="Maximum 1000 characters"><%=sp.getDescription()!=null?sp.getDescription():"" %></textarea>	
+			   						<textarea class="form-control" name="description"   id="ConclusionDetails" rows="4" maxlength="1000" placeholder="Maximum 1000 characters"><%=sp.getDescription()!=null?sp.getDescription():"" %></textarea>	
 								</div>
-    								
-								</div>
+   								
+							</div>
+							
 							<br>
+							
 							<div class="row mt-2" id="ParameterDiv" style="">
-							<div class="col-md-1">
-							<label style="font-size: 15px; margin-top: 5%; color: #07689f">Parameter: <span class="mandatory" style="color: red;">*</span></label>
-							</div>
-							<div class="col-md-3">
-							<input type="text" class="form-control" name="specParameter" id="specParameter" required="required" value="<%=sp.getSpecsParameter()!=null?sp.getSpecsParameter():"" %>">
-							</div>
+								<div class="col-md-1">
+									<label style="font-size: 15px; margin-top: 5%; color: #07689f">Parameter: <span class="mandatory" style="color: red;">*</span></label>
+								</div>
+								<div class="col-md-3">
+									<input type="text" class="form-control" name="specParameter" id="specParameter" required="required" value="<%=sp.getSpecsParameter()!=null?sp.getSpecsParameter():"" %>">
+								</div>
 								
-							<div class="col-md-1">
-							<label style="font-size: 15px; margin-top: 5%;float:right; color: #07689f">Unit: <span class="mandatory" style="color: red;">*</span></label>
-							</div>
-							<div class="col-md-1">
-							<input type="text" class="form-control" name="specUnit" id="specUnit" required="required" value="<%=sp.getSpecsUnit()!=null?sp.getSpecsUnit():"" %>">
-							</div>
-							<div class="">
-							<label style="font-size: 15px; margin-top: 5%;float:right; color: #07689f">Min Value: </label>
-							</div>
-							<div class="col-md-1">
-							<input type="text" class="form-control" name="minValue" id="minValue"  value="<%=sp.getMinimumValue()!=null?sp.getMinimumValue():"" %>">
-							</div>
-							<div class="">
-							<label style="font-size: 15px; margin-top: 5%;float:right; color: #07689f">Typical Value: <span class="mandatory" style="color: red;">*</span></label>
-							</div>
-							<div class="col-md-1">
-							<input type="text" class="form-control" name="specValue" id="specValue" required="required" value="<%=sp.getSpecValue()!=null?sp.getSpecValue():"" %>">
-							</div>
+								<div class="col-md-1">
+									<label style="font-size: 15px; margin-top: 5%;float:right; color: #07689f">Unit: <span class="mandatory" style="color: red;">*</span></label>
+								</div>
+								<div class="col-md-1">
+									<input type="text" class="form-control" name="specUnit" id="specUnit" required="required" value="<%=sp.getSpecsUnit()!=null?sp.getSpecsUnit():"" %>">
+								</div>
+								<div class="">
+									<label style="font-size: 15px; margin-top: 5%;float:right; color: #07689f">Min Value: </label>
+								</div>
+								<div class="col-md-1">
+									<input type="text" class="form-control" name="minValue" id="minValue"  value="<%=sp.getMinimumValue()!=null?sp.getMinimumValue():"" %>">
+								</div>
+								<div class="">
+									<label style="font-size: 15px; margin-top: 5%;float:right; color: #07689f">Typical Value: <span class="mandatory" style="color: red;">*</span></label>
+								</div>
+								<div class="col-md-1">
+									<input type="text" class="form-control" name="specValue" id="specValue" required="required" value="<%=sp.getSpecValue()!=null?sp.getSpecValue():"" %>">
+								</div>
 							
-							<div class="">
-							<label style="font-size: 15px; margin-top: 5%;float:right; color: #07689f">Max Value:</label>
+								<div class="">
+									<label style="font-size: 15px; margin-top: 5%;float:right; color: #07689f">Max Value:</label>
+								</div>
+								<div class="col-md-1">
+									<input type="text" class="form-control" name="maxValue" id="maxValue"  value="<%=sp.getMaximumValue()!=null?sp.getMaximumValue():"" %>">
+								</div>
 							</div>
-							<div class="col-md-1">
-							<input type="text" class="form-control" name="maxValue" id="maxValue"  value="<%=sp.getMaximumValue()!=null?sp.getMaximumValue():"" %>">
-							</div>
-							</div>
-							</div>
-							<hr class="mt-2">
-							<div class="row mt-2" id="tablediv" >
-							<table class="table table-bordered table-striped">
-							<thead class="bg-primary text-light">
-							<tr>
-							<th>SN</th>
-							<th style="text-align:center;width:20%;">Parameter</th>
-							<th style="text-align:center;">Unit</th>
-							<th style="text-align:center;">Min Value</th>
-							<th style="text-align:center;">Typical Value &nbsp;/&nbsp;Value</th>
-							<th style="text-align:center;">Max Value</th>
+						</div>
 						
-							<th style="text-align:center;width:30%;">Description</th>
-							<th>Action</th>
-							</tr>
-							</thead>
-							<tbody id="tbody">
-							<%int count=0;int subrowCount=0;
-							for(Object[]obj:subLevel1Child){ %>
-							<tr class="main-row" data-row="<%=++count%>">
-							<td><%=count%>.</td>
-							<td><input type="text" class="form-control specParameter" name="specParameter_<%=count %>" required="required" value="<%=obj[3]!=null?obj[3].toString():"" %>"></td>
-							<td><input type="text" class="form-control specUnit" name="specUnit_<%=count %>" required="required" value="<%=obj[4]!=null?obj[4].toString():"" %>"></td>
-														<td><input type="text" class="form-control minValue" name="minValue_<%=count %>" required="required" value="<%=obj[16]!=null?obj[16].toString():"" %>"></td>
-							<td><input type="text" class="form-control specValue" name="specValue_<%=count %>" required="required" value="<%=obj[6]!=null?obj[6].toString():"" %>">
-							</td>
-							<td><input type="text" class="form-control maxValue" name="maxValue_<%=count %>" required="required" value="<%=obj[15]!=null?obj[15].toString():"" %>"></td>
-
-							<td>
-							<textarea class="form-control description" name="description_<%=count %>" required="required"><%=obj[2].toString() %></textarea></td>
-							<td>
-							<button type="button" class="btn btn-sm add-sub-row" data-row="<%=count %>"><i class="fa fa-plus" aria-hidden="true" style="color:green"></i></button>
-							</td></tr>
+						<hr class="mt-2">
 							
-							<% for(Object[]obj1:subSpecificationList){
-							if(obj1[14].toString().equalsIgnoreCase(obj[0].toString())){
-							%>
-							
-							<tr class="sub-row" data-parent="<%=count %>" data-sub-row="<%=++subrowCount%>">
-							<td style="text-align:center;"><%=count %>.<%=subrowCount %></td>
-							<td><input type="text" class="form-control specParameter" name="<%=count %>_specParameter" required="required" value="<%=obj1[3]!=null?obj1[3].toString():"" %>"></td>
-							<td><input type="text" class="form-control specUnit" name="<%=count %>_specUnit" required="required" value="<%=obj1[4]!=null?obj1[4].toString():"" %>"></td>
-														<td><input type="text" class="form-control minValue" name="<%=count %>_minValue" required="required" value="<%=obj1[16]!=null? obj1[16].toString():"" %>"></td>
-							<td><input type="text" class="form-control specValue" name="<%=count %>_specValue" required="required" value="<%=obj1[6]!=null?obj1[6].toString():"" %>"></td>
-							<td><input type="text" class="form-control maxValue" name="<%=count %>_maxValue" required="required" value="<%=obj1[15]!=null?obj1[15].toString():"" %>"></td>
-
-							<td><textarea type="text" class="form-control decription" name="<%=count %>_description" required="required"><%=obj1[2]!=null? obj1[2].toString():"" %></textarea></td>
-							<td>
-							<button type="button" class="btn btn-sm remove-sub-row" data-parent="<%=count %>"><i class="fa fa-minus" aria-hidden="true" style="color:red"></i></button>
-							</td>
-							</tr>
-							
-							
-							
-							
-							<%}} %>
-							<%} %>
-							</tbody>
+						<div class="row mt-2" id="tablediv" >
+							<table class="table table-bordered table-striped">
+								<thead class="bg-primary text-light">
+									<tr>
+										<th>SN</th>
+										<th style="text-align:center;width:20%;">Parameter</th>
+										<th style="text-align:center;">Unit</th>
+										<th style="text-align:center;">Min Value</th>
+										<th style="text-align:center;">Typical Value &nbsp;/&nbsp;Value</th>
+										<th style="text-align:center;">Max Value</th>
+									
+										<th style="text-align:center;width:30%;">Description</th>
+										<th>Action</th>
+									</tr>
+								</thead>
+								<tbody id="tbody">
+									<%int count=0;int subrowCount=0;
+									for(Object[]obj:subLevel1Child){ %>
+										<tr class="main-row" data-row="<%=++count%>">
+											<td><%=count%>.</td>
+											<td><input type="text" class="form-control specParameter" name="specParameter_<%=count %>" required="required" value="<%=obj[3]!=null?obj[3].toString():"" %>"></td>
+											<td><input type="text" class="form-control specUnit" name="specUnit_<%=count %>" required="required" value="<%=obj[4]!=null?obj[4].toString():"" %>"></td>
+																		<td><input type="text" class="form-control minValue" name="minValue_<%=count %>" required="required" value="<%=obj[16]!=null?obj[16].toString():"" %>"></td>
+											<td><input type="text" class="form-control specValue" name="specValue_<%=count %>" required="required" value="<%=obj[6]!=null?obj[6].toString():"" %>">
+											</td>
+											<td><input type="text" class="form-control maxValue" name="maxValue_<%=count %>" required="required" value="<%=obj[15]!=null?obj[15].toString():"" %>"></td>
+				
+											<td>
+											<textarea class="form-control description" name="description_<%=count %>" required="required"><%=obj[2].toString() %></textarea></td>
+											<td>
+											<button type="button" class="btn btn-sm add-sub-row" data-row="<%=count %>"><i class="fa fa-plus" aria-hidden="true" style="color:green"></i></button>
+											</td></tr>
+											
+											<% for(Object[]obj1:subSpecificationList){
+											if(obj1[14].toString().equalsIgnoreCase(obj[0].toString())){
+											%>
+											
+											<tr class="sub-row" data-parent="<%=count %>" data-sub-row="<%=++subrowCount%>">
+											<td style="text-align:center;"><%=count %>.<%=subrowCount %></td>
+											<td><input type="text" class="form-control specParameter" name="<%=count %>_specParameter" required="required" value="<%=obj1[3]!=null?obj1[3].toString():"" %>"></td>
+											<td><input type="text" class="form-control specUnit" name="<%=count %>_specUnit" required="required" value="<%=obj1[4]!=null?obj1[4].toString():"" %>"></td>
+																		<td><input type="text" class="form-control minValue" name="<%=count %>_minValue" required="required" value="<%=obj1[16]!=null? obj1[16].toString():"" %>"></td>
+											<td><input type="text" class="form-control specValue" name="<%=count %>_specValue" required="required" value="<%=obj1[6]!=null?obj1[6].toString():"" %>"></td>
+											<td><input type="text" class="form-control maxValue" name="<%=count %>_maxValue" required="required" value="<%=obj1[15]!=null?obj1[15].toString():"" %>"></td>
+				
+											<td><textarea type="text" class="form-control decription" name="<%=count %>_description" required="required"><%=obj1[2]!=null? obj1[2].toString():"" %></textarea></td>
+											<td>
+											<button type="button" class="btn btn-sm remove-sub-row" data-parent="<%=count %>"><i class="fa fa-minus" aria-hidden="true" style="color:red"></i></button>
+											</td>
+										</tr>
+									<%}} %>
+									<%} %>
+								</tbody>
 							</table>
-							</div>
+						</div>
 							
-								<div align="center" class="mt-2">
-								<%if(sp.getSpecsMasterId()!=null){ %>
+						<div align="center" class="mt-2">
+							<%if(sp.getSpecsMasterId()!=null){ %>
 								<button id="editbtn" type="submit" class="btn btn-sm edit"  onclick="submitData()" name="action" value="update">UPDATE </button>
 								<input type="hidden" name="SpecsMasterId" value="<%=sp.getSpecsMasterId()%>">
-								<%}else{ %>
+							<%}else{ %>
 								<button id="submitbtn" type="submit" class="btn btn-sm submit" onclick="submitData()" name="action" value="add">SUBMIT </button>
-								<%} %>
-								<a class="btn btn-info btn-sm back" href="SpecificationMasters.htm">Back</a>
-								</div>
-								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-								</div>
-								</div>
-								</div>
-								</form>	
-								</div>
+							<%} %>
+							<a class="btn btn-info btn-sm back" href="SpecificationMasters.htm?specTypeId=<%=specTypeId%>">Back</a>
+						</div>
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					</div>
+				</div>
+			</div>
+		</form>	
+	</div>
 								
 	<script>
 	$('#Editor').summernote({
