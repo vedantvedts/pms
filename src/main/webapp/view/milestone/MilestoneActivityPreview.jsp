@@ -166,20 +166,21 @@ var s = '';
                              
                         	</div>
                        		</div>
-                       		<%if(RevisionCount==0) { %>
+                       		
                        		<div class="row container-fluid" >
                              <div class="col-md-1 " >                    		
                         	</div>
+                        	<%if(RevisionCount==0) { %>
                     		<div class="col-md-3 " ><br>
                     		<label class="control-label">Activity Type  </label>
-                              		<select class="form-control selectdee" id="ActivityTypeId" required="required" name="ActivityTypeId">
+                              		<select class="form-control selectdee" id="ActivityTypeIdM" required="required" name="ActivityTypeId">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : ActivityTypeList) {%>
 										<option value="<%=obj[0]%>" <%if(getMA[15].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
 											<%} %>
   									</select>
                     	      	</div>
-                        	
+                        	<%} %>
                         	<div class="col-md-3 " align="center"><br>
                         	<label class="control-label">First OIC  </label>
                         	<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
@@ -216,7 +217,7 @@ changeempoic2(<%=getMA[9] %>,'M');
 </script>
    
    
-                       		<%} %>
+                       		
                        		 </form>
                        		 <script type="text/javascript">
 
@@ -284,20 +285,21 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
                         
                         	</div>
                         	</div>
-                        	<%if(RevisionCount==0) {%>
+                        	
                        		<div class="row container-fluid" >
                              <div class="col-md-1 " >                    		
                         	</div>
+                        	<%if(RevisionCount==0) { %>
                     		<div class="col-md-3 " ><br>
                     		<label class="control-label">Activity Type  </label>
-                              		<select class="form-control selectdee" id="ActivityTypeId" required="required" name="ActivityTypeId">
+                              		<select class="form-control selectdee" id="ActivityTypeId<%=ActivityA[0] %>" required="required" name="ActivityTypeId">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : ActivityTypeList) {%>
 										<option value="<%=obj[0]%>" <%if(ActivityA[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
 											<%} %>
   									</select>
                     	      	</div>
-                        	
+                        	<%} %>
                         	<div class="col-md-3 " align="center"><br>
                         	<label class="control-label">First OIC  </label>
                         	<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
@@ -331,7 +333,7 @@ changeempoic2(<%=ActivityA[15] %>,<%=ActivityA[0] %>);
   										
                         
                        		
-                       		<%} %>
+                       		
                         	
                       </form>
 							<script type="text/javascript">
@@ -440,20 +442,21 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
                               <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
                                                   	</div>
 							</div>	
-							<%if(RevisionCount==0) {%>
+							
                        		<div class="row container-fluid" >
                              <div class="col-md-1 " >                    		
                         	</div>
+                        	<%if(RevisionCount==0) { %>
                     		<div class="col-md-3 " ><br>
                     		<label class="control-label">Activity Type  </label>
-                              		<select class="form-control selectdee" id="ActivityTypeId" required="required" name="ActivityTypeId">
+                              		<select class="form-control selectdee" id="ActivityTypeId<%=ActivityA[0] %><%=ActivityB[0] %>" required="required" name="ActivityTypeId">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : ActivityTypeList) {%>
 										<option value="<%=obj[0]%>" <%if(ActivityB[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
 											<%} %>
   									</select>
                     	      	</div>
-                        	
+                        	<%} %>
                        <div class="col-md-3 " align="center"><br>
                         	<label class="control-label">First Oic  </label>
                         	<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
@@ -482,7 +485,7 @@ changeempoic2(<%=ActivityB[15] %>,<%=ActivityA[0] %><%=ActivityB[0] %>);
 
 
 </script>
-                       		<%} %>
+                       		
 							
 						 </form>   
 						 
@@ -597,20 +600,21 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
                                                     	</div>
                                                     	 
                         	</div>
-                        	<%if(RevisionCount==0) {%>
+                        	
                        		<div class="row container-fluid" >
                              <div class="col-md-1 " >                    		
                         	</div>
+                        	<%if(RevisionCount==0) { %>
                     		<div class="col-md-3 " ><br>
                     		<label class="control-label">Activity Type  </label>
-                              		<select class="form-control selectdee" id="ActivityTypeId" required="required" name="ActivityTypeId">
+                              		<select class="form-control selectdee" id="ActivityTypeId<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>" required="required" name="ActivityTypeId">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : ActivityTypeList) {%>
 										<option value="<%=obj[0]%>" <%if(ActivityC[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
 											<%} %>
   									</select>
                     	      	</div>
-                        	
+                        	<%} %>
                        <div class="col-md-3 " align="center"><br>
                         	<label class="control-label">First Oic  </label>
                         	<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
@@ -639,7 +643,7 @@ changeempoic2(<%=ActivityC[15] %>,<%=ActivityA[0] %><%=ActivityB[0] %><%=Activit
 
 
 </script>
-                       		<%} %>
+                       		
                         	
 	                        </form> 
 	                        
@@ -746,20 +750,22 @@ if(MilestoneActivityD!=null&&MilestoneActivityD.size()>0){
                               <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
                                                   	</div>
 							</div>
-							<%if(RevisionCount==0) {%>
+							
                        		<div class="row container-fluid" >
                              <div class="col-md-1 " >                    		
                         	</div>
+                        	<%if(RevisionCount==0) { %>
                     		<div class="col-md-3 " ><br>
                     		<label class="control-label">Activity Type  </label>
-                              		<select class="form-control selectdee" id="ActivityTypeId" required="required" name="ActivityTypeId">
+                              		<select class="form-control selectdee" id="ActivityTypeId<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>" required="required" name="ActivityTypeId">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : ActivityTypeList) {%>
 										<option value="<%=obj[0]%>" <%if(ActivityD[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
 											<%} %>
   									</select>
                     	      	</div>
-                                                <div class="col-md-3 " align="center"><br>
+                    	    <%} %>  	
+                            <div class="col-md-3 " align="center"><br>
                         	<label class="control-label">First Oic  </label>
                         	<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
 										<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox1<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>" onchange="changeempoic1('<%=ActivityD[13]%>','<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>')" >
@@ -787,7 +793,6 @@ changeempoic2(<%=ActivityD[15] %>,<%=ActivityA[0] %><%=ActivityB[0] %><%=Activit
 
 
 </script>
-                       		<%} %>
 								
 						 </form>   
 						 
@@ -899,20 +904,21 @@ if(MilestoneActivityE!=null&&MilestoneActivityE.size()>0){
                                                     	</div>
                                                     	 
                         	</div>
-                        	<%if(RevisionCount==0) {%>
+                        	
                        		<div class="row container-fluid" >
                              <div class="col-md-1 " >                    		
                         	</div>
+                        	<%if(RevisionCount==0) { %>
                     		<div class="col-md-3 " ><br>
                     		<label class="control-label">Activity Type  </label>
-                              		<select class="form-control selectdee" id="ActivityTypeId" required="required" name="ActivityTypeId">
+                              		<select class="form-control selectdee" id="ActivityTypeId<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>" required="required" name="ActivityTypeId">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : ActivityTypeList) {%>
 										<option value="<%=obj[0]%>" <%if(ActivityE[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
 											<%} %>
   									</select>
                     	      	</div>
-                        	
+                        	<%} %>
                         <div class="col-md-3 " align="center"><br>
                         	<label class="control-label">First Oic  </label>
                         	<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
@@ -941,7 +947,6 @@ changeempoic2(<%=ActivityE[15] %>,<%=ActivityA[0] %><%=ActivityB[0] %><%=Activit
 
 
 </script>
-                       		<%} %>
                         	
 	                        </form> 
 	                        

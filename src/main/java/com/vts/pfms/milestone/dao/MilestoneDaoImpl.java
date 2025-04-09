@@ -36,7 +36,13 @@ import com.vts.pfms.print.model.ProjectTechnicalWorkData;
 @Repository
 public class MilestoneDaoImpl implements MilestoneDao {
 
-	private static final String MALIST="select a.milestoneactivityid,b.projectname,a.startdate,a.enddate,a.activityname,a.milestoneno,CONCAT(IFNULL(c.title,''),c.empname) as 'emp',CONCAT(IFNULL(d.title,''),d.empname )as 'employee',(SELECT MAX(e.revisionno) FROM milestone_activity_rev e WHERE a.milestoneactivityid=e.milestoneactivityid) AS rev,a.acceptedby,a.isaccepted,a.statusremarks,a.progressstatus,a.Weightage,a.activitystatusid,b.projectid,a.dateofcompletion from milestone_activity a,project_master b, employee c,employee d where a.projectid=b.projectid and a.oicempid=c.empid and a.oicempid1=d.empid and a.projectid=:ProjectId";
+	private static final String MALIST="SELECT a.MilestoneActivityId, b.ProjectName, a.StartDate, a.EndDate, a.ActivityName, a.MilestoneNo,\r\n"
+			+ "CONCAT(IFNULL(CONCAT(c.Title,' '),(IFNULL(CONCAT(c.Salutation, ' '), ''))), c.EmpName, ', ', e.Designation) AS 'OicEmpId1Name', \r\n"
+			+ "CONCAT(IFNULL(CONCAT(d.Title,' '),(IFNULL(CONCAT(d.Salutation, ' '), ''))), d.EmpName, ', ', f.Designation) AS 'OicEmpId2Name',\r\n"
+			+ "(SELECT MAX(e.revisionno) FROM milestone_activity_rev e WHERE a.milestoneactivityid=e.milestoneactivityid) AS rev,\r\n"
+			+ "a.acceptedby,a.isaccepted,a.statusremarks,a.progressstatus,a.Weightage,a.activitystatusid,b.projectid,a.dateofcompletion \r\n"
+			+ "FROM milestone_activity a,project_master b, employee c,employee d, employee_desig e, employee_desig f \r\n"
+			+ "WHERE a.projectid=b.projectid AND a.oicempid=c.empid AND a.oicempid1=d.empid AND c.DesigId = e.DesigId AND d.DesigId = f.DesigId AND a.projectid=:ProjectId ORDER BY a.MilestoneNo";
 	private static final String PROJECTMASTER="SELECT a.projectid,a.projectcode,a.projectname FROM project_master a WHERE  a.isactive='1'";
 	private static final String EMPLOYEELISTALL="select a.empid,a.empname,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId ORDER BY a.srno=0,a.srno";
     private static final String MILESTONECOUNT="Select count(*) from milestone_activity where isactive='1' and projectid=:ProjectId";
@@ -73,7 +79,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	private static final String ACCEPTUPDATE="UPDATE milestone_activity SET isaccepted='Y',acceptedby=:acceptedby,accepteddate=:accepteddate,ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE milestoneactivityid=:id";
 	private static final String SENDBACKUPDATE="UPDATE milestone_activity SET isaccepted='B',statusremarks=:statusremarks,ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE milestoneactivityid=:id";
     private static final String ACTIONLIST="SELECT a.actionmainid,ab.empname,dc.designation,a.actiondate,aas.enddate,a.actionitem,aas.actionstatus,aas.actionstatus as 'status',a.createdby,a.createddate,(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) AS subid,(SELECT c.progress FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS progress, (SELECT c.remarks FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS remarks,aas.revision FROM action_main a,  employee ab ,employee_desig dc , action_assign aas WHERE aas.actionmainid=a.actionmainid AND aas.assignee=ab.empid AND ab.isactive='1' AND dc.desigid=ab.desigid AND a.actiontype=:actiontype AND a.activityid=:activityid  ";//AND aas.actionflag<>'Y'
-    private static final String MILESUM="SELECT SUM(weightage) FROM milestone_activity WHERE milestoneactivityid<>:id AND projectid=:projectid";
+    private static final String MILESUM="SELECT IFNULL(SUM(weightage), 0) AS 'TotalWeightage' FROM milestone_activity WHERE milestoneactivityid<>:id AND projectid=:projectid";
     private static final String ACTIVITYLEVELSUM="SELECT SUM(weightage) FROM milestone_activity_level WHERE parentactivityid=:id AND activityid<>:activityid and activitylevelid=:levelid";
     private static final String BASELINEMAIN="SELECT a.milestoneactivityid AS obid,e.enddate,a.progressstatus,e.Weightage,b.activitystatus,a.activitystatusid FROM milestone_activity_rev a,milestone_activity_status b,milestone_activity e  WHERE a.activitystatusid=b.activitystatusid  AND a.milestoneactivityid=e.milestoneactivityid AND a.revisionno=e.revisionno AND  a.milestoneactivityid=:inActivityId";
     private static final String BASELINELEVEL="SELECT a.activityid AS obid,c.enddate,a.progressstatus,c.Weightage,b.activitystatus,a.activitystatusid FROM milestone_activity_level a,milestone_activity_sub_rev c,milestone_activity_status b WHERE a.activitystatusid=b.activitystatusid AND a.revision=c.revision  AND   a.parentactivityid=:inActivityId  AND a.activityid=c.activityid and a.activitylevelid=:levelid";
@@ -1289,6 +1295,30 @@ public class MilestoneDaoImpl implements MilestoneDao {
 			}catch (Exception e) {
 				e.printStackTrace();
 				return new ArrayList<>();
+			}
+		}
+
+		@Override
+		public MilestoneActivityLevel getActivityLevelListById(String activitiId) {
+	        try {
+	        	return manager.find(MilestoneActivityLevel.class, Long.parseLong(activitiId));
+	        }catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+
+		@Override
+		public int mileStoneSerialNoUpdate(String newslno, String milestoneActivityId) {
+			try {
+				Query query = manager.createNativeQuery("UPDATE milestone_activity SET MilestoneNo=:MilestoneNo WHERE MilestoneActivityId=:MilestoneActivityId");
+				query.setParameter("MilestoneActivityId", milestoneActivityId);
+				query.setParameter("MilestoneNo", newslno);
+				
+				return query.executeUpdate();
+			}catch (Exception e) {
+				e.printStackTrace();
+				return 0;
 			}
 		}
 }

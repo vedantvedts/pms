@@ -207,16 +207,12 @@ input[type="file"]::-webkit-file-upload-button {
 									formaction="M-A-AssigneeList.htm">BACK</button>
 							</div>
 
-							<input type="hidden" name="MilestoneActivityId"
-								value="<%=EditMain.getMilestoneActivityId() %>" /> <input
-								type="hidden" name="ActivityId"
-								value="<%=EditMain.getActivityId() %>" /> <input type="hidden"
-								name="ProjectId" value="<%=EditMain.getProjectId() %>" /> <input
-								type="hidden" name="ActivityType"
-								value="<%=EditMain.getActivityType() %>" /> <input
-								type="hidden" name="EndDate" value="<%=EditData[2] %>" /> <input
-								type="hidden" name="${_csrf.parameterName}"
-								value="${_csrf.token}" />
+							<input type="hidden" name="MilestoneActivityId" value="<%=EditMain.getMilestoneActivityId() %>" /> 
+							<input type="hidden" name="ActivityId" value="<%=EditMain.getActivityId() %>" /> 
+							<input type="hidden" name="ProjectId" value="<%=EditMain.getProjectId() %>" /> 
+							<input type="hidden" name="ActivityType" value="<%=EditMain.getActivityType() %>" /> 
+							<input type="hidden" name="EndDate" value="<%=EditData[2] %>" /> 
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 						</form>
 
 					</div>

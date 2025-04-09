@@ -312,7 +312,7 @@ public class DocumentsServiceImpl implements DocumentsService{
 					
 					String interfaceCode = (interfaceTypeSplit[1]!=null?interfaceTypeSplit[1]:"-")
 											+ "_" + (interfaceContentSplit[1]!=null?interfaceContentSplit[1]:"-")
-											+ seqCount + "-"+ (countT+1);
+											+ "_" + seqCount + "-"+ (countT+1);
 					
 					String interfaceName = (interfaceTypeSplit[2]!=null?interfaceTypeSplit[2]:"-")
 											+ " " + (interfaceContentSplit[2]!=null?interfaceContentSplit[2]:"-")

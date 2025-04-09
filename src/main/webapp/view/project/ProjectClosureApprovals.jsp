@@ -681,7 +681,7 @@ $('#fromdate').daterangepicker({
 		                    var option = $("<option></option>").attr("value", optionValue).text(optionText);
 		                    $('#approverEmpId').append(option); 
 		                }
-		                $('#approverEmpId').selectpicker('refresh');
+		                $('#approverEmpId').select2();
 		                }else{
 		                	for (var i = 0; i < result.length; i++) {
 		                        var data = result[i];
@@ -690,7 +690,7 @@ $('#fromdate').daterangepicker({
 		                        var option = $("<option></option>").attr("value", optionValue).text(optionText);
 		                        $('#approverEmpId').append(option); 
 		                    }
-		                    $('#approverEmpId').selectpicker('refresh');
+		                    $('#approverEmpId').select2();
 		                }
 		            
 		           }

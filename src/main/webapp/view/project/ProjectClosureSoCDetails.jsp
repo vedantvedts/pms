@@ -1052,6 +1052,7 @@ function LabcodeSubmit() {
 	       },
 	       dataType: 'json',
 	       success: function(result) {
+	    	   if (result != null && LabCode!='@EXP') {
 	    	   for (var i = 0; i < result.length; i++) {
                    var data = result[i];
                    var optionValue = data[0];
@@ -1059,7 +1060,7 @@ function LabcodeSubmit() {
                    var option = $("<option></option>").attr("value", optionValue).text(optionText);
                    $('#approverEmpId').append(option); 
                }
-               $('#approverEmpId').selectpicker('refresh');
+	    	   $('#approverEmpId').select2();
                }else{
                	for (var i = 0; i < result.length; i++) {
                        var data = result[i];
@@ -1068,7 +1069,7 @@ function LabcodeSubmit() {
                        var option = $("<option></option>").attr("value", optionValue).text(optionText);
                        $('#approverEmpId').append(option); 
                    }
-                   $('#approverEmpId').selectpicker('refresh');
+               	$('#approverEmpId').select2();
                }
 	               
 	           }
