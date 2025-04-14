@@ -15,9 +15,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,12 +27,14 @@ import com.vts.pfms.FormatConverter;
 import com.vts.pfms.cars.dao.CARSDao;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.documents.dao.DocumentsDao;
+import com.vts.pfms.documents.dto.InterfaceTypeAndContentDto;
 import com.vts.pfms.documents.dto.StandardDocumentsDto;
 import com.vts.pfms.documents.model.ICDConnectionInterfaces;
 import com.vts.pfms.documents.model.ICDConnectionPurpose;
 import com.vts.pfms.documents.model.ICDDocumentConnections;
 import com.vts.pfms.documents.model.ICDPurpose;
 import com.vts.pfms.documents.model.IGIApplicableDocs;
+import com.vts.pfms.documents.model.IGIDocumentIntroduction;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
@@ -52,8 +51,9 @@ import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.model.PfmsIGITransaction;
 import com.vts.pfms.documents.model.PfmsIRSDocument;
 import com.vts.pfms.documents.model.StandardDocuments;
-import com.vts.pfms.project.model.RequirementSummary;
-import com.vts.pfms.requirements.model.RequirementInitiation;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class DocumentsServiceImpl implements DocumentsService{
@@ -161,7 +161,88 @@ public class DocumentsServiceImpl implements DocumentsService{
 		
 		return dao.getIGIInterfaceContentList();
 	}
+
+	//srikant start
+	@Override
+	public List<Object[]> interfaceTypeMasterList() throws Exception {
+		
+		return dao.interfaceTypeMasterList();
+	}
+
+	@Override
+	public IGIInterfaceTypes getIGIInterfaceTypeById(String interfaceTypeId) throws Exception {
+		
+		return dao.getIGIInterfaceTypeById(interfaceTypeId);
+	}
+
+	@Override
+	public long addInterfaceTypeAndContentDetails(InterfaceTypeAndContentDto dto) throws Exception {
+		try {
+			
+			IGIInterfaceTypes iGIInterfaceTypes = dto.getAction() != null && dto.getAction().equalsIgnoreCase("Edit")
+					? dao.getIGIInterfaceTypeById(dto.getInterfaceTypeId())
+					: new IGIInterfaceTypes();
+			
+
+			iGIInterfaceTypes.setInterfaceType(dto.getInterfaceType());
+			iGIInterfaceTypes.setInterfaceTypeCode(dto.getInterfaceTypeCode());
+			
+			if (dto.getAction() != null && dto.getAction().equalsIgnoreCase("Add")) {
+				iGIInterfaceTypes.setIsActive(dto.getIsActive());
+				iGIInterfaceTypes.setCreatedBy(dto.getCreatedBy());
+				iGIInterfaceTypes.setCreatedDate(dto.getCreatedDate());
+			}
+			
+			// Remove Previously added Interface Type Contents
+			if (dto.getAction() != null && dto.getAction().equalsIgnoreCase("Edit")) {
+				dao.removeIGIInterfaceTypesContents(String.valueOf(iGIInterfaceTypes.getInterfaceTypeId()));
+				iGIInterfaceTypes.setModifiedBy(dto.getCreatedBy());
+				iGIInterfaceTypes.setModifiedDate(dto.getCreatedDate());
+			}
+			
+			long iGIInterfaceTypesId = dao.addIGIInterfaceTypes(iGIInterfaceTypes);
+
+			// Adding IGIInterfaceTypesContents
+			for (int i = 0; i < dto.getInterfaceContent().length; i++) {
+				if (dto.getAction() != null && dto.getAction().equalsIgnoreCase("Edit")) {
+					IGIInterfaceContent iGIInterfaceContent = IGIInterfaceContent.builder()
+							.InterfaceContent(dto.getInterfaceContent()[i])
+							.InterfaceContentCode(dto.getInterfaceContentCode().get(i))
+							.InterfaceTypeId(iGIInterfaceTypes.getInterfaceTypeId())
+							.IsDataCarrying(dto.getIsDataCarrying().get(i)).IsActive(1).ModifiedBy(dto.getCreatedBy())
+							.ModifiedDate(dto.getCreatedDate()).build();
+					dao.addIGIInterfaceTypesContents(iGIInterfaceContent);
+				} else {
+					IGIInterfaceContent iGIInterfaceContent = IGIInterfaceContent.builder()
+							.InterfaceContent(dto.getInterfaceContent()[i])
+							.InterfaceContentCode(dto.getInterfaceContentCode().get(i)).InterfaceTypeId(iGIInterfaceTypesId)
+							.IsDataCarrying(dto.getIsDataCarrying().get(i)).CreatedBy(dto.getCreatedBy())
+							.CreatedDate(dto.getCreatedDate()).IsActive(dto.getIsActive()).build();
+					dao.addIGIInterfaceTypesContents(iGIInterfaceContent);
+				}
+
+			}
+			return 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		
+	}
+
+	@Override
+	public Object[] InterfaceAddCheck(String interfaceTypeCode, String interfaceId) throws Exception {
+		
+		 return dao.InterfaceAddCheck(interfaceTypeCode, interfaceId);
+	}
+
+	@Override
+	public Object[] InterfaceContentAddCheck(String interfaceContentCode, String contentId) throws Exception {
+		
+		return dao.InterfaceContentAddCheck(interfaceContentCode, contentId);
+	}
 	
+	//srikant end;
 	/* ************************************************ IGI Document ***************************************************** */
 	
 	
@@ -282,49 +363,47 @@ public class DocumentsServiceImpl implements DocumentsService{
 	@Override
 	public long addIGIInterface(IGIInterface igiInterface) throws Exception {
 		
-//		if(igiInterface.getInterfaceId()==null) {
-//			int count = dao.getInterfaceCountByType(igiInterface.getInterfaceType());
-//			String[] split = igiInterface.getInterfaceType().split(" ");
-//			String seqChars = "";
-//			if(split.length>1) {
-//				seqChars = split[0].charAt(0)+ "" + split[1].charAt(0);
-//			}else {
-//				seqChars = split[0].charAt(0)+ "" + split[0].charAt(1);
-//			}
-//			String seqCount = (count>=99)?("_"+(count+1)) : ((count>=9 && count<99)?("_0"+(count+1)) : ("_00"+(count+1)) );
-//			igiInterface.setInterfaceSeqNo(seqChars+seqCount);
-//		}
-		
-		if(igiInterface.getInterfaceId()==null) {
-			String interfaceType = igiInterface.getInterfaceType();
-			String interfaceContent = igiInterface.getInterfaceContent();
-			
-			String[] interfaceTypeSplit = interfaceType!=null?interfaceType.split("/") : null;
-			String[] interfaceContentSplit = interfaceContent!=null && !interfaceContent.equalsIgnoreCase("0")?interfaceContent.split("/") : null;
-			
-			
-				if(interfaceTypeSplit!=null && interfaceContentSplit!=null) {
-					
+		try {
+
+			if(igiInterface.getInterfaceId()==null) {
+				String interfaceType = igiInterface.getInterfaceType();
+				String interfaceContent = igiInterface.getInterfaceContent();
+
+				String[] interfaceTypeSplit = interfaceType!=null?interfaceType.split("/") : null;
+				String[] interfaceContentSplit = interfaceContent!=null && !interfaceContent.equalsIgnoreCase("0")?interfaceContent.split("/") : null;
+
+
+				if(interfaceTypeSplit!=null && interfaceContentSplit!=null && igiInterface.getParentId()==0) {
+
 					long countT = dao.getInterfaceTypeCountByinterfaceTypeId(interfaceTypeSplit[0]);
 					long countC = dao.getInterfaceContentCountByinterfaceContentId(interfaceTypeSplit[0], interfaceContentSplit[0]);
-					
+
 					String seqCount = String.format("%03d", countC + 1);
-					
+
 					String interfaceCode = (interfaceTypeSplit[1]!=null?interfaceTypeSplit[1]:"-")
-											+ "_" + (interfaceContentSplit[1]!=null?interfaceContentSplit[1]:"-")
-											+ "_" + seqCount + "-"+ (countT+1);
-					
+							+ "_" + (interfaceContentSplit[1]!=null?interfaceContentSplit[1]:"-")
+							+ "_" + seqCount + "-"+ (countT+1);
+
 					String interfaceName = (interfaceTypeSplit[2]!=null?interfaceTypeSplit[2]:"-")
-											+ " " + (interfaceContentSplit[2]!=null?interfaceContentSplit[2]:"-")
-											+ " - " + interfaceCode;
+							+ " " + (interfaceContentSplit[2]!=null?interfaceContentSplit[2]:"-")
+							+ " - " + interfaceCode;
 					igiInterface.setInterfaceCode(interfaceCode);
 					igiInterface.setInterfaceName(interfaceName);
+				}else if(igiInterface.getParentId()>0) {
+					
+					Long countP = dao.getInterfaceCountByParentId(igiInterface.getParentId());
+					igiInterface.setInterfaceCode(igiInterface.getInterfaceCode() + ("-"+(countP+1)));
+					igiInterface.setInterfaceName(igiInterface.getInterfaceName() + ("-"+(countP+1)));
 				}
-			
-			igiInterface.setInterfaceTypeId(interfaceTypeSplit!=null?Long.parseLong(interfaceTypeSplit[0]):0L);
-			igiInterface.setInterfaceContentId(interfaceContentSplit!=null?Long.parseLong(interfaceContentSplit[0]):0L);
+
+				igiInterface.setInterfaceTypeId(interfaceTypeSplit!=null?Long.parseLong(interfaceTypeSplit[0]):0L);
+				igiInterface.setInterfaceContentId(interfaceContentSplit!=null?Long.parseLong(interfaceContentSplit[0]):0L);
+			}
+			return dao.addIGIInterface(igiInterface);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return 0;
 		}
-		return dao.addIGIInterface(igiInterface);
 	}
 	
 	@Override
@@ -1168,5 +1247,28 @@ public class DocumentsServiceImpl implements DocumentsService{
 		
 	}
 	
+	@Override
+	public List<IGIDocumentIntroduction> getIGIDocumentIntroductionList() throws Exception {
+	
+		return dao.getIGIDocumentIntroductionList();
+	}
+	
+	@Override
+	public IGIDocumentIntroduction getIGIDocumentIntroductionById(String introductionId) throws Exception {
+
+		return dao.getIGIDocumentIntroductionById(introductionId);
+	}
+	
+	@Override
+	public Long addIGIDocumentIntroduction(IGIDocumentIntroduction introduction) throws Exception {
+
+		return dao.addIGIDocumentIntroduction(introduction);
+	}
+	
+	@Override
+	public int deleteIGIIntroduction(String introductionId) throws Exception {
+
+		return dao.deleteIGIIntroduction(introductionId);
+	}
 	
 }

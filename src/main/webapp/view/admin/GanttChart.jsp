@@ -121,9 +121,9 @@ h6{
 										<div class="col-md-8"></div>
 										<div class="col-md-4">
 											<div style="font-weight: bold; " >
-												<span style="margin:0px 0px 10px  10px;">Original :&ensp; <span style=" background-color: #29465B;  padding: 0px 15px; border-radius: 3px;"></span></span>
+												<span style="margin:0px 0px 10px  10px;">Original :&ensp; <span style=" background-color: #4A90E2;  padding: 0px 15px; border-radius: 3px;"></span></span>
 												<span style="margin:0px 0px 10px  15px;">Ongoing :&ensp; <span style=" background-color: #059212;  padding: 0px 15px;border-radius: 3px;"></span></span>
-												<span style="margin:0px 0px 10px  15px;">Revised :&ensp; <span style=" background-color: #f25287; opacity: 0.5; padding: 0px 15px;border-radius: 3px;"></span></span>
+												<span style="margin:0px 0px 10px  15px;">Revised :&ensp; <span style=" background-color: #F5A623; opacity: 0.5; padding: 0px 15px;border-radius: 3px;"></span></span>
 											</div>
 										</div>
 									</div>
@@ -155,21 +155,21 @@ h6{
 								    		    <%if(!obj[9].toString().equalsIgnoreCase("0") && !obj[9].toString().equalsIgnoreCase("1")){ %>
 								    		   	baselineStart: "<%=obj[6]%>",
 								    		    baselineEnd: "<%=obj[7]%>", 
-								    		    baseline: {fill: "#f25287 0.5", stroke: "0.0 #f25287"},
+								    		    baseline: {fill: "#F5A623 0.5", stroke: "0.0 #F5A623"},
 								    		    actualStart: "<%=obj[4]%>",
 								    		    actualEnd: "<%=obj[5]%>",
-								    		    actual: {fill: "#29465B", stroke: "0.8 #29465B"},
+								    		    actual: {fill: "#4A90E2", stroke: "0.8 #4A90E2"},
 								    		    baselineProgressValue: "<%= Math.round((int)obj[8])%>%",
-								    		    progress: {fill: "#FF7F3E 0.0", stroke: "0.0 #FF7F3E"},
+								    		    progress: {fill: "#7ED321 0.0", stroke: "0.0 #150e56"},
 								    		    progressValue: "<%= Math.round((int)obj[8])%>% ", 
 								    		    <%} else{%>
 							    		   		<%-- baselineStart: "<%=obj[6]%>",
 								    		    baselineEnd: "<%=obj[7]%>",  --%>
 								    		    baselineStart: "<%=obj[4]%>",
 								    		    baselineEnd: "<%=obj[5]%>", 
-								    		    baseline: {fill: "#29465B", stroke: "0.8 #29465B"},
+								    		    baseline: {fill: "#4A90E2", stroke: "0.8 #4A90E2"},
 								    		    baselineProgressValue: "<%= Math.round((int)obj[8])%>%",
-								    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
+								    		    progress: {fill: "#7ED321 0.0", stroke: "0.0 #150e56"},
 								    		    progressValue: "<%= Math.round((int)obj[8])%>% ", 
 								    		    <%}%>
 								    		    rowHeight: "55",
@@ -199,7 +199,7 @@ h6{
 									   // configure labels of elements
 									   timeline.elements().labels().fontWeight(600);
 									   timeline.elements().labels().fontSize("14px");
-									   timeline.elements().labels().fontColor("#FF6F00");
+									   timeline.elements().labels().fontColor("#333333");
 
 								        chart.getTimeline().tooltip().format(
 							        		 function() {
@@ -236,58 +236,52 @@ h6{
 												Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");
 												%>
 
-								        /* Title */
-								        
-								        var title = chart.title();
-										title.enabled(true);
-										title.text(" <%=ProjectDetail[2] %> ( <%=ProjectDetail[1] %> ) Gantt Chart");
-										title.fontColor("#64b5f6");
-										title.fontSize(18);
-										title.fontWeight(600);
-										title.padding(5);
-								        
-										<%} %>
-										
-								        
-								        /* Hover */
-								        
-								        chart.rowHoverFill("#8fd6e1 0.3");
-								        chart.rowSelectedFill("#8fd6e1 0.3");
-								        chart.rowStroke("0.5 #64b5f6");
-								        chart.columnStroke("0.5 #64b5f6");
-								      
-								        
-								        chart.defaultRowHeight(35);
-								     	chart.headerHeight(90);
-								     	
-								     	/* Hiding the middle column */
-								     	chart.splitterPosition("15.6%");
-								     	
-								     	var dataGrid = chart.dataGrid();
-								     	dataGrid.rowEvenFill("gray 0.3");
-								     	dataGrid.rowOddFill("gray 0.1");
-								     	dataGrid.rowHoverFill("#ffd54f 0.3");
-								     	dataGrid.rowSelectedFill("#ffd54f 0.3");
-								     	dataGrid.columnStroke("2 #64b5f6");
-								     	dataGrid.headerFill("#64b5f6 0.2");
-								     	
-								     
-								     	/* Title */
+												/* Title */
+												var title = chart.title();
+												title.enabled(true);
+												title.text(" <%=ProjectDetail[2] %> ( <%=ProjectDetail[1] %> ) Gantt Chart");
+												title.fontColor("#1976D2");  // Darker blue for better contrast
+												title.fontSize(18);
+												title.fontWeight(600);
+												title.padding(5);
+												
+												<%} %>
+												
+												/* Hover */
+												chart.rowHoverFill("#FFCC80 0.3");  // Softer orange for hover
+												chart.rowSelectedFill("#FFCC80 0.3");
+												chart.rowStroke("0.5 #4A90E2");  // Matches Sky Blue
+												chart.columnStroke("0.5 #4A90E2");  
 
-								     	var column_1 = chart.dataGrid().column(1);
-								     	column_1.labels().fontWeight(600);
-								     	column_1.labels().useHtml(true);
-								     	column_1.labels().fontColor("#055C9D");
-								     	
-								     	
-								     	var column_2 = chart.dataGrid().column(1);
-								     	column_2.title().text("Activity");
-								     	column_2.title().fontColor("#145374");
-								     	column_2.title().fontWeight(600);
-								     	
-								     	chart.dataGrid().column(0).width(25);
-								     	
-								     	chart.dataGrid().tooltip().useHtml(true);    
+												chart.defaultRowHeight(35);
+												chart.headerHeight(90);
+
+												/* Hiding the middle column */
+												chart.splitterPosition("15.6%");
+
+												var dataGrid = chart.dataGrid();
+												dataGrid.rowEvenFill("#E0E0E0 0.3");  // Light gray for contrast
+												dataGrid.rowOddFill("#E0E0E0 0.1");
+												dataGrid.rowHoverFill("#FFD54F 0.3");  // Light yellow hover
+												dataGrid.rowSelectedFill("#FFD54F 0.3");
+												dataGrid.columnStroke("2 #4A90E2");  
+												dataGrid.headerFill("#4A90E2 0.2");
+
+												/* Title */
+												var column_1 = chart.dataGrid().column(1);
+												column_1.labels().fontWeight(600);
+												column_1.labels().useHtml(true);
+												column_1.labels().fontColor("#0D47A1");  // Dark blue for labels
+
+												var column_2 = chart.dataGrid().column(1);
+												column_2.title().text("Activity");
+												column_2.title().fontColor("#2C3E50");  // Deep blue title
+												column_2.title().fontWeight(600);
+
+												chart.dataGrid().column(0).width(25);
+
+												chart.dataGrid().tooltip().useHtml(true);
+    
 								        
 								     	
 								     	
@@ -381,27 +375,28 @@ h6{
 								     	
 								     	/* Header */
 								     	var header = chart.getTimeline().header();
-								     	header.level(0).fill("#64b5f6 0.2");
-								     	header.level(0).stroke("#64b5f6");
-								     	header.level(0).fontColor("#145374");
+								     	header.level(0).fill("#4A90E2 0.2");  // Softer Sky Blue for clarity
+								     	header.level(0).stroke("#4A90E2");   // Matches Sky Blue
+								     	header.level(0).fontColor("#0D47A1");  // Darker blue for better readability
 								     	header.level(0).fontWeight(600);
 								     	
 								     	/* Marker */
 								     	var marker_1 = chart.getTimeline().lineMarker(0);
 								     	marker_1.value("current");
-								     	marker_1.stroke("0 white");
+								     	marker_1.stroke("2 #FF6F00");  // Bright Orange for better visibility
 								     	
 								     	/* Progress */
 								     	var timeline = chart.getTimeline();
 								     	
 								     	timeline.tasks().labels().useHtml(true);
 								     	timeline.tasks().labels().format(function() {
-								     	  if (this.progress == 1) {
-								     	    return "<span style='color:orange;font-weight:bold;font-family:'Lato';'><Completed</span>";
-								     	  } else {
-								     	    return "<span style='color:black;font-weight:bold'></span>";
-								     	  }
+								     		if (this.progress == 1) {
+								     		    return "<span style='color:#388E3C;font-weight:bold;font-family:Lato;'>Completed</span>";  // Green for completion
+								     		  } else {
+								     		    return "<span style='color:#D32F2F;font-weight:bold;font-family:Lato;'></span>";  // Red for pending
+								     		  }
 								     	});
+								     	
 								     	
 								     	
 								    // calculate height

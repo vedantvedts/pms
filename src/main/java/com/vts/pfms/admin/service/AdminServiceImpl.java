@@ -554,7 +554,7 @@ public class AdminServiceImpl implements AdminService{
 			divisionmaster.setModifiedDate(sdf1.format(new Date()));
 			divisionmaster.setDivisionId(add.getDivisionId());
 	        divisionmaster.setIsActive(add.getIsActive());
-
+	        divisionmaster.setDivisionShortName(add.getDivisionShortName());	//srikant
 			
 			return dao.DivisionMasterUpdate(divisionmaster);
 		}

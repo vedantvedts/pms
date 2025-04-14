@@ -435,7 +435,7 @@ public class PrintDaoImpl implements PrintDao {
 	
 	//private static final String REVIEWMEETINGLIST = "SELECT scheduleid, committeeshortname, committeename,scheduledate,meetingid FROM committee_schedule cs, committee c, committee_meeting_status cms WHERE (cs.scheduledate BETWEEN (SELECT MAX(cs.scheduledate) FROM committee_schedule cs, committee_meeting_status cms WHERE cs.committeeid=:committeeid AND cs.projectid=:projectid AND cs.scheduledate < CURDATE() AND cs.scheduleflag=cms.meetingstatus AND meetingstatusid > 6)   AND CURDATE() )  AND cs.committeeid=c.committeeid AND cs.scheduleflag=cms.meetingstatus AND cms.meetingstatusid > 6 AND cs.projectid=:projectid AND cs.committeeid <> :committeeid ";
 	
-	private static final String REVIEWMEETINGLIST ="SELECT scheduleid, committeeshortname, committeename,scheduledate,meetingid FROM committee_schedule cs, committee c, committee_meeting_status cms WHERE   cs.committeeid=c.committeeid AND cs.scheduleflag=cms.meetingstatus AND cms.meetingstatusid > 6 AND cs.projectid=:projectid AND c.committeeShortName =  :committeecode AND cs.scheduledate <>CURDATE() AND cs.scheduledate < CURDATE()";
+	private static final String REVIEWMEETINGLIST ="SELECT scheduleid, committeeshortname, committeename,scheduledate,meetingid FROM committee_schedule cs, committee c, committee_meeting_status cms WHERE   cs.committeeid=c.committeeid AND cs.scheduleflag=cms.meetingstatus AND cms.meetingstatusid > 6 AND cs.projectid=:projectid AND c.committeeShortName =  :committeecode AND cs.scheduledate <>CURDATE() AND cs.scheduledate < CURDATE() ORDER BY ScheduleDate";
 
 	@Override
 	public List<Object[]> ReviewMeetingList(String projectid, String committeecode) throws Exception 

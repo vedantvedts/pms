@@ -33,11 +33,12 @@
 						 var actionprogress = "border-danger"
 						 var riskprogress = "border-danger"
 						 /* PMRC progress */
+
 							 if(Number(ajaxresult[29])>25 && Number(ajaxresult[29])<=50){
 				 				 pmrcprogress = "border-orange";
 			  					}else if (Number(ajaxresult[29])>50 && Number(ajaxresult[29])<=75){
 			  						 pmrcprogress = "border-warning";
-			  					}else if(Number(ajaxresult[29])>75 && Number(ajaxresult[29])<=100){
+			  					}else if(Number(ajaxresult[29])>75 ){
 			  						pmrcprogress = "border-success";
 			  					}
 						 /*  */
@@ -57,11 +58,12 @@
 			  						msprogress = "border-success";
 			  					}
 						 /*  */
+						
 							 if(Number(ajaxresult[37])>25 && Number(ajaxresult[37])<=50){
 								 actionprogress = "border-orange";
 			  					}else if (Number(ajaxresult[37])>50 && Number(ajaxresult[37])<=75){
 			  						actionprogress = "border-warning";
-			  					}else if(Number(ajaxresult[37])>75 && Number(ajaxresult[37])<=100){
+			  					}else if(Number(ajaxresult[37])>75 ){
 			  						actionprogress = "border-success";
 			  					}
 						 

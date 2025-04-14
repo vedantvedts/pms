@@ -57,46 +57,7 @@
     padding: 17px 0px 0 0px;
 }
 
-/*  .genealogy-tree li::before, .genealogy-tree li::after{
-    content: '';
-    position: absolute; 
-    top: 0; 
-    right: 50%;
-    border-top: 2px solid #ccc;
-    width: 50%; 
-    height: 18px;
-}
-.genealogy-tree li::after{
-    right: auto; left: 50%;
-    border-left: 2px solid #ccc;
-}
-.genealogy-tree li:only-child::after, .genealogy-tree li:only-child::before {
-    display: none;
-}
-.genealogy-tree li:only-child{ 
-    padding-top: 0;
-}
-.genealogy-tree li:first-child::before, .genealogy-tree li:last-child::after{
-    border: 0 none;
-}
-.genealogy-tree li:last-child::before{
-     border-right: 2px solid #ccc;
-     border-radius: 0 5px 0 0;
-    -webkit-border-radius: 0 5px 0 0;
-    -moz-border-radius: 0 5px 0 0;
-}
-.genealogy-tree li:first-child::after{
-    border-radius: 5px 0 0 0;
-    -webkit-border-radius: 5px 0 0 0;
-    -moz-border-radius: 5px 0 0 0;
-}
-.genealogy-tree ul ul::before{
-    content: '';
-    position: absolute; top: 0; left: 50%;
-    border-left: 2px solid #ccc;
-    width: 0; height: 20px;
-}
-  */
+
  
  
 
@@ -123,37 +84,6 @@
 }  
  
  
- 
- /* .genealogy-tree li:last-child .before {
-    border-right: 2px solid black ! important;
-    border-top: 2px solid black ! important;
-    border-radius: 0 5px 0 0 ! important;
-    -webkit-border-radius: 0 5px 0 0 ! important;
-    -moz-border-radius: 0 5px 0 0 ! important;
-}
-.genealogy-tree li:last-child .after {
-    border-right: none ! important;
-    border-top: 2px solid black ! important;
-    border-radius: 0 5px 0 0 ! important;
-    -webkit-border-radius: 0 5px 0 0 ! important;
-    -moz-border-radius: 0 5px 0 0 ! important;
-}
-
-.genealogy-tree li:first-child .before {
-
-    border-radius: 5px 0 0 0 ! important;
-    -webkit-border-radius: 5px 0 0 0 ! important;
-    -moz-border-radius: 5px 0 0 0 ! important;
-    border-top: none ! important;
-}
-
-.genealogy-tree li:first-child .after {
-
-    border-radius: 5px 0 0 0 ! important;
-    -webkit-border-radius: 5px 0 0 0 ! important;
-    -moz-border-radius: 5px 0 0 0 ! important;
-    border-top: 2px solid black ! important;
-} */
  
  
   .genealogy-tree ul ul .firstchildafter{

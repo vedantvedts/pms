@@ -9,14 +9,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import jakarta.servlet.http.Part;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,25 +45,33 @@ import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
-import com.vts.pfms.ccm.model.CCMAchievements;
+import com.vts.pfms.documents.dto.InterfaceTypeAndContentDto;
 import com.vts.pfms.documents.dto.StandardDocumentsDto;
+import com.vts.pfms.documents.model.ICDConnectionInterfaces;
+import com.vts.pfms.documents.model.ICDConnectionPurpose;
+import com.vts.pfms.documents.model.ICDDocumentConnections;
+import com.vts.pfms.documents.model.IGIDocumentIntroduction;
+import com.vts.pfms.documents.model.IGIDocumentShortCodes;
+import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
 import com.vts.pfms.documents.model.IGIInterface;
+import com.vts.pfms.documents.model.IGIInterfaceContent;
+import com.vts.pfms.documents.model.IGIInterfaceTypes;
 import com.vts.pfms.documents.model.IGILogicalInterfaces;
 import com.vts.pfms.documents.model.IRSDocumentSpecifications;
 import com.vts.pfms.documents.model.PfmsApplicableDocs;
 import com.vts.pfms.documents.model.PfmsICDDocument;
 import com.vts.pfms.documents.model.PfmsIDDDocument;
-import com.vts.pfms.documents.model.ICDConnectionInterfaces;
-import com.vts.pfms.documents.model.ICDConnectionPurpose;
-import com.vts.pfms.documents.model.ICDDocumentConnections;
-import com.vts.pfms.documents.model.IGIDocumentShortCodes;
-import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.model.PfmsIRSDocument;
 import com.vts.pfms.documents.service.DocumentsService;
 import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.requirements.service.RequirementService;
 import com.vts.pfms.utils.PMSLogoUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 @Controller
 public class DocumentsController {
@@ -382,6 +388,8 @@ public class DocumentsController {
 			
 			req.setAttribute("logicalInterfaceList", service.getIGILogicalInterfaces());
 			
+			req.setAttribute("igiDocumentIntroductionList", service.getIGIDocumentIntroductionList());
+
 			req.setAttribute("isPdf", req.getParameter("isPdf"));
 			return "documents/IGIDocumentDetails";
 		} catch (Exception e) {
@@ -999,33 +1007,312 @@ public class DocumentsController {
 		}
 	}
 
-	@RequestMapping(value = "IGIIntroductionSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
-	public String igiIntroductionSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+//	@RequestMapping(value = "IGIIntroductionSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+//	public String igiIntroductionSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+//		String UserId = (String) ses.getAttribute("Username");
+//		logger.info(new Date() + " Inside IGIIntroductionSubmit.htm" + UserId);
+//
+//		try {
+//			String igiDocId = req.getParameter("igiDocId");
+//			PfmsIGIDocument pfmsIgiDocument = service.getPfmsIGIDocumentById(igiDocId);
+//			pfmsIgiDocument.setIntroduction(req.getParameter("introduction"));
+//			long result = service.addPfmsIGIDocument(pfmsIgiDocument);
+//
+//			if (result > 0) {
+//				redir.addAttribute("result", "IGI Document Introduction Updated Successfully");
+//			} else {
+//				redir.addAttribute("resultfail", "IGI Document Introduction Update Unsuccessful");
+//			}
+//			redir.addAttribute("igiDocId", igiDocId);
+//			return "redirect:/IGIDocumentDetails.htm";
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			logger.error(new Date() + " Inside IGIIntroductionSubmit.htm " + UserId, e);
+//			return "static/Error";
+//
+//		}
+//
+//	}
+
+	@RequestMapping(value = "IGIIntroductionDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String igiIntroductionDetails(HttpServletRequest req, HttpSession ses) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() + " Inside IGIIntroductionSubmit.htm" + UserId);
-
+		logger.info(new Date() + " Inside IGIIntroductionDetails.htm " + UserId);
 		try {
-			String igiDocId = req.getParameter("igiDocId");
-			PfmsIGIDocument pfmsIgiDocument = service.getPfmsIGIDocumentById(igiDocId);
-			pfmsIgiDocument.setIntroduction(req.getParameter("introduction"));
-			long result = service.addPfmsIGIDocument(pfmsIgiDocument);
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+			String introductionId = req.getParameter("introductionId");
 
-			if (result > 0) {
-				redir.addAttribute("result", "IGI Document Introduction Updated Successfully");
-			} else {
-				redir.addAttribute("resultfail", "IGI Document Introduction Update Unsuccessful");
-			}
-			redir.addAttribute("igiDocId", igiDocId);
-			return "redirect:/IGIDocumentDetails.htm";
+			req.setAttribute("docId", docId);
+			req.setAttribute("docType", docType);
+			req.setAttribute("documentNo", req.getParameter("documentNo"));
+			req.setAttribute("introductionId", introductionId!=null?introductionId:"0");
+			req.setAttribute("igiDocumentIntroductionList", service.getIGIDocumentIntroductionList());
+			return "documents/IGIIntroductionDetails";
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date() + " Inside IGIIntroductionSubmit.htm " + UserId, e);
+			logger.error(new Date() + " Inside IGIIntroductionDetails.htm " + UserId, e);
+			return "static/Error";
+		}
+		
+	}
+	
+	@RequestMapping(value = "IGIIntroductionChapterAdd.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String igiIntroductionChapterAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IGIIntroductionChapterAdd.htm " + UserId);
+		try {
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+			String introductionId = req.getParameter("introductionId");
+			String parentId = req.getParameter("parentId");
+			String levelId = req.getParameter("levelId");
+			String chapterName = req.getParameter("chapterName");
+			
+			IGIDocumentIntroduction introduction = Long.parseLong(introductionId)==0?new IGIDocumentIntroduction(): 
+																					service.getIGIDocumentIntroductionById(introductionId);
+			String action = "Add";
+			if(Long.parseLong(introductionId)==0) {
+				introduction.setParentId(parentId!=null?Long.parseLong(parentId):0L);
+				introduction.setLevelId(levelId!=null?Integer.parseInt(levelId):0);
+				introduction.setDocId(docId!=null?Long.parseLong(docId):0L);
+				introduction.setDocType(docType);
+				introduction.setCreatedBy(UserId);
+				introduction.setCreatedDate(sdtf.format(new Date()));
+				introduction.setIsActive(1);
+			}else {
+				introduction.setModifiedBy(UserId);
+				introduction.setModifiedDate(sdtf.format(new Date()));
+				action = "Edit";
+			}
+			
+			introduction.setChapterName(chapterName);
+			//introduction.setChapterContent(chapterContent);
+			
+			Long result = service.addIGIDocumentIntroduction(introduction);
+			
+			if (result > 0) {
+				redir.addAttribute("result", "Introduction Chapter Name "+action+"ed Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Introduction Chapter Name "+action+" Unsuccessful");
+			}
+			
+			redir.addAttribute("docId", docId);
+			redir.addAttribute("docType", docType);
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			redir.addAttribute("introductionId", result);
+			
+			return "redirect:/IGIIntroductionDetails.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IGIIntroductionChapterAdd.htm " + UserId, e);
+			return "static/Error";
+		}
+		
+	}
+	
+	@RequestMapping(value = "IGIIntroductionDetailsSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String igiIntroductionDetailsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IGIIntroductionDetailsSubmit.htm " + UserId);
+		try {
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+			String introductionId = req.getParameter("introductionId");
+			String chapterContent = req.getParameter("chapterContent");
+			
+			IGIDocumentIntroduction introduction = service.getIGIDocumentIntroductionById(introductionId);
+			introduction.setChapterContent(chapterContent);
+			
+			Long result = service.addIGIDocumentIntroduction(introduction);
+			
+			if (result > 0) {
+				redir.addAttribute("result", "Introduction Chapter Content Submitted Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Introduction Chapter Content Submit Unsuccessful");
+			}
+			
+			redir.addAttribute("docId", docId);
+			redir.addAttribute("docType", docType);
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			redir.addAttribute("introductionId", introductionId);
+			
+			return "redirect:/IGIIntroductionDetails.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IGIIntroductionDetailsSubmit.htm " + UserId, e);
+			return "static/Error";
+		}
+		
+	}
+	
+	@RequestMapping(value = "IGIIntroductionChapterDelete.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String igiIntroductionChapterDelete(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
+
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IGIIntroductionChapterDelete.htm " + UserId);
+		try {
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+			String introductionId = req.getParameter("introductionId");
+			
+			long result = service.deleteIGIIntroduction(introductionId);
+
+			if (result > 0) {
+				redir.addAttribute("result", "Chapter Details Deleted Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Chapter Details Delete Unsuccessful");
+			}
+
+			redir.addAttribute("docId", docId);
+			redir.addAttribute("docType", docType);
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			
+			return "redirect:/IGIIntroductionDetails.htm";
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IGIIntroductionChapterDelete.htm " + UserId);
+			return "static/Error";
+		}
+	}
+
+	/* srikant controller start*/
+	@RequestMapping(value = "InterfaceTypeMaster.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String InterfaceTypeMaster(HttpServletRequest req, HttpServletResponse res, HttpSession ses,
+			RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+
+		logger.info(new Date() + "Inside InterfaceTypeMaster.htm" + UserId);
+		try {
+			req.setAttribute("InterfaceTypeMasterList", service.interfaceTypeMasterList());
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside InterfaceTypeMaster.htm " + UserId, e);
+			return "static/Error";
+
+		}
+		return "documents/InterfaceTypeMasterList";
+
+	}
+	
+	@RequestMapping(value = "InterfaceTypeForm.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String InterfaceTypeMasterAddEdit( HttpServletRequest req, HttpServletResponse res, HttpSession ses,
+			RedirectAttributes redir) throws Exception {
+			String UserId = (String) ses.getAttribute("Username");
+			
+		logger.info(new Date() + "Inside InterfaceTypeForm.htm" + UserId);
+
+		try {
+
+			String interfaceTypeId = req.getParameter("interfaceTypeId");
+			String action = req.getParameter("sub");
+			IGIInterfaceTypes InterfaceType = null;
+			List<IGIInterfaceContent> interfaceContentList = new ArrayList<IGIInterfaceContent>();
+			if (action.equalsIgnoreCase("Edit")) {
+				InterfaceType = service.getIGIInterfaceTypeById(interfaceTypeId);
+				interfaceContentList = service.getIGIInterfaceContentList()
+									   .stream()
+									   .filter(e->(e.getInterfaceTypeId() == Long.parseLong(interfaceTypeId)) && e.getIsActive()==1)
+									   .collect(Collectors.toList());
+				}
+
+			req.setAttribute("interfaceType", InterfaceType);
+			req.setAttribute("interfaceContentList", interfaceContentList);
+
+			return "documents/InterfaceTypeMasterAddEdit";
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			logger.error(new Date() + " Inside InterfaceTypeForm.htm " + UserId, e);
 			return "static/Error";
 
 		}
 
 	}
+	
+	@RequestMapping(value="InterfaceTypeSubmit.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String interfaceTypeMasterAddEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date()+ " Inside InterfaceTypeSubmit.htm "+UserId);	
+		try {
+			InterfaceTypeAndContentDto dto = new InterfaceTypeAndContentDto();
+			dto.setInterfaceTypeId(req.getParameter("interfaceTypeId"));
+			dto.setInterfaceType(req.getParameter("interfaceType"));
+			dto.setInterfaceTypeCode(req.getParameter("interfaceTypeCode"));
+			dto.setInterfaceContent(req.getParameterValues("interfaceContent"));
+			dto.setAction(req.getParameter("action"));
+			dto.setCreatedBy(UserId);
+			dto.setIsActive(1);
+			dto.setCreatedDate(sdtf.format(new Date()));
+			List<String> isDataCarryingList = new ArrayList<>();
+			List<String> interfaceContentCodeList = new ArrayList<>(); 
+			Enumeration<String> parameterNames = req.getParameterNames();
+			while (parameterNames.hasMoreElements()) {
+				String paramName = parameterNames.nextElement();
+				if (paramName.startsWith("isDataCarrying_")) isDataCarryingList.add(req.getParameter(paramName));
+				if (paramName.startsWith("interfaceContentCode_")) interfaceContentCodeList.add(req.getParameter(paramName));
+			}
+			dto.setIsDataCarrying(isDataCarryingList);
+			dto.setInterfaceContentCode(interfaceContentCodeList);
+			long result = service.addInterfaceTypeAndContentDetails(dto);
+			String action = req.getParameter("action");
+			if (result!=0) {
+				redir.addAttribute("result", "Interface Type Details "+action+"ed Successfully");
+			}
+			else {
+				redir.addAttribute("resultfail", "Interface Type Details "+action+" Unsuccessful");	
+			}
+					
+			return "redirect:/InterfaceTypeMaster.htm";
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside InterfaceTypeSubmit.htm "+UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		} 
+	}
+	
+	@RequestMapping(value = "InterfaceAddCheck.htm", method = RequestMethod.GET)
+	public @ResponseBody String InterfaceAddCheck(HttpSession ses, HttpServletRequest req) throws Exception 
+	{
+		String UserId=(String)ses.getAttribute("Username");
+		Object[] interfaces = null;
+		logger.info(new Date() +"Inside InterfaceAddCheck.htm "+UserId);
+		try
+		{	  
+			String interfaceTypeCode=req.getParameter("interfaceTypeCode");
+			String interfaceId=req.getParameter("interfaceId");
+			interfaces =service.InterfaceAddCheck(interfaceTypeCode,interfaceId);
+		}
+		catch (Exception e) {
+			e.printStackTrace(); logger.error(new Date() +"Inside InterfaceAddCheck.htm "+UserId,e);
+		}
+		Gson json = new Gson();
+		return json.toJson(interfaces); 
+	}
+	
+	@RequestMapping(value = "InterfaceContentAddCheck.htm", method = RequestMethod.GET)
+	public @ResponseBody String InterfaceContentAddCheck(HttpSession ses, HttpServletRequest req) throws Exception 
+	{
+		String UserId=(String)ses.getAttribute("Username");
+		Object[] interfaceContent = null;
+		logger.info(new Date() +"Inside InterfaceContentAddCheck.htm "+UserId);
+		try
+		{	  
+			String interfaceContentCode=req.getParameter("interfaceContentCode");
+			String contentId=req.getParameter("contentId");
+			interfaceContent =service.InterfaceContentAddCheck(interfaceContentCode,contentId);
+		}
+		catch (Exception e) {
+			e.printStackTrace(); logger.error(new Date() +"Inside InterfaceContentAddCheck.htm "+UserId,e);
+		}
+		Gson json = new Gson();
+		return json.toJson(interfaceContent); 
+	}
 
+	
+	/* srikant controller end*/
+	
 	@RequestMapping(value = "IGIInterfacesList.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String IgiInterfaces(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
@@ -1038,13 +1325,23 @@ public class DocumentsController {
 			String interfaceId = req.getParameter("interfaceId");
 			interfaceId = interfaceId!=null?interfaceId:"0";
 			
+			String parentId = req.getParameter("parentId");
+			parentId = parentId!=null?parentId:"0";
+			
 			if(!interfaceId.equalsIgnoreCase("0")) {
 				Long interfaceid = Long.parseLong(interfaceId);
 				req.setAttribute("igiInterfaceData", igiInterfaceList.stream().filter(e -> e.getInterfaceId().equals(interfaceid)).findFirst().orElse(null) );
 			}
+			
+			if(!parentId.equalsIgnoreCase("0")) {
+				Long parentid = Long.parseLong(parentId);
+				req.setAttribute("igiInterfaceParentData", igiInterfaceList.stream().filter(e -> e.getInterfaceId().equals(parentid)).findFirst().orElse(null) );
+			}
+			
 			req.setAttribute("interfaceTypesList", service.getIGIInterfaceTypesList());
 			req.setAttribute("interfaceContentList", service.getIGIInterfaceContentList());
 			req.setAttribute("interfaceId", interfaceId);
+			req.setAttribute("parentId", parentId);
 			req.setAttribute("documentNo", req.getParameter("documentNo"));
 
 			return "documents/IGIInterfacesList";
@@ -1066,11 +1363,19 @@ public class DocumentsController {
 			String igiDocId = req.getParameter("igiDocId");
 			String interfaceId = req.getParameter("interfaceId");
 			String action = req.getParameter("action");
-		
+			String parentId = req.getParameter("parentId");
+			
 			IGIInterface igiInterface = interfaceId.equalsIgnoreCase("0")? new IGIInterface(): service.getIGIInterfaceById(interfaceId);
 			igiInterface.setLabCode(LabCode);
 			//igiInterface.setInterfaceCode(req.getParameter("interfaceCode"));
 			//igiInterface.setInterfaceName(req.getParameter("interfaceName"));
+			if(igiInterface.getParentId()==null) {
+				igiInterface.setParentId(parentId!=null?Long.parseLong(parentId):0L);
+			}
+			if(igiInterface.getInterfaceId()==null && igiInterface.getParentId()>0) {
+				igiInterface.setInterfaceCode(req.getParameter("interfaceCode"));
+				igiInterface.setInterfaceName(req.getParameter("interfaceName"));
+			}
 			igiInterface.setParameterData(req.getParameter("parameterData"));
 			igiInterface.setInterfaceContent(req.getParameter("interfaceContent"));
 			igiInterface.setInterfaceType(req.getParameter("interfaceType"));
@@ -1352,7 +1657,7 @@ public class DocumentsController {
 			logicalInterface.setMsgTitle(req.getParameter("msgTitle"));
 			logicalInterface.setDataRate(req.getParameter("dataRate"));
 			logicalInterface.setMsgDescription(req.getParameter("msgDescription"));
-			logicalInterface.setProtocals(req.getParameter("protocals"));
+			logicalInterface.setProtocals(req.getParameter("protocols"));
 			logicalInterface.setAdditionalInfo(req.getParameter("additionalInfo"));
 			
 			if(logicalInterfaceId.equalsIgnoreCase("0")) {

@@ -95,9 +95,9 @@ String pmsToIbasUri = ibasV3Uri+"/login";
 				  <thead>
 				    <tr>
 				 
-                     <th style="width:10rem"><button type="submit" class="btn btn-sm" 
+                     <th style="width:10rem"><span class="btn btn-sm" 
                     style="background-color: #f7f7f7;"><img src="view/images/rupee.png" /> &nbsp;
-                    Cash Out Go (<span style="color: green">&#8377;</span>Cr)</button> </th>
+                    Cash Out Go (<span style="color: green">&#8377;</span>Cr)</span> </th>
 
 
 

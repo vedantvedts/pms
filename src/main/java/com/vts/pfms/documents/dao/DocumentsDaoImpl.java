@@ -4,11 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
-import jakarta.transaction.Transactional;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
@@ -18,6 +13,7 @@ import com.vts.pfms.documents.model.ICDConnectionPurpose;
 import com.vts.pfms.documents.model.ICDDocumentConnections;
 import com.vts.pfms.documents.model.ICDPurpose;
 import com.vts.pfms.documents.model.IGIApplicableDocs;
+import com.vts.pfms.documents.model.IGIDocumentIntroduction;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
@@ -34,6 +30,11 @@ import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.model.PfmsIGITransaction;
 import com.vts.pfms.documents.model.PfmsIRSDocument;
 import com.vts.pfms.documents.model.StandardDocuments;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 
 
 @Transactional
@@ -532,7 +533,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 	@Override
 	public List<IGIInterfaceTypes> getIGIInterfaceTypesList() throws Exception {
 		try {
-			Query query = manager.createQuery("FROM IGIInterfaceTypes ORDER BY InterfaceTypeCode");
+			Query query = manager.createQuery("FROM IGIInterfaceTypes WHERE IsActive=1 ORDER BY InterfaceTypeCode");
 			return (List<IGIInterfaceTypes>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -543,13 +544,108 @@ public class DocumentsDaoImpl implements DocumentsDao{
 	@Override
 	public List<IGIInterfaceContent> getIGIInterfaceContentList() throws Exception {
 		try {
-			Query query = manager.createQuery("FROM IGIInterfaceContent ORDER BY InterfaceContentCode");
+			Query query = manager.createQuery("FROM IGIInterfaceContent WHERE IsActive=1 ORDER BY InterfaceContentCode");
 			return (List<IGIInterfaceContent>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
 			return new ArrayList<IGIInterfaceContent>();
 		}
 	}
+
+	// srikant start
+	private static final String INTERFACETYPEMASTER="SELECT a.InterfaceTypeId, a.InterfaceType, a.InterfaceTypeCode FROM pfms_igi_interface_types a WHERE a.IsActive = 1 ORDER BY a.InterfaceTypeId DESC";
+
+	@Override
+	public List<Object[]> interfaceTypeMasterList() throws Exception {
+		try {
+			Query query=manager.createNativeQuery(INTERFACETYPEMASTER);
+			return (List<Object[]>) query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+
+		}
+	}
+
+	@Override
+	public IGIInterfaceTypes getIGIInterfaceTypeById(String interfaceTypeId) throws Exception {
+		try {
+		  return manager.find(IGIInterfaceTypes.class, Long.parseLong(interfaceTypeId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new IGIInterfaceTypes();
+		}
+	}
+
+	@Override
+	public long addIGIInterfaceTypes(IGIInterfaceTypes iGIInterfaceTypes) throws Exception {
+		try {
+			manager.persist(iGIInterfaceTypes);
+			manager.flush();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return iGIInterfaceTypes.getInterfaceTypeId();
+	}
+
+	@Override
+	public long addIGIInterfaceTypesContents(IGIInterfaceContent iGIInterfaceContent) throws Exception {
+		try {
+			manager.persist(iGIInterfaceContent);
+			manager.flush();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return iGIInterfaceContent.getInterfaceContentId();
+	}
+
+	private static final String IGIINTERFACETYPESCONTENTSDELETE="UPDATE pfms_igi_interface_content  SET IsActive='0' WHERE interfaceTypeId=:interfaceTypeId";
+
+	@Override
+	public int removeIGIInterfaceTypesContents(String interfaceTypeId) throws Exception{
+			try {
+				Query query =manager.createNativeQuery(IGIINTERFACETYPESCONTENTSDELETE);
+				query.setParameter("interfaceTypeId", Long.parseLong(interfaceTypeId));
+				return query.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return 0;		
+	}
+
+	private static final String INTERFACEADDCHECK ="SELECT SUM(IF(InterfaceTypeCode =:interfaceTypeCode,1,0))   AS 'dCode','0' AS 'codecount'FROM pfms_igi_interface_types WHERE isactive=1 AND interfaceTypeId!=:interfaceTypeId";
+
+	@Override
+	public Object[] InterfaceAddCheck(String interfaceTypeCode, String interfaceId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(INTERFACEADDCHECK);
+			query.setParameter("interfaceTypeCode", interfaceTypeCode);
+			query.setParameter("interfaceTypeId", interfaceId);
+			return (Object[]) query.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private static final String INTERFACECONTENTADDCHECK="SELECT SUM(IF(InterfaceContentCode =:interfaceContentCode,1,0))   AS 'dCode','0' AS 'codecount'FROM pfms_igi_interface_content WHERE isactive=1 AND interfaceContentId!=:interfaceContentId ";
+
+	@Override
+	public Object[] InterfaceContentAddCheck(String interfaceContentCode, String contentId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(INTERFACECONTENTADDCHECK);
+			query.setParameter("interfaceContentCode", interfaceContentCode);
+			query.setParameter("interfaceContentId", contentId);
+			return (Object[]) query.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	//srikant end
 	
 	private static final String IGIDOCUMENTUSERREVOKE = "UPDATE pfms_igi_document SET IGIStatusCode='REV', IGIStatusCodeNext='FWD' WHERE IGIDocId=:IGIDocId";
 	@Override
@@ -1085,6 +1181,69 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}catch (Exception e) {
 			e.printStackTrace();
 			return 0;
+		}
+	}
+
+	@Override
+	public List<IGIDocumentIntroduction> getIGIDocumentIntroductionList() throws Exception {
+		try {
+			Query query = manager.createQuery("FROM IGIDocumentIntroduction WHERE IsActive=1");
+			return (List<IGIDocumentIntroduction>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<IGIDocumentIntroduction>();
+		}
+	}
+	
+	@Override
+	public IGIDocumentIntroduction getIGIDocumentIntroductionById(String introductionId) throws Exception {
+		try {
+			return manager.find(IGIDocumentIntroduction.class, Long.parseLong(introductionId));
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside DocumentsDaoImpl getIGIDocumentIntroductionById "+ e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@Override
+	public Long addIGIDocumentIntroduction(IGIDocumentIntroduction introduction) throws Exception {
+		try {
+			manager.persist(introduction);
+			manager.flush();
+			return introduction.getIntroductionId();
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside DocumentsDaoImpl addIGIDocumentIntroduction "+ e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+
+	private static final String DELETEIGIINTRODUCTIONBYID = "UPDATE pfms_igi_document_introduction SET IsActive=0 WHERE IntroductionId=:IntroductionId";
+	@Override
+	public int deleteIGIIntroduction(String introductionId) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(DELETEIGIINTRODUCTIONBYID);
+			query.setParameter("IntroductionId", introductionId);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+	public static final String INTERFACECOUNTBYPARENTID = "SELECT IFNULL(COUNT(InterfaceId),0) AS 'MaxCount' FROM pfms_igi_interfaces WHERE ParentId=:ParentId";
+	@Override
+	public Long getInterfaceCountByParentId(Long parentId) throws Exception {
+
+		try {
+			Query query =manager.createNativeQuery(INTERFACECOUNTBYPARENTID);
+			query.setParameter("ParentId", parentId);
+			return (Long)query.getSingleResult();
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside DocumentsDAOImpl getInterfaceCountByParentId "+ e);
+			e.printStackTrace();
+			return null;
 		}
 	}
 	

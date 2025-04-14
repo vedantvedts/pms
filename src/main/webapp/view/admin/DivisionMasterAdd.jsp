@@ -209,6 +209,17 @@ List<Object[]> DivisionHeadListAdd=(List<Object[]>)request.getAttribute("Divisio
 </div>
    
 </div><!-- row closed -->
+
+<!-- srikant code start -->
+<div class="row">
+<div class="col-md-3">
+		<div class="form-group">
+                 <label>Division Short Name:<span class="mandatory" style="color: red;">*</span></label>
+                  <input  class="form-control form-control"  type="text" name="divisionShortName" id="divisionShortName" placeholder="Division Short Name" id="divisionShortName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize;" > 
+		</div>
+</div>
+</div>
+<!-- srikant code end -->
    
 	<div align="center">
 		<button type="button" class="btn btn-sm submit" style="align-self: center;" onclick="Divisioncheck('divisionAdd');" >SUBMIT</button>
@@ -272,6 +283,7 @@ function Divisioncheck(frmid){
 				if(	$('#divisionCode').val().trim()=="" ||
 						$('#divisionName').val().trim()=="" || 
 						$('#grpId').val().trim()=="" ||
+						$('#divisionShortName').val().trim()=="" || //srikant
 						$('#dHName').val().trim()=="" )
 					{
 						alert('Please fill all the fields !');	

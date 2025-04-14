@@ -3210,4 +3210,30 @@ public class MilestoneController {
 			return "static/Error";
 		}
 	}
+	
+	@RequestMapping(value="MilestoneActivityProgressDetails.htm", method= {RequestMethod.GET})
+	public @ResponseBody String milestoneActivityProgressDetails(HttpSession ses, HttpServletRequest req) throws Exception {
+		
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside MilestoneActivityProgressDetails.htm "+UserId);
+		Gson json = new Gson();
+		List<Object[]> subList = new ArrayList<>();
+		try
+		{	 
+			MileEditDto mainDto = new MileEditDto();
+			mainDto.setMilestoneActivityId(req.getParameter("MilestoneActivityId"));
+			mainDto.setActivityId(req.getParameter("ActivityId"));
+			mainDto.setProjectId(req.getParameter("ProjectId"));
+			mainDto.setActivityType(req.getParameter("ActivityType"));
+
+			subList = service.MilestoneActivitySub(mainDto);
+
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside MilestoneActivityProgressDetails.htm "+UserId ,e);
+			e.printStackTrace(); 
+		}
+		  
+		 return json.toJson(subList);    
+	}
+
 }

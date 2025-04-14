@@ -41,6 +41,7 @@ List<Object[]> OfficerList=(List<Object[]>) request.getAttribute("OfficerList");
 List<Object[]> CategoryList=(List<Object[]>) request.getAttribute("CategoryList");
 List<Object[]> ProjectTypeList=(List<Object[]>) request.getAttribute("ProjectTypeList");
 List<Object[]> ProjectCatSecDetalis=(List<Object[]>) request.getAttribute("ProjectCatSecDetalis");
+List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"); /* srikant */
 %>
 
 
@@ -406,6 +407,17 @@ function validateismaincheck()
 			<input name="projectcategory" id="projectcategoryID" hidden="hidden" <%if(ProjectCatSecDetalis.size()>0){ %> value="<%=ProjectCatSecDetalis.get(0)[1].toString() %>" <%} %>>
 		</td>
 </tr>
+<!-- srikant code start -->
+<tr>
+<th><label style="margin-bottom: -10px;">	Platform: <span class="mandatory"	style="color: red;">*</span></label></th>
+<td><select required="required" name="platformName" class="form-control  form-control selectdee" id="platformName" data-width="100%"	data-live-search="true" >
+<option disabled="disabled" value="" selected="selected">Choose..</option>
+<% for (Object[] protype : PlatformList) {%>
+<option value="<%=protype[0]%>"><%=protype[1]%></option>
+<% } %>
+</select></td>
+</tr>
+<!-- srikant code end -->
 <tr>
 	   <th colspan="1"><label style="margin-bottom: -10px;">Nodal & Participating Lab:<span class="mandatory" style="color: red;">*</span></label></th>
 	  <td colspan="3"><input required="required" name="Nodal" placeholder="Enter Nodal & Participating Lab" class="form-control" maxlength="250" /></td>

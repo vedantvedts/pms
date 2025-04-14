@@ -2173,7 +2173,7 @@ if(ses!=null){ %>
 												<jsp:include page="../print/ProjectsSlideShowSelection.jsp"></jsp:include>
 												<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">DoS</span></td>
 												<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">PDC</span></td>
-												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">AB</span></td>
+												<!-- <td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">AB</span></td> -->
 												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">EB / PMB </span></td>
 												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">PMRC / PJB </span></td>
 												<td ><span style="font-size :15px;font-weight: bold;  ">Milestone </span></td>
@@ -2233,7 +2233,7 @@ if(ses!=null){ %>
 												 <img src="view/images/silde.png" style="width: 25px;"/></a> --%></td>
 												<td style="font-size: 13px;font-weight: 600; "><%if(obj[50]!=null){%><%= sdf3.format(sdf2.parse(obj[50].toString()))%><%}else{ %> - <%} %></td>
 												<td style="font-size: 13px;font-weight: 600; <%if(obj[47]!=null){ if(LocalDate.parse(obj[47].toString()).isBefore(LocalDate.now())){ %>color:maroon<%}}%>  "><%if(obj[47]!=null){%><%= sdf3.format(sdf2.parse(obj[47].toString()))%><%}else{ %> - <%} %></td>
-												<td class="custom-td">
+												<%-- <td class="custom-td">
 												<%if (obj[52].toString().equalsIgnoreCase("Y")) {%>
 												
 												
@@ -2268,7 +2268,7 @@ if(ses!=null){ %>
 														</div>
 													</div>
 													<%} %>
-												</td>
+												</td> --%>
 												<td class="custom-td">
 												<%if (obj[52].toString().equalsIgnoreCase("N")) {%>
 													<%if(Integer.parseInt(obj[13].toString())>0){ %>
@@ -2607,7 +2607,7 @@ if(ses!=null){ %>
 						
 					<div class="row">
 						<div style="text-align: left">
-								<p style="margin-bottom: 0px !important;margin-left:10px">Project </p>
+								<p style="margin-bottom: 0px !important;margin-left:10px">Users </p>
 								<hr class="modal-hr">
 								<ul class="modal-list">
 						          	<li><span class="modal-span" style="color:green">&#8226;</span><span class="modal-text">Indian Army</span></li>
@@ -2628,9 +2628,9 @@ if(ses!=null){ %>
 								<hr class="modal-hr">
 								<ul class="modal-list">
 									<li><span class="modal-span" style="color:red">&#8226;</span><span class="modal-text">0-25%</span></li>
-						           	<li><span class="modal-span" style="color:#EE5007;">&#8226;</span><span class="modal-text">25-50%</span></li>
-						           	<li><span class="modal-span" style="color:#F8CB2E;">&#8226;</span><span class="modal-text">50-75%</span></li>
-						           	<li><span class="modal-span" style="color:green">&#8226;</span><span class="modal-text">75-100%</span></li>
+						           	<li><span class="modal-span" style="color:#EE5007;">&#8226;</span><span class="modal-text">26-50%</span></li>
+						           	<li><span class="modal-span" style="color:#F8CB2E;">&#8226;</span><span class="modal-text">51-75%</span></li>
+						           	<li><span class="modal-span" style="color:green">&#8226;</span><span class="modal-text">76-100%</span></li>
 					            </ul>
 							</div>
 					</div>		
@@ -2729,7 +2729,7 @@ if(ses!=null){ %>
 													<!-- <a  data-toggle="modal"  class="fa faa-pulse animated " data-target="#exampleModal1" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" ><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a> -->
 												</td>
 												<td style="width:5%"><span style="font-size :15px;font-weight: bold; ">Lab</span></td>
-												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">AB</span></td>
+												<!-- <td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">AB</span></td> -->
 												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">EB / PMB</span></td>
 												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">PMRC / PJB</span></td>
 												<td ><span style="font-size :15px;font-weight: bold;  ">Milestone</span></td>
@@ -2746,7 +2746,7 @@ if(ses!=null){ %>
 												<%-- <%=obj[2] %> --%>
 												<a href="javascript:LabDetails('<%=obj[45] %>')"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
 												<td style="font-weight: 800; font-size:0.75rem;text-align:left;"><%=obj[45] %>	</td>
-												<td class="custom-td">
+												<%-- <td class="custom-td">
 													<%if(Integer.parseInt(obj[62].toString())>0){ %>
 														<div class="row">
 															<div class="col-md-11">
@@ -2772,7 +2772,7 @@ if(ses!=null){ %>
 														</div>
 													</div>
 													<%} %>
-												</td>
+												</td> --%>
 												<td class="custom-td">
 													<%if(Integer.parseInt(obj[5].toString())>0){ %>
 														

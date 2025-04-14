@@ -145,6 +145,8 @@ public class MasterServiceImpl implements MasterService {
 		employee.setSrNo(0l);
 		employee.setLabCode(officermasteradd.getLabCode());
 		employee.setSuperiorOfficer(officermasteradd.getSuperiorOfficer());
+		employee.setEmpStatus(officermasteradd.getEmpStatus());	//srikant
+
 		return dao.OfficeMasterInsert(employee);
 	}
 	
@@ -193,6 +195,8 @@ public class MasterServiceImpl implements MasterService {
 			empExternal.setModifiedDate(sdf1.format(new Date()));
 			empExternal.setEmpId(Long.parseLong(officermasteradd.getEmpId()));
 			empExternal.setSuperiorOfficer(officermasteradd.getSuperiorOfficer());
+			empExternal.setEmpStatus(officermasteradd.getEmpStatus()); //srikant
+
 			return dao.OfficerMasterUpdate(empExternal);
 		
 	}

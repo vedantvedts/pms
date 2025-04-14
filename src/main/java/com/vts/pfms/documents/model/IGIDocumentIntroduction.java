@@ -1,4 +1,6 @@
-package com.vts.pfms.admin.model;
+package com.vts.pfms.documents.model;
+
+import java.io.Serializable;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,22 +15,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="division_master")
-public class DivisionMaster {
+@Table(name="pfms_igi_document_introduction")
+public class IGIDocumentIntroduction implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long DivisionId;
-	private String LabCode;
-	private String DivisionCode;
-	private String DivisionName;
-	private String DivisionShortName;
-	private long DivisionHeadId;
-	private long GroupId;
-	private Integer IsActive;
+	private Long IntroductionId;
+	private Long ParentId;
+	private int LevelId;
+	private String ChapterName;
+	private String ChapterContent;
+	private Long DocId;
+	private String DocType;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;
-	
+	private int IsActive;
 }

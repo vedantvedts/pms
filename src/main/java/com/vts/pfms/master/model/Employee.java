@@ -37,4 +37,5 @@ public class Employee {
 	private String ModifiedDate;
 	private String LabCode;
 	private String SuperiorOfficer;
+	private String EmpStatus; //srikant
 }

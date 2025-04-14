@@ -4,7 +4,6 @@
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.net.Inet4Address"%>
 <%@page import="com.vts.pfms.Zipper"%>
-<%@page import="java.math.MathContext"%>
 <%@page import="com.vts.pfms.model.TotalDemand"%>
 <%@page import="java.time.temporal.ChronoUnit"%>
 <%@page import="com.vts.pfms.committee.model.Committee"%>
@@ -765,11 +764,10 @@
 					</div>
 					<div class="col-md-10">
 						<h5 style="margin-top: 5px;">
-							4 (b) Last <%=committee.getCommitteeShortName().trim().toUpperCase()%> Meeting Action Points with Probable Date of Completion (PDC), Actual Date of Completion (ADC) and Status
+						4 (b) Last <%=committee.getCommitteeShortName().trim().toUpperCase()%> Meeting Action Points with Probable Date of Completion (PDC), Actual Date of Completion (ADC) and Status
 						</h5>
 					</div>
-					<div class="col-md-1">
-						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					<div class="col-md-1"><img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
 				</div>
 				<div class="content">
@@ -796,7 +794,6 @@
 									</p>
 								</td>
 							</tr>
-
 							<tr>
 								<th style="width: 15px !important; text-align: center;">SN</th>
 								<th style="width:30px;">ID</th>
@@ -809,7 +806,6 @@
 								<!-- <th style="width: 20px;">Info</th> -->
 							</tr>
 						</thead>
-
 						<tbody>
 							<% if (lastpmrcactions.get(z).size() == 0) { %>
 							<tr>
@@ -822,7 +818,6 @@
 							<tr>
 								<td style="text-align: center;"><%=i%></td>
 								<td style="text-align: center;">
-								
 								<%if(obj[17]!=null && Long.parseLong(obj[17].toString())>0){ %>
 								<button type="button" class="btn btn-sm" style="border-radius: 50px;font-weight: bold" onclick="ActionDetails( <%=obj[17] %>);" data-toggle="tooltip" data-placement="top" title="Action Details" >
 								<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("pmrc")){ %>
@@ -2682,7 +2677,7 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 									<a data-toggle="modal" data-target="#exampleModal1" data-id="milestonemodal<%=obj[0]%>" class="milestonemodal" data-whatever="@mdo" style=" cursor: pointer"> 
 										<i class="fa fa-info-circle fa-lg " style="color: #145374" aria-hidden="true"></i>
 									</a>
-		<%=obj[0]%>
+		
 								</td>
 							</tr>
 							<% count1++;
@@ -3148,7 +3143,7 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 								for (TechImages imges : TechImagesList) { %>
 								<% Path imagePath = Paths.get(filePath,projectLabCode,"TechImages",(imges.getTechImagesId() + "_" + imges.getImageName()));
 								if (imagePath.toFile().exists()) { %>
-								<img data-enlargable style="width:98%;height:70vh; margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(imagePath.toFile()))%>">
+								<img data-enlargable style="height:70vh; margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(imagePath.toFile()))%>">
 								<hr>
 								<%}%><%}}}%>
 					</div>
@@ -3166,7 +3161,13 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 						<h1 style="font-size: 5rem;">Thank You !</h1>
 					</div> -->
 					<div class="content" >
-					<img class="" style="width: 100%; height: 100%;" <%if(thankYouImg!=null ){ %> src="data:image/*;base64,<%=thankYouImg%>" alt="Logo"<%}else{ %> alt="Image Not Found" <%} %> > 
+					<%if(thankYouImg!=null ){ %>
+					<img class="" style="width: 100%; height: 100%;"  src="data:image/*;base64,<%=thankYouImg%>"  > 
+						<%}else{ %>
+							<div style=" position: absolute ;top: 40%;left: 34%;">
+						<h1 style="font-size: 5rem;">Thank You !</h1>
+					</div>
+				<%} %>
 				</div>
 				</div>
 			</div>
@@ -3949,7 +3950,7 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 						<div align="left"><table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 350px; border-collapse: collapse;">
 						<thead><tr> <th style="width: 140px; ">Committee</th> <th  style="width: 140px; "> Date Held</th></tr></thead>
 						<%for(Object[]obj:otherMeetingList) {%>
-						<tbody><tr><td><button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>"><%=obj[2]%> </button>
+						<tbody><tr><td><a class="btn btn-link" style="padding:0px;margin:0px;" href="CommitteeMinutesViewAllDownload.htm?committeescheduleid=<%=obj[0]%>" target="blank"><%=obj[2]%></a>
 								</td>												
 								<td  style="text-align: center; " ><%= sdf.format(sdf1.parse(obj[1].toString()))%></td>
 								</tr>

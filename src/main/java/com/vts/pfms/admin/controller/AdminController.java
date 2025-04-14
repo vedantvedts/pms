@@ -857,6 +857,7 @@ public class AdminController {
 			String divisionName = req.getParameter("dName");
 			String groupId = req.getParameter("grpId");
 			String DivisionHeadName = req.getParameter("dHName");
+			String divisionShortName = req.getParameter("divisionShortName");	//srikant
 
 			DivisionMaster dmo = new DivisionMaster();
 			dmo.setDivisionCode(divisionCode);
@@ -866,6 +867,8 @@ public class AdminController {
 			dmo.setLabCode(LabCode);
 			dmo.setCreatedBy(UserId);
 			// dmo.setIsActive(1);
+			dmo.setDivisionShortName(divisionShortName);	//srikant
+
 			long count = service.DivisionAddSubmit(dmo);
 			if (count > 0) {
 				redir.addAttribute("result", "Division Added Successfully");
@@ -898,7 +901,7 @@ public class AdminController {
 			add.setDivisionHeadId(Long.valueOf(Long.parseLong(req.getParameter("DivisionHeadName"))));
 			add.setGroupId(Long.valueOf(Long.parseLong(req.getParameter("GroupId"))));
 			add.setDivisionId(Long.valueOf(Long.parseLong(req.getParameter("DivisionId"))));
-
+			add.setDivisionShortName(req.getParameter("DivisionShortName"));	//srikant
 			add.setIsActive(Integer.valueOf(req.getParameter("isActive")));
 
 			int count = service.DivisionMasterUpdate(add, Userid);

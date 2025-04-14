@@ -384,9 +384,9 @@ input[type="file"]::-webkit-file-upload-button {
 						id="myTable3" style="margin-top: 20px;">
 						<thead>
 							<tr>
-								<th colspan="7"
-									style="background-color: #346691; color: white; text-align: center; font-size: 18px !important; border-left: 0px solid; text-transform: capitalize;">Activity
-									Updated Details</th>
+								<th colspan="7" style="background-color: #346691; color: white; text-align: center; font-size: 18px !important; border-left: 0px solid; text-transform: capitalize;">
+									Activity Updated Details
+								</th>
 							</tr>
 							<tr>
 								<th style="text-align: left;">As On Date</th>
@@ -536,14 +536,12 @@ input[type="file"]::-webkit-file-upload-button {
 	<script type="text/javascript">
 function editcheck(editfileid)
 {
-	const fi = $('#'+editfileid )[0].files[0].size;							 	
-   	
     if (document.getElementById(editfileid).files.length !=0 && file >= 50 ) 
     {
     	event.preventDefault();
      	alert("File too Big, please select a file less than 50mb");
-    } else
-    {
+     	return false;
+    } else {
     	return confirm('Are you Sure To Submit?');
     }
 }

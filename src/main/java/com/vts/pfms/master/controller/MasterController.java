@@ -236,7 +236,8 @@ public class MasterController {
 			officermasteradd.setSrNo("0");
 			officermasteradd.setLabCode(LabCode);
 			officermasteradd.setSuperiorOfficer(req.getParameter("superiorOfficer"));
-			
+			officermasteradd.setEmpStatus(req.getParameter("empStatus"));	//srikant
+
 			long count=0;
 
 			try {
@@ -283,7 +284,8 @@ public class MasterController {
 			officermasteradd.setDronaEmail(req.getParameter("DronaEmail"));
 			officermasteradd.setInternalEmail(req.getParameter("InternetEmail"));
 			officermasteradd.setSuperiorOfficer(req.getParameter("superiorOfficer"));
-			
+			officermasteradd.setEmpStatus(req.getParameter("empStatus"));	//srikant
+
 			int count= service.OfficerMasterUpdate(officermasteradd, UserId);				
 
 			if(count>0) {

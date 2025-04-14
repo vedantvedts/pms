@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.documents.model.IGIDocumentIntroduction"%>
 <%@page import="com.vts.pfms.documents.model.IGIInterfaceTypes"%>
 <%@page import="com.vts.pfms.documents.model.IGIInterfaceContent"%>
 <%@page import="java.util.function.Function"%>
@@ -205,6 +206,9 @@
 		List<Object[]> productTreeList = (List<Object[]>)request.getAttribute("productTreeList"); 
 		List<Object[]> icdConnectionsList = (List<Object[]>)request.getAttribute("icdConnectionsList"); 
 		
+		List<IGIDocumentIntroduction> introductionList = (List<IGIDocumentIntroduction>)request.getAttribute("igiDocumentIntroductionList");
+		introductionList = introductionList.stream().filter(e -> e.getDocId()==Long.parseLong(icdDocId) && e.getDocType().equalsIgnoreCase("B")).collect(Collectors.toList());
+		
 		String isSubSystem = icdDocument!=null && icdDocument.getProductTreeMainId()!=0? "Y": "N";
 		
 		List<Object[]> productTreeAllList = (List<Object[]>)request.getAttribute("productTreeAllList"); 
@@ -239,7 +243,7 @@
 		    
 		    //String value = count+". "+ connection[4] + "_" + connection[5] + "_" + interfaceCode;
 		    
-		    String value = connection[32].toString();
+		    String value = connection[8].toString();
 		    
 		    connectionMap.merge(key, value, (oldValue, newValue) -> oldValue + " <br> " + newValue);
 		    
@@ -405,13 +409,13 @@
 												</div>
 											</div>
 											
-											<div class="card module" data-toggle="modal" data-target="#introductionModal">
+											<div class="card module" onclick="showChapter1()">
 												<div class="card-body">
 													<div><img alt="" src="view/images/requirements.png" > <span class="topic-name">Chapter 1 : Introduction</span></div>
 												</div>
 											</div>
 											
-											<div class="card module" onclick="showApplicableDocuments()" >
+											<div class="card module" onclick="showChapter2()" >
 												<div class="card-body">
 													<div><img alt="" src="view/images/requirements.png" > <span class="topic-name">Chapter 2 : Applicable Docs</span></div>
 												</div>
@@ -533,6 +537,8 @@
 		<input type="hidden" name="shortCodeType" id="shortCodeType"> 
 	
 		<button type="submit" id="shortCodesFormBtn" formaction="IGIShortCodesDetails.htm" formmethod="post" formnovalidate="formnovalidate" style="display:none;"></button>
+		
+		<button type="submit" id="introductionDetailsFormBtn" formaction="IGIIntroductionDetails.htm" formmethod="post" formnovalidate="formnovalidate" style="display:none;"></button>
 	
 		<button type="submit" id="applicableDocumentsFormBtn" formaction="IGIApplicableDocumentsDetails.htm" formmethod="post" formnovalidate="formnovalidate" style="display:none;"></button>
 		
@@ -746,41 +752,6 @@
     	</div>
 	</div>
 	<!-- -------------------------------------------- Document Summary Modal Structure End ----------------------------------- -->
-
-	<!-- -------------------------------------------- Introduction Modal ------------------------------------------------------------- -->
-	<div class="modal fade" id="introductionModal" tabindex="-1" role="dialog" aria-labelledby="introductionModal" aria-hidden="true">
-		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
-			<div class="modal-content" style="width:135%;margin-left:-20%;">
-				<div class="modal-header" style="background: #055C9D;color: white;">
-		        	<h5 class="modal-title ">Introduction</h5>
-			        <button type="button" class="close" style="text-shadow: none !important" data-dismiss="modal" aria-label="Close">
-			          <span class="text-light" aria-hidden="true">&times;</span>
-			        </button>
-		      	</div>
-     			<div class="modal-body">
-     				<div class="container-fluid mt-3">
-     					<div class="row">
-							<div class="col-md-12 " align="left">
-								<form action="ICDIntroductionSubmit.htm" method="POST" id="myform">
-									<div id="introductionEditor" class="center"></div>
-									<textarea id="introduction" name="introduction" style="display: none;"></textarea>
-									<div class="mt-2" align="center" id="detailsSubmit">
-										<span id="EditorDetails"></span>
-										<input type="hidden" name="icdDocId" value="<%=icdDocId %>">
-										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-										<span id="Editorspan">
-											<span id="btn1" style="display: block;"><button type="submit"class="btn btn-sm btn-warning edit mt-2" onclick="return confirm('Are you sure to Update?')">UPDATE</button></span>
-										</span>
-									</div>
-								</form>
-							</div>
-						</div>
-     				</div>
-     			</div>
-     		</div>
-		</div>
-	</div>				
-	<!-- -------------------------------------------- Introduction Modal End ------------------------------------------------------------- -->		
 	
 <script type="text/javascript">
 	
@@ -813,65 +784,18 @@
 		$('#shortCodeType').val(shortCodeType);
 		$('#shortCodesFormBtn').click();
 	}
+
+	function showChapter1() {
+		$('#introductionDetailsFormBtn').click();
+	}
 	
-	function showApplicableDocuments() {
+	function showChapter2() {
 		$('#applicableDocumentsFormBtn').click();
 	}
 	
 	function showChapter3(){
     	$('#connectionsFormBtn').click();
 	}
-        
-//Define a common Summernote configuration
-var summernoteConfig = {
-    width: 900,
-    toolbar: [
-        ['style', ['bold', 'italic', 'underline', 'clear']],
-        ['font', ['fontsize', 'fontname', 'color', 'superscript', 'subscript']],
-        ['insert', ['picture', 'table']],
-        ['para', ['ul', 'ol', 'paragraph']],
-        ['height', ['height']]
-    ],
-    fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '24', '36', '48', '64', '82', '150'],
-    fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana','Segoe UI','Segoe UI Emoji','Segoe UI Symbol'],
-    buttons: {
-        superscript: function() {
-            return $.summernote.ui.button({
-                contents: '<sup>S</sup>',
-                tooltip: 'Superscript',
-                click: function() {
-                    document.execCommand('superscript');
-                }
-            }).render();
-        },
-        subscript: function() {
-            return $.summernote.ui.button({
-                contents: '<sub>S</sub>',
-                tooltip: 'Subscript',
-                click: function() {
-                    document.execCommand('subscript');
-                }
-            }).render();
-        }
-    },
-    height: 300
-};
-
-// This is for RSQR
-/* CKEDITOR.replace('Editor', editor_config); */
-$('#introductionEditor').summernote(summernoteConfig);
-
-//Update the values of Editors
-var html1 = '<%=icdDocument!=null && icdDocument.getIntroduction()!=null?icdDocument.getIntroduction().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):""%>';
-$('#introductionEditor').summernote('code', html1);
-
-//Set the values to the form when submitting.
-$('#myform').submit(function() {
-
-	 var data1 = $('#introductionEditor').summernote('code');
-	 $('textarea[name=introduction]').val(data1);
-	 
-});
 
 </script>    
 <script type="text/javascript">
@@ -887,7 +811,7 @@ function DownloadDocPDF(){
             content: [
                 // Cover Page with Project Name and Logo
                 {
-                    text: htmlToPdfmake('<h4 class="heading-color ">Interface Control Information (ICD) <br><br> FOR  <br><br>PROJECT <%=projectShortName %> </h4>'),
+                    text: htmlToPdfmake('<h4 class="heading-color ">Interface Control Document (ICD) <br><br> FOR  <br><br>PROJECT <%=projectShortName %> </h4>'),
                     style: 'DocumentName',
                     alignment: 'center',
                     fontSize: 18,
@@ -1265,15 +1189,46 @@ function DownloadDocPDF(){
                     pageBreak: 'before',
                 },
 
-                <%if(icdDocument!=null) {%>
-                
+                <%if(introductionList!=null && introductionList.size()>0) {
+                	int Sub0Count = 1;
+                	for(IGIDocumentIntroduction intro : introductionList) {
+                		if(intro.getLevelId()==1) {
+                %>
 	                {
-	                	stack: [htmlToPdfmake(setImagesWidth('<%if(icdDocument.getIntroduction()!=null) {%><%=icdDocument.getIntroduction().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
+	                    text: '<%=Sub0Count+". "+intro.getChapterName()%>',
+	                    style: 'chapterSubHeader',
+	                    tocItem: false,
+	                },
+	                {
+	                	stack: [htmlToPdfmake(setImagesWidth('<%if(intro.getChapterContent()!=null) {%><%=intro.getChapterContent().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
 	                		  +'<%}else {%> No Details Added! <%} %>', 500))],
+	                    margin: [20, 0, 0, 0],
+	                },
+	                
+	                <%
+	                	int Sub1Count = 1;
+	                	for(IGIDocumentIntroduction intro1 : introductionList) {
+	                		if(intro1.getLevelId()==2 && intro1.getParentId().equals(intro.getIntroductionId())) {
+	                %>
+	                
+		                {
+		                    text: '<%=Sub0Count+". "+Sub1Count+". "+intro1.getChapterName()%>',
+		                    style: 'chapterSubSubHeader',
+		                    tocItem: false,
+		                },
+		                {
+		                	stack: [htmlToPdfmake(setImagesWidth('<%if(intro1.getChapterContent()!=null) {%><%=intro1.getChapterContent().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
+		                		  +'<%}else {%> No Details Added! <%} %>', 500))],
+		                    margin: [25, 0, 0, 0],
+		                },
+	                <%++Sub1Count;} }%>
+	                
+                <%} ++Sub0Count;} }else{%>
+	                {
+	                    text: 'No Details Added!',
 	                    margin: [10, 0, 0, 0],
 	                },
-	                			
-	            <%}%>
+                <%} %>
                 /* ************************************** Introduction End *********************************** */
                 
                 /* ************************************** Applicable Documents *********************************** */
@@ -1332,7 +1287,7 @@ function DownloadDocPDF(){
                 
                 /* ************************************** Connections *********************************** */
                 {
-                    text: (++mainContentCount)+'. Connections',
+                    text: (++mainContentCount)+'. Interfaces',
                     style: 'chapterHeader',
                     tocItem: true,
                     id: 'chapter'+(++chapterCount),

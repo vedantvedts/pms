@@ -358,8 +358,8 @@ label {
 		       									<textarea class="form-control" name="msgDescription" rows="2" placeholder="Enter Msg Description" maxlength="255" ><%if(logicalInterface!=null && logicalInterface.getMsgDescription()!=null) {%><%=logicalInterface.getMsgDescription() %><%} %></textarea>
 		       								</div>
 			                    		    <div class="col-md-2">
-		       									<label class="form-lable">Protocals </label>
-		       									<textarea class="form-control" name="protocals" rows="2" placeholder="Enter Underlying Protocals" maxlength="255"><%if(logicalInterface!=null && logicalInterface.getProtocals()!=null) {%><%=logicalInterface.getProtocals() %><%} %></textarea>
+		       									<label class="form-lable">Protocols </label>
+		       									<textarea class="form-control" name="protocols" rows="2" placeholder="Enter Underlying Protocols" maxlength="255"><%if(logicalInterface!=null && logicalInterface.getProtocals()!=null) {%><%=logicalInterface.getProtocals() %><%} %></textarea>
 		       								</div>
 			                    		    <div class="col-md-2">
 		       									<label class="form-lable">Additional Info </label>

@@ -382,7 +382,7 @@ if(ses1!=null){	%>
 	                                                            List<Object[]> MilestoneB=(List<Object[]>)request.getAttribute(count+"MilestoneActivityB"+countA);
 	
 																%>
-														<tr class="collapse row<%=count %>">
+														<tr class="collapse row<%=count %>" onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objA[0]%>', '<%=ProjectId%>', 'A')" style="cursor: pointer;">
 															<td style="width:2% !important; " class="center"> </td>
 															<td></td>
 															<td style="text-align: left;width: 5%;"> A-<%=countA%></td>
@@ -441,7 +441,7 @@ if(ses1!=null){	%>
 	                                                            List<Object[]> MilestoneC=(List<Object[]>)request.getAttribute(count+"MilestoneActivityC"+countA+countB);
 	
 																%>
-														<tr class="collapse row<%=count %>">
+														<tr class="collapse row<%=count %>" onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objB[0]%>', '<%=ProjectId%>', 'B')" style="cursor: pointer;">
 															<td style="width:2% !important; " class="center"> </td>
 															<td></td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;B-<%=countB%></td>
@@ -500,7 +500,7 @@ if(ses1!=null){	%>
 															for(Object[] objC: MilestoneC){
 													         List<Object[]> MilestoneD=(List<Object[]>)request.getAttribute(count+"MilestoneActivityD"+countA+countB+countC);
 																%>
-														<tr class="collapse row<%=count %>">
+														<tr class="collapse row<%=count %>" onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objC[0]%>', '<%=ProjectId%>', 'C')" style="cursor: pointer;">
 															<td style="width:2% !important; " class="center"> </td>
 															<td></td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C-<%=countC%></td>
@@ -560,7 +560,7 @@ if(ses1!=null){	%>
 	                                                            List<Object[]> MilestoneE=(List<Object[]>)request.getAttribute(count+"MilestoneActivityE"+countA+countB+countC+countD);
 	
 																%>
-														<tr class="collapse row<%=count %>">
+														<tr class="collapse row<%=count %>" onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objD[0]%>', '<%=ProjectId%>', 'D')" style="cursor: pointer;">
 															<td style="width:2% !important; " class="center"> </td>
 															<td></td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D-<%=countD%></td>
@@ -616,7 +616,7 @@ if(ses1!=null){	%>
                                                          <% int countE=1;
 														 	if(MilestoneE!=null&&MilestoneE.size()>0){
 															for(Object[] objE: MilestoneE){ %>
-														<tr class="collapse row<%=count %>">
+														<tr class="collapse row<%=count %>" onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objE[0]%>', '<%=ProjectId%>', 'E')" style="cursor: pointer;">
 															<td style="width:2% !important; " class="center"> </td>
 															<td></td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E-<%=countE%></td>
@@ -675,7 +675,7 @@ if(ses1!=null){	%>
 												<% countB++;} }%>
 												<% countA++;} }else{%>
 												<tr class="collapse row<%=count %>">
-													<td colspan="10" style="text-align: center" class="center">No Sub List Found</td>
+													<td colspan="11" style="text-align: center" class="center">No Sub List Found</td>
 												</tr>
 												<%} %>
 												<% count++; } %>
@@ -688,11 +688,11 @@ if(ses1!=null){	%>
 							              						<button class="btn btn-sm edit" onclick="return slnocheck();">UPDATE</button>
 						              						</form>
 					              						</td>
-														<td colspan="8"></td>
+														<td colspan="9"></td>
 													</tr>
 												<% }else{%>
 												<tr >
-													<td colspan="10" style="text-align: center" class="center">No List Found</td>
+													<td colspan="11" style="text-align: center" class="center">No List Found</td>
 												</tr>
 												<%} %>
 												</tbody>
@@ -713,6 +713,88 @@ if(ses1!=null){	%>
 			</div>
 
 
+		<br>
+
+	<div class="row m-2">
+		<div class="col-md-12"
+			style="text-align: center; width: 140px; height: 30px;">
+			<b>Milestone Flow </b>
+		</div>
+	</div>
+	
+	<div class="row m-2"
+		style="text-align: center; padding-top: 10px; padding-bottom: 15px;">
+
+		<table align="center" style="border-spacing: 0 20px;">
+			<tr>
+				
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b style="color: #e30c0c;">Add Milestone Activity </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b style="color: #e30c0c;">Add Sub Milestone Activity </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b style="color: #e30c0c;">Assign Weightage </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b style="color: #e30c0c;">Assign Milestone Activity </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b style="color: #e30c0c;">Set Baseline </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b style="color: #e30c0c;">Assignee</b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b style="color: #e30c0c;"> Acknowledge Milestone Activity </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b style="color: #e30c0c;">Update progress</b>
+				</td>
+				
+				
+			
+
+			</tr>
+			
+		</table>
+
+
+
+	</div>
+	<br> 
+	<br>
+	<br>
 
 <div class="modal" id="MainDOCEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -748,6 +830,45 @@ if(ses1!=null){	%>
     </div>
   </div>
 </div>
+
+
+
+
+	<!-- -------------------------------------------- Milestone Progess Modal -------------------------------------------- -->
+	<div class="modal fade" id="milestoneProgressModal" tabindex="-1" role="dialog" aria-labelledby="milestoneProgressModal" aria-hidden="true">
+  		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
+    		<div class="modal-content" style="width:135%;margin-left:-20%;">
+      			<div class="modal-header" id="ModalHeader" style="background: #055C9D ;color: white;">
+			        <h5 class="modal-title" >Activity Updated Details</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true" class="text-light">&times;</span>
+			        </button>
+      			</div>
+      			
+      			<div class="modal-body">
+     				<div class="row mb-2">
+						<div class="col-md-12">
+							<table class="table table-bordered" id="myTables" style="width: 100%;">
+								<thead class="center" style="background: #055C9D ;color: white;">
+									<tr>
+										<th width="10%">SN</th>
+										<th width="20%">As On Date</th>
+										<th width="20%">Progress</th>
+										<th width="30%">Remarks</th>
+										<th width="20%">Action</th>
+									</tr>
+								</thead>
+								<tbody id="milestoneprogesstbody">
+								</tbody>
+							</table>
+						</div>      
+     				</div>
+      				
+      			</div>
+    		</div>
+  		</div>
+	</div>
+	<!-- -------------------------------------------- Milestone Progress Modal End -------------------------------------------- -->
 
 
 	
@@ -877,6 +998,71 @@ function ChangeButton(id) {
 	   	 return confirm('Are You Sure to Update?');
 	    }
 	  }
+	
+	function showMilestoneProgress(MilestoneActivityId, ActivityId, ProjectId, ActivityType) {
+		$('#milestoneProgressModal').modal('show');
+		
+		$.ajax({
+			type : "GET",
+			url : "MilestoneActivityProgressDetails.htm",	
+			datatype : 'json',
+			data : {
+				MilestoneActivityId : MilestoneActivityId,				
+				ActivityId : ActivityId,				
+				ProjectId : ProjectId,				
+				ActivityType : ActivityType,				
+			},
+			success : function(result) {
+				var values = JSON.parse(result);
+				
+				var x ='';
+				
+				if(values.length>0){
+					
+					for(var i=0; i<values.length; i++) {
+						x+= '<tr>';
+						x+= '<td class="center">'+(i+1)+'</td>';
+						x+= '<td class="center">'+formatDate(values[i][2])+'</td>';
+						x += '<td>';
+					    x += '<div class="progress" style="background-color: #cdd0cb !important">';
+					    x += '<div class="progress-bar progress-bar-striped" role="progressbar" style="width: ' + values[i][1] + '%;"';
+					    x += ' aria-valuenow="' + values[i][1] + '" aria-valuemin="0" aria-valuemax="100">' + values[i][1] + '</div>';
+					    x += '</div>';
+					    x += '</td>';
+						x+= '<td>'+values[i][3]+'</td>';
+						x += '<td class="center">';
+						if (values[i][4] && values[i][4].toString().length !== 0) {
+					        x += '<div align="center">';
+					        x += '<a href="ActivityAttachDownload.htm?ActivitySubId=' + values[i][0] + '" target="_blank">';
+					        x += '<i class="fa fa-download"></i></a>';
+					        x += '</div>';
+					    } else {
+					        x += '<div align="center">-</div>';
+					    }
+						x += '</td>';
+						x+= '</tr>';
+					}
+				}else{
+					x = '<tr><td colspan="5" class="center">No Data Available</td></tr>';
+				}
+				
+				$('#milestoneprogesstbody').html(x);
+			}
+		});
+	}
+	
+	function formatDate(sqlDate) {
+	    if (!sqlDate) {
+	        return ""; // Handle null or undefined dates
+	    }
+
+	    let date = new Date(sqlDate);
+	    let day = String(date.getDate()).padStart(2, '0');
+	    let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+	    let year = date.getFullYear();
+
+	    return day + '-' + month + '-' + year;
+	}
 </script>  
 
 

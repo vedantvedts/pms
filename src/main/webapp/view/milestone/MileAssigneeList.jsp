@@ -400,6 +400,83 @@ h6{
 		</div>
 	</div>	
 	
+		<div class="row m-1">
+		<div class="col-md-12"
+			style="text-align: center; width: 140px; height: 30px;color: green;">
+			<b>Milestone Flow </b>
+		</div>
+	</div>
+	
+	<div class="row m-1"
+		style="text-align: center; padding-top: 10px; padding-bottom: 15px;">
+
+		<table align="center" style="border-spacing: 0 20px;">
+		<tr>
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<b class="text-primary">Add Milestone Activity</b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b class="text-primary">Add Sub Milestone Activity </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b class="text-primary">Assign Weightage </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b class="text-primary">Assign Milestone Activity </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b class="text-primary">Set Baseline </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b class="text-primary">Assignee</b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b class="text-primary"> Acknowledge Milestone Activity </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b class="text-primary">Update progress</b>
+				</td>
+			</tr>
+			
+		</table>
+
+
+
+	</div>
+	<br> 
+	<br>
+	<br>
+		
+	
+	
 	<div class="modal fade my-modal" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
  	    	<div class="modal-content">

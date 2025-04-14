@@ -32,9 +32,9 @@ import com.vts.pfms.project.model.PfmsProjectData;
 import com.vts.pfms.project.model.PfmsProjectDataRev;
 import com.vts.pfms.project.model.PfmsReqStatus;
 import com.vts.pfms.project.model.PfmsRequirementApproval;
-import com.vts.pfms.project.model.PfmsRequirementAttachment;
 import com.vts.pfms.project.model.PfmsRisk;
 import com.vts.pfms.project.model.PfmsRiskRev;
+import com.vts.pfms.project.model.PlatformMaster;
 import com.vts.pfms.project.model.PreprojectFile;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMactroDetailsBrief;
@@ -401,5 +401,9 @@ public interface ProjectDao {
 	public long editDocMember(DocMembers idm) throws Exception;
 	public long UpdateInitiationReqMembers(long reqMemberId) throws Exception;
 	public List<Object[]> getsystemSpecificationList(String productTreeMainId)throws Exception;
-	
+	public List<Object[]> PlatformList();
+	public Object[] ProjectOriginalData(String ProjectId) throws Exception;
+	public List<Object[]> ProjectReviseList(String ProjectId) throws Exception;
+	public PlatformMaster getPlatformByPlatformId(long platformId) throws Exception; //srikant;
+
 }

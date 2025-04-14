@@ -23,6 +23,7 @@ public class IGIInterface implements Serializable{
 	private Long InterfaceId;
 	private String LabCode;
 	//private String InterfaceSeqNo;
+	private Long ParentId;
 	private String InterfaceCode;
 	private String InterfaceName;
 	@Transient

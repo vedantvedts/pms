@@ -7,6 +7,7 @@ import com.vts.pfms.documents.model.ICDConnectionPurpose;
 import com.vts.pfms.documents.model.ICDDocumentConnections;
 import com.vts.pfms.documents.model.ICDPurpose;
 import com.vts.pfms.documents.model.IGIApplicableDocs;
+import com.vts.pfms.documents.model.IGIDocumentIntroduction;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
@@ -65,6 +66,15 @@ public interface DocumentsDao {
 	public List<Object[]> igiTransactionList(String docId, String docType) throws Exception;
 	public List<IGIInterfaceTypes> getIGIInterfaceTypesList() throws Exception;
 	public List<IGIInterfaceContent> getIGIInterfaceContentList() throws Exception;
+	// srikant start
+	public List<Object[]> interfaceTypeMasterList()throws Exception;
+	public IGIInterfaceTypes getIGIInterfaceTypeById(String interfaceTypeId) throws Exception;
+	public long addIGIInterfaceTypes(IGIInterfaceTypes iGIInterfaceTypes)throws Exception;
+	public long addIGIInterfaceTypesContents(IGIInterfaceContent iGIInterfaceContent)throws Exception;
+	public int removeIGIInterfaceTypesContents(String interfaceTypeId)throws Exception;
+	public Object[] InterfaceAddCheck(String interfaceTypeCode, String interfaceId)throws Exception;
+	public Object[] InterfaceContentAddCheck(String interfaceContentCode, String contentId)throws Exception;
+	//srikant end
 	public int igiDocumentUserRevoke(String igiDocId) throws Exception;
 	public List<IGILogicalInterfaces> getIGILogicalInterfaces() throws Exception;
 	public IGILogicalInterfaces getIGILogicalInterfaceById(String logicalInterfaceId) throws Exception;
@@ -112,4 +122,9 @@ public interface DocumentsDao {
 	public Long getFirstVersionIDDDocId(String projectId, String initiationId, String productTreeMainId) throws Exception;
 	public int iddDocumentUserRevoke(String iddDocId) throws Exception;
 	
+	public List<IGIDocumentIntroduction> getIGIDocumentIntroductionList() throws Exception;	
+	public IGIDocumentIntroduction getIGIDocumentIntroductionById(String introductionId) throws Exception;
+	public Long addIGIDocumentIntroduction(IGIDocumentIntroduction introduction) throws Exception;
+	public int deleteIGIIntroduction(String introductionId) throws Exception;
+	public Long getInterfaceCountByParentId(Long parentId) throws Exception;
 }

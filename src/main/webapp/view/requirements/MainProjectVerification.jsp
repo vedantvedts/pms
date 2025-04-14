@@ -308,7 +308,7 @@ keyframes blinker { 50% {
 		<a class="navbar-brand"> 
 			<b style="color: #585858; font-size: 19px; font-weight: bold; text-align: left; float: left">
 				<span style="color: #31708f">
-					Verification Provisions - 
+					Verification Provisions 
 				</span> 
 				<span style="color: #31708f; font-size: 19px">
 					<%if(projectDetails!=null) {%>
@@ -370,7 +370,7 @@ keyframes blinker { 50% {
 		<div class="row">
 			<div class="col-md-5">
 				<div class="card" style="border-color: #00DADA; margin-top: 2%;">
-					<div class="card-body" id="scrollclass" style="height: 30.5rem;">
+					<div class="card-body" id="scrollclass" style="height: 30.5rem;overflow: auto;">
 
 						<%
 						if (Verifications!=null &&  !Verifications.isEmpty()) {

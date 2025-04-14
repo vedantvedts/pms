@@ -1,3 +1,5 @@
+<%@page import="com.google.gson.GsonBuilder"%>
+<%@page import="com.google.gson.Gson"%>
 <%@page import="com.vts.pfms.requirements.model.SpecificationTypes"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
@@ -10,10 +12,19 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<jsp:include page="../static/header.jsp"></jsp:include>
-<spring:url value="/resources/js/excel.js" var="excel" />
-<script src="${excel}"></script>
-<title>OFFICER DETAILS</title>
+	<jsp:include page="../static/header.jsp"></jsp:include>
+	
+	<spring:url value="/resources/js/excel.js" var="excel" />
+	<script src="${excel}"></script>
+
+<!-- Pdfmake  -->
+	<spring:url value="/resources/pdfmake/pdfmake.min.js" var="pdfmake" />
+	<script src="${pdfmake}"></script>
+	<spring:url value="/resources/pdfmake/vfs_fonts.js" var="pdfmakefont" />
+	<script src="${pdfmakefont}"></script>
+	<spring:url value="/resources/pdfmake/htmltopdf.js" var="htmltopdf" />
+	<script src="${htmltopdf}"></script>
+	
 <style type="text/css">
 label {
 	font-weight: bold;
@@ -229,6 +240,19 @@ label {
     background: #0056b3 !important;
 }
 
+.p-2.border {
+    transition: 0.3s ease-in-out;
+}
+.p-2.border:hover {
+    box-shadow: 0px 0px 10px rgba(0, 128, 0, 0.5);
+    background-color: #e8f5e9; /* Light green background */
+}
+.p-2.border {
+    background: white;
+    border: 2px solid #28a745;
+    box-shadow: 2px 4px 12px rgba(0, 128, 0, 0.2);
+    border-radius: 8px;
+}
 
 </style>
 </head>
@@ -249,6 +273,9 @@ label {
 		
 		specificationTypeMap.computeIfAbsent(specificationType.getSpecTypeCode(), k -> new ArrayList<>()).addAll(specificationListByType);
 	}
+	
+	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+	String jsonspecificarionMasterList = gson.toJson(specificarionMasterList);
 	
 	%>
 
@@ -281,28 +308,26 @@ label {
 								<b>Specification Master List</b>
 							</h4>
 						</div>
-						<div class="col-md-4">
-							<form action=SpecificationMasterExcel.htm method="post"
-								id="excelForm" enctype="multipart/form-data">
-								<div class="row">
-
-									<div class="col-md-12">
-										Download Excel
-										<button class="btn btn-sm" type="submit" name="Action"
-											value="GenerateExcel" formaction="SpecificationMasterExcel.htm"
-											formmethod="post" formnovalidate="formnovalidate">
-											<i class="fa fa-file-excel-o" aria-hidden="true"
-												style="color: green;"></i>
-										</button>
-									</div>
-								</div>
-								
-								<input type="hidden" name="Type" id="specType" value="A">
-								<input type="hidden" class="specTypeId" name="specTypeId" value="<%=specTypeId%>">
-								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-
-							</form>
+						<div class="col-md-2">
+						    <div class="p-2 border rounded shadow bg-light" style="margin-top: -1rem;"> <!-- Added styles -->
+						        <form action="SpecificationMasterExcel.htm" method="post" id="excelForm" enctype="multipart/form-data">
+						            <div class="d-flex align-items-center">
+						                <span class="mr-2">Download:</span>
+						                <button class="btn btn-sm btn-outline-success mx-1" type="button" onclick="downloadPdf()">
+						                    <i class="fa fa-download" aria-hidden="true"></i>
+						                </button>
+						                <button class="btn btn-sm btn-success mx-1" type="submit" name="Action" value="GenerateExcel">
+						                    <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+						                </button>
+						            </div>
+						
+						            <input type="hidden" name="Type" id="specType" value="A">
+						            <input type="hidden" class="specTypeId" name="specTypeId" value="<%=specTypeId%>">
+						            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+						        </form>
+						    </div>
 						</div>
+						<div class="col-md-3"></div>
 					</div>
 				</div>
 				
@@ -346,7 +371,7 @@ label {
 									id="myTable1">
 									<thead style="text-align: center;">
 									<tr>
-									<th style="width:5%;">SN</th>
+									<th style="width:5%;">Select</th>
 									<!--<th>Specification Name</th> -->
 									<th style="width:20%;">Specification Code</th>
 									<!-- <th style="width:10%;">Specification Type</th> -->
@@ -515,6 +540,143 @@ label {
 		    $('#' + datatarget).addClass('active');
 		});
 
+		
+		// Download pdf function
+		var specificarionMasterList = JSON.parse('<%= jsonspecificarionMasterList %>');
+		function downloadPdf() {
+			var specTypeId = $('.specTypeId').val();
+			console.log('specificarionMasterList: ',specificarionMasterList);
+			console.log('******************************');
+			console.log('specTypeId: ',specTypeId);
+			
+			// Filter specificarionMasterList based on specTypeId
+		    var filteredList = specificarionMasterList;
+			if(specTypeId!="0") {
+				 filteredList = specificarionMasterList.filter(item => item[19] == specTypeId);
+			}
+		    console.log('Filtered List:', filteredList);
+		    
+		 // Prepare table body
+            var tableBody = [
+                [
+                    { text: 'SN', style: 'tableHeader' },
+                    { text: 'Specification Code', style: 'tableHeader' },
+                    { text: 'Parameter', style: 'tableHeader' },
+                    { text: 'Min Value', style: 'tableHeader' },
+                    { text: 'Typical Value', style: 'tableHeader' },
+                    { text: 'Max Value', style: 'tableHeader' },
+                    { text: 'Unit', style: 'tableHeader' },
+                ]
+            ];
+
+            if (filteredList.length > 0) {
+                filteredList.forEach((obj, index) => {
+                    tableBody.push([
+                        { text: (index + 1).toString(), style: 'tableData', alignment: 'center', fillColor: obj[14] == "0" ? '#9ae59a' : null },
+                        { text: obj[5] ? obj[5] : '-', style: 'tableData', alignment: 'left', fillColor: obj[14] == "0" ? '#9ae59a' : null },
+                        { text: obj[3] ? obj[3] : '-', style: 'tableData', alignment: 'left', fillColor: obj[14] == "0" ? '#9ae59a' : null },
+                        { text: obj[16] ? obj[16] : '-', style: 'tableData', fillColor: obj[14] == "0" ? '#9ae59a' : null },
+                        { text: obj[6] ? obj[6] : '-', style: 'tableData', fillColor: obj[14] == "0" ? '#9ae59a' : null },
+                        { text: obj[15] ? obj[15] : '-', style: 'tableData', fillColor: obj[14] == "0" ? '#9ae59a' : null },
+                        { text: obj[4] ? obj[4] : '-', style: 'tableData', fillColor: obj[14] == "0" ? '#9ae59a' : null },
+                    ]);
+                });
+            } else {
+                tableBody.push([{ text: 'No Data Available', style: 'tableData', alignment: 'center', colSpan: 7 }]);
+            }
+            
+		    var docDefinition = {
+					pageOrientation: 'landscape',
+		            content: [
+		                
+		                /* ************************************** Specification Master List *********************************** */ 
+		                {
+		                    text: 'Specification Master List',
+		                    style: 'chapterHeader',
+		                    tocItem: false,
+		                    id: 'chapter1',
+		                    alignment: 'center',
+		                },
+		                
+		                {
+		                    table: {
+		                        headerRows: 1,
+		                        widths: ['7%', '18%', '15%', '15%', '15%', '15%', '15%'],
+		                        body: tableBody,
+		                    },
+		                    layout: {
+		                        /* fillColor: function(rowIndex) {
+		                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+		                        }, */
+		                        hLineWidth: function(i, node) {
+		                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+		                        },
+		                        vLineWidth: function(i) {
+		                            return 0.5;
+		                        },
+		                        hLineColor: function(i) {
+		                            return '#aaaaaa';
+		                        },
+		                        vLineColor: function(i) {
+		                            return '#aaaaaa';
+		                        }
+		                    }
+		                },
+		                /* ************************************** Specification Master List End*********************************** */
+
+		                
+					],
+					styles: {
+						chapterHeader: { fontSize: 16, bold: true, margin: [0, 0, 0, 10] },
+		                tableHeader: { fontSize: 12, bold: true, fillColor: '#f0f0f0', alignment: 'center', margin: [10, 5, 10, 5], fontWeight: 'bold' },
+		                tableData: { fontSize: 11.5, margin: [0, 5, 0, 5] },
+		            },
+		            footer: function(currentPage, pageCount) {
+		                /* if (currentPage > 2) { */
+		                    return {
+		                        stack: [
+		                        	{
+		                                canvas: [{ type: 'line', x1: 30, y1: 0, x2: 820, y2: 0, lineWidth: 1 }]
+		                            },
+		                            {
+		                                columns: [
+		                                    { text: '', alignment: 'left', margin: [30, 0, 0, 0], fontSize: 8 },
+		                                    { text: currentPage.toString() + ' of ' + pageCount, alignment: 'right', margin: [0, 0, 30, 0], fontSize: 8 }
+		                                ]
+		                            },
+		                            { text: '', alignment: 'center', fontSize: 8, margin: [0, 5, 0, 0], bold: true }
+		                        ]
+		                    };
+		                /* }
+		                return ''; */
+		            },
+		            /* header: function (currentPage) {
+		                return {
+		                    stack: [
+		                        
+		                        {
+		                            columns: [
+		                                {
+		                                    // Center: Text
+		                                    text: 'Restricted',
+		                                    alignment: 'center',
+		                                    fontSize: 10,
+		                                    bold: true,
+		                                    margin: [0, 10, 0, 0]
+		                                },
+		                            ]
+		                        },
+		                        
+		                    ]
+		                };
+		            }, */
+					pageMargins: [30, 40, 20, 20],
+		            
+		            defaultStyle: { fontSize: 12, color: 'black', }
+		        };
+				
+		        pdfMake.createPdf(docDefinition).open();
+		}
 	</script>
 </body>
 </html>

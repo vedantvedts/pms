@@ -6,16 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
-import jakarta.transaction.Transactional;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +16,6 @@ import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
 import com.vts.pfms.project.dto.PfmsRiskDto;
 import com.vts.pfms.project.model.InitiationAbbreviations;
-import com.vts.pfms.project.model.PfmsInitiationMilestone;
-import com.vts.pfms.project.model.PfmsInitiationMilestoneRev;
 import com.vts.pfms.project.model.PfmsApproval;
 import com.vts.pfms.project.model.PfmsInitiation;
 import com.vts.pfms.project.model.PfmsInitiationAppendix;
@@ -41,6 +29,8 @@ import com.vts.pfms.project.model.PfmsInitiationDetail;
 import com.vts.pfms.project.model.PfmsInitiationLab;
 import com.vts.pfms.project.model.PfmsInitiationMacroDetails;
 import com.vts.pfms.project.model.PfmsInitiationMacroDetailsTwo;
+import com.vts.pfms.project.model.PfmsInitiationMilestone;
+import com.vts.pfms.project.model.PfmsInitiationMilestoneRev;
 import com.vts.pfms.project.model.PfmsInitiationReqIntro;
 import com.vts.pfms.project.model.PfmsInitiationSanctionData;
 import com.vts.pfms.project.model.PfmsInitiationSchedule;
@@ -51,9 +41,9 @@ import com.vts.pfms.project.model.PfmsProjectData;
 import com.vts.pfms.project.model.PfmsProjectDataRev;
 import com.vts.pfms.project.model.PfmsReqStatus;
 import com.vts.pfms.project.model.PfmsRequirementApproval;
-import com.vts.pfms.project.model.PfmsRequirementAttachment;
 import com.vts.pfms.project.model.PfmsRisk;
 import com.vts.pfms.project.model.PfmsRiskRev;
+import com.vts.pfms.project.model.PlatformMaster;
 import com.vts.pfms.project.model.PreprojectFile;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMactroDetailsBrief;
@@ -82,7 +72,16 @@ import com.vts.pfms.requirements.model.SpecifcationProductTree;
 import com.vts.pfms.requirements.model.Specification;
 import com.vts.pfms.requirements.model.SpecificationContent;
 import com.vts.pfms.requirements.model.SpecificationIntro;
-import com.vts.pfms.requirements.model.TestPlanSummary;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+import jakarta.transaction.Transactional;
 
 @Transactional
 @Repository
@@ -188,13 +187,13 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTMAINLIST="SELECT a.projectmainid,b.projecttypeid,b.projecttype,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.totalsanctioncost, a.pdc, a.revisionno,a.objective,a.deliverable FROM project_main a, project_type b WHERE a.projecttypeid=b.projecttypeid AND a.isactive='1' AND b.isactive='1' ORDER BY a.sanctiondate DESC";
 	private static final String OFFICERLIST="SELECT a.empid, a.empno, a.empname, b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid,a.labcode FROM employee a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid AND a.isactive='1' ORDER BY a.srno=0,a.srno ASC ";
 	private static final String PROJECTMAINCLOSE="update project_main set modifiedby=:modifiedby, modifieddate=:modifieddate,isactive='0'  WHERE isactive='1' and projectmainid=:projectmainid";
-	private static final String PROJECTMAINEDITDATA="SELECT a.projectmainid,b.projecttypeid,b.projecttype,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.sanctioncostre, a.sanctioncostfe, a.totalsanctioncost, a.pdc,a.projectdirector,a.projsancauthority,a.boardreference,a.ismainwc,a.workcenter, a.revisionno,a.objective,a.deliverable, a.LabParticipating,a.CategoryId,a.scope ,a.enduser  ,a.application , a.projectshortname FROM project_main a, project_type b WHERE a.projecttypeid=b.projecttypeid and a.projectmainid=:promainid and a.isactive='1' and b.isactive='1' ORDER BY a.projecttypeid, a.projectmainid";
-	private static final String PROJECTMAINUPDATE="UPDATE project_main SET projecttypeid=:projecttypeid,projectcode=:projectcode,projectname=:projectname,projectdescription=:projectdescription, unitcode=:unitcode, sanctionno=:sanctionno, sanctiondate=:sanctiondate,sanctioncostre=:sanctioncostre, sanctioncostfe=:sanctioncostfe,totalsanctioncost=:totalsanctioncost,pdc=:pdc,projectdirector=:projectdirector,projsancauthority=:projsancauthority,boardreference=:boardreference,ismainwc=:ismainwc,workcenter=:workcenter,objective=:objective,deliverable=:deliverable,modifiedby=:modifiedby, modifieddate=:modifieddate, LabParticipating=:labparticipating, CategoryId=:categoryId, Scope=:scope , application=:application , enduser=:enduser , ProjectShortName=:projectshortname WHERE  projectmainid=:promainid  AND isactive='1' ";
+	private static final String PROJECTMAINEDITDATA="SELECT a.projectmainid,b.projecttypeid,b.projecttype,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.sanctioncostre, a.sanctioncostfe, a.totalsanctioncost, a.pdc,a.projectdirector,a.projsancauthority,a.boardreference,a.ismainwc,a.workcenter, a.revisionno,a.objective,a.deliverable, a.LabParticipating,a.CategoryId,a.scope ,a.enduser  ,a.application , a.projectshortname, a.PlatformId FROM project_main a, project_type b WHERE a.projecttypeid=b.projecttypeid and a.projectmainid=:promainid and a.isactive='1' and b.isactive='1' ORDER BY a.projecttypeid, a.projectmainid"; // srikant
+	private static final String PROJECTMAINUPDATE="UPDATE project_main SET projecttypeid=:projecttypeid,projectcode=:projectcode,projectname=:projectname,projectdescription=:projectdescription, unitcode=:unitcode, sanctionno=:sanctionno, sanctiondate=:sanctiondate,sanctioncostre=:sanctioncostre, sanctioncostfe=:sanctioncostfe,totalsanctioncost=:totalsanctioncost,pdc=:pdc,projectdirector=:projectdirector,projsancauthority=:projsancauthority,boardreference=:boardreference,ismainwc=:ismainwc,workcenter=:workcenter,objective=:objective,deliverable=:deliverable,modifiedby=:modifiedby, modifieddate=:modifieddate, LabParticipating=:labparticipating, CategoryId=:categoryId, Scope=:scope , application=:application , enduser=:enduser , ProjectShortName=:projectshortname, PlatformId=:PlatformId WHERE  projectmainid=:promainid  AND isactive='1' "; //srikant
 	private static final String PROJECTLIST1="SELECT a.projectid,b.projectmainid,b.projectcode AS id,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.totalsanctioncost, a.pdc, a.revisionno,a.objective,a.deliverable,a.labcode FROM project_main b, project_master a, project_type c WHERE c.projecttypeid=b.projecttypeid AND a.projectmainid=b.projectmainid AND a.isactive='1' AND b.isactive='1' ORDER BY a.sanctiondate DESC";
 	private static final String PROJECTTYPEMAINLIST="SELECT b.projectmainid,b.projectcode as id from  project_main b WHERE  b.isactive='1' ";
 	private static final String PROJECTCATEGORY="select classificationid, classification from pfms_security_classification";
 	private static final String PROJECTCLOSE="update project_master set modifiedby=:modifiedby, modifieddate=:modifieddate,isactive='0'  WHERE isactive='1' and projectid=:projectid";
-	private static final String PROJECTEDITDATA="SELECT a.projectid,b.projectmainid,c.projecttype as id,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.sanctioncostre, a.sanctioncostfe, a.totalsanctioncost, a.pdc,a.projectdirector,a.projsancauthority,a.boardreference,a.ismainwc,a.workcenter, a.revisionno,a.objective,a.deliverable,a.projectcategory, a.ProjectType ,a.ProjectShortName ,a.EndUser , a.scope ,a.application ,a.LabParticipating, CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',d.designation,e.MobileNo,e.Email,(SELECT MAX(remarks) FROM project_master_rev WHERE projectid=:proid) AS 'Remarks'  FROM project_main b, project_master a, project_type c,employee e,employee_desig d WHERE c.projecttypeid=b.projecttypeid and a.projectid=:proid and a.projectmainid=b.projectmainid and a.isactive='1' and b.isactive='1'AND a.projectdirector=e.empid AND e.desigid=d.desigid  ORDER BY a.projectid, a.projectmainid";
+	private static final String PROJECTEDITDATA="SELECT a.projectid,b.projectmainid,c.projecttype as id,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.sanctioncostre, a.sanctioncostfe, a.totalsanctioncost, a.pdc,a.projectdirector,a.projsancauthority,a.boardreference,a.ismainwc,a.workcenter, a.revisionno,a.objective,a.deliverable,a.projectcategory, a.ProjectType ,a.ProjectShortName ,a.EndUser , a.scope ,a.application ,a.LabParticipating, CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',d.designation,e.MobileNo,e.Email,(SELECT MAX(remarks) FROM project_master_rev WHERE projectid=:proid) AS 'Remarks', a.PlatformId  FROM project_main b, project_master a, project_type c,employee e,employee_desig d WHERE c.projecttypeid=b.projecttypeid and a.projectid=:proid and a.projectmainid=b.projectmainid and a.isactive='1' and b.isactive='1'AND a.projectdirector=e.empid AND e.desigid=d.desigid  ORDER BY a.projectid, a.projectmainid"; //srikant
 	private static final String PROJECTITEMLIST11="SELECT a.projectid, a.projectcode,a.projectname FROM project_master a WHERE isactive='1'";
 	private static final String PROJECTASSIGNLIST="SELECT a.projectemployeeid, c.empid, a.projectid, CONCAT(IFNULL(CONCAT(c.title,' '),''), c.empname) AS 'empname' , d.designation, e.divisioncode,c.MobileNo,c.Email FROM project_employee a, employee c, employee_desig d, division_master e WHERE a.empid=c.empid AND c.desigid=d.desigid AND c.divisionid=e.divisionid AND  a.isactive='1' AND c.isactive='1' AND e.isactive='1'  AND a.projectid= :proid "; 
 	private static final String USERLIST="SELECT  b.empid, CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname',b.labcode,c.designation FROM employee b, employee_desig c  WHERE  b.isactive=1 AND b.desigid=c.desigid AND b.EmpId NOT IN( SELECT EmpId FROM project_employee WHERE ProjectId=:projectid AND IsActive='1')";
@@ -1427,6 +1426,8 @@ public class ProjectDaoImpl implements ProjectDao {
 		query.setParameter("application", proType.getApplication());
 		query.setParameter("enduser", proType.getEndUser());
 		query.setParameter("projectshortname", proType.getProjectShortName());
+		query.setParameter("PlatformId",proType.getPlatformId()); //srikant
+
 		query.executeUpdate();
 		return Long.valueOf(1) ;
 	}
@@ -1501,6 +1502,8 @@ public class ProjectDaoImpl implements ProjectDao {
 		proj.setModifiedBy(proType.getModifiedBy());
 		proj.setModifiedDate(proType.getModifiedDate());
 		proj.setLabParticipating(proType.getLabParticipating());
+		proj.setPlatformId(proType.getPlatformId()); //srikant
+		proj.setPlatform(proType.getPlatform()); //srikant
 		pmrepo.save(proj);
 
 		return proj.getProjectId() ;
@@ -4191,5 +4194,62 @@ public class ProjectDaoImpl implements ProjectDao {
 		return (List<Object[]>)query.getResultList();
 	}
 	
+	//srikant start
+	private static final String PLATFORMLIST="select PlatformId,PlatformName from pfms_platform_master where isactive='1' ORDER BY PlatformId"; //srikant
+	@Override
+	public List<Object[]> PlatformList() {
+		try {
+			Query query=manager.createNativeQuery(PLATFORMLIST);
+			return (List<Object[]>)query.getResultList();	
+		}catch (Exception e) {
+			e.printStackTrace();	
+			return new ArrayList<>();
+		}
+		
+	}
+	//srikant end
+	
+	private static final String PROJECTORGINIALDATA="SELECT a.projectId,a.ProjectName,a.ProjectCode,a.unitcode,a.ProjectShortName,a.EndUser,a.projsancauthority,a.boardreference,e.Title,e.Salutation,e.EmpName,d.designation,a.SanctionNo,a.SanctionDate\r\n"
+			+ ",a.PDC,a.LabParticipating,a.TotalSanctionCost,a.SanctionCostRE,a.SanctionCostFE,a.Application,c.Category,pt.ProjectType ,a.Scope,a.Objective,a.Deliverable,a.projectmainid,pm.projectCode AS id,a.projectdescription\r\n"
+			+ "FROM project_master a\r\n"
+			+ "LEFT JOIN employee e ON a.ProjectDirector = e.empid \r\n"
+			+ "LEFT JOIN employee_desig d ON e.DesigId=d.DesigId \r\n"
+			+ "LEFT JOIN pfms_category  c ON a.ProjectCategory=c.CategoryId \r\n"
+			+ "LEFT JOIN project_type pt ON a.ProjectType=pt.ProjectTypeId\r\n"
+			+ "LEFT JOIN project_main pm ON pm.projectmainid=a.projectId\r\n"
+			+ "WHERE a.projectid=:proid";
+
+	@Override
+	public Object[] ProjectOriginalData(String ProjectId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(PROJECTORGINIALDATA);
+			query.setParameter("proid",ProjectId);
+			return (Object[]) query.getSingleResult();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@Override
+	public List<Object[]> ProjectReviseList(String ProjectId) throws Exception {
+		try {
+			Query query=manager.createNativeQuery("SELECT p.ProjectDescription,p.UnitCode,p. ProjectCode,p.BoardReference,e.empname,e.title,e.salutation,d.designation ,p.ProjectDirector,p.ProjSancAuthority ,p.SanctionNo,p.SanctionDate,p.PDC, p.TotalSanctionCost,p.SanctionCostFE ,p.SanctionCostRE, p.LabParticipating,p.Application,p.ProjectCategory,p.Scope,p.Objective,p.Deliverable,p.Remarks,c.Category,pt.ProjectType from  project_master_rev p LEFT join employee e on p.ProjectDirector = e.empid LEFT Join employee_desig d on e.DesigId=d.DesigId Left join pfms_category  c on p.ProjectCategory=c.CategoryId Left join project_type pt on p.ProjectType=pt.ProjectTypeId\r\n"
+					+ "where ProjectId=:prjId");
+			query.setParameter("prjId", ProjectId);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+		
+	}
+	
+	//srikant
+	@Override
+	public PlatformMaster getPlatformByPlatformId(long platformId) throws Exception {
+		 return manager.find(PlatformMaster.class, platformId);
+	}
+
 }
 

@@ -40,6 +40,7 @@ List<Object[]> OfficerList=(List<Object[]>) request.getAttribute("OfficerList");
 Object[] ProjectMainEditData=(Object[]) request.getAttribute("ProjectMainEditData");
 String ProjectMainId=(String)request.getAttribute("ProjectMainId");
 List<Object[]> securityClassificationList=(List<Object[]>) request.getAttribute("SecurityClassificationList");
+List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"); /* srikant */
 %>
 
 <%String ses=(String)request.getParameter("result"); 
@@ -366,6 +367,20 @@ List<Object[]> securityClassificationList=(List<Object[]>) request.getAttribute(
 
 
  </tr>
+  <!-- srikant code start -->
+								<tr>
+										<th><label style="margin-bottom: -10px;">Platform: <span class="mandatory"	style="color: red;">*</span></label></th>
+													<td><select required="required" id="platformName" name="platformName" class="form-control form-control selectdee" data-width="100%" data-live-search="true">
+													<option disabled="disabled" value="" selected="selected">Choose..</option>
+								<%for(Object[] protype:PlatformList ){%>
+								<option value="<%=protype[0] %>" <%if(ProjectMainEditData[27].toString()!="0" && protype[0].toString().equalsIgnoreCase(ProjectMainEditData[27].toString())){ %>
+								 selected="selected"  <%} %>
+								><%=protype[1] %></option>
+								<%}%>
+						</select></td>
+								</tr>
+								
+<!-- srikant code end-->
  <tr>
 		<th colspan="1"><label style="margin-bottom: -10px;">Nodal & Participating Lab:<span class="mandatory" style="color: red;">*</span></label></th>
 		<td colspan="3"><input required="required"	name="Nodal" class="form-control " maxlength="5000" value="<%if(ProjectMainEditData[21]!=null ){%><%=ProjectMainEditData[21] %><%} %>" /></td>
