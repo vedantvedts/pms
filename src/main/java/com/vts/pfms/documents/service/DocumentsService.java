@@ -2,16 +2,16 @@ package com.vts.pfms.documents.service;
 
 import java.util.List;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-
 import org.springframework.web.multipart.MultipartFile;
 
+import com.vts.pfms.documents.dto.InterfaceTypeAndContentDto;
+import com.vts.pfms.documents.dto.InterfaceTypeAndContentDto;
 import com.vts.pfms.documents.dto.StandardDocumentsDto;
 import com.vts.pfms.documents.model.ICDConnectionInterfaces;
 import com.vts.pfms.documents.model.ICDConnectionPurpose;
 import com.vts.pfms.documents.model.ICDDocumentConnections;
 import com.vts.pfms.documents.model.ICDPurpose;
+import com.vts.pfms.documents.model.IGIDocumentIntroduction;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
@@ -25,8 +25,10 @@ import com.vts.pfms.documents.model.PfmsApplicableDocs;
 import com.vts.pfms.documents.model.PfmsICDDocument;
 import com.vts.pfms.documents.model.PfmsIDDDocument;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
-import com.vts.pfms.documents.model.PfmsIGITransaction;
 import com.vts.pfms.documents.model.PfmsIRSDocument;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 public interface DocumentsService {
 
@@ -66,6 +68,13 @@ public interface DocumentsService {
 	public List<Object[]> igiTransactionList(String docId, String docType) throws Exception;
 	public List<IGIInterfaceTypes> getIGIInterfaceTypesList() throws Exception;
 	public List<IGIInterfaceContent> getIGIInterfaceContentList() throws Exception;
+	 //srikant start
+	public List<Object[]> interfaceTypeMasterList() throws Exception;
+	public IGIInterfaceTypes getIGIInterfaceTypeById(String interfaceTypeId) throws Exception;
+	public long addInterfaceTypeAndContentDetails(InterfaceTypeAndContentDto dto) throws Exception;
+	public Object[] InterfaceAddCheck(String interfaceTypeCode, String interfaceId) throws Exception;
+	public Object[] InterfaceContentAddCheck(String interfaceContentCode, String contentId)throws Exception;
+	//srikant end
 	public long igiDocumentUserRevoke(String igiDocId, String userId, String empId) throws Exception;
 	public List<IGILogicalInterfaces> getIGILogicalInterfaces() throws Exception;
 	public IGILogicalInterfaces getIGILogicalInterfaceById(String logicalInterfaceId) throws Exception;
@@ -116,4 +125,9 @@ public interface DocumentsService {
 	public Long getFirstVersionIDDDocId(String projectId, String initiationId, String productTreeMainId) throws Exception;
 	public long iddDocumentApprovalForward(String docId, String docType, String action, String remarks, String empId, String labcode, String userId) throws Exception;
 	public long iddDocumentUserRevoke(String iddDocId, String userId, String empId) throws Exception;
+	public List<IGIDocumentIntroduction> getIGIDocumentIntroductionList() throws Exception;
+	public IGIDocumentIntroduction getIGIDocumentIntroductionById(String introductionId) throws Exception;
+	public Long addIGIDocumentIntroduction(IGIDocumentIntroduction introduction) throws Exception;
+	public int deleteIGIIntroduction(String introductionId) throws Exception;
+	
 }

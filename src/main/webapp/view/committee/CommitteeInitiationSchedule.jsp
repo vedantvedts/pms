@@ -261,7 +261,92 @@ if(ses1!=null){
 			</div>
 		</div>
 </div>
+<br>
+	<div class="row m-1"
+		style="text-align: center; padding-top: 10px; padding-bottom: 15px;">
 
+		<table align="center" style="border-spacing: 0 20px;">
+			<tr>
+				
+				
+				<td class="trup" style="background: #c4ced3; width: 230px; height: 20px;">
+					<b class="text-primary">Add Schedule  </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true" ></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background: #c4ced3; width: 230px; height: 20px;">
+					<b class="text-primary">Add Agenda </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background: #c4ced3; width: 230px; height: 20px;">
+					<b class="text-primary">Update Venue </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b class="text-primary">Invite Participants </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b class="text-primary">Agenda Approval </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b class="text-primary">Kick off Meeting </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b class="text-primary">Update Attendance </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b class="text-primary">Prepare Minutes  </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background: #c4ced3; width: 230px; height: 20px;">
+					<b class="text-primary">Update Outcomes (A,I,R)  </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b class="text-primary"> Minutes Approval</b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				
+			
+
+			</tr>
+			
+		</table>
+
+
+
+	</div>
 
 <script type='text/javascript'> 
 function submitForm()

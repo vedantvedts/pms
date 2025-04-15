@@ -321,32 +321,78 @@ public class MilestoneServiceImpl implements MilestoneService {
 
 	@Override
 	public int MilestoneActivityUpdate(MileEditDto dto) throws Exception {
-		logger.info(new Date() +"Inside  MilestoneActivityUpdate ");
-		int result=0;
-		dto.setCreatedDate(fc.getSqlDateFormat().format(new Date()));
-		Date fdate = fc.getRegularDateFormat().parse(dto.getStartDate());
-		Date tdate = fc.getRegularDateFormat().parse(dto.getEndDate());
-		dto.setEndDate(fc.getSqlDateFormat().format(tdate));
-		dto.setStartDate(fc.getSqlDateFormat().format(fdate));
-		
-		
-		System.out.println("dto.getRevisionNo()--"+dto.getRevisionNo());
-		System.out.println("dto.getActivityType()--"+dto.getActivityType());
-		if("0".equalsIgnoreCase(dto.getRevisionNo())&&"M".equalsIgnoreCase(dto.getActivityType())) {
-			result=dao.MilestoneActivityMainUpdate(dto);
-		}
-		 if("0".equalsIgnoreCase(dto.getRevisionNo())&&!"M".equalsIgnoreCase(dto.getActivityType())) {
-			  result=dao.ActivityLevelFullEdit(dto);
+		try {
+
+
+			logger.info(new Date() +"Inside  MilestoneActivityUpdate ");
+			int result=0;
+			dto.setCreatedDate(fc.getSqlDateFormat().format(new Date()));
+			Date fdate = fc.getRegularDateFormat().parse(dto.getStartDate());
+			Date tdate = fc.getRegularDateFormat().parse(dto.getEndDate());
+			dto.setEndDate(fc.getSqlDateFormat().format(tdate));
+			dto.setStartDate(fc.getSqlDateFormat().format(fdate));
+
+
+			System.out.println("dto.getRevisionNo()--"+dto.getRevisionNo());
+			System.out.println("dto.getActivityType()--"+dto.getActivityType());
+
+			if("0".equalsIgnoreCase(dto.getRevisionNo())&&"M".equalsIgnoreCase(dto.getActivityType())) {
+				result=dao.MilestoneActivityMainUpdate(dto);
 			}
-	 
-       if(!"0".equalsIgnoreCase(dto.getRevisionNo())&&"M".equalsIgnoreCase(dto.getActivityType())) {
-    	   result=dao.MilestoneActivityUpdate(dto);
-		}
-		  if(!"0".equalsIgnoreCase(dto.getRevisionNo())&&!"M".equalsIgnoreCase(dto.getActivityType())) {
-			  result=dao.ActivityLevelEditUpdate(dto);
+			if("0".equalsIgnoreCase(dto.getRevisionNo())&&!"M".equalsIgnoreCase(dto.getActivityType())) {
+				result=dao.ActivityLevelFullEdit(dto);
 			}
 
-		return result;
+			if(!"0".equalsIgnoreCase(dto.getRevisionNo())&&"M".equalsIgnoreCase(dto.getActivityType())) {
+
+				MilestoneActivity mileActivity = dao.MileActivityDetails(Long.parseLong(dto.getActivityId()));
+
+				java.sql.Date startDate = new java.sql.Date(fdate.getTime());
+				java.sql.Date endDate = new java.sql.Date(tdate.getTime());
+
+				mileActivity.setStartDate(startDate);
+				mileActivity.setEndDate(endDate);
+				if(Integer.parseInt(dto.getRevisionNo())<3) {
+					mileActivity.setOrgStartDate(startDate);
+					mileActivity.setOrgEndDate(endDate);
+				}
+				mileActivity.setWeightage(Integer.parseInt(dto.getWeightage()));
+				mileActivity.setModifiedBy(dto.getCreatedBy());
+				mileActivity.setModifiedDate(dto.getCreatedDate());
+				mileActivity.setActivityName(dto.getActivityName());
+				mileActivity.setOicEmpId(dto.getOicEmpId()!=null?Long.parseLong(dto.getOicEmpId()):0L);
+				mileActivity.setOicEmpId1(dto.getOicEmpId1()!=null?Long.parseLong(dto.getOicEmpId1()):0L);
+				dao.MilestoneActivity(mileActivity);
+				result = 1;
+			}
+			if(!"0".equalsIgnoreCase(dto.getRevisionNo())&&!"M".equalsIgnoreCase(dto.getActivityType())) {
+				MilestoneActivityLevel activityLevel = dao.getActivityLevelListById(dto.getActivityId());
+
+				java.sql.Date startDate = new java.sql.Date(fdate.getTime());
+				java.sql.Date endDate = new java.sql.Date(tdate.getTime());
+
+				activityLevel.setStartDate(startDate);
+				activityLevel.setEndDate(endDate);
+				if(Integer.parseInt(dto.getRevisionNo())<3) {
+					activityLevel.setOrgStartDate(startDate);
+					activityLevel.setOrgEndDate(endDate);
+				}
+				activityLevel.setWeightage(Integer.parseInt(dto.getWeightage()));
+				activityLevel.setModifiedBy(dto.getCreatedBy());
+				activityLevel.setModifiedDate(dto.getCreatedDate());
+				activityLevel.setActivityName(dto.getActivityName());
+				activityLevel.setOicEmpId(dto.getOicEmpId()!=null?Long.parseLong(dto.getOicEmpId()):0L);
+				activityLevel.setOicEmpId1(dto.getOicEmpId1()!=null?Long.parseLong(dto.getOicEmpId1()):0L);
+				
+				dao.MilestoneActivityLevelInsert(activityLevel);
+				result = 1;
+			}
+
+			return result;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}	
 	}
 
 	@Override
@@ -373,45 +419,45 @@ public class MilestoneServiceImpl implements MilestoneService {
 	public int ActivityProgressUpdate(MileEditDto dto) throws Exception {
 		logger.info(new Date() +"Inside  ActivityProgressUpdate ");
 		int result=0;
-		
-		String progressdate= new java.sql.Date(dateFormat.parse(dto.getProgressDate()).getTime())+"";
-		
+		try {
+			String progressdate= new java.sql.Date(dateFormat.parse(dto.getProgressDate()).getTime())+"";
 
-		Date enddate = fc.getSqlDateFormat().parse(dto.getEndDate());
-		Date progressDate=fc.getSqlDateFormat().parse(progressdate);
-		
-		dto.setCreatedDate(fc.getSqlDateFormat().format(new Date()));
-		if("100".equalsIgnoreCase(dto.getProgressStatus())) {
-		dto.setDateOfCompletion(progressdate);
-		if(enddate.after(progressDate)) {
-		dto.setActivityStatusId("3");
-		}else {
-			dto.setActivityStatusId("5");
-		}
-		}
-		else if("0".equalsIgnoreCase(dto.getProgressStatus())) {
-			dto.setActivityStatusId("1");
-		}else {
-			if(enddate.after(progressDate)) {
-				dto.setActivityStatusId("2");
+
+			Date enddate = fc.getSqlDateFormat().parse(dto.getEndDate());
+			Date progressDate=fc.getSqlDateFormat().parse(progressdate);
+
+			dto.setCreatedDate(fc.getSqlDateFormat().format(new Date()));
+			if("100".equalsIgnoreCase(dto.getProgressStatus())) {
+				dto.setDateOfCompletion(progressdate);
+				if(enddate.after(progressDate)) {
+					dto.setActivityStatusId("3");
+				}else {
+					dto.setActivityStatusId("5");
+				}
+			}
+			else if("0".equalsIgnoreCase(dto.getProgressStatus())) {
+				dto.setActivityStatusId("1");
+			}else {
+				if(enddate.after(progressDate)) {
+					dto.setActivityStatusId("2");
 				}else {
 					dto.setActivityStatusId("4");
 				}
 			}
-		if("M".equalsIgnoreCase(dto.getActivityType())) {
-			result=dao.ActivityProgressMainUpdate(dto);
-		}
-
-		  if(!"M".equalsIgnoreCase(dto.getActivityType())) {
-			  result=dao.ActivityProgressUpdateLevel(dto);
+			if("M".equalsIgnoreCase(dto.getActivityType())) {
+				result=dao.ActivityProgressMainUpdate(dto);
 			}
 
-	        if(result>0) {
-	        	String dt=fc.getRegularDateFormat().format(new Date());
-	        	MilestoneActivitySub attach=new MilestoneActivitySub();
-	        	attach.setActivityId(Long.parseLong(dto.getActivityId()));
-	        	attach.setProgress(Integer.parseInt(dto.getProgressStatus()));
-	        	attach.setProgressDate(new java.sql.Date(dateFormat.parse(dto.getProgressDate()).getTime()));
+			if(!"M".equalsIgnoreCase(dto.getActivityType())) {
+				result=dao.ActivityProgressUpdateLevel(dto);
+			}
+
+			if(result>0) {
+				String dt=fc.getRegularDateFormat().format(new Date());
+				MilestoneActivitySub attach=new MilestoneActivitySub();
+				attach.setActivityId(Long.parseLong(dto.getActivityId()));
+				attach.setProgress(Integer.parseInt(dto.getProgressStatus()));
+				attach.setProgressDate(new java.sql.Date(dateFormat.parse(dto.getProgressDate()).getTime()));
 				attach.setAttachName(dto.getFileNamePath());
 				attach.setAttachFile(dto.getFilePath());
 				attach.setCreatedBy(dto.getCreatedBy());
@@ -427,54 +473,54 @@ public class MilestoneServiceImpl implements MilestoneService {
 						List<Object[]> BaselineB=dao.BaseLineLevel(objA[0].toString(),"2");
 						for(Object[] objB:BaselineB) {
 							List<Object[]> BaselineC=dao.BaseLineLevel(objB[0].toString(),"3");
-							
-								for(Object[] objC:BaselineC) {
-										List<Object[]> BaselineD=dao.BaseLineLevel(objC[0].toString(),"4");
-										for(Object[] objD:BaselineD) {
-											List<Object[]> BaselineE=dao.BaseLineLevel(objD[0].toString(),"5");
-											if(BaselineE.size()>0) {
-												double ProgressD=0.00;
-												for(Object[] objE:BaselineE){
-												ProgressD+=(Double.parseDouble(objE[3].toString())/100)*Double.parseDouble(objE[2].toString());
-												}
-												// status for D
-												String StatusD="1";
-												Date enddateD = fc.getSqlDateFormat().parse(dto.getEndDate());
-												if(Math.round(ProgressD)>=100) {
-													ProgressD=100.00;
-													if(enddateD.after(progressDate)) { // taking progressdate in place of new Date()
-														StatusD="3";
-													}else {
-														StatusD="5";
-													}
-													}
-													else if(Math.round(ProgressD)==0) {
-														StatusD="1";
-													}else {
-														if(enddateD.after(progressDate)) { // taking progressdate in place of new Date()
-															StatusD="2";
-															}else {
-																StatusD="4";
-															}
-														}
-				                                 // dao D update
-												dao.ProgressLevel(objD[0].toString(), StatusD,(int)Math.round(ProgressD),dto);
-												
+
+							for(Object[] objC:BaselineC) {
+								List<Object[]> BaselineD=dao.BaseLineLevel(objC[0].toString(),"4");
+								for(Object[] objD:BaselineD) {
+									List<Object[]> BaselineE=dao.BaseLineLevel(objD[0].toString(),"5");
+									if(BaselineE.size()>0) {
+										double ProgressD=0.00;
+										for(Object[] objE:BaselineE){
+											ProgressD+=(Double.parseDouble(objE[3].toString())/100)*Double.parseDouble(objE[2].toString());
+										}
+										// status for D
+										String StatusD="1";
+										Date enddateD = fc.getSqlDateFormat().parse(dto.getEndDate());
+										if(Math.round(ProgressD)>=100) {
+											ProgressD=100.00;
+											if(enddateD.after(progressDate)) { // taking progressdate in place of new Date()
+												StatusD="3";
+											}else {
+												StatusD="5";
 											}
-											
+										}
+										else if(Math.round(ProgressD)==0) {
+											StatusD="1";
+										}else {
+											if(enddateD.after(progressDate)) { // taking progressdate in place of new Date()
+												StatusD="2";
+											}else {
+												StatusD="4";
 											}
-										
-									
-									
-								}	
-							
-							}
-							
-							
-						
+										}
+										// dao D update
+										dao.ProgressLevel(objD[0].toString(), StatusD,(int)Math.round(ProgressD),dto);
+
+									}
+
+								}
+
+
+
+							}	
+
 						}
-					
-				
+
+
+
+					}
+
+
 				}
 				//C
 				for(Object[] objMain:BaselineMain) {
@@ -485,47 +531,47 @@ public class MilestoneServiceImpl implements MilestoneService {
 							List<Object[]> BaselineC=dao.BaseLineLevel(objB[0].toString(),"3");
 							for(Object[] objC:BaselineC) {
 								List<Object[]> BaselineD=dao.BaseLineLevel(objC[0].toString(),"4");
-						if(BaselineD.size()>0) {
-							double ProgressC=0.00;
-						for(Object[] objD:BaselineD) {
-							
-								
-								double ED=(Double.parseDouble(objD[3].toString())/100)*Double.parseDouble(objD[2].toString());
-								ProgressC+=ED;
-								
-								
-							
-							}
-						
-						// status for C
-						String StatusC="1";
-						Date enddateC= fc.getSqlDateFormat().parse(dto.getEndDate());
-						if(Math.round(ProgressC)>=100) {
-							ProgressC=100.00;
-							if(enddateC.after(progressDate)) { // taking progressdate in place of new Date()
-								 StatusC="3";
-							}else {
-								 StatusC="5";
-							}
-							}
-							else if(Math.round(ProgressC)==0) {
-								 StatusC="1";
-							}else {
-								if(enddateC.after(progressDate)) { // taking progressdate in place of new Date()
-									 StatusC="2";
-									}else {
-										 StatusC="4";
+								if(BaselineD.size()>0) {
+									double ProgressC=0.00;
+									for(Object[] objD:BaselineD) {
+
+
+										double ED=(Double.parseDouble(objD[3].toString())/100)*Double.parseDouble(objD[2].toString());
+										ProgressC+=ED;
+
+
+
 									}
+
+									// status for C
+									String StatusC="1";
+									Date enddateC= fc.getSqlDateFormat().parse(dto.getEndDate());
+									if(Math.round(ProgressC)>=100) {
+										ProgressC=100.00;
+										if(enddateC.after(progressDate)) { // taking progressdate in place of new Date()
+											StatusC="3";
+										}else {
+											StatusC="5";
+										}
+									}
+									else if(Math.round(ProgressC)==0) {
+										StatusC="1";
+									}else {
+										if(enddateC.after(progressDate)) { // taking progressdate in place of new Date()
+											StatusC="2";
+										}else {
+											StatusC="4";
+										}
+									}
+									dao.ProgressLevel(objC[0].toString(), StatusC,(int)Math.round(ProgressC),dto);
+
+									// dao C update
 								}
-						      dao.ProgressLevel(objC[0].toString(), StatusC,(int)Math.round(ProgressC),dto);
-						      
-                             // dao C update
-						}
 							}
 						}
-						}
-					
-				
+					}
+
+
 				}
 				//B
 				for(Object[] objMain:BaselineMain) {
@@ -534,47 +580,47 @@ public class MilestoneServiceImpl implements MilestoneService {
 						List<Object[]> BaselineB=dao.BaseLineLevel(objA[0].toString(),"2");
 						for(Object[] objB:BaselineB) {
 							List<Object[]> BaselineC=dao.BaseLineLevel(objB[0].toString(),"3");
-						if(BaselineC.size()>0) {
-							double ProgressB=0.00;
-						for(Object[] objC:BaselineC) {
-							
-								
-								double EC=(Double.parseDouble(objC[3].toString())/100)*Double.parseDouble(objC[2].toString());
-								ProgressB+=EC;
-								
-								
-							
-							}
-						
-						// status for B
-						String StatusB="1";
-						Date enddateB = fc.getSqlDateFormat().parse(dto.getEndDate());
-						if(Math.round(ProgressB)>=100) {
-							ProgressB=100.00;
-							if(enddateB.after(progressDate)) {// taking progressdate in place of new Date()
-								 StatusB="3";
-							}else {
-								 StatusB="5";
-							}
-							}
-							else if(Math.round(ProgressB)==0) {
-								 StatusB="1";
-							}else {
-								if(enddateB.after(progressDate)) { // taking progressdate in place of new Date()
-									 StatusB="2";
+							if(BaselineC.size()>0) {
+								double ProgressB=0.00;
+								for(Object[] objC:BaselineC) {
+
+
+									double EC=(Double.parseDouble(objC[3].toString())/100)*Double.parseDouble(objC[2].toString());
+									ProgressB+=EC;
+
+
+
+								}
+
+								// status for B
+								String StatusB="1";
+								Date enddateB = fc.getSqlDateFormat().parse(dto.getEndDate());
+								if(Math.round(ProgressB)>=100) {
+									ProgressB=100.00;
+									if(enddateB.after(progressDate)) {// taking progressdate in place of new Date()
+										StatusB="3";
 									}else {
-										 StatusB="4";
+										StatusB="5";
 									}
 								}
-						      dao.ProgressLevel(objB[0].toString(), StatusB,(int)Math.round(ProgressB),dto);
-						      
-                             // dao B update
+								else if(Math.round(ProgressB)==0) {
+									StatusB="1";
+								}else {
+									if(enddateB.after(progressDate)) { // taking progressdate in place of new Date()
+										StatusB="2";
+									}else {
+										StatusB="4";
+									}
+								}
+								dao.ProgressLevel(objB[0].toString(), StatusB,(int)Math.round(ProgressB),dto);
+
+								// dao B update
+							}
+
 						}
-						
-						}
-						}
-					
-				
+					}
+
+
 				}
 				//A
 				for(Object[] objMain:BaselineMain) {
@@ -583,54 +629,54 @@ public class MilestoneServiceImpl implements MilestoneService {
 						List<Object[]> BaselineB=dao.BaseLineLevel(objA[0].toString(),"2");
 						if(BaselineB.size()>0) {
 							double ProgressA=0.00;
-						for(Object[] objB:BaselineB) {
-							
+							for(Object[] objB:BaselineB) {
+
 								double EB=(Double.parseDouble(objB[3].toString())/100)*Double.parseDouble(objB[2].toString());
-								
+
 								ProgressA+=EB;
-								
-								
-							
+
+
+
 							}
-						
-						// status for A
-						String StatusA="1";
-						Date enddateA = fc.getSqlDateFormat().parse(dto.getEndDate());
-						if(Math.round(ProgressA)>=100) { 
-							ProgressA=100.00;
-							if(enddateA.after(progressDate)) {// taking progressdate in place of new Date()
-								 StatusA="3";
-							}else {
-								 StatusA="5";
-							}
+
+							// status for A
+							String StatusA="1";
+							Date enddateA = fc.getSqlDateFormat().parse(dto.getEndDate());
+							if(Math.round(ProgressA)>=100) { 
+								ProgressA=100.00;
+								if(enddateA.after(progressDate)) {// taking progressdate in place of new Date()
+									StatusA="3";
+								}else {
+									StatusA="5";
+								}
 							}
 							else if(Math.round(ProgressA)==0) {
-								 StatusA="1";
+								StatusA="1";
 							}else {
 								if(enddateA.after(progressDate)) {  // taking progressdate in place of new Date()
-									 StatusA="2";
-									}else {
-										 StatusA="4";
-									}
+									StatusA="2";
+								}else {
+									StatusA="4";
 								}
-						      dao.ProgressLevel(objA[0].toString(), StatusA,(int)Math.round(ProgressA),dto);
-						      
-                             // dao A update
+							}
+							dao.ProgressLevel(objA[0].toString(), StatusA,(int)Math.round(ProgressA),dto);
+
+							// dao A update
 						}
-						
-						
-						}
-					
-				
+
+
+					}
+
+
 				}
 				for(Object[] objMain:BaselineMain) {
 					List<Object[]> BaselineA=dao.BaseLineLevel(dto.getMilestoneActivityId(),"1");
 					for(Object[] objA:BaselineA) {
-							TotalA+=(Double.parseDouble(objA[3].toString())/100)*Double.parseDouble(objA[2].toString());
-						}
-					
+						TotalA+=(Double.parseDouble(objA[3].toString())/100)*Double.parseDouble(objA[2].toString());
+					}
+
 					// status for Main
-					
+
 					String StatusMain="1";
 					Date enddateMain = fc.getSqlDateFormat().parse(objMain[1].toString());
 					if(Math.round(TotalA)>=100) {
@@ -640,28 +686,33 @@ public class MilestoneServiceImpl implements MilestoneService {
 						}else {
 							StatusMain="5";
 						}
-						}
-						else if(Math.round(TotalA)==0) {
-							StatusMain="1";
+					}
+					else if(Math.round(TotalA)==0) {
+						StatusMain="1";
+					}else {
+						if(enddateMain.after(progressDate)) {
+							StatusMain="2";
 						}else {
-							if(enddateMain.after(progressDate)) {
-								StatusMain="2";
-								}else {
-									StatusMain="4";
-								}
-							}
+							StatusMain="4";
+						}
+					}
 					int mainProgress = (int)Math.round(TotalA);
 					String DateOfCompletion = null;
 					if(mainProgress == 100) {
-						 DateOfCompletion = LocalDate.now().toString();
+						DateOfCompletion = LocalDate.now().toString();
 					}
 					dao.ProgressMain(dto.getMilestoneActivityId(), StatusMain,(int)Math.round(TotalA), DateOfCompletion,dto);
 					// dao upadate main
 				}
 			}else {
 				result=0;
-			}   
-		return result;
+			}
+			return result;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}   
+
 	}
 
 	@Override
@@ -1721,5 +1772,21 @@ public class MilestoneServiceImpl implements MilestoneService {
 	public List<Object[]> getMsprojectProcurementStatusList(String projectId) throws Exception {
 		
 		return dao.getMsprojectProcurementStatusList(projectId);
+	}
+	
+	@Override
+	public int mileStoneSerialNoUpdate(String[] newslno, String[] milestoneActivityId) {
+		int ret=0;
+		try {
+			
+			for(int i=0;i<milestoneActivityId.length;i++) {
+				ret+=dao.mileStoneSerialNoUpdate(newslno[i], milestoneActivityId[i]);
+			}
+			return ret;
+		
+		}catch (Exception e) {
+			e.printStackTrace();
+			return ret;
+		}
 	}
 }

@@ -288,7 +288,112 @@ if(ses1!=null){
 	
 </div>
 
+<br>
 
+	<div class="row m-1">
+		<div class="col-md-12"
+			style="text-align: center; width: 140px; height: 30px;color:green">
+			<b>Committee Flow</b>
+		</div>
+	</div>
+	
+	<div class="row m-1"
+		style="text-align: center; padding-top: 10px; padding-bottom: 15px;">
+
+		<table align="center" style="border-spacing: 0 20px;">
+			<tr>
+				<td rowspan="2" class="trup" style="background: #c4ced3; width: 230px; height: 20px;" rowspan="2">
+                  <b class="text-primary">Committee Formation</b>
+                </td>
+                <td rowspan="2" class="trup" style="width: 10px; height: 20px;"></td>
+                <td rowspan="2"><b>---></b>
+				
+				</td>
+				<td rowspan="2" class="trup" style="width: 10px; height: 20px;"></td>
+				
+				
+				<td rowspan="2" class="trup" style="background: #c4ced3; width: 230px; height: 20px;">
+					<b class="text-primary">Is PreApproved </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><b>---></b>
+				
+				</td>
+				
+				
+				
+				<td class="trup"style=" width: 40px; height: 5px; margin-left: 20px;">
+					<b class="text-primary"> YES</b>
+				</td>
+				
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				
+				<td><b>---</b></td>			
+				<td class="trup" style="width: 10px; height: 20px;"><b>---------------</b></td>
+				
+				
+				
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				 <td  ><b>---></b>
+				
+				 </i></td> 
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				
+				
+				<td rowspan="2" class="trup" style="background: #c4ced3; width: 230px; height: 20px;">
+					<b class="text-primary">Committee Constitution</b>
+				</td>
+				<td rowspan="2" class="trup" style="width: 10px; height: 20px;"></td>
+				<td rowspan="2" ><b>---></b>
+				
+				</td>
+				<td rowspan="2" class="trup" style="width: 10px; height: 20px;"></td>
+				
+				<td rowspan="2" class="trup" style="background: #c4ced3; width: 230px; height: 20px;">
+					<b class="text-primary">Schedule </b>
+				</td>
+				
+			
+
+			</tr>
+			<tr >
+			
+			    <td class="trup" style="width: 10px; height: 20px;"></td>
+				<td><b>---></b>
+				
+				</td>
+			
+
+				<td class="trup"style=" width: 40px; height: 5px; margin-left: 20px;">
+					<b class="text-primary"> No</b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td><b>---></b>
+				
+				</td>
+				
+				<td class="trup"style=" background: #c4ced3; width: 100px; height: 5px; margin-left: 20px;">
+					<b class="text-primary">Approval</b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td><b>---></b>
+				
+				</td>
+				
+				
+				
+				
+				
+
+			</tr>
+
+
+
+		</table>
+
+
+
+	</div>
 
 
 <script type='text/javascript'> 

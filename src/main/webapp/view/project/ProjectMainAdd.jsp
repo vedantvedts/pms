@@ -38,6 +38,7 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 List<Object[]> ProjectTypeList=(List<Object[]>) request.getAttribute("ProjectTypeList");
 List<Object[]> OfficerList=(List<Object[]>) request.getAttribute("OfficerList");
 List<Object[]> securityClassificationList=(List<Object[]>) request.getAttribute("SecurityClassificationList");
+List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"); /* srikant */
 %>
 
 
@@ -204,7 +205,22 @@ String ses1=(String)request.getParameter("resultfail");
 										<td><input id="pdc-date" data-date-format="dd/mm/yyyy" readonly name="pdc" value="" class="form-control form-control"></td>
 										<th><label style="margin-bottom: -10px;">Sanction Cost RE (&#8377;): <span class="mandatory" style="color: red;">*</span></label></th>
 										<td><input type="text" name="sancostre" id="Recostid" class="form-control number-only" value="0.0" maxlength="18" required="required"  readonly="readonly" ></td>
-								</tr>	
+								</tr>
+								<!-- srikant code start -->
+								<tr>
+										<th><label style="margin-bottom: -10px;">Platform: <span class="mandatory"	style="color: red;">*</span></label></th>
+													<td><select required="required" name="platformName" class="form-control  form-control selectdee" id="platformName" data-width="100%"	data-live-search="true" >
+															<option disabled="disabled" value="" selected="selected">Choose..</option>
+															<%
+															for (Object[] protype : PlatformList) {
+															%>
+															<option value="<%=protype[0]%>"><%=protype[1]%></option>
+															<%
+															}
+															%>
+													</select></td>
+								</tr>
+								<!-- srikant code end -->		
 								<tr>
 									   <th colspan="1"><label style="margin-bottom: -10px;">Nodal & Participating Lab:<span class="mandatory" style="color: red;">*</span></label></th>
 									   <td colspan="3"><input required="required" name="Nodal" placeholder="Enter Nodal & Participating Lab" class="form-control" maxlength="250" /></td>

@@ -39,6 +39,7 @@ Object[] ProjectEditData=(Object[]) request.getAttribute("ProjectEditData");
 String projectid=(String)request.getAttribute("projectid");
 List<Object[]> CategoryList=(List<Object[]>) request.getAttribute("CategoryList");
 List<Object[]> ProjectTypeList=(List<Object[]>) request.getAttribute("ProjectTypeList");
+List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"); /* srikant */
 %>
 
 <%String ses=(String)request.getParameter("result"); 
@@ -394,6 +395,20 @@ Project Revision</h4>
 </td>
 
  </tr>
+ <!-- srikant code start -->
+<tr>
+<th><label style="margin-bottom: -10px;">	Platform: <span class="mandatory"	style="color: red;">*</span></label></th>
+<td><select required="required" id="platformName" name="platformName" class="form-control form-control selectdee" data-width="100%" data-live-search="true">
+<option disabled="disabled" value="" selected="selected">Choose..</option>
+<%for(Object[] protype:PlatformList ){%>
+<option value="<%=protype[0] %>" <%if(ProjectEditData[33].toString()!="0" && protype[0].toString().equalsIgnoreCase(ProjectEditData[33].toString())){ %>
+ selected="selected"  <%} %>
+><%=protype[1] %></option>
+<%}%>
+</select></td>
+</tr>
+								
+<!-- srikant code end-->
   <tr>
 		<th colspan="1"><label style="margin-bottom: -10px;">Nodal & Participating Lab:<span class="mandatory" style="color: red;">*</span></label></th>
 		<td colspan="3"><input required="required"	name="LabParticipating" class="form-control " maxlength="5000" value="<%if(ProjectEditData[27]!=null ){%><%=ProjectEditData[27] %><%} %>" /></td>

@@ -110,6 +110,7 @@ import com.vts.pfms.project.model.PfmsInitiationMacroDetailsTwo;
 import com.vts.pfms.project.model.PfmsInitiationSanctionData;
 import com.vts.pfms.project.model.PfmsOtherReq;
 import com.vts.pfms.project.model.PfmsProcurementPlan;
+import com.vts.pfms.project.model.PlatformMaster;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMactroDetailsBrief;
 import com.vts.pfms.project.model.ProjectMain;
@@ -3959,6 +3960,8 @@ public class ProjectController
 				req.setAttribute("SecurityClassificationList",service.ProjectTypeList());
 				req.setAttribute("OfficerList", service.OfficerList());
 				req.setAttribute("SecurityClassificationList",service.ProjectTypeList());
+				req.setAttribute("PlatformList",service.PlatformList()); //srikant
+
 				return "project/ProjectMainAdd";
 			}
 			if("submit".equalsIgnoreCase(sub) || "save".equalsIgnoreCase(sub)) 
@@ -3988,6 +3991,7 @@ public class ProjectController
 				String securityClassification=req.getParameter("securityClassification");
 				String scope=req.getParameter("scope");
 				String projectshortname = req.getParameter("projectshortname"); 
+				String platformName=req.getParameter("platformName"); //srikant
 
 				ProjectMain protype=new ProjectMain();
 				protype.setIsMainWC(Integer.parseInt(isMainWC));
@@ -4009,6 +4013,8 @@ public class ProjectController
 				protype.setEndUser(enduser);
 				protype.setApplication(application);
 				protype.setProjectShortName(projectshortname);
+				protype.setPlatformId(Long.parseLong(platformName)); //srikant
+
 				if(sancostfe!=null && sancostfe.length() >0)
 				{
 					protype.setSanctionCostFE(Double.parseDouble(sancostfe.trim()));
@@ -4059,6 +4065,7 @@ public class ProjectController
 				req.setAttribute("OfficerList", service.OfficerList());
 				req.setAttribute("ProjectMainEditData", service.ProjectMainEditData(ProjectMainId));
 				req.setAttribute("SecurityClassificationList",service.ProjectTypeList());
+				req.setAttribute("PlatformList",service.PlatformList()); //srikant
 
 				return "project/ProjectMainEdit";
 			}
@@ -4088,6 +4095,8 @@ public class ProjectController
 				String application = req.getParameter("application");
 				String enduser = req.getParameter("enduser");
 				String projectshortname = req.getParameter("projectshortname");
+				String PlatformName=req.getParameter("platformName");  //srikant
+
 				ProjectMain protype=new ProjectMain();
 				protype.setIsMainWC(Integer.parseInt(isMainWC));
 				protype.setWorkCenter(WCname);
@@ -4108,6 +4117,8 @@ public class ProjectController
 				protype.setApplication(application);
 				protype.setEndUser(enduser);
 				protype.setProjectShortName(projectshortname);
+				protype.setPlatformId(Long.parseLong(PlatformName));  	//srikant
+
 				if(sancostfe!=null && sancostfe.length() >0)
 				{
 					protype.setSanctionCostFE(Double.parseDouble(sancostfe.trim()));
@@ -4205,6 +4216,8 @@ public class ProjectController
 				req.setAttribute("OfficerList", service.OfficerList().stream().filter(e-> LabCode.equalsIgnoreCase(e[9].toString())).collect(Collectors.toList()));
 				req.setAttribute("CategoryList", service.ProjectCategoryList());
 				req.setAttribute("ProjectTypeList", service.PfmsCategoryList());
+				req.setAttribute("PlatformList",service.PlatformList()); //srikant
+
 				return "project/ProjectAdd";
 			}
 			if("submit".equalsIgnoreCase(sub)) 
@@ -4229,6 +4242,7 @@ public class ProjectController
 
 				String enduser= req.getParameter("enduser");
 				String projectshortname = req.getParameter("projectshortname");
+				String platformName=req.getParameter("platformName"); //srikant
 
 				//     		 Object[] promaindata=service.ProjectMainEditData(projectType);
 				//     		 
@@ -4262,6 +4276,10 @@ public class ProjectController
 				protype.setSanctionDate(new java.sql.Date(sdf2.parse(sadate).getTime()));
 				protype.setTotalSanctionCost(Double.parseDouble(tsancost.trim()));
 				protype.setSanctionCostRE(Double.parseDouble(sancostre.trim()));
+				protype.setPlatformId(Long.parseLong(platformName)); //srikant
+				PlatformMaster platform = service.getPlatformByPlatformId(protype.getPlatformId());
+				protype.setPlatform(platform!=null?platform.getPlatformCode():"-"); //srikant
+
 				if(sancostfe!=null && sancostfe.length() >0)
 				{
 					protype.setSanctionCostFE(Double.parseDouble(sancostfe.trim()));
@@ -4295,7 +4313,7 @@ public class ProjectController
 				req.setAttribute("CategoryList", service.ProjectCategoryList());
 				req.setAttribute("ProjectEditData", service.ProjectEditData1(ProjectId));
 				req.setAttribute("ProjectTypeList", service.PfmsCategoryList());
-
+				req.setAttribute("PlatformList",service.PlatformList()); //srikant
 
 				return "project/ProjectEdit";
 			}else if("editsubmit".equalsIgnoreCase(sub)) {
@@ -4327,6 +4345,9 @@ public class ProjectController
 				String application = req.getParameter("application");
 				String scope = req.getParameter("scope"); 
 				String nodallab = req.getParameter("Nodal");
+				String platformName=req.getParameter("platformName"); //srikant  
+
+				
 				ProjectMaster protype=new ProjectMaster();
 				//     		 protype.setIsMainWC(Integer.parseInt(isMainWC));
 				//			 protype.setWorkCenter(WCname);
@@ -4346,6 +4367,10 @@ public class ProjectController
 				protype.setSanctionDate(new java.sql.Date(sdf2.parse(sadate).getTime()));
 				protype.setTotalSanctionCost(Double.parseDouble(tsancost.trim()));
 				protype.setSanctionCostRE(Double.parseDouble(sancostre.trim()));
+				protype.setPlatformId(Long.parseLong(platformName)); //srikant
+				PlatformMaster platform = service.getPlatformByPlatformId(protype.getPlatformId());
+				protype.setPlatform(platform!=null?platform.getPlatformCode():"-"); //srikant
+
 				if(sancostfe!=null && sancostfe.length() >0)
 				{
 					protype.setSanctionCostFE(Double.parseDouble(sancostfe.trim()));
@@ -5219,6 +5244,8 @@ public class ProjectController
 			req.setAttribute("CategoryList", service.ProjectCategoryList());
 			req.setAttribute("ProjectEditData", service.ProjectEditData1(projectid));
 			req.setAttribute("ProjectTypeList", service.PfmsCategoryList());
+			req.setAttribute("PlatformList",service.PlatformList()); //srikant
+
 			return "project/ProjectMasterRev";
 		}
 		catch (Exception e) {
@@ -5264,6 +5291,8 @@ public class ProjectController
 			String Objective=req.getParameter("Objective");
 			String Deliverable=req.getParameter("Deliverable");
 			String projectTypeID=req.getParameter("projectTypeID");
+			String platformName=req.getParameter("platformName"); //srikant
+
 			ProjectMaster protype=new ProjectMaster();
 			//	 protype.setIsMainWC(Integer.parseInt(isMainWC));
 			//	 protype.setWorkCenter(WCname);
@@ -5297,7 +5326,10 @@ public class ProjectController
 			protype.setModifiedBy(Username);
 			protype.setModifiedDate(sdf1.format(new Date()));
 			protype.setProjectId(Long.parseLong(ProjectId));
-
+			protype.setPlatformId(Long.parseLong(platformName));  //srikant 
+			PlatformMaster platform = service.getPlatformByPlatformId(protype.getPlatformId());
+			protype.setPlatform(platform!=null?platform.getPlatformCode():"-"); //srikant
+			
 			ProjectMasterRev rev = service.ProjectMasterREVSubmit(ProjectId, Username,req.getParameter("remarks"));
 			long count=0;
 			if(rev.getProjectRevId() >0) {
@@ -5326,22 +5358,24 @@ public class ProjectController
 	@RequestMapping(value = "ProjectMasterRevView.htm")
 	public String ProjectMasterRevView(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String Username = (String) ses .getAttribute("Username");
-		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		String Logintype= (String)ses.getAttribute("LoginType");
-		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectMasterRevView.htm "+Username);
 		try 
 		{	
-			String projectid=req.getParameter("ProjectId");
-			req.setAttribute("projectid", projectid);
-			req.setAttribute("projectslist", service.LoginProjectDetailsList(EmpId,Logintype,LabCode));			
-			req.setAttribute("ProjectMasterRevList", service.ProjectRevList(projectid));
+			String ProjectId=req.getParameter("ProjectId");
+
+			req.setAttribute("ProjectId",  ProjectId); 
+			req.setAttribute("ProjectTypeMainList", service.ProjectTypeMainList());
+			req.setAttribute("OfficerList",service.OfficerList());
+			req.setAttribute("CategoryList",service.ProjectCategoryList());
+			req.setAttribute("ProjectOriginalData",service.ProjectOriginalData(ProjectId));
+			req.setAttribute("ProjectTypeList",service.PfmsCategoryList()); 
+			req.setAttribute("ProjectReviseList", service.ProjectReviseList(ProjectId));
 			return "project/ProjectMasterRevView";
-		}
-		catch (Exception e) {
-			e.printStackTrace(); logger.error(new Date() +" Inside ProjectMasterRevView.htm "+Username, e);
+		}catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside ProjectMasterRevView.htm "+Username, e);
 			return "static/Error";
-		}	
+		}		
 
 	}
 
@@ -7202,6 +7236,7 @@ public class ProjectController
 		catch(Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() +"Inside MacroDetailsPart2.htm"+UserId ,e);
+			return json.toJson(0);
 		}
 
 		return json.toJson(count);
@@ -9767,11 +9802,9 @@ public class ProjectController
 			redir.addAttribute("SpecsInitiationId", SpecsInitiationId);
 			return "redirect:/ProjectSpecificationDetails.htm";
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
+			return "static/Error";
 		}
-		
-		
-		return null;
 	}
 	
 	@RequestMapping(value="SpecificaionDetails.htm",method= {RequestMethod.GET,RequestMethod.POST})
@@ -9813,12 +9846,13 @@ public class ProjectController
 			req.setAttribute("systemSpecificationList", systemSpecificationList);
 			}else {
 			List<Object[]>systemSpecificationList = reqService.SpecificationMasterList();
-			systemSpecificationList = systemSpecificationList.stream().filter(e->e[13].toString().equalsIgnoreCase("0")).collect(Collectors.toList());				
+			//systemSpecificationList = systemSpecificationList.stream().filter(e->e[13].toString().equalsIgnoreCase("0")).collect(Collectors.toList());				
 			req.setAttribute("systemSpecificationList", systemSpecificationList);
 			}
 	
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
+			return "static/Error";
 		}
 		return "requirements/SpecsDetails";
 	}

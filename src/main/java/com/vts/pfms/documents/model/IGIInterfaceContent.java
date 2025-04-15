@@ -7,10 +7,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Builder //srikant
 @Data
+@NoArgsConstructor //srikant
+@AllArgsConstructor //srikant
 @Entity
 @Table(name="pfms_igi_interface_content")
 public class IGIInterfaceContent implements Serializable{
@@ -23,6 +28,7 @@ public class IGIInterfaceContent implements Serializable{
 	private Long InterfaceTypeId;
 	private String InterfaceContent;
 	private String InterfaceContentCode;
+	private String IsDataCarrying; // srikant
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;

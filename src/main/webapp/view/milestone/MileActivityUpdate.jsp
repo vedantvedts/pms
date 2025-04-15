@@ -207,16 +207,12 @@ input[type="file"]::-webkit-file-upload-button {
 									formaction="M-A-AssigneeList.htm">BACK</button>
 							</div>
 
-							<input type="hidden" name="MilestoneActivityId"
-								value="<%=EditMain.getMilestoneActivityId() %>" /> <input
-								type="hidden" name="ActivityId"
-								value="<%=EditMain.getActivityId() %>" /> <input type="hidden"
-								name="ProjectId" value="<%=EditMain.getProjectId() %>" /> <input
-								type="hidden" name="ActivityType"
-								value="<%=EditMain.getActivityType() %>" /> <input
-								type="hidden" name="EndDate" value="<%=EditData[2] %>" /> <input
-								type="hidden" name="${_csrf.parameterName}"
-								value="${_csrf.token}" />
+							<input type="hidden" name="MilestoneActivityId" value="<%=EditMain.getMilestoneActivityId() %>" /> 
+							<input type="hidden" name="ActivityId" value="<%=EditMain.getActivityId() %>" /> 
+							<input type="hidden" name="ProjectId" value="<%=EditMain.getProjectId() %>" /> 
+							<input type="hidden" name="ActivityType" value="<%=EditMain.getActivityType() %>" /> 
+							<input type="hidden" name="EndDate" value="<%=EditData[2] %>" /> 
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 						</form>
 
 					</div>
@@ -388,9 +384,9 @@ input[type="file"]::-webkit-file-upload-button {
 						id="myTable3" style="margin-top: 20px;">
 						<thead>
 							<tr>
-								<th colspan="7"
-									style="background-color: #346691; color: white; text-align: center; font-size: 18px !important; border-left: 0px solid; text-transform: capitalize;">Activity
-									Updated Details</th>
+								<th colspan="7" style="background-color: #346691; color: white; text-align: center; font-size: 18px !important; border-left: 0px solid; text-transform: capitalize;">
+									Activity Updated Details
+								</th>
 							</tr>
 							<tr>
 								<th style="text-align: left;">As On Date</th>
@@ -540,14 +536,12 @@ input[type="file"]::-webkit-file-upload-button {
 	<script type="text/javascript">
 function editcheck(editfileid)
 {
-	const fi = $('#'+editfileid )[0].files[0].size;							 	
-   	
     if (document.getElementById(editfileid).files.length !=0 && file >= 50 ) 
     {
     	event.preventDefault();
      	alert("File too Big, please select a file less than 50mb");
-    } else
-    {
+     	return false;
+    } else {
     	return confirm('Are you Sure To Submit?');
     }
 }

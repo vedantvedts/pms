@@ -175,6 +175,22 @@ String seslabid=(String)session.getAttribute("labid");
 </div>
 
 </div>
+<!-- Srikant code Start -->
+<div class="row">
+<div class="col-md-3">
+	<div class="form-group">
+		<label >Emp Status:<span class="mandatory" style="color: red;">*</span></label>
+		<select class="form-control" name="empStatus" id="empStatus" data-container="body" data-live-search="true"  required="required">
+		<option value=""   <%if(OfficerEditData[13]==null){%> selected="selected" <%}%> hidden="true">--Select--</option>
+		<option value="P" <%if(OfficerEditData[13]!=null && OfficerEditData[13].toString().equalsIgnoreCase("P")){%> selected="selected" <%}%>>Present</option>
+		<option value="R" <%if(OfficerEditData[13]!=null && OfficerEditData[13].toString().equalsIgnoreCase("R")){%> selected="selected" <%}%>>Retired</option>
+		<option value="T" <%if(OfficerEditData[13]!=null && OfficerEditData[13].toString().equalsIgnoreCase("T")){%> selected="selected" <%}%>>Transferred</option>
+		
+		</select> 
+	</div>
+</div>
+</div>
+<!--Srikant code end  -->
 <div class="row">
 <div class="col-sm-5" ></div>
 	<input type="button"  class="btn btn-primary btn-sm submit" value="SUBMIT" onclick="return empNoCheck('myfrm');"/>
@@ -271,9 +287,10 @@ function Delete(myfrm){
 			var DronaEmail=$('#DronaEmail').val();
 			var InternetEmail=$('#InternetEmail').val();
 			var Division=$('#Division').val();
+			var EmpStauts =$('#empStatus').val();	//srikant
 		
 			
-			if(EmpName==="" ||Designation===null || ExtNo==="" || mobilenumber==="" || Email==="" || Division===null ) 
+			if(EmpName==="" ||Designation===null || ExtNo==="" || mobilenumber==="" || Email==="" || Division===null || EmpStauts==="" ) //srikant  
 			{
 				alert('Please Fill All the Mandatory Fields ');
 			} else if(!Email.includes("@")){

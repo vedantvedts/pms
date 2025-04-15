@@ -212,6 +212,10 @@ div {
 .form-check {
 	margin: 0px 4%;
 }
+
+.select2-container {
+    width: 100% !important; /* Force full width */
+}
 </style>
 </head>
 <body>
@@ -221,42 +225,34 @@ div {
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	Object[] getMA = (Object[]) request.getAttribute("MilestoneActivity");
 	List<Object[]> ActivityTypeList = (List<Object[]>) request.getAttribute("ActivityTypeList");
-	String ses = (String) request.getParameter("result");
-	String ses1 = (String) request.getParameter("resultfail");
-	if (ses1 != null) {
+	List<Object[]> EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
+	String projectId=(String)request.getAttribute("ProjectId");
 	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert" align="center">
-			<%=ses1%>
+	
+	<% String ses=(String)request.getParameter("result");
+	 	String ses1=(String)request.getParameter("resultfail");
+		if(ses1!=null){
+		%>
+		<div align="center">
+			<div class="alert alert-danger" role="alert">
+		    <%=ses1 %>
+		    </div>
 		</div>
-	</div>
-	<%
-	}
-	if (ses != null) {
-	%>
-	<div align="center">
-		<div class="alert alert-success" role="alert" align="center">
-			<%=ses%>
+		<%}if(ses!=null){ %>
+		<div align="center">
+			<div class="alert alert-success" role="alert" >
+		    	<%=ses %>
+			</div>
 		</div>
-	</div>
-	<%
-	}
-	%>
+	<%} %>
 
 
 	<div class="container-fluid">
-
 		<div class="row">
-
 			<div class="col-md-12">
-				<div class="card"
-					style="border-color: #00DADA; margin-top: -1%; margin-bottom: 50px;">
+				<div class="card" style="border-color: #00DADA; margin-top: -1%; margin-bottom: 50px;">
 					<div class="card-body" style="margin-top: -8px">
-
-
-
 						<div class="panel panel-info" style="margin-top: 0px;">
-
 							<div class="panel-heading ">
 								<h4 class="panel-title">
 									<span style="font-size: 14px"><%=getMA[1]%> : MIL-<%=getMA[5]%>
@@ -264,17 +260,9 @@ div {
 										style="margin-left: 20px;"></i> <%=sdf.format(getMA[2])%> To
 										<%=sdf.format(getMA[3])%></span>
 								</h4>
-								<div style="float: right !important; margin-top: -23px;">
-
-
-								</div>
-
-
+								<div style="float: right !important; margin-top: -23px;"></div>
 								<div style="float: right !important; margin-top: -20px;">
-									<a data-toggle="collapse" data-parent="#accordion"
-										href="#collapse1"> <i class="fa fa-plus" id="Clk"
-										onclick="faChange('#Clk')"></i></a>
-
+									<a data-toggle="collapse" data-parent="#accordion" href="#collapse1"> <i class="fa fa-plus" id="Clk" onclick="faChange('#Clk')"></i></a>
 								</div>
 							</div>
 							<!-- panel-heading end -->
@@ -312,21 +300,20 @@ div {
 											<div class="panel-heading">
 												<h4 class="panel-title">
 
-													<span style="font-size: 14px">Activity A<%=ProjectSubCount%>
-														<i class="fa fa-calendar" aria-hidden="true"
-														style="margin-left: 20px;"></i> <%=sdf.format(obj[2])%>
-														To <%=sdf.format(obj[3])%></span>
+													<span style="font-size: 14px">
+														Activity A<%=ProjectSubCount%> 
+														<i class="fa fa-calendar" aria-hidden="true" style="margin-left: 20px;"></i> 
+														<%=sdf.format(obj[2])%> To <%=sdf.format(obj[3])%>
+													</span>
 
 												</h4>
 												<div style="float: right !important; margin-top: -20px;">
-													<a data-toggle="collapse" data-parent="#accordion"
-														href="#collapse55A<%=ProjectSubCount%>"> <i
-														class="fa fa-plus" id="ClkA<%=ProjectSubCount%>"
-														onclick="faChange('#ClkA<%=ProjectSubCount%>')"></i></a>
+													<a data-toggle="collapse" data-parent="#accordion" href="#collapse55A<%=ProjectSubCount%>"> 
+														<i class="fa fa-plus" id="ClkA<%=ProjectSubCount%>" onclick="faChange('#ClkA<%=ProjectSubCount%>')"></i>
+													</a>
 												</div>
 											</div>
-											<div id="collapse55A<%=ProjectSubCount%>"
-												class="panel-collapse collapse in">
+											<div id="collapse55A<%=ProjectSubCount%>" class="panel-collapse collapse in">
 												<div class="row">
 													<div class="col-md-6 ">
 														<label class="control-label"
@@ -359,18 +346,16 @@ div {
 														<div class="panel panel-info">
 															<div class="panel-heading">
 																<h4 class="panel-title">
-																	<span style="font-size: 14px">Activity B<%=Sub1Count%>
-																		<i class="fa fa-calendar" aria-hidden="true"
-																		style="margin-left: 20px;"></i> <%=sdf.format(obj1[2])%>
-																		To <%=sdf.format(obj1[3])%></span>
+																	<span style="font-size: 14px">
+																		Activity B<%=Sub1Count%>
+																		<i class="fa fa-calendar" aria-hidden="true" style="margin-left: 20px;"></i> 
+																		<%=sdf.format(obj1[2])%> To <%=sdf.format(obj1[3])%>
+																	</span>
 
 																</h4>
 																<div style="float: right !important; margin-top: -20px;">
-																	<a data-toggle="collapse" data-parent="#accordion"
-																		href="#collapse55B<%=ProjectSubCount%><%=Sub1Count%>">
-																		<i class="fa fa-plus"
-																		id="ClkA<%=ProjectSubCount%>B<%=Sub1Count%>"
-																		onclick="faChange('#ClkA<%=ProjectSubCount%>B<%=Sub1Count%>')"></i>
+																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse55B<%=ProjectSubCount%><%=Sub1Count%>">
+																		<i class="fa fa-plus" id="ClkA<%=ProjectSubCount%>B<%=Sub1Count%>" onclick="faChange('#ClkA<%=ProjectSubCount%>B<%=Sub1Count%>')"></i>
 																	</a>
 																</div>
 															</div>
@@ -395,8 +380,7 @@ div {
 																</div>
 																<%
 																int Sub2Count = 1;
-																List<Object[]> MilestoneActivityC = (List<Object[]>) request
-																		.getAttribute("MilestoneActivityC" + ProjectSubCount + Sub1Count);
+																List<Object[]> MilestoneActivityC = (List<Object[]>) request.getAttribute("MilestoneActivityC" + ProjectSubCount + Sub1Count);
 																if (MilestoneActivityC != null && MilestoneActivityC.size() > 0) {
 																	for (Object[] obj2 : MilestoneActivityC) {
 																%>
@@ -408,30 +392,24 @@ div {
 																		<div class="panel panel-info">
 																			<div class="panel-heading">
 																				<h4 class="panel-title">
-																					<span style="font-size: 14px">Activity C<%=Sub2Count%>
-																						<i class="fa fa-calendar" aria-hidden="true"
-																						style="margin-left: 20px;"></i> <%=sdf.format(obj2[2])%>
-																						To <%=sdf.format(obj2[3])%></span>
+																					<span style="font-size: 14px">
+																						Activity C<%=Sub2Count%>
+																						<i class="fa fa-calendar" aria-hidden="true" style="margin-left: 20px;"></i> 
+																						<%=sdf.format(obj2[2])%> To <%=sdf.format(obj2[3])%>
+																					</span>
 
 																				</h4>
-																				<div
-																					style="float: right !important; margin-top: -20px;">
-																					<a data-toggle="collapse" data-parent="#accordion"
-																						href="#collapse55C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>">
-																						<i class="fa fa-plus"
-																						id="ClkA<%=ProjectSubCount%>B<%=Sub1Count%>C<%=Sub2Count%>"
-																						onclick="faChange('#ClkA<%=ProjectSubCount%>B<%=Sub1Count%>C<%=Sub2Count%>')"></i>
+																				<div style="float: right !important; margin-top: -20px;">
+																					<a data-toggle="collapse" data-parent="#accordion" href="#collapse55C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>">
+																						<i class="fa fa-plus" id="ClkA<%=ProjectSubCount%>B<%=Sub1Count%>C<%=Sub2Count%>" onclick="faChange('#ClkA<%=ProjectSubCount%>B<%=Sub1Count%>C<%=Sub2Count%>')"></i>
 																					</a>
 																				</div>
 																			</div>
-																			<div
-																				id="collapse55C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>"
-																				class="panel-collapse collapse in">
+																			<div id="collapse55C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>" class="panel-collapse collapse in">
 																				<div class="row">
 																					<div class="col-md-6 ">
-																						<label class="control-label"
-																							style="margin-left: 25px; text-align: justify;">Activity:
-																							<%=obj2[4]%>
+																						<label class="control-label" style="margin-left: 25px; text-align: justify;">
+																							Activity: <%=obj2[4]%>
 																						</label>
 																					</div>
 																					<div class="col-md-2">
@@ -446,29 +424,25 @@ div {
 																				</div>
 																				<%
 																				int Sub3Count = 1;
-																				List<Object[]> MilestoneActivityD = (List<Object[]>) request
-																						.getAttribute("MilestoneActivityD" + ProjectSubCount + Sub1Count + Sub2Count);
+																				List<Object[]> MilestoneActivityD = (List<Object[]>) request.getAttribute("MilestoneActivityD" + ProjectSubCount + Sub1Count + Sub2Count);
 																				if (MilestoneActivityD != null && MilestoneActivityD.size() > 0) {
 																					for (Object[] obj3 : MilestoneActivityD) {
 																				%>
 
 																				<div class="row">
-																					<div class="col-md-12" align="left"
-																						style="margin-left: 0px;">
+																					<div class="col-md-12" align="left" style="margin-left: 0px;">
 
 																						<div class="panel panel-info">
 																							<div class="panel-heading">
 																								<h4 class="panel-title">
-																									<span style="font-size: 14px">Activity D<%=Sub3Count%>
-																										<i class="fa fa-calendar" aria-hidden="true"
-																										style="margin-left: 20px;"></i> <%=sdf.format(obj3[2])%>
-																										To <%=sdf.format(obj3[3])%></span>
+																									<span style="font-size: 14px">
+																										Activity D<%=Sub3Count%>
+																										<i class="fa fa-calendar" aria-hidden="true" style="margin-left: 20px;"></i>
+																										<%=sdf.format(obj3[2])%> To <%=sdf.format(obj3[3])%></span>
 
 																								</h4>
-																								<div
-																									style="float: right !important; margin-top: -20px;">
-																									<a data-toggle="collapse"
-																										data-parent="#accordion"
+																								<div style="float: right !important; margin-top: -20px;">
+																									<a data-toggle="collapse" data-parent="#accordion"
 																										href="#collapse55D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>">
 																										<i class="fa fa-plus"
 																										id="ClkA<%=ProjectSubCount%>B<%=Sub1Count%>C<%=Sub2Count%>D<%=Sub3Count%>"
@@ -501,8 +475,7 @@ div {
 																								</div>
 																								<%
 																								int Sub4Count = 1;
-																								List<Object[]> MilestoneActivityE = (List<Object[]>) request
-																										.getAttribute("MilestoneActivityE" + ProjectSubCount + Sub1Count + Sub2Count + Sub3Count);
+																								List<Object[]> MilestoneActivityE = (List<Object[]>) request.getAttribute("MilestoneActivityE" + ProjectSubCount + Sub1Count + Sub2Count + Sub3Count);
 																								if (MilestoneActivityE != null && MilestoneActivityE.size() > 0) {
 																									for (Object[] obj4 : MilestoneActivityE) {
 																								%>
@@ -566,8 +539,7 @@ div {
 																								}
 																								%>
 																								<div class="row">
-																									<div class="col-md-12" align="left"
-																										style="margin-left: 0px;">
+																									<div class="col-md-12" align="left" style="margin-left: 0px;">
 																										<div class="panel panel-info">
 																											<div class="panel-heading">
 																												<h4 class="panel-title">
@@ -575,28 +547,27 @@ div {
 																												</h4>
 																											</div>
 																											<div>
-																												<form action="MilestoneActivitySubAdd.htm"
-																													method="POST" name="milestoneaddfrm"
-																													id="milestoneaddfrm<%=Sub1Count%>">
-																													<div class="row container-fluid"
-																														align="center">
+																												<form action="MilestoneActivitySubAdd.htm" method="POST" name="milestoneaddfrm" id="milestoneaddfrm<%=Sub1Count%>">
+																													<div class="row container-fluid" align="center">
 																														<div class="col-sm-6" align="left">
 																															<div class="form-group">
-																																<label>Activity E Name: <span
-																																	class="mandatory" style="color: red;">*</span>
-																																</label><br> <input class="form-control "
-																																	type="text" name="ActivityName"
+																																<label>
+																																	Activity E Name: <span class="mandatory" style="color: red;">*</span>
+																																</label>
+																																<br> 
+																																<input class="form-control " type="text" name="ActivityName"
 																																	id="ActivityName<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>"
-																																	style="width: 100%" maxlength="1000"
-																																	required="required">
+																																	style="width: 100%" maxlength="1000" required="required">
 																															</div>
 																														</div>
 
 
 																														<div class="col-md-2" align="left">
 																															<div class="form-group">
-																																<label class="control-label">Activity
-																																	Type </label> <select class="form-control "
+																																<label class="control-label">
+																																	Activity Type 
+																																</label> 
+																																<select class="form-control selectdee"
 																																	id="ActivityType1<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>"
 																																	required="required" name="ActivityType">
 																																	<option disabled="true" selected
@@ -642,48 +613,57 @@ div {
 
 																													</div>
 
-
+																													<div class="row container-fluid">
+																														<div class="col-md-4">
+																							                        		<div class="form-group">
+																							                            		<label class="control-label">First OIC  </label>
+																							                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
+																																	<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox1E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>" 
+																																	onchange="changeempoic1('E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>')" >
+																																</div>
+																							                              		<select class="form-control selectdee" id="EmpIdE<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>" required="required" name="EmpId">
+																							    									<option disabled="true"  selected value="">Choose...</option>
+																							    										<% for (Object[] objE : EmployeeList) {%>
+																																	<option value="<%=objE[0]%>"><%=objE[1]%>, <%=objE[2]%> </option>
+																																		<%} %>
+																							  									</select>
+																							                        		</div>
+																							                    		</div>
+																							                    		<div class="col-md-4 ">
+																							                        		<div class="form-group">
+																							                            		<label class="control-label">Second OIC </label>
+																							                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
+																																	<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>" 
+																																	onchange="changeempoic2('E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>')" >
+																																</div>
+																							                              		<select class="form-control selectdee" id="EmpId1E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>" name="EmpId1">
+																							    									<option disabled="true" selected value="">Choose...</option>
+																							    										<% for (Object[] objE : EmployeeList) {%>
+																																		<option value="<%=objE[0]%>"><%=objE[1]%>, <%=objE[2]%> </option>
+																																		<%} %>
+																							  									</select>
+																							                        		</div>
+																							                    		</div>
+																													</div>
 
 
 																													<div class="form-group" align="center">
 
-
-																														<input type="submit"
-																															class="btn btn-primary btn-sm submit "
-																															id="sub" value="SUBMIT" name="sub"
-																															onclick="return confirm('Are You Sure To Submit?');">
-																														<button type="submit"
-																															class="btn btn-primary btn-sm edit"
-																															id="sub" value="C" name="sub"
-																															onclick="SubmitBack('<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>')"
-																															formaction="MilestoneActivityDetails.htm">Edit</button>
-																														<input type="submit"
-																															class="btn btn-primary btn-sm back "
-																															id="sub" value="Back" name="sub"
-																															onclick="SubmitBack('<%=ProjectSubCount%>/<%=Sub1Count%>/<%=Sub2Count%>/<%=Sub3Count%>/<%=Sub4Count%>')"
-																															formaction="MilestoneActivityList.htm">
-																														<input type="hidden" name="ProjectId"
-																															value="<%=getMA[10]%>" />
+																														<input type="submit" class="btn btn-primary btn-sm submit " id="sub" value="SUBMIT" name="sub" onclick="return confirm('Are You Sure To Submit?');">
+																														<button type="submit" class="btn btn-primary btn-sm edit" id="sub" value="C" name="sub" formaction="MilestoneActivityDetails.htm" formnovalidate="formnovalidate">Edit</button>
+																														<input type="submit" class="btn btn-primary btn-sm back " id="sub" value="Back" name="sub" formaction="MilestoneActivityList.htm" formnovalidate="formnovalidate">
+																														<input type="hidden" name="ProjectId" value="<%=getMA[10]%>" />
 																													</div>
-																													<input type="hidden" name="LevelId"
-																														value="5" /> <input type="hidden"
-																														name="formname"
-																														value="<%=ProjectSubCount%>/<%=Sub1Count%>/<%=Sub2Count%>/<%=Sub3Count%>/<%=Sub4Count%>" />
-																													<input type="hidden"
-																														name="MilestoneActivityId"
-																														value="<%=getMA[0]%>" /> <input
-																														type="hidden" name="ActivityId"
-																														value="<%=obj3[0]%>" /> <input
-																														type="hidden" name="OicEmpId"
-																														value="<%=getMA[8]%>" /> <input
-																														type="hidden" name="OicEmpId1"
-																														value="<%=getMA[9]%>" /> <input
-																														type="hidden"
-																														name="${_csrf.parameterName}"
-																														value="${_csrf.token}" />
+																													<input type="hidden" name="LevelId" value="5" /> 
+																													<input type="hidden" name="formname" value="<%=ProjectSubCount%>/<%=Sub1Count%>/<%=Sub2Count%>/<%=Sub3Count%>/<%=Sub4Count%>" />
+																													<input type="hidden" name="MilestoneActivityId" value="<%=getMA[0]%>" /> 
+																													<input type="hidden" name="ActivityId" value="<%=obj3[0]%>" /> 
+																													<input type="hidden" name="OicEmpId" value="<%=getMA[8]%>" /> 
+																													<input type="hidden" name="OicEmpId1" value="<%=getMA[9]%>" /> 
+																													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 																												</form>
 																											</div>
-																											<script type="text/javascript">
+<script type="text/javascript">
 var from5 ="<%=sdf.format(obj3[2])%>".split("-")
 var dt55 = new Date(from5[2], from5[1] - 1, from5[0])
 var to5 ="<%=sdf.format(obj3[3])%>".split("-")
@@ -774,9 +754,7 @@ $( document ).ready(function() {
 
 																							</div>
 																							<div>
-																								<form action="MilestoneActivitySubAdd.htm"
-																									method="POST" name="milestoneaddfrm"
-																									id="milestoneaddfrm<%=Sub1Count%>">
+																								<form action="MilestoneActivitySubAdd.htm" method="POST" name="milestoneaddfrm" id="milestoneaddfrm<%=Sub1Count%>">
 																									<div class="row container-fluid" align="center">
 																										<div class="col-sm-6" align="left">
 																											<div class="form-group">
@@ -793,8 +771,8 @@ $( document ).ready(function() {
 
 																										<div class="col-md-2" align="left">
 																											<div class="form-group">
-																												<label class="control-label">Activity
-																													Type </label> <select class="form-control"
+																												<label class="control-label">Activity Type </label> 
+																												<select class="form-control selectdee"
 																													id="ActivityType1<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>"
 																													required="required" name="ActivityType">
 																													<option disabled="true" selected value="">Choose...</option>
@@ -835,43 +813,57 @@ $( document ).ready(function() {
 
 																									</div>
 
-
+																									<div class="row container-fluid">
+																										<div class="col-md-4">
+																			                        		<div class="form-group">
+																			                            		<label class="control-label">First OIC  </label>
+																			                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
+																													<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox1D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>" 
+																													onchange="changeempoic1('D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>')" >
+																												</div>
+																			                              		<select class="form-control selectdee" id="EmpIdD<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>" required="required" name="EmpId">
+																			    									<option disabled="true"  selected value="">Choose...</option>
+																			    										<% for (Object[] objD : EmployeeList) {%>
+																													<option value="<%=objD[0]%>"><%=objD[1]%>, <%=objD[2]%> </option>
+																														<%} %>
+																			  									</select>
+																			                        		</div>
+																			                    		</div>
+																			                    		<div class="col-md-4 ">
+																			                        		<div class="form-group">
+																			                            		<label class="control-label">Second OIC </label>
+																			                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
+																													<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>" 
+																													onchange="changeempoic2('D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>')" >
+																												</div>
+																			                              		<select class="form-control selectdee" id="EmpId1D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>" name="EmpId1">
+																			    									<option disabled="true" selected value="">Choose...</option>
+																			    										<% for (Object[] objD : EmployeeList) {%>
+																														<option value="<%=objD[0]%>"><%=objD[1]%>, <%=objD[2]%> </option>
+																														<%} %>
+																			  									</select>
+																			                        		</div>
+																			                    		</div>
+																									</div>
 
 
 																									<div class="form-group" align="center">
 
-
-																										<input type="submit"
-																											class="btn btn-primary btn-sm submit "
-																											id="sub" value="SUBMIT" name="sub"
-																											onclick="return confirm('Are You Sure To Submit?');">
-																										<button type="submit"
-																											class="btn btn-primary btn-sm edit " id="sub"
-																											value="C" name="sub"
-																											onclick="SubmitBack('<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>')"
-																											formaction="MilestoneActivityDetails.htm">Edit</button>
-																										<input type="submit"
-																											class="btn btn-primary btn-sm back " id="sub"
-																											value="Back" name="sub"
-																											onclick="SubmitBack('<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>')"
-																											formaction="MilestoneActivityList.htm">
-																										<input type="hidden" name="ProjectId"
-																											value="<%=getMA[10]%>" />
+																										<input type="submit" class="btn btn-primary btn-sm submit " id="sub" value="SUBMIT" name="sub" onclick="return confirm('Are You Sure To Submit?');">
+																										<button type="submit" class="btn btn-primary btn-sm edit " id="sub" value="C" name="sub" formaction="MilestoneActivityDetails.htm" formnovalidate="formnovalidate">Edit</button>
+																										<input type="submit" class="btn btn-primary btn-sm back " id="sub" value="Back" name="sub" formaction="MilestoneActivityList.htm" formnovalidate="formnovalidate">
+																										<input type="hidden" name="ProjectId" value="<%=getMA[10]%>" />
 																									</div>
 																									<input type="hidden" name="LevelId" value="4" />
-																									<input type="hidden" name="formname"
-																										value="<%=ProjectSubCount%>/<%=Sub1Count%>/<%=Sub2Count%>/<%=Sub3Count%>" />
-																									<input type="hidden" name="MilestoneActivityId"
-																										value="<%=getMA[0]%>" /> <input type="hidden"
-																										name="ActivityId" value="<%=obj2[0]%>" /> <input
-																										type="hidden" name="OicEmpId"
-																										value="<%=getMA[8]%>" /> <input type="hidden"
-																										name="OicEmpId1" value="<%=getMA[9]%>" /> <input
-																										type="hidden" name="${_csrf.parameterName}"
-																										value="${_csrf.token}" />
+																									<input type="hidden" name="formname" value="<%=ProjectSubCount%>/<%=Sub1Count%>/<%=Sub2Count%>/<%=Sub3Count%>" />
+																									<input type="hidden" name="MilestoneActivityId" value="<%=getMA[0]%>" /> 
+																									<input type="hidden" name="ActivityId" value="<%=obj2[0]%>" /> 
+																									<input type="hidden" name="OicEmpId" value="<%=getMA[8]%>" /> 
+																									<input type="hidden" name="OicEmpId1" value="<%=getMA[9]%>" /> 
+																									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 																								</form>
 																							</div>
-																							<script type="text/javascript">
+<script type="text/javascript">
 var from4 ="<%=sdf.format(obj2[2])%>".split("-")
 var dt44= new Date(from4[2], from4[1] - 1, from4[0])
 var to4 ="<%=sdf.format(obj2[3])%>".split("-")
@@ -963,9 +955,7 @@ $( document ).ready(function() {
 
 																			</div>
 																			<div>
-																				<form action="MilestoneActivitySubAdd.htm"
-																					method="POST" name="milestoneaddfrm"
-																					id="milestoneaddfrm<%=Sub1Count%>">
+																				<form action="MilestoneActivitySubAdd.htm" method="POST" name="milestoneaddfrm" id="milestoneaddfrm<%=Sub1Count%>">
 																					<div class="row container-fluid" align="center">
 																						<div class="col-sm-6" align="left">
 																							<div class="form-group">
@@ -982,8 +972,8 @@ $( document ).ready(function() {
 
 																						<div class="col-md-2" align="left">
 																							<div class="form-group">
-																								<label class="control-label">Activity
-																									Type </label> <select class="form-control "
+																								<label class="control-label">Activity Type </label> 
+																								<select class="form-control selectdee"
 																									id="ActivityType1<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>"
 																									required="required" name="ActivityType">
 																									<option disabled="true" selected value="">Choose...</option>
@@ -1024,40 +1014,54 @@ $( document ).ready(function() {
 
 																					</div>
 
-
+																					<div class="row container-fluid">
+																						<div class="col-md-4">
+															                        		<div class="form-group">
+															                            		<label class="control-label">First OIC  </label>
+															                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
+																									<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox1C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>" 
+																									onchange="changeempoic1('C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>')" >
+																								</div>
+															                              		<select class="form-control selectdee" id="EmpIdC<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>" required="required" name="EmpId">
+															    									<option disabled="true"  selected value="">Choose...</option>
+															    										<% for (Object[] objC : EmployeeList) {%>
+																									<option value="<%=objC[0]%>"><%=objC[1]%>, <%=objC[2]%> </option>
+																										<%} %>
+															  									</select>
+															                        		</div>
+															                    		</div>
+															                    		<div class="col-md-4 ">
+															                        		<div class="form-group">
+															                            		<label class="control-label">Second OIC </label>
+															                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
+																									<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>" 
+																									onchange="changeempoic2('C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>')" >
+																								</div>
+															                              		<select class="form-control selectdee" id="EmpId1C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>" name="EmpId1">
+															    									<option disabled="true" selected value="">Choose...</option>
+															    										<% for (Object[] objC : EmployeeList) {%>
+																										<option value="<%=objC[0]%>"><%=objC[1]%>, <%=objC[2]%> </option>
+																										<%} %>
+															  									</select>
+															                        		</div>
+															                    		</div>
+																					</div>
 
 
 																					<div class="form-group" align="center">
 
-
-																						<input type="submit"
-																							class="btn btn-primary btn-sm submit " id="sub"
-																							value="SUBMIT" name="sub"
-																							onclick="return confirm('Are You Sure To Submit?');">
-																						<button type="submit"
-																							class="btn btn-primary btn-sm edit" id="sub"
-																							value="C" name="sub"
-																							onclick="SubmitBack('<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>')"
-																							formaction="MilestoneActivityDetails.htm">Edit</button>
-																						<input type="submit"
-																							class="btn btn-primary btn-sm back " id="sub"
-																							value="Back" name="sub"
-																							onclick="SubmitBack('<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>')"
-																							formaction="MilestoneActivityList.htm"> <input
-																							type="hidden" name="ProjectId"
-																							value="<%=getMA[10]%>" />
+																						<input type="submit" class="btn btn-primary btn-sm submit " id="sub" value="SUBMIT" name="sub" onclick="return confirm('Are You Sure To Submit?');">
+																						<button type="submit" class="btn btn-primary btn-sm edit" id="sub" value="C" name="sub" formaction="MilestoneActivityDetails.htm" formnovalidate="formnovalidate">Edit</button>
+																						<input type="submit" class="btn btn-primary btn-sm back " id="sub" value="Back" name="sub" formaction="MilestoneActivityList.htm" formnovalidate="formnovalidate"> 
+																						<input type="hidden" name="ProjectId" value="<%=getMA[10]%>" />
 																					</div>
-																					<input type="hidden" name="LevelId" value="3" /> <input
-																						type="hidden" name="formname"
-																						value="<%=ProjectSubCount%>/<%=Sub1Count%>/<%=Sub2Count%>" />
-																					<input type="hidden" name="MilestoneActivityId"
-																						value="<%=getMA[0]%>" /> <input type="hidden"
-																						name="ActivityId" value="<%=obj1[0]%>" /> <input
-																						type="hidden" name="OicEmpId"
-																						value="<%=getMA[8]%>" /> <input type="hidden"
-																						name="OicEmpId1" value="<%=getMA[9]%>" /> <input
-																						type="hidden" name="${_csrf.parameterName}"
-																						value="${_csrf.token}" />
+																					<input type="hidden" name="LevelId" value="3" /> 
+																					<input type="hidden" name="formname" value="<%=ProjectSubCount%>/<%=Sub1Count%>/<%=Sub2Count%>" />
+																					<input type="hidden" name="MilestoneActivityId" value="<%=getMA[0]%>" /> 
+																					<input type="hidden" name="ActivityId" value="<%=obj1[0]%>" /> 
+																					<input type="hidden" name="OicEmpId" value="<%=getMA[8]%>" /> 
+																					<input type="hidden" name="OicEmpId1" value="<%=getMA[9]%>" /> 
+																					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 																				</form>
 																			</div>
 																			<script type="text/javascript">
@@ -1151,9 +1155,7 @@ $( document ).ready(function() {
 
 															</div>
 															<div>
-																<form action="MilestoneActivitySubAdd.htm" method="POST"
-																	name="milestoneaddfrm"
-																	id="milestoneaddfrm<%=Sub1Count%>">
+																<form action="MilestoneActivitySubAdd.htm" method="POST" name="milestoneaddfrm" id="milestoneaddfrm<%=Sub1Count%>">
 																	<div class="row container-fluid" align="center">
 																		<div class="col-sm-6" align="left">
 																			<div class="form-group">
@@ -1171,7 +1173,7 @@ $( document ).ready(function() {
 																		<div class="col-md-2" align="left">
 																			<div class="form-group">
 																				<label class="control-label">Activity Type </label>
-																				<select class="form-control "
+																				<select class="form-control selectdee"
 																					id="ActivityType1<%=ProjectSubCount%><%=Sub1Count%>"
 																					required="required" name="ActivityType">
 																					<option disabled="true" selected value="">Choose...</option>
@@ -1212,41 +1214,57 @@ $( document ).ready(function() {
 
 																	</div>
 
-
+																	<div class="row container-fluid">
+																		<div class="col-md-4">
+											                        		<div class="form-group">
+											                            		<label class="control-label">First OIC  </label>
+											                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
+																					<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox1B<%=ProjectSubCount%><%=Sub1Count%>" 
+																					onchange="changeempoic1('B<%=ProjectSubCount%><%=Sub1Count%>')" >
+																				</div>
+											                              		<select class="form-control selectdee" id="EmpIdB<%=ProjectSubCount%><%=Sub1Count%>" required="required" name="EmpId">
+											    									<option disabled="true"  selected value="">Choose...</option>
+											    										<% for (Object[] objB : EmployeeList) {%>
+																					<option value="<%=objB[0]%>"><%=objB[1]%>, <%=objB[2]%> </option>
+																						<%} %>
+											  									</select>
+											                        		</div>
+											                    		</div>
+											                    		<div class="col-md-4 ">
+											                        		<div class="form-group">
+											                            		<label class="control-label">Second OIC </label>
+											                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
+																					<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2B<%=ProjectSubCount%><%=Sub1Count%>" 
+																					onchange="changeempoic2('B<%=ProjectSubCount%><%=Sub1Count%>')" >
+																				</div>
+											                              		<select class="form-control selectdee" id="EmpId1B<%=ProjectSubCount%><%=Sub1Count%>" name="EmpId1">
+											    									<option disabled="true" selected value="">Choose...</option>
+											    										<% for (Object[] objB : EmployeeList) {%>
+																						<option value="<%=objB[0]%>"><%=objB[1]%>, <%=objB[2]%> </option>
+																						<%} %>
+											  									</select>
+											                        		</div>
+											                    		</div>
+																	</div>
 
 
 																	<div class="form-group" align="center">
 
-
-																		<input type="submit"
-																			class="btn btn-primary btn-sm submit " id="sub"
-																			value="SUBMIT" name="sub"
-																			onclick="return confirm('Are You Sure To Submit?');">
-																		<button type="submit"
-																			class="btn btn-primary btn-sm edit" id="sub"
-																			value="C" name="sub"
-																			onclick="SubmitBack('<%=ProjectSubCount%><%=Sub1Count%>')"
-																			formaction="MilestoneActivityDetails.htm">Edit</button>
-																		<input type="submit"
-																			class="btn btn-primary btn-sm back " id="sub"
-																			value="Back" name="sub"
-																			onclick="SubmitBack('<%=ProjectSubCount%><%=Sub1Count%>')"
-																			formaction="MilestoneActivityList.htm"> <input
-																			type="hidden" name="ProjectId" value="<%=getMA[10]%>" />
+																		<input type="submit" class="btn btn-primary btn-sm submit " id="sub" value="SUBMIT" name="sub" onclick="return confirm('Are You Sure To Submit?');">
+																		<button type="submit" class="btn btn-primary btn-sm edit" id="sub" value="C" name="sub" formaction="MilestoneActivityDetails.htm" formnovalidate="formnovalidate">Edit</button>
+																		<input type="submit" class="btn btn-primary btn-sm back " id="sub" value="Back" name="sub" formaction="MilestoneActivityList.htm" formnovalidate="formnovalidate"> 
+																		<input type="hidden" name="ProjectId" value="<%=getMA[10]%>" />
 																	</div>
-																	<input type="hidden" name="LevelId" value="2" /> <input
-																		type="hidden" name="formname"
-																		value="<%=ProjectSubCount%>/<%=Sub1Count%>" /> <input
-																		type="hidden" name="MilestoneActivityId"
-																		value="<%=getMA[0]%>" /> <input type="hidden"
-																		name="ActivityId" value="<%=obj[0]%>" /> <input
-																		type="hidden" name="OicEmpId" value="<%=getMA[8]%>" />
-																	<input type="hidden" name="OicEmpId1"
-																		value="<%=getMA[9]%>" /> <input type="hidden"
-																		name="${_csrf.parameterName}" value="${_csrf.token}" />
+																	<input type="hidden" name="LevelId" value="2" /> 
+																	<input type="hidden" name="formname" value="<%=ProjectSubCount%>/<%=Sub1Count%>" /> 
+																	<input type="hidden" name="MilestoneActivityId" value="<%=getMA[0]%>" /> 
+																	<input type="hidden" name="ActivityId" value="<%=obj[0]%>" /> 
+																	<input type="hidden" name="OicEmpId" value="<%=getMA[8]%>" />
+																	<input type="hidden" name="OicEmpId1" value="<%=getMA[9]%>" /> 
+																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 																</form>
 															</div>
-															<script type="text/javascript">
+<script type="text/javascript">
 var from2 ="<%=sdf.format(getMA[2])%>".split("-")
 var dt22 = new Date(from2[2], from2[1] - 1, from2[0])
 var to2 ="<%=sdf.format(obj[3])%>".split("-")
@@ -1338,18 +1356,15 @@ $( document ).ready(function() {
 
 											</div>
 											<div>
-												<form action="MilestoneActivitySubAdd.htm" method="POST"
-													name="milestoneaddfrm" id="milestoneaddfrm">
+												<form action="MilestoneActivitySubAdd.htm" method="POST" name="milestoneaddfrm" id="milestoneaddfrm">
 													<div class="row container-fluid" align="center">
 														<div class="col-sm-6" align="left">
 															<div class="form-group">
-																<label>Activity A Name: <span class="mandatory"
-																	style="color: red;">*</span>
-																</label><br> <input class="form-control " type="text"
-																	name="ActivityName"
-																	id="ActivityName<%=ProjectSubCount %>"
-																	style="width: 100%" maxlength="1000"
-																	required="required">
+																<label>
+																	Activity A Name: <span class="mandatory" style="color: red;">*</span>
+																</label>
+																<br> 
+																<input class="form-control " type="text" name="ActivityName" id="ActivityName<%=ProjectSubCount %>" style="width: 100%" maxlength="1000" required="required">
 															</div>
 														</div>
 
@@ -1363,7 +1378,7 @@ $( document ).ready(function() {
 														<div class="col-md-2" align="left">
 															<div class="form-group">
 																<label class="control-label">Activity Type </label> <select
-																	class="form-control "
+																	class="form-control selectdee"
 																	id="ActivityType1<%=ProjectSubCount %>"
 																	required="required" name="ActivityType">
 																	<option disabled="true" selected value="">Choose...</option>
@@ -1378,7 +1393,7 @@ $( document ).ready(function() {
 																</select>
 															</div>
 														</div>
-
+														
 														<div class="col-md-2" align="left">
 															<div class="form-group">
 																<label class="control-label">From <span
@@ -1402,35 +1417,55 @@ $( document ).ready(function() {
 
 													</div>
 
-
+													<div class="row container-fluid">
+														<div class="col-md-4">
+							                        		<div class="form-group">
+							                            		<label class="control-label">First OIC  </label>
+							                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
+																	<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox1A<%=ProjectSubCount %>" 
+																	onchange="changeempoic1('A<%=ProjectSubCount %>')" >
+																</div>
+							                              		<select class="form-control selectdee" id="EmpIdA<%=ProjectSubCount %>" required="required" name="EmpId">
+							    									<option disabled="true"  selected value="">Choose...</option>
+							    										<% for (Object[] objA : EmployeeList) {%>
+																	<option value="<%=objA[0]%>"><%=objA[1]%>, <%=objA[2]%> </option>
+																		<%} %>
+							  									</select>
+							                        		</div>
+							                    		</div>
+							                    		<div class="col-md-4 ">
+							                        		<div class="form-group">
+							                            		<label class="control-label">Second OIC </label>
+							                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
+																	<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2A<%=ProjectSubCount %>" 
+																	onchange="changeempoic2('A<%=ProjectSubCount %>')" >
+																</div>
+							                              		<select class="form-control selectdee" id="EmpId1A<%=ProjectSubCount %>" name="EmpId1">
+							    									<option disabled="true" selected value="">Choose...</option>
+							    										<% for (Object[] objA : EmployeeList) {%>
+																		<option value="<%=objA[0]%>"><%=objA[1]%>, <%=objA[2]%> </option>
+																		<%} %>
+							  									</select>
+							                        		</div>
+							                    		</div>
+													</div>
 
 
 													<div class="form-group" align="center">
 
 
-														<input type="submit"
-															class="btn btn-primary btn-sm submit " id="sub"
-															value="SUBMIT" name="sub"
-															onclick="return confirm('Are You Sure To Submit?');">
-														<button type="submit" class="btn btn-primary btn-sm edit "
-															id="sub" value="C" name="sub"
-															onclick="SubmitBack('<%=ProjectSubCount %>')"
-															formaction="MilestoneActivityDetails.htm">Edit</button>
-														<input type="submit" class="btn btn-primary btn-sm back "
-															id="sub" value="Back" name="sub"
-															onclick="SubmitBack('<%=ProjectSubCount %>')"
-															formaction="MilestoneActivityList.htm"> <input
-															type="hidden" name="ProjectId" value="<%=getMA[10]%>" />
+														<input type="submit" class="btn btn-primary btn-sm submit " id="sub" value="SUBMIT" name="sub" onclick="return confirm('Are You Sure To Submit?');">
+														<button type="submit" class="btn btn-primary btn-sm edit " id="sub" value="C" name="sub" formaction="MilestoneActivityDetails.htm" formnovalidate="formnovalidate">Edit</button>
+														<input type="submit" class="btn btn-primary btn-sm back " id="sub" value="Back" name="sub" formaction="MilestoneActivityList.htm" formnovalidate="formnovalidate"> 
+														<input type="hidden" name="ProjectId" value="<%=getMA[10]%>" />
 													</div>
-													<input type="hidden" name="LevelId" value="1" /> <input
-														type="hidden" name="formname"
-														value="<%=ProjectSubCount %>" /> <input type="hidden"
-														name="MilestoneActivityId" value="<%=getMA[0]%>" /> <input
-														type="hidden" name="ActivityId" value="<%=getMA[0]%>" />
+													<input type="hidden" name="LevelId" value="1" /> 
+													<input type="hidden" name="formname" value="<%=ProjectSubCount %>" /> 
+													<input type="hidden" name="MilestoneActivityId" value="<%=getMA[0]%>" /> 
+													<input type="hidden" name="ActivityId" value="<%=getMA[0]%>" />
 													<input type="hidden" name="OicEmpId" value="<%=getMA[8]%>" />
 													<input type="hidden" name="OicEmpId1" value="<%=getMA[9]%>" />
-													<input type="hidden" name="${_csrf.parameterName}"
-														value="${_csrf.token}" />
+													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 												</form>
 											</div>
 										</div>
@@ -1510,11 +1545,64 @@ $( document ).ready(function() {
   });
 
 
-function SubmitBack(idd){
-	$('#ActivityType1'+idd).prop("required",false);
-	$('#ActivityName'+idd).prop("required",false);
-	
+
+function changeempoic1(level) {
+  if (document.getElementById('allempcheckbox1'+level).checked) 
+  {
+    employeefetch(0,'EmpId'+level);
+  } else {
+	  employeefetch(<%=projectId%>,'EmpId'+level);
+  }
 }
+
+
+function changeempoic2(level) {
+  if (document.getElementById('allempcheckbox2'+level).checked) 
+  {
+    employeefetch(0,'EmpId1'+level);
+  } else {
+	  employeefetch(<%=projectId%>,'EmpId1'+level);
+  }
+}
+
+
+	
+	function employeefetch(ProID,dropdownid){
+			
+				
+						$.ajax({		
+							type : "GET",
+							url : "ProjectEmpListFetch.htm",
+							data : {
+								projectid : ProID
+								   },
+							datatype : 'json',
+							success : function(result) {
+		
+							var result = JSON.parse(result);
+								
+							var values = Object.keys(result).map(function(e) {
+										 return result[e]
+									  
+							});
+								
+					var s = '';
+						s += '<option value="">'+"--Select--"+ '</option>';
+								 for (i = 0; i < values.length; i++) {									
+									s += '<option value="'+values[i][0]+'">'
+											+values[i][1] + ", " +values[i][2] 
+											+ '</option>';
+								} 
+								 
+								$('#'+dropdownid).html(s);
+								
+							}
+						});
+		
+		
+	}
+		
+
 </script>
 
 	<script>

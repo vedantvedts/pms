@@ -38,6 +38,7 @@ import com.vts.pfms.project.model.PfmsInitiationMilestoneRev;
 import com.vts.pfms.project.model.PfmsInitiationSanctionData;
 import com.vts.pfms.project.model.PfmsOtherReq;
 import com.vts.pfms.project.model.PfmsProcurementPlan;
+import com.vts.pfms.project.model.PlatformMaster;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMactroDetailsBrief;
 import com.vts.pfms.project.model.ProjectMain;
@@ -377,4 +378,10 @@ public interface ProjectService {
 	public long editDocMember(DocMembers idm) throws Exception;
 	public long UpdateInitiationReqMembers(long ReqMemberId) throws Exception;
 	public List<Object[]> getsystemSpecificationList(String productTreeMainId)throws Exception;
+	public List<Object[]> PlatformList();
+	public List<Object[]> ProjectReviseList(String ProjectId) throws Exception;
+	public Object[] ProjectOriginalData(String ProjectId) throws Exception;
+	public PlatformMaster getPlatformByPlatformId(long platformId)throws Exception;  //srikant
+
+
 }

@@ -126,4 +126,6 @@ public interface MilestoneDao {
 	public long FileRepUpdate(FileRepNew rep)throws Exception;
 	
 	public List<Object[]> getMsprojectProcurementStatusList(String projectId) throws Exception;
+	public MilestoneActivityLevel getActivityLevelListById(String activitiId);
+	public int mileStoneSerialNoUpdate(String newslno, String milestoneActivityId);
 }

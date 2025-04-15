@@ -59,5 +59,6 @@ public class ProjectMaster implements Serializable{
     private int IsMainWC;
     private String LabCode;
     private String IsCCS;
-	
+    private Long PlatformId; //srikant 
+    private String Platform; //srikant 
 }

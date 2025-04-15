@@ -281,7 +281,7 @@ label {
 	        							<label class="form-lable">Periodicity<span class="mandatory">*</span></label> <br>
 	        							<input type="radio" name="periodicity" value="Periodic" required>Periodic&nbsp;
 	        							<input type="radio" name="periodicity" value="Non-Periodic" required>Non-Periodic&nbsp;
-	        							<input type="radio" name="periodicity" value="Discrete" required>Discrete
+	        							<input type="radio" name="periodicity" value="Descrete" required>Descrete
 	        						</div>
 	        						<div class="col-md-2">
 	        							<label class="form-lable">Description<span class="mandatory">*</span></label>
@@ -289,12 +289,12 @@ label {
 	        							<input type="text" class="form-control" name="description" placeholder="Enter Periodicity Description" required>
 	        						</div>
 	        						<div class="col-md-2">
-	        							<label class="form-lable">Drawing No<span class="mandatory">*</span></label>
-	        							<input type="text" class="form-control" name="drawingNo" placeholder="Enter Drawing No" required>
+	        							<label class="form-lable">Drawing No</label>
+	        							<input type="text" class="form-control" name="drawingNo" placeholder="Enter Drawing No" >
 	        						</div>
 	        						<div class="col-md-4">
-	        							<label class="form-lable">Drawing Attachment<span class="mandatory">*</span></label>
-	        							<input type="file" class="form-control" name="drawingAttachment" accept="application/pdf" required>
+	        							<label class="form-lable">Drawing Attachment</label>
+	        							<input type="file" class="form-control" name="drawingAttachment" accept="application/pdf" >
 	        						</div>
 	        						
 	        					</div>

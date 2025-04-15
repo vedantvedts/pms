@@ -187,7 +187,7 @@ List<Object[]> OfficerList = (List<Object[]>)request.getAttribute("OfficerList")
 	<input type="button" value="SUBMIT"  class="btn btn-primary btn-sm submit" onclick="return empNoCheck('myfrm');" />
 	<button type="submit" class="btn btn-info btn-sm shadow-nohover back" style="margin-left: 1rem;" formaction="Officer.htm" formmethod="get" formnovalidate="formnovalidate" >BACK</button>
 </div>
-
+	<input type="hidden" id="empStatus" name="empStatus" value="P"><!-- srikant -->
 	 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
 	 
 	 

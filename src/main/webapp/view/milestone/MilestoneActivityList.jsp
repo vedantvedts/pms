@@ -100,7 +100,8 @@ input[type=checkbox] {
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
   String ProjectId=(String)request.getAttribute("ProjectId");
-  
+  String LoginType = (String)session.getAttribute("LoginType");
+  List<String> actionAllowedFor =  Arrays.asList("A");
   
  %>
 
@@ -190,20 +191,23 @@ if(ses1!=null){	%>
 					<div class="card-body">
                         <div class="table-responsive"> 
 									<table class="table  table-hover table-bordered">
-													<thead>
+													<thead class="center">
 
 														<tr>
 															<th>Expand</th>
-															<th style="text-align: left;max-width: 10px;">Mil-No</th>
+															<th>SN</th>
+															<th>Mil-No</th>
 														<!-- 	<th style="text-align: left;">Project Name</th> -->
-															<th style="text-align: left;max-width: 200px;">Milestone Activity</th>
+															<th>Milestone Activity</th>
 															<th >Start Date</th>
 															<th >End Date</th>	
-															<th  style="text-align: left;max-width: 200px;">First OIC </th>
-															<th  style="text-align: center;max-width: 40px;">Weightage</th>	
-															<th  style="text-align: center;max-width: 80px;">Progress</th>												
-														 	<th style="max-width: 200px;" >Action</th>
-														 		
+															<th>First OIC </th>
+															<th>Status</th>
+															<th>Weightage</th>	
+															<th>Progress</th>			
+															<%if(actionAllowedFor.contains(LoginType)) {%>									
+														 		<th>Action</th>
+														 	<%} %>	
 														 	
 														</tr>
 													</thead>
@@ -214,6 +218,10 @@ if(ses1!=null){	%>
 															for(Object[] obj: MilestoneList){ %>
 														<tr>
 															<td style="width:2% !important; " class="center"><span class="clickable" data-toggle="collapse" id="row<%=count %>" data-target=".row<%=count %>"><button class="btn btn-sm btn-success" id="btn<%=count %>"  onclick="ChangeButton('<%=count %>')"><i class="fa fa-plus"  id="fa<%=count%>"></i> </button></span></td>
+															<td style="text-align: left;width: 5% !important;">
+																<input class="form-control" form="slnoupdateform" type="number" name="newslno" value="<%=obj[5]%>" min="1" max="<%=MilestoneList.size()%>">
+																<input type="hidden" form="slnoupdateform" name="milestoneActivityId" value="<%=obj[0]%>"/>
+															</td>
 															<td style="text-align: left;width: 5%;"> Mil-<%=obj[5]%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=obj[4] %></td>
@@ -221,6 +229,7 @@ if(ses1!=null){	%>
 															<td  style="width:8% !important; "><%=sdf.format(obj[2])%></td>
 															<td style="width:8% !important; "><%=sdf.format(obj[3])%></td>
 															<td  style="width:15% !important; "><%=obj[6]%></td>
+															<td  style="width: 8% !important; ">-</td>
 															<td  style="width:7% !important; " align="center"><%=obj[13]%></td>	
 															<td>
 																<%if(!obj[12].toString().equalsIgnoreCase("0")){ %>
@@ -245,119 +254,126 @@ if(ses1!=null){	%>
 																</div>
 																</div> <%} %>
 															</td>
-															<td  style="width:20% !important; text-align: center;">		
-																<form action="MilestoneActivityDetails.htm" method="POST" name="myfrm"  style="display: inline">
-																	<%if(Integer.parseInt(obj[12].toString())<100){ %>
-																		<button  class="editable-click" name="sub" value="B">  
+															<%if(actionAllowedFor.contains(LoginType)) {%>
+																<td  style="width:20% !important; text-align: center;">		
+																	<form action="MilestoneActivityDetails.htm" method="POST" name="myfrm"  style="display: inline">
+																		<%if(Integer.parseInt(obj[12].toString())<100){ %>
+																			<button  class="editable-click" name="sub" value="B">  
+																				<div class="cc-rockmenu">
+															                      <div class="rolling">
+															                        <figure class="rolling_icon"><img src="view/images/preview3.png"  ></figure>
+															                        <span>Details</span>
+															                      </div>
+															                     </div> 
+																			</button>
+																		<%}else if(Integer.parseInt(obj[12].toString())==100){ %>
+																			<button  class="editable-click" type="button" onclick="MainDOCEditModal(<%=obj[0]%>,'<%=obj[16]%>')">  
+																				<div class="cc-rockmenu">
+															                      <div class="rolling">
+															                        <figure class="rolling_icon"><i class="fa fa-calendar-o" aria-hidden="true"></i></figure>
+															                        <span>Date of Completion</span>
+															                      </div>
+															                     </div> 
+																			</button>
+																		<%} %>
+																		  <%if("N".equalsIgnoreCase(obj[10].toString())){ %>
+			                                                              <button  class="editable-click" name="sub" value="C" >
 																			<div class="cc-rockmenu">
-														                      <div class="rolling">
-														                        <figure class="rolling_icon"><img src="view/images/preview3.png"  ></figure>
-														                        <span>Details</span>
+																			 <div class="rolling">	
+														                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
+														                        <span>Edit/Weightage</span>
 														                      </div>
-														                     </div> 
-																		</button>
-																	<%}else if(Integer.parseInt(obj[12].toString())==100){ %>
-																		<button  class="editable-click" type="button" onclick="MainDOCEditModal(<%=obj[0]%>,'<%=obj[16]%>')">  
+														                     </div>
+														                  </button> 
+			                                                             <button type="submit"  class="editable-click" name="sub" value="Assign"  formaction="M-A-Assign-OIC.htm" onclick="if('0'=='<%=obj[13].toString() %>'){alert('Please add Weightage first then you able to assign.');return false; }else{ return confirm('Are You Sure To Assign ?') }"   >
 																			<div class="cc-rockmenu">
-														                      <div class="rolling">
-														                        <figure class="rolling_icon"><i class="fa fa-calendar-o" aria-hidden="true"></i></figure>
-														                        <span>Date of Completion</span>
+																			 <div class="rolling">	
+														                        <figure class="rolling_icon"><img src="view/images/assign.jpg" ></figure>
+														                        <span>Assign</span>
 														                      </div>
-														                     </div> 
-																		</button>
-																	<%} %>
-																	  <%if("N".equalsIgnoreCase(obj[10].toString())){ %>
-		                                                              <button  class="editable-click" name="sub" value="C" >
-																		<div class="cc-rockmenu">
-																		 <div class="rolling">	
-													                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
-													                        <span>Edit/Weightage</span>
-													                      </div>
-													                     </div>
-													                  </button> 
-		                                                             <button type="submit"  class="editable-click" name="sub" value="Assign"  formaction="M-A-Assign-OIC.htm" onclick="if('0'=='<%=obj[13].toString() %>'){alert('Please add Weightage first then you able to assign.');return false; }else{ return confirm('Are You Sure To Assign ?') }"   >
-																		<div class="cc-rockmenu">
-																		 <div class="rolling">	
-													                        <figure class="rolling_icon"><img src="view/images/assign.jpg" ></figure>
-													                        <span>Assign</span>
-													                      </div>
-													                     </div>
-													                  </button>  
-													                  
-		                                                              <%}else if("Y".equalsIgnoreCase(obj[10].toString())){ %>
-		                                                               <button  class="editable-click" name="sub" value="C" >
-																		<div class="cc-rockmenu">
-																		 <div class="rolling">	
-													                        <figure class="rolling_icon"><img src="view/images/clipboard.png" ></figure>
-													                        <span>Base Line </span>
-													                      </div>
-													                     </div>
-													                  </button>    
-		                                                               <%} %>
-		                                                            <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-																    <input type="hidden" name="MilestoneActivityId" value="<%=obj[0]%>"/>
-																    <input type="hidden" name="projectid" value="<%=ProjectId%>"/>
-															 </form> 
-															 
-															 	<form action="MilestoneActivityDetails.htm" method="POST" name="myfrm"  style="display: inline">
-														 
-	                                                            <%if("B".equalsIgnoreCase(obj[10].toString())){ %>
-	                                                              
-	                                                             <button type="button"  class="editable-click" name="sub" value="Back"   data-toggle="modal" data-target="#exampleModal<%=obj[0]%>" data-whatever="@mdo" >
-																	<div class="cc-rockmenu">
-																	 <div class="rolling">	
-												                        <figure class="rolling_icon"><img src="view/images/message.png" ></figure>
-												                        <span>Message</span>
-												                      </div>
-												                     </div>
-												                 </button>
-																 
-																<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-															    <input type="hidden" name="MilestoneActivityId" value="<%=obj[0]%>"/>
-																 <div class="modal fade" id="exampleModal<%=obj[0]%>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-						                                              <div class="modal-dialog">
-						                                          <div class="modal-content">
-						                                             <div class="modal-header">
-						                                            <h5 class="modal-title" id="exampleModalLabel">Send Back Remarks</h5>
-								                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								                                     <span aria-hidden="true">&times;</span>
-								                                       </button>
-						                                        </div>
-						                                         <div class="modal-body">
-						          	                                  <div class="row">
-						                       				 
-									                                     <div class="col-md-12">
-																			<div class="form-group">
-																				<label class="control-label">Remark</label> 
-																			    <textarea class="form-control" readonly="readonly" name="Remarks" style="height: 9rem;" maxlength="255" required="required" placeholder="Enter Send Back Remark here with max 255 characters"> <%=obj[11] %>  </textarea>
-																			</div>
-																		</div>       
-															
-							                                         	</div>
-							                                     		<div class="modal-footer">
-							        
-									                                         <button  class="btn btn-sm btn-success" name="sub" value="Assign"  formaction="M-A-Assign-OIC.htm" onclick="return confirm('Are You Sure To Assign ?')" >Assign Again</button>
-									        								 <input type="hidden" name="projectid" value="<%=ProjectId%>"/>
-							   
-							                                           	</div>
-						                                            </div>
-						                                            </div>
-						                                            </div>
-																	</div> 
-																	<%} %>	
+														                     </div>
+														                  </button>  
+														                  
+			                                                              <%}else if("Y".equalsIgnoreCase(obj[10].toString())){ %>
+			                                                               <button  class="editable-click" name="sub" value="C" >
+																			<div class="cc-rockmenu">
+																			 <div class="rolling">	
+														                        <figure class="rolling_icon"><img src="view/images/clipboard.png" ></figure>
+														                        <span>Base Line </span>
+														                      </div>
+														                     </div>
+														                  </button>    
+			                                                               <%} %>
+			                                                            <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+																	    <input type="hidden" name="MilestoneActivityId" value="<%=obj[0]%>"/>
+																	    <input type="hidden" name="projectid" value="<%=ProjectId%>"/>
+																	    <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																 </form> 
-															</td>
+																 
+																 	<form action="MilestoneActivityDetails.htm" method="POST" name="myfrm"  style="display: inline">
+															 
+		                                                            <%if("B".equalsIgnoreCase(obj[10].toString())){ %>
+		                                                              
+		                                                             <button type="button"  class="editable-click" name="sub" value="Back"   data-toggle="modal" data-target="#exampleModal<%=obj[0]%>" data-whatever="@mdo" >
+																		<div class="cc-rockmenu">
+																		 <div class="rolling">	
+													                        <figure class="rolling_icon"><img src="view/images/message.png" ></figure>
+													                        <span>Message</span>
+													                      </div>
+													                     </div>
+													                 </button>
+																	 
+																	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+																    <input type="hidden" name="MilestoneActivityId" value="<%=obj[0]%>"/>
+																	 <div class="modal fade" id="exampleModal<%=obj[0]%>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							                                              <div class="modal-dialog">
+							                                          <div class="modal-content">
+							                                             <div class="modal-header">
+							                                            <h5 class="modal-title" id="exampleModalLabel">Send Back Remarks</h5>
+									                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									                                     <span aria-hidden="true">&times;</span>
+									                                       </button>
+							                                        </div>
+							                                         <div class="modal-body">
+							          	                                  <div class="row">
+							                       				 
+										                                     <div class="col-md-12">
+																				<div class="form-group">
+																					<label class="control-label">Remark</label> 
+																				    <textarea class="form-control" readonly="readonly" name="Remarks" style="height: 9rem;" maxlength="255" required="required" placeholder="Enter Send Back Remark here with max 255 characters"> <%=obj[11] %>  </textarea>
+																				</div>
+																			</div>       
+																
+								                                         	</div>
+								                                     		<div class="modal-footer">
+								        
+										                                         <button  class="btn btn-sm btn-success" name="sub" value="Assign"  formaction="M-A-Assign-OIC.htm" onclick="return confirm('Are You Sure To Assign ?')" >Assign Again</button>
+										        								 <input type="hidden" name="projectid" value="<%=ProjectId%>"/>
+								   
+								                                           	</div>
+							                                            </div>
+							                                            </div>
+							                                            </div>
+																		</div> 
+																		<%} %>	
+																	 </form> 
+																</td>
+															<%} %>	
 														</tr>
 														 <tr class="collapse row<%=count %>" style="font-weight: bold;">
+                                                         <td></td>
                                                          <td></td>
                                                          <td>Sub</td>
                                                          <td>Activity</td>
                                                          <td>Start Date</td>
                                                          <td>End Date</td>
+                                                         <td>First IOC</td>
                                                          <td>Date Of Completion</td>
                                                          <td>Sub Weightage</td>
                                                          <td>Sub Progress</td>
-                                                         <td>Shown in display of Briefing Paper and MOM</td>
+                                                         <%if(actionAllowedFor.contains(LoginType)) {%>
+                                                         	<td>Shown in display of Briefing Paper and MOM</td>
+                                                         <%} %>
                                                          </tr>
                                                          <% int countA=1;
                                                             List<Object[]> MilestoneA=(List<Object[]>)request.getAttribute(count+"MilestoneActivityA");
@@ -366,21 +382,23 @@ if(ses1!=null){	%>
 	                                                            List<Object[]> MilestoneB=(List<Object[]>)request.getAttribute(count+"MilestoneActivityB"+countA);
 	
 																%>
-														<tr class="collapse row<%=count %>">
+														<tr class="collapse row<%=count %>" onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objA[0]%>', '<%=ProjectId%>', 'A')" style="cursor: pointer;">
 															<td style="width:2% !important; " class="center"> </td>
+															<td></td>
 															<td style="text-align: left;width: 5%;"> A-<%=countA%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objA[4] %></td>
 															
 															<td class="width-30px"><%=sdf.format(objA[2])%></td>
 															<td style="width:8% !important; "><%=sdf.format(objA[3])%></td>
-															
+															<td><%=objA[14]%></td>
 															
 															<td class="width-30px"><%if(objA[9].toString().equalsIgnoreCase("3")||objA[9].toString().equalsIgnoreCase("5")){ %>
 														     <%if(objA[7]!=null){ %>   <%=sdf.format(objA[7]) %> <%}else{ %><%=objA[8] %> <%} %>
 														         <%}else{ %>
 														         <%=objA[8] %>
-															 <%} %></td>
+															 <%} %>
+															 </td>
 															 <td align="center"><%=objA[6] %></td>
 															<td>
 															<%if(!objA[5].toString().equalsIgnoreCase("0")){ %>
@@ -405,16 +423,17 @@ if(ses1!=null){	%>
 															</div>
 															</div> <%} %>
 															</td>						
-													
-                                                         <td>
-                                                         <div style="display: flex; justify-content: center;">
-                                                         <div style="display: flex;width:80%">
-                                                		5<input type="checkbox" <%if(objA[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control point5"  value="<%=objA[0].toString()+"/"+objA[19].toString()+"/point5"%>" onchange="updateBpPoints(this)">
-                                                        6.a<input type="checkbox" <%if(objA[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control point6"  value="<%=objA[0].toString()+"/"+objA[20].toString()+"/point6"%>" onchange="updateBpPoints(this)">
-                                                        9<input type="checkbox" <%if(objA[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control point9"  value="<%=objA[0].toString()+"/"+objA[21].toString()+"/point9"%>" onchange="updateBpPoints(this)">
-                                                         </div>
-                                                         </div>
-                                                         </td>
+															<%if(actionAllowedFor.contains(LoginType)) {%>
+		                                                         <td>
+			                                                         <div style="display: flex; justify-content: center;">
+			                                                         <div style="display: flex;width:80%">
+			                                                		5<input type="checkbox" <%if(objA[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control point5"  value="<%=objA[0].toString()+"/"+objA[19].toString()+"/point5"%>" onchange="updateBpPoints(this)">
+			                                                        6.a<input type="checkbox" <%if(objA[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control point6"  value="<%=objA[0].toString()+"/"+objA[20].toString()+"/point6"%>" onchange="updateBpPoints(this)">
+			                                                        9<input type="checkbox" <%if(objA[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control point9"  value="<%=objA[0].toString()+"/"+objA[21].toString()+"/point9"%>" onchange="updateBpPoints(this)">
+			                                                         </div>
+			                                                         </div>
+		                                                         </td>
+	                                                         <%} %>
                                                          </tr>
                                                          <% int countB=1;
 														 	if(MilestoneB!=null&&MilestoneB.size()>0){
@@ -422,15 +441,16 @@ if(ses1!=null){	%>
 	                                                            List<Object[]> MilestoneC=(List<Object[]>)request.getAttribute(count+"MilestoneActivityC"+countA+countB);
 	
 																%>
-														<tr class="collapse row<%=count %>">
+														<tr class="collapse row<%=count %>" onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objB[0]%>', '<%=ProjectId%>', 'B')" style="cursor: pointer;">
 															<td style="width:2% !important; " class="center"> </td>
+															<td></td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;B-<%=countB%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objB[4] %></td>
 															
 															<td class="width-30px"><%=sdf.format(objB[2])%></td>
 															<td style="width:8% !important; "><%=sdf.format(objB[3])%></td>
-															
+															<td><%=objB[14]%></td>
 															<td class="width-30px"><%if(objB[9].toString().equalsIgnoreCase("3")||objB[9].toString().equalsIgnoreCase("5")){ %>
 														      <%if(objB[7]!=null){ %>   <%=sdf.format(objB[7]) %> <%}else{ %><%=objB[8] %> <%} %>
 														         <%}else{ %>
@@ -461,33 +481,35 @@ if(ses1!=null){	%>
 															</div> <%} %>
 															</td>
 															
-														 													
-                                                         <td>
-                                                         
-                                                            <div style="display: flex; justify-content: center;">
-                                                         <div style="display: flex;width:80%">
-                                                        5 <input  type="checkbox" <%if(objB[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objB[0].toString()+"/"+objB[19].toString()+"/point5"%>" onchange="updateBpPoints(this)">
-                                                        6.a <input type="checkbox" <%if(objB[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objB[0].toString()+"/"+objB[20].toString()+"/point6"%>" onchange="updateBpPoints(this)">
-                                                         9<input type="checkbox" <%if(objB[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objB[0].toString()+"/"+objB[21].toString()+"/point9"%>" onchange="updateBpPoints(this)">
-                                                         </div>
-                                                         </div>
-                                                         
-                                                         </td>
+														 	<%if(actionAllowedFor.contains(LoginType)) {%>												
+	                                                         	<td>
+	                                                         
+			                                                        <div style="display: flex; justify-content: center;">
+			                                                         <div style="display: flex;width:80%">
+			                                                        5 <input  type="checkbox" <%if(objB[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objB[0].toString()+"/"+objB[19].toString()+"/point5"%>" onchange="updateBpPoints(this)">
+			                                                        6.a <input type="checkbox" <%if(objB[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objB[0].toString()+"/"+objB[20].toString()+"/point6"%>" onchange="updateBpPoints(this)">
+			                                                         9<input type="checkbox" <%if(objB[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objB[0].toString()+"/"+objB[21].toString()+"/point9"%>" onchange="updateBpPoints(this)">
+			                                                         </div>
+			                                                         </div>
+			                                                         
+	                                                         	</td>
+	                                                         <%}%>
                                                          </tr>
                                                          <% int countC=1;
 														 	if(MilestoneC!=null&&MilestoneC.size()>0){
 															for(Object[] objC: MilestoneC){
 													         List<Object[]> MilestoneD=(List<Object[]>)request.getAttribute(count+"MilestoneActivityD"+countA+countB+countC);
 																%>
-														<tr class="collapse row<%=count %>">
+														<tr class="collapse row<%=count %>" onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objC[0]%>', '<%=ProjectId%>', 'C')" style="cursor: pointer;">
 															<td style="width:2% !important; " class="center"> </td>
+															<td></td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C-<%=countC%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objC[4] %></td>
 															
 															<td class="width-30px"><%=sdf.format(objC[2])%></td>
 															<td style="width:8% !important; "><%=sdf.format(objC[3])%></td>
-															
+															<td><%=objC[14]%></td>
 															<td class="width-30px"><%if(objC[9].toString().equalsIgnoreCase("3")||objC[9].toString().equalsIgnoreCase("5")){ %>
 														     <%if(objC[7]!=null){ %>   <%=sdf.format(objC[7]) %> <%}else{ %><%=objC[8] %> <%} %>
 														         <%}else{ %>
@@ -518,18 +540,19 @@ if(ses1!=null){	%>
 															</div> <%} %>
 															</td>
 															
-														
-                                                         <td>
+															<%if(actionAllowedFor.contains(LoginType)) {%>
+                                                         		<td>
                                                          
-                                                    <div style="display: flex; justify-content: center;">
-                                                         <div style="display: flex;width:80%">
-                                                       5.  <input type="checkbox" <%if(objC[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objC[0].toString()+"/"+objC[19].toString()+"/point5"%>" onchange="updateBpPoints(this)">
-                                                       6.a  <input type="checkbox" <%if(objC[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objC[0].toString()+"/"+objC[20].toString()+"/point6"%>" onchange="updateBpPoints(this)">
-                                                        9. <input type="checkbox" <%if(objC[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objC[0].toString()+"/"+objC[21].toString()+"/point9"%>" onchange="updateBpPoints(this)">
-                                                        </div> </div>
+			                                                    	<div style="display: flex; justify-content: center;">
+			                                                         <div style="display: flex;width:80%">
+			                                                       5.  <input type="checkbox" <%if(objC[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objC[0].toString()+"/"+objC[19].toString()+"/point5"%>" onchange="updateBpPoints(this)">
+			                                                       6.a  <input type="checkbox" <%if(objC[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objC[0].toString()+"/"+objC[20].toString()+"/point6"%>" onchange="updateBpPoints(this)">
+			                                                        9. <input type="checkbox" <%if(objC[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objC[0].toString()+"/"+objC[21].toString()+"/point9"%>" onchange="updateBpPoints(this)">
+			                                                        </div> </div>
                                                          
                                                          
-                                                         </td>
+                                                         		</td>
+                                                         	<%} %>
                                                          </tr>
                                                          <% int countD=1;
 														 	if(MilestoneD!=null&&MilestoneD.size()>0){
@@ -537,15 +560,16 @@ if(ses1!=null){	%>
 	                                                            List<Object[]> MilestoneE=(List<Object[]>)request.getAttribute(count+"MilestoneActivityE"+countA+countB+countC+countD);
 	
 																%>
-														<tr class="collapse row<%=count %>">
+														<tr class="collapse row<%=count %>" onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objD[0]%>', '<%=ProjectId%>', 'D')" style="cursor: pointer;">
 															<td style="width:2% !important; " class="center"> </td>
+															<td></td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D-<%=countD%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objD[4] %></td>
 															
 															<td class="width-30px"><%=sdf.format(objB[2])%></td>
 															<td style="width:8% !important; "><%=sdf.format(objB[3])%></td>
-															
+															<td><%=objD[14]%></td>
 															<td class="width-30px"><%if(objD[9].toString().equalsIgnoreCase("3")||objD[9].toString().equalsIgnoreCase("5")){ %>
 														      <%if(objD[7]!=null){ %>   <%=sdf.format(objD[7]) %> <%}else{ %><%=objD[8] %> <%} %>
 														         <%}else{ %>
@@ -576,30 +600,32 @@ if(ses1!=null){	%>
 															</div> <%} %>
 															</td>
 															
-														 													
-                                                         <td>
-                                                     <div style="display: flex; justify-content: center;">
-                                                         <div style="display: flex;width:80%">
-                                                        5. <input type="checkbox" <%if(objD[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objD[0].toString()+"/"+objD[19].toString()+"/point5"%>" onchange="updateBpPoints(this)">
-                                                        6.a <input type="checkbox" <%if(objD[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objD[0].toString()+"/"+objD[20].toString()+"/point6"%>" onchange="updateBpPoints(this)">
-                                                        9. <input type="checkbox" <%if(objD[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objD[0].toString()+"/"+objD[21].toString()+"/point9"%>" onchange="updateBpPoints(this)">
-                                                      </div>   </div>
+														 	<%if(actionAllowedFor.contains(LoginType)) {%>												
+                                                         		<td>
+			                                                     <div style="display: flex; justify-content: center;">
+			                                                         <div style="display: flex;width:80%">
+			                                                        5. <input type="checkbox" <%if(objD[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objD[0].toString()+"/"+objD[19].toString()+"/point5"%>" onchange="updateBpPoints(this)">
+			                                                        6.a <input type="checkbox" <%if(objD[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objD[0].toString()+"/"+objD[20].toString()+"/point6"%>" onchange="updateBpPoints(this)">
+			                                                        9. <input type="checkbox" <%if(objD[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objD[0].toString()+"/"+objD[21].toString()+"/point9"%>" onchange="updateBpPoints(this)">
+			                                                      </div>   </div>
                                                          
                                                          
-                                                         </td>
+                                                         		</td>
+                                                         	<%} %>	
                                                          </tr>
                                                          <% int countE=1;
 														 	if(MilestoneE!=null&&MilestoneE.size()>0){
 															for(Object[] objE: MilestoneE){ %>
-														<tr class="collapse row<%=count %>">
+														<tr class="collapse row<%=count %>" onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objE[0]%>', '<%=ProjectId%>', 'E')" style="cursor: pointer;">
 															<td style="width:2% !important; " class="center"> </td>
+															<td></td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E-<%=countE%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objE[4] %></td>
 															
 															<td class="width-30px"><%=sdf.format(objE[2])%></td>
 															<td style="width:8% !important; "><%=sdf.format(objE[3])%></td>
-															
+															<td><%=objE[14]%></td>
 															<td class="width-30px"><%if(objE[9].toString().equalsIgnoreCase("3")||objE[9].toString().equalsIgnoreCase("5")){ %>
 														     <%if(objE[7]!=null){ %>   <%=sdf.format(objE[7]) %> <%}else{ %><%=objE[8] %> <%} %>
 														         <%}else{ %>
@@ -630,17 +656,18 @@ if(ses1!=null){	%>
 															</div> <%} %>
 															</td>
 															
-														
-                                                         <td>
-                                                         <div style="display: flex;justify-content: center;">
-                                                         <div style="display: flex;width:80%;">
-                                                        5. <input type="checkbox" <%if(objE[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objE[0].toString()+"/"+objE[19].toString()+"/point5"%>" onchange="updateBpPoints(this)">
-                                                        6.a <input type="checkbox" <%if(objE[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objE[0].toString()+"/"+objE[20].toString()+"/point6"%>" onchange="updateBpPoints(this)">
-                                                        9 <input type="checkbox" <%if(objE[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objE[0].toString()+"/"+objE[21].toString()+"/point9"%>" onchange="updateBpPoints(this)">
-                                                       </div>
-                                                         </div>
+															<%if(actionAllowedFor.contains(LoginType)) {%>
+                                                         		<td>
+			                                                         <div style="display: flex;justify-content: center;">
+			                                                         <div style="display: flex;width:80%;">
+			                                                        5. <input type="checkbox" <%if(objE[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objE[0].toString()+"/"+objE[19].toString()+"/point5"%>" onchange="updateBpPoints(this)">
+			                                                        6.a <input type="checkbox" <%if(objE[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objE[0].toString()+"/"+objE[20].toString()+"/point6"%>" onchange="updateBpPoints(this)">
+			                                                        9 <input type="checkbox" <%if(objE[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objE[0].toString()+"/"+objE[21].toString()+"/point9"%>" onchange="updateBpPoints(this)">
+			                                                       </div>
+			                                                         </div>
                                                          
-                                                         </td>
+                                                         		</td>
+                                                         	<%} %>
                                                          </tr>
 												<% countE++;} }%>
 												<% countD++;} }%>
@@ -648,12 +675,24 @@ if(ses1!=null){	%>
 												<% countB++;} }%>
 												<% countA++;} }else{%>
 												<tr class="collapse row<%=count %>">
-													<td colspan="9" style="text-align: center" class="center">No Sub List Found</td>
+													<td colspan="11" style="text-align: center" class="center">No Sub List Found</td>
 												</tr>
 												<%} %>
-												<% count++; } }else{%>
+												<% count++; } %>
+													<tr>
+														<td></td>
+														<td colspan=1 style="display: flex;justify-content: center;align-items: center">
+															<form action="MilestoneActivityMilNoUpdate.htm" method="POST" name="slnoupdateform" id="slnoupdateform">
+							              						<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+							              						<input type="hidden" name="projectId" value="<%=ProjectId%>">
+							              						<button class="btn btn-sm edit" onclick="return slnocheck();">UPDATE</button>
+						              						</form>
+					              						</td>
+														<td colspan="9"></td>
+													</tr>
+												<% }else{%>
 												<tr >
-													<td colspan="9" style="text-align: center" class="center">No List Found</td>
+													<td colspan="11" style="text-align: center" class="center">No List Found</td>
 												</tr>
 												<%} %>
 												</tbody>
@@ -674,6 +713,88 @@ if(ses1!=null){	%>
 			</div>
 
 
+		<br>
+
+	<div class="row m-2">
+		<div class="col-md-12"
+			style="text-align: center; width: 140px; height: 30px;">
+			<b>Milestone Flow </b>
+		</div>
+	</div>
+	
+	<div class="row m-2"
+		style="text-align: center; padding-top: 10px; padding-bottom: 15px;">
+
+		<table align="center" style="border-spacing: 0 20px;">
+			<tr>
+				
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b style="color: #e30c0c;">Add Milestone Activity </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b style="color: #e30c0c;">Add Sub Milestone Activity </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b style="color: #e30c0c;">Assign Weightage </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b style="color: #e30c0c;">Assign Milestone Activity </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b style="color: #e30c0c;">Set Baseline </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b style="color: #e30c0c;">Assignee</b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b style="color: #e30c0c;"> Acknowledge Milestone Activity </b>
+				</td>
+				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
+				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				
+				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+					<b style="color: #e30c0c;">Update progress</b>
+				</td>
+				
+				
+			
+
+			</tr>
+			
+		</table>
+
+
+
+	</div>
+	<br> 
+	<br>
+	<br>
 
 <div class="modal" id="MainDOCEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -709,6 +830,45 @@ if(ses1!=null){	%>
     </div>
   </div>
 </div>
+
+
+
+
+	<!-- -------------------------------------------- Milestone Progess Modal -------------------------------------------- -->
+	<div class="modal fade" id="milestoneProgressModal" tabindex="-1" role="dialog" aria-labelledby="milestoneProgressModal" aria-hidden="true">
+  		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
+    		<div class="modal-content" style="width:135%;margin-left:-20%;">
+      			<div class="modal-header" id="ModalHeader" style="background: #055C9D ;color: white;">
+			        <h5 class="modal-title" >Activity Updated Details</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true" class="text-light">&times;</span>
+			        </button>
+      			</div>
+      			
+      			<div class="modal-body">
+     				<div class="row mb-2">
+						<div class="col-md-12">
+							<table class="table table-bordered" id="myTables" style="width: 100%;">
+								<thead class="center" style="background: #055C9D ;color: white;">
+									<tr>
+										<th width="10%">SN</th>
+										<th width="20%">As On Date</th>
+										<th width="20%">Progress</th>
+										<th width="30%">Remarks</th>
+										<th width="20%">Action</th>
+									</tr>
+								</thead>
+								<tbody id="milestoneprogesstbody">
+								</tbody>
+							</table>
+						</div>      
+     				</div>
+      				
+      			</div>
+    		</div>
+  		</div>
+	</div>
+	<!-- -------------------------------------------- Milestone Progress Modal End -------------------------------------------- -->
 
 
 	
@@ -811,6 +971,97 @@ function ChangeButton(id) {
 		}else{
 			ele.value=value1+"/Y/"+value3
 		}
+	}
+	
+	// Milestone No Check
+	function slnocheck() {
+		
+		 var arr = document.getElementsByName("newslno");
+
+		var arr1 = [];
+		for (var i=0;i<arr.length;i++){
+			arr1.push(arr[i].value);
+		}		 
+		 
+	    let result = false;
+	  
+	    const s = new Set(arr1);
+	    
+	    if(arr.length !== s.size){
+	       result = true;
+	    }
+	    if(result) {
+	   		event.preventDefault();
+	       	alert('Serial No contains duplicate Values');
+	       	return false;
+	    } else {
+	   	 return confirm('Are You Sure to Update?');
+	    }
+	  }
+	
+	function showMilestoneProgress(MilestoneActivityId, ActivityId, ProjectId, ActivityType) {
+		$('#milestoneProgressModal').modal('show');
+		
+		$.ajax({
+			type : "GET",
+			url : "MilestoneActivityProgressDetails.htm",	
+			datatype : 'json',
+			data : {
+				MilestoneActivityId : MilestoneActivityId,				
+				ActivityId : ActivityId,				
+				ProjectId : ProjectId,				
+				ActivityType : ActivityType,				
+			},
+			success : function(result) {
+				var values = JSON.parse(result);
+				
+				var x ='';
+				
+				if(values.length>0){
+					
+					for(var i=0; i<values.length; i++) {
+						x+= '<tr>';
+						x+= '<td class="center">'+(i+1)+'</td>';
+						x+= '<td class="center">'+formatDate(values[i][2])+'</td>';
+						x += '<td>';
+					    x += '<div class="progress" style="background-color: #cdd0cb !important">';
+					    x += '<div class="progress-bar progress-bar-striped" role="progressbar" style="width: ' + values[i][1] + '%;"';
+					    x += ' aria-valuenow="' + values[i][1] + '" aria-valuemin="0" aria-valuemax="100">' + values[i][1] + '</div>';
+					    x += '</div>';
+					    x += '</td>';
+						x+= '<td>'+values[i][3]+'</td>';
+						x += '<td class="center">';
+						if (values[i][4] && values[i][4].toString().length !== 0) {
+					        x += '<div align="center">';
+					        x += '<a href="ActivityAttachDownload.htm?ActivitySubId=' + values[i][0] + '" target="_blank">';
+					        x += '<i class="fa fa-download"></i></a>';
+					        x += '</div>';
+					    } else {
+					        x += '<div align="center">-</div>';
+					    }
+						x += '</td>';
+						x+= '</tr>';
+					}
+				}else{
+					x = '<tr><td colspan="5" class="center">No Data Available</td></tr>';
+				}
+				
+				$('#milestoneprogesstbody').html(x);
+			}
+		});
+	}
+	
+	function formatDate(sqlDate) {
+	    if (!sqlDate) {
+	        return ""; // Handle null or undefined dates
+	    }
+
+	    let date = new Date(sqlDate);
+	    let day = String(date.getDate()).padStart(2, '0');
+	    let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+	    let year = date.getFullYear();
+
+	    return day + '-' + month + '-' + year;
 	}
 </script>  
 

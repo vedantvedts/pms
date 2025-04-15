@@ -220,6 +220,7 @@ String Onboarding = (String)request.getAttribute("Onboarding");
 			                              		<th>LabCode </th>
 	                                            <th>Division Code</th>
 	                                            <th>Division Name</th>
+	                                            <th>Division Short Name</th> <!--srikant  -->
 	                                            <th>Division Head Name</th>
 	                                            <th>Group Name</th> 
 	                                      </tr>      
@@ -232,6 +233,7 @@ String Onboarding = (String)request.getAttribute("Onboarding");
 	                                             <td><%=obj[5] %></td>
 	                                             <td><%=obj[1] %></td>
 												 <td style="text-align: left"><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></td>
+												 <td style="text-align: left"><%if(obj[7]!=null){%><%=obj[7] %><%}else{ %>-<%} %></td> <!--srikant  -->
 	                                             <td style="text-align: left"><%if(obj[3]!=null && obj[6]!= null){%><%=obj[3]%>, <%=obj[6]%><%}else{ %>-<%} %></td>
 	                                             <td style="text-align: left"><%if(obj[4]!=null ){%><%=obj[4]  %><%}else{ %>-<%} %></td>
 	                                      </tr>

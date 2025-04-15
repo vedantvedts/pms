@@ -96,5 +96,5 @@ public interface MilestoneService {
 	public long submitCheckboxFile(String userId, String techDataId, String attachid, String projectid)throws Exception;
 	
 	public List<Object[]> getMsprojectProcurementStatusList(String projectId) throws Exception;
-
+	public int mileStoneSerialNoUpdate(String[] newslno, String[] milestoneActivityId);
 }

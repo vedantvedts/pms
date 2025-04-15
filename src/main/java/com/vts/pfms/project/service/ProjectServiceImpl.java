@@ -77,6 +77,7 @@ import com.vts.pfms.project.model.PfmsReqStatus;
 import com.vts.pfms.project.model.PfmsRequirementApproval;
 import com.vts.pfms.project.model.PfmsRisk;
 import com.vts.pfms.project.model.PfmsRiskRev;
+import com.vts.pfms.project.model.PlatformMaster;
 import com.vts.pfms.project.model.PreprojectFile;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMactroDetailsBrief;
@@ -2178,6 +2179,8 @@ public class ProjectServiceImpl implements ProjectService {
 		master.setCreatedDate(sdf1.format(new Date()));
 		master.setLabCode(LabCode);
 		master.setLabParticipating(main.getLabParticipating());
+		master.setPlatformId(main.getPlatformId()); 	//srikant
+		master.setIsCCS("N");
 		return dao.ProjectMasterAdd(master);
 	}
 
@@ -2216,6 +2219,9 @@ public class ProjectServiceImpl implements ProjectService {
 		rev.setCreatedBy(userid);
 		rev.setCreatedDate(sdf1.format(new Date()));
 		rev.setRemarks(remarks);
+		rev.setPlatformId(master.getPlatformId()); //srikant
+		rev.setPlatform(master.getPlatform()); // srikant
+		
 		return dao.ProjectREVSubmit(rev);
 	}
 
@@ -3596,4 +3602,30 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 		
 			return dao.getsystemSpecificationList(productTreeMainId);
 		}
+		
+		//srikant 
+		@Override
+		public List<Object[]> PlatformList() {
+			return  dao.PlatformList();
+		}
+		
+		@Override
+		public List<Object[]> ProjectReviseList(String ProjectId) throws Exception{
+			
+			return dao.ProjectReviseList(ProjectId);
+		}
+		
+		@Override
+		public Object[] ProjectOriginalData(String ProjectId) throws Exception {
+
+			return dao.ProjectOriginalData(ProjectId);
+		}
+		
+		//srikant
+		@Override
+		public PlatformMaster getPlatformByPlatformId(long platformId) throws Exception {
+			
+			return dao.getPlatformByPlatformId(platformId);
+		}
+
 }

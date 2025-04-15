@@ -23,4 +23,6 @@ public class OfficerMasterAdd {
 	private String InternalEmail;
 	private String LabCode;
 	private String SuperiorOfficer;
+	private String EmpStatus; //srikant
+
 }

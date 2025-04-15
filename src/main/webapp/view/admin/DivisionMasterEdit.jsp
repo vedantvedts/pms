@@ -133,6 +133,17 @@ Object[] DivisionMasterEditData=(Object[])request.getAttribute("DivisionMasterEd
 				</select>                 
 		</div>
 </div> 
+<!-- srikant code start -->
+<div class="col-3">
+        <div class="form-group"> 
+				<label >Division Short Name:<span class="mandatory" style="color: red;">*</span></label>
+				<input class="form-control form-control" type="text" name="DivisionShortName" id="DivisionShortName" required="required" maxlength="255" style="font-size: 18px;" 
+       value="<%= DivisionMasterEditData[6] != null ? DivisionMasterEditData[6] : "" %>">
+
+
+		</div>
+</div>
+<!-- srikant code end -->
 </div>
 
 
