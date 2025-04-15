@@ -95,13 +95,13 @@ Object[] groupsdata=(Object[])request.getAttribute("groupsdata");
                     		<div class="col-md-3">
                         		<div class="form-group">
                             		<label class="control-label">Group Code</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control"  type="text" name="groupcode" readonly="readonly" id="groupCode" value="<%=groupsdata[1]%>" required="required" maxlength="3" style="font-size: 15px;"> 
+                              		<input  class="form-control alphanum-only"  type="text" name="groupcode" readonly="readonly" id="groupCode" value="<%=groupsdata[1]%>" required="required" maxlength="3" style="font-size: 15px;"> 
                         		</div>
                     		</div>
          					<div class="col-md-3">
                         		<div class="form-group">
                             		<label class="control-label">Group Name</label><span class="mandatory">*</span>
-                            		<input  class="form-control form-control" value="<%=groupsdata[2] %>"  type="text" name="groupname" id="groupName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize; width: 90%;" > 
+                            		<input  class="form-control alphanum-no-leading-space" value="<%=groupsdata[2] %>"  type="text" name="groupname" id="groupName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize; width: 90%;" > 
                         		</div>
                     		</div>
                     		<div class="col-md-4">

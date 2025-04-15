@@ -1,0 +1,56 @@
+package com.vts.pfms.utils;
+
+import java.util.regex.Pattern;
+
+public class InputValidator {
+
+	private static final Pattern withCaptialsAndNumeric = Pattern.compile("^[A-Z0-9]+$");
+    private static final Pattern withCapitalsAndSmalls = Pattern.compile("^[A-Za-z]+$");
+    private static final Pattern withCapitalsAndSmallsAndSpace = Pattern.compile("^[A-Za-z ]+$");
+    private static final Pattern withCapitalsAndSmallsAndNumeric = Pattern.compile("^[A-Za-z0-9]+$");
+    private static final Pattern withCapitalsAndSmallsAndNumericAndSpace = Pattern.compile("^[A-Za-z0-9 ]+$");
+    private static final Pattern withEmailPattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+    private static final Pattern withMobilePattern = Pattern.compile("^[6-9]\\d{9}$");
+    private static final Pattern withPasswordPattern = Pattern.compile("^[6-9]\\d{9}$");
+    private static final Pattern withHTMLTagPattern = Pattern.compile("<[a-zA-Z][^>]*>");
+
+    private static boolean match(String input, Pattern pattern) {
+        return input != null && pattern.matcher(input).matches();
+    }
+    
+    public static boolean isValidCodeWithCapitalsAndNumeric(String input) {
+        return match(input, withCaptialsAndNumeric);
+    }
+
+    public static boolean isValidNameWithCapitalsAndSmallLetters(String input) {
+        return match(input, withCapitalsAndSmalls);
+    }
+    
+    public static boolean isValidNameWithCapitalsAndSmallLettersAndSpace(String input) {
+    	return match(input, withCapitalsAndSmallsAndSpace);
+    }
+    
+    public static boolean isValidCapitalsAndSmallsAndNumeric(String input) {
+    	return match(input, withCapitalsAndSmallsAndNumeric);
+    }
+    
+    public static boolean isValidCapitalsAndSmallsAndNumericAndSpace(String input) {
+    	return match(input, withCapitalsAndSmallsAndNumericAndSpace);
+    }
+    
+    public static boolean isValidEmail(String input) {
+    	return match(input, withEmailPattern);
+    }
+    
+    public static boolean isValidMobileNo(String input) {
+    	return match(input, withMobilePattern);
+    }
+    
+    public static boolean isValidPassword(String input) {
+    	return match(input, withPasswordPattern);
+    }
+
+    public static boolean isContainsHTMLTags(String input) {
+        return withHTMLTagPattern.matcher(input).find();
+    }
+}

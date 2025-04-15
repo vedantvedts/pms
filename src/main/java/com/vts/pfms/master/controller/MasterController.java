@@ -45,6 +45,7 @@ import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
 import com.vts.pfms.master.service.MasterService;
+import com.vts.pfms.utils.InputValidator;
 
 
 @Controller
@@ -744,7 +745,16 @@ public class MasterController {
 			String groupName=req.getParameter("gName");
 			String GroupHeadName=req.getParameter("ghempid");
 			String tdid=req.getParameter("tdId");
-
+			
+			if(!InputValidator.isValidCodeWithCapitalsAndNumeric(groupCode)){
+				redir.addAttribute("resultfail", "Group code must contain only uppercase letters and numbers.");
+				return "redirect:/GroupMaster.htm";
+			} 
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(groupName)) {
+				redir.addAttribute("resultfail", "Group name must contain letters, numbers, and spaces only.");
+				return "redirect:/GroupMaster.htm";
+			}
+			
 			DivisionGroup dgm=new DivisionGroup();
 			dgm.setGroupCode(groupCode);
 			dgm.setGroupName(groupName);
@@ -757,7 +767,7 @@ public class MasterController {
 			if (count > 0) {
 				redir.addAttribute("result", "Group Added Successfully");
 			} else {
-				redir.addAttribute("resultfail", "Group Adding Unsuccessfully");
+				redir.addAttribute("resultfail", "Group addition unsuccessful");
 			}
 
 			return "redirect:/GroupMaster.htm";
@@ -781,10 +791,21 @@ public class MasterController {
 		logger.info(new Date() +" Inside GroupMasterEditSubmit.htm "+Userid );
 
 		try {
-
+			String groupCode=req.getParameter("groupcode");
+			String groupName=req.getParameter("groupname");
+			
+			if(!InputValidator.isValidCodeWithCapitalsAndNumeric(groupCode)){
+				redir.addAttribute("resultfail", "Group code must contain only uppercase letters and numbers.");
+				return "redirect:/GroupMaster.htm";
+			} 
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(groupName)) {
+				redir.addAttribute("resultfail", "Group name must contain letters, numbers, and spaces only.");
+				return "redirect:/GroupMaster.htm";
+			}
+			
 			DivisionGroup model= new DivisionGroup();
-			model.setGroupCode(req.getParameter("groupcode"));
-			model.setGroupName(req.getParameter("groupname"));
+			model.setGroupCode(groupCode);
+			model.setGroupName(groupName);
 			model.setTDId(req.getParameter("tdId"));
 			model.setGroupHeadId(Long.parseLong(req.getParameter("ghempid")));
 			model.setGroupId(Long.parseLong(req.getParameter("groupid")));                 

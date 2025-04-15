@@ -32,6 +32,8 @@
 
 <jsp:include page="dependancy.jsp"></jsp:include>
 
+<spring:url value="/resources/js/input_validations.js" var="inputvalidationsjs" /> 
+<script src="${inputvalidationsjs}"></script>
 
 <style>
 .dropdown-item {
@@ -953,6 +955,8 @@ function changed() {
 					
 				
 				})
+				
+
 </script>
 
 
