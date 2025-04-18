@@ -22,7 +22,7 @@ public class IGILogicalInterfaces implements Serializable {
 	private Long LogicalInterfaceId;
 	private String MsgCode;
 	private String MsgName;
-	private String MsgTitle;
+	private Long LogicalChannelId;
 	private String MsgType;
 	private String MsgDescription;
 	private String DataRate;

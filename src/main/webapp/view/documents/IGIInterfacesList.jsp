@@ -567,6 +567,24 @@ label {
 		       						
 		       						<div class="form-group">
 		       							<div class="row">
+		       								
+		       								<div class="col-md-3">
+		       									<label class="form-lable">Cable Max Length (In Meters)<span class="mandatory">*</span></label>
+		       									<input type="number" step="1" class="form-control" name="cableMaxLength" <%if(igiInterface!=null && igiInterface.getCableMaxLength()!=null) {%> value="<%=igiInterface.getCableMaxLength() %>" <%} %> placeholder="Enter Maximum Length of Cable" min="0" max="1000000000" required>
+		       								</div>
+		       								<div class="col-md-3">
+		       									<label class="form-lable">Interface Loss per Meter<span class="mandatory">*</span></label>
+		       									<input type="number" step="1" class="form-control" name="interfaceLoss" <%if(igiInterface!=null && igiInterface.getInterfaceLoss()!=null) {%> value="<%=igiInterface.getInterfaceLoss() %>" <%} %> placeholder="Enter Interface Loss per Meter" min="0" max="1000000000" required>
+		       								</div>
+		       								<div class="col-md-3">
+		       									<label class="form-lable">Cable Bending Radius<span class="mandatory">*</span></label>
+		       									<input type="number" step="any" class="form-control" name="cableBendingRadius" <%if(igiInterface!=null && igiInterface.getCableBendingRadius()!=null) {%> value="<%=igiInterface.getCableBendingRadius() %>" <%} %> placeholder="Enter Cable Bending Radius" min="0" max="1000000000" required>
+		       								</div>
+		       							</div>
+		       						</div>
+		       						
+		       						<div class="form-group">
+		       							<div class="row">
 		       								<div class="col-md-6">
 		       									<label class="form-lable">Diagram </label>
 		       									<div id="diagramEditor" class="center"></div>

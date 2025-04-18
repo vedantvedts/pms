@@ -203,7 +203,7 @@
 
 		PfmsICDDocument icdDocument = (PfmsICDDocument)request.getAttribute("icdDocument");
 		
-		List<Object[]> productTreeList = (List<Object[]>)request.getAttribute("productTreeList"); 
+		//List<Object[]> productTreeList = (List<Object[]>)request.getAttribute("productTreeList"); 
 		List<Object[]> icdConnectionsList = (List<Object[]>)request.getAttribute("icdConnectionsList"); 
 		
 		List<IGIDocumentIntroduction> introductionList = (List<IGIDocumentIntroduction>)request.getAttribute("igiDocumentIntroductionList");
@@ -212,10 +212,11 @@
 		String isSubSystem = icdDocument!=null && icdDocument.getProductTreeMainId()!=0? "Y": "N";
 		
 		List<Object[]> productTreeAllList = (List<Object[]>)request.getAttribute("productTreeAllList"); 
+		List<Object[]> productTreeList = productTreeAllList.stream().filter(e -> icdDocument.getProductTreeMainId()==Long.parseLong(e[9].toString()) && e[10].toString().equalsIgnoreCase("1")).collect(Collectors.toList());
 		List<Object[]> productTreeSubList = productTreeAllList.stream().filter(e -> icdDocument.getProductTreeMainId()==Long.parseLong(e[9].toString()) && e[10].toString().equalsIgnoreCase("2")).collect(Collectors.toList());
 		
-		List<String> subsystems = productTreeList.stream().map(obj -> obj[7]+"").distinct().collect(Collectors.toList());
-		List<String> supersubsystems = productTreeSubList.stream().map(obj -> obj[7]+"").distinct().collect(Collectors.toList());
+		//List<String> subsystems = productTreeList.stream().map(obj -> obj[7]+"").distinct().collect(Collectors.toList());
+		//List<String> supersubsystems = productTreeSubList.stream().map(obj -> obj[7]+"").distinct().collect(Collectors.toList());
 		
 		Map<String, String> connectionMap = new LinkedHashMap<>();
 		Map<String, String> superSubConnectionMap = new HashMap<>();
@@ -264,7 +265,7 @@
 
 		    //String seqNumber = (countsub >= 100) ? "_" + countsub : (countsub >= 10) ? "_0" + countsub : "_00" + countsub;
 
-		    String valuesub = connection[32].toString();
+		    String valuesub = connection[8].toString();
 		    superSubConnectionMap.merge(keysub, valuesub, (oldValue, newValue) -> oldValue + "<br>" + newValue);
 		
 		    
@@ -423,7 +424,7 @@
 											
 											<div class="card module" onclick="showChapter3()">
 												<div class="card-body">
-													<div><img alt="" src="view/images/requirements.png" > <span class="topic-name">Chapter 3 : Connections</span></div>
+													<div><img alt="" src="view/images/requirements.png" > <span class="topic-name">Chapter 3 : Interfaces</span></div>
 												</div>
 											</div>
 											
@@ -1285,7 +1286,7 @@ function DownloadDocPDF(){
                 },
                 /* ************************************** Applicable Documents End *********************************** */
                 
-                /* ************************************** Connections *********************************** */
+                /* ************************************** Interfaces *********************************** */
                 {
                     text: (++mainContentCount)+'. Interfaces',
                     style: 'chapterHeader',
@@ -1309,9 +1310,9 @@ function DownloadDocPDF(){
                             <%-- <% for (int i = 0; i <subsystems.size()+2; i++) { %>
                                 'auto',
                             <% } %> --%>
-                            '4%', '8%', 
-                            <% for (int i = 0; i <subsystems.size(); i++) { %>
-                            	'<%= (double)((double)88/(double)(subsystems.size())) %>%',
+                            '4%', '12%', 
+                            <% for (int i = 0; i <productTreeList.size(); i++) { %>
+                            	'<%= (double)((double)84/(double)(productTreeList.size())) %>%',
                         	<% } %>
                             
                         ],
@@ -1320,8 +1321,8 @@ function DownloadDocPDF(){
                             [
                                 { text: 'SN', style: 'tableHeader2' },
                                 { text: 'Sub-System', style: 'tableHeader2' },
-                                <% for (String subsystem : subsystems) { %>
-                                    { text: '<%= subsystem != null ? subsystem : "" %>', style: 'tableHeader2' },
+                                <% for (Object[] subsystem : productTreeList) { %>
+                                    { text: '<%= subsystem != null ? subsystem[2] + " (" + subsystem[7] + ")" : "" %>', style: 'tableHeader2' },
                                 <% } %>
                             ],
 
@@ -1329,16 +1330,16 @@ function DownloadDocPDF(){
                             <% 
    
                             int slnoS = 0;
-                            for (String rowSubsystem : subsystems) { %>
+                            for (Object[] rowSubsystem : productTreeList) { %>
                                 [
                                     { text: '<%= ++slnoS%>', style: 'tableData2', alignment: 'center' },
-                                    { text: '<%= rowSubsystem != null ? rowSubsystem : "" %>', style: 'tableData2', alignment: 'center' },
-                                    <% for (String colSubsystem : subsystems) { %>
+                                    { text: '<%= rowSubsystem != null ? rowSubsystem[2] + " (" + rowSubsystem[7] + ")" : "" %>', style: 'tableData2', alignment: 'left' },
+                                    <% for (Object[] colSubsystem : productTreeList) { %>
                                         { text: 
                                             <%-- <% if (rowSubsystem.equalsIgnoreCase(colSubsystem)) { %>
                                                 'NA' --%>
                                             <% //} else { 
-                                                String key = rowSubsystem + "_" + colSubsystem;
+                                                String key = rowSubsystem[7] + "_" + colSubsystem[7];
                                                 String connections = connectionMap.getOrDefault(key, "-");
                                             %>
                                                 htmlToPdfmake('<%= connections != null ? connections : "-" %>')
@@ -1377,9 +1378,9 @@ function DownloadDocPDF(){
                         headerRows: 1,
                         widths: [
                         	 
-                        	'4%', '8%', 
-                            <% for (int i = 0; i <supersubsystems.size(); i++) { %>
-                            	'<%= (double)((double)88/(double)(supersubsystems.size())) %>%',
+                        	'4%', '12%', 
+                            <% for (int i = 0; i <productTreeSubList.size(); i++) { %>
+                            	'<%= (double)((double)84/(double)(productTreeSubList.size())) %>%',
                         	<% } %>
                         ],
                         body: [
@@ -1387,24 +1388,24 @@ function DownloadDocPDF(){
                             [
                                 { text: 'SN', style: 'tableHeader2' },
                                 { text: 'Sub-System', style: 'tableHeader2' },
-                                <% for (String supersubsystem : supersubsystems) { %>
-                                    { text: '<%= supersubsystem != null ? supersubsystem : "" %>', style: 'tableHeader2' },
+                                <% for (Object[] supersubsystem : productTreeSubList) { %>
+                                    { text: '<%= supersubsystem != null ? supersubsystem[2] + " (" + supersubsystem[7] + ")" : "" %>', style: 'tableHeader2' },
                                 <% } %>
                             ],
 
                             // Populate table rows
                             <% 
                             int slnoSS = 0;
-                            for (String rowSubsystem : supersubsystems) { %>
+                            for (Object[] rowSuperSubsystem : productTreeSubList) { %>
                                 [
                                     { text: '<%= ++slnoSS%>', style: 'tableData2', alignment: 'center' },
-                                    { text: '<%= rowSubsystem != null ? rowSubsystem : "" %>', style: 'tableData2', alignment: 'center' },
-                                    <% for (String colSubsystem : supersubsystems) { %>
+                                    { text: '<%= rowSuperSubsystem != null ? rowSuperSubsystem[2] + " (" + rowSuperSubsystem[7] + ")" : "" %>', style: 'tableData2', alignment: 'left' },
+                                    <% for (Object[] colSuperSubsystem : productTreeSubList) { %>
                                         { text: 
                                             <%-- <% if (rowSubsystem.equalsIgnoreCase(colSubsystem)) { %>
                                                 'NA' --%>
                                             <% //} else { 
-                                                String key = rowSubsystem + "_" + colSubsystem;
+                                                String key = rowSuperSubsystem[7] + "_" + colSuperSubsystem[7];
                                                 String connections = superSubConnectionMap.getOrDefault(key, "-");
                                             %>
                                                 htmlToPdfmake('<%= connections != null ? connections : "-" %>')
@@ -1428,10 +1429,14 @@ function DownloadDocPDF(){
                 
 	        	<%} %>
                 
+	        	 /* ************************************** Interfaces End *********************************** */
+	        	 
+	        	 /* ************************************** Interface Summary *********************************** */
+	        	 
                 {
-                	text: '',
+                	text: (++mainContentCount)+'. Interface Summary',
                     style: 'chapterHeader',
-                    tocItem: false,
+                    tocItem: true,
                     id: 'chapter'+(++chapterCount),
                     pageOrientation: 'landscape',
                     pageBreak: 'before',
@@ -1442,12 +1447,14 @@ function DownloadDocPDF(){
                         headerRows: 1,
                         /* widths: ['15%', '15%', '15%', '10%', '15%', '15%', '10%' ], */
                         /* widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto' ], */
-                        widths: ['6%', '25%', '20%', '24%%', '25%' ],
+                        widths: ['6%', '25%', '15%', '15%', '12%', '15%', '12%' ],
                         body: [
                             // Table header
                             [
                                 { text: 'SN', style: 'tableHeader2' },
                                 { text: 'Connection ID', style: 'tableHeader2' },
+                                { text: 'Source', style: 'tableHeader2' },
+                                { text: 'Destination', style: 'tableHeader2' },
                                 /* { text: 'Sub-System 1', style: 'tableHeader' },
                                 { text: 'Sub-System 2', style: 'tableHeader' },
                                 { text: 'Code', style: 'tableHeader' },
@@ -1466,7 +1473,9 @@ function DownloadDocPDF(){
 	                    		[
 	                    			{ text: '<%=++slno %>', style: 'tableData2',alignment: 'center' },
 	                                <%-- { text: '<%=obj[4]+"_"+obj[5]+"_"+obj[8]+((count>=100)?"_"+count:((count>=10)?"_0"+count:"_00"+count)) %>', style: 'tableData',alignment: 'center' }, --%> 
-	                                { text: '<%=obj[32] %>', style: 'tableData2',alignment: 'center' },
+	                                { text: '<%=obj[32] %>', style: 'tableData2',alignment: 'center', linkToDestination: '<%=obj[8]%>' },
+	                                { text: '<%=obj[20]!=null?obj[20]: (obj[18]!=null?obj[18]: "-") %>', style: 'tableData2' },
+	                                { text: '<%=obj[21]!=null?obj[21]: (obj[19]!=null?obj[19]: "-") %>', style: 'tableData2' },
 	                                <%-- { text: '<%=obj[4] %>', style: 'tableData',alignment: 'center' },
 	                                { text: '<%=obj[5] %>', style: 'tableData',alignment: 'center' },
 	                                { text: '<%=obj[8] %>', style: 'tableData',alignment: 'center' },
@@ -1488,7 +1497,7 @@ function DownloadDocPDF(){
                     },
                 },
                 
-                /* ************************************** Connections End *********************************** */
+                /* ************************************** Interface Summary End *********************************** */
                 
                 /* ************************************** Interface Details *********************************** */
                 {
@@ -1564,7 +1573,8 @@ function DownloadDocPDF(){
 	                	text: mainContentCount+'.<%=++slno%>. <%=iface.getInterfaceName() %>',	
 	                	style: 'chapterSubHeader',
 	                    tocItem: true,
-	                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=slno%>',
+	                    <%-- id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=slno%>', --%>
+	                    id: '<%=iface.getInterfaceCode() %>',
 	                    tocMargin: [10, 0, 0, 0],
 	                },
 	                
@@ -1951,6 +1961,9 @@ function DownloadDocPDF(){
                 subChapterNote: { margin: [15, 15, 0, 10] },
                 header: { alignment: 'center', bold: true},
                 chapterContent: {fontSize: 11.5, margin: [0, 5, 0, 5] },
+            },
+            info: {
+            	title : 'ICD_Document',
             },
             footer: function (currentPage, pageCount, pageSize) {
                 const isLandscape = pageSize.width > pageSize.height;

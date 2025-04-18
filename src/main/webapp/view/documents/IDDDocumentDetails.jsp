@@ -1182,6 +1182,9 @@ function DownloadDocPDF(){
                 header: { alignment: 'center', bold: true},
                 chapterContent: {fontSize: 11.5, margin: [0, 5, 0, 5] },
             },
+            info: {
+            	title : 'IDD_Document',
+            },
             footer: function (currentPage, pageCount, pageSize) {
                 const isLandscape = pageSize.width > pageSize.height;
                 const pageWidth = pageSize.width; // Adjust dynamically based on page size

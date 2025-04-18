@@ -1,3 +1,6 @@
+<%@page import="java.time.temporal.ChronoUnit"%>
+<%@page import="java.time.LocalDate"%>
+<%@page import="com.vts.pfms.model.LabMaster"%>
 <%@page import="com.vts.pfms.projectclosure.model.ProjectClosure"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.master.dto.ProjectFinancialDetails"%>
@@ -317,6 +320,8 @@ hr{
 ProjectMaster projectMaster = (ProjectMaster)request.getAttribute("ProjectDetails");
 ProjectClosure closure = (ProjectClosure)request.getAttribute("ProjectClosureDetails");
 ProjectClosureACP acp = (ProjectClosureACP)request.getAttribute("ProjectClosureACPData");
+LabMaster labMaster = (LabMaster)request.getAttribute("labMasterData");
+List<ProjectMasterRev> projectMasterRevList = (List<ProjectMasterRev>)request.getAttribute("projectMasterRevList");
 
 Object[] potherdetails = (Object[])request.getAttribute("ProjectOriginalRevDetails");
 Object[] expndDetails = (Object[])request.getAttribute("ProjectExpenditureDetails");
@@ -1838,7 +1843,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
                    									<input type="hidden" name="closureId" value="<%=closureId%>">
                    									<div class="mt-2" align="center">
 			               								<h5 style="font-weight: bold;margin-top: 1.5rem;">
-				               								AUDIT OF STATEMENT OF ACCOUNTS (EXPENDITURE) AND ADMINISTRATIVE CLOSURE OF PROJECT / PROGRAMME
+				               								AUDIT OF STATEMENT OF ACCOUNTS (EXPENDITURE) AND ADMINISTRATIVE CLOSURE OF  <%=projectMaster.getProjectShortName()+ " (" + projectMaster.getProjectCode() + ")" %>
 			               								 </h5>
 			               								 <h5 style="font-weight: bold;">Part - I</h5>
 			               							</div>
@@ -1847,11 +1852,11 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
 												    		<td style="width: 40%;font-weight: 600;">Name of Lab</td>
-												    		<td>: <%=labcode %> </td>
+												    		<td>: <%=labMaster.getLabName()+ " (" + labMaster.getLabCode() +  "), "+ labMaster.getLabAddress()%> </td>
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;font-weight: 600;">Title of the Project/Programme</td>
+												    		<td style="width: 40%;font-weight: 600;">Title of the Project</td>
 												    		<td>: <%=projectMaster.getProjectName() %> </td>
 												    	</tr>
 												    	<tr>
@@ -1954,27 +1959,58 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																		</tr>
 																	</thead>
 																	<tbody>
-																		<tr>
-																			<td style="text-align: center;">
-																				<%if(potherdetails!=null && potherdetails[7]!=null) {%>
-																					<%=fc.SqlToRegularDate(potherdetails[7].toString()) %>
-																				<%} else{%>
-																					--
+																		<%
+																		String projectPDC = projectMaster.getPDC()+"";
+																		LocalDate date1 = LocalDate.parse(projectPDC);
+																		int rowspan = projectMasterRevList!=null && projectMasterRevList.size()>0?projectMasterRevList.size():1;
+																		
+																		%>
+																		<%for(int i=0; i<rowspan; i++) {%>
+																			<tr>
+																				<%if(i==0) { %>
+																					<td rowspan="<%=rowspan %>" style="text-align: center !important;vertical-align: middle;">
+																						<%if(potherdetails!=null && potherdetails[7]!=null) { 
+																							projectPDC = potherdetails[7].toString(); %>
+																							<%=fc.SqlToRegularDate(potherdetails[7].toString()) %>
+																						<%} else{%>
+																							--
+																						<%} %>
+																					</td>
 																				<%} %>
-																			</td>
-																			<td style="text-align: center;">
-																				<%if(potherdetails!=null && potherdetails[8]!=null) {%>
-																					<%=fc.SqlToRegularDate(potherdetails[8].toString()) %>
-																				<%} else{%>
-																					--
+																				
+																				<td style="text-align: center !important;">
+																					<%if(projectMasterRevList!=null && projectMasterRevList.size()>0) {
+																						ProjectMasterRev rev = projectMasterRevList.get(i);
+																					%>
+																						<%=fc.SqlToRegularDate(rev.getPDC().toString())%>
+																						
+																						<%
+																						LocalDate date2 = LocalDate.parse(rev.getPDC().toString());
+																						// Ensure date1 is before date2
+																				        if (date1.isAfter(date2)) {
+																				            LocalDate temp = date1;
+																				            date1 = date2;
+																				            date2 = temp;
+																				        }
+																						
+																						%>
+																						
+																						&nbsp;(<%=ChronoUnit.MONTHS.between(date1, date2) %> Months)
+																						
+																					<%} else{%>
+																						--
+																					<%} %>
+																				</td>
+																				
+																				<%if(i==0) { %>
+																					<td rowspan="<%=rowspan %>" style="text-align: center !important;vertical-align: middle;">
+																						<%if(potherdetails!=null && potherdetails[9]!=null) {%>
+																							<%=potherdetails[9] %>
+																						<%} %>
+																					</td>
 																				<%} %>
-																			</td>
-																			<td style="text-align: center;">
-																				<%if(potherdetails!=null && potherdetails[9]!=null) {%>
-																					<%=potherdetails[9] %>
-																				<%} %>
-																			</td>
-																		</tr>
+																			</tr>
+																		<%} %>
 																	</tbody>
 																</table>
 												    		</td>
@@ -2012,7 +2048,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
 												    		<td style="width: 40%;font-weight: 600;">List of Sub-Projects</td>
-												    		<td>: <%if( (subprojects==null) || (subprojects!=null && subprojects.size()==0)) { %>NA<%} %></td>
+												    		<td>: <%if( (subprojects==null) || (subprojects!=null && subprojects.size()==0)) { %>Nil<%} %></td>
 												    	</tr>
 												    	<tr>
 												    		<td colspan="3">
@@ -2050,7 +2086,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
 												    		<td style="width: 40%;font-weight: 600;">List of CARS / CAPSI</td>
-												    		<td>: <%if( (carscapsiprojects==null) || (carscapsiprojects !=null && carscapsiprojects.size()==0)) { %>NA<%} %></td>
+												    		<td>: <%if( (carscapsiprojects==null) || (carscapsiprojects !=null && carscapsiprojects.size()==0)) { %>Nil<%} %></td>
 												    	</tr>
 												    	<tr>
 												    		<td colspan="3">
@@ -2096,7 +2132,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
 												    		<td style="width: 40%;font-weight: 600;">List of Consultancies</td>
-												    		<td>: <%if( (consultancies==null) || (consultancies!=null && consultancies.size()==0)) { %>NA<%} %></td>
+												    		<td>: <%if( (consultancies==null) || (consultancies!=null && consultancies.size()==0)) { %>Nil<%} %></td>
 												    	</tr>
 												    	<tr>
 												    		<td colspan="3">
@@ -2130,13 +2166,13 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
 												    		<td style="width: 40%;font-weight: 600;">Details of Facilities created (as proposed in the programme) </td>
-												    		<td>: </td>
+												    		<td>: <span><%if(acp.getFacilitiesCreated()!=null) {%><%=acp.getFacilitiesCreated() %><%} %></span></td>
 												    	</tr>
-												    	<tr>
+												    	<%-- <tr>
 												    		<td colspan="3">
 												    			<span><%if(acp.getFacilitiesCreated()!=null) {%><%=acp.getFacilitiesCreated() %><%} %></span>
 												    		</td>
-												    	</tr>
+												    	</tr> --%>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
 												    		<td style="width: 40%;font-weight: 600;">Trial Results </td>
@@ -2255,7 +2291,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 			               		   					<!-- Signature and timestamp of PD -->
 			               		   					
 													<div style="width: 96%;text-align: right;margin-right: 10px;line-height: 10px;margin-top: 30px;">
-		               								 	<div style="font-size: 15px;">Programme / Project Director</div>
+		               								 	<div style="font-size: 15px;">Project Director</div>
 						               					<%for(Object[] apprInfo : acpApprovalEmpData){ %>
 						   			   					<%if(apprInfo[8].toString().equalsIgnoreCase("AFW")){ %>
 						   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
