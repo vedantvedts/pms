@@ -250,6 +250,14 @@ NFormatConvertion nfc1=new NFormatConvertion();
  	</form>
 </div>
 </div>
+
+<div style="width: 100%; padding: 10px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); text-align: left;">
+    <h1 style="color: red; font-family: Arial, sans-serif; margin: 0; font-size: 16px; font-weight: bold;">Note:-</h1>
+    <h1 style="color: red; font-family: Arial, sans-serif; margin: 0; font-size: 16px; font-weight: bold;">1. If it is a main project, select YES and choose the specific project.</h1>
+    <h1 style="color: red; font-family: Arial, sans-serif; margin: 0; font-size: 16px; font-weight: bold;">2. If it is a sub project, select NO and choose the main project and fill the required details.</h1>
+</div>
+
+
 </div>
 </div>	
 	

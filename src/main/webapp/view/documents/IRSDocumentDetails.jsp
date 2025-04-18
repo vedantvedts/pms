@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.documents.model.IGILogicalChannel"%>
 <%@page import="com.vts.pfms.documents.model.IGIDocumentIntroduction"%>
 <%@page import="com.vts.pfms.documents.model.IGILogicalInterfaces"%>
 <%@page import="java.util.function.Function"%>
@@ -185,7 +186,9 @@
 
 		PfmsIRSDocument irsDocument = (PfmsIRSDocument)request.getAttribute("irsDocument");
 		
-		List<IGILogicalInterfaces> logicalInterfaceList = (List<IGILogicalInterfaces>)request.getAttribute("logicalInterfaceList"); 
+		List<IGILogicalInterfaces> logicalInterfaceList = (List<IGILogicalInterfaces>)request.getAttribute("logicalInterfaceList");
+		List<IGILogicalChannel> logicalChannelList = (List<IGILogicalChannel>)request.getAttribute("logicalChannelList");
+
 		List<Object[]> irsSpecificationsList = (List<Object[]>)request.getAttribute("irsSpecificationsList"); 
 		
 		List<IGIDocumentIntroduction> introductionList = (List<IGIDocumentIntroduction>)request.getAttribute("igiDocumentIntroductionList");
@@ -1172,12 +1175,63 @@ function DownloadDocPDF(){
                     pageBreak: 'before',
                 },
                 
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['10%', '22%', '22%', '46%'],
+                        body: [
+                            // Table header
+                            [
+                                { text: 'SN', style: 'tableHeader' },
+                                { text: 'Channel Name', style: 'tableHeader' },
+                                { text: 'Channel Code', style: 'tableHeader' },
+                                { text: 'Description', style: 'tableHeader' },
+                            ],
+                            // Populate table rows
+                           <% if(logicalChannelList!=null && logicalChannelList.size()>0){
+								int slno=0;
+								for(IGILogicalChannel channel : logicalChannelList){
+							%>
+		                            [
+		                                { text: '<%=++slno %>', style: 'tableData',alignment: 'center' },
+		                                { text: '<%=channel.getLogicalChannel() %>', style: 'tableData', },
+		                                { text: '<%=channel.getChannelCode() %>', style: 'tableData', },
+		                                { text: '<%=channel.getDescription() %>', style: 'tableData', },
+		                            ],
+		                        <% } %>
+                            <% } else{%>
+                            	[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 4 },]
+                            <%} %>
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+                },
+                
+                { text: '\n',},
+                
                 <%if(irsSpecificationsList!=null && irsSpecificationsList.size()>0) {
                 	int specCount=0;
                 	for(Object[] obj : irsSpecificationsList) {
                 		int sn = 0;
                 		IGILogicalInterfaces iface = logicalInterfaceList.stream().filter(e -> e.getLogicalInterfaceId()==Long.parseLong(obj[3].toString())).findFirst().orElse(null);
                 		String[] split = obj[6].toString().split("_");
+			        	IGILogicalChannel channel = logicalChannelList.stream().filter(e -> e.getLogicalChannelId().equals(iface.getLogicalChannelId())).findFirst().orElse(null);
                 %>
 	                {
 	                	text: mainContentCount+'.<%=++specCount%>. <%=obj[6]%>',	
@@ -1187,7 +1241,6 @@ function DownloadDocPDF(){
 	                    tocMargin: [20, 0, 0, 0],
 	                },
 	                
-
 	                {
 	                	table: {
 	                        headerRows: 1,
@@ -1208,14 +1261,15 @@ function DownloadDocPDF(){
 	                            ],
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Msg Name', style: 'tableData', bold: true},
-	                                { text: '<%=iface.getMsgName() %>', style: 'tableData' },
+	                                { text: 'Logical Channel Name', style: 'tableData', bold: true},
+	                                { text: '<%=channel.getLogicalChannel() + " (" + channel.getChannelCode() + ")" %>', style: 'tableData' },
 	                            ],
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Msg Title', style: 'tableData', bold: true},
-	                                { text: '<%=iface.getMsgTitle() %>', style: 'tableData' },
+	                                { text: 'Msg Name', style: 'tableData', bold: true},
+	                                { text: '<%=iface.getMsgName() %>', style: 'tableData' },
 	                            ],
+	                            
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Msg Type', style: 'tableData', bold: true},
@@ -1296,6 +1350,9 @@ function DownloadDocPDF(){
                 subChapterNote: { margin: [15, 15, 0, 10] },
                 header: { alignment: 'center', bold: true},
                 chapterContent: {fontSize: 11.5, margin: [0, 5, 0, 5] },
+            },
+            info: {
+            	title : 'IRS_Document',
             },
             footer: function (currentPage, pageCount, pageSize) {
                 const isLandscape = pageSize.width > pageSize.height;

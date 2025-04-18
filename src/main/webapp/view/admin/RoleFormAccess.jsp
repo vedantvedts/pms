@@ -54,6 +54,9 @@ List<Object[]> AllLabsList=(List<Object[]>) request.getAttribute("AllLabsList");
 String logintype=(String)request.getAttribute("logintype");
 String moduleid=(String)request.getAttribute("moduleid");
 String labCode=(String)session.getAttribute("labcode");
+if(!logintype.equalsIgnoreCase("A")) {
+	FormModulesList.removeIf(e -> e[1]!=null && e[1].toString().equalsIgnoreCase("Admin"));
+}
 %>
 
 <%String ses=(String)request.getParameter("result"); 

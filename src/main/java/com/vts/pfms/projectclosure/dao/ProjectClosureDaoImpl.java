@@ -4,18 +4,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
-import jakarta.transaction.Transactional;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
-import com.vts.pfms.milestone.model.FileRepMaster;
 import com.vts.pfms.project.model.ProjectMaster;
-
+import com.vts.pfms.project.model.ProjectMasterRev;
 import com.vts.pfms.projectclosure.model.ProjectClosure;
 import com.vts.pfms.projectclosure.model.ProjectClosureACP;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPAchievements;
@@ -32,6 +26,11 @@ import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalDocDistrib;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalDocSumary;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalSection;
 import com.vts.pfms.projectclosure.model.ProjectClosureTrans;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 
 
 @Repository
@@ -563,7 +562,13 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		}
 	}
 	
-	private static final String PROJECTORIGINALANDREVISIONDETAILS = "SELECT (SELECT b.ProjectType FROM project_master a,project_type b WHERE a.ProjectId=:ProjectId AND b.ProjectTypeId=a.ProjectCategory LIMIT 1) AS 'Category',(SELECT a.SanctionCostRE FROM project_master a WHERE a.ProjectId=:ProjectId AND a.IsActive=1 LIMIT 1) AS 'pmSanctionCostRE',(SELECT a.SanctionCostFE FROM project_master a WHERE a.ProjectId=:ProjectId AND a.IsActive=1 LIMIT 1) AS 'pmSanctionCostFE',(SELECT a.TotalSanctionCost FROM project_master a WHERE a.ProjectId=:ProjectId AND a.IsActive=1 LIMIT 1) AS 'pmTotalSanctionCost',(SELECT a.SanctionCostRE FROM project_master_rev a WHERE a.ProjectId=:ProjectId ORDER BY a.ProjectRevId LIMIT 1) AS 'pmrevSanctionCostRE',(SELECT a.SanctionCostFE FROM project_master_rev a WHERE a.ProjectId=:ProjectId ORDER BY a.ProjectRevId LIMIT 1) AS 'pmrevSanctionCostFE',(SELECT a.TotalSanctionCost FROM project_master_rev a WHERE a.ProjectId=:ProjectId ORDER BY a.ProjectRevId LIMIT 1) AS 'pmrevTotalSanctionCost',(SELECT a.PDC FROM project_master a WHERE a.ProjectId=:ProjectId AND a.IsActive=1 LIMIT 1) AS 'pmPDC',(SELECT a.PDC FROM project_master_rev a WHERE a.ProjectId=:ProjectId ORDER BY a.ProjectRevId LIMIT 1) AS 'pmrevPDC',(SELECT COUNT(a.ProjectRevId) FROM project_master_rev a WHERE a.ProjectId=:ProjectId LIMIT 1) AS 'NoOfRevisions'FROM DUAL";
+	private static final String PROJECTORIGINALANDREVISIONDETAILS = "SELECT pt.ProjectType AS Category, pm.SanctionCostRE AS pmSanctionCostRE, pm.SanctionCostFE AS pmSanctionCostFE, pm.TotalSanctionCost AS pmTotalSanctionCost,\r\n"
+			+ "    pmr.SanctionCostRE AS pmrevSanctionCostRE, pmr.SanctionCostFE AS pmrevSanctionCostFE, pmr.TotalSanctionCost AS pmrevTotalSanctionCost, pm.PDC AS pmPDC, pmr.PDC AS pmrevPDC,\r\n"
+			+ "    ( SELECT COUNT(*) FROM project_master_rev WHERE ProjectId = :ProjectId ) AS NoOfRevisions\r\n"
+			+ "FROM project_master pm\r\n"
+			+ "LEFT JOIN project_type pt ON pt.ProjectTypeId = pm.ProjectCategory\r\n"
+			+ "LEFT JOIN ( SELECT * FROM project_master_rev WHERE ProjectId = :ProjectId ORDER BY ProjectRevId LIMIT 1 ) pmr ON 1 = 1\r\n"
+			+ "WHERE pm.ProjectId = :ProjectId AND pm.IsActive = 1";
 	@Override
 	public Object[] projectOriginalAndRevisionDetails(String projectId) throws Exception
 	{
@@ -1220,4 +1225,19 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 			return 0;
 		}
 	}
+	
+	@Override
+	public List<ProjectMasterRev> getProjectMasterRevListByProjectId(String projectId) throws Exception {
+		try {
+			
+			Query query = manager.createQuery("FROM ProjectMasterRev WHERE ProjectId=:ProjectId ORDER BY PDC");
+			query.setParameter("ProjectId", Long.parseLong(projectId));
+			return (List<ProjectMasterRev>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<ProjectMasterRev>();
+		}
+		
+	}
+
 }

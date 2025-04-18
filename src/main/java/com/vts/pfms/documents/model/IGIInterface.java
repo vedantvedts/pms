@@ -52,6 +52,9 @@ public class IGIInterface implements Serializable{
 	private String CableConstraint;
 	private String CableDiameter;
 	private String CableDetails;
+	private Integer CableMaxLength;
+	private Integer InterfaceLoss;
+	private Double CableBendingRadius;
 	private Long IGIDocId;
 	private String CreatedBy;
     private String CreatedDate;

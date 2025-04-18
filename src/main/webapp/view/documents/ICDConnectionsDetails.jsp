@@ -191,6 +191,7 @@ label {
         			<input type="hidden" name="docType" value="<%=docType %>" />
         			<input type="hidden" name="documentNo" value="<%=documentNo %>" />
         			<input type="hidden" name="projectId" value="<%=projectId %>" />
+        			<input type="hidden" name="icdConnectionId" value="0" />
         			<input type="hidden" name="isSubSystem" id="isSubSystem" value="<%=isSubSystem %>" />
 	        		<%if(isSubSystem.equalsIgnoreCase("Y")) {%>
 		        		<input type="hidden" name="subSystemOne" id="subSystem1" value="<%=subsystem[0]+"/"+subsystem[7] %>">
@@ -204,7 +205,7 @@ label {
 		        					 <%if(isSubSystem.equalsIgnoreCase("N")) {%>
 		        						<div class="col-md-2">
 		        							<label class="form-lable">Sub-System 1<span class="mandatory">*</span></label>
-		        							<select class="form-control selectdee subSystem1" name="subSystemOne" id="subSystem1" onchange="checkConnectionExistence()"
+		        							<select class="form-control selectdee subSystem1" name="subSystemOne" id="subSystem1"
 			        						data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
 										        
 									        	<option value="" disabled selected>Choose...</option>
@@ -216,7 +217,7 @@ label {
 		        						</div>
 		        						<div class="col-md-2">
 		        							<label class="form-lable">Sub-System 2<span class="mandatory">*</span></label>
-			        						<select class="form-control selectdee subSystem2" name="subSystemTwo" id="subSystem2" onchange="checkConnectionExistence()"
+			        						<select class="form-control selectdee subSystem2" name="subSystemTwo" id="subSystem2"
 			        						data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
 												<option value="" disabled selected>Choose...</option>
 										        <% for(Object[] obj : productTreeList){ %>
@@ -228,7 +229,7 @@ label {
 	        						<%if(isSubSystem.equalsIgnoreCase("Y")) {%>
 		        						<div class="col-md-2">
 		        							<label class="form-lable">Super Sub-System 1<span class="mandatory">*</span></label>
-		        							<select class="form-control selectdee superSubSystem1" name="superSubSystemOne" id="superSubSystem1" onchange="checkConnectionExistence()" 
+		        							<select class="form-control selectdee superSubSystem1" name="superSubSystemOne" id="superSubSystem1"
 		        							data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
 		        								<option value="" disabled selected>Choose...</option>
 										        <%
@@ -239,7 +240,7 @@ label {
 		        						</div>	
 			        					<div class="col-md-2">
 			        						<label class="form-lable">Super Sub-System 2<span class="mandatory">*</span></label>
-			        						<select class="form-control selectdee superSubSystem2" name="superSubSystemTwo" id="superSubSystem2" onchange="checkConnectionExistence()" 
+			        						<select class="form-control selectdee superSubSystem2" name="superSubSystemTwo" id="superSubSystem2"
 			        						data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
 			        							<option value="" disabled selected>Choose...</option>
 										        <%
@@ -251,9 +252,17 @@ label {
 	        						<%} %>
 	        						<div class="col-md-4">
 	        							<label class="form-lable">Interface<span class="mandatory">*</span></label>
-		        						<select class="form-control selectdee interfaceId" name="interfaceId" id="interfaceId" multiple data-placeholder="Choose..." data-live-search="true" data-container="body" required>
-									        <% for(IGIInterface igiinterface : igiInterfaceList){ %>
-									        	<option value="<%=igiinterface.getInterfaceId()+"/"+igiinterface.getInterfaceCode() %>"><%=igiinterface.getInterfaceName() %></option>
+		        						<select class="form-control selectdee interfaceId" name="interfaceId" id="interfaceId" 
+		        						data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
+									        <option value="" disabled selected>---------Select------------</option>
+									        <% for(IGIInterface iface : igiInterfaceList){ %>
+									        	<option value="<%=iface.getInterfaceId()+"/"+iface.getInterfaceCode() %>"
+									        	data-cablelength="<%=iface.getCableMaxLength() %>"
+									        	data-interfaceloss="<%=iface.getInterfaceLoss() %>"
+									        	data-cableradius="<%=iface.getCableBendingRadius() %>"
+									        	>
+									        		<%=iface.getInterfaceName() %>
+									        	</option>
 									        <%} %>
 										</select>
 	        						</div>
@@ -300,6 +309,27 @@ label {
 	        					</div>
 	        				</div>	
 	        				
+	        				<div class="form-group">
+       							<div class="row">
+       								
+       								<div class="col-md-3">
+       									<label class="form-lable">Cable Max Length (In Meters)<span class="mandatory">*</span></label>
+       									<input type="number" step="1" class="form-control" name="cableMaxLength" id="cableMaxLengthAdd" placeholder="Enter Maximum Length of Cable" min="0" required>
+       									<span class="mandatory" id="cablelengthwarning"></span>
+       								</div>
+       								<div class="col-md-3">
+       									<label class="form-lable">Interface Loss per Meter<span class="mandatory">*</span></label>
+       									<input type="number" step="1" class="form-control" name="interfaceLoss" id="interfaceLossAdd" placeholder="Enter Interface Loss per Meter" min="0" required>
+       									<span class="mandatory" id="interfacelosswarning"></span>
+       								</div>
+       								<div class="col-md-3">
+       									<label class="form-lable">Cable Bending Radius<span class="mandatory">*</span></label>
+       									<input type="number" step="any" class="form-control" name="cableBendingRadius" id="cableBendingRadiusAdd" placeholder="Enter Cable Bending Radius" min="0" required>
+       									<span class="mandatory" id="cableradiuswarning"></span>
+       								</div>
+       							</div>
+       						</div>
+		       						
 	        				<div class="center">
 	        					<button type="submit" class="btn btn-sm submit" onclick="return confirm('Are you Sure to Submit?')">
 	        						SUBMIT
@@ -318,24 +348,15 @@ label {
                 	<table class="table activitytable" id="dataTable">
                     	<thead class="center">
                     		<tr>
-                    			<th>SN</th>
-                    			<th>Connection ID</th>
-                    			<%-- <th>Sub-System 1</th>
-                    			<th>Sub-System 2</th>
-                    			<%if(isSubSystem.equalsIgnoreCase("Y")) {%>
-	                    			<th>Super Sub-System 1</th>
-	                    			<th>Super Sub-System 2</th>
-                    			<%} %> --%>
-                    			<!-- <th>Interface Code</th>
-                    			<th>Interface Type</th> -->
-                    			<!-- <th>Transmission Speed</th>
-                    			<th>Data Format</th> -->
-                    			<th>Purpose</th>
-                    			<th>Constraints</th>
-                    			<th>Periodicity</th>
-                    			<th>Description</th>
-                    			<th>Action</th>
-                    			<th>Delete</th>
+                    			<th width="3%">SN</th>
+                    			<th width="15%">Connection ID</th>
+                    			<th width="10%">Source</th>
+                    			<th width="10%">Destination</th>
+                    			<th width="15%">Purpose</th>
+                    			<th width="12%">Constraints</th>
+                    			<th width="8%">Periodicity</th>
+                    			<th width="19%">Description</th>
+                    			<th width="8%">Action</th>
 	                    	</tr>
                     	</thead>
                     	<tbody>
@@ -363,27 +384,30 @@ label {
                     				<td><%=obj[10] %></td> --%>
                     				<%-- <td><%=obj[13] %></td>
                     				<td><%=obj[11] %></td> --%>
-                    				<%if(i==0) {%>
-							    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;"><%=obj[28]!=null?obj[28]:"-" %></td>
-	                    				<td rowspan="<%=values.size() %>" style="vertical-align: middle;"><%=obj[29]!=null?obj[29]:"-"  %></td>
-	                    				<td rowspan="<%=values.size() %>" style="vertical-align: middle;"><%=obj[30]!=null?obj[30]:"-"  %></td>
-	                    				<td rowspan="<%=values.size() %>" style="vertical-align: middle;"><%=obj[31]!=null?obj[31]:"-"  %></td>
-	                    				<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center">
-									       	<button type="button" class="editable-clicko" onclick="openNewConnectionAddModal('<%=slno%>')" data-toggle="tooltip" title="Add New Connections">
-									            <i class="fa fa-plus-square fa-lg" style="padding: 0px;color: green;font-size: 25px;" aria-hidden="true"></i>
-									        </button>
-									        <button type="button" class="editable-clicko" onclick="openConnectionEditModal('<%=slno%>')" data-toggle="tooltip" title="Edit">
-									            <i class="fa fa-lg fa-edit" style="padding: 0px;color: darkorange;font-size: 25px;" aria-hidden="true"></i>
-									        </button>
-						      			</td>
-        							<%} %>
+									
+									<%if(i==0) {%>
+										<td rowspan="<%=values.size() %>" style="vertical-align: middle;"><%=obj[20]!=null?obj[20]: (obj[18]!=null?obj[18]: "-") %></td>
+						    			<td rowspan="<%=values.size() %>" style="vertical-align: middle;"><%=obj[21]!=null?obj[21]: (obj[19]!=null?obj[19]: "-") %></td>
+									<%} %>
+						    		<td><%=obj[28]!=null?obj[28]:"-" %></td>
+                    				<td><%=obj[29]!=null?obj[29]:"-" %></td>
+                    				<td><%=obj[30]!=null?obj[30]:"-" %></td>
+                    				<td><%=obj[31]!=null?obj[31]:"-" %></td>
+                    				<%-- <td class="center">
+								       	<button type="button" class="editable-clicko" onclick="openNewConnectionAddModal('<%=slno%>')" data-toggle="tooltip" title="Add New Connections">
+								            <i class="fa fa-plus-square fa-lg" style="padding: 0px;color: green;font-size: 25px;" aria-hidden="true"></i>
+								        </button>
+								        <button type="button" class="editable-clicko" onclick="openConnectionEditModal('<%=slno%>')" data-toggle="tooltip" title="Edit">
+								            <i class="fa fa-lg fa-edit" style="padding: 0px;color: darkorange;font-size: 25px;" aria-hidden="true"></i>
+								        </button>
+					      			</td> --%>
                     				
                     				<td class="center">
 						      			 <form action="ICDConnectionDelete.htm" method="POST" id="inlineapprform<%=slno%>">
 						      			 
-									        <%-- <button type="button" onclick="openConnectionEditModal('<%=slno%>')">
-									            <img src="view/images/edit.png" alt="Edit">
-									        </button> --%>
+									        <button type="button" class="editable-clicko" onclick="openConnectionEditModal('<%=slno%>')" data-toggle="tooltip" title="Edit">
+								            	<i class="fa fa-lg fa-edit" style="padding: 0px;color: darkorange;font-size: 25px;" aria-hidden="true"></i>
+								        	</button>
 									        <button type="submit" class="editable-clicko" data-toggle="tooltip" title="Delete" onclick="return confirm('Are you sure to Delete?')">
 									            <i class="fa fa-lg fa-trash" style="padding: 0px;color: red;font-size: 25px;" aria-hidden="true"></i>
 									        </button>
@@ -400,14 +424,14 @@ label {
 											<input type="hidden" id="description_<%=slno%>" value="<%=obj[31]%>">
 											<input type="hidden" id="drawingNo_<%=slno%>" value="<%=obj[34]%>">
 											<input type="hidden" id="drawingAttachment_<%=slno%>" value="<%=obj[35]%>">
+											<input type="hidden" id="cableMaxLength_<%=slno%>" value="<%=obj[37]%>">
+											<input type="hidden" id="interfaceLoss_<%=slno%>" value="<%=obj[38]%>">
+											<input type="hidden" id="cableBendingRadius_<%=slno%>" value="<%=obj[39]%>">
+											<input type="hidden" id="actcableMaxLength_<%=slno%>" value="<%=obj[40]%>">
+											<input type="hidden" id="actinterfaceLoss_<%=slno%>" value="<%=obj[41]%>">
+											<input type="hidden" id="actcableBendingRadius_<%=slno%>" value="<%=obj[42]%>">
 											<input type="hidden" id="purposeIds_<%=slno%>" value="<%=obj[36]%>">
-											<input type="hidden" id="modalTitle_<%=slno%>" 
-											<%if(isSubSystem.equalsIgnoreCase("Y")) {%>
-	 											value="<%=obj[16] %>_<%=obj[17] %>"
-	                    					<%} else{%>
-	                    						value="<%=obj[4] %>_<%=obj[5] %>"
-	                    					<%} %>
-											>
+											<input type="hidden" id="modalTitle_<%=slno%>" value="<%=obj[32]%>">
 									    </form>
 						      		</td>
                     			</tr>
@@ -473,7 +497,7 @@ label {
 	<!-- -------------------------------------------- Connection Edit Modal -------------------------------------------- -->
 	<div class="modal fade" id="connectionEditModal" tabindex="-1" role="dialog" aria-labelledby="connectionEditModal" aria-hidden="true">
   		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
-    		<div class="modal-content" style="width: 150%;margin-left: -20%;margin-top: 25%;">
+    		<div class="modal-content" style="width: 180%;margin-left: -35%;margin-top: 25%;">
       			<div class="modal-header" id="ModalHeader" style="background: #055C9D ;color: white;">
 			        <h5 class="modal-title" >Connection Edit - <span class="modalTitle"></span> </h5>
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -482,7 +506,7 @@ label {
       			</div>
       			
       			<div class="modal-body">
-       				<form action="ICDConnectionEditSubmit.htm" method="post">
+       				<form action="ICDConnectionMatrixSubmit.htm" method="post">
        					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
        					<input type="hidden" name="icdConnectionId" class="icdConnectionId">
        					<input type="hidden" name="docId" value="<%=docId%>"> 
@@ -521,8 +545,8 @@ label {
         							<input class="form-control" name="description" id="description" placeholder="Enter Periodicity Description" required>
         						</div>
         						<div class="col-md-2">
-        							<label class="form-lable">Drawing No<span class="mandatory">*</span></label>
-        							<input type="text" class="form-control" name="drawingNo" id="drawingNo" placeholder="Enter Drawing No" required>
+        							<label class="form-lable">Drawing No</label>
+        							<input type="text" class="form-control" name="drawingNo" id="drawingNo" placeholder="Enter Drawing No">
         						</div>
         						<div class="col-md-4">
         							<label class="form-lable">Drawing Attachment </label>
@@ -534,9 +558,30 @@ label {
         					</div>
         				</div>	
         				
+        				<div class="form-group">
+   							<div class="row">
+   								
+   								<div class="col-md-3">
+   									<label class="form-lable">Cable Max Length (In Meters)<span class="mandatory">*</span></label>
+   									<input type="number" step="1" class="form-control" name="cableMaxLength" id="cableMaxLength" placeholder="Enter Maximum Length of Cable" min="0" max="1000000000" required>
+   									<span class="mandatory" id="cablelengthwarningedit"></span>
+   								</div>
+   								<div class="col-md-3">
+   									<label class="form-lable">Interface Loss per Meter<span class="mandatory">*</span></label>
+   									<input type="number" step="1" class="form-control" name="interfaceLoss" id="interfaceLoss" placeholder="Enter Interface Loss per Meter" min="0" max="1000000000" required>
+   									<span class="mandatory" id="interfacelosswarningedit"></span>
+   								</div>
+   								<div class="col-md-3">
+   									<label class="form-lable">Cable Bending Radius<span class="mandatory">*</span></label>
+   									<input type="number" step="any" class="form-control" name="cableBendingRadius" id="cableBendingRadius" placeholder="Enter Cable Bending Radius" min="0" max="1000000000" required>
+   									<span class="mandatory" id="cableradiuswarningedit"></span>
+   								</div>
+   							</div>
+     					</div>
+       						
         				<div class="center">
-        					<button type="submit" class="btn btn-sm submit" onclick="return confirm('Are you Sure to Submit?')">
-        						SUBMIT
+        					<button type="submit" class="btn btn-sm edit" onclick="return confirm('Are you Sure to Update?')">
+        						UPDATE
         					</button>
         				</div>	
       				</form>
@@ -660,6 +705,12 @@ label {
 		var drawingNo = $('#drawingNo_'+rowId).val();
 		var icdConnectionId = $('#icdConnectionId_'+rowId).val();
 		var drawingAttachment = $('#drawingAttachment_'+rowId).val();
+		var cableMaxLength = $('#cableMaxLength_'+rowId).val();
+		var interfaceLoss = $('#interfaceLoss_'+rowId).val();
+		var cableBendingRadius = $('#cableBendingRadius_'+rowId).val();
+		var actcableMaxLength = $('#actcableMaxLength_'+rowId).val();
+		var actinterfaceLoss = $('#actinterfaceLoss_'+rowId).val();
+		var actcableBendingRadius = $('#actcableBendingRadius_'+rowId).val();
 		var purposeIds = $('#purposeIds_'+rowId).val();
 		var modalTitle = $('#modalTitle_'+rowId).val();
 
@@ -677,6 +728,9 @@ label {
 		$('.icdConnectionId').val(icdConnectionId);
 		$('#drawingNo').val(drawingNo);
 		$('#drawingAttach').val(drawingAttachment);
+		$('#cableMaxLength').val(cableMaxLength);
+		$('#interfaceLoss').val(interfaceLoss);
+		$('#cableBendingRadius').val(cableBendingRadius);
 		
 		if (purposeIds) {
 	        // Split the purposeIds into an array
@@ -693,10 +747,18 @@ label {
 	        $('#purpose').trigger('change');
 	    }
 		
+		$('#cableMaxLength').attr("max", actcableMaxLength);
+	    $('#interfaceLoss').attr("max", actinterfaceLoss);
+	    $('#cableBendingRadius').attr("max", actcableBendingRadius);
+	    
+	    $('#cablelengthwarningedit').text('Declared Cable Length in IGI Document: '+actcableMaxLength);
+	    $('#interfacelosswarningedit').text('Declared Interface Loss in IGI Document: '+actinterfaceLoss);
+	    $('#cableradiuswarningedit').text('Declared Cable Radius in IGI Document: '+actcableBendingRadius);
+	    
 		$('#connectionEditModal').modal('show');
 	}
 	
-	function checkConnectionExistence(){
+	<%-- function checkConnectionExistence(){
 
 		var docId = '<%=docId%>';
 		var subSystem1 = $('#subSystem1').val();
@@ -727,9 +789,9 @@ label {
 				}
 			}
 		});
-	}
+	} --%>
 	
-	function openNewConnectionAddModal(rowId) {
+	/* function openNewConnectionAddModal(rowId) {
 		
 		var modalTitle = $('#modalTitle_'+rowId).val();
 		var icdConnectionId = $('#icdConnectionId_'+rowId).val();
@@ -738,7 +800,22 @@ label {
 		
 		$('#addNewConnectionModal').modal('show');
 		
-	}
+	} */
+	
+	$('#interfaceId').on('change', function () {
+	    // Show the content corresponding to the clicked tab
+	    const cablelength = $('#interfaceId option:selected').attr('data-cablelength');
+	    const interfaceloss = $('#interfaceId option:selected').attr('data-interfaceloss');
+	    const cableradius = $('#interfaceId option:selected').attr('data-cableradius');
+	    
+	    $('#cableMaxLengthAdd').attr("max", cablelength);
+	    $('#interfaceLossAdd').attr("max", interfaceloss);
+	    $('#cableBendingRadiusAdd').attr("max", cableradius);
+	    
+	    $('#cablelengthwarning').text('Declared Cable Length in IGI Document: '+cablelength);
+	    $('#interfacelosswarning').text('Declared Interface Loss in IGI Document: '+interfaceloss);
+	    $('#cableradiuswarning').text('Declared Cable Radius in IGI Document: '+cableradius);
+	});
 </script> 	
 </body>
 </html>

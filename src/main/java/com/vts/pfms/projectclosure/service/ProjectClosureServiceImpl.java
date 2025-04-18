@@ -32,11 +32,10 @@ import com.itextpdf.html2pdf.HtmlConverter;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.cars.dao.CARSDao;
-import com.vts.pfms.cars.model.CARSRSQRMajorRequirements;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.project.dao.ProjectDao;
 import com.vts.pfms.project.model.ProjectMaster;
-import com.vts.pfms.project.model.RequirementMembers;
+import com.vts.pfms.project.model.ProjectMasterRev;
 import com.vts.pfms.projectclosure.dao.ProjectClosureDao;
 import com.vts.pfms.projectclosure.dto.ProjectCheckListRevDto;
 import com.vts.pfms.projectclosure.dto.ProjectClosureACPDTO;
@@ -1802,4 +1801,10 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 		
 	}
 	
+	@Override
+	public List<ProjectMasterRev> getProjectMasterRevListByProjectId(String projectId) throws Exception {
+		
+		return dao.getProjectMasterRevListByProjectId(projectId);
+	}
+
 }

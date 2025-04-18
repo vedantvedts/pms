@@ -2,7 +2,6 @@ package com.vts.pfms.documents.dao;
 
 import java.util.List;
 
-import com.vts.pfms.documents.model.ICDConnectionInterfaces;
 import com.vts.pfms.documents.model.ICDConnectionPurpose;
 import com.vts.pfms.documents.model.ICDDocumentConnections;
 import com.vts.pfms.documents.model.ICDPurpose;
@@ -15,6 +14,7 @@ import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.IGIInterface;
 import com.vts.pfms.documents.model.IGIInterfaceContent;
 import com.vts.pfms.documents.model.IGIInterfaceTypes;
+import com.vts.pfms.documents.model.IGILogicalChannel;
 import com.vts.pfms.documents.model.IGILogicalInterfaces;
 import com.vts.pfms.documents.model.IRSDocumentSpecifications;
 import com.vts.pfms.documents.model.PfmsApplicableDocs;
@@ -79,7 +79,11 @@ public interface DocumentsDao {
 	public List<IGILogicalInterfaces> getIGILogicalInterfaces() throws Exception;
 	public IGILogicalInterfaces getIGILogicalInterfaceById(String logicalInterfaceId) throws Exception;
 	public long addIGILogicalInterfaces(IGILogicalInterfaces igiLogicalInterfaces) throws Exception;
-	public int getLogicalInterfaceCountByType(String msgType) throws Exception;
+	public int getLogicalInterfaceCountByType(String logicalChannelId, String msgType) throws Exception;
+	public List<IGILogicalChannel> getIGILogicalChannelList() throws Exception;
+	public IGILogicalChannel getIGILogicalChannelById(String logicalChannelId) throws Exception;
+	public long addIGILogicalChannel(IGILogicalChannel igiLogicalChannel) throws Exception;
+	public int deleteIGILogicalChannelById(String logicalChannelId) throws Exception;
 	/* ************************************************ IGI Document End***************************************************** */
 	
 	/* ************************************************ ICD Document ***************************************************** */
@@ -89,13 +93,12 @@ public interface DocumentsDao {
 	public Long getFirstVersionICDDocId(String projectId, String initiationId, String productTreeMainId) throws Exception;
 	public long addICDDocumentConnections(ICDDocumentConnections connection) throws Exception;
 	public List<Object[]> getICDConnectionsList(String icdDocId) throws Exception;
-	public int deleteICDConnectionById(String conInterfaceId) throws Exception;
+	public int deleteICDConnectionById(String icdConnectionId) throws Exception;
 	public long addPfmsIGITransaction(PfmsIGITransaction transaction) throws Exception;
 	public List<Object[]> getProductTreeAllList(String projectId, String initiationId) throws Exception;
 	public int icdDocumentUserRevoke(String icdDocId) throws Exception;
 	public ICDDocumentConnections getICDDocumentConnectionsById(String icdConnectionId) throws Exception;
 	public List<ICDPurpose> getAllICDPurposeList() throws Exception;
-	public long addICDConnectionInterfaces(ICDConnectionInterfaces connectioInterfaces) throws Exception;
 	public long addICDConnectionPurpose(ICDConnectionPurpose icdConnectionPurpose) throws Exception;
 	public int getICDConnectionsCount(Long subSystemMainIdOne, Long subSystemMainIdTwo, Long superSubSysMainIdOne, 
 			Long superSubSysMainIdTwo, Long icdDocId) throws Exception;

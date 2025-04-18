@@ -3,7 +3,7 @@ package com.vts.pfms.projectclosure.dao;
 import java.util.List;
 
 import com.vts.pfms.project.model.ProjectMaster;
-
+import com.vts.pfms.project.model.ProjectMasterRev;
 import com.vts.pfms.projectclosure.model.ProjectClosure;
 import com.vts.pfms.projectclosure.model.ProjectClosureACP;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPAchievements;
@@ -94,6 +94,6 @@ public interface ProjectClosureDao {
 	public List<Object[]> TCRTemplateChapterListBySectionId(String sectionid) throws Exception;
 	public List<Object[]> TCRTemplateChapterListByChapterParentId(String chapterparentid) throws Exception;
 	public int AmendTechClosureList(String techClosureId) throws Exception;
-	
+	public List<ProjectMasterRev> getProjectMasterRevListByProjectId(String projectId) throws Exception;
 
 }

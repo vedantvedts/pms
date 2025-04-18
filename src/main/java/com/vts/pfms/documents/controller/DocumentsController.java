@@ -47,7 +47,6 @@ import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.documents.dto.InterfaceTypeAndContentDto;
 import com.vts.pfms.documents.dto.StandardDocumentsDto;
-import com.vts.pfms.documents.model.ICDConnectionInterfaces;
 import com.vts.pfms.documents.model.ICDConnectionPurpose;
 import com.vts.pfms.documents.model.ICDDocumentConnections;
 import com.vts.pfms.documents.model.IGIDocumentIntroduction;
@@ -56,6 +55,7 @@ import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
 import com.vts.pfms.documents.model.IGIInterface;
 import com.vts.pfms.documents.model.IGIInterfaceContent;
 import com.vts.pfms.documents.model.IGIInterfaceTypes;
+import com.vts.pfms.documents.model.IGILogicalChannel;
 import com.vts.pfms.documents.model.IGILogicalInterfaces;
 import com.vts.pfms.documents.model.IRSDocumentSpecifications;
 import com.vts.pfms.documents.model.PfmsApplicableDocs;
@@ -387,7 +387,8 @@ public class DocumentsController {
 			req.setAttribute("interfaceContentList", service.getIGIInterfaceContentList());
 			
 			req.setAttribute("logicalInterfaceList", service.getIGILogicalInterfaces());
-			
+			req.setAttribute("logicalChannelList", service.getIGILogicalChannelList());
+
 			req.setAttribute("igiDocumentIntroductionList", service.getIGIDocumentIntroductionList());
 
 			req.setAttribute("isPdf", req.getParameter("isPdf"));
@@ -1399,6 +1400,9 @@ public class DocumentsController {
 			igiInterface.setCableConstraint(req.getParameter("cableConstraint"));
 			igiInterface.setCableDiameter(req.getParameter("cableDiameter"));
 			igiInterface.setCableDetails(req.getParameter("cableDetails"));
+			igiInterface.setCableMaxLength(req.getParameter("cableMaxLength")!=null?Integer.parseInt(req.getParameter("cableMaxLength")): 0);
+			igiInterface.setInterfaceLoss(req.getParameter("interfaceLoss")!=null?Integer.parseInt(req.getParameter("interfaceLoss")): 0);
+			igiInterface.setCableBendingRadius(req.getParameter("cableBendingRadius")!=null?Double.parseDouble(req.getParameter("cableBendingRadius")): 0);
 			if(interfaceId.equalsIgnoreCase("0")) {
 				igiInterface.setCreatedBy(UserId);
 				igiInterface.setCreatedDate(sdtf.format(new Date()));
@@ -1628,9 +1632,11 @@ public class DocumentsController {
 			}
 
 			req.setAttribute("logicalInterfaceList", logicalInterfaceList);
+			req.setAttribute("logicalChannelList", service.getIGILogicalChannelList());
 			req.setAttribute("igiDocId", req.getParameter("igiDocId"));
 			req.setAttribute("logicalInterfaceId", logicalInterfaceId);
 			req.setAttribute("documentNo", req.getParameter("documentNo"));
+			req.setAttribute("logicalChannelId", req.getParameter("logicalChannelId"));
 
 			return "documents/IGILogicalInterfaceList";
 		} catch (Exception e) {
@@ -1649,18 +1655,27 @@ public class DocumentsController {
 			String igiDocId = req.getParameter("igiDocId");
 			String logicalInterfaceId = req.getParameter("logicalInterfaceId");
 			String action = req.getParameter("action");
-		
+			String logicalChannelId = req.getParameter("logicalChannelId");
+			String[] logicalChannel = logicalChannelId!=null?logicalChannelId.split("/"): null;
+			
 			IGILogicalInterfaces logicalInterface = logicalInterfaceId.equalsIgnoreCase("0")? new IGILogicalInterfaces(): service.getIGILogicalInterfaceById(logicalInterfaceId);
 
 			logicalInterface.setMsgType(req.getParameter("msgType"));
 			logicalInterface.setMsgName(req.getParameter("msgName"));
-			logicalInterface.setMsgTitle(req.getParameter("msgTitle"));
+			logicalInterface.setLogicalChannelId(logicalChannel!=null?Long.parseLong(logicalChannel[0]):0L);
 			logicalInterface.setDataRate(req.getParameter("dataRate"));
 			logicalInterface.setMsgDescription(req.getParameter("msgDescription"));
 			logicalInterface.setProtocals(req.getParameter("protocols"));
 			logicalInterface.setAdditionalInfo(req.getParameter("additionalInfo"));
 			
-			if(logicalInterfaceId.equalsIgnoreCase("0")) {
+			if(logicalInterface.getLogicalInterfaceId()==null) {
+				int count = service.getLogicalInterfaceCountByType(logicalInterface.getLogicalChannelId()+"", logicalInterface.getMsgType());
+				
+				String seqCount = String.format("%03d", count + 1);
+				String channelCode = logicalChannel!=null?logicalChannel[1]:"-";
+				
+				logicalInterface.setMsgCode(channelCode + "_" + logicalInterface.getMsgType().substring(0,3).toUpperCase() + "_" + seqCount );
+				
 				logicalInterface.setCreatedBy(UserId);
 				logicalInterface.setCreatedDate(sdtf.format(new Date()));
 				logicalInterface.setIsActive(1);
@@ -1685,6 +1700,77 @@ public class DocumentsController {
 			return "static/Error";
 		}
 
+	}
+
+	@RequestMapping(value="IGILogicalChannelDetailsSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String igiLogicalChannelDetailsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IGILogicalChannelDetailsSubmit.htm " + UserId);
+		try {
+			
+			String logicalChannelId = req.getParameter("logicalChannelId");
+			IGILogicalChannel logicalChannel = Long.parseLong(logicalChannelId)!=0 ?service.getIGILogicalChannelById(logicalChannelId) 
+																					: new IGILogicalChannel();
+			logicalChannel.setLogicalChannel(req.getParameter("logicalChannel"));
+			logicalChannel.setChannelCode(req.getParameter("channelCode"));
+			logicalChannel.setDescription(req.getParameter("description"));
+			String action = "Add";
+			if(Long.parseLong(logicalChannelId)==0) {
+				logicalChannel.setCreatedBy(UserId);
+				logicalChannel.setCreatedDate(sdtf.format(new Date()));
+				logicalChannel.setIsActive(1);
+			}else {
+				logicalChannel.setModifiedBy(UserId);
+				logicalChannel.setModifiedDate(sdtf.format(new Date()));
+				action = "Edit";
+			}
+			
+			long result = service.addIGILogicalChannel(logicalChannel);
+			
+			if (result > 0) {
+				redir.addAttribute("result", "Logical Channel "+action+"ed Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Logical Channel "+action+" Unsuccessful");
+			}
+			
+			redir.addAttribute("igiDocId", req.getParameter("igiDocId"));
+			redir.addAttribute("logicalInterfaceId", req.getParameter("logicalInterfaceId"));
+			redir.addAttribute("logicalChannelId", result);
+			
+			return "redirect:/IGILogicalInterfacesList.htm";
+		}catch (Exception e) {
+			logger.error(new Date() + " Inside IGILogicalChannelDetailsSubmit.htm " + UserId);
+			e.printStackTrace();
+			return "static/Error";
+		}
+	}
+	
+
+	@RequestMapping(value = "IGILogicalChannelDelete.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String igiLogicalChannelDelete(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
+
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IGILogicalChannelDelete.htm " + UserId);
+		try {
+			String logicalChannelId = req.getParameter("logicalChannelId");
+			
+			long result = service.deleteIGILogicalChannelById(logicalChannelId);
+
+			if (result > 0) {
+				redir.addAttribute("result", "Logical Channel Deleted Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Logical Channel Delete Unsuccessful");
+			}
+
+			redir.addAttribute("igiDocId", req.getParameter("igiDocId"));
+			redir.addAttribute("logicalInterfaceId", req.getParameter("logicalInterfaceId"));
+			
+			return "redirect:/IGILogicalInterfacesList.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IGILogicalChannelDelete.htm " + UserId);
+			return "static/Error";
+		}
 	}
 	/* ************************************************ IGI Document End ***************************************************** */
 	
@@ -1716,7 +1802,7 @@ public class DocumentsController {
 				
 				req.setAttribute("projectDetails", projectservice.getProjectDetails(labcode, projectId, "E"));
 				req.setAttribute("projectList", projectList);
-				req.setAttribute("productTreeList", reqservice.productTreeListByProjectId(projectId));
+				req.setAttribute("productTreeAllList", service.getProductTreeAllList(projectId, "0"));
 				
 			}else {
 				initiationId = req.getParameter("initiationId");
@@ -1727,7 +1813,7 @@ public class DocumentsController {
 				
 				req.setAttribute("projectDetails", projectservice.getProjectDetails(labcode, initiationId, "P"));
 				req.setAttribute("preProjectList", preProjectList);
-				req.setAttribute("productTreeList", reqservice.productTreeListByInitiationId(initiationId));
+				req.setAttribute("productTreeAllList", service.getProductTreeAllList("0", initiationId));
 			}
 			req.setAttribute("projectId", projectId);
 			req.setAttribute("initiationId", initiationId);
@@ -1841,7 +1927,6 @@ public class DocumentsController {
 			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
 			req.setAttribute("applicableDocsList", service.getPfmsApplicableDocs());
 			req.setAttribute("icdApplicableDocsList", service.getIGIApplicableDocs(icdDocId, "B"));
-			req.setAttribute("productTreeList", reqservice.productTreeListByProjectId(icdDocument.getProjectId()!=0?icdDocument.getProjectId()+"":icdDocument.getInitiationId()+""));
 			req.setAttribute("icdConnectionsList", service.getICDConnectionsList(icdDocId));
 			req.setAttribute("interfaceTypesList", service.getIGIInterfaceTypesList());
 			req.setAttribute("interfaceContentList", service.getIGIInterfaceContentList());
@@ -1898,7 +1983,6 @@ public class DocumentsController {
 			req.setAttribute("docType", docType);
 			req.setAttribute("documentNo", req.getParameter("documentNo"));
 			req.setAttribute("projectId", req.getParameter("projectId"));
-			//req.setAttribute("productTreeList", reqservice.productTreeListByProjectId(projectId));
 			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
 			req.setAttribute("icdPurposeList", service.getAllICDPurposeList());
 			req.setAttribute("icdConnectionsList", service.getICDConnectionsList(docId));
@@ -1924,41 +2008,69 @@ public class DocumentsController {
 		try {
 			
 			String docId = req.getParameter("docId");
-			String subSystemOne = req.getParameter("subSystemOne");
-			String subSystemTwo = req.getParameter("subSystemTwo");
-			String superSubSystemOne = req.getParameter("superSubSystemOne");
-			String superSubSystemTwo = req.getParameter("superSubSystemTwo");
-			String isSubSystem = req.getParameter("isSubSystem");
-			String[] interfaceId = req.getParameterValues("interfaceId");
+			String icdConnectionId = req.getParameter("icdConnectionId");
 			String[] purpose = req.getParameterValues("purpose");
 			
-			String[] subSystemOnes  = subSystemOne!=null?subSystemOne.split("/"): null;
-			String[] subSystemTwos  = subSystemTwo!=null?subSystemTwo.split("/"): null;
-			String[] superSubSystemOnes  = superSubSystemOne!=null?superSubSystemOne.split("/"): null;
-			String[] superSubSystemTwos  = superSubSystemTwo!=null?superSubSystemTwo.split("/"): null;
+			ICDDocumentConnections connections = Long.parseLong(icdConnectionId)!=0 ? service.getICDDocumentConnectionsById(icdConnectionId) 
+																					: new ICDDocumentConnections();
+			if(connections.getICDConnectionId()==null) {
+				
+				String subSystemOne = req.getParameter("subSystemOne");
+				String subSystemTwo = req.getParameter("subSystemTwo");
+				String superSubSystemOne = req.getParameter("superSubSystemOne");
+				String superSubSystemTwo = req.getParameter("superSubSystemTwo");
+				String interfaceId = req.getParameter("interfaceId");
+				String[] interfaceIds = interfaceId!=null?interfaceId.split("/"):null;
+				String isSubSystem = req.getParameter("isSubSystem");
+				
+				String[] subSystemOnes  = subSystemOne!=null?subSystemOne.split("/"): null;
+				String[] subSystemTwos  = subSystemTwo!=null?subSystemTwo.split("/"): null;
+				String[] superSubSystemOnes  = superSubSystemOne!=null?superSubSystemOne.split("/"): null;
+				String[] superSubSystemTwos  = superSubSystemTwo!=null?superSubSystemTwo.split("/"): null;
+				
+				connections.setICDDocId(Long.parseLong(docId));
+				connections.setSubSystemMainIdOne(subSystemOnes!=null?Long.parseLong(subSystemOnes[0]):0);
+				connections.setSubSystemOne(subSystemOnes!=null?subSystemOnes[1]:null);
+				connections.setSubSystemMainIdTwo(subSystemTwos!=null?Long.parseLong(subSystemTwos[0]):0); 
+				connections.setSubSystemTwo(subSystemTwos!=null?subSystemTwos[1]:null);
+				connections.setSuperSubSysMainIdOne(superSubSystemOnes!=null?Long.parseLong(superSubSystemOnes[0]):0);
+				connections.setSuperSubSystemOne(superSubSystemOnes!=null?superSubSystemOnes[1]:null);
+				connections.setSuperSubSysMainIdTwo(superSubSystemTwos!=null?Long.parseLong(superSubSystemTwos[0]):0);
+				connections.setSuperSubSystemTwo(superSubSystemTwos!=null?superSubSystemTwos[1]:null);
+				connections.setInterfaceId(interfaceIds!=null?Long.parseLong(interfaceIds[0]):0L);
+				connections.setCreatedBy(UserId);
+				connections.setCreatedDate(sdtf.format(new Date()));
+				connections.setIsActive(1);
+				
+				String connectionCode = "";
+				int connectionCount = service.getICDConnectionsCount(connections.getSubSystemMainIdOne(), connections.getSubSystemMainIdTwo(), 
+						connections.getSuperSubSysMainIdOne(), connections.getSuperSubSysMainIdTwo(), connections.getICDDocId());
+
+				if(isSubSystem.equalsIgnoreCase("N")) {
+					connectionCode = connections.getSubSystemOne() + "_" + connections.getSubSystemTwo();
+				}else {
+					connectionCode = connections.getSuperSubSystemOne() + "_" + connections.getSuperSubSystemTwo();
+				}
+
+				connections.setConnectionCode((connectionCount+1) + "." + connectionCode+ "_" + (interfaceIds!=null?interfaceIds[1]:null));
+				
+			}else {
+				connections.setModifiedBy(UserId);
+				connections.setModifiedDate(sdtf.format(new Date()));
+			}
 			
-			ICDDocumentConnections connections = new ICDDocumentConnections();
-			connections.setICDDocId(Long.parseLong(docId));
-			connections.setSubSystemMainIdOne(subSystemOnes!=null?Long.parseLong(subSystemOnes[0]):0);
-			connections.setSubSystemOne(subSystemOnes!=null?subSystemOnes[1]:null);
-			connections.setSubSystemMainIdTwo(subSystemTwos!=null?Long.parseLong(subSystemTwos[0]):0); 
-			connections.setSubSystemTwo(subSystemTwos!=null?subSystemTwos[1]:null);
-			connections.setSuperSubSysMainIdOne(superSubSystemOnes!=null?Long.parseLong(superSubSystemOnes[0]):0);
-			connections.setSuperSubSystemOne(superSubSystemOnes!=null?superSubSystemOnes[1]:null);
-			connections.setSuperSubSysMainIdTwo(superSubSystemTwos!=null?Long.parseLong(superSubSystemTwos[0]):0);
-			connections.setSuperSubSystemTwo(superSubSystemTwos!=null?superSubSystemTwos[1]:null);
 			connections.setConstraints(req.getParameter("constraints"));
 			connections.setPeriodicity(req.getParameter("periodicity"));
 			connections.setDescription(req.getParameter("description"));
 			connections.setDrawingNo(req.getParameter("drawingNo"));
-			connections.setCreatedBy(UserId);
-			connections.setCreatedDate(sdtf.format(new Date()));
-			connections.setIsActive(1);
+			connections.setCableMaxLength(req.getParameter("cableMaxLength")!=null?Integer.parseInt(req.getParameter("cableMaxLength")): 0);
+			connections.setInterfaceLoss(req.getParameter("interfaceLoss")!=null?Integer.parseInt(req.getParameter("interfaceLoss")): 0);
+			connections.setCableBendingRadius(req.getParameter("cableBendingRadius")!=null?Double.parseDouble(req.getParameter("cableBendingRadius")): 0);
 			
 			long result = service.addICDDocumentConnections(connections, drawingAttachment, labcode);
 			
 			// Add ICD Connection Interfaces
-			addICDConnectionInterfaces(connections, interfaceId, result, isSubSystem, UserId);
+			//addICDConnectionInterfaces(connections, interfaceId, result, isSubSystem, UserId);
 			
 			// Add ICD Connection Purpose
 			addICDConnectionPurpose(purpose, result+"", UserId);
@@ -1989,9 +2101,9 @@ public class DocumentsController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() + " Inside ICDConnectionDelete.htm " + UserId);
 		try {
-			String conInterfaceId = req.getParameter("conInterfaceId");
+			String icdConnectionId = req.getParameter("icdConnectionId");
 			
-			long result = service.deleteICDConnectionById(conInterfaceId);
+			long result = service.deleteICDConnectionById(icdConnectionId);
 
 			if (result > 0) {
 				redir.addAttribute("result", "ICD Connection Deleted Successfully");
@@ -2021,13 +2133,11 @@ public class DocumentsController {
 		try {
 			String docId = req.getParameter("docId");
 			String docType = req.getParameter("docType");
-			String projectId = req.getParameter("projectId");
 
 			req.setAttribute("docId", docId);
 			req.setAttribute("docType", docType);
 			req.setAttribute("documentNo", req.getParameter("documentNo"));
 			req.setAttribute("projectId", req.getParameter("projectId"));
-			req.setAttribute("productTreeList", reqservice.productTreeListByProjectId(projectId));
 			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
 			req.setAttribute("icdConnectionsList", service.getICDConnectionsList(docId));
 			PfmsICDDocument icdDocument = service.getPfmsICDDocumentById(docId);
@@ -2212,77 +2322,77 @@ public class DocumentsController {
 	}
 	
 
-	@RequestMapping(value="ICDAddNewConnectionSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
-	public String icdAddNewConnectionSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
-		String UserId = (String) ses.getAttribute("Username");
-		
-		logger.info(new Date() + " Inside ICDAddNewConnectionSubmit.htm " + UserId);
-		
-		try {
-			
-			String icdConnectionId = req.getParameter("icdConnectionId");
-			String isSubSystem = req.getParameter("isSubSystem");
-			ICDDocumentConnections connections = service.getICDDocumentConnectionsById(icdConnectionId);
-			
-			String[] interfaceId = req.getParameterValues("interfaceId");
-			
-			// Add ICD Connection Interfaces
-			int result = addICDConnectionInterfaces(connections, interfaceId, Long.parseLong(icdConnectionId), isSubSystem, UserId);
-			
-			if (result > 0) {
-				redir.addAttribute("result", "ICD Connection Details Updated Successfully");
-			} else {
-				redir.addAttribute("resultfail", "ICD Connection Details Update Unsuccessful");
-			}
+//	@RequestMapping(value="ICDAddNewConnectionSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+//	public String icdAddNewConnectionSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+//		String UserId = (String) ses.getAttribute("Username");
+//		
+//		logger.info(new Date() + " Inside ICDAddNewConnectionSubmit.htm " + UserId);
+//		
+//		try {
+//			
+//			String icdConnectionId = req.getParameter("icdConnectionId");
+//			String isSubSystem = req.getParameter("isSubSystem");
+//			ICDDocumentConnections connections = service.getICDDocumentConnectionsById(icdConnectionId);
+//			
+//			String[] interfaceId = req.getParameterValues("interfaceId");
+//			
+//			// Add ICD Connection Interfaces
+//			int result = addICDConnectionInterfaces(connections, interfaceId, Long.parseLong(icdConnectionId), isSubSystem, UserId);
+//			
+//			if (result > 0) {
+//				redir.addAttribute("result", "ICD Connection Details Updated Successfully");
+//			} else {
+//				redir.addAttribute("resultfail", "ICD Connection Details Update Unsuccessful");
+//			}
+//
+//			redir.addAttribute("docId", req.getParameter("docId"));
+//			redir.addAttribute("docType", req.getParameter("docType"));
+//			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+//			redir.addAttribute("projectId", req.getParameter("projectId"));
+//			
+//			return "redirect:/ICDConnectionsDetails.htm";
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//			logger.error(new Date() + " Inside ICDAddNewConnectionSubmit.htm " + UserId, e);
+//			return "static/Error";
+//		}
+//	}
 
-			redir.addAttribute("docId", req.getParameter("docId"));
-			redir.addAttribute("docType", req.getParameter("docType"));
-			redir.addAttribute("documentNo", req.getParameter("documentNo"));
-			redir.addAttribute("projectId", req.getParameter("projectId"));
-			
-			return "redirect:/ICDConnectionsDetails.htm";
-		}catch (Exception e) {
-			e.printStackTrace();
-			logger.error(new Date() + " Inside ICDAddNewConnectionSubmit.htm " + UserId, e);
-			return "static/Error";
-		}
-	}
-
-	private int addICDConnectionInterfaces(ICDDocumentConnections connections, String[] interfaceId, Long icdConnectionId, String isSubSystem, String userId) throws Exception {
-		try {
-			String connectionCode = "";
-			int connectionCount = service.getICDConnectionsCount(connections.getSubSystemMainIdOne(), connections.getSubSystemMainIdTwo(), 
-					connections.getSuperSubSysMainIdOne(), connections.getSuperSubSysMainIdTwo(), connections.getICDDocId());
-
-			if(isSubSystem.equalsIgnoreCase("N")) {
-				connectionCode = connections.getSubSystemOne() + "_" + connections.getSubSystemTwo();
-			}else {
-				connectionCode = connections.getSuperSubSystemOne() + "_" + connections.getSuperSubSystemTwo();
-			}
-
-			if(interfaceId!=null && interfaceId.length>0) {
-
-				for(int i=0; i<interfaceId.length; i++) {
-
-					String[] interfaceIds = interfaceId[i]!=null?interfaceId[i].split("/"):null;
-					ICDConnectionInterfaces interfaces = new ICDConnectionInterfaces();
-					interfaces.setICDConnectionId(icdConnectionId);
-					interfaces.setInterfaceId(interfaceIds!=null?Long.parseLong(interfaceIds[0]):0);
-					interfaces.setConnectionCode((connectionCount+(i+1)) + "." + connectionCode+ "_" + (interfaceIds!=null?interfaceIds[1]:null));
-					interfaces.setCreatedBy(userId);
-					interfaces.setCreatedDate(sdtf.format(new Date()));
-					interfaces.setIsActive(1);
-
-					service.addICDConnectionInterfaces(interfaces);
-				}
-			}
-
-			return 1;
-		}catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
-	}
+//	private int addICDConnectionInterfaces(ICDDocumentConnections connections, String[] interfaceId, Long icdConnectionId, String isSubSystem, String userId) throws Exception {
+//		try {
+//			String connectionCode = "";
+//			int connectionCount = service.getICDConnectionsCount(connections.getSubSystemMainIdOne(), connections.getSubSystemMainIdTwo(), 
+//					connections.getSuperSubSysMainIdOne(), connections.getSuperSubSysMainIdTwo(), connections.getICDDocId());
+//
+//			if(isSubSystem.equalsIgnoreCase("N")) {
+//				connectionCode = connections.getSubSystemOne() + "_" + connections.getSubSystemTwo();
+//			}else {
+//				connectionCode = connections.getSuperSubSystemOne() + "_" + connections.getSuperSubSystemTwo();
+//			}
+//
+//			if(interfaceId!=null && interfaceId.length>0) {
+//
+//				for(int i=0; i<interfaceId.length; i++) {
+//
+//					String[] interfaceIds = interfaceId[i]!=null?interfaceId[i].split("/"):null;
+//					ICDConnectionInterfaces interfaces = new ICDConnectionInterfaces();
+//					interfaces.setICDConnectionId(icdConnectionId);
+//					interfaces.setInterfaceId(interfaceIds!=null?Long.parseLong(interfaceIds[0]):0);
+//					interfaces.setConnectionCode((connectionCount+(i+1)) + "." + connectionCode+ "_" + (interfaceIds!=null?interfaceIds[1]:null));
+//					interfaces.setCreatedBy(userId);
+//					interfaces.setCreatedDate(sdtf.format(new Date()));
+//					interfaces.setIsActive(1);
+//
+//					service.addICDConnectionInterfaces(interfaces);
+//				}
+//			}
+//
+//			return 1;
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//			return 0;
+//		}
+//	}
 	
 	private int addICDConnectionPurpose(String[] purpose, String icdConnectionId, String userId) throws Exception {
 		try {
@@ -2312,36 +2422,36 @@ public class DocumentsController {
 		
 	}
 	
-	@RequestMapping(value="CheckICDConnectionExistence.htm",method= {RequestMethod.GET,RequestMethod.POST})
-	public  @ResponseBody String  checkICDConnectionExistence(HttpServletRequest req, HttpSession ses)throws Exception{
-		String Username=(String)ses.getAttribute("Username");
-		logger.info(new Date() + "Inside CheckICDConnectionExistence.htm"+Username);
-		Gson json = new Gson();
-		int connectionCount =0;
-		try {
-			String docId = req.getParameter("docId");
-			String subSystemOne = req.getParameter("subSystem1");
-			String subSystemTwo = req.getParameter("subSystem2");
-			String superSubSystemOne = req.getParameter("superSubSystem1");
-			String superSubSystemTwo = req.getParameter("superSubSystem2");
-			
-			String[] subSystemOnes  = subSystemOne!=null?subSystemOne.split("/"): null;
-			String[] subSystemTwos  = subSystemTwo!=null?subSystemTwo.split("/"): null;
-			String[] superSubSystemOnes  = superSubSystemOne!=null?superSubSystemOne.split("/"): null;
-			String[] superSubSystemTwos  = superSubSystemTwo!=null?superSubSystemTwo.split("/"): null;
-			
-			connectionCount = service.getICDConnectionsCount(subSystemOnes!=null && !subSystemOnes[0].isEmpty()?Long.parseLong(subSystemOnes[0]):0, 
-															subSystemTwos!=null && !subSystemTwos[0].isEmpty()?Long.parseLong(subSystemTwos[0]):0, 
-															superSubSystemOnes!=null && !superSubSystemOnes[0].isEmpty()?Long.parseLong(superSubSystemOnes[0]):0, 
-															superSubSystemTwos!=null && !superSubSystemTwos[0].isEmpty()?Long.parseLong(superSubSystemTwos[0]):0, 
-															Long.parseLong(docId) );
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error(new Date() +" Inside CheckICDConnectionExistence.htm"+Username, e);
-		}
-		return json.toJson(connectionCount);
-
-	}
+//	@RequestMapping(value="CheckICDConnectionExistence.htm",method= {RequestMethod.GET,RequestMethod.POST})
+//	public  @ResponseBody String  checkICDConnectionExistence(HttpServletRequest req, HttpSession ses)throws Exception{
+//		String Username=(String)ses.getAttribute("Username");
+//		logger.info(new Date() + "Inside CheckICDConnectionExistence.htm"+Username);
+//		Gson json = new Gson();
+//		int connectionCount =0;
+//		try {
+//			String docId = req.getParameter("docId");
+//			String subSystemOne = req.getParameter("subSystem1");
+//			String subSystemTwo = req.getParameter("subSystem2");
+//			String superSubSystemOne = req.getParameter("superSubSystem1");
+//			String superSubSystemTwo = req.getParameter("superSubSystem2");
+//			
+//			String[] subSystemOnes  = subSystemOne!=null?subSystemOne.split("/"): null;
+//			String[] subSystemTwos  = subSystemTwo!=null?subSystemTwo.split("/"): null;
+//			String[] superSubSystemOnes  = superSubSystemOne!=null?superSubSystemOne.split("/"): null;
+//			String[] superSubSystemTwos  = superSubSystemTwo!=null?superSubSystemTwo.split("/"): null;
+//			
+//			connectionCount = service.getICDConnectionsCount(subSystemOnes!=null && !subSystemOnes[0].isEmpty()?Long.parseLong(subSystemOnes[0]):0, 
+//															subSystemTwos!=null && !subSystemTwos[0].isEmpty()?Long.parseLong(subSystemTwos[0]):0, 
+//															superSubSystemOnes!=null && !superSubSystemOnes[0].isEmpty()?Long.parseLong(superSubSystemOnes[0]):0, 
+//															superSubSystemTwos!=null && !superSubSystemTwos[0].isEmpty()?Long.parseLong(superSubSystemTwos[0]):0, 
+//															Long.parseLong(docId) );
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			logger.error(new Date() +" Inside CheckICDConnectionExistence.htm"+Username, e);
+//		}
+//		return json.toJson(connectionCount);
+//
+//	}
 	
 	@RequestMapping(value = "ICDConnectionDrawingAttachDownload.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public void icdConnectionDrawingAttachDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)throws Exception 
@@ -2410,7 +2520,7 @@ public class DocumentsController {
 				
 				req.setAttribute("projectDetails", projectservice.getProjectDetails(labcode, projectId, "E"));
 				req.setAttribute("projectList", projectList);
-				req.setAttribute("productTreeList", reqservice.productTreeListByProjectId(projectId));
+				req.setAttribute("productTreeAllList", service.getProductTreeAllList(projectId, "0"));
 				
 			}else {
 				initiationId = req.getParameter("initiationId");
@@ -2421,7 +2531,7 @@ public class DocumentsController {
 				
 				req.setAttribute("projectDetails", projectservice.getProjectDetails(labcode, initiationId, "P"));
 				req.setAttribute("preProjectList", preProjectList);
-				req.setAttribute("productTreeList", reqservice.productTreeListByInitiationId(initiationId));
+				req.setAttribute("productTreeAllList", service.getProductTreeAllList("0", initiationId));
 			}
 			req.setAttribute("projectId", projectId);
 			req.setAttribute("initiationId", initiationId);
@@ -2541,6 +2651,8 @@ public class DocumentsController {
 			req.setAttribute("irsApplicableDocsList", service.getIGIApplicableDocs(irsDocId, "C"));
 			
 			req.setAttribute("logicalInterfaceList", service.getIGILogicalInterfaces());
+			req.setAttribute("logicalChannelList", service.getIGILogicalChannelList());
+
 			req.setAttribute("irsSpecificationsList", service.getIRSDocumentSpecificationsList(irsDocId));
 			
 			req.setAttribute("isPdf", req.getParameter("isPdf"));
@@ -2588,7 +2700,6 @@ public class DocumentsController {
 		try {
 			String docId = req.getParameter("docId");
 			String docType = req.getParameter("docType");
-			String projectId = req.getParameter("projectId");
 			String irsSpecificationId = req.getParameter("irsSpecificationId");
 			irsSpecificationId = irsSpecificationId==null?"0":irsSpecificationId;
 
@@ -2598,7 +2709,6 @@ public class DocumentsController {
 			req.setAttribute("docType", docType);
 			req.setAttribute("documentNo", req.getParameter("documentNo"));
 			req.setAttribute("projectId", req.getParameter("projectId"));
-			req.setAttribute("productTreeList", reqservice.productTreeListByProjectId(projectId));
 			req.setAttribute("logicalInterfaceList", service.getIGILogicalInterfaces());
 			req.setAttribute("irsDocument", irsDocument);
 			req.setAttribute("dataCarryingConnectionList", service.getDataCarryingConnectionList(icdDocId));
@@ -2622,13 +2732,13 @@ public class DocumentsController {
 		try {
 			
 			String docId = req.getParameter("docId");
-			String conInterfaceId = req.getParameter("conInterfaceId");
+			String icdConnectionId = req.getParameter("icdConnectionId");
 			String logicalInterfaceId = req.getParameter("logicalInterfaceId");
 			String irsSpecificationId = req.getParameter("irsSpecificationId");
 		
 			IRSDocumentSpecifications specifications = irsSpecificationId.equalsIgnoreCase("0")? new IRSDocumentSpecifications(): service.getIRSDocumentSpecificationsById(irsSpecificationId);
 			specifications.setIRSDocId(Long.parseLong(docId));
-			specifications.setConInterfaceId(conInterfaceId!=null?Long.parseLong(conInterfaceId):0L);
+			specifications.setICDConnectionId(icdConnectionId!=null?Long.parseLong(icdConnectionId):0L);
 			specifications.setLogicalInterfaceId(logicalInterfaceId!=null?Long.parseLong(logicalInterfaceId):0L);
 			specifications.setInfoName(req.getParameter("infoName"));
 			specifications.setActionAtDest(req.getParameter("actionAtDest"));
@@ -2824,7 +2934,7 @@ public class DocumentsController {
 				
 				req.setAttribute("projectDetails", projectservice.getProjectDetails(labcode, projectId, "E"));
 				req.setAttribute("projectList", projectList);
-				req.setAttribute("productTreeList", reqservice.productTreeListByProjectId(projectId));
+				req.setAttribute("productTreeAllList", service.getProductTreeAllList(projectId, "0"));
 				
 			}else {
 				initiationId = req.getParameter("initiationId");
@@ -2835,7 +2945,7 @@ public class DocumentsController {
 				
 				req.setAttribute("projectDetails", projectservice.getProjectDetails(labcode, initiationId, "P"));
 				req.setAttribute("preProjectList", preProjectList);
-				req.setAttribute("productTreeList", reqservice.productTreeListByInitiationId(initiationId));
+				req.setAttribute("productTreeAllList", service.getProductTreeAllList("0", initiationId));
 			}
 			req.setAttribute("projectId", projectId);
 			req.setAttribute("initiationId", initiationId);

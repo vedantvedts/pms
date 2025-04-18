@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.model.LabMaster"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.projectclosure.model.ProjectClosure"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -271,6 +272,7 @@ hr{
 ProjectMaster projectMaster = (ProjectMaster)request.getAttribute("ProjectDetails");
 ProjectClosure closure = (ProjectClosure)request.getAttribute("ProjectClosureDetails");
 ProjectClosureSoC soc = (ProjectClosureSoC)request.getAttribute("ProjectClosureSoCData");
+LabMaster labMaster = (LabMaster)request.getAttribute("labMasterData");
 
 Object[] potherdetails = (Object[])request.getAttribute("ProjectOriginalRevDetails");
 Object[] expndDetails = (Object[])request.getAttribute("ProjectExpenditureDetails");
@@ -600,7 +602,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
 												    		<td style="width: 40%;">Name of Lab/Est</td>
-												    		<td>: <%=labcode %> </td>
+												    		<td>: <%=labMaster.getLabName()+ " (" + labMaster.getLabCode() +  "), "+ labMaster.getLabAddress()%> </td>
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>

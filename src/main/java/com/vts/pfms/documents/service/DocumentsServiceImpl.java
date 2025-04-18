@@ -29,7 +29,6 @@ import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.documents.dao.DocumentsDao;
 import com.vts.pfms.documents.dto.InterfaceTypeAndContentDto;
 import com.vts.pfms.documents.dto.StandardDocumentsDto;
-import com.vts.pfms.documents.model.ICDConnectionInterfaces;
 import com.vts.pfms.documents.model.ICDConnectionPurpose;
 import com.vts.pfms.documents.model.ICDDocumentConnections;
 import com.vts.pfms.documents.model.ICDPurpose;
@@ -42,6 +41,7 @@ import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.IGIInterface;
 import com.vts.pfms.documents.model.IGIInterfaceContent;
 import com.vts.pfms.documents.model.IGIInterfaceTypes;
+import com.vts.pfms.documents.model.IGILogicalChannel;
 import com.vts.pfms.documents.model.IGILogicalInterfaces;
 import com.vts.pfms.documents.model.IRSDocumentSpecifications;
 import com.vts.pfms.documents.model.PfmsApplicableDocs;
@@ -687,14 +687,6 @@ public class DocumentsServiceImpl implements DocumentsService{
 	@Override
 	public long addIGILogicalInterfaces(IGILogicalInterfaces logicalInterfaces) throws Exception {
 		try {
-			if(logicalInterfaces.getLogicalInterfaceId()==null) {
-				
-				int count = dao.getLogicalInterfaceCountByType(logicalInterfaces.getMsgType());
-				
-				String seqCount = (count>=99)?("_"+(count+1)) : ((count>=9 && count<99)?("_0"+(count+1)) : ("_00"+(count+1)) );
-				
-				logicalInterfaces.setMsgCode(logicalInterfaces.getMsgType().substring(0,3).toUpperCase()+ seqCount );
-			}
 			return dao.addIGILogicalInterfaces(logicalInterfaces);
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -702,6 +694,38 @@ public class DocumentsServiceImpl implements DocumentsService{
 		}
 		
 	}
+	
+	@Override
+	public int getLogicalInterfaceCountByType(String logicalChannelId, String msgType) throws Exception {
+
+		return dao.getLogicalInterfaceCountByType(logicalChannelId, msgType);
+	}
+	
+	@Override
+	public List<IGILogicalChannel> getIGILogicalChannelList() throws Exception {
+		
+		return dao.getIGILogicalChannelList();
+	}
+	
+	@Override
+	public IGILogicalChannel getIGILogicalChannelById(String logicalChannelId) throws Exception {
+		
+		return dao.getIGILogicalChannelById(logicalChannelId);
+	}
+	
+	@Override
+	public long addIGILogicalChannel(IGILogicalChannel igiLogicalChannel) throws Exception {
+		
+		return dao.addIGILogicalChannel(igiLogicalChannel);
+	}
+	
+	@Override
+	public int deleteIGILogicalChannelById(String logicalChannelId) throws Exception {
+		
+		return dao.deleteIGILogicalChannelById(logicalChannelId);
+	}
+	
+
 	/* ************************************************ IGI Document End ***************************************************** */
 	
 	/* ************************************************ ICD Document ***************************************************** */
@@ -759,9 +783,9 @@ public class DocumentsServiceImpl implements DocumentsService{
 	}
 	
 	@Override
-	public int deleteICDConnectionById(String conInterfaceId) throws Exception {
+	public int deleteICDConnectionById(String icdConnectionId) throws Exception {
 
-		return dao.deleteICDConnectionById(conInterfaceId);
+		return dao.deleteICDConnectionById(icdConnectionId);
 	}
 	
 	@Override
@@ -908,12 +932,6 @@ public class DocumentsServiceImpl implements DocumentsService{
 	public List<ICDPurpose> getAllICDPurposeList() throws Exception {
 		
 		return dao.getAllICDPurposeList();
-	}
-	
-	@Override
-	public long addICDConnectionInterfaces(ICDConnectionInterfaces connectioInterfaces) throws Exception {
-		
-		return dao.addICDConnectionInterfaces(connectioInterfaces);
 	}
 	
 	@Override

@@ -1,4 +1,5 @@
 
+<%@page import="com.vts.pfms.documents.model.IGILogicalChannel"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="com.vts.pfms.documents.model.IGILogicalInterfaces"%>
 <%@page import="java.util.HashMap"%>
@@ -197,10 +198,15 @@ label {
 <body>
 	<%
 		List<IGILogicalInterfaces> logicalInterfaceList = (List<IGILogicalInterfaces>)request.getAttribute("logicalInterfaceList");
+		List<IGILogicalChannel> logicalChannelList = (List<IGILogicalChannel>)request.getAttribute("logicalChannelList");
 		IGILogicalInterfaces logicalInterface = (IGILogicalInterfaces)request.getAttribute("igiLogicalInterfaceData");
 		String logicalInterfaceId = (String)request.getAttribute("logicalInterfaceId");
+		String logicalChannelId = (String)request.getAttribute("logicalChannelId");
+		if(logicalChannelId==null) {
+			logicalChannelId = "0";
+		}
 		String igiDocId = (String)request.getAttribute("igiDocId");
-		List<String> msgTypesList = Arrays.asList("Point to Point", "Broadcast", "Info", "Logging", "Multicast", "Commanding");
+		List<String> msgTypesList = Arrays.asList("Information", "Request", "Answer", "Command", "Acknowledement");
 	%>
 	
 	<% String ses=(String)request.getParameter("result");
@@ -236,7 +242,7 @@ label {
        		
        		<div class="card-body">
        			<div class="custom-container">
-       				<div style="width: 12%;">
+       				<div style="width: 15%;">
        					<div class="card" style="border-color: #007bff;">
      						<div class="card-header center" style="background-color: transparent;border-color: #007bff;">
      							<h5 class="" style="font-weight: bold;color: #8b550c;">List of Interfaces</h5>
@@ -256,34 +262,47 @@ label {
     							
    								<% 
 								    // Define interface types and corresponding variable names
-								    Map<String, List<IGILogicalInterfaces>> interfaceMap = new LinkedHashMap<>();
-   								
-   									for(String msgType : msgTypesList) {
+								    Map<String, List<IGILogicalInterfaces>> logicalInterfaceMap = new LinkedHashMap<>();
+	   								
+   									for(IGILogicalChannel channel : logicalChannelList) {
    										
-   										List<IGILogicalInterfaces> interfaceListByType = logicalInterfaceList.stream().filter(e -> e.getMsgType().equalsIgnoreCase(msgType)).collect(Collectors.toList());
+   										List<IGILogicalInterfaces> interfaceListByType = logicalInterfaceList.stream().filter(e -> e.getLogicalChannelId().equals(channel.getLogicalChannelId())).collect(Collectors.toList());
    										
-   										interfaceMap.computeIfAbsent(msgType, k -> new ArrayList<>()).addAll(interfaceListByType);
+   										logicalInterfaceMap.computeIfAbsent(channel.getLogicalChannelId() +"/"+ channel.getChannelCode(), k -> new ArrayList<>()).addAll(interfaceListByType);
    									}
+									
    									
 									int interfaceMainCount = 0;
-								    for (Map.Entry<String, List<IGILogicalInterfaces>> entry : interfaceMap.entrySet()) {
-								        String msgType = entry.getKey();
+								    for (Map.Entry<String, List<IGILogicalInterfaces>> entry : logicalInterfaceMap.entrySet()) {
+								        String key = entry.getKey();
+								        String[] channelkey = key.split("/");
+								        String channelId = channelkey[0];
+								        String channelCode = channelkey[1];
 								        List<IGILogicalInterfaces> interfaceList = entry.getValue();
    										
-								        String buttonId = msgType.replace(" ", "").toLowerCase() + "InterfaceBtn";
-								        String listId = msgType.replace(" ", "").toLowerCase() + "InterfaceList";
+								        String buttonId = channelCode.replace(" ", "").toLowerCase() + "InterfaceBtn";
+								        String listId = channelCode.replace(" ", "").toLowerCase() + "InterfaceList";
+								        
+								        IGILogicalChannel channel = logicalChannelList.stream().filter(e-> e.getLogicalChannelId()==Long.parseLong(channelId)).findFirst().orElse(null);
 								%>
 								    <!-- Interface List Section -->
 								    <div class="row">
 								        <div class="col-md-12">
 								            <button type="button" class="btn btn-outline-secondary fw-bold customeSidebarBtn left" 
 								                id="<%=buttonId%>" value="1" style="padding: 0.2rem;" 
-								                data-toggle="tooltip" data-placement="top" title="<%=msgType%> Interfaces">
-								                <span style="font-weight: bold;"><%=(++interfaceMainCount) + ". " + msgType%></span>
-								                <% if (interfaceList.size() > 0) { %>
-								                &nbsp; <i class="fa fa-caret-up"></i>
-								                <% } %>
+								                data-toggle="tooltip" data-placement="top" title="<%=channelCode%> Interfaces">
+								                <span style="font-weight: bold;"><%=(++interfaceMainCount) + ". " + channelCode%></span>
+								                <span style="float: right;margin-right: 0.5rem;">
+								                	<i class="fa fa-pencil-square-o" aria-hidden="true" onclick="openChannelEditModal('<%=channelId%>')"></i>
+								                	&nbsp;&nbsp;<i class="fa fa-trash" aria-hidden="true" onclick="deleteChannel('<%=channelId%>')"></i>
+									                <% if (interfaceList.size() > 0) { %>
+									                &nbsp;&nbsp; <i id="facaret" class="fa fa-caret-up"></i>
+									                <% } %>
+								                </span>
 								            </button>
+								            <input type="hidden" id="logicalChannel<%=channelId %>" value="<%=channel.getLogicalChannel()%>">
+								            <input type="hidden" id="channelCode<%=channelId %>" value="<%=channel.getChannelCode()%>">
+								            <input type="hidden" id="description<%=channelId %>" value="<%=channel.getDescription()%>">
 								        </div>
 								    </div>
 								
@@ -314,7 +333,7 @@ label {
    							</div>
        					</div>
        				</div>
-       				<div style="width: 88%;">
+       				<div style="width: 85%;">
        					<div class="card ml-3 mr-3">
        						<div class="card-header">
        							<h4 class="text-dark">Interface Details <%if(logicalInterface!=null) {%>- <%=logicalInterface.getMsgName() %><%} %> </h4>
@@ -327,6 +346,20 @@ label {
 	       							
 	       							<div class="form-group">
 			       						<div class="row">
+			       							<div class="col-md-3">
+		       									<label class="form-lable">Logical Channel Name<span class="mandatory">*</span></label>
+		       									<select class="form-control selectdee" id="logicalChannelId" name="logicalChannelId" required>
+		       										<option value="" selected disabled>----select----</option>
+		       										<option value="addNew" style="background-color: purple !important;">Add New</option>
+		       										<%for(IGILogicalChannel channel : logicalChannelList) {%>
+		       											<option value="<%=channel.getLogicalChannelId()+"/"+channel.getChannelCode() %>" 
+		       											<%if(logicalInterface!=null && logicalInterface.getLogicalChannelId()!=null && logicalInterface.getLogicalChannelId().equals(channel.getLogicalChannelId()) ||
+		       													Long.parseLong(logicalChannelId)==channel.getLogicalChannelId()) {%>selected<%} %>>
+		       												<%=channel.getLogicalChannel()+" ("+channel.getChannelCode()+")" %>
+		       											</option>
+		       										<%} %>
+		       									</select>
+		       								</div>
 			                    		    <div class="col-md-2">
 		       									<label class="form-lable">Message Type <span class="mandatory">*</span></label>
 		       									<select class="form-control" id="msgType" name="msgType" required>
@@ -336,14 +369,11 @@ label {
 		       										<%} %>
 		       									</select>
 		       								</div>
-			                    		    <div class="col-md-2">
+			                    		    <div class="col-md-3">
 		       									<label class="form-lable">Message Name <span class="mandatory">*</span></label>
 		       									<input type="text" class="form-control" name="msgName" <%if(logicalInterface!=null && logicalInterface.getMsgName()!=null) {%>value="<%=logicalInterface.getMsgName() %>"<%} %> placeholder="Enter Message Name" maxlength="255" required>
 		       								</div>
-		       								<div class="col-md-2">
-		       									<label class="form-lable">Message Title <span class="mandatory">*</span></label>
-		       									<input type="text" class="form-control" name="msgTitle" <%if(logicalInterface!=null && logicalInterface.getMsgTitle()!=null) {%>value="<%=logicalInterface.getMsgTitle() %>"<%} %> placeholder="Enter Message Title" maxlength="255" required>
-		       								</div>
+		       								
 			                    		    <div class="col-md-2">
 		       									<label class="form-lable">Data Rate </label>
 		       									<input type="text" class="form-control" name="dataRate" <%if(logicalInterface!=null && logicalInterface.getDataRate()!=null) {%>value="<%=logicalInterface.getDataRate() %>"<%} %> placeholder="Enter Data Rate" maxlength="255">
@@ -353,15 +383,15 @@ label {
                   				 	
 	       							<div class="form-group">
 			       						<div class="row">
-			                    		    <div class="col-md-2">
+			                    		    <div class="col-md-3">
 		       									<label class="form-lable">Description </label>
 		       									<textarea class="form-control" name="msgDescription" rows="2" placeholder="Enter Msg Description" maxlength="255" ><%if(logicalInterface!=null && logicalInterface.getMsgDescription()!=null) {%><%=logicalInterface.getMsgDescription() %><%} %></textarea>
 		       								</div>
-			                    		    <div class="col-md-2">
+			                    		    <div class="col-md-3">
 		       									<label class="form-lable">Protocols </label>
 		       									<textarea class="form-control" name="protocols" rows="2" placeholder="Enter Underlying Protocols" maxlength="255"><%if(logicalInterface!=null && logicalInterface.getProtocals()!=null) {%><%=logicalInterface.getProtocals() %><%} %></textarea>
 		       								</div>
-			                    		    <div class="col-md-2">
+			                    		    <div class="col-md-3">
 		       									<label class="form-lable">Additional Info </label>
 		       									<textarea class="form-control" name="additionalInfo" rows="2" placeholder="Enter Additional Info" maxlength="255"><%if(logicalInterface!=null && logicalInterface.getAdditionalInfo()!=null) {%><%=logicalInterface.getAdditionalInfo() %><%} %></textarea>
 		       								</div>
@@ -386,6 +416,70 @@ label {
 		</div>
 	</div>	
 	
+	
+	<!-- ----------------------------------------------- Add New Logical Channel Modal --------------------------------------------------------------- -->
+	<div class="modal fade bd-example-modal-lg center" id="addNewChannelsModal" tabindex="-1" role="dialog" aria-labelledby="addNewChannelsModal" aria-hidden="true" style="margin-top: 10%;">
+		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
+			<div class="modal-content" style="width: 90%;margin-left: 10%;">
+				<div class="modal-header" style="background: #055C9D;color: white;">
+		        	<h5 class="modal-title ">Add New Channel</h5>
+			        <button type="button" class="close" style="text-shadow: none !important" data-dismiss="modal" aria-label="Close">
+			          <span class="text-light" aria-hidden="true">&times;</span>
+			        </button>
+		      	</div>
+     			<div class="modal-body">
+     				<div class="container-fluid mt-3">
+     					<div class="row">
+							<div class="col-md-12 " align="left">
+								<form action="IGILogicalChannelDetailsSubmit.htm" method="POST" id="myform">
+									<div class="form-group">
+			       						<div class="row">
+			                    		    <div class="col-md-7">
+		       									<label class="form-lable">Logical Channel <span class="mandatory">*</span></label>
+		       									<input type="text" class="form-control" name="logicalChannel" id="logicalChannel" placeholder="Enter Channel Name" maxlength="255" required>
+		       								</div>
+			                    		    <div class="col-md-5">
+		       									<label class="form-lable">Channel Code <span class="mandatory">*</span></label>
+		       									<input type="text" class="form-control" name="channelCode" id="channelCode" placeholder="Enter Channel Code" maxlength="5" required>
+		       								</div>
+	                  				 	</div>
+                  				 	</div>
+									<div class="form-group">
+			       						<div class="row">
+			                    		    <div class="col-md-12">
+		       									<label class="form-lable">Description <span class="mandatory">*</span></label>
+		       									<textarea class="form-control" name="description" id="description" rows="2" placeholder="Enter Channel Description" maxlength="1000" required></textarea>
+		       								</div>
+	                  				 	</div>
+                  				 	</div>
+									
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+       								<input type="hidden" name="igiDocId" value="<%=igiDocId%>">
+       								<input type="hidden" name="logicalInterfaceId" value="<%=logicalInterfaceId%>">
+       								<input type="hidden" name="logicalChannelId" id="logicalChannelIdModal" value="0">
+									
+									<div class="center mt-2">
+										<button type="submit"class="btn btn-sm submit" onclick="return confirm('Are you sure to Submit?')">SUBMIT</button>
+									</div>
+								</form>
+							</div>
+						</div>
+     				</div>
+     			</div>
+     		</div>
+		</div>
+	</div>	
+	
+	<form action="IGILogicalChannelDelete.htm" method="post" style="display: none;">
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		<input type="hidden" name="igiDocId" value="<%=igiDocId%>">
+		<input type="hidden" name="logicalInterfaceId" value="<%=logicalInterfaceId%>">
+		<input type="hidden" name="logicalChannelId" id="logicalChannelIdDelete">
+		<button type="submit" id="logicalChannelDeleteBtn" formmethod="post" formnovalidate="formnovalidate" onclick="return confirm('Are you sure you want to Delete?\nDeleting a main level will also remove all its sub-levels.')" style="display:none;"></button>
+
+	</form>			
+	<!-- ----------------------------------------------- Add New Logical Channel Modal End-------------------------------------------------------- -->
+	
 	<script type="text/javascript">
 		
 		function toggleInterface(buttonId, listId) {
@@ -393,13 +487,20 @@ label {
 		        const currentValue = $(this).val();
 		        $(this).val(currentValue === '1' ? '0' : '1');
 		        $('#'+listId).toggle();
-		        $(this).find('i').toggleClass('fa-caret-up fa-caret-down');
+		        $(this).find('#facaret').toggleClass('fa-caret-up fa-caret-down');
 		    });
 		}
 	
 		// Initialize toggles
-		<%for(String msgType : msgTypesList) {%>
-			toggleInterface('<%=msgType.toLowerCase() %>InterfaceBtn', '<%=msgType.toLowerCase() %>InterfaceList');
+		<%for (Map.Entry<String, List<IGILogicalInterfaces>> entry : logicalInterfaceMap.entrySet()) {
+			String key = entry.getKey();
+	        String[] channelkey = key.split("/");
+	        String channelCode = channelkey[1];
+	        String buttonId = channelCode.replace(" ", "").toLowerCase() + "InterfaceBtn";
+	        String listId = channelCode.replace(" ", "").toLowerCase() + "InterfaceList";
+	        
+	      %>
+			toggleInterface('<%=buttonId %>', '<%=listId %>');
 		<%} %>
 		
 		// Define a common Summernote configuration
@@ -457,9 +558,29 @@ label {
 			
 		});
 		
-
-	   
-	    
+		$('#logicalChannelId').on('change', function(){
+			var logicalChannelId = $(this).val();
+			if(logicalChannelId=='addNew') {
+				$('#logicalChannel').val('');
+				$('#channelCode').val('');
+				$('#description').val('');
+				$('#logicalChannelIdModal').val('0');
+				$('#addNewChannelsModal').modal('show');
+			}
+		});
+		
+		function openChannelEditModal(channelId) {
+			$('#logicalChannel').val($('#logicalChannel'+channelId).val());
+			$('#channelCode').val($('#channelCode'+channelId).val());
+			$('#description').val($('#description'+channelId).val());
+			$('#logicalChannelIdModal').val(channelId);
+			$('#addNewChannelsModal').modal('show');
+		}
+		
+		function deleteChannel(channelId) {
+			$('#logicalChannelIdDelete').val(channelId);
+			$('#logicalChannelDeleteBtn').click();
+		}
 	</script>
 
 </body>

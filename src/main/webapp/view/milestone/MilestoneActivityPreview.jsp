@@ -24,6 +24,8 @@ Object[] getMA=(Object[])request.getAttribute("MilestoneActivity");
 int RevisionCount=(Integer) request.getAttribute("RevisionCount");
 List<Object[]> ActivityTypeList=(List<Object[]>)request.getAttribute("ActivityTypeList");
 List<Object[]> MilestoneActivityA=(List<Object[]>)request.getAttribute("MilestoneActivityA");
+
+String LoginType = (String)session.getAttribute("LoginType");
 	%>
 <script type="text/javascript">
 function changeempoic1(id,id3)
@@ -154,8 +156,11 @@ var s = '';
 
                     		 
                         	</div>
+                        	
                         	<div class="col-md-1 " ><br><label class="control-label"> &nbsp;&nbsp;Update<br></label><br>
-                        	  <button type="button"  class="btn btn-sm edit" onclick="weightage_sum('<%=getMA[0] %>','<%=getMA[10] %>','M');"> <i class="fa fa-edit" aria-hidden="true"></i> </button>
+                        	  <button type="button" class="btn btn-sm edit" onclick="weightage_sum('<%=getMA[0] %>','<%=getMA[10] %>','M');" <%if(!Arrays.asList("A", "P").contains(LoginType)) {%>disabled<%} %> >
+                        	  <i class="fa fa-edit" aria-hidden="true"></i>
+                        	  </button>
                         	 <input type="submit" hidden="hidden" id="<%=getMA[0] %>M<%=getMA[10] %>sub"/> 
                         	  
 	                              <input type="hidden" name="RevId"	value="<%=RevisionCount %>" /> 
@@ -165,6 +170,7 @@ var s = '';
 	                              <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
                              
                         	</div>
+                        	
                        		</div>
                        		
                        		<div class="row container-fluid" >
