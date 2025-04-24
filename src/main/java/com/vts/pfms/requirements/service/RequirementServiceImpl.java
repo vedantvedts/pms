@@ -51,10 +51,12 @@ import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
 import com.vts.pfms.requirements.model.TestDetails;
+import com.vts.pfms.requirements.model.TestInstrument;
 import com.vts.pfms.requirements.model.TestPlanInitiation;
 import com.vts.pfms.requirements.model.TestPlanMaster;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.model.TestScopeIntro;
+import com.vts.pfms.requirements.model.TestSetupMaster;
 import com.vts.pfms.requirements.model.TestTools;
 import com.vts.pfms.requirements.model.VerificationData;
 import com.vts.pfms.utils.PMSLogoUtil;
@@ -1479,4 +1481,33 @@ public class RequirementServiceImpl implements RequirementService {
 		return dao.getSpecificationTypesList();
 	}
 
+	
+	
+	@Override
+	public List<TestSetupMaster> getTestSetupMaster() throws Exception {
+		
+		return dao.getTestSetupMaster();
+	}
+	
+	@Override
+	public List<TestInstrument> getTestInstrument() throws Exception {
+		return dao.getTestInstrument();
+	}
+	
+	@Override
+	public long setTestInstrument(TestInstrument t) throws Exception {
+		return dao.setTestInstrument(t);
+	}
+	
+	@Override
+	public long addTestSetupMaster(TestSetupMaster tp) throws Exception {
+	
+		return dao.addTestSetupMaster(tp);
+	}
+	
+	@Override
+	public TestSetupMaster getTestSetupMasterById(Long setUpid) throws Exception {
+		
+		return dao.getTestSetupMasterById(setUpid);
+	}
 }

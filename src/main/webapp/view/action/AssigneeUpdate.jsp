@@ -383,7 +383,7 @@ h6{
 								<label style="font-family: 'Lato', sans-serif;font-weight: 700;font-size: 16px"> Remarks : </label> 
 								</div>
 								<div class="col-md-8" style=" margin-left: -6%;" >
-								<textarea class="form-control" rows="5"
+								<textarea class="form-control" rows="5"  oninput="sanitizeInput(this)"
 									name="progressRemarks" id="progressRemarks"
 									style="width: 26rem"></textarea>
 							</div>
@@ -483,6 +483,10 @@ h6{
    			$('#subaction').val(subaction);
    		}
    		
+   		
+   		function sanitizeInput(input) {
+   		    input.value =  input.value.replace(/<\/?[\w\s="/.':;#-\/\?]+>/gi, '');
+   		}
 </script> 
 
 

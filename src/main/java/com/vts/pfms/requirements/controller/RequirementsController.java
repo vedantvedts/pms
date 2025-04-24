@@ -20,12 +20,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import jakarta.servlet.ServletOutputStream;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import jakarta.servlet.http.Part;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -79,13 +73,21 @@ import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
 import com.vts.pfms.requirements.model.TestDetails;
+import com.vts.pfms.requirements.model.TestInstrument;
 import com.vts.pfms.requirements.model.TestPlanInitiation;
+import com.vts.pfms.requirements.model.TestPlanMaster;
 import com.vts.pfms.requirements.model.TestPlanSummary;
+import com.vts.pfms.requirements.model.TestSetupMaster;
 import com.vts.pfms.requirements.model.TestTools;
 import com.vts.pfms.requirements.model.VerificationData;
 import com.vts.pfms.requirements.service.RequirementService;
 import com.vts.pfms.utils.PMSLogoUtil;
-import com.vts.pfms.requirements.model.TestPlanMaster;
+
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 @Controller
 public class RequirementsController {
@@ -4535,6 +4537,7 @@ public class RequirementsController {
 
 	}
 	
+	
 	@RequestMapping(value = "TestPlanMasterAdd.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String TestPlanMasterAdd( HttpServletRequest req, HttpServletResponse res, HttpSession ses,
 			RedirectAttributes redir) throws Exception {
@@ -4548,6 +4551,16 @@ public class RequirementsController {
 			TestPlanMaster tp = action.equalsIgnoreCase("edit") ?service.getTestPlanById(Long.parseLong(TestMasterId)):new TestPlanMaster();
 			req.setAttribute("TestPlanMaster", tp);
 			req.setAttribute("StagesApplicable", service.StagesApplicable());
+			
+			List<TestSetupMaster>master = service.getTestSetupMaster();
+			
+			if(master!=null && master.size()>0) {
+				master = master.stream().filter(e->e.getIsActive()==1).collect(Collectors.toList());
+			}
+			List<TestInstrument>instrumentList = service.getTestInstrument();
+			req.setAttribute("testSetupMasterMaster", master);		
+			req.setAttribute("specificarionMasterList", service.SpecificationMasterList());
+			
 			return "requirements/TestMasterAdd";
 		} catch (Exception e) {
 
@@ -4570,17 +4583,47 @@ public class RequirementsController {
 			String action = req.getParameter("action");
 			TestPlanMaster tp = action.equalsIgnoreCase("update") ?service.getTestPlanById(Long.parseLong(TestMasterId)):new TestPlanMaster();
 			
-			System.out.println("action----"+action);
+			StringBuilder toolSB= new StringBuilder("");
+			StringBuilder stageSb= new StringBuilder("");
+			StringBuilder linkedSpecSb= new StringBuilder("");
+			
+			String[] StageApplicable=req.getParameterValues("StageApplicable");
+			String[] ToolsSetup=req.getParameterValues("ToolsSetup");
+			String[] linkedSpec = req.getParameterValues("linkedSpec");
+			
+			
+			if(StageApplicable!=null) {
+				for(int i=0;i<StageApplicable.length;i++) {
+					stageSb.append(StageApplicable[i]);
+					if(i!=StageApplicable.length-1) {stageSb.append(", ");}
+					}}
+				
+			if(ToolsSetup!=null) {
+				for(int i=0;i<ToolsSetup.length;i++) {
+					toolSB.append(ToolsSetup[i]);
+					if(i!=ToolsSetup.length-1) {toolSB.append(", ");}
+				}}
+			if(linkedSpec!=null) {
+				for(int i=0;i<linkedSpec.length;i++) {
+					linkedSpecSb.append(linkedSpec[i]);
+					if(i!=linkedSpec.length-1) {linkedSpecSb.append(", ");}
+				}}
+			
+			
+			
 			tp.setName(req.getParameter("name"));
 			tp.setObjective(req.getParameter("Objective"));
 			tp.setMethodology(req.getParameter("Methodology"));
-			tp.setToolsSetup(req.getParameter("ToolsSetup"));
+			
+			tp.setToolsSetup(toolSB.toString());
+			
+			
 			tp.setConstraints(req.getParameter("Constraints"));
 			tp.setEstimatedTimeIteration(req.getParameter("EstimatedTimeIteration"));
 			tp.setIterations(req.getParameter("Iterations"));
 			tp.setSchedule(req.getParameter("Schedule"));
 			tp.setPass_Fail_Criteria(req.getParameter("PassFailCriteria"));
-			tp.setStageApplicable(req.getParameter("StageApplicable"));
+			tp.setStageApplicable(stageSb.toString());
 			tp.setPreConditions(req.getParameter("PreConditions"));
 			tp.setPostConditions(req.getParameter("PostConditions"));
 			tp.setSafetyRequirements(req.getParameter("SafetyReq"));
@@ -4588,6 +4631,7 @@ public class RequirementsController {
 			tp.setPersonnelResources(req.getParameter("PersonnelResources"));
 			tp.setRemarks(req.getParameter("remarks"));;
 			tp.setTimeType(req.getParameter("TimeType"));
+			tp.setLinkedSpecids(linkedSpecSb.toString());			
 			if(TestMasterId!=null) {
 				tp.setModifiedBy(UserId);
 				tp.setModifiedDate(LocalDate.now().toString());
@@ -4596,6 +4640,8 @@ public class RequirementsController {
 				tp.setCreatedDate(LocalDate.now().toString());
 				tp.setIsActive(1);
 				}
+			
+			
 			long count = service.testPlanMasterAdd(tp);
 			if (count > 0) {
 				if(action.equalsIgnoreCase("update")) {
@@ -4615,6 +4661,7 @@ public class RequirementsController {
 		
 	}
 	
+		
 	@RequestMapping(value="AddTestDetailsFromMaster.htm",method=RequestMethod.GET)
 	public @ResponseBody String AddTestDetailsFromMaster(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -172,7 +173,7 @@ a:hover {
 									<div class="form-group">
 										<label  >Action Item: <span class="mandatory" style="color: red;" >*</span>
 										</label><br>
-										<input class="form-control " type="text"name="Item" id="Item"  style="width:100% " maxlength="1000" required="required" placeholder="Enter Action Item">
+										<input class="form-control " type="text"name="Item" id="Item"  style="width:100% " maxlength="1000" required="required" placeholder="Enter Action Item" oninput="sanitizeInput(this)">
 									</div>
 								</div>
 
@@ -367,7 +368,7 @@ a:hover {
 															for(Object[] obj: AssignedList){ %>
 															<tr>
 															<td style="width:1% !important; " class="center"><%=count %></td>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=obj[5] %></td>
+															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%= obj[5].toString() %></td>
 															<td class="width-30px" ><%=sdf.format(obj[4])%></td>
 															<td style="width:8% !important; "><%=sdf.format(obj[3])%></td>
 															<td ><%=obj[1]%>, <%=obj[2]%></td>
@@ -1174,6 +1175,11 @@ function dateCompare(d1, d2){
     if(date1 > date2){
         return true;
     } 
+}
+
+
+function sanitizeInput(input) {
+   // input.value =  input.value.replace(/<\/?[\w\s="/.':;#-\/\?]+>/gi, '');
 }
 </script> 
 				

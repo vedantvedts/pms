@@ -63,7 +63,22 @@ List<Object[]> vendorList=(List<Object[]>)request.getAttribute("vendorList");
 String Project="";
 String assigneeLab=(String)request.getAttribute("assigneeLab");
 %>
-
+<%String ses=(String)request.getParameter("result"); 
+ String ses1=(String)request.getParameter("resultfail");
+	if(ses1!=null){
+	%>
+	<center>
+		<div class="alert alert-danger" role="alert">
+			<%=ses1 %>
+		</div>
+	</center>
+	<%}if(ses!=null){ %>
+	<center>
+		<div class="alert alert-success" role="alert">
+			<%=ses %>
+		</div>
+	</center>
+	<%} %>
 
 <div class="container-fluid">
 	<form action="#" method="POST" name="myfrm" id="myfrm" autocomplete="off" enctype="multipart/form-data" >
