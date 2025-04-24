@@ -351,7 +351,7 @@ String LabCode = (String)request.getAttribute("LabCode");
 				        <div class="col-md-4">
 				         	<div class="form-group">
 				            	<label class="control-label" style="margin-bottom: 4px !important">Reference No.</label>
-				  				 <input type="text" class="form-control" name="refNo">					
+				  				 <input type="text" class="form-control reference_no	" name="refNo">					
 				        	</div>
 				        </div>
                 	

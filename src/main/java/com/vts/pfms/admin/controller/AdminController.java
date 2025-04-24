@@ -43,6 +43,7 @@ import com.vts.pfms.admin.model.DivisionMaster;
 import com.vts.pfms.admin.model.Expert;
 import com.vts.pfms.admin.service.AdminService;
 import com.vts.pfms.master.service.MasterService;
+import com.vts.pfms.utils.InputValidator;
 
 @Controller
 public class AdminController {
@@ -471,12 +472,13 @@ public class AdminController {
 	@RequestMapping(value = "Resetpassword.htm", method = RequestMethod.POST)
 	public String Resetpassword(HttpSession ses, HttpServletRequest req, RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
 		logger.info(new Date() + "Inside Resetpassword.htm " + UserId);
 		try {
 			String Lid = req.getParameter("Lid");
-			int count = (int) service.resetPassword(Lid, UserId);
+			int count = (int) service.resetPassword(Lid, UserId, labcode);
 			if (count > 0) {
-				redir.addAttribute("result", "Password is reset to 1234 .");
+				redir.addAttribute("result", "Password is reset to "+labcode+"@1234");
 			} else {
 				redir.addAttribute("resultfail", "Password reset unsuccessfull ");
 			}
@@ -547,10 +549,18 @@ public class AdminController {
 		AdminController.logger.info(new Date() + "Inside UserManagerAddSubmit.htm " + UserId);
 		Object[] employeedata = service.EmployeeData(req.getParameter("Employee"));
 		String Userid = (String) ses.getAttribute("Username");
+		
+		String userName=req.getParameter("UserName");
+		if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(userName)) {
+			
+			return redirectWithError(redir, "UserManagerList.htm", "'UserName' must contain only Alphabets and Numbers");
+
+		}
+		
 		UserManageAdd UserManageAdd = new UserManageAdd();
 		UserManageAdd.setDivision(employeedata[5].toString());
 		UserManageAdd.setRole("2");
-		UserManageAdd.setUserName(req.getParameter("UserName"));
+		UserManageAdd.setUserName(userName);
 		UserManageAdd.setLoginType(req.getParameter("LoginType"));
 		UserManageAdd.setEmployee(req.getParameter("Employee"));
 		Long count = 0L;
@@ -674,7 +684,15 @@ public class AdminController {
 			String Limit = req.getParameter("limit");
 			String olddesigsr = req.getParameter("olddesigsr");
 			String desigsr = req.getParameter("desigsr");
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(desigcode)) {
+				return redirectWithError(redir, "DesignationMaster.htm", "'Designation Code' must contain only Alphabets and Numbers (No Spaces)");
 
+			}
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(designation)) {
+				
+				return redirectWithError(redir, "DesignationMaster.htm", "'Designation' must contain only Alphabets and Numbers");
+
+			}
 			EmployeeDesigDto dto = new EmployeeDesigDto();
 			dto.setDesigId(desigid);
 			dto.setDesigCode(desigcode);
@@ -707,6 +725,16 @@ public class AdminController {
 			String desigcode = req.getParameter("desigcode");
 			String designation = req.getParameter("designation");
 			String Limit = req.getParameter("limit");
+			
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(desigcode)) {
+				return redirectWithError(redir, "DesignationMaster.htm", "'Designation Code' must contain only Alphabets and Numbers (No Spaces)");
+
+			}
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(designation)) {
+				
+				return redirectWithError(redir, "DesignationMaster.htm", "'Designation' must contain only Alphabets and Numbers");
+
+			}
 
 			EmployeeDesigDto dto = new EmployeeDesigDto();
 			dto.setDesigCode(desigcode);
@@ -858,7 +886,18 @@ public class AdminController {
 			String groupId = req.getParameter("grpId");
 			String DivisionHeadName = req.getParameter("dHName");
 			String divisionShortName = req.getParameter("divisionShortName");	//srikant
-
+			System.err.println( divisionCode);
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumeric(divisionCode)) {
+				return redirectWithError(redir, "DivisionMaster.htm", "'Division Code' must contain only Alphabets and Numbers (No Spaces)");
+			}
+			
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(divisionName)) {
+				return redirectWithError(redir, "DivisionMaster.htm", "'Division Name' must contain only Alphabets and Numbers");
+			}
+			
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(divisionShortName)) {
+				return redirectWithError(redir, "DivisionMaster.htm", "'Division Short Name' must contain only Alphabets and Numbers");
+			}
 			DivisionMaster dmo = new DivisionMaster();
 			dmo.setDivisionCode(divisionCode);
 			dmo.setDivisionName(divisionName);
@@ -892,16 +931,31 @@ public class AdminController {
 		String Userid = (String) ses.getAttribute("Username");
 
 		logger.info(new Date() + " Inside DivisionMasterEditSubmit.htm " + Userid);
-
+		String divisionCode=req.getParameter("DivisionCode");
+		String divisionName=req.getParameter("DivisionName");
+		String DivisionShortName=req.getParameter("DivisionShortName");
+		
 		try {
+			
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumeric(divisionCode)) {
+				return redirectWithError(redir, "DivisionMaster.htm", "'Division Code' must contain only Alphabets and Numbers (No Spaces)");
+			}
+			
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(divisionName)) {
+				return redirectWithError(redir, "DivisionMaster.htm", "'Division Name' must contain only Alphabets and Numbers");
+			}
+			
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(DivisionShortName)) {
+				return redirectWithError(redir, "DivisionMaster.htm", "'Division Short Name' must contain only Alphabets and Numbers");
+			}
 
 			DivisionMaster add = new DivisionMaster();
-			add.setDivisionCode(req.getParameter("DivisionCode"));
-			add.setDivisionName(req.getParameter("DivisionName"));
+			add.setDivisionCode(divisionCode);
+			add.setDivisionName(divisionName);
 			add.setDivisionHeadId(Long.valueOf(Long.parseLong(req.getParameter("DivisionHeadName"))));
 			add.setGroupId(Long.valueOf(Long.parseLong(req.getParameter("GroupId"))));
 			add.setDivisionId(Long.valueOf(Long.parseLong(req.getParameter("DivisionId"))));
-			add.setDivisionShortName(req.getParameter("DivisionShortName"));	//srikant
+			add.setDivisionShortName(DivisionShortName);	//srikant
 			add.setIsActive(Integer.valueOf(req.getParameter("isActive")));
 
 			int count = service.DivisionMasterUpdate(add, Userid);
@@ -1326,4 +1380,8 @@ public class AdminController {
 	    }
 	}
 
+	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
+	    redir.addAttribute("resultfail", message);
+	    return "redirect:/"+redirURL;
+	}
 }

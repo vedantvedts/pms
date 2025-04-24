@@ -159,7 +159,7 @@ String ses=(String)request.getParameter("result");
 							<div class="col-md-3" <%if(!committeedetails[7].toString().equalsIgnoreCase("P")){ %> style="display: none" <%} %> id="periodicduration">
 								<div class="form-group">
 									<label class="control-label">Periodic Duration (Days)</label>
-									<input class="form-control" type="number" id="periodicdurationfield" name="periodicduration" required min="1" placeholder="Days" <%if(committeedetails[7].toString().equalsIgnoreCase("P")){ %> value="<%=committeedetails[8]%>" <%} %>>
+									<input class="form-control numeric-only" type="number" id="periodicdurationfield" name="periodicduration" required min="1" placeholder="Days" <%if(committeedetails[7].toString().equalsIgnoreCase("P")){ %> value="<%=committeedetails[8]%>" <%} %>>
 								</div>
 							</div>
 							

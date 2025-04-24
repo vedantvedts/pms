@@ -154,6 +154,7 @@ import com.vts.pfms.master.service.MasterService;
 import com.vts.pfms.model.TotalDemand;
 import com.vts.pfms.print.controller.PrintController;
 import com.vts.pfms.print.service.PrintService;
+import com.vts.pfms.utils.InputValidator;
 import com.vts.pfms.utils.PMSFileUtils;
 import com.vts.pfms.utils.PMSLogoUtil;
 
@@ -265,10 +266,36 @@ public class CommitteeController {
 		logger.info(new Date() +"Inside CommitteeAddSubmit.htm "+UserId);		
 		try {		
 			String projectid=req.getParameter("projectid").trim();
+			
+			String committeeShortName=req.getParameter("committeeshortname").trim();
+			String committeeName=req.getParameter("committeename").trim();
+			String guideLines=req.getParameter("guidelines");
+			String PeriodicDuration=req.getParameter("periodicduration");
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumeric(committeeShortName)) {
+				redir.addAttribute("projectid", projectid);
+				redir.addAttribute("projectappliacble",req.getParameter("projectapplicable"));
+				return redirectWithError(redir, "CommitteeAdd.htm", "'Committee Code' must contain Alphabets and Numbers.!");
+			}
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(committeeName)) {
+				redir.addAttribute("projectid", projectid);
+				redir.addAttribute("projectappliacble",req.getParameter("projectapplicable"));
+				return redirectWithError(redir, "CommitteeAdd.htm", "'committee Name' must contain Alphabets and Numbers.!");
+			}
+			if(InputValidator.isContainsHTMLTags(guideLines)) {
+				redir.addAttribute("projectid", projectid);
+				redir.addAttribute("projectappliacble",req.getParameter("projectapplicable"));
+				return redirectWithError(redir, "CommitteeAdd.htm", "'Guidelines' should not contain HTML Tags.!");
+			}
+			if(!InputValidator.isContainsNumberOnly(PeriodicDuration)) {
+				redir.addAttribute("committeemainid", req.getParameter("committeeid"));
+				redir.addAttribute("committeeid", req.getParameter("committeeid"));
+				return redirectWithError(redir, "CommitteeAdd.htm", "'Periodic Duration' must contain Numbers.!");
+			}
+			
 			CommitteeDto committeeDto=new CommitteeDto();
 
-			committeeDto.setCommitteeName(req.getParameter("committeename").trim());
-			committeeDto.setCommitteeShortName(req.getParameter("committeeshortname").trim());
+			committeeDto.setCommitteeName(committeeShortName);
+			committeeDto.setCommitteeShortName(committeeShortName);
 			committeeDto.setCreatedBy(UserId);
 			committeeDto.setCommitteeType(req.getParameter("committeetype"));
 			committeeDto.setProjectApplicable(req.getParameter("projectapplicable"));
@@ -280,13 +307,13 @@ public class CommitteeController {
 			committeeDto.setReferenceNo(req.getParameter("refno"));
 			if(req.getParameter("periodic").equalsIgnoreCase("P"))
 			{
-				committeeDto.setPeriodicDuration(req.getParameter("periodicduration"));
+				committeeDto.setPeriodicDuration(PeriodicDuration);
 			}else
 			{
 				committeeDto.setPeriodicDuration("0");
 			}
 
-			committeeDto.setGuidelines(req.getParameter("guidelines"));
+			committeeDto.setGuidelines(guideLines);
 			committeeDto.setLabCode(LabCode);
 			long count=0;
 
@@ -409,10 +436,35 @@ public class CommitteeController {
 		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside CommitteeEditSubmit.htm "+UserId);		
 		try {	
+			String committeeShortName=req.getParameter("committeeshortname").trim();
+			String committeeName=req.getParameter("committeename").trim();
+			String guideLines=req.getParameter("guidelines");
+			String PeriodicDuration=req.getParameter("periodicduration");
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumeric(committeeShortName)) {
+				redir.addAttribute("committeemainid", req.getParameter("committeeid"));
+				redir.addAttribute("committeeid", req.getParameter("committeeid"));
+				return redirectWithError(redir, "CommitteeEdit.htm", "'Committee Code' must contain Alphabets and Numbers.!");
+			}
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(committeeName)) {
+				redir.addAttribute("committeemainid", req.getParameter("committeeid"));
+				redir.addAttribute("committeeid", req.getParameter("committeeid"));
+				return redirectWithError(redir, "CommitteeEdit.htm", "'committee Name' must contain Alphabets and Numbers.!");
+			}
+			if(InputValidator.isContainsHTMLTags(guideLines)) {
+				redir.addAttribute("committeemainid", req.getParameter("committeeid"));
+				redir.addAttribute("committeeid", req.getParameter("committeeid"));
+				return redirectWithError(redir, "CommitteeEdit.htm", "'Guidelines' should not contain HTML Tags.!");
+			}
+			if(!InputValidator.isContainsNumberOnly(PeriodicDuration)) {
+				redir.addAttribute("committeemainid", req.getParameter("committeeid"));
+				redir.addAttribute("committeeid", req.getParameter("committeeid"));
+				return redirectWithError(redir, "CommitteeEdit.htm", "'Periodic Duration' must contain Numbers.!");
+			}
+			
 			CommitteeDto committeeDto=new CommitteeDto();
 			committeeDto.setCommitteeId(Long.parseLong(req.getParameter("committeeid")));
-			committeeDto.setCommitteeName(req.getParameter("committeename"));
-			committeeDto.setCommitteeShortName(req.getParameter("committeeshortname"));
+			committeeDto.setCommitteeName(committeeName);
+			committeeDto.setCommitteeShortName(committeeShortName);
 			committeeDto.setModifiedBy(UserId);
 			committeeDto.setCommitteeType(req.getParameter("committeetype"));
 			committeeDto.setProjectApplicable(req.getParameter("projectapplicable"));
@@ -424,13 +476,13 @@ public class CommitteeController {
 			committeeDto.setLabCode(LabCode);
 			if(req.getParameter("periodic").equalsIgnoreCase("P"))
 			{
-				committeeDto.setPeriodicDuration(req.getParameter("periodicduration"));
+				committeeDto.setPeriodicDuration(PeriodicDuration);
 			}
 			else
 			{
 				committeeDto.setPeriodicDuration("0");
 			}				
-			committeeDto.setGuidelines(req.getParameter("guidelines"));
+			committeeDto.setGuidelines(guideLines);
 
 			long count=0;
 			count=service.CommitteeEditSubmit(committeeDto);				
@@ -566,6 +618,16 @@ public class CommitteeController {
 		{
 			String carsInitiationId = req.getParameter("carsInitiationId");
 			carsInitiationId = carsInitiationId==null?"0":carsInitiationId;
+			
+			String referenceNo=req.getParameter("refNo");
+			if(InputValidator.isContainsHTMLTags(referenceNo)) {
+				redir.addAttribute("committeeid",req.getParameter("committeeid"));
+				redir.addAttribute("projectid",req.getParameter("projectid"));
+				redir.addAttribute("divisionid",req.getParameter("divisionid"));
+				redir.addAttribute("initiationid",req.getParameter("initiationid"));
+				redir.addAttribute("carsInitiationId", req.getParameter("carsInitiationId"));
+				return redirectWithError(redir, "CommitteeDetails.htm", "'Reference No' should not contain HTML Tags.!");
+			}
 
 			CommitteeMainDto committeemaindto=new CommitteeMainDto();
 			committeemaindto.setCommitteeId(req.getParameter("committeeid"));
@@ -587,7 +649,7 @@ public class CommitteeController {
 			// new line//
 			committeemaindto.setMsLabCode(req.getParameter("msLabCode"));
 			committeemaindto.setCo_Chairperson(req.getParameter("cochairperson"));
-			committeemaindto.setReferenceNo(req.getParameter("refNo"));
+			committeemaindto.setReferenceNo(referenceNo);
 			committeemaindto.setFormationDate(req.getParameter("Formationdates"));;
 			committeemaindto.setCcplabocode(req.getParameter("ccplabocode"));
 			long mainid =service.CommitteeDetailsSubmit(committeemaindto);
@@ -1145,13 +1207,63 @@ public class CommitteeController {
 			System.out.println("flow" +flow);
 
 			long flagcount=0;
+			
+			String Subject=req.getParameter("subject").trim();
+			String Comment=req.getParameter("Comment").trim();
+			String officer1Role=req.getParameter("Rec1_Role").toUpperCase();
+			String officer2Role=req.getParameter("Rec2_Role").toUpperCase();
+			String officer3Role=req.getParameter("Rec3_Role").toUpperCase();
+			String approvingOfficerRole=req.getParameter("Approving_Role").toUpperCase();
+			if(InputValidator.isContainsHTMLTags(Subject)) {
+				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
+				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Subject' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(Comment)) {
+				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
+				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Comment' should not contain HTML Tags.!");
+			}
+			if(!InputValidator.isContainsDescriptionPattern(officer1Role)) {
+				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
+				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Officer1 Role' should contains Alphabets, Numbers or special characters.!");
+			}
+			if(!InputValidator.isContainsDescriptionPattern(officer2Role)) {
+				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
+				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Officer2 Role' should contains Alphabets, Numbers or special characters.!");
+			}
+			if(!InputValidator.isContainsDescriptionPattern(officer3Role)) {
+				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
+				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Officer3 Role' should contains Alphabets, Numbers or special characters.!");
+			}
+			if(!InputValidator.isContainsDescriptionPattern(approvingOfficerRole)) {
+				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
+				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Approving Officer Role' should contains Alphabets, Numbers or special characters.!");
+			}
+			
 			PmsEnote pe = req.getParameter("EnoteId")!=null && req.getParameter("EnoteId").equalsIgnoreCase("0")? new PmsEnote():  service.getPmsEnote(req.getParameter("EnoteId"));
 
 			if(flag!=null && flag.equalsIgnoreCase("UpdateForward")) {
 				pe.setRefNo(req.getParameter("RefNo"));
 				pe.setRefDate(pe.getRefDate()!=null ? pe.getRefDate(): java.sql.Date.valueOf(req.getParameter("RefDate")));
-				pe.setSubject(req.getParameter("subject").trim());
-				pe.setComment(req.getParameter("Comment").trim());
+				pe.setSubject(Subject);
+				pe.setComment(Comment);
 				pe.setCommitteeMainId(0l);
 				pe.setEnoteFrom("S");
 				pe.setEnoteStatusCode(pe.getEnoteStatusCode()==null?"INI":pe.getEnoteStatusCode());
@@ -1160,18 +1272,18 @@ public class CommitteeController {
 				pe.setInitiatedBy(Long.parseLong(req.getParameter("InitiatedBy")));
 				if(req.getParameter("Recommend1")!=null) {
 					pe.setRecommend1(Long.parseLong(req.getParameter("Recommend1")));
-					pe.setRec1_Role(req.getParameter("Rec1_Role").toUpperCase());
+					pe.setRec1_Role(officer1Role);
 				}
 				if(req.getParameter("Recommend2").length()>0) {;
 				pe.setRecommend2(Long.parseLong(req.getParameter("Recommend2")));
-				pe.setRec2_Role(req.getParameter("Rec2_Role").toUpperCase());
+				pe.setRec2_Role(officer2Role);
 				}else {
 					pe.setRecommend2(null);
 					pe.setRec2_Role(null);
 				}
 				if(req.getParameter("Recommend3").length()>0) {
 					pe.setRecommend3(Long.parseLong(req.getParameter("Recommend3")));
-					pe.setRec3_Role(req.getParameter("Rec3_Role").toUpperCase());
+					pe.setRec3_Role(officer3Role);
 				}else {
 					pe.setRecommend3(null);
 					pe.setRec3_Role(null);
@@ -1180,7 +1292,7 @@ public class CommitteeController {
 					pe.setApprovingOfficer(Long.parseLong(req.getParameter("ApprovingOfficer")));;
 					pe.setApprovingOfficerLabCode(labcode);
 				}
-				pe.setApproving_Role(req.getParameter("Approving_Role").toUpperCase());
+				pe.setApproving_Role(approvingOfficerRole);
 				if(pe.getCreatedBy()==null) {
 					pe.setCreatedBy(Username);	
 					pe.setCreatedDate(sdf1.format(new Date()));	
@@ -1849,6 +1961,17 @@ public class CommitteeController {
 			String Remarks[]= req.getParameterValues("remarks");
 			String presenters[]=req.getParameterValues("presenterid");
 			String PresLabCode[]=req.getParameterValues("PresLabCode");
+			
+			if (containsHTMLTags(AgendaItem)) {
+				
+				redir.addAttribute("scheduleid", req.getParameter("scheduleid"));
+			    return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Agenda Item' should not contain HTML Tags.!");
+			}
+			if (containsHTMLTags(Remarks)) {
+				
+				redir.addAttribute("scheduleid", req.getParameter("scheduleid"));
+			    return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");
+			}
 			ArrayList<String[]> docids = new ArrayList<String[]>();
 			for(int i=0 ; i<AgendaItem.length ;i++) {
 				docids.add( req.getParameterValues("attachid_"+i));
@@ -1909,6 +2032,20 @@ public class CommitteeController {
 			String presentorid=req.getParameter("presenterid");
 			String duration=req.getParameter("duration");
 			String PresLabCode=req.getParameter("PresLabCode");
+		
+			
+			if(InputValidator.isContainsHTMLTags(agendaitem)) {
+				redir.addAttribute("scheduleid", req.getParameter("scheduleid"));
+				return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Agenda Details - Agenda Item' should not contain HTML Tags.!");
+			}
+			if(!InputValidator.isContainsNumberOnly(duration)) {
+				redir.addAttribute("scheduleid", req.getParameter("scheduleid"));
+				return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Agenda Details - Duration' should contain only Numbers");
+			}
+			if(InputValidator.isContainsHTMLTags(remarks)) {
+				redir.addAttribute("scheduleid", req.getParameter("scheduleid"));
+				return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Agenda Details - Remarks' should not contain HTML Tags.!");
+			}
 
 			//			String docid=req.getParameter("editattachid");
 			CommitteeScheduleAgendaDto scheduleagendadto = new CommitteeScheduleAgendaDto();
@@ -2025,6 +2162,12 @@ public class CommitteeController {
 		logger.info(new Date() +"Inside CommitteeMainEditSubmit.htm "+Username);
 		try
 		{		
+			
+			String referenceNo=req.getParameter("Reference No.");
+			if(InputValidator.isContainsHTMLTags(referenceNo)) {
+				redir.addFlashAttribute("committeemainid",req.getParameter("committeemainid"));
+				return redirectWithError(redir, "CommitteeMainMembers.htm", "'Reference No' should not contain HTML Tags.!");
+			}
 			CommitteeMembersEditDto dto=new CommitteeMembersEditDto();
 
 			CommitteeMainDto cmd=new CommitteeMainDto(); // added by praksh
@@ -2042,7 +2185,7 @@ public class CommitteeController {
 			dto.setComemberid(req.getParameter("comemberid"));
 			dto.setMsLabCode(req.getParameter("msLabCode"));
 			cmd.setFormationDate(!req.getParameter("Formationdates").isEmpty()?req.getParameter("Formationdates"):LocalDate.now().toString());
-			cmd.setReferenceNo(req.getParameter("Reference No."));
+			cmd.setReferenceNo(referenceNo);
 			cmd.setCcplabocode(req.getParameter("ccplabocode"));
 
 			System.out.println("setCcplabocode---"+cmd.getCcplabocode());
@@ -2106,13 +2249,28 @@ public class CommitteeController {
 		String UserId=(String)ses.getAttribute("Username");		
 		logger.info(new Date() +"Inside CommitteeVenueUpdate.htm "+UserId);
 		try
-		{
+		{		
+			String Venue=req.getParameter("venue");
+			String Decisions=req.getParameter("decisions");
+			String Reference=req.getParameter("reference");
+			if(InputValidator.isContainsHTMLTags(Venue)) {
+				redir.addFlashAttribute("scheduleid",req.getParameter("scheduleid"));
+				return redirectWithError(redir, "CommitteeScheduleView.htm", "'Venue' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(Decisions)) {
+				redir.addFlashAttribute("scheduleid",req.getParameter("scheduleid"));
+				return redirectWithError(redir, "CommitteeScheduleView.htm", "'Decisions/Recommendations sought from Meeting' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(Reference)) {
+				redir.addFlashAttribute("scheduleid",req.getParameter("scheduleid"));
+				return redirectWithError(redir, "CommitteeScheduleView.htm", "'Reference' should not contain HTML Tags.!");
+			}
 			CommitteeScheduleDto committeescheduledto=new CommitteeScheduleDto(); 
 			committeescheduledto.setScheduleId(Long.parseLong(req.getParameter("scheduleid")));
-			committeescheduledto.setMeetingVenue(req.getParameter("venue"));
+			committeescheduledto.setMeetingVenue(Venue);
 			committeescheduledto.setConfidential(req.getParameter("isconfidential"));
-			committeescheduledto.setReferrence(req.getParameter("reference"));
-			committeescheduledto.setPMRCDecisions(req.getParameter("decisions"));		
+			committeescheduledto.setReferrence(Reference);
+			committeescheduledto.setPMRCDecisions(Decisions);		
 			int count=0;
 			count = service.UpdateMeetingVenue(committeescheduledto);
 
@@ -2216,7 +2374,24 @@ public class CommitteeController {
 		logger.info(new Date() +"Inside CommitteeMinutesSubmit.htm "+UserId);
 		try
 		{
-
+			String ActionName=req.getParameter("NoteText");
+			String Remarks=req.getParameter("remarks");
+			if(InputValidator.isContainsHTMLTags(ActionName)) {
+				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+				redir.addAttribute("specname", req.getParameter("specname"));
+				redir.addAttribute("membertype",req.getParameter("membertype"));
+				redir.addAttribute("formname", req.getParameter("formname"));
+				redir.addAttribute("unit1",req.getParameter("unit1"));
+				return redirectWithError(redir, "CommitteeScheduleMinutes.htm", "'ActionName' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(Remarks)) {
+				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+				redir.addAttribute("specname", req.getParameter("specname"));
+				redir.addAttribute("membertype",req.getParameter("membertype"));
+				redir.addAttribute("formname", req.getParameter("formname"));
+				redir.addAttribute("unit1",req.getParameter("unit1"));
+				return redirectWithError(redir, "CommitteeScheduleMinutes.htm", "'Remarks' should not contain HTML Tags.!");
+			}
 			CommitteeMinutesDetailsDto committeeminutesdetailsdto = new CommitteeMinutesDetailsDto();
 			committeeminutesdetailsdto.setScheduleId(req.getParameter("scheduleid"));
 			committeeminutesdetailsdto.setScheduleSubId(req.getParameter("schedulesubid"));
@@ -2225,10 +2400,10 @@ public class CommitteeController {
 			committeeminutesdetailsdto.setMinutesSubOfSubId(req.getParameter("agendasubid"));
 			committeeminutesdetailsdto.setMinutesUnitId(req.getParameter("minutesunitid"));
 			committeeminutesdetailsdto.setStatusFlag(req.getParameter("statusflag"));
-			committeeminutesdetailsdto.setDetails(req.getParameter("NoteText"));
+			committeeminutesdetailsdto.setDetails(ActionName);
 			committeeminutesdetailsdto.setIDARCK(req.getParameter("darc"));
 			committeeminutesdetailsdto.setCreatedBy(UserId);
-			committeeminutesdetailsdto.setRemarks(req.getParameter("remarks"));
+			committeeminutesdetailsdto.setRemarks(Remarks);
 			committeeminutesdetailsdto.setAgendaSubHead(req.getParameter("OutComeAirHead"));
 
 			long count = service.CommitteeMinutesInsert(committeeminutesdetailsdto);
@@ -2338,17 +2513,35 @@ public class CommitteeController {
 		String UserId=(String)ses.getAttribute("Username");
 		logger.info(new Date() +"Inside CommitteeMinutesEditSubmit.htm "+UserId);
 		try
-		{
+		{	
+			String ActionName=req.getParameter("NoteText");
+			String Remarks=req.getParameter("remarks");
+			if(InputValidator.isContainsHTMLTags(ActionName)) {
+				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+				redir.addAttribute("specname", req.getParameter("specname"));
+				redir.addAttribute("membertype",req.getParameter("membertype"));
+				redir.addAttribute("formname", req.getParameter("formname"));
+				redir.addAttribute("unit1",req.getParameter("unit1"));
+				return redirectWithError(redir, "CommitteeScheduleMinutes.htm", "'ActionName' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(Remarks)) {
+				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+				redir.addAttribute("specname", req.getParameter("specname"));
+				redir.addAttribute("membertype",req.getParameter("membertype"));
+				redir.addAttribute("formname", req.getParameter("formname"));
+				redir.addAttribute("unit1",req.getParameter("unit1"));
+				return redirectWithError(redir, "CommitteeScheduleMinutes.htm", "'Remarks' should not contain HTML Tags.!");
+			}
 
 			CommitteeMinutesDetailsDto committeeminutesdetailsdto = new CommitteeMinutesDetailsDto();
 			committeeminutesdetailsdto.setScheduleId(req.getParameter("scheduleidedit"));
 			committeeminutesdetailsdto.setScheduleSubId(req.getParameter("schedulesubid"));
 			committeeminutesdetailsdto.setMinutesId(req.getParameter("minutesidedits"));
-			committeeminutesdetailsdto.setDetails(req.getParameter("NoteText"));
+			committeeminutesdetailsdto.setDetails(ActionName);
 			committeeminutesdetailsdto.setIDARCK(req.getParameter("darc"));
 			committeeminutesdetailsdto.setModifiedBy(UserId);
 			committeeminutesdetailsdto.setScheduleMinutesId(req.getParameter("schedulminutesid"));
-			committeeminutesdetailsdto.setRemarks(req.getParameter("remarks"));
+			committeeminutesdetailsdto.setRemarks(Remarks);
 
 
 			long count = service.CommitteeMinutesUpdate(committeeminutesdetailsdto);
@@ -2846,7 +3039,7 @@ public class CommitteeController {
 		return "committee/ComMeetingApprovalAgList";
 	}
 
-	@RequestMapping(value = "MeetingApprovalAgendaDetails.htm", method = RequestMethod.POST)
+	@RequestMapping(value = "MeetingApprovalAgendaDetails.htm", method = {RequestMethod.POST, RequestMethod.GET})
 	public String MeetingApprovalAgendaDetails(HttpServletRequest req, RedirectAttributes redir, HttpSession ses)	throws Exception {
 
 		String UserId=(String)ses.getAttribute("Username");
@@ -2893,7 +3086,12 @@ public class CommitteeController {
 			String Option=req.getParameter("sub");
 			String Remarks=req.getParameter("Remark");
 
+			if(InputValidator.isContainsHTMLTags(Remarks)) {
+				
+				return redirectWithError(redir, "MeetingApprovalAgenda.htm", "'Remarks' should not contain HTML Tags.!");
 
+
+			}
 
 			if(Option.equalsIgnoreCase("back")) {
 
@@ -6366,6 +6564,11 @@ public class CommitteeController {
 			String [] Role = req.getParameterValues("Role");
 			String [] EmpNo = req.getParameterValues("EmpNo");
 			String [] LabCode = req.getParameterValues("LabCode");
+			
+			if (containsHTMLTags(Role)) {
+				redir.addAttribute("committeescheduleid", committeescheduleid);
+			    return redirectWithError(redir, "CommitteeAttendance.htm", "'Role' should not contain HTML Tags.!");
+			}
 			
 			System.out.println(Arrays.asList(Role));
 			System.out.println(Arrays.asList(LabCode));
@@ -10158,4 +10361,17 @@ public class CommitteeController {
 			return "static/Error";
 		}
 	}
+	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
+	    redir.addAttribute("resultfail", message);
+	    return "redirect:/"+redirURL;
+	}
+	private boolean containsHTMLTags(String[] inputs) {
+		    
+		    for (String input : inputs) {
+		        if (InputValidator.isContainsHTMLTags(input)) {
+		            return true;
+		        }
+		    }
+		    return false;
+		}
 }

@@ -399,7 +399,7 @@ opacity
 								</label>
 							</div>
 							<div class="col-md-5">
-								<input type="text" name="name" class="form-control" id="NameAdd"
+								<input type="text" name="name" class="form-control alphanum-no-leading-space" id="NameAdd"
 									maxlength="255" required="required"
 									placeholder="Maximum 250 Chararcters" value="<%if(tp.getName()!=null){%><%=tp.getName() %> <%}%>">
 							</div>
@@ -411,7 +411,7 @@ opacity
 								</label>
 							</div>
 							<div class="col-md-5">
-								<input type="text" name="Objective" class="form-control"
+								<input type="text" name="Objective" class="form-control alphanum-no-leading-space"
 									id="ObjectiveAdd" maxlength="255" required="required"
 									placeholder="Maximum 250 Chararcters"
 									style="line-height: 3rem !important" value="<%if(tp.getObjective()!=null){%><%=tp.getObjective() %> <%}%>">
@@ -429,7 +429,7 @@ opacity
 										</label>
 									</div>
 									<div class="col-md-10" style="">
-										<input class="form-control" name="Methodology"
+										<input class="form-control alphanum-no-leading-space" name="Methodology"
 											id="MethodologyAdd" required  value="<%if(tp.getMethodology()!=null){%><%=tp.getMethodology() %> <%}%>">
 									</div>
 								</div>
@@ -443,7 +443,7 @@ opacity
 										</label>
 									</div>
 									<div class="col-md-10">
-										<input class="form-control" name="ToolsSetup" style=""
+										<input class="form-control alphanum-no-leading-space" name="ToolsSetup" style=""
 											required="required"  value="<%if(tp.getToolsSetup()!=null){%><%=tp.getToolsSetup() %> <%}%>">
 
 									</div>
@@ -460,7 +460,7 @@ opacity
 										</label>
 									</div>
 									<div class="col-md-10" style="">
-										<input type="text" name="Constraints" class="form-control"
+										<input type="text" name="Constraints" class="form-control alphanum-no-leading-space"
 											id="ConstraintsAdd" maxlength="255" required
 											placeholder="Maximum 250 Chararcters" value="<%if(tp.getConstraints()!=null){%><%=tp.getConstraints() %> <%}%>">
 									</div>
@@ -501,7 +501,7 @@ opacity
 										</label>
 									</div>
 									<div class="col-md-10" style="">
-										<input type="text" name="Iterations" class="form-control"
+										<input type="text" name="Iterations" class="form-control alphanum-no-leading-space"
 											id="IterationsAdd" maxlength="255" required="required"
 											placeholder="Maximum 250 Chararcters"  value="<%if(tp.getIterations()!=null){%><%=tp.getIterations() %> <%}%>">
 									</div>
@@ -516,7 +516,7 @@ opacity
 										</label>
 									</div>
 									<div class="col-md-10" style="">
-										<input type="text" name="Schedule" class="form-control"
+										<input type="text" name="Schedule" class="form-control alphanum-no-leading-space"
 											id="ScheduleAdd" min="1" required="required"
 											value="<%if(tp.getSchedule()!=null){%><%=tp.getSchedule()%> <%}%>">
 									</div>
@@ -535,7 +535,7 @@ opacity
 									</div>
 									<div class="col-md-10" style="">
 										<input type="text" name="PassFailCriteria"
-											class="form-control" id="PassFailCriteriaAdd" maxlength="255"
+											class="form-control alphanum-no-leading-space" id="PassFailCriteriaAdd" maxlength="255"
 											required="required" placeholder="Maximum 250 Chararcters" value="<%if(tp.getPass_Fail_Criteria()!=null){%><%=tp.getPass_Fail_Criteria()%> <%}%>">
 									</div>
 								</div>
@@ -627,7 +627,7 @@ opacity
 											Remarks <span class="mandatory" style="color: red;">*</span>
 										</label>
 									<div  style="">
-										<textarea  name="remarks" class="form-control"
+										<textarea  name="remarks" class="form-control alphanum-no-leading-space"
 											id="remarksAdd" maxlength="255" required="required"
 											placeholder="Maximum 250 Chararcters" ><%if(tp.getRemarks()!=null){%><%=tp.getRemarks()%> <%}%></textarea>
 									</div>

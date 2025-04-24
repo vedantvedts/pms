@@ -476,7 +476,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                         		</div>
                         		<div class="column b" style="width: 13.5%;border-top-right-radius: 5px;">
                             		<label class="control-label">Duration (In months)</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="duration" id="duration" maxlength="100" style="font-size: 15px;"
+                              		<input  class="form-control form-control numeric-only" type="text" name="duration" id="duration" maxlength="100" style="font-size: 15px;"
                               		 placeholder="Enter Duration" value="<%if(carsIni!=null && carsIni.getDuration()!=null){ %><%=carsIni.getDuration()%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required> 
                         		</div>
                     		 </div>
@@ -523,12 +523,12 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                         		</div>
                         		<div class="column b" style="width: 15%;">
                             		<label class="control-label">City</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="rspCity" id="rspCity" maxlength="500" style="font-size: 15px;"
+                              		<input  class="form-control form-control alpha-no-leading-space" type="text" name="rspCity" id="rspCity" maxlength="500" style="font-size: 15px;"
                               		 placeholder="Enter City" value="<%if(carsIni!=null && carsIni.getRSPCity()!=null){ %><%=carsIni.getRSPCity()%><%} %>" required> 
                         		</div>
                         		<div class="column b" style="width: 10%;">
                             		<label class="control-label">Pin Code</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="rspPinCode" id="rspPinCode" maxlength="6" style="font-size: 15px;"
+                              		<input  class="form-control form-control numeric-only" type="text" name="rspPinCode" id="rspPinCode" maxlength="6" style="font-size: 15px;"
                               		 placeholder="Enter Pin Code" value="<%if(carsIni!=null && carsIni.getRSPPinCode()!=null){ %><%=carsIni.getRSPPinCode()%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" onchange="validatePinCodeInput(this);" required> 
                         		</div>
                         		<div class="column b" style="width: 19.4%;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">
@@ -564,33 +564,33 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                         		</div>
                         		<div class="column b" style="width: 20%;">
                             		<label class="control-label">Name</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="piName" id="piName" maxlength="500" style="font-size: 15px;"
+                              		<input  class="form-control form-control alpha-dot-no-leading-space" type="text" name="piName" id="piName" maxlength="500" style="font-size: 15px;"
                               		 placeholder="Enter Name of PI" value="<%if(carsIni!=null && carsIni.getPIName()!=null){ %><%=carsIni.getPIName()%><%} %>" required> 
                         		</div>
                         		<div class="column b" style="width: 18%;">
                             		<label class="control-label">Designation</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="piDesig" id="piDesig" maxlength="500" style="font-size: 15px;"
+                              		<input  class="form-control form-control alpha-dot-no-leading-space" type="text" name="piDesig" id="piDesig" maxlength="500" style="font-size: 15px;"
                               		 placeholder="Enter Designation of PI" value="<%if(carsIni!=null && carsIni.getPIDesig()!=null){ %><%=carsIni.getPIDesig()%><%} %>" required> 
                         		</div>
                         		<div class="column b" style="width: 18%;">
                             		<label class="control-label">Department</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="piDept" id="piDept" maxlength="500" style="font-size: 15px;"
+                              		<input  class="form-control form-control alpha-dot-no-leading-space" type="text" name="piDept" id="piDept" maxlength="500" style="font-size: 15px;"
                               		 placeholder="Enter Department of PI" value="<%if(carsIni!=null && carsIni.getPIDept()!=null){ %><%=carsIni.getPIDept()%><%} %>" required> 
                         		</div>
                         		<div class="column b" style="width: 12%;">
                             		<label class="control-label">Mobile Number</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="piMobileNo" id="piMobileNo" maxlength="10" style="font-size: 15px;"
-                              		 placeholder="Enter Mobile No of PI" value="<%if(carsIni!=null && carsIni.getPIMobileNo()!=null){ %><%=carsIni.getPIMobileNo()%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" onchange="validateMobileNoInput(this);" required> 
+                              		<input  class="form-control form-control indian-mobile" type="text" name="piMobileNo" id="piMobileNo" maxlength="10" style="font-size: 15px;"
+                              		 placeholder="Enter Mobile No of PI" value="<%if(carsIni!=null && carsIni.getPIMobileNo()!=null){ %><%=carsIni.getPIMobileNo()%><%} %>" onchange="validateMobileNoInput(this);" required> 
                         		</div>
                         		<div class="column b" style="width: 12%;">
                             		<label class="control-label">Email</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="piEmail" id="piEmail" maxlength="50" style="font-size: 15px;"
+                              		<input  class="form-control form-control email-input" type="text" name="piEmail" id="piEmail" maxlength="50" style="font-size: 15px;"
                               		 placeholder="Enter Email of PI" value="<%if(carsIni!=null && carsIni.getPIEmail()!=null){ %><%=carsIni.getPIEmail()%><%} %>" onchange="validateEmailInput(this);" required> 
                         		</div>
                         		<div class="column b" style="width: 9.5%;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">
                             		<label class="control-label">Fax No</label>
-                              		<input  class="form-control form-control" type="text" name="piFaxNo" id="piFaxNo" maxlength="10" style="font-size: 15px;" 
-                              		 placeholder="Enter Fax No of PI" value="<%if(carsIni!=null && carsIni.getPIFaxNo()!=null){ %><%=carsIni.getPIFaxNo()%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"> 
+                              		<input  class="form-control form-control description-input" type="text" name="piFaxNo" id="piFaxNo" maxlength="10" style="font-size: 15px;" 
+                              		 placeholder="Enter Fax No of PI" value="<%if(carsIni!=null && carsIni.getPIFaxNo()!=null){ %><%=carsIni.getPIFaxNo()%><%} %>" > 
                         		</div>
                     		 </div>
                     		 
@@ -1931,13 +1931,13 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 															<textarea class="form-control" name="taskDesc" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required" ><%if(mil.getTaskDesc()!=null) {%><%=mil.getTaskDesc() %><%} %></textarea>
 														</td>	
 														<td style="width: 7%;padding: 10px 5px 0px 5px;">
-															<input type="number" class="form-control " name="months" min="0" max="<%if(carsSoC!=null) {%><%=carsSoC.getSoCDuration() %><%} %>" value="<%if(mil.getMonths()!=null) {%><%=mil.getMonths() %><%} %>" required="required">
+															<input type="number" class="form-control numeric-only" name="months" min="0" max="<%if(carsSoC!=null) {%><%=carsSoC.getSoCDuration() %><%} %>" value="<%if(mil.getMonths()!=null) {%><%=mil.getMonths() %><%} %>" required="required">
 														</td>	
 														<td style="width: 25%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} %></textarea>
 														</td>
 														<td style="width: 6%;padding: 10px 5px 0px 5px;">
-															<input type="number" class="form-control" name="paymentPercentage" min="0" max="100" value="<%if(mil.getPaymentPercentage()!=null) {%><%=mil.getPaymentPercentage() %><%} %>" required="required" oninput="return checkPaymentPercentage(this)">
+															<input type="number" class="form-control numeric-only" name="paymentPercentage" min="0" max="100" value="<%if(mil.getPaymentPercentage()!=null) {%><%=mil.getPaymentPercentage() %><%} %>" required="required" oninput="return checkPaymentPercentage(this)">
 														</td>
 														<td style="width: 10%;padding: 10px 5px 0px 5px;">
 															<input type="number" class="form-control" name="actualAmount" min="0" max="<%if(carsSoC!=null) {%> <%=carsSoC.getSoCAmount() %><%} %>" value="<%if(mil.getActualAmount()!=null) {%><%=String.format("%.2f", Double.parseDouble(mil.getActualAmount())) %><%} %>" required="required" oninput="return checkActualAmount(this)">
@@ -3551,25 +3551,26 @@ function showEditor2(a){
 <script type="text/javascript">
 	function checkPaymentPercentage(inputElement){
 		
-		// Traverse up the DOM to find the parent row
-	    var row = $(inputElement).closest('tr');
-		
-		var percentage = 0;
-		
-		$("input[name='paymentPercentage']").each(function() {
-			percentage = percentage+Number($(this).val());
-		});
-		
-		if(percentage>100){
-			alert('Percentage should not exceed more than 100');
-			
-			// Set the value of the specific input in the same row to 0
-	        $(inputElement).val('0');
-	        
-			return false;
-		}else{
-			return true;
+		function checkPaymentPercentage(input) {
+		    // Allow empty input (if required field will handle validation)
+		    if (!input.value) return true;
+
+		    // Validate the input: only digits and at most one dot
+		    const regex = /^\d*\.?\d*$/;
+
+		    if (!regex.test(input.value)) {
+		        // Remove extra dots or invalid characters
+		        input.value = input.value.replace(/[^0-9.]/g, ''); // remove non-numeric and non-dot
+		        // Remove second or more dots
+		        const parts = input.value.split('.');
+		        if (parts.length > 2) {
+		            input.value = parts[0] + '.' + parts.slice(1).join('').replace(/\./g, '');
+		        }
+		    }
+
+		    return true;
 		}
+
 	}
 	
 	function checkActualAmount(inputElement){

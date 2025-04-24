@@ -1137,7 +1137,7 @@ td {
 											maxlength="250" placeholder="Maximum 250 chcarcters"> -->
 									<textarea rows="2" style="display: block; "
 										class="form-control" id="remarks" name="Remarks"
-										placeholder="Enter Remarks..!!"></textarea>
+										placeholder="Enter Remarks..!"></textarea>
 									</div>
 									<div class="col-md-2">
 										<button type="button" onclick="submitProgress()"
@@ -1278,8 +1278,8 @@ td {
 										<!-- <input class="form-control " name="remarks" id="remarks"
 											maxlength="250" placeholder="Maximum 250 chcarcters"> -->
 									<textarea rows="2" style="display: block; "
-										class="form-control" id="" name="Remarks"
-										placeholder="Enter Remarks..!!"></textarea>
+										class="form-control" id="" name="remarks"
+										placeholder="Enter Remarks..!"></textarea>
 									</div>
 								</div>
 								<div class="row mt-2">
@@ -1558,64 +1558,74 @@ var dt = new Date(from[2], from[1] - 1, from[0]);
     }
     
     
-    function submitProgress(){
-    	
-    	 var Progress=Number($('#Progress').val());
-    	 var ActionAssignId = <%=ActionAssignId%>;
-    	 var file= $("#Attachment")[0].files[0];
-    	 console.log(ActionAssignId)
-    	 var formData = new FormData();
-            formData.append("file", $("#Attachment")[0].files[0]);
-            formData.append("progressDate", $("#progressDate").val());
-            formData.append("Progress",Progress);
-            formData.append("remarks",$('#remarks').val());
-            formData.append("ActionAssignId",ActionAssignId);
-            formData.append("${_csrf.parameterName}", "${_csrf.token}");
-    	if(Progress==0){
-    		Swal.fire({
-    			  icon: "error",
-    			  text: "Please give some progress",
-    			 
-    			});
-    		/* alert("Please give some progress"); */
-    	}else if (Progress>100){
-    		Swal.fire({
-  			  icon: "warning",
-  			  text: "Progrss should not be more than 100 !",
-  			 
-  			});
-    		/* alert("progress can not be more than 100"); */
-    	}
-    	else{
-    		if(confirm('Are you sure to submit progress?')){
-    			$.ajax({
-    				type:'POST',
-    				url:'ActionProgressAjaxSubmit.htm',
-    				 data: formData,
-    	                contentType: false,
-    	                processData: false,
-    	                success:function(result){
-    	               
-		    	        Swal.fire({
-		    	       	title: "Success",
-		                text: "Progress Updated Successfully.",
-		                icon: "success",
-		                allowOutsideClick :false
-		         		});
-		    	        $('.swal2-confirm').click(function (){
-		    	        	console.log("hiiii")
-		    	            location.reload();
-		    	        	})
-    	                }
-    			
-    			})
-    			
-    		}else{
-    			event.preventDefault();
-    			return false;
-    		}
-    	}
+    function submitProgress() {
+        var Progress = Number($('#Progress').val());
+        var ActionAssignId = <%=ActionAssignId%>;
+        var file = $("#Attachment")[0].files[0];
+        var formData = new FormData();
+
+        formData.append("file", file);
+        formData.append("progressDate", $("#progressDate").val());
+        formData.append("Progress", Progress);
+        formData.append("remarks", $('#remarks').val());
+        formData.append("ActionAssignId", ActionAssignId);
+        formData.append("${_csrf.parameterName}", "${_csrf.token}");
+
+        if (Progress === 0) {
+            Swal.fire({
+                icon: "error",
+                text: "Please give some progress"
+            });
+        } else if (Progress > 100) {
+            Swal.fire({
+                icon: "warning",
+                text: "Progress should not be more than 100!"
+            });
+        } else {
+            if (confirm('Are you sure to submit progress?')) {
+                $.ajax({
+                    type: 'POST',
+                    url: 'ActionProgressAjaxSubmit.htm',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(result) {
+                        if (result.startsWith("error:")) {
+                            Swal.fire({
+                                icon: "error",
+                                text: result.replace("error:", "")
+                            });
+                        } else if (result.startsWith("success:")) {
+                            Swal.fire({
+                                title: "Success",
+                                text: result.replace("success:", ""),
+                                icon: "success",
+                                allowOutsideClick: false
+                            });
+                            $('.swal2-confirm').click(function () {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "warning",
+                                text: "Unexpected response from server."
+                            });
+                        }
+                    },
+                    error: function() {
+                        Swal.fire({
+                            icon: "error",
+                            text: "An error occurred while submitting. Please try again."
+                        });
+                    }
+                });
+            } else {
+                event.preventDefault();
+                return false;
+            }
+        }
     }
+
     
     
     

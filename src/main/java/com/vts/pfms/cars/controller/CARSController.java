@@ -73,6 +73,7 @@ import com.vts.pfms.committee.model.ActionMain;
 import com.vts.pfms.committee.service.ActionService;
 import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.project.service.ProjectService;
+import com.vts.pfms.utils.InputValidator;
 import com.vts.pfms.utils.PMSLogoUtil;
 
 @Controller
@@ -246,6 +247,7 @@ public class CARSController {
 			
 			if(carsInitiationId!=null && carsInitiationId!="0") {
 				long carsiniid = Long.parseLong(carsInitiationId);
+				ses.setAttribute("carsid", carsiniid);
 				CARSInitiation carsInitiation = service.getCARSInitiationById(carsiniid);
 				req.setAttribute("CARSInitiationData", carsInitiation);
 				req.setAttribute("RSQRDetails", service.carsRSQRDetails(carsInitiationId));
@@ -295,26 +297,89 @@ public class CARSController {
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date()+ " Inside CARSInitiationAdd.htm "+UserId);
 		try {
+			
+			String initiationTitle=req.getParameter("initiationTitle");
+			String Amount=req.getParameter("amount");
+			String Duration=req.getParameter("duration");
+			String initiationAim=req.getParameter("initiationAim");
+			String justification=req.getParameter("justification");
+			String rspInstitute=req.getParameter("rspInstitute");
+			String rspAddress=req.getParameter("rspAddress");
+			String rspCity=req.getParameter("rspCity");
+			String rspState=req.getParameter("rspState");
+			String rspPinCode=req.getParameter("rspPinCode");
+			String piName=req.getParameter("piName");
+			String piDesig=req.getParameter("piDesig");
+			String piDept=req.getParameter("piDept");
+			String piMobileNo=req.getParameter("piMobileNo");
+			String piEmail=req.getParameter("piEmail");
+			String piFaxNo=req.getParameter("piFaxNo");
+			
+			if(InputValidator.isContainsHTMLTags(initiationTitle)) {
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'CARS Title' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(Amount)) {
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Amount' must contain only numbers.!");
+			}
+			if(!InputValidator.isContainsNumberOnly(Duration)) {
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Duration' must contain only numbers.!");
+			}
+			if(InputValidator.isContainsHTMLTags(initiationAim)) {
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Aim' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(justification)) {
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Justification' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(rspInstitute)) {
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Name of Institute' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(rspAddress)) {
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Address' should not contain HTML Tags.!");
+			}
+			if(!InputValidator.isValidNameWithCapitalsAndSmallLettersAndSpace(rspCity)) {
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'City' must contain only Alphabets.!");
+			}
+			if(!InputValidator.isContainsNumberOnly(rspPinCode)) {
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'PinCode' must contain only numbers.!");
+			}
+			if(InputValidator.isContainsHTMLTags(piName)) {
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Principal Investigator Details (Name)' should not contain HTML Tags.!");
+			}
+			if(!InputValidator.isValidNameWithCapitalsAndSmallLettersAndSpace(piDesig)) {
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Designation' must contain only Alphabets.!");
+			}
+			if(!InputValidator.isValidNameWithCapitalsAndSmallLettersAndSpace(piDept)) {
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Department' must contain only Alphabets.!");
+			}
+			if(!InputValidator.isContainsNumberOnly(piMobileNo)) {
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Mobile Number' must contain only Numbers.!");
+			}
+			if(!InputValidator.isValidEmail(piEmail)) {
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Email' should be in a Email Format.!");
+			}
+			if(InputValidator.isContainsHTMLTags(piFaxNo)) {
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Fax No' should not contain HTML Tags.!");
+			}
 			CARSInitiation initiation = CARSInitiation.builder()
 					                   .EmpId(Long.parseLong(EmpId))
-					                   .InitiationTitle(req.getParameter("initiationTitle"))
-					                   .InitiationAim(req.getParameter("initiationAim"))
-					                   .Justification(req.getParameter("justification"))
+					                   .InitiationTitle(initiationTitle)
+					                   .InitiationAim(initiationAim)
+					                   .Justification(justification	)
 					                   .FundsFrom(req.getParameter("fundsFrom"))
-					                   .Amount(req.getParameter("amount"))
-					                   .Duration(req.getParameter("duration"))
-					                   .RSPInstitute(req.getParameter("rspInstitute"))
-					                   .RSPAddress(req.getParameter("rspAddress"))
-					                   .RSPCity(req.getParameter("rspCity"))
-					                   .RSPState(req.getParameter("rspState"))
-					                   .RSPPinCode(req.getParameter("rspPinCode"))
+					                   .Amount(Amount)
+					                   .Duration(Duration)
+					                   .RSPInstitute(rspInstitute)
+					                   .RSPAddress(rspAddress)
+					                   .RSPCity(rspCity)
+					                   .RSPState(rspState)
+					                   .RSPPinCode(rspPinCode)
 					                   .PITitle(req.getParameter("piTitle"))
-					                   .PIName(req.getParameter("piName"))
-					                   .PIDesig(req.getParameter("piDesig"))
-					                   .PIDept(req.getParameter("piDept"))
-					                   .PIMobileNo(req.getParameter("piMobileNo"))
-					                   .PIEmail(req.getParameter("piEmail"))
-					                   .PIFaxNo(req.getParameter("piFaxNo"))
+					                   .PIName(piName)
+					                   .PIDesig(piDesig)
+					                   .PIDept(piDept)
+					                   .PIMobileNo(piMobileNo)
+					                   .PIEmail(piEmail)
+					                   .PIFaxNo(piFaxNo)
 					                   .EquipmentNeed("N")
 					                   .DPCSoCForwardedBy(0)
 					                   .CARSStatusCode("INI")
@@ -348,25 +413,118 @@ public class CARSController {
 		try {
 			String carsInitiationId = req.getParameter("carsInitiationId");
 			
+			String initiationTitle=req.getParameter("initiationTitle");
+			String Amount=req.getParameter("amount");
+			String Duration=req.getParameter("duration");
+			String initiationAim=req.getParameter("initiationAim");
+			String justification=req.getParameter("justification");
+			String rspInstitute=req.getParameter("rspInstitute");
+			String rspAddress=req.getParameter("rspAddress");
+			String rspCity=req.getParameter("rspCity");
+			String rspState=req.getParameter("rspState");
+			String rspPinCode=req.getParameter("rspPinCode");
+			String piName=req.getParameter("piName");
+			String piDesig=req.getParameter("piDesig");
+			String piDept=req.getParameter("piDept");
+			String piMobileNo=req.getParameter("piMobileNo");
+			String piEmail=req.getParameter("piEmail");
+			String piFaxNo=req.getParameter("piFaxNo");
+			
+			if(InputValidator.isContainsHTMLTags(initiationTitle)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","1");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'CARS Title' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(Amount)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","1");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Amount' should not contain HTML Tags.!");
+			}
+			if(!InputValidator.isContainsNumberOnly(Duration)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","1");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Duration' must contain only numbers.!");
+			}
+			if(InputValidator.isContainsHTMLTags(initiationAim)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","1");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Aim' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(justification)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","1");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Justification' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(rspInstitute)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","1");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Name of Institute' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(rspAddress)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","1");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Address' should not contain HTML Tags.!");
+			}
+			if(!InputValidator.isValidNameWithCapitalsAndSmallLettersAndSpace(rspCity)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","1");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'City' must contain only Alphabets.!");
+			}
+			if(!InputValidator.isContainsNumberOnly(rspPinCode)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","1");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'PinCode' must contain only numbers.!");
+			}
+			if(InputValidator.isContainsHTMLTags(piName)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","1");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Principal Investigator Details (Name)' should not contain HTML Tags.!");
+			}
+			if(!InputValidator.isValidNameWithCapitalsAndSmallLettersAndSpace(piDesig)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","1");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Designation' must contain only Alphabets.!");
+			}
+			if(!InputValidator.isValidNameWithCapitalsAndSmallLettersAndSpace(piDept)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","1");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Department' must contain only Alphabets.!");
+			}
+			if(!InputValidator.isContainsNumberOnly(piMobileNo)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","1");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Mobile Number' must contain only Numbers.!");
+			}
+			if(!InputValidator.isValidEmail(piEmail)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","1");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Email' should be in a Email Format.!");
+			}
+			if(InputValidator.isContainsHTMLTags(piFaxNo)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","1");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Fax No' should not contain HTML Tags.!");
+			}
+			
 			CARSInitiation initiation = service.getCARSInitiationById(Long.parseLong(carsInitiationId));
-			initiation.setInitiationTitle(req.getParameter("initiationTitle"));
-			initiation.setInitiationAim(req.getParameter("initiationAim"));
-			initiation.setJustification(req.getParameter("justification"));
+			initiation.setInitiationTitle(initiationTitle);
+			initiation.setInitiationAim(initiationAim);
+			initiation.setJustification(justification);
 			initiation.setFundsFrom(req.getParameter("fundsFrom"));
-			initiation.setAmount(req.getParameter("amount"));
-			initiation.setDuration(req.getParameter("duration"));
-			initiation.setRSPInstitute(req.getParameter("rspInstitute"));
-			initiation.setRSPAddress(req.getParameter("rspAddress"));
-			initiation.setRSPCity(req.getParameter("rspCity"));
+			initiation.setAmount(Amount);
+			initiation.setDuration(Duration);
+			initiation.setRSPInstitute(rspInstitute);
+			initiation.setRSPAddress(rspAddress);
+			initiation.setRSPCity(rspCity);
 			initiation.setRSPState(req.getParameter("rspState"));
-			initiation.setRSPPinCode(req.getParameter("rspPinCode"));
+			initiation.setRSPPinCode(rspPinCode);
 			initiation.setPITitle(req.getParameter("piTitle"));
-			initiation.setPIName(req.getParameter("piName"));
-			initiation.setPIDesig(req.getParameter("piDesig"));
-			initiation.setPIDept(req.getParameter("piDept"));
-			initiation.setPIMobileNo(req.getParameter("piMobileNo"));
-			initiation.setPIEmail(req.getParameter("piEmail"));
-			initiation.setPIFaxNo(req.getParameter("piFaxNo"));
+			initiation.setPIName(piName);
+			initiation.setPIDesig(piDesig);
+			initiation.setPIDept(piDept);
+			initiation.setPIMobileNo(piMobileNo);
+			initiation.setPIEmail(piEmail);
+			initiation.setPIFaxNo(piFaxNo);
 			initiation.setModifiedBy(UserId);
 			initiation.setModifiedDate(sdtf.format(new Date()));
 			
@@ -374,7 +532,7 @@ public class CARSController {
 			if(result!=0) {
 				redir.addAttribute("result", "CARS Initiation Edited Successfully");
 			}else {
-				redir.addAttribute("resultfail", "CARS Initiation Edit UnSuccessful");
+				redir.addAttribute("resultfail", "CARS Initiation Edit UnSuccessfull");
 			}
 			redir.addAttribute("carsInitiationId", result);
 			redir.addAttribute("TabId","1");
@@ -459,14 +617,48 @@ public class CARSController {
 		
 		String tab=req.getParameter("tab");
 		
+		String[] ReqDescription=req.getParameterValues("reqDescription");
+		String[] RelevantSpecs=req.getParameterValues("relevantSpecs");
+		String[] ValidationMethod=req.getParameterValues("validationMethod");
+		String[] Remarks=req.getParameterValues("remarks");
+		
+	
+		if (containsHTMLTags(ReqDescription)) {
+			redir.addAttribute("carsInitiationId", carsInitiationId);
+			redir.addAttribute("attributes", attributes);
+			redir.addAttribute("TabId",tab!=null?tab:"2");
+		    return redirectWithError(redir, "CARSInitiationDetails.htm", "'Req Description' should not contain HTML Tags.!");
+		}
+		if (containsHTMLTags(RelevantSpecs)) {
+			redir.addAttribute("carsInitiationId", carsInitiationId);
+			redir.addAttribute("attributes", attributes);
+			redir.addAttribute("TabId",tab!=null?tab:"2");
+		    return redirectWithError(redir, "CARSInitiationDetails.htm", "'Relevant Specification' should not contain HTML Tags.!");
+		}
+		if (containsHTMLTags(ValidationMethod)) {
+			redir.addAttribute("carsInitiationId", carsInitiationId);
+			redir.addAttribute("attributes", attributes);
+			redir.addAttribute("TabId",tab!=null?tab:"2");
+		    return redirectWithError(redir, "CARSInitiationDetails.htm", "'Validation Method' should not contain HTML Tags.!");
+		}
+		if (containsHTMLTags(Remarks)) {
+			redir.addAttribute("carsInitiationId", carsInitiationId);
+			redir.addAttribute("attributes", attributes);
+			redir.addAttribute("TabId",tab!=null?tab:"2");
+		    return redirectWithError(redir, "CARSInitiationDetails.htm", "'Remarks' should not contain HTML Tags.!");
+		}
+
+		
 		CARSRSQRDetailsDTO dto = new CARSRSQRDetailsDTO();
 		dto.setCARSInitiationId(carsiniid);
 		dto.setReqId(req.getParameterValues("reqId"));
-		dto.setReqDescription(req.getParameterValues("reqDescription"));
-		dto.setRelevantSpecs(req.getParameterValues("relevantSpecs"));
-		dto.setValidationMethod(req.getParameterValues("validationMethod"));
-		dto.setRemarks(req.getParameterValues("remarks"));
+		dto.setReqDescription(ReqDescription);
+		dto.setRelevantSpecs(RelevantSpecs);
+		dto.setValidationMethod(ValidationMethod);
+		dto.setRemarks(Remarks);
 		dto.setUserId(UserId);
+		
+		
 		
 		List<CARSRSQRMajorRequirements> majorReqr = service.getCARSRSQRMajorReqrByCARSInitiationId(carsiniid);
 		long result = 0l;
@@ -512,9 +704,17 @@ public class CARSController {
 
 			String tab=req.getParameter("tab");
 			
+			String[] Description=req.getParameterValues("description");
+			if (containsHTMLTags(Description)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("attributes", attributes);
+				redir.addAttribute("TabId",tab!=null?tab:"2");
+			    return redirectWithError(redir, "CARSInitiationDetails.htm", "'Description' should not contain HTML Tags.!");
+			}
+			
 			CARSRSQRDetailsDTO dto = new CARSRSQRDetailsDTO();
 			dto.setCARSInitiationId(carsiniid);
-			dto.setDescription(req.getParameterValues("description"));
+			dto.setDescription(Description);
 			dto.setDeliverableType(req.getParameterValues("deliverableType"));
 			dto.setUserId(UserId);
 			
@@ -620,6 +820,12 @@ public class CARSController {
 			CARSInitiation cars = service.getCARSInitiationById(carsini);
 			String carsStatusCode = cars.getCARSStatusCode();
 			
+			
+			if(InputValidator.isContainsHTMLTags(remarks)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","3");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Remarks' should not contain HTML Tags.!");
+			}
 			CARSApprovalForwardDTO dto = new CARSApprovalForwardDTO();
 			dto.setCarsinitiationid(carsini);
 			dto.setAction(action);
@@ -871,15 +1077,85 @@ public class CARSController {
 		try {
 			String carsInitiationId = req.getParameter("carsInitiationId");
 			long carsiniid = Long.parseLong(carsInitiationId);
+			
+			String Alignment=req.getParameter("alignment");
+			String timeReasonability=req.getParameter("timeReasonability");
+			String costReasonability=req.getParameter("costReasonability");
+			String rspSelection=req.getParameter("rspSelection");
+			String socCriterion=req.getParameter("socCriterion");
+			if(InputValidator.isContainsHTMLTags(Alignment)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","4");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Alignment with' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(timeReasonability)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","4");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Justification for time reasonability' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(costReasonability)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","4");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Justification for cost reasonability' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(rspSelection)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","4");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Justification for selection of RSP' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(socCriterion)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","4");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Success / Acceptance Criterion' should not contain HTML Tags.!");
+			}
+			
+			String rspOfferRef=req.getParameter("rspOfferRef");
+			String kp1Details=req.getParameter("kp1Details");
+			String kp2Details=req.getParameter("kp2Details");
+			if(InputValidator.isContainsHTMLTags(rspOfferRef)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","4");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'RSP's Offer Ref' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(kp1Details)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","4");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Key Professional-1 Details' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(kp2Details)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","4");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Key Professional-2 Details' should not contain HTML Tags.!");
+			}
+			
+			String[] consultantName=req.getParameterValues("consultantName");
+			String[] consultantCompany=req.getParameterValues("consultantCompany");
+			String[] equipmentDescription=req.getParameterValues("equipmentDescription");
+			if (containsHTMLTags(consultantName)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","4");
+			    return redirectWithError(redir, "CARSInitiationDetails.htm", "'Research Consultant Name(s)' should not contain HTML Tags.!");
+			}
+			if (containsHTMLTags(consultantCompany)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","4");
+			    return redirectWithError(redir, "CARSInitiationDetails.htm", "'Research Consultant Company(s)' should not contain HTML Tags.!");
+			}
+			if (containsHTMLTags(equipmentDescription)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","4");
+			    return redirectWithError(redir, "CARSInitiationDetails.htm", "'DRDO-owned Equipment (Description)' should not contain HTML Tags.!");
+			}
+			
 			CARSSoC soc = new CARSSoC();
 			soc.setCARSInitiationId(carsiniid);
 			soc.setSoCAmount(req.getParameter("socAmount"));
 			soc.setSoCDuration(req.getParameter("socDuration"));
-			soc.setAlignment(req.getParameter("alignment"));
-			soc.setTimeReasonability(req.getParameter("timeReasonability"));
-			soc.setCostReasonability(req.getParameter("costReasonability"));
-			soc.setRSPSelection(req.getParameter("rspSelection"));
-			soc.setSoCCriterion(req.getParameter("socCriterion"));
+			soc.setAlignment(Alignment);
+			soc.setTimeReasonability(timeReasonability);
+			soc.setCostReasonability(costReasonability);
+			soc.setRSPSelection(rspSelection);
+			soc.setSoCCriterion(socCriterion);
 			soc.setCreatedBy(Username);
 			soc.setCreatedDate(sdtf.format(new Date()));
 			soc.setIsActive(1);
@@ -889,10 +1165,10 @@ public class CARSController {
 			String rspOfferDate = req.getParameter("rspOfferDate");
 			CARSContract contract = new CARSContract();
 			contract.setCARSInitiationId(carsiniid);
-			contract.setRSPOfferRef(req.getParameter("rspOfferRef"));
+			contract.setRSPOfferRef(rspOfferRef);
 			contract.setRSPOfferDate(rspOfferDate!=null?fc.RegularToSqlDate(rspOfferDate):null);
-			contract.setKP1Details(req.getParameter("kp1Details"));
-			contract.setKP2Details(req.getParameter("kp2Details"));
+			contract.setKP1Details(kp1Details);
+			contract.setKP2Details(kp2Details);
 			contract.setExpndPersonnelCost(req.getParameter("expndPersonnelCost"));
 			contract.setExpndEquipmentCost(req.getParameter("expndEquipmentCost"));
 			contract.setExpndOthersCost(req.getParameter("expndOthersCost"));
@@ -906,9 +1182,9 @@ public class CARSController {
 			
 			CARSContractDetailsDTO dto = new CARSContractDetailsDTO();
 			dto.setCARSInitiationId(carsiniid);
-			dto.setConsultantName(req.getParameterValues("consultantName"));
-			dto.setConsultantCompany(req.getParameterValues("consultantCompany"));
-			dto.setEquipmentDescription(req.getParameterValues("equipmentDescription"));
+			dto.setConsultantName(consultantName);
+			dto.setConsultantCompany(consultantCompany);
+			dto.setEquipmentDescription(equipmentDescription);
 			dto.setUserId(Username);
 			
 			long consultantsResult = service.addCARSContractConsultantsDetails(dto);
@@ -955,14 +1231,83 @@ public class CARSController {
 			String carsSocId = req.getParameter("carsSocId");
 			long carsiniid = Long.parseLong(carsInitiationId);
 			
+			String Alignment=req.getParameter("alignment");
+			String timeReasonability=req.getParameter("timeReasonability");
+			String costReasonability=req.getParameter("costReasonability");
+			String rspSelection=req.getParameter("rspSelection");
+			String socCriterion=req.getParameter("socCriterion");
+			if(InputValidator.isContainsHTMLTags(Alignment)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","4");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Alignment with' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(timeReasonability)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","4");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Justification for time reasonability' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(costReasonability)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","4");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Justification for cost reasonability' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(rspSelection)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","4");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Justification for selection of RSP' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(socCriterion)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","4");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Success / Acceptance Criterion' should not contain HTML Tags.!");
+			}
+			
+			String rspOfferRef=req.getParameter("rspOfferRef");
+			String kp1Details=req.getParameter("kp1Details");
+			String kp2Details=req.getParameter("kp2Details");
+			if(InputValidator.isContainsHTMLTags(rspOfferRef)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","4");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'RSP's Offer Ref' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(kp1Details)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","4");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Key Professional-1 Details' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(kp2Details)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","4");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Key Professional-2 Details' should not contain HTML Tags.!");
+			}
+			
+			String[] consultantName=req.getParameterValues("consultantName");
+			String[] consultantCompany=req.getParameterValues("consultantCompany");
+			String[] equipmentDescription=req.getParameterValues("equipmentDescription");
+			if (containsHTMLTags(consultantName)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","4");
+			    return redirectWithError(redir, "CARSInitiationDetails.htm", "'Research Consultant -> Name(s)' should not contain HTML Tags.!");
+			}
+			if (containsHTMLTags(consultantCompany)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","4");
+			    return redirectWithError(redir, "CARSInitiationDetails.htm", "'Research Consultant -> Institute / Company' should not contain HTML Tags.!");
+			}
+			if (containsHTMLTags(equipmentDescription)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","4");
+			    return redirectWithError(redir, "CARSInitiationDetails.htm", "'DRDO-owned Equipment (Description)' should not contain HTML Tags.!");
+			}
+			
 			CARSSoC soc = service.getCARSSoCById(Long.parseLong(carsSocId));
 			soc.setSoCAmount(req.getParameter("socAmount"));
 			soc.setSoCDuration(req.getParameter("socDuration"));
-			soc.setAlignment(req.getParameter("alignment"));
-			soc.setTimeReasonability(req.getParameter("timeReasonability"));
-			soc.setCostReasonability(req.getParameter("costReasonability"));
-			soc.setRSPSelection(req.getParameter("rspSelection"));
-			soc.setSoCCriterion(req.getParameter("socCriterion"));
+			soc.setAlignment(Alignment);
+			soc.setTimeReasonability(timeReasonability);
+			soc.setCostReasonability(costReasonability);
+			soc.setRSPSelection(rspSelection);
+			soc.setSoCCriterion(socCriterion);
 			soc.setModifiedBy(Username);
 			soc.setModifiedDate(sdtf.format(new Date()));
 			
@@ -970,10 +1315,10 @@ public class CARSController {
 			
 			String rspOfferDate = req.getParameter("rspOfferDate");
 			CARSContract contract = service.getCARSContractByCARSInitiationId(carsiniid);
-			contract.setRSPOfferRef(req.getParameter("rspOfferRef"));
+			contract.setRSPOfferRef(rspOfferRef);
 			contract.setRSPOfferDate(rspOfferDate!=null?fc.RegularToSqlDate(rspOfferDate):null);
-			contract.setKP1Details(req.getParameter("kp1Details"));
-			contract.setKP2Details(req.getParameter("kp2Details"));
+			contract.setKP1Details(kp1Details);
+			contract.setKP2Details(kp2Details);
 			contract.setExpndPersonnelCost(req.getParameter("expndPersonnelCost"));
 			contract.setExpndEquipmentCost(req.getParameter("expndEquipmentCost"));
 			contract.setExpndOthersCost(req.getParameter("expndOthersCost"));
@@ -986,9 +1331,9 @@ public class CARSController {
 			
 			CARSContractDetailsDTO dto = new CARSContractDetailsDTO();
 			dto.setCARSInitiationId(carsiniid);
-			dto.setConsultantName(req.getParameterValues("consultantName"));
-			dto.setConsultantCompany(req.getParameterValues("consultantCompany"));
-			dto.setEquipmentDescription(req.getParameterValues("equipmentDescription"));
+			dto.setConsultantName(consultantName);
+			dto.setConsultantCompany(consultantCompany);
+			dto.setEquipmentDescription(equipmentDescription);
 			dto.setUserId(Username);
 			
 			long consultantsResult = service.addCARSContractConsultantsDetails(dto);
@@ -1149,6 +1494,12 @@ public class CARSController {
 			String carsInitiationId = req.getParameter("carsInitiationId");
 			String action = req.getParameter("Action");
 			String remarks = req.getParameter("remarks");
+			
+			if (InputValidator.isContainsHTMLTags(remarks)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("TabId","7");
+			    return redirectWithError(redir, "CARSInitiationDetails.htm", "'Remarks' should not contain HTML Tags.!");
+			}
 			long carsini = Long.parseLong(carsInitiationId);
 			
 			CARSInitiation cars = service.getCARSInitiationById(carsini);
@@ -1331,13 +1682,38 @@ public class CARSController {
 			String attributes=req.getParameter("attributes");
 			String tab=req.getParameter("tab");
 			long carsiniid = Long.parseLong(carsInitiationId);
+			
+			String[] taskDescription=req.getParameterValues("taskDesc");
+			String[] deliverables=req.getParameterValues("deliverables");
+			String[] Months=req.getParameterValues("months");
+			
+			
+			if (containsHTMLTags(taskDescription)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("attributes", attributes);
+				redir.addAttribute("TabId",tab!=null?tab:"2");
+			    return redirectWithError(redir, "CARSInitiationDetails.htm", "'Task Description' should not contain HTML Tags.!");
+			}
+			if (containsHTMLTags(deliverables)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("attributes", attributes);
+				redir.addAttribute("TabId",tab!=null?tab:"2");
+			    return redirectWithError(redir, "CARSInitiationDetails.htm", "'Deliverables' should not contain HTML Tags.!");
+			}
+			if (containsHTMLTags(Months)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("attributes", attributes);
+				redir.addAttribute("TabId",tab!=null?tab:"2");
+			    return redirectWithError(redir, "CARSInitiationDetails.htm", "'Months' should not contain HTML Tags.!");
+			}
+			
 
 			CARSRSQRDetailsDTO dto = new CARSRSQRDetailsDTO();
 			dto.setCARSInitiationId(carsiniid);
 			dto.setMilestoneNo(req.getParameterValues("milestoneno"));
-			dto.setTaskDesc(req.getParameterValues("taskDesc"));
-			dto.setMonths(req.getParameterValues("months"));
-			dto.setDeliverables(req.getParameterValues("deliverables"));
+			dto.setTaskDesc(taskDescription);
+			dto.setMonths(Months);
+			dto.setDeliverables(deliverables);
 			dto.setPaymentPercentage(req.getParameterValues("paymentPercentage"));
 			dto.setPaymentTerms(req.getParameterValues("paymentTerms"));
 			dto.setActualAmount(req.getParameterValues("actualAmount"));
@@ -1632,11 +2008,21 @@ public class CARSController {
 			String carsInitiationId = req.getParameter("carsInitiationId");
 			String carsSocId = req.getParameter("carsSocId");
 			String Action = req.getParameter("Action");
+			String dpcExpenditure=req.getParameter("dpcExpenditure");
+			String dpcAdditinal=req.getParameter("dpcAdditional");
 			
+			if(InputValidator.isContainsHTMLTags(dpcExpenditure)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				return redirectWithError(redir, "CARSDPCSoCDetails.htm", "'Expenditure Head' should not contain HTML Tags.!");
+			}
+			if(InputValidator.isContainsHTMLTags(dpcAdditinal)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				return redirectWithError(redir, "CARSDPCSoCDetails.htm", "'Additional Points' should not contain HTML Tags.!");
+			}
 			CARSSoC soc = service.getCARSSoCById(Long.parseLong(carsSocId));
 			soc.setDPCIntroduction(req.getParameter("dpcIntroduction"));
-			soc.setDPCExpenditure(req.getParameter("dpcExpenditure"));
-			soc.setDPCAdditional(req.getParameter("dpcAdditional"));
+			soc.setDPCExpenditure(dpcExpenditure);
+			soc.setDPCAdditional(dpcAdditinal);
 			soc.setModifiedBy(Username);
 			soc.setModifiedDate(sdtf.format(new Date()));
 			
@@ -2031,13 +2417,18 @@ public class CARSController {
 		try {
 			String carsInitiationId = req.getParameter("carsInitiationId");
 			String firstTime = req.getParameter("firstTime");
+			String Remarks=req.getParameter("t0Remarks");
 			
+			if(InputValidator.isContainsHTMLTags(Remarks)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				return redirectWithError(redir, "CARSDPCFinalReportDetails.htm", "'T0 Remarks' should not contain HTML Tags.!");
+			}
 			CARSContract contract = service.getCARSContractByCARSInitiationId(Long.parseLong(carsInitiationId));
 			String contractDate = req.getParameter("contractDate");
 			String t0Date = req.getParameter("t0Date");
 			contract.setContractDate(fc.RegularToSqlDate(contractDate));
 			contract.setT0Date(fc.RegularToSqlDate(t0Date));
-			contract.setT0Remarks(req.getParameter("t0Remarks"));
+			contract.setT0Remarks(Remarks);
 			long result = service.carsFinalReportEditSubmit(contract, firstTime, labcode);
 			if (result > 0) {
 				redir.addAttribute("result", "CARS Contract Details Submitted Successfully");
@@ -3101,12 +3492,19 @@ public class CARSController {
 			String carsSoCMilestoneId = req.getParameter("carsSoCMilestoneId");
 			String actionMainId = req.getParameter("actionMainId");
 			
+			String actionName=req.getParameter("activityName");
+			if(InputValidator.isContainsHTMLTags(actionName)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("carsSoCMilestoneId", carsSoCMilestoneId);
+				return redirectWithError(redir, "CARSMilestonesMonitorDetails.htm", "'Action Name' should not contain HTML Tags.!");
+			}
+			
 			CARSInitiation carsInitiation = service.getCARSInitiationById(Long.parseLong(carsInitiationId));
 					
 			ActionMainDto mainDto=new ActionMainDto();
 			mainDto.setActionMainId(actionMainId);
 			mainDto.setMainId("0");
-			mainDto.setActionItem(req.getParameter("activityName"));
+			mainDto.setActionItem(actionName);
 			mainDto.setActionLinkId("0");
 			mainDto.setProjectId(carsInitiation.getFundsFrom());
 			mainDto.setActionDate(req.getParameter("pdc"));
@@ -3173,9 +3571,16 @@ public class CARSController {
 			String carsInitiationId = req.getParameter("carsInitiationId");
 			String carsSoCMilestoneId = req.getParameter("carsSoCMilestoneId");
 			
+			String actionName=req.getParameter("activityName");
+			if(InputValidator.isContainsHTMLTags(actionName)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("carsSoCMilestoneId", carsSoCMilestoneId);
+				return redirectWithError(redir, "CARSMilestonesMonitorDetails.htm", "'Action Item' should not contain HTML Tags.!");
+			}
+			
 			ActionMain main=new ActionMain();
 			main.setActionMainId(Long.parseLong(req.getParameter("actionmainid")));
-			main.setActionItem(req.getParameter("activityName"));
+			main.setActionItem(actionName);
 			main.setModifiedBy(Username);
 			main.setModifiedDate(sdtf.format(new Date()));
 			
@@ -3440,6 +3845,21 @@ public class CARSController {
 		}
 		Gson json = new Gson();
 		return json.toJson(initiationList);
+	}
+	
+	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
+	    redir.addAttribute("resultfail", message);
+	    return "redirect:/"+redirURL;
+	}
+	
+	private boolean containsHTMLTags(String[] inputs) {
+	    
+	    for (String input : inputs) {
+	        if (InputValidator.isContainsHTMLTags(input)) {
+	            return true;
+	        }
+	    }
+	    return false;
 	}
 	
 }

@@ -96,13 +96,13 @@ Object[] tdsdata=(Object[])request.getAttribute("tdsdata");
                     		<div class="col-md-3">
                         		<div class="form-group">
                             		<label class="control-label">TD Code</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control"  type="text" name="tdcode" readonly="readonly" id="tdCode" value="<%=tdsdata[1]%>" required="required" maxlength="3" style="font-size: 15px;"> 
+                              		<input  class="form-control form-control alphanum-only"  type="text" name="tdcode" readonly="readonly" id="tdCode" value="<%=tdsdata[1]%>" required="required" maxlength="3" style="font-size: 15px;"> 
                         		</div>
                     		</div>
          					<div class="col-md-3">
                         		<div class="form-group">
                             		<label class="control-label">TD Name</label><span class="mandatory">*</span>
-                            		<input  class="form-control form-control" value="<%=tdsdata[2] %>"  type="text" name="tdname" id="tdName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize; width: 80%;" > 
+                            		<input  class="form-control form-control alphanum-no-leading-space" value="<%=tdsdata[2] %>"  type="text" name="tdname" id="tdName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize; width: 80%;" > 
                         		</div>
                     		</div>
                     		<div class="col-md-4">

@@ -130,6 +130,7 @@ font-weight: bold;
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 List<Object[]> DivisionMasterList=(List<Object[]>) request.getAttribute("DivisionMasterList");
 String Onboarding = (String)request.getAttribute("Onboarding");
+
 %>
 
 <%String ses=(String)request.getParameter("result"); 
@@ -140,12 +141,12 @@ String Onboarding = (String)request.getAttribute("Onboarding");
 	
 	<center>
 	
-	<div class="alert alert-danger" role="alert">
+	<div class="alert alert-danger" role="alert" style="width: 100%">
                      <%=ses1 %>
                     </div></center>
 	<%}if(ses!=null){ %>
 	<center>
-	<div class="alert alert-success" role="alert" >
+	<div class="alert alert-success" role="alert"style="width: 100%" >
                      <%=ses %>
             </div>
             
@@ -153,8 +154,7 @@ String Onboarding = (String)request.getAttribute("Onboarding");
     
     
                     <%} %>
-
-
+                   
 	
 <br>	
 	

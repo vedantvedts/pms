@@ -94,12 +94,12 @@ if(ses1!=null){
 </label>
 </th>
  <td >
-<input  class="form-control form-control" placeholder="UserName" type="text" name="UserName" required="required" maxlength="255" style="font-size: 15px;"  id="UserNameCheck">
+<input  class="form-control form-control alphanum-no-leading-space" placeholder="UserName" type="text" name="UserName" required="required" maxlength="255" style="font-size: 15px;"  id="UserNameCheck">
 <div id="UserNameMsg" style="color: red;"></div>
 <div id="UserNameSuccessMsg" style="color: green;"></div>
 
 </td>
-<td><input type="submit"  class="btn btn-primary btn-sm"        value="CHECK" id="check"/></td>
+<td><input type="submit"  class="btn btn-primary btn-sm" value="CHECK" id="check"/></td>
 </tr> 
   </thead>
   </table>
@@ -119,7 +119,7 @@ if(ses1!=null){
 </label>
 </th>
  <td >
-<input  class="form-control form-control" placeholder="UserName" type="text" name="UserName" required="required" maxlength="255" style="font-size: 15px;"  id="UserName" readonly="readonly">
+<input  class="form-control form-control alphanum-no-leading-space" placeholder="UserName" type="text" name="UserName" required="required" maxlength="255" style="font-size: 15px;"  id="UserName" readonly="readonly">
 
 	 
 </td>

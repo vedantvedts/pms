@@ -116,6 +116,7 @@ import com.vts.pfms.mail.MailConfigurationDto;
 import com.vts.pfms.mail.MailService;
 import com.vts.pfms.milestone.dto.MileEditDto;
 import com.vts.pfms.timesheet.service.TimeSheetService;
+import com.vts.pfms.utils.InputValidator;
 import com.vts.pfms.utils.PMSFileUtils;
 import com.vts.pfms.utils.PMSLogoUtil;
 
@@ -854,8 +855,15 @@ public class ActionController {
 			logger.info(new Date() +"Inside CloseSubmit.htm "+UserId);		
 			try { 
 				
+				String Remarks=req.getParameter("Remarks");
+				if(InputValidator.isContainsHTMLTags(Remarks)) {
+					redir.addAttribute("ActionMainId",req.getParameter("ActionMainId"));
+        			redir.addAttribute("ActionAssignId",req.getParameter("ActionAssignId"));
+        			redir.addAttribute("ActionPath",req.getParameter("ActionPath"));
+					return redirectWithError(redir, "CloseAction.htm", "'Remarks' should not contain HTML Tags.!");
+				}
 				String levelcount = req.getParameter("LevelCount");
-				long count = service.ActionClosed(req.getParameter("ActionMainId"),req.getParameter("Remarks"), UserId,req.getParameter("ActionAssignId") ,levelcount);
+				long count = service.ActionClosed(req.getParameter("ActionMainId"),Remarks, UserId,req.getParameter("ActionAssignId") ,levelcount);
 				
 			 
 			if (count > 0) {
@@ -4562,43 +4570,48 @@ public class ActionController {
         		return null;
         	}
           	//worked
-            @PostMapping(value="ActionProgressAjaxSubmit.htm")
-        		public @ResponseBody String ActionProgressAjaxSubmit(HttpServletRequest req,
-        				HttpSession ses, 
-        				@RequestParam(name = "file", required = false) MultipartFile file,
-        				@RequestParam("progressDate") String progressDate
-        				,@RequestParam("Progress") String Progress
-        				,@RequestParam("remarks") String remarks,
-        				@RequestParam("ActionAssignId") String ActionAssignId
-        				) throws Exception {
-            	String UserId  = (String) ses.getAttribute("Username");
-        		String labCode = (String)ses.getAttribute("labcode");
-        			Gson json = new Gson();
-        			List<Object[]>allEmployees=new ArrayList<>();
-        			logger.info(new Date()+"Inside ActionProgressAjaxSubmit.htm "+UserId);
-        			try {
-        				
-        				
-        				ActionSubDto subDto=new ActionSubDto();
-        				subDto.setLabCode(labCode);
-        				subDto.setFileName(req.getParameter("FileName"));
-        				if(file!=null) {
-        				subDto.setFileNamePath(file.getOriginalFilename());
-            			subDto.setMultipartfile(file);
-            			}
-        	            subDto.setCreatedBy(UserId);
-        	            subDto.setActionAssignId(req.getParameter("ActionAssignId"));
-        	            subDto.setRemarks(remarks);
-        	            subDto.setProgress(Progress);
-        	            subDto.setProgressDate(progressDate);
-        	        	Long count=service.ActionSubInsert(subDto);
-        	        	System.out.println(count);
-        				}
-        			catch(Exception e) {
-        				e.printStackTrace();
-        			}
-        				return null;
-        		}
+        	 @PostMapping(value="ActionProgressAjaxSubmit.htm")
+      		public @ResponseBody String ActionProgressAjaxSubmit(HttpServletRequest req,
+      				HttpSession ses, 
+      				@RequestParam(name = "file", required = false) MultipartFile file,
+      				@RequestParam("progressDate") String progressDate
+      				,@RequestParam("Progress") String Progress
+      				,@RequestParam("remarks") String remarks,
+      				@RequestParam("ActionAssignId") String ActionAssignId,
+      				RedirectAttributes redir
+      				) throws Exception {
+          	String UserId  = (String) ses.getAttribute("Username");
+      		String labCode = (String)ses.getAttribute("labcode");
+      			Gson json = new Gson();
+      			List<Object[]>allEmployees=new ArrayList<>();
+      			logger.info(new Date()+"Inside ActionProgressAjaxSubmit.htm "+UserId);
+      			try {
+      				
+      				if(InputValidator.isContainsHTMLTags(remarks)) {
+      			 
+      					return "error:Remarks should not contain HTML Tags!";
+      				}
+      				ActionSubDto subDto=new ActionSubDto();
+      				subDto.setLabCode(labCode);
+      				subDto.setFileName(req.getParameter("FileName"));
+      				if(file!=null) {
+      				subDto.setFileNamePath(file.getOriginalFilename());
+          			subDto.setMultipartfile(file);
+          			}
+      	            subDto.setCreatedBy(UserId);
+      	            subDto.setActionAssignId(req.getParameter("ActionAssignId"));
+      	            subDto.setRemarks(remarks);
+      	            subDto.setProgress(Progress);
+      	            subDto.setProgressDate(progressDate);
+      	        	Long count=service.ActionSubInsert(subDto);
+      	        	System.out.println(count);
+      				}
+      			catch(Exception e) {
+      				e.printStackTrace();
+      			}
+      				return "success:Action submitted successfully";
+      		}
+
             
             
         	@RequestMapping(value = "ActionRemarksEdit.htm" , method={RequestMethod.POST,RequestMethod.GET})
@@ -5321,4 +5334,8 @@ public class ActionController {
 			
 			return json.toJson(count);
 	   }
+	   private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
+		    redir.addAttribute("resultfail", message);
+		    return "redirect:/"+redirURL;
+		}
 }

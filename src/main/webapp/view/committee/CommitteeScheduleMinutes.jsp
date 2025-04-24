@@ -792,7 +792,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	          						<span  style="font-size:14px">3.<%=unitcount %>.2.<%=unit11 %>.</span>  </h4>
 	          						<div style="margin-top:-22px; margin-left: 55px;">
 	          						
-	          						<input type="text" class=""  name="OutComesId" id="OutComesId" maxlength="100" value="<%= "Presentation "+ (++Presentationcount) %>">
+	          						<input type="text" class="description-input"  name="OutComesId" id="OutComesId" maxlength="100" value="<%= "Presentation "+ (++Presentationcount) %>">
 	          						
 	          						</div>
 	          						<div style="margin-top:-26px; float: right;">
@@ -926,7 +926,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	          						<span  style="font-size:14px">3.<%=unitcount %>.2.<%=unit12 %>.</span>  </h4>
 	          						<div style="margin-top:-22px; margin-left: 55px;">
 	          						
-	          						<input type="text" class=""  name="OutComesId" id="OutComesId" maxlength="100" value="<%= "Discussion "+ (++discussionscount) %>">
+	          						<input type="text" class="description-input"  name="OutComesId" id="OutComesId" maxlength="100" value="<%= "Discussion "+ (++discussionscount) %>">
 	          						
 	          						</div>
 	          						<div style="margin-top:-26px; float: right;">
@@ -2042,7 +2042,7 @@ function showAttachmentModal(){
 								  <div class="col-md-4" id="PresDiscHeader">
                         		<div class="form-group">
                         		<label class="">Header </label>
-  	                               <input type="text" class="form-control" name="PresDiscHeaderVal" value="" id="PresDiscHeaderVal" maxlength="100">
+  	                               <input type="text" class="form-control description-input" name="PresDiscHeaderVal" value="" id="PresDiscHeaderVal" maxlength="100">
 								</div>
 								</div>
 								

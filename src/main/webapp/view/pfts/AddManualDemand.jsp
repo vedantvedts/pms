@@ -84,7 +84,7 @@ font-weight: bold;
 		                      <span class="mandatory" style="color: #cd0a0a;">*</span>
 		                   </div>
 		                    <div class="col-md-4" style="margin-left: -10%;">
-			                    <input  class="form-control"  name="demandNo" id="demandNo"  required="required"  placeholder="Enter Demand Number">
+			                    <input  class="form-control alphanum-only"  name="demandNo" id="demandNo"  required="required"  placeholder="Enter Demand Number">
 		                        <span id="demandMessage"></span>
 		                    </div>
 		             </div>
@@ -103,7 +103,7 @@ font-weight: bold;
 		                      <span class="mandatory" style="color: #cd0a0a;">*</span>
 		                   </div>
 		                    <div class="col-md-4" style="margin-left: -10%;">
-			                    <input type="number" class="form-control"  name="estimatedcost" id="estimatedcost"  required="required"  placeholder="Enter Cost in Rupees">		
+			                    <input type="number" class="form-control numeric-only"  name="estimatedcost" id="estimatedcost"  required="required"  placeholder="Enter Cost in Rupees">		
 		                    </div>
 		             </div>
 		             <br>
@@ -113,7 +113,7 @@ font-weight: bold;
 		                      <span class="mandatory" style="color: #cd0a0a;">*</span>
 		                   </div>
 		                    <div class="col-md-9" style="margin-left: -9%;">
-			                    <input type="text" class="form-control"  name="itemname" id="itemname"  required="required"  placeholder="Enter Item Name" style="width: 99%">		
+			                    <input type="text" class="form-control "  name="itemname" id="itemname"  required="required"  placeholder="Enter Item Name" style="width: 99%">		
 		                   </div>
 		             </div>
 		             
