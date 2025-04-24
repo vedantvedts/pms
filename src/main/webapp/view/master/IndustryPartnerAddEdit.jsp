@@ -87,7 +87,7 @@ List<IndustryPartner> IPNamesList = (List<IndustryPartner>)request.getAttribute(
 								<div class="form-group">
 									<label class="control-label">Name</label><span class="mandatory" style="color: red;">*</span>
 										<span id="industrypartnerinputfield" style="display: flex;">
-											<input class="form-control" type="text" id="industryPartnerName" name="industryPartnerName" value="<%if(IPDetails!=null && IPDetails[1]!=null) {%><%=IPDetails[1] %><%} %>" maxlength="255" placeholder="Enter Industry Partner" >
+											<input class="form-control alphanum-no-leading-space" type="text" id="industryPartnerName" name="industryPartnerName" value="<%if(IPDetails!=null && IPDetails[1]!=null) {%><%=IPDetails[1] %><%} %>" maxlength="255" placeholder="Enter Industry Partner" >
 											<button type="button" class="btn btn-sm ml-2" formnovalidate="formnovalidate" onclick="closeeditindustrypartnername()" title="Close" style="padding: 0px 5px 0px 7px;"> 
 												<i class="fa fa-close"  style="color: red;"></i>
 											</button>
@@ -127,13 +127,13 @@ List<IndustryPartner> IPNamesList = (List<IndustryPartner>)request.getAttribute(
 							<div class="col-md-3 existingaddressdiv">
 								<div class="form-group">
 									<label class="control-label">City</label><span class="mandatory" style="color: red;">*</span>
-									<input class="form-control" type="text" id="industryPartnerCity" name="industryPartnerCity" maxlength="500" placeholder="Enter City" >	
+									<input class="form-control alpha-no-leading-space" type="text" id="industryPartnerCity" name="industryPartnerCity" maxlength="500" placeholder="Enter City" >	
 								</div>
 							</div>
 							<div class="col-md-2 existingaddressdiv">
 								<div class="form-group">
 									<label class="control-label">Code</label><span class="mandatory" style="color: red;">*</span>
-									<input class="form-control" type="text" id="industryPartnerPinCode" name="industryPartnerPinCode" maxlength="6" placeholder="Enter Pincode" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">	
+									<input class="form-control numeric-only" type="text" id="industryPartnerPinCode" name="industryPartnerPinCode" maxlength="6" placeholder="Enter Pincode">	
 								</div>
 							</div>
 						</div>
@@ -142,7 +142,7 @@ List<IndustryPartner> IPNamesList = (List<IndustryPartner>)request.getAttribute(
 							<div class="col-md-4">
 								<div class="form-group">
 									<label class="control-label">New Name</label><span class="mandatory" style="color: red;">*</span>
-									<input class="form-control" type="text" id="industryPartnerName2" name="industryPartnerName2" maxlength="255" placeholder="Enter Industry Partner" >		
+									<input class="form-control alphanum-no-leading-space" type="text" id="industryPartnerName2" name="industryPartnerName2" maxlength="255" placeholder="Enter Industry Partner" >		
 								</div>
 							</div>
 							<div class="col-md-3">
@@ -154,13 +154,13 @@ List<IndustryPartner> IPNamesList = (List<IndustryPartner>)request.getAttribute(
 							<div class="col-md-3">
 								<div class="form-group">
 									<label class="control-label">New City</label><span class="mandatory" style="color: red;">*</span>
-									<input class="form-control" type="text" id="industryPartnerCity2" name="industryPartnerCity2" maxlength="500" placeholder="Enter City" >	
+									<input class="form-control alpha-no-leading-space" type="text" id="industryPartnerCity2" name="industryPartnerCity2" maxlength="500" placeholder="Enter City" >	
 								</div>
 							</div>
 							<div class="col-md-2">
 								<div class="form-group">
 									<label class="control-label">New Pin Code</label><span class="mandatory" style="color: red;">*</span>
-									<input class="form-control" type="text" id="industryPartnerPinCode2" name="industryPartnerPinCode2" maxlength="6" placeholder="Enter Pincode" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">	
+									<input class="form-control numeric-only" type="text" id="industryPartnerPinCode2" name="industryPartnerPinCode2" maxlength="6" placeholder="Enter Pincode">	
 								</div>
 							</div>
 						</div>
@@ -178,20 +178,20 @@ List<IndustryPartner> IPNamesList = (List<IndustryPartner>)request.getAttribute(
 							<div class="col-md-3">
 								<div class="form-group">
 									<label class="control-label">Name</label><span class="mandatory" style="color: red;">*</span>
-									<input class="form-control" type="text" id="repName" name="repName" maxlength="255" placeholder="Enter Rep Name" <%if(IPDetails!=null && IPDetails[4]!=null) {%> value="<%=IPDetails[4] %>" <%} %> required>
+									<input class="form-control alpha-dot-no-leading-space" type="text" id="repName" name="repName" maxlength="255" placeholder="Enter Rep Name" <%if(IPDetails!=null && IPDetails[4]!=null) {%> value="<%=IPDetails[4] %>" <%} %> required>
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
 									<label class="control-label">Designation</label><span class="mandatory" style="color: red;">*</span>
-									<input class="form-control" type="text" id="repDesignation" name="repDesignation" placeholder="Enter Rep Designation" <%if(IPDetails!=null && IPDetails[5]!=null) {%> value="<%=IPDetails[5] %>" <%} %> maxlength="255" required>
+									<input class="form-control alphanum-no-leading-space" type="text" name="repDesignation" placeholder="Enter Rep Designation" <%if(IPDetails!=null && IPDetails[5]!=null) {%> value="<%=IPDetails[5] %>" <%} %> maxlength="255" required>
 								</div>
 							</div>
 						
 							<div class="col-md-3">
 								<div class="form-group">
 									<label class="control-label">Mobile No</label><span class="mandatory" style="color: red;">*</span>
-									<input class="form-control" type="text" id="repMobileNo"  maxlength="10"  name="repMobileNo" placeholder="Enter Rep Mobile No" <%if(IPDetails!=null && IPDetails[6]!=null) {%> value="<%=IPDetails[6] %>" <%} %> required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+									<input class="form-control indian-mobile" type="tel" id="repMobileNo"  maxlength="10"  name="repMobileNo" oninput="validateMobileLength(this)" placeholder="Enter Rep Mobile No" <%if(IPDetails!=null && IPDetails[6]!=null) {%> value="<%=IPDetails[6] %>" <%} %> required>
 								</div>
 							</div>
 								
@@ -199,7 +199,7 @@ List<IndustryPartner> IPNamesList = (List<IndustryPartner>)request.getAttribute(
 							<div class="col-md-3">
 								<div class="form-group">
 									<label class="control-label">Email</label><span class="mandatory" style="color: red;">*</span>
-									<input class="form-control" type="email" id="repEmail" name="repEmail" maxlength="255" placeholder="Enter Rep Email" <%if(IPDetails!=null && IPDetails[7]!=null) {%> value="<%=IPDetails[7] %>" <%} %> required>
+									<input class="form-control email-input" type="email" id="repEmail" name="repEmail" maxlength="255" placeholder="Enter Rep Email" <%if(IPDetails!=null && IPDetails[7]!=null) {%> value="<%=IPDetails[7] %>" <%} %> required>
 								</div>
 							</div>
 						</div>
@@ -222,16 +222,16 @@ List<IndustryPartner> IPNamesList = (List<IndustryPartner>)request.getAttribute(
 								 		<tbody>
 									 		<tr class="tr_clone_repdetails">
 												<td style="padding: 10px 5px 0px 5px;" >
-													<input class="form-control" type="text" id="repName" name="repName" maxlength="255" placeholder="Enter Rep Name" required>
+													<input class="form-control alpha-dot-no-leading-space" type="text" id="repName" name="repName" maxlength="255" placeholder="Enter Rep Name" required>
 												</td>	
 												<td style="padding: 10px 5px 0px 5px;">
-													<input class="form-control" type="text" id="repDesignation" name="repDesignation" placeholder="Enter Rep Designation" maxlength="255" required>
+													<input class="form-control alphanum-no-leading-space" type="text" name="repDesignation" placeholder="Enter Rep Designation" maxlength="255" required>
 												</td>	
 												<td style="padding: 10px 5px 0px 5px;">
-													<input class="form-control" type="text" id="repMobileNo"  maxlength="10"  name="repMobileNo" placeholder="Enter Rep Mobile No" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+													<input class="form-control indian-mobile" type="tel" id="repMobileNo"  maxlength="10"  name="repMobileNo" placeholder="Enter Rep Mobile No"  oninput="validateMobileLength(this)" required>
 												</td>
 												<td style="padding: 10px 5px 0px 5px;">
-													<input class="form-control" type="email" id="repEmail" name="repEmail" maxlength="255" placeholder="Enter Rep Email" required>
+													<input class="form-control email-input" type="email" id="repEmail" name="repEmail" maxlength="255" placeholder="Enter Rep Email" required>
 												</td>
 												<td style="width: 5% ; ">
 													<button style="padding: 3px 7px 3px 7px;" type="button" class=" btn btn_rem_repdetails" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
@@ -442,6 +442,19 @@ $("#addformsubmit").click(function(){
 		$('.existingRepInfoContent').hide();
 		}
 } 
+
+ function validateMobileLength(input) {
+	    if (input.value.length > 10) {
+	      input.value = input.value.slice(0, 10); // trim extra input, just in case
+	    }
+
+	    // Optional: real-time feedback
+	    if (input.value.length === 10) {
+	      input.setCustomValidity(""); // valid
+	    } else {
+	      input.setCustomValidity("Mobile number must be exactly 10 digits");
+	    }
+	  }
 
 </script> 
 

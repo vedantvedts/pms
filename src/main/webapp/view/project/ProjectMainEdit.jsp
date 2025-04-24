@@ -95,7 +95,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 </th>
  <td >
  <input type="text"   name="pcode"
-								class="form-control" maxlength="20" value="<%=ProjectMainEditData[3] %>" required="required">
+								class="form-control alphanum-symbols-no-leading-space" maxlength="20" value="<%=ProjectMainEditData[3] %>" required="required">
  
 </td>
   <th>
@@ -104,7 +104,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 </label>
 </th>
  <td >
-<input type="text"   name="pname"  class="form-control" value="<%=ProjectMainEditData[4] %>" maxlength="255" required="required">
+<input type="text"   name="pname"  class="form-control alphanum-symbols-no-leading-space" value="<%=ProjectMainEditData[4] %>" maxlength="255" required="required">
 
  
 </td>
@@ -118,7 +118,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 </th>
  <td >
 	<input type="text"  name="desc" value="<%=ProjectMainEditData[5] %>"
-								class="form-control" maxlength="100" required="required">
+								class="form-control alphanum-symbols-no-leading-space" maxlength="100" required="required">
  
 </td>
   <th>
@@ -128,7 +128,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 </th>
  <td >
 	<input type="text"   name="unicode" <%if(ProjectMainEditData[6]!=null){ %>value="<%=ProjectMainEditData[6] %>" <%} %>
-								class="form-control" maxlength="20">
+								class="form-control alphanum-symbols-no-leading-space" maxlength="20">
  
 </td>
  </tr>
@@ -145,7 +145,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 				<option value="OH" <%if(ProjectMainEditData[24]!=null && ProjectMainEditData[24].equals("OH")){ %> selected<%} %>>Others</option>
 	</select></td>  
  <th><label style="margin-bottom: -10px;"> Project Short Name:<span class="mandatory" style="color: red;">*</span></label></th>
-<td><input type="text"   name="projectshortname" placeholder="Enter Project Short Name" <%if(ProjectMainEditData!=null && ProjectMainEditData[26]!=null ){%>value="<%=ProjectMainEditData[26]%>" <%}%>	class="form-control" maxlength="20" required="required"></td> 
+<td><input type="text"   name="projectshortname" placeholder="Enter Project Short Name" <%if(ProjectMainEditData!=null && ProjectMainEditData[26]!=null ){%>value="<%=ProjectMainEditData[26]%>" <%}%>	class="form-control alphanum-symbols-no-leading-space" maxlength="20" required="required"></td> 
  </tr>
   <tr>
   <th>
@@ -265,7 +265,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 </th>
  <td >
 <input type="text"   name="sano"  value="<%=ProjectMainEditData[7] %>"
-								class="form-control" maxlength="100" required="required">
+								class="form-control alphanum-symbols-no-leading-space" maxlength="100" required="required">
 </td>
  </tr>
  
@@ -296,7 +296,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 </th>
  <td >
 <input type="text"   id="totalcostid" name="tsancost"
-							class="form-control number-only" >
+							class="form-control decimal-format" >
 </td>
 
 
@@ -330,7 +330,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 </th>
  <td >
 <input type="text"   id="fecostid" name="sancostfe" value="<%=ProjectMainEditData[10] %>"
-								class="form-control number-only"  maxlength="18" required="required">
+								class="form-control decimal-format"  maxlength="18" required="required">
 </td>
  </tr>
  
@@ -362,7 +362,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 </th>
  <td >
 <input type="text"  name="sancostre" id="Recostid" value="<%=ProjectMainEditData[9] %>"  readonly="readonly"  
-								class="form-control number-only"  maxlength="18" required="required">
+								class="form-control decimal-format"  maxlength="18" required="required">
 </td>
 
 
@@ -383,7 +383,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 <!-- srikant code end-->
  <tr>
 		<th colspan="1"><label style="margin-bottom: -10px;">Nodal & Participating Lab:<span class="mandatory" style="color: red;">*</span></label></th>
-		<td colspan="3"><input required="required"	name="Nodal" class="form-control " maxlength="5000" value="<%if(ProjectMainEditData[21]!=null ){%><%=ProjectMainEditData[21] %><%} %>" /></td>
+		<td colspan="3"><input required="required"	name="Nodal" class="form-control alphanum-symbols-no-leading-space" maxlength="5000" value="<%if(ProjectMainEditData[21]!=null ){%><%=ProjectMainEditData[21] %><%} %>" /></td>
 </tr>
  <tr>
 		<th colspan="1"><label style="margin-bottom: -10px;">Application:<span class="mandatory" style="color: red;">*</span></label></th>

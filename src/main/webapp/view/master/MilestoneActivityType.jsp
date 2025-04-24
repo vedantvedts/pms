@@ -266,10 +266,10 @@ th, td {
 														<tbody>
 															<tr>
 																<td>
-																	<input class="form-control" type="text" id="activitytype" name="activitytype" maxlength="255" required>
+																	<input class="form-control alphanum-no-leading-space" type="text" id="activitytype" name="activitytype" maxlength="255" required>
 																</td>
 																<td>
-																	<input class="form-control" type="text" id="activityCode" name="activityCode" maxlength="10" required>
+																	<input class="form-control alphanum-only" type="text" id="activityCode" name="activityCode" maxlength="10" required>
 																</td>
 																<td>
 																	<select class="form-control" name="isTimeSheet" id="isTimeSheet" required>
@@ -391,10 +391,10 @@ th, td {
 								<tbody>
 									<tr>
 										<td>
-											<input class="form-control" type="text" id="ToEditActivitytype" name="toActivity" maxlength="255" required>
+											<input class="form-control alphanum-no-leading-space" type="text" id="ToEditActivitytype" name="toActivity" maxlength="255" required>
 										</td>
 										<td>
-											<input class="form-control" type="text" id="ToEditActivityCode" name="activityCode" maxlength="10" required>
+											<input class="form-control alphanum-only" type="text" id="ToEditActivityCode" name="activityCode" maxlength="10" required>
 										</td>
 										<td>
 											<select class="form-control" name="isTimeSheet" id="ToEditIsTimeSheet" required>

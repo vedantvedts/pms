@@ -214,7 +214,7 @@ FormatConverter fc = new FormatConverter();
 															<label class="control-label">Cost</label><span class="mandatory" style="color: red;">*</span>
 														</th>
 														<td colspan="1">
-															<input class="form-control" type="text" name="projectCost" id="projectCost" maxlength="15" placeholder="Enter Cost in rupees"
+															<input class="form-control decimal-format" type="text" name="projectCost" id="projectCost" maxlength="15" placeholder="Enter Cost in rupees"
 															<%if(roadMap!=null && roadMap.getProjectCost()!=null) {%>value="<%=roadMap.getProjectCost() %>"<%} %> required >	
 														</td>
 														<td colspan="5"></td>
@@ -303,7 +303,7 @@ FormatConverter fc = new FormatConverter();
 									 					
 													<tr class="tr_clone_others">
 														<td style="padding: 10px 5px 0px 5px;" >
-															<input type="text" form="otherform" class="form-control item" name="otherdata" id="otherdata" placeholder="Enter Maximum 1000 characters" maxlength="1000" required="required">
+															<input type="text" form="otherform" class="form-control no-html-tag" name="otherdata" id="otherdata" placeholder="Enter Maximum 1000 characters" maxlength="1000" required="required">
 														</td>	
 														
 														<td style="width: 5% ; ">

@@ -178,7 +178,7 @@ function validateismaincheck()
 </label>
 </th>
  <td>
-<input type="text"   name="pname"  class="form-control" maxlength="255" required="required">
+<input type="text"   name="pname"  class="form-control alphanum-symbols-no-leading-space" maxlength="255" required="required">
 
 </td>
 </tr>
@@ -189,7 +189,7 @@ function validateismaincheck()
 </label>
 </th>
 <td>
-<input type="text"  name="desc"	class="form-control" placeholder="Enter Project No"	 maxlength="100" required="required">
+<input type="text"  name="desc"	class="form-control alphanum-symbols-no-leading-space" placeholder="Enter Project No"	 maxlength="100" required="required">
  
 </td>
 <th>
@@ -198,7 +198,7 @@ function validateismaincheck()
 </label>
 </th>
 <td >
-<input type="text"   name="unicode" placeholder="Enter Project Unit Code"		class="form-control" maxlength="20" required="required" >
+<input type="text"   name="unicode" placeholder="Enter Project Unit Code"		class="form-control alphanum-symbols-no-leading-space" maxlength="20" required="required" >
  
 </td>
  </tr>
@@ -227,7 +227,7 @@ function validateismaincheck()
 </label>
 </th>
 <td>
- <input type="text"   name="projectshortname" placeholder="Enter Project Short Name" class="form-control" maxlength="20" required="required">
+ <input type="text"   name="projectshortname" placeholder="Enter Project Short Name" class="form-control alphanum-symbols-no-leading-space" maxlength="20" required="required">
 </td>
 <!--   <th>
  <label style="margin-bottom: -10px;"> IsMainWorkCenter:
@@ -280,7 +280,7 @@ function validateismaincheck()
 </label>
 </th>
  <td >
- <input type="text"   name="pcode" placeholder="Enter Project Code" class="form-control" maxlength="20" required="required">
+ <input type="text"   name="pcode" placeholder="Enter Project Code" class="form-control alphanum-symbols-no-leading-space" maxlength="20" required="required">
  
 </td>
 
@@ -324,7 +324,7 @@ function validateismaincheck()
 </label>
 </th>
 <td >
-<input type="text"   name="sano" class="form-control" maxlength="100" required="required">
+<input type="text"   name="sano" class="form-control alphanum-symbols-no-leading-space" maxlength="100" required="required">
 </td>
 </tr>
 
@@ -344,7 +344,7 @@ function validateismaincheck()
 </label>
 </th>
  <td >
-<input type="text"   id="totalcostid" name="tsancost" value="0.0" class="form-control number-only" required="required"  >
+<input type="text"   id="totalcostid" name="tsancost" value="0.0" class="form-control decimal-format" required="required">
 </td>
  </tr>
  
@@ -378,7 +378,7 @@ function validateismaincheck()
 </th>
  <td >
 <input type="text"   id="fecostid" name="sancostfe"
-								class="form-control number-only" value="0.0" maxlength="18" required="required">
+								class="form-control decimal-format" value="0.0" maxlength="18" required="required">
 </td>
  </tr>
  
@@ -386,7 +386,7 @@ function validateismaincheck()
 	  <th><label style="margin-bottom: -10px;">PDC:<span class="mandatory" style="color: red;">*</span></label></th>
 	  <td><input  id="pdc-date"  data-date-format="dd/mm/yyyy" readonly name="pdc" value="" class="form-control form-control"></td>
 	  <th><label style="margin-bottom: -10px;"> Sanction Cost RE (&#8377;):<span class="mandatory" style="color: red;">*</span></label></th>
-	  <td><input type="text"  name="sancostre" id="Recostid"class="form-control number-only" value="0.0" maxlength="18" value="0.0" readonly="readonly"></td>
+	  <td><input type="text"  name="sancostre" id="Recostid"class="form-control decimal-format" value="0.0" maxlength="18" value="0.0" readonly="readonly"></td>
 </tr>
 <tr>
    <th><label style="margin-bottom: -10px;"> Category: <span class="mandatory" style="color: red;">*</span></label></th>
@@ -420,7 +420,7 @@ function validateismaincheck()
 <!-- srikant code end -->
 <tr>
 	   <th colspan="1"><label style="margin-bottom: -10px;">Nodal & Participating Lab:<span class="mandatory" style="color: red;">*</span></label></th>
-	  <td colspan="3"><input required="required" name="Nodal" placeholder="Enter Nodal & Participating Lab" class="form-control" maxlength="250" /></td>
+	  <td colspan="3"><input required="required" name="Nodal" placeholder="Enter Nodal & Participating Lab" class="form-control alphanum-symbols-no-leading-space" maxlength="250" /></td>
 </tr>
 <tr>
 		<th colspan="1"><label style="margin-bottom: -10px;">Application:<span class="mandatory" style="color: red;">*</span></label></th>

@@ -204,7 +204,7 @@ if(ses1!=null){
 											</td>
 											<td>
 										    	<label ><b>6. Procurement Limit </b></label>
-										    	<input class="form-control" type="number" name="proclimit" placeholder="Add Limit" min="500000" value="500000.00" step="0.01" >
+										    	<input class="form-control decimal-format" type="number" name="proclimit" placeholder="Add Limit" min="500000" value="500000.00" required="required" >
 										    </td>
 										</tr>
 										<tr>

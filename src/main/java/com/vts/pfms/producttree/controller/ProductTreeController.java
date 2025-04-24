@@ -39,6 +39,7 @@ import com.vts.pfms.milestone.service.MilestoneService;
 import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.producttree.dto.ProductTreeDto;
 import com.vts.pfms.producttree.model.ProductTreeRev;
+import com.vts.pfms.producttree.model.SystemProductTree;
 import com.vts.pfms.producttree.service.ProductTreeService;
 import com.vts.pfms.requirements.service.RequirementService;
 
@@ -602,6 +603,44 @@ public class ProductTreeController {
         
 		
 	}
+	
+	@RequestMapping(value = "SystemProductTreeEditDelete.htm")
+	public String SystemProductTreeEditDelete(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside SystemProductTreeEditDelete.htm "+UserId);		
+		try {
+			String Action=req.getParameter("Action");
+			SystemProductTree spt=new SystemProductTree();
+			spt.setMainId(Long.parseLong(req.getParameter("Mainid")));
+			
+				if(Action!=null &&  Action.equalsIgnoreCase("TE")) {
+				
+					spt.setLevelName(req.getParameter("LevelName"));
+					spt.setLevelCode(req.getParameter("LevelCode"));
+					spt.setModifiedBy(UserId);
+	
+					long update = service.systemLevelNameEdit(spt, Action);
+			 
+					if(update!=0) redir.addAttribute("result", "Level Name Updated Successfully");				 			
+					else redir.addAttribute("resultfail", "Level Name Update Unsuccessful");	 
+		
+				}else if(Action!=null &&  Action.equalsIgnoreCase("TD"))  {
+
+			    	long delete = service.systemLevelNameEdit(spt,Action);
+			    	  
+		    	    if(delete!=0) redir.addAttribute("result", "Level Deleted Successfully");
+		    	    else  redir.addAttribute("resultfail", "Level Delete Unsuccessful");
+				}			
+			return "redirect:/SystemProductTree.htm";			
+		}catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside SystemProductTreeEditDelete.htm "+UserId, e); 
+			return "static/Error";
+			
+		}
+	}
+	
 	@RequestMapping(value = "SystemLevelNameAdd.htm" )
 	public String SystemLevelNameAdd(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 	{

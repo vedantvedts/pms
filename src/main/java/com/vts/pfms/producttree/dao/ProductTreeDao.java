@@ -34,6 +34,13 @@ public interface ProductTreeDao {
 	public ProjectSlides getProjectSlides(String projectId)throws Exception;
 
 	public List<Object[]> getProductTreeListInitiation(String initiationId);
+	
+	public SystemProductTree getSystemLevelNameById(long mainId);
+
+	public long systemLevelNameDelete(SystemProductTree spt)throws Exception;
+
+	public long systemLevelNameEdit(SystemProductTree spt)throws Exception;
+
 
 	
 
