@@ -499,7 +499,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												           <div class="col-md-2" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Proposed Cost (in rupees)</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="number" min="0" name="QARProposedCost"  maxlength="15"
+												                    <input  class="form-control decimal-format" type="text" min="0" name="QARProposedCost"  maxlength="15"
 												                     value="<%if(chlist!=null && chlist.getQARProposedCost()>=0) {%><%=chlist.getQARProposedCost() %><%} else{ %> 0 <%} %>" > 
 												                </div>
 												            </div> 
@@ -615,7 +615,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 																	</td>
 																	
 																	<td style="width: 5%;padding: 10px 5px 0px 5px;">
-																		<input type="number" class="form-control item" name="SCRevisionCost"  value="<%=df.format(Double.parseDouble(obj[4].toString()))%>" >
+																		<input type="text" class="form-control item decimal-format" name="SCRevisionCost"  value="<%=df.format(Double.parseDouble(obj[4].toString()))%>" >
 																	</td>
 																	
 																	<td style="width: 15%;padding: 10px 5px 0px 5px;" >
@@ -643,7 +643,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 																	</td>
 																	
 																	<td style="width: 5%;padding: 10px 5px 0px 5px;">
-																		<input type="number" class="form-control item" name="SCRevisionCost"  value="0" >
+																		<input type="text" class="form-control item decimal-format" name="SCRevisionCost"  value="0" >
 																	</td>
 																	
 																	<td style="width: 15%;padding: 10px 5px 0px 5px;" >

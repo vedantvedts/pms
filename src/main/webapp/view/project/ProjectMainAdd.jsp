@@ -88,16 +88,16 @@ String ses1=(String)request.getParameter("resultfail");
 											<thead>
 												<tr>
 													<th><label style="margin-bottom: -10px;">Project Code: <span class="mandatory" style="color: red;">*</span></label></th>
-													<td><input type="text" name="pcode" placeholder="Enter Project Code"class="form-control" maxlength="20" required="required"></td>
+													<td><input type="text" name="pcode" placeholder="Enter Project Code"class="form-control alphanum-symbols-no-leading-space" maxlength="20" required="required"></td>
 													<th><label style="margin-bottom: -10px;">Project Name: <span class="mandatory" style="color: red;">*</span></label></th>
-													<td><input type="text" name="pname" placeholder="Enter Project Name" class="form-control" maxlength="255" required="required"></td>
+													<td><input type="text" name="pname" placeholder="Enter Project Name" class="form-control alphanum-symbols-no-leading-space" maxlength="255" required="required"></td>
 												</tr>
 
 												<tr>
 													<th><label style="margin-bottom: -10px;">Project Number: <span class="mandatory"style="color: red;">*</span></label></th>
-													<td><input type="text" name="desc" placeholder="Enter Project No" class="form-control" maxlength="100" required="required"></td>
+													<td><input type="text" name="desc" placeholder="Enter Project No" class="form-control alphanum-symbols-no-leading-space" maxlength="100" required="required"></td>
 													<th><label style="margin-bottom: -10px;">Project Unit Code: <span class="mandatory" style="color: red;"></span></label></th>
-													<td><input type="text" name="unicode" placeholder="Enter Project Unit Code" class="form-control" maxlength="20" ></td>
+													<td><input type="text" name="unicode" placeholder="Enter Project Unit Code" class="form-control alphanum-symbols-no-leading-space" maxlength="20" ></td>
 												</tr>
 												
 												<tr>
@@ -114,7 +114,7 @@ String ses1=(String)request.getParameter("resultfail");
 														</select>
 													</td>
 													<th><label style="margin-bottom: -10px;"> Project Short Name:<span class="mandatory" style="color: red;">*</span></label></th>
-													<td><input type="text"   name="projectshortname" placeholder="Enter Project Short Name"	class="form-control" maxlength="20" required="required"></td> 
+													<td><input type="text"   name="projectshortname" placeholder="Enter Project Short Name"	class="form-control alphanum-symbols-no-leading-space" maxlength="20" required="required"></td> 
 												</tr>
 												<tr>
 													<th><label style="margin-bottom: -10px;">Category: <span class="mandatory" style="color: red;">*</span></label></th>
@@ -179,14 +179,14 @@ String ses1=(String)request.getParameter("resultfail");
 															
 													</td>
 													<th><label style="margin-bottom: -10px;">Project Sanction Letter No: <span class="mandatory" style="color: red;">*</span></label></th>
-													<td><input type="text" name="sano" placeholder="Enter Project Sanc Letter No" class="form-control" maxlength="100" required="required"></td>
+													<td><input type="text" name="sano" placeholder="Enter Project Sanc Letter No" class="form-control alphanum-symbols-no-leading-space" maxlength="100" required="required"></td>
 												</tr>
 
 												<tr>
 													<th><label style="margin-bottom: -10px;">Project Sanction Date: <span class="mandatory"style="color: red;">*</span></label></th>
 													<td><input type="text" data-date-format="dd/mm/yyyy"readonly id="sanc-date" name="sadate" value=""class="form-control form-control"></td>
 													<th><label style="margin-bottom: -10px;">Total Sanction Cost (&#8377;): <span class="mandatory" style="color: red;">*</span></label></th>
-													<td><input type="text" id="totalcostid" name="tsancost" class="form-control number-only"  value="0.0" ></td>
+													<td><input type="text" id="totalcostid" name="tsancost" class="form-control decimal-format"  value="0.0" ></td>
 												</tr>
 
 												<tr>
@@ -198,13 +198,13 @@ String ses1=(String)request.getParameter("resultfail");
 														</select>
 													</td>
 													<th><label style="margin-bottom: -10px;">Sanction Cost FE (&#8377;): <span class="mandatory" style="color: red;">*</span></label></th>
-													<td><input type="text" id="fecostid" name="sancostfe"class="form-control number-only" value="0.0"	maxlength="18" required="required"></td>
+													<td><input type="text" id="fecostid" name="sancostfe"class="form-control decimal-format" value="0.0"	maxlength="18" required="required"></td>
 												</tr>
 								<tr>
 										<th><label style="margin-bottom: -10px;">PDC:<span class="mandatory" style="color: red;">*</span></label></th>
 										<td><input id="pdc-date" data-date-format="dd/mm/yyyy" readonly name="pdc" value="" class="form-control form-control"></td>
 										<th><label style="margin-bottom: -10px;">Sanction Cost RE (&#8377;): <span class="mandatory" style="color: red;">*</span></label></th>
-										<td><input type="text" name="sancostre" id="Recostid" class="form-control number-only" value="0.0" maxlength="18" required="required"  readonly="readonly" ></td>
+										<td><input type="text" name="sancostre" id="Recostid" class="form-control decimal-format" value="0.0" maxlength="18" required="required"  readonly="readonly" ></td>
 								</tr>
 								<!-- srikant code start -->
 								<tr>
@@ -223,7 +223,7 @@ String ses1=(String)request.getParameter("resultfail");
 								<!-- srikant code end -->		
 								<tr>
 									   <th colspan="1"><label style="margin-bottom: -10px;">Nodal & Participating Lab:<span class="mandatory" style="color: red;">*</span></label></th>
-									   <td colspan="3"><input required="required" name="Nodal" placeholder="Enter Nodal & Participating Lab" class="form-control" maxlength="250" /></td>
+									   <td colspan="3"><input required="required" name="Nodal" placeholder="Enter Nodal & Participating Lab" class="form-control alphanum-symbols-no-leading-space" maxlength="250" /></td>
 								</tr>
 								<tr>
 										<th colspan="1"><label style="margin-bottom: -10px;">Application:<span class="mandatory" style="color: red;">*</span></label></th>
@@ -235,7 +235,7 @@ String ses1=(String)request.getParameter("resultfail");
 								</tr>		
 								<tr>
 									<th colspan="1"><label style="margin-bottom: -10px;">Objective:<span class="mandatory" style="color: red;">*</span></label></th>
-									<td colspan="3"><textarea required="required"name="Objective" placeholder="Enter maximum 5000 charcters" class="form-control " maxlength="5000"rows="3" cols="53"></textarea></td>
+									<td colspan="3"><textarea required="required" name="Objective" placeholder="Enter maximum 5000 charcters" class="form-control " maxlength="5000"rows="3" cols="53"></textarea></td>
 								</tr>
 								<tr>
 									<th colspan="1"><label style="margin-bottom: -10px;">Deliverable:<span class="mandatory" style="color: red;">*</span></label></th>

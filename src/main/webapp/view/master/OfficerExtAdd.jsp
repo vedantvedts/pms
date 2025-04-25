@@ -109,7 +109,7 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 	<div class="col-md-3">
               <div class="form-group">
 					<label >Employee No:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control"  type="text" id="EmpNo" name="EmpNo" required="required" maxlength="255" style="font-size: 15px;width:100%;text-transform: uppercase;"  >
+					<input  class="form-control alphanum-only"  type="text" id="EmpNo" name="EmpNo" required="required" maxlength="255" style="font-size: 15px;width:100%;text-transform: uppercase;"  >
 			</div>
 </div>
 </div>
@@ -118,7 +118,7 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 <div class="col-md-3">
               <div class="form-group">
 					<label >Employee Name:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control"  type="text" id="EmpName" name="EmpName" required="required" maxlength="255" style="font-size: 15px;width:100%;text-transform: capitalize;" >
+					<input  class="form-control alpha-no-leading-space"  type="text" id="EmpName" name="EmpName" required="required" maxlength="255" style="font-size: 15px;width:100%;text-transform: capitalize;" >
 				</div>
 </div>
 
@@ -137,8 +137,8 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 <div class="col-md-3">
      <div class="form-group">
 					<label >Extension No:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control" type="text" id="ExtNo" name="ExtNo" required="required" maxlength="10" style="font-size: 15px;width:100%" 
-					 placeholder="Extension Number(Max 10 char)" oninput="this.value = this.value.replace(/ /g, '').replace(/(\..*?)\..*/g, '$1').replace(/[^0-9./\\|,:;\[\]{}]/g, '');"/>
+					<input  class="form-control alphanum-only" type="text" id="ExtNo" name="ExtNo" required="required" maxlength="10" style="font-size: 15px;width:100%" 
+					 placeholder="Extension Number(Max 10 char)">
 			 </div>
              
 </div>
@@ -147,8 +147,8 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 <div class="col-md-3">
               <div class="form-group">
 					<label >Mobile No:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control" type="text" id="mobilenumber" value="" name="mobilenumber" maxlength="10" style="font-size: 15px;width:100%"
-					placeholder="Phone No" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+					<input  class="form-control indian-mobile" type="text" id="mobilenumber" value="" name="mobilenumber" maxlength="10" style="font-size: 15px;width:100%"
+					placeholder="Phone No">
 				</div>
           
 </div>
@@ -159,7 +159,7 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 <div class="col-md-3">
              <div class="form-group">
 					<label >Lab Email:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control"  type="email" name="Email" id="Email" required="required" maxlength="40" style="font-size: 15px;width:100%" placeholder="Lab Email">
+					<input  class="form-control email-input"  type="email" name="Email" id="Email" required="required" maxlength="40" style="font-size: 15px;width:100%" placeholder="Lab Email">
 			 </div>
             
 </div>
@@ -167,14 +167,14 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 <div class="col-md-3">
               <div class="form-group">
 						<label >Drona Email:</label>
-						<input  class="form-control form-control" type="email" id="DronaEmail" name="DronaEmail"  maxlength="255" style="font-size: 15px;width:100%"  >
+						<input  class="form-control email-input" type="email" id="DronaEmail" name="DronaEmail"  maxlength="255" style="font-size: 15px;width:100%"  >
 			  </div>
 </div>
 
 <div class="col-md-3">
               <div class="form-group">
 						<label >Internet Email:</label>
-						<input  class="form-control form-control" type="email" id="InternetEmail"  name="InternetEmail"  maxlength="255" style="font-size: 15px;width:100%"  >
+						<input  class="form-control email-input" type="email" id="InternetEmail"  name="InternetEmail"  maxlength="255" style="font-size: 15px;width:100%"  >
 			 </div>
 </div>
 
@@ -241,6 +241,8 @@ function empNoCheck(frmid)
 	var salutation=$('#salutation').val();
 	var $empno=$('#EmpNo').val().trim();
 	
+	
+	
 	if(labId=== "" || $empno==="" ||EmpName==="" ||Designation==="" ||  mobilenumber==="" || Email==="" || Division==="" ) /* ExtNo===null || DronaEmail==="" || InternetEmail==="" || */ 
 	{
 		alert('Please Fill All Mandatory Fields.');
@@ -248,8 +250,12 @@ function empNoCheck(frmid)
 	}
 	else if((title==="" && salutation==="")||(title!=="" && salutation!=="")){
 		alert('Please select either Title or Rank');
+	}else if(!Email.includes("@") || (DronaEmail.length > 1 && !DronaEmail.includes("@")) || (InternetEmail.length > 1 && !InternetEmail.includes("@") )){
+		alert('please use correct email format(E.g. abc1@gmail.com)')
 	}
-	else
+	else if(mobilenumber.length < 10){
+		alert('Please enter a valid 10-digit Indian mobile number starting with 6-9.');
+	}else
 	{
 			$.ajax({
 				

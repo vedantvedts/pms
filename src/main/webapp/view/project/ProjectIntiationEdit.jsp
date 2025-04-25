@@ -138,14 +138,14 @@ FormatConverter fc = new FormatConverter();
 		                   <div class="col-md-2 ">
 		                        <div class="form-group">
 		                            <label class="control-label">Short Name</label>
-		  								<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="ShortName" name="ShortName" disabled="disabled" value="<%=ProjectEditData[6]%>">
+		  								<input type="text" class="form-control alphanum-symbols-no-leading-space"  aria-describedby="inputGroup-sizing-sm" id="ShortName" name="ShortName" readonly value="<%=ProjectEditData[6]%>">
 		                        </div>
 		                    </div>
 		                    
 		                	<div class="col-md-8 ">
 		                        <div class="form-group">
 		                            <label class="control-label">Project Title</label>
-		  								<input type="text" class="form-control" required="required" aria-describedby="inputGroup-sizing-sm" id="ProjectTitle" name="ProjectTitle" value="<%=ProjectEditData[7]%>">
+		  								<input type="text" class="form-control alphanum-symbols-no-leading-space" required="required" aria-describedby="inputGroup-sizing-sm" id="ProjectTitle" name="ProjectTitle" value="<%=ProjectEditData[7]%>">
 		                        </div>
 		                    </div>       
 		                    
@@ -153,7 +153,7 @@ FormatConverter fc = new FormatConverter();
 		                        <div class="form-group">
 		                            <label class="control-label">IsMultiLab</label>
 									   <select class="custom-select" id="IsMultiLab" name="IsMultiLab" required="required">
-									    <option disabled="true"  selected value="">Choose...</option>
+									    <option disabled="true"  selected value="">--Select--</option>
 									    <option value="Y" <%if(ProjectEditData[11]!=null && ProjectEditData[11].toString().equalsIgnoreCase("Y")){ %> selected="selected" <%} %>>Yes</option>
 									    <option value="N" <%if(ProjectEditData[11]!=null && ProjectEditData[11].toString().equalsIgnoreCase("N")){ %> selected="selected" <%} %>>No</option>
 									  </select>
@@ -187,7 +187,7 @@ FormatConverter fc = new FormatConverter();
 	                        	<div class="form-group" id="Remarks" style="display:none;">
 		                            <label class="control-label">Remarks</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-		  							<input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Remarks" name="Remarks" <%if(ProjectEditData[16]!=null) {%>value="<%=ProjectEditData[16]%>" <%} %> maxlength="255" placeholder="max 255 characters" >
+		  							<input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Remarks" name="Remarks" <%if(ProjectEditData[16]!=null) {%>value="<%=ProjectEditData[16]%>" <%} %> maxlength="255" placeholder="Enter Remark" >
 		                        </div>
 	       					</div> 
 
@@ -215,14 +215,14 @@ FormatConverter fc = new FormatConverter();
 					         <div class="col-md-3 ">
 		                        <div class="form-group">
 		                            <label class="control-label">Indicative Duration (Months)</label>
-		  								<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="PCDuration" name="PCDuration"  <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E") || !LoginType.equalsIgnoreCase("C")|| !LoginType.equalsIgnoreCase("I")  ) {%> readonly <%} %>  <% if (ProjectEditData[19]!=null){ %>  value="<%=ProjectEditData[19]%>" <%}else{ %> value="" <%} %>required>
+		  								<input type="text" class="form-control numeric-only"  aria-describedby="inputGroup-sizing-sm" id="PCDuration" name="PCDuration"  <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E") || !LoginType.equalsIgnoreCase("C")|| !LoginType.equalsIgnoreCase("I")  ) {%> readonly <%} %>  <% if (ProjectEditData[19]!=null){ %>  value="<%=ProjectEditData[19]%>" <%}else{ %> value="" <%} %>required>
 		                        </div>
 		                    </div>
                      
                      		<div class="col-md-3 ">
 		                        <div class="form-group">
 		                            <label class="control-label">Indicative Cost (&#8377;)</label>
-		  								<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="IndicativeCost" name="IndicativeCost" <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E") || !LoginType.equalsIgnoreCase("C")|| !LoginType.equalsIgnoreCase("I")  ) {%> readonly<%} %> <% if (ProjectEditData[20]!=null){ %>  value="<%=ProjectEditData[20]%>" <%}else{ %> value="" <%} %>>
+		  								<input type="text" class="form-control decimal-format"  aria-describedby="inputGroup-sizing-sm" id="IndicativeCost" name="IndicativeCost" <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E") || !LoginType.equalsIgnoreCase("C")|| !LoginType.equalsIgnoreCase("I")  ) {%> readonly<%} %> <% if (ProjectEditData[20]!=null){ %>  value="<%=ProjectEditData[20]%>" <%}else{ %> value="" <%} %>>
 		                        </div>
 		                    </div>
                      
@@ -255,7 +255,7 @@ FormatConverter fc = new FormatConverter();
 								<!--  <input type="submit" class="btn btn-primary btn-sm "  value="SUBMIT"> 
 								 <a class="btn btn-info btn-sm  shadow-nohover back" href="ProjectIntiationList.htm" >Back</a> -->
 								 
-								 <button type="submit" class="btn btn-primary btn-sm submit"  value="SUBMIT"  name="sub" onsubmit="confirm()" >SUBMIT </button>
+								 <button type="submit" class="btn btn-primary btn-sm submit"  value="SUBMIT"  name="sub" onclick="return confirm('Are you sure you want to submit this form?')" >SUBMIT</button>
 								 <input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
 						</div>
 

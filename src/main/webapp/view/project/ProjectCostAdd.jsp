@@ -145,7 +145,7 @@ List<Object[]> BudgetHeadList=(List<Object[]>)request.getAttribute("BudgetHeadLi
 			               <div class="col-md-2 ">
 			               		<div class="form-group">
 			                            <label class="control-label">Cost</label>
-			  								<input type="number" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="Cost" name="Cost" required="required" min="1">
+			  								<input type="text" class="form-control decimal-format "  aria-describedby="inputGroup-sizing-sm" id="Cost" name="Cost" required="required" min="1">
 			                     </div>
 			               </div> 
                  
@@ -205,7 +205,7 @@ List<Object[]> BudgetHeadList=(List<Object[]>)request.getAttribute("BudgetHeadLi
 					   					<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="ItemDetail" name="ItemDetail" required="required" value="<%=obj[4] %>">                     
 									</td>
 									<td style="text-align: right">
-										<input type="number" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="Cost" name="Cost" min="1" required="required" value="<%=obj[5].toString().split("\\.")[0] %>" style="text-align:right;">
+										<input type="text" class="form-control decimal-format "  aria-describedby="inputGroup-sizing-sm" id="Cost" name="Cost" min="1" required="required" value="<%=obj[5].toString().split("\\.")[0] %>" style="text-align:right;">
 									<td>
 							    
 							 			

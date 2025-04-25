@@ -66,7 +66,7 @@ String seslabid=(String)session.getAttribute("labid");
 <div class="col-md-2">
               <div class="form-group">
 					<label >Employee No:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control"  type="text" id="EmpNo" name="EmpNo" required="required" maxlength="20" style="font-size: 15px;" readonly	value="<%=OfficerEditData[1] %>">
+					<input  class="form-control alphanum-only"  type="text" id="EmpNo" name="EmpNo" required="required" maxlength="20" style="font-size: 15px;" readonly	value="<%=OfficerEditData[1] %>">
 			</div>
 </div>
 <div class="col-md-3">
@@ -95,7 +95,7 @@ String seslabid=(String)session.getAttribute("labid");
 <div class="col-md-4">
               <div class="form-group">
 					<label >Employee Name:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control"  type="text" id="EmpName" name="EmpName" required="required" maxlength="255" style=" font-size: 15px;text-transform: capitalize; width: 80%;" onkeydown="return /[a-z ]/i.test(event.key)"	value="<%=OfficerEditData[2] %>">
+					<input  class="form-control alpha-no-leading-space"  type="text" id="EmpName" name="EmpName" required="required" maxlength="255" style=" font-size: 15px;text-transform: capitalize; width: 80%;" value="<%=OfficerEditData[2] %>">
 				</div>
 </div>
 </div>
@@ -116,21 +116,21 @@ String seslabid=(String)session.getAttribute("labid");
 <div class="col-md-3">
               <div class="form-group">
 					<label >Extension No:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control"  type="text" id="ExtNo"  name="ExtNo" required="required" maxlength="10" style="font-size: 15px;width: 80%;"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" value="<%=OfficerEditData[4] %>">
+					<input  class="form-control alphanum-only"  type="text" id="ExtNo"  name="ExtNo" required="required" maxlength="10" style="font-size: 15px;width: 80%;" value="<%=OfficerEditData[4] %>">
 				</div>
 </div>
 
 <div class="col-md-3">
               <div class="form-group">
 					<label >Mobile No:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control" type="text"  required="required" id="mobilenumber"  name="mobilenumber" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" style="font-size: 15px;width:100%" value="<%=OfficerEditData[9]%>" id="">
+					<input  class="form-control indian-mobile" type="text"  required="required" id="mobilenumber"  name="mobilenumber" maxlength="10" value="<%=OfficerEditData[9]%>" id="">
 			   </div>
 </div>
 
 <div class="col-md-3">
               <div class="form-group">
 					<label >Lab Email: <span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control"  type="email" id="Email" name="Email" required="required" maxlength="255" style="font-size: 15px;width: 80%;" value="<%=OfficerEditData[5] %>">
+					<input  class="form-control email-input"  type="email" id="Email" name="Email" required="required" maxlength="255" style="font-size: 15px;width: 80%;" value="<%=OfficerEditData[5] %>">
 			  </div>
 </div>
 </div>
@@ -139,14 +139,14 @@ String seslabid=(String)session.getAttribute("labid");
 <div class="col-md-3">
               <div class="form-group">
 					<label >Drona Email: </label>
-					<input  class="form-control form-control" type="email" name="DronaEmail" id="DronaEmail" required="required" maxlength="255" style="font-size: 15px;width:100%"  value="<%=OfficerEditData[7] %>" id="">
+					<input  class="form-control email-input" type="email" name="DronaEmail" id="DronaEmail" required="required" maxlength="255" style="font-size: 15px;width:100%"  value="<%=OfficerEditData[7] %>" id="">
 			  </div>
 </div>
 
 <div class="col-md-3">
               <div class="form-group">
 					<label >Internet Email:</label>
-					<input  class="form-control form-control" type="email" name="InternetEmail" id="InternetEmail" required="required" maxlength="255" style="font-size: 15px;width:100%" value="<%=OfficerEditData[8] %>"  id="">
+					<input  class="form-control email-input" type="email" name="InternetEmail" id="InternetEmail" required="required" maxlength="255" style="font-size: 15px;width:100%" value="<%=OfficerEditData[8] %>"  id="">
 			  </div>
 </div>
 
@@ -288,19 +288,22 @@ function Delete(myfrm){
 			var InternetEmail=$('#InternetEmail').val();
 			var Division=$('#Division').val();
 			var EmpStauts =$('#empStatus').val();	//srikant
+			
 		
 			
 			if(EmpName==="" ||Designation===null || ExtNo==="" || mobilenumber==="" || Email==="" || Division===null || EmpStauts==="" ) //srikant  
 			{
 				alert('Please Fill All the Mandatory Fields ');
-			} else if(!Email.includes("@")){
+			}else if(!Email.includes("@") || (DronaEmail.length > 1 && !DronaEmail.includes("@")) || (InternetEmail.length > 1 && !InternetEmail.includes("@")) )
+			{
 				alert('please use correct email format(E.g. abc1@gmail.com)');
-			} 
-			else if((title==="" && salutation==="")||(title!=="" && salutation!=="")){
+			}else if((title==="" && salutation==="")||(title!=="" && salutation!=="")){
 				window.alert('please select either Title or Rank');
 				event.preventDefault();
 				return false;
-			} else{
+			}else if(mobilenumber.length < 10){
+				alert('Please enter a valid 10-digit Indian mobile number starting with 6-9.');
+			}else{
 				if(window.confirm('Are you sure to save?')){
 					document.getElementById(frmid).submit(); 
 				}else{

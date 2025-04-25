@@ -203,4 +203,52 @@ public class ProductTreeDaoImpl implements ProductTreeDao{
 
 		return ProductTreeList;
 	}
+	
+
+
+	@Override
+	public SystemProductTree getSystemLevelNameById(long mainId) {
+		try {
+			return manager.find(SystemProductTree.class, (mainId));
+		} catch (Exception e) {
+			logger.error(new Date() + "Inside DAO getSystemLevelNameById() "+e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private static final String SYSTEMLEVELNAMEDELETE="UPDATE pfms_system_product_tree AS t1\r\n"
+			+ "	LEFT JOIN pfms_system_product_tree AS t2 ON t1.mainid = t2.parentlevelid\r\n"
+			+ "	LEFT JOIN pfms_system_product_tree AS t3 ON t2.mainid = t3.parentlevelid\r\n"
+			+ "	LEFT JOIN pfms_system_product_tree AS t4 ON t3.mainid = t4.parentlevelid\r\n"
+			+ "	LEFT JOIN pfms_system_product_tree AS t5 ON t4.parentlevelid = t5.mainid\r\n"
+			+ "	LEFT JOIN pfms_system_product_tree AS t6 ON t5.parentlevelid = t6.mainid\r\n"
+			+ "	LEFT JOIN pfms_system_product_tree AS t7 ON t6.parentlevelid = t7.mainid\r\n"
+			+ "	SET\r\n"
+			+ "	    t1.isActive = CASE WHEN t1.mainid = :mainid OR t1.parentlevelid = :mainid THEN 0 ELSE 1 END,\r\n"
+			+ "	    t2.isActive = CASE WHEN t2.mainid = :mainid OR t2.parentlevelid = :mainid THEN 0 ELSE 1 END,\r\n"
+			+ "	    t3.isActive = CASE WHEN t3.mainid = :mainid OR t3.parentlevelid = :mainid THEN 0 ELSE 1 END,\r\n"
+			+ "	    t4.isActive = CASE WHEN t4.mainid = :mainid OR t4.parentlevelid = :mainid THEN 0 ELSE 1 END,\r\n"
+			+ "	    t5.isActive = CASE WHEN t5.mainid = :mainid OR t5.parentlevelid = :mainid THEN 0 ELSE 1 END ,\r\n"
+			+ "	    t6.isActive = CASE WHEN t6.mainid = :mainid OR t6.parentlevelid = :mainid THEN 0 ELSE 1 END , \r\n"
+			+ "	    t7.isActive = CASE WHEN t7.mainid = :mainid OR t7.parentlevelid = :mainid THEN 0 ELSE 1 END \r\n"
+			+ "\r\n"
+			+ "	WHERE \r\n"
+			+ "	t1.mainid = :mainid  OR t2.mainid = :mainid OR t3.mainid = :mainid OR t4.mainid = :mainid OR t5.mainid=:mainid\r\n"
+			+ "	OR t6.mainid=:mainid OR t7.mainid=:mainid";
+	
+	@Override
+	public long systemLevelNameDelete(SystemProductTree spt) {
+		Query query=manager.createNativeQuery(SYSTEMLEVELNAMEDELETE);		
+		query.setParameter("mainid", spt.getMainId());		
+		return (long) query.executeUpdate();
+	}
+
+
+	@Override
+	public long systemLevelNameEdit(SystemProductTree spt) {
+		manager.merge(spt);
+		manager.flush();
+		return spt.getMainId();
+	}
 }

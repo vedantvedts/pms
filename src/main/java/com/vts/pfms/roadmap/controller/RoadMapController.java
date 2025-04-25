@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -59,6 +60,7 @@ import com.vts.pfms.roadmap.model.AnnualTargets;
 import com.vts.pfms.roadmap.model.RoadMap;
 import com.vts.pfms.roadmap.model.RoadMapAnnualTargets;
 import com.vts.pfms.roadmap.service.RoadMapService;
+import com.vts.pfms.utils.InputValidator;
 
 @Controller
 public class RoadMapController {
@@ -80,6 +82,11 @@ public class RoadMapController {
 	
 	@Autowired
 	CARSService carsservice;
+	
+	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
+	    redir.addAttribute("resultfail", message);
+	    return "redirect:/"+redirURL;
+	}
 	
 	@RequestMapping(value = "RoadMapList.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String roadMapList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
@@ -232,20 +239,36 @@ public class RoadMapController {
 		try {
 			String action = req.getParameter("Action");
 			
+			String projectTitle = req.getParameter("projectTitle");
+			String scope = req.getParameter("scope");
+			String otherReference = req.getParameter("otherReference");
+			String projectCost = req.getParameter("projectCost");
+			String aimObjectives = req.getParameter("aimObjectives");
+			
+			
+			if (Stream.of(projectTitle, scope, otherReference,aimObjectives)
+					.anyMatch(field -> InputValidator.isContainsHTMLTags(field))) {
+				return redirectWithError(redir, "RoadMapList.htm", "HTML tags are not permitted.");
+			}
+			if(!InputValidator.isDecimalFormat(projectCost)) {
+				return redirectWithError(redir,"RoadMapList.htm","Only numbers are allowed. You may enter up to 2 digits after the decimal.");
+			}
+			 
+			
 			RoadMapDetailsDTO dto = new RoadMapDetailsDTO();
 			dto.setRoadMapId(req.getParameter("roadMapId"));
 			dto.setRoadMapType(req.getParameter("roadMapType"));
 			dto.setProjectId(req.getParameter("projectId"));
 			dto.setInitiationId(req.getParameter("initiationId"));
-			dto.setProjectTitle(req.getParameter("projectTitle"));
+			dto.setProjectTitle(projectTitle);
 			dto.setDivisionId(req.getParameter("divisionId"));
 			dto.setStartDate(req.getParameter("startDate"));
 			dto.setEndDate(req.getParameter("endDate"));
-			dto.setAimObjectives(req.getParameter("aimObjectives"));
-			dto.setScope(req.getParameter("scope"));
+			dto.setAimObjectives(aimObjectives);
+			dto.setScope(scope);
 			dto.setReference(req.getParameter("references"));
-			dto.setOtherReference(req.getParameter("otherReference"));
-			dto.setProjectCost(req.getParameter("projectCost"));
+			dto.setOtherReference(otherReference);
+			dto.setProjectCost(projectCost);
 			
 			
 			String[] annualYearList = req.getParameterValues("annualYear");
@@ -376,6 +399,10 @@ public class RoadMapController {
 		try {
 			String roadMapId = req.getParameter("roadMapId");
 			String action = req.getParameter("Action");
+			
+			if( InputValidator.isContainsHTMLTags(req.getParameter("remarks"))){
+				return redirectWithError(redir, "RoadMapApprovals.htm", "HTML tags are not permitted.");				
+			}
 			
 			RoadMap roadMap = service.getRoadMapDetailsById(roadMapId);
 			String roadMapStatusCode = roadMap.getRoadMapStatusCode();
@@ -1063,19 +1090,22 @@ public class RoadMapController {
 			String[] others = req.getParameter("others").split(",");
 
 			for(int i=0;i<others.length;i++) {
-				AnnualTargets target = new AnnualTargets();
-				target.setAnnualTarget(others[i]);
-				target.setCreatedBy(Username);
-				target.setCreatedDate(sdtf.format(new Date()));
-				target.setIsActive(1);
-
-				Long annualTargetId = service.addAnnualTargets(target);
-
-				Object[] data = new Object[2];
-				data[0] = annualTargetId;
-				data[1] = others[i];
-
-				dataList.add(data);
+				if (InputValidator.isContainsHTMLTags(others[i])) { 
+				}else {
+					AnnualTargets target = new AnnualTargets();
+					target.setAnnualTarget(others[i]);
+					target.setCreatedBy(Username);
+					target.setCreatedDate(sdtf.format(new Date()));
+					target.setIsActive(1);
+	
+					Long annualTargetId = service.addAnnualTargets(target);
+	
+					Object[] data = new Object[2];
+					data[0] = annualTargetId;
+					data[1] = others[i];
+	
+					dataList.add(data);
+				}
 			}
 
 		} catch (Exception e) {

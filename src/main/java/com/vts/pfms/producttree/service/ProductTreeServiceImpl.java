@@ -152,6 +152,25 @@ public class ProductTreeServiceImpl implements ProductTreeService {
 	@Override
 	public List<Object[]> getProductTreeListInitiation(String initiationId) {
 		return dao.getProductTreeListInitiation(initiationId);
+	}	
+
+	@Override
+	public long systemLevelNameEdit(SystemProductTree dto, String Action) throws Exception {
+		SystemProductTree spt=dao.getSystemLevelNameById(dto.getMainId());
+		spt.setMainId(dto.getMainId());
+		if( Action.equalsIgnoreCase("TE")) {
+						
+			spt.setLevelName(dto.getLevelName());
+			spt.setLevelCode(dto.getLevelCode());
+			spt.setModifiedBy(dto.getModifiedBy());
+			spt.setModifiedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		
+			return dao.systemLevelNameEdit(spt);		
+		}else if(Action.equalsIgnoreCase("TD")) {
+			return dao.systemLevelNameDelete(spt);			
+		}
+		return 0;
 	}
+
 }
 		
