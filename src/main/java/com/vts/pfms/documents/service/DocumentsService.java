@@ -5,9 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.documents.dto.InterfaceTypeAndContentDto;
-import com.vts.pfms.documents.dto.InterfaceTypeAndContentDto;
 import com.vts.pfms.documents.dto.StandardDocumentsDto;
-import com.vts.pfms.documents.model.ICDConnectionInterfaces;
 import com.vts.pfms.documents.model.ICDConnectionPurpose;
 import com.vts.pfms.documents.model.ICDDocumentConnections;
 import com.vts.pfms.documents.model.ICDPurpose;
@@ -19,6 +17,7 @@ import com.vts.pfms.documents.model.IGIDocumentSummary;
 import com.vts.pfms.documents.model.IGIInterface;
 import com.vts.pfms.documents.model.IGIInterfaceContent;
 import com.vts.pfms.documents.model.IGIInterfaceTypes;
+import com.vts.pfms.documents.model.IGILogicalChannel;
 import com.vts.pfms.documents.model.IGILogicalInterfaces;
 import com.vts.pfms.documents.model.IRSDocumentSpecifications;
 import com.vts.pfms.documents.model.PfmsApplicableDocs;
@@ -79,6 +78,11 @@ public interface DocumentsService {
 	public List<IGILogicalInterfaces> getIGILogicalInterfaces() throws Exception;
 	public IGILogicalInterfaces getIGILogicalInterfaceById(String logicalInterfaceId) throws Exception;
 	public long addIGILogicalInterfaces(IGILogicalInterfaces igiLogicalInterfaces) throws Exception;
+	public int getLogicalInterfaceCountByType(String logicalChannelId, String msgType) throws Exception;
+	public List<IGILogicalChannel> getIGILogicalChannelList() throws Exception;
+	public IGILogicalChannel getIGILogicalChannelById(String logicalChannelId) throws Exception;
+	public long addIGILogicalChannel(IGILogicalChannel igiLogicalChannel) throws Exception;
+	public int deleteIGILogicalChannelById(String logicalChannelId) throws Exception;
 	/* ************************************************ IGI Document End***************************************************** */
 	
 	/* ************************************************ ICD Document ***************************************************** */
@@ -88,7 +92,7 @@ public interface DocumentsService {
 	public Long getFirstVersionICDDocId(String projectId, String initiationId, String productTreeMainId) throws Exception;
 	public long addICDDocumentConnections(ICDDocumentConnections connection, MultipartFile drawingAttach, String labcode) throws Exception;
 	public List<Object[]> getICDConnectionsList(String icdDocId) throws Exception;
-	public int deleteICDConnectionById(String conInterfaceId) throws Exception;
+	public int deleteICDConnectionById(String icdConnectionId) throws Exception;
 	public long addPfmsIGITransaction(Long docId, String docType, String statusCode, String remarks, Long actionBy) throws Exception;
 	public long igiDocumentApprovalForward(String docId, String docType, String action, String remarks, String EmpId, String labcode, String userId) throws Exception;
 	public long icdDocumentApprovalForward(String docId, String docType, String action, String remarks, String empId, String labcode, String userId) throws Exception;
@@ -96,12 +100,10 @@ public interface DocumentsService {
 	public long icdDocumentUserRevoke(String icdDocId, String userId, String empId) throws Exception;
 	public ICDDocumentConnections getICDDocumentConnectionsById(String icdConnectionId) throws Exception;
 	public List<ICDPurpose> getAllICDPurposeList() throws Exception;
-	public long addICDConnectionInterfaces(ICDConnectionInterfaces connectioInterfaces) throws Exception;
 	public long addICDConnectionPurpose(ICDConnectionPurpose icdConnectionPurpose) throws Exception;
 	public int getICDConnectionsCount(Long subSystemMainIdOne, Long subSystemMainIdTwo, Long superSubSysMainIdOne, 
 			Long superSubSysMainIdTwo, Long icdDocId) throws Exception;
 	public int deleteICDConnectionPurposeByICDConnectionId(String icdConnectionId) throws Exception;
-
 	/* ************************************************ ICD Document End***************************************************** */
 	
 	/* ************************************************ IRS Document ***************************************************** */

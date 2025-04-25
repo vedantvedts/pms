@@ -286,7 +286,7 @@ FormatConverter fc = new FormatConverter();
 										
 											<tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>">
 												<td></td>
-												<td><%=level3[9]!=null?level3[9]:"-" %></td>
+												<td>&emsp;<%=level3[9]!=null?level3[9]:"-" %></td>
 												<td><%=level3[10]!=null?level3[10]:"-" %></td>
 												<td><%=level3[4]!=null?level3[4]:"-" %>, <%=level3[5]!=null?level3[5]:"-" %></td>
 												<td class="center"><%=level3[11]!=null?fc.sdfTordf(level3[11].toString()):"-" %></td>
@@ -327,7 +327,7 @@ FormatConverter fc = new FormatConverter();
 											%>
 												<tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>">
 													<td></td>
-													<td><%=level4[9]!=null?level4[9]:"-" %></td>
+													<td>&emsp;&emsp;<%=level4[9]!=null?level4[9]:"-" %></td>
 													<td><%=level4[10]!=null?level4[10]:"-" %></td>
 													<td><%=level4[4]!=null?level4[4]:"-" %>, <%=level4[5]!=null?level4[5]:"-" %></td>
 													<td class="center"><%=level4[11]!=null?fc.sdfTordf(level4[11].toString()):"-" %></td>
@@ -369,7 +369,7 @@ FormatConverter fc = new FormatConverter();
 												
 													<tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>">
 														<td></td>
-														<td><%=level5[9]!=null?level5[9]:"-" %></td>
+														<td>&emsp;&emsp;&emsp;<%=level5[9]!=null?level5[9]:"-" %></td>
 														<td><%=level5[10]!=null?level5[10]:"-" %></td>
 														<td><%=level5[4]!=null?level5[4]:"-" %>, <%=level5[5]!=null?level5[5]:"-" %></td>
 														<td class="center"><%=level5[11]!=null?fc.sdfTordf(level5[11].toString()):"-" %></td>
@@ -410,7 +410,7 @@ FormatConverter fc = new FormatConverter();
 												
 														<tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>">
 															<td></td>
-															<td><%=level6[9]!=null?level6[9]:"-" %></td>
+															<td>&emsp;&emsp;&emsp;<%=level6[9]!=null?level6[9]:"-" %></td>
 															<td><%=level6[10]!=null?level6[10]:"-" %></td>
 															<td><%=level6[4]!=null?level6[4]:"-" %>, <%=level6[5]!=null?level6[5]:"-" %></td>
 															<td class="center"><%=level6[11]!=null?fc.sdfTordf(level6[11].toString()):"-" %></td>

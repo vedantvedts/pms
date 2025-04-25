@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.documents.model.IGILogicalChannel"%>
 <%@page import="com.vts.pfms.documents.model.IGIDocumentIntroduction"%>
 <%@page import="com.vts.pfms.documents.model.IGILogicalInterfaces"%>
 <%@page import="com.vts.pfms.documents.model.IGIInterfaceContent"%>
@@ -206,11 +207,12 @@
 		List<IGIInterfaceContent> interfaceContentList = (List<IGIInterfaceContent>)request.getAttribute("interfaceContentList");
 		
 		List<IGILogicalInterfaces> logicalInterfaceList = (List<IGILogicalInterfaces>)request.getAttribute("logicalInterfaceList");
-		
+		List<IGILogicalChannel> logicalChannelList = (List<IGILogicalChannel>)request.getAttribute("logicalChannelList");
+
 		List<IGIDocumentIntroduction> introductionList = (List<IGIDocumentIntroduction>)request.getAttribute("igiDocumentIntroductionList");
 		introductionList = introductionList.stream().filter(e -> e.getDocId()==Long.parseLong(igiDocId) && e.getDocType().equalsIgnoreCase("A")).collect(Collectors.toList());
 		
-		List<String> msgTypesList = Arrays.asList("Point to Point", "Broadcast", "Info", "Logging", "Multicast", "Commanding");
+		List<String> msgTypesList = Arrays.asList("Information", "Request", "Answer", "Command", "Acknowledement");
 		
 		Object[] labDetails = (Object[])request.getAttribute("labDetails");
 		Object[] docTempAtrr = (Object[])request.getAttribute("docTempAttributes");
@@ -846,7 +848,7 @@ function DownloadDocPDF(){
                 // Table of Contents
                 {
                     toc: {
-                        title: { text: 'INDEX', style: 'header', pageBreak: 'before' }
+                        title: { text: 'INDEX', style: 'header', pageBreak: 'before', id: 'INDEX' }
                     }
                 },
                 
@@ -1192,7 +1194,8 @@ function DownloadDocPDF(){
 	                {
 	                    text: '<%=Sub0Count+". "+intro.getChapterName()%>',
 	                    style: 'chapterSubHeader',
-	                    tocItem: false,
+	                    tocItem: true,
+	                    tocMargin: [20, 0, 0, 0],
 	                },
 	                {
 	                	stack: [htmlToPdfmake(setImagesWidth('<%if(intro.getChapterContent()!=null) {%><%=intro.getChapterContent().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
@@ -1209,7 +1212,8 @@ function DownloadDocPDF(){
 		                {
 		                    text: '<%=Sub0Count+". "+Sub1Count+". "+intro1.getChapterName()%>',
 		                    style: 'chapterSubSubHeader',
-		                    tocItem: false,
+		                    tocItem: true,
+		                    tocMargin: [25, 0, 0, 0],
 		                },
 		                {
 		                	stack: [htmlToPdfmake(setImagesWidth('<%if(intro1.getChapterContent()!=null) {%><%=intro1.getChapterContent().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
@@ -1218,7 +1222,7 @@ function DownloadDocPDF(){
 		                },
 	                <%++Sub1Count;} }%>
 	                
-                <%} ++Sub0Count;} }else{%>
+                <% ++Sub0Count;}} }else{%>
 	                {
 	                    text: 'No Details Added!',
 	                    margin: [10, 0, 0, 0],
@@ -1626,22 +1630,72 @@ function DownloadDocPDF(){
                     pageBreak: 'before'
                 },
                 
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['10%', '22%', '22%', '46%'],
+                        body: [
+                            // Table header
+                            [
+                                { text: 'SN', style: 'tableHeader' },
+                                { text: 'Channel Name', style: 'tableHeader' },
+                                { text: 'Channel Code', style: 'tableHeader' },
+                                { text: 'Description', style: 'tableHeader' },
+                            ],
+                            // Populate table rows
+                           <% if(logicalChannelList!=null && logicalChannelList.size()>0){
+								int slno=0;
+								for(IGILogicalChannel channel : logicalChannelList){
+							%>
+		                            [
+		                                { text: '<%=++slno %>', style: 'tableData',alignment: 'center' },
+		                                { text: '<%=channel.getLogicalChannel() %>', style: 'tableData', },
+		                                { text: '<%=channel.getChannelCode() %>', style: 'tableData', },
+		                                { text: '<%=channel.getDescription() %>', style: 'tableData', },
+		                            ],
+		                        <% } %>
+                            <% } else{%>
+                            	[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 4 },]
+                            <%} %>
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+                },
+                
+                { text: '\n',},
+                
                 <% 
 			    // Define interface types and corresponding variable names
 			    Map<String, List<IGILogicalInterfaces>> logicalInterfaceMap = new LinkedHashMap<>();
-                
-				for(String msgType : msgTypesList) {
-						
-						List<IGILogicalInterfaces> interfaceListByType = logicalInterfaceList.stream().filter(e -> e.getMsgType().equalsIgnoreCase(msgType)).collect(Collectors.toList());
-						
-						logicalInterfaceMap.computeIfAbsent(msgType, k -> new ArrayList<>()).addAll(interfaceListByType);
-					}
+	   								
+				for(IGILogicalChannel channel : logicalChannelList) {
 					
+					List<IGILogicalInterfaces> interfaceListByType = logicalInterfaceList.stream().filter(e -> e.getLogicalChannelId().equals(channel.getLogicalChannelId())).collect(Collectors.toList());
+					
+					logicalInterfaceMap.computeIfAbsent(channel.getChannelCode(), k -> new ArrayList<>()).addAll(interfaceListByType);
+				}
+   									
 				int interfaceMainCountL = 0;
 			    for (Map.Entry<String, List<IGILogicalInterfaces>> entry : logicalInterfaceMap.entrySet()) {
 			        String msgType = entry.getKey();
 			        List<IGILogicalInterfaces> interfaceList = entry.getValue();
-
+					
 			        %>
 			        
 			        {
@@ -1655,9 +1709,10 @@ function DownloadDocPDF(){
 	                int interfaceSubCount = 0;
 			        for (IGILogicalInterfaces iface : interfaceList) { 
 			        	int sn = 0;
+			        	IGILogicalChannel channel = logicalChannelList.stream().filter(e -> e.getLogicalChannelId().equals(iface.getLogicalChannelId())).findFirst().orElse(null);
 	                %>
 			        {
-                    	text: mainContentCount+'.<%=interfaceMainCountL%>.<%=++interfaceSubCount%>. <%=iface.getMsgName() %>',	
+                    	text: mainContentCount+'.<%=interfaceMainCountL%>.<%=++interfaceSubCount%>. <%=iface.getMsgType() %>',	
                     	style: 'chapterSubSubHeader',
                         tocItem: true,
                         id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=interfaceMainCountL%>.<%=interfaceSubCount%>',
@@ -1684,14 +1739,15 @@ function DownloadDocPDF(){
 	                            ],
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Msg Name', style: 'tableData', bold: true},
-	                                { text: '<%=iface.getMsgName() %>', style: 'tableData' },
+	                                { text: 'Logical Channel Name', style: 'tableData', bold: true},
+	                                { text: '<%=channel.getLogicalChannel() + " (" + channel.getChannelCode() + ")" %>', style: 'tableData' },
 	                            ],
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Msg Title', style: 'tableData', bold: true},
-	                                { text: '<%=iface.getMsgTitle() %>', style: 'tableData' },
+	                                { text: 'Msg Name', style: 'tableData', bold: true},
+	                                { text: '<%=iface.getMsgName() %>', style: 'tableData' },
 	                            ],
+	                            
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Msg Type', style: 'tableData', bold: true},
@@ -1756,6 +1812,9 @@ function DownloadDocPDF(){
                 header: { alignment: 'center', bold: true},
                 chapterContent: {fontSize: 11.5, margin: [0, 5, 0, 5] },
             },
+            info: {
+            	title : 'IGI_Document',
+            },
             footer: function(currentPage, pageCount) {
                 if (currentPage > 2) {
                     return {
@@ -1766,7 +1825,7 @@ function DownloadDocPDF(){
                             {
                                 columns: [
                                     { text: '<%if(documentNo!=null) {%><%=documentNo %><%} %>', alignment: 'left', margin: [30, 0, 0, 0], fontSize: 8 },
-                                    { text: currentPage.toString() + ' of ' + pageCount, alignment: 'right', margin: [0, 0, 30, 0], fontSize: 8 }
+                                    { text: currentPage.toString() + ' of ' + pageCount, alignment: 'right', margin: [0, 0, 30, 0], fontSize: 8, linkToDestination: 'INDEX' }
                                 ]
                             },
                             { text: 'Restricted', alignment: 'center', fontSize: 8, margin: [0, 5, 0, 0], bold: true }

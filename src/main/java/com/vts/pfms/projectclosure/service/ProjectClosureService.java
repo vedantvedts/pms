@@ -2,17 +2,14 @@ package com.vts.pfms.projectclosure.service;
 
 import java.util.List;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.project.model.ProjectMaster;
+import com.vts.pfms.project.model.ProjectMasterRev;
 import com.vts.pfms.projectclosure.dto.ProjectCheckListRevDto;
 import com.vts.pfms.projectclosure.dto.ProjectClosureACPDTO;
 import com.vts.pfms.projectclosure.dto.ProjectClosureAppendixDto;
 import com.vts.pfms.projectclosure.dto.ProjectClosureApprovalForwardDTO;
-
 import com.vts.pfms.projectclosure.model.ProjectClosure;
 import com.vts.pfms.projectclosure.model.ProjectClosureACP;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPAchievements;
@@ -20,7 +17,6 @@ import com.vts.pfms.projectclosure.model.ProjectClosureACPConsultancies;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPProjects;
 import com.vts.pfms.projectclosure.model.ProjectClosureACPTrialResults;
 import com.vts.pfms.projectclosure.model.ProjectClosureCheckList;
-import com.vts.pfms.projectclosure.model.ProjectClosureCheckListRev;
 import com.vts.pfms.projectclosure.model.ProjectClosureSoC;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnical;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalAppendices;
@@ -28,6 +24,9 @@ import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalChapters;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalDocDistrib;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalDocSumary;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalSection;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public interface ProjectClosureService {
 
@@ -103,7 +102,6 @@ public interface ProjectClosureService {
 	public List<Object[]> TCRTemplateChapterListByChapterParentId(String chapterparentid) throws Exception;
 	public int AmendTechClosureList(String techClosureId) throws Exception;
 	public long AddNewRevision(ProjectClosureTechnical tech, String empId, String labCode, String techClosureId)throws Exception;
-	
-	
+	public List<ProjectMasterRev> getProjectMasterRevListByProjectId(String projectId) throws Exception;
 	
 }

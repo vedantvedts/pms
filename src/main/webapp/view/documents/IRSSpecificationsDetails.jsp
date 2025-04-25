@@ -166,27 +166,29 @@ label {
 	        			<div class="card-body">
 	        				<div class="form-group">
 	        					<div class="row">
-	        						<div class="col-md-2">
+	        						<div class="col-md-3">
 	        							<label class="form-lable">Connection<span class="mandatory">*</span></label>
-		        						<select class="form-control selectdee conInterfaceId" name="conInterfaceId" id="conInterfaceId"
+		        						<select class="form-control selectdee icdConnectionId" name="icdConnectionId" id="icdConnectionId"
 		        						data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
 											<option value="" disabled selected>Choose...</option>
 									        <% for(Object[] obj : dataCarryingConnectionList){ %>
-									        	<option value="<%=obj[0] %>" <%if(irsSpecifications!=null && irsSpecifications.getConInterfaceId()==Long.parseLong(obj[0].toString())) {%>selected<%} %> ><%=obj[3] %></option>
+									        	<option value="<%=obj[1] %>" <%if(irsSpecifications!=null && irsSpecifications.getICDConnectionId()==Long.parseLong(obj[1].toString())) {%>selected<%} %> ><%=obj[3] %></option>
 									        <%} %>
 										</select>
         							</div>
-	        						<div class="col-md-2">
+	        						<div class="col-md-4">
 	        							<label class="form-lable">Message Id<span class="mandatory">*</span></label>
 		        						<select class="form-control selectdee logicalInterfaceId" name="logicalInterfaceId" id="logicalInterfaceId"
 		        						data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
 											<option value="" disabled selected>Choose...</option>
 									        <% for(IGILogicalInterfaces iface : logicalInterfaceList){ %>
-									        	<option value="<%=iface.getLogicalInterfaceId() %>" <%if(irsSpecifications!=null && irsSpecifications.getLogicalInterfaceId().equals(iface.getLogicalInterfaceId())) {%>selected<%} %>><%=iface.getMsgCode() %></option>
+									        	<option value="<%=iface.getLogicalInterfaceId() %>" <%if(irsSpecifications!=null && irsSpecifications.getLogicalInterfaceId().equals(iface.getLogicalInterfaceId())) {%>selected<%} %>>
+									        		<%=iface.getMsgName()+" ("+iface.getMsgCode()+")" %>
+									        	</option>
 									        <%} %>
 										</select>
         							</div>
-        							<div class="col-md-2">
+        							<%-- <div class="col-md-2">
 	        							<label class="form-lable">Info Name<span class="mandatory">*</span></label>
 	        							<select class="form-control" name="infoName" id="infoName" required>
 											<option value="" disabled selected>Choose...</option>
@@ -195,7 +197,7 @@ label {
 											<option value="Plot" <%if(irsSpecifications!=null && irsSpecifications.getInfoName().equalsIgnoreCase("Plot")) {%>selected<%} %>>Plot</option>
 											<option value="Command" <%if(irsSpecifications!=null && irsSpecifications.getInfoName().equalsIgnoreCase("Command")) {%>selected<%} %>>Command</option>
 										</select>
-	        						</div>
+	        						</div> --%>
         							<div class="col-md-3">
 	        							<label class="form-lable">Action at Destination<span class="mandatory">*</span></label>
 	        							<input type="text" class="form-control" name="actionAtDest" <%if(irsSpecifications!=null && irsSpecifications.getActionAtDest()!=null) {%>value="<%=irsSpecifications.getActionAtDest()%>"<%} %> placeholder="Enter Action at Destination" maxlength="255" required>
@@ -230,7 +232,7 @@ label {
                     			<th>SN</th>
                     			<th>Connection ID</th>
                     			<th>Message Id</th>
-                    			<th>Info Name</th>
+                    			<!-- <th>Info Name</th> -->
                     			<th>Source</th>
                     			<th>Destination</th>
                     			<th>Action at Dest</th>
@@ -247,7 +249,7 @@ label {
                     				<td class="center"><%=++slno %></td>
                     				<td><%=obj[6] %></td>
                     				<td><%=obj[7] %></td>
-                    				<td><%=obj[4] %></td>
+                    				<%-- <td><%=obj[4] %></td> --%>
                     				<td><%=split[0].split("\\.")[1] %></td>
                     				<td><%=split[1] %></td>
                     				<td><%=obj[5] %></td>

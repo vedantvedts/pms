@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import com.vts.pfms.header.model.ProjectDashBoardFavourite;
 import com.vts.pfms.header.model.ProjectDashBoardFavouriteProjetcts;
+import com.vts.pfms.login.LoginPasswordHistory;
 import com.vts.pfms.roadmap.model.RoadMap;
 @Transactional
 @Repository
@@ -485,5 +486,36 @@ public class HeaderDaoImpl implements HeaderDao {
 		manager.persist(pf);
 		manager.flush();
 		return pf.getFavouriteId();
+	}
+	
+	private static final String PASSWORDCHANGEHYSTORYCOUNT  ="SELECT COUNT(loginid) AS 'passwordCount' FROM pfms_login_password_history WHERE LoginId=:LoginId";
+	@Override
+	public long PasswordChangeHystoryCount(Long loginId) throws Exception
+	{
+		try {
+			Query query = manager.createNativeQuery(PASSWORDCHANGEHYSTORYCOUNT);
+			query.setParameter("LoginId", loginId);		
+			return (Long)query.getSingleResult();
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside DAO PasswordChangeHystoryCount"+ e);
+			e.printStackTrace();
+			return 0;
+		}
+		
+		
+	}
+
+	@Override
+	public long addLoginPasswordHistory(LoginPasswordHistory passwordHistory) {
+		try {
+			manager.persist(passwordHistory);
+			manager.flush();
+			return passwordHistory.getPasswordHistoryId();
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside DAO addLoginPasswordHistory "+ e);
+			e.printStackTrace();
+			return 0;
+		}
+		
 	}
 }

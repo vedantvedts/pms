@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.vts.pfms.header.model.ProjectDashBoardFavourite;
 import com.vts.pfms.header.model.ProjectDashBoardFavouriteProjetcts;
+import com.vts.pfms.login.LoginPasswordHistory;
 
 public interface HeaderDao {
 
@@ -50,4 +51,6 @@ public interface HeaderDao {
 	public long updateDashBoard(String dashboardId)throws Exception;
 	public List<Object[]> getProjectsBasedOnDashBoard(String dashBoardId)throws Exception;
 	public long addProjectDashBoardFavouriteProjetcts(ProjectDashBoardFavouriteProjetcts pf)throws Exception;
+	public long PasswordChangeHystoryCount(Long loginId) throws Exception;
+	public long addLoginPasswordHistory(LoginPasswordHistory passwordHistory);
 }
