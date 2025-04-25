@@ -2507,91 +2507,91 @@ public class CommitteeController {
 		return json.toJson(DisDesc);
 	}
 
-	@RequestMapping(value="CommitteeMinutesEditSubmit.htm", method=RequestMethod.POST)
-	public String CommitteeMinutesEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
-	{
-		String UserId=(String)ses.getAttribute("Username");
-		logger.info(new Date() +"Inside CommitteeMinutesEditSubmit.htm "+UserId);
-		try
-		{	
-			String ActionName=req.getParameter("NoteText");
-			String Remarks=req.getParameter("remarks");
-			if(InputValidator.isContainsHTMLTags(ActionName)) {
-				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
-				redir.addAttribute("specname", req.getParameter("specname"));
-				redir.addAttribute("membertype",req.getParameter("membertype"));
-				redir.addAttribute("formname", req.getParameter("formname"));
-				redir.addAttribute("unit1",req.getParameter("unit1"));
-				return redirectWithError(redir, "CommitteeScheduleMinutes.htm", "'ActionName' should not contain HTML Tags.!");
+		@RequestMapping(value="CommitteeMinutesEditSubmit.htm", method=RequestMethod.POST)
+		public String CommitteeMinutesEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
+		{
+			String UserId=(String)ses.getAttribute("Username");
+			logger.info(new Date() +"Inside CommitteeMinutesEditSubmit.htm "+UserId);
+			try
+			{	
+				String ActionName=req.getParameter("NoteText");
+				String Remarks=req.getParameter("remarks");
+				if(InputValidator.isContainsHTMLTags(ActionName)) {
+					redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+					redir.addAttribute("specname", req.getParameter("specname"));
+					redir.addAttribute("membertype",req.getParameter("membertype"));
+					redir.addAttribute("formname", req.getParameter("formname"));
+					redir.addAttribute("unit1",req.getParameter("unit1"));
+					return redirectWithError(redir, "CommitteeScheduleMinutes.htm", "'ActionName' should not contain HTML Tags.!");
+				}
+				if(InputValidator.isContainsHTMLTags(Remarks)) {
+					redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+					redir.addAttribute("specname", req.getParameter("specname"));
+					redir.addAttribute("membertype",req.getParameter("membertype"));
+					redir.addAttribute("formname", req.getParameter("formname"));
+					redir.addAttribute("unit1",req.getParameter("unit1"));
+					return redirectWithError(redir, "CommitteeScheduleMinutes.htm", "'Remarks' should not contain HTML Tags.!");
+				}
+	
+				CommitteeMinutesDetailsDto committeeminutesdetailsdto = new CommitteeMinutesDetailsDto();
+				committeeminutesdetailsdto.setScheduleId(req.getParameter("scheduleidedit"));
+				committeeminutesdetailsdto.setScheduleSubId(req.getParameter("schedulesubid"));
+				committeeminutesdetailsdto.setMinutesId(req.getParameter("minutesidedits"));
+				committeeminutesdetailsdto.setDetails(ActionName);
+				committeeminutesdetailsdto.setIDARCK(req.getParameter("darc"));
+				committeeminutesdetailsdto.setModifiedBy(UserId);
+				committeeminutesdetailsdto.setScheduleMinutesId(req.getParameter("schedulminutesid"));
+				committeeminutesdetailsdto.setRemarks(Remarks);
+	
+	
+				long count = service.CommitteeMinutesUpdate(committeeminutesdetailsdto);
+	
+				String SpecName = req.getParameter("specname");
+				String CommitteeName= req.getParameter("committeename");
+	
+				if (count > 0) {
+					redir.addAttribute("result", CommitteeName + " Schedule Minutes (" + SpecName + ") Added Successfully");
+					redir.addAttribute("membertype",req.getParameter("membertype"));
+				} else {
+					redir.addAttribute("resultfail", " Schedule Minutes Update Unsuccessful");
+				}
+	
+				redir.addFlashAttribute("committeescheduleid", req.getParameter("scheduleid"));
+				redir.addFlashAttribute("specname", req.getParameter("specname"));
+				redir.addFlashAttribute("formname", req.getParameter("formname"));
+				redir.addFlashAttribute("unit1",req.getParameter("unit1"));
+				redir.addFlashAttribute("unit2",req.getParameter("unit2"));
 			}
-			if(InputValidator.isContainsHTMLTags(Remarks)) {
-				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
-				redir.addAttribute("specname", req.getParameter("specname"));
-				redir.addAttribute("membertype",req.getParameter("membertype"));
-				redir.addAttribute("formname", req.getParameter("formname"));
-				redir.addAttribute("unit1",req.getParameter("unit1"));
-				return redirectWithError(redir, "CommitteeScheduleMinutes.htm", "'Remarks' should not contain HTML Tags.!");
+			catch (Exception e) {
+				e.printStackTrace(); logger.error(new Date() +"Inside CommitteeMinutesEditSubmit.htm "+UserId,e);
 			}
-
-			CommitteeMinutesDetailsDto committeeminutesdetailsdto = new CommitteeMinutesDetailsDto();
-			committeeminutesdetailsdto.setScheduleId(req.getParameter("scheduleidedit"));
-			committeeminutesdetailsdto.setScheduleSubId(req.getParameter("schedulesubid"));
-			committeeminutesdetailsdto.setMinutesId(req.getParameter("minutesidedits"));
-			committeeminutesdetailsdto.setDetails(ActionName);
-			committeeminutesdetailsdto.setIDARCK(req.getParameter("darc"));
-			committeeminutesdetailsdto.setModifiedBy(UserId);
-			committeeminutesdetailsdto.setScheduleMinutesId(req.getParameter("schedulminutesid"));
-			committeeminutesdetailsdto.setRemarks(Remarks);
-
-
-			long count = service.CommitteeMinutesUpdate(committeeminutesdetailsdto);
-
-			String SpecName = req.getParameter("specname");
-			String CommitteeName= req.getParameter("committeename");
-
-			if (count > 0) {
-				redir.addAttribute("result", CommitteeName + " Schedule Minutes (" + SpecName + ") Added Successfully");
-				redir.addAttribute("membertype",req.getParameter("membertype"));
-			} else {
-				redir.addAttribute("resultfail", " Schedule Minutes Update Unsuccessful");
+			// Prudhvi - 06/03/2024
+			/* ------------------ start ----------------------- */
+			String redirpageflag = req.getParameter("redirpageflag");
+			if(redirpageflag!=null && redirpageflag.equalsIgnoreCase("ROD")) {
+				return"redirect:/RODScheduleMinutes.htm";
 			}
-
-			redir.addFlashAttribute("committeescheduleid", req.getParameter("scheduleid"));
-			redir.addFlashAttribute("specname", req.getParameter("specname"));
-			redir.addFlashAttribute("formname", req.getParameter("formname"));
-			redir.addFlashAttribute("unit1",req.getParameter("unit1"));
-			redir.addFlashAttribute("unit2",req.getParameter("unit2"));
-		}
-		catch (Exception e) {
-			e.printStackTrace(); logger.error(new Date() +"Inside CommitteeMinutesEditSubmit.htm "+UserId,e);
-		}
-		// Prudhvi - 06/03/2024
-		/* ------------------ start ----------------------- */
-		String redirpageflag = req.getParameter("redirpageflag");
-		if(redirpageflag!=null && redirpageflag.equalsIgnoreCase("ROD")) {
-			return"redirect:/RODScheduleMinutes.htm";
-		}
-		/* ------------------ end ----------------------- */
-
-		// CCM Handling
-		String ccmFlag = req.getParameter("ccmFlag");
-		if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
-			redir.addAttribute("ccmScheduleId", req.getParameter("scheduleid"));
-			redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
-			redir.addAttribute("committeeId", req.getParameter("committeeId"));
-			redir.addAttribute("ccmFlag", ccmFlag);
-		}
-
-		// DMC Handling
-		String dmcFlag = req.getParameter("dmcFlag");
-		if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) {
-			redir.addAttribute("committeeId", req.getParameter("committeeId"));
-			redir.addAttribute("dmcFlag", dmcFlag);
-		}
-
-		redir.addAttribute("scheduleid", req.getParameter("scheduleid"));
-
-		return "redirect:/CommitteeScheduleMinutes.htm";
+			/* ------------------ end ----------------------- */
+	
+			// CCM Handling
+			String ccmFlag = req.getParameter("ccmFlag");
+			if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
+				redir.addAttribute("ccmScheduleId", req.getParameter("scheduleid"));
+				redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+				redir.addAttribute("committeeId", req.getParameter("committeeId"));
+				redir.addAttribute("ccmFlag", ccmFlag);
+			}
+	
+			// DMC Handling
+			String dmcFlag = req.getParameter("dmcFlag");
+			if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) {
+				redir.addAttribute("committeeId", req.getParameter("committeeId"));
+				redir.addAttribute("dmcFlag", dmcFlag);
+			}
+	
+			redir.addAttribute("scheduleid", req.getParameter("scheduleid"));
+	
+			return "redirect:/CommitteeScheduleMinutes.htm";
 	}
 
 	@RequestMapping(value="CommitteeMinutesDeleteSubmit.htm", method=RequestMethod.POST)
