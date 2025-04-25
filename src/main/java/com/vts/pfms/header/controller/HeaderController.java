@@ -12,7 +12,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,6 +26,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,8 +37,11 @@ import com.google.gson.Gson;
 import com.vts.pfms.header.model.ProjectDashBoardFavourite;
 import com.vts.pfms.header.model.ProjectDashBoardFavouriteProjetcts;
 import com.vts.pfms.header.service.HeaderService;
+import com.vts.pfms.login.Login;
+import com.vts.pfms.login.LoginRepository;
 import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.service.RfpMainService;
+import com.vts.pfms.utils.InputValidator;
 import com.vts.pfms.utils.PMSLogoUtil;
 @Controller
 public class HeaderController {
@@ -48,7 +54,18 @@ public class HeaderController {
 	
 	@Autowired
 	RfpMainService rfpmainservice;
+	
+	@Autowired
+	LoginRepository loginRepo;
+	
 	private static final Logger logger=LogManager.getLogger(HeaderController.class);
+	
+	private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
+	    redir.addAttribute("resultfail", message);
+	    return "redirect:/"+redirURL;
+	}
 	
 	@RequestMapping(value = "HeaderModuleList.htm" , method = RequestMethod.GET)
 	public @ResponseBody String HeaderModuleList(HttpServletRequest request ,HttpSession ses) throws Exception {
@@ -401,40 +418,47 @@ public class HeaderController {
 		}
 	}
 	
-	@RequestMapping(value = "PasswordChange.htm", method = RequestMethod.GET)
+	@RequestMapping(value = "PasswordChange.htm", method = {RequestMethod.GET, RequestMethod.POST})
 	public String PasswordChange(HttpServletRequest req, HttpSession ses) throws Exception {
 
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside PasswordChange.htm "+UserId);	
+		req.setAttribute("ForcePwd", "N");
 		return "admin/PasswordChange";
 	}
 	
-	@RequestMapping(value = "PasswordChange.htm", method = RequestMethod.POST)
+	@RequestMapping(value = "PasswordChanges.htm", method = RequestMethod.POST)
 	public String PasswordChangeSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside PasswordChange.htm "+UserId);		
+		logger.info(new Date() +"Inside PasswordChanges.htm "+UserId);		
 		try {
-		String Username = (String) ses.getAttribute("Username");  
-		String NewPassword =req.getParameter("NewPassword");
-		String OldPassword =req.getParameter("OldPassword");
-		int count=service.PasswordChange(OldPassword, NewPassword, Username);
+			long LoginId = (long) ses.getAttribute("LoginId");  
+			long EmpId = (long) ses.getAttribute("EmpId");  
+			String NewPassword =req.getParameter("NewPassword");
+			String OldPassword =req.getParameter("OldPassword");
+			
+			if(Stream.of(NewPassword, OldPassword)
+			        .anyMatch(field -> InputValidator.isContainsHTMLTags(field))) {
+			    return redirectWithError(redir, "MainDashBoard.htm", "Password Should not contain HTML Tags");
+			}
+			
+			int count=service.PasswordChange(OldPassword, NewPassword, UserId, LoginId, EmpId);
 		
-		if (count > 0) 
-		{
-			redir.addAttribute("result", "Password Changed Successfully");
-		} 
-		else 
-		{
-			redir.addAttribute("resultfail", "Password Change Unsuccessfull ");
+			if (count > 0)  {
+				redir.addAttribute("result", "Password Changed Successfully");
+				return "redirect:/MainDashBoard.htm";
+			} 
+			else  {
+				redir.addAttribute("resultfail", "Password Change Unsuccessful");
+				return "redirect:/PasswordChange.htm";
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside PasswordChanges.htm "+UserId, e);
+			return "static/Error";
 		}
-		}
-		catch (Exception e) {
-				e.printStackTrace();
-				logger.error(new Date() +" Inside PasswordChange.htm "+UserId, e);
-		}
-
-		return "redirect:/PasswordChange.htm";
 		
 	}
    
@@ -875,8 +899,45 @@ public class HeaderController {
 		logger.error(new Date() +" Inside ProductreeDownload.htm "+UserId, e);
 		}
 	}
+	
+    @RequestMapping(value = "ForcePasswordChange.htm", method = RequestMethod.GET)
+	public String ForcePasswordChange(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside ForcePasswordChange.htm "+UserId);
+		req.setAttribute("ForcePwd", "Y");
+		return "admin/PasswordChange";
+	}
+    
+    @RequestMapping(value = "NewPasswordChangeCheck.htm")
+	public @ResponseBody String NewPasswordChangeCheck(HttpServletRequest req, HttpServletResponse response, HttpSession ses)throws Exception 
+	{
+		String Username = (String) ses.getAttribute("Username");
+		long LoginId = (long) ses.getAttribute("LoginId");
+		String LoginType = (String) ses.getAttribute("LoginType");
+		logger.info(new Date() + "Inside NewPasswordChangeCheck.htm " + Username);
+
+		int retVar = 0;
+		try {
+			String oldpass = req.getParameter("oldpass");
+			boolean result = false;
+			
+			Optional<Login> optionalLogin = loginRepo.findById(LoginId);
+			
+			if (optionalLogin.isPresent()) {
+			    Login login = optionalLogin.get();
+			    String ExistingPassword = login.getPassword();
+			    result = encoder.matches(oldpass, ExistingPassword);
+			} 
+			if(result) {
+				retVar=1;
+			}
+
+		} catch (Exception e) {
+			logger.error(new Date() + "Inside NewPasswordChangeCheck.htm " + Username,e);
+			e.printStackTrace();
+		}
+		Gson json = new Gson();
+		return json.toJson(retVar);
+	}
+
 }
-
-
-
-

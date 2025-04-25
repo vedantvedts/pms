@@ -2283,7 +2283,7 @@ if(ses!=null){ %>
 																<span class="health-circle" style="<%if(Integer.parseInt(obj[10].toString())<=25){%> background-color:red <%}%>
 																								   <%if( (Integer.parseInt(obj[10].toString())>25) && (Integer.parseInt(obj[10].toString())<=50)){%> background-color:#EE5007; <%}%>
 																								   <%if( (Integer.parseInt(obj[10].toString())>50) && (Integer.parseInt(obj[10].toString())<=75)){%> background-color:#F8CB2E;color:black; <%}%>
-																								   <%if( (Integer.parseInt(obj[10].toString())>75) && (Integer.parseInt(obj[10].toString())<=100)){%> background-color:green<%}%>
+																								   <%if( (Integer.parseInt(obj[10].toString())>75)){%> background-color:green<%}%>
 																"><%=obj[10] %></span>
 															</div>
 														</div>
@@ -2305,9 +2305,9 @@ if(ses!=null){ %>
 															</div>
 															<div class="col-md-1" style="padding-left: 0px !important">
 																<span class="health-circle" style="<%if(Integer.parseInt(obj[60].toString())<=25){%> background-color:red <%}%>
-																								   <%if( (Integer.parseInt(obj[60].toString())>25) && (Integer.parseInt(obj[60].toString())<=50)){%> background-color:#EE5007; <%}%>
-																								   <%if( (Integer.parseInt(obj[60].toString())>50) && (Integer.parseInt(obj[60].toString())<=75)){%> background-color:#F8CB2E;color:black; <%}%>
-																								   <%if( (Integer.parseInt(obj[60].toString())>75) && (Integer.parseInt(obj[60].toString())<=100)){%> background-color:green<%}%>
+																								   <%if((Integer.parseInt(obj[60].toString())>25) && (Integer.parseInt(obj[60].toString())<=50)){%> background-color:#EE5007; <%}%>
+																								   <%if((Integer.parseInt(obj[60].toString())>50) && (Integer.parseInt(obj[60].toString())<=75)){%> background-color:#F8CB2E;color:black; <%}%>
+																								   <%if((Integer.parseInt(obj[60].toString())>75)){%> background-color:green<%}%>
 																"><%=obj[60] %></span>
 															</div>
 														</div>

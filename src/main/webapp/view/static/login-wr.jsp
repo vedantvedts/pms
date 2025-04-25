@@ -175,18 +175,18 @@ console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint")
 											<div class="login-form-container">
 												
 												
-												   <form action="${contextPath}/login" autocomplete="off" method="post" >
+												   <form action="${contextPath}/login" method="post" >
 												   
 										
 													<div class="form-row">
 														
 														<div class="form-group col-12 position-relative ${error != null ? 'has-error' : ''}">
-															<input type="text" name="username" placeholder="Username" class="form-control" required>
+															<input type="text" name="username" placeholder="Username" class="form-control" autocomplete="current-username" required>
 															<i class="fa fa-user fa-lg position-absolute"></i>
 														</div>
 														
 														<div class="form-group col-12 position-relative">
-															<input name="password" type="password" placeholder="Password"  class="form-control">
+															<input name="password" type="password" placeholder="Password"  class="form-control" autocomplete="current-password">
 															<i class="fa fa-lock fa-lg position-absolute"></i>	
 														</div>
 															

@@ -22,6 +22,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -137,6 +138,7 @@ import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.TestPlanInitiation;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.service.RequirementService;
+import com.vts.pfms.utils.InputValidator;
 import com.vts.pfms.utils.PMSLogoUtil;
 
 @Controller
@@ -169,6 +171,11 @@ public class ProjectController
 	
 	@Autowired
 	RequirementService reqService;
+	
+	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
+	    redir.addAttribute("resultfail", message);
+	    return "redirect:/"+redirURL;
+	}
 
 	private static final Logger logger=LogManager.getLogger(ProjectController.class);
 
@@ -947,6 +954,28 @@ public class ProjectController
 		logger.info(new Date() +"Inside ProjectIntiationAdd.htm "+UserId);
 
 		try {
+			String ShortName = req.getParameter("ShortName");
+			String ProjectTitle = req.getParameter("ProjectTitle");
+			String PCDuration = req.getParameter("PCDuration");
+			String IndicativeCost = req.getParameter("IndicativeCost");
+			String Deliverable = req.getParameter("Deliverable");
+			String PCRemarks = req.getParameter("PCRemarks");
+			
+			if(Stream.of(ShortName, ProjectTitle)
+			        .anyMatch(field -> !InputValidator.isContainCapitalsSmallsNumericSymbolsSpace(field))) {
+			    return redirectWithError(redir, "ProjectIntiationList.htm", "Only letters, digits, spaces, and '-', '/', '\\' are allowed.");
+			}
+			if(!InputValidator.isDecimalFormat(IndicativeCost)){
+			    return redirectWithError(redir, "ProjectIntiationList.htm", "Only numbers are allowed. You may enter up to 2 digits after the decimal.");				
+			}
+			if(!InputValidator.isContainsNumberOnly(PCDuration)){
+				return redirectWithError(redir,"ProjectIntiationList.htm","The duration must contain numbers only.");
+			}			
+			if(Stream.of(Deliverable,PCRemarks)
+					.anyMatch(field-> InputValidator.isContainsHTMLTags(field))){
+				return redirectWithError(redir, "ProjectIntiationList.htm", "HTML tags are not permitted.");				
+			}
+			
 			String Division = ((Long) ses.getAttribute("Division")).toString();
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			PfmsInitiationDto pfmsinitiationdto = new PfmsInitiationDto();
@@ -957,21 +986,21 @@ public class ProjectController
 			pfmsinitiationdto.setProjectTypeId(req.getParameter("ProjectType"));
 			/*pfmsinitiationdto.setCategoryId(req.getParameter("Category")); */
 			pfmsinitiationdto.setClassificationId(req.getParameter("Category"));
-			pfmsinitiationdto.setProjectShortName(req.getParameter("ShortName"));
-			pfmsinitiationdto.setProjectTitle(req.getParameter("ProjectTitle"));
+			pfmsinitiationdto.setProjectShortName(ShortName);
+			pfmsinitiationdto.setProjectTitle(ProjectTitle);
 			pfmsinitiationdto.setFeCost("0");
 			pfmsinitiationdto.setReCost("0");
 			pfmsinitiationdto.setProjectCost("0");
 			/*pfmsinitiationdto.setProjectDuration(req.getParameter("Duration")); */
 			pfmsinitiationdto.setIsPlanned(req.getParameter("IsPlanned"));
 			//pfmsinitiationdto.setIsMultiLab(req.getParameter("IsMultiLab"));
-			pfmsinitiationdto.setDeliverableId(req.getParameter("Deliverable"));
+			pfmsinitiationdto.setDeliverableId(Deliverable);
 			pfmsinitiationdto.setNodalLab(req.getParameter("NodalLab"));
 			pfmsinitiationdto.setRemarks(req.getParameter("Remarks"));
 			pfmsinitiationdto.setIsMain(req.getParameter("ismain"));
-			pfmsinitiationdto.setDuration(req.getParameter("PCDuration"));
-			pfmsinitiationdto.setIndicativeCost(req.getParameter("IndicativeCost"));
-			pfmsinitiationdto.setPCRemarks(req.getParameter("PCRemarks"));
+			pfmsinitiationdto.setDuration(PCDuration);
+			pfmsinitiationdto.setIndicativeCost(IndicativeCost);
+			pfmsinitiationdto.setPCRemarks(PCRemarks);
 			if(req.getParameter("ismain").equalsIgnoreCase("Y")) {
 				pfmsinitiationdto.setMainId("0");
 			}else{
@@ -1033,6 +1062,29 @@ public class ProjectController
 		logger.info(new Date() +"Inside ProjectIntiationEditSubmit.htm "+UserId);
 		redir.addFlashAttribute("IntiationId", req.getParameter("IntiationId"));
 		try {
+			String ShortName = req.getParameter("ShortName");
+			String ProjectTitle = req.getParameter("ProjectTitle");
+			String PCDuration = req.getParameter("PCDuration");
+			String IndicativeCost = req.getParameter("IndicativeCost");
+			String Deliverable = req.getParameter("Deliverable");
+			String PCRemarks = req.getParameter("PCRemarks");
+			String Remarks = req.getParameter("Remarks");
+			
+			if(Stream.of(ShortName, ProjectTitle)
+			        .anyMatch(field -> !InputValidator.isContainCapitalsSmallsNumericSymbolsSpace(field))) {
+			    return redirectWithError(redir, "ProjectIntiationDetailesLanding.htm", "Only letters, digits, spaces, and '-', '/', '\\' are allowed.");
+			}
+			if(!InputValidator.isDecimalFormat(IndicativeCost)){
+			    return redirectWithError(redir, "ProjectIntiationDetailesLanding.htm", "Only numbers are allowed. You may enter up to 2 digits after the decimal.");				
+			}
+			if(!InputValidator.isContainsNumberOnly(PCDuration)){
+				return redirectWithError(redir,"ProjectIntiationDetailesLanding.htm","The dueration must contain numbers only.");
+			}			
+			if(Stream.of(Deliverable,PCRemarks,Remarks)
+					.anyMatch(field-> InputValidator.isContainsHTMLTags(field))){
+				return redirectWithError(redir, "ProjectIntiationDetailesLanding.htm", "HTML tags are not permitted.");				
+			}
+			
 			String option = req.getParameter("sub");
 			if (option.equalsIgnoreCase("SUBMIT")) {
 				PfmsInitiationDto pfmsinitiationdto = new PfmsInitiationDto();
@@ -1042,16 +1094,16 @@ public class ProjectController
 				/* pfmsinitiationdto.setCategoryId(req.getParameter("Category")); */
 				pfmsinitiationdto.setClassificationId(req.getParameter("Category"));
 				pfmsinitiationdto.setNodalLab(req.getParameter("NodalLab"));
-				pfmsinitiationdto.setProjectTitle(req.getParameter("ProjectTitle"));
+				pfmsinitiationdto.setProjectTitle(ProjectTitle);
 				pfmsinitiationdto.setIsPlanned(req.getParameter("IsPlanned"));
 				pfmsinitiationdto.setIsMultiLab(req.getParameter("IsMultiLab"));
-				pfmsinitiationdto.setDeliverableId(req.getParameter("Deliverable"));
-				pfmsinitiationdto.setRemarks(req.getParameter("Remarks"));
+				pfmsinitiationdto.setDeliverableId(Deliverable);
+				pfmsinitiationdto.setRemarks(Remarks);
 				pfmsinitiationdto.setIsMain(req.getParameter("ismain"));
 				pfmsinitiationdto.setEmpId(req.getParameter("PDD"));
-				pfmsinitiationdto.setPCRemarks(req.getParameter("PCRemarks"));
-				pfmsinitiationdto.setIndicativeCost(req.getParameter("IndicativeCost"));
-				pfmsinitiationdto.setDuration(req.getParameter("PCDuration"));
+				pfmsinitiationdto.setPCRemarks(PCRemarks);
+				pfmsinitiationdto.setIndicativeCost(IndicativeCost);
+				pfmsinitiationdto.setDuration(PCDuration);
 				pfmsinitiationdto.setStartDate(req.getParameter("startDate"));
 				int count = service.ProjectIntiationEdit(pfmsinitiationdto, UserId);
 
@@ -1113,6 +1165,12 @@ public class ProjectController
 			String Option = req.getParameter("sub");
 
 			if (Option.equalsIgnoreCase("SUBMIT")) {
+				
+				if(InputValidator.isContainsHTMLTags(req.getParameter("NeedOfProjectBrief"))){
+					redir.addFlashAttribute("IntiationId", req.getParameter("IntiationId"));
+					redir.addFlashAttribute("TabId", "1");
+					return redirectWithError(redir, "ProjectIntiationDetailesLanding.htm", "HTML tags are not permitted.");				
+				}
 
 				PfmsInitiationDetailDto pfmsinitiationdetaildto = new PfmsInitiationDetailDto();
 				pfmsinitiationdetaildto.setInitiationId(req.getParameter("IntiationId"));
@@ -1656,6 +1714,15 @@ public class ProjectController
 		try {
 
 			if (option.equalsIgnoreCase("SUBMIT")) {
+				
+				if(InputValidator.isContainsHTMLTags(req.getParameter("ItemDetail"))){
+					redir.addFlashAttribute("IntiationId", req.getParameter("IntiationId"));
+					return redirectWithError(redir, "ProjectCostAddLanding.htm", "HTML tags are not permitted.");				
+				}
+				if(!InputValidator.isDecimalFormat(req.getParameter("Cost"))){
+					redir.addFlashAttribute("IntiationId", req.getParameter("IntiationId"));
+				    return redirectWithError(redir, "ProjectCostAddLanding.htm", "Only numbers are allowed. You may enter up to 2 digits after the decimal.");				
+				}
 
 
 				Object[] ProjectCost = service.ProjectCost(Long.parseLong(req.getParameter("IntiationId"))).get(0);
@@ -1693,7 +1760,7 @@ public class ProjectController
 			//return "static/Error";
 		}
 
-		return "redirect:/maindashboard.htm";
+		return "redirect:/MainDashBoard.htm";
 	}
 
 	@RequestMapping(value = "ProjectCostEdit.htm", method = RequestMethod.POST)
@@ -1731,8 +1798,15 @@ public class ProjectController
 		logger.info(new Date() +"Inside ProjectCostEditSubmit.htm "+UserId);
 
 		try {
-
-
+			if(InputValidator.isContainsHTMLTags(req.getParameter("ItemDetail"))){
+				redir.addFlashAttribute("IntiationId", req.getParameter("IntiationId"));
+				return redirectWithError(redir, "ProjectCostAddLanding.htm", "HTML tags are not permitted.");				
+			}
+			if(!InputValidator.isDecimalFormat(req.getParameter("Cost"))){
+				redir.addFlashAttribute("IntiationId", req.getParameter("IntiationId"));
+			    return redirectWithError(redir, "ProjectCostAddLanding.htm", "Only numbers are allowed. You may enter up to 2 digits after the decimal.");				
+			}
+			
 			Object[] ProjectCostEditData = service.ProjectCostEditData(req.getParameter("InitiationCostId")).get(0);
 			Object[] ProjectDetailes = service.ProjectDetailes(Long.parseLong(req.getParameter("IntiationId"))).get(0);
 			Double ProjectCost = Double.parseDouble(ProjectDetailes[8].toString());
@@ -1974,8 +2048,18 @@ public class ProjectController
 
 			String option = req.getParameter("sub");
 			if (option.equalsIgnoreCase("SUBMIT")) {
-
-
+				
+				String[] MilestoneActivities = req.getParameterValues("MilestoneActivity");
+				String[] MilestoneRemarks = req.getParameterValues("MilestoneRemark");
+				if(Stream.of(MilestoneActivities)
+						.anyMatch(field-> InputValidator.isContainsHTMLTags(field)) ||
+				   Stream.of(MilestoneRemarks)
+				        .anyMatch(field-> InputValidator.isContainsHTMLTags(field))){
+					redir.addFlashAttribute("IntiationId", req.getParameter("IntiationId"));
+					redir.addFlashAttribute("TabId", "3");
+					return redirectWithError(redir, "ProjectIntiationDetailesLanding.htm", "HTML tags are not permitted.");				
+				}
+				
 				Object[] ProjectDetailes = service.ProjectDetailes(Long.parseLong(req.getParameter("IntiationId"))).get(0);
 				Integer ProjectScheduleMonth = service.ProjectScheduleMonth(req.getParameter("IntiationId"));
 				/*Line added*/Integer ProjectDurationMonth=  service.ProjectDurationMonth(req.getParameter("IntiationId"));
@@ -2545,7 +2629,12 @@ public class ProjectController
 		try {
 			String option = req.getParameter("sub");
 			if (option.equalsIgnoreCase("SUBMIT")) {
-
+	
+				if(InputValidator.isContainsHTMLTags(req.getParameter("FileName"))){
+					redir.addFlashAttribute("IntiationId", req.getParameter("IntiationId"));
+					redir.addFlashAttribute("TabId", "4");
+					return redirectWithError(redir, "ProjectIntiationDetailesLanding.htm", "HTML tags are not permitted.");				
+				}
 				PfmsInitiationAttachmentDto pfmsinitiationattachmentdto = new PfmsInitiationAttachmentDto();
 				PfmsInitiationAttachmentFileDto pfmsinitiationattachmentfiledto = new PfmsInitiationAttachmentFileDto();
 				pfmsinitiationattachmentdto.setFileName(req.getParameter("FileName"));
@@ -2750,6 +2839,14 @@ public class ProjectController
 		try {
 			String option = req.getParameter("sub");
 			if (option.equalsIgnoreCase("SUBMIT")) {
+				
+				String letterno = req.getParameter("letterno");
+				if(InputValidator.isContainsHTMLTags(letterno)){
+					redir.addFlashAttribute("IntiationId", req.getParameter("IntiationId"));
+					redir.addFlashAttribute("TabId", "5");
+					return redirectWithError(redir, "ProjectIntiationDetailesLanding.htm", "HTML tags are not permitted.");				
+				}
+				
 
 				PfmsInitiationAuthorityDto pfmsinitiationauthoritydto = new PfmsInitiationAuthorityDto();
 
@@ -2758,10 +2855,10 @@ public class ProjectController
 				pfmsinitiationauthoritydto.setAuthorityName(req.getParameter("authorityname"));
 				pfmsinitiationauthoritydto.setInitiationId(req.getParameter("IntiationId"));
 				pfmsinitiationauthoritydto.setLetterDate(req.getParameter("startdate"));
-				pfmsinitiationauthoritydto.setLetterNo(req.getParameter("letterno"));
+				pfmsinitiationauthoritydto.setLetterNo(letterno);
 				pfmsinitiationauthorityfiledto.setFilePath(labcode);
 				pfmsinitiationauthorityfiledto.setAttachFile(FileAttach);
-				pfmsinitiationauthorityfiledto.setAttachementName(	req.getParameter("letterno") + "." + FileAttach.getOriginalFilename().split("\\.")[1]);
+				pfmsinitiationauthorityfiledto.setAttachementName(	letterno + "." + FileAttach.getOriginalFilename().split("\\.")[1]);
 
 				Long count = service.ProjectInitiationAuthorityAdd(pfmsinitiationauthoritydto, UserId,pfmsinitiationauthorityfiledto);
 
@@ -2828,6 +2925,14 @@ public class ProjectController
 		{
 			String option = req.getParameter("sub");
 			if (option.equalsIgnoreCase("SUBMIT")) {
+				
+				String letterno = req.getParameter("letterno");
+				if(InputValidator.isContainsHTMLTags(letterno)){
+					redir.addFlashAttribute("IntiationId", req.getParameter("IntiationId"));
+					redir.addFlashAttribute("TabId", "5");
+					return redirectWithError(redir, "ProjectIntiationDetailesLanding.htm", "HTML tags are not permitted.");				
+				}
+				
 				PfmsInitiationAuthorityDto pfmsinitiationauthoritydto = new PfmsInitiationAuthorityDto();
 
 				PfmsInitiationAuthorityFileDto pfmsinitiationauthorityfiledto = new PfmsInitiationAuthorityFileDto();
@@ -2835,7 +2940,7 @@ public class ProjectController
 				pfmsinitiationauthoritydto.setAuthorityName(req.getParameter("authorityname"));
 				pfmsinitiationauthoritydto.setInitiationId(req.getParameter("IntiationId"));
 				pfmsinitiationauthoritydto.setLetterDate(req.getParameter("startdate"));
-				pfmsinitiationauthoritydto.setLetterNo(req.getParameter("letterno"));
+				pfmsinitiationauthoritydto.setLetterNo(letterno);
 
 
 				pfmsinitiationauthorityfiledto.setAttachementName(req.getParameter("letterno"));
@@ -3992,6 +4097,21 @@ public class ProjectController
 				String scope=req.getParameter("scope");
 				String projectshortname = req.getParameter("projectshortname"); 
 				String platformName=req.getParameter("platformName"); //srikant
+								
+				if (Stream.of(pcode, pname, desc, unicode, projectshortname, sano, NodalName)
+				        .anyMatch(field -> !InputValidator.isContainCapitalsSmallsNumericSymbolsSpace(field))) {
+				    return redirectWithError(redir, "ProjectMain.htm", "Only letters, digits, spaces, and '-', '/', '\\' are allowed.");
+				}
+				
+				if(Stream.of(tsancost,sancostre,sancostfe)
+						.anyMatch(field-> !InputValidator.isDecimalFormat(field))){
+				    return redirectWithError(redir, "ProjectMain.htm", "Only numbers are allowed. You may enter up to 2 digits after the decimal.");				
+				}
+				if(Stream.of(application,scope,Deliverable,Objective)
+						.anyMatch(field-> InputValidator.isContainsHTMLTags(field))){
+					return redirectWithError(redir, "ProjectMain.htm", "HTML tags are not permitted.");				
+				}
+
 
 				ProjectMain protype=new ProjectMain();
 				protype.setIsMainWC(Integer.parseInt(isMainWC));
@@ -4096,6 +4216,20 @@ public class ProjectController
 				String enduser = req.getParameter("enduser");
 				String projectshortname = req.getParameter("projectshortname");
 				String PlatformName=req.getParameter("platformName");  //srikant
+				
+				if (Stream.of(pcode, pname, desc, unicode, projectshortname, sano, NodalLab)
+				        .anyMatch(field -> !InputValidator.isContainCapitalsSmallsNumericSymbolsSpace(field))) {
+				    return redirectWithError(redir, "ProjectMain.htm", "Only letters, digits, spaces, and '-', '/', '\\' are allowed.");
+				}
+				
+				if(Stream.of(tsancost,sancostre,sancostfe)
+						.anyMatch(field-> !InputValidator.isDecimalFormat(field))){
+				    return redirectWithError(redir, "ProjectMain.htm", "Only numbers are allowed. You may enter up to 2 digits after the decimal.");				
+				}
+				if(Stream.of(application,scope,Deliverable,Objective)
+						.anyMatch(field-> InputValidator.isContainsHTMLTags(field))){
+					return redirectWithError(redir, "ProjectMain.htm", "HTML tags are not permitted.");				
+				}
 
 				ProjectMain protype=new ProjectMain();
 				protype.setIsMainWC(Integer.parseInt(isMainWC));
@@ -4254,6 +4388,20 @@ public class ProjectController
 				String projectTypeID=req.getParameter("projectTypeID");
 				String scope = req.getParameter("scope");
 				String application = req.getParameter("application");
+				
+				if (Stream.of(pcode, pname, desc, unicode, projectshortname, sano, nodallab)
+				        .anyMatch(field -> !InputValidator.isContainCapitalsSmallsNumericSymbolsSpace(field))) {
+				    return redirectWithError(redir, "ProjectList.htm", "Only letters, digits, spaces, and '-', '/', '\\' are allowed.");
+				}				
+				if(Stream.of(tsancost,sancostre,sancostfe)
+						.anyMatch(field-> !InputValidator.isDecimalFormat(field))){
+				    return redirectWithError(redir, "ProjectList.htm", "Only numbers are allowed. You may enter up to 2 digits after the decimal.");				
+				}
+				if(Stream.of(application,scope,Deliverable,Objective)
+						.anyMatch(field-> InputValidator.isContainsHTMLTags(field))){
+					return redirectWithError(redir, "ProjectList.htm", "HTML tags are not permitted.");				
+				}
+				
 				ProjectMaster protype=new ProjectMaster();
 				//     		 protype.setIsMainWC(Integer.parseInt(isMainWC));
 				protype.setProjectShortName(projectshortname);
@@ -4346,8 +4494,20 @@ public class ProjectController
 				String scope = req.getParameter("scope"); 
 				String nodallab = req.getParameter("Nodal");
 				String platformName=req.getParameter("platformName"); //srikant  
-
 				
+				if (Stream.of(pcode, pname, desc, unicode, projectshortname, sano, nodallab)
+				        .anyMatch(field -> !InputValidator.isContainCapitalsSmallsNumericSymbolsSpace(field))) {
+				    return redirectWithError(redir, "ProjectList.htm", "Only letters, digits, spaces, and '-', '/', '\\' are allowed.");
+				}				
+				if(Stream.of(tsancost,sancostre,sancostfe)
+						.anyMatch(field-> !InputValidator.isDecimalFormat(field))){
+				    return redirectWithError(redir, "ProjectList.htm", "Only numbers are allowed. You may enter up to 2 digits after the decimal.");				
+				}
+				if(Stream.of(application,scope,Deliverable,Objective)
+						.anyMatch(field-> InputValidator.isContainsHTMLTags(field))){
+					return redirectWithError(redir, "ProjectList.htm", "HTML tags are not permitted.");				
+				}
+	
 				ProjectMaster protype=new ProjectMaster();
 				//     		 protype.setIsMainWC(Integer.parseInt(isMainWC));
 				//			 protype.setWorkCenter(WCname);
@@ -4675,6 +4835,11 @@ public class ProjectController
 			String proclimit = req.getParameter("proclimit");
 			String pmrcdate=req.getParameter("pmrcdate");
 			String ebdate=	req.getParameter("ebdate");
+			
+			if(!InputValidator.isDecimalFormat(proclimit)) {
+				return redirectWithError(redir,"ProjectData.htm","Only numbers are allowed. You may enter up to 2 digits after the decimal.");
+			}
+			
 			PfmsProjectDataDto projectdatadto=new PfmsProjectDataDto();
 
 			projectdatadto.setProjectId(projectid);
@@ -5292,6 +5457,19 @@ public class ProjectController
 			String Deliverable=req.getParameter("Deliverable");
 			String projectTypeID=req.getParameter("projectTypeID");
 			String platformName=req.getParameter("platformName"); //srikant
+			
+			if (Stream.of(pcode, pname, desc, unicode, projectshortcode, sano, LabParticipating)
+			        .anyMatch(field -> !InputValidator.isContainCapitalsSmallsNumericSymbolsSpace(field))) {
+			    return redirectWithError(redir, "ProjectList.htm", "Only letters, digits, spaces, and '-', '/', '\\' are allowed.");
+			}				
+			if(Stream.of(tsancost,sancostre,sancostfe)
+					.anyMatch(field-> !InputValidator.isDecimalFormat(field))){
+			    return redirectWithError(redir, "ProjectList.htm", "Only numbers are allowed. You may enter up to 2 digits after the decimal.");				
+			}
+			if(Stream.of(Application,Scope,Deliverable,Objective)
+					.anyMatch(field-> InputValidator.isContainsHTMLTags(field))){
+				return redirectWithError(redir, "ProjectList.htm", "HTML tags are not permitted.");				
+			}
 
 			ProjectMaster protype=new ProjectMaster();
 			//	 protype.setIsMainWC(Integer.parseInt(isMainWC));
@@ -6234,12 +6412,18 @@ public class ProjectController
 		logger.info(new Date() +"Inside ProcurementSubmit.htm "+UserId);
 		long count=0;
 		try {
+			String Item = req.getParameter("Item");
+			String Purpose = req.getParameter("Purpose");
+			String Source = req.getParameter("Source");
+			if(Stream.of(Item,Purpose,Source)
+					.anyMatch(field-> InputValidator.isContainsHTMLTags(field))){
+			}else {
 			PfmsProcurementPlan pp=new PfmsProcurementPlan();
 			pp.setInitiationId(Long.parseLong(req.getParameter("initiationid")));
 			pp.setInitiationCostId(Long.parseLong(req.getParameter("InitiationCostId")));
-			pp.setItem(req.getParameter("Item"));
-			pp.setPurpose(req.getParameter("Purpose"));
-			pp.setSource(req.getParameter("Source"));
+			pp.setItem(Item);
+			pp.setPurpose(Purpose);
+			pp.setSource(Source);
 			pp.setModeName(req.getParameter("Mode"));
 			pp.setCost(Double.parseDouble(req.getParameter("cost")));
 			pp.setApproved(req.getParameter("Approve"));
@@ -6251,6 +6435,7 @@ public class ProjectController
 			pp.setCreatedDate(sdf1.format(new Date()));
 			pp.setIsActive(1);
 			count=service.PfmsProcurementPlanSubmit(pp);
+			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -6280,11 +6465,17 @@ public class ProjectController
 		logger.info(new Date() +"Inside ProcurementEdit.htm "+UserId);
 		long count=0;
 		try {
+			String Item = req.getParameter("Item");
+			String Purpose = req.getParameter("Purpose");
+			String Source = req.getParameter("Source");
+			if(Stream.of(Item,Purpose,Source)
+					.anyMatch(field-> InputValidator.isContainsHTMLTags(field))){
+			}else {
 			PfmsProcurementPlan pp=new PfmsProcurementPlan();
 			pp.setPlanId(Long.parseLong(req.getParameter("planid")));
-			pp.setItem(req.getParameter("Item"));
-			pp.setPurpose(req.getParameter("Purpose"));
-			pp.setSource(req.getParameter("Source"));
+			pp.setItem(Item);
+			pp.setPurpose(Purpose);
+			pp.setSource(Source);
 			pp.setModeName(req.getParameter("Mode"));
 			pp.setCost(Double.parseDouble(req.getParameter("cost")));
 			pp.setApproved(req.getParameter("Approve"));
@@ -6297,6 +6488,7 @@ public class ProjectController
 			pp.setIsActive(1);
 
 			count=service.ProjectProcurementEdit(pp);
+			}
 		}catch(Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside ProcurementEdit.htm"+UserId, e);

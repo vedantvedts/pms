@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.vts.pfms.header.dao.HeaderDao;
 import com.vts.pfms.header.model.ProjectDashBoardFavourite;
 import com.vts.pfms.header.model.ProjectDashBoardFavouriteProjetcts;
+import com.vts.pfms.login.LoginPasswordHistory;
 @Service
 public class HeaderServiceImpl implements HeaderService {
 	@Autowired
@@ -199,22 +200,34 @@ public class HeaderServiceImpl implements HeaderService {
 	}
 
 	@Override
-	public int PasswordChange(String OldPassword, String NewPassword, String UserId)
-			throws Exception {
+	public int PasswordChange(String OldPassword, String NewPassword, String UserId, Long loginId, Long EmpId) throws Exception {
+		int count = 0;
+		try {
+			String actualoldpassword=dao.OldPassword(UserId);
 
-		logger.info(new Date() +"Inside SERVICE PasswordChange ");
-		String actualoldpassword=dao.OldPassword(UserId);
+			if(encoder.matches(OldPassword, actualoldpassword)) {
 
-		if(encoder.matches(OldPassword, actualoldpassword)) {
-		
-		String oldpassword=encoder.encode(OldPassword);
-		String newpassword=encoder.encode(NewPassword);
-		
-		return dao.PasswordChange(oldpassword, newpassword, UserId, sdf1.format(new Date()));
-		}else {
+				String oldpassword=encoder.encode(OldPassword);
+				String newpassword=encoder.encode(NewPassword);
+
+				count = dao.PasswordChange(oldpassword, newpassword, UserId, sdf1.format(new Date()));
+				
+				if(count>0) {
+					LoginPasswordHistory passHis = new LoginPasswordHistory();
+					passHis.setLoginId(loginId);
+					passHis.setPassword(newpassword);
+					passHis.setActionBy(EmpId);
+					passHis.setActionDate(sdf1.format(new Date()));
+					passHis.setActionType("CP");
+
+					dao.addLoginPasswordHistory(passHis);
+				}
+			}
 			
+		}catch (Exception e) {
+			e.printStackTrace();
 		}
-		return 0;
+		return count;
 	}
 
 	@Override
@@ -435,5 +448,11 @@ public class HeaderServiceImpl implements HeaderService {
 		@Override
 		public List<Object[]> getProjectsBasedOnDashBoard(String dashBoardId) throws Exception {
 			return dao.getProjectsBasedOnDashBoard(dashBoardId);
+		}
+
+		@Override
+		public long PasswordChangeHystoryCount(Long loginId) throws Exception {
+		
+			return dao.PasswordChangeHystoryCount(loginId);
 		}
 }

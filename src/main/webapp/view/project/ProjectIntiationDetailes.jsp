@@ -1913,7 +1913,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 									<label class="sidelabel">Item:</label><span class="mandatory" style="color: red;">*</span>
 								</div>
 								<div class="col-md-7">
-									<input type="text" class="form-control" id="Item" name="Item"
+									<input type="text" class="form-control" id="Item" name="Item" placeholder="Enter Item"
 										maxlength="300" >
 								</div>
 							</div>
@@ -1927,7 +1927,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 								</div>
 								<div class="col-md-7">
 									<input type="text" class="form-control" id="Purpose"
-										name="Purpose" maxlength="450" style="line-height: 3rem"
+										name="Purpose" maxlength="450" style="line-height: 3rem" placeholder="Enter Purpose"
 										required="required">
 								</div>
 							</div>
@@ -1937,7 +1937,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 										style="color: red;">*</span>
 								</div>
 								<div class="col-md-7">
-									<input type="text" class="form-control" id="Source"
+									<input type="text" class="form-control" id="Source" placeholder="Enter Source"
 										name="Source" maxlength="300" required="required">
 								</div>
 							</div>

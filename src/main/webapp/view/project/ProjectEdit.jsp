@@ -108,7 +108,7 @@ Project Edit</h4>
 </label>
 </th>
  <td >
-<input type="text"   name="pname"  class="form-control" value="<%=ProjectEditData[4] %>" maxlength="255" required="required">
+<input type="text"   name="pname"  class="form-control alphanum-symbols-no-leading-space" value="<%=ProjectEditData[4] %>" maxlength="255" required="required">
 
  
 </td>
@@ -122,7 +122,7 @@ Project Edit</h4>
 </th>
  <td >
 	<input type="text"  name="desc" value="<%=ProjectEditData[5] %>"
-								class="form-control" maxlength="100" required="required">
+								class="form-control alphanum-symbols-no-leading-space" maxlength="100" required="required">
  
 </td>
   <th>
@@ -132,7 +132,7 @@ Project Edit</h4>
 </th>
  <td >
 	<input type="text"   name="unicode" value="<%=ProjectEditData[6] %>" 
-	class="form-control" maxlength="20" required="required">
+	class="form-control alphanum-symbols-no-leading-space" maxlength="20" required="required">
  
 </td>
  </tr>
@@ -164,7 +164,7 @@ Project Edit</h4>
 </th>
  <td >
  <%=ProjectEditData[3] %>
- <input type="hidden"   name="pcode" class="form-control" maxlength="20" value="<%=ProjectEditData[3] %>"  required="required">
+ <input type="hidden"   name="pcode" class="form-control alphanum-symbols-no-leading-space" maxlength="20" value="<%=ProjectEditData[3] %>"  required="required">
  
 </td>
 
@@ -174,7 +174,7 @@ Project Edit</h4>
 </label>
 </th>
 <td>
- <input type="text"   name="projectshortname" <%if(ProjectEditData[23]!=null){%> value="<%=ProjectEditData[23] %>"<%} %>	class="form-control" maxlength="20" required="required">
+ <input type="text"   name="projectshortname" <%if(ProjectEditData[23]!=null){%> value="<%=ProjectEditData[23] %>"<%} %>	class="form-control alphanum-symbols-no-leading-space" maxlength="20" required="required">
 </td>
   <%-- <th>
  <label style="margin-bottom: -10px;"> IsMainWorkCenter:
@@ -273,7 +273,7 @@ Project Edit</h4>
 </th>
  <td >
 <input type="text"   name="sano"  value="<%=ProjectEditData[7] %>"
-								class="form-control" maxlength="100" required="required">
+								class="form-control alphanum-symbols-no-leading-space" maxlength="100" required="required">
 </td>
  </tr>
  
@@ -294,7 +294,7 @@ Project Edit</h4>
 </label>
 </th>
  <td >
-<input type="text" required="required"    id="totalcostid" name="tsancost"  class="form-control number-only" >
+<input type="text" required="required"    id="totalcostid" name="tsancost"  class="form-control decimal-format" >
 </td>
 
 
@@ -330,7 +330,7 @@ Project Edit</h4>
 </th>
  <td >
 <input type="text"   id="fecostid" name="sancostfe" value="<%=ProjectEditData[10] %>"
-								class="form-control number-only"  maxlength="18" required="required">
+								class="form-control decimal-format"  maxlength="18" required="required">
 </td>
  </tr>
  
@@ -352,7 +352,7 @@ Project Edit</h4>
 </th>
  <td >
 <input type="text"  name="sancostre" id="Recostid" value="<%=ProjectEditData[9] %>"
-								class="form-control number-only"  maxlength="18" readonly="readonly" value="0.0">
+								class="form-control decimal-format"  maxlength="18" readonly="readonly" value="0.0">
 </td>
  </tr>
     <tr>
@@ -404,7 +404,7 @@ Project Edit</h4>
 <!-- srikant code end-->
 <tr>
 	   <th colspan="1"><label style="margin-bottom: -10px;">Nodal & Participating Lab:<span class="mandatory" style="color: red;">*</span></label></th>
-	  <td colspan="3"><input required="required" name="Nodal" placeholder="Enter Nodal & Participating Lab" class="form-control" maxlength="250" <%if(ProjectEditData!=null && ProjectEditData[27]!=null){%>value="<%=ProjectEditData[27]%>" <%}%> /></td>
+	  <td colspan="3"><input required="required" name="Nodal" placeholder="Enter Nodal & Participating Lab" class="form-control alphanum-symbols-no-leading-space" maxlength="250" <%if(ProjectEditData!=null && ProjectEditData[27]!=null){%>value="<%=ProjectEditData[27]%>" <%}%> /></td>
 </tr>
  <tr>
 		<th colspan="1"><label style="margin-bottom: -10px;">Application:<span class="mandatory" style="color: red;">*</span></label></th>

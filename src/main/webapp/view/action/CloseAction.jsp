@@ -1021,8 +1021,9 @@ td {
 										value="<%=Assignee[0] %>" /> <input type="hidden"
 										name="ActionAssignId" value="<%=Assignee[18] %>" /> <input
 										type="hidden" name="LevelCount" value="<%=Assignee[19] %>" />
-									<input type="hidden" name="${_csrf.parameterName}"
-										value="${_csrf.token}" />
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+										
+									<input type="hidden" name="ActionPath" value="<%=ActionPath%>">
 								</div>
 							</div>
 						</form>
@@ -1137,7 +1138,8 @@ td {
 											maxlength="250" placeholder="Maximum 250 chcarcters"> -->
 									<textarea rows="2" style="display: block; "
 										class="form-control" id="remarks" name="Remarks"
-										placeholder="Enter Remarks..!"></textarea>
+										placeholder="Enter Remarks..!!" oninput="sanitizeInput(this)"></textarea>
+
 									</div>
 									<div class="col-md-2">
 										<button type="button" onclick="submitProgress()"
@@ -1637,6 +1639,10 @@ var dt = new Date(from[2], from[1] - 1, from[0]);
     	console.log("hiiii")
         location.reload();
     	})
+    	
+    	function sanitizeInput(input) {
+   		    input.value =  input.value.replace(/<\/?[\w\s="/.':;#-\/\?]+>/gi, '');
+   		}
 </script>
 
 </body>

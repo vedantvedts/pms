@@ -2392,6 +2392,22 @@ public class CommitteeController {
 				redir.addAttribute("unit1",req.getParameter("unit1"));
 				return redirectWithError(redir, "CommitteeScheduleMinutes.htm", "'Remarks' should not contain HTML Tags.!");
 			}
+
+
+			redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+			redir.addAttribute("specname", req.getParameter("specname"));
+			redir.addAttribute("membertype",req.getParameter("membertype"));
+			redir.addAttribute("formname", req.getParameter("formname"));
+			redir.addAttribute("unit1",req.getParameter("unit1"));
+
+			
+			if(InputValidator.isContainsHTMLTags(req.getParameter("NoteText"))) {
+				redir.addAttribute("resultfail", " Action Name should Not contain HTML Tags !");
+				return "redirect:/CommitteeScheduleMinutes.htm";
+			}
+			
+			
+
 			CommitteeMinutesDetailsDto committeeminutesdetailsdto = new CommitteeMinutesDetailsDto();
 			committeeminutesdetailsdto.setScheduleId(req.getParameter("scheduleid"));
 			committeeminutesdetailsdto.setScheduleSubId(req.getParameter("schedulesubid"));
@@ -2423,12 +2439,7 @@ public class CommitteeController {
 				redir.addAttribute("resultfail", " Schedule Minutes Add Unsuccessful");
 			}
 
-			redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
-			redir.addAttribute("specname", req.getParameter("specname"));
-			redir.addAttribute("membertype",req.getParameter("membertype"));
-			redir.addAttribute("formname", req.getParameter("formname"));
-			redir.addAttribute("unit1",req.getParameter("unit1"));
-
+		
 		}
 		catch (Exception e) {
 			e.printStackTrace(); logger.error(new Date() +"Inside CommitteeMinutesSubmit.htm "+ 

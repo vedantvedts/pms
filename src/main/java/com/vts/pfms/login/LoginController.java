@@ -337,6 +337,12 @@ public class LoginController {
 		    String empNo=rfpmainservice.getEmpNo(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId());
 		    ses.setAttribute("empNo", empNo);
 		    
+		    long pwdCount = headerservice.PasswordChangeHystoryCount(LoginId);
+			if(pwdCount==0) 
+			{
+				return "redirect:/ForcePasswordChange.htm";
+			}
+			
 		    if(loginPage.equalsIgnoreCase("login")) {
 		    	return "redirect:/MainDashBoard.htm";
 		    }else {
@@ -1554,4 +1560,5 @@ public class LoginController {
 
         return "redirect:/" + originalLoginPage + "?sessionExpired";
     }
+    
 }

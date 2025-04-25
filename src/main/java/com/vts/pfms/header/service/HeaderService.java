@@ -18,7 +18,7 @@ public interface HeaderService {
 	
 	public List<Object[]> TodaySchedulesList(String EmpId,String TodayDate) throws Exception;
 	public List<Object[]> TodayActionList(String EmpId) throws Exception;
-	public int PasswordChange(String OldPassword,String NewPassword,String UserId)throws Exception;
+	public int PasswordChange(String OldPassword,String NewPassword,String UserId, Long loginId, Long EmpId)throws Exception;
 	public String FormRoleName(String LoginType) throws Exception;
 	public List<Object[]> GanttChartList(String ProjectId) throws Exception;
 	public List<Object[]> ProjectList() throws Exception;
@@ -50,5 +50,5 @@ public interface HeaderService {
 	public List<Object[]> getDashBoards(Long empId , String LoginType)throws Exception;
 	public long updateDashBoard(String dashboardId,String projects,String UserId)throws Exception;
 	public List<Object[]> getProjectsBasedOnDashBoard(String dashBoardId)throws Exception;
-	
+	public long PasswordChangeHystoryCount(Long loginId) throws Exception;
 }

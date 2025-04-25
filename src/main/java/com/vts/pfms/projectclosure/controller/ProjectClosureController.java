@@ -231,9 +231,11 @@ public class ProjectClosureController {
 				req.setAttribute("PDData", PDData);
 				req.setAttribute("GDDetails", service.getEmpGDDetails(PDData!=null?PDData[1].toString():"0"));
 				req.setAttribute("ProjectOriginalRevDetails", service.projectOriginalAndRevisionDetails(projectId));
+				req.setAttribute("projectMasterRevList", service.getProjectMasterRevListByProjectId(projectId));
 				req.setAttribute("ProjectExpenditureDetails", service.projectExpenditureDetails(projectId));
 				req.setAttribute("SoCRemarksHistory", service.projectClosureRemarksHistoryByType(closureId,"SF","S"));
 				req.setAttribute("SoCApprovalEmpData", service.projectClosureApprovalDataByType(closureId,"SF","S"));
+				req.setAttribute("labMasterData", carsservice.getLabDetailsByLabCode(labcode));
 			}
 			req.setAttribute("Director", carsservice.getLabDirectorData(labcode));
 			req.setAttribute("AD", carsservice.getApprAuthorityDataByType(labcode, "AD"));
@@ -439,6 +441,7 @@ public class ProjectClosureController {
 	@RequestMapping(value="ProjectClosureSoCDownload.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public void projectClosureSoCDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
 		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectClosureSoCDownload.htm "+UserId);		
 		try {
 			String closureId = req.getParameter("closureId");
@@ -449,8 +452,10 @@ public class ProjectClosureController {
 				req.setAttribute("ProjectDetails", service.getProjectMasterByProjectId(projectId));
 				req.setAttribute("ProjectClosureSoCData", service.getProjectClosureSoCByProjectId(closureId));
 				req.setAttribute("ProjectOriginalRevDetails", service.projectOriginalAndRevisionDetails(projectId));
+				req.setAttribute("projectMasterRevList", service.getProjectMasterRevListByProjectId(projectId));
 				req.setAttribute("ProjectExpenditureDetails", service.projectExpenditureDetails(projectId));
 				req.setAttribute("SoCApprovalEmpData", service.projectClosureApprovalDataByType(closureId,"SF","S"));
+				req.setAttribute("labMasterData", carsservice.getLabDetailsByLabCode(labcode));
 			}
 			String filename="SoC";	
 			String path=req.getServletContext().getRealPath("/view/temp");
@@ -671,12 +676,14 @@ public class ProjectClosureController {
 				req.setAttribute("ProjectClosureDetails", closure);
 				req.setAttribute("ProjectDetails", projectMasterDetails);
 				req.setAttribute("ProjectOriginalRevDetails", service.projectOriginalAndRevisionDetails(projectId));
+				req.setAttribute("projectMasterRevList", service.getProjectMasterRevListByProjectId(projectId));
 				req.setAttribute("ProjectExpenditureDetails", service.projectExpenditureDetails(projectId));
 				req.setAttribute("ProjectClosureACPData", service.getProjectClosureACPByProjectId(closureId));
 				req.setAttribute("ACPProjectsData", service.getProjectClosureACPProjectsByProjectId(closureId));
 				req.setAttribute("ACPConsultanciesData", service.getProjectClosureACPConsultanciesByProjectId(closureId));
 				req.setAttribute("ACPTrialResultsData", service.getProjectClosureACPTrialResultsByProjectId(closureId));
 				req.setAttribute("ACPAchivementsData", service.getProjectClosureACPAchievementsByProjectId(closureId));
+				req.setAttribute("labMasterData", carsservice.getLabDetailsByLabCode(labcode));
 				
 				Object[] PDData = carsservice.getEmpPDEmpId(projectId);
 				req.setAttribute("PDData", PDData);
@@ -1114,15 +1121,15 @@ public class ProjectClosureController {
 				req.setAttribute("ProjectClosureDetails", closure);
 				req.setAttribute("ProjectDetails", projectMasterDetails);
 				req.setAttribute("ProjectOriginalRevDetails", service.projectOriginalAndRevisionDetails(projectId));
+				req.setAttribute("projectMasterRevList", service.getProjectMasterRevListByProjectId(projectId));
 				req.setAttribute("ProjectExpenditureDetails", service.projectExpenditureDetails(projectId));
 				req.setAttribute("ProjectClosureACPData", service.getProjectClosureACPByProjectId(closureId));
 				req.setAttribute("ACPProjectsData", service.getProjectClosureACPProjectsByProjectId(closureId));
 				req.setAttribute("ACPConsultanciesData", service.getProjectClosureACPConsultanciesByProjectId(closureId));
 				req.setAttribute("ACPTrialResultsData", service.getProjectClosureACPTrialResultsByProjectId(closureId));
 				req.setAttribute("ACPAchivementsData", service.getProjectClosureACPAchievementsByProjectId(closureId));
-				
 				req.setAttribute("ACPApprovalEmpData", service.projectClosureApprovalDataByType(closureId,"AF","A"));
-				
+				req.setAttribute("labMasterData", carsservice.getLabDetailsByLabCode(labcode));
 				/*-------------------------------------------------------------------------------------------------- */
 				List<List<ProjectFinancialDetails>> financialDetails=new ArrayList<List<ProjectFinancialDetails>>();
 				
@@ -1323,7 +1330,6 @@ public class ProjectClosureController {
 	{
 		String UserId = (String) ses.getAttribute("Username");
 		String labcode = (String) ses.getAttribute("labcode");
-		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside ProjectClosureCheckList.htm "+UserId);
 		try {
 			
@@ -1358,9 +1364,11 @@ public class ProjectClosureController {
 				req.setAttribute("PDData", PDData);
 				req.setAttribute("GDDetails", service.getEmpGDDetails(PDData!=null?PDData[1].toString():"0"));
 				req.setAttribute("ProjectOriginalRevDetails", service.projectOriginalAndRevisionDetails(projectId));
+				req.setAttribute("projectMasterRevList", service.getProjectMasterRevListByProjectId(projectId));
 				req.setAttribute("ProjectExpenditureDetails", service.projectExpenditureDetails(projectId));
 				req.setAttribute("SoCRemarksHistory", service.projectClosureRemarksHistoryByType(closureId,"SF","S"));
 				req.setAttribute("SoCApprovalEmpData", service.projectClosureApprovalDataByType(closureId,"SF","S"));
+				req.setAttribute("labMasterData", carsservice.getLabDetailsByLabCode(labcode));
 			}
 //			req.setAttribute("Director", carsservice.getLabDirectorData(labcode));
 //			req.setAttribute("AD", carsservice.getApprAuthorityDataByType(labcode, "AD"));

@@ -218,7 +218,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 	                        <div class="form-group">
 	                            <label class="control-label">Short Name</label>
 	                            	<span class="mandatory" style="color: #cd0a0a;">*</span>
-	  									<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="ShortName" name="ShortName" required>
+	  									<input type="text" class="form-control alphanum-symbols-no-leading-space"  aria-describedby="inputGroup-sizing-sm" id="ShortName" name="ShortName" placeholder="Enter Short Name" required>
 	                        </div>
 	                    </div>
 	                    
@@ -226,7 +226,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 	                        <div class="form-group">
 	                            <label class="control-label">Project Title</label>
 	                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-	  								<input type="text" class="form-control" required="required" aria-describedby="inputGroup-sizing-sm" id="ProjectTitle" name="ProjectTitle" >
+	  								<input type="text" class="form-control alphanum-symbols-no-leading-space" required="required" aria-describedby="inputGroup-sizing-sm" id="ProjectTitle" name="ProjectTitle" placeholder="Enter Project Title" >
 	                        </div>
 	                    </div> 
 	                    
@@ -235,7 +235,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 	                            <label class="control-label">Is Planned</label>
 	                            <span class="mandatory" style="color: #cd0a0a;">*</span>
 								 <select class="custom-select" id="IsPlanned"  name="IsPlanned" required="required">
-								    <option disabled="true"  selected value="">Choose...</option>
+								    <option disabled="true"  selected value="">--Select--</option>
 								     <option value="N">Non-Plan</option>
 								    <option value="P">Plan</option>   
 								  </select>                   
@@ -277,7 +277,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 												<option>Process</option>
 												<option> Others </option>
 												</select> -->
-			<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="Deliverable" name="Deliverable" placeholder="max 255 characters"  maxlength="250" >
+			<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="Deliverable" name="Deliverable" placeholder="Enter Deliverable"  maxlength="250" >
 												
 						</div>	                    
 	                    </div> 
@@ -300,7 +300,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 		                            <label class="control-label">PDD</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
 		  							<select class="custom-select selectdee" id="PDD" required="required" name="PDD">
-											    <option disabled="true"  selected value="">Choose...</option>
+											    <option disabled="true"  selected value="">--Select--</option>
 											   	<% for (Object[] obj : EmployeeList) {%>
 												<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2] %> </option>
 												<%} %>
@@ -310,9 +310,9 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 	                    
        					<div class="col-md-3 ">
 		                        <div class="form-group">
-		                            <label class="control-label">Indicative Duration(Months)</label>
+		                            <label class="control-label">Indicative Duration(Mos)</label>
 		                            	<span class="mandatory" style="color: #cd0a0a;">*</span>
-		  									<input type="number" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="PCDuration" name="PCDuration" required>
+		  									<input type="text" class="form-control numeric-only "  aria-describedby="inputGroup-sizing-sm" id="PCDuration" name="PCDuration" placeholder="Enter No. of Months" required>
 		                        </div>
 	                    	</div> 
 	                    
@@ -320,7 +320,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 	                        <div class="form-group">
 	                            <label class="control-label">Indicative Cost(Rs)</label>
 	                            	<span class="mandatory" style="color: #cd0a0a;">*</span>
-	  									<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="IndicativeCost" name="IndicativeCost" required>
+	  									<input type="text" class="form-control decimal-format"  aria-describedby="inputGroup-sizing-sm" id="IndicativeCost" name="IndicativeCost" placeholder="Enter Indicative Months" required>
 	                        </div>
 	                    </div>  
 	                    
@@ -328,7 +328,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 	                        <div class="form-group">
 	                            <label class="control-label">P&C DO Remarks</label>
 	                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-									<input type="text" class="form-control" required="required" aria-describedby="inputGroup-sizing-sm" id="PCRemarks" name="PCRemarks" >
+									<input type="text" class="form-control" required="required" aria-describedby="inputGroup-sizing-sm" id="PCRemarks" name="PCRemarks" placeholder="Enter Remarks" >
 	                        </div>
 	                    </div>
                       <input type="hidden" name="Deliverable" value="">

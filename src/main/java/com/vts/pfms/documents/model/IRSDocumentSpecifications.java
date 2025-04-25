@@ -27,7 +27,7 @@ public class IRSDocumentSpecifications implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long IRSSpecificationId;
 	private Long IRSDocId;
-	private Long ConInterfaceId;
+	private Long ICDConnectionId;
 	private Long LogicalInterfaceId;
 	private String InfoName;
 	private String ActionAtDest;

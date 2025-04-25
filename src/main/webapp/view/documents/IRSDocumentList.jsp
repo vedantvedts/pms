@@ -1,3 +1,4 @@
+<%@page import="java.util.stream.Collectors"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.util.List"%>
@@ -211,7 +212,8 @@
 <%
 	List<Object[]> projectList = (List<Object[]>) request.getAttribute("projectList");
 	List<Object[]> preProjectList = (List<Object[]>) request.getAttribute("preProjectList");
-	List<Object[]> productTreeList = (List<Object[]>) request.getAttribute("productTreeList");
+	List<Object[]> productTreeAllList = (List<Object[]>) request.getAttribute("productTreeAllList");
+	List<Object[]> productTreeList = productTreeAllList.stream().filter(e -> e[10].toString().equalsIgnoreCase("1")).collect(Collectors.toList());
 	Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
     
 	String projectId = (String)request.getAttribute("projectId");

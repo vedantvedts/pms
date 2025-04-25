@@ -2055,16 +2055,25 @@ public class CARSController {
 			String carsInitiationId = req.getParameter("carsInitiationId");
 			String action = req.getParameter("Action");
 			
+			
 			long carsini = Long.parseLong(carsInitiationId);
 			
 			CARSInitiation cars = service.getCARSInitiationById(carsini);
 			String statusCode = cars.getCARSStatusCode();
 			
+			String Remarks=req.getParameter("remarks");
+			if(InputValidator.isContainsHTMLTags(Remarks)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("Action", action);
+				redir.addAttribute("dpcTabId", "2");
+				return redirectWithError(redir, "CARSDPCSoCDetails.htm", "'Remarks' should not contain HTML Tags.!");
+			}
+			
 			CARSApprovalForwardDTO dto = new CARSApprovalForwardDTO();
 			dto.setCarsinitiationid(carsini);
 			dto.setAction(action);
 			dto.setEmpId(EmpId);
-			dto.setRemarks(req.getParameter("remarks"));
+			dto.setRemarks(Remarks);
 			dto.setLabcode(labcode);
 			dto.setApprovalSought(req.getParameter("approvalSought"));
 			dto.setApproverLabCode(req.getParameter("LabCode"));

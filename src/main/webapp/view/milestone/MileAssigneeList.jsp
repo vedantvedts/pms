@@ -231,7 +231,7 @@ h6{
 												<%if(obj[8]!=null&&"Y".equalsIgnoreCase(obj[10].toString())){ %>
                         	                		<button type="button" class="btn btn-sm edit" title="Comment" onclick="getCommentBox('<%=obj[0] %>','<%=obj[5] %>','<%=obj[15] %>','<%=obj[16] %>')"> <i class="fa fa-comment" aria-hidden="true" ></i> </button>
 												<%} %>
-												<%if("A".equalsIgnoreCase(obj[10].toString())&&((Long) session.getAttribute("EmpId")).toString().equals(obj[11].toString())){ %>
+												<%if("A".equalsIgnoreCase(obj[10].toString())&&((Long) session.getAttribute("EmpId")).toString().equals(obj[11].toString())){ %> 
                                                 	<form action="MilestoneActivityUpdate.htm" method="POST" name="myfrm"  style="display: inline">
                                                     	<button  class="editable-click" name="sub" value="Accept"  formaction="M-A-Assign-OIC.htm" onclick="return confirm('Are You Sure To Accept?')" >
 															<div class="cc-rockmenu">
@@ -346,7 +346,7 @@ h6{
 											</td>
                                                       
 											<td>
-												<%if(obj[22]!=null && Integer.parseInt(obj[22].toString())==0){
+												<%//if(obj[22]!=null && Integer.parseInt(obj[22].toString())==0){
 													if(Integer.parseInt(obj[5].toString())<100) { 
 														if(!obj[10].toString().equalsIgnoreCase("0")){ 
 															if(Integer.parseInt(obj[6].toString())>0){
@@ -381,7 +381,7 @@ h6{
                                                  	<%} }else{ %> 
                                                     	Completed 
                                                 	<%} %>
-                                            	<%} %>
+                                            	<%-- <%} %> --%>
                                         	</td>	
 										</tr>
 									<%} } %>

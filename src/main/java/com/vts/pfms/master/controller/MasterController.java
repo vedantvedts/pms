@@ -59,6 +59,12 @@ public class MasterController {
 
 	@Value("${ApplicationFilesDrive}")
 	String uploadpath;
+	
+	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
+	    redir.addAttribute("resultfail", message);
+	    return "redirect:/"+redirURL;
+	}
+	
 	private static final Logger logger=LogManager.getLogger(MasterController.class);
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	FormatConverter fc = new FormatConverter();
@@ -212,12 +218,37 @@ public class MasterController {
 				redir.addAttribute("resultfail","Emp No Already Exists" );
 				return "redirect:/Officer.htm";
 			}			
+			
+			String empNo=req.getParameter("EmpNo");
+			String empName=req.getParameter("EmpName");
+			String extNo=req.getParameter("ExtNo");
+			String email= req.getParameter("Email");
+			String dEmail = req.getParameter("DronaEmail");
+			String iEmail = req.getParameter("InternetEmail");
+			String mobileNumber = req.getParameter("mobilenumber");
+			
+			if(!InputValidator.isValidCodeWithCapitalsAndNumeric(empNo) || !InputValidator.isValidCodeWithCapitalsAndNumeric(extNo)){
+				return redirectWithError(redir,"Officer.htm","Number must contain only uppercase letters and numbers.");
+			}		
+			
+			if(!InputValidator.isValidNameWithCapitalsAndSmallLettersAndSpace(empName)) {
+				return redirectWithError(redir,"Officer.htm","Name can contain only letters and spaces.");
+			}
+			
+			if(!InputValidator.isValidMobileNo(mobileNumber)) {
+				return redirectWithError(redir,"Officer.htm","Please enter a valid 10-digit mobile number starting with 6-9.");	
+			}
+			
+			if(!InputValidator.isValidEmail(email) || (dEmail!=null && !dEmail.isEmpty() && !InputValidator.isValidEmail(dEmail) ) || (iEmail!=null &&! iEmail.isEmpty() && !InputValidator.isValidEmail(iEmail) )) {
+				return redirectWithError(redir,"Officer.htm","The email address you entered is not valid. Please try again.");
+			}
+			
 			OfficerMasterAdd officermasteradd= new OfficerMasterAdd();
 			officermasteradd.setLabId(req.getParameter("labId"));
-			officermasteradd.setEmpNo(req.getParameter("EmpNo").toUpperCase());
+			officermasteradd.setEmpNo(empNo.toUpperCase());
 			officermasteradd.setTitle(req.getParameter("title"));
 			officermasteradd.setSalutation(req.getParameter("salutation"));
-			String name=req.getParameter("EmpName");			
+			String name=empName;
 			String words[]=name.split("\\s");  
 			String capitalizeWord="";  
 			for(String w:words){  
@@ -228,12 +259,12 @@ public class MasterController {
 			name = name.substring(0,1).toUpperCase() + name.substring(1);
 			officermasteradd.setEmpName(capitalizeWord);
 			officermasteradd.setDesignation(req.getParameter("Designation"));
-			officermasteradd.setExtNo(req.getParameter("ExtNo"));
-			officermasteradd.setEmail(req.getParameter("Email"));
+			officermasteradd.setExtNo(extNo);
+			officermasteradd.setEmail(email);
 			officermasteradd.setDivision(req.getParameter("Division"));
-			officermasteradd.setDronaEmail(req.getParameter("DronaEmail"));
-			officermasteradd.setInternalEmail(req.getParameter("InternetEmail"));
-			officermasteradd.setMobileNo(req.getParameter("mobilenumber"));
+			officermasteradd.setDronaEmail(dEmail);
+			officermasteradd.setInternalEmail(iEmail);
+			officermasteradd.setMobileNo(mobileNumber);
 			officermasteradd.setSrNo("0");
 			officermasteradd.setLabCode(LabCode);
 			officermasteradd.setSuperiorOfficer(req.getParameter("superiorOfficer"));
@@ -269,21 +300,45 @@ public class MasterController {
 		String UserId= (String)ses.getAttribute("Username");
 		logger.info(new Date() +" Inside OfficerMasterEditSubmit.htm "+UserId);
 		try {
+			
+			String empNo=req.getParameter("EmpNo");
+			String empName=req.getParameter("EmpName");
+			String extNo=req.getParameter("ExtNo");
+			String email= req.getParameter("Email");
+			String dEmail = req.getParameter("DronaEmail");
+			String iEmail = req.getParameter("InternetEmail");
+			String mobileNumber = req.getParameter("mobilenumber");
+			
+			if(!InputValidator.isValidCodeWithCapitalsAndNumeric(empNo) || !InputValidator.isValidCodeWithCapitalsAndNumeric(extNo)){
+				return redirectWithError(redir,"Officer.htm","Number must contain only uppercase letters and numbers.");
+			}		
+			
+			if(!InputValidator.isValidNameWithCapitalsAndSmallLettersAndSpace(empName)) {
+				return redirectWithError(redir,"Officer.htm","Name can contain only letters and spaces.");
+			}
+			
+			if(!InputValidator.isValidMobileNo(mobileNumber)) {
+				return redirectWithError(redir,"Officer.htm","Please enter a valid 10-digit mobile number starting with 6-9.");	
+			}
+			
+			if(!InputValidator.isValidEmail(email) || (dEmail != null && !dEmail.isEmpty() && !InputValidator.isValidEmail(dEmail) ) || (iEmail != null && !iEmail.isEmpty() && !InputValidator.isValidEmail(iEmail) )) {
+				return redirectWithError(redir,"Officer.htm","The email address you entered is not valid. Please try again.");
+			}
 
 			OfficerMasterAdd officermasteradd= new OfficerMasterAdd();
 			officermasteradd.setTitle(req.getParameter("title"));
 			officermasteradd.setSalutation(req.getParameter("salutation"));
 			officermasteradd.setLabId(req.getParameter("labId"));
-			officermasteradd.setEmpNo(req.getParameter("EmpNo"));
-			officermasteradd.setEmpName(req.getParameter("EmpName"));
+			officermasteradd.setEmpNo(empNo);
+			officermasteradd.setEmpName(empName);
 			officermasteradd.setDesignation(req.getParameter("Designation"));
-			officermasteradd.setExtNo(req.getParameter("ExtNo"));
-			officermasteradd.setMobileNo(req.getParameter("mobilenumber"));
-			officermasteradd.setEmail(req.getParameter("Email"));
+			officermasteradd.setExtNo(extNo);
+			officermasteradd.setMobileNo(mobileNumber);
+			officermasteradd.setEmail(email);
 			officermasteradd.setDivision(req.getParameter("Division"));
 			officermasteradd.setEmpId(req.getParameter("OfficerId"));
-			officermasteradd.setDronaEmail(req.getParameter("DronaEmail"));
-			officermasteradd.setInternalEmail(req.getParameter("InternetEmail"));
+			officermasteradd.setDronaEmail(dEmail);
+			officermasteradd.setInternalEmail(iEmail);
 			officermasteradd.setSuperiorOfficer(req.getParameter("superiorOfficer"));
 			officermasteradd.setEmpStatus(req.getParameter("empStatus"));	//srikant
 
@@ -377,10 +432,35 @@ public class MasterController {
 			if(check) {
 				redir.addAttribute("resultfail","Emp No Already Exists" );
 				return "redirect:/OfficerExtList.htm";
-			}			
+			}
+			
+			String empNo=req.getParameter("EmpNo");
+			String empName=req.getParameter("EmpName");
+			String extNo=req.getParameter("ExtNo");
+			String email= req.getParameter("Email");
+			String dEmail = req.getParameter("DronaEmail");
+			String iEmail = req.getParameter("InternetEmail");
+			String mobileNumber = req.getParameter("mobilenumber");
+			
+			if(!InputValidator.isValidCodeWithCapitalsAndNumeric(empNo) || !InputValidator.isValidCodeWithCapitalsAndNumeric(extNo)){
+				return redirectWithError(redir,"OfficerExtList.htm","Number must contain only uppercase letters and numbers.");
+			}		
+			
+			if(!InputValidator.isValidNameWithCapitalsAndSmallLettersAndSpace(empName)) {
+				return redirectWithError(redir,"OfficerExtList.htm","Name can contain only letters and spaces.");
+			}
+			
+			if(!InputValidator.isValidMobileNo(mobileNumber)) {
+				return redirectWithError(redir,"OfficerExtList.htm","Please enter a valid 10-digit mobile number starting with 6-9.");	
+			}
+			
+			if(!InputValidator.isValidEmail(email) || (dEmail!=null && !dEmail.isEmpty() && !InputValidator.isValidEmail(dEmail) ) || (iEmail!=null &&! iEmail.isEmpty() && !InputValidator.isValidEmail(iEmail) )) {
+				return redirectWithError(redir,"OfficerExtList.htm","The email address you entered is not valid. Please try again.");
+			}
+			
 			OfficerMasterAdd officermasteradd= new OfficerMasterAdd();
 			officermasteradd.setLabId(req.getParameter("labId"));
-			officermasteradd.setEmpNo(req.getParameter("EmpNo").toUpperCase());
+			officermasteradd.setEmpNo(empNo.toUpperCase());
 			String name=req.getParameter("EmpName");			
 			String words[]=name.split("\\s");  
 			String capitalizeWord="";  
@@ -394,12 +474,12 @@ public class MasterController {
 			officermasteradd.setSalutation(req.getParameter("salutation"));
 			officermasteradd.setEmpName(capitalizeWord);
 			officermasteradd.setDesignation(req.getParameter("Designation"));
-			officermasteradd.setExtNo(req.getParameter("ExtNo"));
-			officermasteradd.setEmail(req.getParameter("Email"));
+			officermasteradd.setExtNo(extNo);
+			officermasteradd.setEmail(email);
 			officermasteradd.setDivision(req.getParameter("Division"));
-			officermasteradd.setDronaEmail(req.getParameter("DronaEmail"));
-			officermasteradd.setInternalEmail(req.getParameter("InternetEmail"));
-			officermasteradd.setMobileNo(req.getParameter("mobilenumber"));
+			officermasteradd.setDronaEmail(dEmail);
+			officermasteradd.setInternalEmail(iEmail);
+			officermasteradd.setMobileNo(mobileNumber);
 			officermasteradd.setSrNo("0");
 			officermasteradd.setLabCode(labcode);
 			long count=0;
@@ -468,18 +548,42 @@ public class MasterController {
 		String UserId= (String)ses.getAttribute("Username");
 		logger.info(new Date() +" Inside OfficerExtEditSubmit.htm "+UserId);
 		try {
+			String empNo=req.getParameter("EmpNo");
+			String empName=req.getParameter("EmpName");
+			String extNo=req.getParameter("ExtNo");
+			String email= req.getParameter("Email");
+			String dEmail = req.getParameter("DronaEmail");
+			String iEmail = req.getParameter("InternetEmail");
+			String mobileNumber = req.getParameter("mobilenumber");
+			
+			if(!InputValidator.isValidCodeWithCapitalsAndNumeric(empNo) || !InputValidator.isValidCodeWithCapitalsAndNumeric(extNo)){
+				return redirectWithError(redir,"OfficerExtList.htm","Number must contain only uppercase letters and numbers.");
+			}		
+			
+			if(!InputValidator.isValidNameWithCapitalsAndSmallLettersAndSpace(empName)) {
+				return redirectWithError(redir,"OfficerExtList.htm","Name can contain only letters and spaces.");
+			}
+			
+			if(!InputValidator.isValidMobileNo(mobileNumber)) {
+				return redirectWithError(redir,"OfficerExtList.htm","Please enter a valid 10-digit mobile number starting with 6-9.");	
+			}
+			
+			if(!InputValidator.isValidEmail(email) || (dEmail!=null && !dEmail.isEmpty() && !InputValidator.isValidEmail(dEmail) ) || (iEmail!=null &&! iEmail.isEmpty() && !InputValidator.isValidEmail(iEmail) )) {
+				return redirectWithError(redir,"OfficerExtList.htm","The email address you entered is not valid. Please try again.");
+			}
+			
 			OfficerMasterAdd officermasteradd= new OfficerMasterAdd();
 			officermasteradd.setLabId(req.getParameter("labId"));
-			officermasteradd.setEmpNo(req.getParameter("EmpNo"));
-			officermasteradd.setEmpName(req.getParameter("EmpName"));
+			officermasteradd.setEmpNo(empNo);
+			officermasteradd.setEmpName(empName);
 			officermasteradd.setDesignation(req.getParameter("Designation"));
-			officermasteradd.setExtNo(req.getParameter("ExtNo"));
-			officermasteradd.setMobileNo(req.getParameter("mobilenumber"));
-			officermasteradd.setEmail(req.getParameter("Email"));
+			officermasteradd.setExtNo(extNo);
+			officermasteradd.setMobileNo(mobileNumber);
+			officermasteradd.setEmail(email);
 			officermasteradd.setDivision(req.getParameter("Division"));
 			officermasteradd.setEmpId(req.getParameter("OfficerId"));
-			officermasteradd.setDronaEmail(req.getParameter("DronaEmail"));
-			officermasteradd.setInternalEmail(req.getParameter("InternetEmail"));	
+			officermasteradd.setDronaEmail(dEmail);
+			officermasteradd.setInternalEmail(iEmail);	
 			officermasteradd.setTitle(req.getParameter("title"));
 			officermasteradd.setSalutation(req.getParameter("salutation"));
 			int count= service.OfficerExtUpdate(officermasteradd, UserId);							
@@ -646,10 +750,19 @@ public class MasterController {
 		String UserId= (String)ses.getAttribute("Username");
 		logger.info(new Date() +" Inside ActivityAddSubmit.htm "+UserId);
 		try {		
-
+			String activityType = req.getParameter("activitytype");
+			String activityCode = req.getParameter("activityCode");
+			
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(activityType)) {
+				return redirectWithError(redir,"MilestoneActivityTypes.htm","Activity type must contain letters, numbers, and spaces only.");
+			}
+			if(!InputValidator.isValidCodeWithCapitalsAndNumeric(activityCode)){
+				return redirectWithError(redir,"MilestoneActivityTypes.htm","Activity code must contain only uppercase letters and numbers.");
+			}
+			
 			MilestoneActivityType model =new MilestoneActivityType();
-			model.setActivityType(req.getParameter("activitytype"));
-			model.setActivityCode(req.getParameter("activityCode"));
+			model.setActivityType(activityType);
+			model.setActivityCode(activityCode);
 			model.setIsTimeSheet(req.getParameter("isTimeSheet"));
 			model.setCreatedBy(UserId);
 			long count =service.ActivityAddSubmit(model);
@@ -747,12 +860,10 @@ public class MasterController {
 			String tdid=req.getParameter("tdId");
 			
 			if(!InputValidator.isValidCodeWithCapitalsAndNumeric(groupCode)){
-				redir.addAttribute("resultfail", "Group code must contain only uppercase letters and numbers.");
-				return "redirect:/GroupMaster.htm";
+				return redirectWithError(redir,"GroupMaster.htm","Group code must contain only uppercase letters and numbers.");
 			} 
 			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(groupName)) {
-				redir.addAttribute("resultfail", "Group name must contain letters, numbers, and spaces only.");
-				return "redirect:/GroupMaster.htm";
+				return redirectWithError(redir,"GroupMaster.htm","Group name must contain letters, numbers, and spaces only.");
 			}
 			
 			DivisionGroup dgm=new DivisionGroup();
@@ -795,12 +906,10 @@ public class MasterController {
 			String groupName=req.getParameter("groupname");
 			
 			if(!InputValidator.isValidCodeWithCapitalsAndNumeric(groupCode)){
-				redir.addAttribute("resultfail", "Group code must contain only uppercase letters and numbers.");
-				return "redirect:/GroupMaster.htm";
+				return redirectWithError(redir,"GroupMaster.htm","Group code must contain only uppercase letters and numbers.");
 			} 
 			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(groupName)) {
-				redir.addAttribute("resultfail", "Group name must contain letters, numbers, and spaces only.");
-				return "redirect:/GroupMaster.htm";
+				return redirectWithError(redir,"GroupMaster.htm","Group name must contain letters, numbers, and spaces only.");
 			}
 			
 			DivisionGroup model= new DivisionGroup();
@@ -1329,7 +1438,14 @@ public class MasterController {
 				result = service.DeleteActivityType(ActivityID); // only Deletes, flag is true
 			}else{	// else updates
 				String toActivity = req.getParameter("toActivity");
-				result = service.UpdateActivityType(toActivity, ActivityID, req.getParameter("isTimeSheet"), req.getParameter("activityCode"));
+				String activityCode = req.getParameter("activityCode");				
+				if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(toActivity)) {
+					return redirectWithError(redir,"MilestoneActivityTypes.htm","Activity type must contain letters, numbers, and spaces only.");
+				}
+				if(!InputValidator.isValidCodeWithCapitalsAndNumeric(activityCode)){
+					return redirectWithError(redir,"MilestoneActivityTypes.htm","Activity code must contain only uppercase letters and numbers.");
+				}
+				result = service.UpdateActivityType(toActivity, ActivityID, req.getParameter("isTimeSheet"), activityCode );
 			}
 			
 			if (result > 0) {
@@ -1446,12 +1562,38 @@ public class MasterController {
 			boolean addnew = industryPartnerId!=null && industryPartnerId.equalsIgnoreCase("addNew")?true:false;
 			IndustryPartner partner = addnew ? new IndustryPartner() : service.getIndustryPartnerById(industryPartnerId);
 			if(addnew || action.equalsIgnoreCase("Edit")) {
-				partner.setIndustryName(addnew?req.getParameter("industryPartnerName2"):req.getParameter("industryPartnerName"));
+				String industryPartnerName2 = req.getParameter("industryPartnerName2");
+				String industryPartnerName = req.getParameter("industryPartnerName");
+				
+				if((industryPartnerName2!=null && !industryPartnerName2.isEmpty() && !InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(industryPartnerName2)) ||
+				  (industryPartnerName!=null && !industryPartnerName.isEmpty() &&  !InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(industryPartnerName))	) {
+					return redirectWithError(redir,"IndustryPartner.htm","Name can contain only letters, numbers and spaces.");
+				}
+				partner.setIndustryName(addnew?industryPartnerName2:industryPartnerName);
+			}
+			String industryPartnerAddress2 = req.getParameter("industryPartnerAddress2");
+			String industryPartnerAddress = req.getParameter("industryPartnerAddress");
+			String industryPartnerCity2 = req.getParameter("industryPartnerCity2");
+			String industryPartnerCity = req.getParameter("industryPartnerCity");
+			String industryPartnerPinCode2 = req.getParameter("industryPartnerPinCode2");
+			String industryPartnerPinCode = req.getParameter("industryPartnerPinCode");
+			
+			if((industryPartnerAddress2!=null && !industryPartnerAddress2.isEmpty() && InputValidator.isContainsHTMLTags(industryPartnerAddress2)) ||
+			   (industryPartnerAddress!=null && !industryPartnerAddress.isEmpty() && InputValidator.isContainsHTMLTags(industryPartnerAddress))	) {
+						return redirectWithError(redir,"IndustryPartner.htm","HTML tags are not allowed in the address.");
+			}
+			if((industryPartnerCity2!=null && !industryPartnerCity2.isEmpty() && !InputValidator.isValidNameWithCapitalsAndSmallLettersAndSpace(industryPartnerCity2)) ||
+			   (industryPartnerCity!=null && !industryPartnerCity.isEmpty() && !InputValidator.isValidNameWithCapitalsAndSmallLettersAndSpace(industryPartnerCity))	) {
+						return redirectWithError(redir,"IndustryPartner.htm","The city name must contain only letters and spaces.");
+			}
+			if((industryPartnerPinCode2!=null && !industryPartnerPinCode2.isEmpty() && !InputValidator.isContainsNumberOnly(industryPartnerPinCode2)) ||
+			   (industryPartnerPinCode!=null && !industryPartnerPinCode.isEmpty() &&   !InputValidator.isContainsNumberOnly(industryPartnerPinCode)) ) {
+						return redirectWithError(redir,"IndustryPartner.htm","The PIN code must contain numbers only.");
 			}
 			
-			partner.setIndustryAddress(addnew?req.getParameter("industryPartnerAddress2"):req.getParameter("industryPartnerAddress"));
-			partner.setIndustryCity(addnew?req.getParameter("industryPartnerCity2"):req.getParameter("industryPartnerCity"));
-			partner.setIndustryPinCode(addnew?req.getParameter("industryPartnerPinCode2"):req.getParameter("industryPartnerPinCode"));
+			partner.setIndustryAddress(addnew?industryPartnerAddress2:industryPartnerAddress);
+			partner.setIndustryCity(addnew?industryPartnerCity2:industryPartnerCity);
+			partner.setIndustryPinCode(addnew?industryPartnerPinCode2:industryPartnerPinCode);
 			
 			if(addnew) {
 				partner.setCreatedBy(UserId);
@@ -1473,6 +1615,20 @@ public class MasterController {
 			
 			for(int i=0;i<repName.length;i++) {
 				IndustryPartnerRep partnerRep = action!=null && action.equalsIgnoreCase("Add")? new IndustryPartnerRep() : service.getIndustryPartnerRepById(industryPartnerRepId);
+				
+				if(!InputValidator.isValidNameWithCapitalsAndSmallLettersAndDotAndSpace(repName[i])) {
+							return redirectWithError(redir,"IndustryPartner.htm","Name must contain only letters, dots, and spaces.");
+				}
+				if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(repDesignation[i])) {
+					return redirectWithError(redir,"IndustryPartner.htm","Designation can contain only letters, numbers and spaces.");
+				}
+				if(!InputValidator.isValidMobileNo(repMobileNo[i])) {
+					return redirectWithError(redir,"IndustryPartner.htm","Please enter a valid 10-digit mobile number starting with 6-9.");
+				}
+				if(!InputValidator.isValidEmail(repEmail[i])) {
+					return redirectWithError(redir,"IndustryPartner.htm","The email address you entered is not valid. Please try again.");
+				}
+				
 				partnerRep.setRepName(repName[i]);
 				partnerRep.setRepDesignation(repDesignation[i]);
 				partnerRep.setRepMobileNo(repMobileNo[i]);
