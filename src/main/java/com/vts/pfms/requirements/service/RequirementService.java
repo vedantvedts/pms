@@ -18,9 +18,11 @@ import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
 import com.vts.pfms.requirements.model.TestDetails;
+import com.vts.pfms.requirements.model.TestInstrument;
 import com.vts.pfms.requirements.model.TestPlanInitiation;
 import com.vts.pfms.requirements.model.TestPlanMaster;
 import com.vts.pfms.requirements.model.TestPlanSummary;
+import com.vts.pfms.requirements.model.TestSetupMaster;
 import com.vts.pfms.requirements.model.TestTools;
 import com.vts.pfms.requirements.model.VerificationData;
 
@@ -186,4 +188,15 @@ public interface RequirementService {
 	public int deleteSpecificationMasterById(String specsMasterId);
 	public List<SpecificationTypes> getSpecificationTypesList();
 	
+	
+	
+	public List<TestSetupMaster> getTestSetupMaster()throws Exception;
+
+	public List<TestInstrument> getTestInstrument()throws Exception;
+
+	public long setTestInstrument(TestInstrument t)throws Exception;
+
+	public long addTestSetupMaster(TestSetupMaster tp)throws Exception;
+
+	public TestSetupMaster getTestSetupMasterById(Long setUpid)throws Exception;
 }

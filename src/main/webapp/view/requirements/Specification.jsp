@@ -58,7 +58,7 @@ margin-left:5%;
     }
 </style>
 </head>
-<body>
+
 	<%
 String projectType=(String)request.getAttribute("projectType");
 String projectId = (String)request.getAttribute("projectId");
@@ -121,7 +121,7 @@ String isPdf = (String)request.getAttribute("isPdf");
 List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeList");
 
 %>
-
+<body <%if(isPdf!=null && isPdf.equalsIgnoreCase("Y")) {%> style="display:none;" <%} %>>
 	<%String ses=(String)request.getParameter("result"); 
  	  String ses1=(String)request.getParameter("resultfail");
 	  if(ses1!=null){
@@ -1307,7 +1307,7 @@ function DownloadDocPDF(){
                 /* ************************************** Applicable Document End *********************************** */
                 
 	            /* ************************************** Product Tree *********************************** */
-                {
+            <%--     {
                 	text: (++mainContentCount)+'. Product Tree',
                     style: 'chapterHeader',
                     tocItem: true,
@@ -1338,7 +1338,7 @@ function DownloadDocPDF(){
                        	margin: [0, 10, 0, 10]
                    	},
            													
-           		<%} }%>
+           		<%} }%> --%>
                 
                 /* ************************************** Product Tree End *********************************** */
 
@@ -1364,7 +1364,13 @@ function DownloadDocPDF(){
 		                },
             		
             			<% List<Object[]>specsListSub = new ArrayList<>();
+            			
             			specsListSub=specsList.stream().filter(e->e[7].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
+            			if (specsListSub==null || specsListSub.size()==0){
+            				specsListSub=specsList.stream().filter(e->e[7].toString().equalsIgnoreCase(obj[0].toString())
+            						|| e[0].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
+            			}
+            			
             			if(specsListSub!=null && specsListSub.size()>0) {
             				for(Object[]obj1:specsListSub){
 	            				int snCount=0; %>
@@ -1381,13 +1387,13 @@ function DownloadDocPDF(){
 		    	                            ],
 		    	                         	// Populate table rows
 		    	                            [
-		    	                                { text: '<%=++snCount %>', style: 'tableData', alignment: 'center' },
+		    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
 		    	                                { text: 'Specification Id', style: 'tableData' },
 		    	                                { text: '<%=obj1[1]!=null?obj1[1]:"-" %>', style: 'tableData' },
 		    	                            ],
 		    	                            
 		    	                            [
-		    	                                { text: '<%=++snCount %>', style: 'tableData', alignment: 'center' },
+		    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
 		    	                                { text: 'Linked Requirements', style: 'tableData' },
 		    	                                { text: '<% List<String>linkedReq= new ArrayList<>(); List<String>tempReq = new ArrayList<>();%>'
 				            						   +'<%if(obj1[4]!=null){ tempReq= Arrays.asList(obj1[4].toString().split(",")); }%>'
@@ -1401,34 +1407,34 @@ function DownloadDocPDF(){
 		    	                            ],
 		    	                            
 		    	                            [
-		    	                                { text: '<%=++snCount %>', style: 'tableData', alignment: 'center' },
+		    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
 		    	                                { text: 'Specification Parameter', style: 'tableData' },
 		    	                                { text: '<%=obj1[5]!=null?obj1[5]:"-" %>', style: 'tableData' },
 		    	                            ],
 		    	                            
 		    	                            [
-		    	                                { text: '<%=++snCount %>', style: 'tableData', alignment: 'center' },
+		    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
 		    	                                { text: 'Specification Unit', style: 'tableData' },
 		    	                                { text: '<%=obj1[6]!=null?obj1[6]:"-" %>', style: 'tableData' },
 		    	                            ],
 		    	                            
 		    	                            [
-		    	                                { text: '<%=++snCount %>', style: 'tableData', alignment: 'center' },
+		    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
 		    	                                { text: 'Specification Value', style: 'tableData' },
 		    	                                { text: '<%=obj1[9]!=null?obj1[9]:"-" %>', style: 'tableData' },
 		    	                            ],
 		    	                            [
-		    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
+		    	                                { text: '<%= ++snCount %>.', style: 'tableData',alignment: 'center' },
 		    	                                { text: 'Maximum Value', style: 'tableData' },
 		    	                                { text: '<%=obj1[11]!=null?obj1[11]:"-" %>', style: 'tableData' },
 		    	                            ],
 		    	                            [
-		    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
+		    	                                { text: '<%= ++snCount %>.', style: 'tableData',alignment: 'center' },
 		    	                                { text: 'Minimum Value', style: 'tableData' },
 		    	                                { text: '<%=obj1[12]!=null?obj1[12]:"-" %>', style: 'tableData' },
 		    	                            ],
 		    	                            [
-		    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
+		    	                                { text: '<%= ++snCount %>.', style: 'tableData',alignment: 'center' },
 		    	                                { text: 'Linked Sub-Systems', style: 'tableData' },
 		    	                                { text: '<%if(obj1[10]!=null) { String [] a=obj1[10].toString().split(","); for(String s:a){ %> <%=productTreeList.stream().filter(e->e[0].toString().equalsIgnoreCase(s)).map(e->e[2].toString()).collect(Collectors.joining("")) %> \n <%}}else{ %> - <%} %>', style: 'tableData' },
 		    	                            ],
@@ -1688,7 +1694,7 @@ function DownloadDocPDF(){
 
          // Hide the loading spinner
            document.getElementById('loadingOverlay').style.display='none';
-        
+           window.close();
      });
 }
 
@@ -1806,15 +1812,17 @@ function generateRotatedTextImage(text) {
 
 <%if(isPdf!=null && isPdf.equalsIgnoreCase("Y")) {%>
 $( document ).ready(function(){
+	// Hide the current JSP page immediately after opening the PDF
+	document.body.style.display = "none";
+	document.body.style.display="block"
+		 document.body.innerHTML = '<div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white; font-size: 20px; font-weight: bold;">'+
+		    '<div class="spinner" style="border: 4px solid rgba(255, 255, 255, 0.3); border-top: 4px solid white; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px;"></div>'+
+		   ' Please wait while we are generating the PDF...</div>'
 	DownloadDocPDF();
 	/* window.close(); */
 	
-	// Hide the current JSP page immediately after opening the PDF
-	document.body.style.display = "none";
-	
-	setTimeout(function () {
-        window.close();
-    }, 5000); // Adjust the delay time as needed
+
+	// Adjust the delay time as needed
 });
 <%} %>
 </Script>

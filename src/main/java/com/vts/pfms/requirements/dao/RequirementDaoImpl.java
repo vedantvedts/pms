@@ -25,10 +25,12 @@ import com.vts.pfms.requirements.model.SpecsInitiation;
 import com.vts.pfms.requirements.model.TestAcceptance;
 import com.vts.pfms.requirements.model.TestApproach;
 import com.vts.pfms.requirements.model.TestDetails;
+import com.vts.pfms.requirements.model.TestInstrument;
 import com.vts.pfms.requirements.model.TestPlanInitiation;
 import com.vts.pfms.requirements.model.TestPlanMaster ;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.model.TestScopeIntro;
+import com.vts.pfms.requirements.model.TestSetupMaster;
 import com.vts.pfms.requirements.model.TestTools;
 import com.vts.pfms.requirements.model.VerificationData;
 
@@ -1497,6 +1499,61 @@ public class RequirementDaoImpl implements RequirementDao {
 			e.printStackTrace();
 			return new ArrayList<SpecificationTypes>();
 		}
+	}
+	
+	
+	@Override
+	public List<TestSetupMaster> getTestSetupMaster() throws Exception {
+	
+		try {
+			Query query = manager.createQuery("FROM TestSetupMaster");
+			return (List<TestSetupMaster>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+	}
+	
+	@Override
+	public List<TestInstrument> getTestInstrument() throws Exception {
+		try {
+			Query query = manager.createQuery("FROM TestInstrument");
+			return (List<TestInstrument>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+	}
+	
+	@Override
+	public long setTestInstrument(TestInstrument t) throws Exception {
+		manager.persist(t);
+		manager.flush();
+		
+		return t.getInstrumentId();
+				
+	}
+	
+	@Override
+	public long addTestSetupMaster(TestSetupMaster tp) throws Exception {
+		
+		manager.persist(tp);
+		manager.flush();
+		
+		return tp.getSetupId();
+				
+	}
+	
+	@Override
+	public TestSetupMaster getTestSetupMasterById(Long setUpid) throws Exception {
+		
+		try {
+			return manager.find(TestSetupMaster.class, setUpid);
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getTestSetupMasterById "+e);
+			return null;
+	}
 	}
 
 }

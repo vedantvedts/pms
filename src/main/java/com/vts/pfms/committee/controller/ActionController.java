@@ -116,6 +116,7 @@ import com.vts.pfms.mail.MailConfigurationDto;
 import com.vts.pfms.mail.MailService;
 import com.vts.pfms.milestone.dto.MileEditDto;
 import com.vts.pfms.timesheet.service.TimeSheetService;
+import com.vts.pfms.utils.InputValidator;
 import com.vts.pfms.utils.PMSFileUtils;
 import com.vts.pfms.utils.PMSLogoUtil;
 
@@ -341,6 +342,12 @@ public class ActionController {
 		logger.info(new Date() +"Inside ActionSubmit.htm "+UserId);	
 		try {
 
+			if(InputValidator.isContainsHTMLTags(req.getParameter("ActionItem"))) {
+				//redir.addAttribute("resultfail", "Action Item should not contain HTML elements !");
+				return  redirectWithError(redir,"ActionLaunch.htm","Action Item should not contain HTML elements !");
+			}
+			
+			
 			ActionMainDto mainDto=new ActionMainDto();
 			
 			mainDto.setMainId(req.getParameter("MainActionId"));
@@ -496,6 +503,24 @@ public class ActionController {
 		try {
 			
 			
+			String ccmActionFlag = req.getParameter("ccmActionFlag");
+			if(ccmActionFlag!=null && ccmActionFlag.equalsIgnoreCase("Y")) {
+				redir.addAttribute("committeeId", req.getParameter("committeeId"));
+				redir.addAttribute("tabName", req.getParameter("tabName"));
+				
+				return "redirect:/CCMPresentation.htm";
+			}else {
+				redir.addFlashAttribute("ActionMainId", req.getParameter("ActionMainId"));
+				redir.addFlashAttribute("ActionAssignId", req.getParameter("ActionAssignId"));
+				redir.addFlashAttribute("Empid", ((Long) ses.getAttribute("EmpId")).toString());
+				redir.addFlashAttribute("flag", req.getParameter("flag"));
+				redir.addFlashAttribute("projectid", req.getParameter("projectid"));
+			}
+			
+			if(InputValidator.isContainsHTMLTags(req.getParameter("Remarks"))) {
+				return redirectWithError(redir, "ActionSubLaunchRedirect.htm", "Remarks should not contain HTML Elements !");
+			}
+			
 			
 			ActionSubDto subDto=new ActionSubDto();
 			subDto.setLabCode(labCode);
@@ -515,19 +540,7 @@ public class ActionController {
 				redir.addAttribute("resultfail", "Action Update Unsuccessful");
 			}
 			
-			String ccmActionFlag = req.getParameter("ccmActionFlag");
-			if(ccmActionFlag!=null && ccmActionFlag.equalsIgnoreCase("Y")) {
-				redir.addAttribute("committeeId", req.getParameter("committeeId"));
-				redir.addAttribute("tabName", req.getParameter("tabName"));
-				
-				return "redirect:/CCMPresentation.htm";
-			}else {
-				redir.addFlashAttribute("ActionMainId", req.getParameter("ActionMainId"));
-				redir.addFlashAttribute("ActionAssignId", req.getParameter("ActionAssignId"));
-				redir.addFlashAttribute("Empid", ((Long) ses.getAttribute("EmpId")).toString());
-				redir.addFlashAttribute("flag", req.getParameter("flag"));
-				redir.addFlashAttribute("projectid", req.getParameter("projectid"));
-			}
+		
 			
 		}
 		catch (Exception e) {
@@ -853,6 +866,17 @@ public class ActionController {
 		 	String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside CloseSubmit.htm "+UserId);		
 			try { 
+				
+				if(InputValidator.isContainsHTMLTags(req.getParameter("Remarks"))) {
+					redir.addAttribute("ActionPath", req.getParameter("ActionPath"));
+					redir.addAttribute("ActionAssignId", req.getParameter("ActionAssignId"));
+					redir.addAttribute("ActionMainId", req.getParameter("ActionMainId"));
+					redir.addAttribute("sub", req.getParameter("sub"));
+					
+					return redirectWithError(redir, "CloseAction.htm", "Remarks should not contain HTML elements!");
+				}
+				
+				
 				
 				String levelcount = req.getParameter("LevelCount");
 				long count = service.ActionClosed(req.getParameter("ActionMainId"),req.getParameter("Remarks"), UserId,req.getParameter("ActionAssignId") ,levelcount);
@@ -2558,6 +2582,11 @@ public class ActionController {
 		logger.info(new Date() +"Inside ActionEditSubmit.htm "+UserId);	
 		int count =0;
 		try {
+			if(InputValidator.isContainsHTMLTags(req.getParameter("actionitem"))) {
+				//redir.addAttribute("resultfail", "Action Item should not contain HTML elements !");
+				return  redirectWithError(redir,"ActionLaunch.htm","Action Item should not contain HTML elements !");
+			}
+			
 			
 			ActionMain main=new ActionMain();
 			main.setActionMainId(Long.parseLong(req.getParameter("actionmainid")));
@@ -3436,6 +3465,18 @@ public class ActionController {
 	 		logger.info(new Date() +"Inside RfaAEditSubmit.htm "+UserId);
 			try {
 				
+				if(InputValidator.isContainsHTMLTags(req.getParameter("statement"))) {
+					redir.addAttribute("Did",req.getParameter("rfaid"));
+					
+					return redirectWithError(redir, "RfaActionEdit.htm", "Statement should not contain HTML tag!");
+					}
+				
+				if(InputValidator.isContainsHTMLTags(req.getParameter("reference"))) {
+					redir.addAttribute("Did",req.getParameter("rfaid"));
+					
+					return redirectWithError(redir, "RfaActionEdit.htm", "Statement should not contain HTML tag!");
+					}
+				
 				String projectCode=req.getParameter("projectCode");
 				String rfano=req.getParameter("rfano");
 				String rfadate=req.getParameter("rfadate");
@@ -3499,6 +3540,14 @@ public class ActionController {
 			//	String rfano=req.getParameter("rfano");
 				String rfanotype=req.getParameter("rfanotype");
 				String [] CCEmpName=req.getParameterValues("CCEmpName");
+				
+				if(InputValidator.isContainsHTMLTags(statement)) {
+					return redirectWithError(redir, "RfaAction.htm", "Probelem statement should not contain HTML tags !");
+				}
+				
+				if(InputValidator.isContainsHTMLTags(reference)) {
+					return redirectWithError(redir, "RfaAction.htm", "reference should not contain HTML tags !");
+				}
 				
 				RfaActionDto rfa = new RfaActionDto();
 				
@@ -4110,6 +4159,18 @@ public class ActionController {
 				String observation = req.getParameter("observation");
 				String clarification = req.getParameter("clarification");
 				String action = req.getParameter("Rfaaction");
+				
+				if(InputValidator.isContainsHTMLTags(observation)) {
+					
+					return redirectWithError(redir, "RfaInspection.htm", "Observation should not contain HTML tag!");
+				}
+				
+				if(InputValidator.isContainsHTMLTags(action)) {
+					
+					return redirectWithError(redir, "RfaInspection.htm", "Action should not contain HTML tag!");
+				}
+				
+				
 				
 				if(service.RfaAssignAjax(rfaid)==null) {
 					
@@ -5321,4 +5382,10 @@ public class ActionController {
 			
 			return json.toJson(count);
 	   }
+	   
+	   
+		private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
+		    redir.addAttribute("resultfail", message);
+		    return "redirect:/"+redirURL;
+		}
 }

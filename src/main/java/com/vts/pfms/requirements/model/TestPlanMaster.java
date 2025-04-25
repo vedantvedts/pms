@@ -47,7 +47,7 @@ public class TestPlanMaster {
 	private String ModifiedBy;
 	private String ModifiedDate;
 	private String TimeType;
-	
+	private String LinkedSpecids;
 
 
 }
