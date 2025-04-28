@@ -428,7 +428,7 @@ ul, #myUL {
 												</select>
 											</td>	
 											<td  width="10%">
-												<input type="number" name="duration" class="form-control item_name" min="1"  placeholder="Minutes " value="<%=obj[12] %>" required />
+												<input type="number" name="duration" class="form-control item_name numeric-only" min="1"  placeholder="Minutes " value="<%=obj[12] %>" required />
 											</td>
 											<td style="text-align: left; width: 3%;">
 												<table>

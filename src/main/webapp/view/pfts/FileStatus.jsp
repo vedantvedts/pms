@@ -741,7 +741,7 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 		                      <label class="control-label">Demand No.</label>
 		                   </div>
 		                    <div class="col-md-4">
-			                    <input  class="form-control"  name="demandno" id="demandno"  required="required"  placeholder="Enter Demand Number">
+			                    <input  class="form-control description-input"  name="demandno" id="demandno"  required="required"  placeholder="Enter Demand Number">
 		                        <span id="demandMessage"></span>
 		                    </div>
 		             </div>

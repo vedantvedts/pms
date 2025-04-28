@@ -78,6 +78,7 @@ import com.vts.pfms.committee.service.CommitteeService;
 import com.vts.pfms.login.PFMSCCMData;
 import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.roadmap.service.RoadMapService;
+import com.vts.pfms.utils.InputValidator;
 import com.vts.pfms.utils.PMSLogoUtil;
 
 @Controller
@@ -295,12 +296,18 @@ public class CCMController {
 			String ccmScheduleId = req.getParameter("ccmScheduleId");
 			String meetingDate = req.getParameter("meetingDate");
 			String action = req.getParameter("action");
-			
+			String meetingVenue=req.getParameter("meetingVenue");
+			if(InputValidator.isContainsHTMLTags(meetingVenue)) {
+				redir.addAttribute("ccmScheduleId", ccmScheduleId);
+				redir.addAttribute("tabId", req.getParameter("tabId"));
+				redir.addAttribute("monthyear", req.getParameter("monthyear"));
+				return redirectWithError(redir, "CCMSchedule.htm", "'Venue' should not contain HTML Tags.!");
+			}
 			CommitteeSchedule schedule = service.getCCMScheduleById(ccmScheduleId);
 			
 			schedule.setScheduleDate(new java.sql.Date(rdf.parse(meetingDate.substring(0,10)).getTime()));
 			schedule.setScheduleStartTime(meetingDate.substring(11,16));
-			schedule.setMeetingVenue(req.getParameter("meetingVenue"));
+			schedule.setMeetingVenue(meetingVenue);
 			schedule.setModifiedBy(UserId);
 			schedule.setModifiedDate(sdtf.format(new Date()));
 			
@@ -335,11 +342,19 @@ public class CCMController {
 	    	String ccmScheduleId = req.getParameter("ccmScheduleId");
 	    	if(ccmScheduleId.equalsIgnoreCase("0")) {
 				String meetingDate = req.getParameter("meetingDate");
-				
+				String meetingVenue=req.getParameter("meetingVenue");
+				if(InputValidator.isContainsHTMLTags(meetingVenue)) {
+					redir.addAttribute("ccmScheduleId", ccmScheduleId);
+					redir.addAttribute("tabId", req.getParameter("tabId"));
+					redir.addAttribute("monthyear", req.getParameter("monthyear"));
+					redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+					redir.addAttribute("committeeId", req.getParameter("committeeId"));
+					return redirectWithError(redir, "CCMSchedule.htm", "'Venue' should not contain HTML Tags.!");
+				}
 				CommitteeSchedule schedule = new CommitteeSchedule();
 				schedule.setScheduleDate(new java.sql.Date(rdf.parse(meetingDate.substring(0,10)).getTime()));
 				schedule.setScheduleStartTime(meetingDate.substring(11,16));
-				schedule.setMeetingVenue(req.getParameter("meetingVenue"));
+				schedule.setMeetingVenue(meetingVenue);
 				schedule.setLabCode(labcode);
 				schedule.setCommitteeId(Long.parseLong(req.getParameter("committeeId")));
 				schedule.setCommitteeMainId(Long.parseLong(req.getParameter("committeeMainId")));
@@ -367,7 +382,7 @@ public class CCMController {
 	        if (result != 0) {
 	            redir.addAttribute("result", "Agenda Details submitted successfully");
 	        } else {
-	            redir.addAttribute("resultfail", "Agenda Details submission unsuccessful");
+	            redir.addAttribute("resultfail", "Agendasc Details submission unsuccessful");
 	        }
 
 	        redir.addAttribute("ccmScheduleId", ccmScheduleId);
@@ -1907,5 +1922,8 @@ public class CCMController {
 			return "static/Error";
 		}
 	}
-	
+	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
+	    redir.addAttribute("resultfail", message);
+	    return "redirect:/"+redirURL;
+	}
 }

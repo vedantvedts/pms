@@ -62,6 +62,7 @@ import com.vts.pfms.pfts.model.PftsFileMilestoneRev;
 import com.vts.pfms.pfts.model.PftsFileOrder;
 import com.vts.pfms.pfts.service.PFTSService;
 import com.vts.pfms.print.model.ProjectOverallFinance;
+import com.vts.pfms.utils.InputValidator;
 
 @Controller
 public class PFTSController {
@@ -522,7 +523,17 @@ public class PFTSController {
 					String intiDate=request.getParameter("intiDate");
 					String fileId=request.getParameter("fileId");
 					
-				
+					if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(itemNomenclature)) {
+						return redirectWithError(redir, "ProcurementStatus.htm", "'Item Nomenclature' must contain only Alphabets and Numbers");
+					}
+					
+					if(!InputValidator.isContainsNumberOnly(estimatedCost)) {
+						return redirectWithError(redir, "ProcurementStatus.htm", "'Estimated Cost' must contain only Numbers");
+					}
+					
+					if(InputValidator.isContainsHTMLTags(remarks)) {
+						return redirectWithError(redir, "ProcurementStatus.htm", "'Remarks' should not contain HTML Tags.!");
+					}
 					 PFTSFile pf = new PFTSFile();
 					 pf.setProjectId(Long.parseLong(projectId));
 					 pf.setItemNomenclature(itemNomenclature);
@@ -674,6 +685,18 @@ public class PFTSController {
 				String estimatedcost = req.getParameter("estimatedcost");
 				String itemname = req.getParameter("itemname");
 				String demandType = req.getParameter("demandType");
+					
+				if(!InputValidator.isValidCapitalsAndSmallsAndNumeric(demandNo)) {
+					return redirectWithError(redir, "ProcurementStatus.htm", "'Demand Number' must contain only Alphabets and Numbers");
+				}
+				
+				if(!InputValidator.isValidCapitalsAndSmallsAndNumeric(estimatedcost)) {
+					return redirectWithError(redir, "ProcurementStatus.htm", "'Estimated Cost' must contain only Alphabets and Numbers");
+				}
+				
+				if(InputValidator.isContainsHTMLTags(itemname)) {
+					return redirectWithError(redir, "ProcurementStatus.htm", "'Item Name' should not contain HTML Tags");
+				}
 				
 				List<Object[]> projectlist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 				
@@ -752,6 +775,10 @@ public class PFTSController {
 	             String fileId=req.getParameter("fileId");
 	             String remarks=req.getParameter("procRemarks");
 	             String flag=req.getParameter("flag");
+	             
+	             if(InputValidator.isContainsHTMLTags(remarks)) {
+	 				return redirectWithError(redir, "ProcurementStatus.htm", "'Remarks' should not contain HTML tags");
+	 			}
 	        
 	             long result=0l;
 	             result =service.upadteDemandFile(fileId,statusId,eventDate,remarks);
@@ -894,6 +921,11 @@ public class PFTSController {
 				String demanddate = req.getParameter("demanddate");
 				String estimatedcost = req.getParameter("estimatedcost");
 				String itemname = req.getParameter("itemname");
+				
+				if(InputValidator.isContainsHTMLTags(itemname)) {
+					return redirectWithError(redir, "ProcurementStatus.htm", "'Item Name' should not contains HTML tags");
+				}
+				
 				
 				List<Object[]> projectlist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 				
@@ -1517,6 +1549,11 @@ public class PFTSController {
 				return convertedgson.toJson(procurementMilestoneDetails);
 			}
 			    return convertedgson.toJson("-1");
+		}
+		
+		private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
+		    redir.addAttribute("resultfail", message);
+		    return "redirect:/"+redirURL;
 		}
 }
 

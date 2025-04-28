@@ -81,6 +81,7 @@ import com.vts.pfms.requirements.model.TestSetupMaster;
 import com.vts.pfms.requirements.model.TestTools;
 import com.vts.pfms.requirements.model.VerificationData;
 import com.vts.pfms.requirements.service.RequirementService;
+import com.vts.pfms.utils.InputValidator;
 import com.vts.pfms.utils.PMSLogoUtil;
 
 import jakarta.servlet.ServletOutputStream;
@@ -4583,6 +4584,51 @@ public class RequirementsController {
 			String action = req.getParameter("action");
 			TestPlanMaster tp = action.equalsIgnoreCase("update") ?service.getTestPlanById(Long.parseLong(TestMasterId)):new TestPlanMaster();
 			
+			System.out.println("action----"+action);
+			
+			String TestName=req.getParameter("name");
+			String Objective=req.getParameter("Objective");
+			String Methodology=req.getParameter("Methodology");
+			String Constraints=req.getParameter("Constraints");
+			String Iterations=req.getParameter("Iterations");
+			String Schedule=req.getParameter("Schedule");
+			String PassFailCriteria=req.getParameter("PassFailCriteria");
+			String Remarks=req.getParameter("remarks");
+			
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(TestName)) {
+				return redirectWithError(redir, "TestPlanMaster.htm", "'Test Name' must contain only Alphabets and Numbers");
+			}
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(Objective)) {
+				return redirectWithError(redir, "TestPlanMaster.htm", "'Objective' must contain only Alphabets and Numbers");
+			}
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(Methodology)) {
+				return redirectWithError(redir, "TestPlanMaster.htm", "'Methodology' must contain only Alphabets and Numbers");
+			}
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(Constraints)) {
+				return redirectWithError(redir, "TestPlanMaster.htm", "'Constraints' must contain only Alphabets and Numbers");
+			}
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(Iterations)) {
+				return redirectWithError(redir, "TestPlanMaster.htm", "'Iterations' must contain only Alphabets and Numbers");
+			}
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(Schedule)) {
+				return redirectWithError(redir, "TestPlanMaster.htm", "'Schedule' must contain only Alphabets and Numbers");
+			}
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(PassFailCriteria)) {
+				return redirectWithError(redir, "TestPlanMaster.htm", "'Criteria' must contain only Alphabets and Numbers");
+			}
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(Remarks)) {
+				return redirectWithError(redir, "TestPlanMaster.htm", "'Remarks' must contain only Alphabets and Numbers");
+			}
+			tp.setName(TestName);
+			tp.setObjective(Objective);
+			tp.setMethodology(Methodology);
+			tp.setConstraints(Constraints);
+			tp.setEstimatedTimeIteration(req.getParameter("EstimatedTimeIteration"));
+			tp.setIterations(Iterations);
+			tp.setSchedule(Schedule);
+			tp.setPass_Fail_Criteria(PassFailCriteria);
+			tp.setStageApplicable(req.getParameter("StageApplicable"));
+
 			StringBuilder toolSB= new StringBuilder("");
 			StringBuilder stageSb= new StringBuilder("");
 			StringBuilder linkedSpecSb= new StringBuilder("");
@@ -4624,12 +4670,13 @@ public class RequirementsController {
 			tp.setSchedule(req.getParameter("Schedule"));
 			tp.setPass_Fail_Criteria(req.getParameter("PassFailCriteria"));
 			tp.setStageApplicable(stageSb.toString());
+
 			tp.setPreConditions(req.getParameter("PreConditions"));
 			tp.setPostConditions(req.getParameter("PostConditions"));
 			tp.setSafetyRequirements(req.getParameter("SafetyReq"));
 			tp.setDescription(req.getParameter("Description"));
 			tp.setPersonnelResources(req.getParameter("PersonnelResources"));
-			tp.setRemarks(req.getParameter("remarks"));;
+			tp.setRemarks(Remarks);
 			tp.setTimeType(req.getParameter("TimeType"));
 			tp.setLinkedSpecids(linkedSpecSb.toString());			
 			if(TestMasterId!=null) {
@@ -4897,5 +4944,10 @@ public class RequirementsController {
 			logger.error(new Date()+ " Inside SpecificationMasterDelete.htm "+userId);
 			return "static/Error";
 		}
+	}
+	
+	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
+	    redir.addAttribute("resultfail", message);
+	    return "redirect:/"+redirURL;
 	}
 }

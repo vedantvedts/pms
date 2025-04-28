@@ -99,7 +99,7 @@ if(ses1!=null){
 						<div class="col-md-6">
 							<div class="form-group">
 								<label class="control-label">Name <span class="mandatory" style="color: red; font-weight: normal;">*</span></label>
-								<input type="text" class="form-control form-control" name="DocumentName" style="font-size: 15px;" id="DocumentName" required="required">
+								<input type="text" class="form-control form-control alphanum-no-leading-space" name="DocumentName" style="font-size: 15px;" id="DocumentName" required="required">
 							</div>
 						</div>
 						<div class="col-md-6">
@@ -113,7 +113,7 @@ if(ses1!=null){
 						<div class="col-md-12">
 							<div class="form-group">
 								<label class="control-label">Description<span class="mandatory" style="color: red; font-weight: normal;">*</span></label>
-								<textarea class="form-control form-control" rows="3" cols="50" id="Description" name="Description" required="required" maxlength="2000"></textarea>
+								<textarea class="form-control form-control description-input" rows="3" cols="50" id="Description" name="Description" required="required" maxlength="2000"></textarea>
 								<!-- <input type="text" class="form-control form-control" type="text" id="Description" name="Description" style="font-size: 15px;" required="required" /> -->
 							</div>
 						</div>

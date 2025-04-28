@@ -106,13 +106,13 @@ List<Object[]> tdheadlist=(List<Object[]>)request.getAttribute("tdheadlist");
                     		<div class="col-md-3">
                         		<div class="form-group">
                             		<label class="control-label">TD Code</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control"  type="text" name="tCode" id="tdCode" required="required" maxlength="10" style="font-size: 15px;"> 
+                              		<input  class="form-control form-control alphanum-only"  type="text" name="tCode" id="tdCode" required="required" maxlength="3" style="font-size: 15px;"> 
                         		</div>
                     		</div>
          					<div class="col-md-3">
                         		<div class="form-group">
                             		<label class="control-label">TD Name</label><span class="mandatory">*</span>
-                            		<input  class="form-control form-control"  type="text" name="tName" id="tdName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize; width: 80%;" > 
+                            		<input  class="form-control form-control alphanum-no-leading-space"  type="text" name="tName" id="tdName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize; width: 80%;" > 
                         		</div>
                     		</div>
                     		<div class="col-md-5">

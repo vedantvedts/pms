@@ -66,6 +66,7 @@ import com.vts.pfms.documents.model.PfmsIRSDocument;
 import com.vts.pfms.documents.service.DocumentsService;
 import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.requirements.service.RequirementService;
+import com.vts.pfms.utils.InputValidator;
 import com.vts.pfms.utils.PMSLogoUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -128,10 +129,24 @@ public class DocumentsController {
 			String Description=req.getParameter("Description");
 			String DocumentFrom=req.getParameter("DocumentFrom");
 			System.out.println("DocumentFrom:"+DocumentFrom);
+			System.err.println("***********"+Description+"*****");
+			
+			  if(!InputValidator.isValidCapitalsAndSmallsAndNumeric(DocumentName)) {
+			  System.err.println("******Error in Documentname*****"); 
+			  return redirectWithError(redir, "StandardDocuments.htm","'Document Name' must contain only Alphabets and Numbers"); 
+			  }
+			  
+			  if(!InputValidator.isContainsDescriptionPattern(Description)) {
+			  System.err.println("***********Error in Description*****"); 
+			  return redirectWithError(redir, "StandardDocuments.htm","'Description' may only contain letters, numbers, and @ . , ( ) - & (Spaces allowed)'");
+			  }
+			 
 			StandardDocumentsDto dto=new StandardDocumentsDto();
 			dto.setDocumentName(DocumentName);
 			dto.setDescription(Description);
+			 System.err.println("Before Attachment");
 			dto.setAttachment(Attachment);
+			System.err.println("After Attachment");
 			dto.setCreatedBy(UserId);
 			dto.setCreatedDate(sdtf.format(new Date()));
 			dto.setIsActive(1);
@@ -3199,7 +3214,10 @@ public class DocumentsController {
 		}
 
 	}
-	
+	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
+	    redir.addAttribute("resultfail", message);
+	    return "redirect:/"+redirURL;
+	}
 	/* ************************************************ IDD Document End ***************************************************** */
 	
 }

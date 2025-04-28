@@ -48,10 +48,16 @@ document.addEventListener('DOMContentLoaded', function () {
     if (el.classList.contains('email-input')) {
       el.value = el.value.replace(/[^a-zA-Z0-9@._-]/g, '');
     }
-    // description-> Only allow Letters (a-z), Numbers (0-9) and , ., ,, -, (, ),
+    // description-> Only allow Letters (a-z), Numbers (0-9) and , ., ,, -, (, ),/,+
     if (el.classList.contains('description-input')) {
-      el.value = el.value.replace(/[^a-zA-Z0-9@.,()\-& ]/g, '');
+      el.value = el.value.replace(/[^a-zA-Z0-9@.,()\-&\/+ ]/g, '');
     }
+
+	//referenceNo-> only Letters (a-z), Numbers (0-9) and -,'_'
+	if (el.classList.contains('reference_no')) {
+	     el.value = el.value.replace(/[^A-Za-z0-9 \-\_]/g, '').replace(/^ +/, '');
+	   }
+
     // Validation for 2 digits after the decimal point
     if (el.classList.contains('decimal-format')) {
        el.value = el.value.replace(/[^0-9.]/g, '')                

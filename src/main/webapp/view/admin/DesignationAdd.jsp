@@ -69,9 +69,9 @@
 									<div class="form-group">
 										<label>Designation Code: <span class="mandatory"
 											style="color: red;">*</span></label> <input
-											class="form-control form-control" type="text"
+											class="form-control form-control alphanum-no-leading-space" type="text"
 											name="desigcode" id="desigcode" required="required"
-											maxlength="10" style="font-size: 15px;">
+											maxlength="10" style="font-size: 15px;width: 80%;">
 									</div>
 								</div>
 
@@ -79,7 +79,7 @@
 									<div class="form-group">
 										<label>Designation :<span class="mandatory"
 											style="color: red;">*</span>
-										</label> <input class="form-control" type="text" name="designation"
+										</label> <input class="form-control alphanum-no-leading-space" type="text" name="designation"
 											id="designation" required="required" maxlength="100"
 											style="font-size: 15px; width: 80%;">
 									</div>
@@ -89,8 +89,8 @@
 									<div class="form-group">
 										<label>Limit :<span class="mandatory"
 											style="color: red;">*</span></label> <input
-											class="form-control form-control" type="number" name="limit"
-											required="required" style="font-size: 15px; width: 80%;">
+											class="form-control form-control numeric-only" type="number" name="limit"
+											required="required" style="font-size: 15px; width: 100%;">
 									</div>
 								</div>
 

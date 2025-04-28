@@ -128,13 +128,13 @@ label {
  String ses1=(String)request.getParameter("resultfail");
 	if(ses1!=null){
 	%><div align="center">
-		<div class="alert alert-danger" role="alert">
+		<div class="alert alert-danger" role="alert" style="width: 100%">
 			<%=ses1 %>
 		</div>
 	</div>
 	<%}if(ses!=null){ %>
 	<div align="center">
-		<div class="alert alert-success" role="alert">
+		<div class="alert alert-success" role="alert" style="width: 100%">
 			<%=ses %>
 		</div>
 	</div>

@@ -17,6 +17,7 @@ public class InputValidator {
     private static final Pattern withPasswordPattern = Pattern.compile("^[6-9]\\d{9}$");
     private static final Pattern withHTMLTagPattern = Pattern.compile("<[a-zA-Z][^>]*>");
     private static final Pattern withNumericPattern = Pattern.compile("^[0-9]+$");
+    private static final Pattern withDescriptionPattern = Pattern.compile("[a-zA-Z0-9@.,()\\-/& ]+");
     private static final Pattern withDecimalFormatPattern = Pattern.compile("^\\d+(\\.\\d{1,2})?$");
 
 
@@ -68,7 +69,13 @@ public class InputValidator {
     public static boolean isContainsNumberOnly(String input) {
     	return match(input, withNumericPattern);
     }
+
+    public static boolean isContainsDescriptionPattern(String input) {
+        return  match(input, withDescriptionPattern);
+    }
+    
     public static boolean isDecimalFormat(String input) {
     	return match(input, withDecimalFormatPattern);
+
     }
 }

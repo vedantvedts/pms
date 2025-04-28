@@ -332,7 +332,7 @@ String ses=(String)request.getParameter("result");
 							<label class="control-label">Reference No.</label>
 							
 												
-							<input type="text" class="form-control"   name="Reference No." value="<%= committeedata[11] != null ? committeedata[11] : "--" %>" >
+							<input type="text" class="form-control reference_no"   name="Reference No." value="<%= committeedata[11] != null ? committeedata[11] : "--" %>" >
 							
 							</div>
 							</div>

@@ -167,14 +167,14 @@ List<Object[]> DivisionHeadListAdd=(List<Object[]>)request.getAttribute("Divisio
 <div class="col-md-3">
          <div class="form-group">
 				<label >Division Code:<span class="mandatory" style="color: red;">*</span></label>
-				<input  class="form-control form-control"  type="text" name="dCode" id="divisionCode" required="required" maxlength="3" style="font-size: 15px;"> 
+				<input  class="form-control form-control alphanum-only"  type="text" name="dCode" id="divisionCode" required="required" maxlength="3" style="font-size: 15px;"> 
 	     </div>
 </div>		
 
 <div class="col-md-3">
 		<div class="form-group">
                  <label>Division Name:<span class="mandatory" style="color: red;">*</span></label>
-                  <input  class="form-control form-control"  type="text" name="dName" id="divisionName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize; width: 80%;" > 
+                  <input  class="form-control form-control alphanum-no-leading-space"  type="text" name="dName" id="divisionName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize; width: 80%;" > 
 		</div>
 </div>
 
@@ -215,7 +215,7 @@ List<Object[]> DivisionHeadListAdd=(List<Object[]>)request.getAttribute("Divisio
 <div class="col-md-3">
 		<div class="form-group">
                  <label>Division Short Name:<span class="mandatory" style="color: red;">*</span></label>
-                  <input  class="form-control form-control"  type="text" name="divisionShortName" id="divisionShortName" placeholder="Division Short Name" id="divisionShortName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize;" > 
+                  <input  class="form-control form-control alphanum-no-leading-space"  type="text" name="divisionShortName" id="divisionShortName" placeholder="Division Short Name" id="divisionShortName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize;" > 
 		</div>
 </div>
 </div>

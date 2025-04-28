@@ -323,7 +323,7 @@ div {
 						 
 									<span  style="font-size:14px" ><%=Sub0Count %>.</span>
 									<span  style="font-size:14px" id="span_<%=obj[0]%>"> <%=obj[3] %> &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj[0] %>')"></i> </span>	
-						          	<input type="text" name="levelname" class="hiddeninput" id="input_<%=obj[0]%>" value="<%=obj[3] %>" style="display: none;" maxlength="255">
+						          	<input type="text" name="levelname" class="hiddeninput alphanum-no-leading-space" id="input_<%=obj[0]%>" value="<%=obj[3] %>" style="display: none;" maxlength="255">
 						          	<button type="submit" class="btn btn-sm btn-info editbtn" style="display: none;" id="btn_<%=obj[0]%>" formaction="ProjectModuleNameEdit.htm" formmethod="post" onclick="return confirm('Are You Sure To Edit ? ');">UPDATE</button>
 						          	<button type="button" class="btnx" style="color: red;display: none;" id="btnx_<%=obj[0] %>" onclick="moduleeditdisable('<%=obj[0] %>')"><i class="fa fa-times fa-lg " aria-hidden="true"  ></i></button>
 						          	<input type="hidden" name="filerepmasterid" value="<%=obj[0]%>">
@@ -735,7 +735,7 @@ div {
 						          		
 						          		<div style="margin-top:-20px; margin-left:25px;">
 						          		
-						          			<input class="form-control" type="text" name="MasterSubName"  required="required" maxlength="255" style="width:150px; height:25px; "> 
+						          			<input class="form-control alphanum-no-leading-space" type="text" name="MasterSubName"  required="required" maxlength="255" style="width:150px; height:25px; "> 
 						          		</div>
 						          		<div style="margin-top:-22px; margin-left: 190px;">
 						          			<input type="submit" name="sub" class="btn btn-info btn-sm"  form="myFormB<%=Sub0Count %>" value="ADD"  style="width:42px; height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
@@ -778,7 +778,7 @@ div {
 						          		<span  style="font-size:14px"><%=Sub0Count %>. </span>
 						          		
 						          		<div style="margin-top:-20px; margin-left:15px;">
-						          			<input class="form-control" type="text" name="MasterName"  required="required" maxlength="255" style="width:150px; height:25px; "> 
+						          			<input class="form-control alphanum-no-leading-space" type="text" name="MasterName"  required="required" maxlength="255" style="width:150px; height:25px; "> 
 						          		</div>
 						          		<div style="margin-top:-22px; margin-left: 180px;">
 						          			<input type="submit" name="sub" class="btn btn-info btn-sm"  form="myForm" value="ADD1"  style="width:42px; height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>

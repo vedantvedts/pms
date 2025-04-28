@@ -643,8 +643,8 @@ public class AdminServiceImpl implements AdminService{
 			
 		} 
 		@Override
-		public int resetPassword(String lid,String UserId) throws Exception {
-			String password="1234";
+		public int resetPassword(String lid,String UserId, String labcode) throws Exception {
+			String password= labcode+"@1234";
 			String newPasword=encoder.encode(password);
 			System.out.println(newPasword);
 			return dao.resetPassword(lid,UserId,newPasword,sdf1.format(new Date()));

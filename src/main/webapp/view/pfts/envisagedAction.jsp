@@ -81,7 +81,7 @@ String value=(String)request.getAttribute("value");
 		                      <span class="mandatory" style="color: #cd0a0a;">*</span></label>
 		                  </div>
 		                  <div class="col-md-10" style="max-width: 75%">
-		                      <input class="form-control"  placeholder="Max 150 Characters" name="itemNomenclature" id="itemNomenclature" maxlength="150" type="text" <%if(itemN!=null){ %>value="<%=itemN %>" <%}%>>
+		                      <input class="form-control alphanum-no-leading-space"  placeholder="Max 150 Characters" name="itemNomenclature" id="itemNomenclature" maxlength="150" type="text" <%if(itemN!=null){ %>value="<%=itemN %>" <%}%>>
 		                  </div>
 		                  </div><br>
 		                  <div class="row">
@@ -90,7 +90,7 @@ String value=(String)request.getAttribute("value");
 		                      <span class="mandatory" style="color: #cd0a0a;">*</span></label>
 		                  </div>
 		                  <div class="col-md-10" style="max-width: 75%">
-		                      <input class="form-control"  placeholder="Max 13 Characters" name="estimatedCost" id="estimatedCost" type="number" onKeyPress="if(this.value.length==13) return false;" <%if(estimatedCost!=null){ %>value="<%=estimatedCost %>" <%} %>>
+		                      <input class="form-control numeric-only"  placeholder="Max 13 Characters" name="estimatedCost" id="estimatedCost" type="number" onKeyPress="if(this.value.length==13) return false;" <%if(estimatedCost!=null){ %>value="<%=estimatedCost %>" <%} %>>
 		                  </div>
 		            </div>
 		            

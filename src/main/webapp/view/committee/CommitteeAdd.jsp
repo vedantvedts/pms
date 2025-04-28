@@ -90,7 +90,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 											Committee Code
 											<span class="mandatory" style="color: red;">*</span>
 										</label>
-										<input class="form-control" type="text" name="committeeshortname" id="committeeshortname" required maxlength="6">
+										<input class="form-control alphanum-only" type="text" name="committeeshortname" id="committeeshortname" required maxlength="6">
 									</div>
 								</div>
 							
@@ -98,7 +98,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 								<div class="col-md-4">
 									<div class="form-group">
 										<label class="control-label">Committee Name<span class="mandatory" style="color: red;">*</span></label>
-										<input class="form-control" type="text" name="committeename" id="committeename" required maxlength="255">
+										<input class="form-control alpha-no-leading-space" type="text" name="committeename" id="committeename" required maxlength="255">
 									</div>
 								</div>
 
@@ -159,7 +159,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 							<div class="col-md-3" style="display: none" id="periodicduration">
 								<div class="form-group">
 									<label class="control-label">Periodic Duration (Days)<span class="mandatory" style="color: red;">*</span></label>
-									<input class="form-control" type="number" min="1" name="periodicduration" id="periodicdurationfield" placeholder="Days">
+									<input class="form-control numeric-only" type="number" min="1" name="periodicduration" id="periodicdurationfield" placeholder="Days">
 								</div>
 							</div>
 							
