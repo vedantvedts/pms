@@ -1153,6 +1153,12 @@ public class ProjectClosureController {
 			String closureId = req.getParameter("closureId");
 			String action = req.getParameter("Action");
 			
+			String remarks = req.getParameter("remarks");
+			
+			if(remarks !=null && !remarks.isEmpty() && InputValidator.isContainsHTMLTags(remarks)){
+						return redirectWithError(redir, "ProjectClosureApprovals.htm", "HTML tags are not permitted.");
+			}
+			
 			ProjectClosure closure = service.getProjectClosureById(closureId);
 			String statusCode = closure.getClosureStatusCode();
 			
@@ -1160,7 +1166,7 @@ public class ProjectClosureController {
 			dto.setClosureId(closureId);
 			dto.setAction(action);
 			dto.setEmpId(EmpId);
-			dto.setRemarks(req.getParameter("remarks"));
+			dto.setRemarks(remarks);
 			dto.setLabcode(labcode);
 			dto.setApproverLabCode(req.getParameter("LabCode"));
 			dto.setApproverEmpId(req.getParameter("approverEmpId"));
