@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,6 +31,7 @@ import com.vts.pfms.fracas.dto.PfmsFracasMainDto;
 import com.vts.pfms.fracas.dto.PfmsFracasSubDto;
 import com.vts.pfms.fracas.model.PfmsFracasAttach;
 import com.vts.pfms.fracas.service.FracasServiceImpl;
+import com.vts.pfms.utils.InputValidator;
 
 @Controller
 public class FracasController {
@@ -42,6 +44,11 @@ public class FracasController {
 	
 	@Value("${ApplicationFilesDrive}")
 	String uploadpath;
+	
+	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
+	    redir.addAttribute("resultfail", message);
+	    return "redirect:/"+redirURL;
+	}
 	
 	@RequestMapping(value = "FracasMainItemsList.htm")
 	public String FracasMainItemsList(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir) //,@RequestPart("FileAttach") MultipartFile[] FileAttach
@@ -114,6 +121,10 @@ public class FracasController {
 		logger.info(new Date() +"Inside FracasMainAddSubmit.htm "+UserId);
 		try
 		{
+			if(InputValidator.isContainsHTMLTags(req.getParameter("fracasitem"))){
+				return redirectWithError(redir, "FracasMainItemsList.htm", "HTML tags are not permitted.");				
+			}
+			
 			PfmsFracasMainDto dto=new PfmsFracasMainDto();
 			dto.setFracasMainAttach(FileAttach);
 			dto.setFracasItem(req.getParameter("fracasitem"));
@@ -219,6 +230,10 @@ public class FracasController {
 		logger.info(new Date() +"Inside FracasAssignSubmit.htm "+UserId);
 		try
 		{
+			if(InputValidator.isContainsHTMLTags(req.getParameter("remarks"))){
+				redir.addFlashAttribute("fracasmainid",req.getParameter("fracasmainid"));
+				return redirectWithError(redir, "FracasAssign.htm", "HTML tags are not permitted.");				
+			}
 			String fracasmainid=req.getParameter("fracasmainid");
 			//Object[] fracasitemdata=service.FracasItemData(fracasmainid);
 						
@@ -299,9 +314,14 @@ public class FracasController {
 		logger.info(new Date() +"Inside FracasSubSubmit.htm "+UserId);
 		try
 		{
+			
 			String labCode  = (String)ses.getAttribute("labcode");
 			String fracasassignid=req.getParameter("fracasassignid");
 			//Object[] fracasitemdata=service.FracasItemData(fracasmainid);
+			if(InputValidator.isContainsHTMLTags(req.getParameter("Remarks"))){
+				redir.addFlashAttribute("fracasassignid",fracasassignid);
+				return redirectWithError(redir, "FracasAssignDetails.htm", "HTML tags are not permitted.");				
+			}
 						
 			PfmsFracasSubDto dto=new PfmsFracasSubDto();
 			dto.setFracasAssignId(fracasassignid);
@@ -410,6 +430,9 @@ public class FracasController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside FracasSendBackSubmit.htm "+UserId);		
 		try {
+			if(InputValidator.isContainsHTMLTags(req.getParameter("Remarks"))){
+				return redirectWithError(redir, "FracasToReviewList.htm", "HTML tags are not permitted.");				
+			}
 			String fracasassignid=req.getParameter("fracasassignid");
 			PfmsFracasAssignDto dto=new PfmsFracasAssignDto();
 			dto.setFracasAssignId(fracasassignid);
@@ -439,6 +462,9 @@ public class FracasController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside FracasCloseSubmit.htm "+UserId);		
 		try {
+			if(InputValidator.isContainsHTMLTags(req.getParameter("Remarks"))){
+				return redirectWithError(redir, "FracasToReviewList.htm", "HTML tags are not permitted.");				
+			}
 			String fracasassignid=req.getParameter("fracasassignid");
 			PfmsFracasAssignDto dto=new PfmsFracasAssignDto();
 			dto.setFracasAssignId(fracasassignid);
@@ -549,6 +575,9 @@ public class FracasController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside FracasMainEditSubmit.htm "+UserId);		
 		try {
+			if(InputValidator.isContainsHTMLTags(req.getParameter("fracasitem"))){
+				return redirectWithError(redir, "FracasMainItemsList.htm", "HTML tags are not permitted.");				
+			}
 			PfmsFracasMainDto dto=new PfmsFracasMainDto();
 			
 			dto.setProjectId(req.getParameter("projectid"));

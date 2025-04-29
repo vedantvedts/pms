@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Stream;
 
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
@@ -87,6 +88,7 @@ import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalDocDistrib;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalDocSumary;
 import com.vts.pfms.projectclosure.model.ProjectClosureTechnicalSection;
 import com.vts.pfms.projectclosure.service.ProjectClosureService;
+import com.vts.pfms.utils.InputValidator;
 import com.vts.pfms.utils.PMSLogoUtil;
 
 import com.vts.pfms.projectclosure.model.ProjectClosureCheckList;
@@ -125,6 +127,11 @@ public class ProjectClosureController {
 	
 	@Autowired
 	PMSLogoUtil LogoUtil;
+	
+	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
+	    redir.addAttribute("resultfail", message);
+	    return "redirect:/"+redirURL;
+	}
 	
 	@RequestMapping(value = "ProjectClosureList.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String projectClosureList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
@@ -265,24 +272,33 @@ public class ProjectClosureController {
 			String closureId = req.getParameter("closureId");
 			String action = req.getParameter("Action");
 			
-//			String expndAsOn = req.getParameter("expndAsOn");
-//			String totalExpnd = req.getParameter("totalExpnd");
-//			String totalExpndFE = req.getParameter("totalExpndFE");
+			String qrNo = req.getParameter("qrNo");
+			String presentStatus = req.getParameter("presentStatus");
+			String reason = req.getParameter("reason");
+			String recommendation = req.getParameter("recommendation");
+			String monitoringCommittee  = req.getParameter("monitoringCommittee ");
+			String otherRelevant = req.getParameter("otherRelevant");
+			
+			if(Stream.of(qrNo, presentStatus, reason, recommendation, monitoringCommittee, otherRelevant).anyMatch(field-> InputValidator.isContainsHTMLTags(field))) {
+				redir.addAttribute("closureId", closureId);
+				redir.addAttribute("socTabId","2");
+				return redirectWithError(redir, "ProjectClosureSoCDetails.htm", "HTML tags are not permitted.");				
+			}
 			
 			ProjectClosureSoC soc = (action!=null && action.equalsIgnoreCase("Add"))?new ProjectClosureSoC() : service.getProjectClosureSoCByProjectId(closureId);
 			
 			soc.setClosureId(Long.parseLong(closureId));
 //			soc.setClosureCategory(req.getParameter("closureCategory"));
-			soc.setQRNo(req.getParameter("qrNo"));
+			soc.setQRNo(qrNo);
 //			soc.setExpndAsOn(fc.RegularToSqlDate(expndAsOn));
 //			soc.setTotalExpnd(totalExpnd!=null?String.format("%.2f", Double.parseDouble(totalExpnd)*10000000 ):null );
 //			soc.setTotalExpndFE(totalExpndFE!=null?String.format("%.2f", Double.parseDouble(totalExpndFE)*10000000 ):null );
-			soc.setPresentStatus(req.getParameter("presentStatus"));
-			soc.setReason(req.getParameter("reason"));
-			soc.setRecommendation(req.getParameter("recommendation"));
-			soc.setMonitoringCommittee(req.getParameter("monitoringCommittee"));
+			soc.setPresentStatus(presentStatus);
+			soc.setReason(reason);
+			soc.setRecommendation(recommendation);
+			soc.setMonitoringCommittee(monitoringCommittee );
 			soc.setDMCDirection(req.getParameter("dmcDirection"));
-			soc.setOtherRelevant(req.getParameter("otherRelevant"));
+			soc.setOtherRelevant(otherRelevant);
 			
 			long result=0l;
 			if(action!=null && action.equalsIgnoreCase("Add")) {
@@ -334,6 +350,12 @@ public class ProjectClosureController {
 			String closureId = req.getParameter("closureId");
 			String action = req.getParameter("Action");
 			
+			String remarks = req.getParameter("remarks");
+			
+			if(remarks !=null && !remarks.isEmpty() && InputValidator.isContainsHTMLTags(remarks)){
+						return redirectWithError(redir, "ProjectClosureApprovals.htm", "HTML tags are not permitted.");
+			}
+			
 			ProjectClosure closure = service.getProjectClosureById(closureId);
 			String statusCode = closure.getClosureStatusCode();
 			
@@ -342,7 +364,7 @@ public class ProjectClosureController {
 			dto.setClosureId(closureId);
 			dto.setAction(action);
 			dto.setEmpId(EmpId);
-			dto.setRemarks(req.getParameter("remarks"));
+			dto.setRemarks(remarks);
 			dto.setLabcode(labcode);
 			dto.setApproverLabCode(req.getParameter("LabCode"));
 			dto.setApproverEmpId(req.getParameter("approverEmpId"));
@@ -758,6 +780,15 @@ public class ProjectClosureController {
 			String details = req.getParameter("details");
 			
 			String action = req.getParameter("Action");
+			String noofprototypes = req.getParameter("noofprototypes");
+			String techReportNo = req.getParameter("techReportNo");
+			if(noofprototypes !=null && !noofprototypes.isEmpty() && InputValidator.isContainsHTMLTags(noofprototypes) ||
+			   techReportNo !=null && !techReportNo.isEmpty() && InputValidator.isContainsHTMLTags(techReportNo)){
+				redir.addAttribute("closureId", closureId);
+				redir.addAttribute("details", details);
+				redir.addAttribute("acpTabId", "1");					
+				return redirectWithError(redir, "ProjectClosureACPDetails.htm", "HTML tags are not permitted.");
+			}
 		
 			ProjectClosureACPDTO dto = new ProjectClosureACPDTO();
 			dto.setUserId(UserId);
@@ -771,8 +802,8 @@ public class ProjectClosureController {
 			dto.setExpndAsOn(req.getParameter("expndAsOn"));
 			dto.setTotalExpnd(req.getParameter("totalExpnd"));
 			dto.setTotalExpndFE(req.getParameter("totalExpndFE"));
-			dto.setPrototyes(req.getParameter("noofprototypes"));
-			dto.setTechReportNo(req.getParameter("techReportNo"));
+			dto.setPrototyes(noofprototypes);
+			dto.setTechReportNo(techReportNo);
 			long result = service.projectClosureACPDetailsSubmit(dto, labCertificateAttach, monitoringCommitteeAttach);
 			
 			if (result!=0) {
@@ -805,7 +836,34 @@ public class ProjectClosureController {
 			String details = req.getParameter("details");
 			
 			String action = req.getParameter("Action");
-		
+			
+			String[] acpProjectName = req.getParameterValues("acpProjectName");
+			String[] acpProjectNo = req.getParameterValues("acpProjectNo");
+			String[] projectAgency = req.getParameterValues("projectAgency");
+			String[] projectCost = req.getParameterValues("projectCost");
+			String[] projectStatus = req.getParameterValues("projectStatus");
+			String[] projectAchivements = req.getParameterValues("projectAchivements");
+			
+			List<String> list = new ArrayList<>();
+			list.addAll(Arrays.asList(acpProjectName));
+			list.addAll(Arrays.asList(acpProjectNo));
+			list.addAll(Arrays.asList(projectAgency));
+			list.addAll(Arrays.asList(projectStatus));
+			list.addAll(Arrays.asList(projectAchivements));
+			
+			if(list !=null && list.stream().anyMatch(field-> InputValidator.isContainsHTMLTags(field))){
+				redir.addAttribute("closureId", closureId);
+				redir.addAttribute("details", details);
+				redir.addAttribute("acpTabId", "1");					
+				return redirectWithError(redir, "ProjectClosureACPDetails.htm", "HTML tags are not permitted.");				
+			}
+			if(Stream.of(projectCost).anyMatch(field-> !InputValidator.isDecimalFormat(field))){
+				redir.addAttribute("closureId", closureId);
+				redir.addAttribute("details", details);
+				redir.addAttribute("acpTabId", "1");					
+			return redirectWithError(redir, "ProjectClosureACPDetails.htm", "Only numbers are allowed. You may enter up to 2 digits after the decimal.");				
+			}
+			
 			ProjectClosureACPDTO dto = new ProjectClosureACPDTO();
 			dto.setUserId(UserId);
 			dto.setEmpId(EmpId);
@@ -813,12 +871,12 @@ public class ProjectClosureController {
 			dto.setDetails(details);
 			dto.setAcpProjectTypeFlag(req.getParameter("acpProjectTypeFlag"));
 			dto.setACPProjectType(req.getParameterValues("acpProjectType"));
-			dto.setACPProjectName(req.getParameterValues("acpProjectName"));
-			dto.setACPProjectNo(req.getParameterValues("acpProjectNo"));
-			dto.setProjectAgency(req.getParameterValues("projectAgency"));
-			dto.setProjectCost(req.getParameterValues("projectCost"));
-			dto.setProjectStatus(req.getParameterValues("projectStatus"));
-			dto.setProjectAchivements(req.getParameterValues("projectAchivements"));
+			dto.setACPProjectName(acpProjectName);
+			dto.setACPProjectNo(acpProjectNo);
+			dto.setProjectAgency(projectAgency);
+			dto.setProjectCost(projectCost);
+			dto.setProjectStatus(projectStatus);
+			dto.setProjectAchivements(projectAchivements);
 			
 			long result = service.addProjectClosureProjectDetailsSubmit(dto);
 			
@@ -852,14 +910,35 @@ public class ProjectClosureController {
 			String details = req.getParameter("details");
 			
 			String action = req.getParameter("Action");
+			
+			String[] consultancyAim = req.getParameterValues("consultancyAim");
+			String[] consultancyAgency = req.getParameterValues("consultancyAgency");
+			String[] consultancyCost = req.getParameterValues("consultancyCost");
+			
+			List<String> list = new ArrayList<>();
+			list.addAll(Arrays.asList(consultancyAim));
+			list.addAll(Arrays.asList(consultancyAgency));
+			
+			if(list !=null && list.stream().anyMatch(field-> InputValidator.isContainsHTMLTags(field))){
+				redir.addAttribute("closureId", closureId);
+				redir.addAttribute("details", details);
+				redir.addAttribute("acpTabId", "1");					
+				return redirectWithError(redir, "ProjectClosureACPDetails.htm", "HTML tags are not permitted.");				
+			}
+			if(Stream.of(consultancyCost).anyMatch(field-> !InputValidator.isDecimalFormat(field))){
+				redir.addAttribute("closureId", closureId);
+				redir.addAttribute("details", details);
+				redir.addAttribute("acpTabId", "1");						
+			return redirectWithError(redir, "ProjectClosureACPDetails.htm", "Only numbers are allowed. You may enter up to 2 digits after the decimal.");				
+			}
 		
 			ProjectClosureACPDTO dto = new ProjectClosureACPDTO();
 			dto.setUserId(UserId);
 			dto.setEmpId(EmpId);
 			dto.setClosureId(Long.parseLong(closureId));
 			dto.setDetails(details);
-			dto.setConsultancyAim(req.getParameterValues("consultancyAim"));
-			dto.setConsultancyAgency(req.getParameterValues("consultancyAgency"));
+			dto.setConsultancyAim(consultancyAim);
+			dto.setConsultancyAgency(consultancyAgency);
 			dto.setConsultancyCost(req.getParameterValues("consultancyCost"));
 			dto.setConsultancyDate(req.getParameterValues("consultancyDate"));
 			
@@ -894,8 +973,17 @@ public class ProjectClosureController {
 		try {
 			String closureId = req.getParameter("closureId");
 			String details = req.getParameter("details");
-			
 			String action = req.getParameter("Action");
+			String trialResults = req.getParameter("trialResults");
+			String[] description = req.getParameterValues("description");
+			
+			if(Stream.of(description).anyMatch(field-> InputValidator.isContainsHTMLTags(field)) ||
+					InputValidator.isContainsHTMLTags(trialResults)){
+				redir.addAttribute("closureId", closureId);
+				redir.addAttribute("details", details);
+				redir.addAttribute("acpTabId", "1");					
+				return redirectWithError(redir, "ProjectClosureACPDetails.htm", "HTML tags are not permitted.");				
+			}
 		
 			ProjectClosureACPDTO dto = new ProjectClosureACPDTO();
 			dto.setUserId(UserId);
@@ -903,8 +991,8 @@ public class ProjectClosureController {
 			dto.setClosureId(Long.parseLong(closureId));
 			dto.setDetails(details);
 			dto.setAttatchmentName(req.getParameterValues("attatchmentname"));
-			dto.setTrialResults(req.getParameter("trialResults"));
-			dto.setDescription(req.getParameterValues("description"));
+			dto.setTrialResults(trialResults);
+			dto.setDescription(description);
 			dto.setAttachment(attachment);
 			
 			service.projectClosureACPDetailsSubmit(dto, null, null);
@@ -974,15 +1062,31 @@ public class ProjectClosureController {
 			String details = req.getParameter("details");
 			
 			String action = req.getParameter("Action");
+			
+			String[] envisaged = req.getParameterValues("envisaged");
+			String[] achieved = req.getParameterValues("achieved");
+			String[] remarks = req.getParameterValues("remarks");
+			
+			List<String> list = new ArrayList<>();
+			list.addAll(Arrays.asList(envisaged));
+			list.addAll(Arrays.asList(achieved));
+			list.addAll(Arrays.asList(remarks));
+			
+			if(list !=null && list.stream().anyMatch(field-> InputValidator.isContainsHTMLTags(field))){
+				redir.addAttribute("closureId", closureId);
+				redir.addAttribute("details", details);
+				redir.addAttribute("acpTabId", "1");					
+				return redirectWithError(redir, "ProjectClosureACPDetails.htm", "HTML tags are not permitted.");				
+			}
 		
 			ProjectClosureACPDTO dto = new ProjectClosureACPDTO();
 			dto.setUserId(UserId);
 			dto.setEmpId(EmpId);
 			dto.setClosureId(Long.parseLong(closureId));
 			dto.setDetails(details);
-			dto.setEnvisaged(req.getParameterValues("envisaged"));
-			dto.setAchieved(req.getParameterValues("achieved"));
-			dto.setRemarks(req.getParameterValues("remarks"));
+			dto.setEnvisaged(envisaged);
+			dto.setAchieved(achieved);
+			dto.setRemarks(remarks);
 			
 			long result = service.projectClosureACPAchievementDetailsSubmit(dto);
 			
@@ -1417,6 +1521,55 @@ public class ProjectClosureController {
 			String closureId = req.getParameter("closureId");
 			String action = req.getParameter("Action");
 			
+			String QARObjective = req.getParameter("QARObjective");
+			String QARProposedCost = req.getParameter("QARProposedCost");
+			String[] SCRevisionCost = req.getParameterValues("SCRevisionCost");
+			String[] SCReason = req.getParameterValues("SCReason");
+			String[] PDCReason = req.getParameterValues("PDCReason");
+			String CSReason = req.getParameter("CSReason");
+			String NCSReason = req.getParameter("NCSReason");
+			String EquipReason = req.getParameter("EquipReason");
+			String EquipBoughtOnChargeReason = req.getParameter("EquipBoughtOnChargeReason");
+			String BudgetMechanism = req.getParameter("BudgetMechanism");
+			String Budgetexpenditure = req.getParameter("Budgetexpenditure");
+			String LogBookMaintained = req.getParameter("LogBookMaintained");
+			String SPActualposition = req.getParameter("SPActualposition");
+			String SPGeneralSpecific = req.getParameter("SPGeneralSpecific");
+			String NoOfVehicleSanctioned = req.getParameter("NoOfVehicleSanctioned");
+			String VehicleType = req.getParameter("VehicleType");
+			String VehicleAvgRun = req.getParameter("VehicleAvgRun");
+			String VehicleAvgFuel = req.getParameter("VehicleAvgFuel");
+			String ProjectDelayReason = req.getParameter("ProjectDelayReason");
+			String CRspinoff = req.getParameter("CRspinoff");
+			String PDCNotMeetReason = req.getParameter("PDCNotMeetReason");
+			String CRcostoverin = req.getParameter("CRcostoverin");
+			String NonConsumableItemsReturned = req.getParameter("NonConsumableItemsReturned");
+			String ConsumableItemsReturned  = req.getParameter("ConsumableItemsReturned ");
+			String ManPowerSanctioned = req.getParameter("ManPowerSanctioned");
+			String OverAllReason = req.getParameter("OverAllReason");
+			
+			List<String> list = new ArrayList<>(Arrays.asList(CSReason, NCSReason, EquipReason, EquipBoughtOnChargeReason,
+					                            SPActualposition,SPGeneralSpecific, NoOfVehicleSanctioned, VehicleType,
+					                            VehicleAvgRun, VehicleAvgFuel,QARObjective,BudgetMechanism,Budgetexpenditure,LogBookMaintained, ProjectDelayReason, CRspinoff,
+					   						 PDCNotMeetReason, CRcostoverin,NonConsumableItemsReturned, ConsumableItemsReturned, ManPowerSanctioned,
+											 OverAllReason));
+						 list.addAll(Arrays.asList(SCReason));
+						 list.addAll(Arrays.asList(PDCReason));
+						 list.removeIf(s -> s==null || s.isEmpty());
+			
+			if(Stream.of(SCRevisionCost).anyMatch(field-> !InputValidator.isDecimalFormat(field)) ||
+									    !InputValidator.isDecimalFormat(QARProposedCost)){
+							redir.addAttribute("closureId", closureId);
+							redir.addAttribute("chlistTabId","1");					
+			    return redirectWithError(redir, "ProjectClosureCheckList.htm", "Only numbers are allowed. You may enter up to 2 digits after the decimal.");				
+			 }
+			
+			if(list !=null && list.stream().anyMatch(field-> InputValidator.isContainsHTMLTags(field))){
+							redir.addAttribute("closureId", closureId);
+							redir.addAttribute("chlistTabId","1");					
+			    return redirectWithError(redir, "ProjectClosureCheckList.htm", "HTML tags are not permitted.");				
+			 }
+			
 			ProjectCheckListRevDto dto=new ProjectCheckListRevDto();
 			
 			ProjectClosureCheckList clist = (action!=null && action.equalsIgnoreCase("Add"))?new ProjectClosureCheckList() : service.getProjectClosureCheckListByProjectId(closureId);
@@ -1433,7 +1586,6 @@ public class ProjectClosureController {
 			clist.setQARObjective(req.getParameter("QARObjective"));
 			//clist.setQARMilestone(req.getParameter("QARMilestone"));
 			clist.setQARPDCDate(sdf.format(rdf.parse(req.getParameter("QARPDCDate"))));
-			String QARProposedCost=req.getParameter("QARProposedCost");
 			clist.setQARProposedCost(!QARProposedCost.isEmpty()?Double.parseDouble(QARProposedCost):0);
 			//clist.setQARCostBreakup(req.getParameter("QARCostBreakup"));
 			//clist.setSCRequested(sdf.format(rdf.parse(req.getParameter("SCRequested"))));
@@ -2256,7 +2408,12 @@ public class ProjectClosureController {
 				
 				
 			ProjectClosureTechnical tech=new ProjectClosureTechnical();
-				
+			String Particulars = req.getParameter("Particulars");
+			if(Particulars !=null && !Particulars.isEmpty() && InputValidator.isContainsHTMLTags(Particulars)){
+				redir.addAttribute("closureId", closureId);
+				return redirectWithError(redir, "TechClosureList.htm", "HTML tags are not permitted.");
+			}
+			
 			tech.setParticulars(req.getParameter("Particulars"));
 			tech.setClosureId(Long.parseLong(closureId));
 			tech.setRevisionNo(Action.equalsIgnoreCase("Amend")?req.getParameter("RevisionNo"):"0");
@@ -2450,12 +2607,13 @@ public class ProjectClosureController {
 			String closureId=req.getParameter("closureId");
 			String SectionName=req.getParameter("SectionName");
 			String ExistingSection=req.getParameter("ExistingSection");
-			
+
 			//if existing sections are present ,list is shown on opening the modal
-			if(ExistingSection!=null) {
+			if(ExistingSection!=null ||
+					(SectionName !=null && !SectionName.isEmpty() && InputValidator.isContainsHTMLTags(SectionName))) {
 				AddSection=service.getSectionList(closureId);
-			}
-			else {
+				
+			}else {
 				ProjectClosureTechnicalSection sec=new ProjectClosureTechnicalSection();
 				sec.setClosureId(Long.parseLong(closureId));
 				sec.setSectionName(SectionName);			
@@ -2520,11 +2678,17 @@ public class ProjectClosureController {
 		try {
 			
 			String ClosureId=req.getParameter("ClosureId");
+			String ChapterName=req.getParameter("ChapterName");
+			
+			if(ChapterName !=null && !ChapterName.isEmpty() && InputValidator.isContainsHTMLTags(ChapterName)){
+		    	redir.addAttribute("ClosureId", ClosureId);
+				return redirectWithError(redir, "TechClosureContent.htm", "HTML tags are not permitted.");	
+			}
 			
 			ProjectClosureTechnicalChapters chapter=new ProjectClosureTechnicalChapters();
 				chapter.setChapterParentId(Long.parseLong(req.getParameter("ChapterParentId")));
 				chapter.setSectionId(Long.parseLong(req.getParameter("SectionId")));
-				chapter.setChapterName(req.getParameter("ChapterName"));
+				chapter.setChapterName(ChapterName);
 			
              long save =service.ChapterAdd(chapter);
 		
@@ -2558,6 +2722,11 @@ public class ProjectClosureController {
 				String ChapterId=req.getParameter("ChapterId");
 				String ChapterName=req.getParameter("ChapterName");
 			    String ChapterContent=req.getParameter("ChapterContent");
+			    
+			    if(ChapterName !=null && !ChapterName.isEmpty() && InputValidator.isContainsHTMLTags(ChapterName)){
+			    	redir.addAttribute("ClosureId", ClosureId);
+					return redirectWithError(redir, "TechClosureContent.htm", "HTML tags are not permitted.");	
+				}
 				
 			    long update =service.ChapterEdit(ChapterId,ChapterName,ChapterContent);
 		
@@ -2611,8 +2780,14 @@ public class ProjectClosureController {
 			String closureId = req.getParameter("ClosureId");
 			String chapterid = req.getParameter("ChapterId");
 			String DocumentName[] = req.getParameterValues("DocumentName");
+			String[] Appendix = req.getParameterValues("Appendix");
 			
 			String action = req.getParameter("Action");
+			
+			if(Stream.of(Appendix).anyMatch(field-> InputValidator.isContainsHTMLTags(field))){
+				redir.addAttribute("ClosureId", closureId);				
+				return redirectWithError(redir, "TechClosureContent.htm", "HTML tags are not permitted.");				
+			}
 		    
 			ProjectClosureAppendixDto dto = new ProjectClosureAppendixDto();
 		
@@ -2620,7 +2795,7 @@ public class ProjectClosureController {
 			dto.setChapterId(Long.parseLong(chapterid));			
 			dto.setDocumentName(DocumentName);
 			dto.setAttatchmentName(req.getParameterValues("attatchmentname"));
-			dto.setAppendix(req.getParameterValues("Appendix"));
+			dto.setAppendix(Appendix);
 			dto.setAttachment(attachment);
 			dto.setUserId(UserId);
 			
@@ -2750,14 +2925,24 @@ public class ProjectClosureController {
 		try {
 			
 			String closureId  = req.getParameter("closureId");
+			
+			String absct = req.getParameter("abstract");
+			String information = req.getParameter("information");
+			String keywords = req.getParameter("keywords");
+			String distribution = req.getParameter("distribution");
+			
+			if(Stream.of(absct, information, keywords, distribution).anyMatch(field-> InputValidator.isContainsHTMLTags(field))){
+				redir.addAttribute("closureId", closureId);
+				return redirectWithError(redir, "TechClosureList.htm", "HTML tags are not permitted.");	
+			}
 		
 			ProjectClosureTechnicalDocSumary rs = new ProjectClosureTechnicalDocSumary();
 			
 			rs.setClosureId(Long.parseLong(closureId));
-			rs.setAbstract(req.getParameter("abstract"));
-			rs.setAdditionalInformation(req.getParameter("information"));
-			rs.setKeywords(req.getParameter("keywords"));
-			rs.setDistribution(req.getParameter("distribution"));
+			rs.setAbstract(absct);
+			rs.setAdditionalInformation(information);
+			rs.setKeywords(keywords);
+			rs.setDistribution(distribution);
 			rs.setApprover(Long.parseLong(req.getParameter("Approver")));;
 			rs.setReviewer(Long.parseLong(req.getParameter("Reviewer")));
 			rs.setPreparedBy(req.getParameter("preparer"));;
@@ -2820,13 +3005,19 @@ public class ProjectClosureController {
 			ProjectClosureTechnical closure = service.getProjectClosureTechnicalById(techclosureId);
 			String statusCode = closure.getStatusCode();
 			
+			String remarks = req.getParameter("remarks");
+			
+			if(remarks !=null && !remarks.isEmpty() && InputValidator.isContainsHTMLTags(remarks)){
+						return redirectWithError(redir, "ProjectClosureApprovals.htm", "HTML tags are not permitted.");
+			}
+			
 			ProjectClosureApprovalForwardDTO dto = new ProjectClosureApprovalForwardDTO();
 
 			dto.setTechclosureId(techclosureId);
 			dto.setClosureId(closureId);
 			dto.setAction(action);
 			dto.setEmpId(EmpId);
-			dto.setRemarks(req.getParameter("remarks"));
+			dto.setRemarks(remarks);
 			dto.setLabcode(labcode);
 			dto.setApproverLabCode(req.getParameter("LabCode"));
 			dto.setApproverEmpId(req.getParameter("approverEmpId"));

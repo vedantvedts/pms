@@ -731,7 +731,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																				<input type="text" class="form-control item" name="projectAgency" value="<%if(sub.getProjectAgency()!=null) {%><%=sub.getProjectAgency() %><%} %>" placeholder="Enter Agency Details" maxlength="1000" required="required" >
 																			</td>	
 																			<td style="width: ;padding: 10px 5px 0px 5px;">
-																				<input type="number" class="form-control item" name="projectCost" value="<%if(sub.getProjectCost()!=null) {%><%=sub.getProjectCost() %><%} %>" placeholder="Enter Project Cost" maxlength="15" required="required" step="0.01" >
+																				<input type="text" class="form-control item decimal-format" name="projectCost" value="<%if(sub.getProjectCost()!=null) {%><%=sub.getProjectCost() %><%} %>" placeholder="Enter Project Cost" maxlength="15" required="required" step="0.01" >
 																			</td>
 																			<td style="width: ;padding: 10px 5px 0px 5px;">
 																				<input type="text" class="form-control item" name="projectStatus" value="<%if(sub.getProjectStatus()!=null) {%><%=sub.getProjectStatus() %><%} %>" placeholder="Enter Project Status" maxlength="500" required="required" >
@@ -755,7 +755,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																				<input type="text" class="form-control item" name="projectAgency" maxlength="1000" placeholder="Enter Agency Details" required="required" >
 																			</td>	
 																			<td style="width: ;padding: 10px 5px 0px 5px;">
-																				<input type="number" class="form-control item" name="projectCost" maxlength="15" placeholder="Enter Project Cost" required="required" step="0.01" >
+																				<input type="text" class="form-control item decimal-format" name="projectCost" maxlength="15" placeholder="Enter Project Cost" required="required" step="0.01" >
 																			</td>
 																			<td style="width: ;padding: 10px 5px 0px 5px;">
 																				<input type="text" class="form-control item" name="projectStatus" maxlength="500" placeholder="Enter Project Status" required="required" >
@@ -900,7 +900,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																				<input type="text" class="form-control item" name="projectAgency" value="<%if(carscapsi.getProjectAgency()!=null) {%><%=carscapsi.getProjectAgency() %><%} %>" placeholder="Enter Agency Details" maxlength="1000" required="required" >
 																			</td>	
 																			<td style="width: ;padding: 10px 5px 0px 5px;">
-																				<input type="number" class="form-control item" name="projectCost" value="<%if(carscapsi.getProjectCost()!=null) {%><%=carscapsi.getProjectCost() %><%} %>" placeholder="Enter Project Cost" maxlength="15" required="required" step="0.01" >
+																				<input type="number" class="form-control item decimal-format" name="projectCost" value="<%if(carscapsi.getProjectCost()!=null) {%><%=carscapsi.getProjectCost() %><%} %>" placeholder="Enter Project Cost" maxlength="15" required="required" step="0.01" >
 																			</td>
 																			<td style="width: ;padding: 10px 5px 0px 5px;">
 																				<input type="text" class="form-control item" name="projectStatus" value="<%if(carscapsi.getProjectStatus()!=null) {%><%=carscapsi.getProjectStatus() %><%} %>" placeholder="Enter Project Status" maxlength="500" required="required" >
@@ -930,7 +930,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																				<input type="text" class="form-control item" name="projectAgency" maxlength="1000" placeholder="Enter Agency Details" required="required" >
 																			</td>	
 																			<td style="width: ;padding: 10px 5px 0px 5px;">
-																				<input type="number" class="form-control item" name="projectCost" maxlength="15" placeholder="Enter Project Cost" required="required" step="0.01" >
+																				<input type="number" class="form-control item decimal-format" name="projectCost" maxlength="15" placeholder="Enter Project Cost" required="required" step="0.01" >
 																			</td>
 																			<td style="width: ;padding: 10px 5px 0px 5px;">
 																				<input type="text" class="form-control item" name="projectStatus" maxlength="500" placeholder="Enter Project Status" required="required" >
@@ -1051,7 +1051,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																				<input type="text" class="form-control item" name="consultancyAgency" value="<%if(consultancy.getConsultancyAgency()!=null) {%><%=consultancy.getConsultancyAgency() %><%} %>" placeholder="Enter Consultancy Agency" maxlength="2000" required="required" >
 																			</td>	
 																			<td style="width: 10%;padding: 10px 5px 0px 5px;">
-																				<input type="number" class="form-control item" name="consultancyCost" value="<%if(consultancy.getConsultancyCost()!=null) {%><%=consultancy.getConsultancyCost() %><%} %>" placeholder="Enter Consultancy Amount" maxlength="15" required="required" step="0.01" >
+																				<input type="number" class="form-control item decimal-format" name="consultancyCost" value="<%if(consultancy.getConsultancyCost()!=null) {%><%=consultancy.getConsultancyCost() %><%} %>" placeholder="Enter Consultancy Amount" maxlength="15" required="required" step="0.01" >
 																			</td>
 																			<td style="width: 20%;padding: 10px 5px 0px 5px;">
 																				<input type="text" class="form-control item" name="consultancyDate" id="consultancyDate" value="<%if(consultancy.getConsultancyDate()!=null) {%><%=consultancy.getConsultancyDate() %><%} %>" required="required" >
@@ -1069,7 +1069,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																				<input type="text" class="form-control item" name="consultancyAgency" placeholder="Enter Consultancy Agency" maxlength="2000" required="required" >
 																			</td>	
 																			<td style="width: 10%;padding: 10px 5px 0px 5px;">
-																				<input type="number" class="form-control item" name="consultancyCost" placeholder="Enter Consultancy Amount" maxlength="15" required="required" step="0.01" >
+																				<input type="number" class="form-control item decimal-format" name="consultancyCost" placeholder="Enter Consultancy Amount" maxlength="15" required="required" step="0.01" >
 																			</td>
 																			<td style="width: 20%;padding: 10px 5px 0px 5px;">
 																				<input type="text" class="form-control item" name="consultancyDate" id="consultancyDate" readonly="readonly" required="required" style="background: #fff;" >
