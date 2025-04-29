@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -782,71 +783,59 @@ public class MasterController {
 		}		
 	}
 
-	@RequestMapping(value="GroupMaster.htm",method= {RequestMethod.GET})
-	public String GroupMaster(Model model, HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir)throws Exception {
+	@RequestMapping(value = "GroupMaster.htm", method = {RequestMethod.GET, RequestMethod.POST})
+	public String GroupMaster(Model model, HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception {
 
-		String UserId= (String)ses.getAttribute("Username");
-		String LabCode =(String)ses.getAttribute("labcode");
+	    String UserId = (String) ses.getAttribute("Username");
+	    String LabCode = (String) ses.getAttribute("labcode");
 
-		logger.info(new Date() +" Inside GroupMaster.htm "+UserId);
-		try 
-		{
-			String onboard=req.getParameter("Onboarding");
+	    logger.info(new Date() + " Inside GroupMaster.htm " + UserId);
 
-			if(onboard==null) {
-				Map md=model.asMap();
-				onboard=(String)md.get("Onboard");
-			}
+	    try {
+	        String onboard = req.getParameter("Onboarding");
+	        String Option = req.getParameter("sub");
 
-			req.setAttribute("groupslist",service.GroupsList(LabCode) );
-			req.setAttribute("Onboarding", onboard);
-			return "master/GroupsList";
-		}catch (Exception e) {
-			e.printStackTrace();
-			logger.error(new Date() +" Inside GroupMaster.htm "+UserId , e);
-			return "static/Error";
-		}
+	        if (onboard == null) {
+	            Map<String, Object> md = model.asMap();
+	            onboard = (String) md.get("Onboard");
+	        }
+
+	        if (Option == null) {
+	            
+	            req.setAttribute("groupslist", service.GroupsList(LabCode));
+	            req.setAttribute("Onboarding", onboard);
+	            return "master/GroupsList";
+	        } 
+	        else if (Option.equalsIgnoreCase("add")) {
+	          
+	            req.setAttribute("groupheadlist", service.GroupHeadList(LabCode));
+	            req.setAttribute("tdaddlist", service.TDListAdd()
+	                                            .stream()
+	                                            .filter(e -> LabCode.equalsIgnoreCase(e[3].toString()))
+	                                            .collect(Collectors.toList()));
+	            return "master/GroupMasterAdd";
+	        } 
+	        else if (Option.equalsIgnoreCase("edit")) {
+	            
+	            String groupid = req.getParameter("groupid");
+	            req.setAttribute("groupsdata", service.GroupsData(groupid));
+	            req.setAttribute("groupheadlist", service.GroupHeadList(LabCode));
+	            req.setAttribute("tdaddlist", service.TDListAdd()
+	                                            .stream()
+	                                            .filter(e -> LabCode.equalsIgnoreCase(e[3].toString()))
+	                                            .collect(Collectors.toList()));
+	            return "master/GroupMasterEdit";
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        logger.error(new Date() + " Inside GroupMaster.htm " + UserId, e);
+	        redir.addAttribute("resultfail", "Technical Issue");
+	    }
+
+	    return "redirect:/GroupMaster.htm"; 
 	}
 
-	@RequestMapping (value="GroupMaster.htm", method= RequestMethod.POST)
-	public String GroupMaster(HttpServletRequest req, HttpSession ses, HttpServletResponse res,RedirectAttributes redir) throws Exception {
-
-		String Userid = (String) ses.getAttribute("Username");
-		String Option= req.getParameter("sub");
-		String LabCode = (String)ses.getAttribute("labcode");
-
-
-		logger.info(new Date() +"Inside GroupMaster.htm "+ Userid);	
-
-		try {
-
-			if(Option.equalsIgnoreCase("add")) {
-
-				req.setAttribute("groupheadlist",service.GroupHeadList(LabCode));
-				req.setAttribute("tdaddlist", service.TDListAdd().stream().filter(e-> LabCode.equalsIgnoreCase(e[3].toString())).collect(Collectors.toList()));
-				return "master/GroupMasterAdd";
-			}
-
-
-			else if(Option.equalsIgnoreCase("edit")) {
-
-				String groupid=req.getParameter("groupid");
-				req.setAttribute("groupsdata", service.GroupsData(groupid));
-				req.setAttribute("groupheadlist",service.GroupHeadList(LabCode));
-				req.setAttribute("tdaddlist", service.TDListAdd().stream().filter(e-> LabCode.equalsIgnoreCase(e[3].toString())).collect(Collectors.toList()));
-				return "master/GroupMasterEdit";
-			}
-
-		}
-		catch(Exception e){
-
-			redir.addAttribute("resultfail", "Technical Issue");
-			logger.error(new Date() +" Inside GroupMaster.htm "+ Userid, e);
-
-		}
-
-		return "redirect:/GroupMaster.htm";	
-	}
 	@RequestMapping(value = "GroupMasterAddSubmit.htm",method=RequestMethod.POST )
 	public String GroupMasterAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
@@ -859,11 +848,13 @@ public class MasterController {
 			String GroupHeadName=req.getParameter("ghempid");
 			String tdid=req.getParameter("tdId");
 			
-			if(!InputValidator.isValidCodeWithCapitalsAndNumeric(groupCode)){
-				return redirectWithError(redir,"GroupMaster.htm","Group code must contain only uppercase letters and numbers.");
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumeric(groupCode)){
+				redir.addAttribute("sub", "add");
+				return redirectWithError(redir,"GroupMaster.htm","'Group Code' must contain only Alphabets and Numbers.!");
 			} 
 			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(groupName)) {
-				return redirectWithError(redir,"GroupMaster.htm","Group name must contain letters, numbers, and spaces only.");
+				redir.addAttribute("sub", "add");
+				return redirectWithError(redir,"GroupMaster.htm","'Group Name' must contain only Alphabets and Numbers.!");
 			}
 			
 			DivisionGroup dgm=new DivisionGroup();
@@ -890,56 +881,94 @@ public class MasterController {
 		}
 	}
 
-
+	
+	@RequestMapping(value = "GroupMasterEditSubmitCheck.htm", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> GroupMasterEditSubmitCheck(HttpServletRequest req, HttpSession ses) {
+	    String userId = (String) ses.getAttribute("Username");
+	    Map<String, Object> response = new HashMap<>();
+	    String groupId = req.getParameter("groupid"); 
+	    String groupCode = req.getParameter("groupcode"); 
+	    Integer isActive = Integer.valueOf(req.getParameter("isActive"));
+	    logger.info(new Date() + " Inside GroupMasterEditSubmitCheck.htm " + userId);
+	    try {
+	        List<Object[]> alertDivisionMaster = service.checkDivisionMasterId(groupId);
+	        
+	        if (alertDivisionMaster != null && !alertDivisionMaster.isEmpty()) {
+	            for (Object[] obj : alertDivisionMaster) {
+	                Integer isActivedb = (Integer) obj[1];
+	                
+	                if (isActivedb.equals(isActive)) {
+	                    response.put("valid", true);
+	                } else {
+	                    response.put("valid", false);
+	                    response.put("message", "Group Code- '" + groupCode + "' cannot be made inactive as it exists in Division Master ( Division Name- '"+obj[2]+"' )");
+	                }
+	            }
+	        } else {
+	            response.put("valid", true);
+	        }
+	    } catch (Exception e) {
+	        response.put("valid", false);
+	        response.put("message", "Error validating status");
+	        logger.error("Error in GroupMasterEditSubmitCheck", e);
+	    }
+	    
+	    return response;
+	}
 
 	@RequestMapping (value="GroupMasterEditSubmit.htm" , method=RequestMethod.POST)
-
 	public String GroupMasterEditSubmit(HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception
 	{
 
 		String Userid = (String) ses.getAttribute("Username");
 
 		logger.info(new Date() +" Inside GroupMasterEditSubmit.htm "+Userid );
-
+		
 		try {
-			String groupCode=req.getParameter("groupcode");
-			String groupName=req.getParameter("groupname");
-			
-			if(!InputValidator.isValidCodeWithCapitalsAndNumeric(groupCode)){
-				return redirectWithError(redir,"GroupMaster.htm","Group code must contain only uppercase letters and numbers.");
-			} 
-			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(groupName)) {
-				return redirectWithError(redir,"GroupMaster.htm","Group name must contain letters, numbers, and spaces only.");
-			}
-			
-			DivisionGroup model= new DivisionGroup();
-			model.setGroupCode(groupCode);
-			model.setGroupName(groupName);
-			model.setTDId(req.getParameter("tdId"));
-			model.setGroupHeadId(Long.parseLong(req.getParameter("ghempid")));
-			model.setGroupId(Long.parseLong(req.getParameter("groupid")));                 
-			model.setIsActive(Integer.valueOf(req.getParameter("isActive")));
-			model.setModifiedBy(Userid);    
+		    String groupCode = req.getParameter("groupcode");
+		    String groupName = req.getParameter("groupname");
+		    String tdIdStr = req.getParameter("tdId");
+		    String ghempidStr = req.getParameter("ghempid");
+		    String groupidStr = req.getParameter("groupid");
+		    String isActiveStr = req.getParameter("isActive");
 
 
+		    if(!InputValidator.isValidCodeWithCapitalsAndNumeric(groupCode)){
+		    	redir.addAttribute("sub", "edit");
+		        redir.addAttribute("groupid", groupidStr);
+		        return redirectWithError(redir,"GroupMaster.htm","'Group code' must contain only Alphabets and Numbers.!");
+		    } 
+		    if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(groupName)) {
+		    	redir.addAttribute("sub", "edit");
+		        redir.addAttribute("groupid", groupidStr);
+		        return redirectWithError(redir,"GroupMaster.htm","'Group name'  must contain only Alphabets and Numbers.!");
+		    }
 
-			int count = service.GroupMasterUpdate(model);
+		    DivisionGroup model = new DivisionGroup();
+		    model.setGroupCode(groupCode);
+		    model.setGroupName(groupName);
+		    model.setTDId(tdIdStr);  // Assuming TDID is a String
+		    model.setGroupHeadId(Long.parseLong(ghempidStr));
+		    model.setGroupId(Long.parseLong(groupidStr));                 
+		    model.setIsActive(Integer.parseInt(isActiveStr));
+		    model.setModifiedBy(Userid);    
 
-			if(count > 0 ) {
-				redir.addAttribute("result", "Group Edited Successfully");
-			}
+		    int count = service.GroupMasterUpdate(model);
 
-			else {
-				redir.addAttribute("result ", "Group Edit Unsuccessful");
-			}
-
+		    if(count > 0 ) {
+		        redir.addAttribute("result", "Group Edited Successfully");
+		    }
+		    else {
+		        redir.addAttribute("result", "Group Edit Unsuccessful");
+		    }
 		}
 		catch(Exception e){
-
-			e.printStackTrace();
-			redir.addAttribute("resultfail", "Technical Issue");
-			logger.error(new Date() +" Inside GroupMasterEditSubmit.htm "+Userid , e);
+		    e.printStackTrace();
+		    redir.addAttribute("resultfail", "Technical Issue");
+		    logger.error(new Date() +" Inside GroupMasterEditSubmit.htm "+Userid , e);
 		}
+
 
 		return "redirect:/GroupMaster.htm";
 	}
@@ -1267,63 +1296,37 @@ public class MasterController {
 
 
 
-	@RequestMapping(value="TDMaster.htm",method= {RequestMethod.GET})
-	public String TDMaster(Model model, HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir)throws Exception {
+	@RequestMapping(value="TDMaster.htm", method={RequestMethod.GET, RequestMethod.POST})
+	public String TDMaster(Model model, HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception {
 
-		String UserId= (String)ses.getAttribute("Username");
-		String LabCode =(String)ses.getAttribute("labcode");
+	    String UserId = (String) ses.getAttribute("Username");
+	    String LabCode = (String) ses.getAttribute("labcode");
+	    String Option = req.getParameter("sub"); 
 
-		logger.info(new Date() +" Inside TDMaster.htm "+UserId);
-		try 
-		{
-			req.setAttribute("TDList",service.TDList(LabCode));
-			return "master/TDList";
+	    logger.info(new Date() + " Inside TDMaster.htm " + UserId);
 
-		}catch (Exception e) {
-			e.printStackTrace();
-			logger.error(new Date() +" Inside TDMaster.htm "+UserId , e);
-			return "static/Error";
-		}
+	    try {
+	        if (Option == null) {
+	            
+	            model.addAttribute("TDList", service.TDList(LabCode));
+	            return "master/TDList";
+	        } else if ("add".equalsIgnoreCase(Option)) {
+	           
+	            model.addAttribute("tdheadlist", service.TDHeadList(LabCode));
+	            return "master/TDMasterAdd";
+	        } else if ("edit".equalsIgnoreCase(Option)) {
+	           
+	            String tdid = req.getParameter("tdid");
+	            model.addAttribute("tdsdata", service.TDsData(tdid));
+	            model.addAttribute("tdheadlist", service.TDHeadList(LabCode));
+	            return "master/TDMasterEdit";
+	        }
+	    } catch (Exception e) {
+	        redir.addAttribute("resultfail", "Technical Issue");
+	        logger.error(new Date() + " Inside TDMaster.htm " + UserId, e);
+	    }
 
-	}
-	@RequestMapping (value="TDMaster.htm", method= RequestMethod.POST)
-	public String TDMaster(HttpServletRequest req, HttpSession ses, HttpServletResponse res,RedirectAttributes redir) throws Exception {
-
-		String Userid = (String) ses.getAttribute("Username");
-		String Option= req.getParameter("sub");
-		String LabCode = (String)ses.getAttribute("labcode");
-
-
-		logger.info(new Date() +"Inside TDMaster.htm "+ Userid);	
-
-		try {
-
-			if(Option.equalsIgnoreCase("add")) {
-
-				req.setAttribute("tdheadlist",service.TDHeadList(LabCode));
-
-				return "master/TDMasterAdd";
-			}
-
-
-			else if(Option.equalsIgnoreCase("edit")) {
-
-				String tdid=req.getParameter("tdid");
-				req.setAttribute("tdsdata", service.TDsData(tdid));
-				req.setAttribute("tdheadlist",service.TDHeadList(LabCode));
-
-				return "master/TDMasterEdit";
-			}
-
-		}
-		catch(Exception e){
-
-			redir.addAttribute("resultfail", "Technical Issue");
-			logger.error(new Date() +" Inside TDMaster.htm "+ Userid, e);
-
-		}
-
-		return "redirect:/TDMaster.htm";	
+	    return "redirect:/TDMaster.htm";
 	}
 
 	@RequestMapping(value = "TDMasterAddSubmit.htm",method=RequestMethod.POST )
@@ -1339,6 +1342,15 @@ public class MasterController {
 			String tdCode=req.getParameter("tCode");
 			String tdName=req.getParameter("tName");
 			String tdHeadName=req.getParameter("tdempid");
+			
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumeric(tdCode)) {
+				 redir.addAttribute("sub", "add");
+				return redirectWithError(redir, "TDMaster.htm", "'TD Code' should contain Alphabets and Numbers.!");
+			}
+			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(tdName)) {
+				redir.addAttribute("sub", "add");
+				return redirectWithError(redir, "TDMaster.htm", "'TD Name' should contain Alphabets and Numbers.!");
+			}
 
 			DivisionTd dtd=new DivisionTd();
 			dtd.setTdCode(tdCode);
@@ -1381,22 +1393,68 @@ public class MasterController {
 		Gson json = new Gson();
 		return json.toJson(TDCheck); 
 	}
+	
+	@RequestMapping(value = "TDMasterEditSubmitCheck.htm", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> checkActiveStatus(HttpServletRequest req, HttpSession ses) {
+		
+	    String userId = (String) ses.getAttribute("Username");
+	    Map<String, Object> response = new HashMap<>();
+	    String tdCode = req.getParameter("tdcode");
+	    Integer isActive = Integer.valueOf(req.getParameter("isActive"));
+	    logger.info(new Date() + " Inside TDMasterEditSubmit.htm " + userId);
+	    
+	    try {
+	        List<Object[]> alertGroupMaster = service.checkGroupMasterCode(tdCode);
+	        
+	        if (alertGroupMaster != null && !alertGroupMaster.isEmpty()) {
+	            for (Object[] obj : alertGroupMaster) {
+	                Integer isActivedb = (Integer) obj[1];
+	                
+	                if (isActivedb.equals(isActive)) {
+	                    response.put("valid", true);
+	                } else {
+	                    response.put("valid", false);
+	                    response.put("message", "TD Code- '" + tdCode + "' cannot be made inactive as it exists in Group Master (Group Name- '"+obj[2]+"' )");
+	                }
+	            }
+	        } else {
+	            response.put("valid", true);
+	        }
+	    } catch (Exception e) {
+	        response.put("valid", false);
+	        response.put("message", "Error validating status");
+	        logger.error("Error in TDMasterEditSubmitCheck", e);
+	    }
+	    
+	    return response;
+	}
 
 
 	@RequestMapping (value="TDMasterEditSubmit.htm" , method=RequestMethod.POST)
-
 	public String TDMasterEditSubmit(HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception
 	{
 
 		String Userid = (String) ses.getAttribute("Username");
 
 		logger.info(new Date() +" Inside TDMasterEditSubmit.htm "+Userid );
-
+		 String tdid = req.getParameter("tdid");
 		try {
-
+				String tdCode=req.getParameter("tdcode");
+				String tdName=req.getParameter("tdname");
+				if(!InputValidator.isValidCapitalsAndSmallsAndNumeric(tdCode)) {
+					redir.addAttribute("tdid", tdid);
+					redir.addAttribute("sub", "edit");
+					return redirectWithError(redir, "TDMaster.htm", "'TD Code' should contain only Alphabets and Numbers.!");
+				}
+				if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(tdName)) {
+					redir.addAttribute("tdid", tdid);
+					redir.addAttribute("sub", "edit");
+					return redirectWithError(redir, "TDMaster.htm", "'TD Name' should contain only Alphabets and Numbers.!");
+				}
 			DivisionTd model= new DivisionTd();
-			model.setTdCode(req.getParameter("tdcode"));
-			model.setTdName(req.getParameter("tdname"));
+			model.setTdCode(tdCode);
+			model.setTdName(tdName);
 			model.setTdHeadId(Long.parseLong(req.getParameter("tdempid")));
 			model.setTdId(Long.parseLong(req.getParameter("tdid")));                 
 			model.setIsActive(Integer.valueOf(req.getParameter("isActive")));

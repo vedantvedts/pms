@@ -54,7 +54,7 @@ public class MasterDaoImpl implements MasterDao {
 
 
 	private static final String DIVISIONLIST="SELECT divisionid,divisioncode,divisionname FROM division_master WHERE isactive=1";
-	private static final String DIVISIONEMPLIST="SELECT de.divisionemployeeid,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',ed.designation,de.divisionid  FROM division_employee de,employee e, employee_desig ed WHERE de.isactive=1 AND  de.empid=e.empid AND e.desigid=ed.desigid AND de.divisionid=:divisionid";
+	private static final String DIVISIONEMPLIST="SELECT de.divisionemployeeid,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',ed.designation,de.divisionid  FROM division_employee de,employee e, employee_desig ed WHERE de.isactive=1 AND e.isactive=1 AND  de.empid=e.empid AND e.desigid=ed.desigid AND de.divisionid=:divisionid";
 	private static final String DIVISIONNONEMPLIST ="SELECT e.empid, CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',ed.designation,e.labcode  FROM employee e,employee_desig ed  WHERE e.isactive=1 AND e.desigid=ed.desigid AND e.empid NOT IN  (SELECT de.empid FROM division_employee de WHERE de.isactive=1 AND divisionid=:divisionid) ORDER BY e.srno ASC ,ed.desigsr ASC";
 	private static final String DIVISIONDATA ="SELECT divisionid, divisioncode,divisionname FROM division_master WHERE divisionid=:divisionid";
 	private static final String DIVSIONEMPLOYEEREVOKE="UPDATE division_employee SET isactive=0,ModifiedBy=:modifiedby,ModifiedDate=:modifieddate WHERE divisionemployeeid=:divisionempid";
@@ -65,10 +65,10 @@ public class MasterDaoImpl implements MasterDao {
 
 	private static final String ACTIVITYLIST="SELECT activitytypeid, activitytype, IsTimeSheet, ActivityCode FROM milestone_activity_type WHERE isactive=1";
 	private static final String ACTIVITYNAMECHECK="SELECT COUNT(ActivityTypeId) AS 'count','ActivityType' FROM milestone_activity_type WHERE CASE WHEN ActivityTypeId<>0 THEN ActivityTypeId!=:ActivityTypeId END AND ActivityType=:ActivityType AND IsActive=1";
-	private static final String GROUPLIST = "SELECT dg.GroupId,dg.GroupCode,dg.GroupName,dg.GroupHeadId,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',ed.designation ,dg.labcode,dt.tdcode FROM division_group dg,employee e, employee_desig ed, division_td dt WHERE dg.GroupHeadId=e.empid AND e.desigid=ed.desigid AND dg.tdid=dt.tdid  AND dg.isactive=1 AND dg.labcode=:labcode ORDER BY dg.groupid DESC";
+	private static final String GROUPLIST = "SELECT dg.GroupId,dg.GroupCode,dg.GroupName,dg.GroupHeadId,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',ed.designation ,dg.labcode,dt.tdcode FROM division_group dg,employee e, employee_desig ed, division_td dt WHERE e.isActive=1 AND dg.GroupHeadId=e.empid AND e.desigid=ed.desigid AND dg.tdid=dt.tdid  AND dg.isactive=1 AND dg.labcode=:labcode ORDER BY dg.groupid DESC";
 	private static final String GROUPHEADLIST ="SELECT e.empid,CONCAT(IFNULL(e.title,''), e.empname)AS 'empname',ed.designation FROM employee e, employee_desig ed WHERE  e.desigid=ed.desigid AND e.isactive=1 AND e.labcode=:labcode ORDER BY e.srno";
 	private static final String GROUPADDCHECK ="SELECT SUM(IF(GroupCode =:gcode,1,0))   AS 'dCode','0' AS 'codecount'FROM division_group WHERE isactive=1 ";
-	private static final String GROUPDATA = "SELECT dg.GroupId,dg.GroupCode,dg.GroupName,dg.GroupHeadId,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',ed.designation,dg.isactive,dg.tdid FROM division_group dg,employee e, employee_desig ed WHERE dg.GroupHeadId=e.empid AND e.desigid=ed.desigid AND  dg.groupid=:groupid";
+	private static final String GROUPDATA = "SELECT dg.GroupId,dg.GroupCode,dg.GroupName,dg.GroupHeadId,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',ed.designation,dg.isactive,dg.tdid FROM division_group dg,employee e, employee_desig ed WHERE e.isActive=1 AND dg.GroupHeadId=e.empid AND e.desigid=ed.desigid AND  dg.groupid=:groupid";
 	private static final String GROUPUPDATE="UPDATE division_group SET GroupCode=:groupcode, GroupName=:groupname, GroupHeadId=:groupheadid , TDId=:tdId, ModifiedBy=:modifiedby, ModifiedDate=:modifieddate, IsActive=:isactive WHERE GroupId=:groupid";
 	private static final String LABLIST="select labmasterid,labcode,labname,labunitcode,labaddress,labcity,labpin FROM lab_master";
 	private static final String EMPLOYEELIST="SELECT empid, CONCAT(IFNULL(CONCAT(title,' '),''), empname) AS 'empname' FROM employee WHERE isactive=1 ORDER BY srno ";
@@ -631,7 +631,7 @@ public class MasterDaoImpl implements MasterDao {
 		return Attachment;
 	}
 
-	private static final String TDLIST="SELECT a.tdid ,a.tdcode, a.tdname , a.tdheadid ,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',ed.designation ,a.labcode FROM  division_td  a,employee e, employee_desig ed WHERE a.tdheadid=e.empid AND e.desigid=ed.desigid AND a.isactive=1 AND a.labcode=:labcode ORDER BY a.tdid  DESC";
+	private static final String TDLIST="SELECT a.tdid ,a.tdcode, a.tdname , a.tdheadid ,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',ed.designation ,a.labcode FROM  division_td  a,employee e, employee_desig ed WHERE a.tdheadid=e.empid AND e.desigid=ed.desigid AND a.isactive=1 AND e.isactive=1 AND a.labcode=:labcode ORDER BY a.tdid  DESC";
 	@Override
 	public List<Object[]> TDList(String LabCode) throws Exception {
 
@@ -652,7 +652,7 @@ public class MasterDaoImpl implements MasterDao {
 		return TDHeadList;
 	}
 
-	public static final String TDDATA="SELECT dt.TDId,dt.TDCode,dt.TDName,dt.TDHeadId,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',ed.designation,dt.isactive FROM division_td dt,employee e, employee_desig ed WHERE dt.TDHeadId=e.empid AND e.desigid=ed.desigid AND  dt.tdid=:tdid";
+	public static final String TDDATA="SELECT dt.TDId,dt.TDCode,dt.TDName,dt.TDHeadId,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',ed.designation,dt.isactive FROM division_td dt,employee e, employee_desig ed WHERE e.isActive=1 AND dt.TDHeadId=e.empid AND e.desigid=ed.desigid AND  dt.tdid=:tdid";
 	@Override
 	public Object[] TDsData(String tdid)throws Exception
 	{	
@@ -676,6 +676,16 @@ public class MasterDaoImpl implements MasterDao {
 		Query query = manager.createNativeQuery(TDCHECK);
 		query.setParameter("tcode", tCode);
 		return(Object[])query.getSingleResult();
+	}
+	
+	private static final String ALERTTDMASTER="SELECT dt.tdcode,dg.isactive,dg.GroupName  FROM division_group dg,employee e, employee_desig ed, division_td dt \r\n"
+			+ "WHERE dg.GroupHeadId=e.empid AND e.desigid=ed.desigid AND dg.tdid=dt.tdid AND dg.isactive=1 AND dt.tdcode=:tdCode ORDER BY dg.groupid DESC";
+	@Override
+	public List<Object[]> CheckGroupMasterCode(String TdCode) throws Exception {
+		
+		Query query=manager.createNativeQuery(ALERTTDMASTER);
+		query.setParameter("tdCode", TdCode);
+		return (List<Object[]>)query.getResultList();
 	}
 
 	public static final String TDUPDATE="UPDATE division_td SET TDCode=:tdcode, TDName=:tdname, TDHeadId=:tdheadid ,  ModifiedBy=:modifiedby, ModifiedDate=:modifieddate, IsActive=:isactive WHERE TDId=:tdid";
@@ -1000,4 +1010,15 @@ public class MasterDaoImpl implements MasterDao {
 			
 			
 		}
+
+		private static final String DIVISIONMASTERCHECK="SELECT dm.groupid,dm.isactive,dm.DivisionName FROM division_master dm, division_group dg WHERE dg.groupid =dm.groupid  AND dm.isactive=1 AND dm.groupId=:GrpId ORDER BY dg.groupid DESC";
+		@Override
+		public List<Object[]> checkDivisionMasterId(String groupId) {
+			Query query=manager.createNativeQuery(DIVISIONMASTERCHECK);
+			query.setParameter("GrpId", groupId);
+			return (List<Object[]>)query.getResultList();
+		}
+		
+		
+		
 }

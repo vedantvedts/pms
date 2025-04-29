@@ -99,4 +99,6 @@ public interface MasterDao  {
 	public PfmsEmpRoles getPfmsEmpRolesById(String roleid)throws Exception;
 	public long addPfmsEmpRoles(PfmsEmpRoles pf)throws Exception;
 	public List<PfmsEmpRoles>getAllEmpRoles() throws Exception ;
+	public List<Object[]> CheckGroupMasterCode(String TdCode) throws Exception;
+	public List<Object[]> checkDivisionMasterId(String groupId) throws Exception;
 }

@@ -119,4 +119,5 @@ public interface AdminDao {
 	public int auditpatchAddSubmit(AuditPatches model) throws Exception;
 	public AuditPatches getAuditPatchById(Long attachId);
 	public List<Object[]> getFormId(String requestUrlSegment);
+	public List<Object[]> checkDivisionMasterId(String divisionId);
   }

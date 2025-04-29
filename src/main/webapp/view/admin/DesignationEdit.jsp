@@ -72,7 +72,7 @@
 									<div class="form-group">
 										<label>Designation Code:<span class="mandatory"
 											style="color: red;">*</span></label> <input
-											class="form-control form-control alphanum-no-leading-space" type="text"
+											class="form-control form-control description-input" type="text"
 											name="desigcode" id="desigcode" required="required"
 											maxlength="10" style="font-size: 15px; width: 80%;"
 											value="<%=designationdata[1]%>">
@@ -84,7 +84,7 @@
 									<div class="form-group">
 										<label>Designation :<span class="mandatory"
 											style="color: red;">*</span></label> <input
-											class="form-control form-control alphanum-no-leading-space" type="text"
+											class="form-control form-control description-input" type="text"
 											name="designation" id="designation" required="required"
 											maxlength="100" style="font-size: 15px; width: 100%;"
 											value="<%=designationdata[2]%>">
@@ -105,7 +105,7 @@
 									<div class="form-group">
 										<label>SrNo :<span class="mandatory"
 											style="color: red;">*</span></label> <input
-											class="form-control form-control" type="number"
+											class="form-control numeric-only " type="number"
 											name="desigsr" required="required"
 											style="font-size: 15px; width: 80%;"
 											value="<%=designationdata[4]%>">

@@ -524,15 +524,18 @@ public class PFTSController {
 					String fileId=request.getParameter("fileId");
 					
 					if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(itemNomenclature)) {
-						return redirectWithError(redir, "ProcurementStatus.htm", "'Item Nomenclature' must contain only Alphabets and Numbers");
+						redir.addAttribute("projectId", projectId);
+						return redirectWithError(redir, "envisagedAction.htm", "'Item Nomenclature' must contain only Alphabets and Numbers");
 					}
 					
 					if(!InputValidator.isContainsNumberOnly(estimatedCost)) {
-						return redirectWithError(redir, "ProcurementStatus.htm", "'Estimated Cost' must contain only Numbers");
+						redir.addAttribute("projectId", projectId);
+						return redirectWithError(redir, "envisagedAction.htm", "'Estimated Cost' must contain only Numbers");
 					}
 					
 					if(InputValidator.isContainsHTMLTags(remarks)) {
-						return redirectWithError(redir, "ProcurementStatus.htm", "'Remarks' should not contain HTML Tags.!");
+						redir.addAttribute("projectId", projectId);
+						return redirectWithError(redir, "envisagedAction.htm", "'Remarks' should not contain HTML Tags.!");
 					}
 					 PFTSFile pf = new PFTSFile();
 					 pf.setProjectId(Long.parseLong(projectId));
@@ -645,21 +648,21 @@ public class PFTSController {
 
 			}
 			
-		@RequestMapping(value = "AddManualDemand.htm", method = RequestMethod.POST)
+		@RequestMapping(value = "AddManualDemand.htm", method = {RequestMethod.GET, RequestMethod.POST})
 		public String AddManualDemand(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
 		{
 			String UserId = (String) ses.getAttribute("Username");
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			String Logintype= (String)ses.getAttribute("LoginType");
 			String LabCode = (String)ses.getAttribute("labcode");
-			logger.info(new Date() +"Inside AddManualDemand.htm "+UserId);
+			logger.info(new Date() +"Inside AddManualDemand.htm"+UserId);
 			
 			try {
 				
 				String projectId = req.getParameter("projectId");
 				
 				List<Object[]> projectlist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
-				req.setAttribute("projectslist",projectlist );
+				req.setAttribute("projectslist",projectlist);
 				req.setAttribute("projectId",projectId);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -675,7 +678,7 @@ public class PFTSController {
 			String UserId = (String) ses.getAttribute("Username");
 			String LabCode = (String)ses.getAttribute("labcode");
 			
-			logger.info(new Date() +"Inside AddManualDemand.htm "+UserId);
+			logger.info(new Date() +"Inside AddManualDemand.htm"+UserId);
 			
 			try {
 				
@@ -686,19 +689,24 @@ public class PFTSController {
 				String itemname = req.getParameter("itemname");
 				String demandType = req.getParameter("demandType");
 					
+				List<Object[]> projectlist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+				
 				if(!InputValidator.isValidCapitalsAndSmallsAndNumeric(demandNo)) {
-					return redirectWithError(redir, "ProcurementStatus.htm", "'Demand Number' must contain only Alphabets and Numbers");
+					redir.addAttribute("projectId",ProjectId);
+					return redirectWithError(redir, "AddManualDemand.htm", "'Demand Number' must contain only Alphabets and Numbers");
 				}
 				
 				if(!InputValidator.isValidCapitalsAndSmallsAndNumeric(estimatedcost)) {
-					return redirectWithError(redir, "ProcurementStatus.htm", "'Estimated Cost' must contain only Alphabets and Numbers");
+					redir.addAttribute("projectId",ProjectId);
+					return redirectWithError(redir, "AddManualDemand.htm", "'Estimated Cost' must contain only Alphabets and Numbers");
 				}
 				
 				if(InputValidator.isContainsHTMLTags(itemname)) {
-					return redirectWithError(redir, "ProcurementStatus.htm", "'Item Name' should not contain HTML Tags");
+					redir.addAttribute("projectId",ProjectId);
+					return redirectWithError(redir, "AddManualDemand.htm", "'Item Name' should not contain HTML Tags");
 				}
 				
-				List<Object[]> projectlist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+				
 				
 				 PFTSFile pf = new PFTSFile();
 				 
@@ -734,7 +742,7 @@ public class PFTSController {
 			}
 		}
 		
-		@RequestMapping(value = "updateManualDemand.htm", method = RequestMethod.POST)
+		@RequestMapping(value = "updateManualDemand.htm", method = {RequestMethod.GET,RequestMethod.POST})
 		public String updateManualDemand(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
 		{
 			String UserId = (String) ses.getAttribute("Username");
@@ -777,7 +785,9 @@ public class PFTSController {
 	             String flag=req.getParameter("flag");
 	             
 	             if(InputValidator.isContainsHTMLTags(remarks)) {
-	 				return redirectWithError(redir, "ProcurementStatus.htm", "'Remarks' should not contain HTML tags");
+	            	 
+	            	 redir.addAttribute("fileId", fileId);
+	 				return redirectWithError(redir, "updateManualDemand.htm", "'Remarks' should not contain HTML tags");
 	 			}
 	        
 	             long result=0l;

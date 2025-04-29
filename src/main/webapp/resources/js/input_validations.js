@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     // description-> Only allow Letters (a-z), Numbers (0-9) and , ., ,, -, (, ),/,+
     if (el.classList.contains('description-input')) {
-      el.value = el.value.replace(/[^a-zA-Z0-9@.,()\-&\/+ ]/g, '');
+      el.value = el.value.replace(/[^a-zA-Z0-9@.,()\-&\/+ '"_]/g, '');
     }
 
 	//referenceNo-> only Letters (a-z), Numbers (0-9) and -,'_'

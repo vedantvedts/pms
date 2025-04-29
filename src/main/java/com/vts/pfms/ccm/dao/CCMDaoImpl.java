@@ -150,7 +150,8 @@ public class CCMDaoImpl implements CCMDao{
 			Query query =  manager.createNativeQuery(GETMAXAGENDAPRIORITY);
 			query.setParameter("ScheduleId", ccmScheduleId);
 			query.setParameter("ParentScheduleAgendaId", parentScheduleAgendaId);
-			return (Integer)query.getSingleResult();
+			Long maxvalue=(Long)query.getSingleResult();
+			return maxvalue.intValue();
 		}catch ( NoResultException e ) {
 			logger.error(new Date() +" Inside CCMDaoImpl getMaxAgendaPriority "+ e);
 			e.printStackTrace();

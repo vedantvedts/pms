@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -535,8 +536,14 @@ public class AdminController {
 	public @ResponseBody String UserNamePresentCount(HttpServletRequest req, HttpSession ses) throws Exception {
 
 		final String UserId = (String) ses.getAttribute("Username");
+		System.err.println("---------------------------"+req.getParameter("UserName")+"-----------");
+		String userName=req.getParameter("UserName");
+		int UserNamePresentCount=1;
 		AdminController.logger.info(new Date() + "Inside UserNamePresentCount.htm " + UserId);
-		int UserNamePresentCount = service.UserNamePresentCount(req.getParameter("UserName"));
+		if(InputValidator.isValidCapitalsAndSmallsAndNumeric(userName)) {
+			 UserNamePresentCount = service.UserNamePresentCount(userName);
+		}
+		
 		Gson json = new Gson();
 		return json.toJson(UserNamePresentCount);
 
@@ -642,12 +649,12 @@ public class AdminController {
 		}
 	}
 
-	@RequestMapping(value = "DesignationEdit.htm", method = RequestMethod.POST)
+	@RequestMapping(value = "DesignationEdit.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String DesignationEdit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() + "Inside DesignationEdit.htm " + UserId);
 		try {
-
+			
 			String desigid = req.getParameter("desigid");
 			req.setAttribute("designationdata", service.DesignationData(desigid));
 			return "admin/DesignationEdit";
@@ -684,13 +691,18 @@ public class AdminController {
 			String Limit = req.getParameter("limit");
 			String olddesigsr = req.getParameter("olddesigsr");
 			String desigsr = req.getParameter("desigsr");
-			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(desigcode)) {
-				return redirectWithError(redir, "DesignationMaster.htm", "'Designation Code' must contain only Alphabets and Numbers (No Spaces)");
+			
+			
+			if(!InputValidator.isContainsDescriptionPattern(desigcode)) {
+				
+				redir.addAttribute("desigid",desigid);
+				return redirectWithError(redir, "DesignationEdit.htm", "'Designation Code' must contain only Alphabets, Numbers and some Special Characters.!");
 
 			}
-			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(designation)) {
+			if(!InputValidator.isContainsDescriptionPattern(designation)) {
 				
-				return redirectWithError(redir, "DesignationMaster.htm", "'Designation' must contain only Alphabets and Numbers");
+				redir.addAttribute("desigid",desigid);
+				return redirectWithError(redir, "DesignationEdit.htm", "'Designation' must contain only Alphabets, Numbers and some Special Characters.!");
 
 			}
 			EmployeeDesigDto dto = new EmployeeDesigDto();
@@ -726,13 +738,13 @@ public class AdminController {
 			String designation = req.getParameter("designation");
 			String Limit = req.getParameter("limit");
 			
-			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(desigcode)) {
-				return redirectWithError(redir, "DesignationMaster.htm", "'Designation Code' must contain only Alphabets and Numbers (No Spaces)");
+			if(!InputValidator.isContainsDescriptionPattern(desigcode)) {
+				return redirectWithError(redir, "DesignationAdd.htm", "'Designation Code' must contain only Alphabets, Numbers and some Special Characters.!");
 
 			}
-			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(designation)) {
+			if(!InputValidator.isContainsDescriptionPattern(designation)) {
 				
-				return redirectWithError(redir, "DesignationMaster.htm", "'Designation' must contain only Alphabets and Numbers");
+				return redirectWithError(redir, "DesignationAdd.htm", "'Designation' must contain only Alphabets, Numbers and some Special Characters.!");
 
 			}
 
@@ -793,66 +805,65 @@ public class AdminController {
 
 	}
 
-	@RequestMapping(value = { "DivisionMaster.htm" }, method = { RequestMethod.GET })
-	public String DivisionMasterList(Model model, HttpServletRequest req, HttpSession ses) throws Exception {
+	@RequestMapping(value = "DivisionMaster.htm", method = {RequestMethod.GET, RequestMethod.POST})
+	public String DivisionMaster(Model model, HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception {
 
-		final String UserId = (String) ses.getAttribute("Username");
-		String LabCode = (String) ses.getAttribute("labcode");
-		AdminController.logger.info(new Date() + " Inside DivisionMaster.htm " + UserId);
+	    String UserId = (String) ses.getAttribute("Username");
+	    String LabCode = (String) ses.getAttribute("labcode");
 
-		String onboard = req.getParameter("Onboarding");
-		if (onboard == null) {
-			Map md = model.asMap();
-			onboard = (String) md.get("Onboard");
-		}
-		req.setAttribute("Onboarding", onboard);
-		req.setAttribute("DivisionMasterList", (Object) this.service.DivisionMasterList(LabCode));
-		return "admin/DivisionList";
+	    logger.info(new Date() + " Inside DivisionMaster.htm " + UserId);
+
+	    try {
+	        String onboard = req.getParameter("Onboarding");
+	        String Option = req.getParameter("sub"); 
+
+	        if (onboard == null) {
+	            Map<String, Object> md = model.asMap();
+	            onboard = (String) md.get("Onboard");
+	        }
+
+	        if (Option == null) {
+	           
+	            req.setAttribute("Onboarding", onboard);
+	            req.setAttribute("DivisionMasterList", service.DivisionMasterList(LabCode));
+	            return "admin/DivisionList";
+	        } 
+	        else if (Option.equalsIgnoreCase("add")) {
+	           
+	            req.setAttribute("DivisionGroupListAdd", service.DivisionGroupList()
+	                    .stream()
+	                    .filter(e -> LabCode.equalsIgnoreCase(e[2].toString()))
+	                    .collect(Collectors.toList()));
+	            req.setAttribute("DivisionHeadListAdd", service.DivisionHeadList()
+	                    .stream()
+	                    .filter(e -> LabCode.equalsIgnoreCase(e[2].toString()))
+	                    .collect(Collectors.toList()));
+	            return "admin/DivisionMasterAdd";
+	        } 
+	        else if (Option.equalsIgnoreCase("edit")) {
+	           
+	            String DivisionId = req.getParameter("Did");
+	            req.setAttribute("DivisionMasterEditData", service.DivisionMasterEditData(DivisionId).get(0));
+	            req.setAttribute("DivisionGroupList", service.DivisionGroupList()
+	                    .stream()
+	                    .filter(e -> LabCode.equalsIgnoreCase(e[2].toString()))
+	                    .collect(Collectors.toList()));
+	            req.setAttribute("DivisionHeadList", service.DivisionHeadList()
+	                    .stream()
+	                    .filter(e -> LabCode.equalsIgnoreCase(e[2].toString()))
+	                    .collect(Collectors.toList()));
+	            return "admin/DivisionMasterEdit";
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        logger.error(new Date() + " Inside DivisionMaster.htm " + UserId, e);
+	        redir.addAttribute("resultfail", "Technical Issue");
+	    }
+
+	    return "redirect:/DivisionMaster.htm";
 	}
 
-	@RequestMapping(value = "DivisionMaster.htm", method = RequestMethod.POST)
-	public String DivisionAddEdit(HttpServletRequest req, HttpSession ses, HttpServletResponse res,
-			RedirectAttributes redir) throws Exception {
-
-		String Userid = (String) ses.getAttribute("Username");
-		String Option = req.getParameter("sub");
-		String DivisionId = req.getParameter("Did");
-		String LabCode = (String) ses.getAttribute("labcode");
-
-		logger.info(new Date() + "Inside DivisionMaster.htm " + Userid);
-
-		try {
-
-			if (Option.equalsIgnoreCase("add")) {
-
-				req.setAttribute("DivisionGroupListAdd", service.DivisionGroupList().stream()
-						.filter(e -> LabCode.equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()));
-				req.setAttribute("DivisionHeadListAdd", service.DivisionHeadList().stream()
-						.filter(e -> LabCode.equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()));
-
-				return "admin/DivisionMasterAdd";
-			}
-
-			else if (Option.equalsIgnoreCase("edit")) {
-
-				req.setAttribute("DivisionMasterEditData", service.DivisionMasterEditData(DivisionId).get(0));
-				req.setAttribute("DivisionGroupList", service.DivisionGroupList().stream()
-						.filter(e -> LabCode.equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()));
-				req.setAttribute("DivisionHeadList", service.DivisionHeadList().stream()
-						.filter(e -> LabCode.equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()));
-
-				return "admin/DivisionMasterEdit";
-			}
-
-		} catch (Exception e) {
-
-			redir.addAttribute("resultfail", "Technical Issue");
-			logger.error(new Date() + " Inside DivisionMaster.htm " + Userid, e);
-
-		}
-
-		return "redirect:/DivisionMaster.htm";
-	}
 
 	@RequestMapping(value = "DivisionAddCheck.htm", method = RequestMethod.GET)
 	public @ResponseBody String DivisionAddCheck(HttpSession ses, HttpServletRequest req) throws Exception {
@@ -888,14 +899,17 @@ public class AdminController {
 			String divisionShortName = req.getParameter("divisionShortName");	//srikant
 			System.err.println( divisionCode);
 			if(!InputValidator.isValidCapitalsAndSmallsAndNumeric(divisionCode)) {
+				redir.addAttribute("sub", "add");
 				return redirectWithError(redir, "DivisionMaster.htm", "'Division Code' must contain only Alphabets and Numbers (No Spaces)");
 			}
 			
 			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(divisionName)) {
+				redir.addAttribute("sub", "add");
 				return redirectWithError(redir, "DivisionMaster.htm", "'Division Name' must contain only Alphabets and Numbers");
 			}
 			
 			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(divisionShortName)) {
+				redir.addAttribute("sub", "add");
 				return redirectWithError(redir, "DivisionMaster.htm", "'Division Short Name' must contain only Alphabets and Numbers");
 			}
 			DivisionMaster dmo = new DivisionMaster();
@@ -922,9 +936,42 @@ public class AdminController {
 			return "static/Error";
 		}
 	}
+	
+	@RequestMapping(value = "divisionMasterEditSubmitCheck.htm", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> divisionMasterEditSubmitCheck(HttpServletRequest req, HttpSession ses) {
+	    String userId = (String) ses.getAttribute("Username");
+	    Map<String, Object> response = new HashMap<>();
+	    String divisionId = req.getParameter("DivisionId"); // Case-sensitive parameter name
+	    Integer isActive = Integer.valueOf(req.getParameter("isActive"));
+	    System.err.println("from editalert");
+	    try {
+	        List<Object[]> alertDivisionMaster = service.checkDivisionMasterId(divisionId);
+	        
+	        if (alertDivisionMaster != null && !alertDivisionMaster.isEmpty()) {
+	            for (Object[] obj : alertDivisionMaster) {
+	                Integer isActivedb = (Integer) obj[1];
+	                System.err.println("From DB-"+isActivedb);
+	                if (isActivedb.equals(isActive)) {
+	                    response.put("valid", true);
+	                } else {
+	                    response.put("valid", false);
+	                    response.put("message", "Employee(s) present under this Division, Cannot be made Inactive. Revoke employee(s) in Division Employee to make this division Inactive.!");
+	                }
+	            }
+	        } else {
+	            response.put("valid", true);
+	        }
+	    } catch (Exception e) {
+	        response.put("valid", false);
+	        response.put("message", "Error validating status");
+	        logger.error("Error in divisionMasterEditSubmitCheck", e);
+	    }
+	    
+	    return response;
+	}
 
 	@RequestMapping(value = "DivisionMasterEditSubmit.htm", method = RequestMethod.POST)
-
 	public String DivisionMasterEdit(HttpServletRequest req, HttpServletResponse res, HttpSession ses,
 			RedirectAttributes redir) throws Exception {
 
@@ -934,18 +981,25 @@ public class AdminController {
 		String divisionCode=req.getParameter("DivisionCode");
 		String divisionName=req.getParameter("DivisionName");
 		String DivisionShortName=req.getParameter("DivisionShortName");
+		String divisionIdStr = req.getParameter("DivisionId");
 		
 		try {
 			
 			if(!InputValidator.isValidCapitalsAndSmallsAndNumeric(divisionCode)) {
+				redir.addAttribute("sub", "edit");
+			    redir.addAttribute("Did", divisionIdStr);
 				return redirectWithError(redir, "DivisionMaster.htm", "'Division Code' must contain only Alphabets and Numbers (No Spaces)");
 			}
 			
 			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(divisionName)) {
+				redir.addAttribute("sub", "edit");
+			    redir.addAttribute("Did", divisionIdStr);
 				return redirectWithError(redir, "DivisionMaster.htm", "'Division Name' must contain only Alphabets and Numbers");
 			}
 			
 			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(DivisionShortName)) {
+				redir.addAttribute("sub", "edit");
+			    redir.addAttribute("Did", divisionIdStr);
 				return redirectWithError(redir, "DivisionMaster.htm", "'Division Short Name' must contain only Alphabets and Numbers");
 			}
 

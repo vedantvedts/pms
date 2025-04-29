@@ -139,7 +139,7 @@ h6{
                           <div class="form-group">
                            <label  >Activity Name: <span class="mandatory" style="color: red;" >*</span>
                            </label><br>
-                             <input class="form-control " type="text"name="ActivityName" id="ActivityName"  style="width:100% " maxlength="1000" required="required">
+                             <input class="form-control description-input" type="text"name="ActivityName" id="ActivityName"  style="width:100% " maxlength="1000" required="required">
                            </div>
                            </div>
                            

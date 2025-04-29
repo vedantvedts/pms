@@ -96,5 +96,6 @@ public interface AdminService {
 	public int AuditPatchAddSubmit(AuditPatches dto) throws Exception;
 	public AuditPatches getAuditPatchById(Long attachId);
 	public List<Object[]> getFormId(String requestUrlSegment);
+	public List<Object[]> checkDivisionMasterId(String divisionId) throws Exception;
 
 }

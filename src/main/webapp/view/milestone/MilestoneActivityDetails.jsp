@@ -334,7 +334,7 @@ div {
 												<%
 												int Sub1Count = 1;
 												List<Object[]> MilestoneActivityB = (List<Object[]>) request.getAttribute("MilestoneActivityB" + ProjectSubCount);
-												if (MilestoneActivityB != null && MilestoneActivityB.size() > 0) {
+												if (MilestoneActivityB != null && MilestoneActivityB.isEmpty()) {
 													for (Object[] obj1 : MilestoneActivityB) {
 												%>
 
@@ -381,7 +381,7 @@ div {
 																<%
 																int Sub2Count = 1;
 																List<Object[]> MilestoneActivityC = (List<Object[]>) request.getAttribute("MilestoneActivityC" + ProjectSubCount + Sub1Count);
-																if (MilestoneActivityC != null && MilestoneActivityC.size() > 0) {
+																if (MilestoneActivityC != null && MilestoneActivityC.isEmpty()) {
 																	for (Object[] obj2 : MilestoneActivityC) {
 																%>
 
@@ -425,7 +425,7 @@ div {
 																				<%
 																				int Sub3Count = 1;
 																				List<Object[]> MilestoneActivityD = (List<Object[]>) request.getAttribute("MilestoneActivityD" + ProjectSubCount + Sub1Count + Sub2Count);
-																				if (MilestoneActivityD != null && MilestoneActivityD.size() > 0) {
+																				if (MilestoneActivityD != null && MilestoneActivityD.isEmpty()) {
 																					for (Object[] obj3 : MilestoneActivityD) {
 																				%>
 
@@ -555,7 +555,7 @@ div {
 																																	Activity E Name: <span class="mandatory" style="color: red;">*</span>
 																																</label>
 																																<br> 
-																																<input class="form-control " type="text" name="ActivityName"
+																																<input class="form-control description-input" type="text" name="ActivityName"
 																																	id="ActivityName<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>"
 																																	style="width: 100%" maxlength="1000" required="required">
 																															</div>
@@ -760,7 +760,7 @@ $( document ).ready(function() {
 																											<div class="form-group">
 																												<label>Activity D Name: <span
 																													class="mandatory" style="color: red;">*</span>
-																												</label><br> <input class="form-control "
+																												</label><br> <input class="form-control description-input"
 																													type="text" name="ActivityName"
 																													id="ActivityName<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>"
 																													style="width: 100%" maxlength="1000"
@@ -961,7 +961,7 @@ $( document ).ready(function() {
 																							<div class="form-group">
 																								<label>Activity C Name: <span
 																									class="mandatory" style="color: red;">*</span>
-																								</label><br> <input class="form-control "
+																								</label><br> <input class="form-control description-input"
 																									type="text" name="ActivityName"
 																									id="ActivityName<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>"
 																									style="width: 100%" maxlength="1000"
@@ -1161,7 +1161,7 @@ $( document ).ready(function() {
 																			<div class="form-group">
 																				<label>Activity B Name: <span
 																					class="mandatory" style="color: red;">*</span>
-																				</label><br> <input class="form-control " type="text"
+																				</label><br> <input class="form-control description-input" type="text"
 																					name="ActivityName"
 																					id="ActivityName<%=ProjectSubCount%><%=Sub1Count%>"
 																					style="width: 100%" maxlength="1000"
@@ -1364,7 +1364,7 @@ $( document ).ready(function() {
 																	Activity A Name: <span class="mandatory" style="color: red;">*</span>
 																</label>
 																<br> 
-																<input class="form-control " type="text" name="ActivityName" id="ActivityName<%=ProjectSubCount %>" style="width: 100%" maxlength="1000" required="required">
+																<input class="form-control description-input" type="text" name="ActivityName" id="ActivityName<%=ProjectSubCount %>" style="width: 100%" maxlength="1000" required="required">
 															</div>
 														</div>
 
