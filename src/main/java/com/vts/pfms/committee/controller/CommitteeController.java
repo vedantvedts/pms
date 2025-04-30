@@ -236,7 +236,7 @@ public class CommitteeController {
 	private SimpleDateFormat rdf=new SimpleDateFormat("dd-MM-yyyy");
 	private static final Logger logger=LogManager.getLogger(CommitteeController.class);
 
-	@RequestMapping(value = "CommitteeAdd.htm")
+	@RequestMapping(value = "CommitteeAdd.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String CommitteeAddPage(HttpServletRequest req, HttpSession ses) throws Exception
 	{	
 		String UserId = (String) ses.getAttribute("Username");
@@ -270,7 +270,7 @@ public class CommitteeController {
 			String committeeShortName=req.getParameter("committeeshortname").trim();
 			String committeeName=req.getParameter("committeename").trim();
 			String guideLines=req.getParameter("guidelines");
-			String PeriodicDuration=req.getParameter("periodicduration");
+			
 			if(!InputValidator.isValidCapitalsAndSmallsAndNumeric(committeeShortName)) {
 				redir.addAttribute("projectid", projectid);
 				redir.addAttribute("projectappliacble",req.getParameter("projectapplicable"));
@@ -286,11 +286,7 @@ public class CommitteeController {
 				redir.addAttribute("projectappliacble",req.getParameter("projectapplicable"));
 				return redirectWithError(redir, "CommitteeAdd.htm", "'Guidelines' should not contain HTML Tags.!");
 			}
-			if(!InputValidator.isContainsNumberOnly(PeriodicDuration)) {
-				redir.addAttribute("committeemainid", req.getParameter("committeeid"));
-				redir.addAttribute("committeeid", req.getParameter("committeeid"));
-				return redirectWithError(redir, "CommitteeAdd.htm", "'Periodic Duration' must contain Numbers.!");
-			}
+			
 			
 			CommitteeDto committeeDto=new CommitteeDto();
 
@@ -307,6 +303,12 @@ public class CommitteeController {
 			committeeDto.setReferenceNo(req.getParameter("refno"));
 			if(req.getParameter("periodic").equalsIgnoreCase("P"))
 			{
+				String PeriodicDuration=req.getParameter("periodicduration");
+				if(!InputValidator.isContainsNumberOnly(PeriodicDuration)) {
+					redir.addAttribute("committeemainid", req.getParameter("committeeid"));
+					redir.addAttribute("committeeid", req.getParameter("committeeid"));
+					return redirectWithError(redir, "CommitteeAdd.htm", "'Periodic Duration' must contain Numbers.!");
+				}
 				committeeDto.setPeriodicDuration(PeriodicDuration);
 			}else
 			{
