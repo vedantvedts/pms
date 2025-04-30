@@ -61,7 +61,15 @@ Object[] DivisionMasterEditData=(Object[])request.getAttribute("DivisionMasterEd
     
                     <%} %>
 
-
+<div id="ajaxError" style="display: none;">
+    <div align="center">
+        <div class="alert-danger" id="ajaxErrorMessage" style="width: 65%; padding: 10px; margin: 5px 0; 
+              border-radius: 4px;">
+            <!-- Error message will appear here -->
+        </div>
+    </div>
+</div>
+	
 	
 <br>	
 	
@@ -91,7 +99,7 @@ Object[] DivisionMasterEditData=(Object[])request.getAttribute("DivisionMasterEd
 <div class="col-3">	
        <div class="form-group"> 
 				<label >Division Name:<span class="mandatory" style="color: red;">*</span></label>
-				<input  class="form-control form-control alphanum-no-leading-space" type="text" name="DivisionName" required="required" maxlength="255" style="font-size: 18px;" value="<%=DivisionMasterEditData[2]%>">
+				<input  class="form-control form-control alphanum-no-leading-space"  type="text" name="DivisionName" required="required" maxlength="255" style="font-size: 18px;" value="<%=DivisionMasterEditData[2] %>">
 		</div>
 </div>
 
@@ -99,7 +107,7 @@ Object[] DivisionMasterEditData=(Object[])request.getAttribute("DivisionMasterEd
 <div class="col-3">
        <div  class="form-group">
 					<label >Group Name:<span class="mandatory" style="color: red;">*</span></label>
-					 <select class="custom-select " name="GroupId"  required="required" id="GroupId" style="font-size: 18px;">
+					 <select class="custom-select" name="GroupId"  required="required" id="GroupId" style="font-size: 18px;">
 									<option value="" disabled="true" selected="selected" hidden="true">--Select--</option>
 									
 									<% for (  Object[] obj : DivisionGroupList){ %>
@@ -118,7 +126,7 @@ Object[] DivisionMasterEditData=(Object[])request.getAttribute("DivisionMasterEd
 						<option value="" disabled selected="selected">--Select--</option>
 									
 			<% for (  Object[] obj : DivisionHeadList){ %>							
-			<option value=<%=obj[0]%> <%if(obj[0].toString().equalsIgnoreCase(DivisionMasterEditData[3].toString())) {%> selected="selected" <%} %>><%=obj[1]%>, <%=obj[3]%> </option><%}%>
+			<option value=<%=obj[0]%> <%if(obj[0].toString().equalsIgnoreCase(DivisionMasterEditData[3].toString())) {%> selected="selected" <%} %>><%=obj[1]%>, <%=obj[3] %> </option><%}%>
 					</select> 
 		</div>
 </div>
@@ -137,7 +145,7 @@ Object[] DivisionMasterEditData=(Object[])request.getAttribute("DivisionMasterEd
 <div class="col-3">
         <div class="form-group"> 
 				<label >Division Short Name:<span class="mandatory" style="color: red;">*</span></label>
-				<input class="form-control form-control alphanum-no-leading-space" type="text" name="DivisionShortName" id="DivisionShortName" required="required" maxlength="255" style="font-size: 18px;" 
+				<input class="form-control alphanum-no-leading-space " type="text" name="DivisionShortName" id="DivisionShortName" required="required" maxlength="255" style="font-size: 18px;" 
        value="<%= DivisionMasterEditData[6] != null ? DivisionMasterEditData[6] : "" %>">
 
 
@@ -174,5 +182,44 @@ Object[] DivisionMasterEditData=(Object[])request.getAttribute("DivisionMasterEd
 	  $('#DivisionHeadName').select2();
 	  $('#GroupId').select2();
   });
+  
+  $(document).ready(function(){
+	    $('#DivisionHeadName').select2();
+	    $('#DivisionId').select2();
+	    
+	    $('select[name="isActive"]').change(function() {
+	        var isActive = $(this).val();
+	        var DivisionId = $('input[name="DivisionId"]').val(); 
+	        
+	        $('#ajaxError').hide();
+	        $('#ajaxErrorMessage').text('');
+	        
+	        if(isActive === "0") {
+	            $.ajax({
+	                url: 'divisionMasterEditSubmitCheck.htm', 
+	                type: 'POST',
+	                data: {
+	                    isActive: isActive,
+	                    DivisionId: DivisionId, 
+	                    '${_csrf.parameterName}': '${_csrf.token}'
+	                },
+	                success: function(response) {
+	                    if(response.valid) {
+	                        console.log("Validation passed");
+	                    } else {
+	                        $('#ajaxErrorMessage').text(response.message);
+	                        $('#ajaxError').show();
+	                        $('select[name="isActive"]').val("1");
+	                    }
+	                },
+	                error: function(xhr) {
+	                    $('#ajaxErrorMessage').text("Error validating status");
+	                    $('#ajaxError').show();
+	                    $('select[name="isActive"]').val("1");
+	                }
+	            });
+	        }
+	    });
+	});
 </script>
 </html>

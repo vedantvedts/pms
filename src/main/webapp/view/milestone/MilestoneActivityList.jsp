@@ -102,9 +102,7 @@ input[type=checkbox] {
   String ProjectId=(String)request.getAttribute("ProjectId");
   String LoginType = (String)session.getAttribute("LoginType");
   List<String> actionAllowedFor =  Arrays.asList("A");
-  Long projectDirector = 0L;
   
-  Long empId = (Long)session.getAttribute("EmpId");
  %>
 
 
@@ -125,7 +123,7 @@ input[type=checkbox] {
     										<% for (Object[] obj : ProjectList) {
     										String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
     										%>
-											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%projectDirector = Long.parseLong(obj[23].toString()); %> <%} %>> <%=obj[4]+projectshortName%>  </option>
+											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>> <%=obj[4]+projectshortName%>  </option>
 											<%} %>
   									</select>
   									</div>
@@ -207,9 +205,9 @@ if(ses1!=null){	%>
 															<th>Status</th>
 															<th>Weightage</th>	
 															<th>Progress</th>			
-															<%-- <%if(actionAllowedFor.contains(LoginType) || projectDirector.equals(empId) || oicEmpId.equals(empId)) {%>	 --%>								
+															<%if(actionAllowedFor.contains(LoginType)) {%>									
 														 		<th>Action</th>
-														 	<%-- <%} %> --%>	
+														 	<%} %>	
 														 	
 														</tr>
 													</thead>
@@ -256,7 +254,7 @@ if(ses1!=null){	%>
 																</div>
 																</div> <%} %>
 															</td>
-															<%if(actionAllowedFor.contains(LoginType) || projectDirector.equals(empId) || Long.parseLong(obj[17].toString())==(empId)) { %>
+															<%if(actionAllowedFor.contains(LoginType)) {%>
 																<td  style="width:20% !important; text-align: center;">		
 																	<form action="MilestoneActivityDetails.htm" method="POST" name="myfrm"  style="display: inline">
 																		<%if(Integer.parseInt(obj[12].toString())<100){ %>
@@ -360,8 +358,6 @@ if(ses1!=null){	%>
 																		<%} %>	
 																	 </form> 
 																</td>
-															<%} else {%>
-																<td class="center"> <span class="btn btn-sm btn-info">Access Denied</span> </td>
 															<%} %>	
 														</tr>
 														 <tr class="collapse row<%=count %>" style="font-weight: bold;">

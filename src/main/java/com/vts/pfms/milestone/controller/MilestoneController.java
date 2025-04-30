@@ -91,6 +91,7 @@ import com.vts.pfms.milestone.model.FileRepMaster;
 import com.vts.pfms.milestone.model.FileRepNew;
 import com.vts.pfms.milestone.model.MilestoneActivitySub;
 import com.vts.pfms.milestone.service.MilestoneService;
+import com.vts.pfms.utils.InputValidator;
 
 @Controller
 public class MilestoneController {
@@ -373,13 +374,18 @@ public class MilestoneController {
 
 
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			String activityName=req.getParameter("ActivityName");
+			if(InputValidator.isContainsHTMLTags(activityName)) {
+				redir.addAttribute("ProjectId", req.getParameter("ProjectId"));
+				return redirectWithError(redir, "MilestoneActivityAdd.htm", "'Activity Name' should not contain HTML Tags.!");
+			}
 
 			MilestoneActivityDto mainDto=new MilestoneActivityDto();
 			mainDto.setActivityType(req.getParameter("ActivityType"));
 			mainDto.setProjectId(req.getParameter("ProjectId"));
 			mainDto.setOicEmpId(req.getParameter("EmpId"));
 			mainDto.setOicEmpId1(req.getParameter("EmpId1"));
-			mainDto.setActivityName(req.getParameter("ActivityName"));
+			mainDto.setActivityName(activityName);
 			mainDto.setMilestoneNo(req.getParameter("MilestoneNo"));
 			mainDto.setStartDate(req.getParameter("ValidFrom"));
 			mainDto.setEndDate(req.getParameter("ValidTo"));
@@ -412,7 +418,10 @@ public class MilestoneController {
 		try {
 			int countA=1;
 			req.setAttribute("MilestoneActivity", service.MilestoneActivity(req.getParameter("MilestoneActivityId")).get(0));
-			Object[] objd= service.MilestoneActivity(req.getParameter("MilestoneActivityId")).get(0);
+			/*
+			 * Object[] objd=
+			 * service.MilestoneActivity(req.getParameter("MilestoneActivityId")).get(0);
+			 */
 			List<Object[]>  MilestoneActivityA=service.MilestoneActivityLevel(req.getParameter("MilestoneActivityId"),"1");
 			req.setAttribute("MilestoneActivityA", MilestoneActivityA);
 			for(Object[] obj:MilestoneActivityA) {
@@ -465,11 +474,19 @@ public class MilestoneController {
 		try {
 
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			String activityName=req.getParameter("ActivityName");
+			if(InputValidator.isContainsHTMLTags(activityName)) {
+				System.err.println("error in activity name");
+				redir.addAttribute("ProjectId", req.getParameter("ProjectId"));
+				redir.addAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
+				redir.addAttribute("formname", req.getParameter("formname"));
+				return redirectWithError(redir, "MilestoneActivityDetails.htm", "'Activity Name' should not contain HTML Tags.!");
+			}
 			redir.addFlashAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
 			redir.addFlashAttribute("formname", req.getParameter("formname"));
 			MilestoneActivityDto mainDto=new MilestoneActivityDto();
 			mainDto.setActivityType(req.getParameter("ActivityType"));
-			mainDto.setActivityName(req.getParameter("ActivityName"));
+			mainDto.setActivityName(activityName);
 			mainDto.setActivityId(req.getParameter("ActivityId"));
 			mainDto.setLevelId(req.getParameter("LevelId"));
 			mainDto.setStartDate(req.getParameter("ValidFrom"));
@@ -481,7 +498,7 @@ public class MilestoneController {
 			long count =service.MilestoneActivityLevelInsert(mainDto);
 
 			if (count > 0) {
-				redir.addAttribute("result", "Milestone Activity Sub Level  Added Successfully");
+				redir.addAttribute("result", "Milestone Activity Sub Level Added Successfully");
 			} else {
 				redir.addAttribute("resultfail", "Milestone Activity Sub Level Add Unsuccessful");
 			}
@@ -746,6 +763,16 @@ public class MilestoneController {
 			System.out.println(req.getParameter("Weightage")+"------------");
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			redir.addFlashAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
+			
+			String activityName=req.getParameter("ActivityName");
+			if(InputValidator.isContainsHTMLTags(activityName)) {
+				System.err.println("error in activity name");
+				redir.addAttribute("ProjectId", req.getParameter("ProjectId"));
+				redir.addAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
+				redir.addAttribute("formname", req.getParameter("formname"));
+				redir.addAttribute("sub","C");
+				return redirectWithError(redir, "MilestoneActivityDetails.htm", "'Activity Name' should not contain HTML Tags.!");
+			}
 			MileEditDto mainDto=new MileEditDto();
 			mainDto.setMilestoneActivityId(req.getParameter("MilestoneActivityId"));
 			mainDto.setRevisionNo(req.getParameter("RevId"));
@@ -754,7 +781,7 @@ public class MilestoneController {
 			mainDto.setActivityTypeId(req.getParameter("ActivityTypeId"));
 			mainDto.setOicEmpId(req.getParameter("EmpId"));
 			mainDto.setOicEmpId1(req.getParameter("EmpId1"));
-			mainDto.setActivityName(req.getParameter("ActivityName"));
+			mainDto.setActivityName(activityName);
 			mainDto.setStartDate(req.getParameter("ValidFrom"));
 			mainDto.setEndDate(req.getParameter("ValidTo"));
 			mainDto.setWeightage(req.getParameter("Weightage"));
@@ -1061,6 +1088,15 @@ public class MilestoneController {
 		try {
 
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			String remarks=req.getParameter("Remarks");
+			System.err.println(remarks);
+			if(InputValidator.isContainsHTMLTags(remarks)) {
+				redir.addAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
+				redir.addAttribute("ActivityId", req.getParameter("ActivityId"));
+				redir.addAttribute("ActivityType", req.getParameter("ActivityType"));
+				redir.addAttribute("ProjectId", req.getParameter("ProjectId"));
+				return redirectWithError(redir, "M-A-Update.htm", "'Remarks' should not contain HTML Tags.!");
+			}
 			redir.addFlashAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
 			redir.addFlashAttribute("ActivityId", req.getParameter("ActivityId"));
 			redir.addFlashAttribute("ActivityType", req.getParameter("ActivityType"));
@@ -1075,7 +1111,7 @@ public class MilestoneController {
 			mainDto.setFileName(req.getParameter("FileName"));
 			mainDto.setFileNamePath(FileAttach.getOriginalFilename());
 			mainDto.setFilePath(FileAttach.getBytes());
-			mainDto.setStatusRemarks(req.getParameter("Remarks"));
+			mainDto.setStatusRemarks(remarks);
 			mainDto.setCreatedBy(UserId);
 			mainDto.setProgressDate(req.getParameter("progressDate"));
 			int count =service.ActivityProgressUpdate(mainDto);
@@ -3261,5 +3297,8 @@ public class MilestoneController {
 		  
 		 return json.toJson(subList);    
 	}
-
+	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
+	    redir.addAttribute("resultfail", message);
+	    return "redirect:/"+redirURL;
+	}
 }

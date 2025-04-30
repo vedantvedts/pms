@@ -795,8 +795,8 @@ if(ses1!=null){	%>
 															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 															
 															<form action="SystemLevelNameAdd.htm" method="get">
-													            <input type="text" name="LevelName" required >
-													              <input type="text" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
+													            <input type="text" class="description-input" name="LevelName" required >
+													              <input type="text" class="description-input" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
 													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#7#<%=level6[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%>.<%=countF%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
@@ -826,8 +826,8 @@ if(ses1!=null){	%>
 															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 															
 															<form action="SystemLevelNameAdd.htm" method="get">
-													            <input type="text" name="LevelName" required >
-													                <input type="text" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
+													            <input type="text" class="description-input" name="LevelName" required >
+													                <input type="text" class="description-input" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
 													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#6#<%=level5[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
@@ -856,8 +856,8 @@ if(ses1!=null){	%>
 															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 															
 															<form action="SystemLevelNameAdd.htm" method="get">
-													            <input type="text" name="LevelName" required >
-													              <input type="text" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
+													            <input type="text" class="description-input" name="LevelName" required >
+													              <input type="text" class="description-input" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
 													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#5#<%=level4[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
@@ -887,8 +887,8 @@ if(ses1!=null){	%>
 															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 															
 															<form action="SystemLevelNameAdd.htm" method="get">
-													            <input type="text" name="LevelName" required >
-													            <input type="text" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
+													            <input type="text" class="description-input" name="LevelName" required >
+													            <input type="text" class="description-input" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
 													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#4#<%=level3[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
@@ -919,8 +919,8 @@ if(ses1!=null){	%>
 															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 															
 															<form action="SystemLevelNameAdd.htm" method="get">
-													            <input type="text" name="LevelName" required >
-													            <input type="text" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
+													            <input type="text" class="description-input" name="LevelName" required >
+													            <input type="text" class="description-input" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
 													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#3#<%=level2[0]%>#<%=count%>.<%=countA%>.<%=countB%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
@@ -949,8 +949,8 @@ if(ses1!=null){	%>
 											<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 											
 											<form action="SystemLevelNameAdd.htm" method="get">
-									            <input type="text" name="LevelName" required >
-									             <input type="text" name="LevelCode" required  maxlength="3" style="width:35%" placeholder="CODE">
+									            <input type="text" class="description-input" name="LevelName" required >
+									             <input type="text" class="description-input" name="LevelCode" required  maxlength="3" style="width:35%" placeholder="CODE">
 									            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#2#<%=level1[0]%>#<%=count%>.<%=countA%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 									             
 									         </form>    
@@ -977,8 +977,8 @@ if(ses1!=null){	%>
                          <div class="member-view-box action-view-box">
 							<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 					            <form action="SystemLevelNameAdd.htm" method="get">
-						            <input type="text" name="LevelName" required>
-						            <input type="text" name="LevelCode" required  maxlength="3" style="width:35%" placeholder="CODE">
+						            <input type="text" class="description-input" name="LevelName" required>
+						            <input type="text" class="description-input" name="LevelCode" required  maxlength="3" style="width:35%" placeholder="CODE">
 						            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#1#0#<%=count %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 									             
 							   </form>    
@@ -989,7 +989,7 @@ if(ses1!=null){	%>
                     </li>
                     
                    
-                	<%---------------------------------------Level 1 Add------------------------------------------------------------%>
+                	<%---------------------------------------Level 1 ------------------------------------------------------------%>
 				 </ul> 
                 
                          

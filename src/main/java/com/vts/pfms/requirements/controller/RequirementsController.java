@@ -4616,8 +4616,8 @@ public class RequirementsController {
 			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(PassFailCriteria)) {
 				return redirectWithError(redir, "TestPlanMaster.htm", "'Criteria' must contain only Alphabets and Numbers");
 			}
-			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(Remarks)) {
-				return redirectWithError(redir, "TestPlanMaster.htm", "'Remarks' must contain only Alphabets and Numbers");
+			if(InputValidator.isContainsHTMLTags(Remarks)) {
+				return redirectWithError(redir, "TestPlanMaster.htm", "'Remarks' should not contain HTML tags.!");
 			}
 			tp.setName(TestName);
 			tp.setObjective(Objective);

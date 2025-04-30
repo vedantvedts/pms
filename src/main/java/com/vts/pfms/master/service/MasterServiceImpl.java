@@ -538,7 +538,14 @@ public class MasterServiceImpl implements MasterService {
 		
 		return dao.TDAddCheck(tCode);
 	}
-
+	
+	@Override
+	public List<Object[]> checkGroupMasterCode(String TdCode) throws Exception {
+		
+		return dao.CheckGroupMasterCode(TdCode);
+	}
+	
+	
 	@Override
 	public int TDMasterUpdate(DivisionTd model) throws Exception {
 		model.setModifiedDate(sdf1.format(new Date()));		
@@ -761,5 +768,10 @@ public class MasterServiceImpl implements MasterService {
 		@Override
 		public long addPfmsEmpRoles(PfmsEmpRoles pf) throws Exception {
 			return dao.addPfmsEmpRoles(pf);
+		}
+		
+		@Override
+		public List<Object[]> checkDivisionMasterId(String groupId) throws Exception {
+			return dao.checkDivisionMasterId(groupId);
 		}
 }

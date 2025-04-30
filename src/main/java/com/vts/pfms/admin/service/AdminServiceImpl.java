@@ -865,4 +865,10 @@ public class AdminServiceImpl implements AdminService{
 		public List<Object[]> getFormId(String requestUrlSegment)  {
 			return dao.getFormId(requestUrlSegment);
 		}
+		
+		@Override
+		public List<Object[]> checkDivisionMasterId(String divisionId) throws Exception {
+			
+			return dao.checkDivisionMasterId(divisionId);
+		}
 }

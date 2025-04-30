@@ -94,5 +94,7 @@ public interface MasterService {
 	public List<Object[]> getEmployees()throws Exception;
 	public PfmsEmpRoles getPfmsEmpRolesById(String roleid)throws Exception;
 	public long addPfmsEmpRoles(PfmsEmpRoles pf)throws Exception;
+	public List<Object[]> checkGroupMasterCode(String TdCode) throws Exception;
+	public List<Object[]> checkDivisionMasterId(String groupId) throws Exception;
 	
 }

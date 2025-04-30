@@ -65,11 +65,11 @@ public class AdminDaoImpl implements AdminDao{
 	private final static String CHECKUSER = "SELECT COUNT(LoginId) FROM pfms_login_role_security WHERE LoginId=:loginid";
 	private final static String UPDATEPFMSLOGINROLE="UPDATE pfms_login_role_security SET RoleId=:roleid WHERE LoginId=:loginid";
 	private static final String CURRENTADDORTMT="SELECT r.RtmddoId, r.EmpId, r.ValidFrom, r.ValidTo, r.Type,r.labcode FROM pfms_initiation_approver r WHERE r.IsActive=1 ORDER BY r.Type DESC";
-	private static final String DIVISIONLIST1 ="SELECT a.divisionid,a.divisioncode,a.divisionname, CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname' ,c.groupname ,a.labcode, d.Designation, a.DivisionShortName FROM division_master a,employee b,division_group c, employee_desig d WHERE a.isactive='1' AND b.DesigId = d.DesigId and a.divisionheadid=b.empid AND a.groupid=c.groupid AND a.labcode=:labcode ORDER BY a.divisionid desc"; //srikant
+	private static final String DIVISIONLIST1 ="SELECT a.divisionid,a.divisioncode,a.divisionname, CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname' ,c.groupname ,a.labcode, d.Designation, a.DivisionShortName FROM division_master a,employee b,division_group c, employee_desig d WHERE a.isactive='1' AND b.isactive='1' AND b.DesigId = d.DesigId and a.divisionheadid=b.empid AND a.groupid=c.groupid AND a.labcode=:labcode ORDER BY a.divisionid desc"; //srikant
 	private static final String DIVISIONADDCHECK="SELECT SUM(IF(DivisionCode =:divisionCode,1,0))   AS 'dCode',SUM(IF(DivisionName = :divisionName,1,0)) AS 'dName' FROM division_master where isactive=1 ";
 	private static final String DIVISIONUPDATE="UPDATE division_master SET divisioncode=:divisioncode, divisionname=:divisionname, divisionheadid=:divisionheadid , groupid=:groupid, modifiedby=:modifiedby, modifieddate=:modifieddate, isactive=:isactive, DivisionShortName=:DivisionShortName WHERE divisionid=:divisionid";	//srikant
 	private static final String DIVISIONGROUPLIST="SELECT a.groupid,a.groupname,a.labcode FROM division_group a WHERE a.isactive=1";
-	private static final String DIVISIONHEADLIST="SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname',a.labcode,b.designation FROM employee a , employee_desig b WHERE  a.isactive=1 AND a.desigid=b.desigid";
+	private static final String DIVISIONHEADLIST="SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname',a.labcode,b.designation FROM employee a , employee_desig b WHERE a.isactive=1 AND a.desigid=b.desigid";
 	private static final String DIVISIONEDITDATA="SELECT d.divisionid,d.divisioncode, d.divisionname, d.divisionheadid, d.groupid, d.IsActive, d.DivisionShortName FROM division_master d WHERE d.divisionid=:divisionid ";	//srikant
 	private static final String DESIGNATIONDATA="SELECT desigid,desigcode,designation,desiglimit,DesigSr,DesigCadre FROM employee_desig WHERE desigid=:desigid";
 	private static final String DESIGNATIONLIST="SELECT desigid,desigcode,designation,desiglimit,DesigSr,DesigCadre FROM employee_desig ORDER BY DesigSr";
@@ -1186,6 +1186,16 @@ public class AdminDaoImpl implements AdminDao{
 			e.printStackTrace();
 			return new ArrayList<>();
 		}
+		
+		
 
+	}
+	
+	public static final String CHECKDIVISIONMASTER="SELECT de.EmpId,de.isactive FROM division_master dm, division_employee de WHERE dm.DivisionId =de.DivisionId  AND de.isactive=1 AND de.DivisionId=:divId ORDER BY de.empid ASC";
+	@Override
+	public List<Object[]> checkDivisionMasterId(String divisionId) {
+		Query query=manager.createNativeQuery(CHECKDIVISIONMASTER);
+		query.setParameter("divId", divisionId);
+		return (List<Object[]>)query.getResultList();
 	}
 }

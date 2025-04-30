@@ -53,7 +53,22 @@ String fileId=(String)request.getAttribute("fileId");
 String value=(String)request.getAttribute("value");
 
 %>
-
+<%
+	String ses=(String)request.getParameter("result"); 
+	String ses1=(String)request.getParameter("resultfail");
+%>
+	<%if(ses1!=null){ %>
+	<div align="center">
+	<div class="alert alert-danger" role="alert">
+                     <%=ses1 %>
+                    </div></div>
+	<%}if(ses!=null){ %>
+		<div align="center">
+			<div class="alert alert-success" role="alert" >
+	        	<%=ses %>
+	        </div>
+	    </div>
+    <%} %>
 
 
 <div class="container" >

@@ -72,6 +72,14 @@ Object[] tdsdata=(Object[])request.getAttribute("tdsdata");
                     <%} %>
 
 
+<div id="ajaxError" style="display: none;">
+    <div align="center">
+        <div class="alert-danger" id="ajaxErrorMessage" style="width: 65%; padding: 10px; margin: 5px 0; 
+              border-radius: 4px;">
+            <!-- Error message will appear here -->
+        </div>
+    </div>
+</div>
 	
 <br>	
 	
@@ -123,7 +131,7 @@ Object[] tdsdata=(Object[])request.getAttribute("tdsdata");
                         		<div class="form-group">
                             		<label class="control-label">isActive:</label><span class="mandatory">*</span>
                               		 
-								<select  class="custom-select"  name="isActive" required="required" maxlength="255" style="font-size: 18px;" >
+								<select id="isActive" class="custom-select"  name="isActive" required="required" maxlength="255" style="font-size: 18px;" onclick="return isActiveCheck()" >
                        
                        
                      <option value="1" <%if(tdsdata[6].toString().equalsIgnoreCase("1")) {%> selected="selected" <%} %> >YES</option>
@@ -161,8 +169,53 @@ Object[] tdsdata=(Object[])request.getAttribute("tdsdata");
 	
 </body>
 <script>
-  $(document).ready(function(){
-	  $('#tdempid').select2();
-  });
+
+
+
+ $(document).ready(function() {
+	   
+	    $('select[name="isActive"]').change(function() {
+	        var isActive = $(this).val();
+	        var tdCode = $('#tdCode').val();
+	        var tdid = $('input[name="tdid"]').val();
+	        
+	        
+	        $('#ajaxError').hide();
+	        $('#ajaxErrorMessage').text('');
+	        
+	        if(isActive === "0") {
+	            $.ajax({
+	                url: 'TDMasterEditSubmitCheck.htm',
+	                type: 'POST',
+	                data: {
+	                    isActive: isActive,
+	                    tdcode: tdCode,
+	                    tdid: tdid,
+	                    '${_csrf.parameterName}': '${_csrf.token}'
+	                },
+	                success: function(response) {
+	                    if(response.valid) {
+	                       
+	                        console.log("Validation passed");
+	                    } else {
+	                        
+	                        $('#ajaxErrorMessage').text(response.message);
+	                        $('#ajaxError').show();
+	                        
+	                        $('select[name="isActive"]').val("1");
+	                    }
+	                },
+	                error: function(xhr) {
+	                    $('#ajaxErrorMessage').text("Error validating status");
+	                    $('#ajaxError').show();
+	                    $('select[name="isActive"]').val("1");
+	                }
+	            });
+	        }
+	    });
+	});
 </script>
+
+  
+
 </html>

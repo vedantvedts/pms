@@ -240,62 +240,63 @@ $(document).ready(function(){
 	  });
 	});
 $("#UsernameSubmit").hide();
-$(document)
-.ready(function(){
-	 $("#check").click(function(){
-			// SUBMIT FORM
-		
-		$('#UserNameSuccessMsg').html("");	
-		$('#UserNameMsg').html("");	
-		$('#UserName').val("");
-		 $("#UsernameSubmit").hide();
-			var $UserName = $("#UserNameCheck").val();
-			if($UserName!=""&&$UserName.length>=4){
-			
-			$
-					.ajax({
+$(document).ready(function() {
+    $("#check").click(function() {
+        // Clear any previous messages
+        $('#UserNameSuccessMsg').html("");    
+        $('#UserNameMsg').html("");    
+        $('#UserName').val("");  // Reset the username field
+        $("#UsernameSubmit").hide();  // Hide the submit button initially
 
-						type : "GET",
-						url : "UserNamePresentCount.htm",
-						data : {
-							UserName : $UserName
-						},
-						datatype : 'json',
-						success : function(result) {
+        var $UserName = $("#UserNameCheck").val();
 
-							var result = JSON.parse(result);
-						
-							var s = '';
-							if(result>0){
-								s = "UserName Not Available";	
-								$('#UserNameMsg').html(s);
-							
-								 $("#UsernameSubmit").hide();
-							}else{
-								$('#UserName').val($UserName);
-								
-								s = "UserName Available";	
-								$('#UserNameSuccessMsg').html(s);
-								
-								 $("#UsernameSubmit").show();
-							}
-							
-							
-							
-							
-						}
-					});
+        // Check if username is not empty and has minimum 4 characters
+        if ($UserName !== "" && $UserName.length >= 4) {
+            
+            // Regular expression to check for special characters
+            var regex = /^[a-zA-Z0-9]+$/;  // Allows only Alphabets and Numbers
+            
+            // Check if username contains only alphabets and numbers (No special characters)
+            if (!regex.test($UserName)) {
+                var s = "Username must only contain alphabets and numbers (No special characters allowed).";    
+                $('#UserNameMsg').html(s);  // Show error message
+                $("#UsernameSubmit").hide();  // Hide the submit button
+                return;  // Exit function if username is invalid
+            }
 
-}else{
-	
-	var s = "Username Too Short";	
-	$('#UserNameMsg').html(s);
-	
-}
-			
-			
-		});
+            // Proceed with the AJAX call if username is valid
+            $.ajax({
+                type: "GET",
+                url: "UserNamePresentCount.htm",
+                data: {
+                    UserName: $UserName
+                },
+                datatype: 'json',
+                success: function(result) {
+                    var result = JSON.parse(result);
+
+                    var s = '';
+                    if (result > 0) {
+                        s = "UserName Not Available";    
+                        $('#UserNameMsg').html(s);  // Show the not available message
+                        $("#UsernameSubmit").hide();  // Hide the submit button
+                    } else {
+                        $('#UserName').val($UserName);  // Set the valid username
+                        s = "UserName Available";    
+                        $('#UserNameSuccessMsg').html(s);  // Show the available message
+                        $("#UsernameSubmit").show();  // Show the submit button
+                    }
+                }
+            });
+
+        } else {
+            var s = "Username Too Short (Minimum 4 characters required)";    
+            $('#UserNameMsg').html(s);  // Show the too short message
+            $("#UsernameSubmit").hide();  // Hide the submit button
+        }
+    });
 });
+
 
 
 $(document)

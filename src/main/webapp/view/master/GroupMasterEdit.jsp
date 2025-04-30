@@ -71,6 +71,14 @@ Object[] groupsdata=(Object[])request.getAttribute("groupsdata");
                     <%} %>
 
 
+<div id="ajaxError" style="display: none;">
+    <div align="center">
+        <div class="alert-danger" id="ajaxErrorMessage" style="width: 65%; padding: 10px; margin: 5px 0; 
+              border-radius: 4px;">
+            <!-- Error message will appear here -->
+        </div>
+    </div>
+</div>
 	
 <br>	
 	
@@ -95,13 +103,13 @@ Object[] groupsdata=(Object[])request.getAttribute("groupsdata");
                     		<div class="col-md-3">
                         		<div class="form-group">
                             		<label class="control-label">Group Code</label><span class="mandatory">*</span>
-                              		<input  class="form-control alphanum-only"  type="text" name="groupcode" readonly="readonly" id="groupCode" value="<%=groupsdata[1]%>" required="required" maxlength="3" style="font-size: 15px;"> 
+                              		<input  class="form-control form-control "  type="text" name="groupcode" readonly="readonly" id="groupCode" value="<%=groupsdata[1]%>" required="required" maxlength="3" style="font-size: 15px;"> 
                         		</div>
                     		</div>
          					<div class="col-md-3">
                         		<div class="form-group">
                             		<label class="control-label">Group Name</label><span class="mandatory">*</span>
-                            		<input  class="form-control alphanum-no-leading-space" value="<%=groupsdata[2] %>"  type="text" name="groupname" id="groupName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize; width: 90%;" > 
+                            		<input  class="form-control form-control " value="<%=groupsdata[2] %>"  type="text" name="groupname" id="groupName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize; width: 90%;" > 
                         		</div>
                     		</div>
                     		<div class="col-md-4">
@@ -126,7 +134,7 @@ Object[] groupsdata=(Object[])request.getAttribute("groupsdata");
 													
 													<% for (  Object[] obj : tdaddlist){ %>
 											
-											        	<option value=<%=obj[0]%> <%if(obj[0].toString().equalsIgnoreCase(groupsdata[7].toString())) {%> selected="selected" <%} %>><%=obj[2] %> </option>
+											        	<option value=<%=obj[0]%> <%if(obj[0].toString().equalsIgnoreCase(groupsdata[7].toString())) {%> selected="selected" <%} %>><%=obj[1] %> (<%=obj[2] %>)</option>
 												
 													<%} %>
 									</select>
@@ -178,5 +186,45 @@ Object[] groupsdata=(Object[])request.getAttribute("groupsdata");
 	  $('#ghempid').select2();
 	  $('#tdId').select2();
   });
+  
+
+
+  $(document).ready(function() {
+	    $('select[name="isActive"]').change(function() {
+	        var isActive = $(this).val();
+	        var groupCode = $('#groupCode').val();
+	        var groupId = $('input[name="groupid"]').val(); // Get the hidden groupid
+	        
+	        $('#ajaxError').hide();
+	        $('#ajaxErrorMessage').text('');
+	        
+	        if(isActive === "0") {
+	            $.ajax({
+	                url: 'GroupMasterEditSubmitCheck.htm',
+	                type: 'POST',
+	                data: {
+	                    isActive: isActive,
+	                    groupcode: groupCode,  
+	                    groupid: groupId,     
+	                    '${_csrf.parameterName}': '${_csrf.token}'
+	                },
+	                success: function(response) {
+	                    if(response.valid) {
+	                        console.log("Validation passed");
+	                    } else {
+	                        $('#ajaxErrorMessage').text(response.message);
+	                        $('#ajaxError').show();
+	                        $('select[name="isActive"]').val("1");
+	                    }
+	                },
+	                error: function(xhr) {
+	                    $('#ajaxErrorMessage').text("Error validating status");
+	                    $('#ajaxError').show();
+	                    $('select[name="isActive"]').val("1");
+	                }
+	            });
+	        }
+	    });
+	});
 </script>
 </html>

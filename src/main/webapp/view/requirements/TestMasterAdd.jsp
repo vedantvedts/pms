@@ -476,7 +476,7 @@ opacity
 									</div>
 									<div class="col-md-2" style="">
 										<input type="text" name="EstimatedTimeIteration"
-											class="form-control" id="EstimatedTimeIterationAdd"
+											class="form-control numeric-only" id="EstimatedTimeIterationAdd"
 											min="1" required="required" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
 											 value="<%if(tp.getEstimatedTimeIteration()!=null){%><%=Integer.parseInt(tp.getEstimatedTimeIteration()) %><%}%>">
 									</div>
@@ -503,7 +503,7 @@ opacity
 									<div class="col-md-10" style="">
 										<input type="text" name="Iterations" class="form-control alphanum-no-leading-space"
 											id="IterationsAdd" maxlength="255" required="required"
-											placeholder="Maximum 250 Chararcters"  value="<%if(tp.getIterations()!=null){%><%=tp.getIterations() %> <%}%>">
+											placeholder="Maximum 250 Chararcters"  value="<%if(tp.getIterations()!=null){%><%=tp.getIterations() %><%}%>">
 									</div>
 								</div>
 							</div>
@@ -518,7 +518,7 @@ opacity
 									<div class="col-md-10" style="">
 										<input type="text" name="Schedule" class="form-control alphanum-no-leading-space"
 											id="ScheduleAdd" min="1" required="required"
-											value="<%if(tp.getSchedule()!=null){%><%=tp.getSchedule()%> <%}%>">
+											value="<%if(tp.getSchedule()!=null){%><%=tp.getSchedule()%><%}%>">
 									</div>
 								
 								</div>
@@ -627,7 +627,7 @@ opacity
 											Remarks <span class="mandatory" style="color: red;">*</span>
 										</label>
 									<div  style="">
-										<textarea  name="remarks" class="form-control alphanum-no-leading-space"
+										<textarea  name="remarks" class="form-control description-input"
 											id="remarksAdd" maxlength="255" required="required"
 											placeholder="Maximum 250 Chararcters" ><%if(tp.getRemarks()!=null){%><%=tp.getRemarks()%> <%}%></textarea>
 									</div>

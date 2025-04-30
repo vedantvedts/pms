@@ -42,6 +42,7 @@ import com.vts.pfms.producttree.model.ProductTreeRev;
 import com.vts.pfms.producttree.model.SystemProductTree;
 import com.vts.pfms.producttree.service.ProductTreeService;
 import com.vts.pfms.requirements.service.RequirementService;
+import com.vts.pfms.utils.InputValidator;
 
 
 
@@ -201,7 +202,13 @@ public class ProductTreeController {
 	        
 	        String LevelName=req.getParameter("LevelName");
 	        String ProjectType = req.getParameter("ProjectType");
-	       
+	    	if(!InputValidator.isContainsDescriptionPattern(LevelName)) {
+	    			redir.addAttribute("ProjectId", ProjectId);
+	                redir.addAttribute("ProjectType", ProjectType);
+	                redir.addAttribute("initiationId", initiationId);
+				return redirectWithError(redir, "ProductTree.htm", "'Name' should contain Alphabets , Numbers and some special characters.!.!");
+			}
+			
 	        ProductTreeDto dto=new ProductTreeDto();
 	        dto.setProjectId(Long.parseLong(ProjectId));
 	        dto.setParentLevelId(Long.parseLong(ParentLevelId));
@@ -299,9 +306,15 @@ public class ProductTreeController {
 			System.out.println("Action --->"+req.getParameter("Action"));
 			if(Action!=null && (Action.equalsIgnoreCase("E")|| Action.equalsIgnoreCase("TE"))) {
 
-			
+				String LevelName=req.getParameter("LevelName");
+				if(!InputValidator.isContainsDescriptionPattern(LevelName)) {
+	    			redir.addAttribute("ProjectId", ProjectId);
+	                redir.addAttribute("ProjectType", ProjectType);
+	                redir.addAttribute("initiationId", initiationId);
+				return redirectWithError(redir, "ProductTree.htm", "'Name' should contain Alphabets , Numbers and some special characters.!.!");
+			}
 			 ProductTreeDto dto=new ProductTreeDto();
-			 dto.setLevelName(req.getParameter("LevelName"));
+			 dto.setLevelName(LevelName);
 			 dto.setMainId(Long.parseLong(req.getParameter("Mainid")));
 			 dto.setStage(req.getParameter("Stage"));
 			 dto.setModule(req.getParameter("Module"));
@@ -615,9 +628,18 @@ public class ProductTreeController {
 			spt.setMainId(Long.parseLong(req.getParameter("Mainid")));
 			
 				if(Action!=null &&  Action.equalsIgnoreCase("TE")) {
-				
-					spt.setLevelName(req.getParameter("LevelName"));
-					spt.setLevelCode(req.getParameter("LevelCode"));
+					String levelName=req.getParameter("LevelName");
+					String levelCode=req.getParameter("LevelCode");
+					if(!InputValidator.isContainsDescriptionPattern(levelName)) {
+						
+						return redirectWithError(redir, "SystemProductTree.htm", "'Name' should contain Alphabets , Numbers and some special characters.!.!");
+					}
+					if(!InputValidator.isContainsDescriptionPattern(levelCode)) {
+						
+						return redirectWithError(redir, "SystemProductTree.htm", "'Code' should contain Alphabets , Numbers and some special characters.!.!");
+					}
+					spt.setLevelName(levelName);
+					spt.setLevelCode(levelCode);
 					spt.setModifiedBy(UserId);
 	
 					long update = service.systemLevelNameEdit(spt, Action);
@@ -660,17 +682,24 @@ public class ProductTreeController {
 				String SubLevelId=arr[3];
 				
 				
-				String LevelName=req.getParameter("LevelName");
-				
-				
+				String levelName=req.getParameter("LevelName");
+				String levelCode=req.getParameter("LevelCode");
+				if(!InputValidator.isContainsDescriptionPattern(levelName)) {
+					redir.addAttribute("sid", sid);
+					return redirectWithError(redir, "SystemProductTree.htm", "'Name' should contain Alphabets , Numbers and some special characters.!");
+				}
+				if(!InputValidator.isContainsDescriptionPattern(levelCode)) {
+					redir.addAttribute("sid", sid);
+					return redirectWithError(redir, "SystemProductTree.htm", "'Code' should contain Alphabets , Numbers and some special characters.!");
+				}
 				ProductTreeDto dto=new ProductTreeDto();
 				dto.setProjectId(Long.parseLong(sid));
 				dto.setParentLevelId(Long.parseLong(ParentLevelId));
 				dto.setLevelId(LevelId);
 				dto.setSubLevelId(SubLevelId);
-				dto.setLevelName(LevelName);
+				dto.setLevelName(levelName);
 				dto.setCreatedBy(UserId);
-				dto.setLevelCode(req.getParameter("LevelCode"));
+				dto.setLevelCode(levelCode);
 				
 				long result=service.AddSystemLevelName(dto);
 				
@@ -731,5 +760,8 @@ public class ProductTreeController {
 		return json.toJson(proList);
 	}
 	
-	
+	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
+	    redir.addAttribute("resultfail", message);
+	    return "redirect:/"+redirURL;
+	}
 }
