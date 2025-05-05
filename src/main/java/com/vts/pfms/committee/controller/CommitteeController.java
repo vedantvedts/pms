@@ -2378,13 +2378,13 @@ public class CommitteeController {
 		{
 			String ActionName=req.getParameter("NoteText");
 			String Remarks=req.getParameter("remarks");
-			if(InputValidator.isContainsHTMLTags(ActionName)) {
+			if(!InputValidator.isContainsDescriptionPattern(ActionName)) {
 				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
 				redir.addAttribute("specname", req.getParameter("specname"));
 				redir.addAttribute("membertype",req.getParameter("membertype"));
 				redir.addAttribute("formname", req.getParameter("formname"));
 				redir.addAttribute("unit1",req.getParameter("unit1"));
-				return redirectWithError(redir, "CommitteeScheduleMinutes.htm", "'ActionName' should not contain HTML Tags.!");
+				return redirectWithError(redir, "CommitteeScheduleMinutes.htm", "'ActionName' should contain Alphabets, Numbers or some Special Characters.!");
 			}
 			if(InputValidator.isContainsHTMLTags(Remarks)) {
 				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
@@ -2401,12 +2401,6 @@ public class CommitteeController {
 			redir.addAttribute("membertype",req.getParameter("membertype"));
 			redir.addAttribute("formname", req.getParameter("formname"));
 			redir.addAttribute("unit1",req.getParameter("unit1"));
-
-			
-			if(InputValidator.isContainsHTMLTags(req.getParameter("NoteText"))) {
-				redir.addAttribute("resultfail", " Action Name should Not contain HTML Tags !");
-				return "redirect:/CommitteeScheduleMinutes.htm";
-			}
 			
 			
 
@@ -2529,14 +2523,7 @@ public class CommitteeController {
 			{	
 				String ActionName=req.getParameter("NoteText");
 				String Remarks=req.getParameter("remarks");
-				if(InputValidator.isContainsHTMLTags(ActionName)) {
-					redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
-					redir.addAttribute("specname", req.getParameter("specname"));
-					redir.addAttribute("membertype",req.getParameter("membertype"));
-					redir.addAttribute("formname", req.getParameter("formname"));
-					redir.addAttribute("unit1",req.getParameter("unit1"));
-					return redirectWithError(redir, "CommitteeScheduleMinutes.htm", "'ActionName' should not contain HTML Tags.!");
-				}
+				
 				if(InputValidator.isContainsHTMLTags(Remarks)) {
 					redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
 					redir.addAttribute("specname", req.getParameter("specname"));

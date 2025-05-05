@@ -820,11 +820,9 @@ public class CARSController {
 			CARSInitiation cars = service.getCARSInitiationById(carsini);
 			String carsStatusCode = cars.getCARSStatusCode();
 			
-			
 			if(InputValidator.isContainsHTMLTags(remarks)) {
 				redir.addAttribute("carsInitiationId", carsInitiationId);
-				redir.addAttribute("TabId","3");
-				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Remarks' should not contain HTML Tags.!");
+				return redirectWithError(redir, "CARSRSQRApprovals.htm", "'Remarks' should not contain HTML Tags.!");
 			}
 			CARSApprovalForwardDTO dto = new CARSApprovalForwardDTO();
 			dto.setCarsinitiationid(carsini);
@@ -836,6 +834,7 @@ public class CARSController {
 			if(action.equalsIgnoreCase("A")) {
 				if(carsStatusCode.equalsIgnoreCase("INI") || carsStatusCode.equalsIgnoreCase("REV") || 
 				   carsStatusCode.equalsIgnoreCase("RGD") || carsStatusCode.equalsIgnoreCase("RPD")) {
+					
 					if(result!=0) {
 						redir.addAttribute("result","RSQR Approval form forwarded Successfully");
 					}else {
@@ -1498,7 +1497,7 @@ public class CARSController {
 			if (InputValidator.isContainsHTMLTags(remarks)) {
 				redir.addAttribute("carsInitiationId", carsInitiationId);
 				redir.addAttribute("TabId","7");
-			    return redirectWithError(redir, "CARSInitiationDetails.htm", "'Remarks' should not contain HTML Tags.!");
+			    return redirectWithError(redir, "CARSRSQRApprovals.htm", "'Remarks' should not contain HTML Tags.!");
 			}
 			long carsini = Long.parseLong(carsInitiationId);
 			
@@ -2064,9 +2063,7 @@ public class CARSController {
 			String Remarks=req.getParameter("remarks");
 			if(InputValidator.isContainsHTMLTags(Remarks)) {
 				redir.addAttribute("carsInitiationId", carsInitiationId);
-				redir.addAttribute("Action", action);
-				redir.addAttribute("dpcTabId", "2");
-				return redirectWithError(redir, "CARSDPCSoCDetails.htm", "'Remarks' should not contain HTML Tags.!");
+				return redirectWithError(redir, "CARSRSQRApprovals.htm", "'Remarks' should not contain HTML Tags.!");
 			}
 			
 			CARSApprovalForwardDTO dto = new CARSApprovalForwardDTO();

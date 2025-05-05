@@ -524,18 +524,18 @@ public class PFTSController {
 					String fileId=request.getParameter("fileId");
 					
 					if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(itemNomenclature)) {
-						redir.addAttribute("projectId", projectId);
-						return redirectWithError(redir, "envisagedAction.htm", "'Item Nomenclature' must contain only Alphabets and Numbers");
+						
+						return redirectWithError(redir, "ProcurementStatus.htm", "'Item Nomenclature' must contain only Alphabets and Numbers");
 					}
 					
 					if(!InputValidator.isContainsNumberOnly(estimatedCost)) {
-						redir.addAttribute("projectId", projectId);
-						return redirectWithError(redir, "envisagedAction.htm", "'Estimated Cost' must contain only Numbers");
+						
+						return redirectWithError(redir, "ProcurementStatus.htm", "'Estimated Cost' must contain only Numbers");
 					}
 					
 					if(InputValidator.isContainsHTMLTags(remarks)) {
-						redir.addAttribute("projectId", projectId);
-						return redirectWithError(redir, "envisagedAction.htm", "'Remarks' should not contain HTML Tags.!");
+						
+						return redirectWithError(redir, "ProcurementStatus.htm", "'Remarks' should not contain HTML Tags.!");
 					}
 					 PFTSFile pf = new PFTSFile();
 					 pf.setProjectId(Long.parseLong(projectId));
@@ -603,7 +603,7 @@ public class PFTSController {
 
 			}
 			
-			@RequestMapping(value="enviEdit.htm")
+			@RequestMapping(value="enviEdit.htm", method = {RequestMethod.GET,RequestMethod.POST})
 			public String enviEdit(HttpServletRequest req, HttpSession ses) throws Exception 
 			{
 				String UserId = (String) ses.getAttribute("Username");

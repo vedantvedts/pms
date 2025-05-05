@@ -991,7 +991,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 															<textarea class="form-control" name="taskDesc" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required" ><%if(mil.getTaskDesc()!=null) {%><%=mil.getTaskDesc() %><%} %></textarea>
 														</td>	
 														<td style="width: 5%;padding: 10px 5px 0px 5px;">
-															<input type="number" class="form-control " name="months" min="0" max="<%if(carsIni!=null){%><%=carsIni.getDuration()%><%} %>" value="<%if(mil.getMonths()!=null) {%><%=mil.getMonths() %><%} %>" required="required">
+															<input type="number" class="form-control numeric-only" name="months" min="0" max="<%if(carsIni!=null){%><%=carsIni.getDuration()%><%} %>" value="<%if(mil.getMonths()!=null) {%><%=mil.getMonths() %><%} %>" required="required">
 														</td>	
 														<td style="width: 25%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} %></textarea>

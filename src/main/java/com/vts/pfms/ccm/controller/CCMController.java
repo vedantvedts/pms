@@ -303,6 +303,7 @@ public class CCMController {
 				redir.addAttribute("monthyear", req.getParameter("monthyear"));
 				return redirectWithError(redir, "CCMSchedule.htm", "'Venue' should not contain HTML Tags.!");
 			}
+			
 			CommitteeSchedule schedule = service.getCCMScheduleById(ccmScheduleId);
 			
 			schedule.setScheduleDate(new java.sql.Date(rdf.parse(meetingDate.substring(0,10)).getTime()));

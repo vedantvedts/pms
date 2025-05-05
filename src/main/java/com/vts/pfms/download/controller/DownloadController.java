@@ -59,6 +59,7 @@ import com.vts.pfms.AESCryptor;
 import com.vts.pfms.Zipper;
 import com.vts.pfms.download.service.DownloadService;
 import com.vts.pfms.project.service.ProjectService;
+import com.vts.pfms.utils.InputValidator;
 import com.vts.pfms.utils.PMSLogoUtil;
 
 
@@ -276,6 +277,11 @@ public class DownloadController {
 			TemplateAttributes AttributId =null;
 			String Attributid  =req.getParameter("AttributId");
   			System.out.println("!!!!!###Attributid####!!!!!!"+Attributid);
+  			String RestictionOnUse=req.getParameter("RestictionOnUse");
+  			if(InputValidator.isContainsHTMLTags(RestictionOnUse)) {
+  				
+				return redirectWithError(redir, "DocumentTemplate.htm", "'Restiction On Use' should not contain HTML Tags.!");
+			}
   			if(Attributid!=null)
   				{
   					AttributId = service.TemplateAttributesEditById(Long.parseLong(Attributid));
@@ -302,7 +308,7 @@ public class DownloadController {
   			AttributId.setModifiedBy(Username);
   			AttributId.setModifiedDate(LocalDate.now().toString());
   			AttributId.setIsActive(1);
-  			AttributId.setRestrictionOnUse(req.getParameter("RestictionOnUse"));
+  			AttributId.setRestrictionOnUse(RestictionOnUse);
   			
   			
   			
@@ -1284,6 +1290,10 @@ public class DownloadController {
 		}catch (Exception e) {
 			// TODO: handle exception
 		}
+	}
+	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
+	    redir.addAttribute("resultfail", message);
+	    return "redirect:/"+redirURL;
 	}
 	
 }

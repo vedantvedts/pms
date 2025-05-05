@@ -167,7 +167,7 @@ if(ses1!=null){
 								            		<%=obj.getLevelName() %>
 								            	</span>
 								            	<span  style="font-size:14px" id="span_<%=obj.getFileUploadMasterId()%>"> &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj.getFileUploadMasterId() %>')"></i> </span>	
-											     <input type="text" name="levelname" class="hiddeninput"   id="inputx_<%=obj.getFileUploadMasterId()%>"  value="<%=obj.getLevelName()%>" style="display: none;" maxlength="255" >
+											     <input type="text" name="levelname" class="hiddeninput description-input"   id="inputx_<%=obj.getFileUploadMasterId()%>"  value="<%=obj.getLevelName()%>" style="display: none;" maxlength="255" >
 											     <button type="submit" class="btn btn-sm btn-info editbtn" style="display: none;" id="btn_<%=obj.getFileUploadMasterId()%>" formaction="DocumentListNameEdit.htm" formmethod="get" onclick="return confirm('Are You Sure To Edit ? ');">UPDATE</button>
 											     <button type="button" class="btnx" style="color: red;border:25px;background-color:white;font-size:20px;display: none;" id="btnx_<%=obj.getFileUploadMasterId()%>" onclick="moduleeditdisable('<%=obj.getFileUploadMasterId() %>')"><i class="fa fa-times fa-lg " aria-hidden="true"  ></i></button>
 											     <input type="hidden" value="<%=obj.getFileUploadMasterId()%>" name="filerepmasterid">
@@ -185,7 +185,7 @@ if(ses1!=null){
 								             					</span>
 																
 															<span  style="font-size:14px" id="span_<%=obj1.getFileUploadMasterId()%>">  &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj1.getFileUploadMasterId() %>')"></i> </span>
-															 <input type="text" name="levelname" class="hiddeninput" id="inputx_<%=obj1.getFileUploadMasterId()%>" value="<%=obj1.getLevelName()%>" style="display: none;" maxlength="255" >	
+															 <input type="text" name="levelname" class="hiddeninput description-input" id="inputx_<%=obj1.getFileUploadMasterId()%>" value="<%=obj1.getLevelName()%>" style="display: none;" maxlength="255" >	
 														    <button type="submit" class="btn btn-sm btn-info editbtn" style="display: none;" id="btn_<%=obj1.getFileUploadMasterId()%>" formaction="DocumentListNameEdit.htm" formmethod="get" onclick="return confirm('Are You Sure To Edit ? ');">UPDATE</button>
 															<button type="button" class="btnx" style="color: red;border:25px;background-color:white;font-size:22px;display: none;" id="btnx_<%=obj1.getFileUploadMasterId()%>" onclick="moduleeditdisable('<%=obj1.getFileUploadMasterId() %>')">   <i class="fa fa-times" aria-hidden="true"></i></button></button>
 															<input type="hidden" value="<%=obj1.getFileUploadMasterId()%>" name="filerepmasterid">	
@@ -204,7 +204,7 @@ if(ses1!=null){
 																						<%=obj2.getLevelName() %>(<%=obj2.getDocShortName() %>)
 																					</span>
 																					<span  style="font-size:14px" id="span_<%=obj2.getFileUploadMasterId()%>">  &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj2.getFileUploadMasterId() %>')"></i> </span>	
-																				      <input type="text" name="levelname" class="hiddeninput" id="inputx_<%=obj2.getFileUploadMasterId()%>" value="<%=obj2.getLevelName()%>" style="display: none;" maxlength="255" >
+																				      <input type="text" name="levelname" class="hiddeninput description-input" id="inputx_<%=obj2.getFileUploadMasterId()%>" value="<%=obj2.getLevelName()%>" style="display: none;" maxlength="255" >
 																				    <button type="submit" class="btn btn-sm btn-info editbtn" style="display: none;" id="btn_<%=obj2.getFileUploadMasterId()%>" formaction="DocumentListNameEdit.htm" formmethod="get" onclick="return confirm('Are You Sure To Edit ? ');">UPDATE</button>
 																				   <button type="button" class="btnx" style="color: red;border:25px;background-color:white;font-size:20px;display: none;" id="btnx_<%=obj2.getFileUploadMasterId()%>" onclick="moduleeditdisable('<%=obj2.getFileUploadMasterId() %>')"><i class="fa fa-times fa-lg " aria-hidden="true"  ></i></button>
 																				   <input type="hidden" value="<%=obj2.getFileUploadMasterId()%>" name="filerepmasterid">
@@ -237,7 +237,7 @@ if(ses1!=null){
 														<li style="margin : 5px 6px 5px 0px; ;" >
 															<form action="FileLevelSubLevelAdd.htm" method="post" autocomplete="off"  id="form_<%=obj.getFileUploadMasterId()%>"   >
 																<span class="caret-plus">
-																	<input type="text" name="levelname" value="" class="levelinput" id="input_<%=obj.getFileUploadMasterId()%>"  placeholder="New Sub Level Name" maxlength="255"  required="required" >
+																	<input type="text" name="levelname" value="" class="levelinput description-input" id="input_<%=obj.getFileUploadMasterId()%>"  placeholder="New Sub Level Name" maxlength="255"  required="required" >
 																	<button type="button" class="btn btn-sm btn-info editbtn"  id="submitbtn_<%=obj.getFileUploadMasterId()%>"  id="submitbtn_<%=obj.getFileUploadMasterId()%>" onclick="return levelnamecheck('<%=obj.getFileUploadMasterId()%>');"   >ADD</button>
 																	
 																</span>
@@ -255,7 +255,7 @@ if(ses1!=null){
 												<li style="margin : 5px 6px 5px 0px; ;" >
 													<form action="FileLevelSubLevelAdd.htm" method="post" autocomplete="off" id="form_0">
 														<span class="caret-plus">
-															<input type="text" name="levelname" value="" class="levelinput" id="input_0" placeholder="New Level Name" maxlength="255"  required="required">
+															<input type="text" name="levelname" value="" class="levelinput description-input" id="input_0" placeholder="New Level Name" maxlength="255"  required="required">
 															<button type="button" class="btn btn-sm btn-info editbtn" id="submitbtn_0"  onclick="return levelnamecheck('0');" >ADD</button>
 														</span>
 														<input type="hidden" name="levelid" value="1">
@@ -290,13 +290,13 @@ if(ses1!=null){
 	       		<tr >
 		       		<th style="padding: 10px 0px; width: 20% ;" >Name</th>
 		       		<td style="padding: 10px 0px; ">
-						<input type="text" name="levelname" value="" class="form-control" id="modallevelname" placeholder="New File Name" maxlength="255" required="required" >
+						<input type="text" name="levelname" value="" class="form-control description-input" id="modallevelname" placeholder="New File Name" maxlength="255" required="required" >
 					</td>
 				</tr>
 				<tr>
 					<th style="padding: 10px 0px; width: 20% ;" >Short Name</th>
 					<td style="padding: 10px 0px; " >
-						<input type="text" name="docshortname" value="" class="form-control" id="modalsname" placeholder="New File Name" maxlength="15" required="required" >
+						<input type="text" name="docshortname" value="" class="form-control description-input" id="modalsname" placeholder="New File Name" maxlength="15" required="required" >
 					</td>
 				</tr>
 				<tr>
