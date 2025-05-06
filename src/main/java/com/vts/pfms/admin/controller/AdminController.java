@@ -536,7 +536,6 @@ public class AdminController {
 	public @ResponseBody String UserNamePresentCount(HttpServletRequest req, HttpSession ses) throws Exception {
 
 		final String UserId = (String) ses.getAttribute("Username");
-		System.err.println("---------------------------"+req.getParameter("UserName")+"-----------");
 		String userName=req.getParameter("UserName");
 		int UserNamePresentCount=1;
 		AdminController.logger.info(new Date() + "Inside UserNamePresentCount.htm " + UserId);
@@ -897,7 +896,6 @@ public class AdminController {
 			String groupId = req.getParameter("grpId");
 			String DivisionHeadName = req.getParameter("dHName");
 			String divisionShortName = req.getParameter("divisionShortName");	//srikant
-			System.err.println( divisionCode);
 			if(!InputValidator.isValidCapitalsAndSmallsAndNumeric(divisionCode)) {
 				redir.addAttribute("sub", "add");
 				return redirectWithError(redir, "DivisionMaster.htm", "'Division Code' must contain only Alphabets and Numbers (No Spaces)");
@@ -944,14 +942,12 @@ public class AdminController {
 	    Map<String, Object> response = new HashMap<>();
 	    String divisionId = req.getParameter("DivisionId"); // Case-sensitive parameter name
 	    Integer isActive = Integer.valueOf(req.getParameter("isActive"));
-	    System.err.println("from editalert");
 	    try {
 	        List<Object[]> alertDivisionMaster = service.checkDivisionMasterId(divisionId);
 	        
 	        if (alertDivisionMaster != null && !alertDivisionMaster.isEmpty()) {
 	            for (Object[] obj : alertDivisionMaster) {
 	                Integer isActivedb = (Integer) obj[1];
-	                System.err.println("From DB-"+isActivedb);
 	                if (isActivedb.equals(isActive)) {
 	                    response.put("valid", true);
 	                } else {

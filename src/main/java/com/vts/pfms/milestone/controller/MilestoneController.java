@@ -476,7 +476,7 @@ public class MilestoneController {
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			String activityName=req.getParameter("ActivityName");
 			if(InputValidator.isContainsHTMLTags(activityName)) {
-				System.err.println("error in activity name");
+				
 				redir.addAttribute("ProjectId", req.getParameter("ProjectId"));
 				redir.addAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
 				redir.addAttribute("formname", req.getParameter("formname"));
@@ -766,7 +766,6 @@ public class MilestoneController {
 			
 			String activityName=req.getParameter("ActivityName");
 			if(InputValidator.isContainsHTMLTags(activityName)) {
-				System.err.println("error in activity name");
 				redir.addAttribute("ProjectId", req.getParameter("ProjectId"));
 				redir.addAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
 				redir.addAttribute("formname", req.getParameter("formname"));
@@ -1089,7 +1088,6 @@ public class MilestoneController {
 
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			String remarks=req.getParameter("Remarks");
-			System.err.println(remarks);
 			if(InputValidator.isContainsHTMLTags(remarks)) {
 				redir.addAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
 				redir.addAttribute("ActivityId", req.getParameter("ActivityId"));

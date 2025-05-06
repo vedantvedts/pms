@@ -159,15 +159,20 @@ public class CCMDaoImpl implements CCMDao{
 		}
 	}
 	
-	private static final String CCMAGENDAPRIORITYUPDATE ="UPDATE committee_schedules_agenda SET AgendaPriority=:AgendaPriority WHERE ScheduleAgendaId=:ScheduleAgendaId";
 	@Override
 	public int ccmAgendaPriorityUpdate(String scheduleAgendaId,String agendaPriority) throws Exception
 	{
 		try {
-			Query query = manager.createNativeQuery(CCMAGENDAPRIORITYUPDATE);
-			query.setParameter("AgendaPriority", agendaPriority);
-			query.setParameter("ScheduleAgendaId", scheduleAgendaId);
-			return query.executeUpdate();
+			
+			CommitteeScheduleAgenda ExistingCommitteeScheduleAgenda= manager.find(CommitteeScheduleAgenda.class, scheduleAgendaId);
+			if(ExistingCommitteeScheduleAgenda != null) {
+				ExistingCommitteeScheduleAgenda.setAgendaPriority(Integer.parseInt(agendaPriority));
+				return 1;
+			}
+			else {
+				return 0;
+			}
+			
 		}catch ( Exception e ) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside CCMDaoImpl ccmAgendaPriorityUpdate "+ e);
@@ -194,16 +199,23 @@ public class CCMDaoImpl implements CCMDao{
 
 	}
 	
-	private static final String CCMSCHEDULEAGENDADELETE = "UPDATE committee_schedules_agenda SET ModifiedBy=:ModifiedBy, ModifiedDate=:ModifiedDate, IsActive=0, AgendaPriority=0 WHERE ScheduleAgendaId=:ScheduleAgendaId";
 	@Override
 	public int ccmScheduleAgendaDelete(String scheduleAgendaId, String modifiedby ,String modifiedDate)throws Exception
 	{
 		try {
-			Query query = manager.createNativeQuery(CCMSCHEDULEAGENDADELETE);
-			query.setParameter("ScheduleAgendaId", scheduleAgendaId);
-			query.setParameter("ModifiedBy", modifiedby);
-			query.setParameter("ModifiedDate", modifiedDate);
-			return query.executeUpdate();
+			
+			CommitteeScheduleAgenda ExistingCommitteeScheduleAgenda= manager.find(CommitteeScheduleAgenda.class, scheduleAgendaId);
+			if(ExistingCommitteeScheduleAgenda != null) {
+				ExistingCommitteeScheduleAgenda.setModifiedBy(modifiedby);
+				ExistingCommitteeScheduleAgenda.setModifiedDate(modifiedDate);
+				ExistingCommitteeScheduleAgenda.setIsActive(0);
+				ExistingCommitteeScheduleAgenda.setAgendaPriority(0);
+				return 1;
+			}
+			else {
+				return 0;
+			}
+			
 		}catch ( Exception e ) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside CCMDaoImpl ccmScheduleAgendaDelete "+ e);
@@ -392,13 +404,19 @@ public class CCMDaoImpl implements CCMDao{
 		}
 	}
 	
-	private static final String CCMACHIEVEMENTDELETE = "UPDATE pfms_ccm_achievements SET IsActive=0 WHERE AchievementId=:AchievementId";
 	@Override
 	public int ccmAchievementDelete(String achievementId) throws Exception {
 		try {
-			Query query = manager.createNativeQuery(CCMACHIEVEMENTDELETE);
-			query.setParameter("AchievementId", achievementId);
-			return query.executeUpdate();
+			
+			CCMAchievements ExistingCCMAchievements = manager.find(CCMAchievements.class, achievementId);
+			if(ExistingCCMAchievements != null) {
+				ExistingCCMAchievements.setIsActive(0);
+				return 1;
+			}
+			else {
+				return 0;
+			}
+			
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside CCMDaoImpl ccmAchievementDelete "+e);
@@ -586,13 +604,19 @@ public class CCMDaoImpl implements CCMDao{
 
 	}
 
-	private static final String CCMCLOSURESTATUSDELETE = "UPDATE pfms_ccm_closure SET IsActive=0 WHERE CCMClosureId=:CCMClosureId";
 	@Override
 	public int ccmClosureStatusDelete(String ccmClosureId) throws Exception {
 		try {
-			Query query = manager.createNativeQuery(CCMCLOSURESTATUSDELETE);
-			query.setParameter("CCMClosureId", ccmClosureId);
-			return query.executeUpdate();
+			
+			CCMClosureStatus ExistingCCMClosureStatus = manager.find(CCMClosureStatus.class, ccmClosureId);
+			if(ExistingCCMClosureStatus != null) {
+				ExistingCCMClosureStatus.setIsActive(0);
+				return 1;
+			}
+			else {
+				return 0;
+			}
+			
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside CCMDaoImpl ccmClosureStatusDelete "+e);

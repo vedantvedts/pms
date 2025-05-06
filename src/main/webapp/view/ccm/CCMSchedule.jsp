@@ -511,7 +511,7 @@ if(ccmSchedule!=null) {
 					        										<label class="control-label">Venue :</label>
 					        									</div>
 					        									<div class="col-md-4 left">
-					        										<input type="text" class="form-control" name="meetingVenue" id="meetingVenue" placeholder="Enter Venue Details" maxlength="1000" required  <%if(ccmSchedule!=null && ccmSchedule.getMeetingVenue()!=null ) {%> value="<%=ccmSchedule.getMeetingVenue() %>" <%} else{%> form="agendaForm"<%} %> >
+					        										<input type="text" class="form-control description-input" name="meetingVenue" id="meetingVenue" placeholder="Enter Venue Details" maxlength="1000" required  <%if(ccmSchedule!=null && ccmSchedule.getMeetingVenue()!=null ) {%> value="<%=ccmSchedule.getMeetingVenue() %>" <%} else{%> form="agendaForm"<%} %> >
 					        									</div>
 					        									<%if(ccmSchedule!=null) {%>
 					        										<input type="hidden" name="ccmScheduleId" id="ccmScheduleId" value="<%=ccmScheduleId%>">
@@ -803,7 +803,7 @@ if(ccmSchedule!=null) {
 																				<button type="button" class="form-control main agendaItemBtn" id="agendaItemBtn_1" onclick="openEditor('', '1', '0')" style="border: 1px solid #ced4da;height: 35px;width: 22rem;">
 																					Enter Agenda Item
 																				</button>
-																				<textarea class="form-control main agendaItem" name="agenda[0].agendaItem" id="agendaItem_1" style="display: none;">Enter Agenda Item</textarea>
+																				<textarea class="form-control main agendaItem description-input" name="agenda[0].agendaItem" id="agendaItem_1" style="display: none;">Enter Agenda Item</textarea>
 																			</td>
 															         		 
 															         		 <td style="width: 10%;">

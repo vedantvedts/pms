@@ -41,52 +41,39 @@ public class AdminDaoImpl implements AdminDao{
 	private static final String LOGINTYPELIST ="SELECT a.username,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname',c.divisionname,d.rolename,a.loginid FROM login a,employee b,division_master c,pfms_role_security d,pfms_login_role_security e WHERE a.empid=b.empid AND a.divisionid=c.divisionid AND a.loginid=e.loginid AND e.roleid=d.roleid AND a.isactive='1' AND a.pfms='Y' AND b.isactive=1 ORDER BY b.srno";
 	private static final String EMPLOYEELIST ="SELECT a.loginid,a.username,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname' FROM login a, employee b WHERE a.empid=b.empid AND b.isactive=1 AND a.isactive='1' AND a.pfms='N' ORDER BY b.srno ";
 	private static final String ROLELIST="SELECT RoleId, RoleName FROM  pfms_role_security ";
-	private static final String LOGINTYPEADD="UPDATE login SET pfms=:pfms,modifiedby=:modifiedby,modifieddate=:modifieddate WHERE loginid=:loginid";
-	private static final String LOGINTYPEREVOKE="UPDATE login SET pfms=:pfms,modifiedby=:modifiedby,modifieddate=:modifieddate WHERE loginid=:loginid";
 	private static final String LOGINTYPEEDITDATA="SELECT a.username,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname' ,c.divisionname,d.rolename,a.loginid FROM login a,employee b,division_master c,pfms_role_security d,pfms_login_role_security e WHERE a.empid=b.empid AND a.divisionid=c.divisionid AND a.loginid=e.loginid AND e.roleid=d.roleid AND a.isactive='1' AND a.pfms='Y' and a.loginid=:loginid ";
-	private static final String LOGINTYPEEDIT="UPDATE pfms_login_role_security SET roleid=:roleid WHERE loginid=:loginid";
 	private static final String PFMSLOGINREVOKE="DELETE from pfms_login_role_security WHERE loginid=:loginid";
-	private static final String PFMSLOGINTYPEREVOKE="UPDATE login set modifiedby=:modifiedby, modifieddate=:modifieddate WHERE loginid=:loginid";
 	private static final String EMPLOYEELISTALL="select a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname',b.designation,a.labcode FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId";
 	private static final String RTMDDO="SELECT 'empid1',a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname',b.designation,c.validfrom,c.validto  FROM employee a,employee_desig b,pfms_initiation_approver c WHERE a.empid=c.empid AND c.isactive='1' AND a.isactive='1' AND a.DesigId=b.DesigId AND c.type='DO-RTMD'";
-	//private static final String NOTIFICATIONLIST="SELECT notificationdate,notificationmessage,notificationurl,notificationid FROM pfms_notification WHERE empid=:empid and isactive=1";
 	// new code
 	private static final String NOTIFICATIONLIST="SELECT notificationdate, notificationmessage, notificationurl, notificationid FROM pfms_notification WHERE empid =:empid AND isactive = 1 ORDER BY CreatedDate DESC LIMIT 0, 1000";
 	private static final String RTMDDOUPDATE="update pfms_initiation_approver set isactive='0' WHERE Type=:type";
 	private static final String DIVISIONLIST ="select divisionid,divisioncode from division_master where isactive='1'";
-	private static final String LOGINDELETE="update login set isactive=:isactive,modifiedby=:modifiedby,modifieddate=:modifieddate where loginid=:loginid";
 	private static final String AUDITSTAMPING="SELECT a.username,a.logindate, a.logindatetime,a.ipaddress, a.macaddress, ( CASE WHEN a.logouttype='L' THEN 'Logout' ELSE 'Session Expired' END ) AS logouttype, 	a.logoutdatetime FROM auditstamping a WHERE a.`LoginDate` BETWEEN :fromdate AND :todate AND a.loginid=:loginid ORDER BY a.`LoginDateTime` DESC ";
 	private static final String USERNAMELIST="SELECT l.loginid, l.empid,l.username, CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',e.labcode FROM login l , employee e WHERE e.isactive=1 AND l.isactive=1 AND l.EmpId=e.EmpId ORDER BY e.srno=0,e.srno"; 
 	private static final String LOGINEDITDATA="FROM Login WHERE LoginId=:LoginId";
 	private static final String USERMANAGELIST = "SELECT a.loginid, a.username, b.divisionname,c.formrolename, a.Pfms , CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname', d.designation ,lt.logindesc ,e.empno ,e.labcode FROM login a , division_master b , form_role c , employee e, employee_desig d,  login_type lt WHERE a.divisionid=b.divisionid AND a.formroleid=c.formroleid AND a.isactive=1 AND a.empid=e.empid AND e.desigid=d.desigid AND a.logintype=lt.logintype ";
 	private static final String USERNAMEPRESENTCOUNT ="select count(*) from login where username=:username and isactive='1'";
 	private static final String EMPLOYEELIST1="SELECT empid,CONCAT(IFNULL(CONCAT(title,' '),''), empname) AS 'empname' FROM employee e WHERE e.isactive='1' AND labcode=:labcode AND empid NOT IN (SELECT empid FROM login WHERE isactive=1) ORDER BY srno ";
-	private static final String LOGINUPDATE="update login set divisionid=:divisionid ,formroleid=:formroleid,logintype=:logintype,empid=:empid, Pfms=:pfms, modifiedby=:modifiedby,modifieddate=:modifieddate where loginid=:loginid";
 	private final static String CHECKUSER = "SELECT COUNT(LoginId) FROM pfms_login_role_security WHERE LoginId=:loginid";
 	private final static String UPDATEPFMSLOGINROLE="UPDATE pfms_login_role_security SET RoleId=:roleid WHERE LoginId=:loginid";
 	private static final String CURRENTADDORTMT="SELECT r.RtmddoId, r.EmpId, r.ValidFrom, r.ValidTo, r.Type,r.labcode FROM pfms_initiation_approver r WHERE r.IsActive=1 ORDER BY r.Type DESC";
 	private static final String DIVISIONLIST1 ="SELECT a.divisionid,a.divisioncode,a.divisionname, CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname' ,c.groupname ,a.labcode, d.Designation, a.DivisionShortName FROM division_master a,employee b,division_group c, employee_desig d WHERE a.isactive='1' AND b.isactive='1' AND b.DesigId = d.DesigId and a.divisionheadid=b.empid AND a.groupid=c.groupid AND a.labcode=:labcode ORDER BY a.divisionid desc"; //srikant
 	private static final String DIVISIONADDCHECK="SELECT SUM(IF(DivisionCode =:divisionCode,1,0))   AS 'dCode',SUM(IF(DivisionName = :divisionName,1,0)) AS 'dName' FROM division_master where isactive=1 ";
-	private static final String DIVISIONUPDATE="UPDATE division_master SET divisioncode=:divisioncode, divisionname=:divisionname, divisionheadid=:divisionheadid , groupid=:groupid, modifiedby=:modifiedby, modifieddate=:modifieddate, isactive=:isactive, DivisionShortName=:DivisionShortName WHERE divisionid=:divisionid";	//srikant
 	private static final String DIVISIONGROUPLIST="SELECT a.groupid,a.groupname,a.labcode FROM division_group a WHERE a.isactive=1";
 	private static final String DIVISIONHEADLIST="SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname',a.labcode,b.designation FROM employee a , employee_desig b WHERE a.isactive=1 AND a.desigid=b.desigid";
 	private static final String DIVISIONEDITDATA="SELECT d.divisionid,d.divisioncode, d.divisionname, d.divisionheadid, d.groupid, d.IsActive, d.DivisionShortName FROM division_master d WHERE d.divisionid=:divisionid ";	//srikant
 	private static final String DESIGNATIONDATA="SELECT desigid,desigcode,designation,desiglimit,DesigSr,DesigCadre FROM employee_desig WHERE desigid=:desigid";
 	private static final String DESIGNATIONLIST="SELECT desigid,desigcode,designation,desiglimit,DesigSr,DesigCadre FROM employee_desig ORDER BY DesigSr";
-	private static final String DESIGNATIONEDITSUBMIT="UPDATE employee_desig SET desigcode=:desigcode, designation=:designation ,desiglimit=:desiglimit, DesigCadre=:DesigCadre WHERE  desigid=:desigid";
 	private static final String DESIGNATIONCODECHECK="SELECT COUNT(desigcode),'desigcode' FROM employee_desig WHERE desigcode=:desigcode";
 	private static final String DESIGNATIONCHECK="SELECT COUNT(designation),'designation' FROM employee_desig WHERE designation=:designation";
 	private static final String DESIGNATIONCODEEDITCHECK="SELECT COUNT(desigcode),'desigcode' FROM employee_desig WHERE desigcode=:desigcode AND desigid<>:desigid";
 	private static final String DESIGNATIONEDITCHECK="SELECT COUNT(designation),'designation' FROM employee_desig WHERE designation=:designation AND desigid<>:desigid";
 	private static final String LISTOFDESIGSENIORITYNUMBER ="SELECT DesigSr,desigid FROM employee_desig WHERE DesigSr!=0 ORDER BY Desigsr ASC ";
-	private static final String DESIGUPDATESRNO="UPDATE employee_desig SET DesigSr=:srno WHERE Desigid=:desigid";
 	private static final String LOGINTYPEROLES="SELECT LoginTypeId,LoginType,LoginDesc FROM login_type";
-	//private static final String FORMDETAILSLIST="SELECT a.formroleaccessid,a.logintype,b.formname,a.isactive,a.labhq FROM pfms_form_role_access a,pfms_form_detail b WHERE a.logintype=:logintype AND a.formdetailid=b.formdetailid AND CASE WHEN :moduleid <> 'A' THEN b.formmoduleid=:moduleid ELSE 1=1 END";
 	private static final String FORMDETAILSLIST="SELECT b.formroleaccessid,b.logintype,a.formname,b.isactive ,b.labhq ,a.formdetailid FROM  (SELECT fd.formdetailid,fd.formmoduleid,fd.formname FROM pfms_form_detail fd WHERE  fd.isactive=1 AND CASE WHEN :moduleid <> 'A' THEN fd.formmoduleid =:moduleid ELSE 1=1 END) AS a LEFT JOIN  (SELECT b.formroleaccessid,b.logintype,a.formname,b.isactive ,b.labhq , b.formdetailid FROM pfms_form_detail a ,pfms_form_role_access b  WHERE a.formdetailid=b.formdetailid AND a.isactive=1 AND b.logintype=:logintype AND  CASE WHEN :moduleid <> 'A' THEN a.formmoduleid =:moduleid ELSE 1=1 END ) AS b ON a.formdetailid = b.formdetailid";
 	private static final String FORMMODULELIST="SELECT FormModuleId,FormModuleName,ModuleUrl,IsNav,IsActive FROM pfms_form_module WHERE isactive=1";
 	private static final String FORMROLEACTIVELIST="SELECT isactive FROM pfms_form_role_access WHERE formroleaccessid=:formroleaccessid";
-	private static final String FORMROLEACTIVE0="UPDATE pfms_form_role_access SET isactive=:isactive WHERE formroleaccessid=:formroleaccessid";
-	private static final String FORMROLEACTIVE1="UPDATE pfms_form_role_access SET isactive=:isactive WHERE formroleaccessid=:formroleaccessid";
 	private static final String EMPLOYEEDATA ="SELECT a.empid, a.srno,a.empno,a.empname,a.desigid,a.divisionid ,b.groupid  FROM employee  a , division_master b WHERE a.divisionid =b.divisionid  AND a.empid=:empid";
 	private static final String LOGINTYPELIST1="select logintype,logindesc,logintypeid from login_type";	
 	private static final String LOGINEDITEMPLIST = "SELECT empid,CONCAT(IFNULL(CONCAT(title,' '),''), empname) AS 'empname' FROM employee WHERE labcode=:labcode ORDER BY srno ";
@@ -94,12 +81,9 @@ public class AdminDaoImpl implements AdminDao{
 	private static final String GETDESIGNATION = "SELECT DesigId, DesigCode, Designation FROM employee_desig";
 	private static final String  ABILITYOFEXPERTNO ="SELECT COUNT(*)FROM expert WHERE ExpertNo=:EXPERTNO ";
 	private static final String ABILITYOFEXTENSIONNO = "SELECT COUNT(*)FROM expert WHERE ExtNo=:EXTNO ";
-	private static final String  EXPERTREVOKE = "UPDATE expert SET IsActive=:ISACTIVE,modifiedby=:MODIFIEDBY ,modifieddate=:MODIFIEDATE WHERE ExpertId=:EXPERTID ";
 	private static final String  GETEDITDETAILS = "SELECT expertid , title , salutation , expertname, desigid , mobileno , email , organization , expertno FROM expert WHERE ExpertId=:EXPERTID";
 	private static final String CHECKABILITY2 ="SELECT COUNT(*)FROM expert WHERE ExtNo=:EXTNO AND  ExpertId NOT IN (:ExpertId)";
-	private static final String EDITEXPERT = "UPDATE expert SET title=:title,salutation=:salutation, ExpertName=:NAME, DesigId=:DESIGID, ExtNo=:EXTNO, MobileNo=:MOBLIENO, Email=:EMAIL, Organization=:ORGANIZATION ,ModifiedDate=:MODIFIEDDATE ,modifiedby=:MODIFEDBY WHERE ExpertId=:EXPERTID";
 	private static final String CLUSTERLABLIST="SELECT labid,clusterid,labname,labcode FROM cluster_lab";
-	private static final String LABHQCHANGE ="UPDATE pfms_form_role_access SET labhq=:labhqvalue WHERE formroleaccessid=:formroleaccessid ";
 
 
 
@@ -169,26 +153,35 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public Long LoginTypeAddSubmit(PfmsLoginRoleSecurity loginrole,Login login) throws Exception {
 		manager.persist(loginrole);
+		
+		Login ExistingLogin=manager.find(Login.class, loginrole.getLoginId());
+		if(ExistingLogin!=null) {
+			ExistingLogin.setPfms(login.getPfms());
+			ExistingLogin.setModifiedBy(login.getModifiedBy());
+			ExistingLogin.setModifiedDate(login.getModifiedDate());
+			return 1L;
+		}
+		else
+		{
+			return 0L;
+		}
+		
 
-		Query query=manager.createNativeQuery(LOGINTYPEADD);
-		query.setParameter("pfms", login.getPfms());
-		query.setParameter("loginid", loginrole.getLoginId());
-		query.setParameter("modifiedby", login.getModifiedBy());
-		query.setParameter("modifieddate", login.getModifiedDate());
-
-		query.executeUpdate();
-
-		return loginrole.getLoginId();
+		
 	}
 
 	@Override
 	public Long LoginTypeRevoke(Login login) throws Exception {
-		Query query=manager.createNativeQuery(LOGINTYPEREVOKE);
-		query.setParameter("pfms", "N");
-		query.setParameter("loginid", login.getLoginId());
-		query.setParameter("modifiedby", login.getModifiedBy());
-		query.setParameter("modifieddate", login.getModifiedDate());
-		query.executeUpdate();
+		Login ExistingLogin=manager.find(Login.class, login.getLoginId());
+		if(ExistingLogin !=null) {
+			ExistingLogin.setPfms("N");
+			ExistingLogin.setModifiedBy(login.getModifiedBy());
+			ExistingLogin.setModifiedDate(login.getModifiedDate());	
+		}
+		else {
+			return 0L;
+		}
+
 
 		Query query1=manager.createNativeQuery(PFMSLOGINREVOKE);
 		query1.setParameter("loginid", login.getLoginId());
@@ -208,18 +201,27 @@ public class AdminDaoImpl implements AdminDao{
 
 	@Override
 	public Long LoginTypeEditSubmit(PfmsLoginRoleSecurity loginrole,Login login) throws Exception {
-		Query query=manager.createNativeQuery(LOGINTYPEEDIT);
-		query.setParameter("loginid", loginrole.getLoginId());
-		query.setParameter("roleid", loginrole.getRoleId());
-		query.executeUpdate();
+		
+		PfmsLoginRoleSecurity ExistingPfmsLoginRoleSecurity = manager.find(PfmsLoginRoleSecurity.class, loginrole.getLoginId());
+		Login ExistingLogin=manager.find(Login.class, login.getLoginId());
+		
+		if(ExistingPfmsLoginRoleSecurity !=null && ExistingLogin != null) {
+			ExistingPfmsLoginRoleSecurity.setRoleId(loginrole.getRoleId());
 
-		Query query1=manager.createNativeQuery(PFMSLOGINTYPEREVOKE);
-		query1.setParameter("loginid", login.getLoginId());
-		query1.setParameter("modifiedby", login.getModifiedBy());
-		query1.setParameter("modifieddate", login.getModifiedDate());
-		query1.executeUpdate();
+			
+			ExistingLogin.setModifiedBy(login.getModifiedBy());
+			ExistingLogin.setModifiedDate(login.getModifiedDate());
 
-		return loginrole.getLoginId();
+
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
+		
+		
+
+		
 	}
 
 	@Override
@@ -312,19 +314,6 @@ public class AdminDaoImpl implements AdminDao{
 	public Long addExpert( Expert newExpert) throws Exception {
 		manager.persist(newExpert);
 		this.manager.flush();
-		/*
-		 * String updatequery1="UPDATE expert set title=NULL where expert=:empid";
-		 * String updatequery2="UPDATE expert set salutation=NULL where  expert=:empid";
-		 * 
-		 * if(newExpert.getSalutation().length()<1) { Query
-		 * query1=manager.createNativeQuery(updatequery2); query1.setParameter("empid",
-		 * newExpert.getExpertId()); query1.executeUpdate(); }
-		 * 
-		 * if(newExpert.getTitle().length()<1) { Query
-		 * query1=manager.createNativeQuery(updatequery1); query1.setParameter("empid",
-		 * newExpert.getExpertId()); query1.executeUpdate(); }
-		 */
-
 		return newExpert.getExpertId();
 
 	}
@@ -332,13 +321,18 @@ public class AdminDaoImpl implements AdminDao{
 
 	@Override
 	public Long ExpertRevoke( Expert expert) throws Exception {
-		final Query query = this.manager.createNativeQuery(EXPERTREVOKE);
-		query.setParameter("ISACTIVE", (Object)0);
-		query.setParameter("MODIFIEDBY", (Object)expert.getModifiedBy());
-		query.setParameter("MODIFIEDATE", (Object)expert.getModifiedDate());
-		query.setParameter("EXPERTID", (Object)expert.getExpertId());
-		final int s = query.executeUpdate();
-		return Long.parseLong(new StringBuilder(String.valueOf(s)).toString());
+		
+		Expert ExistingExpert= manager.find(Expert.class, expert.getExpertId());
+		if(ExistingExpert !=null) {
+			ExistingExpert.setIsActive(0);
+			ExistingExpert.setModifiedBy(expert.getModifiedBy());
+			ExistingExpert.setModifiedDate(expert.getModifiedDate());
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
+	
 	}
 
 
@@ -367,20 +361,25 @@ public class AdminDaoImpl implements AdminDao{
 
 	@Override
 	public Long editExpert( Expert newExpert) throws Exception {
-		final Query query = this.manager.createNativeQuery(EDITEXPERT);
-		query.setParameter("title", newExpert.getTitle());
-		query.setParameter("salutation", newExpert.getSalutation());
-		query.setParameter("NAME", (Object)newExpert.getExpertName());
-		query.setParameter("DESIGID", (Object)newExpert.getDesigId());
-		query.setParameter("EXTNO", (Object)newExpert.getExtNo());
-		query.setParameter("MOBLIENO", (Object)newExpert.getMobileNo());
-		query.setParameter("EMAIL", (Object)newExpert.getEmail());
-		query.setParameter("ORGANIZATION", (Object)newExpert.getOrganization());
-		query.setParameter("MODIFIEDDATE", (Object)newExpert.getModifiedDate());
-		query.setParameter("MODIFEDBY", (Object)newExpert.getModifiedBy());
-		query.setParameter("EXPERTID", (Object)newExpert.getExpertId());
-		final int s = query.executeUpdate();
-		return newExpert.getExpertId();
+		
+		Expert ExistingExpert = manager.find(Expert.class, newExpert.getExpertId());
+		if(ExistingExpert != null) {
+			ExistingExpert.setTitle(newExpert.getTitle());
+			ExistingExpert.setSalutation(newExpert.getSalutation());
+			ExistingExpert.setExpertName(newExpert.getExpertName());
+			ExistingExpert.setDesigId(newExpert.getDesigId());
+			ExistingExpert.setExtNo(newExpert.getExtNo());
+			ExistingExpert.setMobileNo(newExpert.getMobileNo());
+			ExistingExpert.setEmail(newExpert.getEmail());
+			ExistingExpert.setOrganization(newExpert.getOrganization());
+			ExistingExpert.setModifiedBy(newExpert.getModifiedBy());
+			ExistingExpert.setModifiedDate(newExpert.getModifiedDate());
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
+		
 	}
 
 
@@ -428,13 +427,18 @@ public class AdminDaoImpl implements AdminDao{
 
 	@Override
 	public int UserManagerDelete(Login login) throws Exception {
-		Query query = manager.createNativeQuery(LOGINDELETE);
-		query.setParameter("isactive", 0);
-		query.setParameter("loginid", login.getLoginId());
-		query.setParameter("modifiedby", login.getModifiedBy());
-		query.setParameter("modifieddate", login.getModifiedDate());
-		int UserManagerDelete = (int) query.executeUpdate();
-		return  UserManagerDelete;
+		
+		Login ExistingLogin=manager.find(Login.class, login.getLoginId());
+		if(ExistingLogin!=null) {
+			ExistingLogin.setIsActive(0);
+			ExistingLogin.setModifiedBy(login.getModifiedBy());
+			ExistingLogin.setModifiedDate(login.getModifiedDate());
+			return 1;
+		}
+		else {
+			return 0;
+		}
+
 	}
 
 	@Override
@@ -474,19 +478,23 @@ public class AdminDaoImpl implements AdminDao{
 
 	@Override
 	public int UserManagerUpdate(Login login) throws Exception {
+		
+		Login ExistingLogin=manager.find(Login.class, login.getLoginId());
+		if(ExistingLogin !=null) {
+			ExistingLogin.setDivisionId(login.getDivisionId());
+			ExistingLogin.setFormRoleId(login.getFormRoleId());
+			ExistingLogin.setLoginType(login.getLoginType());
+			ExistingLogin.setEmpId(login.getEmpId());
+			ExistingLogin.setPfms(login.getPfms());
+			ExistingLogin.setModifiedBy(login.getModifiedBy());
+			ExistingLogin.setModifiedDate(login.getModifiedDate());		
+			return 1;
+		}
+		else {
+			return 0;
+		}
 
-		Query query = manager.createNativeQuery(LOGINUPDATE);
-		query.setParameter("divisionid", login.getDivisionId());
-		query.setParameter("formroleid", login.getFormRoleId());
-		query.setParameter("loginid", login.getLoginId());
-		query.setParameter("logintype", login.getLoginType());
-		query.setParameter("empid", login.getEmpId());
-		query.setParameter("pfms", login.getPfms());
-		query.setParameter("modifiedby", login.getModifiedBy());
-		query.setParameter("modifieddate", login.getModifiedDate());
-		int UserManagerUpdate = (int) query.executeUpdate();
-
-		return  UserManagerUpdate;
+		
 	}
 
 
@@ -545,13 +553,18 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public long DesignationEditSubmit(EmployeeDesigDto dto)throws Exception
 	{
-		Query query =manager.createNativeQuery(DESIGNATIONEDITSUBMIT);
-		query.setParameter("desigid", dto.getDesigId());
-		query.setParameter("desigcode",dto.getDesigCode());
-		query.setParameter("designation",dto.getDesignation());
-		query.setParameter("desiglimit",dto.getDesigLimit());
-		query.setParameter("DesigCadre",dto.getDesigCadre());
-		return query.executeUpdate();
+		EmployeeDesig ExistingEmployeeDesig=manager.find(EmployeeDesig.class, dto.getDesigId() );
+		if(ExistingEmployeeDesig != null) {
+			ExistingEmployeeDesig.setDesigCode(dto.getDesigCode());
+			ExistingEmployeeDesig.setDesignation(dto.getDesignation());
+			ExistingEmployeeDesig.setDesigLimit(Long.parseLong(dto.getDesigLimit()));
+			ExistingEmployeeDesig.setDesigCadre(dto.getDesigCadre());
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
+
 	}
 
 	@Override
@@ -637,7 +650,6 @@ public class AdminDaoImpl implements AdminDao{
 	}
 
 
-	//	private static final String DivisionAddCheck="SELECT SUM(IF(DivisionCode =:divisionCode,1,0))   AS 'dCode',SUM(IF(DivisionName = :divisionName,1,0)) AS 'dName' FROM division_master where isactive=1 ";
 	@Override
 	public List<Object[]> DivisionAddCheck(String dCode,String dName) throws Exception
 	{
@@ -663,21 +675,22 @@ public class AdminDaoImpl implements AdminDao{
 
 	@Override
 	public int DivisionMasterUpdate(DivisionMaster divisionmaster) throws Exception {
-
-		Query query=manager.createNativeQuery(DIVISIONUPDATE);
-		query.setParameter("divisioncode", divisionmaster.getDivisionCode());
-		query.setParameter("divisionname", divisionmaster.getDivisionName());
-		query.setParameter("divisionheadid", divisionmaster.getDivisionHeadId());
-		query.setParameter("groupid", divisionmaster.getGroupId());
-		query.setParameter("divisionid", divisionmaster.getDivisionId());
-		query.setParameter("modifiedby", divisionmaster.getModifiedBy());
-		query.setParameter("modifieddate", divisionmaster.getModifiedDate());
-		query.setParameter("isactive", divisionmaster.getIsActive());
-		query.setParameter("DivisionShortName", divisionmaster.getDivisionShortName());	//srikant
-
-		int count = (int)query.executeUpdate();
-
-		return count;
+		DivisionMaster ExistingDivisionMaster=manager.find(DivisionMaster.class, divisionmaster.getDivisionId());
+		if(ExistingDivisionMaster != null) {
+			ExistingDivisionMaster.setDivisionCode(divisionmaster.getDivisionCode());
+			ExistingDivisionMaster.setDivisionName(divisionmaster.getDivisionName());
+			ExistingDivisionMaster.setDivisionHeadId(divisionmaster.getDivisionHeadId());
+			ExistingDivisionMaster.setGroupId(divisionmaster.getGroupId());
+			ExistingDivisionMaster.setModifiedBy(divisionmaster.getModifiedBy());
+			ExistingDivisionMaster.setModifiedDate(divisionmaster.getModifiedDate());
+			ExistingDivisionMaster.setIsActive(divisionmaster.getIsActive());
+			ExistingDivisionMaster.setDivisionShortName(divisionmaster.getDivisionShortName());
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
 	}
 
 
@@ -686,21 +699,30 @@ public class AdminDaoImpl implements AdminDao{
 	{			
 		Query query=manager.createNativeQuery(LISTOFDESIGSENIORITYNUMBER);
 		List<Object[]> listSeni=(List<Object[]>)query.getResultList();
-
-		Query updatequery=manager.createNativeQuery(DESIGUPDATESRNO);
-		updatequery.setParameter("desigid", desigid);
-		updatequery.setParameter("srno", newSeniorityNumber);  	   
-		updatequery.executeUpdate();
-
+		
+		EmployeeDesig ExistingEmployeeDesig = manager.find(EmployeeDesig.class, desigid);
+		if(ExistingEmployeeDesig != null) {
+			ExistingEmployeeDesig.setDesigSr(Integer.parseInt(newSeniorityNumber));
+			manager.merge(ExistingEmployeeDesig);
+		}
 		return listSeni;
+		
+		
 	}
 
 	@Override
 	public int updateAllDesigSeniority(Long desigid, Long srno)throws Exception{
-		Query updatequery=manager.createNativeQuery(DESIGUPDATESRNO);
-		updatequery.setParameter("desigid", desigid);
-		updatequery.setParameter("srno", srno);  	 
-		return updatequery.executeUpdate();
+		
+		EmployeeDesig ExistingEmployeeDesig = manager.find(EmployeeDesig.class, desigid);
+		if(ExistingEmployeeDesig != null) {
+			ExistingEmployeeDesig.setDesigSr(srno.intValue());
+			manager.merge(ExistingEmployeeDesig);
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
 	}
 
 	@Override
@@ -749,18 +771,28 @@ public class AdminDaoImpl implements AdminDao{
 
 
 		if(Value.equals(1L)) {
-
-
-			Query query=manager.createNativeQuery(FORMROLEACTIVE0);
-			query.setParameter("formroleaccessid", formroleaccessid);
-			query.setParameter("isactive", "0");
-			count=query.executeUpdate();
+			PfmsFormRoleAccess ExistingRoleAccess = manager.find(PfmsFormRoleAccess.class, formroleaccessid);
+			if(ExistingRoleAccess != null) {
+				ExistingRoleAccess.setIsActive(0);
+			
+				return 1L;
+			}
+			else {
+				return 0L;
+			}
+		
 		}
 		if(Value.equals(0L)) {
-			Query query=manager.createNativeQuery(FORMROLEACTIVE1);
-			query.setParameter("formroleaccessid", formroleaccessid);
-			query.setParameter("isactive", "1");
-			count=query.executeUpdate();
+			PfmsFormRoleAccess ExistingRoleAccess = manager.find(PfmsFormRoleAccess.class, formroleaccessid);
+			if(ExistingRoleAccess != null) {
+				ExistingRoleAccess.setIsActive(1);
+				
+				return 1L;
+			}
+			else {
+				return 0L;
+			}
+		
 		}
 
 		return (long) count;
@@ -770,15 +802,18 @@ public class AdminDaoImpl implements AdminDao{
 
 	@Override
 	public Long LabHqChange(String formroleaccessid, String Value) throws Exception{
-
-		int count=0;
-
-		Query query=manager.createNativeQuery(LABHQCHANGE);
-		query.setParameter("formroleaccessid", formroleaccessid);
-		query.setParameter("labhqvalue", Value);
-		count=query.executeUpdate();
-
-		return (long) count;
+		
+		
+		PfmsFormRoleAccess ExistingPfmsFormRoleAccess =manager.find(PfmsFormRoleAccess.class, formroleaccessid);
+		if(ExistingPfmsFormRoleAccess !=null) {
+			ExistingPfmsFormRoleAccess.setLabHQ(Value);
+			
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
+		
 
 	}
 
@@ -815,19 +850,23 @@ public class AdminDaoImpl implements AdminDao{
 		return query.executeUpdate();
 	}
 
-	private static final String PASSWORDRESET="update login set password=:password,modifiedby=:modifiedby,modifieddate=:modifieddate where LoginId=:LoginId ";
 
 	@Override
 	public int resetPassword(String lid, String userId, String password, String modifieddate) throws Exception {
-
-		Query query = manager.createNativeQuery(PASSWORDRESET);
-
-		query.setParameter("password", password);
-		query.setParameter("LoginId", lid);
-		query.setParameter("modifiedby", userId);
-		query.setParameter("modifieddate", modifieddate);
-		int PasswordChange = (int) query.executeUpdate();
-		return  PasswordChange;
+		
+		Login ExistingLogin=manager.find(Login.class, lid);
+		if(ExistingLogin != null) {
+			ExistingLogin.setPassword(password);
+			ExistingLogin.setModifiedBy(userId);
+			ExistingLogin.setModifiedDate(modifieddate);
+			
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
+		
 	}
 
 	private static final String FIRSTDAY="SELECT MIN(logindate) AS 'MINDATE'  FROM auditstamping";

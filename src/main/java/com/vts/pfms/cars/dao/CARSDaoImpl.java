@@ -484,14 +484,25 @@ public class CARSDaoImpl implements CARSDao{
 		}
 	}
 
-	private static final String UPDATEINVFORSOODATE = "UPDATE pfms_cars_initiation SET InvForSoODate=:InvForSoODate WHERE CARSInitiationId=:CARSInitiationId AND IsActive=1";
+//	private static final String UPDATEINVFORSOODATE = "UPDATE pfms_cars_initiation SET InvForSoODate=:InvForSoODate WHERE CARSInitiationId=:CARSInitiationId AND IsActive=1";
 	@Override
 	public int invForSoODateSubmit(String carsInitiationId, String sooDate) throws Exception{
 		try {
-			Query query = manager.createNativeQuery(UPDATEINVFORSOODATE);
-			query.setParameter("CARSInitiationId", carsInitiationId);
-			query.setParameter("InvForSoODate", sooDate);
-			return query.executeUpdate();
+			System.err.println(sooDate);
+			CARSInitiation ExistingCARSInitiation = manager.find(CARSInitiation.class, carsInitiationId);
+			if(ExistingCARSInitiation != null) {
+				ExistingCARSInitiation.setInvForSoODate(sooDate);
+				return 1;
+			}
+			else {
+				return 0;
+			}
+			
+			/*
+			 * Query query = manager.createNativeQuery(UPDATEINVFORSOODATE);
+			 * query.setParameter("CARSInitiationId", carsInitiationId);
+			 * query.setParameter("InvForSoODate", sooDate); return query.executeUpdate();
+			 */
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside DAO invForSoODateSubmit "+e);
@@ -1017,15 +1028,27 @@ public class CARSDaoImpl implements CARSDao{
 		}
 	}
 
-	private static final String UPDATECARSINITIATIONSTATUSCODES = "UPDATE pfms_cars_initiation SET CARSStatusCode=:CARSStatusCode,CARSStatusCodeNext=:CARSStatusCodeNext WHERE CARSInitiationId=:CARSInitiationId AND IsActive=1";
+	//private static final String UPDATECARSINITIATIONSTATUSCODES = "UPDATE pfms_cars_initiation SET CARSStatusCode=:CARSStatusCode,CARSStatusCodeNext=:CARSStatusCodeNext WHERE CARSInitiationId=:CARSInitiationId AND IsActive=1";
 	@Override
 	public int updateCARSInitiationStatusCodes(long carsInitiationId, String CARSStatusCode, String CARSStatusCodeNext) throws Exception{
 		try {
-			Query query = manager.createNativeQuery(UPDATECARSINITIATIONSTATUSCODES);
-			query.setParameter("CARSInitiationId", carsInitiationId);
-			query.setParameter("CARSStatusCode", CARSStatusCode);
-			query.setParameter("CARSStatusCodeNext", CARSStatusCodeNext);
-			return query.executeUpdate();
+			
+			CARSInitiation ExistingCARSInitiation=manager.find(CARSInitiation.class, carsInitiationId);
+			if(ExistingCARSInitiation !=null && ExistingCARSInitiation.getIsActive()==1) {
+				ExistingCARSInitiation.setCARSStatusCode(CARSStatusCode);
+				ExistingCARSInitiation.setCARSStatusCodeNext(CARSStatusCodeNext);
+				return 1;
+			}
+			else {
+				return 0;
+			}
+			/*
+			 * Query query = manager.createNativeQuery(UPDATECARSINITIATIONSTATUSCODES);
+			 * query.setParameter("CARSInitiationId", carsInitiationId);
+			 * query.setParameter("CARSStatusCode", CARSStatusCode);
+			 * query.setParameter("CARSStatusCodeNext", CARSStatusCodeNext); return
+			 * query.executeUpdate();
+			 */
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside DAO updateCARSInitiationStatusCodes "+e);
@@ -1103,10 +1126,22 @@ public class CARSDaoImpl implements CARSDao{
 	@Override
 	public long carsOtherDocUpload(String uploadOtherDoc, String otherDocDetailsId) throws Exception {
 		try {
-			Query query = manager.createNativeQuery(CARSCSDOCUPLOAD);
-			query.setParameter("UploadOtherDoc", uploadOtherDoc);
-			query.setParameter("OtherDocDetailsId", otherDocDetailsId);
-			return query.executeUpdate();
+			
+			CARSOtherDocDetails ExistingCARSOtherDocDetails=manager.find(CARSOtherDocDetails.class, otherDocDetailsId);
+			if(ExistingCARSOtherDocDetails !=null && ExistingCARSOtherDocDetails.getIsActive()==1)
+			{
+				ExistingCARSOtherDocDetails.setUploadOtherDoc(uploadOtherDoc);
+				return 1L;
+			}
+			else {
+				return 0L;
+			}
+			/*
+			 * Query query = manager.createNativeQuery(CARSCSDOCUPLOAD);
+			 * query.setParameter("UploadOtherDoc", uploadOtherDoc);
+			 * query.setParameter("OtherDocDetailsId", otherDocDetailsId); return
+			 * query.executeUpdate();
+			 */
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside DAO carsOtherDocUpload "+e);
@@ -1156,15 +1191,21 @@ public class CARSDaoImpl implements CARSDao{
 
 	}
 	
-	private static final String UPDATEFORWARDDETAILSOFOTHERDOCS = "UPDATE pfms_cars_other_doc_details SET ForwardedBy=:ForwardedBy,ForwardedDate=:ForwardedDate WHERE OtherDocDetailsId=:OtherDocDetailsId AND IsActive=1";
 	@Override
 	public long updateOtherDocForwardDetails(String forwardedBy, String forwardedDate, String otherDocDetailsId) throws Exception {
 		try {
-			Query query = manager.createNativeQuery(UPDATEFORWARDDETAILSOFOTHERDOCS);
-			query.setParameter("ForwardedBy", forwardedBy);
-			query.setParameter("ForwardedDate", forwardedDate);
-			query.setParameter("OtherDocDetailsId", otherDocDetailsId);
-			return query.executeUpdate();
+			
+			CARSOtherDocDetails ExistingCARSOtherDocDetails= manager.find(CARSOtherDocDetails.class,otherDocDetailsId);
+			if(ExistingCARSOtherDocDetails != null && ExistingCARSOtherDocDetails.getIsActive() ==1)
+			{
+				ExistingCARSOtherDocDetails.setForwardedBy(Long.parseLong(forwardedBy));
+				ExistingCARSOtherDocDetails.setForwardedDate(forwardedDate);
+				return 1L;
+			}
+			else {
+				return 0L;
+			}
+			
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside DAO updateOtherDocForwardDetails "+e);

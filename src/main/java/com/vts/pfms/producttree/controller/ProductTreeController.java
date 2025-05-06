@@ -206,7 +206,7 @@ public class ProductTreeController {
 	    			redir.addAttribute("ProjectId", ProjectId);
 	                redir.addAttribute("ProjectType", ProjectType);
 	                redir.addAttribute("initiationId", initiationId);
-				return redirectWithError(redir, "ProductTree.htm", "'Name' should contain Alphabets , Numbers and some special characters.!.!");
+				return redirectWithError(redir, "ProductTree.htm", "'Name' should contain Alphabets, Numbers and some special characters.!");
 			}
 			
 	        ProductTreeDto dto=new ProductTreeDto();

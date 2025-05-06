@@ -21,5 +21,6 @@ public class EmployeeDesig {
 	private String Designation;
 	private long DesigLimit;
 	private String DesigCadre;
+	private int DesigSr;
 	
 }

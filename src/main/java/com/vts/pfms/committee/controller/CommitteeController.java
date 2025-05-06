@@ -236,7 +236,7 @@ public class CommitteeController {
 	private SimpleDateFormat rdf=new SimpleDateFormat("dd-MM-yyyy");
 	private static final Logger logger=LogManager.getLogger(CommitteeController.class);
 
-	@RequestMapping(value = "CommitteeAdd.htm")
+	@RequestMapping(value = "CommitteeAdd.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String CommitteeAddPage(HttpServletRequest req, HttpSession ses) throws Exception
 	{	
 		String UserId = (String) ses.getAttribute("Username");
@@ -270,7 +270,7 @@ public class CommitteeController {
 			String committeeShortName=req.getParameter("committeeshortname").trim();
 			String committeeName=req.getParameter("committeename").trim();
 			String guideLines=req.getParameter("guidelines");
-			String PeriodicDuration=req.getParameter("periodicduration");
+			
 			if(!InputValidator.isValidCapitalsAndSmallsAndNumeric(committeeShortName)) {
 				redir.addAttribute("projectid", projectid);
 				redir.addAttribute("projectappliacble",req.getParameter("projectapplicable"));
@@ -286,11 +286,7 @@ public class CommitteeController {
 				redir.addAttribute("projectappliacble",req.getParameter("projectapplicable"));
 				return redirectWithError(redir, "CommitteeAdd.htm", "'Guidelines' should not contain HTML Tags.!");
 			}
-			if(!InputValidator.isContainsNumberOnly(PeriodicDuration)) {
-				redir.addAttribute("committeemainid", req.getParameter("committeeid"));
-				redir.addAttribute("committeeid", req.getParameter("committeeid"));
-				return redirectWithError(redir, "CommitteeAdd.htm", "'Periodic Duration' must contain Numbers.!");
-			}
+			
 			
 			CommitteeDto committeeDto=new CommitteeDto();
 
@@ -307,6 +303,12 @@ public class CommitteeController {
 			committeeDto.setReferenceNo(req.getParameter("refno"));
 			if(req.getParameter("periodic").equalsIgnoreCase("P"))
 			{
+				String PeriodicDuration=req.getParameter("periodicduration");
+				if(!InputValidator.isContainsNumberOnly(PeriodicDuration)) {
+					redir.addAttribute("committeemainid", req.getParameter("committeeid"));
+					redir.addAttribute("committeeid", req.getParameter("committeeid"));
+					return redirectWithError(redir, "CommitteeAdd.htm", "'Periodic Duration' must contain Numbers.!");
+				}
 				committeeDto.setPeriodicDuration(PeriodicDuration);
 			}else
 			{
@@ -2376,13 +2378,13 @@ public class CommitteeController {
 		{
 			String ActionName=req.getParameter("NoteText");
 			String Remarks=req.getParameter("remarks");
-			if(InputValidator.isContainsHTMLTags(ActionName)) {
+			if(!InputValidator.isContainsDescriptionPattern(ActionName)) {
 				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
 				redir.addAttribute("specname", req.getParameter("specname"));
 				redir.addAttribute("membertype",req.getParameter("membertype"));
 				redir.addAttribute("formname", req.getParameter("formname"));
 				redir.addAttribute("unit1",req.getParameter("unit1"));
-				return redirectWithError(redir, "CommitteeScheduleMinutes.htm", "'ActionName' should not contain HTML Tags.!");
+				return redirectWithError(redir, "CommitteeScheduleMinutes.htm", "'ActionName' should contain Alphabets, Numbers or some Special Characters.!");
 			}
 			if(InputValidator.isContainsHTMLTags(Remarks)) {
 				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
@@ -2399,12 +2401,6 @@ public class CommitteeController {
 			redir.addAttribute("membertype",req.getParameter("membertype"));
 			redir.addAttribute("formname", req.getParameter("formname"));
 			redir.addAttribute("unit1",req.getParameter("unit1"));
-
-			
-			if(InputValidator.isContainsHTMLTags(req.getParameter("NoteText"))) {
-				redir.addAttribute("resultfail", " Action Name should Not contain HTML Tags !");
-				return "redirect:/CommitteeScheduleMinutes.htm";
-			}
 			
 			
 
@@ -2527,14 +2523,7 @@ public class CommitteeController {
 			{	
 				String ActionName=req.getParameter("NoteText");
 				String Remarks=req.getParameter("remarks");
-				if(InputValidator.isContainsHTMLTags(ActionName)) {
-					redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
-					redir.addAttribute("specname", req.getParameter("specname"));
-					redir.addAttribute("membertype",req.getParameter("membertype"));
-					redir.addAttribute("formname", req.getParameter("formname"));
-					redir.addAttribute("unit1",req.getParameter("unit1"));
-					return redirectWithError(redir, "CommitteeScheduleMinutes.htm", "'ActionName' should not contain HTML Tags.!");
-				}
+				
 				if(InputValidator.isContainsHTMLTags(Remarks)) {
 					redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
 					redir.addAttribute("specname", req.getParameter("specname"));
