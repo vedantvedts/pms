@@ -399,8 +399,8 @@ if(ses1!=null){	%>
 										</div> 
 									 
 												<div class="actions">
-												       <button class="update" onclick="EditModal('<%=level1[0]%>','<%=level1[3]%>','<%=level1[6]%>','<%=level1[7]%>')" ><img src="view/images/edit.png" ></button>
-												    <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+												       <button class="update" onclick="EditModal('<%=level1[0]%>','<%=level1[3]%>','<%=level1[10]%>','<%=level1[11]%>','<%=level1[12]%>')" ><img src="view/images/edit.png" ></button>
+												    <form action="SystemProductTreeEditDelete.htm"  method="get" style="display: inline">
 												         <input type="hidden" name="sid" value="<%=sid %>" >
 													     <input type="hidden" name="Action" value="TD">
 												            <button class="delet" name="Mainid" value="<%=level1[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
@@ -458,8 +458,8 @@ if(ses1!=null){	%>
 													     
 													      
 													              <div class="actions">
-																	       <button class="update" onclick="EditModal('<%=level2[0]%>','<%=level2[3]%>','<%=level2[6]%>','<%=level2[7]%>')" ><img src="view/images/edit.png" ></button>
-																	          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+																	       <button class="update" onclick="EditModal('<%=level2[0]%>','<%=level2[3]%>','<%=level2[10]%>','<%=level2[11]%>','<%=level2[12]%>')" ><img src="view/images/edit.png" ></button>
+																	          <form action="SystemProductTreeEditDelete.htm"  method="get" style="display: inline">
 																		         <input type="hidden" name="sid" value="<%=sid %>" >
 																			     <input type="hidden" name="Action" value="TD">
 																		            <button class="delet" name="Mainid" value="<%=level2[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
@@ -520,8 +520,8 @@ if(ses1!=null){	%>
 													              </div>
 													              
 													              <div class="actions">
-																	       <button class="update" onclick="EditModal('<%=level3[0]%>','<%=level3[3]%>','<%=level3[6]%>','<%=level3[7]%>')" ><img src="view/images/edit.png" ></button>
-																	          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+																	       <button class="update" onclick="EditModal('<%=level3[0]%>','<%=level3[3]%>','<%=level3[10]%>','<%=level3[11]%>','<%=level3[12]%>')" ><img src="view/images/edit.png" ></button>
+																	          <form action="SystemProductTreeEditDelete.htm"  method="get" style="display: inline">
 																		         <input type="hidden" name="sid" value="<%=sid %>" >
 																			     <input type="hidden" name="Action" value="TD">
 																		            <button class="delet" name="Mainid" value="<%=level3[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
@@ -588,8 +588,8 @@ if(ses1!=null){	%>
 																
 																 
 													              <div class="actions">
-																	       <button class="update" onclick="EditModal('<%=level4[0]%>','<%=level4[3]%>','<%=level4[6]%>','<%=level4[7]%>')" ><img src="view/images/edit.png" ></button>
-																	          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+																	       <button class="update" onclick="EditModal('<%=level4[0]%>','<%=level4[3]%>','<%=level4[10]%>','<%=level4[11]%>','<%=level4[12]%>')" ><img src="view/images/edit.png" ></button>
+																	          <form action="SystemProductTreeEditDelete.htm"  method="get" style="display: inline">
 																		         <input type="hidden" name="sid" value="<%=sid %>" >
 																			     <input type="hidden" name="Action" value="TD">
 																		            <button class="delet" name="Mainid" value="<%=level4[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
@@ -652,8 +652,8 @@ if(ses1!=null){	%>
 													                       
 													                        
 																              <div class="actions">
-																				       <button class="update" onclick="EditModal('<%=level5[0]%>','<%=level5[3]%>','<%=level5[6]%>','<%=level5[7]%>')" ><img src="view/images/edit.png" ></button>
-																				          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+																				       <button class="update" onclick="EditModal('<%=level5[0]%>','<%=level5[3]%>','<%=level5[10]%>','<%=level5[11]%>','<%=level5[12]%>')" ><img src="view/images/edit.png" ></button>
+																				          <form action="SystemProductTreeEditDelete.htm"  method="get" style="display: inline">
 																					         <input type="hidden" name="sid" value="<%=sid %>" >
 																						     <input type="hidden" name="Action" value="TD">
 																					            <button class="delet" name="Mainid" value="<%=level5[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
@@ -713,8 +713,8 @@ if(ses1!=null){	%>
 													                       
 													                        
 																              <div class="actions">
-																				       <button class="update" onclick="EditModal('<%=level6[0]%>','<%=level6[3]%>','<%=level6[6]%>','<%=level6[7]%>')" ><img src="view/images/edit.png" ></button>
-																				          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+																				       <button class="update" onclick="EditModal('<%=level6[0]%>','<%=level6[3]%>','<%=level6[10]%>','<%=level6[11]%>','<%=level6[12]%>')" ><img src="view/images/edit.png" ></button>
+																				          <form action="SystemProductTreeEditDelete.htm"  method="get" style="display: inline">
 																					         <input type="hidden" name="sid" value="<%=sid %>" >
 																						     <input type="hidden" name="Action" value="TD">
 																					            <button class="delet" name="Mainid" value="<%=level6[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
@@ -773,8 +773,8 @@ if(ses1!=null){	%>
 													                       
 													                        
 																              <div class="actions">
-																				       <button class="update" onclick="EditModal('<%=level7[0]%>','<%=level7[3]%>','<%=level7[6]%>','<%=level7[7]%>')" ><img src="view/images/edit.png" ></button>
-																				          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+																				       <button class="update" onclick="EditModal('<%=level7[0]%>','<%=level7[3]%>','<%=level7[10]%>',,'<%=level7[11]%>','<%=level7[12]%>')" ><img src="view/images/edit.png" ></button>
+																				          <form action="SystemProductTreeEditDelete.htm"  method="get" style="display: inline">
 																					         <input type="hidden" name="sid" value="<%=sid %>" >
 																						     <input type="hidden" name="Action" value="TD">
 																					            <button class="delet" name="Mainid" value="<%=level7[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
@@ -795,9 +795,9 @@ if(ses1!=null){	%>
 															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 															
 															<form action="SystemLevelNameAdd.htm" method="get">
-													            <input type="text" class="description-input" name="LevelName" required >
-													              <input type="text" class="description-input" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#7#<%=level6[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%>.<%=countF%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													            <input type="text" name="LevelName" required >
+													              <input type="text" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#7#<%=level6[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%>.<%=countF%>#<%=level6[11] %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
 													             
@@ -826,9 +826,9 @@ if(ses1!=null){	%>
 															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 															
 															<form action="SystemLevelNameAdd.htm" method="get">
-													            <input type="text" class="description-input" name="LevelName" required >
-													                <input type="text" class="description-input" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#6#<%=level5[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													            <input type="text" name="LevelName" required >
+													                <input type="text" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#6#<%=level5[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%>#<%=level5[11] %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
 													             
@@ -856,9 +856,9 @@ if(ses1!=null){	%>
 															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 															
 															<form action="SystemLevelNameAdd.htm" method="get">
-													            <input type="text" class="description-input" name="LevelName" required >
-													              <input type="text" class="description-input" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#5#<%=level4[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													            <input type="text" name="LevelName" required >
+													              <input type="text" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#5#<%=level4[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>#<%=level4[11] %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
 													             
@@ -887,9 +887,9 @@ if(ses1!=null){	%>
 															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 															
 															<form action="SystemLevelNameAdd.htm" method="get">
-													            <input type="text" class="description-input" name="LevelName" required >
-													            <input type="text" class="description-input" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#4#<%=level3[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													            <input type="text" name="LevelName" required >
+													            <input type="text" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#4#<%=level3[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>#<%=level3[11] %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
 													                  
@@ -919,9 +919,9 @@ if(ses1!=null){	%>
 															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 															
 															<form action="SystemLevelNameAdd.htm" method="get">
-													            <input type="text" class="description-input" name="LevelName" required >
-													            <input type="text" class="description-input" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#3#<%=level2[0]%>#<%=count%>.<%=countA%>.<%=countB%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													            <input type="text" name="LevelName" required >
+													            <input type="text" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#3#<%=level2[0]%>#<%=count%>.<%=countA%>.<%=countB%>#<%=level2[11] %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
 													          
@@ -949,9 +949,9 @@ if(ses1!=null){	%>
 											<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 											
 											<form action="SystemLevelNameAdd.htm" method="get">
-									            <input type="text" class="description-input" name="LevelName" required >
-									             <input type="text" class="description-input" name="LevelCode" required  maxlength="3" style="width:35%" placeholder="CODE">
-									            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#2#<%=level1[0]%>#<%=count%>.<%=countA%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+									            <input type="text" name="LevelName" required >
+									             <input type="text" name="LevelCode" required  maxlength="3" style="width:35%" placeholder="CODE">
+									            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#2#<%=level1[0]%>#<%=count%>.<%=countA%>#<%=level1[11] %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 									             
 									         </form>    
 									          
@@ -977,9 +977,9 @@ if(ses1!=null){	%>
                          <div class="member-view-box action-view-box">
 							<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 					            <form action="SystemLevelNameAdd.htm" method="get">
-						            <input type="text" class="description-input" name="LevelName" required>
-						            <input type="text" class="description-input" name="LevelCode" required  maxlength="3" style="width:35%" placeholder="CODE">
-						            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#1#0#<%=count %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+						            <input type="text" name="LevelName" required>
+						            <input type="text" name="LevelCode" required  maxlength="3" style="width:35%" placeholder="CODE">
+						            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#1#0#<%=count %>#N" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 									             
 							   </form>    
 					                 
@@ -989,7 +989,7 @@ if(ses1!=null){	%>
                     </li>
                     
                    
-                	<%---------------------------------------Level 1 ------------------------------------------------------------%>
+                	<%---------------------------------------Level 1 Add------------------------------------------------------------%>
 				 </ul> 
                 
                          
@@ -1437,6 +1437,56 @@ if(ses1!=null){	%>
 	    
 	</div>   
 
+ <div class="modal" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Edit Level Name</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" align="center">
+        <form action="SystemProductTreeEditDelete.htm" method="get">
+        	<table style="width: 100%;">
+        		<tr>
+        			<th>Level Name : &nbsp; </th>
+        			<td><input type="text" class="form-control" name="LevelName" id="levelname" required></td>
+        		</tr>
+        		<tr>
+        			<th>Level Code : &nbsp; </th>
+        			<td><input type="text" class="form-control" name="LevelCode" id="levelCode" maxlength="3" required></td>
+        		</tr>
+        		<tr id="issoftwareTr">
+        		<th>
+        		Is Software:
+        		</th>
+        		<td>
+        		<select class="form select selectdee IsSoftware"  name="IsSoftware"   style="width:100%;">
+        		<option value="" selected="selected" disabled="disabled" >Select</option>
+        		<option value="Y">YES</option>
+        		<option value="N">NO</option>
+        		</select>
+        		</td>
+        		</tr>
+        		<tr>
+        			<td colspan="2" style="text-align: center;">
+        				<br>
+        				<button type="button" class="btn btn-sm btn-danger" data-dismiss="modal"><b>Close</b></button>
+        				<button class="btn btn-sm submit" onclick="return confirm('Are You Sure to Edit?');">SUBMIT</button>
+        			</td>
+        		</tr>
+        	</table>
+        	
+        	<input type="hidden" id="Mainid" name="Mainid" value="" >
+          <input type="hidden" id="" name="Action" value="TE" > 
+        	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+        </form>
+      </div>
+     
+    </div>
+  </div>
+</div> 
 
 <script>
 $(document).ready(function() {
@@ -1494,6 +1544,25 @@ function ChangeButton(id) {
 	$( ".row"+id).hide();
     }
 }
+
+	function EditModal(mainid,levelname,levelCode,IsSoftware,IsSoftwareMain){
+	$('#Mainid').val(mainid);			
+	$('#levelname').val(levelname);
+	$('#levelCode').val(levelCode);
+	//console.log(mainid,levelname,levelCode,IsSoftware);
+	$('select[name="IsSoftware"]').val(IsSoftware).trigger('change');
+  	
+  	if(IsSoftware==='Y' && IsSoftwareMain==='Y'){
+  		$('#issoftwareTr').hide();
+  	}else{
+  		$('#issoftwareTr').show();
+  	}
+
+  	var sid = $('#sid').val();
+
+	$('#EditModal').modal('toggle');
+
+} 
 </script>
 </body>
 </html>

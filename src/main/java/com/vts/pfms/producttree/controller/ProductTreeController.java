@@ -217,6 +217,7 @@ public class ProductTreeController {
 	        dto.setLevelName(LevelName);
 	        dto.setCreatedBy(UserId);
 	        dto.setInitiationId(Long.parseLong(initiationId));
+	        dto.setElementType("I");
 	        
 	        long result=service.AddLevelName(dto);
 	        
@@ -640,6 +641,7 @@ public class ProductTreeController {
 					}
 					spt.setLevelName(levelName);
 					spt.setLevelCode(levelCode);
+					spt.setIsSoftware(req.getParameter("IsSoftware"));
 					spt.setModifiedBy(UserId);
 	
 					long update = service.systemLevelNameEdit(spt, Action);
@@ -680,7 +682,7 @@ public class ProductTreeController {
 				String LevelId=arr[1];
 				String ParentLevelId=arr[2];
 				String SubLevelId=arr[3];
-				
+				String isSoftware = arr[arr.length-1];
 				
 				String levelName=req.getParameter("LevelName");
 				String levelCode=req.getParameter("LevelCode");
@@ -700,7 +702,8 @@ public class ProductTreeController {
 				dto.setLevelName(levelName);
 				dto.setCreatedBy(UserId);
 				dto.setLevelCode(levelCode);
-				
+				dto.setIsSoftware(isSoftware!=null?isSoftware:"N");
+
 				long result=service.AddSystemLevelName(dto);
 				
 				

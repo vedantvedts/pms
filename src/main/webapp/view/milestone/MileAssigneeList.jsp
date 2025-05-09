@@ -346,7 +346,7 @@ h6{
 											</td>
                                                       
 											<td>
-												<%//if(obj[22]!=null && Integer.parseInt(obj[22].toString())==0){
+												<%if(obj[22]!=null && Integer.parseInt(obj[22].toString())==0){
 													if(Integer.parseInt(obj[5].toString())<100) { 
 														if(!obj[10].toString().equalsIgnoreCase("0")){ 
 															if(Integer.parseInt(obj[6].toString())>0){
@@ -381,7 +381,7 @@ h6{
                                                  	<%} }else{ %> 
                                                     	Completed 
                                                 	<%} %>
-                                            	<%-- <%} %> --%>
+                                            	<%} %>
                                         	</td>	
 										</tr>
 									<%} } %>

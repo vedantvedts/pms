@@ -26,5 +26,7 @@ public class ProductTreeDto {
 		private String LevelCode;
 		private int isActive;
 		private Long InitiationId;
-
+		
+		private String IsSoftware;
+		private String ElementType;
 }

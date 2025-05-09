@@ -15,12 +15,11 @@ import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -55,7 +54,12 @@ import com.vts.pfms.ms.dao.EmployeeRepo;
 import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.timesheet.dto.TimeSheetDTO;
 import com.vts.pfms.timesheet.model.TimeSheet;
+import com.vts.pfms.timesheet.model.TimesheetKeywords;
 import com.vts.pfms.timesheet.service.TimeSheetService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class TimeSheetController {
@@ -173,6 +177,7 @@ public class TimeSheetController {
 		logger.info(new Date()+" Inside TimeSheetDetailsSubmit.htm "+UserId);
 		try {
 			String activityDate = req.getParameter("activityDate");
+			String sameTaskDays = req.getParameter("sameTaskDays");
 			activityDate = activityDate==null?rdf.format(new Date()):activityDate;
 			
 			String[] assignedBys = req.getParameterValues("assignedBy");
@@ -215,6 +220,27 @@ public class TimeSheetController {
 							   .build();
 			
 			Long result = service.timeSheetSubmit(dto);
+			
+			if(result>0 && sameTaskDays!=null && !sameTaskDays.isEmpty() && Integer.parseInt(sameTaskDays)>0) {
+				
+				LocalDate activityLD = LocalDate.parse(fc.rdfTosdf(activityDate));
+				
+				List<Object[]> empAllTimeSheetList = service.getEmpAllTimeSheetList(EmpId);
+
+				for(int i = 1; i<=Integer.parseInt(sameTaskDays); i++) {
+					
+					LocalDate plusDate = activityLD.plusDays(i);
+					List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> plusDate.equals(LocalDate.parse(e[3].toString()))).collect(Collectors.toList());
+
+					if(nextDayTimeSheet!=null && nextDayTimeSheet.size()==0 && (plusDate.isBefore(LocalDate.now()) || plusDate.isEqual(LocalDate.now()))) {
+						dto.setActivityFromDate(fc.sdfTordf(plusDate.toString()));
+						dto.setPunchInTime(dto.getActivityFromDate());
+						
+						service.timeSheetSubmit(dto);
+					}
+					
+				}
+			}
 			
 			if(result!=0) {
 				redir.addAttribute("result", "Time Sheet Details "+req.getParameter("Action")+"ed Successfully");
@@ -1477,6 +1503,297 @@ public class TimeSheetController {
 			logger.error(new Date()+ "Inside TimeSheetReport.htm "+UserId, e);
 			e.printStackTrace();
 			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value = "TimeSheetKeywordDetailsSubmit.htm", method = {RequestMethod.GET})
+	public @ResponseBody String timeSheetKeywordDetailsSubmit(HttpServletRequest req, HttpSession ses) throws Exception{
+		String Username=(String)ses.getAttribute("Username");
+		logger.info(new Date() + "Inside TimeSheetKeywordDetailsSubmit.htm"+Username);
+		Gson json = new Gson();
+		Object[] data = new Object[3];
+		try {
+			String keyword = req.getParameter("keyword");
+			String keywordCode = req.getParameter("keywordCode");
+			
+			TimesheetKeywords timesheetKeywords = new TimesheetKeywords();
+			timesheetKeywords.setKeyword(keyword);
+			timesheetKeywords.setKeywordShortCode(keywordCode);
+			timesheetKeywords.setCreatedBy(Username);
+			timesheetKeywords.setCreatedDate(sdtf.format(new Date()));
+			timesheetKeywords.setIsActive(1);
+			
+			Long keywordId = service.addTimesheetKeywords(timesheetKeywords);
+			data[0] = keywordId;
+			data[1] = keyword;
+			data[2] = keywordCode;
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside TimeSheetKeywordDetailsSubmit.htm "+Username, e);
+		}
+		return json.toJson(data);
+	}
+	
+	@RequestMapping(value="WorkRegisterMonthlyViewExcel.htm", method= {RequestMethod.GET, RequestMethod.POST})
+	public void workRegisterMonthlyViewExcel(HttpServletRequest req, HttpSession ses,HttpServletResponse res) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() + " Inside WorkRegisterMonthlyViewExcel.htm "+UserId);
+		try {
+			String empId = req.getParameter("empId");
+			String activityDate = req.getParameter("activityDate");
+			String empName = req.getParameter("empName");
+			
+			activityDate = activityDate==null?rdf.format(new Date()):activityDate;
+			LocalDate activityLD = LocalDate.parse(fc.rdfTosdf(activityDate));
+			List<Object[]> employeeNewTimeSheetList = service.getEmployeeNewTimeSheetList(empId, activityLD.withDayOfMonth(1).toString(), activityLD.with(TemporalAdjusters.lastDayOfMonth()).toString());
+			
+			int rowNo=0;
+			// Creating a worksheet
+			Workbook workbook = new XSSFWorkbook();
+
+			Sheet sheet = workbook.createSheet("Work_Register_Monthly_Report");
+			sheet.setColumnWidth(0, 2000);
+			sheet.setColumnWidth(1, 5000);
+			sheet.setColumnWidth(2, 7000);
+			sheet.setColumnWidth(3, 6000);
+			sheet.setColumnWidth(4, 6000);
+			sheet.setColumnWidth(5, 8000);
+			sheet.setColumnWidth(6, 5000);
+			sheet.setColumnWidth(7, 7000);
+			sheet.setColumnWidth(8, 6000);
+
+			XSSFFont font = ((XSSFWorkbook) workbook).createFont();
+			font.setFontName("Times New Roman");
+			font.setFontHeightInPoints((short) 14);
+			font.setBold(true);
+			
+			XSSFFont font2 = ((XSSFWorkbook) workbook).createFont();
+			font2.setFontName("Times New Roman");
+			font2.setFontHeightInPoints((short) 11);
+			font2.setBold(true);
+			
+			// style for file header
+			CellStyle file_header_Style = workbook.createCellStyle();
+			file_header_Style.setLocked(true);
+			file_header_Style.setFont(font);
+			file_header_Style.setWrapText(true);
+			file_header_Style.setAlignment(HorizontalAlignment.CENTER);
+			file_header_Style.setVerticalAlignment(VerticalAlignment.CENTER);
+			
+			// style for table header
+			CellStyle t_header_style = workbook.createCellStyle();
+			t_header_style.setLocked(true);
+			t_header_style.setFont(font2);
+			t_header_style.setWrapText(true);
+			t_header_style.setAlignment(HorizontalAlignment.CENTER);
+			t_header_style.setVerticalAlignment(VerticalAlignment.CENTER);
+			
+			// style for table cells
+			CellStyle t_body_style = workbook.createCellStyle();
+			t_body_style.setWrapText(true);
+			t_body_style.setAlignment(HorizontalAlignment.LEFT);
+			t_body_style.setVerticalAlignment(VerticalAlignment.TOP);
+
+			// style for table cells with center align
+			CellStyle t_body_style2 = workbook.createCellStyle();
+			t_body_style2.setWrapText(true);
+			t_body_style2.setAlignment(HorizontalAlignment.CENTER);
+			t_body_style2.setVerticalAlignment(VerticalAlignment.TOP);
+			
+			// style for table cells with right align
+			CellStyle t_body_style3 = workbook.createCellStyle();
+			t_body_style3.setWrapText(true);
+			t_body_style3.setAlignment(HorizontalAlignment.RIGHT);
+			t_body_style3.setVerticalAlignment(VerticalAlignment.TOP);
+			
+			CellStyle t_body_style4 = workbook.createCellStyle();
+			t_body_style4.setWrapText(true);
+			t_body_style4.setAlignment(HorizontalAlignment.CENTER);
+			t_body_style4.setVerticalAlignment(VerticalAlignment.CENTER);
+			
+			// File header Row
+			Row file_header_row = sheet.createRow(rowNo++);
+			sheet.addMergedRegion(new CellRangeAddress(0, 0,0, 8));   // Merging Header Cells 
+			Cell cell= file_header_row.createCell(0);
+			cell.setCellValue("Work Register Monthly Report");
+			file_header_row.setHeightInPoints((3*sheet.getDefaultRowHeightInPoints()));
+			cell.setCellStyle(file_header_Style);
+			
+			CellStyle file_header_Style2 = workbook.createCellStyle();
+			file_header_Style2.setLocked(true);
+			file_header_Style2.setFont(font2);
+			file_header_Style2.setWrapText(true);
+			file_header_Style2.setAlignment(HorizontalAlignment.RIGHT);
+			file_header_Style2.setVerticalAlignment(VerticalAlignment.CENTER);	
+
+			CellStyle file_header_Style3 = workbook.createCellStyle();
+			file_header_Style3.setLocked(true);
+			file_header_Style3.setFont(font2);
+			file_header_Style3.setWrapText(true);
+			file_header_Style3.setAlignment(HorizontalAlignment.LEFT);
+			file_header_Style3.setVerticalAlignment(VerticalAlignment.CENTER);	
+			
+			Row file_header_row2 = sheet.createRow(rowNo++);
+			// Merge and set "Employee" cell
+			sheet.addMergedRegion(new CellRangeAddress(file_header_row2.getRowNum(), file_header_row2.getRowNum(), 0, 4));
+			Cell empCell = file_header_row2.createCell(0);
+			empCell.setCellValue("Employee : " + empName);
+			empCell.setCellStyle(file_header_Style3);
+
+			// Merge and set "Month" cell
+			sheet.addMergedRegion(new CellRangeAddress(file_header_row2.getRowNum(), file_header_row2.getRowNum(), 5, 8));
+			Cell monthCell = file_header_row2.createCell(5);
+			monthCell.setCellValue("Month : " + activityLD.getMonth() + " " + activityLD.getYear());
+			monthCell.setCellStyle(file_header_Style2);
+			
+			// Table in file header Row
+			Row t_header_row = sheet.createRow(rowNo++);
+			cell= t_header_row.createCell(0); 
+			cell.setCellValue("SN"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(1); 
+			cell.setCellValue("Date"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(2); 
+			cell.setCellValue("Activity No"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(3); 
+			cell.setCellValue("Activity Type"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(4); 
+			cell.setCellValue("Project"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(5); 
+			cell.setCellValue("Assigner"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(6); 
+			cell.setCellValue("Keywords"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(7); 
+			cell.setCellValue("Work Done"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(8); 
+			cell.setCellValue("Work Done on"); 
+			cell.setCellStyle(t_header_style);
+			
+
+			Map<String, List<Object[]>> timeSheetToListMap = employeeNewTimeSheetList!=null && employeeNewTimeSheetList.size()>0?employeeNewTimeSheetList.stream()
+					  .collect(Collectors.groupingBy(array -> array[0] + "", LinkedHashMap::new, Collectors.toList())) : new HashMap<>();
+			
+			if (timeSheetToListMap!=null && timeSheetToListMap.size() > 0) {int slno = 0;
+			for (Map.Entry<String, List<Object[]>> map : timeSheetToListMap.entrySet()) {
+
+			    List<Object[]> values = map.getValue();
+			    int groupStartRow = rowNo; // remember starting row of this group
+			    int i = 0;
+
+			    for (Object[] obj : values) {
+			        Row t_body_row = sheet.createRow(rowNo++);
+
+			        // We'll add SL No and Date later after merging
+
+			        // Column 2
+			        cell = t_body_row.createCell(2); 
+			        cell.setCellValue(obj[16] != null ? obj[16].toString() : "-"); 
+			        cell.setCellStyle(t_body_style2);
+
+			        // Column 3
+			        cell = t_body_row.createCell(3); 
+			        cell.setCellValue(obj[5] != null ? obj[5].toString() : "-");
+			        cell.setCellStyle(t_body_style);
+
+			        // Column 4
+			        cell = t_body_row.createCell(4); 
+			        cell.setCellValue(obj[8] != null ? obj[8].toString() : "-");
+			        cell.setCellStyle(t_body_style2);
+
+			        // Column 5
+			        cell = t_body_row.createCell(5); 
+			        cell.setCellValue(obj[10]!=null ? obj[10] + ", " + (obj[11] != null ? obj[11] : "-") : "Not Available");
+			        cell.setCellStyle(t_body_style);
+
+			        // Column 6
+			        cell = t_body_row.createCell(6); 
+			        cell.setCellValue(obj[13] != null ? obj[13].toString() : "-");
+			        cell.setCellStyle(t_body_style2);
+
+			        // Column 7
+			        cell = t_body_row.createCell(7); 
+			        cell.setCellValue(obj[14] != null ? obj[14].toString() : "-");
+			        cell.setCellStyle(t_body_style);
+
+			        // Column 8
+			        cell = t_body_row.createCell(8); 
+			        cell.setCellValue(obj[15] != null ?
+			            (obj[15].toString().equalsIgnoreCase("A") ? "AN" :
+			            (obj[15].toString().equalsIgnoreCase("F") ? "FN" : "Full day")) : "-");
+			        cell.setCellStyle(t_body_style2);
+			    }
+
+			    int groupEndRow = rowNo - 1; // current rowNo has moved past the group, so subtract 1
+
+			    // Only merge if more than 1 row in the group
+			    if (groupEndRow > groupStartRow) {
+			        // SL No
+			        sheet.addMergedRegion(new CellRangeAddress(groupStartRow, groupEndRow, 0, 0));
+			        // Date
+			        sheet.addMergedRegion(new CellRangeAddress(groupStartRow, groupEndRow, 1, 1));
+			    }
+
+			    // Add SL No and Date once (on top row of the group)
+			    Row topRow = sheet.getRow(groupStartRow);
+			    cell = topRow.createCell(0); 
+			    cell.setCellValue(++slno); 
+			    cell.setCellStyle(t_body_style4);
+
+			    cell = topRow.createCell(1); 
+			    Object[] firstObj = values.get(0);
+			    cell.setCellValue(firstObj[2] != null ? fc.sdfTordf(firstObj[2].toString()) : "-"); 
+			    cell.setCellStyle(t_body_style4);
+			}
+} 
+			
+			
+			String path = req.getServletContext().getRealPath("/view/temp");
+			String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
+
+			FileOutputStream outputStream = new FileOutputStream(fileLocation);
+			workbook.write(outputStream);
+			workbook.close();
+			
+			
+			String filename="Work_Register_Monthly_Report";
+			
+     
+	        res.setContentType("Application/octet-stream");
+	        res.setHeader("Content-disposition","attachment;filename="+filename+".xlsx");
+	        File f=new File(fileLocation);
+	         
+	        
+	        FileInputStream fis = new FileInputStream(f);
+	        DataOutputStream os = new DataOutputStream(res.getOutputStream());
+	        res.setHeader("Content-Length",String.valueOf(f.length()));
+	        byte[] buffer = new byte[1024];
+	        int len = 0;
+	        while ((len = fis.read(buffer)) >= 0) {
+	            os.write(buffer, 0, len);
+	        } 
+	        os.close();
+	        fis.close();
+			
+			
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside WorkRegisterMonthlyViewExcel.htm "+UserId, e);
+			e.printStackTrace();
 		}
 	}
 }

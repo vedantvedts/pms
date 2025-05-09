@@ -216,103 +216,113 @@ public class MilestoneController {
 			List<Object[]> totalAssignedMainList = new ArrayList<>();
 			List<Object[]> totalAssignedSubList = new ArrayList<>();
 			Map<Long, Long> milestoneActivityIdsMap = new HashMap<>();
-			
+
 			List<Object[]> main = service.MilestoneActivityAssigneeList(ProjectId, "A");
-			
+
 			if (main != null && !main.isEmpty()) {
-				if("A".equalsIgnoreCase(Logintype) || "Z".equalsIgnoreCase(Logintype)) {
+				if(Arrays.asList("A", "Z").contains(Logintype)) {
 					totalAssignedMainList.addAll(main);
 				}else if("P".equalsIgnoreCase(Logintype)) {
 					totalAssignedMainList.addAll(main.stream()
-	    					 .filter(e -> (e[18].toString().equalsIgnoreCase(EmpId)))
-	                         .collect(Collectors.toList()));
+							.filter(e -> (e[18].toString().equalsIgnoreCase(EmpId)))
+							.collect(Collectors.toList()));
 				}else {
 					totalAssignedMainList.addAll(main.stream()
-	    					 .filter(e -> (e[11].toString().equalsIgnoreCase(EmpId) || e[17].toString().equalsIgnoreCase(EmpId)))
-	                         .collect(Collectors.toList()));
+							.filter(e -> (e[11].toString().equalsIgnoreCase(EmpId) || e[17].toString().equalsIgnoreCase(EmpId)))
+							.collect(Collectors.toList()));
 				}
-				
+
 			}
-			
-			
+
+
 			req.setAttribute("MilestoneActivityList",main );	
 			req.setAttribute("ProjectId", ProjectId);
-			
+
 			if(ProjectId!=null) {
 				req.setAttribute("ProjectDetails", service.ProjectDetails(ProjectId).get(0));
-				
+
 				//int MainCount=1;
-				for(Object[] objmain:main ) {
-					
+				for(Object[] objmain : main ) {
+
 					List<Object[]>  MilestoneActivityA=service.MilestoneActivityLevel(objmain[0].toString(),"1");
 					if (MilestoneActivityA != null && !MilestoneActivityA.isEmpty()) {
-						if(Arrays.asList("A", "P", "Z").contains(Logintype)) {
+						if(Arrays.asList("A", "Z").contains(Logintype)) {
+							totalAssignedSubList.addAll(MilestoneActivityA);
+						}else if("P".equalsIgnoreCase(Logintype) && (objmain[18].toString().equalsIgnoreCase(EmpId))) {
 							totalAssignedSubList.addAll(MilestoneActivityA);
 						}else {
 							totalAssignedSubList.addAll(MilestoneActivityA.stream()
-			    					 .filter(e -> (e[13].toString().equalsIgnoreCase(EmpId) || e[15].toString().equalsIgnoreCase(EmpId)))
-			                         .collect(Collectors.toList()));
+									.filter(e -> (e[13].toString().equalsIgnoreCase(EmpId) || e[15].toString().equalsIgnoreCase(EmpId)))
+									.collect(Collectors.toList()));
 						}
-						
+
 					}
 					//req.setAttribute(MainCount+"MilestoneActivityA", MilestoneActivityA);
-					
+
 					//int countA=1;
 					for(Object[] obj:MilestoneActivityA) {
 						milestoneActivityIdsMap.put(Long.parseLong(obj[0].toString()), Long.parseLong(objmain[0].toString()));
 						List<Object[]>  MilestoneActivityB=service.MilestoneActivityLevel(obj[0].toString(),"2");
 						if (MilestoneActivityB != null && !MilestoneActivityB.isEmpty()) {
-							if(Arrays.asList("A", "P", "Z").contains(Logintype)) {
+							if(Arrays.asList("A", "Z").contains(Logintype)) {
+								totalAssignedSubList.addAll(MilestoneActivityB);
+							}else if("P".equalsIgnoreCase(Logintype) && (objmain[18].toString().equalsIgnoreCase(EmpId))) {
 								totalAssignedSubList.addAll(MilestoneActivityB);
 							}else {
 								totalAssignedSubList.addAll(MilestoneActivityB.stream()
-							    					 .filter(e -> (e[13].toString().equalsIgnoreCase(EmpId) || e[15].toString().equalsIgnoreCase(EmpId)))
-							                         .collect(Collectors.toList()));
+										.filter(e -> (e[13].toString().equalsIgnoreCase(EmpId) || e[15].toString().equalsIgnoreCase(EmpId)))
+										.collect(Collectors.toList()));
 							}
 						}
 						//req.setAttribute(MainCount+"MilestoneActivityB"+countA, MilestoneActivityB);
-						
+
 						//int countB=1;
 						for(Object[] obj1:MilestoneActivityB) {
 							milestoneActivityIdsMap.put(Long.parseLong(obj1[0].toString()), Long.parseLong(objmain[0].toString()));
 							List<Object[]>  MilestoneActivityC=service.MilestoneActivityLevel(obj1[0].toString(),"3");
 							if (MilestoneActivityC != null && !MilestoneActivityC.isEmpty()) {
-								if(Arrays.asList("A", "P", "Z").contains(Logintype)) {
+								if(Arrays.asList("A", "Z").contains(Logintype)) {
+									totalAssignedSubList.addAll(MilestoneActivityC);
+								}else if("P".equalsIgnoreCase(Logintype) && (objmain[18].toString().equalsIgnoreCase(EmpId))) {
 									totalAssignedSubList.addAll(MilestoneActivityC);
 								}else {
 									totalAssignedSubList.addAll(MilestoneActivityC.stream()
-								    					 .filter(e -> (e[13].toString().equalsIgnoreCase(EmpId) || e[15].toString().equalsIgnoreCase(EmpId)))
-								                         .collect(Collectors.toList()));
+											.filter(e -> (e[13].toString().equalsIgnoreCase(EmpId) || e[15].toString().equalsIgnoreCase(EmpId)))
+											.collect(Collectors.toList()));
 								}
 							}
 							//req.setAttribute(MainCount+"MilestoneActivityC"+countA+countB, MilestoneActivityC);
-							
+
 							//int countC=1;
 							for(Object[] obj2:MilestoneActivityC) {
 								milestoneActivityIdsMap.put(Long.parseLong(obj2[0].toString()), Long.parseLong(objmain[0].toString()));
 								List<Object[]>  MilestoneActivityD=service.MilestoneActivityLevel(obj2[0].toString(),"4");
 								if (MilestoneActivityD != null && !MilestoneActivityD.isEmpty()) {
-									if(Arrays.asList("A", "P", "Z").contains(Logintype)) {
+									if(Arrays.asList("A", "Z").contains(Logintype)) {
+										totalAssignedSubList.addAll(MilestoneActivityD);
+									}else if("P".equalsIgnoreCase(Logintype) && (objmain[18].toString().equalsIgnoreCase(EmpId))) {
 										totalAssignedSubList.addAll(MilestoneActivityD);
 									}else {
 										totalAssignedSubList.addAll(MilestoneActivityD.stream()
-									    					 .filter(e -> (e[13].toString().equalsIgnoreCase(EmpId) || e[15].toString().equalsIgnoreCase(EmpId)))
-									                         .collect(Collectors.toList()));
+												.filter(e -> (e[13].toString().equalsIgnoreCase(EmpId) || e[15].toString().equalsIgnoreCase(EmpId)))
+												.collect(Collectors.toList()));
 									}
 								}
 								//req.setAttribute(MainCount+"MilestoneActivityD"+countA+countB+countC, MilestoneActivityD);
-								
+
 								//int countD=1;
 								for(Object[] obj3:MilestoneActivityD) {
 									milestoneActivityIdsMap.put(Long.parseLong(obj3[0].toString()), Long.parseLong(objmain[0].toString()));
 									List<Object[]>  MilestoneActivityE=service.MilestoneActivityLevel(obj3[0].toString(),"5");
 									if (MilestoneActivityE != null && !MilestoneActivityE.isEmpty()) {
-										if(Arrays.asList("A", "P", "Z").contains(Logintype)) {
+										if(Arrays.asList("A", "Z").contains(Logintype)) {
+											totalAssignedSubList.addAll(MilestoneActivityE);
+										}else if("P".equalsIgnoreCase(Logintype) && (objmain[18].toString().equalsIgnoreCase(EmpId))) {
 											totalAssignedSubList.addAll(MilestoneActivityE);
 										}else {
 											totalAssignedSubList.addAll(MilestoneActivityE.stream()
-										    					 .filter(e -> (e[13].toString().equalsIgnoreCase(EmpId) || e[15].toString().equalsIgnoreCase(EmpId)))
-										                         .collect(Collectors.toList()));
+													.filter(e -> (e[13].toString().equalsIgnoreCase(EmpId) || e[15].toString().equalsIgnoreCase(EmpId)))
+													.collect(Collectors.toList()));
 										}
 									}
 									//req.setAttribute(MainCount+"MilestoneActivityE"+countA+countB+countC+countD, MilestoneActivityE);
@@ -328,11 +338,11 @@ public class MilestoneController {
 				}
 
 			}
-			
+
 			req.setAttribute("totalAssignedMainList", totalAssignedMainList);
 			req.setAttribute("totalAssignedSubList", totalAssignedSubList);
 			req.setAttribute("milestoneActivityIdsMap", milestoneActivityIdsMap);
-			
+
 			return "milestone/MileAssigneeList";
 		}catch (Exception e) {
 			e.printStackTrace();  
@@ -340,7 +350,6 @@ public class MilestoneController {
 			return "static/Error";
 
 		}
-
 	}
 
 	@RequestMapping(value = "MilestoneActivityAdd.htm")

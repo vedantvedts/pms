@@ -990,7 +990,8 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	@Override
 	public long addProjectClosureCheckList(ProjectClosureCheckList clist, ProjectCheckListRevDto dto,String empId,
 			MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach,MultipartFile qARNCItemsAttach,
-			MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach ) throws Exception {
+			MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach,
+			MultipartFile CommittmentRegister,MultipartFile BudgetDocument ) throws Exception {
 		
 		
 		Timestamp instant = Timestamp.from(Instant.now());
@@ -1045,84 +1046,60 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 			clist.setEquipProcuredBeforePDCAttach(null);
 		}
 		
+		if (!CommittmentRegister.isEmpty() && clist.getCRBringFrom().equalsIgnoreCase("DOC")){
+			clist.setCommittmentRegister("CommittmentRegister" + timestampstr + "."
+					+ FilenameUtils.getExtension(CommittmentRegister.getOriginalFilename()));
+			saveFile1(closurePath, clist.getCommittmentRegister(), CommittmentRegister);
+		} else {
+			clist.setCommittmentRegister(null);
+		}
 		
-//		if (!equipBoughtOnChargeAttach.isEmpty()) {
-//			clist.setQARNCItems("EquipBoughtOnChargeAttach" + timestampstr + "."
-//					+ FilenameUtils.getExtension(equipBoughtOnChargeAttach.getOriginalFilename()));
-//			saveFile(uploadpath + path, clist.getEquipBoughtOnChargeAttach(), equipBoughtOnChargeAttach);
-//		} else {
-//			clist.setEquipBoughtOnChargeAttach(null);
-//		}
+		System.out.println("BudgetDocument.isEmpty()----"+BudgetDocument);
+		if (!BudgetDocument.isEmpty()) {
+			clist.setBudgetDocument("BudgetDocument" + timestampstr + "."
+					+ FilenameUtils.getExtension(BudgetDocument.getOriginalFilename()));
+			saveFile1(closurePath, clist.getBudgetDocument(), BudgetDocument);
+		} else {
+			clist.setBudgetDocument(null);
+		}
 		
-//		if (!budgetExpenditureAttach.isEmpty()) {
-//			clist.setBudgetExpenditureAttach("BudgetExpenditureAttach" + timestampstr + "."
-//					+ FilenameUtils.getExtension(budgetExpenditureAttach.getOriginalFilename()));
-//			saveFile(uploadpath + path, clist.getBudgetExpenditureAttach(), budgetExpenditureAttach);
-//		} else {
-//			clist.setBudgetExpenditureAttach(null);
-//		}
-		
-		
-//		if (!sPActualpositionAttach.isEmpty()) {
-//			clist.setSPActualpositionAttach("SPActualpositionAttach" + timestampstr + "."
-//					+ FilenameUtils.getExtension(sPActualpositionAttach.getOriginalFilename()));
-//			saveFile(uploadpath + path, clist.getSPActualpositionAttach(), sPActualpositionAttach);
-//		} else {
-//			clist.setSPActualpositionAttach(null);
-//		}
-		
-//		if (!sPGeneralSpecificAttach.isEmpty()) {
-//			clist.setSPActualpositionAttach("SPGeneralSpecificAttach" + timestampstr + "."
-//					+ FilenameUtils.getExtension(sPGeneralSpecificAttach.getOriginalFilename()));
-//			saveFile(uploadpath + path, clist.getSPGeneralSpecificAttach(), sPGeneralSpecificAttach);
-//		} else {
-//			clist.setSPGeneralSpecificAttach(null);
-//		}
-		
-//		if (!cRAttach.isEmpty()) {
-//			clist.setSPActualpositionAttach("CRAttach" + timestampstr + "."
-//					+ FilenameUtils.getExtension(cRAttach.getOriginalFilename()));
-//			saveFile(uploadpath + path, clist.getCRAttach(), cRAttach);
-//		} else {
-//			clist.setCRAttach(null);
-//		}
-		
-
-//		}
-		
-		 for(int i=0;i<dto.getSCRequestedDate().length ;i++) {
+		if(dto.getRevSancCost()!=null && dto.getRevSancCost()!="null") {
+			 for(int i=0;i<dto.getSCRequestedDate().length ;i++) {
+					
+					ProjectClosureCheckListRev rev = new ProjectClosureCheckListRev();
+					
+					rev.setClosureId(clist.getProjectClosure().getClosureId());
+					rev.setRevisionType("SANC");	
+					rev.setRequestedDate(sdf.format(rdf.parse(dto.getSCRequestedDate()[i])));
+					rev.setGrantedDate(sdf.format(rdf.parse(dto.getSCGrantedDate()[i])));
+					rev.setRevisionCost(dto.getSCRevisionCost()[i].toString());
+					rev.setReason(dto.getSCReason()[i]);
+					rev.setCreatedBy(clist.getCreatedBy());	
+					rev.setCreatedDate(clist.getCreatedDate());	
+					rev.setIsActive(1);				
+					
+					 dao.AddProjectClosureCheckListRev(rev);
 				
-				ProjectClosureCheckListRev rev = new ProjectClosureCheckListRev();
-				
-				rev.setClosureId(clist.getProjectClosure().getClosureId());
-				rev.setRevisionType("SANC");	
-				rev.setRequestedDate(sdf.format(rdf.parse(dto.getSCRequestedDate()[i])));
-				rev.setGrantedDate(sdf.format(rdf.parse(dto.getSCGrantedDate()[i])));
-				rev.setRevisionCost(dto.getSCRevisionCost()[i].toString());
-				rev.setReason(dto.getSCReason()[i]);
-				rev.setCreatedBy(clist.getCreatedBy());	
-				rev.setCreatedDate(clist.getCreatedDate());	
-				rev.setIsActive(1);				
-				
-				 dao.AddProjectClosureCheckListRev(rev);
-			
+				}
 			}
-		 
-		 for(int i=0;i<dto.getPDCRequestedDate().length ;i++) {
-				
-				ProjectClosureCheckListRev rev = new ProjectClosureCheckListRev();
-				
-				rev.setClosureId(clist.getProjectClosure().getClosureId());
-				rev.setRevisionType("PDC");	
-				rev.setRequestedDate(sdf.format(rdf.parse(dto.getPDCRequestedDate()[i])));
-				rev.setGrantedDate(sdf.format(rdf.parse(dto.getPDCGrantedDate()[i])));
-				rev.setRevisionPDC(sdf.format(rdf.parse(dto.getPDCRevised()[i])));
-				rev.setReason(dto.getPDCReason()[i]);
-				rev.setCreatedBy(clist.getCreatedBy());	
-				rev.setCreatedDate(clist.getCreatedDate());	
-				rev.setIsActive(1);				
-				
-				 dao.AddProjectClosureCheckListRev(rev);
+			 
+			if(dto.getRevPDCCost()!=null && dto.getRevPDCCost()!="null") {
+			 for(int i=0;i<dto.getPDCRequestedDate().length ;i++) {
+					
+					ProjectClosureCheckListRev rev = new ProjectClosureCheckListRev();
+					
+					rev.setClosureId(clist.getProjectClosure().getClosureId());
+					rev.setRevisionType("PDC");	
+					rev.setRequestedDate(sdf.format(rdf.parse(dto.getPDCRequestedDate()[i])));
+					rev.setGrantedDate(sdf.format(rdf.parse(dto.getPDCGrantedDate()[i])));
+					rev.setRevisionPDC(sdf.format(rdf.parse(dto.getPDCRevised()[i])));
+					rev.setReason(dto.getPDCReason()[i]);
+					rev.setCreatedBy(clist.getCreatedBy());	
+					rev.setCreatedDate(clist.getCreatedDate());	
+					rev.setIsActive(1);				
+					
+					 dao.AddProjectClosureCheckListRev(rev);
+				}
 			}
 		 
 		 return dao.addProjectClosureCheckList(clist);
@@ -1132,13 +1109,12 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 	@Override
 	public long editProjectClosureCheckList(ProjectClosureCheckList clist, ProjectCheckListRevDto dto,String empId,
 			MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach
-			,MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach
-			) throws Exception {
+			,MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach,
+			MultipartFile CommittmentRegister,MultipartFile BudgetDocument) throws Exception {
 		
 		Timestamp instant = Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 		
-//        String path = "Project-Closure\\Check-List\\";
         Path closurePath = Paths.get(uploadpath, "Project-Closure", "Check-List");
 		
 		// To upload file path for qARMilestoneAttach
@@ -1176,75 +1152,62 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 			saveFile1(closurePath, clist.getEquipProcuredBeforePDCAttach(), equipProcuredBeforePDCAttach);
 		} 
 		
-		
-//		if (!equipBoughtOnChargeAttach.isEmpty()) {
-//			clist.setEquipBoughtOnChargeAttach("EquipBoughtOnChargeAttach" + timestampstr + "."
-//					+ FilenameUtils.getExtension(equipBoughtOnChargeAttach.getOriginalFilename()));
-//			saveFile(uploadpath + path, clist.getEquipBoughtOnChargeAttach(), equipBoughtOnChargeAttach);
-//		} 
-		
-//		if (!budgetExpenditureAttach.isEmpty()) {
-//			clist.setBudgetExpenditureAttach("BudgetExpenditureAttach" + timestampstr + "."
-//					+ FilenameUtils.getExtension(budgetExpenditureAttach.getOriginalFilename()));
-//			saveFile(uploadpath + path, clist.getBudgetExpenditureAttach(), budgetExpenditureAttach);
-//		} 
+		if (!CommittmentRegister.isEmpty() && clist.getCRBringFrom().equalsIgnoreCase("DOC")){
+			clist.setCommittmentRegister("CommittmentRegister" + timestampstr + "."
+					+ FilenameUtils.getExtension(CommittmentRegister.getOriginalFilename()));
+			saveFile1(closurePath, clist.getCommittmentRegister(), CommittmentRegister);
+		}else {
+			clist.setCommittmentRegister(null);
+			
+		} 
 		
 		
-//		if (!sPActualpositionAttach.isEmpty()) {
-//			clist.setSPActualpositionAttach("SPActualpositionAttach" + timestampstr + "."
-//					+ FilenameUtils.getExtension(sPActualpositionAttach.getOriginalFilename()));
-//			saveFile(uploadpath + path, clist.getSPActualpositionAttach(), sPActualpositionAttach);
-//		} 
-		
-//		if (!sPGeneralSpecificAttach.isEmpty()) {
-//			clist.setSPGeneralSpecificAttach("SPGeneralSpecificAttach" + timestampstr + "."
-//					+ FilenameUtils.getExtension(sPGeneralSpecificAttach.getOriginalFilename()));
-//			saveFile(uploadpath + path, clist.getSPGeneralSpecificAttach(), sPGeneralSpecificAttach);
-//		} 
-//		if (!cRAttach.isEmpty()) {
-//			clist.setCRAttach("CRAttach" + timestampstr + "."
-//					+ FilenameUtils.getExtension(cRAttach.getOriginalFilename()));
-//			saveFile(uploadpath + path, clist.getCRAttach(), cRAttach);
-//		} 
-		
+		if (!BudgetDocument.isEmpty()) {
+			clist.setBudgetDocument("BudgetDocument" + timestampstr + "."
+					+ FilenameUtils.getExtension(BudgetDocument.getOriginalFilename()));
+			saveFile1(closurePath, clist.getBudgetDocument(), BudgetDocument);
+		} 
 		
 		dao.removeProjectClosureCheckListRev(clist.getProjectClosure().getClosureId());
 		
-		for(int i=0;i<dto.getSCRequestedDate().length ;i++) {
-			
-			ProjectClosureCheckListRev rev = new ProjectClosureCheckListRev();
-			
-			rev.setClosureId(clist.getProjectClosure().getClosureId());
-			rev.setRevisionType("SANC");	
-			rev.setRequestedDate(sdf.format(rdf.parse(dto.getSCRequestedDate()[i])));
-			rev.setGrantedDate(sdf.format(rdf.parse(dto.getSCGrantedDate()[i])));
-			rev.setRevisionCost(dto.getSCRevisionCost()[i].toString());
-			rev.setReason(dto.getSCReason()[i]);
-			rev.setCreatedBy(clist.getCreatedBy());	
-			rev.setCreatedDate(clist.getCreatedDate());	
-			rev.setIsActive(1);				
-			
-			 dao.AddProjectClosureCheckListRev(rev);
-		
+		if(dto.getRevSancCost()!=null && dto.getRevSancCost()!="null") {
+
+			for(int i=0;i<dto.getSCRequestedDate().length ;i++) {
+
+				ProjectClosureCheckListRev rev = new ProjectClosureCheckListRev();
+
+				rev.setClosureId(clist.getProjectClosure().getClosureId());
+				rev.setRevisionType("SANC");	
+				rev.setRequestedDate(sdf.format(rdf.parse(dto.getSCRequestedDate()[i])));
+				rev.setGrantedDate(sdf.format(rdf.parse(dto.getSCGrantedDate()[i])));
+				rev.setRevisionCost(dto.getSCRevisionCost()[i].toString());
+				rev.setReason(dto.getSCReason()[i]);
+				rev.setCreatedBy(clist.getCreatedBy());	
+				rev.setCreatedDate(clist.getCreatedDate());	
+				rev.setIsActive(1);				
+
+				dao.AddProjectClosureCheckListRev(rev);
+			}
+
 		}
 	 
-	
-		
-	     for(int j=0;j<dto.getPDCRequestedDate().length ;j++) {
-			
-			ProjectClosureCheckListRev rev = new ProjectClosureCheckListRev();
-			
-			rev.setClosureId(clist.getProjectClosure().getClosureId());
-			rev.setRevisionType("PDC");
-			rev.setRequestedDate(sdf.format(rdf.parse(dto.getPDCRequestedDate()[j])));
-			rev.setGrantedDate(sdf.format(rdf.parse(dto.getPDCGrantedDate()[j])));
-			rev.setRevisionPDC(sdf.format(rdf.parse(dto.getPDCRevised()[j])));
-			rev.setReason(dto.getPDCReason()[j]);
-			rev.setCreatedBy(clist.getCreatedBy());	
-			rev.setCreatedDate(clist.getCreatedDate());	
-			rev.setIsActive(1);				
-			
-			 dao.AddProjectClosureCheckListRev(rev);
+		if(dto.getRevPDCCost()!=null && dto.getRevPDCCost()!="null") {
+			for(int j=0;j<dto.getPDCRequestedDate().length ;j++) {
+
+				ProjectClosureCheckListRev rev = new ProjectClosureCheckListRev();
+
+				rev.setClosureId(clist.getProjectClosure().getClosureId());
+				rev.setRevisionType("PDC");
+				rev.setRequestedDate(sdf.format(rdf.parse(dto.getPDCRequestedDate()[j])));
+				rev.setGrantedDate(sdf.format(rdf.parse(dto.getPDCGrantedDate()[j])));
+				rev.setRevisionPDC(sdf.format(rdf.parse(dto.getPDCRevised()[j])));
+				rev.setReason(dto.getPDCReason()[j]);
+				rev.setCreatedBy(clist.getCreatedBy());	
+				rev.setCreatedDate(clist.getCreatedDate());	
+				rev.setIsActive(1);				
+
+				dao.AddProjectClosureCheckListRev(rev);
+			}
 		}
 		
 		return  dao.editProjectClosureCheckList(clist);

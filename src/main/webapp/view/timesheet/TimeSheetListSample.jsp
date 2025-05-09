@@ -494,7 +494,7 @@ FormatConverter fc = new FormatConverter();
 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 
-
+List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activityLD.plusDays(1).equals(LocalDate.parse(e[3].toString()))).collect(Collectors.toList());
 %>
 <% String ses=(String)request.getParameter("result");
  	String ses1=(String)request.getParameter("resultfail");
@@ -679,9 +679,9 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 															<th width="15%">Activity Type</th>
 															<th width="10%">Project</th>
 															<th width="20%">Assigner</th>
-															<th width="10%">Keywords</th>
-															<th width="30%">Work Done</th>
-															<th width="15%">Work Done on</th>
+															<th width="15%">Keywords</th>
+															<th width="27%">Work Done</th>
+															<th width="13%">Work Done on</th>
 														</tr>
 													</thead>
 													<tbody id="activityTableBody">
@@ -731,8 +731,9 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 																		</select>
 																	</td>
 																	<td>
-																		<select class="form-control selectitem keywordId" name="keywordId" id="keywordId_<%=clonecount %>" data-live-search="true" data-container="body">
+																		<select class="form-control selectitem keywordId" name="keywordId" id="keywordId_<%=clonecount %>" onchange="keywordscheck('<%=clonecount %>')" data-live-search="true" data-container="body">
 																			<option value="" disabled selected>Choose...</option>
+																			<option value="0">Add New Keyword</option>
 																	        <% for(TimesheetKeywords keywords : keywordsList){ %>
 																	        	<option value="<%=keywords.getKeywordId() %>" <%if(act.getKeywordId().equals(keywords.getKeywordId())) {%>selected<%} %> ><%=keywords.getKeyword() %></option>
 																	        <%} %>
@@ -760,7 +761,7 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 																	<td class="center">
 																		<div class="d-flex flex-direction-column " style="gap: 15px;">
 																			<%if(milestoneActivityTypeList!=null && milestoneActivityTypeList.size()>0) {
-																				int milslno = 0;;
+																				int milslno = 0;
 																				for(MilestoneActivityType mil : milestoneActivityTypeList) {
 																					++milslno;
 																			%>
@@ -791,8 +792,9 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 																		</select>
 																	</td>
 																	<td>
-																		<select class="form-control selectitem keywordId" name="keywordId" id="keywordId_1" data-live-search="true" data-container="body">
+																		<select class="form-control selectitem keywordId" name="keywordId" id="keywordId_1" onchange="keywordscheck(1)" data-live-search="true" data-container="body">
 																			<option value="" disabled selected>Choose...</option>
+																			<option value="0">Add New Keyword</option>
 																	        <% for(TimesheetKeywords keywords : keywordsList){ %>
 																	        	<option value="<%=keywords.getKeywordId() %>"><%=keywords.getKeyword() %></option>
 																	        <%} %>
@@ -838,6 +840,25 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 												</span>
 											</div>
 											<div class="col-md-4 center">
+												
+											</div>
+											<div class="col-md-4">
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="row ml-2">
+											<div class="col-md-4">
+												<%if(activityLD.isBefore(now) && timeSheet==null && (nextDayTimeSheet!=null && nextDayTimeSheet.size()==0)) { %>
+													<label>Repeat this task for upcoming days? If yes, please enter the number of days.</label>
+												<%} %>
+											</div>
+											<div class="col-md-1">
+												<%if(activityLD.isBefore(now) && timeSheet==null && (nextDayTimeSheet!=null && nextDayTimeSheet.size()==0)) { %>
+													<input type="number" class="form-control" name="sameTaskDays" min="0" max="100" value="0">
+												<%} %>
+											</div>
+											<div class="col-md-4 mt-1" style="margin-left: 5rem !important">
 												<%if(timeSheet!=null){ %>
 								    				<input type="hidden" name="timeSheetId" value="<%=timeSheet.getTimeSheetId()%>">
 													<button type="submit" class="btn btn-sm btn-warning edit" name="Action" value="Edit" onclick="return confirm('Are you sure to update?')" >UPDATE</button>
@@ -849,10 +870,11 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 													<button type="submit" class="btn btn-sm btn-success submit" name="Action" value="Add" onclick="return confirm('Are you sure to submit?')" >SUBMIT</button>
 												<%} %>
 											</div>
-											<div class="col-md-4">
+											<div class="col-md-3">
 											</div>
 										</div>
 									</div>
+									
 									<div class="form-group">
 										<div class="row ml-2 mr-2 mt-2">
 											<div class="col-md-12">
@@ -930,6 +952,49 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 		</div>
 	</div>
 
+	<!-- ----------------------------------------------- Add New Keyword Modal --------------------------------------------------------------- -->
+	<div class="modal fade bd-example-modal-lg center" id="addNewKeywordModal" tabindex="-1" role="dialog" aria-labelledby="addNewKeywordModal" aria-hidden="true" style="margin-top: 10%;">
+		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
+			<div class="modal-content" style="width: 90%;margin-left: 10%;">
+				<div class="modal-header" style="background: #055C9D;color: white;">
+		        	<h5 class="modal-title ">Add New Keyword</h5>
+			        <button type="button" class="close" style="text-shadow: none !important" data-dismiss="modal" aria-label="Close">
+			          <span class="text-light" aria-hidden="true">&times;</span>
+			        </button>
+		      	</div>
+     			<div class="modal-body">
+     				<div class="container-fluid mt-3">
+     					<div class="row">
+							<div class="col-md-12 " align="left">
+								<form action="TimeSheetKeywordDetailsSubmit.htm" method="POST" id="myform">
+									<div class="form-group">
+			       						<div class="row">
+			                    		    <div class="col-md-7">
+		       									<label class="form-lable">Keyword <span class="mandatory">*</span></label>
+		       									<input type="text" class="form-control" name="keyword" id="keyword" placeholder="Enter Keyword" maxlength="255" required>
+		       								</div>
+			                    		    <div class="col-md-5">
+		       									<label class="form-lable">Keyword Code <span class="mandatory">*</span></label>
+		       									<input type="text" class="form-control" name="keywordCode" id="keywordCode" placeholder="Enter Keyword Code" maxlength="5" required>
+		       								</div>
+	                  				 	</div>
+                  				 	</div>
+									
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+									<input type="hidden" id="keywordIdrowId">
+									<div class="center mt-2">
+										<button type="button"class="btn btn-sm submit" onclick="addNewKeywords()">SUBMIT</button>
+									</div>
+								</form>
+							</div>
+						</div>
+     				</div>
+     			</div>
+     		</div>
+		</div>
+	</div>	
+	
+	
 <!-- <script>
 function toggleDiv(divId) {
 	const calendarDiv = $('#calendar');
@@ -1178,7 +1243,7 @@ function toggleDiv(divId) {
 		$clone.find(".selectitem.projectId").attr("id", 'projectId_' + cloneCount).val("0").trigger("change");
 		//$clone.find(".selectitem.assignerLabCode").attr("id", 'assignerLabCode_' + cloneCount).attr("onchange", 'labEmployeesList(\'' + cloneCount + '\')');
 		$clone.find(".selectitem.assignedBy").attr("id", 'assignedBy_' + cloneCount).val("-1").trigger("change").attr("onchange", 'validateFields(\'' + cloneCount + '\')');
-		$clone.find(".selectitem.keywordId").attr("id", 'keywordId_' + cloneCount).val("").trigger("change");
+		$clone.find(".selectitem.keywordId").attr("id", 'keywordId_' + cloneCount).val("").trigger("change").attr("onchange", 'keywordscheck(\'' + cloneCount + '\')');
 		$clone.find(".workDone").attr("id", 'workDone_' + cloneCount);
 		//$clone.find(".workDoneon").attr("id", 'workDoneon_' + cloneCount).attr("name", 'workDoneon_' + cloneCount);
 	    $clone.find(".workDoneon").each(function (index) {
@@ -1356,6 +1421,56 @@ function toggleDiv(divId) {
 			$('#timesheetdetailsdiv').show();
 		}
 		
+	}
+	
+	function keywordscheck(rowId) {
+		var keywordId = $('#keywordId_'+rowId).val();
+		
+		if(keywordId=='0') {
+			$('#addNewKeywordModal').modal('show');
+			$('#keywordIdrowId').val(rowId);
+		}
+	}
+	
+	function addNewKeywords() {
+		if(confirm('Are you sure to Add?')){
+			
+			var keyword = $('#keyword').val();
+			var keywordCode = $('#keywordCode').val();
+			 
+			if(keyword==null || keyword =="null" || keyword=='') {
+				alert('Please fill Keyword details');
+				return false;
+			}else if(keywordCode==null || keywordCode =="null" || keywordCode=='') {
+				alert('Please fill Keyword Code details');
+				return false;
+			}else {
+				$.ajax({
+					Type:'GET',
+					url:'TimeSheetKeywordDetailsSubmit.htm',
+					datatype:'json',
+					data:{
+						keyword : keyword,
+						keywordCode : keywordCode,
+					},
+					success:function(result){
+						var values = JSON.parse(result);
+						var x="<option value="+values[0]+">"+ values[1]+ "</option>";     
+						$('.keywordId').append(x);
+						var keywordIdrowId = $('#keywordIdrowId').val();
+						$('#keywordId_'+keywordIdrowId).val(values[0]).trigger('change');
+						$('.close').click();
+					}
+				});
+				
+				return true;
+			}
+			 
+			return true;
+		}else{
+			event.PreventDefault();
+			return false;
+		}
 	}
 	
 </script>

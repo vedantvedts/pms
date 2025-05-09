@@ -67,6 +67,9 @@ public class ProjectClosureCheckList implements Serializable {
 	private   String EquipReason;
 	private   String EquipProcuredBeforePDC;
 	private   String EquipProcuredBeforePDCAttach;
+	private   String CRBringFrom;
+	private   String CommittmentRegister;
+	private   String BudgetDocument;
 	private   String EquipBoughtOnCharge;
 	private   String EquipBoughtOnChargeReason;
 	private   String BudgetAllocation;
@@ -101,11 +104,32 @@ public class ProjectClosureCheckList implements Serializable {
 	private   String ConsumableItemsReturned;
 	private   String ManPowerSanctioned;
 	private   String Remarks;
+	private   String PRRemark1;
+	private   String PRRemark2;
+	private   String PECRemark1;
+	private   String SRRemark1;
+	private   String CSRemark1;
+	private   String NCSRemark1;
+	private   String NCSRemark2;
+	private   String NCSRemark3;
+	private   String EquipmentRemark1;
+	private   String EquipmentRemark2;
+	private   String EquipmentRemark3;
+	private   String BudgetRemark1;
+	private   String BudgetRemark2;
+	private   String BudgetRemark3;
+	private   String BudgetRemark4;
+	private   String UtilizationRemark1;
+	private   String StaffRemark1;
+	private   String CWRemark1;
+	private   String ProjectRemark1;
 	private   String CreatedBy;
 	private   String CreatedDate;
 	private   String ModifiedBy;
 	private   String ModifiedDate;
-	private   int IsActive;
+	private   int isActive;
+	
+	
 	
 	@JoinColumn(name="ClosureId")
 	@OneToOne

@@ -66,8 +66,8 @@ public interface ProjectClosureService {
 	public Object[] projectExpenditureDetails(String projectId) throws Exception;
 	public long projectClosureACPRevoke(String closureId, String userId, String empId, String labcode) throws Exception;
 	public ProjectClosureCheckList getProjectClosureCheckListByProjectId(String closureId) throws Exception;
-	public long addProjectClosureCheckList(ProjectClosureCheckList clist,ProjectCheckListRevDto dto, String empId,MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach, MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach) throws Exception;
-	public long editProjectClosureCheckList(ProjectClosureCheckList clist,ProjectCheckListRevDto dto, String empId,MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach, MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach) throws Exception;
+	public long addProjectClosureCheckList(ProjectClosureCheckList clist,ProjectCheckListRevDto dto, String empId,MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach, MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach,MultipartFile CommittmentRegister,MultipartFile BudgetDocument) throws Exception;
+	public long editProjectClosureCheckList(ProjectClosureCheckList clist,ProjectCheckListRevDto dto, String empId,MultipartFile qARMilestoneAttach, MultipartFile qARCostBreakupAttach, MultipartFile qARNCItemsAttach, MultipartFile equipProcuredAttach, MultipartFile equipProcuredBeforePDCAttach,MultipartFile CommittmentRegister,MultipartFile BudgetDocument) throws Exception;
 	public long AddIssue(ProjectClosureTechnical tech,String EmpId,String LabCode,String Action) throws Exception;
 	public List<Object[]> getTechnicalClosureRecord(String closureId)throws Exception;
 	public long AddSection(ProjectClosureTechnicalSection sec)throws Exception;
