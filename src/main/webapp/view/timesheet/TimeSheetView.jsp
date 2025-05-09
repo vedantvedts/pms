@@ -19,11 +19,21 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>  
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
+
+<!-- Pdfmake  -->
+	<spring:url value="/resources/pdfmake/pdfmake.min.js" var="pdfmake" />
+	<script src="${pdfmake}"></script>
+	<spring:url value="/resources/pdfmake/vfs_fonts.js" var="pdfmakefont" />
+	<script src="${pdfmakefont}"></script>
+	<spring:url value="/resources/pdfmake/htmltopdf.js" var="htmltopdf" />
+	<script src="${htmltopdf}"></script>
+	
 <style type="text/css">
 label{
 font-weight: bold;
@@ -612,24 +622,24 @@ FormatConverter fc = new FormatConverter();
 							</div>
 							<div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="pills-tab-2">
 								<div class="calendar-container">
-										    <div class="year-container">
-										        <button class="nav-btn" id="prev-year">
-										            <i class="fa fa-chevron-left"></i>
-										        </button>
-										        <span id="current-year"></span>
-										        <button class="nav-btn" id="next-year">
-										            <i class="fa fa-chevron-right"></i>
-										        </button>
-										    </div>
-										    <button class="nav-btn" id="prev-month">
-										        <i class="fa fa-chevron-left"></i>
-										    </button>
-										    <div id="current-month" class="month-display"></div>
-										    <div id="days-container" class="days-container"></div>
-										    <button class="nav-btn" id="next-month">
-										        <i class="fa fa-chevron-right"></i>
-										    </button>
-										</div>
+								    <div class="year-container">
+								        <button class="nav-btn" id="prev-year">
+								            <i class="fa fa-chevron-left"></i>
+								        </button>
+								        <span id="current-year"></span>
+								        <button class="nav-btn" id="next-year">
+								            <i class="fa fa-chevron-right"></i>
+								        </button>
+								    </div>
+								    <button class="nav-btn" id="prev-month">
+								        <i class="fa fa-chevron-left"></i>
+								    </button>
+									<div id="current-month" class="month-display"></div>
+									<div id="days-container" class="days-container"></div>
+								    <button class="nav-btn" id="next-month">
+								        <i class="fa fa-chevron-right"></i>
+								    </button>
+								</div>
 								
 								<div class="form-group">
 				  					<div class="row mb-3 mt-2">
@@ -644,11 +654,11 @@ FormatConverter fc = new FormatConverter();
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 												<input type="hidden" name="viewFlag" value="M">
 												<div class="row right" style="margin-top: -0.5rem;">
-													<div class="col-md-5"></div>
+													<div class="col-md-3"></div>
 													<div class="col-md-2">
 														<label class="form-label mt-2">Employee: </label>
 													</div>
-													<div class="col-md-5">
+													<div class="col-md-5 right">
 														<select class="form-control selectdee" name="empId" onchange="this.form.submit()" >
 															<option selected disabled>---Select---</option>
 															<%if(employeeList!=null && employeeList.size()>0) {
@@ -659,6 +669,16 @@ FormatConverter fc = new FormatConverter();
 															<%} }%>
 														</select>
 													</div>
+													<div class="col-md-2 left">
+														<button type="button" class="btn btn-sm" formnovalidate="formnovalidate" onclick="downloadMonthlyReport()" data-toggle="tooltip" data-placement="top" title="PDF Report" style="background-color: #fff">
+															<i style="color: #cc0000;font-size: 24px;" class="fa fa-file-pdf-o" aria-hidden="true"></i>
+													  	</button>
+													  	<button type="submit" class="btn btn-sm" name="Action" value="GenerateExcel" formaction="WorkRegisterMonthlyViewExcel.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="Excel Report" style="background-color: #fff">
+															<i style="color: #009900;font-size: 24px;" class="fa fa-file-excel-o" aria-hidden="true"></i>
+													  	</button>
+													</div>
+													<input type="hidden" name="activityDate" id ="activityDate" value="<%=activityDate%>">
+													<input type="hidden" name="empName" value="<%=emp!=null?((emp[1]!=null?emp[1]:(emp[2]!=null?emp[2]:""))+""+emp[5]+", "+emp[6]):"-" %>">
 													<%-- <div class="col-md-1">
 														<label class="form-label mt-2">From: </label>
 													</div>
@@ -717,7 +737,7 @@ FormatConverter fc = new FormatConverter();
 												</tr>
 											<% ++i; } } } else{%>
 												<tr>
-													<td colspan="8" style="text-align: center;">No Data Available</td>
+													<td colspan="9" style="text-align: center;">No Data Available</td>
 												</tr>
 											<%} %>
 										</tbody>
@@ -892,6 +912,182 @@ $('#toDate').daterangepicker({
 <% if(viewFlag!=null && viewFlag.equalsIgnoreCase("M")){%>
 	$('#pills-tab-2').click();
 <%}%>
+
+function downloadMonthlyReport() {
+	var docDefinition = {
+			pageOrientation: 'landscape',
+            content: [
+                
+                
+                /* ************************************** Time Sheet Monthly Report List *********************************** */ 
+                {
+                    text: 'Work Register Monthly Report',
+                    style: 'chapterHeader',
+                    tocItem: false,
+                    id: 'chapter1',
+                    alignment: 'center',
+                },
+                
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['10%', '45%', '25%', '10%', '10%'],
+                        
+                        body: [
+                            // Table header
+                            [
+                                { text: 'Employee: ',bold: true,  },
+                                { text: '<%=emp!=null?((emp[1]!=null?emp[1]:(emp[2]!=null?emp[2]:""))+""+emp[5]+", "+emp[6]):"-" %>',  },
+                                { text: '', },
+                                
+                                { text: 'Month:',bold: true, }, 
+                                { text: '<%=localdate.getMonth()%>', }, 
+                                
+                            ],
+                            
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return 0;
+                        },
+                        vLineWidth: function(i) {
+                            return 0;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+                },
+                
+                {text: '\n'},
+                
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['6%', '10%', '8%', '10%', '10%', '15%', '10%', '21%', '10%'],
+                        body: [
+                            // Table header
+                            [
+                                { text: 'SN', style: 'tableHeader' },
+                                { text: 'Date', style: 'tableHeader' },
+                                { text: 'Activity No', style: 'tableHeader' },
+                                { text: 'Activity Type', style: 'tableHeader' }, 
+                                { text: 'Project', style: 'tableHeader' }, 
+                                { text: 'Assigner', style: 'tableHeader' }, 
+                                { text: 'Keywords', style: 'tableHeader' }, 
+                                { text: 'Work Done', style: 'tableHeader' }, 
+                                { text: 'Work Done on', style: 'tableHeader' }, 
+                            ],
+                            // Populate table rows
+                            <%if (timeSheetToListMap!=null && timeSheetToListMap.size() > 0) {
+								int slno = 0;String key="";
+								for (Map.Entry<String, List<Object[]>> map : timeSheetToListMap.entrySet()) {
+              							
+              							List<Object[]> values = map.getValue();
+              							int i=0;
+              							for (Object[] obj : values) {
+              				%>
+	                            [
+	                            	<%if(i == 0) { %>
+		                                { text: '<%= ++slno %>', style: 'tableData',alignment: 'center', rowSpan: <%=values.size() %>,  },
+		                                { text: '<%=obj[2]!=null?fc.sdfTordf(obj[2].toString()):"-"%>', style: 'tableData',alignment: 'center', rowSpan: <%=values.size() %>,},
+	                                <%} else { %>
+									  {},
+									  {},
+									<%} %>
+	                                { text: '<%=obj[16]!=null?obj[16]:"-" %>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%=obj[5]!=null?obj[5]:"-" %>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%=obj[8]!=null?obj[8]:"-" %>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%=obj[10]!=null?obj[10]+", "+(obj[11]!=null?obj[11]:"-"):"Not Available" %>', style: 'tableData' },
+	                                { text: '<%=obj[13]!=null?obj[13]:"-" %>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%=obj[14]!=null?obj[14]:"-" %>', style: 'tableData',alignment: 'left' },
+	                                { text: '<%=obj[15]!=null?(obj[15].toString().equalsIgnoreCase("A")?"AN":(obj[15].toString().equalsIgnoreCase("F")?"FN":"Full day")):"-" %>', style: 'tableData',alignment: 'center' },
+	                            ],
+	                        <% ++i; } } } else{%>
+                            	[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 9 },]
+                            <%} %>
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+                },
+                /* ************************************** Time Sheet Monthly Report List End*********************************** */
+
+                
+			],
+			styles: {
+				chapterHeader: { fontSize: 16, bold: true, margin: [0, 0, 0, 10] },
+                tableHeader: { fontSize: 12, bold: true, fillColor: '#f0f0f0', alignment: 'center', margin: [10, 5, 10, 5], fontWeight: 'bold' },
+                tableData: { fontSize: 11.5, margin: [0, 5, 0, 5] },
+            },
+            footer: function(currentPage, pageCount) {
+                /* if (currentPage > 2) { */
+                    return {
+                        stack: [
+                        	{
+                                canvas: [{ type: 'line', x1: 30, y1: 0, x2: 820, y2: 0, lineWidth: 1 }]
+                            },
+                            {
+                                columns: [
+                                    { text: '', alignment: 'left', margin: [30, 0, 0, 0], fontSize: 8 },
+                                    { text: currentPage.toString() + ' of ' + pageCount, alignment: 'right', margin: [0, 0, 30, 0], fontSize: 8 }
+                                ]
+                            },
+                            { text: '', alignment: 'center', fontSize: 8, margin: [0, 5, 0, 0], bold: true }
+                        ]
+                    };
+                /* }
+                return ''; */
+            },
+            /* header: function (currentPage) {
+                return {
+                    stack: [
+                        
+                        {
+                            columns: [
+                                {
+                                    // Center: Text
+                                    text: 'Restricted',
+                                    alignment: 'center',
+                                    fontSize: 10,
+                                    bold: true,
+                                    margin: [0, 10, 0, 0]
+                                },
+                            ]
+                        },
+                        
+                    ]
+                };
+            }, */
+			pageMargins: [30, 40, 20, 20],
+            
+            defaultStyle: { fontSize: 12, color: 'black', }
+        };
+		
+        pdfMake.createPdf(docDefinition).open();
+}
 </script>
 
 <script type="text/javascript">

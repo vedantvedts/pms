@@ -420,4 +420,18 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 			return 0;
 		}
 	}
+	
+	@Override
+	public Long addTimesheetKeywords(TimesheetKeywords timeSheetKeywords) throws Exception {
+		try {
+			manager.persist(timeSheetKeywords);
+			manager.flush();
+			return timeSheetKeywords.getKeywordId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside TimeSheetDaoImpl addTimesheetKeywords "+e);
+			return 0L;
+		}
+	}
+
 }

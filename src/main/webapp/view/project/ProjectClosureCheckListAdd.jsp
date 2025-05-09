@@ -1,4 +1,4 @@
-<%@page import="java.text.DecimalFormat"%>
+	<%@page import="java.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.projectclosure.model.ProjectClosure"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -362,30 +362,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
              			  style="color: white!important;float: right;">Back</a>
              		</h4>
              		<hr style="margin: -8px 0px !important;">
-             		<%-- <ul class="nav nav-tabs justify-content-center" role="tablist" style="padding-bottom: 0px;" >
-
-            			<li class="nav-item" id="nav-chlistdetails">
-             				<%if(chlistTabId!=null && chlistTabId.equalsIgnoreCase("1")){ %> 
-             		    		<a class="nav-link active " data-toggle="tab" href="#chlistdetails" id="nav" role="tab">
-             				<%}else{ %>
-              			 		<a class="nav-link  " data-toggle="tab" href="#chlistdetails" role="tab">
-               				<%} %>  
-               					
-                	         	Check List
-              			 		</a>
-            			</li> --%>
-
-            			<%-- <li class="nav-item" id="nav-chlistforward">
-            	     		<%if(chlistTabId!=null && chlistTabId.equalsIgnoreCase("2")){ %>
-              					<a class="nav-link active" data-toggle="tab" href="#chlistforward" id="nav"role="tab" >
-              				<%}else{ %>
-              					<a class="nav-link" data-toggle="tab" href="#chlistforward" role="tab" >
-               				<%} %>
-                  				Check List Forward
-              					</a>
-            			</li> --%>
-            			
-              		<!-- </ul> -->
+             	
          		</div>
          		
          		<!-- This is for Tab Panes -->
@@ -404,9 +381,9 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 											
 											<form>
 												<div class="card-header" style=" /* background: linear-gradient(to right, #334d50, #cbcaa5); */ /* background-color:rgba(6,103,200,1); */ background-color: #055C9D;text-align: left;">
-								                    <b class="text-white" style="">Check List Details : 
+								                    <b class="text-white" >Check List Details : 
 								                    <% if(chlist!=null) {%>
-								                    <button type="submit" class="btn btn-sm" style="" name="closureId" formmethod="get" formnovalidate="formnovalidate"
+								                    <button type="submit" class="btn btn-sm"  name="closureId" formmethod="get" formnovalidate="formnovalidate"
                   					 		  				 	value="<%=closureId %>" formaction="ProjectClosureCheckListDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="CheckList Download">
                   					 							<i class="fa fa-download fa-lg"></i>
                   					 						</button>
@@ -417,6 +394,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 							        			</div> 
 							        	</form>	
 							        
+							        <% int count=0; %>
 							        		
 												<div class="card-body" style="overflow:auto;">
 								        		
@@ -427,9 +405,9 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												    	<input type="hidden" name="closureId" value="<%=closureId%>">
 												    	
 												     	
-												    	 <div class="col-md-3" style="">
+												    	 <div class="col-md-3" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black">1. Project Appraisal Letter (PAR)</label>
+												                	<label class="control-label" style="color:black"><%=++count %>. Project Appraisal Letter (PAR)</label>
 												                    
 												                </div>
 												            </div>
@@ -439,7 +417,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												    	
 												    	<div class="row" style="margin-left: 2%;margin-right: 2%;">
 												    		
-												        	<div class="col-md-2" style="">
+												        	<div class="col-md-2" >
 												        		<div class="form-group">
 												        		<input type="checkbox" id="hqrssenddate" <%if(chlist!=null && chlist.getQARHQrsSentDate()!=null && !chlist.getQARHQrsSentDate().toString().equalsIgnoreCase("NA")) {%> checked <%} %> >
 												                	<label class="control-label">Sent by the Lab to HQrs :</label><span class="mandatory">*</span>
@@ -448,7 +426,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                </div>
 												            </div>
 												            
-												            <div class="col-md-2" style="">
+												            <div class="col-md-2" >
 												        		<div class="form-group">
 												        		<input type="checkbox" id="CFASend" <%if(chlist!=null && chlist.getQARSentDate()!=null && !chlist.getQARSentDate().toString().equalsIgnoreCase("NA")) {%> checked <%} %> >
 												                	<label class="control-label">When sent to the CFA :</label>
@@ -458,7 +436,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                </div>
 												            </div>
 												            
-												            <div class="col-md-4" style="">
+												            <div class="col-md-4" >
 												        		<div class="form-group">
 												                	<label class="control-label">Objective  of the  Project mentioned in the PAR :</label><span class="mandatory">*</span>
 												                	 <input  class="form-control form-control" type="text" name="QARObjective" placeholder="Enter Objective  of the  Project mentioned in the PAR" 
@@ -469,7 +447,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												            
 												            
 												            
-												            <div class="col-md-3" style="">
+												            <div class="col-md-3" >
 												        		<div class="form-group">
 												                	<label class="control-label">Milestones :</label><span class="mandatory">*</span>
 												                	<%if(chlist!=null && chlist.getQARMilestone()!=null){ %>
@@ -488,7 +466,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												   <div class="row" style="margin-left: 2%;margin-right: 2%;">
 												        
 												        
-												        <div class="col-md-2" style="">
+												        <div class="col-md-2" >
 												        		<div class="form-group">
 												                	<label class="control-label">PDC</label><span class="mandatory">*</span>
 												                    <input  class="form-control " type="text" name="QARPDCDate" id="PDCDate"
@@ -496,16 +474,16 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                </div>
 												            </div>
 												            
-												           <div class="col-md-2" style="">
+												           <div class="col-md-2" >
 												        		<div class="form-group">
 												                	<label class="control-label">Proposed Cost (in rupees)</label><span class="mandatory">*</span>
-												                    <input  class="form-control decimal-format" type="text" min="0" name="QARProposedCost"  maxlength="15"
+												                    <input  class="form-control " type="number" min="0" name="QARProposedCost"  maxlength="15" step="0.01"
 												                     value="<%if(chlist!=null && chlist.getQARProposedCost()>=0) {%><%=chlist.getQARProposedCost() %><%} else{ %> 0 <%} %>" > 
 												                </div>
 												            </div> 
 												            
 												            
-												            <div class="col-md-3" style="">
+												            <div class="col-md-3" >
 												        		<div class="form-group">
 												                	<label class="control-label">Cost Break-up (Activity wise, Period wise) </label><span class="mandatory">*</span>
 												                   <%if(chlist!=null && chlist.getQARCostBreakup()!=null){ %>
@@ -519,7 +497,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                </div>
 												            </div>
 												            
-												            <div class="col-md-5" style="">
+												            <div class="col-md-5" >
 												        		<div class="form-group">
 												                	<label class="control-label">List of non-consumable items required (at least costing more than Rs.10 lacs) </label><span class="mandatory">*</span>
 												                   <%if(chlist!=null && chlist.getQARNCItems()!=null){ %>
@@ -537,56 +515,21 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        
 												    <hr>
 												        
-												       <div class="col-md-3" style="">
+												       <div class="col-md-3" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black">2. Revision in sanctioned cost if any</label>
+												                	<label class="control-label" style="color:black"><%=++count %>. Revision in sanctioned cost if any &nbsp;
+												                	<input type="checkbox" id="RevSancCost" name="RevSancCost" 
+												                	<%if (Rev!=null && Rev.size()>0){
+												                		for(Object[] obj : Rev) { 
+																	    if(obj[1]!=null && obj[1].toString().equalsIgnoreCase("SANC")){ %> checked <%}}} %> ></label>
 												                    
 												                </div>
 												            </div>
 												         <br>
 												         <br>  
+												     
 												          
-												      <div class="row" style="margin-left: 2%;margin-right: 2%;"> 
-												         <div class="col-md-12 " align="left" style="margin-left: 0px; width: 100%;" >     
-												          <%-- <div class="col-md-2" style="">
-												        		<div class="form-group">
-												                	<label class="control-label">When requested</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="text" name="SCRequested" id="SCRequested" placeholder="Enter Requested Date" 
-												                     value="<%if(chlist!=null && chlist.getSCRequested()!=null) {%><%=fc.SqlToRegularDate(chlist.getSCRequested()) %><%} %>" > 
-												                </div>
-												            </div> 
-												            
-												             <div class="col-md-2" style="">
-												        		<div class="form-group">
-												                	<label class="control-label">When granted</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="text" name="SCGranted" id="SCGranted" placeholder="Enter Granted Date" 
-												                     value="<%if(chlist!=null && chlist.getSCGranted()!=null) {%><%=fc.SqlToRegularDate(chlist.getSCGranted()) %><%} %>" > 
-												                </div>
-												            </div> 
-												            
-												            
-												            
-												             <div class="col-md-3" style="">
-												        		<div class="form-group">
-												                	<label class="control-label">How much/ revised cost (in rupees)</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="number" min="0" name="SCRevisionCost"  placeholder="Enter Revision Cost"  maxlength="15"
-												                     value="<%if(chlist!=null && chlist.getSCRevisionCost()>=0){%><%=df.format(chlist.getSCRevisionCost()) %><%} %>" >
-												                </div>
-												            </div> 
-												            
-												            
-												              <div class="col-md-5" style="">
-												        		<div class="form-group">
-												                	<label class="control-label">Any reason specified</label><span class="mandatory">*</span>
-												                    <textarea class="form-control form-control" name="SCReason" maxlength="3000" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><%if(chlist!=null && chlist.getSCReason()!=null){ %><%=chlist.getSCReason() %><%} %></textarea>  
-												                </div>
-												            </div>  --%>
-												            
-												           </div>
-			                                             </div>  
-												          
-												          
+												        <div class="row" style="margin-left: 2%;margin-right: 2%;" id="selectRevSancCost">       
 									                  <table style="width: 94%;margin-left: 3%;" id="tablesancrev">
 															<thead style = "background-color: #055C9D; color: white;text-align: center;">
 																<tr>
@@ -601,9 +544,9 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 															</thead>
 															
 															 <tbody>
-															  <% if(Rev !=null && Rev.size()>0 	) {
+															  <% int a=0;if(Rev !=null && Rev.size()>0) {
 																  for(Object[] obj : Rev) {
-																	  if(obj[1]!=null && obj[1].toString().equalsIgnoreCase("SANC")){%>
+																	  if(obj[1]!=null && obj[1].toString().equalsIgnoreCase("SANC")){ a=1;%>
 																
 																<tr class="tr_clone_trialresults">
 																	<td style="width: 5%;padding: 10px 5px 0px 5px;" >
@@ -615,7 +558,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 																	</td>
 																	
 																	<td style="width: 5%;padding: 10px 5px 0px 5px;">
-																		<input type="text" class="form-control item decimal-format" name="SCRevisionCost"  value="<%=df.format(Double.parseDouble(obj[4].toString()))%>" >
+																		<input type="number" class="form-control item" name="SCRevisionCost"  value="<%=df.format(Double.parseDouble(obj[4].toString()))%>" >
 																	</td>
 																	
 																	<td style="width: 15%;padding: 10px 5px 0px 5px;" >
@@ -630,9 +573,9 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 																	</td>									
 																</tr>
 																
-																<%} }} else{ %>
+																<%}}}%>
 																
-																
+																<%if(a==0){ %>
 																<tr class="tr_clone_trialresults">
 																	<td style="width: 5%;padding: 10px 5px 0px 5px;" >
 																	    <input type="text" class="form-control item" name="SCRequested" value="" id="SCRequested">
@@ -643,7 +586,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 																	</td>
 																	
 																	<td style="width: 5%;padding: 10px 5px 0px 5px;">
-																		<input type="text" class="form-control item decimal-format" name="SCRevisionCost"  value="0" >
+																		<input type="number" class="form-control item" name="SCRevisionCost"  value="0" >
 																	</td>
 																	
 																	<td style="width: 15%;padding: 10px 5px 0px 5px;" >
@@ -657,19 +600,23 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 																		 <button type="button" class="btn btn_rem_sancrev" ><i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
 																	</td>									
 																</tr>
-																
 																<%} %>
 															
 													          </tbody>
 									                       </table> 
+									                       </div>
 											               				          
 														   <br>				          
 												           <hr>
 												          
 												          
-												           <div class="col-md-3" style="">
+												           <div class="col-md-3" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black">3. Revision in PDC if any</label>
+												                	<label class="control-label" style="color:black"><%=++count %>. Revision in PDC if any &nbsp;<input type="checkbox" id="RevPDCCost" name="RevPDCCost"
+												                 <%if (Rev!=null && Rev.size()>0 ) {
+												                	 for(Object[] obj : Rev) { 
+																	 if(obj[1]!=null && obj[1].toString().equalsIgnoreCase("PDC")){ %> checked <%}}} %> ></label>
+												                 
 												                    
 												                </div>
 												            </div>
@@ -677,46 +624,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												         <br>
 												         <br>   
 												            
-												          
-												          <div class="row" style="margin-left: 2%;margin-right: 2%;">      
-												          <div class="col-md-2" style="">
-												        		<%-- <div class="form-group">
-												                	<label class="control-label">When requested</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="text" name="PDCRequested" id="PDCRequested"
-												                     value="<%if(chlist!=null && chlist.getPDCRequested()!=null) {%><%=fc.SqlToRegularDate(chlist.getPDCRequested()) %><%} %>" > 
-												                </div>
-												            </div> 
-												            
-												             <div class="col-md-2" style="">
-												        		<div class="form-group">
-												                	<label class="control-label">When granted</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="text" name="PDCGranted" id="PDCGranted" 
-												                     value="<%if(chlist!=null && chlist.getPDCGranted()!=null) {%><%=fc.SqlToRegularDate(chlist.getPDCGranted()) %><%} %>" > 
-												                </div>
-												            </div> 
-												            
-												            
-												            
-												             <div class="col-md-2" style="">
-												        		<div class="form-group">
-												                	<label class="control-label">Quantum/ revised PDC</label><span class="mandatory">*</span>
-												                    <input  class="form-control " type="text" name="PDCRevised" id="PDCRevised" placeholder="Enter revised PDC"  
-												                     value="<%if(chlist!=null && chlist.getPDCRevised()!=null) {%><%=fc.SqlToRegularDate(chlist.getPDCRevised()) %><%} %>" > 
-												                </div>
-												            </div> 
-												            
-												            
-												              <div class="col-md-5" style="">
-												        		<div class="form-group">
-												                	<label class="control-label">Any reason specified</label><span class="mandatory">*</span>
-												                    <textarea class="form-control form-control" name="PDCReason" maxlength="3000" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><%if(chlist!=null && chlist.getPDCReason()!=null){ %><%=chlist.getPDCReason() %><%} %></textarea>  
-												                </div>
-												            </div> --%>
-												             
-												           </div> 
-												           </div>
-												           
+												        <div class="row" style="margin-left: 2%;margin-right: 2%;" id="selectRevPDCCost">      
 												           <table style="width: 94%;margin-left: 3%;" id="tablepdcrev">
 															<thead style = "background-color: #055C9D; color: white;text-align: center;">
 																<tr>
@@ -731,9 +639,9 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 															</thead>
 															
 															 <tbody>
-															  <% if(Rev !=null && Rev.size()>0) {
+															  <% int b=0;if(Rev !=null && Rev.size()>0) {
 																  for(Object[] obj : Rev) { 
-																        if(obj[1]!=null && obj[1].toString().equalsIgnoreCase("PDC")){%>
+																        if(obj[1]!=null && obj[1].toString().equalsIgnoreCase("PDC")){ b=1;%>
 																        
 																<tr class="tr_clone_results">
 																	<td style="width: 5%;padding: 10px 5px 0px 5px;" >
@@ -760,9 +668,9 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 																	</td>									
 																</tr>
 																
-																<%} }} else{ %>
+																<%}}}%>
 																
-																
+																<%if(b==0){ %>
 																<tr class="tr_clone_results">
 																	<td style="width: 5%;padding: 10px 5px 0px 5px;" >
 																	    <input type="text" class="form-control item" name="PDCRequested" id="PDCRequested">
@@ -792,15 +700,16 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 															
 															  </tbody>
 											               </table>
+											               </div>
 											               
 											               <br>
 												           
 												        <hr>
 												          
 												          
-												      <div class="col-md-3" style="">
+												      <div class="col-md-3" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black">4. Project Register</label>
+												                	<label class="control-label" style="color:black"><%=++count %>. Project Register</label>
 												                    
 												                </div>
 												            </div>
@@ -809,12 +718,12 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												              
 												          
 												     <div class="row" style="margin-left: 2%;margin-right: 2%;">         
-												          <div class="col-md-4" style="">
+												          <div class="col-md-3" >
 												        		<div class="form-group">
 												                	<label class="control-label">Maintained in proper format</label><span class="mandatory">*</span>
-<%-- 												                    <input value="Yes" name="PRMaintained"  type="checkbox"  <% if(chlist!=null &&  chlist.getPRMaintained() !=null && chlist.getPRMaintained().equalsIgnoreCase("Yes")){ %> checked <%} %>  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
- --%>												                    
-                                                                         <select class="form-control w-50" data-width="50%" data-live-search="true" name="PRMaintained">
+<%-- 												                   
+ --%>												                   
+                                                                         <select class="form-control w-50" data-width="100%" data-live-search="true" name="PRMaintained">
                                                                             <option value="0" selected disabled >--Select--</option>
                                                                             <option value="Yes" <% if(chlist!=null &&  chlist.getPRMaintained() !=null && chlist.getPRMaintained().toString().equalsIgnoreCase("Yes")){%> selected <%}%> >Yes</option>
                                                                             <option  value="No" <% if(chlist!=null &&  chlist.getPRMaintained() !=null && chlist.getPRMaintained().toString().equalsIgnoreCase("No")){%> selected <%}%> >No</option>
@@ -825,56 +734,78 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                </div>
 												            </div> 
 												            
+												            <div class="col-md-2" >
+												                 <div class="form-group">
+												                	<label class="control-label">Remarks</label>
+												                   
+                              		      							<textarea class="form-control form-control" name="PRRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getPRRemark1()!=null) {%><%=chlist.getPRRemark1() %><%} %></textarea> 
+                              		      							
+												                </div>
+												              </div>
 												            
-												              <div class="col-md-5" style="">
+												            
+												            
+												              <div class="col-md-4" >
 												        		<div class="form-group">
 												                	<label class="control-label">Sanctioned projects entered (including sub-projects)</label><span class="mandatory">*</span>
-<%-- 												                    <input value="Yes" name="PRSanctioned"  type="checkbox"  <% if(chlist!=null &&  chlist.getPRSanctioned() !=null && chlist.getPRSanctioned().equalsIgnoreCase("Yes")){ %> checked <%} %> data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
- --%>												                    
+											                    
 												                    <select class="form-control w-50" data-width="100%" data-live-search="true" name="PRSanctioned">
                                                                             <option value="0" selected disabled >--Select--</option>
                                                                             <option value="Yes" <% if(chlist!=null &&  chlist.getPRSanctioned() !=null && chlist.getPRSanctioned().toString().equalsIgnoreCase("Yes")){%> selected <%}%> >Yes</option>
                                                                             <option  value="No" <% if(chlist!=null &&  chlist.getPRSanctioned() !=null && chlist.getPRSanctioned().toString().equalsIgnoreCase("No")){%> selected <%}%> >No</option>
                                                                             <option  value="N/A" <% if(chlist!=null &&  chlist.getPRSanctioned() !=null && chlist.getPRSanctioned().toString().equalsIgnoreCase("N/A")){%> selected <%}%> >N/A</option>
-                                                                            
-                                                                         
-                                                                         </select>
+                                                                   </select>
 												                    
 												                    
 												                </div>
 												            </div> 
-												        </div>     
-												        
-												       
-												 <hr>
-												       
-												    <div class="col-md-3" style="">
-												        		<div class="form-group">
-												                	<label class="control-label" style="color:black">5. Project expenditure Card</label>
-												                    
+												            
+												            
+												              <div class="col-md-2" >
+												                 <div class="form-group">
+												                	<label class="control-label">Remarks</label>
+												                   
+                              		      							<textarea class="form-control form-control" name="PRRemark2" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getPRRemark2()!=null) {%><%=chlist.getPRRemark2() %><%} %></textarea> 
+                              		      							
 												                </div>
+												              </div>
+												         </div>     
+												  <hr>
+												       
+												    <div class="col-md-3" >
+												        		<div class="form-group">
+												                	<label class="control-label" style="color:black"><%=++count %>. Project expenditure Card</label>
+												                 </div>
 												            </div>
 												           
 												         <br> 
 												      
 												       <div class="row" style="margin-left: 2%;margin-right: 2%;"> 
 												               
-												          <div class="col-md-5" style="">
+												          <div class="col-md-5" >
 												        		<div class="form-group">
 												                	<label class="control-label">Expenditure verified by Project Director/ In-charge</label><span class="mandatory">*</span>
-<%-- 												                    <input value="Yes" name="PECVerified"  type="checkbox"   <% if(chlist!=null &&  chlist.getPECVerified() !=null && chlist.getPECVerified().equalsIgnoreCase("Yes")){ %> checked <%} %> data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
- --%>												                    
+											                    
                                                                      <select class="form-control w-50" data-width="100%" data-live-search="true" name="PECVerified">
 	                                                                            <option value="0" selected disabled >--Select--</option>
 	                                                                             <option value="Yes" <% if(chlist!=null &&  chlist.getPECVerified() !=null && chlist.getPECVerified().toString().equalsIgnoreCase("Yes")){%> selected <%}%> >Yes</option>
                                                                                  <option  value="No" <% if(chlist!=null &&  chlist.getPECVerified() !=null && chlist.getPECVerified().toString().equalsIgnoreCase("No")){%> selected <%}%> >No</option>
                                                                                  <option  value="N/A" <% if(chlist!=null &&  chlist.getPECVerified() !=null && chlist.getPECVerified().toString().equalsIgnoreCase("N/A")){%> selected <%}%> >N/A</option>
                                                                        </select>
-												                    
- 
- 
-												                </div>
+						                                          </div>
 												            </div> 
+												            
+												            <div class="col-md-2" >
+												                 <div class="form-group">
+												                	<label class="control-label">Remarks</label>
+												                   
+                              		      							<textarea class="form-control form-control" name="PECRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getPECRemark1()!=null) {%><%=chlist.getPECRemark1() %><%} %></textarea> 
+                              		      							
+												                </div>
+												              </div>
 												            
 												        </div> 
 												        
@@ -900,12 +831,6 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 																
 																	
 																	<div class="pagination">
-																			<!-- <div class="page-item">
-																				
-																					 <button type="button" class="page-link" id="" >Previous</button>
-																				
-																			</div> -->
-																			
 																			
 																			<div class="page-item">
 																				<button class="page-link" type="button" id="firstpage1" >1</button>
@@ -919,15 +844,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 																			<div class="page-item">
 																				<button class="page-link" type="button" id="firstpage3" >3</button>
 																			</div>
-																			
-																			
-																			
-																			<!-- <div class="page-item">
-																				
-																					   <button type="button" class="page-link" id="firstpagechanges" >Next</button>
-																						<input type="hidden" name="pagination" value=/>
-																				
-																			</div> -->
+																		
 																		</div>
 																 </div>  
 												    
@@ -936,15 +853,55 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												    
 												    
 											  <div class="" id="secondpage">	    
-												    <!--  <form action="ProjectClosureCheckListDetailsSubmit.htm" method="POST" enctype="multipart/form-data">  -->
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 												    	<input type="hidden" name="closureId" value="<%=closureId%>">
 												   
 												         
-												  
-												            <div class="col-md-3" style="">
+												          <div class="col-md-3" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black">6. Subsidiary register</label>
+												                	<label class="control-label" style="color:black"><%=++count %>. Commitment register</label>
+												                    
+												                </div>
+												            </div> 
+												  
+												         <br>
+												  
+												     <div class="row" style="margin-left: 2%;margin-right: 2%;">         
+												          <div class="col-md-4" >
+												        		<div class="form-group">
+												                	<label class="control-label">Bring From</label><span class="mandatory">*</span>
+												                	
+												                     <select class="form-control w-50" data-width="100%" data-live-search="true" name="CRBringFrom" id="select3">
+	                                                                            <option value="0" selected disabled >--Select--</option>
+	                                                                             <option value="IBAS" <% if(chlist!=null && chlist.getCRBringFrom()!=null && chlist.getCRBringFrom().equalsIgnoreCase("IBAS")) {%> selected <%} %> >IBAS</option>
+                                                                                 <option  value="DOC" <% if(chlist!=null && chlist.getCRBringFrom()!=null && chlist.getCRBringFrom().equalsIgnoreCase("DOC")) {%> selected <%} %> >Add Document</option>
+                                                                       </select>
+                                                                     </div>
+												            </div> 
+												            
+												            
+												             <div class="col-md-5" id="CRUpload">
+												        		<div class="form-group">
+												                	<label class="control-label">Upload :</label><span class="mandatory">*</span>
+												                	
+                            					 						<%if(chlist!=null && chlist.getCommittmentRegister()!=null){ %>
+                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+                            					 		  				 	value="CommittmentRegisterfile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="CommittmentRegister Download">
+                            					 							<i class="fa fa-download fa-lg"></i>
+                            					 						</button>
+                            					 					<%} %>
+                            					 					
+                              		      							<input type="file" class="form-control modals" name="CommittmentRegister"  accept=".pdf">
+												                </div>
+												            </div>
+												            
+												         </div>
+												  
+												         <hr> 
+												         
+												            <div class="col-md-3" >
+												        		<div class="form-group">
+												                	<label class="control-label" style="color:black"><%=++count %>. Subsidiary register</label>
 												                    
 												                </div>
 												            </div> 
@@ -952,31 +909,36 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												            <br>
 												          
 												        <div class="row" style="margin-left: 2%;margin-right: 2%;">         
-												          <div class="col-md-5" style="">
+												          <div class="col-md-2" >
 												        		<div class="form-group">
 												                	<label class="control-label">Maintained Properly</label><span class="mandatory">*</span>
-<%-- 												                    <input value="Yes" name="SRMaintained"  type="checkbox"   <% if(chlist!=null &&  chlist.getSRMaintained() !=null && chlist.getSRMaintained().equalsIgnoreCase("Yes")){ %> checked <%} %>  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
- --%>												                    
+												                    
                                                                          <select class="form-control w-50" data-width="100%" data-live-search="true" name="SRMaintained">
-	                                                                            <option value="0" selected disabled >--Select--</option>
+	                                                                            <option value="0" selected disabled >Select</option>
 	                                                                             <option value="Yes" <% if(chlist!=null &&  chlist.getSRMaintained() !=null && chlist.getSRMaintained().toString().equalsIgnoreCase("Yes")){%> selected <%}%> >Yes</option>
                                                                                  <option  value="No" <% if(chlist!=null &&  chlist.getSRMaintained() !=null && chlist.getSRMaintained().toString().equalsIgnoreCase("No")){%> selected <%}%> >No</option>
                                                                                  <option  value="N/A" <% if(chlist!=null &&  chlist.getSRMaintained() !=null && chlist.getSRMaintained().toString().equalsIgnoreCase("N/A")){%> selected <%}%> >N/A</option>
                                                                        </select>
-												                    
-												                    
-												                    
-												                </div>
+												                    </div>
 												            </div> 
 												            
-												        </div>
+												               <div class="col-md-2" >
+												                 <div class="form-group">
+												                	<label class="control-label">Remarks</label>
+												                   
+                              		      							<textarea class="form-control form-control" name="SRRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getSRRemark1()!=null) {%><%=chlist.getSRRemark1() %><%} %></textarea> 
+                              		      							
+												                </div>
+												              </div>
+												         </div>
 												        
 												        <hr>
 												        
 												        
-												        <div class="col-md-4" style="">
+												        <div class="col-md-4" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black">7. Procurement/ Accounting Procedure (consumable Stores)</label>
+												                	<label class="control-label" style="color:black"><%=++count %>. Procurement/ Accounting Procedure (consumable Stores)</label>
 												                    
 												                </div>
 												            </div> 
@@ -984,7 +946,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        <br>
 												        
 												      <div class="row" style="margin-left: 2%;margin-right: 2%;">         
-												          <div class="col-md-2" style="">
+												          <div class="col-md-2" >
 												        		<div class="form-group">
 												                	<label class="control-label">Procedure followed </label><span class="mandatory">*</span>
 												                    <select name="CSProcedure"  class="form-control" data-width="100%" data-live-search="true"  id="select1" required>
@@ -998,7 +960,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                </div>
 												              </div> 
 												               
-												               <div class="col-md-6" style="" id="CSDrawn" >
+												               <div class="col-md-6"  id="CSDrawn" >
 												                 <div class="form-group">
 												                	<label class="control-label">If through main stores, drawn from main Stock Register through Demand-cum-issue voucher </label><span class="mandatory">*</span>
 												                    <%-- <input value="Yes" name="CSDrawn"  type="checkbox"  <% if(chlist!=null && chlist.getCSDrawn()!=null && chlist.getCSDrawn().equalsIgnoreCase("Yes")) {%> checked <%} %> data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
@@ -1014,7 +976,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												              </div>
 												              
 												              
-												              <div class="col-md-3" style="" id="CSReason">
+												              <div class="col-md-3"  id="CSReason">
 												                 <div class="form-group">
 												                	<label class="control-label">If not through main stores, reason thereof </label><span class="mandatory">*</span>
 												                    <textarea class="form-control form-control" name="CSReason" maxlength="3000" rows="1" cols="100" style="font-size: 15px;" 
@@ -1024,10 +986,9 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												              </div>
 												               
 												                
-												               <div class="col-md-3" style="">
+												               <div class="col-md-3" >
 												                 <div class="form-group">
 												                	<label class="control-label">Amount is debited to Project Expenditure card </label><span class="mandatory">*</span>
-												                    <%-- <input value="Yes" name="CSamountdebited"  type="checkbox" <% if(chlist!=null && chlist.getCSamountdebited()!=null && chlist.getCSamountdebited().equalsIgnoreCase("Yes")) {%> checked <%} %>  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
 												                    
 												                    <select class="form-control w-50" data-width="100%" data-live-search="true" name="CSamountdebited">
 	                                                                             <option value="0" selected disabled >--Select--</option>
@@ -1040,15 +1001,25 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                </div>
 												              </div>
 												              
+												             <div class="col-md-2" >
+												                 <div class="form-group">
+												                	<label class="control-label">Remarks</label>
+												                   
+                              		      							<textarea class="form-control form-control" name="CSRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getCSRemark1()!=null) {%><%=chlist.getCSRemark1() %><%} %></textarea> 
+                              		      							
+												                </div>
+												              </div>
+												              
 												                 
 												        </div>
 												        
 												        <hr>
 												        
 												        
-												       <div class="col-md-4" style="">
+												       <div class="col-md-4" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black">8. Procurement/ Accounting Procedure (Non-consumable Stores)</label>
+												                	<label class="control-label" style="color:black"><%=++count %>. Procurement/ Accounting Procedure (Non-consumable Stores)</label>
 												                    
 												                </div>
 												        </div> 
@@ -1057,7 +1028,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        <br> 
 												        
 												        <div class="row" style="margin-left: 2%;margin-right: 2%;">         
-												          <div class="col-md-2" style="">
+												          <div class="col-md-2" >
 												        		<div class="form-group">
 												                	<label class="control-label">Procedure followed </label><span class="mandatory">*</span>
 												                    <select name="NCSProcedure" id="select2" class="form-control" data-width="100%" data-live-search="true" required>
@@ -1071,7 +1042,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                </div>
 												              </div> 
 												              
-												              <div class="col-md-6" style="" id="NCSDrawn" >
+												              <div class="col-md-6"  id="NCSDrawn" >
 												                 <div class="form-group">
 												                	<label class="control-label">If through main stores, drawn from main Stock Register through Demand-cum-issue voucher </label><span class="mandatory">*</span>
 												                    <%-- <input value="Yes" name="NCSDrawn"  <% if(chlist!=null && chlist.getNCSDrawn()!=null && chlist.getNCSDrawn().equalsIgnoreCase("Yes")) {%> checked <%} %>  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
@@ -1087,7 +1058,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												              </div>
 												              
 												              
-												              <div class="col-md-3" style="" id="NCSReason">
+												              <div class="col-md-3"  id="NCSReason">
 												                 <div class="form-group">
 												                	<label class="control-label">If not through main stores, reason thereof </label><span class="mandatory">*</span>
 												                    <textarea class="form-control form-control" name="NCSReason" maxlength="3000" rows="1" cols="100" style="font-size: 15px;" 
@@ -1098,10 +1069,9 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												              
 												               
 												                
-												               <div class="col-md-3" style="">
+												               <div class="col-md-3" >
 												                 <div class="form-group">
 												                	<label class="control-label">Amount is debited to Project Expenditure card </label><span class="mandatory">*</span>
-												                    <%-- <input value="Yes" name="NCSamountdebited"  <% if(chlist!=null && chlist.getNCSamountdebited()!=null && chlist.getNCSamountdebited().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
 												                    
 												                     <select class="form-control w-50" data-width="100%" data-live-search="true" name="NCSamountdebited">
 	                                                                             <option value="0" selected disabled >--Select--</option>
@@ -1113,16 +1083,26 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                </div>
 												              </div>
 												              
+												              
+												              <div class="col-md-2" >
+												                 <div class="form-group">
+												                	<label class="control-label">Remarks</label>
+												                   
+                              		      							<textarea class="form-control form-control" name="NCSRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getNCSRemark1()!=null) {%><%=chlist.getNCSRemark1() %><%} %></textarea> 
+                              		      							
+												                </div>
+												              </div>
+												              
 												                   
 												        </div>
 												        
 												        
 												        <div class="row" style="margin-left: 2%;margin-right: 2%;">         
 												         
-													         <div class="col-md-9" style="">
+													         <div class="col-md-9" >
 													                 <div class="form-group">
 													                	<label class="control-label">In main stores ledger, item shown as distributed to Project Inventory of non-consumables being maintained in project group </label><span class="mandatory">*</span>
-													                    <%-- <input value="Yes" name="NCSDistributed" <% if(chlist!=null && chlist.getNCSDistributed()!=null && chlist.getNCSDistributed().equalsIgnoreCase("Yes")) {%> checked <%} %>   type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
 													                    
 													                    <select class="form-control w-50" data-width="100%" data-live-search="true" name="NCSDistributed">
 	                                                                             <option value="0" selected disabled >--Select--</option>
@@ -1136,11 +1116,21 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 													          </div>
 													          
 													          
+													          <div class="col-md-2" >
+												                 <div class="form-group">
+												                	<label class="control-label">Remarks</label>
+												                   
+                              		      							<textarea class="form-control form-control" name="NCSRemark2" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getNCSRemark2()!=null) {%><%=chlist.getNCSRemark2() %><%} %></textarea> 
+                              		      							
+												                </div>
+												              </div>
 													          
-													           <div class="col-md-9" style="">
+													          
+													          
+													           <div class="col-md-9" >
 													                 <div class="form-group">
 													                	<label class="control-label">Any non-consumable item incorporated in any prototype stores are received and SIR is prepared before closure of project </label><span class="mandatory">*</span>
-													                    <%-- <input value="Yes" name="NCSIncorporated"  <% if(chlist!=null && chlist.getNCSIncorporated()!=null && chlist.getNCSIncorporated().equalsIgnoreCase("Yes")) {%> checked <%} %>  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
 													                    
 													                    <select class="form-control w-50" data-width="100%" data-live-search="true" name="NCSIncorporated">
 	                                                                             <option value="0" selected disabled >--Select--</option>
@@ -1153,14 +1143,25 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 													                    
 													                </div>
 													          </div>
+													          
+													          
+													          <div class="col-md-2" >
+												                 <div class="form-group">
+												                	<label class="control-label">Remarks</label>
+												                   
+                              		      							<textarea class="form-control form-control" name="NCSRemark3" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getNCSRemark3()!=null) {%><%=chlist.getNCSRemark3() %><%} %></textarea> 
+                              		      							
+												                </div>
+												              </div>
 												              
 												        </div>
 												        
 												        <hr>
 												        
-												       <div class="col-md-4" style="">
+												       <div class="col-md-4" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black">9. Equipment</label>
+												                	<label class="control-label" style="color:black"><%=++count %>. Equipment</label>
 												                </div>
 												        </div> 
 												            
@@ -1170,7 +1171,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        
 												        
 												        <div class="row" style="margin-left: 2%;margin-right: 2%;">         
-												          <div class="col-md-4" style="">
+												          <div class="col-md-4" >
 												        		<div class="form-group">
 												                	<label class="control-label">List out major non-consumable/ equipment procured</label><span class="mandatory">*</span>
 												                     <%if(chlist!=null && chlist.getEquipProcured()!=null){ %>
@@ -1185,7 +1186,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												              </div> 
 												               
 												                
-												               <div class="col-md-5" style="">
+												               <div class="col-md-5" >
 												                 <div class="form-group">
 												                	<label class="control-label">Any major equipment not listed in Q.P.R has been purchased? </label><span class="mandatory">*</span>
 												                    <%-- <input value="Yes" name="EquipPurchased"  <% if(chlist!=null && chlist.getEquipPurchased()!=null && chlist.getEquipPurchased().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  id="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
@@ -1201,7 +1202,18 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                </div>
 												              </div>
 												              
-												              <div class="col-md-3" style="" id="EquipReason">
+												              
+												              <div class="col-md-2" >
+												                 <div class="form-group">
+												                	<label class="control-label">Remarks</label>
+												                   
+                              		      							<textarea class="form-control form-control" name="EquipmentRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getEquipmentRemark1()!=null) {%><%=chlist.getEquipmentRemark1() %><%} %></textarea> 
+                              		      							
+												                </div>
+												              </div>
+												              
+												              <div class="col-md-3"  id="EquipReason">
 												                 <div class="form-group">
 												                	<label class="control-label">If yes, reason assigned </label><span class="mandatory">*</span>
 												                     <textarea class="form-control form-control" name="EquipReason" maxlength="3000" rows="1" cols="100" style="font-size: 15px;" 
@@ -1214,7 +1226,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        
 												        
 												      <div class="row" style="margin-left: 2%;margin-right: 2%;">         
-												         <div class="col-md-7" style="">
+												         <div class="col-md-7" >
 												                 <div class="form-group">
 												                	<label class="control-label">Any major equipment procured within one month before the PDC (give details and reason thereof) </label><span class="mandatory">*</span>
 												                    <%-- <input value="Yes" name="EquipProcuredBeforePDC" <% if(chlist!=null && chlist.getEquipProcuredBeforePDC()!=null  && chlist.getEquipProcuredBeforePDC().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  id="checkbox1" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
@@ -1230,8 +1242,19 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                </div>
 												              </div>
 												              
+												               <div class="col-md-2" >
+												                 <div class="form-group">
+												                	<label class="control-label">Remarks</label>
+												                   
+                              		      							<textarea class="form-control form-control" name="EquipmentRemark2" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getEquipmentRemark2()!=null) {%><%=chlist.getEquipmentRemark2() %><%} %></textarea> 
+                              		      							
+												                </div>
+												              </div>
 												              
-												              <div class="col-md-3" style="" id="EquipProcuredBeforePDCAttach">
+												              
+												              
+												              <div class="col-md-3"  id="EquipProcuredBeforePDCAttach">
 												                 <div class="form-group">
 												                	<label class="control-label">Attach if yes</label><span class="mandatory">*</span>
 												                     <%if(chlist!=null && chlist.getEquipProcuredBeforePDCAttach()!=null){ %>
@@ -1247,7 +1270,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        </div>
 												        
 												    <div class="row" style="margin-left: 2%;margin-right: 2%;">              
-												        <div class="col-md-8" style="">
+												        <div class="col-md-8" >
 												                 <div class="form-group">
 												                	<label class="control-label">Any equipment bought on charge within one month before the PDC or after PDC (Give details and reasons thereof) </label><span class="mandatory">*</span>
 												                    <%-- <input value="Yes" name="EquipBoughtOnCharge"  <% if(chlist!=null && chlist.getEquipBoughtOnCharge()!=null  && chlist.getEquipBoughtOnCharge().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  id="checkbox2" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
@@ -1264,18 +1287,21 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												              </div>
 												              
 												              
-												              <div class="col-md-3" style="" id="EquipBoughtOnChargereason">
+												               <div class="col-md-2" >
+												                 <div class="form-group">
+												                	<label class="control-label">Remarks</label>
+												                   
+                              		      							<textarea class="form-control form-control" name="EquipmentRemark3" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getEquipmentRemark3()!=null) {%><%=chlist.getEquipmentRemark3() %><%} %></textarea> 
+                              		      							
+												                </div>
+												              </div>
+												              
+												              
+												              <div class="col-md-3"  id="EquipBoughtOnChargereason">
 												                 <div class="form-group">
 												                	<label class="control-label">Reason if yes </label><span class="mandatory">*</span>
-												                     <%-- <%if(chlist!=null && chlist.getEquipBoughtOnChargeAttach()!=null){ %>
-                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 		  				 	value="EquipBoughtOnChargefile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="EquipBoughtOnCharge Download">
-                            					 							<i class="fa fa-download fa-lg"></i>
-                            					 						</button>
-                            					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="EquipBoughtOnChargeAttach" <%if(chlist==null) {%>required<%} %> accept=".pdf"> --%>
-                              		      							
-                              		      							<input  class="form-control" name="EquipBoughtOnChargeReason"   value="<% if(chlist!=null && chlist.getEquipBoughtOnChargeReason()!=null) {%><%=chlist.getEquipBoughtOnChargeReason() %><%}%>" >
+												                    <input  class="form-control" name="EquipBoughtOnChargeReason"   value="<% if(chlist!=null && chlist.getEquipBoughtOnChargeReason()!=null) {%><%=chlist.getEquipBoughtOnChargeReason() %><%}%>" >
 												                </div>
 												              </div>
 												              
@@ -1284,9 +1310,9 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												  <hr>
 												        
 												        
-												      <div class="col-md-4" style="">
+												      <div class="col-md-4" >
 												        		<div class="form-group">
-												                	   <label class="control-label" style="color:black">10. Budget</label>
+												                	   <label class="control-label" style="color:black"><%=++count %>. Budget</label>
 												                </div>
 												        </div>
 												            
@@ -1295,10 +1321,39 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												          
 												         <div class="row" style="margin-left: 2%;margin-right: 2%;">         
 												          
-												               <div class="col-md-7" style="">
+												           <div class="col-md-5" >
+												                 <div class="form-group">
+												                	<label class="control-label">Yearly break up of Allotment & Expenditure since the Project sanctioned </label><span class="mandatory">*</span>
+												                    
+												                    <select class="form-control w-50" data-width="100%" data-live-search="true" name="BringFrom" id="select4">
+	                                                                            <option value="0" selected disabled >--Select--</option>
+	                                                                             <option value="IBAS">IBAS</option>
+                                                                                 <option  value="DOC">Add Document</option>
+                                                                       </select>
+												                    
+												                </div>
+												              </div>
+												              
+												              <div class="col-md-2" id="BudgetDocUpload">
+												        		<div class="form-group">
+												                	<label class="control-label">Upload :</label><span class="mandatory">*</span>
+												                	<%if(chlist!=null && chlist.getBudgetDocument()!=null){ %>
+                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+                            					 		  				 	value="BudgetDocumentfile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="BudgetDocument Download">
+                            					 							<i class="fa fa-download fa-lg"></i>
+                            					 						</button>
+                            					 					<%} %>
+                            					 					
+                              		      							<input type="file" class="form-control modals" name="BudgetDocument"  accept=".pdf">
+												                </div>
+												            </div>
+												          
+												          
+												          
+												          
+												               <div class="col-md-7" >
 												                 <div class="form-group">
 												                	<label class="control-label">The reviewing officer should  see  the allocation  w.r.t demands  and  also  the  projections  in  the Q.P.R </label><span class="mandatory">*</span>
-												                    <%-- <input value="Yes" name="BudgetAllocation"  <% if(chlist!=null && chlist.getBudgetAllocation()!=null && chlist.getBudgetAllocation().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
 												                    
 												                    <select class="form-control w-50" data-width="100%" data-live-search="true" name="BudgetAllocation" >
 	                                                                             <option value="0" selected disabled >--Select--</option>
@@ -1311,7 +1366,18 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												              </div>
 												              
 												              
-												              <div class="col-md-5" style="">
+												               <div class="col-md-2" >
+												                 <div class="form-group">
+												                	<label class="control-label">Remarks</label>
+												                   
+                              		      							<textarea class="form-control form-control" name="BudgetRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getBudgetRemark1()!=null) {%><%=chlist.getBudgetRemark1() %><%} %></textarea> 
+                              		      							
+												                </div>
+												              </div>
+												              
+												              
+												              <div class="col-md-5" >
 												                 <div class="form-group">
 												                	<label class="control-label">What is the mechanism for monitoring/ control of head-wise expenditure? </label><span class="mandatory">*</span>
 												                    <textarea class="form-control form-control" name="BudgetMechanism" maxlength="3000" rows="1" cols="100" style="font-size: 15px;" 
@@ -1321,16 +1387,10 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												              </div>
 												              
 												              
-												              <div class="col-md-5" style="">
+												              <div class="col-md-5" >
 												                 <div class="form-group">
 												                	<label class="control-label">Mention, if expenditure under any head exceeded the respective allocation</label><span class="mandatory">*</span>
-												                    <%-- <%if(chlist!=null && chlist.getBudgetExpenditureAttach()!=null){ %>
-                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 		  				 	value="BudgetExpenditurefile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="BudgetExpenditure Download">
-                            					 							<i class="fa fa-download fa-lg"></i>
-                            					 						</button>
-                            					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="BudgetExpenditureAttach"  <%if(chlist==null) {%>required<%} %>  accept=".pdf"> --%>
+												                   
                               		      				     <input  class="form-control" name="Budgetexpenditure"   value="<% if(chlist!=null && chlist.getBudgetExpenditure()!=null) {%><%=chlist.getBudgetExpenditure() %><%}%>" >
                               		      							
                               		      							
@@ -1338,10 +1398,9 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												              </div>
 												              
 												              
-												               <div class="col-md-6" style="">
+												               <div class="col-md-6" >
 												                 <div class="form-group">
 												                	<label class="control-label">Whether financial progress is in consonance with Tech. progress.</label><span class="mandatory">*</span>
-												                    <%-- <input value="Yes" name="BudgetFinancialProgress"  <% if(chlist!=null && chlist.getBudgetFinancialProgress()!=null  && chlist.getBudgetFinancialProgress().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
 												                    
 												                     <select class="form-control w-50" data-width="100%" data-live-search="true" name="BudgetFinancialProgress" >
 	                                                                             <option value="0" selected disabled >--Select--</option>
@@ -1355,12 +1414,22 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												              </div>
 												              
 												              
+												              <div class="col-md-2" >
+												                 <div class="form-group">
+												                	<label class="control-label">Remarks</label>
+												                   
+                              		      							<textarea class="form-control form-control" name="BudgetRemark2" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getBudgetRemark2()!=null) {%><%=chlist.getBudgetRemark2() %><%} %></textarea> 
+                              		      							
+												                </div>
+												              </div>
 												              
 												              
-												               <div class="col-md-7" style="">
+												              
+												              
+												               <div class="col-md-7" >
 												                 <div class="form-group">
 												                	<label class="control-label">Monthly/ Quarterly expenditure Reports are rendered to R&D HQrs and copy sent to local CDA</label><span class="mandatory">*</span>
-												                    <%-- <input value="Yes" name="BudgetexpenditureReports"  <% if(chlist!=null && chlist.getBudgetexpenditureReports()!=null  && chlist.getBudgetexpenditureReports().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
 												                    
 												                    <select class="form-control w-50" data-width="100%" data-live-search="true" name="BudgetexpenditureReports" >
 	                                                                             <option value="0" selected disabled >--Select--</option>
@@ -1373,11 +1442,20 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                </div>
 												              </div>
 												              
+												                 <div class="col-md-2" >
+												                 <div class="form-group">
+												                	<label class="control-label">Remarks</label>
+												                   
+                              		      							<textarea class="form-control form-control" name="BudgetRemark3" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getBudgetRemark3()!=null) {%><%=chlist.getBudgetRemark3() %><%} %></textarea> 
+                              		      							
+												                </div>
+												              </div>
 												              
-												               <div class="col-md-5" style="">
+												              
+												               <div class="col-md-5" >
 												                 <div class="form-group">
 												                	<label class="control-label">Any expenditure incurred after Project PDC (Give details and reasons thereof)</label><span class="mandatory">*</span>
-												                    <%-- <input value="Yes" name="BudgetexpenditureIncurred"  <% if(chlist!=null && chlist.getBudgetexpenditureIncurred()!=null  && chlist.getBudgetexpenditureIncurred().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
 												                    
 												                     <select class="form-control w-50" data-width="100%" data-live-search="true" name="BudgetexpenditureIncurred" >
 	                                                                             <option value="0" selected disabled >--Select--</option>
@@ -1389,42 +1467,39 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                </div>
 												              </div>
 												              
+												              <div class="col-md-2" >
+												                 <div class="form-group">
+												                	<label class="control-label">Remarks</label>
+												                   
+                              		      							<textarea class="form-control form-control" name="BudgetRemark4" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getBudgetRemark4()!=null) {%><%=chlist.getBudgetRemark4() %><%} %></textarea> 
+                              		      							
+												                </div>
+												              </div>
+												              
+												              
 												            
 												            </div>  
 												              
 												              <div class="checklistpage"  style="text-align: center;">
 												             
-												             <!--  <button class="btn btn-info btn-sm" id="backtofirstpage" >Previous</button> -->
 												             
-												             <% if(chlist!=null && chlist.getCSProcedure()!=null) {%>
+												             <% if(chlist!=null && chlist.getCRBringFrom()!=null) {%>
 												                    
-												                    <button class="btn-warning edit btn" type="submit" id="" name="Action" value="Edit" onclick="return confirm('Are You Sure To Update')">UPDATE</button>
+												                    <button class="btn-warning edit btn" type="submit"  name="Action" value="Edit" onclick="return confirm('Are You Sure To Update')">UPDATE</button>
 												             <%}else{ %>
 												             
-													                <button class="btn btn-info btn-sm success submit" id="" name="Action"  <% if(chlist!=null){ %> value="Edit" <%} else {%> value="Add" <%} %>onclick="return confirm('Are You Sure To Submit')">SUBMIT</button>
+													                <button class="btn btn-info btn-sm success submit"  name="Action"  <% if(chlist!=null){ %> value="Edit" <%} else {%> value="Add" <%} %>onclick="return confirm('Are You Sure To Submit')">SUBMIT</button>
 													                
 													                <%} %>
 	            							                </div>
-	            							                 
-	            							             
-	            							        
-												   <!--   </form>  -->
-												   
+	            							         
 												   <br>
 												    
 												     <div class="pagin" style="display: flex;justify-content: center;padding-bottom:10px;"> 
 																
 																	
 																	<div class="pagination">
-																			<!-- <div class="page-item">
-																				
-																					<button type="button" class="page-link" id="backtofirstpages">Previous</button>
-																				
-																			</div> -->
-																			<!-- <div class="page-item">
-																				<button class="page-link" type="button" >2</button>
-																			</div> -->
-																			
 																			
 																			<div class="page-item">
 																				<button class="page-link" type="button" id="secondpage1"  >1</button>
@@ -1439,12 +1514,6 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 																				<button class="page-link" type="button" id="secondpage3" >3</button>
 																			</div>
 																			
-																			
-																			<!-- <div class="page-item">
-																				
-																				     <button type="button" class="page-link" id="secondpagechanges">Next</button>
-																			</div> -->
-																			
 																	</div>
 																
 															 </div> 
@@ -1455,18 +1524,12 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												    
 												    
 												     <div class="" id="thirdpage">  
-												    
-												    
-												    <!-- <form action="ProjectClosureCheckListDetailsSubmit.htm" method="POST" enctype="multipart/form-data"> -->
-														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+												        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 												    	<input type="hidden" name="closureId" value="<%=closureId%>">    
 												      
-												       
-												   
-												    
-												         <div class="col-md-4" style="">
+												         <div class="col-md-4" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black">11. Utilization of Equipment</label>
+												                	<label class="control-label" style="color:black"><%=++count %>. Utilization of Equipment</label>
 												                </div>
 												        </div>
 												            
@@ -1475,7 +1538,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        
 												      <div class="row" style="margin-left: 2%;margin-right: 2%;">
 												          
-												          <div class="col-md-4" style="">
+												          <div class="col-md-4" >
 												                 <div class="form-group">
 												                	<label class="control-label">Log book maintained in r/o high cost equipment</label><span class="mandatory">*</span>
 												                    <input class="form-control" type="text" name="LogBookMaintained" value="<% if(chlist!=null && chlist.getLogBookMaintained()!=null) {%> <%=chlist.getLogBookMaintained()%><%}%>">
@@ -1483,10 +1546,10 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                </div>
 												              </div>   
 												              
-												              <div class="col-md-3" style="">
+												              <div class="col-md-2" >
 												                 <div class="form-group">
 												                	<label class="control-label">Job cards maintained</label><span class="mandatory">*</span>
-												                    <%-- <input value="Yes" name="JobCardsMaintained" <% if(chlist!=null && chlist.getJobCardsMaintained()!=null  && chlist.getJobCardsMaintained().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
+												                  
 												                     <select class="form-control w-50" data-width="100%" data-live-search="true" name="JobCardsMaintained" >
 	                                                                             <option value="0" selected disabled >--Select--</option>
 	                                                                             <option value="Yes" <% if(chlist!=null &&  chlist.getJobCardsMaintained() !=null && chlist.getJobCardsMaintained().toString().equalsIgnoreCase("Yes")){%> selected <%}%> >Yes</option>
@@ -1496,15 +1559,26 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                    
 												                    
 												                </div>
-												              </div>    
+												              </div> 
+												              
+												              <div class="col-md-2" >
+												                 <div class="form-group">
+												                	<label class="control-label">Remarks</label>
+												                   
+                              		      							<textarea class="form-control form-control" name="UtilizationRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getUtilizationRemark1()!=null) {%><%=chlist.getUtilizationRemark1() %><%} %></textarea> 
+                              		      							
+												                </div>
+												              </div>
+												                 
 												          
 												          </div>
 												          
 												          <hr>
 												          
-												          <div class="col-md-4" style="">
+												          <div class="col-md-4" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black">12. Staff Position</label>
+												                	<label class="control-label" style="color:black"><%=++count %>. Staff Position</label>
 												                </div>
 												        </div> 
 												            
@@ -1512,7 +1586,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        <br> 
 												          
 												     <div class="row" style="margin-left: 1%;margin-right: 1%;">      
-												         <div class="col-md-3" style="">
+												         <div class="col-md-2" >
 												                 <div class="form-group">
 												                	<label class="control-label">Demanded as per Q.P.R</label><span class="mandatory">*</span>
 												                    <%-- <input value="Yes" name="SPdemand"  <% if(chlist!=null && chlist.getSPdemand()!=null  && chlist.getSPdemand().equalsIgnoreCase("Yes")) {%> checked <%} %>  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
@@ -1527,16 +1601,23 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                </div>
 												          </div> 
 												          
+												          
+												           <div class="col-md-2" >
+												                 <div class="form-group">
+												                	<label class="control-label">Remarks</label>
+												                   
+                              		      							<textarea class="form-control form-control" name="StaffRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getStaffRemark1()!=null) {%><%=chlist.getStaffRemark1() %><%} %></textarea> 
+                              		      							
+												                </div>
+												              </div>
+												          
+												          
+												          
 												           <div class="col-md-4" style="display:none;" id="spactualposition">
 												                 <div class="form-group">
 												                	<label class="control-label">Actual position-held</label><span class="mandatory">*</span>
-												                    <%-- <%if(chlist!=null && chlist.getSPActualpositionAttach()!=null){ %>
-                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 		  				 	value="SPActualpositionfile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="SPActualposition Download">
-                            					 							<i class="fa fa-download fa-lg"></i>
-                            					 						</button>
-                            					 					<%} %> --%>
-                              		      							<%-- <input type="file" class="form-control modals" name="SPActualposition" <%if(chlist==null) {%>required<%} %>  accept=".pdf"> --%>
+												                    
                               		      						<input  class="form-control" name="SPActualposition"   value="<% if(chlist!=null && chlist.getSPActualposition()!=null) {%><%=chlist.getSPActualposition() %><%}%>" >
                               		      							
 												                </div>
@@ -1547,13 +1628,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												           <div class="col-md-4" style="display:none;" id="spgeneralspecific">
 												                 <div class="form-group">
 												                	<label class="control-label">General Specific (Category wise)</label><span class="mandatory">*</span>
-												                    <%-- <%if(chlist!=null && chlist.getSPGeneralSpecificAttach()!=null){ %>
-                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 		  				 	value="SPGeneralSpecificfile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="SPGeneralSpecific Download">
-                            					 							<i class="fa fa-download fa-lg"></i>
-                            					 						</button>
-                            					 					<%} %> --%>
-                              		      							<%-- <input type="file" class="form-control modals" name="SPGeneralSpecific"  <%if(chlist==null) {%>required<%} %>  accept=".pdf"> --%>
+												                    
                               		      					            <input  class="form-control" name="SPGeneralSpecific"   value="<% if(chlist!=null && chlist.getSPGeneralSpecific()!=null) {%><%=chlist.getSPGeneralSpecific() %><%}%>" >
                               		      							
 												                </div>
@@ -1564,9 +1639,9 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												      
 												      <hr>
 												      
-												       <div class="col-md-4" style="">
+												       <div class="col-md-4" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black">13.Civil Works</label>
+												                	<label class="control-label" style="color:black"><%=++count %>.Civil Works</label>
 												                </div>
 												        </div> 
 												            
@@ -1574,7 +1649,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        <br> 
 												          
 												         <div class="row" style="margin-left: 2%;margin-right: 2%;">      
-												         <div class="col-md-6" style="">
+												         <div class="col-md-6" >
 												                 <div class="form-group">
 												                	<label class="control-label">Civil works are included in the estimated prepared before project sanction.</label><span class="mandatory">*</span>
 <%-- 												                    <input value="Yes" name="CWIncluded"  <% if(chlist!=null && chlist.getCWIncluded()!=null  && chlist.getCWIncluded().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
@@ -1589,10 +1664,22 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                </div>
 												          </div> 
 												          
-												           <div class="col-md-4" style="" id="cwadminapp">
+												           <div class="col-md-2" >
+												                 <div class="form-group">
+												                	<label class="control-label">Remarks</label>
+												                   
+                              		      							<textarea class="form-control form-control" name="CWRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getCWRemark1()!=null) {%><%=chlist.getCWRemark1() %><%} %></textarea> 
+                              		      							
+												                </div>
+												              </div>
+												          
+												          
+												          
+												          
+												           <div class="col-md-4"  id="cwadminapp">
 												                 <div class="form-group">
 												                	<label class="control-label">Admin approval is accorded for the work.</label><span class="mandatory">*</span>
-												                    <%-- <input value="Yes" name="CWAdminApp"  <% if(chlist!=null && chlist.getCWAdminApp()!=null  && chlist.getCWAdminApp().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
 												                    <select class="form-control w-50" data-width="100%" data-live-search="true" name="CWAdminApp" >
 	                                                                             <option value="0" selected disabled >--Select--</option>
 	                                                                             <option value="Yes" <% if(chlist!=null &&  chlist.getCWAdminApp() !=null && chlist.getCWAdminApp().toString().equalsIgnoreCase("Yes")){%> selected <%}%> >Yes</option>
@@ -1605,10 +1692,9 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												          
 												          
 												          
-												          <div class="col-md-7" style="" id="cwminorworks">
+												          <div class="col-md-7"  id="cwminorworks">
 												                 <div class="form-group">
 												                	<label class="control-label">Minor works are completed within the financial year and not costing more than one lakh.</label><span class="mandatory">*</span>
-												                    <%-- <input value="Yes" name="CWMinorWorks"  <% if(chlist!=null && chlist.getCWMinorWorks()!=null  && chlist.getCWMinorWorks().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
 												                    
 												                     <select class="form-control w-50" data-width="100%" data-live-search="true" name="CWMinorWorks" >
 	                                                                             <option value="0" selected disabled >--Select--</option>
@@ -1621,10 +1707,9 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												          </div> 
 												          
 												          
-												           <div class="col-md-7" style="" id="cwrevenueworks">
+												           <div class="col-md-7"  id="cwrevenueworks">
 												                 <div class="form-group">
 												                	<label class="control-label">Revenue major works are completed within the financial year and not costing more than two lakhs.</label><span class="mandatory">*</span>
-												                    <%-- <input value="Yes" name="CWRevenueWorks"  <% if(chlist!=null && chlist.getCWRevenueWorks()!=null  && chlist.getCWRevenueWorks().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
 												                    
 												                    <select class="form-control w-50" data-width="100%" data-live-search="true" name="CWRevenueWorks" >
 	                                                                             <option value="0" selected disabled >--Select--</option>
@@ -1637,7 +1722,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												          </div> 
 												          
 												          
-												           <div class="col-md-4" style="" id="cwdeviation">
+												           <div class="col-md-4"  id="cwdeviation">
 												                 <div class="form-group">
 												                	<label class="control-label">There are no deviations from the  admin   approval.</label><span class="mandatory">*</span>
 												                    <%-- <input value="Yes" name="CWDeviation"  <% if(chlist!=null && chlist.getCWDeviation()!=null  && chlist.getCWDeviation().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
@@ -1651,7 +1736,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                </div>
 												          </div> 
 												         
-												          <div class="col-md-7" style="" id="cwexpenditure">
+												          <div class="col-md-7"  id="cwexpenditure">
 												                 <div class="form-group">
 												                	<label class="control-label">Expenditure is not incurred just for the sake of exhausting funds at the end of Project.</label><span class="mandatory">*</span>
 <%-- 												                    <input value="Yes" name="CWExpenditure"  <% if(chlist!=null && chlist.getCWExpenditure()!=null  && chlist.getCWExpenditure().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
@@ -1671,7 +1756,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												      
 												      <div class="col-md-4" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black">14.Vehicles &emsp; <input type="checkbox" id="vehicle" name="VehicleChecked" <%if (chlist!=null && !chlist.getNoOfVehicleSanctioned().isEmpty()){ %> checked <%} %> ></label>
+												                	<label class="control-label" style="color:black"><%=++count %>.Vehicles &emsp; <input type="checkbox" id="vehicle" name="VehicleChecked" <%if (chlist!=null && !chlist.getNoOfVehicleSanctioned().isEmpty()){ %> checked <%} %> ></label>
 												                	
 												                </div>
 												        </div> 
@@ -1680,7 +1765,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        <br> 
 												      
 												         <div class="row" style="margin-left: 2%;margin-right: 2%;" id="selectall">      
-												          <div class="col-md-3" style="">
+												          <div class="col-md-3" >
 												                 <div class="form-group">
 												                	<label class="control-label">No. of vehicles sanctioned in the project </label><span class="mandatory">*</span>
 												                    <input class="form-control" type="text" name="NoOfVehicleSanctioned"  placeholder="No Of Vehicle Sanctioned" id="NoOfVehicleSanctioned"
@@ -1689,9 +1774,9 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                </div>
 												          </div> 
 												          
-												          <div class="col-md-2" style="">
+												          <div class="col-md-2" >
 												                 <div class="form-group">
-												                	<label class="control-label">Vehicle type.</label><span class="mandatory">*</span>
+												                	<label class="control-label">Vehicle type.</label>
 												                    <input class="form-control" type="text" name="VehicleType"  placeholder="Enter Vehicle Type"  id="VehicleType"
 												                    value="<% if(chlist!=null && chlist.getVehicleType()!=null) {%><%=chlist.getVehicleType()%><%}%>" >
 												                    
@@ -1700,7 +1785,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												          
 												          
 												          
-												          <div class="col-md-3" style="">
+												          <div class="col-md-3" >
 												                 <div class="form-group">
 												                	<label class="control-label">Average monthly run of each vehicle.</label><span class="mandatory">*</span>
 												                    <input  class="form-control" type="text" name="VehicleAvgRun"  placeholder="Enter Average monthly run of each vehicle"  
@@ -1710,11 +1795,11 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												          </div> 
 												          
 												          
-												          <div class="col-md-4" style="">
+												          <div class="col-md-4" >
 												                 <div class="form-group">
 												                	<label class="control-label">Average monthly fuel consumption of each vehicle.</label><span class="mandatory">*</span>
-                                                                     <input  class="form-control" type="text" name="VehicleAvgFuel" id="VehicleAvgFuel" placeholder="Enter Average monthly fuel consumption of each vehicle" 
-												                     value="<% if(chlist!=null && chlist.getVehicleAvgFuel()!=null){ %> <%=chlist.getVehicleAvgFuel() %><%} %>" >
+                                                                     <input class="form-control" type="text" name="VehicleAvgFuel" id="VehicleAvgFuel" placeholder="Enter Average monthly fuel consumption of each vehicle" 
+												                     value="<%if(chlist!=null && chlist.getVehicleAvgFuel()!=null){%><%=chlist.getVehicleAvgFuel()%><%}%>" >
 										                    
 												                </div>
 												          </div> 
@@ -1723,9 +1808,9 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												         
 												         <hr>
 												         
-												         <div class="col-md-4" style="">
+												         <div class="col-md-4" >
 											        		<div class="form-group">
-											                	<label class="control-label" style="color:black">15. If the project is closed</label>
+											                	<label class="control-label" style="color:black"><%=++count %>. If the project is closed</label>
 											                </div>
 												        </div> 
 												            
@@ -1733,7 +1818,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        <br>
 												        
 												        <div class="row" style="margin-left: 2%;margin-right: 2%;">      
-												          <div class="col-md-3" style="">
+												          <div class="col-md-3" >
 												                 <div class="form-group">
 												                	<label class="control-label">When the project finally closed</label><span class="mandatory">*</span>
 												                     <input  class="form-control" type="text" name="ProjectClosedDate" id="ProjectClosedDate" placeholder="Enter Project Closed Date" 
@@ -1742,7 +1827,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                </div>
 												          </div> 
 												          
-												          <div class="col-md-4" style="">
+												          <div class="col-md-4" >
 												                 <div class="form-group">
 												                	<label class="control-label">Project closures Report send to R&D HQrs.(Mention Dated)</label><span class="mandatory">*</span>
 												                    <input  class="form-control " type="text" name="ReportDate" id="ClosureReportDate" placeholder="" 
@@ -1753,7 +1838,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												          </div> 
 												          
 												          
-												          <div class="col-md-4" style="">
+												          <div class="col-md-4" >
 												                 <div class="form-group">
 												                	<label class="control-label">If undue delay in sending the Closure Report, reasons thereof.</label><span class="mandatory">*</span>
                                                                      <input  class="form-control " type="text" name="ProjectDelayReason" maxlength="3000" placeholder="If undue delay in sending the Closure Report, reasons thereof" 
@@ -1761,7 +1846,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                </div>
 												          </div> 
 												          
-												           <div class="col-md-4" style="">
+												           <div class="col-md-4" >
 												                 <div class="form-group">
 												                	<label class="control-label">Whether  the  stated  objectives achieved.</label><span class="mandatory">*</span>
                                                                     <%-- <input value="Yes" name="CRObjective" <% if(chlist!=null && chlist.getCRObjective()!=null  && chlist.getCRObjective().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
@@ -1771,13 +1856,20 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
                                                                                  <option  value="No" <% if(chlist!=null &&  chlist.getCRObjective() !=null && chlist.getCRObjective().toString().equalsIgnoreCase("No")){%> selected <%}%> >No</option>
                                                                                  <option  value="N/A" <% if(chlist!=null &&  chlist.getCRObjective() !=null && chlist.getCRObjective().toString().equalsIgnoreCase("N/A")){%> selected <%}%> >N/A</option>
                                                                        </select>
-                                                                    	
-                                                                    	
-                                                                    											                    
-												                </div>
+                           										 </div>
 												           </div>
+												           
+												            <div class="col-md-2" >
+												                 <div class="form-group">
+												                	<label class="control-label">Remarks</label>
+												                   
+                              		      							<textarea class="form-control form-control" name="ProjectRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getProjectRemark1()!=null) {%><%=chlist.getProjectRemark1() %><%} %></textarea> 
+                              		      							
+												                </div>
+												              </div>
 												                
-												            <div class="col-md-3" style="">
+												            <div class="col-md-3" >
 												                 <div class="form-group">
 												                	<label class="control-label">Any other spin-off achieved.</label><span class="mandatory">*</span>
                                                                     <input class="form-control" type="text" name="CRspinoff"  value="<% if(chlist!=null && chlist.getCRspinoff()!=null) {%><%=chlist.getCRspinoff() %><%}%>" maxlength="3000"> 
@@ -1785,122 +1877,79 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                </div>
 												           </div>  
 												           
-												           
-												           <div class="col-md-7" style="">
+												           <div class="col-md-7" >
 												                 <div class="form-group">
 												                	<label class="control-label">Reason, if PDC not  meet (Delay in  convening of TPC or  delayed placement of indent by the user)</label><span class="mandatory">*</span>
-                                                                    <input class="form-control" type="text" name="PDCNotMeetReason" value=" <% if(chlist!=null && chlist.getCRReason()!=null) {%><%=chlist.getCRReason() %><%}%>" maxlength="3000">
+                                                                    <input class="form-control" type="text" name="PDCNotMeetReason" value="<% if(chlist!=null && chlist.getCRReason()!=null){%><%=chlist.getCRReason()%><%}%>" maxlength="3000">
                                                                     											                    
 												                </div>
 												           </div>  
 												             
-												              
-												              
-												               <div class="col-md-5" style="">
+												               <div class="col-md-5" >
 												                 <div class="form-group">
 												                	<label class="control-label">Reason, if Cost Over-run</label><span class="mandatory">*</span>
                                                                     <textarea class="form-control form-control" name="CRcostoverin" maxlength="3000" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getCRcostoverin()!=null) {%><%=chlist.getCRcostoverin() %><%} %></textarea> 											                    
+                              		  								 placeholder="Enter Reason" ><%if(chlist!=null && chlist.getCRcostoverin()!=null){%><%=chlist.getCRcostoverin()%><%}%></textarea> 											                    
 												                </div>
 												           </div>  
 												           
 												           
-												           <div class="col-md-8" style="">
+												           <div class="col-md-8" >
 												                 <div class="form-group">
 												                	<label class="control-label">Non-consumable items returned to main stores on nominal voucher (No credit to be given in Project expenditure  card)</label><span class="mandatory">*</span>
-                                                                      <input class="form-control" name="NonConsumableItemsReturned"   value="<% if(chlist!=null && chlist.getNonConsumableItemsReturned()!=null) {%> <%=chlist.getNonConsumableItemsReturned() %><%}%>"  > 
+                                                                      <input class="form-control" name="NonConsumableItemsReturned"   value="<%if(chlist!=null && chlist.getNonConsumableItemsReturned()!=null){%><%=chlist.getNonConsumableItemsReturned()%><%}%>"  > 
                                                                     
                                                                     											                    
 												                </div>
 												           </div> 
 												           
 												            
-												            <div class="col-md-8" style="">
+												            <div class="col-md-8" >
 												                 <div class="form-group">
 												                	<label class="control-label">Consumable (non-consumed) returned to main store on Issue voucher (Credit to be given in Project Expenditure Card)</label><span class="mandatory">*</span>
-                                                                     <input  class="form-control" name="ConsumableItemsReturned"   value="<% if(chlist!=null && chlist.getConsumableItemsReturned()!=null) {%> <%=chlist.getConsumableItemsReturned() %><%}%>" >
+                                                                     <input  class="form-control" name="ConsumableItemsReturned"   value="<%if(chlist!=null && chlist.getConsumableItemsReturned()!=null){%><%=chlist.getConsumableItemsReturned()%><%}%>" >
                                                                     
                                                                     											                    
 												                </div>
 												           </div> 
 												           
-												           
-												           <%-- <div class="col-md-8" style="">
-												                 <div class="form-group">
-												                	<label class="control-label">Consumable (non-consumed) returned to main store on Issue voucher (Credit to be given in Project Expenditure Card)</label><span class="mandatory">*</span>
-                                                                     <input name="ConsumableItemsReturned"  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
-                                                                    
-                                                                    											                    
-												                </div>
-												           </div>  --%>
 												                
-												              <div class="col-md-7" style="">
+												              <div class="col-md-7" >
 												                 <div class="form-group">
 												                	<label class="control-label">How the manpower sanctioned in the Project has been disposed of (Permanent as well as temporary)</label><span class="mandatory">*</span>
-                                                                    <%-- <%if(chlist!=null && chlist.getCRAttach()!=null){ %>
-                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 		  				 	value="CRAttachfile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="CRAttach Download">
-                            					 							<i class="fa fa-download fa-lg"></i>
-                            					 						</button>
-                            					 					<%} %>
-                              		      							<input type="file" class="form-control modals" name="CRAttach"  <%if(chlist==null) {%>required<%} %>  accept=".pdf"> --%>
-                              		      							<input  class="form-control" name="ManPowerSanctioned"   value="<% if(chlist!=null && chlist.getManPowerSanctioned()!=null){%><%=chlist.getManPowerSanctioned() %><%}%>" >
-                              		      							
-                                                                    											                    
-												                </div>
+                                                                    
+                              		      							   <input  class="form-control" name="ManPowerSanctioned"   value="<%if(chlist!=null && chlist.getManPowerSanctioned()!=null){%><%=chlist.getManPowerSanctioned()%><%}%>" >
+                              		      						</div>
 												                
 												                 <div class="form-group">
 												                	<label class="control-label">Overall Review Remarks/Recommendations </label><span class="mandatory">*</span>
                                                                     <textarea class="form-control form-control" name="OverAllReason" maxlength="3000" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getRemarks()!=null) {%><%=chlist.getRemarks() %><%} %></textarea> 											                    
+                              		  								 placeholder="Enter Reason" ><%if(chlist!=null && chlist.getRemarks()!=null){%><%=chlist.getRemarks()%><%}%></textarea> 											                    
 												                </div>
-												                
-												                
-												           </div>  
-												    </div> 
+												             </div>  
+												        </div> 
 												    
 														     <div class="checklistpage"  style="text-align: center;">
 														     
-														            <!-- <button class="btn btn-info btn-sm" id="backtosecondpage" >Previous</button> -->
-														            
-														             <% if(chlist!=null && chlist.getSPActualposition()!=null) { %>
+														             <% if(chlist!=null && chlist.getSPActualposition()!=null && !chlist.getSPActualposition().isEmpty()) { %>
 												                    
-												                    <button class="btn-warning edit btn" type="submit" id="" name="Action" value="Edit" onclick="return confirm('Are You Sure To Update')">UPDATE</button>
+												                           <button class="btn-warning edit btn" type="submit" id="" name="Action" value="Edit" onclick="return confirm('Are You Sure To Update')">UPDATE</button>
 												                    
-												             <%} else{ %>
+												                     <%} else{ %>
 												             
-													                <button class="btn btn-info btn-sm success submit" id="secondpagechange" name="Action"  <% if(chlist!=null){ %> value="Edit" <%} else {%> value="Add" <%} %>onclick="return confirm('Are You Sure To Submit')">SUBMIT</button>
-													                
-													                <%} %>
-														            
-														           
-															 </div> 
-													
-												    </form> 
+													                         <button class="btn btn-info btn-sm success submit" id="secondpagechange" name="Action"  <% if(chlist!=null){ %> value="Edit" <%} else {%> value="Add" <%} %>onclick="return confirm('Are You Sure To Submit')">SUBMIT</button>
+													                 <%} %>
+														      </div> 
+													</form> 
 												    
 												    <br>
 												    
 												    <div class="pagin" style="display: flex; justify-content: center;padding-bottom:10px;"> 
-																
-																	
-																	<div class="pagination">
-																			<!-- <div class="page-item">
-																			
-																				<button class="page-link"  type="button" id="backtosecondpages" >Previous</button>
-																				
-																			</div> -->
-																			
-																		<!-- 	<div class="page-item">
-																				<input class="page-link" type="button" value="3" disabled/>
-																			</div>
-																			 -->
-																			
+																   <div class="pagination">
 																			
 																			<div class="page-item">
 																				<button class="page-link" type="button" id="thirdpage1" >1</button>
 																			</div>
-																			
-																			
 																			<div class="page-item">
 																				<button class="page-link" type="button" id="thirdpage2" >2</button>
 																			</div>
@@ -1908,16 +1957,9 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 																			<div class="page-item">
 																				<button class="page-link" type="button" id="thirdpage3" >3</button>
 																			</div>
-																			
-																			<!-- <div class="page-item">
-																				   <button class="page-link" type="button"  >Next</button>
-																			</div> -->
-																			
 																	</div>
-															</div> 
+															    </div> 
 															</div>	 
-												    
-												    
 												    </div> 
 												</div>
 											</div>
@@ -1926,19 +1968,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
                					</div>
                					<div style="display: flex;justify-content: space-between;">
                						<div></div>
-		               				<%-- <div class="navigation_btn"  style="text-align: center;">
-		               					<%if(chlist!=null){ %>
-				               				<form action="">
-				               					<button type="submit" class="btn btn-sm " formaction="ProjectClosurechlistDownload.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="chlist Download" style="background-color: purple;border: none;color: white;font-weight: bold;">chlist</button>
-				               					<input type="hidden" name="closureId" value="<%=closureId%>">
-												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-				               				</form>
-			               				<%} %>
-									</div> --%>
-		               				<!-- <div class="navigation_btn"  style="text-align: right;">
-            							<a class="btn btn-info btn-sm  shadow-nohover back" href="ProjectClosureList.htm" style="color: white!important">Back</a>
-										<button class="btn btn-info btn-sm next">Next</button>
-									</div> -->
+		               				
                					</div>
                					
                			<%if(chlistTabId!=null && chlistTabId.equalsIgnoreCase("1")){ %> 
@@ -2050,6 +2080,8 @@ $(document).ready(function() {
    
  });
    
+   
+   
    if ($("#select2").val() == 'PurchasedDirectly') {
 	   
 		 $('#NCSDrawn').hide();
@@ -2060,7 +2092,67 @@ $(document).ready(function() {
 	     $('#NCSReason').hide();
 	   	 $('#NCSDrawn').show();
    }
- });
+  
+});
+
+$(document).ready(function() {
+   $('#CRUpload').hide();
+   
+   $('#select3').on('change', function() {
+	   var selectedValue = $(this).val();
+	   if(selectedValue=="DOC"){
+	   	
+		   $('#CRUpload').show();
+	   	
+	   }
+	   else {
+		   $('#CRUpload').hide();
+	   }
+	    if(selectedValue=="DOC"){
+	   	  $('#CRUpload').attr('required', true);
+	    } 
+	   
+	 });
+   if ($("#select3").val() == 'DOC' ) {
+       
+  	 $('#CRUpload').show();
+
+    }else if($("#select3").val() == 'DOC'){
+	   $('#CRUpload').hide();
+	
+   }
+   
+});
+
+
+$(document).ready(function() {
+	   $('#BudgetDocUpload').hide();
+	   
+	   $('#select4').on('change', function() {
+		   var selectedValue = $(this).val();
+		   if(selectedValue=="DOC"){
+		   	
+			   $('#BudgetDocUpload').show();
+		   	
+		   }
+		   else {
+			   $('#BudgetDocUpload').hide();
+		   }
+		    if(selectedValue=="DOC"){
+		   	  $('#BudgetDocUpload').attr('required', true);
+		    } 
+		   
+		 });
+	   if ($("#select4").val() == 'DOC') {
+	       
+	  	 $('#BudgetDocUpload').show();
+
+	    }else if($("#select4").val() == 'DOC'){
+		   $('#BudgetDocUpload').hide();
+		
+	   }
+	   
+	});
  
  
 $(document).ready(function() {
@@ -2243,8 +2335,46 @@ $('#hqrssenddate').change(function() {
 		}else{
 			$('#selectall').show();
 		}
-		 
+		
+	 
+	 
+	 $('#RevSancCost').change(function() {
+		    if ($(this).is(':checked')) {
+		    	$('#selectRevSancCost').show();
+		    } else {
+		        
+		    	$('#selectRevSancCost').hide();
+		    }
+		});
+	 
+	 if (!$('#RevSancCost').is(':checked')) {
+			
+		    $('#selectRevSancCost').hide();
+		  
+		}else{
+			$('#selectRevSancCost').show();
+		}
+	 
+	 
+	 $('#RevPDCCost').change(function() {
+		    if ($(this).is(':checked')) {
+		    	$('#selectRevPDCCost').show();
+		    } else {
+		        
+		    	$('#selectRevPDCCost').hide();
+		    }
+		});
+	 
+	 if (!$('#RevPDCCost').is(':checked')) {
+			
+		    $('#selectRevPDCCost').hide();
+		  
+		}else{
+			$('#selectRevPDCCost').show();
+		}
+	 
      });
+     
 
 $(document).ready(function() {
 	
