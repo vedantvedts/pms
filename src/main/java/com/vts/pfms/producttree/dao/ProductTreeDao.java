@@ -41,7 +41,7 @@ public interface ProductTreeDao {
 
 	public long systemLevelNameEdit(SystemProductTree spt)throws Exception;
 
-
+	public List<Object[]> getSystemParentLevelIdbyMainId(String mainId)throws Exception;
 	
 
 }

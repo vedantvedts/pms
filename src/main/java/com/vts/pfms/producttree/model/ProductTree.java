@@ -28,6 +28,7 @@ public class ProductTree {
 	private String Stage;
 	private String Module;
 	private String RevisionNo;
+	private String ElementType;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;

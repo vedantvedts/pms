@@ -1,5 +1,6 @@
 package com.vts.pfms.producttree.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class ProductTreeDaoImpl implements ProductTreeDao{
 	private static final Logger logger=LogManager.getLogger(ProductTreeDaoImpl.class);
 
 
-	private static final String PRODUCTTREELIST="SELECT a.MainId,a.parentlevelid,a.levelid,a.levelname,a.projectid,b.ProjectName,a.Stage,a.Module,a.SubLevelId,a.SystemMainId,a.LevelCode,a.InitiationId FROM pfms_product_tree a,project_master b WHERE MainId>0 AND a.projectid=b.projectid AND b.projectid=:projectId and a.isActive='1' ORDER BY parentlevelid";
+	private static final String PRODUCTTREELIST="SELECT a.MainId,a.parentlevelid,a.levelid,a.levelname,a.projectid,b.ProjectName,a.Stage,a.Module,a.SubLevelId,a.SystemMainId,a.LevelCode,a.InitiationId FROM pfms_product_tree a,project_master b WHERE a.ElementType='I' AND MainId>0 AND a.projectid=b.projectid AND b.projectid=:projectId and a.isActive='1' ORDER BY parentlevelid";
 	private static final String LEVELNAMEDELETE="UPDATE pfms_product_tree AS t1\r\n"
 			+ "	LEFT JOIN pfms_product_tree AS t2 ON t1.mainid = t2.parentlevelid\r\n"
 			+ "	LEFT JOIN pfms_product_tree AS t3 ON t2.mainid = t3.parentlevelid\r\n"
@@ -170,7 +171,7 @@ public class ProductTreeDaoImpl implements ProductTreeDao{
 		return prod.getMainId();
 	}
 	
-	private static final String SYSPRODUCTTREELIST="SELECT a.MainId,a.parentlevelid,a.levelid,a.levelname,a.sid,b.systemName,a.Stage,a.Module,a.SubLevelId,b.systemid,a.LevelCode  FROM pfms_system_product_tree a,pfms_system b WHERE MainId>0 AND a.sid=b.sid AND b.sid=:sid AND a.isActive='1' ORDER BY parentlevelid";
+	private static final String SYSPRODUCTTREELIST="SELECT a.MainId,a.parentlevelid,a.levelid,a.levelname,a.sid,b.systemName,a.Stage,a.Module,a.SubLevelId,b.systemid,a.LevelCode,a.IsSoftware,IFNULL((SELECT c.IsSoftware FROM pfms_system_product_tree c  WHERE c.Mainid = a.parentlevelid AND c.isActive = '1'),'N') AS IsSoftwareMain  FROM pfms_system_product_tree a,pfms_system b WHERE MainId>0 AND a.sid=b.sid AND b.sid=:sid AND a.isActive='1' ORDER BY parentlevelid";
 	@Override
 	public List<Object[]> getSystemProductTreeList(String sid) throws Exception {
 		  Query query=manager.createNativeQuery(SYSPRODUCTTREELIST);
@@ -193,7 +194,7 @@ public class ProductTreeDaoImpl implements ProductTreeDao{
 		}
 	}
 	
-	private static final String PRODUCTTREELISTSUB="SELECT a.MainId,a.parentlevelid,a.levelid,a.levelname,a.projectid,b.ProjectShortName,a.Stage,a.Module,a.SubLevelId,a.SystemMainId,a.LevelCode,a.InitiationId FROM pfms_product_tree a,pfms_initiation b WHERE a.MainId>0 AND a.InitiationId=b.InitiationId AND b.InitiationId=:InitiationId and a.isActive='1' ORDER BY parentlevelid";
+	private static final String PRODUCTTREELISTSUB="SELECT a.MainId,a.parentlevelid,a.levelid,a.levelname,a.projectid,b.ProjectShortName,a.Stage,a.Module,a.SubLevelId,a.SystemMainId,a.LevelCode,a.InitiationId FROM pfms_product_tree a,pfms_initiation b WHERE a.ElementType='I' AND a.MainId>0 AND a.InitiationId=b.InitiationId AND b.InitiationId=:InitiationId and a.isActive='1' ORDER BY parentlevelid";
 
 	@Override
 	public List<Object[]> getProductTreeListInitiation(String InitiationId) {
@@ -250,5 +251,18 @@ public class ProductTreeDaoImpl implements ProductTreeDao{
 		manager.merge(spt);
 		manager.flush();
 		return spt.getMainId();
+	}
+	
+	private static final String SYSTEMLEVELIDS=" SELECT a.MainId,a.parentlevelid FROM pfms_system_product_tree a WHERE a.isActive='1' AND a.parentlevelid=:mainid";
+	@Override
+	public List<Object[]> getSystemParentLevelIdbyMainId(String mainId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(SYSTEMLEVELIDS);
+			query.setParameter("mainid", mainId);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
 	}
 }

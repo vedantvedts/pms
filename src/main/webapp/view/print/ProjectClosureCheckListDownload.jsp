@@ -198,6 +198,7 @@ p,td,th
 <%
 
      String labcode = (String)session.getAttribute("labcode");
+     Object[] labcity = (Object[])request.getAttribute("labcity");
      ProjectClosureCheckList chlist = (ProjectClosureCheckList)request.getAttribute("ProjectClosureCheckListData");
      FormatConverter fc = new FormatConverter();
      String closureId=(String)request.getAttribute("closureId");
@@ -236,10 +237,18 @@ p,td,th
 	%>
 	
 	 <table id="tabledata" style="margin-top: -2rem;" style="width:100%;">
+	 
+	 <tr>
+			<td style="width: 5%;font-weight: 600;">SN</td>
+			<td style="width: 35%;text-align: center !important;font-weight: 600;">Description</td>
+			<td style="text-align: center !important;font-weight: 600;">Reply</td>
+		</tr>
+	 
+	 
 		<tr>
-			<td style="width: 5%;"><%=++slno %>.</td>
+			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 600;">Name of the Lab</td>
-			<td ><%=labcode %></td>
+			<td ><%=labcode%>,&nbsp;<%=labcity[2] %></td>
 		</tr>
 		
 		<tr>
@@ -364,7 +373,7 @@ p,td,th
 			<td>
 			
 			
-			<a href="http://192.168.1.14:8085/ibas/FinancialPerformancePdf.htm?ProjectIdSel=<%=ProjectId%>%23<%=ProjectCode%>&Date=<%=fc.SqlToRegularDate(currentDate.toString())%>&Amount=Rupees&rupeevalue=1" >
+			<a href="http://192.168.1.61:8085/ibas/FinancialPerformancePdf.htm?ProjectIdSel=<%=ProjectId%>%23<%=ProjectCode%>&Date=<%=fc.SqlToRegularDate(currentDate.toString())%>&Amount=Rupees&rupeevalue=1" >
 			Annexure-<%=++a %>
 			
 			</a>  
@@ -382,21 +391,19 @@ p,td,th
 		</tr>
 		
 		
-		<!-- <tr>
-			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 400;">v.	Any other point worth mentioning </td>
-			<td></td>
-		</tr> -->
-		
 		
 		<tr>
 			<td style="width: 5%;"><%=++slno %>.</td>
-			<td colspan="2" style="width: 35%;text-align: left !important;font-weight: 600;">Revision in sanctioned cost if any </td>
+			<td style="width: 35%;text-align: left !important;font-weight: 600;">Revision in sanctioned cost if any </td>
+			
+			<%if(Rev!=null && Rev.size()==0){ %><td>NA</td><%}%>
 			
 		</tr>
 		</table>
 		
+		<%if(Rev !=null && Rev.size()>0) { %>
 	<table id="tabledata" style="margin-top: 0rem;border-top:none;border-bottom:none;border:0;width:100%;">
+		
 		
 		<tr>
 			
@@ -411,7 +418,7 @@ p,td,th
 		
 		<% 
 		int sl=0;
-		if(Rev !=null && Rev.size()>0) {
+		
 		for(Object[] obj:Rev){
 			if(obj[1]!=null && obj[1].toString().equalsIgnoreCase("SANC")){%>
 		
@@ -425,53 +432,28 @@ p,td,th
 		
 		
 		</tr>
-		<%}}} %>
+		<%}} %>
 		
 		
 		</table>
+		<%} %>
 		
 		
-		 <table id="tabledata" style="margin-top: -2rem;" style="width:100%;">
-		
-		
-		<%-- <tr>
-			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.	When requested </td>
-			<td><%if(chlist!=null && chlist.getSCRequested()!=null) {%><%=fc.SqlToRegularDate(chlist.getSCRequested()) %><%} %></td>
-		</tr>
-		
-		
+		  <table id="tabledata" style="margin-top: -2rem;" style="width:100%;">
+	
 		<tr>
-			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. When granted </td>
-			<td><%if(chlist!=null && chlist.getSCGranted()!=null) {%><%=fc.SqlToRegularDate(chlist.getSCGranted()) %><%} %></td>
-		</tr>
+			<td style="width: 5%;"><%=++slno%>.</td>
+			<td style="width: 35%;text-align: left !important;font-weight: 600;">Revision in PDC if any </td>
+			<%if(Rev!=null && Rev.size()==0){%><td>NA</td><%} %>
+		</tr> 
 		
-		
-		<tr>
-			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. How much/ revised cost </td>
-			<td><%if(chlist!=null && chlist.getSCRevisionCost()>=0){%><%=df.format(chlist.getSCRevisionCost()) %><%} %></td>
-		</tr>
-		
-		
-		<tr>
-			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 400;">iv. Any reason specified </td>
-			<td><%if(chlist!=null && chlist.getSCReason()!=null){ %><%=chlist.getSCReason() %><%} %></td>
-		</tr>
-		 --%>
-		
-		<tr>
-			<td style="width: 5%;"><%=++slno %>.</td>
-			<td colspan="2" style="width: 35%;text-align: left !important;font-weight: 600;">Revision in PDC if any </td>
-			
-		</tr>
+	
 		
 		</table>
 		
-		
+		<%if(Rev !=null && Rev.size()>0) { %>
 		<table id="tabledata" style="margin-top: -2rem;border-top:none !important;border-bottom:none !important;" style="width:100%;">
+		
 		
 		<tr>
 			
@@ -486,7 +468,7 @@ p,td,th
 		
 		<% 
 		int sl1=0;
-		if(Rev !=null && Rev.size()>0) {
+		
 		for(Object[] obj:Rev){
 			if(obj[1]!=null && obj[1].toString().equalsIgnoreCase("PDC")){%>
 		
@@ -500,40 +482,15 @@ p,td,th
 		
 		
 		</tr>
-		<%}}} %>
+		<%}} %>
 		
 		
 		</table>
+		<%} %>
 		
 		
 		 <table id="tabledata" style="margin-top: -2rem;" style="width:100%;">
-	<%-- 	<tr>
-			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.	When requested </td>
-			<td><%if(chlist!=null && chlist.getPDCRequested()!=null) {%><%=fc.SqlToRegularDate(chlist.getPDCRequested()) %><%} %></td>
-		</tr>
-		
-		
-		<tr>
-			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. When granted </td>
-			<td><%if(chlist!=null && chlist.getPDCGranted()!=null) {%><%=fc.SqlToRegularDate(chlist.getPDCGranted()) %><%} %></td>
-		</tr>
-		
-		
-		<tr>
-			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. Quantum/ revised PDC </td>
-			<td><%if(chlist!=null && chlist.getPDCRevised()!=null) {%><%=fc.SqlToRegularDate(chlist.getPDCRevised()) %><%} %></td>
-		</tr>
-		
-		
-		<tr>
-			<td style="width: 5%;"></td>
-			<td style="width: 35%;text-align: left !important;font-weight: 400;">iv. Any reason specified </td>
-			<td><%if(chlist!=null && chlist.getPDCReason()!=null){ %><%=chlist.getPDCReason() %><%} %></td>
-		</tr> --%>
-		
+	
 		
 		
 		<tr>
@@ -549,11 +506,27 @@ p,td,th
 			<td><% if(chlist!=null &&  chlist.getPRMaintained() !=null ){%><%=chlist.getPRMaintained() %> <%} %></td>
 		</tr>
 		
+		<% if(chlist!=null &&  chlist.getPRRemark1() !=null  && !chlist.getPRRemark1().isEmpty()){ %>
+		<tr>
+			<td style="width: 5%;"></td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
+			<td><% if(chlist!=null &&  chlist.getPRRemark1() !=null ){%><%=chlist.getPRRemark1() %> <%} %></td>
+		</tr>
+		<%} %>
+		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii.Sanctioned projects entered (including sub-projects) </td>
 			<td><% if(chlist!=null &&  chlist.getPRSanctioned() !=null ){%><%=chlist.getPRSanctioned() %> <%} %> </td>
 		</tr>
+		
+		<% if(chlist!=null &&  chlist.getPRRemark2() !=null && !chlist.getPRRemark2().isEmpty()){ %>
+		<tr>
+			<td style="width: 5%;"></td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
+			<td><% if(chlist!=null &&  chlist.getPRRemark2() !=null ){%><%=chlist.getPRRemark2() %> <%} %></td>
+		</tr>
+		<%} %>
 		
 		<tr>
 			<td style="width: 5%;"><%=++slno %>.</td>
@@ -566,15 +539,20 @@ p,td,th
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.	Maintained separately for consumable & non-consumables </td>
 			<td>
+		     <%if(chlist!=null &&  chlist.getBudgetDocument() !=null){%>
 			
-			
-			<!--   <a href="http://192.168.1.14:8085/ibas/ProjectExpenditureReportPrint.htm?_csrf=79269a60-d989-47b5-8e7f-5e4c8ebc27f3&ProjectIdSel=1%23PRJ-01&BudgetHeadIdSel=0%23All&ItemTypeSel=A%23ALL&FromDate=01-03-2024&toDate=22-04-2024&action=pdf">
-			       Download
-		     </a>   -->
-		      
-		       <a href="http://192.168.1.14:8085/ibas/ProjectExpenditureReportPrint.htm?ProjectIdSel=<%=ProjectId%>%23<%=ProjectCode%>&BudgetHeadIdSel=0%23All&ItemTypeSel=A%23ALL&FromDate=<%=fc.SqlToRegularDate(firstDayOfPreviousMonth.toString())%>&toDate=<%=fc.SqlToRegularDate(currentDate.toString())%>&action=pdf" target="_blank" title="PEC Download">
+			     <a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=BudgetDocumentfile&closureId=<%=closureId%>" target="_blank">
 			        Annexure-<%=++a %>
-		       </a>   
+			     </a>
+			
+			<%}else{ %>
+		
+		
+		       <a href="http://192.168.1.61:8085/ibas/ProjectExpenditureReportPrint.htm?ProjectIdSel=<%=ProjectId%>%23<%=ProjectCode%>&BudgetHeadIdSel=0%23All&ItemTypeSel=A%23ALL&FromDate=<%=fc.SqlToRegularDate(firstDayOfPreviousMonth.toString())%>&toDate=<%=fc.SqlToRegularDate(currentDate.toString())%>&action=pdf" target="_blank" title="PEC Download">
+			        Annexure-<%=++a %>
+		       </a> 
+		       
+		       <%} %>  
 		      
 			</td>
 		</tr>
@@ -585,6 +563,14 @@ p,td,th
 			<td><% if(chlist!=null &&  chlist.getPECVerified() !=null ){%><%=chlist.getPECVerified() %><%} %></td>
 		</tr>
 		
+		
+		<% if(chlist!=null &&  chlist.getPECRemark1() !=null && !chlist.getPECRemark1().isEmpty()){ %>
+		<tr>
+			<td style="width: 5%;"></td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
+			<td><% if(chlist!=null &&  chlist.getPECRemark1() !=null ){%><%=chlist.getPECRemark1() %> <%} %></td>
+		</tr>
+		<%} %>
 		
 		<tr>
 			<td style="width: 5%;"><%=++slno %>.</td>
@@ -597,12 +583,22 @@ p,td,th
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.If required, maintained properly </td>
 			<td>
+			<%if(chlist!=null &&  chlist.getCRBringFrom() !=null && chlist.getCRBringFrom().equalsIgnoreCase("DOC")){ %>
 			
-			<a href="http://192.168.1.14:8085/ibas/CommitmentListPdfExl.htm?ControllerProjectId=<%=ProjectId%>&ControllerProjectCode=<%=ProjectCode%>&ControllerFromDate=<%=fc.SqlToRegularDate(firstDayOfPreviousMonth.toString())%>&ControllerToDate=<%=fc.SqlToRegularDate(currentDate.toString())%>&ControllerbudgetHeadId=1&ControllerBudgetHeadDescription=Revenue&ControllerbudgetItemId=0&ControllerHeadOfAccounts=All&ControllerProjShortName=+%28TMS%29&Action=Pdf">
+			
+			<a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=CommittmentRegisterfile&closureId=<%=closureId%>" target="_blank">
 			
 			  Annexure-<%=++a %>
 			
-			</a>    
+			</a>
+			
+			<%}else{ %>
+			<a href="http://192.168.1.61:8085/ibas/CommitmentListPdfExl.htm?ControllerProjectId=<%=ProjectId%>&ControllerProjectCode=<%=ProjectCode%>&ControllerFromDate=<%=fc.SqlToRegularDate(firstDayOfPreviousMonth.toString())%>&ControllerToDate=<%=fc.SqlToRegularDate(currentDate.toString())%>&ControllerbudgetHeadId=1&ControllerBudgetHeadDescription=Revenue&ControllerbudgetItemId=0&ControllerHeadOfAccounts=All&ControllerProjShortName=+%28TMS%29&Action=Pdf">
+			
+			  Annexure-<%=++a %>
+			
+			</a>  
+			<%} %>  
 			
 			</td>
 		</tr>
@@ -621,6 +617,15 @@ p,td,th
 			<td><% if(chlist!=null &&  chlist.getSRMaintained()!=null){%><%= chlist.getSRMaintained() %><%} %> </td>
 			
 		</tr>
+		
+		<% if(chlist!=null &&  chlist.getSRRemark1() !=null && !chlist.getSRRemark1().isEmpty()){ %>
+		<tr>
+			<td style="width: 5%;"></td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
+			<td><% if(chlist!=null &&  chlist.getSRRemark1() !=null ){%><%=chlist.getSRRemark1() %> <%} %></td>
+		</tr>
+		<%} %>
+		
 		
 		
 		<tr>
@@ -648,6 +653,14 @@ p,td,th
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. Amount is debited to Project Expenditure card </td>
 			<td><% if(chlist!=null && chlist.getCSamountdebited()!=null){%><%=chlist.getCSamountdebited()  %><%} %></td>
 		</tr>
+		
+		<% if(chlist!=null &&  chlist.getCSRemark1() !=null && !chlist.getCSRemark1().isEmpty()){ %>
+		<tr>
+			<td style="width: 5%;"></td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
+			<td><% if(chlist!=null &&  chlist.getCSRemark1() !=null ){%><%=chlist.getCSRemark1() %> <%} %></td>
+		</tr>
+		<%} %>
 		
 		
 		<tr>
@@ -682,6 +695,14 @@ p,td,th
 			<td><% if(chlist!=null && chlist.getNCSamountdebited()!=null){%><%=chlist.getNCSamountdebited()  %><%} %></td>
 		</tr>
 		
+		<% if(chlist!=null &&  chlist.getNCSRemark1() !=null && !chlist.getNCSRemark1().isEmpty()){ %>
+		<tr>
+			<td style="width: 5%;"></td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
+			<td><% if(chlist!=null &&  chlist.getNCSRemark1() !=null ){%><%=chlist.getNCSRemark1() %> <%} %></td>
+		</tr>
+		<%} %>
+		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;"> iv. If not through main stores, reason thereof </td>
@@ -694,11 +715,27 @@ p,td,th
 			<td><% if(chlist!=null && chlist.getNCSDistributed()!=null){%><%=chlist.getNCSDistributed() %><%} %></td>
 		</tr>
 		
+		<% if(chlist!=null &&  chlist.getNCSRemark2() !=null && !chlist.getNCSRemark2().isEmpty()){ %>
+		<tr>
+			<td style="width: 5%;"></td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
+			<td><% if(chlist!=null &&  chlist.getNCSRemark2() !=null ){%><%=chlist.getNCSRemark2() %> <%} %></td>
+		</tr>
+		<%} %>
+		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">vi. Any non-consumable item incorporated in any prototype stores are received and SIR is prepared before closure of project</td>
 			<td><% if(chlist!=null && chlist.getNCSIncorporated()!=null){%><%=chlist.getNCSIncorporated() %><%} %></td>
 		</tr>
+		
+		<% if(chlist!=null &&  chlist.getNCSRemark3() !=null && !chlist.getNCSRemark3().isEmpty()){ %>
+		<tr>
+			<td style="width: 5%;"></td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
+			<td><% if(chlist!=null &&  chlist.getNCSRemark3() !=null ){%><%=chlist.getNCSRemark3() %> <%} %></td>
+		</tr>
+		<%} %>
 		
 		
 		<tr>
@@ -727,6 +764,14 @@ p,td,th
 			<td><% if(chlist!=null && chlist.getEquipPurchased()!=null){%><%=chlist.getEquipPurchased() %><%} %></td>
 		</tr>
 		
+		<% if(chlist!=null &&  chlist.getEquipmentRemark1() !=null && !chlist.getEquipmentRemark1().isEmpty()){ %>
+		<tr>
+			<td style="width: 5%;"></td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
+			<td><% if(chlist!=null &&  chlist.getEquipmentRemark1() !=null ){%><%=chlist.getEquipmentRemark1() %> <%} %></td>
+		</tr>
+		<%} %>
+		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. If yes, reason assigned </td>
@@ -748,6 +793,14 @@ p,td,th
 			</td>
 		</tr>
 		
+		<% if(chlist!=null &&  chlist.getEquipmentRemark2() !=null && !chlist.getEquipmentRemark2().isEmpty()){ %>
+		<tr>
+			<td style="width: 5%;"></td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
+			<td><% if(chlist!=null &&  chlist.getEquipmentRemark2() !=null ){%><%=chlist.getEquipmentRemark2() %> <%} %></td>
+		</tr>
+		<%} %>
+		
 		
 		<tr>
 			<td style="width: 5%;"></td>
@@ -755,14 +808,21 @@ p,td,th
 			<td><% if(chlist!=null && chlist.getEquipBoughtOnCharge()!=null ){%><%=chlist.getEquipBoughtOnCharge() %><%} %>
 			
 		 <%if(chlist!=null && chlist.getEquipBoughtOnChargeReason()!=null){ %><%=chlist.getEquipBoughtOnChargeReason() %>
-			<%-- <a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=EquipBoughtOnChargefile&closureId=<%=closureId %>" target="_blank" title="EquipBoughtOnCharge Download">
-			       Annexure-<%=++a %>
-		     </a> --%>
+		
 		     
 			<%} %>
 			
 			</td>
 		</tr>
+		
+		
+		<% if(chlist!=null &&  chlist.getEquipmentRemark3() !=null && !chlist.getEquipmentRemark3().isEmpty()){ %>
+		<tr>
+			<td style="width: 5%;"></td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
+			<td><% if(chlist!=null &&  chlist.getEquipmentRemark3() !=null ){%><%=chlist.getEquipmentRemark3() %> <%} %></td>
+		</tr>
+		<%} %>
 		
 		
 		<tr>
@@ -777,7 +837,7 @@ p,td,th
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.Yearly break up of Allotment & Expenditure since the Project  sanctioned </td>
 			<td>
 			
-			<a href="http://192.168.1.14:8085/ibas/ProjectDetailsAllotExp.htm?ProjectIdSel=<%=ProjectId%>%23<%=ProjectCode%>&Amount=L" target="_blank" title="Budget Yearly BreakUp Download">
+			<a href="http://192.168.1.61:8085/ibas/ProjectDetailsAllotExp.htm?ProjectIdSel=<%=ProjectId%>%23<%=ProjectCode%>&Amount=L" target="_blank" title="Budget Yearly BreakUp Download">
 			       Annexure-<%=++a %>
 		     </a> 
 			
@@ -789,6 +849,15 @@ p,td,th
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. The reviewing officer should  see  the allocation  w.r.t demands  and  also  the  projections  in  the Q.P.R </td>
 			<td><% if(chlist!=null && chlist.getBudgetAllocation()!=null){%><%=chlist.getBudgetAllocation() %><%} %></td>
 		</tr>
+		
+		
+		<% if(chlist!=null &&  chlist.getBudgetRemark1() !=null && !chlist.getBudgetRemark1().isEmpty()){ %>
+		<tr>
+			<td style="width: 5%;"></td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
+			<td><% if(chlist!=null &&  chlist.getBudgetRemark1() !=null ){%><%=chlist.getBudgetRemark1() %> <%} %></td>
+		</tr>
+		<%} %>
 		
 		
 		<tr>
@@ -805,9 +874,6 @@ p,td,th
 			
 			 <%if(chlist!=null && chlist.getBudgetExpenditure()!=null){ %><%=chlist.getBudgetExpenditure() %>
 			 
-			 <%-- <a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=BudgetExpenditurefile&closureId=<%=closureId %>" target="_blank" title="BudgetExpenditure Download">
-			       Annexure-<%=++a %>
-		     </a> --%>
 			
 			<%} %>
 			
@@ -822,6 +888,15 @@ p,td,th
 		</tr>
 		
 		
+		<% if(chlist!=null &&  chlist.getBudgetRemark2() !=null && !chlist.getBudgetRemark2().isEmpty()){ %>
+		<tr>
+			<td style="width: 5%;"></td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
+			<td><% if(chlist!=null &&  chlist.getBudgetRemark2() !=null ){%><%=chlist.getBudgetRemark2() %> <%} %></td>
+		</tr>
+		<%} %>
+		
+		
 		<tr>
 			<td style="width: 5%;"><%=++slno %></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">i. Monthly/ Quarterly expenditure Reports are rendered to R&D HQrs and copy sent to local CDA </td>
@@ -829,12 +904,27 @@ p,td,th
 		</tr>
 		
 		
+		<% if(chlist!=null &&  chlist.getBudgetRemark3() !=null && !chlist.getBudgetRemark3().isEmpty()){ %>
+		<tr>
+			<td style="width: 5%;"></td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
+			<td><% if(chlist!=null &&  chlist.getBudgetRemark3() !=null ){%><%=chlist.getBudgetRemark3() %> <%} %></td>
+		</tr>
+		<%} %>
+		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. Any expenditure incurred after Project PDC (Give details and reasons thereof)</td>
 			<td><% if(chlist!=null && chlist.getBudgetexpenditureIncurred()!=null ){%><%=chlist.getBudgetexpenditureIncurred() %><%} %></td>
 		</tr>
 		
+		<% if(chlist!=null &&  chlist.getBudgetRemark4() !=null && !chlist.getBudgetRemark4().isEmpty()){ %>
+		<tr>
+			<td style="width: 5%;"></td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
+			<td><% if(chlist!=null &&  chlist.getBudgetRemark4() !=null ){%><%=chlist.getBudgetRemark4() %> <%} %></td>
+		</tr>
+		<%} %>
 		
 		<tr>
 			<td style="width: 5%;"><%=++slno %>.</td>
@@ -856,6 +946,14 @@ p,td,th
 			<td><% if(chlist!=null && chlist.getJobCardsMaintained()!=null){%><%=chlist.getJobCardsMaintained() %><%} %></td>
 		</tr>
 		
+		
+		<% if(chlist!=null &&  chlist.getUtilizationRemark1() !=null && !chlist.getUtilizationRemark1().isEmpty()){ %>
+		<tr>
+			<td style="width: 5%;"></td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
+			<td><% if(chlist!=null &&  chlist.getUtilizationRemark1() !=null ){%><%=chlist.getUtilizationRemark1()%><%} %></td>
+		</tr>
+		<%} %>
 		<tr>
 			<td style="width: 5%;"><%=++slno %>.</td>
 			<td  colspan="2" style="width: 35%;text-align: left !important;font-weight: 600;">Staff Position </td>
@@ -869,16 +967,20 @@ p,td,th
 		</tr>
 		
 		
+		<% if(chlist!=null &&  chlist.getStaffRemark1() !=null && !chlist.getStaffRemark1().isEmpty()){ %>
+		<tr>
+			<td style="width: 5%;"></td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
+			<td><% if(chlist!=null &&  chlist.getStaffRemark1() !=null ){%><%=chlist.getStaffRemark1()%><%} %></td>
+		</tr>
+		<%} %>
+		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. Actual position-held </td>
 			<td>
 			 <%if(chlist!=null && chlist.getSPActualposition()!=null){ %><%=chlist.getSPActualposition() %>
-			
-			<%-- <a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=SPActualpositionfile&closureId=<%=closureId %>" target="_blank" title="SPActualposition Download">
-			       Annexure-<%=++a %>
-		     </a> --%>
-			
+		
 			
 			<%} %>
 			
@@ -891,13 +993,6 @@ p,td,th
 			<td>
 			 <%if(chlist!=null && chlist.getSPGeneralSpecific()!=null){ %><%=chlist.getSPGeneralSpecific()%><%} %>
 			
-			
-			<%-- <a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=SPGeneralSpecificfile&closureId=<%=closureId %>" target="_blank" title="SPGeneralSpecific Download">
-			       Annexure-<%=++a %>
-		     </a> --%>
-			
-			
-			
 			</td>
 		</tr>
 		
@@ -907,6 +1002,15 @@ p,td,th
 			<td  colspan="2"  style="width: 35%;text-align: left !important;font-weight: 600;">Civil Works </td>
 			
 		</tr>
+		
+		
+		<% if(chlist!=null &&  chlist.getCWRemark1() !=null && !chlist.getCWRemark1().isEmpty()){ %>
+		<tr>
+			<td style="width: 5%;"></td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
+			<td><% if(chlist!=null &&  chlist.getCWRemark1() !=null ){%><%=chlist.getCWRemark1()%><%} %></td>
+		</tr>
+		<%} %>
 		
 		
 		<tr>
@@ -967,7 +1071,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii.Vehicle Types .</td>
-			<td> <% if(chlist!=null && chlist.getNoOfVehicleSanctioned()!=null){%><%=chlist.getVehicleType() %><%} %></td>
+			<td> <% if(chlist!=null && chlist.getVehicleType()!=null){%><%=chlist.getVehicleType() %><%} %></td>
 		</tr>
 		
 		<tr>
@@ -1024,6 +1128,13 @@ p,td,th
 			<td><% if(chlist!=null && chlist.getCRObjective()!=null){%><%=chlist.getCRObjective() %><%} %></td>
 		</tr>
 		
+		<% if(chlist!=null &&  chlist.getProjectRemark1() !=null && !chlist.getProjectRemark1().isEmpty()){ %>
+		<tr>
+			<td style="width: 5%;"></td>
+			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
+			<td><% if(chlist!=null &&  chlist.getProjectRemark1() !=null ){%><%=chlist.getProjectRemark1()%><%} %></td>
+		</tr>
+		<%} %>
 		
 		<tr>
 			<td style="width: 5%;"></td>
@@ -1064,11 +1175,7 @@ p,td,th
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">vii. How the manpower sanctioned in the Project has been disposed of (Permanent as well as temporary) </td>
 			<td>
 			  <%if(chlist!=null && chlist.getManPowerSanctioned()!=null){ %><%=chlist.getManPowerSanctioned()%><%}%>
-			  
-			  <%-- <a href="<%=path%>ProjectClosureChecklistFileDownload.htm?filename=CRAttachfile&closureId=<%=closureId %>" target="_blank" title="CRAttachfile Download">
-				          Annexure-<%=++a %>
-			     </a> --%>
-			 
+			
 			</td>
 		</tr>
 		

@@ -547,4 +547,11 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 		
 		return dao.getTimesheetKeywordsList();
 	}
+	
+	@Override
+	public Long addTimesheetKeywords(TimesheetKeywords timeSheetKeywords) throws Exception {
+		
+		return dao.addTimesheetKeywords(timeSheetKeywords);
+	}
+
 }

@@ -32,5 +32,6 @@ public interface TimeSheetDao {
 	public List<Object[]> getEmployeeNewTimeSheetList(String empId, String fromDate, String toDate) throws Exception;
 	public List<TimesheetKeywords> getTimesheetKeywordsList() throws Exception;
 	public long getEmployeeActivitySubmissionCount(String empId, String year) throws Exception;
+	public Long addTimesheetKeywords(TimesheetKeywords timeSheetKeywords) throws Exception;
 
 }

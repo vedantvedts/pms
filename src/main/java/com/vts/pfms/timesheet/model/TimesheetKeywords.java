@@ -23,6 +23,7 @@ public class TimesheetKeywords implements Serializable{
 	private String Keyword;
 	private String KeywordShortCode;
 	private String CreatedBy;
+	private String CreatedDate;
 	private int IsActive;
 	
 }

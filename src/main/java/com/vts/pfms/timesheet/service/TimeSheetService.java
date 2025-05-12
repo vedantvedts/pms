@@ -36,5 +36,6 @@ public interface TimeSheetService {
 	public Map<String, Map<LocalDate, TimeSheet>> getTimesheetDataForOfficer(String superiorOfficer, String labCode, String dateofWeek, String loginType) throws Exception;
 	public List<Object[]> getEmployeeNewTimeSheetList(String empId, String fromDate, String toDate) throws Exception;
 	public List<TimesheetKeywords> getTimesheetKeywordsList() throws Exception;
-	
+	public Long addTimesheetKeywords(TimesheetKeywords timeSheetKeywords) throws Exception;
+
 }

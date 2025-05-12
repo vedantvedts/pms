@@ -63,6 +63,7 @@ import com.itextpdf.kernel.utils.PdfMerger;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.cars.service.CARSService;
+import com.vts.pfms.header.service.HeaderService;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
 
 
@@ -107,6 +108,9 @@ public class ProjectClosureController {
 	
 	@Autowired
 	ProjectService projectservice;
+	
+	@Autowired
+	HeaderService headerservice;
 	
 	@Autowired
 	PrintService printservice;
@@ -1513,8 +1517,8 @@ public class ProjectClosureController {
 			@RequestPart(name="QARNCItems", required = false) MultipartFile QARNCItemsAttach,
 	        @RequestPart(name="EquipProcuredAttach", required = false) MultipartFile EquipProcuredAttach,
 	        @RequestPart(name="EquipProcuredBeforePDCAttach", required = false) MultipartFile EquipProcuredBeforePDCAttach,
-	        
-	        
+	        @RequestPart(name="CommittmentRegister", required = false) MultipartFile CommittmentRegister,
+	        @RequestPart(name="BudgetDocument", required = false) MultipartFile BudgetDocument,
 	        @RequestPart(name="SPActualposition",required=false) MultipartFile SPActualpositionAttach,
 	        @RequestPart(name="SPGeneralSpecific",required=false) MultipartFile SPGeneralSpecificAttach
 	       
@@ -1527,75 +1531,29 @@ public class ProjectClosureController {
 			String closureId = req.getParameter("closureId");
 			String action = req.getParameter("Action");
 			
-			String QARObjective = req.getParameter("QARObjective");
-			String QARProposedCost = req.getParameter("QARProposedCost");
-			String[] SCRevisionCost = req.getParameterValues("SCRevisionCost");
-			String[] SCReason = req.getParameterValues("SCReason");
-			String[] PDCReason = req.getParameterValues("PDCReason");
-			String CSReason = req.getParameter("CSReason");
-			String NCSReason = req.getParameter("NCSReason");
-			String EquipReason = req.getParameter("EquipReason");
-			String EquipBoughtOnChargeReason = req.getParameter("EquipBoughtOnChargeReason");
-			String BudgetMechanism = req.getParameter("BudgetMechanism");
-			String Budgetexpenditure = req.getParameter("Budgetexpenditure");
-			String LogBookMaintained = req.getParameter("LogBookMaintained");
-			String SPActualposition = req.getParameter("SPActualposition");
-			String SPGeneralSpecific = req.getParameter("SPGeneralSpecific");
-			String NoOfVehicleSanctioned = req.getParameter("NoOfVehicleSanctioned");
-			String VehicleType = req.getParameter("VehicleType");
-			String VehicleAvgRun = req.getParameter("VehicleAvgRun");
-			String VehicleAvgFuel = req.getParameter("VehicleAvgFuel");
-			String ProjectDelayReason = req.getParameter("ProjectDelayReason");
-			String CRspinoff = req.getParameter("CRspinoff");
-			String PDCNotMeetReason = req.getParameter("PDCNotMeetReason");
-			String CRcostoverin = req.getParameter("CRcostoverin");
-			String NonConsumableItemsReturned = req.getParameter("NonConsumableItemsReturned");
-			String ConsumableItemsReturned  = req.getParameter("ConsumableItemsReturned ");
-			String ManPowerSanctioned = req.getParameter("ManPowerSanctioned");
-			String OverAllReason = req.getParameter("OverAllReason");
-			
-			List<String> list = new ArrayList<>(Arrays.asList(CSReason, NCSReason, EquipReason, EquipBoughtOnChargeReason,
-					                            SPActualposition,SPGeneralSpecific, NoOfVehicleSanctioned, VehicleType,
-					                            VehicleAvgRun, VehicleAvgFuel,QARObjective,BudgetMechanism,Budgetexpenditure,LogBookMaintained, ProjectDelayReason, CRspinoff,
-					   						 PDCNotMeetReason, CRcostoverin,NonConsumableItemsReturned, ConsumableItemsReturned, ManPowerSanctioned,
-											 OverAllReason));
-						 list.addAll(Arrays.asList(SCReason));
-						 list.addAll(Arrays.asList(PDCReason));
-						 list.removeIf(s -> s==null || s.isEmpty());
-			
-			if(Stream.of(SCRevisionCost).anyMatch(field-> !InputValidator.isDecimalFormat(field)) ||
-									    !InputValidator.isDecimalFormat(QARProposedCost)){
-							redir.addAttribute("closureId", closureId);
-							redir.addAttribute("chlistTabId","1");					
-			    return redirectWithError(redir, "ProjectClosureCheckList.htm", "Only numbers are allowed. You may enter up to 2 digits after the decimal.");				
-			 }
-			
-			if(list !=null && list.stream().anyMatch(field-> InputValidator.isContainsHTMLTags(field))){
-							redir.addAttribute("closureId", closureId);
-							redir.addAttribute("chlistTabId","1");					
-			    return redirectWithError(redir, "ProjectClosureCheckList.htm", "HTML tags are not permitted.");				
-			 }
-			
 			ProjectCheckListRevDto dto=new ProjectCheckListRevDto();
 			
 			ProjectClosureCheckList clist = (action!=null && action.equalsIgnoreCase("Add"))?new ProjectClosureCheckList() : service.getProjectClosureCheckListByProjectId(closureId);
 			
 			ProjectClosure projectClosure = service.getProjectClosureById(closureId);
 			clist.setProjectClosure(projectClosure);
-			//clist.setCl
-			System.out.println("QARHQrsSentDate---"+req.getParameter("QARHQrsSentDate"));
+			
+			clist.setCRBringFrom(req.getParameter("CRBringFrom"));
+			
 			String QARHQrsSentDate=req.getParameter("QARHQrsSentDate");
 			
 			clist.setQARHQrsSentDate(QARHQrsSentDate!=null?sdf.format(rdf.parse(QARHQrsSentDate)):"NA");
 			String QARSentDate=req.getParameter("QARSentDate");
 			clist.setQARSentDate(QARSentDate!=null?sdf.format(rdf.parse(QARSentDate)):"NA");
 			clist.setQARObjective(req.getParameter("QARObjective"));
-			//clist.setQARMilestone(req.getParameter("QARMilestone"));
+		
 			clist.setQARPDCDate(sdf.format(rdf.parse(req.getParameter("QARPDCDate"))));
+			String QARProposedCost=req.getParameter("QARProposedCost");
 			clist.setQARProposedCost(!QARProposedCost.isEmpty()?Double.parseDouble(QARProposedCost):0);
-			//clist.setQARCostBreakup(req.getParameter("QARCostBreakup"));
-			//clist.setSCRequested(sdf.format(rdf.parse(req.getParameter("SCRequested"))));
-			//clist.setSCGranted(sdf.format(rdf.parse(req.getParameter("SCGranted"))));
+			
+			dto.setRevSancCost(req.getParameter("RevSancCost"));
+		
+			dto.setRevPDCCost(req.getParameter("RevPDCCost"));
 			dto.setSCRequestedDate(req.getParameterValues("SCRequested"));
 			dto.setSCGrantedDate(req.getParameterValues("SCGranted"));
 			dto.setSCRevisionCost(req.getParameterValues("SCRevisionCost"));
@@ -1607,22 +1565,12 @@ public class ProjectClosureController {
 			dto.setPDCGrantedDate(req.getParameterValues("PDCGranted"));
 			dto.setPDCRevised(req.getParameterValues("PDCRevised"));
 			dto.setPDCReason(req.getParameterValues("PDCReason"));
-			
-			
-			//String SCRevisionCost=req.getParameter("SCRevisionCost");
-			//clist.setSCRevisionCost(Double.parseDouble(SCRevisionCost!=null && !SCRevisionCost.isEmpty()? SCRevisionCost:"0"));
-			//clist.setSCReason(req.getParameter("SCReason"));
-			//clist.setPDCRequested(sdf.format(rdf.parse(req.getParameter("PDCRequested"))));
-			//clist.setPDCGranted(sdf.format(rdf.parse(req.getParameter("PDCGranted"))));
 		
-			//clist.setPDCRevised(sdf.format(rdf.parse(req.getParameter("PDCRevised"))));
-			//clist.setPDCReason(req.getParameter("PDCReason"));
-			//System.out.println("PRMaintained--"+req.getParameter("PRMaintained"));
 			clist.setPRMaintained(req.getParameter("PRMaintained"));
 			
 			clist.setPRSanctioned(req.getParameter("PRSanctioned"));
 			clist.setPECVerified(req.getParameter("PECVerified"));
-			//System.out.println("SRMaintained--"+req.getParameter("SRMaintained"));
+			
 			clist.setSRMaintained(req.getParameter("SRMaintained"));
 			
 			clist.setCSProcedure(req.getParameter("CSProcedure"));
@@ -1682,6 +1630,25 @@ public class ProjectClosureController {
 			clist.setConsumableItemsReturned(req.getParameter("ConsumableItemsReturned"));
 			clist.setManPowerSanctioned(req.getParameter("ManPowerSanctioned"));
 			clist.setRemarks(req.getParameter("OverAllReason"));
+			clist.setPRRemark1(req.getParameter("PRRemark1"));
+			clist.setPRRemark2(req.getParameter("PRRemark2"));
+			clist.setPECRemark1(req.getParameter("PECRemark1"));
+			clist.setSRRemark1(req.getParameter("SRRemark1"));
+			clist.setCSRemark1(req.getParameter("CSRemark1"));
+			clist.setNCSRemark1(req.getParameter("NCSRemark1"));
+			clist.setNCSRemark2(req.getParameter("NCSRemark2"));
+			clist.setNCSRemark3(req.getParameter("NCSRemark3"));
+			clist.setEquipmentRemark1(req.getParameter("EquipmentRemark1"));
+			clist.setEquipmentRemark2(req.getParameter("EquipmentRemark2"));
+			clist.setEquipmentRemark3(req.getParameter("EquipmentRemark3"));
+			clist.setBudgetRemark1(req.getParameter("BudgetRemark1"));
+			clist.setBudgetRemark2(req.getParameter("BudgetRemark2"));
+			clist.setBudgetRemark3(req.getParameter("BudgetRemark3"));
+			clist.setBudgetRemark4(req.getParameter("BudgetRemark4"));
+			clist.setUtilizationRemark1(req.getParameter("UtilizationRemark1"));
+			clist.setStaffRemark1(req.getParameter("StaffRemark1"));
+			clist.setCWRemark1(req.getParameter("CWRemark1"));
+			clist.setProjectRemark1(req.getParameter("ProjectRemark1"));
 			
 			
 
@@ -1692,13 +1659,13 @@ public class ProjectClosureController {
 				clist.setCreatedDate(sdtf.format(new Date()));
 				clist.setIsActive(1);
 				
-				result = service.addProjectClosureCheckList(clist,dto,EmpId,QARMilestoneAttach,QARCostBreakupAttach,QARNCItemsAttach,EquipProcuredAttach,EquipProcuredBeforePDCAttach);
+				result = service.addProjectClosureCheckList(clist,dto,EmpId,QARMilestoneAttach,QARCostBreakupAttach,QARNCItemsAttach,EquipProcuredAttach,EquipProcuredBeforePDCAttach,CommittmentRegister,BudgetDocument);
 				
 			}else if(action!=null && action.equalsIgnoreCase("Edit")) {
 				clist.setModifiedBy(UserId);
 				clist.setModifiedDate(sdtf.format(new Date()));
 				
-				result = service.editProjectClosureCheckList(clist,dto,EmpId,QARMilestoneAttach,QARCostBreakupAttach,QARNCItemsAttach,EquipProcuredAttach,EquipProcuredBeforePDCAttach);
+				result = service.editProjectClosureCheckList(clist,dto,EmpId,QARMilestoneAttach,QARCostBreakupAttach,QARNCItemsAttach,EquipProcuredAttach,EquipProcuredBeforePDCAttach,CommittmentRegister,BudgetDocument);
 				
 				if (result > 0) {
 					redir.addAttribute("result", "Closure CheckList Details Updated Successfully");
@@ -1740,10 +1707,16 @@ public class ProjectClosureController {
 			res.setContentType("Application/octet-stream");	
 			ProjectClosureCheckList clist= service.getProjectClosureCheckListByProjectId(closureId);
 			File my_file=null;
-			String file = ftype.equalsIgnoreCase("QARMilestonefile") ? clist.getQARMilestone():ftype.equalsIgnoreCase("QARCostBreakupfile")? clist.getQARCostBreakup(): ftype.equalsIgnoreCase("QARNCItemsfile")? clist.getQARNCItems():ftype.equalsIgnoreCase("EquipProcuredfile")? clist.getEquipProcured(): ftype.equalsIgnoreCase("EquipProcuredBeforePDCfile")? clist.getEquipProcuredBeforePDCAttach():"";
+			String file = ftype.equalsIgnoreCase("QARMilestonefile") ?
+					clist.getQARMilestone():ftype.equalsIgnoreCase("QARCostBreakupfile")?
+					clist.getQARCostBreakup(): ftype.equalsIgnoreCase("QARNCItemsfile")?
+					clist.getQARNCItems():ftype.equalsIgnoreCase("EquipProcuredfile")?
+					clist.getEquipProcured(): ftype.equalsIgnoreCase("EquipProcuredBeforePDCfile")?
+					clist.getEquipProcuredBeforePDCAttach():ftype.equalsIgnoreCase("CommittmentRegisterfile")?
+					clist.getCommittmentRegister():ftype.equalsIgnoreCase("BudgetDocumentfile")?
+					clist.getBudgetDocument():"";
 			Path closurePath = Paths.get(LabLogoPath, "Project-Closure", "Check-List", file);
 			my_file = closurePath.toFile(); 
-//			my_file = new File(LabLogoPath+"Project-Closure\\Check-List\\"+File.separator+file); 
 	        res.setHeader("Content-disposition","attachment; filename="+file); 
 	        OutputStream out = res.getOutputStream();
 	        FileInputStream in = new FileInputStream(my_file);
@@ -1781,6 +1754,7 @@ public class ProjectClosureController {
 				req.setAttribute("projectId", projectId);
 				ProjectMaster projectmaster=service.getProjectMasterByProjectId(projectId);
 				req.setAttribute("ProjectCode", projectmaster.getProjectCode());
+				req.setAttribute("labcity", headerservice.LabDetails(ses.getAttribute("labcode").toString()));
 				
 			}
 			String filename="Check-List";	

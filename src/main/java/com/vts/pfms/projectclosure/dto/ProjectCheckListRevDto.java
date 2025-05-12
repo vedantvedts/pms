@@ -17,6 +17,7 @@ public class ProjectCheckListRevDto {
 	private String[] PDCGrantedDate;
 	private String[] PDCRevised;
 	private String[] PDCReason;
-	
+	private String RevSancCost;
+	private String RevPDCCost;
 
 }

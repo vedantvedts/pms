@@ -30,4 +30,6 @@ public class SystemProductTree {
 	private String ModifiedDate;
 	private String LevelCode;
 	private int isActive;
+	
+	private String IsSoftware;
 }
