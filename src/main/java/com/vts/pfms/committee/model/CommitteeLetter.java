@@ -38,6 +38,7 @@ public class CommitteeLetter implements Serializable {
 	private String AttachmentName;
 	private String CreatedBy;
 	private String CreatedDate;
+	private Integer IsActive;
 	
 	@Transient
 	private String LabCode;

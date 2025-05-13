@@ -31,7 +31,6 @@ public  class PFTSDaoImpl implements PFTSDao{
 	private static final String PrevDemandFile ="SELECT ProjectId, DemandNo, DemandDate, ItemNomenclature, EstimatedCost FROM pfts_file WHERE ProjectId=:projectid";
 	private static final String StatusList="SELECT s.PftsStatusId, s.PftsStatus, s.PftsStageName FROM pfts_status s WHERE s.PftsStatusId > (SELECT PftsStatusId FROM pfts_file WHERE PftsFileId=:fileid) AND CASE WHEN (SELECT PftsStatusId FROM pfts_file WHERE PftsFileId=:fileid) < 10 THEN s.PftsStatusId <= 10 ELSE TRUE END ORDER BY pftsstatusid ";
 	private static final String updateCostDetails="UPDATE pfts_file SET OrderNo=:orderno, OrderCost=:ordercost, DpDate=:dpdate WHERE PftsFileId=:fileid";
-	private static final String INACTIVEFILE="UPDATE pfts_file SET isactive='0' where PftsFileId=:fileid ";
 	private static final String PROJECTDATA="SELECT projectid, projectcode, projectname FROM project_master WHERE projectid=:projectid";
 	
 	
@@ -110,21 +109,23 @@ public  class PFTSDaoImpl implements PFTSDao{
 	@Override
 	public int upadteDemandFile(String fileId, String statusId, Date eventDateSql,String update,String remarks)throws Exception{
 		
-		
-		
 		String UpdateDemand="UPDATE pfts_file SET PftsStatusId=:statusid, "+update+"=:eventDate, Remarks=:remarks  WHERE PftsFileId=:fileid";
 		String UpdateDemandStatus="UPDATE pfts_file SET PftsStatusId=:statusid, Remarks=:remarks WHERE PftsFileId=:fileid ";
-		int result;
+		int result = 0;
 		System.out.println(statusId+"%%%%%%%%%%%%%%%%%%%%%%");
 		if(statusId.equalsIgnoreCase("1"))
 		{
-			Query query=manager.createNativeQuery(UpdateDemandStatus);
-			query.setParameter("remarks", remarks);
-			query.setParameter("fileid", fileId);
-			query.setParameter("statusid", statusId);
-			result=query.executeUpdate();
+			
+			PFTSFile ExistingPFTSFile= manager.find(PFTSFile.class, fileId);
+			if(ExistingPFTSFile != null) {
+				ExistingPFTSFile.setPftsStatusId(Long.parseLong(statusId));
+				ExistingPFTSFile.setRemarks(remarks);
+				result=1;
+			}
+			
 		}
 		else {
+			
 		Query query=manager.createNativeQuery(UpdateDemand);
 		query.setParameter("fileid", fileId);
 		query.setParameter("statusid", statusId);
@@ -136,24 +137,38 @@ public  class PFTSDaoImpl implements PFTSDao{
 	}
 	
 	
-	private static final String updateCostDetails1="UPDATE pfts_file SET OrderNo=:orderno, OrderCost=:ordercost, DpDate=:dpdate WHERE PftsFileId=:fileid";
+	private static final String updateCostDetails1="UPDATE pfts_file SET OrderNo=:orderno, OrderCost=:ordercost,"
+			+ " DpDate=:dpdate WHERE PftsFileId=:fileid";
 	@Override
 	public int updateCostOnDemand(String orderNo, String oderCostD, String fileId,Date dpDateSql)throws Exception{
-		Query query=manager.createNativeQuery(updateCostDetails);
-		query.setParameter("fileid", fileId);
-		query.setParameter("orderno", orderNo);
-		query.setParameter("ordercost", oderCostD);
-		query.setParameter("dpdate", dpDateSql);
-		int result=query.executeUpdate();
-		return result;
+		
+		PFTSFile ExistingPFTSFile = manager.find(PFTSFile.class, fileId);
+		if(ExistingPFTSFile != null) {
+			 ExistingPFTSFile.setOrderNo(orderNo);
+			 ExistingPFTSFile.setOrderCost(Double.parseDouble(oderCostD));
+			 ExistingPFTSFile.setDpDate(new java.sql.Date(dpDateSql.getTime()));
+			 System.err.println(new java.sql.Date(dpDateSql.getTime()));
+			 return 1;
+		}
+		else {
+			return 0;
+		}
+		
 	}
+	
 
 	@Override
 	public int FileInActive(String fileId, String userId) throws Exception {
-		Query query=manager.createNativeQuery(INACTIVEFILE);
-		query.setParameter("fileid", fileId);
-		int result=query.executeUpdate();
-		return result;
+		
+		PFTSFile ExistingPFTSFile = manager.find(PFTSFile.class, fileId);
+		if(ExistingPFTSFile != null) {
+			ExistingPFTSFile.setIsActive(0);
+			return 1;
+		}
+		else {
+			 return 0;
+		}
+		
 	}
 
 	@Override
@@ -202,20 +217,24 @@ public  class PFTSDaoImpl implements PFTSDao{
 		Long result = (Long)query.getSingleResult();
 		return result.intValue();
 	}
-	private static final String UPDATEENVI = "UPDATE pfts_file SET ItemNomenclature=:ItemNomenclature,EstimatedCost=:EstimatedCost,PrbDateOfInti=:PrbDateOfInti,Remarks=:Remarks,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE PftsFileId=:PftsFileId";
+	
 	@Override
 	public Long updatepftsEnvi(PFTSFile pf) throws Exception {
-		Query query=manager.createNativeQuery(UPDATEENVI);
-		query.setParameter("PftsFileId", pf.getPftsFileId());
-		query.setParameter("EstimatedCost", pf.getEstimatedCost());
-		query.setParameter("ItemNomenclature", pf.getItemNomenclature());
-		query.setParameter("Remarks", pf.getRemarks());
-		query.setParameter("PrbDateOfInti", pf.getPrbDateOfInti());
-		query.setParameter("ModifiedBy", pf.getModifiedBy());
-		query.setParameter("ModifiedDate", pf.getModifiedDate());
-		//query.setParameter("EnvisagedStatus", pf.getEnvisagedStatus());
 		
-		return Long.valueOf(query.executeUpdate()) ;
+		PFTSFile ExistingPFTSFile = manager.find(PFTSFile.class, pf.getPftsFileId());
+				if(ExistingPFTSFile !=null) {
+					ExistingPFTSFile.setItemNomenclature(pf.getItemNomenclature());
+					ExistingPFTSFile.setEstimatedCost(pf.getEstimatedCost());
+					ExistingPFTSFile.setPrbDateOfInti(pf.getPrbDateOfInti());
+					ExistingPFTSFile.setRemarks(pf.getRemarks());
+					ExistingPFTSFile.setModifiedBy(pf.getModifiedBy());
+					ExistingPFTSFile.setModifiedDate(pf.getModifiedDate());
+					return 1L;
+				}
+				else {
+					return 0L;
+				}
+		
 	}
 	private static final String GETENVIDATA ="SELECT PftsFileId,ItemNomenclature,EstimatedCost,PrbDateOfInti,EnvisagedStatus,Remarks FROM pfts_file WHERE PftsFileId=:PftsFileId";
 
@@ -255,36 +274,46 @@ public  class PFTSDaoImpl implements PFTSDao{
 		return  (List<Object[]>)query.getResultList();
 	}
 	
-	private static final String MANUALORDERSUBMIT=" UPDATE pfts_file_order SET OrderNo=:OrderNo,OrderDate=:OrderDate,OrderCost=:OrderCost,DpDate=:DpDate,ItemFor=:ItemFor,VendorName=:VendorName,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE PftsFileOrderId=:PftsFileOrderId";
+	
 	@Override
 	public long ManualOrderSubmit(PftsFileOrder order, String orderid) throws Exception {
-
-		Query query = manager.createNativeQuery(MANUALORDERSUBMIT);
-		query.setParameter("PftsFileOrderId", orderid);
-		query.setParameter("OrderNo", order.getOrderNo());
-		query.setParameter("OrderDate", order.getOrderDate());
-		query.setParameter("OrderCost", order.getOrderCost());
-		query.setParameter("DpDate", order.getDpDate());
-		query.setParameter("ItemFor", order.getItemFor());
-		query.setParameter("VendorName", order.getVendorName());
-		query.setParameter("ModifiedBy", order.getModifiedBy());
-		query.setParameter("ModifiedDate", order.getModifiedDate());
-		return  query.executeUpdate();
+		
+		PftsFileOrder ExistingPftsFileOrder = manager.find(PftsFileOrder.class, orderid);
+		if(ExistingPftsFileOrder != null) {
+			System.err.println("Working");
+			ExistingPftsFileOrder.setOrderNo(order.getOrderNo());
+			ExistingPftsFileOrder.setOrderDate(order.getOrderDate());
+			ExistingPftsFileOrder.setOrderCost(order.getOrderCost());
+			ExistingPftsFileOrder.setDpDate(order.getDpDate());
+			ExistingPftsFileOrder.setItemFor(order.getItemFor());
+			ExistingPftsFileOrder.setVendorName(order.getVendorName());
+			ExistingPftsFileOrder.setModifiedBy(order.getModifiedBy());
+			ExistingPftsFileOrder.setModifiedDate(order.getModifiedDate());
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
+		
 	}
 	
-	private static final String MANUALDEMANDEDITSUBMIT="UPDATE pfts_file SET DemandNo=:DemandNo,DemandDate=:DemandDate,EstimatedCost=:EstimatedCost,ItemNomenclature=:ItemNomenclature,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE PftsFileId=:fileId";
+	
 	@Override
 	public long manualDemandEditSubmit(PFTSFileDto pftsDto) throws Exception {
+		PFTSFile existingPftsFile = manager.find(PFTSFile.class, pftsDto.getPftsFileId());
+		if(existingPftsFile != null) {
+			existingPftsFile.setDemandNo(pftsDto.getDemandNo());
+			existingPftsFile.setDemandDate(pftsDto.getDemandDate());
+			existingPftsFile.setEstimatedCost(pftsDto.getEstimatedCost());
+			existingPftsFile.setItemNomenclature(pftsDto.getItemNomenclature());
+			existingPftsFile.setModifiedBy(pftsDto.getModifiedBy());
+			existingPftsFile.setModifiedDate(pftsDto.getModifiedDate());
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
 		
-		Query query = manager.createNativeQuery(MANUALDEMANDEDITSUBMIT);
-		query.setParameter("DemandNo", pftsDto.getDemandNo());
-		query.setParameter("DemandDate", pftsDto.getDemandDate());
-		query.setParameter("EstimatedCost", pftsDto.getEstimatedCost());
-		query.setParameter("ItemNomenclature", pftsDto.getItemNomenclature());
-		query.setParameter("ModifiedBy", pftsDto.getModifiedBy());
-		query.setParameter("ModifiedDate", pftsDto.getModifiedDate());
-		query.setParameter("fileId", pftsDto.getPftsFileId());
-		return  query.executeUpdate();
 	}
 	
 	private static final String GETDEMANDNO="SELECT demandno FROM pfts_file WHERE isactive='1'";

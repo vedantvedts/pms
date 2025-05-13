@@ -34,15 +34,12 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	private static final String DASHBOARDFORMURLLIST = "select a.formdispname,a.formurl,a.formcolor from form_detail a,form_role_access b,login c where c.loginid=:loginid and a.formmoduleid=:formmoduleid AND b.formroleid=c.formroleid AND a.formdetailid=b.formdetailid AND a.isactive='1' AND b.isactive='1' ORDER BY a.FormSerialNo  ";
 	private static final String USERMANAGELIST = "select a.loginid, a.username, b.divisionname,c.formrolename  from login a , division_master b , formrole c where a.divisionid=b.divisionid and a.formroleid=c.formroleid and a.isactive=1";
 	private static final String LASTLOGINEMPID = "select a.auditstampingid from  auditstamping a where a.auditstampingid=(select max(b.auditstampingid) from auditstamping b WHERE b.loginid=:loginid)";
-	private static final String LOGINSTAMPINGUPDATE="update auditstamping set logouttype=:logouttype,logoutdatetime=:logoutdatetime where auditstampingid=:auditstampingid";
 	private static final String DESGID="select desigid from employee where  empid=:empid";
 	private static final String LABDETAILS="select labmasterid, labcode, labname, lablogo from lab_master";
 	
 	private static final String NOTICEEDITDATA="SELECT * FROM pfms_notice WHERE NoticeId=:NOTICEID AND IsActive=1" ;
 	private static final String SELFACTIONSLIST="SELECT ActionId,EmpId,ActionItem,ActionDate,ActionTime,ActionType FROM pfms_action_self WHERE isactive='1'AND actiondate=CURDATE() AND empid=:empid ORDER BY createddate ASC";	
 	private static final String NOTICEDATEWOSE= "SELECT noticeid, notice, fromdate,todate,noticeby,createdby,createddate FROM pfms_notice WHERE NoticeBy=:EMPID AND IsActive=1 AND ( (FromDate BETWEEN :FROMDATE AND :TODATE) OR  (todate BETWEEN :FROMDATE  AND :TODATE )   OR( fromdate < :FROMDATE  AND todate > :TODATE  ))";
-	private static final String REVOKENOTICE="UPDATE pfms_notice SET isactive=:isactive WHERE NoticeId=:NOTICEID";
-	private static final String EDITNOTICE="UPDATE pfms_notice SET Notice=:NOTICE,FromDate=:FROMDATE,ToDate=:TODATE, NoticeBy=:NOTICEBY WHERE NoticeId=:NOTICEID";
 	private static final String NOTICELIST="SELECT * FROM pfms_notice WHERE NoticeBy=:empid AND IsActive=1 AND MONTH(CreatedDate) = MONTH(CURRENT_DATE())";
 	private static final String NOTICE="SELECT n.noticeid,n.notice, e.EmpName FROM pfms_notice n, employee e   WHERE   DATE(NOW()) >=n.FromDate AND DATE(NOW()) <= n.ToDate AND e.EmpId=n.NoticeBy AND n.IsActive=1 AND n.labcode=:labcode ORDER BY n.NoticeId DESC";	
 	private static final String getEmpNoQuery="SELECT empno FROM employee WHERE empid =:empid";	
@@ -111,14 +108,22 @@ public class RfpMainDaoImpl implements RfpMainDao {
 		return (Long) query.getSingleResult();
 	}
 
+	private static final String LOGINSTAMPINGUPDATE="update auditstamping set logouttype=:logouttype,logoutdatetime=:logoutdatetime "
+			+ "where auditstampingid=:auditstampingid";
+
 	@Override
 	public int LoginStampingUpdate(LoginStamping Stamping) throws Exception {
-		Query query = manager.createNativeQuery(LOGINSTAMPINGUPDATE);
-		query.setParameter("logouttype", Stamping.getLogOutType());
-		query.setParameter("logoutdatetime", Stamping.getLogOutDateTime());
-		query.setParameter("auditstampingid", Stamping.getAuditStampingId());		
-		int LoginStampingUpdate = (int) query.executeUpdate();
-		return  LoginStampingUpdate;
+		
+		LoginStamping ExistingLoginStamping = manager.find(LoginStamping.class, Stamping.getAuditStampingId());
+		if(ExistingLoginStamping != null) {
+			ExistingLoginStamping.setLogOutType(Stamping.getLogOutType());
+			ExistingLoginStamping.setLogOutDateTime(Stamping.getLogOutDateTime());
+			return 1;
+		}
+		else {
+			return 0;
+		}
+
 	}
 	
 	
@@ -248,33 +253,40 @@ public class RfpMainDaoImpl implements RfpMainDao {
         return EditData;
 	}
 	
-	
+
 	@Override
 	public int noticeDelete(String noticeId)throws Exception{
 		
-		Query query=manager.createNativeQuery(REVOKENOTICE);
-		query.setParameter("NOTICEID",noticeId);
-		query.setParameter("isactive",0);
-		int count =(int)query.executeUpdate();
+		Notice ExistingNotice = manager.find(Notice.class, noticeId);
+		if(ExistingNotice != null) {
+			ExistingNotice.setIsActive(0);
+			return 1;
+		}
+		else {
+			return 0;
+		}
 		
-		return count ;
+
 		
 	}
 	
 	 
-	
+
+
 	@Override
 	public int editNotice(Notice notice)throws Exception{
 		
-		Query query=manager.createNativeQuery(EDITNOTICE);
-		query.setParameter("NOTICEID",notice.getNoticeId());
-		query.setParameter("NOTICE", notice.getNotice());
-		query.setParameter("FROMDATE",notice.getFromDate());
-		query.setParameter("TODATE",notice.getToDate());
-		query.setParameter("NOTICEBY", notice.getNoticeBy());
-		int count =(int)query.executeUpdate();
-		
-		return count ;
+		Notice ExistingNotice = manager.find(Notice.class, notice.getNoticeId());
+		if(ExistingNotice != null) {
+			ExistingNotice.setNotice(notice.getNotice());
+			ExistingNotice.setFromDate(notice.getFromDate());
+			ExistingNotice.setToDate(notice.getToDate());
+			ExistingNotice.setNoticeBy(notice.getNoticeBy());
+			return 1;
+		}
+		else {
+			return 0;
+		}
 		
 	}
 	

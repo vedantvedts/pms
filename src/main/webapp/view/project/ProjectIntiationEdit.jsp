@@ -261,7 +261,7 @@ FormatConverter fc = new FormatConverter();
 
 						<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 				
-						<input type="hidden" name="IntiationId" value="<%=ProjectEditData[0] %>" /> 
+						<input type="hidden" name="IntiationId" value="<%=ProjectEditData[0]%>" /> 
 						<input type="hidden" name="ismain" value="<%=ProjectEditData[17]%>" />
 						
 						<%if(ProjectEditData[17].toString().equalsIgnoreCase("N")){ %>

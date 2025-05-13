@@ -38,13 +38,10 @@ public class FracasDaoImpl implements FracasDao {
 	private static final String FRACASASSIGNEELIST = "SELECT * FROM(SELECT pfa.fracasassignid,pfa.fracasmainid,pfa.remarks,pfa.pdc,pfa.assigner,pfa.assignee,pfa.assigneddate, pfa.fracasstatus, CONCAT(IFNULL(CONCAT(e1.title,' '),''), e1.empname) AS 'assignername',ed1.designation AS 'assignerdesig', CONCAT(IFNULL(CONCAT(e2.title,' '),''), e2.empname) AS 'assigneename',  ed2.designation AS 'assigneedesig', pfm.fracasItem ,pfa.fracasassignno FROM pfms_fracas_assign pfa,pfms_fracas_main pfm,employee e1,employee_desig ed1, employee e2, employee_desig ed2   WHERE pfa.assigner=e1.empid AND pfa.isactive=1 AND e1.desigid=ed1.desigid AND pfa.assignee=e2.empid   AND e2.desigid=ed2.desigid AND pfm.fracasmainid=pfa.fracasmainid  AND pfa.fracasstatus IN ('A','B') AND pfa.assignee=:assigneeid ) AS x    LEFT JOIN     ( SELECT pfa.fracasattachid,pfa.fracasmainid AS 'mainid',pfa.fracassubid AS 'subid' FROM pfms_fracas_attach pfa )  AS y    ON x.fracasmainid=y.mainid  ";
 	private static final String FRACASASSIGNDATA= "SELECT pfa.fracasassignid,pfa.fracasmainid,pfa.remarks,pfa.pdc,pfa.assigner,pfa.assignee,pfa.assigneddate, pfa.fracasstatus, CONCAT(IFNULL(CONCAT(e1.title,' '),''), e1.empname) AS 'assignername',ed1.designation AS 'assignerdesig', CONCAT(IFNULL(CONCAT(e2.title,' '),''), e2.empname) AS 'assigneename',  ed2.designation AS 'assigneedesig', pfm.fracasItem,pfa.fracasassignno  FROM pfms_fracas_assign pfa,pfms_fracas_main pfm,employee e1,employee_desig ed1, employee e2, employee_desig ed2   WHERE pfa.assigner=e1.empid AND e1.desigid=ed1.desigid AND pfa.assignee=e2.empid   AND e2.desigid=ed2.desigid AND pfm.fracasmainid=pfa.fracasmainid AND pfa.fracasassignid=:fracasassignid";
 	private static final String FRACASSUBLIST="SELECT * FROM(SELECT pfs.fracassubid ,pfs.fracasassignid,pfs.progress,pfs.progressdate,pfs.remarks FROM pfms_fracas_sub pfs WHERE pfs.fracasassignid=:fracasassignid )  AS x  LEFT JOIN  ( SELECT pfa.fracasattachid,pfa.fracasmainid AS 'mainid',pfa.fracassubid AS 'subid' FROM pfms_fracas_attach pfa ) AS y  ON x.fracassubid = y.subid ";
-	private static final String FRACASASSIGNFORWARDUPDATE="UPDATE pfms_fracas_assign SET Fracasstatus=:fracasstatus , modifiedby=:modifiedby, modifieddate=:modifieddate,remarks=:remarks,isactive=:isactive WHERE fracasassignid=:fracasassignid";
 	private static final String FRACASSUBDELETE= "DELETE FROM pfms_fracas_sub WHERE fracassubid=:fracassubid";
 	private static final String FRACASTOREVIEWLIST= "SELECT pfa.fracasassignid,pfa.fracasmainid,pfa.remarks,pfa.pdc,pfa.assigner,pfa.assignee,pfa.assigneddate, pfa.fracasstatus,  CONCAT(IFNULL(CONCAT(e1.title,' '),''), e1.empname) AS 'assignername',ed1.designation AS 'assignerdesig', CONCAT(IFNULL(CONCAT(e2.title,' '),''), e2.empname) AS 'assigneename', ed2.designation AS 'assigneedesig',  pfm.fracasItem ,(SELECT MAX(pfs.progress) FROM  pfms_fracas_sub pfs WHERE pfa.fracasassignid=pfs.fracasassignid) AS 'Progress'  FROM pfms_fracas_assign pfa,pfms_fracas_main pfm,employee e1,employee_desig ed1, employee e2, employee_desig ed2  WHERE pfa.assigner=e1.empid AND pfa.isactive=1 AND e1.desigid=ed1.desigid AND pfa.assignee=e2.empid AND pfa.fracasstatus IN ('F')  AND e2.desigid=ed2.desigid AND pfm.fracasmainid=pfa.fracasmainid AND pfa.assigner=:assignerempid ";
 	
-	private static final String FRACASMAINDELETE ="UPDATE pfms_fracas_main SET isactive=0, modifiedby=:modifiedby ,modifieddate=:modifieddate  WHERE fracasmainid=:fracasmainid";
 	private static final String FRACASMAINASSIGNCOUNT ="SELECT COUNT(Fracasassignid) AS 'count','assignno' FROM pfms_fracas_assign WHERE fracasmainid=:fracasmainid";
-	private static final String  FRACASMAINEDIT ="UPDATE pfms_fracas_main SET fracastypeid=:fracastypeid ,fracasitem=:fracasitem , fracasdate=:fracasdate ,projectid=:projectid ,modifiedby=:modifiedby ,modifieddate=:modifieddate WHERE fracasmainid=:fracasmainid";
 	private static final String FRACASATTACHDELETE= "DELETE FROM pfms_fracas_attach WHERE fracasattachid=:fracasattachid";
 	
 	
@@ -196,17 +193,24 @@ public class FracasDaoImpl implements FracasDao {
 		return FracasSubList;
 	}
 	
+
 	@Override
 	public int FracasAssignForwardUpdate(PfmsFracasAssignDto dto) throws Exception
 	{
-		Query query=manager.createNativeQuery(FRACASASSIGNFORWARDUPDATE);
-		query.setParameter("fracasstatus",dto.getFracasStatus());	
-		query.setParameter("modifiedby",dto.getModifiedBy());	
-		query.setParameter("modifieddate",dto.getModifiedDate());	
-		query.setParameter("fracasassignid",dto.getFracasAssignId());
-		query.setParameter("remarks",dto.getRemarks());
-		query.setParameter("isactive",dto.getIsActive());
-		return query.executeUpdate();
+		PfmsFracasAssign ExistingPfmsFracasAssign = manager.find(PfmsFracasAssign.class, dto.getFracasAssignId());
+		if(ExistingPfmsFracasAssign != null) {
+			ExistingPfmsFracasAssign.setFracasStatus(dto.getFracasStatus());
+			ExistingPfmsFracasAssign.setModifiedBy(dto.getModifiedBy());
+			ExistingPfmsFracasAssign.setModifiedDate(dto.getModifiedDate());
+			ExistingPfmsFracasAssign.setRemarks(dto.getRemarks());
+			ExistingPfmsFracasAssign.setIsActive(Integer.parseInt(dto.getIsActive()));
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
+		
 	}
 	
 
@@ -229,14 +233,21 @@ public class FracasDaoImpl implements FracasDao {
 		return query.executeUpdate();
 	}
 	
+	
 	@Override
 	public int FracasMainDelete(PfmsFracasMainDto dto) throws Exception
 	{
-		Query query=manager.createNativeQuery(FRACASMAINDELETE);
-		query.setParameter("fracasmainid",dto.getFracasMainId());
-		query.setParameter("modifiedby",dto.getModifiedBy());	
-		query.setParameter("modifieddate",dto.getModifiedDate());	
-		return query.executeUpdate();
+		PfmsFracasMain ExistingPfmsFracasMain = manager.find(PfmsFracasMain.class, dto.getFracasMainId());
+		if(ExistingPfmsFracasMain != null) {
+			ExistingPfmsFracasMain.setIsActive(0);
+			ExistingPfmsFracasMain.setModifiedBy(dto.getModifiedBy());
+			ExistingPfmsFracasMain.setModifiedDate(dto.getModifiedDate());
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
 	}
 	
 	
@@ -248,19 +259,24 @@ public class FracasDaoImpl implements FracasDao {
 		return ( Object[])query.getSingleResult();
 	}
 	
-	
+
 	@Override
 	public int FracasMainEdit(PfmsFracasMainDto dto) throws Exception
 	{
-		Query query=manager.createNativeQuery(FRACASMAINEDIT);
-		query.setParameter("fracasmainid",dto.getFracasMainId());
-		query.setParameter("fracastypeid",dto.getFracasTypeId());
-		query.setParameter("fracasitem",dto.getFracasItem());
-		query.setParameter("fracasdate",dto.getFracasDate());
-		query.setParameter("projectid",dto.getProjectId());
-		query.setParameter("modifiedby",dto.getModifiedBy());	
-		query.setParameter("modifieddate",dto.getModifiedDate());	
-		return query.executeUpdate();
+		PfmsFracasMain ExistingPfmsFracasMain= manager.find(PfmsFracasMain.class, dto.getFracasMainId());
+		if(ExistingPfmsFracasMain != null) {
+			ExistingPfmsFracasMain.setFracasTypeId(Integer.parseInt(dto.getFracasTypeId()));
+			ExistingPfmsFracasMain.setFracasItem(dto.getFracasItem());
+			ExistingPfmsFracasMain.setFracasDate(dto.getFracasDate());
+			ExistingPfmsFracasMain.setProjectId(Long.parseLong(dto.getProjectId()));
+			ExistingPfmsFracasMain.setModifiedBy(dto.getModifiedBy());
+			ExistingPfmsFracasMain.setModifiedDate(dto.getModifiedDate());
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
 	}
 	
 	

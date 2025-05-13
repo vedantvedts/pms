@@ -63,4 +63,6 @@ public class PfmsInitiation implements Serializable {
 	private int IsActive;
 	// newlyadded after 04-06-2024//
 	private String StartDate;
+	// newlyadded after 12-05-2025//
+	private Long ApprovalId;
 }
