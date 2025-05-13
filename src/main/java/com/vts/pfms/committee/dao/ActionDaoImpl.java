@@ -3,6 +3,8 @@ package com.vts.pfms.committee.dao;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,7 +91,6 @@ public class ActionDaoImpl implements ActionDao{
 	private static final String ALLEMPNAMEDESIGLIST="SELECT e.empid ,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) as 'empname' , ed.designation FROM employee e, employee_desig ed WHERE e.desigid=ed.desigid";
 	private static final String COMMITTEESHORTNAME="SELECT cs.committeeid, c.committeeshortname  FROM committee c,committee_schedule cs , committee_schedules_minutes_details cmd WHERE c.committeeid=cs.committeeid AND cs.scheduleid=cmd.scheduleid AND cmd.scheduleminutesid=:scheduleid AND cs.isactive=1 ";
 	private static final String ASSIGNEESEENUPDATE="UPDATE action_assign SET isseen='1' WHERE assignee=:empid ";
-	public static final String ACTIONSELFREMINDERDELETE="UPDATE pfms_action_self SET isactive=0 WHERE actionid=:actionid";
 	private static final String PROJECTEMPLIST="SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) as 'empname' ,b.designation FROM employee a,employee_desig b,project_employee pe  WHERE a.isactive='1' AND a.DesigId=b.DesigId  AND pe.empid=a.empid AND pe.projectid=:projectid ORDER BY a.srno=0,a.srno";
 	 
 	 
@@ -538,12 +539,21 @@ public class ActionDaoImpl implements ActionDao{
 		List<Object[]> ActionSelfReminderList=(List<Object[]>)query.getResultList();	
 		return ActionSelfReminderList;
 	}
-	
+	public static final String ACTIONSELFREMINDERDELETE="UPDATE pfms_action_self SET isactive=0"
+			+ " WHERE actionid=:actionid";
+
 	@Override
 	public int ActionSelfReminderDelete(String actionid) throws Exception {		
-		Query query=manager.createNativeQuery(ACTIONSELFREMINDERDELETE);	
-		query.setParameter("actionid",actionid);
-		return query.executeUpdate();		
+		ActionSelf ExistingActionSelf = manager.find(ActionSelf.class, actionid);
+		if(ExistingActionSelf != null) {
+			ExistingActionSelf.setIsActive(0);
+			System.err.println("Working");
+			return 1;
+		}
+		else {
+			return 0;
+		}
+			
 	}
 
 	@Override
@@ -1049,22 +1059,26 @@ public class ActionDaoImpl implements ActionDao{
 	}
 
 
-	private static final String RFAEDITSUBMIT="UPDATE pfms_rfa_action SET rfadate=:rfadate,priorityid=:priority,statement=:statement,description=:description,reference=:reference,ModifiedBy=:modifiedby , ModifiedDate=:modidifeddate WHERE rfaid=:rfaid";
+	private static final String RFAEDITSUBMIT="UPDATE pfms_rfa_action SET rfadate=:rfadate,priorityid=:priority,"
+			+ "statement=:statement,description=:description,reference=:reference,ModifiedBy=:modifiedby , "
+			+ "ModifiedDate=:modidifeddate WHERE rfaid=:rfaid";
 	@Override
 	public Long RfaEditSubmit(RfaAction rfa) throws Exception {
+		RfaAction ExistingRfaAction= manager.find(RfaAction.class, rfa.getRfaId());
+		if(ExistingRfaAction != null) {
+			ExistingRfaAction.setRfaDate(rfa.getRfaDate());
+			ExistingRfaAction.setPriorityId(rfa.getPriorityId());
+			ExistingRfaAction.setStatement(rfa.getStatement());
+			ExistingRfaAction.setDescription(rfa.getDescription());
+			ExistingRfaAction.setReference(rfa.getReference());
+			ExistingRfaAction.setModifiedBy(rfa.getModifiedBy());
+			ExistingRfaAction.setModifiedDate(rfa.getModifiedDate());
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
 		
-		Query query = manager.createNativeQuery(RFAEDITSUBMIT);
-			query.setParameter("rfadate", rfa.getRfaDate());
-			query.setParameter("priority", rfa.getPriorityId());
-			query.setParameter("statement", rfa.getStatement());
-			query.setParameter("description", rfa.getDescription());
-			query.setParameter("reference", rfa.getReference());
-			query.setParameter("modifiedby", rfa.getModifiedBy());
-			query.setParameter("modidifeddate", rfa.getModifiedDate());
-			query.setParameter("rfaid", rfa.getRfaId());
-		
-		Long result = (long) query.executeUpdate();
-		return result;
 	}
 
 	private static final String RFALABDETAILS="SELECT a.labid,a.labcode,a.labname,a.labaddress,a.labcity,a.labpin FROM lab_master a WHERE a.labcode=:labcode";
@@ -1553,9 +1567,15 @@ public class ActionDaoImpl implements ActionDao{
 	private static final String RFAACTIONUPDATE="UPDATE pfms_rfa_action SET rfastatus='AAA' WHERE rfaid=:rfaId";
 	@Override
 	public int RfaActionUpdate(String rfaId) throws Exception {
-		Query query = manager.createNativeQuery(RFAACTIONUPDATE);
-		query.setParameter("rfaId", rfaId);
-		return query.executeUpdate();
+		RfaAction ExistingRfaAction= manager.find(RfaAction.class, rfaId);
+		if(ExistingRfaAction != null) {
+			ExistingRfaAction.setRfaStatus("AAA");
+			return 1;
+		}
+		else {
+			 return 0;
+		}
+		
 	}
 	
 	
@@ -1697,42 +1717,69 @@ public class ActionDaoImpl implements ActionDao{
 	public int ActionSubDeleteUpdate(String ActionAssignId, String progress, String progressDate, String progressRemarks) throws Exception {
 		
 		if(progress!=null && progressDate!=null && progressRemarks!=null) {
-		Query query = manager.createNativeQuery(SUBDELETEUPDATE);
-		query.setParameter("actionassignid", ActionAssignId );
-		query.setParameter("progress", progress );
-		query.setParameter("progressdate", progressDate );
-		query.setParameter("remarks", progressRemarks );
-		return query.executeUpdate();
+			
+			ActionAssign ExistingActionAssign = manager.find(ActionAssign.class, ActionAssignId);
+			if(ExistingActionAssign !=null) {
+				ExistingActionAssign.setProgress(Integer.parseInt(progress));
+				ExistingActionAssign.setProgressDate(progressDate);
+				ExistingActionAssign.setProgressRemark(progressRemarks);
+				return 1;
 		}else {
-			Query query = manager.createNativeQuery(SUBDELETEUPDATE1);
-			query.setParameter("actionassignid", ActionAssignId );
-			return query.executeUpdate();
+			return 0;
+				}
+			
+		}else {
+			ActionAssign ExistingActionAssign1 = manager.find(ActionAssign.class, ActionAssignId);
+			if(ExistingActionAssign1 !=null) {
+				ExistingActionAssign1.setProgress(0);
+				ExistingActionAssign1.setProgressDate(null);
+				ExistingActionAssign1.setProgressRemark(null);
+				return 1;
+		}else {
+			return 0;
+				}
 		}
 		
 	}
 	
-	private static final String ACTIONREMARKUPDATE="UPDATE action_assign SET progress=:progress, ProgressRemark=:remarks,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE actionassignid=:actionassignid";
+	private static final String ACTIONREMARKUPDATE="UPDATE action_assign SET progress=:progress, ProgressRemark=:remarks,"
+			+ "ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE actionassignid=:actionassignid";
 	@Override
 	public int ActionRemarksEdit(String actionAssignId, String progress, String progressRemarks, String UserId) throws Exception {
-		Query query = manager.createNativeQuery(ACTIONREMARKUPDATE);
-		query.setParameter("actionassignid", actionAssignId );
-		query.setParameter("progress", progress );
-		query.setParameter("remarks", progressRemarks );
-		query.setParameter("ModifiedBy", UserId );
-		query.setParameter("ModifiedDate", sdf1.format(new java.util.Date()));
-		return query.executeUpdate();
+		ActionAssign ExistingActionAssign= manager.find(ActionAssign.class, actionAssignId);
+		if(ExistingActionAssign != null) {
+			ExistingActionAssign.setProgress(Integer.parseInt(progress));
+			ExistingActionAssign.setProgressRemark(progressRemarks);
+			ExistingActionAssign.setModifiedBy(UserId);
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			String formattedDate = LocalDateTime.now().format(formatter);
+			ExistingActionAssign.setModifiedDate(formattedDate);
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
 	}
 	
-	private static final String SUBREMARKSUPDATE="UPDATE action_sub SET progress=:progress, Remarks=:remarks,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE actionsubid=:actionsubid";
+	private static final String SUBREMARKSUPDATE="UPDATE action_sub SET progress=:progress, Remarks=:remarks,"
+			+ "ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE actionsubid=:actionsubid";
 	@Override
 	public int actionSubRemarksEdit(String actionSubId, String progress, String progressRemarks, String UserId) throws Exception {
-		Query query = manager.createNativeQuery(SUBREMARKSUPDATE);
-		query.setParameter("actionsubid", actionSubId );
-		query.setParameter("progress", progress );
-		query.setParameter("remarks", progressRemarks );
-		query.setParameter("ModifiedBy", UserId );
-		query.setParameter("ModifiedDate", sdf1.format(new java.util.Date()));
-		return query.executeUpdate();
+		ActionSub ExistingActionSub = manager.find(ActionSub.class, actionSubId);
+		if(ExistingActionSub != null) {
+			ExistingActionSub.setProgress(Integer.parseInt(progress));
+			ExistingActionSub.setRemarks(progressRemarks);
+			ExistingActionSub.setModifiedBy(UserId);
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			String formattedDate = LocalDateTime.now().format(formatter);
+			ExistingActionSub.setModifiedDate(formattedDate);
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
 	}
 	
 	private static final String RFAMAILSENDING="CALL pfms_Rfa_Mail(:rfa)";
@@ -1782,7 +1829,6 @@ public class ActionDaoImpl implements ActionDao{
 	private static final String UPDATERFACCDATA="UPDATE pfms_rfa_cc SET isactive='0' WHERE rfaid=:rfaid";
 	@Override
 	public Long updateRfaCC(String rfaid) throws Exception {
-		
 		Query query = manager.createNativeQuery(UPDATERFACCDATA);
 		query.setParameter("rfaid", rfaid);
 		
@@ -1818,22 +1864,34 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	
 	
-	private static final String COMMITTACTIONEDIT="UPDATE action_assign SET pdcorg=:pdcorg,enddate=:enddate,assignee=:assignee,assignor=:assignor,assignorlabcode=:assignorlabcode,assigneelabcode=:assigneelabcode,modifiedby=:modifiedby,modifieddate=:modifieddate WHERE actionassignid=:actionassignid";
+	private static final String COMMITTACTIONEDIT="UPDATE action_assign SET pdcorg=:pdcorg,enddate=:enddate,"
+			+ "assignee=:assignee,assignor=:assignor,assignorlabcode=:assignorlabcode,assigneelabcode=:assigneelabcode"
+			+ ",modifiedby=:modifiedby,modifieddate=:modifieddate WHERE actionassignid=:actionassignid";
 	@Override
 	public int CommitteActionEdit(ActionAssignDto actionAssign) throws Exception {
+		ActionAssign ExistingActionAssign = manager.find(ActionAssign.class, actionAssign.getActionAssignId());
+		if(ExistingActionAssign != null) {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			String pdcOrgString = actionAssign.getPDCOrg(); 
+			java.util.Date utilDate = formatter.parse(pdcOrgString); 
+			java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+			ExistingActionAssign.setPDCOrg(sqlDate);
+			String endDate= actionAssign.getEndDate();
+			java.util.Date utilendDate = formatter.parse(endDate); 
+			java.sql.Date sqlEndDate = new java.sql.Date(utilendDate.getTime());
+			ExistingActionAssign.setEndDate(sqlEndDate);
+			ExistingActionAssign.setAssignee(actionAssign.getAssignee());
+			ExistingActionAssign.setAssignor(actionAssign.getAssignor());
+			ExistingActionAssign.setAssignorLabCode(actionAssign.getAssignorLabCode());
+			ExistingActionAssign.setAssigneeLabCode(actionAssign.getAssigneeLabCode());
+			ExistingActionAssign.setModifiedBy(actionAssign.getModifiedBy());
+			ExistingActionAssign.setModifiedDate(actionAssign.getModifiedDate());
+			return 1;
+		}
+		else {
+			return 0;
+		}
 		
-		Query query = manager.createNativeQuery(COMMITTACTIONEDIT);
-		query.setParameter("actionassignid", actionAssign.getActionAssignId());
-		query.setParameter("pdcorg", actionAssign.getPDCOrg());
-		query.setParameter("enddate", actionAssign.getEndDate());
-		query.setParameter("assignee", actionAssign.getAssignee());
-		query.setParameter("assignor", actionAssign.getAssignor());
-		query.setParameter("assignorlabcode", actionAssign.getAssignorLabCode());
-		query.setParameter("assigneelabcode", actionAssign.getAssigneeLabCode());
-		query.setParameter("modifiedby", actionAssign.getModifiedBy());
-		query.setParameter("modifieddate", actionAssign.getModifiedDate());
-		
-		return query.executeUpdate();
 	}
 	
 	private static final String RFAPENDINGCOUNT="SELECT rfaid,rfastatus,empid,actionby FROM pfms_rfa_action_transaction WHERE empid=:empId";
@@ -1921,21 +1979,26 @@ public class ActionDaoImpl implements ActionDao{
 		return null;
 	}
 	
-	private static final String UPDATEOLDRFADATA="UPDATE pfms_rfa_oldfile SET RfaNo=:RfaNo,RfaDate=:RfaDate,RfaFile=:RfaFile,ClosureFile=:ClosureFile,Path=:Path,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE RfaFileUploadId=:RfaFileUploadId";
+	private static final String UPDATEOLDRFADATA="UPDATE pfms_rfa_oldfile SET RfaNo=:RfaNo,RfaDate=:RfaDate,RfaFile=:RfaFile,"
+			+ "ClosureFile=:ClosureFile,Path=:Path,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate "
+			+ "WHERE RfaFileUploadId=:RfaFileUploadId";
 	@Override
 	public long oldRfaUploadEditSubmit(OldRfaUpload rfaModel) throws Exception {
+		Long count=0L;
 		try {
-			Query query = manager.createNativeQuery(UPDATEOLDRFADATA);
-			query.setParameter("RfaFileUploadId", rfaModel.getRfaFileUploadId());
-			query.setParameter("RfaNo", rfaModel.getRfaNo());
-			query.setParameter("RfaDate", rfaModel.getRfaDate());
-			query.setParameter("RfaFile", rfaModel.getRfaFile());
-			query.setParameter("ClosureFile", rfaModel.getClosureFile());
-			query.setParameter("Path", rfaModel.getPath());
-			query.setParameter("ModifiedBy", rfaModel.getModifiedBy());
-			query.setParameter("ModifiedDate", rfaModel.getModifiedDate());
-			query.executeUpdate();
-			return rfaModel.getRfaFileUploadId();
+			OldRfaUpload ExistingOldRfaUpload = manager.find(OldRfaUpload.class, rfaModel.getRfaFileUploadId());
+			if(ExistingOldRfaUpload != null) {
+				ExistingOldRfaUpload.setRfaNo(rfaModel.getRfaNo());
+				ExistingOldRfaUpload.setRfaDate(rfaModel.getRfaDate());
+				ExistingOldRfaUpload.setRfaFile(rfaModel.getRfaFile());
+				ExistingOldRfaUpload.setClosureFile(rfaModel.getClosureFile());
+				ExistingOldRfaUpload.setPath(rfaModel.getPath());
+				ExistingOldRfaUpload.setModifiedBy(rfaModel.getModifiedBy());
+				ExistingOldRfaUpload.setModifiedDate(rfaModel.getModifiedDate());
+				count+=1L;
+			}
+			return count;
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
