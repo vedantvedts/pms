@@ -380,7 +380,7 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 	public List<Object[]> getEmployeeNewTimeSheetList(String empId, String fromDate, String toDate) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(GETEMPLOYEENEWTIMESHEETLIST);
-			query.setParameter("EmpId", Long.parseLong(empId));
+			query.setParameter("EmpId",empId);
 			query.setParameter("FromDate", fromDate);
 			query.setParameter("ToDate", toDate);
 			return (List<Object[]>)query.getResultList();
