@@ -130,7 +130,7 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public Object[] EmployeeData(String empid) throws Exception {
 		Query query=manager.createNativeQuery(EMPLOYEEDATA);
-		query.setParameter("empid",empid );
+		query.setParameter("empid", Long.parseLong(empid));
 		List<Object[]> EmployeeData=(List<Object[]>)query.getResultList();		
 
 		return EmployeeData.get(0);
@@ -193,7 +193,7 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public List<Object[]> LoginTypeEditData(String LoginId) throws Exception {
 		Query query=manager.createNativeQuery(LOGINTYPEEDITDATA);
-		query.setParameter("loginid", LoginId);
+		query.setParameter("loginid", Long.parseLong(LoginId));
 		List<Object[]> LoginTypeEditData=(List<Object[]>)query.getResultList();		
 
 		return LoginTypeEditData;
@@ -227,7 +227,7 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public List<Object[]> NotificationList(String EmpId) throws Exception {
 		Query query=manager.createNativeQuery(NOTIFICATIONLIST);
-		query.setParameter("empid", EmpId);
+		query.setParameter("empid", Long.parseLong(EmpId));
 		List<Object[]> NotificationList=(List<Object[]>)query.getResultList();		
 
 		return NotificationList;
@@ -340,7 +340,7 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public List<Object[]> getEditDetails( String expertId) throws Exception {
 		final Query query = this.manager.createNativeQuery(GETEDITDETAILS);
-		query.setParameter("EXPERTID", (Object)expertId);
+		query.setParameter("EXPERTID", Long.parseLong(expertId));
 
 		final List<Object[]> details = (List<Object[]>)query.getResultList();
 		return details;
@@ -352,7 +352,7 @@ public class AdminDaoImpl implements AdminDao{
 	public int checkAbility2( String extensionNo, final String expertId) throws Exception {
 		final Query query = this.manager.createNativeQuery(CHECKABILITY2);
 		query.setParameter("EXTNO", (Object)extensionNo);
-		query.setParameter("ExpertId", (Object)expertId);
+		query.setParameter("ExpertId", Long.parseLong(expertId));
 		final Object count = query.getSingleResult();
 		final int countR = Integer.parseInt(count.toString());
 		return countR;
@@ -545,7 +545,7 @@ public class AdminDaoImpl implements AdminDao{
 	public Object[] DesignationData(String desigid)throws Exception
 	{
 		Query query =manager.createNativeQuery(DESIGNATIONDATA);
-		query.setParameter("desigid", desigid);
+		query.setParameter("desigid", Long.parseLong(desigid));
 		return (Object[])query.getResultList().get(0);
 	}
 
@@ -597,7 +597,7 @@ public class AdminDaoImpl implements AdminDao{
 	{
 		Query query =manager.createNativeQuery(DESIGNATIONCODEEDITCHECK);
 		query.setParameter("desigcode", desigcode);
-		query.setParameter("desigid", desigid);
+		query.setParameter("desigid", Long.parseLong(desigid));
 		return (Object[])query.getSingleResult();
 	}
 
@@ -606,7 +606,7 @@ public class AdminDaoImpl implements AdminDao{
 	{
 		Query query =manager.createNativeQuery(DESIGNATIONEDITCHECK);
 		query.setParameter("designation", designation);
-		query.setParameter("desigid", desigid);
+		query.setParameter("desigid", Long.parseLong(desigid));
 		return (Object[])query.getSingleResult();
 	}
 
@@ -643,7 +643,7 @@ public class AdminDaoImpl implements AdminDao{
 	public List<Object[]> DivisionMasterEditData(String DivisionId) throws Exception {
 
 		Query query= manager.createNativeQuery(DIVISIONEDITDATA);
-		query.setParameter("divisionid", DivisionId);
+		query.setParameter("divisionid", Long.parseLong(DivisionId));
 		List<Object[]> DivisionMasterEditData=(List<Object[]>) query.getResultList();
 
 		return DivisionMasterEditData;
@@ -758,7 +758,7 @@ public class AdminDaoImpl implements AdminDao{
 	public List<BigInteger> FormRoleActiveList(String formroleaccessid) throws Exception {
 
 		Query query=manager.createNativeQuery(FORMROLEACTIVELIST);
-		query.setParameter("formroleaccessid", formroleaccessid);
+		query.setParameter("formroleaccessid", Long.parseLong(formroleaccessid));
 		List<BigInteger> FormRoleActiveList=(List<BigInteger>)query.getResultList();
 
 		return FormRoleActiveList;
@@ -771,7 +771,7 @@ public class AdminDaoImpl implements AdminDao{
 
 
 		if(Value.equals(1L)) {
-			PfmsFormRoleAccess ExistingRoleAccess = manager.find(PfmsFormRoleAccess.class, formroleaccessid);
+			PfmsFormRoleAccess ExistingRoleAccess = manager.find(PfmsFormRoleAccess.class, Long.parseLong(formroleaccessid));
 			if(ExistingRoleAccess != null) {
 				ExistingRoleAccess.setIsActive(0);
 			
@@ -783,7 +783,7 @@ public class AdminDaoImpl implements AdminDao{
 		
 		}
 		if(Value.equals(0L)) {
-			PfmsFormRoleAccess ExistingRoleAccess = manager.find(PfmsFormRoleAccess.class, formroleaccessid);
+			PfmsFormRoleAccess ExistingRoleAccess = manager.find(PfmsFormRoleAccess.class, Long.parseLong(formroleaccessid));
 			if(ExistingRoleAccess != null) {
 				ExistingRoleAccess.setIsActive(1);
 				
@@ -804,7 +804,7 @@ public class AdminDaoImpl implements AdminDao{
 	public Long LabHqChange(String formroleaccessid, String Value) throws Exception{
 		
 		
-		PfmsFormRoleAccess ExistingPfmsFormRoleAccess =manager.find(PfmsFormRoleAccess.class, formroleaccessid);
+		PfmsFormRoleAccess ExistingPfmsFormRoleAccess =manager.find(PfmsFormRoleAccess.class, Long.parseLong(formroleaccessid));
 		if(ExistingPfmsFormRoleAccess !=null) {
 			ExistingPfmsFormRoleAccess.setLabHQ(Value);
 			
@@ -821,7 +821,7 @@ public class AdminDaoImpl implements AdminDao{
 	public int checkavaibility(String logintype,String detailsid)throws Exception{
 		Query query = manager.createNativeQuery("SELECT COUNT(formroleaccessid)  FROM `pfms_form_role_access` WHERE logintype=:logintype  AND  formdetailid=:detailsid");
 		query.setParameter("logintype", logintype);
-		query.setParameter("detailsid",detailsid );
+		query.setParameter("detailsid", Long.parseLong(detailsid) );
 
 		Long result = (Long) query.getSingleResult();
 		return result.intValue();
@@ -842,7 +842,7 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public int updateformroleaccess(String formroleid,String active,String auth)throws Exception{
 		Query query = manager.createNativeQuery("UPDATE pfms_form_role_access SET isactive=:isactive , modifieddate=:modifieddate , modifiedby=:modifiedby WHERE formroleaccessid=:formroleaccessid");
-		query.setParameter("formroleaccessid", formroleid);
+		query.setParameter("formroleaccessid", Long.parseLong(formroleid));
 		query.setParameter("isactive", active);
 		query.setParameter("modifieddate",sdf1.format(new Date()));
 		query.setParameter("modifiedby", auth);
@@ -854,7 +854,7 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public int resetPassword(String lid, String userId, String password, String modifieddate) throws Exception {
 		
-		Login ExistingLogin=manager.find(Login.class, lid);
+		Login ExistingLogin=manager.find(Login.class, Long.parseLong(lid));
 		if(ExistingLogin != null) {
 			ExistingLogin.setPassword(password);
 			ExistingLogin.setModifiedBy(userId);
@@ -989,7 +989,7 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public int approvalAuthRevoke(String RtmddoId) throws Exception {
 		Query query=manager.createNativeQuery(APPROVALAUTHREVOKE);
-		query.setParameter("RtmddoId", RtmddoId);
+		query.setParameter("RtmddoId", Long.parseLong(RtmddoId));
 		int count=query.executeUpdate();
 		return count;
 	}
@@ -1099,7 +1099,7 @@ public class AdminDaoImpl implements AdminDao{
 	public List<Object[]> ProjectListPD(String empId) throws Exception {
 		// TODO Auto-generated method stub
 		Query query = manager.createNativeQuery("SELECT * FROM project_master WHERE projectdirector=:empId");
-		query.setParameter("empId", empId);
+		query.setParameter("empId", Long.parseLong(empId));
 		try {
 			return query.getResultList();
 		}
@@ -1113,7 +1113,7 @@ public class AdminDaoImpl implements AdminDao{
 	public List<Object[]> ProjectListIC(String empId) throws Exception {
 		// TODO Auto-generated method stub
 		Query query = manager.createNativeQuery("SELECT pe.projectid,pm.labcode, pm.projectmainid, pm.projecttype, pm.projectshortname,pm.UnitCode , pm.projectname FROM project_employee pe JOIN project_master pm ON pe.projectid=pm.projectid WHERE pe.empid=:empId");
-		query.setParameter("empId", empId);
+		query.setParameter("empId", Long.parseLong(empId));
 		try {
 			return query.getResultList();
 		}
@@ -1161,7 +1161,7 @@ public class AdminDaoImpl implements AdminDao{
 
 			Query query = manager.createNativeQuery(GETFORMURLLIST);
 			query.setParameter("loginType", loginType);
-			query.setParameter("formdetaild", formdetaild);
+			query.setParameter("formdetaild", Long.parseLong(formdetaild));
 			List<Object[]>hasroleAccess = (List<Object[]>)query.getResultList();
 			return hasroleAccess;
 		} catch (Exception e) {
@@ -1234,7 +1234,7 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public List<Object[]> checkDivisionMasterId(String divisionId) {
 		Query query=manager.createNativeQuery(CHECKDIVISIONMASTER);
-		query.setParameter("divId", divisionId);
+		query.setParameter("divId", Long.parseLong(divisionId));
 		return (List<Object[]>)query.getResultList();
 	}
 }

@@ -41,12 +41,9 @@ public class MasterDaoImpl implements MasterDao {
 	private static final String OFFICERLIST="SELECT a.empid, a.empno, CONCAT(IFNULL(CONCAT(a.title,' '),(IFNULL(CONCAT(a.Salutation, ' '), ''))), a.empname) AS 'empname' , b.designation, a.extno, a.email, (SELECT c.divisionname FROM division_master c WHERE a.divisionid= c.divisionid LIMIT 1) AS 'divisionname', a.desigid, a.divisionid, a.SrNo, a.isactive,a.labcode FROM employee a,employee_desig b WHERE a.desigid= b.desigid  ORDER BY a.srno=0,a.srno";
 	private static final String DESIGNATIONLIST="SELECT desigid, desigcode, designation, desiglimit FROM employee_desig";
 	private static final String OFFICERDIVISIONLIST="SELECT divisionid, divisionname FROM division_master where isactive='1'";
-	private static final String OFFICEREDITDATA="select empid,empno,empname,desigid,extno,email,divisionid, DronaEmail, InternetEmail,MobileNo , title , salutation, SuperiorOfficer, EmpStatus from employee  where empid=:empid"; // srikant
-	private static final String OFFICERMASTERDELETE="UPDATE employee SET srno=:srno, isactive=:isactive, modifieddate=:modifieddate, modifiedby=:modifiedby WHERE empid=:empid";
-	private static final String OFFICEREXTMASTERDELETE="UPDATE employee SET isactive=:isactive, modifieddate=:modifieddate, modifiedby=:modifiedby WHERE empid=:empid";
+	private static final String OFFICEREDITDATA="select empid,empno,empname,desigid,extno,email,divisionid, DronaEmail, InternetEmail,MobileNo , title , salutation, SuperiorOfficer, EmpStatus from employee  where empid=:empid"; 
 	private static final String EMPNOCHECK="SELECT empno FROM employee";
 	private static final String EMPEXTNOCHECK="SELECT empno FROM employee_external";
-	private static final String OFFICERMASTERUPDATE="UPDATE employee SET title=:title, salutation=:salutation, empno=:empno, empname=:empname, desigid=:desigid, MobileNo=:mobileno, extno=:extno, email=:email, DronaEmail=:dronaemail, InternetEmail=:internetemail, divisionid=:divisionid, modifiedby=:modifiedby, modifieddate=:modifieddate, SuperiorOfficer=:SuperiorOfficer, EmpStatus=:EmpStatus WHERE empid=:empid" ;
 	private static final String CLUSTERLAB="SELECT LabId, ClusterId, LabCode FROM cluster_lab";
 	private static final String EXTERNALOFFICERLIST="SELECT a.empid, a.empno, CONCAT(IFNULL(CONCAT(a.title, ' '), ''), a.empname) AS 'empname', b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid, 'active', a.isactive FROM employee a JOIN employee_desig b ON a.desigid = b.desigid LEFT JOIN division_master c ON a.divisionid = c.divisionid WHERE a.Labcode <>:labcode ORDER BY a.empid DESC";
 	private static final String EXTERNALOFFICEREDITDATA="select empid,empno,empname,desigid,extno,email,divisionid,DronaEmail,InternetEmail,MobileNo,Labcode,title , salutation from employee  where empid=:empid";
@@ -57,11 +54,9 @@ public class MasterDaoImpl implements MasterDao {
 	private static final String DIVISIONEMPLIST="SELECT de.divisionemployeeid,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',ed.designation,de.divisionid  FROM division_employee de,employee e, employee_desig ed WHERE de.isactive=1 AND e.isactive=1 AND  de.empid=e.empid AND e.desigid=ed.desigid AND de.divisionid=:divisionid";
 	private static final String DIVISIONNONEMPLIST ="SELECT e.empid, CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',ed.designation,e.labcode  FROM employee e,employee_desig ed  WHERE e.isactive=1 AND e.desigid=ed.desigid AND e.empid NOT IN  (SELECT de.empid FROM division_employee de WHERE de.isactive=1 AND divisionid=:divisionid) ORDER BY e.srno ASC ,ed.desigsr ASC";
 	private static final String DIVISIONDATA ="SELECT divisionid, divisioncode,divisionname FROM division_master WHERE divisionid=:divisionid";
-	private static final String DIVSIONEMPLOYEEREVOKE="UPDATE division_employee SET isactive=0,ModifiedBy=:modifiedby,ModifiedDate=:modifieddate WHERE divisionemployeeid=:divisionempid";
 
 	private final static String OFFICERDETALIS="SELECT a.empid, a.empno,CONCAT(IFNULL(CONCAT(a.title,' '),(IFNULL(CONCAT(a.Salutation, ' '), ''))), a.empname) AS 'empname' , b.designation, a.extno, a.email, (SELECT c.divisionname FROM division_master c WHERE a.divisionid= c.divisionid LIMIT 1) AS 'divisionname', a.desigid, a.divisionid, a.SrNo FROM employee a,employee_desig b WHERE a.desigid= b.desigid AND a.isactive='1' AND a.empid=:officerid"; 
 	private final static String LISTOFSENIORITYNUMBER="SELECT SrNo, EmpId FROM employee WHERE SrNo !=0 ORDER BY SrNo ASC ";
-	private final static String UPDATESRNO="UPDATE employee SET SrNo=:srno WHERE EmpId=:empid";
 
 	private static final String ACTIVITYLIST="SELECT activitytypeid, activitytype, IsTimeSheet, ActivityCode FROM milestone_activity_type WHERE isactive=1";
 	private static final String ACTIVITYNAMECHECK="SELECT COUNT(ActivityTypeId) AS 'count','ActivityType' FROM milestone_activity_type WHERE CASE WHEN ActivityTypeId<>0 THEN ActivityTypeId!=:ActivityTypeId END AND ActivityType=:ActivityType AND IsActive=1";
@@ -69,11 +64,9 @@ public class MasterDaoImpl implements MasterDao {
 	private static final String GROUPHEADLIST ="SELECT e.empid,CONCAT(IFNULL(e.title,''), e.empname)AS 'empname',ed.designation FROM employee e, employee_desig ed WHERE  e.desigid=ed.desigid AND e.isactive=1 AND e.labcode=:labcode ORDER BY e.srno";
 	private static final String GROUPADDCHECK ="SELECT SUM(IF(GroupCode =:gcode,1,0))   AS 'dCode','0' AS 'codecount'FROM division_group WHERE isactive=1 ";
 	private static final String GROUPDATA = "SELECT dg.GroupId,dg.GroupCode,dg.GroupName,dg.GroupHeadId,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',ed.designation,dg.isactive,dg.tdid FROM division_group dg,employee e, employee_desig ed WHERE e.isActive=1 AND dg.GroupHeadId=e.empid AND e.desigid=ed.desigid AND  dg.groupid=:groupid";
-	private static final String GROUPUPDATE="UPDATE division_group SET GroupCode=:groupcode, GroupName=:groupname, GroupHeadId=:groupheadid , TDId=:tdId, ModifiedBy=:modifiedby, ModifiedDate=:modifieddate, IsActive=:isactive WHERE GroupId=:groupid";
 	private static final String LABLIST="select labmasterid,labcode,labname,labunitcode,labaddress,labcity,labpin FROM lab_master";
 	private static final String EMPLOYEELIST="SELECT empid, CONCAT(IFNULL(CONCAT(title,' '),''), empname) AS 'empname' FROM employee WHERE isactive=1 ORDER BY srno ";
 	private static final String LABMASTEREDITDATA="select labmasterid,labcode,labname,labunitcode,labaddress,labcity,labpin,labtelno,labfaxno,labemail,labauthority,labauthorityid,labrfpemail,lablogo,labid from lab_master where labmasterid= :labmasterid";
-	private static final String LABMASTERUPDATE="UPDATE lab_master SET labcode=:labcode , labname=:labname , labunitcode=:labunitcode, labaddress=:labaddress, labcity=:labcity, labpin= :labpin ,labtelno=:labtelno, labfaxno=:labfaxno, labemail=:labemail, labauthority=:labauthority, labauthorityid=:labauthorityid, labrfpemail=:labrfpemail, labid=:labid, clusterid=:clusterid,  modifiedby=:modifiedby, modifieddate=:modifieddate WHERE labmasterid=:labmasterid"; //lablogo=:lablogo,
 	private static final String LABSLIST="SELECT labid,clusterid,labname,labcode FROM cluster_lab";
 	private static final String EMPNOCHECKAJAX="SELECT empid, CONCAT(IFNULL(CONCAT(title,' '),''), empname) AS 'empname' , empno FROM employee WHERE empno=:empno"; 
 	private static final String EXTEMPNOCHECKAJAX="SELECT empid, empname , empno FROM employee_external WHERE empno=:empno";
@@ -109,7 +102,7 @@ public class MasterDaoImpl implements MasterDao {
 	public List<Object[]> OfficerEditData(String OfficerId) throws Exception {
 
 		Query query=manager.createNativeQuery(OFFICEREDITDATA);
-		query.setParameter("empid", OfficerId);
+		query.setParameter("empid", Long.parseLong(OfficerId));
 		List<Object[]> OfficerEditData= (List<Object[]>) query.getResultList();
 
 		return OfficerEditData;
@@ -117,29 +110,37 @@ public class MasterDaoImpl implements MasterDao {
 
 	@Override
 	public int OfficerMasterDelete(Employee employee) throws Exception {
-
-		Query query=manager.createNativeQuery(OFFICERMASTERDELETE);
-		query.setParameter("modifieddate", employee.getModifiedDate());
-		query.setParameter("modifiedby", employee.getModifiedBy());
-		query.setParameter("isactive", employee.getIsActive());
-		query.setParameter("empid", employee.getEmpId());
-		query.setParameter("srno", employee.getSrNo());
-		int count =(int)query.executeUpdate();
-
-		return count ;
+		Employee emp = manager.find(Employee.class, employee.getEmpId());
+		if (emp == null) {
+			return 0;
+		}
+		try {
+			emp.setSrNo(employee.getSrNo());
+			emp.setIsActive(employee.getIsActive());
+			emp.setModifiedBy(employee.getModifiedBy());
+			emp.setModifiedDate(employee.getModifiedDate());
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 	@Override
 	public int OfficerExtDelete(Employee employee) throws Exception {
-
-		Query query=manager.createNativeQuery(OFFICEREXTMASTERDELETE);
-		query.setParameter("modifieddate", employee.getModifiedDate());
-		query.setParameter("modifiedby", employee.getModifiedBy());
-		query.setParameter("isactive", employee.getIsActive());
-		query.setParameter("empid", employee.getEmpId());
-		int count =(int)query.executeUpdate();
-
-		return count ;
+		Employee emp = manager.find(Employee.class, employee.getEmpId());
+		if (emp == null) {
+			return 0;
+		}
+		try {
+			emp.setIsActive(employee.getIsActive());
+			emp.setModifiedBy(employee.getModifiedBy());
+			emp.setModifiedDate(employee.getModifiedDate());
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 
@@ -161,76 +162,45 @@ public class MasterDaoImpl implements MasterDao {
 
 	@Override
 	public Long OfficeMasterInsert(Employee employee) throws Exception {
-
+		if(employee.getSalutation() == null || employee.getSalutation().isBlank()) { 
+			employee.setSalutation(null);
+		}
+		if(employee.getTitle() == null || employee.getTitle().isBlank()) { 
+			employee.setTitle(null);
+		}
 		manager.persist(employee);
 		manager.flush();
-		String updatequery1="UPDATE employee set title=NULL where empid=:empid";
-		String updatequery2="UPDATE employee set salutation=NULL where  empid=:empid";
-
-		if(employee.getSalutation().length()<1) { Query
-			query1=manager.createNativeQuery(updatequery2); query1.setParameter("empid",
-					employee.getEmpId());
-			query1.executeUpdate();
-		}
-
-		if(employee.getTitle().length()<1) { Query
-			query1=manager.createNativeQuery(updatequery1); query1.setParameter("empid",
-					employee.getEmpId());
-			query1.executeUpdate();
-		}
 		return employee.getEmpId();
 	}
 
 	@Override
 	public int OfficerMasterUpdate(Employee employee) throws Exception {
-
-
-
-
-		Query query=manager.createNativeQuery(OFFICERMASTERUPDATE);
-		query.setParameter("title", employee.getTitle());
-		query.setParameter("salutation", employee.getSalutation());
-		query.setParameter("empno", employee.getEmpNo());
-		query.setParameter("empname", employee.getEmpName());
-		query.setParameter("desigid", employee.getDesigId());
-		query.setParameter("extno", employee.getExtNo());
-		query.setParameter("email", employee.getEmail());
-		query.setParameter("mobileno",employee.getMobileNo());
-		query.setParameter("dronaemail",employee.getDronaEmail());
-		query.setParameter("internetemail",employee.getInternetEmail());
-		query.setParameter("divisionid", employee.getDivisionId());
-		query.setParameter("empid", employee.getEmpId());
-		query.setParameter("modifiedby", employee.getModifiedBy());
-		query.setParameter("modifieddate", employee.getModifiedDate());
-		query.setParameter("SuperiorOfficer", employee.getSuperiorOfficer());
-		query.setParameter("EmpStatus", employee.getEmpStatus()); // SRIKANT
-
-		int count =(int)query.executeUpdate();
-
-		//
-
-		String updatequery1="UPDATE employee set title=NULL where empid=:empid";
-		String updatequery2="UPDATE employee set salutation=NULL where  empid=:empid";
-
-		System.out.println(employee.getSalutation().length()+"Salutation"+employee.getTitle().length()+"Title");
-
-		if(employee.getSalutation().length()<1) { 
-			Query query1=manager.createNativeQuery(updatequery2); 
-			query1.setParameter("empid",
-					employee.getEmpId());
-			query1.executeUpdate();
+		Employee emp = manager.find(Employee.class, employee.getEmpId());
+		if (emp == null) {
+			return 0;
+		}
+		try {
+			emp.setSalutation(employee.getSalutation() == null || employee.getSalutation().isBlank() ? null : employee.getSalutation());
+			emp.setTitle(employee.getTitle() == null || employee.getTitle().isBlank() ? null : employee.getTitle());
+			emp.setEmpNo(employee.getEmpNo());
+			emp.setEmpName(employee.getEmpName());
+			emp.setDesigId(employee.getDesigId());
+			emp.setExtNo(employee.getExtNo());			
+			emp.setEmail(employee.getEmail());			
+			emp.setMobileNo(employee.getMobileNo());			
+			emp.setDronaEmail(employee.getDronaEmail());			
+			emp.setInternetEmail(employee.getInternetEmail());
+			emp.setDivisionId(employee.getDivisionId());
+			emp.setModifiedBy(employee.getModifiedBy());
+			emp.setModifiedDate(employee.getModifiedDate());
+			emp.setSuperiorOfficer(employee.getSuperiorOfficer());
+			emp.setEmpStatus(employee.getEmpStatus());
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
 		}
 
-		if(employee.getTitle().length()<1) { 
-			Query query1=manager.createNativeQuery(updatequery1);
-			query1.setParameter("empid",
-					employee.getEmpId());
-			query1.executeUpdate();
-		}
-
-
-
-		return count;
 	}
 
 	@Override
@@ -262,7 +232,7 @@ public class MasterDaoImpl implements MasterDao {
 	public List<Object[]> ExternalOfficerEditData(String officerId) throws Exception{
 
 		Query query=manager.createNativeQuery(EXTERNALOFFICEREDITDATA);
-		query.setParameter("empid", officerId);
+		query.setParameter("empid", Long.parseLong(officerId));
 		List<Object[]> OfficerEditData= (List<Object[]>) query.getResultList();
 
 		return OfficerEditData;
@@ -270,33 +240,37 @@ public class MasterDaoImpl implements MasterDao {
 
 	@Override  
 	public int OfficerExtUpdate(Employee employee) throws Exception{
-
-		Query query=manager.createNativeQuery(EXTERNALOFFICERMASTERUPDATE);
-		query.setParameter("empno", employee.getEmpNo());
-		query.setParameter("empname", employee.getEmpName());
-		query.setParameter("desigid", employee.getDesigId());
-		query.setParameter("extno", employee.getExtNo());
-		query.setParameter("mobileno", employee.getMobileNo());
-		query.setParameter("email", employee.getEmail());
-		query.setParameter("divisionid", employee.getDivisionId());
-		query.setParameter("empid", employee.getEmpId());
-		query.setParameter("modifiedby", employee.getModifiedBy());
-		query.setParameter("modifieddate", employee.getModifiedDate());
-		query.setParameter("dronaemail", employee.getDronaEmail());
-		query.setParameter("internalemail", employee.getInternetEmail());
-		query.setParameter("title", employee.getTitle());
-		query.setParameter("salutation", employee.getSalutation());
-		query.setParameter("labcode", employee.getLabCode());
-		int count =(int)query.executeUpdate();
-
-		return count;
+		Employee emp = manager.find(Employee.class, employee.getEmpId());
+		if (emp == null) {
+			return 0;
+		}
+		try {
+			emp.setSalutation(employee.getSalutation() == null ||employee.getSalutation().isBlank() ? null : employee.getSalutation());
+			emp.setTitle(employee.getTitle() == null || employee.getTitle().isBlank() ? null : employee.getTitle());
+			emp.setEmpNo(employee.getEmpNo());
+			emp.setEmpName(employee.getEmpName());
+			emp.setDesigId(employee.getDesigId());
+			emp.setExtNo(employee.getExtNo());			
+			emp.setEmail(employee.getEmail());			
+			emp.setMobileNo(employee.getMobileNo());			
+			emp.setDronaEmail(employee.getDronaEmail());			
+			emp.setInternetEmail(employee.getInternetEmail());
+			emp.setDivisionId(employee.getDivisionId());
+			emp.setModifiedBy(employee.getModifiedBy());
+			emp.setModifiedDate(employee.getModifiedDate());
+			emp.setLabCode(employee.getLabCode());
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 
 	@Override
 	public Object[] getOfficerDetalis(String officerId)throws Exception{
 		Query query=manager.createNativeQuery(OFFICERDETALIS);
-		query.setParameter("officerid", officerId);
+		query.setParameter("officerid", Long.parseLong(officerId));
 		return (Object[])query.getSingleResult();
 	}
 
@@ -305,21 +279,22 @@ public class MasterDaoImpl implements MasterDao {
 
 		Query query=manager.createNativeQuery(LISTOFSENIORITYNUMBER);
 		List<Object[]> listSeni=(List<Object[]>)query.getResultList();
-
-		Query updatequery=manager.createNativeQuery(UPDATESRNO);
-		updatequery.setParameter("empid", empId);
-		updatequery.setParameter("srno", newSeniorityNumber);  	   
-		updatequery.executeUpdate();
-
+		
+		Employee emp = manager.find(Employee.class, empId);
+		if (emp != null) {
+			emp.setSrNo(Long.parseLong(newSeniorityNumber));
+		}
 		return listSeni;
 	}
 
 	@Override
 	public int updateAllSeniority(Long empIdL, Long long1)throws Exception{
-		Query updatequery=manager.createNativeQuery(UPDATESRNO);
-		updatequery.setParameter("empid", empIdL);
-		updatequery.setParameter("srno", long1);  	 
-		return updatequery.executeUpdate();
+		Employee emp = manager.find(Employee.class, empIdL);
+		if (emp != null) {
+			emp.setSrNo(long1);
+			return 1;
+		}
+		return 0;
 	}
 
 
@@ -335,7 +310,7 @@ public class MasterDaoImpl implements MasterDao {
 	public List<Object[]> DivisionEmpList(String divisionid)throws Exception
 	{		
 		Query query=manager.createNativeQuery(DIVISIONEMPLIST); 
-		query.setParameter("divisionid", divisionid);  	 
+		query.setParameter("divisionid", Long.parseLong(divisionid));  	 
 		return  (List<Object[]>)query.getResultList();
 	}
 
@@ -343,7 +318,7 @@ public class MasterDaoImpl implements MasterDao {
 	public List<Object[]> DivisionNonEmpList(String divisionid)throws Exception
 	{		
 		Query query=manager.createNativeQuery(DIVISIONNONEMPLIST); 
-		query.setParameter("divisionid", divisionid);  	 
+		query.setParameter("divisionid", Long.parseLong(divisionid));  	 
 		return  (List<Object[]>)query.getResultList();
 	}
 
@@ -351,7 +326,7 @@ public class MasterDaoImpl implements MasterDao {
 	public Object[] DivisionData(String divisionid)throws Exception
 	{
 		Query query=manager.createNativeQuery(DIVISIONDATA); 
-		query.setParameter("divisionid", divisionid);  
+		query.setParameter("divisionid", Long.parseLong(divisionid));  
 		return  (Object[])query.getSingleResult();
 	}
 
@@ -359,11 +334,18 @@ public class MasterDaoImpl implements MasterDao {
 	@Override
 	public int DivsionEmployeeRevoke(DivisionEmployeeDto dto)throws Exception
 	{
-		Query query=manager.createNativeQuery(DIVSIONEMPLOYEEREVOKE); 
-		query.setParameter("divisionempid", dto.getDivisionEmployeeId());
-		query.setParameter("modifiedby", dto.getModifiedBy());
-		query.setParameter("modifieddate", dto.getModifiedDate());
-		return  query.executeUpdate();
+		DivisionEmployee dvEmp = manager.find(DivisionEmployee.class, dto.getDivisionEmployeeId());
+		if (dvEmp == null) {
+			return 0;
+		}
+		try {
+			dvEmp.setModifiedBy(dto.getModifiedBy());
+			dvEmp.setModifiedDate(dto.getModifiedDate());
+			return 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 
@@ -388,7 +370,7 @@ public class MasterDaoImpl implements MasterDao {
 	public Object[] ActivityNameCheck(String activityTypeId, String activityType)throws Exception
 	{		
 		Query query=manager.createNativeQuery(ACTIVITYNAMECHECK);   
-		query.setParameter("ActivityTypeId", activityTypeId);
+		query.setParameter("ActivityTypeId", Long.parseLong(activityTypeId));
 		query.setParameter("ActivityType", activityType);
 		return  (Object[])query.getSingleResult();
 	}
@@ -444,7 +426,7 @@ public class MasterDaoImpl implements MasterDao {
 	public Object[] GroupsData(String groupid)throws Exception
 	{	
 		Query query=manager.createNativeQuery(GROUPDATA);
-		query.setParameter("groupid", groupid);				
+		query.setParameter("groupid", Long.parseLong(groupid));				
 		return( Object[] )query.getSingleResult();
 	}
 
@@ -452,18 +434,23 @@ public class MasterDaoImpl implements MasterDao {
 	@Override
 	public int GroupMasterUpdate(DivisionGroup model) throws Exception
 	{		
-		Query query=manager.createNativeQuery(GROUPUPDATE);
-		query.setParameter("groupcode", model.getGroupCode());
-		query.setParameter("groupname", model.getGroupName());
-		query.setParameter("groupheadid", model.getGroupHeadId());
-		query.setParameter("groupid", model.getGroupId());
-		query.setParameter("tdId", model.getTDId());
-		query.setParameter("modifiedby", model.getModifiedBy());
-		query.setParameter("modifieddate", model.getModifiedDate());
-		query.setParameter("isactive", model.getIsActive());
-		int count = (int)query.executeUpdate();
-
-		return count;
+		DivisionGroup divisionGroup = manager.find(DivisionGroup.class, model.getGroupId());
+		if (divisionGroup == null) {
+			return 0;
+		}
+		try { 
+			divisionGroup.setGroupCode(model.getGroupCode());
+			divisionGroup.setGroupName(model.getGroupName());
+			divisionGroup.setGroupHeadId(model.getGroupHeadId());
+			divisionGroup.setTDId(model.getTDId());
+			divisionGroup.setModifiedBy(model.getModifiedBy());
+			divisionGroup.setModifiedDate(model.getModifiedDate());
+			divisionGroup.setIsActive(model.getIsActive());
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 	@Override
@@ -485,7 +472,7 @@ public class MasterDaoImpl implements MasterDao {
 	public List<Object[]> LabMasterEditData(String LabId) throws Exception {
 
 		Query query = manager.createNativeQuery(LABMASTEREDITDATA);
-		query.setParameter("labmasterid",LabId );
+		query.setParameter("labmasterid", Long.parseLong(LabId));
 		List<Object[]> LabMasterEditData=(List<Object[]>) query.getResultList();
 		return LabMasterEditData;
 	}
@@ -493,30 +480,33 @@ public class MasterDaoImpl implements MasterDao {
 
 	@Override
 	public int LabMasterUpdate(LabMaster labmaster) throws Exception {
-
-		Query query=manager.createNativeQuery(LABMASTERUPDATE);
-		query.setParameter("labcode", labmaster.getLabCode());
-		query.setParameter("labname", labmaster.getLabName());
-		query.setParameter("labunitcode", labmaster.getLabUnitCode());
-		query.setParameter("labaddress", labmaster.getLabAddress());
-		query.setParameter("labcity", labmaster.getLabCity());
-		query.setParameter("labpin", labmaster.getLabPin());
-		query.setParameter("labmasterid", labmaster.getLabMasterId());
-		query.setParameter("labtelno", labmaster.getLabTelNo());
-		query.setParameter("labfaxno", labmaster.getLabFaxNo());
-		query.setParameter("labemail", labmaster.getLabEmail());
-		query.setParameter("labauthority", labmaster.getLabAuthority());
-		query.setParameter("labauthorityid", labmaster.getLabAuthorityId());
-		query.setParameter("labrfpemail", labmaster.getLabRfpEmail());
-		query.setParameter("labid", labmaster.getLabId());
-		query.setParameter("clusterid", labmaster.getClusterId());
-		//		query.setParameter("lablogo", labmaster.getLabLogo());
-		query.setParameter("modifiedby", labmaster.getModifiedBy());
-		query.setParameter("modifieddate", labmaster.getModifiedDate());
-
-
-		int count = (int)query.executeUpdate();
-		return count;
+		
+		LabMaster dbLabMaster = manager.find(LabMaster.class, labmaster.getLabMasterId());
+		if (dbLabMaster == null) {
+			return 0;
+		}
+		try {
+			dbLabMaster.setLabCode(labmaster.getLabCode());
+			dbLabMaster.setLabName(labmaster.getLabName());
+			dbLabMaster.setLabUnitCode(labmaster.getLabUnitCode());
+			dbLabMaster.setLabAddress(labmaster.getLabAddress());
+			dbLabMaster.setLabCity(labmaster.getLabCity());
+			dbLabMaster.setLabPin(labmaster.getLabPin());
+			dbLabMaster.setLabTelNo(labmaster.getLabTelNo());
+			dbLabMaster.setLabFaxNo(labmaster.getLabFaxNo());
+			dbLabMaster.setLabEmail(labmaster.getLabEmail());
+			dbLabMaster.setLabAuthority(labmaster.getLabAuthority());
+			dbLabMaster.setLabAuthorityId(labmaster.getLabAuthorityId());
+			dbLabMaster.setLabRfpEmail(labmaster.getLabRfpEmail());
+			dbLabMaster.setLabId(labmaster.getLabId());
+			dbLabMaster.setClusterId(labmaster.getClusterId());
+			dbLabMaster.setModifiedBy(labmaster.getModifiedBy());
+			dbLabMaster.setModifiedDate(labmaster.getModifiedDate());
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 	@Override
@@ -590,21 +580,27 @@ public class MasterDaoImpl implements MasterDao {
 	public Object[] FeedbackContent(String feedbackid)throws Exception
 	{		
 		Query query=manager.createNativeQuery(FEEDBACKCONTENT);   
-		query.setParameter("feedbackid", feedbackid);
+		query.setParameter("feedbackid", Long.parseLong(feedbackid));
 		return  (Object[])query.getSingleResult();
 	}
-	private final static String CLOSEFEEDBACK="UPDATE pfms_feedback SET STATUS=:status , remarks=:remarks , ModifiedBy=:modifiedby , ModifiedDate=:modifieddate WHERE feedbackid=:feedbackId";
+
 	@Override
 	public int CloseFeedback(String feedbackId , String remarks , String username)throws Exception
-	{
-		Query query=manager.createNativeQuery(CLOSEFEEDBACK);   
-		query.setParameter("feedbackId", feedbackId);
-		query.setParameter("remarks", remarks);
-		query.setParameter("status", "C");
-		query.setParameter("modifiedby", username);
-		query.setParameter("modifieddate", sdf1.format(new Date()));
-		int count =(int)query.executeUpdate();
-		return count ;
+	{	
+		PfmsFeedback pfmsFeedback = manager.find(PfmsFeedback.class, Long.parseLong(feedbackId));
+		if(pfmsFeedback == null) {
+			return 0;
+		}
+		try {
+			pfmsFeedback.setRemarks(remarks);
+			pfmsFeedback.setStatus("C");
+			pfmsFeedback.setModifiedBy(username);
+			pfmsFeedback.setModifiedDate(sdf1.format(new Date()));
+			return 1;
+		}catch(Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 	private static final String ATTACHLIST="SELECT a.feedbackid, a.FeedbackAttachId ,a.path , a.filename  FROM pfms_feedback_attach a , pfms_feedback b WHERE a.feedbackid=b.feedbackid AND a.isactive=1";
 	@Override
@@ -619,7 +615,7 @@ public class MasterDaoImpl implements MasterDao {
 	public List<Object[]> GetfeedbackAttchForUser(String empid)throws Exception
 	{
 		Query query = manager.createNativeQuery(USERATTCHFEEDBACK);
-		query.setParameter("empid", empid);
+		query.setParameter("empid", Long.parseLong(empid));
 		List<Object[]> FeedbackList = (List<Object[]>) query.getResultList();
 		return FeedbackList;
 	}
@@ -657,7 +653,7 @@ public class MasterDaoImpl implements MasterDao {
 	public Object[] TDsData(String tdid)throws Exception
 	{	
 		Query query=manager.createNativeQuery(TDDATA);
-		query.setParameter("tdid", tdid);				
+		query.setParameter("tdid", Long.parseLong(tdid));				
 		return( Object[] )query.getSingleResult();
 	}
 
@@ -688,20 +684,24 @@ public class MasterDaoImpl implements MasterDao {
 		return (List<Object[]>)query.getResultList();
 	}
 
-	public static final String TDUPDATE="UPDATE division_td SET TDCode=:tdcode, TDName=:tdname, TDHeadId=:tdheadid ,  ModifiedBy=:modifiedby, ModifiedDate=:modifieddate, IsActive=:isactive WHERE TDId=:tdid";
 	@Override
 	public int TDMasterUpdate(DivisionTd model) throws Exception {
-
-		Query query = manager.createNativeQuery(TDUPDATE);
-		query.setParameter("tdid", model.getTdId());
-		query.setParameter("tdcode", model.getTdCode());
-		query.setParameter("tdname", model.getTdName());
-		query.setParameter("tdheadid", model.getTdHeadId());
-		query.setParameter("modifiedby", model.getModifiedBy());
-		query.setParameter("modifieddate", model.getModifiedDate());
-		query.setParameter("isactive", model.getIsActive());
-		int count = (int)query.executeUpdate();
-		return count;
+		DivisionTd divisionTd = manager.find(DivisionTd.class, model.getTdId());
+		if(divisionTd == null) {
+			return 0;
+		}
+		try {
+			divisionTd.setTdCode(model.getTdCode());
+			divisionTd.setTdName(model.getTdName());
+			divisionTd.setTdHeadId(model.getTdHeadId());
+			divisionTd.setModifiedBy(model.getModifiedBy());
+			divisionTd.setModifiedDate(model.getModifiedDate());
+			divisionTd.setIsActive(model.getIsActive());
+			return 1;
+		}catch(Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 	public static final String TDADDLIST="SELECT a.tdid,a.tdname,a.tdcode,a.labcode FROM division_td a WHERE a.isactive=1";
@@ -713,31 +713,34 @@ public class MasterDaoImpl implements MasterDao {
 		return TDListAdd;
 	}
 
-	public static final String UpdateActivityTypeQuery="UPDATE milestone_activity_type SET activityType=:activityType, IsTimeSheet=:IsTimeSheet, ActivityCode=:ActivityCode WHERE ActivityTypeId=:ActivityTypeId";
 	@Override
 	public int UpdateActivityType(String activityType, String activityTypeId, String isTimeSheet, String activityCode) throws Exception {
+		MilestoneActivityType milestoneActivityType = manager.find(MilestoneActivityType.class, Long.parseLong(activityTypeId));
+		if(milestoneActivityType == null) {
+			return 0;
+		}
 		try {
-			Query query = manager.createNativeQuery(UpdateActivityTypeQuery);
-			query.setParameter("activityType", activityType);
-			query.setParameter("ActivityCode", activityCode);
-			query.setParameter("ActivityTypeId", activityTypeId);
-			query.setParameter("IsTimeSheet", isTimeSheet);
-			return query.executeUpdate();
-		}catch (Exception e) {
+			milestoneActivityType.setActivityCode(activityCode);
+			milestoneActivityType.setActivityType(activityType);
+			milestoneActivityType.setIsTimeSheet(isTimeSheet);
+			return 1;
+		}catch(Exception e) {
 			e.printStackTrace();
 			return 0;
 		}
 		
 	}
-	public static final String DeleteActivityTypeQuery="UPDATE milestone_activity_type SET isactive=0 WHERE ActivityTypeId=:activitytypeid";
 
 	@Override
 	public int DeleteActivityType(String ActivityId) throws Exception {
+		MilestoneActivityType milestoneActivityType = manager.find(MilestoneActivityType.class, Long.parseLong(ActivityId));
+		if(milestoneActivityType == null) {
+			return 0;
+		}
 		try {
-			Query query = manager.createNativeQuery(DeleteActivityTypeQuery);
-			query.setParameter("activitytypeid", ActivityId);
-			return query.executeUpdate();
-		}catch (Exception e) {
+			milestoneActivityType.setIsActive(0);
+			return 1;
+		}catch(Exception e) {
 			e.printStackTrace();
 			return 0;
 		}
@@ -813,14 +816,16 @@ public class MasterDaoImpl implements MasterDao {
 		}
 	}
 	
-	private static final String REVOKEINDUSTRYPARTNERREP = "UPDATE pfms_industry_partner_rep SET IsActive=0 WHERE IndustryPartnerRepId=:IndustryPartnerRepId";
 	@Override
 	public int revokeIndustryPartnerRep(String industryPartnerRepId) throws Exception{
+		IndustryPartnerRep industryPartnerRep = manager.find(IndustryPartnerRep.class, Long.parseLong(industryPartnerRepId));
+		if(industryPartnerRep == null) {
+			return 0;
+		}
 		try {
-			Query query = manager.createNativeQuery(REVOKEINDUSTRYPARTNERREP);
-			query.setParameter("IndustryPartnerRepId", Long.parseLong(industryPartnerRepId));
-			return query.executeUpdate();
-		}catch (Exception e) {
+		industryPartnerRep.setIsActive(0);
+			return 1;
+		}catch(Exception e) {
 			e.printStackTrace();
 			return 0;
 		}
@@ -831,8 +836,8 @@ public class MasterDaoImpl implements MasterDao {
 	public List<Object[]> industryPartnerRepDetails(String industryPartnerId, String industryPartnerRepId) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(INDUSTRYPARTNERREPDETAILS);
-			query.setParameter("IndustryPartnerId", industryPartnerId);
-			query.setParameter("IndustryPartnerRepId", industryPartnerRepId);
+			query.setParameter("IndustryPartnerId", Long.parseLong(industryPartnerId));
+			query.setParameter("IndustryPartnerRepId", Long.parseLong(industryPartnerRepId));
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -1015,7 +1020,7 @@ public class MasterDaoImpl implements MasterDao {
 		@Override
 		public List<Object[]> checkDivisionMasterId(String groupId) {
 			Query query=manager.createNativeQuery(DIVISIONMASTERCHECK);
-			query.setParameter("GrpId", groupId);
+			query.setParameter("GrpId", Long.parseLong(groupId));
 			return (List<Object[]>)query.getResultList();
 		}
 		

@@ -19,9 +19,23 @@ public class PfmsFeedback implements Serializable {
 	    private String Remarks;
 	    private String CreatedBy;
 	    private String CreatedDate;
+	    private String ModifiedBy;
+		private String ModifiedDate;
 	    private int isActive;
 	    
 	    
+		public String getModifiedBy() {
+			return ModifiedBy;
+		}
+		public void setModifiedBy(String modifiedBy) {
+			ModifiedBy = modifiedBy;
+		}
+		public String getModifiedDate() {
+			return ModifiedDate;
+		}
+		public void setModifiedDate(String modifiedDate) {
+			ModifiedDate = modifiedDate;
+		}
 		public String getStatus() {
 			return Status;
 		}

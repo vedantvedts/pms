@@ -814,8 +814,6 @@ XWPFParagraph reviewHeld = document.createParagraph();
 			pm.setIsChecked(isChecked);
 			pm.setActivityFor(ActivityFor);
 		
-//			 count = service.MilestoneActivityNameUpdate(MilestoneActivityId,UserId,ActivityName);
-			
 			count = service.LabReportMilestone(pm);
 				Gson json = new Gson();
 				return json.toJson(count);

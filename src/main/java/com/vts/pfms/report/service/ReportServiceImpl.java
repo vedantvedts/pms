@@ -79,12 +79,6 @@ public class ReportServiceImpl implements ReportService {
 		
 		return null;
 	}
-	
-	
-	@Override
-	public long MilestoneActivityNameUpdate(String milestoneActivityId,String UserId,String ActivityName) throws Exception {
-		return dao.MilestoneActivityNameUpdate(milestoneActivityId, UserId,ActivityName);
-	}
 
 	@Override
 	public long LabReportMilestone(PfmsLabReportMilestone pm) throws Exception {

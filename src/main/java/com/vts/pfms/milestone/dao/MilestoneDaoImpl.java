@@ -125,7 +125,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public List<Object[]> MilestoneActivityList(String ProjectId) throws Exception {
 
 		Query query=manager.createNativeQuery(MALIST);
-		query.setParameter("ProjectId", ProjectId);
+		query.setParameter("ProjectId",  Long.parseLong(ProjectId));
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
 
 		return MilestoneActivityList;
@@ -145,8 +145,8 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public List<Object[]> MilestoneActivityAssigneeList(String ProjectId,String EmpId) throws Exception {
 
 		Query query=manager.createNativeQuery(MAASSIGNEELIST);
-		query.setParameter("ProjectId", ProjectId);
-		query.setParameter("empid", EmpId);
+		query.setParameter("ProjectId", Long.parseLong(ProjectId));
+		query.setParameter("empid", Long.parseLong(EmpId));
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
 
 		return MilestoneActivityList;
@@ -156,7 +156,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public List<Object[]> ProjectAssigneeList(String EmpId) throws Exception {
 
 		Query query=manager.createNativeQuery(PROJECTASSINEE);
-		query.setParameter("empid", EmpId);
+		query.setParameter("empid", Long.parseLong(EmpId));
 		List<Object[]> ProjectList=(List<Object[]>)query.getResultList();		
 		return ProjectList;
 	}
@@ -182,7 +182,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public int MilestoneCount(String ProjectId) throws Exception {
 		
 		Query query = manager.createNativeQuery(MILESTONECOUNT);
-		query.setParameter("ProjectId", ProjectId);
+		query.setParameter("ProjectId", Long.parseLong(ProjectId));
 		Long count = (Long)query.getSingleResult();
 		return count.intValue();
 	}
@@ -191,7 +191,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public List<Object[]> MilestoneActivity(String MilestoneActivityId) throws Exception {
 
 		Query query=manager.createNativeQuery(MA);
-		query.setParameter("id", MilestoneActivityId);
+		query.setParameter("id", Long.parseLong(MilestoneActivityId));
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
 
 		return MilestoneActivityList;
@@ -207,8 +207,8 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> MilestoneActivityLevel(String MilestoneActivityId,String LevelId) throws Exception {
 		Query query=manager.createNativeQuery(MILEACTIVITYLEVEL);
-		query.setParameter("id", MilestoneActivityId);
-		query.setParameter("levelid", LevelId);
+		query.setParameter("id", Long.parseLong(MilestoneActivityId));
+		query.setParameter("levelid", Long.parseLong(LevelId));
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
 
 		return MilestoneActivityList;
@@ -265,7 +265,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> MilestoneActivityData(String ActivityId) throws Exception {
 		Query query=manager.createNativeQuery(MILEACTIVITYDATA);
-		query.setParameter("id", ActivityId);
+		query.setParameter("id", Long.parseLong(ActivityId));
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
 
 		return MilestoneActivityList;
@@ -274,7 +274,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> ActivityLevelData(String ActivityId) throws Exception {
 		Query query=manager.createNativeQuery(MILEACTIVITYLEVELDATA);
-		query.setParameter("id", ActivityId);
+		query.setParameter("id", Long.parseLong(ActivityId));
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
 
 		return MilestoneActivityList;
@@ -416,10 +416,10 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> ActivityLevelCompare(String ActivityId,String Rev,String Rev1,String LevelId) throws Exception {
 		Query query=manager.createNativeQuery(MILELEVELCOMPARE);
-		query.setParameter("id", ActivityId);
+		query.setParameter("id", Long.parseLong(ActivityId));
 		query.setParameter("rev", Rev);
 		query.setParameter("rev1", Rev1);
-		query.setParameter("levelid", LevelId);
+		query.setParameter("levelid", Long.parseLong(LevelId));
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
 
 		return MilestoneActivityList;
@@ -430,7 +430,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> MilestoneActivityEmpIdList(String EmpId) throws Exception {
 		Query query=manager.createNativeQuery(MAEMPLIST);
-		query.setParameter("EmpId", EmpId);
+		query.setParameter("EmpId", Long.parseLong(EmpId));
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
 
 		return MilestoneActivityList;
@@ -482,7 +482,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public List<Object[]> MilestoneReportsList(String ProjectId) throws Exception {
 
 		Query query=manager.createNativeQuery(REPORTSLIST);
-		query.setParameter("empid", ProjectId);
+		query.setParameter("empid", Long.parseLong(ProjectId));
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
 
 		return MilestoneActivityList;
@@ -493,7 +493,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public int MilestoneTotalWeightage(String MilestoneActivityId) throws Exception {
 		try {
 			Query query=manager.createNativeQuery(MILESTONETOTALWEIGHTAGE);
-			query.setParameter("MilestoneActivityId", MilestoneActivityId);		
+			query.setParameter("MilestoneActivityId", Long.parseLong(MilestoneActivityId));		
 			return (Integer)query.getSingleResult();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -512,7 +512,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> MilestoneActivitySub(String ActivityId,String Type) throws Exception {
 		Query query=manager.createNativeQuery(SUBLIST);
-		query.setParameter("id", ActivityId);
+		query.setParameter("id", Long.parseLong(ActivityId));
 		//query.setParameter("type", ActivityId);
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
 
@@ -531,7 +531,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> ProjectDetails(String ProjectId) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTDETAILS);
-		query.setParameter("projectid",ProjectId);
+		query.setParameter("projectid", Long.parseLong(ProjectId));
 		List<Object[]> ProjectList=(List<Object[]>)query.getResultList();		
 
 		return ProjectList;
@@ -575,7 +575,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public List<Object[]> ActionList(String actiontype,String activityid) throws Exception {
 		Query query=manager.createNativeQuery(ACTIONLIST);
 		query.setParameter("actiontype",actiontype);
-		query.setParameter("activityid",activityid);
+		query.setParameter("activityid", Long.parseLong(activityid));
 		List<Object[]> ActionList=(List<Object[]>)query.getResultList();		
 
 		return ActionList;
@@ -591,8 +591,8 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public int ActivityMainSum(String Id,String ActivityId) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(MILESUM);
-			query.setParameter("projectid", ActivityId);
-			query.setParameter("id", Id);
+			query.setParameter("projectid", Long.parseLong(ActivityId));
+			query.setParameter("id", Long.parseLong(Id));
 			return (Integer)query.getSingleResult();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -604,9 +604,9 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public int ActivityLevelSum(String Id, String ActivityId,String LevelId) throws Exception {
 		try {	
 			Query query = manager.createNativeQuery(ACTIVITYLEVELSUM);
-			query.setParameter("activityid", ActivityId);
-			query.setParameter("id", Id);
-			query.setParameter("levelid", LevelId);
+			query.setParameter("activityid", Long.parseLong(ActivityId));
+			query.setParameter("id", Long.parseLong(Id));
+			query.setParameter("levelid", Long.parseLong(LevelId));
 			return (Integer)query.getSingleResult();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -617,7 +617,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> BaseLineMain(String ActivityId) throws Exception {
 		Query query=manager.createNativeQuery(BASELINEMAIN);
-		query.setParameter("inActivityId", ActivityId);
+		query.setParameter("inActivityId", Long.parseLong(ActivityId));
 		List<Object[]> BaseLineC=(List<Object[]>)query.getResultList();		
 
 		return BaseLineC;
@@ -626,8 +626,8 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> BaseLineLevel(String ActivityId,String LevelId) throws Exception {
 		Query query=manager.createNativeQuery(BASELINELEVEL);
-		query.setParameter("inActivityId", ActivityId);
-		query.setParameter("levelid", LevelId);
+		query.setParameter("inActivityId", Long.parseLong(ActivityId));
+		query.setParameter("levelid", Long.parseLong(LevelId));
 		List<Object[]> BaseLineC=(List<Object[]>)query.getResultList();		
 
 		return BaseLineC;
@@ -636,8 +636,8 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> WeightageLevel(String ActivityId,String LevelId) throws Exception {
 		Query query=manager.createNativeQuery(WEIGHTAGELEVEL);
-		query.setParameter("inActivityId", ActivityId);
-		query.setParameter("levelid", LevelId);
+		query.setParameter("inActivityId",Long.parseLong(ActivityId));
+		query.setParameter("levelid", Long.parseLong(LevelId));
 		List<Object[]> BaseLineC=(List<Object[]>)query.getResultList();		
 
 		return BaseLineC;
@@ -646,7 +646,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public int ProgressMain(String ActivityId, String Status, int Progress,String DateOfCompletion,MileEditDto dto) throws Exception {
 		Query query=manager.createNativeQuery(PROGRESSMAIN);
-		query.setParameter("id",ActivityId);
+		query.setParameter("id", Long.parseLong(ActivityId));
 		query.setParameter("status",Status);
 		query.setParameter("progress",Progress);
 		query.setParameter("DateOfCompletion",DateOfCompletion);
@@ -661,7 +661,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		
 		System.out.println("date of Completion - "+dto.getDateOfCompletion());
 		
-		query.setParameter("id",ActivityId);
+		query.setParameter("id", Long.parseLong(ActivityId));
 		query.setParameter("status",Status);
 		query.setParameter("progress",Progress);
 		query.setParameter("ModifiedDate", dto.getCreatedDate());
@@ -687,7 +687,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public int RevMainUpdate(String ActivityId, String Rev) throws Exception {
 		Query query=manager.createNativeQuery(REVMAINUPDATE);
-		query.setParameter("id",ActivityId);
+		query.setParameter("id",Long.parseLong(ActivityId));
 		query.setParameter("rev",Rev);
 		int result=query.executeUpdate();
 		return result;
@@ -696,7 +696,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public int RevLevelUpdate(String ActivityId, String Rev) throws Exception {
 		Query query=manager.createNativeQuery(REVLEVELUPDATE);
-		query.setParameter("id",ActivityId);
+		query.setParameter("id",Long.parseLong(ActivityId));
 		query.setParameter("rev",Rev);
 		int result=query.executeUpdate();
 		return result;
@@ -707,7 +707,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public int FileRepRevUpdate(String ActivityId, Long release,Long version) throws Exception {
 		Query query=manager.createNativeQuery(FILEREPREV);
-		query.setParameter("id",ActivityId);
+		query.setParameter("id", Long.parseLong(ActivityId));
 		query.setParameter("release",release);
 		query.setParameter("version",version);
 		int result=query.executeUpdate();
@@ -726,7 +726,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> FileDeatils(String FileId) throws Exception {
 		Query query=manager.createNativeQuery(FILEDETAILS);
-		query.setParameter("fileid", FileId);
+		query.setParameter("fileid", Long.parseLong(FileId));
 		List<Object[]> FileSub=(List<Object[]>)query.getResultList();		
 
 		return FileSub;
@@ -737,7 +737,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public List<Object[]> MilestoneScheduleList(String ProjectId) throws Exception {
 
 		Query query=manager.createNativeQuery(MILESTONESCHEDULELIST);
-		query.setParameter("projectid", ProjectId);
+		query.setParameter("projectid", Long.parseLong(ProjectId));
 		List<Object[]> MilestoneScheduleList=(List<Object[]>)query.getResultList();		
 
 		return MilestoneScheduleList;
@@ -755,7 +755,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public int MilestoneScheduleCount(String ProjectId) throws Exception {
 		
 		Query query = manager.createNativeQuery(MILESTONESCHEDULECOUNT);
-		query.setParameter("projectid", ProjectId);
+		query.setParameter("projectid", Long.parseLong(ProjectId));
 		Long count=(Long)query.getSingleResult();
 		return count.intValue();
 	}
@@ -763,7 +763,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> MilestoneExcel(String ProjectId) throws Exception {
 		Query query=manager.createNativeQuery(MILESTONEEXCEL);
-		query.setParameter("projectid", ProjectId);
+		query.setParameter("projectid", Long.parseLong(ProjectId));
 		List<Object[]> MilestoneExcel=(List<Object[]>)query.getResultList();		
 
 		return MilestoneExcel;
@@ -772,7 +772,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> MainSystem(String projectid) throws Exception {
 		Query query=manager.createNativeQuery(MAINSYSTEM);
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		List<Object[]> MainSystem=(List<Object[]>)query.getResultList();		
 
 		return MainSystem;
@@ -791,7 +791,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public List<Object[]> MainSystemLevel(String ParentId) throws Exception {
 	
 		Query query=manager.createNativeQuery(MAINSYSTEMLEVEL);
-		query.setParameter("parentid", ParentId);
+		query.setParameter("parentid", Long.parseLong(ParentId));
 		List<Object[]> MainSystem=(List<Object[]>)query.getResultList();
 		return MainSystem;
 	}
@@ -800,7 +800,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype ,String LabCode)throws Exception
 	{
 		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList(:empid,:logintype,:labcode);");
-		query.setParameter("empid", empid);
+		query.setParameter("empid", Long.parseLong(empid));
 		query.setParameter("logintype", Logintype);
 		query.setParameter("labcode", LabCode);
 		List<Object[]> LoginProjectIdList=(List<Object[]>)query.getResultList();
@@ -811,7 +811,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public List<Object[]> ProjectEmpList(String projectid ,String Labcode)throws Exception
 	{
 		Query query=manager.createNativeQuery(PROJECTEMPLIST);
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		query.setParameter("labcode", Labcode);
 
 		List<Object[]> ProjectEmpList=(List<Object[]>)query.getResultList();
@@ -822,8 +822,8 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public List<Object[]> ProjectEmpListEdit(String projectid,String id)throws Exception
 	{
 		Query query=manager.createNativeQuery(PROJECTEMPLISTEDIT);
-		query.setParameter("projectid", projectid);
-		query.setParameter("id", id);
+		query.setParameter("projectid", Long.parseLong(projectid));
+		query.setParameter("id", Long.parseLong(id));
 		List<Object[]> ProjectEmpList=(List<Object[]>)query.getResultList();
 		return ProjectEmpList;
 	}
@@ -851,7 +851,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public List<Object[]> DocumentTypeList(String projectid,String LabCode)throws Exception
 	{
 		Query query=manager.createNativeQuery(DOCUMENTTYPELIST);
-		query.setParameter("projectid",projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		query.setParameter("LabCode",LabCode);
 		List<Object[]> DocumentTypeList=(List<Object[]>)query.getResultList();
 		return DocumentTypeList;
@@ -861,7 +861,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public List<Object[]> DocumentTitleList(String ProjectId,String Sub,String LabCode) throws Exception 
 	{
 		Query query=manager.createNativeQuery(DOCUMENTTITLELIST);
-		query.setParameter("projectid", ProjectId);
+		query.setParameter("projectid", Long.parseLong(ProjectId));
 		query.setParameter("sub", Sub);
 		query.setParameter("LabCode", LabCode);
 		List<Object[]> DocumentStageList=(List<Object[]>)query.getResultList();
@@ -873,8 +873,8 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public List<Object[]> DocumentStageList(String documenttype,String levelid) throws Exception {
 		
 		Query query=manager.createNativeQuery(DOCUMENTSTAGELIST);
-		query.setParameter("documenttype", documenttype);
-		query.setParameter("levelid", levelid);
+		query.setParameter("documenttype",  Long.parseLong(documenttype));
+		query.setParameter("levelid", Long.parseLong(levelid));
 	
 		List<Object[]> DocumentStageList=(List<Object[]>)query.getResultList();
 		return DocumentStageList;
@@ -900,9 +900,9 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public List<Object[]> VersionCheckList(String ProjectId, String SubsystemId,String documenttitle) throws Exception {
 		
 		Query query=manager.createNativeQuery(VERSIONCHECKLIST);
-		query.setParameter("projectid", ProjectId);
-		query.setParameter("subsysteml1", SubsystemId);
-		query.setParameter("documenttitle", documenttitle);
+		query.setParameter("projectid", Long.parseLong(ProjectId));
+		query.setParameter("subsysteml1",  Long.parseLong(SubsystemId));
+		query.setParameter("documenttitle", Long.parseLong(documenttitle));
 		List<Object[]> VersionCheckList=(List<Object[]>)query.getResultList();
 		return VersionCheckList;
 	}
@@ -912,7 +912,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public List<Object[]> FileHistoryList(String filerepid) throws Exception 
 	{		
 		Query query=manager.createNativeQuery(FILEHISTORYLIST);
-		query.setParameter("filerepid", filerepid);		
+		query.setParameter("filerepid", Long.parseLong(filerepid));		
 		List<Object[]> FileHistoryList=(List<Object[]>)query.getResultList();
 		return FileHistoryList;
 	}
@@ -923,7 +923,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public List<Object[]> FileRepMasterListAll(String projectid,String LabCode )throws Exception
 	{
 		Query query=manager.createNativeQuery(FILEREPMASTERLISTALL);
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		query.setParameter("LabCode", LabCode);
 		List<Object[]> FileRepMasterListAll=(List<Object[]>)query.getResultList();
 		return FileRepMasterListAll;
@@ -935,7 +935,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public List<Object[]> FileDocMasterListAll(String projectid,String LabCode)throws Exception
 	{
 		Query query=manager.createNativeQuery(FILEDOCMASTERLISTALL);
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		query.setParameter("LabCode", LabCode);
 		List<Object[]> FileDocMasterListAll=(List<Object[]>)query.getResultList();
 		return FileDocMasterListAll;
@@ -953,7 +953,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> DocumentAmendment(String FileRepUploadId) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTDOCUMETSADD);
-		query.setParameter("FileRepUploadId", FileRepUploadId);
+		query.setParameter("FileRepUploadId", Long.parseLong(FileRepUploadId));
 		List<Object[]> FileDocMasterListAll=(List<Object[]>)query.getResultList();
 			return FileDocMasterListAll;
 	}
@@ -969,7 +969,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public Object[] DocumentAmendmentData(String docammendmentid) throws Exception {
 		Query query=manager.createNativeQuery(DOCUMENTAMENDMENTDATA);
-		query.setParameter("docammendmentid", docammendmentid);
+		query.setParameter("docammendmentid", Long.parseLong(docammendmentid));
 		List<Object[]> DocumentAmendmentData=(List<Object[]>)query.getResultList();
 		if(DocumentAmendmentData.size()>0) {
 			return DocumentAmendmentData.get(0);
@@ -982,7 +982,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public Object[] RepMasterData(String filerepmasterid) throws Exception {
 		Query query=manager.createNativeQuery(REPMASTERDATA);
-		query.setParameter("filerepmasterid", filerepmasterid);
+		query.setParameter("filerepmasterid", Long.parseLong(filerepmasterid));
 		List<Object[]> RepMasterData=(List<Object[]>)query.getResultList();
 		if(RepMasterData.size()>0) {
 			return RepMasterData.get(0);
@@ -995,7 +995,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> RepMasterAllDocLists(String filerepmasterid) throws Exception {
 		Query query=manager.createNativeQuery(REPMASTERALLDOCLISTS);
-		query.setParameter("filerepmasterid", filerepmasterid);
+		query.setParameter("filerepmasterid", Long.parseLong(filerepmasterid));
 		List<Object[]> RepMasterAllDocLists=(List<Object[]>)query.getResultList();
 		return RepMasterAllDocLists;
 	}
@@ -1006,7 +1006,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public List<Object[]> MainSystem1(String filerepmasterid) throws Exception
  	{
 		Query query=manager.createNativeQuery(MAINSYSTEM1);
-		query.setParameter("filerepmasterid", filerepmasterid);
+		query.setParameter("filerepmasterid", Long.parseLong(filerepmasterid));
 		List<Object[]> MainSystem=(List<Object[]>)query.getResultList();		
 
 		return MainSystem;
@@ -1072,8 +1072,8 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		Query query=manager.createNativeQuery(FILENAMECHECK);
 		query.setParameter("levelname", levelname);
 		query.setParameter("shortname", shortname);
-		query.setParameter("docid", docid);
-		query.setParameter("parentlevelid", parentlevelid);
+		query.setParameter("docid", Long.parseLong(docid));
+		query.setParameter("parentlevelid", Long.parseLong(parentlevelid));
 		query.setParameter("LabCode", LabCode);
 		List<Object[]> MainSystem=(List<Object[]>)query.getResultList();		
 		if(MainSystem.size()>0) {
@@ -1089,7 +1089,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	public List<Object[]> MilestoneActivityListNew(String ProjectId) throws Exception 
 	{
 		Query query=manager.createNativeQuery(MILESTONEACTIVITYLISTNEW);
-		query.setParameter("projectid", ProjectId);
+		query.setParameter("projectid", Long.parseLong(ProjectId));
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
 
 		return MilestoneActivityList;
@@ -1100,8 +1100,8 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> MilestoneActivityLevelExcel(String MilestoneActivityId,String LevelId) throws Exception {
 		Query query=manager.createNativeQuery(MILESTONEACTIVITYLEVELEXCEL);
-		query.setParameter("MilestoneActivityId", MilestoneActivityId);
-		query.setParameter("levelid", LevelId);
+		query.setParameter("MilestoneActivityId", Long.parseLong(MilestoneActivityId));
+		query.setParameter("levelid", Long.parseLong(LevelId));
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
 
 		return MilestoneActivityList;
@@ -1134,7 +1134,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 			// TODO Auto-generated method stub
 			Query query=manager.createNativeQuery(isActive);
 		
-			query.setParameter("Projectid", project);
+			query.setParameter("Projectid", Long.parseLong(project));
 			query.setParameter("FileUploadMasterId", fileUploadMasterId);
 			query.setParameter("ParentLevelid", parentLevelid);
 			query.executeUpdate();
@@ -1144,7 +1144,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		public List<Object[]> FileRepUploadId(String project, int documentID) {
 			
 			Query query=manager.createNativeQuery(FileRepUploadId);
-			query.setParameter("project", project);
+			query.setParameter("project", Long.parseLong(project));
 			query.setParameter("documentID", documentID);
 			List<Object[]>FileRepUploadId=query.getResultList();
 
@@ -1156,7 +1156,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		public int IsFileInActive(String project, int documentID) {
 			Query query=manager.createNativeQuery(IsFileInActive);
 			
-			query.setParameter("project", project);
+			query.setParameter("project", Long.parseLong(project));
 			query.setParameter("documentID", documentID);
 		  int count=query.executeUpdate();
 		  return count;
@@ -1165,7 +1165,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		@Override
 		public int DocumentListNameEdit(String filerepmasterid, String levelname) {
 			Query query=manager.createNativeQuery(DocumentListNameEdit);
-			query.setParameter("filerepmasterid", filerepmasterid);
+			query.setParameter("filerepmasterid", Long.parseLong(filerepmasterid));
 			query.setParameter("levelname", levelname);
 		  int count=query.executeUpdate();
 			return count;
@@ -1242,7 +1242,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		@Override
 		public List<Object[]> getAttachmentId(String projectid) throws Exception {
 			Query query = manager.createNativeQuery(GETATTACHMENTID);
-			query.setParameter("projectid", projectid);
+			query.setParameter("projectid", Long.parseLong(projectid));
 			return (List<Object[]>) query.getResultList();
 		}
 		
@@ -1263,10 +1263,10 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		public List<Object[]> getFileRepData(String projectId, String fileRepMasterId, String subL1, String docid)
 				throws Exception {
 			Query query = manager.createNativeQuery(GETFILEREPCHECKDATA);
-			query.setParameter("projectId", projectId);
-			query.setParameter("fileRepMasterId", fileRepMasterId);
-			query.setParameter("subL1", subL1);
-			query.setParameter("docid", docid);
+			query.setParameter("projectId", Long.parseLong(projectId));
+			query.setParameter("fileRepMasterId",Long.parseLong(fileRepMasterId));
+			query.setParameter("subL1", Long.parseLong(subL1));
+			query.setParameter("docid", Long.parseLong(docid));
 			return (List<Object[]>)query.getResultList();
 		}
 		
@@ -1287,7 +1287,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		public List<Object[]> getMsprojectProcurementStatusList(String projectId) throws Exception {
 			try {
 				Query query = manager.createNativeQuery(MSPROJECTPROCUREMENTSTATUSLIST);
-				query.setParameter("ProjectId", projectId);
+				query.setParameter("ProjectId", Long.parseLong(projectId));
 				return (List<Object[]>)query.getResultList();
 			}catch (Exception e) {
 				e.printStackTrace();
@@ -1309,7 +1309,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		public int mileStoneSerialNoUpdate(String newslno, String milestoneActivityId) {
 			try {
 				Query query = manager.createNativeQuery("UPDATE milestone_activity SET MilestoneNo=:MilestoneNo WHERE MilestoneActivityId=:MilestoneActivityId");
-				query.setParameter("MilestoneActivityId", milestoneActivityId);
+				query.setParameter("MilestoneActivityId", Long.parseLong(milestoneActivityId));
 				query.setParameter("MilestoneNo", newslno);
 				
 				return query.executeUpdate();

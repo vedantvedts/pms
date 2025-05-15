@@ -31,7 +31,7 @@ public class RODDaoImpl implements RODDao{
 	{
 		try {
 			Query query=manager.createNativeQuery(RODPROJECTSCHEDULELISTALL);
-			query.setParameter("ProjectId",projectId);
+			query.setParameter("ProjectId", Long.parseLong(projectId));
 			return (List<Object[]>) query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -67,8 +67,8 @@ public class RODDaoImpl implements RODDao{
 	{
 		try {
 			Query query=manager.createNativeQuery(RODPROJECTSCHEDULELISTALL2);
-			query.setParameter("ProjectId",projectId);
-			query.setParameter("RODNameId", rodNameId);
+			query.setParameter("ProjectId", Long.parseLong(projectId));
+			query.setParameter("RODNameId", Long.parseLong(rodNameId));
 			return (List<Object[]>) query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -118,7 +118,7 @@ public class RODDaoImpl implements RODDao{
 	public Object[] RODScheduleEditData(String CommitteeScheduleId) throws Exception {
 		try {
 			Query query=manager.createNativeQuery(RODSCHEDULEEDITDATA);
-			query.setParameter("committeescheduleid", CommitteeScheduleId );
+			query.setParameter("committeescheduleid", Long.parseLong(CommitteeScheduleId) );
 			List<Object[]> list = (List<Object[]>)query.getResultList();
 			if(list.size()>0) {
 				return list.get(0);
@@ -141,7 +141,7 @@ public class RODDaoImpl implements RODDao{
 	public Object[] RODScheduleData(String CommitteeScheduleId) throws Exception {
 		try {
 			Query query=manager.createNativeQuery(RODSCHEDULEDATA);
-			query.setParameter("committeescheduleid", CommitteeScheduleId );
+			query.setParameter("committeescheduleid", Long.parseLong(CommitteeScheduleId) );
 			List<Object[]> list = (List<Object[]>)query.getResultList();
 			if(list.size()>0) {
 				return list.get(0);
@@ -199,7 +199,7 @@ public class RODDaoImpl implements RODDao{
 	@Override
 	public List<Object[]> RODActionDetails(String rodNameId) throws Exception {
 		Query query =manager.createNativeQuery(NONPROJECTACTIONS);
-		query.setParameter("RODNameId", rodNameId);
+		query.setParameter("RODNameId", Long.parseLong(rodNameId));
 		return (List<Object[]>)query.getResultList();
 	}
 	
@@ -208,8 +208,8 @@ public class RODDaoImpl implements RODDao{
 	public int RODCommProScheduleList(String projectid,String rodNameId,String sdate) throws Exception 
 	{
 		Query query=manager.createNativeQuery(COMMPROSCHEDULELIST);
-		query.setParameter("projectid", projectid);
-		query.setParameter("RODNameId", rodNameId);
+		query.setParameter("projectid", Long.parseLong(projectid));
+		query.setParameter("RODNameId", Long.parseLong(rodNameId));
 		query.setParameter("sdate", sdate);
 		Long CommProScheduleList=(Long)query.getSingleResult();
 		return CommProScheduleList.intValue();
@@ -220,8 +220,8 @@ public class RODDaoImpl implements RODDao{
 	public List<Object[]> industryPartnerRepListInvitations(String industryPartnerId, String scheduleid) throws Exception {
 		try {
 			Query query=manager.createNativeQuery(INDUSTRYPARTNERREPLISTINVITATIONS);
-			query.setParameter("IndustryPartnerId", industryPartnerId);
-			query.setParameter("scheduleid", scheduleid);
+			query.setParameter("IndustryPartnerId", Long.parseLong(industryPartnerId));
+			query.setParameter("scheduleid", Long.parseLong(scheduleid));
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
