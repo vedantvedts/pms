@@ -77,7 +77,9 @@ background-color:white;
 border: 1px solid #ced4da;
 height: calc(2.25rem + 2px);
 }
-
+.select2-container {
+	width: 100% !important;
+}
 </style>
 </head>
 <body>
@@ -154,13 +156,13 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
         		</div>
         
         		<div class="card-body">
-		                <div class="row">
+		                <div class="row"  id="mainfirstrow">
 		                    
 		                    <div class="col-md-3 ">
 		                        <div class="form-group">
 		                            <label class="control-label">Project/Programme</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-			                            <select class="form-control custom-select " id="ProjectProgramme"  required="" name="ProjectProgramme" >
+			                            <select class="form-control custom-select pdd" id="ProjectProgramme"  required="" name="ProjectProgramme" >
 										    <option disabled="true"  selected value="">Choose...</option>
 										    <option value="PGM">Programme</option>
 										    <option value="PRJ">Project</option>
@@ -173,7 +175,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 		                        <div class="form-group">
 		                            <label class="control-label">Category</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-		                            	<select class="custom-select" id="ProjectType" required="required" name="ProjectType">
+		                            	<select class="custom-select pdd" id="ProjectType" required="required" name="ProjectType">
 										    <option disabled="true"  selected value="">Choose...</option>
 											 <% for (Object[] obj : PfmsCategoryList ) {%>
 											<option value="<%=obj[0]%>"><%=obj[1]%></option>
@@ -187,7 +189,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 		                        <div class="form-group">
 		                            <label class="control-label">Security Classification</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-									    <select class="custom-select" id="Category" required="required" name="Category">
+									    <select class="custom-select pdd" id="Category" required="required" name="Category">
 										    <option disabled="true"  selected value="">Choose...</option>
 										   	<% for (Object[] obj : ProjectTypeList) {%>
 											<option value="<%=obj[0]%>"><%=obj[1]%></option>
@@ -200,7 +202,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 		                   		<div class="form-group">
 		                            <label class="control-label">Nodal Lab</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-		  							<select class="custom-select selectdee" id="NodalLab" required="required" name="NodalLab">
+		  							<select class="custom-select selectdee pdd" id="NodalLab" required="required" name="NodalLab">
 											    <option disabled="true"  selected value="">Choose...</option>
 											   	<% for (Object[] obj : NodalLabList) {%>
 												<option value="<%=obj[0]%>"><%=obj[3]%></option>
@@ -209,7 +211,62 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 		                        </div>
 	                    	</div> 
 		            </div> 
+		            
+		                <div class="row" id="subfirstrow">
+		                    
+		                    <div class="col-md-3 ">
+		                        <div class="form-group">
+		                            <label class="control-label">Project/Programme</label>
+		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+			                            <select class="form-control custom-select pdd" id="ProjectProgrammeSub"  required="" name="ProjectProgramme" >
+										    <option disabled="true"  selected value="">Choose...</option>
+										    <option value="PGM">Programme</option>
+										    <option value="PRJ">Project</option>
+			  							</select>
+			  							
+		                        </div>
+		                    </div>
 
+		                    <div class="col-md-3 ">
+		                        <div class="form-group">
+		                            <label class="control-label">Category</label>
+		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+		                            	<select class="custom-select pdd" id="ProjectTypeSub" required="required" name="ProjectType">
+										    <option disabled="true"  selected value="">Choose...</option>
+											 <% for (Object[] obj : PfmsCategoryList ) {%>
+											<option value="<%=obj[0]%>"><%=obj[1]%></option>
+											<%} %>
+		  								</select>
+		                        </div>
+		                    </div>
+		                   
+		                   
+		         			<div class="col-md-3 ">
+		                        <div class="form-group">
+		                            <label class="control-label">Security Classification</label>
+		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+									    <select class="custom-select pdd" id="CategorySub" required="required" name="Category">
+										    <option disabled="true"  selected value="">Choose...</option>
+										   	<% for (Object[] obj : ProjectTypeList) {%>
+											<option value="<%=obj[0]%>"><%=obj[1]%></option>
+											<%} %>
+									  </select>
+		                        </div>
+		                    </div>
+		                    
+		                    <div class="col-md-3 ">
+		                   		<div class="form-group">
+		                            <label class="control-label">Nodal Lab</label>
+		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+		  							<select class="custom-select selectdee pdd" id="NodalLabSub" required="required" name="NodalLab">
+											    <option disabled="true"  selected value="">Choose...</option>
+											   	<% for (Object[] obj : NodalLabList) {%>
+												<option value="<%=obj[0]%>"><%=obj[3]%></option>
+												<%} %>
+									</select>
+		                        </div>
+	                    	</div> 
+		            </div> 
 						<hr>
 
 	                <div class="row">
@@ -234,7 +291,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
                         	<div class="form-group">
 	                            <label class="control-label">Is Planned</label>
 	                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-								 <select class="custom-select" id="IsPlanned"  name="IsPlanned" required="required">
+								 <select class="custom-select pdd" id="IsPlanned"  name="IsPlanned" required="required">
 								    <option disabled="true"  selected value="">--Select--</option>
 								     <option value="N">Non-Plan</option>
 								    <option value="P">Plan</option>   
@@ -299,7 +356,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 		                   		<div class="form-group">
 		                            <label class="control-label">PDD</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-		  							<select class="custom-select selectdee" id="PDD" required="required" name="PDD">
+		  							<select class="custom-select selectdee pdd" id="PDD" required="required" name="PDD">
 											    <option disabled="true"  selected value="">--Select--</option>
 											   	<% for (Object[] obj : EmployeeList) {%>
 												<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2] %> </option>
@@ -351,11 +408,10 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
          		<hr>
          		
 		        <div class="form-group" align="center" >
-					 <input type="submit" class="btn btn-primary btn-sm submit " onclick="Add(myfrm)" value="SUBMIT"> 
+					 <button type="submit" class="btn btn-primary btn-sm submit " onclick="Add(myfrm)" value="SUBMIT">SUBMIT</button> 
 					 <a class="btn btn-info btn-sm  shadow-nohover back" href="ProjectIntiationList.htm" >Back</a>
 				</div>
 
-				<input type="hidden" name="${_csrf.parameterName}"		value="${_csrf.token}" /> 
  		
    </div>    
         
@@ -366,6 +422,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 	</div>
 </div>
 
+<input type="hidden" name="${_csrf.parameterName}"		value="${_csrf.token}" /> 
 
 </form>
 
@@ -388,12 +445,20 @@ $('#ismain').on('change',function(){
 	var value=$('#ismain').val();
 	
 	if(value=='Y'){
+		$('#mainrow input').val('');
+		$('.pdd').val('').trigger('change');
 		$('#mainrow').show();
+		$('#subfirstrow').hide();
+		$('#mainfirstrow').show();
 		$('#initiatedproject').hide();
 		
 	}
 	else if(value=='N'){
-		$('#mainrow').css('display','none');
+		$('#mainrow input').val('');
+		$('.pdd').val('').trigger('change');
+		$('#mainrow').hide();
+		$('#subfirstrow').show();
+		$('#mainfirstrow').hide();
 		$('#initiatedproject').show();
 	}
 	
@@ -434,13 +499,12 @@ $("#projectlist").on('change',function(){
 				s += '<option value="'+values[0][2]+'">'
 							+values[0][3]+ '</option>';
 				
-				$('#Category').html(s);
-				 
 				 
 				t+=  '<option value="'+values[0][4]+'">'
 				+values[0][5]+ '</option>';
 				
-				$('#ProjectType').html(t);
+				$('#CategorySub').html(t);
+				$('#ProjectTypeSub').html(s);
 				
 				
 				var pgm='';
@@ -457,18 +521,17 @@ $("#projectlist").on('change',function(){
 				m+=  '<option value="'+values[0][1]+'">'
 				+pgm+ '</option>';
 				
-				$('#ProjectProgramme').html(m);
+				$('#ProjectProgrammeSub').html(m);
 				
 				
-				n+=  '<option value="'+'N'+'">'
-				+'Sub'+ '</option>';
+				/* n +=  '<option value="Y">Main</option><option value="N">Sub</option>';
 				
-				$('#ismain').html(n);
+				$('#ismain').html(n); */
 				
 				o+=  '<option value="'+values[0][6]+'">'
 				+values[0][7]+ '</option>';
 				
-				$('#NodalLab').html(o);
+				$('#NodalLabSub').html(o);
 				
 				
 				
@@ -496,10 +559,10 @@ function Add(myfrm){
 	 var ProjectTitle = $("#ProjectTitle"). val();
 	 var ShortName = $("#ShortName"). val();
 	 var IsPlanned = $("#IsPlanned"). val();
-	 var Category = $("#Category"). val();
-	 var ProjectType = $("#ProjectType"). val();
-	 var ProjectProgramme = $("#ProjectProgramme"). val();
-	 var NodalLab = $("#NodalLab"). val();
+	 var Category = $('#ismain').val() == 'Y' ? $("#Category").val() : $("#CategorySub").val();
+	 var ProjectType = $('#ismain').val() == 'Y' ? $("#ProjectType").val() : $("#ProjectTypeSub").val();
+	 var ProjectProgramme = $('#ismain').val() == 'Y' ? $("#ProjectProgramme").val() : $("#ProjectProgrammeSub").val();
+	 var NodalLab = $('#ismain').val() == 'Y' ? $("#NodalLab").val() : $("#NodalLabSub").val();
 	 var PCDuration = $("#PCDuration"). val();
 	 var IndicativeCost = $("#IndicativeCost"). val();
 	 var PCRemarks = $("#PCRemarks"). val();
@@ -511,7 +574,7 @@ function Add(myfrm){
 	 }		
 	 
 
-	if( ProjectProgramme==null || ProjectType==null || Category==null || IsPlanned==null  || ProjectTitle=="" || ShortName==""  || PCDuration=="" || PCRemarks=="" || IndicativeCost=="" ||  PDD==null ){
+	if( ProjectProgramme==null || ProjectType==null || Category==null ||  NodalLab==null ||  IsPlanned==null  || ProjectTitle=="" || ShortName==""  || PCDuration=="" || PCRemarks=="" || IndicativeCost=="" ||  PDD==null ){
 	    	 
 		alert("Kindly Fill All The Mandatory Fields..!");
 	   
@@ -524,7 +587,7 @@ function Add(myfrm){
 		    */
 
 
-	else if(!ProjectTitle==""&&!ShortName==""&&!IsPlanned==""&&!Category==""&&!ProjectType==""&&!ProjectProgramme==""){
+			else if(!ProjectTitle==""&&!ShortName==""&&!IsPlanned==""&&!Category==""&&!NodalLab==""&&!ProjectType==""&&!ProjectProgramme==""){
 
 
 $

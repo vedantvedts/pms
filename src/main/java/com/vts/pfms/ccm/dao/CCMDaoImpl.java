@@ -121,7 +121,7 @@ public class CCMDaoImpl implements CCMDao{
 	public List<Object[]> getCCMScheduleAgendaListByCCMScheduleId(String ccmScheduleId) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(GETCCMSCHEDULEAGENDALISTBYCCMSCHEDULEID);
-			query.setParameter("ScheduleId", ccmScheduleId);
+			query.setParameter("ScheduleId", Long.parseLong(ccmScheduleId));
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -148,8 +148,8 @@ public class CCMDaoImpl implements CCMDao{
 
 		try {
 			Query query =  manager.createNativeQuery(GETMAXAGENDAPRIORITY);
-			query.setParameter("ScheduleId", ccmScheduleId);
-			query.setParameter("ParentScheduleAgendaId", parentScheduleAgendaId);
+			query.setParameter("ScheduleId", Long.parseLong(ccmScheduleId));
+			query.setParameter("ParentScheduleAgendaId", Long.parseLong(parentScheduleAgendaId));
 			Long maxvalue=(Long)query.getSingleResult();
 			return maxvalue.intValue();
 		}catch ( NoResultException e ) {
@@ -164,7 +164,7 @@ public class CCMDaoImpl implements CCMDao{
 	{
 		try {
 			
-			CommitteeScheduleAgenda ExistingCommitteeScheduleAgenda= manager.find(CommitteeScheduleAgenda.class, scheduleAgendaId);
+			CommitteeScheduleAgenda ExistingCommitteeScheduleAgenda= manager.find(CommitteeScheduleAgenda.class, Long.parseLong(scheduleAgendaId));
 			if(ExistingCommitteeScheduleAgenda != null) {
 				ExistingCommitteeScheduleAgenda.setAgendaPriority(Integer.parseInt(agendaPriority));
 				return 1;
@@ -188,8 +188,8 @@ public class CCMDaoImpl implements CCMDao{
 		try {
 			Query query=manager.createNativeQuery(GETCCMSCHEDULEAGENDASAFTER);
 			query.setParameter("AgendaPriority", agendaPriority);
-			query.setParameter("ScheduleId", ccmScheduleId);
-			query.setParameter("ParentScheduleAgendaId", parentScheduleAgendaId);
+			query.setParameter("ScheduleId", Long.parseLong(ccmScheduleId));
+			query.setParameter("ParentScheduleAgendaId", Long.parseLong(parentScheduleAgendaId));
 			return (List<Object[]>)query.getResultList();
 		}catch ( Exception e ) {
 			e.printStackTrace();
@@ -204,7 +204,7 @@ public class CCMDaoImpl implements CCMDao{
 	{
 		try {
 			
-			CommitteeScheduleAgenda ExistingCommitteeScheduleAgenda= manager.find(CommitteeScheduleAgenda.class, scheduleAgendaId);
+			CommitteeScheduleAgenda ExistingCommitteeScheduleAgenda= manager.find(CommitteeScheduleAgenda.class, Long.parseLong(scheduleAgendaId));
 			if(ExistingCommitteeScheduleAgenda != null) {
 				ExistingCommitteeScheduleAgenda.setModifiedBy(modifiedby);
 				ExistingCommitteeScheduleAgenda.setModifiedDate(modifiedDate);
@@ -230,7 +230,7 @@ public class CCMDaoImpl implements CCMDao{
 	{
 		try {
 			Query query = manager.createNativeQuery(CCMSCHEDULESUBAGENDADELETE);
-			query.setParameter("ScheduleAgendaId", scheduleAgendaId);
+			query.setParameter("ScheduleAgendaId", Long.parseLong(scheduleAgendaId));
 			query.setParameter("ModifiedBy", modifiedby);
 			query.setParameter("ModifiedDate", modifiedDate);
 			return query.executeUpdate();
@@ -324,7 +324,7 @@ public class CCMDaoImpl implements CCMDao{
 		List<String> list = new ArrayList<>();
 		try {
 			Query query = manager.createNativeQuery(GETLATESTSCHEDULEMINUTESTIDS);
-			query.setParameter("ScheduleId", scheduleId);
+			query.setParameter("ScheduleId", Long.parseLong(scheduleId));
 			list =  (List<String>)query.getResultList();
 			return list;
 		}catch ( Exception e ) {
@@ -340,7 +340,7 @@ public class CCMDaoImpl implements CCMDao{
 	{
 		try {
 			Query query=manager.createNativeQuery(GETCLUSTERLABLISTBYCLUSTERID);
-			query.setParameter("ClusterId", clusterId);
+			query.setParameter("ClusterId", Long.parseLong(clusterId));
 			return (List<Object[]>)query.getResultList();
 		}catch ( Exception e ) {
 			e.printStackTrace();
@@ -408,7 +408,7 @@ public class CCMDaoImpl implements CCMDao{
 	public int ccmAchievementDelete(String achievementId) throws Exception {
 		try {
 			
-			CCMAchievements ExistingCCMAchievements = manager.find(CCMAchievements.class, achievementId);
+			CCMAchievements ExistingCCMAchievements = manager.find(CCMAchievements.class, Long.parseLong(achievementId));
 			if(ExistingCCMAchievements != null) {
 				ExistingCCMAchievements.setIsActive(0);
 				return 1;
@@ -514,7 +514,7 @@ public class CCMDaoImpl implements CCMDao{
 
 		try {
 			Query query = manager.createNativeQuery(GETLASTSCHEDULEIDFROMCURRENTSCHEDULEID);
-			query.setParameter("ScheduleId", ccmScheduleId);
+			query.setParameter("ScheduleId", Long.parseLong(ccmScheduleId));
 			return (Long)query.getSingleResult();
 		}catch ( Exception e ) {
 			e.printStackTrace();
@@ -529,7 +529,7 @@ public class CCMDaoImpl implements CCMDao{
 		List<String> list = new ArrayList<>();
 		try {
 			Query query = manager.createNativeQuery(GETPREVIOUSSCHEDULEMINUTESTIDS);
-			query.setParameter("ScheduleId", scheduleId);
+			query.setParameter("ScheduleId", Long.parseLong(scheduleId));
 			list =  (List<String>)query.getResultList();
 			return list;
 		}catch ( Exception e ) {
@@ -547,7 +547,7 @@ public class CCMDaoImpl implements CCMDao{
 			query.setParameter("MonthStartDate", monthStartDate);
 			query.setParameter("Meeting", meeting);
 			query.setParameter("Days", meeting.equalsIgnoreCase("EB")?180:90);
-			query.setParameter("ClusterId", clusterId);
+			query.setParameter("ClusterId", Long.parseLong(clusterId));
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -593,7 +593,7 @@ public class CCMDaoImpl implements CCMDao{
 		try {
 			
 			Query query = manager.createNativeQuery(GETCLOSURESTATUSLIST);
-			query.setParameter("ScheduleId", scheduleId);
+			query.setParameter("ScheduleId", Long.parseLong(scheduleId));
 			return (List<Object[]>)query.getResultList();
 			
 		}catch (Exception e) {
@@ -608,7 +608,7 @@ public class CCMDaoImpl implements CCMDao{
 	public int ccmClosureStatusDelete(String ccmClosureId) throws Exception {
 		try {
 			
-			CCMClosureStatus ExistingCCMClosureStatus = manager.find(CCMClosureStatus.class, ccmClosureId);
+			CCMClosureStatus ExistingCCMClosureStatus = manager.find(CCMClosureStatus.class, Long.parseLong(ccmClosureId));
 			if(ExistingCCMClosureStatus != null) {
 				ExistingCCMClosureStatus.setIsActive(0);
 				return 1;
@@ -631,7 +631,7 @@ public class CCMDaoImpl implements CCMDao{
 		
 		try {
 			Query query = manager.createNativeQuery(GETCCMASPLIST);
-			query.setParameter("ScheduleId", scheduleId);
+			query.setParameter("ScheduleId", Long.parseLong(scheduleId));
 			return (List<Object[]>)query.getResultList();
 			
 		}catch (Exception e) {

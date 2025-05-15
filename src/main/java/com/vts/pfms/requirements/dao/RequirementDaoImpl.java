@@ -53,7 +53,7 @@ public class RequirementDaoImpl implements RequirementDao {
 	public List<Object[]> RequirementList(String reqInitiationId) throws Exception {
 		// TODO Auto-generated method stub
 		Query query=manager.createNativeQuery(REQLIST);
-		query.setParameter("ReqInitiationId", reqInitiationId);
+		query.setParameter("ReqInitiationId", Long.parseLong(reqInitiationId));
 		List<Object[]> RequirementList=(List<Object[]> )query.getResultList();	
 		return RequirementList;
 	}
@@ -84,8 +84,8 @@ public class RequirementDaoImpl implements RequirementDao {
 	@Override
 	public List<Object[]> AbbreviationDetails(String testPlanInitiationId, String specsInitiationId) throws Exception {
 		Query query = manager.createNativeQuery(ABBREVIATIONS);
-		query.setParameter("TestPlanInitiationId", testPlanInitiationId);
-		query.setParameter("SpecsInitiationId", specsInitiationId);
+		query.setParameter("TestPlanInitiationId", Long.parseLong(testPlanInitiationId));
+		query.setParameter("SpecsInitiationId", Long.parseLong(specsInitiationId));
 		return (List<Object[]>)query.getResultList();
 	}
 	@Override
@@ -111,15 +111,15 @@ public class RequirementDaoImpl implements RequirementDao {
 	public List<Object[]> DocMemberList(String testPlanInitiationId, String specsInitiationId) throws Exception {
 
 		Query query = manager.createNativeQuery(DOCMEMLIST);
-		query.setParameter("TestPlanInitiationId", testPlanInitiationId);
-		query.setParameter("SpecsInitiationId", specsInitiationId);
+		query.setParameter("TestPlanInitiationId", Long.parseLong(testPlanInitiationId));
+		query.setParameter("SpecsInitiationId", Long.parseLong(specsInitiationId));
 		return (List<Object[]>)query.getResultList();
 	}
 	private static final String TESTINTRO="SELECT TestPlanInitiationId,Introduction,SystemIdentification,SystemOverview FROM pfms_test_scope_intro WHERE TestPlanInitiationId=:TestPlanInitiationId AND isactive=1";
 	@Override
 	public Object[] TestScopeIntro(String testPlanInitiationId) throws Exception {
 		Query query=manager.createNativeQuery(TESTINTRO);
-		query.setParameter("TestPlanInitiationId", testPlanInitiationId);
+		query.setParameter("TestPlanInitiationId", Long.parseLong(testPlanInitiationId));
 		Object[]ReqIntro=null;
 		try {
 			ReqIntro=(Object[])query.getSingleResult();
@@ -200,8 +200,8 @@ public class RequirementDaoImpl implements RequirementDao {
 	public List<Object[]> getTestandSpecsDocumentSummary(String testPlanInitiationId, String specsInitiationId) throws Exception {
 
 		Query query = manager.createNativeQuery(DOCSUM);
-		query.setParameter("TestPlanInitiationId", testPlanInitiationId);
-		query.setParameter("SpecsInitiationId", specsInitiationId);
+		query.setParameter("TestPlanInitiationId", Long.parseLong(testPlanInitiationId));
+		query.setParameter("SpecsInitiationId", Long.parseLong(specsInitiationId));
 		List<Object[]>DocumentSummary=(List<Object[]>)query.getResultList();
 
 		return DocumentSummary;
@@ -231,8 +231,8 @@ public class RequirementDaoImpl implements RequirementDao {
 	public List<Object[]> getApproach(String initiationid, String ProjectId) throws Exception {
 
 		Query query = manager.createNativeQuery(GETTESTAPPROACH);
-		query.setParameter("InitiationId", initiationid);
-		query.setParameter("ProjectId", ProjectId);
+		query.setParameter("InitiationId", Long.parseLong(initiationid));
+		query.setParameter("ProjectId", Long.parseLong(ProjectId));
 		List<Object[]>DocumentSummary=(List<Object[]>)query.getResultList();
 		return DocumentSummary;
 	}

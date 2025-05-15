@@ -102,7 +102,7 @@ public class RoadMapDaoImpl implements RoadMapDao{
 			
 			Query query = manager.createNativeQuery(roadMapType.equalsIgnoreCase("E")?GETPROJECTDETAILS:GETPREPROJECTDETAILS);
 			query.setParameter("LabCode", labcode);
-			query.setParameter("ProjectId", projectId);
+			query.setParameter("ProjectId", Long.parseLong(projectId));
 			return (Object[])query.getSingleResult();
 			
 		}catch (Exception e) {
@@ -156,7 +156,7 @@ public class RoadMapDaoImpl implements RoadMapDao{
 	public int removeRoadMapAnnualTargets(String roadMapId) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(REMOVEROADMAPANNUALTARGETS);
-			query.setParameter("RoadMapId", roadMapId);
+			query.setParameter("RoadMapId", Long.parseLong(roadMapId));
 			return query.executeUpdate();
 		}catch (Exception e) {
 			logger.error(new Date()+" Inside RoadMapDaoImpl removeRoadMapAnnualTargets()"+e);
@@ -165,15 +165,17 @@ public class RoadMapDaoImpl implements RoadMapDao{
 		}
 	}
 
-	private static final String REMOVEROADMAPDETAILSBYID="UPDATE pfms_road_map SET IsActive=0,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE RoadMapId=:RoadMapId";
 	@Override
 	public int removeRoadMapDetails(String roadMapId, String userId) throws Exception {
+		RoadMap roadMap = manager.find(RoadMap.class, Long.parseLong(roadMapId));
+		if (roadMap == null) {
+			return 0;
+		}
 		try {
-			Query query = manager.createNativeQuery(REMOVEROADMAPDETAILSBYID);
-			query.setParameter("RoadMapId", roadMapId);
-			query.setParameter("ModifiedBy", userId);
-			query.setParameter("ModifiedDate", sdtf.format(new Date()));
-			return query.executeUpdate();
+			roadMap.setIsActive(0);
+			roadMap.setModifiedBy(userId);
+			roadMap.setModifiedDate(sdtf.format(new Date()));
+			return 1;
 		}catch (Exception e) {
 			logger.error(new Date()+" Inside RoadMapDaoImpl removeRoadMapDetails()"+e);
 			e.printStackTrace();
@@ -210,7 +212,7 @@ public class RoadMapDaoImpl implements RoadMapDao{
 
 		try {
 			Query query = manager.createNativeQuery(ROADMAPAPPROVALDATA);
-			query.setParameter("RoadMapId", roadMapId);
+			query.setParameter("RoadMapId", Long.parseLong(roadMapId));
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			logger.info(new Date()+"Inside DAO roadMapTransApprovalData "+e);
@@ -226,7 +228,7 @@ public class RoadMapDaoImpl implements RoadMapDao{
 
 		try {
 			Query query = manager.createNativeQuery(ROADMAPTRANSLIST);
-			query.setParameter("RoadMapId", roadMapId);
+			query.setParameter("RoadMapId", Long.parseLong(roadMapId));
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			logger.info(new Date()+"Inside DAO roadMapTransList "+e);
@@ -243,7 +245,7 @@ public class RoadMapDaoImpl implements RoadMapDao{
 		List<Object[]> list =new ArrayList<Object[]>();
 		try {
 			Query query= manager.createNativeQuery(ROADMAPREMARKSHISTORY);
-			query.setParameter("RoadMapId", roadMapId);
+			query.setParameter("RoadMapId", Long.parseLong(roadMapId));
 			list= (List<Object[]>)query.getResultList();
 
 		}catch (Exception e) {

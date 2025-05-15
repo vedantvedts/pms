@@ -87,7 +87,7 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 	public int removeTimeSheetActivities(String timeSheetId) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(REMOVETIMESHEETACTIVITIES);
-			query.setParameter("TimeSheetId", timeSheetId);
+			query.setParameter("TimeSheetId", Long.parseLong(timeSheetId));
 			return query.executeUpdate();
 		}catch (Exception e) {
 			logger.error(new Date()+" Inside TimeSheetDaoImpl removeTimeSheetActivities() "+e);
@@ -248,7 +248,7 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 	public List<Object[]> projectActionAnalyticsList(String projectId, String fromDate, String toDate) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(PROJECTACTIONANALYTICSLIST);
-			query.setParameter("ProjectId", projectId);
+			query.setParameter("ProjectId", Long.parseLong(projectId));
 			query.setParameter("FromDate", fromDate);
 			query.setParameter("ToDate", toDate);
 			return (List<Object[]>)query.getResultList();
@@ -266,7 +266,7 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 			Query query = manager.createNativeQuery(GETALLEMPTIMESHEETWORKINGHRSLIST);
 			query.setParameter("LabCode", labCode);
 			query.setParameter("LoginType", loginType);
-			query.setParameter("EmpId", empId);
+			query.setParameter("EmpId", Long.parseLong(empId));
 			query.setParameter("FromDate", fromDate);
 			query.setParameter("ToDate", toDate);
 			return (List<Object[]>)query.getResultList();
@@ -300,7 +300,7 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 	public List<Object[]> empExtraWorkingDaysList(String empId, String fromDate, String toDate) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(EMPEXTRAWORKINGDAYSLIST);
-			query.setParameter("EmpId", empId);
+			query.setParameter("EmpId", Long.parseLong(empId));
 			query.setParameter("FromDate", fromDate);
 			query.setParameter("ToDate", toDate);
 			return (List<Object[]>)query.getResultList();
@@ -336,7 +336,7 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 	public List<Object[]> projectWiseEmpExtraWorkingDaysList(String empId, String fromDate, String toDate) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(PROJECTWISEEMPEXTRAWORKINGDAYSLIST);
-			query.setParameter("EmpId", empId);
+			query.setParameter("EmpId", Long.parseLong(empId));
 			query.setParameter("FromDate", fromDate);
 			query.setParameter("ToDate", toDate);
 			return (List<Object[]>)query.getResultList();
@@ -354,7 +354,7 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 			Query query = manager.createNativeQuery(ROLEWISEEMPLOYEELIST);
 			query.setParameter("LabCode", labCode);
 			query.setParameter("LoginType", loginType);
-			query.setParameter("EmpId", empId);
+			query.setParameter("EmpId", Long.parseLong(empId));
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -380,7 +380,7 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 	public List<Object[]> getEmployeeNewTimeSheetList(String empId, String fromDate, String toDate) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(GETEMPLOYEENEWTIMESHEETLIST);
-			query.setParameter("EmpId", empId);
+			query.setParameter("EmpId", Long.parseLong(empId));
 			query.setParameter("FromDate", fromDate);
 			query.setParameter("ToDate", toDate);
 			return (List<Object[]>)query.getResultList();
@@ -410,7 +410,7 @@ public class TimeSheetDaoImpl implements TimeSheetDao {
 
 		try {
 			Query query =  manager.createNativeQuery(GETEMPACTIVITYSUBMISSIONCOUNT);
-			query.setParameter("EmpId", empId);
+			query.setParameter("EmpId", Long.parseLong(empId));
 			query.setParameter("Year", year);
 			return (Long)query.getSingleResult();
 
