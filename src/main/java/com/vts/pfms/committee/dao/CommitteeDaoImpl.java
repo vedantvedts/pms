@@ -21,6 +21,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import com.ibm.icu.text.SimpleDateFormat;
 import com.vts.pfms.committee.dto.CommitteeConstitutionApprovalDto;
 import com.vts.pfms.committee.dto.CommitteeMainDto;
 import com.vts.pfms.committee.dto.CommitteeScheduleDto;
@@ -61,37 +62,26 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	private static final String EMPLOYEELIST="SELECT a.EmpId, CONCAT(IFNULL(CONCAT(a.Title,' '),(IFNULL(CONCAT(a.Salutation, ' '), ''))), a.EmpName) AS 'EmpName',b.Designation,a.EmpNo  FROM employee a,employee_desig b WHERE a.IsActive='1' AND a.DesigId=b.DesigId AND LabCode=:labcode ORDER BY a.SrNo=0,a.SrNo";
 	private static final String LASTCOMMITTEEID="SELECT committeemainid FROM committee_main WHERE isactive=1 and committeeid=:committeeid AND projectid=:projectid and divisionid=:divisionid AND InitiationId=:initiationid AND CARSInitiationId=:CARSInitiationId";
-	private static final String UPDATECOMMITTEEVALIDTO="UPDATE committee_main SET isactive=0,Status='E',validto=:validto ,modifiedby=:modifiedby, modifieddate=:modifieddate WHERE committeemainid=:lastcommitteeid";
 	private static final String COMMITTEENAME="SELECT committeeid,committeename,committeeshortname,projectapplicable,periodicduration,isglobal FROM committee WHERE  committeeid=:committeeid";
 	private static final String COMMITTEENAMESCHECK="SELECT SUM(IF(CommitteeShortName =:committeeshortname,1,0))   AS 'shortname',SUM(IF(CommitteeName = :committeename,1,0)) AS 'name'FROM committee where isactive=1 AND labcode=:labcode ";
 	private static final String COMMITTEELISTALL="SELECT committeeid,committeeshortname,committeename,CommitteeType,projectapplicable,isactive FROM committee";
 	private static final String COMMITTEELISTACTIVE="SELECT committeeid,committeeshortname,committeename,CommitteeType,projectapplicable,isactive,periodicnon,periodicduration,TechNonTech,Guidelines,Description,TermsOfReference,isglobal FROM committee WHERE isactive=1 AND isglobal=:isglobal AND projectapplicable=:projectapplicable  AND labcode=:labcode ;";
 	private static final String COMMITTEEDETAILS="SELECT committeeid,committeeshortname,committeename,CommitteeType,projectapplicable,technontech,guidelines,periodicnon,periodicduration,isactive,Description,TermsOfReference,isglobal,labcode FROM committee WHERE isactive=1 AND (CASE WHEN 'A'=:committeeid THEN committeeid=committeeid ELSE committeeid=:committeeid END)"; //added referenceNo
-	private static final String COMMITTEEEDITSUBMIT="UPDATE committee SET CommitteeShortName=:committeeshortname ,  CommitteeName=:committeename , CommitteeType=:committeetype , ProjectApplicable=:projectapplicable ,ModifiedBy=:modifiedby , ModifiedDate=:modifieddate,PeriodicDuration=:periodicduration,TechNonTech=:technontech,Guidelines=:guidelines,PeriodicNon=:periodicnon,Description=:description,TermsOfReference=:termsofreference,isglobal=:isglobal WHERE committeeid=:committeeid";
 	private static final String COMMITTEEMAINLIST="SELECT a.committeemainid, a.committeeid,a.validfrom,a.validto, b.committeename,b.committeeshortname FROM committee_main a, committee b WHERE b.projectapplicable='N' AND a.isactive='1' AND a.committeeid=b.committeeid  AND a.divisionid=0 AND a.projectid=0 AND a.initiationid=0 AND TRIM(b.labcode)=:labcode" ;
-	private static final String COMMITTEEMEMBERDELETE ="UPDATE committee_member SET isactive=0, ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE committeememberid=:committeememberid";
 	private static final String COMMITTEESCHEDULELIST="SELECT cs.scheduleid, cs.committeeid,cs.committeemainid,cs.scheduledate,cs.schedulestarttime,cs.projectid , c.committeeshortname FROM committee_schedule cs,committee c WHERE cs.committeeid=c.committeeid AND  cs.divisionid=0 AND cs.committeeid=:committeeid AND cs.projectid=0 AND cs.divisionid=0 AND cs.initiationid=0 AND cs.isactive=1 ";
 	private static final String COMMITTEESCHEDULEEDITDATA="SELECT a.committeeid,a.committeemainid,a.scheduledate,a.schedulestarttime,a.scheduleflag,a.schedulesub,a.scheduleid,b.committeename,b.committeeshortname,a.projectid,c.meetingstatusid,a.meetingid,a.meetingvenue,a.confidential,a.Reference,(SELECT d.classification FROM pfms_security_classification d WHERE a.confidential=d.classificationid) AS 'classification',a.divisionid  ,a.initiationid ,a.pmrcdecisions,a.kickoffotp ,(SELECT minutesattachmentid FROM committee_minutes_attachment WHERE scheduleid=a.scheduleid) AS 'attachid', b.periodicNon,a.MinutesFrozen,a.briefingpaperfrozen,a.labcode, a.CARSInitiationId FROM committee_schedule a,committee b ,committee_meeting_status c WHERE a.scheduleflag=c.MeetingStatus AND a.scheduleid=:committeescheduleid AND a.committeeid=b.committeeid";
 	private static final String PROJECTLIST="SELECT projectid,projectmainid,projectcode,projectname FROM project_master WHERE isactive=1 and labcode=:labcode";
 	//private static final String AGENDALIST = "SELECT a.scheduleagendaid,a.scheduleid,a.schedulesubid,a.agendaitem,b.projectname,b.projectid,a.remarks,b.projectcode,a.agendapriority,a.presenterid ,CONCAT(IFNULL(CONCAT(j.title,' '),''), j.empname) as 'empname' ,h.designation,a.duration,j.desigid, a.PresentorLabCode  FROM project_master b,employee j,employee_desig h,committee_schedules_agenda a  WHERE a.projectid=b.projectid AND a.scheduleid=:committeescheduleid AND a.isactive=1 AND a.projectid<>0 AND a.presenterid=j.empid AND j.desigid=h.desigid  UNION   SELECT a.scheduleagendaid,a.scheduleid,a.schedulesubid,a.agendaitem,cs.labcode AS 'projectname' , '0' AS projectid,a.remarks,'' AS projectcode,a.agendapriority,a.presenterid ,CONCAT(IFNULL(CONCAT(j.title,' '),''), j.empname) as 'empname' ,h.designation,a.duration,j.desigid, a.PresentorLabCode  FROM employee j,employee_desig h, committee_schedules_agenda a, committee_schedule cs   WHERE a.scheduleid=:committeescheduleid AND a.scheduleid=cs.scheduleid  AND a.isactive=1 AND a.projectid=0 AND a.presenterid=j.empid AND j.desigid=h.desigid ORDER BY 9   ";
-	private static final String COMMITTEESCHEDULEUPDATE="UPDATE committee_schedule SET scheduledate=:scheduledate,schedulestarttime=:schedulestarttime,modifiedby=:modifiedby,modifieddate=:modifieddate, meetingid=:meetingid WHERE scheduleid=:scheduleid";
 	private static final String COMMITTEESPECLIST="SELECT a.minutesid,a.scheduleminutesid,a.schedulesubid,a.minutessubid,a.minutessubofsubid,a.details,a.scheduleid,a.idarck,b.outcomename, a.agendasubhead FROM committee_schedules_minutes_details a,committee_schedules_minutes_outcome b WHERE a.idarck=b.idarck and a.scheduleid=:scheduleid ORDER BY scheduleminutesid;";
 	private static final String COMMITTEEMINUTESPEC="SELECT a.minutesid,a.description,b.agendasubid,b.subdescription,c.agendaitem FROM committee_schedules_minutes a, committee_schedules_minutes_sub b,committee_schedules_agenda c WHERE minutesid=:minutesid AND agendasubid=:agendasubid AND scheduleagendaid=:scheduleagendaid  ";
 	private static final String COMMITTEEMINUTEEDIT="SELECT a.minutesid,a.details,a.scheduleid,a.scheduleminutesid,b.description,a.minutessubofsubid,a.minutessubid,c.subdescription,d.agendaitem,a.remarks,a.idarck FROM committee_schedules_minutes_details a, committee_schedules_minutes b, committee_schedules_minutes_sub c,committee_schedules_agenda d WHERE a.minutesid=b.minutesid AND a.minutessubofsubid=c.agendasubid AND a.scheduleminutesid=:scheduleminutesid AND a.minutessubid=d.scheduleagendaid ";
-	private static final String COMMITTEEMINUTEUPDATE="UPDATE committee_schedules_minutes_details SET scheduleid=:scheduleid,schedulesubid=:schedulesubid,minutesid=:minutesid,details=:details,idarck=:darc,modifiedby=:modifiedby,modifieddate=:modifieddate,remarks=:remarks WHERE scheduleminutesid=:scheduleminutesid";
 	private static final String COMMITTEESCHEDULEAGENDAPRIORITY="SELECT ScheduleAgendaId, ScheduleId,AgendaPriority FROM committee_schedules_agenda WHERE ScheduleId=:scheduleid ORDER BY AgendaPriority DESC";
-	private static final String COMMITTEESCHEDULEAGENDAUPDATE="UPDATE committee_schedules_agenda SET PresentorLabCode=:PresentorLabCode, duration=:duration, AgendaItem=:agendaitem, ProjectId=:projectid, Remarks=:remarks, ModifiedBy=:modifiedby, ModifiedDate=:modifieddate, PresenterId=:PresenterId  WHERE ScheduleAgendaId=:scheduleagendaid";
-	private static final String COMMITTEEAGENDAPRIORITYUPDATE ="UPDATE committee_schedules_agenda SET AgendaPriority=:agendapriority WHERE ScheduleAgendaId=:agendaid";
 	private static final String COMMITTEESCHEDULEGETAGENDASAFTER ="SELECT ScheduleAgendaId,AgendaPriority FROM committee_schedules_agenda WHERE ScheduleId=:scheduleid AND AgendaPriority>:AgendaPriority ORDER BY AgendaPriority ASC";
-	private static final String COMMITTEEAGENDADELETE="UPDATE committee_schedules_agenda SET ModifiedBy=:modifiedby, ModifiedDate=:modifieddate, isactive=0,AgendaPriority=0 WHERE ScheduleAgendaId=:agendaid";
 	private static final String COMMITTEESUBSCHEDULELIST="SELECT ScheduleSubId,ScheduleId,ScheduleDate,ScheduleStartTime,ScheduleFlag,IsActive FROM committee_schedule_sub WHERE ScheduleId=:scheduleid"; 
 	private static final String COMMITTEEMINUTESSUB="SELECT * FROM  committee_schedules_minutes_sub WHERE  AgendaSubId >1";
 	private static final String COMMITTEEMINUTESSPECDETAILS="SELECT * FROM committee_schedules_minutes";
 	private static final String COMMITTEEATTENDANCE="SELECT a.empid,a.committeeinvitationid,a.committeescheduleid,a.membertype,a.attendance,b.empno,b.empname,c.designation FROM committee_schedules_invitation a,employee b,employee_desig c WHERE b.IsActive='1' AND a.empid = b.empid AND b.desigid=c.desigid AND a.committeescheduleid =:scheduleid AND a.membertype IN ('C','I' ) UNION SELECT a.empid,a.committeeinvitationid,a.committeescheduleid,a.membertype,a.attendance,b.expertno,b.expertname,c.designation FROM committee_schedules_invitation a,expert b,employee_desig c WHERE a.empid = b.expertid AND b.desigid=c.desigid AND a.committeescheduleid =:scheduleid AND a.membertype = 'E' ORDER BY 4";
-	private static final String COMMITTEEAPPROVAL="UPDATE committee_schedule SET scheduleflag=:flag, modifiedby=:modifiedby, modifieddate=:modifieddate WHERE scheduleid=:scheduleid";
 	private static final String COMMITTEESCHEDULEDATA = "SELECT a.ScheduleId, a.CommitteeMainId, a.ScheduleDate, a.ScheduleStartTime, a.ScheduleFlag, a.ScheduleSub, a.IsActive, a.committeeid ,b.committeeshortname, b.committeename, c.MeetingStatusId,a.projectid,a.meetingid, a.divisionid ,a.initiationid,a.labcode,CARSInitiationId FROM committee_schedule a,committee b,committee_meeting_status c WHERE a.committeeid=b.committeeid AND a.scheduleflag=c.MeetingStatus AND a.ScheduleId=:committeescheduleid";
-	private static final String ATTENDANCEUPDATEP="UPDATE committee_schedules_invitation SET Attendance=:attendance WHERE CommitteeInvitationId=:invitationid";
-	private static final String ATTENDANCEUPDATEN="UPDATE committee_schedules_invitation SET Attendance=:attendance WHERE CommitteeInvitationId=:invitationid";
 	private static final String COMMITTEEATTENDANCETYPE="SELECT attendance from committee_schedules_invitation WHERE CommitteeInvitationId=:invitationid";
 	private static final String COMMITTEEINVITATIONDELETE ="DELETE FROM committee_schedules_invitation WHERE CommitteeInvitationId = :committeeinvitationid";
 	private static final String EXPERTLIST="SELECT a.expertid,a.expertname,b.designation FROM expert a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId";
@@ -100,12 +90,10 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String CHAIRPERSONEMAIL="SELECT email, empid FROM employee WHERE empid IN (SELECT empid FROM committee_member WHERE membertype IN ('CC','CS','PS','CH') AND committeemainid=:committeemainid AND labcode IN (SELECT LabCode FROM lab_master))  UNION SELECT email, empid FROM employee_external WHERE empid IN (SELECT empid FROM committee_member WHERE membertype IN ('CC','CS','PS','CH') AND committeemainid=:committeemainid AND labcode NOT IN (SELECT labcode FROM lab_master)) UNION SELECT email, empid FROM employee WHERE empid IN (SELECT pm.projectdirector FROM project_master pm, committee_main cm WHERE cm.projectid=pm.projectid AND cm.committeemainid=:committeemainid ) ";
 	private static final String PROJECTDIRECTOREMAIL="SELECT d.email,d.empname FROM employee d,project_master e WHERE d.isActive='1' AND projectid=:projectid AND e.projectdirector=d.empid";
 	private static final String RTMDDOEMAIL="SELECT a.email,a.empname FROM employee a,pfms_initiation_approver b WHERE a.isActive='1' AND a.empid=b.empid AND b.isactive=1 AND b.type='DO-RTMD' ";
-	private static final String UPDATEOTP="UPDATE committee_schedule SET kickoffotp=:otp,scheduleflag=:scheduleflag WHERE scheduleid=:committeescheduleid";
 	private static final String KICKOFFOTP="SELECT kickoffotp FROM committee_schedule WHERE scheduleid=:scheduleid";
 	private static final String PROJECTDETAILS="SELECT projectid, projectname, projectdescription,projectmainid,projectcode,projecttype,projectimmscd, unitcode, sanctionno,PDC,projectcategory FROM project_master WHERE projectid=:projectid";
 	private static final String PROJECTSCHEDULELISTALL ="SELECT cs.scheduleid, cs.committeeid,cs.committeemainid,cs.scheduledate,cs.schedulestarttime,cs.projectid , c.committeeshortname,cs.scheduleflag FROM committee_schedule cs,committee c WHERE cs.committeeid=c.committeeid AND cs.isactive=1 AND cs.projectid=:projectid ORDER BY cs.scheduledate DESC";
 	private static final String PROJECTAPPLICABLECOMMITTEELIST="SELECT  b.committeeid,a.projectid, a.autoschedule,b.committeeshortname,b.committeename,b.projectapplicable FROM committee_project a,committee b WHERE a.committeeid=b.committeeid AND b.projectapplicable='P' AND a.projectid=:projectid";
-	private static final String UPDATECOMITTEEMAINID = "UPDATE committee_schedule SET committeemainid=:committeemainid WHERE scheduleid=:scheduleid";
 	private static final String PROJECTCOMMITTEESCHEDULELISTALL ="SELECT cs.scheduleid, cs.committeeid,cs.committeemainid,cs.scheduledate,cs.schedulestarttime,cs.projectid , c.committeeshortname ,cs.scheduleflag FROM committee_schedule cs,committee c WHERE cs.committeeid=c.committeeid AND cs.projectid=:projectid AND cs.CommitteeId=:committeeid AND cs.isactive=1 ORDER BY cs.scheduledate DESC";
 	private static final String AGENDARETURNDATA="SELECT remarks,empid,meetingstatus FROM committee_meeting_approval WHERE meetingstatus IN ('MAR','MMR') AND scheduleid=:scheduleid ";
 	private static final String LABDETAILS = "SELECT LabMasterId, LabCode, LabName, LabUnitCode, LabAddress, LabCity, LabPin, LabTelNo, LabFaxNo, LabEmail, LabAuthority, LabAuthorityId, LabRfpEmail, LabId, ClusterId, LabLogo FROM lab_master WHERE labcode=:labcode ;";
@@ -120,7 +108,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String NOTIFICATIONDATA="SELECT a.empid, a.notificationby FROM pfms_notification a WHERE scheduleid=:scheduleid AND empid=:empid AND a.status=:status";	
 	private static final String MEETINGCOUNT="SELECT COUNT(*) FROM committee_schedule WHERE YEAR(scheduledate)= :scheduledate AND projectid=:projectid AND isactive=1 ";
 	private static final String MEETINGCOUNT1="SELECT COUNT(*) FROM committee_schedule WHERE projectid=:projectid AND isactive=1 ";
-	private static final String UPDATEMEETINGVENUE="UPDATE committee_schedule SET  meetingvenue=:meetingvenue ,confidential=:confidential, Reference=:reference, PMRCDecisions=:pmrcdecisions WHERE scheduleid=:scheduleid";
 	private static final String MINUTESATTACHMENTDELETE="DELETE FROM committee_minutes_attachment WHERE MinutesAttachmentId=:attachid";
 	private static final String MINUTESATTACHMENTLIST="SELECT MinutesAttachmentId,ScheduleId,AttachmentName FROM committee_minutes_attachment WHERE ScheduleId=:scheduleid";
 	private static final String PROJECTCATEGORYLIST="select classificationid,classification from pfms_security_classification";
@@ -138,12 +125,10 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String EXPERTLISTNOINVITEDMEMBERS = "SELECT a.expertid,CONCAT(IFNULL(CONCAT(a.title,' '),''),a.expertname) as 'expertname'  ,b.designation,a.desigid FROM expert a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.expertid NOT IN( SELECT empid FROM committee_schedules_invitation WHERE committeescheduleid=:scheduleid AND labcode='@EXP'  ) ORDER BY a.expertname ";
 	private static final String ALLPROJECTDETAILSLIST ="SELECT a.projectid,a.projectcode,a.projectname,a.ProjectMainId,a.ProjectDescription,a.UnitCode,a.ProjectType,a.ProjectCategory,a.SanctionNo,a.SanctionDate,a.PDC,a.ProjectDirector FROM project_master a WHERE a.isactive=1 ";
 	private static final String PROJECTCOMMITTEEDESCRIPTIONTOR="SELECT committeeprojectid,description , termsofreference, committeeid , projectid  FROM committee_project WHERE committeeid=:committeeid AND projectid=:projectid";
-	private static final String PROJECTCOMMITTEEDESCRIPTIONTOREDIT="UPDATE committee_project SET description=:description  , termsofreference = :termsofreference ,modifiedby= :modifiedby ,modifieddate=:modifieddate WHERE committeeprojectid=:committeeprojectid";
 	private static final String PROJECTCOMMITTEEFORMATIONCHECKLIST="SELECT a.committeeprojectid,b.committeemainid FROM committee_project a LEFT JOIN committee_main b ON a.projectid = b.projectid AND a.committeeid = b.committeeid AND b.isactive=1 WHERE a.projectid = :projectid";
 	private static final String UPDATECOMMITTEEINVITATIONEMAILSENT="UPDATE committee_schedules_invitation SET emailsent ='Y' WHERE membertype NOT IN ('CW','W','E','CO') AND committeescheduleid=:committeescheduleid";
 	private static final String UPDATEUNIT="UPDATE committee_schedules_minutes_unit SET unitname=:unitname,createdby=:createdby,createddate=:createddate WHERE minutesspecunitid=:unitid";
 	private static final String DIVISIONCOMMITTEEDESCRIPTIONTOR="SELECT committeedivisionid,description , termsofreference, committeeid , divisionid  FROM committee_division WHERE committeeid=:committeeid AND divisionid=:divisionid";
-	private static final String DIVISIONCOMMITTEEDESCRIPTIONTOREDIT="UPDATE committee_division SET description=:description  , termsofreference = :termsofreference ,modifiedby= :modifiedby ,modifieddate=:modifieddate WHERE committeedivisionid=:committeedivisionid";
 	private static final String DIVISIONLIST = "SELECT divisionid, divisioncode,divisionname,divisionheadid,groupid FROM division_master";
 	private static final String COMMITTEEDIVISIONASSIGNED = "SELECT b.committeename,b.committeeshortname,b.committeeid,a.committeedivisionid,b.periodicnon,b.periodicduration,a.autoschedule  FROM committee_division a,committee b WHERE a.committeeid=b.committeeid AND a.divisionid=:divisionid";
 	private static final String COMMITTEEDIVISIONNOTASSIGNED = "SELECT a.committeeid,a.committeeshortname,a.committeename,a.CommitteeType,a.projectapplicable,a.isactive,a.periodicnon,a.periodicduration,a.TechNonTech,a.Guidelines,a.Description,a.TermsOfReference  FROM committee a WHERE a.projectapplicable='N' AND a.committeeid NOT IN ( SELECT b.CommitteeId FROM committee_division b WHERE b.divisionid = :divisionid ) AND a.labcode=:LabCode  ORDER BY a.committeeid,a.committeeshortname ";
@@ -154,7 +139,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String INVITATIONMAXSERIALNO ="SELECT 'MaxSlNo', IFNULL(MAX(serialno),0) AS 'MAXserialno' FROM committee_schedules_invitation WHERE committeescheduleid=:scheduleid ";
 	private static final String LOGINDIVISIONLIST ="CALL Pfms_Emp_DivisiontList(:empid);";
 	private static final String COMMITTEEINVITATIONSERIALNOAFTER="SELECT committeeInvitationid, serialno FROM committee_schedules_invitation WHERE serialno> (SELECT serialno FROM committee_schedules_invitation WHERE committeeInvitationid=:committeeinvitationid ) AND committeescheduleid=(SELECT committeescheduleid FROM committee_schedules_invitation WHERE committeeInvitationid=:committeeinvitationid )  ";
-	private static final String COMMITTEEINVITATIONSERIALNOUPDATE="UPDATE committee_schedules_invitation  SET serialno=:serialno WHERE committeeInvitationid=:committeeinvitationid";
 	private static final String COMMITTEELASTSCHEDULEDATE="SELECT MAX(scheduledate),scheduleid FROM committee_schedule WHERE committeeid=:committeeid AND isactive=1";
 	private static final String INTERNALEMPLOYEELISTFORMATION = "SELECT a.empid, a.empname,a.empno,b.designation FROM employee a,employee_desig b WHERE a.desigid=b.desigid AND labcode=:labcode AND a.empid NOT IN (SELECT  empid FROM committee_member   WHERE isactive=1  AND labcode=:labcode AND committeemainid=:committeemainid)  ORDER BY a.srno=0,a.srno ";
 	private static final String DIVISIONDATA = "SELECT divisionid, divisioncode,divisionname,divisionheadid,groupid FROM division_master WHERE divisionid=:divisionid";
@@ -176,12 +160,10 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String COMMITTEEMEMBERREPLIST="SELECT cmr.memberrepid,cmr.repid, cr.repcode, cr.repname FROM committee_rep cr, committee_member_rep cmr WHERE cmr.repid=cr.repid AND cmr.committeemainid=:committeemainid"; 
 	private static final String COMMITTREPLIST="SELECT repid, repcode , repname FROM committee_rep"; 
 	private static final String EMPLOYEELISTWITHOUTMEMBERS="SELECT a.empid,a.empname,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.empid NOT IN (SELECT empid FROM committee_member WHERE labcode=(SELECT labcode FROM lab_master WHERE labcode=:labcode) AND committeemainid=:committeemainid AND isactive=1) AND labcode=:labcode ORDER BY a.srno=0,a.srno;";
-	private static final String COMMITTEEMEMBERUPDATE="UPDATE committee_member SET labcode=:labcode,empid=:empid,modifiedby=:modifiedby,modifieddate=:modifieddate WHERE committeememberid=:committeememberid";
 	private static final String COMMITTEMAINDATA ="SELECT cm.committeemainid, cm.committeeid,cm.projectid, cm.divisionid,cm.initiationid, cm.validfrom, cm.validto, cm.isactive,c.committeeshortname,cm.status, c.labcode,cm.referenceno,cm.formationdate,cm.CARSInitiationId FROM committee_main cm, committee c WHERE  cm.committeeid=c.committeeid AND committeemainid=:committeemainid ";
 	private static final  String INITIATIONCOMMITTEEDELETE= "DELETE FROM committee_initiation WHERE CommitteeInitiationId=:committeeinitiationid";
 	private static final String INITIATIONDETAILS ="SELECT InitiationId,ProjectShortName,ProjectTitle FROM pfms_initiation WHERE InitiationId=:initiationid";
 	private static final String INITIATIONCOMMITTEEDESCRIPTIONTOR ="SELECT CommitteeInitiationId,description , termsofreference, committeeid , InitiationId FROM committee_initiation WHERE committeeid=:committeeid AND InitiationId=:initiationid";
-	private static final String  INITIATIONCOMMITTEEDESCRIPTIONTOREDIT ="UPDATE committee_initiation SET description=:description  , termsofreference = :termsofreference ,modifiedby= :modifiedby ,modifieddate=:modifieddate WHERE CommitteeInitiationId=:committeeinitiationid";
 	private final static String COMMITTEEINITIATIONUPDATE="UPDATE committee_initiation SET autoschedule='Y' WHERE initiationid=:initiationid AND committeeid=:committeeid";
 	private static final String INITIATIONSCHEDULELISTALL = "SELECT cs.scheduleid, cs.committeeid,cs.committeemainid,cs.scheduledate,cs.schedulestarttime,cs.projectid , c.committeeshortname FROM committee_schedule cs,committee c WHERE cs.committeeid=c.committeeid AND cs.projectid=0 AND cs.divisionid=0 AND cs.initiationid=:initiationid AND cs.isactive=1 ";
 	private static final String INITIATIONCOMMITTEESCHEDULELIST = "SELECT cs.scheduleid, cs.committeeid,cs.committeemainid,cs.scheduledate,cs.schedulestarttime,cs.projectid , c.committeeshortname FROM committee_schedule cs,committee c WHERE cs.committeeid=c.committeeid AND cs.initiationid=:initiationid AND cs.CommitteeId=:committeeid AND cs.isactive=1 ";
@@ -190,6 +172,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String PROPOSEDCOMMITTEEMAINID ="SELECT b.committeemainid,'mainid' FROM committee_main a , committee_main b WHERE a.committeeid=b.committeeid AND a.projectid=b.projectid AND a.divisionid=b.divisionid AND a.initiationid= b.initiationid AND b.status='P' AND b.isactive=0 AND a.committeemainid=:committeemainid";
 	private static final String GETPROPOSEDCOMMITTEEMAINID="SELECT committeemainid,'mainid' FROM committee_main WHERE STATUS='P' AND committeeid=:committeeid AND projectid=:projectid AND divisionid=:divisionid AND initiationid=:initiationid";
 	private static final String COMMITTEEMAINAPPROVALDATA="SELECT ca.constitutionapprovalid, ca.committeemainid, ca.emplabid, ca.empid, ca.remarks, ca.constitutionstatus, ca.approvalauthority,cas.statusdetail,cas.constitutionstatusid FROM committee_constitution_approval ca,committee_constitution_approval_status cas WHERE ca.constitutionstatus=cas.status AND ca.committeemainid=:committeemainid";
+	private static final String COMMITTEEAPPROVAL="UPDATE committee_schedule SET scheduleflag=:flag,"
+	+ " modifiedby=:modifiedby, modifieddate=:modifieddate WHERE scheduleid=:scheduleid";
 	private static final String COMMITTEEAPPROVALUPDATE="UPDATE committee_constitution_approval SET ConstitutionStatus=:constitutionstatus , ActionBy=:actionby,ActionDate=:actiondate,Remarks=:remarks WHERE CommitteeMainId=:committeemainid"; //, EmpLabid=:emplabid, Empid=:empid
 	private static final String UPDATECOMMITTEEAPPROVALAUTHORITY="UPDATE committee_constitution_approval SET ApprovalAuthority=:approvalauthority WHERE CommitteeMainId=:committeemainid";
 	private static final String PROPOSEDCOMMITTELIST="SELECT cm.committeemainid,cm.committeeid, cm.projectid, cm.divisionid, cm.initiationid ,cm.status, cm.isactive ,c.committeeshortname,c.committeename FROM committee_main cm, committee c  ,committee_constitution_approval cca WHERE cm.status='P' AND cm.committeeid=c.committeeid AND cca.committeemainid=cm.committeemainid AND cca.ConstitutionStatus NOT IN ('0') ";
@@ -204,7 +188,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String COMMITTEEMAINAPPROVALDODATA ="SELECT e1.empid,e1.empname,ed.designation,'Group Head' FROM employee e,employee e1,employee_desig ed, committee_constitution_approval cca,division_master dm ,division_group dg WHERE cca.empid=e.empid AND e.divisionid=dm.divisionid AND dm.groupid=dg.groupid AND dg.groupheadid=e1.empid AND e1.desigid=ed.desigid AND cca.committeemainid=:committeemainid";
 	private static final String COMMITTEEMINUTESDELETE ="DELETE FROM committee_schedules_minutes_details WHERE scheduleminutesid=:scheduleminutesid";
 	private static final String COMMITTEECONSTATUSDETAILS ="SELECT statusdetail,status FROM committee_constitution_approval_status WHERE status=:status";
-	private static final String COMMITTEESCHEDULEDELETE ="UPDATE committee_schedule SET modifiedby=:modifiedby, modifieddate=:modifieddate, isactive=0 WHERE scheduleid=:scheduleid";
 	private static final String COMMITTEESCHEDULEAGENDADELETE ="UPDATE committee_schedules_agenda SET isactive=0, modifiedby=:modifiedby, modifieddate=:modifieddate WHERE scheduleid=:scheduleid";
 	private static final String COMMITTEESCHEDULEINVITATIONDELETE ="DELETE FROM committee_schedules_invitation WHERE committeescheduleid=:scheduleid ";
 	private static final String SCHEDULECOMMITTEEEMPCHECK ="SELECT cm.committeemainid,cme.empid FROM committee_schedule cs,committee_main cm,committee_member cme WHERE cs.committeeid=cm.committeeid AND cs.projectid=cm.projectid 	AND cs.divisionid=cm.divisionid AND cs.initiationid=cm.initiationid AND cm.isactive=1 AND cm.committeemainid=cme.committeemainid 	AND cme.labcode IN (SELECT labcode FROM lab_master) AND cme.membertype IN ('CC','CS','PS','CH') AND cme.isactive=1 AND cs.scheduleid=:scheduleid AND cme.empid=:empid";
@@ -282,26 +265,32 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		}
 		
 	}
-	
+
 	@Override
 	public Long CommitteeEditSubmit(Committee committeemodel) throws Exception
-	{
-		Query query=manager.createNativeQuery(COMMITTEEEDITSUBMIT);
-		query.setParameter("committeeshortname",committeemodel.getCommitteeShortName() );
-		query.setParameter("committeename", committeemodel.getCommitteeName());
-		query.setParameter("committeetype", committeemodel.getCommitteeType());
-		query.setParameter("projectapplicable", committeemodel.getProjectApplicable());
-		query.setParameter("modifiedby", committeemodel.getModifiedBy());
-		query.setParameter("modifieddate", committeemodel.getModifiedDate());
-		query.setParameter("committeeid", committeemodel.getCommitteeId());
-		query.setParameter("periodicduration", committeemodel.getPeriodicDuration());  
-		query.setParameter("technontech", committeemodel.getTechNonTech());
-		query.setParameter("guidelines", committeemodel.getGuidelines());
-		query.setParameter("periodicnon", committeemodel.getPeriodicNon() );
-		query.setParameter("description", committeemodel.getDescription());
-		query.setParameter("termsofreference", committeemodel.getTermsOfReference());
-		query.setParameter("isglobal", committeemodel.getIsGlobal());
-		return (long)query.executeUpdate();		
+	{	
+		Committee ExistingCommittee = manager.find(Committee.class, committeemodel.getCommitteeId());
+		if(ExistingCommittee != null) {
+			ExistingCommittee.setCommitteeShortName(committeemodel.getCommitteeShortName());
+			ExistingCommittee.setCommitteeName(committeemodel.getCommitteeName());
+			ExistingCommittee.setCommitteeType(committeemodel.getCommitteeType());
+			ExistingCommittee.setProjectApplicable(committeemodel.getProjectApplicable());
+			ExistingCommittee.setModifiedBy(committeemodel.getModifiedBy());
+			ExistingCommittee.setModifiedDate(committeemodel.getModifiedDate());
+			ExistingCommittee.setPeriodicDuration(committeemodel.getPeriodicDuration());
+			ExistingCommittee.setTechNonTech(committeemodel.getTechNonTech());
+			ExistingCommittee.setGuidelines(committeemodel.getGuidelines());
+			ExistingCommittee.setPeriodicNon(committeemodel.getPeriodicNon());
+			ExistingCommittee.setDescription(committeemodel.getDescription());
+			ExistingCommittee.setTermsOfReference(committeemodel.getTermsOfReference());
+			ExistingCommittee.setIsGlobal(committeemodel.getIsGlobal());
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
+		
+		
 	}
 	
 
@@ -346,16 +335,23 @@ public class CommitteeDaoImpl  implements CommitteeDao
 
 	@Override
 	public Long UpdateCommitteemainValidto(CommitteeMain committeemain) throws Exception {
+		
+		CommitteeMain ExisitingCommitteeMain=manager.find(CommitteeMain.class, committeemain.getCommitteeMainId());
+		if(ExisitingCommitteeMain != null)
+		{
+			ExisitingCommitteeMain.setIsActive(0);
+			ExisitingCommitteeMain.setStatus("E");
+			ExisitingCommitteeMain.setValidTo(committeemain.getValidTo());
+			ExisitingCommitteeMain.setModifiedBy(committeemain.getModifiedBy());
+			ExisitingCommitteeMain.setModifiedDate(committeemain.getModifiedDate());
+			return 1L;
 
-		Query query=manager.createNativeQuery(UPDATECOMMITTEEVALIDTO);
-		query.setParameter("validto", committeemain.getValidTo());
-		query.setParameter("lastcommitteeid", committeemain.getCommitteeMainId());
-		query.setParameter("modifiedby", committeemain.getModifiedBy());
-		query.setParameter("modifieddate", committeemain.getModifiedDate());
-
-		int count=query.executeUpdate();
-
-		return (long)count ;
+		}
+		else {
+			return 0L;
+		}
+		
+		
 	}
 
 
@@ -380,15 +376,22 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return CommitteeNonProjectList;
 	}
 
-	
+
+
 	@Override
 	public int CommitteeMemberDelete(CommitteeMember committeemember) throws Exception
-	{
-		Query query=manager.createNativeQuery(COMMITTEEMEMBERDELETE);
-		query.setParameter("modifiedby", committeemember.getModifiedBy());
-		query.setParameter("modifieddate",committeemember.getModifiedDate());
-		query.setParameter("committeememberid",committeemember.getCommitteeMemberId());
-		return query.executeUpdate();
+	{	
+		CommitteeMember ExistingCommitteeMember = manager.find(CommitteeMember.class, committeemember.getCommitteeMemberId());
+		if(ExistingCommitteeMember != null) {
+			ExistingCommitteeMember.setIsActive(0);
+			ExistingCommitteeMember.setModifiedBy(committeemember.getModifiedBy());
+			ExistingCommitteeMember.setModifiedDate(committeemember.getModifiedDate());
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
 	}
 	
 	
@@ -518,20 +521,23 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 
 	
-
+	
 	@Override
 	public Long CommitteeScheduleUpdate(CommitteeSchedule committeeschedule) throws Exception {
-
-		Query query=manager.createNativeQuery(COMMITTEESCHEDULEUPDATE);
-		query.setParameter("scheduledate", committeeschedule.getScheduleDate());
-		query.setParameter("schedulestarttime", committeeschedule.getScheduleStartTime());
-		query.setParameter("modifiedby", committeeschedule.getModifiedBy());
-		query.setParameter("modifieddate", committeeschedule.getModifiedDate());
-		query.setParameter("scheduleid", committeeschedule.getScheduleId());
-		query.setParameter("meetingid", committeeschedule.getMeetingId());
-		long count=query.executeUpdate();
-
-		return count;
+		
+		CommitteeSchedule ExistingCommitteeSchedule=manager.find(CommitteeSchedule.class, committeeschedule.getScheduleId());
+		if(ExistingCommitteeSchedule != null) {
+			ExistingCommitteeSchedule.setScheduleDate(committeeschedule.getScheduleDate());
+			ExistingCommitteeSchedule.setScheduleStartTime(committeeschedule.getScheduleStartTime());
+			ExistingCommitteeSchedule.setModifiedBy(committeeschedule.getModifiedBy());
+			ExistingCommitteeSchedule.setModifiedDate(committeeschedule.getModifiedDate());
+			ExistingCommitteeSchedule.setMeetingId(committeeschedule.getMeetingId());
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
+		
 	}
 
 
@@ -577,30 +583,32 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	}
 
 
+
 	@Override
 	public Long CommitteeMinutesUpdate(CommitteeScheduleMinutesDetails committeescheduleminutesdetails)	throws Exception {
-
-		Query query=manager.createNativeQuery(COMMITTEEMINUTEUPDATE);
-		query.setParameter("scheduleid", committeescheduleminutesdetails.getScheduleId());
-		query.setParameter("schedulesubid", committeescheduleminutesdetails.getScheduleSubId());
-		query.setParameter("minutesid", committeescheduleminutesdetails.getMinutesId());
-		query.setParameter("details", committeescheduleminutesdetails.getDetails());
-		query.setParameter("darc", committeescheduleminutesdetails.getIDARCK());
-		query.setParameter("modifiedby", committeescheduleminutesdetails.getModifiedBy());
-		query.setParameter("modifieddate", committeescheduleminutesdetails.getModifiedDate());
-		query.setParameter("scheduleminutesid", committeescheduleminutesdetails.getScheduleMinutesId());
-		query.setParameter("remarks", committeescheduleminutesdetails.getRemarks());
 		
-		// update query to update action_main based on detailsId
-		String s="UPDATE action_main SET actionItem = :actionItem WHERE ScheduleMinutesId =:ScheduleMinutesId";
-		Query query1= manager.createNativeQuery(s);
-		query1.setParameter("actionItem", committeescheduleminutesdetails.getDetails());
-		query1.setParameter("ScheduleMinutesId", committeescheduleminutesdetails.getScheduleMinutesId());
-		query1.executeUpdate();
-		
-		int count=query.executeUpdate();
-		
-		return (long)count;
+		CommitteeScheduleMinutesDetails ExistingCommitteeScheduleMinutesDetails=manager.find(CommitteeScheduleMinutesDetails.class, committeescheduleminutesdetails.getScheduleMinutesId());
+		if(ExistingCommitteeScheduleMinutesDetails != null) {
+			ExistingCommitteeScheduleMinutesDetails.setScheduleId(committeescheduleminutesdetails.getScheduleId());
+			ExistingCommitteeScheduleMinutesDetails.setScheduleSubId(committeescheduleminutesdetails.getScheduleSubId());
+			ExistingCommitteeScheduleMinutesDetails.setMinutesId(committeescheduleminutesdetails.getMinutesId());
+			ExistingCommitteeScheduleMinutesDetails.setDetails(committeescheduleminutesdetails.getDetails());
+			ExistingCommitteeScheduleMinutesDetails.setIDARCK(committeescheduleminutesdetails.getIDARCK());
+			ExistingCommitteeScheduleMinutesDetails.setModifiedBy(committeescheduleminutesdetails.getModifiedBy());
+			ExistingCommitteeScheduleMinutesDetails.setModifiedDate(committeescheduleminutesdetails.getModifiedDate());
+			ExistingCommitteeScheduleMinutesDetails.setRemarks(committeescheduleminutesdetails.getRemarks());
+			// update query to update action_main based on detailsId
+			String s="UPDATE action_main SET actionItem = :actionItem WHERE ScheduleMinutesId =:ScheduleMinutesId";
+			Query query1= manager.createNativeQuery(s);
+			query1.setParameter("actionItem", committeescheduleminutesdetails.getDetails());
+			query1.setParameter("ScheduleMinutesId", committeescheduleminutesdetails.getScheduleMinutesId());
+			query1.executeUpdate();
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
+	
 	}
 
 	@Override
@@ -611,34 +619,42 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return  (List<Object[]>)query.getResultList();
 	}
 
-	@Override
-	public long	CommitteeScheduleAgendaUpdate(CommitteeScheduleAgenda scheduleagenda) throws Exception   
-	{
-		Query query=manager.createNativeQuery(COMMITTEESCHEDULEAGENDAUPDATE);
-		query.setParameter("scheduleagendaid", scheduleagenda.getScheduleAgendaId());
-		query.setParameter("agendaitem", scheduleagenda.getAgendaItem());
-		query.setParameter("projectid", scheduleagenda.getProjectId());
-		query.setParameter("remarks", scheduleagenda.getRemarks());
-		query.setParameter("modifiedby", scheduleagenda.getModifiedBy());
-		query.setParameter("modifieddate", scheduleagenda.getModifiedDate());
-		query.setParameter("PresentorLabCode", scheduleagenda.getPresentorLabCode());
-		query.setParameter("PresenterId", scheduleagenda.getPresenterId());
-		query.setParameter("duration", scheduleagenda.getDuration());
-		
-		return  query.executeUpdate();
-	}
-
 	
 
 	@Override
+	public long	CommitteeScheduleAgendaUpdate(CommitteeScheduleAgenda scheduleagenda) throws Exception   
+	{	
+		CommitteeScheduleAgenda ExistingCommitteeScheduleAgenda = manager.find(CommitteeScheduleAgenda.class, scheduleagenda.getScheduleAgendaId());
+		if(ExistingCommitteeScheduleAgenda != null) {
+			ExistingCommitteeScheduleAgenda.setAgendaItem(scheduleagenda.getAgendaItem());
+			ExistingCommitteeScheduleAgenda.setProjectId(scheduleagenda.getProjectId());
+			ExistingCommitteeScheduleAgenda.setRemarks(scheduleagenda.getRemarks());
+			ExistingCommitteeScheduleAgenda.setModifiedBy(scheduleagenda.getModifiedBy());
+			ExistingCommitteeScheduleAgenda.setModifiedDate(scheduleagenda.getModifiedDate());
+			ExistingCommitteeScheduleAgenda.setPresentorLabCode(scheduleagenda.getPresentorLabCode());
+			ExistingCommitteeScheduleAgenda.setPresenterId(scheduleagenda.getPresenterId());
+			ExistingCommitteeScheduleAgenda.setDuration(scheduleagenda.getDuration());
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
+		
+	}
+
+	@Override
 	public int CommitteeAgendaPriorityUpdate(String agendaid,String agendapriority) throws Exception
-	{
-			Query query =manager.createNativeQuery(COMMITTEEAGENDAPRIORITYUPDATE);
-			query.setParameter("agendapriority", agendapriority);
-			query.setParameter("agendaid", agendaid);
-			int count=(int)query.executeUpdate();
+	{		
+			CommitteeScheduleAgenda ExistingCommitteeScheduleAgenda = manager.find(CommitteeScheduleAgenda.class, agendaid);
+			if(ExistingCommitteeScheduleAgenda != null) {
+				ExistingCommitteeScheduleAgenda.setAgendaPriority(Integer.parseInt(agendapriority));
+				return 1;
+				
+			}
+			else {
+				return 0;
+			}
 			
-			return count;
 	}
 
 	@Override
@@ -655,12 +671,19 @@ public class CommitteeDaoImpl  implements CommitteeDao
 
 	@Override
 	public int CommitteeAgendaDelete(String committeescheduleagendaid,String Modifiedby ,String ModifiedDate)throws Exception
-	{
-		Query query =manager.createNativeQuery(COMMITTEEAGENDADELETE);
-		query.setParameter("agendaid",committeescheduleagendaid);
-		query.setParameter("modifiedby",Modifiedby);
-		query.setParameter("modifieddate", ModifiedDate);
-		return query.executeUpdate();
+	{	
+		CommitteeScheduleAgenda ExistingCommitteeScheduleAgenda = manager.find(CommitteeScheduleAgenda.class, committeescheduleagendaid);
+		if(ExistingCommitteeScheduleAgenda != null) {
+			ExistingCommitteeScheduleAgenda.setModifiedBy(Modifiedby);
+			ExistingCommitteeScheduleAgenda.setModifiedDate(ModifiedDate);
+			ExistingCommitteeScheduleAgenda.setIsActive(0);
+			ExistingCommitteeScheduleAgenda.setAgendaPriority(0);
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
 	}
 	
 	private static final String AGENDADOCUNLINK = "UPDATE committee_schedule_agenda_docs  SET isactive=0, modifiedby=:modifiedby , modifieddate=:modifieddate WHERE agendaid=:agendaid ";
@@ -745,6 +768,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 
 
+
 	@Override
 	public int MeetingAgendaApproval(CommitteeMeetingApproval approval, CommitteeSchedule schedule,List<PfmsNotification> notifications)
 			throws Exception {
@@ -752,14 +776,18 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		for(int i=0;i<notifications.size();i++) {
 			manager.persist(notifications.get(i));
 		}
-		Query query=manager.createNativeQuery(COMMITTEEAPPROVAL);
-		query.setParameter("scheduleid", schedule.getScheduleId());
-		query.setParameter("flag", schedule.getScheduleFlag());
-		query.setParameter("modifiedby", schedule.getModifiedBy());
-		query.setParameter("modifieddate", schedule.getModifiedDate());
-		int count=query.executeUpdate();
-		manager.flush();
-		return count;
+		
+		CommitteeSchedule ExistingCommitteeSchedule =manager.find(CommitteeSchedule.class, schedule.getScheduleId());
+		if(ExistingCommitteeSchedule != null) {
+			ExistingCommitteeSchedule.setScheduleFlag(schedule.getScheduleFlag());
+			ExistingCommitteeSchedule.setModifiedBy(schedule.getModifiedBy());
+			ExistingCommitteeSchedule.setModifiedDate(schedule.getModifiedDate());
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
 	}
 
 	@Override
@@ -782,16 +810,18 @@ public class CommitteeDaoImpl  implements CommitteeDao
 
 		manager.persist(approval);
 		manager.persist(notification);
-
-		Query query=manager.createNativeQuery(COMMITTEEAPPROVAL);
-		query.setParameter("scheduleid", schedule.getScheduleId());
-		query.setParameter("flag", schedule.getScheduleFlag());
-		query.setParameter("modifiedby", schedule.getModifiedBy());
-		query.setParameter("modifieddate", schedule.getModifiedDate());
-		int count=query.executeUpdate();
-		manager.flush();
 		
-		return count;
+		CommitteeSchedule ExistingCommitteeSchedule =manager.find(CommitteeSchedule.class, schedule.getScheduleId());
+		if(ExistingCommitteeSchedule != null) {
+			ExistingCommitteeSchedule.setScheduleFlag(schedule.getScheduleFlag());
+			ExistingCommitteeSchedule.setModifiedBy(schedule.getModifiedBy());
+			ExistingCommitteeSchedule.setModifiedDate(schedule.getModifiedDate());
+			return 1;
+		}
+		else {
+			return 0;
+		}
+
 	}
 
 	
@@ -853,15 +883,19 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	}
 	
 	
-	
 	@Override
 	public int CommitteeInvitationSerialNoUpdate(String committeeinvitationid,long serialno) throws Exception
 	{
-		Query query=manager.createNativeQuery(COMMITTEEINVITATIONSERIALNOUPDATE);
-		query.setParameter("committeeinvitationid", committeeinvitationid);
-		query.setParameter("serialno", serialno);
 		
-		return query.executeUpdate();
+		CommitteeInvitation ExistingCommitteeInvitation = manager.find(CommitteeInvitation.class, committeeinvitationid);
+		if(ExistingCommitteeInvitation != null) {
+			ExistingCommitteeInvitation.setSerialNo(serialno);
+			return 1;
+		}
+		else {
+			return 0;
+		}
+	
 	}
 	
 	
@@ -886,6 +920,11 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		List<String> AttendanceList=(List<String>)query.getResultList();		
 		return AttendanceList;
 	}
+	private static final String ATTENDANCEUPDATEN="UPDATE committee_schedules_invitation SET Attendance=:attendance "
+			+ "WHERE CommitteeInvitationId=:invitationid";
+	private static final String ATTENDANCEUPDATEP="UPDATE committee_schedules_invitation SET Attendance=:attendance "
+			+ "WHERE CommitteeInvitationId=:invitationid";
+
 
 	@Override
 	public Long CommitteeAttendanceUpdate(String InvitationId, String Value) throws Exception 
@@ -894,16 +933,26 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		int count=0;
 		
 		if(Value.equalsIgnoreCase("P")) {
-			Query query=manager.createNativeQuery(ATTENDANCEUPDATEN);
-			query.setParameter("invitationid", InvitationId);
-			query.setParameter("attendance", "N");
-			count=query.executeUpdate();
+			
+			CommitteeInvitation ExistingCommitteeInvitation = manager.find(CommitteeInvitation.class, InvitationId);
+			if(ExistingCommitteeInvitation != null) {
+				ExistingCommitteeInvitation.setAttendance("N");
+				count=1;
+			}
+			else {
+				count=0;
+			}
+			
 		}
 		if(Value.equalsIgnoreCase("N")) {
-			Query query=manager.createNativeQuery(ATTENDANCEUPDATEP);
-			query.setParameter("invitationid", InvitationId);
-			query.setParameter("attendance", "P");
-			count=query.executeUpdate();
+			CommitteeInvitation ExistingCommitteeInvitation = manager.find(CommitteeInvitation.class, InvitationId);
+			if(ExistingCommitteeInvitation != null) {
+				ExistingCommitteeInvitation.setAttendance("P");
+				count=1;
+			}
+			else {
+				count=0;
+			}
 		}
 		
 		return (long) count;
@@ -982,17 +1031,21 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		
 	}
 
+
 	private static final String LASTPMRCDATEUPDATE ="UPDATE pfms_project_data SET lastpmrcdate =:lastpmrcdate WHERE projectid=:projectid ;";
 	private static final String LASTEBDATEUPDATE ="UPDATE pfms_project_data SET lastebdate =:lastebdate WHERE projectid=:projectid ;";
 	@Override
 	public String UpdateOtp(CommitteeSchedule schedule) throws Exception {
-
-		Query query=manager.createNativeQuery(UPDATEOTP);
-		query.setParameter("otp", schedule.getKickOffOtp());
-		query.setParameter("committeescheduleid", schedule.getScheduleId());
-		query.setParameter("scheduleflag", schedule.getScheduleFlag());
-		int ret=query.executeUpdate();
 		
+		int ret=0;
+		Query query;
+		
+		CommitteeSchedule ExistingCommitteeSchedule = manager.find(CommitteeSchedule.class, schedule.getScheduleId());
+		if(ExistingCommitteeSchedule != null) {
+			ExistingCommitteeSchedule.setKickOffOtp(schedule.getKickOffOtp());
+			ExistingCommitteeSchedule.setScheduleFlag(schedule.getScheduleFlag());
+			ret=1;
+		}
 
 		if(schedule.getScheduleFlag().equalsIgnoreCase("MKV")) 
 		{
@@ -1059,13 +1112,19 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return (List<Object[]>)query.getResultList();
 	}
 	
+
 	@Override
 	public  int UpdateComitteeMainid(String committeemainid, String scheduleid ) throws Exception
 	{
-		Query query=manager.createNativeQuery(UPDATECOMITTEEMAINID);
-		query.setParameter("committeemainid", committeemainid);
-		query.setParameter("scheduleid", scheduleid);		
-		return query.executeUpdate();
+		CommitteeSchedule ExistingCommitteeSchedule = manager.find(CommitteeSchedule.class, scheduleid);
+		if(ExistingCommitteeSchedule != null) {
+			ExistingCommitteeSchedule.setCommitteeMainId(Long.parseLong(committeemainid));
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
 	}
 	
 	@Override
@@ -1268,19 +1327,26 @@ public class CommitteeDaoImpl  implements CommitteeDao
 			return (Long) query.getSingleResult();
 	}
 
-	
+	private static final String UPDATEMEETINGVENUE="UPDATE committee_schedule SET  meetingvenue=:meetingvenue ,"
+			+ "confidential=:confidential, Reference=:reference, PMRCDecisions=:pmrcdecisions WHERE scheduleid=:scheduleid";
+
 	@Override
 	public int UpdateMeetingVenue(CommitteeScheduleDto csdto) throws Exception
 	{
-		int ret=0;
-		Query query=manager.createNativeQuery(UPDATEMEETINGVENUE);
-		query.setParameter("meetingvenue", csdto.getMeetingVenue());
-		query.setParameter("confidential", csdto.getConfidential());
-		query.setParameter("scheduleid", csdto.getScheduleId());
-		query.setParameter("reference", csdto.getReferrence());
-		query.setParameter("pmrcdecisions", csdto.getPMRCDecisions());
-		ret=query.executeUpdate();
-		return ret;
+		
+		CommitteeSchedule ExistingCommitteeSchedule = manager.find(CommitteeSchedule.class, csdto.getScheduleId());
+		if(ExistingCommitteeSchedule != null) {
+			ExistingCommitteeSchedule.setMeetingVenue(csdto.getMeetingVenue());
+			ExistingCommitteeSchedule.setConfidential(csdto.getConfidential());
+			ExistingCommitteeSchedule.setReference(csdto.getReferrence());
+			ExistingCommitteeSchedule.setPMRCDecisions(csdto.getPMRCDecisions());
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
+		
 	}
 
 
@@ -1333,15 +1399,18 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public int MeetingMinutesApproval(CommitteeMeetingApproval approval, CommitteeSchedule schedule)
 			throws Exception {
 		manager.persist(approval);
+		
+		CommitteeSchedule ExistingCommitteeSchedule =manager.find(CommitteeSchedule.class, schedule.getScheduleId());
+		if(ExistingCommitteeSchedule != null) {
+			ExistingCommitteeSchedule.setScheduleFlag(schedule.getScheduleFlag());
+			ExistingCommitteeSchedule.setModifiedBy(schedule.getModifiedBy());
+			ExistingCommitteeSchedule.setModifiedDate(schedule.getModifiedDate());
+			return 1;
+		}
+		else {
+			return 0;
+		}
 
-		Query query=manager.createNativeQuery(COMMITTEEAPPROVAL);
-		query.setParameter("scheduleid", schedule.getScheduleId());
-		query.setParameter("flag", schedule.getScheduleFlag());
-		query.setParameter("modifiedby", schedule.getModifiedBy());
-		query.setParameter("modifieddate", schedule.getModifiedDate());
-		int count=query.executeUpdate();
-		manager.flush();
-		return count;
 	}
 
 	@Override
@@ -1368,16 +1437,18 @@ public class CommitteeDaoImpl  implements CommitteeDao
 
 		manager.persist(approval);
 		manager.persist(notification);
-
-		Query query=manager.createNativeQuery(COMMITTEEAPPROVAL);
-		query.setParameter("scheduleid", schedule.getScheduleId());
-		query.setParameter("flag", schedule.getScheduleFlag());
-		query.setParameter("modifiedby", schedule.getModifiedBy());
-		query.setParameter("modifieddate", schedule.getModifiedDate());
-		int count=query.executeUpdate();
-		manager.flush();
 		
-		return count;
+		CommitteeSchedule ExistingCommitteeSchedule =manager.find(CommitteeSchedule.class, schedule.getScheduleId());
+		if(ExistingCommitteeSchedule != null) {
+			ExistingCommitteeSchedule.setScheduleFlag(schedule.getScheduleFlag());
+			ExistingCommitteeSchedule.setModifiedBy(schedule.getModifiedBy());
+			ExistingCommitteeSchedule.setModifiedDate(schedule.getModifiedDate());
+			return 1;
+		}
+		else {
+			return 0;
+		}
+
 	}
 	
 	@Override
@@ -1717,32 +1788,44 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return DivisionCommitteeDescriptionTOR;
 	}
 	
+
 	@Override
 	public int ProjectCommitteeDescriptionTOREdit( CommitteeProject  committeeproject ) throws Exception
-	{		
-		Query query=manager.createNativeQuery(PROJECTCOMMITTEEDESCRIPTIONTOREDIT);
-		query.setParameter("description", committeeproject.getDescription());	
-		query.setParameter("termsofreference", committeeproject.getTermsOfReference());	
-		query.setParameter("modifiedby", committeeproject.getModifiedBy());	
-		query.setParameter("modifieddate", committeeproject.getModifiedDate());	
-		query.setParameter("committeeprojectid", committeeproject.getCommitteeProjectId() );	
-		int ProjectCommitteeFormationCheckList = query.executeUpdate();
-		return ProjectCommitteeFormationCheckList;
+	{	
+		CommitteeProject ExistingCommitteeProject = manager.find(CommitteeProject.class, committeeproject.getCommitteeProjectId());
+		if(ExistingCommitteeProject != null) {
+			System.err.println("working");
+			ExistingCommitteeProject.setDescription(committeeproject.getDescription());
+			ExistingCommitteeProject.setTermsOfReference(committeeproject.getTermsOfReference());
+			ExistingCommitteeProject.setModifiedBy(committeeproject.getModifiedBy());
+			ExistingCommitteeProject.setModifiedDate(committeeproject.getModifiedDate());
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
+		
 	}
 	
-	
+
 	@Override
 	public int DivisionCommitteeDescriptionTOREdit(CommitteeDivision committeedivision) throws Exception
-	{		
-		Query query=manager.createNativeQuery(DIVISIONCOMMITTEEDESCRIPTIONTOREDIT);
-		query.setParameter("description", committeedivision.getDescription());	
-		query.setParameter("termsofreference", committeedivision.getTermsOfReference());	
-		query.setParameter("modifiedby", committeedivision.getModifiedBy());	
-		query.setParameter("modifieddate", committeedivision.getModifiedDate());	
-		query.setParameter("committeedivisionid", committeedivision.getCommitteeDivisionId() );	
-		int ProjectCommitteeFormationCheckList = query.executeUpdate();
-		return ProjectCommitteeFormationCheckList;
-	}
+	{	
+		CommitteeDivision ExistingCommitteeDivision= manager.find(CommitteeDivision.class, committeedivision.getCommitteeDivisionId());
+		if(ExistingCommitteeDivision != null) {
+			ExistingCommitteeDivision.setDescription(committeedivision.getDescription());
+			ExistingCommitteeDivision.setTermsOfReference(committeedivision.getTermsOfReference());
+			ExistingCommitteeDivision.setModifiedBy(committeedivision.getModifiedBy());
+			ExistingCommitteeDivision.setModifiedDate(committeedivision.getModifiedDate());
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
+		
+	}	
 	
 	
 
@@ -2057,15 +2140,22 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return EmployeeList;
 	}
 	
+
 	@Override
 	public int CommitteeMemberUpdate(CommitteeMember model) throws Exception {
-		Query query=manager.createNativeQuery(COMMITTEEMEMBERUPDATE);
-		query.setParameter("committeememberid", model.getCommitteeMemberId());
-		query.setParameter("labcode", model.getLabCode());
-		query.setParameter("empid", model.getEmpId());
-		query.setParameter("modifiedby", model.getModifiedBy());
-		query.setParameter("modifieddate", model.getModifiedDate());
-		return query.executeUpdate();
+		CommitteeMember ExistingCommitteeMember = manager.find(CommitteeMember.class, model.getCommitteeMemberId());
+		if(ExistingCommitteeMember != null) {
+			ExistingCommitteeMember.setLabCode(model.getLabCode());
+			ExistingCommitteeMember.setEmpId(model.getEmpId());
+			ExistingCommitteeMember.setModifiedBy(model.getModifiedBy());
+			ExistingCommitteeMember.setModifiedDate(model.getModifiedDate());
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
+		
 	}
 	
 	
@@ -2121,18 +2211,21 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return InitiationCommitteeDescriptionTOR;
 	}
 	
-	
 	@Override
 	public int InitiationCommitteeDescriptionTOREdit(CommitteeInitiation committeedivision) throws Exception
 	{		
-		Query query=manager.createNativeQuery(INITIATIONCOMMITTEEDESCRIPTIONTOREDIT);
-		query.setParameter("description", committeedivision.getDescription());	
-		query.setParameter("termsofreference", committeedivision.getTermsOfReference());	
-		query.setParameter("modifiedby", committeedivision.getModifiedBy());	
-		query.setParameter("modifieddate", committeedivision.getModifiedDate());	
-		query.setParameter("committeeinitiationid", committeedivision.getCommitteeInitiationId() );	
-		int ProjectCommitteeFormationCheckList = query.executeUpdate();
-		return ProjectCommitteeFormationCheckList;
+		CommitteeInitiation ExistingCommitteeInitiation= manager.find(CommitteeInitiation.class, committeedivision.getCommitteeInitiationId());
+		if(ExistingCommitteeInitiation != null) {
+			ExistingCommitteeInitiation.setDescription(committeedivision.getDescription());
+			ExistingCommitteeInitiation.setTermsOfReference(committeedivision.getTermsOfReference());
+			ExistingCommitteeInitiation.setModifiedBy(committeedivision.getModifiedBy());
+			ExistingCommitteeInitiation.setModifiedDate(committeedivision.getModifiedDate());
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
 	}
 	
 	
@@ -2440,14 +2533,23 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return (Object[])query.getSingleResult();
 	}
 	
+	
+
 	@Override
 	public int  CommitteeScheduleDelete(CommitteeScheduleDto dto) throws Exception
 	{
-		Query query=manager.createNativeQuery(COMMITTEESCHEDULEDELETE);
-		query.setParameter("modifiedby",dto.getModifiedBy());
-		query.setParameter("modifieddate",dto.getModifiedDate());
-		query.setParameter("scheduleid",dto.getScheduleId());
-		return query.executeUpdate();
+		
+		CommitteeSchedule ExistingCommitteeSchedule = manager.find(CommitteeSchedule.class, dto.getScheduleId());
+		if(ExistingCommitteeSchedule != null) {
+			ExistingCommitteeSchedule.setModifiedBy(dto.getModifiedBy());
+			ExistingCommitteeSchedule.setModifiedDate(dto.getModifiedDate());
+			ExistingCommitteeSchedule.setIsActive(0);
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
 	}
 	
 	@Override
@@ -2688,19 +2790,26 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		}
 	}
 	
-	private static final String PREDEFAGENDAEDIT = "UPDATE committee_default_agenda SET agendaitem=:agendaitem , remarks = :remarks , duration = :duration, modifiedby=:modifiedby , modifieddate=:modifieddate WHERE DefaultAgendaId= :DefaultAgendaId ";
+	private static final String PREDEFAGENDAEDIT = "UPDATE committee_default_agenda SET agendaitem=:agendaitem ,"
+			+ " remarks = :remarks , duration = :duration, modifiedby=:modifiedby , modifieddate=:modifieddate "
+			+ "WHERE DefaultAgendaId= :DefaultAgendaId ";
 	
 	@Override
 	public int PreDefAgendaEdit(CommitteeDefaultAgenda agenda) throws Exception 
 	{
-		Query query=manager.createNativeQuery(PREDEFAGENDAEDIT);
-		query.setParameter("agendaitem", agenda.getAgendaItem());
-		query.setParameter("remarks", agenda.getRemarks());
-		query.setParameter("duration", agenda.getDuration());
-		query.setParameter("modifiedby", agenda.getModifiedBy());
-		query.setParameter("modifieddate", agenda.getModifiedDate());
-		query.setParameter("DefaultAgendaId", agenda.getDefaultAgendaId());
-		return query.executeUpdate();
+		CommitteeDefaultAgenda ExistingCommitteeDefaultAgenda=manager.find(CommitteeDefaultAgenda.class, agenda.getDefaultAgendaId());
+		if(ExistingCommitteeDefaultAgenda != null) {
+			ExistingCommitteeDefaultAgenda.setAgendaItem(agenda.getAgendaItem());
+			ExistingCommitteeDefaultAgenda.setRemarks(agenda.getRemarks());
+			ExistingCommitteeDefaultAgenda.setDuration(agenda.getDuration());
+			ExistingCommitteeDefaultAgenda.setModifiedBy(agenda.getModifiedBy());
+			ExistingCommitteeDefaultAgenda.setModifiedDate(agenda.getModifiedDate());
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
 	}
 
 	
@@ -2712,14 +2821,19 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return agenda.getDefaultAgendaId();
 	}
 	
-	private static final String PREDEFAGENDADELETE=  "UPDATE committee_default_agenda set isactive=0 WHERE DefaultAgendaId=:DefaultAgendaId ";
 	
 	@Override
 	public int PreDefAgendaDelete(String DefaultAgendaId) throws Exception 
-	{
-		Query query=manager.createNativeQuery(PREDEFAGENDADELETE);		
-		query.setParameter("DefaultAgendaId", DefaultAgendaId);
-		return query.executeUpdate();
+	{	
+		CommitteeDefaultAgenda ExistingCommitteeDefaultAgenda= manager.find(CommitteeDefaultAgenda.class, DefaultAgendaId);
+		if(ExistingCommitteeDefaultAgenda != null) {
+			ExistingCommitteeDefaultAgenda.setIsActive(0);
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
 	}
 	
 	private static final String COMMPROSCHEDULELIST = "SELECT COUNT(*)+1 FROM  committee_schedule cs ,committee_meeting_status ms WHERE cs.committeeid=:committeeid AND cs.projectid=:projectid AND cs.isactive=1 AND  ms.meetingstatus=cs.scheduleflag AND ms.meetingstatusid > 6 AND cs.scheduledate<:sdate ";
@@ -2761,14 +2875,19 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	}
 
 
-    private static final String UPDATEFROZEN="update committee_schedule set MinutesFrozen='Y' where scheduleid=:schduleid";
+    
 	@Override
 	public int updateMinutesFrozen(String schduleid) throws Exception {
-		Query query=manager.createNativeQuery(UPDATEFROZEN);
-		query.setParameter("schduleid", schduleid);
-		int ret=0;
-		ret=query.executeUpdate();
-		return ret;
+		
+		CommitteeSchedule ExistingCommitteeSchedule= manager.find(CommitteeSchedule.class, schduleid);
+		if(ExistingCommitteeSchedule != null) {
+			ExistingCommitteeSchedule.setMinutesFrozen("Y");
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
 	}
 
     private static final String FINANCELIST="FROM MinutesFinanceList WHERE CommiteeScheduleId=:scheduleid";
@@ -2899,14 +3018,20 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	@Override
 	public int MomFreezingUpdate(String committeescheduleid) throws Exception {
-		String COMTSCHEDULEUPDATE="UPDATE committee_schedule SET MinutesFrozen='N' WHERE scheduleid=:scheduleid";
+		
 		String FROZENFILEUPDATE="UPDATE committee_meeting_dpfm_frozen SET isactive=0 WHERE scheduleid=:scheduleid";
-		Query query1=manager.createNativeQuery(COMTSCHEDULEUPDATE);
-		query1.setParameter("scheduleid", committeescheduleid);
+		
+		int mf=0;
+		CommitteeSchedule ExistingCommitteeSchedule = manager.find(CommitteeSchedule.class, committeescheduleid);
+		if(ExistingCommitteeSchedule != null) {
+			ExistingCommitteeSchedule.setMinutesFrozen("N");
+			mf=1;
+		}
+		
 		Query query2=manager.createNativeQuery(FROZENFILEUPDATE);
 		query2.setParameter("scheduleid", committeescheduleid);
 		
-		int count=query1.executeUpdate()+query2.executeUpdate();
+		int count=mf+query2.executeUpdate();
 		return count;
 	}
 	private static final String MEETINGS="SELECT cs.scheduleid,cs.projectid,cs.InitiationId,c.CommitteeShortName,c.CommitteeName,cs.MeetingVenue,cs.ScheduleStartTime,pm.projectcode,pm.projectshortname FROM committee_schedule cs,committee c ,project_master pm WHERE  c.CommitteeId=cs.CommitteeId AND pm.projectid=cs.projectid AND  cs.ScheduleDate=:date AND cs.isactive='1'";
@@ -3020,13 +3145,19 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return (List<Object[]>)query.getResultList();
 	}
 	
-	private static final String MEMBERID="UPDATE committee_member SET SerialNo=:SerialNo WHERE CommitteeMemberId=:memberId";
 	@Override
 	public int MemberSerialNoUpdate(String memberId, String SerialNo) {
-		Query query = manager.createNativeQuery(MEMBERID);
-		query.setParameter("memberId", memberId);
-		query.setParameter("SerialNo", SerialNo);
-		return query.executeUpdate();
+		
+		CommitteeMember ExistingCommitteeMember = manager.find(CommitteeMember.class, memberId);
+		if(ExistingCommitteeMember != null) {
+			ExistingCommitteeMember.setSerialNo(Long.parseLong(SerialNo));
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+		
 	}
 	@Override
 	public long saveCommitteeLetter(CommitteeLetter committeeLetter) throws Exception {
@@ -3057,27 +3188,44 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		
 		return (Object[])query.getSingleResult();
 	}
-	private static final String UPDCOMLETTER="UPDATE committee_inivitationletter SET isactive='0' WHERE letterid=:letterId";
+	
 	@Override
 	public long UpdateCommitteLetter(String letterId) throws Exception {
-		Query query  = manager.createNativeQuery(UPDCOMLETTER);
-		query.setParameter("letterId", letterId);
-		query.executeUpdate();
-		return 1l;
+		
+		CommitteeLetter ExistingCommitteeLetter = manager.find(CommitteeLetter.class, letterId);
+		if(ExistingCommitteeLetter != null) {
+			ExistingCommitteeLetter.setIsActive(0);
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
+		
 	}
-	private static final String UpdateReformationDate="UPDATE committee_main SET ReferenceNo=:ReferenceNo,FormationDate=:FormationDate WHERE CommitteeMainId=:CommitteeMainId";
+
+	
 	@Override
 	public int ReformationDate(CommitteeMainDto cmdd) throws Exception {
-	
-		Query query=manager.createNativeQuery(UpdateReformationDate);
-		query.setParameter("CommitteeMainId", cmdd.getCommitteeMainId());
-
-		query.setParameter("ReferenceNo", cmdd.getReferenceNo());
-
+		int count=0;
+		try {
 		
-		query.setParameter("FormationDate", cmdd.getFormationDate());
-
-		return query.executeUpdate();
+		CommitteeMain ExistingCommitteeMain = manager.find(CommitteeMain.class, cmdd.getCommitteeMainId());
+		if(ExistingCommitteeMain != null) {
+			ExistingCommitteeMain.setReferenceNo(cmdd.getReferenceNo());
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			java.util.Date utilDate = sdf.parse(cmdd.getFormationDate());
+			java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+			ExistingCommitteeMain.setFormationDate(sqlDate);
+			count=1;
+					}
+		
+		}
+		catch(Exception e) {
+		    e.printStackTrace();
+		}
+		
+		return count;
 	}
 	
 	
@@ -3377,16 +3525,16 @@ private static final String ENOTEAPPROVELIST="SELECT MAX(a.EnoteId) AS EnoteId,M
 			}
 		
 		}
-		private static final String EMPROLEUPDATE = "UPDATE committee_schedules_invitation SET  EmpMeetingRole =:empMeetingRole WHERE committeeinvitationid=:committeeinvitationid";
+		
 		@Override
 		public void InvitationRoleoUpdate(String empMeetingRole, String committeeinvitationid) throws Exception {
-
-			Query query = manager.createNativeQuery(EMPROLEUPDATE);
 			
-			query.setParameter("empMeetingRole", empMeetingRole);
-			query.setParameter("committeeinvitationid", committeeinvitationid);
+			CommitteeInvitation ExistingCommitteeInvitation = manager.find(CommitteeInvitation.class, committeeinvitationid);
+			if(ExistingCommitteeInvitation != null) {
+				
+				ExistingCommitteeInvitation.setEmpMeetingRole(empMeetingRole);
+			}
 			
-			query.executeUpdate();
 		}
 }
 

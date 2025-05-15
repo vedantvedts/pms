@@ -25,6 +25,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
 
 import com.vts.pfms.committee.model.Committee;
+import com.vts.pfms.committee.model.CommitteeSchedule;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.milestone.model.MilestoneActivityLevelConfiguration;
 import com.vts.pfms.model.LabMaster;
@@ -39,6 +40,8 @@ import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
 import com.vts.pfms.print.model.TechImages;
 import com.vts.pfms.project.model.PfmsProjectData;
+
+import groovyjarjarantlr4.v4.parse.ANTLRParser.exceptionGroup_return;
 
 
 
@@ -527,36 +530,49 @@ public class PrintDaoImpl implements PrintDao {
     private static final String UPDATEFROZEN="update committee_schedule set BriefingPaperFrozen='Y',PresentationFrozen='Y',MinutesFrozen='Y' where scheduleid=:schduleid";
 	@Override
 	public int updateBriefingPaperFrozen(long schduleid) throws Exception {
-		Query query=manager.createNativeQuery(UPDATEFROZEN);
-		query.setParameter("schduleid", schduleid);
-		int ret=0;
-		ret=query.executeUpdate();
-		return ret;
+		
+		CommitteeSchedule ExistingCommitteeSchedule = manager.find(CommitteeSchedule.class, schduleid);
+		if(ExistingCommitteeSchedule != null) {
+			ExistingCommitteeSchedule.setBriefingPaperFrozen("Y");
+			ExistingCommitteeSchedule.setPresentationFrozen("Y");
+			ExistingCommitteeSchedule.setMinutesFrozen("Y");
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
 	}
 	
 	@Override
 	public int updateBriefingPaperFrozen(long schduleid,String BriefingPaperFrozen, String PresentationFrozen, String MinutesFrozen) throws Exception {
-		String BriefingPaperFrozenUPDATE="update committee_schedule set BriefingPaperFrozen='Y' where scheduleid=:schduleid";
-		String PresentationFrozenUPDATE="update committee_schedule set PresentationFrozen='Y' where scheduleid=:schduleid";
-		String MinutesFrozenUPDATE="update committee_schedule set MinutesFrozen='Y' where scheduleid=:schduleid";
+		
 		int count=0;
 		if(BriefingPaperFrozen.equalsIgnoreCase("Y")) {
-		
-			Query query = manager.createNativeQuery(BriefingPaperFrozenUPDATE);
-			query.setParameter("schduleid", schduleid);
-			count=count+query.executeUpdate();
+			CommitteeSchedule ExistingCommitteeSchedule = manager.find(CommitteeSchedule.class, schduleid);
+			if(ExistingCommitteeSchedule != null) {
+				ExistingCommitteeSchedule.setBriefingPaperFrozen("Y");
+				count=1;
+			}
+			
 		}
 		 if(PresentationFrozen.equalsIgnoreCase("Y")) {
-		
-			Query query = manager.createNativeQuery(PresentationFrozenUPDATE);
-			query.setParameter("schduleid", schduleid);
-			count=count+query.executeUpdate();
+			 
+			 CommitteeSchedule ExistingCommitteeSchedule = manager.find(CommitteeSchedule.class, schduleid);
+				if(ExistingCommitteeSchedule != null) {
+					ExistingCommitteeSchedule.setPresentationFrozen("Y");
+					count=1;
+				}
+	
 		}
 		 if(MinutesFrozen.equalsIgnoreCase("Y")) {
+			 
+			 CommitteeSchedule ExistingCommitteeSchedule = manager.find(CommitteeSchedule.class, schduleid);
+				if(ExistingCommitteeSchedule != null) {
+					ExistingCommitteeSchedule.setMinutesFrozen("Y");
+					count=1;
+				}
 			
-			Query query = manager.createNativeQuery(MinutesFrozenUPDATE);
-			query.setParameter("schduleid", schduleid);
-			count=count+query.executeUpdate();
 		}
 		return count;
 	}
@@ -608,18 +624,23 @@ public class PrintDaoImpl implements PrintDao {
 		return mod.getLevelConfigurationId();
 	}
 	
-	private static final String MILESTONELEVELUPDATE="UPDATE milestone_activity_level_configuration SET levelid=:levelid,modifiedby=:modifiedby, modifieddate=:modifieddate WHERE levelconfigurationid=:levelconfigurationid";
+	
 	
 	@Override 
 	public Long MilestoneLevelUpdate(MilestoneActivityLevelConfiguration mod) throws Exception{
 
-		Query query=manager.createNativeQuery(MILESTONELEVELUPDATE);
-		query.setParameter("levelid",  mod.getLevelid() );
-		query.setParameter("modifiedby", mod.getModifiedBy());
-		query.setParameter("modifieddate", mod.getModifiedDate());
-		query.setParameter("levelconfigurationid", mod.getLevelConfigurationId());
+		MilestoneActivityLevelConfiguration ExistingMilestoneActivityLevelConfiguration= manager.find(MilestoneActivityLevelConfiguration.class, mod.getLevelConfigurationId());
+		if(ExistingMilestoneActivityLevelConfiguration != null)
+		{
+			ExistingMilestoneActivityLevelConfiguration.setLevelid(mod.getLevelid());
+			ExistingMilestoneActivityLevelConfiguration.setModifiedBy(mod.getModifiedBy());
+			ExistingMilestoneActivityLevelConfiguration.setModifiedDate(mod.getModifiedDate());
+			return 1L;
+		}
+		else {
+			 return 0L;
+		}
 		
-		return (long) query.executeUpdate();
 	}
 	
 	@Override 
@@ -727,23 +748,28 @@ public class PrintDaoImpl implements PrintDao {
 		return count;
 	}
 	
-	  private static final String UPDATEINITIATIONSAC="UPDATE initiation_sanction SET RdNo=:rdno ,AuthorityId=:authorityid, FromDeptId=:fromdeptid , FromDate=:fromdate ,  ToDeptId=:todeptid ,StartDate=:startdate , EstimateFund=:estimatefund , UAC=:uac ,RdDate=:rddate , VideNo=:videno ,ModifiedBy=:modifiedby , ModifiedDate=:modifieddate  WHERE InitiationSanctionId=:initiationsanctionid";
+	 
 		public Long EditInitiationSanction(InitiationSanction initiationsac) throws Exception{
-			Query query=manager.createNativeQuery(UPDATEINITIATIONSAC);
-			query.setParameter("rdno",initiationsac.getRdNo() );
-			query.setParameter("authorityid",initiationsac.getAuthorityId());
-			query.setParameter("fromdeptid",initiationsac.getFromDeptId());
-			query.setParameter("fromdate",initiationsac.getFromDate());
-			query.setParameter("todeptid",initiationsac.getToDeptId());
-			query.setParameter("startdate",initiationsac.getStartDate() );
-			query.setParameter("estimatefund",initiationsac.getEstimateFund());
-			query.setParameter("uac",initiationsac.getUAC());
-			query.setParameter("rddate",initiationsac.getRdDate());
-			query.setParameter("videno",initiationsac.getVideNo() );
-			query.setParameter("modifiedby",initiationsac.getModifiedBy() );
-			query.setParameter("modifieddate",initiationsac.getModifiedDate() );
-			query.setParameter("initiationsanctionid",initiationsac.getInitiationSanctionId());
-              return (long)query.executeUpdate();
+			InitiationSanction ExistingInitiationSanction= manager.find(InitiationSanction.class, initiationsac.getInitiationSanctionId());
+			if(ExistingInitiationSanction != null) {
+				ExistingInitiationSanction.setRdNo(initiationsac.getRdNo());
+				ExistingInitiationSanction.setAuthorityId(initiationsac.getAuthorityId());
+				ExistingInitiationSanction.setFromDeptId(initiationsac.getFromDeptId());
+				ExistingInitiationSanction.setFromDate(initiationsac.getFromDate());
+				ExistingInitiationSanction.setToDeptId(initiationsac.getToDeptId());
+				ExistingInitiationSanction.setStartDate(initiationsac.getStartDate());
+				ExistingInitiationSanction.setEstimateFund(initiationsac.getEstimateFund());
+				ExistingInitiationSanction.setUAC(initiationsac.getUAC());
+				ExistingInitiationSanction.setRdDate(initiationsac.getRdDate());
+				ExistingInitiationSanction.setVideNo(initiationsac.getVideNo());
+				ExistingInitiationSanction.setModifiedBy(initiationsac.getModifiedBy());
+				ExistingInitiationSanction.setModifiedDate(initiationsac.getModifiedDate());
+				return 1L;
+			}
+			else {
+				return 0L;
+			}
+			
 		}
 
 		@Override
@@ -910,17 +936,23 @@ public class PrintDaoImpl implements PrintDao {
 			manager.flush();
 			return recdec.getRecDecId();
 		}
-		private static final String UPDATERECDEC="UPDATE pfms_recdec_point  SET ModifiedBy=:modifiedby,ModifiedDate=:modifieddate , type=:type , point=:point WHERE recdecid=:recdecid";
+		
 		@Override
 		public long RecDecUpdate(RecDecDetails recdec)throws Exception
 		{
-			 Query updatequery=manager.createNativeQuery(UPDATERECDEC);
-			    updatequery.setParameter("recdecid", recdec.getRecDecId());
-		        updatequery.setParameter("point", recdec.getPoint()); 
-		        updatequery.setParameter("type", recdec.getType());
-		        updatequery.setParameter("modifiedby", recdec.getModifiedBy());
-		        updatequery.setParameter("modifieddate", recdec.getModifiedDate());
-		        return updatequery.executeUpdate();
+			RecDecDetails ExistingRecDecDetails= manager.find(RecDecDetails.class, recdec.getRecDecId());
+			if(ExistingRecDecDetails != null) {
+				System.err.println("Work");
+				ExistingRecDecDetails.setModifiedBy(recdec.getModifiedBy());
+				ExistingRecDecDetails.setModifiedDate(recdec.getModifiedDate());
+				ExistingRecDecDetails.setType(recdec.getType());
+				ExistingRecDecDetails.setPoint(recdec.getPoint());
+				return 1L;
+			}
+			else {
+				return 0L;
+			}
+			 
 		}
 		private static final String GETRECDECDATA="SELECT a.recdecid , a.scheduleid , a.type , a.point FROM pfms_recdec_point a WHERE a.recdecid=:recdecid ";
 		@Override
@@ -969,23 +1001,30 @@ public class PrintDaoImpl implements PrintDao {
 			return slide.getSlideId();
 		}
 		
-		private static final String UPDATEPROJECTSLIDE="UPDATE pfms_project_slides SET Status=:Status , Brief=:Brief,WayForward=:wayfor,VideoName=:videoName, Slide=:Slide , AttachmentName=:AttachmentName ,Imagename=:ImageName  ,  Path=:Path , ModifiedBy=:ModifiedBy , ModifiedDate=:ModifiedDate WHERE SlideId=:SlideId";
+		private static final String UPDATEPROJECTSLIDE="UPDATE pfms_project_slides SET Status=:Status , "
+				+ "Brief=:Brief,WayForward=:wayfor,VideoName=:videoName, Slide=:Slide , AttachmentName=:AttachmentName ,"
+				+ "Imagename=:ImageName  ,  Path=:Path , ModifiedBy=:ModifiedBy , ModifiedDate=:ModifiedDate WHERE SlideId=:SlideId";
 		@Override
 		public Long EditProjectSlideData(ProjectSlides slide)throws Exception
-		{
-			Query query=manager.createNativeQuery(UPDATEPROJECTSLIDE);
-				query.setParameter("SlideId", slide.getSlideId());
-				query.setParameter("Slide", slide.getSlide());
-				query.setParameter("Status", slide.getStatus());
-				query.setParameter("Brief", slide.getBrief());
-				query.setParameter("Path", slide.getPath());
-				query.setParameter("ImageName", slide.getImageName());
-				query.setParameter("AttachmentName", slide.getAttachmentName());
-				query.setParameter("wayfor", slide.getWayForward());
-				query.setParameter("videoName", slide.getVideoName());
-				query.setParameter("ModifiedBy", slide.getModifiedBy());
-				query.setParameter("ModifiedDate", slide.getModifiedDate());
-			return (long)query.executeUpdate();
+		{	
+			ProjectSlides ExistingProjectSlides = manager.find(ProjectSlides.class, slide.getSlideId());
+			if(ExistingProjectSlides != null) {
+				ExistingProjectSlides.setStatus(slide.getStatus());
+				ExistingProjectSlides.setBrief(slide.getBrief());
+				ExistingProjectSlides.setWayForward(slide.getWayForward());
+				ExistingProjectSlides.setVideoName(slide.getVideoName());
+				ExistingProjectSlides.setSlide(slide.getSlide());
+				ExistingProjectSlides.setAttachmentName(slide.getAttachmentName());
+				ExistingProjectSlides.setImageName(slide.getImageName());
+				ExistingProjectSlides.setPath(slide.getPath());
+				ExistingProjectSlides.setModifiedBy(slide.getModifiedBy());
+				ExistingProjectSlides.setModifiedDate(slide.getModifiedDate());
+				return 1L;
+			}
+			else {
+				return 0L;
+			}
+			
 		}		
 		
 		private static final String PROJECTSLIDEDATA="SELECT a.status ,  a.slide , a.ImageName , a.path ,a.SlideId ,a.attachmentname, a.brief, a.projectid FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid";
@@ -1080,13 +1119,18 @@ public class PrintDaoImpl implements PrintDao {
 			return (List<Object[]>)query.getResultList();
 		}	
 		
-		private static final String PROIMAGEDLT="UPDATE pfms_tech_images SET isactive=0 WHERE techimagesid=:techImagesId";
+	
 		@Override
 		public int ProjectImageDelete(String techImagesId) throws Exception {
-			// TODO Auto-generated method stub
-			Query query = manager.createNativeQuery(PROIMAGEDLT);
-			query.setParameter("techImagesId", techImagesId);
-			return query.executeUpdate();
+			TechImages ExistingTechImages = manager.find(TechImages.class,Long.parseLong(techImagesId));
+			if(ExistingTechImages != null) {
+				ExistingTechImages.setIsActive(0);
+				return 1;
+			}
+			else {
+				return 0;
+			}
+			
 		}
 		
 		
@@ -1104,15 +1148,18 @@ public class PrintDaoImpl implements PrintDao {
 			return TotalMilestones;
 		}
 		
-		private static final String DECRECRMV="UPDATE pfms_recdec_point SET isactive='0' WHERE recdecid=:recdecid";
 		@Override
 		public int ProjectDecRecDelete(String recdecId) throws Exception {
-			// TODO Auto-generated method stub
-			Query query=manager.createNativeQuery(DECRECRMV);
 			
-			query.setParameter("recdecid", recdecId);
+			RecDecDetails ExistingRecDecDetails = manager.find(RecDecDetails.class,Long.parseLong(recdecId));
+			if(ExistingRecDecDetails != null) {
+				ExistingRecDecDetails.setIsActive(0);
+				return 1;
+			}
+			else {
+				return 0;
+			}
 			
-			return (int)query.executeUpdate();
 		}
 		
 			@Override
@@ -1188,13 +1235,16 @@ public class PrintDaoImpl implements PrintDao {
 			@Override
 			public long updateBreifingStatus(String briefingStatus, String sheduleId)throws Exception {
 				logger.info(new Date() + "Inside DAO updateBreifingStatus");
+				
 				try {
-				Query query=manager.createNativeQuery(UPDATEBRIEFINGSTATUS);
-				query.setParameter("briefingStatus", briefingStatus);
-				query.setParameter("sheduleId", sheduleId);
-				long res=0;
-				res=query.executeUpdate();
-				return res;	
+					long res=0;
+					CommitteeSchedule ExistingCommitteeSchedule = manager.find(CommitteeSchedule.class,Long.parseLong(sheduleId));
+					if(ExistingCommitteeSchedule != null) {
+						ExistingCommitteeSchedule.setBriefingStatus(briefingStatus);
+						res=1;
+					}
+
+					return res;	
 				} catch (Exception e) {
 					e.printStackTrace();
 					logger.error(new Date() + "Inside DaoImpl updateBreifingStatus", e);
@@ -1391,27 +1441,23 @@ public class PrintDaoImpl implements PrintDao {
 			return null;
 		}
 
-		private static final String UpdateFavSlides = "UPDATE pfms_favourite_slides SET FavouriteSlidesTitle=:title, ProjectIds=:projectIds, ModifiedDate = :date, modifiedBy=:by WHERE FavouriteSlidesId=:id";
+	
 
 		@Override
 		public Long EditFavouriteSlides(FavouriteSlidesModel fSM) throws Exception {
+			Long result=0L;
 			try {
-				Query query=manager.createNativeQuery(UpdateFavSlides);	
-				query.setParameter("title", fSM.getFavouriteSlidesTitle());
-				query.setParameter("projectIds", fSM.getProjectIds());
-				query.setParameter("date", fSM.getModifiedDate());
-				query.setParameter("by", fSM.getModifiedBy());
-				query.setParameter("id", fSM.getFavouriteSlidesId());
-				int result;
-				try {
-					result = query.executeUpdate();
-				}catch (Exception e) {
-					// TODO: handle exception
-					System.out.println("error in executing update");
-					result = 0;
+				
+				FavouriteSlidesModel ExistingFavouriteSlidesModel = manager.find(FavouriteSlidesModel.class, fSM.getFavouriteSlidesId());
+				if(ExistingFavouriteSlidesModel != null) {
+					ExistingFavouriteSlidesModel.setFavouriteSlidesTitle(fSM.getFavouriteSlidesTitle());
+					ExistingFavouriteSlidesModel.setProjectIds(fSM.getProjectIds());
+					ExistingFavouriteSlidesModel.setModifiedDate(fSM.getModifiedDate());
+					ExistingFavouriteSlidesModel.setModifiedBy(fSM.getModifiedBy());
+					result=1L;
 				}
 				
-				return Long.getLong(String.valueOf(result));
+				return result;
 			}catch (Exception e) {
 				// TODO: handle exception
 				System.out.println("there is an error bruh");
@@ -1419,15 +1465,20 @@ public class PrintDaoImpl implements PrintDao {
 			return null;
 		}
 		
-		public static final String EDITTECHIMAGE="UPDATE pfms_tech_images SET ImageName=:ImageName,CreatedBy=:CreatedBy,CreatedDate=:CreatedDate WHERE TechImagesId=:TechImagesId";
+		
 		@Override
 		public int editTechImage(TechImages image) throws Exception {
-			Query query=manager.createNativeQuery(EDITTECHIMAGE);	   
-			query.setParameter("ImageName", image.getImageName());
-			query.setParameter("CreatedBy", image.getCreatedBy());
-			query.setParameter("CreatedDate", image.getCreatedDate());
-			query.setParameter("TechImagesId", image.getTechImagesId());
-			return query.executeUpdate();
+			TechImages ExistingTechImages = manager.find(TechImages.class, image.getTechImagesId());
+			if(ExistingTechImages !=null) {
+				ExistingTechImages.setImageName(image.getImageName());
+				ExistingTechImages.setCreatedBy(image.getCreatedBy());
+				ExistingTechImages.setCreatedDate(image.getCreatedDate());
+				return 1;
+			}
+			else {
+				return 0;
+			}
+			
 		}
 		
 		

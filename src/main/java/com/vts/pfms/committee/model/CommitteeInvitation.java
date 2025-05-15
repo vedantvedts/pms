@@ -28,6 +28,6 @@ public class CommitteeInvitation
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;
-	
+	private String EmpMeetingRole;
 
 }

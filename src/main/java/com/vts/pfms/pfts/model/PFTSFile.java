@@ -73,5 +73,6 @@ public class PFTSFile implements Serializable {
 	private Date PrbDateOfInti;
 	private String EnvisagedFlag;
 	private String ModifiedDate;
+	private Integer IsActive;
 		
 }

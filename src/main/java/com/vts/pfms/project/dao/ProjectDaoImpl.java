@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.vts.pfms.committee.model.ActionAssign;
 import com.vts.pfms.committee.model.CommitteeInitiation;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
@@ -96,7 +97,6 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTDELIVERABLELIST="select deliverableid,deliverable from pfms_deliverable order by deliverable ";
 	private static final String LABLIST="SELECT a.labid,a.labname,a.labcode FROM cluster_lab a WHERE   a.labid NOT IN (SELECT b.labid FROM pfms_initiation_lab b  WHERE  b.initiationid=:initiationid AND b.isactive='1')";
 	private static final String PROJECTSHORTNAMECHECK="SELECT count(*) from pfms_initiation where projectshortname=:projectshortname";
-	private static final String PROJECTINTIUPDATE="update  pfms_initiation set labcount=:labcount ,modifiedby=:modifiedby,modifieddate=:modifieddate where initiationid=:initiationid";
 	private static final String BUDEGTITEM="select sanctionitemid,headofaccounts,refe,projecttypeid ,CONCAT (majorhead,'-',minorhead,'-',subhead) AS headcode from budget_item_sanc where budgetheadid=:budgetheadid and isactive='1' ORDER BY headofaccounts";
 	private static final String PROJECTITEMLIST="SELECT a.initiationcostid,a.initiationid,c.budgetheaddescription,b.headofaccounts,a.itemdetail,a.itemcost ,b.refe , CONCAT (b.majorhead,'-',b.minorhead,'-',b.subhead) AS headcode FROM pfms_initiation_cost a,budget_item_sanc b,budget_head c WHERE a.initiationid=:initiationid AND a.budgetsancid=b.sanctionitemid AND a.budgetheadid=c.budgetheadid AND a.isactive='1' ORDER BY a.budgetheadid ASC";
 	private static final String PROJECTLABLIST="select a.initiationid,a.InitiationLabId,b.labname,b.labcode from pfms_initiation_lab a,cluster_lab b where a.initiationid=:initiationid and b.labid=a.labid and isactive='1'";
@@ -113,14 +113,10 @@ public class ProjectDaoImpl implements ProjectDao {
 			+ "SELECT a.initiationid,a.empid,a.divisionid,a.projectprogramme,a.projecttypeid,a.classificationid,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.isplanned,a.ismultilab,a.deliverable,a.fecost,a.recost,a.nodallab,a.remarks,a.ismain,b.projecttitle ,a.pcduration,a.indicativecost,a.pcremarks,a.StartDate \r\n"
 			+ "FROM pfms_initiation a ,pfms_initiation b \r\n"
 			+ "WHERE a.initiationid=:initiationid AND a.isactive='1' AND a.mainid=b.initiationid";
-	private static final String PROJECTINTIEDITUPDATE="update pfms_initiation set projectprogramme=:projectprogramme,projecttypeid=:projecttypeid,classificationid=:classificationid,projecttitle=:projecttitle,isplanned=:isplanned,ismultilab=:ismultilab,deliverable=:deliverable,modifiedby=:modifiedby,modifieddate=:modifieddate,nodallab=:nodallab,remarks=:remarks,empid=:empid,pcduration=:pcduration,pcremarks=:pcremarks,indicativecost=:indicativecost,StartDate=:StartDate where initiationid=:initiationid and isactive='1'";
 	private static final String PROJECTINTITOTALCOST="select sum(ItemCost) from pfms_initiation_cost where initiationid=:initiationid and isactive='1'";
 	private static final String PROJECTINTICOSTDATA="select initiationcostid,initiationid,budgetheadid,budgetsancid,itemdetail,itemcost from pfms_initiation_cost where initiationcostid=:initiationcostid and isactive='1'";
-	private static final String PROJECTINTICOSTUPDATE="update pfms_initiation_cost set budgetsancid=:budgetitemid,itemdetail=:itemdetail,itemcost=:itemcost,modifiedby=:modifiedby,modifieddate=:modifieddate where initiationcostid=:initiationcostid and isactive='1'";
 	/*L.A*/private static final String MILESTONETOTALMONTHUPDATE="UPDATE pfms_initiation_schedule SET MilestoneTotalMonth=:newMilestoneTotalMonth  WHERE  initiationid=:InitiationId AND isactive='1' AND milestoneno=:milestoneno";
 	private static final String PROJECTSHDULEUPDATE="update pfms_initiation_schedule set milestoneactivity=:milestoneactivity,milestonemonth=:milestonemonth,milestoneremark=:milestoneremark,modifiedby=:modifiedby,modifieddate=:modifieddate where initiationscheduleid=:initiationscheduleid and isactive='1'";
-	private static final String PROJECTSHDULEDELETE="update pfms_initiation_schedule set modifiedby=:modifiedby,modifieddate=:modifieddate,isactive='0' where initiationscheduleid=:initiationscheduleid and isactive='1'";
-	private static final String PROJECTCOSTUPDATE="UPDATE pfms_initiation SET fecost=:fecost,recost=:recost,projectcost=:projectcost,modifieddate=:modifieddate, modifiedby=:modifiedby WHERE initiationid=:initiationid";	
 	private static final String PROJECTDETAILSREQUPDATE="update pfms_initiation_detail set requirements=:requirements, reqbrief=:reqbrief, modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
 	private static final String PROJECTDETAILSOBJUPDATE="update pfms_initiation_detail set objective=:objective, objbrief=:objbrief, modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
 	private static final String PROJECTDETAILSSCOPEUPDATE="update pfms_initiation_detail set scope=:scope, scopebrief=:scopebrief, modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
@@ -141,11 +137,8 @@ public class ProjectDaoImpl implements ProjectDao {
 	/*L.A*/private static final String PREVIOUSMONTH="SELECT milestonemonth FROM pfms_initiation_schedule WHERE milestoneno=:milestoneno AND initiationid=:IntiationId AND isactive='1'";
 	/*L.A*/private static final String MILESTONENOTOTALMONTH="SELECT MilestoneTotalMonth FROM pfms_initiation_schedule WHERE milestoneno=:milestoneno AND initiationid=:IntiationId AND isactive='1'";
 	private static final String PROJECTINTATTACH="SELECT a.initiationattachmentid,a.initiationid,a.filename,a.filenamepath,a.createdby,a.createddate,b.initiationattachmentfileid FROM pfms_initiation_attachment a,pfms_initiation_attachment_file b WHERE isactive='1' AND initiationid=:initiationid AND a.initiationattachmentid=b.initiationattachmentid";
-	private static final String PROJECTINTATTACHDELETE="update pfms_initiation_attachment set isactive='0',modifiedby=:modifiedby, modifieddate=:modifieddate where initiationattachmentid=:initiationattachmentid";
-	private static final String PROJECTINTATTACHUPDATE="update pfms_initiation_attachment set filename=:filename,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationattachmentid=:initiationattachmentid";
 	private static final String PROJECTINTATTACHFILENAME="select a.filename from pfms_initiation_attachment a where a.isactive='1' and a.initiationattachmentid=:initiationattachmentid ";
 	private static final String PROJECTINTATTACHFILENAMEPATH="select a.filenamepath from pfms_initiation_attachment a where a.isactive='1' and a.initiationattachmentid=:initiationattachmentid ";
-	private static final String PROJECTINTLABUPDATE="update pfms_initiation_lab set isactive='0' ,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationlabid=:initiationlabid";
 	private static final String PROJECTINTCOSTDELETE="update pfms_initiation_cost set isactive='0' ,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationcostid=:initiationcostid ";
 	private static final String PROJECTACTIONLIST="select projectauthorityid,status,statusaction from pfms_project_authority_actionlist where projectauthorityid=:projectauthorityid";
 	private static final String EMPLOYEELIST="select a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.LabCode=:LabCode ORDER BY a.srno=0,a.srno";
@@ -155,9 +148,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTINTIDATAPREVIEW="SELECT a.initiationid,d.empname,e.divisioncode,a.projectprogramme,b.projecttype,c.classification,a.projectshortname,a.projecttitle,a.projectcost, a.projectduration,a.isplanned,a.ismultilab,a.deliverable,a.labcount,a.fecost,a.recost,a.ismain,f.projectshortname AS 'initiatedproject' FROM pfms_initiation a,project_type b,pfms_security_classification c,employee d,division_master e,pfms_initiation f WHERE a.initiationid=:initiationid AND a.classificationid=c.classificationid  AND a.projecttypeid=b.projecttypeid AND a.empid=d.empid AND a.divisionid=e.divisionid AND a.isactive='1' AND a.mainid=f.initiationid UNION SELECT a.initiationid,d.empname,e.divisioncode,a.projectprogramme,b.projecttype,c.classification,a.projectshortname,a.projecttitle,a.projectcost, a.projectduration,a.isplanned,a.ismultilab,a.deliverable,a.labcount,a.fecost,a.recost,a.ismain,a.projecttitle AS 'initiatedproject' FROM pfms_initiation a,project_type b,pfms_security_classification c,employee d,division_master e WHERE a.initiationid=:initiationid AND a.classificationid=c.classificationid  AND a.projecttypeid=b.projecttypeid AND a.empid=d.empid AND a.divisionid=e.divisionid AND a.isactive='1' AND a.mainid=0 ";
 	private static final String PROJECTINTITOTALFECOST="select sum(a.ItemCost) from pfms_initiation_cost a,budget_item_sanc b where a.initiationid=:initiationid and a.isactive='1' and a.budgetsancid=b.sanctionitemid and a.refe='FE' ";
 	private static final String PROJECTINTITOTALRECOST="select sum(a.ItemCost) from pfms_initiation_cost a,budget_item_sanc b where a.initiationid=:initiationid and a.isactive='1' and a.budgetsancid=b.sanctionitemid and a.refe='RE' ";
-	private static final String PROJECTDURATIONUPDATE="update pfms_initiation set projectduration=:duration where initiationid=:initiationid";
 	private static final String PROJECTCOSTDATA="select fecost , recost from pfms_initiation where initiationid=:initiationid ";
-	private static final String PROJECTSHDULEINITUPDATE="update pfms_initiation set projectduration=:milestonemonth where initiationid=:initiationid and isactive='1'";
 	private static final String TCCPROJECTLIST="SELECT projecttitle,projectshortname, initiationid FROM pfms_initiation WHERE projectstatus='PTA' AND isactive='1' ";
 	private static final String EXPERTLIST="SELECT a.expertid,a.expertname,b.designation FROM expert a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId";
 	private static final String DIVISIONHEADID="SELECT a.divisionheadid FROM division_master a, employee b WHERE a.divisionid=b.divisionid AND b.empid=:empid";
@@ -183,24 +174,18 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTRISKDATA ="SELECT DISTINCT am.actionmainid, am.actionitem, am.projectid, aas.actionstatus,am.type,aas.pdcorg,aas.enddate,aas.actionno,aas.actionassignid FROM action_main am ,action_assign aas WHERE aas.actionmainid=am.actionmainid AND  am.type='K' AND aas.ActionAssignId=:actionassignid";
 	private static final String AUTHORITYATTACHMENT="SELECT a.authorityid,a.initiationid,a.authorityname,a.letterdate,a.letterno,c.attachmentname,b.empname,c.initiationauthorityfileid FROM pfms_initiation_authority a,employee b,pfms_initiation_authority_file c WHERE a.initiationid=:initiationid AND a.authorityname=b.empid AND a.authorityid=c.authorityid";
 	private static final String AUTHORITYUPDATE="UPDATE pfms_initiation_authority SET authorityname=:authorityname, letterdate=:letterdate,letterno=:letterno, modifiedby=:modifiedby,modifieddate=:modifieddate WHERE initiationid=:initiationid";
-	private static final String AUTHORITYFILEUPDATE="UPDATE pfms_initiation_authority_file SET attachmentname=:attachmentname,file=:file WHERE initiationauthorityfileid=:initiationauthorityfileid ";
 	private static final String PROJECTMAINLIST="SELECT a.projectmainid,b.projecttypeid,b.projecttype,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.totalsanctioncost, a.pdc, a.revisionno,a.objective,a.deliverable FROM project_main a, project_type b WHERE a.projecttypeid=b.projecttypeid AND a.isactive='1' AND b.isactive='1' ORDER BY a.sanctiondate DESC";
 	private static final String OFFICERLIST="SELECT a.empid, a.empno, a.empname, b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid,a.labcode FROM employee a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid AND a.isactive='1' ORDER BY a.srno=0,a.srno ASC ";
-	private static final String PROJECTMAINCLOSE="update project_main set modifiedby=:modifiedby, modifieddate=:modifieddate,isactive='0'  WHERE isactive='1' and projectmainid=:projectmainid";
 	private static final String PROJECTMAINEDITDATA="SELECT a.projectmainid,b.projecttypeid,b.projecttype,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.sanctioncostre, a.sanctioncostfe, a.totalsanctioncost, a.pdc,a.projectdirector,a.projsancauthority,a.boardreference,a.ismainwc,a.workcenter, a.revisionno,a.objective,a.deliverable, a.LabParticipating,a.CategoryId,a.scope ,a.enduser  ,a.application , a.projectshortname, a.PlatformId FROM project_main a, project_type b WHERE a.projecttypeid=b.projecttypeid and a.projectmainid=:promainid and a.isactive='1' and b.isactive='1' ORDER BY a.projecttypeid, a.projectmainid"; // srikant
-	private static final String PROJECTMAINUPDATE="UPDATE project_main SET projecttypeid=:projecttypeid,projectcode=:projectcode,projectname=:projectname,projectdescription=:projectdescription, unitcode=:unitcode, sanctionno=:sanctionno, sanctiondate=:sanctiondate,sanctioncostre=:sanctioncostre, sanctioncostfe=:sanctioncostfe,totalsanctioncost=:totalsanctioncost,pdc=:pdc,projectdirector=:projectdirector,projsancauthority=:projsancauthority,boardreference=:boardreference,ismainwc=:ismainwc,workcenter=:workcenter,objective=:objective,deliverable=:deliverable,modifiedby=:modifiedby, modifieddate=:modifieddate, LabParticipating=:labparticipating, CategoryId=:categoryId, Scope=:scope , application=:application , enduser=:enduser , ProjectShortName=:projectshortname, PlatformId=:PlatformId WHERE  projectmainid=:promainid  AND isactive='1' "; //srikant
 	private static final String PROJECTLIST1="SELECT a.projectid,b.projectmainid,b.projectcode AS id,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.totalsanctioncost, a.pdc, a.revisionno,a.objective,a.deliverable,a.labcode FROM project_main b, project_master a, project_type c WHERE c.projecttypeid=b.projecttypeid AND a.projectmainid=b.projectmainid AND a.isactive='1' AND b.isactive='1' ORDER BY a.sanctiondate DESC";
 	private static final String PROJECTTYPEMAINLIST="SELECT b.projectmainid,b.projectcode as id from  project_main b WHERE  b.isactive='1' ";
 	private static final String PROJECTCATEGORY="select classificationid, classification from pfms_security_classification";
-	private static final String PROJECTCLOSE="update project_master set modifiedby=:modifiedby, modifieddate=:modifieddate,isactive='0'  WHERE isactive='1' and projectid=:projectid";
 	private static final String PROJECTEDITDATA="SELECT a.projectid,b.projectmainid,c.projecttype as id,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.sanctioncostre, a.sanctioncostfe, a.totalsanctioncost, a.pdc,a.projectdirector,a.projsancauthority,a.boardreference,a.ismainwc,a.workcenter, a.revisionno,a.objective,a.deliverable,a.projectcategory, a.ProjectType ,a.ProjectShortName ,a.EndUser , a.scope ,a.application ,a.LabParticipating, CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',d.designation,e.MobileNo,e.Email,(SELECT MAX(remarks) FROM project_master_rev WHERE projectid=:proid) AS 'Remarks', a.PlatformId  FROM project_main b, project_master a, project_type c,employee e,employee_desig d WHERE c.projecttypeid=b.projecttypeid and a.projectid=:proid and a.projectmainid=b.projectmainid and a.isactive='1' and b.isactive='1'AND a.projectdirector=e.empid AND e.desigid=d.desigid  ORDER BY a.projectid, a.projectmainid"; //srikant
 	private static final String PROJECTITEMLIST11="SELECT a.projectid, a.projectcode,a.projectname FROM project_master a WHERE isactive='1'";
 	private static final String PROJECTASSIGNLIST="SELECT a.projectemployeeid, c.empid, a.projectid, CONCAT(IFNULL(CONCAT(c.title,' '),''), c.empname) AS 'empname' , d.designation, e.divisioncode,c.MobileNo,c.Email FROM project_employee a, employee c, employee_desig d, division_master e WHERE a.empid=c.empid AND c.desigid=d.desigid AND c.divisionid=e.divisionid AND  a.isactive='1' AND c.isactive='1' AND e.isactive='1'  AND a.projectid= :proid "; 
 	private static final String USERLIST="SELECT  b.empid, CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname',b.labcode,c.designation FROM employee b, employee_desig c  WHERE  b.isactive=1 AND b.desigid=c.desigid AND b.EmpId NOT IN( SELECT EmpId FROM project_employee WHERE ProjectId=:projectid AND IsActive='1')";
 	private static final String PROJECTDATA="SELECT a.projectid, a.projectcode FROM project_master a WHERE a.projectid=:proid";
-	private static final String PROJECTASSIGNREVOKE="update project_employee set modifiedby=:modifiedby, modifieddate=:modifieddate,isactive='0'  WHERE isactive='1' and projectemployeeid=:proempid";
 	private static final String PROJECTRISKMATRIXDATA="SELECT riskid,projectid,actionmainid,description, severity,probability,mitigationplans,revisionno,LabCode,RPN,Impact,Category,RiskTypeId , status , remarks FROM pfms_risk WHERE actionmainid=:actionmainid";
-	private static final String PROJECTRISKDATAEDIT="UPDATE pfms_risk SET severity =:severity , probability=:probability , mitigationplans=:mitigationplans ,revisionno=:revisionno, modifiedby=:modifiedby , modifieddate=:modifieddate, RPN=:RPN,Impact=:Impact, Category=:Category, RiskTypeId=:RiskTypeId WHERE riskid=:riskid";
 	private static final String PROJECTRISKMATRIXREVLIST="SELECT rr.riskrevisionid,rr.projectid,rr.actionmainid,rr.description, rr.severity,rr.probability,rr.mitigationplans,rr.revisionno,rr.revisiondate,rr.RPN,rr.Impact,rr.category,rr.RisktypeId, rt.risktype FROM pfms_risk_rev rr, pfms_risk_type rt WHERE rr.risktypeid=rt.risktypeid AND actionmainid=:actionmainid  ORDER BY revisionno DESC";		
 	private static final String RISKDATAPRESENTLIST="SELECT actionmainid , status FROM pfms_risk WHERE projectid=:projectid ";  
 	private final static String PROCATSECDETAILS ="SELECT ProjectTypeId, CategoryId FROM project_main WHERE ProjectMainId=:projectmainid";
@@ -334,19 +319,25 @@ public class ProjectDaoImpl implements ProjectDao {
 		return pfmsinitiationdetail.getInitiationDetailId();
 	}
 
+
 	@Override
 	public int ProjectLabAdd(List<PfmsInitiationLab> pfmsinitiationlablist,PfmsInitiation pfmsinitiation) throws Exception {
 		for(PfmsInitiationLab lab:pfmsinitiationlablist) {
 			manager.persist(lab);
 		}
-		Query query=manager.createNativeQuery(PROJECTINTIUPDATE);
-		query.setParameter("initiationid", pfmsinitiation.getInitiationId());
-		query.setParameter("labcount", pfmsinitiation.getLabCount());
-		query.setParameter("modifiedby",   pfmsinitiation.getModifiedBy());
-		query.setParameter("modifieddate", pfmsinitiation.getModifiedDate());
-
-		manager.flush();
-		return query.executeUpdate();
+		PfmsInitiation ExistingPfmsInitiation = manager.find(PfmsInitiation.class, pfmsinitiation.getInitiationId());
+		if(ExistingPfmsInitiation != null) {
+			ExistingPfmsInitiation.setLabCount(pfmsinitiation.getLabCount());
+			ExistingPfmsInitiation.setModifiedBy(pfmsinitiation.getModifiedBy());
+			ExistingPfmsInitiation.setModifiedDate(pfmsinitiation.getModifiedDate());
+			manager.flush();
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
+		
 	}
 
 	@Override
@@ -391,6 +382,8 @@ public class ProjectDaoImpl implements ProjectDao {
 
 		return BudgetHead;
 	}
+	private static final String PROJECTDURATIONUPDATE="update pfms_initiation set projectduration=:duration "
+			+ "where initiationid=:initiationid";
 
 	@Override
 	public Long ProjectScheduleAdd(List<PfmsInitiationSchedule> pfmsinitiationschedulelist,PfmsInitiation pfmsinitiation) throws Exception {
@@ -401,13 +394,13 @@ public class ProjectDaoImpl implements ProjectDao {
 			manager.persist(schedule);
 			count=schedule.getInitiationId();		
 		}
-
-		Query query=manager.createNativeQuery(PROJECTDURATIONUPDATE);
-		query.setParameter("initiationid", pfmsinitiationschedulelist.get(0).getInitiationId());
-		query.setParameter("duration", pfmsinitiation.getProjectDuration());
-		query.executeUpdate();
-
-		manager.flush();
+		PfmsInitiation ExistingPfmsInitiation=manager.find(PfmsInitiation.class,  pfmsinitiationschedulelist.get(0).getInitiationId());
+		if(ExistingPfmsInitiation != null) {
+			
+			ExistingPfmsInitiation.setProjectDuration(pfmsinitiation.getProjectDuration());
+			count+=1L;
+		}
+		
 		return count;
 	}
 
@@ -486,35 +479,37 @@ public class ProjectDaoImpl implements ProjectDao {
 
 		return ProjectEditData;
 	}
-
+	
 	@Transactional
 	@Override
 	public int ProjectIntiationEdit(PfmsInitiation pfmsinitiation) throws Exception {
 
-		Query query=manager.createNativeQuery(PROJECTINTIEDITUPDATE);
-		query.setParameter("initiationid", pfmsinitiation.getInitiationId());
-		query.setParameter("projectprogramme", pfmsinitiation.getProjectProgramme());
-		query.setParameter("projecttypeid", pfmsinitiation.getProjectTypeId());
-		query.setParameter("classificationid", pfmsinitiation.getClassificationId());
-		query.setParameter("nodallab", pfmsinitiation.getNodalLab());
-
-		query.setParameter("projecttitle", pfmsinitiation.getProjectTitle());
-		query.setParameter("isplanned", pfmsinitiation.getIsPlanned());
-		query.setParameter("ismultilab", pfmsinitiation.getIsMultiLab());
-
-		query.setParameter("deliverable", pfmsinitiation.getDeliverable());
-		query.setParameter("remarks", pfmsinitiation.getRemarks());
-
-		query.setParameter("modifiedby",   pfmsinitiation.getModifiedBy());
-		query.setParameter("modifieddate", pfmsinitiation.getModifiedDate());
-
-		query.setParameter("empid", pfmsinitiation.getEmpId());
-		query.setParameter("pcduration", pfmsinitiation.getPCDuration());
-		query.setParameter("indicativecost", pfmsinitiation.getIndicativeCost());
-		query.setParameter("pcremarks", pfmsinitiation.getPCRemarks());
-		query.setParameter("StartDate", pfmsinitiation.getStartDate());
-
-		return query.executeUpdate();
+		PfmsInitiation ExistingPfmsInitiation = manager.find(PfmsInitiation.class, pfmsinitiation.getInitiationId());
+		if(ExistingPfmsInitiation != null && ExistingPfmsInitiation.getIsActive()==1) {
+			
+			ExistingPfmsInitiation.setProjectProgramme(pfmsinitiation.getProjectProgramme());
+			ExistingPfmsInitiation.setProjectTypeId(pfmsinitiation.getProjectTypeId());
+			ExistingPfmsInitiation.setClassificationId(pfmsinitiation.getClassificationId());
+			ExistingPfmsInitiation.setProjectTitle(pfmsinitiation.getProjectTitle());
+			ExistingPfmsInitiation.setIsPlanned(pfmsinitiation.getIsPlanned());
+			ExistingPfmsInitiation.setIsMultiLab(pfmsinitiation.getIsMultiLab());
+			ExistingPfmsInitiation.setDeliverable(pfmsinitiation.getDeliverable());
+			ExistingPfmsInitiation.setModifiedBy(pfmsinitiation.getModifiedBy());
+			ExistingPfmsInitiation.setModifiedDate(pfmsinitiation.getModifiedDate());
+			ExistingPfmsInitiation.setNodalLab(pfmsinitiation.getNodalLab());
+			ExistingPfmsInitiation.setRemarks(pfmsinitiation.getRemarks());
+			ExistingPfmsInitiation.setEmpId(pfmsinitiation.getEmpId());
+			ExistingPfmsInitiation.setPCDuration(pfmsinitiation.getPCDuration());
+			ExistingPfmsInitiation.setPCRemarks(pfmsinitiation.getPCRemarks());
+			ExistingPfmsInitiation.setIndicativeCost(pfmsinitiation.getIndicativeCost());
+			ExistingPfmsInitiation.setStartDate(pfmsinitiation.getStartDate());
+			
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
 	}
 
 	@Override
@@ -537,41 +532,45 @@ public class ProjectDaoImpl implements ProjectDao {
 		return ProjectCostEditData;
 	}
 
+	
 
 	@Override
 	public int ProjectIntiationCostEdit(PfmsInitiationCost pfmsinitiationcost) throws Exception {
-
-		Query query=manager.createNativeQuery(PROJECTINTICOSTUPDATE);
-		query.setParameter("initiationcostid", pfmsinitiationcost.getInitiationCostId());
-		query.setParameter("budgetitemid", pfmsinitiationcost.getBudgetSancId());
-		query.setParameter("itemdetail", pfmsinitiationcost.getItemDetail());
-		query.setParameter("itemcost", pfmsinitiationcost.getItemCost());
-		query.setParameter("modifiedby",   pfmsinitiationcost.getModifiedBy());
-		query.setParameter("modifieddate", pfmsinitiationcost.getModifiedDate());
-
-		int count=0;
-		count=query.executeUpdate();
-
-		return count;
+		PfmsInitiationCost ExistingPfmsInitiationCost= manager.find(PfmsInitiationCost.class, pfmsinitiationcost.getInitiationCostId());
+		if(ExistingPfmsInitiationCost != null && ExistingPfmsInitiationCost.getIsActive()==1) {
+			ExistingPfmsInitiationCost.setBudgetSancId(pfmsinitiationcost.getBudgetSancId());
+			ExistingPfmsInitiationCost.setItemDetail(pfmsinitiationcost.getItemDetail());
+			ExistingPfmsInitiationCost.setItemCost(pfmsinitiationcost.getItemCost());
+			ExistingPfmsInitiationCost.setModifiedBy(pfmsinitiationcost.getModifiedBy());
+			ExistingPfmsInitiationCost.setModifiedDate(pfmsinitiationcost.getModifiedDate());
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
 	}
 
+	
 
 	@Override
 	public int ProjectIntiationCostsUpdate(PfmsInitiation pfmsinitiation) throws Exception 
 	{
-		int count=0;
-
-		Query query1=manager.createNativeQuery(PROJECTCOSTUPDATE);
-		query1.setParameter("fecost",pfmsinitiation.getFeCost());
-		query1.setParameter("recost",pfmsinitiation.getReCost());
-		query1.setParameter("projectcost",  pfmsinitiation.getProjectCost());
-		query1.setParameter("modifiedby",   pfmsinitiation.getModifiedBy());
-		query1.setParameter("modifieddate", pfmsinitiation.getModifiedDate());
-		query1.setParameter("initiationid", pfmsinitiation.getInitiationId());
-
-		query1.executeUpdate();
-
-		return count;
+		
+		PfmsInitiation ExistingPfmsInitiation= manager.find(PfmsInitiation.class, pfmsinitiation.getInitiationId());
+		if(ExistingPfmsInitiation != null) {
+			ExistingPfmsInitiation.setFeCost(pfmsinitiation.getFeCost());
+			ExistingPfmsInitiation.setReCost(pfmsinitiation.getReCost());
+			ExistingPfmsInitiation.setProjectCost(pfmsinitiation.getProjectCost());
+			ExistingPfmsInitiation.setModifiedDate(pfmsinitiation.getModifiedDate());
+			ExistingPfmsInitiation.setModifiedBy(pfmsinitiation.getModifiedBy());
+			
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
 
 	}
 
@@ -588,12 +587,16 @@ public class ProjectDaoImpl implements ProjectDao {
 	{
 		manager.merge(pfmsinitiationschedule);
 		manager.flush();
-		Query query=manager.createNativeQuery(PROJECTSHDULEINITUPDATE);
-		query.setParameter("initiationid", pfmsinitiation.getInitiationId());
-		query.setParameter("milestonemonth", pfmsinitiation.getProjectDuration());
-		int count2=query.executeUpdate();
-
-		return pfmsinitiationschedule.getInitiationScheduleId();
+		
+		PfmsInitiation ExistingPfmsInitiation=manager.find(PfmsInitiation.class, pfmsinitiation.getInitiationId());
+		if(ExistingPfmsInitiation!= null) {
+			ExistingPfmsInitiation.setProjectDuration(pfmsinitiation.getProjectDuration());
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
 	}
 
 
@@ -641,23 +644,26 @@ public class ProjectDaoImpl implements ProjectDao {
 		return count;
 	}
 
+	
+
 
 	@Override
-	public int ProjectScheduleDelete(PfmsInitiationSchedule pfmsinitiationschedule,PfmsInitiation pfmsinitiation ) throws Exception {
-
-		Query query=manager.createNativeQuery(PROJECTSHDULEDELETE);
-		query.setParameter("initiationscheduleid", pfmsinitiationschedule.getInitiationScheduleId());
-
-		query.setParameter("modifiedby",   pfmsinitiationschedule.getModifiedBy());
-		query.setParameter("modifieddate", pfmsinitiationschedule.getModifiedDate());
-
-		Query query1=manager.createNativeQuery(PROJECTSHDULEINITUPDATE);
-		query1.setParameter("initiationid", pfmsinitiation.getInitiationId());
-		query1.setParameter("milestonemonth", pfmsinitiation.getProjectDuration());
-		query1.executeUpdate();	
-
-
-		return query.executeUpdate();
+	public int ProjectScheduleDelete(PfmsInitiationSchedule pfmsinitiationschedule,PfmsInitiation pfmsInitiation ) throws Exception {
+		PfmsInitiationSchedule ExistingPfmsInitiationSchedule=manager.find(PfmsInitiationSchedule.class, pfmsinitiationschedule.getInitiationScheduleId());
+		PfmsInitiation ExistingPfmsInitiation= manager.find(PfmsInitiation.class, pfmsInitiation.getInitiationId());
+		if(ExistingPfmsInitiationSchedule != null && ExistingPfmsInitiationSchedule.getIsActive()==1 
+				&& ExistingPfmsInitiation!=null && ExistingPfmsInitiation.getIsActive()==1) {
+			ExistingPfmsInitiationSchedule.setModifiedBy(pfmsinitiationschedule.getModifiedBy());
+			ExistingPfmsInitiationSchedule.setModifiedDate(pfmsinitiationschedule.getModifiedDate());
+			ExistingPfmsInitiationSchedule.setIsActive(0);
+			
+			ExistingPfmsInitiation.setProjectDuration(pfmsInitiation.getProjectDuration());
+			
+			return 1;
+		}
+		else {
+			return 0;
+		}
 	}
 	@Override
 	public Long ProjectInitiationDetailsUpdate (PfmsInitiationDetail pfmsinitiationdetail,String Details) throws Exception{
@@ -1021,33 +1027,36 @@ public class ProjectDaoImpl implements ProjectDao {
 		}
 		return result;
 	}
+	
 
 	@Override
 	public int ProjectInitiationAttachmentDelete(PfmsInitiationAttachment pfmsinitiationattachment) throws Exception {
-
-		Query query=manager.createNativeQuery(PROJECTINTATTACHDELETE);
-		query.setParameter("initiationattachmentid", pfmsinitiationattachment.getInitiationAttachmentId());
-
-		query.setParameter("modifiedby", pfmsinitiationattachment.getModifiedBy());
-		query.setParameter("modifieddate", pfmsinitiationattachment.getModifiedDate());
-		int count=(int)query.executeUpdate();
-
-
-		return count;
+		PfmsInitiationAttachment ExistingPfmsInitiationAttachment = manager.find(PfmsInitiationAttachment.class, pfmsinitiationattachment.getInitiationAttachmentId());
+		if(ExistingPfmsInitiationAttachment != null) {
+			ExistingPfmsInitiationAttachment.setIsActive(0);
+			ExistingPfmsInitiationAttachment.setModifiedBy(pfmsinitiationattachment.getModifiedBy());
+			ExistingPfmsInitiationAttachment.setModifiedDate(pfmsinitiationattachment.getModifiedDate());
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
 	}
-
+	
 	@Override
 	public int ProjectInitiationAttachmentUpdate(PfmsInitiationAttachment pfmsinitiationattachment) throws Exception {
-
-		Query query=manager.createNativeQuery(PROJECTINTATTACHUPDATE);
-		query.setParameter("initiationattachmentid", pfmsinitiationattachment.getInitiationAttachmentId());
-		query.setParameter("filename", pfmsinitiationattachment.getFileName());
-		query.setParameter("modifiedby", pfmsinitiationattachment.getModifiedBy());
-		query.setParameter("modifieddate", pfmsinitiationattachment.getModifiedDate());
-		int count=(int)query.executeUpdate();
-
-
-		return count;
+		PfmsInitiationAttachment ExistingPfmsInitiationAttachment = manager.find(PfmsInitiationAttachment.class, pfmsinitiationattachment.getInitiationAttachmentId());
+		if(ExistingPfmsInitiationAttachment != null) {
+			ExistingPfmsInitiationAttachment.setFileName(pfmsinitiationattachment.getFileName());
+			ExistingPfmsInitiationAttachment.setModifiedBy(pfmsinitiationattachment.getModifiedBy());
+			ExistingPfmsInitiationAttachment.setModifiedDate(pfmsinitiationattachment.getModifiedDate());
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
 	}
 
 	@Override
@@ -1069,25 +1078,34 @@ public class ProjectDaoImpl implements ProjectDao {
 
 		return ProjectIntiationAttachmentFileNamePath;
 	}
+	private static final String PROJECTINTIUPDATE="update  pfms_initiation set labcount=:labcount ,modifiedby=:modifiedby,"
+			+ "modifieddate=:modifieddate where initiationid=:initiationid";
+	
+	private static final String PROJECTINTLABUPDATE="update pfms_initiation_lab set isactive='0' ,modifiedby=:modifiedby, "
+			+ "modifieddate=:modifieddate where initiationlabid=:initiationlabid";
 
 	@Override
 	public int ProjectLabdelete(PfmsInitiationLab pfmsinitiationlab, PfmsInitiation pfmsinitiation) throws Exception {
 
 
-		Query query=manager.createNativeQuery(PROJECTINTIUPDATE);
-		query.setParameter("initiationid", pfmsinitiation.getInitiationId());
-		query.setParameter("labcount", pfmsinitiation.getLabCount());
-		query.setParameter("modifiedby",   pfmsinitiation.getModifiedBy());
-		query.setParameter("modifieddate", pfmsinitiation.getModifiedDate());
+		PfmsInitiation ExistingPfmsInitiation = manager.find(PfmsInitiation.class, pfmsinitiation.getInitiationId());
+		PfmsInitiationLab ExistingPfmsInitiationLab = manager.find(PfmsInitiationLab.class, pfmsinitiationlab.getInitiationLabId());
+		
+		if(ExistingPfmsInitiation != null && ExistingPfmsInitiationLab != null) {
+			ExistingPfmsInitiation.setLabCount(pfmsinitiation.getLabCount());
+			ExistingPfmsInitiation.setModifiedBy(pfmsinitiation.getModifiedBy());
+			ExistingPfmsInitiation.setModifiedDate(pfmsinitiation.getModifiedDate());
+			
+			ExistingPfmsInitiationLab.setIsActive(0);
+			ExistingPfmsInitiationLab.setModifiedBy(pfmsinitiationlab.getModifiedBy());
+			ExistingPfmsInitiationLab.setModifiedDate(pfmsinitiationlab.getModifiedDate());
+			manager.flush();
+			return 1;
+		}
+		else {
+			return 0;
+		}
 
-		Query query1=manager.createNativeQuery(PROJECTINTLABUPDATE);
-		query1.setParameter("initiationlabid", pfmsinitiationlab.getInitiationLabId());
-
-		query1.setParameter("modifiedby",   pfmsinitiationlab.getModifiedBy());
-		query1.setParameter("modifieddate", pfmsinitiationlab.getModifiedDate());
-		query1.executeUpdate();
-
-		return query.executeUpdate();
 	}
 
 	@Override
@@ -1101,25 +1119,28 @@ public class ProjectDaoImpl implements ProjectDao {
 		return query.executeUpdate();
 	}
 
-	private static final String PROJECTSTATUSUPDATE="update pfms_initiation set projectstatus=:projectstatus,approvalid=:approvalid,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid ";
+	private static final String PROJECTSTATUSUPDATE="update pfms_initiation set projectstatus=:projectstatus,"
+			+ "approvalid=:approvalid,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid ";
 
 	@Override
 	public int ProjectIntiationStatusUpdate(PfmsInitiation pfmsinitiation,PfmsApproval pfmsapproval,PfmsNotification notification) throws Exception {
 
 		manager.persist(pfmsapproval);
 		manager.persist(notification);
-
-		Query query=manager.createNativeQuery(PROJECTSTATUSUPDATE);
-		query.setParameter("initiationid", pfmsinitiation.getInitiationId());
-		query.setParameter("projectstatus", pfmsinitiation.getProjectStatus());
-		query.setParameter("approvalid", pfmsapproval.getProjectApprovalId());
-		query.setParameter("modifiedby",   pfmsinitiation.getModifiedBy());
-		query.setParameter("modifieddate", pfmsinitiation.getModifiedDate());
-
-		int count=query.executeUpdate();
-		manager.flush();
-
-		return count;
+		
+		PfmsInitiation ExistingPfmsInitiation = manager.find(PfmsInitiation.class, pfmsinitiation.getInitiationId());
+		if(ExistingPfmsInitiation != null) {
+			ExistingPfmsInitiation.setProjectStatus(pfmsinitiation.getProjectStatus());
+			ExistingPfmsInitiation.setApprovalId(pfmsapproval.getProjectApprovalId());
+			ExistingPfmsInitiation.setModifiedBy(pfmsinitiation.getModifiedBy());
+			ExistingPfmsInitiation.setModifiedDate(pfmsinitiation.getModifiedDate());
+			System.err.println("working");
+			manager.flush();
+			return 1;
+		}
+		else {
+			return 0;
+		}
 	}
 	private static final String REQSTATUSUPDATE="UPDATE pfms_initiation_req_status a SET a.status=:statuscode,a.approvalId=:approveid,a.modifiedby=:modifiedby,a.modifiedDate=:modifiedDate WHERE ReqInitiationId=:ReqInitiationId AND isactive=1";
 	@Override
@@ -1176,17 +1197,18 @@ public class ProjectDaoImpl implements ProjectDao {
 		manager.persist(pfmsapproval);
 		manager.persist(notification);
 
-		Query query=manager.createNativeQuery(PROJECTSTATUSUPDATE);
-		query.setParameter("initiationid", pfmsinitiation.getInitiationId());
-		query.setParameter("projectstatus", pfmsinitiation.getProjectStatus());
-		query.setParameter("approvalid", pfmsapproval.getProjectApprovalId());
-		query.setParameter("modifiedby",   pfmsinitiation.getModifiedBy());
-		query.setParameter("modifieddate", pfmsinitiation.getModifiedDate());
-
-		int count=query.executeUpdate();
-		manager.flush();
-
-		return count;
+		PfmsInitiation ExistingPfmsInitiation = manager.find(PfmsInitiation.class, pfmsinitiation.getInitiationId());
+		if(ExistingPfmsInitiation != null) {
+			ExistingPfmsInitiation.setProjectStatus(pfmsinitiation.getProjectStatus());
+			ExistingPfmsInitiation.setApprovalId(pfmsapproval.getProjectApprovalId());
+			ExistingPfmsInitiation.setModifiedBy(pfmsinitiation.getModifiedBy());
+			ExistingPfmsInitiation.setModifiedDate(pfmsinitiation.getModifiedDate());
+			manager.flush();
+			return 1;
+		}
+		else {
+			return 0;
+		}
 	}
 
 
@@ -1370,17 +1392,21 @@ public class ProjectDaoImpl implements ProjectDao {
 		List<Object[]> ProjectMainList = (List<Object[]>) query.getResultList();
 		return ProjectMainList;
 	}
+	
 
 	@Override
 	public Long ProjectMainClose(ProjectMain proType) throws Exception {
+		Long count=0L;
 		try {
-			Query query=manager.createNativeQuery(PROJECTMAINCLOSE);
-			query.setParameter("projectmainid",proType.getProjectMainId());
-			query.setParameter("modifiedby", proType.getModifiedBy());
-			query.setParameter("modifieddate",proType.getModifiedDate());
-			int ProjectTypeEdit=(int)query.executeUpdate();	
-
-			return Long.valueOf(ProjectTypeEdit) ;
+			ProjectMain ExistingProjectMain = manager.find(ProjectMain.class, proType.getProjectMainId());
+			if(ExistingProjectMain != null && ExistingProjectMain.getIsActive()==1) {
+				ExistingProjectMain.setModifiedBy(proType.getModifiedBy());
+				ExistingProjectMain.setModifiedDate(proType.getModifiedDate());
+				ExistingProjectMain.setIsActive(0);
+				
+				count=1L;
+			}
+				return count;
 		}catch (Exception e) {
 			e.printStackTrace();
 			return 0L;
@@ -1394,42 +1420,52 @@ public class ProjectDaoImpl implements ProjectDao {
 		Object[] ProjectMainEditData = (Object[]) query.getSingleResult();
 		return ProjectMainEditData;
 	}
-
+	private static final String PROJECTMAINUPDATE="UPDATE project_main SET projecttypeid=:projecttypeid,"
+			+ "projectcode=:projectcode,projectname=:projectname,projectdescription=:projectdescription, "
+			+ "unitcode=:unitcode, sanctionno=:sanctionno, sanctiondate=:sanctiondate,"
+			+ "sanctioncostre=:sanctioncostre, sanctioncostfe=:sanctioncostfe,totalsanctioncost=:totalsanctioncost,"
+			+ "pdc=:pdc,projectdirector=:projectdirector,projsancauthority=:projsancauthority,boardreference=:boardreference,"
+			+ "ismainwc=:ismainwc,workcenter=:workcenter,objective=:objective,deliverable=:deliverable,modifiedby=:modifiedby,"
+			+ " modifieddate=:modifieddate, LabParticipating=:labparticipating, CategoryId=:categoryId, Scope=:scope ,"
+			+ " application=:application , enduser=:enduser , ProjectShortName=:projectshortname, PlatformId=:PlatformId "
+			+ "WHERE  projectmainid=:promainid  AND isactive='1' "; //srikant
 	@Override
 	public Long ProjectMainEdit(ProjectMain proType) throws Exception {
-
-		Query query=manager.createNativeQuery(PROJECTMAINUPDATE);
-		query.setParameter("projecttypeid",proType.getProjectTypeId());
-		query.setParameter("categoryId", proType.getCategoryId());
-		query.setParameter("promainid",proType.getProjectMainId());
-		query.setParameter("projectcode",proType.getProjectCode());
-		query.setParameter("projectname",proType.getProjectName());
-		query.setParameter("projectdescription",proType.getProjectDescription());
-		query.setParameter("unitcode",proType.getUnitCode());
-		query.setParameter("sanctionno",proType.getSanctionNo());
-		query.setParameter("sanctiondate",proType.getSanctionDate());
-		query.setParameter("sanctioncostre",proType.getSanctionCostRE());
-		query.setParameter("sanctioncostfe",proType.getSanctionCostFE());
-		query.setParameter("totalsanctioncost",proType.getTotalSanctionCost());
-		query.setParameter("pdc",proType.getPDC());
-		query.setParameter("projectdirector",proType.getProjectDirector());
-		query.setParameter("projsancauthority",proType.getProjSancAuthority());
-		query.setParameter("boardreference",proType.getBoardReference());
-		query.setParameter("ismainwc",proType.getIsMainWC());
-		query.setParameter("workcenter",proType.getWorkCenter());
-		query.setParameter("objective",proType.getObjective());
-		query.setParameter("deliverable",proType.getDeliverable());
-		query.setParameter("labparticipating", proType.getLabParticipating());
-		query.setParameter("modifiedby", proType.getModifiedBy());
-		query.setParameter("modifieddate",proType.getModifiedDate());
-		query.setParameter("scope",proType.getScope());
-		query.setParameter("application", proType.getApplication());
-		query.setParameter("enduser", proType.getEndUser());
-		query.setParameter("projectshortname", proType.getProjectShortName());
-		query.setParameter("PlatformId",proType.getPlatformId()); //srikant
-
-		query.executeUpdate();
-		return Long.valueOf(1) ;
+		ProjectMain ExistingProjectMain= manager.find(ProjectMain.class, proType.getProjectMainId());
+		if(ExistingProjectMain != null && ExistingProjectMain.getIsActive()==1) {
+			ExistingProjectMain.setProjectTypeId(proType.getProjectTypeId());
+			ExistingProjectMain.setProjectCode(proType.getProjectCode());
+			ExistingProjectMain.setProjectName(proType.getProjectName());
+			ExistingProjectMain.setProjectDescription(proType.getProjectDescription());
+			ExistingProjectMain.setUnitCode(proType.getUnitCode());
+			ExistingProjectMain.setSanctionNo(proType.getSanctionNo());
+			ExistingProjectMain.setSanctionDate(proType.getSanctionDate());
+			ExistingProjectMain.setSanctionCostRE(proType.getSanctionCostRE());
+			ExistingProjectMain.setSanctionCostFE(proType.getSanctionCostFE());
+			ExistingProjectMain.setTotalSanctionCost(proType.getTotalSanctionCost());
+			ExistingProjectMain.setPDC(proType.getPDC());
+			ExistingProjectMain.setProjectDirector(proType.getProjectDirector());
+			ExistingProjectMain.setProjSancAuthority(proType.getProjSancAuthority());
+			ExistingProjectMain.setBoardReference(proType.getBoardReference());
+			ExistingProjectMain.setIsMainWC(proType.getIsMainWC());
+			ExistingProjectMain.setWorkCenter(proType.getWorkCenter());
+			ExistingProjectMain.setObjective(proType.getObjective());
+			ExistingProjectMain.setDeliverable(proType.getDeliverable());
+			ExistingProjectMain.setModifiedBy(proType.getModifiedBy());
+			ExistingProjectMain.setModifiedDate(proType.getModifiedDate());
+			ExistingProjectMain.setLabParticipating(proType.getLabParticipating());
+			ExistingProjectMain.setCategoryId(proType.getCategoryId());
+			ExistingProjectMain.setScope(proType.getScope());
+			ExistingProjectMain.setApplication(proType.getApplication());
+			ExistingProjectMain.setEndUser(proType.getEndUser());
+			ExistingProjectMain.setProjectShortName(proType.getProjectShortName());
+			ExistingProjectMain.setPlatformId(proType.getPlatformId());
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
+		
 	}
 
 
@@ -1510,18 +1546,18 @@ public class ProjectDaoImpl implements ProjectDao {
 	}
 
 
-
-
-
 	@Override
 	public Long ProjectClose(ProjectMaster proType) throws Exception {
-		Query query=manager.createNativeQuery(PROJECTCLOSE);
-		query.setParameter("projectid",proType.getProjectId());
-		query.setParameter("modifiedby", proType.getModifiedBy());
-		query.setParameter("modifieddate",proType.getModifiedDate());
-		int ProjectTypeEdit=(int)query.executeUpdate();	
-
-		return Long.valueOf(ProjectTypeEdit) ;
+		ProjectMaster ExistingProjectMaster= manager.find(ProjectMaster.class, proType.getProjectId());
+		if(ExistingProjectMaster!=null) {
+			ExistingProjectMaster.setModifiedBy(proType.getModifiedBy());
+			ExistingProjectMaster.setModifiedDate(proType.getModifiedDate());
+			ExistingProjectMaster.setIsActive(0);
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
 
 	}
 
@@ -1574,16 +1610,21 @@ public class ProjectDaoImpl implements ProjectDao {
 		manager.flush();
 		return proAssign.getProjectEmployeeId();
 	}
+	
 
 	@Override
 	public Long ProjectRevoke(ProjectAssign proAssign) throws Exception {
-		Query query=manager.createNativeQuery(PROJECTASSIGNREVOKE);
-		query.setParameter("proempid",proAssign.getProjectEmployeeId());
-		query.setParameter("modifiedby", proAssign.getModifiedBy());
-		query.setParameter("modifieddate",proAssign.getModifiedDate());
-		int ProjectRevoke=(int)query.executeUpdate();	
-
-		return Long.valueOf(ProjectRevoke) ;
+		ProjectAssign ExistingProjectAssign= manager.find(ProjectAssign.class, proAssign.getProjectEmployeeId());
+		if(ExistingProjectAssign != null && ExistingProjectAssign.getIsActive()==1) {
+			ExistingProjectAssign.setModifiedBy(proAssign.getModifiedBy());
+			ExistingProjectAssign.setModifiedDate(proAssign.getModifiedDate());
+			ExistingProjectAssign.setIsActive(0);
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
+		
 	}
 
 	@Override
@@ -1802,31 +1843,32 @@ public class ProjectDaoImpl implements ProjectDao {
 		}
 		return ProjectRiskData;		
 	}
-	private static final String PROJECTCLOSERISK="UPDATE pfms_risk SET status=:status, statusdate=:statusdate , remarks=:remarks , modifiedby=:modifiedby, modifieddate=:modifieddate WHERE riskid=:riskid";
-	private static final String ACTIONRISK="UPDATE action_assign SET ClosedDate=:ClosedDate, actionstatus=:actionstatus , modifiedby=:modifiedby, modifieddate=:modifieddate WHERE actionassignid=:actionassignid";
+	
+
 	@Override
 	public long CloseProjectRisk(PfmsRiskDto dto)throws Exception
 	{
-
-
 		String date=LocalDate.now().toString();
+		ActionAssign ExistingActionAssign = manager.find(ActionAssign.class, dto.getActionMainId());
+		PfmsRisk ExistingPfmsRisk = manager.find(PfmsRisk.class, dto.getRiskId());
+		
+		if(ExistingActionAssign != null && ExistingPfmsRisk != null) {
+			ExistingActionAssign.setClosedDate(date);
+			ExistingActionAssign.setActionStatus(dto.getStatus());
+			ExistingActionAssign.setModifiedBy(dto.getModifiedBy());
+			ExistingActionAssign.setModifiedDate(dto.getModifiedDate());
+			
+			ExistingPfmsRisk.setStatus(dto.getStatus());
+			ExistingPfmsRisk.setStatusDate(dto.getStatusDate());
+			ExistingPfmsRisk.setRemarks(dto.getRemarks());
+			ExistingPfmsRisk.setModifiedBy(dto.getModifiedBy());
+			ExistingPfmsRisk.setModifiedDate(dto.getModifiedDate());
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
 
-		Query query1=manager.createNativeQuery(ACTIONRISK);
-		query1.setParameter("actionassignid", dto.getActionMainId());
-		query1.setParameter("actionstatus", dto.getStatus());
-		query1.setParameter("modifiedby", dto.getModifiedBy());
-		query1.setParameter("modifieddate", dto.getModifiedDate());
-		query1.setParameter("ClosedDate", date);
-		query1.executeUpdate();
-		Query query=manager.createNativeQuery(PROJECTCLOSERISK);
-		query.setParameter("riskid", dto.getRiskId());
-		query.setParameter("status", dto.getStatus());
-		query.setParameter("statusdate", dto.getStatusDate());
-		query.setParameter("remarks", dto.getRemarks());
-		query.setParameter("modifiedby", dto.getModifiedBy());
-		query.setParameter("modifieddate", dto.getModifiedDate());
-		long count=query.executeUpdate();
-		return count;
 	}
 
 	@Override
@@ -1850,27 +1892,29 @@ public class ProjectDaoImpl implements ProjectDao {
 			ProjectRiskMatrixData=null;
 		}
 		return ProjectRiskMatrixData;
-	}		
-
-
-
+	}
 
 	@Override
 	public int ProjectRiskDataEdit(PfmsRiskDto dto) throws Exception {
-		Query query=manager.createNativeQuery(PROJECTRISKDATAEDIT);
-		query.setParameter("severity", dto.getSeverity());
-		query.setParameter("probability", dto.getProbability());
-		query.setParameter("mitigationplans", dto.getMitigationPlans());
-		query.setParameter("revisionno", dto.getRevisionNo());
-		query.setParameter("RPN", Integer.parseInt(dto.getProbability()) * Integer.parseInt(dto.getSeverity()) );
-		query.setParameter("Impact", dto.getImpact());
-		query.setParameter("Category", dto.getCategory());
-		query.setParameter("RiskTypeId", dto.getRiskTypeId());
-		query.setParameter("modifiedby", dto.getModifiedBy());
-		query.setParameter("modifieddate", dto.getModifiedDate());
-		query.setParameter("riskid", dto.getRiskId());
-
-		return query.executeUpdate();
+		
+		PfmsRisk ExistingPfmsRisk = manager.find(PfmsRisk.class, dto.getRiskId());
+		if(ExistingPfmsRisk != null) {
+			ExistingPfmsRisk.setSeverity(Integer.parseInt(dto.getSeverity()));
+			ExistingPfmsRisk.setProbability(Integer.parseInt(dto.getProbability()));
+			ExistingPfmsRisk.setMitigationPlans(dto.getMitigationPlans());
+			ExistingPfmsRisk.setRevisionNo(Long.parseLong(dto.getRevisionNo()));
+			ExistingPfmsRisk.setModifiedBy(dto.getModifiedBy());
+			ExistingPfmsRisk.setModifiedDate(dto.getModifiedDate());
+			ExistingPfmsRisk.setRPN(Integer.parseInt(dto.getProbability()) * Integer.parseInt(dto.getSeverity()));
+			ExistingPfmsRisk.setImpact(dto.getImpact());
+			ExistingPfmsRisk.setCategory(dto.getCategory());
+			ExistingPfmsRisk.setRiskTypeId(Integer.parseInt(dto.getRiskTypeId()));	
+			return 1;
+		}
+		else {
+			return 0;
+		}
+		
 	}	
 
 	@Override
@@ -1937,18 +1981,21 @@ public class ProjectDaoImpl implements ProjectDao {
 		return Long.valueOf(count);
 
 	}
+	private static final String AUTHORITYFILEUPDATE="UPDATE pfms_initiation_authority_file"
+			+ " SET attachmentname=:attachmentname,file=:file WHERE initiationauthorityfileid=:initiationauthorityfileid ";
 
 	@Override
 	public Long AuthorityFileUpdate(PfmsInitiationAuthorityFile pfmsinitiationauthorityfile) throws Exception {
-
-		Query query=manager.createNativeQuery(AUTHORITYFILEUPDATE);
-		query.setParameter("attachmentname", pfmsinitiationauthorityfile.getAttachmentName());
-		query.setParameter("file", pfmsinitiationauthorityfile.getFile());
-		query.setParameter("initiationauthorityfileid", pfmsinitiationauthorityfile.getInitiationAuthorityFileId());
-
-		int count= query.executeUpdate();
-
-		return Long.valueOf(count);
+		PfmsInitiationAuthorityFile ExistingPfmsInitiationAuthorityFile = manager.find(PfmsInitiationAuthorityFile.class, pfmsinitiationauthorityfile.getInitiationAuthorityFileId());
+		if(ExistingPfmsInitiationAuthorityFile !=null) {
+			ExistingPfmsInitiationAuthorityFile.setAttachmentName(pfmsinitiationauthorityfile.getAttachmentName());
+			ExistingPfmsInitiationAuthorityFile.setFile(pfmsinitiationauthorityfile.getFile());
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
+		
 	}
 
 
@@ -2298,17 +2345,22 @@ public class ProjectDaoImpl implements ProjectDao {
 		query.executeUpdate();
 		return 1l;
 	}
-	private static final String USERUPDATE="UPDATE pfms_initiation SET User=:User,ModifiedBy=:ModifiedBy, modifiedDate=:modifiedDate WHERE initiationid=:initiationid";
+
 
 	@Override
 	public long projectInitiationUserUpdate(PfmsInitiation pf) throws Exception {
-
-		Query query =manager.createNativeQuery(USERUPDATE);
-		query.setParameter("User", pf.getUser());
-		query.setParameter("ModifiedBy", pf.getModifiedBy());
-		query.setParameter("modifiedDate", pf.getModifiedDate());
-		query.setParameter("initiationid", pf.getInitiationId());
-		return query.executeUpdate();
+		
+		PfmsInitiation ExistingPfmsInitiation= manager.find(PfmsInitiation.class, pf.getInitiationId());
+		if(ExistingPfmsInitiation!=null) {
+			ExistingPfmsInitiation.setUser(pf.getUser());
+			ExistingPfmsInitiation.setModifiedBy(pf.getModifiedBy());
+			ExistingPfmsInitiation.setModifiedDate(pf.getModifiedDate());
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
+	
 	}
 	private static final String REQTYPECOUNT="SELECT IFNULL(MAX(ReqCount),0) AS 'MAX' FROM pfms_initiation_req WHERE initiationid=:intiationId AND projectid=:projectid AND isactive='1'";
 	@Override
@@ -2571,26 +2623,31 @@ public class ProjectDaoImpl implements ProjectDao {
 	}
 
 
-	private static final String PROCUREMENTEDIT="update pfms_procurement_plan set Item=:Item,Purpose=:Purpose,Source=:Source,ModeName=:ModeName,Cost=:Cost,Demand=:Demand,Tender=:Tender,OrderTime=:OrderTime,payment=:payment,Total=:Total,Approved=:Approved,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate where planid=:planid";
+	
 	@Override
 	public long ProjectProcurementEdit(PfmsProcurementPlan pp) throws Exception {
-		// TODO Auto-generated method stub
-		Query query=manager.createNativeQuery(PROCUREMENTEDIT);
-		query.setParameter("Item", pp.getItem());
-		query.setParameter("Purpose", pp.getPurpose());
-		query.setParameter("Source", pp.getSource());
-		query.setParameter("ModeName",pp.getModeName());
-		query.setParameter("Cost", pp.getCost());
-		query.setParameter("Demand", pp.getDemand());
-		query.setParameter("Tender", pp.getTender());
-		query.setParameter("OrderTime", pp.getOrderTime());
-		query.setParameter("payment", pp.getPayment()); 
-		query.setParameter("Total", pp.getTotal());
-		query.setParameter("Approved", pp.getApproved());
-		query.setParameter("ModifiedBy", pp.getModifiedBy());
-		query.setParameter("ModifiedDate", pp.getModifiedDate());
-		query.setParameter("planid", pp.getPlanId());
-		return query.executeUpdate();
+		
+		PfmsProcurementPlan ExistingPfmsProcurementPlan= manager.find(PfmsProcurementPlan.class, pp.getPlanId());
+		if(ExistingPfmsProcurementPlan != null) {
+			ExistingPfmsProcurementPlan.setItem(pp.getItem());
+			ExistingPfmsProcurementPlan.setPurpose(pp.getPurpose());
+			ExistingPfmsProcurementPlan.setSource(pp.getSource());
+			ExistingPfmsProcurementPlan.setModeName(pp.getModeName());
+			ExistingPfmsProcurementPlan.setCost(pp.getCost());
+			ExistingPfmsProcurementPlan.setDemand(pp.getDemand());
+			ExistingPfmsProcurementPlan.setTender(pp.getTender());
+			ExistingPfmsProcurementPlan.setOrderTime(pp.getOrderTime());
+			ExistingPfmsProcurementPlan.setPayment(pp.getPayment());
+			ExistingPfmsProcurementPlan.setTotal(pp.getTotal());
+			ExistingPfmsProcurementPlan.setApproved(pp.getApproved());
+			ExistingPfmsProcurementPlan.setModifiedBy(pp.getModifiedBy());
+			ExistingPfmsProcurementPlan.setModifiedDate(pp.getModifiedDate());
+			return 1L;
+			}
+		else {
+			return 0L;
+		}
+		
 	}
 	private static final String TOTALCOST="SELECT SUM(cost) FROM pfms_procurement_plan WHERE payment BETWEEN :start AND :end AND InitiationId=:initiationid";
 	@Override
@@ -2728,26 +2785,23 @@ public class ProjectDaoImpl implements ProjectDao {
 		return TraingRequirements;
 	}
 
-	private static final String TRAUPDATE="UPDATE pfms_initiation_soc_training SET Discipline=:Discipline,agency=:agency,personneltrained=:personneltrained,duration=:duration,cost=:cost,remarks=:remarks,modifiedby=:modifiedby, modifieddate=:modifieddate WHERE trainingid=:trainingid AND isactive=1;";
-
 	@Override
 	public long ProjectMajorTrainingRequirementUpdate(ProjectMajorRequirements pmr) throws Exception {
-		// TODO Auto-generated method stub
-
-		Query query =manager.createNativeQuery(TRAUPDATE);
-
-		query.setParameter("Discipline", pmr.getDiscipline());
-		query.setParameter("agency", pmr.getAgency());
-		query.setParameter("personneltrained", pmr.getPersonneltrained());
-		query.setParameter("duration", pmr.getDuration());
-		query.setParameter("cost", pmr.getCost());
-		query.setParameter("remarks", pmr.getRemarks());
-		query.setParameter("modifiedby", pmr.getModifiedBy());
-		query.setParameter("modifieddate", pmr.getModifiedDate());
-		query.setParameter("trainingid", pmr.getTrainingId());
-
-
-		return query.executeUpdate();
+		ProjectMajorRequirements ExistingProjectMajorRequirements = manager.find(ProjectMajorRequirements.class, pmr.getTrainingId());
+		if(ExistingProjectMajorRequirements != null && ExistingProjectMajorRequirements.getIsActive()==1) {
+			ExistingProjectMajorRequirements.setDiscipline(pmr.getDiscipline());
+			ExistingProjectMajorRequirements.setAgency(pmr.getAgency());
+			ExistingProjectMajorRequirements.setPersonneltrained(pmr.getPersonneltrained());
+			ExistingProjectMajorRequirements.setDuration(pmr.getDuration());
+			ExistingProjectMajorRequirements.setCost(pmr.getCost());
+			ExistingProjectMajorRequirements.setRemarks(pmr.getRemarks());
+			ExistingProjectMajorRequirements.setModifiedBy(pmr.getModifiedBy());
+			ExistingProjectMajorRequirements.setModifiedDate(pmr.getModifiedDate());
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
 	}
 	@Override
 	public long WorkPackageSubmit(ProjectMajorWorkPackages pw) throws Exception {
@@ -2774,22 +2828,25 @@ public class ProjectDaoImpl implements ProjectDao {
 		query.setParameter("parameter", parameter);
 		return (Object[])query.getSingleResult();
 	}
-	private static final String WORKEDIT="UPDATE pfms_initiation_soc_wp SET govtagencies=:govtagencies,workpackage=:workpackage,objective=:objective,scope=:scope,cost=:cost,pdc=:pdc,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE workid=:workid AND isactive=1";
+
 	@Override
 	public long WorkPackagesEdit(ProjectMajorWorkPackages pw) throws Exception {
-		// TODO Auto-generated method stub
-		Query query=manager.createNativeQuery(WORKEDIT);
-
-		query.setParameter("govtagencies", pw.getGovtAgencies());
-		query.setParameter("workpackage", pw.getWorkPackage());
-		query.setParameter("objective", pw.getObjective());
-		query.setParameter("scope", pw.getScope());
-		query.setParameter("cost", pw.getCost());
-		query.setParameter("pdc", pw.getPDC());
-		query.setParameter("ModifiedBy", pw.getModifiedBy());
-		query.setParameter("ModifiedDate", pw.getModifiedDate());
-		query.setParameter("workid", pw.getWorkId());
-		return query.executeUpdate();
+		ProjectMajorWorkPackages ExistingProjectMajorWorkPackages= manager.find(ProjectMajorWorkPackages.class, pw.getWorkId());
+		if(ExistingProjectMajorWorkPackages != null && ExistingProjectMajorWorkPackages.getIsActive()==1) {
+			ExistingProjectMajorWorkPackages.setGovtAgencies(pw.getGovtAgencies());
+			ExistingProjectMajorWorkPackages.setWorkPackage(pw.getWorkPackage());
+			ExistingProjectMajorWorkPackages.setObjective(pw.getObjective());
+			ExistingProjectMajorWorkPackages.setScope(pw.getScope());
+			ExistingProjectMajorWorkPackages.setCost(pw.getCost());
+			ExistingProjectMajorWorkPackages.setPDC(pw.getPDC());
+			ExistingProjectMajorWorkPackages.setModifiedBy(pw.getModifiedBy());
+			ExistingProjectMajorWorkPackages.setModifiedDate(pw.getModifiedDate());
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
+		
 	}
 	@Override
 	public long CarsDetailsAdd(ProjectMajorCars pmc) throws Exception {
@@ -2814,21 +2871,27 @@ public class ProjectDaoImpl implements ProjectDao {
 		query.setParameter("parameter", parameter);
 		return (Object[])query.getSingleResult();
 	}
-	private static final String CARSEDIT="UPDATE pfms_initiation_soc_cars SET institute=:institute,professor=:professor,AreaRd=:AreaRd,cost=:cost,pdc=:pdc,confidencelevel=:confidencelevel,modifiedby=:modifiedby, modifieddate=:modifieddate WHERE carsid=:carsid AND isactive=1";
+	private static final String CARSEDIT="UPDATE pfms_initiation_soc_cars SET institute=:institute,professor=:profe"
+			+ "ssor,AreaRd=:AreaRd,cost=:cost,pdc=:pdc,confidencelevel=:confidencelevel,modifiedby=:modifiedby,"
+			+ " modifieddate=:modifieddate WHERE carsid=:carsid AND isactive=1";
 	@Override
 	public long CarEdit(ProjectMajorCars pmc) throws Exception {
-		// TODO Auto-generated method stub
-		Query query =manager.createNativeQuery(CARSEDIT);
-		query.setParameter("institute", pmc.getInstitute());
-		query.setParameter("professor", pmc.getProfessor());
-		query.setParameter("AreaRd", pmc.getAreaRD());
-		query.setParameter("cost", pmc.getCost());
-		query.setParameter("pdc", pmc.getPDC());
-		query.setParameter("confidencelevel", pmc.getConfidencelevel());
-		query.setParameter("modifiedby", pmc.getModifiedBy());
-		query.setParameter("modifieddate", pmc.getModifiedDate());
-		query.setParameter("carsid", pmc.getCarsId());
-		return query.executeUpdate();
+		ProjectMajorCars ExistingProjectMajorCars= manager.find(ProjectMajorCars.class, pmc.getCarsId());
+		if(ExistingProjectMajorCars != null && ExistingProjectMajorCars.getIsActive()==1) {
+			ExistingProjectMajorCars.setInstitute(pmc.getInstitute());
+			ExistingProjectMajorCars.setProfessor(pmc.getProfessor());
+			ExistingProjectMajorCars.setAreaRD(pmc.getAreaRD());
+			ExistingProjectMajorCars.setCost(pmc.getCost());
+			ExistingProjectMajorCars.setPDC(pmc.getPDC());
+			ExistingProjectMajorCars.setConfidencelevel(pmc.getConfidencelevel());
+			ExistingProjectMajorCars.setModifiedBy(pmc.getModifiedBy());
+			ExistingProjectMajorCars.setModifiedDate(pmc.getModifiedDate());
+			return 1L;
+			}
+		else {
+			return 0L;
+		}
+	
 	}
 
 	@Override
@@ -2854,21 +2917,24 @@ public class ProjectDaoImpl implements ProjectDao {
 		query.setParameter("parameter", parameter);
 		return (Object[])query.getSingleResult();
 	}
-	private static final String CONSULTANCYEDIT="UPDATE pfms_initiation_soc_consultancy a SET a.Discipline=:Discipline,a.agency=:agency,a.person=:person,a.cost=:cost,a.process=:proc,a.ModifiedBy=:ModifiedBy,a.ModifiedDate=:ModifiedDate WHERE isactive=1 AND a.ConsultancyId=:ConsultancyId";
+
 	@Override
 	public long ConsultancyEdit(ProjectMajorConsultancy pmc) throws Exception {
-		// TODO Auto-generated method stub
-		Query query=manager.createNativeQuery(CONSULTANCYEDIT);
-		query.setParameter("Discipline", pmc.getDiscipline());
-		query.setParameter("agency", pmc.getAgency());
-		query.setParameter("person", pmc.getPerson());
-		query.setParameter("cost", pmc.getCost());
-		query.setParameter("proc", pmc.getProcess());
-		query.setParameter("ModifiedBy", pmc.getModifiedBy());
-		query.setParameter("ModifiedDate", pmc.getModifiedDate());
-		query.setParameter("ConsultancyId", pmc.getConsultancyId());
+		ProjectMajorConsultancy ExistingProjectMajorConsultancy = manager.find(ProjectMajorConsultancy.class, pmc.getConsultancyId());
+		if(ExistingProjectMajorConsultancy != null && ExistingProjectMajorConsultancy.getIsActive()==1) {
+			ExistingProjectMajorConsultancy.setDiscipline(pmc.getDiscipline());
+			ExistingProjectMajorConsultancy.setAgency(pmc.getAgency());
+			ExistingProjectMajorConsultancy.setPerson(pmc.getPerson());
+			ExistingProjectMajorConsultancy.setCost(pmc.getCost());
+			ExistingProjectMajorConsultancy.setProcess(pmc.getProcess());
+			ExistingProjectMajorConsultancy.setModifiedBy(pmc.getModifiedBy());
+			ExistingProjectMajorConsultancy.setModifiedDate(pmc.getModifiedDate());
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
 
-		return query.executeUpdate();
 	}
 
 	@Override
@@ -2894,21 +2960,24 @@ public class ProjectDaoImpl implements ProjectDao {
 		query.setParameter("requirementid", parameter);
 		return (Object[])query.getSingleResult();
 	}
-	private static final String MANPOWEDIT="UPDATE pfms_initiation_soc_manpower a SET a.designation=:designation,a.discipline=:discipline,a.numbers=:numbers,a.period=:months,a.remarks=:remarks,a.ModifiedBy=:ModifiedBy,a.ModifiedDate=:ModifiedDate WHERE a.requirementid=:requirementid AND isactive=1";
+	
 	@Override
 	public long ManPowerEdit(ProjectMajorManPowers pm) throws Exception {
-		// TODO Auto-generated method stub
+		ProjectMajorManPowers ExistingProjectMajorManPowers = manager.find(ProjectMajorManPowers.class, pm.getRequirementId());
+		if(ExistingProjectMajorManPowers != null) {
+			ExistingProjectMajorManPowers.setDesignation(pm.getDesignation());
+			ExistingProjectMajorManPowers.setDiscipline(pm.getDiscipline());
+			ExistingProjectMajorManPowers.setNumbers(pm.getNumbers());
+			ExistingProjectMajorManPowers.setPeriod(pm.getPeriod());
+			ExistingProjectMajorManPowers.setRemarks(pm.getRemarks());
+			ExistingProjectMajorManPowers.setModifiedBy(pm.getModifiedBy());
+			ExistingProjectMajorManPowers.setModifiedDate(pm.getModifiedDate());
+			return 1L;
+			}
+		else {
+			return 0L;
+		}
 
-		Query query=manager.createNativeQuery(MANPOWEDIT);
-		query.setParameter("designation", pm.getDesignation());
-		query.setParameter("discipline", pm.getDiscipline());
-		query.setParameter("numbers", pm.getNumbers());
-		query.setParameter("months", pm.getPeriod());
-		query.setParameter("remarks", pm.getRemarks());
-		query.setParameter("ModifiedBy", pm.getModifiedBy());
-		query.setParameter("ModifiedDate", pm.getModifiedDate());
-		query.setParameter("requirementid", pm.getRequirementId());
-		return query.executeUpdate();
 	}
 	private static final String MACRODETAILS2="SELECT DetailId,InitiationId,AdditionalInformation,Comments,Recommendations,AdditionalCapital FROM pfms_initiation_macro_details_part2 WHERE initiationid=:initiationid AND isactive=1" ;
 	@Override
@@ -3030,21 +3099,27 @@ public class ProjectDaoImpl implements ProjectDao {
 		query.setParameter("parameter", parameter);
 		return (Object[])query.getSingleResult();
 	}
-	private static final String CAPSEDIT="UPDATE pfms_initiation_soc_capsi SET station=:station,consultant=:consultant,areard=:areard,cost=:cost,pdc=:pdc,confidencelevel=:confidencelevel,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE capsid=:capsid";
+	private static final String CAPSEDIT="UPDATE pfms_initiation_soc_capsi SET station=:station,consultant=:consultant,"
+			+ "areard=:areard,cost=:cost,pdc=:pdc,confidencelevel=:confidencelevel,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate "
+			+ "WHERE capsid=:capsid";
 	@Override
 	public long CapsiEdt(ProjectMajorCapsi pmc) throws Exception {
-		// TODO Auto-generated method stub
-		Query query =manager.createNativeQuery(CAPSEDIT);
-		query.setParameter("station", pmc.getStation());
-		query.setParameter("consultant",pmc.getConsultant() );
-		query.setParameter("areard", pmc.getAreaRD());
-		query.setParameter("cost", pmc.getCost());
-		query.setParameter("pdc", pmc.getPDC());
-		query.setParameter("confidencelevel", pmc.getConfidencelevel());
-		query.setParameter("ModifiedBy", pmc.getModifiedBy());
-		query.setParameter("ModifiedDate", pmc.getModifiedDate());
-		query.setParameter("capsid", pmc.getCapsId());
-		return query.executeUpdate();
+		ProjectMajorCapsi ExistingProjectMajorCapsi = manager.find(ProjectMajorCapsi.class, pmc.getCapsId());
+		if(ExistingProjectMajorCapsi != null) {
+			ExistingProjectMajorCapsi.setStation(pmc.getStation());
+			ExistingProjectMajorCapsi.setConsultant(pmc.getConsultant());
+			ExistingProjectMajorCapsi.setAreaRD(pmc.getAreaRD());
+			ExistingProjectMajorCapsi.setCost(pmc.getCost());
+			ExistingProjectMajorCapsi.setPDC(pmc.getPDC());
+			ExistingProjectMajorCapsi.setConfidencelevel(pmc.getConfidencelevel());
+			ExistingProjectMajorCapsi.setModifiedBy(pmc.getModifiedBy());
+			ExistingProjectMajorCapsi.setModifiedDate(pmc.getModifiedDate());
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
+		
 	}
 	private static final String ALLLAB="SELECT labid ,labname,labcode  FROM cluster_lab WHERE labcode=:labcode";
 	@Override
@@ -3322,22 +3397,33 @@ public class ProjectDaoImpl implements ProjectDao {
 		manager.persist(pm);
 		return pm.getRequirementId();
 	}
-	private static final String UPDREQNAME="UPDATE pfms_initiation_otherreq_details SET RequirementName=:RequirementName WHERE RequirementId=:RequirementId AND isactive='1'";
+	private static final String UPDREQNAME="UPDATE pfms_initiation_otherreq_details SET"
+			+ " RequirementName=:RequirementName WHERE RequirementId=:RequirementId AND isactive='1'";
 	@Override
 	public long UpdateOtherRequirementName(ProjectOtherReqModel pm) throws Exception {
-		Query query =manager.createNativeQuery(UPDREQNAME);
-		query.setParameter("RequirementName", pm.getRequirementName());
-		query.setParameter("RequirementId", pm.getRequirementId());
-
-		return query.executeUpdate();
+		ProjectOtherReqModel ExistingProjectOtherReqModel= manager.find(ProjectOtherReqModel.class, pm.getRequirementId());
+		if(ExistingProjectOtherReqModel != null && ExistingProjectOtherReqModel.getIsActive()==1) {
+			ExistingProjectOtherReqModel.setRequirementName(pm.getRequirementName());
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
+		
 	}
-	private static final String UPDREQDETAILS="UPDATE pfms_initiation_otherreq_details SET RequirementDetails=:RequirementDetails WHERE RequirementId=:RequirementId AND isactive='1'";
+	private static final String UPDREQDETAILS="UPDATE pfms_initiation_otherreq_details SET "
+			+ "RequirementDetails=:RequirementDetails WHERE RequirementId=:RequirementId AND isactive='1'";
 	@Override
 	public long UpdateOtherRequirementDetails(ProjectOtherReqModel pm) throws Exception {
-		Query query =manager.createNativeQuery(UPDREQDETAILS);
-		query.setParameter("RequirementDetails", pm.getRequirementDetails());
-		query.setParameter("RequirementId", pm.getRequirementId());
-		return query.executeUpdate();
+		ProjectOtherReqModel ExistingProjectOtherReqModel = manager.find(ProjectOtherReqModel.class, pm.getRequirementId());
+		if(ExistingProjectOtherReqModel != null && ExistingProjectOtherReqModel.getIsActive()==1) {
+			ExistingProjectOtherReqModel.setRequirementDetails(pm.getRequirementDetails());
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
+		
 	}
 	private static final String REQID="SELECT requirementid FROM pfms_initiation_otherreq_details  WHERE ReqInitiationId=:ReqInitiationId AND reqmainid=:reqmainid AND reqparentid=:reqparentid AND isactive='1'";
 	@Override
@@ -3582,19 +3668,28 @@ public class ProjectDaoImpl implements ProjectDao {
 	}
 	@Override
 	public long RequirementParaEdit(RequirementparaModel rpm) throws Exception {
-		String PARAUPDATE="UPDATE pfms_initiation_sqr_para SET parano=:parano WHERE paraid=:paraid AND isactive='1'";	
-		String PARADETAILSUPDATE="UPDATE pfms_initiation_sqr_para SET paradetails=:paradetails WHERE paraid=:paraid AND isactive='1'";
+		
 		if(rpm.getParaDetails()==null) {
-			Query query = manager.createNativeQuery(PARAUPDATE);
-			query.setParameter("parano", rpm.getParaNo());
-			query.setParameter("paraid", rpm.getParaId());
-			return query.executeUpdate();
+			
+			RequirementparaModel ExistingRequirementparaModel= manager.find(RequirementparaModel.class, rpm.getParaId());
+			if(ExistingRequirementparaModel != null && ExistingRequirementparaModel.getIsActive()==1) {
+				ExistingRequirementparaModel.setParaNo(rpm.getParaNo());
+				return 1L;
+			}
+			else {
+				return 0L;
+			}
 		}
+		else
 		{
-			Query query = manager.createNativeQuery(PARADETAILSUPDATE);
-			query.setParameter("paradetails", rpm.getParaDetails());
-			query.setParameter("paraid", rpm.getParaId());
-			return query.executeUpdate();	
+			RequirementparaModel ExistingRequirementparaModel= manager.find(RequirementparaModel.class, rpm.getParaId());
+			if(ExistingRequirementparaModel != null && ExistingRequirementparaModel.getIsActive()==1) {
+				ExistingRequirementparaModel.setParaDetails(rpm.getParaDetails());
+				return 1L;
+			}
+			else {
+				return 0L;
+			}
 		}
 	}
 
@@ -3625,24 +3720,34 @@ public class ProjectDaoImpl implements ProjectDao {
 		return rv.getVerificationId();
 	}
 
-	private static final String UPDATEVER="UPDATE pfms_initiation_verification SET Provisions=:Provisions WHERE VerificationId=:VerificationId AND isactive='1'";
+
 	@Override
 	public Long updateRequirementVerification(RequirementVerification rv) throws Exception {
-
-		Query query= manager.createNativeQuery(UPDATEVER);
-		query.setParameter("Provisions", rv.getProvisions());
-		query.setParameter("VerificationId", rv.getVerificationId());
-		return (long) query.executeUpdate();
+		RequirementVerification ExistingRequirementVerification= manager.find(RequirementVerification.class, rv.getVerificationId());
+		if(ExistingRequirementVerification != null && ExistingRequirementVerification.getIsActive()==1)
+		{
+			ExistingRequirementVerification.setProvisions(rv.getProvisions());
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
+		
 	}
-	private static final String UPDATEVERDE="UPDATE pfms_initiation_verification SET ProvisionsDetails=:ProvisionsDetails WHERE VerificationId=:VerificationId AND isactive='1'";
+	private static final String UPDATEVERDE="UPDATE pfms_initiation_verification SET ProvisionsDetails=:ProvisionsDetails "
+			+ "WHERE VerificationId=:VerificationId AND isactive='1'";
 
 	@Override
 	public long updateRequirementVerificationDetails(RequirementVerification rv) throws Exception {
-		// TODO Auto-generated method stub
-		Query query= manager.createNativeQuery(UPDATEVERDE);
-		query.setParameter("ProvisionsDetails", rv.getProvisionsDetails());
-		query.setParameter("VerificationId", rv.getVerificationId());
-		return (long) query.executeUpdate();
+		RequirementVerification ExistingRequirementVerification = manager.find(RequirementVerification.class, rv.getVerificationId());
+		if(ExistingRequirementVerification != null && ExistingRequirementVerification.getIsActive()==1) {
+			ExistingRequirementVerification.setProvisionsDetails(rv.getProvisionsDetails());
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
+		
 	}
 
 
@@ -3826,26 +3931,33 @@ public class ProjectDaoImpl implements ProjectDao {
 	}
 
 
-	private static final String DOCSUMUPD="UPDATE pfms_initiation_req_summary SET AdditionalInformation=:AdditionalInformation,Abstract=:Abstract,Keywords=:Keywords,Distribution=:Distribution , reviewer=:reviewer,approver=:approver,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate,PreparedBy=:PreparedBy,ReleaseDate=:ReleaseDate WHERE SummaryId=:SummaryId AND isactive='1'";
+	private static final String DOCSUMUPD="UPDATE pfms_initiation_req_summary SET AdditionalInformation=:AdditionalInformation,"
+			+ "Abstract=:Abstract,Keywords=:Keywords,Distribution=:Distribution , reviewer=:reviewer,approver=:approver,"
+			+ "ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate,PreparedBy=:PreparedBy,ReleaseDate=:ReleaseDate "
+			+ "WHERE SummaryId=:SummaryId AND isactive='1'";
 
+	
 
 	@Override
 	public long editreqSummary(RequirementSummary rs) throws Exception {
-		Query query = manager.createNativeQuery(DOCSUMUPD);
-		query.setParameter("AdditionalInformation", rs.getAdditionalInformation());			
-		query.setParameter("Abstract", rs.getAbstract());			
-		query.setParameter("Keywords", rs.getKeywords());			
-		query.setParameter("Distribution", rs.getDistribution());			
-		query.setParameter("reviewer", rs.getReviewer());			
-		query.setParameter("approver", rs.getApprover());			
-		query.setParameter("ModifiedBy", rs.getModifiedBy());			
-		query.setParameter("ModifiedDate", rs.getModifiedDate());			
-		query.setParameter("SummaryId", rs.getSummaryId());	
-		query.setParameter("PreparedBy", rs.getPreparedBy());	
-		query.setParameter("ReleaseDate", rs.getReleaseDate());	
-
-
-		return query.executeUpdate();
+		RequirementSummary ExistingRequirementSummary= manager.find(RequirementSummary.class, rs.getSummaryId());
+		if(ExistingRequirementSummary!=null && ExistingRequirementSummary.getIsActive()==1) {
+			ExistingRequirementSummary.setAdditionalInformation(rs.getAdditionalInformation());
+			ExistingRequirementSummary.setAbstract(rs.getAbstract());
+			ExistingRequirementSummary.setKeywords(rs.getKeywords());
+			ExistingRequirementSummary.setDistribution(rs.getDistribution());
+			ExistingRequirementSummary.setReviewer(rs.getReviewer());
+			ExistingRequirementSummary.setApprover(rs.getApprover());
+			ExistingRequirementSummary.setModifiedBy(rs.getModifiedBy());
+			ExistingRequirementSummary.setModifiedDate(rs.getModifiedDate());
+			ExistingRequirementSummary.setPreparedBy(rs.getPreparedBy());
+			ExistingRequirementSummary.setReleaseDate(rs.getReleaseDate());
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
+		
 	}
 	private static final String DOCTEMPATTRIBUTES="SELECT a.HeaderFontSize,a.HeaderFontWeight,a.SubHeaderFontsize, a.SubHeaderFontweight,a.ParaFontSize,a.ParaFontWeight,a.MainTableWidth, a.subTableWidth,a.AttributId,a.SuperHeaderFontsize,a.SuperHeaderFontWeight,a.FontFamily,a.RestrictionOnUse FROM  pfms_doc_template_attributes a";
 	@Override
@@ -4024,17 +4136,21 @@ public class ProjectDaoImpl implements ProjectDao {
 		return (List<Object[]>)query.getResultList();
 	}
 	
-	private static final String EDITSPECINTRO="UPDATE pfms_specification_intro SET IntroContent=:IntroContent , ModifiedBy=:ModifiedBy , ModifiedDate=:ModifiedDate WHERE IntroductionId=:IntroductionId";
+	private static final String EDITSPECINTRO="UPDATE pfms_specification_intro SET IntroContent=:IntroContent ,"
+			+ " ModifiedBy=:ModifiedBy , ModifiedDate=:ModifiedDate WHERE IntroductionId=:IntroductionId";
 	@Override
 	public long editSpecificationIntro(SpecificationIntro s) throws Exception {
-		
-		Query query = manager.createNativeQuery(EDITSPECINTRO);
-		query.setParameter("IntroContent", s.getIntroContent());
-		query.setParameter("ModifiedBy", s.getModifiedBy());
-		query.setParameter("ModifiedDate", s.getModifiedDate());
-		query.setParameter("IntroductionId", s.getIntroductionId());
-		
-		return (long)query.executeUpdate();
+		SpecificationIntro ExistingSpecificationIntro= manager.find(SpecificationIntro.class, s.getIntroductionId());
+		if( ExistingSpecificationIntro != null) {
+			ExistingSpecificationIntro.setIntroContent(s.getIntroContent());
+			ExistingSpecificationIntro.setModifiedBy(s.getModifiedBy());
+			ExistingSpecificationIntro.setModifiedDate(s.getModifiedDate());
+			return 1L;
+			}
+		else {
+			return 0L;
+		}
+	
 	}
 	
 	@Override
@@ -4169,14 +4285,20 @@ public class ProjectDaoImpl implements ProjectDao {
 		}
 	}
 	
-	
+	String sql = "UPDATE pfms_initiation_req_members SET Isactive='0' WHERE ReqMemeberId=:reqMemberId";
 	@Override
 	public long UpdateInitiationReqMembers(long reqMemberId) throws Exception {
-		String sql = "UPDATE pfms_initiation_req_members SET Isactive='0' WHERE ReqMemeberId=:reqMemberId";
-		Query query = manager.createNativeQuery(sql);
-		query.setParameter("reqMemberId", reqMemberId);
-		long result=query.executeUpdate();
-		return result;
+		
+		RequirementMembers ExistingRequirementMembers = manager.find(RequirementMembers.class, reqMemberId);
+		if(ExistingRequirementMembers != null) {
+			ExistingRequirementMembers.setIsActive(0);
+			return 1L;
+		}
+		else {
+			return 0L;
+		}
+		
+		
 	}
 	
 	

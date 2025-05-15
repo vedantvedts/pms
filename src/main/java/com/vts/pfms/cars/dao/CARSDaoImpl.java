@@ -1122,7 +1122,6 @@ public class CARSDaoImpl implements CARSDao{
 		}
 	}
 
-	private static final String CARSCSDOCUPLOAD = "UPDATE pfms_cars_other_doc_details SET UploadOtherDoc=:UploadOtherDoc WHERE OtherDocDetailsId=:OtherDocDetailsId AND IsActive=1";
 	@Override
 	public long carsOtherDocUpload(String uploadOtherDoc, String otherDocDetailsId) throws Exception {
 		try {
@@ -1136,12 +1135,7 @@ public class CARSDaoImpl implements CARSDao{
 			else {
 				return 0L;
 			}
-			/*
-			 * Query query = manager.createNativeQuery(CARSCSDOCUPLOAD);
-			 * query.setParameter("UploadOtherDoc", uploadOtherDoc);
-			 * query.setParameter("OtherDocDetailsId", otherDocDetailsId); return
-			 * query.executeUpdate();
-			 */
+			
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside DAO carsOtherDocUpload "+e);

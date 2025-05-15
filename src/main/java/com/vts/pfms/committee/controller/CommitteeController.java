@@ -2378,14 +2378,7 @@ public class CommitteeController {
 		{
 			String ActionName=req.getParameter("NoteText");
 			String Remarks=req.getParameter("remarks");
-			if(!InputValidator.isContainsDescriptionPattern(ActionName)) {
-				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
-				redir.addAttribute("specname", req.getParameter("specname"));
-				redir.addAttribute("membertype",req.getParameter("membertype"));
-				redir.addAttribute("formname", req.getParameter("formname"));
-				redir.addAttribute("unit1",req.getParameter("unit1"));
-				return redirectWithError(redir, "CommitteeScheduleMinutes.htm", "'ActionName' should contain Alphabets, Numbers or some Special Characters.!");
-			}
+			
 			if(InputValidator.isContainsHTMLTags(Remarks)) {
 				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
 				redir.addAttribute("specname", req.getParameter("specname"));
