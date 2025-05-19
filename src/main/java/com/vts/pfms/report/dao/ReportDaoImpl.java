@@ -39,7 +39,7 @@ public class ReportDaoImpl implements ReportDao {
 	public Object[] prjDetails(String projectid) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(prjDetails);
-			query.setParameter("projectid", projectid);
+			query.setParameter("projectid", Long.parseLong(projectid));
 			return (Object[]) query.getSingleResult();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -95,7 +95,7 @@ public class ReportDaoImpl implements ReportDao {
 	public Object[] editorData(String projectid) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(editorData);
-			query.setParameter("ProjectId", projectid);
+			query.setParameter("ProjectId", Long.parseLong(projectid));
 			
 			//return (Object[]) query.getSingleResult();
 			// Use getResultList instead of getSingleResult to avoid NoResultException
@@ -120,7 +120,7 @@ public class ReportDaoImpl implements ReportDao {
 	public List<Object[]> mileStoneData(int currentYear,String projectid) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(mileStoneData);
-			query.setParameter("prjid", projectid);
+			query.setParameter("prjid", Long.parseLong(projectid));
 			/*
 			 * query.setParameter("currentYear", currentYear); query.setParameter("nextyr",
 			 * (currentYear+1));
@@ -133,23 +133,6 @@ public class ReportDaoImpl implements ReportDao {
 		}
 		
 		
-	}
-	
-	
-	private static final String MILACTNAMEUPDATE="UPDATE milestone_activity SET ActivityName=:ActivityName , ModifiedBy =:ModifiedBy WHERE MilestoneActivityId=:MilestoneActivityId";
-		@Override
-	public long MilestoneActivityNameUpdate(String milestoneActivityId,String UserId,String ActivityName) throws Exception {
-				try {
-		Query query    = manager.createNativeQuery(MILACTNAMEUPDATE);
-		query.setParameter("MilestoneActivityId", milestoneActivityId);
-		query.setParameter("ModifiedBy", UserId);
-		query.setParameter("ActivityName", ActivityName);
-	
-		return query.executeUpdate();
-				}catch (Exception e) {
-				e.printStackTrace();
-				return 0;
-				}
 	}	
 		
 @Override

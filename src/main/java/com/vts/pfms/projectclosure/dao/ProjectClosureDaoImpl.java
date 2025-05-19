@@ -55,7 +55,7 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 	public List<Object[]> projectClosureList(String EmpId, String labcode, String LoginType) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(PROJECTCLOSURELIST);
-			query.setParameter("EmpId", EmpId);
+			query.setParameter("EmpId", Long.parseLong(EmpId));
 			query.setParameter("LabCode", labcode);
 			query.setParameter("LoginType", LoginType);
 			return (List<Object[]>) query.getResultList();
@@ -187,7 +187,7 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 
 		try {
 			Query query = manager.createNativeQuery(PROJECTCLOSURETRANSAPPROVALDATABYTYPE);
-			query.setParameter("ClosureId", closureId);
+			query.setParameter("ClosureId", Long.parseLong(closureId));
 			query.setParameter("ClosureForward", closureForward);
 			query.setParameter("ClosureForm", closureForm);
 			return (List<Object[]>)query.getResultList();
@@ -206,7 +206,7 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		List<Object[]> list =new ArrayList<Object[]>();
 		try {
 			Query query= manager.createNativeQuery(PROJECTCLOSUREREMARKSHISTORYBYTYPE);
-			query.setParameter("ClosureId", closureId);
+			query.setParameter("ClosureId", Long.parseLong(closureId));
 			query.setParameter("ClosureForward", closureForward);
 			query.setParameter("ClosureForm", closureForm);
 			list= (List<Object[]>)query.getResultList();
@@ -224,7 +224,7 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 	{
 		try {			
 			Query query= manager.createNativeQuery(GETEMPGDDETAILS);
-			query.setParameter("EmpId", empId);
+			query.setParameter("EmpId", Long.parseLong(empId));
 			List<Object[]> list =  (List<Object[]>)query.getResultList();
 			if(list.size()>0) {
 				return list.get(0);
@@ -574,8 +574,8 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 	{
 		try {			
 			Query query= manager.createNativeQuery(PROJECTORIGINALANDREVISIONDETAILS);
-			query.setParameter("ProjectId", projectId);
-			List<Object[]> list =  (List<Object[]>)query.getResultList();
+			query.setParameter("ProjectId", Long.parseLong(projectId));
+				List<Object[]> list =  (List<Object[]>)query.getResultList();
 			if(list.size()>0) {
 				return list.get(0);
 			}else {
@@ -594,7 +594,7 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 	{
 		try {			
 			Query query= manager.createNativeQuery(PROJECTEXPENDITUREDETAILS);
-			query.setParameter("ProjectId", projectId);
+			query.setParameter("ProjectId", Long.parseLong(projectId));
 			List<Object[]> list =  (List<Object[]>)query.getResultList();
 			if(list.size()>0) {
 				return list.get(0);
@@ -680,8 +680,7 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		
 		try {			
 			Query query= manager.createNativeQuery(TECHNICALCLOSURERECORDLIST);
-			query.setParameter("closureId", closureId);
-			
+			query.setParameter("closureId", Long.parseLong(closureId));			
 			List<Object[]> list =  (List<Object[]>)query.getResultList();
 			return list;
 		}catch (Exception e) {
@@ -717,8 +716,7 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		
 		try {			
 			Query query= manager.createNativeQuery(TECHNICALCLOSURESECTIONLIST);
-			query.setParameter("closureId", closureId);
-			
+			query.setParameter("closureId", Long.parseLong(closureId));	
 			List<Object[]> list =  (List<Object[]>)query.getResultList();
 			return list;
 		}catch (Exception e) {
@@ -736,8 +734,7 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		
 		try {			
 			Query query= manager.createNativeQuery(TECHNICALCLOSURECHAPTERLIST);
-			query.setParameter("closureId", closureId);
-			
+			query.setParameter("closureId", Long.parseLong(closureId));			
 			
 			List<Object[]> list =  (List<Object[]>)query.getResultList();
 			return list;
@@ -797,7 +794,7 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		
 		try {			
 			Query query= manager.createNativeQuery(TECHNICALCLOSURECHAPTERCONTENT);
-			query.setParameter("chapterId", chapterId);
+			query.setParameter("chapterId", Long.parseLong(chapterId));
 			List<Object[]> list =  (List<Object[]>)query.getResultList();
 			if(list.size()>0) {
 				return list.get(0);
@@ -850,7 +847,7 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		
 		try {			
 			Query query= manager.createNativeQuery(APPENDICESLIST);
-			query.setParameter("closureId", closureId);
+			query.setParameter("closureId", Long.parseLong(closureId));
 			List<Object[]> list =  (List<Object[]>)query.getResultList();
 			return list;
 		}catch (Exception e) {
@@ -898,7 +895,7 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		
 		try {			
 			Query query= manager.createNativeQuery(TECHCLOSURECONTENT);
-			query.setParameter("closureId", closureId);
+			query.setParameter("closureId", Long.parseLong(closureId));
 			List<Object[]> list =  (List<Object[]>)query.getResultList();
 			return list;
 		}catch (Exception e) {
@@ -961,7 +958,7 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		
 		try {			
 			Query query= manager.createNativeQuery(TECHCLOSUREDOCUMENTSUMMARY);
-			query.setParameter("closureId", closureId);
+			query.setParameter("closureId", Long.parseLong(closureId));
 			List<Object[]> list =  (List<Object[]>)query.getResultList();
 			return list;
 		}catch (Exception e) {
@@ -1028,7 +1025,7 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		
 		try {			
 			Query query= manager.createNativeQuery(TECHCLOSUREPENDINGLIST);
-			query.setParameter("EmpId", empId);
+			query.setParameter("EmpId", Long.parseLong(empId));
 			query.setParameter("LabCode", labcode);
 			List<Object[]> list =  (List<Object[]>)query.getResultList();
 			return list;
@@ -1097,7 +1094,7 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		
 		try {
 			Query query = manager.createNativeQuery(TCRFreeze);
-			query.setParameter("techclosureId", techclosureId);
+			query.setParameter("techclosureId", Long.parseLong(techclosureId));
 			query.setParameter("TCRFreeze", filepath);
 			return query.executeUpdate();
 		}catch (Exception e) {
@@ -1182,7 +1179,7 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		
 		try {			
 			Query query= manager.createNativeQuery(TCRTEMPLATECHAPTERLISTBYSECTIONID);
-			query.setParameter("sectionid", sectionid);
+			query.setParameter("sectionid", Long.parseLong(sectionid));
 			List<Object[]> list =  (List<Object[]>)query.getResultList();
 			return list;
 		}catch (Exception e) {
@@ -1199,7 +1196,7 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		
 		try {			
 			Query query= manager.createNativeQuery(TCRTEMPLATECHAPTERLISTBYCHAPTERPARENTID);
-			query.setParameter("chapterparentid", chapterparentid);
+			query.setParameter("chapterparentid", Long.parseLong(chapterparentid));
 			List<Object[]> list =  (List<Object[]>)query.getResultList();
 			return list;
 		}catch (Exception e) {
@@ -1216,7 +1213,7 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		
 		try {			
 			Query query= manager.createNativeQuery(AMENDCLOSURELIST);
-			query.setParameter("techClosureId", techClosureId);
+			query.setParameter("techClosureId", Long.parseLong(techClosureId));
 			return query.executeUpdate();
 			
 		}catch (Exception e) {

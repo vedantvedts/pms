@@ -21,8 +21,6 @@ public interface ReportDao {
 
 	public List<Object[]> mileStoneData(int currentYear,String projectid)throws Exception;
 
-	public long MilestoneActivityNameUpdate(String milestoneActivityId,String UserId,String ActivityName)throws Exception;
-
 	public long LabReportMilestone(PfmsLabReportMilestone pm)throws Exception;
 
 	public List<PfmsLabReportMilestone> getPfmsLabReportMilestoneData(String projectid)throws Exception;

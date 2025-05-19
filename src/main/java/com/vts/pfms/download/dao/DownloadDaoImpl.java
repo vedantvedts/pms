@@ -35,7 +35,7 @@ public class DownloadDaoImpl implements DownloadDao{
 	{
 		logger.info(new java.util.Date() +"Inside DAO AgendaDocLinkDownload ");
 		Query query=manager.createNativeQuery(AGENDADOCLINKDOWNLOAD);
-		query.setParameter("filerepid", filerepid);
+		query.setParameter("filerepid", Long.parseLong(filerepid));
 		List<Object[]> FileRepMasterListAll=(List<Object[]>)query.getResultList();
 		if(FileRepMasterListAll.size()>0) {
 		return FileRepMasterListAll.get(0);
@@ -51,7 +51,7 @@ public class DownloadDaoImpl implements DownloadDao{
 		logger.info(new java.util.Date() +"Inside DAO ProjectDataSpecsFileData ");
 	
 		Query query=manager.createNativeQuery(PROJECTDATASPECSFILEDATA);
-		query.setParameter("projectdataid",projectdataid);
+		query.setParameter("projectdataid",Long.parseLong(projectdataid));
 		Object[] ProjectDataSpecsFileData=(Object[])query.getSingleResult();
 		return ProjectDataSpecsFileData;
 		
@@ -64,7 +64,7 @@ public class DownloadDaoImpl implements DownloadDao{
 		logger.info(new java.util.Date() +"Inside DAO reqAttachDownload ");
 		Query query =manager.createNativeQuery(REQATTACHDOWNLOAD);
 		
-		query.setParameter("attachmentid", attachmentid);
+		query.setParameter("attachmentid", Long.parseLong(attachmentid));
 		Object[]reqAttachDownload=(Object[])query.getSingleResult();
 		return reqAttachDownload;
 	}
