@@ -146,7 +146,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 		Query query=manager.createNativeQuery(MAASSIGNEELIST);
 		query.setParameter("ProjectId", Long.parseLong(ProjectId));
-		query.setParameter("empid", Long.parseLong(EmpId));
+		query.setParameter("empid", EmpId);
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
 
 		return MilestoneActivityList;
