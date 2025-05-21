@@ -123,7 +123,7 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> AssignedList(String EmpId ) throws Exception {
         Query query=manager.createNativeQuery(ASSIGNEDLIST);
-		query.setParameter("empid", EmpId);
+		query.setParameter("empid", Long.parseLong(EmpId));
 		
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
@@ -150,7 +150,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> AssigneeList(String EmpId) throws Exception {
 		
 		Query query=manager.createNativeQuery(ASSIGNEELIST);
-		query.setParameter("empid", EmpId);
+		query.setParameter("empid", Long.parseLong(EmpId));
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
 	}
@@ -161,7 +161,7 @@ public class ActionDaoImpl implements ActionDao{
 	public int AssigneeSeenUpdate(String EmpId) throws Exception 
 	{		
 		Query query=manager.createNativeQuery(ASSIGNEESEENUPDATE);
-		query.setParameter("empid", EmpId);
+		query.setParameter("empid", Long.parseLong(EmpId));
 		return query.executeUpdate();
 	}
 	
@@ -172,7 +172,7 @@ public class ActionDaoImpl implements ActionDao{
 		try {
 		Query query=manager.createNativeQuery(ASSIGNEEDATA);
 //		query.setParameter("mainid", mainid);
-		query.setParameter("actionassignid", assignid);
+		query.setParameter("actionassignid", Long.parseLong(assignid));
 		
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		
@@ -187,7 +187,7 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> SubList(String assignid) throws Exception {
 		Query query=manager.createNativeQuery(SUBLIST);
-		query.setParameter("assignid", assignid);
+		query.setParameter("assignid", Long.parseLong(assignid));
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
 	}
@@ -219,7 +219,7 @@ public class ActionDaoImpl implements ActionDao{
 	public int ActionSubDelete(String id) throws Exception {
 		
 		Query query=manager.createNativeQuery(SUBDELETE);
-		query.setParameter("subid", id);
+		query.setParameter("subid", Long.parseLong(id));
 		int result=query.executeUpdate();
 		return result;
 	}
@@ -262,7 +262,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> ForwardList(String EmpId) throws Exception {
 		
 		Query query=manager.createNativeQuery(FORWARDLIST);
-		query.setParameter("empid", EmpId);
+		query.setParameter("empid", Long.parseLong(EmpId));
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
 	}
@@ -289,7 +289,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> StatusList(String EmpId,String fdate, String tdate) throws Exception {
 		
 		Query query=manager.createNativeQuery(STATUSLIST);
-		query.setParameter("empid", EmpId);
+		query.setParameter("empid", Long.parseLong(EmpId));
 		query.setParameter("fdate", fdate);
 		query.setParameter("tdate", tdate);
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
@@ -300,7 +300,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> ActionList(String EmpId) throws Exception {
 		
 		Query query=manager.createNativeQuery(ACTIONLIST);
-		query.setParameter("empid", EmpId);
+		query.setParameter("empid", Long.parseLong(EmpId));
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
 	}
@@ -309,7 +309,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> CommitteeActionList(String EmpId) throws Exception {
 		
 		Query query=manager.createNativeQuery(COMMITTEEDATA);
-		query.setParameter("scheduleid", EmpId);
+		query.setParameter("scheduleid", Long.parseLong(EmpId));
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
 	}
@@ -318,7 +318,7 @@ public class ActionDaoImpl implements ActionDao{
 	public Object[] CommitteeScheduleEditData(String CommitteeScheduleId) throws Exception 
 	{		
 		Query query=manager.createNativeQuery(COMMITTEESCHEDULEEDITDATA);
-		query.setParameter("committeescheduleid", CommitteeScheduleId );
+		query.setParameter("committeescheduleid", Long.parseLong(CommitteeScheduleId));
 		Object[] CommitteeScheduleEditData=(Object[])query.getSingleResult();
 		return CommitteeScheduleEditData;
 	}
@@ -327,7 +327,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> ScheduleActionList(String ScheduleId) throws Exception {
 		
 		Query query=manager.createNativeQuery(SCHEDULELIST);
-		query.setParameter("schid", ScheduleId);
+		query.setParameter("schid", Long.parseLong(ScheduleId));
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
 	}
@@ -336,7 +336,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> MeetingContent(String ScheduleId) throws Exception {
 		
 		Query query=manager.createNativeQuery(CONTENT);
-		query.setParameter("aid", ScheduleId);
+		query.setParameter("aid", Long.parseLong(ScheduleId));
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
 	}
@@ -355,7 +355,7 @@ public class ActionDaoImpl implements ActionDao{
 	public int ActionGenCount(String ProjectId, String type) throws Exception {
 		
 		Query query = manager.createNativeQuery(ACTIONGENCOUNT);
-		query.setParameter("projectid",ProjectId );
+		query.setParameter("projectid", Long.parseLong(ProjectId));
 		query.setParameter("type", type);
 		Long count=(Long)query.getSingleResult();
 		
@@ -374,7 +374,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> AssigneeDetails(String assignid) throws Exception {
 		
 		Query query=manager.createNativeQuery(ASSIGNEEDETAILS);
-		query.setParameter("assignid",assignid );
+		query.setParameter("assignid", Long.parseLong(assignid));
 		List<Object[]> AssigneeDetails=(List<Object[]>)query.getResultList();
 		
 		return AssigneeDetails;
@@ -384,7 +384,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> ScheduleActionItem(String ScheduleId) throws Exception {
 		
 		Query query=manager.createNativeQuery(SCHEDULEITEM);
-		query.setParameter("schid", ScheduleId);
+		query.setParameter("schid", Long.parseLong(ScheduleId));
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
 	}
@@ -394,7 +394,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> ActionReports(String EmpId,String Term,String Position,String Type,String LabCode) throws Exception {
 		
 		Query query=manager.createNativeQuery(ACTIONREPORT);
-		query.setParameter("empid",EmpId);
+		query.setParameter("empid", Long.parseLong(EmpId));
 		query.setParameter("term",Term);
 		query.setParameter("position",Position);
 		query.setParameter("type",Type);
@@ -407,7 +407,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> ActionSearch(String EmpId,String No,String Position) throws Exception {
 		
 		Query query=manager.createNativeQuery(ACTIONSEARCHNO);
-		query.setParameter("empid",EmpId);
+		query.setParameter("empid", Long.parseLong(EmpId));
 		query.setParameter("no",No);
 		query.setParameter("position",Position);
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
@@ -426,7 +426,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> ActionCountList(String ProjectId) throws Exception {
 		
 		Query query=manager.createNativeQuery(ACTIONCOUNT);
-		query.setParameter("projectid",ProjectId);
+		query.setParameter("projectid", Long.parseLong(ProjectId));
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
 	}
@@ -435,7 +435,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> projectdetailsList(String EmpId) throws Exception {
 		
 		Query query=manager.createNativeQuery(LOGINPROJECTIDLIST);
-		query.setParameter("empid", EmpId);
+		query.setParameter("empid", Long.parseLong(EmpId));
 		return (List<Object[]>)query.getResultList();
 	}
 	
@@ -451,7 +451,7 @@ public class ActionDaoImpl implements ActionDao{
 		
 		Query query=manager.createNativeQuery(ACTIONWISE);
 		query.setParameter("term",Term);
-		query.setParameter("ProjectId",ProjectId);
+		query.setParameter("ProjectId", Long.parseLong(ProjectId));
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
 	}
@@ -459,8 +459,8 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> ActionNotification( String MainId , String assignid) throws Exception {
 		
 		Query query=manager.createNativeQuery(ACTIONNOTIFIC);
-		query.setParameter("mainid",MainId);
-		query.setParameter("actionassignid", assignid);
+		query.setParameter("mainid",Long.parseLong(MainId));
+		query.setParameter("actionassignid", Long.parseLong(assignid));
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
 	}
@@ -484,14 +484,14 @@ public class ActionDaoImpl implements ActionDao{
 	public String ProjectCode(String ProjectId) throws Exception {
 		
 		Query query=manager.createNativeQuery(PROJECTCODE);
-		query.setParameter("ProjectId",ProjectId);
+		query.setParameter("ProjectId", Long.parseLong(ProjectId));
 		String ProjectCode=(String)query.getSingleResult();	
 		return ProjectCode;
 	}
 	@Override
 	public List<Object[]> ActionSelfList(String EmpId) throws Exception {
 	        Query query=manager.createNativeQuery(SELFASSIGNEDLIST);
-			query.setParameter("empid", EmpId);
+			query.setParameter("empid", Long.parseLong(EmpId));
 			List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 			return AssignedList;
 		}
@@ -499,8 +499,8 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> SearchDetails(String MainId , String assignid) throws Exception {
 		Query query=manager.createNativeQuery(SEARCHDATA);
-		query.setParameter("mainid", MainId);
-		query.setParameter("assignid", assignid);
+		query.setParameter("mainid", Long.parseLong(MainId));
+		query.setParameter("assignid", Long.parseLong(assignid));
 		List<Object[]> SearchDetails=(List<Object[]>)query.getResultList();	
 		return SearchDetails;
 	}	
@@ -514,7 +514,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> ActionWiseAllReport(String ProjectId) throws Exception {
 		
 		Query query=manager.createNativeQuery(ACTIONWISEALLREPORT);
-		query.setParameter("projectid", ProjectId);
+		query.setParameter("projectid", Long.parseLong(ProjectId));
 		List<Object[]> ActionWiseAllReport=(List<Object[]>)query.getResultList();	
 		return ActionWiseAllReport;
 	}
@@ -533,7 +533,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> ActionSelfReminderList(String empid,String fromdate,String todate) throws Exception {
 		
 		Query query=manager.createNativeQuery(ACTIONSELFREMINDERLIST);		
-		query.setParameter("empid",empid);
+		query.setParameter("empid", Long.parseLong(empid));
 		query.setParameter("fromdate",fromdate);
 		query.setParameter("todate",todate);
 		List<Object[]> ActionSelfReminderList=(List<Object[]>)query.getResultList();	
@@ -544,7 +544,7 @@ public class ActionDaoImpl implements ActionDao{
 
 	@Override
 	public int ActionSelfReminderDelete(String actionid) throws Exception {		
-		ActionSelf ExistingActionSelf = manager.find(ActionSelf.class, actionid);
+		ActionSelf ExistingActionSelf = manager.find(ActionSelf.class, Long.parseLong(actionid));
 		if(ExistingActionSelf != null) {
 			ExistingActionSelf.setIsActive(0);
 			System.err.println("Working");
@@ -566,7 +566,7 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> getActionToday(String empid,String ai) throws Exception {
 		Query query=manager.createNativeQuery(ACTIONTODAY);	
-		query.setParameter("empid",empid);
+		query.setParameter("empid", Long.parseLong(empid));
 		query.setParameter("AI",ai);
 		List<Object[]> getActionToday=(List<Object[]>)query.getResultList();	
 		return getActionToday;
@@ -575,7 +575,7 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> getActionTommo(String empid,String ai) throws Exception {
 		Query query=manager.createNativeQuery(ACTIONTOMMO);	
-		query.setParameter("empid",empid);
+		query.setParameter("empid",Long.parseLong(empid));
 		query.setParameter("AI",ai);
 		List<Object[]> getActionTommo=(List<Object[]>)query.getResultList();	
 		return getActionTommo;
@@ -591,7 +591,7 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> getMeetingToday(String empid) throws Exception {
 		Query query=manager.createNativeQuery(MEETINGTODAY);	
-		query.setParameter("empid",empid);
+		query.setParameter("empid", Long.parseLong(empid));
 		List<Object[]> getMeetingToday=(List<Object[]>)query.getResultList();	
 		return getMeetingToday;
 	}
@@ -599,7 +599,7 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> getMeetingTommo(String empid) throws Exception {
 		Query query=manager.createNativeQuery(MEETINGTOMMO);	
-		query.setParameter("empid",empid);
+		query.setParameter("empid", Long.parseLong(empid));
 		List<Object[]> getMeetingTommo=(List<Object[]>)query.getResultList();	
 		return getMeetingTommo;
 	}
@@ -608,7 +608,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype , String LabCode)throws Exception
 	{
 		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList(:empid,:logintype,:labcode);");
-		query.setParameter("empid", empid);
+		query.setParameter("empid", Long.parseLong(empid));
 		query.setParameter("logintype", Logintype);
 		query.setParameter("labcode", LabCode);
 		List<Object[]> LoginProjectIdList=(List<Object[]>)query.getResultList();
@@ -628,7 +628,7 @@ public class ActionDaoImpl implements ActionDao{
 	{
 		Object[] assigndata = null;
 		Query query=manager.createNativeQuery(GETREASSIGNEDDATA);
-		query.setParameter("actionassignid", Actionassignid);
+		query.setParameter("actionassignid", Long.parseLong(Actionassignid));
 		List<Object[]> list=(List<Object[]>)query.getResultList();
 		if(list!=null && list.size()>0) {
 			assigndata=list.get(0);
@@ -641,7 +641,7 @@ public class ActionDaoImpl implements ActionDao{
 	{
 		Object[] assigndata = null;
 		Query query=manager.createNativeQuery(PROJECTDATA);
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		List<Object[]> list=(List<Object[]>)query.getResultList();
 		if(list!=null && list.size()>0) {
 			assigndata=list.get(0);
@@ -653,7 +653,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> ProjectEmpList(String projectid)throws Exception
 	{
 		Query query=manager.createNativeQuery(PROJECTEMPLIST);
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		List<Object[]> ProjectEmpList=(List<Object[]>)query.getResultList();
 		return ProjectEmpList;
 	}
@@ -664,7 +664,7 @@ public class ActionDaoImpl implements ActionDao{
 	public Object[] CommitteeShortName(String scheduleid)throws Exception
 	{
 		Query query=manager.createNativeQuery(COMMITTEESHORTNAME);
-		query.setParameter("scheduleid", scheduleid);
+		query.setParameter("scheduleid", Long.parseLong(scheduleid));
 		Object[] CommitteeShortName=(Object[])query.getResultList().get(0);
 		return CommitteeShortName;
 	}
@@ -675,7 +675,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> EmployeeDropdown(String empid,String logintype,String projectid)throws Exception
 	{
 		Query query=manager.createNativeQuery("CALL Employee_Dropdown(:empid,:logintype,:projectid);");
-		query.setParameter("empid", empid);
+		query.setParameter("empid", Long.parseLong(empid));
 		query.setParameter("logintype", logintype);
 		query.setParameter("projectid", projectid);
 		List<Object[]> EmployeeDropdown=(List<Object[]>)query.getResultList();
@@ -689,8 +689,8 @@ public class ActionDaoImpl implements ActionDao{
 	public Object[] ActionDetailsAjax(String actionid ,String assignid) throws Exception
 	{		
 		Query query=manager.createNativeQuery(ACTIONDETAILSAJAX);
-		query.setParameter("actionid", actionid);
-		query.setParameter("assignid", assignid);
+		query.setParameter("actionid", Long.parseLong(actionid));
+		query.setParameter("assignid", Long.parseLong(assignid));
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		if(AssignedList.size()>0) {
 			return AssignedList.get(0);
@@ -746,7 +746,7 @@ public class ActionDaoImpl implements ActionDao{
 	public Object[] GetActionMainData(String actionmainid) throws Exception {
 		Object[] actiondata=null;
 		Query query = manager.createNativeQuery(ACTIONMAINDATA);
-		query.setParameter("actionmainid", actionmainid);
+		query.setParameter("actionmainid", Long.parseLong(actionmainid));
 		List<Object[]> result = (List<Object[]>)query.getResultList();
 		if(result.size()>0) {
 			actiondata=result.get(0);
@@ -776,7 +776,7 @@ public class ActionDaoImpl implements ActionDao{
 		try {
 			Query query=manager.createNativeQuery(CLUSTERFILTEREMPLIST);
 			query.setParameter("labcode", Labcode);
-			query.setParameter("mainid", MainId);
+			query.setParameter("mainid", Long.parseLong(MainId));
 			List<Object[]> DGEmpData=(List<Object[]>)query.getResultList();
 			return DGEmpData;
 		}catch (Exception e) {
@@ -810,7 +810,7 @@ public class ActionDaoImpl implements ActionDao{
 	{
 		Query query=manager.createNativeQuery(LABEMPFILTERFORACTION);
 		query.setParameter("labcode", LabCode);
-		query.setParameter("mainid", MainId);
+		query.setParameter("mainid", Long.parseLong(MainId));
 		List<Object[]> ChairpersonEmployeeListFormation=(List<Object[]>)query.getResultList();
 		return ChairpersonEmployeeListFormation;
 	}
@@ -841,7 +841,7 @@ public class ActionDaoImpl implements ActionDao{
 	 public List<Object[]> ActionSubLevelsList(String ActionAssignId) throws Exception
 	 {
 		Query query=manager.createNativeQuery(ACTIONSUBLEVELSLIST);
-		query.setParameter("ActionAssignId", ActionAssignId);
+		query.setParameter("ActionAssignId", Long.parseLong(ActionAssignId));
 		List<Object[]> ActionSubLevelsList=(List<Object[]>)query.getResultList();
 		return ActionSubLevelsList;
 	 }
@@ -852,7 +852,7 @@ public class ActionDaoImpl implements ActionDao{
 	 public List<Object[]> ActionSubLevelsListForClose(String ActionAssignId) throws Exception
 	 {
 		Query query=manager.createNativeQuery(ACTIONSUBLEVELSLISTFORCLOSE);
-		query.setParameter("ActionAssignId", ActionAssignId);
+		query.setParameter("ActionAssignId", Long.parseLong(ActionAssignId));
 		List<Object[]> ActionSubLevelsList=(List<Object[]>)query.getResultList();
 		return ActionSubLevelsList;
 	 }
@@ -861,7 +861,7 @@ public class ActionDaoImpl implements ActionDao{
 	 @Override
 		public List<Object[]> ActionSubList(String assignid) throws Exception {
 			Query query=manager.createNativeQuery(ACTIONSUBLIST);
-			query.setParameter("assignid", assignid);
+			query.setParameter("assignid",  Long.parseLong(assignid));
 			List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 			return AssignedList;
 		}
@@ -872,7 +872,7 @@ public class ActionDaoImpl implements ActionDao{
 		{
 			Query query = manager.createNativeQuery(ISSULIST);
 			
-			query.setParameter("empid", empid);
+			query.setParameter("empid", Long.parseLong(empid));
 			return (List<Object[]>)query.getResultList();
 		}
 		private static final String GETRECOMENDATIONLIST="SELECT b.scheduleminutesid, a.scheduleid ,a.meetingid, b.details , b.remarks FROM committee_schedule a, committee_schedules_minutes_details b WHERE idarck='R' AND a.scheduleid = b.scheduleid AND (CASE WHEN 'A'=:projectid THEN 1=1 ELSE a.projectid=:projectid END)  AND (CASE WHEN 'A'=:committeid THEN 1=1 ELSE a.committeeid=:committeid END) ";
@@ -902,7 +902,7 @@ public class ActionDaoImpl implements ActionDao{
 	public Object[] ActionAssignDataAjax(String assignid) throws Exception 
 	{
 		Query query=manager.createNativeQuery(ACTIONASSIGNDATAAJAX);
-		query.setParameter("assignid", assignid);
+		query.setParameter("assignid", Long.parseLong(assignid));
 		return (Object[])query.getResultList().get(0);	
 	}
 	private static final String GETDECISIONSOUGHT="SELECT DISTINCT (a.scheduleid) ,a.meetingid, a.pmrcdecisions , a.reference  FROM committee_schedule a, committee_schedules_minutes_details b WHERE idarck=:type AND a.scheduleid = b.scheduleid AND (CASE WHEN 'A'=:projectid THEN 1=1 ELSE a.projectid=:projectid END)  AND (CASE WHEN 'A'=:committeeid THEN 1=1 ELSE a.committeeid=:committeeid END)";
@@ -921,7 +921,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> getActualDecOrRecSought(String scheduleid, String type)throws Exception
 	{
 		Query query = manager.createNativeQuery(RECDECSOUGHT);
-		query.setParameter("scheduleid", scheduleid);
+		query.setParameter("scheduleid", Long.parseLong(scheduleid));
 		query.setParameter("type", type);
 		return (List<Object[]>)query.getResultList();
 	}
@@ -931,7 +931,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> getDecOrRecSought(String scheduleid , String type)throws Exception
 	{
 		Query query = manager.createNativeQuery(ACTUALDECISIONSOUGHT);
-		query.setParameter("scheduleid", scheduleid);
+		query.setParameter("scheduleid", Long.parseLong(scheduleid));
 		query.setParameter("type", type);
 		return (List<Object[]>)query.getResultList();
 	}
@@ -941,7 +941,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> GetActionList(String empid)throws Exception
 	{
 		Query query = manager.createNativeQuery(ALLACTIONLIST);
-		query.setParameter("empid", empid);
+		query.setParameter("empid", Long.parseLong(empid));
 		return (List<Object[]>)query.getResultList();
 	}
 	
@@ -950,7 +950,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> ActionMonitoring(String ProjectId , String Status)throws Exception
 	{
 		Query query = manager.createNativeQuery(ACTIONMONITORING);
-		query.setParameter("ProjectId", ProjectId);
+		query.setParameter("ProjectId", Long.parseLong(ProjectId));
 		query.setParameter("Status", Status);
 		return (List<Object[]>)query.getResultList();
 	}
@@ -961,8 +961,8 @@ public class ActionDaoImpl implements ActionDao{
 		Query query = manager.createNativeQuery(GETACTIONFORFEVORITE);
 		query.setParameter("fromdate", fromdate);
 		query.setParameter("todate", todate);
-		query.setParameter("projectid", projectid);
-		query.setParameter("empid", empid);
+		query.setParameter("projectid", Long.parseLong(projectid));
+		query.setParameter("empid", Long.parseLong(empid));
 		return (List<Object[]>)query.getResultList();
 	}
 	
@@ -978,7 +978,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> GetFavouriteList(String empid)throws Exception
 	{
 		Query query = manager.createNativeQuery(GETFAVOURITE);
-		query.setParameter("empid", empid);
+		query.setParameter("empid", Long.parseLong(empid));
 		return (List<Object[]>)query.getResultList();
 	}
 	private static final String PROJECTTYPELIST="select classificationid,classification from pfms_security_classification order by classification";
@@ -1032,7 +1032,7 @@ public class ActionDaoImpl implements ActionDao{
 	public Object[] GetDivisionCode(String Division) throws Exception {
 		
 		Query query = manager.createNativeQuery(GETDIVISIONCODE);
-		query.setParameter("empid", Division); // passing EmpId as Division  
+		query.setParameter("empid", Long.parseLong(Division)); // passing EmpId as Division  
 		return (Object[])query.getSingleResult();
 		
 	}
@@ -1042,7 +1042,7 @@ public class ActionDaoImpl implements ActionDao{
 	public Long GetRfaCount(String rfatypeid, Long projectId,String type,String vendor) throws Exception {
 		
 		Query query = manager.createNativeQuery(GETRFACOUNT);
-		query.setParameter("rfatypeid", rfatypeid);
+		query.setParameter("rfatypeid", Long.parseLong(rfatypeid));
 		query.setParameter("projectId", projectId);
 		query.setParameter("TypeOfRfa", type);
 		query.setParameter("VendorCode", vendor);
@@ -1054,7 +1054,7 @@ public class ActionDaoImpl implements ActionDao{
 	public Object[] RfaActionEdit(String rfaid) throws Exception {
 		
 		Query query = manager.createNativeQuery(RFAEDITDATA);
-		query.setParameter("rfaid", rfaid);
+		query.setParameter("rfaid", Long.parseLong(rfaid));
 		return (Object[])query.getSingleResult();
 	}
 
@@ -1095,7 +1095,7 @@ public class ActionDaoImpl implements ActionDao{
 	public Object[] RfaPrintData(String rfaid) throws Exception {
 		
 		Query query = manager.createNativeQuery(RFAPRINT);
-		query.setParameter("rfaid", rfaid);
+		query.setParameter("rfaid", Long.parseLong(rfaid));
 		return (Object[])query.getSingleResult();
 	}
     
@@ -1103,7 +1103,7 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> RfaForwardList(String EmpId) throws Exception {
 		Query query = manager.createNativeQuery(RFAFORWARDLIST);
-		query.setParameter("EmpId", EmpId);
+		query.setParameter("EmpId", Long.parseLong(EmpId));
 		return (List<Object[]>)query.getResultList();
 	}
 	
@@ -1111,7 +1111,7 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> RfaInspectionApprovalList(String EmpId) throws Exception {
 		Query query = manager.createNativeQuery(RFAINSPECTIONAPPROVALLIST);
-		query.setParameter("EmpId", EmpId);
+		query.setParameter("EmpId", Long.parseLong(EmpId));
 		return (List<Object[]>)query.getResultList();
 	}
 	
@@ -1120,7 +1120,7 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> RfaInspectionList(String EmpId) throws Exception {
 		Query query = manager.createNativeQuery(RFAINSPECTIONLIST);
-		query.setParameter("EmpId", EmpId);
+		query.setParameter("EmpId", Long.parseLong(EmpId));
 		return (List<Object[]>)query.getResultList();
 	}
 	
@@ -1148,7 +1148,7 @@ public class ActionDaoImpl implements ActionDao{
 		
 		Query query =manager.createNativeQuery(EMPS);
 		query.setParameter("empno", UserId);
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		
 	 List<BigInteger>x=(List<BigInteger>)query.getResultList();
 	 List<String>emps=new ArrayList<>();
@@ -1172,7 +1172,7 @@ public class ActionDaoImpl implements ActionDao{
 		}
 		Query query = manager.createNativeQuery(UPDATESTATUS);
 		query.setParameter("rfastatus", rf.getRfaStatus());
-		query.setParameter("rfa", rfa);
+		query.setParameter("rfa", Long.parseLong(rfa));
 		long a= query.executeUpdate();
 		return a;
 	}
@@ -1181,8 +1181,8 @@ public class ActionDaoImpl implements ActionDao{
     @Override
 	public Object[] RfaList(String rfa,String EmpId) throws Exception {
 		Query query = manager.createNativeQuery(RFALIST);
-		query.setParameter("rfa", rfa);
-		query.setParameter("EmpId", EmpId);
+		query.setParameter("rfa", Long.parseLong(rfa));
+		query.setParameter("EmpId", Long.parseLong(EmpId));
 		return (Object[])query.getSingleResult();
 	}
 	
@@ -1190,7 +1190,7 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public String getUserId(String rfa) throws Exception {
 		Query query = manager.createNativeQuery(GETUSERID);
-		query.setParameter("rfa", rfa);
+		query.setParameter("rfa",Long.parseLong(rfa));
 		return query.getSingleResult().toString();
 	}
 	
@@ -1198,7 +1198,7 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public String getAssineeId(String rfa) throws Exception {
 		Query query = manager.createNativeQuery(GETASSINEID);
-		query.setParameter("rfa", rfa);
+		query.setParameter("rfa", Long.parseLong(rfa));
 		return query.getSingleResult().toString();
 	}
 	
@@ -1207,7 +1207,7 @@ public class ActionDaoImpl implements ActionDao{
 	public Object[] getRfaAssign(String rfa) throws Exception {
 		
 		Query query = manager.createNativeQuery(RFAACTION);
-		query.setParameter("rfa", rfa);
+		query.setParameter("rfa", Long.parseLong(rfa));
 		Object[] assign=null;
 		try {
 			assign=(Object[])query.getSingleResult();
@@ -1232,7 +1232,7 @@ public class ActionDaoImpl implements ActionDao{
 	public Object[] RfaAssignAjax(String rfaId) throws Exception {
 		
 		Query query = manager.createNativeQuery(RFAASSIGNDATA);
-		query.setParameter("rfaid", rfaId);
+		query.setParameter("rfaid", Long.parseLong(rfaId));
 		
 		Object[] RfaAssignAjax=null;
 		try {
@@ -1273,7 +1273,7 @@ public class ActionDaoImpl implements ActionDao{
 		manager.persist(tr);
 		Query query = manager.createNativeQuery(UPDATESTATUS);
 		query.setParameter("rfastatus", rf.getRfaStatus());
-		query.setParameter("rfa", rfa);
+		query.setParameter("rfa", Long.parseLong(rfa));
 		query.executeUpdate();
 		return tr.getRfaTransactionId();
 	}
@@ -1304,7 +1304,7 @@ public class ActionDaoImpl implements ActionDao{
 		try {
 		Query query=manager.createNativeQuery(GETRFAADDDATA);
 		
-		query.setParameter("rfaId", rfaId);
+		query.setParameter("rfaId", Long.parseLong(rfaId));
 		Object[] executeUpdate = (Object[])query.getSingleResult();
 		return executeUpdate ;
 		} catch (Exception e) {
@@ -1321,7 +1321,7 @@ public class ActionDaoImpl implements ActionDao{
 		try {
 		Query query=manager.createNativeQuery(GETRFAINSPECTIONDATA);
 		
-		query.setParameter("rfaId", rfaId);
+		query.setParameter("rfaId", Long.parseLong(rfaId));
 		Object[] executeUpdate = (Object[])query.getSingleResult();
 		return executeUpdate ;
 		} catch (Exception e) {
@@ -1336,7 +1336,7 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> getrfaRemarks(String rfaId,String status) throws Exception {
 		Query query=manager.createNativeQuery(GETRFAREMARKS);
-		query.setParameter("rfaId", rfaId);
+		query.setParameter("rfaId", Long.parseLong(rfaId));
 		List<Object[]> remarksList=(List<Object[]>)query.getResultList();	
 		return remarksList;
 	}
@@ -1346,7 +1346,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> ProjectApplicableCommitteeList(String projectid)throws Exception
 	{
 		Query query=manager.createNativeQuery(PROJECTAPPLICABLECOMMITTEELIST);
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		return (List<Object[]>)query.getResultList();
 	}
 
@@ -1355,8 +1355,8 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> MeettingCount(String committeeid, String projectid) throws Exception {
 		
 		Query query = manager.createNativeQuery(MEETTINGCOUNT);
-		query.setParameter("committeeid", committeeid);
-		query.setParameter("projectid", projectid);
+		query.setParameter("committeeid", Long.parseLong(committeeid));
+		query.setParameter("projectid", Long.parseLong(projectid));
 		return (List<Object[]>)query.getResultList();
 	}
 
@@ -1364,9 +1364,9 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> MeettingList(String committeeid, String projectid, String scheduleid) throws Exception {
 		Query query = manager.createNativeQuery(MEETINGLIST);
-		query.setParameter("committeeid", committeeid);
-		query.setParameter("projectid", projectid);
-		query.setParameter("scheduleid", scheduleid);
+		query.setParameter("committeeid",Long.parseLong(committeeid));
+		query.setParameter("projectid", Long.parseLong(projectid));
+		query.setParameter("scheduleid", Long.parseLong(scheduleid));
 		return (List<Object[]>)query.getResultList();
 	}
 	
@@ -1375,10 +1375,10 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> MeettingActionList(String committeeid, String projectid, String scheduleid, String empId)
 			throws Exception {
 		Query query = manager.createNativeQuery(MEETINGACTIONLIST);
-		query.setParameter("committeeid", committeeid);
-		query.setParameter("projectid", projectid);
-		query.setParameter("scheduleid", scheduleid);
-		query.setParameter("empId", empId);
+		query.setParameter("committeeid", Long.parseLong(committeeid));
+		query.setParameter("projectid", Long.parseLong(projectid));
+		query.setParameter("scheduleid", Long.parseLong(scheduleid));
+		query.setParameter("empId", Long.parseLong(empId));
 		return (List<Object[]>)query.getResultList();
 	}
 	
@@ -1431,7 +1431,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> getRfaTransList(String rfaTransId) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(RFATRANSACTIONLIST);
-			query.setParameter("rfaTransId", rfaTransId);
+			query.setParameter("rfaTransId", Long.parseLong(rfaTransId));
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -1460,7 +1460,7 @@ public class ActionDaoImpl implements ActionDao{
 	public Object[] RfaAttachmentDownload(String rfaid) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(RFAATTACHMENTDOWNLOAD);
-			query.setParameter("rfaid", rfaid);
+			query.setParameter("rfaid", Integer.parseInt(rfaid));
 			return (Object[])query.getSingleResult();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -1532,8 +1532,7 @@ public class ActionDaoImpl implements ActionDao{
 	public Long UpdateAssigneeData(String rfaid) throws Exception {
 		
 		Query query = manager.createNativeQuery(UPDATEASSIGNEEDATA);
-		query.setParameter("rfaid", rfaid);
-		
+		query.setParameter("rfaid", Long.parseLong(rfaid));		
 		return (long) query.executeUpdate();
 	}
 
@@ -1556,7 +1555,7 @@ public class ActionDaoImpl implements ActionDao{
 		
 		try {
 			Query query = manager.createNativeQuery(CCASSIGNORLIST);
-			query.setParameter("rfaid", rfaid);
+			query.setParameter("rfaid", Long.parseLong(rfaid));
 			return (List<String>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -1567,7 +1566,7 @@ public class ActionDaoImpl implements ActionDao{
 	private static final String RFAACTIONUPDATE="UPDATE pfms_rfa_action SET rfastatus='AAA' WHERE rfaid=:rfaId";
 	@Override
 	public int RfaActionUpdate(String rfaId) throws Exception {
-		RfaAction ExistingRfaAction= manager.find(RfaAction.class, rfaId);
+		RfaAction ExistingRfaAction= manager.find(RfaAction.class, Long.parseLong(rfaId));
 		if(ExistingRfaAction != null) {
 			ExistingRfaAction.setRfaStatus("AAA");
 			return 1;
@@ -1611,7 +1610,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> RfaProjectwiseList(String empId, String Project, String fdate, String tdate) throws Exception {
 		
 		Query query = manager.createNativeQuery(RFAPROJECTWISE);
-		query.setParameter("empId", empId);
+		query.setParameter("empId", Long.parseLong(empId));
 		query.setParameter("Project", Project);
 		query.setParameter("fdate", fdate);
 		query.setParameter("tdate", tdate);
@@ -1632,7 +1631,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> getProjectByDirectorID(String empId)throws Exception {
 		// TODO Auto-generated method stub
 		Query query = manager.createNativeQuery("SELECT projectmainid, projectcode FROM project_main WHERE projectdirector=:id");
-		query.setParameter("id", empId);
+		query.setParameter("id", Long.parseLong(empId));
 		return query.getResultList();
 	}
 
@@ -1640,7 +1639,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> getRecentWeeklyUpdateDate(String string)throws Exception {
 		// TODO Auto-generated method stub
 		Query query = manager.createNativeQuery("SELECT UpdatedDate, projectId FROM pfms_weekly_update WHERE projectid=:id order by UpdatedDate desc");
-		query.setParameter("id", string);
+		query.setParameter("id", Integer.parseInt(string));
 		return query.getResultList();
 	}
 	
@@ -1683,7 +1682,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> getAllRecentUpdateList(String projectId)throws Exception {
 		// TODO Auto-generated method stub
 		Query query = manager.createNativeQuery("select * from pfms_weekly_update where projectid=:projectid order by UpdatedDate desc");
-		query.setParameter("projectid", projectId );
+		query.setParameter("projectid", Integer.parseInt(projectId));
 		return query.getResultList();
 	}
 
@@ -1718,7 +1717,7 @@ public class ActionDaoImpl implements ActionDao{
 		
 		if(progress!=null && progressDate!=null && progressRemarks!=null) {
 			
-			ActionAssign ExistingActionAssign = manager.find(ActionAssign.class, ActionAssignId);
+			ActionAssign ExistingActionAssign = manager.find(ActionAssign.class, Long.parseLong(ActionAssignId));
 			if(ExistingActionAssign !=null) {
 				ExistingActionAssign.setProgress(Integer.parseInt(progress));
 				ExistingActionAssign.setProgressDate(progressDate);
@@ -1729,7 +1728,7 @@ public class ActionDaoImpl implements ActionDao{
 				}
 			
 		}else {
-			ActionAssign ExistingActionAssign1 = manager.find(ActionAssign.class, ActionAssignId);
+			ActionAssign ExistingActionAssign1 = manager.find(ActionAssign.class,Long.parseLong(ActionAssignId));
 			if(ExistingActionAssign1 !=null) {
 				ExistingActionAssign1.setProgress(0);
 				ExistingActionAssign1.setProgressDate(null);
@@ -1746,7 +1745,7 @@ public class ActionDaoImpl implements ActionDao{
 			+ "ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE actionassignid=:actionassignid";
 	@Override
 	public int ActionRemarksEdit(String actionAssignId, String progress, String progressRemarks, String UserId) throws Exception {
-		ActionAssign ExistingActionAssign= manager.find(ActionAssign.class, actionAssignId);
+		ActionAssign ExistingActionAssign= manager.find(ActionAssign.class, Long.parseLong(actionAssignId));
 		if(ExistingActionAssign != null) {
 			ExistingActionAssign.setProgress(Integer.parseInt(progress));
 			ExistingActionAssign.setProgressRemark(progressRemarks);
@@ -1766,7 +1765,7 @@ public class ActionDaoImpl implements ActionDao{
 			+ "ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE actionsubid=:actionsubid";
 	@Override
 	public int actionSubRemarksEdit(String actionSubId, String progress, String progressRemarks, String UserId) throws Exception {
-		ActionSub ExistingActionSub = manager.find(ActionSub.class, actionSubId);
+		ActionSub ExistingActionSub = manager.find(ActionSub.class, Long.parseLong(actionSubId));
 		if(ExistingActionSub != null) {
 			ExistingActionSub.setProgress(Integer.parseInt(progress));
 			ExistingActionSub.setRemarks(progressRemarks);
@@ -1787,7 +1786,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<String> rfaMailSend(String rfa) throws Exception {
 		
 		Query query = manager.createNativeQuery(RFAMAILSENDING);
-		query.setParameter("rfa", rfa);
+		query.setParameter("rfa", Long.parseLong(rfa));
 		
 		return (List<String>)query.getResultList();
 	}
@@ -1798,7 +1797,7 @@ public class ActionDaoImpl implements ActionDao{
 	public Object[] rodShortName(String scheduleid)throws Exception
 	{
 		Query query=manager.createNativeQuery(RODSHORTNAME);
-		query.setParameter("scheduleid", scheduleid);
+		query.setParameter("scheduleid", Long.parseLong(scheduleid));
 		Object[] rodShortName=(Object[])query.getResultList().get(0);
 		return rodShortName;
 	}
@@ -1830,8 +1829,7 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public Long updateRfaCC(String rfaid) throws Exception {
 		Query query = manager.createNativeQuery(UPDATERFACCDATA);
-		query.setParameter("rfaid", rfaid);
-		
+		query.setParameter("rfaid", Long.parseLong(rfaid));		
 		return (long) query.executeUpdate();
 	}
 	
@@ -1856,7 +1854,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> rfaTotalActionList(String projectid, String rfatypeid, String fdate, String tdate) {
 		Query query = manager.createNativeQuery(RFAACTIONLISTS);
 		rfatypeid="%"+rfatypeid+"%";
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		query.setParameter("rfatypeid", rfatypeid);
 		query.setParameter("fdate", fdate);
 		query.setParameter("tdate", tdate);
@@ -1898,7 +1896,7 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> RfaPendingCount(String empId) throws Exception {
 		Query query = manager.createNativeQuery(RFAPENDINGCOUNT);
-		query.setParameter("empId", empId);
+		query.setParameter("empId", Long.parseLong(empId));
 		return (List<Object[]>)query.getResultList();
 	}
 	
@@ -1909,8 +1907,7 @@ public class ActionDaoImpl implements ActionDao{
 		
 		
 		Query query = manager.createNativeQuery(ACTIONMAINIDS);
-		query.setParameter("scheduleMinutesId", scheduleMinutesId);
-		
+		query.setParameter("scheduleMinutesId", Long.parseLong(scheduleMinutesId));		
 		List<Object[]>main = new ArrayList<>();
 	
 		 try {
@@ -1928,7 +1925,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> ActionReportsNew(String EmpId,String Term,String Position,String Type,String LabCode,String loginType) throws Exception {
 		
 		Query query=manager.createNativeQuery(ActionReportsNew);
-		query.setParameter("empid",EmpId);
+		query.setParameter("empid",Long.parseLong(EmpId));
 		query.setParameter("term",Term);
 		query.setParameter("position",Position);
 		query.setParameter("type",Type);
@@ -1961,7 +1958,7 @@ public class ActionDaoImpl implements ActionDao{
 		try {
 			Query query = manager.createNativeQuery(OLDRFAUPLOADLIST);
 			query.setParameter("labCode", labCode);
-			query.setParameter("projectId", projectId);
+			query.setParameter("projectId", Long.parseLong(projectId));
 			return (List<Object[]>)query.getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2013,7 +2010,7 @@ public class ActionDaoImpl implements ActionDao{
 	public int getActionCountByCommittee(String projectId, String type, String committeeShortName) throws Exception {
 		
 		Query query = manager.createNativeQuery(ACTIONCOUNTBYCOMMITTEE);
-		query.setParameter("ProjectId",projectId );
+		query.setParameter("ProjectId", Long.parseLong(projectId));
 		query.setParameter("Type", type);
 		query.setParameter("CommitteeShortName", committeeShortName);
 		Long count=(Long)query.getSingleResult();
@@ -2061,7 +2058,7 @@ public class ActionDaoImpl implements ActionDao{
 			Query query = manager.createNativeQuery(getMeetingAction);
 			query.setParameter("meetingId", meetingId);
 			query.setParameter("loginType", loginType);
-			query.setParameter("empId", empId);
+			query.setParameter("empId", Long.parseLong(empId));
 			
 			return (List<Object[]>)query.getResultList();
 		} catch (Exception e) {
@@ -2116,7 +2113,7 @@ public class ActionDaoImpl implements ActionDao{
 
 			try {
 				Query query = manager.createNativeQuery(ACTIONMAINATTACH);
-				query.setParameter("ActionMainId", mainid);
+				query.setParameter("ActionMainId", Long.parseLong(mainid));
 				
 				return (Object[])query.getSingleResult();
 				

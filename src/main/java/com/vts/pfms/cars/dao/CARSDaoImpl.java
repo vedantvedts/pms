@@ -53,7 +53,7 @@ public class CARSDaoImpl implements CARSDao{
 	public List<Object[]> carsInitiationList(String LoginType, String EmpId) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(CARSINITIATIONLIST);
-			query.setParameter("EmpId", EmpId);
+			query.setParameter("EmpId", Long.parseLong(EmpId));
 			query.setParameter("LoginType", LoginType);
 			return (List<Object[]>) query.getResultList();
 		}catch (Exception e) {
@@ -119,7 +119,7 @@ public class CARSDaoImpl implements CARSDao{
 	public Object[] carsRSQRDetails(String carsinitiationid) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(CARSRSQRDATA);
-			query.setParameter("CARSInitiationId", carsinitiationid);
+			query.setParameter("CARSInitiationId", Long.parseLong(carsinitiationid));
 			List<Object[]> list = (List<Object[]>)query.getResultList();
 			if(list.size()>0) {
 				return list.get(0);
@@ -282,7 +282,7 @@ public class CARSDaoImpl implements CARSDao{
 	{
 		try {			
 			Query query= manager.createNativeQuery(GETEMPGDEMPID);
-			query.setParameter("EmpId", empId);
+			query.setParameter("EmpId", Long.parseLong(empId));
 			List<Object[]> list =  (List<Object[]>)query.getResultList();
 			if(list.size()>0) {
 				return list.get(0);
@@ -302,7 +302,7 @@ public class CARSDaoImpl implements CARSDao{
 	{
 		try {			
 			Query query= manager.createNativeQuery(GETEMPPDEMPID);
-			query.setParameter("ProjectId", projectId);
+			query.setParameter("ProjectId", Long.parseLong(projectId));
 			List<Object[]> list =  (List<Object[]>)query.getResultList();
 			if(list.size()>0) {
 				return list.get(0);
@@ -352,7 +352,7 @@ public class CARSDaoImpl implements CARSDao{
 	{
 		try {			
 			Query query= manager.createNativeQuery(GETEMPDETAILS);
-			query.setParameter("EmpId", empId);
+			query.setParameter("EmpId", Long.parseLong(empId));
 			List<Object[]> list =  (List<Object[]>)query.getResultList();
 			if(list.size()>0) {
 				return list.get(0);
@@ -381,7 +381,7 @@ public class CARSDaoImpl implements CARSDao{
 
 		try {
 			Query query = manager.createNativeQuery(CARSTRANSAPPROVALDATA);
-			query.setParameter("CARSInitiationId", carsInitiationId);
+			query.setParameter("CARSInitiationId", Long.parseLong(carsInitiationId));
 			query.setParameter("ApprFor", apprFor);
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
@@ -489,7 +489,7 @@ public class CARSDaoImpl implements CARSDao{
 	public int invForSoODateSubmit(String carsInitiationId, String sooDate) throws Exception{
 		try {
 			System.err.println(sooDate);
-			CARSInitiation ExistingCARSInitiation = manager.find(CARSInitiation.class, carsInitiationId);
+			CARSInitiation ExistingCARSInitiation = manager.find(CARSInitiation.class, Long.parseLong(carsInitiationId));
 			if(ExistingCARSInitiation != null) {
 				ExistingCARSInitiation.setInvForSoODate(sooDate);
 				return 1;
@@ -698,7 +698,7 @@ public class CARSDaoImpl implements CARSDao{
 
 		try {
 			Query query = manager.createNativeQuery(CARSTRANSLISTBYTYPE);
-			query.setParameter("CARSInitiationId", carsInitiationId);
+			query.setParameter("CARSInitiationId", Long.parseLong(carsInitiationId));
 			query.setParameter("CARSStatusFor", statusFor);
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
@@ -721,7 +721,7 @@ public class CARSDaoImpl implements CARSDao{
 		List<Object[]> list =new ArrayList<Object[]>();
 		try {
 			Query query= manager.createNativeQuery(CARSREMARKSHISTORYBYTYPE);
-			query.setParameter("CARSInitiationId", carsInitiationId);
+			query.setParameter("CARSInitiationId", Long.parseLong(carsInitiationId));
 			query.setParameter("RemarksFor", remarksFor);
 			list= (List<Object[]>)query.getResultList();
 
@@ -738,7 +738,7 @@ public class CARSDaoImpl implements CARSDao{
 		try {
 			Query query = manager.createNativeQuery(SOCMOMUPLOAD);
 			query.setParameter("MoMUpload", momFile);
-			query.setParameter("CARSInitiationId", carsInitiationId);
+			query.setParameter("CARSInitiationId", Long.parseLong(carsInitiationId));
 			return query.executeUpdate();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -1126,7 +1126,7 @@ public class CARSDaoImpl implements CARSDao{
 	public long carsOtherDocUpload(String uploadOtherDoc, String otherDocDetailsId) throws Exception {
 		try {
 			
-			CARSOtherDocDetails ExistingCARSOtherDocDetails=manager.find(CARSOtherDocDetails.class, otherDocDetailsId);
+			CARSOtherDocDetails ExistingCARSOtherDocDetails=manager.find(CARSOtherDocDetails.class, Long.parseLong(otherDocDetailsId));
 			if(ExistingCARSOtherDocDetails !=null && ExistingCARSOtherDocDetails.getIsActive()==1)
 			{
 				ExistingCARSOtherDocDetails.setUploadOtherDoc(uploadOtherDoc);
@@ -1151,7 +1151,7 @@ public class CARSDaoImpl implements CARSDao{
 		List<Object[]> list =new ArrayList<Object[]>();
 		try {
 			Query query= manager.createNativeQuery(CARSREMARKSHISTORYBYMILESTONENO);
-			query.setParameter("CARSInitiationId", carsInitiationId);
+			query.setParameter("CARSInitiationId", Long.parseLong(carsInitiationId));
 			query.setParameter("MilestoneNo", milestoneNo);
 			list= (List<Object[]>)query.getResultList();
 
@@ -1174,7 +1174,7 @@ public class CARSDaoImpl implements CARSDao{
 
 		try {
 			Query query = manager.createNativeQuery(CARSTRANSAPPROVALDATABYMILESTONENO);
-			query.setParameter("CARSInitiationId", carsInitiationId);
+			query.setParameter("CARSInitiationId", Long.parseLong(carsInitiationId));
 			query.setParameter("MilestoneNo", milestoneNo);
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
@@ -1189,7 +1189,7 @@ public class CARSDaoImpl implements CARSDao{
 	public long updateOtherDocForwardDetails(String forwardedBy, String forwardedDate, String otherDocDetailsId) throws Exception {
 		try {
 			
-			CARSOtherDocDetails ExistingCARSOtherDocDetails= manager.find(CARSOtherDocDetails.class,otherDocDetailsId);
+			CARSOtherDocDetails ExistingCARSOtherDocDetails= manager.find(CARSOtherDocDetails.class, Long.parseLong(otherDocDetailsId));
 			if(ExistingCARSOtherDocDetails != null && ExistingCARSOtherDocDetails.getIsActive() ==1)
 			{
 				ExistingCARSOtherDocDetails.setForwardedBy(Long.parseLong(forwardedBy));
@@ -1297,7 +1297,7 @@ public class CARSDaoImpl implements CARSDao{
 	public int finalSoODateSubmit(String carsInitiationId, String date) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(UPDATESOOLETTERDATE);
-			query.setParameter("CARSInitiationId", carsInitiationId);
+			query.setParameter("CARSInitiationId", Long.parseLong(carsInitiationId));
 			query.setParameter("FinalSoODate", date);
 			return query.executeUpdate();
 		}catch (Exception e) {
@@ -1438,7 +1438,7 @@ public class CARSDaoImpl implements CARSDao{
 		try {
 			Query query = manager.createNativeQuery(CARSCURRENTSTATUSUPDATE);
 			query.setParameter("CurrentStatus", currentStatus);
-			query.setParameter("CARSInitiationId", carsInitiationId);
+			query.setParameter("CARSInitiationId", Long.parseLong(carsInitiationId));
 			return query.executeUpdate();
 		}catch (Exception e) {
 			e.printStackTrace();

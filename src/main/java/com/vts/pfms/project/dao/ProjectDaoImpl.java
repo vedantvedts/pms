@@ -176,11 +176,11 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String AUTHORITYUPDATE="UPDATE pfms_initiation_authority SET authorityname=:authorityname, letterdate=:letterdate,letterno=:letterno, modifiedby=:modifiedby,modifieddate=:modifieddate WHERE initiationid=:initiationid";
 	private static final String PROJECTMAINLIST="SELECT a.projectmainid,b.projecttypeid,b.projecttype,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.totalsanctioncost, a.pdc, a.revisionno,a.objective,a.deliverable FROM project_main a, project_type b WHERE a.projecttypeid=b.projecttypeid AND a.isactive='1' AND b.isactive='1' ORDER BY a.sanctiondate DESC";
 	private static final String OFFICERLIST="SELECT a.empid, a.empno, a.empname, b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid,a.labcode FROM employee a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid AND a.isactive='1' ORDER BY a.srno=0,a.srno ASC ";
-	private static final String PROJECTMAINEDITDATA="SELECT a.projectmainid,b.projecttypeid,b.projecttype,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.sanctioncostre, a.sanctioncostfe, a.totalsanctioncost, a.pdc,a.projectdirector,a.projsancauthority,a.boardreference,a.ismainwc,a.workcenter, a.revisionno,a.objective,a.deliverable, a.LabParticipating,a.CategoryId,a.scope ,a.enduser  ,a.application , a.projectshortname, a.PlatformId FROM project_main a, project_type b WHERE a.projecttypeid=b.projecttypeid and a.projectmainid=:promainid and a.isactive='1' and b.isactive='1' ORDER BY a.projecttypeid, a.projectmainid"; // srikant
+	private static final String PROJECTMAINEDITDATA="SELECT a.projectmainid,b.projecttypeid,b.projecttype,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.sanctioncostre, a.sanctioncostfe, a.totalsanctioncost, a.pdc,a.projectdirector,a.projsancauthority,a.boardreference,a.ismainwc,a.workcenter, a.revisionno,a.objective,a.deliverable, a.LabParticipating,a.CategoryId,a.scope ,a.enduser  ,a.application , a.projectshortname, a.PlatformId FROM project_main a, project_type b WHERE a.projecttypeid=b.projecttypeid and a.projectmainid=:promainid and a.isactive='1' and b.isactive='1' ORDER BY a.projecttypeid, a.projectmainid"; 
 	private static final String PROJECTLIST1="SELECT a.projectid,b.projectmainid,b.projectcode AS id,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.totalsanctioncost, a.pdc, a.revisionno,a.objective,a.deliverable,a.labcode FROM project_main b, project_master a, project_type c WHERE c.projecttypeid=b.projecttypeid AND a.projectmainid=b.projectmainid AND a.isactive='1' AND b.isactive='1' ORDER BY a.sanctiondate DESC";
 	private static final String PROJECTTYPEMAINLIST="SELECT b.projectmainid,b.projectcode as id from  project_main b WHERE  b.isactive='1' ";
 	private static final String PROJECTCATEGORY="select classificationid, classification from pfms_security_classification";
-	private static final String PROJECTEDITDATA="SELECT a.projectid,b.projectmainid,c.projecttype as id,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.sanctioncostre, a.sanctioncostfe, a.totalsanctioncost, a.pdc,a.projectdirector,a.projsancauthority,a.boardreference,a.ismainwc,a.workcenter, a.revisionno,a.objective,a.deliverable,a.projectcategory, a.ProjectType ,a.ProjectShortName ,a.EndUser , a.scope ,a.application ,a.LabParticipating, CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',d.designation,e.MobileNo,e.Email,(SELECT MAX(remarks) FROM project_master_rev WHERE projectid=:proid) AS 'Remarks', a.PlatformId  FROM project_main b, project_master a, project_type c,employee e,employee_desig d WHERE c.projecttypeid=b.projecttypeid and a.projectid=:proid and a.projectmainid=b.projectmainid and a.isactive='1' and b.isactive='1'AND a.projectdirector=e.empid AND e.desigid=d.desigid  ORDER BY a.projectid, a.projectmainid"; //srikant
+	private static final String PROJECTEDITDATA="SELECT a.projectid,b.projectmainid,c.projecttype as id,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.sanctioncostre, a.sanctioncostfe, a.totalsanctioncost, a.pdc,a.projectdirector,a.projsancauthority,a.boardreference,a.ismainwc,a.workcenter, a.revisionno,a.objective,a.deliverable,a.projectcategory, a.ProjectType ,a.ProjectShortName ,a.EndUser , a.scope ,a.application ,a.LabParticipating, CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',d.designation,e.MobileNo,e.Email,(SELECT MAX(remarks) FROM project_master_rev WHERE projectid=:proid) AS 'Remarks', a.PlatformId  FROM project_main b, project_master a, project_type c,employee e,employee_desig d WHERE c.projecttypeid=b.projecttypeid and a.projectid=:proid and a.projectmainid=b.projectmainid and a.isactive='1' and b.isactive='1'AND a.projectdirector=e.empid AND e.desigid=d.desigid  ORDER BY a.projectid, a.projectmainid"; 
 	private static final String PROJECTITEMLIST11="SELECT a.projectid, a.projectcode,a.projectname FROM project_master a WHERE isactive='1'";
 	private static final String PROJECTASSIGNLIST="SELECT a.projectemployeeid, c.empid, a.projectid, CONCAT(IFNULL(CONCAT(c.title,' '),''), c.empname) AS 'empname' , d.designation, e.divisioncode,c.MobileNo,c.Email FROM project_employee a, employee c, employee_desig d, division_master e WHERE a.empid=c.empid AND c.desigid=d.desigid AND c.divisionid=e.divisionid AND  a.isactive='1' AND c.isactive='1' AND e.isactive='1'  AND a.projectid= :proid "; 
 	private static final String USERLIST="SELECT  b.empid, CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname',b.labcode,c.designation FROM employee b, employee_desig c  WHERE  b.isactive=1 AND b.desigid=c.desigid AND b.EmpId NOT IN( SELECT EmpId FROM project_employee WHERE ProjectId=:projectid AND IsActive='1')";
@@ -210,7 +210,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> ProjectIntiationList(String Empid,String LoginType,String LabCode) throws Exception {
 
 		Query query=manager.createNativeQuery(PROJECTINTILIST);
-		query.setParameter("empid", Empid);
+		query.setParameter("empid", Long.parseLong(Empid));
 		query.setParameter("logintype", LoginType);
 		query.setParameter("LabCode", LabCode);
 		List<Object[]> ProjectIntiationList=(List<Object[]>)query.getResultList();		
@@ -261,7 +261,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> LabList(String IntiationId) throws Exception {
 		Query query=manager.createNativeQuery(LABLIST);
-		query.setParameter("initiationid", IntiationId);
+		query.setParameter("initiationid", Long.parseLong(IntiationId));
 		List<Object[]> LabList=(List<Object[]>)query.getResultList();		
 
 		return LabList;
@@ -343,7 +343,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> BudgetItem(String BudegtId) throws Exception {
 		Query query=manager.createNativeQuery(BUDEGTITEM);
-		query.setParameter("budgetheadid", BudegtId);
+		query.setParameter("budgetheadid", Long.parseLong(BudegtId));
 		List<Object[]> BudgetItem=(List<Object[]>)query.getResultList();		
 
 		return BudgetItem;
@@ -352,7 +352,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> ProjectIntiationItemList(String InitiationId) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTITEMLIST);
-		query.setParameter("initiationid", InitiationId);
+		query.setParameter("initiationid", Long.parseLong(InitiationId));
 		List<Object[]> ProjectIntiationItemList=(List<Object[]>)query.getResultList();		
 
 		return ProjectIntiationItemList;
@@ -369,7 +369,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> ProjectIntiationLabList(String InitiationId) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTLABLIST);
-		query.setParameter("initiationid", InitiationId);
+		query.setParameter("initiationid",Long.parseLong(InitiationId));
 		List<Object[]> ProjectIntiationLabList=(List<Object[]>)query.getResultList();		
 
 		return ProjectIntiationLabList;
@@ -408,7 +408,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> ProjectIntiationScheduleList(String InitiationId) throws Exception {
 
 		Query query=manager.createNativeQuery(PROJECTSCHEDULELIST);
-		query.setParameter("initiationid", InitiationId);
+		query.setParameter("initiationid", Long.parseLong(InitiationId));
 		List<Object[]> ProjectIntiationScheduleList=(List<Object[]>)query.getResultList();		
 
 		return ProjectIntiationScheduleList;
@@ -428,7 +428,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> ProjectScheduleTotalMonthList(String InitiationId) throws Exception {
 		// TODO Auto-generated method stub
 		Query query =manager.createNativeQuery(PROJECTSCHEDULETOTALMONTHLIST);
-		query.setParameter("initiationid", InitiationId);
+		query.setParameter("initiationid", Long.parseLong(InitiationId));
 		List<Object[]>ProjectScheduleTotalMonthList=(List<Object[]>)query.getResultList();
 		return ProjectScheduleTotalMonthList;
 	}	
@@ -436,7 +436,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> MileStonenoTotalMonths(String InitiationId, int msno) throws Exception {
 		// TODO Auto-generated method stub
 		Query query =manager.createNativeQuery(MILESTONENOTOTALMONTHS);
-		query.setParameter("InitiationId",InitiationId );
+		query.setParameter("InitiationId", Long.parseLong(InitiationId));
 		query.setParameter("milestonestartedfrom",msno);
 		List<Object[]> MileStonenoTotalMonths=(List<Object[]>)query.getResultList();
 		return  MileStonenoTotalMonths;
@@ -445,7 +445,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public Object[] ProjectProgressCount(String InitiationId) throws Exception {
 		Query query=manager.createNativeQuery("CALL ProjectProgressBar(:InitiationId)");
-		query.setParameter("InitiationId", InitiationId);
+		query.setParameter("InitiationId", Long.parseLong(InitiationId));
 		Object[] ProjectProgressCount=(Object[])query.getSingleResult();	
 
 		return ProjectProgressCount;
@@ -454,7 +454,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> ProjectIntiationDetailsList(String InitiationId) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTDETAILSLIST);
-		query.setParameter("initiationid", InitiationId);
+		query.setParameter("initiationid", Long.parseLong(InitiationId));
 		List<Object[]> ProjectIntiationDetailsList=(List<Object[]> )query.getResultList();	
 
 
@@ -465,7 +465,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> ProjectIntiationCostList(String InitiationId) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTCOSTLIST);
-		query.setParameter("initiationid", InitiationId);
+		query.setParameter("initiationid", Long.parseLong(InitiationId));
 		List<Object[]> ProjectIntiationCostList=(List<Object[]>)query.getResultList();		
 
 		return ProjectIntiationCostList;
@@ -474,7 +474,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> ProjectEditData(String IntiationId) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTINTIEDITDATA);
-		query.setParameter("initiationid", IntiationId);
+		query.setParameter("initiationid", Long.parseLong(IntiationId));
 		List<Object[]> ProjectEditData=(List<Object[]>)query.getResultList();		
 
 		return ProjectEditData;
@@ -515,7 +515,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public Double TotalIntiationCost(String IntiationId) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTINTITOTALCOST);
-		query.setParameter("initiationid", IntiationId);
+		query.setParameter("initiationid", Long.parseLong(IntiationId));
 		BigDecimal TotalIntiationCost=(BigDecimal)query.getSingleResult();		
 		if(TotalIntiationCost==null) {
 			return 0.00;
@@ -526,7 +526,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> ProjectCostEditData(String InitiationCostId) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTINTICOSTDATA);
-		query.setParameter("initiationcostid", InitiationCostId);
+		query.setParameter("initiationcostid", Long.parseLong(InitiationCostId));
 		List<Object[]> ProjectCostEditData=(List<Object[]>)query.getResultList();		
 
 		return ProjectCostEditData;
@@ -605,7 +605,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public int InitiationClearTotalMonth(String InitiationId) throws Exception 
 	{
 		Query query1=manager.createNativeQuery(INITIATIONCLEARTOTALMONTH);
-		query1.setParameter("InitiationId",InitiationId);
+		query1.setParameter("InitiationId", Long.parseLong(InitiationId));
 		return query1.executeUpdate();
 	}
 
@@ -636,9 +636,8 @@ public class ProjectDaoImpl implements ProjectDao {
 
 		Query query= manager.createNativeQuery(MILESTONETOTALMONTHUPDATE);
 		query.setParameter("newMilestoneTotalMonth", newMilestoneTotalMonth);
-		query.setParameter("InitiationId", IntiationId);
-		query.setParameter("milestoneno", milestoneno);
-
+		query.setParameter("InitiationId", Long.parseLong(IntiationId));
+		query.setParameter("milestoneno", Integer.parseInt(milestoneno));
 		int count=query.executeUpdate();
 
 		return count;
@@ -889,7 +888,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public Integer ProjectScheduleMonth(String InitiationId) throws Exception {
 		try {
 			Query query=manager.createNativeQuery(PROJECTSCHTOTALMONTH);
-			query.setParameter("InitiationId", InitiationId);
+			query.setParameter("InitiationId", Long.parseLong(InitiationId));
 			return (Integer)query.getSingleResult();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -902,7 +901,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
 		try {
 			Query query=manager.createNativeQuery(PROJECTDURMONTH);
-			query.setParameter("InitiationId", InitiationId);
+			query.setParameter("InitiationId", Long.parseLong(InitiationId));
 			return (Integer)query.getSingleResult();	
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -916,8 +915,8 @@ public class ProjectDaoImpl implements ProjectDao {
 		
 		try {
 			Query query=manager.createNativeQuery(MILESCHMONTH);
-			query.setParameter("initiationscheduleid", initiationscheduleid);
-			query.setParameter("IntiationId", IntiationId);
+			query.setParameter("initiationscheduleid", Long.parseLong(initiationscheduleid));;
+			query.setParameter("IntiationId", Long.parseLong(IntiationId));
 			return (Integer)query.getSingleResult();	
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -930,7 +929,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public int ProjectMileStoneNo(String InitiationId) throws Exception {
 		try {
 			Query query=manager.createNativeQuery(MILESTONENO);
-			query.setParameter("InitiationId", InitiationId);
+			query.setParameter("InitiationId", Long.parseLong(InitiationId));
 			return (Integer)query.getSingleResult();	
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -941,7 +940,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public int ProjectScheduleEditData(String InitiationScheduleId) throws Exception {
 		try {
 			Query query=manager.createNativeQuery(SCDULEMONTH);
-			query.setParameter("initiationscheduleid", InitiationScheduleId);
+			query.setParameter("initiationscheduleid", Long.parseLong(InitiationScheduleId));
 			return (Integer)query.getSingleResult();	
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -954,8 +953,8 @@ public class ProjectDaoImpl implements ProjectDao {
 		try {
 
 			Query query=manager.createNativeQuery(PREVIOUSMONTH);
-			query.setParameter("IntiationId", IntiationId);
-			query.setParameter("milestoneno", milestoneno);
+			query.setParameter("IntiationId", Long.parseLong(IntiationId));
+			query.setParameter("milestoneno", Integer.parseInt(milestoneno));
 			return (Integer)query.getSingleResult();	
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -969,8 +968,8 @@ public class ProjectDaoImpl implements ProjectDao {
 		try {
 			
 			Query query=manager.createNativeQuery(MILESTONENOTOTALMONTH);
-			query.setParameter("IntiationId", IntiationId);
-			query.setParameter("milestoneno", milestoneno);
+			query.setParameter("IntiationId", Long.parseLong(IntiationId));
+			query.setParameter("milestoneno", Integer.parseInt(milestoneno));
 			return (Integer)query.getSingleResult();	
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -992,7 +991,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> ProjectIntiationAttachment(String InitiationId) throws Exception {
 
 		Query query=manager.createNativeQuery(PROJECTINTATTACH);
-		query.setParameter("initiationid", InitiationId);
+		query.setParameter("initiationid", Long.parseLong(InitiationId));
 		List<Object[]> ProjectIntiationAttachment=(List<Object[]>)query.getResultList();		
 
 		return ProjectIntiationAttachment;
@@ -1002,7 +1001,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> AuthorityAttachment(String InitiationId) throws Exception {
 
 		Query query=manager.createNativeQuery(AUTHORITYATTACHMENT);
-		query.setParameter("initiationid", InitiationId);
+		query.setParameter("initiationid", Long.parseLong(InitiationId));
 
 		List<Object[]> AuthorityAttachment=(List<Object[]>)query.getResultList();		
 
@@ -1063,7 +1062,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public String ProjectIntiationAttachmentFileName(String InitiationAttachmentId) throws Exception {
 
 		Query query=manager.createNativeQuery(PROJECTINTATTACHFILENAME);
-		query.setParameter("initiationattachmentid", InitiationAttachmentId);
+		query.setParameter("initiationattachmentid", Long.parseLong(InitiationAttachmentId));
 		String ProjectIntiationAttachmentFileName=(String)query.getSingleResult();		
 
 		return ProjectIntiationAttachmentFileName;
@@ -1073,7 +1072,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public String ProjectIntiationAttachmentFileNamePath(String InitiationAttachmentId) throws Exception {
 
 		Query query=manager.createNativeQuery(PROJECTINTATTACHFILENAMEPATH);
-		query.setParameter("initiationattachmentid", InitiationAttachmentId);
+		query.setParameter("initiationattachmentid", Long.parseLong(InitiationAttachmentId));
 		String ProjectIntiationAttachmentFileNamePath=(String)query.getSingleResult();		
 
 		return ProjectIntiationAttachmentFileNamePath;
@@ -1164,7 +1163,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public Long ProjectForwardStatus(String InitiationId) throws Exception {
 		try {
 			Query query=manager.createNativeQuery("CALL ProjectForwardStatus(:InitiationId)");
-			query.setParameter("InitiationId", InitiationId);
+			query.setParameter("InitiationId", Long.parseLong(InitiationId));
 			return (Long)query.getSingleResult();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -1177,7 +1176,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> ProjectActionList(String ProjectAuthorityId) throws Exception {
 
 		Query query=manager.createNativeQuery(PROJECTACTIONLIST);
-		query.setParameter("projectauthorityid", ProjectAuthorityId);
+		query.setParameter("projectauthorityid", Long.parseLong(ProjectAuthorityId));
 		List<Object[]> ProjectActionList=(List<Object[]>)query.getResultList();		
 
 		return ProjectActionList;
@@ -1187,7 +1186,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> ProjectApprovePdList(String EmpId) throws Exception {
 
 		Query query=manager.createNativeQuery("CALL Project_Approval_Pd(:EmpId)");
-		query.setParameter("EmpId", EmpId);
+		query.setParameter("EmpId", Long.parseLong(EmpId));
 		List<Object[]> ProjectApprovePdList=(List<Object[]>)query.getResultList();	
 		return ProjectApprovePdList;
 	}
@@ -1216,7 +1215,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public double PfmsInitiationRefeSum(String initiationid,String refe) throws Exception
 	{
 		Query query=manager.createNativeQuery(PFMSINITIATIONREFESUM);
-		query.setParameter("initiationid", initiationid);
+		query.setParameter("initiationid", Long.parseLong(initiationid));
 		query.setParameter("refe", refe);
 		Object temp=query.getResultList().get(0);
 		double costsum=0.00;
@@ -1244,7 +1243,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> ProjectStatusList(String EmpId,String LoginType,String LabCode) throws Exception{
 
 		Query query=manager.createNativeQuery(PROJECTSTATUSLIST);
-		query.setParameter("empid", EmpId);
+		query.setParameter("empid", Long.parseLong(EmpId));
 		query.setParameter("logintype", LoginType);
 		query.setParameter("LabCode", LabCode);
 		List <Object[]> ProjectStatusList= (List<Object[]>)query.getResultList();
@@ -1256,7 +1255,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> ProjectApprovalTracking(String InitiationId) throws Exception{
 
 		Query query=manager.createNativeQuery(PROJECTAPPROVALTRACKING);
-		query.setParameter("initiationid", InitiationId);
+		query.setParameter("initiationid", Long.parseLong(InitiationId));
 		List<Object[]> ProjectApprovalTracking=(List<Object[]>)query.getResultList();
 
 		return ProjectApprovalTracking;
@@ -1266,7 +1265,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> ProjectApproveRtmddoList(String EmpId) throws Exception {
 
 		Query query=manager.createNativeQuery("CALL Project_Approval_Rtmddo(:EmpId)");
-		query.setParameter("EmpId", EmpId);
+		query.setParameter("EmpId", Long.parseLong(EmpId));
 		List<Object[]> ProjectApproveRtmddoList=(List<Object[]>)query.getResultList();	
 		return ProjectApproveRtmddoList;
 	}
@@ -1275,7 +1274,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> ProjectApproveTccList(String EmpId) throws Exception {
 
 		Query query=manager.createNativeQuery("CALL Project_Approval_Tcc(:EmpId)");
-		query.setParameter("EmpId", EmpId);
+		query.setParameter("EmpId", Long.parseLong(EmpId));
 		List<Object[]> ProjectApproveTccList=(List<Object[]>)query.getResultList();	
 		return ProjectApproveTccList;
 	}
@@ -1285,7 +1284,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public Double TotalIntiationFeCost(String IntiationId) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTINTITOTALFECOST);
-		query.setParameter("initiationid", IntiationId);
+		query.setParameter("initiationid", Long.parseLong(IntiationId));
 		BigDecimal TotalIntiationFeCost=(BigDecimal)query.getSingleResult();		
 		if(TotalIntiationFeCost==null) {
 			return 0.00;
@@ -1297,7 +1296,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public Double TotalIntiationReCost(String IntiationId) throws Exception {
 
 		Query query=manager.createNativeQuery(PROJECTINTITOTALRECOST);
-		query.setParameter("initiationid", IntiationId);
+		query.setParameter("initiationid", Long.parseLong(IntiationId));
 		BigDecimal TotalIntiationReCost=(BigDecimal)query.getSingleResult();		
 		if(TotalIntiationReCost==null) {
 			return 0.00;
@@ -1341,7 +1340,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public Long DivisionHeadId(String EmpId) throws Exception {
 		try {
 			Query query=manager.createNativeQuery(DIVISIONHEADID);
-			query.setParameter("empid", EmpId);
+			query.setParameter("empid", Long.parseLong(EmpId));
 			return (Long)query.getSingleResult();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -1416,7 +1415,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public Object[] ProjectMainEditData(String ProjectMainId) throws Exception {
 		Query query = manager.createNativeQuery(PROJECTMAINEDITDATA);
-		query.setParameter("promainid",ProjectMainId);
+		query.setParameter("promainid",Long.parseLong(ProjectMainId));
 		Object[] ProjectMainEditData = (Object[]) query.getSingleResult();
 		return ProjectMainEditData;
 	}
@@ -1428,7 +1427,7 @@ public class ProjectDaoImpl implements ProjectDao {
 			+ "ismainwc=:ismainwc,workcenter=:workcenter,objective=:objective,deliverable=:deliverable,modifiedby=:modifiedby,"
 			+ " modifieddate=:modifieddate, LabParticipating=:labparticipating, CategoryId=:categoryId, Scope=:scope ,"
 			+ " application=:application , enduser=:enduser , ProjectShortName=:projectshortname, PlatformId=:PlatformId "
-			+ "WHERE  projectmainid=:promainid  AND isactive='1' "; //srikant
+			+ "WHERE  projectmainid=:promainid  AND isactive='1' "; 
 	@Override
 	public Long ProjectMainEdit(ProjectMain proType) throws Exception {
 		ProjectMain ExistingProjectMain= manager.find(ProjectMain.class, proType.getProjectMainId());
@@ -1538,8 +1537,8 @@ public class ProjectDaoImpl implements ProjectDao {
 		proj.setModifiedBy(proType.getModifiedBy());
 		proj.setModifiedDate(proType.getModifiedDate());
 		proj.setLabParticipating(proType.getLabParticipating());
-		proj.setPlatformId(proType.getPlatformId()); //srikant
-		proj.setPlatform(proType.getPlatform()); //srikant
+		proj.setPlatformId(proType.getPlatformId()); 
+		proj.setPlatform(proType.getPlatform()); 
 		pmrepo.save(proj);
 
 		return proj.getProjectId() ;
@@ -1564,7 +1563,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public Object[] ProjectEditData1(String ProjectId) throws Exception {
 		Query query = manager.createNativeQuery(PROJECTEDITDATA);
-		query.setParameter("proid",ProjectId);
+		query.setParameter("proid", Long.parseLong(ProjectId));
 		Object[] ProjectEditData = (Object[]) query.getSingleResult();
 		return ProjectEditData;
 	}
@@ -1581,7 +1580,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> ProjectAssignList(String EmpId) throws Exception {
 
 		Query query=manager.createNativeQuery(PROJECTASSIGNLIST);
-		query.setParameter("proid",EmpId);
+		query.setParameter("proid", Long.parseLong(EmpId));
 		List<Object[]> ProjectAssignList=(List<Object[]>)query.getResultList();	
 		return ProjectAssignList;
 	}
@@ -1590,7 +1589,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> UserList(String proId) throws Exception {
 
 		Query query=manager.createNativeQuery(USERLIST);
-		query.setParameter("projectid", proId);
+		query.setParameter("projectid", Long.parseLong(proId));
 		List<Object[]> OfficerList=(List<Object[]>)query.getResultList();
 		return OfficerList;
 	}
@@ -1598,7 +1597,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public Object[] ProjectData(String ProId) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTDATA);
-		query.setParameter("proid",ProId);
+		query.setParameter("proid", Long.parseLong(ProId));
 		Object[] ProjectData=(Object[])query.getSingleResult();
 		return ProjectData;
 	}
@@ -1630,7 +1629,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> ProjectApproveAdList(String EmpId) throws Exception {
 		Query query=manager.createNativeQuery("CALL Project_Approval_Ad(:EmpId)");
-		query.setParameter("EmpId", EmpId);
+		query.setParameter("EmpId", Long.parseLong(EmpId));
 		List<Object[]> ProjectApproveAdList=(List<Object[]>)query.getResultList();	
 		return ProjectApproveAdList;
 	}
@@ -1646,7 +1645,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		Query query=manager.createNativeQuery(APPSTATUSLIST);
-		query.setParameter("AuthoId", AuthoId);
+		query.setParameter("AuthoId", Long.parseLong(AuthoId));
 		List<Object[]> StutusList=(List<Object[]>)query.getResultList();	
 		return StutusList;
 	}
@@ -1670,7 +1669,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public Object[] ProjectDataDetails(String projectid) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTDATADETAILS);
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		Object[] ProjectStageDetails=null;
 		try {
 			ProjectStageDetails=(Object[])query.getSingleResult();
@@ -1706,7 +1705,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	{
 
 		Query query=manager.createNativeQuery(PROJECTDATASPECSFILEDATA);
-		query.setParameter("projectdataid",projectdataid);
+		query.setParameter("projectdataid", Long.parseLong(projectdataid));
 		Object[] ProjectDataSpecsFileData=(Object[])query.getSingleResult();
 		return ProjectDataSpecsFileData;
 
@@ -1724,7 +1723,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> ProjectDataRevList(String projectid) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTDATAREVLIST);
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		List<Object[]> ProjectDataRevList=(List<Object[]>)query.getResultList();
 		return ProjectDataRevList;
 	}
@@ -1736,7 +1735,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public Object[] ProjectDataRevData(String projectdatarevid) throws Exception
 	{
 		Query query=manager.createNativeQuery(PROJECTDATAREVDATA);
-		query.setParameter("projectdatarevid", projectdatarevid); 
+		query.setParameter("projectdatarevid", Long.parseLong(projectdatarevid));
 		Object[] ProjectDataRevData=null;
 		try 
 		{
@@ -1755,7 +1754,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	{
 
 		Query query=manager.createNativeQuery(PROJECTDATASPECSREVFILEDATA);
-		query.setParameter("projectdatarevid",projectdatarevid);
+		query.setParameter("projectdatarevid", Long.parseLong(projectdatarevid));
 		Object[] ProjectDataSpecsRevFileData=(Object[])query.getSingleResult();
 		return ProjectDataSpecsRevFileData;
 
@@ -1774,7 +1773,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> InitiatedProjectDetails(String ProjectId) throws Exception {
 
 		Query query=manager.createNativeQuery(INITIATEDPROJECTDETAILS);
-		query.setParameter("initiationid", ProjectId);
+		query.setParameter("initiationid", Long.parseLong(ProjectId));
 		List<Object[]> InitiatedProjectDetails=(List<Object[]>)query.getResultList();
 		return InitiatedProjectDetails;
 	}
@@ -1792,7 +1791,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> SubProjectList(String InitiationId) throws Exception {
 
 		Query query=manager.createNativeQuery(SUBPROJECTLIST);
-		query.setParameter("initiationid", InitiationId);
+		query.setParameter("initiationid", Long.parseLong(InitiationId));
 		List<Object[]> SubProjectList=(List<Object[]>)query.getResultList();
 		return SubProjectList;
 	}
@@ -1810,7 +1809,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public Long EmpId(String InitiationId) throws Exception {
 		try {
 			Query query=manager.createNativeQuery(INTEMPID);
-			query.setParameter("id", InitiationId);
+			query.setParameter("id", Long.parseLong(InitiationId));
 			return (Long)query.getSingleResult();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -1833,7 +1832,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public Object[] ProjectRiskData(String actionassignid) throws Exception 
 	{			
 		Query query=manager.createNativeQuery(PROJECTRISKDATA);
-		query.setParameter("actionassignid", actionassignid);
+		query.setParameter("actionassignid", Long.parseLong(actionassignid));
 		Object[] ProjectRiskData=null;
 		try {
 			ProjectRiskData=(Object[])query.getSingleResult();
@@ -1883,7 +1882,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public Object[] ProjectRiskMatrixData(String actionmainid) throws Exception 
 	{
 		Query query=manager.createNativeQuery(PROJECTRISKMATRIXDATA);
-		query.setParameter("actionmainid", actionmainid);
+		query.setParameter("actionmainid", Long.parseLong(actionmainid));
 		Object[] ProjectRiskMatrixData=null;
 		try {
 			ProjectRiskMatrixData=(Object[])query.getSingleResult();
@@ -1928,7 +1927,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> ProjectRiskMatrixRevList(String actionmainid) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTRISKMATRIXREVLIST);
-		query.setParameter("actionmainid", actionmainid);
+		query.setParameter("actionmainid", Long.parseLong(actionmainid));
 		List<Object[]>  ProjectRiskMatrixRevList=(List<Object[]>)query.getResultList();
 		return ProjectRiskMatrixRevList;
 	}	
@@ -1939,7 +1938,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object> RiskDataPresentList(String projectid,String LabCode) throws Exception {
 		Query query=manager.createNativeQuery(RISKDATAPRESENTLIST);
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		//			query.setParameter("LabCode", LabCode);
 		List<Object>  RiskDataPresentList=(List<Object>)query.getResultList();
 		return RiskDataPresentList;
@@ -2009,7 +2008,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype ,String LabCode)throws Exception
 	{
 		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList(:empid,:logintype,:labcode);");
-		query.setParameter("empid", empid);
+		query.setParameter("empid", Long.parseLong(empid));
 		query.setParameter("logintype", Logintype);
 		query.setParameter("labcode", LabCode);
 		List<Object[]> LoginProjectIdList=(List<Object[]>)query.getResultList();
@@ -2044,7 +2043,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public Object[]  EmpDivHeadData(String empid) throws Exception
 	{
 		Query query=manager.createNativeQuery(EMPDIVHEADDATA);
-		query.setParameter("empid",empid);
+		query.setParameter("empid", Long.parseLong(empid));
 		try {
 			return (Object[])query.getSingleResult();
 		}catch (NoResultException e) {
@@ -2097,7 +2096,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> ProjectRevList(String projectid) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTREVLIST);
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid",  Long.parseLong(projectid));
 		return (List<Object[]>)query.getResultList();
 	}
 
@@ -2112,7 +2111,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> ProjectMasterAttachList(String projectid) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTMASTERATTACHLIST);
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		return (List<Object[]>)query.getResultList();
 	}
 
@@ -2120,7 +2119,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public Object[] ProjectMasterAttachData(String projectattachid) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTMASTERATTACHDATA);
-		query.setParameter("projectattachid", projectattachid);
+		query.setParameter("projectattachid", Long.parseLong(projectattachid));
 		return (Object[])query.getResultList().get(0);
 	}
 
@@ -2131,7 +2130,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public int ProjectMasterAttachDelete(String projectattachid) throws Exception
 	{
 		Query query=manager.createNativeQuery(PROJECTMASTERATTACHDELETE);
-		query.setParameter("projectattachid", projectattachid);
+		query.setParameter("projectattachid", Long.parseLong(projectattachid));
 		return query.executeUpdate();
 	}
 
@@ -2157,7 +2156,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> InitiationCheckList(String initiationid ) throws Exception 
 	{
 		Query query=manager.createNativeQuery(INITIATIONCHECKLIST);
-		query.setParameter("initiationid", initiationid);
+		query.setParameter("initiationid", Long.parseLong(initiationid));
 		return (List<Object[]>)query.getResultList();
 	}
 
@@ -2270,7 +2269,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> RequirementList(String reqInitiationId) throws Exception {
 		Query query=manager.createNativeQuery(REQLIST);
-		query.setParameter("ReqInitiationId", reqInitiationId);
+		query.setParameter("ReqInitiationId", Long.parseLong(reqInitiationId));
 		List<Object[]> RequirementList=(List<Object[]> )query.getResultList();	
 		return RequirementList;
 	}
@@ -2384,7 +2383,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Integer> reqcountList(String initiationId) throws Exception {
 		Query query=manager.createNativeQuery(REQCOUNTLIST);
-		query.setParameter("initiationId",initiationId );
+		query.setParameter("initiationId", Long.parseLong(initiationId));
 		List<Integer>reqcountList=(List<Integer>)query.getResultList();
 
 		return reqcountList;
@@ -2393,7 +2392,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public int deleteRequirement(String initiationReqId) throws Exception {
 		Query query =manager.createNativeQuery(REQDELT);
-		query.setParameter("initiationReqId", initiationReqId);
+		query.setParameter("initiationReqId", Long.parseLong(initiationReqId));
 
 		return query.executeUpdate();
 	}
@@ -2403,7 +2402,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public String getReqId(int i, String initiationId) throws Exception {
 		Query query=manager.createNativeQuery(REQIREID);
 		query.setParameter("i", i);
-		query.setParameter("initiationId", initiationId);
+		query.setParameter("initiationId", Long.parseLong(initiationId));
 		String getReqId=(String)query.getSingleResult();
 		return getReqId;
 	}
@@ -2414,7 +2413,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		query.setParameter("s", s);
 		query.setParameter("last", last);
 		query.setParameter("first", first);
-		query.setParameter("initiationId", initiationId);
+		query.setParameter("initiationId", Long.parseLong(initiationId));
 
 		return query.executeUpdate();
 	}
@@ -2437,7 +2436,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> RequirementAttachmentList(String inititationReqId) throws Exception {
 		Query query=manager.createNativeQuery(REQATTACHLIST);
-		query.setParameter("inititationReqId", inititationReqId);
+		query.setParameter("inititationReqId", Long.parseLong(inititationReqId));
 		List<Object[]>requirementAttachmentList=(List<Object[]>)query.getResultList();
 		return requirementAttachmentList;
 	}
@@ -2449,10 +2448,10 @@ public class ProjectDaoImpl implements ProjectDao {
 		logger.info(new java.util.Date() +"Inside DAO reqAttachDownload ");
 		Query query =manager.createNativeQuery(REQATTACHDOWNLOAD);
 
-		query.setParameter("DocumentId", DocumentId);
+		query.setParameter("DocumentId", Long.parseLong(DocumentId));
 		query.setParameter("VersionDoc", VersionDoc);
-		query.setParameter("initiationid", initiationid);
-		query.setParameter("stepid", stepid);
+		query.setParameter("initiationid", Long.parseLong(initiationid));
+		query.setParameter("stepid", Long.parseLong(stepid));
 		Object[]reqAttachDownload=(Object[])query.getSingleResult();
 		return reqAttachDownload;
 	}
@@ -2461,7 +2460,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public long requirementAttachmentDelete(String attachmentid) throws Exception {
 		Query query =manager.createNativeQuery(REQATTACHDEL);
-		query.setParameter("attachmentid", attachmentid);
+		query.setParameter("attachmentid", Long.parseLong(attachmentid));
 
 		return query.executeUpdate();
 	}
@@ -2485,8 +2484,8 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> getProjectFilese(String initiationid, String stepid) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTFILES);
-		query.setParameter("initiationid", initiationid);
-		query.setParameter("stepid", stepid);
+		query.setParameter("initiationid", Long.parseLong(initiationid));
+		query.setParameter("stepid", Long.parseLong(stepid));
 		List<Object[]>projectfiles=(List<Object[]>)query.getResultList();
 		return projectfiles;
 	}
@@ -2497,8 +2496,8 @@ public class ProjectDaoImpl implements ProjectDao {
 	public long filecount(String stepid, String initiationid) throws Exception {
 		try {
 			Query query =manager.createNativeQuery(FILECOUNT);
-			query.setParameter("initiationid", initiationid);
-			query.setParameter("stepid",stepid);
+			query.setParameter("initiationid", Long.parseLong(initiationid));
+			query.setParameter("stepid", Long.parseLong(stepid));
 			return (Long)query.getSingleResult();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -2514,9 +2513,9 @@ public class ProjectDaoImpl implements ProjectDao {
 			throws Exception {
 
 		Query query=manager.createNativeQuery(FILELIST);
-		query.setParameter("inititationid", inititationid);
-		query.setParameter("stepid", stepid);
-		query.setParameter("documentcount", documentcount);
+		query.setParameter("inititationid", Long.parseLong(inititationid));
+		query.setParameter("stepid", Long.parseLong(stepid));
+		query.setParameter("documentcount", Long.parseLong(documentcount));
 
 		List<Object[]>projectfiles=(List<Object[]>)query.getResultList();
 		return projectfiles;
@@ -2529,8 +2528,8 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> requirementFiles(String initiationid, int stepid) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTREQFILES);
 
-		query.setParameter("initiationid", initiationid);
-		query.setParameter("stepid", stepid);
+		query.setParameter("initiationid", Long.parseLong(initiationid));
+		query.setParameter("stepid",  stepid);
 		List<Object[]>requirementFiles=(List<Object[]>)query.getResultList();
 		return requirementFiles;
 	}
@@ -2538,7 +2537,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> sanctionlistDetails(String initiationid) throws Exception {
 		Query query =manager.createNativeQuery(SANCDETAILS);
-		query.setParameter("initiationid",initiationid );
+		query.setParameter("initiationid", Long.parseLong(initiationid));
 		List<Object[]>sanctionlistDetails=(List<Object[]>)query.getResultList();
 		return sanctionlistDetails;
 	}
@@ -2555,8 +2554,8 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> projectfiles(String inititationid, String stepid) throws Exception {
 		Query query=manager.createNativeQuery(FILEDETAILS);
-		query.setParameter("inititationid",inititationid );
-		query.setParameter("stepid", stepid);
+		query.setParameter("inititationid", Long.parseLong(inititationid));
+		query.setParameter("stepid", Long.parseLong(stepid));
 
 		List<Object[]>projectfiles=(List<Object[]>)query.getResultList();
 		return projectfiles;
@@ -2566,9 +2565,9 @@ public class ProjectDaoImpl implements ProjectDao {
 	public Object[] projectfile(String initiationid, String stepid, String documentid) throws Exception {
 		// TODO Auto-generated method stub
 		Query query =manager.createNativeQuery(PROFILES);
-		query.setParameter("initiationid", initiationid);
-		query.setParameter("stepid", stepid);
-		query.setParameter("documentid", documentid);
+		query.setParameter("initiationid", Long.parseLong(initiationid));
+		query.setParameter("stepid",  Long.parseLong(stepid));
+		query.setParameter("documentid", Long.parseLong(documentid));
 
 		Object[]projectfile=null;
 		try {
@@ -2602,7 +2601,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		// TODO Auto-generated method stub
 
 		Query query =manager.createNativeQuery(PROCUREMENTLIST);
-		query.setParameter("initiationid", initiationid);
+		query.setParameter("initiationid", Long.parseLong(initiationid));
 		List<Object[]>ProcurementList=null;
 		try {
 			ProcurementList=(List<Object[]>)query.getResultList();
@@ -2617,7 +2616,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public Object[] PocurementPlanEditDetails(String planid) throws Exception {
 		// TODO Auto-generated method stub
 		Query query =manager.createNativeQuery(PROCUREMENTDETAILS);
-		query.setParameter("planid", planid);
+		query.setParameter("planid",  Long.parseLong(planid));
 		Object[]PocurementPlanEditDetails=(Object[])query.getSingleResult();
 		return PocurementPlanEditDetails;
 	}
@@ -2656,7 +2655,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		Query query=manager.createNativeQuery(TOTALCOST);
 		query.setParameter("start", start);
 		query.setParameter("end", end);
-		query.setParameter("initiationid", initiationid);
+		query.setParameter("initiationid", Long.parseLong(initiationid));
 		Object temp=query.getResultList().get(0);
 		String total="0.00";
 		if(temp!=null) {
@@ -2669,7 +2668,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public Object[] projectMacroDetails(String initiationid) throws Exception {
 		// TODO Auto-generated method stub
 		Query query =manager.createNativeQuery(MACRODETAIL);
-		query.setParameter("initiationid", initiationid);
+		query.setParameter("initiationid", Long.parseLong(initiationid));
 		Object[]MACRODETAIL= {};
 		try {
 			MACRODETAIL=(Object[])query.getSingleResult();
@@ -2769,7 +2768,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> TrainingRequirementList(String initiationid) throws Exception {
 		// TODO Auto-generated method stub
 		Query query=manager.createNativeQuery(TRAINGLIST);
-		query.setParameter("initiationid", initiationid);
+		query.setParameter("initiationid", Long.parseLong(initiationid));
 
 		List<Object[]>TrainingRequirementList=(List<Object[]>)query.getResultList();
 
@@ -2780,7 +2779,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public Object[] TraingRequirements(String trainingid) throws Exception {
 		// TODO Auto-generated method stub
 		Query query= manager.createNativeQuery(TRANREQ);
-		query.setParameter("trainingid", trainingid);
+		query.setParameter("trainingid", Long.parseLong(trainingid));
 		Object[]TraingRequirements=(Object[])query.getSingleResult();
 		return TraingRequirements;
 	}
@@ -2815,7 +2814,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> WorkPackageList(String initiationid) throws Exception {
 		// TODO Auto-generated method stub
 		Query query=manager.createNativeQuery(WORKLIST);
-		query.setParameter("initiationid", initiationid);
+		query.setParameter("initiationid", Long.parseLong(initiationid));
 		List<Object[]>WorkPackageList=(List<Object[]>)query.getResultList();
 
 		return WorkPackageList;
@@ -2906,7 +2905,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> ConsultancyList(String initiationid) throws Exception {
 		// TODO Auto-generated method stub
 		Query query =manager.createNativeQuery(CONSULTANCYLIST);
-		query.setParameter("initiationid", initiationid);
+		query.setParameter("initiationid", Long.parseLong(initiationid));
 		return (List<Object[]>)query.getResultList();
 	}
 	private static final String CONSULTANCYVALUE="SELECT a.consultancyid,a.initiationid,a.Discipline ,a.agency,a.person,a.cost,a.process FROM pfms_initiation_soc_consultancy a WHERE consultancyid=:parameter AND isactive=1";
@@ -2983,7 +2982,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public Object[] macroDetailsPartTwo(String initiationid) throws Exception {
 		Query query =manager.createNativeQuery(MACRODETAILS2);
-		query.setParameter("initiationid", initiationid);
+		query.setParameter("initiationid", Long.parseLong(initiationid));
 		Object[]macroDetailsPartTwo= {};
 		try {
 			macroDetailsPartTwo=(Object[])query.getSingleResult();
@@ -3019,7 +3018,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public Object[] BriefTechnicalAppreciation(String initiationid) throws Exception {
 		// TODO Auto-generated method stub
 		Query query=manager.createNativeQuery(BRIEFLIST);
-		query.setParameter("initiationid", initiationid);
+		query.setParameter("initiationid", Long.parseLong(initiationid));
 
 		Object[]BriefTechnicalAppreciation= {};
 		try {
@@ -3070,8 +3069,8 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> GetCostBreakList(String InitiationId , String projecttypeid)throws Exception
 	{
 		Query query=manager.createNativeQuery(COSTBREAK);
-		query.setParameter("initiationid", InitiationId);
-		query.setParameter("projecttypeid", projecttypeid);
+		query.setParameter("initiationid", Long.parseLong(InitiationId));
+		query.setParameter("projecttypeid", Integer.parseInt(projecttypeid));
 		List<Object[]> PfmscostbreakList=(List<Object[]>)query.getResultList();		
 
 		return PfmscostbreakList;
@@ -3088,7 +3087,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> CapsiList(String initiationid) throws Exception {
 		// TODO Auto-generated method stub
 		Query query =manager.createNativeQuery(CAPSLIST);
-		query.setParameter("initiationid", initiationid);
+		query.setParameter("initiationid", Long.parseLong(initiationid));
 		return (List<Object[]>)query.getResultList();
 	}
 	private static final String CAPSVALUE="SELECT capsid,initiationid,Station,Consultant,Areard,Cost,pdc,confidencelevel FROM pfms_initiation_soc_capsi WHERE capsid=:parameter AND isactive=1";
@@ -3134,8 +3133,8 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> ProcurementInitiationCostList(String initiationid, String initiationCostId) throws Exception {
 		// TODO Auto-generated method stub
 		Query query =manager.createNativeQuery(PROCOSTLIST);
-		query.setParameter("initiationid", initiationid);
-		query.setParameter("initiationCostId", initiationCostId);
+		query.setParameter("initiationid", Long.parseLong(initiationid));
+		query.setParameter("initiationCostId", Long.parseLong(initiationCostId));
 		List<Object[]>ProcurementInitiationCostList=null;
 		try{ProcurementInitiationCostList=query.getResultList();}
 		catch(Exception e) {
@@ -3294,7 +3293,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public String getEmpId(String pdd) throws Exception {
 		try {
 			Query query =manager.createNativeQuery(EMPID);
-			query.setParameter("InitiationId", pdd);
+			query.setParameter("InitiationId", Long.parseLong(pdd));
 			return (Long) query.getSingleResult()+"";
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -3308,7 +3307,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> DocumentApprovalFlowData(String labCode, String initiationid) throws Exception {
 		Query query=manager.createNativeQuery(DOCFLWDATA);
 		query.setParameter("labcode", labCode);
-		query.setParameter("initiationid", initiationid);
+		query.setParameter("initiationid", Long.parseLong(initiationid));
 		List<Object[]>DocumentApprovalFlowData=(List<Object[]>)query.getResultList();
 		return DocumentApprovalFlowData;
 	}
@@ -3332,7 +3331,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public String getInitiationReviewer(String initiationid) throws Exception {
 		Query query = manager.createNativeQuery(REVIEWER);
-		query.setParameter("initiationid", initiationid);
+		query.setParameter("initiationid", Long.parseLong(initiationid));
 		Object reviewer=0;
 		try {
 			reviewer=	(Object)query.getSingleResult();
@@ -3354,7 +3353,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public String getInitiationApprover(String initiationid) throws Exception {
 		Query query = manager.createNativeQuery(APPROVER);
-		query.setParameter("initiationid", initiationid);
+		query.setParameter("initiationid",  Long.parseLong(initiationid));
 		Object reviewer=(Object)query.getSingleResult();
 		try {
 			if(reviewer==null) {
@@ -3444,7 +3443,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public Object[] OtherSubRequirementsDetails(String requirementId) throws Exception {
 		Query query =manager.createNativeQuery(OTHREQDATA);
-		query.setParameter("requirementid", requirementId);
+		query.setParameter("requirementid", Long.parseLong(requirementId));
 		return (Object[])query.getSingleResult();
 	}
 	private static final String OTHMAINREQLIST="SELECT ReqMainId,RequirementName,RequirementId FROM pfms_initiation_otherreq_details WHERE initiationid=:initiationid and projectid=:projectId AND reqparentid=0 AND isactive=1 ORDER BY ReqMainId ";
@@ -3476,7 +3475,7 @@ public class ProjectDaoImpl implements ProjectDao {
 //		query.setParameter("initiationid", initiationid);
 //		System.out.println("inside dao"+ProjectId);
 //		query.setParameter("ProjectId", ProjectId);
-		query.setParameter("ReqInitiationId", reqInitiationId);
+		query.setParameter("ReqInitiationId", Long.parseLong(reqInitiationId));
 		Object[]ReqIntro=null;
 		try {
 			ReqIntro=(Object[])query.getSingleResult();
@@ -3618,8 +3617,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public Long ReqForwardProgress(String reqInitiationId) throws Exception {
 		try {
 			Query query =manager.createNativeQuery(PRGCOUNT);
-			query.setParameter("ReqInitiationId", reqInitiationId);
-
+			query.setParameter("ReqInitiationId", Long.parseLong(reqInitiationId));
 			return (Long)query.getSingleResult();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -3643,7 +3641,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public Object[] SqrFiles(String reqInitiationId) throws Exception {
 		Query query =manager.createNativeQuery(SQRFILES);
-		query.setParameter("ReqInitiationId", reqInitiationId);
+		query.setParameter("ReqInitiationId", Long.parseLong(reqInitiationId));
 		Object[]SQRFILES=null;
 		try {
 			SQRFILES=(Object[])query.getSingleResult();
@@ -3662,7 +3660,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> ReParaDetails(String reqInitiationId) throws Exception {
 		Query query = manager.createNativeQuery(PARADETAILS);
-		query.setParameter("ReqInitiationId", reqInitiationId);
+		query.setParameter("ReqInitiationId", Long.parseLong(reqInitiationId));
 		List<Object[]>paraDetails=(List<Object[]>)query.getResultList();
 		return paraDetails;
 	}
@@ -3710,7 +3708,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> getVerificationList(String reqInitiationId) throws Exception {
 
 		Query query=manager.createNativeQuery(VERIFICATIONLIST);
-		query.setParameter("ReqInitiationId", reqInitiationId);
+		query.setParameter("ReqInitiationId", Long.parseLong(reqInitiationId));
 		List<Object[]> verificationList=(List<Object[]>)query.getResultList();
 		return verificationList;
 	}
@@ -3756,7 +3754,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> getAbbreviationDetails(String reqInitiationId) throws Exception {
 		Query query = manager.createNativeQuery(ABBREVIATIONS);
-		query.setParameter("ReqInitiationId", reqInitiationId);
+		query.setParameter("ReqInitiationId", Long.parseLong(reqInitiationId));
 		return (List<Object[]>)query.getResultList();
 	}
 
@@ -3785,7 +3783,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> AppendixList(String initiationid) throws Exception {
 
 		Query query = manager.createNativeQuery(APPENDIXLIST);
-		query.setParameter("InitiationId", initiationid);
+		query.setParameter("InitiationId", Long.parseLong(initiationid));
 
 		return (List<Object[]>)query.getResultList();
 	}
@@ -3814,7 +3812,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> getAcronymsList(String reqInitiationId) throws Exception {
 		Query query = manager.createNativeQuery(ACRONYMLIST);
-		query.setParameter("ReqInitiationId", reqInitiationId);
+		query.setParameter("ReqInitiationId", Long.parseLong(reqInitiationId));
 		return (List<Object[]>)query.getResultList();
 	}
 	@Override
@@ -3844,8 +3842,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> getPerformanceList(String reqInitiationId) throws Exception {
 
 		Query query = manager.createNativeQuery(PERFORMANCELIST);
-		query.setParameter("ReqInitiationId", reqInitiationId);
-
+		query.setParameter("ReqInitiationId", Long.parseLong(reqInitiationId));
 		return (List<Object[]>)query.getResultList();
 	}
 	@Override
@@ -3885,8 +3882,8 @@ public class ProjectDaoImpl implements ProjectDao {
 		Query query = manager.createNativeQuery(EMPLISTS);
 
 		query.setParameter("LabCode", labCode);
-		query.setParameter("ReqInitiationId", reqInitiationId);
-
+		query.setParameter("ReqInitiationId", Long.parseLong(reqInitiationId));
+		
 		return (List<Object[]>)query.getResultList();
 	}
 
@@ -3907,7 +3904,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
 		Query query = manager.createNativeQuery(REQMEMLIST);
 
-		query.setParameter("ReqInitiationId", reqInitiationId);
+		query.setParameter("ReqInitiationId", Long.parseLong(reqInitiationId));
 		return (List<Object[]>)query.getResultList();
 	}
 	@Override
@@ -3924,7 +3921,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public List<Object[]> getDocumentSummary(String reqInitiationId) throws Exception {
 
 		Query query = manager.createNativeQuery(DOCSUM);
-		query.setParameter("ReqInitiationId", reqInitiationId);
+		query.setParameter("ReqInitiationId", Long.parseLong(reqInitiationId));
 		List<Object[]>DocumentSummary=(List<Object[]>)query.getResultList();
 
 		return DocumentSummary;
@@ -3980,7 +3977,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> ReParaDetailsMain(String reqInitiationId) throws Exception {
 		Query query = manager.createNativeQuery(PARADETAILSMAIN);
-		query.setParameter("ReqInitiationId", reqInitiationId);
+		query.setParameter("ReqInitiationId", Long.parseLong(reqInitiationId));
 		List<Object[]>paraDetails=(List<Object[]>)query.getResultList();
 		return paraDetails;
 	}
@@ -3989,7 +3986,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> getVerificationListMain(String reqInitiationId) throws Exception {
 		Query query=manager.createNativeQuery(VERIFICATIONLISTMAIN);
-		query.setParameter("ReqInitiationId", reqInitiationId);
+		query.setParameter("ReqInitiationId", Long.parseLong(reqInitiationId));
 		List<Object[]> verificationList=(List<Object[]>)query.getResultList();
 		return verificationList;
 	}
@@ -4000,7 +3997,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		Query query = manager.createNativeQuery(VPDETAILS);
 //		query.setParameter("initiationid", initiationid);
 //		query.setParameter("ProjectId", ProjectId);
-		query.setParameter("ReqInitiationId", reqInitiationId);
+		query.setParameter("ReqInitiationId", Long.parseLong(reqInitiationId));
 		List<Object[]>paraDetails=(List<Object[]>)query.getResultList();
 		return paraDetails;
 	}
@@ -4010,8 +4007,8 @@ public class ProjectDaoImpl implements ProjectDao {
 		Query query = manager.createNativeQuery(EMPLISTS1);
 
 		query.setParameter("LabCode", labCode);
-		query.setParameter("TestPlanInitiationId", testPlanInitiationId);
-		query.setParameter("SpecsInitiationId", SpecsInitiationId);
+		query.setParameter("TestPlanInitiationId", Long.parseLong(testPlanInitiationId));
+		query.setParameter("SpecsInitiationId", Long.parseLong(SpecsInitiationId));
 
 
 		return (List<Object[]>)query.getResultList();
@@ -4025,7 +4022,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
 			Query query = manager.createNativeQuery(projectType.equalsIgnoreCase("E")?GETPROJECTDETAILS:GETPREPROJECTDETAILS);
 			query.setParameter("LabCode", labcode);
-			query.setParameter("ProjectId", projectId);
+			query.setParameter("ProjectId", Long.parseLong(projectId));
 			return (Object[])query.getSingleResult();
 
 		}catch (Exception e) {
@@ -4062,9 +4059,9 @@ public class ProjectDaoImpl implements ProjectDao {
 	{
 		try {
 			Query query=manager.createNativeQuery(INITIATIONREQLIST);
-			query.setParameter("ProjectId", projectId);
-			query.setParameter("ProductTreeMainId", mainId);
-			query.setParameter("InitiationId", initiationId);
+			query.setParameter("ProjectId", Long.parseLong(projectId));
+			query.setParameter("ProductTreeMainId",  Long.parseLong(mainId));
+			query.setParameter("InitiationId",  Long.parseLong(initiationId));
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -4085,7 +4082,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> SpecContentsDetails(String specsInitiationId) throws Exception {
 		Query query = manager.createNativeQuery(SEPCCONTENTDETAILS);
-		query.setParameter("SpecsInitiationId", specsInitiationId);	
+		query.setParameter("SpecsInitiationId", Long.parseLong(specsInitiationId));
 		List<Object[]>SpecContentsDetails= new ArrayList<>();
 		SpecContentsDetails= (List<Object[]>)query.getResultList();
 		return SpecContentsDetails;
@@ -4132,7 +4129,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> getSpecsIntro(String SpecsInitiationId) throws Exception {
 		Query query = manager.createNativeQuery(SPECINTROLIST);
-		query.setParameter("SpecsInitiationId", SpecsInitiationId);
+		query.setParameter("SpecsInitiationId", Long.parseLong(SpecsInitiationId));
 		return (List<Object[]>)query.getResultList();
 	}
 	
@@ -4170,7 +4167,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> SpecProducTreeDetails(String specsInitiationId) throws Exception {
 		Query query = manager.createNativeQuery(PRODUCTTREE);
-		query.setParameter("SpecificationId", specsInitiationId);
+		query.setParameter("SpecificationId",  Long.parseLong(specsInitiationId));
 		
 		return (List<Object[]>)query.getResultList();
 	}
@@ -4199,7 +4196,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		
 		Query query = manager.createNativeQuery(PARAS);
 		
-		query.setParameter("paraid", paraid);
+		query.setParameter("paraid", Long.parseLong(paraid));
 		
 		return (Object[])query.getSingleResult();
 	}
@@ -4220,7 +4217,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		try {
 			
 			Query query =  manager.createNativeQuery(GETMILESTONEDATA);
-			query.setParameter("initiationid", initiationid);
+			query.setParameter("initiationid", Long.parseLong(initiationid));
 			return (List<Object[]>)query.getResultList();
 			
 		} catch (Exception e) {
@@ -4316,8 +4313,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		return (List<Object[]>)query.getResultList();
 	}
 	
-	//srikant start
-	private static final String PLATFORMLIST="select PlatformId,PlatformName from pfms_platform_master where isactive='1' ORDER BY PlatformId"; //srikant
+	private static final String PLATFORMLIST="select PlatformId,PlatformName from pfms_platform_master where isactive='1' ORDER BY PlatformId"; 
 	@Override
 	public List<Object[]> PlatformList() {
 		try {
@@ -4329,7 +4325,6 @@ public class ProjectDaoImpl implements ProjectDao {
 		}
 		
 	}
-	//srikant end
 	
 	private static final String PROJECTORGINIALDATA="SELECT a.projectId,a.ProjectName,a.ProjectCode,a.unitcode,a.ProjectShortName,a.EndUser,a.projsancauthority,a.boardreference,e.Title,e.Salutation,e.EmpName,d.designation,a.SanctionNo,a.SanctionDate\r\n"
 			+ ",a.PDC,a.LabParticipating,a.TotalSanctionCost,a.SanctionCostRE,a.SanctionCostFE,a.Application,c.Category,pt.ProjectType ,a.Scope,a.Objective,a.Deliverable,a.projectmainid,pm.projectCode AS id,a.projectdescription\r\n"
@@ -4345,7 +4340,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	public Object[] ProjectOriginalData(String ProjectId) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(PROJECTORGINIALDATA);
-			query.setParameter("proid",ProjectId);
+			query.setParameter("proid", Long.parseLong(ProjectId));
 			return (Object[]) query.getSingleResult();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -4358,7 +4353,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		try {
 			Query query=manager.createNativeQuery("SELECT p.ProjectDescription,p.UnitCode,p. ProjectCode,p.BoardReference,e.empname,e.title,e.salutation,d.designation ,p.ProjectDirector,p.ProjSancAuthority ,p.SanctionNo,p.SanctionDate,p.PDC, p.TotalSanctionCost,p.SanctionCostFE ,p.SanctionCostRE, p.LabParticipating,p.Application,p.ProjectCategory,p.Scope,p.Objective,p.Deliverable,p.Remarks,c.Category,pt.ProjectType from  project_master_rev p LEFT join employee e on p.ProjectDirector = e.empid LEFT Join employee_desig d on e.DesigId=d.DesigId Left join pfms_category  c on p.ProjectCategory=c.CategoryId Left join project_type pt on p.ProjectType=pt.ProjectTypeId\r\n"
 					+ "where ProjectId=:prjId");
-			query.setParameter("prjId", ProjectId);
+			query.setParameter("prjId", Long.parseLong(ProjectId));
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -4367,7 +4362,6 @@ public class ProjectDaoImpl implements ProjectDao {
 		
 	}
 	
-	//srikant
 	@Override
 	public PlatformMaster getPlatformByPlatformId(long platformId) throws Exception {
 		 return manager.find(PlatformMaster.class, platformId);

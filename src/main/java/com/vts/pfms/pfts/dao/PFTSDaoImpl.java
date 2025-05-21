@@ -47,7 +47,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	public Object[] ProjectData(String projectid) throws Exception {
 
 		Query query=manager.createNativeQuery(PROJECTDATA);	   
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		Object[] Project=(Object[])query.getSingleResult();	
 		
 		return Project;
@@ -57,7 +57,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype ,String LabCode)throws Exception
 	{
 		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList(:empid,:logintype,:labcode);");
-		query.setParameter("empid", empid);
+		query.setParameter("empid", Long.parseLong(empid));
 		query.setParameter("logintype", Logintype);
 		query.setParameter("labcode", LabCode);
 		List<Object[]> LoginProjectIdList=(List<Object[]>)query.getResultList();
@@ -70,7 +70,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	public List<Object[]> getFileStatusList(String projectId) throws Exception {
 	
 		Query query=manager.createNativeQuery(FILESTATUS);
-		query.setParameter("projectid", projectId);
+		query.setParameter("projectid", Integer.parseInt(projectId));
 		List<Object[]> fileStatusList=(List<Object[]>)query.getResultList();	
 		
 		return fileStatusList;
@@ -80,7 +80,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	@Override
 	public List<Object[]> getprevDemandFile(String projectId)throws Exception{
 		Query query=manager.createNativeQuery(PrevDemandFile);
-		query.setParameter("projectid", projectId);
+		query.setParameter("projectid",  Integer.parseInt(projectId));
 		List<Object[]> prevDemandFileList=(List<Object[]>)query.getResultList();	
 		
 		return prevDemandFileList;
@@ -100,7 +100,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	@Override
 	public List<Object[]> getStatusList(String fileid)throws Exception{
 		Query query=manager.createNativeQuery(StatusList);
-		query.setParameter("fileid", fileid);
+		query.setParameter("fileid", Long.parseLong(fileid));
 		return (List<Object[]>)query.getResultList();
 	}
 	
@@ -116,7 +116,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 		if(statusId.equalsIgnoreCase("1"))
 		{
 			
-			PFTSFile ExistingPFTSFile= manager.find(PFTSFile.class, fileId);
+			PFTSFile ExistingPFTSFile= manager.find(PFTSFile.class, Long.parseLong(fileId));
 			if(ExistingPFTSFile != null) {
 				ExistingPFTSFile.setPftsStatusId(Long.parseLong(statusId));
 				ExistingPFTSFile.setRemarks(remarks);
@@ -127,7 +127,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 		else {
 			
 		Query query=manager.createNativeQuery(UpdateDemand);
-		query.setParameter("fileid", fileId);
+		query.setParameter("fileid", Long.parseLong(fileId));
 		query.setParameter("statusid", statusId);
 		query.setParameter("eventDate", eventDateSql);
 		query.setParameter("remarks", remarks);
@@ -142,7 +142,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	@Override
 	public int updateCostOnDemand(String orderNo, String oderCostD, String fileId,Date dpDateSql)throws Exception{
 		
-		PFTSFile ExistingPFTSFile = manager.find(PFTSFile.class, fileId);
+		PFTSFile ExistingPFTSFile = manager.find(PFTSFile.class, Long.parseLong(fileId));
 		if(ExistingPFTSFile != null) {
 			 ExistingPFTSFile.setOrderNo(orderNo);
 			 ExistingPFTSFile.setOrderCost(Double.parseDouble(oderCostD));
@@ -160,7 +160,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	@Override
 	public int FileInActive(String fileId, String userId) throws Exception {
 		
-		PFTSFile ExistingPFTSFile = manager.find(PFTSFile.class, fileId);
+		PFTSFile ExistingPFTSFile = manager.find(PFTSFile.class,  Long.parseLong(fileId));
 		if(ExistingPFTSFile != null) {
 			ExistingPFTSFile.setIsActive(0);
 			return 1;
@@ -190,7 +190,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	public Object[] getFilePDCInfo(String fileid)throws Exception
 	{
 		Query query=manager.createNativeQuery(GETFILEPDCINFO);
-		query.setParameter("fileid", fileid);
+		query.setParameter("fileid", Long.parseLong(fileid));
 		return ( Object[])query.getSingleResult();
 	}
 	
@@ -213,7 +213,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	@Override
 	public int getpftsFieldId(String pftsFileId) throws Exception {
 		Query query=manager.createNativeQuery(GETPFTSCOUNT);
-		query.setParameter("pftsFileId", pftsFileId);
+		query.setParameter("pftsFileId", Long.parseLong(pftsFileId));
 		Long result = (Long)query.getSingleResult();
 		return result.intValue();
 	}
@@ -243,7 +243,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	public Object[] getEnviData(String PftsFileId)throws Exception
 	{
 		Query query=manager.createNativeQuery(GETENVIDATA);
-		query.setParameter("PftsFileId", PftsFileId);
+		query.setParameter("PftsFileId", Long.parseLong(PftsFileId));
 		return ( Object[])query.getSingleResult();
 	}
 	
@@ -260,7 +260,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	public Object[] getpftsFileViewList(String procFileId) throws Exception {
 		
 		Query query = manager.createNativeQuery(FILEVIEWLIST);
-		query.setParameter("pftsfileid", procFileId);
+		query.setParameter("pftsfileid", Long.parseLong(procFileId));
 		
 		return  (Object[])query.getSingleResult();
 	}
@@ -270,7 +270,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	public List<Object[]> getOrderDetailsAjax(String fileId) throws Exception {
 		
 		Query query = manager.createNativeQuery(ORDERETAILSAJAX);
-		query.setParameter("fileId", fileId);
+		query.setParameter("fileId", Long.parseLong(fileId));
 		return  (List<Object[]>)query.getResultList();
 	}
 	
@@ -278,7 +278,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	@Override
 	public long ManualOrderSubmit(PftsFileOrder order, String orderid) throws Exception {
 		
-		PftsFileOrder ExistingPftsFileOrder = manager.find(PftsFileOrder.class, orderid);
+		PftsFileOrder ExistingPftsFileOrder = manager.find(PftsFileOrder.class, Long.parseLong(orderid));
 		if(ExistingPftsFileOrder != null) {
 			System.err.println("Working");
 			ExistingPftsFileOrder.setOrderNo(order.getOrderNo());
@@ -328,7 +328,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 		// TODO Auto-generated method stub
 			String updateOrder="UPDATE pfts_file_order SET IsActive='0' WHERE PftsFileId=:PftsFileId";
 			Query query = manager.createNativeQuery(updateOrder);
-			query.setParameter("PftsFileId", fileId);
+			query.setParameter("PftsFileId", Long.parseLong(fileId));
 			query.executeUpdate();
 	}
 	
@@ -385,7 +385,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 		try {
 			
 			Query query = manager.createNativeQuery(ACTUALSTATUSDATE);
-			query.setParameter("ProjectId", projectId);
+			query.setParameter("ProjectId", Long.parseLong(projectId));
 			query.setParameter("DemandNo", demandId);
 			return (Object[])query.getSingleResult();
 		} catch (Exception e) {
@@ -399,7 +399,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	public Object[] getpftsMileDemandList(String PftsFileId) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(GETMILEDEMANDLIST);
-			query.setParameter("PftsFileId", PftsFileId);
+			query.setParameter("PftsFileId", Long.parseLong(PftsFileId));
 			return (Object[])query.getSingleResult();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -412,7 +412,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	public Object[] getpftsActuallDate(String pftsFileId) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(GETPFTSSCTUALDATE);
-			query.setParameter("pftsFileId",pftsFileId);
+			query.setParameter("pftsFileId", Long.parseLong(pftsFileId));
 			return (Object[])query.getSingleResult();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -425,7 +425,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	public Object[] getpftsProjectDate(String projectId) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(GETPFTSPRIJECRDATE);
-			query.setParameter("ProjectId", projectId);
+			query.setParameter("ProjectId", Long.parseLong(projectId));
 			return (Object[]) query.getSingleResult();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -438,7 +438,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	public List<Object[]> getpftsFileOrder(String fileId) throws Exception {
 	    try {
 	    	Query query = manager.createNativeQuery(GETFILEORDERLIST);
-			query.setParameter("PftsFileId", fileId);
+			query.setParameter("PftsFileId", Long.parseLong(fileId));
 			return (List<Object[]>)query.getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -455,7 +455,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	public List<Object[]> getprocurementMilestoneDetails(String pftsid) throws Exception {
 		 try {
 		    	Query query = manager.createNativeQuery(GETPROCUREMENTDETAILS);
-				query.setParameter("PftsFileId", pftsid);
+				query.setParameter("PftsFileId", Long.parseLong(pftsid));
 				return (List<Object[]>)query.getResultList();
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -305,7 +305,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] CommitteeName(String CommitteeId) throws Exception {
 		Query query=manager.createNativeQuery(COMMITTEENAME);
-		query.setParameter("committeeid", CommitteeId);		
+		query.setParameter("committeeid", Long.parseLong(CommitteeId));
 		Object[] CommitteeName=(Object[])query.getSingleResult();	
 		return CommitteeName;
 	}
@@ -325,11 +325,11 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Long LastCommitteeId(String CommitteeId,String projectid,String divisionid,String initiationid, String carsInitiationId) throws Exception {
 
 		Query query=manager.createNativeQuery(LASTCOMMITTEEID);
-		query.setParameter("committeeid", CommitteeId);
-		query.setParameter("projectid", projectid);
-		query.setParameter("divisionid", divisionid);
-		query.setParameter("initiationid", initiationid);
-		query.setParameter("CARSInitiationId", carsInitiationId);
+		query.setParameter("committeeid", Long.parseLong(CommitteeId));
+		query.setParameter("projectid", Long.parseLong(projectid));
+		query.setParameter("divisionid",Long.parseLong(divisionid));
+		query.setParameter("initiationid", Long.parseLong(initiationid));
+		query.setParameter("CARSInitiationId",Long.parseLong(carsInitiationId));
 		return Long.parseLong(query.getResultList().stream().findFirst().orElse(0).toString());
 	}
 
@@ -416,7 +416,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> CommitteeScheduleListNonProject(String committeeid)throws Exception
 	{
 		Query query=manager.createNativeQuery(COMMITTEESCHEDULELIST);
-		query.setParameter("committeeid", committeeid);
+		query.setParameter("committeeid", Long.parseLong(committeeid));
 		List<Object[]> committeeschedulelist=(List<Object[]>)query.getResultList();
 		return committeeschedulelist;
 	}
@@ -425,7 +425,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[] CommitteeScheduleEditData(String CommitteeScheduleId) throws Exception {
 
 		Query query=manager.createNativeQuery(COMMITTEESCHEDULEEDITDATA);
-		query.setParameter("committeescheduleid", CommitteeScheduleId );
+		query.setParameter("committeescheduleid", Long.parseLong(CommitteeScheduleId));
 		Object[] CommitteeScheduleEditData=(Object[])query.getSingleResult();
 		return CommitteeScheduleEditData;
 	}
@@ -434,7 +434,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> AgendaReturnData(String CommitteeScheduleId) throws Exception {
 
 		Query query=manager.createNativeQuery(AGENDARETURNDATA);
-		query.setParameter("scheduleid", CommitteeScheduleId );
+		query.setParameter("scheduleid", Long.parseLong(CommitteeScheduleId));
 		List<Object[]> AgendaReturnData=(List<Object[]>)query.getResultList();
 		return AgendaReturnData;
 	}
@@ -466,7 +466,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<String> AgendaAddedDocLinkIdList(String agendaid) throws Exception 
 	{
 		Query query=manager.createNativeQuery(AGENDAADDEDDOCLINKIDLIST);
-		query.setParameter("agendaid", agendaid);
+		query.setParameter("agendaid", Long.parseLong(agendaid));
 		List<String> AgendaAddedDocLinkIdList=new ArrayList<String>();
 		try {
 			AgendaAddedDocLinkIdList=(List<String>)query.getResultList();
@@ -513,7 +513,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> AgendaList(String CommitteeScheduleId) throws Exception {
 
 		Query query=manager.createNativeQuery(AGENDALIST);
-		query.setParameter("committeescheduleid", CommitteeScheduleId);
+		query.setParameter("committeescheduleid", Long.parseLong(CommitteeScheduleId));
 		List<Object[]> AgendaList=(List<Object[]>)query.getResultList();
 		
 		return AgendaList;
@@ -545,7 +545,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> CommitteeMinutesSpecList(String CommitteeScheduleId) throws Exception 
 	{
 		Query query=manager.createNativeQuery(COMMITTEESPECLIST);
-		query.setParameter("scheduleid", CommitteeScheduleId);
+		query.setParameter("scheduleid", Long.parseLong(CommitteeScheduleId));
 		List<Object[]> CommitteeMinutesSpecList=(List<Object[]>)query.getResultList();
 		
 		return CommitteeMinutesSpecList;
@@ -615,7 +615,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> CommitteeScheduleAgendaPriority(String Committeescheduleid)throws Exception
 	{
 		Query query=manager.createNativeQuery(COMMITTEESCHEDULEAGENDAPRIORITY);
-		query.setParameter("scheduleid", Committeescheduleid);
+		query.setParameter("scheduleid", Long.parseLong(Committeescheduleid));
 		return  (List<Object[]>)query.getResultList();
 	}
 
@@ -645,7 +645,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int CommitteeAgendaPriorityUpdate(String agendaid,String agendapriority) throws Exception
 	{		
-			CommitteeScheduleAgenda ExistingCommitteeScheduleAgenda = manager.find(CommitteeScheduleAgenda.class, agendaid);
+			CommitteeScheduleAgenda ExistingCommitteeScheduleAgenda = manager.find(CommitteeScheduleAgenda.class, Long.parseLong(agendaid));
 			if(ExistingCommitteeScheduleAgenda != null) {
 				ExistingCommitteeScheduleAgenda.setAgendaPriority(Integer.parseInt(agendapriority));
 				return 1;
@@ -661,7 +661,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> CommitteeScheduleGetAgendasAfter( String  scheduleid,String AgendaPriority) throws Exception
 	{
 		Query query=manager.createNativeQuery(COMMITTEESCHEDULEGETAGENDASAFTER);
-		query.setParameter("scheduleid", scheduleid);
+		query.setParameter("scheduleid", Long.parseLong(scheduleid));
 		query.setParameter("AgendaPriority",  AgendaPriority);
 		List<Object[]> TccScheduleGetAgendasAfter=(List<Object[]>)query.getResultList();
 		
@@ -672,7 +672,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int CommitteeAgendaDelete(String committeescheduleagendaid,String Modifiedby ,String ModifiedDate)throws Exception
 	{	
-		CommitteeScheduleAgenda ExistingCommitteeScheduleAgenda = manager.find(CommitteeScheduleAgenda.class, committeescheduleagendaid);
+		CommitteeScheduleAgenda ExistingCommitteeScheduleAgenda = manager.find(CommitteeScheduleAgenda.class, Long.parseLong(committeescheduleagendaid));
 		if(ExistingCommitteeScheduleAgenda != null) {
 			ExistingCommitteeScheduleAgenda.setModifiedBy(Modifiedby);
 			ExistingCommitteeScheduleAgenda.setModifiedDate(ModifiedDate);
@@ -692,7 +692,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public int AgendaDocUnlink(String agendaid,String Modifiedby ,String ModifiedDate)throws Exception
 	{
 		Query query =manager.createNativeQuery(AGENDADOCUNLINK);
-		query.setParameter("agendaid",agendaid);
+		query.setParameter("agendaid", Long.parseLong(agendaid));
 		query.setParameter("modifiedby",Modifiedby);
 		query.setParameter("modifieddate", ModifiedDate);
 		return query.executeUpdate();
@@ -709,7 +709,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> CommitteeSubScheduleList(String scheduleid) throws Exception
 	{
 		Query query=manager.createNativeQuery(COMMITTEESUBSCHEDULELIST);
-		query.setParameter("scheduleid", scheduleid);
+		query.setParameter("scheduleid", Long.parseLong(scheduleid));
 		List<Object[]> CommitteeSubScheduleList=(List<Object[]> )query.getResultList();
 		return CommitteeSubScheduleList;
 	}
@@ -731,7 +731,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> CommitteeScheduleMinutes(String scheduleid) throws Exception
 	{
 		Query query=manager.createNativeQuery(AGENDASPECLIST);
-		query.setParameter("InScheduleId", scheduleid);
+		query.setParameter("InScheduleId", Long.parseLong(scheduleid));
 		List<Object[]> CommitteeScheduleMinutes =(List<Object[]>)query.getResultList();
 		return CommitteeScheduleMinutes;
 	}
@@ -759,7 +759,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> CommitteeAttendance(String CommitteeScheduleId) throws Exception {
 
 		Query query=manager.createNativeQuery(COMMITTEEATTENDANCE);
-		query.setParameter("scheduleid", CommitteeScheduleId);	
+		query.setParameter("scheduleid", Long.parseLong(CommitteeScheduleId));
 		List<Object[]> CommitteeAttendance=(List<Object[]>) query.getResultList();
 		return CommitteeAttendance;
 	}
@@ -794,7 +794,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> MeetingApprovalAgendaList(String EmpId) throws Exception {
 				
 		Query query=manager.createNativeQuery("CALL Pfms_Agenda_aproval_List(:empid);");
-		query.setParameter("empid", EmpId);
+		query.setParameter("empid", Long.parseLong(EmpId));
 		List<Object[]> MeetingApprovalAgendaList=(List<Object[]>) query.getResultList();
 			
 		return MeetingApprovalAgendaList;
@@ -829,14 +829,14 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[] CommitteeScheduleData(String committeescheduleid) throws Exception
 	{
 		Query query=manager.createNativeQuery(COMMITTEESCHEDULEDATA);
-		query.setParameter("committeescheduleid", committeescheduleid );
+		query.setParameter("committeescheduleid", Long.parseLong(committeescheduleid));
 		return (Object[] )query.getResultList().get(0);
 	}
 	@Override
 	public List<Object[]> CommitteeAtendance(String committeescheduleid) throws Exception
 	{
 		Query query= manager.createNativeQuery("Call Pfms_Committee_Invitation (:committeescheduleid)");
-		query.setParameter("committeescheduleid", committeescheduleid);
+		query.setParameter("committeescheduleid", Long.parseLong(committeescheduleid));
 		return (List<Object[]>)query.getResultList();
 	}
 
@@ -868,8 +868,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[] InvitationMaxSerialNo(String scheduleid) throws Exception
 	{
 		Query query=manager.createNativeQuery(INVITATIONMAXSERIALNO);
-		query.setParameter("scheduleid", scheduleid);
-		
+		query.setParameter("scheduleid", Long.parseLong(scheduleid));		
 		Object[] InvitationMaxSerialNo=(Object[] )query.getResultList().get(0);
 		return InvitationMaxSerialNo;		
 	}
@@ -878,7 +877,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Long CommitteeInvitationDelete(String committeeinvitationid) throws Exception
 	{
 		Query query=manager.createNativeQuery(COMMITTEEINVITATIONDELETE);
-		query.setParameter("committeeinvitationid", committeeinvitationid);
+		query.setParameter("committeeinvitationid", Long.parseLong(committeeinvitationid));
 		return (long) query.executeUpdate();
 	}
 	
@@ -887,7 +886,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public int CommitteeInvitationSerialNoUpdate(String committeeinvitationid,long serialno) throws Exception
 	{
 		
-		CommitteeInvitation ExistingCommitteeInvitation = manager.find(CommitteeInvitation.class, committeeinvitationid);
+		CommitteeInvitation ExistingCommitteeInvitation = manager.find(CommitteeInvitation.class, Long.parseLong(committeeinvitationid));
 		if(ExistingCommitteeInvitation != null) {
 			ExistingCommitteeInvitation.setSerialNo(serialno);
 			return 1;
@@ -905,7 +904,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> CommitteeInvitationSerialNoAfter(String committeeinvitationid) throws Exception
 	{
 		Query query=manager.createNativeQuery(COMMITTEEINVITATIONSERIALNOAFTER);
-		query.setParameter("committeeinvitationid", committeeinvitationid);
+		query.setParameter("committeeinvitationid", Long.parseLong(committeeinvitationid));
 		List<Object[]> CommitteeInvitationSerialNoAfter=(List<Object[]> )query.getResultList();
 		return CommitteeInvitationSerialNoAfter;
 	}
@@ -916,7 +915,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<String> CommitteeAttendanceList(String invitationId) throws Exception 
 	{
 		Query query=manager.createNativeQuery(COMMITTEEATTENDANCETYPE);
-		query.setParameter("invitationid", invitationId);
+		query.setParameter("invitationid", Long.parseLong(invitationId));
 		List<String> AttendanceList=(List<String>)query.getResultList();		
 		return AttendanceList;
 	}
@@ -934,7 +933,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		
 		if(Value.equalsIgnoreCase("P")) {
 			
-			CommitteeInvitation ExistingCommitteeInvitation = manager.find(CommitteeInvitation.class, InvitationId);
+			CommitteeInvitation ExistingCommitteeInvitation = manager.find(CommitteeInvitation.class, Long.parseLong(InvitationId));
 			if(ExistingCommitteeInvitation != null) {
 				ExistingCommitteeInvitation.setAttendance("N");
 				count=1;
@@ -982,7 +981,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> MinutesUnitList(String CommitteeScheduleId) throws Exception {
 
 		Query query=manager.createNativeQuery(MINUTESUNITLIST);
-		query.setParameter("committeescheduleid", CommitteeScheduleId);
+		query.setParameter("committeescheduleid", Long.parseLong(CommitteeScheduleId));
 		List<Object[]> MinutesUnitList=(List<Object[]> )query.getResultList();
 		
 		return MinutesUnitList;
@@ -992,7 +991,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> CommitteeAgendaPresenter(String scheduleid) throws Exception
 	{
 		Query query=manager.createNativeQuery(COMMITTEEAGENDAPRESENTER);
-		query.setParameter("scheduleid", scheduleid);
+		query.setParameter("scheduleid", Long.parseLong(scheduleid));
 		return (List<Object[]>)query.getResultList();
 	}
 
@@ -1001,7 +1000,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> ChaipersonEmailId(String CommitteeMainId) throws Exception {
 
 		Query query=manager.createNativeQuery(CHAIRPERSONEMAIL);
-		query.setParameter("committeemainid", CommitteeMainId);
+		query.setParameter("committeemainid", Long.parseLong(CommitteeMainId));
 		List<Object[]> ChaipersonEmailId=(List<Object[]>)query.getResultList();
 		
 		return ChaipersonEmailId;
@@ -1011,7 +1010,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[] ProjectDirectorEmail(String ProjectId) throws Exception {
 
 		Query query=manager.createNativeQuery(PROJECTDIRECTOREMAIL);
-		query.setParameter("projectid", ProjectId);
+		query.setParameter("projectid", Long.parseLong(ProjectId));
 		Object[] ProjectDirectorEmail=(Object[])query.getSingleResult();
 		
 		return ProjectDirectorEmail;
@@ -1079,7 +1078,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype, String LabCode)throws Exception
 	{
 		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList(:empid,:logintype,:labcode);");
-		query.setParameter("empid", empid);
+		query.setParameter("empid", Long.parseLong(empid));
 		query.setParameter("logintype", Logintype);
 		query.setParameter("labcode", LabCode);
 		List<Object[]> LoginProjectIdList=(List<Object[]>)query.getResultList();
@@ -1092,7 +1091,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[] projectdetails(String projectid) throws Exception
 	{		
 		Query query=manager.createNativeQuery(PROJECTDETAILS);
-		query.setParameter("projectid",projectid);
+		query.setParameter("projectid",Long.parseLong(projectid));
 		return (Object[]) query.getResultList().get(0);
 	}
 	
@@ -1100,7 +1099,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> ProjectScheduleListAll(String projectid) throws Exception
 	{
 		Query query=manager.createNativeQuery(PROJECTSCHEDULELISTALL);
-		query.setParameter("projectid",projectid);
+		query.setParameter("projectid",Long.parseLong(projectid));
 		return (List<Object[]>) query.getResultList();
 	}
 	
@@ -1108,7 +1107,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> ProjectApplicableCommitteeList(String projectid)throws Exception
 	{
 		Query query=manager.createNativeQuery(PROJECTAPPLICABLECOMMITTEELIST);
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid",Long.parseLong(projectid));
 		return (List<Object[]>)query.getResultList();
 	}
 	
@@ -1116,7 +1115,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public  int UpdateComitteeMainid(String committeemainid, String scheduleid ) throws Exception
 	{
-		CommitteeSchedule ExistingCommitteeSchedule = manager.find(CommitteeSchedule.class, scheduleid);
+		CommitteeSchedule ExistingCommitteeSchedule = manager.find(CommitteeSchedule.class, Long.parseLong(scheduleid));
 		if(ExistingCommitteeSchedule != null) {
 			ExistingCommitteeSchedule.setCommitteeMainId(Long.parseLong(committeemainid));
 			return 1;
@@ -1131,8 +1130,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> ProjectCommitteeScheduleListAll(String projectid,String committeeid) throws Exception
 	{
 		Query query=manager.createNativeQuery(PROJECTCOMMITTEESCHEDULELISTALL);
-		query.setParameter("projectid",projectid);
-		query.setParameter("committeeid",committeeid);
+		query.setParameter("projectid", Long.parseLong(projectid));
+		query.setParameter("committeeid", Long.parseLong(committeeid));
 		return (List<Object[]>) query.getResultList();
 	}
 
@@ -1141,7 +1140,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public String KickOffOtp(String CommitteeScheduleId) throws Exception {
 
 		Query query=manager.createNativeQuery(KICKOFFOTP);
-		query.setParameter("scheduleid", CommitteeScheduleId);
+		query.setParameter("scheduleid", Long.parseLong(CommitteeScheduleId));
 		String KickOffOtp=(String)query.getSingleResult();
 		return KickOffOtp;
 	}
@@ -1151,8 +1150,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> UserSchedulesList(String EmpId,String MeetingId) throws Exception {
 
 		Query query=manager.createNativeQuery("CALL Pfms_Schedule_Individual(:empid,:meetingid)");
-		query.setParameter("empid",EmpId);
-		query.setParameter("meetingid",MeetingId);
+		query.setParameter("empid",Long.parseLong(EmpId));
+		query.setParameter("meetingid", MeetingId);
 		
 		
 		return (List<Object[]>) query.getResultList();
@@ -1171,8 +1170,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[] CommitteeScheduleDataPro(String committeescheduleid, String projectid) throws Exception
 	{
 		Query query=manager.createNativeQuery(COMMITTEESCHEDULEDATAPRO);
-		query.setParameter("committeescheduleid", committeescheduleid );
-		query.setParameter("projectid", projectid);
+		query.setParameter("committeescheduleid", Long.parseLong(committeescheduleid));
+		query.setParameter("projectid", Long.parseLong(projectid));
 		return (Object[] )query.getResultList().get(0);
 	}
 	
@@ -1205,7 +1204,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> ProjectMasterList(String ProjectId) throws Exception {
 		
 		Query query=manager.createNativeQuery(PROJECTMASTERLIST);
-		query.setParameter("projectid", ProjectId );
+		query.setParameter("projectid", Long.parseLong(ProjectId));
 		List<Object[]> ProjectMasterList=(List<Object[]>)query.getResultList();
 		return ProjectMasterList;
 	}
@@ -1225,9 +1224,9 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> CommitteeAutoScheduleList(String ProjectId,String divisionid,String initiationid,String projectstatus) throws Exception {
 
 		Query query=manager.createNativeQuery(COMMITTEEAUTOSCHEDULELIST);
-		query.setParameter("projectid", ProjectId );
-		query.setParameter("divisionid", divisionid );
-		query.setParameter("initiationid", initiationid );
+		query.setParameter("projectid", Long.parseLong(ProjectId));
+		query.setParameter("divisionid", Long.parseLong(divisionid));
+		query.setParameter("initiationid", Long.parseLong(initiationid));
 		query.setParameter("projectstatus", projectstatus  );
 		List<Object[]> CommitteeAutoScheduleList=(List<Object[]>)query.getResultList();
 		return CommitteeAutoScheduleList;
@@ -1238,10 +1237,10 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	{
 		
 		Query query=manager.createNativeQuery(COMMITTEEAUTOSCHEDULELIST1);
-		query.setParameter("projectid", ProjectId );
-		query.setParameter("committeeid", committeeid ); 
-		query.setParameter("divisionid", divisionid  );
-		query.setParameter("initiationid", initiationid  );
+		query.setParameter("projectid", Long.parseLong(ProjectId));
+		query.setParameter("committeeid", committeeid); 
+		query.setParameter("divisionid", Long.parseLong(divisionid));
+		query.setParameter("initiationid", Long.parseLong(initiationid));
 		query.setParameter("projectstatus", projectstatus  );
 		List<Object[]> CommitteeAutoScheduleList=(List<Object[]>)query.getResultList();
 		return CommitteeAutoScheduleList;
@@ -1253,7 +1252,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[] CommitteeLastScheduleDate(String committeeid) throws Exception 
 	{
 		Query query=manager.createNativeQuery(COMMITTEELASTSCHEDULEDATE);	
-		query.setParameter("committeeid", committeeid );
+		query.setParameter("committeeid", Long.parseLong(committeeid));
 		Object[] CommitteeLastScheduleDate=(Object[])query.getSingleResult();
 		return CommitteeLastScheduleDate;
 	}
@@ -1263,8 +1262,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public int CommitteeProjectUpdate(String ProjectId, String CommitteeId) throws Exception {
 
 		Query query=manager.createNativeQuery(COMMITTEEPROJECTUPDATE);
-		query.setParameter("projectid", ProjectId);
-		query.setParameter("committeeid", CommitteeId);		
+		query.setParameter("projectid", Long.parseLong(ProjectId));
+		query.setParameter("committeeid", Long.parseLong(CommitteeId));
 		
 		return query.executeUpdate();
 	}
@@ -1274,7 +1273,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[] CommitteMainMembersData(String CommitteeScheduleId, String membertype) throws Exception {
 
 		Query query=manager.createNativeQuery(COMMITTEMAINMEMBERSDATA);
-		query.setParameter("scheduleid", CommitteeScheduleId );
+		query.setParameter("scheduleid", Long.parseLong(CommitteeScheduleId));
 		query.setParameter("membertype", membertype);
 		try {
 		Object[] CommitteMainMembersData=(Object[])query.getSingleResult();
@@ -1295,8 +1294,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[] NotificationData(String ScheduleId, String EmpId,String Status) throws Exception {
 
 		Query query=manager.createNativeQuery(NOTIFICATIONDATA);
-		query.setParameter("scheduleid", ScheduleId );
-		query.setParameter("empid", EmpId );
+		query.setParameter("scheduleid", Long.parseLong(ScheduleId));
+		query.setParameter("empid", Long.parseLong(EmpId));
 		query.setParameter("status", Status );
 		Object[] NotificationData=null;
 		
@@ -1317,7 +1316,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		if(ProjectId.equalsIgnoreCase("0")) {
 			Query query=manager.createNativeQuery(MEETINGCOUNT);
 			query.setParameter("scheduledate", ScheduleDate );
-			query.setParameter("projectid", ProjectId );
+			query.setParameter("projectid", Long.parseLong(ProjectId));
 			return (Long) query.getSingleResult();
 			
 		}
@@ -1363,7 +1362,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> MinutesAttachmentList(String scheduleid ) throws Exception 
 	{
 		Query query=manager.createNativeQuery(MINUTESATTACHMENTLIST);
-		query.setParameter("scheduleid", scheduleid);
+		query.setParameter("scheduleid", Long.parseLong(scheduleid));
 		List<Object[]> MinutesAttachmentList=null;
 		MinutesAttachmentList=query.getResultList();
 		return MinutesAttachmentList;
@@ -1374,7 +1373,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public int MinutesAttachmentDelete(String attachid ) throws Exception 
 	{
 		Query query=manager.createNativeQuery(MINUTESATTACHMENTDELETE);
-		query.setParameter("attachid", attachid);		
+		query.setParameter("attachid", Long.parseLong(attachid));	
 		return query.executeUpdate();
 	}
 	
@@ -1425,7 +1424,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> MeetingApprovalMinutesList(String EmpId) throws Exception {
 		Query query=manager.createNativeQuery("CALL Pfms_Minutes_aproval_List(:empid)");
-		query.setParameter("empid", EmpId);
+		query.setParameter("empid", Long.parseLong(EmpId));
 		List<Object[]> MeetingApprovalMinutesList=(List<Object[]>) query.getResultList();			
 		return MeetingApprovalMinutesList;
 	}
@@ -1455,7 +1454,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> CommitteeAllAttendance(String CommitteeScheduleId) throws Exception {
 
 		Query query=manager.createNativeQuery(COMMITTEEALLATTENDANCE);
-		query.setParameter("scheduleid", CommitteeScheduleId);	
+		query.setParameter("scheduleid", Long.parseLong(CommitteeScheduleId));
 		List<Object[]> CommitteeAttendance=(List<Object[]>) query.getResultList();
 		return CommitteeAttendance;
 	}
@@ -1465,7 +1464,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> MeetingReports(String EmpId, String Term, String ProjectId,String divisionid,String initiationid,String logintype,String LabCode) throws Exception {
 
 		Query query=manager.createNativeQuery("CALL Pfms_Meeting_Reports(:EmpId,:Term,:projectid,:divisionid, :initiationid,:logintype,:LabCode)");
-		query.setParameter("EmpId", EmpId);
+		query.setParameter("EmpId", Long.parseLong(EmpId));
 		query.setParameter("Term", Term);
 		query.setParameter("projectid", ProjectId);
 		query.setParameter("divisionid", divisionid);
@@ -1494,7 +1493,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> MeetingReportListEmp(String fdate, String tdate, String ProjectId, String EmpId)	throws Exception {
 		Query query=manager.createNativeQuery("CALL Pfms_Total_Meeting_Reports(:fdate,:tdate,:ProjectId,:EmpId)");
-		query.setParameter("EmpId", EmpId);
+		query.setParameter("EmpId", Long.parseLong(EmpId));
 		query.setParameter("fdate", fdate);
 		query.setParameter("tdate", tdate);
 		query.setParameter("ProjectId", ProjectId);
@@ -1510,7 +1509,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public int UpdateCommitteeInvitationEmailSent(String committeescheduleid)throws Exception
 	{
 		Query query=manager.createNativeQuery(UPDATECOMMITTEEINVITATIONEMAILSENT);
-		query.setParameter("committeescheduleid", committeescheduleid);
+		query.setParameter("committeescheduleid", Long.parseLong(committeescheduleid));
 		int ret=0;
 		ret=query.executeUpdate();
 		return ret;
@@ -1520,7 +1519,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> MinutesViewAllActionList(String scheduleid) throws Exception {
 		Query query=manager.createNativeQuery(MINUTESVIEWALLACTIONLIST);
-		query.setParameter("scheduleid", scheduleid );
+		query.setParameter("scheduleid", Long.parseLong(scheduleid));
 		List<Object[]>  MinutesViewAllActionList=(List<Object[]> )query.getResultList();
 
 		return MinutesViewAllActionList;
@@ -1538,7 +1537,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ProjectCommitteesListNotAdded(String projectid,String LabCode) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTCOMMITTEESLISTNOTADDED);
-		query.setParameter("projectid", projectid );
+		query.setParameter("projectid", Long.parseLong(projectid));
 		query.setParameter("LabCode", LabCode );
 		List<Object[]>  ProjectCommitteesListNotAdded=(List<Object[]> )query.getResultList();
 		return ProjectCommitteesListNotAdded;
@@ -1581,7 +1580,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		
 		Query query=manager.createNativeQuery(INTERNALEMPLOYEELISTFORMATION);
 		query.setParameter("labcode", labcode);
-		query.setParameter("committeemainid", committeemainid);
+		query.setParameter("committeemainid", Long.parseLong(committeemainid));
 		List<Object[]> ExternalEmployeeList=(List<Object[]>)query.getResultList();
 		return ExternalEmployeeList;
 	}
@@ -1593,7 +1592,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	{
 		Query query=manager.createNativeQuery(CHAIRPERSONEMPLOYEELISTFORMATION);
 		query.setParameter("labcode", LabCode);
-		query.setParameter("committeemainid", committeemainid);
+		query.setParameter("committeemainid", Long.parseLong(committeemainid));
 		List<Object[]> ChairpersonEmployeeListFormation=(List<Object[]>)query.getResultList();
 		return ChairpersonEmployeeListFormation;
 	}
@@ -1638,7 +1637,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	{
 		try {
 			Query query=manager.createNativeQuery(CLUSTEREXPERTSLIST);
-			query.setParameter("committeemainid", committeemainid);
+			query.setParameter("committeemainid", Long.parseLong(committeemainid));
 			List<Object[]> DGEmpData=(List<Object[]>)query.getResultList();
 			return DGEmpData;
 		}catch (Exception e) {
@@ -1682,7 +1681,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		
 		Query query=manager.createNativeQuery(EXTERNALEMPLOYEELISTINVITATIONS);
 		query.setParameter("labcode", labcode);
-		query.setParameter("scheduleid", scheduleid);
+		query.setParameter("scheduleid", Long.parseLong(scheduleid));
 		List<Object[]> ExternalEmployeeList=(List<Object[]>)query.getResultList();
 		return ExternalEmployeeList;
 	}
@@ -1691,7 +1690,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ExternalMembersNotAddedCommittee(String committeemainid) throws Exception {
 		Query query=manager.createNativeQuery(EXTERNALMEMBERSNOTADDEDCOMMITTEE);
-		query.setParameter("committeemainid", committeemainid );
+		query.setParameter("committeemainid", Long.parseLong(committeemainid));
 		List<Object[]>  ExternalMembersNotAddedCommittee=(List<Object[]> )query.getResultList();
 		return ExternalMembersNotAddedCommittee;
 	}
@@ -1701,7 +1700,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeAllMembers(String committeemainid) throws Exception {
 		Query query=manager.createNativeQuery("CALL Pfms_Committee_All_Members(:committeemainid); ");
-		query.setParameter("committeemainid", committeemainid );
+		query.setParameter("committeemainid", Long.parseLong(committeemainid));
 		List<Object[]>  CommitteeAllMembers=(List<Object[]> )query.getResultList();
 		return CommitteeAllMembers;
 	}
@@ -1711,7 +1710,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> EmployeeListNoInvitedMembers(String scheduleid,String LabCode) throws Exception {
 		Query query=manager.createNativeQuery(EMPLOYEELISTNOINVITEDMEMBERS);
-		query.setParameter("scheduleid", scheduleid );
+		query.setParameter("scheduleid", Long.parseLong(scheduleid));
 		query.setParameter("LabCode", LabCode );
 		List<Object[]>  EmployeeListNoInvitedMembers=(List<Object[]> )query.getResultList();
 		return EmployeeListNoInvitedMembers;
@@ -1721,7 +1720,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ExternalMembersNotInvited(String scheduleid) throws Exception {
 		Query query=manager.createNativeQuery(EXPERTLISTNOINVITEDMEMBERS);
-		query.setParameter("scheduleid", scheduleid );
+		query.setParameter("scheduleid", Long.parseLong(scheduleid));
 		List<Object[]>  ExpertListNoInvitedMembers=(List<Object[]> )query.getResultList();
 		return ExpertListNoInvitedMembers;
 	}
@@ -1730,7 +1729,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[] ProjectBasedMeetingStatusCount(String projectid) throws Exception
 	{
 		Query query=manager.createNativeQuery(" CALL Pfms_Meetings_Status_Count(:projectid);");
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		Object[] ProjectBasedMeetingStatusCount = (Object[]) query.getSingleResult();
 		return ProjectBasedMeetingStatusCount;
 	}
@@ -1749,7 +1748,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> PfmsMeetingStatusWiseReport(String projectid,String statustype) throws Exception
 	{		
 		Query query=manager.createNativeQuery("CALL Pfms_Meeting_Status_Wise_Report (:projectid,:statustype);");
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		query.setParameter("statustype", statustype);
 		List<Object[]> PfmsMeetingStatusWiseReport = (List<Object[]>)query.getResultList();
 		return PfmsMeetingStatusWiseReport;
@@ -1761,7 +1760,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> ProjectCommitteeFormationCheckList(String projectid) throws Exception
 	{		
 		Query query=manager.createNativeQuery(PROJECTCOMMITTEEFORMATIONCHECKLIST);
-		query.setParameter("projectid", projectid);		
+		query.setParameter("projectid", Long.parseLong(projectid));
 		List<Object[]> ProjectCommitteeFormationCheckList = (List<Object[]>)query.getResultList();
 		return ProjectCommitteeFormationCheckList;
 	}
@@ -1771,8 +1770,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[] ProjectCommitteeDescriptionTOR(String projectid,String Committeeid) throws Exception
 	{		
 		Query query=manager.createNativeQuery(PROJECTCOMMITTEEDESCRIPTIONTOR);
-		query.setParameter("committeeid", Committeeid);	
-		query.setParameter("projectid", projectid);	
+		query.setParameter("committeeid",Long.parseLong(Committeeid));
+		query.setParameter("projectid", Long.parseLong(projectid));
 		Object[] ProjectCommitteeFormationCheckList = (Object[])query.getSingleResult();
 		return ProjectCommitteeFormationCheckList;
 	}
@@ -1782,8 +1781,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[] DivisionCommitteeDescriptionTOR(String divisionid,String Committeeid) throws Exception
 	{		
 		Query query=manager.createNativeQuery(DIVISIONCOMMITTEEDESCRIPTIONTOR);
-		query.setParameter("committeeid", Committeeid);	
-		query.setParameter("divisionid", divisionid);	
+		query.setParameter("committeeid", Long.parseLong(Committeeid));
+		query.setParameter("divisionid", Long.parseLong(divisionid));
 		Object[] DivisionCommitteeDescriptionTOR = (Object[])query.getSingleResult();
 		return DivisionCommitteeDescriptionTOR;
 	}
@@ -1840,7 +1839,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int ScheduleMinutesUnitUpdate(String UnitId, String Unit, String UserId,String dt) throws Exception {
 		Query query=manager.createNativeQuery(UPDATEUNIT);
-		query.setParameter("unitid", UnitId);	
+		query.setParameter("unitid", Long.parseLong(UnitId));
 		query.setParameter("unitname",Unit);	
 		query.setParameter("createdby", UserId);	
 		query.setParameter("createddate", dt);	
@@ -1860,7 +1859,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		@Override
 	public List<Object[]> LoginDivisionList(String empid) throws Exception {
 		Query query=manager.createNativeQuery(LOGINDIVISIONLIST);
-		query.setParameter("empid", empid);
+		query.setParameter("empid", Long.parseLong(empid));
 		List<Object[]> divisionList=(List<Object[]>)query.getResultList();	
 		return divisionList;
 	}
@@ -1869,7 +1868,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> CommitteedivisionAssigned(String divisionid) throws Exception
 	{
 		Query query=manager.createNativeQuery(COMMITTEEDIVISIONASSIGNED);
-		query.setParameter("divisionid", divisionid);	
+		query.setParameter("divisionid", Long.parseLong(divisionid));	
 		List<Object[]> CommitteedivisionAssigned=(List<Object[]>)query.getResultList();	
 		return CommitteedivisionAssigned;
 	}
@@ -1880,7 +1879,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> CommitteedivisionNotAssigned(String divisionid, String LabCode ) throws Exception
 	{
 		Query query=manager.createNativeQuery(COMMITTEEDIVISIONNOTASSIGNED);
-		query.setParameter("divisionid", divisionid);	
+		query.setParameter("divisionid", Long.parseLong(divisionid));
 		query.setParameter("LabCode", LabCode);
 		List<Object[]> CommitteedivisionNotAssigned=(List<Object[]>)query.getResultList();	
 		return CommitteedivisionNotAssigned;
@@ -1902,7 +1901,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> DivisionCommitteeFormationCheckList(String divisionid) throws Exception
 	{		
 		Query query=manager.createNativeQuery(DIVISIONCOMMITTEEFORMATIONCHECKLIST);
-		query.setParameter("divisionid", divisionid);		
+		query.setParameter("divisionid", Long.parseLong(divisionid));
 		List<Object[]> CommitteeFormationCheckList = (List<Object[]>)query.getResultList();
 		return CommitteeFormationCheckList;
 	}
@@ -1923,7 +1922,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	{
 		Query query=manager.createNativeQuery(DIVISIONDATA);
 		try {
-		query.setParameter("divisionid", divisionid);		
+		query.setParameter("divisionid", Long.parseLong(divisionid));		
 		return (Object[])query.getSingleResult();
 		}catch (Exception e) {
 			logger.error(new java.util.Date() +"Inside DAO DivisionData "+e);
@@ -1939,7 +1938,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> DivisionCommitteeMainList(String divisionid) throws Exception 
 	{
 		Query query=manager.createNativeQuery(DIVISIONCOMMITTEEMAINLIST);
-		query.setParameter("divisionid", divisionid);	
+		query.setParameter("divisionid", Long.parseLong(divisionid));
 		List<Object[]> DivisionCommitteeMainList=(List<Object[]>)query.getResultList();
 		return DivisionCommitteeMainList;
 	}
@@ -1949,7 +1948,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> DivisionScheduleListAll(String divisionid) throws Exception
 	{
 		Query query=manager.createNativeQuery(DIVISIONSCHEDULELISTALL);
-		query.setParameter("divisionid",divisionid);
+		query.setParameter("divisionid", Long.parseLong(divisionid));
 		return (List<Object[]>) query.getResultList();
 	}
 
@@ -1958,8 +1957,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> DivisionCommitteeScheduleList(String divisionid,String committeeid) throws Exception
 	{
 		Query query=manager.createNativeQuery(DIVISIONCOMMITTEESCHEDULELIST);
-		query.setParameter("divisionid",divisionid);
-		query.setParameter("committeeid",committeeid);
+		query.setParameter("divisionid", Long.parseLong(divisionid));
+		query.setParameter("committeeid", Long.parseLong(committeeid));
 		return (List<Object[]>) query.getResultList();
 	}
 
@@ -1969,7 +1968,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> DivisionMasterList(String divisionid) throws Exception {
 		
 		Query query=manager.createNativeQuery(DIVISIONMASTERLIST);
-		query.setParameter("divisionid", divisionid );
+		query.setParameter("divisionid", Long.parseLong(divisionid));
 		List<Object[]> divisionmasterlist=null;
 		try {
 			divisionmasterlist=(List<Object[]>)query.getResultList();
@@ -1986,7 +1985,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> DivCommitteeAutoScheduleList(String divisionid) throws Exception {
 
 		Query query=manager.createNativeQuery(DIVCOMMITTEEAUTOSCHEDULELIST);
-		query.setParameter("divisionid", divisionid );
+		query.setParameter("divisionid", Long.parseLong(divisionid));
 		List<Object[]> divcommitteeautoschedulelist=(List<Object[]>)query.getResultList();
 		return divcommitteeautoschedulelist;
 	}
@@ -1996,7 +1995,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> CommitteeActionList(String EmpId) throws Exception {
 		
 		Query query=manager.createNativeQuery(COMMITTEEACTIONDATA);
-		query.setParameter("scheduleid", EmpId);
+		query.setParameter("scheduleid", Long.parseLong(EmpId));
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
 	}
@@ -2006,8 +2005,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public int CommitteeDivisionUpdate(String divisionid, String CommitteeId) throws Exception 
 	{
 		Query query=manager.createNativeQuery(COMMITTEEDIVISIONUPDATE);
-		query.setParameter("divisionid", divisionid);
-		query.setParameter("committeeid", CommitteeId);		
+		query.setParameter("divisionid", Long.parseLong(divisionid));
+		query.setParameter("committeeid", Long.parseLong(CommitteeId));	
 		
 		return query.executeUpdate();
 	}
@@ -2038,7 +2037,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> InitiationMasterList(String initiationid) throws Exception {
 		
 		Query query=manager.createNativeQuery(INITIATIONMASTERLIST);
-		query.setParameter("initiationid", initiationid );
+		query.setParameter("initiationid", Long.parseLong(initiationid));
 		List<Object[]> InitiationMasterList=(List<Object[]>)query.getResultList();
 		return InitiationMasterList;
 	}
@@ -2047,7 +2046,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> InitiationCommitteeFormationCheckList(String initiationid) throws Exception
 	{		
 		Query query=manager.createNativeQuery(INITIATIONCOMMITTEEFORMATIONCHECKLIST);
-		query.setParameter("initiationid", initiationid);		
+		query.setParameter("initiationid", Long.parseLong(initiationid));		
 		List<Object[]> InitiationCommitteeFormationCheckList = (List<Object[]>)query.getResultList();
 		return InitiationCommitteeFormationCheckList;
 	}
@@ -2056,7 +2055,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> InitiationCommitteesListNotAdded(String initiationid,String LabCode) throws Exception {
 		Query query=manager.createNativeQuery(INITIATIONCOMMITTEESLISTNOTADDED);
-		query.setParameter("initiationid", initiationid );
+		query.setParameter("initiationid", Long.parseLong(initiationid));
 		query.setParameter("LabCode", LabCode );
 		List<Object[]>  InitiationCommitteesListNotAdded=(List<Object[]> )query.getResultList();
 		return InitiationCommitteesListNotAdded;
@@ -2069,8 +2068,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public int InvitationSerialnoUpdate(String invitationid,String newslno) throws Exception
 	{
 			Query query =manager.createNativeQuery(INVITATIONSERIALNOUPDATE);
-			query.setParameter("newslno", newslno);
-			query.setParameter("invitationid", invitationid);
+			query.setParameter("newslno", Long.parseLong(newslno));
+			query.setParameter("invitationid", Long.parseLong(invitationid));
 			int count=(int)query.executeUpdate();
 			
 			return count;
@@ -2098,7 +2097,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> CommitteeMemberRepList(String committeemainid) throws Exception
 	{
 			Query query =manager.createNativeQuery(COMMITTEEMEMBERREPLIST);
-			query.setParameter("committeemainid", committeemainid);
+			query.setParameter("committeemainid", Long.parseLong(committeemainid));
 			List<Object[]> CommitteeMemberRepList=(List<Object[]>)query.getResultList();
 			return CommitteeMemberRepList;
 	}
@@ -2107,7 +2106,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> CommitteeRepNotAddedList(String committeemainid) throws Exception
 	{
 			Query query =manager.createNativeQuery(COMMITTEEREPNOTADDEDLIST);
-			query.setParameter("committeemainid", committeemainid);
+			query.setParameter("committeemainid", Long.parseLong(committeemainid));
 			List<Object[]> CommitteeRepNotAddedList=(List<Object[]>)query.getResultList();
 			return CommitteeRepNotAddedList;
 	}
@@ -2118,7 +2117,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public int CommitteeMemberRepDelete(String memberrepid) throws Exception
 	{
 			Query query =manager.createNativeQuery(COMMITTEEMEMBERREPDELETE);
-			query.setParameter("memberrepid", memberrepid);
+			query.setParameter("memberrepid", Long.parseLong(memberrepid));
 			return query.executeUpdate();
 	}
 	
@@ -2126,7 +2125,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> CommitteeAllMembersList(String committeemainid) throws Exception
 	{
 			Query query =manager.createNativeQuery("CALL Pfms_Committee_All_Members(:committeemainid);");
-			query.setParameter("committeemainid", committeemainid);
+			query.setParameter("committeemainid", Long.parseLong(committeemainid));
 			return query.getResultList();
 	}
 	
@@ -2134,7 +2133,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> EmployeeListWithoutMembers(String committeemainid,String LabCode) throws Exception {
 		Query query=manager.createNativeQuery(EMPLOYEELISTWITHOUTMEMBERS);
-		query.setParameter("committeemainid", committeemainid);
+		query.setParameter("committeemainid",Long.parseLong(committeemainid));
 		query.setParameter("labcode", LabCode);
 		List<Object[]> EmployeeList=(List<Object[]>)query.getResultList();	
 		return EmployeeList;
@@ -2164,7 +2163,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[] CommitteMainData(String committeemainid) throws Exception 
 	{
 		Query query=manager.createNativeQuery(COMMITTEMAINDATA);
-		query.setParameter("committeemainid", committeemainid );		
+		query.setParameter("committeemainid", Long.parseLong(committeemainid));		
 		try {
 		Object[] CommitteeAutoScheduleList=(Object[])query.getSingleResult();
 		return CommitteeAutoScheduleList;
@@ -2191,7 +2190,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	{		
 		Query query=manager.createNativeQuery(INITIATIONDETAILS);
 		try {
-		query.setParameter("initiationid",initiationid);
+		query.setParameter("initiationid", Long.parseLong(initiationid));
 		return (Object[]) query.getResultList().get(0);
 		}catch (Exception e) {
 			logger.error(new java.util.Date() +"Inside DAO Initiationdetails "+ e);
@@ -2205,8 +2204,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[] InitiationCommitteeDescriptionTOR(String initiationid,String Committeeid) throws Exception
 	{		
 		Query query=manager.createNativeQuery(INITIATIONCOMMITTEEDESCRIPTIONTOR);
-		query.setParameter("committeeid", Committeeid);	
-		query.setParameter("initiationid", initiationid);	
+		query.setParameter("committeeid", Long.parseLong(Committeeid));
+		query.setParameter("initiationid", Long.parseLong(initiationid));
 		Object[] InitiationCommitteeDescriptionTOR = (Object[])query.getSingleResult();
 		return InitiationCommitteeDescriptionTOR;
 	}
@@ -2233,7 +2232,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> InitiaitionMasterList(String initiationid) throws Exception 
 	{		
 		Query query=manager.createNativeQuery(INITIAITIONMASTERLIST);
-		query.setParameter("initiationid", initiationid );
+		query.setParameter("initiationid",  Long.parseLong(initiationid));
 		List<Object[]> InitiaitionMasterList=(List<Object[]>)query.getResultList();
 		return InitiaitionMasterList;
 	}
@@ -2243,8 +2242,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public int CommitteeInitiationUpdate(String initiationid, String CommitteeId) throws Exception 
 	{
 		Query query=manager.createNativeQuery(COMMITTEEINITIATIONUPDATE);
-		query.setParameter("initiationid", initiationid);
-		query.setParameter("committeeid", CommitteeId);		
+		query.setParameter("initiationid", Long.parseLong(initiationid));
+		query.setParameter("committeeid", Long.parseLong(CommitteeId));		
 		return query.executeUpdate();
 	}
 	
@@ -2252,7 +2251,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> InitiationCommitteeMainList(String initiationid) throws Exception 
 	{
 		Query query=manager.createNativeQuery(INITIATIONCOMMITTEEMAINLIST);
-		query.setParameter("initiationid", initiationid);	
+		query.setParameter("initiationid", Long.parseLong(initiationid));	
 		List<Object[]> InitiationCommitteeMainList=(List<Object[]>)query.getResultList();
 		return InitiationCommitteeMainList;
 	}
@@ -2262,7 +2261,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> InitiationScheduleListAll(String initiationid) throws Exception
 	{
 		Query query=manager.createNativeQuery(INITIATIONSCHEDULELISTALL);
-		query.setParameter("initiationid",initiationid);
+		query.setParameter("initiationid", Long.parseLong(initiationid));
 		return (List<Object[]>) query.getResultList();
 	}
 	
@@ -2272,8 +2271,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> InitiationCommitteeScheduleList(String initiationid,String committeeid) throws Exception
 	{
 		Query query=manager.createNativeQuery(INITIATIONCOMMITTEESCHEDULELIST);
-		query.setParameter("initiationid",initiationid);
-		query.setParameter("committeeid",committeeid);
+		query.setParameter("initiationid",Long.parseLong(initiationid));
+		query.setParameter("committeeid",Long.parseLong(committeeid));
 		return (List<Object[]>) query.getResultList();
 	}
 	
@@ -2283,7 +2282,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	{
 		Query query=manager.createNativeQuery(PROPOSEDCOMMITTEEMAINID);
 		try {
-			query.setParameter("committeemainid",committeemainid);
+			query.setParameter("committeemainid", Long.parseLong(committeemainid));
 			return (Object[]) query.getSingleResult();
 		}catch (Exception e) {
 			logger.error(new java.util.Date() +"Inside DAO ProposedCommitteeMainId "+e);
@@ -2298,10 +2297,10 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	{
 		Query query=manager.createNativeQuery(GETPROPOSEDCOMMITTEEMAINID);
 		try {
-			query.setParameter("committeeid",committeeid);
-			query.setParameter("projectid",projectid);
-			query.setParameter("divisionid",divisionid);
-			query.setParameter("initiationid",initiationid);
+			query.setParameter("committeeid",Long.parseLong(committeeid));
+			query.setParameter("projectid", Long.parseLong(projectid));
+			query.setParameter("divisionid", Long.parseLong(divisionid));
+			query.setParameter("initiationid", Long.parseLong(initiationid));
 			return (Object[]) query.getResultList().get(0);
 		}catch (Exception e) {
 			logger.error(new java.util.Date() +"Inside DAO GetProposedCommitteeMainId "+e);
@@ -2317,7 +2316,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	{
 		Query query=manager.createNativeQuery(COMMITTEEMAINAPPROVALDATA);
 		try {
-			query.setParameter("committeemainid",committeemainid);
+			query.setParameter("committeemainid", Long.parseLong(committeemainid));
 			return (Object[]) query.getResultList().get(0);
 		}catch (Exception e) {
 			logger.error(new java.util.Date() +"Inside DAO CommitteeMainApprovalData "+e);
@@ -2387,7 +2386,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		
 		try {			
 			Query query=manager.createNativeQuery(APPROVALSTATUSLIST);
-			query.setParameter("committeemainid",committeemainid);
+			query.setParameter("committeemainid", Long.parseLong(committeemainid));
 			List<Object[]> ApprovalStatusList =(List<Object[]>) query.getResultList();
 			return ApprovalStatusList ;
 		}catch (Exception e) {
@@ -2423,7 +2422,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	{
 		Query query=manager.createNativeQuery("CALL Pfms_Com_Con_Approval(:logintype, :empid);");
 		query.setParameter("logintype",logintype);
-		query.setParameter("empid",empid);
+		query.setParameter("empid", Long.parseLong(empid));
 		return (List<Object[]>)query.getResultList();
 	}
 	
@@ -2431,7 +2430,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[] LoginData(String loginid) throws Exception
 	{
 		Query query=manager.createNativeQuery(LOGINDATA);
-		query.setParameter("loginid",loginid);
+		query.setParameter("loginid", Long.parseLong(loginid));
 		return (Object[])query.getSingleResult();
 	}
 	
@@ -2453,7 +2452,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]>  ComConstitutionApprovalHistory(String committeemainid) throws Exception
 	{
 		Query query=manager.createNativeQuery(COMCONSTITUTIONAPPROVALHISTORY);
-		query.setParameter("committeemainid",committeemainid);
+		query.setParameter("committeemainid", Long.parseLong(committeemainid));
 		return (List<Object[]>)query.getResultList();
 	}
 	
@@ -2462,7 +2461,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[]  ComConstitutionEmpdetails(String committeemainid) throws Exception
 	{
 		Query query=manager.createNativeQuery(COMCONSTITUTIONEMPDETAILS);
-		query.setParameter("committeemainid",committeemainid);
+		query.setParameter("committeemainid", Long.parseLong(committeemainid));
 		try {
 			return (Object[])query.getSingleResult();
 		}catch (Exception e) {
@@ -2503,7 +2502,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[]  CommitteeMainApprovalDoData(String committeemainid) throws Exception
 	{
 		Query query=manager.createNativeQuery(COMMITTEEMAINAPPROVALDODATA);
-		query.setParameter("committeemainid",committeemainid);
+		query.setParameter("committeemainid", Long.parseLong(committeemainid));
 		try {
 			return (Object[])query.getSingleResult();
 		}catch (Exception e) {
@@ -2520,7 +2519,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public int  CommitteeMinutesDelete(String scheduleminutesid) throws Exception
 	{
 		Query query=manager.createNativeQuery(COMMITTEEMINUTESDELETE);
-		query.setParameter("scheduleminutesid",scheduleminutesid);
+		query.setParameter("scheduleminutesid", Long.parseLong(scheduleminutesid));
 		return query.executeUpdate();
 	}
 	
@@ -2578,8 +2577,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> ScheduleCommitteeEmpCheck(String scheduleid ,String empid) throws Exception
 	{
 		Query query=manager.createNativeQuery(SCHEDULECOMMITTEEEMPCHECK);
-		query.setParameter("scheduleid",scheduleid);
-		query.setParameter("empid",empid);
+		query.setParameter("scheduleid", Long.parseLong(scheduleid));
+		query.setParameter("empid", Long.parseLong(empid));
 		return (List<Object[]>)query.getResultList();
 	}
 	
@@ -2588,8 +2587,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> ScheduleCommitteeEmpinvitedCheck(String scheduleid ,String empid) throws Exception
 	{
 		Query query=manager.createNativeQuery(SCHEDULECOMMITTEEEMPINVITEDCHECK);
-		query.setParameter("scheduleid",scheduleid);
-		query.setParameter("empid",empid);
+		query.setParameter("scheduleid", Long.parseLong(scheduleid));
+		query.setParameter("empid", Long.parseLong(empid));
 		return (List<Object[]>)query.getResultList();
 	}
 	
@@ -2598,8 +2597,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> EmpScheduleData(String empid,String scheduleid) throws Exception 
 	{
 		Query query=manager.createNativeQuery(EMPSCHEDULEDATA);
-		query.setParameter("empid", empid );
-		query.setParameter("scheduleid", scheduleid );
+		query.setParameter("empid",  Long.parseLong(empid));
+		query.setParameter("scheduleid", Long.parseLong(scheduleid));
 		List<Object[]> EmpScheduleData=(List<Object[]>)query.getResultList();
 		return EmpScheduleData;
 	}
@@ -2609,7 +2608,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> AllActionAssignedCheck(String scheduleid) throws Exception 
 	{
 		Query query=manager.createNativeQuery(ALLACTIONASSIGNEDCHECK);
-		query.setParameter("scheduleid", scheduleid );
+		query.setParameter("scheduleid", Long.parseLong(scheduleid));
 		List<Object[]> AllActionAssignedCheck=(List<Object[]>)query.getResultList();
 		return AllActionAssignedCheck;
 	}
@@ -2619,7 +2618,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> DefaultAgendaList(String committeeid,String LabCode) throws Exception 
 	{
 		Query query=manager.createNativeQuery(DEFAULTAGENDALIST);
-		query.setParameter("committeeid", committeeid );
+		query.setParameter("committeeid", Long.parseLong(committeeid));
 		query.setParameter("LabCode", LabCode );
 		List<Object[]> DefaultAgendaList=(List<Object[]>)query.getResultList();
 		return DefaultAgendaList;
@@ -2629,7 +2628,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ProcurementStatusList(String projectid)throws Exception{
 		Query query = manager.createNativeQuery(PROCUREMETSSTATUSLIST);
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		List<Object[]> ProcurementStatusList= query.getResultList();
 		return ProcurementStatusList;
 		
@@ -2640,7 +2639,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	{
 		List<Object[]> ActionPlanThreeMonths=new ArrayList<Object[]>();
 		Query query = manager.createNativeQuery("CALL Pfms_Milestone_PDC_New(:projectid, 180);");
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		try {
 			ActionPlanThreeMonths= query.getResultList();
 		}catch (Exception e) {
@@ -2655,7 +2654,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[] ProjectDataDetails(String projectid) throws Exception 
 	{
 		Query query=manager.createNativeQuery(PROJECTDATADETAILS);
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		Object[] ProjectStageDetails=null;
 		try {
 			ProjectStageDetails=(Object[])query.getSingleResult();
@@ -2671,8 +2670,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	{
 		Query query=manager.createNativeQuery("CALL last_pmrc_actions_list_new(:scheduleid,:committeeid,:proid)");	   
 		query.setParameter("scheduleid", scheduleid);
-		query.setParameter("committeeid",committeeid);
-		query.setParameter("proid",proid);
+		query.setParameter("committeeid", Long.parseLong(committeeid));
+		query.setParameter("proid", Long.parseLong(proid));
 //		query.setParameter("isFrozen",isFrozen);
 		List<Object[]> LastPMRCActions=(List<Object[]>)query.getResultList();			
 		return LastPMRCActions;		
@@ -2691,7 +2690,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> MilestoneSubsystems(String projectid) throws Exception 
 	{
 		Query query=manager.createNativeQuery(MILESTONESUBSYSTEMS);	   
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		List<Object[]> MilestoneSubsystems=(List<Object[]>)query.getResultList();	
 		return MilestoneSubsystems;
 	}
@@ -2700,7 +2699,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> EmployeeScheduleReports(String empid, String fromdate,String todate) throws Exception 
 	{
 		Query query=manager.createNativeQuery("CALL Pfms_Emp_Report (:empid,:fromdate,:todate)");	   
-		query.setParameter("empid", empid);
+		query.setParameter("empid", Long.parseLong(empid));
 		query.setParameter("fromdate", fromdate);
 		query.setParameter("todate", todate);
 		List<Object[]> EmployeeScheduleList=(List<Object[]>)query.getResultList();	
@@ -2712,9 +2711,9 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> EmployeeDropdown(String empid,String logintype,String projectid)throws Exception
 	{
 		Query query=manager.createNativeQuery("CALL Employee_Dropdown(:empid,:logintype,:projectid);");
-		query.setParameter("empid", empid);
+		query.setParameter("empid", Long.parseLong(empid));
 		query.setParameter("logintype", logintype);
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		List<Object[]> EmployeeDropdown=(List<Object[]>)query.getResultList();
 		return EmployeeDropdown;
 	}
@@ -2724,7 +2723,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> FileRepMasterListAll(String projectid,String LabCode)throws Exception
 	{
 		Query query=manager.createNativeQuery(FILEREPMASTERLISTALL);
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid",Long.parseLong(projectid));
 		query.setParameter("LabCode", LabCode);
 		List<Object[]> FileRepMasterListAll=(List<Object[]>)query.getResultList();
 		return FileRepMasterListAll;
@@ -2735,7 +2734,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[] AgendaDocLinkDownload(String filerepid)throws Exception
 	{
 		Query query=manager.createNativeQuery(AGENDADOCLINKDOWNLOAD);
-		query.setParameter("filerepid", filerepid);
+		query.setParameter("filerepid", Long.parseLong(filerepid));
 		List<Object[]> FileRepMasterListAll=(List<Object[]>)query.getResultList();
 		if(FileRepMasterListAll.size()>0) {
 		return FileRepMasterListAll.get(0);
@@ -2749,7 +2748,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> MilestoneActivityList(String ProjectId) throws Exception {
 
 		Query query=manager.createNativeQuery(MALIST);
-		query.setParameter("ProjectId", ProjectId);
+		query.setParameter("ProjectId", Long.parseLong(ProjectId));
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
 
 		return MilestoneActivityList;
@@ -2759,8 +2758,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> MilestoneActivityLevel(String MilestoneActivityId,String LevelId) throws Exception {
 		Query query=manager.createNativeQuery(MILEACTIVITYLEVEL);
-		query.setParameter("id", MilestoneActivityId);
-		query.setParameter("levelid", LevelId);
+		query.setParameter("id", Long.parseLong(MilestoneActivityId));
+		query.setParameter("levelid", Long.parseLong(LevelId));
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
 
 		return MilestoneActivityList;
@@ -2770,7 +2769,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> AgendaLinkedDocList(String scheduleid) throws Exception {
 		Query query=manager.createNativeQuery(AGENDALINKEDDOCLIST);
-		query.setParameter("scheduleid", scheduleid);
+		query.setParameter("scheduleid",  Long.parseLong(scheduleid));
 		List<Object[]> AgendaLinkedDocList=(List<Object[]>)query.getResultList();
 		return AgendaLinkedDocList;
 	}
@@ -2825,8 +2824,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int PreDefAgendaDelete(String DefaultAgendaId) throws Exception 
 	{	
-		CommitteeDefaultAgenda ExistingCommitteeDefaultAgenda= manager.find(CommitteeDefaultAgenda.class, DefaultAgendaId);
-		if(ExistingCommitteeDefaultAgenda != null) {
+		CommitteeDefaultAgenda ExistingCommitteeDefaultAgenda= manager.find(CommitteeDefaultAgenda.class, Long.parseLong(DefaultAgendaId));		if(ExistingCommitteeDefaultAgenda != null) {
 			ExistingCommitteeDefaultAgenda.setIsActive(0);
 			return 1;
 		}
@@ -2841,8 +2839,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public int CommProScheduleList(String projectid,String committeeid,String sdate) throws Exception 
 	{
 		Query query=manager.createNativeQuery(COMMPROSCHEDULELIST);
-		query.setParameter("projectid", projectid);
-		query.setParameter("committeeid", committeeid);
+		query.setParameter("projectid", Long.parseLong(projectid));
+		query.setParameter("committeeid", Long.parseLong(committeeid));
 		query.setParameter("sdate", sdate);
 		Long CommProScheduleList=(Long)query.getSingleResult();
 		return CommProScheduleList.intValue();
@@ -2855,9 +2853,9 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		
 		try {
 			Query query=manager.createNativeQuery(LASTPRMC);
-			query.setParameter("projectid", projectid);
-			query.setParameter("committeeid", committeeid);
-			query.setParameter("scheduleId", scheduleId);
+			query.setParameter("projectid", Long.parseLong(projectid));
+			query.setParameter("committeeid", Long.parseLong(committeeid));
+			query.setParameter("scheduleId", Long.parseLong(scheduleId));
 			return (Long)query.getSingleResult();
 		}catch (Exception e) {
 			logger.error(new java.util.Date() +"Inside DAO getLastPmrcId "+ e);
@@ -2879,7 +2877,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int updateMinutesFrozen(String schduleid) throws Exception {
 		
-		CommitteeSchedule ExistingCommitteeSchedule= manager.find(CommitteeSchedule.class, schduleid);
+		CommitteeSchedule ExistingCommitteeSchedule= manager.find(CommitteeSchedule.class, Long.parseLong(schduleid));
 		if(ExistingCommitteeSchedule != null) {
 			ExistingCommitteeSchedule.setMinutesFrozen("Y");
 			return 1;
@@ -2916,7 +2914,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[] getDefaultAgendasCount(String committeeId, String LabCode) throws Exception
 	{
 		Query query=manager.createNativeQuery(GETDEFAULTAGENDASCOUNT);
-		query.setParameter("committeeId", committeeId);
+		query.setParameter("committeeId", Long.parseLong(committeeId));
 		query.setParameter("LabCode", LabCode);
 		Object[] ClusterList=(Object[])query.getResultList().get(0);
 		return ClusterList;
@@ -2946,7 +2944,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[] CommitteeMainDetails(String CommitteeMainId) {
 		
 		Query query=manager.createNativeQuery(COMMITTEEMAINDETAILS);
-		query.setParameter("CommitteeMainId", CommitteeMainId);
+		query.setParameter("CommitteeMainId", Long.parseLong(CommitteeMainId));
 		Object[] ClusterList=(Object[])query.getResultList().get(0);
 		return ClusterList;
 		
@@ -2975,7 +2973,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> totalProjectMilestones(String projectid) throws Exception {
 		List<Object[]> TotalMilestones=new ArrayList<Object[]>();
 		Query query = manager.createNativeQuery("CALL pfms_total_project_milestones(:projectid);"); // to call all the milestones using projectid
-		query.setParameter("projectid", projectid); 
+		query.setParameter("projectid", Long.parseLong(projectid));
 		try {
 			TotalMilestones= query.getResultList(); 
 		}catch (Exception e) {
@@ -3005,7 +3003,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> getEnvisagedDemandList(String projectid) throws Exception {
 		Query query = manager.createNativeQuery(GETENVILIST);
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Integer.parseInt(projectid));
 		try {
 			return query.getResultList();
 		}catch (Exception e) {
@@ -3022,14 +3020,14 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		String FROZENFILEUPDATE="UPDATE committee_meeting_dpfm_frozen SET isactive=0 WHERE scheduleid=:scheduleid";
 		
 		int mf=0;
-		CommitteeSchedule ExistingCommitteeSchedule = manager.find(CommitteeSchedule.class, committeescheduleid);
+		CommitteeSchedule ExistingCommitteeSchedule = manager.find(CommitteeSchedule.class, Long.parseLong(committeescheduleid));
 		if(ExistingCommitteeSchedule != null) {
 			ExistingCommitteeSchedule.setMinutesFrozen("N");
 			mf=1;
 		}
 		
 		Query query2=manager.createNativeQuery(FROZENFILEUPDATE);
-		query2.setParameter("scheduleid", committeescheduleid);
+		query2.setParameter("scheduleid", Long.parseLong(committeescheduleid));
 		
 		int count=mf+query2.executeUpdate();
 		return count;
@@ -3052,7 +3050,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> actionDetailsForNonProject(String committeeId) throws Exception {
 		Query query =manager.createNativeQuery(NONPROJECTACTIONS);
-		query.setParameter("committeeId", committeeId);
+		query.setParameter("committeeId", Long.parseLong(committeeId));
 		return (List<Object[]>)query.getResultList();
 	}
 
@@ -3062,9 +3060,9 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> CommitteeOthersList(String projectid, String divisionid, String initiationid, String projectstatus) throws Exception {
 		
 		Query query =manager.createNativeQuery(COMMITTEEOTHERSLIST);
-		query.setParameter("projectid", projectid );
-		query.setParameter("divisionid", divisionid );
-		query.setParameter("initiationid", initiationid );
+		query.setParameter("projectid", Long.parseLong(projectid));
+		query.setParameter("divisionid", Long.parseLong(divisionid));
+		query.setParameter("initiationid", Long.parseLong(initiationid));
 		query.setParameter("projectstatus", projectstatus  );
 		List<Object[]> CommitteeOthersList=(List<Object[]>)query.getResultList();
 		return CommitteeOthersList;
@@ -3095,7 +3093,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[] MomAttachmentFile(String committeescheduleid) throws Exception {
 		
 		Query query = manager.createNativeQuery(MOMATTACH);
-		query.setParameter("ScheduleId", committeescheduleid);
+		query.setParameter("ScheduleId", Long.parseLong(committeescheduleid));
 		
 		List<Object[]>momattach= (List<Object[]>)query.getResultList();
 		
@@ -3112,8 +3110,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> MomReportList(String projectId, String committeeId) throws Exception {
 		Query query =manager.createNativeQuery(MOMREPORTLIST);
-		query.setParameter("projectId", projectId );
-		query.setParameter("committeeId", committeeId );
+		query.setParameter("projectId", Long.parseLong(projectId));
+		query.setParameter("committeeId", Long.parseLong(committeeId));
 		List<Object[]> MomReportList=(List<Object[]>)query.getResultList();
 		return MomReportList;
 	}
@@ -3125,8 +3123,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> IndustryPartnerRepListInvitationsMainMembers(String industryPartnerId, String committeemainid) throws Exception {
 		try {
 			Query query=manager.createNativeQuery(INDUSTRYPARTNERREPLISTINVITATIONS);
-			query.setParameter("IndustryPartnerId", industryPartnerId);
-			query.setParameter("CommitteeMainId", committeemainid);
+			query.setParameter("IndustryPartnerId", Long.parseLong(industryPartnerId));;
+			query.setParameter("CommitteeMainId", Long.parseLong(committeemainid));
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -3141,14 +3139,14 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ConstitutionApprovalFlowData(String committeemainid) throws Exception {
 		Query query = manager.createNativeQuery(FLOWDATA);
-		query.setParameter("committeemainid", committeemainid);
+		query.setParameter("committeemainid", Long.parseLong(committeemainid));
 		return (List<Object[]>)query.getResultList();
 	}
 	
 	@Override
 	public int MemberSerialNoUpdate(String memberId, String SerialNo) {
 		
-		CommitteeMember ExistingCommitteeMember = manager.find(CommitteeMember.class, memberId);
+		CommitteeMember ExistingCommitteeMember = manager.find(CommitteeMember.class, Long.parseLong(memberId));
 		if(ExistingCommitteeMember != null) {
 			ExistingCommitteeMember.setSerialNo(Long.parseLong(SerialNo));
 			return 1;
@@ -3173,10 +3171,10 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		
 		Query query = manager.createNativeQuery(COMMITTEELETTERS);
 		
-		query.setParameter("commmitteeId", commmitteeId);
-		query.setParameter("projectId", projectId);
-		query.setParameter("divisionId",divisionId );
-		query.setParameter("initiationId",initiationId );
+		query.setParameter("commmitteeId", Long.parseLong(commmitteeId));
+		query.setParameter("projectId", Long.parseLong(projectId));
+		query.setParameter("divisionId", Long.parseLong(divisionId));
+		query.setParameter("initiationId", Long.parseLong(initiationId));
 		
 		return (List<Object[]>)query.getResultList();
 	}
@@ -3184,7 +3182,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] getcommitteeLetter(String letterId) throws Exception {
 		Query query = manager.createNativeQuery(COMTLETTER);
-		query.setParameter("letterid", letterId);
+		query.setParameter("letterid", Long.parseLong(letterId));
 		
 		return (Object[])query.getSingleResult();
 	}
@@ -3192,7 +3190,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public long UpdateCommitteLetter(String letterId) throws Exception {
 		
-		CommitteeLetter ExistingCommitteeLetter = manager.find(CommitteeLetter.class, letterId);
+		CommitteeLetter ExistingCommitteeLetter = manager.find(CommitteeLetter.class, Long.parseLong(letterId));
 		if(ExistingCommitteeLetter != null) {
 			ExistingCommitteeLetter.setIsActive(0);
 			return 1L;
@@ -3235,8 +3233,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> MeettingList(String committeeId, String projectId) throws Exception {
 		try {
 			Query query=manager.createNativeQuery(MeettingList);
-			query.setParameter("projectId", projectId);
-			query.setParameter("committeeId", committeeId);
+			query.setParameter("projectId", Long.parseLong(projectId));
+			query.setParameter("committeeId", Long.parseLong(committeeId));
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -3249,7 +3247,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> MeettingList(String projectid) {
 		try {
 			Query query=manager.createNativeQuery(MeettingResultAll);
-			query.setParameter("projectId", projectid);
+			query.setParameter("projectId", Long.parseLong(projectid));
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -3271,12 +3269,12 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		if(!labCode.equalsIgnoreCase("@EXP")) {
 			Query query = manager.createNativeQuery(sql1);
 			query.setParameter("labCode", labCode);
-			query.setParameter("scheduleid", scheduleid);
+			query.setParameter("scheduleid", Long.parseLong(scheduleid));
 			list = (List<Object[]>)query.getResultList();
 			
 		}else {
 			Query query = manager.createNativeQuery(sql2);
-			query.setParameter("scheduleid", scheduleid);
+			query.setParameter("scheduleid", Long.parseLong(scheduleid));
 			list = (List<Object[]>)query.getResultList();
 			
 		}
@@ -3290,8 +3288,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> allconstitutionapprovalflowData(String CommitteeMainId) throws Exception {
 	
 		Query query  = manager.createNativeQuery(FLOWDATAS);
-		query.setParameter("CommitteeMainId", CommitteeMainId);
-		
+		query.setParameter("CommitteeMainId", Long.parseLong(CommitteeMainId));	
 		
 		return (List<Object[]>)query.getResultList();
 	}
@@ -3311,8 +3308,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[] CommitteMainEnoteList(String CommitteeMainId,String ScheduleId) throws Exception {
 
 		Query query = manager.createNativeQuery(COMMENOTELIST);
-		query.setParameter("CommitteeMainId", CommitteeMainId);
-		query.setParameter("ScheduleId", ScheduleId);
+		query.setParameter("CommitteeMainId", Long.parseLong(CommitteeMainId));
+		query.setParameter("ScheduleId", Long.parseLong(ScheduleId));
 		Object[]CommitteMainEnoteList = null;
 		try {
 		CommitteMainEnoteList = (Object[])query.getSingleResult();
@@ -3348,8 +3345,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		logger.info(LocalDate.now() + "Inside EnoteTransactionList");
 		try {
 			Query query = manager.createNativeQuery(ENOTETRANSACTIONLIST);
-			query.setParameter("enoteTrackId", enoteTrackId);
-			 List<Object[]> EnoteTransactionList = (List<Object[]>) query.getResultList();
+			query.setParameter("enoteTrackId", Long.parseLong(enoteTrackId));
+			List<Object[]> EnoteTransactionList = (List<Object[]>) query.getResultList();
 				return EnoteTransactionList;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -3395,8 +3392,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 public Object[] NewApprovalList(String EnoteId) throws Exception {
 
 	Query query = manager.createNativeQuery(NEWAPPROVALLIST);
-	query.setParameter("EnoteId", EnoteId);
-			Object[]NewApprovalList = null;
+	query.setParameter("EnoteId", Long.parseLong(EnoteId));
+	Object[]NewApprovalList = null;
 	try {
 		NewApprovalList=(Object[])query.getSingleResult();
 		return NewApprovalList;
@@ -3459,7 +3456,7 @@ private static final String ENOTEAPPROVELIST="SELECT MAX(a.EnoteId) AS EnoteId,M
 	@Override
 	public List<Object[]> getAgendaAttachId(String agendaid) throws Exception {
 		Query query = manager.createNativeQuery(GETATTACHMENTID);
-		query.setParameter("agendaid", agendaid);
+		query.setParameter("agendaid", Long.parseLong(agendaid));
 		return (List<Object[]>) query.getResultList();
 	}
 	
@@ -3503,7 +3500,7 @@ private static final String ENOTEAPPROVELIST="SELECT MAX(a.EnoteId) AS EnoteId,M
 		{
 			try {
 				Query query=manager.createNativeQuery(CARSSCHEDULELIST);
-				query.setParameter("CARSInitiationId", carsInitiationId);
+				query.setParameter("CARSInitiationId", Long.parseLong(carsInitiationId));
 				return (List<Object[]>)query.getResultList();
 			}catch (Exception e) {
 				e.printStackTrace();
@@ -3517,7 +3514,7 @@ private static final String ENOTEAPPROVELIST="SELECT MAX(a.EnoteId) AS EnoteId,M
 		public Long carsMeetingCount(String carsInitiationId) throws Exception {
 			try {
 				Query query=manager.createNativeQuery(CARSMEETINGCOUNT);
-				query.setParameter("CARSInitiationId", carsInitiationId );
+				query.setParameter("CARSInitiationId", Long.parseLong(carsInitiationId));
 				return (Long) query.getSingleResult();
 			}catch (Exception e) {
 				e.printStackTrace();
@@ -3529,7 +3526,7 @@ private static final String ENOTEAPPROVELIST="SELECT MAX(a.EnoteId) AS EnoteId,M
 		@Override
 		public void InvitationRoleoUpdate(String empMeetingRole, String committeeinvitationid) throws Exception {
 			
-			CommitteeInvitation ExistingCommitteeInvitation = manager.find(CommitteeInvitation.class, committeeinvitationid);
+			CommitteeInvitation ExistingCommitteeInvitation = manager.find(CommitteeInvitation.class, Long.parseLong(committeeinvitationid));
 			if(ExistingCommitteeInvitation != null) {
 				
 				ExistingCommitteeInvitation.setEmpMeetingRole(empMeetingRole);

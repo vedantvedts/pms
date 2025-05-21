@@ -67,7 +67,7 @@ public class FracasDaoImpl implements FracasDao {
 	public List<Object[]> ProjectsList(String empid,String Logintype, String LabCode)throws Exception
 	{
 		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList(:empid,:logintype,:labcode);");
-		query.setParameter("empid", empid);
+		query.setParameter("empid", Long.parseLong(empid));
 		query.setParameter("logintype", Logintype);
 		query.setParameter("labcode", LabCode);
 		List<Object[]> LoginProjectIdList=(List<Object[]>)query.getResultList();
@@ -80,7 +80,7 @@ public class FracasDaoImpl implements FracasDao {
 	{
 		Object[] ProjectsData=null;		
 		Query query=manager.createNativeQuery(PROJECTSDATA);
-		query.setParameter("projectid",projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		ProjectsData=(Object[]) query.getSingleResult();
 		return ProjectsData;
 	}
@@ -115,7 +115,7 @@ public class FracasDaoImpl implements FracasDao {
 	public List<Object[]> ProjectFracasItemsList(String projectid,String LabCode) throws Exception
 	{
 		Query query=manager.createNativeQuery(PROJECTFRACASITEMSLIST);
-		query.setParameter("projectid",projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		query.setParameter("LabCode",LabCode);
 		List<Object[]> ProjectFracasItemsList=(List<Object[]>) query.getResultList();
 		return ProjectFracasItemsList;
@@ -124,7 +124,7 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public PfmsFracasAttach FracasAttachDownload(String fracasattachid) throws Exception
 	{
-		PfmsFracasAttach attach= manager.find(PfmsFracasAttach .class,Long.parseLong(fracasattachid));
+		PfmsFracasAttach attach= manager.find(PfmsFracasAttach .class, Long.parseLong(fracasattachid));
 		return attach;
 	}
 	
@@ -132,7 +132,7 @@ public class FracasDaoImpl implements FracasDao {
 	public Object[] FracasItemData(String fracasmainid) throws Exception
 	{
 		Query query=manager.createNativeQuery(FRACASITEMDATA);
-		query.setParameter("fracasmainid",fracasmainid);
+		query.setParameter("fracasmainid", Long.parseLong(fracasmainid));
 		Object[] FracasItemData=(Object[]) query.getSingleResult();
 		return FracasItemData;
 	}
@@ -150,8 +150,8 @@ public class FracasDaoImpl implements FracasDao {
 	public List<Object[]> FracasAssignedList(String assignerempid,String fracasmainid) throws Exception
 	{
 		Query query=manager.createNativeQuery(FRACASASSIGNEDLIST);
-		query.setParameter("assignerempid",assignerempid);
-		query.setParameter("fracasmainid",fracasmainid);
+		query.setParameter("assignerempid", Long.parseLong(assignerempid));
+		query.setParameter("fracasmainid", Long.parseLong(fracasmainid));
 		List<Object[]> FracasSubList=(List<Object[]>) query.getResultList();
 		return FracasSubList;
 	}
@@ -161,7 +161,7 @@ public class FracasDaoImpl implements FracasDao {
 	public List<Object[]> FracasAssigneeList(String assigneeid) throws Exception
 	{
 		Query query=manager.createNativeQuery(FRACASASSIGNEELIST);
-		query.setParameter("assigneeid",assigneeid);
+		query.setParameter("assigneeid", Long.parseLong(assigneeid));
 		List<Object[]> FracasAssigneeList=(List<Object[]>) query.getResultList();
 		return FracasAssigneeList;
 	}
@@ -170,7 +170,7 @@ public class FracasDaoImpl implements FracasDao {
 	public Object[] FracasAssignData(String fracasassignid) throws Exception
 	{
 		Query query=manager.createNativeQuery(FRACASASSIGNDATA);
-		query.setParameter("fracasassignid",fracasassignid);
+		query.setParameter("fracasassignid", Long.parseLong(fracasassignid));
 		Object[] FracasAssignData=(Object[]) query.getSingleResult();
 		return FracasAssignData;
 	}
@@ -188,7 +188,7 @@ public class FracasDaoImpl implements FracasDao {
 	public List<Object[]> FracasSubList(String fracasassignid) throws Exception
 	{
 		Query query=manager.createNativeQuery(FRACASSUBLIST);
-		query.setParameter("fracasassignid",fracasassignid);
+		query.setParameter("fracasassignid", Long.parseLong(fracasassignid));
 		List<Object[]> FracasSubList=(List<Object[]>) query.getResultList();
 		return FracasSubList;
 	}
@@ -219,7 +219,7 @@ public class FracasDaoImpl implements FracasDao {
 	public List<Object[]> FracasToReviewList(String assignerempid) throws Exception
 	{
 		Query query=manager.createNativeQuery(FRACASTOREVIEWLIST);
-		query.setParameter("assignerempid",assignerempid);
+		query.setParameter("assignerempid", Long.parseLong(assignerempid));
 		List<Object[]> FracasToReviewList=(List<Object[]>) query.getResultList();
 		return FracasToReviewList;
 	}
@@ -229,7 +229,7 @@ public class FracasDaoImpl implements FracasDao {
 	public int FracasSubDelete(String fracassubid) throws Exception
 	{
 		Query query=manager.createNativeQuery(FRACASSUBDELETE);
-		query.setParameter("fracassubid",fracassubid);		
+		query.setParameter("fracassubid", Long.parseLong(fracassubid));		
 		return query.executeUpdate();
 	}
 	
@@ -255,7 +255,7 @@ public class FracasDaoImpl implements FracasDao {
 	public Object[] FracasMainAssignCount(String fracasmainid) throws Exception
 	{
 		Query query=manager.createNativeQuery(FRACASMAINASSIGNCOUNT);
-		query.setParameter("fracasmainid",fracasmainid);
+		query.setParameter("fracasmainid", Long.parseLong(fracasmainid));
 		return ( Object[])query.getSingleResult();
 	}
 	
@@ -284,7 +284,7 @@ public class FracasDaoImpl implements FracasDao {
 	public int FracasAttachDelete(String fracasattachid) throws Exception
 	{
 		Query query=manager.createNativeQuery(FRACASATTACHDELETE);
-		query.setParameter("fracasattachid",fracasattachid);		
+		query.setParameter("fracasattachid", Long.parseLong(fracasattachid));	
 		return query.executeUpdate();
 	}
 	
@@ -301,7 +301,7 @@ public class FracasDaoImpl implements FracasDao {
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype,String LabCode)throws Exception
 	{
 		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList(:empid,:logintype,:labcode);");
-		query.setParameter("empid", empid);
+		query.setParameter("empid", Long.parseLong(empid));
 		query.setParameter("logintype", Logintype);
 		query.setParameter("labcode", LabCode);
 		List<Object[]> LoginProjectIdList=(List<Object[]>)query.getResultList();

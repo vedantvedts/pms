@@ -145,7 +145,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	@Override
 	public String DesgId(String Empid) throws Exception {
 		Query query = manager.createNativeQuery(DESGID);
-		query.setParameter("empid", Empid);
+		query.setParameter("empid", Long.parseLong(Empid));
 		Long DesgId = (Long) query.getSingleResult();
 		return DesgId.toString();
 	}
@@ -185,7 +185,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 		
 		Query query=manager.createNativeQuery("CALL Pfms_All_Actions_Count (:projectid)");	
 //		query.setParameter("empid", empid);
-		query.setParameter("projectid", ProjectId);
+		query.setParameter("projectid", Long.parseLong(ProjectId));
 
 		List<Object[]> AllActionsCount=(List<Object[]>)query.getResultList();	
 		return AllActionsCount;
@@ -215,7 +215,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
     public List<Object> GetNoticeEligibility(String empId)throws Exception{
 		
 		Query query=manager.createNativeQuery("CALL Pfms_Notice_Eligibility(:EMPID)");	
-		query.setParameter("EMPID",empId);
+		query.setParameter("EMPID", Long.parseLong(empId));
 		List<Object> NoticeList=(List<Object>)query.getResultList();
 
 		return NoticeList;	
@@ -226,7 +226,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
     public List<Object> SelfActionsList(String empId)throws Exception {
 		
 		Query query=manager.createNativeQuery(SELFACTIONSLIST);	
-		query.setParameter("empid",empId);
+		query.setParameter("empid", Long.parseLong(empId));
 		List<Object> SelfActionsList=(List<Object>)query.getResultList();
 
 		return SelfActionsList;	
@@ -248,7 +248,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	@Override
 	public List<Object[]> getnoticeEditData(String noticeId)throws Exception{
 		Query query=manager.createNativeQuery(NOTICEEDITDATA);
-		query.setParameter("NOTICEID", noticeId);
+		query.setParameter("NOTICEID", Long.parseLong(noticeId));
 		List<Object[]> EditData=(List<Object[]>)query.getResultList();
         return EditData;
 	}
@@ -257,7 +257,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	@Override
 	public int noticeDelete(String noticeId)throws Exception{
 		
-		Notice ExistingNotice = manager.find(Notice.class, noticeId);
+		Notice ExistingNotice = manager.find(Notice.class, Long.parseLong(noticeId));
 		if(ExistingNotice != null) {
 			ExistingNotice.setIsActive(0);
 			return 1;
@@ -301,7 +301,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	@Override
 	public Object[] AllSchedulesCount(String loginid) throws Exception {
 		Query query=manager.createNativeQuery("CALL Pfms_All_Meetings_Count(:loginid);");
-		query.setParameter("loginid",loginid);
+		query.setParameter("loginid", Long.parseLong(loginid));
 		Object[] AllSchedulesCount=(Object[])query.getSingleResult();
 		return AllSchedulesCount;
 	}
@@ -309,7 +309,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	@Override
 	public List<Object[]> ProjectMeetingCount(String ProjectId) throws Exception {
 		Query query=manager.createNativeQuery("CALL Pfms_All_Meetings_Count(:ProjectId);");
-		query.setParameter("ProjectId",ProjectId);
+		query.setParameter("ProjectId", Long.parseLong(ProjectId));
 		List<Object[]> ProjectMeetingCount=(List<Object[]>)query.getResultList();
 		return ProjectMeetingCount;
 	}
@@ -318,7 +318,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	public List<Object[]> ProjectList(String EmpId) throws Exception {
 		
 		Query query=manager.createNativeQuery(PROJECTLIST);
-		query.setParameter("empid", EmpId);
+		query.setParameter("empid", Long.parseLong(EmpId));
 
 		return (List<Object[]>) query.getResultList();
 	}
@@ -329,7 +329,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 		
 		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList (:empid,:logintype,:labcode)");
 		//Query query=manager.createNativeQuery(PROJECTEMPLOYEELIST);
-		query.setParameter("empid",empid);
+		query.setParameter("empid", Long.parseLong(empid));
 		query.setParameter("logintype", logintype);
 		query.setParameter("labcode", LabCode);
 		List<Object[]> ProjectEmployeeList=(List<Object[]>)query.getResultList();
@@ -342,7 +342,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	public List<Object[]> ProjectQuaters(String ProjectId) throws Exception {
 
 		Query query=manager.createNativeQuery(QUATERS);
-		query.setParameter("projectid",ProjectId);
+		query.setParameter("projectid", Long.parseLong(ProjectId));
 		List<Object[]> ProjectQuaters=(List<Object[]>)query.getResultList();
 		return ProjectQuaters;
 	}
@@ -350,7 +350,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	@Override
 	public List<Object[]> MileQuaters(String ProjectId, int Quater, int year) throws Exception {
 		Query query=manager.createNativeQuery(MILEQUATER);
-		query.setParameter("proid",ProjectId);
+		query.setParameter("proid", Long.parseLong(ProjectId));
 		query.setParameter("Quater",Quater);
 		query.setParameter("yr",year);
 		List<Object[]> ProjectQuaters=(List<Object[]>)query.getResultList();
@@ -380,7 +380,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 		
 		Query query = manager.createNativeQuery(PROJECTTOTALHEALTHDATA);
 		query.setParameter("projectid", ProjectId);
-		query.setParameter("empid", EmpId);
+		query.setParameter("empid", Long.parseLong(EmpId));
 		query.setParameter("logintype", LoginType);
 		query.setParameter("labcode", LabCode);
 		query.setParameter("isall", IsAll);
@@ -401,7 +401,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	public Object[] ProjectHealthInsertData(String projectId) throws Exception {
 		
 		Query query = manager.createNativeQuery(PROJECTHEALTHINSERTDATA);
-		query.setParameter("projectid", projectId);
+		query.setParameter("projectid", Long.parseLong(projectId));
 		Object[] ProjectHealthTotalData= (Object[])query.getSingleResult();
 		return ProjectHealthTotalData;
 	}
@@ -409,7 +409,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	@Override
 	public int ProjectHealthDelete(String projectId) throws Exception {
 		Query query = manager.createNativeQuery(PROJECTHEALTHDELETE);
-		query.setParameter("projectid", projectId);
+		query.setParameter("projectid",Long.parseLong(projectId));
 		int count =(int)query.executeUpdate();
 		
 		return count ;
@@ -506,7 +506,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	@Override
 	public int ProjectHoaChangesDelete(String projectId) throws Exception {
 		Query query = manager.createNativeQuery(PROJECTHOACHANGESDELETE);
-		query.setParameter("projectid", projectId);
+		query.setParameter("projectid", Long.parseLong(projectId));
 		int count =(int)query.executeUpdate();
 		
 		return count ;
@@ -527,7 +527,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	{
 		try {
 			Query query=manager.createNativeQuery(PROJECTDATA);
-			query.setParameter("projectid",projectid);
+			query.setParameter("projectid", Long.parseLong(projectid));
 			return (Object[])query.getSingleResult();
 		}catch (NoResultException e) {
 			return null;
@@ -559,7 +559,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	public List<Object[]> getCCMData(String EmpId,String LoginType,String LabCode)throws Exception
 	{
 		Query query = manager.createNativeQuery(GETCCMDATA);
-		query.setParameter("EmpId", EmpId);
+		query.setParameter("EmpId", Long.parseLong(EmpId));
 		query.setParameter("LoginType", LoginType);
 		query.setParameter("LabCode", LabCode);
 		List<Object[]> CCMData =(List<Object[]>)query.getResultList();
@@ -573,9 +573,9 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	{
 		Query query = manager.createNativeQuery(DASHBOARDFINANCECASHOUTGO);
 		query.setParameter("LoginType", LoginType);
-		query.setParameter("EmpId", EmpId);
+		query.setParameter("EmpId", Long.parseLong(EmpId));
 		query.setParameter("LabCode", LabCode);
-		query.setParameter("ClusterId", ClusterId);
+		query.setParameter("ClusterId", Long.parseLong(ClusterId));
 		List<Object[]> CCMData =(List<Object[]>)query.getResultList();
 		
 		return CCMData ;
@@ -587,9 +587,9 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	{
 		Query query = manager.createNativeQuery(DASHBOARDFINANCE);
 		query.setParameter("LoginType", LoginType);
-		query.setParameter("EmpId", EmpId);
+		query.setParameter("EmpId", Long.parseLong(EmpId));
 		query.setParameter("LabCode", LabCode);
-		query.setParameter("ClusterId", ClusterId);
+		query.setParameter("ClusterId", Long.parseLong(ClusterId));
 		List<Object[]> CCMData =(List<Object[]>)query.getResultList();		
 		return CCMData ;
 	}

@@ -93,8 +93,7 @@ public class PrintDaoImpl implements PrintDao {
 	public List<Object[]> PfmsInitiationList(String InitiationId) throws Exception {
 		
 		Query query=manager.createNativeQuery(PFMSINITLIST);
-		query.setParameter("initiationid", InitiationId);
-		
+		query.setParameter("initiationid", Long.parseLong(InitiationId));		
 		List<Object[]> PfmsInitiationList=(List<Object[]>)query.getResultList();		
 
 		return PfmsInitiationList;
@@ -104,8 +103,8 @@ public class PrintDaoImpl implements PrintDao {
 	public List<Object[]> GetCostBreakList(String InitiationId , String projecttypeid)throws Exception
 	{
 		Query query=manager.createNativeQuery(COSTBREAK);
-		query.setParameter("initiationid", InitiationId);
-		query.setParameter("projecttypeid", projecttypeid);
+		query.setParameter("initiationid", Long.parseLong(InitiationId));
+		query.setParameter("projecttypeid", Integer.parseInt(projecttypeid));
 		List<Object[]> PfmscostbreakList=(List<Object[]>)query.getResultList();		
 
 		return PfmscostbreakList;
@@ -134,7 +133,7 @@ public class PrintDaoImpl implements PrintDao {
 	public List<Object[]> ProjectIntiationDetailsList(String InitiationId) throws Exception {
 		
 		Query query=manager.createNativeQuery(PROJECTDETAILSLIST);
-		query.setParameter("initiationid", InitiationId);
+		query.setParameter("initiationid", Long.parseLong(InitiationId));
 		List<Object[]> ProjectIntiationDetailsList=(List<Object[]> )query.getResultList();	
 			
 		
@@ -145,7 +144,7 @@ public class PrintDaoImpl implements PrintDao {
 	public List<Object[]> CostDetailsList(String InitiationId) throws Exception {
 
 		Query query=manager.createNativeQuery(COSTDETAILSLIST);
-		query.setParameter("initiationid", InitiationId);
+		query.setParameter("initiationid", Long.parseLong(InitiationId));
 		List<Object[]> CostDetailsList =(List<Object[]>)query.getResultList();
 		
 		return CostDetailsList;
@@ -155,7 +154,7 @@ public class PrintDaoImpl implements PrintDao {
 	public List<Object[]> ProjectInitiationScheduleList(String InitiationId) throws Exception {
 
 		Query query=manager.createNativeQuery(PROJECTSCHEDULELIST);
-	    query.setParameter("initiationid", InitiationId);
+	    query.setParameter("initiationid", Long.parseLong(InitiationId));
 		List<Object[]> ProjectIntiationScheduleList=(List<Object[]>)query.getResultList();		
 		
 		return ProjectIntiationScheduleList;
@@ -176,7 +175,7 @@ public class PrintDaoImpl implements PrintDao {
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype ,String LabCode)throws Exception
 	{
 		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList(:empid,:logintype,:labcode);");
-		query.setParameter("empid", empid);
+		query.setParameter("empid", Long.parseLong(empid));
 		query.setParameter("logintype", Logintype);
 		query.setParameter("labcode", LabCode);
 		List<Object[]> LoginProjectIdList=(List<Object[]>)query.getResultList();
@@ -189,7 +188,7 @@ public class PrintDaoImpl implements PrintDao {
 	public Object[] ProjectAttributes(String projectid) throws Exception 
 	{
 		Query query=manager.createNativeQuery(PROJECTATTRIBUTES);	   
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		Object[] ProjectAttributes=null;
 		try {
 			ProjectAttributes=(Object[])query.getSingleResult();	
@@ -210,7 +209,7 @@ public class PrintDaoImpl implements PrintDao {
 	public List<Object[]> EBAndPMRCCount(String projectid) throws Exception {
 
 		Query query=manager.createNativeQuery(EBANDPMRCCOUNT);	   
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		List<Object[]> EBAndPMRCCount=(List<Object[]>)query.getResultList();	
 		
 		return EBAndPMRCCount;
@@ -222,7 +221,7 @@ public class PrintDaoImpl implements PrintDao {
 	{
 
 		Query query=manager.createNativeQuery(PROJECTCOMMITTEEMEETINGSCOUNT);	   
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		query.setParameter("CommitteeCode", CommitteeCode);
 		Object[] EBAndPMRCCount=(Object[])query.getSingleResult();	
 		
@@ -236,8 +235,8 @@ public class PrintDaoImpl implements PrintDao {
 	public List<Object[]> Milestones(String projectid, String committeeid) throws Exception {
 
 		Query query=manager.createNativeQuery(MILESTONES);	   
-		query.setParameter("projectid", projectid);
-		query.setParameter("committeeid", committeeid);
+		query.setParameter("projectid", Long.parseLong(projectid));
+		query.setParameter("committeeid", Long.parseLong(committeeid));
 		List<Object[]> Milestones=(List<Object[]>)query.getResultList();	
 		
 		return Milestones;
@@ -248,8 +247,8 @@ public class PrintDaoImpl implements PrintDao {
 	public List<Object[]> Milestones(String projectid, String committeeid, String Date) throws Exception {
 		String milestones ="CALL Pfms_Milestone_Level_Prior_meeting(:projectid,:committeeid,:date)";
 		Query query=manager.createNativeQuery(milestones);	   
-		query.setParameter("projectid", projectid);
-		query.setParameter("committeeid", committeeid);
+		query.setParameter("projectid", Long.parseLong(projectid));
+		query.setParameter("committeeid", Long.parseLong(committeeid));
 		query.setParameter("date", Date);
 		List<Object[]> Milestones=(List<Object[]>)query.getResultList();	
 		
@@ -260,8 +259,8 @@ public class PrintDaoImpl implements PrintDao {
 	public List<Object[]> MilestonesChange(String projectid,String milestoneactivitystatusid) throws Exception {
 
 		Query query=manager.createNativeQuery(MILESTONESCHANGE);	   
-		query.setParameter("projectid", projectid);
-		query.setParameter("milestoneactivitystatusid", milestoneactivitystatusid );
+		query.setParameter("projectid", Long.parseLong(projectid));
+		query.setParameter("milestoneactivitystatusid", milestoneactivitystatusid);
 		List<Object[]> MilestonesChange=(List<Object[]>)query.getResultList();	
 		
 		return MilestonesChange;
@@ -271,7 +270,7 @@ public class PrintDaoImpl implements PrintDao {
 	public List<Object[]> MilestoneSubsystems(String projectid) throws Exception {
 
 		Query query=manager.createNativeQuery(MILESTONESUBSYSTEMS);	   
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		List<Object[]> MilestoneSubsystems=(List<Object[]>)query.getResultList();	
 		
 		return MilestoneSubsystems;
@@ -281,8 +280,8 @@ public class PrintDaoImpl implements PrintDao {
 	public List<Object[]> LastPMRCActions(String projectid ,String committeeid) throws Exception 
 	{
 		Query query=manager.createNativeQuery("CALL Last_PMRC_Actions_List(:projectid,:committeeid);");	   
-		query.setParameter("projectid", projectid);
-		query.setParameter("committeeid", committeeid);
+		query.setParameter("projectid", Long.parseLong(projectid));
+		query.setParameter("committeeid", Long.parseLong(committeeid));
 		//query.setParameter("lastpmrcdate", lastpmrcdate);
 		List<Object[]> LastPMRCActions=(List<Object[]>)query.getResultList();			
 		return LastPMRCActions;		
@@ -292,8 +291,8 @@ public class PrintDaoImpl implements PrintDao {
 	public List<Object[]> OldPMRCActions(String projectid, String committeeid) throws Exception 
 	{
 		Query query=manager.createNativeQuery("CALL Old_PMRC_Actions_List(:projectid,:committeeid);");	   
-		query.setParameter("projectid", projectid);
-		query.setParameter("committeeid", committeeid);
+		query.setParameter("projectid", Long.parseLong(projectid));
+		query.setParameter("committeeid", Long.parseLong(committeeid));
 		List<Object[]> OldPMRCActions=(List<Object[]>)query.getResultList();			
 		return OldPMRCActions;		
 	}
@@ -301,7 +300,7 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<Object[]> ProjectDetails(String ProjectId) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTDETAILS);
-		query.setParameter("projectid",ProjectId);
+		query.setParameter("projectid", Long.parseLong(ProjectId));
 		List<Object[]> ProjectList=(List<Object[]>)query.getResultList();		
 
 		return ProjectList;
@@ -312,7 +311,7 @@ public class PrintDaoImpl implements PrintDao {
 	public List<Object[]> GanttChartList(String ProjectId) throws Exception {
 		
 		Query query = manager.createNativeQuery(GANTTCHARTLIST);
-		query.setParameter("projectid", ProjectId);
+		query.setParameter("projectid", Long.parseLong(ProjectId));
 		List<Object[]> GanttChartList= query.getResultList();
 		return GanttChartList;
 	}
@@ -320,7 +319,7 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public Object[] ProjectDataDetails(String projectid) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTDATADETAILS);
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		Object[] ProjectStageDetails=null;
 		try {
 			ProjectStageDetails=(Object[])query.getSingleResult();
@@ -337,7 +336,7 @@ public class PrintDaoImpl implements PrintDao {
 	public List<Object[]> OldPMRCIssuesList(String projectid) throws Exception {  
 		
 		Query query = manager.createNativeQuery("CALL Old_Issues_List(:projectid);");
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		List<Object[]> OldPMRCIssuesList= query.getResultList();
 		return OldPMRCIssuesList;
 	}
@@ -346,7 +345,7 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<Object[]> ProcurementStatusList(String projectid)throws Exception{
 		Query query = manager.createNativeQuery(PROCUREMETSSTATUSLIST);
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Integer.parseInt(projectid));
 		List<Object[]> ProcurementStatusList= query.getResultList();
 		return ProcurementStatusList;
 	}
@@ -356,7 +355,7 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<Object[]> RiskMatirxData(String projectid)throws Exception{
 		Query query = manager.createNativeQuery(RISKMATIRXDATA);
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		List<Object[]> RiskMatirxData= query.getResultList();
 		return RiskMatirxData;
 		
@@ -368,8 +367,8 @@ public class PrintDaoImpl implements PrintDao {
 	public Object[] LastPMRCDecisions(String committeeid,String projectid)throws Exception
 	{
 		Query query = manager.createNativeQuery(LASTPMRCDECISIONS);
-		query.setParameter("projectid", projectid);
-		query.setParameter("committeeid", committeeid);
+		query.setParameter("projectid", Long.parseLong(projectid));
+		query.setParameter("committeeid", Long.parseLong(committeeid));
 		
 		Object[] LastPMRCDecisions=null;
 		try {
@@ -387,7 +386,7 @@ public class PrintDaoImpl implements PrintDao {
 		List<Object[]> ActionPlanThreeMonths=new ArrayList<Object[]>();
 		//Query query = manager.createNativeQuery("CALL Pfms_Milestone_PDC(:projectid, 180);");
 		Query query = manager.createNativeQuery("CALL Pfms_Milestone_PDC_New(:projectid, :interval)");
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		query.setParameter("interval", interval);
 		try {
 			ActionPlanThreeMonths= query.getResultList();
@@ -405,9 +404,9 @@ public class PrintDaoImpl implements PrintDao {
 	{
 		try {
 			Query query=manager.createNativeQuery(LASTPRMC);
-			query.setParameter("projectid", projectid);
-			query.setParameter("committeeid", committeeid);
-			query.setParameter("scheduleId", scheduleId);
+			query.setParameter("projectid",  Long.parseLong(projectid));
+			query.setParameter("committeeid", Long.parseLong(committeeid));
+			query.setParameter("scheduleId",  Long.parseLong(scheduleId));
 			return (Long)query.getSingleResult();
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside DAO getLastPmrcId "+ e);
@@ -419,8 +418,8 @@ public class PrintDaoImpl implements PrintDao {
 	public List<Object[]> LastPMRCActions1(String projectid ,String committeeid) throws Exception 
 	{
 		Query query=manager.createNativeQuery("CALL last_pmrc_actions_list_bpaper(:projectid,:committeeid);");	   
-		query.setParameter("projectid", projectid);
-		query.setParameter("committeeid", committeeid);
+		query.setParameter("projectid", Long.parseLong(projectid));
+		query.setParameter("committeeid", Long.parseLong(committeeid));
 		List<Object[]> LastPMRCActions=(List<Object[]>)query.getResultList();			
 		return LastPMRCActions;		
 	}
@@ -431,7 +430,7 @@ public class PrintDaoImpl implements PrintDao {
 	public List<String> ProjectsubProjectIdList(String projectid ) throws Exception 
 	{
 		Query query=manager.createNativeQuery(PROJECTSUBPROJECTIDLIST);	   
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		List<String> Projectidlist=(List<String>)query.getResultList();			
 		return Projectidlist;		
 	}
@@ -444,7 +443,7 @@ public class PrintDaoImpl implements PrintDao {
 	public List<Object[]> ReviewMeetingList(String projectid, String committeecode) throws Exception 
 	{
 		Query query=manager.createNativeQuery(REVIEWMEETINGLIST);	   
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		query.setParameter("committeecode", committeecode);
 		List<Object[]> ReviewMeetingList=(List<Object[]>)query.getResultList();		
 		return ReviewMeetingList;
@@ -456,7 +455,7 @@ public class PrintDaoImpl implements PrintDao {
 	public Object[] TechWorkData(String projectid) throws Exception 
 	{
 		Query query=manager.createNativeQuery(TECHWORKDATALIST);	   
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		List<Object[]> ReviewMeetingList=(List<Object[]>)query.getResultList();	
 		if(ReviewMeetingList.size()>0) 
 		{
@@ -472,7 +471,7 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<Object[]> ProjectRevList(String projectid) throws Exception {
 		Query query=manager.createNativeQuery(PROJECTREVLIST);
-		query.setParameter("projectid", projectid);
+		query.setParameter("projectid", Long.parseLong(projectid));
 		return (List<Object[]>)query.getResultList();
 	}
 
@@ -481,7 +480,7 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<Object[]> getMeetingSchedules(String ProjectId, String Month, String Year) throws Exception {
 		Query query=manager.createNativeQuery(SCHEDULELIST);
-		query.setParameter("ProjectId", ProjectId);
+		query.setParameter("ProjectId", Long.parseLong(ProjectId));
 		query.setParameter("InMonth", Month);
 		query.setParameter("InYear", Year);
 		return (List<Object[]>)query.getResultList();
@@ -494,7 +493,7 @@ public class PrintDaoImpl implements PrintDao {
 	public Object[] CommitteeScheduleEditData(String CommitteeScheduleId) throws Exception {
 
 		Query query=manager.createNativeQuery(COMMITTEESCHEDULEEDITDATA);
-		query.setParameter("committeescheduleid", CommitteeScheduleId );
+		query.setParameter("committeescheduleid", Long.parseLong(CommitteeScheduleId));
 		Object[] CommitteeScheduleEditData=(Object[])query.getSingleResult();
 		return CommitteeScheduleEditData;
 	}
@@ -506,8 +505,8 @@ public class PrintDaoImpl implements PrintDao {
 	{
 		try {
 			Query query=manager.createNativeQuery(NEXTSCHEDULEID);
-			query.setParameter("projectid", projectid);
-			query.setParameter("committeeid", committeeid);
+			query.setParameter("projectid",  Long.parseLong(projectid));
+			query.setParameter("committeeid",  Long.parseLong(committeeid));
 			return (Long)query.getSingleResult();
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside DAO getNextScheduleId "+ e);
@@ -604,8 +603,8 @@ public class PrintDaoImpl implements PrintDao {
 
 		try {
 			Query query=manager.createNativeQuery(MILESTONELEVELID);
-			query.setParameter("projectid", ProjectId);
-			query.setParameter("committeeid", Committeeid);
+			query.setParameter("projectid", Long.parseLong(ProjectId));
+			query.setParameter("committeeid", Long.parseLong(Committeeid));
 			Object[] MileStoneLevelId = (Object[]) query.getSingleResult();
 			return MileStoneLevelId;
 	
@@ -647,8 +646,8 @@ public class PrintDaoImpl implements PrintDao {
 	public List<Object[]> BreifingMilestoneDetails(String Projectid, String committeeid) throws Exception{
 
 		Query query=manager.createNativeQuery("CALL Pfms_Milestone_Level_Prior(:projectid,:committeeid)");
-		query.setParameter("projectid", Projectid);
-		query.setParameter("committeeid", committeeid);
+		query.setParameter("projectid", Long.parseLong(Projectid));
+		query.setParameter("committeeid", Long.parseLong(committeeid));
 		return (List<Object[]>) query.getResultList();
 	}
 
@@ -657,7 +656,7 @@ public class PrintDaoImpl implements PrintDao {
 	public Object[] GetProjectInitiationdata(String projectid) throws Exception {
 		
 			Query query=manager.createNativeQuery(PROJECTINITIATIONDATA);	   
-			query.setParameter("initiationid", projectid);
+			query.setParameter("initiationid", Long.parseLong(projectid));
 			Object[] ProjectAttributes=null;
 			try {
 				ProjectAttributes=(Object[])query.getSingleResult();	
@@ -675,7 +674,7 @@ public class PrintDaoImpl implements PrintDao {
 	public List<Object[]> GetItemList(String projectid)throws Exception
 	{
 		Query query = manager.createNativeQuery(ITEMLIST);
-		query.setParameter("initiationid", projectid);
+		query.setParameter("initiationid", Long.parseLong(projectid));
 		return  (List<Object[]>) query.getResultList();
 	}
 	
@@ -720,7 +719,7 @@ public class PrintDaoImpl implements PrintDao {
 	public Object[] GetInitiationSanctionData(String initiationId)throws Exception
 	{
 		Query query = manager.createNativeQuery(INITIATIONSANCTIONDATA);
-		query.setParameter("initiationid", initiationId);
+		query.setParameter("initiationid", Long.parseLong(initiationId));
 		List<Object[]> list =(List<Object[]>)query.getResultList();
 		Object[] result = null;
 		if(list!=null && list.size()>0) {
@@ -733,7 +732,7 @@ public class PrintDaoImpl implements PrintDao {
 	public List<Object[]> GetCopyAddressList (String initiationId)throws Exception
 	{
 		Query query = manager.createNativeQuery(COPYADDRESSDATA);
-		query.setParameter("initiationid", initiationId);
+		query.setParameter("initiationid", Long.parseLong(initiationId));
 		List<Object[]> list =(List<Object[]>)query.getResultList();
 		return list;
 	}
@@ -742,7 +741,7 @@ public class PrintDaoImpl implements PrintDao {
 	public int DeleteCopyAddress(String initiationsancopyid) throws Exception{
 
 		Query query=manager.createNativeQuery(DELETEINITIATIONSANCOPY);
-		query.setParameter("initiationsancopyid", initiationsancopyid);
+		query.setParameter("initiationsancopyid", Long.parseLong(initiationsancopyid));
 		int count =(int)query.executeUpdate();
 		
 		return count;
@@ -853,7 +852,7 @@ public class PrintDaoImpl implements PrintDao {
 		{
 
 			Query query=manager.createNativeQuery(AGENDALIST);
-			query.setParameter("committeescheduleid", scheduleId);
+			query.setParameter("committeescheduleid", Long.parseLong(scheduleId));
 			List<Object[]> AgendaList=(List<Object[]>)query.getResultList();
 			
 			return AgendaList;
@@ -865,7 +864,7 @@ public class PrintDaoImpl implements PrintDao {
 		public List<Object[]> AgendaLinkedDocList(String scheduleid) throws Exception 
 		{
 			Query query=manager.createNativeQuery(AGENDALINKEDDOCLIST);
-			query.setParameter("scheduleid", scheduleid);
+			query.setParameter("scheduleid", Long.parseLong(scheduleid));
 			List<Object[]> AgendaLinkedDocList=(List<Object[]>)query.getResultList();
 			return AgendaLinkedDocList;
 		}
@@ -879,7 +878,7 @@ public class PrintDaoImpl implements PrintDao {
 			Query query=manager.createNativeQuery(BRIEFINGSCHEDULELIST);
 			query.setParameter("labcode", labcode );
 			query.setParameter("committeeshortname", committeeshortname );
-			query.setParameter("projectid", projectid );
+			query.setParameter("projectid", Long.parseLong(projectid));
 			List<Object[]> BriefingScheduleList=(List<Object[]>)query.getResultList();
 			return BriefingScheduleList;
 		}
@@ -890,8 +889,8 @@ public class PrintDaoImpl implements PrintDao {
 		{
 			try {
 				Query query=manager.createNativeQuery(BRIEFINGMEETINGVENUE);
-				query.setParameter("committeeid", committeeid );
-				query.setParameter("projectid", projectid );
+				query.setParameter("committeeid", Long.parseLong(committeeid));
+				query.setParameter("projectid", Long.parseLong(projectid));
 				Object[] BriefingScheduleList=(Object[])query.getSingleResult();
 				return BriefingScheduleList;
 			}catch (NoResultException e) {
@@ -904,7 +903,7 @@ public class PrintDaoImpl implements PrintDao {
 		public Object RequirementList(String intiationId) throws Exception {
 			// TODO Auto-generated method stub
 			 Query query=manager.createNativeQuery(REQLIST);
-			 query.setParameter("initiationid", intiationId);
+			 query.setParameter("initiationid", Long.parseLong(intiationId));
 			 
 			 List<Object[]> RequirementList=(List<Object[]> )query.getResultList();	
 			return RequirementList;
@@ -915,7 +914,7 @@ public class PrintDaoImpl implements PrintDao {
 		public Object headofaccountsList(String projecttypeid) throws Exception {
 			// TODO Auto-generated method stub
 				Query query =manager.createNativeQuery(HEADOFACCOUNTSLIST);
-				query.setParameter("projecttypeid",projecttypeid );
+				query.setParameter("projecttypeid", Integer.parseInt(projecttypeid));
 				List<Object[]> headofaccountsList=(List<Object[]> )query.getResultList();	
 	 
 			return headofaccountsList;
@@ -925,7 +924,7 @@ public class PrintDaoImpl implements PrintDao {
 		public List<Object[]> GetRecDecDetails(String scheduledid)throws Exception
 		{
 			 Query query=manager.createNativeQuery(GETRECDEC);
-			 query.setParameter("scheduledid", scheduledid);
+			 query.setParameter("scheduledid", Long.parseLong(scheduledid));
 			 List<Object[]> RequirementList=(List<Object[]> )query.getResultList();	
 			return RequirementList;
 		}
@@ -959,7 +958,7 @@ public class PrintDaoImpl implements PrintDao {
 		public Object[] GetRecDecData(String recdecid)throws Exception
 		{
 			 Query query=manager.createNativeQuery(GETRECDECDATA);
-			 query.setParameter("recdecid", recdecid);
+			 query.setParameter("recdecid", Long.parseLong(recdecid));
 			 Object[] result=null;
 			 List<Object[]> list=(List<Object[]> )query.getResultList();
 			 if(list!=null && list.size()>0) {
@@ -984,7 +983,7 @@ public class PrintDaoImpl implements PrintDao {
 		public Object[] GetProjectdata(String projectid)throws Exception
 		{
 			Query query=manager.createNativeQuery(PROJECTDATA);
-			 query.setParameter("ProjectId", projectid);
+			 query.setParameter("ProjectId", Long.parseLong(projectid));
 			 Object[] result=null;
 			 List<Object[]> list=(List<Object[]> )query.getResultList();
 			 if(list!=null && list.size()>0) {
@@ -1032,7 +1031,7 @@ public class PrintDaoImpl implements PrintDao {
 		public Object[] GetProjectSildedata(String projectid)throws Exception
 		{
 			Query query=manager.createNativeQuery(PROJECTSLIDEDATA);
-			 query.setParameter("projectid", projectid);
+			 query.setParameter("projectid", Long.parseLong(projectid));
 			 Object[] result=null;
 			 List<Object[]> list=(List<Object[]> )query.getResultList();
 			 if(list!=null && list.size()>0) {
@@ -1075,7 +1074,7 @@ public class PrintDaoImpl implements PrintDao {
 		public List<Object[]> getProjectSlideList(String projectid)throws Exception
 		{
 			Query query=manager.createNativeQuery(PROJECTSLIDELIST);
-			query.setParameter("projectid", projectid);
+			query.setParameter("projectid", Long.parseLong(projectid));
 			List<Object[]> RiskTypes=(List<Object[]> )query.getResultList();
 			return RiskTypes;
 		}
@@ -1084,7 +1083,7 @@ public class PrintDaoImpl implements PrintDao {
 		public List<Object[]> GetAllProjectSildedata(String projectid)throws Exception
 		{
 			Query query=manager.createNativeQuery(ALLPROJECTSLIDEDATA);
-			query.setParameter("projectid", projectid);
+			query.setParameter("projectid", Long.parseLong(projectid));
 			
 			List<Object[]> RiskTypes=(List<Object[]> )query.getResultList();
 			return RiskTypes;
@@ -1095,7 +1094,7 @@ public class PrintDaoImpl implements PrintDao {
 		public List<Object[]> GetFreezingHistory(String projectid)throws Exception
 		{
 			Query query=manager.createNativeQuery(GetFreezingHistoryQuery);
-			query.setParameter("projectid", projectid);
+			query.setParameter("projectid", Long.parseLong(projectid));
 			
 			List<Object[]> RiskTypes=(List<Object[]> )query.getResultList();
 			return RiskTypes;
@@ -1106,7 +1105,7 @@ public class PrintDaoImpl implements PrintDao {
 		public List<Object[]> GetTodayFreezedSlidedata(String projectid)throws Exception
 		{
 			Query query=manager.createNativeQuery(TODATFREEZEDSLIDEDATA);
-			query.setParameter("projectid", projectid);
+			query.setParameter("projectid", Long.parseLong(projectid));
 			List<Object[]> RiskTypes=(List<Object[]> )query.getResultList();
 			return RiskTypes;
 		}
@@ -1115,14 +1114,14 @@ public class PrintDaoImpl implements PrintDao {
 		public List<Object[]> CostDetailsListSummary(String initiationId) throws Exception {
 			// TODO Auto-generated method stub
 			Query query = manager.createNativeQuery(COSTLIST);
-			query.setParameter("initiationId", initiationId);
+			query.setParameter("initiationId", Long.parseLong(initiationId));
 			return (List<Object[]>)query.getResultList();
 		}	
 		
 	
 		@Override
 		public int ProjectImageDelete(String techImagesId) throws Exception {
-			TechImages ExistingTechImages = manager.find(TechImages.class,Long.parseLong(techImagesId));
+			TechImages ExistingTechImages = manager.find(TechImages.class, Long.parseLong(techImagesId));
 			if(ExistingTechImages != null) {
 				ExistingTechImages.setIsActive(0);
 				return 1;
@@ -1138,7 +1137,7 @@ public class PrintDaoImpl implements PrintDao {
 		public List<Object[]> totalProjecMilestones(String projectid) throws Exception {
 			List<Object[]> TotalMilestones=new ArrayList<Object[]>();
 			Query query = manager.createNativeQuery("CALL pfms_total_project_milestones(:projectid);");
-			query.setParameter("projectid", projectid);
+			query.setParameter("projectid", Long.parseLong(projectid));
 			try {
 				TotalMilestones= query.getResultList();
 			}catch (Exception e) {
@@ -1171,7 +1170,7 @@ public class PrintDaoImpl implements PrintDao {
 				updateQuery="UPDATE milestone_activity_level set "+point+"='N' where ActivityId=:ActivityId";
 			}
 			Query query=manager.createNativeQuery(updateQuery);
-			query.setParameter("ActivityId", activityid);
+			query.setParameter("ActivityId", Long.parseLong(activityid));
 			int count=query.executeUpdate();
 			return count;
 		}
@@ -1181,7 +1180,7 @@ public class PrintDaoImpl implements PrintDao {
 			
 				Query query = manager.createNativeQuery(DATAUPDATE);
 				query.setParameter("presentationName", presentationName);
-				query.setParameter("scheduleid", scheduleid);
+				query.setParameter("scheduleid", Long.parseLong(scheduleid));
 				return (int)query.executeUpdate();
 			}
 			
@@ -1191,7 +1190,7 @@ public class PrintDaoImpl implements PrintDao {
 			
 				Query query = manager.createNativeQuery(MOMUPDATE);
 				query.setParameter("presentationName", presentationName);
-				query.setParameter("scheduleid", scheduleid);
+				query.setParameter("scheduleid", Long.parseLong(scheduleid));
 				return (int)query.executeUpdate();
 			}
 			
@@ -1201,7 +1200,7 @@ public class PrintDaoImpl implements PrintDao {
 			@Override
 			public List<Object[]> getEnvisagedDemandList(String projectid) throws Exception {
 				Query query = manager.createNativeQuery(GETENVILIST);
-				query.setParameter("projectid", projectid);
+				query.setParameter("projectid", Integer.parseInt(projectid));
 				try {
 					return query.getResultList();
 				}catch (Exception e) {
@@ -1285,7 +1284,7 @@ public class PrintDaoImpl implements PrintDao {
 			public Object[] getDHId(String projectid) throws Exception {
 				try {
 				Query query=manager.createNativeQuery(GETDHID);
-				query.setParameter("projectid", projectid)	;	
+				query.setParameter("projectid", Long.parseLong(projectid));	
 				return (Object[])query.getSingleResult();	
 				}catch (Exception e) {
 					e.printStackTrace();
@@ -1298,7 +1297,7 @@ public class PrintDaoImpl implements PrintDao {
 			public Object getGHId(String projectid) throws Exception {
 				try {
 					Query query=manager.createNativeQuery(GETGHID);
-					query.setParameter("projectid", projectid)	;	
+					query.setParameter("projectid", Long.parseLong(projectid));	
 					return (Object[])query.getSingleResult();	
 					}catch (Exception e) {
 						e.printStackTrace();
@@ -1335,8 +1334,8 @@ public class PrintDaoImpl implements PrintDao {
 				Query query=manager.createNativeQuery(BRIEFINGSCHEDULEFWDAPPROVEDLIST);
 				query.setParameter("labCode", labCode );
 				query.setParameter("committeecode", committeecode );
-				query.setParameter("projectid", projectid );
-				query.setParameter("empId", empId );
+				query.setParameter("projectid", Long.parseLong(projectid));
+				query.setParameter("empId", Long.parseLong(empId) );
 				List<Object[]> BriefingScheduleList=(List<Object[]>)query.getResultList();
 				return BriefingScheduleList;
 			}
@@ -1345,7 +1344,7 @@ public class PrintDaoImpl implements PrintDao {
 			public Object[] getBriefingData(String sheduleId) throws Exception {
 				try {
 					Query query=manager.createNativeQuery(GETBRIEFINGDATA);
-					query.setParameter("sheduleId", sheduleId)	;	
+					query.setParameter("sheduleId", Long.parseLong(sheduleId));
 					return (Object[])query.getSingleResult();	
 					}catch (Exception e) {
 						e.printStackTrace();
@@ -1360,7 +1359,7 @@ public class PrintDaoImpl implements PrintDao {
 				logger.info(new Date() + "Inside DAO updateBreifingStatus");
 				try {
 				Query query=manager.createNativeQuery(GETFWDUSERID);
-				query.setParameter("sheduleId", sheduleId);
+				query.setParameter("sheduleId", Long.parseLong(sheduleId));
 				
 				return (Object[]) query.getSingleResult();
 				} catch (Exception e) {
@@ -1375,7 +1374,7 @@ public class PrintDaoImpl implements PrintDao {
 				logger.info(new Date() + "Inside DAO getEmpName");
 				try {
 					Query query=manager.createNativeQuery(GETEMPNAME);
-					query.setParameter("empId", empId);
+					query.setParameter("empId", Long.parseLong(empId));
 					return query.getSingleResult().toString();
 					
 				} catch (Exception e) {
@@ -1389,7 +1388,7 @@ public class PrintDaoImpl implements PrintDao {
 			@Override
 			public List<Object[]> getBriefingRemarks(String sheduleId) throws Exception {
 				Query query=manager.createNativeQuery(GETBRIEFINGREMARKS);
-				query.setParameter("sheduleId", sheduleId);
+				query.setParameter("sheduleId", Long.parseLong(sheduleId));
 				List<Object[]> remarksList=(List<Object[]>)query.getResultList();	
 				return remarksList;
 			}
@@ -1399,8 +1398,8 @@ public class PrintDaoImpl implements PrintDao {
 		public List<Object[]> LastPMRCActions(String projectid, String committeeid, String date) throws Exception {
 			// TODO Auto-generated method stub
 			Query query=manager.createNativeQuery("CALL Last_PMRC_Actions_List_meeting(:projectid,:committeeid,:date);");	   
-			query.setParameter("projectid", projectid);
-			query.setParameter("committeeid", committeeid);
+			query.setParameter("projectid", Long.parseLong(projectid));
+			query.setParameter("committeeid", Long.parseLong(committeeid));
 			query.setParameter("date", date);
 			//query.setParameter("lastpmrcdate", lastpmrcdate);
 			List<Object[]> LastPMRCActions=(List<Object[]>)query.getResultList();			
@@ -1486,7 +1485,7 @@ public class PrintDaoImpl implements PrintDao {
 		public long addOverallFinace(List<ProjectOverallFinance> list, String projectid) {
 			String sql ="UPDATE pfms_overall_finance SET isactive='0' ,ModifiedBy =:ModifiedBy , ModifiedDate=:ModifiedDate WHERE ProjectId=:ProjectId";
 			Query query = manager.createNativeQuery(sql);
-			query.setParameter("ProjectId", projectid);
+			query.setParameter("ProjectId", Long.parseLong(projectid));
 			query.setParameter("ModifiedBy", list.get(0).getCreatedBy());
 			query.setParameter("ModifiedDate", LocalDate.now().toString());
 			query.executeUpdate();
@@ -1516,7 +1515,7 @@ public class PrintDaoImpl implements PrintDao {
 		@Override
 		public List<Object[]> getrOverallFinance(String proid) throws Exception {
 			Query query = manager.createNativeQuery(OVERALLFINANCE);
-			query.setParameter("projectid", proid);
+			query.setParameter("projectid", Long.parseLong(proid));
 			
 			return (List<Object[]>)query.getResultList();
 		}
@@ -1527,7 +1526,7 @@ public class PrintDaoImpl implements PrintDao {
 			
 			try {
 			Query query = manager.createNativeQuery(OTHERMEETINGLIST);
-			query.setParameter("projectid", projectid);
+			query.setParameter("projectid", Long.parseLong(projectid));
 			
 			return (List<Object[]>)query.getResultList();
 			}catch (Exception e) {
