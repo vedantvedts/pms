@@ -35,6 +35,7 @@
 <body>
 	<%
 		List<Object[]> msProcurementStatusList = (List<Object[]>)request.getAttribute("msProcurementStatusList");
+		List<Object[]> procurementStatusList = (List<Object[]>)request.getAttribute("procurementStatusList");
 		Object[] projectDetails = (Object[])request.getAttribute("projectDetails");
 		String projectId = (String)request.getParameter("ProjectId");
 	%>
@@ -79,7 +80,8 @@
 					 	<tr>
 							<th style="width: 3%;">SN</th>
 							<th style="width: 7%;">Demand No.</th>
-							<th style="width: 25%;">Task Name</th>
+							<th style="width: 20%;">Task Name</th>
+							<th style="width: 5%;">Est Cost <br> (In Lakhs)</th>
 							<%for(int demandStage=0; demandStage<=25; demandStage++) {%>
 								<th style="width: 2.5%;"><%=demandStage %></th>
 							<%} %>
@@ -94,6 +96,12 @@
 								<td class="center"><%=++slno %></td>
 								<td class="center"><%=obj[1] %></td>
 								<td ><%=obj[3] %></td>
+								<td class="right">
+									<%
+									Object[] proc = procurementStatusList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj[1].toString())).findFirst().orElse(null);
+									%>
+									<%=proc!=null && proc[5]!=null?proc[5]:"-" %>
+								</td>
 								<%for(int demandStage=0; demandStage<=25; demandStage++) {%>
 									<td <%if(obj[2]!=null && demandStage<=(Integer.parseInt(obj[2].toString())) ) {%> 
 											style="background-color: green;color: white" class="center" 

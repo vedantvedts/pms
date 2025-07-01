@@ -18,6 +18,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -296,7 +297,184 @@ public class MilestoneServiceImpl implements MilestoneService {
 			dao.RevMainUpdate(dto.getActivityId(), dto.getRevisionNo());
      	}
 		
+		
+		
+		if(Integer.parseInt(dto.getRevisionNo())>=1) {
+		System.out.println(dto.getActivityId()+"-----dto.getActivityId()");
+		MileEditDto dto1 = new MileEditDto();
+		dto1.setMilestoneActivityId(dto.getActivityId());
+		
+		updateMilestoneLevelProgress(dto1);
+		}
+		
+		
+		
+		
 		return rev;
+	}
+
+	@Async
+	private void updateMilestoneLevelProgress(MileEditDto dto)  {
+		
+		try {
+			System.out.println(dto.getMilestoneActivityId()+"-----dto.getActivityId()");
+		List<Object[]> BaselineMain=dao.BaseLineMain(dto.getMilestoneActivityId());
+		double TotalA=0.00;
+		for(Object[] objMain:BaselineMain) {
+			List<Object[]> BaselineA=dao.BaseLineLevel(objMain[0].toString(),"1");
+			for(Object[] objA:BaselineA) {
+				List<Object[]> BaselineB=dao.BaseLineLevel(objA[0].toString(),"2");
+				for(Object[] objB:BaselineB) {
+					List<Object[]> BaselineC=dao.BaseLineLevel(objB[0].toString(),"3");
+					
+						for(Object[] objC:BaselineC) {
+								List<Object[]> BaselineD=dao.BaseLineLevel(objC[0].toString(),"4");
+								for(Object[] objD:BaselineD) {
+									List<Object[]> BaselineE=dao.BaseLineLevel(objD[0].toString(),"5");
+									if(BaselineE.size()>0) {
+										double ProgressD=0.00;
+										for(Object[] objE:BaselineE){
+										ProgressD+=(Double.parseDouble(objE[3].toString())/100)*Double.parseDouble(objE[2].toString());
+										}
+										// status for D
+										String StatusD=objD[5].toString();
+										
+		                                 // dao D update
+										dao.ProgressLevel(objD[0].toString(), StatusD,(int)Math.round(ProgressD),dto);
+										
+									}
+									
+									}
+								
+							
+							
+						}	
+					
+					}
+					
+					
+				
+				}
+			
+		
+		}
+		//C
+		for(Object[] objMain:BaselineMain) {
+			List<Object[]> BaselineA=dao.BaseLineLevel(dto.getMilestoneActivityId(),"1");
+			for(Object[] objA:BaselineA) {
+				List<Object[]> BaselineB=dao.BaseLineLevel(objA[0].toString(),"2");
+				for(Object[] objB:BaselineB) {
+					List<Object[]> BaselineC=dao.BaseLineLevel(objB[0].toString(),"3");
+					for(Object[] objC:BaselineC) {
+						List<Object[]> BaselineD=dao.BaseLineLevel(objC[0].toString(),"4");
+				if(BaselineD.size()>0) {
+					double ProgressC=0.00;
+				for(Object[] objD:BaselineD) {
+					
+						
+						double ED=(Double.parseDouble(objD[3].toString())/100)*Double.parseDouble(objD[2].toString());
+						ProgressC+=ED;
+						
+						
+					
+					}
+				
+				// status for C
+				String StatusC=objC[5].toString();
+				
+				      dao.ProgressLevel(objC[0].toString(), StatusC,(int)Math.round(ProgressC),dto);
+				      
+                     // dao C update
+				}
+					}
+				}
+				}
+			
+		
+		}
+		//B
+		for(Object[] objMain:BaselineMain) {
+			List<Object[]> BaselineA=dao.BaseLineLevel(dto.getMilestoneActivityId(),"1");
+			for(Object[] objA:BaselineA) {
+				List<Object[]> BaselineB=dao.BaseLineLevel(objA[0].toString(),"2");
+				for(Object[] objB:BaselineB) {
+					List<Object[]> BaselineC=dao.BaseLineLevel(objB[0].toString(),"3");
+				if(BaselineC.size()>0) {
+					double ProgressB=0.00;
+				for(Object[] objC:BaselineC) {
+					
+						
+						double EC=(Double.parseDouble(objC[3].toString())/100)*Double.parseDouble(objC[2].toString());
+						ProgressB+=EC;
+						
+						
+					
+					}
+				
+				// status for B
+				String StatusB=objB[5].toString();
+				
+				dao.ProgressLevel(objB[0].toString(), StatusB,(int)Math.round(ProgressB),dto);
+				      
+                     // dao B update
+				}
+				
+				}
+				}
+			
+		
+		}
+		//A
+		for(Object[] objMain:BaselineMain) {
+			List<Object[]> BaselineA=dao.BaseLineLevel(dto.getMilestoneActivityId(),"1");
+			for(Object[] objA:BaselineA) {
+				List<Object[]> BaselineB=dao.BaseLineLevel(objA[0].toString(),"2");
+				if(BaselineB.size()>0) {
+					double ProgressA=0.00;
+				for(Object[] objB:BaselineB) {
+					
+						double EB=(Double.parseDouble(objB[3].toString())/100)*Double.parseDouble(objB[2].toString());
+						
+						ProgressA+=EB;
+						
+						
+					
+					}
+				
+				// status for A
+				String StatusA=objA[5].toString();
+				
+				      dao.ProgressLevel(objA[0].toString(), StatusA,(int)Math.round(ProgressA),dto);
+				      
+                     // dao A update
+				}
+				
+				
+				}
+			
+		
+		}
+		for(Object[] objMain:BaselineMain) {
+			List<Object[]> BaselineA=dao.BaseLineLevel(dto.getMilestoneActivityId(),"1");
+			for(Object[] objA:BaselineA) {
+					TotalA+=(Double.parseDouble(objA[3].toString())/100)*Double.parseDouble(objA[2].toString());
+				}
+			
+			// status for Main
+			
+			String StatusMain=objMain[5].toString();
+			
+			String DateOfCompletion = objMain[6]!=null?objMain[6].toString():null;
+		
+			dao.ProgressMain(dto.getMilestoneActivityId(), StatusMain,(int)Math.round(TotalA), DateOfCompletion,dto);
+			// dao upadate main
+		}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
 	}
 
 	@Override
@@ -1789,4 +1967,17 @@ public class MilestoneServiceImpl implements MilestoneService {
 			return ret;
 		}
 	}
+	
+	@Override
+	public List<Object[]> getAllMilestoneActivityList() throws Exception {
+		
+		return dao.getAllMilestoneActivityList();
+	}
+	
+	@Override
+	public List<Object[]> getAllMilestoneActivityLevelList() throws Exception {
+
+		return dao.getAllMilestoneActivityLevelList();
+	}
+	
 }

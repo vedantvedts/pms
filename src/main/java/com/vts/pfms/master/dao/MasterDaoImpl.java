@@ -5,32 +5,29 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
-import jakarta.persistence.TypedQuery;
-import jakarta.transaction.Transactional;
-
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.committee.model.PfmsEmpRoles;
-import com.vts.pfms.documents.model.IGIInterface;
 import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.model.DivisionEmployee;
 import com.vts.pfms.master.model.DivisionGroup;
 import com.vts.pfms.master.model.DivisionTd;
 import com.vts.pfms.master.model.Employee;
+import com.vts.pfms.master.model.HolidayMaster;
 import com.vts.pfms.master.model.IndustryPartner;
 import com.vts.pfms.master.model.IndustryPartnerRep;
-import com.vts.pfms.master.model.HolidayMaster;
 import com.vts.pfms.master.model.LabPmsEmployee;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
+import com.vts.pfms.master.model.PfmsFeedbackTrans;
 import com.vts.pfms.model.LabMaster;
-import com.vts.pfms.project.model.PfmsInititationRequirement;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 
 @Transactional
 @Repository
@@ -574,8 +571,7 @@ public class MasterDaoImpl implements MasterDao {
 		return FeedbackList;
 	}
 
-	private static final String FEEDBACKCONTENT = "SELECT a.feedbackid,b.empname,a.createddate,a.feedback FROM pfms_feedback a,employee b WHERE a.isactive='1' AND a.empid=b.empid AND feedbackid=:feedbackid";
-
+	private static final String FEEDBACKCONTENT = "SELECT a.feedbackid,b.empname,a.createddate,a.feedback,a.EmpId, a.Status FROM pfms_feedback a,employee b WHERE a.isactive='1' AND a.empid=b.empid AND feedbackid=:feedbackid";
 	@Override
 	public Object[] FeedbackContent(String feedbackid)throws Exception
 	{		
@@ -583,25 +579,7 @@ public class MasterDaoImpl implements MasterDao {
 		query.setParameter("feedbackid", Long.parseLong(feedbackid));
 		return  (Object[])query.getSingleResult();
 	}
-
-	@Override
-	public int CloseFeedback(String feedbackId , String remarks , String username)throws Exception
-	{	
-		PfmsFeedback pfmsFeedback = manager.find(PfmsFeedback.class, Long.parseLong(feedbackId));
-		if(pfmsFeedback == null) {
-			return 0;
-		}
-		try {
-			pfmsFeedback.setRemarks(remarks);
-			pfmsFeedback.setStatus("C");
-			pfmsFeedback.setModifiedBy(username);
-			pfmsFeedback.setModifiedDate(sdf1.format(new Date()));
-			return 1;
-		}catch(Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
-	}
+	
 	private static final String ATTACHLIST="SELECT a.feedbackid, a.FeedbackAttachId ,a.path , a.filename  FROM pfms_feedback_attach a , pfms_feedback b WHERE a.feedbackid=b.feedbackid AND a.isactive=1";
 	@Override
 	public List<Object[]> GetfeedbackAttch()throws Exception
@@ -610,6 +588,17 @@ public class MasterDaoImpl implements MasterDao {
 		List<Object[]> FeedbackList = (List<Object[]>) query.getResultList();
 		return FeedbackList;
 	}
+	
+	@Override
+	public PfmsFeedback getPfmsFeedbackById(String feedbackId) {
+		try {
+			return manager.find(PfmsFeedback.class, Long.parseLong(feedbackId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	private static final String USERATTCHFEEDBACK="SELECT a.feedbackid,a.FeedbackAttachId ,a.path , a.filename  FROM pfms_feedback_attach a , pfms_feedback b WHERE a.feedbackid=b.feedbackid AND b.empid=:empid AND a.isactive=1";
 	@Override
 	public List<Object[]> GetfeedbackAttchForUser(String empid)throws Exception
@@ -1024,6 +1013,30 @@ public class MasterDaoImpl implements MasterDao {
 			return (List<Object[]>)query.getResultList();
 		}
 		
+		private static final String GETFEEDBACKTRANSACTIONBYFEEDBACKID = "SELECT a.FeedbackTransId, a.FeedbackId, a.Comments, a.ActionBy, a.ActionDate, CONCAT(IFNULL(CONCAT(b.Title,' '),(IFNULL(CONCAT(b.Salutation, ' '), ''))), b.EmpName) AS 'EmpName', c.Designation FROM pfms_feedback_trans a LEFT JOIN employee b ON a.ActionBy = b.EmpId LEFT JOIN employee_desig c ON b.DesigId = c.DesigId WHERE a.FeedbackId=:FeedbackId";
+		@Override
+		public List<Object[]> getFeedbackTransByFeedbackId(String feedbackId)throws Exception
+		{
+			try {
+				Query query=manager.createNativeQuery(GETFEEDBACKTRANSACTIONBYFEEDBACKID);
+				query.setParameter("FeedbackId", Long.parseLong(feedbackId));
+				return (List<Object[]>)query.getResultList();
+			}catch (Exception e) {
+				e.printStackTrace();
+				return new ArrayList<Object[]>();
+			}
+
+		}
 		
-		
+		@Override
+		public long addPfmsFeedbackTrans(PfmsFeedbackTrans transaction) throws Exception {
+			try {
+				manager.persist(transaction);
+				manager.flush();
+				return transaction.getFeedbackTransId();
+			}catch (Exception e) {
+				e.printStackTrace();
+				return 0;
+			}
+		}
 }

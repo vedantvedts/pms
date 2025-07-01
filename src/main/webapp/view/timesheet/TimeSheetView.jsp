@@ -99,7 +99,7 @@ font-weight: bold;
 }
 
 .table-wrapper {
-    max-height: 800px; /* Set the max height for the table wrapper */
+    max-height: 580px; /* Set the max height for the table wrapper */
     overflow-y: auto; /* Enable vertical scrolling */
     overflow-x: hidden; /* Enable vertical scrolling */
 }
@@ -275,6 +275,13 @@ font-weight: bold;
     height: 200px;
 }
 
+.select2-container {
+	width: 100% !important;
+}
+
+.empIdPdiv > .select2-container {
+	width: 110% !important;
+}
 </style> 
 </head>
 <body>
@@ -302,12 +309,18 @@ LocalDate endOfWeek = localdate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATU
 
 String empId = (String)request.getAttribute("empId");
 String empIdW = (String)request.getAttribute("empIdW");
+String empIdP = (String)request.getAttribute("empIdP");
+String fromDate = (String)request.getAttribute("fromDate");
+String toDate = (String)request.getAttribute("toDate");
 
 String activityDate = (String)request.getAttribute("activityDate");
 String activityDateSql = (String)request.getAttribute("activityDateSql");
 
 List<Object[]> employeeNewTimeSheetList = (List<Object[]>)request.getAttribute("employeeNewTimeSheetList");
 Map<String, List<Object[]>> timeSheetToListMap = employeeNewTimeSheetList!=null && employeeNewTimeSheetList.size()>0?employeeNewTimeSheetList.stream()
+		  										  .collect(Collectors.groupingBy(array -> array[0] + "", LinkedHashMap::new, Collectors.toList())) : new HashMap<>();
+List<Object[]> employeeNewTimeSheetListP = (List<Object[]>)request.getAttribute("employeeNewTimeSheetListP");
+Map<String, List<Object[]>> timeSheetToListMapP = employeeNewTimeSheetListP!=null && employeeNewTimeSheetListP.size()>0?employeeNewTimeSheetListP.stream()
 		  										  .collect(Collectors.groupingBy(array -> array[0] + "", LinkedHashMap::new, Collectors.toList())) : new HashMap<>();
 List<Object[]> empAllTimeSheetList = (List<Object[]>)request.getAttribute("empAllTimeSheetList");
 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
@@ -317,6 +330,9 @@ String viewFlag = (String)request.getAttribute("viewFlag");
 viewFlag = viewFlag == null? "W":viewFlag;
 
 FormatConverter fc = new FormatConverter();
+
+String fromDateR = fc.sdfTordf(fromDate);
+String toDateR = fc.sdfTordf(toDate);
 %>
 
 	<% String ses=(String)request.getParameter("result");
@@ -359,14 +375,22 @@ FormatConverter fc = new FormatConverter();
 					<div class="row" style="margin: 0.5rem;">
 						<div class="col-12">
 		         			<ul class="nav nav-pills" id="pills-tab" role="tablist" style="background-color: #E1E5E8;padding:0px;">
-				  				<li class="nav-item" style="width: 50%;"  >
-				    				<div class="nav-link active" style="text-align: center;" id="pills-tab-1" data-toggle="pill" data-target="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">
+				  				<li class="nav-item" style="width: 33%;"  >
+				    				<div class="nav-link <% if(viewFlag!=null && viewFlag.equalsIgnoreCase("W")){%>active<%} %>" style="text-align: center;" id="pills-tab-1" data-toggle="pill" data-target="#tab-1" role="tab" aria-controls="tab-1" 
+				    				aria-selected="<% if(viewFlag!=null && viewFlag.equalsIgnoreCase("W")){%>true<%} else{%>false<%}%>">
 					   					<span>Weekly View</span> 
 				    				</div>
 				  				</li>
-				  				<li class="nav-item"  style="width: 50%;">
-				    				<div class="nav-link" style="text-align: center;" id="pills-tab-2" data-toggle="pill" data-target="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">
+				  				<li class="nav-item"  style="width: 34%;">
+				    				<div class="nav-link <% if(viewFlag!=null && viewFlag.equalsIgnoreCase("M")){%>active<%} %>" style="text-align: center;" id="pills-tab-2" data-toggle="pill" data-target="#tab-2" role="tab" aria-controls="tab-2" 
+				    				aria-selected="<% if(viewFlag!=null && viewFlag.equalsIgnoreCase("M")){%>true<%} else{%>false<%}%>">
 				    	 				<span>Monthly View</span> 
+				    				</div>
+				  				</li>
+				  				<li class="nav-item"  style="width: 33%;">
+				    				<div class="nav-link <% if(viewFlag!=null && viewFlag.equalsIgnoreCase("P")){%>active<%} %>" style="text-align: center;" id="pills-tab-3" data-toggle="pill" data-target="#tab-3" role="tab" aria-controls="tab-3" 
+				    				aria-selected="<% if(viewFlag!=null && viewFlag.equalsIgnoreCase("P")){%>true<%} else{%>false<%}%>">
+				    	 				<span>Periodic View</span> 
 				    				</div>
 				  				</li>
 							</ul>
@@ -375,7 +399,7 @@ FormatConverter fc = new FormatConverter();
 					<div class="card-body">
 						<div class="tab-content" id="pills-tabContent">
        			
-            				<div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="pills-tab-1">
+            				<div class="tab-pane fade<% if(viewFlag!=null && viewFlag.equalsIgnoreCase("W")){%> show active<%} %>" id="tab-1" role="tabpanel" aria-labelledby="pills-tab-1">
             					<div class="row mb-3">
 									<div class="col-md-6">
 									</div>
@@ -383,6 +407,11 @@ FormatConverter fc = new FormatConverter();
 										<form action="TimeSheetView.htm" method="get">
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 											<input type="hidden" name="viewFlag" value="W">
+											<input type="hidden" name="empId" value="<%=empId%>">
+											<input type="hidden" name="activityDate" value="<%=activityDate%>">
+											<input type="hidden" name="empIdP" value="<%=empIdP%>">
+											<input type="hidden" name="fromDate" value="<%=fromDateR%>">
+											<input type="hidden" name="toDate" value="<%=toDateR%>">
 											<table style="width: 100%;padding: 3px;">
 												<tr>
 													<td width="10%" class="right">
@@ -419,28 +448,6 @@ FormatConverter fc = new FormatConverter();
 													</td>
 												</tr>
 											</table>
-											
-											<%-- <div class="row right" style="margin-top: -0.5rem;">
-												<div class="col-md-1"></div>
-												<div class="col-md-1">
-													<label class="form-label mt-2">Date: </label>
-												</div>
-												<div class="col-md-2">
-													<input type="text" class="form-control " name="activityWeekDate" id="activityWeekDate" value="<%=activityWeekDate%>" onchange="this.form.submit()">
-												</div>
-												<div class="col-md-2">
-													<label class="form-label mt-2">Start Date: </label>
-												</div>
-												<div class="col-md-2">
-													<input type="text" class="form-control " id="activityWeekStartDate" value="<%=fc.SqlToRegularDate(startOfWeek.toString()) %>" readonly>
-												</div>
-												<div class="col-md-2">
-													<label class="form-label mt-2">End Date: </label>
-												</div>
-												<div class="col-md-2">
-													<input type="text" class="form-control " id="activityWeekEndDate" value="<%=fc.SqlToRegularDate(endOfWeek.toString()) %>" readonly>
-												</div>
-											</div> --%>
 											
 										</form>
 									</div>
@@ -620,7 +627,8 @@ FormatConverter fc = new FormatConverter();
 									</table>
 								</div>
 							</div>
-							<div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="pills-tab-2">
+							
+							<div class="tab-pane fade <% if(viewFlag!=null && viewFlag.equalsIgnoreCase("M")){%> show active<%} %>" id="tab-2" role="tabpanel" aria-labelledby="pills-tab-2">
 								<div class="calendar-container">
 								    <div class="year-container">
 								        <button class="nav-btn" id="prev-year">
@@ -647,12 +655,16 @@ FormatConverter fc = new FormatConverter();
 											<%Object[] emp = employeeList!=null && employeeList.size()>0?employeeList.stream()
 															.filter(e -> empId.equalsIgnoreCase(e[0]+"")).findFirst().orElse(null):null; %>
 											<b class="ml-2">Report</b> of <b><%=emp!=null?((emp[1]!=null?emp[1]:(emp[2]!=null?emp[2]:""))+""+emp[5]+", "+emp[6]):"-" %></b>
-											<%-- from <b><%=fc.sdfTordf(fromDate) %></b> to <b><%=fc.sdfTordf(toDate) %></b> --%>
 										</div>
 										<div class="col-md-6">
 											<form action="TimeSheetView.htm" method="get">
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 												<input type="hidden" name="viewFlag" value="M">
+												<input type="hidden" name="empIdW" value="<%=empIdW%>">
+												<input type="hidden" name="activityWeekDate" value="<%=activityWeekDate%>">
+												<input type="hidden" name="empIdP" value="<%=empIdP%>">
+												<input type="hidden" name="fromDate" value="<%=fromDateR%>">
+												<input type="hidden" name="toDate" value="<%=toDateR%>">
 												<div class="row right" style="margin-top: -0.5rem;">
 													<div class="col-md-3"></div>
 													<div class="col-md-2">
@@ -679,18 +691,6 @@ FormatConverter fc = new FormatConverter();
 													</div>
 													<input type="hidden" name="activityDate" id ="activityDate" value="<%=activityDate%>">
 													<input type="hidden" name="empName" value="<%=emp!=null?((emp[1]!=null?emp[1]:(emp[2]!=null?emp[2]:""))+""+emp[5]+", "+emp[6]):"-" %>">
-													<%-- <div class="col-md-1">
-														<label class="form-label mt-2">From: </label>
-													</div>
-													<div class="col-md-2">
-														<input type="text" class="form-control " name="fromDate" id="fromDate" value="<%=fc.sdfTordf(fromDate) %>" onchange="this.form.submit()" >
-													</div>
-													<div class="col-md-1">
-														<label class="form-label mt-2">To: </label>
-													</div>
-													<div class="col-md-2">
-														<input type="text" class="form-control " name="toDate" id="toDate" value="<%=fc.sdfTordf(toDate)%>" onchange="this.form.submit()">
-													</div> --%>
 												</div>
 											</form>
 										</div>
@@ -744,6 +744,116 @@ FormatConverter fc = new FormatConverter();
 									</table>
 								</div>		
 			  				</div>	
+			  				
+			  				<div class="tab-pane fade <% if(viewFlag!=null && viewFlag.equalsIgnoreCase("P")){%> show active<%} %>" id="tab-3" role="tabpanel" aria-labelledby="pills-tab-3">
+								
+								<div class="form-group">
+				  					<div class="row mb-3 mt-2">
+										<div class="col-md-5">
+											<%Object[] emp2 = employeeList!=null && employeeList.size()>0?employeeList.stream()
+															.filter(e -> empIdP.equalsIgnoreCase(e[0]+"")).findFirst().orElse(null):null; %>
+											<b class="ml-2">Report</b> of <b><%=emp2!=null?((emp2[1]!=null?emp2[1]:(emp2[2]!=null?emp2[2]:""))+""+emp2[5]+", "+emp2[6]):"-" %></b>
+										</div>
+										<div class="col-md-7">
+											<form action="TimeSheetView.htm" method="get">
+												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+												<input type="hidden" name="viewFlag" value="P">
+												<input type="hidden" name="empId" value="<%=empId%>">
+												<input type="hidden" name="empIdW" value="<%=empIdW%>">
+												<input type="hidden" name="activityWeekDate" value="<%=activityWeekDate%>">
+												<div class="row" style="margin-top: -0.5rem;">
+													<div class="col-md-1">
+														<label class="form-label mt-2">Employee: </label>
+													</div>
+													<div class="col-md-3 right empIdPdiv">
+														<select class="form-control empIdP selectdee" name="empIdP" onchange="this.form.submit()" >
+															<option selected disabled>---Select---</option>
+															<%if(employeeList!=null && employeeList.size()>0) {
+																for(Object[] obj : employeeList) {%>
+																	<option value="<%=obj[0]%>" <%if(empIdP.equalsIgnoreCase(obj[0]+"")) {%>selected<%} %> >
+																		<%=(obj[1]!=null?obj[1]:(obj[2]!=null?obj[2]:""))+""+obj[5]+", "+obj[6] %>
+																	</option>
+															<%} }%>
+														</select>
+													</div>
+													<input type="hidden" name="activityDate" value="<%=activityDate%>">
+													<input type="hidden" name="empName" value="<%=emp2!=null?((emp2[1]!=null?emp2[1]:(emp2[2]!=null?emp2[2]:""))+""+emp2[5]+", "+emp2[6]):"-" %>">
+													<div class="col-md-1 right">
+														<label class="form-label mt-2">From: </label>
+													</div>
+													<div class="col-md-2">
+														<input type="text" class="form-control " name="fromDate" id="fromDate" value="<%=fromDateR %>" onchange="this.form.submit()" >
+													</div>
+													<div class="col-md-1 right">
+														<label class="form-label mt-2">To: </label>
+													</div>
+													<div class="col-md-2">
+														<input type="text" class="form-control " name="toDate" id="toDate" value="<%=toDateR %>" onchange="this.form.submit()">
+													</div>
+													<div class="col-md-2 left">
+														<button type="button" class="btn btn-sm" formnovalidate="formnovalidate" onclick="downloadPeriodicReport()" data-toggle="tooltip" data-placement="top" title="PDF Report" style="background-color: #fff">
+															<i style="color: #cc0000;font-size: 24px;" class="fa fa-file-pdf-o" aria-hidden="true"></i>
+													  	</button>
+													  	<button type="submit" class="btn btn-sm" name="Action" value="GenerateExcel" formaction="WorkRegisterMonthlyViewExcel.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="Excel Report" style="background-color: #fff">
+															<i style="color: #009900;font-size: 24px;" class="fa fa-file-excel-o" aria-hidden="true"></i>
+													  	</button>
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+								
+								<div class="table-wrapper table-responsive">
+									<!-- <input type="text" id="searchBar2" class="search-bar form-control" placeholder="Search..." style="float: right;width: auto;" />
+       								<br> -->
+									<table class="table activitytable" id="dataTable3"> 
+			                        	<thead style="">
+			                        		<tr>
+												<th width="5%">SN</th>
+												<th width="7%">Date</th>
+												<th width="7%">Activity No</th>
+												<th width="10%">Activity Type</th>
+												<th width="10%">Project</th>
+												<th width="15%">Assigner</th>
+												<th width="10%">Keywords</th>
+												<th width="21%">Work Done</th>
+												<th width="10%">Work Done on</th>
+											</tr>
+										</thead>
+										<tbody>	
+											<% if (timeSheetToListMapP!=null && timeSheetToListMapP.size() > 0) {
+												int slno = 0;String key="";
+												for (Map.Entry<String, List<Object[]>> map : timeSheetToListMapP.entrySet()) {
+			                  							
+			                  							List<Object[]> values = map.getValue();
+			                  							int i=0;
+			                  							for (Object[] obj : values) {
+											%>
+												<tr>
+													<%if(i==0) {%>
+														<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=++slno%></td>
+											    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=fc.sdfTordf(obj[2].toString()) %></td>
+			         								<%} %>
+			         								<td class="center"><%=obj[16]!=null?obj[16]:"-" %></td>
+			    									<td ><%=obj[5]!=null?obj[5]:"-" %></td>
+			    									<td class="center"><%=obj[8]!=null?obj[8]:"-" %></td>
+			    									<td><%=obj[10]!=null?obj[10]+", "+(obj[11]!=null?obj[11]:"-"):"Not Available" %></td>
+			    									<td class="center"><%=obj[13]!=null?obj[13].toString():"-" %></td>
+			    									<td><%=obj[14]!=null?obj[14]:"-" %></td>
+			    									<td class="center"><%=obj[15]!=null?(obj[15].toString().equalsIgnoreCase("A")?"AN":(obj[15].toString().equalsIgnoreCase("F")?"FN":"Full day")):"-" %></td>
+												</tr>
+											<% ++i; } } } else{%>
+												<tr>
+													<td colspan="9" style="text-align: center;">No Data Available</td>
+												</tr>
+											<%} %>
+										</tbody>
+									</table>
+								</div>		
+								
+							</div>		
+			  				
 						</div>
 					</div>
 				</div>
@@ -754,6 +864,12 @@ FormatConverter fc = new FormatConverter();
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		<input type="hidden" class="activityDate" name="activityDate" id="activityDate">
 		<input type="hidden" name="viewFlag" value="M">
+		<input type="hidden" name="empId" value="<%=empId%>">
+		<input type="hidden" name="empIdW" value="<%=empIdW%>">
+		<input type="hidden" name="activityWeekDate" value="<%=activityWeekDate%>">
+		<input type="hidden" name="empIdP" value="<%=empIdP%>">
+		<input type="hidden" name="fromDate" value="<%=fromDateR%>">
+		<input type="hidden" name="toDate" value="<%=toDateR%>">
 	</form>
 <script type="text/javascript">
 
@@ -868,7 +984,7 @@ $(document).on('mouseleave', '.daterangepicker td.available', function() {
 });
 
 // Initialize other datepickers without affecting the week highlighting
-<%-- $('#fromDate').daterangepicker({
+$('#fromDate').daterangepicker({
     "singleDatePicker": true,
     "linkedCalendars": false,
     "showCustomRangeLabel": true,
@@ -907,11 +1023,8 @@ $('#toDate').daterangepicker({
     locale: {
         format: 'DD-MM-YYYY'
     }
-}); --%>
+});
 
-<% if(viewFlag!=null && viewFlag.equalsIgnoreCase("M")){%>
-	$('#pills-tab-2').click();
-<%}%>
 
 function downloadMonthlyReport() {
 	var docDefinition = {
@@ -1007,7 +1120,7 @@ function downloadMonthlyReport() {
 	                                { text: '<%=obj[8]!=null?obj[8]:"-" %>', style: 'tableData',alignment: 'center' },
 	                                { text: '<%=obj[10]!=null?obj[10]+", "+(obj[11]!=null?obj[11]:"-"):"Not Available" %>', style: 'tableData' },
 	                                { text: '<%=obj[13]!=null?obj[13]:"-" %>', style: 'tableData',alignment: 'center' },
-	                                { text: '<%=obj[14]!=null?obj[14]:"-" %>', style: 'tableData',alignment: 'left' },
+	                                { text: htmlToPdfmake('<%=obj[14]!=null?obj[14].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") :"-" %>'), style: 'tableData',alignment: 'left' },
 	                                { text: '<%=obj[15]!=null?(obj[15].toString().equalsIgnoreCase("A")?"AN":(obj[15].toString().equalsIgnoreCase("F")?"FN":"Full day")):"-" %>', style: 'tableData',alignment: 'center' },
 	                            ],
 	                        <% ++i; } } } else{%>
@@ -1034,6 +1147,188 @@ function downloadMonthlyReport() {
                     }
                 },
                 /* ************************************** Time Sheet Monthly Report List End*********************************** */
+
+                
+			],
+			styles: {
+				chapterHeader: { fontSize: 16, bold: true, margin: [0, 0, 0, 10] },
+                tableHeader: { fontSize: 12, bold: true, fillColor: '#f0f0f0', alignment: 'center', margin: [10, 5, 10, 5], fontWeight: 'bold' },
+                tableData: { fontSize: 11.5, margin: [0, 5, 0, 5] },
+            },
+            footer: function(currentPage, pageCount) {
+                /* if (currentPage > 2) { */
+                    return {
+                        stack: [
+                        	{
+                                canvas: [{ type: 'line', x1: 30, y1: 0, x2: 820, y2: 0, lineWidth: 1 }]
+                            },
+                            {
+                                columns: [
+                                    { text: '', alignment: 'left', margin: [30, 0, 0, 0], fontSize: 8 },
+                                    { text: currentPage.toString() + ' of ' + pageCount, alignment: 'right', margin: [0, 0, 30, 0], fontSize: 8 }
+                                ]
+                            },
+                            { text: '', alignment: 'center', fontSize: 8, margin: [0, 5, 0, 0], bold: true }
+                        ]
+                    };
+                /* }
+                return ''; */
+            },
+            /* header: function (currentPage) {
+                return {
+                    stack: [
+                        
+                        {
+                            columns: [
+                                {
+                                    // Center: Text
+                                    text: 'Restricted',
+                                    alignment: 'center',
+                                    fontSize: 10,
+                                    bold: true,
+                                    margin: [0, 10, 0, 0]
+                                },
+                            ]
+                        },
+                        
+                    ]
+                };
+            }, */
+			pageMargins: [30, 40, 20, 20],
+            
+            defaultStyle: { fontSize: 12, color: 'black', }
+        };
+		
+        pdfMake.createPdf(docDefinition).open();
+}
+
+
+function downloadPeriodicReport() {
+	var docDefinition = {
+			pageOrientation: 'landscape',
+            content: [
+                
+                
+                /* ************************************** Time Sheet Periodic Report List *********************************** */ 
+                {
+                    text: 'Work Register Report',
+                    style: 'chapterHeader',
+                    tocItem: false,
+                    id: 'chapter1',
+                    alignment: 'center',
+                },
+                
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['10%', '24%', '25%', '8%', '10%', '5%', '8%', '10%'],
+                        
+                        body: [
+                            // Table header
+                            [
+                                { text: 'Employee: ',bold: true,  },
+                                { text: '<%=emp2!=null?((emp2[1]!=null?emp2[1]:(emp2[2]!=null?emp2[2]:""))+""+emp2[5]+", "+emp2[6]):"-" %>',  },
+                                { text: '', },
+                                
+                                { text: 'From:',bold: true, }, 
+                                { text: '<%=fromDateR%>', }, 
+                                { text: '', },
+                                
+                                { text: 'To:',bold: true, }, 
+                                { text: '<%=toDateR%>', },
+                                
+                            ],
+                            
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return 0;
+                        },
+                        vLineWidth: function(i) {
+                            return 0;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+                },
+                
+                {text: '\n'},
+                
+                {
+                    table: {
+                        headerRows: 1,
+                        /* widths: ['6%', '10%', '8%', '10%', '10%', '15%', '10%', '21%', '10%'], */
+                        widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+                        body: [
+                            // Table header
+                            [
+                                { text: 'SN', style: 'tableHeader' },
+                                { text: 'Date', style: 'tableHeader' },
+                                { text: 'Activity No', style: 'tableHeader' },
+                                { text: 'Activity Type', style: 'tableHeader' }, 
+                                { text: 'Project', style: 'tableHeader' }, 
+                                { text: 'Assigner', style: 'tableHeader' }, 
+                                { text: 'Keywords', style: 'tableHeader' }, 
+                                { text: 'Work Done', style: 'tableHeader' }, 
+                                { text: 'Work Done on', style: 'tableHeader' }, 
+                            ],
+                            // Populate table rows
+                            <%if (timeSheetToListMapP!=null && timeSheetToListMapP.size() > 0) {
+								int slno = 0;String key="";
+								for (Map.Entry<String, List<Object[]>> map : timeSheetToListMapP.entrySet()) {
+              							
+              							List<Object[]> values = map.getValue();
+              							int i=0;
+              							for (Object[] obj : values) {
+              				%>
+	                            [
+	                            	<%if(i == 0) { %>
+		                                { text: '<%= ++slno %>', style: 'tableData',alignment: 'center', rowSpan: <%=values.size() %>,  },
+		                                { text: '<%=obj[2]!=null?fc.sdfTordf(obj[2].toString()):"-"%>', style: 'tableData',alignment: 'center', rowSpan: <%=values.size() %>,},
+	                                <%} else { %>
+									  {},
+									  {},
+									<%} %>
+	                                { text: '<%=obj[16]!=null?obj[16]:"-" %>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%=obj[5]!=null?obj[5]:"-" %>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%=obj[8]!=null?obj[8]:"-" %>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%=obj[10]!=null?obj[10]+", "+(obj[11]!=null?obj[11]:"-"):"Not Available" %>', style: 'tableData' },
+	                                { text: '<%=obj[13]!=null?obj[13]:"-" %>', style: 'tableData',alignment: 'center' },
+	                                { text: htmlToPdfmake('<%=obj[14]!=null?obj[14].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):"-" %>'), style: 'tableData',alignment: 'left' },
+	                                { text: '<%=obj[15]!=null?(obj[15].toString().equalsIgnoreCase("A")?"AN":(obj[15].toString().equalsIgnoreCase("F")?"FN":"Full day")):"-" %>', style: 'tableData',alignment: 'center' },
+	                            ],
+	                        <% ++i; } } } else{%>
+                            	[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 9 },]
+                            <%} %>
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+                },
+                /* ************************************** Time Sheet Periodic Report List End*********************************** */
 
                 
 			],

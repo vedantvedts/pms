@@ -348,7 +348,7 @@ String ses=(String)request.getParameter("result");
 					</button>
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
 					<input type="hidden" name="EnoteId" value="<%=CommitteMainEnoteList[0].toString()%>">
-					<input type="hidden" name="type" value="C">
+					<input type="hidden" name="type" value="S">
 					<input type="hidden" name="scheduleid" value="<%=scheduleid %>">
 					<input type="hidden" name="committeemainid" value="0">
 					</form>

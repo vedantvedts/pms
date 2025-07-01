@@ -101,8 +101,10 @@ input[type=checkbox] {
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
   String ProjectId=(String)request.getAttribute("ProjectId");
   String LoginType = (String)session.getAttribute("LoginType");
-  List<String> actionAllowedFor =  Arrays.asList("A");
+  List<String> actionAllowedFor =  Arrays.asList("A", "P");
+  Long projectDirector = 0L;
   
+  Long empId = (Long)session.getAttribute("EmpId");
  %>
 
 
@@ -123,7 +125,7 @@ input[type=checkbox] {
     										<% for (Object[] obj : ProjectList) {
     										String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
     										%>
-											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>> <%=obj[4]+projectshortName%>  </option>
+											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%projectDirector = Long.parseLong(obj[23].toString()); %> <%} %>> <%=obj[4]+projectshortName%>  </option>
 											<%} %>
   									</select>
   									</div>
@@ -205,9 +207,9 @@ if(ses1!=null){	%>
 															<th>Status</th>
 															<th>Weightage</th>	
 															<th>Progress</th>			
-															<%if(actionAllowedFor.contains(LoginType)) {%>									
+															<%-- <%if(actionAllowedFor.contains(LoginType) || projectDirector.equals(empId) || oicEmpId.equals(empId)) {%>	 --%>								
 														 		<th>Action</th>
-														 	<%} %>	
+														 	<%-- <%} %> --%>	
 														 	
 														</tr>
 													</thead>
@@ -217,16 +219,27 @@ if(ses1!=null){	%>
 														 	if(MilestoneList!=null&&MilestoneList.size()>0){
 															for(Object[] obj: MilestoneList){ %>
 														<tr>
-															<td style="width:2% !important; " class="center"><span class="clickable" data-toggle="collapse" id="row<%=count %>" data-target=".row<%=count %>"><button class="btn btn-sm btn-success" id="btn<%=count %>"  onclick="ChangeButton('<%=count %>')"><i class="fa fa-plus"  id="fa<%=count%>"></i> </button></span></td>
+															<td style="width:2% !important; " class="center">
+																<span class="clickable" data-toggle="collapse" id="row<%=count %>" data-target=".row<%=count %>">
+																	<button class="btn btn-sm btn-success" id="btn<%=count %>"  onclick="ChangeButton('<%=count %>')">
+																		<i class="fa fa-plus"  id="fa<%=count%>"></i> 
+																	</button>
+																</span>
+																<input type="hidden" id="financialOutlay_<%=obj[0]%>" value="<%=obj[18]!=null?obj[18]:"-"%>">
+																<input type="hidden" id="statusRemarks_<%=obj[0]%>" value="<%=obj[11]!=null?obj[11].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):"-"%>">
+															</td>
 															<td style="text-align: left;width: 5% !important;">
 																<input class="form-control" form="slnoupdateform" type="number" name="newslno" value="<%=obj[5]%>" min="1" max="<%=MilestoneList.size()%>">
 																<input type="hidden" form="slnoupdateform" name="milestoneActivityId" value="<%=obj[0]%>"/>
 															</td>
 															<td style="text-align: left;width: 5%;"> Mil-<%=obj[5]%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=obj[4] %></td>
+															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;" 
+															onclick="showMilestoneStatusProgress('<%=obj[0]%>')">
+															<%=obj[4] %>
+															</td>
 															
-															<td  style="width:8% !important; "><%=sdf.format(obj[2])%></td>
+															<td style="width:8% !important; "><%=sdf.format(obj[2])%></td>
 															<td style="width:8% !important; "><%=sdf.format(obj[3])%></td>
 															<td  style="width:15% !important; "><%=obj[6]%></td>
 															<td  style="width: 8% !important; ">-</td>
@@ -254,7 +267,7 @@ if(ses1!=null){	%>
 																</div>
 																</div> <%} %>
 															</td>
-															<%if(actionAllowedFor.contains(LoginType)) {%>
+															<%if("A".equalsIgnoreCase(LoginType) || projectDirector.equals(empId) || Long.parseLong(obj[17].toString())==(empId)) { %>
 																<td  style="width:20% !important; text-align: center;">		
 																	<form action="MilestoneActivityDetails.htm" method="POST" name="myfrm"  style="display: inline">
 																		<%if(Integer.parseInt(obj[12].toString())<100){ %>
@@ -358,6 +371,8 @@ if(ses1!=null){	%>
 																		<%} %>	
 																	 </form> 
 																</td>
+															<%} else {%>
+																<td class="center"> <span class="btn btn-sm btn-info">Access Denied</span> </td>
 															<%} %>	
 														</tr>
 														 <tr class="collapse row<%=count %>" style="font-weight: bold;">
@@ -382,12 +397,15 @@ if(ses1!=null){	%>
 	                                                            List<Object[]> MilestoneB=(List<Object[]>)request.getAttribute(count+"MilestoneActivityB"+countA);
 	
 																%>
-														<tr class="collapse row<%=count %>" onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objA[0]%>', '<%=ProjectId%>', 'A')" style="cursor: pointer;">
+														<tr class="collapse row<%=count %>" >
 															<td style="width:2% !important; " class="center"> </td>
 															<td></td>
 															<td style="text-align: left;width: 5%;"> A-<%=countA%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objA[4] %></td>
+															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;"
+															 onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objA[0]%>', '<%=ProjectId%>', 'A')">
+															<%=objA[4] %>
+															</td>
 															
 															<td class="width-30px"><%=sdf.format(objA[2])%></td>
 															<td style="width:8% !important; "><%=sdf.format(objA[3])%></td>
@@ -441,12 +459,15 @@ if(ses1!=null){	%>
 	                                                            List<Object[]> MilestoneC=(List<Object[]>)request.getAttribute(count+"MilestoneActivityC"+countA+countB);
 	
 																%>
-														<tr class="collapse row<%=count %>" onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objB[0]%>', '<%=ProjectId%>', 'B')" style="cursor: pointer;">
+														<tr class="collapse row<%=count %>" >
 															<td style="width:2% !important; " class="center"> </td>
 															<td></td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;B-<%=countB%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objB[4] %></td>
+															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;"
+															 onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objB[0]%>', '<%=ProjectId%>', 'B')">
+																<%=objB[4] %>
+															</td>
 															
 															<td class="width-30px"><%=sdf.format(objB[2])%></td>
 															<td style="width:8% !important; "><%=sdf.format(objB[3])%></td>
@@ -500,12 +521,15 @@ if(ses1!=null){	%>
 															for(Object[] objC: MilestoneC){
 													         List<Object[]> MilestoneD=(List<Object[]>)request.getAttribute(count+"MilestoneActivityD"+countA+countB+countC);
 																%>
-														<tr class="collapse row<%=count %>" onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objC[0]%>', '<%=ProjectId%>', 'C')" style="cursor: pointer;">
+														<tr class="collapse row<%=count %>">
 															<td style="width:2% !important; " class="center"> </td>
 															<td></td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C-<%=countC%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objC[4] %></td>
+															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;"
+															 onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objC[0]%>', '<%=ProjectId%>', 'C')">
+															<%=objC[4] %>
+															</td>
 															
 															<td class="width-30px"><%=sdf.format(objC[2])%></td>
 															<td style="width:8% !important; "><%=sdf.format(objC[3])%></td>
@@ -560,12 +584,15 @@ if(ses1!=null){	%>
 	                                                            List<Object[]> MilestoneE=(List<Object[]>)request.getAttribute(count+"MilestoneActivityE"+countA+countB+countC+countD);
 	
 																%>
-														<tr class="collapse row<%=count %>" onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objD[0]%>', '<%=ProjectId%>', 'D')" style="cursor: pointer;">
+														<tr class="collapse row<%=count %>" >
 															<td style="width:2% !important; " class="center"> </td>
 															<td></td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D-<%=countD%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objD[4] %></td>
+															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;"
+															 onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objD[0]%>', '<%=ProjectId%>', 'D')">
+															 <%=objD[4] %>
+															 </td>
 															
 															<td class="width-30px"><%=sdf.format(objB[2])%></td>
 															<td style="width:8% !important; "><%=sdf.format(objB[3])%></td>
@@ -616,12 +643,15 @@ if(ses1!=null){	%>
                                                          <% int countE=1;
 														 	if(MilestoneE!=null&&MilestoneE.size()>0){
 															for(Object[] objE: MilestoneE){ %>
-														<tr class="collapse row<%=count %>" onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objE[0]%>', '<%=ProjectId%>', 'E')" style="cursor: pointer;">
+														<tr class="collapse row<%=count %>"  style="">
 															<td style="width:2% !important; " class="center"> </td>
 															<td></td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E-<%=countE%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objE[4] %></td>
+															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;"
+															onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objE[0]%>', '<%=ProjectId%>', 'E')">
+															<%=objE[4] %>
+															</td>
 															
 															<td class="width-30px"><%=sdf.format(objE[2])%></td>
 															<td style="width:8% !important; "><%=sdf.format(objE[3])%></td>
@@ -730,56 +760,56 @@ if(ses1!=null){	%>
 				
 				
 				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
-					<b style="color: #e30c0c;">Add Milestone Activity </b>
+					<b class="text-primary">Add Milestone Activity </b>
 				</td>
 				<td class="trup" style="width: 10px; height: 20px;"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
 				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
 				
 				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
-					<b style="color: #e30c0c;">Add Sub Milestone Activity </b>
+					<b class="text-primary">Add Sub Milestone Activity </b>
 				</td>
 				<td class="trup" style="width: 10px; height: 20px;"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
 				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
 				
 				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
-					<b style="color: #e30c0c;">Assign Weightage </b>
+					<b class="text-primary">Assign Weightage </b>
 				</td>
 				<td class="trup" style="width: 10px; height: 20px;"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
 				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
 				
 				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
-					<b style="color: #e30c0c;">Assign Milestone Activity </b>
+					<b class="text-primary">Assign Milestone Activity </b>
 				</td>
 				<td class="trup" style="width: 10px; height: 20px;"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
 				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
 				
 				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
-					<b style="color: #e30c0c;">Set Baseline </b>
+					<b class="text-primary">Set Baseline </b>
 				</td>
 				<td class="trup" style="width: 10px; height: 20px;"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
 				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
 				
 				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
-					<b style="color: #e30c0c;">Assignee</b>
+					<b class="text-primary">Assignee</b>
 				</td>
 				<td class="trup" style="width: 10px; height: 20px;"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
 				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
 				
 				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
-					<b style="color: #e30c0c;"> Acknowledge Milestone Activity </b>
+					<b class="text-primary"> Acknowledge Milestone Activity </b>
 				</td>
 				<td class="trup" style="width: 10px; height: 20px;"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
 				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
 				
 				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
-					<b style="color: #e30c0c;">Update progress</b>
+					<b class="text-primary">Update progress</b>
 				</td>
 				
 				
@@ -869,6 +899,38 @@ if(ses1!=null){	%>
   		</div>
 	</div>
 	<!-- -------------------------------------------- Milestone Progress Modal End -------------------------------------------- -->
+
+
+	<!-- -------------------------------------------- Milestone Status Remarks Modal -------------------------------------------- -->
+	<div class="modal fade" id="milestoneStatusRemarksModal" tabindex="-1" role="dialog" aria-labelledby="milestoneStatusRemarksModal" aria-hidden="true">
+  		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
+    		<div class="modal-content" style="width:135%;margin-left:-20%;">
+      			<div class="modal-header" id="ModalHeader" style="background: #055C9D ;color: white;">
+			        <h5 class="modal-title" >Status Remarks</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true" class="text-light">&times;</span>
+			        </button>
+      			</div>
+      			
+      			<div class="modal-body">
+      				<div class="row">
+      					<div class="col-md-12">
+      						<label class="form-label">Financial Outlay :</label> 
+      						<span id="financialOutlay"></span>
+						</div>  
+      				</div>
+     				<div class="row mb-2">
+						<div class="col-md-12">
+							<label class="form-label">Remarks : </label>  
+							<div id="statusRemarks"></div>
+						</div>      
+     				</div>
+      				
+      			</div>
+    		</div>
+  		</div>
+	</div>
+	<!-- -------------------------------------------- Milestone Status Remarks Modal End -------------------------------------------- -->
 
 
 	
@@ -1062,6 +1124,12 @@ function ChangeButton(id) {
 	    let year = date.getFullYear();
 
 	    return day + '-' + month + '-' + year;
+	}
+	
+	function showMilestoneStatusProgress(rowId) {
+		$('#financialOutlay').text($('#financialOutlay_'+rowId).val());
+		$('#statusRemarks').html($('#statusRemarks_'+rowId).val());
+		$('#milestoneStatusRemarksModal').modal('show');
 	}
 </script>  
 
