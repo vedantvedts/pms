@@ -40,6 +40,7 @@ import com.vts.pfms.master.model.LabPmsEmployee;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
+import com.vts.pfms.master.model.PfmsFeedbackTrans;
 import com.vts.pfms.model.LabMaster;
 
 @Service
@@ -496,11 +497,19 @@ public class MasterServiceImpl implements MasterService {
 	{	
 		return dao.FeedbackContent(feedbackid);
 	}
+	
 	@Override
-	public int CloseFeedback(String feedbackId , String remarks, String username)throws Exception
-	{
-		return dao.CloseFeedback(feedbackId , remarks,username);
+	public PfmsFeedback getPfmsFeedbackById(String feedbackId) {
+		
+		return dao.getPfmsFeedbackById(feedbackId);
 	}
+	
+	@Override
+	public Long addPfmsFeedback(PfmsFeedback feedback) throws Exception {
+
+		return dao.FeedbackInsert(feedback);
+	}
+	
 	@Override
 	
 	public PfmsFeedbackAttach FeedbackAttachmentDownload(String achmentid) throws Exception {
@@ -774,4 +783,18 @@ public class MasterServiceImpl implements MasterService {
 		public List<Object[]> checkDivisionMasterId(String groupId) throws Exception {
 			return dao.checkDivisionMasterId(groupId);
 		}
+		
+		@Override
+		public List<Object[]> getFeedbackTransByFeedbackId(String feedbackId) throws Exception {
+			
+			return dao.getFeedbackTransByFeedbackId(feedbackId);
+		}
+		
+		@Override
+		public long addPfmsFeedbackTrans(PfmsFeedbackTrans transaction) throws Exception {
+			
+			return dao.addPfmsFeedbackTrans(transaction);
+		}
+
 }
+

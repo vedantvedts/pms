@@ -8,13 +8,14 @@ import com.vts.pfms.master.model.DivisionEmployee;
 import com.vts.pfms.master.model.DivisionGroup;
 import com.vts.pfms.master.model.DivisionTd;
 import com.vts.pfms.master.model.Employee;
+import com.vts.pfms.master.model.HolidayMaster;
 import com.vts.pfms.master.model.IndustryPartner;
 import com.vts.pfms.master.model.IndustryPartnerRep;
-import com.vts.pfms.master.model.HolidayMaster;
 import com.vts.pfms.master.model.LabPmsEmployee;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
+import com.vts.pfms.master.model.PfmsFeedbackTrans;
 import com.vts.pfms.model.LabMaster;
 
 public interface MasterDao  {
@@ -64,8 +65,8 @@ public interface MasterDao  {
 	public List<Object[]> FeedbackList(String fromdate , String todate , String empid ,String LabCode,String feedbacktype) throws Exception;
 	public List<Object[]> FeedbackListForUser(String LabCode , String empid) throws Exception;
 	public Object[] FeedbackContent(String feedbackid) throws Exception;
-	public int CloseFeedback(String feedbackId , String remarks, String username)throws Exception;
 	public List<Object[]> GetfeedbackAttch()throws Exception;
+	public PfmsFeedback getPfmsFeedbackById(String feedbackId);
 	public List<Object[]> GetfeedbackAttchForUser(String empid)throws Exception;
 	public PfmsFeedbackAttach FeedbackAttachmentDownload(String achmentid) throws Exception;
 	public List<Object[]> TDList(String LabCode)throws Exception;
@@ -101,4 +102,7 @@ public interface MasterDao  {
 	public List<PfmsEmpRoles>getAllEmpRoles() throws Exception ;
 	public List<Object[]> CheckGroupMasterCode(String TdCode) throws Exception;
 	public List<Object[]> checkDivisionMasterId(String groupId) throws Exception;
+	public List<Object[]> getFeedbackTransByFeedbackId(String feedbackId) throws Exception;
+	public long addPfmsFeedbackTrans(PfmsFeedbackTrans transaction) throws Exception;
+
 }

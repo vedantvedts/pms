@@ -91,7 +91,8 @@ h6{
   List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
   List<Object[]> totalAssignedMainList = (List<Object[]>)request.getAttribute("totalAssignedMainList");
   List<Object[]> totalAssignedSubList = (List<Object[]>)request.getAttribute("totalAssignedSubList");
-  Map<Long, Long> milestoneActivityIdsMap = (Map<Long, Long>)request.getAttribute("milestoneActivityIdsMap");
+  //Map<Long, Long> milestoneActivityIdsMap = (Map<Long, Long>)request.getAttribute("milestoneActivityIdsMap");
+  Map<Long, Object[]> milestoneActivityLevelsMap = (Map<Long, Object[]>)request.getAttribute("milestoneActivityLevelsMap");
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
   String ProjectId=(String)request.getAttribute("ProjectId");
@@ -169,14 +170,14 @@ h6{
 							<table class="table table-condensed table-striped table-hover table-bordered" id="myTable" style="width: 100%;">
 								<thead class="center">
 									<tr>
-										<th width="5%">SN</th>
-										<!-- <th style="text-align: left;">Mil-No</th> -->
-									<!-- 	<th style="text-align: left;">Project Name</th> -->
-										<th width="20%">Milestone Activity</th>
-										<th width="10%">Start Date</th>
-										<th width="10%">End Date</th>	
-										<th width="20%">First OIC</th>
-										<th width="10%">Status</th>
+										<th width="3%">SN</th>
+										<th width="2%">Main</th>
+									    <th width="9%">Sub</th>
+										<th width="22%">Milestone Activity</th>
+										<th width="8%">Start Date</th>
+										<th width="8%">End Date</th>	
+										<th width="15%">First OIC</th>
+										<th width="8%">Status</th>
 										<th width="5%">Weightage</th>	
 										<th width="10%">Progress</th>												
 									 	<th width="10%">Action</th>
@@ -192,8 +193,8 @@ h6{
 											<td class="center">
 												<%=++slno %>
 											</td>
-											<%-- <td style="text-align: left;width: 5%;"> Mil-<%=obj[5]%></td> --%>
-											<%-- <td class="width-30px"><%=obj[1]%></td> --%>
+											<td class="center">M<%=obj[5]%></td>
+											<td class="center"></td>
 											<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;">
 												<%=obj[4] %>
 											</td>
@@ -296,9 +297,12 @@ h6{
 									
 									<%if(totalAssignedSubList!=null && totalAssignedSubList.size()>0) {
 										for(Object[] obj : totalAssignedSubList) {
+											Object[] levelsMapData = milestoneActivityLevelsMap.get(Long.parseLong(obj[0].toString()));
 									%>
 										<tr>
 											<td class="center"><%=++slno %> </td>
+											<td class="center"><%=levelsMapData[2] %></td>
+											<td class="center"><%=levelsMapData[1] %> </td>
 											<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;">
 												<%=obj[4] %>
 											</td>
@@ -366,7 +370,7 @@ h6{
 																%>
                                                          		<form class="form-inline"  method="POST" action="M-A-Update.htm">
                         	                                  		<button class="btn btn-sm edit" > <i class="fa fa-wrench"  aria-hidden="true"></i> </button>
-                                                                 	<input type="hidden" name="MilestoneActivityId"	value="<%=milestoneActivityIdsMap.get(Long.parseLong(obj[0].toString())) %>" /> 
+                                                                 	<input type="hidden" name="MilestoneActivityId"	value="<%=levelsMapData[0] %>" /> 
                                                                   	<input type="hidden" name="ActivityId" value="<%=obj[0] %>" /> 
                                                                   	<input type="hidden" name="startdate" value="<%=obj[2].toString() %>" >
                                                                   	<input type="hidden" name="ProjectId" value="<%=ProjectId %>" /> 
@@ -496,7 +500,7 @@ h6{
 							</div>
 					 		<br>
 							<div class="col-md-12"> Remarks :<br>
-  	      		    			<textarea class="form-control"  name="Remarks" id="remarks"   required="required"  maxlength="255"> </textarea>
+  	      		    			<textarea class="form-control" name="Remarks" id="remarks" required="required" maxlength="2000"> </textarea>
   	      		    		</div>
   	      				</div>
   	      				<br>

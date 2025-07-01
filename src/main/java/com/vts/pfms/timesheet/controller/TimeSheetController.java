@@ -1469,7 +1469,29 @@ public class TimeSheetController {
 			req.setAttribute("empAllTimeSheetList", service.getEmpAllTimeSheetList(empId));
 			req.setAttribute("employeeNewTimeSheetList", service.getEmployeeNewTimeSheetList(empId, activityLD.withDayOfMonth(1).toString(), activityLD.with(TemporalAdjusters.lastDayOfMonth()).toString()));
 			req.setAttribute("empId", empId);
+			
+			// Periodic View
+			String empIdP = req.getParameter("empIdP");
+			empIdP = empIdP==null?EmpId:empIdP;
+			String fromDate = req.getParameter("fromDate");
+			String toDate = req.getParameter("toDate");
+			
+			LocalDate now = LocalDate.now();
+			if(fromDate==null || toDate==null) {
+				fromDate = now.withDayOfMonth(1).toString();
+				toDate = now.toString();
+			}else {
+				fromDate = fc.rdfTosdf(fromDate);
+				toDate = fc.rdfTosdf(toDate);
+			}
+			
+			req.setAttribute("empIdP", empIdP);
+			req.setAttribute("fromDate", fromDate);
+			req.setAttribute("toDate", toDate);
+			req.setAttribute("employeeNewTimeSheetListP", service.getEmployeeNewTimeSheetList(empIdP, fromDate, toDate));
+			
 			req.setAttribute("viewFlag", req.getParameter("viewFlag"));
+			
 			
 			return "timesheet/TimeSheetView";
 		}catch (Exception e) {
@@ -1540,19 +1562,29 @@ public class TimeSheetController {
 		String UserId = (String)ses.getAttribute("Username");
 		logger.info(new Date() + " Inside WorkRegisterMonthlyViewExcel.htm "+UserId);
 		try {
-			String empId = req.getParameter("empId");
-			String activityDate = req.getParameter("activityDate");
+			String viewFlag = req.getParameter("viewFlag");
 			String empName = req.getParameter("empName");
-			
+			String fromDate = req.getParameter("fromDate");
+			String toDate = req.getParameter("toDate");
+			String activityDate = req.getParameter("activityDate");
 			activityDate = activityDate==null?rdf.format(new Date()):activityDate;
 			LocalDate activityLD = LocalDate.parse(fc.rdfTosdf(activityDate));
-			List<Object[]> employeeNewTimeSheetList = service.getEmployeeNewTimeSheetList(empId, activityLD.withDayOfMonth(1).toString(), activityLD.with(TemporalAdjusters.lastDayOfMonth()).toString());
+			
+			List<Object[]> employeeNewTimeSheetList = new ArrayList<>();
+			
+			if(viewFlag!=null && viewFlag.equalsIgnoreCase("M")) {
+				String empId = req.getParameter("empId");
+				employeeNewTimeSheetList = service.getEmployeeNewTimeSheetList(empId, activityLD.withDayOfMonth(1).toString(), activityLD.with(TemporalAdjusters.lastDayOfMonth()).toString());
+			}else if(viewFlag!=null && viewFlag.equalsIgnoreCase("P")) {
+				String empIdP = req.getParameter("empIdP");
+				employeeNewTimeSheetList = service.getEmployeeNewTimeSheetList(empIdP, fc.rdfTosdf(fromDate), fc.rdfTosdf(toDate));
+			}
 			
 			int rowNo=0;
 			// Creating a worksheet
 			Workbook workbook = new XSSFWorkbook();
 
-			Sheet sheet = workbook.createSheet("Work_Register_Monthly_Report");
+			Sheet sheet = workbook.createSheet("Work_Register_Report");
 			sheet.setColumnWidth(0, 2000);
 			sheet.setColumnWidth(1, 5000);
 			sheet.setColumnWidth(2, 7000);
@@ -1616,7 +1648,7 @@ public class TimeSheetController {
 			Row file_header_row = sheet.createRow(rowNo++);
 			sheet.addMergedRegion(new CellRangeAddress(0, 0,0, 8));   // Merging Header Cells 
 			Cell cell= file_header_row.createCell(0);
-			cell.setCellValue("Work Register Monthly Report");
+			cell.setCellValue("Work Register Report");
 			file_header_row.setHeightInPoints((3*sheet.getDefaultRowHeightInPoints()));
 			cell.setCellStyle(file_header_Style);
 			
@@ -1641,11 +1673,20 @@ public class TimeSheetController {
 			empCell.setCellValue("Employee : " + empName);
 			empCell.setCellStyle(file_header_Style3);
 
-			// Merge and set "Month" cell
-			sheet.addMergedRegion(new CellRangeAddress(file_header_row2.getRowNum(), file_header_row2.getRowNum(), 5, 8));
-			Cell monthCell = file_header_row2.createCell(5);
-			monthCell.setCellValue("Month : " + activityLD.getMonth() + " " + activityLD.getYear());
-			monthCell.setCellStyle(file_header_Style2);
+			if(viewFlag!=null && viewFlag.equalsIgnoreCase("M")) {
+				// Merge and set "Month" cell
+				sheet.addMergedRegion(new CellRangeAddress(file_header_row2.getRowNum(), file_header_row2.getRowNum(), 5, 8));
+				Cell monthCell = file_header_row2.createCell(5);
+				monthCell.setCellValue("Month : " + activityLD.getMonth() + " " + activityLD.getYear());
+				monthCell.setCellStyle(file_header_Style2);
+			}else if(viewFlag!=null && viewFlag.equalsIgnoreCase("P")) {
+				// Merge and set "Period" cell
+				sheet.addMergedRegion(new CellRangeAddress(file_header_row2.getRowNum(), file_header_row2.getRowNum(), 5, 8));
+				Cell monthCell = file_header_row2.createCell(5);
+				monthCell.setCellValue("From : " + fromDate + "                     To: " + toDate);
+				monthCell.setCellStyle(file_header_Style2);
+			}
+			
 			
 			// Table in file header Row
 			Row t_header_row = sheet.createRow(rowNo++);
@@ -1771,7 +1812,7 @@ public class TimeSheetController {
 			workbook.close();
 			
 			
-			String filename="Work_Register_Monthly_Report";
+			String filename="Work_Register_Report";
 			
      
 	        res.setContentType("Application/octet-stream");

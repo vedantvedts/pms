@@ -13,10 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,14 +35,19 @@ import com.vts.pfms.master.dto.LabMasterAdd;
 import com.vts.pfms.master.dto.OfficerMasterAdd;
 import com.vts.pfms.master.model.DivisionGroup;
 import com.vts.pfms.master.model.DivisionTd;
+import com.vts.pfms.master.model.HolidayMaster;
 import com.vts.pfms.master.model.IndustryPartner;
 import com.vts.pfms.master.model.IndustryPartnerRep;
-import com.vts.pfms.master.model.HolidayMaster;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
+import com.vts.pfms.master.model.PfmsFeedbackTrans;
 import com.vts.pfms.master.service.MasterService;
 import com.vts.pfms.utils.InputValidator;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 
 @Controller
@@ -1203,6 +1204,7 @@ public class MasterController {
 			Long Feedbackid=service.FeedbackInsert(feedback , FileAttach,LabCode);
 
 			if (Feedbackid>0) {
+				addPfmsFeedbackTrans(Feedbackid, Feedback, EmpId);
 				redir.addAttribute("result", " Feedback Add Successful");
 			} else {
 				redir.addAttribute("resultfail", "Feedback Add UnSuccessful");
@@ -1273,16 +1275,60 @@ public class MasterController {
 
 	}
 
+	@RequestMapping( value = "FeedbackTransactionSubmit.htm" , method = RequestMethod.POST)
+	public String feedbackTransactionSubmit(HttpSession ses, HttpServletRequest req ,RedirectAttributes redir)throws Exception
+	{
+		String UserId=(String)ses.getAttribute("Username");
+		Long EmpId = (Long) ses.getAttribute("EmpId");
+		logger.info(new Date() +"Inside FeedbackTransactionSubmit.htm "+UserId);
+		try {
+			String feedbackid = req.getParameter("feedbackid");
+			String remarks = req.getParameter("Remarks");
+			String sub = req.getParameter("sub");
+			
+			PfmsFeedback feedback = service.getPfmsFeedbackById(feedbackid);
+			feedback.setRemarks(remarks);
+			if(sub.equalsIgnoreCase("Close")) {
+				feedback.setStatus("C");
+			}
+			feedback.setModifiedBy(UserId);
+			feedback.setModifiedDate(sdtf.format(new Date()));
+			
+			long result = service.addPfmsFeedback(feedback);
+			
+			if(result > 0) {
+				addPfmsFeedbackTrans(Long.parseLong(feedbackid), remarks, EmpId);
+				redir.addAttribute("result" , "Feedback Submitted Successfully ");
+			}else {
+				redir.addAttribute("resultfail", "Feedback Submit Unsuccessful");
+			}
+			return "redirect:/FeedBack.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +"Inside FeedbackTransactionSubmit.htm "+UserId,e);
+			return "static/Error";
+		}
+		
+	}
+	
 	@RequestMapping( value = "CloseFeedBack.htm" , method = RequestMethod.POST)
 	public String CloseFeedback(HttpSession ses, HttpServletRequest req ,RedirectAttributes redir)throws Exception
 	{
 		String UserId=(String)ses.getAttribute("Username");
 		logger.info(new Date() +"Inside CloseFeedBack.htm "+UserId);
 		try {
-			String feedbackid = req.getParameter("feedbackid");
-			String remarks = req.getParameter("Remarks");
-			int count = service.CloseFeedback(feedbackid , remarks,UserId);
-			if(count > 0) {
+			String feedbackId = req.getParameter("feedbackId");
+			//String remarks = req.getParameter("Remarks");
+			
+			PfmsFeedback feedback = service.getPfmsFeedbackById(feedbackId);
+			//feedback.setRemarks(remarks);
+			feedback.setStatus("C");
+			feedback.setModifiedBy(UserId);
+			feedback.setModifiedDate(sdtf.format(new Date()));
+			
+			long result = service.addPfmsFeedback(feedback);
+			
+			if(result > 0) {
 				redir.addAttribute("result" , "Feedback Closed Successfully ");
 			}else {
 				redir.addAttribute("resultfail", "Feedback Close Unsuccessful");
@@ -1293,8 +1339,6 @@ public class MasterController {
 		}
 		return "redirect:/FeedBack.htm";
 	}
-
-
 
 	@RequestMapping(value="TDMaster.htm", method={RequestMethod.GET, RequestMethod.POST})
 	public String TDMaster(Model model, HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception {
@@ -2052,4 +2096,38 @@ public class MasterController {
 			}
 			
 		}
+		
+	@RequestMapping(value="FeedbackTransaction.htm", method = {RequestMethod.POST, RequestMethod.GET})
+	public String feedbackTransaction(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date()+ " Inside FeedbackTransaction.htm "+UserId);	
+		try {
+			String feedbackId = req.getParameter("feedbackId");
+			req.setAttribute("transactionList", service.getFeedbackTransByFeedbackId(feedbackId));
+			req.setAttribute("feedBackData", service.FeedbackContent(feedbackId));
+			return "master/FeedbackTransaction";
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside FeedbackTransaction.htm "+UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		} 
+	}
+	
+	public long addPfmsFeedbackTrans(Long feedbackId, String remarks, Long empId) {
+		try {
+
+			PfmsFeedbackTrans trans = new PfmsFeedbackTrans();
+			trans.setFeedbackId(feedbackId);
+			trans.setComments(remarks);
+			trans.setActionBy(empId);
+			trans.setActionDate(sdtf.format(new Date()));
+			
+			return service.addPfmsFeedbackTrans(trans);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
 }

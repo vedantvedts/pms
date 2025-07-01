@@ -555,7 +555,7 @@ div {
 																																	Activity E Name: <span class="mandatory" style="color: red;">*</span>
 																																</label>
 																																<br> 
-																																<input class="form-control alphanum-no-leading-space" type="text" name="ActivityName"
+																																<input class="form-control " type="text" name="ActivityName"
 																																	id="ActivityName<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>"
 																																	style="width: 100%" maxlength="1000" required="required">
 																															</div>
@@ -636,7 +636,7 @@ div {
 																																	<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>" 
 																																	onchange="changeempoic2('E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>')" >
 																																</div>
-																							                              		<select class="form-control selectdee" id="EmpId1E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>" name="EmpId1">
+																							                              		<select class="form-control selectdee" id="EmpId1E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>" name="EmpId1" required="required">
 																							    									<option disabled="true" selected value="">Choose...</option>
 																							    										<% for (Object[] objE : EmployeeList) {%>
 																																		<option value="<%=objE[0]%>"><%=objE[1]%>, <%=objE[2]%> </option>
@@ -760,7 +760,7 @@ $( document ).ready(function() {
 																											<div class="form-group">
 																												<label>Activity D Name: <span
 																													class="mandatory" style="color: red;">*</span>
-																												</label><br> <input class="form-control alphanum-no-leading-space"
+																												</label><br> <input class="form-control "
 																													type="text" name="ActivityName"
 																													id="ActivityName<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>"
 																													style="width: 100%" maxlength="1000"
@@ -836,7 +836,7 @@ $( document ).ready(function() {
 																													<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>" 
 																													onchange="changeempoic2('D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>')" >
 																												</div>
-																			                              		<select class="form-control selectdee" id="EmpId1D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>" name="EmpId1">
+																			                              		<select class="form-control selectdee" id="EmpId1D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>" name="EmpId1" required="required">
 																			    									<option disabled="true" selected value="">Choose...</option>
 																			    										<% for (Object[] objD : EmployeeList) {%>
 																														<option value="<%=objD[0]%>"><%=objD[1]%>, <%=objD[2]%> </option>
@@ -961,7 +961,7 @@ $( document ).ready(function() {
 																							<div class="form-group">
 																								<label>Activity C Name: <span
 																									class="mandatory" style="color: red;">*</span>
-																								</label><br> <input class="form-control alphanum-no-leading-space"
+																								</label><br> <input class="form-control "
 																									type="text" name="ActivityName"
 																									id="ActivityName<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>"
 																									style="width: 100%" maxlength="1000"
@@ -1037,7 +1037,7 @@ $( document ).ready(function() {
 																									<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>" 
 																									onchange="changeempoic2('C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>')" >
 																								</div>
-															                              		<select class="form-control selectdee" id="EmpId1C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>" name="EmpId1">
+															                              		<select class="form-control selectdee" id="EmpId1C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>" name="EmpId1" required="required">
 															    									<option disabled="true" selected value="">Choose...</option>
 															    										<% for (Object[] objC : EmployeeList) {%>
 																										<option value="<%=objC[0]%>"><%=objC[1]%>, <%=objC[2]%> </option>
@@ -1161,7 +1161,7 @@ $( document ).ready(function() {
 																			<div class="form-group">
 																				<label>Activity B Name: <span
 																					class="mandatory" style="color: red;">*</span>
-																				</label><br> <input class="form-control alphanum-no-leading-space" type="text"
+																				</label><br> <input class="form-control " type="text"
 																					name="ActivityName"
 																					id="ActivityName<%=ProjectSubCount%><%=Sub1Count%>"
 																					style="width: 100%" maxlength="1000"
@@ -1237,7 +1237,7 @@ $( document ).ready(function() {
 																					<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2B<%=ProjectSubCount%><%=Sub1Count%>" 
 																					onchange="changeempoic2('B<%=ProjectSubCount%><%=Sub1Count%>')" >
 																				</div>
-											                              		<select class="form-control selectdee" id="EmpId1B<%=ProjectSubCount%><%=Sub1Count%>" name="EmpId1">
+											                              		<select class="form-control selectdee" id="EmpId1B<%=ProjectSubCount%><%=Sub1Count%>" name="EmpId1" required="required">
 											    									<option disabled="true" selected value="">Choose...</option>
 											    										<% for (Object[] objB : EmployeeList) {%>
 																						<option value="<%=objB[0]%>"><%=objB[1]%>, <%=objB[2]%> </option>
@@ -1364,7 +1364,7 @@ $( document ).ready(function() {
 																	Activity A Name: <span class="mandatory" style="color: red;">*</span>
 																</label>
 																<br> 
-																<input class="form-control alphanum-no-leading-space" type="text" name="ActivityName" id="ActivityName<%=ProjectSubCount %>" style="width: 100%" maxlength="1000" required="required">
+																<input class="form-control " type="text" name="ActivityName" id="ActivityName<%=ProjectSubCount %>" style="width: 100%" maxlength="1000" required="required">
 															</div>
 														</div>
 
@@ -1440,7 +1440,7 @@ $( document ).ready(function() {
 																	<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2A<%=ProjectSubCount %>" 
 																	onchange="changeempoic2('A<%=ProjectSubCount %>')" >
 																</div>
-							                              		<select class="form-control selectdee" id="EmpId1A<%=ProjectSubCount %>" name="EmpId1">
+							                              		<select class="form-control selectdee" id="EmpId1A<%=ProjectSubCount %>" name="EmpId1" required="required">
 							    									<option disabled="true" selected value="">Choose...</option>
 							    										<% for (Object[] objA : EmployeeList) {%>
 																		<option value="<%=objA[0]%>"><%=objA[1]%>, <%=objA[2]%> </option>

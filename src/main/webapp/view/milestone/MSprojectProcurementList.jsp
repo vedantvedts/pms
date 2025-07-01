@@ -131,7 +131,7 @@
 													</div> 
 												<%}else{ %>
 													<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:red !important;color: #fff;font-weight: bold;  "  >
 															Not Started
 														</div>
 													</div> 
@@ -184,7 +184,7 @@
 														</div> 
 													<%}else{ %>
 														<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:red !important;color: #fff;font-weight: bold;  "  >
 																Not Started
 															</div>
 														</div> 
@@ -227,7 +227,7 @@
 															</div> 
 														<%}else{ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:red !important;color: #fff;font-weight: bold;  "  >
 																	Not Started
 																</div>
 															</div> 
@@ -269,7 +269,7 @@
 																</div> 
 															<%}else{ %>
 																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																	<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																	<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:red !important;color: #fff;font-weight: bold;  "  >
 																		Not Started
 																	</div>
 																</div> 
@@ -311,7 +311,7 @@
 																	</div> 
 																<%}else{ %>
 																	<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																		<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																		<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:red !important;color: #fff;font-weight: bold;  "  >
 																			Not Started
 																		</div>
 																	</div> 
@@ -353,7 +353,7 @@
 																		</div> 
 																	<%}else{ %>
 																		<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																			<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																			<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:red !important;color: ##fff;font-weight: bold;  "  >
 																				Not Started
 																			</div>
 																		</div> 

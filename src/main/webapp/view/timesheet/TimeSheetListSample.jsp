@@ -740,7 +740,7 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 																		</select>
 																	</td>
 																	<td>
-																		<textarea class="form-control workDone" rows="2" name="workDone" id="workDone_<%=clonecount %>" placeholder="Enter Maximum of 100 Characters" maxlength="100"><%if(act.getWorkDone()!=null) {%> <%=act.getWorkDone() %> <%} %></textarea>
+																		<textarea class="form-control workDone" rows="2" name="workDone" id="workDone_<%=clonecount %>" placeholder="Enter Maximum of 255 Characters" maxlength="255"><%if(act.getWorkDone()!=null) {%> <%=act.getWorkDone() %> <%} %></textarea>
 																	</td>
 																	<td>
 																		<div class="d-flex " style="gap: 15px;">
@@ -809,7 +809,7 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 								                                        </label>
 																	</td> -->
 																	<td>
-																		<textarea class="form-control workDone" rows="2" name="workDone" id="workDone_1" placeholder="Enter Maximum of 100 Characters" maxlength="100"></textarea>
+																		<textarea class="form-control workDone" rows="2" name="workDone" id="workDone_1" placeholder="Enter Maximum of 255 Characters" maxlength="255"></textarea>
 																	</td>
 																	<td>
 																		<div class="d-flex " style="gap: 15px;">

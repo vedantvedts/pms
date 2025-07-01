@@ -97,4 +97,7 @@ public interface MilestoneService {
 	
 	public List<Object[]> getMsprojectProcurementStatusList(String projectId) throws Exception;
 	public int mileStoneSerialNoUpdate(String[] newslno, String[] milestoneActivityId);
+	public List<Object[]> getAllMilestoneActivityList() throws Exception;
+	public List<Object[]> getAllMilestoneActivityLevelList() throws Exception;
+	
 }
