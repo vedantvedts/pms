@@ -252,39 +252,10 @@ SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
   									<div class="col-md-4" style="margin-left: 75px;margin-top:-7px;">
   										<div align="center" class="mb-2">
 	
-	<button type="button" class="btn viewbtn" id="treeViewBtn" onclick="showDiv('treeView','listView')">Tree View</button>
-	<button type="button" class="btn viewbtn" id="listViewBtn" onclick="showDiv('listView','treeView')">List view</button>
+<!-- 	<button type="button" class="btn viewbtn" id="treeViewBtn" onclick="showDiv('treeView','listView')">Tree View</button>
+	<button type="button" class="btn viewbtn" id="listViewBtn" onclick="showDiv('listView','treeView')">List view</button> -->
 	</div>
-  										
-  						<%-- 				<% if(systemList!=null && systemList.size()>0){ %>
-  										
-		  										<button type="submit" class="btn btn-sm btn-link" name="view_mode" value="Y" formtarget="blank" title="Product Tree View" data-toggle="tooltip" data-placement="top"  >
-												            <img src="view/images/tree.png">
-												</button> 
-												
-												<button type="submit" class="btn btn-sm btn-link" name="view_mode" value="V" formtarget="blank" title="Product Tree View V" data-toggle="tooltip" data-placement="top"  >
-												            <img src="view/images/tree.png">
-												</button> 
-												
-												
-		                                       
-		                                       <button name="action" class="btn btn-sm back" name ="sid" value="<%=sid %>" formaction="ProductTreeRevise.htm" style="background-color: green;color: white; border: 0" type="submit" value="revise"  onclick="return confirm('Are You Sure To Submit')">SET BASE LINE  ( <%=RevisionCount.size()==0?0:String.valueOf(Integer.parseInt(RevisionCount.get(0)[0].toString())+1) %> )</button>
-                                                   <input type="hidden" name="REVCount" value="<%=RevisionCount.size()==0?0:String.valueOf(Integer.parseInt(RevisionCount.get(0)[0].toString())+1)%>" >
-                                              
-                                           <button type="submit" name="sid" value="<%=sid %>" class="btn btn-sm add" formaction="ProductTreeEditDelete.htm" formmethod="get">LIST</button>
-                                           
-                                           <% if(RevisionCount.size()!=0){ %>
-                                         <button type="submit" class="btn btn-sm edit" name="sid" value="<%=sid %>" formaction="ProductTreeRevisionData.htm" formmethod="get">Revision Data</button> 
-                                           <input type="hidden" name="revCount" value="<%=RevisionCount.size()==0?0:String.valueOf(Integer.parseInt(RevisionCount.get(0)[0].toString()))%>" >
-                                          <%} %>  
-                                          
-                                          
-                                       <%} %> --%>
-                                       
-                                       <%-- <button  type="submit" class="btn btn-sm "  style="margin-left: 1rem;" name="sid" value="<%=sid %>"  formaction="ProductTreeDownload.htm" formtarget="_blank" ><i class="fa fa-download fa-lg" ></i></button>  --%>
-                                      
-                                       
-                                   </div>
+  	</div>
   									
 <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
  <input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
@@ -314,16 +285,10 @@ if(ses1!=null){	%>
 <%} %>
 	
 	
-	    <div class="genealogy-tree" id="treeView" style="">
+<%-- 	    <div class="genealogy-tree" id="treeView" style="">
 	    
 	    
-	<%--    <% if(ProductTreeList!=null && ProductTreeList.size()>0){ %> 
-	     <form action="ProductTreeEditDelete.htm" method="get">
-	     
-	                <button class="btn btn-sm add" type="submit" name="sid" value="<%=sid%>" >Update / Delete</button> 
-		     </form>
-		     
-		     <%} %> --%>
+
 	        
 	  		<ul>
 				<li>      
@@ -534,7 +499,7 @@ if(ses1!=null){	%>
 															
 															 <% List<Object[]> Level3 =ProductTreeList.stream().filter(e-> level3[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
 															
-										                <%------------------------------------------------------LEVEL 4 -------------------------------------------------------%>
+										                ----------------------------------------------------LEVEL 4 -----------------------------------------------------
 										                
 										               <ul <% if(Level3!=null && Level3.size()>0){%> class="active" <%}%> >	                
 										                	 <%
@@ -601,7 +566,7 @@ if(ses1!=null){	%>
 																	
 																	<% List<Object[]> Level4 =ProductTreeList.stream().filter(e-> level4[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
 																	
-																	<%--------------------------------------------------------------------------------LEVEL 5 ---------------------------------------------%>
+																	------------------------------------------------------------------------------LEVEL 5 -------------------------------------------
 																	
 														 <ul <% if(Level4!=null && Level4.size()>0){%> class="active" <%}%> >	                
 										                	<%
@@ -663,7 +628,7 @@ if(ses1!=null){	%>
 													                       
 																	</div> 
 																		<% List<Object[]> Level5 =ProductTreeList.stream().filter(e-> level5[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
-																	<%--------------------------------------------------------------------------------LEVEL 6 ---------------------------------------------%>
+																	------------------------------------------------------------------------------LEVEL 6 -------------------------------------------
 																	
 																	 <ul <% if(Level5!=null && Level5.size()>0){%> class="active" <%}%> >	                
 													                	<%
@@ -726,7 +691,7 @@ if(ses1!=null){	%>
 																	
 																	
 																		<% List<Object[]> Level6 =ProductTreeList.stream().filter(e-> level6[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
-																	<%--------------------------------------------------------------------------------LEVEL 7 ---------------------------------------------%>
+																	------------------------------------------------------------------------------LEVEL 7 -------------------------------------------
 																	
 																	 <ul <% if(Level6!=null && Level6.size()>0){%> class="active" <%}%> >	                
 													                	<%
@@ -788,7 +753,7 @@ if(ses1!=null){	%>
 															<%  countF++;} %>
 														<%} %>	
 														
-															 <%---------------------------------------Level 7 Add---------------------------------------------------------%>
+															 -------------------------------------Level 7 Add-------------------------------------------------------
 														
 												   <li>
 				                                       <div class="member-view-box action-view-box">
@@ -796,7 +761,7 @@ if(ses1!=null){	%>
 															
 															<form action="SystemLevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
-													              <input type="text" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
+													              <input type="text" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE" required="required">
 													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#7#<%=level6[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%>.<%=countF%>#<%=level6[11] %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
@@ -807,11 +772,11 @@ if(ses1!=null){	%>
 				                
 				                               </li>
 														
-												 <%---------------------------------------Level 7 Add---------------------------------------------------------%>		
+												 -------------------------------------Level 7 Add-------------------------------------------------------		
 														
 														</ul>	  
 														
-														  <%---------------------------------------Level 7 ---------------------------------------------------------%>		
+														  -------------------------------------Level 7 -------------------------------------------------------		
 																   </li>
 															
 														    <%  countE++;} %>
@@ -819,7 +784,7 @@ if(ses1!=null){	%>
 														
 														
 														
-																	 <%---------------------------------------Level 6 Add---------------------------------------------------------%>
+																	 -------------------------------------Level 6 Add-------------------------------------------------------
 														
 												   <li>
 				                                       <div class="member-view-box action-view-box">
@@ -827,7 +792,7 @@ if(ses1!=null){	%>
 															
 															<form action="SystemLevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
-													                <input type="text" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
+													                <input type="text" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE" required="required">
 													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#6#<%=level5[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%>#<%=level5[11] %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
@@ -838,10 +803,10 @@ if(ses1!=null){	%>
 				                
 				                               </li>
 														
-												 <%---------------------------------------Level 6 Add---------------------------------------------------------%>		
+												 -------------------------------------Level 6 Add-------------------------------------------------------		
 																	
 															</ul>			
-																	<%--------------------------------------------------------------------------------LEVEL 6 ---------------------------------------------%>
+																	------------------------------------------------------------------------------LEVEL 6 -------------------------------------------
 																   
 																   </li>
 															
@@ -849,7 +814,7 @@ if(ses1!=null){	%>
 														<% } %>
 														
 														
-														 <%---------------------------------------Level 5 Add---------------------------------------------------------%>
+														 -------------------------------------Level 5 Add-------------------------------------------------------
 														
 												   <li>
 				                                       <div class="member-view-box action-view-box">
@@ -857,7 +822,7 @@ if(ses1!=null){	%>
 															
 															<form action="SystemLevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
-													              <input type="text" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
+													              <input type="text" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE"  required="required">
 													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#5#<%=level4[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>#<%=level4[11] %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
@@ -868,11 +833,11 @@ if(ses1!=null){	%>
 				                
 				                               </li>
 														
-												 <%---------------------------------------Level 5 Add---------------------------------------------------------%>		
+												 -------------------------------------Level 5 Add-------------------------------------------------------		
 														
 													</ul>      
 																	
-														<%--------------------------------------------------------------------------------LEVEL 5 ---------------------------------------------%> 
+														------------------------------------------------------------------------------LEVEL 5 ------------------------------------------- 
 																    
 														 </li>
 															
@@ -880,7 +845,7 @@ if(ses1!=null){	%>
 												<% } %>
 														
 														
-														 <%---------------------------------------Level 4 Add---------------------------------------------------------%>
+														 -------------------------------------Level 4 Add-------------------------------------------------------
 														
 														  <li>
 				                                       <div class="member-view-box action-view-box">
@@ -888,7 +853,7 @@ if(ses1!=null){	%>
 															
 															<form action="SystemLevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
-													            <input type="text" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
+													            <input type="text" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE"  required="required">
 													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#4#<%=level3[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>#<%=level3[11] %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
@@ -898,7 +863,7 @@ if(ses1!=null){	%>
 				                
 				                               </li>
 														
-												 <%---------------------------------------Level 4 Add---------------------------------------------------------%>		
+												 -------------------------------------Level 4 Add-------------------------------------------------------		
 										                </ul>     
 																    
 																    
@@ -912,7 +877,7 @@ if(ses1!=null){	%>
 													<% } %>
 											
 											
-											 <%---------------------------------------Level 3 Add---------------------------------------------------------%>
+											 -------------------------------------Level 3 Add-------------------------------------------------------
                 	        
 				                	            <li>
 				                                       <div class="member-view-box action-view-box">
@@ -920,7 +885,7 @@ if(ses1!=null){	%>
 															
 															<form action="SystemLevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
-													            <input type="text" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE">
+													            <input type="text" name="LevelCode"   maxlength="3" style="width:35%" placeholder="CODE"  required="required">
 													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#3#<%=level2[0]%>#<%=count%>.<%=countA%>.<%=countB%>#<%=level2[11] %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													             
 													         </form>    
@@ -931,7 +896,7 @@ if(ses1!=null){	%>
 				                
 				                               </li>
                 	        
-                	          <%---------------------------------------Level 3 Add---------------------------------------------------------%>
+                	          -------------------------------------Level 3 Add-------------------------------------------------------
 											
 							                </ul>    
 										                
@@ -942,7 +907,7 @@ if(ses1!=null){	%>
 								 <% countA++;} %>
                 	        <% } %>
                 	        
-                	        <%---------------------------------------Level 2 Add---------------------------------------------------------%>
+                	        -------------------------------------Level 2 Add-------------------------------------------------------
                 	        
                 	            <li>
                                        <div class="member-view-box action-view-box">
@@ -950,7 +915,7 @@ if(ses1!=null){	%>
 											
 											<form action="SystemLevelNameAdd.htm" method="get">
 									            <input type="text" name="LevelName" required >
-									             <input type="text" name="LevelCode" required  maxlength="3" style="width:35%" placeholder="CODE">
+									             <input type="text" name="LevelCode" required  maxlength="3" style="width:35%" placeholder="CODE"  >
 									            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=sid%>#2#<%=level1[0]%>#<%=count%>.<%=countA%>#<%=level1[11] %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 									             
 									         </form>    
@@ -961,7 +926,7 @@ if(ses1!=null){	%>
                 
                                </li>
                 	        
-                	          <%---------------------------------------Level 2 Add---------------------------------------------------------%>
+                	          -------------------------------------Level 2 Add-------------------------------------------------------
 			                </ul>  
 						                  
 						        <!-- --------------------------------------------------------   LEVEL 2 ---------------------------------------------------- -->    
@@ -971,7 +936,7 @@ if(ses1!=null){	%>
                 	   count++;} %>
                 	
 					<% } %>
-			<%----------------------------------------------------------------------Level 1 Add---------------------------------------------------------%>
+			--------------------------------------------------------------------Level 1 Add-------------------------------------------------------
                     <li>
                 
                          <div class="member-view-box action-view-box">
@@ -989,7 +954,7 @@ if(ses1!=null){	%>
                     </li>
                     
                    
-                	<%---------------------------------------Level 1 Add------------------------------------------------------------%>
+                	-------------------------------------Level 1 Add----------------------------------------------------------
 				 </ul> 
                 
                          
@@ -1000,7 +965,7 @@ if(ses1!=null){	%>
 	        		
 		        </ul>
 	    
-        </div>	
+        </div> --%>	
         
         <div id="listView">
  <div class="container-fluid">
@@ -1011,6 +976,7 @@ if(ses1!=null){	%>
 			
 		
 				<div class="row card-header">
+				
 			     <div class="col-md-11">
 					<h5 ><%if(sid!=null){	
 				        Object[] systemListDetail=systemList.stream().filter(e->e[0].toString().equalsIgnoreCase(sid)).collect(Collectors.toList()).get(0);%>  
@@ -1018,395 +984,81 @@ if(ses1!=null){	%>
 	                      <%} %>
 					</h5>
 					</div>
-					<%-- <form>
-					      <input type="hidden"  value="<%=sid %>" name="sid"> 
-					      <input type="submit" class="btn btn-primary btn-sm back "  value="Back"  onclick="SubmitBack()"  formaction="ProductTree.htm"> 
-					</form> --%>
+					<div class="col-md-1" >
+					<button class="btn add" style="margin-top: -8px;" onclick="EditModal('0')">ADD </button>
+					</div>
+				
 					 </div>
 				
 					<div class="card-body">
-                        <div class="table-responsive"> 
-									<table class="table  table-hover table-bordered">
+                       
+                       	<div class="col-md-12 mb-2" style="text-align: right;">
+                              	      		<span style="background-color: #72cd23;padding: 0px 15px;border-radius: 3px;"></span><span>&nbsp; Software  </span>
+                              		<span style="background-color: #FF8C00;padding: 0px 15px;border-radius: 3px;"></span><span> &nbsp;Hardware </span>
+                              		<span style="background-color: #FF69B4;padding: 0px 15px;border-radius: 3px;"></span><span> &nbsp;Firmware  </span>
+                              		</div>
+                       
+                        <div  align="center">
+									<table class="table  table-hover table-bordered" style="width: 50%" id="modal_progress_table">
 													<thead>
 
-														<tr>
-															<th>Expand</th>
-															
-															<th style="text-align: left;width:200px;">Level </th> 
-															<th style="text-align: left;width:100px;">Level Id </th> 
-															 <th style="text-align: left;">Level Name</th> 
-															
-															<th style="" >Stage</th>	
-															<th style="" >Module</th>											
-														 	<th style=";" >Action</th>
-														 		
-														 	
+													<tr>
+														<th style="text-align: center;">SN</th> 
+														<th style="text-align: center;">Level Name</th> 
+														<th style="text-align: center;width:20%;">Level Code</th> 
+														<th style="text-align: center;width:20%;">Level Type</th> 
+														<th style="text-align: center;width:40%;" >Action</th>
 														</tr>
 													</thead>
 													<tbody>
-														<% int  countx=1;
+														<% int  countx=0;
 															
 														 	if(ProductTreeList!=null&&ProductTreeList.size()>0){
-															for(Object[] level1: ProductTreeList){
-																 if(level1[2].toString().equalsIgnoreCase("1")) { %>	
-																
-														<tr>
-															<td style="width:2% !important;" class="center"><span class="clickable" data-toggle="collapse" id="row<%=countx %>" data-target=".row<%=countx %>"><button class="btn btn-sm btn-success" id="btn<%=countx %>"  onclick="ChangeButton('<%=countx %>')"><i class="fa fa-plus"  id="fa<%=countx%>"></i> </button></span></td> 
-															 <td style="">Sub-System-L<%=level1[2] %></td>
-															 <td style="text-align: left;"><%=countx %></td>
-															
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level1[3] %></td>
-															
-															<td><% if(level1[6]!=null){%><%=level1[6] %><%}else { %> -- <%} %></td>
-															<td><% if(level1[7]!=null){%><%=level1[7] %><%}else { %> -- <%} %></td>
-															
-															<td  style="width:20% !important; text-align: center;">		
-																	
-																	
-														<%-- 	
-		                                                              <button  class="editable-click" name="buttonid" value="<%=countx %>" onclick="EditModal('<%=level1[0]%>','<%=level1[3]%>','<%=level1[6]%>','<%=level1[7]%>','0')">  
-		                                                              
-																		<div class="cc-rockmenu">
-																		 <div class="rolling">	
-													                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
-													                        <span>Edit</span>
-													                      </div>
-													                     </div>
-													                  </button> 
-													                  
-													             
-													           <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
-													               <input type="hidden" name="sid" value="<%=sid %>" >
-																    <input type="hidden" name="Action" value="D"/>
-																    <input type="hidden" name="buttonid" value="<%=countx %>">
-													                  <button  class="editable-click" name="Mainid" value="<%=level1[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')">
-																		<div class="cc-rockmenu">
-																		 <div class="rolling">	
-													                        <figure class="rolling_icon"><img src="view/images/delete.png" ></figure>
-													                        <span>Delete</span>
-													                      </div>
-													                     </div>
-													                  </button> 
-													               </form> --%>
-													                 
-		                                                   	 
-															 	
-															</td>
-														</tr>
-														
-														  <tr class="collapse row<%=countx %>"  id="rowcollapse<%=countx%>" style="font-weight: bold;">
-                                                         <td></td>
-                                                         <td style="width:200px;">Sub -Level</td>
-                                                         <td style="width:100px;">Sub -Level Id</td>
-                                                         <td>Level Name</td>
-                                                         <td >Stage</td>	
-														 <td >Module</td>	
-                                                         <td>Action</td>
-                                                         
-                                                         </tr>
-                                                         
-                                                         <% int countA=1;
-                                                          
-														 	if(ProductTreeList!=null&&ProductTreeList.size()>0){
-															for(Object[] level2: ProductTreeList){
-																 if(level2[2].toString().equalsIgnoreCase("2") && level1[0].toString().equalsIgnoreCase(level2[1].toString())){ %>
-	
-																
-														<tr class="collapse row<%=countx %>" id="rowcollapse<%=countx%>" >
-															<td style="width:2% !important; " class="center"> </td>
-																		 <td style="">Sub-System-L<%=level2[2] %></td>
-															<td style="text-align: left;">&nbsp;&nbsp; &nbsp;&nbsp;<%=countx %>.<%=countA%></td>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level2[3] %></td>
-															<td><% if(level2[6]!=null){%><%=level2[6] %><%}else { %> -- <%} %></td>
-															<td><% if(level2[7]!=null){%><%=level2[7] %><%}else { %> -- <%} %></td>
-														 	<td class="width-30px" style="text-align: center;">
-														 	
-														 	
-														<%--  	 <button class="editable-click" name="buttonid" value="<%=countx %>" onclick="EditModal('<%=level2[0]%>','<%=level2[3]%>','<%=level2[6]%>','<%=level2[7]%>','<%=countx %>')">  
-																		<div class="cc-rockmenu">
-																		 <div class="rolling">	
-													                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
-													                        <span>Edit</span>
-													                      </div>
-													                     </div>
-													             </button> 
-													                  
-													            <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
-													                <input type="hidden" name="sid" value="<%=sid %>" >
-																    <input type="hidden" name="Action" value="D"/>
-																      <input type="hidden" name="buttonid" value="<%=countx %>">
-													                  <button class="editable-click" name="Mainid" value="<%=level2[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"> 
-																		<div class="cc-rockmenu">
-																		 <div class="rolling">	
-													                        <figure class="rolling_icon"><img src="view/images/delete.png" ></figure>
-													                        <span>Delete</span>
-													                      </div>
-													                     </div>
-													                  </button>
-													                  
-													               </form> --%>
-														 	
-														 	
-														 	
-														 	
-														 	</td>
-                                                         </tr>
-                                                         <% int countB=1;
-														 	if(ProductTreeList!=null&&ProductTreeList.size()>0){
-															for(Object[] level3: ProductTreeList){
-																  if(level3[2].toString().equalsIgnoreCase("3") && level2[0].toString().equalsIgnoreCase(level3[1].toString()) ){
-	
-																%>
-														<tr class="collapse row<%=countx %>" id="rowcollapse<%=countx%>">
-															<td style="width:2% !important; " class="center"> </td>
-															 <td style="">Sub-System-L<%=level3[2] %></td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<%=countx %>.<%=countA%>.<%=countB%></td>
-															
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level3[3] %></td>
-															<td><% if(level3[6]!=null){%><%=level3[6] %><%} else { %> -- <%} %></td>
-															<td><% if(level3[7]!=null){%><%=level3[7] %><%} else { %> -- <%} %></td>
-															
-															<td class="width-30px"  style="text-align: center;">
-															
-															
-												<%-- 			 <button  class="editable-click" name="buttonid" value="<%=countx %>" onclick="EditModal('<%=level3[0]%>','<%=level3[3]%>','<%=level3[6]%>','<%=level3[7]%>','<%=countx %>')">  
-																		<div class="cc-rockmenu">
-																		 <div class="rolling">	
-													                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
-													                        <span>Edit</span>
-													                      </div>
-													                     </div>
-													                  </button> 
-													                  
-													                  
-													                  
-													             <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
-													                <input type="hidden" name="sid" value="<%=sid %>" >
-																    <input type="hidden" name="Action" value="D"/>
-																    <input type="hidden" name="buttonid" value="<%=countx %>">
-													                 <button class="editable-click" name="Mainid" value="<%=level3[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"> 
-																		<div class="cc-rockmenu">
-																		 <div class="rolling">	
-													                        <figure class="rolling_icon"><img src="view/images/delete.png" ></figure>
-													                        <span>Delete</span>
-													                      </div>
-													                     </div>
-													                  </button>
-															     </form> --%>
-															
-															
-															</td>
-															
-                                                         </tr>
-                                                         <% int countC=1;
-														 	if(ProductTreeList!=null&&ProductTreeList.size()>0){
-															for(Object[] level4: ProductTreeList){
-																  if(level4[2].toString().equalsIgnoreCase("4") && level3[0].toString().equalsIgnoreCase(level4[1].toString())) {
-																%>
-														<tr class="collapse row<%=countx %>"  id="rowcollapse<%=countx%>" >
-															<td style="width:2% !important; " class="center"> </td>
-															<td style="">Sub-System-L<%=level4[2] %></td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=countx %>.<%=countA%>.<%=countB%>.<%=countC%></td>
-															
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level4[3] %></td>
-															<td><% if(level4[6]!=null){%><%=level4[6] %><%} else { %> -- <%} %></td>
-															<td><% if(level4[7]!=null){%><%=level4[7] %><%} else { %> -- <%} %></td>
-															
-															<td class="width-30px"  style="text-align: center;">
-															
-															
-												<%-- 		 <button  class="editable-click" name="buttonid" value="<%=countx %>" onclick="EditModal('<%=level4[0]%>','<%=level4[3]%>','<%=level4[6]%>','<%=level4[7]%>','<%=countx %>')">  
-																		<div class="cc-rockmenu">
-																		 <div class="rolling">	
-													                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
-													                        <span>Edit</span>
-													                      </div>
-													                     </div>
-													                  </button> 
-													                  
-													                  
-													              <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
-													                <input type="hidden" name="sid" value="<%=sid %>" >
-																    <input type="hidden" name="Action" value="D"/>
-																    <input type="hidden" name="buttonid" value="<%=countx %>">
-													                 <button class="editable-click" name="Mainid" value="<%=level4[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"> 
-																		<div class="cc-rockmenu">
-																		 <div class="rolling">	
-													                        <figure class="rolling_icon"><img src="view/images/delete.png" ></figure>
-													                        <span>Delete</span>
-													                      </div>
-													                     </div>
-													                  </button>
-															      </form> --%>
-															
-															
-															
-															</td>
-															
-                                                         </tr>
-                                                         <% int countD=1;
-														 	if(ProductTreeList!=null&&ProductTreeList.size()>0){
-															for(Object[] level5: ProductTreeList){
-															if(level5[2].toString().equalsIgnoreCase("5") && level4[0].toString().equalsIgnoreCase(level5[1].toString()) ){%>
-	
-																
-														<tr class="collapse row<%=countx %>"  id="rowcollapse<%=countx%>" >
-															<td style="width:2% !important; " class="center"> </td>
-															<td style="">Sub-System-L<%=level5[2] %></td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=countx %>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%></td>
-														
-														
-														  
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level5[3] %></td>
-															 <td><% if(level5[6]!=null){%><%=level5[6] %><%} else { %> -- <%} %></td>
-															<td><% if(level5[7]!=null){%><%=level5[7] %><%} else { %> -- <%} %></td>
-															
-																<td class="width-30px" style="text-align: center;">
-															
-															
-															<%-- 	 <button  class="editable-click" name="buttonid" value="<%=countx %>" onclick="EditModal('<%=level5[0]%>','<%=level5[3]%>','<%=level5[6]%>','<%=level5[7]%>','<%=countx %>')">  
-																		<div class="cc-rockmenu">
-																		 <div class="rolling">	
-													                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
-													                        <span>Edit</span>
-													                      </div>
-													                     </div>
-													                  </button> 
-														
-													                  
-													                  
-													               <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
-													                  <input type="hidden" name="sid" value="<%=sid %>" >
-																      <input type="hidden" name="Action" value="D"/>
-																      <input type="hidden" name="buttonid" value="<%=countx %>">
-													                  <button class="editable-click" name="Mainid" value="<%=level5[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"> 
-																		<div class="cc-rockmenu">
-																		 <div class="rolling">	
-													                        <figure class="rolling_icon"><img src="view/images/delete.png" ></figure>
-													                        <span>Delete</span>
-													                      </div>
-													                     </div>
-													                  </button>
-													                </form> --%>
-															
-															
-															
-															
-															</td>
-															
-                                                         </tr>
-                                                         <% int countE=1;
-														 	if(ProductTreeList!=null&&ProductTreeList.size()>0){
-															for(Object[] level6: ProductTreeList){ 
-																if(level6[2].toString().equalsIgnoreCase("6") && level5[0].toString().equalsIgnoreCase(level6[1].toString())) {
-																	
-																%>
-															
-														<tr class="collapse row<%=countx %>"  id="rowcollapse<%=countx%>">
-															<td style="width:2% !important; " class="center"> </td>
-															<td style="">Sub-System-L<%=level6[2] %></td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=countx %>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%></td>
-															
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level6[3] %></td>
-															<td><% if(level6[6]!=null){%><%=level6[6] %><%} else { %> -- <%} %></td>
-															<td><% if(level6[7]!=null){%><%=level6[7] %><%} else { %> -- <%} %></td>
-															 
-														    <td class="width-30px" style="text-align: center;">
-															
-															
-														<%-- 		 <button  class="editable-click" name="buttonid" value="<%=countx %>" onclick="EditModal('<%=level6[0]%>','<%=level6[3]%>','<%=level6[6]%>','<%=level6[7]%>','<%=countx %>')">  
-																		<div class="cc-rockmenu">
-																		 <div class="rolling">	
-													                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
-													                        <span>Edit</span>
-													                      </div>
-													                     </div>
-													                  </button> 
-														
-													                  
-													                  
-													              <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
-													                <input type="hidden" name="sid" value="<%=sid %>" >
-																    <input type="hidden" name="Action" value="D"/>
-																    <input type="hidden" name="buttonid" value="<%=countx %>">
-													                 <button class="editable-click" name="Mainid" value="<%=level6[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"> 
-																		<div class="cc-rockmenu">
-																		 <div class="rolling">	
-													                        <figure class="rolling_icon"><img src="view/images/delete.png" ></figure>
-													                        <span>Delete</span>
-													                      </div>
-													                     </div>
-													                  </button>
-															     </form> --%>
-															
-															
-															
-															</td>
-															
-															
-                                                         </tr>
-                                                         
-                                                         <% int countF=1;
-														 	if(ProductTreeList!=null&&ProductTreeList.size()>0){
-															for(Object[] level7: ProductTreeList){ 
-																if(level7[2].toString().equalsIgnoreCase("7") && level6[0].toString().equalsIgnoreCase(level7[1].toString())) {
-																	
-																%>
-															
-														<tr class="collapse row<%=countx %>"  id="rowcollapse<%=countx%>">
-															<td style="width:2% !important; " class="center"> </td>
-															<td style="">Sub-System-L<%=level7[2] %></td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=countx %>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%>.<%=countF%></td>
-															
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level7[3] %></td>
-															<td><% if(level7[6]!=null){%><%=level7[6] %><%} else { %> -- <%} %></td>
-															<td><% if(level7[7]!=null){%><%=level7[7] %><%} else { %> -- <%} %></td>
-															 
-														    <td class="width-30px" style="text-align: center;">
-															
-															
-													<%-- 			 <button  class="editable-click" name="buttonid" value="<%=countx %>" onclick="EditModal('<%=level7[0]%>','<%=level7[3]%>','<%=level7[6]%>','<%=level7[7]%>','<%=countx %>')">  
-																		<div class="cc-rockmenu">
-																		 <div class="rolling">	
-													                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
-													                        <span>Edit</span>
-													                      </div>
-													                     </div>
-													                  </button> 
-														
-													                  
-													                  
-													              <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
-													                <input type="hidden" name="sid" value="<%=sid %>" >
-																    <input type="hidden" name="Action" value="D"/>
-																    <input type="hidden" name="buttonid" value="<%=countx %>">
-													                 <button class="editable-click" name="Mainid" value="<%=level7[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"> 
-																		<div class="cc-rockmenu">
-																		 <div class="rolling">	
-													                        <figure class="rolling_icon"><img src="view/images/delete.png" ></figure>
-													                        <span>Delete</span>
-													                      </div>
-													                     </div>
-													                  </button>
-															     </form> --%>
-															
-															
-															
-															</td>
-															
-															
-                                                         </tr>
-                                                <% countF++;} }}%>         
-												<% countE++;} }}%>
-												<% countD++;} }}%>
-												<% countC++;} }}%>
-												<% countB++;} }}%>
-												<% countA++;} }}else{%>
-												<tr class="collapse row<%=countx %>">
-													<td colspan="9" style="text-align: center" class="center">No Sub List Found</td>
-												</tr>
-												<%} %> 
-												<% countx++; }} }else{%>
+														 		for(Object[]obj:ProductTreeList){%>
+														 		<tr>
+														 		<td style="text-align: center" ><%=++countx %>. </td>
+														 		<td> <%=obj[3] %></td>
+														 		<td><%=obj[10]!=null?obj[10]:"-" %> </td>
+														 		
+														 		<%if(obj[11]!=null){ %>
+														 		<%if(obj[11].toString().equalsIgnoreCase("S")) {%>
+														 		<td style="background: #72cd23; color: white;">Software</td>
+														 		<%}else if(obj[11].toString().equalsIgnoreCase("F")) {%>
+														 		<td style="background: #FF69B4; color: white;">Firmware </td>
+														 		<%}else if(obj[11].toString().equalsIgnoreCase("H")){ %>
+														 		<td style="background: #FF8C00; color: white;">Hardware</td>
+														 		<%}else{ %>
+														 		<td>-</td>
+														 		<%} %>
+														 		<%}else{ %>
+														 		<td>-</td>
+														 		<%} %>
+														 		
+														 		<td>
+													<div style="display: flex;    justify-content: space-evenly;">
+														<button class="btn btn-sm"
+															onclick="EditModal('<%=obj[0]%>','<%=obj[3]%>','<%=obj[10]%>','<%=obj[11]%>','<%=obj[12]%>')"   data-toggle="tooltip" data-placement="right"
+								title="Edit">
+															<img src="view/images/edit.png">
+														</button>
+														<div>
+														<form action="SystemProductTreeEditDelete.htm"
+															method="get" style="display: inline">
+															<input type="hidden" name="sid" value="<%=sid%>">
+															<input type="hidden" name="Action" value="TD">
+															<button   class="btn btn-sm" name="Mainid"
+																value="<%=obj[0]%>" data-toggle="tooltip" data-placement="right"
+								title="Delete"
+																onclick="return confirm ('Are you sure you want to delete? ')">
+																<img src="view/images/delete.png">
+															</button>
+														</form>
+														</div>
+													</div>
+
+												</td>
+														 		</tr>
+														 		<% }}else{%>
 												<tr >
 													<td colspan="9" style="text-align: center" class="center">No List Found</td>
 												</tr>
@@ -1414,6 +1066,7 @@ if(ses1!=null){	%>
 												
 												</tbody>
 												</table>
+											
 											</div>
 							   </div>
 							   
@@ -1438,48 +1091,60 @@ if(ses1!=null){	%>
 	</div>   
 
  <div class="modal" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 720px;">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Edit Level Name</h5>
+<!--         <h5 class="modal-title" id="exampleModalLongTitle">Edit Level Name</h5> -->
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body" align="center">
-        <form action="SystemProductTreeEditDelete.htm" method="get">
+        <form action="SystemProductTreeEditDelete.htm" method="get" id="myform">
         	<table style="width: 100%;">
         		<tr>
         			<th>Level Name : &nbsp; </th>
         			<td><input type="text" class="form-control" name="LevelName" id="levelname" required></td>
         		</tr>
+        		<tr></tr>
         		<tr>
         			<th>Level Code : &nbsp; </th>
-        			<td><input type="text" class="form-control" name="LevelCode" id="levelCode" maxlength="3" required></td>
+        			<td ><input type="text" class="form-control" name="LevelCode" id="levelCode" maxlength="3" required style="width: 50%"></td>
+        			
         		</tr>
+        		<tr></tr>
         		<tr id="issoftwareTr">
         		<th>
-        		Is Software:
+        		Level Type:
         		</th>
         		<td>
-        		<select class="form select selectdee IsSoftware"  name="IsSoftware"   style="width:100%;">
-        		<option value="" selected="selected" disabled="disabled" >Select</option>
-        		<option value="Y">YES</option>
-        		<option value="N">NO</option>
-        		</select>
+        		<!-- <select class="form select selectdee IsSoftware"  name="LevelType"   style="width:100%;">
+        		<option value="N" selected="selected" >Not Specified</option>
+        		<option value="S">Software</option>
+        		<option value="H">Hardware</option>
+        		<option value="F">Firmware</option>
+        		</select> -->
+        		
+        		<input type="radio" name="LevelType" checked="checked" value="N">&nbsp;  Not Specified &nbsp;
+        		<input type="radio" name="LevelType"  value="S">&nbsp; Software &nbsp;
+        		<input type="radio" name="LevelType"  value="F"> &nbsp; Firmware &nbsp;
+        		<input type="radio" name="LevelType"  value="H">  &nbsp; Hardware &nbsp;
+
         		</td>
         		</tr>
         		<tr>
         			<td colspan="2" style="text-align: center;">
         				<br>
         				<button type="button" class="btn btn-sm btn-danger" data-dismiss="modal"><b>Close</b></button>
-        				<button class="btn btn-sm submit" onclick="return confirm('Are You Sure to Edit?');">SUBMIT</button>
+        				<button class="btn btn-sm submit" formaction="SystemProductTreeEditDelete.htm" id="editbtn"   onclick="return confirm('Are You Sure to Edit?');">SUBMIT</button>
+        				<button class="btn btn-sm submit" formaction="SystemLevelNameAdd.htm" id="addbtn"   onclick="return confirm('Are You Sure to Add?');">SUBMIT</button>
         			</td>
         		</tr>
         	</table>
         	
         	<input type="hidden" id="Mainid" name="Mainid" value="" >
           <input type="hidden" id="" name="Action" value="TE" > 
+          <input type="hidden" name="sid" value="<%=sid %>">
         	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
         </form>
       </div>
@@ -1487,6 +1152,9 @@ if(ses1!=null){	%>
     </div>
   </div>
 </div> 
+
+
+
 
 <script>
 $(document).ready(function() {
@@ -1516,7 +1184,7 @@ $(function () {
         e.stopPropagation(); 
     });
 });
-showDiv('treeView','listView')
+/* showDiv('treeView','listView')
 function showDiv(a,b){
 	
 	
@@ -1529,9 +1197,9 @@ function showDiv(a,b){
 	$('#'+b+'Btn').css('background-color','grey');
 	$('#'+b+'Btn').css('color','black');
 	$(".genealogy-body").css("white-space", "normal");
-}
+} */
 
-function ChangeButton(id) {
+/* function ChangeButton(id) {
 	  
 	//console.log($( "#btn"+id ).hasClass( "btn btn-sm btn-success" ).toString());
 	if($( "#btn"+id ).hasClass( "btn btn-sm btn-success" ).toString()=='true'){
@@ -1543,26 +1211,56 @@ function ChangeButton(id) {
 	$( "#fa"+id ).removeClass( "fa fa-minus" ).addClass( "fa fa-plus" );
 	$( ".row"+id).hide();
     }
-}
+} */
 
 	function EditModal(mainid,levelname,levelCode,IsSoftware,IsSoftwareMain){
+	if(mainid!=='0'){
 	$('#Mainid').val(mainid);			
 	$('#levelname').val(levelname);
 	$('#levelCode').val(levelCode);
 	//console.log(mainid,levelname,levelCode,IsSoftware);
-	$('select[name="IsSoftware"]').val(IsSoftware).trigger('change');
-  	
-  	if(IsSoftware==='Y' && IsSoftwareMain==='Y'){
+
+	$('input[name="LevelType"][value="' + IsSoftware + '"]').prop('checked', true).trigger('change');
+  /*if(IsSoftware!=='N' && (IsSoftware===IsSoftwareMain)){
   		$('#issoftwareTr').hide();
   	}else{
   		$('#issoftwareTr').show();
+  	} */
+  	
+  	if(IsSoftwareMain==='N'){
+  		$('#issoftwareTr').show();
+  	}else{
+  		$('#issoftwareTr').hide();
   	}
-
+		
   	var sid = $('#sid').val();
-
+  $('#editbtn').show();
+  $('#addbtn').hide();
+	}else{
+		 $('#editbtn').hide();
+		  $('#addbtn').show();
+		$('#levelname').val('');
+		$('#levelCode').val('');
+		$('input[name="LevelType"][value="N"]').prop('checked', true).trigger('change');
+	}
 	$('#EditModal').modal('toggle');
 
+	
 } 
+
+$("#modal_progress_table").DataTable({
+	"lengthMenu": [ 25, 50, 75, 100 ],
+	"pagingType": "simple",
+	"pageLength": 25
+});
+
+
+$(function () {
+$('[data-toggle="tooltip"]').tooltip()
+})
+
+
+
 </script>
 </body>
 </html>

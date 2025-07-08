@@ -5,9 +5,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Data;
 
 @Entity
 @Table(name="file_rep_new")
+@Data
 public class FileRepNew {			
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,75 +20,10 @@ public class FileRepNew {
 	private Long ReleaseDoc;
 	private Long DocumentId;
 	private Long SubL1;
-	
-	
-	public Long getSubL1() {
-		return SubL1;
-	}
-	public void setSubL1(Long subL1) {
-		SubL1 = subL1;
-	}
-	
-	public Long getDocumentId() {
-		return DocumentId;
-	}
-	public void setDocumentId(Long documentId) {
-		DocumentId = documentId;
-	}
+	private String DocumentName;
 	private String CreatedBy;
 	private String CreatedDate;
 	private int IsActive;
-	public Long getFileRepId() {
-		return FileRepId;
-	}
-	public void setFileRepId(Long fileRepositoryId) {
-		FileRepId = fileRepositoryId;
-	}
-	
-	public Long getProjectId() {
-		return ProjectId;
-	}
-	public void setProjectId(Long projectId) {
-		ProjectId = projectId;
-	}
-
-	public Long getFileRepMasterId() {
-		return FileRepMasterId;
-	}
-	public void setFileRepMasterId(Long fileRepMasterId) {
-		FileRepMasterId = fileRepMasterId;
-	}
-	
-	public String getCreatedBy() {
-		return CreatedBy;
-	}
-	public void setCreatedBy(String createdBy) {
-		CreatedBy = createdBy;
-	}
-	public String getCreatedDate() {
-		return CreatedDate;
-	}
-	public void setCreatedDate(String createdDate) {
-		CreatedDate = createdDate;
-	}
-	public int getIsActive() {
-		return IsActive;
-	}
-	public void setIsActive(int isActive) {
-		IsActive = isActive;
-	}
-	public Long getVersionDoc() {
-		return VersionDoc;
-	}
-	public void setVersionDoc(Long versionDoc) {
-		VersionDoc = versionDoc;
-	}
-	public Long getReleaseDoc() {
-		return ReleaseDoc;
-	}
-	public void setReleaseDoc(Long releaseDoc) {
-		ReleaseDoc = releaseDoc;
-	}
 	
 	
 }

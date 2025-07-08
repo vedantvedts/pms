@@ -123,8 +123,20 @@ overflow-x:hidden !important;
     background-color :#000;
     z-index: 1;
 }
+.F{
+ background: #FF69B4;
+    color: white;   
+}
+.S{
+background: #72cd23;
+    color: white;
+}
 
 
+.H{
+background: #FF8C00;
+    color: white;
+}
 </style>
  <!-- ------------------------------- tree css ------------------------------- -->
 
@@ -273,6 +285,13 @@ height:18px;
                               	
                               		</select>
                               		</div>
+                              		
+                              		<div class="col-md-7" style="text-align: right;">
+                              	      		<span style="background-color: #72cd23;padding: 0px 15px;border-radius: 3px;"></span><span>&nbsp; Software  </span>
+                              		<span style="background-color: #FF8C00;padding: 0px 15px;border-radius: 3px;"></span><span> &nbsp;Hardware </span>
+                              		<span style="background-color: #FF69B4;padding: 0px 15px;border-radius: 3px;"></span><span> &nbsp;Firmware  </span>
+                              		</div>
+                              		
                               		</div>
                               					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
                               					
@@ -469,7 +488,7 @@ if(ses1!=null){	%>
 												 
 												 
 												
-										             <span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
+										             <span  class="<%=level1[12].toString()%>" style="cursor:pointer;font-weight: 600;font-size: 1.7em;"  <%if(!level1[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level1[13].toString() %>, <%=level1[10] %>"  <%} %>> 
 										           <%=level1[3] %>
 										                
 										             </span> 
@@ -533,7 +552,7 @@ if(ses1!=null){	%>
 																 
 																 );" >
 															  
-															       <span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
+															       <span class="<%=level2[12].toString()%>" style="cursor:pointer;font-weight: 600;font-size: 1.7em;"  <%if(!level2[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level2[13].toString() %>, <%=level2[10] %>"  <%} %>> 
 			                          			                              <%=level2[3] %>
 			                          			                   </span>
 			                          			                   
@@ -596,7 +615,7 @@ if(ses1!=null){	%>
 																			 );" >									
 																		
 																		
-																		<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;" >
+																		<span class="<%=level3[12].toString()%>" style="cursor:pointer;font-weight: 600;font-size: 1.7em;"   <%if(!level3[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level3[13].toString() %>, <%=level3[10] %>"  <%} %>>
 			                          			                             
 			                          			                                <%=level3[3] %>
 			                          			                                
@@ -608,7 +627,7 @@ if(ses1!=null){	%>
 													              </div>
 													              
 													              <div class="actions">
-																	       <button class="update" onclick="EditModal('<%=level3[0]%>','<%=level3[3]%>','<%=level3[6]%>','<%=level3[7]%>','3','<%=level3[9]%> %>','<%=level3[10]%> %>')" ><img src="view/images/edit.png" ></button>
+																	       <button class="update" onclick="EditModal('<%=level3[0]%>','<%=level3[3]%>','<%=level3[6]%>','<%=level3[7]%>','3','<%=level3[9]%>','<%=level3[10]%>')" ><img src="view/images/edit.png" ></button>
 																	          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 																		         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																			     <input type="hidden" name="Action" value="TD">
@@ -662,7 +681,7 @@ if(ses1!=null){	%>
 																			 );" >
 																		
 																		
-																		<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;" >
+																		<span class="<%=level4[12].toString()%>" style="cursor:pointer;font-weight: 600;font-size: 1.7em;"  <%if(!level4[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level4[13].toString() %>, <%=level4[10] %>"  <%} %>>
 			                          			                             
 			                          			                                <%=level4[3] %>
 			                          			                                
@@ -678,7 +697,7 @@ if(ses1!=null){	%>
 																
 																 
 													              <div class="actions">
-																	       <button class="update" onclick="EditModal('<%=level4[0]%>','<%=level4[3]%>','<%=level4[6]%>','<%=level4[7]%>','4','<%=level4[9]%> %>','<%=level4[10]%> %>')" ><img src="view/images/edit.png" ></button>
+																	       <button class="update" onclick="EditModal('<%=level4[0]%>','<%=level4[3]%>','<%=level4[6]%>','<%=level4[7]%>','4','<%=level4[9]%>','<%=level4[10]%>')" ><img src="view/images/edit.png" ></button>
 																	          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
 																		         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																			     <input type="hidden" name="Action" value="TD">
@@ -728,7 +747,7 @@ if(ses1!=null){	%>
 																			 
 																			 );" >
 																		
-																		<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;" >
+																		<span class="<%=level5[12].toString()%>" style="cursor:pointer;font-weight: 600;font-size: 1.7em;"  <%if(!level5[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level5[13].toString() %>, <%=level5[10] %>"  <%} %>>
 			                          			                             
 			                          			                                <%=level5[3] %>
 			                          			                                
@@ -792,7 +811,7 @@ if(ses1!=null){	%>
 																			 
 																			 );" >
 																		
-																		<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;" >
+																		<span class="<%=level6[12].toString()%>" style="cursor:pointer;font-weight: 600;font-size: 1.7em;"  <%if(!level6[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level6[13].toString() %>, <%=level6[10] %>"  <%} %>>
 			                          			                             
 			                          			                                <%=level6[3] %>
 			                          			                                
@@ -857,7 +876,7 @@ if(ses1!=null){	%>
 																			 
 																			 );" >
 																		
-																		<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;" >
+																		<span class="<%=level7[12].toString()%>" style="cursor:pointer;font-weight: 600;font-size: 1.7em;" <%if(!level7[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level7[13].toString() %>, <%=level7[10] %>"  <%} %> >
 			                          			                             
 			                          			                                <%=level7[3] %>
 			                          			                                
@@ -893,7 +912,7 @@ if(ses1!=null){	%>
 															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 															
 															<form action="LevelNameAdd.htm" method="get">
-													            <input type="text" class="description-input" name="LevelName" required >
+													            <input type="text" name="LevelName" required >
 													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#7#<%=level6[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%>.<%=countF%>#<%=initiationId %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													              <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
 													         </form>    
@@ -923,7 +942,7 @@ if(ses1!=null){	%>
 															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 															
 															<form action="LevelNameAdd.htm" method="get">
-													            <input type="text" class="description-input" name="LevelName" required >
+													            <input type="text" name="LevelName" required >
 													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#6#<%=level5[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%>#<%=initiationId %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													              <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
 													         </form>    
@@ -952,7 +971,7 @@ if(ses1!=null){	%>
 															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 															
 															<form action="LevelNameAdd.htm" method="get">
-													            <input type="text" class="description-input" name="LevelName" required >
+													            <input type="text" name="LevelName" required >
 													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#5#<%=level4[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>#<%=initiationId %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													              <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
 													         </form>    
@@ -982,7 +1001,7 @@ if(ses1!=null){	%>
 															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 															
 															<form action="LevelNameAdd.htm" method="get">
-													            <input type="text" class="description-input" name="LevelName" required >
+													            <input type="text" name="LevelName" required >
 													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#4#<%=level3[0]%>#<%=count%>.<%=countA%>.<%=countB%>.<%=countC%>#<%=initiationId %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													              <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
 													         </form>    
@@ -1013,7 +1032,7 @@ if(ses1!=null){	%>
 															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 															
 															<form action="LevelNameAdd.htm" method="get">
-													            <input type="text" class="description-input" name="LevelName" required >
+													            <input type="text" name="LevelName" required >
 													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#3#<%=level2[0]%>#<%=count%>.<%=countA%>.<%=countB%>#<%=initiationId %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 													              <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
 													         </form>    
@@ -1042,7 +1061,7 @@ if(ses1!=null){	%>
 											<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 											
 											<form action="LevelNameAdd.htm" method="get">
-									            <input type="text" class="description-input" name="LevelName" required >
+									            <input type="text" name="LevelName" required >
 									            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#2#<%=level1[0]%>#<%=count%>.<%=countA%>#<%=initiationId %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 									              <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
 									         </form>    
@@ -1069,7 +1088,7 @@ if(ses1!=null){	%>
                          <div class="member-view-box action-view-box">
 							<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 					            <form action="LevelNameAdd.htm" method="get">
-						            <input type="text" class="description-input" name="LevelName" required>
+						            <input type="text" name="LevelName" required>
 						            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#1#0#<%=count %>#<%=initiationId %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
 									           <input type="hidden" name="ProjectType" value="<%=ProjectType%>">   
 							   </form>    
@@ -1120,7 +1139,7 @@ if(ses1!=null){	%>
         	<table style="width: 100%;">
         		<tr>
         			<th>Level Name : &nbsp; </th>
-        			<td><input type="text" class="form-control description-input" name="LevelName" id="levelname" required></td>
+        			<td><input type="text" class="form-control" name="LevelName" id="levelname" required></td>
         		</tr>
         		
         		
@@ -1128,7 +1147,7 @@ if(ses1!=null){	%>
         			<th >Stage : &nbsp; </th>
         			<td >
         			
-        			<select class="form select selectdee " name="Stage"  id="stage"  required style="width:100%;">
+        			<select class="form select selectdee " name="Stage"  id="stage"   style="width:100%;">
         			
         			        <option value="Design">Design</option>
 		      				<option value="Realisation">Realisation</option>
@@ -1146,8 +1165,8 @@ if(ses1!=null){	%>
         			     <th >Module : &nbsp; </th>
         			<td >
         			
-        			<select class="form select selectdee" id="Module" name="Module"  required style="width:100%;">
-        			
+        			<select class="form select selectdee" id="Module" name="Module"   style="width:100%;">
+        					
         			        <option value="In-House-Development">In-House-Development</option>
 		      				<option value="BTP">BTP</option>
 		      				<option value="BTS">BTS</option>
@@ -1167,6 +1186,18 @@ if(ses1!=null){	%>
         			</select>
         		</td>
         		</tr>
+        		<!-- <tr id="issoftwareTr">
+        		<th>
+        		Is Software:
+        		</th>
+        		<td>
+        		<select class="form select selectdee IsSoftware"  name="IsSoftware"   style="width:100%;">
+        		<option value="" selected="selected" disabled="disabled" >Select</option>
+        		<option value="Y">YES</option>
+        		<option value="N">NO</option>
+        		</select>
+        		</td>
+        		</tr> -->
         		<tr>
         			<td colspan="2" style="text-align: center;">
         				<br>
@@ -1250,6 +1281,13 @@ if(ses1!=null){	%>
   	$('#Mainid').val(mainid);			
   	$('#levelname').val(levelname);
   	
+  	/* $('select[name="IsSoftware"]').val(IsSoftware).trigger('change');
+  	
+  	if(IsSoftware==='Y' && IsSoftwareMain==='Y'){
+  		$('#issoftwareTr').hide();
+  	}else{
+  		$('#issoftwareTr').show();
+  	} */
   	
     var sid = $('#sid').val();
 	  
@@ -1268,7 +1306,7 @@ if(ses1!=null){	%>
 		 	var html ='<option value="" disabled selected>SELECT</option>';
 		 	
 		 	for(var i=0;i<subSyestem.length;i++){
-		 		html= html+'<option value="'+subSyestem[i][0]+"#"+subSyestem[i][10]+ '">'+subSyestem[i][3]+'</option>'
+		 		html= html+'<option value="'+subSyestem[i][0]+"#"+subSyestem[i][10]+ '">'+subSyestem[i][3]+'( '+subSyestem[i][10]+' )'  +'</option>'
 		 	}
 			
 		 	$('#subSystem').html(html);
@@ -1404,6 +1442,10 @@ if(ses1!=null){	%>
   	 $('#Module').html(p);	
   	 
 
+  
+  	 
+
+  	 
   }
   
   var subSyestem = [];
@@ -1446,6 +1488,10 @@ if(ses1!=null){	%>
 function submit(myfrm){
 	$('#'+myfrm).submit();
 }
+
+$(function () {
+	$('[data-toggle="tooltip"]').tooltip()
+	})
 
 </script>
 

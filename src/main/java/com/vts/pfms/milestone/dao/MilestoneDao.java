@@ -1,6 +1,7 @@
 package com.vts.pfms.milestone.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.milestone.dto.MileEditDto;
@@ -41,9 +42,6 @@ public interface MilestoneDao {
 	public int ActivityLevelEditUpdate(MileEditDto dto) throws Exception;
 	public int ActivityLevelFullEdit(MileEditDto dto) throws Exception;
 	public int MilestoneActivityUpdate(MileEditDto dto) throws Exception;
-	public int ActivityUpdateA(MileEditDto dto) throws Exception;
-	public int ActivityUpdateB(MileEditDto dto) throws Exception;
-	public int ActivityUpdateC(MileEditDto dto) throws Exception;
 	public List<Object[]> ActivityCompareMAin(String ActivityId,String Rev,String Rev1) throws Exception;
 	public List<Object[]> ActivityLevelCompare(String ActivityId,String Rev,String Rev1,String LevelId) throws Exception;
 	public List<Object[]> MilestoneActivityEmpIdList(String EmpId) throws Exception;
@@ -51,7 +49,6 @@ public interface MilestoneDao {
 	public int ActivityProgressMainUpdate(MileEditDto dto) throws Exception;
 	public int ActivityProgressUpdateLevel(MileEditDto dto) throws Exception;
 	public List<Object[]> MilestoneReportsList(String ProjectId) throws Exception;
-	public int MilestoneTotalWeightage(String MilestoneActivityId) throws Exception;
 	public long MilestoneActivitySubInsert(MilestoneActivitySub sub)throws Exception;
 	public List<Object[]> MilestoneActivitySub(String ActivityId,String Type) throws Exception;
     public com.vts.pfms.milestone.model.MilestoneActivitySub ActivityAttachmentDownload(Long ActivitySubId)throws Exception;
@@ -130,5 +127,18 @@ public interface MilestoneDao {
 	public int mileStoneSerialNoUpdate(String newslno, String milestoneActivityId);
 	public List<Object[]> getAllMilestoneActivityList() throws Exception;
 	public List<Object[]> getAllMilestoneActivityLevelList() throws Exception;
+	public List<Object[]> getOldFileDocNames(String projectId,String fileType,String fileId) throws Exception;
+	public FileRepNew getFileRepById(long fileRepId)throws Exception;
+	public List<Object[]> FileRepDocsList(String projectId)throws Exception;
+	public Optional<FileRepUploadNew> getFileById(Long id)throws Exception;
+	public int getFileRepMasterNames(String projectId, String fileType, String fileId, String fileName)throws Exception;
+	public Optional<FileRepMaster> getFileRepMasterById(long filerepmasterId)throws Exception;
+	public List<Object[]> findByFilePathStartingWith(String levelType, Long projectId, Long mainRepMasterId, Long subRepMasterId, String oldName)throws Exception;
+	public void updateFileRepUploadById(Long uploadId, String updatedPath)throws Exception;
+	public MilestoneActivityLevel getMilestoneActivityLevelById(String id);
+	public String getMainLevelId(Long getActivityId)throws Exception;
+	public String getProjectIdByMainLevelId(String id)throws Exception;
+	public MilestoneActivity getMilestoneActivityById(String id);
+	public List<Object[]> actionAssigneeList(String EmpId) throws Exception;
 
 }

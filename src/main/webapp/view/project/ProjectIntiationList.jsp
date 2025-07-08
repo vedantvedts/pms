@@ -239,37 +239,31 @@ milelist.add(new Object[]{4, "CCM"});
 milelist.add(new Object[]{5, "DMC"});
 milelist.add(new Object[]{6, "Sanction"});
 
+String labcode= (String) session.getAttribute("labcode");
 %>
 
 
 
-<%
-   String ses = request.getParameter("result");
-   String ses1 = (String) request.getAttribute("resultfail");
-   String validMsg = request.getParameter("resultfail");
-   
-   String errorMsg = null;
+	<%String ses=(String)request.getParameter("result"); 
+ String ses1=(String)request.getAttribute("resultfail");
+	if(ses1!=null){
+	%>
 
-   if (ses1 != null && !ses1.trim().isEmpty()) {
-       errorMsg = ses1;
-   } else if (validMsg != null && !validMsg.trim().isEmpty()) {
-       errorMsg = validMsg;
-   }
 
-   if (errorMsg != null) {%>
-    <div align="center">
-        <div class="alert alert-danger" role="alert">
-            <%= errorMsg  %>
-        </div>
-    </div>
-<%} if (ses != null) {%>
-    <div align="center">
-        <div class="alert alert-success" role="alert">
-            <%= ses %>
-        </div>
-    </div>
-<%}%>
+	<div align="center">
 
+		<div class="alert alert-danger" role="alert">
+			<%=ses1 %>
+		</div>
+	</div>
+	<%}if(ses!=null){ %>
+	<div align="center">
+		<div class="alert alert-success" role="alert">
+			<%=ses %>
+		</div>
+
+	</div>
+	<%} %>
 
 
 	<br>
@@ -528,7 +522,8 @@ milelist.add(new Object[]{6, "Sanction"});
 														<input type="hidden" name="${_csrf.parameterName}"
 															value="${_csrf.token}" />
 													</form>
-							
+											
+											<%if(!labcode.equalsIgnoreCase("ADE")){ %>
 													<form action="ProjectIntiationForward.htm" method="POST"
 														name="myfrm" style="display: inline">
 														<button class="editable-clicko" name="InitiationId"
@@ -549,6 +544,7 @@ milelist.add(new Object[]{6, "Sanction"});
 															type="hidden" name="pdd" value="<%=obj[9] %>" /> <input
 															type="hidden" name="labcode" value="<%=obj[10] %>">
 													</form>
+													<%} %>
 							
 													<form action="ProjectIntiationListSubmit.htm" method="POST"
 														name="myfrm" style="display: inline">
@@ -587,6 +583,7 @@ milelist.add(new Object[]{6, "Sanction"});
 															name="initiationid" value="<%=obj[0] %>" />
 													 </form>
 													 
+													 <%if(labcode.equalsIgnoreCase("ADE")){ %>
 														<button class="editable-clicko" type="button" name="InitiationId" onclick="openMilestone('<%=obj[0]%>','<%=obj[5] %>')"
 															value="<%=obj[0]%>">
 															<div class="cc-rockmenu">
@@ -598,9 +595,30 @@ milelist.add(new Object[]{6, "Sanction"});
 																</div>
 															</div>
 														</button>
+														
+														<%} %>
 														<input type="hidden" name="${_csrf.parameterName}"
 															value="${_csrf.token}" /> <input type="hidden"
 															name="initiationid" value="<%=obj[0] %>" />
+												
+												
+										<form action="IntiationFlow.htm" method="POST"
+														name="myfrm" style="display: inline">
+														<button class="editable-clicko" name="InitiationId"
+															value="<%=obj[0]%>">
+															<div class="cc-rockmenu">
+																<div class="rolling">
+																	<figure class="rolling_icon">
+																		<img src="view/images/assign.jpg">
+																	</figure>
+																	<span>Approval Flow</span>
+																</div>
+															</div>
+														</button>
+														<input type="hidden" name="${_csrf.parameterName}"
+															value="${_csrf.token}" /> <input type="hidden"
+															name="initiationid" value="<%=obj[0] %>" />
+													 </form>
 												
 												</div>
 											</div>
@@ -646,7 +664,8 @@ milelist.add(new Object[]{6, "Sanction"});
 
 					<hr>
 
-					<div class="row">
+
+<%-- 					<div class="row">
 						<div class="col-md-12" style="text-align: center;">
 							<b>Approval Flow</b>
 						</div>
@@ -715,7 +734,9 @@ milelist.add(new Object[]{6, "Sanction"});
 				                		</td> -->
 							</tr>
 						</table>
-					</div>
+					</div> --%>
+					
+					
 				</div>
 			</div>
 		</div>

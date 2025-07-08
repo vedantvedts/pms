@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +27,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.FormatConverter;
+import com.vts.pfms.admin.dao.AdminDao;
+import com.vts.pfms.cars.dao.CARSDao;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
 import com.vts.pfms.project.dao.ProjectDao;
@@ -53,6 +56,7 @@ import com.vts.pfms.project.model.InitiationAbbreviations;
 import com.vts.pfms.project.model.PfmsApproval;
 import com.vts.pfms.project.model.PfmsInitiation;
 import com.vts.pfms.project.model.PfmsInitiationAppendix;
+import com.vts.pfms.project.model.PfmsInitiationApproval;
 import com.vts.pfms.project.model.PfmsInitiationAttachment;
 import com.vts.pfms.project.model.PfmsInitiationAttachmentFile;
 import com.vts.pfms.project.model.PfmsInitiationAuthority;
@@ -78,6 +82,7 @@ import com.vts.pfms.project.model.PfmsRequirementApproval;
 import com.vts.pfms.project.model.PfmsRisk;
 import com.vts.pfms.project.model.PfmsRiskRev;
 import com.vts.pfms.project.model.PlatformMaster;
+import com.vts.pfms.project.model.PmsInitiationApprovalTransaction;
 import com.vts.pfms.project.model.PreprojectFile;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMactroDetailsBrief;
@@ -131,6 +136,10 @@ public class ProjectServiceImpl implements ProjectService {
 	@Autowired
 	RequirementDao reqDao;
 
+	
+	@Autowired AdminDao admindao;
+	@Autowired CARSDao carsdao;
+	
 	@Override
 	public List<Object[]> ProjectIntiationList(String Empid, String LoginType, String LabCode) throws Exception {
 
@@ -684,6 +693,7 @@ public class ProjectServiceImpl implements ProjectService {
 		schedule.setMilestonestartedfrom(projectscheduledto.getMilestonestartedfrom());
 		schedule.setMilestoneMonth(Integer.parseInt(projectscheduledto.getMileStoneMonth()));
 		schedule.setStartDate(initiation.getStartDate());
+		schedule.setFinancialOutlay(projectscheduledto.getFinancialOutlay()!=null?projectscheduledto.getFinancialOutlay():schedule.getFinancialOutlay()  );
 		schedule.setEndDate(initiation.getStartDate()!=null?LocalDate.parse(initiation.getStartDate()).plusMonths(schedule.getMilestoneMonth()).toString():null);
 		schedule.setMilestoneRemark(projectscheduledto.getMileStoneRemark());
 		schedule.setModifiedBy(projectscheduledto.getModifiedBy());
@@ -1075,13 +1085,13 @@ public class ProjectServiceImpl implements ProjectService {
 		
 		pfmsapproval.setInitiationId(Long.parseLong(InitiationId));
 		pfmsapproval.setProjectStatus("PST");
-		pfmsapproval.setEmpId(DivisionHeadId);
+		pfmsapproval.setEmpId(DivisionHeadId.longValue());
 		pfmsapproval.setActionBy(UserId);
 		pfmsapproval.setActionDate(sdf1.format(new Date()));
 		
 		
 		
-		notification.setEmpId(DivisionHeadId);
+		notification.setEmpId(DivisionHeadId.longValue());
 		notification.setNotificationby(Long.parseLong(EmpId));
 		notification.setNotificationDate(sdf1.format(new Date()));
 		notification.setNotificationMessage("Pending Project Approval for " + ProjectCode + " from User");
@@ -1278,11 +1288,11 @@ public class ProjectServiceImpl implements ProjectService {
 		Long Empid = dao.EmpId(InitiationId);
 		Long RtmddoId = dao.RtmddoId();
 		if (Status.equalsIgnoreCase("DOR")) {
-			notification.setEmpId(RtmddoId);
+			notification.setEmpId(RtmddoId.longValue());
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from DO");
 			notification.setNotificationUrl("ProjectApprovalRtmddo.htm");
 		} else if (Status.equalsIgnoreCase("DOI")) {
-			notification.setEmpId(Empid);
+			notification.setEmpId(Empid.longValue());
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from DO");
 			notification.setNotificationUrl("ProjectIntiationList.htm");
 		}
@@ -1363,15 +1373,15 @@ public class ProjectServiceImpl implements ProjectService {
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from AD");
 			notification.setNotificationUrl("ProjectApprovalTcc.htm");
 		}else if (Status.equalsIgnoreCase("ADI")) {
-			notification.setEmpId(Empid);
+			notification.setEmpId(Empid.longValue());
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from AD");
 			notification.setNotificationUrl("ProjectIntiationList.htm");
 		}else if (Status.equalsIgnoreCase("ADO")) {
-			notification.setEmpId(DivisionHeadId);
+			notification.setEmpId(DivisionHeadId.longValue());
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from AD");
 			notification.setNotificationUrl("ProjectApprovalPd.htm");
 		}else if (Status.equalsIgnoreCase("ADT")) {
-			notification.setEmpId(DORTMTDId);
+			notification.setEmpId(DORTMTDId.longValue());
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from AD");
 			notification.setNotificationUrl("ProjectApprovalRtmddo.htm");
 		}
@@ -1415,15 +1425,15 @@ public class ProjectServiceImpl implements ProjectService {
 		Long DivisionHeadId = dao.DivisionHeadId(Empid.toString());
 		Long TccChairpersonId = dao.AdId();
 		if (Status.equalsIgnoreCase("RTR")) {
-			notification.setEmpId(TccChairpersonId);
+			notification.setEmpId(TccChairpersonId.longValue());
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from RTMDDO");
 			notification.setNotificationUrl("ProjectApprovalAd.htm");
 		} else if (Status.equalsIgnoreCase("RTI")) {
-			notification.setEmpId(Empid);
+			notification.setEmpId(Empid.longValue());
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from RTMDDO");
 			notification.setNotificationUrl("ProjectIntiationList.htm");
 		} else if (Status.equalsIgnoreCase("RTD")) {
-			notification.setEmpId(DivisionHeadId);
+			notification.setEmpId(DivisionHeadId.longValue());
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from RTMDDO");
 			notification.setNotificationUrl("ProjectApprovalPd.htm");
 		}
@@ -1479,23 +1489,23 @@ public class ProjectServiceImpl implements ProjectService {
 		Long CcmChairpersonId = dao.CcmChairpersonId(Labcode);
 		Long DORTMTDId = dao.RtmddoId();
 		if (Status.equalsIgnoreCase("PTA") || Status.equalsIgnoreCase("PDR")) {
-			notification.setEmpId(CcmChairpersonId);
+			notification.setEmpId(CcmChairpersonId.longValue());
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from TCM");
 			notification.setNotificationUrl("ProjectApprovalTcc.htm");
 		} else if (Status.equalsIgnoreCase("PTI") || Status.equalsIgnoreCase("DRI")) {
-			notification.setEmpId(Empid);
+			notification.setEmpId(Empid.longValue());
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from TCM");
 			notification.setNotificationUrl("ProjectIntiationList.htm");
 		} else if (Status.equalsIgnoreCase("PTD") || Status.equalsIgnoreCase("DRD")) {
-			notification.setEmpId(DivisionHeadId);
+			notification.setEmpId(DivisionHeadId.longValue());
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from TCM");
 			notification.setNotificationUrl("ProjectApprovalPd.htm");
 		} else if (Status.equalsIgnoreCase("PTR") || Status.equalsIgnoreCase("DRR")) {
-			notification.setEmpId(DORTMTDId);
+			notification.setEmpId(DORTMTDId.longValue());
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from TCM");
 			notification.setNotificationUrl("ProjectApprovalRtmddo.htm");
 		} else if (Status.equalsIgnoreCase("PTY") || Status.equalsIgnoreCase("DAD")) {
-			notification.setEmpId(TccChairpersonId);
+			notification.setEmpId(TccChairpersonId.longValue());
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from TCM");
 			notification.setNotificationUrl("ProjectApprovalAd.htm");
 		}
@@ -2221,7 +2231,7 @@ public class ProjectServiceImpl implements ProjectService {
 		rev.setRemarks(remarks);
 		rev.setPlatformId(master.getPlatformId()); //srikant
 		rev.setPlatform(master.getPlatform()); // srikant
-		
+
 		return dao.ProjectREVSubmit(rev);
 	}
 
@@ -3627,5 +3637,232 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 			
 			return dao.getPlatformByPlatformId(platformId);
 		}
-
+		//29-04-2025
+		@Override
+		public PfmsInitiationApproval getPfmsInitiationApprovalById(String enoteId) throws Exception {
+			return dao.getPfmsInitiationApprovalById(enoteId);
+		}
+		
+		@Override
+		public long savePfmsInitiationApproval(PfmsInitiationApproval pe) throws Exception {
+		
+			return dao.savePfmsInitiationApproval(pe);
+		}
+		
+		@Override
+		public Object[] InitiationApprovalData(String initiationid) throws Exception {
+			
+			return dao.InitiationApprovalData(initiationid);
+		}
+		
+		@Override
+		public long InitiationForward(PfmsInitiationApproval pe, String remarks, Long empId, String flow, String username)
+		throws Exception {
+			try {
+			Long ENoteId=pe.getEnoteId();
+			String EnoteStatusCode = pe.getEnoteStatusCode();
+			String EnoteStatusCodeNext = pe.getEnoteStatusCodeNext();
+			Long NotifyEmpId=0l;
+			List<String> forwardstatus = Arrays.asList("INI","RR1","RR2","RR3","RR4","RR5","RAP","REV");
+			List<String> reforwardstatus = Arrays.asList("RR1","RR2","RR3","RR4","RR5","RAP");
+			
+			
+			if(flow.equalsIgnoreCase("A")) {
+				if(EnoteStatusCodeNext.equalsIgnoreCase("APR")) {
+					EnoteStatusCode="APR";
+					EnoteStatusCodeNext="APR";
+					pe.setEnoteStatusCode(EnoteStatusCode);
+					pe.setEnoteStatusCodeNext(EnoteStatusCodeNext);
+				
+				}else if(forwardstatus.contains(EnoteStatusCode)) {
+					EnoteStatusCode="FWD";
+					EnoteStatusCodeNext="RC1";
+					pe.setEnoteStatusCode(EnoteStatusCode);
+					pe.setEnoteStatusCodeNext(EnoteStatusCodeNext);
+				}
+				else if(EnoteStatusCode.equalsIgnoreCase("FWD")) {
+					EnoteStatusCode="RC1";
+					if(pe.getRecommend2()!=null) {
+					EnoteStatusCodeNext="RC2";
+					}else if(pe.getRecommend3()!=null) {
+						EnoteStatusCodeNext="RC3";
+					}else {
+						EnoteStatusCodeNext="APR";
+					}
+					pe.setEnoteStatusCode(EnoteStatusCode);
+					pe.setEnoteStatusCodeNext(EnoteStatusCodeNext);
+				}
+				else if(EnoteStatusCode.equalsIgnoreCase("RC1")) {
+					EnoteStatusCode="RC2";
+					if(pe.getRecommend3()!=null) {
+						EnoteStatusCodeNext="RC3";
+						}else  {
+							EnoteStatusCodeNext="APR";
+						}
+					pe.setEnoteStatusCode(EnoteStatusCode);
+					pe.setEnoteStatusCodeNext(EnoteStatusCodeNext);
+				}
+				else if(EnoteStatusCode.equalsIgnoreCase("RC2")) {
+					EnoteStatusCode="RC3";
+					EnoteStatusCodeNext="APR";
+					pe.setEnoteStatusCode(EnoteStatusCode);
+					pe.setEnoteStatusCodeNext(EnoteStatusCodeNext);	
+				}
+				
+			}
+			else if(flow.equalsIgnoreCase("REV")) {
+				EnoteStatusCode="REV";
+				EnoteStatusCodeNext="INI";
+				pe.setEnoteStatusCode(EnoteStatusCode);
+				pe.setEnoteStatusCodeNext(EnoteStatusCodeNext);
+			}
+			else {
+				if(pe.getEnoteStatusCode().equalsIgnoreCase("FWD")) {
+					EnoteStatusCode="RR1";
+				}
+				else if(pe.getEnoteStatusCode().equalsIgnoreCase("RC1")) {
+					if(pe.getEnoteStatusCodeNext().equalsIgnoreCase("RC2")) {
+					EnoteStatusCode="RR2";
+					}else if(pe.getEnoteStatusCodeNext().equalsIgnoreCase("RC3")) {
+						EnoteStatusCode="RR3";
+					}else {
+						EnoteStatusCode="RAP";	
+					}
+				}
+				else if(pe.getEnoteStatusCode().equalsIgnoreCase("RC2")) {
+					if(pe.getEnoteStatusCodeNext().equalsIgnoreCase("RC3")) {
+						EnoteStatusCode="RR3";
+						}else if(pe.getEnoteStatusCodeNext().equalsIgnoreCase("APR")) {
+							EnoteStatusCode="RAP";
+						}
+				}
+				else if(pe.getEnoteStatusCode().equalsIgnoreCase("RC3")) {
+					EnoteStatusCode="RAP";
+				}
+				EnoteStatusCodeNext="INI";
+				pe.setEnoteStatusCode(EnoteStatusCode);
+				pe.setEnoteStatusCodeNext(EnoteStatusCodeNext);
+			}
+			
+			
+			pe.setModifiedBy(username);
+			pe.setModifiedDate(sdf1.format(new Date()));
+			
+			dao.savePfmsInitiationApproval(pe);
+			
+			
+			PmsInitiationApprovalTransaction pt = PmsInitiationApprovalTransaction.builder()
+													.EnoteId(ENoteId)
+													.EnoteStatusCode(EnoteStatusCode)
+													.Remarks(remarks)
+													.ActionBy(empId)
+													.ActionDate(sdf1.format(new Date()))
+													.build();
+			
+			long result=dao.savePmsInitiationApprovalTransaction(pt);
+			
+			String NotificationBy= admindao.EmployeeData(empId.toString())[3].toString();
+			
+			PfmsNotification notification=new PfmsNotification();
+			if(flow!=null && flow.equalsIgnoreCase("A")) {
+				String  nextcode = pe.getEnoteStatusCodeNext();
+				String cuurentCode = pe.getEnoteStatusCode();
+				if(nextcode.equalsIgnoreCase("RC1")) {
+					notification.setIsActive(1);
+					notification.setEmpId(pe.getRecommend1());
+					notification.setNotificationMessage("Initiation Project Forwarded by "+NotificationBy +" for recommendation ! ");
+					notification.setNotificationUrl("InitiationApprovalList.htm");
+				}else if(nextcode.equalsIgnoreCase("RC2")) {
+					notification.setIsActive(1);
+					notification.setEmpId(pe.getRecommend2());
+					notification.setNotificationMessage("Initiation Project Recommended by "+NotificationBy);
+					notification.setNotificationUrl("InitiationApprovalList.htm");
+				}else if(nextcode.equalsIgnoreCase("RC3")) {
+					notification.setIsActive(1);
+					notification.setEmpId(pe.getRecommend3());
+					notification.setNotificationMessage("Initiation Project Recommended by "+NotificationBy+ " for Approval !");
+					notification.setNotificationUrl("InitiationApprovalList.htm");
+				}			
+				else if(cuurentCode.equalsIgnoreCase("APR") && nextcode.equalsIgnoreCase("APR")) {
+					notification.setIsActive(1);
+					notification.setEmpId(pe.getInitiatedBy());
+					notification.setNotificationMessage("Initiation Project is Approved by "+NotificationBy);
+					notification.setNotificationUrl("ProjectIntiationList.htm");
+				}
+				carsdao.addNotifications(notification);
+				}
+			else if(flow.equalsIgnoreCase("R")){
+				notification.setEmpId(pe.getInitiatedBy());
+				notification.setNotificationMessage("Project Returned for checking by "+NotificationBy);
+				notification.setNotificationUrl("ProjectIntiationList.htm");
+				notification.setNotificationby(empId);
+				notification.setIsActive(1);
+				notification.setCreatedBy(username);
+				notification.setCreatedDate(sdf1.format(new Date()));
+				notification.setNotificationDate(sdf1.format(new Date()));
+				carsdao.addNotifications(notification);
+			}
+			
+			
+			
+			return result;
+			
+			
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				return 0;
+			}
+			
+		
+		}
+		
+		
+		@Override
+		public List<Object[]> initiationPendingList(long empId) throws Exception {
+			
+			return dao.initiationPendingList(empId);
+		}
+		
+		@Override
+		public Object[] NewApprovalList(String enoteId) throws Exception {
+			
+			return dao.NewApprovalList(enoteId);
+		}
+		
+		@Override
+		public List<Object[]> EnoteTransactionList(String enoteTrackId) throws Exception {
+			
+			return dao.EnoteTransactionList(enoteTrackId);
+		}
+		
+		@Override
+		public List<Object[]> initiationApprovalList(long empId, String fromDate, String toDate) throws Exception {
+			return dao.initiationApprovalList(empId,fromDate,toDate);
+		}
+		
+		
+		@Override
+		public List<Object[]> InitiationAprrovalPrintDetails(long enoteid) throws Exception {
+			List<Object[]>epdetails =  dao.InitiationAprrovalPrintDetails(enoteid);
+			
+//			List<String>status = Arrays.asList("FWD","RFD","RC1","RC2","RC3","RC4","RC5","APR");
+//			
+//			
+//			List<Object[]>newList= new ArrayList<>();
+//			
+//			for(String s:status) {
+//				
+//				List<Object[]>subList = epdetails.stream().filter(e->e[8].toString().equalsIgnoreCase(s)).collect(Collectors.toList());
+//				
+//				if(subList!=null && subList.size()>0) {
+//					
+//					newList.add(subList.get(subList.size()-1));
+//				}
+//				
+//			}
+			
+			return epdetails;
+			
+		}
 }

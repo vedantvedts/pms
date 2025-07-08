@@ -1,14 +1,19 @@
 package com.vts.pfms.milestone.service;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileSystemException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,11 +25,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.Zipper;
+import com.vts.pfms.committee.dao.ActionDao;
 import com.vts.pfms.committee.dao.CommitteeDao;
+import com.vts.pfms.committee.model.ActionAssign;
 import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.milestone.dao.MilestoneDao;
@@ -62,8 +68,12 @@ public class MilestoneServiceImpl implements MilestoneService {
 	@Autowired
 	CommitteeDao committeDao;
 	
+	@Autowired
+	ActionDao actionDao;
+	
 	FormatConverter fc=new FormatConverter();
 	private static final Logger logger=LogManager.getLogger(MilestoneServiceImpl.class);
+	
 	@Value("${ApplicationFilesDrive}")
     private String FilePath;
 	
@@ -111,6 +121,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 		Milestone.setProgressStatus(0);
 		Milestone.setWeightage(0);
 		Milestone.setIsActive(1);
+		Milestone.setLoading(0);
 		return dao.MilestoneActivity(Milestone);
 	}
 
@@ -145,6 +156,9 @@ public class MilestoneServiceImpl implements MilestoneService {
 		Milestone.setPoint5("Y");
 		Milestone.setPoint6("Y");
 		Milestone.setPoint9("Y");
+		Milestone.setLoading(0);
+		Milestone.setIsMasterData("N");
+		Milestone.setLinkedMilestonId(0l);
 		return dao.MilestoneActivityLevelInsert(Milestone);
 	}
 	
@@ -314,8 +328,10 @@ public class MilestoneServiceImpl implements MilestoneService {
 	}
 
 	@Async
-	private void updateMilestoneLevelProgress(MileEditDto dto)  {
+	@Override
+	public void updateMilestoneLevelProgress(MileEditDto dto)  {
 		
+		System.out.println("Inside ABCD--------------------------------");
 		try {
 			System.out.println(dto.getMilestoneActivityId()+"-----dto.getActivityId()");
 		List<Object[]> BaselineMain=dao.BaseLineMain(dto.getMilestoneActivityId());
@@ -596,46 +612,47 @@ public class MilestoneServiceImpl implements MilestoneService {
 	@Override
 	public int ActivityProgressUpdate(MileEditDto dto) throws Exception {
 		logger.info(new Date() +"Inside  ActivityProgressUpdate ");
-		int result=0;
 		try {
-			String progressdate= new java.sql.Date(dateFormat.parse(dto.getProgressDate()).getTime())+"";
+		int result=0;
+		
+		String progressdate= new java.sql.Date(dateFormat.parse(dto.getProgressDate()).getTime())+"";
+		
 
-
-			Date enddate = fc.getSqlDateFormat().parse(dto.getEndDate());
-			Date progressDate=fc.getSqlDateFormat().parse(progressdate);
-
-			dto.setCreatedDate(fc.getSqlDateFormat().format(new Date()));
-			if("100".equalsIgnoreCase(dto.getProgressStatus())) {
-				dto.setDateOfCompletion(progressdate);
-				if(enddate.after(progressDate)) {
-					dto.setActivityStatusId("3");
-				}else {
-					dto.setActivityStatusId("5");
-				}
-			}
-			else if("0".equalsIgnoreCase(dto.getProgressStatus())) {
-				dto.setActivityStatusId("1");
-			}else {
-				if(enddate.after(progressDate)) {
-					dto.setActivityStatusId("2");
+		Date enddate = fc.getSqlDateFormat().parse(dto.getEndDate());
+		Date progressDate=fc.getSqlDateFormat().parse(progressdate);
+		
+		dto.setCreatedDate(fc.getSqlDateFormat().format(new Date()));
+		if("100".equalsIgnoreCase(dto.getProgressStatus())) {
+		dto.setDateOfCompletion(progressdate);
+		if(enddate.after(progressDate)) {
+		dto.setActivityStatusId("3");
+		}else {
+			dto.setActivityStatusId("5");
+		}
+		}
+		else if("0".equalsIgnoreCase(dto.getProgressStatus())) {
+			dto.setActivityStatusId("1");
+		}else {
+			if(enddate.after(progressDate)) {
+				dto.setActivityStatusId("2");
 				}else {
 					dto.setActivityStatusId("4");
 				}
 			}
-			if("M".equalsIgnoreCase(dto.getActivityType())) {
-				result=dao.ActivityProgressMainUpdate(dto);
+		if("M".equalsIgnoreCase(dto.getActivityType())) {
+			result=dao.ActivityProgressMainUpdate(dto);
+		}
+
+		  if(!"M".equalsIgnoreCase(dto.getActivityType())) {
+			  result=dao.ActivityProgressUpdateLevel(dto);
 			}
 
-			if(!"M".equalsIgnoreCase(dto.getActivityType())) {
-				result=dao.ActivityProgressUpdateLevel(dto);
-			}
-
-			if(result>0) {
-				String dt=fc.getRegularDateFormat().format(new Date());
-				MilestoneActivitySub attach=new MilestoneActivitySub();
-				attach.setActivityId(Long.parseLong(dto.getActivityId()));
-				attach.setProgress(Integer.parseInt(dto.getProgressStatus()));
-				attach.setProgressDate(new java.sql.Date(dateFormat.parse(dto.getProgressDate()).getTime()));
+	        if(result>0) {
+	        	String dt=fc.getRegularDateFormat().format(new Date());
+	        	MilestoneActivitySub attach=new MilestoneActivitySub();
+	        	attach.setActivityId(Long.parseLong(dto.getActivityId()));
+	        	attach.setProgress(Integer.parseInt(dto.getProgressStatus()));
+	        	attach.setProgressDate(new java.sql.Date(dateFormat.parse(dto.getProgressDate()).getTime()));
 				attach.setAttachName(dto.getFileNamePath());
 				attach.setAttachFile(dto.getFilePath());
 				attach.setCreatedBy(dto.getCreatedBy());
@@ -651,54 +668,54 @@ public class MilestoneServiceImpl implements MilestoneService {
 						List<Object[]> BaselineB=dao.BaseLineLevel(objA[0].toString(),"2");
 						for(Object[] objB:BaselineB) {
 							List<Object[]> BaselineC=dao.BaseLineLevel(objB[0].toString(),"3");
-
-							for(Object[] objC:BaselineC) {
-								List<Object[]> BaselineD=dao.BaseLineLevel(objC[0].toString(),"4");
-								for(Object[] objD:BaselineD) {
-									List<Object[]> BaselineE=dao.BaseLineLevel(objD[0].toString(),"5");
-									if(BaselineE.size()>0) {
-										double ProgressD=0.00;
-										for(Object[] objE:BaselineE){
-											ProgressD+=(Double.parseDouble(objE[3].toString())/100)*Double.parseDouble(objE[2].toString());
-										}
-										// status for D
-										String StatusD="1";
-										Date enddateD = fc.getSqlDateFormat().parse(dto.getEndDate());
-										if(Math.round(ProgressD)>=100) {
-											ProgressD=100.00;
-											if(enddateD.after(progressDate)) { // taking progressdate in place of new Date()
-												StatusD="3";
-											}else {
-												StatusD="5";
+							
+								for(Object[] objC:BaselineC) {
+										List<Object[]> BaselineD=dao.BaseLineLevel(objC[0].toString(),"4");
+										for(Object[] objD:BaselineD) {
+											List<Object[]> BaselineE=dao.BaseLineLevel(objD[0].toString(),"5");
+											if(BaselineE.size()>0) {
+												double ProgressD=0.00;
+												for(Object[] objE:BaselineE){
+												ProgressD+=(Double.parseDouble(objE[3].toString())/100)*Double.parseDouble(objE[2].toString());
+												}
+												// status for D
+												String StatusD="1";
+												Date enddateD = fc.getSqlDateFormat().parse(dto.getEndDate());
+												if(Math.round(ProgressD)>=100) {
+													ProgressD=100.00;
+													if(enddateD.after(progressDate)) { // taking progressdate in place of new Date()
+														StatusD="3";
+													}else {
+														StatusD="5";
+													}
+													}
+													else if(Math.round(ProgressD)==0) {
+														StatusD="1";
+													}else {
+														if(enddateD.after(progressDate)) { // taking progressdate in place of new Date()
+															StatusD="2";
+															}else {
+																StatusD="4";
+															}
+														}
+				                                 // dao D update
+												dao.ProgressLevel(objD[0].toString(), StatusD,(int)Math.round(ProgressD),dto);
+												
 											}
-										}
-										else if(Math.round(ProgressD)==0) {
-											StatusD="1";
-										}else {
-											if(enddateD.after(progressDate)) { // taking progressdate in place of new Date()
-												StatusD="2";
-											}else {
-												StatusD="4";
+											
 											}
-										}
-										// dao D update
-										dao.ProgressLevel(objD[0].toString(), StatusD,(int)Math.round(ProgressD),dto);
-
-									}
-
-								}
-
-
-
-							}	
-
+										
+									
+									
+								}	
+							
+							}
+							
+							
+						
 						}
-
-
-
-					}
-
-
+					
+				
 				}
 				//C
 				for(Object[] objMain:BaselineMain) {
@@ -709,47 +726,47 @@ public class MilestoneServiceImpl implements MilestoneService {
 							List<Object[]> BaselineC=dao.BaseLineLevel(objB[0].toString(),"3");
 							for(Object[] objC:BaselineC) {
 								List<Object[]> BaselineD=dao.BaseLineLevel(objC[0].toString(),"4");
-								if(BaselineD.size()>0) {
-									double ProgressC=0.00;
-									for(Object[] objD:BaselineD) {
-
-
-										double ED=(Double.parseDouble(objD[3].toString())/100)*Double.parseDouble(objD[2].toString());
-										ProgressC+=ED;
-
-
-
-									}
-
-									// status for C
-									String StatusC="1";
-									Date enddateC= fc.getSqlDateFormat().parse(dto.getEndDate());
-									if(Math.round(ProgressC)>=100) {
-										ProgressC=100.00;
-										if(enddateC.after(progressDate)) { // taking progressdate in place of new Date()
-											StatusC="3";
-										}else {
-											StatusC="5";
-										}
-									}
-									else if(Math.round(ProgressC)==0) {
-										StatusC="1";
+						if(BaselineD.size()>0) {
+							double ProgressC=0.00;
+						for(Object[] objD:BaselineD) {
+							
+								
+								double ED=(Double.parseDouble(objD[3].toString())/100)*Double.parseDouble(objD[2].toString());
+								ProgressC+=ED;
+								
+								
+							
+							}
+						
+						// status for C
+						String StatusC="1";
+						Date enddateC= fc.getSqlDateFormat().parse(dto.getEndDate());
+						if(Math.round(ProgressC)>=100) {
+							ProgressC=100.00;
+							if(enddateC.after(progressDate)) { // taking progressdate in place of new Date()
+								 StatusC="3";
+							}else {
+								 StatusC="5";
+							}
+							}
+							else if(Math.round(ProgressC)==0) {
+								 StatusC="1";
+							}else {
+								if(enddateC.after(progressDate)) { // taking progressdate in place of new Date()
+									 StatusC="2";
 									}else {
-										if(enddateC.after(progressDate)) { // taking progressdate in place of new Date()
-											StatusC="2";
-										}else {
-											StatusC="4";
-										}
+										 StatusC="4";
 									}
-									dao.ProgressLevel(objC[0].toString(), StatusC,(int)Math.round(ProgressC),dto);
-
-									// dao C update
 								}
+						      dao.ProgressLevel(objC[0].toString(), StatusC,(int)Math.round(ProgressC),dto);
+						      
+                             // dao C update
+						}
 							}
 						}
-					}
-
-
+						}
+					
+				
 				}
 				//B
 				for(Object[] objMain:BaselineMain) {
@@ -758,47 +775,47 @@ public class MilestoneServiceImpl implements MilestoneService {
 						List<Object[]> BaselineB=dao.BaseLineLevel(objA[0].toString(),"2");
 						for(Object[] objB:BaselineB) {
 							List<Object[]> BaselineC=dao.BaseLineLevel(objB[0].toString(),"3");
-							if(BaselineC.size()>0) {
-								double ProgressB=0.00;
-								for(Object[] objC:BaselineC) {
-
-
-									double EC=(Double.parseDouble(objC[3].toString())/100)*Double.parseDouble(objC[2].toString());
-									ProgressB+=EC;
-
-
-
-								}
-
-								// status for B
-								String StatusB="1";
-								Date enddateB = fc.getSqlDateFormat().parse(dto.getEndDate());
-								if(Math.round(ProgressB)>=100) {
-									ProgressB=100.00;
-									if(enddateB.after(progressDate)) {// taking progressdate in place of new Date()
-										StatusB="3";
-									}else {
-										StatusB="5";
-									}
-								}
-								else if(Math.round(ProgressB)==0) {
-									StatusB="1";
-								}else {
-									if(enddateB.after(progressDate)) { // taking progressdate in place of new Date()
-										StatusB="2";
-									}else {
-										StatusB="4";
-									}
-								}
-								dao.ProgressLevel(objB[0].toString(), StatusB,(int)Math.round(ProgressB),dto);
-
-								// dao B update
+						if(BaselineC.size()>0) {
+							double ProgressB=0.00;
+						for(Object[] objC:BaselineC) {
+							
+								
+								double EC=(Double.parseDouble(objC[3].toString())/100)*Double.parseDouble(objC[2].toString());
+								ProgressB+=EC;
+								
+								
+							
 							}
-
+						
+						// status for B
+						String StatusB="1";
+						Date enddateB = fc.getSqlDateFormat().parse(dto.getEndDate());
+						if(Math.round(ProgressB)>=100) {
+							ProgressB=100.00;
+							if(enddateB.after(progressDate)) {// taking progressdate in place of new Date()
+								 StatusB="3";
+							}else {
+								 StatusB="5";
+							}
+							}
+							else if(Math.round(ProgressB)==0) {
+								 StatusB="1";
+							}else {
+								if(enddateB.after(progressDate)) { // taking progressdate in place of new Date()
+									 StatusB="2";
+									}else {
+										 StatusB="4";
+									}
+								}
+						      dao.ProgressLevel(objB[0].toString(), StatusB,(int)Math.round(ProgressB),dto);
+						      
+                             // dao B update
 						}
-					}
-
-
+						
+						}
+						}
+					
+				
 				}
 				//A
 				for(Object[] objMain:BaselineMain) {
@@ -807,54 +824,54 @@ public class MilestoneServiceImpl implements MilestoneService {
 						List<Object[]> BaselineB=dao.BaseLineLevel(objA[0].toString(),"2");
 						if(BaselineB.size()>0) {
 							double ProgressA=0.00;
-							for(Object[] objB:BaselineB) {
-
+						for(Object[] objB:BaselineB) {
+							
 								double EB=(Double.parseDouble(objB[3].toString())/100)*Double.parseDouble(objB[2].toString());
-
+								
 								ProgressA+=EB;
-
-
-
+								
+								
+							
 							}
-
-							// status for A
-							String StatusA="1";
-							Date enddateA = fc.getSqlDateFormat().parse(dto.getEndDate());
-							if(Math.round(ProgressA)>=100) { 
-								ProgressA=100.00;
-								if(enddateA.after(progressDate)) {// taking progressdate in place of new Date()
-									StatusA="3";
-								}else {
-									StatusA="5";
-								}
+						
+						// status for A
+						String StatusA="1";
+						Date enddateA = fc.getSqlDateFormat().parse(dto.getEndDate());
+						if(Math.round(ProgressA)>=100) { 
+							ProgressA=100.00;
+							if(enddateA.after(progressDate)) {// taking progressdate in place of new Date()
+								 StatusA="3";
+							}else {
+								 StatusA="5";
+							}
 							}
 							else if(Math.round(ProgressA)==0) {
-								StatusA="1";
+								 StatusA="1";
 							}else {
 								if(enddateA.after(progressDate)) {  // taking progressdate in place of new Date()
-									StatusA="2";
-								}else {
-									StatusA="4";
+									 StatusA="2";
+									}else {
+										 StatusA="4";
+									}
 								}
-							}
-							dao.ProgressLevel(objA[0].toString(), StatusA,(int)Math.round(ProgressA),dto);
-
-							// dao A update
+						      dao.ProgressLevel(objA[0].toString(), StatusA,(int)Math.round(ProgressA),dto);
+						      
+                             // dao A update
 						}
-
-
-					}
-
-
+						
+						
+						}
+					
+				
 				}
 				for(Object[] objMain:BaselineMain) {
 					List<Object[]> BaselineA=dao.BaseLineLevel(dto.getMilestoneActivityId(),"1");
 					for(Object[] objA:BaselineA) {
-						TotalA+=(Double.parseDouble(objA[3].toString())/100)*Double.parseDouble(objA[2].toString());
-					}
-
+							TotalA+=(Double.parseDouble(objA[3].toString())/100)*Double.parseDouble(objA[2].toString());
+						}
+					
 					// status for Main
-
+					
 					String StatusMain="1";
 					Date enddateMain = fc.getSqlDateFormat().parse(objMain[1].toString());
 					if(Math.round(TotalA)>=100) {
@@ -864,33 +881,32 @@ public class MilestoneServiceImpl implements MilestoneService {
 						}else {
 							StatusMain="5";
 						}
-					}
-					else if(Math.round(TotalA)==0) {
-						StatusMain="1";
-					}else {
-						if(enddateMain.after(progressDate)) {
-							StatusMain="2";
-						}else {
-							StatusMain="4";
 						}
-					}
+						else if(Math.round(TotalA)==0) {
+							StatusMain="1";
+						}else {
+							if(enddateMain.after(progressDate)) {
+								StatusMain="2";
+								}else {
+									StatusMain="4";
+								}
+							}
 					int mainProgress = (int)Math.round(TotalA);
 					String DateOfCompletion = null;
 					if(mainProgress == 100) {
-						DateOfCompletion = LocalDate.now().toString();
+						 DateOfCompletion = LocalDate.now().toString();
 					}
 					dao.ProgressMain(dto.getMilestoneActivityId(), StatusMain,(int)Math.round(TotalA), DateOfCompletion,dto);
 					// dao upadate main
 				}
 			}else {
 				result=0;
-			}
-			return result;
+			}   
+		return result;
 		}catch (Exception e) {
 			e.printStackTrace();
 			return 0;
-		}   
-
+		}
 	}
 
 	@Override
@@ -898,11 +914,6 @@ public class MilestoneServiceImpl implements MilestoneService {
 		return dao.MilestoneReportsList(ProjectId);
 	}
 	
-	@Override
-	public int MilestoneTotalWeightage(String MilestoneActivityId) throws Exception {
-		
-		return dao.MilestoneTotalWeightage(MilestoneActivityId);
-	}
 	@Override
 	public List<Object[]> MilestoneActivitySub(MileEditDto dto) throws Exception {
 		List<Object[]> MileSubata=new ArrayList<Object[]>();
@@ -1556,10 +1567,121 @@ public class MilestoneServiceImpl implements MilestoneService {
  	}
 	
 	@Override
-	public int fileRepMasterEditSubmit(String filerepmasterid,String levelname) throws Exception
+	public int fileRepMasterEditSubmit(String filerepmasterid,String levelname, String levelType) throws Exception
  	{
+		String fileType = levelType.trim().toLowerCase();
+		Optional<FileRepMaster> request = dao.getFileRepMasterById(Long.parseLong(filerepmasterid));
+		if(request.isPresent()) {
+			FileRepMaster repMaster = request.get();
+			  switch (fileType) {
+	          case "mainlevel":
+	  	          Path filepath1 = Paths.get(FilePath, repMaster.getLabCode().toString(), "docrepo", "P"+repMaster.getProjectId().toString(), repMaster.getLevelName());
+	  	          if (Files.exists(filepath1) || Files.isDirectory(filepath1)) {
+	  	            renameMainFolder(levelType, repMaster.getLabCode(), repMaster.getProjectId(), repMaster.getFileRepMasterId(), 0l, levelname.trim(), repMaster.getLevelName().trim());
+	  	          }
+	  	          break;
+	          case "sublevel":
+	        	  Long parentId = repMaster.getParentLevelId();
+	        	  FileRepMaster master = dao.getFileRepMasterById(parentId).get();
+	  	          Path filepath2 = Paths.get(FilePath, repMaster.getLabCode().toString(), "docrepo", "P"+repMaster.getProjectId().toString(), master.getLevelName(), repMaster.getLevelName());
+	  	          if (Files.exists(filepath2) || Files.isDirectory(filepath2)) {
+	  	             renameSubFolder(levelType, repMaster.getLabCode(), repMaster.getProjectId(), parentId, repMaster.getFileRepMasterId(), master.getLevelName().trim(), levelname.trim(), repMaster.getLevelName().trim());
+	  	          }
+	  	          break;
+	          }
+		}
 		return dao.fileRepMasterEditSubmit(filerepmasterid, levelname);
  	}
+	
+    private void renameMainFolder(String levelType, String labCode, Long projectId, Long mainRepMasterId, Long subRepMasterId, String newName, String oldName) throws Exception {
+        Path oldPath = Paths.get(FilePath, labCode, "docrepo", "P"+projectId, oldName);
+        Path newPath = Paths.get(FilePath, labCode, "docrepo", "P"+projectId, newName);
+
+        if (!Files.exists(oldPath) || !Files.isDirectory(oldPath)) {
+            throw new IllegalArgumentException("Main folder not found: " + oldPath);
+        }
+        
+        // Prevent moving into itself
+ 		if (newPath.startsWith(oldPath)) {
+ 		    throw new IllegalArgumentException("Cannot move a folder into its subfolder: " + newPath);
+ 		}
+     		
+ 		try {
+     		// Attempt to rename (move) the folder
+     		   Files.move(oldPath, newPath, StandardCopyOption.REPLACE_EXISTING);
+     	} catch (FileSystemException e) {
+     		// Likely caused by file lock
+     		throw new IOException("Failed to move folder. It may be open or locked by another process: " + e.getMessage(), e);
+ 		}
+
+        List<Object[]> affectedFiles = dao.findByFilePathStartingWith(levelType,projectId,mainRepMasterId,subRepMasterId,oldName);
+        for (Object[] file : affectedFiles) {
+        	Long uploadId = ((Number) file[0]).longValue(); 
+            String oldPathStr = file[4].toString();
+            if (oldPathStr != null) {
+                // Split the path by slash or backslash
+                String[] segments = oldPathStr.split("[/\\\\]");
+                StringBuilder uploadPath = new StringBuilder();
+
+                for (int i = 0; i < segments.length; i++) {
+                    if (segments[i].equals(oldName)) {
+                        segments[i] = newName; // Replace only exact match
+                    }
+                    uploadPath.append(segments[i]);
+                    if (i < segments.length - 1) {
+                    	uploadPath.append(File.separator);
+                    }
+                }
+
+                dao.updateFileRepUploadById(uploadId, uploadPath.toString());
+            }
+        }
+    }
+
+    private void renameSubFolder(String levelType, String labCode, Long projectId, Long mainRepMasterId, Long subRepMasterId, String mainLevelName, String newName, String oldName) throws Exception {
+        Path oldPath = Paths.get(FilePath, labCode, "docrepo", "P"+projectId, mainLevelName, oldName);
+        Path newPath = Paths.get(FilePath, labCode, "docrepo", "P"+projectId, mainLevelName, newName);
+
+        if (!Files.exists(oldPath) || !Files.isDirectory(oldPath)) {
+            throw new IllegalArgumentException("Subfolder not found: " + oldPath);
+        }
+
+        // Prevent moving into itself
+   		if (newPath.startsWith(oldPath)) {
+   		    throw new IllegalArgumentException("Cannot move a folder into its subfolder: " + newPath);
+   		}
+       		
+   		try {
+       		// Attempt to rename (move) the folder
+       		   Files.move(oldPath, newPath, StandardCopyOption.REPLACE_EXISTING);
+       	} catch (FileSystemException e) {
+       		// Likely caused by file lock
+       		throw new IOException("Failed to move folder. It may be open or locked by another process: " + e.getMessage(), e);
+   		}
+
+        List<Object[]> affectedFiles = dao.findByFilePathStartingWith(levelType,projectId,mainRepMasterId,subRepMasterId,oldName);
+        for (Object[] file : affectedFiles) {
+        	Long uploadId = ((Number) file[0]).longValue(); 
+            String oldPathStr = file[4].toString();
+            if (oldPathStr != null) {
+                // Split the path by slash or backslash
+                String[] segments = oldPathStr.split("[/\\\\]");
+                StringBuilder uploadPath = new StringBuilder();
+
+                for (int i = 0; i < segments.length; i++) {
+                    if (segments[i].equals(oldName)) {
+                        segments[i] = newName; // Replace only exact match
+                    }
+                    uploadPath.append(segments[i]);
+                    if (i < segments.length - 1) {
+                    	uploadPath.append(File.separator);
+                    }
+                }
+
+                dao.updateFileRepUploadById(uploadId, uploadPath.toString());
+            }
+        }
+    }
 	
 	@Override
 	public List<FileDocMaster> fileDocMasterList(String LabCode) throws Exception
@@ -1808,10 +1930,51 @@ public class MilestoneServiceImpl implements MilestoneService {
 		long count1=0;
 	
 		 try {
-				String[] Dir=uploadDto.getPathName().split(",");
+			 AtomicReference<Path> fullPathRef = new AtomicReference<>();
+
+			 FileRepUploadNew upload = new FileRepUploadNew();
+			 String fileType = uploadDto.getFileType();
+			 String labCode = uploadDto.getLabCode();
+			 String projectPath = "P" + uploadDto.getProjectId();
+
+			 if ("mainLevel".equalsIgnoreCase(fileType)) {
+			     dao.getFileRepMasterById(Long.parseLong(uploadDto.getFileRepMasterId()))
+			        .ifPresent(repMaster -> {
+			            String levelName = repMaster.getLevelName();
+
+			            Path fullPath = Paths.get(FilePath, labCode, "docrepo", projectPath, levelName);
+			            Path relativePath = Paths.get(labCode, "docrepo", projectPath, levelName);
+
+			            fullPathRef.set(fullPath);
+
+			            upload.setFilePath(relativePath.toString());
+			        });
+
+			 } else if ("subLevel".equalsIgnoreCase(fileType)) {
+			     Optional<FileRepMaster> subLevelOpt = dao.getFileRepMasterById(Long.parseLong(uploadDto.getSubL1()));
+			     
+			     if (subLevelOpt.isPresent()) {
+			         FileRepMaster subLevel = subLevelOpt.get();
+			         Long parentId = subLevel.getParentLevelId();
+			         
+			         Optional<FileRepMaster> parentLevelOpt = dao.getFileRepMasterById(parentId);
+			         
+			         if (parentLevelOpt.isPresent()) {
+			             FileRepMaster parentLevel = parentLevelOpt.get();
+			             
+			             Path fullPath = Paths.get(FilePath, labCode, "docrepo", projectPath,
+			                                       parentLevel.getLevelName(), subLevel.getLevelName());
+			             
+			             Path relativePath = Paths.get(labCode, "docrepo", projectPath,
+			                                           parentLevel.getLevelName(), subLevel.getLevelName());
+
+			             fullPathRef.set(fullPath);
+
+			             upload.setFilePath(relativePath.toString());
+			         }
+			     }
+			 }
 				
-				Path docPath1=Paths.get(uploadDto.getLabCode(),"docrepo",("P"+uploadDto.getProjectId()),Dir[0],Dir[1]);
-				Path docPath2=Paths.get(FilePath,uploadDto.getLabCode(),"docrepo",("P"+uploadDto.getProjectId()),Dir[0],Dir[1]);
 				
 				Zipper zip=new Zipper();
 				String Pass=dao.FilePass(uploadDto.getUserId());
@@ -1825,7 +1988,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 				}
 				
 	            FileRepNew rep = new FileRepNew();
-	            List<Object[]> fileRepUpdate = dao.getFileRepData(uploadDto.getProjectId(),uploadDto.getFileRepMasterId(),uploadDto.getSubL1(),uploadDto.getDocid());
+	            List<Object[]> fileRepUpdate = dao.getFileRepData(uploadDto.getProjectId(),uploadDto.getFileRepMasterId(),uploadDto.getSubL1(),uploadDto.getDocumentName().trim());
 	            if(fileRepUpdate!=null && fileRepUpdate.size()>0) {
 	            	rep.setFileRepId(Long.parseLong(fileRepUpdate.get(0)[0].toString()));
 	 	            rep.setVersionDoc(version);
@@ -1840,21 +2003,20 @@ public class MilestoneServiceImpl implements MilestoneService {
 		            rep.setSubL1(Long.parseLong(uploadDto.getSubL1()));
 		            rep.setVersionDoc(version);
 		            rep.setReleaseDoc(release);
-		            rep.setDocumentId(Long.parseLong(uploadDto.getDocid()));
+		            rep.setDocumentId(0l);
+		            rep.setDocumentName(uploadDto.getDocumentName());
 		            rep.setCreatedBy(uploadDto.getUserId());
 		            rep.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
 		            rep.setIsActive(1);
 		            count1=dao.FileSubInsertNew(rep);
 	            }
 	            
-				FileRepUploadNew upload=new FileRepUploadNew();
 				upload.setFileName(uploadDto.getFileNamePath());
 				upload.setFilePass(Pass);
 				upload.setReleaseDoc(release);
 				upload.setVersionDoc(version);
 				upload.setFileRepId(count1);
-				upload.setFilePath(docPath1.toString());
-				upload.setFileNameUi(uploadDto.getFileName());
+				upload.setFileNameUi(uploadDto.getDocumentName());
 				upload.setCreatedBy(uploadDto.getUserId());
 				upload.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
 				upload.setIsActive(1);
@@ -1863,11 +2025,11 @@ public class MilestoneServiceImpl implements MilestoneService {
 				Long Rev=upload.getReleaseDoc();
 				Long Ver=upload.getVersionDoc();
 				
-				if(count>0) {
-					if (!Files.exists(docPath2)) {
-						Files.createDirectories(docPath2);
+				if(fullPathRef.get() != null && count>0) {
+					if (!Files.exists(fullPathRef.get())) {
+						Files.createDirectories(fullPathRef.get());
 					}
-					zip.pack(uploadDto.getFileNamePath(),uploadDto.getIS(),docPath2.toString(),uploadDto.getFileName()+Ver+"-"+Rev,Pass);
+					zip.pack(uploadDto.getFileNamePath(),uploadDto.getIS(),fullPathRef.get().toString(),uploadDto.getDocumentName()+Ver+"-"+Rev,Pass);
 					
 		        long count2=dao.FileRepRevUpdate(uploadDto.getFileId(),upload.getReleaseDoc(),version);
 		        
@@ -1951,7 +2113,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 		
 		return dao.getMsprojectProcurementStatusList(projectId);
 	}
-	
+
 	@Override
 	public int mileStoneSerialNoUpdate(String[] newslno, String[] milestoneActivityId) {
 		int ret=0;
@@ -1980,4 +2142,263 @@ public class MilestoneServiceImpl implements MilestoneService {
 		return dao.getAllMilestoneActivityLevelList();
 	}
 	
+	@Override
+	public List<Object[]> getOldFileDocNames(String projectId,String fileType,String fileId) throws Exception {
+		
+		return dao.getOldFileDocNames(projectId,fileType,fileId);
+	}
+	
+	@Override
+	public long uploadFileData(FileUploadDto upload, String fileType) throws Exception {
+		try {
+			
+			FileRepNew fileRepNew = new FileRepNew();
+			FileRepUploadNew uploadNew = new FileRepUploadNew();
+			
+			Zipper zip=new Zipper();
+			String Pass=dao.FilePass(upload.getUserId());
+			
+			if(fileType.equalsIgnoreCase("mainLevel")) {
+				Object[] repData = dao.RepMasterData(upload.getFileRepMasterId());
+				
+				Path docPath1=Paths.get(upload.getLabCode(),"docrepo",("P"+upload.getProjectId()),repData[2].toString());
+				Path docPath2=Paths.get(FilePath,upload.getLabCode(),"docrepo",("P"+upload.getProjectId()),repData[2].toString());
+				
+				if(upload.getFileId()!=null && Long.parseLong(upload.getFileId())>0) {
+					
+					FileRepNew fileRep = dao.getFileRepById(Long.parseLong(upload.getFileId()));
+					
+					long version = upload.getIsNewVersion().toString().equalsIgnoreCase("Y") ? fileRep.getVersionDoc() + 1 : fileRep.getVersionDoc();
+					long release = upload.getIsNewVersion().toString().equalsIgnoreCase("Y") ? 0l : fileRep.getReleaseDoc() + 1;
+					
+					fileRepNew.setFileRepId(fileRep.getFileRepId());
+					fileRepNew.setVersionDoc(version);
+					fileRepNew.setReleaseDoc(release);
+					fileRepNew.setCreatedBy(upload.getUserId());
+					fileRepNew.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+					dao.FileRepUpdate(fileRepNew);
+					
+		            uploadNew.setFileName(upload.getFileNamePath());
+		            uploadNew.setFilePass(Pass);
+		            uploadNew.setVersionDoc(version);
+		            uploadNew.setReleaseDoc(release);
+		            uploadNew.setFileRepId(fileRep.getFileRepId());
+		            uploadNew.setFilePath(docPath1.toString());
+		            uploadNew.setFileNameUi(upload.getDocumentName());
+		            uploadNew.setCreatedBy(upload.getUserId());
+		            uploadNew.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		            uploadNew.setIsActive(1);
+					long count = dao.FileUploadInsertNew(uploadNew);
+					
+					 if(count>0) {
+						if (!Files.exists(docPath2)) {
+							Files.createDirectories(docPath2);
+						}
+					   zip.pack(upload.getFileNamePath(),upload.getIS(),docPath2.toString(),upload.getDocumentName()+version+"-"+release,Pass);
+				     }
+					
+				}else {
+					fileRepNew.setProjectId(Long.parseLong(upload.getProjectId()));
+					fileRepNew.setFileRepMasterId(Long.parseLong(upload.getFileRepMasterId()));
+					fileRepNew.setSubL1(Long.parseLong(upload.getSubL1()));
+					fileRepNew.setVersionDoc(Long.parseLong("1"));
+					fileRepNew.setReleaseDoc(Long.parseLong("0"));
+					fileRepNew.setDocumentId(0l);
+					fileRepNew.setDocumentName(upload.getDocumentName());
+					fileRepNew.setCreatedBy(upload.getUserId());
+					fileRepNew.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+					fileRepNew.setIsActive(1);
+		            long count = dao.FileSubInsertNew(fileRepNew);
+		            
+		            uploadNew.setFileName(upload.getFileNamePath());
+		            uploadNew.setFilePass(Pass);
+		            uploadNew.setVersionDoc(Long.parseLong("1"));
+		            uploadNew.setReleaseDoc(Long.parseLong("0"));
+		            uploadNew.setFileRepId(count);
+		            uploadNew.setFilePath(docPath1.toString());
+		            uploadNew.setFileNameUi(upload.getDocumentName());
+		            uploadNew.setCreatedBy(upload.getUserId());
+		            uploadNew.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		            uploadNew.setIsActive(1);
+					long count1 = dao.FileUploadInsertNew(uploadNew);
+					
+					 if(count1>0) {
+						if (!Files.exists(docPath2)) {
+							Files.createDirectories(docPath2);
+						}
+					   zip.pack(upload.getFileNamePath(),upload.getIS(),docPath2.toString(),upload.getDocumentName()+"1-0",Pass);
+				     }
+			    }
+			}else {
+				Object[] repSubData = dao.RepMasterData(upload.getSubL1());
+
+				Path docPath3=Paths.get(upload.getLabCode(),"docrepo",("P"+upload.getProjectId()),repSubData[5].toString(),repSubData[2].toString());
+				Path docPath4=Paths.get(FilePath,upload.getLabCode(),"docrepo",("P"+upload.getProjectId()),repSubData[5].toString(),repSubData[2].toString());
+                
+				 if(upload.getFileId()!=null && Long.parseLong(upload.getFileId())>0) {
+					
+					FileRepNew fileRep = dao.getFileRepById(Long.parseLong(upload.getFileId()));
+					
+					long version = upload.getIsNewVersion().toString().equalsIgnoreCase("Y") ? fileRep.getVersionDoc() + 1 : fileRep.getVersionDoc();
+					long release = upload.getIsNewVersion().toString().equalsIgnoreCase("Y") ? 0l : fileRep.getReleaseDoc() + 1;
+					
+					fileRepNew.setFileRepId(fileRep.getFileRepId());
+					fileRepNew.setVersionDoc(version);
+					fileRepNew.setReleaseDoc(release);
+					fileRepNew.setCreatedBy(upload.getUserId());
+					fileRepNew.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+					dao.FileRepUpdate(fileRepNew);
+					
+		            uploadNew.setFileName(upload.getFileNamePath());
+		            uploadNew.setFilePass(Pass);
+		            uploadNew.setVersionDoc(version);
+		            uploadNew.setReleaseDoc(release);
+		            uploadNew.setFileRepId(fileRep.getFileRepId());
+		            uploadNew.setFilePath(docPath3.toString());
+		            uploadNew.setFileNameUi(upload.getDocumentName());
+		            uploadNew.setCreatedBy(upload.getUserId());
+		            uploadNew.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		            uploadNew.setIsActive(1);
+					long count = dao.FileUploadInsertNew(uploadNew);
+					
+					 if(count>0) {
+						if (!Files.exists(docPath4)) {
+							Files.createDirectories(docPath4);
+						}
+					   zip.pack(upload.getFileNamePath(),upload.getIS(),docPath4.toString(),upload.getDocumentName()+version+"-"+release,Pass);
+				     }
+					
+				}else {
+					fileRepNew.setProjectId(Long.parseLong(upload.getProjectId()));
+					fileRepNew.setFileRepMasterId(Long.parseLong(upload.getFileRepMasterId()));
+					fileRepNew.setSubL1(Long.parseLong(upload.getSubL1()));
+					fileRepNew.setVersionDoc(Long.parseLong("1"));
+					fileRepNew.setReleaseDoc(Long.parseLong("0"));
+					fileRepNew.setDocumentId(0l);
+					fileRepNew.setDocumentName(upload.getDocumentName());
+					fileRepNew.setCreatedBy(upload.getUserId());
+					fileRepNew.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+					fileRepNew.setIsActive(1);
+		            long count = dao.FileSubInsertNew(fileRepNew);
+		            
+		            uploadNew.setFileName(upload.getFileNamePath());
+		            uploadNew.setFilePass(Pass);
+		            uploadNew.setVersionDoc(Long.parseLong("1"));
+		            uploadNew.setReleaseDoc(Long.parseLong("0"));
+		            uploadNew.setFileRepId(count);
+		            uploadNew.setFilePath(docPath3.toString());
+		            uploadNew.setFileNameUi(upload.getDocumentName());
+		            uploadNew.setCreatedBy(upload.getUserId());
+		            uploadNew.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		            uploadNew.setIsActive(1);
+					long count1 = dao.FileUploadInsertNew(uploadNew);
+					
+					 if(count1>0) {
+						if (!Files.exists(docPath4)) {
+							Files.createDirectories(docPath4);
+						}
+					   zip.pack(upload.getFileNamePath(),upload.getIS(),docPath4.toString(),upload.getDocumentName()+"1-0",Pass);
+				     }
+			    }
+			}
+			return 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	@Override
+	public List<Object[]> FileRepDocsList(String fileRepId) throws Exception {
+		return dao.FileRepDocsList(fileRepId);
+	}
+	
+	@Override
+	public Optional<FileRepUploadNew> getFileById(Long id) throws Exception {
+		return dao.getFileById(id);
+	}
+	
+	@Override
+	public int getFileRepMasterNames(String projectId, String fileType, String fileId, String fileName)
+			throws Exception {
+		return dao.getFileRepMasterNames(projectId,fileType,fileId,fileName);
+	}
+	
+	@Override
+	public long removeFileAttachment(String projectId, String techDataId, String techAttachId, String userId) throws Exception {
+		try {
+			ProjectTechnicalWorkData workData = new ProjectTechnicalWorkData();
+			workData.setProjectId(Long.parseLong(projectId));
+			workData.setTechDataId(Long.parseLong(techDataId));
+			workData.setAttachmentId(Long.parseLong(techAttachId));
+			workData.setModifiedBy(userId);
+			workData.setModifiedDate(sdtf.format(new Date()));
+			workData.setIsActive(0);
+			dao.submitCheckboxFile(workData);
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	
+	@Override
+	public MilestoneActivityLevel getMilestoneActivityLevelById(String id) {
+		
+		return dao.getMilestoneActivityLevelById(id);
+	}
+	
+	@Override
+	public long MilestoneActivityLevelSave(MilestoneActivityLevel level1) {
+		try {
+			dao.MilestoneActivityLevelInsert(level1);
+			return 1;
+		}catch (Exception e) {
+				
+			logger.error("Error inside MilestoneActivityLevelSave ",e.getMessage() );
+			return 0;
+		}
+	}
+	
+	@Override
+	public String getMainLevelId(Long getActivityId) throws Exception {
+		
+		return dao.getMainLevelId(getActivityId);
+	}
+	
+	@Override
+	public String getProjectIdByMainLevelId(String id) throws Exception {
+		return dao.getProjectIdByMainLevelId(id);
+	}
+
+	@Override
+	public MilestoneActivity getMilestoneActivityById(String id) {
+
+		return dao.getMilestoneActivityById(id);
+	}
+	
+	@Override
+	public long MilestoneActivitySave(MilestoneActivity activity) throws Exception {
+
+		return dao.MileActivityDetailsUpdtae(activity);
+	}
+	
+	@Override
+	public List<Object[]> actionAssigneeList(String EmpId) throws Exception {
+
+		return dao.actionAssigneeList(EmpId);
+	}
+	
+	@Override
+	public long ActionAssignInsert(ActionAssign assign) throws Exception {
+
+		return actionDao.ActionAssignInsert(assign);
+	}
+
+	@Override
+	public int MilestoneTotalWeightage(String MilestoneActivityId) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

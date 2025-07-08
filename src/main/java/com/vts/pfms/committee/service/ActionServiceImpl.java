@@ -2667,4 +2667,20 @@ public Long rfaCloseForExternal(RfaActionDto rfa) throws Exception {
 public Object[] getActionMainAttachMent(String mainid) throws Exception {
 	return dao.getActionMainAttachMent(mainid);
 }
+
+@Override
+public List<Object[]> TotalActions() throws Exception {
+	return dao.TotalActions();
+}
+
+@Override
+public List<Object[]> getProjects(String empId) throws Exception {
+	return dao.getProjects(empId);
+}
+
+@Override
+public int ActionAssignerEdit(ActionAssign assign) throws Exception {
+	// TODO Auto-generated method stub
+	return dao.ActionAssignerEdit(assign);
+}
 }

@@ -30,6 +30,14 @@ public class PfmsInitiationMacroDetails implements Serializable {
     private String CreatedDate;
     private String ModifiedBy;
     private String ModifiedDate;
+    private String SanctionDate;
+    private String TitleProgramme;
+    private String PDRemarks;
+    private String LabdirectorDetails;
 	private int IsActive;
+	private String prototypeDetails;
+	private String Highdevelopmentrisk;
+	private String designIteration;
+	private String subProjectDetails;
     
 }

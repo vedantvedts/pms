@@ -170,4 +170,8 @@ public interface ActionService {
 	public List<Object[]> getvendorList()throws Exception;
 	public Long rfaCloseForExternal(RfaActionDto rfa)throws Exception;
 	public Object[] getActionMainAttachMent(String mainid)throws Exception;
+	
+	public List<Object[]> TotalActions()throws Exception;
+	public List<Object[]> getProjects(String empId)throws Exception;
+	public int ActionAssignerEdit(ActionAssign assign)throws Exception;
 }

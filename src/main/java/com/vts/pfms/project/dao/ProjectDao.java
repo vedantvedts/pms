@@ -10,6 +10,7 @@ import com.vts.pfms.project.model.InitiationAbbreviations;
 import com.vts.pfms.project.model.PfmsApproval;
 import com.vts.pfms.project.model.PfmsInitiation;
 import com.vts.pfms.project.model.PfmsInitiationAppendix;
+import com.vts.pfms.project.model.PfmsInitiationApproval;
 import com.vts.pfms.project.model.PfmsInitiationAttachment;
 import com.vts.pfms.project.model.PfmsInitiationAttachmentFile;
 import com.vts.pfms.project.model.PfmsInitiationAuthority;
@@ -35,6 +36,7 @@ import com.vts.pfms.project.model.PfmsRequirementApproval;
 import com.vts.pfms.project.model.PfmsRisk;
 import com.vts.pfms.project.model.PfmsRiskRev;
 import com.vts.pfms.project.model.PlatformMaster;
+import com.vts.pfms.project.model.PmsInitiationApprovalTransaction;
 import com.vts.pfms.project.model.PreprojectFile;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMactroDetailsBrief;
@@ -406,4 +408,15 @@ public interface ProjectDao {
 	public List<Object[]> ProjectReviseList(String ProjectId) throws Exception;
 	public PlatformMaster getPlatformByPlatformId(long platformId) throws Exception; //srikant;
 
+	
+	
+	public PfmsInitiationApproval getPfmsInitiationApprovalById(String enoteId)throws Exception;
+	public long savePfmsInitiationApproval(PfmsInitiationApproval pe)throws Exception;
+	public Object[] InitiationApprovalData(String initiationid)throws Exception;
+	public long savePmsInitiationApprovalTransaction(PmsInitiationApprovalTransaction pt)throws Exception;
+	public List<Object[]> initiationPendingList(long empId)throws Exception;
+	public Object[] NewApprovalList(String enoteId)throws Exception;
+	public List<Object[]> EnoteTransactionList(String enoteTrackId)throws Exception;
+	public List<Object[]> initiationApprovalList(long empId, String fromDate, String toDate)throws Exception;
+	public List<Object[]> InitiationAprrovalPrintDetails(long enoteid)throws Exception;
 }

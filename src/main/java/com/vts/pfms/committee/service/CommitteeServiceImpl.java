@@ -23,8 +23,6 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -52,6 +50,7 @@ import com.vts.pfms.committee.dto.CommitteeScheduleAgendaDto;
 import com.vts.pfms.committee.dto.CommitteeScheduleDto;
 import com.vts.pfms.committee.dto.CommitteeSubScheduleDto;
 import com.vts.pfms.committee.dto.EmpAccessCheckDto;
+import com.vts.pfms.committee.dto.MeetingCheckDto;
 import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.committee.model.CommitteeConstitutionApproval;
 import com.vts.pfms.committee.model.CommitteeConstitutionHistory;
@@ -83,6 +82,8 @@ import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.MinutesFinanceList;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class CommitteeServiceImpl implements CommitteeService{
@@ -3846,5 +3847,35 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 			}
 		}
 		
+	}
+	
+	@Override
+	public List<MeetingCheckDto> getMeetingCheckDto(String date, String committeemainid) throws Exception {
+		
+		return dao.getMeetingCheckDto(date,committeemainid );
+	}
+	
+	@Override
+	public List<MeetingCheckDto> getMeetingCheckDto(String empid, String labocode,String scheduleid) throws Exception {
+		
+		return dao.getMeetingCheckDto(empid,labocode,scheduleid);
+	}
+	
+	@Override
+	public List<Object[]> previousMeetingHeld(String committeeid) throws Exception {
+		
+		return dao.previousMeetingHeld(committeeid) ;
+	}
+	
+	@Override
+	public List<Object[]> getRecommendationsOfCommittee(String committeeid) throws Exception {
+		
+		return dao.getRecommendationsOfCommittee(committeeid);
+	}
+	
+	@Override
+	public List<Object[]> getDecisionsofCommittee(String committeeid) throws Exception {
+		
+		return dao.getDecisionsofCommittee(committeeid);
 	}
 }

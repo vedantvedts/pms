@@ -13,10 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +20,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -43,6 +38,11 @@ import com.vts.pfms.producttree.model.SystemProductTree;
 import com.vts.pfms.producttree.service.ProductTreeService;
 import com.vts.pfms.requirements.service.RequirementService;
 import com.vts.pfms.utils.InputValidator;
+import com.vts.pfms.utils.PMSLogoUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 
 
@@ -61,6 +61,8 @@ public class ProductTreeController {
 	@Value("${ApplicationFilesDrive}")
 	String uploadpath;
 	
+	@Autowired
+	PMSLogoUtil LogoUtil;
 	FormatConverter fc=new FormatConverter();
 	private  SimpleDateFormat rdf=fc.getRegularDateFormat();
 	private  SimpleDateFormat sdf=fc.getSqlDateFormat();
@@ -395,7 +397,8 @@ public class ProductTreeController {
 				 }
 	    		  
 	      }
-			
+			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));
+			req.setAttribute("drdologo", LogoUtil.getDRDOLogoAsBase64String());
 		}
 		catch (Exception e) {
 			e.printStackTrace(); 
@@ -403,6 +406,7 @@ public class ProductTreeController {
 			return "static/Error";
 			
 		}
+		
 		return "producttree/ProductTreeEditDelete";
 	}
 	
@@ -617,7 +621,6 @@ public class ProductTreeController {
         
 		
 	}
-	
 	@RequestMapping(value = "SystemProductTreeEditDelete.htm")
 	public String SystemProductTreeEditDelete(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 	{
@@ -629,19 +632,10 @@ public class ProductTreeController {
 			spt.setMainId(Long.parseLong(req.getParameter("Mainid")));
 			
 				if(Action!=null &&  Action.equalsIgnoreCase("TE")) {
-					String levelName=req.getParameter("LevelName");
-					String levelCode=req.getParameter("LevelCode");
-					if(!InputValidator.isContainsDescriptionPattern(levelName)) {
-						
-						return redirectWithError(redir, "SystemProductTree.htm", "'Name' should contain Alphabets , Numbers and some special characters.!.!");
-					}
-					if(!InputValidator.isContainsDescriptionPattern(levelCode)) {
-						
-						return redirectWithError(redir, "SystemProductTree.htm", "'Code' should contain Alphabets , Numbers and some special characters.!.!");
-					}
-					spt.setLevelName(levelName);
-					spt.setLevelCode(levelCode);
-					spt.setIsSoftware(req.getParameter("IsSoftware"));
+				
+					spt.setLevelName(req.getParameter("LevelName"));
+					spt.setLevelCode(req.getParameter("LevelCode"));
+					spt.setLevelType(req.getParameter("LevelType"));
 					spt.setModifiedBy(UserId);
 	
 					long update = service.systemLevelNameEdit(spt, Action);
@@ -653,7 +647,7 @@ public class ProductTreeController {
 
 			    	long delete = service.systemLevelNameEdit(spt,Action);
 			    	  
-		    	    if(delete!=0) redir.addAttribute("result", "Level Deleted Successfully");
+			        if(delete!=0) redir.addAttribute("result", "Level Deleted Successfully");
 		    	    else  redir.addAttribute("resultfail", "Level Delete Unsuccessful");
 				}			
 			return "redirect:/SystemProductTree.htm";			
@@ -674,36 +668,24 @@ public class ProductTreeController {
 		logger.info(new Date() +"Inside SystemLevelNameAdd.htm "+UserId);		
 		try {
 			
-			String split=req.getParameter("Split");
-			if (split != null && !split.equals("null")) {
+		
 				
-				String arr[] = split.split("#");
-				String sid=arr[0];
-				String LevelId=arr[1];
-				String ParentLevelId=arr[2];
-				String SubLevelId=arr[3];
-				String isSoftware = arr[arr.length-1];
 				
-				String levelName=req.getParameter("LevelName");
-				String levelCode=req.getParameter("LevelCode");
-				if(!InputValidator.isContainsDescriptionPattern(levelName)) {
-					redir.addAttribute("sid", sid);
-					return redirectWithError(redir, "SystemProductTree.htm", "'Name' should contain Alphabets , Numbers and some special characters.!");
-				}
-				if(!InputValidator.isContainsDescriptionPattern(levelCode)) {
-					redir.addAttribute("sid", sid);
-					return redirectWithError(redir, "SystemProductTree.htm", "'Code' should contain Alphabets , Numbers and some special characters.!");
-				}
+				String sid= req.getParameter("sid");
+				
+				
+				String LevelName=req.getParameter("LevelName");
+				
+				
 				ProductTreeDto dto=new ProductTreeDto();
 				dto.setProjectId(Long.parseLong(sid));
-				dto.setParentLevelId(Long.parseLong(ParentLevelId));
-				dto.setLevelId(LevelId);
-				dto.setSubLevelId(SubLevelId);
-				dto.setLevelName(levelName);
+				dto.setParentLevelId(0l);
+				dto.setLevelId("1");
+				dto.setLevelName(LevelName);
 				dto.setCreatedBy(UserId);
-				dto.setLevelCode(levelCode);
-				dto.setIsSoftware(isSoftware!=null?isSoftware:"N");
-
+				dto.setLevelType(req.getParameter("LevelType"));
+				dto.setLevelCode(req.getParameter("LevelCode"));
+				
 				long result=service.AddSystemLevelName(dto);
 				
 				
@@ -716,7 +698,7 @@ public class ProductTreeController {
 				redir.addAttribute("sid", sid);
 				return "redirect:/SystemProductTree.htm";
 				
-			}    
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace(); 
@@ -724,7 +706,7 @@ public class ProductTreeController {
 			return "static/Error";
 			
 		}
-		return "redirect:/SystemProductTree.htm";
+	
 		
 	}
 	
@@ -753,16 +735,15 @@ public class ProductTreeController {
 		service.addProjectSlides(ps);
 		}
 		List<Object[]>proList=service.getSystemProductTreeList(sid);
-		if(proList!=null && proList.size()>0) {
-			proList=proList.stream().filter
-					(e->e[2].toString().equalsIgnoreCase(level))
-					.collect(Collectors.toList());
-		}
-		
+//		if(proList!=null && proList.size()>0) {
+//			proList=proList.stream().filter
+//					(e->e[2].toString().equalsIgnoreCase(level))
+//					.collect(Collectors.toList());
+//		}
+//		
 		Gson json = new Gson();
 		return json.toJson(proList);
 	}
-	
 	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
 	    redir.addAttribute("resultfail", message);
 	    return "redirect:/"+redirURL;

@@ -17,7 +17,7 @@ public class TestSetupMaster {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long setupId;
+private Long setupId;
 	
 	private String testSetUpId;
 	

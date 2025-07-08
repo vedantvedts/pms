@@ -1,11 +1,12 @@
 package com.vts.pfms.milestone.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.springframework.web.multipart.MultipartFile;
 
+import com.vts.pfms.committee.model.ActionAssign;
 import com.vts.pfms.milestone.dto.FileDocAmendmentDto;
 import com.vts.pfms.milestone.dto.FileProjectDocDto;
 import com.vts.pfms.milestone.dto.FileUploadDto;
@@ -15,7 +16,8 @@ import com.vts.pfms.milestone.dto.MilestoneScheduleDto;
 import com.vts.pfms.milestone.model.FileDocMaster;
 import com.vts.pfms.milestone.model.FileRepNew;
 import com.vts.pfms.milestone.model.FileRepUploadNew;
-import com.vts.pfms.print.model.ProjectTechnicalWorkData;
+import com.vts.pfms.milestone.model.MilestoneActivity;
+import com.vts.pfms.milestone.model.MilestoneActivityLevel;
 
 public interface MilestoneService {
 	public List<Object[]> MilestoneActivityList(String ProjectId) throws Exception;
@@ -73,7 +75,7 @@ public interface MilestoneService {
 	public Object[] RepMasterData(String filerepmasterid) throws Exception;
 	public List<Object[]> RepMasterAllDocLists(String filerepmasterid) throws Exception;
 	public List<Object[]> MainSystem1(String filerepmasterid) throws Exception;
-	public int fileRepMasterEditSubmit(String filerepmasterid, String levelname) throws Exception;
+	public int fileRepMasterEditSubmit(String filerepmasterid, String levelname, String levelType) throws Exception;
 	public List<FileDocMaster> fileDocMasterList(String LabCode) throws Exception;
 	public long FileDocMasterAdd(FileDocMaster model) throws Exception;
 	public List<FileDocMaster> FileLevelSublevelNameCheck(String levelname,String LabCode) throws Exception;
@@ -99,5 +101,23 @@ public interface MilestoneService {
 	public int mileStoneSerialNoUpdate(String[] newslno, String[] milestoneActivityId);
 	public List<Object[]> getAllMilestoneActivityList() throws Exception;
 	public List<Object[]> getAllMilestoneActivityLevelList() throws Exception;
+	
+	
+	public List<Object[]> getOldFileDocNames(String projectId, String fileType, String fileId)throws Exception;
+	public long uploadFileData(FileUploadDto upload, String fileType)throws Exception;
+	public List<Object[]> FileRepDocsList(String projectId)throws Exception;
+	public Optional<FileRepUploadNew> getFileById(Long id)throws Exception;
+	public int getFileRepMasterNames(String projectId, String fileType, String fileId, String fileName) throws Exception;
+	public long removeFileAttachment(String projectId, String techDataId, String techAttachId, String userId) throws Exception;
+	public MilestoneActivityLevel getMilestoneActivityLevelById(String milesMainId);
+	public long MilestoneActivityLevelSave(com.vts.pfms.milestone.model.MilestoneActivityLevel level1);
+	public String getMainLevelId(Long getActivityId)throws Exception;
+	
+	public void updateMilestoneLevelProgress(MileEditDto dto);
+	public String getProjectIdByMainLevelId(String id)throws Exception;
+	public MilestoneActivity getMilestoneActivityById(String id);
+	public long MilestoneActivitySave(MilestoneActivity activity) throws Exception;
+	public List<Object[]> actionAssigneeList(String EmpId) throws Exception;
+	public long ActionAssignInsert(ActionAssign assign) throws Exception;
 	
 }

@@ -7,10 +7,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -20,14 +20,10 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import jakarta.servlet.http.Part;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -42,17 +38,12 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.tomcat.util.http.fileupload.FileItem;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,15 +56,18 @@ import com.google.gson.Gson;
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
+import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.utils.PdfMerger;
+import com.itextpdf.layout.Document;
 import com.itextpdf.layout.font.FontProvider;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
-import com.vts.pfms.admin.model.DivisionMaster;
-import com.vts.pfms.committee.service.ActionService;
+import com.vts.pfms.admin.dao.AdminDao;
+import com.vts.pfms.cars.dao.CARSDao;
+import com.vts.pfms.committee.service.CommitteeService;
 import com.vts.pfms.milestone.service.MilestoneService;
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
 import com.vts.pfms.print.service.PrintService;
@@ -81,14 +75,11 @@ import com.vts.pfms.project.dto.PfmsInitiationAttachmentDto;
 import com.vts.pfms.project.dto.PfmsInitiationAttachmentFileDto;
 import com.vts.pfms.project.dto.PfmsInitiationAuthorityDto;
 import com.vts.pfms.project.dto.PfmsInitiationAuthorityFileDto;
-import com.vts.pfms.project.model.PfmsInitiationMilestone;
-import com.vts.pfms.project.model.PfmsInitiationMilestoneRev;
 import com.vts.pfms.project.dto.PfmsInitiationCostDto;
 import com.vts.pfms.project.dto.PfmsInitiationDetailDto;
 import com.vts.pfms.project.dto.PfmsInitiationDto;
 import com.vts.pfms.project.dto.PfmsInitiationRequirementDto;
 import com.vts.pfms.project.dto.PfmsProjectDataDto;
-import com.vts.pfms.project.dto.PfmsRequirementAttachmentDto;
 import com.vts.pfms.project.dto.PfmsRiskDto;
 import com.vts.pfms.project.dto.PreprojectFileDto;
 import com.vts.pfms.project.dto.ProjectAssignDto;
@@ -103,11 +94,14 @@ import com.vts.pfms.project.dto.ProjectScheduleDto;
 import com.vts.pfms.project.model.InitiationAbbreviations;
 import com.vts.pfms.project.model.PfmsInitiation;
 import com.vts.pfms.project.model.PfmsInitiationAppendix;
+import com.vts.pfms.project.model.PfmsInitiationApproval;
 import com.vts.pfms.project.model.PfmsInitiationAttachmentFile;
 import com.vts.pfms.project.model.PfmsInitiationAuthorityFile;
 import com.vts.pfms.project.model.PfmsInitiationChecklistData;
 import com.vts.pfms.project.model.PfmsInitiationMacroDetails;
 import com.vts.pfms.project.model.PfmsInitiationMacroDetailsTwo;
+import com.vts.pfms.project.model.PfmsInitiationMilestone;
+import com.vts.pfms.project.model.PfmsInitiationMilestoneRev;
 import com.vts.pfms.project.model.PfmsInitiationSanctionData;
 import com.vts.pfms.project.model.PfmsOtherReq;
 import com.vts.pfms.project.model.PfmsProcurementPlan;
@@ -118,7 +112,6 @@ import com.vts.pfms.project.model.ProjectMain;
 import com.vts.pfms.project.model.ProjectMajorCapsi;
 import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.project.model.ProjectMasterRev;
-import com.vts.pfms.project.model.ProjectOtherReqModel;
 import com.vts.pfms.project.model.ProjectRequirementType;
 import com.vts.pfms.project.model.ProjectSqrFile;
 import com.vts.pfms.project.model.ReqTestExcelFile;
@@ -135,11 +128,15 @@ import com.vts.pfms.requirements.model.Specification;
 import com.vts.pfms.requirements.model.SpecificationContent;
 import com.vts.pfms.requirements.model.SpecificationIntro;
 import com.vts.pfms.requirements.model.SpecsInitiation;
-import com.vts.pfms.requirements.model.TestPlanInitiation;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.service.RequirementService;
 import com.vts.pfms.utils.InputValidator;
 import com.vts.pfms.utils.PMSLogoUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 @Controller
 public class ProjectController 
@@ -162,6 +159,12 @@ public class ProjectController
 	
 	@Autowired 
 	MilestoneService MilService;
+	
+	@Autowired CommitteeService comservice;
+	
+
+	@Autowired AdminDao admindao;
+	@Autowired CARSDao carsdao;
 	
 	@Autowired
 	Environment env;
@@ -222,6 +225,11 @@ public class ProjectController
 			/* fetching actual data */
 			List<Object[]> ob = service.ProjectIntiationList(EmpId,LoginType,LabCode);
 
+			if(ob!=null && ob.isEmpty()) {
+				redir.addAttribute("resultfail","No Project is Created for you !");
+				return "redirect:/MainDashBoard.htm";
+			}
+			
 			// adding values to this List<Object[]>
 			List<Object[]> o = new ArrayList<>();
 
@@ -2171,6 +2179,7 @@ public class ProjectController
 					.MileStoneMonth(MilestoneMonthEdit)
 					.MileStoneRemark(MilestoneRemarkEdit)
 					.MileStoneMonth(MilestoneMonthEdit)
+					.FinancialOutlay(req.getParameter("finance") )
 					.Milestonestartedfrom(Integer.parseInt(MilestoneFrom))
 					.ModifiedBy(UserId)
 					.build();
@@ -7348,7 +7357,7 @@ public class ProjectController
 
 		return json.toJson(result);
 	}
-	@RequestMapping(value="PrototypeDeliverables.htm",method=RequestMethod. GET)
+	@RequestMapping(value="PrototypeDeliverables.htm",method= {RequestMethod. GET , RequestMethod.POST})
 	public @ResponseBody String PrototypeDeliverables(HttpSession ses,HttpServletRequest req) throws Exception { 
 		Gson json = new Gson(); 
 		String UserId=(String)ses.getAttribute("Username");
@@ -7359,6 +7368,14 @@ public class ProjectController
 			String initiationid=req.getParameter("initiationid"); 
 			String PrototypesNo=req.getParameter("PrototypesNo"); 
 			String deliverables=req.getParameter("deliverables"); 
+			String sanctionDate=req.getParameter("sanctionDate"); 
+			String TitleProgramme=req.getParameter("TitleProgramme"); 
+			String prototypeDetails=req.getParameter("prototypeDetails"); 
+			String PDRemarks=req.getParameter("PDRemarks"); 
+			String LabdirectorDetails=req.getParameter("LabdirectorDetails"); 
+			String Highdevelopmentrisk=req.getParameter("Highdevelopmentrisk"); 
+			String subProjectDetails=req.getParameter("subProjectDetails"); 
+			String designIteration=req.getParameter("designIteration"); 
 			Object[]MacroDetails=service.projectMacroDetails(initiationid);
 			if(MacroDetails.length==0) {
 				PfmsInitiationMacroDetails pm=new PfmsInitiationMacroDetails();
@@ -7367,7 +7384,15 @@ public class ProjectController
 				pm.setDeliverables(Integer.parseInt(deliverables));
 				pm.setCreatedBy(UserId);
 				pm.setCreatedDate(sdf1.format(new Date()));
+				pm.setSanctionDate(sanctionDate);	
+				pm.setTitleProgramme(TitleProgramme);
+				pm.setPrototypeDetails(prototypeDetails);
+				pm.setPDRemarks(PDRemarks);
+				pm.setLabdirectorDetails(LabdirectorDetails);	
+				pm.setHighdevelopmentrisk(Highdevelopmentrisk);
 				pm.setIsActive(1);
+				pm.setSubProjectDetails(subProjectDetails);
+				pm.setDesignIteration(designIteration);
 				count=service.InsertMacroDetails(pm);
 				result="Data updated Successfully";
 			}else {
@@ -7377,6 +7402,15 @@ public class ProjectController
 				pm.setModifiedDate(sdf1.format(new Date()));
 				pm.setPrototypesNo(Integer.parseInt(PrototypesNo));
 				pm.setDeliverables(Integer.parseInt(deliverables));
+				pm.setSanctionDate(sanctionDate);
+				pm.setTitleProgramme(TitleProgramme);
+				pm.setPrototypeDetails(prototypeDetails);
+				pm.setPDRemarks(PDRemarks);
+				pm.setLabdirectorDetails(LabdirectorDetails);
+				pm.setHighdevelopmentrisk(Highdevelopmentrisk);
+				pm.setSubProjectDetails(subProjectDetails);
+				pm.setDesignIteration(designIteration);
+				
 				count=service.ProposedprojectdeliverablesUpdate(pm);
 				result="Data updated Successfully";
 			}
@@ -7406,6 +7440,7 @@ public class ProjectController
 				pmd.setRecommendations(req.getParameter("information3"));
 				pmd.setCreatedBy(UserId);
 				pmd.setCreatedDate(sdf1.format(new Date()));
+				pmd.setBuildingSpaceRequirement( req.getParameter("information4")  );
 				pmd.setAdditionalCapital(req.getParameter("majorcapital"));
 				pmd.setInitiationId(Long.parseLong(initiationid));
 				pmd.setIsActive(1);
@@ -7419,6 +7454,7 @@ public class ProjectController
 				pmd.setAdditionalCapital(req.getParameter("majorcapital"));
 				pmd.setModifiedDate(sdf1.format(new Date()));
 				pmd.setCreatedDate(sdf1.format(new Date()));
+				pmd.setBuildingSpaceRequirement( req.getParameter("information4"));
 				pmd.setInitiationId(Long.parseLong(initiationid));
 				pmd.setIsActive(1);
 				count=service.MacroDetailsPartTwoEdit(pmd);
@@ -11117,4 +11153,327 @@ public class ProjectController
 		Gson convertedgson = new Gson();
 	    return convertedgson.toJson(result);
 	}
+	
+	
+	//29-04-2025
+	@RequestMapping(value="IntiationFlow.htm",method= {RequestMethod.POST,RequestMethod.GET})
+	public String IntiationFlowApproval(HttpServletRequest req,HttpServletResponse res, RedirectAttributes redir, HttpSession ses )throws Exception
+	{
+		String Username=(String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside IntiationFlow.htm "+Username);
+		try
+		{
+			
+			String initiationid=req.getParameter("InitiationId");	
+			Object[]ApprovalData= service.InitiationApprovalData(initiationid);
+
+			
+			if(Long.parseLong(initiationid)>0) {
+				req.setAttribute("ProjectEditData", service.ProjectEditData(initiationid).get(0));
+			}
+			req.setAttribute("employeelist", service.EmployeeList(LabCode));
+			req.setAttribute("initiationid", initiationid);
+			req.setAttribute("AllLabList", comservice.AllLabList());
+			req.setAttribute("ApprovalData", ApprovalData);
+			if(ApprovalData!=null) {
+			req.setAttribute("NewApprovalList", service.NewApprovalList(ApprovalData[0].toString()));
+			}
+			return "project/IntiationFlowAdd";
+		}
+		catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +"Inside IntiationFlow.htm "+Username,e);
+			return "static/Error";
+
+		}
+
+	} 
+	
+	@RequestMapping(value="InitiationApprovalPrint.htm",method= {RequestMethod.POST,RequestMethod.GET})
+	public String CommitteeEnotePrint(HttpServletRequest req,HttpServletResponse res, RedirectAttributes redir, HttpSession ses )throws Exception
+	{
+		String Username=(String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside InitiationApprovalPrint.htm "+Username);
+
+		try {
+			String initiationid=req.getParameter("InitiationId");	
+			Object[]ApprovalData= service.InitiationApprovalData(initiationid);
+
+			
+			if(Long.parseLong(initiationid)>0) {
+				req.setAttribute("ProjectEditData", service.ProjectEditData(initiationid).get(0));
+			}
+			req.setAttribute("employeelist", service.EmployeeList(LabCode));
+			req.setAttribute("initiationid", initiationid);
+			req.setAttribute("returnFlag", req.getParameter("returnFlag"));
+					req.setAttribute("AllLabList", comservice.AllLabList());
+			req.setAttribute("ApprovalData", ApprovalData);
+			
+			String EnoteId=req.getParameter("EnoteId");
+			List<Object[]> EnotePrintDetails=service.InitiationAprrovalPrintDetails(Long.parseLong(EnoteId));
+			req.setAttribute("EnotePrintDetails", EnotePrintDetails);
+			String filename="Initiation_Approval_Print";
+		
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path); 
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/project/InitiationApprovalPrint.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+			byte[] data = html.getBytes();
+			InputStream fis1=new ByteArrayInputStream(data);
+			PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+".pdf"));	
+
+			Document document = new Document(pdfDoc, PageSize.A4);
+			//document.setMargins(50, 100, 150, 50);
+			document.setMargins(50, 50, 50, 50);
+			ConverterProperties converterProperties = new ConverterProperties();
+			FontProvider dfp = new DefaultFontProvider(true, true, true);
+			converterProperties.setFontProvider(dfp);
+			HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+			File f=new File(path+"/"+filename+".pdf");
+			FileInputStream fis = new FileInputStream(f);
+			DataOutputStream os = new DataOutputStream(res.getOutputStream());
+			res.setHeader("Content-Length",String.valueOf(f.length()));
+			byte[] buffer = new byte[1024];
+			int len = 0;
+			while ((len = fis.read(buffer)) >= 0) {
+				os.write(buffer, 0, len);
+			} 
+			fis.close();
+			os.close();
+
+
+
+			Path pathOfFile2= Paths.get(path+"/"+filename+".pdf"); 
+			Files.delete(pathOfFile2);		
+
+			document.close();
+
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		return "project/InitiationApprovalPrint";
+	}
+	
+	
+	
+	
+	@RequestMapping(value="InitiationForward.htm",method=RequestMethod.POST)
+	public String InitiationForward(HttpServletRequest req,HttpServletResponse res, RedirectAttributes redir, HttpSession ses )throws Exception
+	{
+		Long EmpId = (Long)ses.getAttribute("EmpId");
+		String Username=(String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside InitiationForward.htm "+Username);
+		try
+		{
+			String initiationid=req.getParameter("initiationid");
+			String action=req.getParameter("action");
+			String flow =req.getParameter("flow");
+			String flag =req.getParameter("flag");
+			
+			redir.addAttribute("InitiationId",initiationid);
+			
+			PfmsInitiationApproval pe = 
+					!req.getParameter("EnoteId").equalsIgnoreCase("0")
+					?service.getPfmsInitiationApprovalById(req.getParameter("EnoteId"))
+					: new PfmsInitiationApproval();
+			
+			if(action.equalsIgnoreCase("submit")||action.equalsIgnoreCase("update") || action.equalsIgnoreCase("forward")) {			
+			pe.setRefNo(req.getParameter("RefNo"));
+			pe.setRefDate(LocalDate.now());
+			pe.setInitiationId(Long.parseLong(initiationid));
+			pe.setSubject(req.getParameter("subject").trim());
+			pe.setComment(req.getParameter("Comment").trim());
+			pe.setEnoteStatusCode(pe.getEnoteStatusCode()==null?"INI":pe.getEnoteStatusCode());
+			pe.setEnoteStatusCodeNext(pe.getEnoteStatusCodeNext()==null ?"INI":pe.getEnoteStatusCodeNext());
+			pe.setInitiatedBy(Long.parseLong(req.getParameter("InitiatedBy")));
+			if(req.getParameter("Recommend1")!=null) {
+				pe.setRecommend1(Long.parseLong(req.getParameter("Recommend1")));
+				pe.setRec1_Role(req.getParameter("Rec1_Role").toUpperCase());
+			}
+			if(req.getParameter("Recommend2").length()>0) {;
+			pe.setRecommend2(Long.parseLong(req.getParameter("Recommend2")));
+			pe.setRec2_Role(req.getParameter("Rec2_Role").toUpperCase());
+			}else {
+				pe.setRecommend2(null);
+				pe.setRec2_Role(null);
+			}
+			if(req.getParameter("Recommend3").length()>0) {
+				pe.setRecommend3(Long.parseLong(req.getParameter("Recommend3")));
+				pe.setRec3_Role(req.getParameter("Rec3_Role").toUpperCase());
+			}else {
+				pe.setRecommend3(null);
+				pe.setRec3_Role(null);
+			}
+			if(req.getParameter("ApprovingOfficer")!=null) {
+				pe.setApprovingOfficer(Long.parseLong(req.getParameter("ApprovingOfficer")));;
+			}
+			pe.setApproving_Role(req.getParameter("Approving_Role").toUpperCase());
+			pe.setApprovingOfficerLabCode(req.getParameter("ApprovingOfficerLabCode"));;
+			if(pe.getCreatedBy()==null) {
+				pe.setCreatedBy(Username);	
+				pe.setCreatedDate(sdf1.format(new Date()));	
+			}else {
+				pe.setModifiedBy(Username);
+				pe.setModifiedDate(sdf1.format(new Date()));
+			}
+			pe.setIsActive(1);
+			
+			long count = service.savePfmsInitiationApproval(pe);
+			
+			if(action.equalsIgnoreCase("submit")||action.equalsIgnoreCase("update")) {
+			if(count>0) {
+				redir.addAttribute("result","Approval Flow Data Updated successfully !");
+				
+			}else {
+				redir.addAttribute("resultfail","Approval Flow Data update unsuccessful !");
+			}
+			return "redirect:/IntiationFlow.htm";
+			}
+			
+			}
+			
+			
+			 String remarks= req.getParameter("Remarks");
+			pe.setSessionLabCode(LabCode);
+
+			
+			
+			long result = service.InitiationForward(pe,remarks,EmpId,flow,Username);
+			
+		
+			
+			
+			if(result>0) {
+				if(flow!=null && flow.equalsIgnoreCase("A")) {
+				redir.addAttribute("result","Project Forwarded successfully for Approval!");
+				}
+				if(flow!=null && flow.equalsIgnoreCase("REV")) {
+					redir.addAttribute("result","Approval Flow Revoked successfully!");
+					}
+				if(flow!=null && flow.equalsIgnoreCase("R")) {
+					redir.addAttribute("result","Project Returned successfully!");
+					}
+			}else {
+				redir.addAttribute("resultfail","Something went Wrong !");
+			}
+			if(flow!=null &&  flow.equalsIgnoreCase("REV")) {
+				return "redirect:/IntiationFlow.htm";
+			}
+			
+			if(flow!=null &&  flow.equalsIgnoreCase("A")) {
+				if(flag!=null && flag.equalsIgnoreCase("UpdateForward")){
+					return "redirect:/IntiationFlow.htm";
+				}else {
+					return "redirect:/InitiationApprovalList.htm";
+				}
+				
+			}else {
+				
+				return "redirect:/InitiationApprovalList.htm";
+			}
+		}catch(Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +"Inside InitiationForward.htm "+Username,e);
+			return "static/Error";
+		}
+		
+		//return "redirect:/IntiationFlow.htm";
+	
+	}
+	
+	Format  format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en", "in"));
+	private  SimpleDateFormat sdf4=new SimpleDateFormat("yyyy-MM-dd");
+	private SimpleDateFormat rdf=new SimpleDateFormat("dd-MM-yyyy");
+	
+	@RequestMapping(value = "InitiationApprovalList.htm" , method = {RequestMethod.POST,RequestMethod.GET})
+	public String InitiationApprovalList(HttpServletRequest req,HttpServletResponse resp,HttpSession ses) throws Exception {
+		logger.info(new Date() +"InitiationApprovalList.htm"+req.getUserPrincipal().getName());
+		long EmpId=(Long)ses.getAttribute("EmpId");
+		try {
+			String fromDate=(String)req.getParameter("FromDate");
+			String toDate=(String)req.getParameter("ToDate");
+
+			String redirectedvalue=req.getParameter("redirectedvalue");
+			if(redirectedvalue!=null) {
+				req.setAttribute("redirectedvalueForward", redirectedvalue);
+			}
+			if(toDate == null) 
+			{
+				toDate=LocalDate.now().toString();
+			}else
+			{
+				fromDate=sdf4.format(rdf.parse(fromDate));
+			}
+
+			if(fromDate==null) {
+				fromDate=LocalDate.now().minusYears(1).toString();
+			}else {
+				toDate=sdf4.format(rdf.parse(toDate));
+			}
+			List<Object[]> eNotePendingList =service.initiationPendingList(EmpId);
+			List<Object[]> eNoteApprovalList=service.initiationApprovalList(EmpId,fromDate,toDate);
+			req.setAttribute("eNoteApprovalList", eNoteApprovalList);
+			req.setAttribute("EnoteApprovalPendingList", eNotePendingList);
+			req.setAttribute("frmDt", fromDate);
+			req.setAttribute("toDt",   toDate);
+			return "project/InitiationApprovalList";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+	@RequestMapping(value="InitiationRecommendation.htm",method= {RequestMethod.POST,RequestMethod.GET})
+	public String InitiationRecommendation(HttpServletRequest req,HttpServletResponse res, RedirectAttributes redir, HttpSession ses )throws Exception
+	{
+		String Username=(String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside InitiationRecommendation.htm "+Username);
+
+		try {
+			String initiationid=req.getParameter("InitiationId");	
+			String EnoteId=req.getParameter("EnoteId");	
+			Object[]ApprovalData= service.InitiationApprovalData(initiationid);
+			String type=req.getParameter("type");
+			req.setAttribute("ApprovalData",ApprovalData);
+			
+			req.setAttribute("initiationid", initiationid);
+			if(Long.parseLong(initiationid)>0) {
+				req.setAttribute("ProjectEditData", service.ProjectEditData(initiationid).get(0));
+			}
+			req.setAttribute("employeelist", service.EmployeeList(LabCode));
+			req.setAttribute("NewApprovalList", service.NewApprovalList(EnoteId));
+		}catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +"Inside InitiationRecommendation.htm "+Username,e);
+			return "static/Error";
+		}
+
+		return "project/InitiationRecommendation";
+	}
+	
+	@RequestMapping(value = "InitiationFlowTrack.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	public String InitiationFlowTrack(HttpServletResponse resp, HttpServletRequest req, HttpSession ses) throws Exception {
+
+		logger.info(new Date() +"InitiationFlowTrack.htm"+req.getUserPrincipal().getName());
+		String Username=(String)ses.getAttribute("Username");
+		try {
+		String EnoteTrackId=req.getParameter("EnoteTrackId");
+
+		req.setAttribute("EnoteTransactionList",service.EnoteTransactionList(EnoteTrackId));
+		return "project/InitiationFlowTrack";
+		}catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +"Inside InitiationFlowTrack.htm "+Username,e);
+			return "static/Error";
+		}
+}
 }

@@ -17,6 +17,7 @@ public class ProjectScheduleDto {
 	private int MilestoneTotalMonth;
 	private int Milestonestartedfrom;
 	private String InitiationScheduleId;
+	private String FinancialOutlay;
 	private String UserId;
 	private Integer TotalMonth;
 	private String InitiationId;

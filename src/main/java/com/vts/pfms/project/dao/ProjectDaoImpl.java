@@ -20,6 +20,7 @@ import com.vts.pfms.project.model.InitiationAbbreviations;
 import com.vts.pfms.project.model.PfmsApproval;
 import com.vts.pfms.project.model.PfmsInitiation;
 import com.vts.pfms.project.model.PfmsInitiationAppendix;
+import com.vts.pfms.project.model.PfmsInitiationApproval;
 import com.vts.pfms.project.model.PfmsInitiationAttachment;
 import com.vts.pfms.project.model.PfmsInitiationAttachmentFile;
 import com.vts.pfms.project.model.PfmsInitiationAuthority;
@@ -45,6 +46,7 @@ import com.vts.pfms.project.model.PfmsRequirementApproval;
 import com.vts.pfms.project.model.PfmsRisk;
 import com.vts.pfms.project.model.PfmsRiskRev;
 import com.vts.pfms.project.model.PlatformMaster;
+import com.vts.pfms.project.model.PmsInitiationApprovalTransaction;
 import com.vts.pfms.project.model.PreprojectFile;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMactroDetailsBrief;
@@ -101,8 +103,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTITEMLIST="SELECT a.initiationcostid,a.initiationid,c.budgetheaddescription,b.headofaccounts,a.itemdetail,a.itemcost ,b.refe , CONCAT (b.majorhead,'-',b.minorhead,'-',b.subhead) AS headcode FROM pfms_initiation_cost a,budget_item_sanc b,budget_head c WHERE a.initiationid=:initiationid AND a.budgetsancid=b.sanctionitemid AND a.budgetheadid=c.budgetheadid AND a.isactive='1' ORDER BY a.budgetheadid ASC";
 	private static final String PROJECTLABLIST="select a.initiationid,a.InitiationLabId,b.labname,b.labcode from pfms_initiation_lab a,cluster_lab b where a.initiationid=:initiationid and b.labid=a.labid and isactive='1'";
 	private static final String BUDEGTHEADLIST="select budgetheadid,budgetheaddescription from budget_head where isproject='Y' order by budgetheaddescription asc ";
-	private static final String PROJECTSCHEDULELIST="select milestoneno,milestoneactivity,milestonemonth,initiationscheduleid,milestoneremark,Milestonestartedfrom,MilestoneTotalMonth,StartDate,EndDate from pfms_initiation_schedule where initiationid=:initiationid and isactive='1'";
-	private static final String PROJECTSCHEDULETOTALMONTHLIST="select MilestoneTotalMonth,milestoneno,Milestonestartedfrom from pfms_initiation_schedule where initiationid=:initiationid and isactive='1' " ;
+	private static final String PROJECTSCHEDULELIST="select milestoneno,milestoneactivity,milestonemonth,initiationscheduleid,milestoneremark,Milestonestartedfrom,MilestoneTotalMonth,StartDate,EndDate,COALESCE (FinancialOutlay,'0') AS 'outlay' from pfms_initiation_schedule where initiationid=:initiationid and isactive='1'";	private static final String PROJECTSCHEDULETOTALMONTHLIST="select MilestoneTotalMonth,milestoneno,Milestonestartedfrom from pfms_initiation_schedule where initiationid=:initiationid and isactive='1' " ;
 	/*L.A*/private static final String MILESTONENOTOTALMONTHS="SELECT milestoneno,MilestoneTotalMonth,Milestonestartedfrom FROM pfms_initiation_schedule WHERE isactive='1' AND initiationid=:InitiationId AND milestonestartedfrom=:milestonestartedfrom ";
 	private static final String PROJECTDETAILSLIST= "SELECT a.Requirements,a.Objective,a.Scope,a.MultiLabWorkShare,a.EarlierWork,a.CompentencyEstablished,a.NeedOfProject,a.TechnologyChallanges,a.RiskMitigation,a.Proposal,a.RealizationPlan,a.initiationid,a.worldscenario,a.ReqBrief,a.ObjBrief,a.ScopeBrief,a.MultiLabBrief,a.EarlierWorkBrief,a.CompentencyBrief,a.NeedOfProjectBrief,a.TechnologyBrief,a.RiskMitigationBrief,a.ProposalBrief,a.RealizationBrief,a.WorldScenarioBrief FROM pfms_initiation_detail a WHERE a.initiationid=:initiationid ";
 	private static final String PROJECTCOSTLIST="SELECT b.budgetheaddescription,c.headofaccounts,a.itemdetail,a.itemcost,c.refe,c.sanctionitemid  FROM pfms_initiation_cost a,budget_head b,budget_item_sanc c WHERE a.budgetheadid=b.budgetheadid AND a.budgetsancid=c.sanctionitemid AND a.initiationid=:initiationid ORDER BY sanctionitemid ";
@@ -118,6 +119,8 @@ public class ProjectDaoImpl implements ProjectDao {
 	/*L.A*/private static final String MILESTONETOTALMONTHUPDATE="UPDATE pfms_initiation_schedule SET MilestoneTotalMonth=:newMilestoneTotalMonth  WHERE  initiationid=:InitiationId AND isactive='1' AND milestoneno=:milestoneno";
 	private static final String PROJECTSHDULEUPDATE="update pfms_initiation_schedule set milestoneactivity=:milestoneactivity,milestonemonth=:milestonemonth,milestoneremark=:milestoneremark,modifiedby=:modifiedby,modifieddate=:modifieddate where initiationscheduleid=:initiationscheduleid and isactive='1'";
 	private static final String PROJECTDETAILSREQUPDATE="update pfms_initiation_detail set requirements=:requirements, reqbrief=:reqbrief, modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
+	
+	
 	private static final String PROJECTDETAILSOBJUPDATE="update pfms_initiation_detail set objective=:objective, objbrief=:objbrief, modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
 	private static final String PROJECTDETAILSSCOPEUPDATE="update pfms_initiation_detail set scope=:scope, scopebrief=:scopebrief, modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
 	private static final String PROJECTDETAILSMULTIUPDATE="update pfms_initiation_detail set multilabworkshare=:multilab, multilabbrief=:multibrief, modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
@@ -2663,8 +2666,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		}
 		return total;
 	}
-	private static final String MACRODETAIL="SELECT a.detailid,a.initiationid,a.additionalrequirements,a.methodology,a.otherinformation,a.enclosures,a.PrototypesNo,a.deliverables,a.createdby,a.createddate,a.modifiedby,a.modifieddate FROM pfms_initiation_macro_details a WHERE a.initiationid=:initiationid AND a.isactive=1";
-	@Override
+	private static final String MACRODETAIL="SELECT a.detailid,a.initiationid,a.additionalrequirements,a.methodology,a.otherinformation,a.enclosures,a.PrototypesNo,a.deliverables,a.createdby,a.createddate,a.modifiedby,a.modifieddate,SanctionDate,a.TitleProgramme,a.prototypeDetails,a.PDRemarks,a.LabdirectorDetails,a.Highdevelopmentrisk,a.designIteration,a.subProjectDetails FROM pfms_initiation_macro_details a WHERE a.initiationid=:initiationid AND a.isactive=1";	@Override
 	public Object[] projectMacroDetails(String initiationid) throws Exception {
 		// TODO Auto-generated method stub
 		Query query =manager.createNativeQuery(MACRODETAIL);
@@ -2741,7 +2743,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		count= query.executeUpdate();	
 		return count;
 	}
-	private static final String DELIVERABLESUPDATE="UPDATE pfms_initiation_macro_details SET PrototypesNo=:PrototypesNo,deliverables=:deliverables ,modifiedby=:modifiedby, modifieddate=:modifieddate WHERE initiationid=:initiationid AND isactive=1";
+	private static final String DELIVERABLESUPDATE="UPDATE pfms_initiation_macro_details SET PrototypesNo=:PrototypesNo,deliverables=:deliverables ,modifiedby=:modifiedby, modifieddate=:modifieddate,SanctionDate=:SanctionDate,TitleProgramme=:TitleProgramme,prototypeDetails=:prototypeDetails,PDRemarks=:PDRemarks,LabdirectorDetails=:LabdirectorDetails,Highdevelopmentrisk=:Highdevelopmentrisk,subProjectDetails=:subProjectDetails,designIteration=:designIteration WHERE initiationid=:initiationid AND isactive=1";
 	@Override
 	public long ProposedprojectdeliverablesUpdate(PfmsInitiationMacroDetails pm) throws Exception {
 		// TODO Auto-generated method stub
@@ -2753,6 +2755,14 @@ public class ProjectDaoImpl implements ProjectDao {
 		query.setParameter("modifiedby", pm.getModifiedBy());
 		query.setParameter("modifieddate", pm.getModifiedDate());
 		query.setParameter("initiationid", pm.getInitiationId());
+		query.setParameter("SanctionDate", pm.getSanctionDate() );
+		query.setParameter("TitleProgramme", pm.getTitleProgramme() );
+		query.setParameter("prototypeDetails", pm.getPrototypeDetails() );
+		query.setParameter("PDRemarks",pm.getPDRemarks() );
+		query.setParameter("LabdirectorDetails",pm.getLabdirectorDetails() );
+		query.setParameter("Highdevelopmentrisk",pm.getHighdevelopmentrisk() );
+		query.setParameter("subProjectDetails",pm.getSubProjectDetails() );
+		query.setParameter("designIteration",pm.getDesignIteration() );
 		count= query.executeUpdate();	
 		return count;
 	}
@@ -2978,8 +2988,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		}
 
 	}
-	private static final String MACRODETAILS2="SELECT DetailId,InitiationId,AdditionalInformation,Comments,Recommendations,AdditionalCapital FROM pfms_initiation_macro_details_part2 WHERE initiationid=:initiationid AND isactive=1" ;
-	@Override
+	private static final String MACRODETAILS2="SELECT DetailId,InitiationId,AdditionalInformation,Comments,Recommendations,AdditionalCapital,BuildingSpaceRequirement FROM pfms_initiation_macro_details_part2 WHERE initiationid=:initiationid AND isactive=1" ;	@Override
 	public Object[] macroDetailsPartTwo(String initiationid) throws Exception {
 		Query query =manager.createNativeQuery(MACRODETAILS2);
 		query.setParameter("initiationid", Long.parseLong(initiationid));
@@ -2999,7 +3008,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		manager.flush();
 		return pmd.getDetailId();
 	}
-	private static final String MACRODETAILSEDIT="UPDATE pfms_initiation_macro_details_part2 SET AdditionalInformation=:AdditionalInformation,Comments=:Comments,Recommendations=:Recommendations,AdditionalCapital=:AdditionalCapital,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE InitiationId=:InitiationId AND isactive='1'";
+	private static final String MACRODETAILSEDIT="UPDATE pfms_initiation_macro_details_part2 SET AdditionalInformation=:AdditionalInformation,Comments=:Comments,Recommendations=:Recommendations,AdditionalCapital=:AdditionalCapital,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate,BuildingSpaceRequirement=:BuildingSpaceRequirement WHERE InitiationId=:InitiationId AND isactive='1'";
 	@Override
 	public long MacroDetailsPartTwoEdit(PfmsInitiationMacroDetailsTwo pmd) throws Exception {
 		Query query=manager.createNativeQuery(MACRODETAILSEDIT);
@@ -3010,8 +3019,10 @@ public class ProjectDaoImpl implements ProjectDao {
 		query.setParameter("ModifiedBy", pmd.getModifiedBy());
 		query.setParameter("ModifiedDate", pmd.getModifiedDate());
 		query.setParameter("InitiationId", pmd.getInitiationId());
+		query.setParameter("BuildingSpaceRequirement", pmd.getBuildingSpaceRequirement()  );
 		return query.executeUpdate();
 	}
+
 
 	private static final String BRIEFLIST="SELECT socid,Initiationid,TRLanalysis,PeerReview,ActionPlan,TestingPlan,ResponsibilityMatrix,DevelopmentPartner,ProductionAgencies,CostsBenefit,ProjectManagement,PERT,Achievement,CriticalTech FROM pfms_initiation_soc_brief WHERE InitiationId=:initiationid AND isactive=1";
 	@Override
@@ -4365,6 +4376,157 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public PlatformMaster getPlatformByPlatformId(long platformId) throws Exception {
 		 return manager.find(PlatformMaster.class, platformId);
+	}
+
+	
+	
+	//29-04-2025
+	@Override
+	public PfmsInitiationApproval getPfmsInitiationApprovalById(String enoteId) throws Exception {
+		
+		return manager.find(PfmsInitiationApproval.class, Long.parseLong(enoteId));
+	}
+	
+	@Override
+	public long savePfmsInitiationApproval(PfmsInitiationApproval pe) throws Exception {
+		
+		manager.persist(pe);
+		manager.flush();
+		return pe.getEnoteId();
+		
+	}
+	
+	private final String INIAPPROVALDATA= "SELECT a.EnoteId , a.RefNo , a.RefDate , a.Subject , a.Comment ,\r\n"
+			+ " a.InitiationId  ,a.Recommend1,a.Rec1_Role,a.Recommend2,a.Rec2_Role ,\r\n"
+			+ "  a.Recommend3, a.Rec3_Role , a.ApprovingOfficer,a.Approving_Role,a.EnoteStatusCode,a.EnoteStatusCodeNext,\r\n"
+			+ "  a.InitiatedBy,e.empname , d.designation , ds.EnoteStatus,ds.EnoteStatusColor,a.ApprovingOfficerLabCode \r\n"
+			+ "  FROM pfms_initiation_approval a , employee e , employee_desig d , dak_enote_status ds WHERE   a.EnoteStatusCode=ds.EnoteStatusCode\r\n"
+			+ " AND a.InitiationId=:InitiationId AND a.InitiatedBy = e.empid AND e.desigid = d.desigid AND a.isactive ='1'";
+	
+	@Override
+	public Object[] InitiationApprovalData(String InitiationId) throws Exception {
+		try {	
+		Query query = manager.createNativeQuery(INIAPPROVALDATA);
+		
+		query.setParameter("InitiationId", InitiationId);
+		return (Object[])query.getSingleResult();
+		}
+		catch (Exception e) {
+
+			return null;
+		}
+	}
+	
+	
+	@Override
+	public long savePmsInitiationApprovalTransaction(PmsInitiationApprovalTransaction pt) throws Exception {
+	
+		manager.persist(pt);
+		manager.flush();
+		
+		return pt.getEnoteTransId();
+				
+	}
+	private static final String ENOTEPENDINGLIST="CALL Pms_initiationApproval_PendingList(:EmpId)";
+	@Override
+	public List<Object[]> initiationPendingList(long empId) throws Exception {
+		logger.info(LocalDate.now() + "Inside initiationPendingList");
+		try {
+			Query query = manager.createNativeQuery(ENOTEPENDINGLIST);
+		
+			query.setParameter("EmpId", empId);
+	
+			 List<Object[]> eNotePendingList = (List<Object[]>) query.getResultList();
+				return eNotePendingList;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(LocalDate.now() + "Inside DaoImpl initiationPendingList", e);
+			return null;
+		}
+	}
+	
+	private static final String NEWAPPROVALLIST ="SELECT \r\n"
+			+ "(SELECT CONCAT(e.empname,', ',d.designation) FROM employee e,employee_desig d WHERE e.empid=p.InitiatedBy AND e.desigid=d.desigid )AS 'InitiatedByEmployee'\r\n"
+			+ ",(SELECT CONCAT(e.empname,', ',d.designation) FROM employee e,employee_desig d WHERE e.empid=p.Recommend1 AND e.desigid=d.desigid )AS 'Recommend1Officer'\r\n"
+			+ ",p.Rec1_Role\r\n"
+			+ ",(SELECT CONCAT(e.empname,', ',d.designation) FROM employee e,employee_desig d WHERE e.empid=p.Recommend2 AND e.desigid=d.desigid )AS 'Recommend2Officer'\r\n"
+			+ ",p.Rec2_Role\r\n"
+			+ ",(SELECT CONCAT(e.empname,', ',d.designation) FROM employee e,employee_desig d WHERE e.empid=p.Recommend3 AND e.desigid=d.desigid )AS 'Recommend3Officer'\r\n"
+			+ ",p.Recommend3\r\n"
+			+ ",(SELECT CONCAT(e.empname,', ',d.designation) FROM employee e,employee_desig d WHERE e.empid=p.ApprovingOfficer AND e.desigid=d.desigid )AS 'Approving Officer'\r\n"
+			+ ",p.Approving_Role,p.ApprovingOfficerLabCode\r\n"
+			+ " FROM pfms_initiation_approval p WHERE p.EnoteId=:EnoteId";
+	@Override
+	public Object[] NewApprovalList(String enoteId) throws Exception {
+		Query query = manager.createNativeQuery(NEWAPPROVALLIST);
+		query.setParameter("EnoteId", enoteId);
+				Object[]NewApprovalList = null;
+		try {
+			NewApprovalList=(Object[])query.getSingleResult();
+			return NewApprovalList;
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return null;
+	}
+	
+	
+	private static final String ENOTETRANSACTIONLIST="SELECT tra.EnoteTransId,emp.EmpId,emp.EmpName,des.Designation,tra.ActionDate,tra.Remarks,sta.EnoteStatus,sta.EnoteStatusColor FROM pfms_initiation_approval_transaction tra,dak_enote_status sta,employee emp,employee_desig des,pfms_initiation_approval e WHERE e.EnoteId = tra.EnoteId AND tra.EnoteStatusCode = sta.EnoteStatusCode AND tra.ActionBy=emp.EmpId AND emp.DesigId = des.DesigId AND e.EnoteId=:enoteTrackId ORDER BY tra.ActionDate";
+	@Override
+	public List<Object[]> EnoteTransactionList(String enoteTrackId) throws Exception {
+		logger.info(LocalDate.now() + "Inside EnoteTransactionList");
+		try {
+			Query query = manager.createNativeQuery(ENOTETRANSACTIONLIST);
+			query.setParameter("enoteTrackId", enoteTrackId);
+			 List<Object[]> EnoteTransactionList = (List<Object[]>) query.getResultList();
+				return EnoteTransactionList;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(LocalDate.now() + "Inside DaoImpl EnoteTransactionList", e);
+			return null;
+		}
+	}
+	
+	private static final String APPRVLIST= "SELECT MAX(a.EnoteId) AS EnoteId,MAX(a.RefNo) AS RefNo,MAX(a.RefDate) AS RefDate,MAX(a.Subject) AS SUBJECT,MAX(a.Comment) AS COMMENT,MAX(a.InitiatedBy) AS InitiatedBy,MAX(c.ActionDate) AS ActionDate,\r\n"
+			+ "		MAX(d.EnoteStatus) AS EnoteStatus,MAX(d.EnoteStatusColor) AS EnoteStatusColor,MAX(d.EnoteStatusCode) AS EnoteStatusCode,\r\n"
+			+ "		MAX(p.projectShortName) AS ProjectShortName , MAX(CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname)) AS empname, MAX(ed.designation) AS designation,MAX(p.projecttitle) AS projecttitle,MAX(a.initiationid)\r\n"
+			+ "		FROM pfms_initiation_approval a,employee b,pfms_initiation_approval_transaction c, pfms_initiation p ,dak_enote_status d , employee_desig ed\r\n"
+			+ "		WHERE a.InitiatedBy=b.EmpId AND b.desigid=ed.DesigId\r\n"
+			+ "		AND a.EnoteStatusCode=d.EnoteStatusCode AND a.EnoteId=c.EnoteId AND a.InitiationId = p.InitiationId \r\n"
+			+ "		AND c.EnoteStatusCode IN ('RC1','RC2','RC3','RC4','RC5','EXT','APR') AND c.ActionBy=:empId AND DATE(a.CreatedDate) \r\n"
+			+ "		BETWEEN :fromDate AND :toDate  GROUP BY a.EnoteId \r\n";
+			
+	@Override
+	public List<Object[]> initiationApprovalList(long empId, String fromDate, String toDate) throws Exception {
+
+		Query query = manager.createNativeQuery(APPRVLIST);
+		
+		query.setParameter("empId", empId);
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("toDate", toDate);
+		return (List<Object[]>)query.getResultList();
+	}
+	
+	
+	private static final String PRINTDETAILS="SELECT tra.EnoteTransId,(SELECT empId FROM pfms_initiation_approval_transaction t ,\r\n"
+			+ "			 employee e  WHERE e.empid = t.Actionby AND t.EnoteStatusCode =  sta.EnoteStatusCode AND\r\n"
+			+ "			 t.EnoteId=par.EnoteId ORDER BY t.EnoteTransId DESC LIMIT 1) AS 'empid',\r\n"
+			+ "			 (SELECT empname FROM pfms_initiation_approval_transaction t , employee e  WHERE e.empid = t.Actionby AND t.EnoteStatusCode =  sta.EnoteStatusCode AND t.EnoteId=par.EnoteId ORDER BY t.EnoteTransId DESC LIMIT 1) AS 'empname',\r\n"
+			+ "			 (SELECT designation FROM pfms_initiation_approval_transaction t ,employee e,employee_desig des WHERE e.empid = t.Actionby AND e.desigid=des.desigid AND\r\n"
+			+ "			  t.EnoteStatusCode =  sta.EnoteStatusCode AND t.EnoteId=par.EnoteId ORDER BY t.EnoteTransId DESC LIMIT 1) AS 'Designation', MAX(tra.ActionDate) AS ActionDate,(SELECT t.Remarks FROM pfms_initiation_approval_transaction t ,\r\n"
+			+ "			 employee e  WHERE e.empid = t.Actionby AND t.EnoteStatusCode =  sta.EnoteStatusCode AND t.EnoteId=par.EnoteId ORDER BY t.EnoteTransId DESC LIMIT 1) AS 'Remarks',\r\n"
+			+ "			 sta.EnoteStatus,sta.EnoteStatusColor,sta.EnoteStatusCode,par.InitiatedBy FROM \r\n"
+			+ "			 pfms_initiation_approval_transaction tra,dak_enote_status sta,employee emp,pfms_initiation_approval par WHERE par.EnoteId=tra.EnoteId\r\n"
+			+ "			 AND tra.EnoteStatusCode =sta.EnoteStatusCode AND sta.EnoteStatusCode IN ('FWD','RFD','RC1','RC2','RC3','RC4','RC5','APR','RR1','RR2','RR3','RAP') \r\n"
+			+ "			 AND tra.Actionby=emp.EmpId AND par.EnoteId=:enoteid  GROUP BY tra.EnoteStatusCode,tra.EnoteTransId,sta.EnoteStatus,sta.EnoteStatusColor ORDER BY ActionDate ASC";
+	
+	@Override
+	public List<Object[]> InitiationAprrovalPrintDetails(long enoteid) throws Exception {
+		// TODO Auto-generated method stub
+		Query query = manager.createNativeQuery(PRINTDETAILS);
+		query.setParameter("enoteid", enoteid);
+		return (List<Object[]>)query.getResultList();
 	}
 
 }

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.vts.pfms.login.Login;
 
-@FeignClient(name = "master-service", url = "${master_service_url}")
+@FeignClient(name = "master-service", url = "${master_service_url:NA}")
 public interface MasterServiceProxy {
     @PostMapping("getLoginDetails.htm")
     Login LoginDetails(@RequestHeader(name = "request_from", defaultValue = "VEDTS") String request_from,

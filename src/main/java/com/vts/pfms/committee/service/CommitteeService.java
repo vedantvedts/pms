@@ -2,10 +2,6 @@ package com.vts.pfms.committee.service;
 
 import java.util.List;
 
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vts.pfms.committee.dto.CommitteeConstitutionApprovalDto;
@@ -20,6 +16,7 @@ import com.vts.pfms.committee.dto.CommitteeScheduleAgendaDto;
 import com.vts.pfms.committee.dto.CommitteeScheduleDto;
 import com.vts.pfms.committee.dto.CommitteeSubScheduleDto;
 import com.vts.pfms.committee.dto.EmpAccessCheckDto;
+import com.vts.pfms.committee.dto.MeetingCheckDto;
 import com.vts.pfms.committee.model.CommitteeDefaultAgenda;
 import com.vts.pfms.committee.model.CommitteeDivision;
 import com.vts.pfms.committee.model.CommitteeInitiation;
@@ -35,6 +32,8 @@ import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.MinutesFinanceList;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 public interface CommitteeService {
 	
@@ -301,5 +300,17 @@ public interface CommitteeService {
 	
 	public List<Object[]> carsScheduleList(String carsInitiationId) throws Exception;
 	public void InvitationRoleoUpdate(String[] role, String[] empNo, String[] labCode, String userId,String []invitationid)throws Exception;
+
+
+	public List<MeetingCheckDto> getMeetingCheckDto(String date, String committeemainid)throws Exception;
+	public List<MeetingCheckDto> getMeetingCheckDto(String empid, String labocode,String scheduleid)throws Exception;
+	
+		/*  this method 
+		 * will help to get all meeting list based on committee later 
+		 * you can filter based on your need
+		 */
+	public List<Object[]> previousMeetingHeld(String committeeid)throws Exception  ;
+	public List<Object[]> getRecommendationsOfCommittee(String committeeid)throws Exception  ;
+	public List<Object[]> getDecisionsofCommittee(String committeeid)throws Exception  ;
 }
 

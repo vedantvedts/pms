@@ -262,14 +262,20 @@ label {
 	List<Object[]> specificarionMasterList = (List<Object[]>) request.getAttribute("specificarionMasterList");
 	List<SpecificationTypes> specificationTypesList = (List<SpecificationTypes>) request.getAttribute("specificationTypesList");
 	String specTypeId = (String) request.getAttribute("specTypeId");
+	String sid = (String) request.getAttribute("sid");
+	String mainid = (String) request.getAttribute("mainid");
 	specTypeId = specTypeId==null?"0":specTypeId;
-	
+	List<Object[]>systemList = (List<Object[]>)request.getAttribute("systemList");
+	List<Object[]>proList = (List<Object[]>)request.getAttribute("proList");
+
     Map<String, List<Object[]>> specificationTypeMap = new LinkedHashMap<>();
     specificationTypeMap.put("A", specificarionMasterList);
     
 	for(SpecificationTypes specificationType : specificationTypesList) {
 		
-		List<Object[]> specificationListByType = specificarionMasterList.stream().filter(e -> Long.parseLong(e[19].toString())==(specificationType.getSpecTypeId())).collect(Collectors.toList());
+		List<Object[]> specificationListByType = specificarionMasterList.stream()
+				.filter(e -> Long.parseLong(e[19].toString())==(specificationType.getSpecTypeId()) )
+				.collect(Collectors.toList());
 		
 		specificationTypeMap.computeIfAbsent(specificationType.getSpecTypeCode(), k -> new ArrayList<>()).addAll(specificationListByType);
 	}
@@ -303,7 +309,7 @@ label {
 			<div class="card shadow-nohover">
 				<div class="card-header">
 					<div class="row">
-						<div class="col-md-7">
+						<div class="col-md-4">
 							<h4>
 								<b>Specification Master List</b>
 							</h4>
@@ -327,12 +333,55 @@ label {
 						        </form>
 						    </div>
 						</div>
-						<div class="col-md-3"></div>
+
 					</div>
 				</div>
 				
+				<form action="SpecificationMasters.htm" method="get" id="myform">
+				<input type="hidden" name="mainid" id="mid">
+				 <input type="hidden" name="Type" id="specType" value="A">
+						            <input type="hidden" class="specTypeId" name="specTypeId" value="<%=specTypeId%>">
+						            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+						            
+						            <input type="submit" id="formsubmit" hidden="hidden">
+				</form>
+				
 				<div class="card-body">
-				    <div class="tabs-wrapper d-flex align-items-center">
+				<hr>
+				<div class="row mb-2 mt-2" >
+				<div class="col-md-4"></div>
+					<div class="col-md-2" align="right">
+					<label style="font-size: 17px; margin-top: 2%; color: #07689f">System Name :</label>
+					</div>
+										<div class="col-md-2" >
+						                         
+                              	<select class="form-control selectdee" id="sid" required="required" name="sid" onchange="getSubSystem()" >
+    								<option disabled selected value="">Choose...</option>
+   									<% for (Object[] obj : systemList) {%>
+										<option value="<%=obj[0]%>" data-system="<%=obj[2].toString() %>" <%if(sid!=null && sid.equalsIgnoreCase(obj[0].toString())) {%> selected <%} %> > <%=obj[2]%>  </option>
+									<%} %>
+  								</select>
+  					
+						</div>
+				<div class="col-md-2" align="right">
+					<label style="font-size: 17px; margin-top: 2%; color: #07689f">Sub-System Name :</label>
+					</div>
+						
+							<div class="col-md-2" >
+						                      
+                              	<select class="form-control selectdee" id="mainid" required="required" name="mainid" onchange="submitForm(myform,this)" >
+    								<option disabled selected value="">Choose...</option>
+    								<option  value="0" <%if(mainid.equalsIgnoreCase("0")) {%> selected <%} %>>RADAR</option>
+   									<% for (Object[] obj : proList) {%>
+										<option value="<%=obj[0]%>" data-system="<%=obj[2].toString() %>"  <%if(mainid.equalsIgnoreCase(obj[0].toString())){ %>selected <%} %> > <%=obj[3]%>  ( <%=obj[10] %> ) </option>
+									<%} %>
+  								</select>
+  					
+						</div>
+				
+				</div>
+				<hr>
+				    <div class="tabs-wrapper d-flex align-items-center mt-2">
 				        <button class="tab-btn prev btn btn-primary mr-2" onclick="scrollTabs(-1)">
 				            <i class="fa fa-chevron-left"></i>
 				        </button> 
@@ -551,9 +600,9 @@ label {
 			
 			// Filter specificarionMasterList based on specTypeId
 		    var filteredList = specificarionMasterList;
-			if(specTypeId!="0") {
+		/* 	if(specTypeId!="0") {
 				 filteredList = specificarionMasterList.filter(item => item[19] == specTypeId);
-			}
+			} */
 		    console.log('Filtered List:', filteredList);
 		    
 		 // Prepare table body
@@ -562,10 +611,13 @@ label {
                     { text: 'SN', style: 'tableHeader' },
                     { text: 'Specification Code', style: 'tableHeader' },
                     { text: 'Parameter', style: 'tableHeader' },
+                    { text: 'Description', style: 'tableHeader' },
                     { text: 'Min Value', style: 'tableHeader' },
                     { text: 'Typical Value', style: 'tableHeader' },
                     { text: 'Max Value', style: 'tableHeader' },
                     { text: 'Unit', style: 'tableHeader' },
+                    { text: 'Spec Type', style: 'tableHeader' },
+                    { text: 'Unit Required', style: 'tableHeader' },
                 ]
             ];
 
@@ -575,10 +627,13 @@ label {
                         { text: (index + 1).toString(), style: 'tableData', alignment: 'center', fillColor: obj[14] == "0" ? '#9ae59a' : null },
                         { text: obj[5] ? obj[5] : '-', style: 'tableData', alignment: 'left', fillColor: obj[14] == "0" ? '#9ae59a' : null },
                         { text: obj[3] ? obj[3] : '-', style: 'tableData', alignment: 'left', fillColor: obj[14] == "0" ? '#9ae59a' : null },
-                        { text: obj[16] ? obj[16] : '-', style: 'tableData', fillColor: obj[14] == "0" ? '#9ae59a' : null },
-                        { text: obj[6] ? obj[6] : '-', style: 'tableData', fillColor: obj[14] == "0" ? '#9ae59a' : null },
-                        { text: obj[15] ? obj[15] : '-', style: 'tableData', fillColor: obj[14] == "0" ? '#9ae59a' : null },
-                        { text: obj[4] ? obj[4] : '-', style: 'tableData', fillColor: obj[14] == "0" ? '#9ae59a' : null },
+                        { text: obj[2] ? obj[2] : '-', style: 'tableData', alignment: 'left', fillColor: obj[14] == "0" ? '#9ae59a' : null },
+                        { text: obj[16] ? obj[16] : '-', style: 'tableData', fillColor: obj[14] == "0" ? '#9ae59a' : null, alignment: 'center' },
+                        { text: obj[6] ? obj[6] : '-', style: 'tableData', fillColor: obj[14] == "0" ? '#9ae59a' : null, alignment: 'center' },
+                        { text: obj[15] ? obj[15] : '-', style: 'tableData', fillColor: obj[14] == "0" ? '#9ae59a' : null, alignment: 'center' },
+                        { text: obj[4] ? obj[4] : '-', style: 'tableData', fillColor: obj[14] == "0" ? '#9ae59a' : null, alignment: 'center' },
+                        { text: obj[20] ? obj[20].split(" ")[0] : '-', style: 'tableData', fillColor: obj[14] == "0" ? '#9ae59a' : null, alignment: 'center' },
+                        { text: obj[4] ? 'YES' : 'NO', style: 'tableData', fillColor: obj[14] == "0" ? '#9ae59a' : null, alignment: 'center' },
                     ]);
                 });
             } else {
@@ -601,7 +656,7 @@ label {
 		                {
 		                    table: {
 		                        headerRows: 1,
-		                        widths: ['7%', '18%', '15%', '15%', '15%', '15%', '15%'],
+		                        widths: ['4%', '13%', '10%', '18%', '9%', '9%', '9%','9%','10%','8%'],
 		                        body: tableBody,
 		                    },
 		                    layout: {
@@ -628,8 +683,8 @@ label {
 					],
 					styles: {
 						chapterHeader: { fontSize: 16, bold: true, margin: [0, 0, 0, 10] },
-		                tableHeader: { fontSize: 12, bold: true, fillColor: '#f0f0f0', alignment: 'center', margin: [10, 5, 10, 5], fontWeight: 'bold' },
-		                tableData: { fontSize: 11.5, margin: [0, 5, 0, 5] },
+		                tableHeader: { fontSize: 8, bold: true, fillColor: '#f0f0f0', alignment: 'center', margin: [10, 5, 10, 5], fontWeight: 'bold' },
+		                tableData: { fontSize: 8, margin: [0, 5, 0, 5] },
 		            },
 		            footer: function(currentPage, pageCount) {
 		                /* if (currentPage > 2) { */
@@ -650,32 +705,20 @@ label {
 		                /* }
 		                return ''; */
 		            },
-		            /* header: function (currentPage) {
-		                return {
-		                    stack: [
-		                        
-		                        {
-		                            columns: [
-		                                {
-		                                    // Center: Text
-		                                    text: 'Restricted',
-		                                    alignment: 'center',
-		                                    fontSize: 10,
-		                                    bold: true,
-		                                    margin: [0, 10, 0, 0]
-		                                },
-		                            ]
-		                        },
-		                        
-		                    ]
-		                };
-		            }, */
+		          
 					pageMargins: [30, 40, 20, 20],
 		            
 		            defaultStyle: { fontSize: 12, color: 'black', }
 		        };
 				
 		        pdfMake.createPdf(docDefinition).open();
+		}
+		
+		
+		function submitForm(myform,ele){
+			
+			$('#mid').val(ele.value)
+			$('#formsubmit').click();
 		}
 	</script>
 </body>

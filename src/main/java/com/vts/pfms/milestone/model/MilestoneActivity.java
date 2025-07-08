@@ -32,6 +32,7 @@ public class MilestoneActivity {
 	private int ActivityStatusId;
 	private String StatusRemarks;
 	private int RevisionNo;
+	private int Loading;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
