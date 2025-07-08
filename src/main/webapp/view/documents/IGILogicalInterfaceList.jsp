@@ -1,4 +1,6 @@
 
+<%@page import="com.vts.pfms.documents.model.FieldGroupMaster"%>
+<%@page import="com.vts.pfms.documents.model.IGIFieldDescription"%>
 <%@page import="com.vts.pfms.documents.model.IGILogicalChannel"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="com.vts.pfms.documents.model.IGILogicalInterfaces"%>
@@ -32,40 +34,6 @@ label {
 	color: #07689f;
 }
 
-.tab-pane p{
-	text-align: justify;
-	
-}
-
-.tabpanes {
-	min-height: 637px;
-    max-height: 637px;
-    overflow: auto;
-    scrollbar-width: thin;
-  	scrollbar-color: #216583 #f8f9fa;
-}
-
-.card-body {
-    padding-bottom: 50px; /* Add some padding to make sure content doesn't overlap with the buttons */
-}
-
-/* Chrome, Edge, and Safari */
-.tabpanes::-webkit-scrollbar {
-  width: 12px;
-}
-
-.tabpanes::-webkit-scrollbar-track {
-  background: #f8f9fa;
-  border-radius: 5px;
-}
-
-.tabpanes::-webkit-scrollbar-thum {
-  background-color: #216583;
-  border-radius: 5px;
-  border: 2px solid #f8f9fa;
-}
-
-
 .card-body{
 	padding: 0rem !important;
 }
@@ -74,35 +42,12 @@ label {
 	margin: 1%;
 }
 
- .b{
+.b{
 	background-color: #ebecf1;	
 }
+
 .a{
 	background-color: #d6e0f0;
-}
-
-.nav-links{
-	text-align: left;
-}
-
-.text-center{
-	text-align: left !imporatant;
-}
-
-.previous{
-	color: white !important;
-}
-
-.previous, .next{
-	font-family: 'Montserrat', sans-serif;
-    font-weight: 800 !important;
-}
-
-.next {
-  padding: 4px 16px;
-  font-weight: 800;
-  background-color: #394989;
-  border-color: #394989;
 }
 
 .center {
@@ -124,19 +69,9 @@ label {
 	text-align: left !important;
 }
 
-.agendaItemBtn > p {
-	margin-bottom : 0;
-}
-
-.panel-bottom {
-    bottom: 10px;
-    right: 10px;
-    text-align: right;
-}
-
 .customSidebar {
-	min-height: 920px;
-    max-height: 920px;
+	min-height: 660px;
+    max-height: 660px;
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: thin;
@@ -149,38 +84,6 @@ label {
 	margin-top: 0.25rem;
 	width: 97%;
 	border-radius: 0.75rem;
-}
-
-.panel-buttons {
-	margin: 1%;
-}
-
-.btn-print {
-	background-color: purple;
-	border: none;
-	color: white;
-	font-weight: bold;
-	text-decoration: none;
-}
-
-.fs-custom {
-	font-size: 0.95rem;
-}
-
-.nav-links.active {
-	color: green !important;
-	font-weight: bold;
-	border: none !important;
-	display: block;
-    padding: .5rem 1rem;
-}
-
-.nav-links {
-	color: black !important;
-	font-weight: bold;
-	border: none !important;
-	display: block;
-    padding: .5rem 1rem;
 }
 
 .custom-container {
@@ -199,6 +102,9 @@ label {
 	<%
 		List<IGILogicalInterfaces> logicalInterfaceList = (List<IGILogicalInterfaces>)request.getAttribute("logicalInterfaceList");
 		List<IGILogicalChannel> logicalChannelList = (List<IGILogicalChannel>)request.getAttribute("logicalChannelList");
+		List<Object[]> fieldDescriptionList = (List<Object[]>)request.getAttribute("fieldDescriptionList");
+		List<Object[]> fieldMasterList = (List<Object[]>)request.getAttribute("fieldMasterList");
+		List<Object[]> dataTypeMasterList = (List<Object[]>)request.getAttribute("dataTypeMasterList");
 		IGILogicalInterfaces logicalInterface = (IGILogicalInterfaces)request.getAttribute("igiLogicalInterfaceData");
 		String logicalInterfaceId = (String)request.getAttribute("logicalInterfaceId");
 		String logicalChannelId = (String)request.getAttribute("logicalChannelId");
@@ -207,6 +113,31 @@ label {
 		}
 		String igiDocId = (String)request.getAttribute("igiDocId");
 		List<String> msgTypesList = Arrays.asList("Information", "Request", "Answer", "Command", "Acknowledement");
+		
+		fieldDescriptionList = fieldDescriptionList.stream().filter(e -> logicalInterfaceId.equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());
+	
+		List<FieldGroupMaster> fieldGroupList = (List<FieldGroupMaster>) request.getAttribute("fieldGroupList");
+		
+		Map<String, List<Object[]>> fieldGroupMap = new LinkedHashMap<>();
+		fieldGroupMap.put("0", fieldMasterList);
+	    
+		for(FieldGroupMaster fieldGroup : fieldGroupList) {
+			
+			List<Object[]> fieldMasterByType = fieldMasterList.stream()
+											    .filter(e -> {
+											    	if(e[18]!=null) {
+											    		String fieldGroupIds = e[18].toString();
+												        List<String> idList = Arrays.asList(fieldGroupIds.split(","));
+												        return idList.contains(fieldGroup.getFieldGroupId()+"");
+											    	}else{
+											    		return false;
+											    	}
+											        
+											    })
+				    							.collect(Collectors.toList());
+			
+			fieldGroupMap.computeIfAbsent(fieldGroup.getFieldGroupId()+"", k -> new ArrayList<>()).addAll(fieldMasterByType);
+		}
 	%>
 	
 	<% String ses=(String)request.getParameter("result");
@@ -233,8 +164,18 @@ label {
  					<div class="col-md-2">
  						<h3 class="text-dark" style="font-weight: bold;">Logical Interfaces</h3>
  					</div>
- 					<div class="col-md-8"></div>
- 					<div class="col-md-2 right">
+ 					<div class="col-md-7"></div>
+ 					<div class="col-md-2"  align="right">
+						<form action="IGILogicalInterfaceMatrixDetails.htm" method="post">
+                    		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		        			<input type="hidden" name="igiDocId" value="<%=igiDocId %>" />
+		        			<input type="hidden" name="docType" value="A" />
+		        			<button class="btn btn-info btn-sm shadow-nohover back">
+		        				Interface Matrix
+		        			</button>
+                		</form>                	
+                	</div>
+ 					<div class="col-md-1 right">
 	 					<a class="btn btn-info btn-sm shadow-nohover back" style="position:relative;" href="IGIDocumentDetails.htm?igiDocId=<%=igiDocId%>">Back</a>
  					</div>
  				</div>
@@ -242,7 +183,7 @@ label {
        		
        		<div class="card-body">
        			<div class="custom-container">
-       				<div style="width: 15%;">
+       				<div style="width: 18%;">
        					<div class="card" style="border-color: #007bff;">
      						<div class="card-header center" style="background-color: transparent;border-color: #007bff;">
      							<h5 class="" style="font-weight: bold;color: #8b550c;">List of Interfaces</h5>
@@ -268,7 +209,7 @@ label {
    										
    										List<IGILogicalInterfaces> interfaceListByType = logicalInterfaceList.stream().filter(e -> e.getLogicalChannelId().equals(channel.getLogicalChannelId())).collect(Collectors.toList());
    										
-   										logicalInterfaceMap.computeIfAbsent(channel.getLogicalChannelId() +"/"+ channel.getChannelCode(), k -> new ArrayList<>()).addAll(interfaceListByType);
+   										logicalInterfaceMap.computeIfAbsent(channel.getLogicalChannelId() +"/"+ channel.getLogicalChannel(), k -> new ArrayList<>()).addAll(interfaceListByType);
    									}
 									
    									
@@ -293,8 +234,6 @@ label {
 								                data-toggle="tooltip" data-placement="top" title="<%=channelCode%> Interfaces">
 								                <span style="font-weight: bold;"><%=(++interfaceMainCount) + ". " + channelCode%></span>
 								                <span style="float: right;margin-right: 0.5rem;">
-								                	<i class="fa fa-pencil-square-o" aria-hidden="true" onclick="openChannelEditModal('<%=channelId%>')"></i>
-								                	&nbsp;&nbsp;<i class="fa fa-trash" aria-hidden="true" onclick="deleteChannel('<%=channelId%>')"></i>
 									                <% if (interfaceList.size() > 0) { %>
 									                &nbsp;&nbsp; <i id="facaret" class="fa fa-caret-up"></i>
 									                <% } %>
@@ -333,10 +272,10 @@ label {
    							</div>
        					</div>
        				</div>
-       				<div style="width: 85%;">
+       				<div style="width: 82%;">
        					<div class="card ml-3 mr-3">
        						<div class="card-header">
-       							<h4 class="text-dark">Interface Details <%if(logicalInterface!=null) {%>- <%=logicalInterface.getMsgName() %><%} %> </h4>
+       							<h4 class="text-dark">Interface Details <%if(logicalInterface!=null) {%>- <%=logicalInterface.getMsgCode() %><%} else{%>Add<%} %> </h4>
        						</div>
        						<div class="card-body m-2">
        							<form action="IGILogicalInterfaceDetailsSubmit.htm" method="post" id="myform">
@@ -350,9 +289,9 @@ label {
 		       									<label class="form-lable">Logical Channel Name<span class="mandatory">*</span></label>
 		       									<select class="form-control selectdee" id="logicalChannelId" name="logicalChannelId" required>
 		       										<option value="" selected disabled>----select----</option>
-		       										<option value="addNew" style="background-color: purple !important;">Add New</option>
+		       										<!-- <option value="addNew" style="background-color: purple !important;">Add New</option> -->
 		       										<%for(IGILogicalChannel channel : logicalChannelList) {%>
-		       											<option value="<%=channel.getLogicalChannelId()+"/"+channel.getChannelCode() %>" 
+		       											<option value="<%=channel.getLogicalChannelId()+"/"+channel.getLogicalChannel() %>" 
 		       											<%if(logicalInterface!=null && logicalInterface.getLogicalChannelId()!=null && logicalInterface.getLogicalChannelId().equals(channel.getLogicalChannelId()) ||
 		       													Long.parseLong(logicalChannelId)==channel.getLogicalChannelId()) {%>selected<%} %>>
 		       												<%=channel.getLogicalChannel()+" ("+channel.getChannelCode()+")" %>
@@ -398,6 +337,145 @@ label {
 	                  				 	</div>
                   				 	</div>
                   				 	
+                  				 	<div class="form-group">
+                  				 		<div class="form-row">
+                  				 			<div class="col-md-2">
+		       									<label class="form-lable">Message Length <span class="mandatory">*</span></label>
+		       									<input type="number" class="form-control" name="msgLength" <%if(logicalInterface!=null && logicalInterface.getMsgLength()!=null) {%>value="<%=logicalInterface.getMsgLength() %>"<%} %> min="0" max="9999999999" required>
+		       								</div>
+		       								
+			                    		    <div class="col-md-2">
+		       									<label class="form-lable">Message Number <span class="mandatory">*</span></label>
+		       									<input type="text" class="form-control" name="msgNo" <%if(logicalInterface!=null && logicalInterface.getMsgNo()!=null) {%>value="<%=logicalInterface.getMsgNo() %>"<%} %> placeholder="Enter Message No" maxlength="255" required>
+		       								</div>
+                  				 		</div>
+                  				 	</div>
+                  				 	<hr class="mt-3 mb-3">
+	                    				 
+		       						<div class="row">
+		                    		    <div class="col-md-6" style="text-align: left;">
+		                    		    	<label class="control-label" style="color: black;">Field Description :</label>
+		                    		    </div>
+                  				 	</div>
+	                  				 	
+                  				 	<div class="form-group">
+                  				 		<div class="row">
+                  				 			<div class="col-md-12">
+                  				 				<table id="fielddesctable" class="table table-bordered fielddesctable" style="width: 100%;" >
+													<thead class="center" style="background: #055C9D;color: white;">
+														<tr>
+															<th width="20%">Group</th>
+															<th width="25%">Field Name</th>
+															<th width="20%">Data Type (bits)</th>
+															<th width="15%">Quantum</th>
+															<th width="15%">Unit</th>
+															<!-- <th width="20%">Remarks</th> -->
+															<td width="5%">
+																<button type="button" class=" btn btn-sm btn_add_fielddesc "><i class="btn btn-sm fa fa-plus" style="color: green;"></i></button>
+															</td>
+														</tr>
+													</thead>
+													<tbody>
+														<%
+														int slno = 1;
+														if(fieldDescriptionList!=null && fieldDescriptionList.size()>0) {
+															for(Object[] desc : fieldDescriptionList) {
+														%>
+															<tr class="tr_clone_fielddesc">
+																<td>
+																	<select class="form-control selectitem fieldGroupId" name="fieldGroupId" id="fieldGroupId_<%=slno %>" data-live-search="true" data-container="body" required>
+											               				<option value="" disabled selected>Choose...</option>
+											               				<option value="0" <%if(desc[12]!=null && Long.parseLong(desc[12].toString())==0) {%>selected<%} %>>Not Applicable</option>
+											               				<%for(FieldGroupMaster fieldGroup : fieldGroupList){
+											                			 %>
+																			<option value="<%=fieldGroup.getFieldGroupId()%>" <%if(desc[12]!=null && Long.parseLong(desc[12].toString())==(fieldGroup.getFieldGroupId())) {%>selected<%} %> >
+																				<%=fieldGroup.getGroupName()+" ("+fieldGroup.getGroupCode()+")" %>
+																			</option>
+																		<%} %>
+																	</select>
+																</td>
+																<td>
+																	<select class="form-control selectitem fieldMasterId" name="fieldMasterId" id="fieldMasterId_<%=slno %>" data-live-search="true" data-container="body" required>
+											               				<option value="" disabled selected>Choose...</option>
+											               				<%for(Object[] obj : fieldMasterList ){
+											                			 %>
+																			<option value="<%=obj[0]%>" <%if(desc[2]!=null && Long.parseLong(desc[2].toString())==Long.parseLong(obj[0].toString())) {%>selected<%} %> >
+																				<%=obj[1] %>
+																			</option>
+																		<%} %>
+																	</select>
+																</td>	
+																<td>
+																	<input type="text" class="form-control dataType" name="dataType" id="dataType_<%=slno %>" <%if(desc[19]!=null) {%> value="<%=desc[19] %>" <%} %> readonly>
+																</td>	
+																<td>
+																	<input type="text" class="form-control quantum" name="quantum" id="quantum_<%=slno %>" value="<%=desc[6] %>" readonly>
+																</td>
+																<td>
+																	<input type="text" class="form-control unit" name="unit" id="unit_<%=slno %>" value="<%=desc[18] %>" readonly>
+																</td>	
+																<%-- <td>
+																	<input type="text" class="form-control remarks" name="remarks" id="remarks_<%=slno %>" value="<%=desc.getRemarks() %>" readonly>
+																</td> --%>	
+																<td class="center">
+																	<button type="button" class=" btn btn-sm btn_rem_fielddesc" > <i class="btn btn-sm fa fa-minus" style="color: red;"></i></button>
+																</td>		
+															</tr>
+														<%++slno;} }else{%>
+															<tr class="tr_clone_fielddesc">
+																<td>
+																	<select class="form-control selectitem fieldGroupId" name="fieldGroupId" id="fieldGroupId_1" data-live-search="true" data-container="body" required>
+											               				<option value="" disabled selected>Choose...</option>
+											               				<option value="0" >Not Applicable</option>
+											               				<%for(FieldGroupMaster fieldGroup : fieldGroupList){
+											                			 %>
+																			<option value="<%=fieldGroup.getFieldGroupId()%>">
+																				<%=fieldGroup.getGroupName()+" ("+fieldGroup.getGroupCode()+")" %>
+																			</option>
+																		<%} %>
+																	</select>
+																</td>
+																<td>
+																	<select class="form-control selectitem fieldMasterId" name="fieldMasterId" id="fieldMasterId_1" data-live-search="true" data-container="body" required>
+											               				<%-- <option value="" disabled selected>Choose...</option>
+											               				<%for(Object[] obj : fieldMasterList ){
+											                			 %>
+																			<option value="<%=obj[0]%>" 
+																			data-fieldname="<%=obj[1]%>"
+																			data-fieldcode="<%=obj[3]%>"
+																			data-quantum="<%=obj[11]%>"
+																			data-unit="<%=obj[12]%>"
+																			data-remarks="<%=obj[13]%>"
+																			data-datatype="<%=obj[14]%>"
+																			data-datalength="<%=obj[15]%>"
+																			>
+																				<%=obj[1]+" ("+obj[3]+")" %>
+																			</option>
+																		<%} %> --%>
+																	</select>
+																</td>	
+																<td>
+																	<input type="text" class="form-control dataType" name="dataType" id="dataType_1" readonly>
+																</td>	
+																<td>
+																	<input type="text" class="form-control quantum" name="quantum" id="quantum_1" readonly>
+																</td>	
+																<td>
+																	<input type="text" class="form-control unit" name="unit" id="unit_1" readonly>
+																</td>	
+																<!-- <td>
+																	<input type="text" class="form-control remarks" name="remarks" id="remarks_1" readonly>
+																</td> -->	
+																<td class="center">
+																	<button type="button" class=" btn btn-sm btn_rem_fielddesc" > <i class="btn btn-sm fa fa-minus" style="color: red;"></i></button>
+																</td>		
+															</tr>
+														<%} %>		
+													</tbody>
+												</table>
+                  				 			</div>
+                  				 		</div>
+                  				 	</div>
 	       							<div class="form-group">
 	       								<div class="center">
 	       									<%if(logicalInterface!=null){ %>
@@ -418,7 +496,7 @@ label {
 	
 	
 	<!-- ----------------------------------------------- Add New Logical Channel Modal --------------------------------------------------------------- -->
-	<div class="modal fade bd-example-modal-lg center" id="addNewChannelsModal" tabindex="-1" role="dialog" aria-labelledby="addNewChannelsModal" aria-hidden="true" style="margin-top: 10%;">
+	<%-- <div class="modal fade bd-example-modal-lg center" id="addNewChannelsModal" tabindex="-1" role="dialog" aria-labelledby="addNewChannelsModal" aria-hidden="true" style="margin-top: 10%;">
 		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
 			<div class="modal-content" style="width: 90%;margin-left: 10%;">
 				<div class="modal-header" style="background: #055C9D;color: white;">
@@ -468,7 +546,7 @@ label {
      			</div>
      		</div>
 		</div>
-	</div>	
+	</div> --%>	
 	
 	<form action="IGILogicalChannelDelete.htm" method="post" style="display: none;">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -558,7 +636,7 @@ label {
 			
 		});
 		
-		$('#logicalChannelId').on('change', function(){
+		/* $('#logicalChannelId').on('change', function(){
 			var logicalChannelId = $(this).val();
 			if(logicalChannelId=='addNew') {
 				$('#logicalChannel').val('');
@@ -580,7 +658,206 @@ label {
 		function deleteChannel(channelId) {
 			$('#logicalChannelIdDelete').val(channelId);
 			$('#logicalChannelDeleteBtn').click();
+		} */ 
+		
+		var fieldGroupMap = {};
+	    <% for (Map.Entry<String, List<Object[]>> entry : fieldGroupMap.entrySet()) { %>
+	        fieldGroupMap["<%= entry.getKey() %>"] = [
+	            <% for (Object[] field : entry.getValue()) { %>
+	                {
+	                	value: "<%= field[0] %>",
+	                    text: "<%= field[1] %>",
+	                    datatype: "<%= field[16] %>",
+	                    quantum: "<%= field[11] %>",
+	                    unit: "<%= field[12] %>",
+	                    remarks: "<%= field[13] %>"
+	                },
+	            <% } %>
+	        ];
+	    <% } %>
+	    
+		/* Cloning (Adding) the table body rows */
+		let fieldDescIndex = '<%=slno%>'; // Start from 1 if one row is already present
+
+		$("#fielddesctable").on('click', '.btn_add_fielddesc', function () {
+		    const $last = $('.tr_clone_fielddesc').last();
+		    const $clone = $last.clone();
+
+		    fieldDescIndex++;
+
+		    // Clean up old select2 from clone
+		    $clone.find('.select2-container').remove();
+		    $clone.find('.fieldGroupId, .fieldMasterId')
+		        .removeClass('select2-hidden-accessible')
+		        .removeAttr('data-select2-id')
+		        .removeAttr('aria-hidden')
+		        .removeAttr('tabindex');
+
+		    // Update IDs and reset values
+		    $clone.find('.fieldGroupId')
+		        .val('')
+		        .attr('id', 'fieldGroupId_' + fieldDescIndex)
+
+		    $clone.find('.fieldMasterId')
+		        .val('')
+		        .attr('id', 'fieldMasterId_' + fieldDescIndex)
+		        .html('<option value="" selected disabled>Choose...</option>');
+
+		    // Reset any inputs
+		    $clone.find("input[type='text'], textarea").val('');
+		    $clone.find("input[type='number']").val('0');
+
+		    // Add to DOM
+		    $last.after($clone);
+
+		    // Reinitialize all select2 (important!)
+		    initializeSelect2ForAll();
+		});
+
+		/* Cloning (Removing) the table body rows */
+		$("#fielddesctable").on('click','.btn_rem_fielddesc' ,function() {
+			
+			var cl=$('.tr_clone_fielddesc').length;
+				
+			if(cl>1){
+			   var $tr = $(this).closest('.tr_clone_fielddesc');
+			  
+			   var $clone = $tr.remove();
+			   $tr.after($clone);
+			   
+			}
+		 
+		});
+
+
+		function initializeSelect2ForAll() {
+		    // Clean up and reinitialize all select2
+		    $('.fieldGroupId, .fieldMasterId').each(function () {
+		        // Destroy existing Select2 if initialized
+		        if ($(this).hasClass("select2-hidden-accessible")) {
+		            $(this).select2('destroy');
+		        }
+		        // Reinitialize
+		        $(this).select2({ width: '100%' });
+		    });
 		}
+		
+		function handleFieldGroupChange(rowId) {
+		    const selectedGroupId = $('#fieldGroupId_' + rowId).val();
+		    const $originalRow = $('#fieldGroupId_' + rowId).closest('tr');
+		    const fieldList = fieldGroupMap[selectedGroupId] || [];
+
+		    // Clear the fieldMaster dropdown and populate options
+		    const $fieldDropdown = $('#fieldMasterId_' + rowId);
+		    $fieldDropdown.empty().append('<option value="" selected disabled>Choose...</option>');
+
+		 	// Always clear data fields first for safety
+		    $originalRow.find('.dataType').val('');
+		    $originalRow.find('.quantum').val('');
+		    $originalRow.find('.unit').val('');
+		    // $originalRow.find('.remarks').val('');
+		    $originalRow.find("input[type='text'], textarea").val('');
+		    $originalRow.find("input[type='number']").val('0');
+		    
+		    if (selectedGroupId === '0' || fieldList.length === 0) {
+
+		        fieldList.forEach(field => {
+		            $fieldDropdown.append(new Option(field.text, field.value));
+		        });
+
+		        // Reinitialize select2 only for this dropdown
+		        initializeSelect2ForAll();
+		        return;
+		    }
+
+		    // If multiple fields exist, populate current row and clone only remaining ones
+		    fieldList.forEach((field, index) => {
+		        if (index === 0) {
+		            // First item: update current row
+		            $fieldDropdown.append(new Option(field.text, field.value, true, true));
+		            $originalRow.find('.fieldGroupId').val(selectedGroupId);
+		            $originalRow.find("input[type='text'], textarea").val('');
+		            $originalRow.find("input[type='number']").val('0');
+		            
+		            $originalRow.find('.dataType').val(field.datatype || '');
+		            $originalRow.find('.quantum').val(field.quantum || '');
+		            $originalRow.find('.unit').val(field.unit || '');
+		            // $originalRow.find('.remarks').val(field.remarks || '');
+		            
+		        } else {
+		            // For additional fields, clone new rows
+		            fieldDescIndex++;
+
+		            const $newRow = $('.tr_clone_fielddesc').first().clone();
+
+		            $newRow.find('.select2-container').remove();
+		            $newRow.find('.fieldGroupId, .fieldMasterId')
+		                .removeClass('select2-hidden-accessible')
+		                .removeAttr('data-select2-id')
+		                .removeAttr('aria-hidden')
+		                .removeAttr('tabindex');
+
+		            $newRow.find('.fieldGroupId')
+		                .val(selectedGroupId)
+		                .attr('id', 'fieldGroupId_' + fieldDescIndex);
+
+		            $newRow.find('.fieldMasterId')
+		                .empty()
+		                .append(new Option(field.text, field.value, true, true))
+		                .attr('id', 'fieldMasterId_' + fieldDescIndex);
+
+		            $newRow.find("input[type='text'], textarea").val('');
+		            $newRow.find("input[type='number']").val('0');
+
+		            $newRow.find('.dataType').val(field.datatype || '');
+		            $newRow.find('.quantum').val(field.quantum || '');
+		            $newRow.find('.unit').val(field.unit || '');
+		            // $newRow.find('.remarks').val(field.remarks || '');
+
+		            $originalRow.after($newRow);
+		        }
+		    });
+
+		    initializeSelect2ForAll();
+		}
+
+
+		$(document).ready(function () {
+		    // Set initial counter
+		    const lastId = $('.fieldGroupId').last().attr('id');
+		    if (lastId) {
+		        const parts = lastId.split('_');
+		        fieldDescIndex = parseInt(parts[1]) || 1;
+		    }
+
+		    // Initialize all existing selects
+		    initializeSelect2ForAll();
+		    
+		 	// Use event delegation to bind change handler to current and future .fieldGroupId elements
+		    $('#fielddesctable').on('change', '.fieldGroupId', function () {
+		    	const id = $(this).attr('id'); // e.g., fieldGroupId_2
+		        const index = parseInt(id.split('_')[1]); // get 2
+		        handleFieldGroupChange(index);
+		    });
+
+		 	// Field Master selection change handler
+		    $('#fielddesctable').on('change', '.fieldMasterId', function () {
+		        const selectedFieldId = $(this).val();
+		        const $row = $(this).closest('tr');
+		        const groupId = $row.find('.fieldGroupId').val();
+		        const fieldList = fieldGroupMap[groupId] || [];
+		        const matchedField = fieldList.find(f => f.value === selectedFieldId);
+
+		        if (matchedField) {
+		            $row.find('.dataType').val(matchedField.datatype || '');
+		            $row.find('.quantum').val(matchedField.quantum || '');
+		            $row.find('.unit').val(matchedField.unit || '');
+		            // $row.find('.remarks').val(matchedField.remarks || '');
+		        }
+		    });
+
+		});
+
 	</script>
 
 </body>

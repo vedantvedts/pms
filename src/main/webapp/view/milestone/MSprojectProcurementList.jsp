@@ -1,12 +1,20 @@
+<%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/css/sweetalert2.min.css" var="sweetalertCss" />
+<spring:url value="/resources/js/sweetalert2.min.js" var="sweetalertJs" />
+<link href="${sweetalertCss}" rel="stylesheet" />
+<script src="${sweetalertJs}"></script>
+
 <style type="text/css">
 .left {
 	text-align: left;
@@ -81,30 +89,41 @@
 	
        		<div class="card-body">
        			<div class="tab-content" id="pills-tabContent">
-       			
             		<div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="pills-tab-1">
              			<div class="table-responsive">
-              				<table class="table table-hover  table-striped table-condensed table-bordered table-fixed" id="myTable">
+              				<table class="table  table-hover table-bordered" id="myTable" style="width: 100%;">
 								<thead class="center">
 									<tr>
-					  					<th style="">Expand</th>
-										<th style="">Task No.</th>
-					  					<th style="">Task</th>
-					  					<th style="">Assignee</th>
-					  					<th style="">Start Date</th>
-					  					<th style="">End Date</th>
-					  					<th style="">Demand No</th>
-					  					<th style="">Progress</th>
-                  					</tr>
+										<th width="5%">Expand</th>
+										<th width="5%">SN</th>
+										<th width="10%">Task No.</th>
+										<th width="20%">Task Name</th>
+										<th width="20%">Assignee</th>
+										<th width="10%">Start Date</th>
+										<th width="10%">Finish Date</th>
+										<th width="10%">Demand No</th>
+										<th width="10%">Progress</th>
+									</tr>
 								</thead>
                  				<tbody>
                        				<%if(msProcurementList!=null && msProcurementList.size()>0) {
-                       					int count =0;
-                       					for(Object[] level1 : msProcurementList) {
-                       						if(level1[8].toString().equalsIgnoreCase("1")){
+	                       				int count = 0;
+	                               	 	List<Object[]> level1msProcurementList = msProcurementList.stream().filter(e -> e[8].toString().equalsIgnoreCase("1") ).collect(Collectors.toList());
+	                       				for(Object[] level1 : level1msProcurementList) {
+	                                    	List<Object[]> level2msProcurementList = msProcurementList.stream().filter(e -> e[8].toString().equalsIgnoreCase("2") && e[7].toString().equalsIgnoreCase(level1[6].toString())).collect(Collectors.toList());
+
                        				%>
                        					<tr>
-											<td style="width:2% !important;" class="center"><span class="clickable" data-toggle="collapse" id="row<%=count %>" data-target=".row<%=count %>"><button class="btn btn-sm btn-success" id="btn<%=count %>"  onclick="ChangeButton('<%=count %>')"><i class="fa fa-plus"  id="fa<%=count%>"></i> </button></span></td> 
+											<td class="center">
+												<%if(level2msProcurementList!=null && level2msProcurementList.size()>0) {%>
+													<span class="clickable" data-toggle="collapse" id="row_<%=level1[0] %>" data-target=".row_<%=level1[0]  %>">
+														<button class="btn btn-sm btn-success" id="btn<%=level1[0]  %>"  onclick="loadSubTasks('<%=level1[0]  %>','<%=level1[6]  %>', 2)">
+															<i class="fa fa-plus"  id="fa<%=level1[0] %>"></i> 
+														</button>
+													</span>
+												<%} %>
+											</td> 
+											<td class="center"><%=++count %></td>
 											<td><%=level1[9]!=null?level1[9]:"-" %></td>
 											<td><%=level1[10]!=null?level1[10]:"-" %></td>
 											<td><%=level1[4]!=null?level1[4]:"-" %>, <%=level1[5]!=null?level1[5]:"-" %></td>
@@ -138,285 +157,143 @@
 												<%} %>
 											</td>
 										</tr>
-										
-										<tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>">
-                                        	<td></td>
-                                       		<th class="center">Task sub-level No</th>
-                                        	<th class="center">Task</th>
-						  					<th class="center">Assignee</th>
-						  					<th class="center">Start Date</th>
-						  					<th class="center">End Date</th>
-						  					<th class="center">Demand No</th>
-						  					<th class="center">Progress</th>
-                                    	</tr>
-                                    	
-                                    	<!-- ----------------------------------- Sub-Level-1 -----------------------------------------  -->
-                                    	<%
-											int countA=0;
-											for(Object []level2 : msProcurementList){
-												if(level2[8].toString().equalsIgnoreCase("2") && level2[7].toString().equalsIgnoreCase(level1[6].toString())){
-										%>
-											<tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>">
-												<td></td>
-												<td><%=level2[9]!=null?level2[9]:"-" %></td>
-												<td><%=level2[10]!=null?level2[10]:"-" %></td>
-												<td><%=level2[4]!=null?level2[4]:"-" %>, <%=level2[5]!=null?level2[5]:"-" %></td>
-												<td class="center"><%=level2[11]!=null?fc.sdfTordf(level2[11].toString()):"-" %></td>
-												<td class="center"><%=level2[12]!=null?fc.sdfTordf(level2[12].toString()):"-" %></td>
-												<td><%=level2[19]!=null?level2[19]:"-" %></td>
-							 					<td>
-							 
-							 						<%if(Integer.parseInt(level2[15].toString())>0){ %>
-														<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped
-																<%if(Integer.parseInt(level2[15].toString())<=100 && Integer.parseInt(level2[15].toString())>75){ %>
-																	bg-success
-																<%} else if(Integer.parseInt(level2[15].toString())<=75 && Integer.parseInt(level2[15].toString())>50){ %>
-																	bg-info
-																<%} else if(Integer.parseInt(level2[15].toString())<=50 && Integer.parseInt(level2[15].toString())>25){ %>
-																	bg-warning 
-																<%} else if(Integer.parseInt(level2[15].toString())<=25 && Integer.parseInt(level2[15].toString())>0){ %>
-																	bg-danger
-																<%}  %>
-																" role="progressbar" style=" width: <%=level2[15].toString() %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																<%=level2[15].toString() %>
-															</div> 
-														</div> 
-													<%}else{ %>
-														<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:red !important;color: #fff;font-weight: bold;  "  >
-																Not Started
-															</div>
-														</div> 
-													<%} %>
-												</td>
-											</tr>
-											
-											<!-- ----------------------------------- Sub-Level-2 -----------------------------------------  -->
-											<%
-												int countB=0;
-												for(Object[]level3 : msProcurementList){
-													if(level3[8].toString().equalsIgnoreCase("3")  && level3[7].toString().equalsIgnoreCase(level2[6].toString())){
-											%>
-											
-												<tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>">
-													<td></td>
-													<td><%=level3[9]!=null?level3[9]:"-" %></td>
-													<td><%=level3[10]!=null?level3[10]:"-" %></td>
-													<td><%=level3[4]!=null?level3[4]:"-" %>, <%=level3[5]!=null?level3[5]:"-" %></td>
-													<td class="center"><%=level3[11]!=null?fc.sdfTordf(level3[11].toString()):"-" %></td>
-													<td class="center"><%=level3[12]!=null?fc.sdfTordf(level3[12].toString()):"-" %></td>
-													<td><%=level3[19]!=null?level3[19]:"-" %></td>
-							 						<td>
-							 
-							 							<%if(Integer.parseInt(level3[15].toString())>0){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																<div class="progress-bar progress-bar-striped
-																	<%if(Integer.parseInt(level3[15].toString())<=100 && Integer.parseInt(level3[15].toString())>75){ %>
-																		bg-success
-																	<%} else if(Integer.parseInt(level3[15].toString())<=75 && Integer.parseInt(level3[15].toString())>50){ %>
-																		bg-info
-																	<%} else if(Integer.parseInt(level3[15].toString())<=50 && Integer.parseInt(level3[15].toString())>25){ %>
-																		bg-warning
-																	<%} else if(Integer.parseInt(level3[15].toString())<=25 && Integer.parseInt(level3[15].toString())>0){ %>
-																		bg-danger 
-																	<%}  %>
-																	" role="progressbar" style=" width: <%=level3[15].toString() %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																	<%=level3[15].toString() %>
-																</div> 
-															</div> 
-														<%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:red !important;color: #fff;font-weight: bold;  "  >
-																	Not Started
-																</div>
-															</div> 
-														<%} %>
-													</td>
-												</tr>
-												
-												<!-- ----------------------------------- Sub-Level-3 -----------------------------------------  -->
-												<%
-													int countC=0;
-													for(Object[]level4 : msProcurementList){
-														if(level4[8].toString().equalsIgnoreCase("4")  && level4[7].toString().equalsIgnoreCase(level3[6].toString())){
-												%>
-													<tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>">
-														<td></td>
-														<td><%=level4[9]!=null?level4[9]:"-" %></td>
-														<td><%=level4[10]!=null?level4[10]:"-" %></td>
-														<td><%=level4[4]!=null?level4[4]:"-" %>, <%=level4[5]!=null?level4[5]:"-" %></td>
-														<td class="center"><%=level4[11]!=null?fc.sdfTordf(level4[11].toString()):"-" %></td>
-														<td class="center"><%=level4[12]!=null?fc.sdfTordf(level4[12].toString()):"-" %></td>
-														<td><%=level4[19]!=null?level4[19]:"-" %></td>
-							 							<td>
-							 
-							 								<%if(Integer.parseInt(level4[15].toString())>0){ %>
-																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																	<div class="progress-bar progress-bar-striped
-																		<%if(Integer.parseInt(level4[15].toString())<=100 && Integer.parseInt(level4[15].toString())>75){ %>
-																			bg-success
-																		<%} else if(Integer.parseInt(level4[15].toString())<=75 && Integer.parseInt(level4[15].toString())>50){ %>
-																			bg-info
-																		<%} else if(Integer.parseInt(level4[15].toString())<=50 && Integer.parseInt(level4[15].toString())>25){ %>
-																			bg-warning
-																		<%} else if(Integer.parseInt(level4[15].toString())<=25 && Integer.parseInt(level4[15].toString())>0){ %>
-																			bg-danger 
-																		<%}  %>
-																		" role="progressbar" style=" width: <%=level4[15].toString() %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																		<%=level4[15].toString() %>
-																	</div> 
-																</div> 
-															<%}else{ %>
-																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																	<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:red !important;color: #fff;font-weight: bold;  "  >
-																		Not Started
-																	</div>
-																</div> 
-															<%} %>
-														</td>
-													</tr>
-													
-													<!-- ----------------------------------- Sub-Level-4 -----------------------------------------  -->
-													<%
-														int countD=0;
-														for(Object[]level5 : msProcurementList){
-													 		if(level5[8].toString().equalsIgnoreCase("5")  && level5[7].toString().equalsIgnoreCase(level4[6].toString())){
-													%>	
-													
-														<tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>">
-															<td></td>
-															<td><%=level5[9]!=null?level5[9]:"-" %></td>
-															<td><%=level5[10]!=null?level5[10]:"-" %></td>
-															<td><%=level5[4]!=null?level5[4]:"-" %>, <%=level5[5]!=null?level5[5]:"-" %></td>
-															<td class="center"><%=level5[11]!=null?fc.sdfTordf(level5[11].toString()):"-" %></td>
-															<td class="center"><%=level5[12]!=null?fc.sdfTordf(level5[12].toString()):"-" %></td>
-															<td><%=level5[19]!=null?level5[19]:"-" %></td>
-							 								<td>
-													 			<%if(Integer.parseInt(level5[15].toString())>0){ %>
-																	<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																		<div class="progress-bar progress-bar-striped
-																			<%if(Integer.parseInt(level5[15].toString())<=100 && Integer.parseInt(level5[15].toString())>75){ %>
-																				bg-success
-																			<%} else if(Integer.parseInt(level5[15].toString())<=75 && Integer.parseInt(level5[15].toString())>50){ %>
-																				bg-info
-																			<%} else if(Integer.parseInt(level5[15].toString())<=50 && Integer.parseInt(level5[15].toString())>25){ %>
-																				bg-warning
-																			<%} else if(Integer.parseInt(level5[15].toString())<=25 && Integer.parseInt(level5[15].toString())>0){ %>
-																				bg-danger 
-																			<%}  %>
-																			" role="progressbar" style=" width: <%=level5[15].toString() %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																			<%=level5[15].toString() %>
-																		</div> 
-																	</div> 
-																<%}else{ %>
-																	<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																		<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:red !important;color: #fff;font-weight: bold;  "  >
-																			Not Started
-																		</div>
-																	</div> 
-																<%} %>
-															</td>
-														</tr>
-													
-														<!-- ----------------------------------- Sub-Level-5 -----------------------------------------  -->
-														<%
-															int countE=0;
-															for(Object[]level6 : msProcurementList){
-														 		if(level6[8].toString().equalsIgnoreCase("6")  && level6[7].toString().equalsIgnoreCase(level5[6].toString())){
-														%>
-													
-															<tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>">
-																<td></td>
-																<td><%=level6[9]!=null?level6[9]:"-" %></td>
-																<td><%=level6[10]!=null?level6[10]:"-" %></td>
-																<td><%=level6[4]!=null?level6[4]:"-" %>, <%=level6[5]!=null?level6[5]:"-" %></td>
-																<td class="center"><%=level6[11]!=null?fc.sdfTordf(level6[11].toString()):"-" %></td>
-																<td class="center"><%=level6[12]!=null?fc.sdfTordf(level6[12].toString()):"-" %></td>
-																<td><%=level6[19]!=null?level6[19]:"-" %></td>
-								 								<td>
-												 					<%if(Integer.parseInt(level6[15].toString())>0){ %>
-																		<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																			<div class="progress-bar progress-bar-striped
-																				<%if(Integer.parseInt(level6[15].toString())<=100 && Integer.parseInt(level6[15].toString())>75){ %>
-																					bg-success
-																				<%} else if(Integer.parseInt(level6[15].toString())<=75 && Integer.parseInt(level6[15].toString())>50){ %>
-																					bg-info
-																				<%} else if(Integer.parseInt(level6[15].toString())<=50 && Integer.parseInt(level6[15].toString())>25){ %>
-																					bg-warning
-																				<%} else if(Integer.parseInt(level6[15].toString())<=25 && Integer.parseInt(level6[15].toString())>0){ %>
-																					bg-danger 
-																				<%}  %>
-																				" role="progressbar" style=" width: <%=level6[15].toString() %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																				<%=level6[15].toString() %>
-																			</div> 
-																		</div> 
-																	<%}else{ %>
-																		<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																			<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:red !important;color: ##fff;font-weight: bold;  "  >
-																				Not Started
-																			</div>
-																		</div> 
-																	<%} %>
-																</td>
-															</tr>	
-														<%countE++;}} %>
-													<%countD++;}} %>
-												<%countC++;}} %> 
-											<%countB++;}} %>
-										<% countA++;}}%>
-										<%if(countA==0){ %>
-											<tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>">
-												<td colspan="8" style="text-align: center" class="center">No sub level Found</td>
-											</tr>
-										<%} %>			 
-                       				<%count++;}} }else {%>
-                       					<tr><td colspan="8" class="center">No Data Available</td></tr>
-                       				<%}%>
+                       				<%} }%>
                  				</tbody>  
 							</table>
 						</div>
 			  		</div>
-			  		
-			  		<!-- <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="pills-tab-2">
-			  			<div class="table-responsive">
-              				
-						</div>	
-			  		</div> -->
 			  
 				</div>
        		</div>
 		</div>
 	</div>
 <script type="text/javascript">
-$("#myTable1").DataTable({
-    "lengthMenu": [ 50, 75, 100],
-    "pagingType": "simple"
 
+$(document).ready(function() {
+    $('#myTable').DataTable({
+        "lengthMenu": [10, 25, 50, 75, 100],
+        "pagingType": "simple",
+        "pageLength": 10,
+        "order": [[1, 'asc']],
+        "columnDefs": [
+            { "orderable": false, "targets": 0 }
+        ],
+    });
 });
 
-function ChangeButton(id) {
-	  
-	//console.log($( "#btn"+id ).hasClass( "btn btn-sm btn-success" ).toString());
-	if($( "#btn"+id ).hasClass( "btn btn-sm btn-success" ).toString()=='true'){
-	$( "#btn"+id ).removeClass( "btn btn-sm btn-success" ).addClass( "btn btn-sm btn-danger" );
-	$( "#fa"+id ).removeClass( "fa fa-plus" ).addClass( "fa fa-minus" );
-	$( ".row"+id).show();
-    }else{
-	$( "#btn"+id ).removeClass( "btn btn-sm btn-danger" ).addClass( "btn btn-sm btn-success" );
-	$( "#fa"+id ).removeClass( "fa fa-minus" ).addClass( "fa fa-plus" );
-	$( ".row"+id).hide();
+function loadSubTasks(msTaskId, parentId, level) {
+    var button = $("#btn" + msTaskId);
+    var icon = $("#fa" + msTaskId);
+
+    if (button.hasClass("btn-success")) {
+        // Prevent duplicate rendering
+        if ($(".trclass" + msTaskId).length > 0) {
+            $(".row_" + msTaskId).collapse("show");
+            button.removeClass("btn-success").addClass("btn-danger");
+            icon.removeClass("fa-plus").addClass("fa-minus");
+            return;
+        }
+
+        Swal.fire({ title: 'Loading...', allowOutsideClick: false, didOpen: function () { Swal.showLoading(); } });
+
+        $.ajax({
+            url: 'MSProjectSubLevelsList.htm',
+            type: 'GET',
+            data: {
+                parentId: parentId,
+                level: level,
+                projectId: '<%=projectId%>',
+                listfor: 'P',
+            },
+            success: function (data) {
+                var tasks = JSON.parse(data);
+                var rowsHtml = "";
+
+                tasks.forEach(function (item) {
+                    var task = item.data;
+                    var hasChild = item.hasChild;
+
+                    var taskId = task[0];
+                    var taskNo = task[9] || "-";
+                    var taskName = task[10] || "-";
+                    var assignee = (task[4] || "-") + ", " + (task[5] || "-");
+                    var startDate = task[11] ? formatDate(task[11]) : "-";
+                    var finishDate = task[12] ? formatDate(task[12]) : "-";
+                    var progress = parseInt(task[15]) || 0;
+                    var demandNo = task[19] || "-";
+                    var childId = task[6]; // Parent reference for next level
+
+                    var progressBar = "";
+
+                    if (progress > 0) {
+                        var bgColor = "bg-danger";
+                        if (progress > 75) bgColor = "bg-success";
+                        else if (progress > 50) bgColor = "bg-info";
+                        else if (progress > 25) bgColor = "bg-warning";
+
+                        progressBar += '<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">';
+                        progressBar += '<div class="progress-bar progress-bar-striped ' + bgColor + '" role="progressbar"';
+                        progressBar += ' style="width: ' + progress + '%;" aria-valuenow="' + progress + '" aria-valuemin="0" aria-valuemax="100">';
+                        progressBar += progress + '</div></div>';
+                    } else {
+                        progressBar += '<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">';
+                        progressBar += '<div class="progress-bar" role="progressbar"';
+                        progressBar += ' style="width: 100%; background-color:red !important;color: #fff;font-weight: bold;">';
+                        progressBar += 'Not Started</div></div>';
+                    }
+
+                    rowsHtml += '<tr class="collapse show row_' + msTaskId + ' trclass' + msTaskId + '">';
+                    rowsHtml += '<td></td>';
+                    if (hasChild) {
+                        rowsHtml += '<td class="center">';
+                        rowsHtml += '<span class="clickable" id="row_' + taskId + '" data-toggle="collapse" data-target=".row_' + taskId + '">';
+                        rowsHtml += '<button class="btn btn-sm btn-success" id="btn' + taskId + '" onclick="loadSubTasks(\'' + taskId + '\', \'' + childId + '\', ' + (level + 1) + ')">';
+                        rowsHtml += '<i class="fa fa-plus" id="fa' + taskId + '"></i>';
+                        rowsHtml += '</button></span></td>';
+                    } else {
+                        rowsHtml += '<td></td>';
+                    }
+
+                    var indent = '';
+                    for (var i = 1; i < level; i++) {
+                        indent += '&emsp;';
+                    }
+                    rowsHtml += '<td>' + indent + taskNo + '</td>';
+
+                    rowsHtml += '<td>' + taskName + '</td>';
+                    rowsHtml += '<td>' + assignee + '</td>';
+                    rowsHtml += '<td class="center">' + startDate + '</td>';
+                    rowsHtml += '<td class="center">' + finishDate + '</td>';
+                    rowsHtml += '<td>' + demandNo + '</td>';
+                    rowsHtml += '<td>' + progressBar + '</td>';
+                    rowsHtml += '</tr>';
+                });
+
+                $("#row_" + msTaskId).closest("tr").after(rowsHtml);
+                button.removeClass("btn-success").addClass("btn-danger");
+                icon.removeClass("fa-plus").addClass("fa-minus");
+
+                Swal.close();
+            },
+            error: function () {
+                Swal.fire("Error loading sub-tasks", "", "error");
+            }
+        });
+    } else {
+        $(".row_" + msTaskId).collapse("hide");
+        button.removeClass("btn-danger").addClass("btn-success");
+        icon.removeClass("fa-minus").addClass("fa-plus");
     }
 }
-	<%-- <%if(tab!=null && tab.equals("closed")){%>
-	
-		$('#pills-tab-2').click();
-	
-	<%}%>
-	<% String val = request.getParameter("val");
-	if(val!=null && val.equalsIgnoreCase("app")){%>
-		$('#pills-tab-2').click();
-	<%}%> --%>
+
+function formatDate(dateStr) {
+    var date = new Date(dateStr);
+    var dd = String(date.getDate()).padStart(2, '0');
+    var mm = String(date.getMonth() + 1).padStart(2, '0'); // January is 0!
+    var yyyy = date.getFullYear();
+    return dd + '-' + mm + '-' + yyyy;
+}
+
 </script>			
 </body>
 </html>

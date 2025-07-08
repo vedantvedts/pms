@@ -666,7 +666,7 @@ public class ProjectClosureServiceImpl implements ProjectClosureService{
 				String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 
 //				String path = "Project-Closure\\TPCR\\Appendices\\";
-				Path closurePath = Paths.get(uploadpath, "Project-Closure", "TPCR", "Appendices");
+				Path closurePath = Paths.get(uploadpath, "Project-Closure", "ACP", "Trial-Results");
 
 				// To upload file path for monitoringCommitteeAttach
 				if (!dto.getAttachment()[i].isEmpty()) {

@@ -2,22 +2,40 @@ package com.vts.pfms.documents.dao;
 
 import java.util.List;
 
+import com.vts.pfms.documents.dto.ICDConnectionDTO;
+import com.vts.pfms.documents.dto.ICDPinMapDTO;
+import com.vts.pfms.documents.model.DataTypeMaster;
+import com.vts.pfms.documents.model.FieldGroupLinked;
+import com.vts.pfms.documents.model.FieldGroupMaster;
+import com.vts.pfms.documents.model.FieldMaster;
+import com.vts.pfms.documents.model.ICDConnectionConnectors;
+import com.vts.pfms.documents.model.ICDConnectionInterfaces;
 import com.vts.pfms.documents.model.ICDConnectionPurpose;
+import com.vts.pfms.documents.model.ICDConnectionSystems;
+import com.vts.pfms.documents.model.ICDConnectorPinMapping;
+import com.vts.pfms.documents.model.ICDConnectorPins;
 import com.vts.pfms.documents.model.ICDDocumentConnections;
+import com.vts.pfms.documents.model.ICDMechanicalInterfaces;
 import com.vts.pfms.documents.model.ICDPurpose;
+import com.vts.pfms.documents.model.ICDSystemAttach;
 import com.vts.pfms.documents.model.IGIApplicableDocs;
+import com.vts.pfms.documents.model.IGIConnector;
+import com.vts.pfms.documents.model.IGIConnectorAttach;
+import com.vts.pfms.documents.model.IGIConstants;
 import com.vts.pfms.documents.model.IGIDocumentIntroduction;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
+import com.vts.pfms.documents.model.IGIFieldDescription;
 import com.vts.pfms.documents.model.IGIInterface;
 import com.vts.pfms.documents.model.IGIInterfaceContent;
 import com.vts.pfms.documents.model.IGIInterfaceTypes;
 import com.vts.pfms.documents.model.IGILogicalChannel;
 import com.vts.pfms.documents.model.IGILogicalInterfaces;
+import com.vts.pfms.documents.model.IRSArrayMaster;
 import com.vts.pfms.documents.model.IRSDocumentSpecifications;
-import com.vts.pfms.documents.model.PfmsApplicableDocs;
+import com.vts.pfms.documents.model.IRSFieldDescription;
 import com.vts.pfms.documents.model.PfmsICDDocument;
 import com.vts.pfms.documents.model.PfmsIDDDocument;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
@@ -51,7 +69,7 @@ public interface DocumentsDao {
 	public Long getDuplicateInterfaceCodeCount(String interfaceId, String interfaceCode) throws Exception;
 	public List<IGIDocumentShortCodes> getIGIDocumentShortCodesList() throws Exception;
 	public long addIGIDocumentShortCodes(IGIDocumentShortCodes igiDocumentShortCodes) throws Exception;
-	public List<PfmsApplicableDocs> getPfmsApplicableDocs() throws Exception;
+	public List<StandardDocuments> getStandardDocuments() throws Exception;
 	public List<Object[]> getIGIApplicableDocs(String docId, String docType) throws Exception;
 	public long addIGIApplicableDocs(IGIApplicableDocs igiApplicableDocs) throws Exception;
 	public int deleteIGIApplicableDocument(String igiApplicableDocId) throws Exception;
@@ -62,7 +80,6 @@ public interface DocumentsDao {
 	public List<Object[]> getIGIShortCodesLinkedListByType(String docId, String docType) throws Exception;
 	public int deleteIGIDocumentShortCodesLinked(String shortCodeLinkedId) throws Exception;
 	public Long getDuplicateIGIShortCodeCount(String shortCode, String shortCodeType) throws Exception;
-	public long addApplicableDocs(PfmsApplicableDocs pfmsApplicableDocs) throws Exception;
 	public List<Object[]> igiTransactionList(String docId, String docType) throws Exception;
 	public List<IGIInterfaceTypes> getIGIInterfaceTypesList() throws Exception;
 	public List<IGIInterfaceContent> getIGIInterfaceContentList() throws Exception;
@@ -84,6 +101,34 @@ public interface DocumentsDao {
 	public IGILogicalChannel getIGILogicalChannelById(String logicalChannelId) throws Exception;
 	public long addIGILogicalChannel(IGILogicalChannel igiLogicalChannel) throws Exception;
 	public int deleteIGILogicalChannelById(String logicalChannelId) throws Exception;
+	public List<Object[]> fieldMasterList()throws Exception;
+	public FieldMaster getFieldMasterById(String fieldMasterId) throws Exception;
+	public long addFieldMaster(FieldMaster field) throws Exception;
+	public List<Object[]> dataTypeMasterList()throws Exception;
+	public DataTypeMaster getDataTypeMasterById(Long dataTypeMasterId) throws Exception;
+	public long addDataTypeMaster(DataTypeMaster dto) throws Exception;
+	public int removeIGIFieldDescription(String logicalInterfaceTypeId) throws Exception;
+	public Long addIGIFieldDescription(IGIFieldDescription igiFieldDescription) throws Exception;
+	public List<Object[]> getIGILogicalInterfaceConnectionList() throws Exception;
+	public List<FieldGroupMaster> getFieldGroupMasterList();
+	public Long addFieldGroupMaster(FieldGroupMaster fieldGroup) throws Exception;
+	public FieldGroupMaster getFieldGroupMasterById(Long fieldGroupId) throws Exception;
+	public Long addFieldGroupLinked(FieldGroupLinked fieldGroupLinked) throws Exception;
+	public int removeFieldGroupLinked(String fieldMasterId) throws Exception;
+	public List<FieldGroupLinked> getFieldGroupLinkedList(String fieldMasterId);
+	public List<ICDMechanicalInterfaces> getICDMechanicalInterfacesList();
+	public ICDMechanicalInterfaces getICDMechanicalInterfacesById(Long mechInterfaceId);
+	public Long addICDMechanicalInterfaces(ICDMechanicalInterfaces mechanicalInterfaces);
+	public List<IGIConnector> getConnectorMasterList() throws Exception;
+	public IGIConnector getIGIConnectorById(Long dataTypeMasterId) throws Exception;
+	public long addIGIConnector(IGIConnector connector) throws Exception;
+	public List<IGIConstants> getIGIConstantsMasterList();
+	public IGIConstants getIGIConstantsById(Long constantId) throws Exception;
+	public long addIGIConstants(IGIConstants constant) throws Exception;
+	public List<IGIConnectorAttach> getIGIConnectorAttachList();
+	public IGIConnectorAttach getIGIConnectorAttachById(String connectorAttachId) throws Exception;
+	public long addIGIConnectorAttach(IGIConnectorAttach attach) throws Exception;
+	
 	/* ************************************************ IGI Document End***************************************************** */
 	
 	/* ************************************************ ICD Document ***************************************************** */
@@ -92,7 +137,7 @@ public interface DocumentsDao {
 	public PfmsICDDocument getPfmsICDDocumentById(String icdDocId)throws Exception;
 	public Long getFirstVersionICDDocId(String projectId, String initiationId, String productTreeMainId) throws Exception;
 	public long addICDDocumentConnections(ICDDocumentConnections connection) throws Exception;
-	public List<Object[]> getICDConnectionsList(String icdDocId) throws Exception;
+	public List<ICDConnectionDTO> getICDConnectionsList(String icdDocId) throws Exception;
 	public int deleteICDConnectionById(String icdConnectionId) throws Exception;
 	public long addPfmsIGITransaction(PfmsIGITransaction transaction) throws Exception;
 	public List<Object[]> getProductTreeAllList(String projectId, String initiationId) throws Exception;
@@ -100,9 +145,32 @@ public interface DocumentsDao {
 	public ICDDocumentConnections getICDDocumentConnectionsById(String icdConnectionId) throws Exception;
 	public List<ICDPurpose> getAllICDPurposeList() throws Exception;
 	public long addICDConnectionPurpose(ICDConnectionPurpose icdConnectionPurpose) throws Exception;
-	public int getICDConnectionsCount(Long subSystemMainIdOne, Long subSystemMainIdTwo, Long superSubSysMainIdOne, 
-			Long superSubSysMainIdTwo, Long icdDocId) throws Exception;
+	public int getICDConnectionsCount(Long subSystemMainIdOne, Long subSystemMainIdTwo, Long icdDocId) throws Exception;
 	public int deleteICDConnectionPurposeByICDConnectionId(String icdConnectionId) throws Exception;
+	public ICDPurpose getICDPurposeById(String purposeId) throws Exception;
+	public long addICDPurpose(ICDPurpose purpose) throws Exception;
+	public List<Object[]> getICDMechInterfaceConnectionList(String icdDocId) throws Exception;
+	public long addICDConnectionSystems(ICDConnectionSystems subsystems) throws Exception;
+	public long addICDConnectionInterfaces(ICDConnectionInterfaces interfaces) throws Exception;
+	public int deleteICDConnectionSystemsByICDConnectionId(String icdConnectionId, String subSystemType) throws Exception;
+	public int deleteICDConnectionInterfaceByICDConnectionId(String icdConnectionId) throws Exception;
+	public long addICDConnectionConnectors(ICDConnectionConnectors connectors);
+	public long addICDConnectorPins(ICDConnectorPins pins);
+	public Long getDuplicateConnectorCount(String icdConnectionId, String connectorNo, String systemType, String subSystemId, String icdConnectorId) throws Exception;
+	public List<Object[]> getICDConnectorList(String icdConnectionId) throws Exception;
+	public List<ICDConnectionConnectors> getAllICDConnectorList();
+	public List<Object[]> getICDConnectorPinListByICDConnectionId(String icdConnectionId) throws Exception;
+	public ICDConnectionConnectors getICDConnectionConnectorsById(String icdConnectorId) throws Exception;
+	public int deleteICDConnectionConnectorPinDetails(String icdConnectorId) throws Exception;
+	public ICDConnectorPinMapping getICDConnectorPinMappingById(String connectorPinMapId) throws Exception;
+	public long addICDConnectorPinMapping(ICDConnectorPinMapping pinMap);
+	public List<ICDPinMapDTO> getICDConnectorPinMapListByICDDocId(String icdDocId) throws Exception;
+	public ICDConnectorPins getICDConnectorPinsById(String connectorPinId) throws Exception;
+	public int deleteICDConnectionConnectorById(String icdConnectorId) throws Exception;
+	public List<ICDSystemAttach> getICDSystemAttachListByICDDocId(String icdDocId);
+	public ICDSystemAttach getICDSystemAttachById(String systemAttachId) throws Exception;
+	public long addICDSystemAttach(ICDSystemAttach systemAttach);
+
 	/* ************************************************ ICD Document End***************************************************** */
 	
 	/* ************************************************ IRS Document ***************************************************** */
@@ -116,6 +184,16 @@ public interface DocumentsDao {
 	public int irsDocumentUserRevoke(String irsDocId) throws Exception;
 	public List<Object[]> getDataCarryingConnectionList(String icdDocId)throws Exception;
 	public IRSDocumentSpecifications getIRSDocumentSpecificationsById(String irsSpecificationId) throws Exception;
+	public long addIRSFieldDescription(IRSFieldDescription irsFieldDescription);
+	public List<Object[]> getIRSFieldDescriptionList(String irsDocId)throws Exception;
+	public int removeIRSFieldDescription(String irsSpecificationId, String fieldGroupId) throws Exception;
+	public List<IRSFieldDescription> getIRSFieldDescriptionEntityList(String irsDocId);
+	public IRSFieldDescription getIRSFieldDescriptionById(String irsFieldDescId);
+	public int updateIRSFieldDescription(String groupVariable, String arrayMasterId, String irsSpecificationId, String fieldGroupId) throws Exception;
+	public List<IRSArrayMaster> getIRSArrayMasterListByIRSDocId(String irsDocId);
+	public IRSArrayMaster getIRSArrayMasterById(String arrayMasterId) throws Exception;
+	public long addIRSArrayMaster(IRSArrayMaster arrayMaster) throws Exception;
+	
 	/* ************************************************ IRS Document End***************************************************** */
 	
 	/* ************************************************ IDD Document ***************************************************** */
@@ -130,4 +208,10 @@ public interface DocumentsDao {
 	public Long addIGIDocumentIntroduction(IGIDocumentIntroduction introduction) throws Exception;
 	public int deleteIGIIntroduction(String introductionId) throws Exception;
 	public Long getInterfaceCountByParentId(Long parentId) throws Exception;
+	public List<Object[]> getSystemProductTreeAllList() throws Exception;
+	public List<Object[]> getLogicalChannelList() throws Exception;
+	public int getLogicalChannelCount() throws Exception;
+	public List<Object[]> getIGIFieldDescriptionList() throws Exception;
+	public long getMechanicalInterfaceCount() throws Exception;
+	
 }

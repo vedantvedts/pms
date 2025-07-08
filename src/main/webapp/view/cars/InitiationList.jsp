@@ -612,7 +612,7 @@ String committeeId = (String)request.getAttribute("committeeId");
 																	</div>
 												    			</button>
 											    			<%} %>
-												    		<%if((transactionCodes.contains("SFG") || transactionCodes.contains("SFP")) ) {%>
+												    		<%if((transactionCodes.contains("AGD") || transactionCodes.contains("APD")) ) {%>
 		                                       	 				<button class="editable-clicko" name="carsInitiationId" value="<%=obj[0] %>" formaction="CommitteeMainMembers.htm">
 																	<div class="cc-rockmenu">
 																		<div class="rolling">

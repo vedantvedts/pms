@@ -12,18 +12,24 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="pfms_applicable_docs")
-public class PfmsApplicableDocs implements Serializable {
-
+@Table(name="pfms_igi_connector")
+public class IGIConnector implements Serializable{
+	
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long ApplicableDocId;
-	private String DocumentName;
+	private Long ConnectorId;
+	private String partNo;
+	private String connectorMake;
+	private String StandardName;
+	private String Protection;
+	private String RefInfo;
+	private String Remarks;
+	private Integer PinCount;
 	private String CreatedBy;
-	private String CreatedDate;
-	private String ModifiedBy;
-	private String ModifiedDate;
+    private String CreatedDate;
+    private String ModifiedBy;
+    private String ModifiedDate;
 	private int IsActive;
 }

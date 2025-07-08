@@ -9,30 +9,43 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Entity
-@Table(name="pfms_irs_document_specifications")
-public class IRSDocumentSpecifications implements Serializable {
+@Table(name="pfms_irs_field_desc")
+public class IRSFieldDescription implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long IRSFieldDescId;
 	private Long IRSSpecificationId;
-	private Long IRSDocId;
-	private Long ConnectorPinMapId;
 	private Long LogicalInterfaceId;
-	private String ActionAtDest;
+	private Long FieldMasterId;
+	private Long FieldGroupId;
+	private String FieldName;
+	private String FieldShortName;
+	private String FieldCode;
+	private String FieldDesc;
+	private Long DataTypeMasterId;
+	private String TypicalValue;
+	private String FieldMinValue;
+	private String FieldMaxValue;
+	private String InitValue;
+	private String FieldOffSet;
+	private String Quantum;
+	private String FieldUnit;
+	private String Remarks;
+	private String GroupVariable;
+	private Long ArrayMasterId;
+	private Integer FieldSlNo;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;
-	private int IsActive;
+	private Integer IsActive;
 }

@@ -8,27 +8,20 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name = "pfms_igi_logical_channel")
-public class IGILogicalChannel implements Serializable {
+@Table(name="pfms_igi_connector_attach")
+public class IGIConnectorAttach implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long LogicalChannelId;
-	private Long SourceId;
-	private Long DestinationId;
-	private String LogicalChannel;
-	private String ChannelCode;
-	private String Description;
+	private Long ConnectorAttachId;
+	private Long ConnectorId;
+	private String Attachment;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;

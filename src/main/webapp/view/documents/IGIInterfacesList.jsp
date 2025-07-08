@@ -1,4 +1,5 @@
 
+<%@page import="com.vts.pfms.documents.model.IGIConnector"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.ArrayList"%>
@@ -198,6 +199,7 @@ label {
 		List<IGIInterface> igiInterfaceList = (List<IGIInterface>)request.getAttribute("igiInterfaceList");
 		List<IGIInterfaceTypes> interfaceTypesList = (List<IGIInterfaceTypes>)request.getAttribute("interfaceTypesList");
 		List<IGIInterfaceContent> interfaceContentList = (List<IGIInterfaceContent>)request.getAttribute("interfaceContentList");
+		List<IGIConnector> connectorMasterList = (List<IGIConnector>)request.getAttribute("connectorMasterList");
 		IGIInterface igiInterface = (IGIInterface)request.getAttribute("igiInterfaceData");
 		IGIInterface igiInterfaceParent = (IGIInterface)request.getAttribute("igiInterfaceParentData");
 		String interfaceId = (String)request.getAttribute("interfaceId");
@@ -363,11 +365,11 @@ label {
        								<input type="hidden" name="igiDocId" value="<%=igiDocId%>">
        								<input type="hidden" name="interfaceId" id="interfaceId" value="<%=interfaceId%>">
        								<input type="hidden" name="parentId" value="<%=parentId%>">
-	       							<div class="form-group">
+	       							<div class="form-group border rounded shadow-sm p-3 mb-3 bg-light" style="border-color: #9898ff !important;">
 		       							<div class="row">
 		       								<div class="col-md-2">
 		       									<label class="form-lable">Interface Type <span class="mandatory">*</span></label>
-		       									<select class="form-control" id="interfaceType" name="interfaceType" <%if(igiInterface!=null || igiInterfaceParent!=null) {%>disabled<%} %> required>
+		       									<select class="form-control selectdee" id="interfaceType" name="interfaceType" <%if(igiInterface!=null || igiInterfaceParent!=null) {%>disabled<%} %> required>
 		       										<option value="" selected disabled>----select----</option>
 		       										<%
 		       										String interfaceTypeParent = "";
@@ -386,7 +388,7 @@ label {
 		       								
 		       								<div class="col-md-2">
 											    <label class="form-label">Interface Content <span class="mandatory">*</span></label>
-											    <select class="form-control " id="interfaceContent" name="interfaceContent" <%if(igiInterface!=null || igiInterfaceParent!=null) {%>disabled<%} %> required>
+											    <select class="form-control selectdee " id="interfaceContent" name="interfaceContent" <%if(igiInterface!=null || igiInterfaceParent!=null) {%>disabled<%} %> required>
 											        <option value="0/NA/NA" selected>----select----</option>
 											        <%if(igiInterface!=null) { 
 											        	IGIInterfaceTypes igiInterfaceType = interfaceTypesList.stream().filter(e -> igiInterface.getInterfaceTypeId().equals(e.getInterfaceTypeId())).findFirst().orElse(null);
@@ -467,118 +469,72 @@ label {
 		       							</div>
 		       						</div>
 		       						
-		       						<div class="row">
-		                    		    <div class="col-md-6" style="text-align: left;">
-		                    		    	<label class="control-label" style="color: black;">End-1 Connector :</label>
-		                    		    </div>
-                  				 	</div>
-
-		       						
-		       						<div class="form-group">
+		       						<div class="form-group border rounded shadow-sm p-3 mb-3 bg-light" style="border-color: #9898ff !important;">
 			       						<div class="row">
-			                    		    <div class="col-md-2">
-		       									<label class="form-lable">Part No </label>
-		       									<input type="text" class="form-control" name="partNoEOne" <%if(igiInterface!=null && igiInterface.getPartNoEOne()!=null) {%>value="<%=igiInterface.getPartNoEOne() %>"<%} %> placeholder="Enter Part No" maxlength="255">
-		       								</div>
-			                    		    <div class="col-md-2">
-		       									<label class="form-lable">Connector Make </label>
-		       									<input type="text" class="form-control" name="connectorMakeEOne" <%if(igiInterface!=null && igiInterface.getConnectorMakeEOne()!=null) {%>value="<%=igiInterface.getConnectorMakeEOne() %>"<%} %> placeholder="Enter Connector Make" maxlength="255">
-		       								</div>
-			                    		    <div class="col-md-2">
-		       									<label class="form-lable">Standard </label>
-		       									<input type="text" class="form-control" name="standardEOne" <%if(igiInterface!=null && igiInterface.getStandardEOne()!=null) {%>value="<%=igiInterface.getStandardEOne() %>"<%} %> placeholder="Enter Standard" maxlength="255">
-		       								</div>
-			                    		    <div class="col-md-2">
-		       									<label class="form-lable">Protection </label>
-		       									<input type="text" class="form-control" name="protectionEOne" <%if(igiInterface!=null && igiInterface.getProtectionEOne()!=null) {%>value="<%=igiInterface.getProtectionEOne() %>"<%} %> placeholder="Enter Protection" maxlength="255">
-		       								</div>
-			                    		    <div class="col-md-2">
-		       									<label class="form-lable">Ref Info </label>
-		       									<input type="text" class="form-control" name="refInfoEOne" <%if(igiInterface!=null && igiInterface.getRefInfoEOne()!=null) {%>value="<%=igiInterface.getRefInfoEOne() %>"<%} %> placeholder="Enter Ref Info" maxlength="255">
-		       								</div>
-			                    		    <div class="col-md-2">
-		       									<label class="form-lable">Remarks </label>
-		       									<input type="text" class="form-control" name="remarksEOne" <%if(igiInterface!=null && igiInterface.getRemarksEOne()!=null) {%>value="<%=igiInterface.getRemarksEOne() %>"<%} %> placeholder="Enter Remarks" maxlength="255">
-		       								</div>
+			                    		    <div class="col-md-6" style="text-align: left;">
+			                    		    	<label class="control-label" style="color: black;">End-1 Connector :</label>
+			                    		    	<select class="form-control selectdee connectorIdE1" name="connectorIdE1" id="connectorIdE1"
+										    	data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
+												<option value="" disabled selected>Choose...</option>
+												    <%for(IGIConnector con : connectorMasterList){ %>
+												    	<option value="<%=con.getConnectorId() %>"
+												    	<%if(igiInterface!=null && igiInterface.getConnectorIdEOne().equals(con.getConnectorId())) {%>selected<%} %>>
+												      		<%=con.getPartNo() %> (<%=con.getConnectorMake() %>)
+												    	</option>
+												    <% }%>
+												</select>
+			                    		    </div>
+			                    		    
+			                    		    <div class="col-md-6" style="text-align: left;">
+			                    		    	<label class="control-label" style="color: black;">End-2 Connector :</label>
+			                    		    	<select class="form-control selectdee connectorIdE2" name="connectorIdE2" id="connectorIdE2"
+										    	data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
+												<option value="" disabled selected>Choose...</option>
+												    <%for(IGIConnector con : connectorMasterList){ %>
+												    	<option value="<%=con.getConnectorId() %>"
+												    	<%if(igiInterface!=null && igiInterface.getConnectorIdETwo().equals(con.getConnectorId())) {%>selected<%} %>>
+												      		<%=con.getPartNo() %> (<%=con.getConnectorMake() %>)
+												    	</option>
+												    <% }%>
+												</select>
+			                    		    </div>
 	                  				 	</div>
-                  				 	</div>
-                    				 
-                    				<hr class="mb-4">
-                    				 
-		       						<div class="row">
-		                    		    <div class="col-md-6" style="text-align: left;">
-		                    		    	<label class="control-label" style="color: black;">End-2 Connector :</label>
-		                    		    </div>
-                  				 	</div>
-
-                  				 	
-		       						<div class="form-group">
-			       						<div class="row">
-			                    		    <div class="col-md-2">
-		       									<label class="form-lable">Part No </label>
-		       									<input type="text" class="form-control" name="partNoETwo" <%if(igiInterface!=null && igiInterface.getPartNoETwo()!=null) {%>value="<%=igiInterface.getPartNoETwo() %>"<%} %> placeholder="Enter Part No" maxlength="255">
-		       								</div>
-			                    		    <div class="col-md-2">
-		       									<label class="form-lable">Connector Make </label>
-		       									<input type="text" class="form-control" name="connectorMakeETwo" <%if(igiInterface!=null && igiInterface.getConnectorMakeETwo()!=null) {%>value="<%=igiInterface.getConnectorMakeETwo() %>"<%} %> placeholder="Enter Connector Make" maxlength="255">
-		       								</div>
-			                    		    <div class="col-md-2">
-		       									<label class="form-lable">Standard </label>
-		       									<input type="text" class="form-control" name="standardETwo" <%if(igiInterface!=null && igiInterface.getStandardETwo()!=null) {%>value="<%=igiInterface.getStandardETwo() %>"<%} %> placeholder="Enter Standard" maxlength="255">
-		       								</div>
-			                    		    <div class="col-md-2">
-		       									<label class="form-lable">Protection </label>
-		       									<input type="text" class="form-control" name="protectionETwo" <%if(igiInterface!=null && igiInterface.getProtectionETwo()!=null) {%>value="<%=igiInterface.getProtectionETwo() %>"<%} %> placeholder="Enter Protection" maxlength="255">
-		       								</div>
-			                    		    <div class="col-md-2">
-		       									<label class="form-lable">Ref Info </label>
-		       									<input type="text" class="form-control" name="refInfoETwo" <%if(igiInterface!=null && igiInterface.getRefInfoETwo()!=null) {%>value="<%=igiInterface.getRefInfoETwo() %>"<%} %> placeholder="Enter Ref Info" maxlength="255">
-		       								</div>
-			                    		    <div class="col-md-2">
-		       									<label class="form-lable">Remarks </label>
-		       									<input type="text" class="form-control" name="remarksETwo" <%if(igiInterface!=null && igiInterface.getRemarksETwo()!=null) {%>value="<%=igiInterface.getRemarksETwo() %>"<%} %> placeholder="Enter Remarks" maxlength="255">
-		       								</div>
-	                  				 	</div>
-                  				 	</div>
+                    				</div>
                     				
-                    				<hr class="mb-4">
-                    				 
-		       						<div class="form-group">
+		       						<div class="form-group border rounded shadow-sm p-3 mb-3 bg-light" style="border-color: #9898ff !important;">
 		       							<div class="row">
 		       								
 		       								<div class="col-md-3">
-		       									<label class="form-lable">Cable Info</label>
+		       									<label class="form-lable">Info</label>
 		       									<input type="text" class="form-control" name="cableInfo" <%if(igiInterface!=null && igiInterface.getCableInfo()!=null) {%> value="<%=igiInterface.getCableInfo() %>" <%} %> placeholder="Enter Maximum of 255 Characters" maxlength="255">
 		       								</div>
 		       								<div class="col-md-3">
-		       									<label class="form-lable">Cable Constraint</label>
+		       									<label class="form-lable">Constraint</label>
 		       									<input type="text" class="form-control" name="cableConstraint" <%if(igiInterface!=null && igiInterface.getCableConstraint()!=null) {%> value="<%=igiInterface.getCableConstraint() %>" <%} %> placeholder="Enter Maximum of 255 Characters" maxlength="255">
 		       								</div>
 		       								<div class="col-md-3">
-		       									<label class="form-lable">Cable Diameter</label>
+		       									<label class="form-lable">Diameter</label>
 		       									<input type="text" class="form-control" name="cableDiameter" <%if(igiInterface!=null && igiInterface.getCableDiameter()!=null) {%> value="<%=igiInterface.getCableDiameter() %>" <%} %> placeholder="Enter Maximum of 255 Characters" maxlength="255">
 		       								</div>
 		       								<div class="col-md-3">
-		       									<label class="form-lable">Cable Details </label>
+		       									<label class="form-lable">Details </label>
 		       									<input type="text" class="form-control" name="cableDetails" <%if(igiInterface!=null && igiInterface.getCableDetails()!=null) {%> value="<%=igiInterface.getCableDetails() %>" <%} %> placeholder="Enter Maximum of 255 Characters" maxlength="255">
 		       								</div>
 		       							</div>
-		       						</div>
-		       						
-		       						<div class="form-group">
-		       							<div class="row">
+		       							
+		       							<div class="row mt-3">
 		       								
 		       								<div class="col-md-3">
-		       									<label class="form-lable">Cable Max Length (In Meters)<span class="mandatory">*</span></label>
-		       									<input type="number" step="1" class="form-control" name="cableMaxLength" <%if(igiInterface!=null && igiInterface.getCableMaxLength()!=null) {%> value="<%=igiInterface.getCableMaxLength() %>" <%} %> placeholder="Enter Maximum Length of Cable" min="0" max="1000000000" required>
+		       									<label class="form-lable">Max Length (In Meters)<span class="mandatory">*</span></label>
+		       									<input type="number" step="1" class="form-control" name="cableMaxLength" <%if(igiInterface!=null && igiInterface.getCableMaxLength()!=null) {%> value="<%=igiInterface.getCableMaxLength() %>" <%} %> placeholder="Enter Maximum Length" min="0" max="1000000000" required>
 		       								</div>
 		       								<div class="col-md-3">
 		       									<label class="form-lable">Interface Loss per Meter<span class="mandatory">*</span></label>
 		       									<input type="number" step="1" class="form-control" name="interfaceLoss" <%if(igiInterface!=null && igiInterface.getInterfaceLoss()!=null) {%> value="<%=igiInterface.getInterfaceLoss() %>" <%} %> placeholder="Enter Interface Loss per Meter" min="0" max="1000000000" required>
 		       								</div>
 		       								<div class="col-md-3">
-		       									<label class="form-lable">Cable Bending Radius<span class="mandatory">*</span></label>
-		       									<input type="number" step="any" class="form-control" name="cableBendingRadius" <%if(igiInterface!=null && igiInterface.getCableBendingRadius()!=null) {%> value="<%=igiInterface.getCableBendingRadius() %>" <%} %> placeholder="Enter Cable Bending Radius" min="0" max="1000000000" required>
+		       									<label class="form-lable">Bending Radius<span class="mandatory">*</span></label>
+		       									<input type="number" step="any" class="form-control" name="cableBendingRadius" <%if(igiInterface!=null && igiInterface.getCableBendingRadius()!=null) {%> value="<%=igiInterface.getCableBendingRadius() %>" <%} %> placeholder="Enter Bending Radius" min="0" max="1000000000" required>
 		       								</div>
 		       							</div>
 		       						</div>
@@ -705,25 +661,25 @@ label {
 	        interfaceContentMap["<%= interfaceType.getInterfaceTypeId() +"/"+interfaceType.getInterfaceTypeCode() +"/"+ interfaceType.getInterfaceType() %>"] = contentList;
 	    <% } %>
 
-	    document.getElementById("interfaceType").addEventListener("change", function () {
-	        const selectedInterfaceType = this.value;
-	        const contentDropdown = document.getElementById("interfaceContent");
-	        
-	        // Clear existing options
-	        contentDropdown.innerHTML = '<option value="0/NA/NA" selected>----select----</option>';
-	        
-	        // Get the options for the selected interface type
-	        const contentList = interfaceContentMap[selectedInterfaceType] || [];
-	        
-	        // Append options to the content dropdown
-	        contentList.forEach(content => {
-	            const option = document.createElement("option");
-	            option.value = content.value;
-	            option.textContent = content.text;
-	            contentDropdown.appendChild(option);
-	        });
-	    });
+	    $('.selectdee').select2({
+            width: '100%'
+        });
 	    
+	 	// Handle dropdown change
+        $(document).on('change', '#interfaceType', function () {
+            const selectedInterfaceType = $(this).val();
+            const $contentDropdown = $('#interfaceContent');
+
+            $contentDropdown.empty().append('<option value="0/NA/NA" selected>----select----</option>');
+
+            const ifaceList = interfaceContentMap[selectedInterfaceType] || [];
+            ifaceList.forEach(iface => {
+                $contentDropdown.append(new Option(iface.text, iface.value));
+            });
+
+            $contentDropdown.trigger('change.select2');
+        });
+	 
 	</script>
 
 </body>

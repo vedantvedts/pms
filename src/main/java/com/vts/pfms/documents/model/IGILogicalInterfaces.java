@@ -28,6 +28,8 @@ public class IGILogicalInterfaces implements Serializable {
 	private String DataRate;
 	private String Protocals;
 	private String AdditionalInfo;
+	private Integer MsgLength;
+	private String MsgNo;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
