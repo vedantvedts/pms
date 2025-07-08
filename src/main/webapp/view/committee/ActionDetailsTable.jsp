@@ -1,863 +1,1279 @@
 <%@page import="java.time.format.DateTimeFormatter"%>
-<%@page import="java.time.LocalDateTime"%>
-<%@page import="java.time.LocalDate"%>
+<%@page import="java.time.LocalTime"%>
+<%@page import="java.net.Inet4Address"%>
+<%@page import="com.vts.pfms.Zipper"%>
+<%@page import="java.math.MathContext"%>
+<%@page import="com.vts.pfms.model.TotalDemand"%>
+<%@page import="java.time.temporal.ChronoUnit"%>
+<%@page import="com.vts.pfms.committee.model.Committee"%>
+<%@page import="org.apache.commons.io.FileUtils"%>
+<%@page import="com.vts.pfms.print.model.TechImages"%>
+<%@page import="com.vts.pfms.model.LabMaster"%>
+<%@page import="com.vts.pfms.AESCryptor"%>
+<%@page import="org.apache.commons.io.FilenameUtils"%>
+<%@page import="java.io.File"%>
+<%@page import="java.math.BigInteger"%>
+<%@page import="java.text.Format"%>
+<%@page import="java.util.stream.Collectors"%>
+<%@page import="com.vts.pfms.master.dto.ProjectFinancialDetails"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.math.BigDecimal"%>
-<%@page import="com.vts.pfms.master.dto.ProjectFinancialDetails"%>
-<%@page import="java.text.Format"%>
-<%@page import="java.util.stream.Collectors"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
-<%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
-<%@page import="com.vts.pfms.NFormatConvertion"%>
-<%@page import="com.vts.pfms.model.TotalDemand"%>
-<%@page import="java.time.format.DateTimeFormatter"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1" import="java.util.*"%>
+	pageEncoding="ISO-8859-1"
+	import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.time.LocalDate"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
 <!DOCTYPE html>
 <html>
 <head>
-
-<%	
-
-List<ProjectFinancialDetails> projectFinancialDetails =(List<ProjectFinancialDetails>)request.getAttribute("financialDetails");
-List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envisagedDemandlist");
-	Object[] committeescheduleeditdata = (Object[]) request.getAttribute("committeescheduleeditdata");	
-	LinkedHashMap< String, ArrayList<Object[]>> actionlist = (LinkedHashMap< String, ArrayList<Object[]>>) request.getAttribute("tableactionlist");
-	Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
-	Object[] labdetails = (Object[]) request.getAttribute("labdetails");
-	List<Object[]> procurementOnDemand = (List<Object[]>)request.getAttribute("procurementOnDemand");
-	Object[] divisiondetails=(Object[])request.getAttribute("divisiondetails");
-	String projectid= committeescheduleeditdata[9].toString();
-	String divisionid= committeescheduleeditdata[16].toString();
-	Object[] projectdatadetails = (Object[]) request.getAttribute("projectdatadetails");
-	FormatConverter fc=new FormatConverter(); 
-	SimpleDateFormat sdf=fc.getRegularDateFormat();
-	List<Object[]> procurementOnSanction = (List<Object[]>)request.getAttribute("procurementOnSanction");
-	SimpleDateFormat sdf1=fc.getSqlDateFormat(); int addcount=0; 
-	List<Object[]> MilestoneDetails6 = (List<Object[]>)request.getAttribute("milestonedatalevel6");
-	String levelid= (String) request.getAttribute("levelid");
-	Map<Integer,String> treeMapLevOne =(Map<Integer,String>)request.getAttribute("treeMapLevOne");
-	Map<Integer,String> treeMapLevTwo =(Map<Integer,String>)request.getAttribute("treeMapLevTwo");
-	List<TotalDemand> totalprocurementdetails = (List<TotalDemand>)request.getAttribute("TotalProcurementDetails");
-	DecimalFormat df=new DecimalFormat("####################.##");
-	Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en", "in"));
-	List<Object[]> ActionPlanSixMonths = (List<Object[]>)request.getAttribute("ActionPlanSixMonths");
-	String flagforView=(String)request.getAttribute("flagforView");
-	String labcode= (String) session.getAttribute("labcode");
-%>
-<style type="text/css">
-
-p{
-  text-align: justify;
-  text-justify: inter-word;
-}
-
-
-
-.break
-	{
-		page-break-after: always;
-	} 
-              
- 
-@page {             
-        <% if(labcode.equalsIgnoreCase("ADE")){%> size:790px 1120px ;  <%}else{%>size: 1120px 790px;   <%}%>
-          margin-top: 49px;
-          margin-left: 39px;
-          margin-right: 39px;
-          margin-buttom: 49px; 	
-          border: 1px solid black;    
-         /* @bottom-right {          		
-             content: "Page-AI " counter(page) " of " counter(pages);
-             margin-bottom: 30px;
-             margin-right: 10px;
-             font-size: 13px;
-          } */
-          @top-right {
-          		<%if( Long.parseLong(projectid)>0){%>
-             content: "<%=projectdetails[1]%>";
-             <%}else if(Long.parseLong(divisionid)>0){%>
-               	content: "Division:<%=divisiondetails[1]%>";
-             <%}else {%>
-             	content: "<%=labdetails[1]%>";
-             <%}%>
-             margin-top: 30px;
-             margin-right: 10px;
-             font-size: 13px;
-          }
-          @top-left {
-          	margin-top: 30px;
-            margin-left: 10px;
-            content: "<%=committeescheduleeditdata[11] %>";
-            font-size: 13px;
-          }            
-          
-          @top-center { 
-          margin-top: 30px;
-          content: "<%=committeescheduleeditdata[15]%>"; 
-           font-size: 13px;
-          
-          }
-         
-          @bottom-center { 
-	          margin-bottom: 30px;
-	          content: "<%=committeescheduleeditdata[15]%>"; 
-          
-          }
-          
-           @bottom-left { 
-             font-size: 13px;
-	          margin-bottom: 30px;
-	          content: "<%=LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))%>"; 
-	          
-          
-          }   
-          
-      <%--     @bottom-left {          		
- 			 content : "The info in this Doc. is proprietary of  <%if( Long.parseLong(projectid)>0){%> <%=projectdetails[1]%> <%}else if(Long.parseLong(divisionid)>0){%> Division:<%=divisiondetails[1]%> <%}else {%> <%=labdetails[1]%> <%}%> 	/DRDO , MOD Govt. of India. Unauthorized possession may be liable for prosecution.";
- 			 margin-bottom: 30px;
-             font-size: 9.5px;
-          }  --%>
- }
- 
- 
-
- .sth
- {
- 	font-size: 16px;
- 	border: 1px solid black;
- }
- 
- .std
- {
- 	text-align: left;
- 	border: 1px solid black;
- 	padding :3px;
- }
- 
-</style>
 <meta charset="ISO-8859-1">
-<title><%=committeescheduleeditdata[8]%> Minutes View</title>
+<link rel="shortcut icon" type="image/png"
+	href="view/images/drdologo.png">
+<jsp:include page="../static/dependancy.jsp"></jsp:include>
+<spring:url value="/resources/css/slides-style.css" var="SlidesStyleCSS" />
+<link href="${SlidesStyleCSS}" rel="stylesheet" />
+
+<title>PMS - Presentation</title>
+
+<meta charset="ISO-8859-1">
+
 </head>
-<body>
-	<%if(flagforView==null) { %>
-		<div align="center" style="text-decoration: underline">Annexure - A</div>	
-	<table style="width: 950px; margin-top:5px;font-size: 16px; border-collapse: collapse; margin-left: 8px;">
-						<tr>
-							<th colspan="8" style="text-align: left; font-weight: 700;">Status of major sub system and sub projects</th>
-						</tr>
-					</table>	
-					<br>
-							<table style=" margin-left: 8px; <% if(labcode.equalsIgnoreCase("ADE")){%>width:690px;<%}else{%> width:1020px<%}%> ; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
-						     <thead>
-									
-						     
-						         		 <tr>
-										 <th class="" style="border:1px solid black;width: 30px !important; ">MS</th>
-										 <th class="" style="border:1px solid black;width: 50px !important; padding:8px;">L</th>
-										 <th class="" style="border:1px solid black;width:600px; ">System/ Subsystem/ Activities</th>
-										 <th class="" style="border:1px solid black;width:120px; ">  PDC</th>
-										 <th class="" style="border:1px solid black;width:100px; "> Progress</th>
-<!-- 										 <th class="std" style="border: 1px solid black;max-width:70px; "> Status</th>
- -->										 <th class="" style="border: 1px solid black;width:300px; "> Remarks</th> 
-										 
-									</tr>
-								</thead>
+<body style="background-color: #F9F2DF66;">
+	<%
+		FormatConverter fc = new FormatConverter();
+		SimpleDateFormat sdf = fc.getRegularDateFormat();
+		SimpleDateFormat sdf1 = fc.getSqlDateFormat();
+		List<String> SplCommitteeCodes=(List<String>) request.getAttribute("SplCommitteeCodes");
+	
+		Object[] projectattributes = (Object[]) request.getAttribute("projectattributes");
+		Object[] committeeMetingsCount =  (Object[]) request.getAttribute("committeeMetingsCount");
+		Object[] scheduledata =  (Object[]) request.getAttribute("scheduledata");
+	
+		List<Object[]> AgendaList =  (List<Object[]>) request.getAttribute("AgendaList");
+		List<Object[]> AgendaDocList =  (List<Object[]>) request.getAttribute("AgendaDocList");
 		
-								<tbody>
-									<% if(MilestoneDetails6 !=null){ if( MilestoneDetails6.size()>0){ 
-									long milcount1=1;
-									int milcountA=1;
-									int milcountB=1;
-									int milcountC=1;
-									int milcountD=1;
-									int milcountE=1;%>
-									<%for(Object[] obj:MilestoneDetails6){
-										
-										if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid) ){
-										%>
-										<tr>
-											<td class=""  style=" border: 1px solid black;text-align: center;">M<%=obj[0] %></td>
-											<td class=""  style=" border: 1px solid black;text-align: center;" >
-												<%
-												
-												if(obj[21].toString().equals("0")) { %>
-													&nbsp;&nbsp;&nbsp;
-												<%	milcountA=1;
-													milcountB=1;
-													milcountC=1;
-													milcountD=1;
-													milcountE=1;
-												}else if(obj[21].toString().equals("1")) { 
-												for(Map.Entry<Integer,String>entry:treeMapLevOne.entrySet()){
-													if(entry.getKey().toString().equalsIgnoreCase(obj[2].toString())){%>
-														<%=entry.getValue() %>
-												<%}}
-												%>
-												
-												<% 
-												}else if(obj[21].toString().equals("2")) { 
-													for(Map.Entry<Integer,String>entry:treeMapLevTwo.entrySet()){
-														if(entry.getKey().toString().equalsIgnoreCase(obj[3].toString())){%>
-															<%=entry.getValue() %>
-													<%}}
-												
-												
-												%>
-													
-												<%
-												}else if(obj[21].toString().equals("3")) { %>
-													C-<%=milcountC %>
-												<%milcountC+=1;
-												milcountD=1;
-												milcountE=1;
-												}else if(obj[21].toString().equals("4")) { %>
-													D-<%=milcountD %>
-												<%
-												milcountD+=1;
-												milcountE=1;
-												}else if(obj[21].toString().equals("5")) { %>
-													E-<%=milcountE %>
-												<%milcountE++;
-												} %>
-											</td>
+		LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
+		String lablogo = (String)request.getAttribute("lablogo");
+		String Drdologo = (String)request.getAttribute("Drdologo");
+		Committee committeeData = (Committee) request.getAttribute("committeeData");
+		
+		String scheduleid = scheduledata[6].toString();
+		String committeeid = scheduledata[0].toString();
+		String CommitteeCode = committeeData.getCommitteeShortName().trim();
+		String CommitteeName = committeeData.getCommitteeName().trim();
+		String projectid = scheduledata[9].toString();
+		
+		String ProjectCode="General";
+				if(projectattributes!=null){
+					ProjectCode=projectattributes[0].toString();
+				}
+				
+		String MeetingNo = CommitteeCode+" #"+(Long.parseLong(committeeMetingsCount[1].toString())+1);
+		
+		
+		List<Object[]> decesions =  (List<Object[]>) request.getAttribute("decesions");
+		List<Object[]> recommendationList =  (List<Object[]>) request.getAttribute("recommendationList");
+		List<Object[]> ActionDetails =  (List<Object[]>) request.getAttribute("ActionDetails");
+		List<Object[]> meetingsHeld =  (List<Object[]>) request.getAttribute("meetingsHeld");
+		List<Object[]> OpenActionDetails = new ArrayList<>();
+		List<Object[]> closeActionDetails = new ArrayList<>();
+		
+		if(ActionDetails!=null && ActionDetails.size()>0){
+			OpenActionDetails = ActionDetails.stream().filter(e->!e[3].toString().equalsIgnoreCase("C")).collect(Collectors.toList());
+			closeActionDetails = ActionDetails.stream().filter(e->e[3].toString().equalsIgnoreCase("C")).collect(Collectors.toList());
+		}
+		
+	%>
 
-											<td class=""  style=" border: 1px solid black;text-align: left; <%if(obj[21].toString().equals("0")) {%>font-weight: bold;<%}%>">
-												<%if(obj[21].toString().equals("0")) {%>
-													<%=obj[10] %>
-												<%}else if(obj[21].toString().equals("1")) { %>
-													&nbsp;&nbsp;<%=obj[11] %>
-												<%}else if(obj[21].toString().equals("2")) { %>
-													&nbsp;&nbsp;<%=obj[12] %>
-												<%}else if(obj[21].toString().equals("3")) { %>
-													&nbsp;&nbsp;<%=obj[13] %>
-												<%}else if(obj[21].toString().equals("4")) { %>
-													&nbsp;&nbsp;<%=obj[14] %>
-												<%}else if(obj[21].toString().equals("5")) { %>
-													&nbsp;&nbsp;<%=obj[15] %>
-												<%} %>
-											</td>
-											<td class=""  style=" border: 1px solid black;text-align: center;"><%=sdf.format(sdf1.parse(obj[9].toString())) %><br><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
-											<td class=""  style=" border: 1px solid black;text-align: center;"><%=obj[17] %>%</td>											
-											<td class=""  style=" border: 1px solid black;text-align: left;"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
-										</tr>
-									<%milcount1++;}} %>
-								<%} else{ %>
-								<tr><td class="" colspan="8" style="border: 1px solid black; text-align: center;" > No SubSystems</td></tr>
-								<%}}else{ %>
-									<tr><td class="" colspan="8" style="border: 1px solid black; text-align: center;" > No SubSystems</td></tr>
-								<%} %>
 
+	<div id="presentation-slides" class="carousel slide"
+		data-ride="carousel">
+
+		<div class="carousel-inner" align="center">
+
+			<!-- ---------------------------------------- P-1  Div ----------------------------------------------------- -->
+			<div class="carousel-item active">
+
+				<div class="content" align="center"
+					style="height: 93vh !important; padding-top: 15px;">
+
+					<div class="firstpage">
+
+						<div align="center">
+							<h2
+								style="color: #145374 !important; font-family: 'Muli' !important">Presentation</h2>
+						</div>
+						<div align="center">
+							<h3 style="color: #145374 !important">for</h3>
+						</div>
+
+						<div align="center">
+							<h3 style="color: #4C9100 !important"><%=CommitteeName %>
+								#<%=Long.parseLong(committeeMetingsCount[1].toString())+1 %>
+								Meeting
+							</h3>
+						</div>
+
+						<div align="center">
+							<h3 style="color: #4C9100 !important">
+								<%if(projectattributes!=null){%>
+								<%= projectattributes[1] %>
+								(<%= projectattributes[0] %>)
+								<%}%>
+							</h3>
+						</div>
+
+						<table class="executive home-table"
+							style="align: center; margin-left: auto; margin-right: auto; border: 0px; font-size: 16px;">
+							<tr>
+								<th colspan="8" style="text-align: center; font-weight: 700;">
+									<img class="logo" style="width: 120px; height: 120px;"
+									<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
+									alt="Logo" <%}else{ %> alt="File Not Found" <%} %>> <br>
+								</th>
+
+							</tr>
+						</table>
+
+						<table style="align: center; width: 650px;">
+							<tr style="margin-top: 10px">
+								<th
+									style="text-align: center; font-size: 18px; border: 0px !important;">
+									<u>Meeting Id </u>
+								</th>
+							</tr>
+							<tr>
+								<th
+									style="text-align: center; font-size: 18px; border: 0px !important;">
+									<%=scheduledata[11] %>
+								</th>
+							</tr>
+						</table>
+						<table style="align: left; width: 650px;">
+							<tr>
+								<th
+									style="text-align: center; width: 50%; font-size: 18px; border: 0px !important;">
+									<u> Meeting Date </u>
+								</th>
+								<th
+									style="text-align: center; width: 50%; font-size: 18px; border: 0px !important;"><u>
+										Meeting Time </u></th>
+							</tr>
+							<tr>
+								<%-- <%LocalTime starttime = LocalTime.parse(LocalTime.parse(nextMeetVenue[3].toString(),DateTimeFormatter.ofPattern("HH:mm:ss")).format( DateTimeFormatter.ofPattern("HH:mm") ));   %> --%>
+								<td
+									style="text-align: center; width: 50%; font-size: 18px; padding-top: 5px; border: 0px !important;">
+									<b><%=sdf.format(sdf1.parse(scheduledata[2].toString()))%></b>
+								</td>
+								<td
+									style="text-align: center; width: 50%; font-size: 18px; padding-top: 5px; border: 0px !important;">
+									<b><%=scheduledata[3]/* starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) */%></b>
+								</td>
+							</tr>
+						</table>
+						<table style="align: center; width: 650px;">
+							<tr style="margin-top: 10px">
+								<th
+									style="text-align: center; font-size: 18px; border: 0px !important;">
+									<u>Meeting Venue</u>
+								</th>
+							</tr>
+							<tr>
+								<th
+									style="text-align: center;; font-size: 18px; border: 0px !important;">
+									<% if(scheduledata[12]!=null){ %><%=scheduledata[12] %> <%}else{ %>
+									- <%} %>
+								</th>
+							</tr>
+						</table>
+
+						<table class="executive home-table"
+							style="align: center; margin-bottom: 5px; margin-left: auto; margin-right: auto; border: 0px; font-size: 16px;">
+							<% if(labInfo!=null){ %>
+							<tr>
+								<th colspan="8"
+									style="text-align: center; font-weight: 700; font-size: 22px">
+									<%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %>
+									<%}else{ %>LAB NAME<%} %>
+								</th>
+							</tr>
+							<%}%>
+							<tr>
+								<th colspan="8"
+									style="text-align: center; font-weight: 700; font-size: 15px"><br>Government
+									of India, Ministry of Defence</th>
+							</tr>
+							<tr>
+								<th colspan="8"
+									style="text-align: center; font-weight: 700; font-size: 15px">Defence
+									Research & Development Organization</th>
+							</tr>
+							<tr>
+								<th colspan="8"
+									style="text-align: center; font-weight: 700; font-size: 15px">
+									<%if(labInfo.getLabAddress() !=null){ %><%=labInfo.getLabAddress()  %>
+									, <%=labInfo.getLabCity() %>
+									<%}else{ %>LAB ADDRESS<%} %>
+								</th>
+							</tr>
+						</table>
+
+
+					</div>
+
+				</div>
+
+			</div>
+			<!-- ----------------------------------------  P-1  Div ----------------------------------------------------- -->
+
+
+			<!-- ---------------------------------------- P-2  Div ----------------------------------------------------- -->
+
+			<div class="carousel-item">
+
+				<div class="content-header row ">
+
+					<div class="col-md-1">
+						<img class="logo"
+							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+							<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
+							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+					</div>
+					<div class="col-md-1" align="left" style="padding-top: 19px;">
+						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+					</div>
+					<div class="col-md-8">
+						<h3>Agenda</h3>
+					</div>
+					<div class="col-md-1" align="right" style="padding-top: 19px;">
+						<b style="margin-right: -35px;"><%=MeetingNo %></b>
+					</div>
+					<div class="col-md-1">
+						<img class="logo"
+							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+							<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
+							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+					</div>
+
+				</div>
+
+				<div class="content">
+
+
+
+
+					<% if(Long.parseLong(projectid)>0  && SplCommitteeCodes.contains(CommitteeCode)){ %>
+					<div class="row" style="float: right;">
+						<form action="#" method="post" id="myfrm" target="_blank"
+							style="float: right; margin-right: 25px; padding: 5px;">
+
+							<% if(scheduledata[23].toString().equalsIgnoreCase("Y")){%>
+							<input type="submit" class="btn btn-sm back"
+								formaction="MeetingBriefingPaper.htm" value="Briefing"
+								formmethod="get" data-toggle="tooltip" data-placement="bottom"
+								title="Briefing Paper">
+							<%}%>
+
+							<button type="submit" class="btn btn-sm "
+								style="background-color: #96D500;"
+								formaction="BriefingPresentation.htm" formmethod="post"
+								formtarget="_blank" data-toggle="tooltip"
+								data-placement="bottom" title="Presentation">
+								<img src="view/images/presentation.png"
+									style="width: 19px !important">
+							</button>
+							<input type="hidden" name="scheduleid" value="<%=scheduleid%>">
+							<input type="hidden" name="committeeid" value="<%=committeeid%>">
+							<input type="hidden" name="projectid" value="<%=projectid %>">
+							<input type="hidden" name="${_csrf.parameterName}"
+								value="${_csrf.token}" />
+						</form>
+					</div>
+					<% } %>
+
+
+					<table
+						class="table table-bordered table-hover table-striped table-condensed "
+						style="margin-top: 10px; width: 100%">
+						<thead>
+							<tr>
+								<th style="width: 5%;">SN</th>
+								<th style="width: 22%;">Agenda Item</th>
+								<!-- 	<th style="width: 15%;">Reference</th>
+			                       	<th style="width: 10%;">Remarks</th> -->
+								<th style="width: 24%;">Presenter</th>
+								<th style="width: 14%;">Duration</th>
+								<th style="width: 10%;">Attachment</th>
+							</tr>
+						</thead>
+						<tbody>
+							<%LocalTime starttime = LocalTime.parse(LocalTime.parse(scheduledata[3].toString(),DateTimeFormatter.ofPattern("HH:mm:ss")).format( DateTimeFormatter.ofPattern("HH:mm") ));  %>
+							<%	int count=0;
+								for(Object[] 	obj:AgendaList){ count++;%>
+							<tr>
+
+								<td style="text-align: center;"><%=count%></td>
+								<td><%=obj[3] %></td>
+								<%-- <td><%=obj[4] %>  </td>									
+									<td><%=obj[6] %></td> --%>
+								<td><%=obj[10]%>,  <%=obj[11] %></td>
+								<td style="text-align: center;"><%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %>
+									- <%=starttime.plusMinutes(Long.parseLong(obj[12].toString())).format( DateTimeFormatter.ofPattern("hh:mm a") )  %>
+									<%starttime=starttime.plusMinutes(Long.parseLong(obj[12].toString()) /* + 1 */); %>
+
+								</td>
+								<td>
+							 			<table>
+											<%for(Object[] doc : AgendaDocList) { 
+											if(obj[0].toString().equalsIgnoreCase(doc[1].toString())){%>
+												<tr>
+													<td><%=doc[3] %></td>
+													<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
+												<tr>													
+											<%} }%>
+										</table>
+									</td> 
+
+							</tr>
+
+							<%} %>
 						</tbody>
 					</table>
-	
-	
-	
-	 <h1 class="break"></h1> 
-	
-			<div  align="center" style="text-decoration: underline">Annexure - B</div>		
-				<table style=" margin-left: 8px; width: 950px; margin-top:5px;font-size: 16px; border-collapse: collapse;" >
-						<tr>
-							<th colspan="10" style="text-align: left; font-weight: 700;">Details of procurements items envisaged in the projects along with status</th>
-						</tr>
-					</table>	
-							<table style=" margin-left: 8px; <% if(labcode.equalsIgnoreCase("ADE")){%>width:690px;<%}else{%> width:1020px<%}%> ; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
-										<thead>
-										<tr>
-											<th colspan="11" style="text-align: right;"> <span class="currency" >(In &#8377; Lakhs)</span></th>
-										</tr>
-										 <tr>
-										 	<th colspan="11" class="std">Demand Details ( > &#8377; <% if (projectdatadetails != null && projectdatadetails[13] != null) { %>
-													<%=projectdatadetails[13].toString().replaceAll("\\.\\d+$", "")%> ) <% } else { %> - )<% } %>
-												
-											</th>
-										</tr>
-										</thead>
-										
-										<tr>
-											<th class="std" style="border: 1px solid black;width: 30px !important;">SN</th>
-											<th class="std" style="border: 1px solid black;max-width:90px;">Demand No <br> Demand Date</</th>
-<!-- 											<th class="std" style="border: 1px solid black;max-width:90px; ">Demand Date</th>
- -->											<th class="std" colspan="4" style="border: 1px solid black;max-width: 150px;"> Nomenclature</th>
-											<th class="std" style="border: 1px solid black;max-width:90px;"> Est. Cost</th>
-											<th class="std" style="border: 1px solid black;max-width:80px; "> Status</th>
-											<th class="std" colspan="3" style="border: 1px solid black;max-width:200px;">Remarks</th>
-										</tr>
-										    <% int k=0;
-										    if(procurementOnDemand!=null &&  procurementOnDemand.size()>0){
-										    Double estcost=0.0;
-										    Double socost=0.0;
-										    for(Object[] obj : procurementOnDemand){ 
-										    	k++; %>
-											<tr>
-												<td class="std"  style=" border: 1px solid black;"><%=k%></td>
-												<td class="std"  style=" border: 1px solid black;"><%=obj[1]%><br><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
-<%-- 												<td class="std"  style=" border: 1px solid black;"><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
- --%>												<td class="std" colspan="4" ><%=obj[8]%></td>
-												<td class="std" style=" text-align:right;"> <%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
-												<td class="std"  style=" border: 1px solid black;"> <%=obj[10]%> </td>
-												<td class="std" colspan="3" style=" border: 1px solid black;"><%=obj[11]%> </td>		
-											</tr>		
-											<%
-											estcost += Double.parseDouble(obj[5].toString());
-										    }%>
-										    
-										    <tr>
-										    	<td class="std" colspan="8" style="text-align: right;"><b>Total</b></td>
-										    	<td class="std" style="text-align: right;"><b><%=df.format(estcost)%></b></td>
-										    	
-										    	<td class="std" colspan="2" style="text-align: right;"></td>
+				</div>
 
-										    </tr>
-										    
-										    
-										    <% }else{%>											
-												<tr><td colspan="11" style="border: 1px solid black;text-align: center;" class="std" >Nil </td></tr>
-											<%} %>
-											<!-- ********************************Future Demand Start *********************************** -->
-											<tr>
-											<th class="std" colspan="11" style="border: 1px solid black"><span class="mainsubtitle">Future Demand</span></th>
-											</tr>
-											<tr>
-												 <th class="std" style="border: 1px solid black;width: 15px !important;text-align: center;">SN</th>
-													 <th class="std"  colspan="4" style="border: 1px solid black;;width: 295px;"> Nomenclature</th>
-													 <th class="std" style="border: 1px solid black;width: 80px;"> Est. Cost-Lakh &#8377;</th>
-													 <th class="std" style="border: 1px solid black;max-width:50px; "> Status</th>
-													 <th class="std" colspan="4" style="border: 1px solid black;max-width: 310px;">Remarks</th>
-											</tr>
-										
-										    			    <% int a=0;
-										    if(envisagedDemandlist!=null &&  envisagedDemandlist.size()>0){
-										    Double estcost=0.0;
-										    Double socost=0.0;
-										    for(Object[] obj : envisagedDemandlist){ 
-										    	a++; %>
-											<tr>
-												<td class="std"  style=" border: 1px solid black;"><%=a%></td>
-												<td class="std" colspan="4" style="border: 1px solid black;" ><%=obj[3]%></td>
-												<td class="std" style="border: 1px solid black; text-align:right;"> <%=format.format(new BigDecimal(obj[2].toString())).substring(1)%></td>
-												<td class="std"  style=" border: 1px solid black;"> <%=obj[6]%> </td>
-												<td class="std" colspan="4" style="border: 1px solid black;"><%=obj[4]%> </td>		
-											</tr>		
-											<%
-												estcost += Double.parseDouble(obj[2].toString());
-										    }%>
-										    
-										    <tr>
-										    	<td  class="std"colspan="7" style="border: 1px solid black;text-align: right;"><b>Total</b></td>
-										    	<td class="std" style="border: 1px solid black;text-align: right;" colspan="4"><b><%=df.format(estcost)%></b></td>
-										    </tr>
-										    
-										    
-										    <% }else{%>											
-												<tr><td colspan="11" style="border: 1px solid black;text-align: center;" class="std" >Nil </td></tr>
-											<%} %>
-											
-									<!-- ********************************Future Demand End *********************************** -->
-											
-											 <tr >
-											 
-												<th  class="std"  colspan="8">Orders Placed ( > &#8377; <% if (projectdatadetails != null && projectdatadetails[13] != null) { %>
-													<%=projectdatadetails[13].toString().replaceAll("\\.\\d+$", "")%> ) <% } else { %> - )<% } %>
-												</th>
-											 </tr>
-										
-										  	 <tr>	
-										  	 	 <th class="std" rowspan="1" style="border: 1px solid black;width: 30px !important;">SN</th>
-										  	 	 <th class="std" style="border: 1px solid black;width:150px;">Demand No <br>Demand  Date</th>
-										  	 	<!--  <th class="std" style="border: 1px solid black;" >Demand  Date</th> -->
-												 <th class="std" colspan="2" style="border: 1px solid black;"> Nomenclature</th>
-												  	<th class="std"  style=" border: 1px solid black;width: 150px;">Supply Order No <br> Order Date</th>
-												  <th class="std"  colspan="1" style="border: 1px solid black;width:100px">SO Cost-Lakh &#8377;</th>
-												<!--  <th class="std" style="border: 1px solid black;max-width:90px;	">DP Date</th> -->
-												  <th class="std" style="border: 1px solid black;width:100px;">DP Date  <br>Rev DP</th>
-												 <th class="std" colspan="2" style="border: 1px solid black;width: 200px;">Vendor Name</th>
-												  <th class="std" style="border: 1px solid black;max-width:80px; "> Status</th>											 
-												 <th class="std"  colspan="1" style="border: 1px solid black;width:100px">Remarks &#8377;</th>
-												</tr>
-											
-											
-											<%if(procurementOnSanction!=null && procurementOnSanction.size()>0){ 
-												  int rowk=0;
-										    	  Double estcost=0.0;
-												  Double socost=0.0;
-												  String demand="";
-												  List<Object[]> list = new ArrayList<>();
-												  for(Object[] obj:procurementOnSanction){ 
-													if(obj[2]!=null){
-														if(!obj[1].toString().equalsIgnoreCase(demand)){
-															rowk++;
-											  	 		 	 list = procurementOnSanction.stream().filter(e-> e[0].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
-														}
-													}
-													  
-											%>
-					<tr>
-					<td <%if(!obj[1].toString().equalsIgnoreCase(demand)){ %> style="border: 1px solid black;border-bottom:none;"<%} else{ %> style="border: 1px solid black;border-bottom:none;border-top:none;"<%} %>>
-					<%if(!obj[1].toString().equalsIgnoreCase(demand)){ %>
-					<%=rowk %>
-					<%} %>
-					</td>
-					<td <%if(!obj[1].toString().equalsIgnoreCase(demand)){ %> style="border: 1px solid black;border-bottom:none;"<%} else{ %> style="border: 1px solid black;border-bottom:none;border-top:none;"<%} %>>
-					<%if(!obj[1].toString().equalsIgnoreCase(demand)){ %><%if(obj[1]!=null) {%> <%=obj[1].toString()%><% }else{ %>-<%} %><br>
-					<%=sdf.format(sdf1.parse(obj[3].toString()))%>
-					<%} %>
-					</td>
-					<td colspan="2" <%if(!obj[1].toString().equalsIgnoreCase(demand)){ %> style="border: 1px solid black;border-bottom:none;"<%} else{ %> style="border: 1px solid black;border-bottom:none;border-top:none;"<%} %>>
-					<%if(!obj[1].toString().equalsIgnoreCase(demand)){ %>
-					<%=obj[8]%>
-					<%} %>
-					</td>
-						<td style="border: 1px solid black;text-align: center;">
-						<% if(obj[2]!=null){%> <%=obj[2]%> <%}else{ %>-<%} %> <br>
-						<%if(obj[14]!=null){%> <%=sdf.format(sdf1.parse(obj[14].toString()))%> <%}else{ %> - <%} %>
-					</td>
-						<td style="border: 1px solid black;text-align: right"><%if(obj[6]!=null){%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%> <%} else{ %> - <%} %></td>
-					<td style="border: 1px solid black;">
-					<%if(obj[4]!=null){%> <%=sdf.format(sdf1.parse(obj[4].toString()))%> <%}else{ %> - <%} %>
-					<br>
-					<%if(obj[7]!=null){if(!obj[7].toString().equals("null")){%> <%=sdf.format(sdf1.parse(obj[7].toString()))%><%}}else{ %>-<%} %></td>
-						
-						<td colspan="2" style="border: 1px solid black;"><%=obj[12] %> </td>
-						<td <%if(!obj[1].toString().equalsIgnoreCase(demand)){ %> style="border: 1px solid black;border-bottom:none;"<%} else{ %> style="border: 1px solid black;border-bottom:none;border-top:none;"<%} %>>
-						<%if(!obj[1].toString().equalsIgnoreCase(demand)){ %>
-					<%=obj[10]%>
-					<%} %>
-					
-					</td>
-					
-					
-						<td <%if(!obj[1].toString().equalsIgnoreCase(demand)){ %> style="border: 1px solid black;border-bottom:none;"<%} else{ %> style="border: 1px solid black;border-bottom:none;border-top:none;"<%} %>>
-						<%if(!obj[1].toString().equalsIgnoreCase(demand)){ %>
-					<%=obj[11].toString()%>
-					<%} %>
-					
-					</td>
-					</tr>
-											<%
-											demand = obj[1].toString();
-											Double value = 0.00;
-								  	 		if(obj[6]!=null){
-								  	 			value=Double.parseDouble(obj[6].toString());
-								  	 		}
-								  	 		
-								  	 		estcost += Double.parseDouble(obj[5].toString());
-								  	 		socost +=  value;
-											}
-											%>
-											
-												<tr>
-										    	<td colspan="5" class="std" style="text-align: right;border: 1px solid black;"><b>Total</b></td>
-										    	<td colspan="1" class="std" style="text-align: right;border: 1px solid black;"><b><%=df.format(socost)%></b></td>
-										    	<td colspan="5" class="std" style="text-align: right;border: 1px solid black;"><b></b></td>
-										   		 </tr>	
-										 <% }else{%>
-											
-												<tr><td colspan="8" style="border: 1px solid black;" class="std"  style="text-align: center;">Nil </td></tr>
-											<%} %>
-									</table> 
-							<table style=" margin-left: 8px; <% if(labcode.equalsIgnoreCase("ADE")){%>width:690px;<%}else{%> width:1020px<%}%> ; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
-										<thead>
-											 <tr >
-												 <th class="std" colspan="8" ><span class="mainsubtitle">Total Summary of Procurement</span></th>
-											 </tr>
-										 </thead>
-									       <tr>
-												<th class="std" style="max-width: 150px;border: 1px solid black;">No. of Demand</th>
-												<th class="std" style="max-width: 150px;border: 1px solid black;">Est. Cost</th>
-												<th class="std" style="max-width: 150px;border: 1px solid black;">No. of Orders</th>
-												<th class="std" style="max-width: 150px;border: 1px solid black;">SO Cost</th>
-												<th class="std" style="max-width: 150px;border: 1px solid black;">Expenditure</th>
-											</tr>
-									<%if(totalprocurementdetails!=null && totalprocurementdetails.size()>0){ 
-										 for(TotalDemand obj:totalprocurementdetails){
-											 if(obj.getProjectId().equalsIgnoreCase(projectid)){
-										 %>
-										   <tr>
-										      <td class="std" style="text-align: center;border: 1px solid black;"><%=obj.getDemandCount() %></td>
-										      <td class="std" style="text-align: center;border: 1px solid black;"><%=obj.getEstimatedCost() %></td>
-										      <td class="std" style="text-align: center;border: 1px solid black;"><%=obj.getSupplyOrderCount()%></td>
-										      <td class="std" style="text-align: center;border: 1px solid black;"><%=obj.getTotalOrderCost() %></td>
-										      <td class="std" style="text-align: center;border: 1px solid black;"><%=obj.getTotalExpenditure()%></td>
-										   </tr>
-										   <%}}}else{%>
-										   <tr>
-										      <td class="std" colspan="5" style="text-align: center;border: 1px solid black;">IBAS Server Could Not Be Connected</td>
-										   </tr>
-										   <%} %>
-									</table>	
-						<h1 class="break"></h1>
-						
-											<div align="center" style="text-decoration: underline">Annexure - C</div>		
-					<table style="  <% if(labcode.equalsIgnoreCase("ADE")){%>width:690px;<%}else{%> width:1020px<%}%> ; margin-top:5px;font-size: 16px;margin-left:8px; border-collapse: collapse;" >
-						<tr>
-							<th colspan="8" style="text-align: left; font-weight: 700;"><br>Financial Status presented during the review</th>
-						</tr>
-						<tr >
-							<td colspan="8" style="border: 1px solid black;" align="right">(Amount in Crores)</td>
-						</tr>
-					</table>	
-					<%if(Long.parseLong(projectid) >0 && projectFinancialDetails!=null) { %>
-							
-							<table style=" <% if(labcode.equalsIgnoreCase("ADE")){%>width:690px;<%}else{%> width:1020px<%}%> ; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black;margin-left:8px" >
-								    <thead>
-								        <tr>
-								           	<td class="std" colspan="2" align="center" style="border:1px solid black;"><b>Head</b></td>
-								           	<td class="std" colspan="2" align="center" style="border:1px solid black;"><b>Sanction</b></td>
-									         <td class="std" colspan="2" align="center" style="border:1px solid black;"><b>Expenditure</b></td>
-									        <td class="std" colspan="2" align="center" style="border:1px solid black;"><b>Out Commitment</b> </td>
-								            <td class="std" colspan="2" align="center" style="border:1px solid black;"><b>Balance</b></td>
-									        <td class="std" colspan="2" align="center" style="border:1px solid black;"><b>DIPL</b></td>
-								            <td class="std" colspan="2" align="center" style="border:1px solid black;"><b>Notional Balance</b></td>
-								        </tr>
-									    <tr>
-											<th class="std" style="border:1px solid black;">SN</th>
-										    <th class="std" style="border:1px solid black;">Head</th>
-										    <th class="std" style="border:1px solid black;">RE</th>
-										    <th class="std" style="border:1px solid black;">FE</th>
-										    <th class="std" style="border:1px solid black;">RE</th>
-										    <th class="std" style="border:1px solid black;">FE</th>
-									        <th class="std" style="border:1px solid black;">RE</th>
-									        <th class="std" style="border:1px solid black;">FE</th>
-								            <th class="std" style="border:1px solid black;">RE</th>
-										    <th class="std" style="border:1px solid black;">FE</th>
-										    <th class="std" style="border:1px solid black;">RE</th>
-										    <th class="std" style="border:1px solid black;">FE</th>
-										    <th class="std" style="border:1px solid black;">RE</th>
-										    <th class="std" style="border:1px solid black;">FE</th>
-								        </tr>
-									</thead>
-									<tbody>
-									<% 
-								    double totSanctionCost=0,totReSanctionCost=0,totFESanctionCost=0;
-									double totExpenditure=0,totREExpenditure=0,totFEExpenditure=0;
-									double totCommitment=0,totRECommitment=0,totFECommitment=0,totalDIPL=0,totalREDIPL=0,totalFEDIPL=0;
-									double totBalance=0,totReBalance=0,totFeBalance=0,btotalRe=0,btotalFe=0;
-									int counts=1;
-									if(projectFinancialDetails!=null){
-										for(ProjectFinancialDetails projectFinancialDetail:projectFinancialDetails){    %>
-									 
-									    	<tr>
-												<td class="std"  align="center" style="border:1px solid black;"><%=counts++ %></td>
-												<td class="std"  style=" border: 1px solid black;text-align: left;border:1px solid black;"><%=projectFinancialDetail.getBudgetHeadDescription()%></td>
-												<td class="std"  align="right" style="text-align: right; border:1px solid black;"><%=df.format(projectFinancialDetail.getReSanction()) %></td>
-												<%totReSanctionCost+=(projectFinancialDetail.getReSanction());%>
-													<td class="std"  align="right" style="text-align: right;border:1px solid black;"><%=df.format(projectFinancialDetail.getFeSanction())%></td>
-												<%totFESanctionCost+=(projectFinancialDetail.getFeSanction());%>
-													<td class="std"  align="right" style="text-align: right;border:1px solid black;"><%=df.format(projectFinancialDetail.getReExpenditure()) %></td>
-												<%totREExpenditure+=(projectFinancialDetail.getReExpenditure());%>
-												    <td class="std"  align="right" style="text-align: right;border:1px solid black;"><%=df.format(projectFinancialDetail.getFeExpenditure())%></td>
-												<%totFEExpenditure+=(projectFinancialDetail.getFeExpenditure());%>
-												    <td class="std"  align="right" style="text-align: right;border:1px solid black;"><%=df.format(projectFinancialDetail.getReOutCommitment())%></td>
-												<%totRECommitment+=(projectFinancialDetail.getReOutCommitment());%>
-												    <td class="std"  align="right" style="text-align: right;border:1px solid black;"><%=df.format(projectFinancialDetail.getFeOutCommitment())%></td>
-												<%totFECommitment+=(projectFinancialDetail.getFeOutCommitment());%>
-													<td class="std"  align="right" style="text-align: right;border:1px solid black;"><%=df.format(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl())%></td>
-												<%btotalRe+=(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl());%>
-													<td class="std"  align="right" style="text-align: right;border:1px solid black;"><%=df.format(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl())%></td>
-												<%btotalFe+=(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl());%>
-													 <td class="std"  align="right"style="text-align: right;border:1px solid black;"><%=df.format(projectFinancialDetail.getReDipl())%></td>
-												<%totalREDIPL+=(projectFinancialDetail.getReDipl());%>
-													 <td class="std"  align="right" style="text-align: right;border:1px solid black;"><%=df.format(projectFinancialDetail.getFeDipl())%></td>
-												<%totalFEDIPL+=(projectFinancialDetail.getFeDipl());%>
-													<td class="std"  align="right" style="text-align: right;border:1px solid black;"><%=df.format(projectFinancialDetail.getReBalance())%></td>
-												<%totReBalance+=(projectFinancialDetail.getReBalance());%>
-													<td class="std"  align="right" style="text-align: right;border:1px solid black;"><%=df.format(projectFinancialDetail.getFeBalance())%></td>
-												<%totFeBalance+=(projectFinancialDetail.getFeBalance());%>
-											</tr>
-										<%} }%>
-																
-											<tr>
-												<td class="std"  colspan="2"><b>Total</b></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;border:1px solid black;"><%=df.format(totReSanctionCost)%></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;border:1px solid black;"><%=df.format(totFESanctionCost)%></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;border:1px solid black;"><%=df.format(totREExpenditure)%></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;border:1px solid black;"><%=df.format(totFEExpenditure)%></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;border:1px solid black;"><%=df.format(totRECommitment)%></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;border:1px solid black;"><%=df.format(totFECommitment)%></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;border:1px solid black;"><%=df.format(btotalRe)%></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;border:1px solid black;"><%=df.format(btotalFe)%></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;border:1px solid black;"><%=df.format(totalREDIPL)%></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;border:1px solid black;"><%=df.format(totalFEDIPL)%></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;border:1px solid black;"><%=df.format(totReBalance)%></td>
-												<td class="std"  align="right" style="text-align: right;font-weight: bold;border:1px solid black;"><%=df.format(totFeBalance)%></td>
-											</tr>
-											<tr>
-												<td class="std"  colspan="2"><b>GrandTotal</b></td>
-												<td class="std"  colspan="2"  style="text-align: right;font-weight: bold;border:1px solid black;"><%=df.format(totReSanctionCost+totFESanctionCost)%></td>
-												<td class="std"  colspan="2"  style="text-align: right;font-weight: bold;border:1px solid black;"><%=df.format(totREExpenditure+totFEExpenditure)%></td>
-												<td class="std"  colspan="2"  style="text-align: right;font-weight: bold;border:1px solid black;"><%=df.format(totRECommitment+totFECommitment)%></td>
-												<td class="std"  colspan="2"  style="text-align: right;font-weight: bold;border:1px solid black;"><%=df.format(btotalRe+btotalFe)%></td>
-												<td class="std"  colspan="2"  style="text-align: right;font-weight: bold;border:1px solid black;"><%=df.format(totalREDIPL+totalFEDIPL)%></td>
-												<td class="std"  colspan="2"  style="text-align: right;font-weight: bold;border:1px solid black;"><%=df.format(totReBalance+totFeBalance)%></td>
-											</tr>
-										</tbody>        
-									</table>
-														
-							
-					<% }else {  %>
-						
-						<table style=" <% if(labcode.equalsIgnoreCase("ADE")){%>width:690px;<%}else{%> width:1020px<%}%> ;font-size: 16px; border-collapse: collapse;margin-left:8px;" >
-						<tr >
-							<td colspan="8" style="border: 1px solid black;border-top:0px;font-weight: bold"  align="center">No Data Available</td>
-						</tr>
-					</table>	
-							  
-					<% } %>
-						
-						<h1 class="break"></h1>
-											<div align="center" style="text-decoration: underline">Annexure - D</div>		
-						<table style=" <% if(labcode.equalsIgnoreCase("ADE")){%>width:690px;<%}else{%> width:1020px<%}%> ; margin-top:5px;font-size: 16px; border-collapse: collapse; margin-left:8px">
-						<tr>
-							<th colspan="8" style="text-align: left; font-weight: 700;">Major milestones to be completed in next 06 months along with the financial outlay.</th>
-						</tr>
-					</table>
-					<table style="margin-top: 5px; margin-bottom: 0px;  <% if(labcode.equalsIgnoreCase("ADE")){%>width:690px;<%}else{%> width:1020px<%}%> ; font-size: 16px; border-collapse: collapse;border: 1px solid black;margin-left:8px" >
-							 <thead>
-									
-								<tr style="font-size:14px; ">
-									<th class="std"  style=" border: 1px solid black;width:20px !important;">SN</th>
-									<th class="std"  style=" border: 1px solid black;width:20px; ">MS</th>
-									<th class="std"  style=" border: 1px solid black;width:20px; ">L</th>
-									<th class="std"  style=" border: 1px solid black;width:400px;">Action Plan </th>	
-									<th class="std"  style=" border: 1px solid black;width:140px;">Responsibility </th>
-									<th class="std"  style=" border: 1px solid black;width:70px;">PDC</th>	
-									<th class="std"  style=" border: 1px solid black;width:70px;">Progress </th>
-					                 <th class="std"  style=" border: 1px solid black;width:180px;">Remarks</th>
+			</div>
+
+			<div class="carousel-item">
+
+				<div class="content-header row ">
+
+					<div class="col-md-1">
+						<img class="logo"
+							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+							<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
+							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+					</div>
+					<div class="col-md-1" align="left" style="padding-top: 19px;">
+						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+					</div>
+					<div class="col-md-8">
+						<h3>Previous Meetings</h3>
+					</div>
+					<div class="col-md-1" align="right" style="padding-top: 19px;">
+						<b style="margin-right: -35px;"><%=MeetingNo %></b>
+					</div>
+					<div class="col-md-1">
+						<img class="logo"
+							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+							<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
+							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+					</div>
+
+				</div>
+
+				<div class="content">
+					<div class="row">
+					<div class="col-md-3"></div>
+					<div class="col-md-3">
+					<table class="subtables"
+						style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+								<thead>
+								<tr>
+								<th  style="width: 140px; ">Committee</th>
+								<th  style="width: 140px; "> Date Held</th>
 								</tr>
 							</thead>
-							<tbody style="font-size: 14px;">
-								<%if(ActionPlanSixMonths!=null && ActionPlanSixMonths.size()>0){ 
-									long milecount=1;
-									int countA=1;
-									int countB=1;
-									int countC=1;
-									int countD=1;
-									int countE=1;
-									String mainMileStone=null;
-									String mile=null;
-									String mileA=null;
-									String mileBid=null;
-									if(!ActionPlanSixMonths.isEmpty()){
-										mainMileStone=ActionPlanSixMonths.get(0)[0].toString();
-										mile=ActionPlanSixMonths.get(0)[2].toString();
-										mileA=ActionPlanSixMonths.get(0)[3].toString();
-										mileBid=ActionPlanSixMonths.get(0)[1].toString();
-									}
-									%>
-									<%for(Object[] obj:ActionPlanSixMonths){
-										
-										if(Integer.parseInt(obj[26].toString())<= Integer.parseInt(levelid) ){
-										%>
-										<tr>
-											<td class="std"  style=" border: 1px solid black;text-align: center"><%=milecount %></td>
-											<td class="std"  style="border: 1px solid black; border:1px solid black; text-align: center;<%if(obj[26].toString().equalsIgnoreCase("0")){%> <%}%> ">M<%=obj[22] %></td>
-											
-											<td class="std"  style=" border: 1px solid black;text-align: center;border:1px solid black;">
-												<%
-												if(obj[26].toString().equals("0")) {%>
-												<%countA=1;
-													countB=1;
-													countC=1;
-													countD=1;
-													countE=1;
-												}else if(obj[26].toString().equals("1")) {    
-												for (Map.Entry<Integer,String> entry : treeMapLevOne.entrySet()) {
-												if(entry.getKey().toString().equalsIgnoreCase(obj[2].toString())){%>
-													<%=entry.getValue() %>
-												<%}
-												}
-												    countB=1;
-												    countC=1;
-													countD=1;
-													countE=1;
-												}else if(obj[26].toString().equals("2")) { 
-													
-													for(Map.Entry<Integer, String>entry:treeMapLevTwo.entrySet()){
-													if(entry.getKey().toString().equalsIgnoreCase(obj[3].toString())){%>
-													<%=entry.getValue() %>
-													<%	}
-													}
-												%>
-												<%countC=1;
-												countD=1;
-												countE=1;
-												}else if(obj[26].toString().equals("3")) { %>
-												C-<%=countC %>
-												<%countC+=1;
-												countD=1;
-												countE=1;
-												}else if(obj[26].toString().equals("4")) { %>
-												D-<%=countD %>
-												<%
-												countD+=1;
-												countE=1;
-												}else if(obj[26].toString().equals("5")) { %>
-													E-<%=countE %>
-												<%countE++;
-												} %>
-											</td>
-											<td class="std" style="<%if(obj[26].toString().equals("0")) {%>font-weight:bold;<%}%> text-align:left;border:1px solid black;" >
-												<%if(obj[26].toString().equals("0")) {%>
-												<p style="text-align: justify"><%=obj[9] %></p>
-												<%}else if(obj[26].toString().equals("1")) { %>
-												<p style="text-align: justify"><%=obj[10]%></p>
-												<%}else if(obj[26].toString().equals("2")) { %>
-												<p style="text-align: justify"><%=obj[11]%></p>
-												<%}else if(obj[26].toString().equals("3")) { %>
-												<p style="text-align: justify"><%=obj[12]%></p>
-												<%}else if(obj[26].toString().equals("4")) { %>
-												<p style="text-align: justify"><%=obj[13]%></p>
-												<%}else if(obj[26].toString().equals("5")) { %>
-												<p style="text-align: justify"><%=obj[14]%></p>
-												<%}%>
-											</td>
-											<td class="std"  style=" border: 1px solid black;"><%=obj[24] %>(<%=obj[25] %>)</td>
-											<td class="std" style="border: 1px solid black; font-size: 12px;font-weight:bold;" >
-											<%=sdf.format(sdf1.parse(obj[8].toString())) %>
-											<%if(!LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[29].toString()))){ %>
-											<br><%=sdf.format(sdf1.parse(obj[29].toString())) %>
-											<%} %>
-											</td>
-											<td class="std"  style=" border: 1px solid black;text-align: center"><%=obj[16] %>%</td>											
+						<tbody>
+						<% 
+						int meetingCount=0;
+						if( meetingsHeld !=null && meetingsHeld.size()>0) {
+						for(Object[]obj:meetingsHeld.stream().limit(15).collect(Collectors.toList()) ){
+						%>
+						<tr>
+						<td> 
+						<%if(!obj[3].toString().equalsIgnoreCase("0")){ %>
+						 <a target="blank" href="CommitteeMinutesNewDownload.htm?committeescheduleid=<%=obj[0].toString() %>"><%=obj[7].toString()+"#"+(++meetingCount) %> </a> 
+						<%}else{ %>
+				<a target="blank" href="CommitteeMinutesViewAllDownload.htm?committeescheduleid=<%=obj[0].toString() %>"><%=obj[7].toString()+"#"+(++meetingCount) %> </a> 
+						
+						<%} %>
+						</td>
+						<td style="text-align: center;"> <%= sdf.format(sdf1.parse(obj[2].toString()))%> </td>
+						</tr>
+						<%} %>
+						<%}else{ %>
+						<tr>
+						<td colspan="2" style="text-align: center;" >No Meetings Held !</td>
+						</tr>
+						<%} %>
+						</tbody>
+
+
+					</table>
+					</div>
+					<% if( meetingsHeld !=null && meetingsHeld.stream().skip(10).collect(Collectors.toList()).size()>0) {%>
+					<div class="col-md-3">
+					<table class="subtables"
+						style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+								<thead>
+								<tr>
+								<th  style="width: 140px; ">Committee</th>
+								<th  style="width: 140px; "> Date Held</th>
+								</tr>
+							</thead>
+						<tbody>
+						<%for(Object[]obj:meetingsHeld.stream().skip(15).collect(Collectors.toList()) ){
+						%>	
+						<tr>
+						<td>
+											<%
+											if (!obj[3].toString().equalsIgnoreCase("0")) {
+											%> <a
+											target="blank"
+											href="CommitteeMinutesNewDownload.htm?committeescheduleid=<%=obj[0].toString()%>"><%=obj[7].toString() + "#" + (++meetingCount)%>
+										</a> <%
+											 } else {
+											 %> <a target="blank"
+											href="CommitteeMinutesViewAllDownload.htm?committeescheduleid=<%=obj[0].toString()%>"><%=obj[7].toString() + "#" + (++meetingCount)%>
+										</a> <%} %>
+										</td>
+						<td style="text-align: center;"> <%= sdf.format(sdf1.parse(obj[2].toString()))%> </td>
+						</tr>
+						<%} %>
+						
+						</tbody>
+
+
+					</table>
+					</div>
+					<%} %>
+					<div class="col-md-3"></div>
+					</div>
+				</div>
+
+			</div>
+
+
+			<div class="carousel-item">
+
+				<div class="content-header row ">
+
+					<div class="col-md-1">
+						<img class="logo"
+							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+							<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
+							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+					</div>
+					<div class="col-md-1" align="left" style="padding-top: 19px;">
+						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+					</div>
+					<div class="col-md-8">
+						<h3>Open Action Points From Previous Meetings</h3>
+					</div>
+					<div class="col-md-1" align="right" style="padding-top: 19px;">
+						<b style="margin-right: -35px;"><%=MeetingNo %></b>
+					</div>
+					<div class="col-md-1">
+						<img class="logo"
+							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+							<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
+							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+					</div>
+
+				</div>
+
+				<div class="content">
+
+					<table class="subtables"
+						style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+						<thead>
+							<tr>
+								<td colspan="10" style="">
+									<p style="font-size: 12px; text-align: center">
+									
+										<span class="assigned">AA</span> : Activity Assigned
+										&nbsp;&nbsp; <span class="ongoing">OG</span> : On Going
+										&nbsp;&nbsp; <span class="delay">DO</span> : Delay - On Going
+										&nbsp;&nbsp; <span class="delay">FD</span> : Forwarded With
+										Delay &nbsp;&nbsp;<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
+									</p>
+								</td>
+
+							</tr>
+							<tr>
+								<th class="std" style="width: 20px;">SN</th>
+								<th class="std" style="width: 60px;">Action No</th>
+								<th class="std" style="width: 300px;">Action Point</th>
+								<th class="std" style="width: 100px;">PDC</th>
+								<th class="std" style="width: 80px;">Progress</th>
+								<th class="std" style="width: 100px;">Responsibility</th>
+								<th class="std" style="width: 70px;">Status<!-- (DD) --></th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<%if(OpenActionDetails.size()>0) { %>
+							<%int count1=0;String key="";;
+								for(Object[]obj:OpenActionDetails){ %>
+							<tr>
+								<td class="std" align="center"
+									style="padding: 5px; text-align: center;"><%=++count1 %>.
+								</td>
+								<td class="std"
+									style="text-align: center; padding: 2px; font-weight: 600">
+							<button class="btn btn-sm" style="text-align: justify; padding: 4px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1] %> </button>		
+								</td>
+								<td class="std" style="text-align: justify; padding: 2px">
+									<%=obj[5].toString() %>
+								</td>
+								<td class="std" style="text-align: center;"><%=sdf.format(sdf1.parse(obj[10].toString())) %></td>
+								<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13].toString() %></td>
+								<td class="std" style="font-size: 14px;"><%=obj[2].toString() %></td>
+								<td class="std">
+									<%if(obj[4]!= null){ %> <%	String actionstatus = obj[3].toString();
+														int progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
+														LocalDate pdcorg = LocalDate.parse(obj[10].toString());
+														LocalDate lastdate = obj[14]!=null ? LocalDate.parse(obj[14].toString()): null;
+														LocalDate today = LocalDate.now();
+													%> <%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
+									<span class="ongoing">RC</span> <%}else if(actionstatus.equals("F")  && pdcorg.isBefore(lastdate)) { %>
+									<span class="delay">FD</span> <%}else if((pdcorg.isAfter(today) || pdcorg.isEqual(today)) && progress>0){  %>
+									<span class="ongoing">OG</span> <%}else if(pdcorg.isBefore(today) && progress>0){  %>
+									<span class="delay">DO <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  --%>
+								</span> <%}else if( progress==0) {%> <span class="assigned">AA</span> <%} %>
+									<%}else { %> <span class="notassign">NA</span> <%} %>
+
+
+
+								</td>
+							</tr>
+							<% }%>
+							<%}else{ %>
+							<tr>
+								<td colspan="6" style="text-align: center;">No Data
+									Available</td>
+							</tr>
+							<%} %>
+						</tbody>
+
+					</table>
+
+
+
+
+
+
+				</div>
+
+			</div>
+
+
+
+			<div class="carousel-item">
+
+				<div class="content-header row ">
+
+					<div class="col-md-1">
+						<img class="logo"
+							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+							<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
+							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+					</div>
+					<div class="col-md-1" align="left" style="padding-top: 19px;">
+						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+					</div>
+					<div class="col-md-8">
+						<h3>Close Action Points From Previous Meetings</h3>
+					</div>
+					<div class="col-md-1" align="right" style="padding-top: 19px;">
+						<b style="margin-right: -35px;"><%=MeetingNo %></b>
+					</div>
+					<div class="col-md-1">
+						<img class="logo"
+							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+							<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
+							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+					</div>
+
+				</div>
+
+				<div class="content">
+
+					<table class="subtables"
+						style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+						<thead>
+							<tr>
+								<td colspan="10" style="">
+									<p style="font-size: 12px; text-align: center">
+										<span class="completed">CO</span> :Completed &nbsp;&nbsp; <span
+											class="completeddelay">CD</span> : Completed with Delay
+										&nbsp;&nbsp;
+									</p>
+								</td>
+
+							</tr>
+							<tr>
+								<th class="std" style="width: 20px;">SN</th>
+								<th class="std" style="width: 60px;">Action No</th>
+								<th class="std" style="width: 300px;">Action Point</th>
+								<th class="std" style="width: 100px;">PDC</th>
+								<th class="std" style="width: 80px;">Progress</th>
+								<th class="std" style="width: 100px;">Responsibility</th>
+								<th class="std" style="width: 70px;">Status<!-- (DD) --></th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<%if(closeActionDetails  .size()>0) { %>
+							<%int count1=0;String key="";;
+								for(Object[]obj:closeActionDetails){ %>
+							<tr>
+								<td class="std" align="center"
+									style="padding: 5px; text-align: center;"><%=++count1 %>.
+								</td>
+									<td class="std"
+									style="text-align: center; padding: 2px; font-weight: 600">
+							<button class="btn btn-sm" style="text-align: justify; padding: 2px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1] %> </button>		
+								</td>
+								<td class="std" style="text-align: justify; padding: 2px">
+									<%=obj[5].toString() %>
+								</td>
+								<td class="std"><%=sdf.format(sdf1.parse(obj[10].toString())) %></td>
+								<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13].toString() %></td>
+								<td class="std" style="font-size: 14px;"><%=obj[2].toString() %></td>
+								<td class="std">
+									<%if(obj[4]!= null){ %> <%	String actionstatus = obj[3].toString();
+														int progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
+														LocalDate pdcorg = LocalDate.parse(obj[10].toString());
+														LocalDate lastdate = obj[14]!=null ? LocalDate.parse(obj[14].toString()): null;
+														LocalDate today = LocalDate.now();
+													%> <% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
+									<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
+									<span class="completed">CO</span> <%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>
+									<span class="completeddelay">CD <%-- (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>)  --%></span>
+									<%} %> <%}else{ %> <%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
+									<span class="ongoing">RC</span> <%}else if(actionstatus.equals("F")  && pdcorg.isBefore(lastdate)) { %>
+									<span class="delay">FD</span> <%}else if((pdcorg.isAfter(today) || pdcorg.isEqual(today)) && progress>0){  %>
+									<span class="ongoing">OG</span> <%}else if(pdcorg.isBefore(today) && progress>0){  %>
+									<span class="delay">DO <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  --%>
+								</span> <%}else if( progress==0) {%> <span class="assigned">AA</span> <%} %>
+									<%} %> <%}else { %> <span class="notassign">NA</span> <%} %>
+
+
+
+								</td>
+							</tr>
+							<% }%>
+							<%}else{ %>
+							<tr>
+								<td colspan="6" style="text-align: center;">No Data
+									Available</td>
+							</tr>
+							<%} %>
+						</tbody>
+
+					</table>
+
+
+
+
+
+
+				</div>
+
+			</div>
+
+
+			<div class="carousel-item">
+
+				<div class="content-header row ">
+
+					<div class="col-md-1">
+						<img class="logo"
+							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+							<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
+							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+					</div>
+					<div class="col-md-1" align="left" style="padding-top: 19px;">
+						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+					</div>
+					<div class="col-md-8">
+						<h3>All Action Points From Previous Meetings</h3>
+					</div>
+					<div class="col-md-1" align="right" style="padding-top: 19px;">
+						<b style="margin-right: -35px;"><%=MeetingNo %></b>
+					</div>
+					<div class="col-md-1">
+						<img class="logo"
+							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+							<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
+							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+					</div>
+
+				</div>
+
+				<div class="content">
+
+					<table class="subtables"
+						style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+						<thead>
+							<tr>
+								<td colspan="10" style="">
+									<p style="font-size: 12px; text-align: center">
+										<span class="completed">CO</span> :Completed &nbsp;&nbsp; <span
+											class="completeddelay">CD</span> : Completed with Delay
+										&nbsp;&nbsp; <span class="assigned">AA</span> : Activity
+										Assigned &nbsp;&nbsp; <span class="ongoing">OG</span> : On
+										Going &nbsp;&nbsp; <span class="delay">DO</span> : Delay - On
+										Going &nbsp;&nbsp; <span class="delay">FD</span> : Forwarded
+										With Delay &nbsp;&nbsp;<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
+
+									</p>
+								</td>
+
+							</tr>
+							<tr>
+								<th class="std" style="width: 20px;">SN</th>
+								<th class="std" style="width: 60px;">Action No</th>
+								<th class="std" style="width: 300px;">Action Point</th>
+								<th class="std" style="width: 100px;">PDC</th>
+								<th class="std" style="width: 80px;">Progress</th>
+								<th class="std" style="width: 100px;">Responsibility</th>
+								<th class="std" style="width: 70px;">Status<!-- (DD) --></th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<%if(ActionDetails  .size()>0) { %>
+							<%int count1=0;String key="";;
+								for(Object[]obj:ActionDetails){ %>
+							<tr>
+								<td class="std" align="center"
+									style="padding: 5px; text-align: center;"><%=++count1 %>.
+								</td>
+								<td class="std"
+									style="text-align: center; padding: 2px; font-weight: 600">
+							<button class="btn btn-sm" style="text-align: justify; padding: 2px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1] %> </button>		
+								</td>
+								<td class="std" style="text-align: justify; padding: 2px">
+									<%=obj[5].toString() %>
+								</td>
+								<td class="std"><%=sdf.format(sdf1.parse(obj[10].toString())) %></td>
+								<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13].toString() %></td>
+								<td class="std" style="font-size: 14px;"><%=obj[2].toString() %></td>
+								<td class="std">
+									<%if(obj[4]!= null){ %> <%	String actionstatus = obj[3].toString();
+														int progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
+														LocalDate pdcorg = LocalDate.parse(obj[10].toString());
+														LocalDate lastdate = obj[14]!=null ? LocalDate.parse(obj[14].toString()): null;
+														LocalDate today = LocalDate.now();
+													%> <% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
+									<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
+									<span class="completed">CO</span> <%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>
+									<span class="completeddelay">CD <%-- (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>)  --%></span>
+									<%} %> <%}else{ %> <%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
+									<span class="ongoing">RC</span> <%}else if(actionstatus.equals("F")  && pdcorg.isBefore(lastdate)) { %>
+									<span class="delay">FD</span> <%}else if((pdcorg.isAfter(today) || pdcorg.isEqual(today)) && progress>0){  %>
+									<span class="ongoing">OG</span> <%}else if(pdcorg.isBefore(today) && progress>0){  %>
+									<span class="delay">DO <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  --%>
+								</span> <%}else if( progress==0) {%> <span class="assigned">AA</span> <%} %>
+									<%} %> <%}else { %> <span class="notassign">NA</span> <%} %>
+
+
+
+								</td>
+							</tr>
+							<% }%>
+							<%}else{ %>
+							<tr>
+								<td colspan="6" style="text-align: center;">No Data
+									Available</td>
+							</tr>
+							<%} %>
+						</tbody>
+
+					</table>
+
+
+
+
+
+
+				</div>
+
+			</div>
+			
+			
+						<div class="carousel-item">
+
+				<div class="content-header row ">
+
+					<div class="col-md-1">
+						<img class="logo"
+							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+							<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
+							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+					</div>
+					<div class="col-md-1" align="left" style="padding-top: 19px;">
+						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+					</div>
+					<div class="col-md-8">
+						<h3>All  Recommendation  Points From Previous Meetings</h3>
+					</div>
+					<div class="col-md-1" align="right" style="padding-top: 19px;">
+						<b style="margin-right: -35px;"><%=MeetingNo %></b>
+					</div>
+					<div class="col-md-1">
+						<img class="logo"
+							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+							<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
+							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+					</div>
+
+				</div>
+
+				<div class="content">
+
+					<table class="subtables"
+						style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+						<thead>
+							<tr>
+								<td colspan="10" style="">
+									<p style="font-size: 12px; text-align: center">
+										<span class="completed">CO</span> :Completed &nbsp;&nbsp; <span
+											class="completeddelay">CD</span> : Completed with Delay
+										&nbsp;&nbsp; <span class="assigned">AA</span> : Activity
+										Assigned &nbsp;&nbsp; <span class="ongoing">OG</span> : On
+										Going &nbsp;&nbsp; <span class="delay">DO</span> : Delay - On
+										Going &nbsp;&nbsp; <span class="delay">FD</span> : Forwarded
+										With Delay &nbsp;&nbsp;<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
+
+									</p>
+								</td>
+
+							</tr>
+							<tr>
+								<th class="std" style="width: 20px;">SN</th>
+								<th class="std" style="width: 60px;">Action No</th>
+								<th class="std" style="width: 300px;">Action Point</th>
+								<th class="std" style="width: 100px;">PDC</th>
+								<th class="std" style="width: 80px;">Progress</th>
+								<th class="std" style="width: 100px;">Responsibility</th>
+								<th class="std" style="width: 70px;">Status<!-- (DD) --></th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<%if(recommendationList  .size()>0) { %>
+							<%int count1=0;String key="";;
+								for(Object[]obj:recommendationList){ %>
+							<tr>
+								<td class="std" align="center"
+									style="padding: 5px; text-align: center;"><%=++count1 %>.
+								</td>
+								<td class="std"
+									style="text-align: center; padding: 2px; font-weight: 600">
+							<button class="btn btn-sm" style="text-align: justify; padding: 2px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1] %> </button>		
+								</td>
+								<td class="std" style="text-align: justify; padding: 2px">
+									<%=obj[5].toString() %>
+								</td>
+								<td class="std"><%=sdf.format(sdf1.parse(obj[10].toString())) %></td>
+								<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13].toString() %></td>
+								<td class="std" style="font-size: 14px;"><%=obj[2].toString() %></td>
+								<td class="std">
+									<%if(obj[4]!= null){ %> <%	String actionstatus = obj[3].toString();
+														int progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
+														LocalDate pdcorg = LocalDate.parse(obj[10].toString());
+														LocalDate lastdate = obj[14]!=null ? LocalDate.parse(obj[14].toString()): null;
+														LocalDate today = LocalDate.now();
+													%> <% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
+									<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
+									<span class="completed">CO</span> <%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>
+									<span class="completeddelay">CD <%-- (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>)  --%></span>
+									<%} %> <%}else{ %> <%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
+									<span class="ongoing">RC</span> <%}else if(actionstatus.equals("F")  && pdcorg.isBefore(lastdate)) { %>
+									<span class="delay">FD</span> <%}else if((pdcorg.isAfter(today) || pdcorg.isEqual(today)) && progress>0){  %>
+									<span class="ongoing">OG</span> <%}else if(pdcorg.isBefore(today) && progress>0){  %>
+									<span class="delay">DO <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  --%>
+								</span> <%}else if( progress==0) {%> <span class="assigned">AA</span> <%} %>
+									<%} %> <%}else { %> <span class="notassign">NA</span> <%} %>
+
+
+
+								</td>
+							</tr>
+							<% }%>
+							<%}else{ %>
+							<tr>
+								<td colspan="6" style="text-align: center;">No Data
+									Available</td>
+							</tr>
+							<%} %>
+						</tbody>
+
+					</table>
+
+
+
+
+
+
+				</div>
+
+			</div>
+			
+			
+					<div class="carousel-item">
+
+				<div class="content-header row ">
+
+					<div class="col-md-1">
+						<img class="logo"
+							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+							<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
+							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+					</div>
+					<div class="col-md-1" align="left" style="padding-top: 19px;">
+						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+					</div>
+					<div class="col-md-8">
+						<h3>All  Decision  Points From Previous Meetings</h3>
+					</div>
+					<div class="col-md-1" align="right" style="padding-top: 19px;">
+						<b style="margin-right: -35px;"><%=MeetingNo %></b>
+					</div>
+					<div class="col-md-1">
+						<img class="logo"
+							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+							<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
+							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+					</div>
+
+				</div>
+
+				<div class="content">
+
+					<table class="subtables"
+						style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+						<thead>
+					<!-- 		<tr>
+								<td colspan="10" style="border: 0">
+									<p style="font-size: 12px; text-align: center">
+										<span class="completed">CO</span> :Completed &nbsp;&nbsp; <span
+											class="completeddelay">CD</span> : Completed with Delay
+										&nbsp;&nbsp; <span class="assigned">AA</span> : Activity
+										Assigned &nbsp;&nbsp; <span class="ongoing">OG</span> : On
+										Going &nbsp;&nbsp; <span class="delay">DO</span> : Delay - On
+										Going &nbsp;&nbsp; <span class="delay">FD</span> : Forwarded
+										With Delay &nbsp;&nbsp;
+
+									</p>
+								</td>
+
+							</tr> -->
+							<tr>
+								<th class="std" style="width: 20px;">SN</th>
+								<th class="std" style="width: 300px;">Details</th>
+							</tr>
+						</thead>
+						<tbody>
+						<%if(decesions!=null &&  !decesions.isEmpty() ){
+						int decCount = 0;
+							for(Object[]obj:decesions){	
+						%>
+						<tr>
+						<td style="text-align: center;"><%=++decCount %>.</td>
+						<td><%=obj[1].toString() %></td>
+						</tr>
+						<%}}else{ %>
+						<tr>
+						<td colspan="2"> No Details Available ! </td>
+						</tr>
+						<%} %>
+						</tbody>
+
+			
+
+					</table>
+
+
+
+
+
+
+				</div>
+
+			</div>
+			<!-- ----------------------------------------  P-2  Div ----------------------------------------------------- -->
+
+
+		</div>
+
+		<a class="carousel-control-prev" href="#presentation-slides"
+			role="button" data-slide="prev"
+			style="width: 0%; padding-left: 20px;"> <span aria-hidden="true">
+				<i class="fa fa-chevron-left fa-2x" style="color: #000000"
+				aria-hidden="true"></i>
+		</span> <span class="sr-only">Previous</span>
+		</a> <a class="carousel-control-next" href="#presentation-slides"
+			role="button" data-slide="next"
+			style="width: 0%; padding-right: 20px;"> <span aria-hidden="true">
+				<i class="fa fa-chevron-right fa-2x" style="color: #000000"
+				aria-hidden="true"></i>
+		</span> <span class="sr-only">Next</span>
+		</a>
+
+		<ol class="carousel-indicators">
+			<li data-target="#presentation-slides" data-slide-to="0"
+				class="carousel-indicator active" data-toggle="tooltip"
+				data-placement="top" title="Start"><b><i class="fa fa-home"
+					aria-hidden="true"></i></b></li>
+			<li data-target="#presentation-slides" data-slide-to="1"
+				class="carousel-indicator" data-toggle="tooltip"
+				data-placement="top" title="Agenda"><b>1</b></li>
+			<li data-target="#presentation-slides" data-slide-to="2"
+				class="carousel-indicator" data-toggle="tooltip"
+				data-placement="top" title="Previous Meetings"><b>2</b></li>
+			<li data-target="#presentation-slides" data-slide-to="3"
+				class="carousel-indicator" data-toggle="tooltip"
+				data-placement="top" title="Open Action Points"><b>3</b></li>
+			<li data-target="#presentation-slides" data-slide-to="4"
+				class="carousel-indicator" data-toggle="tooltip"
+				data-placement="top" title="Close Action Points"><b>4</b></li>
+			<li data-target="#presentation-slides" data-slide-to="5"
+				class="carousel-indicator" data-toggle="tooltip"
+				data-placement="top" title="All Action Points"><b>5</b></li>
+					<li data-target="#presentation-slides" data-slide-to="6"
+				class="carousel-indicator" data-toggle="tooltip"
+				data-placement="top" title="All Recommendation Points"><b>6</b></li>
+					<li data-target="#presentation-slides" data-slide-to="7"
+				class="carousel-indicator" data-toggle="tooltip"
+				data-placement="top" title="All Decesions"><b>7</b></li>
+		</ol>
+	</div>
+	
+	
+	
+	<!--  Action Modal   -->
+
+	<div class=" modal bd-example-modal-lg" tabindex="-1" role="dialog" id="action_modal">
+		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
+			<div class="modal-content">
+				<div class="modal-header" style="background-color: #FFE0AD; ">
+					<div class="row w-100"  >
+						<div class="col-md-12" >
+							<h5 class="modal-title" id="modal_action_no" style="font-weight:700; color: #A30808;"></h5>
+						</div>
+					</div>
+					
+					 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" align="center">
+					<form action="#" method="post" autocomplete="off"  >
+						<table style="width: 100%;">
+							<tr>
+								<td style="width:20%;padding: 5px;border :0;font-weight: bold;"> Action Item :</td>
+								<td class="tabledata" style="width:80%;padding: 5px;word-wrap:break-word;border :0;" colspan="3" id="modal_action_item"></td>
+							</tr>
+							<tr>
+								<td style="padding: 5px;border :0;font-weight: bold;" >Assign Date :</td>
+								<td style="padding: 5px;border :0;" id="modal_action_date"></td>
+								<td style="padding: 5px;border :0;font-weight: bold;" >PDC :</td>
+								<td style="padding: 5px;border :0;" id="modal_action_PDC"></td>
+							</tr>
+							<tr>
+								<td style="padding: 5px;border :0;font-weight: bold;" >Assignor :</td>
+								<td style="padding: 5px;border :0;" class="tabledata" id="modal_action_assignor"></td>
+								<td style="padding: 5px;border :0;font-weight: bold;" >Assignee :</td>
+								<td style="padding: 5px;border :0;" class="tabledata" id="modal_action_assignee"></td>
+							</tr>
+							<tr>
+								<td style="padding: 5px;border :0;font-weight: bold;" >Final Progress :</td>
+								<td style="padding: 5px;border :0;" id="modal_action_progress"></td>
+								<td style="padding: 5px;border :0;font-weight: bold;" > Type :</td>
+								<td style="padding: 5px;font-weight: bold;color:#A30808 ;border :0;" id="modal_action_type"></td>
+							</tr>
+							
+						</table>
+						</form>
+						<hr>
+						<form action="#" method="get">
+						
+						<table class="table table-bordered table-hover table-striped table-condensed " id="" style="width: 100%">
+							<thead> 
+								<tr style="background-color: #055C9D; color: white;">
+									<th style="text-align: center;width:5% !important;">SN</th>
+									<th style="text-align: center;width:15% !important;">Progress Date</th>
+									<th style="text-align: center;width:15% !important;"> Progress</th>
+									<th style="width:60% !important;">Remarks</th>
+									<th style="text-align: center;width:5% !important;">Download</th>
+								</tr>
+							</thead>
+							<tbody id="modal_progress_table_body">
 								
-											<td  class="std"  style="max-width: 80px;border: 1px solid black;">
-												<%if(obj[28]!=null){ %> <%=obj[28] %> <%} %>
-											</td>
-										</tr>
-									<%milecount++;mile=obj[2].toString();mileA=obj[3].toString();mainMileStone=obj[0].toString();mileBid=obj[1].toString();}} %>
-								<%} else{ %>
-								<tr><td class="std"  colspan="9" style="text-align:center; "> Nil</td></tr>
-								<%} %>
-						</tbody>				
-					</table>
-					  
-					<%if(actionlist.size()>=0 && !labcode.equalsIgnoreCase("ADE")){ %>
-						<h1 class="break"></h1>	
-					<div align="center">
-				 	<div style="text-align: center ; padding-right: 15px; " ><h3 style="text-decoration: underline;">Annexure - AI</h3></div> 
-						<div style="text-align: center;  " class="lastpage" id="lastpage"><h2>ACTION ITEM DETAILS</h2></div>
+							</tbody>
+						</table>
+						</form>
 					
-						<table style=" <% if(labcode.equalsIgnoreCase("ADE")){%>width:690px;<%}else{%> width:1020px<%}%> ; margin-left:10px; font-size: 16px; border-collapse: collapse ;border: 1px solid black ;margin-right: 10px;margin-top:10px;">
-						<tbody>
-							<tr>
-								<th  class="sth" style=" max-width: 40px"> SN </th>
-								<th  class="sth" style=" max-width: 210px"> Action Id</th>	
-								<th  class="sth" style=" max-width: 600px"> Item</th>				
-								<th  class="sth" style=" max-width: 200px"> Responsibility </th>					
-								<th  class="sth" style=" width: 100px"> PDC</th>
-							</tr>
-							
-							<% 	
-							
-							int count =1;
-							  	Iterator actIterator = actionlist.entrySet().iterator();
-								while(actIterator.hasNext()){	
-								Map.Entry mapElement = (Map.Entry)actIterator.next();
-					            String key = ((String)mapElement.getKey());
-					            ArrayList<Object[]> values=(ArrayList<Object[]>)mapElement.getValue();
-								%>
-								<tr>
-									<td class="std" style="text-align: center;"> <%=count%></td>
-									<td  class="std">
-										
-										<%	int count1=0;
-											for(Object obj[]:values){
-												 count1++; %>
-												<%if(count1==1 ){ %>
-													<%if(obj[3]!=null){ %> <%= obj[3]%><%}else{ %> - <%} %>
-												<%}else if(count1==values.size() ){ %>
-													<%if(obj[3]!=null){ %> <br> - <br> <%= obj[3]%> <%}else{ %> - <%} %>
-												<%} %>
-										<%} %>
-									</td>
-									
-									<td  class="std" style="padding-left: 5px;padding-right: 5px;text-align: justify;"><%= values.get(0)[1]  %></td>
-									<td  class="std" >
-									<%	int count2=0;
-										for(Object obj[]:values){ %>
-										<%if(obj[13]!=null){ %> <%= obj[13]%>,&nbsp;<%=obj[14] %>
-											<%if(count2>=0 && count2<values.size()-1){ %>
-											,&nbsp;
-											<%} %>
-										<%}else{ %> - <%} %>
-									<%count2++;} %>
-									</td>                       						
-									<td  class="std"><%if( values.get(0)[5]!=null){ %> <%=sdf.format(sdf1.parse(values.get(0)[5].toString()))%> <%}else{ %> - <%} %></td>
-								</tr>				
-							<% count++;} %>
-						</tbody>
-					</table>
-					</div>
-					<br>	
-				<%}%>
-					
-					
-					
-					
-					<%} else{%>	
-					
-				<%if(actionlist.size()>=0){ %>
-							
-					<div align="center">
-				 	<div style="text-align: center ; padding-right: 15px; " ><h3 style="text-decoration: underline;">Annexure - AI</h3></div> 
-						<div style="text-align: center;  " class="lastpage" id="lastpage"><h2>ACTION ITEM DETAILS</h2></div>
-					
-						<table style=" <% if(labcode.equalsIgnoreCase("ADE")){%>width:690px;<%}else{%> width:1020px<%}%> ; margin-left:10px; font-size: 16px; border-collapse: collapse ;border: 1px solid black ;margin-right: 10px;margin-top:10px;">
-						<tbody>
-							<tr>
-								<th  class="sth" style=" max-width: 40px"> SN </th>
-								<th  class="sth" style=" max-width: 210px"> Action Id</th>	
-								<th  class="sth" style=" max-width: 600px"> Item</th>				
-								<th  class="sth" style=" max-width: 200px"> Responsibility </th>					
-								<th  class="sth" style=" width: 100px"> PDC</th>
-							</tr>
-							
-							<% 	
-							
-							int count =1;
-							  	Iterator actIterator = actionlist.entrySet().iterator();
-								while(actIterator.hasNext()){	
-								Map.Entry mapElement = (Map.Entry)actIterator.next();
-					            String key = ((String)mapElement.getKey());
-					            ArrayList<Object[]> values=(ArrayList<Object[]>)mapElement.getValue();
-								%>
-								<tr>
-									<td class="std" style="text-align: center;"> <%=count%></td>
-									<td  class="std">
-										
-										<%	int count1=0;
-											for(Object obj[]:values){
-												 count1++; %>
-												<%if(count1==1 ){ %>
-													<%if(obj[3]!=null){ %> <%= obj[3]%><%}else{ %> - <%} %>
-												<%}else if(count1==values.size() ){ %>
-													<%if(obj[3]!=null){ %> <br> - <br> <%= obj[3]%> <%}else{ %> - <%} %>
-												<%} %>
-										<%} %>
-									</td>
-									
-									<td  class="std" style="padding-left: 5px;padding-right: 5px;text-align: justify;"><%= values.get(0)[1]  %></td>
-									<td  class="std" >
-									<%	int count2=0;
-										for(Object obj[]:values){ %>
-										<%if(obj[13]!=null){ %> <%= obj[13]%>,&nbsp;<%=obj[14] %>
-											<%if(count2>=0 && count2<values.size()-1){ %>
-											,&nbsp;
-											<%} %>
-										<%}else{ %> - <%} %>
-									<%count2++;} %>
-									</td>                       						
-									<td  class="std"><%if( values.get(0)[5]!=null){ %> <%=sdf.format(sdf1.parse(values.get(0)[5].toString()))%> <%}else{ %> - <%} %></td>
-								</tr>				
-							<% count++;} %>
-						</tbody>
-					</table>
-					</div>
-					<br>	
-				<%}} %>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+		<!--  -->
+	<script type="text/javascript">
+
+$('.carousel').carousel({
+	  interval: false,
+	  keyboard: true,
+	})
+
+$(function () {
+$('[data-toggle="tooltip"]').tooltip()
+})
+
+
+
+
+
+function ActionDetails(InAssignId)
+{
+		$("#modal_progress_table").DataTable().destroy();
+		
+		$.ajax({		
+			type : "GET",
+			url : "ActionAssignDataAjax.htm",
+			data : {
+				ActionAssignid : InAssignId
+			},
+			datatype : 'json',
+			success : function(result) {
+				var result = JSON.parse(result);
+				
+				$('#modal_action_item').html(result[1]);
+				$('#modal_action_no').html(result[2]);
+				$('#modal_action_date').html(moment(new Date(result[5]) ).format('DD-MM-YYYY'));
+				$('#modal_action_PDC').html(moment(new Date(result[6]) ).format('DD-MM-YYYY'));
+				$('#modal_action_assignor').html(result[8]);
+				$('#modal_action_assignee').html(result[9]);
+				
+				var InActionType = result[10];
+				var ActionType = 'Action';
+				
+				if(InActionType==='A')
+				{
+					ActionType = 'Action';
+				}
+				else if(InActionType==='I')
+				{
+					ActionType = 'Issue';
+				}
+				else if(InActionType==='D')
+				{
+					ActionType = 'Decision';
+				}
+				else if(InActionType==='R')
+				{
+					ActionType = 'Recommendation';
+				}
+				else if(InActionType==='C')
+				{
+					ActionType = 'Comment';
+				}
+				else if(InActionType==='K')
+				{
+					ActionType = 'Risk';
+				}
+				
+				$('#modal_action_type').html(ActionType);
+				
+				var InProgress = '0'
+				if(result[4]!=null){
+					InProgress=result[4]+'';
+				}
+				
+				if(InProgress.trim() === '0')
+				{
+					var progressBar ='<div class="progress" style="background-color:#cdd0cb !important;height: 1.5rem !important;">'; 
+					progressBar += 		'<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >';
+					progressBar +=		'Not Started'
+					progressBar +=		'</div>'; 
+					progressBar += '</div>'; 
+				}
+				else
+				{
+					var progressBar ='<div class="progress" style="background-color:#cdd0cb !important;height:1.5rem !important; ">'; 
+					progressBar += 		'<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: '+InProgress+'%;  " aria-valuemin="0" aria-valuemax="100" >';
+					progressBar +=		InProgress
+					progressBar +=		'</div>'; 
+					progressBar += '</div>'; 
+				}
+				$('#modal_action_progress').html(progressBar);
+			}
+		});
+		$.ajax({		
+			type : "GET",
+			url : "ActionSubListAjax.htm",
+			data : {
+				ActionAssignid : InAssignId
+			},
+			datatype : 'json',
+			success :  function(result) {
+				var result = JSON.parse(result);
+				
+				
+				var htmlStr='';
+				if(result.length> 0){
+					for(var v=0;v<result.length;v++)
+						{
+						htmlStr += '<tr>';
+						htmlStr += '<td class="tabledata" style="text-align: center;" >'+ (v+1) + '</td>';
+						htmlStr += '<td class="tabledata" style="text-align: center;" >'+ moment(new Date(result[v][3]) ).format('DD-MM-YYYY') + '</td>';
+						htmlStr += '<td class="tabledata" style="text-align: center;" >'+ result[v][2] + ' %</td>';
+						htmlStr += '<td class="tabledata" >'+ result[v][4] + '</td>';
+						if(result[v][5]=== null)
+						{
+						htmlStr += '<td class="tabledata" style="text-align: center;">-</td>';
+						}
+						else
+						{
+						htmlStr += '<td class="tabledata" style="text-align: center;"><button type="submit" class="btn btn-sm" name="ActionSubId" value="'+ result[v][5] + '" target="blank" formaction="ActionDataAttachDownload.htm" ><i class="fa fa-download"></i></button></td>';
+						}
+						htmlStr += '</tr>';
+					}
+				}
+				else
+				{
+					htmlStr += '<tr>';
+					htmlStr += '<td colspan="5" style="text-align: center;"> Progress Not Updated </td>';
+					htmlStr += '</tr>';
+				}
+				setModalDataTable();
+				$('#modal_progress_table_body').html(htmlStr);
+				
+				
+				$('#action_modal').modal('toggle');
+			}
+		});
+	}
+	setModalDataTable();
+	function setModalDataTable()
+	{
+		$("#modal_progress_table").DataTable({
+			"lengthMenu": [ 5, 10,25, 50, 75, 100 ],
+			"pagingType": "simple",
+			"pageLength": 5
+		});
+	}
+</script>
+
+
 
 </body>
 </html>

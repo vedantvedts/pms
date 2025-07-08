@@ -33,8 +33,7 @@ public class ProductTreeDaoImpl implements ProductTreeDao{
 	private static final Logger logger=LogManager.getLogger(ProductTreeDaoImpl.class);
 
 
-	private static final String PRODUCTTREELIST="SELECT a.MainId,a.parentlevelid,a.levelid,a.levelname,a.projectid,b.ProjectName,a.Stage,a.Module,a.SubLevelId,a.SystemMainId,a.LevelCode,a.InitiationId FROM pfms_product_tree a,project_master b WHERE a.ElementType='I' AND MainId>0 AND a.projectid=b.projectid AND b.projectid=:projectId and a.isActive='1' ORDER BY parentlevelid";
-	private static final String LEVELNAMEDELETE="UPDATE pfms_product_tree AS t1\r\n"
+	private static final String PRODUCTTREELIST="SELECT a.MainId,a.parentlevelid,a.levelid,a.levelname,a.projectid,b.ProjectName,a.Stage,a.Module,a.SubLevelId,a.SystemMainId,a.LevelCode,a.InitiationId ,COALESCE ((SELECT LevelType FROM pfms_system_product_tree b WHERE b.MainId = a.SystemMainId ),'N')AS 'Level Type' ,COALESCE ((SELECT LevelName FROM pfms_system_product_tree b WHERE b.MainId = a.SystemMainId ),'N') AS 'MainLevelName' FROM pfms_product_tree a,project_master b WHERE a.ElementType='I' AND MainId>0 AND a.projectid=b.projectid AND b.projectid=:projectId and a.isActive='1' ORDER BY parentlevelid";	private static final String LEVELNAMEDELETE="UPDATE pfms_product_tree AS t1\r\n"
 			+ "	LEFT JOIN pfms_product_tree AS t2 ON t1.mainid = t2.parentlevelid\r\n"
 			+ "	LEFT JOIN pfms_product_tree AS t3 ON t2.mainid = t3.parentlevelid\r\n"
 			+ "	LEFT JOIN pfms_product_tree AS t4 ON t3.mainid = t4.parentlevelid\r\n"
@@ -171,7 +170,7 @@ public class ProductTreeDaoImpl implements ProductTreeDao{
 		return prod.getMainId();
 	}
 	
-	private static final String SYSPRODUCTTREELIST="SELECT a.MainId,a.parentlevelid,a.levelid,a.levelname,a.sid,b.systemName,a.Stage,a.Module,a.SubLevelId,b.systemid,a.LevelCode,a.IsSoftware,IFNULL((SELECT c.IsSoftware FROM pfms_system_product_tree c  WHERE c.Mainid = a.parentlevelid AND c.isActive = '1'),'N') AS IsSoftwareMain  FROM pfms_system_product_tree a,pfms_system b WHERE MainId>0 AND a.sid=b.sid AND b.sid=:sid AND a.isActive='1' ORDER BY parentlevelid";
+	private static final String SYSPRODUCTTREELIST="SELECT a.MainId,a.parentlevelid,a.levelid,a.levelname,a.sid,b.systemName,a.Stage,a.Module,a.SubLevelId,b.systemid,a.LevelCode,a.LevelType,IFNULL((SELECT c.LevelType FROM pfms_system_product_tree c  WHERE c.Mainid = a.parentlevelid AND c.isActive = '1'),'N') AS 'MainLevelType'  FROM pfms_system_product_tree a,pfms_system b WHERE MainId>0 AND a.sid=b.sid AND b.sid=:sid AND a.isActive='1' ORDER BY parentlevelid";
 	@Override
 	public List<Object[]> getSystemProductTreeList(String sid) throws Exception {
 		  Query query=manager.createNativeQuery(SYSPRODUCTTREELIST);

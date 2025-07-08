@@ -46,7 +46,6 @@ public class ProductTreeServiceImpl implements ProductTreeService {
 		prod.setInitiationId(dto.getInitiationId());
 		prod.setElementType(dto.getElementType());
 		prod.setLevelCode(dto.getLevelCode());
-		
 		return dao.AddLevelName(prod);
 	}
 
@@ -60,6 +59,7 @@ public class ProductTreeServiceImpl implements ProductTreeService {
 	public long LevelNameEdit(ProductTreeDto dto,String Action) throws Exception {
 		
 		ProductTree pt=dao.getLevelNameById(dto.getMainId());
+		
 		
 		
 		if(Action.equalsIgnoreCase("E") || Action.equalsIgnoreCase("TE")) {
@@ -79,6 +79,21 @@ public class ProductTreeServiceImpl implements ProductTreeService {
 		}
 		
 		
+//		List<String >list = new ArrayList<>();
+//		List<String>mainIds = getMainIds(dto.getMainId()+"",list);
+//		System.out.println(mainIds.toString()+"------");
+//		for(String s:mainIds) {
+//			ProductTree pt1=dao.getLevelNameById(Long.parseLong(s));
+//			pt1.setMainId(Long.parseLong(s));
+//			pt1.setIsSoftware(dto.getIsSoftware());
+//			dao.LevelNameEdit(pt1);
+//		}
+//		
+//		if(dto.getIsSoftware()!=null) {
+//		pt.setIsSoftware(dto.getIsSoftware());	
+//		}
+
+		
 		return dao.LevelNameEdit(pt);
 		
 		}
@@ -91,6 +106,57 @@ public class ProductTreeServiceImpl implements ProductTreeService {
 		return 0;
 		
 		
+	}
+
+
+//	private List<String> getMainIds(String mainId, List<String> list) {
+//		try {
+//		List<Object[]>subList = dao.getParentLevelIdbyMainId(mainId);
+//		
+//		if(subList==null || subList.size()==0) {
+//			if(!list.contains(mainId)) {
+//				list.add(mainId);
+//			}
+//		}else {
+//			for(Object[]obj:subList) {
+//				list.add(obj[0].toString());
+//				getMainIds(obj[0].toString(),list);
+//			}
+//			
+//		}
+//		
+//		
+//		return list;
+//		}
+//		catch (Exception e) {
+//		e.printStackTrace();
+//		return list;
+//		}
+//	}
+	
+	private List<String> getSPTMainIds(String mainId, List<String> list) {
+		try {
+		List<Object[]>subList = dao.getSystemParentLevelIdbyMainId(mainId);
+		
+		if(subList==null || subList.size()==0) {
+			if(!list.contains(mainId)) {
+				list.add(mainId);
+			}
+		}else {
+			for(Object[]obj:subList) {
+				list.add(obj[0].toString());
+				getSPTMainIds(obj[0].toString(),list);
+			}
+			
+		}
+		
+		
+		return list;
+		}
+		catch (Exception e) {
+		e.printStackTrace();
+		return list;
+		}
 	}
 
 	@Override
@@ -131,7 +197,7 @@ public class ProductTreeServiceImpl implements ProductTreeService {
 		prod.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
 		prod.setIsActive(1);
 		prod.setLevelCode(dto.getLevelCode());
-		prod.setIsSoftware(dto.getIsSoftware());
+		prod.setLevelType(dto.getLevelType());
 		return dao.AddSystemLevelName(prod);
 	}
 	
@@ -153,7 +219,7 @@ public class ProductTreeServiceImpl implements ProductTreeService {
 	@Override
 	public List<Object[]> getProductTreeListInitiation(String initiationId) {
 		return dao.getProductTreeListInitiation(initiationId);
-	}	
+	}
 
 	@Override
 	public long systemLevelNameEdit(SystemProductTree dto, String Action) throws Exception {
@@ -166,50 +232,26 @@ public class ProductTreeServiceImpl implements ProductTreeService {
 			for(String s:mainIds) {
 				SystemProductTree spt1=dao.getSystemLevelNameById(Long.parseLong(s));
 				spt1.setMainId(Long.parseLong(s));
-				spt1.setIsSoftware(dto.getIsSoftware());
+				spt1.setLevelType(dto. getLevelType() );
 				dao.systemLevelNameEdit(spt1);
 			}
 			
-			if(dto.getIsSoftware()!=null) {
-			spt.setIsSoftware(dto.getIsSoftware());	
+			if(dto.getLevelType()!=null) {
+			spt.setLevelType(dto.getLevelType());	
 			}
-			
+						
 			spt.setLevelName(dto.getLevelName());
 			spt.setLevelCode(dto.getLevelCode());
-			spt.setIsSoftware(dto.getIsSoftware());
+			spt.setLevelType(dto.getLevelType());
 			spt.setModifiedBy(dto.getModifiedBy());
 			spt.setModifiedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
-
+		
 			return dao.systemLevelNameEdit(spt);		
 		}else if(Action.equalsIgnoreCase("TD")) {
 			return dao.systemLevelNameDelete(spt);			
 		}
 		return 0;
 	}
-	
-	private List<String> getSPTMainIds(String mainId, List<String> list) {
-		try {
-		List<Object[]>subList = dao.getSystemParentLevelIdbyMainId(mainId);
-		
-		if(subList==null || subList.size()==0) {
-			if(!list.contains(mainId)) {
-				list.add(mainId);
-			}
-		}else {
-			for(Object[]obj:subList) {
-				list.add(obj[0].toString());
-				getSPTMainIds(obj[0].toString(),list);
-			}
-			
-		}
-		
-		
-		return list;
-		}
-		catch (Exception e) {
-		e.printStackTrace();
-		return list;
-		}
-	}
+
 }
 		

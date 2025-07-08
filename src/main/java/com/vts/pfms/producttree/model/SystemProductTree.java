@@ -29,7 +29,6 @@ public class SystemProductTree {
 	private String ModifiedBy;
 	private String ModifiedDate;
 	private String LevelCode;
+	private String LevelType;
 	private int isActive;
-	
-	private String IsSoftware;
 }

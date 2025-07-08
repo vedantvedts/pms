@@ -32,13 +32,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import jakarta.servlet.http.Part;
-
-
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
@@ -106,6 +99,8 @@ import com.vts.pfms.FormatConverter;
 import com.vts.pfms.Zipper;
 import com.vts.pfms.cars.service.CARSService;
 import com.vts.pfms.committee.model.Committee;
+import com.vts.pfms.committee.service.CommitteeService;
+import com.vts.pfms.header.service.HeaderService;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.milestone.dto.MilestoneActivityLevelConfigurationDto;
 import com.vts.pfms.milestone.service.MilestoneService;
@@ -125,6 +120,11 @@ import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.project.dto.ProjectSlideDto;
 import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.utils.PMSLogoUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 @Controller
 public class PrintController {
@@ -165,6 +165,12 @@ public class PrintController {
 	
 	@Autowired
 	ProjectService prservice;
+	
+	
+	@Autowired CommitteeService comservice;
+
+	@Autowired
+	HeaderService headservice;
 	
 	private static final Logger logger=LogManager.getLogger(PrintController.class);
 
@@ -2920,6 +2926,7 @@ public class PrintController {
 		try
 		{
 			int flag = setBriefingDataToResponse(model, req, ses, redir, res);
+			int milFlag = setMilestoneDetailsToResponse(model, req, ses, redir, res);
 			if(flag==0) 
 	        {				
 				redir.addAttribute("cc", "No Project is Assigned to you.");
@@ -2936,6 +2943,68 @@ public class PrintController {
     	}		
 	}
 
+	
+	private int setMilestoneDetailsToResponse(Model model, HttpServletRequest req, HttpSession ses,
+			RedirectAttributes redir, HttpServletResponse res) {
+
+		try {
+			String projectid=req.getParameter("projectid");
+
+
+
+
+
+			System.out.println("setMilestoneDetailsToResponse --- "+projectid);
+
+			if(projectid!=null) {
+				List<Object[]> main=headservice.MilestoneActivityList(projectid);
+				List<Object[]> MilestoneActivityA0=new ArrayList<Object[]>();
+				List<Object[]> MilestoneActivityB0=new ArrayList<Object[]>();
+				List<Object[]> MilestoneActivityC0=new ArrayList<Object[]>();
+				List<Object[]> MilestoneActivityD0=new ArrayList<Object[]>();
+				List<Object[]> MilestoneActivityE0=new ArrayList<Object[]>();
+
+				for(Object[] objmain:main ) {
+					List<Object[]>  MilestoneActivityA1=headservice.MilestoneActivityLevel(objmain[0].toString(),"1");
+					MilestoneActivityA0.addAll(MilestoneActivityA1);
+
+					for(Object[] obj:MilestoneActivityA1) {
+						List<Object[]>  MilestoneActivityB1=headservice.MilestoneActivityLevel(obj[0].toString(),"2");
+						MilestoneActivityB0.addAll(MilestoneActivityB1);
+
+						for(Object[] obj1:MilestoneActivityB1) {
+							List<Object[]>  MilestoneActivityC1=headservice.MilestoneActivityLevel(obj1[0].toString(),"3");
+							MilestoneActivityC0.addAll(MilestoneActivityC1);
+
+							for(Object[] obj2:MilestoneActivityC1) {
+								List<Object[]>  MilestoneActivityD1=headservice.MilestoneActivityLevel(obj2[0].toString(),"4");
+								MilestoneActivityD0.addAll( MilestoneActivityD1);
+
+								for(Object[] obj3:MilestoneActivityD1) {
+									List<Object[]>  MilestoneActivityE1=headservice.MilestoneActivityLevel(obj3[0].toString(),"5");
+									MilestoneActivityE0.addAll( MilestoneActivityE1);
+								}
+							}
+						}
+					}
+				}
+				req.setAttribute("MilestoneActivityMain0", main);
+				req.setAttribute("MilestoneActivityE0", MilestoneActivityE0);
+				req.setAttribute("MilestoneActivityD0", MilestoneActivityD0);
+				req.setAttribute("MilestoneActivityC0", MilestoneActivityC0);
+				req.setAttribute("MilestoneActivityB0", MilestoneActivityB0);
+				req.setAttribute("MilestoneActivityA0", MilestoneActivityA0);
+
+			}
+
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside BriefingPresentation.htm ");
+			e.printStackTrace();
+			return 0;
+		}
+		return 1;
+	}
+	
 	@RequestMapping(value="AnnualMeetingSchedules.htm", method = RequestMethod.GET)
 	public String AnnualMeetingSchedules(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res)	throws Exception 
 	{
@@ -3680,40 +3749,93 @@ public class PrintController {
 	    @RequestMapping(value="AgendaPresentation.htm", method = {RequestMethod.GET,RequestMethod.POST})
 		public String AgendaPresentation(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res)	throws Exception 
 		{
-	    	String UserId = (String) ses.getAttribute("Username");
+			String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside AgendaPresentation.htm "+UserId);		
-	    	try {
-		    	String scheduleid = req.getParameter("scheduleid");
-		    	String projectid = req.getParameter("projectid");
-		    	String committeeid= req.getParameter("committeeid");
-		    	
-		    	Committee committee = service.getCommitteeData(committeeid);
-		    	String projectLabCode = committee.getLabCode();
-		    	String CommitteeCode = committee.getCommitteeShortName().trim();
-		    	
-		    	
-		    	Object[] scheduledata=service.CommitteeScheduleEditData(scheduleid);
-		    	
-		    	req.setAttribute("labInfo", service.LabDetailes(projectLabCode));
-		    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(projectLabCode));
-		    	req.setAttribute("Drdologo", LogoUtil.getDRDOLogoAsBase64String());
-		    	req.setAttribute("committeeData", service.getCommitteeData(committeeid));
-		    	req.setAttribute("projectattributes", service.ProjectAttributes(projectid));
-		    	req.setAttribute("AgendaList", service.AgendaList(scheduleid));
-		    	req.setAttribute("AgendaDocList",service.AgendaLinkedDocList(scheduleid));
-		    	req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
-		    	req.setAttribute("scheduledata", scheduledata);
-		    	req.setAttribute("SplCommitteeCodes",SplCommitteeCodes);
-		    	
-		    	req.setAttribute("projectid", projectid);
-		    	
-		    	return "print/AgendaPresentation";
-	    	}catch (Exception e) {
-    			e.printStackTrace(); 
-    			logger.error(new Date() +" Inside AgendaPresentation.htm  "+UserId, e); 
-    			return "static/Error";
-    			
-    		}
+			try {
+				String scheduleid = req.getParameter("scheduleid");
+				String projectid = req.getParameter("projectid");
+				String committeeid= req.getParameter("committeeid");
+
+				Committee committee = service.getCommitteeData(committeeid);
+				String projectLabCode = committee.getLabCode();
+				String CommitteeCode = committee.getCommitteeShortName().trim();
+
+
+				Object[] scheduledata=service.CommitteeScheduleEditData(scheduleid);
+
+				Object[] scheduleeditdata= comservice.CommitteeScheduleEditData(scheduleid);
+
+				String committeeId=scheduleeditdata[0].toString();
+				String scheduledate=scheduleeditdata[2].toString();
+
+				String initiationid= scheduleeditdata[17].toString();
+				String divisionid= scheduleeditdata[16].toString();
+				List<Object[]>ActionDetails=comservice.actionDetailsForNonProject(committeeId,scheduledate);
+				List<Object[]>actionSubDetails=new ArrayList();
+				if(ActionDetails.size()>0) {
+					actionSubDetails=ActionDetails.stream().filter(i -> LocalDate.parse(i[9].toString()).isBefore(LocalDate.parse(scheduledate))).collect(Collectors.toList());
+					if(actionSubDetails.size()>0) {
+						actionSubDetails=actionSubDetails.stream().filter(i -> i[15].toString().equalsIgnoreCase(projectid) && i[16].toString().equalsIgnoreCase(initiationid) && i[17].toString().equalsIgnoreCase(divisionid)).collect(Collectors.toList());
+					}
+				}
+
+				List<Object[]>meetingsHeld = comservice.previousMeetingHeld(committeeid);
+				if(meetingsHeld !=null && meetingsHeld.size()>0 ) {
+					meetingsHeld=meetingsHeld.stream().filter(i -> LocalDate.parse(i[2].toString()).isBefore(LocalDate.parse(scheduledate))).collect(Collectors.toList());
+					meetingsHeld = meetingsHeld.stream()
+							.filter(
+									i -> i[3].toString().equalsIgnoreCase(projectid) && i[4].toString().equalsIgnoreCase(initiationid) && i[5].toString().equalsIgnoreCase(divisionid)	
+									)
+							.collect(Collectors.toList());
+				}
+
+				List<Object[]>recommendationList = comservice.getRecommendationsOfCommittee(committeeid) ;
+
+
+				if(recommendationList.size()>0) {
+					recommendationList=recommendationList.stream().filter(i -> LocalDate.parse(i[9].toString()).isBefore(LocalDate.parse(scheduledate))).collect(Collectors.toList());
+					if(recommendationList.size()>0) {
+						recommendationList=recommendationList.stream().filter(i -> i[15].toString().equalsIgnoreCase(projectid) && i[16].toString().equalsIgnoreCase(initiationid) && i[17].toString().equalsIgnoreCase(divisionid)).collect(Collectors.toList());
+					}
+				}
+
+				List<Object[]>decesions = comservice.getDecisionsofCommittee(committeeid);
+
+				if(decesions.size()>0) {
+					decesions=decesions.stream().filter(i -> LocalDate.parse(i[2].toString()).isBefore(LocalDate.parse(scheduledate))).collect(Collectors.toList());
+					if(decesions.size()>0) {
+						decesions=decesions.stream().filter(i ->
+						i[3].toString().equalsIgnoreCase(projectid) &&
+						i[4].toString().equalsIgnoreCase(initiationid) && 
+						i[5].toString().equalsIgnoreCase(divisionid)).collect(Collectors.toList());
+					}
+				}
+
+				req.setAttribute("labInfo", service.LabDetailes(projectLabCode));
+				req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(projectLabCode));
+				req.setAttribute("Drdologo", LogoUtil.getDRDOLogoAsBase64String());
+				req.setAttribute("committeeData", service.getCommitteeData(committeeid));
+				req.setAttribute("projectattributes", service.ProjectAttributes(projectid));
+				req.setAttribute("AgendaList", service.AgendaList(scheduleid));
+				req.setAttribute("AgendaDocList",service.AgendaLinkedDocList(scheduleid));
+				req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
+				req.setAttribute("scheduledata", scheduledata);
+				req.setAttribute("SplCommitteeCodes",SplCommitteeCodes);
+				req.setAttribute("recommendationList",recommendationList);
+
+				req.setAttribute("projectid", projectid);
+
+				req.setAttribute("ActionDetails", actionSubDetails);
+				req.setAttribute("meetingsHeld", meetingsHeld);
+				req.setAttribute("decesions", decesions);
+
+				return "print/AgendaPresentation";
+			}catch (Exception e) {
+				e.printStackTrace(); 
+				logger.error(new Date() +" Inside AgendaPresentation.htm  "+UserId, e); 
+				return "static/Error";
+
+			}
 		}
 	    
 	    
@@ -5844,5 +5966,95 @@ public class PrintController {
 					redir.addFlashAttribute("projectid",projectid);
 	    			redir.addFlashAttribute("committeeid",committeeid);
 	    			return "redirect:/ProjectBriefingPaper.htm";
+				}
+			  
+			  
+			  @RequestMapping(value = "excelSheetWithFinanceData.htm", method = {RequestMethod.POST, RequestMethod.GET})
+				public String excelSheetWithFinanceData(RedirectAttributes redir, HttpServletRequest req,
+				                                        HttpServletResponse res, HttpSession ses) throws Exception {
+
+				    String mainprojectid = req.getParameter("mainprojectid");
+				    System.out.println("mainprojectid: " + mainprojectid);
+
+				    List<Object[]> list = service.getrOverallFinance(mainprojectid);
+
+				    try (XSSFWorkbook workbook = new XSSFWorkbook()) {
+				        XSSFSheet sheet = workbook.createSheet("PMS_Finance");
+
+				        // Header cell style
+				        CellStyle headerStyle = workbook.createCellStyle();
+				        headerStyle.setAlignment(HorizontalAlignment.CENTER);
+				        headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+				      
+				    
+
+				        // === First Row (Merged Headers)
+				        XSSFRow row1 = sheet.createRow(0);
+				        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 1));
+				        Cell cell = row1.createCell(0);
+				        cell.setCellValue("Head");
+				        cell.setCellStyle(headerStyle);
+
+				        for (int i = 1; i <= 6; i++) {
+				            int colIndex = (i - 1) * 2 + 2;
+				            sheet.addMergedRegion(new CellRangeAddress(0, 0, colIndex, colIndex + 1));
+				            cell = row1.createCell(colIndex);
+				            cell.setCellValue(getColumnHeader(i) + " ( in Cr )");
+				            cell.setCellStyle(headerStyle);
+				        }
+
+				        // === Second Row (RE/FE Labels)
+				        XSSFRow row2 = sheet.createRow(1);
+				        row2.createCell(0).setCellValue("SN");
+				        row2.createCell(1).setCellValue("Head");
+				        for (int i = 1; i <= 6; i++) {
+				            int colIndex = (i - 1) * 2 + 2;
+				            row2.createCell(colIndex).setCellValue("RE");
+				            row2.createCell(colIndex + 1).setCellValue("FE");
+				        }
+
+				        // Set column widths
+				        for (int i = 0; i <= 13; i++) {
+				            sheet.setColumnWidth(i, 4000);
+				        }
+
+				      
+				        if (list != null && list.size() > 0) {
+				            for (int i = 0; i < list.size(); i++) {
+				                Object[] obj = list.get(i);
+				                XSSFRow row = sheet.createRow(i + 2); // Start from 3rd row (index 2)
+
+				                // SN
+				                row.createCell(0).setCellValue(i + 1);
+
+				                // Head from obj[4]
+				                row.createCell(1).setCellValue(obj[4] != null ? obj[4].toString() : "");
+
+				                // RE/FE values from obj[5] to obj[16]
+				                int colIndex = 2;
+				                for (int j = 5; j <= 16; j += 2) {
+				                    String re = (obj[j] != null) ? obj[j].toString() : "";
+				                    String fe = (j + 1 <= 16 && obj[j + 1] != null) ? obj[j + 1].toString() : "";
+
+				                    row.createCell(colIndex).setCellValue(re);
+				                    row.createCell(colIndex + 1).setCellValue(fe);
+				                    colIndex += 2;
+				                }
+				            }
+				        }
+
+				        // === Set Response Headers
+				        res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+				        res.setHeader("Content-Disposition", "attachment; filename=PMS_Finance.xlsx");
+
+				        workbook.write(res.getOutputStream());
+				        res.getOutputStream().flush();
+
+				    } catch (Exception e) {
+				        e.printStackTrace(); // or use proper logging
+				        throw new Exception("Error generating Excel file", e);
+				    }
+
+				    return null;
 				}
 }

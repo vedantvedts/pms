@@ -2123,4 +2123,47 @@ public class ActionDaoImpl implements ActionDao{
 		
 		return null;
 	}
+	
+	public static final String TOTALACTIONS ="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(ab.title,' '),''), ab.empname) AS 'empname' ,dc.designation,a.actiondate,aas.enddate,\r\n"
+			+ "a.actionitem,aas.actionstatus,aas.actionstatus AS 'status' , aas.isactive,\r\n"
+			+ "aas.progress , \r\n"
+			+ "aas.remarks ,a.actionlinkid,aas.actionno, aas.actionassignid ,a.projectid,aas.assignor,aas.assignee \r\n"
+			+ "FROM action_main a,  employee ab ,employee_desig dc , action_assign aas WHERE a.actionmainid=aas.actionmainid AND aas.assignee=ab.empid\r\n"
+			+ "AND ab.isactive='1' AND dc.desigid=ab.desigid AND aas.actionstatus IN ('F','A','B','I') \r\n"
+			+ "AND aas.assigneelabcode <> '@EXP' \r\n"
+			+ "UNION \r\n"
+			+ "SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(ab.title,' '),''), ab.expertname) AS 'empname' ,'Expert' AS 'designation',a.actiondate,aas.enddate,a.actionitem,aas.actionstatus,aas.actionstatus AS 'status',\r\n"
+			+ "aas.isactive,\r\n"
+			+ "aas.progress , \r\n"
+			+ "aas.remarks ,a.actionlinkid,aas.actionno, aas.actionassignid ,a.projectid,aas.assignor,aas.assignee FROM action_main a,  expert ab , action_assign aas\r\n"
+			+ "WHERE a.actionmainid=aas.actionmainid AND aas.assignee=ab.expertid AND ab.isactive='1'\r\n"
+			+ "AND aas.actionstatus IN ('F','A','B','I') AND aas.assigneelabcode = '@EXP'ORDER BY assignee ASC";
+	@Override
+	public List<Object[]> TotalActions() throws Exception {
+		Query query = manager.createNativeQuery(TOTALACTIONS);
+		return (List<Object[]>)query.getResultList();
+	}
+	
+	
+	
+	private final String PROJECTS="SELECT projectid,projectmainid,projectcode,projectname FROM project_master WHERE ProjectDirector= :empid";
+	
+	@Override
+	public List<Object[]> getProjects(String empId) throws Exception {
+		Query query = manager.createNativeQuery(PROJECTS);
+		query.setParameter("empid", empId);
+		return (List<Object[]>)query.getResultList();
+	}
+	private static final String ASSIGNEREDIT ="UPDATE action_assign SET Assignor =:Assignor WHERE ActionAssignId =:ActionAssignId";
+	@Override
+	public int ActionAssignerEdit(ActionAssign assign) throws Exception {
+		Query query = manager.createNativeQuery(ASSIGNEREDIT);
+		query.setParameter("Assignor", assign.getAssignor());
+		query.setParameter("ActionAssignId", assign.getActionAssignId());
+		return query.executeUpdate();
+	}
+	
+	
+
+	
 }

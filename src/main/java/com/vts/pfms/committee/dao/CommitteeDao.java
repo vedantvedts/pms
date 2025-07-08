@@ -6,6 +6,7 @@ import java.util.List;
 import com.vts.pfms.committee.dto.CommitteeConstitutionApprovalDto;
 import com.vts.pfms.committee.dto.CommitteeMainDto;
 import com.vts.pfms.committee.dto.CommitteeScheduleDto;
+import com.vts.pfms.committee.dto.MeetingCheckDto;
 import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.committee.model.CommitteeConstitutionApproval;
 import com.vts.pfms.committee.model.CommitteeConstitutionHistory;
@@ -325,6 +326,12 @@ public interface CommitteeDao {
 	public List<Object[]> carsScheduleList(String carsInitiationId) throws Exception;
 	public Long carsMeetingCount(String carsInitiationId) throws Exception;
 	public void InvitationRoleoUpdate(String role, String committeeinvitationid) throws Exception;
+	public List<MeetingCheckDto> getMeetingCheckDto(String date, String committeemainid)throws Exception;
+	public List<MeetingCheckDto> getMeetingCheckDto(String empid, String labocode,String scheduleid)throws Exception;
+	public List<Object[]> previousMeetingHeld(String committeeid)throws Exception;
+	public List<Object[]> getRecommendationsOfCommittee(String committeeid)throws Exception;
+	public List<Object[]> getDecisionsofCommittee(String committeeid)throws Exception;
 	
+
 
 }

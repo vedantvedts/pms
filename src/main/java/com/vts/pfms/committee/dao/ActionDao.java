@@ -199,4 +199,8 @@ public interface ActionDao {
 	public RfaAttachment getAttachmentByRfaId(Long rfaId)throws Exception;
 	public void saveActionMainAttachment(ActionMainAttachment attachment)throws Exception;
 	public Object[] getActionMainAttachMent(String mainid)throws Exception;
+	
+	public List<Object[]> TotalActions()throws Exception;
+	public List<Object[]> getProjects(String empId)throws Exception;
+	public int ActionAssignerEdit(ActionAssign assign)throws Exception;
 }

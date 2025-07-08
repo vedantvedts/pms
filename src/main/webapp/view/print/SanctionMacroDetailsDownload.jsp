@@ -1,4 +1,5 @@
-	<%@page import="java.text.SimpleDateFormat"%>
+	<%@page import="java.time.LocalDate"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.math.BigDecimal,java.util.stream.Collectors"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
@@ -101,7 +102,7 @@ text-align:justify !important;
       right: 0;
       top: 0;
       bottom: 0;
-      border: 2px solid black;
+      
     }     
  
 		@page{             
@@ -110,7 +111,7 @@ text-align:justify !important;
           margin-left: 49px;
           margin-right: 49px;
           margin-buttom: 49px; 	
-          border: 2px solid black;    
+         /*  border: 2px solid black;  */   
           @bottom-right {          		
              content: "Page " counter(page) " of " counter(pages);
              margin-bottom: 30px;
@@ -160,6 +161,13 @@ td>table{
   li{
   text-align: justify;
   }
+  
+  .mainTD{
+ color:#021B79;
+ font-weight: 600;
+ 
+
+}
  </style>
 
 </head>
@@ -169,23 +177,23 @@ td>table{
 		<h3 style="text-align: center;">Micro Details of Project / Programme</h3><hr style="width:80%">
     <table class="border-black" style="margin-left:20px; margin-top:15px;border:1px solid black;border-collapse:collapse;font-family:FontAwesome; width:650px;">
 	<tr >
-	<td style="width:300px;text-align: left;padding: 1px !important; border:1px solid plack;"><h4>&nbsp;1.&nbsp;&nbsp;a.&nbsp;&nbsp; Title of the Project:</h4></td>
+	<td  style="width:300px;text-align: left;padding: 1px !important; border:1px solid plack;"><h4 class="mainTD">&nbsp;1.&nbsp;&nbsp;a.&nbsp;&nbsp; Title of the Project:</h4></td>
 	<td align="left" style="border:1px solid plack;"><%=ProjectDetailes[7].toString() %></td>
 	</tr>
 	<tr style="">
-	<td style="width:300px;text-align: left;padding: 1px !important;border:1px solid plack;"><h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b.&nbsp;&nbsp; Short Name or Acronym :</h4></td>
+	<td  style="width:300px;text-align: left;padding: 1px !important;border:1px solid plack;"><h4 class="mainTD">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b.&nbsp;&nbsp; Short Name or Acronym :</h4></td>
 	<td align="left"style="border:1px solid plack;"><%=ProjectDetailes[6].toString() %></td>
 	</tr>
 	<tr>
-	<td class="border-black" style="width:300px;padding: 1px !important;text-align: left;"><h4>&nbsp;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Title of the Programme:<br>(If the Project is part of a Programme) </h4></td>
-	<td class="border-black" align="left"><%=ProjectDetailes[16].toString() %></td>
+	<td class="mainTD" class="border-black" style="width:300px;padding: 1px !important;text-align: left;"><h4 class="mainTD">&nbsp;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Title of the Programme:<br>(If the Project is part of a Programme) </h4></td>
+	<td class="border-black" align="left"><%=MacroDetails!=null && MacroDetails.length>0 && MacroDetails[13]!=null? MacroDetails[13].toString():"-" %></td>
 	</tr>
 	</table>
 	<h1 class="break"></h1>
 	<table  style="margin-left:20px; margin-top:15px;border:0px solid black;font-family:FontAwesome; width:650px;">
 	<tr>
 	<td style="width:650px;text-align:left;">
-	<h4>3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Objective:</h4>	
+	<h4 class="mainTD">3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Objective:</h4>	
 	</td>
 	</tr>
 	<tr>
@@ -205,60 +213,35 @@ td>table{
 	</tr>
 	<tr>
 	<td style="width:650px;text-align:left;">
-	<h4>4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Scope:</h4>	
+	<h4 class="mainTD">4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Scope:</h4>	
 	</td>
 	</tr>
 		<tr>
 	<td style="width:650px;text-align:left;">
-     <%						if(!DetailsList.isEmpty()){
-												for (Object[] obj : DetailsList) {
-													if (obj[2] != null) {%>
-													<% if(obj[2].toString().trim().length()==0){%>
-													<p align="center"> Not Mentioned</p>
-													<%}else {
-												%>
-												<%=obj[2].toString()%>
-												<%}}}}else{ %>
-												<p align="center">Not Mentioned</p>
-												<%} %>
+     <%	if(!DetailsList.isEmpty()){for (Object[] obj : DetailsList) {
+		if (obj[2] != null) {%><% if(obj[2].toString().trim().length()==0){%>
+		<p align="center"> Not Mentioned</p><%}else {%><%=obj[2].toString()%><%}}}}else{ %>
+		<p align="center">Not Mentioned</p><%} %>
     </td>
 	</tr>
 	</table>
 	<table style="margin-left:20px; margin-top:15px;border:0px solid black;font-family:FontAwesome; width:650px;">
 	<tr>
-	<td style="width:300px;text-align: left;"><h4>5.&nbsp;&nbsp;&nbsp;&nbsp;Proposed project deliverables: 
+	<td style="width:300px;text-align: left;"><h4 class="mainTD">5.&nbsp;&nbsp;&nbsp;&nbsp;Proposed project deliverables: 
 	</h4></td>
 	<td></td>
 	</tr>
 	</table>
-	    <table class="border-black" style="margin-left:20px; margin-top:15px;border:1px solid black;border-collapse:collapse;font-family:FontAwesome; width:650px;">
-	<tr >
-	<td style="width:450px;text-align: left; border:1px solid plack;"><h4>&nbsp;&nbsp;&nbsp;&nbsp; (a) No of prototypes for testing&nbsp;&nbsp;&nbsp;</h4></td>
-			<td class="border-black" >
-	 <%if(MacroDetails.length!=0){ %>
-	 <%if(MacroDetails[6]!=null){ %><p style="margin:0px;margin-left:44px;text-align:center;"><%=MacroDetails[6].toString()%><%} %></p>
-	 <%}else{ %>
-	<p style="margin-left:50px;">Not Specified</p>
-	<%} %>
-		</td>
-	</tr>
-	<tr style="">
-	<td style="width:450px;text-align: left;border:1px solid plack;"><h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b) No of (type approved/qualified) deliverables</h4></td>
-				<td class="border-black" >
-	 <%if(MacroDetails.length!=0){ %>
-	 <%if(MacroDetails[7]!=null){ %><p style="margin:0px;margin-left:44px;text-align:center;"><%=MacroDetails[7].toString()%><%} %></p>
-	 <%}else{ %>
-	<p style="margin-left:50px;">Not Specified</p>
-	<%} %>
-		</td>
-	</tr>
-	</tr>
-	</table>
+	<div style="margin-left:50px;">
+	
+		<%if(MacroDetails!=null && MacroDetails.length>0 && MacroDetails[14]!=null){ %><%=MacroDetails[14].toString()%>
+		<%}else{ %><p>Not Specified</p><%} %>
+	</div>
 
 
 	<table style="margin-left:20px; margin-top:15px;border:0px solid black;font-family:FontAwesome; width:650px;">
 	<tr>
-	<td style="width:300px;text-align: left;"><h4>6.&nbsp;&nbsp;&nbsp;&nbsp;Is it a Multi-lab Project?  
+	<td style="width:300px;text-align: left;"><h4 class="mainTD">6.&nbsp;&nbsp;&nbsp;&nbsp;Is it a Multi-lab Project?  
 	</h4></td>
 	<td >
 	<%if (ProjectDetailes[11] != null && ProjectDetailes[11].toString().equalsIgnoreCase("Y")) {%>Yes<%} else {%>No<%}%>
@@ -268,210 +251,48 @@ td>table{
 	</table>
 	<table style="margin-left:20px; margin-top:0px;border:0px solid black;font-family:FontAwesome; width:650px;">
 	<tr>
-	<td style="width:650px;text-align: left;"><h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Participating Labs Name - </h4></td>
+	<td style="width:650px;text-align: left;"><h4 class="mainTD">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Participating Labs Name - </h4></td>
 	</tr>
  <tr><td align="justify"><h5><%int count = 1;
- if (!ProjectInitiationLabList.isEmpty()) {
+ 	if (!ProjectInitiationLabList.isEmpty()) {
 	for (Object[] obj : ProjectInitiationLabList) {
-	count++;
-	%>
+	count++;%>
 	<%=obj[2]+"("+obj[3]+")" %><%if(count<ProjectInitiationLabList.size()){ %>,<%} %>
 	<%}} %>					
  </h5></td></tr>
 	</table>
 	<table style="margin-left:20px; margin-top:15px;border:0px solid black;font-family:FontAwesome; width:650px;">
 	<tr>
-	<td style="width:300px;text-align: left;"><h4>7.&nbsp;&nbsp;&nbsp;&nbsp;Specify the User  </h4></td>
-	<td> <%if(ProjectDetailes[22]!=null){ %>
-	<%if(ProjectDetailes[22].toString().equalsIgnoreCase("IA")){%>Army<%} %>
-	<%if(ProjectDetailes[22].toString().equalsIgnoreCase("IAF")){%>Air Force<%} %>
-	<%if(ProjectDetailes[22].toString().equalsIgnoreCase("IN")){%>Navy<%} %>
-	<%if(ProjectDetailes[22].toString().equalsIgnoreCase("IS")){%>Inter-services<%} %>
-	<%if(ProjectDetailes[22].toString().equalsIgnoreCase("DO")){%>DRDO<%} %>
-	<%if(ProjectDetailes[22].toString().equalsIgnoreCase("OH")){%>Others<%} %>
-		<%}else{ %>Not Specified<%} %></td>
+	<td style="width:300px;text-align: left;"><h4 class="mainTD">7.&nbsp;&nbsp;&nbsp;&nbsp;Specify the User  </h4></td>
+	<td>
+	<%if(ProjectDetailes[22]!=null){%>
+		<%=ProjectDetailes[22] %>
+	<%}else{ %>Not Specified<%}%>
+	</td>
 	</tr>
 	</table>
-	<table style="margin-left:20px; margin-top:15px;border:0px solid black;font-family:FontAwesome; width:650px;">
+	<table style="margin-left:20px; margin-top:15px;border:0px solid black;font-family:FontAwesome;width:700px ">
 	<tr>
-	<td style="width:650px;text-align: left;"><h4>8.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specify the proposed LSI / DcPP/ PA or selection methodology 
+	<td style="text-align: left;"><span class="mainTD">8.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specify the proposed LSI / DcPP/ PA or selection methodology 
  </h4></td>
 	</tr>
-	<tr>
-	<td style="width:650px;text-align: left;">
+	<tr colspan="1">
+	<td style="padding: 7px;">
 	<%if(MacroDetails.length!=0){ %>
-	<%if(MacroDetails[3]!=null){ %><%=MacroDetails[3].toString()%><%} %>
+	<%if(MacroDetails[3]!=null){ %><div><%=MacroDetails[3].toString()%></div><%}else{ %> <p>Not Specified</p> <%} %>
 	<%}else{ %>
 	<p>Not Specified</p>
 	<%} %>
 	</td>
 	</tr>
 	<tr>
-	<td style="width:650px;text-align: left;margin-top: 20px;"><h4>10.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Additional requirement of mechanical transport vehicles specific to the 
-	project, for equipment/developed systems and stores (with justifications): 
- 	</h4></td>
-	</tr>
-		<tr>
-	<td style="width:650px; ">
-	<%if(MacroDetails.length!=0){ %>
-	<%if(MacroDetails[2]!=null){ %><%=MacroDetails[2].toString()%><%} %>
-	<%}else{ %>
-	<p>Not Specified</p>
-	<%} %>
+	<td style="width:300px;text-align: left;"><span class="mainTD">9. PDC of Main Project -</span> 	<%if(MacroDetails.length != 0 && MacroDetails[12]!= null) { String[]temp = MacroDetails[12].toString().split("-");String datetemp = temp[2]+"-"+temp[1]+"-"+temp[0];%><%=datetemp%><%}else{%>Not Specified <%}%>
 	</td>
-	</tr>
-	<tr>
-	<td style="width:650px;text-align: left;margin-top: 20px;"><h4>11.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Proposed Six monthly milestones along-with financial outlay (&#8377; in Cr):
- 	</h4></td>
-	</tr>
-	</table>	
-			<table  id="mytable" class="border-black"
-							style="width: 650px; margin-left:20px;margin-top:15px;font-family: 'FontAwesome';">
-							<thead style="background: #055C9D;color: black;">
-								<tr>
-								<th class="border-black" style="width:8%;text-align: center;">SN</th>
-								<th class="border-black" style="width:10%;text-align: center;">Time<br>(Months)</th>
-								<th class="border-black" style="width:50%;text-align: center;">Six Monthly Technical Milestone</th>
-								<th class="border-black" style="width:25%;text-align: center;">Financial Outlay <br>&nbsp;(&#8377; in Cr.)</th>
-								</tr>
-							</thead>
-							<tbody >
-							<%/* int i=0; */
-							if(ScheduleList.isEmpty()){%>
-							<tr class="border-black"><td colspan="3" align="center"><h5>Please add Schedule for the project in Project Initiation</h5><td></tr>
-							<%}else{
-							int monthDivision=Integer.parseInt(ProjectDetailes[9].toString())%6==0?Integer.parseInt(ProjectDetailes[9].toString())/6:Integer.parseInt(ProjectDetailes[9].toString())/6+1;
-							
-							for(int i=0;i<monthDivision;i++){
-							%>
-							<tr >
-							<td class="border-black" style="text-align: center;"><h5 style="font-weight: 500"><%=i+1%></h5></td>
-							<td class="border-black" style="text-align: center;"><h5 style="font-weight: 500"><%=((i*6)+1)+"-"+((i+1)*6)%></h5></td>
-						
-							<td class="border-black" style="text-align: left;"><h5 style="font-weight: 500">
-								<%for(Object[]obj:ScheduleList) {
-								boolean case1=Integer.parseInt(obj[5].toString())<=i;
-								boolean case2=Integer.parseInt(obj[6].toString())>=((i*6)+1);
-								boolean case3=Integer.parseInt(obj[6].toString())>((i+1)*6);
-								boolean case4=case2&&Integer.parseInt(obj[6].toString())<((i+1)*6);
-								boolean case5=Integer.parseInt(obj[5].toString())>=monthDivision;
-								if(case1&&(case2||case3)){
-								%>
-								<%="MS-"+obj[0].toString()+"  ( "+obj[1].toString()+" )" %><br>
-								<%}else if(case5 &&case4){%>
-								<%="MS-"+obj[0].toString()+"  ( "+obj[1].toString()+" )" %><br>
-								<%}}%>
-							</h5>	</td>
-								<td class="border-black" id="td<%=i+1%>" align="right"><%=nfc.convert(Double.parseDouble(CostList.get(i))/10000000) %></td>
-								</tr>
-								<%}} %>
-						
-							</tbody>
-						</table>  
-	<table style="margin-left:20px; margin-top:15px;border:0px solid black;font-family:FontAwesome; width:650px;">
-	<tr>
-	<td style="width:650px;text-align: left;margin-top: 20px;">
-	<h4>
-	12.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Procurement Plan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<span style="font-weight:100">(Attached as a Annexure-A)</span></h4>
-	</td>
+	
 	</tr>
 	</table>
-	<table id="a1" style="margin-left:20px; margin-top:15px;border:0px solid black;font-family:FontAwesome; width:650px;">
-	<tr>
-	<td style="width:650px;text-align: left;margin-top: 20px;"><h4>
-	13.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Details of Demand approvals required 
-	</h4></td>
-	</tr>		
-	</table>			
-			<table  id="mytable" class="border-black"
-							style="width: 650px; margin-left:20px;font-family: 'FontAwesome';">
-							<thead style="background: #055C9D;color: black;">
-								<tr>
-								<th class="border-black" style="width:5%;text-align: center;">SN</th>
-								<th class="border-black" style="width:30%;text-align: center;">Name</th>
-								<th class="border-black" style="width:30%;text-align: center;">source</th>
-								<th class="border-black" style="width:10%;text-align: center;">Mode</th>
-								<th class="border-black" style="width:10%;text-align: center;">cost<br>&nbsp;(&#8377; in Cr.)</th>
-								</tr>
-							</thead>
-								<tbody >
-							<% int i=1;
-							if(ProcurementList.isEmpty()){%>
-							<tr class="border-black"><td colspan="4" align="center"><h4>Please add Procurement plan for this project</h4><td></tr>
-							<%}else{
-							for(Object[]obj:ProcurementList){	
-							%>	
-							<tr>
-							<td class="border-black" style="padding:px;"><%=i %></td>
-							<td class="border-black"style="padding:px;"><%=obj[2] %></td>
-							<td class="border-black"style="padding:px;"><%=obj[4] %></td>
-							<td class="border-black"style="padding:px;"><%=obj[5] %></td>
-							<td class="border-black"style="padding:px;"><%=nfc.convert(Double.parseDouble(obj[6].toString())/10000000)%></td>
-							</tr>
-							<%
-							i++;}
-							}%>
-							</table>	
-			<table style="margin-left:20px; margin-top:25px; border:0px solid black;font-family:FontAwesome; width:650px;">
-			<tr>
-				<td style="width: 650px; text-align: left; margin-top: 20px;"><h4>
-						14.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Any other information:
-						</h4></td>
-			</tr>
-			<tr>
-				<td style="width: 650px; text-align: left;">
-					<%
-					if (MacroDetails.length != 0) {
-					%> <%
- 					if (MacroDetails[4] != null) {
- 					%><%=MacroDetails[4].toString()%>
-					<%
-					}else{
-					%> 
-					<p>Not Specified</p>
- 					<%} }else {%>
-					<p>Not Specified</p>
-					 <%}%>
- 					
-				</td>
-			</tr>
-		</table>
-					<table style="margin-left:20px; margin-top:25px; border:0px solid black;font-family:FontAwesome; width:650px;">
-			<tr>
-				<td style="width: 650px; text-align: left; margin-top: 20px;"><h4>
-					15.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; List of enclosures: 
-						</h4></td>
-			</tr>
-			<tr>
-				<td style="width: 650px; text-align: left;">
-					<%
-					if (MacroDetails.length != 0) {
-					%> <%
- 					if (MacroDetails[5] != null) {
- 					%><%=MacroDetails[5].toString()%>
-					<%
-					}else{
-					%> 
-					<p>Not Specified</p>
- 					<%} }else {%>
-					<p>Not Specified</p>
-					 <%}%>
- 					
-				</td>
-			</tr>
-		</table>	
-		<table style="margin-left:20px; margin-top:25px; border:0px solid black;font-family:FontAwesome; width:650px;">
-		<tr><td style="width: 650px; text-align: left; margin-top: 20px;">
-			<p style="font-weight: bold;;">16.It is certified that this technology is not available in India and the selected industry DCPP is not in negative list of Vendors</p>
-			</td></tr>
-		
-			</table>
-			<br></br>	
-			<h4 style="width:35%;margin-left:10px;"><%=ProjectDetailes[1] %><hr style="padding-bottom: 0px;">
-			</h4><h4 style="text-align:left;margin-left: 80px;margin-top:0px;"> Project Director </h4>
-	<div style="page-break-before:always">&nbsp;</div> 	
- <%
+	
+	 <%
   
  double totalcost = costbreak.stream().mapToDouble(e-> Double.parseDouble(e[0].toString())).sum();
  if(ProjectDetailes[21]!=null && ProjectDetailes[21].toString().equalsIgnoreCase("1") ||
@@ -554,13 +375,13 @@ td>table{
 		 
 		 
 		 %>
-	<table style="margin-left:20px; margin-top:0px; border:0px solid black;font-family:FontAwesome; width:650px;">
-			<tr>
-				<td style="width: 650px; text-align: left; margin-top: 20px;"><h4>
-				9. Breakup of Cost (&#8377; in Cr.):
-				</h4></td></tr></table>
- <table class="border-black" style="margin-top:0px; margin-bottom: 10px;margin-left: 10px;width:670px;  " id="cost">
+
+ 		<table class="border-black" style="margin-top:10px; margin-bottom: 10px;margin-left: 10px;width:670px;  " id="cost">
 		  <thead>
+		  		  	<tr style=" border:0px !important;">
+				<td style="width: 650px; text-align: left;  border:0px !important;"><h4 class="mainTD">
+				10. Breakup of Cost (&#8377; in Cr.):
+				</h4></td></tr>
 			  	<tr> 
 				  	 <th colspan="5" class="border_black weight_700 center">
 				 		 	 Cost Break-Up Table for MM, TD, UT & IF Projects  <br> (in &#x20B9; Lakhs.)
@@ -763,13 +584,13 @@ td>table{
 		 
 		 
 		 %>  
-	<table style="margin-left:10px; margin-top:10px; border:0px solid black;font-family:FontAwesome; width:500px;">
-			<tr>
-				<td style="width: 650px; text-align: left; margin-top: 20px;"><h4>
-				9. Breakup of Cost (&#8377; in Cr.):
-				</h4></td></tr></table>		 
+			 
   <table class="border-black" style="margin-top:10px; margin-bottom: 10px;margin-left: 10px;width:670px;  " id="cost">
 		  <thead>
+		  	 	<tr style=" border:0px !important;">
+				<td style="width: 650px; text-align: left; border:0px !important;"><h4 class="mainTD">
+				10. Breakup of Cost (&#8377; in Cr.):
+				</h4></td></tr>
 			  	<tr> 
 				  	 <th colspan="5" class="border_black weight_700 center">
 				  	 		Cost Break-up Table for S&T & PS Projects  <br> (in &#x20B9; Lakhs.) 
@@ -897,6 +718,230 @@ td>table{
  </table>
   <h1 class="break"></h1>
   <%}%>			
+	
+	
+	<table>
+	<tr>
+	<td style="width:650px;text-align: left;margin-top: 20px;"><h4 class="mainTD">11.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Additional requirement of mechanical transport vehicles specific to the 
+	project, for equipment/developed systems and stores (with justifications): 
+ 	</h4></td>
+	</tr>
+		<tr>
+	<td style="width:650px; ">
+	<%if(MacroDetails.length!=0){ %>
+	<%if(MacroDetails[2]!=null){ %><%=MacroDetails[2].toString()%><%}else { %> 	<p style="text-align: center;">Not Specified</p> <%} %>
+	<%}else{ %>
+	<p>Not Specified</p>
+	<%} %>
+	</td>
+	</tr>
+	<tr>
+	<td style="width:650px;text-align: left;margin-top: 20px;"><h4 class="mainTD">12.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Proposed Six monthly milestones along-with financial outlay (&#8377; in Cr):
+ 	</h4></td>
+	</tr>
+	</table>	
+			<table  id="mytable" class="border-black"
+							style="width: 650px; margin-left:20px;margin-top:15px;font-family: 'FontAwesome';">
+							<thead style="background: #055C9D;color: black;">
+								<tr>
+								<th class="border-black" style="width:8%;text-align: center;">SN</th>
+								<th class="border-black" style="width:10%;text-align: center;">Time<br>(Months)</th>
+								<th class="border-black" style="width:50%;text-align: center;">Six Monthly Technical Milestone</th>
+								<th class="border-black" style="width:25%;text-align: center;">Financial Outlay <br>&nbsp;(&#8377; in Lakhs.)</th>
+								</tr>
+							</thead>
+							<tbody >
+							<%/* int i=0; */
+							if(ScheduleList.isEmpty()){%>
+							<tr class="border-black"><td colspan="3" align="center"><h5>Please add Schedule for the project in Project Initiation</h5><td></tr>
+							<%}else{
+							int monthDivision=Integer.parseInt(ProjectDetailes[9].toString())%6==0?Integer.parseInt(ProjectDetailes[9].toString())/6:Integer.parseInt(ProjectDetailes[9].toString())/6+1;
+							
+							for(int i=0;i<monthDivision;i++){
+							%>
+							<tr >
+							<td class="border-black" style="text-align: center;"><h5 style="font-weight: 500"><%=i+1%></h5></td>
+							<td class="border-black" style="text-align: center;"><h5 style="font-weight: 500"><%="T0 + "+(i+1)*6%></h5></td>
+						
+							<td class="border-black" style="text-align: left;"><h5 style="font-weight: 500">
+								<%for(Object[]obj:ScheduleList) {
+								int milstonetotalMont = Integer.parseInt(obj[6].toString());
+								if( milstonetotalMont>((i)*6) && milstonetotalMont<=((i+1)*6) ){
+								%>
+						<%-- 		boolean case1=Integer.parseInt(obj[5].toString())<=i;
+								boolean case2=Integer.parseInt(obj[6].toString())>=((i*6)+1);
+								boolean case3=Integer.parseInt(obj[6].toString())>((i+1)*6);
+								boolean case4=case2&&Integer.parseInt(obj[6].toString())<((i+1)*6);
+								boolean case5=Integer.parseInt(obj[5].toString())>=monthDivision;
+								if(case1&&(case2||case3)){
+								%>
+								<%=obj[1].toString() %><br>
+								<%}else if(case5 &&case4){%>
+								<%=obj[1].toString() %><br>
+								<%} %> --%>
+								<div><%=obj[1].toString() %></div>
+								
+								<%}}%>
+							</h5>	</td>
+								<td class="border-black" id="td<%=i+1%>" align="right">
+								<%for(Object[]obj:ScheduleList) {
+								int milstonetotalMont = Integer.parseInt(obj[6].toString());
+								if( milstonetotalMont>((i)*6) && milstonetotalMont<=((i+1)*6) ){
+								%>
+								
+								<p style="text-align: right !important;"><%=nfc.convert(Double.parseDouble(obj[9].toString())) %></p>
+								<%}}%>
+								
+								</td>
+								</tr>
+								<%}} %>
+						
+							</tbody>
+						</table>  
+	<table style="margin-left:20px; margin-top:15px;border:0px solid black;font-family:FontAwesome; width:650px;">
+	<tr>
+	<td style="width:650px;text-align: left;margin-top: 20px;">
+	<h4 class="mainTD">
+	13.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Procurement Plan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	
+	</td>
+	</tr>
+	</table>
+	
+			  <table class="border-black" style="margin-left:20px; margin-top:15px;border:0px solid black;font-family:FontAwesome; width:650px;">
+		 								<thead style="background: #055C9D;color: black; font-size: 13px;">
+								<tr>
+								<th class="border-black" style="width:2%;text-align: center;">SN</th>
+								<th class="border-black" style="width:14%;text-align: center; ">Name of the item/ Service</th>
+									<th class="border-black" style="width:30%;text-align: center;">Description/Purpose </th>
+								<th class="border-black" style="width:15%;text-align: center;">Source</th>
+								<th class="border-black" style="width:10%;text-align: center;">Mode of tendering</th>
+								<th class="border-black" style="width:6%;text-align: center;">Expected cost</th>
+								<th class="border-black" style="width:10%;text-align: center;">ETS<br>( Months )</th>
+										<th class="border-black" style="width:10%;text-align: center;">ED<br>( Months )</th>
+								</tr>
+							</thead>
+							<tbody>
+							<%int i=0;
+							if(!ProcurementList.isEmpty()) {
+							for(Object[]obj:ProcurementList){
+							%><tr style="font-size: 13px;">
+							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=(++i) %></td>
+							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[2] %></td>
+							<td class="border-black" style="width:2%;text-align: center; padding:10px;" ><%=obj[3].toString() %></td>
+							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[4].toString() %></td>
+							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[5].toString() %></td>
+							<td class="border-black" style="width:2%;text-align: right;padding: 5px;"><%=nfc.convert(Double.parseDouble(obj[6].toString())/10000000)%></td>
+							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[8].toString() %></td>
+							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[9].toString() %></td>
+							</tr>
+							<%}} %>
+							</tbody>
+		  </table>
+		  <table class="border-black" style="margin-left:20px; border-top:none solid white;font-size:15px;font-family:FontAwesome; width:650px;">					
+		 				<thead style="background: #055C9D;color: black; font-size: "> 
+						<tr>
+						<td class="border-black" style="width:650px;text-align: left;padding: 5px;">
+						<h5>ETS-Expected Date of Tendering / Placing of SO&nbsp;, &nbsp;ED-Expected date of Delivery</h5>  </td>
+						</tr>
+						</thead>
+		 </table>
+	<table id="a1" style="margin-left:20px; margin-top:15px;border:0px solid black;font-family:FontAwesome; width:650px;">
+	<tr  style="font-size: 13px;">
+	<td style="width:650px;text-align: left;margin-top: 20px;"><h4 class="mainTD">
+	14.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Details of Demand approvals required 
+	</h4></td>
+	</tr>		
+	</table>			
+			<table  id="mytable" class="border-black"
+							style="width: 650px; margin-left:20px;font-family: 'FontAwesome';">
+							<thead style="background: #055C9D;color: black;">
+								<tr>
+								<th class="border-black" style="width:5%;text-align: center;">SN</th>
+								<th class="border-black" style="width:30%;text-align: center;">Name</th>
+								<th class="border-black" style="width:30%;text-align: center;">source</th>
+								<th class="border-black" style="width:10%;text-align: center;">Mode</th>
+								<th class="border-black" style="width:10%;text-align: center;">cost<br>&nbsp;(&#8377; in Cr.)</th>
+								</tr>
+							</thead>
+								<tbody >
+							<% int j=1;
+							if(ProcurementList.isEmpty()){%>
+							<tr class="border-black"><td colspan="4" align="center"><h4>Please add Procurement plan for this project</h4><td></tr>
+							<%}else{
+							for(Object[]obj:ProcurementList){	
+							%>	
+							<tr>
+							<td class="border-black" style="padding:px;"><%=j %></td>
+							<td class="border-black"style="padding:px;"><%=obj[2] %></td>
+							<td class="border-black"style="padding:px;"><%=obj[4] %></td>
+							<td class="border-black"style="padding:px;"><%=obj[5] %></td>
+							<td class="border-black"style="padding:px;"><%=nfc.convert(Double.parseDouble(obj[6].toString())/10000000)%></td>
+							</tr>
+							<%
+							j++;}
+							}%>
+							</table>	
+			<table style="margin-left:20px; margin-top:25px; border:0px solid black;font-family:FontAwesome; width:650px;">
+			<tr>
+				<td style="width: 650px; text-align: left; margin-top: 20px;"><h4 class="mainTD">
+						15.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Any other information:
+						</h4></td>
+			</tr>
+			<tr>
+				<td style="width: 650px; text-align: left;">
+					<%
+					if (MacroDetails.length != 0) {
+					%> <%
+ 					if (MacroDetails[4] != null) {
+ 					%><%=MacroDetails[4].toString()%>
+					<%
+					}else{
+					%> 
+					<p>Not Specified</p>
+ 					<%} }else {%>
+					<p>Not Specified</p>
+					 <%}%>
+ 					
+				</td>
+			</tr>
+		</table>
+					<table style="margin-left:20px; margin-top:25px; border:0px solid black;font-family:FontAwesome; width:650px;">
+			<tr>
+				<td style="width: 650px; text-align: left; margin-top: 20px;"><h4 class="mainTD">
+					16.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; List of enclosures: 
+						</h4></td>
+			</tr>
+			<tr>
+				<td style="width: 650px; text-align: left;">
+					<%
+					if (MacroDetails.length != 0) {
+					%> <%
+ 					if (MacroDetails[5] != null) {
+ 					%><%=MacroDetails[5].toString()%>
+					<%
+					}else{
+					%> 
+					<p>Not Specified</p>
+ 					<%} }else {%>
+					<p>Not Specified</p>
+					 <%}%>
+ 					
+				</td>
+			</tr>
+		</table>	
+		<table style="margin-left:20px; margin-top:25px; border:0px solid black;font-family:FontAwesome; width:650px;">
+		<tr><td style="width: 650px; text-align: left; margin-top: 20px;">
+			<p style="font-weight: bold;;" class="mainTD">17.It is certified that this technology is not available in India and the selected industry DCPP is not in negative list of Vendors</p>
+			</td></tr>
+		
+			</table>
+			<div style="margin-left: 50px;"> 	<%if(MacroDetails!=null && MacroDetails.length>0 && MacroDetails[15]!=null){ %> <%=MacroDetails[15].toString() %> <%} %></div>
+			<br></br>	
+			<h4 style="width:35%;margin-left:10px;"><%=ProjectDetailes[1] %><hr style="padding-bottom: 0px;">
+			</h4><h4 style="text-align:left;margin-left: 80px;margin-top:0px;"> Project Director </h4>
+
+
 	</div>
 </body>
 </html>

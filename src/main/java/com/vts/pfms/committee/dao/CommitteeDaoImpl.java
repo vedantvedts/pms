@@ -5,17 +5,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
-import jakarta.transaction.Transactional;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,6 +15,7 @@ import com.ibm.icu.text.SimpleDateFormat;
 import com.vts.pfms.committee.dto.CommitteeConstitutionApprovalDto;
 import com.vts.pfms.committee.dto.CommitteeMainDto;
 import com.vts.pfms.committee.dto.CommitteeScheduleDto;
+import com.vts.pfms.committee.dto.MeetingCheckDto;
 import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.committee.model.CommitteeConstitutionApproval;
 import com.vts.pfms.committee.model.CommitteeConstitutionHistory;
@@ -52,7 +43,17 @@ import com.vts.pfms.committee.model.PmsEnoteTransaction;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.MinutesFinanceList;
-import com.vts.pfms.requirements.model.TestPlanSummary;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import jakarta.transaction.Transactional;
 
 @Transactional
 @Repository
@@ -3533,5 +3534,162 @@ private static final String ENOTEAPPROVELIST="SELECT MAX(a.EnoteId) AS EnoteId,M
 			}
 			
 		}
+		
+		
+		private static final String MEETINGCHECK="SELECT a.ScheduleId,a.MeetingId,a.MeetingVenue,b.empid,CONCAT(IFNULL(CONCAT(c.title,' '),IFNULL(CONCAT(c.salutation,' '),'')), c.empname) AS 'empname',b.labcode,a.ScheduleStartTime,d.Description\r\n"
+				+ "				FROM committee_schedule a, committee_member_type d,\r\n"
+				+ "				committee_member b ,employee c WHERE a.ScheduleDate = :adate\r\n"
+				+ "				AND b.CommitteeMainId = a.CommitteeMainId  AND b.empid=c.empid AND b.labcode=c.labcode AND b.empid IN \r\n"
+				+ "				(SELECT  EmpId FROM committee_member WHERE  CommitteeMainId = :committeemainid AND labcode<> '@EXP' AND labcode<> '@IP')  AND b.MemberType = d.MemberType AND a.isactive='1'\r\n"
+				+ "				UNION\r\n"
+				+ "				SELECT a.ScheduleId,a.MeetingId,a.MeetingVenue,b.empid,CONCAT(IFNULL(CONCAT(c.title,' '),IFNULL(CONCAT(c.salutation,' '),'')), c.ExpertName) AS 'empname',b.labcode,a.ScheduleStartTime,d.Description\r\n"
+				+ "				FROM committee_schedule a,  committee_member_type d,\r\n"
+				+ "				committee_member b ,expert c WHERE a.ScheduleDate = :adate\r\n"
+				+ "				AND b.CommitteeMainId = a.CommitteeMainId  AND b.empid=c.expertid  AND b.empid IN \r\n"
+				+ "				(SELECT  EmpId FROM committee_member WHERE  CommitteeMainId = :committeemainid AND labcode= '@EXP') AND b.MemberType = d.MemberType AND b.labcode ='@EXP' AND a.isactive='1'\r\n"
+				+ "				UNION\r\n"
+				+ "				SELECT a.ScheduleId,a.MeetingId,a.MeetingVenue,b.empid,CONCAT(IFNULL(CONCAT(c.title,' '),IFNULL(CONCAT(c.salutation,' '),'')), c.empname) AS 'empname',b.labcode,a.ScheduleStartTime,d.Description\r\n"
+				+ "				FROM committee_schedule a,committee_member_type d,\r\n"
+				+ "				committee_schedules_invitation b ,employee c WHERE a.ScheduleDate = :adate\r\n"
+				+ "				AND b.CommitteeScheduleId = a.ScheduleId AND \r\n"
+				+ "				b.EmpId IN \r\n"
+				+ "				(SELECT  EmpId FROM committee_member \r\n"
+				+ "				WHERE  CommitteeMainId = :committeemainid AND isactive=1 AND LabCode<>'@EXP' AND LabCode<>'@IP') AND b.MemberType = d.MemberType AND a.isactive='1'\r\n"
+				+ "				AND b.empid=c.empid  \r\n"
+				+ "				UNION \r\n"
+				+ "				SELECT a.ScheduleId,a.MeetingId,a.MeetingVenue,b.empid,CONCAT(IFNULL(CONCAT(c.title,' '),IFNULL(CONCAT(c.salutation,' '),'')), c.ExpertName) AS 'empname' ,b.labcode,a.ScheduleStartTime,d.Description\r\n"
+				+ "				FROM committee_schedule a, committee_member_type d, committee_schedules_invitation b ,expert c WHERE a.ScheduleDate = :adate\r\n"
+				+ "				AND b.CommitteeScheduleId = a.ScheduleId AND \r\n"
+				+ "				b.EmpId IN \r\n"
+				+ "				(SELECT  EmpId FROM committee_member \r\n"
+				+ "				WHERE  CommitteeMainId = :committeemainid AND isactive=1 AND LabCode='@EXP') AND b.MemberType = d.MemberType AND a.isactive='1'";
+		
+		@Override
+		public List<MeetingCheckDto> getMeetingCheckDto(String date, String committeemainid) throws Exception {
+			
+			List<MeetingCheckDto>dto = new ArrayList<>();
+			try {
+				
+				Query query = manager.createNativeQuery(MEETINGCHECK);
+				query.setParameter("adate", date);
+				query.setParameter("committeemainid", committeemainid);
+
+				
+				
+				List<Object[]>list = (List<Object[]>)query.getResultList();
+				
+				
+			
+				if(list!=null && !list.isEmpty()) {
+					dto = list.stream()
+							.map( e->MeetingCheckDto.builder()
+									.ScheduleId( Long.parseLong(e[0].toString() ) )
+									.empid(Long.parseLong(e[3].toString()))
+									.MeetingId( e[1].toString())
+									.MeetingVenue(e[2].toString() )
+									.empname( e[4].toString())
+									.labcode( e[5].toString())
+									.ScheduleStartTime(e[6].toString())
+									.description(e[7].toString())
+									.build())
+							.collect(Collectors.toList());			
+					}
+				
+			}catch (Exception e) {
+			
+				e.printStackTrace();	
+				
+			}
+			
+			
+			return dto;
+		}
+		
+		
+		private static final String MEETINGCHECKEMPWISE= "SELECT a.ScheduleId,a.MeetingId,a.MeetingVenue, a.ScheduleStartTime , c.Description\r\n"
+				+ "FROM committee_schedule a,committee_schedules_invitation b\r\n"
+				+ ",committee_member_type c\r\n"
+				+ "WHERE a.ScheduleDate=(SELECT ScheduleDate FROM committee_schedule WHERE ScheduleId = :scheduleid) \r\n"
+				+ "AND a.ScheduleId <> :scheduleid  AND \r\n"
+				+ "b.CommitteeScheduleId = a.ScheduleId AND b.empid =:empid AND b.labcode= :labocode AND c.MemberType=b.MemberType";
+		
+		
+		@Override
+		public List<MeetingCheckDto> getMeetingCheckDto(String empid, String labocode,String scheduleid) throws Exception {
+			List<MeetingCheckDto>dto = new ArrayList<>();
+			try {
+			Query query = manager.createNativeQuery(MEETINGCHECKEMPWISE);
+			query.setParameter("empid", empid)	;	
+			query.setParameter("labocode", labocode)	;	
+			query.setParameter("scheduleid", scheduleid)	;	
+			
+			List<Object[]>list = (List<Object[]>)query.getResultList();
+			
+			if(list!=null && !list.isEmpty()) {
+				dto = list.stream()
+						.map( e->MeetingCheckDto.builder()
+								.ScheduleId( Long.parseLong(e[0].toString() ) )
+								.MeetingId( e[1].toString())
+								.MeetingVenue(e[2].toString() )
+								.ScheduleStartTime(e[3].toString())
+								.description(e[4].toString())
+								.build())
+						.collect(Collectors.toList());			
+				}
+			
+		}catch (Exception e) {
+		
+			e.printStackTrace();	
+			
+		}
+		
+		
+		return dto;
+		}
+		
+	private static final String PREVIOUSMEETINGS="SELECT a.ScheduleId,a.MeetingId,a.ScheduleDate,a.projectId,a.InitiationId,a.Divisionid,a.ScheduleFlag \r\n"
+			+ "		, b.committeeshortname	FROM committee_schedule a, committee b  \r\n"
+			+ "			WHERE a.CommitteeId = :committeeid AND a.isactive = 1  AND a.ScheduleFlag IN ( 'MKV','MMR','MMF','MMS','MMA' ) AND a.CommitteeId = b.CommitteeId ORDER BY ScheduleDate ";	
+		
+	@Override
+	public List<Object[]> previousMeetingHeld(String committeeid) throws Exception {
+		
+		Query query  = manager.createNativeQuery(PREVIOUSMEETINGS);
+		query.setParameter("committeeid", committeeid);
+		return (List<Object[]>)query.getResultList() ;
+	}
+	
+	private static final String RECOMMENDATIONS = "SELECT d.ActionAssignId,d.ActionNo,CONCAT(IFNULL(CONCAT(e.title,' '),IFNULL(CONCAT(e.salutation,' '),'')), e.empname) AS 'empname',\r\n"
+			+ "d.ActionStatus,c.ActionMainId,c.ActionItem,b.ScheduleMinutesId,a.ScheduleId,a.MeetingId,a.ScheduleDate,d.PDCOrg,d.PDC1,d.PDC2,d.Progress,d.ProgressDate,a.projectId,a.InitiationId,a.Divisionid\r\n"
+			+ "FROM committee_schedule a, committee_schedules_minutes_details b , action_main c,action_assign d, employee e\r\n"
+			+ "WHERE a.CommitteeId = :committeeid AND a.isactive = 1 AND a.ScheduleId=b.ScheduleId AND c.type='R'   AND b.IDARCK = 'R'\r\n"
+			+ "AND c.ScheduleMinutesId=b.ScheduleMinutesId AND c.ActionMainId=d.ActionMainId AND d.Assignee=e.empid AND d.AssigneeLabCode <> '@EXP'  					\r\n"
+			+ "UNION 	\r\n"
+			+ "SELECT d.ActionAssignId,d.ActionNo,CONCAT(IFNULL(CONCAT(e.title,' '),IFNULL(CONCAT(e.salutation,' '),'')), e.expertname) AS 'empname',\r\n"
+			+ "d.ActionStatus,c.ActionMainId,c.ActionItem,b.ScheduleMinutesId,a.ScheduleId,a.MeetingId,a.ScheduleDate,d.PDCOrg,d.PDC1,d.PDC2,d.Progress,d.ProgressDate,a.projectId,a.InitiationId,a.Divisionid\r\n"
+			+ "FROM committee_schedule a, committee_schedules_minutes_details b , action_main c,action_assign d, expert e\r\n"
+			+ "WHERE a.CommitteeId = :committeeid AND a.isactive = 1 AND a.ScheduleId=b.ScheduleId AND  c.type='R'   AND b.IDARCK = 'R'\r\n"
+			+ "AND c.ScheduleMinutesId=b.ScheduleMinutesId AND c.ActionMainId=d.ActionMainId AND d.Assignee=e.expertid AND d.AssigneeLabCode = '@EXP'  ORDER BY ScheduleDate ASC";
+	
+	
+	@Override
+	public List<Object[]> getRecommendationsOfCommittee(String committeeid) throws Exception {
+
+		Query query = manager.createNativeQuery(RECOMMENDATIONS);	
+		query.setParameter("committeeid", committeeid);		
+		
+		return (List<Object[]>)query.getResultList();
+	}
+	
+	
+	private static final String DECESIONS = "SELECT b.ScheduleMinutesId,b.Details,a.scheduledate, a.projectId,a.InitiationId,a.Divisionid FROM committee_schedule a,\r\n"
+			+ "committee_schedules_minutes_details b WHERE b.idarck ='D' AND a.CommitteeId = :committeeid  AND a.isactive = 1 AND a.ScheduleId=b.ScheduleId ";
+	@Override
+	public List<Object[]> getDecisionsofCommittee(String committeeid) throws Exception {
+		
+		Query query  = manager.createNativeQuery(DECESIONS);
+		query.setParameter("committeeid", committeeid);
+		return (List<Object[]>)query.getResultList();
+	}
 }
 

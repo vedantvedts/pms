@@ -17,7 +17,6 @@ import lombok.ToString;
 @Table(name = "pfms_initiation_schedule")
 public class PfmsInitiationSchedule implements Serializable {
 
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long InitiationScheduleId;
@@ -31,13 +30,14 @@ public class PfmsInitiationSchedule implements Serializable {
     private String ModifiedDate;
 	private int IsActive;
 	private String MilestoneRemark;
-	
+	private String FinancialOutlay;
 	private int Milestonestartedfrom;
 	// private int MonthExtendedBy;
 	private int MilestoneTotalMonth;
 
 	private String StartDate;
 	private String EndDate;
+
 
     
 	

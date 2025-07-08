@@ -182,7 +182,7 @@ String ses=(String)request.getParameter("result");
 					<label class="control-label" style="margin-bottom: 4px !important;" >Officer1 Role: &nbsp;<span class="mandatory" style="color: red;">*</span></label>
 					</div>
 					<div class="col-md-2">
-					<input class="form-control reference_no" required="required" maxlength="18" name="Rec1_Role" value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[8]!=null) {%><%=CommitteMainEnoteList[8].toString() %> <%}%>">
+					<input class="form-control" required="required" maxlength="18" name="Rec1_Role" value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[8]!=null) {%><%=CommitteMainEnoteList[8].toString() %> <%}%>">
 					</div>
 					<div class="col-md-2">
 					<label class="control-label" style="margin-bottom: 4px !important">Recommended Officer 1: &nbsp;<span class="mandatory" style="color: red;">*</span></label>
@@ -204,7 +204,7 @@ String ses=(String)request.getParameter("result");
 					<label class="control-label" style="margin-bottom: 4px !important;">Officer2 Role: &nbsp;</label>
 					</div>
 					<div class="col-md-2">
-					<input class="form-control reference_no" maxlength="18" name="Rec2_Role" id="Rec2_Role" value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[10]!=null) {%><%=CommitteMainEnoteList[10].toString() %> <%}%>">
+					<input class="form-control" maxlength="18" name="Rec2_Role" id="Rec2_Role" value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[10]!=null) {%><%=CommitteMainEnoteList[10].toString() %> <%}%>">
 					</div>
 					<div class="col-md-2">
 					<label class="control-label" style="margin-bottom: 4px !important">Recommended Officer 2: &nbsp;</label>
@@ -227,7 +227,7 @@ String ses=(String)request.getParameter("result");
 					<label class="control-label" style="margin-bottom: 4px !important;">Officer3 Role: &nbsp;</label>
 					</div>
 					<div class="col-md-2">
-					<input class="form-control reference_no" maxlength="18" name="Rec3_Role" id="Rec3_Role" value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[12]!=null) {%><%=CommitteMainEnoteList[12].toString() %> <%}%>">
+					<input class="form-control" maxlength="18" name="Rec3_Role" id="Rec3_Role" value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[12]!=null) {%><%=CommitteMainEnoteList[12].toString() %> <%}%>">
 					</div>
 					<div class="col-md-2">
 					<label class="control-label" style="margin-bottom: 4px !important">Recommended Officer 3: &nbsp;</label>
@@ -251,7 +251,7 @@ String ses=(String)request.getParameter("result");
 					<label class="control-label" style="margin-bottom: 4px !important;">Approving Officer Role: &nbsp;<span class="mandatory" style="color: red;">*</span></label>
 					</div>
 					<div class="col-md-2">
-					<input class="form-control reference_no" name="Approving_Role" maxlength="18" 
+					<input class="form-control" name="Approving_Role" maxlength="18" 
 					<%if(CommitteMainEnoteList!=null && !forwardstatus.contains(CommitteMainEnoteList[15].toString())) {%> readonly="readonly" <%} %>
 					value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[14]!=null) {%><%=CommitteMainEnoteList[14].toString() %> <%}%>" required="required">
 					</div>

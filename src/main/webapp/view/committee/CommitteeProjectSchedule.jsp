@@ -122,6 +122,7 @@ List<Object[]>  projapplicommitteelist=(List<Object[]>)request.getAttribute("pro
 Object[] committeedetails=(Object[])request.getAttribute("committeedetails");
 String projectid=(String)request.getAttribute("projectid");
 String committeeid=(String)request.getAttribute("committeeid");
+String committeemainid=(String)request.getAttribute("committeemainid");
 
 List<String>status= Arrays.asList("MKV","MMR","MMF","MMA","MMS");
 
@@ -240,6 +241,7 @@ if(ses1!=null){
 		                    	<input type="hidden" name="initiationid" value="0" /> 
 		                    	<input type="hidden" name="projectid" value="<%=projectid %>" /> 
 		                    	<input type="hidden" name="committeeid" value="<%=committeeid%>" /> 
+		                    	<input type="hidden" name="committeeMainId" value="<%=committeemainid%>" /> 
 		                    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 		                    	<input type="button" class="btn  btn-sm add " style="float: right" onclick="Add1('myfrm1')" value="ADD SCHEDULE" > 	
 	                    	</div>                   	
@@ -375,6 +377,47 @@ if(ses1!=null){
 	<br>
 	<br>
 
+
+	<!-- Modal Div  -->
+
+<div class="modal fade" id="meetingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="width: 210%;margin-left: -60%;">
+      <div class="modal-header">
+        <h6 class="modal-title" id="exampleModalLabel">Meeting List, Committee Members are already Having meeting on  That Particular Day</h6>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered table-stripped" id="myTable">
+        	<thead>
+        		<tr>
+        		<th>Member Name</th>
+        		<th>Meeting Id </th>
+        		<th>Meeting Venue</th>
+        		<th>Meeting Time</th>
+        		<th>Meeting Role</th>
+        		</tr>
+        	</thead>
+        	<tbody id="meetingbody">
+        	
+        	</tbody>
+        </table>
+      </div>
+      <div align="center" class="mt-2 mb-2">
+        <button type="button" class="btn btn-sm submit" id="submitbtn" onclick="submitAddForm()">CREATE</button>
+        <button type="button" class="btn  btn-sm btn-danger delete" data-dismiss="modal">Close</button>
+     
+     
+      </div>
+      <div class="text-danger p-2">
+      If you are still adding meeting , Please make sure meeting times are not clashing!
+     </div>
+    </div>
+  </div>
+</div>
+
 <script type='text/javascript'> 
 function submitForm()
 { 
@@ -456,20 +499,106 @@ $("#calendar").evoCalendar(
 			
 		});
 
+var table1=$("#myTable").DataTable({		 
+	 "lengthMenu": [5,10,25, 50, 75, 100 ],
+	 "pagingType": "simple",
+	 "pageLength": 5,
+	 "language": {
+	      "emptyTable": "Files not Found"
+	    }
+});
+
+function submitAddForm(){
+	
+	
+	var isconfirm=confirm("Are You still Sure To  add a Schedule ?");
+	if(isconfirm){
+    	
+		$("sub").value;
+     $("#"+"myfrm1").submit(); 
+	}
+	else{
+		event.preventDefault();
+	}
+}
+
+
 function Add1(myfrm1){
 	event.preventDefault();
 		
 		var date=$("#startdate").val();
 		var time=$("#starttime").val();
-		var result=confirm("Are You Sure To Add Schedule on "+date+"  ("+ time +") ?");
-		if(result){
-	    	
-			$("sub").value;
-	     $("#"+myfrm1).submit(); 
-		}
-		else{
-			event.preventDefault();
-		}
+		
+		var dateArr = date.split("-");
+		
+		var dateReverse = dateArr[2]+"-"+dateArr[1]+"-"+dateArr[0];
+		table1.destroy();
+		$.ajax({
+		
+			type:'GET',
+			url:'checkMeetingOnParitcularDay.htm',
+			datatype:'json',
+			data:{
+				
+				committeemainid:<%=committeemainid%>,
+				
+				date:dateReverse
+			},
+			success:function(result){
+				var ajaxresult = JSON.parse(result);
+				console.log(ajaxresult)
+				if(ajaxresult.length>0){
+					
+					
+					
+					var html=''
+					for(var i=0;i<ajaxresult.length;i++){
+						html+='<tr><td>'+ ajaxresult[i].empname   +'</td>'
+						html+='<td>'+ajaxresult[i].MeetingId   +'</td>'
+						html+='<td>'+ ajaxresult[i].MeetingVenue  +'</td>'
+						html+='<td>'+ ajaxresult[i].ScheduleStartTime  +'</td>'
+						html+='<td>'+ ajaxresult[i].description  +'</td></tr>'
+					}		
+					
+					$('#meetingbody').html(html);
+				
+					
+					 
+					 table1=$("#myTable").DataTable({		 
+						 "lengthMenu": [5,10,25, 50, 75, 100 ],
+						 "pagingType": "simple",
+						 "pageLength": 5,
+						 "language": {
+						      "emptyTable": "Files not Found"
+						    }
+					}); 
+					 
+					 $('#meetingModal').modal('show');
+					
+				}else{
+					
+					var isconfirm=confirm("Are You Sure To Add Schedule on "+date+"  ("+ time +") ?");
+					if(isconfirm){
+				    	
+						$("sub").value;
+				     $("#"+myfrm1).submit(); 
+					}
+					else{
+						event.preventDefault();
+					}
+				}
+				
+				
+			}
+			
+		})
+		
+		
+
+		
+		
+		
+		
 		
 		
 		}
@@ -509,9 +638,11 @@ function Add1(myfrm1){
 	
 	
 }	 
-   
+ $(document).ready(function() {
+	
+	});
 </script>
 
 
 </body>
-</html>
+</html>	

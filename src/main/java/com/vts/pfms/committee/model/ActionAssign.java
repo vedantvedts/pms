@@ -38,6 +38,7 @@ public class ActionAssign {
 	private String ProgressDate;
 	private String ProgressRemark;
 	private String ClosedDate;
+	private int Loading;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;

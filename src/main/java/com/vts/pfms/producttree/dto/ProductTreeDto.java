@@ -10,23 +10,23 @@ import lombok.Setter;
 public class ProductTreeDto {
 
 	private long MainId;
-		private long ProjectId;
-		private long ParentLevelId;
-		private String LevelId;
-		private String SubLevelId;
-		private String LevelName;
-		private String Stage;
-		private String Module;
-		private String subSystem;
-		private String RevisionNo;
-		private String CreatedBy;
-		private String CreatedDate;
-		private String ModifiedBy;
-		private String ModifiedDate;
-		private String LevelCode;
-		private int isActive;
-		private Long InitiationId;
-		
-		private String IsSoftware;
-		private String ElementType;
+	private long ProjectId;
+	private long ParentLevelId;
+	private String LevelId;
+	private String SubLevelId;
+	private String LevelName;
+	private String Stage;
+	private String Module;
+	private String subSystem;
+	private String RevisionNo;
+	private String CreatedBy;
+	private String CreatedDate;
+	private String ModifiedBy;
+	private String ModifiedDate;
+	private String LevelCode;
+	private int isActive;
+	private Long InitiationId;
+
+	private String LevelType;
+	private String ElementType;
 }

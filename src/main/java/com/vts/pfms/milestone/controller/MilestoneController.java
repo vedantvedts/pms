@@ -20,14 +20,18 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -40,10 +44,6 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
-import jakarta.servlet.ServletOutputStream;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.logging.log4j.LogManager;
@@ -65,9 +65,17 @@ import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -79,6 +87,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.vts.pfms.Zipper;
+import com.vts.pfms.committee.model.ActionAssign;
+import com.vts.pfms.committee.service.ActionService;
 import com.vts.pfms.committee.service.CommitteeService;
 import com.vts.pfms.milestone.dto.FileDocAmendmentDto;
 import com.vts.pfms.milestone.dto.FileProjectDocDto;
@@ -89,11 +99,19 @@ import com.vts.pfms.milestone.dto.MilestoneScheduleDto;
 import com.vts.pfms.milestone.model.FileDocMaster;
 import com.vts.pfms.milestone.model.FileRepMaster;
 import com.vts.pfms.milestone.model.FileRepNew;
+import com.vts.pfms.milestone.model.FileRepUploadNew;
+import com.vts.pfms.milestone.model.MilestoneActivity;
+import com.vts.pfms.milestone.model.MilestoneActivityLevel;
 import com.vts.pfms.milestone.model.MilestoneActivitySub;
 import com.vts.pfms.milestone.service.MilestoneService;
 import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.timesheet.service.TimeSheetService;
 import com.vts.pfms.utils.InputValidator;
+
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class MilestoneController {
@@ -108,6 +126,9 @@ public class MilestoneController {
 	
 	@Autowired
 	TimeSheetService timesheetservice;
+	
+	@Autowired
+	ActionService actionservice;
 	
 	private static final Logger logger=LogManager.getLogger(MilestoneController.class);
 	@Value("${File_Size}")
@@ -149,10 +170,13 @@ public class MilestoneController {
 
 				}
 			}
+			req.setAttribute("EmployeeList", service.EmployeeList());
+			
 			List<Object[]> main=service.MilestoneActivityList(ProjectId);
 			req.setAttribute("MilestoneActivityList",main );
 			req.setAttribute("ProjectList",projlist);
 			req.setAttribute("ProjectId", ProjectId);
+			req.setAttribute("EmployeeList", service.EmployeeList());
 			if(ProjectId!=null) {
 				req.setAttribute("ProjectDetails", service.ProjectDetails(ProjectId).get(0));
 				int MainCount=1;
@@ -234,7 +258,7 @@ public class MilestoneController {
 					totalAssignedMainList.addAll(main);
 				}else if("P".equalsIgnoreCase(Logintype)) {
 					totalAssignedMainList.addAll(main.stream()
-	    					 .filter(e -> (e[18].toString().equalsIgnoreCase(EmpId)))
+							.filter(e ->  (e[11].toString().equalsIgnoreCase(EmpId) || e[17].toString().equalsIgnoreCase(EmpId))|| (e[18].toString().equalsIgnoreCase(EmpId)))
 	                         .collect(Collectors.toList()));
 				}else {
 					totalAssignedMainList.addAll(main.stream()
@@ -359,7 +383,15 @@ public class MilestoneController {
 										                         .collect(Collectors.toList()));
 										}
 									}
-									//req.setAttribute(MainCount+"MilestoneActivityE"+countA+countB+countC+countD, MilestoneActivityE);
+									int countE = 1;
+									for(Object[] obj4:MilestoneActivityE) {
+										Object[] levels5 = new Object[3];
+										levels5[0] = Long.parseLong(objmain[0].toString());
+										levels5[1] = "A"+countA+"-B"+countB+"-C"+countC+"-D"+countD+"-E"+countE;
+										levels5[2] = "M"+objmain[5];
+										milestoneActivityLevelsMap.put(Long.parseLong(obj4[0].toString()), levels5);
+										countE++;
+									}
 									countD++;
 								}
 								countC++;
@@ -464,10 +496,10 @@ public class MilestoneController {
 		try {
 			int countA=1;
 			req.setAttribute("MilestoneActivity", service.MilestoneActivity(req.getParameter("MilestoneActivityId")).get(0));
-			/*
-			 * Object[] objd=
-			 * service.MilestoneActivity(req.getParameter("MilestoneActivityId")).get(0);
-			 */
+			
+			  Object[] objd=
+			  service.MilestoneActivity(req.getParameter("MilestoneActivityId")).get(0);
+			 
 			List<Object[]>  MilestoneActivityA=service.MilestoneActivityLevel(req.getParameter("MilestoneActivityId"),"1");
 			req.setAttribute("MilestoneActivityA", MilestoneActivityA);
 			for(Object[] obj:MilestoneActivityA) {
@@ -498,7 +530,7 @@ public class MilestoneController {
 			String projectId=req.getParameter("ProjectId");
 			req.setAttribute("EmployeeList", service.ProjectEmpList(projectId , LabCode));
 			req.setAttribute("ProjectId", projectId);
-			
+			req.setAttribute("projectDirector", req.getParameter("projectDirector"));
 			if("C".equalsIgnoreCase(req.getParameter("sub"))) {
 				req.setAttribute("RevisionCount", service.MilestoneRevisionCount(req.getParameter("MilestoneActivityId")));
 				return "milestone/MilestoneActivityPreview";
@@ -756,6 +788,7 @@ public class MilestoneController {
 			req.setAttribute("RevisionCount", service.MilestoneRevisionCount(MainId));
 			req.setAttribute("ActivityTypeList", service.ActivityTypeList());
 			req.setAttribute("EmployeeList", service.EmployeeList());
+			req.setAttribute("projectDirector", req.getParameter("projectDirector"));
 		}
 		catch (Exception e) {
 			e.printStackTrace();  
@@ -838,7 +871,7 @@ public class MilestoneController {
 			} else {
 				redir.addAttribute("resultfail", "Milestone Activity Update Unsuccessful");
 			}
-
+			redir.addAttribute("projectDirector",req.getParameter("projectDirector"));
 		}
 		catch (Exception e) {
 			e.printStackTrace();  
@@ -1054,8 +1087,7 @@ public class MilestoneController {
 			int rev=service.MilestoneRevisionCount(req.getParameter("MilestoneActivityId"))-1;
 
 			int countA=1; 
-			List<Object[]> activityCompareMAin = service.ActivityCompareMAin(req.getParameter("MilestoneActivityId"),String.valueOf(rev),String.valueOf(rev-1));
-			req.setAttribute("MilestoneActivity", activityCompareMAin!=null && activityCompareMAin.size()>0? activityCompareMAin.get(0): null);
+			req.setAttribute("MilestoneActivity", service.ActivityCompareMAin(req.getParameter("MilestoneActivityId"),String.valueOf(rev),String.valueOf(rev-1)).get(0));
 			List<Object[]>  MilestoneActivityA=service.ActivityLevelCompare(req.getParameter("MilestoneActivityId"),String.valueOf(rev),String.valueOf(rev-1),"1");
 			req.setAttribute("MilestoneActivityA", MilestoneActivityA);
 			for(Object[] obj:MilestoneActivityA) {
@@ -1158,7 +1190,14 @@ public class MilestoneController {
 			mainDto.setStatusRemarks(remarks);
 			mainDto.setCreatedBy(UserId);
 			mainDto.setProgressDate(req.getParameter("progressDate"));
+			//int count =0;
+			MilestoneActivityLevel Level = service.getMilestoneActivityLevelById(mainDto.getActivityId());
+			
+			//System.out.println("linkedLevel----"+Level.toString());
 			int count =service.ActivityProgressUpdate(mainDto);
+			if(Level.getIsMasterData().equalsIgnoreCase("Y")) {
+				updateLinkedMilestoneProgress(Level.getLinkedMilestonId(), mainDto);
+			}
 
 			if (count > 0) {
 				redir.addAttribute("result", "Milestone Activity  Updated  Successfuly.");
@@ -1178,6 +1217,49 @@ public class MilestoneController {
 		return "redirect:/MA-UpdateRedirect.htm";
 	}
 
+	
+	@Async
+	private void updateLinkedMilestoneProgress(Long linkedLevel, MileEditDto mainDto) {
+		MilestoneActivityLevel Level = service.getMilestoneActivityLevelById(linkedLevel+"");
+		
+		Level.setProgressStatus(Integer.parseInt(mainDto.getProgressStatus()));
+		
+		LocalDate endDate = LocalDate.parse(Level.getEndDate()+"");
+		
+		LocalDate progressDate = LocalDate.parse(mainDto.getProgressDate().split("-")[2]+"-"+mainDto.getProgressDate().split("-")[1]+"-"+mainDto.getProgressDate().split("-")[0]);
+		
+		if("100".equalsIgnoreCase(mainDto.getProgressStatus())) {
+			//dto.setDateOfCompletion(progressdate);
+			if(endDate.isAfter(progressDate)) {
+			Level.setActivityStatusId(3);
+			}else {
+				Level.setActivityStatusId(5);
+			}
+			}
+			else if("0".equalsIgnoreCase(mainDto.getProgressStatus())) {
+				Level.setActivityStatusId(1);
+			}else {
+				if(endDate.isAfter(progressDate)) {
+					Level.setActivityStatusId(2);
+					}else {
+						Level.setActivityStatusId(4);
+					}
+			}
+		
+			//long count1= service.MilestoneActivityLevelSave(Level);
+			
+			try {
+				String mainId = service.getMainLevelId(Level.getActivityId());
+				mainDto.setMilestoneActivityId(mainId);
+				service.updateMilestoneLevelProgress(mainDto);
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+			};
+		
+	}
+	
+	
 	@RequestMapping(value = "MA-UpdateRedirect.htm", method = RequestMethod.GET)
 	public String UpdateRedirect(Model model,HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
@@ -1649,7 +1731,7 @@ public class MilestoneController {
 		logger.info(new Date() +"Inside VersionCheckList.htm "+UserId);
 
 		try {
-			VersionCheckList=service.VersionCheckList(req.getParameter("projectid"),req.getParameter("subsysteml1"),req.getParameter("documenttitle"));
+			VersionCheckList=service.VersionCheckList(req.getParameter("projectid"),req.getParameter("subsysteml1"),req.getParameter("documentName"));
 
 		}catch (Exception e) {
 
@@ -2152,9 +2234,11 @@ public class MilestoneController {
 			fileRepo.setCreatedBy(UserId);
 			long result=service.FileRepMasterSubInsert(fileRepo);
 			if (result > 0) {
-				redir.addAttribute("result", "File Rep Master Sub Added Successfully");
+				redir.addAttribute("result", "Sub File Added Successfully");
+				redir.addAttribute("parentLevelId", req.getParameter("FileMasterId"));
+				redir.addAttribute("type", "subLevel");
 			} else {
-				redir.addAttribute("resultfail", "File Rep Master Sub Add Unsuccessful");
+				redir.addAttribute("resultfail", "Sub File Add Unsuccessful");
 			}
 			redir.addFlashAttribute("formname", req.getParameter("formname"));
 			redir.addFlashAttribute("projectid", req.getParameter("projectid"));
@@ -2184,9 +2268,9 @@ public class MilestoneController {
 			fileRepo.setCreatedBy(UserId);
 			long result=service.RepMasterInsert(fileRepo);
 			if (result > 0) {
-				redir.addAttribute("result", "File Master Added Successfully");
+				redir.addAttribute("result", "Main File Added Successfully");
 			} else {
-				redir.addAttribute("resultfail", "File Master Add Unsuccessful");
+				redir.addAttribute("resultfail", "Main File Add Unsuccessful");
 
 			}
 			redir.addFlashAttribute("formname", req.getParameter("formname"));
@@ -2709,33 +2793,28 @@ public class MilestoneController {
 
 	}
 
-	@RequestMapping(value = "ProjectModuleNameEdit.htm", method = RequestMethod.POST)
-	public String ProjectModuleNameEdit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+	@RequestMapping(value = "ProjectModuleNameEdit.htm")
+	public @ResponseBody String ProjectModuleNameEdit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ProjectModuleNameEdit.htm "+UserId);		
 		try {
 
 			String filerepmasterid = req.getParameter("filerepmasterid");
 			String levelname = req.getParameter("levelname").trim();
-			int count = service.fileRepMasterEditSubmit(filerepmasterid, levelname);
-
-			if (count > 0) {
-				redir.addAttribute("result", "Module Name Updated  Successfuly.");
-			} else {
-				redir.addAttribute("resultfail", "Module Name Update Unsuccessful");
-			}
-
-			redir.addFlashAttribute("formname", req.getParameter("formname"));
-			redir.addFlashAttribute("projectid", req.getParameter("projectid"));
-			return "redirect:/FileRepMaster.htm";
+			String levelType = req.getParameter("levelType");
+			int count = service.fileRepMasterEditSubmit(filerepmasterid, levelname, levelType);
+			Gson json = new Gson();
+			return json.toJson(count);
 		}
 		catch (Exception e) 
 		{
 			e.printStackTrace();  
 			logger.error(new Date() +" Inside ProjectModuleNameEdit.htm "+UserId, e); 
-			return "static/Error";
+			Gson json = new Gson();
+			return json.toJson(0);
 		}
 	}
+
 
 	@RequestMapping(value = "FileListInRepo.htm", method = RequestMethod.GET)
 	public String FileListInRepo(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
@@ -3014,11 +3093,11 @@ public class MilestoneController {
 		Gson json = new Gson();
 		return json.toJson(DocsDatasize);	
 	}	
+
+	/* ************************************************** MS Project *************************************************************** */
 	@RequestMapping(value = "MSProjectMilestone.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String MSProjectMilestone(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
 	{
-
-
 		String UserId = (String) ses.getAttribute("Username");
 		String Logintype= (String)ses.getAttribute("LoginType");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
@@ -3037,8 +3116,6 @@ public class MilestoneController {
 				return "redirect:/MainDashBoard.htm";
 			}
 
-
-
 			if(ProjectId==null) {
 				try {
 					Object[] pro=projlist.get(0);
@@ -3048,62 +3125,47 @@ public class MilestoneController {
 				}
 			}
 
-			List<Object[]>mstaskList = service.getMsprojectTaskList(ProjectId);
+			List<Object[]> mstaskList = service.getMsprojectTaskList(ProjectId);
 
 			req.setAttribute("ProjectList",projlist);
 			req.setAttribute("ProjectId", ProjectId);
 			req.setAttribute("ProjectDetails", service.ProjectDetails(ProjectId).get(0));
 			req.setAttribute("mstaskList",mstaskList);
 
-
+			return "milestone/MSprojectMilestone";
 		}catch (Exception e) {
 			e.printStackTrace(); 
 			logger.error(new Date() +" Inside MSProjectMilestone.htm "+UserId, e); 
 			return "static/Error";
 		}
-
-
-		return "milestone/MSprojectMilestone";
 	}
 
 	@RequestMapping(value = "MSprojectGanttChart.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String MSprojectGanttChart(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
 	{
-
-
 		String UserId = (String) ses.getAttribute("Username");
-		String Logintype= (String)ses.getAttribute("LoginType");
-		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside MSprojectGanttChart.htm "+UserId);
-
-
 		try {
 			String ProjectId=req.getParameter("ProjectId");
 			List<Object[]>mstaskList = service.getMsprojectTaskList(ProjectId);
 			req.setAttribute("ProjectId", ProjectId);
 			req.setAttribute("ProjectDetails", service.ProjectDetails(ProjectId).get(0));
 			req.setAttribute("mstaskList",mstaskList);
-
+			
+			return "milestone/MsProjectGantChart";
 		}catch (Exception e) {
 			e.printStackTrace(); 
 			logger.error(new Date() +" Inside MSprojectGanttChart.htm "+UserId, e); 
 			return "static/Error";
 		}
-
-		return "milestone/MsProjectGantChart";
-
 	}
 
 	@RequestMapping(value = "MSprojectCriticalPath.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String MSprojectCriticalPath(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
 	{
 
-
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside MSprojectCriticalPath.htm "+UserId);
-
-
 		try {
 			String ProjectId=req.getParameter("ProjectId");
 			List<Object[]> mstaskList = service.getMsprojectTaskList(ProjectId);
@@ -3111,29 +3173,135 @@ public class MilestoneController {
 			req.setAttribute("ProjectId", ProjectId);
 			req.setAttribute("ProjectDetails", service.ProjectDetails(ProjectId).get(0));
 			req.setAttribute("msCriticalPathList", msCriticalPathList);
-
+			
+			return "milestone/MsProjectCriticalPath";
 		}catch (Exception e) {
 			e.printStackTrace(); 
 			logger.error(new Date() +" Inside MSprojectCriticalPath.htm "+UserId, e); 
 			return "static/Error";
 		}
-
-		return "milestone/MsProjectCriticalPath";
-
 	}
+
+	@RequestMapping(value = "MSprojectProcurementList.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	public String msprojectProcurementList(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside MSprojectProcurementList.htm "+UserId);
+
+		try {
+			String ProjectId=req.getParameter("ProjectId");
+			List<Object[]> msProjectList = service.getMsprojectTaskList(ProjectId);
+			List<Object[]> msProcurementList = msProjectList!=null && msProjectList.size()>0?msProjectList.stream().filter(e -> Integer.parseInt(e[20].toString())==1).collect(Collectors.toList()):new ArrayList<>();
+			req.setAttribute("ProjectId", ProjectId);
+			req.setAttribute("projectDetails", service.ProjectDetails(ProjectId).get(0));
+			req.setAttribute("msProcurementList", msProcurementList);
+			
+			return "milestone/MSprojectProcurementList";
+		}catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside MSprojectProcurementList.htm "+UserId, e); 
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value = "MSprojectProcurementStatus.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	public String msprojectProcurementStatus(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside MSprojectProcurementStatus.htm "+UserId);
+		
+		try {
+			String projectId = req.getParameter("ProjectId");
+			req.setAttribute("ProjectId", projectId);
+			req.setAttribute("projectDetails", service.ProjectDetails(projectId).get(0));
+			req.setAttribute("msProcurementStatusList", service.getMsprojectProcurementStatusList(projectId));
+			req.setAttribute("procurementStatusList", printservice.ProcurementStatusList(projectId));
+			
+			return "milestone/MSprojectProcurementStatus";
+		}catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside MSprojectProcurementStatus.htm "+UserId, e); 
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value = "MSprojectProcurementGanttChart.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	public String msprojectProcurementGanttChart(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside MSprojectProcurementGanttChart.htm "+UserId);
+		
+		try {
+			String ProjectId=req.getParameter("ProjectId");
+			List<Object[]> mstaskList = service.getMsprojectTaskList(ProjectId);
+			List<Object[]> msProcurementList = mstaskList!=null && mstaskList.size()>0?mstaskList.stream().filter(e -> Integer.parseInt(e[20].toString())==1).collect(Collectors.toList()):new ArrayList<>();
+			req.setAttribute("ProjectId", ProjectId);
+			req.setAttribute("projectDetails", service.ProjectDetails(ProjectId).get(0));
+			req.setAttribute("msProcurementList", msProcurementList);
+			
+			return "milestone/MSprojectProcurementGanttChart";
+		}catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside MSprojectProcurementGanttChart.htm "+UserId, e); 
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value = "MSProjectSubLevelsList.htm", method = RequestMethod.GET)
+	public @ResponseBody String msProjectSubLevelsList(HttpServletRequest req, HttpSession ses) throws Exception {
+	    String UserId = (String) ses.getAttribute("Username");
+	    logger.info(new Date() + " Inside MSProjectSubLevelsList.htm" + UserId);
+	    Gson json = new Gson();
+
+	    List<Map<String, Object>> responseList = new ArrayList<>();
+	    try {
+	        String projectId = req.getParameter("projectId");
+	        String level = req.getParameter("level");
+	        String parentId = req.getParameter("parentId");
+	        String listfor = req.getParameter("listfor");
+
+	        List<Object[]> mstaskList = service.getMsprojectTaskList(projectId);
+
+	        if(listfor!=null && listfor.equalsIgnoreCase("P")) {
+	        	mstaskList = mstaskList!=null && mstaskList.size()>0?mstaskList.stream().filter(e -> Integer.parseInt(e[20].toString())==1).collect(Collectors.toList()):new ArrayList<>();
+	        }
+	        // Current level tasks
+	        List<Object[]> subTasks = mstaskList.stream().filter(e -> e[8].toString().equals(level) && e[7].toString().equals(parentId)).collect(Collectors.toList());
+
+	        for (Object[] task : subTasks) {
+	            String taskId = task[6].toString();
+	            int nextLevel = Integer.parseInt(level) + 1;
+
+	            boolean hasChild = mstaskList.stream()
+	                .anyMatch(e -> e[8].toString().equals(String.valueOf(nextLevel)) && e[7].toString().equals(taskId));
+
+	            Map<String, Object> map = new HashMap<>();
+	            map.put("data", task);
+	            map.put("hasChild", hasChild);
+
+	            responseList.add(map);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return json.toJson(responseList);
+	}
+
+	/* ************************************************** MS Project End *************************************************************** */
 
 	@PostMapping(value = "DocFileUpload.htm")
 	public @ResponseBody String DocFileUploadAjax(Model model,HttpServletRequest req, HttpSession ses,HttpServletResponse res,
 			@RequestParam(name = "file", required = false) MultipartFile file,
-			@RequestParam("FileRepId") String fileRepId,
+			@RequestParam("fileRepId") String fileRepId,
 			@RequestParam("projectid") String projectid,
-			@RequestParam("mainLevelId") String mainLevelId,
-			@RequestParam("subLevelId") String subLevelId,
-			@RequestParam("docId") String docId,
-			@RequestParam("FileNameUI") String fileNameUI,
-			@RequestParam("FileVersion") String fileVersion,
-			@RequestParam("HeaderValue") String fileValue,
-			@RequestParam("FileRelease") String fileRelease )throws Exception 
+			@RequestParam("mainId") String mainId,
+			@RequestParam("subId") String subId,
+			@RequestParam("docName") String docName,
+			@RequestParam("version") String version,
+			@RequestParam("release") String release,
+			@RequestParam("fileType") String fileType )throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode =(String) ses.getAttribute("labcode");
@@ -3144,16 +3312,15 @@ public class MilestoneController {
 
 			FileUploadDto upload = new FileUploadDto();
 			upload.setFileId(fileRepId);
-			upload.setFileRepMasterId(mainLevelId);
-			upload.setSubL1(subLevelId);
-			upload.setDocid(docId);
-			upload.setFileName(fileNameUI);
+			upload.setFileType(fileType);
+			upload.setFileRepMasterId(mainId);
+			upload.setSubL1(subId);
+			upload.setDocumentName(docName);
 			upload.setIS(file.getInputStream());
 			upload.setFileNamePath(file.getOriginalFilename());
-			upload.setPathName(fileValue);
-			upload.setRel(fileRelease);
-			upload.setVer(fileVersion);
 			upload.setProjectId(projectid);
+			upload.setVer(version);
+			upload.setRel(release);
 			upload.setUserId(UserId);
 			upload.setLabCode(LabCode);
 			upload.setAgendaId(agendaid);
@@ -3220,75 +3387,6 @@ public class MilestoneController {
 		return "";
 	}
 
-	@RequestMapping(value = "MSprojectProcurementList.htm", method = {RequestMethod.GET,RequestMethod.POST})
-	public String msprojectProcurementList(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
-	{
-		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside MSprojectProcurementList.htm "+UserId);
-
-		try {
-			String ProjectId=req.getParameter("ProjectId");
-			List<Object[]> msProjectList = service.getMsprojectTaskList(ProjectId);
-			List<Object[]> msProcurementList = msProjectList!=null && msProjectList.size()>0?msProjectList.stream().filter(e -> Integer.parseInt(e[20].toString())==1).collect(Collectors.toList()):new ArrayList<>();
-			req.setAttribute("ProjectId", ProjectId);
-			req.setAttribute("projectDetails", service.ProjectDetails(ProjectId).get(0));
-			req.setAttribute("msProcurementList", msProcurementList);
-
-		}catch (Exception e) {
-			e.printStackTrace(); 
-			logger.error(new Date() +" Inside MSprojectProcurementList.htm "+UserId, e); 
-			return "static/Error";
-		}
-
-		return "milestone/MSprojectProcurementList";
-
-	}
-	
-	@RequestMapping(value = "MSprojectProcurementStatus.htm", method = {RequestMethod.GET,RequestMethod.POST})
-	public String msprojectProcurementStatus(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
-	{
-		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside MSprojectProcurementStatus.htm "+UserId);
-		
-		try {
-			String projectId = req.getParameter("ProjectId");
-			req.setAttribute("ProjectId", projectId);
-			req.setAttribute("projectDetails", service.ProjectDetails(projectId).get(0));
-			req.setAttribute("msProcurementStatusList", service.getMsprojectProcurementStatusList(projectId));
-			req.setAttribute("procurementStatusList", printservice.ProcurementStatusList(projectId));
-
-			return "milestone/MSprojectProcurementStatus";
-		}catch (Exception e) {
-			e.printStackTrace(); 
-			logger.error(new Date() +" Inside MSprojectProcurementStatus.htm "+UserId, e); 
-			return "static/Error";
-		}
-		
-	}
-
-	@RequestMapping(value = "MSprojectProcurementGanttChart.htm", method = {RequestMethod.GET,RequestMethod.POST})
-	public String msprojectProcurementGanttChart(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
-	{
-		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside MSprojectProcurementGanttChart.htm "+UserId);
-		
-		try {
-			String ProjectId=req.getParameter("ProjectId");
-			List<Object[]> mstaskList = service.getMsprojectTaskList(ProjectId);
-			List<Object[]> msProcurementList = mstaskList!=null && mstaskList.size()>0?mstaskList.stream().filter(e -> Integer.parseInt(e[20].toString())==1).collect(Collectors.toList()):new ArrayList<>();
-			req.setAttribute("ProjectId", ProjectId);
-			req.setAttribute("projectDetails", service.ProjectDetails(ProjectId).get(0));
-			req.setAttribute("msProcurementList", msProcurementList);
-			
-		}catch (Exception e) {
-			e.printStackTrace(); 
-			logger.error(new Date() +" Inside MSprojectProcurementGanttChart.htm "+UserId, e); 
-			return "static/Error";
-		}
-		
-		return "milestone/MSprojectProcurementGanttChart";
-		
-	}
 	
 	@RequestMapping(value="MilestoneActivityMilNoUpdate.htm",method=RequestMethod.POST)
 	public String milestoneActivityMilNoUpdate(HttpServletRequest req,HttpServletResponse res, RedirectAttributes redir, HttpSession ses)throws Exception
@@ -3356,6 +3454,8 @@ public class MilestoneController {
 		String labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ResourceGanttChart.htm "+UserId);
 		try {
+			String tabNo = req.getParameter("tabNo");
+			String activityType = req.getParameter("activityType");
 			String empId = req.getParameter("empId");
 			empId = empId == null?EmpId : empId;
 			String finalEmpId = empId;
@@ -3450,10 +3550,13 @@ public class MilestoneController {
 				}
 			}
 			
-			req.setAttribute("roleWiseEmployeeList", roleWiseEmployeeList);
+			req.setAttribute("tabNo", tabNo!=null?tabNo:"1");
+			req.setAttribute("activityType", activityType!=null?activityType:"A");
 			req.setAttribute("empId", empId);
+			req.setAttribute("roleWiseEmployeeList", roleWiseEmployeeList);
 			req.setAttribute("totalAssignedMainList", totalAssignedMainList);
 			req.setAttribute("totalAssignedSubList", totalAssignedSubList);
+			req.setAttribute("actionAssigneeList", service.actionAssigneeList(empId));
 			req.setAttribute("projectList", service.ProjectList());
 			
 			return "milestone/ResourceGanttChart";
@@ -3464,4 +3567,434 @@ public class MilestoneController {
 		}
 	}
 
+	@RequestMapping(value = "getOldFileDocNames.htm", method = RequestMethod.GET)
+	public @ResponseBody String getOldFileDocNames(HttpServletRequest req,HttpSession ses) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside getOldFileDocNames"+UserId);
+		List<Object[]> fileDocNameList=null;
+		Gson json = new Gson();
+		try {				
+			String projectId=req.getParameter("projectId");
+			String fileId=req.getParameter("fileId");
+			String fileType=req.getParameter("fileType");
+			fileDocNameList=service.getOldFileDocNames(projectId,fileType,fileId);
+		}
+		catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside getOldFileDocNames"+UserId, e);
+		}
+		return json.toJson(fileDocNameList);	
+	}
+	
+	@RequestMapping(value = "checkFolderNames.htm", method = RequestMethod.GET)
+	public @ResponseBody String getFileRepMasterNames(HttpServletRequest req,HttpSession ses) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside getFileRepMasterNames"+UserId);
+		int count = 0;
+		Gson json = new Gson();
+		try {				
+			
+			String projectId=req.getParameter("projectId");
+			String fileId=req.getParameter("fileId");
+			String fileType=req.getParameter("fileType");
+			String fileName=req.getParameter("fileName");
+			count=service.getFileRepMasterNames(projectId,fileType,fileId,fileName);
+		}
+		catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside getFileRepMasterNames"+UserId, e);
+		}
+		return json.toJson(count);	
+	}
+	
+	
+	@RequestMapping(value = "getDocVersionList.htm", method = RequestMethod.GET)
+	public @ResponseBody String getFileRepDocList(HttpServletRequest req,HttpSession ses) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside getFileRepDocList"+UserId);
+		List<Object[]> fileDocList= new ArrayList<>();
+		Gson json = new Gson();
+		try {				
+			String fileRepId=req.getParameter("fileRepId");
+			fileDocList=service.FileRepDocsList(fileRepId);
+		}
+		catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside getFileRepDocList"+UserId, e);
+		}
+		return json.toJson(fileDocList);	
+	}
+	
+	@RequestMapping(value = "uploadFileData.htm", method = RequestMethod.POST)
+	public @ResponseBody String uploadFileData(HttpServletRequest req,HttpSession ses,
+			@RequestParam(name = "fileAttach", required = false) MultipartFile file,
+			@RequestParam("docName") String docName,
+			@RequestParam("fileRepId") String fileRepId,
+			@RequestParam("projectId") String projectId,
+			@RequestParam("mainLevelId") String mainLevelId,
+			@RequestParam("subLevelId") String subLevelId,
+			@RequestParam("isnewversion") String isnewversion,
+        	@RequestParam("fileType") String fileType) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside getOldFileDocNames"+UserId);
+		long result = 0l;
+		Gson json = new Gson();
+		try {
+			
+			FileUploadDto upload = new FileUploadDto();
+			upload.setFileId(fileRepId);
+			upload.setFileRepMasterId(mainLevelId);
+			upload.setSubL1(subLevelId);
+			upload.setDocumentName(docName);
+			upload.setIS(file.getInputStream());
+			upload.setFileNamePath(file.getOriginalFilename());
+			upload.setProjectId(projectId);
+			upload.setUserId(UserId);
+			upload.setLabCode(labcode);
+			upload.setIsNewVersion(isnewversion);
+			
+			result=service.uploadFileData(upload,fileType);
+		}
+		catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside getOldFileDocNames"+UserId, e);
+		}
+		return json.toJson(result);	
+	}
+	
+	@RequestMapping(value = "fileDownload.htm/{id}", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<Resource> downloadPdfFromPasswordZip(
+			 @PathVariable("id") Long id,
+		     @RequestParam("fileType") String fileType,
+	        HttpServletRequest req) throws Exception {
+
+	    Optional<FileRepUploadNew> optionalFile = service.getFileById(id);
+	    if (!optionalFile.isPresent()) {
+	        return ResponseEntity.notFound().build();
+	    }
+
+	    FileRepUploadNew fileEntity = optionalFile.get();
+	    if (fileEntity.getFilePath() == null || fileEntity.getFileName() == null) {
+	        return ResponseEntity.badRequest().build();
+	    }
+
+	    try {
+	        Zipper zip = new Zipper();
+
+	        // Build zip file path
+	        String[] parts = fileEntity.getFilePath().replaceAll("[/\\\\]", ",").split(",");
+	        String zipName = String.format("%s%s-%s.zip",
+	                fileEntity.getFileNameUi(),
+	                fileEntity.getVersionDoc(),
+	                fileEntity.getReleaseDoc());
+
+	        Path zipFilePath;
+	        if ("mainLevel".equalsIgnoreCase(fileType)) {
+	            zipFilePath = Paths.get(FilePath, parts[0], parts[1], parts[2], parts[3], zipName);
+	        } else {
+	            zipFilePath = Paths.get(FilePath, parts[0], parts[1], parts[2], parts[3], parts[4], zipName);
+	        }
+
+	        if (!Files.exists(zipFilePath)) {
+	            return ResponseEntity.notFound().build();
+	        }
+
+	        // Extract zip to a temp folder
+	        String tempDirPath = req.getServletContext().getRealPath("/view/temp/" + UUID.randomUUID());
+	        File tempDir = new File(tempDirPath);
+	        tempDir.mkdirs();
+
+	        zip.unpack(zipFilePath.toString(), tempDirPath, fileEntity.getFilePass());
+
+	        // Find the single PDF inside
+	        File[] pdfFiles = tempDir.listFiles((d, name) -> name.toLowerCase().endsWith(".pdf"));
+	        if (pdfFiles == null || pdfFiles.length == 0) {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	        }
+
+	        File pdfFile = pdfFiles[0];
+	        Resource resource = new UrlResource(pdfFile.toURI());
+
+	        return ResponseEntity.ok()
+	                .contentType(MediaType.APPLICATION_PDF)
+	                .header(HttpHeaders.CONTENT_DISPOSITION,
+	                        "inline; filename=\"" + pdfFile.getName() + "\"")
+	                .body(resource);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	    }
+	}
+	
+	@RequestMapping(value = "removeFileAttachment.htm", method = RequestMethod.POST)
+	public @ResponseBody String removeFileAttachment(HttpServletRequest req, HttpSession ses,HttpServletResponse res,
+			@RequestParam("techDataId") String techDataId,
+			@RequestParam("techAttachId") String techAttachId,
+			@RequestParam("projectId") String projectId)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside removeFileAttachment.htm "+UserId);
+		try {
+
+			long result = service.removeFileAttachment(projectId,techDataId,techAttachId,UserId);
+
+			Gson json = new Gson();
+			return json.toJson(result);
+
+		} catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside removeFileAttachment.htm "+UserId, e); 
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value = "getProjectMilestones.htm", method = RequestMethod.GET)
+	public @ResponseBody String getProjectMilestones(HttpServletRequest req, HttpSession ses,HttpServletResponse res,
+			@RequestParam("projectid") String projectid)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside removeFileAttachment.htm "+UserId);
+		try {
+			List<Object[]> main=service.MilestoneActivityList(projectid);
+			
+			
+			
+			List<Object[]> totalAssignedSubList = new ArrayList<>();
+			Map<String , Object[]>map = new LinkedHashMap<>();
+			if(projectid!=null) {int count=1;
+				for(Object[] objmain : main ) {
+					
+					List<Object[]>  MilestoneActivityA = service.MilestoneActivityLevel(objmain[0].toString(),"1");
+					int countA=1;
+					for(Object[] obj:MilestoneActivityA) {
+						totalAssignedSubList.add(obj);
+						map.put("M"+count+"-A"+countA+"/"+obj[0], obj);
+						List<Object[]>  MilestoneActivityB=service.MilestoneActivityLevel(obj[0].toString(),"2");
+						int countb=1;
+						for(Object[] obj1:MilestoneActivityB) {
+							totalAssignedSubList.add(obj1);
+							map.put("M"+count+"-A"+countA+"-B"+countb+"/"+obj1[0], obj1);
+							List<Object[]>  MilestoneActivityC=service.MilestoneActivityLevel(obj1[0].toString(),"3");
+							int countc=1;
+							for(Object[] obj2:MilestoneActivityC) {
+								totalAssignedSubList.add(obj2);
+								map.put("M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"/"+obj2[0], obj2);
+								List<Object[]>  MilestoneActivityD=service.MilestoneActivityLevel(obj2[0].toString(),"4");
+								int countD=1;
+								for(Object[] obj3:MilestoneActivityD) {
+									totalAssignedSubList.add(obj3);
+									map.put("M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"-D"+countD+"/"+obj3[0], obj3);
+									List<Object[]>  MilestoneActivityE=service.MilestoneActivityLevel(obj3[0].toString(),"5");
+									int countE=1;
+									for(Object[] obj4:MilestoneActivityE) {
+										totalAssignedSubList.add(obj4);
+										map.put("M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"-D"+countD+"-E"+countE+"/"+obj4[0], obj4);
+										countE++;
+									}
+									countD++;
+									}
+								countc++;
+								}
+							countb++;
+							}
+						countA++;
+						}
+					count++;
+					}
+				}
+			
+			
+			
+			Gson json = new Gson();
+			return json.toJson(map);
+			
+		} catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside getProjectMilestones.htm "+UserId, e); 
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value = "updateMilestonSuperSeding.htm", method = RequestMethod.GET)
+	public @ResponseBody String updateMilestonSuperSeding(HttpServletRequest req, HttpSession ses,HttpServletResponse res)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside removeFileAttachment.htm "+UserId);
+
+		Gson json = new Gson();
+
+		try {
+			
+			String milesMainId = req.getParameter("milesMainId");
+			String mileIdLink = req.getParameter("mileIdLink");
+			String isMasterData = req.getParameter("isMasterData");
+			
+			MilestoneActivityLevel level1= service.getMilestoneActivityLevelById(milesMainId);
+			level1.setLinkedMilestonId(Long.parseLong(mileIdLink));
+			level1.setIsMasterData(isMasterData.equalsIgnoreCase("Y")?"N":"Y");
+			
+			long count =service.MilestoneActivityLevelSave(level1);
+			
+			MilestoneActivityLevel level2= service.getMilestoneActivityLevelById(mileIdLink);
+			level2.setLinkedMilestonId(Long.parseLong(milesMainId));
+			level2.setIsMasterData(isMasterData);
+			
+			long count1= service.MilestoneActivityLevelSave(level2);
+			
+			return json.toJson(count+count1);
+			
+		} catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside updateMilestonSuperSeding.htm "+UserId, e); 
+			return json.toJson(0);
+		}
+	
+	}
+	@RequestMapping(value = "MilestoneLinked.htm", method = RequestMethod.GET)
+	public @ResponseBody String MilestoneLinked(HttpServletRequest req, HttpSession ses,HttpServletResponse res)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside MilestoneLinked.htm.htm "+UserId);
+		
+		Gson json = new Gson();
+		
+		try {
+		
+			String id = req.getParameter("id");
+			System.out.println("id "+id);
+			String projectId = service.getProjectIdByMainLevelId(id);
+			
+			Object[]projectDetails =  service.ProjectDetails(projectId).get(0);
+			List<Object[]> main=service.MilestoneActivityList(projectId);
+			List<Object[]> totalAssignedSubList = new ArrayList<>();
+			Map<String , String>map = new LinkedHashMap<>();
+			if(projectId!=null) {int count=1;
+				for(Object[] objmain : main ) {
+					
+					List<Object[]>  MilestoneActivityA = service.MilestoneActivityLevel(objmain[0].toString(),"1");
+					int countA=1;
+					for(Object[] obj:MilestoneActivityA) {
+						totalAssignedSubList.add(obj);
+						map.put(obj[0].toString(), "M"+count+"-A"+countA+"/"+obj[4]+"/"+projectDetails[1]);
+						List<Object[]>  MilestoneActivityB=service.MilestoneActivityLevel(obj[0].toString(),"2");
+						int countb=1;
+						for(Object[] obj1:MilestoneActivityB) {
+							totalAssignedSubList.add(obj1);
+							map.put(obj1[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"/"+obj1[4]+"/"+projectDetails[1]);
+							List<Object[]>  MilestoneActivityC=service.MilestoneActivityLevel(obj1[0].toString(),"3");
+							int countc=1;
+							for(Object[] obj2:MilestoneActivityC) {
+								totalAssignedSubList.add(obj2);
+								map.put(obj2[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"/"+obj2[4]+"/"+projectDetails[1]);
+								List<Object[]>  MilestoneActivityD=service.MilestoneActivityLevel(obj2[0].toString(),"4");
+								int countD=1;
+								for(Object[] obj3:MilestoneActivityD) {
+									totalAssignedSubList.add(obj3);
+									map.put(obj3[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"-D"+countD+"/"+obj3[4]+"/"+projectDetails[1]);
+									List<Object[]>  MilestoneActivityE=service.MilestoneActivityLevel(obj3[0].toString(),"5");
+									int countE=1;
+									for(Object[] obj4:MilestoneActivityE) {
+										totalAssignedSubList.add(obj4);
+										map.put(obj4[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"-D"+countD+"-E"+countE+"/"+obj4[4]+"/"+projectDetails[1]);
+										countE++;
+									}
+									countD++;
+									}
+								countc++;
+								}
+							countb++;
+							}
+						countA++;
+						}
+					count++;
+					}
+				}
+			
+			
+			
+			return json.toJson(map);
+		} catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside MilestoneLinked.htm "+UserId, e); 
+			return json.toJson(0);
+		}
+		
+	}
+	@RequestMapping(value="MilestoneActivityLoadingSubmit.htm", method= {RequestMethod.GET, RequestMethod.POST})
+	public String milestoneActivityLoadingSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside MilestoneActivityLoadingSubmit.htm "+UserId);
+		try {
+			String milestoneActivityId = req.getParameter("milestoneActivityId");
+			String milestoneType = req.getParameter("milestoneType");
+			String loading = req.getParameter("loading");
+			
+			long result = 0;
+			if(milestoneType.equalsIgnoreCase("M")) {
+				MilestoneActivity activity = service.getMilestoneActivityById(milestoneActivityId);
+				activity.setLoading(loading!=null?Integer.parseInt(loading):0);
+				result = service.MilestoneActivitySave(activity);
+			}else if(milestoneType.equalsIgnoreCase("S")) {
+				MilestoneActivityLevel level = service.getMilestoneActivityLevelById(milestoneActivityId);
+				level.setLoading(loading!=null?Integer.parseInt(loading):0);
+				result = service.MilestoneActivityLevelSave(level);
+			}
+			
+			if (result> 0) {
+				redir.addAttribute("result", "Milestone Loading Submitted Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Milestone Loading Submit Unsuccessful");
+			}
+			
+			redir.addAttribute("empId", req.getParameter("empId"));
+			redir.addAttribute("activityType", req.getParameter("activityType"));
+			return "redirect:/ResourceGanttChart.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside MilestoneActivityLoadingSubmit.htm "+UserId, e); 
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="ActionActivityLoadingSubmit.htm", method= {RequestMethod.GET, RequestMethod.POST})
+	public String actionActivityLoadingSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ActionActivityLoadingSubmit.htm "+UserId);
+		try {
+			String actionAssignId = req.getParameter("actionAssignId");
+			String loading = req.getParameter("loading");
+			
+			ActionAssign assign = actionservice.getActionAssign(actionAssignId);
+			assign.setLoading(loading!=null?Integer.parseInt(loading):0);
+			long result = service.ActionAssignInsert(assign);
+			
+			if (result> 0) {
+				redir.addAttribute("result", "Action Loading Submitted Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Action Loading Submit Unsuccessful");
+			}
+			
+			redir.addAttribute("empId", req.getParameter("empId"));
+			redir.addAttribute("activityType", req.getParameter("activityType"));
+			return "redirect:/ResourceGanttChart.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ActionActivityLoadingSubmit.htm "+UserId, e); 
+			return "static/Error";
+		}
+	}
+	
+
 }
+
+

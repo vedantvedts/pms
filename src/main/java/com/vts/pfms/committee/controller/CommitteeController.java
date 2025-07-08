@@ -32,19 +32,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-import jakarta.mail.Message;
-import jakarta.mail.MessagingException;
-import jakarta.mail.PasswordAuthentication;
-import jakarta.mail.Session;
-import jakarta.mail.Transport;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeBodyPart;
-import jakarta.mail.internet.MimeMessage;
-import jakarta.mail.internet.MimeMultipart;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -55,7 +42,6 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
-
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblGrid;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblGridCol;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblPr;
@@ -100,21 +86,20 @@ import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.geom.Rectangle;
-//import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfReader;
-//import com.itextpdf.kernel.pdf.PdfWriter;
-//import com.itextpdf.kernel.pdf.WriterProperties;
-import com.itextpdf.kernel.utils.PdfMerger;
 import com.itextpdf.kernel.pdf.CompressionConstants;
 //import com.itextpdf.layout.Document;
 import com.itextpdf.kernel.pdf.EncryptionConstants;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfPage;
+//import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.WriterProperties;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
+//import com.itextpdf.kernel.pdf.PdfWriter;
+//import com.itextpdf.kernel.pdf.WriterProperties;
+import com.itextpdf.kernel.utils.PdfMerger;
 import com.itextpdf.layout.Document;
-
 import com.itextpdf.layout.font.FontProvider;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
@@ -133,6 +118,7 @@ import com.vts.pfms.committee.dto.CommitteeScheduleAgendaDto;
 import com.vts.pfms.committee.dto.CommitteeScheduleDto;
 import com.vts.pfms.committee.dto.CommitteeSubScheduleDto;
 import com.vts.pfms.committee.dto.EmpAccessCheckDto;
+import com.vts.pfms.committee.dto.MeetingCheckDto;
 import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.committee.model.CommitteeDefaultAgenda;
 import com.vts.pfms.committee.model.CommitteeDivision;
@@ -157,6 +143,19 @@ import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.utils.InputValidator;
 import com.vts.pfms.utils.PMSFileUtils;
 import com.vts.pfms.utils.PMSLogoUtil;
+
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class CommitteeController {
@@ -3382,7 +3381,7 @@ public class CommitteeController {
 			String committeeid=req.getParameter("committeeid");
 
 			List<Object[]> projectdetailslist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
-
+			String committeemainid=String.valueOf(service.LastCommitteeId(committeeid, projectid, "0", "0", "0"));
 			if(projectdetailslist.size()==0) 
 			{				
 				redir.addAttribute("resultfail", "No Project is Assigned to you.");
@@ -3419,6 +3418,7 @@ public class CommitteeController {
 
 			req.setAttribute("projectid",projectid);
 			req.setAttribute("committeeid",committeeid);
+			req.setAttribute("committeemainid",committeemainid);
 			req.setAttribute("Projectdetails",projectdetailslist.get(0));
 			req.setAttribute("ProjectsList",projectdetailslist);
 			req.setAttribute("projapplicommitteelist",projapplicommitteelist);
@@ -5573,7 +5573,7 @@ public class CommitteeController {
 					if(DronaEmail.length>0) {
 						//long result=cm.sendMessage1(DronaEmail, subject, Message);
 					}
-					service.UpdateCommitteeInvitationEmailSent(committeescheduleid);
+					//service.UpdateCommitteeInvitationEmailSent(committeescheduleid);
 					if(count>0) {
 						redir.addAttribute("result", " Committee Invitation Letter Sent Successfully !! ");
 					}
@@ -6563,9 +6563,6 @@ public class CommitteeController {
 			    return redirectWithError(redir, "CommitteeAttendance.htm", "'Role' should not contain HTML Tags.!");
 			}
 			
-			System.out.println(Arrays.asList(Role));
-			System.out.println(Arrays.asList(LabCode));
-			System.out.println(Arrays.asList(EmpNo));
 			
 			Set<String> s = new HashSet<String>(Arrays.asList(newslno));
 
@@ -9848,11 +9845,21 @@ public class CommitteeController {
 				long startTime = System.currentTimeMillis();
 
 				Properties properties = System.getProperties(); 
+				if(LabCode.equalsIgnoreCase("ADE")) {
+					properties.setProperty("mail.smtp.host", hostAddress);
+					properties.put("mail.smtp.ssl.enable", "true"); //TLS
+					properties.put("mail.smtp.port", mailAuthentication.getPort()); 
+					properties.put("mail.smtp.auth", "true"); 
+					properties.put("mail.smtp.socketFactory.class","jakarta.net.ssl.SSLSocketFactory");
+					properties.put("mail.smtp.ssl.checkserveridentity", false);
+					properties.put("mail.smtp.ssl.trust", hostAddress);
+				}else {
 				properties.setProperty("mail.smtp.host", hostAddress);
 				//properties.put("mail.smtp.starttls.enable", "true"); //TLS
 				properties.put("mail.smtp.port", mailAuthentication.getPort()); 
 				properties.put("mail.smtp.auth", "true"); 
 				properties.put("mail.smtp.socketFactory.class","jakarta.net.ssl.SSLSocketFactory"); 
+				} 
 				Session session = Session.getDefaultInstance(properties,
 						new jakarta.mail.Authenticator() {
 					protected PasswordAuthentication getPasswordAuthentication() {
@@ -10061,12 +10068,22 @@ public class CommitteeController {
 			System.out.println("TLSEmail Start");
 			long startTime = System.currentTimeMillis();
 
-			Properties properties = System.getProperties(); 
-			properties.setProperty("mail.smtp.host", hostAddress);
-			properties.put("mail.smtp.starttls.enable", "true"); //TLS
-			properties.put("mail.smtp.port", mailAuthentication.getPort()); 
-			properties.put("mail.smtp.auth", "true"); 
-			properties.put("mail.smtp.socketFactory.class","jakarta.net.ssl.SSLSocketFactory"); 
+			Properties properties = System.getProperties(); 	if(LabCode.equalsIgnoreCase("ADE")) {
+				properties.setProperty("mail.smtp.host", hostAddress);
+				properties.put("mail.smtp.ssl.enable", "true"); //TLS
+				properties.put("mail.smtp.port", mailAuthentication.getPort()); 
+				properties.put("mail.smtp.auth", "true"); 
+				properties.put("mail.smtp.socketFactory.class","jakarta.net.ssl.SSLSocketFactory");
+				properties.put("mail.smtp.ssl.checkserveridentity", false);
+				properties.put("mail.smtp.ssl.trust", hostAddress);
+			}else {
+				properties.setProperty("mail.smtp.host", hostAddress);
+				properties.put("mail.smtp.starttls.enable", "true"); //TLS
+				properties.put("mail.smtp.port", mailAuthentication.getPort()); 
+				properties.put("mail.smtp.auth", "true"); 
+				properties.put("mail.smtp.socketFactory.class","jakarta.net.ssl.SSLSocketFactory"); 
+			}
+			
 			Session session = Session.getDefaultInstance(properties,
 					new jakarta.mail.Authenticator() {
 				protected PasswordAuthentication getPasswordAuthentication() {
@@ -10354,6 +10371,47 @@ public class CommitteeController {
 			return "static/Error";
 		}
 	}
+	
+	@RequestMapping(value = "checkMeetingOnParitcularDay.htm", method = RequestMethod.GET)
+	public @ResponseBody String checkMeetingOnParitcularDay(HttpSession ses, HttpServletRequest req) throws Exception 
+	{
+		List<MeetingCheckDto>list = new ArrayList<>();
+		try {
+			String committeemainid = req.getParameter("committeemainid");
+		
+			String date = req.getParameter("date");
+			LocalDate todayDate = LocalDate.now();
+			LocalDate dateparameter = LocalDate.parse(date);
+
+			if(!dateparameter.isBefore(todayDate)){	
+			list = service.getMeetingCheckDto(date,committeemainid );
+			}
+		}catch (Exception e) {
+		  e.printStackTrace();
+		}
+		Gson json = new Gson();
+		return json.toJson(list);
+	}
+	@RequestMapping(value = "checkMeetingEmpWise.htm", method = RequestMethod.GET)
+	public @ResponseBody String checkMeetingEmpWise(HttpSession ses, HttpServletRequest req) throws Exception 
+	{
+		List<MeetingCheckDto>list = new ArrayList<>();
+		try {
+			String empid = req.getParameter("empid");
+			String labocode = req.getParameter("labocode");
+			String scheduleid = req.getParameter("scheduleid");
+			
+		
+			
+			list = service.getMeetingCheckDto(empid,labocode,scheduleid);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		Gson json = new Gson();
+		return json.toJson(list);
+	}	
+	
+	
 	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
 	    redir.addAttribute("resultfail", message);
 	    return "redirect:/"+redirURL;

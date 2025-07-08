@@ -22,6 +22,9 @@ public class FileUploadDto {
 	private String LabCode;
 	private String FileRepMasterId;
 	private String AgendaId;
+	private String DocumentName;
+	private String isNewVersion;
+	private String fileType;
   
 	
 	

@@ -24,6 +24,7 @@ public class PfmsInitiationMacroDetailsTwo implements Serializable {
 	private String Comments;
 	private String Recommendations;
 	private String AdditionalCapital;
+	private String BuildingSpaceRequirement;
 	private String CreatedBy;
     private String CreatedDate;
     private String ModifiedBy;

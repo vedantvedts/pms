@@ -28,6 +28,7 @@ import com.vts.pfms.project.dto.ProjectScheduleDto;
 import com.vts.pfms.project.model.InitiationAbbreviations;
 import com.vts.pfms.project.model.PfmsInitiation;
 import com.vts.pfms.project.model.PfmsInitiationAppendix;
+import com.vts.pfms.project.model.PfmsInitiationApproval;
 import com.vts.pfms.project.model.PfmsInitiationAttachmentFile;
 import com.vts.pfms.project.model.PfmsInitiationAuthorityFile;
 import com.vts.pfms.project.model.PfmsInitiationChecklistData;
@@ -382,6 +383,15 @@ public interface ProjectService {
 	public List<Object[]> ProjectReviseList(String ProjectId) throws Exception;
 	public Object[] ProjectOriginalData(String ProjectId) throws Exception;
 	public PlatformMaster getPlatformByPlatformId(long platformId)throws Exception;  //srikant
-
+	//29-04-2025
+	public PfmsInitiationApproval getPfmsInitiationApprovalById(String enoteId)throws Exception;
+	public long savePfmsInitiationApproval(PfmsInitiationApproval pe)throws Exception;
+	public Object[] InitiationApprovalData(String initiationid)throws Exception;
+	public long InitiationForward(PfmsInitiationApproval pe, String remarks, Long empId, String flow, String username)throws Exception;
+	public List<Object[]> initiationPendingList(long empId)throws Exception;
+	public Object[] NewApprovalList(String enoteId)throws Exception;
+	public List<Object[]> EnoteTransactionList(String enoteTrackId)throws Exception;
+	public List<Object[]> initiationApprovalList(long empId, String fromDate, String toDate)throws Exception;
+	public List<Object[]> InitiationAprrovalPrintDetails(long enoteid)throws Exception;
 
 }
