@@ -448,7 +448,7 @@ div {
 																	<span class="btn btn-sm p-0" id="editorbtnB<%=Sub0Count %><%=Sub1Count %>" onclick="openEditor('<%=intro1.getIntroductionId()%>', '<%=intro1.getChapterName() %>')">
 																		<i class="fa fa-list-alt" aria-hidden="true" style="font-size: 20px;"></i>
 																	</span>
-																	<span class="btn btn-sm p-0" id="deletebtnB<%=Sub0Count %><%=Sub1Count %>">
+																	<span class="btn btn-sm p-0" id="deletebtnB<%=Sub0Count %><%=Sub1Count %>" onclick="deleteChapterName('<%=intro1.getIntroductionId()%>')">
 																		<i class="fa fa-trash" aria-hidden="true" style="font-size: 20px;"></i>
 																	</span>
 										   						</div>

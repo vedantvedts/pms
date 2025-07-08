@@ -8,22 +8,40 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import com.vts.pfms.documents.dto.ICDConnectionDTO;
+import com.vts.pfms.documents.dto.ICDPinMapDTO;
+import com.vts.pfms.documents.model.DataTypeMaster;
+import com.vts.pfms.documents.model.FieldGroupLinked;
+import com.vts.pfms.documents.model.FieldGroupMaster;
+import com.vts.pfms.documents.model.FieldMaster;
+import com.vts.pfms.documents.model.ICDConnectionConnectors;
+import com.vts.pfms.documents.model.ICDConnectionInterfaces;
 import com.vts.pfms.documents.model.ICDConnectionPurpose;
+import com.vts.pfms.documents.model.ICDConnectionSystems;
+import com.vts.pfms.documents.model.ICDConnectorPinMapping;
+import com.vts.pfms.documents.model.ICDConnectorPins;
 import com.vts.pfms.documents.model.ICDDocumentConnections;
+import com.vts.pfms.documents.model.ICDMechanicalInterfaces;
 import com.vts.pfms.documents.model.ICDPurpose;
+import com.vts.pfms.documents.model.ICDSystemAttach;
 import com.vts.pfms.documents.model.IGIApplicableDocs;
+import com.vts.pfms.documents.model.IGIConnector;
+import com.vts.pfms.documents.model.IGIConnectorAttach;
+import com.vts.pfms.documents.model.IGIConstants;
 import com.vts.pfms.documents.model.IGIDocumentIntroduction;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
+import com.vts.pfms.documents.model.IGIFieldDescription;
 import com.vts.pfms.documents.model.IGIInterface;
 import com.vts.pfms.documents.model.IGIInterfaceContent;
 import com.vts.pfms.documents.model.IGIInterfaceTypes;
 import com.vts.pfms.documents.model.IGILogicalChannel;
 import com.vts.pfms.documents.model.IGILogicalInterfaces;
+import com.vts.pfms.documents.model.IRSArrayMaster;
 import com.vts.pfms.documents.model.IRSDocumentSpecifications;
-import com.vts.pfms.documents.model.PfmsApplicableDocs;
+import com.vts.pfms.documents.model.IRSFieldDescription;
 import com.vts.pfms.documents.model.PfmsICDDocument;
 import com.vts.pfms.documents.model.PfmsIDDDocument;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
@@ -347,17 +365,17 @@ public class DocumentsDaoImpl implements DocumentsDao{
 	}
 	
 	@Override
-	public List<PfmsApplicableDocs> getPfmsApplicableDocs() throws Exception {
+	public List<StandardDocuments> getStandardDocuments() throws Exception {
 		try {
-			Query query = manager.createQuery("FROM PfmsApplicableDocs WHERE IsActive=1");
-			return (List<PfmsApplicableDocs>)query.getResultList();
+			Query query = manager.createQuery("FROM StandardDocuments WHERE IsActive=1");
+			return (List<StandardDocuments>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
-			return new ArrayList<PfmsApplicableDocs>();
+			return new ArrayList<StandardDocuments>();
 		}
 	}
 	
-	private static final String GETIGIGAPPLICABLEDOCS = "SELECT a.IGIApplicableDocId, a.ApplicableDocId, b.DocumentName FROM pfms_igi_document_applicabledocs a, pfms_applicable_docs b WHERE a.IsActive=1 AND a.ApplicableDocId=b.ApplicableDocId AND a.DocId=:DocId AND a.DocType = :DocType";
+	private static final String GETIGIGAPPLICABLEDOCS = "SELECT a.IGIApplicableDocId, a.StandardDocumentId, b.DocumentName FROM pfms_igi_document_applicabledocs a, pfms_standard_documents b WHERE a.IsActive=1 AND a.StandardDocumentId=b.StandardDocumentId AND a.DocId=:DocId AND a.DocType = :DocType";
 	@Override
 	public List<Object[]> getIGIApplicableDocs(String docId, String docType) throws Exception {
 		try {
@@ -377,7 +395,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		try {
 			manager.persist(igiApplicableDocs);
 			manager.flush();
-			return igiApplicableDocs.getApplicableDocId();
+			return igiApplicableDocs.getStandardDocumentId();
 		}catch (Exception e) {
 			e.printStackTrace();
 			return 0;
@@ -498,20 +516,6 @@ public class DocumentsDaoImpl implements DocumentsDao{
 			return 0L;
 		}
 	}
-
-	@Override
-	public long addApplicableDocs(PfmsApplicableDocs pfmsApplicableDocs) throws Exception {
-		try {
-			manager.persist(pfmsApplicableDocs);
-			manager.flush();
-
-			return pfmsApplicableDocs.getApplicableDocId();
-		}catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
-	}
-	
 
 	private static final String IGIDOCTRANSLIST = "SELECT a.IGITransactionId,c.EmpNo,c.EmpName,d.Designation,a.ActionDate,a.Remarks,b.ReqStatus,b.ReqStatusColor FROM pfms_igi_trans a,pfms_req_approval_status b,employee c,employee_desig d WHERE a.StatusCode = b.ReqStatusCode AND a.ActionBy=c.EmpId AND c.DesigId = d.DesigId AND a.DocId=:DocId AND a.DocType=:DocType ORDER BY a.IGITransactionId";
 	@Override
@@ -726,7 +730,6 @@ public class DocumentsDaoImpl implements DocumentsDao{
 			return new ArrayList<IGILogicalChannel>();
 		}
 	}
-	
 
 	@Override
 	public IGILogicalChannel getIGILogicalChannelById(String logicalChannelId) throws Exception {
@@ -764,6 +767,335 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}catch (Exception e) {
 			e.printStackTrace();
 			return 0;
+		}
+	}
+
+	private static final String FIELDMASTER="SELECT a.FieldMasterId, a.FieldName, a.FieldShortName, a.FieldCode, a.FieldDesc, a.DataTypeMasterId, a.TypicalValue, a.FieldMinValue, a.FieldMaxValue, a.InitValue, a.FieldOffSet, a.Quantum, a.FieldUnit, a.Remarks, b.DataTypePrefix, b.DataLength, b.AliasName, b.DataStandardName, (SELECT GROUP_CONCAT(c.FieldGroupId SEPARATOR ',') FROM pfms_field_group_linked c WHERE c.FieldMasterId = a.FieldMasterId AND c.IsActive=1) AS FieldGroupIds FROM pfms_field_master a, pfms_data_type_master b WHERE a.IsActive = 1 AND a.DataTypeMasterId=b.DataTypeMasterId ORDER BY a.FieldMasterId DESC";
+	@Override
+	public List<Object[]> fieldMasterList() throws Exception {
+		try {
+			Query query=manager.createNativeQuery(FIELDMASTER);
+			return (List<Object[]>) query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+
+		}
+	}
+	
+	@Override
+	public FieldMaster getFieldMasterById(String fieldMasterId) throws Exception {
+		try {
+		  return manager.find(FieldMaster.class, Long.parseLong(fieldMasterId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new FieldMaster();
+		}
+	}
+
+	@Override
+	public long addFieldMaster(FieldMaster fieldMaster) throws Exception {
+		try {
+			manager.persist(fieldMaster);
+			manager.flush();
+			return fieldMaster.getFieldMasterId();
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside DocumentsDaoImpl addFieldMaster "+ e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+	
+	private static final String DATATYPEMASTER="SELECT a.DataTypeMasterId, a.DataTypePrefix, a.DataLength, a.AliasName, a.DataStandardName FROM pfms_data_type_master a WHERE a.IsActive = 1 ORDER BY a.DataTypeMasterId DESC";
+	@Override
+	public List<Object[]> dataTypeMasterList() throws Exception {
+		try {
+			Query query=manager.createNativeQuery(DATATYPEMASTER);
+			return (List<Object[]>) query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+
+		}
+	}
+
+	@Override
+	public DataTypeMaster getDataTypeMasterById(Long dataTypeMasterId) throws Exception {
+		try{
+			return manager.find(DataTypeMaster.class, dataTypeMasterId);
+		}catch (Exception e){
+			logger.error(new Date()  + "Inside DAO getDataTypeMasterById " + e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public long addDataTypeMaster(DataTypeMaster dto) throws Exception {
+		try {
+			manager.persist(dto);
+			manager.flush();
+			return dto.getDataTypeMasterId();
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside DocumentsDaoImpl dataTypeMasterSubmit "+ e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+	
+	private static final String IGIFIELDDESCRIPTIONDELETE = "UPDATE pfms_igi_field_desc SET IsActive='0' WHERE LogicalInterfaceId=:LogicalInterfaceId";
+	@Override
+	public int removeIGIFieldDescription(String logicalInterfaceTypeId) throws Exception{
+			try {
+				Query query =manager.createNativeQuery(IGIFIELDDESCRIPTIONDELETE);
+				query.setParameter("LogicalInterfaceId", Long.parseLong(logicalInterfaceTypeId));
+				return query.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+				return 0;
+			}
+	}
+	
+	@Override
+	public Long addIGIFieldDescription(IGIFieldDescription igiFieldDescription) throws Exception {
+		try {
+			manager.persist(igiFieldDescription);
+			manager.flush();
+			return igiFieldDescription.getFieldDescId();
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside DocumentsDaoImpl addIGIFieldDescription "+ e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+	
+	private static final String IGILOGICALINTERFACECONNECTIONLIST ="SELECT a.LogicalInterfaceId, a.MsgCode, a.MsgName, a.LogicalChannelId, a.MsgType, a.MsgDescription, a.DataRate, a.Protocals, a.AdditionalInfo,\r\n"
+			+ "	b.SourceId, b.DestinationId, b.LogicalChannel, b.ChannelCode, b.Description,\r\n"
+			+ "	c.LevelName AS 'SLevelName', c.LevelCode AS 'SLevelCode', d.LevelName AS 'DLevelName', d.LevelCode AS 'DLevelCode'\r\n"
+			+ "FROM pfms_igi_logical_interfaces a, pfms_igi_logical_channel b, pfms_system_product_tree c, pfms_system_product_tree d\r\n"
+			+ "WHERE a.IsActive=1 AND a.LogicalChannelId = b.LogicalChannelId AND b.SourceId = c.MainId AND b.DestinationId = d.MainId";
+	@Override
+	public List<Object[]> getIGILogicalInterfaceConnectionList() throws Exception {
+		try {
+			Query query=manager.createNativeQuery(IGILOGICALINTERFACECONNECTIONLIST);
+			return (List<Object[]>) query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+
+		}
+	}
+
+	@Override
+	public List<FieldGroupMaster> getFieldGroupMasterList() {
+		try {
+			Query query = manager.createQuery("FROM FieldGroupMaster WHERE IsActive=1");
+			return (List<FieldGroupMaster>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<FieldGroupMaster>();
+		}
+	}
+
+	@Override
+	public Long addFieldGroupMaster(FieldGroupMaster fieldGroup) throws Exception {
+		try {
+			manager.persist(fieldGroup);
+			manager.flush();
+			return fieldGroup.getFieldGroupId();
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside DocumentsDaoImpl addFieldGroupMaster "+ e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+
+	@Override
+	public FieldGroupMaster getFieldGroupMasterById(Long fieldGroupId) throws Exception {
+		try{
+			return manager.find(FieldGroupMaster.class, fieldGroupId);
+		}catch (Exception e){
+			logger.error(new Date()  + "Inside DAO getFieldGroupMasterById " + e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@Override
+	public Long addFieldGroupLinked(FieldGroupLinked fieldGroupLinked) throws Exception {
+		try {
+			manager.persist(fieldGroupLinked);
+			manager.flush();
+			return fieldGroupLinked.getFieldGroupLinkedId();
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside DocumentsDaoImpl addFieldGroupLinked "+ e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+
+	private static final String FIELDGROUPLINKEDDELETE = "UPDATE pfms_field_group_linked SET IsActive='0' WHERE FieldMasterId=:FieldMasterId";
+	@Override
+	public int removeFieldGroupLinked(String fieldMasterId) throws Exception {
+			try {
+				Query query =manager.createNativeQuery(FIELDGROUPLINKEDDELETE);
+				query.setParameter("FieldMasterId", Long.parseLong(fieldMasterId));
+				return query.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+				return 0;
+			}
+	}
+
+	@Override
+	public List<FieldGroupLinked> getFieldGroupLinkedList(String fieldMasterId) {
+		try {
+			Query query = manager.createQuery("FROM FieldGroupLinked WHERE IsActive=1 AND FieldMasterId=:FieldMasterId");
+			query.setParameter("FieldMasterId", Long.parseLong(fieldMasterId));
+			return (List<FieldGroupLinked>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<FieldGroupLinked>();
+		}
+	}
+
+	@Override
+	public List<ICDMechanicalInterfaces> getICDMechanicalInterfacesList() {
+		try {
+			Query query = manager.createQuery("FROM ICDMechanicalInterfaces WHERE IsActive=1");
+			return (List<ICDMechanicalInterfaces>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<ICDMechanicalInterfaces>();
+		}
+	}
+
+	@Override
+	public ICDMechanicalInterfaces getICDMechanicalInterfacesById(Long mechInterfaceId) {
+		try{
+			return manager.find(ICDMechanicalInterfaces.class, mechInterfaceId);
+		}catch (Exception e){
+			logger.error(new Date()  + "Inside DAO getICDMechanicalInterfacesById " + e);
+			e.printStackTrace();
+			return new ICDMechanicalInterfaces();
+		}
+	}
+	
+	@Override
+	public Long addICDMechanicalInterfaces(ICDMechanicalInterfaces mechanicalInterfaces) {
+		try {
+			manager.persist(mechanicalInterfaces);
+			manager.flush();
+			return mechanicalInterfaces.getMechInterfaceId();
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside DocumentsDaoImpl addICDMechanicalInterfaces "+ e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+
+	@Override
+	public List<IGIConnector> getConnectorMasterList() {
+		try {
+			Query query = manager.createQuery("FROM IGIConnector WHERE IsActive=1");
+			return (List<IGIConnector>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<IGIConnector>();
+		}
+	}
+	
+	@Override
+	public IGIConnector getIGIConnectorById(Long dataTypeMasterId) throws Exception {
+		try{
+			return manager.find(IGIConnector.class, dataTypeMasterId);
+		}catch (Exception e){
+			logger.error(new Date()  + "Inside DAO getIGIConnectorById " + e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public long addIGIConnector(IGIConnector connector) throws Exception {
+		try {
+			manager.persist(connector);
+			manager.flush();
+			return connector.getConnectorId();
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside DocumentsDaoImpl addIGIConnector "+ e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+	
+	@Override
+	public List<IGIConstants> getIGIConstantsMasterList() {
+		try {
+			Query query = manager.createQuery("FROM IGIConstants WHERE IsActive=1");
+			return (List<IGIConstants>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<IGIConstants>();
+		}
+	}
+	
+	@Override
+	public IGIConstants getIGIConstantsById(Long constantId) throws Exception {
+		try{
+			return manager.find(IGIConstants.class, constantId);
+		}catch (Exception e){
+			logger.error(new Date()  + "Inside DAO getIGIConstantsById " + e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@Override
+	public long addIGIConstants(IGIConstants constant) throws Exception {
+		try {
+			manager.persist(constant);
+			manager.flush();
+			return constant.getConstantId();
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside DocumentsDaoImpl addIGIConstants "+ e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+
+	@Override
+	public List<IGIConnectorAttach> getIGIConnectorAttachList() {
+		try {
+			Query query = manager.createQuery("FROM IGIConnectorAttach WHERE IsActive=1");
+			return (List<IGIConnectorAttach>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<IGIConnectorAttach>();
+		}
+	}
+	
+	@Override
+	public IGIConnectorAttach getIGIConnectorAttachById(String connectorAttachId) throws Exception {
+		try{
+			return manager.find(IGIConnectorAttach.class, Long.parseLong(connectorAttachId));
+		}catch (Exception e){
+			logger.error(new Date()  + "Inside DAO getIGIConnectorAttachById " + e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public long addIGIConnectorAttach(IGIConnectorAttach attach) throws Exception {
+		try {
+			manager.persist(attach);
+			manager.flush();
+			return attach.getConnectorAttachId();
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside DocumentsDaoImpl addIGIConnectorAttach "+ e);
+			e.printStackTrace();
+			return 0L;
 		}
 	}
 	
@@ -844,42 +1176,85 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 	
-	private static final String GETICDCONEECTIONSLIST = "SELECT a.ICDConnectionId, a.ICDDocId, a.SubSystemMainIdOne, a.SubSystemMainIdTwo, a.SubSystemOne,  a.SubSystemTwo,  a.InterfaceId,\r\n"
-			+ "	'NA' AS InterfaceSeqNo, c.InterfaceCode, c.InterfaceName, h.InterfaceType, c.ParameterData, i.InterfaceContent, c.InterfaceSpeed, \r\n"
-			+ "	a.SuperSubSysMainIdOne, a.SuperSubSysMainIdTwo, a.SuperSubSystemOne, a.SuperSubSystemTwo,\r\n"
-			+ "	d.LevelName AS 'LevelNameS1', e.LevelName AS 'LevelNameS2', f.LevelName AS 'LevelNameSS1', g.LevelName AS 'LevelNameSS2',\r\n"
-			+ "	h.InterfaceTypeId, h.InterfaceTypeCode, h.InterfaceTypeCodeId, i.InterfaceContentId, i.InterfaceContentCode, i.InterfaceContentCodeId, \r\n"
-			+ "	(SELECT GROUP_CONCAT(k.Purpose SEPARATOR ', ') FROM pfms_icd_connection_purpose j, pfms_icd_purpose k WHERE a.ICDConnectionId = j.ICDConnectionId AND j.PurposeId = k.PurposeId AND j.IsActive=1) AS Purpose, \r\n"
-			+ "	a.Constraints, a.Periodicity, a.Description, a.ConnectionCode, '0' AS 'ConInterfaceId', a.DrawingNo, a.DrawingAttach, \r\n"
-			+ "	(SELECT GROUP_CONCAT(k.PurposeId SEPARATOR ', ') FROM pfms_icd_connection_purpose j, pfms_icd_purpose k WHERE a.ICDConnectionId = j.ICDConnectionId AND j.PurposeId = k.PurposeId AND j.IsActive=1) AS PurposeIds, \r\n"
-			+ "	a.CableMaxLength, a.InterfaceLoss, a.CableBendingRadius, c.CableMaxLength AS 'ActCableMaxLength', c.InterfaceLoss AS 'ActInterfaceLoss', c.CableBendingRadius AS 'ActCableBendingRadius' \r\n"
-			+ "FROM pfms_icd_document_connections a \r\n"
-			+ "LEFT JOIN pfms_igi_interfaces c ON a.InterfaceId = c.InterfaceId\r\n"
-			+ "LEFT JOIN pfms_product_tree d ON a.SubSystemMainIdOne = d.MainId\r\n"
-			+ "LEFT JOIN pfms_product_tree e ON a.SubSystemMainIdTwo = e.MainId\r\n"
-			+ "LEFT JOIN pfms_product_tree f ON a.SuperSubSysMainIdOne = f.MainId\r\n"
-			+ "LEFT JOIN pfms_product_tree g ON a.SuperSubSysMainIdTwo = g.MainId\r\n"
-			+ "LEFT JOIN pfms_igi_interface_types h ON c.InterfaceTypeId = h.InterfaceTypeId\r\n"
-			+ "LEFT JOIN pfms_igi_interface_content i ON c.InterfaceTypeId = i.InterfaceContentId\r\n"
-			+ "WHERE a.IsActive=1 AND ICDDocId=:ICDDocId";
+	private static final String GETICDCONEECTIONSLIST = "SELECT a.ICDConnectionId, a.ICDDocId, a.DrawingNo, a.DrawingAttach, \r\n"
+			+ "	GROUP_CONCAT(DISTINCT e.MainId SEPARATOR ',') AS SubSystemIdsS1, \r\n"
+			+ "	GROUP_CONCAT(DISTINCT f.MainId SEPARATOR ',') AS SubSystemIdsS2, \r\n"
+			+ "	GROUP_CONCAT(DISTINCT CONCAT(e.LevelName,' (', e.LevelCode,')')  SEPARATOR ', ') AS LevelNamesS1, \r\n"
+			+ "	GROUP_CONCAT(DISTINCT CONCAT(f.LevelName,' (', f.LevelCode,')')  SEPARATOR ', ') AS LevelNamesS2, \r\n"
+			+ "	GROUP_CONCAT(DISTINCT e.LevelCode  SEPARATOR ',') AS LevelCodesS1, \r\n"
+			+ "	GROUP_CONCAT(DISTINCT f.LevelCode  SEPARATOR ',') AS LevelCodesS2, \r\n"
+			+ "	GROUP_CONCAT(DISTINCT CONCAT(e.MainId,'#',e.ElementType) SEPARATOR ',') AS ElementTypesS1, \r\n"
+			+ "	GROUP_CONCAT(DISTINCT CONCAT(f.MainId,'#',f.ElementType) SEPARATOR ',') AS ElementTypesS2,\r\n"
+			+ "	GROUP_CONCAT(DISTINCT c.InterfaceId SEPARATOR ',') AS InterfaceIds, \r\n"
+			+ "	GROUP_CONCAT(DISTINCT d.InterfaceCode SEPARATOR ',') AS InterfaceCodes, \r\n"
+			+ "	GROUP_CONCAT(DISTINCT d.InterfaceName SEPARATOR ', ') AS InterfaceNames, \r\n"
+			+ "	GROUP_CONCAT(DISTINCT l.InterfaceType SEPARATOR ',') AS InterfaceTypes,\r\n"
+			+ "	GROUP_CONCAT(DISTINCT d.ParameterData SEPARATOR ', ') AS ParameterDatas,\r\n"
+			+ "	GROUP_CONCAT(DISTINCT k.Purpose SEPARATOR ', ') AS Purpose, GROUP_CONCAT(DISTINCT j.PurposeId SEPARATOR ',') AS PurposeIds	\r\n"
+			+ "FROM pfms_icd_connections a \r\n"
+			+ "LEFT JOIN pfms_icd_connection_systems b ON a.ICDConnectionId = b.ICDConnectionId \r\n"
+			+ "LEFT JOIN pfms_product_tree e ON b.SubSystemId = e.MainId AND b.SubSystemType = 'A' \r\n"
+			+ "LEFT JOIN pfms_product_tree f ON b.SubSystemId = f.MainId AND b.SubSystemType = 'B' \r\n"
+			+ "LEFT JOIN pfms_icd_connection_interfaces c ON a.ICDConnectionId = c.ICDConnectionId AND c.IsActive = 1 \r\n"
+			+ "LEFT JOIN pfms_igi_interfaces d ON c.InterfaceId = d.InterfaceId \r\n"
+			+ "LEFT JOIN pfms_icd_connection_purpose j ON a.ICDConnectionId = j.ICDConnectionId AND j.IsActive = 1 \r\n"
+			+ "LEFT JOIN pfms_icd_purpose k ON j.PurposeId = k.PurposeId \r\n"
+			+ "LEFT JOIN pfms_igi_interface_types l ON l.InterfaceTypeId = d.InterfaceTypeId\r\n"
+			+ "WHERE a.IsActive=1 AND b.IsActive=1 AND ICDDocId=:ICDDocId \r\n"
+			+ "GROUP BY a.ICDConnectionId, a.ICDDocId, a.DrawingNo, a.DrawingAttach";
 	@Override
-	public List<Object[]> getICDConnectionsList(String icdDocId) throws Exception {
-		try {
-			Query query=manager.createNativeQuery(GETICDCONEECTIONSLIST);
-			query.setParameter("ICDDocId", icdDocId);
-			return (List<Object[]>)query.getResultList();
-		}catch (Exception e) {
-			e.printStackTrace();
-			return new ArrayList<>();
-		}
+	public List<ICDConnectionDTO> getICDConnectionsList(String icdDocId) throws Exception {
+	    try {
+	        Query query = manager.createNativeQuery(GETICDCONEECTIONSLIST);
+	        query.setParameter("ICDDocId", icdDocId);
+	        List<Object[]> results = query.getResultList();
+
+	        List<ICDConnectionDTO> dtoList = new ArrayList<>();
+	        if(results!=null && results.size()>0 && results.get(0)[0]!=null) {
+		        for (Object[] row : results) {
+		            ICDConnectionDTO dto = new ICDConnectionDTO();
+	
+		            int i = 0;
+		            dto.setICDConnectionId(((Number) row[i++]).longValue());
+		            dto.setICDDocId(((Number) row[i++]).longValue());
+		            dto.setDrawingNo((String) row[i++]);
+		            dto.setDrawingAttach((String) row[i++]);
+		            
+		            dto.setSubSystemIdsS1((String) row[i++]);
+		            dto.setSubSystemIdsS2((String) row[i++]);
+		            dto.setLevelNamesS1((String) row[i++]);
+		            dto.setLevelNamesS2((String) row[i++]);
+		            dto.setLevelCodesS1((String) row[i++]);
+		            dto.setLevelCodesS2((String) row[i++]);
+		            dto.setElementTypesS1((String) row[i++]);
+		            dto.setElementTypesS2((String) row[i++]);
+		            
+		            dto.setInterfaceIds((String) row[i++]);
+		            dto.setInterfaceCodes((String) row[i++]);
+		            dto.setInterfaceNames((String) row[i++]);
+		            dto.setInterfaceTypes((String) row[i++]);
+		            dto.setParameterDatas((String) row[i++]);
+		            
+		            dto.setPurpose((String) row[i++]);
+		            dto.setPurposeIds((String) row[i++]);
+	
+		            dtoList.add(dto);
+		        }
+	        }
+	        return dtoList;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return new ArrayList<>();
+	    }
 	}
 
-	private static final String DELETEICDCONNECTIONBYID = "UPDATE pfms_icd_document_connections SET IsActive=0 WHERE ICDConnectionId=:ICDConnectionId";
+
+	private static final String DELETEICDCONNECTIONBYID = "UPDATE pfms_icd_connection_interfaces SET IsActive=0 WHERE ConInterfaceId=:ConInterfaceId";
 	@Override
-	public int deleteICDConnectionById(String icdConnectionId) throws Exception {
+	public int deleteICDConnectionById(String conInterfaceId) throws Exception {
 		try {
 			Query query=manager.createNativeQuery(DELETEICDCONNECTIONBYID);
-			query.setParameter("ICDConnectionId", icdConnectionId);
+			query.setParameter("ConInterfaceId", conInterfaceId);
 			return query.executeUpdate();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -901,7 +1276,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 	
-	private static final String PRODUCTTREEALLLIST = "SELECT a.MainId, a.SubLevelId, a.LevelName, a.Stage, a.Module, a.RevisionNo, a.SystemMainId, a.LevelCode, CASE WHEN 0=:ProjectId THEN a.InitiationId ELSE a.ProjectId END AS 'ProjectId', a.ParentLevelId, a.LevelId FROM pfms_product_tree a WHERE a.MainId>0 AND a.ProjectId=:ProjectId AND a.InitiationId=:InitiationId AND a.IsActive='1' ORDER BY a.SubLevelId";
+	private static final String PRODUCTTREEALLLIST = "SELECT a.MainId, a.SubLevelId, a.LevelName, a.Stage, a.Module, a.RevisionNo, a.SystemMainId, a.LevelCode, CASE WHEN 0=:ProjectId THEN a.InitiationId ELSE a.ProjectId END AS 'ProjectId', a.ParentLevelId, a.LevelId, a.ElementType FROM pfms_product_tree a LEFT JOIN pfms_system_product_tree b ON b.MainId=a.SystemMainId WHERE a.MainId>0 AND a.ProjectId=:ProjectId AND a.InitiationId=:InitiationId AND a.IsActive='1' ORDER BY FIELD(a.ElementType, 'I', 'E'), a.SubLevelId";
 	@Override
 	public List<Object[]> getProductTreeAllList(String projectId, String initiationId)throws Exception
 	{
@@ -944,7 +1319,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 	@Override
 	public List<ICDPurpose> getAllICDPurposeList() throws Exception {
 		try {
-			Query query = manager.createQuery("FROM ICDPurpose");
+			Query query = manager.createQuery("FROM ICDPurpose WHERE IsActive=1");
 			return (List<ICDPurpose>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -966,17 +1341,14 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 
-	public static final String GETICDCONNECTIONSCOUNT = "SELECT IFNULL(COUNT(ICDConnectionId), 0) AS 'ConnectionCount' FROM pfms_icd_document_connections a WHERE a.SubSystemMainIdOne=:SubSystemMainIdOne  AND a.SubSystemMainIdTwo=:SubSystemMainIdTwo AND  a.SuperSubSysMainIdOne=:SuperSubSysMainIdOne AND a.SuperSubSysMainIdTwo=:SuperSubSysMainIdTwo AND a.ICDDocId=:ICDDocId";
+	public static final String GETICDCONNECTIONSCOUNT = "SELECT IFNULL(COUNT(b.ConInterfaceId), 0) AS 'ConnectionCount' FROM pfms_icd_connections a, pfms_icd_connection_interfaces b WHERE a.ICDConnectionId=b.ICDConnectionId AND a.SubSystemMainIdOne=:SubSystemMainIdOne AND a.SubSystemMainIdTwo=:SubSystemMainIdTwo AND a.ICDDocId=:ICDDocId";
 	@Override
-	public int getICDConnectionsCount(Long subSystemMainIdOne, Long subSystemMainIdTwo, Long superSubSysMainIdOne, 
-			Long superSubSysMainIdTwo, Long icdDocId) throws Exception {
+	public int getICDConnectionsCount(Long subSystemMainIdOne, Long subSystemMainIdTwo, Long icdDocId) throws Exception {
 
 		try {
 			Query query =manager.createNativeQuery(GETICDCONNECTIONSCOUNT);
 			query.setParameter("SubSystemMainIdOne", subSystemMainIdOne);
 			query.setParameter("SubSystemMainIdTwo", subSystemMainIdTwo);
-			query.setParameter("SuperSubSysMainIdOne", superSubSysMainIdOne);
-			query.setParameter("SuperSubSysMainIdTwo", superSubSysMainIdTwo);
 			query.setParameter("ICDDocId", icdDocId);
 			Long maxCount = (Long)query.getSingleResult();
 			return maxCount.intValue();
@@ -1000,6 +1372,365 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 
+	@Override
+	public ICDPurpose getICDPurposeById(String purposeId) throws Exception {
+		try {
+		  return manager.find(ICDPurpose.class, Long.parseLong(purposeId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public long addICDPurpose(ICDPurpose purpose) throws Exception {
+		try {
+			manager.persist(purpose);
+			manager.flush();
+			return purpose.getPurposeId();
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside DocumentsDaoImpl addICDPurpose "+ e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+	
+	private static final String ICDMECHINTERFACECONNECTIONLIST = "SELECT a.MechInterfaceId, a.ICDDocId, a.SubSystemMainIdOne, a.SubSystemMainIdTwo, a.InterfaceCode, a.InterfaceName, a.InterfaceSeqId, a.partOne, a.partTwo, a.DrawingOne, a.DrawingTwo, a.Description, a.Standards, a.Precautions, a.Instructions, a.Remarks, b.LevelName AS 'LevelNameS1', c.LevelName AS 'LevelNameS2', b.LevelCode AS 'LevelCodeS1', c.LevelCode AS 'LevelCodeS2' FROM pfms_icd_mech_interfaces a, pfms_product_tree b, pfms_product_tree c WHERE a.IsActive=1 AND a.SubSystemMainIdOne = b.MainId AND a.SubSystemMainIdTwo = c.MainId AND a.ICDDocId=:ICDDocId";
+	@Override
+	public List<Object[]> getICDMechInterfaceConnectionList(String icdDocId) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(ICDMECHINTERFACECONNECTIONLIST);
+			query.setParameter("ICDDocId", Long.parseLong(icdDocId));
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+	}
+
+	@Override
+	public long addICDConnectionSystems(ICDConnectionSystems subsystems) throws Exception {
+		try {
+			manager.persist(subsystems);
+			manager.flush();
+			return subsystems.getConSystemsId();
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside DocumentsDaoImpl addICDConnectionSystems "+ e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+	
+	@Override
+	public long addICDConnectionInterfaces(ICDConnectionInterfaces interfaces) throws Exception {
+		try {
+			manager.persist(interfaces);
+			manager.flush();
+			return interfaces.getConInterfaceId();
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside DocumentsDaoImpl addICDConnectionInterfaces "+ e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+	
+	private static final String DELETEICDCONNECTIONSYSTEMSBYICDCONNECTIONID = "UPDATE pfms_icd_connection_systems SET IsActive=0 WHERE SubSystemType=:SubSystemType AND ICDConnectionId=:ICDConnectionId";
+	@Override
+	public int deleteICDConnectionSystemsByICDConnectionId(String icdConnectionId, String subSystemType) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(DELETEICDCONNECTIONSYSTEMSBYICDCONNECTIONID);
+			query.setParameter("ICDConnectionId", icdConnectionId);
+			query.setParameter("SubSystemType", subSystemType);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	private static final String DELETEICDCONNECTIONINTERFACEBYICDCONNECTIONID = "UPDATE pfms_icd_connection_interfaces SET IsActive=0 WHERE ICDConnectionId=:ICDConnectionId";
+	@Override
+	public int deleteICDConnectionInterfaceByICDConnectionId(String icdConnectionId) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(DELETEICDCONNECTIONINTERFACEBYICDCONNECTIONID);
+			query.setParameter("ICDConnectionId", icdConnectionId);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+	@Override
+	public long addICDConnectionConnectors(ICDConnectionConnectors connectors) {
+		try {
+			manager.persist(connectors);
+			manager.flush();
+			return connectors.getICDConnectorId();
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside DocumentsDaoImpl addICDConnectionConnectors "+ e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+	
+	@Override
+	public long addICDConnectorPins(ICDConnectorPins pins) {
+		try {
+			manager.persist(pins);
+			manager.flush();
+			return pins.getConnectorPinId();
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside DocumentsDaoImpl addICDConnectorPins "+ e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+
+	public static final String DUPLICATECONNECTORCOUNT = "SELECT IFNULL(COUNT(ICDConnectorId), 0) AS MaxCount FROM pfms_icd_connection_connectors WHERE ICDConnectionId=:ICDConnectionId AND ConnectorNo=:ConnectorNo AND SystemType=:SystemType AND SubSystemId=:SubSystemId AND ICDConnectorId<>:ICDConnectorId";
+	@Override
+	public Long getDuplicateConnectorCount(String icdConnectionId, String connectorNo, String systemType, String subSystemId, String icdConnectorId) throws Exception {
+
+		try {
+			
+			Query query =manager.createNativeQuery(DUPLICATECONNECTORCOUNT);
+			query.setParameter("ICDConnectionId", icdConnectionId);
+			query.setParameter("ConnectorNo", connectorNo);
+			query.setParameter("SystemType", systemType);
+			query.setParameter("SubSystemId", subSystemId);
+			query.setParameter("ICDConnectorId", icdConnectorId);
+			
+			return (Long)query.getSingleResult();
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside DocumentsDAOImpl getDuplicateConnectorCount "+ e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	private static final String ICDCONNECTORLIST = "SELECT a.ICDConnectorId, a.ICDConnectionId, a.ConnectorNo, a.SystemType, a.SubSystemId, b.LevelName, b.LevelCode FROM pfms_icd_connection_connectors a, pfms_product_tree b WHERE a.IsActive=1 AND b.IsActive=1 AND a.SubSystemId=b.MainId AND a.ICDConnectionId=:ICDConnectionId";
+	@Override
+	public List<Object[]> getICDConnectorList(String icdConnectionId) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(ICDCONNECTORLIST);
+			query.setParameter("ICDConnectionId", icdConnectionId);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+		
+	}
+	
+	@Override
+	public List<ICDConnectionConnectors> getAllICDConnectorList() {
+		try {
+			Query query = manager.createQuery("FROM ICDConnectionConnectors WHERE IsActive=1");
+			return (List<ICDConnectionConnectors>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<ICDConnectionConnectors>();
+		}
+	}
+	
+	private static final String ICDCONNECTORPINLIST = "SELECT a.ICDConnectorId, a.ICDConnectionId, a.ConnectorNo, a.SystemType, a.SubSystemId, c.LevelName, c.LevelCode, b.ConnectorPinId, b.PinNo, b.InterfaceId, b.Constraints, b.Periodicity, b.Description, d.InterfaceCode, d.InterfaceName, a.ConnectorId, e.PartNo, e.ConnectorMake, e.StandardName, e.Protection, e.RefInfo, e.Remarks, e.PinCount \r\n"
+			+ "FROM pfms_icd_connection_connectors a JOIN pfms_icd_connector_pins b ON a.ICDConnectorId=b.ICDConnectorId JOIN pfms_product_tree c ON a.SubSystemId=c.MainId LEFT JOIN pfms_igi_interfaces d ON b.InterfaceId=d.InterfaceId LEFT JOIN pfms_igi_connector e ON e.ConnectorId=a.ConnectorId \r\n"
+			+ "WHERE a.IsActive=1 AND b.IsActive=1 AND a.ICDConnectionId=:ICDConnectionId";
+	@Override
+	public List<Object[]> getICDConnectorPinListByICDConnectionId(String icdConnectionId) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(ICDCONNECTORPINLIST);
+			query.setParameter("ICDConnectionId", icdConnectionId);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+		
+	}
+
+	@Override
+	public ICDConnectionConnectors getICDConnectionConnectorsById(String icdConnectorId) throws Exception {
+		try {
+			return manager.find(ICDConnectionConnectors.class, Long.parseLong(icdConnectorId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	private static final String DELETEICDCONNECTIONCONNECTORPINDETAILS = "UPDATE pfms_icd_connector_pins SET IsActive=0 WHERE ICDConnectorId=:ICDConnectorId";
+	@Override
+	public int deleteICDConnectionConnectorPinDetails(String icdConnectorId) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(DELETEICDCONNECTIONCONNECTORPINDETAILS);
+			query.setParameter("ICDConnectorId", icdConnectorId);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+	@Override
+	public ICDConnectorPinMapping getICDConnectorPinMappingById(String connectorPinMapId) throws Exception {
+		try {
+			return manager.find(ICDConnectorPinMapping.class, Long.parseLong(connectorPinMapId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public long addICDConnectorPinMapping(ICDConnectorPinMapping pinMap) {
+		try {
+			manager.persist(pinMap);
+			manager.flush();
+			return pinMap.getConnectorPinMapId();
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside DocumentsDaoImpl addICDConnectorPinMapping "+ e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+
+	private static final String ICDCONNECTORPINMAPLIST = "SELECT a.ConnectorPinMapId, a.ICDConnectionId, a.ConnectorPinIdFrom, a.ConnectorPinIdTo, a.PinFunction, a.SignalName, a.ConnectionCode, a.CableMaxLength, a.InterfaceLoss, a.CableBendingRadius, a.Remarks,\r\n"
+			+ "	b.ConnectorPinId AS 'PinIdE1', b.ICDConnectorId AS 'ConnectorIdE1', b.PinNo AS 'PinNoE1', c.ConnectorPinId AS 'PinIdE2', c.ICDConnectorId AS 'ConnectorIdE2', c.PinNo AS 'PinNoE2', \r\n"
+			+ "	d.ConnectorNo AS 'ConnectorNoE1', e.ConnectorNo AS 'ConnectorNoE2', d.SubSystemId AS 'SubSystemIdE1', e.SubSystemId AS 'SubSystemIdE2',\r\n"
+			+ "	f.LevelName AS 'LevelNameE1', f.LevelCode 'LevelCodeE1', g.LevelName AS 'LevelNameE2', g.LevelCode AS 'LevelCodeE2',\r\n"
+			+ "	a.InterfaceId, b.Constraints, b.Periodicity, b.Description, h.InterfaceName, h.InterfaceCode, i.InterfaceType, k.InterfaceContent \r\n"
+			+ "FROM pfms_icd_connector_pin_mapping a \r\n"
+			+ "LEFT JOIN pfms_icd_connector_pins b ON a.ConnectorPinIdFrom = b.ConnectorPinId\r\n"
+			+ "LEFT JOIN pfms_icd_connector_pins c ON a.ConnectorPinIdTo = c.ConnectorPinId\r\n"
+			+ "LEFT JOIN pfms_icd_connection_connectors d ON d.ICDConnectorId = b.ICDConnectorId\r\n"
+			+ "LEFT JOIN pfms_icd_connection_connectors e ON e.ICDConnectorId = c.ICDConnectorId\r\n"
+			+ "LEFT JOIN pfms_product_tree f ON f.MainId = d.SubSystemId\r\n"
+			+ "LEFT JOIN pfms_product_tree g ON g.MainId = e.SubSystemId\r\n"
+			+ "LEFT JOIN pfms_igi_interfaces h ON a.InterfaceId = h.InterfaceId\r\n"
+			+ "LEFT JOIN pfms_igi_interface_types i ON i.InterfaceTypeId = h.InterfaceTypeId\r\n"
+			+ "LEFT JOIN pfms_icd_connections j ON j.ICDConnectionId = a.ICDConnectionId AND j.ICDDocId=:ICDDocId\r\n"
+			+ "LEFT JOIN pfms_igi_interface_content k ON k.InterfaceContentId = h.InterfaceContentId \r\n"
+			+ "WHERE a.IsActive=1";
+	@Override
+	public List<ICDPinMapDTO> getICDConnectorPinMapListByICDDocId(String icdDocId) throws Exception {
+	    try {
+	        Query query = manager.createNativeQuery(ICDCONNECTORPINMAPLIST);
+			query.setParameter("ICDDocId", icdDocId);
+	        List<Object[]> results = query.getResultList();
+
+	        List<ICDPinMapDTO> dtoList = new ArrayList<>();
+	        if(results!=null && results.size()>0 && results.get(0)[0]!=null) {
+		        for (Object[] row : results) {
+		        	ICDPinMapDTO dto = new ICDPinMapDTO();
+	
+		            int i = 0;
+		            dto.setConnectorPinMapId(((Number) row[i++]).longValue());
+		            dto.setICDConnectionId(((Number) row[i++]).longValue());
+		            dto.setConnectorPinIdFrom(((Number) row[i++]).longValue());
+		            dto.setConnectorPinIdTo(((Number) row[i++]).longValue());
+		            dto.setPinFunction((String) row[i++]);
+		            dto.setSignalName((String) row[i++]);
+		            dto.setConnectionCode((String) row[i++]);
+		            dto.setCableMaxLength(((Number) row[i++]).intValue());
+		            dto.setInterfaceLoss(((Number) row[i++]).intValue());
+		            dto.setCableBendingRadius(((Number) row[i++]).doubleValue());
+		            dto.setRemarks((String) row[i++]);
+		            
+		            dto.setPinIdE1(((Number) row[i++]).longValue());
+		            dto.setConnectorIdE1(((Number) row[i++]).longValue());
+		            dto.setPinNoE1((String) row[i++]);
+		            dto.setPinIdE2(((Number) row[i++]).longValue());
+		            dto.setConnectorIdE2(((Number) row[i++]).longValue());
+		            dto.setPinNoE2((String) row[i++]);
+		            
+		            dto.setConnectorNoE1(((Number) row[i++]).intValue());
+		            dto.setConnectorNoE2(((Number) row[i++]).intValue());
+		            dto.setSubSystemIdE1(((Number) row[i++]).longValue());
+		            dto.setSubSystemIdE2(((Number) row[i++]).longValue());
+		            
+		            dto.setLevelNameE1((String) row[i++]);
+		            dto.setLevelCodeE1((String) row[i++]);
+		            dto.setLevelNameE2((String) row[i++]);
+		            dto.setLevelCodeE2((String) row[i++]);
+		            
+		            dto.setInterfaceId(((Number) row[i++]).longValue());
+		            dto.setConstraints((String) row[i++]);
+		            dto.setPeriodicity((String) row[i++]);
+		            dto.setDescription((String) row[i++]);
+		            dto.setInterfaceName((String) row[i++]);
+		            dto.setInterfaceCode((String) row[i++]);
+		            dto.setInterfaceType((String) row[i++]);
+		            dto.setInterfaceContent((String) row[i++]);
+	
+		            dtoList.add(dto);
+		        }
+	        }
+	        return dtoList;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return new ArrayList<>();
+	    }
+	}
+
+	@Override
+	public ICDConnectorPins getICDConnectorPinsById(String connectorPinId) throws Exception {
+		try {
+			return manager.find(ICDConnectorPins.class, Long.parseLong(connectorPinId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private static final String DELETEICDCONNECTIONCONNECTORBYID = "UPDATE pfms_icd_connection_connectors SET IsActive=0 WHERE ICDConnectorId=:ICDConnectorId";
+	@Override
+	public int deleteICDConnectionConnectorById(String icdConnectorId) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(DELETEICDCONNECTIONCONNECTORBYID);
+			query.setParameter("ICDConnectorId", icdConnectorId);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+	@Override
+	public List<ICDSystemAttach> getICDSystemAttachListByICDDocId(String icdDocId) {
+		try {
+			Query query = manager.createQuery("FROM ICDSystemAttach WHERE IsActive=1 AND ICDDocId=:ICDDocId");
+			query.setParameter("ICDDocId", Long.parseLong(icdDocId));
+			return (List<ICDSystemAttach>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<ICDSystemAttach>();
+		}
+	}
+
+	@Override
+	public ICDSystemAttach getICDSystemAttachById(String systemAttachId) throws Exception {
+		try {
+			return manager.find(ICDSystemAttach.class, Long.parseLong(systemAttachId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public long addICDSystemAttach(ICDSystemAttach systemAttach) {
+		try {
+			manager.persist(systemAttach);
+			manager.flush();
+			return systemAttach.getSystemAttachId();
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside DocumentsDaoImpl addICDSystemAttach "+ e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+	
 	/* ************************************************ ICD Document End***************************************************** */
 	
 	/* ************************************************ IRS Document ***************************************************** */
@@ -1079,7 +1810,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 
-	private static final String GETIRSDOCUMENTSPECSLIST = "SELECT a.IRSSpecificationId, a.IRSDocId, a.ICDConnectionId, a.LogicalInterfaceId, a.InfoName, a.ActionAtDest, b.ConnectionCode, c.MsgCode, c.MsgName FROM pfms_irs_document_specifications a, pfms_icd_document_connections b, pfms_igi_logical_interfaces c WHERE a.ICDConnectionId=b.ICDConnectionId AND a.LogicalInterfaceId=c.LogicalInterfaceId AND a.IsActive=1 AND a.IRSDocId=:IRSDocId";
+	private static final String GETIRSDOCUMENTSPECSLIST = "SELECT a.IRSSpecificationId, a.IRSDocId, a.ConnectorPinMapId, a.LogicalInterfaceId, '' AS InfoName, a.ActionAtDest, b.ConnectionCode, c.MsgCode, c.MsgName FROM pfms_irs_document_specifications a, pfms_icd_connector_pin_mapping b, pfms_igi_logical_interfaces c WHERE a.IsActive=1 AND a.ConnectorPinMapId = b.ConnectorPinMapId AND a.LogicalInterfaceId=c.LogicalInterfaceId AND a.IRSDocId=:IRSDocId";
 	@Override
 	public List<Object[]> getIRSDocumentSpecificationsList(String irsDocId)throws Exception {
 		try {
@@ -1120,7 +1851,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 	
-	private static final String GETDATACARRYINGCONNECTIONS = "SELECT '0' AS ConInterfaceId, a.ICDConnectionId, a.InterfaceId, a.ConnectionCode FROM pfms_icd_document_connections a, pfms_igi_interfaces b WHERE a.IsActive=1 AND a.InterfaceId=b.InterfaceId AND b.InterfaceContentId IN (SELECT c.InterfaceContentId FROM pfms_igi_interface_content c WHERE c.IsDataCarrying='Y' AND c.IsActive=1) AND a.ICDDocId =:ICDDocId";
+	private static final String GETDATACARRYINGCONNECTIONS = "SELECT a.ConnectorPinMapId, a.ConnectionCode, a.ICDConnectionId, a.InterfaceId FROM pfms_icd_connector_pin_mapping a, pfms_igi_interfaces b, pfms_icd_connections c WHERE a.IsActive=1 AND a.InterfaceId=b.InterfaceId AND a.ICDConnectionId=c.ICDConnectionId AND b.InterfaceContentId IN (SELECT c.InterfaceContentId FROM pfms_igi_interface_content c WHERE c.IsDataCarrying='Y' AND c.IsActive=1) AND c.ICDDocId=:ICDDocId";
 	@Override
 	public List<Object[]> getDataCarryingConnectionList(String icdDocId)throws Exception {
 		try {
@@ -1144,6 +1875,125 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 
+	@Override
+	public long addIRSFieldDescription(IRSFieldDescription irsFieldDescription) {
+		try {
+		    manager.persist(irsFieldDescription);
+		    manager.flush();
+			return irsFieldDescription.getIRSFieldDescId();
+		}
+		catch (Exception e) {
+			logger.error(new Date()  + " Inside DocumentsDAOImpl addIRSFieldDescription " + e);
+			e.printStackTrace();
+			return 0 ;
+		}
+	}
+
+	private static final String GETIRSFIELDDESCRIPTIONLIST = "SELECT a.IRSFieldDescId, a.LogicalInterfaceId, a.FieldMasterId, a.DataTypeMasterId, c.DataLength, a.FieldDesc, a.Quantum, a.Remarks, a.FieldName, a.FieldShortName, a.FieldCode, c.DataTypePrefix, a.FieldGroupId, a.TypicalValue, a.FieldMinValue, a.FieldMaxValue, a.InitValue, a.FieldOffSet, a.FieldUnit, a.IRSSpecificationId, a.ArrayMasterId, d.ArrayName, d.ArrayValue, e.GroupName, e.GroupCode, e.GroupType, a.GroupVariable, c.AliasName, c.DataStandardName, a.FieldSlNo \r\n"
+			+ "FROM pfms_irs_field_desc a JOIN pfms_irs_document_specifications b ON a.IRSSpecificationId = b.IRSSpecificationId AND b.IsActive=1 JOIN pfms_data_type_master c ON a.DataTypeMasterId = c.DataTypeMasterId LEFT JOIN pfms_irs_array_master d ON a.ArrayMasterId = d.ArrayMasterId LEFT JOIN pfms_field_group e ON a.FieldGroupId = e.FieldGroupId \r\n"
+			+ "WHERE a.IsActive=1 AND b.IRSDocId=:IRSDocId ORDER BY a.FieldSlNo, a.IRSFieldDescId";
+	@Override
+	public List<Object[]> getIRSFieldDescriptionList(String irsDocId)throws Exception {
+		try {
+			Query query=manager.createNativeQuery(GETIRSFIELDDESCRIPTIONLIST);
+			query.setParameter("IRSDocId", Long.parseLong(irsDocId));
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+
+	}
+
+	private static final String IRSFIELDDESCRIPTIONDELETE = "UPDATE pfms_irs_field_desc SET IsActive='0' WHERE IRSSpecificationId=:IRSSpecificationId AND FieldGroupId=:FieldGroupId";
+	@Override
+	public int removeIRSFieldDescription(String irsSpecificationId, String fieldGroupId) throws Exception {
+		try {
+			Query query =manager.createNativeQuery(IRSFIELDDESCRIPTIONDELETE);
+			query.setParameter("IRSSpecificationId", Long.parseLong(irsSpecificationId));
+			query.setParameter("FieldGroupId", Long.parseLong(fieldGroupId));
+			return query.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+	private static final String GETIRSFIELDDESCRIPTIONENTITYLIST = "SELECT a FROM IRSFieldDescription a, IRSDocumentSpecifications b WHERE a.IsActive=1 AND b.IsActive=1 AND a.IRSSpecificationId = b.IRSSpecificationId AND b.IRSDocId=:IRSDocId";
+	@Override
+	public List<IRSFieldDescription> getIRSFieldDescriptionEntityList(String irsDocId) {
+		try {
+			Query query = manager.createQuery(GETIRSFIELDDESCRIPTIONENTITYLIST);
+			query.setParameter("IRSDocId", Long.parseLong(irsDocId));
+			return (List<IRSFieldDescription>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<IRSFieldDescription>();
+		}
+	}
+	
+	@Override
+	public IRSFieldDescription getIRSFieldDescriptionById(String irsFieldDescId) {
+		try {
+			return manager.find(IRSFieldDescription.class, Long.parseLong(irsFieldDescId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private static final String IRSFIELDDESCRIPTIONUPDATE = "UPDATE pfms_irs_field_desc SET GroupVariable=:GroupVariable, ArrayMasterId=:ArrayMasterId WHERE IRSSpecificationId=:IRSSpecificationId AND FieldGroupId=:FieldGroupId";
+	@Override
+	public int updateIRSFieldDescription(String groupVariable, String arrayMasterId, String irsSpecificationId, String fieldGroupId) throws Exception {
+		try {
+			Query query =manager.createNativeQuery(IRSFIELDDESCRIPTIONUPDATE);
+			query.setParameter("GroupVariable", groupVariable);
+			query.setParameter("ArrayMasterId", Long.parseLong(arrayMasterId));
+			query.setParameter("IRSSpecificationId", Long.parseLong(irsSpecificationId));
+			query.setParameter("FieldGroupId", Long.parseLong(fieldGroupId));
+			return query.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	@Override
+	public List<IRSArrayMaster> getIRSArrayMasterListByIRSDocId(String irsDocId) {
+		try {
+			Query query = manager.createQuery("FROM IRSArrayMaster WHERE IsActive=1 AND IRSDocId=:IRSDocId");
+			query.setParameter("IRSDocId", Long.parseLong(irsDocId));
+			return (List<IRSArrayMaster>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<IRSArrayMaster>();
+		}
+	}
+
+	@Override
+	public IRSArrayMaster getIRSArrayMasterById(String arrayMasterId) throws Exception {
+		try {
+			return manager.find(IRSArrayMaster.class, Long.parseLong(arrayMasterId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public long addIRSArrayMaster(IRSArrayMaster arrayMaster) throws Exception {
+		try {
+			manager.persist(arrayMaster);
+			manager.flush();
+			return arrayMaster.getArrayMasterId();
+		}
+		catch (Exception e) {
+			logger.error(new Date()  + " Inside DocumentsDAOImpl addIRSArrayMaster " + e);
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
 	/* ************************************************ IRS Document End***************************************************** */
 	
 	/* ************************************************ IDD Document ***************************************************** */
@@ -1285,5 +2135,72 @@ public class DocumentsDaoImpl implements DocumentsDao{
 			return null;
 		}
 	}
+
+	private static final String SYSTEMPRODUCTTREELIST = "SELECT a.MainId, a.SubLevelId, a.LevelName, a.Stage, a.Module, a.RevisionNo, a.Sid, a.LevelCode, a.ParentLevelId, a.LevelId, a.LevelType FROM pfms_system_product_tree a WHERE a.MainId>0 AND a.IsActive='1' ORDER BY a.SubLevelId";
+	@Override
+	public List<Object[]> getSystemProductTreeAllList()throws Exception
+	{
+		try {
+			Query query=manager.createNativeQuery(SYSTEMPRODUCTTREELIST);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+
+	}
 	
+	private static final String IGILOGICALCHANNELLIST = "SELECT a.LogicalChannelId, a.SourceId, a.DestinationId, a.LogicalChannel, a.ChannelCode, a.Description, b.LevelName AS 'SourceName', b.LevelCode AS 'SourceCode', c.LevelName AS 'DestName', c.LevelCode AS 'DestCode' FROM pfms_igi_logical_channel a, pfms_system_product_tree b, pfms_system_product_tree c WHERE a.SourceId=b.MainId AND a.DestinationId=c.MainId AND a.IsActive=1 ORDER BY a.LogicalChannelId DESC";
+	@Override
+	public List<Object[]> getLogicalChannelList() throws Exception {
+		try {
+			Query query = manager.createNativeQuery(IGILOGICALCHANNELLIST);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+	}
+
+	public static final String LOGICALCHANNELCOUNT = "SELECT IFNULL(COUNT(LogicalChannelId), 0) AS 'Count' FROM pfms_igi_logical_channel";
+	@Override
+	public int getLogicalChannelCount() throws Exception {
+
+		try {
+			Query query = manager.createNativeQuery(LOGICALCHANNELCOUNT);
+			Long count = (Long)query.getSingleResult();
+			return count.intValue();
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside DocumentsDAOImpl getLogicalChannelCount "+ e);
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+	private static final String GETFIELDDESCRIPTIONLIST = "SELECT a.FieldDescId, a.LogicalInterfaceId, a.FieldMasterId, b.DataTypeMasterId, c.DataLength, b.FieldDesc, b.Quantum, b.Remarks, b.FieldName, b.FieldShortName, b.FieldCode, c.DataTypePrefix, a.FieldGroupId, b.TypicalValue, b.FieldMinValue, b.FieldMaxValue, b.InitValue, b.FieldOffSet, b.FieldUnit, c.AliasName, c.DataStandardName FROM pfms_igi_field_desc a, pfms_field_master b, pfms_data_type_master c WHERE a.IsActive=1 AND a.FieldMasterId = b.FieldMasterId AND b.DataTypeMasterId=c.DataTypeMasterId";
+	@Override
+	public List<Object[]> getIGIFieldDescriptionList()throws Exception {
+		try {
+			Query query=manager.createNativeQuery(GETFIELDDESCRIPTIONLIST);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+
+	}
+	
+	public static final String MECHANICALINTERFACECOUNT = "SELECT IFNULL(COUNT(MechInterfaceId), 0) AS 'Count' FROM pfms_icd_mech_interfaces";
+	@Override
+	public long getMechanicalInterfaceCount() throws Exception {
+
+		try {
+			Query query = manager.createNativeQuery(MECHANICALINTERFACECOUNT);
+			return (Long)query.getSingleResult();
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside DocumentsDAOImpl getMechanicalInterfaceCount "+ e);
+			e.printStackTrace();
+			return 0;
+		}
+	}
 }

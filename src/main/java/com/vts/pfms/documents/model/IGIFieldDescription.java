@@ -16,23 +16,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "pfms_igi_logical_channel")
-public class IGILogicalChannel implements Serializable {
+@Table(name="pfms_igi_field_desc")
+public class IGIFieldDescription implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long LogicalChannelId;
-	private Long SourceId;
-	private Long DestinationId;
-	private String LogicalChannel;
-	private String ChannelCode;
-	private String Description;
+	private Long FieldDescId;
+	private Long LogicalInterfaceId;
+	private Long FieldGroupId;
+	private Long FieldMasterId;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;
-	private int IsActive;
-	
+	private Integer IsActive;
 }

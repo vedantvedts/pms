@@ -1,5 +1,5 @@
 <%@page import="java.util.stream.Collectors"%>
-<%@page import="com.vts.pfms.documents.model.PfmsApplicableDocs"%>
+<%@page import="com.vts.pfms.documents.model.StandardDocuments"%>
 <%@page import="java.util.List"%>
 <%@page import="com.google.gson.GsonBuilder"%>
 <%@page import="com.google.gson.Gson"%>
@@ -64,10 +64,10 @@
 	String docType = (String)request.getAttribute("docType");
 	String documentNo = (String)request.getAttribute("documentNo");
 
-	List<PfmsApplicableDocs> applicableDocsList = (List<PfmsApplicableDocs>)request.getAttribute("applicableDocsList");
+	List<StandardDocuments> applicableDocsList = (List<StandardDocuments>)request.getAttribute("applicableDocsList");
 	List<Object[]> applicableDocsLinkedList = (List<Object[]>)request.getAttribute("applicableDocsLinkedList");
 	List<Long> igiApplicableDocIds = applicableDocsLinkedList.stream().map(e -> Long.parseLong(e[1].toString())).collect(Collectors.toList());
-	applicableDocsList = applicableDocsList.stream().filter(e -> !igiApplicableDocIds.contains(e.getApplicableDocId())).collect(Collectors.toList());
+	applicableDocsList = applicableDocsList.stream().filter(e -> !igiApplicableDocIds.contains(e.getStandardDocumentId())).collect(Collectors.toList());
 	List<String> igiApplicableDocNames = applicableDocsList.stream().map(e -> e.getDocumentName().toLowerCase()).collect(Collectors.toList());
 	
 	Gson gson = new GsonBuilder().create();
@@ -101,9 +101,9 @@
 	                    </h5>
                 	</div>
                 	<div class="col-md-2"  align="right">
-               			<button type="button" class="btn btn-sm submit" data-toggle="modal" data-target="#addNewDocumentsModal">
+               			<!-- <button type="button" class="btn btn-sm submit" data-toggle="modal" data-target="#addNewDocumentsModal">
                				ADD NEW DOCUMENTS
-               			</button>
+               			</button> -->
                 	</div>
                     <div class="col-md-1" align="right">
                         <a class="btn btn-info btn-sm shadow-nohover back" style="position:relative;"
@@ -215,9 +215,9 @@
 								        %>
 								        	<!-- Start a new row for the first column -->
 									        <%if (i % 3 == 0) { rowcount=1;%> <tr> <%} %>
-									        <%PfmsApplicableDocs applicableDoc = applicableDocsList.get(i); %>
+									        <%StandardDocuments applicableDoc = applicableDocsList.get(i); %>
 									        	<td class="center">
-									        		<input type="checkbox" class="shortcode_<%=rowcount %>" name="applicableDocId" value="<%=applicableDoc.getApplicableDocId()%>">
+									        		<input type="checkbox" class="shortcode_<%=rowcount %>" name="applicableDocId" value="<%=applicableDoc.getStandardDocumentId()%>">
 									        	</td>
 								            	<td>
 								            		<%=applicableDoc.getDocumentName() %>
@@ -246,7 +246,7 @@
 	</div>
 
 	<!-- ----------------------------------------------- Add New Applicable Documents Modal --------------------------------------------------------------- -->
-	<div class="modal fade bd-example-modal-lg" id="addNewDocumentsModal" tabindex="-1" role="dialog" aria-labelledby="addNewShortCodesModal" aria-hidden="true" style="margin-top: 10%;">
+	<%-- <div class="modal fade bd-example-modal-lg" id="addNewDocumentsModal" tabindex="-1" role="dialog" aria-labelledby="addNewShortCodesModal" aria-hidden="true" style="margin-top: 10%;">
 		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
 			<div class="modal-content" style="width:80%;">
 				<div class="modal-header" style="background: #055C9D;color: white;">
@@ -296,7 +296,7 @@
      			</div>
      		</div>
 		</div>
-	</div>				
+	</div> --%>				
 	<!-- ----------------------------------------------- Add New Short Codes Modal End-------------------------------------------------------- -->
 <script type="text/javascript">
 

@@ -12,27 +12,27 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @Entity
-@Table(name = "pfms_igi_logical_channel")
-public class IGILogicalChannel implements Serializable {
+@Table(name="pfms_icd_connector_pins")
+public class ICDConnectorPins implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long LogicalChannelId;
-	private Long SourceId;
-	private Long DestinationId;
-	private String LogicalChannel;
-	private String ChannelCode;
+	private Long ConnectorPinId;
+	private Long ICDConnectorId;
+	private String PinNo;
+	private Long InterfaceId;
+	private String Constraints;
+	private String Periodicity;
 	private String Description;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;
 	private int IsActive;
-	
 }

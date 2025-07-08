@@ -8,28 +8,22 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 @Entity
-@Table(name="pfms_icd_connections")
-public class ICDDocumentConnections implements Serializable {
-
+@Table(name="pfms_icd_connection_interfaces")
+public class ICDConnectionInterfaces implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long ConInterfaceId;
 	private Long ICDConnectionId;
-	private Long ICDDocId;
-	private String DrawingNo;
-	private String DrawingAttach;
+	private Long InterfaceId;
 	private String CreatedBy;
 	private String CreatedDate;
-	private String ModifiedBy;
-	private String ModifiedDate;
-	private int IsActive;
+	private Integer IsActive;
+
 }

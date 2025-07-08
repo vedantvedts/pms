@@ -26,7 +26,7 @@ public class IGIApplicableDocs implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long IGIApplicableDocId;
-	private Long ApplicableDocId;
+	private Long StandardDocumentId;
 	private Long DocId;
 	private String DocType;
 	private String CreatedBy;

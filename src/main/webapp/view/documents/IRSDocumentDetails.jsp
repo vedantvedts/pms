@@ -5,7 +5,7 @@
 <%@page import="com.google.gson.GsonBuilder"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="com.vts.pfms.documents.model.PfmsIRSDocument"%>
-<%@page import="com.vts.pfms.documents.model.PfmsApplicableDocs"%>
+<%@page import="com.vts.pfms.documents.model.StandardDocuments"%>
 <%@page import="com.vts.pfms.documents.model.IGIInterface"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.documents.model.IGIDocumentShortCodes"%>
@@ -32,11 +32,6 @@
 	<spring:url value="/resources/pdfmake/htmltopdf.js" var="htmltopdf" />
 	<script src="${htmltopdf}"></script> 
 	
-	<!-- Summer Note -->
-	<spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
-	<spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
-	<script src="${SummernoteJs}"></script>
-	<link href="${SummernoteCss}" rel="stylesheet" />
 <style type="text/css">
 
 .topicsSideBar {
@@ -178,10 +173,10 @@
 		List<Object[]> abbreviationsLinkedList = shortCodesLinkedList.stream().filter(e -> e[3].toString().equalsIgnoreCase("A")).collect(Collectors.toList());
 		List<Object[]> acronymsLinkedList = shortCodesLinkedList.stream().filter(e -> e[3].toString().equalsIgnoreCase("B")).collect(Collectors.toList());
 		
-		List<PfmsApplicableDocs> applicableDocsList = (List<PfmsApplicableDocs>)request.getAttribute("applicableDocsList");
+		List<StandardDocuments> applicableDocsList = (List<StandardDocuments>)request.getAttribute("applicableDocsList");
 		List<Object[]> irsApplicableDocsList = (List<Object[]>)request.getAttribute("irsApplicableDocsList");
 		List<Long> irsApplicableDocIds = irsApplicableDocsList.stream().map(e -> Long.parseLong(e[1].toString())).collect(Collectors.toList());
-		applicableDocsList = applicableDocsList.stream().filter(e -> !irsApplicableDocIds.contains(e.getApplicableDocId())).collect(Collectors.toList());
+		applicableDocsList = applicableDocsList.stream().filter(e -> !irsApplicableDocIds.contains(e.getStandardDocumentId())).collect(Collectors.toList());
 		List<String> irsApplicableDocNames = applicableDocsList.stream().map(e -> e.getDocumentName().toLowerCase()).collect(Collectors.toList());
 
 		PfmsIRSDocument irsDocument = (PfmsIRSDocument)request.getAttribute("irsDocument");
@@ -190,7 +185,8 @@
 		List<IGILogicalChannel> logicalChannelList = (List<IGILogicalChannel>)request.getAttribute("logicalChannelList");
 
 		List<Object[]> irsSpecificationsList = (List<Object[]>)request.getAttribute("irsSpecificationsList"); 
-		
+		List<Object[]> fieldDescriptionList = (List<Object[]>)request.getAttribute("fieldDescriptionList");
+
 		List<IGIDocumentIntroduction> introductionList = (List<IGIDocumentIntroduction>)request.getAttribute("igiDocumentIntroductionList");
 		introductionList = introductionList.stream().filter(e -> e.getDocId()==Long.parseLong(irsDocId) && e.getDocType().equalsIgnoreCase("C")).collect(Collectors.toList());
 		
@@ -230,6 +226,11 @@
         </div>
     <% } %>
 
+	<div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white; font-size: 20px; font-weight: bold;">
+		<div class="spinner" style="border: 4px solid rgba(255, 255, 255, 0.3); border-top: 4px solid white; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px;"></div>
+	   	Please wait while we are generating the PDF...
+	</div>
+	
     <div class="container-fluid">
        
     	<div class="card shadow-nohover" style="margin-top: -0.6pc">
@@ -263,7 +264,13 @@
   									<div class="col-md-12">
   										<div class="modulecontainer">
 				
-											<div class="card module" onclick="DownloadDocPDF()">
+											<div class="card module" onclick="DownloadDocPDF('P')">
+												<div class="card-body">
+													<div><img alt="" src="view/images/pdf.png" > <span class="topic-name">P-IRS Document</span></div>
+												</div>
+											</div>
+				
+											<div class="card module" onclick="DownloadDocPDF('I')">
 												<div class="card-body">
 													<div><img alt="" src="view/images/pdf.png" > <span class="topic-name">IRS Document</span></div>
 												</div>
@@ -683,11 +690,14 @@
 
 </script>    
 <script type="text/javascript">
-function DownloadDocPDF(){
+function DownloadDocPDF(flag){
+
+	document.getElementById('loadingOverlay').style.display = 'flex';
+	
 	var chapterCount = 0;
     var mainContentCount = 0;
 	var leftSideNote = '<%if(docTempAtrr!=null && docTempAtrr[12]!=null) {%><%=docTempAtrr[12].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
-	
+
 	var docDefinition = {
             content: [
                 // Cover Page with Project Name and Logo
@@ -1078,12 +1088,13 @@ function DownloadDocPDF(){
 	                {
 	                    text: '<%=Sub0Count+". "+intro.getChapterName()%>',
 	                    style: 'chapterSubHeader',
-	                    tocItem: false,
+	                    tocItem: true,
+	                    tocMargin: [10, 0, 0, 0],
 	                },
 	                {
 	                	stack: [htmlToPdfmake(setImagesWidth('<%if(intro.getChapterContent()!=null) {%><%=intro.getChapterContent().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
-	                		  +'<%}else {%> No Details Added! <%} %>', 500))],
-	                    margin: [20, 0, 0, 0],
+	                		  +'<%}else {%> - <%} %>', 500))],
+	                    margin: [15, 0, 0, 0],
 	                },
 	                
 	                <%
@@ -1095,18 +1106,19 @@ function DownloadDocPDF(){
 		                {
 		                    text: '<%=Sub0Count+". "+Sub1Count+". "+intro1.getChapterName()%>',
 		                    style: 'chapterSubSubHeader',
-		                    tocItem: false,
+		                    tocItem: true,
+		                    tocMargin: [20, 0, 0, 0],
 		                },
 		                {
 		                	stack: [htmlToPdfmake(setImagesWidth('<%if(intro1.getChapterContent()!=null) {%><%=intro1.getChapterContent().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
-		                		  +'<%}else {%> No Details Added! <%} %>', 500))],
+		                		  +'<%}else {%> - <%} %>', 500))],
 		                    margin: [25, 0, 0, 0],
 		                },
 	                <%++Sub1Count;} }%>
 	                
-                <%} ++Sub0Count;} }else{%>
+                <%++Sub0Count; } } }else{%>
 	                {
-	                    text: 'No Details Added!',
+	                    text: '-',
 	                    margin: [10, 0, 0, 0],
 	                },
                 <%} %>
@@ -1124,12 +1136,13 @@ function DownloadDocPDF(){
                 {
                     table: {
                         headerRows: 1,
-                        widths: ['20%', '80%'],
+                        widths: ['20%', '60%', '20%'],
                         body: [
                             // Table header
                             [
                                 { text: 'SN', style: 'tableHeader' },
                                 { text: 'Document Name', style: 'tableHeader' },
+                                { text: 'Action', style: 'tableHeader' },
                             ],
                             // Populate table rows
                            <% if(irsApplicableDocsList!=null && irsApplicableDocsList.size()>0){
@@ -1139,10 +1152,18 @@ function DownloadDocPDF(){
 		                            [
 		                                { text: '<%=++slno %>', style: 'tableData',alignment: 'center' },
 		                                { text: '<%=obj[2] %>', style: 'tableData', },
+		                                {
+		                                    text: 'Download',
+		                                    style: 'tableData',
+		                                    link: '<%= request.getRequestURL().toString().replace(request.getRequestURI(), "") + request.getContextPath() + "/StandardDocumentsDownload.htm?StandardDocumentId=" + obj[0] %>',
+		                                    color: 'blue',
+		                                    decoration: 'underline',
+		                                    alignment: 'center',
+		                                },
 		                            ],
 		                        <% } %>
                             <% } else{%>
-                            	[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 2 },]
+                            	[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 3 },]
                             <%} %>
                         ]
                     },
@@ -1230,15 +1251,18 @@ function DownloadDocPDF(){
                 	for(Object[] obj : irsSpecificationsList) {
                 		int sn = 0;
                 		IGILogicalInterfaces iface = logicalInterfaceList.stream().filter(e -> e.getLogicalInterfaceId()==Long.parseLong(obj[3].toString())).findFirst().orElse(null);
-                		String[] split = obj[6].toString().split("_");
+                		String[] split = obj[6].toString().split("-");
 			        	IGILogicalChannel channel = logicalChannelList.stream().filter(e -> e.getLogicalChannelId().equals(iface.getLogicalChannelId())).findFirst().orElse(null);
+			        	
+			        	List<Object[]> fieldDescList =  fieldDescriptionList.stream().filter(e -> iface.getLogicalInterfaceId()== Long.parseLong(e[1].toString())).collect(Collectors.toList());
+			        	
                 %>
 	                {
-	                	text: mainContentCount+'.<%=++specCount%>. <%=obj[6]%>',	
+	                	text: mainContentCount+'. <%=++specCount%>. <%=obj[6]%>',	
 	                	style: 'chapterSubHeader',
 	                    tocItem: true,
 	                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=specCount%>',
-	                    tocMargin: [20, 0, 0, 0],
+	                    tocMargin: [10, 0, 0, 0],
 	                },
 	                
 	                {
@@ -1277,6 +1301,16 @@ function DownloadDocPDF(){
 	                            ],
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Msg Length', style: 'tableData', bold: true},
+	                                { text: '<%=iface.getMsgLength() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Msg No', style: 'tableData', bold: true},
+	                                { text: '<%=iface.getMsgNo() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Description', style: 'tableData', bold: true},
 	                                { text: '<%=(iface.getMsgDescription()!=null && !iface.getMsgDescription().isEmpty())? iface.getMsgDescription():"-" %>', style: 'tableData' },
 	                            ],
@@ -1288,7 +1322,7 @@ function DownloadDocPDF(){
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Source', style: 'tableData', bold: true},
-	                                { text: '<%=split[0].split("\\.")[1] %>', style: 'tableData' },
+	                                { text: '<%=split[0] %>', style: 'tableData' },
 	                            ],
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
@@ -1298,12 +1332,10 @@ function DownloadDocPDF(){
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Action at Destination', style: 'tableData', bold: true},
-	                                { text: '<%=obj[5] %>', style: 'tableData' },
-	                            ],
-	                            [
-	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
-	                                { text: 'Info Name', style: 'tableData', bold: true},
-	                                { text: '<%=obj[4] %>', style: 'tableData' },
+	                                {
+	        		                	stack: [htmlToPdfmake(setImagesWidth('<%if(obj[5]!=null) {%><%=obj[5].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
+	        		                		  +'<%}else {%> - <%} %>', 500))],
+	        		                },
 	                            ],
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
@@ -1314,6 +1346,11 @@ function DownloadDocPDF(){
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Additional Info', style: 'tableData', bold: true},
 	                                { text: '<%=(iface.getAdditionalInfo()!=null && !iface.getAdditionalInfo().isEmpty())? iface.getAdditionalInfo():"-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Fields', style: 'tableData', bold: true},
+	                                { text: '<%for(Object[] field : fieldDescList) { %><%=field[8] %>, <%} %> ', style: 'tableData' },
 	                            ],
 	                        ]
 	                    },
@@ -1335,8 +1372,145 @@ function DownloadDocPDF(){
 	                        }
 	                    }
 	                },
+	                { text: '\n',},
                 <%} }%>
+                
+
                 /* ************************************** Specifications End *********************************** */
+                
+                /* ************************************** Field Description *********************************** */
+                <%--  <%
+                	Set<Long> logicalInterfaceIds =  irsSpecificationsList.stream().map(e -> Long.parseLong(e[3].toString())).collect(Collectors.toSet());
+         			List<Object[]> fieldDescList =  fieldDescriptionList.stream().filter(e -> logicalInterfaceIds.contains(Long.parseLong(e[1].toString())) ).collect(Collectors.toList());
+         			fieldDescList = fieldDescList.stream()
+         				    .collect(Collectors.groupingBy(e -> e[2]))
+         				    .values().stream()
+         				    .map(list -> list.get(0))
+         				    .collect(Collectors.toList());
+
+                {
+                    text: (++mainContentCount)+'. Field Description',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    pageBreak: 'before'
+                },
+                <% if(fieldDescList!=null && fieldDescList.size()>0){
+         			int slno=0;
+         			for(Object[] field : fieldDescList){
+         				int sn = 0;
+         		%>
+         		
+         			{
+                    	text: mainContentCount+'.<%=++slno%>. <%=field[8] %>',	
+                    	style: 'chapterSubHeader',
+                        tocItem: true,
+                        id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=slno%>',
+                        tocMargin: [10, 0, 0, 0],
+                    },
+                    
+                    {
+                        table: {
+                            headerRows: 1,
+                            widths: ['10%', '30%', '60%'],
+                            body: [
+                                // Table header
+                                [
+                                    { text: 'SN', style: 'tableHeader' },
+                                    { text: 'Section', style: 'tableHeader' },
+                                    { text: 'Details', style: 'tableHeader' },
+                                ],
+                                // Populate table rows
+                                [
+                                	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+                                    { text: 'Field Code', style: 'tableData', bold: true},
+                                    { text: '<%=field[10] %>', style: 'tableData' },
+                                ],
+                                [
+                                	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+                                    { text: 'Field Short Name', style: 'tableData', bold: true},
+                                    { text: '<%=field[9] %>', style: 'tableData' },
+                                ],
+                                [
+                                	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+                                    { text: 'Field Name', style: 'tableData', bold: true},
+                                    { text: '<%=field[8] %>', style: 'tableData' },
+                                ],
+                                [
+                                	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+                                    { text: 'Field Description', style: 'tableData', bold: true},
+                                    { text: '<%=field[5]!=null && !field[5].toString().isEmpty()?field[5] : "-" %>', style: 'tableData' },
+                                ],
+                                [
+                                	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+                                    { text: 'Data type (bits)', style: 'tableData', bold: true},
+                                    { text: '<%=field[27] %> (<%=field[4] %>)', style: 'tableData' },
+                                ],
+                                [
+                                	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+                                    { text: 'Typical Value', style: 'tableData', bold: true},
+                                    { text: '<%=field[13] %>', style: 'tableData' },
+                                ],
+                                [
+                                	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+                                    { text: 'Min Value', style: 'tableData', bold: true},
+                                    { text: '<%=field[14] %>', style: 'tableData' },
+                                ],
+                                [
+                                	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+                                    { text: 'Max Value', style: 'tableData', bold: true},
+                                    { text: '<%=field[15] %>', style: 'tableData' },
+                                ],
+                                [
+                                	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+                                    { text: 'Init Value', style: 'tableData', bold: true},
+                                    { text: '<%=field[16] %>', style: 'tableData' },
+                                ],
+                                [
+                                	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+                                    { text: 'Field Offset', style: 'tableData', bold: true},
+                                    { text: '<%=field[17]!=null?field[17]:"-" %>', style: 'tableData' },
+                                ],
+                                [
+                                	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+                                    { text: 'Quantum', style: 'tableData', bold: true},
+                                    { text: '<%=field[6] %>', style: 'tableData' },
+                                ],
+                                [
+                                	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+                                    { text: 'Unit', style: 'tableData', bold: true},
+                                    { text: '<%=field[18] %>', style: 'tableData' },
+                                ],
+                                [
+                                	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+                                    { text: 'Remarks', style: 'tableData', bold: true},
+                                    { text: '<%=field[7]!=null && !field[7].toString().isEmpty()?field[7] : "-" %>', style: 'tableData' },
+                                ],
+                            ]
+                        },
+                        layout: {
+                            /* fillColor: function(rowIndex) {
+                                return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                            }, */
+                            hLineWidth: function(i, node) {
+                                return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                            },
+                            vLineWidth: function(i) {
+                                return 0.5;
+                            },
+                            hLineColor: function(i) {
+                                return '#aaaaaa';
+                            },
+                            vLineColor: function(i) {
+                                return '#aaaaaa';
+                            }
+                        }
+                    },
+                    
+                    { text: '\n\n',},
+                <% } }%> --%>
+                
+         		/* ************************************** Field Description End *********************************** */
 			],
 			styles: {
                 DocumentName: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
@@ -1359,7 +1533,7 @@ function DownloadDocPDF(){
                 const pageWidth = pageSize.width; // Adjust dynamically based on page size
                 const margin = 30;
 
-                if (currentPage > 2) {
+                if (currentPage > 0) {
                     return {
                         stack: [
                             {
@@ -1444,8 +1618,156 @@ function DownloadDocPDF(){
            
             defaultStyle: { fontSize: 12, color: 'black', }
         };
-		
-        pdfMake.createPdf(docDefinition).open();
+	
+	
+	    /* ************************************** Field Description *********************************** */
+	    <%
+	    	Set<Long> logicalInterfaceIds =  irsSpecificationsList.stream().map(e -> Long.parseLong(e[3].toString())).collect(Collectors.toSet());
+			List<Object[]> fieldDescList =  fieldDescriptionList.stream().filter(e -> logicalInterfaceIds.contains(Long.parseLong(e[1].toString())) ).collect(Collectors.toList());
+			fieldDescList = fieldDescriptionList.stream()
+				    .collect(Collectors.groupingBy(e -> e[2]))
+				    .values().stream()
+				    .map(list -> list.get(0))
+				    .collect(Collectors.toList());
+	
+	    %>
+		if (flag==='I') {
+	        docDefinition.content.push(
+	                {
+	                    text: (++mainContentCount) + '. Field Description',
+	                    style: 'chapterHeader',
+	                    tocItem: true,
+	                    id: 'chapter' + (++chapterCount),
+	                    pageBreak: 'before'
+	                }
+	            );
+	        
+	        <% if(fieldDescList != null && fieldDescList.size() > 0) {
+	            int slno = 0;
+	            for (Object[] field : fieldDescList) {
+	                int sn = 0;
+	        %>
+	        	docDefinition.content.push(
+	                {
+	                    text: mainContentCount + '.<%=++slno%>. <%=field[8] %>',
+	                    style: 'chapterSubHeader',
+	                    tocItem: true,
+	                    id: 'chapter' + chapterCount + '.' + mainContentCount + '.<%=slno%>',
+	                    tocMargin: [10, 0, 0, 0],
+	                },
+	                {
+	                    table: {
+	                        headerRows: 1,
+	                        widths: ['10%', '30%', '60%'],
+	                        body: [
+	                        	// Table header
+	                            [
+	                                { text: 'SN', style: 'tableHeader' },
+	                                { text: 'Section', style: 'tableHeader' },
+	                                { text: 'Details', style: 'tableHeader' },
+	                            ],
+	                            // Populate table rows
+	                            <%-- [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Field Code', style: 'tableData', bold: true},
+	                                { text: '<%=field[10] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Field Short Name', style: 'tableData', bold: true},
+	                                { text: '<%=field[9] %>', style: 'tableData' },
+	                            ], --%>
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Field Name', style: 'tableData', bold: true},
+	                                { text: '<%=field[8] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Field Description', style: 'tableData', bold: true},
+	                                { text: '<%=field[5]!=null && !field[5].toString().isEmpty()?field[5] : "-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Data type', style: 'tableData', bold: true},
+	                                { text: '<%=field[27] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Typical Value', style: 'tableData', bold: true},
+	                                { text: '<%=field[13] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Min Value', style: 'tableData', bold: true},
+	                                { text: '<%=field[14] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Max Value', style: 'tableData', bold: true},
+	                                { text: '<%=field[15] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Init Value', style: 'tableData', bold: true},
+	                                { text: '<%=field[16] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Field Offset', style: 'tableData', bold: true},
+	                                { text: '<%=field[17]!=null?field[17]:"-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Quantum', style: 'tableData', bold: true},
+	                                { text: '<%=field[6] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Unit', style: 'tableData', bold: true},
+	                                { text: '<%=field[18] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Remarks', style: 'tableData', bold: true},
+	                                { text: '<%=field[7]!=null && !field[7].toString().isEmpty()?field[7] : "-" %>', style: 'tableData' },
+	                            ],
+	                        ]
+	                    },
+	                    layout: {
+	                        hLineWidth: function(i, node) {
+	                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+	                        },
+	                        vLineWidth: function(i) {
+	                            return 0.5;
+	                        },
+	                        hLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        },
+	                        vLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        }
+	                    }
+	                },
+	                { text: '\n\n' },
+	        	);   
+	        <%  } } %>
+	    }
+		/* ************************************** Field Description End *********************************** */
+
+		//pdfMake.createPdf(docDefinition).open();
+		pdfMake.createPdf(docDefinition).getBlob((blob) => {
+	        // Create a URL for the blob
+	        const url = URL.createObjectURL(blob);
+
+	        // Open the PDF in a new tab
+	        window.open(url, '_blank');
+
+	        // Hide the loading spinner
+	          document.getElementById('loadingOverlay').style.display='none';
+	        window.close();
+	    });
+
 }
 
 const setImagesWidth = (htmlString, width) => {
@@ -1565,15 +1887,21 @@ function generateRotatedTextImage(text) {
 
 <%if(isPdf!=null && isPdf.equalsIgnoreCase("Y")) {%>
 $( document ).ready(function(){
-	DownloadDocPDF();
+
+	document.body.style.display="block"
+	document.body.innerHTML = '<div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white; font-size: 20px; font-weight: bold;">'+
+		    '<div class="spinner" style="border: 4px solid rgba(255, 255, 255, 0.3); border-top: 4px solid white; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px;"></div>'+
+		   ' Please wait while we are generating the PDF...</div>'
+		 
+	DownloadDocPDF('P');
 	/* window.close(); */
 	
 	// Hide the current JSP page immediately after opening the PDF
-	document.body.style.display = "none";
+	//document.body.style.display = "none";
 	
-	setTimeout(function () {
+	/* setTimeout(function () {
         window.close();
-    }, 8000); // Adjust the delay time as needed
+    }, 8000) */; // Adjust the delay time as needed
 });
 <%} %>
 </script> 

@@ -243,7 +243,7 @@ padding: 6px;
 				<label class="control-label">Restriction On Use:</label><span class="mandatory" style="color: red;">*</span>
 			</td>
 			<td colspan="3">
-			<textarea rows="3" cols="40" class="form-control description-input" name="RestictionOnUse" placeholder="Max 1000 characters" maxlength="1000"><%if( edit != null && edit[12]!=null) {%> <%=edit[12].toString() %> <%} %></textarea>
+			<textarea rows="3" cols="40" class="form-control" name="RestictionOnUse" placeholder="Max 1000 characters" maxlength="1000"><%if( edit != null && edit[12]!=null) {%> <%=edit[12].toString() %> <%} %></textarea>
 			
 			</td>
 	</tbody>

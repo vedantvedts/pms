@@ -1,9 +1,11 @@
+<%@page import="com.vts.pfms.documents.model.IGILogicalChannel"%>
+<%@page import="com.vts.pfms.documents.model.IGILogicalInterfaces"%>
 <%@page import="com.vts.pfms.documents.model.IGIDocumentIntroduction"%>
 <%@page import="java.util.function.Function"%>
 <%@page import="com.google.gson.GsonBuilder"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="com.vts.pfms.documents.model.PfmsIDDDocument"%>
-<%@page import="com.vts.pfms.documents.model.PfmsApplicableDocs"%>
+<%@page import="com.vts.pfms.documents.model.StandardDocuments"%>
 <%@page import="com.vts.pfms.documents.model.IGIInterface"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.documents.model.IGIDocumentShortCodes"%>
@@ -176,25 +178,24 @@
 		List<Object[]> abbreviationsLinkedList = shortCodesLinkedList.stream().filter(e -> e[3].toString().equalsIgnoreCase("A")).collect(Collectors.toList());
 		List<Object[]> acronymsLinkedList = shortCodesLinkedList.stream().filter(e -> e[3].toString().equalsIgnoreCase("B")).collect(Collectors.toList());
 		
-		List<PfmsApplicableDocs> applicableDocsList = (List<PfmsApplicableDocs>)request.getAttribute("applicableDocsList");
+		List<StandardDocuments> applicableDocsList = (List<StandardDocuments>)request.getAttribute("applicableDocsList");
 		List<Object[]> iddApplicableDocsList = (List<Object[]>)request.getAttribute("iddApplicableDocsList");
 		List<Long> iddApplicableDocIds = iddApplicableDocsList.stream().map(e -> Long.parseLong(e[1].toString())).collect(Collectors.toList());
-		applicableDocsList = applicableDocsList.stream().filter(e -> !iddApplicableDocIds.contains(e.getApplicableDocId())).collect(Collectors.toList());
+		applicableDocsList = applicableDocsList.stream().filter(e -> !iddApplicableDocIds.contains(e.getStandardDocumentId())).collect(Collectors.toList());
 		List<String> iddApplicableDocNames = applicableDocsList.stream().map(e -> e.getDocumentName().toLowerCase()).collect(Collectors.toList());
 
 		PfmsIDDDocument iddDocument = (PfmsIDDDocument)request.getAttribute("iddDocument");
-		List<IGIInterface> igiInterfaceList = (List<IGIInterface>)request.getAttribute("igiInterfaceList");
-		
-		Map<String, IGIInterface> interfaceListToMap = igiInterfaceList.stream()
-			    	.collect(Collectors.toMap(IGIInterface::getInterfaceCode, Function.identity(), (existing, replacement) -> existing ));
-
-		//List<IGIInterface> physicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Physical Interface")).collect(Collectors.toList());
-		//List<IGIInterface> electricalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Electrical Interface")).collect(Collectors.toList());
-		//List<IGIInterface> opticalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Optical Interface")).collect(Collectors.toList());
-		//List<IGIInterface> logicalInterfaceList = igiInterfaceList.stream().filter(e -> e.getInterfaceType()!=null && e.getInterfaceType().equalsIgnoreCase("Logical Interface")).collect(Collectors.toList());
 		
 		List<IGIDocumentIntroduction> introductionList = (List<IGIDocumentIntroduction>)request.getAttribute("igiDocumentIntroductionList");
 		introductionList = introductionList.stream().filter(e -> e.getDocId()==Long.parseLong(iddDocId) && e.getDocType().equalsIgnoreCase("D")).collect(Collectors.toList());
+		
+		List<IGILogicalChannel> logicalChannelList = (List<IGILogicalChannel>)request.getAttribute("logicalChannelList");
+		List<IGILogicalInterfaces> logicalInterfaceList = (List<IGILogicalInterfaces>)request.getAttribute("logicalInterfaceList");
+		List<Object[]> irsSpecificationsList = (List<Object[]>)request.getAttribute("irsSpecificationsList");
+		//irsSpecificationsList.stream().map(e -> Long.parseLong(e[3].toString())).collect(Collectors.toSet());
+		logicalInterfaceList = logicalInterfaceList.stream().filter(e -> irsSpecificationsList.stream().map(m -> Long.parseLong(m[3].toString())).collect(Collectors.toList()).contains(e.getLogicalInterfaceId())).collect(Collectors.toList());
+		List<Object[]> fieldDescriptionList = (List<Object[]>)request.getAttribute("fieldDescriptionList");
+
 		
 		Object[] projectDetails = (Object[])request.getAttribute("projectDetails");
 		Object[] labDetails = (Object[])request.getAttribute("labDetails");
@@ -232,6 +233,11 @@
         </div>
     <% } %>
 
+	<div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white; font-size: 20px; font-weight: bold;">
+		<div class="spinner" style="border: 4px solid rgba(255, 255, 255, 0.3); border-top: 4px solid white; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px;"></div>
+	   	Please wait while we are generating the PDF...
+	</div>
+	
     <div class="container-fluid">
        
     	<div class="card shadow-nohover" style="margin-top: -0.6pc">
@@ -685,6 +691,9 @@
 </script>    
 <script type="text/javascript">
 function DownloadDocPDF(){
+
+	document.getElementById('loadingOverlay').style.display = 'flex';
+	
 	var chapterCount = 0;
     var mainContentCount = 0;
 	var leftSideNote = '<%if(docTempAtrr!=null && docTempAtrr[12]!=null) {%><%=docTempAtrr[12].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
@@ -1079,12 +1088,13 @@ function DownloadDocPDF(){
 	                {
 	                    text: '<%=Sub0Count+". "+intro.getChapterName()%>',
 	                    style: 'chapterSubHeader',
-	                    tocItem: false,
+	                    tocItem: true,
+	                    tocMargin: [10, 0, 0, 0],
 	                },
 	                {
 	                	stack: [htmlToPdfmake(setImagesWidth('<%if(intro.getChapterContent()!=null) {%><%=intro.getChapterContent().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
-	                		  +'<%}else {%> No Details Added! <%} %>', 500))],
-	                    margin: [20, 0, 0, 0],
+	                		  +'<%}else {%> - <%} %>', 500))],
+	                    margin: [15, 0, 0, 0],
 	                },
 	                
 	                <%
@@ -1096,18 +1106,19 @@ function DownloadDocPDF(){
 		                {
 		                    text: '<%=Sub0Count+". "+Sub1Count+". "+intro1.getChapterName()%>',
 		                    style: 'chapterSubSubHeader',
-		                    tocItem: false,
+		                    tocItem: true,
+		                    tocMargin: [20, 0, 0, 0],
 		                },
 		                {
 		                	stack: [htmlToPdfmake(setImagesWidth('<%if(intro1.getChapterContent()!=null) {%><%=intro1.getChapterContent().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
-		                		  +'<%}else {%> No Details Added! <%} %>', 500))],
+		                		  +'<%}else {%> - <%} %>', 500))],
 		                    margin: [25, 0, 0, 0],
 		                },
 	                <%++Sub1Count;} }%>
 	                
-                <%} ++Sub0Count;} }else{%>
+                <%++Sub0Count; } } }else{%>
 	                {
-	                    text: 'No Details Added!',
+	                    text: '-',
 	                    margin: [10, 0, 0, 0],
 	                },
                 <%} %>
@@ -1125,12 +1136,13 @@ function DownloadDocPDF(){
                 {
                     table: {
                         headerRows: 1,
-                        widths: ['20%', '80%'],
+                        widths: ['20%', '60%', '20%'],
                         body: [
                             // Table header
                             [
                                 { text: 'SN', style: 'tableHeader' },
                                 { text: 'Document Name', style: 'tableHeader' },
+                                { text: 'Action', style: 'tableHeader' },
                             ],
                             // Populate table rows
                            <% if(iddApplicableDocsList!=null && iddApplicableDocsList.size()>0){
@@ -1140,10 +1152,18 @@ function DownloadDocPDF(){
 		                            [
 		                                { text: '<%=++slno %>', style: 'tableData',alignment: 'center' },
 		                                { text: '<%=obj[2] %>', style: 'tableData', },
+		                                {
+		                                    text: 'Download',
+		                                    style: 'tableData',
+		                                    link: '<%= request.getRequestURL().toString().replace(request.getRequestURI(), "") + request.getContextPath() + "/StandardDocumentsDownload.htm?StandardDocumentId=" + obj[0] %>',
+		                                    color: 'blue',
+		                                    decoration: 'underline',
+		                                    alignment: 'center',
+		                                },
 		                            ],
 		                        <% } %>
                             <% } else{%>
-                            	[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 2 },]
+                            	[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 3 },]
                             <%} %>
                         ]
                     },
@@ -1167,7 +1187,596 @@ function DownloadDocPDF(){
                 },
                 /* ************************************** Applicable Documents End *********************************** */
                 
+                /* ************************************** Interface Design *********************************** */
+                <% int designslno = 0;%>
+                {
+                    text: (++mainContentCount)+'. Interface Design',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    pageBreak: 'before'
+                },
                 
+                /* ***************************** Interface Message Description ***************************** */
+
+                {
+                    text: (mainContentCount)+'.<%=++designslno%>. Interface Message Description',
+                    style: 'chapterSubHeader',
+                    tocItem: true,
+                    id: 'chapter'+(chapterCount)+'.'+mainContentCount+'.<%=designslno%>',
+                    tocMargin: [10, 0, 0, 0],
+                },
+                
+                {
+                    text: (mainContentCount)+'.<%=designslno%>.1. Message Structure',
+                    style: 'chapterSubSubHeader',
+                    tocItem: true,
+                    id: 'chapter'+(chapterCount)+'.'+mainContentCount+'.<%=designslno%>.1',
+                    tocMargin: [20, 0, 0, 0],
+                },
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: [<% for (int i = 0; i <18; i++) { %>'auto',<% } %>],
+                        body: [
+                            // Table header
+                            [
+                                { text: '  ', style: 'tableHeader2' },
+                                <% for (int i = 15; i >=0; i--) { %>
+                                	{ text: 'b<%=i%>', style: 'tableHeader2' },
+                                <% } %>
+                                { text: 'Pos', style: 'tableHeader2' },
+                            ],
+                            [
+                                { text: '0', style: 'tableData2', alignment: 'center', },
+                                { text: 'Header', style: 'tableData2', colSpan: 16, rowSpan: 2, alignment: 'center' }, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+                                { text: '0', style: 'tableData2', alignment: 'center', }
+                            ],
+                            [
+                                { text: '2', style: 'tableData2', alignment: 'center', },
+                                null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+                                { text: '2', style: 'tableData2', alignment: 'center', }
+                            ],
+                            [
+                                { text: '4', style: 'tableData2', alignment: 'center', },
+                                { text: 'Message Data', style: 'tableData2', colSpan: 16, rowSpan: 2, alignment: 'center', }, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+                                { text: '4', style: 'tableData2', alignment: 'center', }
+                            ],
+                            [
+                                { text: '6', style: 'tableData2', alignment: 'center', },
+                                null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+                                { text: '6', style: 'tableData2', alignment: 'center', }
+                            ],
+                            [
+                                { text: 'End', style: 'tableData2', alignment: 'center', },
+                                { text: '', style: 'tableData2', colSpan: 16, alignment: 'center', }, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+                                { text: 'End', style: 'tableData2', alignment: 'center', }
+                            ],
+                        ]
+                    },
+                    layout: {
+                        hLineWidth: function (i, node) { return 1; },
+                        vLineWidth: function (i, node) { return 1; },
+                        hLineColor: function (i, node) { return '#aaaaaa'; },
+                        vLineColor: function (i, node) { return '#aaaaaa'; },
+                        paddingLeft: function(i, node) { return 2; },
+                        paddingRight: function(i, node) { return 2; },
+                    },
+                    margin: [20, 0, 0, 0],
+                },
+                
+                { text: '\n',},
+                
+                {
+                    text: (mainContentCount)+'.<%=designslno%>.2. Header Format',
+                    style: 'chapterSubSubHeader',
+                    tocItem: true,
+                    id: 'chapter'+(chapterCount)+'.'+mainContentCount+'.<%=designslno%>.2',
+                    tocMargin: [20, 0, 0, 0],
+                },
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: [<% for (int i = 0; i <18; i++) { %>'auto',<% } %>],
+                        body: [
+                            // Table header
+                            [
+                                { text: '  ', style: 'tableHeader2' },
+                                <% for (int i = 15; i >=0; i--) { %>
+                                	{ text: 'b<%=i%>', style: 'tableHeader2' },
+                                <% } %>
+                                { text: 'Pos', style: 'tableHeader2' },
+                            ],
+                            [
+                                { text: '0', style: 'tableData2', alignment: 'center', },
+                                { text: 'bySourceID', style: 'tableData2', colSpan: 8, alignment: 'center' }, 
+                                <% for (int i = 0; i < 7; i++) { %> null,<% } %>
+                                { text: 'byDestinationID', style: 'tableData2', colSpan: 8, alignment: 'center' }, 
+                                <% for (int i = 0; i < 7; i++) { %> null,<% } %>
+                                { text: '0', style: 'tableData2', alignment: 'center', }
+                            ],
+                            [
+                                { text: '2', style: 'tableData2', alignment: 'center', },
+                                { text: 'byChecksum', style: 'tableData2', colSpan: 8, alignment: 'center' }, 
+                                <% for (int i = 0; i < 7; i++) { %> null,<% } %>
+                                { text: 'byMsgId', style: 'tableData2', colSpan: 8, alignment: 'center' }, 
+                                <% for (int i = 0; i < 7; i++) { %> null,<% } %>
+                                { text: '2', style: 'tableData2', alignment: 'center', }
+                            ],
+                            [
+                                { text: '4', style: 'tableData2', alignment: 'center', },
+                                { text: 'hwSerialNo', style: 'tableData2', colSpan: 16, alignment: 'center', }, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+                                { text: '4', style: 'tableData2', alignment: 'center', }
+                            ],
+                        ]
+                    },
+                    layout: {
+                        hLineWidth: function (i, node) { return 1; },
+                        vLineWidth: function (i, node) { return 1; },
+                        hLineColor: function (i, node) { return '#aaaaaa'; },
+                        vLineColor: function (i, node) { return '#aaaaaa'; },
+                        paddingLeft: function(i, node) { return 2; },
+                        paddingRight: function(i, node) { return 2; },
+                    },
+                    margin: [20, 0, 0, 0],
+                },
+                
+                /* ***************************** Interface Message Description ******************************** */
+
+                /* ***************************** Message Summary ***************************** */
+				{ text: '\n',},
+                {
+                    text: (mainContentCount)+'.<%=++designslno%>. Message Summary',
+                    style: 'chapterSubHeader',
+                    tocItem: true,
+                    id: 'chapter'+(chapterCount)+'.'+mainContentCount+'.<%=designslno%>',
+                    tocMargin: [10, 0, 0, 0],
+                },
+                
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['10%', '44%', '46%'],
+                        body: [
+                            // Table header
+                            [
+                                { text: 'SN', style: 'tableHeader' },
+                                { text: 'Message Id', style: 'tableHeader' },
+                                { text: 'Message', style: 'tableHeader' },
+                            ],
+                            // Populate table rows
+                           	<%if(irsSpecificationsList!=null && irsSpecificationsList.size()>0) {
+			                	int slno=0;
+			                	for(Object[] obj : irsSpecificationsList) {
+			               	%>
+		                            [
+		                                { text: '<%=++slno %>', style: 'tableData',alignment: 'center' },
+		                                { text: '<%=obj[7] %>', style: 'tableData', },
+		                                { text: '<%=obj[8] %>', style: 'tableData', },
+		                            ],
+		                        <% } %>
+                            <% } else{%>
+                            	[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 3 },]
+                            <%} %>
+                        ]
+                    },
+                    layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+                },
+                { text: '\n',},
+                /* ***************************** Message Summary ***************************** */
+
+                /* ************************** Communication Establishment Messages End ************************ */
+
+                {
+                    text: (mainContentCount)+'.<%=++designslno%>. Communication Establishment Messages',
+                    style: 'chapterSubHeader',
+                    tocItem: true,
+                    id: 'chapter'+(chapterCount)+'.'+mainContentCount+'.<%=designslno%>',
+                    tocMargin: [10, 0, 0, 0],
+                },
+                
+                <%if(irsSpecificationsList!=null && irsSpecificationsList.size()>0) {
+                	int specCount=0;
+                	for(Object[] obj : irsSpecificationsList) {
+                		int sn = 0;
+                		IGILogicalInterfaces iface = logicalInterfaceList.stream().filter(e -> e.getLogicalInterfaceId()==Long.parseLong(obj[3].toString())).findFirst().orElse(null);
+                		String[] split = obj[6].toString().split("-");
+			        	IGILogicalChannel channel = logicalChannelList.stream().filter(e -> e.getLogicalChannelId().equals(iface.getLogicalChannelId())).findFirst().orElse(null);
+			        	List<Object[]> fieldDescList =  fieldDescriptionList.stream().filter(e -> iface.getLogicalInterfaceId()== Long.parseLong(e[1].toString()) && obj[0].toString().equalsIgnoreCase(e[19].toString())).collect(Collectors.toList());
+
+                %>
+	                {
+	                	text: mainContentCount+'.<%=designslno%>.<%=++specCount%>. <%=iface.getMsgCode() %>',	
+	                	style: 'chapterSubSubHeader',
+	                    tocItem: true,
+	                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=designslno%>.<%=specCount%>',
+	                    tocMargin: [20, 0, 0, 0],
+	                },
+	                
+	                {
+	                	table: {
+	                        headerRows: 1,
+	                        widths: ['10%', '25%', '65%'],
+	                        body: [
+	                            // Table header
+	                            [
+	                                { text: 'SN', style: 'tableHeader' },
+	                                { text: 'Section', style: 'tableHeader' },
+	                                { text: 'Details', style: 'tableHeader' },
+	                            ],
+	                            
+	                            // Populate table rows
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Msg Id', style: 'tableData', bold: true},
+	                                { text: '<%=iface.getMsgCode() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Logical Channel Name', style: 'tableData', bold: true},
+	                                { text: '<%=channel.getLogicalChannel() + " (" + channel.getChannelCode() + ")" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Msg Name', style: 'tableData', bold: true},
+	                                { text: '<%=iface.getMsgName() %>', style: 'tableData' },
+	                            ],
+	                            
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Msg Type', style: 'tableData', bold: true},
+	                                { text: '<%=iface.getMsgType() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Msg Length', style: 'tableData', bold: true},
+	                                { text: '<%=iface.getMsgLength() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Msg No', style: 'tableData', bold: true},
+	                                { text: '<%=iface.getMsgNo() %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Description', style: 'tableData', bold: true},
+	                                { text: '<%=(iface.getMsgDescription()!=null && !iface.getMsgDescription().isEmpty())? iface.getMsgDescription():"-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Data Rate', style: 'tableData', bold: true},
+	                                { text: '<%=(iface.getDataRate()!=null && !iface.getDataRate().isEmpty())? iface.getDataRate():"-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Source', style: 'tableData', bold: true},
+	                                { text: '<%=split[0] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Destination', style: 'tableData', bold: true},
+	                                { text: '<%=split[1] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Action at Destination', style: 'tableData', bold: true},
+	                                {
+	        		                	stack: [htmlToPdfmake(setImagesWidth('<%if(obj[5]!=null) {%><%=obj[5].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
+	        		                		  +'<%}else {%> - <%} %>', 500))],
+	        		                },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Underlying Protocols', style: 'tableData', bold: true},
+	                                { text: '<%=(iface.getProtocals()!=null && !iface.getProtocals().isEmpty())? iface.getProtocals():"-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Additional Info', style: 'tableData', bold: true},
+	                                { text: '<%=(iface.getAdditionalInfo()!=null && !iface.getAdditionalInfo().isEmpty())? iface.getAdditionalInfo():"-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Fields', style: 'tableData', bold: true},
+	                                { text: '<%for(Object[] field : fieldDescList) { %><%=field[8] %>, <%} %> ', style: 'tableData' },
+	                            ],
+	                        ]
+	                    },
+	                    layout: {
+	                        /* fillColor: function(rowIndex) {
+	                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+	                        }, */
+	                        hLineWidth: function(i, node) {
+	                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+	                        },
+	                        vLineWidth: function(i) {
+	                            return 0.5;
+	                        },
+	                        hLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        },
+	                        vLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        }
+	                    }
+	                },
+	                { text: '\n',},
+
+	                <%-- {
+	                    text: mainContentCount+'. <%=specCount%>. Field Description',
+	                    style: 'chapterSubHeader',
+	                    tocItem: true,
+	                    id: 'chapter'+(++chapterCount),
+	                    tocMargin: [25, 0, 0, 0],
+	                },
+	                <% if(fieldDescList!=null && fieldDescList.size()>0){
+						int slno=0;
+						for(Object[] field : fieldDescList){
+							int snf = 0;
+					%>
+					
+						{
+		                	text: mainContentCount+'. <%=specCount%>. <%=++slno%>. <%=field[8] %>',	
+		                	style: 'chapterSubSubHeader',
+		                    tocItem: true,
+		                    id: 'chapter'+chapterCount+'.'+mainContentCount+'. <%=specCount%>. <%=slno%>',
+		                    tocMargin: [30, 0, 0, 0],
+		                },
+		                
+		                {
+		                    table: {
+		                        headerRows: 1,
+		                        widths: ['10%', '30%', '60%'],
+		                        body: [
+		                            // Table header
+		                            [
+		                                { text: 'SN', style: 'tableHeader' },
+		                                { text: 'Section', style: 'tableHeader' },
+		                                { text: 'Details', style: 'tableHeader' },
+		                            ],
+		                            // Populate table rows
+		                            [
+		                            	{ text: '<%=++snf%>', style: 'tableData', bold: true, alignment: 'center',},
+		                                { text: 'Field Code', style: 'tableData', bold: true},
+		                                { text: '<%=field[10] %>', style: 'tableData' },
+		                            ],
+		                            [
+		                            	{ text: '<%=++snf%>', style: 'tableData', bold: true, alignment: 'center',},
+		                                { text: 'Field Short Name', style: 'tableData', bold: true},
+		                                { text: '<%=field[9] %>', style: 'tableData' },
+		                            ],
+		                            [
+		                            	{ text: '<%=++snf%>', style: 'tableData', bold: true, alignment: 'center',},
+		                                { text: 'Field Name', style: 'tableData', bold: true},
+		                                { text: '<%=field[8] %>', style: 'tableData' },
+		                            ],
+		                            [
+		                            	{ text: '<%=++snf%>', style: 'tableData', bold: true, alignment: 'center',},
+		                                { text: 'Field Description', style: 'tableData', bold: true},
+		                                { text: '<%=field[5]!=null && !field[5].toString().isEmpty()?field[5] : "-" %>', style: 'tableData' },
+		                            ],
+		                            [
+		                            	{ text: '<%=++snf%>', style: 'tableData', bold: true, alignment: 'center',},
+		                                { text: 'Data type (bits)', style: 'tableData', bold: true},
+		                                { text: '<%=field[27] %> (<%=field[4] %>)', style: 'tableData' },
+		                            ],
+		                            [
+		                            	{ text: '<%=++snf%>', style: 'tableData', bold: true, alignment: 'center',},
+		                                { text: 'Typical Value', style: 'tableData', bold: true},
+		                                { text: '<%=field[13] %>', style: 'tableData' },
+		                            ],
+		                            [
+		                            	{ text: '<%=++snf%>', style: 'tableData', bold: true, alignment: 'center',},
+		                                { text: 'Min Value', style: 'tableData', bold: true},
+		                                { text: '<%=field[14] %>', style: 'tableData' },
+		                            ],
+		                            [
+		                            	{ text: '<%=++snf%>', style: 'tableData', bold: true, alignment: 'center',},
+		                                { text: 'Max Value', style: 'tableData', bold: true},
+		                                { text: '<%=field[15] %>', style: 'tableData' },
+		                            ],
+		                            [
+		                            	{ text: '<%=++snf%>', style: 'tableData', bold: true, alignment: 'center',},
+		                                { text: 'Init Value', style: 'tableData', bold: true},
+		                                { text: '<%=field[16] %>', style: 'tableData' },
+		                            ],
+		                            [
+		                            	{ text: '<%=++snf%>', style: 'tableData', bold: true, alignment: 'center',},
+		                                { text: 'Field Offset', style: 'tableData', bold: true},
+		                                { text: '<%=field[17]!=null?field[17]:"-" %>', style: 'tableData' },
+		                            ],
+		                            [
+		                            	{ text: '<%=++snf%>', style: 'tableData', bold: true, alignment: 'center',},
+		                                { text: 'Quantum', style: 'tableData', bold: true},
+		                                { text: '<%=field[6] %>', style: 'tableData' },
+		                            ],
+		                            [
+		                            	{ text: '<%=++snf%>', style: 'tableData', bold: true, alignment: 'center',},
+		                                { text: 'Unit', style: 'tableData', bold: true},
+		                                { text: '<%=field[18] %>', style: 'tableData' },
+		                            ],
+		                            [
+		                            	{ text: '<%=++snf%>', style: 'tableData', bold: true, alignment: 'center',},
+		                                { text: 'Remarks', style: 'tableData', bold: true},
+		                                { text: '<%=field[7]!=null && !field[7].toString().isEmpty()?field[7] : "-" %>', style: 'tableData' },
+		                            ],
+		                        ]
+		                    },
+		                    layout: {
+		                        /* fillColor: function(rowIndex) {
+		                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+		                        }, */
+		                        hLineWidth: function(i, node) {
+		                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+		                        },
+		                        vLineWidth: function(i) {
+		                            return 0.5;
+		                        },
+		                        hLineColor: function(i) {
+		                            return '#aaaaaa';
+		                        },
+		                        vLineColor: function(i) {
+		                            return '#aaaaaa';
+		                        }
+		                    }
+		                },
+		                
+		                { text: '\n\n',},
+	                <% } }%> --%>
+                <%} }%>
+                /* **************************** Communication Establishment Messages End ******************** */
+
+                /* ************************************** Interface Design End *********************************** */
+                
+                /* ************************************** Field Description *********************************** */
+                <%
+                	Set<Long> logicalInterfaceIds =  irsSpecificationsList.stream().map(e -> Long.parseLong(e[3].toString())).collect(Collectors.toSet());
+					List<Object[]> fieldDescList =  fieldDescriptionList.stream().filter(e -> logicalInterfaceIds.contains(Long.parseLong(e[1].toString())) ).collect(Collectors.toList());
+					fieldDescList = fieldDescList.stream()
+						    .collect(Collectors.groupingBy(e -> e[2]))
+						    .values().stream()
+						    .map(list -> list.get(0))
+						    .collect(Collectors.toList());
+
+                %>
+                {
+                    text: (++mainContentCount)+'. Field Description',
+                    style: 'chapterHeader',
+                    tocItem: true,
+                    id: 'chapter'+(++chapterCount),
+                    pageBreak: 'before'
+                },
+                <% if(fieldDescList!=null && fieldDescList.size()>0){
+					int slno=0;
+					for(Object[] field : fieldDescList){
+						int sn = 0;
+				%>
+				
+					{
+	                	text: mainContentCount+'.<%=++slno%>. <%=field[8] %>',	
+	                	style: 'chapterSubHeader',
+	                    tocItem: true,
+	                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=slno%>',
+	                    tocMargin: [10, 0, 0, 0],
+	                },
+	                
+	                {
+	                    table: {
+	                        headerRows: 1,
+	                        widths: ['10%', '30%', '60%'],
+	                        body: [
+	                            // Table header
+	                            [
+	                                { text: 'SN', style: 'tableHeader' },
+	                                { text: 'Section', style: 'tableHeader' },
+	                                { text: 'Details', style: 'tableHeader' },
+	                            ],
+	                            // Populate table rows
+	                            <%-- [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Field Code', style: 'tableData', bold: true},
+	                                { text: '<%=field[10] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Field Short Name', style: 'tableData', bold: true},
+	                                { text: '<%=field[9] %>', style: 'tableData' },
+	                            ], --%>
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Field Name', style: 'tableData', bold: true},
+	                                { text: '<%=field[8] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Field Description', style: 'tableData', bold: true},
+	                                { text: '<%=field[5]!=null && !field[5].toString().isEmpty()?field[5] : "-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Data type', style: 'tableData', bold: true},
+	                                { text: '<%=field[27] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Typical Value', style: 'tableData', bold: true},
+	                                { text: '<%=field[13] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Min Value', style: 'tableData', bold: true},
+	                                { text: '<%=field[14] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Max Value', style: 'tableData', bold: true},
+	                                { text: '<%=field[15] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Init Value', style: 'tableData', bold: true},
+	                                { text: '<%=field[16] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Field Offset', style: 'tableData', bold: true},
+	                                { text: '<%=field[17]!=null?field[17]:"-" %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Quantum', style: 'tableData', bold: true},
+	                                { text: '<%=field[6] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Unit', style: 'tableData', bold: true},
+	                                { text: '<%=field[18] %>', style: 'tableData' },
+	                            ],
+	                            [
+	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
+	                                { text: 'Remarks', style: 'tableData', bold: true},
+	                                { text: '<%=field[7]!=null && !field[7].toString().isEmpty()?field[7] : "-" %>', style: 'tableData' },
+	                            ],
+	                        ]
+	                    },
+	                    layout: {
+	                        /* fillColor: function(rowIndex) {
+	                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+	                        }, */
+	                        hLineWidth: function(i, node) {
+	                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+	                        },
+	                        vLineWidth: function(i) {
+	                            return 0.5;
+	                        },
+	                        hLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        },
+	                        vLineColor: function(i) {
+	                            return '#aaaaaa';
+	                        }
+	                    }
+	                },
+	                
+	                { text: '\n\n',},
+                <% } }%>
+                /* ************************************** Field Description End *********************************** */
 			],
 			styles: {
                 DocumentName: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
@@ -1176,6 +1785,8 @@ function DownloadDocPDF(){
                 chapterSubHeader: { fontSize: 13, bold: true, margin: [10, 10, 0, 10]},
                 tableHeader: { fontSize: 12, bold: true, fillColor: '#f0f0f0', alignment: 'center', margin: [10, 5, 10, 5], fontWeight: 'bold' },
                 tableData: { fontSize: 11.5, margin: [0, 5, 0, 5] },
+                tableHeader2: { fontSize: 9, bold: true, fillColor: '#f0f0f0', alignment: 'center', margin: [5, 0, 5, 0], fontWeight: 'bold' },
+                tableData2: { fontSize: 8.5, margin: [0, 5, 0, 5] },
                 chapterSubSubHeader: { fontSize: 12, bold: true, margin: [15, 10, 10, 10] },
                 chapterSubSubSubHeader: { fontSize: 12, bold: true, margin: [20, 10, 10, 10] },
                 subChapterNote: { margin: [15, 15, 0, 10] },
@@ -1190,7 +1801,7 @@ function DownloadDocPDF(){
                 const pageWidth = pageSize.width; // Adjust dynamically based on page size
                 const margin = 30;
 
-                if (currentPage > 2) {
+                if (currentPage > 0) {
                     return {
                         stack: [
                             {
@@ -1276,7 +1887,18 @@ function DownloadDocPDF(){
             defaultStyle: { fontSize: 12, color: 'black', }
         };
 		
-        pdfMake.createPdf(docDefinition).open();
+		//pdfMake.createPdf(docDefinition).open();
+		pdfMake.createPdf(docDefinition).getBlob((blob) => {
+		       // Create a URL for the blob
+		       const url = URL.createObjectURL(blob);
+		
+		       // Open the PDF in a new tab
+		       window.open(url, '_blank');
+		
+		       // Hide the loading spinner
+		         document.getElementById('loadingOverlay').style.display='none';
+		       window.close();
+		   });
 }
 
 const setImagesWidth = (htmlString, width) => {
@@ -1396,15 +2018,21 @@ function generateRotatedTextImage(text) {
 
 <%if(isPdf!=null && isPdf.equalsIgnoreCase("Y")) {%>
 $( document ).ready(function(){
+
+	document.body.style.display="block"
+	document.body.innerHTML = '<div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white; font-size: 20px; font-weight: bold;">'+
+		    '<div class="spinner" style="border: 4px solid rgba(255, 255, 255, 0.3); border-top: 4px solid white; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px;"></div>'+
+		   ' Please wait while we are generating the PDF...</div>'
+		 
 	DownloadDocPDF();
 	/* window.close(); */
 	
 	// Hide the current JSP page immediately after opening the PDF
-	document.body.style.display = "none";
+	//document.body.style.display = "none";
 	
-	setTimeout(function () {
+	/* setTimeout(function () {
         window.close();
-    }, 8000); // Adjust the delay time as needed
+    }, 8000) */; // Adjust the delay time as needed
 });
 <%} %>
 </script> 

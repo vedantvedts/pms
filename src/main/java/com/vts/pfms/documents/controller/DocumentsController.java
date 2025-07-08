@@ -13,8 +13,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,6 +34,11 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,25 +54,45 @@ import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
+import com.vts.pfms.documents.dto.ICDConnectionDTO;
 import com.vts.pfms.documents.dto.InterfaceTypeAndContentDto;
 import com.vts.pfms.documents.dto.StandardDocumentsDto;
+import com.vts.pfms.documents.model.DataTypeMaster;
+import com.vts.pfms.documents.model.FieldGroupLinked;
+import com.vts.pfms.documents.model.FieldGroupMaster;
+import com.vts.pfms.documents.model.FieldMaster;
+import com.vts.pfms.documents.model.ICDConnectionConnectors;
+import com.vts.pfms.documents.model.ICDConnectionInterfaces;
 import com.vts.pfms.documents.model.ICDConnectionPurpose;
+import com.vts.pfms.documents.model.ICDConnectionSystems;
+import com.vts.pfms.documents.model.ICDConnectorPinMapping;
+import com.vts.pfms.documents.model.ICDConnectorPins;
 import com.vts.pfms.documents.model.ICDDocumentConnections;
+import com.vts.pfms.documents.model.ICDMechanicalInterfaces;
+import com.vts.pfms.documents.model.ICDPurpose;
+import com.vts.pfms.documents.model.ICDSystemAttach;
+import com.vts.pfms.documents.model.IGIConnector;
+import com.vts.pfms.documents.model.IGIConnectorAttach;
+import com.vts.pfms.documents.model.IGIConstants;
 import com.vts.pfms.documents.model.IGIDocumentIntroduction;
 import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
+import com.vts.pfms.documents.model.IGIFieldDescription;
 import com.vts.pfms.documents.model.IGIInterface;
 import com.vts.pfms.documents.model.IGIInterfaceContent;
 import com.vts.pfms.documents.model.IGIInterfaceTypes;
 import com.vts.pfms.documents.model.IGILogicalChannel;
 import com.vts.pfms.documents.model.IGILogicalInterfaces;
+import com.vts.pfms.documents.model.IRSArrayMaster;
 import com.vts.pfms.documents.model.IRSDocumentSpecifications;
-import com.vts.pfms.documents.model.PfmsApplicableDocs;
+import com.vts.pfms.documents.model.IRSFieldDescription;
 import com.vts.pfms.documents.model.PfmsICDDocument;
 import com.vts.pfms.documents.model.PfmsIDDDocument;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.model.PfmsIRSDocument;
 import com.vts.pfms.documents.service.DocumentsService;
+import com.vts.pfms.producttree.dto.ProductTreeDto;
+import com.vts.pfms.producttree.service.ProductTreeService;
 import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.requirements.service.RequirementService;
 import com.vts.pfms.utils.InputValidator;
@@ -88,6 +117,9 @@ public class DocumentsController {
 	
 	@Autowired
 	RequirementService reqservice;
+	
+	@Autowired
+	ProductTreeService prodservice;
 	
 	@Autowired
 	PMSLogoUtil logoUtil;
@@ -393,7 +425,7 @@ public class DocumentsController {
 			req.setAttribute("drdologo", logoUtil.getDRDOLogoAsBase64String());
 			
 			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
-			req.setAttribute("applicableDocsList", service.getPfmsApplicableDocs());
+			req.setAttribute("applicableDocsList", service.getStandardDocuments());
 			req.setAttribute("igiApplicableDocsList", service.getIGIApplicableDocs(igiDocId, "A"));
 			
 			req.setAttribute("interfaceTypesList", service.getIGIInterfaceTypesList());
@@ -403,6 +435,10 @@ public class DocumentsController {
 			req.setAttribute("logicalChannelList", service.getIGILogicalChannelList());
 
 			req.setAttribute("igiDocumentIntroductionList", service.getIGIDocumentIntroductionList());
+			
+			req.setAttribute("igiLogicalInterfaceConnectionList", service.getIGILogicalInterfaceConnectionList());
+			req.setAttribute("systemProductTreeAllList", service.getSystemProductTreeAllList());
+			req.setAttribute("connectorMasterList", service.getConnectorMasterList());
 
 			req.setAttribute("isPdf", req.getParameter("isPdf"));
 			return "documents/IGIDocumentDetails";
@@ -894,7 +930,7 @@ public class DocumentsController {
 			String docId = req.getParameter("docId");
 			String docType = req.getParameter("docType");
 
-			req.setAttribute("applicableDocsList", service.getPfmsApplicableDocs());
+			req.setAttribute("applicableDocsList", service.getStandardDocuments());
 			req.setAttribute("applicableDocsLinkedList", service.getIGIApplicableDocs(docId, docType));
 			req.setAttribute("docId", docId);
 			req.setAttribute("docType", docType);
@@ -947,48 +983,48 @@ public class DocumentsController {
 		
 	}
 
-	@RequestMapping(value="IGIApplicableDocumentsDetailsSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
-	public String igiApplicableDocumentsDetailsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
-		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() + " Inside IGIApplicableDocumentsDetailsSubmit.htm " + UserId);
-		try {
-			
-			String docId = req.getParameter("docId");
-			String docType = req.getParameter("docType");
-			String[] documentName = req.getParameterValues("documentName");
-			
-			if(documentName!=null && documentName.length>0) {
-				long result = 0;
-				for(int i=0; i<documentName.length; i++) {
-					PfmsApplicableDocs igiDocumentShortCode = new PfmsApplicableDocs();
-					igiDocumentShortCode.setDocumentName(documentName[i]);
-					igiDocumentShortCode.setCreatedBy(UserId);
-					igiDocumentShortCode.setCreatedDate(sdtf.format(new Date()));
-					igiDocumentShortCode.setIsActive(1);
-					
-					result = service.addApplicableDocs(igiDocumentShortCode, docId, docType);
-				}
-				
-				if (result > 0) {
-					redir.addAttribute("result", "Applicable Documents Added Successfully");
-				} else {
-					redir.addAttribute("resultfail", "Applicable Documents Add Unsuccessful");
-				}
-				
-			}
-			
-			redir.addAttribute("docId", docId);
-			redir.addAttribute("docType", docType);
-			redir.addAttribute("documentNo", req.getParameter("documentNo"));
-			
-			return "redirect:/IGIApplicableDocumentsDetails.htm";
-
-		}catch (Exception e) {
-			e.printStackTrace();
-			logger.error(new Date() + " Inside IGIApplicableDocumentsDetailsSubmit.htm " + UserId, e);
-			return "static/Error";
-		}
-	}
+//	@RequestMapping(value="IGIApplicableDocumentsDetailsSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+//	public String igiApplicableDocumentsDetailsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+//		String UserId = (String) ses.getAttribute("Username");
+//		logger.info(new Date() + " Inside IGIApplicableDocumentsDetailsSubmit.htm " + UserId);
+//		try {
+//			
+//			String docId = req.getParameter("docId");
+//			String docType = req.getParameter("docType");
+//			String[] documentName = req.getParameterValues("documentName");
+//			
+//			if(documentName!=null && documentName.length>0) {
+//				long result = 0;
+//				for(int i=0; i<documentName.length; i++) {
+//					PfmsApplicableDocs igiDocumentShortCode = new PfmsApplicableDocs();
+//					igiDocumentShortCode.setDocumentName(documentName[i]);
+//					igiDocumentShortCode.setCreatedBy(UserId);
+//					igiDocumentShortCode.setCreatedDate(sdtf.format(new Date()));
+//					igiDocumentShortCode.setIsActive(1);
+//					
+//					result = service.addApplicableDocs(igiDocumentShortCode, docId, docType);
+//				}
+//				
+//				if (result > 0) {
+//					redir.addAttribute("result", "Applicable Documents Added Successfully");
+//				} else {
+//					redir.addAttribute("resultfail", "Applicable Documents Add Unsuccessful");
+//				}
+//				
+//			}
+//			
+//			redir.addAttribute("docId", docId);
+//			redir.addAttribute("docType", docType);
+//			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+//			
+//			return "redirect:/IGIApplicableDocumentsDetails.htm";
+//
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//			logger.error(new Date() + " Inside IGIApplicableDocumentsDetailsSubmit.htm " + UserId, e);
+//			return "static/Error";
+//		}
+//	}
 	
 	@RequestMapping(value = "IGIApplicableDocumentDelete.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String igiApplicableDocumentDelete(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
@@ -1354,6 +1390,7 @@ public class DocumentsController {
 			
 			req.setAttribute("interfaceTypesList", service.getIGIInterfaceTypesList());
 			req.setAttribute("interfaceContentList", service.getIGIInterfaceContentList());
+			req.setAttribute("connectorMasterList", service.getConnectorMasterList());
 			req.setAttribute("interfaceId", interfaceId);
 			req.setAttribute("parentId", parentId);
 			req.setAttribute("documentNo", req.getParameter("documentNo"));
@@ -1394,18 +1431,8 @@ public class DocumentsController {
 			igiInterface.setInterfaceContent(req.getParameter("interfaceContent"));
 			igiInterface.setInterfaceType(req.getParameter("interfaceType"));
 			igiInterface.setInterfaceSpeed(req.getParameter("interfaceSpeed"));
-			igiInterface.setPartNoEOne(req.getParameter("partNoEOne"));
-			igiInterface.setConnectorMakeEOne(req.getParameter("connectorMakeEOne"));
-			igiInterface.setStandardEOne(req.getParameter("standardEOne"));
-			igiInterface.setProtectionEOne(req.getParameter("protectionEOne"));
-			igiInterface.setRefInfoEOne(req.getParameter("refInfoEOne"));
-			igiInterface.setRemarksEOne(req.getParameter("remarksEOne"));
-			igiInterface.setPartNoETwo(req.getParameter("partNoETwo"));
-			igiInterface.setConnectorMakeETwo(req.getParameter("connectorMakeETwo"));
-			igiInterface.setStandardETwo(req.getParameter("standardETwo"));
-			igiInterface.setProtectionETwo(req.getParameter("protectionETwo"));
-			igiInterface.setRefInfoETwo(req.getParameter("refInfoETwo"));
-			igiInterface.setRemarksETwo(req.getParameter("remarksETwo"));
+			igiInterface.setConnectorIdEOne(req.getParameter("connectorIdE1")!=null?Long.parseLong(req.getParameter("connectorIdE1")):0L);
+			igiInterface.setConnectorIdETwo(req.getParameter("connectorIdE2")!=null?Long.parseLong(req.getParameter("connectorIdE2")):0L);
 			igiInterface.setInterfaceDiagram(req.getParameter("interfaceDiagram"));
 			igiInterface.setInterfaceDescription(req.getParameter("interfaceDescription"));
 			igiInterface.setIGIDocId(Long.parseLong(igiDocId));
@@ -1444,24 +1471,24 @@ public class DocumentsController {
 
 	}
 
-	@RequestMapping(value="DuplicateInterfaceCodeCheck.htm", method=RequestMethod.GET)
-	public @ResponseBody String duplicateInterfaceCodeCheck(HttpSession ses, HttpServletRequest req) throws Exception {
-		
-		String UserId=(String)ses.getAttribute("Username");
-		logger.info(new Date() +" Inside DuplicateInterfaceCodeCheck.htm "+UserId);
-		Gson json = new Gson();
-		Long duplicate=null;
-		try
-		{	  
-	          duplicate = service.getDuplicateInterfaceCodeCount(req.getParameter("interfaceId"), req.getParameter("interfaceCode"));
-	          
-		}catch (Exception e) {
-			logger.error(new Date() +"Inside DuplicateInterfaceCodeCheck.htm "+UserId ,e);
-			e.printStackTrace(); 
-		}
-		  
-		 return json.toJson(duplicate);    
-	}
+//	@RequestMapping(value="DuplicateInterfaceCodeCheck.htm", method=RequestMethod.GET)
+//	public @ResponseBody String duplicateInterfaceCodeCheck(HttpSession ses, HttpServletRequest req) throws Exception {
+//		
+//		String UserId=(String)ses.getAttribute("Username");
+//		logger.info(new Date() +" Inside DuplicateInterfaceCodeCheck.htm "+UserId);
+//		Gson json = new Gson();
+//		Long duplicate=null;
+//		try
+//		{	  
+//	          duplicate = service.getDuplicateInterfaceCodeCount(req.getParameter("interfaceId"), req.getParameter("interfaceCode"));
+//	          
+//		}catch (Exception e) {
+//			logger.error(new Date() +"Inside DuplicateInterfaceCodeCheck.htm "+UserId ,e);
+//			e.printStackTrace(); 
+//		}
+//		  
+//		 return json.toJson(duplicate);    
+//	}
 
 	@RequestMapping(value = "IGIDocTransStatus.htm", method = { RequestMethod.GET, RequestMethod.POST })
 	public String igiDocTransStatus(HttpServletRequest req, HttpSession ses) throws Exception {
@@ -1633,24 +1660,27 @@ public class DocumentsController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() + " Inside IGILogicalInterfacesList.htm " + UserId);
 		try {
-
 			List<IGILogicalInterfaces> logicalInterfaceList = service.getIGILogicalInterfaces();
 			
 			String logicalInterfaceId = req.getParameter("logicalInterfaceId");
 			logicalInterfaceId = logicalInterfaceId!=null?logicalInterfaceId:"0";
 			
 			if(!logicalInterfaceId.equalsIgnoreCase("0")) {
-				Long logicalInterfaceid = Long.parseLong(logicalInterfaceId);
-				req.setAttribute("igiLogicalInterfaceData", logicalInterfaceList.stream().filter(e -> e.getLogicalInterfaceId().equals(logicalInterfaceid)).findFirst().orElse(null) );
+				long logicalInterfaceid = Long.parseLong(logicalInterfaceId);
+				req.setAttribute("igiLogicalInterfaceData", logicalInterfaceList.stream().filter(e -> e.getLogicalInterfaceId()==logicalInterfaceid).findFirst().orElse(null) );
 			}
 
 			req.setAttribute("logicalInterfaceList", logicalInterfaceList);
 			req.setAttribute("logicalChannelList", service.getIGILogicalChannelList());
+			req.setAttribute("fieldMasterList", service.fieldMasterList());
+			req.setAttribute("dataTypeMasterList", service.dataTypeMasterList());
+			req.setAttribute("fieldDescriptionList", service.getIGIFieldDescriptionList());
 			req.setAttribute("igiDocId", req.getParameter("igiDocId"));
 			req.setAttribute("logicalInterfaceId", logicalInterfaceId);
 			req.setAttribute("documentNo", req.getParameter("documentNo"));
 			req.setAttribute("logicalChannelId", req.getParameter("logicalChannelId"));
-
+			req.setAttribute("fieldGroupList", service.getFieldGroupMasterList());
+			
 			return "documents/IGILogicalInterfaceList";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1674,12 +1704,14 @@ public class DocumentsController {
 			IGILogicalInterfaces logicalInterface = logicalInterfaceId.equalsIgnoreCase("0")? new IGILogicalInterfaces(): service.getIGILogicalInterfaceById(logicalInterfaceId);
 
 			logicalInterface.setMsgType(req.getParameter("msgType"));
-			logicalInterface.setMsgName(req.getParameter("msgName"));
 			logicalInterface.setLogicalChannelId(logicalChannel!=null?Long.parseLong(logicalChannel[0]):0L);
 			logicalInterface.setDataRate(req.getParameter("dataRate"));
 			logicalInterface.setMsgDescription(req.getParameter("msgDescription"));
 			logicalInterface.setProtocals(req.getParameter("protocols"));
 			logicalInterface.setAdditionalInfo(req.getParameter("additionalInfo"));
+			String msgLength = req.getParameter("msgLength");
+			logicalInterface.setMsgLength(msgLength!=null && !msgLength.isEmpty()? Integer.parseInt(msgLength): 0);
+			logicalInterface.setMsgNo(req.getParameter("msgNo"));
 			
 			if(logicalInterface.getLogicalInterfaceId()==null) {
 				int count = service.getLogicalInterfaceCountByType(logicalInterface.getLogicalChannelId()+"", logicalInterface.getMsgType());
@@ -1688,16 +1720,36 @@ public class DocumentsController {
 				String channelCode = logicalChannel!=null?logicalChannel[1]:"-";
 				
 				logicalInterface.setMsgCode(channelCode + "_" + logicalInterface.getMsgType().substring(0,3).toUpperCase() + "_" + seqCount );
-				
+				logicalInterface.setMsgName(logicalInterface.getMsgType().substring(0,3)+" "+req.getParameter("msgName"));
 				logicalInterface.setCreatedBy(UserId);
 				logicalInterface.setCreatedDate(sdtf.format(new Date()));
 				logicalInterface.setIsActive(1);
 			}else {
+				logicalInterface.setMsgName(req.getParameter("msgName"));
 				logicalInterface.setModifiedBy(UserId);
 				logicalInterface.setModifiedDate(sdtf.format(new Date()));
+				
+				// Remove Existing Field Description
+				service.removeIGIFieldDescription(logicalInterfaceId);
 			}
 
 			long result = service.addIGILogicalInterfaces(logicalInterface);
+			
+			// Adding Field Description
+			String[] fieldGroupIds = req.getParameterValues("fieldGroupId");
+			String[] fieldMasterIds = req.getParameterValues("fieldMasterId");
+			
+			for(int i=0; i<fieldMasterIds.length; i++) {
+				IGIFieldDescription fieldDesc = new IGIFieldDescription();
+				fieldDesc.setLogicalInterfaceId(result);
+				fieldDesc.setFieldGroupId(fieldGroupIds!=null?Long.parseLong(fieldGroupIds[i]):0L);
+				fieldDesc.setFieldMasterId(fieldMasterIds!=null?Long.parseLong(fieldMasterIds[i]):0L);
+				fieldDesc.setCreatedBy(UserId);
+				fieldDesc.setCreatedDate(sdtf.format(new Date()));
+				fieldDesc.setIsActive(1);
+				
+				service.addIGIFieldDescription(fieldDesc);
+			}
 			
 			if (result > 0) {
 				redir.addAttribute("result", "Inteface Details "+action+"ed Successfully");
@@ -1722,13 +1774,26 @@ public class DocumentsController {
 		try {
 			
 			String logicalChannelId = req.getParameter("logicalChannelId");
+			String source = req.getParameter("source");
+			String destination = req.getParameter("destination");
+			String[] sourcesplit = source!=null?source.split("/"): null;
+			String[] destsplit = destination!=null?destination.split("/"): null;
 			IGILogicalChannel logicalChannel = Long.parseLong(logicalChannelId)!=0 ?service.getIGILogicalChannelById(logicalChannelId) 
 																					: new IGILogicalChannel();
-			logicalChannel.setLogicalChannel(req.getParameter("logicalChannel"));
-			logicalChannel.setChannelCode(req.getParameter("channelCode"));
 			logicalChannel.setDescription(req.getParameter("description"));
 			String action = "Add";
 			if(Long.parseLong(logicalChannelId)==0) {
+				logicalChannel.setChannelCode(req.getParameter("channelCode"));
+				String logicalChannelName = "";
+				if(sourcesplit!=null && destsplit!=null) {
+					
+					int seqCount = service.getLogicalChannelCount();
+					
+					logicalChannelName = sourcesplit[1]+"_"+destsplit[1]+"_"+logicalChannel.getChannelCode()+"_L-"+(seqCount+1);
+					logicalChannel.setSourceId(Long.parseLong(sourcesplit[0]));
+					logicalChannel.setDestinationId(Long.parseLong(destsplit[0]));
+				}
+				logicalChannel.setLogicalChannel(logicalChannelName);
 				logicalChannel.setCreatedBy(UserId);
 				logicalChannel.setCreatedDate(sdtf.format(new Date()));
 				logicalChannel.setIsActive(1);
@@ -1746,18 +1811,13 @@ public class DocumentsController {
 				redir.addAttribute("resultfail", "Logical Channel "+action+" Unsuccessful");
 			}
 			
-			redir.addAttribute("igiDocId", req.getParameter("igiDocId"));
-			redir.addAttribute("logicalInterfaceId", req.getParameter("logicalInterfaceId"));
-			redir.addAttribute("logicalChannelId", result);
-			
-			return "redirect:/IGILogicalInterfacesList.htm";
+			return "redirect:/LogicalChannelMaster.htm";
 		}catch (Exception e) {
 			logger.error(new Date() + " Inside IGILogicalChannelDetailsSubmit.htm " + UserId);
 			e.printStackTrace();
 			return "static/Error";
 		}
 	}
-	
 
 	@RequestMapping(value = "IGILogicalChannelDelete.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String igiLogicalChannelDelete(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
@@ -1775,16 +1835,491 @@ public class DocumentsController {
 				redir.addAttribute("resultfail", "Logical Channel Delete Unsuccessful");
 			}
 
-			redir.addAttribute("igiDocId", req.getParameter("igiDocId"));
-			redir.addAttribute("logicalInterfaceId", req.getParameter("logicalInterfaceId"));
-			
-			return "redirect:/IGILogicalInterfacesList.htm";
+			return "redirect:/LogicalChannelMaster.htm";
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() + " Inside IGILogicalChannelDelete.htm " + UserId);
 			return "static/Error";
 		}
 	}
+
+	@RequestMapping(value="LogicalChannelMaster.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String logicalChannelMasterList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside LogicalChannelMaster.htm " + UserId);
+
+		try {
+			String action = req.getParameter("action");
+			if(action!=null && action.equalsIgnoreCase("Add")) {
+				req.setAttribute("systemProductTreeAllList", service.getSystemProductTreeAllList());
+				return "documents/LogicalChannelAddEdit";
+			}else if(action!=null && action.equalsIgnoreCase("Edit")) {
+				String logicalChannelId = req.getParameter("logicalChannelId");
+				req.setAttribute("igiLogicalChannel", service.getIGILogicalChannelById(logicalChannelId));
+				req.setAttribute("systemProductTreeAllList", service.getSystemProductTreeAllList());
+				return "documents/LogicalChannelAddEdit";
+			}else {
+				req.setAttribute("logicalChannelList", service.getLogicalChannelList());
+				return "documents/LogicalChannelList";
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside LogicalChannelMaster.htm " + UserId, e);
+			return "static/Error";
+		}
+		
+	}
+	
+	@RequestMapping(value = "FieldMaster.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String fieldMaster(HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside FieldMaster.htm" + UserId);
+		try {
+			String action = req.getParameter("action");
+			req.setAttribute("fieldGroupList", service.getFieldGroupMasterList());
+			req.setAttribute("fieldGroupId", req.getParameter("fieldGroupId"));
+			
+			if(action!=null && action.equalsIgnoreCase("Add")) {
+				req.setAttribute("dataTypeMasterList", service.dataTypeMasterList());
+				return "documents/FieldMasterAddEdit";
+			}else if(action!=null && action.equalsIgnoreCase("Edit")) {
+				String fieldMasterId = req.getParameter("fieldMasterId");
+				req.setAttribute("dataTypeMasterList", service.dataTypeMasterList());
+				req.setAttribute("fieldMaster", service.getFieldMasterById(fieldMasterId));
+				req.setAttribute("fieldGroupLinkedList", service.getFieldGroupLinkedList(fieldMasterId));
+				return "documents/FieldMasterAddEdit";
+			}else {
+				req.setAttribute("fieldMasterList", service.fieldMasterList());
+				return "documents/FieldMasterList";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside FieldMaster.htm " + UserId, e);
+			return "static/Error";
+
+		}
+	}
+	
+	@RequestMapping(value="FieldMasterDetailsSubmit.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String fieldMasterDetailsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date()+ " Inside FieldMasterDetailsSubmit.htm "+UserId);	
+		try {
+			
+			String action =req.getParameter("action");
+			String fieldMasterId =req.getParameter("fieldMasterId");
+			String dataTypeMasterId =req.getParameter("dataTypeMasterId");
+
+			FieldMaster field = fieldMasterId.equalsIgnoreCase("0") ? new FieldMaster() :  service.getFieldMasterById(fieldMasterId);
+			
+			field.setFieldName(req.getParameter("fieldName"));
+			field.setFieldShortName(req.getParameter("fieldShortName"));
+			field.setFieldCode(req.getParameter("fieldCode"));
+			field.setFieldDesc(req.getParameter("fieldDesc"));
+			field.setDataTypeMasterId(dataTypeMasterId!=null?Long.parseLong(dataTypeMasterId):0L);
+			field.setTypicalValue(req.getParameter("typicalValue"));
+			field.setFieldMinValue(req.getParameter("minValue"));
+			field.setFieldMaxValue(req.getParameter("maxValue"));
+			field.setInitValue(req.getParameter("initValue"));
+			field.setQuantum(req.getParameter("quantum"));
+			field.setFieldUnit(req.getParameter("unit"));
+			field.setRemarks(req.getParameter("remarks"));
+
+			if (fieldMasterId.equalsIgnoreCase("0")) {
+				field.setCreatedBy(UserId);
+				field.setCreatedDate(sdtf.format(new Date()));
+				field.setIsActive(1);
+			} else {
+				field.setModifiedBy(UserId);
+				field.setModifiedDate(sdtf.format(new Date()));
+				
+				// Remove Existing Linked Field Groups
+				service.removeFieldGroupLinked(fieldMasterId);
+				
+			}
+			
+			long result = service.addFieldMaster(field);
+			
+			String[] fieldGroupIds = req.getParameterValues("fieldGroupId");
+
+			if(fieldGroupIds!=null && fieldGroupIds.length>0) {
+				for(int i=0; i<fieldGroupIds.length; i++) {
+					if(fieldGroupIds[i]!=null && !fieldGroupIds[i].equalsIgnoreCase("0")) {
+						FieldGroupLinked linked = new FieldGroupLinked();
+						linked.setFieldMasterId(result);
+						linked.setFieldGroupId(Long.parseLong(fieldGroupIds[i]));
+						linked.setCreatedBy(UserId);
+						linked.setCreatedDate(sdtf.format(new Date()));
+						linked.setIsActive(1);
+						
+						service.addFieldGroupLinked(linked);
+					}
+				}
+			}
+			
+			if (result!=0) {
+				redir.addAttribute("result", "Field Master "+action+"ed Successfully");
+			}else {
+				redir.addAttribute("resultfail", "Field Master "+action+" Unsuccessful");	
+			}
+					
+			return "redirect:/FieldMaster.htm";
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside FieldMasterDetailsSubmit.htm "+UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		} 
+	}
+	
+	@RequestMapping(value = "DataTypeMaster.htm",method = {RequestMethod.GET,RequestMethod.POST})
+	public String dataTypeMasterList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside DataTypeMaster.htm" + UserId);
+		try {
+			req.setAttribute("dataTypeMasterList", service.dataTypeMasterList());
+			return "documents/DataTypeMasterList";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside DataTypeMaster.htm" + UserId, e);
+			return "static/Error";
+		}
+		
+	}
+	
+	@RequestMapping(value = "DataTypeMasterDetailsSubmit.htm",method = {RequestMethod.GET,RequestMethod.POST})
+	public String DataTypeMasterAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside DataTypeMasterAddSubmit.htm" + UserId);
+		try {
+			String dataTypeMasterId = req.getParameter("dataTypeMasterId");
+			String dataLength=req.getParameter("dataLength");
+			String action =req.getParameter("action");
+			
+			DataTypeMaster dataTypeMaster = dataTypeMasterId.equalsIgnoreCase("0") ? new DataTypeMaster() :  service.getDataTypeMasterById(Long.parseLong(dataTypeMasterId));
+			
+			dataTypeMaster.setDataTypePrefix(req.getParameter("dataTypePrefix"));
+			dataTypeMaster.setDataLength(dataLength!=null && !dataLength.isEmpty() ? Integer.parseInt(dataLength): 0);	
+			dataTypeMaster.setAliasName(req.getParameter("aliasName"));
+			dataTypeMaster.setDataStandardName(req.getParameter("dataStandardName"));
+			
+			if (dataTypeMasterId.equalsIgnoreCase("0")) {
+				dataTypeMaster.setCreatedBy(UserId);
+				dataTypeMaster.setCreatedDate(sdtf.format(new Date()));
+				dataTypeMaster.setIsActive(1);
+			} else {
+				dataTypeMaster.setModifiedBy(UserId);
+				dataTypeMaster.setModifiedDate(sdtf.format(new Date()));
+			}
+			
+			long result=service.addDataTypeMaster(dataTypeMaster);
+			
+			if (result!=0) {
+				redir.addAttribute("result", "Data Type "+action+"ed Successfully");
+			}else {
+				redir.addAttribute("resultfail", "Data Type "+action+" Unsuccessful");	
+			}
+			return "redirect:/DataTypeMaster.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside DataTypeMasterAddSubmit.htm" + UserId, e);
+			return "static/Error";
+		}
+
+	}
+
+	@RequestMapping(value="IGILogicalInterfaceMatrixDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String igiLogicalInterfaceMatrixDetails(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IGILogicalInterfaceMatrixDetails.htm " + UserId);
+		try {
+			req.setAttribute("igiLogicalInterfaceConnectionList", service.getIGILogicalInterfaceConnectionList());
+			req.setAttribute("systemProductTreeAllList", service.getSystemProductTreeAllList());
+			req.setAttribute("igiDocId", req.getParameter("igiDocId"));
+			return "documents/LogicalInterfaceMatrixDetails";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IGILogicalInterfaceMatrixDetails.htm " + UserId, e);
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value = "IGIFieldGroupDetailsSubmit.htm", method = {RequestMethod.GET})
+	public @ResponseBody String igiFieldGroupDetailsSubmit(HttpServletRequest req, HttpSession ses) throws Exception{
+		String Username=(String)ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IGIFieldGroupDetailsSubmit.htm "+Username);
+		Gson json = new Gson();
+		Object[] data = new Object[4];
+		try {
+			String groupName = req.getParameter("groupName");
+			String groupCode = req.getParameter("groupCode");
+			String groupType = req.getParameter("groupType");
+			
+			FieldGroupMaster fieldGroup = new FieldGroupMaster();
+			fieldGroup.setGroupName(groupName);
+			fieldGroup.setGroupCode(groupCode);
+			fieldGroup.setGroupType(groupType);
+			fieldGroup.setCreatedBy(Username);
+			fieldGroup.setCreatedDate(sdtf.format(new Date()));
+			fieldGroup.setIsActive(1);
+			
+			Long fieldGroupId = service.addFieldGroupMaster(fieldGroup);
+			data[0] = fieldGroupId;
+			data[1] = groupName;
+			data[2] = groupCode;
+			data[3] = groupType;
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside IGIFieldGroupDetailsSubmit.htm "+Username, e);
+		}
+		return json.toJson(data);
+	}
+	
+	@RequestMapping(value="IGIFieldGroupEditSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String igiFieldGroupEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IGIFieldGroupEditSubmit.htm "+UserId);
+		try {
+			String fieldGroupId = req.getParameter("fieldGroupId");
+			FieldGroupMaster fieldGroup = service.getFieldGroupMasterById(fieldGroupId!=null?Long.parseLong(fieldGroupId):0L);
+			fieldGroup.setGroupName(req.getParameter("groupName"));
+			fieldGroup.setGroupCode(req.getParameter("groupCode"));
+			fieldGroup.setGroupType(req.getParameter("groupType"));
+			fieldGroup.setModifiedBy(UserId);
+			fieldGroup.setModifiedDate(sdtf.format(new Date()));
+			fieldGroup.setIsActive(1);
+			
+			Long result = service.addFieldGroupMaster(fieldGroup);
+			
+			if (result!=0) {
+				redir.addAttribute("result", "Field Group Master Edited Successfully");
+			}
+			else {
+				redir.addAttribute("resultfail", "Field Group Master Edit Unsuccessful");	
+			}
+			redir.addAttribute("fieldGroupId", fieldGroupId);
+			
+			return "redirect:/FieldMaster.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IGIFieldGroupEditSubmit.htm " + UserId, e);
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value = "ConnectorMaster.htm",method = {RequestMethod.GET,RequestMethod.POST})
+	public String connectorMasterList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside ConnectorMaster.htm" + UserId);
+		try {
+			req.setAttribute("connectorMasterList", service.getConnectorMasterList());
+			req.setAttribute("connectorAttachList", service.getIGIConnectorAttachList());
+			return "documents/ConnectorMasterList";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside ConnectorMaster.htm" + UserId, e);
+			return "static/Error";
+		}
+		
+	}
+
+	@RequestMapping(value = "ConnectorMasterDetailsSubmit.htm",method = {RequestMethod.GET,RequestMethod.POST})
+	public String connectorMasterAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside ConnectorMasterDetailsSubmit.htm.htm" + UserId);
+		try {
+			String connectorId = req.getParameter("connectorId");
+			String pinCount = req.getParameter("pinCount");
+			String action =req.getParameter("action");
+			
+			IGIConnector connector = connectorId.equalsIgnoreCase("0") ? new IGIConnector() :  service.getIGIConnectorById(Long.parseLong(connectorId));
+			
+			connector.setPartNo(req.getParameter("partNo"));
+			connector.setConnectorMake(req.getParameter("connectorMake"));
+			connector.setStandardName(req.getParameter("standardName"));
+			connector.setProtection(req.getParameter("protection"));
+			connector.setRefInfo(req.getParameter("refInfo"));
+			connector.setRemarks(req.getParameter("remarks"));
+			connector.setPinCount(pinCount!=null && !pinCount.isEmpty() ? Integer.parseInt(pinCount): 0);	
+
+			if (connectorId.equalsIgnoreCase("0")) {
+				connector.setCreatedBy(UserId);
+				connector.setCreatedDate(sdtf.format(new Date()));
+				connector.setIsActive(1);
+			} else {
+				connector.setModifiedBy(UserId);
+				connector.setModifiedDate(sdtf.format(new Date()));
+			}
+			
+			long result=service.addIGIConnector(connector);
+			
+			if (result!=0) {
+				redir.addAttribute("result", "Connector Details "+action+"ed Successfully");
+			}else {
+				redir.addAttribute("resultfail", "Connector Details "+action+" Unsuccessful");	
+			}
+			return "redirect:/ConnectorMaster.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside ConnectorMasterDetailsSubmit.htm.htm" + UserId, e);
+			return "static/Error";
+		}
+
+	}
+	
+	@RequestMapping(value = "ConstantsMaster.htm",method = {RequestMethod.GET,RequestMethod.POST})
+	public String constantsMaster(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside ConstantsMaster.htm" + UserId);
+		try {
+			req.setAttribute("constantsMasterList", service.getIGIConstantsMasterList());
+			return "documents/ConstantsMasterList";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside ConstantsMaster.htm" + UserId, e);
+			return "static/Error";
+		}
+		
+	}
+	
+	@RequestMapping(value = "ConstantsMasterDetailsSubmit.htm",method = {RequestMethod.GET,RequestMethod.POST})
+	public String constantsMasterAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside ConstantsMasterDetailsSubmit.htm" + UserId);
+		try {
+			String constantId = req.getParameter("constantId");
+			String action =req.getParameter("action");
+			
+			IGIConstants constant = constantId.equalsIgnoreCase("0") ? new IGIConstants() :  service.getIGIConstantsById(Long.parseLong(constantId));
+			
+			constant.setGroupName(req.getParameter("groupName"));
+			constant.setConstantName(req.getParameter("constantName"));
+			constant.setConstantValue(req.getParameter("constantValue"));
+			
+			if (constantId.equalsIgnoreCase("0")) {
+				constant.setCreatedBy(UserId);
+				constant.setCreatedDate(sdtf.format(new Date()));
+				constant.setIsActive(1);
+			} else {
+				constant.setModifiedBy(UserId);
+				constant.setModifiedDate(sdtf.format(new Date()));
+			}
+			
+			long result=service.addIGIConstants(constant);
+			
+			if (result!=0) {
+				redir.addAttribute("result", "Constant Details "+action+"ed Successfully");
+			}else {
+				redir.addAttribute("resultfail", "Constant Details "+action+" Unsuccessful");	
+			}
+			return "redirect:/ConstantsMaster.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside ConstantsMasterDetailsSubmit.htm" + UserId, e);
+			return "static/Error";
+		}
+		
+	}
+
+	@RequestMapping(value = "IGIConnectorAttachmentSubmit.htm",method = {RequestMethod.GET,RequestMethod.POST})
+	public String igiConnectorAttachmentSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir, @RequestPart(name = "attachment", required = false) MultipartFile[] attachment) {
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() + "Inside IGIConnectorAttachmentSubmit.htm" + UserId);
+		try {
+			String connectorId = req.getParameter("connectorId");
+			long result = 0;
+			for(int i=0;i<attachment.length ;i++) {
+				IGIConnectorAttach connectorAttach = new IGIConnectorAttach();
+				connectorAttach.setConnectorId(connectorId!=null?Long.parseLong(connectorId):0L);
+				connectorAttach.setCreatedBy(UserId);
+				connectorAttach.setCreatedDate(sdtf.format(new Date()));
+				connectorAttach.setIsActive(1);
+				result = service.addIGIConnectorAttach(connectorAttach, attachment[i], labcode);
+			}
+			
+			if (result!=0) {
+				redir.addAttribute("result", "Connector Images Submitted Successfully");
+			}else {
+				redir.addAttribute("resultfail", "Connector Images Submit Unsuccessful");	
+			}
+			
+			return "redirect:/ConnectorMaster.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IGIConnectorAttachmentSubmit.htm" + UserId, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value = "IGIConnectorAttachmentDelete.htm",method = {RequestMethod.GET,RequestMethod.POST})
+	public String igiConnectorAttachmentDelete(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) {
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() + "Inside IGIConnectorAttachmentDelete.htm" + UserId);
+		try {
+			String connectorAttachId = req.getParameter("connectorAttachId");
+			
+			IGIConnectorAttach connectorAttach = connectorAttachId.equalsIgnoreCase("0") ? new IGIConnectorAttach() : service.getIGIConnectorAttachById(connectorAttachId);
+			connectorAttach.setModifiedBy(UserId);
+			connectorAttach.setModifiedDate(sdtf.format(new Date()));
+			connectorAttach.setIsActive(0);
+			
+			long result = service.addIGIConnectorAttach(connectorAttach, null, labcode);
+			
+			if (result!=0) {
+				redir.addAttribute("result", "Connector Image Deleted Successfully");
+			}else {
+				redir.addAttribute("resultfail", "Connector Image Delete Unsuccessful");	
+			}
+			
+			return "redirect:/ConnectorMaster.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IGIConnectorAttachmentDelete.htm" + UserId, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value = "IGIConnectorDrawingAttachDownload.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public void igiConnectorDrawingAttachDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside IGIConnectorDrawingAttachDownload.htm "+UserId);
+		try
+		{
+			res.setContentType("application/pdf");	
+			
+			String fileName = req.getParameter("drawingAttach");
+
+			String filePath = Paths.get(uploadpath, labcode, "IGI", "Connectors").toString(); 
+			
+			Path filepath = Paths.get(filePath, fileName);
+			File my_file = filepath.toFile();
+			
+			res.setHeader("Content-disposition","inline; filename="+fileName);
+	        String mimeType = getMimeType(my_file.getName()); 
+	        res.setContentType(mimeType);
+	        
+	        OutputStream out = res.getOutputStream();
+	        FileInputStream in = new FileInputStream(my_file);
+	        byte[] buffer = new byte[4096];
+	        int length;
+	        while ((length = in.read(buffer)) > 0) {
+	            out.write(buffer, 0, length);
+	        }
+	        in.close();
+	        out.close();
+		}catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside IGIConnectorDrawingAttachDownload.htm "+UserId,e);
+		}
+	}
+	
 	/* ************************************************ IGI Document End ***************************************************** */
 	
 	/* ************************************************ ICD Document ***************************************************** */
@@ -1938,14 +2473,78 @@ public class DocumentsController {
 			req.setAttribute("lablogo",  logoUtil.getLabLogoAsBase64String(labcode)); 
 			req.setAttribute("drdologo", logoUtil.getDRDOLogoAsBase64String());
 			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
-			req.setAttribute("applicableDocsList", service.getPfmsApplicableDocs());
+			req.setAttribute("applicableDocsList", service.getStandardDocuments());
 			req.setAttribute("icdApplicableDocsList", service.getIGIApplicableDocs(icdDocId, "B"));
-			req.setAttribute("icdConnectionsList", service.getICDConnectionsList(icdDocId));
 			req.setAttribute("interfaceTypesList", service.getIGIInterfaceTypesList());
 			req.setAttribute("interfaceContentList", service.getIGIInterfaceContentList());
 			req.setAttribute("isPdf", req.getParameter("isPdf"));
-			req.setAttribute("productTreeAllList", service.getProductTreeAllList(icdDocument.getProjectId()+"", icdDocument.getInitiationId()+""));
+			req.setAttribute("igiDocumentIntroductionList", service.getIGIDocumentIntroductionList());
+			req.setAttribute("mechanicalInterfacesList", service.getICDMechInterfaceConnectionList(icdDocId));
+			req.setAttribute("connectorMasterList", service.getConnectorMasterList());
+			req.setAttribute("allICDConnectorList", service.getAllICDConnectorList());
+			req.setAttribute("filePath", uploadpath);
+			
+			String pdfForSystem = req.getParameter("pdfForSystem");
+			String systemId = req.getParameter("systemId");
+			List<Object[]> productTreeAllList = service.getProductTreeAllList(icdDocument.getProjectId()+"", icdDocument.getInitiationId()+"");
+			List<ICDConnectionDTO> icdConnectionsList = service.getICDConnectionsList(icdDocId);
+			
+			if (pdfForSystem != null && pdfForSystem.equalsIgnoreCase("Y")) {
+			    icdConnectionsList = icdConnectionsList.stream()
+			        				.filter(e -> Arrays.stream(e.getSubSystemIdsS1().split(",")).map(String::trim).anyMatch(id -> id.equals(systemId)) ||
+			            						Arrays.stream(e.getSubSystemIdsS2().split(",")).map(String::trim).anyMatch(id -> id.equals(systemId)) )
+			        				.collect(Collectors.toList());
+			}
+			
+			// 1. All subsystem IDs (split and converted to Long)
+			Set<Long> filterIds = icdConnectionsList.stream()
+								    .flatMap(e -> Stream.of(e.getSubSystemIdsS1(), e.getSubSystemIdsS2()))
+								    .filter(Objects::nonNull)
+								    .flatMap(s -> Arrays.stream(s.split(",")))
+								    .map(String::trim)
+								    .filter(str -> !str.isEmpty())
+								    .map(Long::valueOf)
+								    .collect(Collectors.toSet());
 
+			// 2. Internal: ElementTypes both must be "I", split values
+			Set<Long> filterIdsInternal = icdConnectionsList.stream()
+										    .filter(e -> allValuesAre("I", e.getElementTypesS1()))
+										    .filter(e -> allValuesAre("I", e.getElementTypesS2()))
+										    .flatMap(e -> Stream.of(e.getSubSystemIdsS1(), e.getSubSystemIdsS2()))
+										    .filter(Objects::nonNull)
+										    .flatMap(s -> Arrays.stream(s.split(",")))
+										    .map(String::trim)
+										    .filter(str -> !str.isEmpty())
+										    .map(Long::valueOf)
+										    .collect(Collectors.toSet());
+
+			// 3. External: if either is "E", include
+			Set<Long> filterIdsExternal = icdConnectionsList.stream()
+										    .filter(e -> anyValueIs("E", e.getElementTypesS1()) || anyValueIs("E", e.getElementTypesS2()))
+										    .flatMap(e -> Stream.of(e.getSubSystemIdsS1(), e.getSubSystemIdsS2()))
+										    .filter(Objects::nonNull)
+										    .flatMap(s -> Arrays.stream(s.split(",")))
+										    .map(String::trim)
+										    .filter(str -> !str.isEmpty())
+										    .map(Long::valueOf)
+										    .collect(Collectors.toSet());
+
+			// Filter the productTreeAllList using the above IDs
+			List<Object[]> productTreeList = productTreeAllList.stream().filter(arr -> filterIds.contains(Long.parseLong(arr[0].toString()))).collect(Collectors.toList());
+			List<Object[]> productTreeListInternal = productTreeAllList.stream().filter(arr -> filterIdsInternal.contains(Long.parseLong(arr[0].toString()))).collect(Collectors.toList());
+			List<Object[]> productTreeListExternal = productTreeAllList.stream().filter(arr -> filterIdsExternal.contains(Long.parseLong(arr[0].toString()))).collect(Collectors.toList());
+
+			req.setAttribute("icdDocument", icdDocument);
+			req.setAttribute("icdConnectionsList", icdConnectionsList);
+			req.setAttribute("productTreeAllList", productTreeAllList);
+			req.setAttribute("productTreeList", productTreeList);
+			req.setAttribute("productTreeListInternal", productTreeListInternal);
+			req.setAttribute("productTreeListExternal", productTreeListExternal);
+			req.setAttribute("icdConnectorPinMapList", service.getICDConnectorPinMapListByICDDocId(icdDocId));
+			req.setAttribute("icdSystemAttachList", service.getICDSystemAttachListByICDDocId(icdDocId));
+			req.setAttribute("systemId", systemId);
+			req.setAttribute("pdfForSystem", pdfForSystem);
+			
 			return "documents/ICDDocumentDetails";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1954,39 +2553,12 @@ public class DocumentsController {
 		}
 
 	}
-	
-	@RequestMapping(value = "ICDIntroductionSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
-	public String icdIntroductionSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
-		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() + " Inside ICDIntroductionSubmit.htm" + UserId);
 
-		try {
-			String icdDocId = req.getParameter("icdDocId");
-			PfmsICDDocument pfmsICDDocument = service.getPfmsICDDocumentById(icdDocId);
-			pfmsICDDocument.setIntroduction(req.getParameter("introduction"));
-			long result = service.addPfmsICDDocument(pfmsICDDocument);
-
-			if (result > 0) {
-				redir.addAttribute("result", "ICD Document Introduction Updated Successfully");
-			} else {
-				redir.addAttribute("resultfail", "ICD Document Introduction Update Unsuccessful");
-			}
-			redir.addAttribute("icdDocId", icdDocId);
-			return "redirect:/ICDDocumentDetails.htm";
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error(new Date() + " Inside ICDIntroductionSubmit.htm " + UserId, e);
-			return "static/Error";
-
-		}
-
-	}
-	
-	@RequestMapping(value = "ICDConnectionsDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
-	public String icdConnectionMatrixDetails(HttpServletRequest req, HttpSession ses) throws Exception {
+	@RequestMapping(value = "ICDConnectionList.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String icdConnectionList(HttpServletRequest req, HttpSession ses) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
 		String labcode = (String) ses.getAttribute("labcode");
-		logger.info(new Date() + " Inside ICDConnectionsDetails.htm " + UserId);
+		logger.info(new Date() + " Inside ICDConnectionList.htm " + UserId);
 		try {
 			String docId = req.getParameter("docId");
 			String docType = req.getParameter("docType");
@@ -1999,99 +2571,100 @@ public class DocumentsController {
 			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
 			req.setAttribute("icdPurposeList", service.getAllICDPurposeList());
 			req.setAttribute("icdConnectionsList", service.getICDConnectionsList(docId));
+//			req.setAttribute("icdConnectionsList", new ArrayList<ICDConnectionDTO>());
 			PfmsICDDocument icdDocument = service.getPfmsICDDocumentById(docId);
 			req.setAttribute("icdDocument", icdDocument);
 			req.setAttribute("productTreeAllList", service.getProductTreeAllList(icdDocument.getProjectId()+"", icdDocument.getInitiationId()+""));
 			
-			return "documents/ICDConnectionsDetails";
+			return "documents/ICDConnectionList";
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date() + " Inside ICDConnectionsDetails.htm " + UserId, e);
+			logger.error(new Date() + " Inside ICDConnectionList.htm " + UserId, e);
 			return "static/Error";
 		}
 		
 	}
 	
-	@RequestMapping(value="ICDConnectionMatrixSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
-	public String icdConnectionMatrixSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,
+	@RequestMapping(value = "ICDConnectionDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String icdConnectionDetails(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() + " Inside ICDConnectionDetails.htm " + UserId);
+		try {
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+			String icdConnectionId = req.getParameter("icdConnectionId");
+			//String projectId = req.getParameter("projectId");
+			
+			req.setAttribute("docId", docId);
+			req.setAttribute("docType", docType);
+			req.setAttribute("documentNo", req.getParameter("documentNo"));
+			req.setAttribute("projectId", req.getParameter("projectId"));
+			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
+			req.setAttribute("icdPurposeList", service.getAllICDPurposeList());
+			PfmsICDDocument icdDocument = service.getPfmsICDDocumentById(docId);
+			req.setAttribute("icdDocument", icdDocument);
+			req.setAttribute("productTreeAllList", service.getProductTreeAllList(icdDocument.getProjectId()+"", icdDocument.getInitiationId()+""));
+			req.setAttribute("icdConnectionsList", service.getICDConnectionsList(docId));
+			req.setAttribute("icdConnectionId", icdConnectionId==null?"0":icdConnectionId);
+			
+			return "documents/ICDConnectionDetails";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside ICDConnectionDetails.htm " + UserId, e);
+			return "static/Error";
+		}
+		
+	}
+	
+	@RequestMapping(value="ICDConnectionDetailsSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String icdConnectionDetailsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,
 			@RequestPart(name="drawingAttachment", required = false) MultipartFile drawingAttachment) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
 		String labcode = (String) ses.getAttribute("labcode");
-		logger.info(new Date() + " Inside ICDConnectionMatrixSubmit.htm " + UserId);
+		logger.info(new Date() + " Inside ICDConnectionDetailsSubmit.htm " + UserId);
 		try {
 			
 			String docId = req.getParameter("docId");
+			String action = req.getParameter("action");
 			String icdConnectionId = req.getParameter("icdConnectionId");
-			String[] purpose = req.getParameterValues("purpose");
+			String[] purposeId = req.getParameterValues("purposeId");
+			String[] interfaceId = req.getParameterValues("interfaceId");
+			String[] subSystemIdOne = req.getParameterValues("subSystemIdOne");
+			String[] subSystemIdTwo = req.getParameterValues("subSystemIdTwo");
 			
 			ICDDocumentConnections connections = Long.parseLong(icdConnectionId)!=0 ? service.getICDDocumentConnectionsById(icdConnectionId) 
 																					: new ICDDocumentConnections();
 			if(connections.getICDConnectionId()==null) {
-				
-				String subSystemOne = req.getParameter("subSystemOne");
-				String subSystemTwo = req.getParameter("subSystemTwo");
-				String superSubSystemOne = req.getParameter("superSubSystemOne");
-				String superSubSystemTwo = req.getParameter("superSubSystemTwo");
-				String interfaceId = req.getParameter("interfaceId");
-				String[] interfaceIds = interfaceId!=null?interfaceId.split("/"):null;
-				String isSubSystem = req.getParameter("isSubSystem");
-				
-				String[] subSystemOnes  = subSystemOne!=null?subSystemOne.split("/"): null;
-				String[] subSystemTwos  = subSystemTwo!=null?subSystemTwo.split("/"): null;
-				String[] superSubSystemOnes  = superSubSystemOne!=null?superSubSystemOne.split("/"): null;
-				String[] superSubSystemTwos  = superSubSystemTwo!=null?superSubSystemTwo.split("/"): null;
-				
 				connections.setICDDocId(Long.parseLong(docId));
-				connections.setSubSystemMainIdOne(subSystemOnes!=null?Long.parseLong(subSystemOnes[0]):0);
-				connections.setSubSystemOne(subSystemOnes!=null?subSystemOnes[1]:null);
-				connections.setSubSystemMainIdTwo(subSystemTwos!=null?Long.parseLong(subSystemTwos[0]):0); 
-				connections.setSubSystemTwo(subSystemTwos!=null?subSystemTwos[1]:null);
-				connections.setSuperSubSysMainIdOne(superSubSystemOnes!=null?Long.parseLong(superSubSystemOnes[0]):0);
-				connections.setSuperSubSystemOne(superSubSystemOnes!=null?superSubSystemOnes[1]:null);
-				connections.setSuperSubSysMainIdTwo(superSubSystemTwos!=null?Long.parseLong(superSubSystemTwos[0]):0);
-				connections.setSuperSubSystemTwo(superSubSystemTwos!=null?superSubSystemTwos[1]:null);
-				connections.setInterfaceId(interfaceIds!=null?Long.parseLong(interfaceIds[0]):0L);
 				connections.setCreatedBy(UserId);
 				connections.setCreatedDate(sdtf.format(new Date()));
 				connections.setIsActive(1);
-				
-				String connectionCode = "";
-				int connectionCount = service.getICDConnectionsCount(connections.getSubSystemMainIdOne(), connections.getSubSystemMainIdTwo(), 
-						connections.getSuperSubSysMainIdOne(), connections.getSuperSubSysMainIdTwo(), connections.getICDDocId());
-
-				if(isSubSystem.equalsIgnoreCase("N")) {
-					connectionCode = connections.getSubSystemOne() + "_" + connections.getSubSystemTwo();
-				}else {
-					connectionCode = connections.getSuperSubSystemOne() + "_" + connections.getSuperSubSystemTwo();
-				}
-
-				connections.setConnectionCode((connectionCount+1) + "." + connectionCode+ "_" + (interfaceIds!=null?interfaceIds[1]:null));
-				
 			}else {
 				connections.setModifiedBy(UserId);
 				connections.setModifiedDate(sdtf.format(new Date()));
 			}
 			
-			connections.setConstraints(req.getParameter("constraints"));
-			connections.setPeriodicity(req.getParameter("periodicity"));
-			connections.setDescription(req.getParameter("description"));
 			connections.setDrawingNo(req.getParameter("drawingNo"));
-			connections.setCableMaxLength(req.getParameter("cableMaxLength")!=null?Integer.parseInt(req.getParameter("cableMaxLength")): 0);
-			connections.setInterfaceLoss(req.getParameter("interfaceLoss")!=null?Integer.parseInt(req.getParameter("interfaceLoss")): 0);
-			connections.setCableBendingRadius(req.getParameter("cableBendingRadius")!=null?Double.parseDouble(req.getParameter("cableBendingRadius")): 0);
 			
 			long result = service.addICDDocumentConnections(connections, drawingAttachment, labcode);
 			
+			// Add ICD Connection SubSystemOne
+			addICDConnectionSystems(subSystemIdOne, result, UserId, "A");
+			
+			// Add ICD Connection SubSystemTwo
+			addICDConnectionSystems(subSystemIdTwo, result, UserId, "B");
+			
 			// Add ICD Connection Interfaces
-			//addICDConnectionInterfaces(connections, interfaceId, result, isSubSystem, UserId);
+			addICDConnectionInterfaces(interfaceId, result, UserId);
 			
 			// Add ICD Connection Purpose
-			addICDConnectionPurpose(purpose, result+"", UserId);
+			addICDConnectionPurpose(purposeId, result+"", UserId);
 			
 			if (result > 0) {
-				redir.addAttribute("result", "ICD Connections Submitted Successfully");
+				redir.addAttribute("result", "ICD Connections "+action+"ed Successfully");
 			} else {
-				redir.addAttribute("resultfail", "ICD Connections Submit Unsuccessful");
+				redir.addAttribute("resultfail", "ICD Connections "+action+" Unsuccessful");
 			}
 			
 			redir.addAttribute("docId", docId);
@@ -2099,11 +2672,11 @@ public class DocumentsController {
 			redir.addAttribute("documentNo", req.getParameter("documentNo"));
 			redir.addAttribute("projectId", req.getParameter("projectId"));
 			
-			return "redirect:/ICDConnectionsDetails.htm";
+			return "redirect:/ICDConnectionList.htm";
 
 		}catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date() + " Inside ICDConnectionMatrixSubmit.htm " + UserId, e);
+			logger.error(new Date() + " Inside ICDConnectionDetailsSubmit.htm " + UserId, e);
 			return "static/Error";
 		}
 	}
@@ -2114,9 +2687,9 @@ public class DocumentsController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() + " Inside ICDConnectionDelete.htm " + UserId);
 		try {
-			String icdConnectionId = req.getParameter("icdConnectionId");
+			String conInterfaceId = req.getParameter("conInterfaceId");
 			
-			long result = service.deleteICDConnectionById(icdConnectionId);
+			long result = service.deleteICDConnectionById(conInterfaceId);
 
 			if (result > 0) {
 				redir.addAttribute("result", "ICD Connection Deleted Successfully");
@@ -2129,7 +2702,7 @@ public class DocumentsController {
 			redir.addAttribute("documentNo", req.getParameter("documentNo"));
 			redir.addAttribute("projectId", req.getParameter("projectId"));
 			
-			return "redirect:/ICDConnectionsDetails.htm";
+			return "redirect:/ICDConnectionList.htm";
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2152,11 +2725,56 @@ public class DocumentsController {
 			req.setAttribute("documentNo", req.getParameter("documentNo"));
 			req.setAttribute("projectId", req.getParameter("projectId"));
 			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
-			req.setAttribute("icdConnectionsList", service.getICDConnectionsList(docId));
 			PfmsICDDocument icdDocument = service.getPfmsICDDocumentById(docId);
-			req.setAttribute("icdDocument", icdDocument);
-			req.setAttribute("productTreeAllList", service.getProductTreeAllList(icdDocument.getProjectId()+"", icdDocument.getInitiationId()+""));
+			List<Object[]> productTreeAllList = service.getProductTreeAllList(icdDocument.getProjectId()+"", icdDocument.getInitiationId()+"");
+			List<ICDConnectionDTO> icdConnectionsList = service.getICDConnectionsList(docId);
+			
+			// 1. All subsystem IDs (split and converted to Long)
+			Set<Long> filterIds = icdConnectionsList.stream()
+								    .flatMap(e -> Stream.of(e.getSubSystemIdsS1(), e.getSubSystemIdsS2()))
+								    .filter(Objects::nonNull)
+								    .flatMap(s -> Arrays.stream(s.split(",")))
+								    .map(String::trim)
+								    .filter(str -> !str.isEmpty())
+								    .map(Long::valueOf)
+								    .collect(Collectors.toSet());
 
+			// 2. Internal: ElementTypes both must be "I", split values
+			Set<Long> filterIdsInternal = icdConnectionsList.stream()
+										    .filter(e -> allValuesAre("I", e.getElementTypesS1()))
+										    .filter(e -> allValuesAre("I", e.getElementTypesS2()))
+										    .flatMap(e -> Stream.of(e.getSubSystemIdsS1(), e.getSubSystemIdsS2()))
+										    .filter(Objects::nonNull)
+										    .flatMap(s -> Arrays.stream(s.split(",")))
+										    .map(String::trim)
+										    .filter(str -> !str.isEmpty())
+										    .map(Long::valueOf)
+										    .collect(Collectors.toSet());
+
+			// 3. External: if either is "E", include
+			Set<Long> filterIdsExternal = icdConnectionsList.stream()
+										    .filter(e -> anyValueIs("E", e.getElementTypesS1()) || anyValueIs("E", e.getElementTypesS2()))
+										    .flatMap(e -> Stream.of(e.getSubSystemIdsS1(), e.getSubSystemIdsS2()))
+										    .filter(Objects::nonNull)
+										    .flatMap(s -> Arrays.stream(s.split(",")))
+										    .map(String::trim)
+										    .filter(str -> !str.isEmpty())
+										    .map(Long::valueOf)
+										    .collect(Collectors.toSet());
+
+			// Filter the productTreeAllList using the above IDs
+			List<Object[]> productTreeList = productTreeAllList.stream().filter(arr -> filterIds.contains(Long.parseLong(arr[0].toString()))).collect(Collectors.toList());
+			List<Object[]> productTreeListInternal = productTreeAllList.stream().filter(arr -> filterIdsInternal.contains(Long.parseLong(arr[0].toString()))).collect(Collectors.toList());
+			List<Object[]> productTreeListExternal = productTreeAllList.stream().filter(arr -> filterIdsExternal.contains(Long.parseLong(arr[0].toString()))).collect(Collectors.toList());
+
+			// Add to model for JSP
+			req.setAttribute("icdDocument", icdDocument);
+			req.setAttribute("icdConnectionsList", icdConnectionsList);
+			req.setAttribute("productTreeAllList", productTreeAllList);
+			req.setAttribute("productTreeList", productTreeList);
+			req.setAttribute("productTreeListInternal", productTreeListInternal);
+			req.setAttribute("productTreeListExternal", productTreeListExternal);
+			
 			return "documents/ICDConnectionMatrixDetails";
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -2164,6 +2782,20 @@ public class DocumentsController {
 		}
 	}
 
+	private boolean allValuesAre(String expected, String csv) {
+	    return csv != null && Arrays.stream(csv.split(","))
+	        .map(String::trim)
+	        .map(val -> val.contains("#") ? val.split("#")[1] : "")
+	        .allMatch(type -> type.equals(expected));
+	}
+
+	private boolean anyValueIs(String expected, String csv) {
+	    return csv != null && Arrays.stream(csv.split(","))
+	        .map(String::trim)
+	        .map(val -> val.contains("#") ? val.split("#")[1] : "")
+	        .anyMatch(type -> type.equals(expected));
+	}
+	
 	@RequestMapping(value = "ICDDocumentApprovalSubmit.htm", method = { RequestMethod.GET, RequestMethod.POST })
 	public String icdDocumentApprovalSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
@@ -2287,139 +2919,78 @@ public class DocumentsController {
 
 	}
 	
-	@RequestMapping(value="ICDConnectionEditSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
-	public String icdConnectionEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,
-			@RequestPart(name="drawingAttachment", required = false) MultipartFile drawingAttachment) throws Exception {
-		String UserId = (String) ses.getAttribute("Username");
-		String labcode = (String) ses.getAttribute("labcode");
-		
-		logger.info(new Date() + " Inside ICDConnectionEditSubmit.htm " + UserId);
-		
-		try {
-			
-			String icdConnectionId = req.getParameter("icdConnectionId");
-			ICDDocumentConnections connections = service.getICDDocumentConnectionsById(icdConnectionId);
-			//connections.setPurpose(req.getParameter("purpose"));
-			connections.setConstraints(req.getParameter("constraints"));
-			connections.setPeriodicity(req.getParameter("periodicityEdit"));
-			connections.setDescription(req.getParameter("description"));
-			connections.setDrawingNo(req.getParameter("description"));
-			connections.setModifiedBy(UserId);
-			connections.setModifiedDate(sdtf.format(new Date()));
-			connections.setIsActive(1);
-			
-			String[] purpose = req.getParameterValues("purpose");
-			
-			// Add ICD Connection Purpose
-			addICDConnectionPurpose(purpose, icdConnectionId, UserId);
-			
-			long result = service.addICDDocumentConnections(connections, drawingAttachment, labcode);
-			
-			if (result > 0) {
-				redir.addAttribute("result", "ICD Connection Details Updated Successfully");
-			} else {
-				redir.addAttribute("resultfail", "ICD Connection Details Update Unsuccessful");
-			}
 
-			redir.addAttribute("docId", req.getParameter("docId"));
-			redir.addAttribute("docType", req.getParameter("docType"));
-			redir.addAttribute("documentNo", req.getParameter("documentNo"));
-			redir.addAttribute("projectId", req.getParameter("projectId"));
+	private int addICDConnectionSystems(String[] subSystemId, Long icdConnectionId, String userId, String subSystemType) throws Exception {
+		try {
+
+			if(subSystemId!=null && subSystemId.length>0) {
+
+				// Delete Existing SubSystems
+				service.deleteICDConnectionSystemsByICDConnectionId(icdConnectionId+"", subSystemType);
+				
+				for(int i=0; i<subSystemId.length; i++) {
+
+					ICDConnectionSystems systems = new ICDConnectionSystems();
+					systems.setICDConnectionId(icdConnectionId);
+					systems.setSubSystemType(subSystemType);
+					systems.setSubSystemId(subSystemId!=null?Long.parseLong(subSystemId[i]):0);
+					systems.setCreatedBy(userId);
+					systems.setCreatedDate(sdtf.format(new Date()));
+					systems.setIsActive(1);
+
+					service.addICDConnectionSystems(systems);
+				}
+			}
 			
-			return "redirect:/ICDConnectionsDetails.htm";
+			return 1;
 		}catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date() + " Inside ICDConnectionEditSubmit.htm " + UserId, e);
-			return "static/Error";
+			return 0;
 		}
 	}
 	
-
-//	@RequestMapping(value="ICDAddNewConnectionSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
-//	public String icdAddNewConnectionSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
-//		String UserId = (String) ses.getAttribute("Username");
-//		
-//		logger.info(new Date() + " Inside ICDAddNewConnectionSubmit.htm " + UserId);
-//		
-//		try {
-//			
-//			String icdConnectionId = req.getParameter("icdConnectionId");
-//			String isSubSystem = req.getParameter("isSubSystem");
-//			ICDDocumentConnections connections = service.getICDDocumentConnectionsById(icdConnectionId);
-//			
-//			String[] interfaceId = req.getParameterValues("interfaceId");
-//			
-//			// Add ICD Connection Interfaces
-//			int result = addICDConnectionInterfaces(connections, interfaceId, Long.parseLong(icdConnectionId), isSubSystem, UserId);
-//			
-//			if (result > 0) {
-//				redir.addAttribute("result", "ICD Connection Details Updated Successfully");
-//			} else {
-//				redir.addAttribute("resultfail", "ICD Connection Details Update Unsuccessful");
-//			}
-//
-//			redir.addAttribute("docId", req.getParameter("docId"));
-//			redir.addAttribute("docType", req.getParameter("docType"));
-//			redir.addAttribute("documentNo", req.getParameter("documentNo"));
-//			redir.addAttribute("projectId", req.getParameter("projectId"));
-//			
-//			return "redirect:/ICDConnectionsDetails.htm";
-//		}catch (Exception e) {
-//			e.printStackTrace();
-//			logger.error(new Date() + " Inside ICDAddNewConnectionSubmit.htm " + UserId, e);
-//			return "static/Error";
-//		}
-//	}
-
-//	private int addICDConnectionInterfaces(ICDDocumentConnections connections, String[] interfaceId, Long icdConnectionId, String isSubSystem, String userId) throws Exception {
-//		try {
-//			String connectionCode = "";
-//			int connectionCount = service.getICDConnectionsCount(connections.getSubSystemMainIdOne(), connections.getSubSystemMainIdTwo(), 
-//					connections.getSuperSubSysMainIdOne(), connections.getSuperSubSysMainIdTwo(), connections.getICDDocId());
-//
-//			if(isSubSystem.equalsIgnoreCase("N")) {
-//				connectionCode = connections.getSubSystemOne() + "_" + connections.getSubSystemTwo();
-//			}else {
-//				connectionCode = connections.getSuperSubSystemOne() + "_" + connections.getSuperSubSystemTwo();
-//			}
-//
-//			if(interfaceId!=null && interfaceId.length>0) {
-//
-//				for(int i=0; i<interfaceId.length; i++) {
-//
-//					String[] interfaceIds = interfaceId[i]!=null?interfaceId[i].split("/"):null;
-//					ICDConnectionInterfaces interfaces = new ICDConnectionInterfaces();
-//					interfaces.setICDConnectionId(icdConnectionId);
-//					interfaces.setInterfaceId(interfaceIds!=null?Long.parseLong(interfaceIds[0]):0);
-//					interfaces.setConnectionCode((connectionCount+(i+1)) + "." + connectionCode+ "_" + (interfaceIds!=null?interfaceIds[1]:null));
-//					interfaces.setCreatedBy(userId);
-//					interfaces.setCreatedDate(sdtf.format(new Date()));
-//					interfaces.setIsActive(1);
-//
-//					service.addICDConnectionInterfaces(interfaces);
-//				}
-//			}
-//
-//			return 1;
-//		}catch (Exception e) {
-//			e.printStackTrace();
-//			return 0;
-//		}
-//	}
-	
-	private int addICDConnectionPurpose(String[] purpose, String icdConnectionId, String userId) throws Exception {
+	private int addICDConnectionInterfaces(String[] interfaceId, Long icdConnectionId, String userId) throws Exception {
 		try {
-			// Delete Existing Purposes
-			service.deleteICDConnectionPurposeByICDConnectionId(icdConnectionId);
 			
-			if(purpose!=null && purpose.length>0) {
+			if(interfaceId!=null && interfaceId.length>0) {
 				
-				for(int i=0; i<purpose.length; i++) {
+				// Delete Existing Interfaces
+				service.deleteICDConnectionInterfaceByICDConnectionId(icdConnectionId+"");
+				
+				for(int i=0; i<interfaceId.length; i++) {
+					
+					ICDConnectionInterfaces interfaces = new ICDConnectionInterfaces();
+					interfaces.setICDConnectionId(icdConnectionId);
+					interfaces.setInterfaceId(interfaceId!=null?Long.parseLong(interfaceId[i]):0);
+					interfaces.setCreatedBy(userId);
+					interfaces.setCreatedDate(sdtf.format(new Date()));
+					interfaces.setIsActive(1);
+					
+					service.addICDConnectionInterfaces(interfaces);
+				}
+			}
+			
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	private int addICDConnectionPurpose(String[] purposeId, String icdConnectionId, String userId) throws Exception {
+		try {
+			
+			if(purposeId!=null && purposeId.length>0) {
+				
+				// Delete Existing Purposes
+				service.deleteICDConnectionPurposeByICDConnectionId(icdConnectionId);
+				
+				for(int i=0; i<purposeId.length; i++) {
 					
 					
 					ICDConnectionPurpose purposes = new ICDConnectionPurpose();
 					purposes.setICDConnectionId(Long.parseLong(icdConnectionId));
-					purposes.setPurposeId(purpose!=null?Long.parseLong(purpose[i]):0);
+					purposes.setPurposeId(purposeId!=null?Long.parseLong(purposeId[i]):0);
 					purposes.setCreatedBy(userId);
 					purposes.setCreatedDate(sdtf.format(new Date()));
 					purposes.setIsActive(1);
@@ -2435,36 +3006,30 @@ public class DocumentsController {
 		
 	}
 	
-//	@RequestMapping(value="CheckICDConnectionExistence.htm",method= {RequestMethod.GET,RequestMethod.POST})
-//	public  @ResponseBody String  checkICDConnectionExistence(HttpServletRequest req, HttpSession ses)throws Exception{
-//		String Username=(String)ses.getAttribute("Username");
-//		logger.info(new Date() + "Inside CheckICDConnectionExistence.htm"+Username);
-//		Gson json = new Gson();
-//		int connectionCount =0;
-//		try {
-//			String docId = req.getParameter("docId");
-//			String subSystemOne = req.getParameter("subSystem1");
-//			String subSystemTwo = req.getParameter("subSystem2");
-//			String superSubSystemOne = req.getParameter("superSubSystem1");
-//			String superSubSystemTwo = req.getParameter("superSubSystem2");
-//			
-//			String[] subSystemOnes  = subSystemOne!=null?subSystemOne.split("/"): null;
-//			String[] subSystemTwos  = subSystemTwo!=null?subSystemTwo.split("/"): null;
-//			String[] superSubSystemOnes  = superSubSystemOne!=null?superSubSystemOne.split("/"): null;
-//			String[] superSubSystemTwos  = superSubSystemTwo!=null?superSubSystemTwo.split("/"): null;
-//			
-//			connectionCount = service.getICDConnectionsCount(subSystemOnes!=null && !subSystemOnes[0].isEmpty()?Long.parseLong(subSystemOnes[0]):0, 
-//															subSystemTwos!=null && !subSystemTwos[0].isEmpty()?Long.parseLong(subSystemTwos[0]):0, 
-//															superSubSystemOnes!=null && !superSubSystemOnes[0].isEmpty()?Long.parseLong(superSubSystemOnes[0]):0, 
-//															superSubSystemTwos!=null && !superSubSystemTwos[0].isEmpty()?Long.parseLong(superSubSystemTwos[0]):0, 
-//															Long.parseLong(docId) );
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			logger.error(new Date() +" Inside CheckICDConnectionExistence.htm"+Username, e);
-//		}
-//		return json.toJson(connectionCount);
-//
-//	}
+	@RequestMapping(value="CheckICDConnectionExistence.htm",method= {RequestMethod.GET,RequestMethod.POST})
+	public  @ResponseBody String  checkICDConnectionExistence(HttpServletRequest req, HttpSession ses)throws Exception{
+		String Username=(String)ses.getAttribute("Username");
+		logger.info(new Date() + "Inside CheckICDConnectionExistence.htm"+Username);
+		Gson json = new Gson();
+		int connectionCount =0;
+		try {
+			String docId = req.getParameter("docId");
+			String subSystemOne = req.getParameter("subSystem1");
+			String subSystemTwo = req.getParameter("subSystem2");
+			
+			String[] subSystemOnes  = subSystemOne!=null?subSystemOne.split("/"): null;
+			String[] subSystemTwos  = subSystemTwo!=null?subSystemTwo.split("/"): null;
+			
+			connectionCount = service.getICDConnectionsCount(subSystemOnes!=null && !subSystemOnes[0].isEmpty()?Long.parseLong(subSystemOnes[0]):0, 
+															subSystemTwos!=null && !subSystemTwos[0].isEmpty()?Long.parseLong(subSystemTwos[0]):0, 
+															Long.parseLong(docId) );
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CheckICDConnectionExistence.htm"+Username, e);
+		}
+		return json.toJson(connectionCount);
+
+	}
 	
 	@RequestMapping(value = "ICDConnectionDrawingAttachDownload.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public void icdConnectionDrawingAttachDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)throws Exception 
@@ -2501,6 +3066,699 @@ public class DocumentsController {
 			logger.error(new Date() +" Inside ICDConnectionDrawingAttachDownload.htm "+UserId,e);
 		}
 	}
+
+	@RequestMapping(value="ExternalElementsSubmit.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String externalElementsSubmit(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ExternalElementsSubmit.htm "+UserId);
+		try {
+			String projectId = req.getParameter("projectId");
+			String projectType = req.getParameter("projectType");
+			String[] levelName = req.getParameterValues("levelName");
+			String[] levelCode = req.getParameterValues("levelCode");
+			
+			long result = 0;
+			for(int i=0; i<levelName.length;i++) {
+				ProductTreeDto dto=new ProductTreeDto();
+		        dto.setProjectId(projectType.equalsIgnoreCase("E")?Long.parseLong(projectId): 0L);
+		        dto.setParentLevelId(0L);
+		        dto.setLevelId("1");
+		        dto.setSubLevelId("1");
+		        dto.setLevelName(levelName[i]);
+		        dto.setLevelCode(levelCode[i]);
+		        dto.setElementType("E");
+		        dto.setCreatedBy(UserId);
+		        dto.setInitiationId(!projectType.equalsIgnoreCase("E")?Long.parseLong(projectId): 0L);
+		        
+		        result+= prodservice.AddLevelName(dto);
+			}
+			
+			if (result > 0) {
+				redir.addAttribute("result", "External Elements Added Successfully");
+			}else {
+				redir.addAttribute("resultfail", "External Elements Add Unsuccessful");	
+			}	
+			
+			redir.addAttribute("icdDocId", req.getParameter("docId"));
+			return "redirect:/ICDDocumentDetails.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ExternalElementsSubmit.htm "+UserId, e);
+			return "static/Error";			
+		}
+	}
+
+	@RequestMapping(value = "PurposeMaster.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String purposeMasterList(HttpServletRequest req, HttpSession ses) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside PurposeMaster.htm" + UserId);
+		try {
+			req.setAttribute("purposeMasterList", service.getAllICDPurposeList());
+			return "documents/PurposeMasterList";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside PurposeMaster.htm " + UserId, e);
+			return "static/Error";
+		}
+		
+	}
+	
+	@RequestMapping(value="PurposeMasterDetailsSubmit.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String purposeMasterAddEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date()+ " Inside PurposeMasterDetailsSubmit.htm "+UserId);	
+		try {
+			
+			String action =req.getParameter("action");
+			String purposeId =req.getParameter("purposeId");
+			
+			ICDPurpose purpose = purposeId.equalsIgnoreCase("0") ? new ICDPurpose() : service.getICDPurposeById(purposeId);
+			
+			purpose.setPurpose(req.getParameter("purpose"));
+			purpose.setPurposeCode(req.getParameter("purposeCode"));
+			
+			if (purposeId.equalsIgnoreCase("0")) {
+				purpose.setCreatedBy(UserId);
+				purpose.setCreatedDate(sdtf.format(new Date()));
+				purpose.setIsActive(1);
+			} else {
+				purpose.setModifiedBy(UserId);
+				purpose.setModifiedDate(sdtf.format(new Date()));
+			}
+			
+			long result = service.addICDPurpose(purpose);
+			
+			if (result!=0) {
+				redir.addAttribute("result", "Purpose "+action+"ed Successfully");
+			}
+			else {
+				redir.addAttribute("resultfail", "Purpose "+action+" Unsuccessful");	
+			}
+			
+			return "redirect:/PurposeMaster.htm";
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside PurposeMasterDetailsSubmit.htm "+UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		} 
+	}
+
+	@RequestMapping(value="ICDMechanicalInterfacesList.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String icdMechanicalInterfacesList(HttpServletRequest req, HttpSession ses) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside ICDMechanicalInterfacesList.htm " + UserId);
+		try {
+			String icdDocId = req.getParameter("icdDocId");
+			String mechInterfaceId = req.getParameter("mechInterfaceId");
+			mechInterfaceId = mechInterfaceId!=null?mechInterfaceId:"0";
+			
+			List<ICDMechanicalInterfaces> mechanicalInterfacesList = service.getICDMechanicalInterfacesList();
+			mechanicalInterfacesList.stream().filter(e-> e.getICDDocId()==Long.parseLong(icdDocId)).collect(Collectors.toList());
+			
+			if(!mechInterfaceId.equalsIgnoreCase("0")) {
+				long mechInterfaceid = Long.parseLong(mechInterfaceId);
+				req.setAttribute("icdMechanicalInterfaceData", mechanicalInterfacesList.stream().filter(e -> e.getMechInterfaceId()==mechInterfaceid).findFirst().orElse(null) );
+			}
+			
+			req.setAttribute("icdDocId", icdDocId);
+			req.setAttribute("documentNo", req.getParameter("documentNo"));
+			req.setAttribute("projectId", req.getParameter("projectId"));
+			req.setAttribute("mechInterfaceId", mechInterfaceId);
+			req.setAttribute("mechanicalInterfacesList", mechanicalInterfacesList);
+			PfmsICDDocument icdDocument = service.getPfmsICDDocumentById(icdDocId);
+			req.setAttribute("icdDocument", icdDocument);
+			req.setAttribute("productTreeAllList", service.getProductTreeAllList(icdDocument.getProjectId()+"", icdDocument.getInitiationId()+""));
+			
+			return "documents/ICDMechanicalInterfacesList";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside ICDMechanicalInterfacesList.htm " + UserId, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="ICDMechanicalInterfaceDetailsSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String icdMechanicalInterfaceDetailsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,
+			@RequestPart(name="drawingOne", required = false) MultipartFile drawingOne,
+			@RequestPart(name="drawingTwo", required = false) MultipartFile drawingTwo) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() + " Inside ICDMechanicalInterfaceDetailsSubmit.htm " + UserId);
+		try {
+			String action = req.getParameter("action");
+			String icdDocId = req.getParameter("icdDocId");
+			String subSystemOne = req.getParameter("subSystemOne");
+			String subSystemTwo = req.getParameter("subSystemTwo");
+			String mechInterfaceId = req.getParameter("mechInterfaceId");
+			long mechinterfaceid = Long.parseLong(mechInterfaceId);
+			
+			String[] subSystemOnes  = subSystemOne!=null?subSystemOne.split("/"): null;
+			String[] subSystemTwos  = subSystemTwo!=null?subSystemTwo.split("/"): null;
+			
+			ICDMechanicalInterfaces mechInterface = mechinterfaceid!=0 ? service.getICDMechanicalInterfacesById(mechinterfaceid) : new ICDMechanicalInterfaces();
+			
+			mechInterface.setICDDocId(Long.parseLong(icdDocId));
+			mechInterface.setInterfaceName(req.getParameter("interfaceName"));
+			mechInterface.setPartOne(req.getParameter("partOne"));
+			mechInterface.setPartTwo(req.getParameter("partTwo"));
+			mechInterface.setDescription(req.getParameter("description"));
+			mechInterface.setStandards(req.getParameter("standards"));
+			mechInterface.setPrecautions(req.getParameter("precautions"));
+			mechInterface.setInstructions(req.getParameter("instructions"));
+			mechInterface.setRemarks(req.getParameter("remarks"));
+			
+			if(mechinterfaceid==0) {
+				mechInterface.setSubSystemMainIdOne(subSystemOnes!=null?Long.parseLong(subSystemOnes[0]):0L);
+				mechInterface.setSubSystemMainIdTwo(subSystemTwos!=null?Long.parseLong(subSystemTwos[0]):0L);
+				mechInterface.setInterfaceCode(req.getParameter("interfaceCode"));
+				long interfaceCount = service.getMechanicalInterfaceCount();
+				String seqId = (subSystemOnes!=null?subSystemOnes[1]:"-") + "_" + (subSystemTwos!=null?subSystemTwos[1]:"-") + "_" + mechInterface.getInterfaceCode()+ "_M-"+ (interfaceCount+1);
+				mechInterface.setInterfaceSeqId(seqId);
+				mechInterface.setCreatedBy(UserId);
+				mechInterface.setCreatedDate(sdtf.format(new Date()));
+				mechInterface.setIsActive(1);
+			}else {
+				mechInterface.setModifiedBy(UserId);
+				mechInterface.setModifiedDate(sdtf.format(new Date()));
+			}
+			
+			Long result = service.addICDMechanicalInterfaces(mechInterface, drawingOne, drawingTwo, labcode);
+		
+			if (result!=0) {
+				redir.addAttribute("result", "Interface Details "+action+"ed Successfully");
+			}else {
+				redir.addAttribute("resultfail", "Interface Details "+action+" Unsuccessful");	
+			}
+			
+			redir.addAttribute("mechInterfaceId", result);
+			redir.addAttribute("icdDocId", icdDocId);
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			
+			return "redirect:/ICDMechanicalInterfacesList.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside ICDMechanicalInterfaceDetailsSubmit.htm " + UserId, e);
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value = "ICDMechanicalDrawingAttachDownload.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public void icdMechanicalDrawingAttachDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside ICDMechanicalDrawingAttachDownload.htm "+UserId);
+		try
+		{
+			res.setContentType("application/pdf");	
+			
+			String fileName = req.getParameter("drawingAttach");
+
+			String filePath = Paths.get(uploadpath, labcode, "ICD", "MechInterface").toString(); 
+			
+			Path filepath = Paths.get(filePath, fileName);
+			File my_file = filepath.toFile();
+			
+			res.setHeader("Content-disposition","inline; filename="+fileName);
+	        String mimeType = getMimeType(my_file.getName()); 
+	        res.setContentType(mimeType);
+	        
+	        OutputStream out = res.getOutputStream();
+	        FileInputStream in = new FileInputStream(my_file);
+	        byte[] buffer = new byte[4096];
+	        int length;
+	        while ((length = in.read(buffer)) > 0) {
+	            out.write(buffer, 0, length);
+	        }
+	        in.close();
+	        out.close();
+		}catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside ICDMechanicalDrawingAttachDownload.htm "+UserId,e);
+		}
+	}
+	
+	@RequestMapping(value="ICDConnectionPinDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String icdConnectionPinDetails(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() + " Inside ICDConnectionPinDetails.htm " + UserId);
+
+		try {
+			String icdConnectionId = req.getParameter("icdConnectionId");
+			String docId = req.getParameter("docId");
+			String tab = req.getParameter("tab");
+			
+			req.setAttribute("docId", docId);
+			req.setAttribute("docType", req.getParameter("docType"));
+			req.setAttribute("documentNo", req.getParameter("documentNo"));
+			req.setAttribute("projectId", req.getParameter("projectId"));
+			req.setAttribute("icdConnectionId", icdConnectionId);
+			req.setAttribute("tab", tab==null?"1":tab);
+			req.setAttribute("icdDocumentConnections", service.getICDDocumentConnectionsById(icdConnectionId));
+			req.setAttribute("icdConnectionsList", service.getICDConnectionsList(docId));
+			PfmsICDDocument icdDocument = service.getPfmsICDDocumentById(docId);
+			req.setAttribute("icdDocument", icdDocument);
+			req.setAttribute("productTreeAllList", service.getProductTreeAllList(icdDocument.getProjectId()+"", icdDocument.getInitiationId()+""));
+			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
+			req.setAttribute("connectorMasterList", service.getConnectorMasterList());
+			req.setAttribute("icdConnectorList", service.getICDConnectorList(icdConnectionId));
+			List<Object[]> icdConnectorPinList = service.getICDConnectorPinListByICDConnectionId(icdConnectionId);
+			req.setAttribute("icdConnectorPinList", icdConnectorPinList);
+			req.setAttribute("icdConnectorPinMapList", service.getICDConnectorPinMapListByICDDocId(docId).stream().filter(e->e.getICDConnectionId()==Long.parseLong(icdConnectionId)).collect(Collectors.toList()));
+			String icdConnectorIdE1 = req.getParameter("icdConnectorIdE1");
+			if(icdConnectorIdE1!=null) {
+				req.setAttribute("pinListE1", icdConnectorPinList.stream().filter(e -> e[0].toString().equalsIgnoreCase(icdConnectorIdE1)).collect(Collectors.toList()) );
+				req.setAttribute("icdConnectorIdE1", icdConnectorIdE1);
+			}
+			
+			String icdConnectorIdE2 = req.getParameter("icdConnectorIdE2");
+			
+			if(icdConnectorIdE2!=null) {
+				req.setAttribute("pinListE2", icdConnectorPinList.stream().filter(e -> e[0].toString().equalsIgnoreCase(icdConnectorIdE2)).collect(Collectors.toList()) );
+				req.setAttribute("icdConnectorIdE2", icdConnectorIdE2);
+			}
+
+			String connectorPinMapId = req.getParameter("connectorPinMapId");
+			if(connectorPinMapId!=null) {
+				req.setAttribute("icdConnectorPinMapping", service.getICDConnectorPinMappingById(connectorPinMapId) );
+				req.setAttribute("connectorPinMapId", connectorPinMapId);
+			}
+			
+			return "documents/ICDConnectionPinDetails";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside ICDConnectionPinDetails.htm " + UserId, e);
+			return "static/Error";
+		}
+
+	}
+	
+	@RequestMapping(value="ICDConnectionPinDetailsSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String icdConnectionPinDetailsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside ICDConnectionPinDetailsSubmit.htm " + UserId);
+
+		try {
+			String icdConnectorId = req.getParameter("icdConnectorId");
+			String icdConnectionId = req.getParameter("icdConnectionId");
+			String connectorNo = req.getParameter("connectorNo");
+			String subSystemId = req.getParameter("subSystemId");
+			String connectorId = req.getParameter("connectorId");
+			String pinCount = req.getParameter("pinCount");
+			String endNo = req.getParameter("endNo");
+			String action = req.getParameter("action");
+			
+			boolean isNew = icdConnectorId.equalsIgnoreCase("0")? true: false;
+			
+			int totalPins = Integer.parseInt(pinCount);
+			
+			ICDConnectionConnectors connector = isNew? new ICDConnectionConnectors() : service.getICDConnectionConnectorsById(icdConnectorId);
+			if(isNew) {
+				connector.setICDConnectionId(icdConnectionId!=null?Long.parseLong(icdConnectionId):0L);
+				connector.setConnectorNo(connectorNo!=null?Integer.parseInt(connectorNo):0);
+				connector.setSystemType(req.getParameter("systemType"));
+				connector.setSubSystemId(subSystemId!=null?Long.parseLong(subSystemId):0L);
+				connector.setConnectorId(connectorId!=null?Long.parseLong(connectorId):0L);
+				connector.setCreatedBy(UserId);
+				connector.setCreatedDate(sdtf.format(new Date()));
+				connector.setIsActive(1);
+			}else {
+				connector.setModifiedBy(UserId);
+				connector.setModifiedDate(sdtf.format(new Date()));
+				
+				// Remove existing pin details
+				//service.deleteICDConnectionConnectorPinDetails(icdConnectorId);
+			}
+			
+			
+			long result = service.addICDConnectionConnectors(connector);
+			
+			String[] pinNo = req.getParameterValues("pinNo");
+			String[] interfaceId = req.getParameterValues("interfaceId");
+			String[] constraints = req.getParameterValues("constraints");
+			String[] description = req.getParameterValues("description");
+			
+			for(int i=0; i<totalPins; i++) {
+				
+				String periodicity = req.getParameter(("periodicity_"+endNo+"_")+(i+1));
+
+				ICDConnectorPins pin = new ICDConnectorPins();
+				pin.setICDConnectorId(result);
+				pin.setPinNo(pinNo[i]);	
+				pin.setInterfaceId(interfaceId!=null?Long.parseLong(interfaceId[i]):-2L);
+				if(endNo.equalsIgnoreCase("E1")) {
+					pin.setConstraints(constraints[i]);
+					pin.setPeriodicity(periodicity);
+					pin.setDescription(description[i]);
+				}
+				pin.setCreatedBy(UserId);
+				pin.setCreatedDate(sdtf.format(new Date()));
+				pin.setIsActive(1);
+				
+				service.addICDConnectorPins(pin);
+			}
+			
+
+			if (result!=0) {
+				redir.addAttribute("result", "Connector & Pin Details "+action+"ed Successfully");
+			}else {
+				redir.addAttribute("resultfail", "Connector & Pin Details "+action+" Unsuccessful");	
+			}
+			
+			redir.addAttribute("icdConnectionId", icdConnectionId);
+			redir.addAttribute("icdConnectorId"+endNo, result);
+			redir.addAttribute("docId", req.getParameter("docId"));
+			redir.addAttribute("docType", req.getParameter("docType"));
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			redir.addAttribute("projectId", req.getParameter("projectId"));
+			redir.addAttribute("tab", req.getParameter("tab"));
+			
+			return "redirect:/ICDConnectionPinDetails.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside ICDConnectionPinDetailsSubmit.htm " + UserId, e);
+			return "static/Error";
+		}
+
+	}
+
+	@RequestMapping(value = "ICDConnectionConnectorDelete.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String icdConnectionConnectorDelete(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
+
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside ICDConnectionConnectorDelete.htm " + UserId);
+		try {
+			String icdConnectionId = req.getParameter("icdConnectionId");
+			String icdConnectorId = req.getParameter("icdConnectorId");
+			String endNo = req.getParameter("endNo");
+			
+			long result = service.deleteICDConnectionConnectorById(icdConnectorId);
+
+			// Remove existing pin details
+			service.deleteICDConnectionConnectorPinDetails(icdConnectorId);
+			
+			if (result > 0) {
+				redir.addAttribute("result", "Connector Details Deleted Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Connector Details Delete Unsuccessful");
+			}
+
+			redir.addAttribute("icdConnectionId", icdConnectionId);
+			redir.addAttribute("icdConnectorId"+endNo, 0L);
+			redir.addAttribute("docId", req.getParameter("docId"));
+			redir.addAttribute("docType", req.getParameter("docType"));
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			redir.addAttribute("projectId", req.getParameter("projectId"));
+			redir.addAttribute("tab", req.getParameter("tab"));
+			
+			return "redirect:/ICDConnectionPinDetails.htm";
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside ICDConnectionConnectorDelete.htm " + UserId);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="ICDConnectionPinDetailsUpdate.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String icdConnectionPinDetailsUpdate(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside ICDConnectionPinDetailsUpdate.htm " + UserId);
+		
+		try {
+			String icdConnectionId = req.getParameter("icdConnectionId");
+			String connectorPinId = req.getParameter("connectorPinId");
+			String endNo = req.getParameter("endNo");
+			String interfaceId = req.getParameter("interfaceId");
+			
+			ICDConnectorPins pin = service.getICDConnectorPinsById(connectorPinId);
+			pin.setInterfaceId(interfaceId!=null?Long.parseLong(interfaceId):0L);
+			pin.setConstraints(req.getParameter("constraints"));
+			pin.setPeriodicity(req.getParameter("periodicity"));
+			pin.setDescription(req.getParameter("description"));
+			pin.setCreatedBy(UserId);
+			pin.setCreatedDate(sdtf.format(new Date()));
+			pin.setIsActive(1);
+			
+			long result = service.addICDConnectorPins(pin);
+			
+			if (result!=0) {
+				redir.addAttribute("result", "Pin Details Updated Successfully");
+			}else {
+				redir.addAttribute("resultfail", "Pin Details Update Unsuccessful");	
+			}
+			
+			redir.addAttribute("icdConnectionId", icdConnectionId);
+			redir.addAttribute("icdConnectorId"+endNo, req.getParameter("icdConnectorId"));
+			redir.addAttribute("docId", req.getParameter("docId"));
+			redir.addAttribute("docType", req.getParameter("docType"));
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			redir.addAttribute("projectId", req.getParameter("projectId"));
+			redir.addAttribute("tab", req.getParameter("tab"));
+			
+			return "redirect:/ICDConnectionPinDetails.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside ICDConnectionPinDetailsUpdate.htm " + UserId, e);
+			return "static/Error";
+		}
+		
+	}
+
+	@RequestMapping(value="DuplicateConnectorNoCheck.htm", method=RequestMethod.GET)
+	public @ResponseBody String duplicateConnectorNoCheck(HttpSession ses, HttpServletRequest req) throws Exception {
+		
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside DuplicateConnectorNoCheck.htm "+UserId);
+		Gson json = new Gson();
+		Long duplicate=null;
+		try
+		{	  
+	          duplicate = service.getDuplicateConnectorCount(req.getParameter("icdConnectionId"), 
+	        		  req.getParameter("connectorNo"),
+	        		  req.getParameter("systemType"),
+	        		  req.getParameter("subSystemId"),
+	        		  req.getParameter("icdConnectorId") );
+	          
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside DuplicateConnectorNoCheck.htm "+UserId ,e);
+			e.printStackTrace(); 
+		}
+		  
+		 return json.toJson(duplicate);    
+	}
+
+	@RequestMapping(value="ICDPinMappingDetailsSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String icdPinMappingDetailsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside ICDPinMappingDetailsSubmit.htm " + UserId);
+		try {
+			String connectorPinMapId = req.getParameter("connectorPinMapId");
+			String icdConnectionId = req.getParameter("icdConnectionId");
+			String connectorPinIdFrom = req.getParameter("connectorPinIdFrom");
+			String connectorPinIdTo = req.getParameter("connectorPinIdTo");
+			String interfaceId = req.getParameter("interfaceId");
+			String interfaceCode = req.getParameter("interfaceCode");
+			String action = req.getParameter("action");
+			
+			boolean isNew = connectorPinMapId.equalsIgnoreCase("0")? true: false;
+
+			ICDConnectorPinMapping pinMap = isNew? new ICDConnectorPinMapping() : service.getICDConnectorPinMappingById(connectorPinMapId);
+			
+			pinMap.setPinFunction(req.getParameter("pinFunction"));
+			pinMap.setSignalName( req.getParameter("signalName"));
+			pinMap.setCableMaxLength(req.getParameter("cableMaxLength")!=null?Integer.parseInt(req.getParameter("cableMaxLength")): 0);
+			pinMap.setInterfaceLoss(req.getParameter("interfaceLoss")!=null?Integer.parseInt(req.getParameter("interfaceLoss")): 0);
+			pinMap.setCableBendingRadius(req.getParameter("cableBendingRadius")!=null?Double.parseDouble(req.getParameter("cableBendingRadius")): 0);
+			pinMap.setRemarks(req.getParameter("remarks"));
+			
+			String[] pinFrom =  connectorPinIdFrom!=null?connectorPinIdFrom.split("/") : null;
+			String[] pinTo =  connectorPinIdTo!=null?connectorPinIdTo.split("/") : null;
+			pinMap.setConnectorPinIdFrom(pinFrom!=null?Long.parseLong(pinFrom[0]):0L);
+			pinMap.setConnectorPinIdTo(pinTo!=null?Long.parseLong(pinTo[0]):0L);
+			pinMap.setInterfaceId(interfaceId!=null?Long.parseLong(interfaceId):0L);
+			if(interfaceCode==null || (interfaceCode!=null && interfaceCode.isEmpty())) {
+				if(pinMap.getInterfaceId()==-1) {
+					interfaceCode = "NC";
+				}else if(pinMap.getInterfaceId()==0) {
+					interfaceCode = "GR";
+				}
+			}
+			String connectionCode = "-";
+			if(pinFrom!=null && pinTo!=null) {
+				connectionCode = pinFrom[1]+"_"+pinFrom[2]+"-"+pinTo[1]+"_"+pinTo[2]+"-"+(interfaceCode);
+			}
+			pinMap.setConnectionCode(connectionCode);
+			if(isNew) {
+				
+				pinMap.setICDConnectionId(Long.parseLong(icdConnectionId));
+				pinMap.setCreatedBy(UserId);
+				pinMap.setCreatedDate(sdtf.format(new Date()));
+				pinMap.setIsActive(1);
+			}else {
+				pinMap.setModifiedBy(UserId);
+				pinMap.setModifiedDate(sdtf.format(new Date()));
+			}
+			
+			long result = service.addICDConnectorPinMapping(pinMap);
+
+			if (result!=0) {
+				redir.addAttribute("result", "Pin Map Details "+action+"ed Successfully");
+			}else {
+				redir.addAttribute("resultfail", "Pin Map Details "+action+" Unsuccessful");	
+			}
+			
+			redir.addAttribute("icdConnectionId", icdConnectionId);
+			redir.addAttribute("connectorPinMapId", result);
+			redir.addAttribute("docId", req.getParameter("docId"));
+			redir.addAttribute("docType", req.getParameter("docType"));
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			redir.addAttribute("projectId", req.getParameter("projectId"));
+			redir.addAttribute("tab", req.getParameter("tab"));
+			
+			return "redirect:/ICDConnectionPinDetails.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside ICDPinMappingDetailsSubmit.htm " + UserId, e);
+			return "static/Error";
+		}
+
+	}
+	
+	@RequestMapping(value="ICDSystemDrawingDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String icdSystemDrawingDetails(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+	
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside ICDSystemDrawingDetails.htm " + UserId);
+		try {
+			String docId = req.getParameter("docId");
+			PfmsICDDocument icdDocument = service.getPfmsICDDocumentById(docId);
+			
+			List<Object[]> productTreeAllList = service.getProductTreeAllList(icdDocument.getProjectId()+"", icdDocument.getInitiationId()+"");
+			List<ICDConnectionDTO> icdConnectionsList = service.getICDConnectionsList(docId);
+			
+			Set<Long> filterIds = icdConnectionsList.stream()
+								    .flatMap(e -> Stream.of(e.getSubSystemIdsS1(), e.getSubSystemIdsS2()))
+								    .filter(Objects::nonNull)
+								    .flatMap(s -> Arrays.stream(s.split(",")))
+								    .map(String::trim)
+								    .filter(str -> !str.isEmpty())
+								    .map(Long::valueOf)
+								    .collect(Collectors.toSet());
+			
+			// Filter the productTreeAllList using the above IDs
+			List<Object[]> productTreeList = productTreeAllList.stream().filter(arr -> filterIds.contains(Long.parseLong(arr[0].toString()))).collect(Collectors.toList());
+
+			req.setAttribute("icdDocument", icdDocument);
+			req.setAttribute("icdConnectionsList", icdConnectionsList);
+			req.setAttribute("productTreeList", productTreeList);
+			req.setAttribute("icdSystemAttachList", service.getICDSystemAttachListByICDDocId(docId));
+			
+			req.setAttribute("docId", docId);
+			req.setAttribute("docType", req.getParameter("docType"));
+			req.setAttribute("documentNo", req.getParameter("documentNo"));
+			req.setAttribute("projectId", req.getParameter("projectId"));
+
+			return "documents/ICDSystemDrawingDetails";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside ICDSystemDrawingDetails.htm " + UserId, e);
+			return "static/Error";
+		}
+	
+	}
+	
+	@RequestMapping(value = "ICDSystemDrawingDetailsSubmit.htm",method = {RequestMethod.GET,RequestMethod.POST})
+	public String icdSystemDrawingDetailsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,@RequestPart(name = "attachment", required = false) MultipartFile attachment) {
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() + "Inside ICDSystemDrawingDetailsSubmit.htm" + UserId);
+		try {
+			String docId = req.getParameter("docId");
+			String systemAttachId = req.getParameter("systemAttachId");
+			String subSystemId = req.getParameter("subSystemId");
+			
+			ICDSystemAttach systemAttach = systemAttachId.equalsIgnoreCase("0") ? new ICDSystemAttach() :  service.getICDSystemAttachById(systemAttachId);
+			systemAttach.setDescription(req.getParameter("description"));
+			
+			if (systemAttachId.equalsIgnoreCase("0")) {
+				systemAttach.setICDDocId(docId!=null?Long.parseLong(docId):0L);
+				systemAttach.setSubSystemId(subSystemId!=null?Long.parseLong(subSystemId):0L);
+				systemAttach.setCreatedBy(UserId);
+				systemAttach.setCreatedDate(sdtf.format(new Date()));
+				systemAttach.setIsActive(1);
+			} else {
+				systemAttach.setModifiedBy(UserId);
+				systemAttach.setModifiedDate(sdtf.format(new Date()));
+			}
+			
+			long result=service.addICDSystemAttach(systemAttach, attachment, labcode);
+			
+			if (result!=0) {
+				redir.addAttribute("result", "System Image Uploaded Successfully");
+			}else {
+				redir.addAttribute("resultfail", "System Image Upload Unsuccessful");	
+			}
+			
+			redir.addAttribute("docId", docId);
+			redir.addAttribute("docId", docId);
+			redir.addAttribute("docType", req.getParameter("docType"));
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			redir.addAttribute("projectId", req.getParameter("projectId"));
+			
+			return "redirect:/ICDSystemDrawingDetails.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside ICDSystemDrawingDetailsSubmit.htm" + UserId, e);
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value = "ICDSystemDrawingAttachDownload.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public void icdSystemDrawingAttachDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside ICDSystemDrawingAttachDownload.htm "+UserId);
+		try
+		{
+			res.setContentType("application/pdf");	
+			
+			String fileName = req.getParameter("drawingAttach");
+
+			String filePath = Paths.get(uploadpath, labcode, "ICD", "SubSystems").toString(); 
+			
+			Path filepath = Paths.get(filePath, fileName);
+			File my_file = filepath.toFile();
+			
+			res.setHeader("Content-disposition","inline; filename="+fileName);
+	        String mimeType = getMimeType(my_file.getName()); 
+	        res.setContentType(mimeType);
+	        
+	        OutputStream out = res.getOutputStream();
+	        FileInputStream in = new FileInputStream(my_file);
+	        byte[] buffer = new byte[4096];
+	        int length;
+	        while ((length = in.read(buffer)) > 0) {
+	            out.write(buffer, 0, length);
+	        }
+	        in.close();
+	        out.close();
+		}catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside ICDSystemDrawingAttachDownload.htm "+UserId,e);
+		}
+	}
+	
 	/* ************************************************ ICD Document End ***************************************************** */
 	
 	/* ************************************************ IRS Document ***************************************************** */
@@ -2660,14 +3918,17 @@ public class DocumentsController {
 			req.setAttribute("labDetails", projectservice.LabListDetails(labcode));
 			req.setAttribute("lablogo",  logoUtil.getLabLogoAsBase64String(labcode)); 
 			req.setAttribute("drdologo", logoUtil.getDRDOLogoAsBase64String());
-			req.setAttribute("applicableDocsList", service.getPfmsApplicableDocs());
+			req.setAttribute("applicableDocsList", service.getStandardDocuments());
 			req.setAttribute("irsApplicableDocsList", service.getIGIApplicableDocs(irsDocId, "C"));
 			
+			req.setAttribute("fieldDescriptionList", service.getIRSFieldDescriptionList(irsDocId));
 			req.setAttribute("logicalInterfaceList", service.getIGILogicalInterfaces());
 			req.setAttribute("logicalChannelList", service.getIGILogicalChannelList());
 
 			req.setAttribute("irsSpecificationsList", service.getIRSDocumentSpecificationsList(irsDocId));
 			
+			req.setAttribute("igiDocumentIntroductionList", service.getIGIDocumentIntroductionList());
+
 			req.setAttribute("isPdf", req.getParameter("isPdf"));
 			
 			return "documents/IRSDocumentDetails";
@@ -2678,33 +3939,6 @@ public class DocumentsController {
 		}
 
 	} 
-
-	@RequestMapping(value = "IRSIntroductionSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
-	public String irsIntroductionSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
-		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() + " Inside IRSIntroductionSubmit.htm" + UserId);
-
-		try {
-			String irsDocId = req.getParameter("irsDocId");
-			PfmsIRSDocument pfmsIRSDocument = service.getPfmsIRSDocumentById(irsDocId);
-			pfmsIRSDocument.setIntroduction(req.getParameter("introduction"));
-			long result = service.addPfmsIRSDocument(pfmsIRSDocument);
-
-			if (result > 0) {
-				redir.addAttribute("result", "IRS Document Introduction Updated Successfully");
-			} else {
-				redir.addAttribute("resultfail", "IRS Document Introduction Update Unsuccessful");
-			}
-			redir.addAttribute("irsDocId", irsDocId);
-			return "redirect:/IRSDocumentDetails.htm";
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error(new Date() + " Inside IRSIntroductionSubmit.htm " + UserId, e);
-			return "static/Error";
-
-		}
-
-	}
 	
 	@RequestMapping(value = "IRSSpecificationsDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String irsSpecificationsDetails(HttpServletRequest req, HttpSession ses) throws Exception {
@@ -2728,7 +3962,13 @@ public class DocumentsController {
 			req.setAttribute("irsSpecificationsList", service.getIRSDocumentSpecificationsList(docId));
 			req.setAttribute("irsSpecificationId", irsSpecificationId);
 			req.setAttribute("irsDocSpecifications", service.getIRSDocumentSpecificationsById(irsSpecificationId));
-			
+			req.setAttribute("logicalChannelList", service.getIGILogicalChannelList());
+			req.setAttribute("fieldMasterList", service.fieldMasterList());
+			req.setAttribute("dataTypeMasterList", service.dataTypeMasterList());
+			req.setAttribute("fieldDescriptionList", service.getIRSFieldDescriptionList(docId));
+			req.setAttribute("fieldGroupList", service.getFieldGroupMasterList());
+			req.setAttribute("arrayMasterList", service.getIRSArrayMasterListByIRSDocId(docId));
+
 			return "documents/IRSSpecificationsDetails";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2745,17 +3985,19 @@ public class DocumentsController {
 		try {
 			
 			String docId = req.getParameter("docId");
-			String icdConnectionId = req.getParameter("icdConnectionId");
+			String connectorPinMapId = req.getParameter("connectorPinMapId");
 			String logicalInterfaceId = req.getParameter("logicalInterfaceId");
 			String irsSpecificationId = req.getParameter("irsSpecificationId");
 		
-			IRSDocumentSpecifications specifications = irsSpecificationId.equalsIgnoreCase("0")? new IRSDocumentSpecifications(): service.getIRSDocumentSpecificationsById(irsSpecificationId);
-			specifications.setIRSDocId(Long.parseLong(docId));
-			specifications.setICDConnectionId(icdConnectionId!=null?Long.parseLong(icdConnectionId):0L);
-			specifications.setLogicalInterfaceId(logicalInterfaceId!=null?Long.parseLong(logicalInterfaceId):0L);
-			specifications.setInfoName(req.getParameter("infoName"));
+			boolean isNew = "0".equalsIgnoreCase(irsSpecificationId);
+			
+			IRSDocumentSpecifications specifications = isNew? new IRSDocumentSpecifications(): service.getIRSDocumentSpecificationsById(irsSpecificationId);
+			
 			specifications.setActionAtDest(req.getParameter("actionAtDest"));
-			if(irsSpecificationId.equalsIgnoreCase("0")) {
+			if(isNew) {
+				specifications.setIRSDocId(Long.parseLong(docId));
+				specifications.setConnectorPinMapId(connectorPinMapId!=null?Long.parseLong(connectorPinMapId):0L);
+				specifications.setLogicalInterfaceId(logicalInterfaceId!=null?Long.parseLong(logicalInterfaceId):0L);
 				specifications.setCreatedBy(UserId);
 				specifications.setCreatedDate(sdtf.format(new Date()));
 				specifications.setIsActive(1);
@@ -2766,8 +4008,53 @@ public class DocumentsController {
 					
 			long result = service.addIRSDocumentSpecifications(specifications);
 
+			if(isNew && result>0) {
 				
-			if (result > 0) {
+				// Handling IRS Field Description
+				List<Object[]> fieldDescriptionList = service.getIGIFieldDescriptionList();
+				fieldDescriptionList = fieldDescriptionList.stream().filter(e -> specifications.getLogicalInterfaceId()==(Long.parseLong(e[1].toString())) ).collect(Collectors.toList());
+			    
+				List<IRSFieldDescription> irsFieldDescriptionEntityList = service.getIRSFieldDescriptionEntityList(docId);
+				int fieldSlNo = 0;
+				for(Object[] obj : fieldDescriptionList) {
+					
+				    IRSFieldDescription irsFieldDescription = irsFieldDescriptionEntityList.stream().filter(e -> e.getFieldMasterId() == Long.parseLong(obj[2].toString())).findFirst().orElse(null);
+
+					FieldMaster fieldMaster = service.getFieldMasterById(obj[2].toString());
+					
+					IRSFieldDescription fieldDesc = new IRSFieldDescription();
+					fieldDesc.setIRSSpecificationId(result);
+					fieldDesc.setLogicalInterfaceId(specifications.getLogicalInterfaceId());
+					fieldDesc.setFieldGroupId(obj[12]!=null? Long.parseLong(obj[12].toString()): 0L);
+					fieldDesc.setFieldMasterId(fieldMaster.getFieldMasterId());
+					fieldDesc.setFieldName(fieldMaster.getFieldName());
+					fieldDesc.setFieldShortName(fieldMaster.getFieldShortName());
+					fieldDesc.setFieldCode(fieldMaster.getFieldCode());
+					fieldDesc.setDataTypeMasterId(fieldMaster.getDataTypeMasterId());
+					
+					fieldDesc.setTypicalValue(irsFieldDescription!=null?irsFieldDescription.getTypicalValue():fieldMaster.getTypicalValue());
+					fieldDesc.setFieldMinValue(irsFieldDescription!=null?irsFieldDescription.getFieldMinValue():fieldMaster.getFieldMinValue());
+					fieldDesc.setFieldMaxValue(irsFieldDescription!=null?irsFieldDescription.getFieldMinValue():fieldMaster.getFieldMaxValue());
+					fieldDesc.setInitValue(irsFieldDescription!=null?irsFieldDescription.getInitValue():fieldMaster.getInitValue());
+					fieldDesc.setQuantum(irsFieldDescription!=null?irsFieldDescription.getQuantum():fieldMaster.getQuantum());
+					fieldDesc.setFieldDesc(irsFieldDescription!=null?irsFieldDescription.getFieldDesc():fieldMaster.getFieldDesc());
+					fieldDesc.setFieldUnit(irsFieldDescription!=null?irsFieldDescription.getFieldUnit():fieldMaster.getFieldUnit());
+					fieldDesc.setRemarks(irsFieldDescription!=null?irsFieldDescription.getRemarks():fieldMaster.getRemarks());
+					
+					fieldDesc.setArrayMasterId(0L);
+					fieldDesc.setFieldSlNo(++fieldSlNo);
+					fieldDesc.setCreatedBy(UserId);
+					fieldDesc.setCreatedDate(sdtf.format(new Date()));
+					fieldDesc.setIsActive(1);
+					
+					service.addIRSFieldDescription(fieldDesc);
+				}
+			}
+//			else {
+//				addNewIRSFieldDescriptions(req, specifications, UserId);
+//			}
+			
+			if (result> 0) {
 				redir.addAttribute("result", "IRS Details Submitted Successfully");
 			} else {
 				redir.addAttribute("resultfail", "IRS Details Submit Unsuccessful");
@@ -2777,6 +4064,7 @@ public class DocumentsController {
 			redir.addAttribute("docType", req.getParameter("docType"));
 			redir.addAttribute("documentNo", req.getParameter("documentNo"));
 			redir.addAttribute("projectId", req.getParameter("projectId"));
+			redir.addAttribute("irsSpecificationId", result);
 			
 			return "redirect:/IRSSpecificationsDetails.htm";
 
@@ -2787,6 +4075,213 @@ public class DocumentsController {
 		}
 	}
 
+
+	@RequestMapping(value="IRSFieldDescUpdate.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String irsFieldDescUpdate(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IRSFieldDescUpdate.htm " + UserId);
+		try {
+			
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+			String irsSpecificationId = req.getParameter("irsSpecificationId");
+			String fieldGroupId = req.getParameter("fieldGroupId");
+			String groupVariable = req.getParameter("groupVariable");
+			String irsFieldDescId = req.getParameter("irsFieldDescId");
+			String arrayMasterId = req.getParameter("arrayMasterId");
+		    
+			IRSFieldDescription fieldDesc = service.getIRSFieldDescriptionById(irsFieldDescId);
+			fieldDesc.setGroupVariable(groupVariable);
+			fieldDesc.setArrayMasterId(arrayMasterId!=null?Long.parseLong(arrayMasterId):0L);
+			
+			long result = service.addIRSFieldDescription(fieldDesc);
+
+			// Update the same values for all the fields for that particular group
+			if(fieldGroupId!=null && Long.parseLong(fieldGroupId)>0) {
+				service.updateIRSFieldDescription(groupVariable, arrayMasterId, irsSpecificationId, fieldGroupId);
+			}
+			
+			if (result> 0) {
+				redir.addAttribute("result", "Field Description Updated Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Field Description Update Unsuccessful");
+			}
+			
+			redir.addAttribute("docId", docId);
+			redir.addAttribute("docType", docType);
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			redir.addAttribute("projectId", req.getParameter("projectId"));
+			redir.addAttribute("irsSpecificationId", irsSpecificationId);
+			
+			if(docType.equalsIgnoreCase("D")) {
+				redir.addAttribute("logicalInterfaceId", req.getParameter("logicalInterfaceId"));
+				return "redirect:/IDDDesignDetails.htm";
+			}
+			
+			return "redirect:/IRSSpecificationsDetails.htm";
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IRSFieldDescUpdate.htm " + UserId, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="IRSFieldDescDelete.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String irsFieldDescDelete(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IRSFieldDescDelete.htm " + UserId);
+		try {
+			
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+			String irsSpecificationId = req.getParameter("irsSpecificationId");
+			String fieldGroupId = req.getParameter("fieldGroupId");
+			String irsFieldDescId = req.getParameter("irsFieldDescId");
+			
+			IRSFieldDescription fieldDesc = service.getIRSFieldDescriptionById(irsFieldDescId);
+			fieldDesc.setIsActive(0);
+			
+			long result = service.addIRSFieldDescription(fieldDesc);
+			
+			// Remove the same group fields
+			if(fieldGroupId!=null && Long.parseLong(fieldGroupId)>0) {
+				service.removeIRSFieldDescription(irsSpecificationId, fieldGroupId);
+			}
+			
+			if (result> 0) {
+				redir.addAttribute("result", "Field Description Deleted Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Field Description Delete Unsuccessful");
+			}
+			
+			redir.addAttribute("docId", docId);
+			redir.addAttribute("docType", docType);
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			redir.addAttribute("projectId", req.getParameter("projectId"));
+			redir.addAttribute("irsSpecificationId", irsSpecificationId);
+			
+			if(docType.equalsIgnoreCase("D")) {
+				redir.addAttribute("logicalInterfaceId", req.getParameter("logicalInterfaceId"));
+				return "redirect:/IDDDesignDetails.htm";
+			}
+			
+			return "redirect:/IRSSpecificationsDetails.htm";
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IRSFieldDescDelete.htm " + UserId, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="IRSNewFieldDescSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String irsNewFieldDescSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IRSNewFieldDescSubmit.htm " + UserId);
+		try {
+			
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+			String irsSpecificationId = req.getParameter("irsSpecificationId");
+			
+			IRSDocumentSpecifications specifications = service.getIRSDocumentSpecificationsById(irsSpecificationId);
+			
+			int result = addNewIRSFieldDescriptions(req, specifications, UserId);
+
+			if (result> 0) {
+				redir.addAttribute("result", "Field Description Submitted Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Field Description Submit Unsuccessful");
+			}
+			
+			redir.addAttribute("docId", docId);
+			redir.addAttribute("docType", docType);
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			redir.addAttribute("projectId", req.getParameter("projectId"));
+			redir.addAttribute("irsSpecificationId", irsSpecificationId);
+			
+			if(docType.equalsIgnoreCase("D")) {
+				redir.addAttribute("logicalInterfaceId", req.getParameter("logicalInterfaceId"));
+				return "redirect:/IDDDesignDetails.htm";
+			}
+			
+			return "redirect:/IRSSpecificationsDetails.htm";
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IRSNewFieldDescSubmit.htm " + UserId, e);
+			return "static/Error";
+		}
+	}
+
+	private int addNewIRSFieldDescriptions(HttpServletRequest req, IRSDocumentSpecifications spec, String userId) throws Exception {
+	   
+		try {
+			// Remove Existing Field Description
+			//service.removeIRSFieldDescription(String.valueOf(spec.getLogicalInterfaceId()));
+   
+		    String docId = req.getParameter("docId");
+		    String slno = req.getParameter("slno");
+		    int fieldSlNo = Integer.parseInt(slno);
+		    String[] fieldGroupIds = req.getParameterValues("fieldGroupId");
+		    String[] fieldMasterIds = req.getParameterValues("fieldMasterId");
+		    String[] arrayMasterIds = req.getParameterValues("arrayMasterId");
+		    String[] groupVariables = req.getParameterValues("groupVariable");
+
+//		    System.out.println("fieldGroupIds size: "+fieldGroupIds.length);
+//		    System.out.println("fieldMasterIds size: "+fieldMasterIds.length);
+//		    System.out.println("fieldGroupIds: "+fieldGroupIds.toString());
+//		    System.out.println("fieldMasterIds: "+fieldMasterIds.toString());
+//		    
+//		    for (int i = 0; i < fieldMasterIds.length; i++) {
+//			    System.out.println("fieldMasterIds[i]: "+fieldMasterIds[i]);
+//		    }
+			List<IRSFieldDescription> irsFieldDescriptionEntityList = service.getIRSFieldDescriptionEntityList(docId);
+			
+		    for (int i = 0; i < fieldMasterIds.length; i++) {
+				
+				IRSFieldDescription fieldDesc = new IRSFieldDescription();
+				fieldDesc.setIRSSpecificationId(spec.getIRSSpecificationId());
+				fieldDesc.setLogicalInterfaceId(spec.getLogicalInterfaceId());
+				fieldDesc.setFieldGroupId(fieldGroupIds!=null?Long.parseLong(fieldGroupIds[i]):0L);
+				fieldDesc.setFieldMasterId(fieldMasterIds!=null?Long.parseLong(fieldMasterIds[i]):0L);
+
+				IRSFieldDescription irsFieldDescription = irsFieldDescriptionEntityList.stream().filter(e -> e.getFieldMasterId().equals(fieldDesc.getFieldMasterId())).findFirst().orElse(null);
+				
+				FieldMaster fieldMaster = service.getFieldMasterById(fieldDesc.getFieldMasterId()+"");
+				
+				fieldDesc.setFieldName(fieldMaster.getFieldName());
+				fieldDesc.setFieldShortName(fieldMaster.getFieldShortName());
+				fieldDesc.setFieldCode(fieldMaster.getFieldCode());
+				fieldDesc.setDataTypeMasterId(fieldMaster.getDataTypeMasterId());
+				
+				fieldDesc.setTypicalValue(irsFieldDescription!=null?irsFieldDescription.getTypicalValue():fieldMaster.getTypicalValue());
+				fieldDesc.setFieldMinValue(irsFieldDescription!=null?irsFieldDescription.getFieldMinValue():fieldMaster.getFieldMinValue());
+				fieldDesc.setFieldMaxValue(irsFieldDescription!=null?irsFieldDescription.getFieldMinValue():fieldMaster.getFieldMaxValue());
+				fieldDesc.setInitValue(irsFieldDescription!=null?irsFieldDescription.getInitValue():fieldMaster.getInitValue());
+				fieldDesc.setQuantum(irsFieldDescription!=null?irsFieldDescription.getQuantum():fieldMaster.getQuantum());
+				fieldDesc.setFieldDesc(irsFieldDescription!=null?irsFieldDescription.getFieldDesc():fieldMaster.getFieldDesc());
+				fieldDesc.setFieldUnit(irsFieldDescription!=null?irsFieldDescription.getFieldUnit():fieldMaster.getFieldUnit());
+				fieldDesc.setRemarks(irsFieldDescription!=null?irsFieldDescription.getRemarks():fieldMaster.getRemarks());
+				
+				fieldDesc.setArrayMasterId(arrayMasterIds!=null?Long.parseLong(arrayMasterIds[i]):0L);
+				fieldDesc.setGroupVariable(fieldDesc.getFieldGroupId()>0?groupVariables[i]:null);
+				fieldDesc.setFieldSlNo(++fieldSlNo);
+				fieldDesc.setCreatedBy(userId);
+				fieldDesc.setCreatedDate(sdtf.format(new Date()));
+				fieldDesc.setIsActive(1);
+				
+				service.addIRSFieldDescription(fieldDesc);
+			}
+		    return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		
+	}
+	
 	@RequestMapping(value = "IRSSpecificationDelete.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String irsSpecificationDelete(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
 
@@ -2897,8 +4392,7 @@ public class DocumentsController {
 			
 			if (count > 0) {
 				redir.addAttribute("result", "IRS Document Revoked Successfully");
-			}
-			else {
+			}else {
 				redir.addAttribute("resultfail", "IRS Document Revoke Unsuccessful");	
 			}	
 
@@ -2913,6 +4407,213 @@ public class DocumentsController {
 			return "static/Error";			
 		}
 
+	}
+	
+	@RequestMapping(value="IRSFieldDescModify.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String irsFieldDescModify(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IRSFieldDescModify.htm " + UserId);
+		try {
+			String docId = req.getParameter("docId");
+			String irsDocId = req.getParameter("irsDocId");
+			String docType = req.getParameter("docType");
+
+			req.setAttribute("docId", docId);
+			req.setAttribute("docType", docType);
+			req.setAttribute("irsDocId", irsDocId);
+			req.setAttribute("documentNo", req.getParameter("documentNo"));
+			req.setAttribute("projectId", req.getParameter("projectId"));
+			req.setAttribute("irsSpecificationsList", service.getIRSDocumentSpecificationsList(irsDocId));
+			req.setAttribute("fieldMasterList", service.fieldMasterList());
+			req.setAttribute("dataTypeMasterList", service.dataTypeMasterList());
+			req.setAttribute("fieldDescriptionList", service.getIRSFieldDescriptionList(irsDocId));
+			req.setAttribute("fieldGroupList", service.getFieldGroupMasterList());
+			
+			return "documents/IRSFieldDescModify";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IRSFieldDescModify.htm " + UserId, e);
+			return "static/Error";
+		}
+		
+	}
+
+	@RequestMapping(value="IRSFieldDescModifySubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String irsFieldDescModifySubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IRSFieldDescModifySubmit.htm " + UserId);
+		try {
+			String irsDocId = req.getParameter("irsDocId");
+
+			String fieldMasterId = req.getParameter("fieldMasterId");
+		    String typicalValue = req.getParameter("typicalValue");
+		    String minValue = req.getParameter("minValue");
+		    String maxValue = req.getParameter("maxValue");
+		    String initValue = req.getParameter("initValue");
+		    String quantum = req.getParameter("quantum");
+		    String unit = req.getParameter("unit");
+		    String description = req.getParameter("description");
+		    String remarks = req.getParameter("remarks");
+
+		    long result = 0;
+		    List<IRSFieldDescription> irsFieldDescriptionEntityList = service.getIRSFieldDescriptionEntityList(irsDocId);
+		    irsFieldDescriptionEntityList = irsFieldDescriptionEntityList.stream().filter(e -> e.getFieldMasterId() == Long.parseLong(fieldMasterId)).collect(Collectors.toList());
+		    for (int i = 0; i < irsFieldDescriptionEntityList.size(); i++) {
+				
+				IRSFieldDescription fieldDesc = irsFieldDescriptionEntityList.get(i);
+				
+				fieldDesc.setTypicalValue(typicalValue);
+				fieldDesc.setFieldMinValue(minValue);
+				fieldDesc.setFieldMaxValue(maxValue);
+				fieldDesc.setInitValue(initValue);
+				fieldDesc.setQuantum(quantum);
+				fieldDesc.setFieldUnit(unit);
+				fieldDesc.setFieldDesc(description);
+				fieldDesc.setRemarks(remarks);
+				
+				fieldDesc.setModifiedBy(UserId);
+				fieldDesc.setModifiedDate(sdtf.format(new Date()));
+				
+				result = service.addIRSFieldDescription(fieldDesc);
+			}
+		    
+		    if (result > 0) {
+				redir.addAttribute("result", "Field Description Updated Successfully");
+			}else {
+				redir.addAttribute("resultfail", "Field Description Update Unsuccessful");	
+			}	
+		    
+			redir.addAttribute("docId", req.getParameter("docId"));
+			redir.addAttribute("irsDocId", irsDocId);
+			redir.addAttribute("docType", req.getParameter("docType"));
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			redir.addAttribute("projectId", req.getParameter("projectId"));
+			return "redirect:/IRSFieldDescModify.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IRSFieldDescModifySubmit.htm " + UserId, e);
+			return "static/Error";
+		}
+		
+	}
+	
+	@RequestMapping(value = "IRSArrayMaster.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String irsArrayMaster(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IRSArrayMaster.htm " + UserId);
+		try {
+			String irsDocId = req.getParameter("irsDocId");
+			String arrayMasterId = req.getParameter("arrayMasterId");
+			arrayMasterId = arrayMasterId==null?"0":arrayMasterId;
+			
+			req.setAttribute("arrayMasterList", service.getIRSArrayMasterListByIRSDocId(irsDocId));
+			
+			req.setAttribute("docId", req.getParameter("docId"));
+			req.setAttribute("irsDocId", irsDocId);
+			req.setAttribute("arrayMasterId", arrayMasterId);
+			req.setAttribute("docType", req.getParameter("docType"));
+			req.setAttribute("documentNo", req.getParameter("documentNo"));
+			req.setAttribute("projectId", req.getParameter("projectId"));
+			return "documents/IRSArrayMaster";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IRSArrayMaster.htm " + UserId, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="IRSArrayMasterDetailsSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String irsArrayMasterDetailsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IRSArrayMasterDetailsSubmit.htm " + UserId);
+		try {
+			String action = req.getParameter("action");
+			String arrayMasterId = req.getParameter("arrayMasterId");
+			String arrayValue = req.getParameter("arrayValue");
+			String irsDocId = req.getParameter("irsDocId");
+			
+			boolean isNew = arrayMasterId.equalsIgnoreCase("0")? true: false;
+			
+			IRSArrayMaster arrayMaster = isNew?new IRSArrayMaster() : service.getIRSArrayMasterById(arrayMasterId);
+			arrayMaster.setArrayName(req.getParameter("arrayName"));
+			arrayMaster.setArrayValue(arrayValue!=null?Integer.parseInt(arrayValue):0);
+			
+			if(isNew) {
+				arrayMaster.setIRSDocId(Long.parseLong(irsDocId));
+				arrayMaster.setCreatedBy(UserId);
+				arrayMaster.setCreatedDate(sdtf.format(new Date()));
+				arrayMaster.setIsActive(1);
+			}else {
+				arrayMaster.setModifiedBy(UserId);
+				arrayMaster.setModifiedDate(sdtf.format(new Date()));
+			}
+			
+			long result = service.addIRSArrayMaster(arrayMaster);
+			
+			if (result!=0) {
+				redir.addAttribute("result", "Array Details "+action+"ed Successfully");
+			}else {
+				redir.addAttribute("resultfail", "Array Details "+action+" Unsuccessful");	
+			}
+			redir.addAttribute("docId", req.getParameter("docId"));
+			redir.addAttribute("irsDocId", irsDocId);
+			redir.addAttribute("arrayMasterId", result);
+			redir.addAttribute("docType", req.getParameter("docType"));
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			redir.addAttribute("projectId", req.getParameter("projectId"));
+			return "redirect:/IRSArrayMaster.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IRSArrayMasterDetailsSubmit.htm " + UserId, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="IRSFieldDescSerialNoUpdate.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String irsFieldSerialNoUpdate(HttpServletRequest req,HttpServletResponse res, RedirectAttributes redir, HttpSession ses)throws Exception
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside IRSFieldSerialNoUpdate.htm "+UserId);
+		try
+		{
+			String docType = req.getParameter("docType");
+			String irsSpecificationId = req.getParameter("irsSpecificationId");
+
+			String[] newslno = req.getParameterValues("newslno");
+			String[] irsFieldDescId = req.getParameterValues("irsFieldDescId");
+
+			Set<String> s = new HashSet<String>(Arrays.asList(newslno));
+
+			int result = 0;
+			if (s.size() == newslno.length) {
+				result = service.irsFieldDescSerialNoUpdate(newslno, irsFieldDescId);
+			}
+			
+			if (result!=0) {
+				redir.addAttribute("result", "Serial No Updated Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Serial No Update UnSuccessfull");
+			}	
+
+			redir.addAttribute("irsSpecificationId", irsSpecificationId);
+			redir.addAttribute("docId", req.getParameter("docId"));
+			redir.addAttribute("docType", docType);
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
+			redir.addAttribute("projectId", req.getParameter("projectId"));
+			
+			if(docType.equalsIgnoreCase("D")) {
+				redir.addAttribute("logicalInterfaceId", req.getParameter("logicalInterfaceId"));
+				return "redirect:/IDDDesignDetails.htm";
+			}
+			
+			return "redirect:/IRSSpecificationsDetails.htm";
+		} catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +"Inside IRSFieldSerialNoUpdate.htm "+UserId,e);
+			return "static/Error";
+		}
 	}
 	
 	/* ************************************************ IRS Document End ***************************************************** */
@@ -3040,33 +4741,6 @@ public class DocumentsController {
 		}
 		
 	}
-
-	@RequestMapping(value = "IDDIntroductionSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
-	public String iddIntroductionSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
-		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() + " Inside IDDIntroductionSubmit.htm" + UserId);
-
-		try {
-			String iddDocId = req.getParameter("iddDocId");
-			PfmsIDDDocument pfmsIDDDocument = service.getPfmsIDDDocumentById(iddDocId);
-			pfmsIDDDocument.setIntroduction(req.getParameter("introduction"));
-			long result = service.addPfmsIDDDocument(pfmsIDDDocument);
-
-			if (result > 0) {
-				redir.addAttribute("result", "IDD Document Introduction Updated Successfully");
-			} else {
-				redir.addAttribute("resultfail", "IDD Document Introduction Update Unsuccessful");
-			}
-			redir.addAttribute("iddDocId", iddDocId);
-			return "redirect:/IDDDocumentDetails.htm";
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error(new Date() + " Inside IDDIntroductionSubmit.htm " + UserId, e);
-			return "static/Error";
-
-		}
-
-	}
 	
 	@RequestMapping(value = "IDDDocumentDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String iddDocumentDetails(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
@@ -3099,11 +4773,18 @@ public class DocumentsController {
 			req.setAttribute("labDetails", projectservice.LabListDetails(labcode));
 			req.setAttribute("lablogo",  logoUtil.getLabLogoAsBase64String(labcode)); 
 			req.setAttribute("drdologo", logoUtil.getDRDOLogoAsBase64String());
-			req.setAttribute("igiInterfaceList", service.getIGIInterfaceListByLabCode(labcode));
-			req.setAttribute("applicableDocsList", service.getPfmsApplicableDocs());
+			req.setAttribute("applicableDocsList", service.getStandardDocuments());
 			req.setAttribute("iddApplicableDocsList", service.getIGIApplicableDocs(iddDocId, "D"));
-			
+			req.setAttribute("igiDocumentIntroductionList", service.getIGIDocumentIntroductionList());
+
 			req.setAttribute("isPdf", req.getParameter("isPdf"));
+			
+			String irsDocId = service.getFirstVersionIRSDocId(iddDocument.getProjectId()+"", iddDocument.getInitiationId()+"", iddDocument.getProductTreeMainId()+"")+"";
+			req.setAttribute("irsSpecificationsList", service.getIRSDocumentSpecificationsList(irsDocId));
+			
+			req.setAttribute("fieldDescriptionList", service.getIRSFieldDescriptionList(irsDocId));
+			req.setAttribute("logicalInterfaceList", service.getIGILogicalInterfaces());
+			req.setAttribute("logicalChannelList", service.getIGILogicalChannelList());
 			
 			return "documents/IDDDocumentDetails";
 		} catch (Exception e) {
@@ -3112,6 +4793,46 @@ public class DocumentsController {
 			return "static/Error";
 		}
 
+	}
+
+	@RequestMapping(value = "IDDDesignDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String iddDesignDetails(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + " Inside IDDDesignDetails.htm " + UserId);
+		try {
+			String docId = req.getParameter("docId");
+			String docType = req.getParameter("docType");
+
+			PfmsIDDDocument iddDocument = service.getPfmsIDDDocumentById(docId);
+			String irsDocId = service.getFirstVersionIRSDocId(iddDocument.getProjectId()+"", iddDocument.getInitiationId()+"", iddDocument.getProductTreeMainId()+"")+"";
+			req.setAttribute("docId", docId);
+			req.setAttribute("docType", docType);
+			req.setAttribute("documentNo", req.getParameter("documentNo"));
+			req.setAttribute("projectId", req.getParameter("projectId"));
+			req.setAttribute("iddDocument", iddDocument);
+			
+			String logicalInterfaceId = req.getParameter("logicalInterfaceId");
+			List<Object[]> irsSpecificationsList = service.getIRSDocumentSpecificationsList(irsDocId);
+			
+			if(logicalInterfaceId==null && (irsSpecificationsList!=null && irsSpecificationsList.size()>0)) {
+				logicalInterfaceId = irsSpecificationsList.get(0)[3].toString();
+			}
+			req.setAttribute("logicalInterfaceId", logicalInterfaceId);
+			req.setAttribute("irsSpecificationsList", irsSpecificationsList);
+			req.setAttribute("irsDocId", irsDocId);
+			req.setAttribute("fieldMasterList", service.fieldMasterList());
+			req.setAttribute("dataTypeMasterList", service.dataTypeMasterList());
+			req.setAttribute("fieldDescriptionList", service.getIRSFieldDescriptionList(irsDocId));
+			req.setAttribute("fieldGroupList", service.getFieldGroupMasterList());
+			req.setAttribute("arrayMasterList", service.getIRSArrayMasterListByIRSDocId(irsDocId));
+
+			return "documents/IDDDesignDetails";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside IDDDesignDetails.htm " + UserId, e);
+			return "static/Error";
+		}
+		
 	}
 
 	@RequestMapping(value = "IDDDocumentApprovalSubmit.htm", method = { RequestMethod.GET, RequestMethod.POST })
@@ -3212,6 +4933,215 @@ public class DocumentsController {
 		}
 
 	}
+	
+	@RequestMapping(value = "IDDFieldDescriptionHFileDownload.htm", method = RequestMethod.GET)
+	public ResponseEntity<byte[]> iddFieldDescriptionHFileDownload(HttpServletRequest req) throws Exception {
+	    String logicalInterfaceId = req.getParameter("logicalInterfaceId");
+	    String irsDocId = req.getParameter("irsDocId");
+
+	    List<Object[]> fieldDescriptionList = service.getIRSFieldDescriptionList(irsDocId);
+	    IGILogicalInterfaces logicalInterface = service.getIGILogicalInterfaceById(logicalInterfaceId);
+	    
+	    fieldDescriptionList = fieldDescriptionList.stream()
+	        .filter(e -> logicalInterfaceId.equalsIgnoreCase(e[1].toString()))
+	        .collect(Collectors.toList());
+
+	    if (fieldDescriptionList == null || logicalInterface == null) {
+	        return ResponseEntity.badRequest().body(null);
+	    }
+
+	    
+	    String content = generateFieldDescHeaderContent(fieldDescriptionList, logicalInterface);
+	    String fileName = logicalInterface.getMsgCode().replaceAll("[^a-zA-Z0-9_]", "_") + ".h";
+
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.TEXT_PLAIN);
+	    headers.setContentDisposition(ContentDisposition.builder("attachment")
+	        .filename(fileName)
+	        .build());
+
+	    return new ResponseEntity<>(content.getBytes(), headers, HttpStatus.OK);
+	}
+	
+	public static String generateFieldDescHeaderContent(List<Object[]> fieldDescriptionList, IGILogicalInterfaces logicalInterface) {
+
+		String messageCode = logicalInterface.getMsgName();
+		double messageLength = 0.00;
+		
+	    String sanitizedMessageCode = messageCode.replaceAll("[^a-zA-Z0-9_]", "_");
+	    if (Character.isDigit(sanitizedMessageCode.charAt(0))) {
+	        sanitizedMessageCode = "_" + sanitizedMessageCode;
+	    }
+
+	    StringBuilder sb = new StringBuilder();
+	    StringBuilder sbmiddle = new StringBuilder(); // for typedef structs
+	    StringBuilder sblast = new StringBuilder();   // for main struct fields
+	    
+	    sb.append("// ").append(sanitizedMessageCode).append("  -  ").append("__MSG_LENGTH_PLACEHOLDER__").append("  bytes").append("\n\n");
+	    
+//	    List<Long> fieldDescArrMasterIds =  fieldDescriptionList.stream().map(e -> e[20]!=null?Long.parseLong(e[20].toString()):0L).collect(Collectors.toList());
+//	    arrayMasterList = arrayMasterList.stream().filter(e -> fieldDescArrMasterIds.contains(e.getArrayMasterId())).collect(Collectors.toList());
+	    
+	    sb.append("\n");
+
+	    sb.append("#ifndef ").append(sanitizedMessageCode.toUpperCase()).append("_H\n");
+	    sb.append("#define ").append(sanitizedMessageCode.toUpperCase()).append("_H\n\n");
+	    
+//	    for (IRSArrayMaster arr : arrayMasterList) {
+//	        sb.append("#define ").append(arr.getArrayName()).append(" ").append(arr.getArrayValue()).append("\n");
+//	    }
+//
+//	    sb.append("\n");
+	    
+	    sb.append("#include <stdio.h>\n");
+	    sb.append("#include <ltypes.h>\n");
+	    sb.append("#include <constants.h>\n\n");
+
+	    Set<Long> processedGroups = new HashSet<>();
+
+	    for (Object[] field : fieldDescriptionList) {
+	    	
+	        Long groupId = Long.parseLong(field[12].toString());
+	        int dataLength = Integer.parseInt(field[4].toString());
+	        double lengthInBytes = dataLength * 0.125;
+	        
+	        if (groupId == 0) {
+	            String fieldName = field[8] != null ? field[8].toString().replaceAll("\\s+", "") : "unknownField";
+	            String cType = field[27] != null ? field[27]+"" : "void*";
+	            String arr = "";
+	            if(field[21] != null) {
+	            	arr = "[" + field[21] + "]";
+	            	int arrValue = Integer.parseInt(field[22].toString());
+	            	messageLength+=(lengthInBytes*arrValue);
+	            }else {
+	            	messageLength+=lengthInBytes;
+	            }
+	            
+	            sblast.append("    ").append(cType).append(" ").append(field[11]+"").append(fieldName).append(arr).append(";\n");
+	            
+	        } else if (groupId!=0) {
+	        	
+	        	List<Object[]> descByGroup = fieldDescriptionList.stream()
+		                .filter(e -> e[12].toString().equals(String.valueOf(groupId)))
+		                .collect(Collectors.toList());
+	        	
+	        	if(descByGroup.size() > 0 && descByGroup.get(0)[21]!=null) {
+	            	int arrValue = Integer.parseInt(field[22].toString());
+	            	messageLength+=(lengthInBytes*arrValue);
+	            }else {
+	            	messageLength+=lengthInBytes;
+	            }
+	        	
+	        	if(!processedGroups.contains(groupId)) {
+	        		processedGroups.add(groupId);
+	        		
+	        		String grpName = descByGroup.size() > 0 ? descByGroup.get(0)[23].toString().toUpperCase() : "UnknownGroup";
+		            String grpVariable = descByGroup.size() > 0 ? descByGroup.get(0)[26] + "" : "unknownVar";
+		            String arr = descByGroup.size() > 0 && descByGroup.get(0)[21]!=null ? "[" + descByGroup.get(0)[21] + "]" : "";
+		            
+		          //String arr = descByGroup.size() > 0 && descByGroup.get(0)[21]!=null ? "[" + descByGroup.get(0)[21] + "]" : "";
+
+		            sbmiddle.append("typedef struct TS").append(grpName).append(" {\n");
+		            
+		            for (Object[] desc : descByGroup) {
+		                String fieldName = desc[8] != null ? desc[8].toString().replaceAll("\\s+", "") : "unknownField";
+		                String cType = desc[27] != null ? desc[27]+"" : "void*";
+		                
+		                sbmiddle.append("    ").append(cType).append(" ").append(desc[11]+"").append(fieldName).append(";\n");
+		            }
+		            
+		            sbmiddle.append("} S").append(grpName).append(";\n\n");
+
+		            sblast.append("    S").append(grpName).append(" s").append(grpVariable.toLowerCase()).append(arr).append(";\n");
+	        	}
+	            
+	        }
+	    }
+
+	    // Now build the main struct
+	    sb.append(sbmiddle); // group typedefs first
+	    sb.append("typedef struct TS").append(sanitizedMessageCode.toUpperCase()).append(" {\n");
+	    sb.append(sblast);   // fields and group references
+	    sb.append("} S").append(sanitizedMessageCode.toUpperCase()).append(";\n\n");
+
+	    sb.append("#endif\n");
+
+	    String fullHeader = sb.toString();
+	    fullHeader = fullHeader.replace("__MSG_LENGTH_PLACEHOLDER__", String.valueOf((int)messageLength));
+	    
+	    return fullHeader;
+	}
+
+	@RequestMapping(value = "IGIDataTypeMasterHFileDownload.htm", method = RequestMethod.GET)
+	public ResponseEntity<byte[]> igiDataTypeMasterHFileDownload(HttpServletRequest req) throws Exception {
+
+	    List<Object[]> dataTypeList = service.dataTypeMasterList();
+	    
+	    if (dataTypeList == null) {
+	        return ResponseEntity.badRequest().body(null);
+	    }
+	    
+	    String content = generateDataTypesHeaderContent(dataTypeList);
+
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.TEXT_PLAIN);
+	    headers.setContentDisposition(ContentDisposition.builder("attachment")
+	        .filename("ltypes.h")
+	        .build());
+
+	    return new ResponseEntity<>(content.getBytes(), headers, HttpStatus.OK);
+	}
+	
+	public static String generateDataTypesHeaderContent(List<Object[]> dataTypeList) {
+	    StringBuilder sb = new StringBuilder();
+	    // Add data types section
+	    sb.append("// Data Type Definitions\n");
+	    for (Object[] typeRow : dataTypeList) {
+	        sb.append("typedef ").append(typeRow[4]).append(" ").append(typeRow[1]).append(typeRow[3]).append(";\n");
+	    }
+	    return sb.toString();
+	}	
+	
+	@RequestMapping(value = "IGIConstantsHFileDownload.htm", method = RequestMethod.GET)
+	public ResponseEntity<byte[]> igiConstantsHFileDownload(HttpServletRequest req) throws Exception {
+		
+	    String irsDocId = req.getParameter("irsDocId");
+
+		List<IGIConstants> igiConstantsMasterList = service.getIGIConstantsMasterList();
+	    List<IRSArrayMaster> arrayMasterList = service.getIRSArrayMasterListByIRSDocId(irsDocId);
+
+		if ((igiConstantsMasterList == null || igiConstantsMasterList.size()<0) && (arrayMasterList == null || arrayMasterList.size()<0) ) {
+			return ResponseEntity.badRequest().body(null);
+		}
+		
+		String content = generateConstantsHeaderContent(igiConstantsMasterList, arrayMasterList);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.TEXT_PLAIN);
+		headers.setContentDisposition(ContentDisposition.builder("attachment")
+				.filename("constants.h")
+				.build());
+		
+		return new ResponseEntity<>(content.getBytes(), headers, HttpStatus.OK);
+	}
+	
+	public static String generateConstantsHeaderContent(List<IGIConstants> igiConstantsMasterList, List<IRSArrayMaster> arrayMasterList) {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("// Constant Definitions\n");
+		
+		for (IRSArrayMaster arr : arrayMasterList) {
+	        sb.append("#define ").append(arr.getArrayName()).append(" ").append(arr.getArrayValue()).append("\n");
+	    }
+
+	    sb.append("\n");
+			
+		for (IGIConstants con : igiConstantsMasterList) {
+			sb.append("#define ").append(con.getConstantName()).append(" ").append(con.getConstantValue()).append("\n");
+		}
+		return sb.toString();
+	}	
+	
 	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
 	    redir.addAttribute("resultfail", message);
 	    return "redirect:/"+redirURL;

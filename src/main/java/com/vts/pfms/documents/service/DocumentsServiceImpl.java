@@ -27,24 +27,42 @@ import com.vts.pfms.FormatConverter;
 import com.vts.pfms.cars.dao.CARSDao;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.documents.dao.DocumentsDao;
+import com.vts.pfms.documents.dto.ICDConnectionDTO;
+import com.vts.pfms.documents.dto.ICDPinMapDTO;
 import com.vts.pfms.documents.dto.InterfaceTypeAndContentDto;
 import com.vts.pfms.documents.dto.StandardDocumentsDto;
+import com.vts.pfms.documents.model.DataTypeMaster;
+import com.vts.pfms.documents.model.FieldGroupLinked;
+import com.vts.pfms.documents.model.FieldGroupMaster;
+import com.vts.pfms.documents.model.FieldMaster;
+import com.vts.pfms.documents.model.ICDConnectionConnectors;
+import com.vts.pfms.documents.model.ICDConnectionInterfaces;
 import com.vts.pfms.documents.model.ICDConnectionPurpose;
+import com.vts.pfms.documents.model.ICDConnectionSystems;
+import com.vts.pfms.documents.model.ICDConnectorPinMapping;
+import com.vts.pfms.documents.model.ICDConnectorPins;
 import com.vts.pfms.documents.model.ICDDocumentConnections;
+import com.vts.pfms.documents.model.ICDMechanicalInterfaces;
 import com.vts.pfms.documents.model.ICDPurpose;
+import com.vts.pfms.documents.model.ICDSystemAttach;
 import com.vts.pfms.documents.model.IGIApplicableDocs;
+import com.vts.pfms.documents.model.IGIConnector;
+import com.vts.pfms.documents.model.IGIConnectorAttach;
+import com.vts.pfms.documents.model.IGIConstants;
 import com.vts.pfms.documents.model.IGIDocumentIntroduction;
 import com.vts.pfms.documents.model.IGIDocumentMembers;
 import com.vts.pfms.documents.model.IGIDocumentShortCodes;
 import com.vts.pfms.documents.model.IGIDocumentShortCodesLinked;
 import com.vts.pfms.documents.model.IGIDocumentSummary;
+import com.vts.pfms.documents.model.IGIFieldDescription;
 import com.vts.pfms.documents.model.IGIInterface;
 import com.vts.pfms.documents.model.IGIInterfaceContent;
 import com.vts.pfms.documents.model.IGIInterfaceTypes;
 import com.vts.pfms.documents.model.IGILogicalChannel;
 import com.vts.pfms.documents.model.IGILogicalInterfaces;
+import com.vts.pfms.documents.model.IRSArrayMaster;
 import com.vts.pfms.documents.model.IRSDocumentSpecifications;
-import com.vts.pfms.documents.model.PfmsApplicableDocs;
+import com.vts.pfms.documents.model.IRSFieldDescription;
 import com.vts.pfms.documents.model.PfmsICDDocument;
 import com.vts.pfms.documents.model.PfmsIDDDocument;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
@@ -460,9 +478,9 @@ public class DocumentsServiceImpl implements DocumentsService{
 	}
 	
 	@Override
-	public List<PfmsApplicableDocs> getPfmsApplicableDocs() throws Exception {
+	public List<StandardDocuments> getStandardDocuments() throws Exception {
 		
-		return dao.getPfmsApplicableDocs();
+		return dao.getStandardDocuments();
 	}
 	
 	@Override
@@ -477,7 +495,7 @@ public class DocumentsServiceImpl implements DocumentsService{
 			
 			for(int i=0; i<applicableDocIds.length; i++) {
 				IGIApplicableDocs applicableDoc = new IGIApplicableDocs();
-				applicableDoc.setApplicableDocId(applicableDocIds[i]!=null? Long.parseLong(applicableDocIds[i]):0);
+				applicableDoc.setStandardDocumentId(applicableDocIds[i]!=null? Long.parseLong(applicableDocIds[i]):0);
 				applicableDoc.setDocType(docType);
 				applicableDoc.setDocId(docId!=null?Long.parseLong(docId):0);
 				applicableDoc.setCreatedBy(userId);
@@ -528,29 +546,6 @@ public class DocumentsServiceImpl implements DocumentsService{
 	public Long getDuplicateIGIShortCodeCount(String shortCode, String shortCodeType) throws Exception {
 		
 		return dao.getDuplicateIGIShortCodeCount(shortCode, shortCodeType);
-	}
-	
-	@Override
-	public long addApplicableDocs(PfmsApplicableDocs pfmsApplicableDocs, String docId, String docType) throws Exception {
-		
-		try {
-
-			long applicableDocId = dao.addApplicableDocs(pfmsApplicableDocs);
-			
-			IGIApplicableDocs shortCodesLinked = IGIApplicableDocs.builder()
-															.ApplicableDocId(applicableDocId)
-															.DocId(Long.parseLong(docId))
-															.DocType(docType)
-															.CreatedBy(pfmsApplicableDocs.getCreatedBy())
-															.CreatedDate(sdtf.format(new Date()))
-															.IsActive(1)
-															.build();
-			return dao.addIGIApplicableDocs(shortCodesLinked);
-		}catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
-		
 	}
 	
 	@Override
@@ -724,7 +719,203 @@ public class DocumentsServiceImpl implements DocumentsService{
 		
 		return dao.deleteIGILogicalChannelById(logicalChannelId);
 	}
+
+	@Override
+	public List<Object[]> fieldMasterList() throws Exception {
+		
+		return dao.fieldMasterList();
+	}
 	
+	@Override
+	public FieldMaster getFieldMasterById(String fieldMasterId) throws Exception {
+		
+		return dao.getFieldMasterById(fieldMasterId);
+	}
+
+	@Override
+	public long addFieldMaster(FieldMaster field) throws Exception {
+		
+		return dao.addFieldMaster(field);
+	}
+
+	@Override
+	public List<Object[]> dataTypeMasterList() throws Exception {
+		
+		return dao.dataTypeMasterList();
+	}
+
+	@Override
+	public DataTypeMaster getDataTypeMasterById(Long DataTypeMasterId) throws Exception  {
+		
+		return dao.getDataTypeMasterById(DataTypeMasterId);
+	}
+
+	@Override
+	public long addDataTypeMaster(DataTypeMaster dto) throws Exception {
+		
+		return dao.addDataTypeMaster(dto);
+	}
+	
+	@Override
+	public int removeIGIFieldDescription(String logicalInterfaceTypeId) throws Exception {
+	
+		return dao.removeIGIFieldDescription(logicalInterfaceTypeId);
+	}
+	
+	@Override
+	public Long addIGIFieldDescription(IGIFieldDescription igiFieldDescription) throws Exception {
+		
+		return dao.addIGIFieldDescription(igiFieldDescription);
+	}
+	
+	@Override
+	public List<Object[]> getIGILogicalInterfaceConnectionList() throws Exception {
+		
+		return dao.getIGILogicalInterfaceConnectionList();
+	}
+	
+	@Override
+	public List<FieldGroupMaster> getFieldGroupMasterList() {
+		
+		return dao.getFieldGroupMasterList();
+	}
+	
+	@Override
+	public Long addFieldGroupMaster(FieldGroupMaster fieldGroup) throws Exception {
+		
+		return dao.addFieldGroupMaster(fieldGroup);
+	}
+	
+	@Override
+	public FieldGroupMaster getFieldGroupMasterById(Long fieldGroupId) throws Exception {
+		
+		return dao.getFieldGroupMasterById(fieldGroupId);
+	}
+	
+	@Override
+	public Long addFieldGroupLinked(FieldGroupLinked fieldGroupLinked) throws Exception {
+		
+		return dao.addFieldGroupLinked(fieldGroupLinked);
+	}
+	
+	@Override
+	public int removeFieldGroupLinked(String fieldMasterId) throws Exception {
+		
+		return dao.removeFieldGroupLinked(fieldMasterId);
+	}
+	
+	@Override
+	public List<FieldGroupLinked> getFieldGroupLinkedList(String fieldMasterId) {
+		
+		return dao.getFieldGroupLinkedList(fieldMasterId);
+	}
+	
+	@Override
+	public List<ICDMechanicalInterfaces> getICDMechanicalInterfacesList() {
+		
+		return dao.getICDMechanicalInterfacesList();
+	}
+	
+	@Override
+	public ICDMechanicalInterfaces getICDMechanicalInterfacesById(Long mechInterfaceId) {
+		
+		return dao.getICDMechanicalInterfacesById(mechInterfaceId);
+	}
+	
+	@Override
+	public Long addICDMechanicalInterfaces(ICDMechanicalInterfaces mechInterfaces, MultipartFile drawingOne, MultipartFile drawingTwo, String labcode) {
+		try {
+			
+			Timestamp instant = Timestamp.from(Instant.now());
+	        String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
+
+	        Path path = Paths.get(uploadpath, labcode, "ICD", "MechInterface");
+
+			if (drawingOne != null && !drawingOne.isEmpty()) {
+				mechInterfaces.setDrawingOne("Drawing1-" + timestampstr + "." + FilenameUtils.getExtension(drawingOne.getOriginalFilename()));
+                saveFile1(path, mechInterfaces.getDrawingOne(), drawingOne);
+            } 
+
+			if (drawingTwo != null && !drawingTwo.isEmpty()) {
+				mechInterfaces.setDrawingTwo("Drawing2-" + timestampstr + "." + FilenameUtils.getExtension(drawingTwo.getOriginalFilename()));
+                saveFile1(path, mechInterfaces.getDrawingTwo(), drawingTwo);
+            } 
+			
+			return dao.addICDMechanicalInterfaces(mechInterfaces);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
+		
+	}
+	
+	@Override
+	public List<IGIConnector> getConnectorMasterList() throws Exception {
+
+		return dao.getConnectorMasterList();
+	}
+	
+	@Override
+	public IGIConnector getIGIConnectorById(Long dataTypeMasterId) throws Exception {
+
+		return dao.getIGIConnectorById(dataTypeMasterId);
+	}
+	
+	@Override
+	public long addIGIConnector(IGIConnector connector) throws Exception {
+
+		return dao.addIGIConnector(connector);
+	}
+	
+	@Override
+	public List<IGIConstants> getIGIConstantsMasterList() {
+
+		return dao.getIGIConstantsMasterList();
+	}
+	
+	@Override
+	public IGIConstants getIGIConstantsById(Long constantId) throws Exception {
+
+		return dao.getIGIConstantsById(constantId);
+	}
+	
+	@Override
+	public long addIGIConstants(IGIConstants constant) throws Exception {
+
+		return dao.addIGIConstants(constant);
+	}
+	
+	@Override
+	public List<IGIConnectorAttach> getIGIConnectorAttachList() {
+		
+		return dao.getIGIConnectorAttachList();
+	}
+	
+	@Override
+	public IGIConnectorAttach getIGIConnectorAttachById(String connectorAttachId) throws Exception {
+		
+		return dao.getIGIConnectorAttachById(connectorAttachId);
+	}
+	
+	@Override
+	public long addIGIConnectorAttach(IGIConnectorAttach connectorAttach, MultipartFile attachment, String labcode) throws Exception {
+		try {
+			if (attachment != null && !attachment.isEmpty()) {
+				Timestamp instant = Timestamp.from(Instant.now());
+		        String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
+
+		        Path path = Paths.get(uploadpath, labcode, "IGI", "Connectors");
+				connectorAttach.setAttachment("Drawing-" + timestampstr + "." + FilenameUtils.getExtension(attachment.getOriginalFilename()));
+                saveFile1(path, connectorAttach.getAttachment(), attachment);
+            } 
+			
+			return dao.addIGIConnectorAttach(connectorAttach);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
+		
+	}
 
 	/* ************************************************ IGI Document End ***************************************************** */
 	
@@ -777,15 +968,15 @@ public class DocumentsServiceImpl implements DocumentsService{
 	}
 	
 	@Override
-	public List<Object[]> getICDConnectionsList(String icdDocId) throws Exception {
+	public List<ICDConnectionDTO> getICDConnectionsList(String icdDocId) throws Exception {
 		
 		return dao.getICDConnectionsList(icdDocId);
 	}
 	
 	@Override
-	public int deleteICDConnectionById(String icdConnectionId) throws Exception {
+	public int deleteICDConnectionById(String conInterfaceId) throws Exception {
 
-		return dao.deleteICDConnectionById(icdConnectionId);
+		return dao.deleteICDConnectionById(conInterfaceId);
 	}
 	
 	@Override
@@ -941,10 +1132,9 @@ public class DocumentsServiceImpl implements DocumentsService{
 	}
 	
 	@Override
-	public int getICDConnectionsCount(Long subSystemMainIdOne, Long subSystemMainIdTwo, Long superSubSysMainIdOne, 
-			Long superSubSysMainIdTwo, Long icdDocId) throws Exception {
+	public int getICDConnectionsCount(Long subSystemMainIdOne, Long subSystemMainIdTwo, Long icdDocId) throws Exception {
 		
-		return dao.getICDConnectionsCount(subSystemMainIdOne, subSystemMainIdTwo, superSubSysMainIdOne, superSubSysMainIdTwo, icdDocId);
+		return dao.getICDConnectionsCount(subSystemMainIdOne, subSystemMainIdTwo, icdDocId);
 	}
 	
 	@Override
@@ -953,6 +1143,160 @@ public class DocumentsServiceImpl implements DocumentsService{
 		return dao.deleteICDConnectionPurposeByICDConnectionId(icdConnectionId);
 	}
 
+	@Override
+	public ICDPurpose getICDPurposeById(String purposeId) throws Exception {
+		
+		return dao.getICDPurposeById(purposeId);
+	}
+	
+	@Override
+	public long addICDPurpose(ICDPurpose purpose) throws Exception {
+		
+		return dao.addICDPurpose(purpose);
+	}
+	
+	@Override
+	public List<Object[]> getICDMechInterfaceConnectionList(String icdDocId) throws Exception {
+
+		return dao.getICDMechInterfaceConnectionList(icdDocId);
+	}
+	
+	@Override
+	public long addICDConnectionSystems(ICDConnectionSystems subsystems) throws Exception {
+		
+		return dao.addICDConnectionSystems(subsystems);
+	}
+	
+	@Override
+	public long addICDConnectionInterfaces(ICDConnectionInterfaces interfaces) throws Exception {
+		
+		return dao.addICDConnectionInterfaces(interfaces);
+	}
+	
+	@Override
+	public int deleteICDConnectionSystemsByICDConnectionId(String icdConnectionId, String subSystemType) throws Exception {
+
+		return dao.deleteICDConnectionSystemsByICDConnectionId(icdConnectionId, subSystemType);
+	}
+	
+	@Override
+	public int deleteICDConnectionInterfaceByICDConnectionId(String icdConnectionId) throws Exception {
+		
+		return dao.deleteICDConnectionInterfaceByICDConnectionId(icdConnectionId);
+	}
+	
+	@Override
+	public long addICDConnectionConnectors(ICDConnectionConnectors connectors) {
+
+		return dao.addICDConnectionConnectors(connectors);
+	}
+	
+	@Override
+	public long addICDConnectorPins(ICDConnectorPins pins) {
+
+		return dao.addICDConnectorPins(pins);
+	}
+	
+	@Override
+	public Long getDuplicateConnectorCount(String icdConnectionId, String connectorNo, String systemType, String subSystemId, String icdConnectorId) throws Exception {
+
+		return dao.getDuplicateConnectorCount(icdConnectionId, connectorNo, systemType, subSystemId, icdConnectorId);
+	}
+	
+	@Override
+	public List<Object[]> getICDConnectorList(String icdConnectionId) throws Exception {
+		
+		return dao.getICDConnectorList(icdConnectionId);
+	}
+	
+	@Override
+	public List<ICDConnectionConnectors> getAllICDConnectorList() {
+
+		return dao.getAllICDConnectorList();
+	}
+	
+	@Override
+	public List<Object[]> getICDConnectorPinListByICDConnectionId(String icdConnectionId) throws Exception {
+
+		return dao.getICDConnectorPinListByICDConnectionId(icdConnectionId);
+	}
+	
+	@Override
+	public ICDConnectionConnectors getICDConnectionConnectorsById(String icdConnectorId) throws Exception {
+		
+		return dao.getICDConnectionConnectorsById(icdConnectorId);
+	}
+	
+	@Override
+	public int deleteICDConnectionConnectorPinDetails(String icdConnectorId) throws Exception {
+
+		return dao.deleteICDConnectionConnectorPinDetails(icdConnectorId);
+	}
+	
+	@Override
+	public ICDConnectorPinMapping getICDConnectorPinMappingById(String connectorPinMapId) throws Exception {
+		
+		return dao.getICDConnectorPinMappingById(connectorPinMapId);
+	}
+	
+	@Override
+	public long addICDConnectorPinMapping(ICDConnectorPinMapping pinMap) {
+		
+		return dao.addICDConnectorPinMapping(pinMap);
+	}
+	
+	@Override
+	public List<ICDPinMapDTO> getICDConnectorPinMapListByICDDocId(String icdDocId) throws Exception {
+		
+		return dao.getICDConnectorPinMapListByICDDocId(icdDocId);
+	}
+	
+	@Override
+	public ICDConnectorPins getICDConnectorPinsById(String connectorPinId) throws Exception {
+
+		return dao.getICDConnectorPinsById(connectorPinId);
+	}
+	
+	@Override
+	public int deleteICDConnectionConnectorById(String icdConnectorId) throws Exception {
+		
+		return dao.deleteICDConnectionConnectorById(icdConnectorId);
+	}
+	
+	@Override
+	public List<ICDSystemAttach> getICDSystemAttachListByICDDocId(String icdDocId) {
+		
+		return dao.getICDSystemAttachListByICDDocId(icdDocId);
+	}
+	
+	@Override
+	public ICDSystemAttach getICDSystemAttachById(String systemAttachId) throws Exception {
+		
+		return dao.getICDSystemAttachById(systemAttachId);
+	}
+	
+	@Override
+	public long addICDSystemAttach(ICDSystemAttach systemAttach, MultipartFile attachment, String labcode) {
+		try {
+			
+			Timestamp instant = Timestamp.from(Instant.now());
+	        String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
+
+	        Path path = Paths.get(uploadpath, labcode, "ICD", "SubSystems");
+
+			if (attachment != null && !attachment.isEmpty()) {
+				systemAttach.setAttachment("Drawing-" + timestampstr + "." + FilenameUtils.getExtension(attachment.getOriginalFilename()));
+                saveFile1(path, systemAttach.getAttachment(), attachment);
+            } 
+			
+			return dao.addICDSystemAttach(systemAttach);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
+		
+	}
+	
 	/* ************************************************ ICD Document End***************************************************** */
 	
 	/* ************************************************ IRS Document ***************************************************** */
@@ -1123,6 +1467,75 @@ public class DocumentsServiceImpl implements DocumentsService{
 		
 		return dao.getIRSDocumentSpecificationsById(irsSpecificationId);
 	}
+
+	@Override
+	public long addIRSFieldDescription(IRSFieldDescription irsFieldDescription) {
+		
+		return dao.addIRSFieldDescription(irsFieldDescription);
+	}
+	
+	@Override
+	public List<Object[]> getIRSFieldDescriptionList(String irsDocId) throws Exception {
+		
+		return dao.getIRSFieldDescriptionList(irsDocId);
+	}
+	
+	@Override
+	public int removeIRSFieldDescription(String irsSpecificationId, String fieldGroupId) throws Exception {
+		
+		return dao.removeIRSFieldDescription(irsSpecificationId, fieldGroupId);
+	}
+	
+	@Override
+	public List<IRSFieldDescription> getIRSFieldDescriptionEntityList(String irsDocId) {
+		
+		return dao.getIRSFieldDescriptionEntityList(irsDocId);
+	}
+	
+	@Override
+	public IRSFieldDescription getIRSFieldDescriptionById(String irsFieldDescId) {
+
+		return dao.getIRSFieldDescriptionById(irsFieldDescId);
+	}
+	
+	@Override
+	public int updateIRSFieldDescription(String groupVariable, String arrayMasterId, String irsSpecificationId, String fieldGroupId) throws Exception {
+		
+		return dao.updateIRSFieldDescription(groupVariable, arrayMasterId, irsSpecificationId, fieldGroupId);
+	}
+	
+	@Override
+	public List<IRSArrayMaster> getIRSArrayMasterListByIRSDocId(String irsDocId) {
+
+		return dao.getIRSArrayMasterListByIRSDocId(irsDocId);
+	}
+	
+	@Override
+	public IRSArrayMaster getIRSArrayMasterById(String arrayMasterId) throws Exception {
+		
+		return dao.getIRSArrayMasterById(arrayMasterId);
+	}
+	
+	@Override
+	public long addIRSArrayMaster(IRSArrayMaster arrayMaster) throws Exception {
+		
+		return dao.addIRSArrayMaster(arrayMaster);
+	}
+	
+	@Override
+	public int irsFieldDescSerialNoUpdate(String[] newslno, String[] irsFieldDescId) throws Exception {
+		try {
+			for(int i=0;i<irsFieldDescId.length;i++) {
+				IRSFieldDescription fieldDesc = dao.getIRSFieldDescriptionById(irsFieldDescId[i]);
+				fieldDesc.setFieldSlNo(Integer.parseInt(newslno[i]));
+				dao.addIRSFieldDescription(fieldDesc);
+			}
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
 	
 	/* ************************************************ IRS Document End***************************************************** */
 	
@@ -1287,6 +1700,36 @@ public class DocumentsServiceImpl implements DocumentsService{
 	public int deleteIGIIntroduction(String introductionId) throws Exception {
 
 		return dao.deleteIGIIntroduction(introductionId);
+	}
+
+	@Override
+	public List<Object[]> getSystemProductTreeAllList() throws Exception {
+		
+		return dao.getSystemProductTreeAllList();
+	}
+
+	@Override
+	public List<Object[]> getLogicalChannelList() throws Exception {
+		
+		return dao.getLogicalChannelList();
+	}
+	
+	@Override
+	public int getLogicalChannelCount() throws Exception {
+		
+		return dao.getLogicalChannelCount();
+	}
+	
+	@Override
+	public List<Object[]> getIGIFieldDescriptionList() throws Exception {
+
+		return dao.getIGIFieldDescriptionList();
+	}
+	
+	@Override
+	public long getMechanicalInterfaceCount() throws Exception {
+	
+		return dao.getMechanicalInterfaceCount();
 	}
 	
 }
