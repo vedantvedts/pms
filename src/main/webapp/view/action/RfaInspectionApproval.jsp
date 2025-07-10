@@ -157,7 +157,7 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA","AR","AY");
 		<div class="container-fluid" >
            <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade show active" id="pills-mov-property" role="tabpanel" aria-labelledby="pills-mov-property-tab">
-		    <form action="#" method="POST" id="">
+		   
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
              <div class="table-responsive">
               <table class="table table-hover  table-striped table-condensed table-bordered table-fixed" id="myTable1">
@@ -186,12 +186,15 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA","AR","AY");
 											<td style="text-align: center;"><%=obj[5] %></td>
 											<td><%=obj[11] %></td>
 											<td style="text-align: center;">
+											   <form action="#" method="POST" id="">
 	                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	                                       	  	<button type="submit" class="btn btn-sm btn-link btn-status" formaction="RfaTransStatus.htm" value="<%=obj[0] %>" name="rfaTransId"  data-toggle="tooltip" data-placement="top" title="Transaction History" 
 	                                       	  	style=" color: #E65100; font-weight: 600;" formtarget="_blank"><%=obj[15] %> 
 								    			</button>
+								    		  </form>
 	                                        </td>
 											<td class="left width" style="text-align: center;">
+											 <form action="#" method="POST" id="">
 												<button class="editable-click bg-transparent"
 													formaction="RfaActionPrint.htm" formmethod="get"
 													formnovalidate="formnovalidate" name="rfaid"
@@ -258,7 +261,9 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA","AR","AY");
 														<i class="fa fa-backward" aria-hidden="true" style="color: red; font-size: 24px; position: relative; top: 5px;"></i>
 												</button> 
 												 <%} %> 
+												 </form>
 											</td>
+											
 										</tr>
 										<%}} %>
 									</tbody>
@@ -266,7 +271,7 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA","AR","AY");
             </table>
           </div>
           <input type="hidden" name="isApproval" value="Y">
-         </form>
+         
 				
 			  </div>
  
@@ -361,44 +366,39 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA","AR","AY");
 				tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 				aria-hidden="true">
 				<div class="modal-dialog modal-lg">
-					<div class="modal-content addreq" style="width: 110%; position: relative; right: 50px;">
-						<div class="modal-header" id="modalreqheader">
+					<div class="modal-content addreq">
+						<div class="modal-header" id="modalreqheader" style="background-color: #021B79; color: white;">
 							<h5 class="modal-title" id="exampleModalLabel">RFA Return</h5>
 							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close" style="color: black;">
+								aria-label="Close" style="color: white;">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
 						<div>
-							<div class="modal-body">
-							
-										<div class=col-md-12>
-										<div class="row">
-											<div class="col-md-3">
-												<label style="font-size: 18px; margin-top: 5%; color: #07689f; margin-left: 0.1rem ; font-weight: bold;">Reply<span class="mandatory" style="color: red;">*</span></label>
-											</div>
-											<div class="col-md-8" style="margin-top: 10px">
-												<div class="form-group" style="width: 135%;margin-left: -24%">
-													<input type="text" class="form-control" name="replyMsg"
-														id="replyMsg" maxlength="255" required="required"
-														placeholder="Maximum 250 Chararcters"
-														style="line-height: 4rem !important">
-												</div>
-											</div>
-										</div>
-									</div>
+						<div class="modal-body">
 
-									<input type="hidden" name="rfaid" id="rfaidvalue"
-										value="" />
-									<div class="form-group" align="center" style="margin-top: 3%;">
-										<input type="hidden" name="${_csrf.parameterName}"
-											value="${_csrf.token}" />
-										<span id="btnsub"><button type="button" id="returnSubBtn" class="btn btn-primary btn-sm submit" id="submit" formaction="RfaActionReturnList.htm"  value="SUBMIT" onclick="return returnSub()">SUBMIT</button>
-										</span>
-									</div>
-	
+							<div class="col-md-12">
+								<label class="control-label returnLabel"
+									style="font-weight: 600; font-size: 16px;"> Reply <span
+									class="mandatory" style="color: #cd0a0a;">*</span>
+								</label>
+								<textarea class="form-control" rows="3" cols="30"
+									placeholder="Max 500 Characters" name="replyMsg" id="replyMsg"
+									maxlength="500" required></textarea>
 							</div>
+
+							<input type="hidden" name="rfaid" id="rfaidvalue" value="" />
+							<div class="form-group" align="center" style="margin-top: 3%;">
+								<input type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}" /> <span id="btnsub"><button
+										type="button" id="returnSubBtn"
+										class="btn btn-primary btn-sm submit" id="submit"
+										formaction="RfaActionReturnList.htm" value="SUBMIT"
+										onclick="return returnSub()">SUBMIT</button> </span>
+							</div>
+
 						</div>
+					</div>
 					</div>
 
 				</div>

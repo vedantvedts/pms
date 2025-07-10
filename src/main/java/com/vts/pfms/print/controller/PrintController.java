@@ -1265,7 +1265,12 @@ public class PrintController {
 	        		 String tecdata = TechWorkDataList.get(z)[6].toString().replaceAll("[/\\\\]", ",");
 	        		 String[] fileParts = tecdata.split(",");
 	        		 String zipName = String.format(TechWorkDataList.get(z)[7].toString()+TechWorkDataList.get(z)[11].toString()+"-"+TechWorkDataList.get(z)[10].toString()+".zip");
-	        		 Path techPath = Paths.get(env.getProperty("ApplicationFilesDrive"), fileParts[0],fileParts[1],fileParts[2],fileParts[3],fileParts[4],zipName);
+	        		 Path techPath = null;
+	        		 if(fileParts.length == 4){
+	        		 	techPath = Paths.get(env.getProperty("ApplicationFilesDrive"), fileParts[0],fileParts[1],fileParts[2],fileParts[3],zipName);
+	        		 }else{
+	        			techPath = Paths.get(env.getProperty("ApplicationFilesDrive"), fileParts[0],fileParts[1],fileParts[2],fileParts[3],fileParts[4],zipName);
+	        		 }
 	                 zip.unpack(techPath.toString(),path,TechWorkDataList.get(z)[9].toString());
 				    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(path+File.separator+TechWorkDataList.get(z)[8].toString()),new PdfWriter(path+File.separator+filename+"temp.pdf"));
 				        Document document5 = new Document(pdfDocument2,PageSize.A4);
@@ -1952,7 +1957,12 @@ public class PrintController {
 				        		 String tecdata = TechWorkDataList.get(z)[6].toString().replaceAll("[/\\\\]", ",");
 				        		 String[] fileParts = tecdata.split(",");
 				        		 String zipName = String.format(TechWorkDataList.get(z)[7].toString()+TechWorkDataList.get(z)[11].toString()+"-"+TechWorkDataList.get(z)[10].toString()+".zip");
-				        		 Path techPath = Paths.get(env.getProperty("ApplicationFilesDrive"), fileParts[0],fileParts[1],fileParts[2],fileParts[3],fileParts[4],zipName);
+				        		 Path techPath = null;
+				        		 if(fileParts.length == 4){
+				        		 	techPath = Paths.get(env.getProperty("ApplicationFilesDrive"), fileParts[0],fileParts[1],fileParts[2],fileParts[3],zipName);
+				        		 }else{
+				        			techPath = Paths.get(env.getProperty("ApplicationFilesDrive"), fileParts[0],fileParts[1],fileParts[2],fileParts[3],fileParts[4],zipName);
+				        		 }
 				                 zip.unpack(techPath.toString(),path,TechWorkDataList.get(z)[9].toString());
 							    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(path+File.separator+TechWorkDataList.get(z)[8].toString()),new PdfWriter(path+File.separator+filename+"temp.pdf"));
 							        Document document5 = new Document(pdfDocument2,PageSize.A4);

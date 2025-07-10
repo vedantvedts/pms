@@ -203,7 +203,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String AGENDADOCLINKDOWNLOAD  ="SELECT b.filerepuploadid,b.filerepid,b.filepath,b.filenameui,b.filename,b.filepass,b.ReleaseDoc,b.VersionDoc FROM file_rep_upload b WHERE  b.filerepuploadid=:filerepid ";
 	private static final String MALIST="SELECT a.milestoneactivityid,0 AS 'parentactivityid', a.activityname,a.orgstartdate,a.orgenddate,a.startdate,a.enddate,a.progressstatus, mas.activitystatus, e.empname AS 'OIC1',a.milestoneno, mas.activityshort, mas.activitystatusid,0 as level FROM milestone_activity a, milestone_activity_status mas,employee e WHERE  a.isactive=1 AND mas.activitystatusid=a.activitystatusid AND a.enddate BETWEEN CURDATE() AND DATE(DATE_ADD(CURDATE(),INTERVAL 180 DAY))  AND a.oicempid=e.empid AND a.projectid=:ProjectId";
 	private static final String MILEACTIVITYLEVEL="SELECT a.activityid ,a.parentactivityid, a.activityname,a.orgstartdate,a.orgenddate , a.startdate, a.enddate,  a.progressstatus, mas.activitystatus, e.empname,0 as milestoneno, mas.activityshort, mas.activitystatusid,a.activitylevelid as level  FROM milestone_activity_level a, milestone_activity_status mas, employee e WHERE  a.enddate BETWEEN CURDATE() AND DATE(DATE_ADD(CURDATE(),INTERVAL 180 DAY)) AND mas.activitystatusid=a.activitystatusid AND a.oicempid=e.empid AND a.parentactivityid=:id AND a.activitylevelid=:levelid ";
-	private static final String AGENDALINKEDDOCLIST="SELECT sad.agendadocid,sad.agendaid,sad.filedocid,fru.filenameui FROM committee_schedule_agenda_docs sad, committee_schedules_agenda sa, file_rep_upload fru WHERE sad.agendaid=sa.scheduleagendaid AND sad.filedocid = fru.FileRepUploadId AND sad.isactive=1 AND sa.isactive=1 AND sa.scheduleid=:scheduleid";
+	private static final String AGENDALINKEDDOCLIST="SELECT sad.agendadocid,sad.agendaid,sad.filedocid,fru.filenameui,fru.VersionDoc,fru.ReleaseDoc FROM committee_schedule_agenda_docs sad, committee_schedules_agenda sa, file_rep_upload fru WHERE sad.agendaid=sa.scheduleagendaid AND sad.filedocid = fru.FileRepUploadId AND sad.isactive=1 AND sa.isactive=1 AND sa.scheduleid=:scheduleid";
 	
 	@PersistenceContext
 	EntityManager manager;
@@ -326,7 +326,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Long LastCommitteeId(String CommitteeId,String projectid,String divisionid,String initiationid, String carsInitiationId) throws Exception {
 
 		Query query=manager.createNativeQuery(LASTCOMMITTEEID);
-		query.setParameter("committeeid", Long.parseLong(CommitteeId));
+		query.setParameter("committeeid", CommitteeId);
 		query.setParameter("projectid", Long.parseLong(projectid));
 		query.setParameter("divisionid",Long.parseLong(divisionid));
 		query.setParameter("initiationid", Long.parseLong(initiationid));

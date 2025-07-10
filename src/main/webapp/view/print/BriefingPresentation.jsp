@@ -3084,7 +3084,12 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 								String tecdata = TechWorkDataList.get(z)[6].toString().replaceAll("[/\\\\]", ",");
 				        		String[] fileParts = tecdata.split(",");
 				        		String zipName = String.format(TechWorkDataList.get(z)[7].toString()+TechWorkDataList.get(z)[11].toString()+"-"+TechWorkDataList.get(z)[10].toString()+".zip");
-				        		Path techPath = Paths.get(filePath, fileParts[0],fileParts[1],fileParts[2],fileParts[3],fileParts[4],zipName);
+				        		Path techPath = null;
+				        		if(fileParts.length == 4){
+				        			techPath = Paths.get(filePath, fileParts[0],fileParts[1],fileParts[2],fileParts[3],zipName);
+				        		}else{
+				        			techPath = Paths.get(filePath, fileParts[0],fileParts[1],fileParts[2],fileParts[3],fileParts[4],zipName);
+				        		}
 								if (FileExtList.contains(fileExt) ) {%>
 								<% String path = request.getServletContext().getRealPath("/view/temp");
 								Zipper zip = new Zipper();

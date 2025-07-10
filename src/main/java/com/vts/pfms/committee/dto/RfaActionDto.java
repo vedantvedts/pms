@@ -11,6 +11,7 @@ public class RfaActionDto
 {
 	private Long RfaId;
 	private String LabCode;
+	private String projectType;
 	private Long ProjectId;
 	private String RfaNo;
 	private String ProjectCode;
@@ -38,6 +39,16 @@ public class RfaActionDto
 	private String VendorCode;
 	private String rfastatus;
 	private String labcode;
-
+	
+	
+	private String BoxNo;
+	
+	private Date SWdate;
+	
+	private String FPGA;
+	
+	private String RigVersion;
+	private String RfaRaisedByName;
+	//29-04-2025
 	
 }
