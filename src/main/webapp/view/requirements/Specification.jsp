@@ -1307,7 +1307,7 @@ function DownloadDocPDF(){
                 /* ************************************** Applicable Document End *********************************** */
                 
 	            /* ************************************** Product Tree *********************************** */
-            <%--     {
+                {
                 	text: (++mainContentCount)+'. Product Tree',
                     style: 'chapterHeader',
                     tocItem: true,
@@ -1333,12 +1333,12 @@ function DownloadDocPDF(){
            			{
                     	image: 'data:image/png;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(imagepathFile))%>',
                     	width: 500,
-                       	height: 500,
+                       	height: 400,
                        	alignment: 'center',
                        	margin: [0, 10, 0, 10]
                    	},
            													
-           		<%} }%> --%>
+           		<%} }%> 
                 
                 /* ************************************** Product Tree End *********************************** */
 
@@ -1355,13 +1355,20 @@ function DownloadDocPDF(){
             		List<Object[]>specsListMain=specsList.stream().filter(e->e[7].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
             		for(Object[]obj:specsListMain){ %>
             		
-	            		{
-		                	text: mainContentCount+'.<%=++specCount %> <%=obj[1].toString() %>',	
-		                	style: 'chapterSubHeader',
-		                    tocItem: true,
-		                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=specCount %>',
-		                    tocMargin: [10, 0, 0, 0],
-		                },
+            		{
+            		    text: [
+            		        {
+            		            text: mainContentCount+'.<%=++specCount %> <%=obj[1].toString()  %> ',
+            		            tocItem: true // Only this text goes to TOC
+            		        },
+            		        {
+            		            text: '<%=obj[5]!=null?"( "+ obj[5] +" )":"" %>'
+            		        }
+            		    ],
+            		    style: 'chapterSubHeader',
+            		    id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=specCount %>',
+            		    tocMargin: [10, 0, 0, 0],
+            		},
             		
             			<% List<Object[]>specsListSub = new ArrayList<>();
             			
@@ -1372,12 +1379,26 @@ function DownloadDocPDF(){
             			}
             			
             			if(specsListSub!=null && specsListSub.size()>0) {
+            				int parameterCount=0;
             				for(Object[]obj1:specsListSub){
-	            				int snCount=0; %>
+	            				int snCount=0;
+	            			
+	            				%>
+	            				
+	            				<% if(!obj[0].toString().equalsIgnoreCase(obj1[0].toString())){%>
+	            				{
+	    	                       	text: mainContentCount+'.<%=specCount+"."+ (++parameterCount) %>. <%=obj1[5]!=null?"Parameter - "+ obj1[5] :"" %>',
+	    	                       	style: 'chapterSubHeader',
+	    	                        tocItem: true,
+	    		                  <%--   id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=specCount+"-"+parameterCount %>', --%>
+	    		                    tocMargin: [20, 0, 0, 0]
+	    		                },
+	    		                <%}%>
+	            				
             					{
 		            				table : {
 		            					headerRows : 1,
-		            					widths: ['20%', '30%', '50%'],
+		            					widths: ['10%', '25%', '65%'],
 		    	                        body: [
 		    	                            // Table header
 		    	                            [
@@ -1403,24 +1424,25 @@ function DownloadDocPDF(){
 		    	                            ],
 		    	                            
 		    	                            [
-		    	                                { stack: [htmlToPdfmake(setImagesWidth('<%=++snCount %>.Description: <%if(obj1[2]!=null){ %> <%=obj1[2].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 3 }
+		    	                            	 { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
+		    	                                { stack: [htmlToPdfmake(setImagesWidth('Description: - <%if(obj1[2]!=null){ %> <%=obj1[2].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
 		    	                            ],
 		    	                            
 		    	                            [
-		    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
-		    	                                { text: 'Specification Parameter', style: 'tableData' },
+		    	                            	 { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
+		    	                                { text: 'Parameter', style: 'tableData' },
 		    	                                { text: '<%=obj1[5]!=null?obj1[5]:"-" %>', style: 'tableData' },
 		    	                            ],
 		    	                            
 		    	                            [
 		    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
-		    	                                { text: 'Specification Unit', style: 'tableData' },
+		    	                                { text: 'Unit', style: 'tableData' },
 		    	                                { text: '<%=obj1[6]!=null?obj1[6]:"-" %>', style: 'tableData' },
 		    	                            ],
 		    	                            
 		    	                            [
 		    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
-		    	                                { text: 'Specification Value', style: 'tableData' },
+		    	                                { text: 'Typical Value', style: 'tableData' },
 		    	                                { text: '<%=obj1[9]!=null?obj1[9]:"-" %>', style: 'tableData' },
 		    	                            ],
 		    	                            [
@@ -1596,6 +1618,8 @@ function DownloadDocPDF(){
                 },
                 /* ************************************** Conclusion End *********************************** */
 			],
+			
+			
             styles: {
                 DocumentName: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
                 chapterHeader: { fontSize: 16, bold: true, margin: [0, 0, 0, 10] },

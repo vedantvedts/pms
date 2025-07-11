@@ -330,28 +330,7 @@ float: right;
 							</div>
 						</div>
 						
-						<!--  -->
-							<!-- 	<div class="panel panel-info" style="margin-top: 10px;">
-								<div class="panel-heading ">
-								<h4 class="panel-title">
-								<span class="ml-2" style="font-size: 14px">5. Applicable Standards</span>
-								</h4>
-								<button class="btn bg-transparent buttonEd" type="button"
-									id="btnEditor5" onclick="showEditor('Applicable Standards')">
-									<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-								</button>
-								</div>
-								</div> -->
-								<!--  -->
-					<%-- 			<div class="panel panel-info" style="margin-top: 10px;">
-								<div class="panel-heading ">
-								<h4 class="panel-title">
-								<span class="ml-2" style="font-size: 14px">6. Referenced Documents</span>
-								</h4>
-								<button class="btn bg-transparent buttonEd" type="button" id="btnEditor" onclick="showTable(<%=projectId %>)" style="margin-top:-2%;"><i class="fa fa-eye" aria-hidden="true" style="color:dodgerblue"></i></button>
-								</div>
-								</div>  --%>
-					<!--  -->
+				
 					</div>
 				</div>
 			</div>

@@ -10,6 +10,7 @@ import com.vts.pfms.requirements.model.DocumentFreeze;
 import com.vts.pfms.requirements.model.DocumentTrans;
 import com.vts.pfms.requirements.model.PfmsReqTypes;
 import com.vts.pfms.requirements.model.PfmsSpecTypes;
+import com.vts.pfms.requirements.model.PfmsSystemSubIntroduction;
 import com.vts.pfms.requirements.model.PfmsTestTypes;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
@@ -24,6 +25,7 @@ import com.vts.pfms.requirements.model.TestPlanInitiation;
 import com.vts.pfms.requirements.model.TestPlanMaster;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.model.TestScopeIntro;
+import com.vts.pfms.requirements.model.TestSetUpAttachment;
 import com.vts.pfms.requirements.model.TestSetupMaster;
 import com.vts.pfms.requirements.model.TestTools;
 import com.vts.pfms.requirements.model.VerificationData;
@@ -181,9 +183,7 @@ public interface RequirementDao {
 	public List<SpecificationMaster> getAllSpecPlans()throws Exception;
 	public int deleteSpecificationMasterById(String specsMasterId);
 	public List<SpecificationTypes> getSpecificationTypesList();
-	
-	
-	
+
 
 	public List<TestSetupMaster> getTestSetupMaster()throws Exception;
 
@@ -197,5 +197,20 @@ public interface RequirementDao {
 
 
 	public TestSetupMaster getTestSetupMasterById(Long setUpid)throws Exception;
+
+
+	public long saveTestSetUpAttachment(TestSetUpAttachment tp)throws Exception;
+
+
+	public List<TestSetUpAttachment> getTestSetUpAttachment(String setUpId)throws Exception;
+
+
+	public List<PfmsSystemSubIntroduction>  getActiveSubIntroductionByMainId(Long mainId)throws Exception;
+
+
+	public long savePfmsSystemSubIntroduction(PfmsSystemSubIntroduction ps)throws Exception;
+
+
+	public int setMilestoneInActive(String id)throws Exception;
 
 }

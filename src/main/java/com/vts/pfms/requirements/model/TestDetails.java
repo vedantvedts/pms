@@ -56,5 +56,6 @@ public class TestDetails {
 	private Long TestPlanInitiationId;
 	private Long parentId;
 	private Long MainId;
-	
+	private String NumberofRows;
+	private String NumberofCycles;
 }

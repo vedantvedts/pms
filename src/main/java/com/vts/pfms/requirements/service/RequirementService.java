@@ -10,6 +10,7 @@ import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.DocumentFreeze;
 import com.vts.pfms.requirements.model.PfmsReqTypes;
+import com.vts.pfms.requirements.model.PfmsSystemSubIntroduction;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.SpecificationMaster;
@@ -22,6 +23,7 @@ import com.vts.pfms.requirements.model.TestInstrument;
 import com.vts.pfms.requirements.model.TestPlanInitiation;
 import com.vts.pfms.requirements.model.TestPlanMaster;
 import com.vts.pfms.requirements.model.TestPlanSummary;
+import com.vts.pfms.requirements.model.TestSetUpAttachment;
 import com.vts.pfms.requirements.model.TestSetupMaster;
 import com.vts.pfms.requirements.model.TestTools;
 import com.vts.pfms.requirements.model.VerificationData;
@@ -187,9 +189,7 @@ public interface RequirementService {
 	public List<SpecificationMaster> getAllSpecPlans()throws Exception;
 	public int deleteSpecificationMasterById(String specsMasterId);
 	public List<SpecificationTypes> getSpecificationTypesList();
-	
-	
-	
+
 	public List<TestSetupMaster> getTestSetupMaster()throws Exception;
 
 	public List<TestInstrument> getTestInstrument()throws Exception;
@@ -199,4 +199,16 @@ public interface RequirementService {
 	public long addTestSetupMaster(TestSetupMaster tp)throws Exception;
 
 	public TestSetupMaster getTestSetupMasterById(Long setUpid)throws Exception;
+
+	public long saveTestSetUpAttachment(MultipartFile[] attchments, long setUpId, String labCode)throws Exception;
+
+	public List<TestSetUpAttachment> getTestSetUpAttachment(String setUpId)throws Exception;
+
+	public long saveTestSetUpAttachement(TestSetUpAttachment tp)throws Exception;
+
+	public List<PfmsSystemSubIntroduction> getActiveSubIntroductionByMainId(Long MainId)throws Exception;
+
+	long savePfmsSystemSubIntroduction(PfmsSystemSubIntroduction ps)throws Exception;
+
+	public int setMilestoneInActive(String id)throws Exception;
 }

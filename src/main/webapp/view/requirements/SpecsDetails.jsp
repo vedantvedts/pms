@@ -432,7 +432,7 @@ String count1="10";
 									</h5>
 								</div>
 								<div class="col-md-6" id="addReqButton">
-								<%if ((systemSpecificationList != null) && (!systemSpecificationList.isEmpty())) {%>
+								<%if ((systemSpecificationList != null) && (!systemSpecificationList.isEmpty())) { %>
 									<button class="btn btn-sm submit mr-2" style="margin-top: -1%;" onclick="showMasterModal()">CHOOSE FROM SPEC MASTER</button>
 									<%} %>
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
@@ -465,19 +465,16 @@ String count1="10";
 				</div>
 				</div>
 					<div class="requirementid" style="display:block; height:70vh;overflow: auto ;<%if(specsList==null || specsList.size()==0){%> display:none;<%}%>">
-					
+
 					<%
 					if(specsList!=null && specsList.size()>0) {
-						
-						List<Object[]>specsListMain=specsList.stream().filter(e->e[7].toString().equalsIgnoreCase("0") && e[13].toString().equalsIgnoreCase("N")).collect(Collectors.toList());
-						for(Object[]obj:specsListMain){
-					
+					List<Object[]>specsListMain=specsList.stream().filter(e->e[7].toString().equalsIgnoreCase("0") && e[13].toString().equalsIgnoreCase("N")).collect(Collectors.toList());
+					for(Object[]obj:specsListMain){
 					%>
-					
 					<div  style="display: flex; align-items: center; margin-top: 8px; width: 100%">
 					<button style="text-decoration: underline" type="button" class="btn btn-secondary  mt-2 btnM" onclick="addData(<%=obj[0].toString() %>,<%=obj[8].toString() %>)" id="btn<%=obj[0].toString()%>"><%=(++count)+" . "+obj[1].toString() %> &nbsp;&nbsp;<i class="fa fa-plus-square" aria-hidden="true"></i> </button>
 					<button class="btn btn-sm bg-transparent" type="button" onclick="deleteSpc(<%=obj[0].toString()%>)">
-							<i class="fa fa-trash-o" aria-hidden="true" style="color:red;"></i>
+					<i class="fa fa-trash-o" aria-hidden="true" style="color:red;"></i>
 					</button>
 					</div>
 					<%
@@ -550,7 +547,7 @@ String count1="10";
 					<div class="card-body" id="cardbody">
 						
 							<div class="row" id ="specsDiv" style="display: none;">
-								<div class="col-md-3">
+								<div class="col-md-6">
 									<label id="specsId" style="font-size: 17px; margin-top: 5%; color: #07689f">
 											
 										</label>

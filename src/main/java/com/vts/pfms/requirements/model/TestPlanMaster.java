@@ -48,6 +48,8 @@ public class TestPlanMaster {
 	private String ModifiedDate;
 	private String TimeType;
 	private String LinkedSpecids;
+	private String NumberofRows;
+	private String NumberofCycles;
 
 
 }

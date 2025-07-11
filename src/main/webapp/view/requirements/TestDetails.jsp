@@ -1,4 +1,5 @@
 <%@page import="com.vts.pfms.requirements.model.TestPlanMaster"%>
+<%@page import="com.vts.pfms.requirements.model.TestSetupMaster"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
@@ -26,6 +27,13 @@
 
 <script src="${SummernoteJs}"></script>
 <link href="${SummernoteCss}" rel="stylesheet" />
+
+<spring:url value="/resources/pdfmake/pdfmake.min.js" var="pdfmake" />
+<script src="${pdfmake}"></script>
+<spring:url value="/resources/pdfmake/vfs_fonts.js" var="pdfmakefont" />
+<script src="${pdfmakefont}"></script>
+<spring:url value="/resources/pdfmake/htmltopdf.js" var="htmltopdf" />
+<script src="${htmltopdf}"></script>
 <style type="text/css">
 label {
 	font-weight: bold;
@@ -353,7 +361,15 @@ margin-left: -21px;
 	String productTreeMainId = (String)request.getAttribute("productTreeMainId");
 	String testPlanInitiationId = (String)request.getAttribute("testPlanInitiationId");
 
- 	List<Object[]>TestDetailsList=(List<Object[]>)request.getAttribute("TestDetailsList"); 
+ 	List<Object[]>TestDetailsList=(List<Object[]>)request.getAttribute("TestDetailsList");
+ 	
+ 	
+	Object[] DocTempAtrr = (Object[])request.getAttribute("DocTempAttributes");
+	Object[]LabList=(Object[])request.getAttribute("LabList");
+	String lablogo = (String)request.getAttribute("lablogo");
+	String drdologo = (String)request.getAttribute("drdologo");
+
+ 	
  	List<Object[]>TestTypeList=(List<Object[]>)request.getAttribute("TestTypeList");
  	String TestReqId=(String)request.getAttribute("TestReqId");
  	List<Object[]>StagesApplicable=(List<Object[]>)request.getAttribute("StagesApplicable");
@@ -367,9 +383,17 @@ margin-left: -21px;
 	List<Object[]> specificationList = (List<Object[]>)request.getAttribute("specificationList");
 	//List<Object[]> TestPlanMasterList = (List<Object[]>)request.getAttribute("TestPlanMasterList");
 	List<TestPlanMaster>TestPlanMasterList=(List<TestPlanMaster>)request.getAttribute("TestPlanMasterList");
-	if(specificationList!=null && specificationList.size()>0){
-		specificationList=specificationList.stream().filter(e->!e[7].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+	
+	if(!TestPlanMasterList.isEmpty()){
+		List<String>presentMainIds = presentMainIds = TestDetailsList.stream().filter(e->e[24]!=null).map(e->e[24].toString())
+				.collect(Collectors.toList());
+		TestPlanMasterList = TestPlanMasterList.stream().
+				filter(e->!presentMainIds.contains(e.getTestMasterId()+"")).collect(Collectors.toList());
 	}
+	
+	/* if(specificationList!=null && specificationList.size()>0){
+		specificationList=specificationList.stream().filter(e->!e[7].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
+	} */
 	Integer nextCount=0;
 	if(TestDetailsList!=null && TestDetailsList.size()>0){
 		
@@ -377,8 +401,10 @@ margin-left: -21px;
 	}
 	
 	Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
-
+	
+	List<TestSetupMaster>master = (List<TestSetupMaster>)request.getAttribute("testSetupMasterMaster");
 %>
+
 <body style="background-color: white;">
 
 	<%String ses=(String)request.getParameter("result"); 
@@ -407,6 +433,7 @@ margin-left: -21px;
 		</div>
 	<%}else{ %>
 		<div id="reqmain" class="card-slider">
+		
 			<div class="container-fluid" style="display: none;" id="main">
 				<div class="row">
 					<div class="col-md-12">
@@ -424,9 +451,11 @@ margin-left: -21px;
 										</small>
 									</h5>
 								</div>
+								<%if(TestPlanMasterList!=null && TestPlanMasterList.size()>0){ %>
 								<div class="col-md-2">
 								<button class="btn btn-sm submit" type="button" style="margin-top: -3%;" onclick="showMasterModal()">TESTPLAN MASTER</button>
 								</div>
+								<%} %>
 								<div class="col-md-3" id="addReqButton">
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 									<input type="hidden" name="projectId" value="<%=projectId%>">
@@ -447,11 +476,33 @@ margin-left: -21px;
 											formaction="ProjectTestPlanDetails.htm" formmethod="get"
 											formnovalidate="formnovalidate" style="margin-top: -3%;">BACK</button>
 									</form>
+									
+									
 								</div>
+					
 							</div>
 						</div>
 					</div>
+				
 				</div>
+					<%if((TestDetailsList!=null) &&(!TestDetailsList.isEmpty())){ %>
+								<div class="row">
+								<div class="col-md-6"></div>
+								<div class="col-md-6 mt-2 mb-2"  style="display: flex;">
+									<div style="font-size: 20px; color: #005086; width: 100%;text-align: right;font-weight: 600">Stage PDF:</div>&nbsp;&nbsp;
+									<select required="required"
+												class="form-control selectItem StageApplicableEdit" name=""
+												id="StageApplicablePDF" data-width="100%"
+												data-live-search="true" data-placeholder="Choose" onchange="createTestStagePDF(this)">
+													<option val="" selected disabled>Choose...</option>
+													<%for (Object[] obj : StagesApplicable) {%>
+													<option value="<%=obj[3]%>"><%=obj[3]%></option>
+													<%}%>
+											</select>
+								</div>
+								</div>
+							<%} %>
+				
 				<div class="row">
 					<div class="col-md-2" >
 						<%if((TestDetailsList!=null) &&(!TestDetailsList.isEmpty())){ %>
@@ -735,38 +786,7 @@ margin-left: -21px;
 													
 												</div>
 										
-				<%-- 								<%if ((TestPlanMasterList != null) && (!TestPlanMasterList.isEmpty())) { %>
-							<div class="form-group row">
-								<div class="col-md-3">
-									<label style="font-size: 17px; margin-top: 5%; color: #07689f">
-										Choose from Test Plan Master </label>
-								</div>
-								<div class="col-md-6" style="margin-top: 1%;">
-									<div class="form-group">
-
-										<select class="form-control selectdee" data-width="80%" id="SpecsMasterId"
-											data-live-search="true" onchange="getSpecDetails()">
-											<option value="" disabled="disabled" selected="selected">SELECT</option>
-											<%
-											for (Object[] obj : TestPlanMasterList) {
-											%>
-											<option value="<%=obj[0]%>"><%=obj[1]%></option>
-											<%
-											}
-											%>
-										</select>
-
-									</div>
-								</div>
-							</div>
-							<%
-							} else {
-							%>
-
-							<%
-							}
-							%> --%>
-										
+			
 										
 										
 												<div class="form-group row">
@@ -810,17 +830,15 @@ margin-left: -21px;
 																</label>
 															</div>
 															<div class="col-md-10" style="">
-																<select class="form-control selectdee" name="Methodology" id="MethodologyAdd" data-width="100%" data-placeholder="Select Methodology" data-live-search="true" multiple  required onchange="AddData('1',this)">
+																<select class="form-control selectdee" name="Methodology" id="MethodologyAdd" data-width="100%" data-placeholder="Select Methodology" data-live-search="true"   required onchange="AddData('1',this)">
 																	<option value="" disabled="disabled">---Choose----</option>
-																	<!-- <option value="0">NA ( Not Applicable )</option> -->
-																	<%if((DemonstrationList!=null) &&(!DemonstrationList.isEmpty())){
-																 	int count=0; 
-																	%>
-																		<%for(Object[] obj:DemonstrationList){ %>
-												 							<option value="<%="D"+(++count) %>" title=<%=obj[3] %>><%=obj[3]%></option> 
-																		<%}%>
-																	<%}%>
-																	<option value="0">ADD NEW</option>
+																	<option value="" disabled="disabled" selected="selected">SELECT</option>
+																	<option value="D" >Demonstration</option>
+																	<option value="T" >Test</option>
+																	<option value="A" >Analysis/Design</option>
+																	<option value="I">Inspection</option>
+																	<option value="S" >Special Verification Methods </option>
+																	<!-- <option value="0">ADD NEW</option> -->
 																</select>
 															</div>
 														</div>
@@ -835,13 +853,12 @@ margin-left: -21px;
 															</div>
 															<div class="col-md-10">
 																<select class="form-control selectdee" id="select1" name="ToolsSetup" onchange="AddTestSetUp('select1')" data-width="100%"
-																	data-live-search="true" style=""  data-placeholder="Choose" multiple="multiple" required="required">
+																	data-live-search="true" style=""  data-placeholder="Choose"  required="required">
 																	<!-- <option disabled="disabled" value="" selected="selected">Choose..</option> -->
-																	<option class="bg-success text-light" value="0"  >ADD NEW</option>
-																	<%if(!TestTypeList.isEmpty()){
-																		for(Object[] obj:TestTypeList){ %>
-																			<option value="<%=obj[0]%>"><%=obj[1]%></option>
-																	<%}}%>
+																	<option value="" >---Choose----</option>
+																	<%for (TestSetupMaster t :master) {%>
+																<option value="<%=t.getSetupId()%>"   ><%=t.getTestSetUpId() %></option>
+																	<%} %>
 																	
 																</select>
 															</div>
@@ -866,13 +883,15 @@ margin-left: -21px;
 													
 													<div class="col-md-6">
 														<div class="row">
-															<div class="col-md-2">
+														
+															
+															<div class="col-md-3">
 																<label style="font-size: 17px;color: #07689f;">
-																	Est Time <span class="mandatory" style="color: red;">*</span>
+																	Schedule <span class="mandatory" style="color: red;">*</span>
 																</label>
 															</div>
-															<div class="col-md-10" style="">
-																<input type="text" name="EstimatedTimeIteration" class="form-control" id="EstimatedTimeIterationAdd" maxlength="255" required="required" placeholder="Maximum 250 Chararcters">
+															<div class="col-md-9" style="">
+																<input type="text" name="Schedule" class="form-control" id="ScheduleAdd" maxlength="255" required="required" min="1">
 															</div>
 														</div>
 													</div>
@@ -894,20 +913,21 @@ margin-left: -21px;
 									
 													<div class="col-md-6">
 														<div class="row">
-															<div class="col-md-2">
+																<div class="col-md-2">
 																<label style="font-size: 17px;color: #07689f;">
-																	Schedule <span class="mandatory" style="color: red;">*</span>
+																	Est Time <span class="mandatory" style="color: red;">*</span>
 																</label>
 															</div>
 															<div class="col-md-2" style="">
-																<input type="number" name="Schedule" class="form-control" id="ScheduleAdd" maxlength="255" required="required" min="1">
+																<input type="text" name="EstimatedTimeIteration" class="form-control" id="EstimatedTimeIterationAdd" maxlength="255" required="required" placeholder="Maximum 250 Chararcters">
 															</div>
 															<div class="col-md-4" style="">
 															<select class="form-control" required="required" name="timeType">
 															<option value="" selected  disabled="disabled">SELECT</option>
-															<option value="D">D</option>
-															<option value="H">H</option>
-															<option value="M">M</option>
+															<option value="D">Day</option>
+															<option value="M">Minute</option>
+															<option value="H">Hour</option>
+															
 															</select>
 															</div>
 														</div>
@@ -928,7 +948,7 @@ margin-left: -21px;
 														</div>
 													</div>		
 										
-													<div class="col-md-6">
+											<%-- 		<div class="col-md-6">
 														<div class="row">
 															<div class="col-md-2">
 																<label style="font-size: 17px;color: #07689f;">
@@ -949,7 +969,7 @@ margin-left: -21px;
 																
 															</div>
 														</div>
-													</div>
+													</div> --%>
 												</div>
 												
 												<div class="form-group row">
@@ -1014,6 +1034,45 @@ margin-left: -21px;
 														</div>
 													</div>
 													<div class="col-md-6">
+														<table class="table table-bordered">
+									<thead style=" background: #055C9D; color: white;">
+										<tr>
+											<th>Stage</th>
+											<th>Number of rows</th>
+											<th>Number of cycles</th>
+											<th>Action</th>
+											
+										</tr>
+									</thead>
+									<tbody id="specificationTable">
+										<tr>
+											<td><select required="required"
+												class="form-control selectItem StageApplicable" name="StageApplicable"
+												id="StageApplicable" data-width="100%"
+												data-live-search="true" data-placeholder="Choose">
+													<option val="" selected disabled>Choose...</option>
+													<%
+													for (Object[] obj : StagesApplicable) {
+													
+													%>
+													<option value="<%=obj[3]%>"><%=obj[3]%></option>
+													<%
+													}
+													%>
+											</select></td>
+											<td style="width: 30%;"><input type="number" name="rows"
+												class="form-control" maxlength="5" required
+												placeholder="Max 5 Characters" value="0"></td>
+											<td><input type="number" name="cycle" class="form-control"
+												maxlength="250" required placeholder="Max 250 Characters" value="0"></td>
+											<td><button type="button" class="btn btn-sm"
+													id="plusbutton">
+													<i class="fa fa-plus" aria-hidden="true"></i>
+												</button></td>
+										</tr>
+									</tbody>
+								</table>
+													
 													</div>
 												</div>
 												<input type="hidden" name="projectId" value="<%=projectId%>">
@@ -1113,16 +1172,15 @@ margin-left: -21px;
 																</div>
 																<div class="col-md-10" style="">
 																	<div class="form-group">
-																		<select required="required" class="form-control selectdee" name="Methodology" id="EditMethodology"data-width="100%" data-live-search="true" multiple>
+																		<select required="required" class="form-control selectdee" name="Methodology" id="EditMethodology"data-width="100%" data-live-search="true" >
 																			<option value="" disabled="disabled">---Choose----</option>
-																			<!-- <option value="0">NA ( Not Applicable )</option> -->
-																			<%if((DemonstrationList!=null) &&(!DemonstrationList.isEmpty())){
-																			int count=0;
-																			%>
-																				<%for(Object[] obj:DemonstrationList){ %>
-																					<option value="<%="D"+(++count) %>" title=<%=obj[3] %>><%=obj[3]%></option>
-																				<%}%>
-																			<%}%>
+
+																	<option value="D" >Demonstration</option>
+																	<option value="T" >Test</option>
+																	<option value="A" >Analysis/Design</option>
+																	<option value="I">Inspection</option>
+																	<option value="S" >Special Verification Methods </option>
+																	
 																		</select>
 																	</div>
 																</div>
@@ -1140,12 +1198,11 @@ margin-left: -21px;
 																<div class="col-md-10" style="">
 																	<select required="required" id="EditToolsSetup" name="ToolsSetup"
 																		onchange="AddTestSetUp('EditToolsSetup')" class="form-control selectdee" data-width="80%"
-																		data-live-search="true" style="margin-top: 5%"  multiple>
-																		 <option class="bg-success text-light" value="0">ADD NEW </option> 
-																		<%if(!TestTypeList.isEmpty()){
-																		for(Object[] obj:TestTypeList){ %>
-																		<option value="<%=obj[0]%>"><%=obj[1]%></option>
-																		<%}}%>
+																		data-live-search="true" style="margin-top: 5%"  >
+																		<option value="" disabled="disabled">---Choose----</option>
+																				<%for (TestSetupMaster t :master) {%>
+																<option value="<%=t.getSetupId()%>"   ><%=t.getTestSetUpId() %></option>
+																	<%} %>
 																		
 																	</select>
 																</div>
@@ -1174,9 +1231,19 @@ margin-left: -21px;
 																		Est Time <span class="mandatory" style="color: red;">*</span>
 																	</label>
 																</div>
-																<div class="col-md-10" style="">
+																<div class="col-md-4" style="">
 																	<input type="text" name="EstimatedTimeIteration" class="form-control"id="EditEstimatedTimeIteration" maxlength="255" required="required" placeholder="Maximum 250 Chararcters">
 																</div>
+																
+																<div class="col-md-4" style="">
+															<select class="form-control" required="required" name="timeType" id="edittimeType">
+															<option value="" selected  disabled="disabled">SELECT</option>
+															<option value="D">Day</option>
+															<option value="M">Minute</option>
+															<option value="H">Hour</option>
+															
+															</select>
+															</div>
 															</div>
 														</div>
 													</div>	
@@ -1224,7 +1291,7 @@ margin-left: -21px;
 															</div>
 														</div>
 														
-														<div class="col-md-6">
+													<%-- 	<div class="col-md-6">
 															<div class="row">
 																<div class="col-md-2">
 																	<label style="font-size: 17px; color: #07689f;">
@@ -1239,7 +1306,7 @@ margin-left: -21px;
 																	</select>
 																</div>
 															</div>
-														</div>
+														</div> --%>
 													</div>
 														
 													<div class="form-group row">
@@ -1299,8 +1366,47 @@ margin-left: -21px;
 																</div>
 															</div>
 														</div>
-														<div class="col-md-6">
-														</div>
+																	<div class="col-md-6">
+														<table class="table table-bordered">
+									<thead style=" background: #055C9D; color: white;">
+										<tr>
+											<th>Stage</th>
+											<th>Number of rows</th>
+											<th>Number of cycles</th>
+											<th>Action</th>
+											
+										</tr>
+									</thead>
+									<tbody id="stageEditTable">
+										<tr>
+											<td><select required="required"
+												class="form-control selectItem StageApplicableEdit" name="StageApplicable"
+												id="StageApplicableEdit" data-width="100%"
+												data-live-search="true" data-placeholder="Choose">
+													<option val="" selected disabled>Choose...</option>
+													<%
+													for (Object[] obj : StagesApplicable) {
+													
+													%>
+													<option value="<%=obj[3]%>"><%=obj[3]%></option>
+													<%
+													}
+													%>
+											</select></td>
+											<td style="width: 30%;"><input type="number" name="rows"
+												class="form-control" maxlength="5" required
+												placeholder="Max 5 Characters" value="0"></td>
+											<td><input type="number" name="cycle" class="form-control"
+												maxlength="250" required placeholder="Max 250 Characters" value="0"></td>
+											<td><button type="button" class="btn btn-sm"
+													id="plusbutton">
+													<i class="fa fa-plus" aria-hidden="true"></i>
+												</button></td>
+										</tr>
+									</tbody>
+								</table>
+													
+													</div>
 													</div>	
 																
 												
@@ -1312,7 +1418,7 @@ margin-left: -21px;
 													<input type="hidden" name="testId" id="edittestId" value="">  
 													<div class="form-group" align="center" style="margin-top: 3%;">
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-														<button type="submit" class="btn btn-sm btn-warning edit mt-2" id="add" name="action" value="edit" onclick="return confirm('Are you sure to submit?')">Update</button>
+														<button type="submit" class="btn btn-sm btn-warning edit mt-2" id="add" name="action" value="edit" onclick="return confirm('Are you sure to submit?')">UPDATE</button>
 													</div>
 												</div>
 												
@@ -1587,6 +1693,35 @@ function editCheck(event, frmid) {
          }
      }
  %>
+ 
+ var objArray = [
+	  { code: "D", name: "Demonstration" },
+	  { code: "T", name: "Test" },
+	  { code: "A", name: "Analysis/Design" },
+	  { code: "I", name: "Inspection" },
+	  { code: "S", name: "Special Verification Methods " },
+	];
+ 
+ 
+ var objArray1 = [
+	 <%
+	     if (master != null) {
+	         int count = 0;
+	         for (TestSetupMaster tsm : master) {
+	             String setupId = tsm.getSetupId()+"";
+	             String testSetUpId = tsm.getTestSetUpId();
+	 %>
+	         {
+	             setupId: "<%= setupId %>",
+	             testSetUpId: "<%= testSetUpId %>"
+	         }<%= (++count < master.size()) ? "," : "" %>
+	 <%
+	         }
+	     }
+	 %>
+	     ];
+ 
+
 	 function TestDetailsShow(TestReqId)
 	 {
 		 $('.viewbtn').css("background","#055C9D");
@@ -1601,10 +1736,16 @@ function editCheck(event, frmid) {
 			success:function(result){
 				 var ajaxresult=JSON.parse(result); 
 				
-				 var jsObjectList = JSON.parse('<%= jsonArray %>');
+			console.log(ajaxresult[25]+"---"+ajaxresult[26])
 				 
-				 var jsObjectTestToolList =JSON.parse('<%= jsonArrayTestTool %>');
-				 
+						var rowSplit = ajaxresult[25].split(", ");
+						var cycleSplit = ajaxresult[26].split(", ");
+						var stageApplicable=ajaxresult[21].split(", ");
+						var stageData="";
+				for(var i=0;i<stageApplicable.length;i++){
+					stageData= stageData+stageApplicable[i]+ " (row = "+rowSplit[i]+", cycle = "+cycleSplit[i]+") <br>";
+				}
+						
 				 var s="";
 				 var specid = [];
 				 if(ajaxresult[19]!==null){
@@ -1628,7 +1769,8 @@ function editCheck(event, frmid) {
 				$('#PostConditionsView').html(ajaxresult[6]);
 				$('#Constraints').html(ajaxresult[7]);
 				$('#SafetyRequirements').html(ajaxresult[8]);
-				$('#Methodology').html(ajaxresult[9]);
+				var methodology = objArray.find(obj => obj.code === ajaxresult[9]+"")
+				$('#Methodology').html(methodology ? methodology.name : "-");
 				$('#ToolsSetup').html(ajaxresult[10]);
 				$('#PersonnelResourcesView').html(ajaxresult[11]);
 				$('#EstimatedTimeIteration').html(ajaxresult[12]);
@@ -1638,25 +1780,19 @@ function editCheck(event, frmid) {
 				$('#PassFailCriteria').html(ajaxresult[15]);
 				$('#Remarks').html(ajaxresult[16]);
 				//$('#ToolsSetupname').html(ajaxresult[23]);
-				var tempArray=ajaxresult[21].split(",");
-				var tempsubArray="";
-					for(var i=0;i<jsObjectList.length;i++){
-						if(tempArray.includes(jsObjectList[i][0]+"")){
-							tempsubArray=tempsubArray+jsObjectList[i][3]+",&nbsp;&nbsp;";
+				var tempArray=ajaxresult[21];
+			
+				
+				$('#StageApplicableView').html(stageData);
+				var tempArrayToolsSetup=ajaxresult[10]!=null? ajaxresult[10].split(","):[];
+			
+			 	var tempsubArrayToolsSetup="";
+					for(var i=0;i<objArray1.length;i++){
+						if(tempArrayToolsSetup.includes(objArray1[i].setupId+"")){ 
+							tempsubArrayToolsSetup=tempsubArrayToolsSetup+objArray1[i].testSetUpId+",";
 						}
 					}
-					tempsubArray=tempsubArray.substring(0,tempsubArray.length-1);
-				
-				$('#StageApplicableView').html(tempsubArray.toString());
-				var tempArrayToolsSetup=ajaxresult[10].split(",");
-				
-				var tempsubArrayToolsSetup="";
-					for(var i=0;i<jsObjectTestToolList.length;i++){
-						if(tempArrayToolsSetup.includes(jsObjectTestToolList[i][0]+"")){
-							tempsubArrayToolsSetup=tempsubArrayToolsSetup+jsObjectTestToolList[i][1]+",";
-						}
-					}
-					tempsubArrayToolsSetup=tempsubArrayToolsSetup.substring(0,tempsubArray.length-1);
+					tempsubArrayToolsSetup=tempsubArrayToolsSetup.substring(0,tempsubArrayToolsSetup.length-1); 
 					
 				$('#ToolsSetupView').html(tempsubArrayToolsSetup.toString());
 				
@@ -1708,7 +1844,11 @@ function edit(value){
 		 
 		 if(ajaxresult!=null){
 		$('#edittestId').val(ajaxresult[0]);
-		var specid= ajaxresult[19].split(",");
+		var specid= [];
+		if(ajaxresult[19]!=null){
+			specid=ajaxresult[19].split(", ");
+		}
+		
 		$('#SpecIdEdit').val(specid).trigger('change');
 		$('#reqName1').val(ajaxresult[1]);
 		$('#EName').val(ajaxresult[2]);
@@ -1721,7 +1861,7 @@ function edit(value){
 		   $('#EditorSafetyReqforEdit').summernote('code', ajaxresult[8]);		
 		   $('#EditorPersonnelResourcesForEdit').summernote('code', ajaxresult[11]);		
 		   $('#EditorPostConditionsForEdit').summernote('code', ajaxresult[6]);		
-		   $('#EditorPreConditionsForEdit').summernote('code', ajaxresult[8]);		
+		   $('#EditorPreConditionsForEdit').summernote('code', ajaxresult[5]);		
 		   $('#descriptioneditoredit').summernote('code', ajaxresult[4]);		
 		
 		/* $('#EditSafetyRequirements').val(ajaxresult[8]); */
@@ -1731,11 +1871,12 @@ function edit(value){
 		$('#EditSchedule').val(ajaxresult[14]);
 		$('#EditPassFailCriteria').val(ajaxresult[15]);
 		$('#EditRemarks').val(ajaxresult[16]);
+		$('#edittimeType').val(ajaxresult[24]);
 		const StageApplicable=ajaxresult[21].split(",");
 		$('#StageApplicableedit').val(StageApplicable).trigger('change');
 		const EditMethodology=ajaxresult[9].split(",");
 		$('#EditMethodology').val(EditMethodology).trigger('change');
-		const EditToolsSetup=ajaxresult[10].split(",");
+		const EditToolsSetup= ajaxresult[10]!=null?ajaxresult[10].split(","):"";
 		$('#EditToolsSetup').val(EditToolsSetup).trigger('change');
 		
 		 }
@@ -1870,95 +2011,9 @@ $(function () {
   });
   </script>
 <script>
-/* var editor_config = {
-		toolbar : [
-				{
-					name : 'paragraph',
-					items : [ 'NumberedList', 'BulletedList', '-',
-							'Outdent', 'Indent', '-', 'Blockquote' ]
-				},
-				{
-					name : 'styles',
-					items : [ 'Format', 'Font', 'FontSize' ]
-				},
-				{
-					name : 'align',
-					items : [ 'JustifyLeft', 'JustifyCenter',
-							'JustifyRight', 'JustifyBlock' ]
-				} ],
-		removeButtons : 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
-		customConfig : '',
-		disallowedContent : 'img{width,height,float}',
-		extraAllowedContent : 'img[width,height,align]',
-		height : 80,
-		contentsCss : [ CKEDITOR.basePath + 'mystyles.css' ],
-		bodyClass : 'document-editor',
-		format_tags : 'p;h1;h2;h3;pre',
 
-		removeDialogTabs : 'image:advanced;link:advanced',
-
-		stylesSet : [
-
-		{
-			name : 'Marker',
-			element : 'span',
-			attributes : {
-				'class' : 'marker'
-			}
-		}, {
-			name : 'Cited Work',
-			element : 'cite'
-		}, {
-			name : 'Inline Quotation',
-			element : 'q'
-		},
-
-		{
-			name : 'Special Container',
-			element : 'div',
-			styles : {
-				padding : '5px 10px',
-				background : '#eee',
-				border : '1px solid #ccc'
-			}
-		}, {
-			name : 'Compact table',
-			element : 'table',
-			attributes : {
-				cellpadding : '5',
-				cellspacing : '0',
-				border : '1',
-				bordercolor : '#ccc'
-			},
-			styles : {
-				'border-collapse' : 'collapse'
-			}
-		}, {
-			name : 'Borderless Table',
-			element : 'table',
-			styles : {
-				'border-style' : 'hidden',
-				'background-color' : '#E6E6FA'
-			}
-		}, {
-			name : 'Square Bulleted List',
-			element : 'ul',
-			styles : {
-				'list-style-type' : 'square'
-			}
-		}, {
-			filebrowserUploadUrl : '/path/to/upload-handler'
-		}, ]
-	}; */
 $(document).ready(function() {
-/* 	  $('#EditorPreConditions').summernote({
-		  width: 600,   //don't use px
-		
-		  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
-		 
-	      lineHeights: ['0.5']
-	
-	 }); */
+
 
 $('#EditorPreConditions').summernote({
     
@@ -1966,42 +2021,20 @@ $('#EditorPreConditions').summernote({
      height: 200
    });
    
-/* 	 $('#EditorPostConditions').summernote({
-		  width: 600,   //don't use px
-		
-		  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
-		 
-	      lineHeights: ['0.5']
-	
-	 }); */
 
 $('#EditorPostConditions').summernote({
     
      tabsize: 5,
      height: 200
    });
-/* 	 $('#EditorSafetyReq').summernote({
-		  width: 600,   //don't use px
-		
-		  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
-		 
-	      lineHeights: ['0.5']
-	
-	 }); */
+
 
 $('#EditorSafetyReq').summernote({
     
      tabsize: 5,
      height: 200
    });
-/* 	 $('#EditorPersonnelResources').summernote({
-		  width: 600,   //don't use px
-		
-		  fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
-		 
-	      lineHeights: ['0.5']
-	
-	 }); */
+
 
 $('#EditorPersonnelResources').summernote({
     
@@ -2226,7 +2259,7 @@ $('#myform1').submit(function() {
 				 datatype:'json',
 				 success : function(result){
 					var ajaxresult = JSON.parse(result);
-					 console.log(ajaxresult.Description)
+					
 					
 					 if(ajaxresult.Description!=null)
 						 $('#modal-body1').html(ajaxresult.Description)
@@ -2294,6 +2327,8 @@ $('#myform1').submit(function() {
 			
 			MasterIds.push(this.value)
 		})
+		
+		
 		if(MasterIds.length==0){
 				Swal.fire({
 					  icon: "error",
@@ -2318,7 +2353,20 @@ $('#myform1').submit(function() {
 						nextCount :	<%=nextCount %>,
 					},
 					success:function(result){
-						
+						var ajaxresult = JSON.parse(result);
+						console.log("--"+typeof ajaxresult)
+						if(ajaxresult!==0){
+							
+							  Swal.fire({
+					    	       	title: "Success",
+					                text: "Testplan Linked From TestPlan Master Successfully",
+					                icon: "success",
+					                allowOutsideClick :false
+					         		});
+			            	  $('.swal2-confirm').click(function (){
+			      	                location.reload();
+			      	        	})
+						}
 					}
 					})
 					
@@ -2326,6 +2374,320 @@ $('#myform1').submit(function() {
 			
 		}
 		}
+		
+		
+		function initializeSelect2ForAll() {
+		    // Clean up and reinitialize all select2
+		    $('.StageApplicable').each(function () {
+		        // Destroy existing Select2 if initialized
+		        if ($(this).hasClass("select2-hidden-accessible")) {
+		            $(this).select2('destroy');
+		        }
+		        // Reinitialize
+		        $(this).select2({ width: '100%' });
+		    });
+		}
+		
+		$(document).ready(function () {
+		    // Initialize all existing selects
+		    initializeSelect2ForAll();
+		});    
+		// Delegate event for dynamically added buttons
+	    var count = 1;
+	    $('#specificationTable').on('click', '.btn', function () {
+	    	
+	    	let $button = $(this);
+	        
+	        // If button is plus
+	        if ($button.find('i').hasClass('fa-plus')) {
+	            let $row = $button.closest('tr').clone();
+				++count;
+
+			    // Clean up old select2 from clone
+			    $row.find('.select2-container').remove();
+			    $row.find('.StageApplicable')
+			        .removeClass('select2-hidden-accessible')
+			        .removeAttr('data-select2-id')
+			        .removeAttr('aria-hidden')
+			        .removeAttr('tabindex');
+			    
+	            // Change the button to minus
+	            $row.find('i').removeClass('fa-plus').addClass('fa-minus');
+	            $row.find('.btn').removeAttr('id'); // Remove ID from cloned row's button
+	            $row.find('.StageApplicable').val('').attr("id", "StageApplicable_"+count);
+	            
+	            // Clear inputs
+	            $row.find('input').val('');
+
+	            $('#specificationTable').append($row);
+	            
+	            initializeSelect2ForAll();
+	        }
+	        // If button is minus
+	        else if ($button.find('i').hasClass('fa-minus')) {
+	            $button.closest('tr').remove();
+	        }
+	    });
+	    
+	   
+		
+		function initializeSelect2EditForAll() {
+		    // Clean up and reinitialize all select2
+		    $('.stageEditTable').each(function () {
+		        // Destroy existing Select2 if initialized
+		        if ($(this).hasClass("select2-hidden-accessible")) {
+		            $(this).select2('destroy');
+		        }
+		        // Reinitialize
+		        $(this).select2({ width: '100%' });
+		    });
+		}
+		
+		$(document).ready(function () {
+		    // Initialize all existing selects
+		    initializeSelect2EditForAll();
+		});    
+		// Delegate event for dynamically added buttons
+	    var count = 1;
+	    $('#stageEditTable').on('click', '.btn', function () {
+	    	
+	    	let $button = $(this);
+	        
+	        // If button is plus
+	        if ($button.find('i').hasClass('fa-plus')) {
+	            let $row = $button.closest('tr').clone();
+				++count;
+
+			    // Clean up old select2 from clone
+			    $row.find('.select2-container').remove();
+			    $row.find('.StageApplicableEdit')
+			        .removeClass('select2-hidden-accessible')
+			        .removeAttr('data-select2-id')
+			        .removeAttr('aria-hidden')
+			        .removeAttr('tabindex');
+			    
+	            // Change the button to minus
+	            $row.find('i').removeClass('fa-plus').addClass('fa-minus');
+	            $row.find('.btn').removeAttr('id'); // Remove ID from cloned row's button
+	            $row.find('.StageApplicableEdit').val('').attr("id", "StageApplicable_"+count);
+	            
+	            // Clear inputs
+	            $row.find('input').val('');
+
+	            $('#stageEditTable').append($row);
+	            
+	            initializeSelect2EditForAll();
+	        }
+	        // If button is minus
+	        else if ($button.find('i').hasClass('fa-minus')) {
+	            $button.closest('tr').remove();
+	        }
+	    });
+	    
+	    
+	    
+	    function createTestStagePDF(ele){
+	    	
+	    	Swal.fire({
+	    	    title: 'Generating PDF...',
+	    	    text: 'Please wait while we prepare the document.',
+	    	    allowOutsideClick: false,
+	    	    didOpen: () => {
+	    	        Swal.showLoading();
+	    	    }
+	    	});
+	    
+			var stage = ele.value
+			var testPlan = [];
+	
+			$.ajax({
+				
+				type:'get',
+				url:'getTestPlanMasterList.htm',
+				datatype:'json',
+				data:{
+					testPlanInitiationId:<%=testPlanInitiationId %>,
+				},
+				success:function(result){
+					
+					var ajaxresult = JSON.parse(result);
+					
+					var stagePresent = [];
+					console.log(ajaxresult)
+					
+					 for(var i =0;i<ajaxresult.length;i++){
+						
+						var data = ajaxresult[i][22].split(",");
+						
+						const exists = data.map(item => item.trim()).includes(stage);
+						
+						if(exists){
+							stagePresent.push(ajaxresult[i])
+						}
+					} 
+					console.log(stage+"----")
+					console.log(stagePresent)
+					
+						var chapterCount = 0;
+					    var mainContentCount = 0;
+						var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
+						
+						var docDefinition = {
+					            content: [
+					                // Cover Page with Project Name and Logo
+					                {
+					                    text: htmlToPdfmake('<h4 class="heading-color ">Document For '+stage+' </h4>'),
+					                    style: 'DocumentName',
+					                    alignment: 'center',
+					                    fontSize: 18,
+					                    margin: [0, 200, 0, 20]
+					                },
+					                <% if (lablogo != null) { %>
+					                {
+					                    image: 'data:image/png;base64,<%= lablogo %>',
+					                    width: 95,
+					                    height: 95,
+					                    alignment: 'center',
+					                    margin: [0, 20, 0, 30]
+					                },
+					                <% } %>
+					                
+					                {
+					                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + ")" %> <% } else { %> '-' <% } %></h5>'),
+					                    alignment: 'center',
+					                    fontSize: 16,
+					                    bold: true,
+					                    margin: [0, 20, 0, 20]
+					                },
+					                {
+					                    text: htmlToPdfmake('<h6>Government of India, Ministry of Defence<br>Defence Research & Development Organization </h6>'),
+					                    alignment: 'center',
+					                    fontSize: 14,
+					                    bold: true,
+					                    margin: [0, 10, 0, 10]
+					                },
+					                {
+					                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %><%}else{ %>-<%} %></h6>'),
+					                    alignment: 'center',
+					                    fontSize: 14,
+					                    bold: true,
+					                    margin: [0, 10, 0, 10]
+					                }, 
+					                // Table of Contents
+					                {
+					                    toc: {
+					                        title: { text: 'INDEX', style: 'header', pageBreak: 'before' }
+					                    }
+					                
+					                },
+					                {
+					                    text: '',
+					                    pageBreak: 'before'
+					                },
+				
+					      
+					                ],
+								
+								/* last */
+					            styles: {
+					                DocumentName: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
+					                chapterHeader: { fontSize: 16, bold: true, margin: [0, 0, 0, 10] },
+					                chapterNote: { fontSize: 13, bold: true, margin: [0, 10, 0, 10]},
+					                chapterSubHeader: { fontSize: 13, bold: true, margin: [10, 10, 0, 10]},
+					                tableHeader: { fontSize: 12, bold: true, fillColor: '#f0f0f0', alignment: 'center', margin: [10, 5, 10, 5], fontWeight: 'bold' },
+					                tableData: { fontSize: 11.5, margin: [0, 5, 0, 5] },
+					                chapterSubSubHeader: { fontSize: 12, bold: true, margin: [15, 10, 10, 10] },
+					                subChapterNote: { margin: [15, 15, 0, 10] },
+					                header: { alignment: 'center', bold: true},
+					                chapterContent: {fontSize: 11.5, margin: [0, 5, 0, 5] },
+					            },
+					            info: {
+					                title: 'Test SetUp Document', // Set document title here
+					                author: 'LRDE', // Optional metadata
+					                subject: 'Subject of the PDF',       // Optional metadata
+					                keywords: 'keyword1, keyword2',     // Optional metadata
+					            },
+					            footer: function(currentPage, pageCount) {
+					                if (currentPage > 2) {
+					                    return {
+					                        stack: [
+					                        	{
+					                                canvas: [{ type: 'line', x1: 30, y1: 0, x2: 565, y2: 0, lineWidth: 1 }]
+					                            },
+					                            {
+					                                columns: [
+					                                    { text: currentPage.toString() + ' of ' + pageCount, alignment: 'right', margin: [0, 0, 30, 0], fontSize: 8 }
+					                                ]
+					                            },
+					                            { text: 'Restricted', alignment: 'center', fontSize: 8, margin: [0, 5, 0, 0], bold: true }
+					                        ]
+					                    };
+					                }
+					                return '';
+					            },
+					            header: function (currentPage) {
+					                return {
+					                    stack: [
+					                        
+					                        {
+					                            columns: [
+					                                {
+					                                    // Left: Lab logo
+					                                    image: '<%= lablogo != null ? "data:image/png;base64," + lablogo : "" %>',
+					                                    width: 30,
+					                                    height: 30,
+					                                    alignment: 'left',
+					                                    margin: [35, 10, 0, 10]
+					                                },
+					                                {
+					                                    // Center: Text
+					                                    text: 'Restricted',
+					                                    alignment: 'center',
+					                                    fontSize: 10,
+					                                    bold: true,
+					                                    margin: [0, 10, 0, 0]
+					                                },
+					                                {
+					                                    // Right: DRDO logo
+					                                    image: '<%= drdologo != null ? "data:image/png;base64," + drdologo : "" %>',
+					                                    width: 30,
+					                                    height: 30,
+					                                    alignment: 'right',
+					                                    margin: [0, 10, 20, 10]
+					                                }
+					                            ]
+					                        },
+					                        
+					                    ]
+					                };
+					            },
+								pageMargins: [50, 50, 30, 40],
+					            
+					        
+					            watermark: { text: 'DRAFT', opacity: 0.1, bold: true, italics: false, fontSize: 80,  },
+					           
+					            defaultStyle: { fontSize: 12, color: 'black', }
+					        };
+							
+						 pdfMake.createPdf(docDefinition).getBlob((blob) => {
+					         // Create a URL for the blob
+					         const url = URL.createObjectURL(blob);
+
+					         // Open the PDF in a new tab
+					         window.open(url, '_blank');
+					         Swal.close(); 
+					        
+					     });
+					
+					
+				}
+				
+				
+			})
+			
+			
+		}
+	   
  </script>
 	
 </body>

@@ -61,6 +61,10 @@ h6{
 	width: 312px;
 }
 
+.hover:hover{
+cursor: pointer;
+}
+
 .cc-rockmenu .rolling i.fa {
     font-size: 20px;
     padding: 6px;
@@ -82,6 +86,12 @@ h6{
 }
 .bootstrap-select {
 	width: 400px !important;
+}
+
+.customTooltip {
+  transition: opacity 0.2s ease;
+  max-width: 450px;
+  white-space: normal;
 }
 </style>
 </head>
@@ -230,7 +240,9 @@ h6{
 											</td>
 											<td>		
 												<%if(obj[8]!=null&&"Y".equalsIgnoreCase(obj[10].toString())){ %>
-                        	                		<button type="button" class="btn btn-sm edit" title="Comment" onclick="getCommentBox('<%=obj[0] %>','<%=obj[5] %>','<%=obj[15] %>','<%=obj[16] %>')"> <i class="fa fa-comment" aria-hidden="true" ></i> </button>
+                        	                		<button type="button" class="btn edit" title="Update Remarks" onclick="getCommentBox('<%=obj[0] %>','<%=obj[5] %>','<%=obj[15]!=null? obj[15].toString().replaceAll("\n", " ").replaceAll("\r", " "):"" %>','<%=obj[16] %>')"  data-toggle="tooltip" data-placement="top" data-original-data="Remarks" title="Remarks">
+                        	                		 <i class="fa fa-comment" aria-hidden="true" ></i>
+                        	                		 </button>
 												<%} %>
 												<%if("A".equalsIgnoreCase(obj[10].toString())&&((Long) session.getAttribute("EmpId")).toString().equals(obj[11].toString())){ %> 
                                                 	<form action="MilestoneActivityUpdate.htm" method="POST" name="myfrm"  style="display: inline">
@@ -288,7 +300,7 @@ h6{
 											            <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 														<input type="hidden" name="MilestoneActivityId" value="<%=obj[0]%>"/>
 													</form> 
-												<%} %>
+												<% } %>
 																		
 											</td>
 		
@@ -368,8 +380,13 @@ h6{
 																	activityType = "E";
 																}
 																%>
+																<%-- <%if(obj[24]!=null &&  !obj[24].toString().equalsIgnoreCase("0")  && !obj[25].toString().equalsIgnoreCase("Y")) {%>
+                                                         		<span class="hover text-primary" style="color:blue ; font-weight: bold" onmouseover="showContent('<%=obj[24].toString() %>',this)">Linked Milestone </span>
+                                                         			<div class="customTooltip" id="customTooltip<%=obj[24].toString() %>" style="position:absolute; display:none; z-index:9999; background:#fff; border:1px solid #ccc; padding:8px 10px; border-radius:6px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); font-size:13px; color:#333; pointer-events:none;"></div>
+                                                         	
+                                                         		<%}else{ %> --%>
                                                          		<form class="form-inline"  method="POST" action="M-A-Update.htm">
-                        	                                  		<button class="btn btn-sm edit" > <i class="fa fa-wrench"  aria-hidden="true"></i> </button>
+                        	                                  		<button class="btn edit"  data-toggle="tooltip" data-placement="top"  title="UPDATE"> <i class="fa fa-wrench"  aria-hidden="true"></i> </button>
                                                                  	<input type="hidden" name="MilestoneActivityId"	value="<%=levelsMapData[0] %>" /> 
                                                                   	<input type="hidden" name="ActivityId" value="<%=obj[0] %>" /> 
                                                                   	<input type="hidden" name="startdate" value="<%=obj[2].toString() %>" >
@@ -377,6 +394,7 @@ h6{
                                                                   	<input type="hidden" name="ActivityType" value="<%=activityType %>" /> 
                                                                     <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
                                                         		</form>
+                                                        	<%-- 	<%} %> --%>
                                            					<%}else{ %>
                                                             	Weightage Not Set 
                                                                    
@@ -490,13 +508,13 @@ h6{
 		  	          <span aria-hidden="true">&times;</span>
 		  	        </button>
   	     	 	</div>
-  	      		<div class="modal-body">
+  	      		<div class="modal-body"> 
   	      
   	      			<form action="MileRemarkUpdate.htm" method="POST" autocomplete="off">
   	      				<div class="row">
   	      		    
-							<div class="col-md-12">Financial Outlay : <br>
-								<input class="form-control" title="Enter Number" name="financialoutlay" id="financialoutlay" type="text"   maxlength="9">
+							<div class="col-md-12" style="display: none;">Financial Outlay : <br>
+								<input class="form-control" title="Enter Number" name="financialoutlay" id="financialoutlay" type="text"   maxlength="9" required="required" value="0">
 							</div>
 					 		<br>
 							<div class="col-md-12"> Remarks :<br>
@@ -518,7 +536,9 @@ h6{
 	 	      	</div>
   	    	</div>
 		</div>
-	</div>							
+	</div>
+			
+						
 </body>
 
 <script>
@@ -582,12 +602,62 @@ h6{
 		}
 	
 	$(document).ready(function() {
+
+			$('[data-toggle="tooltip"]').tooltip()
+		
         $('#myTable').DataTable({
-            "lengthMenu": [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 100],
+            "lengthMenu": [ 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 100],
             "pagingType": "simple",
-            "pageLength": 5
+            "pageLength": 15
         });
     });
+	
+	
+	function showContent(a,ele){
+		$.ajax({
+			type:'GET',
+			url:'MilestoneLinked.htm',
+			datatype:'json',
+			data:{
+				id:a,
+			},
+			success:function(result){
+				
+				var ajaxresult = JSON.parse(result);
+			
+				var val="";
+					for (var key in ajaxresult) {
+					  if (ajaxresult.hasOwnProperty(key)) {
+						   
+					    if(key===a){val = ajaxresult[key];}
+					
+					  }
+					}
+					
+					
+					var arr = val.split("/");
+			
+					// Tooltip handlers
+					   ele.addEventListener("mousemove", function (e) {
+					        var tooltip = document.getElementById("customTooltip"+a);
+					        tooltip.style.display = "block";
+					      /* tooltip.style.left = (e.pageX + 15) + "px";
+					        tooltip.style.top = (e.pageY + 10) + "px"; */
+					        tooltip.innerHTML =
+					        	"<span style='font-weight:bold'>Project Code </span>: "+arr[2]+"<br> <span style='font-weight:bold'>Milestone Name: <br></span>"
+					        	+arr[1] + "<br> ( " + arr[0] +" )";
+					   }); 
+					
+					   ele.addEventListener("mouseleave", function () {
+					        var tooltip = document.getElementById("customTooltip"+a);
+					        tooltip.style.display = "none";
+					    }); 
+					; 
+			}
+		})
+	}
+	
+	
 	</script>  
 
 </html>

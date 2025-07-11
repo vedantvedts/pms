@@ -12,12 +12,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -26,12 +28,16 @@ import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -65,6 +71,7 @@ import com.vts.pfms.requirements.model.Abbreviations;
 import com.vts.pfms.requirements.model.DocMembers;
 import com.vts.pfms.requirements.model.DocumentFreeze;
 import com.vts.pfms.requirements.model.PfmsReqTypes;
+import com.vts.pfms.requirements.model.PfmsSystemSubIntroduction;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
 import com.vts.pfms.requirements.model.Specification;
@@ -77,11 +84,11 @@ import com.vts.pfms.requirements.model.TestInstrument;
 import com.vts.pfms.requirements.model.TestPlanInitiation;
 import com.vts.pfms.requirements.model.TestPlanMaster;
 import com.vts.pfms.requirements.model.TestPlanSummary;
+import com.vts.pfms.requirements.model.TestSetUpAttachment;
 import com.vts.pfms.requirements.model.TestSetupMaster;
 import com.vts.pfms.requirements.model.TestTools;
 import com.vts.pfms.requirements.model.VerificationData;
 import com.vts.pfms.requirements.service.RequirementService;
-import com.vts.pfms.utils.InputValidator;
 import com.vts.pfms.utils.PMSLogoUtil;
 
 import jakarta.servlet.ServletOutputStream;
@@ -184,9 +191,32 @@ public class RequirementsController {
 		String UserId = (String) ses.getAttribute("Username");
 
 		logger.info(new Date() + "Inside SpecificationMasters.htm" + UserId);
-
-		try {
-			req.setAttribute("specificarionMasterList", service.SpecificationMasterList());
+		req.setAttribute("systemList", productreeservice.getAllSystemName());
+		
+		String sid = req.getParameter("sid");
+		String mainid = req.getParameter("mainid");
+		if(sid==null) {
+			sid="1";
+		}
+		if(mainid==null) {
+			mainid="0";
+		}
+		req.setAttribute("sid", sid);
+		req.setAttribute("mainid", mainid);
+	
+		List<Object[]>proList=productreeservice.getSystemProductTreeList(sid);
+//		if(proList!=null && proList.size()>0) {
+//			proList=proList.stream().filter(e->e[2].toString().equalsIgnoreCase("1")).collect(Collectors.toList());
+//		}
+		req.setAttribute("proList", proList);
+				try {
+			String sidsub=sid;
+			String mainsub=mainid;
+			List<Object[]> specificationMasterList = service.SpecificationMasterList()
+														.stream().filter(e->e[12].toString().equalsIgnoreCase(sidsub)
+																&& e[13].toString().equalsIgnoreCase(mainsub))
+																 .collect(Collectors.toList());
+			req.setAttribute("specificarionMasterList", specificationMasterList);
 			req.setAttribute("specificationTypesList", service.getSpecificationTypesList());
 			req.setAttribute("specTypeId", req.getParameter("specTypeId"));
 			
@@ -201,12 +231,15 @@ public class RequirementsController {
 		
 
 	}
-	
+
 	@RequestMapping(value="SpecificationMasterExcel.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
 	public void SpecificationMasterExcel( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
 	{
 		String UserId=(String)ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside ExcelUpload.htm "+UserId);
+		String project= req.getParameter("project");
 		try(XSSFWorkbook workbook = new XSSFWorkbook()){
 			String action = req.getParameter("Action"); 
 			String Type=req.getParameter("Type");
@@ -243,25 +276,46 @@ public class RequirementsController {
 				maincell2.setCellValue("Parameter");
 				maincell2.setCellStyle(unlockedCellStyle); // Apply the style
 				sheet.setColumnWidth(2, 9000);
+				
+				Cell maincell7 = row.createCell(3);
+				maincell7.setCellValue("Description");
+				maincell7.setCellStyle(unlockedCellStyle); // Apply the style
+				sheet.setColumnWidth(4, 9000);
 
-				Cell maincellmin = row.createCell(3);
+				Cell maincellmin = row.createCell(4);
 				maincellmin.setCellValue("Minimum Value");
 				maincellmin.setCellStyle(unlockedCellStyle); // Apply the style
 				sheet.setColumnWidth(3, 9000);
 				
-				Cell maincell3 = row.createCell(4);
-				maincell3.setCellValue("Typecial Value/Value");
+				Cell maincell3 = row.createCell(5);
+				maincell3.setCellValue("Typical Value/Value");
 				maincell3.setCellStyle(unlockedCellStyle); // Apply the style
 				sheet.setColumnWidth(3, 9000);
 
-				Cell maincellmax = row.createCell(5);
+				Cell maincellmax = row.createCell(6);
 				maincellmax.setCellValue("Maximum Value");
 				maincellmax.setCellStyle(unlockedCellStyle); // Apply the style
 				sheet.setColumnWidth(3, 9000);
 				
-				Cell maincell4 = row.createCell(6);
+				Cell maincell4 = row.createCell(7);
 				maincell4.setCellValue("Unit");
 				maincell4.setCellStyle(unlockedCellStyle); // Apply the style
+				sheet.setColumnWidth(4, 9000);
+				
+				Cell maincell8 = row.createCell(8);
+				maincell8.setCellValue("Spec Type");
+				maincell8.setCellStyle(unlockedCellStyle); // Apply the style
+				sheet.setColumnWidth(4, 9000);
+				
+				
+				Cell maincell9 = row.createCell(9);
+				maincell9.setCellValue("Unit Required");
+				maincell9.setCellStyle(unlockedCellStyle); // Apply the style
+				sheet.setColumnWidth(4, 9000);
+				
+				Cell maincell10 = row.createCell(10);
+				maincell10.setCellValue("Is Child");
+				maincell10.setCellStyle(unlockedCellStyle); // Apply the style
 				sheet.setColumnWidth(4, 9000);
 				int r=0;
 
@@ -318,23 +372,43 @@ public class RequirementsController {
 					cell2.setCellStyle(style);
 
 					Cell cell3 = row.createCell(3);
-					cell3.setCellValue(obj[16] != null ? obj[16].toString() : "-");
+					cell3.setCellValue(obj[2] != null ? obj[2].toString() : "-");
 					cell3.setCellStyle(style);
 
 					Cell cell4 = row.createCell(4);
-					cell4.setCellValue(obj[6] != null ? obj[6].toString() : "-");
+					cell4.setCellValue(obj[16] != null ? obj[16].toString() : "-");
 					cell4.setCellStyle(style);
 					sheet.setColumnWidth(4, 10000);
 					
 					Cell cell5 = row.createCell(5);
-					cell5.setCellValue(obj[15] != null ? obj[15].toString() : "-");
+					cell5.setCellValue(obj[6] != null ? obj[6].toString() : "-");
 					cell5.setCellStyle(style);
 					sheet.setColumnWidth(5, 10000);
 					
 					Cell cell6 = row.createCell(6);
-					cell6.setCellValue(obj[4] != null ? obj[4].toString() : "-");
+					cell6.setCellValue(obj[15] != null ? obj[15].toString() : "-");
 					cell6.setCellStyle(style);
 					sheet.setColumnWidth(6, 10000);
+					Cell cell7 = row.createCell(7);
+					cell7.setCellValue(obj[4] != null && obj[4].toString().trim().length()>0 ? obj[4].toString() : "-");
+					cell7.setCellStyle(style);
+					sheet.setColumnWidth(7, 10000);
+					
+					Cell cell8 = row.createCell(8);
+					cell8.setCellValue(obj[20] != null ? obj[20].toString() : "-");
+					cell8.setCellStyle(style);
+					sheet.setColumnWidth(8, 10000);
+					
+					Cell cell9 = row.createCell(9);
+					cell9.setCellValue(obj[4]!=null && obj[4].toString().trim().length()>0?"YES":"NO"  );
+					cell9.setCellStyle(style);
+					sheet.setColumnWidth(9, 10000);
+					
+					
+					Cell cell10 = row.createCell(10);
+					cell10.setCellValue(obj[14]!=null && obj[14].toString().equals("0")?"NO":"YES"  );
+					cell10.setCellStyle(style);
+					sheet.setColumnWidth(9, 10000);
 				}}
 				res.setContentType("application/vnd.ms-excel");
 				res.setHeader("Content-Disposition", "attachment; filename=SpecificationMaster.xls");	
@@ -955,6 +1029,12 @@ public class RequirementsController {
 			req.setAttribute("TestScopeIntro", service.TestScopeIntro(testPlanInitiationId));
 			req.setAttribute("TestSuite", service.TestTypeList());
 			req.setAttribute("TestDetailsList", service.TestDetailsList(testPlanInitiationId));
+		List<TestSetupMaster>master = service.getTestSetupMaster();
+			
+			if(master!=null && master.size()>0) {
+				master = master.stream().filter(e->e.getIsActive()==1).collect(Collectors.toList());
+			}
+			req.setAttribute("testSetupMasterMaster", master);
 			String specsInitiationId = service.getFirstVersionSpecsInitiationId(initiationId, projectId,
 					productTreeMainId) + "";
 			req.setAttribute("specificationList", service.getSpecsList(specsInitiationId));
@@ -1163,7 +1243,6 @@ public class RequirementsController {
 		}
 		return "static/Error";
 	}
-
 	@RequestMapping(value = "MemberSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String RequirementMemberSubmit(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res,
 			HttpSession ses) throws Exception {
@@ -1343,7 +1422,7 @@ public class RequirementsController {
 
 			String testPlanInitiationId = req.getParameter("testPlanInitiationId");
 
-			System.out.println("testPlanInitiationId#########" + testPlanInitiationId);
+		
 
 			TestPlanInitiation testPlanInitiation = service.getTestPlanInitiationById(testPlanInitiationId);
 			if (testPlanInitiation != null) {
@@ -1430,7 +1509,7 @@ public class RequirementsController {
 						String htmlContentRoleResponsibility = convertExcelToHtml(new FileInputStream(my_file4));
 						req.setAttribute("htmlContentRoleResponsibility", htmlContentRoleResponsibility);
 						req.setAttribute("RoleResponsibility", RoleResponsibility);
-						System.out.println();
+					
 					}
 				}
 
@@ -1445,11 +1524,89 @@ public class RequirementsController {
 		return "print/TestPlanDownload";
 	}
 
-	public static String convertExcelToHtml(InputStream inputStream) throws Exception {
+    public static String convertExcelToHtml(InputStream inputStream) throws Exception {
+        Workbook workbook = new XSSFWorkbook(inputStream);
+        Sheet sheet = workbook.getSheetAt(0);
+
+        StringBuilder htmlContent = new StringBuilder(
+            "<table class='table table-bordered htmlTable' border='1' style='border-collapse: collapse;'>");
+
+        DataFormatter formatter = new DataFormatter();
+
+        for (Row row : sheet) {
+            if (isRowEmpty(row)) continue;
+
+            htmlContent.append("<tr>");
+            for (Cell cell : row) {
+                String cellValue;
+                String textAlign = "center"; // default alignment
+
+                switch (cell.getCellType()) {
+                    case STRING:
+                        cellValue = cell.getStringCellValue();
+                        textAlign = "center";
+                        break;
+                    case NUMERIC:
+                        if (DateUtil.isCellDateFormatted(cell)) {
+                            cellValue = formatter.formatCellValue(cell); // Date format
+                            textAlign = "center";
+                        } else {
+                            double value = cell.getNumericCellValue();
+                            cellValue = (value == Math.floor(value))
+                                ? String.valueOf((long) value)
+                                : String.valueOf(value);
+                            textAlign = "right";
+                        }
+                        break;
+                    case BOOLEAN:
+                        cellValue = String.valueOf(cell.getBooleanCellValue());
+                        textAlign = "center";
+                        break;
+                    case FORMULA:
+                        cellValue = formatter.formatCellValue(cell, workbook.getCreationHelper().createFormulaEvaluator());
+                        textAlign = "center";
+                        break;
+                    case BLANK:
+                        cellValue = "";
+                        textAlign = "center";
+                        break;
+                    default:
+                        cellValue = cell.toString();
+                        textAlign = "center";
+                }
+
+                String bgColorStyle = "background-color: white;";
+                if (cell.getCellStyle() instanceof XSSFCellStyle) {
+                    XSSFCellStyle style = (XSSFCellStyle) cell.getCellStyle();
+                    XSSFColor color = style.getFillForegroundColorColor();
+                    if (color != null) {
+                        String hex = color.getARGBHex();
+                        if (hex != null && hex.length() == 8) {
+                            String rgb = "#" + hex.substring(2);
+                            bgColorStyle = "background-color:" + rgb + ";";
+                        }
+                    }
+                }
+
+                htmlContent.append("<td style='border:1px solid black;")
+                           .append(bgColorStyle)
+                           .append("text-align:").append(textAlign).append(";'>")
+                           .append(cellValue)
+                           .append("</td>");
+            }
+            htmlContent.append("</tr>");
+        }
+
+        htmlContent.append("</table>");
+        workbook.close();
+        return htmlContent.toString();
+    }
+
+	public static String convertExcelToHtml1(InputStream inputStream) throws Exception {
 		Workbook workbook = new XSSFWorkbook(inputStream);
 		Sheet sheet = workbook.getSheetAt(0); // Assuming you are working with the first sheet
 
-		StringBuilder htmlContent = new StringBuilder("<table border='1' style='border-collapse: collapse;'>");
+		StringBuilder htmlContent = new StringBuilder("<table class='table' border='1' style='border-collapse: collapse;'>");
 
 		for (Row row : sheet) {
 			// Skip rows with all cells blank
@@ -1945,7 +2102,7 @@ public class RequirementsController {
 		try {
 			String ftype = req.getParameter("filename");
 			String Testid = req.getParameter("UpdateActionid");
-			System.out.println(Testid);
+			
 			res.setContentType("Application/octet-stream");
 			Object[] projectdatafiledata = service.AcceptanceTestingList(Testid);
 
@@ -1996,9 +2153,8 @@ public class RequirementsController {
 				productTreeMainId = "0";
 			}
 			
-			System.out.println("projectId"+projectId);
-			System.out.println("productTreeMainId"+productTreeMainId);
-			System.out.println("initiationId"+initiationId);
+			
+			
 			
 			req.setAttribute("initiationId", initiationId);
 			req.setAttribute("projectId", projectId);
@@ -2033,7 +2189,7 @@ public class RequirementsController {
 
 			req.setAttribute("reqInitiation", service.getRequirementInitiationById(reqInitiationId));
 			String type = projectId.equalsIgnoreCase("0") ? "P" : "E";
-			System.out.println("type +++" + type);
+			
 			req.setAttribute("projectDetails", projectservice.getProjectDetails(LabCode,
 					type.equalsIgnoreCase("E") ? projectId : initiationId, type));
 			List<Object[]> productTreeList = service.productTreeListByProjectId(projectId);
@@ -2089,7 +2245,7 @@ public class RequirementsController {
 				String[] valuesArray = values.get(i).split("/");
 				// pir.setInitiationId(Long.parseLong(initiationId));
 				// pir.setProjectId(Long.parseLong(projectId));
-				System.out.println(Arrays.toString(valuesArray) + "--" + values);
+			
 				pir.setCategory("N");
 				pir.setNeedType("N");
 				pir.setReqMainId(Long.parseLong(valuesArray[0]));
@@ -2420,7 +2576,8 @@ public class RequirementsController {
 
 			String ReqMainId = reqTypes[0];
 			if (!ReqMainId.equalsIgnoreCase(pir.getReqMainId() + "")) {
-				System.out.println(InitiationReqId + "length--" + ReqMainId);
+				
+				
 				List<Object[]> reqTypeList = service.getreqTypeList(ReqMainId, MainInitiationReqId);
 				int length = 10;
 
@@ -2552,7 +2709,7 @@ public class RequirementsController {
 		long count = 0;
 		try {
 
-			System.out.println("checkedValues" + req.getParameter("checkedValues"));
+			
 			String chkValue = req.getParameter("checkedValues");
 			String[] values = chkValue.split(",");
 
@@ -2620,7 +2777,7 @@ public class RequirementsController {
 			String reqInitiationId = req.getParameter("reqInitiationId");
 
 			Object[] sqrfile = projectservice.SqrFiles(reqInitiationId);
-			System.out.println(reqInitiationId + "reqInitiationId");
+			
 
 			File my_file = new File(
 					uploadpath + File.separator + File.separator + sqrfile[11] + File.separator + sqrfile[12]);
@@ -2756,8 +2913,8 @@ public class RequirementsController {
 			RequirementInitiation reqInitiation = service.getRequirementInitiationById(reqInitiationId);
 			String reqStatusCode = reqInitiation.getReqStatusCode();
 
-			System.out.println(reqInitiationId + "---reqInitiationId");
-			System.out.println(reqStatusCode + "---reqStatusCode");
+		
+		
 
 			List<String> reqforwardstatus = Arrays.asList("RIN", "RRR", "RRA");
 
@@ -2881,6 +3038,7 @@ public class RequirementsController {
 			req.setAttribute("StagesApplicable", service.StagesApplicable());
 			req.setAttribute("VerificationMethodList", service.getVerificationMethodList());
 			List<Object[]> TestDetailsList = service.TestDetailsList(testPlanInitiationId);
+			
 			if (req.getParameter("TestReqId") == null && TestDetailsList != null && TestDetailsList.size() > 0) {
 				req.setAttribute("TestReqId", TestDetailsList.get(0)[0].toString());
 			} else {
@@ -2889,7 +3047,12 @@ public class RequirementsController {
 
 			String specsInitiationId = service.getFirstVersionSpecsInitiationId(initiationId, projectId,
 					productTreeMainId) + "";
-
+				List<TestSetupMaster>master = service.getTestSetupMaster();
+			
+			if(master!=null && master.size()>0) {
+				master = master.stream().filter(e->e.getIsActive()==1).collect(Collectors.toList());
+			}
+			req.setAttribute("testSetupMasterMaster", master);	
 			req.setAttribute("specificationList", service.getSpecsList(specsInitiationId));
 			req.setAttribute("TestDetailsList", service.TestDetailsList(testPlanInitiationId));
 			req.setAttribute("initiationId", initiationId);
@@ -2905,7 +3068,10 @@ public class RequirementsController {
 			
 			List<TestPlanMaster>tp= service.getAllTestPlans();
 			req.setAttribute("TestPlanMasterList", tp);
-			
+			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));
+			req.setAttribute("LabList", projectservice.LabListDetails(LabCode));
+			req.setAttribute("drdologo", LogoUtil.getDRDOLogoAsBase64String());
+			req.setAttribute("DocTempAttributes", projectservice.DocTempAttributes());
 			return "requirements/TestDetails";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2916,159 +3082,7 @@ public class RequirementsController {
 	@RequestMapping(value = "TestDetailsAddSubmit.htm", method = RequestMethod.POST)
 	public String TestDetailsAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
 			throws Exception {
-//		String UserId = (String) ses.getAttribute("Username");
-//		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-//		logger.info(new Date() +"Inside TestDetailsAddSubmit.htm "+UserId);
-//		try {
-//			String initiationId  = req.getParameter("initiationId");
-//			String projectId =req.getParameter("projectId");
-//			String productTreeMainId =req.getParameter("productTreeMainId");
-//			String testPlanInitiationId = req.getParameter("testPlanInitiationId");
-//
-//			if(initiationId==null) initiationId="0";
-//			if(projectId==null) projectId="0";	
-//			if(productTreeMainId==null) productTreeMainId="0";
-//
-//			if(testPlanInitiationId.equals("0") ) {					
-//				testPlanInitiationId = Long.toString(service.testPlanInitiationAddHandling(initiationId,projectId,productTreeMainId,EmpId,UserId, null,null));
-//			}
-//
-//			String action = req.getParameter("action");
-//			String testId = req.getParameter("testId");
-//
-//			TestDetails Td = action!=null && action.equalsIgnoreCase("Edit")? service.getTestPlanDetailsById(testId):new TestDetails();
-//
-//			//			Td.setInitiationId(Long.parseLong(initiationId));
-//			//			Td.setProjectId(Long.parseLong(projectId));
-//			//Td.setProjectId((long)0);
-//
-//			Td.setTestPlanInitiationId(Long.parseLong(testPlanInitiationId));
-//			Td.setName(req.getParameter("name"));
-//
-//			String StageApplicable="";
-//			if(req.getParameterValues("StageApplicable")!=null) 
-//			{
-//				String[] linkedreq= req.getParameterValues("StageApplicable");
-//				for(int i=0;i<linkedreq.length;i++) {
-//					StageApplicable=StageApplicable+linkedreq[i];
-//					if(i!=linkedreq.length-1) {
-//						StageApplicable=StageApplicable+",";
-//					}
-//				}
-//			}
-//
-//			String Methodology="";
-//			if(req.getParameterValues("Methodology")!=null) 
-//			{
-//				String[] linkedreq= req.getParameterValues("Methodology");
-//				for(int i=0;i<linkedreq.length;i++) {
-//					Methodology=Methodology+linkedreq[i];
-//					if(i!=linkedreq.length-1) {
-//						Methodology=Methodology+",";
-//					}
-//				}
-//			}
-//
-//			String ToolsSetup="";
-//			if(req.getParameterValues("ToolsSetup")!=null) 
-//			{
-//				String[] linkedreq= req.getParameterValues("ToolsSetup");
-//				for(int i=0;i<linkedreq.length;i++) {
-//					ToolsSetup=ToolsSetup+linkedreq[i];
-//					if(i!=linkedreq.length-1) {
-//						ToolsSetup=ToolsSetup+",";
-//					}
-//				}
-//			}
-//				String specid = "";
-//				
-//				if(req.getParameterValues("SpecId")!=null) {
-//					System.out.println("req.getParameterValues(\"SpecId\")"+Arrays.asList(req.getParameterValues("SpecId")));
-//					String[] SpecId= req.getParameterValues("SpecId");
-//					for(int i=0;i<SpecId.length;i++) {
-//						specid=specid+SpecId[i];
-//						if(i!=SpecId.length-1) {
-//							specid=specid+",";
-//						}
-//					}
-//				}
-//				
-//				Td.setSpecificationId(specid);
-//			
-//			
-//			Td.setObjective(req.getParameter("Objective"));
-//			Td.setDescription(req.getParameter("Description"));
-//			Td.setPreConditions(req.getParameter("PreConditions"));
-//			Td.setPostConditions(req.getParameter("PostConditions"));
-//			Td.setConstraints(req.getParameter("Constraints"));
-//			Td.setSafetyRequirements(req.getParameter("SafetyReq"));
-//			Td.setMethodology(Methodology);
-//			Td.setToolsSetup(ToolsSetup);
-//			Td.setPersonnelResources(req.getParameter("PersonnelResources"));
-//			Td.setEstimatedTimeIteration(req.getParameter("EstimatedTimeIteration"));
-//			Td.setIterations(req.getParameter("Iterations"));
-//			Td.setSchedule(req.getParameter("Schedule"));
-//			Td.setPass_Fail_Criteria(req.getParameter("PassFailCriteria"));
-//			Td.setRemarks(req.getParameter("remarks"));
-//			
-//			Td.setStageApplicable(StageApplicable);
-//
-//			if(action!=null && action.equalsIgnoreCase("Edit")) {
-//				Td.setModifiedBy(UserId);
-//				Td.setModifiedDate(sdf1.format(new Date()));
-//			}else {
-//
-//				String  Testtype="TEST";
-//				String mainid = req.getParameter("MainId");
-//				
-//				String parentid = req.getParameter("parentid");
-//				
-//				Long a=	(Long)service.numberOfTestTypeId(parentid);
-//				String TestDetailsId="";
-//				if(mainid.equalsIgnoreCase("0")) {
-//					TestDetailsId = req.getParameter("testName")+"_"+(a+1);
-//				}else {
-//					Object[]testType=service.getTestTypeName(mainid);
-//					if(testType!=null) {
-//						Testtype=testType[3].toString();
-//					}
-//				if(a<90L) {
-//					System.out.println("10"+ (a+10));
-//					TestDetailsId=Testtype+("000"+((a*10)+10));
-//				}else if(a<990L) {
-//					TestDetailsId=Testtype+("00"+((a*10)+10));
-//				}else {
-//					TestDetailsId=Testtype+("0"+((a*10)+10));
-//				}
-//				}
-//				Td.setTestDetailsId(TestDetailsId);
-//				Td.setTestCount((a.intValue()+10));
-//				Td.setParentId(Long.parseLong(parentid));
-//				Td.setMainId(0l);
-//				Td.setCreatedBy(UserId);
-//				Td.setIsActive(1);
-//				Td.setCreatedDate(sdf1.format(new Date()));
-//			}
-//			long count=service.TestDetailsAdd(Td);
-//
-//			if (count > 0) {
-//				redir.addAttribute("result", "Test  Details "+action+"ed Successfully");
-//			} else {
-//				redir.addAttribute("resultfail", "Test Details "+action+" Unsuccessful");
-//			}
-//			redir.addAttribute("initiationId",initiationId);
-//			redir.addAttribute("projectId",projectId);
-//			redir.addAttribute("productTreeMainId",productTreeMainId);
-//			redir.addAttribute("testPlanInitiationId",testPlanInitiationId);
-//			redir.addAttribute("TestReqId",count+"");
-//			return "redirect:/TestDetails.htm";
-//		}
-//
-//		catch(Exception e){
-//			e.printStackTrace();
-//			logger.error(new Date() +"Inside TestDetailsAddSubmit.htm  "+UserId, e);
-//			return "static/Error";
-//		}
+
 
 		String UserId = (String) ses.getAttribute("Username");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
@@ -3079,6 +3093,13 @@ public class RequirementsController {
 			String productTreeMainId = req.getParameter("productTreeMainId");
 			String testPlanInitiationId = req.getParameter("testPlanInitiationId");
 
+			StringBuilder toolSB= new StringBuilder("");
+			
+			StringBuilder linkedSpecSb= new StringBuilder("");
+			
+			
+		
+			
 			if (initiationId == null)
 				initiationId = "0";
 			if (projectId == null)
@@ -3097,23 +3118,74 @@ public class RequirementsController {
 			TestDetails Td = action != null && action.equalsIgnoreCase("Edit") ? service.getTestPlanDetailsById(testId)
 					: new TestDetails();
 
-			// Td.setInitiationId(Long.parseLong(initiationId));
-			// Td.setProjectId(Long.parseLong(projectId));
-			// Td.setProjectId((long)0);
+	
+			
+			String[] StageApplicable=req.getParameterValues("StageApplicable");
+			
+			String[] cycle = req.getParameterValues("rows");
+			String[] cycleRows = req.getParameterValues("cycle");
+			
+		
+
+			
+			String stageSb= "";
+			String cycleSb= "";
+			String rowSb= "";
+			if(StageApplicable!=null && StageApplicable.length>0) {
+				stageSb=Arrays.stream(StageApplicable).collect(Collectors.joining(", "));
+			}
+			
+			if ( Td.getStageApplicable()!=null ) {
+				if(StageApplicable!=null && StageApplicable.length>0) {
+					stageSb= stageSb+", "+Td.getStageApplicable();
+				}else {
+					stageSb = Td.getStageApplicable();
+				}
+			}
+			
+			
+			if(cycleRows!=null && cycleRows.length>0) {
+				
+				rowSb = Arrays.stream(cycleRows).collect(Collectors.joining(", ") );
+			}
+			
+			
+			if (Td.getNumberofCycles()!=null && 
+					!Td.getNumberofCycles().equalsIgnoreCase("0") ) 
+			{
+				if(StageApplicable!=null && StageApplicable.length>0) {
+					rowSb=rowSb+", "+Td.getNumberofCycles();
+				}else {
+					rowSb = Td.getNumberofCycles();
+				}
+			}
+			
+			
+			
+			if(cycle!=null && cycle.length>0 ) {
+				
+				cycleSb = Arrays.stream(cycle).collect(Collectors.joining(", "));
+						
+			}
+			
+			
+			if ( Td.getNumberofRows()!=null && !Td.getNumberofRows().equalsIgnoreCase("0")) {
+				
+				if(StageApplicable!=null && StageApplicable.length>0) {
+					cycleSb = cycleSb+", "+Td.getNumberofRows();
+				}else {
+					cycleSb= Td.getNumberofRows();
+				}
+				
+			}
+			
+			
+			
 
 			Td.setTestPlanInitiationId(Long.parseLong(testPlanInitiationId));
 			Td.setName(req.getParameter("name"));
 
-			String StageApplicable = "";
-			if (req.getParameterValues("StageApplicable") != null) {
-				String[] linkedreq = req.getParameterValues("StageApplicable");
-				for (int i = 0; i < linkedreq.length; i++) {
-					StageApplicable = StageApplicable + linkedreq[i];
-					if (i != linkedreq.length - 1) {
-						StageApplicable = StageApplicable + ",";
-					}
-				}
-			}
+		
 
 			String Methodology = "";
 			if (req.getParameterValues("Methodology") != null) {
@@ -3143,7 +3215,7 @@ public class RequirementsController {
 				for (int i = 0; i < SpecId.length; i++) {
 					specid = specid + SpecId[i];
 					if (i != SpecId.length - 1) {
-						specid = specid + ",";
+						specid = specid + ", ";
 					}
 				}
 			}
@@ -3164,8 +3236,12 @@ public class RequirementsController {
 			Td.setSchedule(req.getParameter("Schedule"));
 			Td.setPass_Fail_Criteria(req.getParameter("PassFailCriteria"));
 			Td.setRemarks(req.getParameter("remarks"));
-
-			Td.setStageApplicable(StageApplicable);
+			Td.setTimetype(req.getParameter("timeType") );
+			Td.setStageApplicable(stageSb.toString() );
+			Td.setNumberofCycles(specid);
+			Td.setNumberofCycles(rowSb.toString() );
+			Td.setNumberofRows(cycleSb.toString() );
+			
 			Td.setIsActive(1);
 			if (action != null && action.equalsIgnoreCase("Edit")) {
 				Td.setModifiedBy(UserId);
@@ -3176,7 +3252,7 @@ public class RequirementsController {
 				Long a = (Long) service.numberOfTestTypeId(testPlanInitiationId);
 				String TestDetailsId = "";
 				if (a < 90L) {
-					System.out.println("10" + (a + 10));
+			
 					TestDetailsId = Testtype + ("000" + (a + 10));
 				} else if (a < 990L) {
 					TestDetailsId = Testtype + ("00" + (a + 10));
@@ -3234,91 +3310,7 @@ public class RequirementsController {
 		return json.toJson(TestDetails);
 	}
 
-	// @RequestMapping(value = "TestDetailsEditSubmit.htm", method =
-	// RequestMethod.POST)
-	// public String ProjectRequirementEditSubmit(HttpServletRequest req,
-	// RedirectAttributes redir, HttpSession ses ) {
-	// String UserId = (String) ses.getAttribute("Username");
-	// logger.info(new Date() +"Inside TestDetailsEditSubmit.htm "+UserId);
-	// String option=req.getParameter("action");
-	// try {
-	// if(option.equalsIgnoreCase("SUBMIT"))
-	// {
-	// String TestId=req.getParameter("edittestId");
-	// String initiationId=req.getParameter("initiationId");
-	// String projectId=req.getParameter("projectId");
-	// String ProjectType=req.getParameter("ProjectType");
-	// String StageApplicable="";
-	// if(req.getParameterValues("StageApplicable")!=null) {
-	// String []linkedreq= req.getParameterValues("StageApplicable");
-	// for(int i=0;i<linkedreq.length;i++) {
-	// StageApplicable=StageApplicable+linkedreq[i];
-	// if(i!=linkedreq.length-1) {
-	// StageApplicable=StageApplicable+",";
-	// }
-	// }
-	// }
-	// String Methodology="";
-	// if(req.getParameterValues("Methodology")!=null) {
-	// String []linkedreq= req.getParameterValues("Methodology");
-	// for(int i=0;i<linkedreq.length;i++) {
-	// Methodology=Methodology+linkedreq[i];
-	// if(i!=linkedreq.length-1) {
-	// Methodology=Methodology+",";
-	// }
-	// }
-	// }
-	// String ToolsSetup="";
-	// if(req.getParameterValues("ToolsSetup")!=null) {
-	// String []linkedreq= req.getParameterValues("ToolsSetup");
-	// for(int i=0;i<linkedreq.length;i++) {
-	// ToolsSetup=ToolsSetup+linkedreq[i];
-	// if(i!=linkedreq.length-1) {
-	// ToolsSetup=ToolsSetup+",";
-	// }
-	// }
-	// }
-	// TestDetails Tdedit= new TestDetails();
-	// Tdedit.setName(req.getParameter("TestName"));
-	// Tdedit.setObjective(req.getParameter("Objective"));
-	// Tdedit.setDescription(req.getParameter("Description"));
-	// Tdedit.setPreConditions(req.getParameter("PreConditions"));
-	// Tdedit.setPostConditions(req.getParameter("PostConditions"));
-	// Tdedit.setConstraints(req.getParameter("Constraints"));
-	// Tdedit.setSafetyRequirements(req.getParameter("SafetyReq"));
-	// Tdedit.setMethodology(Methodology);
-	// Tdedit.setToolsSetup(ToolsSetup);
-	// Tdedit.setPersonnelResources(req.getParameter("PersonnelResources"));
-	// Tdedit.setEstimatedTimeIteration(req.getParameter("EstimatedTimeIteration"));
-	// Tdedit.setIterations(req.getParameter("Iterations"));
-	// Tdedit.setSchedule(req.getParameter("Schedule"));
-	// Tdedit.setPass_Fail_Criteria(req.getParameter("PassFailCriteria"));
-	// Tdedit.setStageApplicable(StageApplicable);
-	// Tdedit.setRemarks(req.getParameter("remarks"));
-	// long count=service.TestDetailasUpdate(Tdedit,UserId,TestId);
-	//
-	// if (count > 0) {
-	// redir.addAttribute("ProjectType", ProjectType);
-	// redir.addAttribute("initiationId", initiationId);
-	// redir.addAttribute("projectId", projectId);
-	// redir.addAttribute("result", "Test Details Edited Successfully");
-	// return "redirect:/TestDetails.htm";
-	// } else {
-	// redir.addAttribute("ProjectType", ProjectType);
-	// redir.addAttribute("initiationId", initiationId);
-	// redir.addAttribute("projectId", projectId);
-	// redir.addAttribute("resultfail", "Test Details Edited Unsuccessful");
-	// return "redirect:/TestDetails.htm";
-	// }
-	// }
-	// }
-	// catch(Exception e) {
-	// e.printStackTrace();
-	// logger.error(new Date() +"Inside TestDetailsEditSubmit.htm "+UserId, e);
-	// return "static/Error";
-	// }
-	// return "redirect:/ProjectTestPlanDetails.htm";
-	// }
+
 
 	// adding requirement type
 	@RequestMapping(value = "InsertTestType.htm", method = RequestMethod.GET)
@@ -3427,7 +3419,7 @@ public class RequirementsController {
 			PdfReader pdf1 = new PdfReader(path + File.separator + filename + ".pdf");
 			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);
 			int totalPages = pdfDocument.getNumberOfPages();
-			System.out.println("Total Number of Pages: " + totalPages); //
+			
 			req.setAttribute("totalPages", totalPages);
 
 			pdfDocument.close();
@@ -3798,7 +3790,7 @@ public class RequirementsController {
 			// reqini.getInitiationId()!=0?reqini.getInitiationId()+"":reqini.getProjectId()+"",
 			// reqini.getInitiationId()!=0?"P":"E");
 
-			System.out.println("reqInitiationId" + reqInitiationId);
+		
 			req.setAttribute("ProjectParaDetails", service.getProjectParaDetails(reqInitiationId));
 			req.setAttribute("RequirementList", service.RequirementList(reqInitiationId));
 			req.setAttribute("projectType", projectType);
@@ -4006,8 +3998,7 @@ public class RequirementsController {
 				SpecsInitiationId = Long.toString(service.SpecificationInitiationAddHandling(initiationId, projectId,
 						productTreeMainId, EmpId, UserId, null, null));
 			}
-			System.out.println(
-					initiationId + " --" + projectId + " --- " + productTreeMainId + "---" + SpecsInitiationId);
+
 			String[] specValue = req.getParameterValues("specValue");
 			long count = 0;
 			for (int i = 0; i < specValue.length; i++) {
@@ -4114,7 +4105,7 @@ public class RequirementsController {
 			DocMembers idm = projectservice.getDocMemberById(Long.parseLong(MemeberId));
 			idm.setIsActive(0);
 			long IgiMemeberIdAfterDelete = projectservice.editDocMember(idm);
-			System.out.println(IgiMemeberIdAfterDelete);
+			
 
 			if (IgiMemeberIdAfterDelete > 0) {
 				redir.addAttribute("result", "Members Deleted Successfully for Document Distribution");
@@ -4157,7 +4148,7 @@ public class RequirementsController {
 			DocMembers idm = projectservice.getDocMemberById(Long.parseLong(MemeberId));
 			idm.setIsActive(0);
 			long IgiMemeberIdAfterDelete = projectservice.editDocMember(idm);
-			System.out.println(IgiMemeberIdAfterDelete);
+		
 
 			if (IgiMemeberIdAfterDelete > 0) {
 				redir.addAttribute("result", "Members Deleted Successfully for Document Distribution");
@@ -4191,8 +4182,7 @@ public class RequirementsController {
 			String projectType = req.getParameter("projectType");
 			String verificationId = req.getParameter("verificationId");
 
-			System.out.println("verificationId*************" + verificationId);
-			System.out.println("ProjectId&&&&&&&&&&&&&" + ProjectId);
+		
 
 			if (initiationid == null) {
 				initiationid = "0";
@@ -4496,8 +4486,10 @@ public class RequirementsController {
 				redir.addAttribute("resultfail", "Specification Data Add Unsuccessful");
 			}
 			redir.addAttribute("specTypeId", specTypeId);
+			redir.addAttribute("mainid", subids[0]);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "static/Error";
 		}
 
 		return "redirect:/SpecificationMasters.htm";
@@ -4527,6 +4519,22 @@ public class RequirementsController {
 		try {
 			TestPlanMasterList = service.TestPlanMaster();
 			req.setAttribute("TestPlanMasterList", TestPlanMasterList);
+			req.setAttribute("StagesApplicable", service.StagesApplicable());
+		
+			List<TestSetupMaster>master = service.getTestSetupMaster();
+			
+			if(master!=null && master.size()>0) {
+				master = master.stream().filter(e->e.getIsActive()==1).collect(Collectors.toList());
+			}
+			List<TestInstrument>instrumentList = service.getTestInstrument();
+			req.setAttribute("testSetupMasterMaster", master);		
+			req.setAttribute("specificarionMasterList", service.SpecificationMasterList());
+		
+			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));
+			req.setAttribute("LabList", projectservice.LabListDetails(LabCode));
+			req.setAttribute("drdologo", LogoUtil.getDRDOLogoAsBase64String());
+			req.setAttribute("DocTempAttributes", projectservice.DocTempAttributes());
+
 		} catch (Exception e) {
 
 			e.printStackTrace();
@@ -4538,19 +4546,56 @@ public class RequirementsController {
 
 	}
 	
-	
 	@RequestMapping(value = "TestPlanMasterAdd.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String TestPlanMasterAdd( HttpServletRequest req, HttpServletResponse res, HttpSession ses,
 			RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
-
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() + "Inside TestPlanMasterAdd.htm" + UserId);
-
+		req.setAttribute("DocTempAttributes", projectservice.DocTempAttributes());
 		try {
 			String TestMasterId = req.getParameter("Did");
 			String action = req.getParameter("sub");
-			TestPlanMaster tp = action.equalsIgnoreCase("edit") ?service.getTestPlanById(Long.parseLong(TestMasterId)):new TestPlanMaster();
+			TestPlanMaster tp = TestMasterId!=null?service.getTestPlanById(Long.parseLong(TestMasterId)):new TestPlanMaster();
+
+			// delete Test Plan Master
+			if (TestMasterId != null  && action != null && "delete".equalsIgnoreCase(action)) {
+				tp.setIsActive(0);
+				long delete = service.testPlanMasterAdd(tp);
+
+				if (delete != 0) redir.addAttribute("result", "Test Plan Master  Deleted Successfully");
+				else redir.addAttribute("resultfail", "Test Plan Master  Delete Unsuccessful");
+
+				return "redirect:/TestPlanMaster.htm";
+
+			}
+			
 			req.setAttribute("TestPlanMaster", tp);
+			
+			if(tp!=null && tp.getToolsSetup()!=null) {
+			String setUpId = tp.getToolsSetup().split(", ")[0];
+			Long id = 0l;
+			if(setUpId.length()>0 ) {
+				id = Long.valueOf(setUpId);
+			}
+			
+			TestSetupMaster ts = service.getTestSetupMasterById(id);
+			if(ts!=null) {
+				  
+				File my_file = null;
+				
+				if(ts.getTdrsData()!=null) {
+				Path path = Paths.get(uploadpath,LabCode,"Test SetUp", ts.getTdrsData());
+				
+				my_file = path.toFile(); 
+			  
+				if(my_file.exists()) {
+			  try (FileInputStream fis = new FileInputStream(my_file)) {
+					String htmlContent = convertExcelToHtml(fis);
+					
+					req.setAttribute("htmlContent", htmlContent);
+			  }
+			}}}}
 			req.setAttribute("StagesApplicable", service.StagesApplicable());
 			
 			List<TestSetupMaster>master = service.getTestSetupMaster();
@@ -4558,8 +4603,9 @@ public class RequirementsController {
 			if(master!=null && master.size()>0) {
 				master = master.stream().filter(e->e.getIsActive()==1).collect(Collectors.toList());
 			}
+			req.setAttribute("testSetupMasterMaster", master);	
 			List<TestInstrument>instrumentList = service.getTestInstrument();
-			req.setAttribute("testSetupMasterMaster", master);		
+				
 			req.setAttribute("specificarionMasterList", service.SpecificationMasterList());
 			
 			return "requirements/TestMasterAdd";
@@ -4584,66 +4630,72 @@ public class RequirementsController {
 			String action = req.getParameter("action");
 			TestPlanMaster tp = action.equalsIgnoreCase("update") ?service.getTestPlanById(Long.parseLong(TestMasterId)):new TestPlanMaster();
 			
-			System.out.println("action----"+action);
-			
-			String TestName=req.getParameter("name");
-			String Objective=req.getParameter("Objective");
-			String Methodology=req.getParameter("Methodology");
-			String Constraints=req.getParameter("Constraints");
-			String Iterations=req.getParameter("Iterations");
-			String Schedule=req.getParameter("Schedule");
-			String PassFailCriteria=req.getParameter("PassFailCriteria");
-			String Remarks=req.getParameter("remarks");
-			
-			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(TestName)) {
-				return redirectWithError(redir, "TestPlanMaster.htm", "'Test Name' must contain only Alphabets and Numbers");
-			}
-			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(Objective)) {
-				return redirectWithError(redir, "TestPlanMaster.htm", "'Objective' must contain only Alphabets and Numbers");
-			}
-			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(Methodology)) {
-				return redirectWithError(redir, "TestPlanMaster.htm", "'Methodology' must contain only Alphabets and Numbers");
-			}
-			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(Constraints)) {
-				return redirectWithError(redir, "TestPlanMaster.htm", "'Constraints' must contain only Alphabets and Numbers");
-			}
-			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(Iterations)) {
-				return redirectWithError(redir, "TestPlanMaster.htm", "'Iterations' must contain only Alphabets and Numbers");
-			}
-			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(Schedule)) {
-				return redirectWithError(redir, "TestPlanMaster.htm", "'Schedule' must contain only Alphabets and Numbers");
-			}
-			if(!InputValidator.isValidCapitalsAndSmallsAndNumericAndSpace(PassFailCriteria)) {
-				return redirectWithError(redir, "TestPlanMaster.htm", "'Criteria' must contain only Alphabets and Numbers");
-			}
-			if(InputValidator.isContainsHTMLTags(Remarks)) {
-				return redirectWithError(redir, "TestPlanMaster.htm", "'Remarks' should not contain HTML tags.!");
-			}
-			tp.setName(TestName);
-			tp.setObjective(Objective);
-			tp.setMethodology(Methodology);
-			tp.setConstraints(Constraints);
-			tp.setEstimatedTimeIteration(req.getParameter("EstimatedTimeIteration"));
-			tp.setIterations(Iterations);
-			tp.setSchedule(Schedule);
-			tp.setPass_Fail_Criteria(PassFailCriteria);
-			tp.setStageApplicable(req.getParameter("StageApplicable"));
-
 			StringBuilder toolSB= new StringBuilder("");
-			StringBuilder stageSb= new StringBuilder("");
+			
 			StringBuilder linkedSpecSb= new StringBuilder("");
 			
-			String[] StageApplicable=req.getParameterValues("StageApplicable");
+			
 			String[] ToolsSetup=req.getParameterValues("ToolsSetup");
 			String[] linkedSpec = req.getParameterValues("linkedSpec");
+			String[] StageApplicable=req.getParameterValues("StageApplicable");
+			
+			String[] cycle = req.getParameterValues("rows");
+			String[] cycleRows = req.getParameterValues("cycle");
 			
 			
-			if(StageApplicable!=null) {
-				for(int i=0;i<StageApplicable.length;i++) {
-					stageSb.append(StageApplicable[i]);
-					if(i!=StageApplicable.length-1) {stageSb.append(", ");}
-					}}
+			String stageSb= "";
+			String cycleSb= "";
+			String rowSb= "";
+			if(StageApplicable!=null && StageApplicable.length>0) {
+				stageSb=Arrays.stream(StageApplicable).collect(Collectors.joining(", "));
+			}
+			
+			if (action.equalsIgnoreCase("update") && tp.getStageApplicable()!=null ) {
+				if(StageApplicable!=null && StageApplicable.length>0) {
+					stageSb= stageSb+", "+tp.getStageApplicable();
+				}else {
+					stageSb = tp.getStageApplicable();
+				}
+			}
+			
+			
+			if(cycleRows!=null && cycleRows.length>0) {
 				
+				rowSb = Arrays.stream(cycleRows).collect(Collectors.joining(", ") );
+			}
+			
+			
+			if (action.equalsIgnoreCase("update")
+					&& tp.getNumberofCycles()!=null && 
+					!tp.getNumberofCycles().equalsIgnoreCase("0") ) 
+			{
+				if(StageApplicable!=null && StageApplicable.length>0) {
+					rowSb=rowSb+", "+tp.getNumberofCycles();
+				}else {
+					rowSb = tp.getNumberofCycles();
+				}
+			}
+			
+			
+			
+			if(cycle!=null && cycle.length>0 ) {
+				
+				cycleSb = Arrays.stream(cycle).collect(Collectors.joining(", "));
+						
+			}
+			
+			
+			if (action.equalsIgnoreCase("update") && tp.getNumberofRows()!=null && !tp.getNumberofRows().equalsIgnoreCase("0")) {
+				
+				if(StageApplicable!=null && StageApplicable.length>0) {
+					cycleSb = cycleSb+", "+tp.getNumberofRows();
+				}else {
+					cycleSb= tp.getNumberofRows();
+				}
+				
+			}
+				
+			
 			if(ToolsSetup!=null) {
 				for(int i=0;i<ToolsSetup.length;i++) {
 					toolSB.append(ToolsSetup[i]);
@@ -4669,16 +4721,18 @@ public class RequirementsController {
 			tp.setIterations(req.getParameter("Iterations"));
 			tp.setSchedule(req.getParameter("Schedule"));
 			tp.setPass_Fail_Criteria(req.getParameter("PassFailCriteria"));
-			tp.setStageApplicable(stageSb.toString());
-
+			
 			tp.setPreConditions(req.getParameter("PreConditions"));
 			tp.setPostConditions(req.getParameter("PostConditions"));
 			tp.setSafetyRequirements(req.getParameter("SafetyReq"));
 			tp.setDescription(req.getParameter("Description"));
 			tp.setPersonnelResources(req.getParameter("PersonnelResources"));
-			tp.setRemarks(Remarks);
+			tp.setRemarks(req.getParameter("remarks"));;
 			tp.setTimeType(req.getParameter("TimeType"));
-			tp.setLinkedSpecids(linkedSpecSb.toString());			
+			tp.setLinkedSpecids(linkedSpecSb.toString());
+			tp.setStageApplicable(stageSb.toString());
+			tp.setNumberofCycles(rowSb.toString() );
+			tp.setNumberofRows(cycleSb.toString() );
 			if(TestMasterId!=null) {
 				tp.setModifiedBy(UserId);
 				tp.setModifiedDate(LocalDate.now().toString());
@@ -4708,7 +4762,6 @@ public class RequirementsController {
 		
 	}
 	
-		
 	@RequestMapping(value="AddTestDetailsFromMaster.htm",method=RequestMethod.GET)
 	public @ResponseBody String AddTestDetailsFromMaster(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
@@ -4734,17 +4787,43 @@ public class RequirementsController {
 			if (productTreeMainId == null)
 				productTreeMainId = "0";
 
+			String specsInitiationId = service.getFirstVersionSpecsInitiationId(initiationId, projectId,
+					productTreeMainId) + "";
+			
+			List<Object[]>sepcList = service.getSpecsList(specsInitiationId);
 			if (testPlanInitiationId==null ||testPlanInitiationId.equals("0")) {
 				testPlanInitiationId = Long.toString(service.testPlanInitiationAddHandling(initiationId, projectId,
 						productTreeMainId, EmpId, UserId, null, null));
 			}
-	
+			List<Object[]> specificationMasterList = service.SpecificationMasterList();
 			for(String id:MasterId) {
 				Optional<TestPlanMaster> optionalTestPlanMaster = tp.stream()
 				        .filter(e -> e.getTestMasterId().toString().equalsIgnoreCase(id))
 				        .findFirst();
 			TestPlanMaster testPlanMaster = optionalTestPlanMaster.orElse(null);
 			if(testPlanMaster!=null) {
+				
+				List<String>specIds = Arrays.asList(testPlanMaster.getLinkedSpecids().split(", "));				
+	
+			
+				
+				List<String>specNames = specificationMasterList.stream()
+										.filter(e->specIds.contains(e[0].toString() ) )
+										.map(e->e[5].toString())
+										.collect(Collectors.toList());
+				
+				
+				
+				List<String>specids = new ArrayList<>();
+				
+				if(specNames!=null && specNames.size()>0) {
+					specids = sepcList.stream()	
+								.filter(e->specNames.contains(e[1].toString()))
+								.map(e->e[0].toString() )
+								.collect(Collectors.toList() );		
+					}
+				System.out.println(specids.toString());
+				
 				
 				String Testtype = "TEST";
 				String TestDetailsId = "";
@@ -4779,8 +4858,15 @@ public class RequirementsController {
 				Td.setRemarks(testPlanMaster.getRemarks());
 				Td.setTestPlanInitiationId(Long.parseLong(testPlanInitiationId));
 				Td.setSchedule(testPlanMaster.getSchedule());
+				Td.setMethodology(testPlanMaster.getMethodology());	
 				Td.setCreatedBy(UserId);
 				Td.setCreatedDate(sdf1.format(new Date()));
+				Td.setMainId(Long.parseLong(id));
+				Td.setToolsSetup(testPlanMaster.getToolsSetup());
+				
+				Td.setNumberofRows(testPlanMaster.getNumberofRows());
+				Td.setNumberofCycles( testPlanMaster.getNumberofCycles()  );			
+				Td.setSpecificationId(specids.size()>0? specids.toString().replace("[", "").replace("]", "") :"");
 				result= service.TestDetailsAdd(Td);
 			}
 			
@@ -4788,6 +4874,7 @@ public class RequirementsController {
 			
 			}
 		}catch (Exception e) {
+			e.printStackTrace();
 			logger.error(new Date() + " Inside AddTestDetailsFromMaster.htm " + UserId, e);
 		}
 	
@@ -4855,8 +4942,8 @@ public class RequirementsController {
 				result=projectservice.addSpecification(s);
 				
 				List<SpecificationMaster>spLevel1=sp.stream()
-												.filter(e->e.getParentId().toString().equalsIgnoreCase(id))
-												.collect(Collectors.toList());
+				.filter(e->e.getParentId().toString().equalsIgnoreCase(id))
+				.collect(Collectors.toList());
 				
 				
 				for(SpecificationMaster s1:spLevel1) {
@@ -4886,8 +4973,8 @@ public class RequirementsController {
 							.filter(e->e.getParentId().equals( s1.getSpecsMasterId()))
 							.collect(Collectors.toList());
 					
-					System.out.println("s1.getSpecsMasterId()"+s1.getSpecsMasterId());
-					System.out.println(spLevel2.size()+"<------");
+		
+			
 					for(SpecificationMaster s2:spLevel2) {
 						Specification s2New = new Specification();
 						s2New.setDescription(s2.getDescription());
@@ -4921,7 +5008,7 @@ public class RequirementsController {
 		}
 		return json.toJson(result);	
 	}
-	
+
 	@GetMapping(value="SpecificationMasterDelete.htm" )
 	public String specificationMasterDelete(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String userId = (String)ses.getAttribute("Username");
@@ -4945,9 +5032,516 @@ public class RequirementsController {
 			return "static/Error";
 		}
 	}
-	
-	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
-	    redir.addAttribute("resultfail", message);
-	    return "redirect:/"+redirURL;
+	@GetMapping(value="TestSetUpMaster.htm" )
+	public String TestSetUpMaster(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String userId = (String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date()+ " Inside TestSetUpMaster.htm "+userId);
+		try {
+			List<TestSetupMaster>master = service.getTestSetupMaster();
+			
+			if(master!=null && master.size()>0) {
+				master = master.stream().filter(e->e.getIsActive()==1).collect(Collectors.toList());
+			}
+			List<TestInstrument>instrumentList = service.getTestInstrument();
+			req.setAttribute("testSetupMasterMaster", master);	
+
+			req.setAttribute("instrumentList", instrumentList);
+			
+			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));
+			req.setAttribute("LabList", projectservice.LabListDetails(LabCode));
+			req.setAttribute("drdologo", LogoUtil.getDRDOLogoAsBase64String());
+			req.setAttribute("DocTempAttributes", projectservice.DocTempAttributes());
+
+			return "requirements/TestSetUpMasterList";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+ " Inside TestSetUpMaster.htm "+userId);
+			return "static/Error";
+		}
 	}
+	@RequestMapping(value="TestSetMasterAdd.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String TestSetMasterAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String userId = (String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date()+ " Inside TestSetMasterAdd.htm "+userId);
+		try {
+			List<TestInstrument>instrumentList = service.getTestInstrument();
+			req.setAttribute("instrumentList", instrumentList);	
+			
+				String setUpId = req.getParameter("Did");
+				String action = req.getParameter("sub");
+				
+				if(action!=null && action.equalsIgnoreCase("add")) {	
+					
+				}else {
+				
+						if(setUpId!=null) {
+			TestSetupMaster tp = service.getTestSetupMasterById(Long.valueOf(setUpId));
+			
+				// delete test Setup master list
+				
+			List<TestSetUpAttachment> listOfAttachments = service.getTestSetUpAttachment(setUpId);
+			req.setAttribute("listOfAttachments", listOfAttachments);
+			
+		
+			
+			
+			if(tp!=null) {
+			  
+				File my_file = null;
+				
+				if(tp.getTdrsData()!=null) {
+				Path path = Paths.get(uploadpath,LabCode,"Test SetUp", tp.getTdrsData());
+				
+				my_file = path.toFile(); 
+			  
+				if(my_file.exists()) {
+			  try (FileInputStream fis = new FileInputStream(my_file)) {
+					String htmlContent = convertExcelToHtml(fis);
+					
+					req.setAttribute("htmlContent", htmlContent);
+			  }
+			}}}
+			if (action != null && "delete".equalsIgnoreCase(action)) {
+					tp.setIsActive(0);
+					long delete = service.addTestSetupMaster(tp);
+	
+					if (delete != 0) redir.addAttribute("result", "SetUp Master  Deleted Successfully");
+					else redir.addAttribute("resultfail", "SetUp Master  Delete Unsuccessful");
+	
+					return "redirect:/TestSetUpMaster.htm";
+	
+				}
+			
+			req.setAttribute("tp", tp);	
+			}}
+			
+			List<TestSetupMaster>master = service.getTestSetupMaster();
+			
+			if(master!=null && master.size()>0) {
+				master = master.stream().filter(e->e.getIsActive()==1).collect(Collectors.toList());
+			}
+			
+
+			
+			req.setAttribute("testSetupMasterMaster", master);	
+			return "requirements/TestSetUpMasterAdd";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+ " Inside TestSetMasterAdd.htm "+userId);
+			return "static/Error";
+		}
+	}
+	@RequestMapping(value="TestSetUpSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String TestSetUpSubmit(
+			HttpServletRequest req,
+			HttpSession ses,
+			RedirectAttributes redir,
+			@RequestParam("attach") MultipartFile [] attchments,
+			@RequestParam("tdrs") MultipartFile tdrs
+			) throws Exception {
+		String userId = (String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date()+ " Inside TestSetUpSubmit.htm "+userId);
+		try {
+			
+			Random rand = new Random();
+			int randomNumber = rand.nextInt(1000);
+			
+		String testSetUpId = req.getParameter("testSetUpId");
+		String objective = req.getParameter("objective");
+		String facility = req.getParameter("facility");
+		String testSetup = req.getParameter("testSetup");
+		String testProcedure = req.getParameter("testProcedure");
+		
+		String []testInstrument = req.getParameterValues("testInstrument");
+		
+		String id= req.getParameter("id");
+		
+	
+		
+		StringBuilder sb= new StringBuilder("");
+		if(testInstrument!=null) {
+				
+			for(int i=0;i<testInstrument.length;i++) {
+				sb.append(testInstrument[i]);
+				if(i!=testInstrument.length-1) {
+					sb.append(", ")	;			}
+			}
+			
+		}
+		
+		TestSetupMaster tp =id==null? new TestSetupMaster():
+			service.getTestSetupMasterById(Long.valueOf(id));
+		
+		tp.setTestSetUpId(testSetUpId);
+		tp.setObjective(objective);
+		tp.setFacilityRequired(facility);
+		if(tdrs!= null && !tdrs.isEmpty()  ) {
+		tp.setTdrsData(randomNumber+"_"+tdrs.getOriginalFilename() );
+		}
+		tp.setTestSetUp(testSetup);
+		tp.setTestProcedure(testProcedure);	
+		tp.setTestInstrument(sb.toString());
+		tp.setTdrs(tdrs);
+		tp.setLabCode(LabCode);	
+		tp.setIsActive(1);
+		if(id!=null) {
+			tp.setSetupId(Long.valueOf(id));
+			tp.setModifiedBy(userId)	;
+			tp.setModifiedDate(LocalDateTime.now());
+			
+		}else {
+			tp.setCreatedBy(userId);
+			tp.setCreatedDate(LocalDateTime.now());
+		}
+		
+		long count = service.addTestSetupMaster(tp);
+
+		long result = service.saveTestSetUpAttachment(attchments,count,LabCode);
+		
+		if (count > 0) {
+			if(id==null) {
+			redir.addAttribute("result", "Test Setup Added Successfully");
+			}else {
+				redir.addAttribute("result", "Test Setup updated Successfully");	
+			}
+		} else {
+			redir.addAttribute("resultfail", "Oops something went wrong !");
+		}
+
+		return "redirect:/TestSetUpMaster.htm";
+		
+
+		}catch (Exception e) {
+			e.printStackTrace();
+			redir.addAttribute("resultfail", "Oops something went wrong !");
+			logger.error(new Date()+ " Inside TestSetUpSubmit.htm "+userId);
+			return "static/Error";
+		}
+	}
+	@RequestMapping(value="saveTestInstrumentName.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public @ResponseBody String saveTestInstrumentName(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String userId = (String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date()+ " Inside saveTestInstrumentName.htm "+userId);
+		try {
+			String InstrumentName = req.getParameter("InstrumentName");
+			
+		
+			
+			TestInstrument t = new TestInstrument();
+			t.setInstrumentName(InstrumentName);
+
+			long count = service.setTestInstrument(t);
+			Gson json = new Gson();
+			return json.toJson(count);
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+ " Inside saveTestInstrumentName.htm "+userId);
+			return "static/Error";
+		}
+	}
+	
+	
+	
+	
+	@RequestMapping(value = { "TestSetupAttachmentDownload.htm" })
+	public void TestSetupAttachmentDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)
+			throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() + "Inside  TestSetupAttachmentDownload" + UserId);
+		try {
+			String attachmentId = req.getParameter("attachmentId");
+			String setupId = req.getParameter("id");
+	
+			List<TestSetUpAttachment> listOfAttachments = service.getTestSetUpAttachment(setupId);
+			
+			TestSetUpAttachment tp = listOfAttachments.stream()
+				    .filter(a -> attachmentId.equals(a.getAttachmentId().toString() ))
+				    .findFirst()
+				    .orElse(null);
+			
+			
+			  res.setContentType("Application/octet-stream"); 
+			  
+			  File my_file = null;
+			  
+			  Path path = Paths.get(uploadpath,LabCode,tp.getFilePath(),setupId+"_"+tp.getAttachmentFileName());
+			  
+			  my_file = path.toFile(); 
+			  
+			  res.setHeader("Content-disposition", "attachment; filename=" +tp.getAttachmentFileName() );
+			  OutputStream out = res.getOutputStream();
+			  
+			  FileInputStream in = new FileInputStream(my_file);
+			  byte[] buffer = new byte[4096]; 
+			  int length;
+			  while((length = in.read(buffer)) > 0)
+			  { out.write(buffer, 0, length); }
+			  in.close();
+			  out.flush(); 
+			  out.close();
+			 
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside  TestSetupAttachmentDownload" + UserId, e);
+		}
+	}
+	
+	@RequestMapping(value = { "TestTdrsAttachmentDownload.htm" })
+	public void TestTdrsAttachmentDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)
+			throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() + "Inside  TestTdrsAttachmentDownload" + UserId);
+		try {
+			
+			String setupId = req.getParameter("id");
+			
+			
+			TestSetupMaster tp = service.getTestSetupMasterById(Long.valueOf(setupId));
+			
+			
+			res.setContentType("Application/octet-stream"); 
+			
+			File my_file = null;
+			
+			Path path = Paths.get(uploadpath,LabCode,"Test SetUp", tp.getTdrsData());
+			
+			my_file = path.toFile(); 
+			
+			res.setHeader("Content-disposition", "attachment; filename=" +tp.getTdrsData()    );
+			OutputStream out = res.getOutputStream();
+			
+			FileInputStream in = new FileInputStream(my_file);
+			byte[] buffer = new byte[4096]; 
+			int length;
+			while((length = in.read(buffer)) > 0)
+			{ out.write(buffer, 0, length); }
+			in.close();
+			out.flush(); 
+			out.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside  TestTdrsAttachmentDownload" + UserId, e);
+		}
+	}
+
+	@RequestMapping(value = "deleteTestSetUpAttachement.htm", method = { RequestMethod.GET })
+	public @ResponseBody String deleteTestSetUpAttachement(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		Gson json = new Gson();
+		try {
+			
+			String setUpId = req.getParameter("setUpId");
+			String attachmentId = req.getParameter("attachmentId");
+
+		
+		
+			
+			List<TestSetUpAttachment> listOfAttachments = service.getTestSetUpAttachment(setUpId);
+			
+			TestSetUpAttachment tp = listOfAttachments.stream()
+				    .filter(a -> attachmentId.equals(a.getAttachmentId().toString() ))
+				    .findFirst()
+				    .orElse(null);
+			
+			tp.setIsActive(0);
+			
+			service.saveTestSetUpAttachement(tp);
+		}catch (Exception e) {
+			json.toJson(0);
+		}
+		
+		
+		return json.toJson(1);
+	}
+	
+	
+	
+	@RequestMapping(value = "ProductTreeIntroduction.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String ProductTreeIntroduction(HttpServletRequest req, HttpServletResponse res, HttpSession ses,
+			RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		
+		logger.info(new Date() + "Inside ProductTreeIntroduction.htm" + UserId);
+		try {
+			String Mainid = req.getParameter("Mainid");
+			
+			if(Mainid!=null) {
+				req.setAttribute("Mainid", Mainid);
+			}
+			
+			return "requirements/DocumentIntroduction";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside ProductTreeIntroduction.htm " + UserId, e);
+			return "static/Error";
+		}
+	}
+	
+	
+	@RequestMapping(value = "getSubsytemIntroduction.htm", method = { RequestMethod.GET })
+	public @ResponseBody String getSubsytemIntroduction(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside getSubsytemIntroduction.htm " + UserId);
+		List<PfmsSystemSubIntroduction>  psi = new ArrayList<>();
+		try {
+
+			String MainId = req.getParameter("MainId");			
+			
+			psi = 
+		service.getActiveSubIntroductionByMainId(Long.parseLong(MainId));
+			
+			
+			System.out.println("MainId---->"+MainId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside getSubsytemIntroduction.htm" + UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(psi);
+	}
+
+	@RequestMapping(value="submitSubIntroDuction.htm",method= {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody String ProjectAdditonalRequirementUpdate(HttpSession ses, HttpServletRequest req)
+			throws Exception {
+
+		Gson json = new Gson();
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date()
+				+"Inside submitSubIntroDuction.htm"+UserId); 
+		long count=0;
+		String result="";
+		try {
+			String MainId = req.getParameter("MainId");
+			String Details = req.getParameter("Details");
+			String moduleName = req.getParameter("moduleName");
+			String introductionId = req.getParameter("introductionId");
+			
+			
+			
+			PfmsSystemSubIntroduction ps = new PfmsSystemSubIntroduction();
+			if( !introductionId.equalsIgnoreCase("0") ) {
+				List<PfmsSystemSubIntroduction>  psi
+				=service.getActiveSubIntroductionByMainId(Long.parseLong(MainId));
+				
+				ps = psi.stream().filter(e->e.getIntroductionId().toString().equalsIgnoreCase(introductionId) )
+							.findFirst()
+							.orElse(ps);				
+				ps.setIntroductionId(Long.parseLong(introductionId));
+			}
+				
+				
+				ps.setMainId(Long.parseLong(MainId));
+				ps.setIntroduction(moduleName);	
+				ps.setDetails(Details);			
+				ps.setCreatedBy(UserId);	
+				ps.setCreatedDate(LocalDate.now().toString());
+				ps.setIsActive(1);			
+				
+			
+			
+			count = service.savePfmsSystemSubIntroduction(ps);
+		}
+		catch(Exception e) {
+			logger.error(new Date()+"Inside submitSubIntroDuction.htm"+UserId ,e);
+			e.printStackTrace(); 
+			return json.toJson(count);
+		} 
+		return json.toJson(count);
+		
+	}
+	@RequestMapping(value="MilestoneIsActive.htm",method= {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody String MilestoneIsActive(HttpSession ses, HttpServletRequest req)
+			throws Exception {
+		
+		Gson json = new Gson();
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date()
+				+"Inside submitSubIntroDuction.htm"+UserId); 
+		int count=0;
+		String result="";
+		try {
+			String id = req.getParameter("id");		
+			
+			count =  service.setMilestoneInActive(id);
+			
+		}
+		catch(Exception e) {
+			logger.error(new Date()+"Inside MilestoneIsActive.htm"+UserId ,e);
+			e.printStackTrace(); 
+			return json.toJson(count);
+		} 
+		return json.toJson(count);
+		
+	}
+	@RequestMapping(value="deleteSatagesForTestPlan.htm",method= {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody String deleteSatagesForTestPlan(HttpSession ses, HttpServletRequest req)
+			throws Exception {
+		
+		Gson json = new Gson();
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date()
+				+"Inside deleteSatagesForTestPlan.htm"+UserId); 
+		long count=0;
+		String result="";
+		try {
+			String id = req.getParameter("id");		
+			TestPlanMaster tp = service.getTestPlanById(Long.parseLong(id));
+			tp.setStageApplicable("");
+			tp.setNumberofCycles("" );
+			tp.setNumberofRows("" );
+			tp.setModifiedBy(UserId);
+			tp.setModifiedDate(LocalDate.now().toString());
+		    count = service.testPlanMasterAdd(tp);
+			
+		}
+		catch(Exception e) {
+			logger.error(new Date()+"Inside deleteSatagesForTestPlan.htm"+UserId ,e);
+			e.printStackTrace(); 
+			return json.toJson(count);
+		} 
+		return json.toJson(count);
+		
+	}
+	@RequestMapping(value="getTestPlanMasterList.htm",method= {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody String getTestPlanMasterList(HttpSession ses, HttpServletRequest req)
+			throws Exception {
+		
+		Gson json = new Gson();
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date()
+				+"Inside getTestPlanMasterList.htm"+UserId); 
+		
+		try {
+			String testPlanInitiationId = req.getParameter("testPlanInitiationId");
+			
+			List<Object[]> TestDetailsList = service.TestDetailsList(testPlanInitiationId);
+			return json.toJson(TestDetailsList);
+		}
+		catch(Exception e) {
+			logger.error(new Date()+"Inside getTestPlanMasterList.htm"+UserId ,e);
+			e.printStackTrace(); 
+			return "";
+		
+			
+		} 
+	
+		
+	}
+
+
 }
