@@ -142,8 +142,10 @@ body {
                             <div class="col-md-1" >
                               	<select class="form-control selectdee" id="sid" required="required" name="sid" onchange="getSubSystem()" >
     								<option disabled selected value="">Choose...</option>
-   									<% for (Object[] obj : systemList) {%>
-										<option value="<%=obj[0]%>" data-system="<%=obj[2].toString() %>" <%if(sp.getSid()!=null && sp.getSid().toString().equalsIgnoreCase(obj[0].toString())) {%> selected <%} %> > <%=obj[2]%>  </option>
+   									<% 
+   									String sid = sp.getSid()!=null?sp.getSid()+"":"1";
+   									for (Object[] obj : systemList) {%>
+										<option value="<%=obj[0]%>" data-system="<%=obj[2].toString() %>" <%if(sid.equalsIgnoreCase(obj[0].toString())) {%> selected <%} %> > <%=obj[2]%>  </option>
 									<%} %>
   								</select>
   							</div>
