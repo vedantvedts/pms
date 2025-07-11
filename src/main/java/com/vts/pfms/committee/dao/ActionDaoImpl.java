@@ -992,15 +992,36 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	
 	
-	private static final String RFAACTIONLIST="SELECT DISTINCT a.rfaid,a.labcode,d.projectcode,a.rfano,a.rfadate,b.priority,f.classification AS category, a.statement,a.description,a.reference,a.isactive,a.createdby,a.createddate,a.projectid,a.rfastatus,a.AssignorId,(SELECT COUNT(Remarks) FROM pfms_rfa_action_transaction trans WHERE a.RfaId=trans.RfaId) AS Remarks,g.rfastatusdetails,a.TypeOfRfa FROM pfms_rfa_action a, pfms_rfa_priority b, employee_desig c ,project_master d, employee e, pfms_security_classification f, pfms_rfa_status g WHERE a.priorityid=b.priorityid AND d.projectid=a.projectid AND CASE WHEN 'A'=:ProjectId THEN 1=1 ELSE a.projectid=:ProjectId END AND e.desigid=c.desigid AND d.projectcategory=f.classificationid AND a.assignorid=:EmpId AND a.rfastatus=g.rfastatus AND a.rfadate BETWEEN :fdate AND :tdate ORDER BY rfaid DESC";
+	private static final String RFAACTIONLIST="SELECT DISTINCT a.rfaid,a.labcode,CASE WHEN a.projectType ='P' THEN d.projectcode ELSE h.projectShortName END AS projectCode,a.rfano,a.rfadate,b.priority,\r\n"
+			+ "f.classification AS category,a.statement,a.description,a.reference,a.isactive,a.createdby,a.createddate,a.projectid,a.rfastatus,a.AssignorId,\r\n"
+			+ "(SELECT COUNT(Remarks) FROM pfms_rfa_action_transaction trans WHERE a.RfaId=trans.RfaId) AS Remarks,g.rfastatusdetails,a.TypeOfRfa ,a.projectType\r\n"
+			+ "FROM pfms_rfa_action a\r\n"
+			+ "INNER JOIN pfms_rfa_priority b ON a.priorityid = b.priorityid\r\n"
+			+ "LEFT JOIN project_master d ON a.projectid = d.projectid\r\n"
+			+ "LEFT JOIN pfms_initiation h ON a.projectid = h.initiationId\r\n"
+			+ "INNER JOIN pfms_security_classification f \r\n"
+			+ "ON(\r\n"
+			+ "(a.projectType = 'P' AND d.projectcategory = f.classificationid)\r\n"
+			+ " OR (a.projectType <> 'P' AND h.classificationId = f.classificationid)\r\n"
+			+ ")\r\n"
+			+ "INNER JOIN pfms_rfa_status g ON a.rfastatus = g.rfastatus\r\n"
+			+ "WHERE a.projectType = :projectType AND\r\n"
+			+ "(\r\n"
+			+ " (:projectType = 'P' AND (:projectId = 'A' OR a.projectId = :projectId))\r\n"
+			+ "  OR\r\n"
+			+ " (:projectType = 'I' AND (:initiationId = 'A' OR a.projectId = :initiationId))\r\n"
+			+ ")\r\n"
+			+ "AND a.assignorid=:empId AND a.rfadate BETWEEN :fdate AND :tdate ORDER BY rfaid DESC";
 	@Override
-	public List<Object[]> GetRfaActionList(String EmpId,String ProjectId,String fdate,String tdate) throws Exception 
+	public List<Object[]> GetRfaActionList(String EmpId,String projectType,String projectId,String initiationId,String fdate,String tdate) throws Exception 
 	{
 		Query query = manager.createNativeQuery(RFAACTIONLIST);
 		query.setParameter("fdate", fdate);
 		query.setParameter("tdate", tdate);
-		query.setParameter("ProjectId", ProjectId);
-		query.setParameter("EmpId", EmpId);
+		query.setParameter("projectType", projectType);
+		query.setParameter("projectId", projectId);
+		query.setParameter("initiationId", initiationId);
+		query.setParameter("empId", EmpId);
 		return (List<Object[]>)query.getResultList();
 	}
 
@@ -1593,25 +1614,48 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	}
 	
-	private static final String RFAACTIONLIST1="SELECT DISTINCT a.rfaid,a.labcode,d.projectcode,a.rfano,a.rfadate,b.priority,f.classification AS category, a.statement,a.description,a.reference,a.isactive,a.createdby,a.createddate,a.projectid,a.rfastatus,a.AssignorId,(SELECT COUNT(Remarks) FROM pfms_rfa_action_transaction trans WHERE a.RfaId=trans.RfaId) AS Remarks,g.rfastatusdetails,a.TypeOfRfa FROM pfms_rfa_action a, pfms_rfa_priority b, employee_desig c ,project_master d, employee e, pfms_security_classification f, pfms_rfa_status g WHERE a.priorityid=b.priorityid AND d.projectid=a.projectid AND e.desigid=c.desigid AND d.projectcategory=f.classificationid AND a.rfastatus=g.rfastatus AND CASE WHEN 'A'=:projectid THEN 1=1 ELSE a.projectid=:projectid END AND a.rfadate BETWEEN :fdate AND :tdate AND a.rfastatus  IN ('AA','AF','AC','RC','AX','REV','AP') ORDER BY rfaid DESC"; 
+	private static final String RFAACTIONLIST1="SELECT DISTINCT a.rfaid,a.labcode,CASE WHEN a.projectType = 'P' THEN d.projectcode ELSE h.projectShortName END AS projectCode,a.rfano,a.rfadate,b.priority,\r\n"
+			+ "f.classification AS category,a.statement,a.description,a.reference,a.isactive,a.createdby,a.createddate,a.projectid,a.rfastatus,a.AssignorId,\r\n"
+			+ "(SELECT COUNT(Remarks) FROM pfms_rfa_action_transaction trans WHERE a.RfaId=trans.RfaId) AS Remarks,g.rfastatusdetails,a.TypeOfRfa,a.projectType\r\n"
+			+ "FROM pfms_rfa_action a\r\n"
+			+ "INNER JOIN pfms_rfa_priority b ON a.priorityid = b.priorityid\r\n"
+			+ "LEFT JOIN project_master d ON a.projectid = d.projectid\r\n"
+			+ "LEFT JOIN pfms_initiation h ON a.projectId = h.initiationId\r\n"
+			+ "INNER JOIN pfms_security_classification f \r\n"
+			+ "ON(\r\n"
+			+ "(a.projectType = 'P' AND d.projectcategory = f.classificationid)\r\n"
+			+ " OR (a.projectType <> 'P' AND h.classificationId = f.classificationid)\r\n"
+			+ ")\r\n"
+			+ "INNER JOIN pfms_rfa_status g ON a.rfastatus = g.rfastatus\r\n"
+			+ "WHERE a.projectType = :projectType AND\r\n"
+			+ "(\r\n"
+			+ " (:projectType = 'P' AND (:projectId = 'A' OR a.projectId = :projectId))\r\n"
+			+ "  OR\r\n"
+			+ " (:projectType = 'I' AND (:initiationId = 'A' OR a.projectId = :initiationId))\r\n"
+			+ ")\r\n"
+			+ "AND a.rfadate BETWEEN :fdate AND :tdate AND a.rfastatus IN ('AA','AF','AC','RC','AX','REV','AP','RV','ARC') ORDER BY rfaid DESC"; 
 	@Override
-	public List<Object[]> GetRfaActionList1(String Project, String fdate, String tdate) throws Exception {
+	public List<Object[]> GetRfaActionList1(String projectType, String projectId, String initiationId, String fdate, String tdate) throws Exception {
 		
 		Query query = manager.createNativeQuery(RFAACTIONLIST1);
-		query.setParameter("projectid", Project);
+		query.setParameter("projectType", projectType);
+		query.setParameter("projectId", projectId);
+		query.setParameter("initiationId", initiationId);
 		query.setParameter("fdate", fdate);
 		query.setParameter("tdate", tdate);
 		return (List<Object[]>)query.getResultList();
 	}
 	
 	
-	private static final String RFAPROJECTWISE="CALL pfms_RfaProjectWise_List(:empId,:Project,:fdate,:tdate)";
+	private static final String RFAPROJECTWISE="CALL pfms_RfaProjectWise_List(:empId,:projectType,:projectId,:initiationId,:fdate,:tdate)";
 	@Override
-	public List<Object[]> RfaProjectwiseList(String empId, String Project, String fdate, String tdate) throws Exception {
+	public List<Object[]> RfaProjectwiseList(String empId, String projectType, String projectId, String initiationId, String fdate, String tdate) throws Exception {
 		
 		Query query = manager.createNativeQuery(RFAPROJECTWISE);
-		query.setParameter("empId", Long.parseLong(empId));
-		query.setParameter("Project", Project);
+		query.setParameter("empId", empId);
+		query.setParameter("projectType", projectType);
+		query.setParameter("projectId", projectId);
+		query.setParameter("initiationId", initiationId);
 		query.setParameter("fdate", fdate);
 		query.setParameter("tdate", tdate);
 		return (List<Object[]>)query.getResultList();
@@ -1846,15 +1890,24 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	
 	private static final String RFAACTIONLISTS="SELECT a.RfaId, a.RfaNo,a.RfaDate,d.Priority,a.projectId,a.Statement,a.Description,a.Reference,\r\n"
-			+ "c.RfaStatusDetails,(SELECT b.CompletionDate FROM pfms_rfa_inspection b WHERE b.rfaid=a.rfaid) AS 'CompletionDate',\r\n"
-			+ "((SELECT b.Observation FROM pfms_rfa_inspection b WHERE b.rfaid=a.rfaid))AS'Observation',(SELECT b.Clarification FROM pfms_rfa_inspection b WHERE b.rfaid=a.rfaid) AS 'Clarification', (SELECT b.ActionRequired FROM pfms_rfa_inspection b WHERE b.rfaid=a.rfaid) AS 'ActionRequired',a.rfastatus\r\n"
-			+ "FROM pfms_rfa_action a ,pfms_rfa_status c,pfms_rfa_priority d WHERE  a.RfaStatus = c.RfaStatus AND a.PriorityId= d.PriorityId AND a.projectid=:projectid AND a.RfaNo LIKE :rfatypeid AND a.RfaDate BETWEEN :fdate AND :tdate ORDER BY a.rfaid";
-	//private static final String RFAACTIONLISTS="SELECT a.RfaId, a.RfaNo,a.RfaDate,d.Priority,a.projectId,a.Statement,a.Description,a.Reference,c.RfaStatusDetails,b.CompletionDate,b.Observation,b.clarification,b.actionrequired FROM pfms_rfa_action a, pfms_rfa_inspection b ,pfms_rfa_status c,pfms_rfa_priority d WHERE a.RfaId=b.RfaId  AND a.RfaStatus = c.RfaStatus AND a.PriorityId= d.PriorityId AND a.projectid=:projectid AND a.RfaNo LIKE :rfatypeid AND a.RfaDate BETWEEN :fdate AND :tdate ORDER BY a.rfaid";
-@Override
-	public List<Object[]> rfaTotalActionList(String projectid, String rfatypeid, String fdate, String tdate) {
+			+ "c.RfaStatusDetails,insp.CompletionDate,insp.Observation,insp.Clarification,insp.ActionRequired,\r\n"
+			+ "a.rfastatus,a.rfaRaisedByName AS 'industryPartner',\r\n"
+			+ "CONCAT(COALESCE(emp.title, ''), ' ', emp.empname, ', ', desig.designation) AS raisedBy\r\n"
+			+ "FROM pfms_rfa_action a\r\n"
+			+ "JOIN pfms_rfa_status c ON a.RfaStatus = c.RfaStatus\r\n"
+			+ "JOIN pfms_rfa_priority d ON a.PriorityId = d.PriorityId\r\n"
+			+ "LEFT JOIN pfms_rfa_inspection insp ON insp.rfaid = a.rfaid\r\n"
+			+ "LEFT JOIN login l ON l.username = a.createdBy\r\n"
+			+ "LEFT JOIN employee emp ON l.empId = emp.empId\r\n"
+			+ "LEFT JOIN employee_desig desig ON emp.desigid = desig.desigid\r\n"
+			+ "WHERE a.projectid =:projectid AND a.projectType =:projectType AND a.RfaNo LIKE :rfatypeid\r\n"
+			+ "AND a.RfaDate BETWEEN :fdate AND :tdate ORDER BY a.rfaid";
+    @Override
+	public List<Object[]> rfaTotalActionList(String projectType,String projectid, String rfatypeid, String fdate, String tdate) {
 		Query query = manager.createNativeQuery(RFAACTIONLISTS);
 		rfatypeid="%"+rfatypeid+"%";
-		query.setParameter("projectid", Long.parseLong(projectid));
+		query.setParameter("projectType", projectType);
+		query.setParameter("projectid", projectid);
 		query.setParameter("rfatypeid", rfatypeid);
 		query.setParameter("fdate", fdate);
 		query.setParameter("tdate", tdate);
@@ -2163,7 +2216,14 @@ public class ActionDaoImpl implements ActionDao{
 		return query.executeUpdate();
 	}
 	
-	
-
+	private static final String GETPROJECTCODE = "SELECT CASE WHEN 'P'=:projectType THEN (SELECT d.projectcode FROM project_master d WHERE d.projectid=:projectId AND d.isactive='1') ELSE (SELECT h.projectShortName FROM pfms_initiation h WHERE h.initiationId=:projectId AND h.isactive='1') END AS projectCode";
+	@Override
+	public String getProjectCode(Long projectId, String projectType) throws Exception {
+		Query query=manager.createNativeQuery(GETPROJECTCODE);
+		query.setParameter("projectId",projectId);
+		query.setParameter("projectType",projectType);
+		String projectCode=(String)query.getSingleResult();	
+		return projectCode;
+	}
 	
 }

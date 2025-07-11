@@ -34,6 +34,12 @@
              margin-right: 10px;
               font-size: 13px;
           }
+             @bottom-left {          		
+             content: "This is system generated, So no need Signature.";
+             margin-bottom: 30px;
+             margin-right: 10px;
+              font-size: 13px;
+          }
       }
 
 .border-black{
@@ -152,6 +158,19 @@ List<String> approvedIdStatus  = Arrays.asList("AP","ARC");
                 <td colspan="4"style="border: 1px solid black; text-align: left; font-weight: 700; height: 50px">&nbsp;&nbsp;Priority : <span style="font-weight: normal;"><%=obj[1].toString() %> </span></td>
                 <%}} %>
               </tr>
+              
+              <%if(RfaPrint[23]!=null){ %>
+              <tr>
+             <td colspan="6" style="border: 1px solid black; text-align: left; font-weight: 700; height: 50px">&nbsp;&nbsp;Software Release Date : <span style="font-weight: normal;"><%=RfaPrint[24]!=null?   new FormatConverter().SqlToRegularDate( RfaPrint[24].toString()):"-"%> </span></td>
+              <td colspan="4" style="border: 1px solid black; text-align: left; font-weight: 700; height: 50px">&nbsp;&nbsp;Box No : <span style="font-weight: normal;"><%=RfaPrint[23]!=null?   RfaPrint[23].toString():"-"%> </span></td>
+              </tr>
+              <%} %>
+                <%if(RfaPrint[25]!=null){ %>
+              <tr>
+             <td colspan="6" style="border: 1px solid black; text-align: left; font-weight: 700; height: 50px">&nbsp;&nbsp;Rig Software Version : <span style="font-weight: normal;"><%=RfaPrint[26]!=null?   RfaPrint[26].toString():"-"%> </span></td>
+              <td colspan="4" style="border: 1px solid black; text-align: left; font-weight: 700; height: 50px">&nbsp;&nbsp;FPGA Version : <span style="font-weight: normal;"><%=RfaPrint[25]!=null?   RfaPrint[25].toString():"-"%> </span></td>
+              </tr>
+              <%} %>
               <tr>
                 <td colspan="2" style="border: 1px solid black; text-align: left; font-weight: 700; height: 30px ">&nbsp;&nbsp;Problem Statement  </td>
                  <td colspan="8" style="border: 1px solid black; text-align: justify; font-weight: 700;  width: 80px; "><span  style="font-weight: normal; padding:  3px 2px 2px 2px ;">&nbsp;&nbsp;<%=RfaPrint[7].toString() %></span></td>
@@ -190,7 +209,9 @@ List<String> approvedIdStatus  = Arrays.asList("AP","ARC");
               <tr>
                 <td colspan="2" style="border: 1px solid black; text-align: left; font-weight: 700; height: 62px">&nbsp;&nbsp;Raised By </td>
                 <%if(RfaPrint[16]!=null){ %>
-                <td colspan="8" style="border: 1px solid black; text-align: left; font-weight: 700;height: 62px "><span style="font-weight: normal;">&nbsp;&nbsp;<%=raisedBy2%> <br> <span style="font-size: 13px;"> &nbsp; [forwarded on :</span> <span class="spanDate"><%=risedDateFormatted%></span><span style="font-size: 13px;"> ]</span></span></td>
+                <td colspan="8" style="border: 1px solid black; text-align: left; font-weight: 700;height: 62px "><span style="font-weight: normal;">&nbsp;&nbsp;<%=raisedBy2%> <br>
+                 <%if(RfaPrint[27]!=null) {%>  &nbsp;   <span > <%=RfaPrint[27].toString() %></span> <br><%} %>
+                 <span style="font-size: 13px;"> &nbsp; [forwarded on :</span> <span class="spanDate"><%=risedDateFormatted%></span><span style="font-size: 13px;"> ]</span></span></td>
                 <%}else{ %>
                  <td colspan="8" style="border: 1px solid black; text-align: left; font-weight: 700;height: 62px "><span style="font-weight: normal;"></span></td>
                 <%} %>
@@ -277,7 +298,7 @@ List<String> approvedIdStatus  = Arrays.asList("AP","ARC");
                 <%} %>
               </tr> 
               <tr>
-              <%if(RfaPrint[20]!=null && Arrays.asList("RFA","AR","ARC").contains(RfaPrint[11]+"")){ %>
+              <%if(RfaPrint[20]!=null && Arrays.asList("RFA","AR","ARC","AP").contains(RfaPrint[11].toString())){ %>
                  <td colspan="2" style="border: 1px solid black; text-align: left; font-weight: 700; height: 62px">&nbsp;&nbsp;Received By </td>
                  <%if(receiverIdStatus.contains(RfaPrint[11]) ){ %>
                  <td colspan="8" style="border: 1px solid black; text-align: left; font-weight: 700;height: 62px "><span style="font-weight: normal;">&nbsp;&nbsp;<%=receivedBy2%> <br> <span style="font-size: 13px;"> &nbsp; [received on :</span> <span class="spanDate"><%=receivedBy2ByDateFormatted%></span><span style="font-size: 13px;"> ]</span></span></td>

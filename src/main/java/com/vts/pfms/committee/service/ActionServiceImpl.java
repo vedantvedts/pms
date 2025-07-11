@@ -1660,10 +1660,10 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	@Override
-	public List<Object[]> GetRfaActionList(String EmpId,String ProjectId,String fdate,String tdate) throws Exception 
+	public List<Object[]> GetRfaActionList(String EmpId,String projectType,String projectId,String initiationId,String fdate,String tdate) throws Exception 
 	{
 		
-		return dao.GetRfaActionList(EmpId,ProjectId,fdate,tdate);
+		return dao.GetRfaActionList(EmpId,projectType,projectId,initiationId,fdate,tdate);
 	}
 
 	
@@ -1672,6 +1672,7 @@ public class ActionServiceImpl implements ActionService {
 		
 		return dao.PriorityList();
 	}
+	
 	@Override
 	public Long RfaActionSubmit(RfaActionDto rfa,String LabCode,String UserId,String[] assignee,String[] CCEmpName) throws Exception {
 		
@@ -1679,7 +1680,7 @@ public class ActionServiceImpl implements ActionService {
 		
 		try {
 			
-		String project = dao.ProjectCode(rfa.getProjectId().toString());
+		String project = dao.getProjectCode(rfa.getProjectId(),rfa.getProjectType());
 //		Object[] division = dao.GetDivisionCode(Division);
 //		String DivisionCode = division[1].toString();
 		List<Object[]> rfaDivType=dao.getRfaType();
@@ -1716,6 +1717,7 @@ public class ActionServiceImpl implements ActionService {
 		rfa1.setLabCode(LabCode);
 		rfa1.setRfaNo(RfaNo);
 		rfa1.setRfaTypeId(rfa.getRfaTypeId());
+		rfa1.setProjectType(rfa.getProjectType());
 		rfa1.setProjectId(rfa.getProjectId());
 		rfa1.setPriorityId(rfa.getPriorityId());
 		rfa1.setStatement(rfa.getStatement());
@@ -1728,6 +1730,13 @@ public class ActionServiceImpl implements ActionService {
 		rfa1.setIsActive(1);
 		rfa1.setTypeOfRfa(rfa.getTypeOfRfa());
 		rfa1.setVendorCode(rfa.getVendorCode());
+		
+		rfa1.setBoxNo(rfa.getBoxNo());
+		rfa1.setFPGA(rfa.getFPGA());
+		rfa1.setSWdate(rfa.getSWdate());
+		rfa1.setRigVersion(rfa.getRigVersion());
+		rfa1.setRfaRaisedByName(rfa.getRfaRaisedByName());		
+		
 		long rfaIdAttach= dao.RfaActionSubmit(rfa1);
 		
 		RfaTransaction rfaTrans = new RfaTransaction();
@@ -1784,7 +1793,7 @@ public class ActionServiceImpl implements ActionService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() + "Inside Service RfaActionSubmit", e);
-			return 0L;
+			return null;
 		}
 
 	}
@@ -1818,7 +1827,12 @@ public class ActionServiceImpl implements ActionService {
 			action.setReference(rfa.getReference());
 			action.setModifiedBy(rfa.getModifiedBy());
 			action.setModifiedDate(sdf1.format(new Date()));
+			action.setBoxNo(rfa.getBoxNo());
 			
+			action.setFPGA(rfa.getFPGA());
+			action.setSWdate(rfa.getSWdate());
+			action.setRigVersion(rfa.getRigVersion());
+			action.setRfaRaisedByName(rfa.getRfaRaisedByName());
 			long count=dao.RfaEditSubmit(action);
 
 		RfaAttachment rfaAttach=new RfaAttachment();
@@ -1873,22 +1887,24 @@ public class ActionServiceImpl implements ActionService {
 		
 		//for CC emplist edit start
 		Long result1=dao.updateRfaCC(rfa.getRfaId()+"");  // here first existing data isactive will be "0"
-		for(int i=0;i<CCEmpName.length;i++) 
-		{
-		String []ccemp = CCEmpName[i].split("/");
-			
-			String empid = ccemp[0].toString();
-			String lab = ccemp[1].toString();
-			
-			RfaCC rfaCC = new RfaCC();
-			rfaCC.setRfaId(rfa.getRfaId());
-			rfaCC.setCCEmpId(Long.parseLong(empid));
-			rfaCC.setLabCode(lab);
-			rfaCC.setActionBy(rfa.getActionBy());
-			rfaCC.setModifiedBy(rfa.getModifiedBy());
-			rfaCC.setModifiedDate(sdf.format(new Date()));
-			rfaCC.setIsActive(1);
-			dao.rfaCCInsert(rfaCC); //again it insert to table 
+		if(CCEmpName!=null && CCEmpName.length > 0) {
+			for(int i=0;i<CCEmpName.length;i++) 
+			{
+			String []ccemp = CCEmpName[i].split("/");
+				
+				String empid = ccemp[0].toString();
+				String lab = ccemp[1].toString();
+				
+				RfaCC rfaCC = new RfaCC();
+				rfaCC.setRfaId(rfa.getRfaId());
+				rfaCC.setCCEmpId(Long.parseLong(empid));
+				rfaCC.setLabCode(lab);
+				rfaCC.setActionBy(rfa.getActionBy());
+				rfaCC.setModifiedBy(rfa.getModifiedBy());
+				rfaCC.setModifiedDate(sdf.format(new Date()));
+				rfaCC.setIsActive(1);
+				dao.rfaCCInsert(rfaCC); //again it insert to table 
+			}
 		}
 		//for CC emplist edit end
 		
@@ -2340,16 +2356,17 @@ public List<String> CCAssignorList(String rfaid) throws Exception {
 }
 
 @Override
-public List<Object[]> GetRfaActionList1(String Project, String fdate, String tdate) throws Exception {
+public List<Object[]> GetRfaActionList1(String projectType, String projectId, String initiationId, String fdate, String tdate) throws Exception {
 
-	return dao.GetRfaActionList1(Project,fdate,tdate);
+	return dao.GetRfaActionList1(projectType,projectId,initiationId,fdate,tdate);
 }
 
 @Override
-public List<Object[]> RfaProjectwiseList(String empId, String Project, String fdate, String tdate) throws Exception {
+public List<Object[]> RfaProjectwiseList(String empId, String projectType, String projectId, String initiationId, String fdate, String tdate) throws Exception {
 	
-	return dao.RfaProjectwiseList(empId,Project,fdate,tdate);
+	return dao.RfaProjectwiseList(empId,projectType,projectId,initiationId,fdate,tdate);
 }
+
 @Override
 public List<Object[]> getmodifieddate(String userId, int pid)throws Exception {
 	// TODO Auto-generated method stub
@@ -2449,8 +2466,8 @@ public List<Object[]> RfaCCList() throws Exception {
 }
 
 @Override
-public List<Object[]> rfaTotalActionList(String projectid, String rfatypeid, String fdate, String tdate) {
-	return dao.rfaTotalActionList(projectid,rfatypeid,fdate,tdate);
+public List<Object[]> rfaTotalActionList(String projectType,String projectid, String rfatypeid, String fdate, String tdate) {
+	return dao.rfaTotalActionList(projectType,projectid,rfatypeid,fdate,tdate);
 }
 
 @Override

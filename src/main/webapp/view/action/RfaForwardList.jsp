@@ -451,121 +451,58 @@ List<Object[]> AssigneeList=(List<Object[]>) request.getAttribute("AssigneeEmplL
 		</form>
 		
 		<!-- -- ******************************************************************Assign  Model End ***********************************************************************************-->
-<form class="form-horizontal" role="form"
-			action="RfaActionReturnList.htm" method="POST" id="returnFrm" autocomplete="off">
-			<div class="modal fade bd-example-modal-lg" id="rfaReturnmodal"
-				tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-				aria-hidden="true">
-				<div class="modal-dialog modal-md">
-					<div class="modal-content addreq" style="height:20rem; width:150%; margin-left:-22%; position: relative;" >
-						<div class="modal-header" id="modalreqheader" style="background-color: #021B79">
-							<h5 class="modal-title" id="exampleModalLabel" style="color: #fff">RFA Return</h5>
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close" style="color: white">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div style="height: 530px; overflow: auto;">
-							<div class="modal-body">
-							<div class="row" style="" id="mainrow">
-		<div class="col-md-12">
- 			
-          <!--   <div class="row">
-                           <div class="col-md-3">
-		                        <div class="form-group">
-		                            <label class="control-label returnLabel">RFA No</label>
-			  							<input  class="form-control"   id="rfanoreturn" name="rfanoreturn"  readonly="readonly"  style="width: 100%;"  >	
-		                        </div>
-		                    </div>
-		                    <div class="col-md-3">
-		                        <div class="form-group">
-		                            <label class="control-label returnLabel">Project</label>
-			  							<input  class="form-control"   id="projectname" name="projectname"  readonly="readonly"  style="width: 100%;"  >	
-		                        </div>
-		                    </div>
+	<form class="form-horizontal" role="form"
+		action="RfaActionReturnList.htm" method="POST" id="returnFrm"
+		autocomplete="off">
+		<div class="modal fade bd-example-modal-lg" id="rfaReturnmodal"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content addreq">
+					<div class="modal-header" id="modalreqheader"
+						style="background-color: #021B79">
+						<h5 class="modal-title" id="exampleModalLabel" style="color: #fff">RFA Return</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close" style="color: white">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+						<div class="modal-body">
+							<div class="row" id="mainrow">
+								<div class="col-md-12">
+									<label class="control-label returnLabel"
+										style="font-weight: 600; font-size: 16px;"> Reply <span
+										class="mandatory" style="color: #cd0a0a;">*</span>
+									</label>
+									<textarea class="form-control" rows="3" cols="30"
+										placeholder="Max 500 Characters" name="replyMsg" id="replyMsg"
+										maxlength="500" required></textarea>
+								</div>
 
-		                    <div class="col-md-3">
-		                        <div class="form-group">
-		                            <label class="control-label returnLabel">Priority</label>
-		  								<input  class="form-control"   id="priority" name="priority"  readonly="readonly"  style="width: 100%;" >	
-		                        </div>
-		                    </div>
-		                    
-		                    <div class="col-md-3">
-		                        <div class="form-group">
-		                            <label class="control-label returnLabel">Date</label>
-						  			<input  class="form-control"   id="datepicker1" name="rfadate" readonly="readonly"   style="width: 100%;" >						
-		                        </div>
-		                    </div>
-		                     
-		          </div>
-		      
-		            <div class="row">
-		                  <div class="col-md-3" style="max-width: 18%">
-		                      <label class="control-label returnLabel"> Problem Satement</label>
-		                  </div>
-		                  <div class="col-md-10" style="max-width: 82%">
-		                      <textarea class="form-control" rows="1" cols="30" readonly="readonly"  name="statement" id="statement" maxlength="200"></textarea>
-		                  </div>
-		            </div>
-		            
-		            <br>
-		            
-		            <div class="row">
-		                  <div class="col-md-3" style="max-width: 18%">
-		                      <label class="control-label returnLabel">Description</label>
-		                  </div>
-		                  <div class="col-md-10" style="max-width: 82%">
-		                      <textarea class="form-control" rows="3" cols="30" readonly="readonly"  name="description" id="description" maxlength="500"></textarea>
-		                  </div>
-		            </div>
-		            
-		            <br>
-		            
-		            <div class="row">
-		                  <div class="col-md-3" style="max-width: 18%">
-		                      <label class="control-label returnLabel">References</label>
-		                  </div>
-		                  <div class="col-md-10" style="max-width: 82%">
-		                      <input class="form-control"  readonly="readonly" name="reference" id="reference" maxlength="100">
-		                  </div>
-		            </div><br> -->
-		                <div class="row">
-		                  <div class="col-md-3" style="max-width: 18%">
-		                      <label class="control-label returnLabel">Reply</label>
-		                      <span class="mandatory" style="color: #cd0a0a;">*</span>
-		                  </div>
-		                  <div class="col-md-10" style="max-width: 82%">
-		                      <textarea class="form-control" rows="3" cols="30" placeholder="Max 500 Characters" name="replyMsg" id="replyMsg" maxlength="500" required></textarea>
-		                  </div>
-		            </div>
-		           
-		             <br>
-		            
-		        <div class="form-group" align="center" >
-					<span id="btnsub"><button type="submit"  class="btn btn-primary btn-sm submit" id="submit" value="SUBMIT" onclick="return confirm('Are you sure to return?')">SUBMIT</button></span>
-				</div>
+								<div class="col-md-12 form-group mt-3 d-flex justify-content-center">
+										<button type="submit" class="btn btn-primary btn-sm submit"
+											id="submit" value="SUBMIT"
+											onclick="return confirm('Are you sure to return?')">
+											SUBMIT</button>
+								</div>
 
-				<input type="hidden" name="${_csrf.parameterName}"		value="${_csrf.token}" /> 
- 		<input type="hidden" name="rfa" id="rfaHidden" >
- 		<input type="hidden" name="RfaStatus" id="RfaStatusHidden">
- 		<input type="hidden" name="assignor" id="userIdHidden">
 
-        
-	</div>
-</div>
-	
+								<input type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}" /> <input type="hidden" name="rfa"
+									id="rfaHidden"> <input type="hidden" name="RfaStatus"
+									id="RfaStatusHidden"> <input type="hidden"
+									name="assignor" id="userIdHidden">
 							</div>
 						</div>
-					</div>
+				</div>
 
-				</div>
-				</div>
-		
-		</form>
-		
-		
-			<div class="modal fade  bd-example-modal-lg" tabindex="-1" role="dialog" id="ActionAssignfilemodal">
+			</div>
+		</div>
+
+	</form>
+
+
+	<div class="modal fade  bd-example-modal-lg" tabindex="-1" role="dialog" id="ActionAssignfilemodal">
 				<div class="modal-dialog modal-lg" role="document">
 					<div class="modal-content">
 						<div class="modal-header">

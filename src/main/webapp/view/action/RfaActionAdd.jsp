@@ -49,6 +49,7 @@ hr{
 
 <%
 List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
+List<Object[]> preProjectList=(List<Object[]>)request.getAttribute("preProjectList");
 List<Object[]> ProjectTypeList=(List<Object[]>)request.getAttribute("ProjectTypeList");
 List<Object[]> PriorityList=(List<Object[]>)request.getAttribute("PriorityList");
 List<Object[]> EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
@@ -56,16 +57,19 @@ List<Object[]> RfaNoTypeList=(List<Object[]>)request.getAttribute("RfaNoTypeList
 List<Object[]> vendorList=(List<Object[]>)request.getAttribute("vendorList");
 String labcode=(String)session.getAttribute("labcode");
 
+String projectType = (String)request.getAttribute("projectType");
+String projectId = (String)request.getAttribute("projectId");
+String initiationId = (String)request.getAttribute("initiationId");
 
 String EmpId=(String)request.getAttribute("EmpId");
-
+String DesgId = ((String)session.getAttribute("DesgId"));
 
 
 %>
 
 
 
-<div class="container-fluid">
+<div class="container-fluid" style="width: 82%">
 	<form action="RfaActionSubmit.htm" method="POST" name="myfrm" id="myfrm" autocomplete="off" enctype="multipart/form-data" >
 		<div class="card shadow-nohover" style="margin-top:0px">		
 				<div class="row card-header">
@@ -82,7 +86,7 @@ String EmpId=(String)request.getAttribute("EmpId");
         		
         		<div class="row">
         		
-        		  <div class="col-md-2">
+        		         <div class="col-md-2">
 		                        <div class="form-group">
 		                            <label class="control-label">Type</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
@@ -115,23 +119,34 @@ String EmpId=(String)request.getAttribute("EmpId");
 		                        <div class="form-group">
 		                            <label class="control-label">Project</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-			                            <select class="form-control selectdee " id="ProjectProgramme"  name="projectid" required="required">
-										    <option disabled="true"  selected value="">Select...</option>
-										     <% for (Object[] obj : ProjectList) {
-										    	 String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
-										     %>
-											<option value="<%=obj[0]%>"><%=obj[4]+projectshortName%></option>
-											<%} %>
+		                               <select class="form-control selectdee " id="ProjectProgramme"  name="projectid" required="required">
+		                               	 <option disabled="true"  selected value="">Select...</option>
+			                               <%if(projectType!= null && "P".equalsIgnoreCase(projectType)){ %>
+											     <% for (Object[] obj : ProjectList) {
+											    	 String projectshortName=(obj[17]!=null) ? " ( "+obj[17].toString()+" ) ":"";
+											     %>
+												 <option value="<%=obj[0] %>" <%if(projectId.equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>>
+												       <%=obj[4]+projectshortName %>
+												 </option>	
+												<%} %>
+				  							<%}else{ %>
+												<% if(preProjectList!=null && preProjectList.size()>0){
+														for (Object[] obj : preProjectList) {%>
+												<option value="<%=obj[0]%>"  <%if(obj[0].toString().equalsIgnoreCase(initiationId)){ %> selected <%} %>>
+														<%=obj[3]+"( "+obj[2]+" )" %>
+												</option>
+												<%} }%>
+				  							<%} %>
 			  							</select>
-			  							
+		                           </div>
 		                        </div>
-		                    </div>
 		                    
 		                  <div class="col-md-2">
 		                     <div class="form-group">
 		                            <label class="control-label"> RFA Type</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-		                            <select class="form-control selectdee" required="required" name="rfanotype" id="rfanotype" data-placeholder= "Select Type">                   
+		                            <select class="form-control selectdee" required="required" name="rfanotype" id="rfanotype" data-placeholder= "Select Type" onchange="showRFAExtraFields()">                   
+		                             <option disabled="true"  selected value="">Select...</option>
 		                            <% if(RfaNoTypeList!=null && RfaNoTypeList.size()>0){
 		                            for(Object[] obj : RfaNoTypeList) { %>
 		                            <option value="<%=obj[0]%>"><%=obj[1]%></option>
@@ -189,9 +204,49 @@ String EmpId=(String)request.getAttribute("EmpId");
 		            
 		          </div>
 		                   
-		            <br>
-		      
-		            <div class="row">
+		           <div class="row mt-2" id="subdiv" style="display: none;">
+		            
+		            <div class="col-md-3">
+		            <div class="form-group"> 
+		               <label class="control-label"> Box No.   <span class="mandatory" style="color: #cd0a0a;">*</span></label>
+		           
+		           <input type="text" class="form-control" name="boxno" maxlength="250" required="required">
+		            </div>
+		            </div>
+		            
+		      		
+		      		   <div class="col-md-3">
+		            <div class="form-group"> 
+		               <label class="control-label"> S/W Release Data:   <span class="mandatory" style="color: #cd0a0a;">*</span></label>
+		           <input  class="form-control form-control date"  data-date-format="dd-mm-yyyy" id="datepicker2"
+						  			 name="swdate" readonly="readonly"  required="required" style="width: 100%;">						
+		            </div>
+		            </div>
+		            
+		            
+		              
+		            <div class="col-md-3">
+		            <div class="form-group"> 
+		               <label class="control-label"> FPGA Version.   <span class="mandatory" style="color: #cd0a0a;">*</span></label>
+		           
+		           <input type="text" class="form-control" name="FPGA" maxlength="250" required="required">
+		            </div>
+		            </div>
+		            
+		              
+		            <div class="col-md-3">
+		            <div class="form-group"> 
+		               <label class="control-label"> Rig S/W Version.   <span class="mandatory" style="color: #cd0a0a;">*</span></label>
+		           
+		           <input type="text" class="form-control" name="RigVersion" maxlength="250" required="required">
+		            </div>
+		            </div>
+		      		
+		      		</div>
+		            
+
+		      		
+		            <div class="row mt-2">
 		                  <div class="col-md-2" >
 		                      <label class="control-label"> Problem Statement</label>
 		                      <span class="mandatory" style="color: #cd0a0a;">*</span>
@@ -238,6 +293,17 @@ String EmpId=(String)request.getAttribute("EmpId");
 		                      
 		                  </div>
 		            </div>
+		            <%if(DesgId.equalsIgnoreCase("110")){ %>
+		            <div class="row mt-2">
+		                  <div class="col-md-2">
+		                      <label class="control-label">RFA raised BY</label>
+		                      <span class="mandatory" style="color: #cd0a0a;">*</span>
+		                  </div>
+		                  <div class="col-md-10">
+		                     <input type="text" class="form-control" name="rfaRaisedBy" maxlength="500"  <%if(DesgId.equalsIgnoreCase("110")){ %> required="required" <%} %> placeholder="maximum 500 Characters">
+		                  </div>
+		            </div>
+		            <%} %>
 		            
 		            <br>
 		            
@@ -254,20 +320,19 @@ String EmpId=(String)request.getAttribute("EmpId");
 		             <br>
 		        <div class="form-group" align="center" >
 					 <button type="submit" class="btn btn-primary btn-sm submit "  value="SUBMIT" id="rfaAddSubBtn" onclick ="return confirm('Are you sure to submnit?')">SUBMIT </button>
-					 <a class="btn btn-info btn-sm  shadow-nohover back" href="RfaAction.htm" >Back</a>
+					    <%if(projectType.equalsIgnoreCase("P")){ %>
+					        <a class="btn btn-info btn-sm  shadow-nohover back" href="RfaAction.htm?projectType=<%=projectType %>&projectId=<%=projectId %>" >Back</a>
+					    <%}else{ %>
+					        <a class="btn btn-info btn-sm  shadow-nohover back" href="RfaAction.htm?projectType=<%=projectType %>&initiationId=<%=initiationId %>" >Back</a>
+					    <%} %>
 				</div>
-
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
- 		
-   </div>    
-        
-
-        
+            </div>    
         </div>
-
-<input type="hidden" value="<%=EmpId %>" name="EmpId">
-</form>
-</div>
+		  <input type="hidden" value="<%=EmpId %>" name="EmpId">
+		  <input type="hidden" value="<%=projectType %>" name="projectType">
+		</form>
+		</div>
   
   <script type="text/javascript">
 
@@ -277,6 +342,18 @@ String EmpId=(String)request.getAttribute("EmpId");
 	  
   
 	$('#datepicker1').daterangepicker({
+		"singleDatePicker" : true,
+		"linkedCalendars" : false,
+		"showCustomRangeLabel" : true,
+		"startDate" : new Date(),
+		"cancelClass" : "btn-default",
+		showDropdowns : true,
+		locale : {
+			format : 'DD-MM-YYYY'
+		}
+	});
+	
+	$('#datepicker2').daterangepicker({
 		"singleDatePicker" : true,
 		"linkedCalendars" : false,
 		"showCustomRangeLabel" : true,
@@ -514,6 +591,26 @@ let optionsArray = [];
 $('#CCEmpName option').each(function() {
  optionsArray.push($(this).prop('outerHTML')); // Get the full <option> tag
 });
+
+function showRFAExtraFields(){
+	
+	var arr= ['1','2','3','4'];
+	
+	var value = $('#rfanotype').val();
+	
+	
+	
+	if(arr.includes(value)){
+		$('#subdiv').show();
+		 $('input[name="boxno"], input[name="swdate"], input[name="FPGA"], input[name="RigVersion"]').attr('required', true);
+	}else{
+		
+		$('#subdiv').hide();
+		 $('input[name="boxno"], input[name="swdate"], input[name="FPGA"], input[name="RigVersion"]').attr('required', false);
+	}
+	
+	
+}
 
 </script>
 </body>

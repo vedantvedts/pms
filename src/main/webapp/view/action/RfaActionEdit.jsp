@@ -55,6 +55,7 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 Object[] RfaAction=(Object[]) request.getAttribute("RfaAction");
 Object[] rfaAttachDownload=(Object[]) request.getAttribute("rfaAttachDownload");
 List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
+List<Object[]> preProjectList=(List<Object[]>)request.getAttribute("preProjectList");
 List<Object[]> ProjectTypeList=(List<Object[]>)request.getAttribute("ProjectTypeList");
 List<Object[]> PriorityList=(List<Object[]>)request.getAttribute("PriorityList");
 List<Object[]> EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
@@ -62,25 +63,11 @@ List<Object[]> AssigneeList=(List<Object[]>) request.getAttribute("AssigneeEmplL
 List<Object[]> vendorList=(List<Object[]>)request.getAttribute("vendorList");
 String Project="";
 String assigneeLab=(String)request.getAttribute("assigneeLab");
+String projectType=(String)request.getAttribute("projectType");
 %>
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</center>
-	<%}if(ses!=null){ %>
-	<center>
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-	</center>
-	<%} %>
 
-<div class="container-fluid">
+
+<div class="container-fluid" style="width: 82%">
 	<form action="#" method="POST" name="myfrm" id="myfrm" autocomplete="off" enctype="multipart/form-data" >
  			<div class="card shadow-nohover" style="margin-top:0px">		
 				<div class="row card-header">
@@ -94,23 +81,31 @@ String assigneeLab=(String)request.getAttribute("assigneeLab");
 					 </div>
         
         		<div class="card-body">
-            <div class="row">
-		                    <div class="col-md-1">
+                 <div class="row">
+		                    <div class="col-md-3">
 		                        <div class="form-group">
 		                            <label class="control-label">Project</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-			             
-			  							<%for (Object[] obj : ProjectList) { 
-											if(obj[0].toString().equalsIgnoreCase(RfaAction[2].toString())){
-												Project=obj[0].toString();
-											%>
-											<input class="form-control" name="projectCode" value="<%=obj[4].toString()%>" readonly="readonly">
-											<%}} %>
-			  						
+		                                       <%if(projectType!= null && "P".equalsIgnoreCase(projectType)){ %>
+											     <% for (Object[] obj : ProjectList) {
+											    	 if(obj[0].toString().equalsIgnoreCase(RfaAction[2].toString())){
+															Project=obj[0].toString();
+											     %>
+												 <input class="form-control" name="projectCode" value="<%=obj[4].toString()%>" readonly="readonly">
+												<%}} %>
+				  							<%}else{ %>
+												<% if(preProjectList!=null && preProjectList.size()>0){
+														for (Object[] obj : preProjectList) {
+															if(obj[0].toString().equalsIgnoreCase(RfaAction[2].toString())){
+																Project=obj[0].toString();
+														%>
+												<input class="form-control" name="projectCode" value="<%=obj[2].toString()%>" readonly="readonly">
+												<%} } }%>
+				  						<%} %>
 		                        </div>
 		                    </div>
 		                    
-		                   <div class="col-md-2">
+		                   <div class="col-md-4">
 		                       <div class="form-group">
 		                            <label class="control-label"> RFA No.</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
@@ -119,7 +114,7 @@ String assigneeLab=(String)request.getAttribute("assigneeLab");
 		                   </div> 
 		                    
 						<input type="hidden" name="rfaid" value="<%=RfaAction[0] %>">
-		                    <div class="col-md-2">
+		                    <div class="col-md-3">
 		                        <div class="form-group">
 		                            <label class="control-label">Priority</label>
 		                            	<select class="custom-select"  required="required"name="priority" id="priority">
@@ -130,10 +125,17 @@ String assigneeLab=(String)request.getAttribute("assigneeLab");
 		  								</select>
 		                        </div>
 		                    </div>
+		                    <div class="col-md-2">
+		                       <div class="form-group">
+		                            <label class="control-label">RFA Date</label>
+						  			<input  class="form-control form-control date"  data-date-format="dd-mm-yyyy" id="datepicker1" name="rfadate"  
+						  			value="<%=new FormatConverter().SqlToRegularDate(  RfaAction[4].toString() )%>">						
+		                        </div>
+		                    </div> 
 		                   </div>
 		                    <div class="row">
 		                    <%if(RfaAction[15].toString().equalsIgnoreCase("E")){ %>
-		                        <div class="col-md-3" id="vendorDiv" style="">
+		                        <div class="col-md-4" id="vendorDiv" style="">
 		                     <div class="form-group">
 		                            <label class="control-label"> Vendor</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
@@ -159,14 +161,6 @@ String assigneeLab=(String)request.getAttribute("assigneeLab");
 		                  </div>
 		                </div> 
 		                
-		                  <div class="col-md-1">
-		                       <div class="form-group">
-		                            <label class="control-label">RFA Date</label>
-						  			<input  class="form-control form-control date"  data-date-format="dd-mm-yyyy" id="datepicker1" name="rfadate"  
-						  			value="<%=new FormatConverter().SqlToRegularDate(  RfaAction[4].toString() )%>" style="width: 110%;">						
-		                        </div>
-		                  </div> 
-		                  
 		                   <div class="col-md-4">
 		                     <div class="form-group">
 		                         <label class="control-label">CC To</label>
@@ -177,12 +171,54 @@ String assigneeLab=(String)request.getAttribute("assigneeLab");
 		                      </select>
 		                  </div>
 		                </div>   
-		            
 		          </div>
 		          
-		            <br>
+		      <div class="row mt-2" id="subdiv" >
+		            
+		            <%if(RfaAction[16]!=null){ %>
+		            <div class="col-md-3">
+		            <div class="form-group"> 
+		               <label class="control-label"> Box No.   <span class="mandatory" style="color: #cd0a0a;">*</span></label>
+		           
+		           <input type="text" class="form-control" name="boxno" maxlength="250" value="<%=RfaAction[16].toString().trim()  %>" required="required">
+		            </div>
+		            </div>
+		            
+		            <%} %>
+		            
+		      		  <%if(RfaAction[17]!=null){ %>
+		      		   <div class="col-md-3">
+		            <div class="form-group"> 
+		               <label class="control-label"> S/W Release Data:   <span class="mandatory" style="color: #cd0a0a;">*</span></label>
+		           <input  class="form-control form-control date"  data-date-format="dd-mm-yyyy" id="datepicker2"
+					value="<%=new FormatConverter().SqlToRegularDate(  RfaAction[17].toString() )%>" name="swdate" readonly="readonly"  required="required" style="width: 100%;">						
+		            </div>
+		            </div>
+		             <%} %>
+		            
+		              	  <%if(RfaAction[18]!=null){ %>
+		            <div class="col-md-3">
+		            <div class="form-group"> 
+		               <label class="control-label"> FPGA Version.   <span class="mandatory" style="color: #cd0a0a;">*</span></label>
+		           
+		           <input type="text" class="form-control" name="FPGA" maxlength="250" value="<%=RfaAction[18].toString().trim() %>" required="required">
+		            </div>
+		            </div>
+		             <%} %>
+		              
+		              <%if(RfaAction[19]!=null){ %>
+		            <div class="col-md-3">
+		            <div class="form-group"> 
+		               <label class="control-label"> Rig S/W Version.   <span class="mandatory" style="color: #cd0a0a;">*</span></label>
+		           
+		           <input type="text" class="form-control" name="RigVersion" maxlength="250"   required="required" <%if(RfaAction[19].toString().trim().length()>0) {%>    value="<%=RfaAction[19].toString().trim() %>"  <%}else{ %>   value="-" <%} %>>
+		            </div>
+		            </div>
+		            <%} %>
+		      		
+		      		</div>
 		      
-		            <div class="row">
+		            <div class="row mt-2">
 		                  <div class="col-md-2" style="max-width: 18%">
 		                      <label class="control-label"> Problem Statement</label>
 		                  </div>
@@ -227,8 +263,18 @@ String assigneeLab=(String)request.getAttribute("assigneeLab");
 		            </div>
 		            
 		            <br>
-		           
-		            <div class="row">
+		            <%if(RfaAction[20]!=null){ %>
+		            <div class="row mt-2">
+		                  <div class="col-md-2">
+		                      <label class="control-label">RFA raised BY</label>
+		                      <span class="mandatory" style="color: #cd0a0a;">*</span>
+		                  </div>
+		                  <div class="col-md-10">
+		                     <input type="text" class="form-control" name="rfaRaisedBy" maxlength="500" value="<%=RfaAction[20] %>"   placeholder="maximum 500 Characters">
+		                  </div>
+		            </div>
+		           <%} %>
+		            <div class="row mt-2">
 		                <div class="col-md-4" style="max-width: 18%">
 		                      <label class="control-label">Attachment</label>
 		                  </div>
@@ -250,16 +296,19 @@ String assigneeLab=(String)request.getAttribute("assigneeLab");
 		            
 		        <div class="form-group" align="center" >
 					 <input type="button" class="btn btn-primary btn-sm submit" onclick="return editRfa()" formaction="RfaAEditSubmit.htm" value="SUBMIT" id="rfaEditSubBtn"> 
-					 <a class="btn btn-info btn-sm  shadow-nohover back" href="RfaAction.htm?Project=<%=Project%>" >Back</a>
+					  <%if(projectType.equalsIgnoreCase("P")){ %>
+					        <a class="btn btn-info btn-sm  shadow-nohover back" href="RfaAction.htm?projectType=<%=projectType %>&projectId=<%=Project %>" >Back</a>
+					    <%}else{ %>
+					        <a class="btn btn-info btn-sm  shadow-nohover back" href="RfaAction.htm?projectType=<%=projectType %>&initiationId=<%=Project %>" >Back</a>
+					    <%} %>
 				</div>
 
-				<input type="hidden" name="${_csrf.parameterName}"		value="${_csrf.token}" /> 
+				<input type="hidden" name="projectType" value="<%=projectType %>" /> 
+				<input type="hidden" name="projectId" value="<%=Project%>" /> 
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
  		
    </div>    
-        
-
-        
-        </div>
+    </div>
 </form>
 </div>
   
@@ -310,6 +359,17 @@ String assigneeLab=(String)request.getAttribute("assigneeLab");
 }
   
 	$('#datepicker1').daterangepicker({
+		"singleDatePicker" : true,
+		"linkedCalendars" : false,
+		"showCustomRangeLabel" : true,
+
+		"cancelClass" : "btn-default",
+		showDropdowns : true,
+		locale : {
+			format : 'DD-MM-YYYY'
+		}
+	});
+	$('#datepicker2').daterangepicker({
 		"singleDatePicker" : true,
 		"linkedCalendars" : false,
 		"showCustomRangeLabel" : true,

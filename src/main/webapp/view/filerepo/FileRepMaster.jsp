@@ -1,236 +1,155 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/css/sweetalert2.min.css" var="sweetalertCss" />
+<spring:url value="/resources/js/sweetalert2.min.js" var="sweetalertJs" />
+<link href="${sweetalertCss}" rel="stylesheet" />
+<script src="${sweetalertJs}"></script>
 <title>File Master</title>
 
   <style>
-    .bs-example{
-        margin: 20px;
-    }
-    .accordion .fa{
-        margin-right: 0.5rem;
-    }
+.subfolder-group {
+    display: none;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
 
-label{
-  font-weight: bold;
-  font-size: 20px;
-}
- 
-.note-editable {
-  line-height: 1.0;
-}
-.panel-info {
-    border-color: #bce8f1;
-}
-.panel {
+.breadcrumb-header {
+    font-size: 16px;
+    font-weight: 500;
     margin-bottom: 10px;
-    background-color: #fff;
-    border: 1px solid transparent;
+    color: #555;
+}
+
+.breadcrumb-link {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.subfolder-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.folder-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.folder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.mainicon {
+    font-size: 65px;
+    color: #f0ad4e;
+}
+
+.fileicon {
+    font-size: 48px;
+    color: red;
+}
+.fa-pencil-square-o {
+    font-size: 18px !important;
+    color: #9f0dff !important;
+}
+.folder .edit-form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 5px;
+}
+
+.folder .edit-form input[type="text"] {
+	text-align: center;
+}
+textarea {
+	font-family: inherit;
+	font-size: 14px;
+	line-height: 1.2;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	padding: 4px;
+}
+
+/* .upload-tooltip {
+    background: #333;
+    color: #fff;
+    padding: 4px 8px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-}
- .panel-heading {
-    background-color: #FFF !important;
-    border-color: #bce8f1 !important;
-    border-bottom: 2px solid #466BA2 !important;
-    color: #1d5987;
-}
-.panel-title {
-    margin-top: 0;
-    margin-bottom: 0;
-    font-size: 13px;
-    color: inherit;
-    font-weight: bold;
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-div {
-    display: block;
+    font-size: 14px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
 }
 
-element.style {
-}
-.olre-body .panel-info .panel-heading {
-    background-color: #FFF !important;
-    border-color: #bce8f1 !important;
-    border-bottom: 2px solid #466BA2 !important;
-   
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-info>.panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-heading {
-    padding: 3px 10px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-.panel-heading {
-    padding: 3px 10px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-.panel-heading {
-    padding: 3px 10px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-.panel-heading {
-    padding: 3px 10px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-.panel-heading {
-    padding: 3px 10px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-.p-5 {
-    padding: 5px;
-}
-.panel-heading {
-    padding: 10px 15px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-user agent stylesheet
-div {
-    display: block;
+.upload-tooltip i {
+    font-size: 16px;
+} */
+
+.folder-icon-wrapper {
+    position: relative;
 }
 
-.panel-info {
-    border-color: #bce8f1;
+.control-label {
+	font-weight: bold !important;
 }
 
-.form-check{
-	margin:0px 4%;
+.file-icon-wrapper {
+    font-size: 43px;
 }
 
-.editbtn
-{
-	background-color: green;
-	width:auto; 
-	height: 22px; 
-	font-size:10px;
-	font-weight: bold;
-	text-align: justify; 
-	margin-top : -9px;
-	padding: 0px 3px 1px 3px; 
+.pdf-item {
+    width: 120px;
+    word-wrap: break-word;
 }
 
-.hiddeninput
-{
-	width:50%;
-	height: 25px;
-	
-	font-size: 1rem;
-	border: 1px solid #ced4da;
-	border-radius: 0.25rem;
-	padding: 2px;
-	
+.file-download-span {
+    cursor: pointer;
+    text-decoration: none;
 }
 
- .btnx
-{
-	width:22px; 
-	height: 22px;
-	border: 1px solid #ced4da;
-	border-radius: 0.25rem;
-	
+.file-download-span:hover {
+    text-decoration: underline;
+    color: #007bff;
 }
 
-.fa-lg
-{
-	margin-left: -5px;
-	vertical-align: 0%;
-	font-size: 1.4rem;
-} 
+.modal-xl{
+	max-width: 1200px;
+}
 
 </style>
 </head>
 <body>
   <%
-  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
-  SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
-  List<Object[]> ProjectList=(List<Object[]>) request.getAttribute("projectslist");
-  String ProjectId= (String) request.getAttribute("projectid");
-  
-  List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filerepmasterlistall");
+	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+	SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+	List<Object[]> ProjectList = (List<Object[]>) request.getAttribute("projectslist");
+	String ProjectId = (String) request.getAttribute("projectid");
+	Long projectDirectorId = 0l;
+	String parentLevelId = (String) request.getParameter("parentLevelId");
+	String type = (String) request.getParameter("type");
+	String logintype= (String)session.getAttribute("LoginType");
+	Long empId = (Long) session.getAttribute("EmpId");
+	List<Object[]> filerepmasterlistall = (List<Object[]>) request.getAttribute("filerepmasterlistall");
+	List<Object[]> filerepdoclist = (List<Object[]>) request.getAttribute("filerepdoclist");
  %>
 
 
@@ -252,610 +171,1214 @@ div {
 
     
 
-<div class="container-fluid">   
-<div class="row"> 
-<div class="col-md-12" >
-	<div class="card" >
-		<div class="card-header">
-				<div class="row" style="margin-top:-10px;">
-					<div class="col-md-6">
-						<h4>Project System</h4>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">
+						<div class="row" style="margin-top: -10px;">
+							<div class="col-md-6">
+								<h4>Project Document Rep-Master</h4>
+							</div>
+							<div class="col-md-6">
+								<form action="FileRepMaster.htm" method="post"
+									id="myprojectform">
+									<table style="float: right;">
+										<tr>
+											<td><label class="control-label">Project Name :&nbsp;&nbsp; </label></td>
+											<td><select class="form-control selectdee"
+												id="projectid" required="required" name="projectid"
+												onchange="$('#myprojectform').submit();">
+													<option value="" disabled="disabled">Choose...</option>
+													<%-- 	<option value="0"  <%if(ProjectId.split("_")[0].equalsIgnoreCase("0")){ %>selected="selected" <%} %>>General</option> --%>
+													<%
+													for (Object[] obj : ProjectList) {
+														String projectshortName = (obj[17] != null) ? " ( " + obj[17].toString() + " ) " : "";
+													%>
+													<option value="<%=obj[0]%>"
+														<%if (ProjectId.equalsIgnoreCase(obj[0].toString())) {
+															projectDirectorId = Long.parseLong(obj[23].toString());
+														%>
+														selected="selected" <%}%>><%=obj[4] + projectshortName%>
+													</option>
+													<%
+													}
+													%>
+													<option value="0"
+														<%if (ProjectId.split("_")[0].equalsIgnoreCase("0")) {%>
+														selected="selected" <%}%>>General</option>
+											</select> <input type="hidden" name="${_csrf.parameterName}"
+												value="${_csrf.token}" /></td>
+										</tr>
+									</table>
+								</form>
+							</div>
+						</div>
 					</div>
-					<div class="col-md-6">
-						<form action="FileRepMaster.htm" method="post" id="myprojectform">
-		        			<table style="float: right;">
-								<tr>
-									<td><label >Project Name :&nbsp;&nbsp; </label></td>
-								   	<td>
-								   		<select class="form-control selectdee" id="projectid" required="required"  name="projectid" onchange="$('#myprojectform').submit();">
-								    		<option    value="" disabled="disabled">Choose...</option>
-								    	<%-- 	<option value="0"  <%if(ProjectId.split("_")[0].equalsIgnoreCase("0")){ %>selected="selected" <%} %>>General</option> --%>
-								    		<% for (Object[] obj : ProjectList) {
-								    			String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
-								    		%>
-												<option value="<%=obj[0]%>"  <%if(ProjectId.equalsIgnoreCase(obj[0].toString())){ %>selected="selected" <%} %>><%=obj[4]+projectshortName%> </option>
-											<%} %>
-											<option value="0"  <%if(ProjectId.split("_")[0].equalsIgnoreCase("0")){ %>selected="selected" <%} %>>General</option>
-										</select>
-										<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-									</td>
-								</tr>
-							</table>
+					<div class="card-body"
+						style="margin-top: -8px; border-color: #00DADA;">
+                        <div class="d-flex justify-content-left align-items-center flex-wrap mb-3">
+						    <div class="breadcrumb-header" style="margin-right: 20px" id="breadcumb-span">
+						        <span class="breadcrumb-link" onclick="goBackToMain()">Home</span>
+						        <span> &gt; </span>
+						        <span id="spanValue"></span>
+						        <span id="subTag"> &gt; </span>
+						        <span id="subspanValue"></span>
+						    </div>
+						    <div class="text-center">
+						      <%if(empId!=null && empId.equals(projectDirectorId) || logintype!=null && logintype.equalsIgnoreCase("A") ){ %>
+						        <button type="button" class="btn btn-primary" id="addBtn" value="mainlevel" onclick="addNewLevel()">Add New</button>
+						      <% }%>
+						    </div>
+						</div>
+
+						<div class="folder-container" id="mainFolderId">
+						   <div id="main-folders" class="folder-container">
+							    <%
+							        for (Object[] obj : filerepmasterlistall) {
+							            if ("1".equalsIgnoreCase(obj[2].toString())) {
+							    %>
+							    <div class="folder">
+							       <div class="folder-icon-wrapper">
+									    <i class="fa fa-folder mainicon" onclick="showSubfolders('<%= obj[0] %>')"></i>
+									</div>
+							    
+											<!-- View Mode -->
+											<span id="span_<%=obj[0]%>"> <%=obj[3]%> 
+											    <br/>
+											    <%if(empId!=null && empId.equals(projectDirectorId) || logintype!=null && logintype.equalsIgnoreCase("A") ){ %>
+												<i class="fa fa-pencil-square-o"
+													style="margin-left: 5px; cursor: pointer;" aria-hidden="true"
+													onclick="event.stopPropagation(); enableInlineEdit('<%=obj[0]%>')">
+												</i>
+												<i class="fa fa-upload"
+													style="margin-left: 5px; cursor: pointer; color: #0a5dff;"
+													aria-hidden="true"
+													onclick="event.stopPropagation(); showUpload('mainLevel','<%=obj[3]%>','<%= obj[0] %>')">
+												</i>
+											   <% }%>
+											</span>
+	
+											<!-- Edit Mode -->
+											<textarea name="levelname" id="input_<%=obj[0]%>"
+												maxlength="255"
+												style="display: none; width: 90px; resize: none; overflow-wrap: break-word; height: auto;"
+												rows="2"><%=obj[3]%></textarea>
+												
+											<div class="row">
+												<button type="button" id="btn_<%=obj[0]%>"
+													style="display: none;" class="btn btn-sm btn-success" onclick="submitLevelEdit('mainlevel', '<%=obj[0]%>','0','<%=obj[3]%>')">
+													<i class="fa fa-check" aria-hidden="true"></i>
+												</button>&nbsp;
+												<button type="button" id="btnx_<%=obj[0]%>"
+													class="btn btn-sm btn-danger" style="display: none;"
+													onclick="event.stopPropagation(); disableInlineEdit('<%=obj[0]%>')">
+													<i class="fa fa-times" aria-hidden="true"></i>
+												</button>
+											</div>
+											
+											<input type="hidden" name="filerepmasterid"  id="mainlevel_<%=obj[0]%>" value="<%=obj[0]%>">
+											<input type="hidden" name="levelId" id="levelId" value="<%=obj[2]%>">
+											<input type="hidden" name="parentName" id="parentName_<%=obj[0]%>" value="<%=obj[3]%>">
+								</div>
+							    <%
+							    }
+							    }
+							    %>
+							</div>
+							
+							<!-- Subfolder views (one per parent folder) -->
+							 <div class="row" id="subFolderId">
+							<%
+							    for (Object[] main : filerepmasterlistall) {
+							        if ("1".equalsIgnoreCase(main[2].toString())) {
+							            String parentId = main[0].toString();
+							%>
+							<div class="subfolder-group" data-parent="<%= parentId %>" style="width: auto;" id="subFolderId">
+							    <!-- Right: Subfolders list -->
+							    <div class="subfolder-list">
+							        <%
+							            for (Object[] sub : filerepmasterlistall) {
+							                if ("2".equalsIgnoreCase(sub[2].toString()) && parentId.equals(sub[1].toString())) {
+							        %>
+							            <div class="folder">
+							                <div class="folder-icon-wrapper">
+											    <i class="fa fa-folder mainicon" onclick="showSubFileDocs('<%= parentId %>','<%= sub[0] %>','<%= sub[3] %>')"></i>
+											</div>
+							                
+											<!-- View Mode -->
+											<span id="span_<%=sub[0]%>"> <%=sub[3]%>
+											    <br/>
+											    <%if(empId!=null && empId.equals(projectDirectorId) || logintype!=null && logintype.equalsIgnoreCase("A") ){ %>
+											    <i class="fa fa-pencil-square-o"
+													style="margin-left: 5px; cursor: pointer;"
+													aria-hidden="true"
+													onclick="event.stopPropagation(); enableInlineEdit('<%=sub[0]%>')">
+												</i>
+												<i class="fa fa-upload"
+													style="margin-left: 5px; cursor: pointer; color: #0a5dff;"
+													aria-hidden="true"
+													onclick="event.stopPropagation(); showUpload('subLevel','<%=sub[3]%>','<%= sub[0] %>')">
+												</i>
+												<%} %>
+											</span>
+
+											<!-- Edit Mode -->
+											<textarea name="levelname" id="input_<%=sub[0]%>"
+												maxlength="255"
+												style="display: none; width: 90px; resize: none; overflow-wrap: break-word; height: auto;"
+												rows="2"><%=sub[3]%></textarea>
+											<div class="row">
+												<button type="button" id="btn_<%=sub[0]%>"
+													style="display: none;" class="btn btn-sm btn-success" onclick="submitLevelEdit('sublevel', '<%=sub[0]%>', '<%=parentId%>', '<%=sub[3]%>')">
+													<i class="fa fa-check" aria-hidden="true"></i>
+												</button>
+												&nbsp;
+												<button type="button" id="btnx_<%=sub[0]%>"
+													class="btn btn-sm btn-danger" style="display: none;"
+													onclick="event.stopPropagation(); disableInlineEdit('<%=sub[0]%>')">
+													<i class="fa fa-times" aria-hidden="true"></i>
+												</button>
+											</div>
+											<input type="hidden" name="filerepmasterid" id="sublevel_<%=sub[0]%>" value="<%=sub[0]%>">
+											<input type="hidden" name="fileParentId" id="fileParentId_<%=sub[0]%>" value="<%=parentId%>">
+											<input type="hidden" name="fileSubName" id="fileSubName_<%=sub[0]%>" value="<%=sub[3]%>">
+									    </div>
+							        <%
+							                }
+							            }
+							        %>
+							    </div>
+							</div>
+							<%
+							        }
+							    }
+							%>
+					
+				     <!-- <div class="d-flex flex-wrap gap-4">
+							    <div class="pdf-item text-center">
+							        <div class="file-icon-wrapper">
+							            <i class="fa fa-file-pdf-o fileicon" aria-hidden="true"></i>
+							        </div>
+							        <span>test.pdf</span>
+							    </div>
+							</div> -->
+							<div id="pdf-wrapper"></div>
+					
+							</div>	   
+						</div>
+						<div id="subpdf-wrapper"></div>
+				
+						</div>	
+					</div>
+					<!-- Big card-body end -->
+				</div>
+				<!-- Card End  -->
+			</div>
+			<!-- col-md-5 end -->
+		</div>
+
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Main Level</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div>
+						<form id="myFormA" action="FileRepMasterAdd.htm" method="post">
+							<input type="hidden" name="projectid" value="<%=ProjectId%>">
+							<input type="hidden" name="specname" value="Agenda-Presentation">
+							<input type="hidden" name="formname" value="rm" /> 
+							<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" /> 
+							<div>
+								<input class="form-control" type="text" name="MasterName" id="masterName"
+									required="required" maxlength="255" onchange="checkDuplicateFolderName()"
+									style="width: 100%;">
+							</div>
+							<div class="text-center mt-4">
+								<button type="submit" class="btn btn-success" onclick="return submitMainFile()">Submit</button>
+							</div>
 						</form>
 					</div>
 				</div>
-        	</div>  
-    	<div class="card-body" style="margin-top: -8px ;border-color:#00DADA ;">
-    	
-         <div class="panel panel-info" style="margin-top: 10px;" >
-         
-      		<div class="panel-heading ">
-        		<h4 class="panel-title">
-          			<span  style="font-size:14px">Main System</span>  
-        		</h4>
-         	<div   style="float: right !important; margin-top:-23px; ">
-		 		
-	
-       	</div>
-      
-      
-		<div   style="float: right !important; margin-top:-20px; ">  
-		<a data-toggle="collapse" data-parent="#accordion" href="#collapse1" > <i class="fa fa-plus faplus " id="Clk"></i></a>
-
-   		</div>
-     </div>
-     <!-- panel-heading end -->
-  	
-	  	<div id="collapse1" class="panel-collapse collapse in">
-	  	<%
-		  	int Sub0Count=1;
-		  	for(Object[] obj:filerepmasterlistall){
-		  	if(obj[2].toString().equalsIgnoreCase("1")){
-	  	%>
-	  	<div class="row">  
-				   <div class="col-md-11"  align="left"  style="margin-left: 20px;">
-				   
-				     <div class="panel panel-info">
-					      <div class="panel-heading">
-					        <h4 class="panel-title">
-					        	<div>
-						           <form  id="myForm<%=Sub0Count %>" action="FileProjectSubAdd.htm" method="post">
-						 
-									<span  style="font-size:14px" ><%=Sub0Count %>.</span>
-									<span  style="font-size:14px" id="span_<%=obj[0]%>"> <%=obj[3] %> &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj[0] %>')"></i> </span>	
-						          	<input type="text" name="levelname" class="hiddeninput alphanum-no-leading-space" id="input_<%=obj[0]%>" value="<%=obj[3] %>" style="display: none;" maxlength="255">
-						          	<button type="submit" class="btn btn-sm btn-info editbtn" style="display: none;" id="btn_<%=obj[0]%>" formaction="ProjectModuleNameEdit.htm" formmethod="post" onclick="return confirm('Are You Sure To Edit ? ');">UPDATE</button>
-						          	<button type="button" class="btnx" style="color: red;display: none;" id="btnx_<%=obj[0] %>" onclick="moduleeditdisable('<%=obj[0] %>')"><i class="fa fa-times fa-lg " aria-hidden="true"  ></i></button>
-						          	<input type="hidden" name="filerepmasterid" value="<%=obj[0]%>">
-						          	<input type="hidden" name="projectid" value="<%=ProjectId%>">
-						          	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-						          		
-						          	</form>
-					       		</div>
-					        </h4>
-					       		<div style="float: right !important; margin-top:-20px; " > 
-					       			<a data-toggle="collapse" data-parent="#accordion" href="#collapse55<%=Sub0Count %>" > <i class="fa fa-plus faplus " id="Clk<%=Sub0Count %>"></i></a>
-					       		    </div>
-					      </div>
-					  			<div id="collapse55<%=Sub0Count %>" class="panel-collapse collapse in">
-					  			<%	int Sub1Count=1; 
-						  	  	    for(Object[] obj1:filerepmasterlistall){
-						  	  	    if(obj1[2].toString().equalsIgnoreCase("2") && obj[0].toString().equalsIgnoreCase(obj1[1].toString()) ){
-						  	  	    	
-					  			%>
-					  			
-					  			<div class="row">  
-				   <div class="col-md-11"  align="left"  style="margin-left: 20px;">
-				   
-				     <div class="panel panel-info">
-					      <div class="panel-heading">
-					        <h4 class="panel-title">
-					        	<div>
-						           <form  id="myFormB<%=Sub0Count %><%=Sub1Count %>" action="FileMasterSubAdd.htm" method="post">
-						 
-										<input type="hidden" name="projectid" value="<%=ProjectId%>">
-										<input type="hidden" name="specname" value="Agenda-Presentation">
-									    <input type="hidden" name="FileId" value="<%=obj1[0] %>" >
-                                        <input type="hidden" name="LevelId" value="<%=obj1[2] %>" >
-										<input type="hidden" name="formname" value="<%=Sub0Count %>/<%=Sub1Count %>" />										
-										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-						          		<span  style="font-size:14px"><%=Sub0Count %>.<%=Sub1Count %> </span><span  style="font-size:14px" id="span_<%=obj1[0]%>"> <%=obj1[3] %> &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj1[0] %>')"></i> </span>
-						          		<input type="text" name="levelname" class="hiddeninput" id="input_<%=obj1[0]%>" value="<%=obj1[3] %>" style="display: none;" maxlength="255" >
-							          	<button type="submit" class="btn btn-sm btn-info editbtn" style="display: none;" id="btn_<%=obj1[0]%>" formaction="ProjectModuleNameEdit.htm" formmethod="post" onclick="return confirm('Are You Sure To Edit ? ');">UPDATE</button>
-							          	<button type="button" class="btnx" style="color: red;display: none;" id="btnx_<%=obj1[0] %>" onclick="moduleeditdisable('<%=obj1[0] %>')"><i class="fa fa-times fa-lg " aria-hidden="true"  ></i></button>
-							          	<input type="hidden" name="filerepmasterid" value="<%=obj1[0]%>">
-						          	
-						          	
-						          		
-						          	</form>
-					       		</div>
-					        </h4>
-					       		<div style="float: right !important; margin-top:-20px; " > 
-					       		<a data-toggle="collapse" data-parent="#accordion" href="#collapse55B<%=Sub0Count %><%=Sub1Count %>" > 
-					       		<%-- <i class="fa fa-plus faplus " id="Clk<%=Sub0Count %><%=Sub1Count %>"></i> --%>
-					       		</a>
-					       		    </div>
-					      </div>
-					  			<%-- <div id="collapse55B<%=Sub0Count %><%=Sub1Count %>" class="panel-collapse collapse in">
-					  			
-					  			<%
-						  			int Sub2Count=1; 
-						  	  	 	for(Object[] obj2:filerepmasterlistall){
-						  	  		if(obj2[2].toString().equalsIgnoreCase("3") && obj1[0].toString().equalsIgnoreCase(obj2[1].toString()) ){
-					  			%>
-					  			
-					  			<div class="row">  
-				   <div class="col-md-11"  align="left"  style="margin-left: 20px;">
-				   
-				     <div class="panel panel-info">
-					      <div class="panel-heading">
-					        <h4 class="panel-title">
-					        	<div>
-						           <form  id="myFormB<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %>" action="FileSubAdd.htm" method="post">
-						 
-														
-										<input type="hidden" name="specname" value="Agenda-Presentation">
-										 <input type="hidden" name="FileId" value="<%=obj2[0] %>" >
-                                        <input type="hidden" name="LevelId" value="<%=obj2[3] %>" >
-										<input type="hidden" name="formname" value="<%=Sub0Count %>/<%=Sub1Count %>/<%=Sub2Count %>" />
-										<input type="hidden" name="projectid" value="<%=ProjectId%>">
-										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-						
-						          		<span  style="font-size:14px"><%=Sub0Count %>.<%=Sub1Count %>.<%=Sub2Count %> </span><span  style="font-size:14px" id="span_<%=obj2[0]%>"> <%=obj2[3] %> &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj2[0] %>')"></i> </span>
-						          		<input type="text" name="levelname" class="hiddeninput" id="input_<%=obj2[0]%>" value="<%=obj2[3] %>" style="display: none;" maxlength="255">
-							          	<button type="submit" class="btn btn-sm btn-info editbtn" style="display: none;" id="btn_<%=obj2[0]%>" formaction="ProjectModuleNameEdit.htm" formmethod="post" onclick="return confirm('Are You Sure To Edit ? ');">UPDATE</button>
-							          	<button type="button" class="btnx" style="color: red;display: none;" id="btnx_<%=obj2[0] %>" onclick="moduleeditdisable('<%=obj2[0] %>')"><i class="fa fa-times fa-lg " aria-hidden="true"  ></i></button>
-							          	<input type="hidden" name="filerepmasterid" value="<%=obj2[0]%>">
-						          				
-						          	
-						          		
-						          	</form>
-					       		</div>
-					        </h4>
-					       		<div style="float: right !important; margin-top:-20px; " > 
-					       		<a data-toggle="collapse" data-parent="#accordion" href="#collapse55B<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %>" > <i class="fa fa-plus faplus " id="Clk<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %>"></i></a>
-					       		    </div>
-					      </div>
-					  			<div id="collapse55B<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %>" class="panel-collapse collapse in">
-					  			<%
-					  				int Sub3Count=1; 
-						  	  	  	for(Object[] obj3:filerepmasterlistall){
-						  	  		if(obj3[2].toString().equalsIgnoreCase("4") && obj2[0].toString().equalsIgnoreCase(obj3[1].toString()) ){
-					  			%>
-					  			
-					  			<div class="row">  
-				   <div class="col-md-11"  align="left"  style="margin-left: 20px;">
-				   
-				     <div class="panel panel-info">
-					      <div class="panel-heading">
-					        <h4 class="panel-title">
-					        	<div>
-						           <form  id="myFormB<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %><%=Sub3Count %>" action="FileSubAdd.htm" method="post">
-						 
-														
-										<input type="hidden" name="specname" value="Agenda-Presentation">
-										<input type="hidden" name="FileId" value="<%=obj3[0] %>" >
-                                        <input type="hidden" name="LevelId" value="<%=obj3[2] %>" >
-										<input type="hidden" name="formname" value="<%=Sub0Count %>/<%=Sub1Count %>/<%=Sub2Count %>/<%=Sub3Count %>" />
-										<input type="hidden" name="projectid" value="<%=ProjectId%>">
-										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-						
-						          		<span  style="font-size:14px"><%=Sub0Count %>.<%=Sub1Count %>.<%=Sub2Count %>.<%=Sub3Count %> </span><span  style="font-size:14px" id="span_<%=obj3[0]%>"> <%=obj3[3] %> &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj3[0] %>')"></i> </span>
-						          		<input type="text" name="levelname" class="hiddeninput" id="input_<%=obj3[0]%>" value="<%=obj3[3] %>" style="display: none;" maxlength="255">
-							          	<button type="submit" class="btn btn-sm btn-info editbtn" style="display: none;" id="btn_<%=obj3[0]%>" formaction="ProjectModuleNameEdit.htm" formmethod="post" onclick="return confirm('Are You Sure To Edit ? ');">UPDATE</button>
-							          	<button type="button" class="btnx" style="color: red;display: none;" id="btnx_<%=obj3[0] %>" onclick="moduleeditdisable('<%=obj3[0] %>')"><i class="fa fa-times fa-lg " aria-hidden="true"  ></i></button>
-							          	<input type="hidden" name="filerepmasterid" value="<%=obj3[0]%>">
-						          	
-						          		
-						          	</form>
-					       		</div>
-					        </h4>
-					       		<div style="float: right !important; margin-top:-20px; " > 
-					       		<a data-toggle="collapse" data-parent="#accordion" href="#collapse55B<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %><%=Sub3Count %>" > <i class="fa fa-plus faplus " id="Clk<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %><%=Sub3Count %>"></i></a>
-					       		    </div>
-					      </div>
-					  			<div id="collapse55B<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %><%=Sub3Count %>" class="panel-collapse collapse in">
-					  			
-					  			
-					  			<%
-						  			int Sub4Count=1; 
-						  	  	 	for(Object[] obj4:filerepmasterlistall){
-						  	  		if(obj4[2].toString().equalsIgnoreCase("5") && obj3[0].toString().equalsIgnoreCase(obj4[1].toString()) ){
-						  		%>
-					  			
-					  			<div class="row">  
-				   <div class="col-md-11"  align="left"  style="margin-left: 20px;">
-				   
-				     <div class="panel panel-info">
-					      <div class="panel-heading">
-					        <h4 class="panel-title">
-					        	<div>
-						           <form  id="myFormB<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %><%=Sub3Count %><%=Sub4Count %>" action="FileSubAdd.htm" method="post">
-						 
-														
-										<input type="hidden" name="specname" value="Agenda-Presentation">
-									    <input type="hidden" name="FileId" value="<%=obj4[0] %>" >
-                                        <input type="hidden" name="LevelId" value="<%=obj4[2] %>" >
-										<input type="hidden" name="formname" value="<%=Sub0Count %>/<%=Sub1Count %>/<%=Sub2Count %>/<%=Sub3Count %>/<%=Sub4Count %>" />
-										<input type="hidden" name="projectid" value="<%=ProjectId%>">
-										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-						
-						          		<span  style="font-size:14px"><%=Sub0Count %>.<%=Sub1Count %>.<%=Sub2Count %>.<%=Sub3Count %>.<%=Sub4Count %> </span><span  style="font-size:14px" id="span_<%=obj4[0]%>"> <%=obj4[3] %> &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj4[0] %>')"></i> </span>
-						          		<input type="text" name="levelname" class="hiddeninput" id="input_<%=obj4[0]%>" value="<%=obj4[3] %>" style="display: none;" maxlength="255">
-							          	<button type="submit" class="btn btn-sm btn-info editbtn" style="display: none;" id="btn_<%=obj4[0]%>" formaction="ProjectModuleNameEdit.htm" formmethod="post" onclick="return confirm('Are You Sure To Edit ? ');">UPDATE</button>
-							          	<button type="button" class="btnx" style="color: red;display: none;" id="btnx_<%=obj4[0] %>" onclick="moduleeditdisable('<%=obj4[0] %>')"><i class="fa fa-times fa-lg " aria-hidden="true"  ></i></button>
-							          	<input type="hidden" name="filerepmasterid" value="<%=obj4[0]%>">
-						          	
-						          		
-						          	</form>
-					       		</div>
-					        </h4>
-					       		<div style="float: right !important; margin-top:-20px; " > 
-					       		<a data-toggle="collapse" data-parent="#accordion" href="#collapse55B<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %><%=Sub3Count %><%=Sub4Count %>" > <i class="fa fa-plus faplus " id="Clk<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %><%=Sub3Count %><%=Sub4Count %>"></i></a>
-					       		    </div>
-					      </div>
-					  			<div id="collapse55B<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %><%=Sub3Count %><%=Sub4Count %>" class="panel-collapse collapse in">
-					  			
-					  			
-					  			<%int 
-					  				Sub5Count=1; 
-					  	  	  		for(Object[] obj5:filerepmasterlistall){
-					  	  			if(obj5[2].toString().equalsIgnoreCase("6") && obj4[0].toString().equalsIgnoreCase(obj5[1].toString()) ){
-					  			%>
-					  			
-					  			<div class="row">  
-				   <div class="col-md-11"  align="left"  style="margin-left: 20px;">
-				   
-				     <div class="panel panel-info">
-					      <div class="panel-heading">
-					        <h4 class="panel-title">
-					        	<div>
-						           <form  id="myFormB<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %><%=Sub3Count %><%=Sub4Count %><%=Sub5Count %>" action="FileSubAdd.htm" method="post">
-						 
-														
-										<input type="hidden" name="specname" value="Agenda-Presentation">
-									    <input type="hidden" name="FileId" value="<%=obj5[0] %>" >
-                                        <input type="hidden" name="LevelId" value="<%=obj5[2] %>" >
-										<input type="hidden" name="formname" value="<%=Sub0Count %>/<%=Sub1Count %>/<%=Sub2Count %>/<%=Sub3Count %>/<%=Sub4Count %>/<%=Sub5Count %>" />
-										<input type="hidden" name="projectid" value="<%=ProjectId%>">
-										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-						
-						          		<span  style="font-size:14px"><%=Sub0Count %>.<%=Sub1Count %>.<%=Sub2Count %>.<%=Sub3Count %>.<%=Sub4Count %>.<%=Sub5Count %> <%=obj5[3] %> </span>
-						          				
-						          	
-						          		
-						          	</form>
-					       		</div>
-					        </h4>
-					       		<div style="float: right !important; margin-top:-20px; " > 
-					       		<a data-toggle="collapse" data-parent="#accordion" href="#collapse55B<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %><%=Sub3Count %><%=Sub4Count %><%=Sub5Count %>" > <i class="fa fa-plus faplus " id="Clk<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %><%=Sub3Count %><%=Sub4Count %><%=Sub5Count %>"></i></a>
-					       		    </div>
-					      </div>
-					  			<div id="collapse55B<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %><%=Sub3Count %><%=Sub4Count %><%=Sub5Count %>" class="panel-collapse collapse in">
-					  		
-					  			
-					  			
-					  			
-					  </div>
-					 </div>
-					 
-				  </div>
-	  			</div>
-					 <%Sub5Count++;}} %> 			
-		
-					 <!-- end five --> 
-					  			
-					  			
-					  			
-					  			
-					  			
-					  </div>
-					 </div>
-					 
-				  </div>
-	  			</div>
-					 <%Sub4Count++;}} %> 			
-				<div class="row">  
-				   <div class="col-md-11"  align="left"  style="margin-left: 20px;">
-				   
-				     <div class="panel panel-info">
-					      <div class="panel-heading">
-					        <h4 class="panel-title">
-					        	<div>
-						           <form  id="myFormB<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %><%=Sub3Count %><%=Sub4Count %>" action="FileRepMasterSubAdd.htm" method="post">
-						 
-														
-										<input type="hidden" name="specname" value="Agenda-Presentation">
-										<input type="hidden" name="FileMasterId" value="<%=obj3[0] %>" >
-                                        <input type="hidden" name="LevelId" value="<%=obj3[2] %>" >
-										<input type="hidden" name="formname" value="<%=Sub0Count %>/<%=Sub1Count %>/<%=Sub2Count %>/<%=Sub3Count %>" />
-										<input type="hidden" name="projectid" value="<%=ProjectId%>">
-										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-						  			<span  style="font-size:14px">
-						          		
-						          		<%=Sub0Count %>.<%=Sub1Count %>.<%=Sub2Count %>.<%=Sub3Count %>.<%=Sub4Count %>
-						          		
-						          		 </span>
-						          		
-						          		<div style="margin-top:-20px; margin-left:55px;">
-						          		
-						          			<input class="form-control" type="text" name="MasterSubName"  required="required" maxlength="255" style="width:150px; height:25px; "> 
-						          		</div>
-						          		<div style="margin-top:-22px; margin-left: 220px;">
-						          			<input type="submit" name="sub" class="btn btn-info btn-sm"  form="myFormB<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %><%=Sub3Count %><%=Sub4Count %>" value="ADD"  style="width:42px; height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
-						          		</div>
-						          		
-						          	</form>
-					       		</div>
-					        </h4>
-					       		
-					      </div>
-					  	<div >
-					  </div>
-					 </div>
-				  </div>
-	  			</div>	
- <!-- end four --> 
-						
-					  			
 			</div>
 		</div>
 	</div>
-</div>
-					 <%Sub3Count++;}} %> 			
-					  	<div class="row">  
-				   <div class="col-md-11"  align="left"  style="margin-left: 20px;">
-				   
-				     <div class="panel panel-info">
-					      <div class="panel-heading">
-					        <h4 class="panel-title">
-					        	<div>
-						           <form  id="myFormB<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %><%=Sub3Count %>" action="FileRepMasterSubAdd.htm" method="post">
-						 
-														
-										<input type="hidden" name="specname" value="Agenda-Presentation">
-										<input type="hidden" name="FileMasterId" value="<%=obj2[0] %>" >
-                                        <input type="hidden" name="LevelId" value="<%=obj2[2] %>" >
-										<input type="hidden" name="formname" value="<%=Sub0Count %>/<%=Sub1Count %>/<%=Sub2Count %>" />
-										<input type="hidden" name="projectid" value="<%=ProjectId%>">
-										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-						
-						          	     			<span  style="font-size:14px">
-						          		
-						          		<%=Sub0Count %>.<%=Sub1Count %>.<%=Sub2Count %>.<%=Sub3Count %>
-						          		
-						          		 </span>
-						          
-						          		<div style="margin-top:-20px; margin-left:45px;">
-						          		
-						          			<input class="form-control" type="text" name="MasterSubName"  required="required" maxlength="255" style="width:150px; height:25px; "> 
-						          		</div>
-						          		<div style="margin-top:-22px; margin-left: 210px;">
-						          			<input type="submit" name="sub" class="btn btn-info btn-sm"  form="myFormB<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %><%=Sub3Count %>" value="ADD"  style="width:42px; height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
-						          		</div>
-						          		
-						          	</form>
-					       		</div>
-					        </h4>
-					       		
-					      </div>
-					  			<div >
-					  			
-					  </div>
-					 </div>
-					 
-				  </div>
-	  			</div>	
-					 <!-- end three --> 			
-					  			
-					  			
-					  			
-					  			
-					  </div>
-					 </div>
-					 
-				  </div>
-	  			</div>
-					 <%Sub2Count++;}} %> 			
-					  	<div class="row">  
-				   <div class="col-md-11"  align="left"  style="margin-left: 20px;">
-				   
-				     <div class="panel panel-info">
-					      <div class="panel-heading">
-					        <h4 class="panel-title">
-					        	<div>
-						           <form  id="myFormB<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %>" action="FileRepMasterSubAdd.htm" method="post">
-						 
-														
-										<input type="hidden" name="specname" value="Agenda-Presentation">
-										<input type="hidden" name="FileMasterId" value="<%=obj1[0] %>" >
-                                        <input type="hidden" name="LevelId" value="<%=obj1[2] %>" >
-										<input type="hidden" name="formname" value="<%=Sub0Count %>/<%=Sub1Count %>" />
-										<input type="hidden" name="projectid" value="<%=ProjectId%>">
-										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-						
-						          			<span  style="font-size:14px">
-						          		
-						          		<%=Sub0Count %>.<%=Sub1Count %>.<%=Sub2Count %>
-						          		
-						          		 </span>
-						          		
-						          		<div style="margin-top:-20px; margin-left:35px;">
-						          		
-						          			<input class="form-control" type="text" name="MasterSubName"  required="required" maxlength="255" style="width:150px; height:25px; "> 
-						          		</div>
-						          		<div style="margin-top:-22px; margin-left: 200px;">
-						          			<input type="submit" name="sub" class="btn btn-info btn-sm"  form="myFormB<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %>" value="ADD"  style="width:42px; height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
-						          		</div>
-						          	
-						          		
-						          		
-						          	</form>
-					       		</div>
-					        </h4>
-					       		
-					      </div>
-					  			<div >
-					  			
-					  </div>
-					 </div>
-					 
-				  </div>
-	  			</div>	
-					<!-- end two	 -->		
-					  			
-					  </div> --%>
-					 </div>
-					 
-				  </div>
-	  			</div>
-					 <%Sub1Count++;}} %> 			
-					  	<div class="row">  
-				   <div class="col-md-11"  align="left"  style="margin-left: 20px;">
-				   
-				     <div class="panel panel-info">
-					      <div class="panel-heading">
-					        <h4 class="panel-title">
-					        	<div>
-						           <form  id="myFormB<%=Sub0Count %>" action="FileRepMasterSubAdd.htm" method="post">
-						 
-														
-										<input type="hidden" name="specname" value="Agenda-Presentation">
-										<input type="hidden" name="FileMasterId" value="<%=obj[0] %>" >
-                                        <input type="hidden" name="LevelId" value="<%=obj[2] %>" >
-										<input type="hidden" name="formname" value="<%=Sub0Count %>" />
-										<input type="hidden" name="projectid" value="<%=ProjectId%>">
-										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-						
-						          		<span  style="font-size:14px">
-						          		
-						          		<%=Sub0Count %>.<%=Sub1Count %>
-						          		
-						          		 </span>
-						          		
-						          		<div style="margin-top:-20px; margin-left:25px;">
-						          		
-						          			<input class="form-control alphanum-no-leading-space" type="text" name="MasterSubName"  required="required" maxlength="255" style="width:150px; height:25px; "> 
-						          		</div>
-						          		<div style="margin-top:-22px; margin-left: 190px;">
-						          			<input type="submit" name="sub" class="btn btn-info btn-sm"  form="myFormB<%=Sub0Count %>" value="ADD"  style="width:42px; height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
-						          		</div>
-						          		
-						          	</form>
-					       		</div>
-					        </h4>
-					       		
-					      </div>
-					  			<div >
-					  			
-					  			
-					  </div>
-					 </div>
-					 
-				  </div>
-	  			</div>		
-					  </div>
-					 </div>
-					 
-				  </div>
-	  			</div>
-	  	
-	  	
-	  	<%Sub0Count++;}} %>
-	<div class="row">  
-				   <div class="col-md-11"  align="left"  style="margin-left: 20px;">
-				   
-				     <div class="panel panel-info">
-					      <div class="panel-heading">
-					        <h4 class="panel-title">
-					        	<div>
-						           <form  id="myForm" action="FileRepMasterAdd.htm" method="post">
-						 
-										<input type="hidden" name="projectid" value="<%=ProjectId%>">				
-										<input type="hidden" name="specname" value="Agenda-Presentation">
-										<input type="hidden" name="formname" value="rm" />
-										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-						          		<span  style="font-size:14px"><%=Sub0Count %>. </span>
-						          		
-						          		<div style="margin-top:-20px; margin-left:15px;">
-						          			<input class="form-control alphanum-no-leading-space" type="text" name="MasterName"  required="required" maxlength="255" style="width:150px; height:25px; "> 
-						          		</div>
-						          		<div style="margin-top:-22px; margin-left: 180px;">
-						          			<input type="submit" name="sub" class="btn btn-info btn-sm"  form="myForm" value="ADD1"  style="width:42px; height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
-						          		</div>
-						          		
-						          	</form>
-					       		</div>
-					        </h4>
-					      </div>
-						<div >
-					  </div>
-					 </div>
-				  </div>
-	  			</div>
-		     </div>      
- 		  </div>
-   <!-- panel end -->   
-		</div><!-- Big card-body end -->
-	</div><!-- Card End  -->
-</div> <!-- col-md-5 end -->
-</div>
-</div>
-
-
+	
+  <div class="modal fade" id="exampleSubModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleSubModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleSubModalLabel">Sub Level</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div>
+						<form id="myFormB" action="FileRepMasterSubAdd.htm" method="post">
+							<div>
+								<input class="form-control" type="text" name="MasterSubName" id="masterSubName"
+									required="required" maxlength="255" onchange="checkDuplicateFolderName()"
+									style="width: 100%;">
+							</div>
+						<div class="text-center mt-4">
+							<button type="submit" class="btn btn-success" onclick="return submitSubFile()">Submit</button>
+							<input type="hidden" name="FileMasterId" id="parentPkId" value="">
+							<input type="hidden" name="LevelId" id="LevelId" value="">
+							<input type="hidden" name="projectid" value="<%=ProjectId%>">
+							<input type="hidden" name="specname" value="Agenda-Presentation">
+							<input type="hidden" name="formname" value="rm" /> 
+							<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" /> 
+						</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-lg" role="document"
+			style="max-width: 60% !important;">
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <h5 class="modal-title" id="modalTitle"></h5>
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        </div>
+	        <div class="modal-body">
+     		  <div class="row">
+					<div class="col-md-12 d-flex align-items-center mb-2">
+					    <label class="control-label mr-3 mb-0" style="white-space: nowrap;">Upload Type</label>
+					    <div class="btn-group btn-group-toggle flex-grow-1" data-toggle="buttons">
+					        <label class="btn btn-outline-success flex-fill" style="font-weight: 700">
+					            <input type="radio" name="isNewUpload" id="isNewUploadY" value="Y" autocomplete="off" checked onchange="toggleUploadType(this.value)"> New Upload
+					        </label>
+					        <label class="btn btn-outline-danger flex-fill" style="font-weight: 700">
+					            <input type="radio" name="isNewUpload" id="isNewUploadN" value="N" autocomplete="off" onchange="toggleUploadType(this.value)"> Existing Upload
+					        </label>
+					    </div>
+					</div>
+					
+					<div class="col-md-5 mt-3">
+					    <div class="form-group">
+					        <label class="control-label">Document Name</label>
+					
+					        <!-- Text input shown by default -->
+					        <input type="text" class="form-control" id="FileNameInput"
+					            onchange="checkDuplicateFileName()" name="FileName" required="required" style="height: 2.7rem"/>
+					
+					        <!-- Dropdown hidden by default -->
+					        <select class="form-control d-none" id="FileNameSelect" name="FileName"  style="height: 2.7rem">
+					            <option value="">-- Select Document --</option>
+					        </select>
+					    </div>
+					</div>
+					<div class="col-md-4 mt-3">
+						<div class="form-group">
+							<label class="control-label">Upload</label> <input
+								type="file" name="FileAttach" id="FileAttach"
+								class="form-control" accept="application/pdf"
+								aria-describedby="inputGroup-sizing-sm" maxlength="255"
+								/>
+						</div>
+					</div>
+					<div class="col-md-3 mt-3">
+						<div class="form-group">
+							<label class="control-label">Is New Version</label> <br>
+							<input type="radio" name="isnewversion" id="isnewver" value="Y" />&nbsp;&nbsp;Yes &emsp; 
+							<input type="radio" name="isnewversion" id="isnonewver" checked="checked" value="N" />&nbsp;&nbsp;No
+						</div>
+					</div>
+				</div>
+	            <input type="hidden" name="folderId" id="folderId" value="">
+	            <input type="hidden" name="fileType" id="fileType" value="">
+	        </div>
+			 <div align="center">
+					<input type="button" class="btn btn-primary btn-sm submit" style="margin-bottom: 15px;" id="submitversion" onclick="submitUpload()"/>
+			</div>
+		  </div>
+	  </div>
+	</div>
+	
+	<div class="modal fade" id="versionModal" tabindex="-1" role="dialog" aria-labelledby="versionModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-xl" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="versionModalLabel"></h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <table class="table table-bordered table-hover">
+	          <thead style="background-color: bisque">
+	            <tr>
+	              <th>SN</th>
+	              <th>File Name</th>
+	              <th>Version</th>
+	              <th>Upload Date</th>
+	              <th>Uploaded By</th>
+	              <th>Action</th>
+	            </tr>
+	          </thead>
+	          <tbody id="versionTableBody">
+	            <!-- Content will be added dynamically -->
+	          </tbody>
+	        </table>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 
 
 
 <script type="text/javascript">
-function moduleeditenable(moduleid)
-{
-	$('#span_'+moduleid).hide();
-	$('#input_'+moduleid).show();
-	$('#btn_'+moduleid).show();	
-	$('#btnx_'+moduleid).show();
-}
+	function enableInlineEdit(id) {
+		document.getElementById("span_" + id).style.display = "none";
+		document.getElementById("input_" + id).style.display = "inline-block";
+		document.getElementById("btn_" + id).style.display = "inline-block";
+		document.getElementById("btnx_" + id).style.display = "inline-block";
+		document.getElementById("input_" + id).focus();
+	}
+	
+	function disableInlineEdit(id) {
+		document.getElementById("span_" + id).style.display = "inline-block";
+		document.getElementById("input_" + id).style.display = "none";
+		document.getElementById("btn_" + id).style.display = "none";
+		document.getElementById("btnx_" + id).style.display = "none";
+	}
+	
+    function showSubfolders(parentId) {
+    	$('#subFolderId').show();
+    	$('#breadcumb-span').show();
+    	$('#subTag').hide();
+    	$('#subspanValue').hide();
+    	const id = $('#levelId').val();
+    	const pname = $('#parentName_'+parentId).val();
+        document.getElementById("main-folders").style.display = "none";
+        document.querySelectorAll('.subfolder-group').forEach(el => el.style.display = "none");
+        document.querySelector('.subfolder-group[data-parent="' + parentId + '"]').style.display = "flex";
+        $('#addBtn').val('sublevel');
+        $('#parentPkId').val(parentId);
+        $('#LevelId').val(id);
+        $('#spanValue').text(pname);
+        
+        const wrapper = $("#pdf-wrapper");
+        const containerId = "pdf-container-" + parentId;
+        let container = $("#" + containerId);
 
-function moduleeditdisable(moduleid)
-{
-	$('#span_'+moduleid).show();
-	$('#input_'+moduleid).hide();
-	$('#btn_'+moduleid).hide();	
-	$('#btnx_'+moduleid).hide();
-}
+        if (container.length > 0) {
+            container.toggle();
+            return;
+        }
+
+        container = $("<div>", {
+            id: containerId,
+            class: "d-flex flex-wrap gap-4",
+            css: { display: "flex" }
+        });
+        wrapper.append(container);
+        
+        $.ajax({
+            type: "GET",
+            url: 'getOldFileDocNames.htm',
+            data : {
+		   			projectId : <%=ProjectId%>,
+		   			fileId : parentId,
+		   			fileType : 'mainLevel',
+    		},
+            dataType: "json",
+            success: function (data) {
+                if (data.length === 0) {
+                    //container.append("<p>No documents found.</p>");
+                    console.error("No document found");
+                } else {
+                    $.each(data, function (index, file) {
+                        const pdfItem ='<div class="pdf-item text-center">'+
+			                                '<div class="file-icon-wrapper">'+
+			                                    '<i class="fa fa-file-pdf-o fileicon" aria-hidden="true"></i>'+
+			                                '</div>'+
+			                                '<span class="file-download-span" onclick="fileDownload(' + file[7] + ', \'mainLevel\')">' + file[6] + '</span><br/>'+
+			                                '<span class="text-muted">Ver '+file[4]+'.'+file[5]+' <i class="fa fa-info-circle" aria-hidden="true" style="cursor: pointer;" onclick="showVersionModal(' + file[0] + ',\'' + file[6] + '\', \'mainLevel\')"></i></span>'+
+			                            '</div>';
+                        container.append(pdfItem);
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error:", error);
+                ///container.append("<p>Error loading documents.</p>");
+            }
+        });
+    }
+    
+    function showSubFileDocs(mainId,subId,subName) {
+    	$('#addBtn').hide();
+    	$('#subFolderId').hide();
+    	$('#spanValue').addClass('breadcrumb-link');
+    	$('#spanValue').on('click', function() {
+    		$('#addBtn').show();
+        	$('#subFolderId').show();
+        	$("#subpdf-wrapper").empty();
+        	$('#subTag').hide();
+        	$('#subspanValue').hide();
+        	$('#spanValue').removeClass('breadcrumb-link');
+    	});
+    	$('#subTag').show();
+    	$('#subspanValue').text(subName).show();
+        const wrapper = $("#subpdf-wrapper");
+        const containerId = "subpdf-container-" + subId;
+        let container = $("#" + containerId);
+
+        if (container.length > 0) {
+            container.toggle();
+            return;
+        }
+
+        container = $("<div>", {
+            id: containerId,
+            class: "d-flex flex-wrap gap-4",
+            css: { display: "flex" }
+        });
+        wrapper.append(container);
+        
+        $.ajax({
+            type: "GET",
+            url: 'getOldFileDocNames.htm',
+            data : {
+		   			projectId : <%=ProjectId%>,
+		   			fileId : subId,
+		   			fileType : 'subLevel',
+    		},
+            dataType: "json",
+            success: function (data) {
+                if (data.length === 0) {
+                    console.error("No document found");
+                } else {
+                    $.each(data, function (index, file) {
+                        const pdfItem ='<div class="pdf-item text-center">'+
+			                                '<div class="file-icon-wrapper">'+
+			                                    '<i class="fa fa-file-pdf-o fileicon" aria-hidden="true"></i>'+
+			                                '</div>'+
+			                                '<span class="file-download-span" onclick="fileDownload(' + file[7] + ', \'subLevel\')">' + file[6] + '</span><br/>'+
+			                                '<span class="text-muted">Ver '+file[4]+'.'+file[5]+' <i class="fa fa-info-circle" aria-hidden="true" style="cursor: pointer;" onclick="showVersionModal(' + file[0] + ',\'' + file[6] + '\',\'subLevel\')"></i></span>'+
+			                            '</div>';
+                        container.append(pdfItem);
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error:", error);
+            }
+        });
+	}
+
+    function goBackToMain() {
+        document.getElementById("main-folders").style.display = "flex";
+        document.querySelectorAll('.subfolder-group').forEach(el => el.style.display = "none");
+        $('#addBtn').val('mainlevel');
+    	$('#breadcumb-span').hide();
+    	$("#pdf-wrapper").empty();
+    	$("#subpdf-wrapper").empty();
+    	$('#mainFolderId').show();
+    	$('#addBtn').show();
+    	$('#spanTag').hide();
+    	$('#spanValue').removeClass('breadcrumb-link');
+    }
+    
+    function addNewLevel() {
+    	const type = $('#addBtn').val();
+    	if(type === 'mainlevel'){
+    	   $('#exampleModal').modal('show');
+    	}else{
+    		$('#exampleSubModal').modal('show')
+    	}
+	}
+    
+    function submitLevelEdit(levelType, pkId, parentId, previousName) {
+        const id = $('#' + levelType + '_' + pkId).val();
+        const inputvalue = $('#input_' + pkId).val().trim();
+
+        // Input validation
+        if (!inputvalue) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Validation Error',
+                text: 'File name cannot be empty.',
+            });
+            return;
+        }
+        
+        if (previousName === inputvalue) {
+            return;
+        }else{
+    		$.ajax({
+    		    type: 'GET',
+    		    url: 'checkFolderNames.htm',
+    		    data: {
+    		        projectId: <%=ProjectId%>,
+    		        fileId: parentId,
+    		        fileType: levelType,
+    		        fileName: inputvalue,
+    		    },
+    		    success: function(response) {
+    		        let result = parseInt(response);
+    		        if (result > 0) {
+    		            Swal.fire({
+    		                icon: 'error',
+    		                title: 'Duplicate Folder Name',
+    		                text: inputvalue + ' folder name already exists. Please choose another.',
+    		                allowOutsideClick: false
+    		            });
+    		            $('#input_' + pkId).val(previousName);
+    		        }
+    		    },
+    		    error: function(err) {
+    		    	Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Could not check the folder name. Please try again later.',
+                        allowOutsideClick: false
+                    });
+    		    }
+    		});
+        }
+
+        Swal.fire({
+            title: 'Are you sure to edit?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: 'green',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, update it'
+        }).then((result) => {
+            if (result.isConfirmed) {
+            	
+            	 Swal.fire({
+                     title: 'Updating...',
+                     text: 'Please wait while the file name is being updated.',
+                     allowOutsideClick: false,
+                     didOpen: () => {
+                         Swal.showLoading();
+                     }
+                 });
+            	
+                $.ajax({
+                	type : "POST",
+                    url: "ProjectModuleNameEdit.htm",
+                    data: {
+                        filerepmasterid: id,
+                        levelname: inputvalue,
+                        levelType: levelType,
+                        ${_csrf.parameterName}:	"${_csrf.token}",
+                    },
+                    success: function(response) {
+                    	 Swal.close();
+                        let result = parseInt(response);
+                        if (result > 0) {
+                        	 Swal.fire({
+                                 icon: 'success',
+                                 title: 'Success',
+                                 text: 'File name updated successfully!',
+                                 allowOutsideClick: false
+                             }).then((result) => {
+                                 if (result.isConfirmed) {
+                                	 var form=$("#myprojectform");
+                                	 if(levelType === 'mainlevel'){
+                                         if(form)
+                                       	 {
+                                        	 form.submit();
+                                       	 }
+                                	 }else{
+                                		  localStorage.setItem("showSubfolderAfterReload", parentId);
+                                		  if(form)
+                                       	 {
+                                        	 form.submit();
+                                       	 }
+                                	 }
+                                 }
+                             });
+                            disableInlineEdit(pkId); // Hide input, show span
+                            const newName = $('#input_' + pkId).val();
+                            $('#span_' + pkId).contents().filter(function() {
+                                return this.nodeType === 3;
+                            }).first().replaceWith(newName + " ");
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Update failed. Please try again.'
+                            });
+                        }
+                    },
+                    error: function() {
+                    	Swal.close(); // Close the loading swal
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'An error occurred while updating the file.',
+                        });
+                    }
+                });
+            }
+        });
+    }
+    
+    function submitMainFile() {
+	   event.preventDefault(); 
+       const inputvalue = $('#masterName').val().trim();
+        if (!inputvalue) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Validation Error',
+                text: 'File name cannot be empty.',
+            });
+            return;
+        }
+        
+        Swal.fire({
+            title: 'Are you sure to add?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: 'green',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $('#myFormA').submit();
+            } else {
+                console.log("Action cancelled");
+            }
+        });
+	}
+    
+    function submitSubFile() {
+	   event.preventDefault(); 
+       const inputvalue = $('#masterSubName').val().trim();
+        if (!inputvalue) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Validation Error',
+                text: 'File name cannot be empty.',
+            });
+            return;
+        }
+        
+        Swal.fire({
+            title: 'Are you sure to add?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: 'green',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $('#myFormB').submit();
+            } else {
+                console.log("Action cancelled");
+            }
+        });
+	}
+    
 </script>
 
-
-
-
-
-
-
 <script type="text/javascript">
+
 $(document).ready(function(){
-    // Add minus icon for collapse element which is open by default
-    $(".collapse.show").each(function(){
-    	$(this).prev(".panel-heading").find(".faplus").addClass("fa-minus").removeClass("fa-plus");
-    });
-    
-    // Toggle plus minus icon on show hide of collapse element
-    $(".collapse").on('show.bs.collapse', function(){
-    	$(this).prev(".panel-heading").find(".faplus").removeClass("fa-plus").addClass("fa-minus");
-    }).on('hide.bs.collapse', function(){
-    	$(this).prev(".panel-heading").find(".faplus").removeClass("fa-minus").addClass("fa-plus");
-    });
+	  const storedParentId = localStorage.getItem("showSubfolderAfterReload");
+      if (storedParentId) {
+          showSubfolders(storedParentId);
+          localStorage.removeItem("showSubfolderAfterReload");
+      }else{
+    	  	$('#breadcumb-span').hide();
+      }
+	<% if(parentLevelId!=null && type!=null && type.equalsIgnoreCase("subLevel")){ %>
+	   showSubfolders(<%=parentLevelId%>);
+		$('#breadcumb-span').show();
+	<% } %>
 });
 
-$('#Clk').click();
+function showUpload(type,name,id) {
+    $('#uploadModal').data('folder-id', id).modal('show');
+    $('#FileAttach').val('');
+    $('#FileNameInput').val('');
+	$('#isnewver').prop('checked', true);
+	$('#isnonewver').prop('disabled', true);
+    $('#submitversion').val('Upload Version 1.0');
+    $('#fileType').val(type);
+    $('#folderId').val(id);
+    $('#modalTitle').text('Upload Document for '+name);
+    toggleUploadType("Y");
+}
 
-<%String FormName=(String)request.getAttribute("FromName");
-if(FormName!=null){
-	String [] id=FormName.split("/");
-	String IdName="Clk";
-	for(int i=0;i<id.length;i++){
-		IdName=IdName.concat(id[i]);
-%>
-      $('#<%=IdName%>').click();
-<%}}%>
+function toggleUploadType(value) {
+    const inputField = document.getElementById("FileNameInput");
+    const dropdown = document.getElementById("FileNameSelect");
+
+    $('.btn-group-toggle label').removeClass('active');
+    if (value === 'Y') {
+        $('#isNewUploadY').closest('label').addClass('active');
+        $('.btn-outline-success').css({
+            background: 'green',
+            color: 'white'
+        });
+        $('.btn-outline-danger').css({
+            background: 'white',
+            color: 'red'
+        });
+        $('#FileNameSelect option:selected').attr('data-rep', '0');
+    } else {
+        $('#isNewUploadN').closest('label').addClass('active');
+       
+        $('.btn-outline-danger').css({
+            background: 'red',
+            color: 'white'
+        });
+        
+        $('.btn-outline-success').css({
+            background: 'white',
+            color: 'green'
+        });
+
+    }
+    
+    if (value === "Y") {
+        inputField.classList.remove("d-none");
+        inputField.required = true;
+        dropdown.classList.add("d-none");
+        dropdown.required = false;
+    	$('#isnewver').prop('checked', true);
+    	$('#isnonewver').prop('disabled', true);
+        $('#submitversion').val('Upload Version 1.0');
+    } else {
+        dropdown.classList.remove("d-none");
+        dropdown.required = true;
+        inputField.classList.add("d-none");
+        inputField.required = false;
+		$('#isnewver').prop('checked', false);
+		$('#isnonewver').prop('checked', true);
+		$('#isnonewver').prop('disabled', false);
+		$('#submitversion').val('Submit');
+        $('#FileNameSelect').find('option:not(:first)').remove();
+         
+        const fileId = $('#folderId').val();
+        const fileType = $('#fileType').val();
+        // Fetch document names via AJAX
+        $.ajax({
+            type: 'GET',
+            url: 'getOldFileDocNames.htm',
+            data : {
+    			projectId : <%=ProjectId%>,
+    			fileId : fileId,
+    			fileType : fileType,
+    		},
+    		datatype : 'json',
+            success: function(docNames) {
+            	var result = JSON.parse(docNames);
+            	$.each(result, function(index, name) {
+            	    $('#FileNameSelect').append(
+            	        $('<option>', {
+            	            value: name[6],
+            	            text: name[6]
+            	        })
+            	        .attr('data-rep', name[0])
+            	        .attr('data-version', name[4])
+            	        .attr('data-release', name[5])
+            	    );
+            	});
+            },
+            error: function(err) {
+                alert("Failed to load document names.");
+                console.error(err);
+            }
+        });
+    }
+}
+
+
+function submitUpload() {
+	event.preventDefault();
+    const fileInput = document.getElementById("FileAttach");
+    const textInput = document.getElementById("FileNameInput");
+    const isnewversion = $('input[name="isnewversion"]:checked').val();
+    const selectTab = $('input[name="isNewUpload"]:checked').val();
+    const selectDropdown = $('#FileNameSelect').val();
+    const file = fileInput.files[0];
+    const docName = textInput.value.trim();
+    const folderId = $('#folderId').val();
+    const fileType = $('#fileType').val();
+    const parentId = $('#fileParentId_'+folderId).val();
+    const selectedOption = $('#FileNameSelect option:selected');
+    const repId = selectedOption.attr('data-rep') || '0';
+
+
+    // Validate input
+    if (!file) {
+        Swal.fire({
+            icon: 'error',
+            title: 'No File Selected',
+            text: 'Please select a PDF file to upload.',
+            allowOutsideClick: false
+        });
+        fileInput.value = ""; 
+        return;
+    }
+
+    if (file.type !== 'application/pdf') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid File Type',
+            text: 'Only PDF files are allowed.',
+            allowOutsideClick: false
+        });
+        fileInput.value = ""; 
+        return;
+    }
+
+    if (file.size > 90 * 1024 * 1024) {
+        Swal.fire({
+            icon: 'error',
+            title: 'File Too Large',
+            text: 'File size must be less than 25MB.',
+            allowOutsideClick: false
+        });
+        fileInput.value = ""; 
+        return;
+    }
+    
+    if(selectTab === 'N'){
+    	 if (!selectDropdown) {
+ 	        Swal.fire({
+ 	            icon: 'error',
+ 	            title: 'Missing File Name',
+ 	            text: 'Please select a file name.',
+ 	            allowOutsideClick: false
+ 	        });
+ 	        return;
+ 	    }
+    }else{
+	    if (!docName) {
+	        Swal.fire({
+	            icon: 'error',
+	            title: 'Missing File Name',
+	            text: 'Please enter a file name.',
+	            allowOutsideClick: false
+	        });
+	        textInput.value = ""; 
+	        return;
+	    }
+    }
+
+    var projectId = <%=ProjectId %>;
+    // Prepare form data
+    const formData = new FormData();
+    formData.append("fileAttach", file);
+    formData.append("fileType", fileType);
+    formData.append("docName",  docName || selectDropdown);
+    formData.append("fileRepId", repId);
+    formData.append("projectId", projectId);
+    formData.append("mainLevelId", fileType === 'mainLevel' ? folderId : parentId);
+    formData.append("subLevelId", fileType === 'mainLevel' ? '0' : folderId);
+    formData.append("isnewversion", isnewversion);
+    formData.append("${_csrf.parameterName}", "${_csrf.token}");
+    
+
+    // Submit via AJAX
+     Swal.fire({
+            title: 'Are you sure to upload?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: 'green',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+            	
+              	 Swal.fire({
+                     title: 'Uploading...',
+                     text: 'Please wait while the file is being uploading.',
+                     allowOutsideClick: false,
+                     didOpen: () => {
+                         Swal.showLoading();
+                     }
+                 });
+            	
+                $.ajax({
+                	url: 'uploadFileData.htm',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                    Swal.close();
+                    var result = JSON.parse(response);
+	                     if(result > 0){
+	                         Swal.fire({
+	                             icon: 'success',
+	                             title: 'Uploaded!',
+	                             text: 'Your document has been uploaded successfully.',
+	                             allowOutsideClick: false
+	                         });
+	                         $('#uploadModal').data('folder-id', folderId).modal('hide');
+	                         fileInput.value = ""; 
+	                         textInput.value = "";
+	                         if(fileType === 'mainLevel'){
+	                        	 showSubfolders(folderId);
+	                         }else{
+	                        	 const subName = $('#fileSubName_'+folderId).val();
+	                        	 showSubFileDocs(parentId,folderId,subName);
+	                         }
+	                     }else{
+	                         Swal.fire({
+	                             icon: 'error',
+	                             title: 'Upload Failed',
+	                             text: 'Something went wrong. Please try again.',
+	                             allowOutsideClick: false
+	                         });
+	                     }
+                    },
+                    error: function() {
+                    	Swal.close();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Upload Failed',
+                            text: 'Something went wrong. Please try again.',
+                            allowOutsideClick: false
+                        });
+                    }
+                });
+            } else {
+                console.log("Action cancelled");
+            }
+      });
+}
+
+
+$(document).ready(function () {
+    function updateSubmitVersion() {
+        const selectedOption = $('#FileNameSelect option:selected');
+        if (!selectedOption.length) return;
+
+        const version = parseInt(selectedOption.attr('data-version')) || 0;
+        const release = parseInt(selectedOption.attr('data-release')) || 0;
+
+        let finalVersion = '';
+
+        if ($('#isnonewver').is(':checked')) {
+            // No: same version, release + 1
+             finalVersion = version + '.' + (release + 1);
+        } else if ($('#isnewver').is(':checked')) {
+           // Yes: new main version = version + 1, release = 0
+            finalVersion = (version + 1) + '.0';
+        } else {
+            finalVersion = '1.0'; // Fallback
+        }
+
+        $('#submitversion').val('Upload Version ' + finalVersion);
+    }
+    // Trigger only on user interaction
+    $('#FileNameSelect').on('change', updateSubmitVersion);
+    $('input[name="isnewversion"]').on('change', updateSubmitVersion);
+});
+
+function fileDownload(fileId, fileType) {
+    $.ajax({
+        url: 'fileDownload.htm/' + fileId + '?fileType=' + encodeURIComponent(fileType),
+        type: 'GET',
+        xhrFields: {
+            responseType: 'blob'
+        },
+        success: function (data, status, xhr) {
+        	
+        	  const blob = new Blob([data], { type: 'application/pdf' });
+
+              // Create a blob URL and open it in a new tab
+              const blobUrl = URL.createObjectURL(blob);
+              window.open(blobUrl, '_blank');
+
+              // Optional: release memory later
+              setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+        	
+       /*   const disposition = xhr.getResponseHeader('Content-Disposition');
+            let filename = "downloaded_file";
+            if (disposition && disposition.indexOf('filename=') !== -1) {
+                filename = disposition.split('filename=')[1].replace(/"/g, '');
+            }
+            const url = window.URL.createObjectURL(data);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url); */
+            
+        },
+        error: function (xhr, status, error) {
+            alert("Failed to download/open file: " + (xhr.responseText || error));
+            console.error("Download error:", error);
+        }
+    });
+}
+
+function showVersionModal(fileRepId,fileName,fileType) {
+	  $('#versionModal').modal('show');
+	  $('#versionModalLabel').text('Version History of ' + fileName);
+	  $('#versionTableBody').html('<tr><td colspan="5" class="text-center">Loading...</td></tr>');
+
+	  $.ajax({
+		type: 'GET',
+	    url: 'getDocVersionList.htm',
+	    data : {
+	    	fileRepId : fileRepId,
+		},
+		datatype : 'json',
+	    success: function(response) {
+			var result= JSON.parse(response);
+			var values= Object.keys(result).map(function(e){
+				return result[e];
+			})
+	      if (!values || values.length === 0) {
+	        $('#versionTableBody').html('<tr><td colspan="5" class="text-center text-muted">No previous versions found.</td></tr>');
+	        return;
+	      }
+
+	      var rows = '';
+	      for (var i = 0; i < values.length; i++) {
+	        var version = values[i];
+	        rows += '<tr>' +
+	                  '<td>' + (i + 1) + '</td>' +
+	                  '<td>' + version[3] + '</td>' +
+	                  '<td>v' + version[4] + '.' + version[5] + '</td>' +
+	                  '<td>' + RegularDateFormat(version[6]) + '</td>' +
+	                  '<td>' + version[7] + ', ' + version[8] + '</td>' +
+	                  '<td><i class="fa fa-download" style="cursor: pointer;" onclick="fileDownload(' + version[0] + ', \'' + fileType + '\')"></i></td>' +
+	                '</tr>';
+	      }
+	      $('#versionTableBody').html(rows);
+	    },
+	    error: function() {
+	      $('#versionTableBody').html('<tr><td colspan="5" class="text-danger text-center">Failed to load versions.</td></tr>');
+	    }
+	  });
+}
+
+function checkDuplicateFileName() {
+  const fileName = $('#FileNameInput').val().trim();
+  const folderId = $('#folderId').val();
+  const fileType = $('#fileType').val();
+  
+   if (fileName !== '') {
+		$.ajax({
+		    type: 'GET',
+		    url: 'getOldFileDocNames.htm',
+		    data: {
+		        projectId: <%=ProjectId%>,
+		        fileId: folderId,
+		        fileType: fileType
+		    },
+		    dataType: 'json',
+		    success: function(result) {
+		        var isDuplicate = false;
+		        
+		        $.each(result, function(index, name) {
+		            if (fileName.toLowerCase() === (name[6] || '').toLowerCase()) {
+		                isDuplicate = true;
+		                return false; // break loop
+		            }
+		        });
+		        if (isDuplicate) {
+		            Swal.fire({
+		                icon: 'error',
+		                title: 'Duplicate File Name',
+		                text: fileName+' file name already exists. Please choose another.',
+		                allowOutsideClick: false
+		            });
+		            $('#FileNameInput').val('').focus();
+		        }
+		    },
+		    error: function(err) {
+		    	Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'Could not check the file name. Please try again later.',
+                  allowOutsideClick: false
+              });
+		    }
+		});
+  } 
+}
+
+function checkDuplicateFolderName() {
+  const fileMainName = $('#masterName').val().trim();
+  const fileSubName = $('#masterSubName').val().trim();
+  const parentId = $('#parentPkId').val();
+  const fileType = $('#addBtn').val();
+
+    if(fileType === 'mainlevel' ? fileMainName !== '' : fileSubName !== ''){
+		$.ajax({
+		    type: 'GET',
+		    url: 'checkFolderNames.htm',
+		    data: {
+		        projectId: <%=ProjectId%>,
+		        fileId: fileType === 'mainlevel' ? '0' : parentId,
+		        fileType: fileType,
+		        fileName: fileType === 'mainlevel' ? fileMainName : fileSubName,
+		    },
+		    success: function(response) {
+		        let result = parseInt(response);
+		        if (result > 0) {
+		            Swal.fire({
+		                icon: 'error',
+		                title: 'Duplicate Folder Name',
+		                text: fileType === 'mainlevel' 
+		                    ? fileMainName + ' folder name already exists. Please choose another.' 
+		                    : fileSubName + ' folder name already exists. Please choose another.',
+		                allowOutsideClick: false
+		            });
+
+		            $('#' + (fileType === 'mainlevel' ? 'masterName' : 'masterSubName')).val('').focus();
+		        }
+		    },
+		    error: function(err) {
+		    	Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'Could not check the folder name. Please try again later.',
+                  allowOutsideClick: false
+              });
+		    }
+		});
+    }
+}
+
+function RegularDateFormat(UserDate)
+{
+  /* Date Formation  */
+	 var d = new Date(UserDate),
+     month = '' + (d.getMonth() + 1),
+     day = '' + d.getDate(),
+     year = d.getFullYear();
+ if (month.length < 2) 
+     month = '0' + month;
+ if (day.length < 2) 
+     day = '0' + day;
+ var expectedDate=[day,month,year].join('-');
+ return expectedDate;
+}
+
 </script>
+
 </body>
 </html>

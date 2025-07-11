@@ -19,6 +19,7 @@ public class RfaAction {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long RfaId;
 	private String LabCode;
+	private String ProjectType;
 	private Long ProjectId;
 	private String RfaNo;
 	private Date RfaDate;
@@ -36,6 +37,15 @@ public class RfaAction {
 	private int IsActive;
 	private String TypeOfRfa;
 	private String VendorCode;
+	
+	private String BoxNo;
+	
+	private Date SWdate;
+	
+	private String FPGA;
+	
+	private String RigVersion;
+	private String RfaRaisedByName;
 	
 	
 }
