@@ -289,7 +289,7 @@ strong {
 <body>
 
 	<%
-	
+	SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 	List<Object[]> ProjectIntiationList = (List<Object[]>) request.getAttribute("ProjectIntiationList");
 	Object[] ProjectDetailes = (Object[]) request.getAttribute("ProjectDetailes");
 	String projectshortName = (String) request.getAttribute("projectshortName");
@@ -479,7 +479,7 @@ strong {
 										</tr>
 										<tr>
 											<td><h5>8. Project Deliverables/Output:</h5></td>
-											<td><h5>
+											<td>
 													<%
 													if (ProjectDetailes[12] != null && !ProjectDetailes[12].toString().equalsIgnoreCase("")) {
 													%>
@@ -489,7 +489,7 @@ strong {
 													%>-<%
 													}
 													%>
-												</h5></td>
+												</td>
 										</tr>
 										<tr>
 											<td>
@@ -726,10 +726,12 @@ strong {
 								</div>
 								<div class="row mt-2">
 									<div class="col-md-12 ml-1 leftsiderow">
-										<h5 class="ml-1">
+										<h5 class="ml-1" style="display: flex;justify-content: space-around;">
 											2.&nbsp;&nbsp;&nbsp;&nbsp;Title of the Programme
 											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;
-											<p><%=ProjectDetailes[16]%></p>
+											<%-- <p><%=ProjectDetailes[16]%></p> --%>
+											<input class="form-control" name="TitleProgramme" id="TitleProgramme" maxlength="500" style="width:50%" value="<%=MacroDetails!=null && MacroDetails.length>0 &&  MacroDetails[13]!=null? MacroDetails[13].toString():"-" %>">
+											<button class="btn btn-sm submit" onclick="valueSubmit()">SUBMIT</button>
 										</h5>
 									</div>
 								</div>
@@ -821,7 +823,7 @@ strong {
 											6.&nbsp;&nbsp;&nbsp;Specify the User
 											<%if(ProjectDetailes[22]==null){ %>
 
-											<select class="form-control selectdee" id="user" name="user"
+										<!-- 	<select class="form-control selectdee" id="user" name="user"
 												data-container="body" data-live-search="true"
 												style="font-size: 5px; width: 27%">
 												<option value="IA">Army</option>
@@ -829,33 +831,16 @@ strong {
 												<option value="IN">Navy</option>
 												<option value="IS">Inter-services</option>
 												<option value="DO">DRDO</option>
+												<option value="ADA">ADA,DRDO</option>
 												<option value="OH">Others</option>
-											</select> <span id="adduser"><button type="button"
+											</select> --> 
+											<input class="form-control mt-1 mb-1" id="user" name="user">
+											
+											<span id="adduser"><button type="button"
 													class="btn btn-sm btn-success" onclick="submitUser()"
 													style="box-shadow: 2px 2px 2px gray;">SUBMIT</button> </span>
 											<%}else{ %>
-											<select class="form-control selectdee" id="user" name="user"
-												data-container="body" data-live-search="true"
-												style="font-size: 5px; width: 27%">
-												<option
-													<%if (ProjectDetailes[22].toString().equalsIgnoreCase("IA")) {%>
-													selected <%}%> value="IA">Army</option>
-												<option
-													<%if (ProjectDetailes[22].toString().equalsIgnoreCase("IAF")) {%>
-													selected <%}%> value="IAF">Air Force</option>
-												<option
-													<%if (ProjectDetailes[22].toString().equalsIgnoreCase("IN")) {%>
-													selected <%}%> value="IN">Navy</option>
-												<option
-													<%if (ProjectDetailes[22].toString().equalsIgnoreCase("IS")) {%>
-													selected <%}%> value="IS">Inter-services</option>
-												<option
-													<%if (ProjectDetailes[22].toString().equalsIgnoreCase("DO")) {%>
-													selected <%}%> value="DO">DRDO</option>
-												<option
-													<%if (ProjectDetailes[22].toString().equalsIgnoreCase("OH")) {%>
-													selected <%} %> value="OH">Others</option>
-											</select>
+										<input class="form-control mt-1 mb-1" id="user" name="user" value="<%=ProjectDetailes[22]%>"> 
 
 
 											<button class="btn btn-sm btn-warning" onclick="submitUser()"
@@ -878,38 +863,35 @@ strong {
 									</div>
 								</div>
 								<div class="row mt-2">
-									<div class="col-md-12 ml-1 leftsiderow">
+									<div class="col-md-5 ml-1 leftsiderow">
 										<h5 class="ml-1">
-											8.&nbsp;&nbsp;&nbsp;Is it a Multi-lab Project? &nbsp;&nbsp;<%
-					if (ProjectDetailes[11] != null && ProjectDetailes[11].toString().equalsIgnoreCase("Y")) {
-					%><p>&nbsp;&nbsp;Yes&nbsp;&nbsp;</p>
-											<%
-											} else {
-											%><p>&nbsp;&nbsp;No&nbsp;&nbsp;</p>
-											<%
-											}
-											%>
-											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-											<%
-											int count = 1;
-											if (!ProjectInitiationLabList.isEmpty()) {
-											%>
-
-											<button type="button" class="btn btn-sm btn-primary"
-												style="box-shadow: 2px 2px 2px gray; font-family: FontAwesome"
-												data-toggle="tooltip" data-placement="top" data-width="100%"
-												title="<%for (Object[] obj : ProjectInitiationLabList) {%><%=count + ". " + obj[2] + '\n'%><%count++;}%>">
-												View Labs</button>
-											<%
-											}else{%>
-											<span class="badge badge-primary p-2"
-												style="box-shadow: 2px 2px 2px gray">Not specified</span>
-											<% }%>
-
-
+										8.&nbsp;&nbsp;&nbsp;Is it a Multi-lab Project? &nbsp;&nbsp;<%
+										if (ProjectDetailes[11] != null && ProjectDetailes[11].toString().equalsIgnoreCase("Y")) {%><p>&nbsp;&nbsp;Yes&nbsp;&nbsp;</p>
+										<%} else {%><p>&nbsp;&nbsp;No&nbsp;&nbsp;</p><%}%>
 										</h5>
 									</div>
+									
+									<div class="col-md-6" style="display: flex;justify-content: space-evenly;">
+									<span style="font-weight:500;">PDC : </span>
+									<span> <input type="text" data-date-format="dd/mm/yyyy"readonly id="sanc-date" name="sadate" value=""  class="form-control form-control" style="width:100%;"> </span>
+									<span><button class="btn submit" onclick="valueSubmit(1)">SUBMIT</button> </span>
+									</div>
 								</div>
+									<div class="col-md-12 mt-4" id="projectdeliverables">
+										<h5 class="mt-1" style="font-weight: 600">
+											PD / LabDirector Remarks on Technology<br> </h5> 
+											<div id="PDRemarks" class="center">
+											<%if(MacroDetails.length>0 && MacroDetails[15]!=null  ){ %> <%=MacroDetails[15].toString() %> <%} %>
+											</div>
+											
+											<span class="text-center" id="protospan"> 
+													<button class="btn btn-sm btn-success mt-1" type="button"
+														onclick="valueSubmit()" style="margin-left: 50%;">SUBMIT</button>
+													
+											</span> 
+											
+										
+									</div>
 							</div>
 							<div class="col-md-6 " id="rightside">
 								<div class="row">
@@ -1119,48 +1101,20 @@ strong {
 
 									<div class="col-md-12 mt-2" id="projectdeliverables">
 										<h5 class="mt-1" id="deliverables">
-											13.Proposed project deliverables<br> <span> <%if(MacroDetails.length==0){ %>
-												<label class=" font-weight-bold">(a) No of
-													prototypes for testing :</label> <input class="form-control"
-												id="PrototypesNo" name="PrototypesNo" type="text"
-												oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
-												style="display: inline-block; width: 10%; margin-left: 2%">
-												<br>
-											<label class=" font-weight-bold mt-1">(b) No of (type
-													approved/qualified) deliverables:</label> <input
-												class="form-control mt-1" id="deliverables1"
-												name="deliverables1" type="text"
-												oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
-												style="display: inline-block; width: 10%; margin-left: 2%">
-												<br>
-											<span class="text-center" id="protospan"><button
-														class="btn btn-sm btn-success mt-1" type="button"
-														onclick="valueSubmit()" style="margin-left: 50%;">SUBMIT</button></span>
-												<%}else{ %> <label class=" font-weight-bold">(a) No of
-													prototypes for testing :</label> <input class="form-control"
-												id="PrototypesNo" name="PrototypesNo" type="text"
-												oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
-												style="display: inline-block; width: 10%; margin-left: 2%"
-												value="<%if(!MacroDetails[6].toString().equalsIgnoreCase("0")){%><%=MacroDetails[6] %><%}else{%>0<%}%>">
-												<br>
-											<label class=" font-weight-bold mt-1">(b) No of (type
-													approved/qualified) deliverables:</label> <input
-												class="form-control mt-1" id="deliverables1"
-												name="deliverables" type="text"
-												oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
-												style="display: inline-block; width: 10%; margin-left: 2%"
-												value="<%if(!MacroDetails[7].toString().equalsIgnoreCase("0")){%><%=MacroDetails[7] %><%}else{%>0<%}%>">
-												<br>
-											<span class="text-center" id="protospan"> <%if(MacroDetails[6].toString().equalsIgnoreCase("0")&&MacroDetails[7].toString().equalsIgnoreCase("0")) {%>
+											13.Proposed project deliverables<br> </h5> 
+											<div id="prototypeDiv" class="center">
+												<%if(MacroDetails.length>0 && MacroDetails[14]!=null ){ %><%=MacroDetails[14].toString()%>
+											<%} %>
+											</div>
+											<textarea name="prototypeDetails" style="display: none;"></textarea>
+											
+											<span class="text-center" id="protospan"> 
 													<button class="btn btn-sm btn-success mt-1" type="button"
 														onclick="valueSubmit()" style="margin-left: 50%;">SUBMIT</button>
-													<%}else {%>
-													<button class="btn btn-sm btn-warning mt-1" type="button"
-														onclick="valueSubmit()" style="margin-left: 50%;">UPDATE</button>
-													<% }%>
-											</span> <%} %>
-											</span>
-										</h5>
+													
+											</span> 
+											
+										
 									</div>
 								</div>
 							</div>
@@ -1843,6 +1797,67 @@ strong {
 										</h5>
 									</div>
 								</div>
+								<div class="col-md-12 mt-2" id="highDevRiskContainer">
+    <h5 class="mt-1" style="cursor: pointer;" onclick="toggleHighDevRisk()">
+        High development risk areas and remedial actions proposed<br>
+    </h5>
+
+    <div id="highDevRiskContent" style="display: none;">
+        <div id="Highdevelopmentrisk" class="center">
+            <% if(MacroDetails.length>0 && MacroDetails[17] != null) { %>
+                <%= MacroDetails[17].toString() %>
+            <% } %>
+        </div>
+
+        <textarea name="" style="display: none;"></textarea>
+
+        <span class="text-center" id="protospan">
+            <button class="btn btn-sm btn-success mt-1" type="button"
+                onclick="valueSubmit()" style="margin-left: 50%;">SUBMIT</button>
+        </span>
+    </div>
+</div>
+
+
+
+								<div class="col-md-12 mt-2" id="projectdeliverablesHeader"
+									style="cursor: pointer; background-color: #f1f1f1;"
+									onclick="toggleDeliverables()">
+									<h5 class="mt-1">Details of Sub-Projects</h5>
+								</div>
+
+								<div class="col-md-12 mt-2" id="projectdeliverablesContent"
+									style="display: none">
+									<div id="subProjectDetails" class="center"> <% if(MacroDetails.length>0 && MacroDetails[19] != null) { %>
+                <%= MacroDetails[19].toString() %>
+            <% } %></div>
+									<textarea name="" style="display: none;"></textarea>
+									<span class="text-center" id="protospan">
+										<button class="btn btn-sm btn-success mt-1" type="button"
+											onclick="valueSubmit()" style="margin-left: 50%;">SUBMIT</button>
+									</span>
+								</div>
+
+							<div class="col-md-12 mt-2" id="designIterationContainer">
+    <h5 class="mt-1" style="cursor: pointer;" onclick="toggleDesignIteration()">
+        Members of designed, Iteration Required <br>
+    </h5>
+
+    <div id="designIterationContent" style="display: none;">
+        <div id="designIteration" class="center">
+          <% if(MacroDetails.length>0&& MacroDetails[18] != null) { %>
+                <%= MacroDetails[18].toString() %>
+            <% } %>
+        </div>
+
+        <textarea name="" style="display: none;"></textarea>
+
+        <span class="text-center" id="protospan">
+            <button class="btn btn-sm btn-success mt-1" type="button"
+                onclick="valueSubmit()" style="margin-left: 50%;">SUBMIT</button>
+        </span>
+    </div>
+</div>
 							</div>
 							<!-- Right Side Part  -->
 							<div class="col-md-6" id="part2rightside" style="">
@@ -1903,10 +1918,7 @@ strong {
 										<h5>
 											9. Details of additional building space requirement
 
-											<%int k=0;
-					if(!CostDetailsListSummary.isEmpty()){
-					for(Object[]obj:CostDetailsListSummary){
-					if(obj[0].toString().contains("Works")){%>
+						
 											<span class="ml-5" id="buildingwork"
 												style="float: right; margin-top: -3px;">
 												<button type="button" class="btn btn-sm bg-transparent plus"
@@ -1916,15 +1928,6 @@ strong {
 														style="color: green; padding: 0px 0px 0px 0px;"></i>
 												</button>
 											</span>
-											<%}else if(++k==CostDetailsListSummary.size()){%>
-											<span class="badge badge-pill badge-primary"
-												style="float: right; padding: 10px; margin-top: -6px;">Not
-												Available</span>
-											<%}}}else{%>
-											<span class="badge badge-pill badge-primary"
-												style="float: right; padding: 10px; margin-top: -6px;">Not
-												Available</span>
-											<%} %>
 										</h5>
 									</div>
 								</div>
@@ -1932,35 +1935,11 @@ strong {
 									style="display: none;">
 									<div class="col-md-12">
 										<div id="" style="">
-											<table class="table table-striped table-bordered"
-												id="mytable"
-												style="width: 100%; font-family: 'FontAwesome';">
-												<thead
-													style="background: #055C9D; color: white; position: sticky; top: -2px;">
-													<tr style="text-align: center;">
-														<th style="width: 3%">SN</th>
-														<th style="width: 30%">Head Code</th>
-														<th style="width: 40%">Item</th>
-														<th style="width: 15%">Cost <br>( &#8377; In
-															Cr.)
-														</th>
-													</tr>
-												</thead>
-												<tbody id="">
-													<%int c=0;
-					if(!CostDetailsListSummary.isEmpty()){ 
-					for(Object[]obj:CostDetailsListSummary){
-						if(obj[0].toString().contains("Works")){
-					%>
-													<tr>
-														<td><%=++c %></td>
-														<td><%=obj[0].toString()+"( "%><%=obj[1].toString() +" )"%></td>
-														<td></td>
-														<td align="right"><%=nfc.convert(Double.parseDouble(obj[2].toString())/100000)%></td>
-													</tr>
-													<%}}} %>
-												</tbody>
-											</table>
+	
+											<textarea name="additionalbuilding" id="additionalbuilding" class="form-control"><%if(macrodetailsTwo.length!=0&&macrodetailsTwo[6].toString().length()>0) {%><%=macrodetailsTwo[6].toString() %> <%}%></textarea>
+										</div>
+										<div align="center" class="mt-1">
+										<button type="button" class ="btn submit" onclick="submitBuildingDetails()"  >SUBMIT</button>
 										</div>
 									</div>
 								</div>
@@ -2075,6 +2054,24 @@ strong {
 									</div>
 								</div>
 								<%} %>
+								
+							<div class="col-md-12 mt-2" id="projectdeliverables">
+										<h5 class="mt-1" id="">
+											13.Details need to be certified by Lab Director<br> </h5> 
+											<div id="LabdirectorDetails" class="center">
+												<%if(MacroDetails.length>0 && MacroDetails[16]!=null){ %><%=MacroDetails[16].toString()%>
+											<%} %>
+											</div>
+											<textarea name="" style="display: none;"></textarea>
+											
+											<span class="text-center" id="protospan"> 
+													<button class="btn btn-sm btn-success mt-1" type="button"
+														onclick="valueSubmit()" style="margin-left: 50%;">SUBMIT</button>
+													
+											</span> 
+											
+										
+									</div>
 							</div>
 						</div>
 						<div class="mt-2" align="left">
@@ -4237,30 +4234,49 @@ strong {
 		}
 	}
 	
-	function valueSubmit(){
-		var PrototypesNo=$('#PrototypesNo').val();
-		var deliverables=$('#deliverables1').val();
-		console.log(PrototypesNo+"hashas");
-		if(PrototypesNo===""||deliverables===""){
-			alert("please fill both the field");
-		}else{
+	function valueSubmit(a){
+
+		var TitleProgramme = $('#TitleProgramme').val();
+		
+	
+		var prototypeDetails =CKEDITOR.instances['prototypeDiv'].getData();
+		var PDRemarks =CKEDITOR.instances['PDRemarks'].getData();
+		var LabdirectorDetails =CKEDITOR.instances['LabdirectorDetails'].getData();
+		var Highdevelopmentrisk =CKEDITOR.instances['Highdevelopmentrisk'].getData();
+		var subProjectDetails =CKEDITOR.instances['subProjectDetails'].getData();
+		var designIteration =CKEDITOR.instances['designIteration'].getData();
+		console.log(prototypeDetails+"prototypeDetails");
+		var sanctionDate = $('#sanc-date').val();
+		sanctionDatearr =sanctionDate.split("-"); 
+		sanctionDate = sanctionDatearr[2]+"-"+sanctionDatearr[1]+"-"+sanctionDatearr[0];
+	
+	
 			if(confirm("Are you sure you want to update data?")){
 				$('#successdiv').css("display","none"); 
 		  		$.ajax({
-					type:'GET',
+					type:'POST',
 					url:'PrototypeDeliverables.htm',
 					datatype:'json',
 					data:{
 						initiationid :<%=initiationid%>,
-						PrototypesNo:PrototypesNo,
-						deliverables:deliverables,
+						PrototypesNo:"0",
+						deliverables:"0",
+						sanctionDate:sanctionDate,
+						TitleProgramme:TitleProgramme,
+						prototypeDetails:prototypeDetails,
+						PDRemarks:PDRemarks,
+						LabdirectorDetails:LabdirectorDetails,
+						Highdevelopmentrisk:Highdevelopmentrisk,
+						subProjectDetails:subProjectDetails,
+						designIteration:designIteration,
+						${_csrf.parameterName}:	"${_csrf.token}"
 						},
 					success:function(result){
 						var ajaxresult=JSON.parse(result);
 						$('#successdiv').css("display","block");
 						$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">'+ajaxresult+'</div>');
 						$('#successdiv').delay(3000).hide(0); 
-						$('#protospan').html('<button class="btn btn-sm btn-warning mt-1" type="button" onclick="valueSubmit()" style="margin-left: 50%;">UPDATE</button>');
+						/* $('#protospan').html('<button class="btn btn-sm btn-warning mt-1" type="button" onclick="valueSubmit()" style="margin-left: 50%;">UPDATE</button>'); */
 					
 					} 
 				}) 
@@ -4268,7 +4284,7 @@ strong {
 			}else{
 				event.preventDefault();
 				return false;
-			}	
+				
 			}	
 	}	
 	function submitUser(){
@@ -4430,6 +4446,12 @@ strong {
 		CKEDITOR.replace( 'Additionaldiv',editor_config); 
 		CKEDITOR.replace('otherinformationDiv',editor_config);
 		CKEDITOR.replace('EnclosuresDiv',editor_config);
+		CKEDITOR.replace('prototypeDiv',editor_config);
+		CKEDITOR.replace('PDRemarks',editor_config);
+		CKEDITOR.replace('LabdirectorDetails',editor_config);
+		CKEDITOR.replace('Highdevelopmentrisk',editor_config);
+		CKEDITOR.replace('subProjectDetails',editor_config);
+		CKEDITOR.replace('designIteration',editor_config);
 		CKEDITOR.replace('subpointdiv2Editor',editor_config);
 		CKEDITOR.replace('subpointdiv4Editor',editor_config);
 		CKEDITOR.replace('subpointdiv5Editor',editor_config);
@@ -5701,7 +5723,7 @@ strong {
 		var information3=$('#information3').val().trim();
 		var majorcapital =CKEDITOR.instances['majorcapital'].getData();
 
-		
+		var information4=$('#additionalbuilding').val().trim();
  		if(information1.length<=0&&information2.length<=0&&information3.length<=0&&majorcapital.length<=0){
 			alert("Please fill the field")
 		}else{
@@ -5716,6 +5738,7 @@ strong {
 						information1:information1,
 						information2:information2,
 						information3:information3,
+						information4:information4,
 						initiationid:<%=initiationid%>,
 						${_csrf.parameterName}:	"${_csrf.token}"
 					},
@@ -5735,6 +5758,50 @@ strong {
 			}
 		}
 	}
+	
+	function submitBuildingDetails(){
+		var information1=$('#information1').val().trim();
+		var information2=$('#information2').val().trim();
+		var information3=$('#information3').val().trim();
+		var information4=$('#additionalbuilding').val().trim();
+
+		var majorcapital =CKEDITOR.instances['majorcapital'].getData();
+
+		
+ 		if(information4.length<=0){
+			alert("Please fill the field")
+		}else{
+			if(confirm("Are you sure,you want to submit the data?")){
+				$('#successdiv').css("display","none");
+				$.ajax({
+					type:'POST',
+					url:'MacroDetailsPart2.htm',
+					datatype:'json',
+					data:{
+						majorcapital:majorcapital,
+						information1:information1,
+						information2:information2,
+						information3:information3,
+						information4:information4,
+						initiationid:<%=initiationid%>,
+						${_csrf.parameterName}:	"${_csrf.token}"
+					},
+					success:function(result){
+						if(result>0){
+							$('#successdiv').css("display","block");
+							$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
+							$('#successdiv').delay(3000).hide(0);
+						}
+					}
+					
+				})
+			}else{
+				event.preventDefault();
+				return false;
+			}
+		}
+	}
+	
 	 function briefPertSubmit(a){
 		 var subpointdiv16Editor =CKEDITOR.instances['subpointdiv16Editor'].getData();
 		 if(subpointdiv16Editor.length==0){
@@ -6349,6 +6416,53 @@ function hideWork(){
 	$('#buildingworkDiv').css("display","none");
 	$('#buildingwork').html('<button type="button" class="btn btn-sm bg-transparent plus"  data-toggle="tooltip" data-placement="top" onclick="showWork()"><i class="btn  fa  fa-plus " style="color: green; padding: 0px  0px  0px  0px;"></i></button>');
 }
+$(document).ready(function() {
+	var dateNew = ""
+	<%if(MacroDetails.length>0 && MacroDetails[12]!=null){ 
+	
+	%>
+	<%}%>
+	console.log(dateNew+"dateNew")
+    $('#sanc-date').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        drops: "up",
+        cancelClass: "btn-default",
+        startDate:<%if(MacroDetails.length != 0 && MacroDetails[12]!= null) { String[]temp = MacroDetails[12].toString().split("-");String datetemp = temp[2]+"-"+temp[1]+"-"+temp[0];%>'<%=datetemp%>'<%}else{%>new Date()<%}%>,
+        locale: {
+            format: 'DD-MM-YYYY'
+        }
+    });
+});
+
+function toggleDeliverables() {
+    const contentDiv = document.getElementById('projectdeliverablesContent');
+    if (contentDiv.style.display === "none") {
+        contentDiv.style.display = "block";
+    } else {
+        contentDiv.style.display = "none";
+    }
+}
+
+
+function toggleDesignIteration() {
+    const content = document.getElementById("designIterationContent");
+    if (content.style.display === "none" || content.style.display === "") {
+        content.style.display = "block";
+    } else {
+        content.style.display = "none";
+    }
+}
+
+function toggleHighDevRisk() {
+    const content = document.getElementById("highDevRiskContent");
+    content.style.display = (content.style.display === "none" || content.style.display === "") 
+        ? "block" 
+        : "none";
+}
+
+
+
 </script>
 </body>
 </html>
