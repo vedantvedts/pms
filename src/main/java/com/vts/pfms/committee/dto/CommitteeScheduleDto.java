@@ -29,6 +29,7 @@ public class CommitteeScheduleDto
 	private String InitiationId;
 	// Added by Prudhvi on 21-10-2024
 	private String CARSInitiationId;
+	private String ProgrammeId;
 	private String rodNameId;
 	private String PMRCDecisions;
 	

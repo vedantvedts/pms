@@ -35,6 +35,7 @@ public class CommitteeSchedule
 	private Long InitiationId; 
 	// Added by Prudhvi on 21-10-2024
 	private Long CARSInitiationId;
+	private Long ProgrammeId;
 	private Long RODNameId;
 	private Date ScheduleDate;
 	private String ScheduleStartTime;

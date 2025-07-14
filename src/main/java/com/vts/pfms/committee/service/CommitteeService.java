@@ -28,6 +28,8 @@ import com.vts.pfms.committee.model.CommitteeMomAttachment;
 import com.vts.pfms.committee.model.CommitteeProject;
 import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.committee.model.PmsEnote;
+import com.vts.pfms.committee.model.ProgammeProjects;
+import com.vts.pfms.committee.model.ProgrammeMaster;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
@@ -312,5 +314,15 @@ public interface CommitteeService {
 	public List<Object[]> previousMeetingHeld(String committeeid)throws Exception  ;
 	public List<Object[]> getRecommendationsOfCommittee(String committeeid)throws Exception  ;
 	public List<Object[]> getDecisionsofCommittee(String committeeid)throws Exception  ;
+	
+	/* ********************************************* Programme AD ************************************************ */
+	public List<ProgrammeMaster> getProgrammeMasterList()throws Exception;
+	public Long getCommitteeMainIdByProgrammeId(String programmeId) throws Exception;
+	public List<Object[]> prgmScheduleList(String programmeId) throws Exception;
+	public List<ProgammeProjects> getProgammeProjectsList(String programmeId) throws Exception;
+	public List<Object[]> prgmProjectList(String programmeId) throws Exception;
+	public ProgrammeMaster getProgrammeMasterById(String programmeId) throws Exception;
+	/* ********************************************* Programme AD End************************************************ */
+
 }
 

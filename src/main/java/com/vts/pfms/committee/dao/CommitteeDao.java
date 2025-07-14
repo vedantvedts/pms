@@ -31,6 +31,8 @@ import com.vts.pfms.committee.model.CommitteeSubSchedule;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.committee.model.PmsEnote;
 import com.vts.pfms.committee.model.PmsEnoteTransaction;
+import com.vts.pfms.committee.model.ProgammeProjects;
+import com.vts.pfms.committee.model.ProgrammeMaster;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.MinutesFinanceList;
@@ -331,7 +333,16 @@ public interface CommitteeDao {
 	public List<Object[]> previousMeetingHeld(String committeeid)throws Exception;
 	public List<Object[]> getRecommendationsOfCommittee(String committeeid)throws Exception;
 	public List<Object[]> getDecisionsofCommittee(String committeeid)throws Exception;
+	public CommitteeSchedule getCommitteeScheduleById(Long scheduleId)throws Exception;
 	
-
+	/* ********************************************* Programme AD ************************************************ */
+	public List<ProgrammeMaster> getProgrammeMasterList()throws Exception;
+	public Long getCommitteeMainIdByProgrammeId(String programmeId) throws Exception;
+	public List<Object[]> prgmScheduleList(String programmeId) throws Exception;
+	public Long prgmMeetingCount(String programmeId) throws Exception;
+	public List<ProgammeProjects> getProgammeProjectsList(String programmeId) throws Exception;
+	public List<Object[]> prgmProjectList(String programmeId) throws Exception;
+	public ProgrammeMaster getProgrammeMasterById(String programmeId) throws Exception;
+	/* ********************************************* Programme AD End************************************************ */
 
 }

@@ -22,6 +22,13 @@ public class CommitteeMembersEditDto {
 	private String msLabCode;
 	private String CommitteeId;
 	
+	private Long ProjectId;
+	private Long DivisionId;
+	private Long InitiationId;
+	private Long CARSInitiationId;
+	private String ProgrammeId;
 	
+	private String ReferenceNo;
+	private String FormationDate;
 
 }

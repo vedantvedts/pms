@@ -419,7 +419,7 @@ public class CARSServiceImpl implements CARSService{
 				
 				for(int i=0;i<2;i++) {
 					PfmsNotification notification2 = new PfmsNotification();
-					notification2.setEmpId(Long.parseLong(i==0?dpandc[0].toString():GHDPandC[0].toString()));
+					notification2.setEmpId(dpandc!=null?(Long.parseLong(i==0?dpandc[0].toString():GHDPandC[0].toString())):0L);
 					notification2.setNotificationUrl("CARSRSQRApprovedList.htm");
 					notification2.setNotificationMessage("CARS RSQR request approved for "+emp.getEmpName());
 					notification2.setNotificationby(Long.parseLong(EmpId));
