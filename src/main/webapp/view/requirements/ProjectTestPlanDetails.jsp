@@ -1,4 +1,6 @@
 <%@page import="java.util.stream.Collectors"%>
+<%@page import="com.vts.pfms.requirements.model.TestPlanMaster"%>
+<%@page import="com.vts.pfms.requirements.model.TestSetupMaster"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.time.LocalDate"%>
@@ -140,12 +142,21 @@ height:300px!important;
 	List<Object[]> AcceptanceTesting = (List<Object[]>)request.getAttribute("AcceptanceTesting");
 	List<Object[]> specificationList = (List<Object[]>)request.getAttribute("specificationList");
 	List<Object[]> StagesApplicable = (List<Object[]>)request.getAttribute("StagesApplicable");
+	List<TestSetupMaster>master = (List<TestSetupMaster>)request.getAttribute("testSetupMasterMaster");
 
 	if(specificationList!=null && specificationList.size()>0){
 		specificationList=specificationList.stream().filter(e->!e[7].toString().equalsIgnoreCase("0")).collect(Collectors.toList());
 	}
 	
 	String isPdf = (String)request.getAttribute("isPdf");
+	
+	 Map<String, String> objMap = new HashMap<>();
+     
+     objMap.put("D", "Demonstration");
+     objMap.put("T", "Test");
+     objMap.put("A", "Analysis/Design");
+     objMap.put("I", "Inspection");
+     objMap.put("S", "Special Verification Methods");
 	%>
 	
 	<%String ses=(String)request.getParameter("result"); 
@@ -1958,7 +1969,7 @@ function DownloadDocPDF(){
 		            				[
 		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
 		            					{text: 'Methodology', style: 'tableData',},
-		            					{text: '<% if(obj[9]!=null){%><%=obj[9] %><% } else {%>-<%}%>', style: 'tableData',},
+		            					{text: '<% if(obj[9]!=null){%><%=objMap.get(obj[9].toString()) %><% } else {%>-<%}%>', style: 'tableData',},
 		            				],
 
 		            				[
@@ -1968,13 +1979,37 @@ function DownloadDocPDF(){
 		            					<%String[] TempArray = obj[10]!=null? obj[10].toString().split(","):new String[]{"", "", "", "", ""}; 
  										List<String>tempList = Arrays.asList(TempArray);
  										List<String>temp = new ArrayList<>();
-											for(Object[] obj1: TestSuiteList){
+										/* 	for(Object[] obj1: TestSuiteList){
 										if(tempList.contains(obj1[0].toString())){
 											temp.add(obj1[3].toString());
-										}} %> 
+										}} */ 
 										
-		            					{text: '<%if(temp.size()>0) {%> <%= String.join(", ", temp) + "" %><%}else{ %> - <%} %>', style: 'tableData',},
+										TestSetupMaster tp = master.stream().filter(e->e.getSetupId().toString().equalsIgnoreCase(TempArray[0].trim()))
+															.findFirst().orElse(null);
+										
+									
+										System.out.println(tp.getTestSetUpId());
+										%> 
+										
+										[
+			            					{stack: [htmlToPdfmake(setImagesWidth('<%if(tp!=null){%><%=tp.getTestSetUpId() %><% } else {%>-<%}%>', 500))], colSpan: 3},
+			            				],
+			            				
+			            			
 		            				],
+		            				[
+		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(tp!=null && tp.getObjective()!=null){%><%= "<b>Objective</b>"+ tp.getObjective().toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
+		            					
+		            				],
+		            				[
+		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(tp!=null && tp.getTestProcedure()!=null){%><%= "<b>Test Procedure</b>"+ tp.getTestProcedure().toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
+		            					
+		            				],
+		            				[
+		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(tp!=null && tp.getTestSetUp()!=null){%><%= "<b>Test Set Up</b>"+ tp.getTestSetUp().toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
+		            					
+		            				],
+		            				
 
 		            				[
 		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
@@ -2083,7 +2118,7 @@ function DownloadDocPDF(){
                 				{text: '<%=++slno %>', style: 'tableData', alignment: 'center'},
                 				{text: '<%=obj[1]!=null?obj[1]:"-" %>', style: 'tableData', },
                 				
-                				<% List<String> specid = Arrays.asList(obj[19].toString() .split(","));
+                				<% List<String> specid = obj[19]!=null?Arrays.asList(obj[19].toString() .split(",")):new ArrayList<>();
         						List<Object[]>newSpecList = new ArrayList<>();
         						newSpecList = specificationList.stream().filter(spec->specid.contains(spec[0].toString())).collect(Collectors.toList()); 
         						%>
@@ -2147,7 +2182,7 @@ function DownloadDocPDF(){
                 				<%
 								List<Object[]>newTestList = new ArrayList<>(); 
 								if(TestDetailsList!=null && TestDetailsList.size()>0){
-									newTestList = TestDetailsList.stream().filter(e->Arrays.asList(e[19].toString().split(",")).contains(obj[0].toString())).collect(Collectors.toList());
+									newTestList = TestDetailsList.stream().filter(e->e[19]!=null &&  Arrays.asList(e[19].toString().split(",")).contains(obj[0].toString())).collect(Collectors.toList());
 								}%>
         						
         						{text: '<%if(newTestList.size()>0){ for(Object[] obj1: newTestList){ %><%=obj1[1] %>\n<%}}else{ %> - <%} %>', style: 'tableData', },

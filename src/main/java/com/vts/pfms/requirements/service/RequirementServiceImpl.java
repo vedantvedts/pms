@@ -42,6 +42,7 @@ import com.vts.pfms.requirements.model.DocumentFreeze;
 import com.vts.pfms.requirements.model.DocumentTrans;
 import com.vts.pfms.requirements.model.PfmsReqTypes;
 import com.vts.pfms.requirements.model.PfmsSpecTypes;
+import com.vts.pfms.requirements.model.PfmsSystemSubIntroduction;
 import com.vts.pfms.requirements.model.PfmsTestTypes;
 import com.vts.pfms.requirements.model.ReqDoc;
 import com.vts.pfms.requirements.model.RequirementInitiation;
@@ -56,6 +57,7 @@ import com.vts.pfms.requirements.model.TestPlanInitiation;
 import com.vts.pfms.requirements.model.TestPlanMaster;
 import com.vts.pfms.requirements.model.TestPlanSummary;
 import com.vts.pfms.requirements.model.TestScopeIntro;
+import com.vts.pfms.requirements.model.TestSetUpAttachment;
 import com.vts.pfms.requirements.model.TestSetupMaster;
 import com.vts.pfms.requirements.model.TestTools;
 import com.vts.pfms.requirements.model.VerificationData;
@@ -96,6 +98,28 @@ public class RequirementServiceImpl implements RequirementService {
 	
 	@Autowired
 	CARSDao carsdao;
+	
+	
+	public static int saveFile1(Path uploadPath, String fileName, MultipartFile multipartFile) throws IOException {
+		logger.info(new Date() + "Inside SERVICE saveFile ");
+		int result = 1;
+
+		if (!Files.exists(uploadPath)) {
+			Files.createDirectories(uploadPath);
+		}
+		try (InputStream inputStream = multipartFile.getInputStream()) {
+			Path filePath = uploadPath.resolve(fileName);
+			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException ioe) {
+			result = 0;
+			throw new IOException("Could not save image file: " + fileName, ioe);
+		} catch (Exception e) {
+			result = 0;
+			logger.error(new Date() + "Inside SERVICE saveFile " + e);
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 	@Override
 	public List<Object[]> RequirementList(String reqInitiationId) throws Exception {
@@ -1474,14 +1498,12 @@ public class RequirementServiceImpl implements RequirementService {
 		
 		return dao.deleteSpecificationMasterById(specsMasterId);
 	}
-	
+
 	@Override
 	public List<SpecificationTypes> getSpecificationTypesList() {
 
 		return dao.getSpecificationTypesList();
 	}
-
-	
 	
 	@Override
 	public List<TestSetupMaster> getTestSetupMaster() throws Exception {
@@ -1501,7 +1523,14 @@ public class RequirementServiceImpl implements RequirementService {
 	
 	@Override
 	public long addTestSetupMaster(TestSetupMaster tp) throws Exception {
-	
+		
+		if(tp.getTdrs()!=null && !tp.getTdrs().isEmpty()) {
+			Path path = Paths.get(uploadpath,tp.getLabCode() ,"Test SetUp");
+			saveFile1(path,tp.getTdrsData(), tp.getTdrs());
+		}
+		
+		
+		
 		return dao.addTestSetupMaster(tp);
 	}
 	
@@ -1509,5 +1538,68 @@ public class RequirementServiceImpl implements RequirementService {
 	public TestSetupMaster getTestSetupMasterById(Long setUpid) throws Exception {
 		
 		return dao.getTestSetupMasterById(setUpid);
+	}
+	
+	@Override
+	public long saveTestSetUpAttachment(MultipartFile[] attchments, long setUpId, String labCode) throws Exception {
+		long result=0l;
+		Path path = Paths.get(uploadpath,labCode,"Test SetUp");
+		try {
+			
+	
+		if(attchments!=null && attchments.length>0) {
+			for(int i=0;i<attchments.length;i++) {
+			
+			if(!attchments[i].isEmpty() ) {
+			saveFile1(path,setUpId+"_"+attchments[i].getOriginalFilename(),attchments[i]);
+			
+			TestSetUpAttachment tp = new TestSetUpAttachment();
+			
+			tp.setSetupId(setUpId);
+			tp.setLabCode(labCode);
+			
+			tp.setFilePath("Test SetUp");
+			
+			tp.setAttachmentFileName(attchments[i].getOriginalFilename());
+			tp.setIsActive(1);
+			
+			result = dao.saveTestSetUpAttachment(tp);
+			}
+			}
+		
+		}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	
+	@Override
+	public List<TestSetUpAttachment> getTestSetUpAttachment(String setUpId) throws Exception {
+		return dao.getTestSetUpAttachment(setUpId);
+	}
+	
+	@Override
+	public long saveTestSetUpAttachement(TestSetUpAttachment tp) throws Exception {
+		return dao.saveTestSetUpAttachment(tp);
+	}
+	
+	@Override
+	public List<PfmsSystemSubIntroduction> getActiveSubIntroductionByMainId(Long MainId)throws Exception {
+		
+		return dao.getActiveSubIntroductionByMainId(MainId);
+	}
+	
+	@Override
+	public long savePfmsSystemSubIntroduction(PfmsSystemSubIntroduction ps) throws Exception {
+		
+		return dao.savePfmsSystemSubIntroduction(ps);
+	}
+	
+	@Override
+	public int setMilestoneInActive(String id) throws Exception {
+		
+		return dao.setMilestoneInActive(id);
 	}
 }
