@@ -5,15 +5,12 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,6 +42,10 @@ import com.vts.pfms.admin.model.Expert;
 import com.vts.pfms.admin.service.AdminService;
 import com.vts.pfms.master.service.MasterService;
 import com.vts.pfms.utils.InputValidator;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AdminController {
@@ -1430,6 +1431,46 @@ public class AdminController {
 	    }
 	}
 
+	@RequestMapping(value = { "ExperAddAjax.htm" }, method = { RequestMethod.GET })
+	public @ResponseBody String ExperAddAjax(final HttpServletRequest req, final HttpSession ses, final RedirectAttributes redir)
+			throws Exception {
+		final String UserId = (String) ses.getAttribute("Username");
+		AdminController.logger.info(new Date() + "Inside ExperAddAjax.htm " + UserId);
+		 
+		Gson json = new Gson();
+				
+		
+		String expertNo = service.GenExpertNo();
+		Expert newExpert = new Expert();
+		newExpert.setTitle(req.getParameter("title"));
+		newExpert.setSalutation(req.getParameter("salutation"));
+		newExpert.setExpertNo(expertNo);
+		newExpert.setExpertName(req.getParameter("expertname"));
+		newExpert.setDesigId(Long.valueOf(Long.parseLong(req.getParameter("designationId"))));
+		newExpert.setExtNo("1234");
+		newExpert.setMobileNo(0l);
+		newExpert.setEmail("-");
+		newExpert.setOrganization(req.getParameter("organization"));
+		newExpert.setCreatedBy(UserId);
+		
+		try {
+			Long result = this.service.addExpert(newExpert);
+			
+			List<Object[]>expertList = service.GetExpertList().stream().filter(e->e[1].toString().equalsIgnoreCase(expertNo))
+										.collect(Collectors.toList());
+			return json.toJson(expertList);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return json.toJson( new ArrayList<>() );
+		}
+		
+	
+	}
+	
+	
+	
+	
+	
 	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
 	    redir.addAttribute("resultfail", message);
 	    return "redirect:/"+redirURL;

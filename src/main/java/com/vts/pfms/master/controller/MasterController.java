@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -2130,4 +2131,75 @@ public class MasterController {
 		}
 	}
 
+	public @ResponseBody String industryPartnerAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside industryPartnerAdd.htm " + UserId);
+		Gson json = new Gson();
+		IndustryPartner partner1 = new IndustryPartner();
+		try {
+			
+			String industryPartnerName2 = req.getParameter("industryPartnerName2");
+			String industryPartnerAddress2 = req.getParameter("industryPartnerAddress2");
+			String industryPartnerCity2 = req.getParameter("industryPartnerCity2");
+			String industryPartnerPinCode2 = req.getParameter("industryPartnerPinCode2");
+			
+			IndustryPartner partner =  new IndustryPartner();
+			partner.setIndustryName(industryPartnerName2);
+			partner.setIndustryAddress(industryPartnerAddress2);
+			partner.setIndustryCity(industryPartnerCity2);
+			partner.setIndustryPinCode(industryPartnerPinCode2);
+			partner.setCreatedBy(UserId);
+			partner.setCreatedDate(LocalDate.now().toString());
+			partner.setIsActive(1);
+			
+			long count = service.addIndustryPartner(partner);
+			 partner1 = service.getIndustryPartnerById(count+"");
+			return json.toJson(partner1);
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside industryPartnerAdd.htm " + UserId, e);
+			return json.toJson(partner1);
+		}
+	}
+	
+	
+	
+	@RequestMapping(value = "industryPartnerEmpAdd.htm" , method = {RequestMethod.GET})
+	public @ResponseBody String industryPartnerEmpAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside industryPartnerEmpAdd.htm " + UserId);
+		Gson json = new Gson();
+		try {
+			
+			String repName = req.getParameter("repName");
+			String repDesignation = req.getParameter("repDesignation");
+			String repEmail = req.getParameter("repEmail");
+			String repMobileNo = req.getParameter("repMobileNo");
+			String industryPartnerId = req.getParameter("industryPartnerId");
+			List<IndustryPartnerRep> partnerReplist = new ArrayList<>();
+			IndustryPartnerRep partnerRep = new IndustryPartnerRep();
+			IndustryPartner partner1 = service.getIndustryPartnerById((industryPartnerId));
+			
+			partnerRep.setIndustryPartner(partner1);
+			partnerRep.setRepName(repName);
+			partnerRep.setRepDesignation(repDesignation);
+			partnerRep.setRepEmail(repEmail);
+			partnerRep.setRepMobileNo(repMobileNo);
+			partnerRep.setCreatedBy(UserId);
+			partnerRep.setCreatedDate(LocalDateTime.now().toString());
+			partnerRep.setIsActive(1);
+			
+			partnerReplist.add(partnerRep);
+			partner1.setRep(partnerReplist);
+			
+			long result = service.addIndustryPartner(partner1);
+			return json.toJson(1);
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside industryPartnerEmpAdd.htm " + UserId, e);
+			return json.toJson(0);
+		}
+		
+	}
+		
 }
