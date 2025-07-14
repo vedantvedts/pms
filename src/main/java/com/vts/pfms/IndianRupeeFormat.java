@@ -30,7 +30,7 @@ public class IndianRupeeFormat {
 		
 		char lastDigit = salary.charAt(len);
 		String store="";
-		String decimal=".00";
+		String decimal="."+split[1];
 		int count=0;
 		for(int i=len-1 ; i>=0 ; i--)
 		{

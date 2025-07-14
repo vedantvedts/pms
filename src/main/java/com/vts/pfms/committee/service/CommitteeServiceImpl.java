@@ -76,6 +76,8 @@ import com.vts.pfms.committee.model.PfmsEmpRoles;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.committee.model.PmsEnote;
 import com.vts.pfms.committee.model.PmsEnoteTransaction;
+import com.vts.pfms.committee.model.ProgammeProjects;
+import com.vts.pfms.committee.model.ProgrammeMaster;
 import com.vts.pfms.mail.CustomJavaMailSender;
 import com.vts.pfms.master.dao.MasterDao;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
@@ -461,7 +463,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			
 			committeeschedule.setLabCode(committeescheduledto.getLabCode());	
 			committeeschedule.setCommitteeId(committeescheduledto.getCommitteeId());
-			committeeschedule.setProjectId(Long.parseLong(committeescheduledto.getProjectId()));
+			committeeschedule.setProjectId(committeescheduledto.getProjectId()!=null?Long.parseLong(committeescheduledto.getProjectId()):0L);
 			committeeschedule.setCreatedBy(committeescheduledto.getCreatedBy());
 			committeeschedule.setScheduleStartTime(committeescheduledto.getScheduleStartTime());
 			committeeschedule.setScheduleDate(new java.sql.Date(sdf.parse(committeescheduledto.getScheduleDate()).getTime()));
@@ -470,42 +472,42 @@ public class CommitteeServiceImpl implements CommitteeService{
 			committeeschedule.setIsActive(1);
 			committeeschedule.setScheduleFlag(committeescheduledto.getScheduleFlag());
 			committeeschedule.setConfidential(committeescheduledto.getConfidential());
-			committeeschedule.setDivisionId(Long.parseLong(committeescheduledto.getDivisionId()));
-			committeeschedule.setInitiationId(Long.parseLong(committeescheduledto.getInitiationId()));
+			committeeschedule.setDivisionId(committeescheduledto.getDivisionId()!=null?Long.parseLong(committeescheduledto.getDivisionId()):0L);
+			committeeschedule.setInitiationId(committeescheduledto.getInitiationId()!=null?Long.parseLong(committeescheduledto.getInitiationId()):0L);
 			committeeschedule.setPresentationFrozen("N");
 			committeeschedule.setBriefingPaperFrozen("N");
 			committeeschedule.setMinutesFrozen("N");
 			committeeschedule.setBriefingStatus("INI");
 			
-			
-			System.out.println(committeeschedule.getBriefingPaperFrozen());;
-			System.out.println(committeeschedule.getMinutesFrozen());
-			System.out.println(committeeschedule.getBriefingStatus());
-			System.out.println();
 			// Added by Prudhvi on 21-10-2024
-			committeeschedule.setCARSInitiationId(Long.parseLong(committeescheduledto.getCARSInitiationId()));
+			committeeschedule.setCARSInitiationId(committeescheduledto.getCARSInitiationId()!=null?Long.parseLong(committeescheduledto.getCARSInitiationId()):0L);
 			committeeschedule.setCommitteeMainId(committeescheduledto.getCommitteeMainId());
+			
+			committeeschedule.setProgrammeId(committeescheduledto.getProgrammeId()!=null?Long.parseLong(committeescheduledto.getProgrammeId()):0L);
 			
 			String CommitteeName=dao.CommitteeName(committeescheduledto.getCommitteeId().toString())[2].toString();
 			String LabName=dao.LabDetails(committeeschedule.getLabCode())[1].toString();
 			Long SerialNo=dao.MeetingCount(new java.sql.Date(sdf.parse(committeescheduledto.getScheduleDate()).getTime()),committeescheduledto.getProjectId());
 			String ProjectName=null;
-			if(Long.parseLong(committeescheduledto.getProjectId())>0) 
+			if(committeeschedule.getProjectId()>0) 
 			{
 				ProjectName=dao.projectdetails(committeescheduledto.getProjectId())[4].toString();
 			}
-			else if(Long.parseLong(committeescheduledto.getDivisionId())>0) 
+			else if(committeeschedule.getDivisionId()>0) 
 			{
 				ProjectName="DIV";
 			}
-			else if(Long.parseLong(committeescheduledto.getInitiationId())>0) 
+			else if(committeeschedule.getInitiationId()>0) 
 			{
 				ProjectName="INI";
 			}
-			else if(Long.parseLong(committeescheduledto.getCARSInitiationId())>0)
+			else if(committeeschedule.getCARSInitiationId()>0)
 			{
-				ProjectName="CARS-"+committeescheduledto.getCARSInitiationId();
-				SerialNo=dao.carsMeetingCount(committeescheduledto.getCARSInitiationId());
+				ProjectName="CARS-"+committeeschedule.getCARSInitiationId();
+				SerialNo=dao.carsMeetingCount(committeeschedule.getCARSInitiationId()+"");
+			}else if(committeeschedule.getProgrammeId()>0) {
+				ProjectName = "PRGM";
+				SerialNo=dao.prgmMeetingCount(committeeschedule.getProgrammeId()+"");
 			}
 			else
 			{
@@ -758,6 +760,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		logger.info(new Date() +"Inside SERVICE CommitteeScheduleUpdate ");
 		String meetingid = dao.CommitteeScheduleData(committeescheduledto.getScheduleId().toString())[12].toString();
 		CommitteeSchedule committeeschedule=new  CommitteeSchedule();
+		
 		committeeschedule.setScheduleDate(new java.sql.Date(sdf.parse(committeescheduledto.getScheduleDate()).getTime()));
 		committeeschedule.setScheduleStartTime(committeescheduledto.getScheduleStartTime());
 		committeeschedule.setScheduleId(committeescheduledto.getScheduleId());
@@ -767,7 +770,101 @@ public class CommitteeServiceImpl implements CommitteeService{
 		String[] strarr=meetingid.split("/");
 		meetingid=strarr[0].toString().trim() +"/"+strarr[1].toString().trim() +"/"+strarr[2].toString().trim() +"/"+sdf2.format(committeeschedule.getScheduleDate()).toString().toUpperCase().replace("-", "")+"/"+strarr[4].toString().trim() ;
 		committeeschedule.setMeetingId(meetingid);
-		return dao.CommitteeScheduleUpdate(committeeschedule);
+		
+		CommitteeSchedule schedule = dao.getCommitteeScheduleById(committeescheduledto.getScheduleId());
+		
+		long count =dao.CommitteeScheduleUpdate(committeeschedule);
+		
+		sentScheduleChangeNotification(schedule,committeescheduledto);
+		
+		
+		return count;
+	}
+
+	
+	private void sentScheduleChangeNotification(CommitteeSchedule schedule, CommitteeScheduleDto committeescheduledto) throws Exception {
+		StringBuilder message = new StringBuilder();
+
+		
+		String scheduleDate = schedule.getScheduleDate().toString();
+		String newDate = committeescheduledto.getScheduleDate().split("-")[2] + "-"+ committeescheduledto.getScheduleDate().split("-")[1] + "-"+ committeescheduledto.getScheduleDate().split("-")[0];
+
+		String oldTime = schedule.getScheduleStartTime().substring(0, 5);
+		String newTime = committeescheduledto.getScheduleStartTime();
+
+	
+
+//// Start of the message
+//		message.append("Dear Team,\n\n");
+//
+//		boolean changeFlag = false;
+//
+//		if (!scheduleDate.equalsIgnoreCase(newDate)) {
+//			changeFlag = true;
+//			message.append("This is to inform you that the **meeting date** has been rescheduled.\n\n")
+//					.append("Project Code : ").append(projectCode).append("\n").append("Committee    : ")
+//					.append(committee).append("\n").append("Previous Date: ").append(scheduleDate).append("\n")
+//					.append("Updated Date : ").append(newDate).append("\n");
+//		}
+//
+//		if (!oldTime.equals(newTime)) {
+//			if (!changeFlag) {
+//				message.append("Please note that the **meeting time** has been updated.\n\n").append("Project Code : ")
+//						.append(projectCode).append("\n").append("Committee    : ").append(committee).append("\n")
+//						.append("Meeting Date : ").append(newDate).append("\n");
+//			}
+//			changeFlag = true;
+//
+//			message.append("Previous Time: ").append(oldTime).append("\n").append("Updated Time : ").append(newTime)
+//					.append("\n\n");
+//		}
+//
+//		if (!changeFlag) {
+//			message.append("This is to confirm that there have been **no changes** to the scheduled meeting.\n");
+//		}
+//
+//		message.append("Kind regards,\nScheduling System");
+
+		
+		if (!scheduleDate.equalsIgnoreCase(newDate) || !oldTime.equals(newTime)) {
+			String[] arr = schedule.getMeetingId().split("/");
+			String projectCode = arr[1];
+			String committee = arr[2];
+			message.append("Please Note that ")
+				.append(committee+ " Meeting for " + projectCode)
+				.append(" on "+scheduleDate.split("-")[2] + "-"+ scheduleDate.split("-")[1] + "-"+ scheduleDate.split("-")[0]+" has been rescheduled on "+committeescheduledto.getScheduleDate()+ " at "+newTime);
+	
+			
+		List<Object[]>list = 	dao.CommitteeAtendance(schedule.getScheduleId()+"");
+		
+		ArrayList<String> emails= new ArrayList<String>();
+		ArrayList<String> emps= new ArrayList<String>();
+	
+		ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","I","P"));
+
+		for(Object[] obj : list) 
+		{	
+			if(membertypes.contains(obj[3].toString())) {
+				emps.add(obj[0].toString());
+			}
+		}
+		
+		for(String s:emps) {
+			PfmsNotification notification=new PfmsNotification();
+			notification.setEmpId(Long.parseLong(s) );
+			notification.setNotificationMessage(message.toString() );
+			notification.setNotificationUrl("CommitteeScheduleView.htm?scheduleid="+schedule.getScheduleId());
+			notification.setNotificationby(0l);
+			notification.setIsActive(1);
+			notification.setCreatedBy(committeescheduledto.getCreatedBy());
+			notification.setCreatedDate(sdf1.format(new Date()));
+			notification.setNotificationDate(sdf1.format(new Date()));
+			carsdao.addNotifications(notification);
+		}
+		
+		
+		System.out.println(message);
+		}
 	}
 
 	@Override
@@ -3878,4 +3975,45 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 		
 		return dao.getDecisionsofCommittee(committeeid);
 	}
+	
+	/* ********************************************* Programme AD ************************************************ */
+	@Override
+	public List<ProgrammeMaster> getProgrammeMasterList() throws Exception {
+		
+		return dao.getProgrammeMasterList();
+	}
+	
+	@Override
+	public Long getCommitteeMainIdByProgrammeId(String programmeId) throws Exception {
+		
+		return dao.getCommitteeMainIdByProgrammeId(programmeId);
+	}
+	
+	@Override
+	public List<Object[]> prgmScheduleList(String programmeId) throws Exception {
+		
+		return dao.prgmScheduleList(programmeId);
+	}
+	
+	@Override
+	public List<ProgammeProjects> getProgammeProjectsList(String programmeId) throws Exception {
+		
+		return dao.getProgammeProjectsList(programmeId);
+	}
+	
+	@Override
+	public List<Object[]> prgmProjectList(String programmeId) throws Exception {
+		
+		return dao.prgmProjectList(programmeId);
+	}
+	
+	@Override
+	public ProgrammeMaster getProgrammeMasterById(String programmeId) throws Exception {
+		
+		return dao.getProgrammeMasterById(programmeId);
+	}
+	
+	/* ********************************************* Programme AD End************************************************ */
+
+
 }

@@ -379,7 +379,7 @@ h6{
 						                            		%>
 						                            		<tr>
 						                            			<td class="center"><%=++slno %></td>
-						                            			<td class="center"><%=projectDetails[1]+" ("+projectDetails[3]+")"%></td>
+						                            			<td class="center"><%=projectDetails!=null?(projectDetails[1]+" ("+projectDetails[3]+")"):"-"%></td>
 						                            			<td class="center">M<%=obj[17] %> <%=obj[16] %></td>
 						                            			<td><%=obj[3]%></td>
 						                            			<td class="center"><%=obj[6]!=null?fc.sdfTordf(obj[6].toString()):"-" %></td>
@@ -633,7 +633,7 @@ h6{
 						{
 							id: "<%=obj[2]%>",
 						    name: "<%=obj[3].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", " ").replaceAll("\r", "")%>",
-							project: "<%=projectDetails[1]+" ("+projectDetails[3]+")"%>",
+						    project: "<%=projectDetails!=null?(projectDetails[1]+" ("+projectDetails[3]+")"):"-"%>",
 							<%if(!obj[9].toString().equalsIgnoreCase("0") && !obj[9].toString().equalsIgnoreCase("1")){ %>
 								baselineStart: "<%=obj[6]%>",
 								baselineEnd: "<%=obj[7]%>", 
@@ -1057,7 +1057,7 @@ $('#empId').on('change',function(){
 		            id: "<%=obj[2]%>",
 		            taskshortname: "<%=taskshortname.replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", " ").replaceAll("\r", "")%>",
 				    name: "<%=obj[3].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", " ").replaceAll("\r", "")%>",
-		            project: "<%=projectDetails[1] + " (" + projectDetails[3] + ")"%>",
+				    project: "<%=projectDetails!=null?(projectDetails[1] + " (" + projectDetails[3] + ")"):"-"%>",
 		            start: "<%=obj[6]%>",
 		            end: "<%=obj[7]%>",
 		            loading: "<%= Math.round((int)obj[14])%>"

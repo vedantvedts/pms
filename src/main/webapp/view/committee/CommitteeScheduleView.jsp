@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.committee.model.ProgrammeMaster"%>
 <%@page import="com.vts.pfms.cars.model.CARSInitiation"%>
 <%@page import="org.apache.logging.log4j.core.pattern.IntegerPatternConverter"%>
 <%@page import="java.sql.Date"%>
@@ -102,10 +103,12 @@
 	String divisionid= committeescheduleeditdata[16].toString();
 	String initiationid= committeescheduleeditdata[17].toString();
 	String carsInitiationId = committeescheduleeditdata[25].toString();
+	String programmeId = committeescheduleeditdata[26]!=null?committeescheduleeditdata[26].toString():"0";
 	Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 	Object[] divisiondetails=(Object[])request.getAttribute("divisiondetails");
 	Object[] initiationdetails=(Object[])request.getAttribute("initiationdetails");
 	CARSInitiation carsInitiationDetails=(CARSInitiation)request.getAttribute("carsInitiationDetails");
+	ProgrammeMaster prgmMasterDetails=(ProgrammeMaster)request.getAttribute("prgmMasterDetails");
 	
 	List<String> SplCommitteeCodes=(List<String>) request.getAttribute("SplCommitteeCodes");
 	
@@ -151,6 +154,9 @@
 									<%if(Long.parseLong(carsInitiationId)>0){ %>							  
 									  (CARS : <%=carsInitiationDetails.getCARSNo() %>)
 									<%} %>
+									<%if(Long.parseLong(programmeId)>0){ %>							  
+									  (Programme : <%=prgmMasterDetails.getPrgmName() %> (<%=prgmMasterDetails.getPrgmCode() %>) )
+									<%} %>
 							  </h4>
 							 </div>
 							 <div class="col-md-4">							 		
@@ -167,7 +173,7 @@
 									 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 									 	<input type="hidden" name="projectid" value="<%=projectid %>">
 									 </form>
-									<%}else if(Long.parseLong(projectid)==0 && Long.parseLong(divisionid)==0 && Long.parseLong(initiationid)==0 && Long.parseLong(carsInitiationId)==0  && userview==null){%>
+									<%}else if(Long.parseLong(projectid)==0 && Long.parseLong(divisionid)==0 && Long.parseLong(initiationid)==0 && Long.parseLong(carsInitiationId)==0 && Long.parseLong(programmeId)==0 && userview==null){%>
 									<form action="CommitteeScheduleList.htm" name="myfrm" method="post">
 									 	<input type="submit" class="btn  btn-sm back" value="SCHEDULE LIST" style="margin-left: 50px; font-size:15px;font-weight: bold; margin-top:-2px;float: right">
 									 	<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
@@ -194,6 +200,13 @@
 										 	<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
 										 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 										 	<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId %>">							 
+										</form>							
+									<%}else if( Long.parseLong(programmeId)>0){%>
+										<form action="PrgmSchedule.htm" name="myfrm" method="post">
+										 	<input type="submit" class="btn  btn-sm back" value="SCHEDULE LIST" style="margin-left: 50px; font-size:15px;font-weight: bold; margin-top:-2px;float: right">
+										 	<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
+										 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+										 	<input type="hidden" name="programmeId" value="<%=programmeId %>">							 
 										</form>							
 									<%} %>
  							 </div>
@@ -274,19 +287,21 @@
 											  </select>
 					                        </td>
 		                  				</tr>
-		                  				<tr >  
-		                  					<td colspan="4" >
-		                  						<label style="margin-bottom:-20px">Decisions/Recommendations sought from Meeting : &nbsp;</label>
-		                  					</td>
-		                  				<tr>
-		                  					<td colspan="4" >
-						       					<textarea class="form-control" name="decisions" id="decisions" cols="50" rows="5"  placeholder="Decisions sought from Meeting" maxlength="1000"><%if(committeescheduleeditdata[18]!=null ){ %> <%=committeescheduleeditdata[18] %> <%} %></textarea>
-						       				</td>
-		                  				</tr>
-		                  				<tr >  
-		                  					<td> <label style="margin-top: 25px;margin-bottom:-20px;  ">Reference : &nbsp;</label></td>
-						       				<td colspan="3"><input class="form-control" type="text" name="reference" id="reference"   placeholder="Reference for this Meeting" <%if(committeescheduleeditdata[14]!=null){ %> value="<%=committeescheduleeditdata[14] %>" <%} %> ></td>
-		                  				</tr>
+		                  				<% if( Long.parseLong(programmeId)==0){%>
+			                  				<tr >  
+			                  					<td colspan="4" >
+			                  						<label style="margin-bottom:-20px">Briefing of the meeting : &nbsp;</label>
+			                  					</td>
+			                  				<tr>
+			                  					<td colspan="4" >
+							       					<textarea class="form-control" name="decisions" id="decisions" cols="50" rows="5"  placeholder="Decisions sought from Meeting" maxlength="1000"><%if(committeescheduleeditdata[18]!=null ){ %> <%=committeescheduleeditdata[18] %> <%} %></textarea>
+							       				</td>
+			                  				</tr>
+			                  				<tr >  
+			                  					<td> <label style="margin-top: 25px;margin-bottom:-20px;  ">Reference : &nbsp;</label></td>
+							       				<td colspan="3"><input class="form-control" type="text" name="reference" id="reference"   placeholder="Reference for this Meeting" <%if(committeescheduleeditdata[14]!=null){ %> value="<%=committeescheduleeditdata[14] %>" <%} %> ></td>
+			                  				</tr>
+		                  				<%} %>
 		                  				<tr >
 		                  					<td colspan="4"  align="center"   >
 		                  					 <%if(useraccess>=1){ %>	
@@ -351,7 +366,7 @@
 									<td><%=obj[3] %></td>
 									<td><%=obj[4] %>  </td>									
 									<td><%=obj[6] %></td>									
-									<td><%=obj[10]%>(<%=obj[11] %>)  </td>
+									<td><%=obj[10]%>, <%=obj[11] %>  </td>
 									<td><%=obj[12] %></td>
 									<td>
 								
@@ -386,7 +401,7 @@
 									<%	if(Integer.parseInt(committeescheduleeditdata[10].toString())<6 && (userview==null || userview.equalsIgnoreCase("CS") || userview.equalsIgnoreCase("CC") )) { %>
 					   					 <%if(!committeeagendalist.isEmpty()){%>
 												 <%if(useraccess>1){ %>		 
-													 <form action="CommitteeScheduleAgenda.htm" method="post">
+													 <form <%if(programmeId.equals("0")) {%>action="CommitteeScheduleAgenda.htm"<%} else {%>action="PrgmScheduleAgenda.htm"<%} %> method="post">
 														<input type="hidden"  name="scheduleid" value="<%=committeescheduleeditdata[6] %>" >
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 														<button type="submit" class="btn  btn-sm  edit"  style="padding:2px 13px !important;margin-right: 5%" >EDIT</button>
@@ -394,7 +409,7 @@
 												<%} %>
 										
 											<%} else if(!committeescheduleeditdata[4].toString().equalsIgnoreCase("MAA") && useraccess>=1){%>											
-												<form action="CommitteeScheduleAgenda.htm" method="post">
+												<form <%if(programmeId.equals("0")) {%>action="CommitteeScheduleAgenda.htm"<%} else {%>action="PrgmScheduleAgenda.htm"<%} %> method="post">
 													<input type="hidden"  name="scheduleid" value="<%=committeescheduleeditdata[6] %>" >
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 													<button type="submit" class="btn  btn-sm  add"  style="padding:2px 13px !important" >ADD</button>

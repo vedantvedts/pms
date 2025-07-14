@@ -82,8 +82,13 @@ public class CCMServiceImpl implements CCMService{
 				main.setIsActive(1);
 				main.setCreatedBy(dto.getModifiedBy());
 				main.setCreatedDate(sdtf.format(new Date()));
-				main.setFormationDate(java.sql.Date.valueOf(fromDate));
-				
+				main.setFormationDate(dto.getFormationDate()!=null?java.sql.Date.valueOf(dto.getFormationDate()) :java.sql.Date.valueOf(fromDate));
+				main.setReferenceNo(dto.getReferenceNo()!=null?dto.getReferenceNo():"--");
+				main.setProjectId(0L);
+				main.setDivisionId(0L);
+				main.setInitiationId(0L);
+				main.setCARSInitiationId(0L);
+				main.setProgrammeId(dto.getProgrammeId()!=null?Long.parseLong(dto.getProgrammeId()):0L);
 				commmitteeMainId = committeedao.CommitteeDetailsSubmit(main);	
 			}
 			

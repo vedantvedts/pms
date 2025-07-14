@@ -104,6 +104,7 @@ import com.itextpdf.layout.font.FontProvider;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.Zipper;
+import com.vts.pfms.admin.service.AdminService;
 import com.vts.pfms.cars.service.CARSService;
 import com.vts.pfms.ccm.service.CCMService;
 import com.vts.pfms.committee.dto.CommitteeConstitutionApprovalDto;
@@ -130,6 +131,7 @@ import com.vts.pfms.committee.model.CommitteeMomAttachment;
 import com.vts.pfms.committee.model.CommitteeProject;
 import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.committee.model.PmsEnote;
+import com.vts.pfms.committee.model.ProgrammeMaster;
 import com.vts.pfms.committee.service.CommitteeService;
 import com.vts.pfms.committee.service.RODService;
 import com.vts.pfms.mail.CustomJavaMailSender;
@@ -165,6 +167,9 @@ public class CommitteeController {
 	@Autowired
 	MailService mailService;
 
+	@Autowired
+	AdminService adminservice;
+	
 	@Autowired
 	@Lazy
 	CustomJavaMailSender cm;
@@ -791,6 +796,8 @@ public class CommitteeController {
 			req.setAttribute("committeeapprovaldata",service.CommitteeMainApprovalData(committeemainid));
 			req.setAttribute("constitutionapprovalflow",service.ConstitutionApprovalFlow(committeemainid));
 			req.setAttribute("clusterlist", service.ClusterList());
+			req.setAttribute("designationlist", adminservice.DesignationList());
+
 			// Prudhvi - 27/03/2024
 			/* ------------------ start ----------------------- */
 			req.setAttribute("industryPartnerList",  masterservice.getIndustryPartnerList());
@@ -829,6 +836,7 @@ public class CommitteeController {
 		try
 		{	
 			String ccmflag = req.getParameter("ccmflag");
+			String prgmflag = req.getParameter("prgmflag");
 			CommitteeMembersDto dto=new CommitteeMembersDto();
 			dto.setCommitteeMainId(req.getParameter("committeemainid"));
 			dto.setInternalMemberIds(req.getParameterValues("InternalMemberIds"));
@@ -855,11 +863,18 @@ public class CommitteeController {
 				redir.addAttribute("committeeId", req.getParameter("committeeId"));
 
 				return "redirect:/CCMCommitteeConstitution.htm";
-			}else {
-				redir.addAttribute("committeemainid", req.getParameter("committeemainid"));
-				return "redirect:/CommitteeMainMembers.htm";
 			}
-
+			
+			if(prgmflag!=null && prgmflag.equalsIgnoreCase("Y")) {
+				redir.addAttribute("committeeMainId", req.getParameter("committeemainid"));
+				redir.addAttribute("committeeId", req.getParameter("committeeId"));
+				redir.addAttribute("programmeId", req.getParameter("programmeId"));
+				
+				return "redirect:/PrgmCommitteeConstitution.htm";
+			}
+			
+			redir.addAttribute("committeemainid", req.getParameter("committeemainid"));
+			return "redirect:/CommitteeMainMembers.htm";
 
 		}
 		catch (Exception e) {
@@ -882,6 +897,15 @@ public class CommitteeController {
 
 			service.CommitteeRepMemberAdd(repids,committeemainid,Username);
 
+			String prgmflag = req.getParameter("prgmflag");
+			if(prgmflag!=null && prgmflag.equalsIgnoreCase("Y")) {
+				redir.addAttribute("committeeMainId", req.getParameter("committeemainid"));
+				redir.addAttribute("committeeId", req.getParameter("committeeId"));
+				redir.addAttribute("programmeId", req.getParameter("programmeId"));
+
+				return "redirect:/PrgmCommitteeConstitution.htm";
+			}
+			
 			redir.addFlashAttribute("committeemainid",committeemainid );
 			return"redirect:/CommitteeMainMembers.htm";
 		}
@@ -1501,7 +1525,9 @@ public class CommitteeController {
 		try
 		{
 			String ccmflag = req.getParameter("ccmflag");
+			String prgmflag = req.getParameter("prgmflag");
 			String committeememberid=req.getParameter("committeememberid");
+			String committeemainid = req.getParameter("committeemainid");
 
 			int count=0;
 			count=service.CommitteeMemberDelete(committeememberid, Username);
@@ -1513,14 +1539,23 @@ public class CommitteeController {
 			}
 
 			if(ccmflag!=null && ccmflag.equalsIgnoreCase("Y")) {
-				redir.addAttribute("committeeMainId", req.getParameter("committeemainid"));
+				redir.addAttribute("committeeMainId", committeemainid);
 				redir.addAttribute("committeeId", req.getParameter("committeeId"));
 
 				return "redirect:/CCMCommitteeConstitution.htm";
-			}else {
-				redir.addAttribute("committeemainid", req.getParameter("committeemainid"));
-				return "redirect:/CommitteeMainMembers.htm";
 			}
+			
+			if(prgmflag!=null && prgmflag.equalsIgnoreCase("Y")) {
+				redir.addAttribute("committeeMainId", committeemainid);
+				redir.addAttribute("committeeId", req.getParameter("committeeId"));
+				redir.addAttribute("programmeId", req.getParameter("programmeId"));
+
+				return "redirect:/PrgmCommitteeConstitution.htm";
+			}
+			
+			redir.addAttribute("committeemainid", committeemainid);
+			return "redirect:/CommitteeMainMembers.htm";
+			
 
 		}
 		catch (Exception e) {
@@ -1648,6 +1683,8 @@ public class CommitteeController {
 			committeescheduledto.setCARSInitiationId(carsInitiationId!=null?carsInitiationId:"0");
 			committeescheduledto.setCommitteeMainId(committeeMainId!=null?Long.parseLong(committeeMainId):0);
 			
+			committeescheduledto.setProgrammeId(req.getParameter("programmeId"));
+			
 			if(projectid!=null && Long.parseLong(projectid)>0) 
 			{
 				Object[] projectdetails=service.projectdetails(projectid);				
@@ -1670,7 +1707,13 @@ public class CommitteeController {
 			{
 				redir.addAttribute("resultfail", "Schedule Adding Failed, Try Again");	
 			}			
-			redir.addFlashAttribute("scheduleid", String.valueOf(count));
+			redir.addAttribute("scheduleid", String.valueOf(count));
+			
+			if(committeescheduledto.getProgrammeId()!=null && !committeescheduledto.getProgrammeId().equals("0")) {
+				redir.addAttribute("programmeId", committeescheduledto.getProgrammeId());
+				return "redirect:/PrgmScheduleAgenda.htm";
+			}
+			
 			return "redirect:/CommitteeScheduleAgenda.htm";
 		}
 		catch (Exception e) {
@@ -1879,6 +1922,8 @@ public class CommitteeController {
 			String divisionid=committeescheduleeditdata[16].toString();
 			String initiationid=committeescheduleeditdata[17].toString();
 			String carsInitiationId=committeescheduleeditdata[25].toString();
+			String programmeId=committeescheduleeditdata[26]!=null?committeescheduleeditdata[26].toString():"0";
+
 			Long committeemainid=null;
 			if(Long.parseLong(initiationid)>0) {
 				committeemainid=service.LastCommitteeId(committeeid, projectid, divisionid, initiationid, carsInitiationId);
@@ -1911,7 +1956,11 @@ public class CommitteeController {
 			{
 				req.setAttribute("carsInitiationDetails", carsservice.getCARSInitiationById(Long.parseLong(carsInitiationId)));
 			}
-
+			if(Long.parseLong(programmeId)>0)
+			{
+				req.setAttribute("prgmMasterDetails", service.getProgrammeMasterById(programmeId));
+			}
+			
 			if(Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("C")|| Logintype.equalsIgnoreCase("I")) 
 			{
 				if(md.get("otp")!=null) {
@@ -1962,17 +2011,6 @@ public class CommitteeController {
 			String Remarks[]= req.getParameterValues("remarks");
 			String presenters[]=req.getParameterValues("presenterid");
 			String PresLabCode[]=req.getParameterValues("PresLabCode");
-			
-			if (containsHTMLTags(AgendaItem)) {
-				
-				redir.addAttribute("scheduleid", req.getParameter("scheduleid"));
-			    return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Agenda Item' should not contain HTML Tags.!");
-			}
-			if (containsHTMLTags(Remarks)) {
-				
-				redir.addAttribute("scheduleid", req.getParameter("scheduleid"));
-			    return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");
-			}
 			ArrayList<String[]> docids = new ArrayList<String[]>();
 			for(int i=0 ; i<AgendaItem.length ;i++) {
 				docids.add( req.getParameterValues("attachid_"+i));
@@ -2016,6 +2054,7 @@ public class CommitteeController {
 		if(redirpageflag!=null && redirpageflag.equalsIgnoreCase("ROD")) {
 			return"redirect:/RODScheduleView.htm";
 		}
+		
 		/* ------------------ end ----------------------- */
 		return"redirect:/CommitteeScheduleView.htm";
 	}
@@ -2033,20 +2072,6 @@ public class CommitteeController {
 			String presentorid=req.getParameter("presenterid");
 			String duration=req.getParameter("duration");
 			String PresLabCode=req.getParameter("PresLabCode");
-		
-			
-			if(InputValidator.isContainsHTMLTags(agendaitem)) {
-				redir.addAttribute("scheduleid", req.getParameter("scheduleid"));
-				return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Agenda Details - Agenda Item' should not contain HTML Tags.!");
-			}
-			if(!InputValidator.isContainsNumberOnly(duration)) {
-				redir.addAttribute("scheduleid", req.getParameter("scheduleid"));
-				return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Agenda Details - Duration' should contain only Numbers");
-			}
-			if(InputValidator.isContainsHTMLTags(remarks)) {
-				redir.addAttribute("scheduleid", req.getParameter("scheduleid"));
-				return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Agenda Details - Remarks' should not contain HTML Tags.!");
-			}
 
 			//			String docid=req.getParameter("editattachid");
 			CommitteeScheduleAgendaDto scheduleagendadto = new CommitteeScheduleAgendaDto();
@@ -2079,18 +2104,28 @@ public class CommitteeController {
 			}
 
 			redir.addAttribute("scheduleid", req.getParameter("scheduleid"));
+			
+			// Prudhvi - 04/03/2024
+			/* ------------------ start ----------------------- */
+			String redirpageflag = req.getParameter("redirpageflag");
+			if(redirpageflag!=null && redirpageflag.equalsIgnoreCase("ROD")) {
+				return"redirect:/RODScheduleView.htm";
+			}
+			/* ------------------ end ----------------------- */
+			
+			String prgmflag = req.getParameter("prgmflag");
+			if(prgmflag!=null && prgmflag.equalsIgnoreCase("Y")) {
+				return"redirect:/PrgmScheduleAgenda.htm";
+			}
+			return"redirect:/CommitteeScheduleAgenda.htm";
+			
 		}
 		catch (Exception e) {
-			e.printStackTrace(); logger.error(new Date() +"Inside CommitteeScheduleAgendaEdit.htm "+UserId,e);
+			e.printStackTrace(); 
+			logger.error(new Date() +"Inside CommitteeScheduleAgendaEdit.htm "+UserId,e);
+			return "static/Error";
 		}
-		// Prudhvi - 04/03/2024
-		/* ------------------ start ----------------------- */
-		String redirpageflag = req.getParameter("redirpageflag");
-		if(redirpageflag!=null && redirpageflag.equalsIgnoreCase("ROD")) {
-			return"redirect:/RODScheduleView.htm";
-		}
-		/* ------------------ end ----------------------- */
-		return"redirect:/CommitteeScheduleAgenda.htm";
+		
 	}
 
 
@@ -2108,14 +2143,19 @@ public class CommitteeController {
 
 			if (s.size() == priority.length) {
 				service.CommitteeAgendaPriorityUpdate(agendaid, priority);
-
 				redir.addAttribute("result", "Agenda Priority Updated Successfully");
-				redir.addFlashAttribute("scheduleid", req.getParameter("scheduleid"));
 
 			} else {
 				redir.addAttribute("resultfail", "Agenda Priority Updated UnSuccessfull");
-				redir.addAttribute("scheduleid", req.getParameter("scheduleid"));
-			}		
+			}	
+			
+			redir.addAttribute("scheduleid", req.getParameter("scheduleid"));
+			
+			String prgmflag = req.getParameter("prgmflag");
+			if(prgmflag!=null && prgmflag.equalsIgnoreCase("Y")) {
+				return"redirect:/PrgmScheduleAgenda.htm";
+			}
+			
 			return"redirect:/CommitteeScheduleAgenda.htm";
 		}
 		catch (Exception e) {
@@ -2139,9 +2179,7 @@ public class CommitteeController {
 			String scheduleid = req.getParameter("scheduleid");
 			String AgendaPriority = req.getParameter("AgendaPriority");
 
-			int count = 0;
-
-			count = service.CommitteeAgendaDelete(Committeescheduleagendaid, attachmentid, UserId, scheduleid, AgendaPriority);
+			int count = service.CommitteeAgendaDelete(Committeescheduleagendaid, attachmentid, UserId, scheduleid, AgendaPriority);
 			if (count > 0) {
 				redir.addAttribute("result", " Agenda Deleted Successfully");
 			} else {
@@ -2149,11 +2187,19 @@ public class CommitteeController {
 			}
 
 			redir.addAttribute("scheduleid", req.getParameter("scheduleid"));
+			
+			String prgmflag = req.getParameter("prgmflag");
+			if(prgmflag!=null && prgmflag.equalsIgnoreCase("Y")) {
+				return"redirect:/PrgmScheduleAgenda.htm";
+			}
+			
+			return"redirect:/CommitteeScheduleAgenda.htm";
 		}
 		catch (Exception e) {
-			e.printStackTrace(); logger.error(new Date() +"Inside CommitteeAgendaDelete.htm "+UserId,e);
+			e.printStackTrace(); 
+			logger.error(new Date() +"Inside CommitteeAgendaDelete.htm "+UserId,e);
+			return "static/Error";
 		}
-		return"redirect:/CommitteeScheduleAgenda.htm";
 	}
 
 	@RequestMapping(value="CommitteeMainEditSubmit.htm",method= {RequestMethod.GET,RequestMethod.POST})
@@ -6618,8 +6664,8 @@ public class CommitteeController {
 		try
 		{
 			String ccmflag = req.getParameter("ccmflag");
+			String prgmflag = req.getParameter("prgmflag");
 			String committeemainid = req.getParameter("committeemainid");
-
 
 			String[] newslno=req.getParameterValues("newslno");
 			String[] memberId=req.getParameterValues("memberId");
@@ -6641,10 +6687,18 @@ public class CommitteeController {
 				redir.addAttribute("committeeId", req.getParameter("committeeId"));
 
 				return "redirect:/CCMCommitteeConstitution.htm";
-			}else {
-				redir.addAttribute("committeemainid", committeemainid);
-				return "redirect:/CommitteeMainMembers.htm";
 			}
+			
+			if(prgmflag!=null && prgmflag.equalsIgnoreCase("Y")) {
+				redir.addAttribute("committeeMainId", committeemainid);
+				redir.addAttribute("committeeId", req.getParameter("committeeId"));
+				redir.addAttribute("programmeId", req.getParameter("programmeId"));
+				
+				return "redirect:/PrgmCommitteeConstitution.htm";
+			}
+			
+			redir.addAttribute("committeemainid", committeemainid);
+			return "redirect:/CommitteeMainMembers.htm";
 
 		}
 		catch (Exception e)
@@ -10417,6 +10471,176 @@ public class CommitteeController {
 		return json.toJson(list);
 	}	
 	
+	/* ********************************************* Programme AD ************************************************ */
+	@RequestMapping(value="PrgmCommitteeConstitution.htm", method = {RequestMethod.POST, RequestMethod.GET})
+	public String prgmCommitteeConstitution(HttpServletRequest req,HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +" Inside PrgmCommitteeConstitution.htm "+UserId);
+		try {
+			String committeeMainId = req.getParameter("committeeMainId");
+			String committeeId = req.getParameter("committeeId");
+			String programmeId = req.getParameter("programmeId");
+			
+			List<ProgrammeMaster> programmeList = service.getProgrammeMasterList();
+			if(programmeId==null) {
+				programmeId = programmeList!=null && programmeList.size()>0?programmeList.get(0).getProgrammeId()+"":"0";
+			}
+			
+			if(committeeId==null) {
+				committeeId = String.valueOf(ccmservice.getCommitteeIdByCommitteeCode("PMC"));
+				if(committeeId.equals("0")) {
+					redir.addAttribute("resultfail","The PMC Committee has not yet been created");
+					return "redirect:/CommitteeList.htm";
+				}
+			}
+
+			if(committeeMainId==null) {
+				committeeMainId = String.valueOf(service.getCommitteeMainIdByProgrammeId(programmeId));
+			}
+			
+			req.setAttribute("allLabList", service.AllLabList());
+			req.setAttribute("programmeList", programmeList);
+			req.setAttribute("employeeList", service.EmployeeListWithoutMembers(committeeMainId,labcode));
+			req.setAttribute("employeeList1", service.EmployeeListNoMembers(labcode,committeeMainId));
+			req.setAttribute("expertList", service.ExternalMembersNotAddedCommittee(committeeMainId));
+			req.setAttribute("committeeMembersAll", service.CommitteeAllMembersList(committeeMainId));
+			req.setAttribute("committeedata", service.CommitteMainData(committeeMainId));
+			req.setAttribute("industryPartnerList", masterservice.getIndustryPartnerList());
+			req.setAttribute("committeerepnotaddedlist", service.CommitteeRepNotAddedList(committeeMainId));
+			req.setAttribute("committeeMemberreplist", service.CommitteeMemberRepList(committeeMainId));
+			req.setAttribute("committeeMainId", committeeMainId);
+			req.setAttribute("committeeId", committeeId);
+			req.setAttribute("programmeId", programmeId);
+			
+			return "committee/PrgmCommitteeConstitution";
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside PrgmCommitteeConstitution.htm "+UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="PrgmCommitteeSubmit.htm", method= {RequestMethod.GET, RequestMethod.POST})
+	public String prgmCommitteeSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +" Inside PrgmCommitteeSubmit.htm "+UserId);
+		try {
+			String action = req.getParameter("action");
+			String committeeId = req.getParameter("committeeId");
+			
+			CommitteeMembersEditDto dto=new CommitteeMembersEditDto();
+			
+			dto.setChairperson(req.getParameter("chairperson"));
+			dto.setSecretary(req.getParameter("Secretary"));
+			dto.setProxysecretary(req.getParameter("proxysecretary"));
+			dto.setSesLabCode(labcode);
+			dto.setCpLabCode(req.getParameter("CpLabCode"));
+			dto.setCommitteemainid(req.getParameter("committeemainid"));
+			dto.setChairpersonmemid(req.getParameter("cpmemberid"));
+			dto.setSecretarymemid(req.getParameter("msmemberid"));
+			dto.setProxysecretarymemid(req.getParameter("psmemberid"));			
+			dto.setModifiedBy(UserId);		
+			dto.setCo_chairperson(req.getParameter("co_chairperson"));
+			dto.setComemberid(req.getParameter("comemberid"));
+			dto.setMsLabCode(req.getParameter("msLabCode"));
+			dto.setCommitteeId(committeeId);
+			dto.setProgrammeId(req.getParameter("programmeId"));
+			//dto.setReferenceNo(req.getParameter("ReferenceNo"));
+			//dto.setFormationDate(req.getParameter("Formationdates"));
+			long result = ccmservice.ccmCommitteeMainMembersSubmit(dto, action);
+			
+			if(result!=0) {
+				redir.addAttribute("result", "Committee Main Members "+action+"ed Successfully");
+			}else {
+				redir.addAttribute("resultfail", "Committee Main Members "+action+" UnSuccessful");
+			}
+			
+			redir.addAttribute("committeeMainId", result);
+			redir.addAttribute("committeeId", committeeId);
+			return "redirect:/PrgmCommitteeConstitution.htm";
+			
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside PrgmCommitteeSubmit.htm "+UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="PrgmSchedule.htm", method= {RequestMethod.GET, RequestMethod.POST})
+	public String prgmSchedule(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside PrgmSchedule.htm "+UserId);
+		try {
+
+			String committeeId = req.getParameter("committeeId");
+			String committeeMainId = req.getParameter("committeeMainId");
+			String programmeId = req.getParameter("programmeId");
+			
+			List<ProgrammeMaster> programmeList = service.getProgrammeMasterList();
+			if(programmeId==null) {
+				programmeId = programmeList!=null && programmeList.size()>0?programmeList.get(0).getProgrammeId()+"":"0";
+			}
+			
+			if(committeeId==null) {
+				committeeId = String.valueOf(ccmservice.getCommitteeIdByCommitteeCode("PMC"));
+				if(committeeId.equals("0")) {
+					redir.addAttribute("resultfail","The PMC Committee has not yet been created");
+					return "redirect:/CommitteeList.htm";
+				}
+			}
+			
+			if(committeeMainId==null) {
+				committeeMainId = String.valueOf(service.getCommitteeMainIdByProgrammeId(programmeId));
+				if(committeeMainId.equals("0")) {
+					redir.addAttribute("programmeId", programmeId);
+					redir.addAttribute("committeeId", committeeId);
+					redir.addAttribute("resultfail","The PMC Committee has not yet been constituted");
+					return "redirect:/PrgmCommitteeConstitution.htm";
+				}
+			}
+			
+			req.setAttribute("programmeList", programmeList);
+			req.setAttribute("programmeId", programmeId);
+			req.setAttribute("committeeschedulelist", service.prgmScheduleList(programmeId));
+			req.setAttribute("committeeId", committeeId);
+			req.setAttribute("committeeMainId", committeeMainId);
+		
+			return "committee/PrgmSchedule";
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside PrgmSchedule.htm "+UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="PrgmScheduleAgenda.htm", method= {RequestMethod.GET, RequestMethod.POST})
+	public String prgmScheduleAgenda(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String LoginType = (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +" Inside PrgmScheduleAgenda.htm "+UserId);
+		try {
+			String scheduleid = req.getParameter("scheduleid");
+			
+			Object[] scheduledata = service.CommitteeScheduleEditData(scheduleid);
+			req.setAttribute("scheduledata", scheduledata);
+			req.setAttribute("prgmProjectList", service.prgmProjectList(scheduledata!=null?scheduledata[26].toString():"0"));
+			req.setAttribute("committeeAgendaList", service.AgendaList(scheduleid));
+			req.setAttribute("agendaDocList",service.AgendaLinkedDocList(scheduleid));
+			req.setAttribute("filesize",file_size);
+			req.setAttribute("labcode",labcode);
+			
+			return "committee/PrgmScheduleAgenda";
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside PrgmScheduleAgenda.htm "+UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		}
+	}
+	/* ********************************************* Programme AD End ************************************************ */
 	
 	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
 	    redir.addAttribute("resultfail", message);
