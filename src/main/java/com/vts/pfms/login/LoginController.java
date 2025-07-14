@@ -850,7 +850,7 @@ public class LoginController {
 				     String fdate = firstDayOfYear.toString();
 				     LocalDate lastDayOfYear = LocalDate.of(currentDate.getYear(), 12, 31);
 					   String tdate=lastDayOfYear.toString();
-				req.setAttribute("rfaPendingCountList", Actservice.GetRfaActionList(EmpId,"A",fdate,tdate));
+				req.setAttribute("rfaPendingCountList", Actservice.GetRfaActionList(EmpId,"A","A","A", tdate, tdate));
 				req.setAttribute("rfaForwardCount",Actservice.RfaForwardList(EmpId).size());
 				req.setAttribute("rfaInspectionCount",Actservice.RfaInspectionList(EmpId).size());
 				req.setAttribute("rfaInspectionAprCount",Actservice.RfaInspectionApprovalList(EmpId).size());

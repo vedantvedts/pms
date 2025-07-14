@@ -115,6 +115,7 @@ import com.vts.pfms.committee.service.RODService;
 import com.vts.pfms.mail.MailConfigurationDto;
 import com.vts.pfms.mail.MailService;
 import com.vts.pfms.milestone.dto.MileEditDto;
+import com.vts.pfms.requirements.service.RequirementService;
 import com.vts.pfms.timesheet.service.TimeSheetService;
 import com.vts.pfms.utils.InputValidator;
 import com.vts.pfms.utils.PMSFileUtils;
@@ -155,6 +156,9 @@ public class ActionController {
 	
 	@Autowired
 	TimeSheetService timesheetservice;
+	
+	@Autowired
+	RequirementService reqservice;
 	
 	FormatConverter fc=new FormatConverter();
 	private SimpleDateFormat sdf2=fc.getRegularDateFormat();
@@ -3176,7 +3180,7 @@ public class ActionController {
 	 	}
 	 	
 
-		@RequestMapping(value = "RfaAction.htm", method = {RequestMethod.GET, RequestMethod.POST})
+	 	@RequestMapping(value = "RfaAction.htm", method = {RequestMethod.GET, RequestMethod.POST})
 	 	public String RfaAction(HttpServletResponse res , HttpServletRequest req ,HttpSession ses , RedirectAttributes redir)throws Exception
 	 	{
 			String UserId =(String)ses.getAttribute("Username");
@@ -3194,8 +3198,25 @@ public class ActionController {
 				String fdate=req.getParameter("fdate");
 				String tdate=req.getParameter("tdate");
 				String Emp=req.getParameter("EmpId");
-				String Project=req.getParameter("Project");
 				String Status=req.getParameter("Status");
+				String initiationId = "A";
+				String projectId = "A";
+				String projectType = req.getParameter("projectType");
+				projectType = projectType != null ? projectType : "P";
+				
+				if (projectType.equalsIgnoreCase("P")) {
+					projectId = req.getParameter("projectId");
+					List<Object[]> projectList = service.LoginProjectDetailsList(EmpId, LoginType, LabCode);
+					projectId = projectId != null ? projectId: "A";
+					req.setAttribute("ProjectList", projectList);
+					req.setAttribute("projectId",projectId);
+				} else {
+					initiationId = req.getParameter("initiationId");
+					List<Object[]> preProjectList = reqservice.getPreProjectList(LoginType, LabCode, EmpId);
+					initiationId = initiationId != null ? initiationId: "A";
+					req.setAttribute("preProjectList", preProjectList);
+					req.setAttribute("initiationId", initiationId);
+				}
 				
 				 Gson json = new Gson();
 				 LocalDate currentDate = LocalDate.now();
@@ -3203,9 +3224,7 @@ public class ActionController {
 				{
 					LocalDate firstDayOfYear = LocalDate.of(currentDate.getYear(), 1, 1);
 				    fdate = firstDayOfYear.toString();
-				//	fdate=LocalDate.now().minusYears(1).toString();
 					Emp="A";
-					Project="A";
 				}else
 				{
 					fdate=sdf1.format(sdf.parse(fdate));
@@ -3214,7 +3233,6 @@ public class ActionController {
 				{
 					LocalDate lastDayOfYear = LocalDate.of(currentDate.getYear(), 12, 31);
 					tdate=lastDayOfYear.toString();
-				    //	tdate=LocalDate.now().toString();
 				}
 				else 
 				{	
@@ -3225,23 +3243,23 @@ public class ActionController {
 				req.setAttribute("fdate",fdate);
 				req.setAttribute("ModalEmpList",json.toJson(service.getRfaModalEmpList(LabCode)));
 				req.setAttribute("ModalTDList", json.toJson( service.getRfaTDList(LabCode)));
-				req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,LoginType,LabCode));
-				req.setAttribute("Project",Project);
 				req.setAttribute("Employee", Emp);
 				req.setAttribute("EmpId", EmpId);
 				req.setAttribute("LoginType", LoginType);
 				req.setAttribute("UserId", UserId);
 				req.setAttribute("Status", Status);
 				req.setAttribute("AssigneeEmplList", service.AssigneeEmpList());
+				req.setAttribute("projectType", projectType);
+
 				
 				List<Object[]> RfaActionList = new ArrayList<>();
 				
 				if(LoginType.equalsIgnoreCase("A") || LoginType.equalsIgnoreCase("C") || LoginType.equalsIgnoreCase("I")) {
-					RfaActionList = service.GetRfaActionList1(Project,fdate,tdate);    // Admin,TD,PGD can see all rfa list
+					RfaActionList = service.GetRfaActionList1(projectType,projectId,initiationId,fdate,tdate);    // Admin,TD,PGD can see all rfa list
 				}else if(LoginType.equalsIgnoreCase("P")){
-					RfaActionList = service.RfaProjectwiseList(EmpId,Project,fdate,tdate);  // project wise rfa list
+					RfaActionList = service.RfaProjectwiseList(EmpId,projectType,projectId,initiationId,fdate,tdate);  // project wise rfa list
 				}else {
-					 RfaActionList = service.GetRfaActionList(EmpId,Project,fdate,tdate); // assignor can see only his rfa list
+					RfaActionList = service.GetRfaActionList(EmpId,projectType,projectId,initiationId,fdate,tdate); // assignor can see only his rfa list
 				}
 				
 				if(Status!=null && Status.equalsIgnoreCase("O")) {  // for rfa open list
@@ -3315,22 +3333,26 @@ public class ActionController {
 			try {
 		
 				String Option=req.getParameter("sub");
-			    	
 			    
 			if(Option!=null && Option.equalsIgnoreCase("add")) {
 				
 				List<Object[]> ProjectList = service.LoginProjectDetailsList(EmpId, LoginType, LabCode);
+				List<Object[]> preProjectList = reqservice.getPreProjectList(LoginType, LabCode, EmpId);
 				List<Object[]> ProjectTypeList = service.ProjectTypeList();
 				List<Object[]> PriorityList = service.PriorityList();
 				List<Object[]> EmployeeList = service.EmployeeList(LabCode);
 				List<Object[]> RfaNoTypeList = service.getRfaNoTypeList();
 				
 				req.setAttribute("ProjectList", ProjectList);		
+				req.setAttribute("preProjectList", preProjectList);		
 				req.setAttribute("ProjectTypeList", ProjectTypeList);
 				req.setAttribute("PriorityList", PriorityList);
 				req.setAttribute("EmployeeList", EmployeeList);
 				req.setAttribute("RfaNoTypeList", RfaNoTypeList);
 				req.setAttribute("EmpId", EmpId);
+				req.setAttribute("projectType", req.getParameter("projectType"));
+				req.setAttribute("projectId", req.getParameter("projectId"));
+				req.setAttribute("initiationId", req.getParameter("initiationId"));
 				List<Object[]>vendorList = service.getvendorList();
 				req.setAttribute("vendorList", vendorList);
 				return"action/RfaActionAdd";
@@ -3363,7 +3385,9 @@ public class ActionController {
 				
 				req.setAttribute("rfaAttachDownload", rfaAttachDownload);
 				req.setAttribute("RfaAction", RfaActionEdit);
-				req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId, LoginType, LabCode));		
+				req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId, LoginType, LabCode));
+				req.setAttribute("preProjectList", reqservice.getPreProjectList(LoginType, LabCode, EmpId));
+				req.setAttribute("projectType", RfaActionEdit[21]!=null ? RfaActionEdit[21].toString() : "");
 				req.setAttribute("ProjectTypeList",service.ProjectTypeList());
 				req.setAttribute("PriorityList", service.PriorityList());
 				req.setAttribute("RfaNoTypeList", service.getRfaNoTypeList());
@@ -3377,7 +3401,6 @@ public class ActionController {
 		        		AssignEmp.add(obj[3].toString());
 		        		assigneeLab=obj[4].toString();
 		        	}
-		        	
 		        }
 		        
 		        
@@ -3395,7 +3418,6 @@ public class ActionController {
 		        		RfaCCEmp.add(obj[3].toString()+"/"+obj[4].toString());
 		        	}
 		        }
-		        System.out.println("assigneeLab"+assigneeLab);
 		        Gson json = new Gson();
 		        req.setAttribute("AssignEmp", json.toJson(AssignEmp));
 		        req.setAttribute("RfaCCEmp", json.toJson(RfaCCEmp));
@@ -3423,24 +3445,16 @@ public class ActionController {
 				String type=req.getParameter("type");
 				Object[] rfaAttachDownload = service.RfaAttachmentDownload(rfaid);
 				
-				String attachPath = "-";
-				String projectCode = "-";
-				
-				if(rfaAttachDownload!=null) {
-					attachPath = rfaAttachDownload[5].toString().replace("/", "_");
-					projectCode = rfaAttachDownload[5].toString().split("/")[1];
-				}
-				
 				File my_file=null;
 				if(type.equalsIgnoreCase("ARD")) {
-					Path filePath = Paths.get(uploadpath,LabCode,"RFAFiles", projectCode, attachPath, rfaAttachDownload[3].toString());
+					Path filePath = Paths.get(uploadpath,LabCode,"RFAFiles",rfaAttachDownload[7].toString(),rfaAttachDownload[5].toString().replace('/', '_'),rfaAttachDownload[3].toString());
 //					my_file = new File(uploadpath+ rfaAttachDownload[2]+File.separator+rfaAttachDownload[3]);
 					my_file = filePath.toFile();
 					res.setContentType("Application/octet-stream");	
 			        res.setHeader("Content-disposition","attachment; filename="+rfaAttachDownload[3].toString()); 
 					
 				}else {
-				  Path filePath1 = Paths.get(uploadpath,LabCode,"RFAFiles", projectCode, attachPath, rfaAttachDownload[4].toString());
+				  Path filePath1 = Paths.get(uploadpath,LabCode,"RFAFiles",rfaAttachDownload[7].toString(),rfaAttachDownload[5].toString().replace('/', '_'),rfaAttachDownload[4].toString());
 				  my_file = filePath1.toFile();
 //				   my_file = new File(uploadpath+ rfaAttachDownload[2]+File.separator+rfaAttachDownload[4]);
 				   res.setContentType("Application/octet-stream");	
@@ -3463,7 +3477,7 @@ public class ActionController {
 			
 	 	}
 			
-		
+		//29-04-2025
 		@RequestMapping(value = "RfaAEditSubmit.htm", method = {RequestMethod.GET, RequestMethod.POST})
 	 	public String RfaAEditSubmit(HttpServletResponse res , HttpServletRequest req ,HttpSession ses , RedirectAttributes redir,
 	 			@RequestPart("attachment") MultipartFile attachment)throws Exception
@@ -3474,28 +3488,19 @@ public class ActionController {
 	 		logger.info(new Date() +"Inside RfaAEditSubmit.htm "+UserId);
 			try {
 				
-				if(InputValidator.isContainsHTMLTags(req.getParameter("statement"))) {
-					redir.addAttribute("Did",req.getParameter("rfaid"));
-					
-					return redirectWithError(redir, "RfaActionEdit.htm", "Statement should not contain HTML tag!");
-					}
-				
-				if(InputValidator.isContainsHTMLTags(req.getParameter("reference"))) {
-					redir.addAttribute("Did",req.getParameter("rfaid"));
-					
-					return redirectWithError(redir, "RfaActionEdit.htm", "Statement should not contain HTML tag!");
-					}
-				
 				String projectCode=req.getParameter("projectCode");
 				String rfano=req.getParameter("rfano");
 				String rfadate=req.getParameter("rfadate");
 				String priority=req.getParameter("priority");
+				String projectType=req.getParameter("projectType");
+				String projectId=req.getParameter("projectId");
 				String statement=req.getParameter("statement");
 				String description=req.getParameter("description");
 				String reference=req.getParameter("reference");
 				String rfaid=req.getParameter("rfaid");
 				String [] assignee=req.getParameterValues("assignee");
 				String [] CCEmpName=req.getParameterValues("CCEmpName");
+				
 	
 				RfaActionDto rfa = new RfaActionDto();
 				
@@ -3513,14 +3518,29 @@ public class ActionController {
 				rfa.setAssignorAttachment(attachment.getOriginalFilename());
 				rfa.setActionBy(Long.parseLong(EmpId));
 				rfa.setVendorCode(req.getParameter("vendor")!=null?req.getParameter("vendor").split("/")[0]:LabCode);
-				
+				rfa.setBoxNo(req.getParameter("boxno"));
+				if(req.getParameter("swdate")!=null) {
+				rfa.setSWdate(sdf.parse(req.getParameter("swdate")));
+				}
+				rfa.setRigVersion(req.getParameter("RigVersion"));
+				rfa.setFPGA(req.getParameter("FPGA"));		
+
+				if(req.getParameter("rfaRaisedBy")!=null) {
+					rfa.setRfaRaisedByName(req.getParameter("rfaRaisedBy"));
+					}
 				Long count=service.RfaEditSubmit(rfa,assignee,CCEmpName);
 				if (count > 0) {
 					redir.addAttribute("result", "RFA Edited Successfully");
 				} else {
 					redir.addAttribute("resultfail", "RFA Edited Unsuccessfully");
 				}
-
+				
+				redir.addAttribute("projectType", projectType);
+				if(projectType.equalsIgnoreCase("P")) {
+					redir.addAttribute("projectId",projectId);
+				}else {
+					redir.addAttribute("initiationId", projectId);
+				}
 			    }catch (Exception e) {
 					e.printStackTrace();
 					logger.error(new Date() +" Inside RfaAEditSubmit.htm "+UserId, e);
@@ -3528,6 +3548,7 @@ public class ActionController {
 	 		return "redirect:/RfaAction.htm";
 	 	}
 		
+		//29-04-2025
 		@RequestMapping(value = "RfaActionSubmit.htm", method = {RequestMethod.GET, RequestMethod.POST})
 	 	public String RfaActionSubmit(HttpServletResponse res , HttpServletRequest req ,HttpSession ses , RedirectAttributes redir,
 	 			@RequestPart("attachment") MultipartFile attachment)throws Exception
@@ -3541,6 +3562,7 @@ public class ActionController {
 				String rfadate=req.getParameter("rfadate");
 				String EmpId=req.getParameter("EmpId");
 				String projectid=req.getParameter("projectid");
+				String projectType=req.getParameter("projectType");
 				String priority=req.getParameter("priority");
 				String statement=req.getParameter("statement");
 				String description=req.getParameter("description");
@@ -3550,17 +3572,10 @@ public class ActionController {
 				String rfanotype=req.getParameter("rfanotype");
 				String [] CCEmpName=req.getParameterValues("CCEmpName");
 				
-				if(InputValidator.isContainsHTMLTags(statement)) {
-					return redirectWithError(redir, "RfaAction.htm", "Probelem statement should not contain HTML tags !");
-				}
-				
-				if(InputValidator.isContainsHTMLTags(reference)) {
-					return redirectWithError(redir, "RfaAction.htm", "reference should not contain HTML tags !");
-				}
-				
 				RfaActionDto rfa = new RfaActionDto();
 				
 				rfa.setRfaDate(sdf.parse(rfadate));
+				rfa.setProjectType(projectType);
 				rfa.setProjectId(Long.parseLong(projectid));
 				rfa.setPriorityId(Long.parseLong(priority));
 				rfa.setStatement(statement);
@@ -3574,6 +3589,15 @@ public class ActionController {
 				rfa.setTypeOfRfa(req.getParameter("type"));
 				rfa.setVendorCode(req.getParameter("vendor")!=null?req.getParameter("vendor").split("/")[0]:"-");
 				
+				if(Arrays.asList("1","2","3","4").contains(rfanotype)){
+				rfa.setBoxNo(req.getParameter("boxno"));
+				rfa.setSWdate(sdf.parse(req.getParameter("swdate")));
+				rfa.setRigVersion(req.getParameter("RigVersion"));
+				rfa.setFPGA(req.getParameter("FPGA"));				
+				}
+				if(req.getParameter("rfaRaisedBy")!=null) {
+				rfa.setRfaRaisedByName(req.getParameter("rfaRaisedBy"));
+				}
 				Long count=service.RfaActionSubmit(rfa,LabCode,UserId,assignee,CCEmpName);
 				
 				if (count > 0) {
@@ -3581,6 +3605,13 @@ public class ActionController {
 				} else {
 					redir.addAttribute("resultfail", "RFA Adding Unsuccessfull");
 				}
+				
+		   	    redir.addAttribute("projectType", projectType);
+			    if(projectType.equalsIgnoreCase("P")) {
+			    	redir.addAttribute("projectId",projectid);
+			    }else {
+				    redir.addAttribute("initiationId", projectid);
+			    }
 				
 			    }catch (Exception e) {
 					e.printStackTrace();
@@ -3837,6 +3868,8 @@ public class ActionController {
 			    String rfa=req.getParameter("RFAID");
 			    String status=req.getParameter("rfaoptionby");
 			    String rfaEmpId=req.getParameter("rfaEmpModal");
+			    String projectType=req.getParameter("projectType");
+			    String projectId=req.getParameter("projectId");
 			    
 
 			  long count=service.RfaActionForward(status,projectid,UserId,rfa,EmpId,rfaEmpId);
@@ -3866,6 +3899,9 @@ public class ActionController {
 					    req.setAttribute("CCTdeEmplList", assignorCC);
 					    
 					 Object[]attachmentData=service.RfaAttachmentDownload(rfaid);
+		//			 List<String> rfaPrintData = attachmentData!=null ? Arrays.asList( attachmentData[2].toString().split("/")): new ArrayList<>(); 
+					 String projectCode =  attachmentData!=null?attachmentData[7]+"":"";
+					 String newRfaNo = attachmentData!=null? attachmentData[5].toString().replace("/","_"):"-";
 					    
 					String RFANo=RfaPrintData[3].toString();
 					String filename="RFA Attachment ";
@@ -3909,7 +3945,7 @@ public class ActionController {
 			        		if(attachmentData[3]!=null) {
 				        		
 			        			if(FilenameUtils.getExtension(attachmentData[3].toString()).equalsIgnoreCase("pdf")) {
-			        				Path pdfPath = Paths.get(uploadpath, LabCode,"RFAFiles",attachmentData[3].toString());
+			        				Path pdfPath = Paths.get(uploadpath, LabCode,"RFAFiles",projectCode,newRfaNo,attachmentData[3].toString());
 			        			    PdfReader pdfReader = new PdfReader(pdfPath.toString());
 			        		        PdfDocument pdfDocument1 = new PdfDocument(pdfReader,new PdfWriter(path+File.separator+filename+"temp.pdf"));
 			        		        Document document4 = new Document(pdfDocument1,PageSize.A4);
@@ -3949,7 +3985,7 @@ public class ActionController {
 			        	if(attachmentData[4]!=null) {
 			        		
 			        			if(FilenameUtils.getExtension(attachmentData[4].toString()).equalsIgnoreCase("pdf")) {
-			        				Path pdfPath1 = Paths.get(uploadpath, LabCode,"RFAFiles",attachmentData[4].toString());
+			        				Path pdfPath1 = Paths.get(uploadpath, LabCode,"RFAFiles",projectCode,newRfaNo,attachmentData[4].toString());
 			        			    PdfReader pdfReader1 = new PdfReader(pdfPath1.toString());
 			        		        PdfDocument pdfDocument2 = new PdfDocument(pdfReader1,new PdfWriter(path+File.separator+filename+"temp.pdf"));
 			        		        Document document5 = new Document(pdfDocument2,PageSize.A4);
@@ -4012,13 +4048,15 @@ public class ActionController {
 					final String password = mailAuthentication.getPassword().toString(); 
 					final String port = mailAuthentication.getPort().toString(); 
 			
-						System.out.println("RFA TLSEmail Start");
 						Properties properties = System.getProperties(); 
 						properties.setProperty("mail.smtp.host", hostAddress);
-					//	properties.put("mail.smtp.starttls.enable", "true"); //TLS
+						properties.put("mail.smtp.ssl.enable", "true"); //TLS
 						properties.put("mail.smtp.port", port); 
 						properties.put("mail.smtp.auth", "true"); 
-						properties.put("mail.smtp.socketFactory.class","jakarta.net.ssl.SSLSocketFactory"); 
+						properties.put("mail.smtp.socketFactory.class","jakarta.net.ssl.SSLSocketFactory");
+						properties.put("mail.smtp.ssl.checkserveridentity", false);
+						properties.put("mail.smtp.ssl.trust", hostAddress);
+						
 						Session session = Session.getDefaultInstance(properties,
 							new jakarta.mail.Authenticator() {
 								protected PasswordAuthentication getPasswordAuthentication() {
@@ -4043,7 +4081,6 @@ public class ActionController {
 							mimeMultipart.addBodyPart(part2);
 							message.setContent(mimeMultipart);
 							Transport.send(message);
-							System.out.println("Message Sent");
 					} catch (MessagingException mex) {
 						mex.printStackTrace();
 					} 	
@@ -4051,11 +4088,23 @@ public class ActionController {
 				  }
 				  if(status.equalsIgnoreCase("AF") || status.equalsIgnoreCase("AX")) {
 					  redir.addAttribute("result", "RFA Forwarded Successfully");
+					  redir.addAttribute("projectType", projectType);
+					  if(projectType.equalsIgnoreCase("P")) {
+						redir.addAttribute("projectId",projectId);
+					  }else {
+						redir.addAttribute("initiationId", projectId);
+					  }
 				  }else if( status.equalsIgnoreCase("AC")||status.equalsIgnoreCase("AV")){
 					  redir.addAttribute("result", "RFA Forwarded Successfully");
 					  return "redirect:/RfaActionForwardList.htm";
 		          }else if(status.equalsIgnoreCase("ARC")){
 		        	  redir.addAttribute("result", "RFA Close Successfully");
+		        	  redir.addAttribute("projectType", projectType);
+					  if(projectType.equalsIgnoreCase("P")) {
+						redir.addAttribute("projectId",projectId);
+					  }else {
+						redir.addAttribute("initiationId", projectId);
+					  }
 		        	  return "redirect:/RfaAction.htm";
 		          }else if(status.equalsIgnoreCase("AY") || status.equalsIgnoreCase("RFA")){
 		        	  redir.addAttribute("result", "RFA Forwarded Successfully");
@@ -4168,18 +4217,6 @@ public class ActionController {
 				String observation = req.getParameter("observation");
 				String clarification = req.getParameter("clarification");
 				String action = req.getParameter("Rfaaction");
-				
-				if(InputValidator.isContainsHTMLTags(observation)) {
-					
-					return redirectWithError(redir, "RfaInspection.htm", "Observation should not contain HTML tag!");
-				}
-				
-				if(InputValidator.isContainsHTMLTags(action)) {
-					
-					return redirectWithError(redir, "RfaInspection.htm", "Action should not contain HTML tag!");
-				}
-				
-				
 				
 				if(service.RfaAssignAjax(rfaid)==null) {
 					
@@ -4294,6 +4331,8 @@ public class ActionController {
 			 String assignor=req.getParameter("assignor");
 			 String rfa=req.getParameter("rfa");
 			 String replyMsg=req.getParameter("replyMsg");
+			 String projectType=req.getParameter("revokeProjType");
+			 String projectId=req.getParameter("revokeProjId");
 			
 			 // for revoke
 			 if(status.equalsIgnoreCase("AF") || status.equalsIgnoreCase("AX") ) {
@@ -4319,10 +4358,16 @@ public class ActionController {
 			 
 			 if(status.equalsIgnoreCase("REV")) {
 				 if(count>0) {
-				 redir.addAttribute("result", "RFA Revoked Successfully");
+				     redir.addAttribute("result", "RFA Revoked Successfully");
 				 }else {
 					 redir.addAttribute("result", "RFA Revoked Unsuccessful");
 				 }
+				redir.addAttribute("projectType", projectType);
+				if(projectType.equalsIgnoreCase("P")) {
+					redir.addAttribute("projectId",projectId);
+				}else {
+					redir.addAttribute("initiationId", projectId);
+				}
 				 return "redirect:/RfaAction.htm";
 			 }
 		
@@ -4332,7 +4377,13 @@ public class ActionController {
 			 }
 			 
 			 if(status.equalsIgnoreCase("RFC")) {
-				 redir.addAttribute("result", "RFA Cancelled Successfully"); 
+				 redir.addAttribute("result", "RFA Cancelled Successfully");
+				 redir.addAttribute("projectType", projectType);
+				 if(projectType.equalsIgnoreCase("P")) {
+					redir.addAttribute("projectId",projectId);
+				 }else {
+					redir.addAttribute("initiationId", projectId);
+				 }
 				 return "redirect:/RfaAction.htm";
 			 }
 			 
@@ -4711,71 +4762,84 @@ public class ActionController {
         	}
         	
        
-            @RequestMapping(value = "RfaActionReports.htm", method = {RequestMethod.GET, RequestMethod.POST})
-            public String RfaActionReports(HttpServletRequest req,HttpSession ses, RedirectAttributes redir) throws Exception 
-            {
-            	String UserId = (String) ses.getAttribute("Username");
-    			String LabCode = (String) ses.getAttribute("labcode");
-    			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-    			String LoginType=(String)ses.getAttribute("LoginType");
-    			
-        		logger.info(new Date() +"Inside RfaActionReports.htm "+UserId);
-        		try {
-        			String rfaid=req.getParameter("rfaid");
-        			String projectid= req.getParameter("projectid");
-        			String rfatypeid=req.getParameter("rfatypeid");
-        			String fdate = req.getParameter("fdate");
-        			String tdate = req.getParameter("tdate");
-        			
-        			FormatConverter fc=new FormatConverter();
-    				SimpleDateFormat sdf=fc.getRegularDateFormat();
-    				SimpleDateFormat sdf1=fc.getSqlDateFormat();
-        			
-        			List<Object[]> ProjectList = service.LoginProjectDetailsList(EmpId, LoginType, LabCode);
-        			List<Object[]> RfaNoTypeList = service.getRfaNoTypeList();
-        			
-        			if(projectid==null) {
-    					projectid=	ProjectList.get(0)[0].toString(); // if project Id null selecet the first project as Default
-    				}
-    				if(rfatypeid==null) {
-    					rfatypeid = "-"; // if rfatype is null selected the firstone default
-    				}
-    				 LocalDate currentDate = LocalDate.now();
-    				if(fdate==null)
-    				{		
-    				        LocalDate firstDayOfYear = LocalDate.of(currentDate.getYear(), 1, 1);
-    				        fdate = firstDayOfYear.toString();
-    				}else
-    				{		
-    					fdate=sdf1.format(sdf.parse(fdate)); 
-    				}		
-    				if(tdate==null)
-    				{
-    					LocalDate lastDayOfYear = LocalDate.of(currentDate.getYear(), 12, 31);
-    					tdate=lastDayOfYear.toString();
-    				}
-    				else 
-    				{	
-    					tdate=sdf1.format(sdf.parse(tdate));				
-    				}
-    				
-    				List<Object[]>RfaActionList = service.rfaTotalActionList(projectid,rfatypeid,fdate,tdate);
-    				req.setAttribute("ProjectList", ProjectList);		
-    				req.setAttribute("RfaNoTypeList", RfaNoTypeList);
-    				req.setAttribute("rfaActionList", RfaActionList);
-    				req.setAttribute("projectid", projectid);
-    				req.setAttribute("rfatypeid", rfatypeid);
-    				req.setAttribute("fdate", fdate);
-    				req.setAttribute("tdate", tdate);
-        		}
-        		catch (Exception e) 
-        		{
-        			e.printStackTrace(); 
-        			logger.error(new Date() +"Inside RfaActionReports.htm "+UserId,e);
-        		}
+        	  @RequestMapping(value = "RfaActionReports.htm", method = {RequestMethod.GET, RequestMethod.POST})
+              public String RfaActionReports(HttpServletRequest req,HttpSession ses, RedirectAttributes redir) throws Exception 
+              {
+              	String UserId = (String) ses.getAttribute("Username");
+      			String LabCode = (String) ses.getAttribute("labcode");
+      			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+      			String LoginType=(String)ses.getAttribute("LoginType");
+      			
+          		logger.info(new Date() +"Inside RfaActionReports.htm "+UserId);
+          		try {
+          			String rfaid=req.getParameter("rfaid");
+          			String projectid= req.getParameter("projectid");
+          			String projectType= req.getParameter("projectType");
+          			String rfatypeid=req.getParameter("rfatypeid");
+          			String fdate = req.getParameter("fdate");
+          			String tdate = req.getParameter("tdate");
+          			
+          			FormatConverter fc=new FormatConverter();
+      				SimpleDateFormat sdf=fc.getRegularDateFormat();
+      				SimpleDateFormat sdf1=fc.getSqlDateFormat();
+          			
+          			List<Object[]> ProjectList = service.LoginProjectDetailsList(EmpId, LoginType, LabCode);
+          			List<Object[]> preProjectList = reqservice.getPreProjectList(LoginType, LabCode, EmpId);
+          			List<Object[]> RfaNoTypeList = service.getRfaNoTypeList();
+          			
+          			if(projectType==null && projectid==null) {
+          				projectType="P";
+      					projectid=ProjectList.get(0)[0].toString();
+      				}
+          			if(projectType!=null && "I".equalsIgnoreCase(projectType)){
+      					projectid=projectid!=null ? projectid : preProjectList.get(0)[0].toString();
+      				}
+          			if(projectType!=null && "P".equalsIgnoreCase(projectType)){
+      					projectid= projectid!=null ? projectid : ProjectList.get(0)[0].toString();
+          	        }
+          			
+      				if(rfatypeid==null) {
+      					rfatypeid = "-"; // if rfatype is null selected the first one default
+      				}
+      				 LocalDate currentDate = LocalDate.now();
+      				if(fdate==null)
+      				{		
+  				        LocalDate firstDayOfYear = LocalDate.of(currentDate.getYear(), 1, 1);
+  				        fdate = firstDayOfYear.toString();
+      				}else
+      				{		
+      					fdate=sdf1.format(sdf.parse(fdate)); 
+      				}		
+      				if(tdate==null)
+      				{
+      					LocalDate lastDayOfYear = LocalDate.of(currentDate.getYear(), 12, 31);
+      					tdate=lastDayOfYear.toString();
+      				}
+      				else 
+      				{	
+      					tdate=sdf1.format(sdf.parse(tdate));				
+      				}
+      				
+      				List<Object[]>RfaActionList = service.rfaTotalActionList(projectType,projectid,rfatypeid,fdate,tdate);
+      				req.setAttribute("ProjectList", ProjectList);		
+      				req.setAttribute("preProjectList", preProjectList);		
+      				req.setAttribute("RfaNoTypeList", RfaNoTypeList);
+      				req.setAttribute("rfaActionList", RfaActionList);
+      				req.setAttribute("AssigneeEmplList", service.AssigneeEmpList());
+      				req.setAttribute("projectid", projectid);
+      				req.setAttribute("projectType", projectType);
+      				req.setAttribute("rfatypeid", rfatypeid);
+      				req.setAttribute("fdate", fdate);
+      				req.setAttribute("tdate", tdate);
+          		}
+          		catch (Exception e) 
+          		{
+          			e.printStackTrace(); 
+          			logger.error(new Date() +"Inside RfaActionReports.htm "+UserId,e);
+          		}
 
-                return "action/RfaActionReports"; 
-             }
+                  return "action/RfaActionReports"; 
+               }
 
             
             @RequestMapping(value = "CommitteActionEdit.htm" , method={RequestMethod.POST,RequestMethod.GET})
@@ -4843,7 +4907,7 @@ public class ActionController {
         	}
             
             
-            @RequestMapping(value = "RfaActionReportPdf.htm" , method={RequestMethod.POST,RequestMethod.GET})
+            @RequestMapping(value = "RfaActionReportPdf.htm" , method={RequestMethod.POST})
         	public void RfaActionReportPdf(Model model,HttpServletRequest req,HttpServletResponse res ,HttpSession ses, RedirectAttributes redir)throws Exception
         	{
             	String UserId = (String) ses.getAttribute("Username");
@@ -4858,15 +4922,20 @@ public class ActionController {
 					SimpleDateFormat sdf1=fc.getSqlDateFormat();
         			
         			String projectid= req.getParameter("projectid");
+        			String projectType= req.getParameter("projectType");
         			String rfatypeid=req.getParameter("rfatypeid");
-        			String fdate = req.getParameter("fdate");
-        			String tdate = req.getParameter("tdate");
+        			String fdate = req.getParameter("reportFromdate");
+        			String tdate = req.getParameter("reportTodate");
         			
         			List<Object[]> ProjectList = service.LoginProjectDetailsList(EmpId, LoginType, LabCode);
-        			List<Object[]>RfaActionReportList = service.rfaTotalActionList(projectid,rfatypeid,fdate,tdate);
+        			List<Object[]> preProjectList = reqservice.getPreProjectList(LoginType, LabCode, EmpId);
+        			List<Object[]>RfaActionReportList = service.rfaTotalActionList(projectType,projectid,rfatypeid,fdate,tdate);
         			
         			req.setAttribute("RfaActionReportList", RfaActionReportList);
+        			req.setAttribute("AssigneeEmplList", service.AssigneeEmpList());
         			req.setAttribute("ProjectList", ProjectList);
+        			req.setAttribute("preProjectList", preProjectList);
+        			req.setAttribute("projectType", projectType);
         			req.setAttribute("projectid", projectid);
     				req.setAttribute("rfatypeid", rfatypeid);
     				req.setAttribute("fdate", fdate);

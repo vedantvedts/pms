@@ -97,7 +97,7 @@ public interface ActionService {
 	public Long AddFavouriteList(String[] favoriteid , Long empid ,String userid)throws Exception;
 	public List<Object[]> GetFavouriteList(String empid)throws Exception;
 	public ActionAssign getActionAssign(String actionassignId) throws Exception;
-	public List<Object[]> GetRfaActionList(String EmpId,String ProjectId,String fdate,String tdate) throws Exception;
+	public List<Object[]> GetRfaActionList(String EmpId,String projectType, String projectId, String initiationId,String fdate,String tdate) throws Exception;
 	public List<Object[]> ProjectTypeList() throws Exception;
 	public List<Object[]> PriorityList() throws Exception;
 	
@@ -133,10 +133,8 @@ public interface ActionService {
 	public List<Object[]> AssigneeEmpList()throws Exception;
 	//public List<String> CCAssigneeList(String rfaid)throws Exception;
 	public List<String> CCAssignorList(String rfaid)throws Exception;
-	public List<Object[]> GetRfaActionList1(String Project, String fdate, String tdate)throws Exception;
-	public List<Object[]> RfaProjectwiseList(String empId, String Project, String fdate, String tdate)throws Exception;
-	
-	
+	public List<Object[]> GetRfaActionList1(String projectType, String projectId, String initiationId, String fdate, String tdate)throws Exception;
+	public List<Object[]> RfaProjectwiseList(String empId, String projectType, String projectId, String initiationId, String fdate, String tdate)throws Exception;
 	public List<Object[]> getmodifieddate(String userId, int pid)throws Exception;
 	public List<Object[]> getProjectByDirectorID(String empId)throws Exception;
 	public List<Object[]> getRecentWeeklyUpdateDate(String string)throws Exception;
@@ -154,7 +152,7 @@ public interface ActionService {
 	public List<String> rfaMailSend(String rfa)throws Exception;
 	public List<Object[]> getRfaNoTypeList()throws Exception;
 	public List<Object[]> RfaCCList()throws Exception;
-	public List<Object[]> rfaTotalActionList(String projectid, String rfatypeid, String fdate, String tdate);
+	public List<Object[]> rfaTotalActionList(String projectType,String projectid, String rfatypeid, String fdate, String tdate);
 	public int CommitteActionEdit(ActionAssignDto actionAssign)throws Exception;
 	public List<Object[]> RfaPendingCount(String empId)throws Exception;
 	//prakarsh
@@ -171,6 +169,7 @@ public interface ActionService {
 	public Long rfaCloseForExternal(RfaActionDto rfa)throws Exception;
 	public Object[] getActionMainAttachMent(String mainid)throws Exception;
 	
+	//newly Added
 	public List<Object[]> TotalActions()throws Exception;
 	public List<Object[]> getProjects(String empId)throws Exception;
 	public int ActionAssignerEdit(ActionAssign assign)throws Exception;

@@ -3427,7 +3427,7 @@ public class CommitteeController {
 			String committeeid=req.getParameter("committeeid");
 
 			List<Object[]> projectdetailslist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
-			String committeemainid=String.valueOf(service.LastCommitteeId(committeeid, projectid, "0", "0", "0"));
+		
 			if(projectdetailslist.size()==0) 
 			{				
 				redir.addAttribute("resultfail", "No Project is Assigned to you.");
@@ -3461,6 +3461,12 @@ public class CommitteeController {
 
 			List<Object[]> projapplicommitteelist=service.ProjectApplicableCommitteeList(projectid);
 
+			
+			System.out.println(committeeid);
+		
+			System.out.println(projectid);
+			
+			String committeemainid=String.valueOf(service.LastCommitteeId(committeeid, projectid, "0", "0", "0"));
 
 			req.setAttribute("projectid",projectid);
 			req.setAttribute("committeeid",committeeid);

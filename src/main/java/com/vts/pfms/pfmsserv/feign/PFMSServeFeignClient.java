@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.vts.pfms.login.CCMView;
 
-@FeignClient(name = "PFMSServeFeignClient", url = "${pfms_serv_url}")
+@FeignClient(name = "PFMSServeFeignClient", url = "${pfms_serv_url:NA}")
 public interface PFMSServeFeignClient {
 
     @PostMapping("/getCCMViewData")

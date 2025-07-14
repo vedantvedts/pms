@@ -108,7 +108,10 @@ background-color: transparent;
 List<Object[]> AssigneeList=(List<Object[]>) request.getAttribute("AssigneeEmplList");
 List<Object[]> RfaActionList=(List<Object[]>) request.getAttribute("RfaActionList");
 List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
-String Project=(String)request.getAttribute("Project");
+List<Object[]> preProjectList = (List<Object[]>) request.getAttribute("preProjectList");
+String projectId=(String)request.getAttribute("projectId");
+String projectType = (String)request.getAttribute("projectType");
+String initiationId =(String)request.getAttribute("initiationId");
 String ModalEmpList=(String)request.getAttribute("ModalEmpList");
 String ModalTDList=(String)request.getAttribute("ModalTDList");
 String Employee=(String)request.getAttribute("Employee");
@@ -145,69 +148,81 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
-                 
-                 <div class="card-header ">  
-
-					<div class="row">
-						<h5 class="col-md-2">RFA List</h5>  
-							<div class="col-md-10" style="float: right; margin-top: -12px;">
-					   			<form method="post" action="#" name="dateform" id="dateform">
-					   				<table >
-					   					<tr>
-					   						<td >
-					   							<label class="control-label" style="font-size: 17px; margin-bottom: .0rem;font-weight: 700;">Project: </label>
-					   						</td>
-					   						<td style=" padding-right: 50px">
-                                                        <select class="form-control selectdee " name="Project" id="Project" required="required"  data-live-search="true"  >
-                                                         <option value="A"  <%if(Project.equalsIgnoreCase("A")){%> selected="selected" <%}%>>ALL</option>	
-                                                           <%
-                                                           for(Object[] obj:ProjectList){
-                                                           String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
-                                                           %>
-														   <option value="<%=obj[0] %>" <%if(Project.equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[4]+projectshortName %></option>	
-														<%} %>
-																</select>	        
-											</td>
-											
-					   									   		
-					   						<td >
-					   							<label class="control-label" style="font-size: 17px; margin-bottom: .0rem;font-weight: 700;">From Date: </label>
-					   						</td>
-					   						<td style="padding-right: 20px">
-					   							<input  class="form-control"  data-date-format="dd/mm/yyyy" id="fdate" name="fdate"  required="required"  value="<%=sdf.format(sdf1.parse(fdate))%>">
-					   						</td>
-					   						<td>
-					   							<label class="control-label" style="font-size: 17px; margin-bottom: .0rem; font-weight: 700;">To Date: </label>
-					   						</td>
-					   						<td style=" padding-right: 20px">
-					   							<input  class="form-control "  data-date-format="dd/mm/yyyy" id="tdate" name="tdate"  required="required"  value="<%= sdf2.format(sdf3.parse(tdate))%>">
-					   						</td>
-					   						<td >
-					   							<label class="control-label" style="font-size: 17px; margin-bottom: .0rem;font-weight: 700;">RFA Status: </label>
-					   						</td>
-					   						<td style=" padding-right: 20px">
-                                                <select class="form-control selectdee " name="Status" id="Status" required="required" >                                                     
-											        <option value="A" <%if("A".equalsIgnoreCase(Status)){%>selected="selected" <%}%> >  All</option>	
-											        <option value="O" <%if("O".equalsIgnoreCase(Status)){%>selected="selected" <%}%> >  Open</option>
-											        <option value="C" <%if("C".equalsIgnoreCase(Status)){%>selected="selected" <%}%> > Close</option>
-											        <option value="CAN" <%if("CAN".equalsIgnoreCase(Status)){%>selected="selected" <%}%> > Cancel</option>
-										        </select>	       
-											</td>
-					   						<td>
-					   							
-					   						</td>			
-					   					</tr>   					   				
-					   				</table>
-					   				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-					   			</form>
-		   					</div>
-		   				</div>	   							
-
+					<div class="card-header position-relative p-0">
+					    <!-- Left: RFA List Title -->
+					    <h5 class="mb-0" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%);">RFA List</h5>
+					
+					    <form method="post" action="#" name="dateform" id="dateform" class="d-flex justify-content-center flex-wrap" style="margin-bottom: 10px">
+					        <!-- Project Type -->
+					        <div class="d-flex align-items-center mx-2 my-1">
+					            <label for="projectType" class="mr-2 font-weight-bold" style="font-size: 17px;">Project Type:</label>
+					            <select class="form-control selectdee" id="projectType" name="projectType">
+					                <option disabled selected value="">Choose...</option>
+					                <option value="P" <%if(projectType.equalsIgnoreCase("P")){ %> selected <% }%>>Project</option>
+					                <option value="I" <%if(projectType.equalsIgnoreCase("I")){ %> selected <% }%>>Pre Project</option>
+					            </select>
+					        </div>
+					
+					        <!-- Project -->
+					        <div class="d-flex align-items-center mx-2 my-1">
+					            <label for="projectId" class="mr-2 font-weight-bold" style="font-size: 17px;">Project:</label>
+					            <% if(projectType.equalsIgnoreCase("P")) { %>
+					                <select class="form-control selectdee" name="projectId" id="projectId" required data-live-search="true">
+					                    <option value="A" <%if(projectId.equalsIgnoreCase("A")){%> selected <%}%>>ALL</option>
+					                    <% for(Object[] obj : ProjectList) {
+					                        String projectshortName = (obj[17] != null) ? " ( " + obj[17].toString() + " ) " : "";
+					                    %>
+					                        <option value="<%=obj[0]%>" <%if(projectId.equalsIgnoreCase(obj[0].toString())){ %> selected <% } %>><%=obj[4] + projectshortName %></option>
+					                    <% } %>
+					                </select>
+					            <% } else { %>
+					                <select class="form-control selectdee" id="initiationId" name="initiationId" data-live-search="true">
+					                    <option value="A" <%if(initiationId.equalsIgnoreCase("A")){%> selected <%}%>>ALL</option>
+					                    <% if(preProjectList != null && preProjectList.size() > 0) {
+					                        for(Object[] obj : preProjectList) { %>
+					                            <option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(initiationId)) { %> selected <% } %>><%=obj[3] + " ( " + obj[2] + " )" %></option>
+					                    <% } } %>
+					                </select>
+					            <% } %>
+					        </div>
+					
+					        <!-- RFA Status -->
+					        <div class="d-flex align-items-center mx-2 my-1">
+					            <label for="Status" class="mr-2 font-weight-bold" style="font-size: 17px;">RFA Status:</label>
+					            <select class="form-control selectdee" name="Status" id="Status" required>
+					                <option value="A" <%if("A".equalsIgnoreCase(Status)) {%> selected <% } %>>All</option>
+					                <option value="O" <%if("O".equalsIgnoreCase(Status)) {%> selected <% } %>>Open</option>
+					                <option value="C" <%if("C".equalsIgnoreCase(Status)) {%> selected <% } %>>Close</option>
+					                <option value="CAN" <%if("CAN".equalsIgnoreCase(Status)) {%> selected <% } %>>Cancel</option>
+					            </select>
+					        </div>
+					
+					        <!-- CSRF Token -->
+					        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					    </form>
 					</div>
+
+
                  
 					<form action="#" method="post" id="myFrom" >
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 						<div class="card-body">
+						     <div class="d-flex justify-content-end align-items-center">
+						        <!-- From Date -->
+						        <div class="form-group mb-2 mr-4 d-flex align-items-center">
+						            <label for="fdate" class="control-label mb-0 mr-2" style="font-size: 17px; font-weight: 700;">From Date:</label>
+						            <input type="text" class="form-control" data-date-format="dd/mm/yyyy" id="fdate" name="fdate" 
+						                   required="required" value="<%=sdf.format(sdf1.parse(fdate))%>" style="width: 150px;">
+						        </div>
+						
+						        <!-- To Date -->
+						        <div class="form-group mb-2 d-flex align-items-center">
+						            <label for="tdate" class="control-label mb-0 mr-2" style="font-size: 17px; font-weight: 700;">To Date:</label>
+						            <input type="text" class="form-control" data-date-format="dd/mm/yyyy" id="tdate" name="tdate" 
+						                   required="required" value="<%=sdf2.format(sdf3.parse(tdate))%>" style="width: 150px;">
+						        </div>
+						     </div>
+
 							<div class="table-responsive">
 								<table
 									class="table table-bordered table-hover table-striped table-condensed "
@@ -280,7 +295,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 					                       if(obj[11].toString().equalsIgnoreCase(UserId) && toUserStatus.contains(obj[14].toString())){%>
 				                         <button class="editable-click"  style="background-color: transparent; name="rfa" value="<%=obj[0]%>" 
 											type="button"	data-toggle="tooltip" data-placement="top" id="rfaCloseBtn" 
-											onclick="forwardmodal('<%=obj[3]%>',<%=obj[0]%>)" title="" data-original-title="FORWARD RFA">
+											onclick="forwardmodal('<%=obj[3]%>',<%=obj[0]%>,'<%=obj[13]%>','<%=obj[19]%>')" title="" data-original-title="FORWARD RFA">
 												<div class="cc-rockmenu" >
 														<figure class="rolling_icon" >
 															<img src="view/images/forward1.png">
@@ -297,12 +312,14 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 													value="" style="background-color: transparent;" data-toggle="tooltip" data-placement="top"
 													formaction="RfaActionReturnList.htm" formmethod="POST"
 													formnovalidate="formnovalidate"  id="rfaRevokeBtn"
-													onclick="return returnRfa(<%=obj[0]%>,'<%=obj[14]%>','<%=obj[15]%>')">
+													onclick="return returnRfa(<%=obj[0]%>,'<%=obj[14]%>','<%=obj[15]%>','<%=obj[13]%>','<%=obj[19]%>')">
 												  <i class="fa fa-backward" aria-hidden="true" style="color: #007bff; font-size: 24px; position: relative; top: 5px;"></i>
 												</button> 
 													<input type="hidden" name="rfa" id="rfaHidden">
  													<input type="hidden" name="RfaStatus" id="RfaStatusHidden">
-      												 <input type="hidden" name="assignor" id="assignorId">
+      												<input type="hidden" name="assignor" id="assignorId">
+      												<input type="hidden" name="revokeProjType" id="pType">
+      												<input type="hidden" name="revokeProjId" id="pId">
 	                                    <% } if(Integer.valueOf(obj[16].toString())>0 && obj[11].toString().equalsIgnoreCase(UserId) || obj[14].toString().equalsIgnoreCase("RFC")){ %>
 													<button title="REMARKS" class="editable-click" name="sub" type="button"
 													value="" style="background-color: transparent;"
@@ -328,17 +345,17 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 											
 											 <%if((obj[14].toString().equalsIgnoreCase("AP") && obj[15].toString().equalsIgnoreCase(EmpId)) ){ %>
 											 	<button type="button" class="editable-click btn btn-sm btn-info"  style="" 
-												onclick="closeModal('<%=obj[0].toString() %>','<%=obj[3] %>','<%=obj[2].toString() %>','<%=obj[18] %>')"
+												onclick="closeModal('<%=obj[0].toString() %>','<%=obj[3] %>','<%=obj[2].toString() %>','<%=obj[18] %>','<%=obj[13] %>','<%=obj[19] %>')"
 													data-toggle="tooltip" data-placement="top" id="rfaCancelBtn" title="" data-original-title="CLOSE RFA">
-											CLOSE
+										                   	CLOSE
 											   </button>
 											   <input type="hidden" name="rfaoptionby" value="ARC" >
 											<%} %>
 											 <%if((obj[14].toString().equalsIgnoreCase("AV") && obj[18].toString().equalsIgnoreCase("E")) ){ %>
 											 	<button type="button" class="editable-click btn btn-sm btn-info"  style="" 
-												onclick="closeModal('<%=obj[0].toString() %>','<%=obj[3] %>','<%=obj[2].toString() %>','<%=obj[18] %>')"
+												onclick="closeModal('<%=obj[0].toString() %>','<%=obj[3] %>','<%=obj[2].toString() %>','<%=obj[18] %>','<%=obj[13] %>','<%=obj[19] %>')"
 													data-toggle="tooltip" data-placement="top" id="rfaCancelBtn" title="" data-original-title="CLOSE RFA">
-											CLOSE
+										                	CLOSE
 											   </button>
 											   <input type="hidden" name="rfaoptionby" value="ARC" >
 											   											   <input type="hidden" name="rfaoptionby" value="ARC" >
@@ -356,6 +373,9 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 								value="${_csrf.token}" />
 								
 							<button class="btn add" type="button" formaction="RfaActionAdd.htm" name="sub" value="add" onclick="addRfa()" id="addRfaBtn">ADD</button>
+						  	<input type="hidden" name="projectId" value="<%=projectId%>">
+						  	<input type="hidden" name="projectType" value="<%=projectType%>">
+						  	<input type="hidden" name="initiationId" value="<%=initiationId%>">
 						  
 							<a class="btn btn-info shadow-nohover back"
 								href="MainDashBoard.htm">BACK</a>
@@ -427,9 +447,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 				<form name="specadd" id="specadd" action="RfaActionForward.htm"
 					method="POST">
 					<div class="modal-body">
-
 						<div class="row">
-
 							<div class="col-3">
 								<div class="form-group">
 									<b><label> RFA By : <span class="mandatory"
@@ -444,7 +462,6 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 									</select>
 								</div>
 							</div>
-
 							<div class="col-6" id="selectClassModal2" style="display:none;">
 								<div class="form-group">
 									<b><label>RFA Forward To : </label><br></b> <select
@@ -456,13 +473,13 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 							</div>
 						</div>
 						<div align="center">
-							<input type="hidden" name="${_csrf.parameterName}"
-								value="${_csrf.token}" /> <input type="hidden" name="rfano1"
-								id="rfanomodal" value=""> <input type="submit"
-								name="sub" class="btn  btn-sm submit" form="specadd"
-								id="rfaforwarding" value="SUBMIT"
-								onclick="return confirm('Are you sure To Submit?')" /> <input
-								type="hidden" name="RFAID" id="RFAID">
+							<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" /> 
+							<input type="hidden" name="rfano1" id="rfanomodal" value=""> 
+							<input type="submit" name="sub" class="btn  btn-sm submit" form="specadd" id="rfaforwarding" value="SUBMIT"
+								onclick="return confirm('Are you sure To Submit?')" /> 
+							<input type="hidden" name="RFAID" id="RFAID">
+							<input type="hidden" name="projectType" id="proType">
+							<input type="hidden" name="projectId" id="proId">
 						</div>
 
 					</div>
@@ -497,15 +514,14 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 							<div class="row" style="" id="mainrow">
 								<div class="col-md-12">
 									<div class="row">
-										<div class="col-md-3">
-											<label class="control-label returnLabel" style="font-weight: 600;font-size: 16px">Reason For Cancel</label> <span
-												class="mandatory" style="color: #cd0a0a;">*</span>
-										</div>
-										<div class="col-md-9" style="max-width: 82%">
-											<textarea class="form-control" rows="5" cols="30"
-												placeholder="Max 500 Characters" name="replyMsg"
-												id="replyMsg" maxlength="500" required></textarea>
-										</div>
+									    <div class="col-md-12">
+									        <label class="control-label returnLabel" style="font-weight: 600; font-size: 16px;">
+									            Reason For Cancel <span class="mandatory" style="color: #cd0a0a;">*</span>
+									        </label>
+									        <textarea class="form-control mt-2" rows="4" cols="30"
+									            placeholder="Max 500 Characters" name="replyMsg"
+									            id="replyMsg" maxlength="500" required></textarea>
+									    </div>
 									</div>
 									<br>
 									<div class="form-group" align="center">
@@ -565,15 +581,17 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 		                  </div>
 		            </div>
 		           
-		            <div align="center" class="mt-2 mb-2">
-    <button class="btn btn-sm submit" name="rfaoptionby" value="ARC" type="submit"  onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
-    <button id="retrunbtn" class="btn btn-sm btn-danger" name="rfaoptionby" value="RFR" type="submit"  onclick="return confirm('Are you sure to return?')">RETURN</button>
-    <input type="hidden" id="rfaidClose" name="RFAID">
-    <input type="hidden" id="rfanoClose" name="rfano">
-    <input type="hidden" id="rfaprojectCode" name="projectCode">
-    <!--  <input type="hidden" name="rfaoptionby" value="ARC" > -->
-    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-    </div>
+		    <div align="center" class="mt-2 mb-2">
+				    <button class="btn btn-sm submit" name="rfaoptionby" value="ARC" type="submit"  onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
+				    <button id="retrunbtn" class="btn btn-sm btn-danger" name="rfaoptionby" value="RFR" type="submit"  onclick="return confirm('Are you sure to return?')">RETURN</button>
+				    <input type="hidden" id="rfaidClose" name="RFAID">
+				    <input type="hidden" id="rfanoClose" name="rfano">
+				    <input type="hidden" id="rfaprojectCode" name="projectCode">
+				    <input type="hidden" id="rfaprojectType" name="projectType">
+				    <input type="hidden" id="rfaprojectId" name="projectId">
+				    <!--  <input type="hidden" name="rfaoptionby" value="ARC" > -->
+				    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		    </div>
 		   </form>	         
       </div>
     
@@ -636,17 +654,17 @@ $(function () {
 	})
 	
 		$(document).ready(function(){
-						   $('#fdate, #tdate,#Project,#Status').change(function(){
-							   var form = document.getElementById("dateform");
-							 
-				               if (form) {
-				                        // Set the form's action attribute to the formactionValue o submit form
-				                        form.setAttribute("action", "RfaAction.htm");
-				                         form.submit();
-				                     }
-				                });
-						 
-						}); 
+		   $('#fdate, #tdate,#projectId,#Status,#projectType,#initiationId').change(function(){
+			   var form = document.getElementById("dateform");
+			 
+               if (form) {
+                        // Set the form's action attribute to the formactionValue o submit form
+                        form.setAttribute("action", "RfaAction.htm");
+                         form.submit();
+                     }
+                });
+		 
+		}); 
 		function frdRfa(rfaId,RfaStatus) {
 			$('#rfa').val(rfaId);
 			$('#RfaStatus').val(RfaStatus);
@@ -693,10 +711,12 @@ $(function () {
 			
 		}
 						
-function returnRfa(rfaId,RfaStatus,createdBy) {
+function returnRfa(rfaId,RfaStatus,createdBy,projectId,projectType) {
 	$('#rfaHidden').val(rfaId);
 	$('#RfaStatusHidden').val(RfaStatus);
 	$('#assignorId').val(createdBy);
+	$('#pType').val(projectType);
+	$('#pId').val(projectId);
 	  var confirmation = confirm('Are You Sure To Revoke this RFA ?');
 	  if(confirmation){
 		  var form = document.getElementById("myFrom");
@@ -774,32 +794,26 @@ function rfaRemarks(rfaId,RfaStatus) {
 
 
 function addRfa() {
-	
-		  var form = document.getElementById("myFrom");
-		   
+   var form = document.getElementById("myFrom");
       if (form) {
        var addRfaBtn = document.getElementById("addRfaBtn");
           if (addRfaBtn) {
               var formactionValue = addRfaBtn.getAttribute("formaction");
-              
                form.setAttribute("action", formactionValue);
                 form.submit();
             }
        }
-	 
-	
 }
 
-function forwardmodal(rfanomodal,RFAID){
+function forwardmodal(rfanomodal,RFAID,projectId,projectType){
          $('#rfamodalval').html(rfanomodal);
          $('#RFAID').val(RFAID);
-
+         $('#proType').val(projectType);
+         $('#proId').val(projectId);
 	     $('#ActionAssignfilemodal').modal('show');
-	     		
 }
 
 function rfaOptionFunc(){
-	
 	 var selectValue = $("#rfaoptionby").val();
 	 document.getElementById("selectClassModal2").style.display = "block";
 	 var ModalEmpList =<%=ModalEmpList%>;
@@ -825,18 +839,19 @@ function rfaOptionFunc(){
 
 function returnCancelRfa(rfaId,RfaStatus,assignee) {
 	$('#rfaCancelmodal').modal('show');
-
 	$('#rfaIdHidden').val(rfaId);
 	$('#StatusHidden').val(RfaStatus);
 	$('#assignorHidden').val(assignee);
 	
 }
 
-function closeModal(a,b,c,rfatype){
+function closeModal(a,b,c,rfatype,projId,projtype){
 	$('#closeModal').modal('show');
 	$('#rfaidClose').val(a);
 	$('#rfanoClose').val(b);
 	$('#rfaprojectCode').val(c);
+	$('#rfaprojectType').val(projtype);
+	$('#rfaprojectId').val(projId);
 	
 	if(rfatype==='E'){
 		$('#AttachementRow').show();

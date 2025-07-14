@@ -60,85 +60,111 @@ String fdate=(String)request.getAttribute("fdate");
 String tdate=(String)request.getAttribute("tdate");  
 String rfatypeid=(String)request.getAttribute("rfatypeid");  
 String projectid = (String)request.getAttribute("projectid");
-String projectCode=ProjectList.stream().filter(project -> project[0] != null && project[0].toString().equals(projectid)) 
+String projectType = (String)request.getAttribute("projectType");
+List<Object[]> preProjectList = (List<Object[]>) request.getAttribute("preProjectList");
+List<Object[]> AssigneeList=(List<Object[]>) request.getAttribute("AssigneeEmplList");
+String projectCode=projectType.equalsIgnoreCase("P") ? 
+		                                ProjectList.stream().filter(project -> project[0] != null && project[0].toString().equals(projectid)) 
 									   .map(project -> project[4] != null ? project[4].toString() : null)
+									   .findFirst()
+									   .orElse(null)
+									           :
+										preProjectList.stream().filter(project -> project[0] != null && project[0].toString().equals(projectid)) 
+									   .map(project -> project[3] != null ? project[3].toString() : null)
 									   .findFirst()
 									   .orElse(null);
 
 %>
+<%=RfaActionList.size() %>
 <div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
-           <div class="card-header ">  
+           <div class="card-header position-relative p-0">  
 					<div class="row">
-						<h4 class="col-md-3">RFA Action Reports</h4>  
-							<div class="col-md-9" style="float: right; margin-top: -8px;margin-left: -3%" >
-					   			<form method="post" action="RfaActionReports.htm" name="dateform" id="myform">
-					   				<table>
-					   					<tr>
-					   						<td>
-					   							<label class="control-label" style="font-size: 17px; margin-bottom: .0rem;">Project: </label>
-					   						</td>
-					   						<td>
-                                               <select class="form-control selectdee" id="projectid" required="required" name="projectid" onchange='submitForm1();' >
-										<% if(ProjectList!=null && ProjectList.size()>0){
-										 for (Object[] obj : ProjectList) {
-											 String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";			 
-										 %>
-												<option value="<%=obj[0]%>" <%if(projectid.equalsIgnoreCase(obj[0].toString())) {%> selected <%} %>><%=obj[4]+projectshortName%></option>
-										<%}} %>
-								             </select>       
-											</td>
-											<td style="width:8%">
-					   							<label class="control-label" style="font-size: 17px; margin-bottom: .0rem;">Type : </label>
-					   						</td>
-					   						<td style="width:15%">
-                                              <select class="form-control selectdee" id="rfatypeid" name="rfatypeid"  >
-                                              <option value="-" <%if(rfatypeid.equalsIgnoreCase("")) {%> selected <%} %>>ALL</option>
-							   			        	<%if(RfaNoTypeList!=null && RfaNoTypeList.size()>0){
-							   			        	  for (Object[] obj : RfaNoTypeList) {%>
-											     <option value="<%=obj[1].toString()%>" <%if(rfatypeid!=null && rfatypeid.equalsIgnoreCase(obj[1].toString())){%>selected<%} %>><%=obj[1].toString()%></option>
-											        <%}} %>   
-							  	             </select>
-											</td>
-					   						<td style="width:11%">
-					   							<label class="control-label" style="font-size: 17px; margin-bottom: .0rem;" >From Date:</label>
-					   						</td>
-					   						<td>
-					   							<input  class="form-control"  data-date-format="dd/mm/yyyy" id="fdate" name="fdate"  required="required"  value="<%=sdf.format(sdf1.parse(fdate))%>">
-					   						</td>
-					   						<td style="width:11%">
-					   							<label class="control-label" style="font-size: 17px; margin-bottom: .0rem;">To Date:</label>
-					   						</td>
-					   						<td >
-					   							<input  class="form-control "  data-date-format="dd/mm/yyyy" id="tdate" name="tdate"  required="required" value="<%=sdf.format(sdf1.parse(tdate))%>">
-					   						</td>
-					   							   									
-					   					</tr>   					   				
-					   				</table>
-					   				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-					   			</form>
+						<h4 class="col-md-3 p-3">RFA Action Reports</h4>  
+							<div class="col-md-9">
+						   	  <form method="post" action="RfaActionReports.htm" name="dateform" id="myform" class="d-flex justify-content-center flex-wrap">
+							   			 <!-- Project Type -->
+							        <div class="d-flex align-items-center mx-2 my-1">
+							            <label for="projectType" class="mr-2 font-weight-bold" style="font-size: 17px;">Project Type:</label>
+							            <select class="form-control selectdee" id="projectType" name="projectType">
+							                <option disabled selected value="">Choose...</option>
+							                <option value="P" <%if(projectType.equalsIgnoreCase("P")){ %> selected <% }%>>Project</option>
+							                <option value="I" <%if(projectType.equalsIgnoreCase("I")){ %> selected <% }%>>Pre Project</option>
+							            </select>
+							        </div>
+							
+							        <!-- Project -->
+							        <div class="d-flex align-items-center mx-2 my-1">
+							            <label for="projectId" class="mr-2 font-weight-bold" style="font-size: 17px;">Project:</label>
+							             <select class="form-control selectdee" name="projectid" id="projectId" required data-live-search="true">
+								            <% if(projectType.equalsIgnoreCase("P")) { %>
+								                    <% for(Object[] obj : ProjectList) {
+								                        String projectshortName = (obj[17] != null) ? " ( " + obj[17].toString() + " ) " : "";
+								                    %>
+								                        <option value="<%=obj[0]%>" <%if(projectid.equalsIgnoreCase(obj[0].toString())){ %> selected <% } %>><%=obj[4] + projectshortName %></option>
+								                    <% } %>
+								            <% } else { %>
+								                    <% if(preProjectList != null && preProjectList.size() > 0) {
+								                        for(Object[] obj : preProjectList) { %>
+								                            <option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(projectid)) { %> selected <% } %>><%=obj[3] + " ( " + obj[2] + " )" %></option>
+								                    <% } } %>
+								            <% } %>
+								         </select>
+								      </div>
+								         
+								     <div class="d-flex align-items-center mx-2 my-1">
+							            <label for="projectType" class="mr-2 font-weight-bold" style="font-size: 17px;">Type:</label>
+							             <select class="form-control selectdee" id="rfatypeid" name="rfatypeid"  >
+			                                          <option value="-" <%if(rfatypeid.equalsIgnoreCase("")) {%> selected <%} %>>ALL</option>
+						   			        	<%if(RfaNoTypeList!=null && RfaNoTypeList.size()>0){
+						   			        	  for (Object[] obj : RfaNoTypeList) {%>
+										     <option value="<%=obj[1].toString()%>" <%if(rfatypeid!=null && rfatypeid.equalsIgnoreCase(obj[1].toString())){%>selected<%} %>><%=obj[1].toString()%></option>
+										        <%}} %>   
+						  	             </select>
+							        </div>
+							        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+						   	  </form>	
 		   					</div>
 		   				</div>	   							
 					</div>
 			    <form action="#">		
 			        <div class="card-body">
-							<div align="right">
-								<button class="pdf" formaction="RfaActionReportPdf.htm" 
-									formmethod="get" formnovalidate="formnovalidate" name="rfaid"
-									value="" formtarget="_blank" data-toggle="tooltip"
-									data-placement="top" data-original-title="RFA Report pdf"
-									style="border: none;background: transparent;margin-bottom: 7px;">
-									<div>
-										<img class="pdfimage" src="view/images/pdf1.png">
-									</div>
-								</button>
-								<input type="hidden" name="fdate" value="<%=fdate%>">
-								<input type="hidden" name="tdate" value="<%=tdate%>">
-								<input type="hidden" name="rfatypeid" value="<%=rfatypeid%>">
-								<input type="hidden" name="projectid" value="<%=projectid%>">
-							</div>
+			        		<div class="d-flex justify-content-end align-items-center">
+						        <!-- From Date -->
+						        <div class="form-group mb-2 mr-4 d-flex align-items-center">
+						            <label for="fdate" class="control-label mb-0 mr-2" style="font-size: 17px; font-weight: 700;">From Date:</label>
+						           <input  class="form-control"  data-date-format="dd/mm/yyyy" id="fdate" name="fdate" 
+						           required="required"  value="<%=sdf.format(sdf1.parse(fdate))%>" style="width: 150px;">
+						        </div>
+						
+						        <!-- To Date -->
+						        <div class="form-group mb-2 d-flex align-items-center">
+						            <label for="tdate" class="control-label mb-0 mr-2" style="font-size: 17px; font-weight: 700;">To Date:</label>
+						            <input  class="form-control " data-date-format="dd/mm/yyyy" id="tdate" name="tdate"  
+						            required="required" value="<%=sdf.format(sdf1.parse(tdate))%>" style="width: 150px;">
+						        </div>
+						        
+						        <div>
+									<button class="pdf" formaction="RfaActionReportPdf.htm" 
+										formmethod="POST" formnovalidate="formnovalidate" name="rfaid"
+										value="" formtarget="_blank" data-toggle="tooltip"
+										data-placement="top" data-original-title="RFA Report pdf"
+										style="border: none;background: transparent;margin-bottom: 7px;">
+										<div>
+											<img class="pdfimage" src="view/images/pdf1.png">
+										</div>
+									</button>
+									<input type="hidden" name="reportFromdate" value="<%=fdate%>">
+									<input type="hidden" name="reportTodate" value="<%=tdate%>">
+									<input type="hidden" name="rfatypeid" value="<%=rfatypeid%>">
+									<input type="hidden" name="projectid" value="<%=projectid%>">
+									<input type="hidden" name="projectType" value="<%=projectType%>">
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							   </div> 
+						     </div>
+		                   
 							<div class="table-responsive">
 								<table
 									class="table table-bordered table-hover table-striped table-condensed "
@@ -148,9 +174,9 @@ String projectCode=ProjectList.stream().filter(project -> project[0] != null && 
 															<th>SN</th>
 															<th style="width: 15%">RFA No</th>	
 															<th style="width: 7%">RFA Date</th>
-															<th>Priority</th>																								
+															<th>Raised By</th>																								
 														 	<th>Problem Statement</th>					 	
-														 	<th>Observation</th>
+														 	<th>Assigned To</th>
 														 	<th style="width: 8%">Close Date</th>
 														 	<th style="width: 9%">RFA Status</th>
 														 	<th style="width: 8%">Action</th>
@@ -166,8 +192,7 @@ String projectCode=ProjectList.stream().filter(project -> project[0] != null && 
 													<td <%if(obj[13]!=null && obj[13].toString().equalsIgnoreCase("RFC")){ %>style="color: red"<%} %>><%if(obj[1]!=null){%><%=obj[1].toString() %><%}else{ %>-<%} %></td>
 													
 													<td><%if(obj[2]!=null){%><%=sdf.format(obj[2])%><%}else{ %>-<%} %></td>
-													<td><%if(obj[3]!=null){%><%=obj[3].toString()  %><%}else{ %>-<%} %></td>
-													<%-- <td><%if(obj[5]!=null){%><%=obj[5].toString()  %><%}else{ %>-<%} %></td> --%>
+													<td><%if(obj[14]!=null){%><%=obj[14].toString()%><%}else{ %><%=obj[15].toString()%><%} %></td>
 													<td>
 													   <%if(obj[5]!=null){%>
 														<%if(obj[5].toString().length()>70){ %>
@@ -179,8 +204,7 @@ String projectCode=ProjectList.stream().filter(project -> project[0] != null && 
 														<%} %>
 													   <%}else{ %>-<%} %>
 													</td>	
-													<%-- <td><%if(obj[10]!=null){%><%=obj[10].toString() %><%}else{ %>-<%} %></td> --%>
-													<td>
+											 <%-- <td>
 													   <%if(obj[10]!=null){%>
 														<%if(obj[10].toString().length()>70){ %>
 														 <%=obj[10].toString().substring(0, 70) %>
@@ -190,6 +214,14 @@ String projectCode=ProjectList.stream().filter(project -> project[0] != null && 
 														<%=obj[10].toString() %>
 														<%} %>
 													  <%}else{ %>-<%} %>
+													</td> --%>
+													<td>
+														<%if(AssigneeList!=null ){ 
+															for(Object[] obj1 : AssigneeList){
+																if(obj1[0].toString().equalsIgnoreCase(obj[0].toString())){
+																%>
+														      <p style="margin-bottom:0px !important;"> <%=obj1[1].toString()+", "+obj1[2].toString() %> (<%=obj1[4].toString() %>) </p>          
+														<% }}}%>
 													</td>
 													<td><%if(obj[9]!=null){%><%=sdf.format(obj[9])%><%}else{ %>-<%} %></td>
 													<td style="text-align: center;">
@@ -286,20 +318,27 @@ $('#tdate').daterangepicker({
 });
 
 $(document).ready(function() {
-	$('#projectid').on('change', function() {
+	$('#projectId').on('change', function() {
 		var temp = $(this).children("option:selected").val();
 		$('#myform').submit();
 	});
-	});
+});
 	
 $('#rfatypeid').on('change', function() {
 	var temp = $(this).children("option:selected").val();
 	$('#myform').submit();
 });
+
 $('#fdate').on('change', function() {
 	$('#myform').submit();
 });
+
 $('#tdate').on('change', function() {
+	$('#myform').submit();
+});
+
+$('#projectType').on('change', function() {
+	var temp = $(this).children("option:selected").val();
 	$('#myform').submit();
 });
 

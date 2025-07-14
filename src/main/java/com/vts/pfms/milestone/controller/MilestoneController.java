@@ -2642,7 +2642,12 @@ public class MilestoneController {
 			String tecdata = obj[2].toString().replaceAll("[/\\\\]", ",");
 			String[] fileParts = tecdata.split(",");
 			String zipName = String.format(obj[3].toString()+obj[7].toString()+"-"+obj[6].toString()+".zip");
-			Path techPath = Paths.get(FilePath, fileParts[0],fileParts[1],fileParts[2],fileParts[3],fileParts[4],zipName);
+			 Path techPath = null;
+    		 if(fileParts.length == 4){
+    		 	techPath = Paths.get(FilePath, fileParts[0],fileParts[1],fileParts[2],fileParts[3],zipName);
+    		 }else{
+    			techPath = Paths.get(FilePath, fileParts[0],fileParts[1],fileParts[2],fileParts[3],fileParts[4],zipName);
+    		 }
 			zip.unpack(techPath.toString(), path,obj[5].toString());
 
 			res.setContentType("application/pdf");

@@ -517,7 +517,7 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 				</div>
 				
 				
-<!-- Return Modal Remarks Start -->	
+<!-- Return Modal Remarks Start -->
 
 	<form class="form-horizontal" role="form"
 		action="RfaActionReturnList.htm" method="POST" id="returnFrm"
@@ -525,56 +525,49 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 		<div class="modal fade bd-example-modal-lg" id="rfaReturnmodal"
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
-			<div class="modal-dialog modal-md">
-				<div class="modal-content addreq"
-					style="height: 20rem; width: 150%; margin-left: -22%; position: relative;">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content addreq">
 					<div class="modal-header" id="modalreqheader"
 						style="background-color: #021B79">
-						<h5 class="modal-title" id="exampleModalLabel" style="color: #fff">RFA
-							Return</h5>
+						<h5 class="modal-title" id="exampleModalLabel" style="color: #fff">RFA Return</h5>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close" style="color: white">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div style="height: 530px; overflow: auto;">
-						<div class="modal-body">
-							<div class="row" style="" id="mainrow">
-								<div class="col-md-12">
-									<div class="row">
-										<div class="col-md-3" style="max-width: 18%">
-											<label class="control-label returnLabel">Reply</label> <span
-												class="mandatory" style="color: #cd0a0a;">*</span>
-										</div>
-										<div class="col-md-10" style="max-width: 82%">
-											<textarea class="form-control" rows="3" cols="30"
-												placeholder="Max 500 Characters" name="replyMsg"
-												id="replyMsg" maxlength="500" required></textarea>
-										</div>
-									</div>
-									<br>
-									<div class="form-group" align="center">
-										<span id="btnsub"><button type="submit"
-												class="btn btn-primary btn-sm submit" id="submit"
-												value="SUBMIT"
-												onclick="return confirm('Are you sure to return?')">SUBMIT</button></span>
-									</div>
-
-									<input type="hidden" name="${_csrf.parameterName}"
-										value="${_csrf.token}" /> <input type="hidden" name="rfa"
-										id="rfaIdHidden"> <input type="hidden" name="RfaStatus"
-										id="StatusHidden"> <input type="hidden"
-										name="assignor" id="assignorHidden">
-
-								</div>
+					<div class="modal-body">
+						<div class="row" style="" id="mainrow">
+							<div class="col-md-12">
+								<label class="control-label returnLabel"
+									style="font-weight: 600; font-size: 16px;"> Reply <span
+									class="mandatory" style="color: #cd0a0a;">*</span>
+								</label>
+								<textarea class="form-control" rows="3" cols="30"
+									placeholder="Max 500 Characters" name="replyMsg" id="replyMsg"
+									maxlength="500" required></textarea>
 							</div>
+
+							<div
+								class="col-md-12 form-group mt-3 d-flex justify-content-center">
+								<button type="submit" class="btn btn-primary btn-sm submit"
+									id="submit" value="SUBMIT"
+									onclick="return confirm('Are you sure to return?')">
+									SUBMIT</button>
+							</div>
+
+							<input type="hidden" name="${_csrf.parameterName}"
+								value="${_csrf.token}" /> <input type="hidden" name="rfa"
+								id="rfaIdHidden"> <input type="hidden" name="RfaStatus"
+								id="StatusHidden"> <input type="hidden" name="assignor"
+								id="assignorHidden">
+
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</form>
- <!-- Return Modal Remarks End -->	
+	<!-- Return Modal Remarks End -->	
 
 	<script>
 

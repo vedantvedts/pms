@@ -344,6 +344,63 @@ ul, #myUL {
     height: 1020px; /*hight of the spinner gif +2px to fix IE8 issue */
 }
 
+.folder-tree {
+  list-style: none;
+  padding-left: 0;
+}
+
+.folder-tree .list-group-item {
+  border: none;
+  padding: 8px 15px;
+  transition: all 0.3s ease;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.folder-tree .folder-item:hover {
+  background: #f0f8ff;
+  transform: translateX(5px);
+}
+
+.folder-tree .file-item:hover {
+  background: #f9f9f9;
+  transform: scale(1.02);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.folder-tree .subfolder {
+  display: none;
+  margin-left: 20px;
+  padding-left: 10px;
+  border-left: 2px dashed #ddd;
+}
+
+.folder-tree .folder-item.open > .subfolder {
+  display: block;
+}
+
+.folder-icon {
+  margin-right: 8px;
+  transition: transform 0.3s;
+  font-size: 18px;
+}
+
+.pdf-check {
+  cursor: pointer;
+}
+
+.folder-item.open > .folder-icon {
+  color: #f39c12 !important;
+  transform: scale(1.3);
+  transition: all 0.3s ease;
+}
+
+.folder-tree .folder-item:hover {
+  background: #f0f8ff;
+  transform: translateX(5px);
+}
+
 </style>
 
 
@@ -370,8 +427,6 @@ String projectLabCode=(String)request.getAttribute("projectLabCode");
 List<Object[]> projectslist=(List<Object[]>)request.getAttribute("projectslist");
 String projectid=(String)request.getAttribute("projectid");
 String committeeid=(String)request.getAttribute("committeeid");
-System.out.println("************************** committeeid: "+committeeid);
-System.out.println("************************** projectid: "+projectid);
 Committee committee=(Committee)request.getAttribute("committeeData");
 
 List<Object[]> projectattributeslist = (List<Object[]> )request.getAttribute("projectattributes");
@@ -410,7 +465,7 @@ List<Object[]> SpecialCommitteesList = (List<Object[]>)request.getAttribute("Spe
 LocalDate before6months = LocalDate.now().minusMonths(6);
 
 Committee committeeData=(Committee)request.getAttribute("committeeData");
-//long ProjectCost = (long)request.getAttribute("ProjectCost"); 
+long ProjectCost = (long)request.getAttribute("ProjectCost"); 
 String levelid= (String) request.getAttribute("levelid");
 
 String No2=null;
@@ -861,7 +916,7 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 															   						Approval 
 															   						<%}else { %>
 															   						Ratification
-															   						<%} %>  of <b>recommendations</b> of last <%=committee.getCommitteeShortName().trim().toUpperCase() %> Meeting (if any)</div>
+															   						<%} %>  of <b>recommendations</b> of last PMRC / <%=committee.getCommitteeShortName().trim().toUpperCase() %> Meeting (if any)</div>
 															   						
 							
 			<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; border-collapse:collapse;" >
@@ -1247,24 +1302,23 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 								
 							</form>
 						
-									<%if(otherMeetingList!=null && otherMeetingList.size()>0) {
+				
+				<%if(otherMeetingList!=null && otherMeetingList.size()>0) {
 					int count=0;
 				%>
 				<div align="left" class="mb-2 ml-4"><b><%="Other Meetings" %></b></div>
-						<div align="left" class="mb-2"><table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 350px; border-collapse: collapse;">
+			      <form action="CommitteeMinutesViewAllDownload.htm" method="get" target="_blank">
+					<div align="left" class="mb-2"><table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 350px; border-collapse: collapse;">
 						<thead><tr> <th style="width: 140px; ">Committee</th> <th  style="width: 140px; "> Date Held</th></tr></thead>
-				<%for(Object[]obj:otherMeetingList) {%>
-				
-											<tbody>
-									<tr><td><button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>"><%=obj[2]%> </button>
-														</td>												
-														<td  style="text-align: center; " ><%= sdf.format(sdf1.parse(obj[1].toString()))%></td>
-													</tr>
-									</tbody>
-				
-				<%}%></table></div> <%} %>
+				     <%for(Object[]obj:otherMeetingList) {%>
+						<tbody>
+							<tr>
+							    <td><button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>"><%=obj[3]%> </button></td>												
+								<td  style="text-align: center; " ><%= sdf.format(sdf1.parse(obj[1].toString()))%></td>
+							</tr>
+						</tbody>
+			     	<%}%></table></div></form> <%} %>
 						</div>
-															
 					<%} %>
 					 
 				</details>
@@ -3116,7 +3170,7 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 										<div class="row" align="center" style="margin-top:15px;" >
 										<!-- <div class="col-2"></div> -->
 										<div class="col-3" style="text-align: left;margin-top: 8px;margin-bottom: 5px"><label style="font-weight: 600;font-size: 16px;color: black;">Technical Work Carried (Attachment)</label></div>
-												<div class="col-9" style="text-align: left;">
+											<div class="col-9" style="text-align: left;">
 												<div class="row">
 												  <div class="col-2" style="margin-left: -5rem">
 													<span id="attachname_<%=projectidlist.get(z)%>" ></span>
@@ -3127,22 +3181,23 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 														<input type="hidden" name="TechDataId" value="<%=TechWorkDataList.get(z)[0]%>">
 														<%if(TechWorkDataList.get(z)[3]!=null && Long.parseLong(TechWorkDataList.get(z)[3].toString())>0){ %>
 														<button type="button" class="btn" title="Download Document"  onclick="FileDownload1('<%=TechWorkDataList.get(z)[3]%>');"  ><i class="fa fa-download" aria-hidden="true"> </i></button>
+														<button type="button" class="btn btn-danger btnfileattachment"  title="Unlink Document" onclick="removeFileAttch('<%=projectidlist.get(z)%>','<%=TechWorkDataList.get(z)[0]%>','<%=TechWorkDataList.get(z)[3]%>') ;" ><i class="fa fa-chain-broken" aria-hidden="true"></i></button>
 														<input type="hidden" class="hidden" name="attachid" id="attachid_<%=projectidlist.get(z)%>" value="<%=TechWorkDataList.get(z)[3]%>">
 														<%} else{%>
 														<input type="hidden" class="hidden" name="attachid" id="attachid_<%=projectidlist.get(z)%>" value="0">
 														<%} %>
 													<%} %>
-													<button type="button" class="btn btn-primary btnfileattachment"  title="Link Document" id="" onclick="openMainModal(<%=projectidlist.get(z)%>) ;" ><i class="fa fa-link" aria-hidden="true"></i></button>
+													<button type="button" class="btn btn-primary btnfileattachment"  title="Link Document" onclick="openMainModal(<%=projectidlist.get(z)%>) ;" ><i class="fa fa-link" aria-hidden="true"></i></button>
 													<input type="hidden" name="projectid" value="<%=projectidlist.get(z)%>">
 													<input type="hidden" name="committeeid" value="<%=committeeid%>">
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                                     </div>
                                                     <div class="col-2"></div>
-                                             <div class="col-3">
-												<button type="submit" class="btn btn-sm submit" name="submit" value="submit" onclick="return confirm('Are You Sure To Submit ?');">SUBMIT</button>
-												<input type="hidden" name="fileRepID" id="fileRepID" value="">
-											</div>
-											</div>
+		                                             <div class="col-3">
+														<button type="submit" class="btn btn-sm submit" name="submit" value="submit" onclick="return confirm('Are You Sure To Submit ?');">SUBMIT</button>
+														<input type="hidden" name="fileRepID" id="fileRepID" value="">
+													</div>
+											  </div>
 											</div>
 										</div>
 									</form>								
@@ -3254,47 +3309,6 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 			</div>
 		</div>
 	</div>
-		
-<!-- --------------------------------------------  model start  -------------------------------------------------------- -->
-
-		<div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered "  style="max-width: 60% !important;">
-		
-				<div class="modal-content" >
-					   
-				    <div class="modal-header" style="background-color: rgba(0,0,0,.03);">
-				      
-				    	<h4 class="modal-title" id="model-card-header"></h4>
-	
-				        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
-				          <span aria-hidden="true">&times;</span>
-				        </button>
-				        				        
-				    </div>
-					<div class="modal-body"  style="padding: 0.5rem !important;">
-							
-							<div class="card-body" style="min-height:30% ;max-height: 93% !important;overflow-y: auto;">
-			
-								<div class="row">
-										<div class="col-md-12" style="margin-top: -20px">
-											<div id="fileuploadlist">
-
-											</div>
-										</div>
-										
-				             		</div>					
-							</div>
-						
-					</div>
-				<div class="modal-footer">
-					<div style="color: red;font-weight: 500;">Note - Please upload PDF files only and PDF size should be smaller than 10mb.</div>
-				 </div>
-				</div>
-			</div> 
-		</div>
-		
-		<input type="hidden" name="projectid" id="AttachProjectId" value="" />
-<!-- --------------------------------------------  model end  -------------------------------------------------------- -->
 
 
 <!--------------------------------------------------- Milestone Model -----------------------------------------------  -->
@@ -3804,8 +3818,280 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 				</div>
 			</div> 
 		</div>
-<!-- --------------------------------------------  Risk Types Modal   -------------------------------------------------------- -->
+<!-- --------------------------------------------  Risk Types Modal End  -------------------------------------------------------- -->
+
+<!-- File Repo Modal -->
+<div class="modal fade" id="pdfModal" tabindex="-1" role="dialog" aria-labelledby="pdfModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content shadow-lg border-0">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="modalTitleId"><i class="fa fa-folder-open"></i></h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Folder Tree List -->
+         <ul class="list-group folder-tree" id="folderTree"></ul>
+      </div>
+	  <div class="modal-footer">
+		 <div style="color: red;font-weight: 500;">Note - Please upload PDF files only and PDF size should be smaller than 10mb.</div>
+	  </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
 <script>
+var projectId='<%=projectid%>';
+var techDataId="";
+var attachmentId="";
+var projectName="";
+$( document ).ready(function() {
+	$.ajax({
+	    url: 'getAttachmentId.htm',
+	    type: 'GET',
+	    data: {projectid: projectId},
+	    success: function(response) {
+	    	var result= JSON.parse(response);
+	    	attachmentId=result[1];
+	    	techDataId=result[0];
+	    },
+	  })
+});
+function openMainModal(projectid) {
+    $.ajax({
+        type: "GET",
+        url: "FileRepMasterListAllAjax.htm",
+        data: { projectid: projectid },
+        success: function(result) {
+            var data = JSON.parse(result);
+            var folderMap = {};
+            var html = '';
+            if (data.length > 0) {
+                projectName = data[0][4];
+           }
+
+            // First pass: build main folders
+            for (var i = 0; i < data.length; i++) {
+                var mainId = data[i][0];
+                var parentId = data[i][1];
+                var name = data[i][3];
+
+                if (parentId === 0) { // Main Folder
+                    folderMap[mainId] = { name: name, subfolders: [] };
+                }
+            }
+
+            // Second pass: attach subfolders
+            for (var j = 0; j < data.length; j++) {
+                var subId = data[j][0];
+                var subParentId = data[j][1];
+                var subName = data[j][3];
+
+                if (subParentId !== 0 && folderMap[subParentId]) { // Subfolder
+                    folderMap[subParentId].subfolders.push({ id: subId, name: subName });
+                }
+            }
+
+            // Generate HTML
+            if (folderMap && Object.keys(folderMap).length > 0) {
+                for (var mainId in folderMap) {
+                    if (folderMap.hasOwnProperty(mainId)) {
+                        html += '<li class="list-group-item folder-item" data-id="' + mainId + '" onclick="toggleFolder(this, ' + mainId + ', '+ projectid +', \'mainLevel\')">';
+                        html += '<i class="fa fa-folder folder-icon text-warning"></i> ' + folderMap[mainId].name;
+                        html += '<ul class="list-group subfolder" style="display:none;">';
+
+                        var subfolders = folderMap[mainId].subfolders;
+                        for (var k = 0; k < subfolders.length; k++) {
+                            var sub = subfolders[k];
+                            html += '<li class="list-group-item folder-item" data-id="' + sub.id + '" onclick="toggleFolder(this, ' + sub.id + ', '+ projectid +', \'subLevel\')">';
+                            html += '<i class="fa fa-folder folder-icon text-warning"></i> ' + sub.name;
+                            html += '<ul class="list-group subfolder" id="subfolder-files-' + sub.id + '" style="display:none;"></ul>';
+                            html += '</li>';
+                        }
+
+                        html += '<div class="" id="mainfolder-files-' + mainId + '" style="display:none;"></div>';
+                        html += '</ul></li>';
+                    }
+                }
+            }else {
+                html += '<div>No Data Available.</div></br>';
+                html += '<div>Please go to <span style="font-weight: 500; color: blue;">Document Repository Module &rarr; Document Rep Master</span>, create a folder, and upload pdfs.</div></br>';
+            }
+
+            $('.folder-tree').html(html);
+            $('#pdfModal').modal('show');
+            if (projectName !== undefined && projectName.trim() !== '') {
+                $('#modalTitleId').text('PDF Files Explorer for ' + projectName);
+            }else{
+            	$('#modalTitleId').text('PDF Files Explorer');
+            }
+        }
+    });
+}
+
+function toggleFolder(element, folderId, projecId,  type) {
+	
+    if ($(event.target).closest('.file-item').length > 0 || $(event.target).hasClass('pdf-check')) {
+        return;
+    }
+    event.stopPropagation(); // Prevent parent toggling
+
+    var $elem = $(element);
+    var $icon = $elem.children('.folder-icon');
+    var $subfolder = $elem.children('ul.subfolder');
+
+    if ($subfolder.is(':visible')) {
+        $subfolder.slideUp(200);
+        $elem.removeClass('open');
+        $icon.removeClass('fa-folder-open').addClass('fa-folder');
+    } else {
+        $subfolder.slideDown(200);
+        $elem.addClass('open');
+        $icon.removeClass('fa-folder').addClass('fa-folder-open');
+
+        // Load files if not loaded yet
+        var fileContainerId = '';
+        if (type === 'mainLevel') {
+            fileContainerId = '#mainfolder-files-' + folderId;
+        } else {
+            fileContainerId = '#subfolder-files-' + folderId;
+        }
+
+        if ($(fileContainerId).is(':empty')) {
+            loadFolderFiles(folderId, projecId,  type);
+        }
+    }
+}
+
+function loadFolderFiles(folderId, projecId, type) {
+    $.ajax({
+        type: "GET",
+        url: "getOldFileDocNames.htm",
+        data : {
+   			projectId : projecId,
+   			fileId : folderId,
+   			fileType : type,
+	    },
+        success: function(result) {
+            var data = JSON.parse(result);
+            var html = '';
+
+            for (var i = 0; i < data.length; i++) {
+                var fileName = data[i][6];
+                html += '<li class="list-group-item file-item">';
+                html += '<input type="checkbox" class="pdf-check mr-2" id="checkId'+data[i][0]+'" value="' + data[i][7] + '" onclick="singleSelect(this)"';
+                if(data[i][7] != 0 && attachmentId === data[i][7]) {
+                    html += ' checked disabled';
+                }
+                html += '/>';
+                html += '<i class="fa fa-file-pdf-o text-danger"></i> ' + fileName;
+                html += '<span class="text-muted" style="font-size:13px"> Ver '+data[i][4]+'.'+data[i][5]+'</span>';
+                html += '<i class="fa fa-download" style="cursor: pointer; margin-left:8px;" onclick="fileDownload(' + data[i][7] + ', \'' + type + '\')"></i>';
+                html += '<i class="fa fa-upload" aria-hidden="true" style="color: #0a5dff; cursor: pointer; margin-left:12px;" onclick="fileUpload(\''+data[i][0]+'\')"></i></button><br/>';
+                html += '<label for="fileInput" id="uploadlabel'+data[i][0]+'" style="margin-left: 20px; margin-top: 10px; display: none;">'
+                html += '<input type="file" name="docFileInput" id="fileInput'+data[i][0]+'" required="required"  accept="application/pdf"/> '
+                html += '<button type="button" class="btn btn-sm back" onclick="fileSubmit(\''+type+'\',\''+data[i][0]+'\',\''+data[i][2]+'\',\''+data[i][3]+'\',\''+data[i][4]+'\',\''+data[i][5]+'\',\''+data[i][6]+'\')">Upload</button>'
+                html += '</label>'
+                html += '</li>';
+            }
+
+            if (type === 'mainLevel') {
+                $('#mainfolder-files-' + folderId).html(html).show();
+            } else {
+                $('#subfolder-files-' + folderId).html(html).show();
+            }
+        }
+    });
+}
+
+// Allow only one checkbox to be selected at a time
+function singleSelect(checkbox) {
+	console.log(checkbox.id);
+    $('.pdf-check').not(checkbox).not(':disabled').prop('checked', false);
+}
+
+function fileDownload(fileId, fileType) {
+    $.ajax({
+        url: 'fileDownload.htm/' + fileId + '?fileType=' + encodeURIComponent(fileType),
+        type: 'GET',
+        xhrFields: {
+            responseType: 'blob'
+        },
+        success: function (data, status, xhr) {
+        	  const blob = new Blob([data], { type: 'application/pdf' });
+              const blobUrl = URL.createObjectURL(blob);
+              window.open(blobUrl, '_blank');
+              setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+        },
+        error: function (xhr, status, error) {
+		     Swal.fire({
+			        icon: 'error',
+			        title: 'Error',
+			        text: 'Failed to download/open file.',
+			 });
+        }
+    });
+}
+
+// Event delegation for dynamically added checkboxes
+$(document).on('change', '.pdf-check', function() {
+  // Logic to allow only one checkbox to be checked at a time within the list
+  $('.pdf-check').not(this).not(':disabled').prop('checked', false);
+  // Send AJAX request with the selected checkbox value
+  var selectedValue = $(this).val();
+  var projectid = <%=projectid%>;
+	  if(selectedValue){
+	     Swal.fire({
+	            title: 'Are you sure to linking?',
+	            icon: 'question',
+	            showCancelButton: true,
+	            confirmButtonColor: 'green',
+	            cancelButtonColor: '#d33',
+	            confirmButtonText: 'Yes'
+	        }).then((result) => {
+	            if (result.isConfirmed) {
+				  $.ajax({
+					    url: 'submitCheckboxFile.htm', 
+					    type: 'GET',
+					    data: { attachid: selectedValue,techDataId: techDataId,projectid: projectid},
+					    success: function(response) {
+					      Swal.fire({
+					        icon: 'success',
+					        title: 'Success',
+					        text: 'Document linked successfully!',
+					        allowOutsideClick :false
+					      });
+					      $('#pdfModal').hide();
+					      $('.swal2-confirm').click(function (){
+					           location.reload();
+					       	})
+					    },
+					    error: function() {
+					      Swal.fire({
+					        icon: 'error',
+					        title: 'Error',
+					        text: 'An error occurred while submitting the checkbox selection.',
+					      });
+					    }
+				});
+	          }else{
+	        	  $('.pdf-check').not(':disabled').prop('checked', false);
+	          }
+	       });
+	  }else{
+		  Swal.fire({
+		        icon: 'error',
+		        title: 'Error',
+		        text: 'An error occurred while submitting the checkbox selection.',
+		  }); 
+	  }
+});
+
 $('#levelvalue').on('change', function(){
 	$('#milestonelevelid').val($(this).find(":selected").val());
 	$('#projectid').val(<%=projectid%>);
@@ -4445,10 +4731,9 @@ function fileUpload(Id){
 }
 </script>
 <script>
-function fileSubmit(value,main,sub,mainLevelId,subLevelId,docId,repid,filename,releaseDoc,version,attachid,attchName) {
-	
-    var fileInput =  $("#fileInput"+value)[0].files[0];
-    var modalHeaderContent = main+','+sub;
+function fileSubmit(type,repid,mainId,subId,version,release,docName) {
+    event.preventDefault();
+    var fileInput =  $("#fileInput"+repid)[0].files[0];
     
 	 if (fileInput === undefined) {
 	       Swal.fire({
@@ -4481,247 +4766,103 @@ function fileSubmit(value,main,sub,mainLevelId,subLevelId,docId,repid,filename,r
 	       });
 	       return;
 	   }
-    if (confirm("Are you sure to submit this?")) {
-        event.preventDefault();
-        var projectid = <%= projectid %>;
-        var formData = new FormData();
-        formData.append("file", $("#fileInput"+value)[0].files[0]);
-        formData.append("FileRepId", repid);
-        formData.append("projectid", projectid);
-        formData.append("mainLevelId", mainLevelId);
-        formData.append("subLevelId", subLevelId);
-        formData.append("docId", docId);
-        formData.append("FileNameUI", attchName);
-        formData.append("FileVersion", version);
-        formData.append("FileRelease", releaseDoc);
-        formData.append("HeaderValue", modalHeaderContent);
-        formData.append("${_csrf.parameterName}", "${_csrf.token}");
-        // Use AJAX to submit the form data
-        $.ajax({
-            url: 'DocFileUpload.htm',
-            type: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(response) {
-            	attachid=response;
-            	  Swal.fire({
-		    	       	title: "Success",
-		                text: "File Uploaded Successfully",
-		                icon: "success",
-		                allowOutsideClick :false
-		         		});
-            	  $('#exampleModalCenter1').hide();
-            	  $('.swal2-confirm').click(function (){
-      	        	console.log("hiiii")
-      	            location.reload();
-      	        	})
-            },
-            error: function(xhr, status, error) {
-            	  Swal.fire({
-                      icon: 'error',
-                      title: 'Error',
-                      text: 'An error occurred while uploading the file'
-                  });
-                  console.log(xhr.responseText);
-               }
-          });
-        
-    } else {
-        event.preventDefault();
-        return false;
-    }
-}
-</script>
-<script type="text/javascript">
-var projectId='<%=projectid%>';
-var x="";
-var y="";
-$( document ).ready(function() {
-	$.ajax({
-	    url: 'getAttachmentId.htm',
-	    type: 'GET',
-	    data: {projectid: projectId},
-	    success: function(response) {
-	    	var result= JSON.parse(response);
-	    		 x=result[1];
-	        	 y=result[0];
-	    },
-	  })
-});
-
-function openMainModal(projectid){
-var projectName="";
-var subId="";
-var attachRepId=x;
-var techDataId=y;
-var main="";
-var sub="";
-var mainLevelId="";
-var subLevelId="";
-
-	$.ajax({
-		type : "GET",
-		url : "FileRepMasterListAllAjax.htm",
-		data : {
-			projectid : projectid,
-		},
-		datatype: 'json',
-		success : function(result)
-			{
-				var result= JSON.parse(result);
-				var values= Object.keys(result).map(function(e){
-					return result[e];
-				})	
-                if (values.length > 0) {
-                     projectName = values[0][4];
-                     subId = values[0][2];
-                }
-				var values1=values;
-				var values2=values;
-				
-			/* --------------------------------------------------tree making--------------------------------------------------------- */			
-				var str='<ul>';
-				var itemCounter = 0;
-				var subCounter= 0;
-				for(var v1=0;v1<values1.length;v1++){ 
-					mainLevelId=values1[v1][0];
-					main=values1[v1][3];
-				  for(var v2=0;v2<values2.length;v2++){ 
-					  if( values2[v2][1]==values1[v1][0] )
-						{
-						  subLevelId=values2[v2][0];
-						  sub=values2[v2][3];
-						  var levelId = values2[v2][0];
-						   var itemId = 'item-' + (++itemCounter);
-							str += '<li id="' + itemId + '"> <span style="color:#006400;font-weight:600;font-size:20px;">'+values1[v1][3]+' <i class="fa fa-arrow-right" aria-hidden="true"></i> '+values2[v2][3]+'</span> ';
-							
-							 (function(projectid,itemId,mainIndex,main,sub,mainLevelId,subLevelId,attachRepId) {
-								 $.ajax({
-					                    type: "GET",
-					                    url: "ProjectDocsList.htm",
-					                    data: { projectid: projectid}, 
-					                    datatype: 'json',
-					                    success: function(result) {
-					                    	var result= JSON.parse(result);
-					        				var mainvalues= Object.keys(result).map(function(e){
-					        					return result[e];
-					        				})
-					        				var values3=mainvalues;
-					        				var values4=mainvalues;
-					                        var mainStr = '<ul>';
-					                        for(var v3=0;v3<values3.length;v3++){
-					                        	for(var v4=0;v4<values4.length;v4++){
-					                        		var masterid=values4[v4][0];
-					                        		var mianItemId = 'main-sub-item-'+ (++subCounter);
-					                        		 if( values4[v4][1]==values3[v3][0] ){
-					                        			 mainStr +='<li id="' + mianItemId + '"> <span style="color:#FF6700;font-weight:600;font-size:19px;">'+values3[v3][3]+' <i class="fa fa-arrow-right" aria-hidden="true"></i> '+values4[v4][3]+'</span></li>';
-					                        		 
-					                      			 (function(mianItemId,subIndex,subLevelId,attachRepId,masterid) {
-					            							 $.ajax({
-					            				                    type: "GET",
-					            				                    url: "AllFilesList.htm",
-					            				                    data: { projectid: projectid, subid:subLevelId }, 
-					            				                    datatype: 'json',
-					            				                    success: function(additionalResult) {
-					            				                        var additionalResult = JSON.parse(additionalResult);
-					            				                        var additionalValues = Object.keys(additionalResult).map(function(e) {
-					            				                            return additionalResult[e];
-					            				                        });
-					            				                        var additionalStr = '<ul>';
-					            				                        for (var j = 0; j < additionalValues.length; j++) {
-					            				                        	if(masterid==additionalValues[j][1]){
-					            				                        	var subItemId = 'sub-item-' + subIndex + '-' + j;
-					            				                            additionalStr +='<li id="' + subItemId + '" style="color:black;font-weight:600;font-size:18px;">'
-					            				                            additionalStr += '<input class="form-check-input " type="checkbox" style=" width: 18px; height: 18px;margin-top:9px;" value="' + additionalValues[j][4] + '" id="checkbox' + j + '"';
-					            				                            if(additionalValues[j][7]!=0){
-					            				                            	if(attachRepId!=null && attachRepId==additionalValues[j][4]){
-					            				                            	   additionalStr += ' checked disabled>';
-					            				                            	}
-					            				                            }else{
-					            				                                additionalStr += ' disabled>';
-					            				                            }
-					            				                            additionalStr +='&nbsp;<span >' + additionalValues[j][3] + '</span>';
-					            				                        	if(additionalValues[j][4]!=0){
-					            				                        		 additionalStr +='&nbsp;&nbsp;<span class="version" style="color:grey">Ver '+additionalValues[j][8]+'.'+additionalValues[j][6];
-					            				                        		 additionalStr +='<button type="radio" name="selectattach" class="btn"  style="background-color: transparent;margin: -5px 0px;"  onclick="FileDownload(\''+additionalValues[j][4]+'\')">';                                     
-					            				                        		 additionalStr +='<i class="fa fa-download" aria-hidden="true" style="font-size:20px;"></i>';
-					            				                        		 additionalStr +='</button> ';
-					            				                        		 additionalStr += '</span>';
-					            											}
-					            			                        		 additionalStr += '<span><button type="button" class="btn" style="background-color: transparent;" title="Upload" onclick="fileUpload(\''+subItemId+'\')"><i class="fa fa-upload" aria-hidden="true" style="color: #0a5dff;font-size:20px;"></i></button>';
-					            			                        		 additionalStr += '<label for="fileInput" id="uploadlabel'+subItemId+'" style="margin-left: 20px; display: none;">'
-					            			                        		 additionalStr += '<input type="file" name="docFileInput" id="fileInput'+subItemId+'" required="required"  accept="application/pdf"/> '
-					            			                        		 additionalStr += '<button type="submit" class="btn btn-sm back" onclick="fileSubmit(\''+subItemId+'\',\''+main+'\',\''+sub+'\',\''+mainLevelId+'\',\''+subLevelId+'\',\''+additionalValues[j][0]+'\',\''+additionalValues[j][7]+'\',\''+additionalValues[j][5]+'\',\''+additionalValues[j][6]+'\',\''+additionalValues[j][8]+'\',\''+ additionalValues[j][4] +'\', \''+additionalValues[j][3] +'\')">Upload</button>'
-					            			                        		 additionalStr += '</label>'
-					            			                        		 additionalStr += '</span>';
-					            				                             additionalStr +='</li>'
-					            				                        }
-					            				                    }
-					            				                        additionalStr += '</ul>';
-					            				                        $('#' + mianItemId).append(additionalStr);
-					            				                    }
-					            				               });
-					            						 })(mianItemId,subCounter,subLevelId,attachRepId,masterid); 
-					                        			 
-					                        		 }
-					                        	}
-					                        }
-					                        mainStr += '</ul>';
-					                        $('#' + itemId).append(mainStr);
-					                    }
-					               });
-								  
-								  })(projectid,itemId,itemCounter,main,sub,mainLevelId,subLevelId,attachRepId);
-						
-					}
-			     }
-		      } 
-		/* --------------------------------------------------tree making--------------------------------------------------------- */
-				str += '</ul>';
-			  if (projectName !== undefined && projectName.trim() !== '') {
-		            $('#exampleModalCenter1 .modal-title').html('<span style="color: #F50057;font-weight:600;">Document Linking For ' + projectName + '</span>');
-		        } else {
-		            $('#exampleModalCenter1 .modal-title').html('<span style="color: #F50057;font-weight:600;">Document Linking </span>');
-		            str = '<span>No Data Available</span>';
-		        }
-			$('#fileuploadlist').html(str);
-		}
+	   
+       Swal.fire({
+            title: 'Are you sure to upload?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: 'green',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+		        var projectid = <%= projectid %>;
+		        var formData = new FormData();
+		        formData.append("file", $("#fileInput"+repid)[0].files[0]);
+		        formData.append("fileType", type);
+		        formData.append("fileRepId", repid);
+		        formData.append("projectid", projectid);
+		        formData.append("mainId", mainId);
+		        formData.append("subId", subId);
+		        formData.append("docName", docName);
+		        formData.append("version", version);
+		        formData.append("release", release);
+		        formData.append("${_csrf.parameterName}", "${_csrf.token}");
+		        // Use AJAX to submit the form data
+		        $.ajax({
+		            url: 'DocFileUpload.htm',
+		            type: 'POST',
+		            data: formData,
+		            contentType: false,
+		            processData: false,
+		            success: function(response) {
+		            	attachid=response;
+		            	  Swal.fire({
+				    	       	title: "Success",
+				                text: "File Uploaded Successfully",
+				                icon: "success",
+				                allowOutsideClick :false
+				         		});
+		            	  $('#pdfModal').hide();
+		            	  $('.swal2-confirm').click(function (){
+		      	                location.reload();
+		      	        	})
+		            },
+		            error: function(xhr, status, error) {
+		            	  Swal.fire({
+		                      icon: 'error',
+		                      title: 'Error',
+		                      text: 'An error occurred while uploading the file'
+		                  });
+		                  console.log(xhr.responseText);
+		             }
+		        });
+        }
     });
-	$('#exampleModalCenter1').modal('show');
-	
-	 // Event delegation for dynamically added checkboxes
-     $(document).on('change', '.form-check-input', function() {
-       // Logic to allow only one checkbox to be checked at a time within the list
-       $('.form-check-input').not(this).prop('checked', false);
-       // Send AJAX request with the selected checkbox value
-       var selectedValue = $(this).val();
-       var projectid = <%=projectid%>;
-       $.ajax({
-         url: 'submitCheckboxFile.htm', 
-         type: 'GET',
-         data: { attachid: selectedValue,techDataId: techDataId,projectid: projectid},
-         success: function(response) {
-           Swal.fire({
-             icon: 'success',
-             title: 'Success',
-             text: 'Document linked successfully!',
-             allowOutsideClick :false
-           });
-           $('#exampleModalCenter1').hide();
-           $('.swal2-confirm').click(function (){
-	            location.reload();
-	        	})
-         },
-         error: function() {
-           Swal.fire({
-             icon: 'error',
-             title: 'Error',
-             text: 'An error occurred while submitting the checkbox selection.',
-           });
-         }
-    });	 
-  });
+}
+
+function removeFileAttch(projectId,techDataId,techAttachId) {
+    Swal.fire({
+        title: 'Are you sure to remove attachment?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: 'green',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then((result) => {
+        if (result.isConfirmed) {
+        	 $.ajax({
+		            url: 'removeFileAttachment.htm',
+		            type: 'POST',
+		            datatype: 'json',
+		            data: {
+		            	 techDataId : techDataId,
+		            	 techAttachId : techAttachId,
+		            	 projectId : projectId,
+		            	 ${_csrf.parameterName} : "${_csrf.token}",
+		            },
+		            success: function(response) {
+		            	  Swal.fire({
+				    	       	title: "Success",
+				                text: "Attachment Removed Successfully",
+				                icon: "success",
+				                allowOutsideClick :false
+				         		});
+		            	  $('.swal2-confirm').click(function (){
+		      	                location.reload();
+		      	        	})
+		            },
+		            error: function(xhr, status, error) {
+		            	  Swal.fire({
+		                      icon: 'error',
+		                      title: 'Error',
+		                      text: 'An error occurred while removing the file'
+		                  });
+		                  console.log(xhr.responseText);
+		             }
+		        });
+        }
+    });
 }
 </script>
 </body>

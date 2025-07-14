@@ -69,9 +69,22 @@ String fdate=(String)request.getAttribute("fdate");
 String tdate=(String)request.getAttribute("tdate");  
 String rfatypeid=(String)request.getAttribute("rfatypeid");  
 String projectid = (String)request.getAttribute("projectid");
+String projectType = (String)request.getAttribute("projectType");
 String lablogo=(String)request.getAttribute("lablogo");
 List<Object[]> ProjectList = (List<Object[]>)request.getAttribute("ProjectList");
+List<Object[]> preProjectList = (List<Object[]>) request.getAttribute("preProjectList");
 List<Object[]> RfaActionReportList = (List<Object[]>)request.getAttribute("RfaActionReportList");
+List<Object[]> AssigneeList=(List<Object[]>) request.getAttribute("AssigneeEmplList");
+String projectCode=projectType.equalsIgnoreCase("P") ? 
+        ProjectList.stream().filter(project -> project[0] != null && project[0].toString().equals(projectid)) 
+	   .map(project -> project[4] != null ? project[4].toString() : null)
+	   .findFirst()
+	   .orElse(null)
+	           :
+		preProjectList.stream().filter(project -> project[0] != null && project[0].toString().equals(projectid)) 
+	   .map(project -> project[3] != null ? project[3].toString() : null)
+	   .findFirst()
+	   .orElse(null);
 %>
 
     <div id="container pageborder" align="center"  class="firstpage" id="firstpage"  >
@@ -84,14 +97,8 @@ List<Object[]> RfaActionReportList = (List<Object[]>)request.getAttribute("RfaAc
              <div class="col-md-8" style="display: inline-block;float: none;">
 		     <div style="font-size: 30px;padding: 20px;font-weight: 600;text-decoration: underline;">RFA Reports From &nbsp; <%=sdf.format(sdf1.parse(fdate))%>  &nbsp; To &nbsp; <%=sdf.format(sdf1.parse(tdate))%></div>
 	         <div class="col-md-12">
-	         <% if(ProjectList!=null && ProjectList.size()>0){
-					 for (Object[] obj : ProjectList) {
-			 %>
-			 <%if(projectid!=null && projectid.equalsIgnoreCase(obj[0].toString())){%>
-				 <div class="col-md-6" style="display: inline-block; margin-right: 90px;font-size: 22px;font-weight: 600;">Project : <%=obj[4].toString() %></div>
-			<%}}} %>
-	          
-              <div  class="col-md-6" style="display: inline-block; margin-left: 90px;font-size: 22px;font-weight: 600;">RFA Type : <%if(rfatypeid!=null && rfatypeid.equalsIgnoreCase("-")){%><%="All"%><%}else{%><%=rfatypeid %><%} %></div>
+				<div class="col-md-6" style="display: inline-block; margin-right: 90px;font-size: 22px;font-weight: 600;">Project : <%=projectCode %></div>
+                <div  class="col-md-6" style="display: inline-block; margin-left: 90px;font-size: 22px;font-weight: 600;">RFA Type : <%if(rfatypeid!=null && rfatypeid.equalsIgnoreCase("-")){%><%="All"%><%}else{%><%=rfatypeid %><%} %></div>
              </div>
              </div>
               <div class="col-md-2" style="display: inline-block;float: right !important;">
@@ -105,10 +112,9 @@ List<Object[]> RfaActionReportList = (List<Object[]>)request.getAttribute("RfaAc
            <th style="width: 5%">SN</th>
            <th style="width: 14%">RFA Number</th>
            <th style="width: 7%">RFA Date</th>
-           <th style="width: 7%">Priority</th>
-           <th style="width: 10%">Problem Statement</th>
-           <th style="width: 20%">Description</th>
-           <th style="width: 10%">Observation</th>
+           <th style="width: 15%">Raised By</th>
+           <th style="width: 12%">Problem Statement</th>
+           <th style="width: 20%">Assigned To</th>
            <th style="width: 20%">Clarification</th>
            <th style="width: 7%">Completion Date</th>
         </tr>
@@ -121,10 +127,17 @@ List<Object[]> RfaActionReportList = (List<Object[]>)request.getAttribute("RfaAc
           <td><%=++count %></td>
           <td><%if(obj[1]!=null){%><%=obj[1].toString()%><%}else{ %>-<%} %></td>
           <td><%if(obj[2]!=null){%><%=sdf.format(sdf1.parse(obj[2].toString()))%><%}else{ %>-<%} %></td>
-          <td><%if(obj[3]!=null){%><%=obj[3].toString()%><%}else{ %>-<%} %></td>
+          <td><%if(obj[14]!=null){%><%=obj[14].toString()%><%}else{ %><%=obj[15].toString()%><%} %></td>
           <td style=" text-align: justify;padding:5px;"><%if(obj[5]!=null){%><%=obj[5].toString()%><%}else{ %>-<%} %></td>
-          <td><%if(obj[6]!=null){%><%=obj[6].toString()%><%}else{ %>-<%} %></td>
-          <td style=" text-align: justify;padding:5px;"><%if(obj[10]!=null){%><%=obj[10].toString()%><%}else{ %>-<%} %></td>
+          <%-- <td style=" text-align: justify;padding:5px;"><%if(obj[10]!=null){%><%=obj[10].toString()%><%}else{ %>-<%} %></td> --%>
+          <td>
+			<%if(AssigneeList!=null ){ 
+				for(Object[] obj1 : AssigneeList){
+					if(obj1[0].toString().equalsIgnoreCase(obj[0].toString())){
+					%>
+			      <div style="margin-bottom:0px !important;"> <%=obj1[1].toString()+", "+obj1[2].toString() %> (<%=obj1[4].toString() %>) </div>          
+			<% }}}%>
+		  </td>
           <td><%if(obj[11]!=null){%><%=obj[11].toString()%><%}else{ %>-<%} %></td>
           <td><%if(obj[9]!=null){%><%=sdf.format(sdf1.parse(obj[9].toString()))%><%}else{ %>-<%} %></td>
         </tr>
