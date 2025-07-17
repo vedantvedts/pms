@@ -16,6 +16,7 @@ import com.vts.pfms.committee.dto.CommitteeConstitutionApprovalDto;
 import com.vts.pfms.committee.dto.CommitteeMainDto;
 import com.vts.pfms.committee.dto.CommitteeScheduleDto;
 import com.vts.pfms.committee.dto.MeetingCheckDto;
+import com.vts.pfms.committee.model.CommitteScheduleMinutesDraft;
 import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.committee.model.CommitteeConstitutionApproval;
 import com.vts.pfms.committee.model.CommitteeConstitutionHistory;
@@ -36,6 +37,7 @@ import com.vts.pfms.committee.model.CommitteeSchedule;
 import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
 import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.committee.model.CommitteeScheduleMinutesDetails;
+import com.vts.pfms.committee.model.CommitteeSchedulesMomDraftRemarks;
 import com.vts.pfms.committee.model.CommitteeSubSchedule;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.committee.model.PmsEnote;
@@ -3792,5 +3794,69 @@ private static final String ENOTEAPPROVELIST="SELECT MAX(a.EnoteId) AS EnoteId,M
 	}
 	
 	/* ********************************************* Programme AD End ************************************************ */
-}
+	@Override
+	public long sentMomDraft(CommitteScheduleMinutesDraft cmd) throws Exception {
+		manager.persist(cmd);
+		manager.flush();
+		return cmd.getDraftId();
+	}
+	
+	@Override
+	public List<CommitteScheduleMinutesDraft> getCommitteScheduleMinutesDraftList()
+			throws Exception {
+	
+		String jpql = "SELECT p FROM CommitteScheduleMinutesDraft p";
+		
+		  try {
+		        return (List<CommitteScheduleMinutesDraft>)manager.createQuery(jpql, CommitteScheduleMinutesDraft.class)
+		                 .getResultList();
+		    } catch (NoResultException e) {
+		        return new ArrayList<>(); // or throw a custom exception if preferred
+		    }
+	}
+	
+
+	@Override
+	public List<Object[]> getdraftMomList(String empid, String pageSize) throws Exception {
+			
+		
+		
+		String dynamicQuery = "SELECT a.MeetingId, a.ProjectId, a.Divisionid, a.InitiationId, a.ScheduleDate, a.ScheduleStartTime, b.scheduleId "
+			    + "FROM committee_schedule a "
+			    + "JOIN committee_schedules_mom_draft b ON a.scheduleId = b.scheduleId "
+			    + "WHERE b.empid = :empid AND a.ScheduleFlag = 'MKV' "
+			    + "LIMIT " + pageSize;
+		
+		Query query = manager.createNativeQuery(dynamicQuery);
+		query.setParameter("empid", empid);	
+			
+		return (List<Object[]>)query.getResultList() ;
+	}
+	
+	
+	@Override
+	public long saveCommitteeSchedulesMomDraftRemarks(CommitteeSchedulesMomDraftRemarks cmd) throws Exception {
+		manager.persist(cmd);	
+		manager.flush();
+		
+		return cmd.getRemarksId();
+	}
+	
+	
+	private static final String DRAFTREMARKS = "SELECT CONCAT(IFNULL(CONCAT(b.title,' '),IFNULL(CONCAT(b.salutation,' '),'')), b.empname) AS 'empname',c.designation , \r\n"
+			+ "a.remarks , a.createdDate,a.empid, a.scheduleid  FROM employee b ,committee_schedules_mom_draft_remarks a, employee_desig c WHERE a.empid=b.empid AND b.desigid=c.desigid\r\n"
+			+ "AND a.scheduleid=:scheduleid  AND a.isactive=1";
+	@Override
+	public List<Object[]> getCommitteeSchedulesMomDraftRemarks(Long scheduleid) throws Exception {
+	
+		Query query   = manager.createNativeQuery(DRAFTREMARKS)	;
+		query.setParameter("scheduleid", scheduleid);
+		
+		
+		return (List<Object[]>)query.getResultList();
+	}
+	
+	
+	}
+
 

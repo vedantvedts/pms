@@ -433,6 +433,7 @@ public class MilestoneController {
 			req.setAttribute("ProjectDetails", service.ProjectDetails(ProjectId).get(0));
 			req.setAttribute("ActivityTypeList", service.ActivityTypeList());
 			req.setAttribute("ProjectId", ProjectId);
+			req.setAttribute("projectDirector", req.getParameter("projectDirector"));
 		}
 		catch (Exception e) {
 			e.printStackTrace();  
@@ -478,6 +479,7 @@ public class MilestoneController {
 			}
 			redir.addFlashAttribute("MilestoneActivityId", count+"");
 			redir.addAttribute("ProjectId", req.getParameter("ProjectId"));
+			redir.addAttribute("projectDirector", req.getParameter("projectDirector"));
 		}
 		catch (Exception e) {
 			e.printStackTrace();  
@@ -581,6 +583,7 @@ public class MilestoneController {
 				redir.addAttribute("resultfail", "Milestone Activity Sub Level Add Unsuccessful");
 			}
 			redir.addAttribute("ProjectId", req.getParameter("ProjectId"));
+			redir.addAttribute("projectDirector", req.getParameter("projectDirector"));
 		}
 		catch (Exception e) {
 			e.printStackTrace();  
@@ -642,6 +645,7 @@ public class MilestoneController {
 			String projectId=req.getParameter("ProjectId");
 			req.setAttribute("EmployeeList", service.ProjectEmpList(projectId , LabCode));
 			req.setAttribute("ProjectId", projectId);
+			req.setAttribute("projectDirector", req.getParameter("projectDirector"));
 		}
 		catch (Exception e) {
 			e.printStackTrace();  
@@ -699,7 +703,7 @@ public class MilestoneController {
 			redir.addFlashAttribute("ProjectId",req.getParameter("projectid"));
 			return "redirect:/M-A-AssigneeList.htm";
 
-		}catch (Exception e) {
+		}catch (Exception e) {	
 			e.printStackTrace(); 
 			logger.error(new Date() +" Inside M-A-Assign-OIC.htm "+UserId, e); 
 			return "static/Error";
@@ -728,7 +732,7 @@ public class MilestoneController {
 			} else {
 				redir.addAttribute("resultfail", "Milestone Activity Revision Unsuccessful");
 			}
-
+			redir.addAttribute("projectDirector", req.getParameter("projectDirector"));
 		}
 		catch (Exception e) {
 			e.printStackTrace();  

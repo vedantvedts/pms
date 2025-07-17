@@ -49,12 +49,9 @@ Object[] committeedata=(Object[]) request.getAttribute("committeedata");
 List<Object[]> projectlist=(List<Object[]>) request.getAttribute("projectlist");
 List<Object[]> AllLabsList=(List<Object[]>) request.getAttribute("AllLabsList");
 String committeemainid1 = (String)request.getAttribute("committeemainid");
-
 List<Object[]> divisionslist=(List<Object[]>) request.getAttribute("divisionslist");
 List<Object[]> committeereplist=(List<Object[]>) request.getAttribute("committeereplist");
 Object[] initiationdata=(Object[]) request.getAttribute("initiationdata");
-
-
 String divisionid = (String)request.getAttribute("divisionid");
 String projectid = (String)request.getAttribute("projectid");
 String initiationid = (String)request.getAttribute("initiationid");
@@ -75,7 +72,6 @@ String LabCode = (String)request.getAttribute("LabCode");
                      <%=ses %>
                    </div></div>
 <%} %>
-
 
 
 <div class="container">
@@ -259,10 +255,10 @@ String LabCode = (String)request.getAttribute("LabCode");
 	                        <tr>
 								<td style="width:35%; border:0:" >
 									<div id="cplab-col" >
-									<label class="control-label" style="margin-bottom: 4px !important">Lab<span class="mandatory" style="color: red;">*</span></label>
+									<label class="control-label" style="margin-bottom: 4px !important">Lab</label>
 									<div class="input select" >
 										 	
-										<select class=" form-control selectdee" name="ccplabocode" id="ccplabocode" required="required" style="margin-top: -5px" onchange="ccpEmpList()" >
+										<select class=" form-control selectdee" name="ccplabocode" id="ccplabocode"  style="margin-top: -5px" onchange="ccpEmpList()" >
 											<option disabled="disabled"  selected value="" >Choose...</option>
 											<%	for (Object[] obj  : AllLabsList) {%>
 										     	<option value="<%=obj[3]%>" <%if(LabCode.equalsIgnoreCase(obj[3].toString())){ %>selected <%} %> ><%=obj[3] %> </option>
@@ -275,8 +271,8 @@ String LabCode = (String)request.getAttribute("LabCode");
 								<td>&nbsp;</td>		<td>&nbsp;</td>	<td>&nbsp;</td>	<td>&nbsp;</td>	<td>&nbsp;</td>	<td>&nbsp;</td>									
 								<td style="border:0;">
 								<div class="input select">
-									<label class="control-label" style="margin-bottom: 4px !important">Co-Chairperson<span class="mandatory" style="color: red;">*</span></label>
-										<select class="form-control selectdee" name="cochairperson" id="cochairperson" data-live-search="true"   data-placeholder="Select Member" required="required" >
+									<label class="control-label" style="margin-bottom: 4px !important">Co-Chairperson</label>
+										<select class="form-control selectdee" name="cochairperson" id="cochairperson" data-live-search="true"   data-placeholder="Select Member"  >
 								             
 										</select>															
 									</div>					
@@ -351,7 +347,7 @@ String LabCode = (String)request.getAttribute("LabCode");
 				        <div class="col-md-4">
 				         	<div class="form-group">
 				            	<label class="control-label" style="margin-bottom: 4px !important">Reference No.</label>
-				  				 <input type="text" class="form-control reference_no	" name="refNo">					
+				  				 <input type="text" class="form-control" name="refNo">					
 				        	</div>
 				        </div>
                 	

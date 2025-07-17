@@ -118,14 +118,9 @@ h6{
 																	<tr>
 																		<td><%=count %></td>
 																		<td>
-																		<form action="ActionDetails.htm" method="POST" >
+																		
 																				<button  type="submit" class="btn btn-outline-info"  formtarget="_blank" ><%=obj[0] %></button>
-																			   <input type="hidden" name="ActionLinkId" value="<%=obj[11]%>"/>
-																	           <input type="hidden" name="Assignee" value="<%=obj[1]%>,<%=obj[2]%>"/>
-																	           <input type="hidden" name="ActionMainId" value="<%=obj[10]%>"/>
- 																			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-																			
-																			</form>  
+																			 
                                                                         </td>
 																		<td><%=sdf.format(obj[6])%></td>																		
 																		<td><%=obj[1]%>, <%=obj[2]%></td>

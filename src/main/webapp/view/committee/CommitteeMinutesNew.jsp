@@ -67,9 +67,9 @@
 	Map<Integer,String> mappmrc=(Map<Integer,String>)request.getAttribute("mappmrc");
 	Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 	List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envisagedDemandlist");
-	String labcode= (String) session.getAttribute("labcode");
 	
 	
+	String labcode =(String) session.getAttribute("labcode");
 	// new
 	
 		LinkedHashMap< String, ArrayList<Object[]>> actionlist = (LinkedHashMap< String, ArrayList<Object[]>>) request.getAttribute("tableactionlist");
@@ -397,9 +397,9 @@ for( Object[]obj:specialMembers){ %>
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ){ %> Co-Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11]%>) --%><%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Member<%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>Member<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")){	 %>Member<%-- &nbsp;(<%=invitedlist.get(i)[11]%>) --%><%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("P") ){	 %>Presenter <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
@@ -442,9 +442,9 @@ for( Object[]obj:specialMembers){ %>
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ){ %> Co-Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11]%>) --%><%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Member<%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>Member<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")){	 %>Member<%-- &nbsp;(<%=invitedlist.get(i)[11]%>) --%><%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("P") ){	 %>Presenter <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
@@ -715,7 +715,8 @@ for( Object[]obj:specialMembers){ %>
 									<td  class="std" style="text-align: center;"> <%= values.get(0)[2]  %></td>
 									<td  class="std" >
 								<%	int count2=0;
-									Set<String>labCodes= new LinkedHashSet<>();
+									//Set<String>labCodes= new LinkedHashSet<>();
+									List<String>labCodes = new LinkedList<>();
 										for(Object obj[]:values){
 									    if(obj[16]!=null ){
 										labCodes.add(obj[16].toString());	
