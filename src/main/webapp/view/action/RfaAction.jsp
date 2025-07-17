@@ -148,11 +148,12 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
+				 <form method="post" id="myFrom">
 					<div class="card-header position-relative p-0">
 					    <!-- Left: RFA List Title -->
 					    <h5 class="mb-0" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%);">RFA List</h5>
 					
-					    <form method="post" action="#" name="dateform" id="dateform" class="d-flex justify-content-center flex-wrap" style="margin-bottom: 10px">
+                            <div class="d-flex justify-content-center flex-wrap" style="margin-bottom: 10px">
 					        <!-- Project Type -->
 					        <div class="d-flex align-items-center mx-2 my-1">
 					            <label for="projectType" class="mr-2 font-weight-bold" style="font-size: 17px;">Project Type:</label>
@@ -196,15 +197,11 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 					                <option value="CAN" <%if("CAN".equalsIgnoreCase(Status)) {%> selected <% } %>>Cancel</option>
 					            </select>
 					        </div>
-					
-					        <!-- CSRF Token -->
-					        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-					    </form>
+			
+					   </div>
 					</div>
 
-
                  
-					<form action="#" method="post" id="myFrom" >
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 						<div class="card-body">
 						     <div class="d-flex justify-content-end align-items-center">
@@ -260,7 +257,6 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 											<% }}}%>
 											</td>
 											<td style="text-align: center;">
-	                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	                                       	  	<button type="submit" class="btn btn-sm btn-link btn-status" formaction="RfaTransStatus.htm" value="<%=obj[0] %>" name="rfaTransId"  data-toggle="tooltip" data-placement="top" title="Transaction History" 
 	                                       	  	style=" color: #E65100; font-weight: 600;" formtarget="_blank"><%=obj[17] %> 
 								    			</button>
@@ -290,8 +286,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 												</button>
 												<%
 												}
-												%> <input type="hidden" /> <input type="hidden"
-												name="${_csrf.parameterName}" value="${_csrf.token}" /> <%
+												%>  <%
 					                       if(obj[11].toString().equalsIgnoreCase(UserId) && toUserStatus.contains(obj[14].toString())){%>
 				                         <button class="editable-click"  style="background-color: transparent; name="rfa" value="<%=obj[0]%>" 
 											type="button"	data-toggle="tooltip" data-placement="top" id="rfaCloseBtn" 
@@ -302,9 +297,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 														</figure>
 												</div>
 											</button>
-											
-											<input type="hidden" name="${_csrf.parameterName}"
-												value="${_csrf.token}" /> 
+										
 												
 	                                      <% }if(obj[11].toString().equalsIgnoreCase(UserId) && (obj[14].toString().equalsIgnoreCase("AF") || obj[14].toString().equalsIgnoreCase("AX"))){
 	                                      %>
@@ -332,7 +325,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 											 <%if(toUserStatus.contains(obj[14].toString().toString()) && obj[15].toString().equalsIgnoreCase(EmpId)){ %>
 											 	<button type="button" class="editable-click"  style="background-color: transparent;" 
 												name="RFAID" value="<%=obj[0]%>" formaction="#" formmethod="POST"
-												onclick="returnCancelRfa(<%=obj[0]%>,'<%=obj[14]%>','<%=obj[15]%>');"
+												onclick="returnCancelRfa(<%=obj[0]%>,'<%=obj[13]%>','<%=obj[14]%>','<%=obj[15]%>','<%=obj[19]%>');"
 													data-toggle="tooltip" data-placement="top" id="rfaCancelBtn" title="" data-original-title="CANCEL RFA">
 												<div class="cc-rockmenu" >
 														<figure class="rolling_icon" >
@@ -368,17 +361,13 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 							</div>
 						</div>
 						<div align="center" style="margin-bottom: 20px">
-
-							<input type="hidden" name="${_csrf.parameterName}"
-								value="${_csrf.token}" />
 								
 							<button class="btn add" type="button" formaction="RfaActionAdd.htm" name="sub" value="add" onclick="addRfa()" id="addRfaBtn">ADD</button>
 						  	<input type="hidden" name="projectId" value="<%=projectId%>">
 						  	<input type="hidden" name="projectType" value="<%=projectType%>">
 						  	<input type="hidden" name="initiationId" value="<%=initiationId%>">
 						  
-							<a class="btn btn-info shadow-nohover back"
-								href="MainDashBoard.htm">BACK</a>
+							<a class="btn btn-info shadow-nohover back" href="MainDashBoard.htm">BACK</a>
 						</div>
 						<input type="hidden" name="sub" value="add">
 					</form>
@@ -536,7 +525,8 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 										id="rfaIdHidden"> <input type="hidden" name="RfaStatus"
 										id="" value="RFC"> <input type="hidden"
 										name="assignor" id="assignorHidden">
-
+                                    <input type="hidden" name="revokeProjType" id="cancelProjectType">
+                                    <input type="hidden" name="revokeProjId" id="cancelProjectId">
 								</div>
 							</div>
 						</div>
@@ -655,7 +645,7 @@ $(function () {
 	
 		$(document).ready(function(){
 		   $('#fdate, #tdate,#projectId,#Status,#projectType,#initiationId').change(function(){
-			   var form = document.getElementById("dateform");
+			   var form = document.getElementById("myFrom");
 			 
                if (form) {
                         // Set the form's action attribute to the formactionValue o submit form
@@ -837,12 +827,13 @@ function rfaOptionFunc(){
 		  }
 }
 
-function returnCancelRfa(rfaId,RfaStatus,assignee) {
+function returnCancelRfa(rfaId,projectId,RfaStatus,assignee,projectType) {
 	$('#rfaCancelmodal').modal('show');
 	$('#rfaIdHidden').val(rfaId);
 	$('#StatusHidden').val(RfaStatus);
 	$('#assignorHidden').val(assignee);
-	
+	$('#cancelProjectId').val(projectId);
+	$('#cancelProjectType').val(projectType);
 }
 
 function closeModal(a,b,c,rfatype,projId,projtype){

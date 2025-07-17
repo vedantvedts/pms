@@ -110,28 +110,24 @@ public  class PFTSDaoImpl implements PFTSDao{
 	public int upadteDemandFile(String fileId, String statusId, Date eventDateSql,String update,String remarks)throws Exception{
 		
 		String UpdateDemand="UPDATE pfts_file SET PftsStatusId=:statusid, "+update+"=:eventDate, Remarks=:remarks  WHERE PftsFileId=:fileid";
-		String UpdateDemandStatus="UPDATE pfts_file SET PftsStatusId=:statusid, Remarks=:remarks WHERE PftsFileId=:fileid ";
+//		String UpdateDemandStatus="UPDATE pfts_file SET PftsStatusId=:statusid, Remarks=:remarks WHERE PftsFileId=:fileid ";
 		int result = 0;
-		System.out.println(statusId+"%%%%%%%%%%%%%%%%%%%%%%");
 		if(statusId.equalsIgnoreCase("1"))
 		{
-			
 			PFTSFile ExistingPFTSFile= manager.find(PFTSFile.class, Long.parseLong(fileId));
 			if(ExistingPFTSFile != null) {
 				ExistingPFTSFile.setPftsStatusId(Long.parseLong(statusId));
 				ExistingPFTSFile.setRemarks(remarks);
 				result=1;
 			}
-			
 		}
 		else {
-			
-		Query query=manager.createNativeQuery(UpdateDemand);
-		query.setParameter("fileid", Long.parseLong(fileId));
-		query.setParameter("statusid", statusId);
-		query.setParameter("eventDate", eventDateSql);
-		query.setParameter("remarks", remarks);
-		result=query.executeUpdate();
+			Query query=manager.createNativeQuery(UpdateDemand);
+			query.setParameter("fileid", Long.parseLong(fileId));
+			query.setParameter("statusid", statusId);
+			query.setParameter("eventDate", eventDateSql);
+			query.setParameter("remarks", remarks);
+			result=query.executeUpdate();
 		}
 		return result;
 	}
