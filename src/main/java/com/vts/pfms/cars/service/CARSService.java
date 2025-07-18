@@ -33,8 +33,8 @@ public interface CARSService {
 	public long addCARSInitiation(CARSInitiation initiation,String labcode) throws Exception;
 	public long editCARSInitiation(CARSInitiation initiation) throws Exception;
 	public Object[] carsRSQRDetails(String carsinitiationid) throws Exception;
-	public long carsRSQRDetailsSubmit(String carsInitiationId, String attributes, String details, String userId) throws Exception;
-	public long carsRSQRDetailsUpdate(String carsInitiationId, String attributes, String details, String userId) throws Exception;
+	public long carsRSQRDetailsSubmit(String carsInitiationId, String attributes, String details, String userId, String labcode) throws Exception;
+	public long carsRSQRDetailsUpdate(String carsInitiationId, String attributes, String details, String userId, String labcode) throws Exception;
 	public List<CARSRSQRMajorRequirements> getCARSRSQRMajorReqrByCARSInitiationId(long carsInitiationId) throws Exception;
 	public List<CARSRSQRDeliverables> getCARSRSQRDeliverablesByCARSInitiationId(long carsInitiationId) throws Exception;
 	public long carsRSQRMajorReqrDetailsSubmit(CARSRSQRDetailsDTO dto) throws Exception;

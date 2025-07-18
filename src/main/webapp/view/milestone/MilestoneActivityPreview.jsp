@@ -24,8 +24,9 @@ Object[] getMA=(Object[])request.getAttribute("MilestoneActivity");
 int RevisionCount=(Integer) request.getAttribute("RevisionCount");
 List<Object[]> ActivityTypeList=(List<Object[]>)request.getAttribute("ActivityTypeList");
 List<Object[]> MilestoneActivityA=(List<Object[]>)request.getAttribute("MilestoneActivityA");
-
+Long EmpId =  (Long)session.getAttribute("EmpId") ;
 String LoginType = (String)session.getAttribute("LoginType");
+String projectDirector = (String)request.getAttribute("projectDirector");
 	%>
 <script type="text/javascript">
 function changeempoic1(id,id3)
@@ -90,18 +91,21 @@ var s = '';
 }  
 </script>	
 <body>
+
   <nav class="navbar navbar-light bg-light" style="margin-top: -1%;">
   <a class="navbar-brand"></a>
   <form class="form-inline"  method="POST" action="MilestoneActivityList.htm">
+    <%if( Arrays.asList(getMA[8].toString(),projectDirector,getMA[9].toString()).contains(EmpId.toString()) || LoginType.equalsIgnoreCase("A")  ){ %>
    <%if(getMA[13]!=null){ %>
     <input type="submit" class="btn btn-primary btn-sm submit "  value="Set Base Line ( <%=RevisionCount %> )" onclick="return confirm('Are You Sure To Submit ?')" formaction="M-A-Set-BaseLine.htm" > 
   
+  <%} %>
   <%} %>
   <%if(RevisionCount>0){ %>
   <input type="submit" class="btn btn-primary btn-sm preview "  value="Compare" style="margin-left: 10px;" formaction="MilestoneActivityCompare.htm"> 		
   <%} %>
   <input type="submit" class="btn btn-primary btn-sm back "  value="Back" style="margin-left: 10px;"> 	
-		
+		     <input type="hidden" name="projectDirector" value ="<%=projectDirector%>">
       <input type="hidden" name="RevId"	value="<%=RevisionCount %>" /> 
       <input type="hidden" name="ProjectId"	value="<%=getMA[10] %>" /> 
       <input type="hidden" name="MilestoneActivityId"	value="<%=getMA[0] %>" /> 
@@ -109,8 +113,12 @@ var s = '';
 <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 </form>
 </nav>
+	<div class="row text-danger ml-3" style="font-weight: 600; font-size: 14px; "> 
+Kindly note that only the Project Director, the Admin, and the OICs of the Parent Milestone are authorized to edit milestones. Please ensure all details are accurate before adding a new milestone.
+</div>
+<%
 
-<%String ses=(String)request.getParameter("result"); 
+String ses=(String)request.getParameter("result"); 
  String ses1=(String)request.getParameter("resultfail");
 	if(ses1!=null){
 	%>
@@ -123,22 +131,23 @@ var s = '';
 	<div class="alert alert-success" role="alert"  >
                      <%=ses %>
                    </div></center>
+                      <br />
                     <%} %>
 
-    <br />
+ 
 
 
-<div class="container-fluid">
+<div class="container-fluid mt-2">
 <div class="row" >
 <div class="col-md-12">
-<div  class="panel-group" style="  "><h5 class="text-white" style="font-weight: bold;font-size: large;background-color: #055C9D; text-align: center;"><%=getMA[1] %> Milestone Activity Details</h5>  
+<div  class="panel-group" style="  "><h5 class="text-white" style="font-weight: bold;font-size: large;background-color: #055C9D; text-align: center;"><%=getMA[1] %> Milestone Activity Details  </h5>  
 <form   method="POST" action="MilestoneActivityEditSubmit.htm" id="form<%=getMA[0] %>M<%=getMA[10] %>">
 <div class="row container-fluid" >
                              <div class="col-md-1 " ><br><label class="control-label">Type</label>  <br>  <b >Main</b>                    		
                         	</div>
                     		<div class="col-md-5 " ><br>
                     		<label class="control-label"> Activity Name:</label> <br> 
-                    		 <textarea rows="1" cols="50" class="form-control description-input"  <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=getMA[4] %></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control "  <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=getMA[4] %></textarea> 
                         	</div>
                         	
                         	<div class="col-md-2 " align="center"><br>
@@ -158,7 +167,8 @@ var s = '';
                         	</div>
                         	
                         	<div class="col-md-1 " ><br><label class="control-label"> &nbsp;&nbsp;Update<br></label><br>
-                        	  <button type="button" class="btn btn-sm edit" onclick="weightage_sum('<%=getMA[0] %>','<%=getMA[10] %>','M');" <%if(!Arrays.asList("A", "P").contains(LoginType)) {%>disabled<%} %> >
+                        				<%if( Arrays.asList(projectDirector).contains(EmpId.toString()) || LoginType.equalsIgnoreCase("A")  ){ %>
+                        	  <button type="button" class="btn btn-sm edit" onclick="weightage_sum('<%=getMA[0] %>','<%=getMA[10] %>','M');" >
                         	  <i class="fa fa-edit" aria-hidden="true"></i>
                         	  </button>
                         	 <input type="submit" hidden="hidden" id="<%=getMA[0] %>M<%=getMA[10] %>sub"/> 
@@ -167,8 +177,9 @@ var s = '';
 	                              <input type="hidden" name="MilestoneActivityId"	value="<%=getMA[0] %>" /> 
 	                              <input type="hidden" name="ActivityId"	value="<%=getMA[0] %>" /> 
 	                              <input type="hidden" name="ActivityType"	value="M" /> 
+	                              <input type="hidden" name="projectDirector"	value="<%=projectDirector %>" /> 
 	                              <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-                             
+                             <%} %>
                         	</div>
                         	
                        		</div>
@@ -260,7 +271,7 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
                     		
                         	</div>
 						  <div class="col-md-5 " ><br>
-                    		 <textarea rows="1" cols="50" class="form-control description-input" <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityA[4] %></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityA[4] %></textarea> 
                         	</div>
                         	
                         	<div class="col-md-2 " align="center"><br>
@@ -279,6 +290,7 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
                     		 
                         	</div>
                             <div class="col-md-1 "><br>
+                            <%if( Arrays.asList(getMA[8].toString(),projectDirector,getMA[9].toString() ).contains(EmpId.toString()) || LoginType.equalsIgnoreCase("A")  ){ %>
                         	  <button type="button"  class="btn btn-sm edit" onclick="weightage_sum('<%=getMA[0] %>','<%=ActivityA[0] %>','A','1');"> <i class="fa fa-edit" aria-hidden="true"></i> </button>
                         	 
                         	  <input type="submit" hidden="hidden" id="<%=getMA[0] %>A<%=ActivityA[0] %>sub"/> 
@@ -287,8 +299,9 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
                               <input type="hidden" name="ActivityId"	value="<%=ActivityA[0] %>" /> 
                               <input type="hidden" name="ActivityType"	value="A" /> 
                               <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+                              <input type="hidden" name="projectDirector" value ="<%=projectDirector%>">
                               
-                        
+                        <%} %>
                         	</div>
                         	</div>
                         	
@@ -419,7 +432,7 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
                     		
                         	</div>
 						    <div class="col-md-5 " ><br>
-                    		 <textarea rows="1" cols="50" class="form-control description-input" <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityB[4] %></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityB[4] %></textarea> 
                         	</div>
                         	
                         	<div class="col-md-2 " align="center"><br>
@@ -438,6 +451,8 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
                     		 
                         	</div>
                         	<div class="col-md-1 "><br>
+                        	                            <%if( Arrays.asList(getMA[8].toString(),projectDirector,getMA[9].toString(),ActivityA[13].toString(),ActivityA[15].toString() ).contains(EmpId.toString()) || LoginType.equalsIgnoreCase("A")  ){ %>
+                        	
                         	  <button type="button"  class="btn btn-sm edit" onclick="weightage_sum('<%=ActivityA[0] %>','<%=ActivityB[0] %>','B','2');"> <i class="fa fa-edit" aria-hidden="true"></i> </button>
                         	 
                         	  <input type="submit" hidden="hidden" id="<%=ActivityA[0] %>B<%=ActivityB[0] %>sub"/> 
@@ -446,6 +461,9 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
                               <input type="hidden" name="ActivityId"	value="<%=ActivityB[0] %>" /> 
                               <input type="hidden" name="ActivityType"	value="B" /> 
                               <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+                              <input type="hidden" name="projectDirector" value ="<%=projectDirector%>">
+                                                
+                                            <%} %>    
                                                   	</div>
 							</div>	
 							
@@ -578,7 +596,7 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
                         	</div>
                         	
 						    <div class="col-md-5 " ><br>
-                    		 <textarea rows="1" cols="50" class="form-control description-input" <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityC[4] %></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityC[4] %></textarea> 
                         	</div>
                         	
                         	<div class="col-md-2 " align="center"><br>
@@ -594,7 +612,7 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
                     		 
                         	</div>
                         	<div class="col-md-1 "><br>
-                              
+                          <%if( Arrays.asList(getMA[8].toString(),projectDirector,getMA[9].toString(),ActivityA[13].toString(),ActivityA[15].toString(),ActivityB[13].toString(),ActivityB[15].toString() ).contains(EmpId.toString()) || LoginType.equalsIgnoreCase("A")  ){ %>
                         	  <button type="button"  class="btn btn-sm edit" onclick="weightage_sum('<%=ActivityB[0] %>','<%=ActivityC[0] %>','C','3');"> <i class="fa fa-edit" aria-hidden="true"></i> </button>
                         	  <input type="submit" hidden="hidden" id="<%=ActivityB[0] %>C<%=ActivityC[0] %>sub"/> 
                         	  
@@ -602,8 +620,10 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
                               <input type="hidden" name="MilestoneActivityId"	value="<%=getMA[0] %>" /> 
                               <input type="hidden" name="ActivityId"	value="<%=ActivityC[0] %>" /> 
                               <input type="hidden" name="ActivityType"	value="C" /> 
+                                   <input type="hidden" name="projectDirector" value ="<%=projectDirector%>">
                               <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-                                                    	</div>
+                                 <%} %>                   	
+                               </div>
                                                     	 
                         	</div>
                         	
@@ -728,7 +748,7 @@ if(MilestoneActivityD!=null&&MilestoneActivityD.size()>0){
                     		
                         	</div>
 						    <div class="col-md-5 " ><br>
-                    		 <textarea rows="1" cols="50" class="form-control description-input" <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityD[4] %></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityD[4] %></textarea> 
                         	</div>
                         	
                         	<div class="col-md-2 " align="center"><br>
@@ -747,13 +767,18 @@ if(MilestoneActivityD!=null&&MilestoneActivityD.size()>0){
                     		 
                         	</div>
                         	<div class="col-md-1 "><br>
+                        	
+                       <%if( Arrays.asList(getMA[8].toString(),projectDirector,getMA[9].toString(),ActivityA[13].toString(),ActivityA[15].toString(),ActivityB[13].toString(),ActivityB[15].toString(),ActivityC[13].toString(),ActivityC[15].toString() ).contains(EmpId.toString()) || LoginType.equalsIgnoreCase("A")  ){ %>
                         	  <button type="button"  class="btn btn-sm edit" onclick="weightage_sum('<%=ActivityC[0] %>','<%=ActivityD[0] %>','D','4');"> <i class="fa fa-edit" aria-hidden="true"></i> </button>
                         	 
                         	  <input type="submit" hidden="hidden" id="<%=ActivityC[0] %>D<%=ActivityD[0] %>sub"/> 
                               <input type="hidden" name="RevId"	value="<%=RevisionCount %>" /> 
                               <input type="hidden" name="MilestoneActivityId"	value="<%=getMA[0] %>" /> 
                               <input type="hidden" name="ActivityId"	value="<%=ActivityD[0] %>" /> 
-                              <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+                              <input type="hidden" name="projectDirector" value ="<%=projectDirector%>">
+                                                          
+                                                            <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+                              <%} %>
                                                   	</div>
 							</div>
 							
@@ -883,7 +908,7 @@ if(MilestoneActivityE!=null&&MilestoneActivityE.size()>0){
                         	</div>
                         	
 						    <div class="col-md-5 " ><br>
-                    		 <textarea rows="1" cols="50" class="form-control description-input" <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityE[4] %></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityE[4] %></textarea> 
                         	</div>
                         	
                         	<div class="col-md-2 " align="center"><br>
@@ -899,15 +924,17 @@ if(MilestoneActivityE!=null&&MilestoneActivityE.size()>0){
                     		 
                         	</div>
                         	<div class="col-md-1 "><br>
-                              
+                  			<%if( Arrays.asList(getMA[8].toString(),projectDirector,getMA[9].toString(),ActivityA[13].toString(),ActivityA[15].toString(),ActivityB[13].toString(),ActivityB[15].toString(),ActivityC[13].toString(),ActivityC[15].toString(),ActivityD[13].toString(),ActivityD[15].toString() ).contains(EmpId.toString()) || LoginType.equalsIgnoreCase("A")  ){ %>
                         	  <button type="button"  class="btn btn-sm edit" onclick="weightage_sum('<%=ActivityD[0] %>','<%=ActivityE[0] %>','E','5');"> <i class="fa fa-edit" aria-hidden="true"></i> </button>
                         	  <input type="submit" hidden="hidden" id="<%=ActivityD[0] %>E<%=ActivityE[0] %>sub"/> 
-                        	  
                               <input type="hidden" name="RevId"	value="<%=RevisionCount %>" /> 
                               <input type="hidden" name="MilestoneActivityId"	value="<%=getMA[0] %>" /> 
                               <input type="hidden" name="ActivityId"	value="<%=ActivityE[0] %>" /> 
+                                                            <input type="hidden" name="projectDirector" value ="<%=projectDirector%>">
+                              
                               <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-                                                    	</div>
+                              <%} %>     
+                               </div>
                                                     	 
                         	</div>
                         	
@@ -1070,6 +1097,8 @@ $( document ).ready(function() {
 	<br><br><br><br><br>
 	</div>
 	</div>
+	
+
 									</div>	
 <script type="text/javascript">
 function weightage_sum(id,activityid,type,levelid){

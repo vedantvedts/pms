@@ -1,8 +1,10 @@
 package com.vts.pfms.documents.controller;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -11,14 +13,18 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -4942,14 +4948,11 @@ public class DocumentsController {
 	    List<Object[]> fieldDescriptionList = service.getIRSFieldDescriptionList(irsDocId);
 	    IGILogicalInterfaces logicalInterface = service.getIGILogicalInterfaceById(logicalInterfaceId);
 	    
-	    fieldDescriptionList = fieldDescriptionList.stream()
-	        .filter(e -> logicalInterfaceId.equalsIgnoreCase(e[1].toString()))
-	        .collect(Collectors.toList());
+	    fieldDescriptionList = fieldDescriptionList.stream().filter(e -> logicalInterfaceId.equalsIgnoreCase(e[1].toString())).collect(Collectors.toList());
 
 	    if (fieldDescriptionList == null || logicalInterface == null) {
 	        return ResponseEntity.badRequest().body(null);
 	    }
-
 	    
 	    String content = generateFieldDescHeaderContent(fieldDescriptionList, logicalInterface);
 	    String fileName = logicalInterface.getMsgCode().replaceAll("[^a-zA-Z0-9_]", "_") + ".h";
@@ -4965,7 +4968,7 @@ public class DocumentsController {
 	
 	public static String generateFieldDescHeaderContent(List<Object[]> fieldDescriptionList, IGILogicalInterfaces logicalInterface) {
 
-		String messageCode = logicalInterface.getMsgName();
+		String messageCode = logicalInterface.getMsgName().toUpperCase();
 		double messageLength = 0.00;
 		
 	    String sanitizedMessageCode = messageCode.replaceAll("[^a-zA-Z0-9_]", "_");
@@ -4974,97 +4977,81 @@ public class DocumentsController {
 	    }
 
 	    StringBuilder sb = new StringBuilder();
-	    StringBuilder sbmiddle = new StringBuilder(); // for typedef structs
-	    StringBuilder sblast = new StringBuilder();   // for main struct fields
 	    
 	    sb.append("// ").append(sanitizedMessageCode).append("  -  ").append("__MSG_LENGTH_PLACEHOLDER__").append("  bytes").append("\n\n");
 	    
-//	    List<Long> fieldDescArrMasterIds =  fieldDescriptionList.stream().map(e -> e[20]!=null?Long.parseLong(e[20].toString()):0L).collect(Collectors.toList());
-//	    arrayMasterList = arrayMasterList.stream().filter(e -> fieldDescArrMasterIds.contains(e.getArrayMasterId())).collect(Collectors.toList());
-	    
-	    sb.append("\n");
-
-	    sb.append("#ifndef ").append(sanitizedMessageCode.toUpperCase()).append("_H\n");
-	    sb.append("#define ").append(sanitizedMessageCode.toUpperCase()).append("_H\n\n");
-	    
-//	    for (IRSArrayMaster arr : arrayMasterList) {
-//	        sb.append("#define ").append(arr.getArrayName()).append(" ").append(arr.getArrayValue()).append("\n");
-//	    }
-//
-//	    sb.append("\n");
+	    sb.append("#ifndef __").append(sanitizedMessageCode).append("_H\n");
+	    sb.append("#define __").append(sanitizedMessageCode).append("_H\n\n");
 	    
 	    sb.append("#include <stdio.h>\n");
 	    sb.append("#include <ltypes.h>\n");
 	    sb.append("#include <constants.h>\n\n");
+	    sb.append("typedef struct _TS").append(sanitizedMessageCode).append(" {\n");
 
-	    Set<Long> processedGroups = new HashSet<>();
+	    Map<Long, List<Object[]>> groupedMap = fieldDescriptionList.stream().filter(e -> Long.parseLong(e[12].toString())!=0).collect(Collectors.groupingBy(e -> Long.parseLong(e[12].toString())));
+	    List<Object[]> fieldList = fieldDescriptionList.stream().filter(e -> Long.parseLong(e[12].toString())==0).collect(Collectors.toList());
+	    
+	    // Calculate max length of fields / group name
+	    int maxLength = fieldDescriptionList.stream()
+	        .mapToInt(field -> {
+	            if (Long.parseLong(field[12].toString()) == 0) {
+	                return field[27] != null ? field[27].toString().length() : 4;
+	            } else {
+	                String grpName = field[23] != null ? field[23].toString().toUpperCase() : "UnknownGroup";
+	                return ("_S" + grpName).length();
+	            }
+	        }).max().orElse(0);
+		
+	    // Include Group names
+	    for (Map.Entry<Long, List<Object[]>> entry : groupedMap.entrySet()) {
+	    	List<Object[]> groupRows = entry.getValue();
+	    	Object[] rep = groupRows.get(0);
 
-	    for (Object[] field : fieldDescriptionList) {
-	    	
-	        Long groupId = Long.parseLong(field[12].toString());
+	    	String grpName = rep[23] != null ? rep[23].toString().toUpperCase() : "UnknownGroup";
+	    	String grpVariable = rep[26] != null ? rep[26].toString() : "unknownVar";
+	    	String arr = rep[21] != null ? "[" + rep[21] + "]" : "";
+
+	    	String paddedName = String.format("%-" + (maxLength+6) + "s", "_S"+grpName);
+	    	sb.append("    ").append(paddedName).append("s").append(grpVariable.toLowerCase()).append(arr).append(";\n");
+
+	    	// Calculate no of bytes
+	    	for (Object[] field : groupRows) {
+	    		int dataLength = Integer.parseInt(field[4].toString());
+	    		double lengthInBytes = dataLength * 0.125;
+
+	    		if (field[21] != null) {
+	    			int arrValue = Integer.parseInt(field[22].toString());
+	    			messageLength += (lengthInBytes * arrValue);
+	    		} else {
+	    			messageLength += lengthInBytes;
+	    		}
+	    	}
+	    }
+
+	    // Include only fields which are not linked with any group
+	    for (Object[] field : fieldList) {
 	        int dataLength = Integer.parseInt(field[4].toString());
 	        double lengthInBytes = dataLength * 0.125;
 	        
-	        if (groupId == 0) {
-	            String fieldName = field[8] != null ? field[8].toString().replaceAll("\\s+", "") : "unknownField";
-	            String cType = field[27] != null ? field[27]+"" : "void*";
-	            String arr = "";
-	            if(field[21] != null) {
-	            	arr = "[" + field[21] + "]";
-	            	int arrValue = Integer.parseInt(field[22].toString());
-	            	messageLength+=(lengthInBytes*arrValue);
-	            }else {
-	            	messageLength+=lengthInBytes;
-	            }
-	            
-	            sblast.append("    ").append(cType).append(" ").append(field[11]+"").append(fieldName).append(arr).append(";\n");
-	            
-	        } else if (groupId!=0) {
-	        	
-	        	List<Object[]> descByGroup = fieldDescriptionList.stream()
-		                .filter(e -> e[12].toString().equals(String.valueOf(groupId)))
-		                .collect(Collectors.toList());
-	        	
-	        	if(descByGroup.size() > 0 && descByGroup.get(0)[21]!=null) {
-	            	int arrValue = Integer.parseInt(field[22].toString());
-	            	messageLength+=(lengthInBytes*arrValue);
-	            }else {
-	            	messageLength+=lengthInBytes;
-	            }
-	        	
-	        	if(!processedGroups.contains(groupId)) {
-	        		processedGroups.add(groupId);
-	        		
-	        		String grpName = descByGroup.size() > 0 ? descByGroup.get(0)[23].toString().toUpperCase() : "UnknownGroup";
-		            String grpVariable = descByGroup.size() > 0 ? descByGroup.get(0)[26] + "" : "unknownVar";
-		            String arr = descByGroup.size() > 0 && descByGroup.get(0)[21]!=null ? "[" + descByGroup.get(0)[21] + "]" : "";
-		            
-		          //String arr = descByGroup.size() > 0 && descByGroup.get(0)[21]!=null ? "[" + descByGroup.get(0)[21] + "]" : "";
-
-		            sbmiddle.append("typedef struct TS").append(grpName).append(" {\n");
-		            
-		            for (Object[] desc : descByGroup) {
-		                String fieldName = desc[8] != null ? desc[8].toString().replaceAll("\\s+", "") : "unknownField";
-		                String cType = desc[27] != null ? desc[27]+"" : "void*";
-		                
-		                sbmiddle.append("    ").append(cType).append(" ").append(desc[11]+"").append(fieldName).append(";\n");
-		            }
-		            
-		            sbmiddle.append("} S").append(grpName).append(";\n\n");
-
-		            sblast.append("    S").append(grpName).append(" s").append(grpVariable.toLowerCase()).append(arr).append(";\n");
-	        	}
-	            
-	        }
+	        String fieldName = field[8] != null ? field[8].toString().replaceAll("\\s+", "") : "unknownField";
+            String cType = field[27] != null ? field[27]+"" : "void*";
+            String arr = "";
+         // Calculate no of bytes
+            if(field[21] != null) {
+            	arr = "[" + field[21] + "]";
+            	int arrValue = Integer.parseInt(field[22].toString());
+            	messageLength+=(lengthInBytes*arrValue);
+            }else {
+            	messageLength+=lengthInBytes;
+            }
+            
+            String paddedName = String.format("%-" + (maxLength+6) + "s", cType);
+            sb.append("    ").append(paddedName).append(field[11]+"").append(fieldName).append(arr).append(";\n");
 	    }
 
-	    // Now build the main struct
-	    sb.append(sbmiddle); // group typedefs first
-	    sb.append("typedef struct TS").append(sanitizedMessageCode.toUpperCase()).append(" {\n");
-	    sb.append(sblast);   // fields and group references
-	    sb.append("} S").append(sanitizedMessageCode.toUpperCase()).append(";\n\n");
+	    sb.append("} _S").append(sanitizedMessageCode).append(";\n\n");
 
-	    sb.append("#endif\n");
+	    sb.append("#endif       // __").append(sanitizedMessageCode).append("_H\n");
 
 	    String fullHeader = sb.toString();
 	    fullHeader = fullHeader.replace("__MSG_LENGTH_PLACEHOLDER__", String.valueOf((int)messageLength));
@@ -5072,35 +5059,267 @@ public class DocumentsController {
 	    return fullHeader;
 	}
 
+//	public static String generateFieldDescHeaderContent(List<Object[]> fieldDescriptionList, IGILogicalInterfaces logicalInterface) {
+//
+//		String messageCode = logicalInterface.getMsgName();
+//		double messageLength = 0.00;
+//		
+//	    String sanitizedMessageCode = messageCode.replaceAll("[^a-zA-Z0-9_]", "_");
+//	    if (Character.isDigit(sanitizedMessageCode.charAt(0))) {
+//	        sanitizedMessageCode = "_" + sanitizedMessageCode;
+//	    }
+//
+//	    StringBuilder sb = new StringBuilder();
+//	    StringBuilder sbmiddle = new StringBuilder(); // for typedef structs
+//	    StringBuilder sblast = new StringBuilder();   // for main struct fields
+//	    
+//	    sb.append("// ").append(sanitizedMessageCode).append("  -  ").append("__MSG_LENGTH_PLACEHOLDER__").append("  bytes").append("\n\n");
+//	    
+////	    List<Long> fieldDescArrMasterIds =  fieldDescriptionList.stream().map(e -> e[20]!=null?Long.parseLong(e[20].toString()):0L).collect(Collectors.toList());
+////	    arrayMasterList = arrayMasterList.stream().filter(e -> fieldDescArrMasterIds.contains(e.getArrayMasterId())).collect(Collectors.toList());
+//	    
+//	    sb.append("\n");
+//
+//	    sb.append("#ifndef ").append(sanitizedMessageCode.toUpperCase()).append("_H\n");
+//	    sb.append("#define ").append(sanitizedMessageCode.toUpperCase()).append("_H\n\n");
+//	    
+////	    for (IRSArrayMaster arr : arrayMasterList) {
+////	        sb.append("#define ").append(arr.getArrayName()).append(" ").append(arr.getArrayValue()).append("\n");
+////	    }
+////
+////	    sb.append("\n");
+//	    
+//	    sb.append("#include <stdio.h>\n");
+//	    sb.append("#include <ltypes.h>\n");
+//	    sb.append("#include <constants.h>\n\n");
+//
+//	    Set<Long> processedGroups = new HashSet<>();
+//
+//	    for (Object[] field : fieldDescriptionList) {
+//	    	
+//	        Long groupId = Long.parseLong(field[12].toString());
+//	        int dataLength = Integer.parseInt(field[4].toString());
+//	        double lengthInBytes = dataLength * 0.125;
+//	        
+//	        if (groupId == 0) {
+//	            String fieldName = field[8] != null ? field[8].toString().replaceAll("\\s+", "") : "unknownField";
+//	            String cType = field[27] != null ? field[27]+"" : "void*";
+//	            String arr = "";
+//	            if(field[21] != null) {
+//	            	arr = "[" + field[21] + "]";
+//	            	int arrValue = Integer.parseInt(field[22].toString());
+//	            	messageLength+=(lengthInBytes*arrValue);
+//	            }else {
+//	            	messageLength+=lengthInBytes;
+//	            }
+//	            
+//	            sblast.append("    ").append(cType).append(" ").append(field[11]+"").append(fieldName).append(arr).append(";\n");
+//	            
+//	        } else if (groupId!=0) {
+//	        	
+//	        	List<Object[]> descByGroup = fieldDescriptionList.stream()
+//		                .filter(e -> e[12].toString().equals(String.valueOf(groupId)))
+//		                .collect(Collectors.toList());
+//	        	
+//	        	if(descByGroup.size() > 0 && descByGroup.get(0)[21]!=null) {
+//	            	int arrValue = Integer.parseInt(field[22].toString());
+//	            	messageLength+=(lengthInBytes*arrValue);
+//	            }else {
+//	            	messageLength+=lengthInBytes;
+//	            }
+//	        	
+//	        	if(!processedGroups.contains(groupId)) {
+//	        		processedGroups.add(groupId);
+//	        		
+//	        		String grpName = descByGroup.size() > 0 ? descByGroup.get(0)[23].toString().toUpperCase() : "UnknownGroup";
+//		            String grpVariable = descByGroup.size() > 0 ? descByGroup.get(0)[26] + "" : "unknownVar";
+//		            String arr = descByGroup.size() > 0 && descByGroup.get(0)[21]!=null ? "[" + descByGroup.get(0)[21] + "]" : "";
+//		            
+//		          //String arr = descByGroup.size() > 0 && descByGroup.get(0)[21]!=null ? "[" + descByGroup.get(0)[21] + "]" : "";
+//
+//		            sbmiddle.append("typedef struct TS").append(grpName).append(" {\n");
+//		            
+//		            for (Object[] desc : descByGroup) {
+//		                String fieldName = desc[8] != null ? desc[8].toString().replaceAll("\\s+", "") : "unknownField";
+//		                String cType = desc[27] != null ? desc[27]+"" : "void*";
+//		                
+//		                sbmiddle.append("    ").append(cType).append(" ").append(desc[11]+"").append(fieldName).append(";\n");
+//		            }
+//		            
+//		            sbmiddle.append("} S").append(grpName).append(";\n\n");
+//
+//		            sblast.append("    S").append(grpName).append(" s").append(grpVariable.toLowerCase()).append(arr).append(";\n");
+//	        	}
+//	            
+//	        }
+//	    }
+//
+//	    // Now build the main struct
+//	    sb.append(sbmiddle); // group typedefs first
+//	    sb.append("typedef struct TS").append(sanitizedMessageCode.toUpperCase()).append(" {\n");
+//	    sb.append(sblast);   // fields and group references
+//	    sb.append("} S").append(sanitizedMessageCode.toUpperCase()).append(";\n\n");
+//
+//	    sb.append("#endif\n");
+//
+//	    String fullHeader = sb.toString();
+//	    fullHeader = fullHeader.replace("__MSG_LENGTH_PLACEHOLDER__", String.valueOf((int)messageLength));
+//	    
+//	    return fullHeader;
+//	}
+	
 	@RequestMapping(value = "IGIDataTypeMasterHFileDownload.htm", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> igiDataTypeMasterHFileDownload(HttpServletRequest req) throws Exception {
+	    String logicalInterfaceId = req.getParameter("logicalInterfaceId");
+	    String irsDocId = req.getParameter("irsDocId");
 
 	    List<Object[]> dataTypeList = service.dataTypeMasterList();
-	    
-	    if (dataTypeList == null) {
-	        return ResponseEntity.badRequest().body(null);
-	    }
-	    
-	    String content = generateDataTypesHeaderContent(dataTypeList);
+	    List<Object[]> fieldDescriptionList = service.getIRSFieldDescriptionList(irsDocId);
 
+	    fieldDescriptionList = fieldDescriptionList.stream()
+	        .filter(e -> logicalInterfaceId.equalsIgnoreCase(e[1].toString()))
+	        .collect(Collectors.toList());
+
+	    Path tempDir = Files.createTempDirectory("headers_");
+	    byte[] zipBytes;
+
+	    try {
+	        // 1. Generate group header files + includes
+	        StringBuilder includesBuilder = new StringBuilder();
+	        generateGroupHeaderFiles(fieldDescriptionList, tempDir, includesBuilder);
+
+	        // 2. Generate ltypes.h
+	        String ltypesContent = generateDataTypesHeaderContent(dataTypeList, includesBuilder.toString());
+	        Files.write(tempDir.resolve("ltypes.h"), ltypesContent.getBytes());
+
+	        // 3. Create ZIP in memory
+	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	        try (ZipOutputStream zos = new ZipOutputStream(baos)) {
+	            Files.walk(tempDir).filter(Files::isRegularFile).forEach(file -> {
+	                try {
+	                    zos.putNextEntry(new ZipEntry(file.getFileName().toString()));
+	                    Files.copy(file, zos);
+	                    zos.closeEntry();
+	                } catch (IOException e) {
+	                    e.printStackTrace();
+	                }
+	            });
+	        }
+	        zipBytes = baos.toByteArray();  // safe to delete files after this point
+
+	    } finally {
+	        // 4. Clean up temp files and folder
+	        try {
+	            Files.walk(tempDir)
+	                .sorted(Comparator.reverseOrder()) // delete files before folder
+	                .forEach(path -> {
+	                    try {
+	                        Files.deleteIfExists(path);
+	                    } catch (IOException e) {
+	                        e.printStackTrace();  // optional: log cleanup failure
+	                    }
+	                });
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    // 5. Send response
 	    HttpHeaders headers = new HttpHeaders();
-	    headers.setContentType(MediaType.TEXT_PLAIN);
+	    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 	    headers.setContentDisposition(ContentDisposition.builder("attachment")
-	        .filename("ltypes.h")
+	        .filename("ltypes.zip")
 	        .build());
 
-	    return new ResponseEntity<>(content.getBytes(), headers, HttpStatus.OK);
+	    return new ResponseEntity<>(zipBytes, headers, HttpStatus.OK);
 	}
-	
-	public static String generateDataTypesHeaderContent(List<Object[]> dataTypeList) {
-	    StringBuilder sb = new StringBuilder();
-	    // Add data types section
-	    sb.append("// Data Type Definitions\n");
-	    for (Object[] typeRow : dataTypeList) {
-	        sb.append("typedef ").append(typeRow[4]).append(" ").append(typeRow[1]).append(typeRow[3]).append(";\n");
+
+
+	private void generateGroupHeaderFiles(List<Object[]> fieldDescriptionList, Path tempDir, StringBuilder includesBuilder) throws IOException {
+	    
+		Map<Long, List<Object[]>> groupedMap = fieldDescriptionList.stream().filter(e -> Long.parseLong(e[12].toString()) != 0).collect(Collectors.groupingBy(e -> Long.parseLong(e[12].toString())));
+
+	    int maxLengthGrp = fieldDescriptionList.stream().mapToInt(e -> e[27] != null ? e[27].toString().length() : 0).max().orElse(0);
+
+	    for (Map.Entry<Long, List<Object[]>> entry : groupedMap.entrySet()) {
+	        List<Object[]> groupRows = entry.getValue();
+	        Object[] rep = groupRows.get(0);
+	        String grpName = rep[23] != null ? rep[23].toString() : "UnknownGroup";
+	        String fileName = grpName + ".h";
+
+	        includesBuilder.append("#include <").append(fileName).append(">\n");
+
+	        StringBuilder groupFileContent = new StringBuilder();
+	        String grpNameUpper = grpName.toUpperCase();
+	        groupFileContent.append("#ifndef __").append(grpNameUpper).append("_H\n");
+	        groupFileContent.append("#define __").append(grpNameUpper).append("_H\n\n");
+	        groupFileContent.append("typedef struct _TS").append(grpNameUpper).append(" {\n");
+
+	        for (Object[] desc : groupRows) {
+	            String fieldName = desc[8] != null ? desc[8].toString().replaceAll("\\s+", "") : "unknownField";
+	            String cType = desc[27] != null ? desc[27].toString() : "void*";
+	            String paddedName = String.format("%-" + (maxLengthGrp + 6) + "s", cType);
+	            groupFileContent.append("    ").append(paddedName).append(desc[11]).append(fieldName).append(";\n");
+	        }
+
+	        groupFileContent.append("} _S").append(grpNameUpper).append(";\n\n");
+	        groupFileContent.append("\n#endif       // __").append(grpNameUpper).append("_H\n");;
+
+	        // Write group file
+	        Files.write(tempDir.resolve(fileName), groupFileContent.toString().getBytes());
 	    }
+	}
+
+	public static String generateDataTypesHeaderContent(List<Object[]> dataTypeList, String includeLines) {
+	    StringBuilder sb = new StringBuilder();
+	    StringBuilder sbOneByte = new StringBuilder();
+	    StringBuilder sbSigned = new StringBuilder();
+	    StringBuilder sbUnSigned = new StringBuilder();
+	    StringBuilder sbRealNumber = new StringBuilder();
+	    StringBuilder sbOthers = new StringBuilder();
+
+	    sb.append("// Data Type Definitions\n");
+	    sb.append("#ifndef __LTYPES_H\n");
+	    sb.append("#define __LTYPES_H\n\n");
+
+	    sb.append(includeLines).append("\n");
+
+	    sbOneByte.append("// one byte type definitions\n");
+	    sbSigned.append("// signed type definitions\n");
+	    sbUnSigned.append("// unsigned type definitions\n");
+	    sbRealNumber.append("// real number type definitions\n");
+
+	    int maxLength = dataTypeList.stream().mapToInt(e -> e[4] != null ? e[4].toString().length() : 0).max().orElse(0);
+
+	    for (Object[] obj : dataTypeList) {
+	        String standardName = obj[4] != null ? obj[4].toString() : "";
+	        int dataLength = obj[2] != null ? Integer.parseInt(obj[2].toString()) : 0;
+	        double lengthInBytes = dataLength * 0.125;
+	        String paddedName = String.format("%-" + (maxLength + 8) + "s", standardName);
+
+	        if (lengthInBytes == 1.0 && !standardName.startsWith("signed")) {
+	            sbOneByte.append("typedef ").append(paddedName).append(obj[3]).append(";\n");
+	        } else if (standardName.startsWith("signed")) {
+	            sbSigned.append("typedef ").append(paddedName).append(obj[3]).append(";\n");
+	        } else if (standardName.startsWith("unsigned")) {
+	            sbUnSigned.append("typedef ").append(paddedName).append(obj[3]).append(";\n");
+	        } else if (standardName.startsWith("_")) {
+	            sbOthers.append("typedef ").append(paddedName).append(obj[3]).append(";\n");
+	        } else {
+	            sbRealNumber.append("typedef ").append(paddedName).append(obj[3]).append(";\n");
+	        }
+	    }
+
+	    sb.append(sbOneByte).append("\n")
+	      .append(sbSigned).append("\n")
+	      .append(sbUnSigned).append("\n")
+	      .append(sbRealNumber).append("\n")
+	      .append(sbOthers).append("\n");
+
+	    sb.append("\n#endif       // __LTYPES_H\n");
+
 	    return sb.toString();
-	}	
+	}
 	
 	@RequestMapping(value = "IGIConstantsHFileDownload.htm", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> igiConstantsHFileDownload(HttpServletRequest req) throws Exception {
@@ -5127,18 +5346,31 @@ public class DocumentsController {
 	
 	public static String generateConstantsHeaderContent(List<IGIConstants> igiConstantsMasterList, List<IRSArrayMaster> arrayMasterList) {
 		StringBuilder sb = new StringBuilder();
-		
+
 		sb.append("// Constant Definitions\n");
+		sb.append("#ifndef __CONSTANTS_H\n");
+	    sb.append("#define __CONSTANTS_H\n\n");
+
+		// Step 1: Find the maximum length of the array names
+		int maxLength1 = arrayMasterList.stream().mapToInt(e -> e.getArrayName().length()).max().orElse(0);
+		int maxLength2 = igiConstantsMasterList.stream().mapToInt(e -> e.getConstantName().length()).max().orElse(0);
+		int maxLength = Math.max(maxLength1, maxLength2) + 6;
 		
+		// Step 2: Generate the aligned output
 		for (IRSArrayMaster arr : arrayMasterList) {
-	        sb.append("#define ").append(arr.getArrayName()).append(" ").append(arr.getArrayValue()).append("\n");
-	    }
+		    String paddedName = String.format("%-" + maxLength + "s", arr.getArrayName());
+		    sb.append("#define ").append(paddedName).append(arr.getArrayValue()).append("\n");
+		}
 
 	    sb.append("\n");
 			
 		for (IGIConstants con : igiConstantsMasterList) {
-			sb.append("#define ").append(con.getConstantName()).append(" ").append(con.getConstantValue()).append("\n");
+			String paddedName = String.format("%-" + maxLength + "s", con.getConstantName());
+			sb.append("#define ").append(paddedName).append(con.getConstantValue()).append("\n");
 		}
+		
+		sb.append("\n#endif       // __CONSTANTS_H\n");
+		
 		return sb.toString();
 	}	
 	

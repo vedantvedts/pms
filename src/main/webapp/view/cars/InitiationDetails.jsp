@@ -291,6 +291,8 @@ Object[] GDs = (Object[])request.getAttribute("GDEmpIds");
 Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 
 String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
+
+String labcode=(String)session.getAttribute("labcode"); 
 %>
 
 <% String ses=(String)request.getParameter("result"); 
@@ -734,10 +736,10 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 										<div class="panel panel-info" style="margin-top: 10px;">
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++rsqrslno %>. Scope of LRDE</span>
+													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++rsqrslno %>. Scope of <%=labcode %></span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
-												id="btnEditor8" onclick="showEditor('LRDE Scope')">
+												id="btnEditor8" onclick="showEditor('<%=labcode %> Scope')">
 													<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 												</button>
 											</div>
@@ -1670,10 +1672,10 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 										<div class="panel panel-info" style="margin-top: 10px;">
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++finalrsqrslno %>. Scope of LRDE</span>
+													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++finalrsqrslno %>. Scope of <%=labcode %></span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
-												id="btnEditor18" onclick="showEditor2('LRDE Scope')">
+												id="btnEditor18" onclick="showEditor2('<%=labcode %> Scope')">
 													<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 												</button>
 											</div>
@@ -2971,7 +2973,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 						$('#btn1').hide();
 						html=ajaxresult[6];
 					}
-					else if(x==="lrde scope" && ajaxresult[7]!=null){
+					else if(x==="<%=labcode.toLowerCase() %> scope" && ajaxresult[7]!=null){
 						$('#btn2').show();
 						$('#btn1').hide();
 						html=ajaxresult[7];
@@ -3030,7 +3032,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 				}else if(a==="RSP Scope") {
 					showEditor(a);
 					$('#btnEditor7').click();
-				}else if(a==="LRDE Scope") {
+				}else if(a==="<%=labcode %> Scope") {
 					showEditor(a);
 					$('#btnEditor8').click();
 				}else if(a==="Success Criterion") {
@@ -3353,7 +3355,7 @@ function showEditor2(a){
 				$('#btn3').hide();
 				html=ajaxresult[6];
 			}
-			else if(x==="lrde scope" && ajaxresult[7]!=null){
+			else if(x==="<%=labcode.toLowerCase() %> scope" && ajaxresult[7]!=null){
 				$('#btn4').show();
 				$('#btn3').hide();
 				html=ajaxresult[7];
@@ -3412,7 +3414,7 @@ function showEditor2(a){
 		}else if(a==="RSP Scope") {
 			showEditor(a);
 			$('#btnEditor17').click();
-		}else if(a==="LRDE Scope") {
+		}else if(a==="<%=labcode %> Scope") {
 			showEditor(a);
 			$('#btnEditor18').click();
 		}else if(a==="Success Criterion") {

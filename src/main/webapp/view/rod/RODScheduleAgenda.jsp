@@ -7,7 +7,10 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
- 
+<spring:url value="/resources/css/sweetalert2.min.css" var="sweetalertCss" />
+<spring:url value="/resources/js/sweetalert2.min.js" var="sweetalertJs" />
+<link href="${sweetalertCss}" rel="stylesheet" />
+<script src="${sweetalertJs}"></script>
 <style type="text/css">
 label{  
 font-weight: bold;
@@ -170,6 +173,65 @@ ul, #myUL {
 .active-1 {
   display: block;
 }
+
+
+.folder-tree {
+  list-style: none;
+  padding-left: 0;
+}
+
+.folder-tree .list-group-item {
+  border: none;
+  padding: 8px 15px;
+  transition: all 0.3s ease;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.folder-tree .folder-item:hover {
+  background: #f0f8ff;
+  transform: translateX(5px);
+}
+
+.folder-tree .file-item:hover {
+  background: #f9f9f9;
+  transform: scale(1.02);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.folder-tree .subfolder {
+  display: none;
+  margin-left: 20px;
+  padding-left: 10px;
+  border-left: 2px dashed #ddd;
+}
+
+.folder-tree .folder-item.open > .subfolder {
+  display: block;
+}
+
+.folder-icon {
+  margin-right: 8px;
+  transition: transform 0.3s;
+  font-size: 18px;
+}
+
+.pdf-check {
+  cursor: pointer;
+}
+
+.folder-item.open > .folder-icon {
+  color: #f39c12 !important;
+  transform: scale(1.3);
+  transition: all 0.3s ease;
+}
+
+.folder-tree .folder-item:hover {
+  background: #f0f8ff;
+  transform: translateX(5px);
+}
+
 </style>
 
 </head>
@@ -308,7 +370,7 @@ ul, #myUL {
 																	
 										<td style="text-align: left; width: 15%;">
 										
-											<button type="button" class=" btn btn-sm btnfileattachment" name="add" onclick="openMainModal('0','a')" > <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button> 
+											<button type="button" class=" btn btn-sm btnfileattachment" name="add" onclick="openMainModal('0','0',' ','<%=projectid %>','0','add')" > <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button> 
 											<br>
 											<table class="attachlist" id="attachlistdiv_0">
 												
@@ -425,12 +487,12 @@ ul, #myUL {
 											<td  width="10%">
 												<input type="number" name="duration" class="form-control item_name" min="1"  placeholder="Minutes " value="<%=obj[12] %>" required />
 											</td>
-											<td style="text-align: left; width: 3%;">
+											<td style="text-align: left; width: 18%;">
 												<table>
 												<%for(Object[] doc : AgendaDocList) { 
 													if(obj[0].toString().equalsIgnoreCase(doc[1].toString())){%>
 													<tr>
-														<td><%=doc[3] %></td>
+														<td><%= doc[3] + " <span class='text-muted'> Ver " + doc[4] + "." + doc[5] + "</span>" %></td>
 														<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
 														<td style="width:1% ;white-space: nowrap;" ><a type="button" onclick="removeDocRow(this,<%=doc[0] %>);" > <i class=" fa fa-minus" style="color: red;"   ></i> </a></td>
 													<tr>													
@@ -439,9 +501,9 @@ ul, #myUL {
 									
 											</td>
 										
-											<td style="text-align: left; width: 15%;"> 
+											<td style="text-align: left; width: 5%;"> 
 												<span id="editattachname_<%=obj[0] %>" class="attachname"></span>
-												<button type="button" class=" btn btn-sm" name="add" id="attacheditbtn_<%=obj[0] %>" onclick="openMainModal('<%=obj[0] %>','e')" > <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+												<button type="button" class=" btn btn-sm" name="add" id="attacheditbtn_<%=obj[0] %>" onclick="openMainModal('<%=obj[0] %>','<%=obj[1] %>','<%=obj[3] %>','<%=obj[5] %>','0','edit')" > <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
 												<input type="hidden" name="attachid" id="editattachid_<%=obj[0] %>" value="">												
 											</td>																	
 											<td style="text-align: left; width: 6%;">
@@ -663,7 +725,26 @@ ul, #myUL {
 	<input type="hidden" name="FileUploadId" id="FileUploadId" value="" />
 </form>
 
-
+<!-- File Repo Modal -->
+<div class="modal fade" id="pdfModal" tabindex="-1" role="dialog" aria-labelledby="pdfModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content shadow-lg border-0">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="modalTitleId"><i class="fa fa-folder-open"></i></h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Folder Tree List -->
+         <ul class="list-group folder-tree" id="folderTree"></ul>
+      </div>
+	  <div class="modal-footer">
+		 <div style="color: red;font-weight: 500;">Note - Please upload PDF files only and PDF size should be smaller than 10mb.</div>
+	  </div>
+    </div>
+  </div>
+</div>
 
 <script type="text/javascript">
 
@@ -681,7 +762,7 @@ $("table").on('click','.tr_clone_addbtn' ,function() {
   count++;
   
   
-  $clone.find(".btnfileattachment").attr("onclick", 'openMainModal(\''+count+'\',\'a\')').val("").end();
+  $clone.find(".btnfileattachment").attr("onclick", 'openMainModal(\'0\',\'0\',\' \',\''+'<%=projectid %>'+'\',\''+count+'\',\'add\')').val("").end();
   $clone.find(".hidden").prop("id", 'attachid_'+count).prop("name", 'attachid_'+count).val("").end();
   $clone.find(".attachlist").prop("id","attachlistdiv_"+count).html("").end();
   $clone.find(".attachname").prop("id", 'attachname_'+count).html("").end();
@@ -801,51 +882,386 @@ function submitForm1(msg,frmid)
 
 <script type="text/javascript">
 
-function openMainModal (agendatempid,addedit)
-{
-	$('#addoredit').val(addedit);
-	$('#agendano').val(agendatempid);
-	$('#attachmentmodal').modal('show');
+var mainAgendaId="";
+var attachRepIds = [];
+var agendadocId=[];
+function openMainModal(agendaid,scheduleid,agendaname,projectid,cloneId,agendatype){
+	mainAgendaId="";
+	$('#addoredit').val(agendatype);
+	$('#agendano').val(cloneId);
+	mainAgendaId=agendaid;
+	if(agendaid!=0){
+		 $.ajax({
+             url: 'getAgendaAttachId.htm',
+             type: 'GET',
+             data: {agendaid: agendaid},
+             success: function(response) {
+            	 try {
+                     var parsedResponse = JSON.parse(response);
+                     if (Array.isArray(parsedResponse)) {
+                       parsedResponse.forEach(item => {
+                         attachRepIds.push(item[1]);
+                         agendadocId.push(item[0]);
+                       });
+                     } else {
+                       console.error('Response is not an array:', parsedResponse);
+                     }
+                   } catch (e) {
+                     console.error('Error parsing JSON response:', e);
+                   }
+             },
+          }); 
+	}
+	
+    $.ajax({
+        type: "GET",
+        url: "FileRepMasterListAllAjax.htm",
+        data: { projectid: projectid },
+        success: function(result) {
+            var data = JSON.parse(result);
+            var folderMap = {};
+            var html = '';
+            if (data.length > 0) {
+                projectName = data[0][4];
+           }
+
+            // First pass: build main folders
+            for (var i = 0; i < data.length; i++) {
+                var mainId = data[i][0];
+                var parentId = data[i][1];
+                var name = data[i][3];
+
+                if (parentId === 0) { // Main Folder
+                    folderMap[mainId] = { name: name, subfolders: [] };
+                }
+            }
+
+            // Second pass: attach subfolders
+            for (var j = 0; j < data.length; j++) {
+                var subId = data[j][0];
+                var subParentId = data[j][1];
+                var subName = data[j][3];
+
+                if (subParentId !== 0 && folderMap[subParentId]) { // Subfolder
+                    folderMap[subParentId].subfolders.push({ id: subId, name: subName });
+                }
+            }
+
+            // Generate HTML
+            if (folderMap && Object.keys(folderMap).length > 0) {
+                for (var mainId in folderMap) {
+                    if (folderMap.hasOwnProperty(mainId)) {
+                        html += '<li class="list-group-item folder-item" data-id="' + mainId + '" onclick="toggleFolder(this, ' + mainId + ', '+ projectid +', \'mainLevel\', \'' + agendatype + '\', '+ agendaid +')">';
+                        html += '<i class="fa fa-folder folder-icon text-warning"></i> ' + folderMap[mainId].name;
+                        html += '<ul class="list-group subfolder" style="display:none;">';
+
+                        var subfolders = folderMap[mainId].subfolders;
+                        for (var k = 0; k < subfolders.length; k++) {
+                            var sub = subfolders[k];
+                            html += '<li class="list-group-item folder-item" data-id="' + sub.id + '" onclick="toggleFolder(this, ' + sub.id + ', '+ projectid +', \'subLevel\', \'' + agendatype + '\', '+ agendaid +')">';
+                            html += '<i class="fa fa-folder folder-icon text-warning"></i> ' + sub.name;
+                            html += '<ul class="list-group subfolder" id="subfolder-files-' + sub.id + '" style="display:none;"></ul>';
+                            html += '</li>';
+                        }
+
+                        html += '<div class="" id="mainfolder-files-' + mainId + '" style="display:none;"></div>';
+                        html += '</ul></li>';
+                    }
+                }
+            }else {
+                html += '<div>No Data Available.</div></br>';
+                html += '<div>Please go to <span style="font-weight: 500; color: blue;">Document Repository Module &rarr; Document Rep Master</span>, create a folder, and upload pdfs.</div></br>';
+            }
+
+            $('.folder-tree').html(html);
+            $('#pdfModal').modal('show');
+            if (projectName !== undefined && projectName.trim() !== '' && agendatype !== "add") {
+                $('#modalTitleId').text('PDF Files Explorer for ' + agendaname);
+            }else{
+            	$('#modalTitleId').text('PDF Files Explorer');
+            }
+        }
+    });
 }
+
+function toggleFolder(element, folderId, projecId, type, agendatype, agendaid) {
+	
+    if ($(event.target).closest('.file-item').length > 0 || $(event.target).hasClass('pdf-check')) {
+        return;
+    }
+    event.stopPropagation(); // Prevent parent toggling
+
+    var $elem = $(element);
+    var $icon = $elem.children('.folder-icon');
+    var $subfolder = $elem.children('ul.subfolder');
+
+    if ($subfolder.is(':visible')) {
+        $subfolder.slideUp(200);
+        $elem.removeClass('open');
+        $icon.removeClass('fa-folder-open').addClass('fa-folder');
+    } else {
+        $subfolder.slideDown(200);
+        $elem.addClass('open');
+        $icon.removeClass('fa-folder').addClass('fa-folder-open');
+
+        // Load files if not loaded yet
+        var fileContainerId = '';
+        if (type === 'mainLevel') {
+            fileContainerId = '#mainfolder-files-' + folderId;
+        } else {
+            fileContainerId = '#subfolder-files-' + folderId;
+        }
+
+        if ($(fileContainerId).is(':empty')) {
+            loadFolderFiles(folderId, projecId, type, agendatype, agendaid);
+        }
+    }
+}
+
+function loadFolderFiles(folderId, projecId, type, agendatype, agendaid) {
+    $.ajax({
+        type: "GET",
+        url: "getOldFileDocNames.htm",
+        data : {
+   			projectId : projecId,
+   			fileId : folderId,
+   			fileType : type,
+	    },
+        success: function(result) {
+            var data = JSON.parse(result);
+            var html = '';
+
+            for (var i = 0; i < data.length; i++) {
+                var fileName = data[i][6];
+                html += '<li class="list-group-item file-item">';
+                html += '<input type="checkbox" class="pdf-check mr-2" id="checkId'+data[i][0]+'" value="' + data[i][7] + '" data-filename="'+data[i][6]+'" ';
+                if(data[i][7]!= 0 && attachRepIds.length>0 && attachRepIds.includes(data[i][7]) && agendatype !== "add") {
+                    html += ' checked disabled';
+                }
+                html += '/>';
+                html += '<i class="fa fa-file-pdf-o text-danger"></i> ' + fileName;
+                html += '<span class="text-muted" style="font-size:13px"> Ver '+data[i][4]+'.'+data[i][5]+'</span>';
+                html += '<i class="fa fa-download" style="cursor: pointer; margin-left:8px;" onclick="fileDownload(' + data[i][7] + ', \'' + type + '\')"></i>';
+                html += '<i class="fa fa-upload" aria-hidden="true" style="color: #0a5dff; cursor: pointer; margin-left:12px;" onclick="fileUpload(\''+data[i][0]+'\')"></i></button><br/>';
+                html += '<label for="fileInput" id="uploadlabel'+data[i][0]+'" style="margin-left: 20px; margin-top: 10px; display: none;">'
+                html += '<input type="file" name="docFileInput" id="fileInput'+data[i][0]+'" required="required"  accept="application/pdf"/> '
+                html += '<button type="button" class="btn btn-sm back" onclick="fileSubmit(\''+type+'\',\''+data[i][0]+'\',\''+data[i][2]+'\',\''+data[i][3]+'\',\''+data[i][4]+'\',\''+data[i][5]+'\',\''+data[i][6]+'\', '+agendaid+')">Upload</button>'
+                html += '</label>'
+                html += '</li>';
+            }
+
+            if (type === 'mainLevel') {
+                $('#mainfolder-files-' + folderId).html(html).show();
+            } else {
+                $('#subfolder-files-' + folderId).html(html).show();
+            }
+        }
+    });
+}
+
+function fileDownload(fileId, fileType) {
+    $.ajax({
+        url: 'fileDownload.htm/' + fileId + '?fileType=' + encodeURIComponent(fileType),
+        type: 'GET',
+        xhrFields: {
+            responseType: 'blob'
+        },
+        success: function (data, status, xhr) {
+        	  const blob = new Blob([data], { type: 'application/pdf' });
+              const blobUrl = URL.createObjectURL(blob);
+              window.open(blobUrl, '_blank');
+              setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+        },
+        error: function (xhr, status, error) {
+		     Swal.fire({
+			        icon: 'error',
+			        title: 'Error',
+			        text: 'Failed to download/open file.',
+			 });
+        }
+    });
+}
+
+// Allow only one checkbox to be selected at a time
+function singleSelect(checkbox) {
+    $('.pdf-check').not(checkbox).not(':disabled').prop('checked', false);
+}
+
+// Event delegation for dynamically added checkboxes
+$(document).on('change', '.pdf-check', function() {
+  // Send AJAX request with the selected checkbox value
+  var selectedValue = $(this).val();
+  var filename = $(this).data('filename');
+  var isChecked = $(this).prop('checked');
+  var agendtype=$('#addoredit').val();
+  
+  if(isChecked){
+	  if (agendtype==='add') {
+      	setagendaattachval(selectedValue,filename);
+      }else{
+ 	     Swal.fire({
+	            title: 'Are you sure to linking?',
+	            icon: 'question',
+	            showCancelButton: true,
+	            confirmButtonColor: 'green',
+	            cancelButtonColor: '#d33',
+	            confirmButtonText: 'Yes'
+	        }).then((result) => {
+	            if (result.isConfirmed) {
+	          	  $.ajax({
+	        	        url: 'addAgendaLinkFile.htm', 
+	        	        type: 'GET',
+	        	        data: { attachId: selectedValue,agendaId: mainAgendaId},
+	        	        success: function(response) {
+	        	        	 Swal.fire({
+	        	    	            icon: 'success',
+	        	    	            title: 'Success',
+	        	    	            text: 'Document linked successfully!',
+	        	    	            allowOutsideClick :false
+	        	    	          });
+	        	        	 $('#pdfModal').hide();
+	        	        	$('.swal2-confirm').click(function() {
+	        	                location.reload();
+	        	            });
+	        	        },
+	        	        error: function() {
+	        	          Swal.fire({
+	        	            icon: 'error',
+	        	            title: 'Error',
+	        	            text: 'An error occurred while submitting the checkbox selection.',
+	        	          });
+	        	        }
+	        	    });
+	          }else{
+	        	  $('.pdf-check').not(':disabled').prop('checked', false);
+	          }
+	     });
+      }
+    }
+});
+
+function fileUpload(Id){
+	 var label = document.getElementById("uploadlabel"+Id);
+   if (label.style.display === "none") {
+       label.style.display = "inline-block";
+   } else {
+       label.style.display = "none";
+   }
+}
+
+function fileSubmit(type,repid,mainId,subId,version,release,docName,agendaid) {
+    event.preventDefault();
+    var fileInput =  $("#fileInput"+repid)[0].files[0];
+    var agendtype=$('#addoredit').val();
+    
+	 if (fileInput === undefined) {
+	       Swal.fire({
+	            icon: 'error',
+	            title: 'Oops...',
+	            text: 'Please select a file to upload!',
+	            allowOutsideClick :false
+	       });
+	       return;
+	  }
+	// Check if the file is a PDF
+	   var fileType = fileInput.type;
+	   if (fileType !== 'application/pdf') {
+	       Swal.fire({
+	           icon: 'error',
+	           title: 'Invalid File Type',
+	           text: 'Please select a PDF file!',
+	           allowOutsideClick: false
+	       });
+	       return;
+	   }
+	   // Check if the file size is less than 10MB (10 * 1024 * 1024 bytes)
+	   var fileSize = fileInput.size;
+	   if (fileSize > 10 * 1024 * 1024) {
+	       Swal.fire({
+	           icon: 'error',
+	           title: 'File Too Large',
+	           text: 'Please select a file smaller than 10MB!',
+	           allowOutsideClick: false
+	       });
+	       return;
+	   }
+	   
+       Swal.fire({
+            title: 'Are you sure to upload?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: 'green',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+		        var projectid = <%= projectid %>;
+		        var formData = new FormData();
+		        formData.append("file", $("#fileInput"+repid)[0].files[0]);
+		        formData.append("fileType", type);
+		        formData.append("fileRepId", repid);
+		        formData.append("projectid", projectid);
+		        formData.append("mainId", mainId);
+		        formData.append("subId", subId);
+		        formData.append("docName", docName);
+		        formData.append("version", version);
+		        formData.append("release", release);
+		        formData.append("agendaid", agendaid);
+		        formData.append("${_csrf.parameterName}", "${_csrf.token}");
+		        // Use AJAX to submit the form data
+		        $.ajax({
+		            url: 'DocFileUpload.htm',
+		            type: 'POST',
+		            data: formData,
+		            contentType: false,
+		            processData: false,
+		            success: function(response) {
+		            	attachid=response;
+		              	 if (agendtype==='add') {
+		      	        	setagendaattachval(attachid,docName);
+		      	        }else{
+		             	  Swal.fire({
+		 		    	       	title: "Success",
+		 		                text: "File Uploaded Successfully",
+		 		                icon: "success",
+		 		                allowOutsideClick :false
+		 		         		});
+		             	  $('#pdfModal').hide();
+		             	  $('.swal2-confirm').click(function() {
+		   	                location.reload();
+		   	               });
+		             	}
+		            },
+		            error: function(xhr, status, error) {
+		            	  Swal.fire({
+		                      icon: 'error',
+		                      title: 'Error',
+		                      text: 'An error occurred while uploading the file'
+		                  });
+		                  console.log(xhr.responseText);
+		             }
+		        });
+        }
+    });
+}
+
 
 function setagendaattachval(attachid, attchName)
 {
-	
 	$addedit=$('#addoredit').val();
 	$agendaelem=$('#agendano').val();
-	
-	
-	
-	if($addedit==='a'  )
+	if($addedit==='add'  )
 	{
 		let agendano=$('#agendano').val();
 		let html= $("#attachlistdiv_"+agendano).html();
-		let attname ;
-		if(attchName.length>5){
-			attname = attchName.substring(0, 5).concat("...");
-		}else{
-			attname=attchName;
-		}
-		 
+		let attname =attchName;
 		html += '<tr id="a_'+agendano+'"><td title='+attchName+'> '+attname+'</td><td style="width:1% ;white-space: nowrap;">';
-		html += '<button type="button"  onclick="$(this).parent(\'td\').parent(\'tr\').remove();"  > <i class="btn btn-sm fa fa-minus" style="color: red;"   ></i> </button>';  /* onclick="$(\'#a_'+agendano+'\').remove();" */
+		html += '<button type="button"  onclick="$(this).parent(\'td\').parent(\'tr\').remove();"  > <i class="btn btn-sm fa fa-minus" style="color: red;"   ></i> </button>';
 		html += '<input type="hidden" name="attachid_'+agendano+'" value="'+attachid+'" /></td>';
-		
 		html += '</tr>';
 		$("#attachlistdiv_"+agendano).html(html);
-		
-		 
-		
-	}else if($addedit==='e'){		
-		$('#editattachid_'+$agendaelem).val(attachid);
-		$('#editattachname_'+$agendaelem).html(attchName+'&nbsp;&nbsp; <i class="btn btn-sm fa fa-minus" style="color: red;" onclick="editattachremove('+$agendaelem+');"  ></i>');
-		$('#attacheditbtn_'+$agendaelem).hide();
 	}
-	
-	
-	$('#exampleModalCenter1').modal('hide');
-	$('#attachmentmodal').modal('hide');
-		
+	$('#pdfModal').modal('hide');
 }
 
 
@@ -864,6 +1280,12 @@ function FileDownload(fileid1)
 	$('#FileUploadId').val(fileid1);
 	$('#downloadform').submit();
 }
+$(document).ready(function(){
+	<%for( Object[] agenda : rodagendalist){ %>
+		EditAgendaPresentors ('<%=agenda[0]%>','<%=agenda[9]%>');
+	<%}%>
+	
+});
 </script>
 
 <script type="text/javascript">
@@ -903,223 +1325,6 @@ function onclickchangeMain(ele)
 	$(ele).css("font-weight", "700");
 }
 
-
-
-
-$(document).ready(function(){
-
-	var toggler = document.getElementsByClassName("caret");
-	var i;
-	for (i = 0; i <toggler.length; i++) {
-	  toggler[i].addEventListener("click", function() {	
-		this.parentElement.querySelector(".nested").classList.toggle("active");   
-	    this.classList.toggle("caret-down");
-	  });
-	}
-	
-	<%for( Object[] agenda : rodagendalist){ %>
-		EditAgendaPresentors('<%=agenda[0]%>','<%=agenda[9]%>');
-	<%}%>
-	
-});
-
-function setmodelheader(m,l1,l2,l3,l4,lev,project,divid){
-	
-	/* var modelhead=project+'  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  '+m; */
-	
-	var modelhead=m;
-	
-	if(lev>=1)
-	{
-		 modelhead +='  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  '+l1; 
-	}
-	if(lev>=2)
-	{
-		modelhead +='  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  '+l2;
-	}
-	if(lev>=3)
-	{
-		modelhead +='  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  '+l3;
-	}
-	if(lev>=4)
-	{
-		modelhead +='  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  '+l4;
-	}
-	$('#'+divid).html(modelhead);
-}
-
-
-function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
-{
-		
-		var $projectid=$('#ProjectId').val();		
-		setmodelheader(mname,lname1,lname2,lname3,lname4,lev,$('#projectname').val(),'model-card-header');		
-		$('#amendmentbox').css('display','none');
-		$('#submitversion').val('');
-		$('#prevversion').text('');
-		$('#downloadbtn').remove();
-		$('#FileName').prop('readonly',false);
-		$('#FileName').val('');
-		$('#modeldescshow').text('');
-		$('#uploadbox').css('display','none');
-		$('#ammendmentbox').css('display','none');
-		
-		$.ajax({
-				type : "GET",
-				url : "FileHistoryListAjax.htm",
-				data : {
-					projectid : $projectid,
-					mainsystemval : mid,
-					sublevel : lev ,
-					s1:l1,
-					s2:l2,
-					s3:l3,
-					s4:l4,				
-				},
-				datatype: 'json',
-				success : function(result)
-					{
-						var result= JSON.parse(result);
-						var values= Object.keys(result).map(function(e){
-						return result[e];
-					})			
-						
-					
-						/* --------------------------------------------ajax nested--------------------------------------- */		
-							
-							 $.ajax({
-									type : "GET",
-									url : "FileDocMasterListAll.htm",
-									data : {
-										projectid : $projectid,		
-									},
-									datatype: 'json',
-									success : function(result1)
-											{
-												var result1= JSON.parse(result1);
-												var values1= Object.keys(result1).map(function(e){
-													return result1[e];
-												})
-														
-												var values2=values1;
-												/* --------------------------------------------------tree making--------------------------------------------------------- */			
-													var str='<ul>';
-													for(var v1=0;v1<values1.length;v1++)
-													{ 
-														if(values1[v1][2]===1)
-														{  
-															str +='<li> <span class="caret-1" id="docsysl1'+values1[v1][0]+'" onclick="onclickchange(this);" >'+values1[v1][3] +'</span> <ul  class="nested-1"> <li>'; 
-													 /* ----------------------------------------level 1------------------------------------- */	
-																for(var v2=0;v2<values2.length;v2++)
-																{ 
-																	if(values1[v2][2]===2 && values2[v2][1]==values1[v1][0] )
-																	{  
-																		str += '<li> <span class="caret-1" id="docsysl2'+values2[v2][0]+'" onclick="onclickchange(this);" >' +values2[v2][3]+'</span> <ul  class="nested-1"> <li>'; 
-																/* ----------------------------------------level 2------------------------------------- */
-																			
-																			for(var v3=0;v3<values.length;v3++)
-																			{ 
-																				if(  values[v3][1]==values2[v2][0])
-																				{
-																					str += '<li>';
-																					
-																					if(values[v3][4]!=0)
-																					{
-																						str += '<input type="radio" class="DocModalcheckbox" onchange="setagendaattachval(\''+ values[v3][4] +'\', \''+values[v3][3] +'\');" ></button>' ;
-																					}
-																					else
-																					{
-																						str += '<input type="radio" class="DocModalcheckbox" disabled onclick="alert(\'Document Not Uploaded\');" ></button>' ;
-																					}
-																					
-																					str +=' <span class="caret-last-1" id="docsysl3'+values[v3][0]+'" onclick="onclickchange(this);">'+values[v3][3]+'('+values[v3][9]+')</span>';
-																						
-																					/* str +='<span><button type="button" class="btn"  style="background-color: transparent;margin: -3px 0px;" onclick="showuploadbox(\''+values1[v1][3]+'\',\''+values2[v2][3]+'\',\''+values[v3][3]+'\',\''+values[v3][8]+'\',\''+values[v3][6]+'\',\''+values[v3][0]+'\',\''+values[v3][9]+'\',\''+values[v3][10]+'\',\''+values1[v1][0]+'\',\''+values2[v2][0] +'\')" >';
-																					
-																					str +=		'<i class="fa fa-upload" style="color: #007bff" aria-hidden="true"></i>';
-																					str +=		'</button>'; */
-																					if(values[v3][4]!=0)
-																					{ 
-																						str +=' <span class="version">Ver '+values[v3][8]+'.'+values[v3][6];
-																						str +=		' <button type="radio" name="selectattach" class="btn"  style="background-color: transparent;margin: -5px 0px;" onclick="FileDownload(\''+values[v3][4]+'\')">';                                     
-																						str += 			'<i class="fa fa-download" aria-hidden="true"></i>';
-																						str +=		'</button> ';
-																				
-																						/* str +=		'  <button type="button" class="btn"  style="background-color: #CFFFFE;padding : 0px 5px 3px;margin: 0px -10px;border: 0.1px solid grey;" onclick="showamuploadbox(\''+values1[v1][3]+'\',\''+values2[v2][3]+'\',\''+values[v3][3]+'\',\''+values[v3][8]+'\',\''+values[v3][6]+'\',\''+values[v3][0]+'\',\''+values[v3][9]+'\',\''+values[v3][10]+'\',\''+values1[v1][0]+'\',\''+values2[v2][0] +'\',\''+values[v3][4]+'\')" >';                                     
-																						str += 			' Amendment <img style="height:20px; width: 20px; " src="view/images/amendment-icon-2.png"> ';   /* <i class="fa fa-plus" style="color: #3DB2FF" aria-hidden="true"></i> <i class="fa fa-upload" style="color: #007bff" aria-hidden="true"></i> 
-																						str +=		'</button> </span>'; */
-																						
-																						str += '</span>';
-																					} 
- 																					str +='	</span> </li>';
-																						
-																				}
-																			}			
-																	
-																			
-																/* ----------------------------------------level 2------------------------------------- */			
-																		str +=	'</li> </ul> </li>';
-																	}
-																} 
-															
-												 	/* ----------------------------------------level 1------------------------------------- */
-																			
-															str +='</li> 	</ul> 	</li>';	
-														} 
-													} 
-												/* --------------------------------------------------tree making--------------------------------------------------------- */
-													str += '</ul>';
-													
-													$('#fileuploadlist').html(str);
-													
-													var toggler = document.getElementsByClassName("caret-1");
-													$('#s1').val(l1);
-													$('#s2').val(l2);
-													$('#s3').val(l3);
-													$('#s4').val(l4);
-													$('#mainsystemval').val(mid);
-													$('#sublevel').val(lev);
-													$('#Path').val(mname+'/'+lname1);
-													
-													var i;
-													for (i = 0; i <toggler.length; i++) {
-													  toggler[i].addEventListener("click", function() {	
-														this.parentElement.querySelector(".nested-1").classList.toggle("active-1");   
-													    this.classList.toggle("caret-down-1");
-													  });
-													}
-													$('#exampleModalCenter1').modal('show');
-															
-														
-													
-											},
-											error: function(XMLHttpRequest, textStatus, errorThrown) {
-												alert("Internal Error Occured !!");
-									            alert("Status: " + textStatus);
-									            alert("Error: " + errorThrown); 
-									        }  
-											
-							 		})
-							 
-						/* --------------------------------------------ajax nested--------------------------------------- */
-						
-					
-				},
-				error: function(XMLHttpRequest, textStatus, errorThrown) {
-					alert("Internal Error Occured !!");
-		            alert("Status: " + textStatus);
-		            alert("Error: " + errorThrown); 
-		        }  
-		 })
-				
-}
-
-
-</script>
-<!--  -----------------------------------------------agenda attachment js ---------------------------------------------- -->
-
-
-<script type="text/javascript">
 
 function editcheck(editfileid)
 {
@@ -1203,7 +1408,7 @@ var filexcount=0;
 						s += '<option value="" selected disabled>Choose...</option>';
 								 for (i = 0; i < values.length; i++) {									
 									s += '<option value="'+values[i][0]+'">'
-											+values[i][1] + " (" +values[i][3]+")" 
+											+values[i][1] + ", " +values[i][3]+"" 
 											+ '</option>';
 								} 
 								 
@@ -1239,7 +1444,7 @@ var filexcount=0;
 						s += '<option value="" selected disabled>Choose...</option>';
 								 for (i = 0; i < values.length; i++) {									
 									s += '<option value="'+values[i][0]+'">'
-											+values[i][1] + " (" +values[i][3]+")" 
+											+values[i][1] + ", " +values[i][3]+"" 
 											+ '</option>';
 								} 
 								 
@@ -1254,6 +1459,6 @@ var filexcount=0;
 	
 
 
- 
+
 </body>
 </html>

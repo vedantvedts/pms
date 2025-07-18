@@ -2334,6 +2334,18 @@ function formCheck(frmid)
 	}
 	
 }
+
+$(document).on('shown.bs.modal', function () {
+	  $(this).find('.selectdee').each(function () {
+	    if (!$(this).hasClass('select2-hidden-accessible')) {
+	      $(this).select2({
+	        dropdownParent: $(this).closest('.modal'),
+	        width: '100%'
+	      });
+	    }
+	  });
+	});
+
 </script>
 <!-- Prudhvi 27/03/2024 end -->	
 </body>

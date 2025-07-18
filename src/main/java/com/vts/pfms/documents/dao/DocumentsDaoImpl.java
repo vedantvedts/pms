@@ -806,7 +806,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 	
-	private static final String DATATYPEMASTER="SELECT a.DataTypeMasterId, a.DataTypePrefix, a.DataLength, a.AliasName, a.DataStandardName FROM pfms_data_type_master a WHERE a.IsActive = 1 ORDER BY a.DataTypeMasterId DESC";
+	private static final String DATATYPEMASTER="SELECT a.DataTypeMasterId, a.DataTypePrefix, a.DataLength, a.AliasName, a.DataStandardName FROM pfms_data_type_master a WHERE a.IsActive = 1 ORDER BY a.DataLength, a.DataTypeMasterId DESC";
 	@Override
 	public List<Object[]> dataTypeMasterList() throws Exception {
 		try {

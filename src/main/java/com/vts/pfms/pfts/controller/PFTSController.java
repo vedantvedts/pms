@@ -195,8 +195,9 @@ public class PFTSController {
 			pf.setEstimatedCost(Double.parseDouble(req.getParameter("Estimtedcost")));
 			pf.setPftsStatusId(1l);
 			pf.setRemarks("Nil");
+			pf.setIsActive(1);
 			
-			List<DemandDetails> prevDemandFile=service.getprevDemandFile(projectId);
+//			List<DemandDetails> prevDemandFile=service.getprevDemandFile(projectId);
 			
 			Long result=service.addDemandfile(pf);
 			
@@ -206,7 +207,7 @@ public class PFTSController {
 				redir.addAttribute("resultfail","Something went worng");
 			}
 			
-			redir.addFlashAttribute("projectid",projectId);
+			redir.addAttribute("projectid",projectId);
 			return  "redirect:/ProcurementStatus.htm";
 		}catch (Exception e) 
 		{			
@@ -544,7 +545,7 @@ public class PFTSController {
 					 pf.setEnvisagedStatus("Demand to be Initiated");
 					 pf.setRemarks(remarks);
 					 pf.setPrbDateOfInti(new java.sql.Date(inputFormat.parse(intiDate).getTime()));
-					
+					 pf.setIsActive(1);
 					 pf.setCreatedBy(UserId);
 					 pf.setCreatedDate(sdf.format(new Date()));
 					 pf.setEnvisagedFlag("Y");
@@ -720,6 +721,7 @@ public class PFTSController {
 			     pf.setRemarks("Nil");
 				 pf.setCreatedBy(UserId);
 				 pf.setCreatedDate(sdf.format(new Date()));
+				 pf.setIsActive(1);
 				 
 				 Long result=service.addDemandfile(pf);
 					
@@ -826,7 +828,7 @@ public class PFTSController {
 	     			}
 	             
 	             redir.addFlashAttribute("projectslist",projectlist);
-				 redir.addFlashAttribute("projectid",projectId);
+				 redir.addAttribute("projectid",projectId);
 				 redir.addFlashAttribute("fileStatusList",service.getFileStatusList(projectId));
 				 redir.addFlashAttribute("pftsStageList", service.getpftsStageList());
 				 return  "redirect:/ProcurementStatus.htm";
@@ -901,7 +903,7 @@ public class PFTSController {
 	     			}
 	             
 	             redir.addFlashAttribute("projectslist",projectlist);
-				 redir.addFlashAttribute("projectid",projectId);
+				 redir.addAttribute("projectid",projectId);
 				 redir.addFlashAttribute("fileStatusList",service.getFileStatusList(projectId));
 				 redir.addFlashAttribute("pftsStageList", service.getpftsStageList());
 				 return  "redirect:/ProcurementStatus.htm";
@@ -957,7 +959,7 @@ public class PFTSController {
 					}
 					
 					redir.addFlashAttribute("projectslist",projectlist);
-					redir.addFlashAttribute("projectid",ProjectId);
+					redir.addAttribute("projectid",ProjectId);
 					redir.addFlashAttribute("fileStatusList",service.getFileStatusList(ProjectId));
 					redir.addFlashAttribute("pftsStageList", service.getpftsStageList());
 					return  "redirect:/ProcurementStatus.htm";
@@ -1147,9 +1149,10 @@ public class PFTSController {
 										}
 									}
 								}
-								pf.setDemandType("M");
-								pf.setPftsStatusId(1l);
+								 pf.setDemandType("M");
+								 pf.setPftsStatusId(1l);
 							     pf.setRemarks("Nil");
+							     pf.setIsActive(1);
 								 pf.setCreatedBy(UserId);
 								 pf.setCreatedDate(sdf.format(new Date()));
 								 pf.setProjectId(Long.parseLong(projectid));
@@ -1167,7 +1170,7 @@ public class PFTSController {
 				} catch (Exception e) {
 				e.printStackTrace();
 				}
-				redir.addFlashAttribute("projectid", projectid);
+				redir.addAttribute("projectid", projectid);
 				return "redirect:/ProcurementStatus.htm";
 				
 			}
@@ -1447,7 +1450,7 @@ public class PFTSController {
 				e.printStackTrace();
 			} 
 			
-			redir.addFlashAttribute("projectid", projectid);
+			redir.addAttribute("projectid", projectid);
 			return "redirect:/ProcurementStatus.htm";
 		}
 		

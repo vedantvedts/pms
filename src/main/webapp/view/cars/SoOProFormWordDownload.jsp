@@ -8,7 +8,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>CARS-02</title>
-<script src="./webjars/jquery/3.6.0/jquery.min.js"></script>
+<script src="./webjars/jquery/3.4.0/jquery.min.js"></script>
 <spring:url value="/resources/js/FileSaver.min.js" var="FileSaver" />
 <script src="${FileSaver}"></script>
 

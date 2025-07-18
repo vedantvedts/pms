@@ -112,8 +112,8 @@ public class CARSController {
 	
 	public String getLabLogoAsBase64() throws IOException {
 
-//		String path = labLogoPath + "\\images\\lablogos\\lrdelogo.png";
-		Path logoPath = Paths.get(labLogoPath,"images","lablogos","lrdelogo.png");
+//		String path = LabLogoPath + "\\images\\lablogos\\lablogo.png";
+		Path logoPath = Paths.get(labLogoPath,"images","lablogos","lablogo.png");
 		try {
 			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(logoPath.toFile()));
 		} catch (FileNotFoundException e) {
@@ -124,8 +124,8 @@ public class CARSController {
 	
 	public String getSecondLabLogoAsBase64() throws IOException {
 		
-//		String path = labLogoPath + "\\images\\lablogos\\lrdelogo2.png";
-		Path logoPath = Paths.get(labLogoPath,"images","lablogos","lrdelogo2.png");
+//		String path = LabLogoPath + "\\images\\lablogos\\lablogo2.png";
+		Path logoPath = Paths.get(labLogoPath,"images","lablogos","lablogo2.png");
 		try {
 			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(logoPath.toFile()));
 		} catch (FileNotFoundException e) {
@@ -548,6 +548,7 @@ public class CARSController {
 	@RequestMapping(value="RSQRDetailsSubmit.htm",method= {RequestMethod.GET,RequestMethod.POST})
 	public String RequiremnetIntroSubmit(HttpServletRequest req,HttpSession ses, RedirectAttributes redir) {
 		String UserId=(String)ses.getAttribute("Username");
+		String labcode=(String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside RSQRDetailsSubmit.htm "+UserId);
 		try {
 		String carsInitiationId=req.getParameter("carsInitiationId");
@@ -560,9 +561,9 @@ public class CARSController {
 		Object[] carsRSQR = service.carsRSQRDetails(carsInitiationId);
 		long result=0l;
 		if(carsRSQR==null) {
-			result=service.carsRSQRDetailsSubmit(carsInitiationId,attributes,Details,UserId);
+			result=service.carsRSQRDetailsSubmit(carsInitiationId,attributes,Details,UserId,labcode);
 		}else {
-			result=service.carsRSQRDetailsUpdate(carsInitiationId,attributes,Details,UserId);
+			result=service.carsRSQRDetailsUpdate(carsInitiationId,attributes,Details,UserId,labcode);
 			if (result > 0) {
 				redir.addAttribute("result", attributes+" updated Successfully");
 			} else {

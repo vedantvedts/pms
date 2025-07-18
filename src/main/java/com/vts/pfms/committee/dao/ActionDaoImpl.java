@@ -1103,6 +1103,7 @@ public class ActionDaoImpl implements ActionDao{
 		return result;
 	}
 
+
 	private static final String RFALABDETAILS="SELECT a.labid,a.labcode,a.labname,a.labaddress,a.labcity,a.labpin FROM lab_master a WHERE a.labcode=:labcode";
 	@Override
 	public Object[] RfaLabDetails(String LabCode) throws Exception {
@@ -1494,7 +1495,6 @@ public class ActionDaoImpl implements ActionDao{
 			e.printStackTrace();
 			return null;
 		}
-
 	}
 	
 	
@@ -1640,7 +1640,7 @@ public class ActionDaoImpl implements ActionDao{
 			+ "  OR\r\n"
 			+ " (:projectType = 'I' AND (:initiationId = 'A' OR a.projectId = :initiationId))\r\n"
 			+ ")\r\n"
-			+ "AND a.rfadate BETWEEN :fdate AND :tdate AND a.rfastatus IN ('AA','AF','AC','RC','AX','REV','AP','RV','ARC') ORDER BY rfaid DESC"; 
+			+ "AND a.rfadate BETWEEN :fdate AND :tdate AND a.rfastatus IN ('AA','AF','AC','RC','AX','REV','AP','RV','ARC','RFC') ORDER BY rfaid DESC"; 
 	@Override
 	public List<Object[]> GetRfaActionList1(String projectType, String projectId, String initiationId, String fdate, String tdate) throws Exception {
 		

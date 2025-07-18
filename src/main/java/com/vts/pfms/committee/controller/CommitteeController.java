@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -120,6 +121,7 @@ import com.vts.pfms.committee.dto.CommitteeScheduleDto;
 import com.vts.pfms.committee.dto.CommitteeSubScheduleDto;
 import com.vts.pfms.committee.dto.EmpAccessCheckDto;
 import com.vts.pfms.committee.dto.MeetingCheckDto;
+import com.vts.pfms.committee.model.CommitteScheduleMinutesDraft;
 import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.committee.model.CommitteeDefaultAgenda;
 import com.vts.pfms.committee.model.CommitteeDivision;
@@ -130,6 +132,7 @@ import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
 import com.vts.pfms.committee.model.CommitteeMomAttachment;
 import com.vts.pfms.committee.model.CommitteeProject;
 import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
+import com.vts.pfms.committee.model.CommitteeSchedulesMomDraftRemarks;
 import com.vts.pfms.committee.model.PmsEnote;
 import com.vts.pfms.committee.model.ProgrammeMaster;
 import com.vts.pfms.committee.service.CommitteeService;
@@ -239,7 +242,7 @@ public class CommitteeController {
 	private  SimpleDateFormat sdf2=new SimpleDateFormat("yyyy-MM-dd");
 	private SimpleDateFormat rdf=new SimpleDateFormat("dd-MM-yyyy");
 	private static final Logger logger=LogManager.getLogger(CommitteeController.class);
-
+	private SimpleDateFormat sdtf = fc.getSqlDateAndTimeFormat();
 	@RequestMapping(value = "CommitteeAdd.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String CommitteeAddPage(HttpServletRequest req, HttpSession ses) throws Exception
 	{	
@@ -285,7 +288,8 @@ public class CommitteeController {
 				redir.addAttribute("projectappliacble",req.getParameter("projectapplicable"));
 				return redirectWithError(redir, "CommitteeAdd.htm", "'committee Name' must contain Alphabets and Numbers.!");
 			}
-			if(InputValidator.isContainsHTMLTags(guideLines)) {
+			
+			if( InputValidator.isContainsHTMLTags(guideLines)) {
 				redir.addAttribute("projectid", projectid);
 				redir.addAttribute("projectappliacble",req.getParameter("projectapplicable"));
 				return redirectWithError(redir, "CommitteeAdd.htm", "'Guidelines' should not contain HTML Tags.!");
@@ -294,7 +298,7 @@ public class CommitteeController {
 			
 			CommitteeDto committeeDto=new CommitteeDto();
 
-			committeeDto.setCommitteeName(committeeShortName);
+			committeeDto.setCommitteeName(committeeName);
 			committeeDto.setCommitteeShortName(committeeShortName);
 			committeeDto.setCreatedBy(UserId);
 			committeeDto.setCommitteeType(req.getParameter("committeetype"));
@@ -461,7 +465,7 @@ public class CommitteeController {
 				redir.addAttribute("committeeid", req.getParameter("committeeid"));
 				return redirectWithError(redir, "CommitteeEdit.htm", "'Guidelines' should not contain HTML Tags.!");
 			}
-			if(!InputValidator.isContainsNumberOnly(PeriodicDuration)) {
+			if(req.getParameter("periodic").equalsIgnoreCase("P") && !InputValidator.isContainsNumberOnly(PeriodicDuration)) {
 				redir.addAttribute("committeemainid", req.getParameter("committeeid"));
 				redir.addAttribute("committeeid", req.getParameter("committeeid"));
 				return redirectWithError(redir, "CommitteeEdit.htm", "'Periodic Duration' must contain Numbers.!");
@@ -1233,58 +1237,59 @@ public class CommitteeController {
 
 			long flagcount=0;
 			
-			String Subject=req.getParameter("subject").trim();
-			String Comment=req.getParameter("Comment").trim();
-			String officer1Role=req.getParameter("Rec1_Role").toUpperCase();
-			String officer2Role=req.getParameter("Rec2_Role").toUpperCase();
-			String officer3Role=req.getParameter("Rec3_Role").toUpperCase();
-			String approvingOfficerRole=req.getParameter("Approving_Role").toUpperCase();
-			if(InputValidator.isContainsHTMLTags(Subject)) {
-				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
-			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
-			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
-			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
-				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Subject' should not contain HTML Tags.!");
-			}
-			if(InputValidator.isContainsHTMLTags(Comment)) {
-				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
-			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
-			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
-			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
-				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Comment' should not contain HTML Tags.!");
-			}
-			if(!InputValidator.isContainsDescriptionPattern(officer1Role)) {
-				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
-			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
-			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
-			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
-				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Officer1 Role' should contains Alphabets, Numbers or special characters.!");
-			}
-			if(!InputValidator.isContainsDescriptionPattern(officer2Role)) {
-				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
-			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
-			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
-			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
-				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Officer2 Role' should contains Alphabets, Numbers or special characters.!");
-			}
-			if(!InputValidator.isContainsDescriptionPattern(officer3Role)) {
-				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
-			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
-			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
-			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
-				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Officer3 Role' should contains Alphabets, Numbers or special characters.!");
-			}
-			if(!InputValidator.isContainsDescriptionPattern(approvingOfficerRole)) {
-				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
-			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
-			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
-			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
-				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Approving Officer Role' should contains Alphabets, Numbers or special characters.!");
-			}
+	
+//			if(InputValidator.isContainsHTMLTags(Subject)) {
+//				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+//			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+//			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
+//			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
+//				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Subject' should not contain HTML Tags.!");
+//			}
+//			if(InputValidator.isContainsHTMLTags(Comment)) {
+//				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+//			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+//			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
+//			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
+//				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Comment' should not contain HTML Tags.!");
+//			}
+//			if(!InputValidator.isContainsDescriptionPattern(officer1Role)) {
+//				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+//			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+//			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
+//			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
+//				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Officer1 Role' should contains Alphabets, Numbers or special characters.!");
+//			}
+//			if(!InputValidator.isContainsDescriptionPattern(officer2Role)) {
+//				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+//			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+//			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
+//			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
+//				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Officer2 Role' should contains Alphabets, Numbers or special characters.!");
+//			}
+//			if(!InputValidator.isContainsDescriptionPattern(officer3Role)) {
+//				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+//			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+//			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
+//			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
+//				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Officer3 Role' should contains Alphabets, Numbers or special characters.!");
+//			}
+//			if(!InputValidator.isContainsDescriptionPattern(approvingOfficerRole)) {
+//				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+//			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+//			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
+//			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
+//				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Approving Officer Role' should contains Alphabets, Numbers or special characters.!");
+//			}
 			
 			PmsEnote pe = req.getParameter("EnoteId")!=null && req.getParameter("EnoteId").equalsIgnoreCase("0")? new PmsEnote():  service.getPmsEnote(req.getParameter("EnoteId"));
 
 			if(flag!=null && flag.equalsIgnoreCase("UpdateForward")) {
+				String Subject=req.getParameter("subject").trim();
+				String Comment=req.getParameter("Comment").trim();
+				String officer1Role=req.getParameter("Rec1_Role").toUpperCase();
+				String officer2Role=req.getParameter("Rec2_Role").toUpperCase();
+				String officer3Role=req.getParameter("Rec3_Role").toUpperCase();
+				String approvingOfficerRole=req.getParameter("Approving_Role").toUpperCase();
 				pe.setRefNo(req.getParameter("RefNo"));
 				pe.setRefDate(pe.getRefDate()!=null ? pe.getRefDate(): java.sql.Date.valueOf(req.getParameter("RefDate")));
 				pe.setSubject(Subject);
@@ -1436,7 +1441,7 @@ public class CommitteeController {
 
 		logger.info(new Date() +"EnoteStatusTrack.htm"+req.getUserPrincipal().getName());
 
-		String EnoteTrackId=req.getParameter("EnoteTrackId");
+		String EnoteTrackId=req.getParameter("EnoteTrackId").trim();
 
 		req.setAttribute("EnoteTransactionList",service.EnoteTransactionList(EnoteTrackId));
 		return "committee/EnoteTrack";
@@ -2809,7 +2814,7 @@ public class CommitteeController {
 			{
 				List<Object[]> EmployeeList = service.EmployeeListNoInvitedMembers(committeescheduleid,LabCode);
 				List<Object[]> ExpertList = service.ExternalMembersNotInvited(committeescheduleid);
-
+				req.setAttribute("designationlist", adminservice.DesignationList());
 				req.setAttribute("committeereplist", service.CommitteeMemberRepList(committeescheduledata[1].toString()));
 				req.setAttribute("committeeinvitedlist", committeeinvitedlist);
 				req.setAttribute("EmployeeList", EmployeeList);
@@ -10641,6 +10646,149 @@ public class CommitteeController {
 		}
 	}
 	/* ********************************************* Programme AD End ************************************************ */
+	
+	@RequestMapping(value = "sendDraftMom.htm", method = RequestMethod.GET)
+	public @ResponseBody String sendDraftMom(HttpSession ses, HttpServletRequest req) throws Exception 
+	{
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String LoginType = (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		long count = 0;
+		Gson json = new Gson();
+		try {
+	
+			String committeescheduleid = req.getParameter("committeescheduleid");
+			
+			List<CommitteScheduleMinutesDraft> draftList = service.getCommitteScheduleMinutesDraftList();
+			draftList = draftList.stream().filter(e->e.getScheduleId().toString().equalsIgnoreCase(committeescheduleid))
+							.collect(Collectors.toList());					
+			if(draftList.size()>0 ) {
+				return json.toJson(-1);
+			}
+			
+			
+			List<Object[]> committeeinvitedlist = service.CommitteeAtendance(committeescheduleid);
+			
+			
+			
+			committeeinvitedlist = committeeinvitedlist.stream().filter(e->e[11].toString().equalsIgnoreCase(labcode) && !e[3].toString().equalsIgnoreCase("CS")  )
+									.collect(Collectors.toList()) ;
+			
+			
+			
+			
+			
+			for(Object[]obj:committeeinvitedlist) {
+				CommitteScheduleMinutesDraft cmd = new CommitteScheduleMinutesDraft();
+				
+				cmd.setScheduleId(Long.parseLong(committeescheduleid) );	
+				cmd.setSentDate(LocalDate.now());
+				cmd.setSentBy(UserId);	
+				cmd.setEmpid(Long.parseLong(obj[0].toString()));
+				
+				count = service.sentMomDraft(cmd);
+			}
+			
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return json.toJson(count);
+	}
+	@RequestMapping(value = "CommitteeMomDraft.htm", method = RequestMethod.GET)
+	public  String CommitteeMomDraft(HttpSession ses, HttpServletRequest req
+			,RedirectAttributes redir
+	) throws Exception 
+	{
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String LoginType = (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+	
+		try {
+			
+			String pageSize = req.getParameter("pageSize");			
+			
+			pageSize = pageSize!=null?pageSize:"5";
+			
+			try {
+			    long page = Long.parseLong(pageSize);
+			} catch (NumberFormatException e) {
+			    req.setAttribute("errorInPageSize", "Invalid page size: Please enter a valid number.");
+			    pageSize = "0";
+			}
+			List<Object[]>draftMomList = service.getdraftMomList(EmpId,pageSize);
+			req.setAttribute("draftMomList", draftMomList);
+			req.setAttribute("pageSize", pageSize);
+		}catch (Exception e) {
+			e.printStackTrace();
+			 	return "static/Error";
+		}
+		
+		return "committee/committeeDraftList";
+	}
+	
+	@RequestMapping(value = "submitMomRemarks.htm", method = RequestMethod.GET)
+	public @ResponseBody String submitMomRemarks(HttpSession ses, HttpServletRequest req) throws Exception 
+	{
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String LoginType = (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		long count = 0;
+		Gson json = new Gson();
+		try {
+			
+			String remarks = req.getParameter("remarks");			
+			Long scheduleId = Long.parseLong(req.getParameter("scheduleId") );			
+			
+			CommitteeSchedulesMomDraftRemarks cmd = new CommitteeSchedulesMomDraftRemarks();
+			
+			System.out.println(LocalDateTime.now().toString());
+			
+			cmd.setEmpid(Long.parseLong(EmpId));
+			cmd.setScheduleId(scheduleId);
+			cmd.setRemarks(remarks);
+			cmd.setCreatedDate(sdtf.format(new Date()));
+			cmd.setIsactive(1);		
+			
+			 count = service.saveCommitteeSchedulesMomDraftRemarks(cmd);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return json.toJson(count);
+	}
+	@RequestMapping(value = "getMomDraftRemarks.htm", method = RequestMethod.GET)
+	public @ResponseBody String getMomDraftRemarks(HttpSession ses, HttpServletRequest req) throws Exception 
+	{
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String LoginType = (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		List<Object[]>list = new ArrayList<Object[]>();
+		Gson json = new Gson();
+		try {
+			
+					
+			Long scheduleId = Long.parseLong(req.getParameter("scheduleId") );			
+			
+		
+			
+	
+			list = service.getCommitteeSchedulesMomDraftRemarks(scheduleId);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return json.toJson(list);
+	}
+
+	
 	
 	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
 	    redir.addAttribute("resultfail", message);

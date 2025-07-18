@@ -182,7 +182,7 @@ public class CARSServiceImpl implements CARSService{
 	}
 	
 	@Override
-	public long carsRSQRDetailsSubmit(String carsInitiationId, String attributes, String details, String userId) throws Exception {
+	public long carsRSQRDetailsSubmit(String carsInitiationId, String attributes, String details, String userId, String labcode) throws Exception {
 		
 		CARSRSQR rsqr = new CARSRSQR();
 		
@@ -196,7 +196,7 @@ public class CARSServiceImpl implements CARSService{
 			rsqr.setProposedMandT(details);
 		}else if(attributes.equalsIgnoreCase("RSP Scope")) {
 			rsqr.setRSPScope(details);
-		}else if(attributes.equalsIgnoreCase("LRDE Scope")) {
+		}else if(attributes.equalsIgnoreCase(labcode+" Scope")) {
 			rsqr.setLRDEScope(details);
 		}else if(attributes.equalsIgnoreCase("Success Criterion")) {
 			rsqr.setCriterion(details);
@@ -206,7 +206,7 @@ public class CARSServiceImpl implements CARSService{
 		LocalDate now = LocalDate.now();
 		
 		rsqr.setCARSInitiationId(Long.parseLong(carsInitiationId));
-		rsqr.setCARSRSQRNo("LRDE/CARS/RSQR-"+carsInitiationId+"/"+now.getYear());
+		rsqr.setCARSRSQRNo(labcode+"/CARS/RSQR-"+carsInitiationId+"/"+now.getYear());
 		rsqr.setCreatedBy(userId);
 		rsqr.setCreatedDate(sdtf.format(new Date()));
 		rsqr.setIsActive(1);
@@ -215,7 +215,7 @@ public class CARSServiceImpl implements CARSService{
 	}
 	
 	@Override
-	public long carsRSQRDetailsUpdate(String carsInitiationId, String attributes, String details, String userId) throws Exception {
+	public long carsRSQRDetailsUpdate(String carsInitiationId, String attributes, String details, String userId, String labcode) throws Exception {
 		CARSRSQR rsqr = dao.getCARSRSQRByCARSInitiationId(Long.parseLong(carsInitiationId));
 		
 		if(attributes.equalsIgnoreCase("Introduction")) {
@@ -228,7 +228,7 @@ public class CARSServiceImpl implements CARSService{
 			rsqr.setProposedMandT(details);
 		}else if(attributes.equalsIgnoreCase("RSP Scope")) {
 			rsqr.setRSPScope(details);
-		}else if(attributes.equalsIgnoreCase("LRDE Scope")) {
+		}else if(attributes.equalsIgnoreCase(labcode+" Scope")) {
 			rsqr.setLRDEScope(details);
 		}else if(attributes.equalsIgnoreCase("Success Criterion")) {
 			rsqr.setCriterion(details);

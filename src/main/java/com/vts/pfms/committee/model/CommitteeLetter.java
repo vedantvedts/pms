@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="committee_inivitationLetter")
+@Table(name="committee_inivitationletter")
 public class CommitteeLetter implements Serializable {
 
 	private static final long serialVersionUID = 1L;

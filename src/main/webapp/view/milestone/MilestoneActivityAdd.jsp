@@ -90,6 +90,7 @@ h6{
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
   String ProjectId=(String)request.getAttribute("ProjectId");
+  String projectDirector=(String)request.getAttribute("projectDirector");
   Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");
 
   
@@ -139,7 +140,7 @@ h6{
                           <div class="form-group">
                            <label  >Activity Name: <span class="mandatory" style="color: red;" >*</span>
                            </label><br>
-                             <input class="form-control description-input" type="text"name="ActivityName" id="ActivityName"  style="width:100% " maxlength="1000" required="required">
+                             <input class="form-control " type="text"name="ActivityName" id="ActivityName"  style="width:100% " maxlength="1000" required="required">
                            </div>
                            </div>
                            
@@ -210,7 +211,7 @@ h6{
 			
 	 		<input type="submit" class="btn btn-primary btn-sm submit " id="sub" value="SUBMIT" name="sub"  onclick="return confirm('Are You Sure To Submit ?')" > 
 		   <input type="submit" class="btn btn-primary btn-sm back " id="sub" value="Back" name="sub" onclick="SubmitBack()"  formaction="MilestoneActivityList.htm"> 
-			
+			   <input type="hidden" name="projectDirector" value="<%=projectDirector%>">  
 		
 		</div>
       <input type="hidden" name="ProjectId"	value="<%=ProjectId %>" /> 
