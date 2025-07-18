@@ -141,7 +141,7 @@
         $('#myTable').DataTable({
             "lengthMenu": [10, 25, 50, 75, 100],
             "pagingType": "simple",
-            "pageLength": 5
+            "pageLength": 10
         });
     });
     
