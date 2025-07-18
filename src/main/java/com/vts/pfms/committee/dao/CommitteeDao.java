@@ -7,6 +7,7 @@ import com.vts.pfms.committee.dto.CommitteeConstitutionApprovalDto;
 import com.vts.pfms.committee.dto.CommitteeMainDto;
 import com.vts.pfms.committee.dto.CommitteeScheduleDto;
 import com.vts.pfms.committee.dto.MeetingCheckDto;
+import com.vts.pfms.committee.model.CommitteScheduleMinutesDraft;
 import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.committee.model.CommitteeConstitutionApproval;
 import com.vts.pfms.committee.model.CommitteeConstitutionHistory;
@@ -27,6 +28,7 @@ import com.vts.pfms.committee.model.CommitteeSchedule;
 import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
 import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.committee.model.CommitteeScheduleMinutesDetails;
+import com.vts.pfms.committee.model.CommitteeSchedulesMomDraftRemarks;
 import com.vts.pfms.committee.model.CommitteeSubSchedule;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.committee.model.PmsEnote;
@@ -344,5 +346,9 @@ public interface CommitteeDao {
 	public List<Object[]> prgmProjectList(String programmeId) throws Exception;
 	public ProgrammeMaster getProgrammeMasterById(String programmeId) throws Exception;
 	/* ********************************************* Programme AD End************************************************ */
-
+	public long sentMomDraft(CommitteScheduleMinutesDraft cmd)throws Exception;
+	public List<CommitteScheduleMinutesDraft> getCommitteScheduleMinutesDraftList( )throws Exception;
+	public List<Object[]> getdraftMomList(String empId, String pageSize)throws Exception;
+	public long saveCommitteeSchedulesMomDraftRemarks(CommitteeSchedulesMomDraftRemarks cmd)throws Exception;
+	public List<Object[]> getCommitteeSchedulesMomDraftRemarks(Long scheduleId)throws Exception;
 }

@@ -183,7 +183,7 @@ String ses=(String)request.getParameter("result");
 					<div class="row mt-4">
 					<div class="col-md-2"><label class="control-label" style="margin-bottom: 4px !important;font-size: 1.2 rem;">Initiated By : </label></div>
 					<div class="col-md-3">
-					<select class="form-control selectdee" name="InitiatedBy" id="InitiatedBy" onchange="checkNewEmp()">
+					<select class="form-control selectdee" name="InitiatedBy" id="InitiatedBy" >
 					<%for(Object[]obj:employeelist){ %>
 					<option value="<%=obj[0].toString()%>"   <%if(CommitteMainEnoteList!=null && obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[17].toString())) {%> selected  <%} %>><%=obj[1].toString() %>, <%=obj[2].toString() %></option>
 					<%} %>

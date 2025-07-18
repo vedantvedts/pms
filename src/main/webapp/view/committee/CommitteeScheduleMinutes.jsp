@@ -11,7 +11,11 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
-
+<spring:url value="/resources/css/sweetalert2.min.css"
+	var="sweetalertCss" />
+<spring:url value="/resources/js/sweetalert2.min.js" var="sweetalertJs" />
+<link href="${sweetalertCss}" rel="stylesheet" />
+<script src="${sweetalertJs}"></script>
 <title>COMMITTEE SCHEDULE MINUTES</title>
 
  <script src="${ckeditor}"></script>
@@ -278,6 +282,90 @@ cursor: pointer;
 	-webkit-box-shadow: inset 0 0 6px black;
 	transition: 0.5s;
 }
+
+
+.chat-container {
+	max-width: 800px;
+	height: 600px;
+	margin: 30px auto;
+	background-color: #f8f9fa;
+	border: 1px solid #dee2e6;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.chat-body {
+	flex-grow: 1;
+	overflow-y: auto;
+}
+
+.chat-message {
+	margin: 10px 0;
+	padding: 12px 16px;
+	border-radius: 20px;
+	max-width: 75%;
+	word-break: break-word;
+	font-size: 14px;
+}
+
+.user-msg {
+	background-color: #ffffff;
+	border: 1px solid #dee2e6;
+	align-self: flex-start;
+}
+
+.admin-msg {
+	background-color: #d1e7dd;
+	border: 1px solid #badbcc;
+	align-self: flex-end;
+	margin-left: auto;
+}
+
+.chat-message strong {
+	display: block;
+	font-size: 13px;
+	color: #343a40;
+	margin-bottom: 4px;
+}
+
+.timestamp {
+	font-size: 11px;
+	color: #6c757d;
+	text-align: right;
+	margin-top: 6px;
+}
+
+.chat-input {
+	position: sticky;
+	bottom: 0;
+	z-index: 10;
+}
+
+.sender-name {
+	font-weight: bold;
+	display: block;
+	color: #343a40;
+}
+
+/* .btn.submit {
+    width: 150px;
+    border-radius: 25px;
+    padding: 8px 20px;
+    font-weight: 600;
+} */
+@media ( max-width : 768px) {
+	.chat-container {
+		height: auto;
+	}
+	.chat-message {
+		max-width: 90%;
+	}
+	.btn.submit {
+		width: 100%;
+	}
+}
 	</style>
 </head>
 <body>
@@ -317,7 +405,7 @@ List<Object[]> committeescheduledata=(List<Object[]>)request.getAttribute("commi
 List<String> SplCommitteeCodes=(List<String>)request.getAttribute("SplCommitteeCodes");
 
 Object[]MomAttachment=(Object[])request.getAttribute("MomAttachment");
-
+Long empId = (Long)session.getAttribute("EmpId");
 String formname=(String)request.getAttribute("formname");
 if(formname!=null){
 	GenId=formname;
@@ -391,7 +479,8 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 		
 		<%if(SplCommitteeCodes.stream().anyMatch(x -> x.trim().equalsIgnoreCase(committeecode.trim())) && Long.parseLong(projectid)>0){ %>
 		    <!-- <input type="submit" class="btn  btn-sm view" value="DPFM L" formaction="CommitteeMinutesNewDfm.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" /> -->
-		<%if(committeescheduleeditdata[22].toString().equals("N")){%>	
+		<%if(committeescheduleeditdata[22].toString().equals("N")){%>
+		<%-- 	<button type="button" class="btn btn-sm btn-primary my-2 my-sm-0" onclick="sendDraftMoM('<%=committeescheduleeditdata[6]%>')" style="font-size:12px;font-family: 'Montserrat', sans-serif;font-weight: 800"> SEND DRAFT</button>	 --%>
 			<button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0" formaction=""  style="font-size:12px;font-family: 'Montserrat', sans-serif;font-weight: 800" onclick="sendEmail(<%=committeescheduleeditdata[6]%>)">
 			<i class="fa fa-paper-plane-o" aria-hidden="true"></i>&nbsp; EMAIL</button> 
 <!-- 					 <input type="submit" class="btn  btn-sm view" value="PROTECTED MINUTES" name="PROTECTED MINUTES" formaction="CommitteeMinutesNewProtected.htm" formmethod="get" formtarget="_blank" style="background-color:#DF4646 ;color:white ;font-size:12px;" /> 
@@ -792,7 +881,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	          						<span  style="font-size:14px">3.<%=unitcount %>.2.<%=unit11 %>.</span>  </h4>
 	          						<div style="margin-top:-22px; margin-left: 55px;">
 	          						
-	          						<input type="text" class="description-input"  name="OutComesId" id="OutComesId" maxlength="100" value="<%= "Presentation "+ (++Presentationcount) %>">
+	          						<input type="text" class=""  name="OutComesId" id="OutComesId" maxlength="100" value="<%= "Presentation "+ (++Presentationcount) %>">
 	          						
 	          						</div>
 	          						<div style="margin-top:-26px; float: right;">
@@ -926,7 +1015,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	          						<span  style="font-size:14px">3.<%=unitcount %>.2.<%=unit12 %>.</span>  </h4>
 	          						<div style="margin-top:-22px; margin-left: 55px;">
 	          						
-	          						<input type="text" class="description-input"  name="OutComesId" id="OutComesId" maxlength="100" value="<%= "Discussion "+ (++discussionscount) %>">
+	          						<input type="text" class=""  name="OutComesId" id="OutComesId" maxlength="100" value="<%= "Discussion "+ (++discussionscount) %>">
 	          						
 	          						</div>
 	          						<div style="margin-top:-26px; float: right;">
@@ -2008,7 +2097,7 @@ function showAttachmentModal(){
    					<div class="col-md-12"  align="left" style="margin-left: 0px;width:100%;">
 						<label >Action Name</label>
 
-						 <textarea class="form-control description-input" required="required"  name="NoteText" id="editorair" style="width:100%;height: 140px;" maxlength="1000"></textarea>
+						 <textarea class="form-control" required="required"  name="NoteText" id="editorair" style="width:100%;height: 140px;" maxlength="5000"></textarea>
 					</div>
 
   					
@@ -2042,7 +2131,7 @@ function showAttachmentModal(){
 								  <div class="col-md-4" id="PresDiscHeader">
                         		<div class="form-group">
                         		<label class="">Header </label>
-  	                               <input type="text" class="form-control description-input" name="PresDiscHeaderVal" value="" id="PresDiscHeaderVal" maxlength="100">
+  	                               <input type="text" class="form-control" name="PresDiscHeaderVal" value="" id="PresDiscHeaderVal" maxlength="100">
 								</div>
 								</div>
 								
@@ -2177,9 +2266,57 @@ function showAttachmentModal(){
 </div>
 
 
-
+	
 
 <%} %>
+
+
+<!-- Modal to give remarks and show remarks   -->
+	<div class="modal fade" id="chatModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="width: 200%; margin-left: -50%;">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel"></h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="chat-container d-flex flex-column">
+
+						<!-- Scrollable chat body -->
+						<div class="chat-body flex-grow-1 overflow-auto px-3 py-2" id="messageEditor">
+
+						</div>
+
+						<!-- Fixed input section -->
+						<div class="chat-input border-top p-3 bg-white">
+
+							<div class="form-group mb-2">
+								<label for="Remarks"><strong>Comment:</strong></label>
+								<textarea rows="2" class="form-control" id="RemarksEdit"
+									name="Remarks" placeholder="Enter Comments" required></textarea>
+							</div>
+							<div class="text-center">
+								<input type="button" class="btn btn-primary btn-sm submit"
+									value="Submit" name="sub" onclick="submitRemarks()"> 
+									
+								<!-- <input type="button" class="btn btn-danger btn-sm delete"
+									value="Close" name="sub"
+									onclick="return confirm('Are You Sure To Close?')"> -->
+							</div>
+
+
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
 <script type="text/javascript">
 
 function editcheck(editfileid)
@@ -3104,6 +3241,153 @@ function sendEmails(a){
 	    }
 	});
 <%} %>
+
+
+function sendDraftMoM(a){
+	   $('body').css("filter", "blur(1.0px)");
+		 $('#spinner').show(); 
+		 var committeescheduleid= a;
+		$.ajax({
+		type:'GET',
+		url:'sendDraftMom.htm',
+		datatype:'json',
+		data:{
+			committeescheduleid:committeescheduleid,
+		},
+		success:function(result){
+			var ajaxresult = JSON.parse(result)
+			console.log("meeting draft sent##"+ajaxresult)
+			if(Number(ajaxresult)>0){
+				alert("Mom Draft Sent Successfully");
+				 $('#spinner').hide();
+				 $('body').css("filter", "none");
+				 location.reload();
+			}else{
+				/* alert("Mom Draft has already been Sent ! Wait for their Remarks"); */
+				 $('#spinner').hide();
+				 $('body').css("filter", "none");
+				showModal(committeescheduleid)
+			}
+		}
+	})
+}
+
+var scheduleId="0";
+function showModal(a){
+	console.log(a)
+	$.ajax({
+	
+		type:'GET',
+		url:'getMomDraftRemarks.htm',
+		datatype:'json',
+		data:{
+			scheduleId:a,
+		},
+		success : function (result){
+			var ajaxresult = JSON.parse(result);
+			
+			var empid = '<%=empId %>'
+			
+			var html = "";
+		
+			for (var i=0;i<ajaxresult.length;i++){
+				
+				var sender = ajaxresult[i][4];
+				if(sender==empid){
+					html=html +'<div class="chat-message user-msg">'
+				}else{
+					html=html +'<div class="chat-message admin-msg">'
+				}
+				
+				var senderName = ajaxresult[i][0]+", "+ajaxresult[i][1];
+				var message = ajaxresult[i][2];
+				var arr= ajaxresult[i][3].split(" ");
+				var msgdate = arr[0].split("-")[2]+"-"+arr[0].split("-")[1]+"-"+arr[0].split("-")[0];
+				
+				var msgtime = arr[1].substring(0,5);
+				
+				html = html +
+						'<strong class="sender-name">'+senderName +'</strong>'+message 
+						+'<div class="timestamp">'+msgdate+' '+ msgtime+'</div></div>'
+			}
+			$('#messageEditor').html(html);
+		}
+		
+		
+	})
+	
+	scheduleId=a;
+	
+$('#chatModal').modal('show');
+}
+
+
+
+function submitRemarks(){
+	console.log(scheduleId)
+	
+	
+	var remarks = $('#RemarksEdit').val().trim();
+	console.log(remarks)
+	
+	if(remarks.length==0){
+		Swal.fire({
+			  icon: "error",
+			  title: "Oops...",
+			  text: "Remarks can not be empty!",
+			
+			});
+		
+		event.preventDefault();
+		return false;
+	}
+	console.log(remarks +"remarks")
+	
+	Swal.fire({
+title: 'Are you sure?',
+text: "Do you want to submit the remarks?",
+icon: 'warning',
+showCancelButton: true,
+confirmButtonText: 'Yes',
+cancelButtonText: 'No'
+}).then((result) => {
+if (result.isConfirmed) {
+    $.ajax({
+        type: 'GET',
+        url: 'submitMomRemarks.htm',
+        dataType: 'json',  
+        data: {
+            scheduleId: scheduleId,
+            remarks: remarks
+        },
+        success: function (result) {
+            var ajaxresult = JSON.parse(result);
+            if (Number(ajaxresult) > 0) {
+                $('#chatModal').modal('hide'); // hide modal first
+
+                Swal.fire({
+                    icon: "success",
+                    title: "SUCCESS",
+                    text: "Remarks Given",
+                    allowOutsideClick: false
+                }).then(() => {
+                    // After Swal is closed, reopen the modal
+                    $('#RemarksEdit').val('');
+                    showModal(scheduleId);
+                });
+            }
+        },
+        error: function () {
+            // Optional: show error message
+            Swal.fire('Error', 'There was an issue submitting your remarks.', 'error');
+        }
+    });
+}
+})
+	
+	
+}
+
 </script>
 
 </body>

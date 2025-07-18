@@ -2202,4 +2202,61 @@ public class MasterController {
 		
 	}
 		
+	
+	@RequestMapping (value="OfficerExternalAjaxAdd.htm", method=RequestMethod.GET)
+	public @ResponseBody String  OfficerExternalAjaxAdd (HttpSession ses, HttpServletRequest  req, HttpServletResponse res, RedirectAttributes redir) throws Exception
+	{
+		String UserId= (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +" Inside OfficerExternalAjaxAdd.htm "+UserId);
+		Gson json = new Gson();
+		try {
+			String EmpNo=req.getParameter("EmpNo");
+			
+			OfficerMasterAdd officermasteradd= new OfficerMasterAdd();
+			officermasteradd.setLabId(req.getParameter("labId"));
+			officermasteradd.setEmpNo(req.getParameter("EmpNo").toUpperCase());
+			String name=req.getParameter("EmpName");			
+			String words[]=name.split("\\s");  
+			String capitalizeWord="";  
+			for(String w:words){  
+				String first=w.substring(0,1);  
+				String afterfirst=w.substring(1);  
+				capitalizeWord+=first.toUpperCase()+afterfirst+" ";  
+			}	
+			name = name.substring(0,1).toUpperCase() + name.substring(1);
+			officermasteradd.setTitle(req.getParameter("title"));
+			officermasteradd.setSalutation(req.getParameter("salutation"));
+			officermasteradd.setEmpName(capitalizeWord);
+			officermasteradd.setDesignation(req.getParameter("Designation"));
+			officermasteradd.setExtNo("-");
+			officermasteradd.setEmail("-");
+			officermasteradd.setDivision("0");
+			officermasteradd.setDronaEmail("-");
+			officermasteradd.setInternalEmail("-");
+			officermasteradd.setMobileNo("0123456789");
+			officermasteradd.setSrNo("0");
+			officermasteradd.setLabCode(labcode);
+			long count=0;
+			
+			try {
+				count= service.OfficerExtInsert(officermasteradd, UserId);	
+				
+				return json.toJson(count);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+				return json.toJson(0);
+			}
+			
+			
+		}
+		catch (Exception e){			
+			e.printStackTrace();
+			logger.error(new Date() +" Inside OfficerExternalAjaxAdd.htm "+UserId , e);
+			return json.toJson(0);
+		}
+		
+	}
+
 }

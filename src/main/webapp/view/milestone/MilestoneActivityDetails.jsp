@@ -207,6 +207,7 @@ div {
 
 .panel-info {
 	border-color: #bce8f1;
+	
 }
 
 .form-check {
@@ -227,7 +228,14 @@ div {
 	List<Object[]> ActivityTypeList = (List<Object[]>) request.getAttribute("ActivityTypeList");
 	List<Object[]> EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
 	String projectId=(String)request.getAttribute("ProjectId");
+	String Logintype=(String)session.getAttribute("LoginType");
+	String projectDirector=(String)request.getAttribute("projectDirector");
+	
+	Long EmpId =  (Long)session.getAttribute("EmpId") ;
+	
 	%>
+	
+
 	
 	<% String ses=(String)request.getParameter("result");
 	 	String ses1=(String)request.getParameter("resultfail");
@@ -248,11 +256,21 @@ div {
 
 
 	<div class="container-fluid">
+	
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card" style="border-color: #00DADA; margin-top: -1%; margin-bottom: 50px;">
-					<div class="card-body" style="margin-top: -8px">
-						<div class="panel panel-info" style="margin-top: 0px;">
+					
+					
+					<div align="right" class="m-1" >
+					<form action="#">
+					<input type="submit" class="btn btn-primary btn-sm back " id="sub" value="Back" name="sub" formaction="MilestoneActivityList.htm" formnovalidate="formnovalidate">
+					<input type="hidden" name="ProjectId" value="<%=getMA[10]%>" />
+					</form>
+					</div>
+					 
+					 <div class="card-body" style="margin-top: -18px">
+						<div class="panel panel-info m-1" style="margin-top: 0px;">
 							<div class="panel-heading ">
 								<h4 class="panel-title">
 									<span style="font-size: 14px"><%=getMA[1]%> : MIL-<%=getMA[5]%>
@@ -296,7 +314,7 @@ div {
 								<div class="row">
 									<div class="col-md-11" align="left" style="margin-left: 20px;">
 
-										<div class="panel panel-info">
+										<div class="panel panel-info m-1">
 											<div class="panel-heading">
 												<h4 class="panel-title">
 
@@ -343,7 +361,7 @@ div {
 													<div class="col-md-12" align="left"
 														style="margin-left: 0px;">
 
-														<div class="panel panel-info">
+														<div class="panel panel-info m-1">
 															<div class="panel-heading">
 																<h4 class="panel-title">
 																	<span style="font-size: 14px">
@@ -389,7 +407,7 @@ div {
 																	<div class="col-md-12" align="left"
 																		style="margin-left: 0px;">
 
-																		<div class="panel panel-info">
+																		<div class="panel panel-info m-1">
 																			<div class="panel-heading">
 																				<h4 class="panel-title">
 																					<span style="font-size: 14px">
@@ -432,7 +450,7 @@ div {
 																				<div class="row">
 																					<div class="col-md-12" align="left" style="margin-left: 0px;">
 
-																						<div class="panel panel-info">
+																						<div class="panel panel-info m-1">
 																							<div class="panel-heading">
 																								<h4 class="panel-title">
 																									<span style="font-size: 14px">
@@ -484,7 +502,7 @@ div {
 																									<div class="col-md-12" align="left"
 																										style="margin-left: 0px;">
 
-																										<div class="panel panel-info">
+																										<div class="panel panel-info m-1">
 																											<div class="panel-heading">
 																												<h4 class="panel-title">
 																													<span style="font-size: 14px">Activity
@@ -538,9 +556,11 @@ div {
 																								}
 																								}
 																								%>
+																								
+					                                     <%if( Arrays.asList(getMA[8].toString(),getMA[9].toString(),obj[13].toString(),obj[15].toString(),obj1[13].toString(),obj1[15].toString(),obj2[13].toString(),obj2[15].toString(),obj3[13].toString(),obj3[15].toString(),projectDirector   ).contains(EmpId.toString()) || Logintype.equalsIgnoreCase("A") ){ %>						
 																								<div class="row">
 																									<div class="col-md-12" align="left" style="margin-left: 0px;">
-																										<div class="panel panel-info">
+																										<div class="panel panel-info m-1">
 																											<div class="panel-heading">
 																												<h4 class="panel-title">
 																													Activity E<%=Sub4Count%>
@@ -651,9 +671,12 @@ div {
 
 																														<input type="submit" class="btn btn-primary btn-sm submit " id="sub" value="SUBMIT" name="sub" onclick="return confirm('Are You Sure To Submit?');">
 																														<button type="submit" class="btn btn-primary btn-sm edit" id="sub" value="C" name="sub" formaction="MilestoneActivityDetails.htm" formnovalidate="formnovalidate">Edit</button>
+																														
 																														<input type="submit" class="btn btn-primary btn-sm back " id="sub" value="Back" name="sub" formaction="MilestoneActivityList.htm" formnovalidate="formnovalidate">
 																														<input type="hidden" name="ProjectId" value="<%=getMA[10]%>" />
 																													</div>
+																														<input type="hidden" name="projectDirector" value= "<%=projectDirector %>">
+																													<input type="hidden" name="projectDirector" value= "<%=projectDirector %>">
 																													<input type="hidden" name="LevelId" value="5" /> 
 																													<input type="hidden" name="formname" value="<%=ProjectSubCount%>/<%=Sub1Count%>/<%=Sub2Count%>/<%=Sub3Count%>/<%=Sub4Count%>" />
 																													<input type="hidden" name="MilestoneActivityId" value="<%=getMA[0]%>" /> 
@@ -727,6 +750,7 @@ $( document ).ready(function() {
 
 																									</div>
 																								</div>
+																								<%} %>
 																							</div>
 
 																						</div>
@@ -742,11 +766,12 @@ $( document ).ready(function() {
 																				}
 																				}
 																				%>
+										<%if( Arrays.asList(getMA[8].toString(),projectDirector,getMA[9].toString(),obj[13].toString(),obj[15].toString(),obj1[13].toString(),obj1[15].toString(),obj2[13].toString(),obj2[15].toString()   ).contains(EmpId.toString()) || Logintype.equalsIgnoreCase("A")  ){ %>						
 																				<div class="row">
 																					<div class="col-md-12" align="left"
 																						style="margin-left: 0px;">
 
-																						<div class="panel panel-info">
+																						<div class="panel panel-info m-1">
 																							<div class="panel-heading">
 																								<h4 class="panel-title">
 																									Activity D<%=Sub3Count%>
@@ -854,6 +879,7 @@ $( document ).ready(function() {
 																										<input type="submit" class="btn btn-primary btn-sm back " id="sub" value="Back" name="sub" formaction="MilestoneActivityList.htm" formnovalidate="formnovalidate">
 																										<input type="hidden" name="ProjectId" value="<%=getMA[10]%>" />
 																									</div>
+																										<input type="hidden" name="projectDirector" value= "<%=projectDirector %>">
 																									<input type="hidden" name="LevelId" value="4" />
 																									<input type="hidden" name="formname" value="<%=ProjectSubCount%>/<%=Sub1Count%>/<%=Sub2Count%>/<%=Sub3Count%>" />
 																									<input type="hidden" name="MilestoneActivityId" value="<%=getMA[0]%>" /> 
@@ -928,6 +954,7 @@ $( document ).ready(function() {
 
 																					</div>
 																				</div>
+																				<%} %>
 																			</div>
 
 																		</div>
@@ -943,11 +970,14 @@ $( document ).ready(function() {
 																}
 																}
 																%>
+																
+													<%if( Arrays.asList(getMA[8].toString(),projectDirector,getMA[9].toString(),obj[13].toString(),obj[15].toString(),obj1[13].toString(),obj1[15].toString()  ).contains(EmpId.toString()) || Logintype.equalsIgnoreCase("A")  ){ %>						
+																
 																<div class="row">
 																	<div class="col-md-12" align="left"
 																		style="margin-left: 0px;">
 
-																		<div class="panel panel-info">
+																		<div class="panel panel-info m-1">
 																			<div class="panel-heading">
 																				<h4 class="panel-title">
 																					Activity C<%=Sub2Count%>
@@ -1055,6 +1085,7 @@ $( document ).ready(function() {
 																						<input type="submit" class="btn btn-primary btn-sm back " id="sub" value="Back" name="sub" formaction="MilestoneActivityList.htm" formnovalidate="formnovalidate"> 
 																						<input type="hidden" name="ProjectId" value="<%=getMA[10]%>" />
 																					</div>
+																						<input type="hidden" name="projectDirector" value= "<%=projectDirector %>">
 																					<input type="hidden" name="LevelId" value="3" /> 
 																					<input type="hidden" name="formname" value="<%=ProjectSubCount%>/<%=Sub1Count%>/<%=Sub2Count%>" />
 																					<input type="hidden" name="MilestoneActivityId" value="<%=getMA[0]%>" /> 
@@ -1128,6 +1159,8 @@ $( document ).ready(function() {
 
 																	</div>
 																</div>
+																
+																<%} %>
 															</div>
 
 														</div>
@@ -1143,11 +1176,12 @@ $( document ).ready(function() {
 												}
 												}
 												%>
+						<%if( Arrays.asList(getMA[8].toString(),projectDirector,getMA[9].toString(),obj[13].toString(),obj[15].toString() ).contains(EmpId.toString()) || Logintype.equalsIgnoreCase("A")  ){ %>						
 												<div class="row">
 													<div class="col-md-12" align="left"
 														style="margin-left: 0px;">
 
-														<div class="panel panel-info">
+														<div class="panel panel-info m-1">
 															<div class="panel-heading">
 																<h4 class="panel-title">
 																	Activity B<%=Sub1Count%>
@@ -1255,6 +1289,7 @@ $( document ).ready(function() {
 																		<input type="submit" class="btn btn-primary btn-sm back " id="sub" value="Back" name="sub" formaction="MilestoneActivityList.htm" formnovalidate="formnovalidate"> 
 																		<input type="hidden" name="ProjectId" value="<%=getMA[10]%>" />
 																	</div>
+																		<input type="hidden" name="projectDirector" value= "<%=projectDirector %>">
 																	<input type="hidden" name="LevelId" value="2" /> 
 																	<input type="hidden" name="formname" value="<%=ProjectSubCount%>/<%=Sub1Count%>" /> 
 																	<input type="hidden" name="MilestoneActivityId" value="<%=getMA[0]%>" /> 
@@ -1328,6 +1363,8 @@ $( document ).ready(function() {
 
 													</div>
 												</div>
+												<%} %>
+												<!-- B END  -->
 											</div>
 
 										</div>
@@ -1343,12 +1380,12 @@ $( document ).ready(function() {
 
 								<!-- panel end -->
 
-
+				<%if( Arrays.asList(getMA[8].toString(),projectDirector,getMA[9].toString()).contains(EmpId.toString()) || Logintype.equalsIgnoreCase("A")  ){ %>
 								<div class="row">
 									<div class="col-md-11" align="left"
 										style="margin-left: 20px; margin-bottom: 20px;">
 
-										<div class="panel panel-info">
+										<div class="panel panel-info m-1">
 											<div class="panel-heading">
 												<h4 class="panel-title">
 													Activity A<%=ProjectSubCount %>
@@ -1459,6 +1496,7 @@ $( document ).ready(function() {
 														<input type="submit" class="btn btn-primary btn-sm back " id="sub" value="Back" name="sub" formaction="MilestoneActivityList.htm" formnovalidate="formnovalidate"> 
 														<input type="hidden" name="ProjectId" value="<%=getMA[10]%>" />
 													</div>
+														<input type="hidden" name="projectDirector" value= "<%=projectDirector %>">
 													<input type="hidden" name="LevelId" value="1" /> 
 													<input type="hidden" name="formname" value="<%=ProjectSubCount %>" /> 
 													<input type="hidden" name="MilestoneActivityId" value="<%=getMA[0]%>" /> 
@@ -1474,12 +1512,14 @@ $( document ).ready(function() {
 								</div>
 
 
+<%} %>
 
 
 
 
-
-
+<div class="row text-danger m-3" style="font-weight: 600; font-size: 14px; "> 
+Kindly note that only the Project Director, the Admin, and the OICs of the Parent Milestone are authorized to add and edit milestones. Please ensure all details are accurate before adding a new milestone.
+</div>
 							</div>
 							<!-- Big card-body end -->
 
@@ -1487,6 +1527,8 @@ $( document ).ready(function() {
 						<!-- Card End  -->
 
 					</div>
+					
+
 				</div>
 			</div>
 		</div>

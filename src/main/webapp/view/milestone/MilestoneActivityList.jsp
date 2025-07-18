@@ -7,7 +7,10 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/sweetalert2.min.css" var="sweetalertCss" />
+<spring:url value="/resources/js/sweetalert2.min.js" var="sweetalertJs" />
+	<link href="${sweetalertCss}" rel="stylesheet" />
+	<script src="${sweetalertJs}"></script>
  
 
 <title>Milestone List</title>
@@ -35,6 +38,13 @@ h6{
 	font-family: 'Lato',sans-serif;
 }
 
+/*  #swal2-title , #swal2-html-container{
+display:none !important;
+}
+
+.swal2-popup{
+background: none !important;
+}  */
 .cc-rockmenu .rolling {
   display: inline-block;
   cursor:pointer;
@@ -93,8 +103,9 @@ input[type=checkbox] {
 <body>
   <%
   
-
+  String projectshortName="";
   
+  List<Object[]> EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
   List<Object[]> MilestoneList=(List<Object[]>)request.getAttribute("MilestoneActivityList");
   List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
@@ -123,7 +134,7 @@ input[type=checkbox] {
                               		<select class="form-control selectdee" id="ProjectId" required="required" name="ProjectId">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : ProjectList) {
-    										String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+    										 projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
     										%>
 											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%projectDirector = Long.parseLong(obj[23].toString()); %> <%} %>> <%=obj[4]+projectshortName%>  </option>
 											<%} %>
@@ -175,7 +186,7 @@ if(ses1!=null){	%>
 					<div class="col-md-2 justify-content-end" style="float: right;">
 					<%if(ProjectId!=null){ %>                              
 
-														
+						 <%if(LoginType.equalsIgnoreCase("A") || projectDirector.toString().equalsIgnoreCase(empId+"") ){ %>								
 																
 					  <form class="  justify-content-end"  method="POST" action="MilestoneActivityAdd.htm">
 					  		<%if(MilestoneList.size()>0){ %>
@@ -185,11 +196,15 @@ if(ses1!=null){	%>
 							<%} %>
                             	<input type="hidden" name="ProjectId"	value="<%=ProjectId %>" /> 
                              <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+                              <input type="hidden" name="projectDirector" value="<%=projectDirector%>">  
                                <input type="submit"  value="Add Activity" class="btn btn-sm add" style="float: right;">
+                          
                      </form>
+                          <%} %>
 					 <%} %>
 					 </div>
 					 </div>
+					
 					<div class="card-body">
                         <div class="table-responsive"> 
 									<table class="table  table-hover table-bordered">
@@ -203,7 +218,9 @@ if(ses1!=null){	%>
 															<th>Milestone Activity</th>
 															<th >Start Date</th>
 															<th >End Date</th>	
-															<th>First OIC </th>
+															<th style="padding: 0px !important">
+															<div style="border-bottom: 1px solid #dee2e6;">First OIC </div>
+															 Second OIC</th>
 															<th>Status</th>
 															<th>Weightage</th>	
 															<th>Progress</th>			
@@ -220,9 +237,9 @@ if(ses1!=null){	%>
 															for(Object[] obj: MilestoneList){ %>
 														<tr>
 															<td style="width:2% !important; " class="center">
-																<span class="clickable" data-toggle="collapse" id="row<%=count %>" data-target=".row<%=count %>">
-																	<button class="btn btn-sm btn-success" id="btn<%=count %>"  onclick="ChangeButton('<%=count %>')">
-																		<i class="fa fa-plus"  id="fa<%=count%>"></i> 
+																<span class="clickable" data-toggle="collapse" id="row<%=obj[0] %>" data-target=".row<%=obj[0]  %>">
+																	<button class="btn btn-sm btn-success" id="btn<%=obj[0]  %>"  onclick="ChangeButton('<%=obj[0]  %>')">
+																		<i class="fa fa-plus"  id="fa<%=obj[0] %>"></i> 
 																	</button>
 																</span>
 																<input type="hidden" id="financialOutlay_<%=obj[0]%>" value="<%=obj[18]!=null?obj[18]:"-"%>">
@@ -241,7 +258,7 @@ if(ses1!=null){	%>
 															
 															<td style="width:8% !important; "><%=sdf.format(obj[2])%></td>
 															<td style="width:8% !important; "><%=sdf.format(obj[3])%></td>
-															<td  style="width:15% !important; "><%=obj[6]%></td>
+															<td  style="width:15% !important; "><%=obj[6]%> <br> <%=obj[7]%> </td>
 															<td  style="width: 8% !important; ">-</td>
 															<td  style="width:7% !important; " align="center"><%=obj[13]%></td>	
 															<td>
@@ -267,11 +284,10 @@ if(ses1!=null){	%>
 																</div>
 																</div> <%} %>
 															</td>
-															<%if("A".equalsIgnoreCase(LoginType) || projectDirector.equals(empId) || Long.parseLong(obj[17].toString())==(empId)) { %>
 																<td  style="width:20% !important; text-align: center;">		
 																	<form action="MilestoneActivityDetails.htm" method="POST" name="myfrm"  style="display: inline">
 																		<%if(Integer.parseInt(obj[12].toString())<100){ %>
-																			<button  class="editable-click" name="sub" value="B">  
+																			<button  class="editable-click" name="sub" value="B" id="detailsAddbtn<%=obj[0].toString() %>">  
 																				<div class="cc-rockmenu">
 															                      <div class="rolling">
 															                        <figure class="rolling_icon"><img src="view/images/preview3.png"  ></figure>
@@ -280,7 +296,7 @@ if(ses1!=null){	%>
 															                     </div> 
 																			</button>
 																		<%}else if(Integer.parseInt(obj[12].toString())==100){ %>
-																			<button  class="editable-click" type="button" onclick="MainDOCEditModal(<%=obj[0]%>,'<%=obj[16]%>')">  
+																			<button  class="editable-click" type="button" onclick="MainDOCEditModal(<%=obj[0]%>,'<%=obj[16]%>')" id="docbtn<%=obj[0]%>">  
 																				<div class="cc-rockmenu">
 															                      <div class="rolling">
 															                        <figure class="rolling_icon"><i class="fa fa-calendar-o" aria-hidden="true"></i></figure>
@@ -290,7 +306,9 @@ if(ses1!=null){	%>
 																			</button>
 																		<%} %>
 																		  <%if("N".equalsIgnoreCase(obj[10].toString())){ %>
-			                                                              <button  class="editable-click" name="sub" value="C" >
+																		  	<%if("A".equalsIgnoreCase(LoginType) || projectDirector.equals(empId) || Long.parseLong(obj[17].toString())==(empId)) { %>
+																		  
+			                                                              <button  class="editable-click" name="sub" value="C"  id="EditWeightage<%=obj[0].toString()%>">
 																			<div class="cc-rockmenu">
 																			 <div class="rolling">	
 														                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
@@ -298,17 +316,27 @@ if(ses1!=null){	%>
 														                      </div>
 														                     </div>
 														                  </button> 
-			                                                             <button type="submit"  class="editable-click" name="sub" value="Assign"  formaction="M-A-Assign-OIC.htm" onclick="if('0'=='<%=obj[13].toString() %>'){alert('Please add Weightage first then you able to assign.');return false; }else{ return confirm('Are You Sure To Assign ?') }"   >
+			                                                             <button type="submit" id="assignBtn<%=obj[0].toString() %>"  class="editable-click" name="sub" value="Assign"  formaction="M-A-Assign-OIC.htm" onclick="if('0'=='<%=obj[13].toString() %>'){alert('Please add Weightage first then you able to assign.');return false; }else{ return confirm('Are You Sure To Assign ?') }"   >
 																			<div class="cc-rockmenu">
 																			 <div class="rolling">	
 														                        <figure class="rolling_icon"><img src="view/images/assign.jpg" ></figure>
 														                        <span>Assign</span>
 														                      </div>
 														                     </div>
-														                  </button>  
-														                  
+														                  </button>
+														                  <br>
+														                 <%--     <button type="button" id="deleteBtn<%=obj[0].toString() %>"  class="editable-click deleteBtn" name="sub" value="<%=obj[0].toString() %>"    >
+																			<div class="cc-rockmenu">
+																			 <div class="rolling">	
+														                        <figure class="rolling_icon"><img src="view/images/delete.png" ></figure>
+														                        <span>Delete</span>
+														                      </div>
+														                     </div>
+														                  </button> --%>  
+														                  <%} %>
 			                                                              <%}else if("Y".equalsIgnoreCase(obj[10].toString())){ %>
-			                                                               <button  class="editable-click" name="sub" value="C" >
+<%-- 			                                                              <%if("A".equalsIgnoreCase(LoginType) || projectDirector.equals(empId) || Long.parseLong(obj[17].toString())==(empId)) { %>
+ --%>			                                                               <button  class="editable-click" name="sub" value="C" id="basLineBtn<%=obj[0].toString() %>" >
 																			<div class="cc-rockmenu">
 																			 <div class="rolling">	
 														                        <figure class="rolling_icon"><img src="view/images/clipboard.png" ></figure>
@@ -316,11 +344,13 @@ if(ses1!=null){	%>
 														                      </div>
 														                     </div>
 														                  </button>    
+														                 <%--  <%} %> --%>
 			                                                               <%} %>
 			                                                            <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 																	    <input type="hidden" name="MilestoneActivityId" value="<%=obj[0]%>"/>
 																	    <input type="hidden" name="projectid" value="<%=ProjectId%>"/>
 																	    <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
+																	    <input type="hidden" name="projectDirector" value="<%=projectDirector %>" >
 																 </form> 
 																 
 																 	<form action="MilestoneActivityDetails.htm" method="POST" name="myfrm"  style="display: inline">
@@ -370,19 +400,23 @@ if(ses1!=null){	%>
 																		</div> 
 																		<%} %>	
 																	 </form> 
+																	 
+																	 <span class="btn btn-sm btn-info" id="spanMessage<%=obj[0].toString()%>" style="display: none;">Access Denied</span>
 																</td>
-															<%} else {%>
+															<%-- <%} else {%>
 																<td class="center"> <span class="btn btn-sm btn-info">Access Denied</span> </td>
-															<%} %>	
+															<%} %> --%>	
 														</tr>
-														 <tr class="collapse row<%=count %>" style="font-weight: bold;">
+														 <tr class="collapse row<%=obj[0]%> trclass<%=obj[0]%>" style="font-weight: bold;" >
                                                          <td></td>
                                                          <td></td>
                                                          <td>Sub</td>
                                                          <td>Activity</td>
                                                          <td>Start Date</td>
                                                          <td>End Date</td>
-                                                         <td>First IOC</td>
+                                                         	<th style="padding: 0px !important;text-align: center;">
+															<div style="border-bottom: 1px solid #dee2e6;">First OIC </div>
+															 Second OIC</th>
                                                          <td>Date Of Completion</td>
                                                          <td>Sub Weightage</td>
                                                          <td>Sub Progress</td>
@@ -390,16 +424,39 @@ if(ses1!=null){	%>
                                                          	<td>Shown in display of Briefing Paper and MOM</td>
                                                          <%} %>
                                                          </tr>
-                                                         <% int countA=1;
+                                                         <%
+                                                         List<String>empList = new ArrayList<>();
+                                                         int countA=1;
                                                             List<Object[]> MilestoneA=(List<Object[]>)request.getAttribute(count+"MilestoneActivityA");
 														 	if(MilestoneA!=null&&MilestoneA.size()>0){
 															for(Object[] objA: MilestoneA){
+																//check if empList contains first OIC of A level 
+																if(!empList.contains(objA[13].toString() )){
+																empList.add(objA[13].toString());
+																}
+																//check if empList contains first 2ndIC of A level 
+																if(!empList.contains(objA[15].toString() )){
+																	empList.add(objA[15].toString());
+																	}
 	                                                            List<Object[]> MilestoneB=(List<Object[]>)request.getAttribute(count+"MilestoneActivityB"+countA);
 	
 																%>
-														<tr class="collapse row<%=count %>" >
-															<td style="width:2% !important; " class="center"> </td>
-															<td></td>
+																		
+														<tr class="collapse row<%=obj[0]  %> trclass<%=obj[0]%>"  >
+														
+															<td style="width:2% !important; " class="center">
+															</td>
+															<td class="center"> 
+															<%if(MilestoneB!=null && MilestoneB.size()>0) {%>
+															<span class="clickable" data-toggle="collapse" id="row_<%=objA[0] %>" data-target=".row_<%=objA[0]  %>">
+																	<button class="btn btn-sm btn-success" id="btn<%=objA[0]  %>"  onclick="ChangeButton('<%=objA[0]  %>')">
+																		<i class="fa fa-plus"  id="fa<%=objA[0] %>"></i> 
+																	</button>
+																</span>
+																<%}else{ %>
+<%-- 																<button type="button"  class="btn" onclick="supersedingMilestone('<%=objA[0] %>','<%=objA[4] %>', 'M<%=obj[5]%>-A<%=countA%>'  )"> <i class="fa fa-info" aria-hidden="true" style="color: #055C9D"></i></button>
+ --%>																<%} %>
+															</td>
 															<td style="text-align: left;width: 5%;"> A-<%=countA%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;"
@@ -409,7 +466,18 @@ if(ses1!=null){	%>
 															
 															<td class="width-30px"><%=sdf.format(objA[2])%></td>
 															<td style="width:8% !important; "><%=sdf.format(objA[3])%></td>
-															<td><%=objA[14]%></td>
+															<td><%=objA[14]%>
+															<br>
+																
+															<%= EmployeeList.stream()
+															.filter(e->e[0].toString().equalsIgnoreCase(objA[15].toString()))
+															.map(e -> (e[4]!=null?e[4].toString():e[3]!=null?e[3].toString():" " )+   e[1].toString() + ", " + e[2].toString())
+															.findFirst()
+														    .orElse("-")
+															%>	
+															
+															
+															</td>
 															
 															<td class="width-30px"><%if(objA[9].toString().equalsIgnoreCase("3")||objA[9].toString().equalsIgnoreCase("5")){ %>
 														     <%if(objA[7]!=null){ %>   <%=sdf.format(objA[7]) %> <%}else{ %><%=objA[8] %> <%} %>
@@ -440,9 +508,11 @@ if(ses1!=null){	%>
 															Not Started
 															</div>
 															</div> <%} %>
-															</td>						
-															<%if(actionAllowedFor.contains(LoginType)) {%>
-		                                                         <td>
+															</td>
+															
+															<td>						
+							              <%if("A".equalsIgnoreCase(LoginType) || projectDirector.equals(empId) || Long.parseLong(objA[13].toString())==(empId)) { %>
+		                                                         
 			                                                         <div style="display: flex; justify-content: center;">
 			                                                         <div style="display: flex;width:80%">
 			                                                		5<input type="checkbox" <%if(objA[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control point5"  value="<%=objA[0].toString()+"/"+objA[19].toString()+"/point5"%>" onchange="updateBpPoints(this)">
@@ -450,18 +520,38 @@ if(ses1!=null){	%>
 			                                                        9<input type="checkbox" <%if(objA[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control point9"  value="<%=objA[0].toString()+"/"+objA[21].toString()+"/point9"%>" onchange="updateBpPoints(this)">
 			                                                         </div>
 			                                                         </div>
-		                                                         </td>
-	                                                         <%} %>
+		                                                         
+	                                                         <%} %></td>
                                                          </tr>
+                                                  
                                                          <% int countB=1;
 														 	if(MilestoneB!=null&&MilestoneB.size()>0){
 															for(Object[] objB: MilestoneB){
+																
+																//check if empList contains first OIC of B level 
+																if(!empList.contains(objB[13].toString() )){
+																empList.add(objB[13].toString());
+																}
+																//check if empList contains first 2ndIC of B level 
+																if(!empList.contains(objB[15].toString() )){
+																	empList.add(objB[15].toString());
+																	}
 	                                                            List<Object[]> MilestoneC=(List<Object[]>)request.getAttribute(count+"MilestoneActivityC"+countA+countB);
 	
 																%>
-														<tr class="collapse row<%=count %>" >
+														<tr class="collapse row_<%=objA[0]  %> trclass<%=obj[0]%> trclass<%=objA[0]%>"  >
 															<td style="width:2% !important; " class="center"> </td>
-															<td></td>
+																<td class="center"> 
+															<%if(MilestoneC!=null && MilestoneC.size()>0) {%>
+															<span class="clickable" data-toggle="collapse" id="row_<%=objB[0] %>" data-target=".row_<%=objB[0]  %>">
+																	<button class="btn btn-sm btn-success" id="btn<%=objB[0]  %>"  onclick="ChangeButton('<%=objB[0]  %>')">
+																		<i class="fa fa-plus"  id="fa<%=objB[0] %>"></i> 
+																	</button>
+																</span>
+																<%}else{ %>
+<%-- 																<button type="button"  class="btn" onclick="supersedingMilestone('<%=objB[0] %>','<%=objB[4] %>', 'M<%=obj[5]%>-A<%=countA%>-B<%=countB%>'  )"> <i class="fa fa-info" aria-hidden="true" style="color: #055C9D"></i></button>
+ --%>																<%} %>
+															</td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;B-<%=countB%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;"
@@ -471,7 +561,15 @@ if(ses1!=null){	%>
 															
 															<td class="width-30px"><%=sdf.format(objB[2])%></td>
 															<td style="width:8% !important; "><%=sdf.format(objB[3])%></td>
-															<td><%=objB[14]%></td>
+															<td><%=objB[14]%>
+															<br>
+															<%= EmployeeList.stream()
+															.filter(e->e[0].toString().equalsIgnoreCase(objB[15].toString()))
+															.map(e -> (e[4]!=null?e[4].toString():e[3]!=null?e[3].toString():" " )+   e[1].toString() + ", " + e[2].toString())
+															.findFirst()
+														    .orElse("-")
+															%>
+															</td>
 															<td class="width-30px"><%if(objB[9].toString().equalsIgnoreCase("3")||objB[9].toString().equalsIgnoreCase("5")){ %>
 														      <%if(objB[7]!=null){ %>   <%=sdf.format(objB[7]) %> <%}else{ %><%=objB[8] %> <%} %>
 														         <%}else{ %>
@@ -501,9 +599,9 @@ if(ses1!=null){	%>
 															</div>
 															</div> <%} %>
 															</td>
-															
-														 	<%if(actionAllowedFor.contains(LoginType)) {%>												
-	                                                         	<td>
+															<td>
+														 	                                                   <%if("A".equalsIgnoreCase(LoginType) || projectDirector.equals(empId) || Long.parseLong(objB[13].toString())==(empId)) { %>
+	                                                         	
 	                                                         
 			                                                        <div style="display: flex; justify-content: center;">
 			                                                         <div style="display: flex;width:80%">
@@ -513,17 +611,36 @@ if(ses1!=null){	%>
 			                                                         </div>
 			                                                         </div>
 			                                                         
-	                                                         	</td>
-	                                                         <%}%>
+	                                                         
+	                                                         <%}%>	</td>
                                                          </tr>
                                                          <% int countC=1;
 														 	if(MilestoneC!=null&&MilestoneC.size()>0){
 															for(Object[] objC: MilestoneC){
+																
+																//check if empList contains first OIC of C level 
+																if(!empList.contains(objC[13].toString() )){
+																empList.add(objC[13].toString());
+																}
+																//check if empList contains first 2ndIC of C level 
+																if(!empList.contains(objC[15].toString() )){
+																	empList.add(objC[15].toString());
+																	}
 													         List<Object[]> MilestoneD=(List<Object[]>)request.getAttribute(count+"MilestoneActivityD"+countA+countB+countC);
 																%>
-														<tr class="collapse row<%=count %>">
+														<tr class="collapse row_<%=objB[0] %> trclass<%=obj[0]%> trclass<%=objA[0]%> trclass<%=objB[0]%>" >
 															<td style="width:2% !important; " class="center"> </td>
-															<td></td>
+															<td class="center">
+															<%if(MilestoneD!=null && MilestoneD.size()>0) {%>
+															<span class="clickable" data-toggle="collapse" id="row_<%=objC[0] %>" data-target=".row_<%=objC[0]  %>">
+																	<button class="btn btn-sm btn-success" id="btn<%=objC[0]  %>"  onclick="ChangeButton('<%=objC[0]  %>')">
+																		<i class="fa fa-plus"  id="fa<%=objC[0] %>"></i> 
+																	</button>
+																</span>
+																<%}else{ %>
+<%-- 																<button type="button"  class="btn" onclick="supersedingMilestone('<%=objC[0] %>','<%=objC[4] %>', 'M<%=obj[5]%>-A<%=countA%>-B<%=countB%>-C<%=countC%>'  )"> <i class="fa fa-info" aria-hidden="true" style="color: #055C9D"></i></button>
+ --%>																<%} %>
+															</td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C-<%=countC%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;"
@@ -533,7 +650,16 @@ if(ses1!=null){	%>
 															
 															<td class="width-30px"><%=sdf.format(objC[2])%></td>
 															<td style="width:8% !important; "><%=sdf.format(objC[3])%></td>
-															<td><%=objC[14]%></td>
+															<td><%=objC[14]%>
+															<br>
+															
+															<%= EmployeeList.stream()
+															.filter(e->e[0].toString().equalsIgnoreCase(objC[15].toString()))
+															.map(e -> (e[4]!=null?e[4].toString():e[3]!=null?e[3].toString():" " )+   e[1].toString() + ", " + e[2].toString())
+															.findFirst()
+														    .orElse("-")
+															%>
+															</td>
 															<td class="width-30px"><%if(objC[9].toString().equalsIgnoreCase("3")||objC[9].toString().equalsIgnoreCase("5")){ %>
 														     <%if(objC[7]!=null){ %>   <%=sdf.format(objC[7]) %> <%}else{ %><%=objC[8] %> <%} %>
 														         <%}else{ %>
@@ -563,9 +689,9 @@ if(ses1!=null){	%>
 															</div>
 															</div> <%} %>
 															</td>
-															
-															<%if(actionAllowedFor.contains(LoginType)) {%>
-                                                         		<td>
+															<td>
+														                                                   <%if("A".equalsIgnoreCase(LoginType) || projectDirector.equals(empId) || Long.parseLong(objC[13].toString())==(empId)) { %>
+                                                         		
                                                          
 			                                                    	<div style="display: flex; justify-content: center;">
 			                                                         <div style="display: flex;width:80%">
@@ -575,18 +701,38 @@ if(ses1!=null){	%>
 			                                                        </div> </div>
                                                          
                                                          
-                                                         		</td>
-                                                         	<%} %>
+                                                         		
+                                                         	<%} %></td>
                                                          </tr>
                                                          <% int countD=1;
 														 	if(MilestoneD!=null&&MilestoneD.size()>0){
 															for(Object[] objD: MilestoneD){
+																
+																//check if empList contains first OIC of D level 
+																if(!empList.contains(objD[13].toString() )){
+																empList.add(objD[13].toString());
+																}
+																//check if empList contains first 2ndIC of D level 
+																if(!empList.contains(objD[15].toString() )){
+																	empList.add(objD[15].toString());
+																	}
 	                                                            List<Object[]> MilestoneE=(List<Object[]>)request.getAttribute(count+"MilestoneActivityE"+countA+countB+countC+countD);
 	
 																%>
-														<tr class="collapse row<%=count %>" >
+														<tr class="collapse row_<%=objC[0] %> trclass<%=obj[0]%> trclass<%=objA[0]%> trclass<%=objB[0]%> trclass<%=objC[0]%>" >
 															<td style="width:2% !important; " class="center"> </td>
-															<td></td>
+															<td class="center">
+																<%if(MilestoneE!=null && MilestoneE.size()>0) {%>
+															<span class="clickable" data-toggle="collapse" id="row_<%=objD[0] %>" data-target=".row_<%=objD[0]  %>">
+																	<button class="btn btn-sm btn-success" id="btn<%=objD[0]  %>"  onclick="ChangeButton('<%=objD[0]  %>')">
+																		<i class="fa fa-plus"  id="fa<%=objD[0] %>"></i> 
+																	</button>
+																</span>
+																<%}else{ %>
+<%-- 																<button type="button"  class="btn" onclick="supersedingMilestone('<%=objD[0] %>','<%=objD[4] %>', 'M<%=obj[5]%>-A<%=countA%>-B<%=countB%>-C<%=countC%>-D<%=countD%>'  )"> <i class="fa fa-info" aria-hidden="true" style="color: #055C9D"></i></button>
+ --%>																<%} %>
+															
+															</td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D-<%=countD%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;"
@@ -596,7 +742,16 @@ if(ses1!=null){	%>
 															
 															<td class="width-30px"><%=sdf.format(objB[2])%></td>
 															<td style="width:8% !important; "><%=sdf.format(objB[3])%></td>
-															<td><%=objD[14]%></td>
+															<td><%=objD[14]%>
+															<br>
+															<%= EmployeeList.stream()
+															.filter(e->e[0].toString().equalsIgnoreCase(objD[15].toString()))
+															.map(e -> (e[4]!=null?e[4].toString():e[3]!=null?e[3].toString():" " )+   e[1].toString() + ", " + e[2].toString())
+															.findFirst()
+														    .orElse("-")
+															%>
+															
+															</td>
 															<td class="width-30px"><%if(objD[9].toString().equalsIgnoreCase("3")||objD[9].toString().equalsIgnoreCase("5")){ %>
 														      <%if(objD[7]!=null){ %>   <%=sdf.format(objD[7]) %> <%}else{ %><%=objD[8] %> <%} %>
 														         <%}else{ %>
@@ -626,9 +781,9 @@ if(ses1!=null){	%>
 															</div>
 															</div> <%} %>
 															</td>
-															
-														 	<%if(actionAllowedFor.contains(LoginType)) {%>												
-                                                         		<td>
+															<td>
+													                                                   <%if("A".equalsIgnoreCase(LoginType) || projectDirector.equals(empId) || Long.parseLong(objD[13].toString())==(empId)) { %>											
+                                                         		
 			                                                     <div style="display: flex; justify-content: center;">
 			                                                         <div style="display: flex;width:80%">
 			                                                        5. <input type="checkbox" <%if(objD[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objD[0].toString()+"/"+objD[19].toString()+"/point5"%>" onchange="updateBpPoints(this)">
@@ -637,15 +792,27 @@ if(ses1!=null){	%>
 			                                                      </div>   </div>
                                                          
                                                          
-                                                         		</td>
-                                                         	<%} %>	
+                                                         		
+                                                         	<%} %></td>	
                                                          </tr>
                                                          <% int countE=1;
 														 	if(MilestoneE!=null&&MilestoneE.size()>0){
-															for(Object[] objE: MilestoneE){ %>
-														<tr class="collapse row<%=count %>"  style="">
+															for(Object[] objE: MilestoneE){
+																//check if empList contains first OIC of E level 
+																if(!empList.contains(objE[13].toString() )){
+																empList.add(objE[13].toString());
+																}
+																//check if empList contains first 2ndIC of A level 
+																if(!empList.contains(objE[15].toString() )){
+																	empList.add(objE[15].toString());
+																	}
+																
+																%>
+														<tr class="collapse row_<%=objD[0] %> trclass<%=obj[0]%> trclass<%=objA[0]%> trclass<%=objB[0]%> trclass<%=objC[0]%> trclass<%=objD[0]%>"  style="" >
 															<td style="width:2% !important; " class="center"> </td>
-															<td></td>
+															<td class="center">
+<%-- 									         				<button type="button"  class="btn" onclick="supersedingMilestone('<%=objE[0] %>','<%=objE[4] %>', 'M<%=obj[5]%>-A<%=countA%>-B<%=countB%>-C<%=countC%>-D<%=countD%>-E<%=countE%>'  )"> <i class="fa fa-info" aria-hidden="true" style="color: #055C9D"></i></button>
+ --%>															</td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E-<%=countE%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;"
@@ -655,7 +822,16 @@ if(ses1!=null){	%>
 															
 															<td class="width-30px"><%=sdf.format(objE[2])%></td>
 															<td style="width:8% !important; "><%=sdf.format(objE[3])%></td>
-															<td><%=objE[14]%></td>
+															<td><%=objE[14]%>
+															<br>
+															<%= EmployeeList.stream()
+															.filter(e->e[0].toString().equalsIgnoreCase(objE[15].toString()))
+															.map(e -> (e[4]!=null?e[4].toString():e[3]!=null?e[3].toString():" " )+   e[1].toString() + ", " + e[2].toString())
+															.findFirst()
+														    .orElse("-")
+															%>
+															
+															</td>
 															<td class="width-30px"><%if(objE[9].toString().equalsIgnoreCase("3")||objE[9].toString().equalsIgnoreCase("5")){ %>
 														     <%if(objE[7]!=null){ %>   <%=sdf.format(objE[7]) %> <%}else{ %><%=objE[8] %> <%} %>
 														         <%}else{ %>
@@ -686,8 +862,8 @@ if(ses1!=null){	%>
 															</div> <%} %>
 															</td>
 															
-															<%if(actionAllowedFor.contains(LoginType)) {%>
-                                                         		<td>
+															      <td>                                             <%if("A".equalsIgnoreCase(LoginType) || projectDirector.equals(empId) || Long.parseLong(objE[13].toString())==(empId)) { %>
+                                                         		
 			                                                         <div style="display: flex;justify-content: center;">
 			                                                         <div style="display: flex;width:80%;">
 			                                                        5. <input type="checkbox" <%if(objE[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objE[0].toString()+"/"+objE[19].toString()+"/point5"%>" onchange="updateBpPoints(this)">
@@ -696,9 +872,11 @@ if(ses1!=null){	%>
 			                                                       </div>
 			                                                         </div>
                                                          
-                                                         		</td>
-                                                         	<%} %>
+                           
+                                                         	<%} %>  
+                                                                                    		</td>
                                                          </tr>
+                                                      
 												<% countE++;} }%>
 												<% countD++;} }%>
 												<% countC++;} }%>
@@ -707,8 +885,45 @@ if(ses1!=null){	%>
 												<tr class="collapse row<%=count %>">
 													<td colspan="11" style="text-align: center" class="center">No Sub List Found</td>
 												</tr>
+										       
+												<%} %>
+												<%
+												if(!Arrays.asList(obj[obj.length-1].toString(),obj[obj.length-3].toString()).contains(empId+"")){
+												%>
+												<script>
+												 var empListJs = [<%= empList.stream().map(e -> "\"" + e + "\"").collect(java.util.stream.Collectors.joining(",")) %>];
+												 var empId = '<%=empId %>';
+												 var loginType = '<%=LoginType %>';
+												 var projectDirector = '<%=projectDirector %>';
+												 var mileId = '<%=obj[0].toString() %>';
+												 
+												<%--  var progress = '<%=obj[12]%>'; --%>
+												    console.log(empListJs+ "---");
+												    console.log(empId+ "---"+typeof empId);
+												    console.log(empListJs.includes(empId))
+												    console.log(empId===projectDirector)
+												    console.log(loginType==='A')
+												    console.log(mileId)
+												    
+												    
+												   if( empListJs.includes(empId) || empId===projectDirector || loginType==='A') {
+													   console.log("Any of the codition satisfied")
+												   }else{
+													     
+													   console.log("No codition satisfied")
+													   $('#detailsAddbtn'+mileId).hide();
+													   $('#EditWeightage'+mileId).hide();
+													   $('#basLineBtn'+mileId).hide();
+													   $('#assignBtn'+mileId).hide();
+													   $('#docbtn'+mileId).hide();
+													   $('#spanMessage'+mileId).show();
+													
+												   }
+												</script>
 												<%} %>
 												<% count++; } %>
+												
+												
 													<tr>
 														<td></td>
 														<td colspan=1 style="display: flex;justify-content: center;align-items: center">
@@ -881,11 +1096,12 @@ if(ses1!=null){	%>
 							<table class="table table-bordered" id="myTables" style="width: 100%;">
 								<thead class="center" style="background: #055C9D ;color: white;">
 									<tr>
-										<th width="10%">SN</th>
-										<th width="20%">As On Date</th>
-										<th width="20%">Progress</th>
-										<th width="30%">Remarks</th>
-										<th width="20%">Action</th>
+										<th width="5%">SN</th>
+										<th width="15%">As On Date</th>
+										<th width="15%">Progress</th>
+										<th width="25%">Remarks</th>
+										<th width="5%">Action</th>
+										<th width="30%">Progress By</th>
 									</tr>
 								</thead>
 								<tbody id="milestoneprogesstbody">
@@ -932,7 +1148,72 @@ if(ses1!=null){	%>
 	</div>
 	<!-- -------------------------------------------- Milestone Status Remarks Modal End -------------------------------------------- -->
 
-
+<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document"> <!-- Use modal-lg here -->
+    <div class="modal-content" style=" width: 150%;margin-left: -22%;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalheader">Choose Milestone for Linking & Superseding</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+					<div class="row">
+						<div class="col-md-3">
+							<label class="control-label">Project Name :</label>
+						</div>
+						<div class="col-md-5" style="">
+							<select class="form-control selectdee" id="projectIds"
+								required="required" style="width: 100%" onchange="getProjectMilestones()">
+								<option  selected value="0">Choose...</option>
+								<%
+								for (Object[] obj : ProjectList) {
+								if(!ProjectId.equalsIgnoreCase(obj[0].toString())){
+									//String projectshortName = (obj[17] != null) ? " ( " + obj[17].toString() + " ) " : "";
+								%>
+								<option value="<%=obj[0]%>"><%=obj[4] %></option>
+								<%
+								}}
+								%>
+							</select>
+						</div>
+					</div>
+					
+						<div class="row mt-4">
+						<div class="col-md-3">
+							<label class="control-label">Milestone List:</label>
+						</div>
+						<div class="col-md-8" style="">
+							<select class="form-control selectdee" id="mileIdLink"
+								required="required" style="width: 100%" >
+								
+							
+								
+							</select>
+						</div>
+					</div>
+					
+						<div class="row mt-4" id="IsMasterDiv" style="display: none;">
+						<div class="col-md-6">
+							<label class="control-label" id="masterDataLabel">Is Master Data:</label>
+						</div>
+						<div class="col-md-1" id="IsMasterDivDetails" style="">
+							<input type="radio"  name="IsMaster" value="Y" checked="checked">&nbsp;&nbsp;YES
+						</div>
+						<div class="col-md-1" id="IsMasterDivDetails" style="">
+							<input type="radio"  name="IsMaster" value="N"> &nbsp;&nbsp;NO
+						</div>
+					</div>
+					
+				<div align="center" class="mt-4">
+				        <button class="btn btn-sm submit" onclick="saveData()">SUBMIT</button>
+				        <input type="hidden" id="milesMainId"> 
+				      </div>
+				</div>
+     
+    </div>
+  </div>
+</div>
 	
 <script type="text/javascript">
 function MainDOCEditModal(mainid, DOC)
@@ -968,15 +1249,48 @@ $(document).ready(function() {
 	
 	 
 function ChangeButton(id) {
-	console.log($( "#btn"+id ).hasClass( "btn btn-sm btn-success" ).toString());
-	if($( "#btn"+id ).hasClass( "btn btn-sm btn-success" ).toString()=='true'){
-	$( "#btn"+id ).removeClass( "btn btn-sm btn-success" ).addClass( "btn btn-sm btn-danger" );
-	$( "#fa"+id ).removeClass( "fa fa-plus" ).addClass( "fa fa-minus" );
-    }else{
-	$( "#btn"+id ).removeClass( "btn btn-sm btn-danger" ).addClass( "btn btn-sm btn-success" );
-	$( "#fa"+id ).removeClass( "fa fa-minus" ).addClass( "fa fa-plus" );
-    }
+    // Show loading using SweetAlert2
+    Swal.fire({
+       
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    // Give DOM time to update (for smoother animation), then process logic
+    setTimeout(() => {
+        if ($("#btn" + id).hasClass("btn btn-sm btn-success").toString() == 'true') {
+            $("#btn" + id).removeClass("btn btn-sm btn-success").addClass("btn btn-sm btn-danger");
+            $("#fa" + id).removeClass("fa fa-plus").addClass("fa fa-minus");
+        } else {
+            var targetRow = $(".trclass" + id);
+            targetRow.collapse("hide");
+            $("#btn" + id).removeClass("btn btn-sm btn-danger").addClass("btn btn-sm btn-success");
+            $("#fa" + id).removeClass("fa fa-minus").addClass("fa fa-plus");
+       
+            if (targetRow && targetRow.length > 0) {
+                targetRow.find("button.btn.btn-sm.btn-danger").each(function () {
+                    $(this)
+                        .removeClass("btn btn-sm btn-danger")
+                        .addClass("btn btn-sm btn-success");
+
+                    $(this).find("i.fa.fa-minus")
+                        .removeClass("fa fa-minus")
+                        .addClass("fa fa-plus");
+                });
+            }
+        
+        }
+
+     
+
+    
+        Swal.close();  
+    }, 300); // Small timeout to allow loading to render
 }
+
 
 
 </script>
@@ -1015,7 +1329,7 @@ function ChangeButton(id) {
 		var value1=a.split("/")[0];
 		var value2=a.split("/")[1];
 		var value3=a.split("/")[2]
-		console.log(value1+"-"+value2+"-"+value3);
+		
 		$.ajax({
 			type:'GET',
 			url:'BriefingPointsUpdate.htm',
@@ -1083,7 +1397,7 @@ function ChangeButton(id) {
 					
 					for(var i=0; i<values.length; i++) {
 						x+= '<tr>';
-						x+= '<td class="center">'+(i+1)+'</td>';
+						x+= '<td class="center">'+(i+1)+'.</td>';
 						x+= '<td class="center">'+formatDate(values[i][2])+'</td>';
 						x += '<td>';
 					    x += '<div class="progress" style="background-color: #cdd0cb !important">';
@@ -1102,6 +1416,7 @@ function ChangeButton(id) {
 					        x += '<div align="center">-</div>';
 					    }
 						x += '</td>';
+						x+='<td>'+ values[i][5] +'</td>'
 						x+= '</tr>';
 					}
 				}else{
@@ -1130,6 +1445,159 @@ function ChangeButton(id) {
 		$('#financialOutlay').text($('#financialOutlay_'+rowId).val());
 		$('#statusRemarks').html($('#statusRemarks_'+rowId).val());
 		$('#milestoneStatusRemarksModal').modal('show');
+	}
+	
+	$(".deleteBtn").click(function(){
+		
+		var id = this.value;
+		if(confirm('Kindly Note if you remove a milestone sub-milestones will also get removed.Are you sure to delete this Milestone?')){
+			
+			$.ajax({
+				type:'GET',
+				url:'MilestoneIsActive.htm',
+				datatype:'json',
+				data:{
+					id:id,
+				},
+				success:function(result){
+					var ajaxresult = JSON.parse(result);
+					
+					if(ajaxresult=='1'){
+						alert('Milestone Deleted successfully!')
+						window.location.reload()
+					}else{
+						alert('Milestone Delete unsuccessful!')
+					}
+				}
+			})
+		}else{
+			
+		}
+		
+		
+		});
+	
+	
+	
+	function supersedingMilestone(a,b ,c){
+		
+		$('#largeModal').modal('show');
+		$("#mileIdLink").html("<option disabled selected value=''>Choose...</option>");
+		$("#modalheader").html(" Linking & Superseding for "+b+ " ( "+ c + " )" +    "<%=projectshortName %>"    );
+		$('#projectIds').val('0').trigger('change');
+		$('#IsMasterDiv').hide();
+		$('#milesMainId').val(a);
+	}
+	
+	
+	function getProjectMilestones(){
+		
+		var projectid = $('#projectIds').val();
+		
+		
+	
+			$.ajax({
+			type:'GET',
+			url:'getProjectMilestones.htm',
+			datatype:'json',
+			data:{
+				projectid:projectid,
+			},
+			success:function (result){
+				var data = JSON.parse(result);
+			
+				var html = "<option disabled selected value=''>Choose...</option>";	
+				for (var key in data) {
+					  if (data.hasOwnProperty(key)) {
+					    var val = data[key]; 
+					/*  console.log(val[22]+"---"+val[24]+"---"+val[5]) */
+					  if((val[22]+"")==="0" && (val[24]+"")==="0"){
+						  if((val[5]+"")==="0"){
+						html += "<option value='" + val[0] + "'>" + val[4] +"(" +key.split("/")[0] + ")"+ "</option>";
+					  }}
+					  }
+					}
+				$("#mileIdLink").html(html);
+			
+				
+			}
+		})
+	}
+	
+	
+	$('#mileIdLink').on('change', function () {
+	    var selectedValue = $(this).val();                // Gets the value
+	    var selectedText = $(this).find("option:selected").text(); // Gets the displayed text
+	    console.log("Selected Value:", selectedValue);
+	    console.log("Selected Text:", selectedText);
+	    
+	    $('#IsMasterDiv').show();
+	    $('#masterDataLabel').html('Is '+selectedText +" master Data ?");
+	});
+	
+	function saveData(){
+		
+		var mileIdLink = $('#mileIdLink').val();
+		var milesMainId = $('#milesMainId').val();
+		
+		var selectedValue = $('input[name="IsMaster"]:checked').val();
+		
+		
+		
+			  if (!mileIdLink || mileIdLink.trim() === "") {
+				  console.log("mileIdLink--"+mileIdLink)
+    			Swal.fire({
+       			 icon: 'error',
+       			 title: 'Milestone Required',
+       			 text: 'You need to choose a milestone to link. If no milestones are visible, it may be because all milestones for the selected project have already started progressing.',
+   			 });
+				  return;
+}
+       Swal.fire({
+            title: 'Are you sure to upload?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: 'green',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+		$.ajax({
+			
+			type:'GET',
+			url:'updateMilestonSuperSeding.htm',
+			datatype:'json',
+			data:{
+				mileIdLink:mileIdLink,
+				milesMainId:milesMainId,
+				isMasterData:selectedValue
+			},
+			   success: function(response) {
+	            	
+	            	  Swal.fire({
+			    	       	title: "Success",
+			                text: "Milestone Linked Successfully",
+			                icon: "success",
+			                allowOutsideClick :false
+			         		});
+	            	 
+	            	  $('.swal2-confirm').click(function (){
+	      	                location.reload();
+	      	        	})
+	            },
+	            error: function(xhr, status, error) {
+	            	  Swal.fire({
+	                      icon: 'error',
+	                      title: 'Error',
+	                      text: 'An error occurred while uploading the file'
+	                  });
+	                  console.log(xhr.responseText);
+	             }
+			
+		})
+            }
+        });
+		
 	}
 </script>  
 

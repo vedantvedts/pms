@@ -51,6 +51,7 @@ import com.vts.pfms.committee.dto.CommitteeScheduleDto;
 import com.vts.pfms.committee.dto.CommitteeSubScheduleDto;
 import com.vts.pfms.committee.dto.EmpAccessCheckDto;
 import com.vts.pfms.committee.dto.MeetingCheckDto;
+import com.vts.pfms.committee.model.CommitteScheduleMinutesDraft;
 import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.committee.model.CommitteeConstitutionApproval;
 import com.vts.pfms.committee.model.CommitteeConstitutionHistory;
@@ -71,6 +72,7 @@ import com.vts.pfms.committee.model.CommitteeSchedule;
 import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
 import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.committee.model.CommitteeScheduleMinutesDetails;
+import com.vts.pfms.committee.model.CommitteeSchedulesMomDraftRemarks;
 import com.vts.pfms.committee.model.CommitteeSubSchedule;
 import com.vts.pfms.committee.model.PfmsEmpRoles;
 import com.vts.pfms.committee.model.PfmsNotification;
@@ -1203,7 +1205,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			committeeinvitation.setAttendance("P");
 			committeeinvitation.setCreatedDate(sdf1.format(new Date()));
 			committeeinvitation.setEmpId(Long.parseLong(MemberType[0]));
-			if(committeeinvitationdto.getReptype()!= null && Integer.parseInt(committeeinvitationdto.getReptype())!=0) 
+			if(committeeinvitationdto.getReptype()!= null && !committeeinvitationdto.getReptype().equals("0")) 
 			{
 				committeeinvitation.setMemberType(committeeinvitationdto.getReptype());
 			}
@@ -3548,7 +3550,7 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 		committeeLetter.setAttachmentName(committeeLetter.getLetter().getOriginalFilename());
 		committeeLetter.setCreatedBy(committeeLetter.getCreatedBy());
 		committeeLetter.setCreatedDate(sdf1.format(new Date()));		
-		
+		committeeLetter.setIsActive(1);
 		long count=0;
 		if(!committeeLetter.getLetter().isEmpty()) {
 			committeeLetter.setAttachmentName(committeeLetter.getLetter().getOriginalFilename());
@@ -4014,6 +4016,48 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 	}
 	
 	/* ********************************************* Programme AD End************************************************ */
-
-
+	@Override
+	public long sentMomDraft(CommitteScheduleMinutesDraft cmd) throws Exception {
+		
+		CommitteeSchedule schedule = dao.getCommitteeScheduleById(cmd.getScheduleId());
+		
+		 PfmsNotification notification = new PfmsNotification();
+	        notification.setEmpId(cmd.getEmpid());
+	        notification.setNotificationMessage("A MoM draft has been sent to you for review for Meeting ID "+schedule.getMeetingId());
+	        notification.setNotificationUrl("CommitteeMomDraft.htm");
+	        notification.setNotificationby(0L);
+	        notification.setIsActive(1);
+	        notification.setCreatedBy(cmd.getSentBy() );
+	        notification.setCreatedDate(sdf1.format(new Date()));
+	        notification.setNotificationDate(sdf1.format(new Date()));
+	        carsdao.addNotifications(notification);
+		
+		
+		return dao.sentMomDraft(cmd);
+	}
+	
+	@Override
+	public List<CommitteScheduleMinutesDraft> getCommitteScheduleMinutesDraftList()
+			throws Exception {
+		
+		return dao.getCommitteScheduleMinutesDraftList();
+	}
+	
+	@Override
+	public List<Object[]> getdraftMomList(String empId, String pageSize) throws Exception {
+		
+		return dao.getdraftMomList(empId,pageSize);
+	}
+	
+	@Override
+	public long saveCommitteeSchedulesMomDraftRemarks(CommitteeSchedulesMomDraftRemarks cmd) throws Exception {
+		
+		return dao.saveCommitteeSchedulesMomDraftRemarks(cmd);
+	}
+	
+	@Override
+	public List<Object[]> getCommitteeSchedulesMomDraftRemarks(Long scheduleId) throws Exception {
+		
+		return dao.getCommitteeSchedulesMomDraftRemarks(scheduleId);
+	}
 }
