@@ -30,7 +30,7 @@ import com.vts.pfms.committee.model.CommitteeProject;
 import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.committee.model.CommitteeSchedulesMomDraftRemarks;
 import com.vts.pfms.committee.model.PmsEnote;
-import com.vts.pfms.committee.model.ProgammeProjects;
+import com.vts.pfms.committee.model.ProgrammeProjects;
 import com.vts.pfms.committee.model.ProgrammeMaster;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.model.LabMaster;
@@ -321,7 +321,7 @@ public interface CommitteeService {
 	public List<ProgrammeMaster> getProgrammeMasterList()throws Exception;
 	public Long getCommitteeMainIdByProgrammeId(String programmeId) throws Exception;
 	public List<Object[]> prgmScheduleList(String programmeId) throws Exception;
-	public List<ProgammeProjects> getProgammeProjectsList(String programmeId) throws Exception;
+	public List<ProgrammeProjects> getProgrammeProjectsList(String programmeId) throws Exception;
 	public List<Object[]> prgmProjectList(String programmeId) throws Exception;
 	public ProgrammeMaster getProgrammeMasterById(String programmeId) throws Exception;
 	/* ********************************************* Programme AD End************************************************ */

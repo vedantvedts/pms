@@ -31,6 +31,9 @@ import com.google.gson.Gson;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.admin.service.AdminService;
 import com.vts.pfms.committee.model.PfmsEmpRoles;
+import com.vts.pfms.committee.model.ProgrammeMaster;
+import com.vts.pfms.committee.model.ProgrammeProjects;
+import com.vts.pfms.committee.service.CommitteeService;
 import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.dto.LabMasterAdd;
 import com.vts.pfms.master.dto.OfficerMasterAdd;
@@ -59,7 +62,10 @@ public class MasterController {
 
 	@Autowired
 	AdminService adminservice;
-
+	
+	@Autowired
+	CommitteeService committeeservice;
+	
 	@Value("${ApplicationFilesDrive}")
 	String uploadpath;
 	
@@ -2258,5 +2264,126 @@ public class MasterController {
 		}
 		
 	}
+	
+	/* **************************** Programme Master - Naveen R  - 16/07/2025 **************************************** */
+	@RequestMapping(value = "ProgrammeMaster.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	public String getProgrameMaster(HttpServletRequest req, HttpServletResponse resp, HttpSession session,RedirectAttributes redir) throws Exception {
+		String UserId = (String) session.getAttribute("Username");
+		String labcode = (String) session.getAttribute("labcode");
+		
+		logger.info(new Date() + "Inside ProgrammeMaster.htm" + UserId);
+		try {
+			String action = req.getParameter("action");
+			if(action!=null && "Add".equalsIgnoreCase(action)) {
+				
+				req.setAttribute("directorsList", service.OfficerList());
+				req.setAttribute("projectsList", committeeservice.ProjectList(labcode));
+				return "master/ProgramMasterAddEdit";
+			}else if(action!=null && "Edit".equalsIgnoreCase(action)) {
+				
+				String ProgrammeId = req.getParameter("ProgrammeId");
+				req.setAttribute("prgmMaster", committeeservice.getProgrammeMasterById(ProgrammeId));
+				req.setAttribute("prgmprojectsList", committeeservice.getProgrammeProjectsList(ProgrammeId));
+				req.setAttribute("directorsList", service.OfficerList());
+				req.setAttribute("projectsList", committeeservice.ProjectList(labcode));
+				
+				return "master/ProgramMasterAddEdit";
+			}else {
+				req.setAttribute("programeMasterList", service.getProgramMasterList());
+				return "master/ProgramMasterList";
+			}
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside ProgrammeMaster.htm "+UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		} 
+	}
+	
+	@RequestMapping(value = "ProgrammeMasterSubmit.htm",method = {RequestMethod.POST,RequestMethod.GET})
+	public String getProgrammeMasterAddEditPage(HttpServletRequest req, HttpServletResponse resp, HttpSession session,RedirectAttributes redir) throws Exception {
+		
+		String UserId = (String) session.getAttribute("Username");
+		logger.info(new Date() + "Inside ProgrammeMasterSubmit.htm" + UserId);
+		try {
+			String action = req.getParameter("action");	
+			String programmeMasterId = req.getParameter("programmeMasterId");
+			String programmedirector = req.getParameter("programmedirector");
+			String sanctionDate = req.getParameter("sanctionDate");
+			ProgrammeMaster master = programmeMasterId.equalsIgnoreCase("0")? new ProgrammeMaster(): committeeservice.getProgrammeMasterById(programmeMasterId);
+
+			master.setPrgmCode(req.getParameter("ProgrammeCode").toUpperCase());
+			master.setPrgmName(req.getParameter("ProgrammeName"));
+			master.setPrgmDirector(programmedirector!=null? Long.parseLong(req.getParameter("programmedirector")):0);
+			master.setSanctionedOn(sanctionDate!=null?fc.rdfTosdf(sanctionDate):null);
+
+			if(programmeMasterId.equalsIgnoreCase("0")) {
+				master.setCreatedBy(UserId);
+				master.setCreatedDate(sdtf.format(new Date()));
+				master.setIsActive(1);
+			}else{
+				master.setModifiedBy(UserId);
+				master.setModifiedDate(sdtf.format(new Date()));
+				
+				service.removeProjectsLinked(programmeMasterId);
+				
+			}
+
+			Long result = service.addProgrammeMaster(master);
+			
+			String[] prgmProjectsIds = req.getParameterValues("prgmprojectids");
+//			System.out.println(Arrays.toString(prgmProjectsIds));
+
+			if(prgmProjectsIds!=null && prgmProjectsIds.length>0) {
+				for(int i=0; i<prgmProjectsIds.length; i++) {
+//					System.out.println("Inside loop");
+
+					if(prgmProjectsIds[i]!=null && !prgmProjectsIds[i].equalsIgnoreCase("0")) {
+//						System.out.println("Inside condition"+prgmProjectsIds[i]);
+
+						ProgrammeProjects linked = new ProgrammeProjects();
+						linked.setProgrammeId(result);
+						linked.setProjectId(Long.parseLong(prgmProjectsIds[i]));
+						linked.setCreatedBy(UserId);
+						linked.setCreatedDate(sdtf.format(new Date()));
+						linked.setIsActive(1);
+						
+						service.addProgrammeProjects(linked);
+						
+					}
+				}
+			} 
+			
+
+			if(result!=0) redir.addAttribute("result","Programme Master "+action +"ed Successfully");
+			else redir.addAttribute("resultfail","Programme Master "+action +"ed UnSuccessfull");
+			return "redirect:/ProgrammeMaster.htm";
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside ProgrammeMasterSubmit.htm "+UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		} 
+	}
+	
+	@RequestMapping(value = "ProgrammeCodeCheck.htm", method = RequestMethod.GET)
+	public @ResponseBody String programeCodeAddCheck(HttpSession ses, HttpServletRequest req) throws Exception 
+	{
+		String UserId=(String)ses.getAttribute("Username");
+		Long prgmCodes = null;
+		logger.info(new Date() +"Inside ProgrammeCodeCheck.htm "+UserId);
+		try
+		{	  
+			String ProgrammeCode=req.getParameter("ProgrammeCode");
+			String ProgrammeId=req.getParameter("ProgrammeId");
+			prgmCodes =service.ProgramCodeCheck(ProgrammeCode,ProgrammeId);
+		}
+		catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +"ProgrammeCodeCheck.htm "+UserId,e);
+		}
+		Gson json = new Gson();
+		return json.toJson(prgmCodes); 
+	}
+	/* **************************** Programme Master - Naveen R - 16/07/2025 End **************************************** */
+
 
 }

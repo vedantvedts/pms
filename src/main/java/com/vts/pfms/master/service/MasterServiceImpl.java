@@ -25,6 +25,8 @@ import com.vts.pfms.FormatConverter;
 import com.vts.pfms.admin.dao.AdminDao;
 import com.vts.pfms.admin.model.EmployeeDesig;
 import com.vts.pfms.committee.model.PfmsEmpRoles;
+import com.vts.pfms.committee.model.ProgrammeMaster;
+import com.vts.pfms.committee.model.ProgrammeProjects;
 import com.vts.pfms.master.dao.MasterDao;
 import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.dto.LabMasterAdd;
@@ -795,6 +797,38 @@ public class MasterServiceImpl implements MasterService {
 			
 			return dao.addPfmsFeedbackTrans(transaction);
 		}
+		
+		/* **************************** Programme Master - Naveen R  - 16/07/2025 **************************************** */
+		@Override
+		public List<Object[]> getProgramMasterList() throws Exception {
+			
+			return dao.getProgramMasterList();
+		}
+
+		@Override
+		public long addProgrammeMaster(ProgrammeMaster master) throws Exception {
+			
+			return dao.addProgrammeMaster(master);
+		}
+
+		@Override
+		public int removeProjectsLinked(String programmeId) throws Exception {
+			
+			return dao.removeProjectLinked(programmeId);
+		}
+
+		@Override
+		public long addProgrammeProjects(ProgrammeProjects linked) throws Exception {
+			
+			return dao.addProgrammeProjects(linked);		
+		}
+
+		@Override
+		public Long ProgramCodeCheck(String programmeCode, String prgrammeId) throws Exception {
+			
+			return dao.ProgramCodeCheck(programmeCode,prgrammeId);
+		}
+		/* **************************** Programme Master - Naveen R  - 16/07/2025 End**************************************** */
 
 }
 
