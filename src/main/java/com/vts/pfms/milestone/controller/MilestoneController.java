@@ -86,6 +86,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
+import com.vts.pfms.FormatConverter;
 import com.vts.pfms.Zipper;
 import com.vts.pfms.committee.model.ActionAssign;
 import com.vts.pfms.committee.service.ActionService;
@@ -116,6 +117,8 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class MilestoneController {
 
+	FormatConverter fc = new FormatConverter();
+	
 	@Autowired CommitteeService committeservice;
 
 	@Autowired
@@ -4002,7 +4005,151 @@ public class MilestoneController {
 			return "static/Error";
 		}
 	}
-	
+
+	@RequestMapping(value = "MilestoneActivityProgress.htm", method= {RequestMethod.GET, RequestMethod.POST})
+	public String milestoneActivityProgress(HttpServletRequest req,HttpSession ses) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		String LoginType = (String)ses.getAttribute("LoginType");
+		String labcode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside MilestoneActivityProgress.htm "+UserId);
+		try {
+			String oldProjectId = req.getParameter("oldProjectId");
+			String projectId = req.getParameter("projectId");
+			String fromDate = req.getParameter("fromDate");
+			String toDate = req.getParameter("toDate");
+			
+			List<Object[]> projectList = service.LoginProjectDetailsList(EmpId, LoginType, labcode);
+			Object[] projectData = null;
+			if(projectList!=null && projectList.size()>0) {
+				if(projectId==null) {
+					projectData = projectList.get(0);
+					projectId = projectData!=null ? projectData[0].toString(): "0";
+				}else {
+					Long projectid = Long.parseLong(projectId);
+					projectData = projectList!=null && projectList.size()>0 ? projectList.stream().filter(e -> projectid == Long.parseLong(e[0].toString())).findFirst().orElse(null):null;
+				}
+			}
+			
+			LocalDate today=LocalDate.now();
+			if(fromDate==null || (oldProjectId!=null && oldProjectId!=null && !oldProjectId.equalsIgnoreCase(projectId))) {
+				fromDate = projectData!=null ? projectData[12].toString(): today.toString();
+				toDate = today.toString();
+			}else{
+				fromDate=fc.rdfTosdf(fromDate);
+				toDate=fc.rdfTosdf(toDate);
+			}
+			
+			String finalProjectId = projectId;
+			List<Object[]> mainList = service.getAllMilestoneActivityList();
+			List<Object[]> subList = service.getAllMilestoneActivityLevelList();
+			
+			LocalDate fromDateL = LocalDate.parse(fromDate);
+			LocalDate toDateL = LocalDate.parse(toDate);
+			
+			List<Object[]> totalAssignedMainList = new ArrayList<>();
+			List<Object[]> totalAssignedSubList = new ArrayList<>();
+			
+			if (mainList != null && !mainList.isEmpty()) {
+				mainList = mainList.stream().filter(e -> e[1].toString().equalsIgnoreCase(finalProjectId) ).collect(Collectors.toList());
+				
+				totalAssignedMainList.addAll(mainList.stream()
+											.filter(e -> !LocalDate.parse(e[6].toString()).isBefore(fromDateL) && !LocalDate.parse(e[7].toString()).isAfter(toDateL) )
+											.collect(Collectors.toList()));
+				
+				for(Object[] objmain : mainList ) {
+
+					List<Object[]> MilestoneActivityA = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(objmain[0].toString()) && Integer.parseInt(e[2].toString())==1).collect(Collectors.toList());
+					int countA = 1;
+					for(Object[] obj:MilestoneActivityA) {
+						
+						if (!LocalDate.parse(obj[6].toString()).isBefore(fromDateL) && !LocalDate.parse(obj[7].toString()).isAfter(toDateL)) {
+					        Object[] newRow = Arrays.copyOf(obj, obj.length + 4);
+					        newRow[obj.length] = objmain[0].toString();
+					        newRow[obj.length + 1] = "A" + countA;
+					        newRow[obj.length + 2] = objmain[2];
+					        newRow[obj.length + 3] = objmain[1].toString();
+					        totalAssignedSubList.add(newRow);
+					    }
+						
+						List<Object[]> MilestoneActivityB = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj[0].toString()) && Integer.parseInt(e[2].toString())==2).collect(Collectors.toList());
+						int countB = 1;
+						for(Object[] obj1:MilestoneActivityB) {
+							
+							if (!LocalDate.parse(obj1[6].toString()).isBefore(fromDateL) && !LocalDate.parse(obj1[7].toString()).isAfter(toDateL)) {
+						        Object[] newRow = Arrays.copyOf(obj1, obj1.length + 4);
+						        newRow[obj1.length] = objmain[0].toString();
+						        newRow[obj1.length + 1] = "A"+countA+"-B"+countB;
+						        newRow[obj1.length + 2] = objmain[2];
+						        newRow[obj1.length + 3] = objmain[1].toString();
+						        totalAssignedSubList.add(newRow);
+						    }
+							
+							List<Object[]> MilestoneActivityC = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj1[0].toString()) && Integer.parseInt(e[2].toString())==3).collect(Collectors.toList());
+							int countC = 1;
+							for(Object[] obj2:MilestoneActivityC) {
+
+								if (!LocalDate.parse(obj2[6].toString()).isBefore(fromDateL) && !LocalDate.parse(obj2[7].toString()).isAfter(toDateL)) {
+							        Object[] newRow = Arrays.copyOf(obj1, obj1.length + 4);
+							        newRow[obj2.length] = objmain[0].toString();
+							        newRow[obj2.length + 1] = "A"+countA+"-B"+countB+"-C"+countC;
+							        newRow[obj2.length + 2] = objmain[2];
+							        newRow[obj2.length + 3] = objmain[1].toString();
+							        totalAssignedSubList.add(newRow);
+							    }
+								
+								List<Object[]> MilestoneActivityD = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj2[0].toString()) && Integer.parseInt(e[2].toString())==4).collect(Collectors.toList());
+								int countD = 1;
+								for(Object[] obj3:MilestoneActivityD) {
+									
+									if (!LocalDate.parse(obj3[6].toString()).isBefore(fromDateL) && !LocalDate.parse(obj3[7].toString()).isAfter(toDateL)) {
+								        Object[] newRow = Arrays.copyOf(obj1, obj1.length + 4);
+								        newRow[obj3.length] = objmain[0].toString();
+								        newRow[obj3.length + 1] = "A"+countA+"-B"+countB+"-C"+countC+"-D"+countD;
+								        newRow[obj3.length + 2] = objmain[2];
+								        newRow[obj3.length + 3] = objmain[1].toString();
+								        totalAssignedSubList.add(newRow);
+								    }
+									
+									List<Object[]> MilestoneActivityE = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj3[0].toString()) && Integer.parseInt(e[2].toString())==5).collect(Collectors.toList());
+									int countE = 1;
+									for(Object[] obj4:MilestoneActivityE) {
+										
+										if (!LocalDate.parse(obj4[6].toString()).isBefore(fromDateL) && !LocalDate.parse(obj4[7].toString()).isAfter(toDateL)) {
+									        Object[] newRow = Arrays.copyOf(obj1, obj1.length + 4);
+									        newRow[obj4.length] = objmain[0].toString();
+									        newRow[obj4.length + 1] = "A"+countA+"-B"+countB+"-C"+countC+"-D"+countD+"-E"+countE;
+									        newRow[obj4.length + 2] = objmain[2];
+									        newRow[obj4.length + 3] = objmain[1].toString();
+									        totalAssignedSubList.add(newRow);
+									    }
+										countE++;
+									}
+									countD++;
+								}
+								countC++;
+							}
+							countB++;
+						}
+						countA++;
+					}
+				}
+			}
+			
+			req.setAttribute("projectId", projectId);
+			req.setAttribute("fromDate", fromDate);
+			req.setAttribute("toDate", toDate);
+			req.setAttribute("totalAssignedMainList", totalAssignedMainList);
+			req.setAttribute("totalAssignedSubList", totalAssignedSubList);
+			req.setAttribute("projectList", projectList);
+			
+			return "milestone/MilestoneActivityProgress";
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside MilestoneActivityProgress.htm "+UserId ,e);
+			e.printStackTrace(); 
+			return "static/Error";
+		}
+	}
 
 }
 
