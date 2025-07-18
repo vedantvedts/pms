@@ -4390,7 +4390,7 @@ public class CommitteeController {
 			String userId = (String) req.getSession().getAttribute("Username");
 			String EmpName = (String) req.getSession().getAttribute("EmpName");
 			String EmpNo = (String) req.getSession().getAttribute("EmpNo");
-
+			String LabCode =(String)ses.getAttribute("labcode");
 			CommitteeMinutesAttachment attachment = service.MinutesAttachDownload(attachmentId);
 
 			// String inputFilePath = uploadpath + attachment.getFilePath() + File.separator + attachment.getAttachmentName();
@@ -4401,7 +4401,7 @@ public class CommitteeController {
 			//			            String encryptedOutputPath = uploadpath + attachment.getFilePath() + File.separator +"Encrypted_" + attachment.getAttachmentName();
 			Path filepath2 = Paths.get(uploadpath, fileParts[0], fileParts[1], ("Encrypted_" +attachment.getAttachmentName()));
 
-			String password = "lrde123";
+			String password ="vedts123";
 			PdfReader pdfReader = new PdfReader(filepath.toString());
 
 			pdfReader.setUnethicalReading(true);
@@ -7375,7 +7375,7 @@ public class CommitteeController {
 				if(PROTECTED_MINUTES == null) {
 					pdfw=new PdfWriter(path +File.separator+ "mergedb.pdf");
 				}else {
-					String password = "LRDE123";
+					String password = "vedts123";
 					pdfw = new PdfWriter(path +File.separator+ "mergedb.pdf",
 							new WriterProperties().setStandardEncryption(password.getBytes(), password.getBytes(),
 									EncryptionConstants.ALLOW_PRINTING, EncryptionConstants.ENCRYPTION_AES_128));
@@ -7738,7 +7738,7 @@ public class CommitteeController {
 				HtmlConverter.convertToPdf(fis1, pdfDoc, converterProperties);
 
 
-				String password = "LRDE123";
+				String password = "vedts123";
 				PdfWriter pdfw= new PdfWriter(path +File.separator+ "mergedb.pdf",
 						new WriterProperties().setStandardEncryption(password.getBytes(), password.getBytes(),
 								EncryptionConstants.ALLOW_PRINTING, EncryptionConstants.ENCRYPTION_AES_128));
@@ -9784,7 +9784,7 @@ public class CommitteeController {
 				if(PROTECTED_MINUTES == null) {
 					pdfw=new PdfWriter(path +File.separator+ "MoM.pdf");
 				}else {
-					String password = "LRDE123";
+					String password = "vedts123";
 					pdfw = new PdfWriter(path +File.separator+ "MoM.pdf",
 							new WriterProperties().setStandardEncryption(password.getBytes(), password.getBytes(),
 									EncryptionConstants.ALLOW_PRINTING, EncryptionConstants.ENCRYPTION_AES_128));
