@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.committee.model.PfmsEmpRoles;
+import com.vts.pfms.committee.model.ProgrammeMaster;
+import com.vts.pfms.committee.model.ProgrammeProjects;
 import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.dto.LabMasterAdd;
 import com.vts.pfms.master.dto.OfficerMasterAdd;
@@ -99,5 +101,13 @@ public interface MasterService {
 	public List<Object[]> checkDivisionMasterId(String groupId) throws Exception;
 	public List<Object[]> getFeedbackTransByFeedbackId(String feedbackId) throws Exception;
 	public long addPfmsFeedbackTrans(PfmsFeedbackTrans transaction) throws Exception;
+
+	/* **************************** Programme Master - Naveen R  - 16/07/2025 **************************************** */
+	public List<Object[]> getProgramMasterList() throws Exception;
+	public long addProgrammeMaster(ProgrammeMaster master) throws Exception;
+	public int removeProjectsLinked(String programmeId) throws Exception;
+	public long addProgrammeProjects(ProgrammeProjects linked) throws Exception;
+	public Long ProgramCodeCheck(String programmeCode, String prgrammeId) throws Exception ;
+	/* **************************** Programme Master - Naveen R  - 16/07/2025 End**************************************** */
 
 }

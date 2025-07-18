@@ -78,7 +78,7 @@ import com.vts.pfms.committee.model.PfmsEmpRoles;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.committee.model.PmsEnote;
 import com.vts.pfms.committee.model.PmsEnoteTransaction;
-import com.vts.pfms.committee.model.ProgammeProjects;
+import com.vts.pfms.committee.model.ProgrammeProjects;
 import com.vts.pfms.committee.model.ProgrammeMaster;
 import com.vts.pfms.mail.CustomJavaMailSender;
 import com.vts.pfms.master.dao.MasterDao;
@@ -3998,9 +3998,9 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 	}
 	
 	@Override
-	public List<ProgammeProjects> getProgammeProjectsList(String programmeId) throws Exception {
+	public List<ProgrammeProjects> getProgrammeProjectsList(String programmeId) throws Exception {
 		
-		return dao.getProgammeProjectsList(programmeId);
+		return dao.getProgrammeProjectsList(programmeId);
 	}
 	
 	@Override

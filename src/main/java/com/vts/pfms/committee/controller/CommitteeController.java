@@ -2305,15 +2305,15 @@ public class CommitteeController {
 			String Venue=req.getParameter("venue");
 			String Decisions=req.getParameter("decisions");
 			String Reference=req.getParameter("reference");
-			if(InputValidator.isContainsHTMLTags(Venue)) {
+			if(Venue!=null && InputValidator.isContainsHTMLTags(Venue)) {
 				redir.addFlashAttribute("scheduleid",req.getParameter("scheduleid"));
 				return redirectWithError(redir, "CommitteeScheduleView.htm", "'Venue' should not contain HTML Tags.!");
 			}
-			if(InputValidator.isContainsHTMLTags(Decisions)) {
+			if(Decisions!=null && InputValidator.isContainsHTMLTags(Decisions)) {
 				redir.addFlashAttribute("scheduleid",req.getParameter("scheduleid"));
 				return redirectWithError(redir, "CommitteeScheduleView.htm", "'Decisions/Recommendations sought from Meeting' should not contain HTML Tags.!");
 			}
-			if(InputValidator.isContainsHTMLTags(Reference)) {
+			if(Reference!=null && InputValidator.isContainsHTMLTags(Reference)) {
 				redir.addFlashAttribute("scheduleid",req.getParameter("scheduleid"));
 				return redirectWithError(redir, "CommitteeScheduleView.htm", "'Reference' should not contain HTML Tags.!");
 			}

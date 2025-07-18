@@ -3,6 +3,8 @@ package com.vts.pfms.master.dao;
 import java.util.List;
 
 import com.vts.pfms.committee.model.PfmsEmpRoles;
+import com.vts.pfms.committee.model.ProgrammeMaster;
+import com.vts.pfms.committee.model.ProgrammeProjects;
 import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.model.DivisionEmployee;
 import com.vts.pfms.master.model.DivisionGroup;
@@ -105,4 +107,11 @@ public interface MasterDao  {
 	public List<Object[]> getFeedbackTransByFeedbackId(String feedbackId) throws Exception;
 	public long addPfmsFeedbackTrans(PfmsFeedbackTrans transaction) throws Exception;
 
+	/* **************************** Programme Master - Naveen R  - 16/07/2025 **************************************** */
+	public List<Object[]> getProgramMasterList() throws Exception;
+	public long addProgrammeMaster(ProgrammeMaster master) throws Exception;
+	public int removeProjectLinked(String programmeId) throws Exception;
+	public long addProgrammeProjects(ProgrammeProjects programmeprojects) throws Exception;
+	public Long ProgramCodeCheck(String programmeCode, String prgrammeId) throws Exception;
+	/* **************************** Programme Master - Naveen R  - 16/07/2025 End**************************************** */
 }
