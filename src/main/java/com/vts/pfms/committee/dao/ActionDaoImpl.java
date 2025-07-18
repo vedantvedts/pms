@@ -1070,7 +1070,7 @@ public class ActionDaoImpl implements ActionDao{
 		return (Long)query.getSingleResult();
 	}
 	
-	private static final String RFAEDITDATA="SELECT rfaid,labcode,projectid,rfano,rfadate,priorityid,statement,description,reference,rfastatus,createdby,createddate,modifiedby,modifieddate,isactive,TypeOfRfa FROM pfms_rfa_action WHERE rfaid=:rfaid";
+	private static final String RFAEDITDATA="SELECT rfaid,labcode,projectid,rfano,rfadate,priorityid,statement,description,reference,rfastatus,createdby,createddate,modifiedby,modifieddate,isactive,TypeOfRfa,BoxNo,SWdate,FPGA,RigVersion,RfaRaisedByName,projectType FROM pfms_rfa_action WHERE rfaid=:rfaid";
 	@Override
 	public Object[] RfaActionEdit(String rfaid) throws Exception {
 		
@@ -1080,27 +1080,29 @@ public class ActionDaoImpl implements ActionDao{
 	}
 
 
-	private static final String RFAEDITSUBMIT="UPDATE pfms_rfa_action SET rfadate=:rfadate,priorityid=:priority,"
-			+ "statement=:statement,description=:description,reference=:reference,ModifiedBy=:modifiedby , "
-			+ "ModifiedDate=:modidifeddate WHERE rfaid=:rfaid";
+	private static final String RFAEDITSUBMIT="UPDATE pfms_rfa_action SET rfadate=:rfadate,priorityid=:priority,statement=:statement,description=:description,reference=:reference,ModifiedBy=:modifiedby , ModifiedDate=:modidifeddate,boxno=:boxno,SWdate=:SWdate,FPGA=:FPGA,RigVersion=:RigVersion,RfaRaisedByName=:RfaRaisedByName WHERE rfaid=:rfaid";
 	@Override
 	public Long RfaEditSubmit(RfaAction rfa) throws Exception {
-		RfaAction ExistingRfaAction= manager.find(RfaAction.class, rfa.getRfaId());
-		if(ExistingRfaAction != null) {
-			ExistingRfaAction.setRfaDate(rfa.getRfaDate());
-			ExistingRfaAction.setPriorityId(rfa.getPriorityId());
-			ExistingRfaAction.setStatement(rfa.getStatement());
-			ExistingRfaAction.setDescription(rfa.getDescription());
-			ExistingRfaAction.setReference(rfa.getReference());
-			ExistingRfaAction.setModifiedBy(rfa.getModifiedBy());
-			ExistingRfaAction.setModifiedDate(rfa.getModifiedDate());
-			return 1L;
-		}
-		else {
-			return 0L;
-		}
 		
+		Query query = manager.createNativeQuery(RFAEDITSUBMIT);
+			query.setParameter("rfadate", rfa.getRfaDate());
+			query.setParameter("priority", rfa.getPriorityId());
+			query.setParameter("statement", rfa.getStatement());
+			query.setParameter("description", rfa.getDescription());
+			query.setParameter("reference", rfa.getReference());
+			query.setParameter("modifiedby", rfa.getModifiedBy());
+			query.setParameter("modidifeddate", rfa.getModifiedDate());
+			query.setParameter("boxno", rfa.getBoxNo());
+			query.setParameter("SWdate", rfa.getSWdate());
+			query.setParameter("FPGA", rfa.getFPGA());
+			query.setParameter("RigVersion", rfa.getRigVersion());
+			query.setParameter("rfaid", rfa.getRfaId());
+			query.setParameter("RfaRaisedByName", rfa.getRfaRaisedByName());
+		
+		Long result = (long) query.executeUpdate();
+		return result;
 	}
+
 
 	private static final String RFALABDETAILS="SELECT a.labid,a.labcode,a.labname,a.labaddress,a.labcity,a.labpin FROM lab_master a WHERE a.labcode=:labcode";
 	@Override
@@ -1476,18 +1478,23 @@ public class ActionDaoImpl implements ActionDao{
 		
 	}
 
-	public static final String RFAATTACHMENTDOWNLOAD="SELECT a.rfaattachmentid,a.rfaid,a.filespath,a.assignorattachment,a.assigneeattachment,b.rfano,a.CloseAttachment FROM pfms_rfa_attachment a,pfms_rfa_action b WHERE a.rfaid=:rfaid AND a.rfaid=b.rfaid AND a.isactive=1";
+	public static final String RFAATTACHMENTDOWNLOAD="SELECT a.rfaattachmentid,a.rfaid,a.filespath,a.assignorattachment,a.assigneeattachment,b.rfano,a.CloseAttachment,\r\n"
+			+ "CASE WHEN b.projectType = 'P' THEN p.projectcode ELSE h.projectShortName END AS projectCode \r\n"
+			+ "FROM pfms_rfa_attachment a\r\n"
+			+ "LEFT JOIN pfms_rfa_action b ON a.rfaid = b.rfaid\r\n"
+			+ "LEFT JOIN project_master p ON p.projectid = b.projectid\r\n"
+			+ "LEFT JOIN pfms_initiation h ON h.initiationId = b.projectid\r\n"
+			+ "WHERE a.rfaid =:rfaid AND a.isactive = 1;";
 	@Override
 	public Object[] RfaAttachmentDownload(String rfaid) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(RFAATTACHMENTDOWNLOAD);
-			query.setParameter("rfaid", Integer.parseInt(rfaid));
+			query.setParameter("rfaid", rfaid);
 			return (Object[])query.getSingleResult();
 		}catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
-
 	}
 	
 	
@@ -1633,7 +1640,7 @@ public class ActionDaoImpl implements ActionDao{
 			+ "  OR\r\n"
 			+ " (:projectType = 'I' AND (:initiationId = 'A' OR a.projectId = :initiationId))\r\n"
 			+ ")\r\n"
-			+ "AND a.rfadate BETWEEN :fdate AND :tdate AND a.rfastatus IN ('AA','AF','AC','RC','AX','REV','AP','RV','ARC') ORDER BY rfaid DESC"; 
+			+ "AND a.rfadate BETWEEN :fdate AND :tdate AND a.rfastatus IN ('AA','AF','AC','RC','AX','REV','AP','RV','ARC','RFC') ORDER BY rfaid DESC"; 
 	@Override
 	public List<Object[]> GetRfaActionList1(String projectType, String projectId, String initiationId, String fdate, String tdate) throws Exception {
 		

@@ -166,6 +166,11 @@ hr {
 #uppermodule .dropdown-menu-right {
 	width: 185px !important;
 }
+
+.help-icon{
+    font-size: 21px;
+    margin-left: 5px;
+}
 </style>
 
 </head>
@@ -438,9 +443,11 @@ String labcode= (String)session.getAttribute("labcode");
 											</a> <a class="dropdown-item" href="DelegationFlow.htm"> <img
 												src="view/images/workflow.png" /> &nbsp;&nbsp; Delegation
 												Flow
-											</a> <a class="dropdown-item" href="FeedBack.htm"> <img
+											</a> 
+											<a class="dropdown-item" href="FeedBack.htm"> <img
 												src="view/images/feedback.png" /> &nbsp;&nbsp; Feedback
-											</a> <a class="dropdown-item" href="AboutPFM.htm" target="_blank">
+											</a> 
+											<a class="dropdown-item" href="AboutPFM.htm" target="_blank">
 												<img src="view/images/work.png" /> &nbsp;&nbsp; About PMS
 											</a>
                                             <a class="dropdown-item" href="PDManual.htm"
@@ -451,6 +458,10 @@ String labcode= (String)session.getAttribute("labcode");
                                             <a class="dropdown-item" href="TimeSheetWorkFlowPdf.htm"
 												target="_blank"> <img src="view/images/calendar.png" />
 												&nbsp;&nbsp; Work Register Work Flow
+											</a>
+                                            <a class="dropdown-item" href="userGuide.htm"
+												target="_blank"> <i class="fa fa-question-circle help-icon" aria-hidden="true"></i>
+												&nbsp;&nbsp; Help
 											</a>
 
 											<div class="dropdown-divider"></div>

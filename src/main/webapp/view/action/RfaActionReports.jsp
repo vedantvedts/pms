@@ -75,16 +75,17 @@ String projectCode=projectType.equalsIgnoreCase("P") ?
 									   .orElse(null);
 
 %>
-<%=RfaActionList.size() %>
+
+
 <div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
-           <div class="card-header position-relative p-0">  
+				 <form method="post" name="dateform" id="myform">
+                 <div class="card-header position-relative p-0">  
 					<div class="row">
-						<h4 class="col-md-3 p-3">RFA Action Reports</h4>  
-							<div class="col-md-9">
-						   	  <form method="post" action="RfaActionReports.htm" name="dateform" id="myform" class="d-flex justify-content-center flex-wrap">
+						<h4 class="col-md-3 p-3">RFA Action Reports</h4> 
+					    	<div class="d-flex justify-content-center flex-wrap" style="margin-bottom: 15px">
 							   			 <!-- Project Type -->
 							        <div class="d-flex align-items-center mx-2 my-1">
 							            <label for="projectType" class="mr-2 font-weight-bold" style="font-size: 17px;">Project Type:</label>
@@ -124,12 +125,9 @@ String projectCode=projectType.equalsIgnoreCase("P") ?
 										        <%}} %>   
 						  	             </select>
 							        </div>
-							        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-						   	  </form>	
-		   					</div>
 		   				</div>	   							
 					</div>
-			    <form action="#">		
+					</div>
 			        <div class="card-body">
 			        		<div class="d-flex justify-content-end align-items-center">
 						        <!-- From Date -->
@@ -204,17 +202,6 @@ String projectCode=projectType.equalsIgnoreCase("P") ?
 														<%} %>
 													   <%}else{ %>-<%} %>
 													</td>	
-											 <%-- <td>
-													   <%if(obj[10]!=null){%>
-														<%if(obj[10].toString().length()>70){ %>
-														 <%=obj[10].toString().substring(0, 70) %>
-														    <input type="hidden" value="<%=obj[10].toString()%>" id="tdobs<%=obj[0].toString()%>">
-														    <span style="text-decoration: underline;font-size:13px;color: #145374;cursor: pointer;font-weight: bolder" onclick="showObservation('<%=obj[0].toString()%>','<%=obj[1].toString()%>')">show more..</span>
-														<%}else{ %>
-														<%=obj[10].toString() %>
-														<%} %>
-													  <%}else{ %>-<%} %>
-													</td> --%>
 													<td>
 														<%if(AssigneeList!=null ){ 
 															for(Object[] obj1 : AssigneeList){
@@ -225,7 +212,6 @@ String projectCode=projectType.equalsIgnoreCase("P") ?
 													</td>
 													<td><%if(obj[9]!=null){%><%=sdf.format(obj[9])%><%}else{ %>-<%} %></td>
 													<td style="text-align: center;">
-													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	                                       	  	    <button type="submit" class="btn btn-sm btn-link btn-status" formaction="RfaTransStatus.htm" value="<%=obj[0] %>" name="rfaTransId"  data-toggle="tooltip" data-placement="top" title="Transaction History" 
 	                                       	  	    style=" color: #E65100; font-weight: 600;" formtarget="_blank"><%=obj[8] %> 
 								    			    </button>
@@ -317,30 +303,17 @@ $('#tdate').daterangepicker({
 	}
 });
 
-$(document).ready(function() {
-	$('#projectId').on('change', function() {
-		var temp = $(this).children("option:selected").val();
-		$('#myform').submit();
-	});
-});
-	
-$('#rfatypeid').on('change', function() {
-	var temp = $(this).children("option:selected").val();
-	$('#myform').submit();
-});
-
-$('#fdate').on('change', function() {
-	$('#myform').submit();
+$(document).ready(function(){
+	   $('#fdate, #tdate,#projectId,#projectType,#rfatypeid').change(function(){
+	   var form = document.getElementById("myform");
+		 
+        if (form) {
+                 form.setAttribute("action", "RfaActionReports.htm");
+                  form.submit();
+              }
+         });
 });
 
-$('#tdate').on('change', function() {
-	$('#myform').submit();
-});
-
-$('#projectType').on('change', function() {
-	var temp = $(this).children("option:selected").val();
-	$('#myform').submit();
-});
 
 $(document).ready(function(){
 	  $("#myTable").DataTable({
