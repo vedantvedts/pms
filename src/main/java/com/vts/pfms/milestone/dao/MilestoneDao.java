@@ -140,5 +140,6 @@ public interface MilestoneDao {
 	public String getProjectIdByMainLevelId(String id)throws Exception;
 	public MilestoneActivity getMilestoneActivityById(String id);
 	public List<Object[]> actionAssigneeList(String EmpId) throws Exception;
-
+	public List<Object[]> getMilestoneActivityProgressList() throws Exception;
+	
 }

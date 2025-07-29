@@ -1263,7 +1263,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 			}
 		}
 		
-		private static final String ALLMILESTONEACTIVITYLIST = "SELECT a.MilestoneActivityId, a.ProjectId, a.MilestoneNo, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.RevisionNo, a.OicEmpId, a.OicEmpId1, a.ActivityStatusId, a.Weightage, b.ProjectCode, b.ProjectShortName, b.ProjectName, a.Loading FROM milestone_activity a LEFT JOIN project_master b ON a.ProjectId=b.ProjectId WHERE a.IsActive=1 ORDER BY a.ProjectId, a.MilestoneActivityId";
+		private static final String ALLMILESTONEACTIVITYLIST = "SELECT a.MilestoneActivityId, a.ProjectId, a.MilestoneNo, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.RevisionNo, a.OicEmpId, a.OicEmpId1, a.ActivityStatusId, a.Weightage, b.ProjectCode, b.ProjectShortName, b.ProjectName, a.Loading, a.StatusRemarks FROM milestone_activity a LEFT JOIN project_master b ON a.ProjectId=b.ProjectId WHERE a.IsActive=1 ORDER BY a.ProjectId, a.MilestoneActivityId";
 		@Override
 		public List<Object[]> getAllMilestoneActivityList() throws Exception {
 			try {
@@ -1276,9 +1276,9 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		}
 		
 		//private static final String ALLMILESTONEACTIVITYLEVELLIST = "SELECT a.ActivityId, a.ParentActivityId, a.ActivityLevelId, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.Revision, a.OicEmpId, a.OicEmpId1 FROM milestone_activity_level a WHERE a.IsActive=1";
-		private static final String ALLMILESTONEACTIVITYLEVELLIST = "SELECT a.ActivityId AS obid, a.ParentActivityId, a.ActivityLevelId, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.Revision, a.OicEmpId, a.OicEmpId1, a.ActivityStatusId, a.Weightage, a.Loading FROM milestone_activity_level a WHERE a.IsActive=1 AND a.Revision=0\r\n"
+		private static final String ALLMILESTONEACTIVITYLEVELLIST = "SELECT a.ActivityId AS obid, a.ParentActivityId, a.ActivityLevelId, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.Revision, a.OicEmpId, a.OicEmpId1, a.ActivityStatusId, a.Weightage, a.Loading, a.StatusRemarks FROM milestone_activity_level a WHERE a.IsActive=1 AND a.Revision=0\r\n"
 				+ "UNION\r\n"
-				+ "SELECT a.ActivityId AS obid, a.ParentActivityId, a.ActivityLevelId, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.Revision, a.OicEmpId, a.OicEmpId1, a.ActivityStatusId, a.Weightage, a.Loading FROM milestone_activity_level a, milestone_activity_sub_rev b WHERE a.IsActive=1 AND a.Revision=b.Revision AND a.ActivityId=b.ActivityId \r\n"
+				+ "SELECT a.ActivityId AS obid, a.ParentActivityId, a.ActivityLevelId, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.Revision, a.OicEmpId, a.OicEmpId1, a.ActivityStatusId, a.Weightage, a.Loading, a.StatusRemarks FROM milestone_activity_level a, milestone_activity_sub_rev b WHERE a.IsActive=1 AND a.Revision=b.Revision AND a.ActivityId=b.ActivityId \r\n"
 				+ "ORDER BY obid ASC";
 		@Override
 		public List<Object[]> getAllMilestoneActivityLevelList() throws Exception {
@@ -1504,6 +1504,19 @@ public class MilestoneDaoImpl implements MilestoneDao {
 			return (List<Object[]>)query.getResultList();	
 		}catch (Exception e) {
 			logger.error( "Inside DAO actionAssigneeList "+e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	private static final String MILESTONEACTIVITYPROGRESSLIST="SELECT a.ActivitySubId, a.ActivityId, a.Progress, a.ProgressDate, a.AttachName, a.AttachFile, a.Remarks, c.EmpId, CONCAT(IFNULL(CONCAT(c.Title,' '),(IFNULL(CONCAT(c.Salutation, ' '), ''))), c.EmpName) AS 'EmpName', d.Designation FROM milestone_activity_sub a LEFT JOIN login b ON a.CreatedBy=b.UserName LEFT JOIN employee c ON b.EmpId=c.EmpId LEFT JOIN employee_desig d ON c.DesigId=d.DesigId WHERE a.IsActive=1 ORDER BY a.ProgressDate DESC";
+	@Override
+	public List<Object[]> getMilestoneActivityProgressList() throws Exception {
+		try {
+			Query query=manager.createNativeQuery(MILESTONEACTIVITYPROGRESSLIST);
+			return (List<Object[]>)query.getResultList();	
+		}catch (Exception e) {
+			logger.error( "Inside DAO getMilestoneActivityProgressList "+e);
 			e.printStackTrace();
 			return null;
 		}

@@ -2401,4 +2401,10 @@ public class MilestoneServiceImpl implements MilestoneService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	@Override
+	public List<Object[]> getMilestoneActivityProgressList() throws Exception {
+		
+		return dao.getMilestoneActivityProgressList();
+	}
 }
