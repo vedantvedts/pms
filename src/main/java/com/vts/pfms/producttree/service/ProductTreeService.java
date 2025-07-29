@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.producttree.dto.ProductTreeDto;
+import com.vts.pfms.producttree.model.ProductTree;
 import com.vts.pfms.producttree.model.ProductTreeRev;
 import com.vts.pfms.producttree.model.SystemProductTree;
 
@@ -35,6 +36,7 @@ public interface ProductTreeService {
 	
 	public long systemLevelNameEdit(SystemProductTree dto, String action)throws Exception;
 
-
+	public ProductTree getProductTreeById(long mainId) throws Exception;
+	public long LevelNameEdit(ProductTree productTree) throws Exception;
 
 }

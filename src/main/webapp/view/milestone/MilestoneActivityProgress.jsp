@@ -1,3 +1,5 @@
+<%@page import="java.time.LocalDate"%>
+<%@page import="java.util.Map"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="org.apache.commons.text.StringEscapeUtils"%>
@@ -43,31 +45,33 @@
 	List<Object[]> projectList = (List<Object[]>)request.getAttribute("projectList");
 	List<Object[]> totalAssignedMainList = (List<Object[]>)request.getAttribute("totalAssignedMainList");
 	List<Object[]> totalAssignedSubList = (List<Object[]>)request.getAttribute("totalAssignedSubList");
+	Map<Long, List<Object[]>> progressListMap = (Map<Long, List<Object[]>>)request.getAttribute("progressListMap");
 	String projectId = (String)request.getAttribute("projectId");
 	String fromDate = (String)request.getAttribute("fromDate");
 	String toDate = (String)request.getAttribute("toDate");
+	String sancDate = (String)request.getAttribute("sancDate");
 	
 	FormatConverter fc = new FormatConverter();
 	
 	totalAssignedSubList.sort((o1, o2) -> {
 	    // Null safety, if needed
-	    Long p1 = o1[18] != null ? Long.parseLong(o1[18].toString()) : 0;
-	    Long p2 = o2[18] != null ? Long.parseLong(o2[18].toString()) : 0;
+	    Long p1 = o1[19] != null ? Long.parseLong(o1[19].toString()) : 0;
+	    Long p2 = o2[19] != null ? Long.parseLong(o2[19].toString()) : 0;
 	    int result = p1.compareTo(p2);
 	    if (result != 0) return result;
 
-	    Long s1 = o1[15] != null ? Long.parseLong(o1[15].toString()) : 0;
-	    Long s2 = o2[15] != null ? Long.parseLong(o2[15].toString()) : 0;
+	    Long s1 = o1[16] != null ? Long.parseLong(o1[16].toString()) : 0;
+	    Long s2 = o2[16] != null ? Long.parseLong(o2[16].toString()) : 0;
 	    result = s1.compareTo(s2);
 	    if (result != 0) return result;
 
-	    Integer t1 = o1[17] != null ? Integer.parseInt(o1[17].toString()) : 0;
-	    Integer t2 = o2[17] != null ? Integer.parseInt(o2[17].toString()) : 0;
+	    Integer t1 = o1[18] != null ? Integer.parseInt(o1[18].toString()) : 0;
+	    Integer t2 = o2[18] != null ? Integer.parseInt(o2[18].toString()) : 0;
 	    result = t1.compareTo(t2);
 	    if (result != 0) return result;
 
-	    String u1 = o1[16] != null ? o1[16].toString() : "";
-	    String u2 = o2[16] != null ? o2[16].toString() : "";
+	    String u1 = o1[17] != null ? o1[17].toString() : "";
+	    String u2 = o2[17] != null ? o2[17].toString() : "";
 	    return u1.compareTo(u2);
 	});
 	
@@ -99,6 +103,7 @@
             	<form method="post" action="MilestoneActivityProgress.htm" name="myform" id="myform">
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 					<input type="hidden" name="oldProjectId" value="<%=projectId%>">
+					<input type="hidden" name="sancDate" value="<%=sancDate%>">
 	                <div class="row">
 	                    <div class="col-md-6">
 	                        <h5>Milestone Progress List</h5> 
@@ -142,17 +147,17 @@
 	                                <tr>
 	                                    <th width="3%">SN</th>
 	                                    <!-- <th width="12%">Project</th> -->
-	                                    <th width="12%">Main</th>
+	                                    <th width="5%">Main</th>
 	                                    <th width="15%">Sub</th>
 	                                    <th width="30%">Activity</th>
-	                                    <th width="10%">Start</th>
-	                                    <th width="10%">End</th>
-	                                    <th width="10%">Weightage</th>
+	                                    <th width="17%">Progress By</th>
+	                                    <th width="10%">Progress Date</th>
 	                                    <th width="10%">Progress</th>
+	                                    <th width="10%">Remarks</th>
 	                                </tr>
 					      		</thead>
 					          	<tbody>
-					            	<%int slno = 0;
+					            	<%-- <%int slno = 0;
 					            	if(totalAssignedMainList!=null && totalAssignedMainList.size()>0) { 
 					            		totalAssignedMainList = totalAssignedMainList.stream().filter(e -> Integer.parseInt(e[8].toString())>0 ).collect(Collectors.toList());
 						            	for(Object[] obj : totalAssignedMainList) { %>
@@ -190,26 +195,28 @@
 													<%} %>
 		                            			</td>
 		                            		</tr>
-						        	<%} }%>
+						        	<%} }%> --%>
 						        	
-						            <%if(totalAssignedSubList!=null && totalAssignedSubList.size()>0) { 
+						            <%int slno = 0;
+						            if(totalAssignedSubList!=null && totalAssignedSubList.size()>0) { 
 						            	totalAssignedSubList = totalAssignedSubList.stream().filter(e -> Integer.parseInt(e[8].toString())>0 ).collect(Collectors.toList());
 						            	for(Object[] obj : totalAssignedSubList) { 
+						            		List<Object[]> porgressList = progressListMap.get(Long.parseLong(obj[0].toString()));
+						            		for(Object[] prog : porgressList){
 						            %>
 		                            		<tr>
 		                            			<td class="center"><%=++slno %></td>
-		                            			<td class="center">M<%=obj[17] %></td>
-		                            			<td class="center"><%=obj[16] %></td>
+		                            			<td class="center">M<%=obj[18] %></td>
+		                            			<td class="center"><%=obj[17] %></td>
 		                            			<td><%=obj[3]%></td>
-		                            			<td class="center"><%=obj[6]!=null?fc.sdfTordf(obj[6].toString()):"-" %></td>
-		                            			<td class="center"><%=obj[7]!=null?fc.sdfTordf(obj[7].toString()):"-" %></td>
-		                            			<td class="center"><%=obj[13]%></td>
+		                            			<td><%=prog[8]%>, <%=prog[9]%></td>
+		                            			<td class="center"><%=prog[3]!=null?fc.sdfTordf(prog[3].toString()):"-" %></td>
 		                            			<td>
-		                            				<%if(!obj[8].toString().equalsIgnoreCase("0")){ %>
+		                            				<%if(!prog[2].toString().equalsIgnoreCase("0")){ %>
 														<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar progress-bar-striped
-																" role="progressbar" style=" width: <%=obj[8] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																<%=obj[8] %>
+																" role="progressbar" style=" width: <%=prog[2] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																<%=prog[2] %>
 															</div> 
 														</div> 
 													<%}else{ %>
@@ -220,8 +227,9 @@
 														</div> 
 													<%} %>
 		                            			</td>
+		                            			<td><%=prog[6]!=null?prog[6]:"-"%></td>
 		                            		</tr>
-						            <%} }%>
+						            <%} } }%>
 					         	</tbody>
 					    	</table>
 						</div>
@@ -246,8 +254,9 @@
         "linkedCalendars": false,
         "showCustomRangeLabel": true,
         "startDate": new Date('<%=fromDate%>'),
-        "minDate": new Date('<%=fromDate%>'),
-        "maxDate": new Date('<%=toDate%>'),
+        "endDate": new Date('<%=toDate%>'),
+        "minDate": new Date('<%=sancDate%>'),
+        "maxDate": new Date('<%=LocalDate.now()%>'),
         "cancelClass": "btn-default",
         showDropdowns: true,
         locale: {
@@ -260,8 +269,9 @@
     	    "linkedCalendars": false,
     	    "showCustomRangeLabel": true,
     	    "startDate": new Date('<%=toDate%>'),
+    	    "endDate": new Date('<%=toDate%>'),
     	    "minDate": $("#fromDate").val(),
-    	    "maxDate": new Date('<%=toDate%>'),
+    	    "maxDate": new Date('<%=LocalDate.now()%>'),
     	    "cancelClass": "btn-default",
     	    showDropdowns: true,
     	    locale: {
@@ -274,8 +284,9 @@
         "linkedCalendars": false,
         "showCustomRangeLabel": true,
         "startDate": new Date('<%=toDate%>'),
+        "endDate": new Date('<%=toDate%>'),
         "minDate": $("#fromDate").val(),
-        "maxDate": new Date('<%=toDate%>'),
+        "maxDate": new Date('<%=LocalDate.now()%>'),
         "cancelClass": "btn-default",
         showDropdowns: true,
         locale: {
