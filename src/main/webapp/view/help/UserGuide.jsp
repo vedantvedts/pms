@@ -50,7 +50,7 @@
 	<div class="container my-5">
 		<div class="row justify-content-center">
 
-			<div class="col-md-4 mb-4">
+		<!-- 	<div class="col-md-4 mb-4">
 				<a href="RoadmapUserGuide.htm" target="_blank"
 					class="text-white text-decoration-none">
 					<div class="card custom-card bg-blue text-center">
@@ -62,9 +62,9 @@
 						</div>
 					</div>
 				</a>
-			</div>
+			</div> -->
 
-			<div class="col-md-4 mb-4">
+			<!-- <div class="col-md-4 mb-4">
 				<a href="MilestoneUserGuide.htm" target="_blank"
 					class="text-white text-decoration-none">
 					<div class="card custom-card bg-green text-center">
@@ -76,9 +76,9 @@
 						</div>
 					</div>
 				</a>
-			</div>
+			</div> -->
 
-			<div class="col-md-4 mb-4">
+			<!-- <div class="col-md-4 mb-4">
 				<a href="ClosureUserGuide.htm" target="_blank"
 					class="text-white text-decoration-none">
 					<div class="card custom-card bg-orange text-center">
@@ -90,7 +90,7 @@
 						</div>
 					</div>
 				</a>
-			</div>
+			</div> -->
 
 			<div class="col-md-4 mb-4">
 				<a href="CommitteeUserGuide.htm" target="_blank"
@@ -134,7 +134,7 @@
 				</a>
 			</div>
 
-			<div class="col-md-4 mb-4">
+<!-- 			<div class="col-md-4 mb-4">
 				<a href="ProcurementUserGuide.htm" target="_blank"
 					class="text-white text-decoration-none">
 					<div class="card custom-card bg-orange text-center">
@@ -174,7 +174,7 @@
 						</div>
 					</div>
 				</a>
-			</div>
+			</div> -->
 
 		</div>
 	</div>

@@ -1400,11 +1400,7 @@
 										<%}}
 								 %> <%-- A-<%=milcountA%> --%>
 								<%
-								/* milcountA++;
-								milcountB = 1;
-								milcountC = 1;
-								milcountD = 1;
-								milcountE = 1; */
+							
 								} else if (obj[21].toString().equals("2")) {
 									for(Map.Entry<Integer,String>entry:treeMapLevTwo.entrySet()){
 										if(entry.getKey().toString().equalsIgnoreCase(obj[3].toString())){%>
@@ -1412,10 +1408,7 @@
 									<%}}
 								%><%--  B-<%=milcountB%> --%>
 								<%
-								/* milcountB += 1;
-								milcountC = 1;
-								milcountD = 1;
-								milcountE = 1; */
+						
 								} else if (obj[21].toString().equals("3")) {
 								%> C-<%=milcountC%>
 								<%
@@ -1514,15 +1507,9 @@
 						<%}%>
 					</table>
 
-					<%}%>
-				</div>
-
-			</div>
-
+					<%}%></div></div>
 			<!-- ----------------------------------------   P-6a Div ----------------------------------------------------- -->
-
 			<!-- ---------------------------------------- P-6b Div ----------------------------------------------------- -->
-
 			<div class="carousel-item ">
 
 				<div class="content-header row ">
@@ -1554,9 +1541,6 @@
 								<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
 							</div>
 						<% } %>
-
-					<!-- <div align="left" style="margin-left: 15px;"><span class="mainsubtitle">(b) TRL table with TRL at sanction stage and current stage indicating overall PRI.</span></div> -->
-
 					<div>
 						<table style="width: 100%;">
 							<% if (projectdatadetails.get(z) != null && projectdatadetails.get(z)[6] != null) { %>
@@ -1595,18 +1579,11 @@
 					</div>
 
 					<% } %>
-				</div>
-
-			</div>
-
+				</div></div>
 			<!-- ----------------------------------------   P-6b Div ----------------------------------------------------- -->
-
 			<!-- ---------------------------------------- P-6c Div ----------------------------------------------------- -->
-
 			<div class="carousel-item ">
-
 				<div class="content-header row ">
-					
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
@@ -1622,13 +1599,7 @@
 					</div>
 					<div class="col-md-1">
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
-					</div>
-					
-				</div>
-
-
-				<div class="content">
-
+					</div></div><div class="content">
 					<% for (int z = 0; z < 1; z++) { %>
 					<% if (ProjectDetail.size() > 1) { %>
 					<div>

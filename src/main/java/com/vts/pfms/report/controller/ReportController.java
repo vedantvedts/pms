@@ -330,9 +330,11 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
         
        
 
-        req.setAttribute("ProjectId", projectIdsParam);
-        req.setAttribute("ProjectAssignList", prjservice.ProjectAssignList(projectIdsParam));
-   
+		/*
+		 * req.setAttribute("ProjectId", projectIdsParam);
+		 * req.setAttribute("ProjectAssignList",
+		 * prjservice.ProjectAssignList(projectIdsParam));
+		 */
 
      
 

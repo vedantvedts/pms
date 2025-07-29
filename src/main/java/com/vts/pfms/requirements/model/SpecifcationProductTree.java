@@ -15,7 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "pfms_specification_productTree")
+@Table(name = "pfms_specification_producttree")
 public class SpecifcationProductTree {
 	
 	@Id

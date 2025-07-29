@@ -1613,7 +1613,7 @@ public class RequirementDaoImpl implements RequirementDao {
 	}
 	
 	
-	private static final String MILISACTIVE = "UPDATE milestone_activity SET isactive= '0' WHERE MilestoneActivityId=:id";
+	private static final String MILISACTIVE = "DELETE from  milestone_activity  WHERE MilestoneActivityId=:id";
 	@Override
 	public int setMilestoneInActive(String id) throws Exception {
 	

@@ -4586,7 +4586,7 @@ public class PrintController {
 		 
 
 
-		 @RequestMapping(value = "GetAllProjectSlide.htm" , method = RequestMethod.POST)
+		 @RequestMapping(value = "GetAllProjectSlide.htm" , method = RequestMethod.GET)
 		 public String GetAllProjectSlide(HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
 			{
 			 long startTime = System.currentTimeMillis();
