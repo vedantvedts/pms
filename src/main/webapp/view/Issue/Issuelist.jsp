@@ -247,7 +247,7 @@ if(ses1!=null){
 															</div> <%} %></td>
 								<td class="center">
 								<%if(action!=null && !"F".equalsIgnoreCase(action)){%>
-									<form action="CloseAction.htm" method="post">
+									<form action="ActionSubLaunch.htm" method="post">
 										<button class="editable-click" name="sub" value="Details" 	>
 													<div class="cc-rockmenu">
 																<div class="rolling">

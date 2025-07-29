@@ -128,8 +128,8 @@ System.out.println(projectIds.toString()+"----");
 <!-- Modal -->
 	<div class="modal fade bd-example-modal-xl" id="selectProjectsForSlideShowModal" style="width: 100%;display: none;" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-lg " style="max-width: 1800px" role="document">
-	  <form action="GetAllProjectSlide.htm" target="_blank" onsubmit="return checkslidesinput()" method="post" id="slideshowForm">
-	  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+	  <form action="GetAllProjectSlide.htm" target="_blank" onsubmit="return checkslidesinput()" method="get" id="slideshowForm">
+	  <%-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />  --%>
 	  
 	    <div class="modal-content">
 	      <div class="modal-header">
