@@ -147,13 +147,13 @@
 	                                <tr>
 	                                    <th width="3%">SN</th>
 	                                    <!-- <th width="12%">Project</th> -->
-	                                    <th width="5%">Main</th>
-	                                    <th width="15%">Sub</th>
-	                                    <th width="30%">Activity</th>
+	                                    <th width="3%">Main</th>
+	                                    <th width="12%">Sub</th>
+	                                    <th width="27%">Activity</th>
 	                                    <th width="17%">Progress By</th>
-	                                    <th width="10%">Progress Date</th>
+	                                    <th width="8%">Progress Date</th>
 	                                    <th width="10%">Progress</th>
-	                                    <th width="10%">Remarks</th>
+	                                    <th width="20%">Remarks</th>
 	                                </tr>
 					      		</thead>
 					          	<tbody>

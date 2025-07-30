@@ -383,6 +383,7 @@ label {
 					              		<form action="IRSFieldDescSerialNoUpdate.htm" method="POST" id="slnoupdateform">
 							              	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 							              	<input type="hidden" name="irsSpecificationId" value="<%=irsSpecificationId%>">
+							              	<input type="hidden" name="logicalInterfaceId" value="<%=logicalInterfaceId%>">
 							              	<input type="hidden" name="docId" value="<%=docId %>" />
 						        			<input type="hidden" name="docType" value="<%=docType %>" />
 						        			<input type="hidden" name="documentNo" value="<%=documentNo %>" />

@@ -818,6 +818,7 @@ public class DocumentsController {
 			redir.addAttribute("docId", docId);
 			redir.addAttribute("docType", docType);
 			redir.addAttribute("shortCodeType", shortCodeType);
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
 			
 			return "redirect:/IGIShortCodesDetails.htm";
 			

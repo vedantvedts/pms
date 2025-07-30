@@ -259,7 +259,10 @@ h6{
 					                            	int slno = 0;
 					                            	if((activityType.equalsIgnoreCase("A") || activityType.equalsIgnoreCase("B")) ) { %>
 					                            		<%if(actionAssigneeList!=null && actionAssigneeList.size()>0) { 
-						                            		for(Object[] obj : actionAssigneeList) { %>
+						                            		for(Object[] obj : actionAssigneeList) {
+						                            			int progress = obj[11]!=null?Integer.parseInt(obj[11].toString()):0;
+						                            			if(progress>99) continue;
+						                            			%>
 						                            		<tr>
 						                            			<td class="center"><%=++slno %></td>
 						                            			<td class="center">
@@ -275,20 +278,11 @@ h6{
 						                            			<td class="center"><%=obj[6]!=null?fc.sdfTordf(obj[6].toString()):"-" %></td>
 						                            			<%-- <td class="center"><%=obj[13]%></td> --%>
 						                            			<td>
-						                            				<%if(!obj[11].toString().equalsIgnoreCase("0")){ %>
+						                            				<%if(progress>0){ %>
 																		<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 																			<div class="progress-bar progress-bar-striped
-																				<%if(obj[11].toString().equalsIgnoreCase("2")){ %>
-																					bg-success
-																				<%} else if(obj[11].toString().equalsIgnoreCase("3")){ %>
-																					bg-info
-																				<%} else if(obj[11].toString().equalsIgnoreCase("4")){ %>
-																					bg-danger
-																				<%} else if(obj[11].toString().equalsIgnoreCase("5")){ %>
-																					bg-warning
-																				<%}  %>
-																				" role="progressbar" style=" width: <%=obj[11] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																				<%=obj[11] %>
+																				" role="progressbar" style=" width: <%=progress %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																				<%=progress %>
 																			</div> 
 																		</div> 
 																	<%}else{ %>
@@ -321,7 +315,10 @@ h6{
 					                            	if((activityType.equalsIgnoreCase("A") || activityType.equalsIgnoreCase("C")) ) { %>
 					                            	
 						                            	<%if(totalAssignedMainList!=null && totalAssignedMainList.size()>0) { 
-						                            		for(Object[] obj : totalAssignedMainList) { %>
+						                            		for(Object[] obj : totalAssignedMainList) { 
+						                            			int progress = obj[8]!=null?Integer.parseInt(obj[8].toString()):0;
+						                            			if(progress>99) continue;
+						                            			%>
 						                            		<tr>
 						                            			<td class="center"><%=++slno %></td>
 						                            			<td class="center"><%=obj[14]+" ("+obj[15]+")"%></td>
@@ -331,7 +328,7 @@ h6{
 						                            			<td class="center"><%=obj[7]!=null?fc.sdfTordf(obj[7].toString()):"-" %></td>
 						                            			<%-- <td class="center"><%=obj[13]%></td> --%>
 						                            			<td>
-						                            				<%if(!obj[8].toString().equalsIgnoreCase("0")){ %>
+						                            				<%if(progress>0){ %>
 																		<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 																			<div class="progress-bar progress-bar-striped
 																				<%if(obj[12].toString().equalsIgnoreCase("2")){ %>
@@ -343,8 +340,8 @@ h6{
 																				<%} else if(obj[12].toString().equalsIgnoreCase("5")){ %>
 																					bg-warning
 																				<%}  %>
-																				" role="progressbar" style=" width: <%=obj[8] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																				<%=obj[8] %>
+																				" role="progressbar" style=" width: <%=progress %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																				<%=progress %>
 																			</div> 
 																		</div> 
 																	<%}else{ %>
@@ -375,6 +372,8 @@ h6{
 						                            	<%} }%>
 						                            	<%if(totalAssignedSubList!=null && totalAssignedSubList.size()>0) { 
 						                            		for(Object[] obj : totalAssignedSubList) { 
+						                            			int progress = obj[8]!=null?Integer.parseInt(obj[8].toString()):0;
+						                            			if(progress>99) continue;
 						                    	   				Object[] projectDetails = projectList.stream().filter(e -> Long.parseLong(e[0].toString())== Long.parseLong(obj[18].toString())).findFirst().orElse(null);
 						                            		%>
 						                            		<tr>
@@ -386,11 +385,20 @@ h6{
 						                            			<td class="center"><%=obj[7]!=null?fc.sdfTordf(obj[7].toString()):"-" %></td>
 						                            			<%-- <td class="center"><%=obj[13]%></td> --%>
 						                            			<td>
-						                            				<%if(!obj[8].toString().equalsIgnoreCase("0")){ %>
+						                            				<%if(progress>0){ %>
 																		<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 																			<div class="progress-bar progress-bar-striped
-																				" role="progressbar" style=" width: <%=obj[8] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																				<%=obj[8] %>
+																				<%if(obj[12].toString().equalsIgnoreCase("2")){ %>
+																					bg-success
+																				<%} else if(obj[12].toString().equalsIgnoreCase("3")){ %>
+																					bg-info
+																				<%} else if(obj[12].toString().equalsIgnoreCase("4")){ %>
+																					bg-danger
+																				<%} else if(obj[12].toString().equalsIgnoreCase("5")){ %>
+																					bg-warning
+																				<%}  %>
+																				" role="progressbar" style=" width: <%=progress %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																				<%=progress %>
 																			</div> 
 																		</div> 
 																	<%}else{ %>
@@ -580,7 +588,9 @@ h6{
 	function chartprint(type,interval){
 		var data = [
 			<% if((activityType.equalsIgnoreCase("A") || activityType.equalsIgnoreCase("B")) ) { %>
-				<%for(Object[] obj : actionAssigneeList){ %>
+				<%for(Object[] obj : actionAssigneeList){ 
+					int progress = obj[11]!=null?Integer.parseInt(obj[11].toString()):0;
+					if(progress>99) continue;%>
 				
 					{
 						id: "<%=obj[0]%>",
@@ -597,7 +607,10 @@ h6{
 				<%}%>
 			<%}%>
 			<% if((activityType.equalsIgnoreCase("A") || activityType.equalsIgnoreCase("C")) ) { %>
-	   			<%for(Object[] obj : totalAssignedMainList){ %>
+	   			<%for(Object[] obj : totalAssignedMainList){ 
+	   				int progress = obj[8]!=null?Integer.parseInt(obj[8].toString()):0;
+        			if(progress>99) continue;
+	   			%>
 	
 					{
 						id: "<%=obj[2]%>",
@@ -627,7 +640,9 @@ h6{
 					},
 				<%}%>
 		   		<%for(Object[] obj : totalAssignedSubList){ 
-	   				Object[] projectDetails = projectList.stream().filter(e -> Long.parseLong(e[0].toString())== Long.parseLong(obj[17].toString())).findFirst().orElse(null);
+		   			int progress = obj[8]!=null?Integer.parseInt(obj[8].toString()):0;
+        			if(progress>99) continue;
+	   				Object[] projectDetails = projectList.stream().filter(e -> Long.parseLong(e[0].toString())== Long.parseLong(obj[18].toString())).findFirst().orElse(null);
 		   		  %>
 		
 						{
@@ -1022,6 +1037,8 @@ $('#empId').on('change',function(){
 	var tasks = [
     	<% if((activityType.equalsIgnoreCase("A") || activityType.equalsIgnoreCase("B")) ) { %>
 			<% for (Object[] obj : actionAssigneeList) {
+				int progress = obj[11]!=null?Integer.parseInt(obj[11].toString()):0;
+    			if(progress>99) continue;
 				String taskshortname = obj[3]!=null && obj[3].toString().length()>90?obj[3].toString().substring(0, 90)+"....":obj[3].toString();
 				%>
 			    {
@@ -1037,6 +1054,8 @@ $('#empId').on('change',function(){
 		<%}%>
 		<% if((activityType.equalsIgnoreCase("A") || activityType.equalsIgnoreCase("C")) ) { %>
 	        <% for (Object[] obj : totalAssignedMainList) { 
+	        	int progress = obj[8]!=null?Integer.parseInt(obj[8].toString()):0;
+    			if(progress>99) continue;
 				String taskshortname = obj[3]!=null && obj[3].toString().length()>90?obj[3].toString().substring(0, 90)+"....":obj[3].toString();
 	        %>
 		        {
@@ -1050,6 +1069,8 @@ $('#empId').on('change',function(){
 		        },
 	        <% } %>
 	        <% for (Object[] obj : totalAssignedSubList) {
+	        	int progress = obj[8]!=null?Integer.parseInt(obj[8].toString()):0;
+    			if(progress>99) continue;
 	            Object[] projectDetails = projectList.stream().filter(e -> Long.parseLong(e[0].toString()) == Long.parseLong(obj[18].toString())).findFirst().orElse(null);
 				String taskshortname = obj[3]!=null && obj[3].toString().length()>90?obj[3].toString().substring(0, 90)+"....":obj[3].toString();
 	        %>
