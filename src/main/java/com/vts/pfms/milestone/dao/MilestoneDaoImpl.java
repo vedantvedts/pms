@@ -1275,11 +1275,11 @@ public class MilestoneDaoImpl implements MilestoneDao {
 			}
 		}
 		
-		//private static final String ALLMILESTONEACTIVITYLEVELLIST = "SELECT a.ActivityId, a.ParentActivityId, a.ActivityLevelId, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.Revision, a.OicEmpId, a.OicEmpId1 FROM milestone_activity_level a WHERE a.IsActive=1";
-		private static final String ALLMILESTONEACTIVITYLEVELLIST = "SELECT a.ActivityId AS obid, a.ParentActivityId, a.ActivityLevelId, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.Revision, a.OicEmpId, a.OicEmpId1, a.ActivityStatusId, a.Weightage, a.Loading, a.StatusRemarks FROM milestone_activity_level a WHERE a.IsActive=1 AND a.Revision=0\r\n"
-				+ "UNION\r\n"
-				+ "SELECT a.ActivityId AS obid, a.ParentActivityId, a.ActivityLevelId, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.Revision, a.OicEmpId, a.OicEmpId1, a.ActivityStatusId, a.Weightage, a.Loading, a.StatusRemarks FROM milestone_activity_level a, milestone_activity_sub_rev b WHERE a.IsActive=1 AND a.Revision=b.Revision AND a.ActivityId=b.ActivityId \r\n"
-				+ "ORDER BY obid ASC";
+		private static final String ALLMILESTONEACTIVITYLEVELLIST = "SELECT a.ActivityId, a.ParentActivityId, a.ActivityLevelId, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.Revision, a.OicEmpId, a.OicEmpId1, a.ActivityStatusId, a.Weightage, a.Loading, a.StatusRemarks FROM milestone_activity_level a WHERE a.IsActive=1";
+//		private static final String ALLMILESTONEACTIVITYLEVELLIST = "SELECT a.ActivityId AS obid, a.ParentActivityId, a.ActivityLevelId, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.Revision, a.OicEmpId, a.OicEmpId1, a.ActivityStatusId, a.Weightage, a.Loading, a.StatusRemarks FROM milestone_activity_level a WHERE a.IsActive=1 AND a.Revision=0\r\n"
+//				+ "UNION\r\n"
+//				+ "SELECT a.ActivityId AS obid, a.ParentActivityId, a.ActivityLevelId, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.Revision, a.OicEmpId, a.OicEmpId1, a.ActivityStatusId, a.Weightage, a.Loading, a.StatusRemarks FROM milestone_activity_level a, milestone_activity_sub_rev b WHERE a.IsActive=1 AND a.Revision=b.Revision AND a.ActivityId=b.ActivityId \r\n"
+//				+ "ORDER BY obid ASC";
 		@Override
 		public List<Object[]> getAllMilestoneActivityLevelList() throws Exception {
 			try {

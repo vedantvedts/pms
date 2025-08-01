@@ -54,24 +54,25 @@
 	FormatConverter fc = new FormatConverter();
 	
 	totalAssignedSubList.sort((o1, o2) -> {
+		
 	    // Null safety, if needed
-	    Long p1 = o1[19] != null ? Long.parseLong(o1[19].toString()) : 0;
-	    Long p2 = o2[19] != null ? Long.parseLong(o2[19].toString()) : 0;
+	    Long p1 = o1[o1.length - 1] != null ? Long.parseLong(o1[o1.length - 1].toString()) : 0;
+	    Long p2 = o2[o2.length - 1] != null ? Long.parseLong(o2[o2.length - 1].toString()) : 0;
 	    int result = p1.compareTo(p2);
 	    if (result != 0) return result;
 
-	    Long s1 = o1[16] != null ? Long.parseLong(o1[16].toString()) : 0;
-	    Long s2 = o2[16] != null ? Long.parseLong(o2[16].toString()) : 0;
+	    Long s1 = o1[o1.length - 4] != null ? Long.parseLong(o1[o1.length - 4].toString()) : 0;
+	    Long s2 = o2[o2.length - 4] != null ? Long.parseLong(o2[o2.length - 4].toString()) : 0;
 	    result = s1.compareTo(s2);
 	    if (result != 0) return result;
 
-	    Integer t1 = o1[18] != null ? Integer.parseInt(o1[18].toString()) : 0;
-	    Integer t2 = o2[18] != null ? Integer.parseInt(o2[18].toString()) : 0;
+	    Integer t1 = o1[o1.length - 2] != null ? Integer.parseInt(o1[o1.length - 2].toString()) : 0;
+	    Integer t2 = o2[o2.length - 2] != null ? Integer.parseInt(o2[o2.length - 2].toString()) : 0;
 	    result = t1.compareTo(t2);
 	    if (result != 0) return result;
 
-	    String u1 = o1[17] != null ? o1[17].toString() : "";
-	    String u2 = o2[17] != null ? o2[17].toString() : "";
+	    String u1 = o1[o1.length - 3] != null ? o1[o1.length - 3].toString() : "";
+	    String u2 = o2[o2.length - 3] != null ? o2[o2.length - 3].toString() : "";
 	    return u1.compareTo(u2);
 	});
 	
@@ -147,13 +148,13 @@
 	                                <tr>
 	                                    <th width="3%">SN</th>
 	                                    <!-- <th width="12%">Project</th> -->
-	                                    <th width="5%">Main</th>
-	                                    <th width="15%">Sub</th>
-	                                    <th width="30%">Activity</th>
+	                                    <th width="3%">Main</th>
+	                                    <th width="12%">Sub</th>
+	                                    <th width="27%">Activity</th>
 	                                    <th width="17%">Progress By</th>
-	                                    <th width="10%">Progress Date</th>
+	                                    <th width="8%">Progress Date</th>
 	                                    <th width="10%">Progress</th>
-	                                    <th width="10%">Remarks</th>
+	                                    <th width="20%">Remarks</th>
 	                                </tr>
 					      		</thead>
 					          	<tbody>
@@ -206,8 +207,8 @@
 						            %>
 		                            		<tr>
 		                            			<td class="center"><%=++slno %></td>
-		                            			<td class="center">M<%=obj[18] %></td>
-		                            			<td class="center"><%=obj[17] %></td>
+		                            			<td class="center">M<%=obj[obj.length - 2] %></td>
+		                            			<td class="center"><%=obj[obj.length - 3] %></td>
 		                            			<td><%=obj[3]%></td>
 		                            			<td><%=prog[8]%>, <%=prog[9]%></td>
 		                            			<td class="center"><%=prog[3]!=null?fc.sdfTordf(prog[3].toString()):"-" %></td>
