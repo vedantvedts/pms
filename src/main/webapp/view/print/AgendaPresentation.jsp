@@ -65,6 +65,7 @@
 		String CommitteeCode = committeeData.getCommitteeShortName().trim();
 		String CommitteeName = committeeData.getCommitteeName().trim();
 		String projectid = scheduledata[9].toString();
+		String scheduletype = scheduledata[26]!=null?scheduledata[26].toString():"N";
 		
 		String ProjectCode="General";
 				if(projectattributes!=null){
@@ -307,6 +308,9 @@
 								<th style="width: 24%;">Presenter</th>
 								<th style="width: 14%;">Duration</th>
 								<th style="width: 10%;">Attachment</th>
+								<%if(scheduletype.equalsIgnoreCase("P")) {%>
+									<th width="10%">Present</th>
+								<%} %>
 							</tr>
 						</thead>
 						<tbody>
@@ -336,7 +340,29 @@
 											<%} }%>
 										</table>
 									</td> 
-
+								<%if(scheduletype.equalsIgnoreCase("P")) {%>	
+									<td>
+										<form action="#" method="post" id="myfrm_<%=count %>" target="_blank"
+											style="float: right; margin-right: 25px; padding: 5px;">
+				
+											<% if(scheduledata[23].toString().equalsIgnoreCase("Y")){%>
+												<input type="submit" class="btn btn-sm back" 
+												formaction="MeetingBriefingPaper.htm" value="Briefing" formmethod="get" data-toggle="tooltip" 
+												data-placement="bottom" title="Briefing Paper">
+											<%}%>
+				
+											<button type="submit" class="btn btn-sm " style="background-color: #96D500;"
+												formaction="BriefingPresentation.htm" formmethod="post" formtarget="_blank" data-toggle="tooltip"
+												data-placement="bottom" title="Presentation">
+												<img src="view/images/presentation.png" style="width: 19px !important">
+											</button>
+											<input type="hidden" name="scheduleid" value="<%=scheduleid%>">
+											<input type="hidden" name="committeeid" value="<%=committeeid%>">
+											<input type="hidden" name="projectid" value="<%=obj[5] %>">
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+										</form>
+									</td>
+								<%} %>
 							</tr>
 
 							<%} %>

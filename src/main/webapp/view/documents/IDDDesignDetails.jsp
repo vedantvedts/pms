@@ -212,7 +212,7 @@ label {
 	           		<table class="table table-bordered" style="width: 100%;" >
 						<thead class="center" style="background-color: #3b70b1;color: #fff;">
 							<tr>
-								<th >SN</th>
+								<!-- <th >SN</th> -->
 								<th >Group</th>
 								<th >Field Name</th>
 								<th >Data Type</th>
@@ -245,10 +245,10 @@ label {
 	
 							%>
 								<tr>
-									<td>
+									<%-- <td>
 										<input form="slnoupdateform" type="number" class="form-control" name="newslno" value="<%=fieldSlNo %>" min="1" max="<%=fieldDescriptionList.size()%>" required/>
 										<input form="slnoupdateform" type="hidden" name="irsFieldDescId" value="<%=desc[0] %>" />
-									</td>
+									</td> --%>
 									<td>
 										<select class="form-control selectitem fieldGroupId" name="fieldGroupId" id="fieldGroupIdEdit_<%=slno1 %>" data-live-search="true" data-container="body" required disabled="disabled">
 				               				<option value="" disabled selected>Choose...</option>
@@ -378,7 +378,7 @@ label {
 									<%} %>		
 								</tr>
 							<%++slno1;}%>
-								<tr>
+								<%-- <tr>
 					              	<td colspan="1" style="display: flex;justify-content: center;align-items: center">
 					              		<form action="IRSFieldDescSerialNoUpdate.htm" method="POST" id="slnoupdateform">
 							              	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -392,7 +392,7 @@ label {
 						              	</form>
 					              	</td>
 					              	<td colspan="14"></td>
-				              	</tr>
+				              	</tr> --%>
 							<%} else {%>
 								<tr>
 									<td colspan="15" class="center">No Data Available</td>
@@ -666,6 +666,8 @@ function handleFieldGroupChange(rowId) {
         initializeSelect2ForAll();
         return;
     }
+    
+    let $lastInsertedRow = $originalRow; // Start from the original row
 
     // If multiple fields exist, populate current row and clone only remaining ones
     fieldList.forEach((field, index) => {
@@ -732,7 +734,8 @@ function handleFieldGroupChange(rowId) {
             $newRow.find('.remarks').attr('id', 'remarks_' + fieldDescIndex).val(field.remarks || '');
             $newRow.find('.groupVariable').val('').attr('id', 'groupVariable_' + fieldDescIndex).prop('readonly', selectedGroupId==0?true: false);
             
-            $originalRow.after($newRow);
+            $lastInsertedRow.after($newRow);
+			$lastInsertedRow = $newRow; // Update reference
         }
     });
 

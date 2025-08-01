@@ -130,24 +130,25 @@ h6{
 	FormatConverter fc = new FormatConverter();
 	
 	totalAssignedSubList.sort((o1, o2) -> {
+		
 	    // Null safety, if needed
-	    Long p1 = o1[19] != null ? Long.parseLong(o1[19].toString()) : 0;
-	    Long p2 = o2[19] != null ? Long.parseLong(o2[19].toString()) : 0;
+	    Long p1 = o1[o1.length - 1] != null ? Long.parseLong(o1[o1.length - 1].toString()) : 0;
+	    Long p2 = o2[o2.length - 1] != null ? Long.parseLong(o2[o2.length - 1].toString()) : 0;
 	    int result = p1.compareTo(p2);
 	    if (result != 0) return result;
 
-	    Long s1 = o1[16] != null ? Long.parseLong(o1[16].toString()) : 0;
-	    Long s2 = o2[16] != null ? Long.parseLong(o2[16].toString()) : 0;
+	    Long s1 = o1[o1.length - 4] != null ? Long.parseLong(o1[o1.length - 4].toString()) : 0;
+	    Long s2 = o2[o2.length - 4] != null ? Long.parseLong(o2[o2.length - 4].toString()) : 0;
 	    result = s1.compareTo(s2);
 	    if (result != 0) return result;
 
-	    Integer t1 = o1[18] != null ? Integer.parseInt(o1[18].toString()) : 0;
-	    Integer t2 = o2[18] != null ? Integer.parseInt(o2[18].toString()) : 0;
+	    Integer t1 = o1[o1.length - 2] != null ? Integer.parseInt(o1[o1.length - 2].toString()) : 0;
+	    Integer t2 = o2[o2.length - 2] != null ? Integer.parseInt(o2[o2.length - 2].toString()) : 0;
 	    result = t1.compareTo(t2);
 	    if (result != 0) return result;
 
-	    String u1 = o1[17] != null ? o1[17].toString() : "";
-	    String u2 = o2[17] != null ? o2[17].toString() : "";
+	    String u1 = o1[o1.length - 3] != null ? o1[o1.length - 3].toString() : "";
+	    String u2 = o2[o2.length - 3] != null ? o2[o2.length - 3].toString() : "";
 	    return u1.compareTo(u2);
 	});
 
@@ -374,12 +375,12 @@ h6{
 						                            		for(Object[] obj : totalAssignedSubList) { 
 						                            			int progress = obj[8]!=null?Integer.parseInt(obj[8].toString()):0;
 						                            			if(progress>99) continue;
-						                    	   				Object[] projectDetails = projectList.stream().filter(e -> Long.parseLong(e[0].toString())== Long.parseLong(obj[18].toString())).findFirst().orElse(null);
+						                    	   				Object[] projectDetails = projectList.stream().filter(e -> Long.parseLong(e[0].toString())== Long.parseLong(obj[obj.length - 2].toString())).findFirst().orElse(null);
 						                            		%>
 						                            		<tr>
 						                            			<td class="center"><%=++slno %></td>
 						                            			<td class="center"><%=projectDetails!=null?(projectDetails[1]+" ("+projectDetails[3]+")"):"-"%></td>
-						                            			<td class="center">M<%=obj[18] %> <%=obj[17] %></td>
+						                            			<td class="center">M<%=obj[obj.length - 2] %> <%=obj[obj.length - 3] %></td>
 						                            			<td><%=obj[3]%></td>
 						                            			<td class="center"><%=obj[6]!=null?fc.sdfTordf(obj[6].toString()):"-" %></td>
 						                            			<td class="center"><%=obj[7]!=null?fc.sdfTordf(obj[7].toString()):"-" %></td>
@@ -642,7 +643,7 @@ h6{
 		   		<%for(Object[] obj : totalAssignedSubList){ 
 		   			int progress = obj[8]!=null?Integer.parseInt(obj[8].toString()):0;
         			if(progress>99) continue;
-	   				Object[] projectDetails = projectList.stream().filter(e -> Long.parseLong(e[0].toString())== Long.parseLong(obj[18].toString())).findFirst().orElse(null);
+	   				Object[] projectDetails = projectList.stream().filter(e -> Long.parseLong(e[0].toString())== Long.parseLong(obj[obj.length - 2].toString())).findFirst().orElse(null);
 		   		  %>
 		
 						{
@@ -1071,7 +1072,7 @@ $('#empId').on('change',function(){
 	        <% for (Object[] obj : totalAssignedSubList) {
 	        	int progress = obj[8]!=null?Integer.parseInt(obj[8].toString()):0;
     			if(progress>99) continue;
-	            Object[] projectDetails = projectList.stream().filter(e -> Long.parseLong(e[0].toString()) == Long.parseLong(obj[18].toString())).findFirst().orElse(null);
+	            Object[] projectDetails = projectList.stream().filter(e -> Long.parseLong(e[0].toString()) == Long.parseLong(obj[obj.length - 2].toString())).findFirst().orElse(null);
 				String taskshortname = obj[3]!=null && obj[3].toString().length()>90?obj[3].toString().substring(0, 90)+"....":obj[3].toString();
 	        %>
 		        {
