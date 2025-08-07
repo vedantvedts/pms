@@ -487,6 +487,9 @@ public class CommitteeServiceImpl implements CommitteeService{
 			committeeschedule.setCommitteeMainId(committeescheduledto.getCommitteeMainId());
 			
 			committeeschedule.setProgrammeId(committeescheduledto.getProgrammeId()!=null?Long.parseLong(committeescheduledto.getProgrammeId()):0L);
+			if(committeeschedule.getProgrammeId()!=0) {
+				committeeschedule.setScheduleType("P");
+			}
 			
 			String CommitteeName=dao.CommitteeName(committeescheduledto.getCommitteeId().toString())[2].toString();
 			String LabName=dao.LabDetails(committeeschedule.getLabCode())[1].toString();

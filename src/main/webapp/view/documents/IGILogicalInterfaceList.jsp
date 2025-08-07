@@ -770,6 +770,8 @@ label {
 		        return;
 		    }
 
+		    let $lastInsertedRow = $originalRow; // Start from the original row
+
 		    // If multiple fields exist, populate current row and clone only remaining ones
 		    fieldList.forEach((field, index) => {
 		        if (index === 0) {
@@ -814,7 +816,8 @@ label {
 		            $newRow.find('.unit').val(field.unit || '');
 		            // $newRow.find('.remarks').val(field.remarks || '');
 
-		            $originalRow.after($newRow);
+		            $lastInsertedRow.after($newRow);
+        			$lastInsertedRow = $newRow; // Update reference
 		        }
 		    });
 

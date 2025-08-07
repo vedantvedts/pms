@@ -4039,9 +4039,9 @@ public class MilestoneController {
 			
 			LocalDate today=LocalDate.now();
 			if(fromDate==null || (oldProjectId!=null && oldProjectId!=null && !oldProjectId.equalsIgnoreCase(projectId))) {
-				fromDate = projectData!=null ? projectData[12].toString(): today.toString();
+				fromDate = today.minusWeeks(1).toString();
 				toDate = today.toString();
-				sancDate = fromDate;
+				sancDate = projectData!=null ? projectData[12].toString(): today.toString();
 			}else{
 				fromDate=fc.rdfTosdf(fromDate);
 				toDate=fc.rdfTosdf(toDate);

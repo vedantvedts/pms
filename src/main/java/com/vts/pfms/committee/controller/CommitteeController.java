@@ -7064,8 +7064,8 @@ public class CommitteeController {
 			String projectid= scheduledata[9].toString();
 			String divisionid= scheduledata[16].toString();
 			String initiationid= scheduledata[17].toString();
-
-
+			String carsInitiationId= scheduledata[25].toString();
+			String programmeId= scheduledata[26].toString();
 
 			int count=service.CommitteeScheduleDelete(dto);
 
@@ -7078,20 +7078,17 @@ public class CommitteeController {
 				redir.addAttribute("resultfail", " Meeting Delete Unsucessful");
 			}		
 
-			if(Long.parseLong(projectid)>0 )
-			{
+			if(Long.parseLong(projectid)>0 ) {
 				return "redirect:/ProjectBasedSchedule.htm" ;
-			}
-			else if( Long.parseLong(divisionid)>0)
-			{
+			}else if( Long.parseLong(divisionid)>0) {
 				return "redirect:/DivisionBasedSchedule.htm" ;
-			}
-			else if( Long.parseLong(initiationid)>0)
-			{
+			}else if( Long.parseLong(initiationid)>0) {
 				return "redirect:/InitiationBasedSchedule.htm" ;
-			}
-			else 
-			{
+			}else if(Long.parseLong(carsInitiationId)>0) {
+				return "redirect:/CARSSchedule.htm";
+			}else if(Long.parseLong(programmeId)>0) {
+				return "redirect:/PrgmSchedule.htm";
+			}else  {
 				return "redirect:/CommitteeScheduleList.htm" ;
 			}
 
@@ -7101,7 +7098,6 @@ public class CommitteeController {
 			return "static/Error";
 		}
 	}
-
 
 	@RequestMapping(value="CommitteeMinutesNewDownload.htm", method = {RequestMethod.POST,RequestMethod.GET})
 	public void CommitteeMinutesNewDownload(HttpServletRequest req,HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception
@@ -10640,7 +10636,8 @@ public class CommitteeController {
 			req.setAttribute("agendaDocList",service.AgendaLinkedDocList(scheduleid));
 			req.setAttribute("filesize",file_size);
 			req.setAttribute("labcode",labcode);
-			
+			req.setAttribute("labEmpList",service.PreseneterForCommitteSchedule(labcode));
+
 			return "committee/PrgmScheduleAgenda";
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside PrgmScheduleAgenda.htm "+UserId, e);
