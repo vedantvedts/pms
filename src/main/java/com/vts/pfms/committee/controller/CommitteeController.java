@@ -142,6 +142,7 @@ import com.vts.pfms.mail.MailConfigurationDto;
 import com.vts.pfms.mail.MailService;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.master.service.MasterService;
+import com.vts.pfms.milestone.model.FileRepUploadPreProject;
 import com.vts.pfms.model.TotalDemand;
 import com.vts.pfms.print.controller.PrintController;
 import com.vts.pfms.print.service.PrintService;
@@ -1811,6 +1812,7 @@ public class CommitteeController {
 			req.setAttribute("AllLabList", service.AllLabList());
 			req.setAttribute("scheduledata",scheduledata);
 			req.setAttribute("projectlist", service.ProjectList(LabCode));
+			req.setAttribute("preProjectlist", service.preProjectlist(LabCode));
 			req.setAttribute("committeeagendalist", committeeagendalist);
 			req.setAttribute("labdata", service.LabDetails(scheduledata[24].toString()));			
 			req.setAttribute("filesize",file_size);
@@ -10803,5 +10805,48 @@ public class CommitteeController {
 		        }
 		    }
 		    return false;
+	}
+	
+	
+	@RequestMapping(value = "PrePRojectAgendaDocLinkDownload.htm", method = RequestMethod.GET)
+	public void PrePRojectAgendaDocLinkDownload(Model model,HttpServletRequest req, HttpSession ses,HttpServletResponse res)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+
+		logger.info(new Date() +"Inside PrePRojectAgendaDocLinkDownload.htm "+UserId);
+
+		try {	
+			String filerepid=req.getParameter("filerepid");
+			FileRepUploadPreProject obj=service.getPreProjectAgendaDocById(filerepid);
+			Path uploadPath = Paths.get(ApplicationFilesDrive, obj.getFilePath(),(obj.getFileNameUi()+obj.getVersionDoc()+"-"+obj.getReleaseDoc()+".zip"));
+			String path=req.getServletContext().getRealPath("/view/temp");
+			Zipper zip=new Zipper();
+			zip.unpack(uploadPath.toString(),path,obj.getFilePass());
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition","attachment;filename="+obj.getFileName()); 
+			File f=new File(path+"/"+obj.getFileName());
+			FileInputStream fis = new FileInputStream(f);
+			DataOutputStream os = new DataOutputStream(res.getOutputStream());
+			res.setHeader("Content-Length",String.valueOf(f.length()));
+			byte[] buffer = new byte[1024];
+			int len = 0;
+			while ((len = fis.read(buffer)) >= 0) {
+				os.write(buffer, 0, len);
+			} 
+			fis.close();
+			os.close();
+
+			Path pathOfFile2= Paths.get(path+"/"+obj.getFileName()); 
+			Files.delete(pathOfFile2);
+
 		}
+		catch (Exception e) {
+
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside PrePRojectAgendaDocLinkDownload.htm "+UserId, e); 
+
+		}
+
+	}
+	
 }

@@ -83,6 +83,7 @@ import com.vts.pfms.committee.model.ProgrammeMaster;
 import com.vts.pfms.mail.CustomJavaMailSender;
 import com.vts.pfms.master.dao.MasterDao;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
+import com.vts.pfms.milestone.model.FileRepUploadPreProject;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.MinutesFinanceList;
@@ -4059,5 +4060,17 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 	public List<Object[]> getCommitteeSchedulesMomDraftRemarks(Long scheduleId) throws Exception {
 		
 		return dao.getCommitteeSchedulesMomDraftRemarks(scheduleId);
+	}
+	
+	@Override
+	public List<Object[]> preProjectlist(String labCode) throws Exception {
+		
+		return dao.preProjectlist(labCode);
+	}
+	
+	@Override
+	public FileRepUploadPreProject getPreProjectAgendaDocById(String filerepid) throws Exception {
+		
+		return dao.getPreProjectAgendaDocById(filerepid);
 	}
 }
