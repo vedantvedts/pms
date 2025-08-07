@@ -43,6 +43,8 @@ import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.committee.model.PmsEnote;
 import com.vts.pfms.committee.model.PmsEnoteTransaction;
 import com.vts.pfms.committee.model.ProgrammeProjects;
+import com.vts.pfms.milestone.model.FileRepMasterPreProject;
+import com.vts.pfms.milestone.model.FileRepUploadPreProject;
 import com.vts.pfms.committee.model.ProgrammeMaster;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
@@ -207,7 +209,17 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String AGENDADOCLINKDOWNLOAD  ="SELECT b.filerepuploadid,b.filerepid,b.filepath,b.filenameui,b.filename,b.filepass,b.ReleaseDoc,b.VersionDoc FROM file_rep_upload b WHERE  b.filerepuploadid=:filerepid ";
 	private static final String MALIST="SELECT a.milestoneactivityid,0 AS 'parentactivityid', a.activityname,a.orgstartdate,a.orgenddate,a.startdate,a.enddate,a.progressstatus, mas.activitystatus, e.empname AS 'OIC1',a.milestoneno, mas.activityshort, mas.activitystatusid,0 as level FROM milestone_activity a, milestone_activity_status mas,employee e WHERE  a.isactive=1 AND mas.activitystatusid=a.activitystatusid AND a.enddate BETWEEN CURDATE() AND DATE(DATE_ADD(CURDATE(),INTERVAL 180 DAY))  AND a.oicempid=e.empid AND a.projectid=:ProjectId";
 	private static final String MILEACTIVITYLEVEL="SELECT a.activityid ,a.parentactivityid, a.activityname,a.orgstartdate,a.orgenddate , a.startdate, a.enddate,  a.progressstatus, mas.activitystatus, e.empname,0 as milestoneno, mas.activityshort, mas.activitystatusid,a.activitylevelid as level  FROM milestone_activity_level a, milestone_activity_status mas, employee e WHERE  a.enddate BETWEEN CURDATE() AND DATE(DATE_ADD(CURDATE(),INTERVAL 180 DAY)) AND mas.activitystatusid=a.activitystatusid AND a.oicempid=e.empid AND a.parentactivityid=:id AND a.activitylevelid=:levelid ";
-	private static final String AGENDALINKEDDOCLIST="SELECT sad.agendadocid,sad.agendaid,sad.filedocid,fru.filenameui,fru.VersionDoc,fru.ReleaseDoc FROM committee_schedule_agenda_docs sad, committee_schedules_agenda sa, file_rep_upload fru WHERE sad.agendaid=sa.scheduleagendaid AND sad.filedocid = fru.FileRepUploadId AND sad.isactive=1 AND sa.isactive=1 AND sa.scheduleid=:scheduleid";
+//	private static final String AGENDALINKEDDOCLIST="SELECT sad.agendadocid,sad.agendaid,sad.filedocid,fru.filenameui,fru.VersionDoc,fru.ReleaseDoc FROM committee_schedule_agenda_docs sad, committee_schedules_agenda sa, file_rep_upload fru WHERE sad.agendaid=sa.scheduleagendaid AND sad.filedocid = fru.FileRepUploadId AND sad.isactive=1 AND sa.isactive=1 AND sa.scheduleid=:scheduleid";
+	private static final String AGENDALINKEDDOCLIST="""
+			SELECT sad.agendadocid,sad.agendaid,sad.filedocid,fru.filenameui,fru.VersionDoc,fru.ReleaseDoc 
+			FROM committee_schedule_agenda_docs sad, committee_schedules_agenda sa, file_rep_upload fru,committee_schedule cs 
+			WHERE sad.agendaid=sa.scheduleagendaid AND sad.filedocid = fru.FileRepUploadId AND sad.isactive=1 
+			AND sa.isactive=1 AND sa.scheduleid=:scheduleid AND sa.scheduleid=cs.scheduleid AND sa.projectid=cs.projectid
+			UNION
+			SELECT sad.agendadocid,sad.agendaid,sad.filedocid,fru.filenameui,fru.VersionDoc,fru.ReleaseDoc 
+			FROM committee_schedule_agenda_docs sad, committee_schedules_agenda sa, file_rep_upload_preproject fru,committee_schedule cs
+			WHERE sad.agendaid=sa.scheduleagendaid AND sad.filedocid = fru.FileRepUploadId AND sad.isactive=1 AND sa.scheduleid=cs.scheduleid
+			AND sa.isactive=1 AND sa.scheduleid=:scheduleid AND cs.initiationId<>0 AND sa.projectid<>0 AND sa.projectid=cs.initiationId """;
 	
 	@PersistenceContext
 	EntityManager manager;
@@ -490,29 +502,37 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return doc.getAgendaDocid();
 	}
 	//changed as expert is not Coming 
-	private static final String AGENDALIST ="SELECT a.scheduleagendaid,a.scheduleid,a.schedulesubid,a.agendaitem,b.projectname,b.projectid,a.remarks,b.projectcode,\r\n"
-			+ "a.agendapriority,a.presenterid ,CONCAT(IFNULL(CONCAT(j.Title,' '),(IFNULL(CONCAT(j.Salutation, ' '), ''))), j.EmpName) AS 'EmpName' ,h.designation,a.duration,\r\n"
-			+ "j.desigid, a.PresentorLabCode  FROM project_master b,employee j,employee_desig h,committee_schedules_agenda a \r\n"
-			+ "WHERE a.projectid=b.projectid AND a.scheduleid=:committeescheduleid AND a.isactive=1 AND a.projectid<>0 AND a.presenterid=j.empid AND \r\n"
-			+ "j.desigid=h.desigid AND a.PresentorLabCode<>'@EXP'\r\n"
-			+ "UNION\r\n"
-			+ "SELECT a.scheduleagendaid,a.scheduleid,a.schedulesubid,a.agendaitem,b.projectname,b.projectid,a.remarks,b.projectcode,\r\n"
-			+ "a.agendapriority,a.presenterid ,CONCAT(IFNULL(CONCAT(j.Title,' '),(IFNULL(CONCAT(j.Salutation, ' '), ''))), j.ExpertName) AS 'EmpName' ,h.designation,a.duration,\r\n"
-			+ "j.desigid, a.PresentorLabCode  FROM project_master b,expert j,employee_desig h,committee_schedules_agenda a \r\n"
-			+ "WHERE a.projectid=b.projectid AND a.scheduleid=:committeescheduleid AND a.isactive=1 AND a.projectid<>0 AND a.presenterid=j.expertid AND \r\n"
-			+ "j.desigid=h.desigid AND a.PresentorLabCode='@EXP'\r\n"
-			+ "UNION  \r\n"
-			+ "SELECT a.scheduleagendaid,a.scheduleid,a.schedulesubid,a.agendaitem,cs.labcode AS 'projectname' , '0' AS projectid,\r\n"
-			+ "a.remarks,'' AS projectcode,a.agendapriority,a.presenterid ,CONCAT(IFNULL(CONCAT(j.Title,' '),(IFNULL(CONCAT(j.Salutation, ' '), ''))), j.EmpName) AS 'EmpName' ,\r\n"
-			+ "h.designation,a.duration,j.desigid, a.PresentorLabCode  FROM employee j,employee_desig h, committee_schedules_agenda a, committee_schedule cs\r\n"
-			+ "WHERE a.scheduleid=:committeescheduleid AND a.scheduleid=cs.scheduleid  AND a.isactive=1 AND a.projectid=0 \r\n"
-			+ "AND a.presenterid=j.empid AND j.desigid=h.desigid AND a.PresentorLabCode<>'@EXP' \r\n"
-			+ "UNION\r\n"
-			+ "SELECT a.scheduleagendaid,a.scheduleid,a.schedulesubid,a.agendaitem,cs.labcode AS 'projectname' , '0' AS projectid,\r\n"
-			+ "a.remarks,'' AS projectcode,a.agendapriority,a.presenterid ,CONCAT(IFNULL(CONCAT(j.Title,' '),(IFNULL(CONCAT(j.Salutation, ' '), ''))), j.ExpertName) AS 'EmpName' ,\r\n"
-			+ "h.designation,a.duration,j.desigid, a.PresentorLabCode  FROM expert j,employee_desig h, committee_schedules_agenda a, committee_schedule cs\r\n"
-			+ "WHERE a.scheduleid=:committeescheduleid AND a.scheduleid=cs.scheduleid  AND a.isactive=1 AND a.projectid=0 \r\n"
-			+ "AND a.presenterid=j.expertid AND j.desigid=h.desigid AND a.PresentorLabCode='@EXP'  ORDER BY agendapriority ";
+	private static final String AGENDALIST ="""
+		SELECT a.scheduleagendaid,a.scheduleid,a.schedulesubid,a.agendaitem,b.projectname,b.projectid,a.remarks,b.projectcode,
+		a.agendapriority,a.presenterid ,CONCAT(IFNULL(CONCAT(j.Title,' '),(IFNULL(CONCAT(j.Salutation, ' '), ''))), j.EmpName) AS 'EmpName' ,h.designation,a.duration,
+		j.desigid, a.PresentorLabCode  FROM project_master b,employee j,employee_desig h,committee_schedules_agenda a,committee_schedule cs
+		WHERE a.projectid=cs.projectid AND cs.projectid=b.projectid AND a.scheduleid=cs.scheduleid AND a.scheduleid=:committeescheduleid AND a.isactive=1 AND a.projectid<>0 AND a.presenterid=j.empid AND 
+		j.desigid=h.desigid AND a.PresentorLabCode<>'@EXP'
+		UNION
+		SELECT a.scheduleagendaid,a.scheduleid,a.schedulesubid,a.agendaitem,b.projectname,b.projectid,a.remarks,b.projectcode,
+		a.agendapriority,a.presenterid ,CONCAT(IFNULL(CONCAT(j.Title,' '),(IFNULL(CONCAT(j.Salutation, ' '), ''))), j.ExpertName) AS 'EmpName' ,h.designation,a.duration,
+		j.desigid, a.PresentorLabCode  FROM project_master b,expert j,employee_desig h,committee_schedules_agenda a,committee_schedule cs
+		WHERE a.projectid=cs.projectid AND cs.projectid=b.projectid AND a.scheduleid=cs.scheduleid AND a.scheduleid=:committeescheduleid AND a.isactive=1 AND a.projectid<>0 AND a.presenterid=j.expertid AND 
+		j.desigid=h.desigid AND a.PresentorLabCode='@EXP'
+		UNION  
+		SELECT a.scheduleagendaid,a.scheduleid,a.schedulesubid,a.agendaitem,cs.labcode AS 'projectname' , '0' AS projectid,
+		a.remarks,'' AS projectcode,a.agendapriority,a.presenterid ,CONCAT(IFNULL(CONCAT(j.Title,' '),(IFNULL(CONCAT(j.Salutation, ' '), ''))), j.EmpName) AS 'EmpName' ,
+		h.designation,a.duration,j.desigid, a.PresentorLabCode  FROM employee j,employee_desig h, committee_schedules_agenda a, committee_schedule cs
+		WHERE a.scheduleid=:committeescheduleid AND a.scheduleid=cs.scheduleid  AND a.isactive=1 AND a.projectid=0 
+		AND a.presenterid=j.empid AND j.desigid=h.desigid AND a.PresentorLabCode<>'@EXP' 
+		UNION
+		SELECT a.scheduleagendaid,a.scheduleid,a.schedulesubid,a.agendaitem,cs.labcode AS 'projectname' , '0' AS projectid,
+		a.remarks,'' AS projectcode,a.agendapriority,a.presenterid ,CONCAT(IFNULL(CONCAT(j.Title,' '),(IFNULL(CONCAT(j.Salutation, ' '), ''))), j.ExpertName) AS 'EmpName' ,
+		h.designation,a.duration,j.desigid, a.PresentorLabCode  FROM expert j,employee_desig h, committee_schedules_agenda a, committee_schedule cs
+		WHERE a.scheduleid=:committeescheduleid AND a.scheduleid=cs.scheduleid  AND a.isactive=1 AND a.projectid=0 
+		AND a.presenterid=j.expertid AND j.desigid=h.desigid AND a.PresentorLabCode='@EXP'
+		UNION
+		SELECT a.scheduleagendaid,a.scheduleid,a.schedulesubid,a.agendaitem,b.ProjectTitle,b.initiationId,a.remarks,b.ProjectShortName,
+		a.agendapriority,a.presenterid ,CONCAT(IFNULL(CONCAT(j.Title,' '),(IFNULL(CONCAT(j.Salutation, ' '), ''))), j.EmpName) AS 'EmpName' ,h.designation,a.duration,
+		j.desigid, a.PresentorLabCode  FROM pfms_initiation b,employee j,employee_desig h,committee_schedules_agenda a,committee_schedule cs
+		WHERE a.projectid=cs.initiationId AND cs.initiationId=b.initiationId AND a.scheduleid=cs.scheduleid AND a.scheduleid=:committeescheduleid AND a.isactive=1 AND a.projectid<>0 AND a.presenterid=j.empid AND 
+		j.desigid=h.desigid AND a.PresentorLabCode<>'@EXP'
+		ORDER BY agendapriority """;
 	
 	@Override
 	public List<Object[]> AgendaList(String CommitteeScheduleId) throws Exception {
@@ -730,7 +750,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 			+ " CASE WHEN a.minutesid='4' THEN 'Other Discussion' ELSE 'Other Outcomes' END AS agenda, a.agendasubhead\r\n"
 			+ " FROM committee_schedules_minutes_details a,committee_schedules_minutes_outcome b\r\n"
 			+ " WHERE a.scheduleid =:InScheduleId  AND a.idarck=b.idarck AND a.minutesid<>'3'\r\n"
-			+ " ORDER BY  CASE WHEN minutesid = '3' THEN 1  ELSE 2 END, agenda" ;
+			+ " ORDER BY  CASE WHEN minutesid = '3' THEN 1  ELSE 2 END, agenda,ScheduleMinutesId" ;
 	
 	@Override
 	public List<Object[]> CommitteeScheduleMinutes(String scheduleid) throws Exception
@@ -3857,6 +3877,21 @@ private static final String ENOTEAPPROVELIST="SELECT MAX(a.EnoteId) AS EnoteId,M
 	}
 	
 	
+	private static final String PREPROJECTLIST="SELECT InitiationId,MainId,ProjectProgramme,ProjectTitle,ProjectShortName FROM pfms_initiation WHERE isactive=1 and labcode=:labCode";
+	@Override
+	public List<Object[]> preProjectlist(String labCode) throws Exception {
+		Query query=manager.createNativeQuery(PREPROJECTLIST);
+		query.setParameter("labCode", labCode);
+		List<Object[]> preProjectlist=(List<Object[]>)query.getResultList();
+		return preProjectlist;
 	}
+	
+	@Override
+	public FileRepUploadPreProject getPreProjectAgendaDocById(String filerepid) throws Exception {
+		FileRepUploadPreProject repmaster=manager.find(FileRepUploadPreProject.class,Long.parseLong(filerepid));
+		return repmaster;
+	}
+	
+}
 
 
