@@ -4025,7 +4025,8 @@ function fileDownload(fileId, fileType) {
         success: function (data, status, xhr) {
         	  const blob = new Blob([data], { type: 'application/pdf' });
               const blobUrl = URL.createObjectURL(blob);
-              window.open(blobUrl, '_blank');
+              const viewerUrl = '<%=request.getContextPath()%>/view/filerepo/pdfViewer.jsp?url=' + encodeURIComponent(blobUrl);
+              window.open(viewerUrl, '_blank');
               setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
         },
         error: function (xhr, status, error) {

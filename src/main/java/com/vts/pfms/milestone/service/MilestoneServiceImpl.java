@@ -45,8 +45,11 @@ import com.vts.pfms.milestone.model.FileDocAmendment;
 import com.vts.pfms.milestone.model.FileDocMaster;
 import com.vts.pfms.milestone.model.FileProjectDoc;
 import com.vts.pfms.milestone.model.FileRepMaster;
+import com.vts.pfms.milestone.model.FileRepMasterPreProject;
 import com.vts.pfms.milestone.model.FileRepNew;
+import com.vts.pfms.milestone.model.FileRepNewPreProject;
 import com.vts.pfms.milestone.model.FileRepUploadNew;
+import com.vts.pfms.milestone.model.FileRepUploadPreProject;
 import com.vts.pfms.milestone.model.MilestoneActivity;
 import com.vts.pfms.milestone.model.MilestoneActivityLevel;
 import com.vts.pfms.milestone.model.MilestoneActivityRev;
@@ -2407,4 +2410,334 @@ public class MilestoneServiceImpl implements MilestoneService {
 		
 		return dao.getMilestoneActivityProgressList();
 	}
+	
+	
+	@Override
+	public List<Object[]> getPreProjectFolderList(String initiationId, String labcode) throws Exception {
+		
+		return dao.getPreProjectFolderList(initiationId,labcode);
+	}
+	
+	@Override
+	public List<Object[]> getPreProjectSubFolderList(String initiationId, String mainLevelId, String labcode)
+			throws Exception {
+		return dao.getPreProjectSubFolderList(initiationId,mainLevelId,labcode);
+	}
+	
+	@Override
+	public int getPreProjectFileRepMasterNames(String initiationId, String fileType, String fileId, String fileName) throws Exception{
+		return dao.getPreProjectFileRepMasterNames(initiationId,fileType,fileId,fileName);
+	}
+	
+	@Override
+	public long preProjectRepMasterInsert(FileRepMasterPreProject fileRepo) throws Exception {
+		long pi=0;
+		fileRepo.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		fileRepo.setIsActive(1);
+		fileRepo.setParentLevelId(pi);
+		fileRepo.setLevelId(pi+1);
+		return dao.preProjectRepMasterInsert(fileRepo);
+	}
+	
+	@Override
+	public long preProjectFileRepMasterSubInsert(FileRepMasterPreProject fileRepo) throws Exception {
+		fileRepo.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		fileRepo.setIsActive(1);
+		return dao.preProjectFileRepMasterSubInsert(fileRepo);
+	}
+	
+	@Override
+	public long preProjectfileEditSubmit(String filerepmasterid, String levelname, String levelType) throws Exception {
+		String fileType = levelType.trim().toLowerCase();
+		Optional<FileRepMasterPreProject> request = dao.getPreProjectFileRepById(Long.parseLong(filerepmasterid));
+		if(request.isPresent()) {
+			FileRepMasterPreProject repMaster = request.get();
+			  switch (fileType) {
+	          case "mainLevel":
+	  	          Path filepath1 = Paths.get(FilePath, repMaster.getLabCode().toString(), "preProjectRepo", "P"+repMaster.getInitiationId().toString(), repMaster.getLevelName());
+	  	          if (Files.exists(filepath1) || Files.isDirectory(filepath1)) {
+	  	        	preProjectRenameMainFolder(levelType, repMaster.getLabCode(), repMaster.getInitiationId(), repMaster.getFileRepMasterId(), 0l, levelname.trim(), repMaster.getLevelName().trim());
+	  	          }
+	  	          break;
+	          case "subLevel":
+	        	  Long parentId = repMaster.getParentLevelId();
+	        	  FileRepMasterPreProject master = dao.getPreProjectMainFileById(parentId).get();
+	  	          Path filepath2 = Paths.get(FilePath, repMaster.getLabCode().toString(), "preProjectRepo", "P"+repMaster.getInitiationId().toString(), master.getLevelName(), repMaster.getLevelName());
+	  	          if (Files.exists(filepath2) || Files.isDirectory(filepath2)) {
+	  	        	preProjectRenameSubFolder(levelType, repMaster.getLabCode(), repMaster.getInitiationId(), parentId, repMaster.getFileRepMasterId(), master.getLevelName().trim(), levelname.trim(), repMaster.getLevelName().trim());
+	  	          }
+	  	          break;
+	          }
+		}
+		return dao.preProjectfileEditSubmit(filerepmasterid, levelname);
+	}
+	
+    private void preProjectRenameMainFolder(String levelType, String labCode, Long initoationId, Long mainRepMasterId, Long subRepMasterId, String newName, String oldName) throws Exception {
+        Path oldPath = Paths.get(FilePath, labCode, "preProjectRepo", "P"+initoationId, oldName);
+        Path newPath = Paths.get(FilePath, labCode, "preProjectRepo", "P"+initoationId, newName);
+
+        if (!Files.exists(oldPath) || !Files.isDirectory(oldPath)) {
+            throw new IllegalArgumentException("Main folder not found: " + oldPath);
+        }
+        
+        // Prevent moving into itself
+ 		if (newPath.startsWith(oldPath)) {
+ 		    throw new IllegalArgumentException("Cannot move a folder into its subfolder: " + newPath);
+ 		}
+     		
+ 		try {
+     		// Attempt to rename (move) the folder
+     		   Files.move(oldPath, newPath, StandardCopyOption.REPLACE_EXISTING);
+     	} catch (FileSystemException e) {
+     		// Likely caused by file lock
+     		throw new IOException("Failed to move folder. It may be open or locked by another process: " + e.getMessage(), e);
+ 		}
+
+        List<Object[]> affectedFiles = dao.findByPreProjectFilePath(levelType,initoationId,mainRepMasterId,subRepMasterId,oldName);
+        for (Object[] file : affectedFiles) {
+        	Long uploadId = ((Number) file[0]).longValue(); 
+            String oldPathStr = file[4].toString();
+            if (oldPathStr != null) {
+                // Split the path by slash or backslash
+                String[] segments = oldPathStr.split("[/\\\\]");
+                StringBuilder uploadPath = new StringBuilder();
+
+                for (int i = 0; i < segments.length; i++) {
+                    if (segments[i].equals(oldName)) {
+                        segments[i] = newName; // Replace only exact match
+                    }
+                    uploadPath.append(segments[i]);
+                    if (i < segments.length - 1) {
+                    	uploadPath.append(File.separator);
+                    }
+                }
+
+                dao.updatePreProjectFileById(uploadId, uploadPath.toString());
+            }
+        }
+    }
+
+    private void preProjectRenameSubFolder(String levelType, String labCode, Long initoationId, Long mainRepMasterId, Long subRepMasterId, String mainLevelName, String newName, String oldName) throws Exception {
+        Path oldPath = Paths.get(FilePath, labCode, "preProjectRepo", "P"+initoationId, mainLevelName, oldName);
+        Path newPath = Paths.get(FilePath, labCode, "preProjectRepo", "P"+initoationId, mainLevelName, newName);
+
+        if (!Files.exists(oldPath) || !Files.isDirectory(oldPath)) {
+            throw new IllegalArgumentException("Subfolder not found: " + oldPath);
+        }
+
+        // Prevent moving into itself
+   		if (newPath.startsWith(oldPath)) {
+   		    throw new IllegalArgumentException("Cannot move a folder into its subfolder: " + newPath);
+   		}
+       		
+   		try {
+       		// Attempt to rename (move) the folder
+       		   Files.move(oldPath, newPath, StandardCopyOption.REPLACE_EXISTING);
+       	} catch (FileSystemException e) {
+       		// Likely caused by file lock
+       		throw new IOException("Failed to move folder. It may be open or locked by another process: " + e.getMessage(), e);
+   		}
+
+        List<Object[]> affectedFiles = dao.findByPreProjectFilePath(levelType,initoationId,mainRepMasterId,subRepMasterId,oldName);
+        for (Object[] file : affectedFiles) {
+        	Long uploadId = ((Number) file[0]).longValue(); 
+            String oldPathStr = file[4].toString();
+            if (oldPathStr != null) {
+                // Split the path by slash or backslash
+                String[] segments = oldPathStr.split("[/\\\\]");
+                StringBuilder uploadPath = new StringBuilder();
+
+                for (int i = 0; i < segments.length; i++) {
+                    if (segments[i].equals(oldName)) {
+                        segments[i] = newName; // Replace only exact match
+                    }
+                    uploadPath.append(segments[i]);
+                    if (i < segments.length - 1) {
+                    	uploadPath.append(File.separator);
+                    }
+                }
+
+                dao.updatePreProjectFileById(uploadId, uploadPath.toString());
+            }
+        }
+    }
+    
+    @Override
+    public List<Object[]> getPreProjectOldFileNames(String initiationId, String fileType, String fileId)
+    		throws Exception {
+    	return dao.getPreProjectOldFileNames(initiationId, fileType, fileId);
+    }
+    
+    @Override
+    public long uploadPreProjectFile(FileUploadDto upload, String fileType) throws Exception {
+      try {
+    	    FileRepNewPreProject fileRepNew = new FileRepNewPreProject();
+			FileRepUploadPreProject uploadNew = new FileRepUploadPreProject();
+			
+			Zipper zip=new Zipper();
+			String Pass=dao.FilePass(upload.getUserId());
+			
+			if(fileType.equalsIgnoreCase("mainLevel")) {
+				Object[] repData = dao.preProjectRepMaster(upload.getFileRepMasterId());
+				
+				Path docPath1=Paths.get(upload.getLabCode(),"preProjectRepo",("P"+upload.getInitiationId()),repData[2].toString());
+				Path docPath2=Paths.get(FilePath,upload.getLabCode(),"preProjectRepo",("P"+upload.getInitiationId()),repData[2].toString());
+				
+				if(upload.getFileId()!=null && Long.parseLong(upload.getFileId())>0) {
+					
+					FileRepNewPreProject fileRep = dao.getPreProjectFileById(Long.parseLong(upload.getFileId()));
+					
+					long version = upload.getIsNewVersion().toString().equalsIgnoreCase("Y") ? fileRep.getVersionDoc() + 1 : fileRep.getVersionDoc();
+					long release = upload.getIsNewVersion().toString().equalsIgnoreCase("Y") ? 0l : fileRep.getReleaseDoc() + 1;
+					
+					fileRepNew.setFileRepId(fileRep.getFileRepId());
+					fileRepNew.setVersionDoc(version);
+					fileRepNew.setReleaseDoc(release);
+					fileRepNew.setCreatedBy(upload.getUserId());
+					fileRepNew.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+					dao.prepRojectFileUpdate(fileRepNew);
+					
+		            uploadNew.setFileName(upload.getFileNamePath());
+		            uploadNew.setFilePass(Pass);
+		            uploadNew.setVersionDoc(version);
+		            uploadNew.setReleaseDoc(release);
+		            uploadNew.setFileRepId(fileRep.getFileRepId());
+		            uploadNew.setFilePath(docPath1.toString());
+		            uploadNew.setFileNameUi(upload.getDocumentName());
+		            uploadNew.setCreatedBy(upload.getUserId());
+		            uploadNew.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		            uploadNew.setIsActive(1);
+					long count = dao.preProjectFileUploadInsert(uploadNew);
+					
+					 if(count>0) {
+						if (!Files.exists(docPath2)) {
+							Files.createDirectories(docPath2);
+						}
+					   zip.pack(upload.getFileNamePath(),upload.getIS(),docPath2.toString(),upload.getDocumentName()+version+"-"+release,Pass);
+				     }
+					
+				}else {
+					fileRepNew.setInitiationId(Long.parseLong(upload.getInitiationId()));
+					fileRepNew.setFileRepMasterId(Long.parseLong(upload.getFileRepMasterId()));
+					fileRepNew.setSubL1(Long.parseLong(upload.getSubL1()));
+					fileRepNew.setVersionDoc(Long.parseLong("1"));
+					fileRepNew.setReleaseDoc(Long.parseLong("0"));
+					fileRepNew.setDocumentName(upload.getDocumentName());
+					fileRepNew.setCreatedBy(upload.getUserId());
+					fileRepNew.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+					fileRepNew.setIsActive(1);
+		            long count = dao.preProjectFileSubInsert(fileRepNew);
+		            
+		            uploadNew.setFileName(upload.getFileNamePath());
+		            uploadNew.setFilePass(Pass);
+		            uploadNew.setVersionDoc(Long.parseLong("1"));
+		            uploadNew.setReleaseDoc(Long.parseLong("0"));
+		            uploadNew.setFileRepId(count);
+		            uploadNew.setFilePath(docPath1.toString());
+		            uploadNew.setFileNameUi(upload.getDocumentName());
+		            uploadNew.setCreatedBy(upload.getUserId());
+		            uploadNew.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		            uploadNew.setIsActive(1);
+					long count1 = dao.preProjectFileUploadInsert(uploadNew);
+					
+					 if(count1>0) {
+						if (!Files.exists(docPath2)) {
+							Files.createDirectories(docPath2);
+						}
+					   zip.pack(upload.getFileNamePath(),upload.getIS(),docPath2.toString(),upload.getDocumentName()+"1-0",Pass);
+				     }
+			    }
+			}else {
+				Object[] repSubData = dao.preProjectRepMaster(upload.getSubL1());
+
+				Path docPath3=Paths.get(upload.getLabCode(),"preProjectRepo",("P"+upload.getInitiationId()),repSubData[5].toString(),repSubData[2].toString());
+				Path docPath4=Paths.get(FilePath,upload.getLabCode(),"preProjectRepo",("P"+upload.getInitiationId()),repSubData[5].toString(),repSubData[2].toString());
+                
+				 if(upload.getFileId()!=null && Long.parseLong(upload.getFileId())>0) {
+					
+					FileRepNew fileRep = dao.getFileRepById(Long.parseLong(upload.getFileId()));
+					
+					long version = upload.getIsNewVersion().toString().equalsIgnoreCase("Y") ? fileRep.getVersionDoc() + 1 : fileRep.getVersionDoc();
+					long release = upload.getIsNewVersion().toString().equalsIgnoreCase("Y") ? 0l : fileRep.getReleaseDoc() + 1;
+					
+					fileRepNew.setFileRepId(fileRep.getFileRepId());
+					fileRepNew.setVersionDoc(version);
+					fileRepNew.setReleaseDoc(release);
+					fileRepNew.setCreatedBy(upload.getUserId());
+					fileRepNew.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+					dao.prepRojectFileUpdate(fileRepNew);
+					
+		            uploadNew.setFileName(upload.getFileNamePath());
+		            uploadNew.setFilePass(Pass);
+		            uploadNew.setVersionDoc(version);
+		            uploadNew.setReleaseDoc(release);
+		            uploadNew.setFileRepId(fileRep.getFileRepId());
+		            uploadNew.setFilePath(docPath3.toString());
+		            uploadNew.setFileNameUi(upload.getDocumentName());
+		            uploadNew.setCreatedBy(upload.getUserId());
+		            uploadNew.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		            uploadNew.setIsActive(1);
+					long count = dao.preProjectFileUploadInsert(uploadNew);
+					
+					 if(count>0) {
+						if (!Files.exists(docPath4)) {
+							Files.createDirectories(docPath4);
+						}
+					   zip.pack(upload.getFileNamePath(),upload.getIS(),docPath4.toString(),upload.getDocumentName()+version+"-"+release,Pass);
+				     }
+					
+				}else {
+					fileRepNew.setInitiationId(Long.parseLong(upload.getInitiationId()));
+					fileRepNew.setFileRepMasterId(Long.parseLong(upload.getFileRepMasterId()));
+					fileRepNew.setSubL1(Long.parseLong(upload.getSubL1()));
+					fileRepNew.setVersionDoc(Long.parseLong("1"));
+					fileRepNew.setReleaseDoc(Long.parseLong("0"));
+					fileRepNew.setDocumentName(upload.getDocumentName());
+					fileRepNew.setCreatedBy(upload.getUserId());
+					fileRepNew.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+					fileRepNew.setIsActive(1);
+		            long count = dao.preProjectFileSubInsert(fileRepNew);
+		            
+		            uploadNew.setFileName(upload.getFileNamePath());
+		            uploadNew.setFilePass(Pass);
+		            uploadNew.setVersionDoc(Long.parseLong("1"));
+		            uploadNew.setReleaseDoc(Long.parseLong("0"));
+		            uploadNew.setFileRepId(count);
+		            uploadNew.setFilePath(docPath3.toString());
+		            uploadNew.setFileNameUi(upload.getDocumentName());
+		            uploadNew.setCreatedBy(upload.getUserId());
+		            uploadNew.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		            uploadNew.setIsActive(1);
+					long count1 = dao.preProjectFileUploadInsert(uploadNew);
+					
+					 if(count1>0) {
+						if (!Files.exists(docPath4)) {
+							Files.createDirectories(docPath4);
+						}
+					   zip.pack(upload.getFileNamePath(),upload.getIS(),docPath4.toString(),upload.getDocumentName()+"1-0",Pass);
+				     }
+			    }
+			}
+			return 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+    }
+    
+    @Override
+    public Optional<FileRepUploadPreProject> getPreProjectFileById(Long id) throws Exception {
+    	return dao.getPreProjectUploadFileById(id);
+    }
+    
+    
+    @Override
+    public List<Object[]> preProjectFileRepDocsList(String fileRepId) throws Exception {
+    	return dao.preProjectFileRepoDocsList(fileRepId);
+    }
+    
+    @Override
+    public List<Object[]> getPreProjectFileRepMasterListAll(String initiationId, String labCode) throws Exception {
+    	return dao.getPreProjectFileRepMasterListAll(initiationId,labCode);
+    }
 }
