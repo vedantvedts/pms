@@ -1197,7 +1197,7 @@ function fileDownload(fileId, fileType) {
 
               // Create a blob URL and open it in a new tab
               const blobUrl = URL.createObjectURL(blob);
-              const viewerUrl = '<%=request.getContextPath()%>/view/filerepo/pdfViewer.jsp?url=' + encodeURIComponent(blobUrl);
+              const viewerUrl = '<%=request.getContextPath()%>/pdf-viewer?url=' + encodeURIComponent(blobUrl);
               window.open(viewerUrl, '_blank');
 
               // Optional: release memory later

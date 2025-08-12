@@ -261,8 +261,6 @@ ul, #myUL {
   String divisionid=scheduledata[16].toString();
   String initiationid=scheduledata[17].toString();
   
- System.out.println("initiationid***********" + initiationid);
- System.out.println("projectid***********" + projectid);
  %>
  
  
@@ -1145,7 +1143,7 @@ function fileDownload(fileId, fileType) {
         success: function (data, status, xhr) {
         	  const blob = new Blob([data], { type: 'application/pdf' });
               const blobUrl = URL.createObjectURL(blob);
-              const viewerUrl = '<%=request.getContextPath()%>/view/filerepo/pdfViewer.jsp?url=' + encodeURIComponent(blobUrl);
+              const viewerUrl = '<%=request.getContextPath()%>/pdf-viewer?url=' + encodeURIComponent(blobUrl);
               window.open(viewerUrl, '_blank');
               setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
         },

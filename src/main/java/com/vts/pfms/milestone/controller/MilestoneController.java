@@ -75,6 +75,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -4487,11 +4488,15 @@ public class MilestoneController {
 		logger.info(new Date() +"Inside PreProjectFileRepMasterListAllAjax.htm "+UserId);
 
 		String initiationId= req.getParameter("initiationId");	
-		System.out.println("initiationId##############" + initiationId);
 		List<Object[]> FileLevelSublevelName = service.getPreProjectFileRepMasterListAll(initiationId,LabCode);
 
 		Gson json = new Gson();
 		return json.toJson(FileLevelSublevelName);
+	}
+	
+	@GetMapping("/pdf-viewer")
+	public String pdfViewerPage() {
+	    return "filerepo/pdfViewer"; 
 	}
 	
 }
