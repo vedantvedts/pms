@@ -119,5 +119,6 @@ public interface MilestoneService {
 	public long MilestoneActivitySave(MilestoneActivity activity) throws Exception;
 	public List<Object[]> actionAssigneeList(String EmpId) throws Exception;
 	public long ActionAssignInsert(ActionAssign assign) throws Exception;
-	
+	public int deleteMilsetone(String activityId)throws Exception;
+
 }

@@ -730,7 +730,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 			+ " CASE WHEN a.minutesid='4' THEN 'Other Discussion' ELSE 'Other Outcomes' END AS agenda, a.agendasubhead\r\n"
 			+ " FROM committee_schedules_minutes_details a,committee_schedules_minutes_outcome b\r\n"
 			+ " WHERE a.scheduleid =:InScheduleId  AND a.idarck=b.idarck AND a.minutesid<>'3'\r\n"
-			+ " ORDER BY  CASE WHEN minutesid = '3' THEN 1  ELSE 2 END, agenda" ;
+			+ " ORDER BY  CASE WHEN minutesid = '3' THEN 1  ELSE 2 END, agenda,ScheduleMinutesId" ;
 	
 	@Override
 	public List<Object[]> CommitteeScheduleMinutes(String scheduleid) throws Exception

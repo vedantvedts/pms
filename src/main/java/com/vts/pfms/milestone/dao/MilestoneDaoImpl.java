@@ -544,16 +544,22 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public int ActivityLevelSum(String Id, String ActivityId,String LevelId) throws Exception {
-		try {	
-			Query query = manager.createNativeQuery(ACTIVITYLEVELSUM);
-			query.setParameter("activityid", Long.parseLong(ActivityId));
-			query.setParameter("id", Long.parseLong(Id));
-			query.setParameter("levelid", Long.parseLong(LevelId));
-			return (Integer)query.getSingleResult();
-		}catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
+		try {
+	        Query query = manager.createNativeQuery(ACTIVITYLEVELSUM);
+	        query.setParameter("activityid", Long.parseLong(ActivityId));
+	        query.setParameter("id", Long.parseLong(Id));
+	        query.setParameter("levelid", Long.parseLong(LevelId));
+
+	        Object result = query.getSingleResult();
+	     
+	        if (result == null) return 0;
+
+	        return ((Number) result).intValue();  
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return 0;
+	    }
 	}
 	
 
@@ -1508,5 +1514,13 @@ public class MilestoneDaoImpl implements MilestoneDao {
 			return null;
 		}
 	}
+	private static final String DELETEMIL = "DELETE FROM milestone_activity_level WHERE ActivityId =:ActivityId ";
+	@Override
+	public int deleteMilsetone(String activityId) throws Exception {
 		
+		Query query = manager.createNativeQuery(DELETEMIL);
+		query.setParameter("ActivityId", Long.parseLong(activityId));
+		
+		return (int)query.executeUpdate();
+	}
 }

@@ -3851,6 +3851,15 @@ public class MilestoneController {
 			String isMasterData = req.getParameter("isMasterData");
 			
 			MilestoneActivityLevel level1= service.getMilestoneActivityLevelById(milesMainId);
+			
+			System.out.println(level1.getLinkedMilestonId());
+			if (!level1.getLinkedMilestonId().toString().equalsIgnoreCase("0")  ) {
+				MilestoneActivityLevel level3= service.getMilestoneActivityLevelById(level1.getLinkedMilestonId().toString());
+				level3.setLinkedMilestonId(0l);
+				level3.setIsMasterData("N");
+				service.MilestoneActivityLevelSave(level3);;
+			}
+			
 			level1.setLinkedMilestonId(Long.parseLong(mileIdLink));
 			level1.setIsMasterData(isMasterData.equalsIgnoreCase("Y")?"N":"Y");
 			
@@ -3861,6 +3870,8 @@ public class MilestoneController {
 			level2.setIsMasterData(isMasterData);
 			
 			long count1= service.MilestoneActivityLevelSave(level2);
+			
+			
 			
 			return json.toJson(count+count1);
 			
@@ -3883,8 +3894,14 @@ public class MilestoneController {
 		try {
 		
 			String id = req.getParameter("id");
+			//String flag = req.getParameter("flag");
 			System.out.println("id "+id);
+		
 			String projectId = service.getProjectIdByMainLevelId(id);
+			
+//			if(flag!=null  && flag.equalsIgnoreCase("Y") ) {
+//				return json.toJson(projectId);
+//			}
 			
 			Object[]projectDetails =  service.ProjectDetails(projectId).get(0);
 			List<Object[]> main=service.MilestoneActivityList(projectId);
@@ -3897,27 +3914,27 @@ public class MilestoneController {
 					int countA=1;
 					for(Object[] obj:MilestoneActivityA) {
 						totalAssignedSubList.add(obj);
-						map.put(obj[0].toString(), "M"+count+"-A"+countA+"/"+obj[4]+"/"+projectDetails[1]);
+						map.put(obj[0].toString(), "M"+count+"-A"+countA+"/"+obj[4]+"/"+projectDetails[1]+"/"+projectDetails[0]);
 						List<Object[]>  MilestoneActivityB=service.MilestoneActivityLevel(obj[0].toString(),"2");
 						int countb=1;
 						for(Object[] obj1:MilestoneActivityB) {
 							totalAssignedSubList.add(obj1);
-							map.put(obj1[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"/"+obj1[4]+"/"+projectDetails[1]);
+							map.put(obj1[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"/"+obj1[4]+"/"+projectDetails[1]+"/"+projectDetails[0]);
 							List<Object[]>  MilestoneActivityC=service.MilestoneActivityLevel(obj1[0].toString(),"3");
 							int countc=1;
 							for(Object[] obj2:MilestoneActivityC) {
 								totalAssignedSubList.add(obj2);
-								map.put(obj2[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"/"+obj2[4]+"/"+projectDetails[1]);
+								map.put(obj2[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"/"+obj2[4]+"/"+projectDetails[1]+"/"+projectDetails[0]);
 								List<Object[]>  MilestoneActivityD=service.MilestoneActivityLevel(obj2[0].toString(),"4");
 								int countD=1;
 								for(Object[] obj3:MilestoneActivityD) {
 									totalAssignedSubList.add(obj3);
-									map.put(obj3[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"-D"+countD+"/"+obj3[4]+"/"+projectDetails[1]);
+									map.put(obj3[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"-D"+countD+"/"+obj3[4]+"/"+projectDetails[1]+"/"+projectDetails[0]);
 									List<Object[]>  MilestoneActivityE=service.MilestoneActivityLevel(obj3[0].toString(),"5");
 									int countE=1;
 									for(Object[] obj4:MilestoneActivityE) {
 										totalAssignedSubList.add(obj4);
-										map.put(obj4[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"-D"+countD+"-E"+countE+"/"+obj4[4]+"/"+projectDetails[1]);
+										map.put(obj4[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"-D"+countD+"-E"+countE+"/"+obj4[4]+"/"+projectDetails[1]+"/"+projectDetails[0]);
 										countE++;
 									}
 									countD++;
@@ -4150,7 +4167,39 @@ public class MilestoneController {
 			return "static/Error";
 		}
 	}
-
+	@RequestMapping(value = "delteSubMilestoneActivity.htm", method = RequestMethod.GET)
+	public @ResponseBody String delteSubMilestoneActivity(HttpServletRequest req, HttpSession ses,HttpServletResponse res
+			)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside removeFileAttachment.htm "+UserId);
+		try {
+			 String activityId = req.getParameter("activityId");
+		
+			//long result = service.deleteMilsetone(activityId);
+			
+		System.out.println(activityId+"----activityId");
+		
+		List<String>activityIds = new ArrayList<String>();
+			
+		if(activityId!=null) {
+			activityIds = 	Arrays.asList(activityId.split(","));
+		}
+		int deleteCount = 0;
+		for(String s:activityIds) {
+			deleteCount = deleteCount+service.deleteMilsetone(s);
+		}
+		Gson json = new Gson();
+		
+		return json.toJson(deleteCount);
+		} catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside removeFileAttachment.htm "+UserId, e); 
+			return "static/Error";
+		}
+	
+	}
 }
 
 

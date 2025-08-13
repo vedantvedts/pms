@@ -2401,4 +2401,17 @@ public class MilestoneServiceImpl implements MilestoneService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	
+	@Override
+	public int deleteMilsetone(String activityId) throws Exception {
+		try {
+	
+		return dao.deleteMilsetone(activityId);
+		
+		}catch (Exception e) {
+			e.getMessage();
+		}
+		return 0;
+	}
 }
