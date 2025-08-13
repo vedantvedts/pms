@@ -2,11 +2,11 @@ package com.vts.pfms.print.controller;
 
 
 
+
 import java.io.ByteArrayInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -28,9 +28,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -147,9 +150,6 @@ public class PrintController {
 	
 	@Value("${ApplicationFilesDrive}")
 	private String ApplicationFilesDrive;
-	
-	@Value("#{${CommitteeCodes}}")
-	private List<String> SplCommitteeCodes;
 	
 	@Value("${IsIbasConnected}")
 	private String IsIbasConnected;
@@ -634,205 +634,27 @@ public class PrintController {
 	    try {
 	    	String projectid=req.getParameter("projectid");
 	    	String committeeid= req.getParameter("committeeid");
-	    	String tempid=committeeid;
-	  
-	    	String text=req.getParameter("text");
 	    	
-	    	req.setAttribute("text", text);
-	    	req.setAttribute("IsIbasConnected", IsIbasConnected);
-	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-	    	String Logintype= (String)ses.getAttribute("LoginType");
 	    	Committee committee = service.getCommitteeData(committeeid);
 	    	
 	    	String projectLabCode = service.ProjectDetails(projectid).get(0)[5].toString();
 	    	String CommitteeCode = committee.getCommitteeShortName().trim();
 	    	
-	    
 	    	if(LabCode.equalsIgnoreCase("ADE")) {
-		    	List<Object[]>otherMeetingList = service.otherMeetingList(projectid);
-		    	req.setAttribute("otherMeetingList", otherMeetingList);
-		    	}
-	    	
-	    	List<Object[]> projectattributes = new ArrayList<Object[]>();
-	    	List<List<Object[]>>  ebandpmrccount = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> milestonesubsystems = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> milestones  = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> lastpmrcactions = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> lastpmrcminsactlist = new ArrayList<List<Object[]>>();
-	    	List<Object[]> ProjectDetails = new ArrayList<Object[]>();
-	    	List<List<Object[]>> ganttchartlist = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> oldpmrcissueslist = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> riskmatirxdata = new ArrayList<List<Object[]>>();
-	    	List<Object[]> lastpmrcdecisions = new ArrayList<Object[]>();
-	    	List<List<Object[]>> actionplanthreemonths = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> ReviewMeetingListEB = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> ReviewMeetingListPMRC = new ArrayList<List<Object[]>>();
-	    	List<Object[]> projectdatadetails  = new ArrayList<Object[]>();
-	    	List<Object[]> TechWorkDataList =new ArrayList<Object[]>();
-    		List<List<Object[]>> milestonesubsystemsnew = new ArrayList<List<Object[]>>();
-    		//****************************envi download start**********************************
-    		List<Object[]> envisagedDemandlist  = new ArrayList<Object[]>();
-    		envisagedDemandlist=service.getEnvisagedDemandList(projectid);
-    		req.setAttribute("envisagedDemandlist", envisagedDemandlist);
-
-    		List<List<Object[]>> overallfinance =new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> ProjectRevList =new ArrayList<List<Object[]>>();
-	    	
-	    	
-	    	List<List<ProjectFinancialDetails>> financialDetails=new ArrayList<List<ProjectFinancialDetails>>();
-	    	List<List<Object[]>> procurementOnDemandlist  = new ArrayList<List<Object[]>>();
-    		List<List<Object[]>> procurementOnSanctionlist = new ArrayList<List<Object[]>>();
-    		List<List<TechImages>> TechImages =new ArrayList<List<TechImages>>();
-	    	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
-	    	for(String proid : Pmainlist) 
-	    	{	    	
-	    		Object[] projectattribute = service.ProjectAttributes(proid);
-	    		
-	    		TechImages.add(service.getTechList(proid));
-	    		projectattributes.add(projectattribute);
-	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
-	    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
-	    		milestones.add(service.Milestones(proid,committeeid));
-	    		lastpmrcactions.add(service.LastPMRCActions(proid,committeeid));
-	    		lastpmrcminsactlist.add(service.LastPMRCActions1(proid,committeeid));
-	    		ProjectDetails.add(service.ProjectDetails(proid).get(0));
-	    		ganttchartlist.add(service.GanttChartList(proid));
-	    		oldpmrcissueslist.add(service.OldPMRCIssuesList(proid));
-	    		riskmatirxdata.add(service.RiskMatirxData(proid));
-	    		lastpmrcdecisions.add(service.LastPMRCDecisions(committeeid,proid));
-	    		actionplanthreemonths.add(service.ActionPlanSixMonths(proid,committeeid));//changed
-	    		projectdatadetails.add(service.ProjectDataDetails(proid));
-	    		ReviewMeetingListEB.add(service.ReviewMeetingList(projectid, "EB"));
-	    		ReviewMeetingListPMRC.add(service.ReviewMeetingList(projectid, "PMRC"));
-	    		TechWorkDataList.add(service.TechWorkData(proid));
-		    	milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committeeid));
-	    		ProjectRevList.add(service.ProjectRevList(proid));
-		/* ----------------------------------------------------------------------------------------------------------	   */  		
-	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
-			 		HttpHeaders headers = new HttpHeaders();
-			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			    	headers.set("labcode", LabCode);
-			 		
-			 		String jsonResult=null;
-					try {
-						HttpEntity<String> entity = new HttpEntity<String>(headers);
-						ResponseEntity<String> response=restTemplate.exchange(localUri, HttpMethod.POST, entity, String.class);
-						jsonResult=response.getBody();						
-					}catch(Exception e) {
-						req.setAttribute("errorMsg", "errorMsg");
-					}
-					ObjectMapper mapper = new ObjectMapper();
-					mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-					mapper.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
-					List<ProjectFinancialDetails> projectDetails=null;
-					if(jsonResult!=null) {
-						try {
-							/*
-							 * projectDetails = mapper.readValue(jsonResult,
-							 * mapper.getTypeFactory().constructCollectionType(List.class,
-							 * ProjectFinancialDetails.class));
-							 */
-							projectDetails = mapper.readValue(jsonResult, new TypeReference<List<ProjectFinancialDetails>>(){});
-							financialDetails.add(projectDetails);
-							req.setAttribute("financialDetails",projectDetails);
-						} catch (JsonProcessingException e) {
-							e.printStackTrace();
-						}
-					}
-					if(IsIbasConnected!=null && IsIbasConnected.equalsIgnoreCase("N")) {
-						overallfinance.add(service.getrOverallFinance(proid));
-				
-					}
-					final String localUri2=uri+"/pfms_serv/getTotalDemand";
-
-			 		String jsonResult2=null;
-					try {
-						HttpEntity<String> entity = new HttpEntity<String>(headers);
-						ResponseEntity<String> response=restTemplate.exchange(localUri2, HttpMethod.POST, entity, String.class);
-						jsonResult2=response.getBody();						
-					}catch(Exception e) {
-						req.setAttribute("errorMsg", "errorMsg");
-					}
-					ObjectMapper mapper2 = new ObjectMapper();
-					mapper2.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-					mapper2.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
-					List<TotalDemand> totaldemand=null;
-					if(jsonResult2!=null) {
-						try {
-							/*
-							 * projectDetails = mapper.readValue(jsonResult,
-							 * mapper.getTypeFactory().constructCollectionType(List.class,
-							 * ProjectFinancialDetails.class));
-							 */
-							totaldemand = mapper2.readValue(jsonResult2, new TypeReference<List<TotalDemand>>(){});
-							req.setAttribute("TotalProcurementDetails",totaldemand);
-						} catch (JsonProcessingException e) {
-							e.printStackTrace();
-						}
-					}
-	 
-	    	List<Object[]> procurementStatusList=(List<Object[]>)service.ProcurementStatusList(proid);
-	    	List<Object[]> procurementOnDemand=null;
-	    	List<Object[]> procurementOnSanction=null;
-	    	
-
-	    	if(procurementStatusList!=null)
-	    	{
-		    	Map<Object, List<Object[]>> map = procurementStatusList.stream().collect(Collectors.groupingBy(c -> c[9])); 
-		    	Collection<?> keys = map.keySet();
-		    	for(Object key:keys)
-		    	{
-		    		if(key.toString().equals("D")) {
-		    			procurementOnDemand=map.get(key);
-			    	}else if(key.toString().equals("S")) {
-			    		procurementOnSanction=map.get(key);
-			    	}
-		    	 }
+	    		req.setAttribute("otherMeetingList", service.otherMeetingList(projectid));
 	    	}
-//	    	procurementOnDemandlist.add(procurementStatusList);
-//	    	procurementOnDemandlist.add(procurementOnDemand);
-//	    	procurementOnSanctionlist.add(procurementOnSanction);
-	    	
-	    	procurementOnDemandlist.add(procurementOnDemand);
-	    	procurementOnSanctionlist.add(procurementOnSanction);
-	    	
-	    	req.setAttribute("procurementOnDemand", procurementOnDemand);
-	    	req.setAttribute("procurementOnSanction", procurementOnSanction);
-	    }
-/* ----------------------------------------------------------------------------------------------------------  */
-	    	
-	  
-	    	
-	    	req.setAttribute("TechImages",TechImages);
+	    	List<Object[]> SpecialCommitteesList =  service.SpecialCommitteesList(LabCode);
+	    	Map<String, List<Object[]>> reviewMeetingListMap = new HashMap<String, List<Object[]>>();
+			for(Object[] obj : SpecialCommitteesList) {
+				reviewMeetingListMap.put(obj[1]+"", service.ReviewMeetingList(projectid, obj[1]+""));
+			}
+	    	req.setAttribute("reviewMeetingListMap",reviewMeetingListMap);
+
+	    	req.setAttribute("text", req.getParameter("text"));
+	    	req.setAttribute("IsIbasConnected", IsIbasConnected);
 	    	req.setAttribute("committeeData", committee);
-	    	req.setAttribute("projectattributes",projectattributes);
-    		req.setAttribute("ebandpmrccount", ebandpmrccount);	    		
-    		req.setAttribute("milestonesubsystems", milestonesubsystems);
-    		req.setAttribute("milestones", milestones);	  
-    		req.setAttribute("lastpmrcactions", lastpmrcactions);
-    		req.setAttribute("lastpmrcminsactlist", lastpmrcminsactlist);
-    		req.setAttribute("ProjectDetails", ProjectDetails);
-    		req.setAttribute("ganttchartlist", ganttchartlist );
-    		req.setAttribute("oldpmrcissueslist",oldpmrcissueslist);	    		
-    		req.setAttribute("riskmatirxdata",riskmatirxdata);	    		
-    		req.setAttribute("lastpmrcdecisions" , lastpmrcdecisions);	    		
-    		req.setAttribute("actionplanthreemonths" , actionplanthreemonths);  	
-    		req.setAttribute("projectdatadetails",projectdatadetails);
-    		
-    		
-    		req.setAttribute("ReviewMeetingList",ReviewMeetingListEB);
-    		req.setAttribute("ReviewMeetingListPMRC",ReviewMeetingListPMRC);
-    		
-    		req.setAttribute("financialDetails",financialDetails);
-    		req.setAttribute("procurementOnDemandlist",procurementOnDemandlist);
-    		req.setAttribute("procurementOnSanctionlist",procurementOnSanctionlist);
-    		
-    		req.setAttribute("TechWorkDataList",TechWorkDataList);
-    		req.setAttribute("ProjectRevList", ProjectRevList);
-        	
-    		req.setAttribute("projectidlist",Pmainlist);
     		req.setAttribute("projectid",projectid);
-    		req.setAttribute("committeeid",tempid);
+    		req.setAttribute("committeeid",committeeid);
     		req.setAttribute("ProjectCost",ProjectCost);
 	    	req.setAttribute("isprint", "0");
 	    	req.setAttribute("AppFilesPath",ApplicationFilesDrive);
@@ -841,85 +663,28 @@ public class PrintController {
 	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(projectLabCode));  
 	    	req.setAttribute("thankYouImg", LogoUtil.getThankYouImageAsBase64String());
             req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
-            req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
     		req.setAttribute("ApplicationFilesDrive",env.getProperty("ApplicationFilesDrive"));
     		req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
     		Object[] nextmeetVenue = (Object[])service.BriefingMeetingVenue(projectid, committeeid);
 	    	req.setAttribute("nextMeetVenue", nextmeetVenue);
 	    	if(nextmeetVenue!=null && nextmeetVenue[0]!=null) {
-	    	req.setAttribute("recdecDetails", service.GetRecDecDetails(nextmeetVenue[0].toString()));
+	    		req.setAttribute("recdecDetails", service.GetRecDecDetails(nextmeetVenue[0].toString()));
 	    	}
 	    	req.setAttribute("RiskTypes", service.RiskTypes());
     		
-    		String LevelId= "2";
+    		Object[] mileStoneLevelId = service.MileStoneLevelId(projectid,committeeid);
+			req.setAttribute("levelid", mileStoneLevelId!=null?mileStoneLevelId[0].toString():"2");
 			
-			if(service.MileStoneLevelId(projectid,committeeid) != null) {
-				LevelId= service.MileStoneLevelId(projectid,committeeid)[0].toString();
-			}
-			//newly Added on 13th sept  		
-			req.setAttribute("levelid", LevelId);
-			Map<Integer,String> mappmrc = new HashMap<>();
-	 		int pmrccount=0;
-	 		for (Object []obj:ReviewMeetingListPMRC.get(0)) {
-	 			mappmrc.put(++pmrccount,obj[3].toString());
-	 		}
-			int ebcount=0;
-			Map<Integer,String> mapEB = new HashMap<>();
-			for (Object []obj:ReviewMeetingListEB.get(0)) {
-			mapEB.put(++ebcount,obj[3].toString());
-			}
-		 	List<Object[]>totalMileStones=service.totalProjectMilestones(projectid);//get all the milestones details based on projectid
-		 	List<Object[]>first=null;   //store the milestones with levelid 1
-		 	List<Object[]>second=null;	// store the milestones with levelid 2
-		 	List<Object[]>three= null; // store the milestones with levelid 3
-		 	Map<Integer,String> treeMapLevOne = new TreeMap<>();  // store the milestoneid with level id 1 and counts 
-		 	Map<Integer,String>treeMapLevTwo= new TreeMap<>(); // store the milestonidid with level id 2 and counts
-		 	Map<Integer,String>treeMapLevThree= new TreeMap<>();  // store the milestoneid with level id 3 and counts 
-		 	 TreeSet<Integer> AllMilestones = new TreeSet<>();   // store the number of milestone in sorted order
-		 	 if(!totalMileStones.isEmpty()) {
-		 	 for(Object[]obj:totalMileStones){
-		 	 AllMilestones.add(Integer.parseInt(obj[0].toString())); // getting the milestones from list
-		 	 }
-		 	
-		 	 for(Integer mile:AllMilestones) {
-		 	 int count=1;
-		 	 first=totalMileStones.stream().
-	 			   filter(i->i[26].toString().equalsIgnoreCase("1") && i[22].toString().equalsIgnoreCase(mile+""))
-	 				.map(objectArray -> new Object[]{objectArray[0], objectArray[2]})
-	 				.collect(Collectors.toList());
-		 		for(Object[]obj:first) {
-		 		treeMapLevOne.put(Integer.parseInt(obj[1].toString()),"A"+(count++));// to get the first level their id 
-		 		}
-		 	}
-		 	for (Map.Entry<Integer,String> entry : treeMapLevOne.entrySet()) {
-		 		int count=1;
-		 		second=totalMileStones.stream().
-		 			   filter(i->i[26].toString().equalsIgnoreCase("2") && i[2].toString().equalsIgnoreCase(entry.getKey()+""))
-		 			    .map(objectArray -> new Object[] {entry.getKey(),objectArray[3]})
-		 			   .collect(Collectors.toList());
-		 			for(Object[]obj:second) {
-		 				treeMapLevTwo.put(Integer.parseInt(obj[1].toString()),entry.getValue()+"-B"+(count++)); // to get the second level and their id
-		 			}
-		 		}
-		 	for(Map.Entry<Integer,String>entry: treeMapLevTwo.entrySet()) {
-		 		int count=1;
-		 		three=totalMileStones.stream().
-		 				filter(i->i[26].toString().equalsIgnoreCase("3") && i[3].toString().equalsIgnoreCase(entry.getKey()+""))
-		 				.map(objectArray -> new Object[] {entry.getKey(),objectArray[4]})
-		 				.collect(Collectors.toList());
-		 			for(Object[]obj:three) {
-					treeMapLevThree.put(Integer.parseInt(obj[1].toString()), "C"+(count++)); 
-		 			}
-		 		}
-		 	 }
-					 	 req.setAttribute("treeMapLevOne", treeMapLevOne);
-					 	 req.setAttribute("treeMapLevTwo", treeMapLevTwo);
-
-
-				req.setAttribute("mappmrc", mappmrc);
-		    	req.setAttribute("mapEB", mapEB);
-    		//end on 13th sept
-		    	req.setAttribute("overallfinance", overallfinance);
+			// Project Data
+			processProjectData(req, projectid, committeeid, uri, projectLabCode, UserId, IsIbasConnected);
+			
+			List<Object[]> projectdatadetails = (List<Object[]>)req.getAttribute("projectdatadetails");
+			List<List<Object[]>> ebandpmrccount = (List<List<Object[]>>)req.getAttribute("ebandpmrccount");
+			List<Object[]> TechWorkDataList = (List<Object[]>)req.getAttribute("TechWorkDataList");
+			
+			// Milestone Data for Committee
+			milestoneLevelDataMap(req, reviewMeetingListMap, projectid, committee.getCommitteeShortName().trim());
+			
 	    	String filename="BriefingPaper";		
 	    	
 	    	String path=req.getServletContext().getRealPath("/view/temp");
@@ -2411,499 +2176,498 @@ public class PrintController {
     	}		
 	}
 
-	public int setBriefingDataToResponse(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res) throws Exception
-	{
-		
-		try {
-		
-		String UserId = (String) ses.getAttribute("Username");
-		String LabCode = (String)ses.getAttribute("labcode");
-
-	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-	    	String Logintype= (String)ses.getAttribute("LoginType");
-	    	String projectid=req.getParameter("projectid");
-	    	String committeeid = req.getParameter("committeeid");
-	    	
-	    	if(projectid==null || committeeid==null) 
-	    	{
-	    		Map md = model.asMap();	    	
-	    		projectid = (String) md.get("projectid");
-	    		committeeid = (String) md.get("committeeid");
-	    	}
-	    	
-	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
-	    	List<Object[] > projlist= service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
-	    	List<Object[]>SpecialCommitteesList =  service.SpecialCommitteesList(LabCode);
-	    	
-	    	if((projectslist.size()==0 && projectid==null) || projlist.size()==0) 
-	        {				
-				return 0;
-			}
-	    	
-	    	if(projectslist.size()==0 && projectid!=null) 
-	        {				
-				projectslist.addAll(service.ProjectDetails(projectid));
-			}
-	    	
-	    	Map md = model.asMap();
-	    	if(projectid==null) {
-	    	projectid = (String) md.get("projectid");
-	    	committeeid = (String) md.get("committeeid");
-	    	}
-	    	if(projectid==null) {
-	    		projectid=projectslist.get(0)[0].toString();
-	    	}
-	    	
-	    	String tempid=committeeid;
-	    	
-	    	
-	    	if(committeeid==null  ) 
-	    	{
-	    		
-	    		for(Object[] committee : SpecialCommitteesList) {
-	    			if(committee[1].toString().equalsIgnoreCase("PMRC")) {
-	    				
-	    				committeeid=committee[0].toString();
-	    	    		tempid=committee[0].toString();
-	    	    		
-	    	    		break;
-	    			}
-	    		}
-	    		
-	    	}
-	    	else if(Long.parseLong(committeeid)==0)
-	    	{
-	    		for(Object[] committee : SpecialCommitteesList) {
-	    			if(committee[1].toString().equalsIgnoreCase("PMRC")) 
-	    			{
-	    				committeeid=committee[0].toString();
-	    	    		break;
-	    			}
-	    		}
-	    	}
-	    	
-	    	if(LabCode.equalsIgnoreCase(LabCode)) {
-	    	List<Object[]>otherMeetingList = service.otherMeetingList(projectid);
-	    	req.setAttribute("otherMeetingList", otherMeetingList);
-	    	}
-	    	
-	    	Committee committee = service.getCommitteeData(committeeid);
-	    	String projectLabCode = service.ProjectDetails(projectid).get(0)[5].toString();
-	    	String CommitteeCode = committee.getCommitteeShortName().trim();
-	    	
-	    	List<Object[]> projectattributes = new ArrayList<Object[]>();
-	    	List<List<Object[]>>  ebandpmrccount = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> milestonesubsystems = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> milestonesubsystemsnew = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> milestones  = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> lastpmrcactions = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> lastpmrcminsactlist = new ArrayList<List<Object[]>>();
-	    	List<Object[]> ProjectDetails = new ArrayList<Object[]>();
-	    	List<List<Object[]>> ganttchartlist = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> oldpmrcissueslist = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> riskmatirxdata = new ArrayList<List<Object[]>>();
-	    	List<Object[]> lastpmrcdecisions = new ArrayList<Object[]>();
-	    	List<List<Object[]>> actionplanthreemonths = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> ReviewMeetingList = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> ReviewMeetingListPMRC = new ArrayList<List<Object[]>>();
-	    	List<Object[]> projectdatadetails  = new ArrayList<Object[]>();
-    		
-	    	List<List<ProjectFinancialDetails>> financialDetails=new ArrayList<List<ProjectFinancialDetails>>();
-	    	List<List<Object[]>> procurementOnDemandlist  = new ArrayList<List<Object[]>>();
-    		List<List<Object[]>> procurementOnSanctionlist = new ArrayList<List<Object[]>>();
-	    	
-    		List<Object[]> pdffiles =new ArrayList<Object[]>();
-    		
-    		List<Object[]> TechWorkDataList =new ArrayList<Object[]>();
-    		
-    		List<List<Object[]>> ProjectRevList =new ArrayList<List<Object[]>>();
-    		List<List<TechImages>> TechImages =new ArrayList<List<TechImages>>();
-    		List<Object[]> LastMeetingDates =new ArrayList<Object[]>();
-    		//overall finance when ibas is not connected
-    		List<List<Object[]>> overallfinance =new ArrayList<List<Object[]>>();
-    		
-	    	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
-	    	for(String proid : Pmainlist) 
-	    	{	   
-	    		
-	    		Object[] projectattribute = service.ProjectAttributes(proid);
-	    		projectattributes.add(projectattribute);
-	    		TechImages.add(service.getTechList(proid));
-	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
-	    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
-				milestones.add(service.Milestones(proid,committeeid)); /* CALL Pfms_Milestone_Level_Prior(:projectid,committeeid) */
-				lastpmrcactions.add(service.LastPMRCActions(proid, committeeid)); /* CALL Last_PMRC_Actions_List(:projectid,:committeeid); */
-				lastpmrcminsactlist.add(service.LastPMRCActions1(proid,committeeid)); /* CALL last_pmrc_actions_list_bpaper(:projectid,:committeeid); */
-	    		ProjectDetails.add(service.ProjectDetails(proid).get(0));
-	    		ganttchartlist.add(service.GanttChartList(proid));
-				oldpmrcissueslist.add(service.OldPMRCIssuesList(proid));/* CALL Old_Issues_List(:projectid); */
-	    		riskmatirxdata.add(service.RiskMatirxData(proid));
-	    		lastpmrcdecisions.add(service.LastPMRCDecisions(committeeid,proid));
-				actionplanthreemonths.add(service.ActionPlanSixMonths(proid,committeeid)); /* CALL Pfms_Milestone_PDC_New(:projectid, :interval) */
-	    		TechWorkDataList.add(service.TechWorkData(proid)); 
-	    		ReviewMeetingList.add(service.ReviewMeetingList(projectid, "EB"));
-	    		ReviewMeetingListPMRC.add(service.ReviewMeetingList(projectid, "PMRC"));
-	    		ProjectRevList.add(service.ProjectRevList(proid));
-				milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid, committeeid)); /* */	    	 	
-	    		Object[] prodetails=service.ProjectDataDetails(proid);
-	    		LastMeetingDates.add(null);
-	    		projectdatadetails.add(prodetails);
-	    		
-	   
-	    		
-	    		String[] pdfs=new String[4];
-				if(prodetails!=null && prodetails.length>0)
-				{	
-				
-					if(prodetails[3]!=null) {
-						try {
-							//config
-							if(Files.exists(Paths.get(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[3]))) {
-								pdfs[0] = Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[3])));
-							}
-						}catch ( FileNotFoundException  e) {
-							logger.error(new Date() +" Inside ProjectBriefingPaper "+UserId, e);
-							e.printStackTrace();
-							pdfs[0]=null;
-						}
-					}
-					if(prodetails[5]!=null){
-						try {
-							//producttree
-							if(Files.exists(Paths.get(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[5]))) {
-								pdfs[1]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[5])));
-							}
-						}catch (FileNotFoundException e) {
-							logger.error(new Date() +" Inside ProjectBriefingPaper "+UserId, e);
-							pdfs[1]=null;
-						}
-					}
-					if(prodetails[6]!=null) {
-						try {
-							
-	                    //pearlimg
-							if(Files.exists(Paths.get(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[6]))) {
-								pdfs[2]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[6])));
-							}
-						
-						}catch (FileNotFoundException e) {
-							logger.error(new Date() +" Inside ProjectBriefingPaper "+UserId, e);
-							pdfs[2]=null;
-						}
-					}
-					if(prodetails[4]!=null) {
-						try {
-							//Sysspecs
-							
-							if(Files.exists(Paths.get(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[4]))) {
-								pdfs[3]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[4])));
-						}
-						
-							}catch (FileNotFoundException e) {
-								logger.error(new Date() +" Inside ProjectBriefingPaper "+UserId, e);
-								e.printStackTrace();
-								pdfs[3]=null;
-							}
-					}
-						
-				}
-				pdffiles.add(pdfs);
-	    		
-				List<Object[]> envisagedDemandlist  = new ArrayList<Object[]>();
-				envisagedDemandlist=service.getEnvisagedDemandList(projectid);
-				req.setAttribute("envisagedDemandlist", envisagedDemandlist);
-	    	
-	    		
-		/* -------------------------------------------------------------------------------------------------------------- */  		
-	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
-			 		HttpHeaders headers = new HttpHeaders();
-			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			    	headers.set("labcode", LabCode);
-			 		String jsonResult=null;
-					try {
-						HttpEntity<String> entity = new HttpEntity<String>(headers);
-						ResponseEntity<String> response=restTemplate.exchange(localUri, HttpMethod.POST, entity, String.class);
-						jsonResult=response.getBody();						
-					}catch(Exception e) {
-						req.setAttribute("errorMsg", "errorMsg");
-					}
-					ObjectMapper mapper = new ObjectMapper();
-					mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-					mapper.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
-					List<ProjectFinancialDetails> projectDetails=null;
-					if(jsonResult!=null) {
-						try {
-							/*
-							 * projectDetails = mapper.readValue(jsonResult,
-							 * mapper.getTypeFactory().constructCollectionType(List.class,
-							 * ProjectFinancialDetails.class));
-							 */
-							projectDetails = mapper.readValue(jsonResult, new TypeReference<List<ProjectFinancialDetails>>(){});
-							financialDetails.add(projectDetails);
-							req.setAttribute("financialDetails",projectDetails);
-						} catch (JsonProcessingException e) {
-							e.printStackTrace();
-						}
-					}
-					
-					//make sure IsIbasConnected is no for the labs which does not have ibas.The value of IsIbasConnected is coming form applicationProperties
-					if(IsIbasConnected!=null && IsIbasConnected.equalsIgnoreCase("N")) {
-						overallfinance.add(service.getrOverallFinance(proid));
-				
-					}
-					
-					final String localUri2=uri+"/pfms_serv/getTotalDemand";
-
-			 		String jsonResult2=null;
-					try {
-						HttpEntity<String> entity = new HttpEntity<String>(headers);
-						ResponseEntity<String> response=restTemplate.exchange(localUri2, HttpMethod.POST, entity, String.class);
-						jsonResult2=response.getBody();						
-					}catch(Exception e) {
-						req.setAttribute("errorMsg", "errorMsg");
-					}
-					ObjectMapper mapper2 = new ObjectMapper();
-					mapper2.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-					mapper2.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
-					List<TotalDemand> totaldemand=null;
-					if(jsonResult2!=null) {
-						try {
-							/*
-							 * projectDetails = mapper.readValue(jsonResult,
-							 * mapper.getTypeFactory().constructCollectionType(List.class,
-							 * ProjectFinancialDetails.class));
-							 */
-							totaldemand = mapper2.readValue(jsonResult2, new TypeReference<List<TotalDemand>>(){});
-							req.setAttribute("TotalProcurementDetails",totaldemand);
-						} catch (JsonProcessingException e) {
-							e.printStackTrace();
-						}
-					}
-	 
-	    	List<Object[]> procurementStatusList=(List<Object[]>)service.ProcurementStatusList(proid);
-	    	List<Object[]> procurementOnDemand=null;
-	    	List<Object[]> procurementOnSanction=null;
-	    	
-
-	    	if(procurementStatusList!=null)
-	    	{
-		    	Map<Object, List<Object[]>> map = procurementStatusList.stream().collect(Collectors.groupingBy(c -> c[9])); 
-		    	Collection<?> keys = map.keySet();
-		    	for(Object key:keys)
-		    	{
-		    		if(key.toString().equals("D")) {
-		    			procurementOnDemand=map.get(key);
-			    	}else if(key.toString().equals("S")) {
-			    		procurementOnSanction=map.get(key);
-			    	}
-		    	 }
-	    	}
-//	    	procurementOnDemandlist.add(procurementStatusList);
+//	public int setBriefingDataToResponse(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res) throws Exception
+//	{
+//		
+//		try {
+//		
+//		String UserId = (String) ses.getAttribute("Username");
+//		String LabCode = (String)ses.getAttribute("labcode");
+//
+//	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+//	    	String Logintype= (String)ses.getAttribute("LoginType");
+//	    	String projectid=req.getParameter("projectid");
+//	    	String committeeid = req.getParameter("committeeid");
+//	    	
+//	    	if(projectid==null || committeeid==null) 
+//	    	{
+//	    		Map md = model.asMap();	    	
+//	    		projectid = (String) md.get("projectid");
+//	    		committeeid = (String) md.get("committeeid");
+//	    	}
+//	    	
+//	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+//	    	List<Object[] > projlist= service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+//	    	List<Object[]>SpecialCommitteesList =  service.SpecialCommitteesList(LabCode);
+//	    	
+//	    	if((projectslist.size()==0 && projectid==null) || projlist.size()==0) 
+//	        {				
+//				return 0;
+//			}
+//	    	
+//	    	if(projectslist.size()==0 && projectid!=null) 
+//	        {				
+//				projectslist.addAll(service.ProjectDetails(projectid));
+//			}
+//	    	
+//	    	Map md = model.asMap();
+//	    	if(projectid==null) {
+//	    	projectid = (String) md.get("projectid");
+//	    	committeeid = (String) md.get("committeeid");
+//	    	}
+//	    	if(projectid==null) {
+//	    		projectid=projectslist.get(0)[0].toString();
+//	    	}
+//	    	
+//	    	String tempid=committeeid;
+//	    	
+//	    	
+//	    	if(committeeid==null  ) 
+//	    	{
+//	    		
+//	    		for(Object[] committee : SpecialCommitteesList) {
+//	    			if(committee[1].toString().equalsIgnoreCase("PMRC")) {
+//	    				
+//	    				committeeid=committee[0].toString();
+//	    	    		tempid=committee[0].toString();
+//	    	    		
+//	    	    		break;
+//	    			}
+//	    		}
+//	    		
+//	    	}
+//	    	else if(Long.parseLong(committeeid)==0)
+//	    	{
+//	    		for(Object[] committee : SpecialCommitteesList) {
+//	    			if(committee[1].toString().equalsIgnoreCase("PMRC")) 
+//	    			{
+//	    				committeeid=committee[0].toString();
+//	    	    		break;
+//	    			}
+//	    		}
+//	    	}
+//	    	
+//	    	if(LabCode.equalsIgnoreCase(LabCode)) {
+//	    	List<Object[]>otherMeetingList = service.otherMeetingList(projectid);
+//	    	req.setAttribute("otherMeetingList", otherMeetingList);
+//	    	}
+//	    	
+//	    	Committee committee = service.getCommitteeData(committeeid);
+//	    	String projectLabCode = service.ProjectDetails(projectid).get(0)[5].toString();
+//	    	String CommitteeCode = committee.getCommitteeShortName().trim();
+//	    	
+//	    	List<Object[]> projectattributes = new ArrayList<Object[]>();
+//	    	List<List<Object[]>>  ebandpmrccount = new ArrayList<List<Object[]>>();
+//	    	List<List<Object[]>> milestonesubsystems = new ArrayList<List<Object[]>>();
+//	    	List<List<Object[]>> milestonesubsystemsnew = new ArrayList<List<Object[]>>();
+//	    	List<List<Object[]>> milestones  = new ArrayList<List<Object[]>>();
+//	    	List<List<Object[]>> lastpmrcactions = new ArrayList<List<Object[]>>();
+//	    	List<List<Object[]>> lastpmrcminsactlist = new ArrayList<List<Object[]>>();
+//	    	List<Object[]> ProjectDetails = new ArrayList<Object[]>();
+//	    	List<List<Object[]>> ganttchartlist = new ArrayList<List<Object[]>>();
+//	    	List<List<Object[]>> oldpmrcissueslist = new ArrayList<List<Object[]>>();
+//	    	List<List<Object[]>> riskmatirxdata = new ArrayList<List<Object[]>>();
+//	    	List<Object[]> lastpmrcdecisions = new ArrayList<Object[]>();
+//	    	List<List<Object[]>> actionplanthreemonths = new ArrayList<List<Object[]>>();
+//	    	List<List<Object[]>> ReviewMeetingList = new ArrayList<List<Object[]>>();
+//	    	List<List<Object[]>> ReviewMeetingListPMRC = new ArrayList<List<Object[]>>();
+//	    	List<Object[]> projectdatadetails  = new ArrayList<Object[]>();
+//    		
+//	    	List<List<ProjectFinancialDetails>> financialDetails=new ArrayList<List<ProjectFinancialDetails>>();
+//	    	List<List<Object[]>> procurementOnDemandlist  = new ArrayList<List<Object[]>>();
+//    		List<List<Object[]>> procurementOnSanctionlist = new ArrayList<List<Object[]>>();
+//	    	
+//    		List<Object[]> pdffiles =new ArrayList<Object[]>();
+//    		
+//    		List<Object[]> TechWorkDataList =new ArrayList<Object[]>();
+//    		
+//    		List<List<Object[]>> ProjectRevList =new ArrayList<List<Object[]>>();
+//    		List<List<TechImages>> TechImages =new ArrayList<List<TechImages>>();
+//    		List<Object[]> LastMeetingDates =new ArrayList<Object[]>();
+//    		//overall finance when ibas is not connected
+//    		List<List<Object[]>> overallfinance =new ArrayList<List<Object[]>>();
+//    		
+//	    	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
+//	    	for(String proid : Pmainlist) 
+//	    	{	   
+//	    		
+//	    		Object[] projectattribute = service.ProjectAttributes(proid);
+//	    		projectattributes.add(projectattribute);
+//	    		TechImages.add(service.getTechList(proid));
+//	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
+//	    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
+//				milestones.add(service.Milestones(proid,committeeid)); /* CALL Pfms_Milestone_Level_Prior(:projectid,committeeid) */
+//				lastpmrcactions.add(service.LastPMRCActions(proid, committeeid)); /* CALL Last_PMRC_Actions_List(:projectid,:committeeid); */
+//				lastpmrcminsactlist.add(service.LastPMRCActions1(proid,committeeid)); /* CALL last_pmrc_actions_list_bpaper(:projectid,:committeeid); */
+//	    		ProjectDetails.add(service.ProjectDetails(proid).get(0));
+//	    		ganttchartlist.add(service.GanttChartList(proid));
+//				oldpmrcissueslist.add(service.OldPMRCIssuesList(proid));/* CALL Old_Issues_List(:projectid); */
+//	    		riskmatirxdata.add(service.RiskMatirxData(proid));
+//	    		lastpmrcdecisions.add(service.LastPMRCDecisions(committeeid,proid));
+//				actionplanthreemonths.add(service.ActionPlanSixMonths(proid,committeeid)); /* CALL Pfms_Milestone_PDC_New(:projectid, :interval) */
+//	    		TechWorkDataList.add(service.TechWorkData(proid)); 
+//	    		ReviewMeetingList.add(service.ReviewMeetingList(projectid, "EB"));
+//	    		ReviewMeetingListPMRC.add(service.ReviewMeetingList(projectid, "PMRC"));
+//	    		ProjectRevList.add(service.ProjectRevList(proid));
+//				milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid, committeeid)); /* */	    	 	
+//	    		Object[] prodetails=service.ProjectDataDetails(proid);
+//	    		LastMeetingDates.add(null);
+//	    		projectdatadetails.add(prodetails);
+//	    		
+//	   
+//	    		
+//	    		String[] pdfs=new String[4];
+//				if(prodetails!=null && prodetails.length>0)
+//				{	
+//				
+//					if(prodetails[3]!=null) {
+//						try {
+//							//config
+//							if(Files.exists(Paths.get(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[3]))) {
+//								pdfs[0] = Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[3])));
+//							}
+//						}catch ( FileNotFoundException  e) {
+//							logger.error(new Date() +" Inside ProjectBriefingPaper "+UserId, e);
+//							e.printStackTrace();
+//							pdfs[0]=null;
+//						}
+//					}
+//					if(prodetails[5]!=null){
+//						try {
+//							//producttree
+//							if(Files.exists(Paths.get(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[5]))) {
+//								pdfs[1]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[5])));
+//							}
+//						}catch (FileNotFoundException e) {
+//							logger.error(new Date() +" Inside ProjectBriefingPaper "+UserId, e);
+//							pdfs[1]=null;
+//						}
+//					}
+//					if(prodetails[6]!=null) {
+//						try {
+//							
+//	                    //pearlimg
+//							if(Files.exists(Paths.get(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[6]))) {
+//								pdfs[2]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[6])));
+//							}
+//						
+//						}catch (FileNotFoundException e) {
+//							logger.error(new Date() +" Inside ProjectBriefingPaper "+UserId, e);
+//							pdfs[2]=null;
+//						}
+//					}
+//					if(prodetails[4]!=null) {
+//						try {
+//							//Sysspecs
+//							
+//							if(Files.exists(Paths.get(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[4]))) {
+//								pdfs[3]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[4])));
+//						}
+//						
+//							}catch (FileNotFoundException e) {
+//								logger.error(new Date() +" Inside ProjectBriefingPaper "+UserId, e);
+//								e.printStackTrace();
+//								pdfs[3]=null;
+//							}
+//					}
+//						
+//				}
+//				pdffiles.add(pdfs);
+//	    		
+//				List<Object[]> envisagedDemandlist  = new ArrayList<Object[]>();
+//				envisagedDemandlist=service.getEnvisagedDemandList(projectid);
+//				req.setAttribute("envisagedDemandlist", envisagedDemandlist);
+//	    	
+//	    		
+//		/* -------------------------------------------------------------------------------------------------------------- */  		
+//	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
+//			 		HttpHeaders headers = new HttpHeaders();
+//			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+//			    	headers.set("labcode", LabCode);
+//			 		String jsonResult=null;
+//					try {
+//						HttpEntity<String> entity = new HttpEntity<String>(headers);
+//						ResponseEntity<String> response=restTemplate.exchange(localUri, HttpMethod.POST, entity, String.class);
+//						jsonResult=response.getBody();						
+//					}catch(Exception e) {
+//						req.setAttribute("errorMsg", "errorMsg");
+//					}
+//					ObjectMapper mapper = new ObjectMapper();
+//					mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+//					mapper.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
+//					List<ProjectFinancialDetails> projectDetails=null;
+//					if(jsonResult!=null) {
+//						try {
+//							/*
+//							 * projectDetails = mapper.readValue(jsonResult,
+//							 * mapper.getTypeFactory().constructCollectionType(List.class,
+//							 * ProjectFinancialDetails.class));
+//							 */
+//							projectDetails = mapper.readValue(jsonResult, new TypeReference<List<ProjectFinancialDetails>>(){});
+//							financialDetails.add(projectDetails);
+//							req.setAttribute("financialDetails",projectDetails);
+//						} catch (JsonProcessingException e) {
+//							e.printStackTrace();
+//						}
+//					}
+//					
+//					//make sure IsIbasConnected is no for the labs which does not have ibas.The value of IsIbasConnected is coming form applicationProperties
+//					if(IsIbasConnected!=null && IsIbasConnected.equalsIgnoreCase("N")) {
+//						overallfinance.add(service.getrOverallFinance(proid));
+//				
+//					}
+//					
+//					final String localUri2=uri+"/pfms_serv/getTotalDemand";
+//
+//			 		String jsonResult2=null;
+//					try {
+//						HttpEntity<String> entity = new HttpEntity<String>(headers);
+//						ResponseEntity<String> response=restTemplate.exchange(localUri2, HttpMethod.POST, entity, String.class);
+//						jsonResult2=response.getBody();						
+//					}catch(Exception e) {
+//						req.setAttribute("errorMsg", "errorMsg");
+//					}
+//					ObjectMapper mapper2 = new ObjectMapper();
+//					mapper2.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+//					mapper2.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
+//					List<TotalDemand> totaldemand=null;
+//					if(jsonResult2!=null) {
+//						try {
+//							/*
+//							 * projectDetails = mapper.readValue(jsonResult,
+//							 * mapper.getTypeFactory().constructCollectionType(List.class,
+//							 * ProjectFinancialDetails.class));
+//							 */
+//							totaldemand = mapper2.readValue(jsonResult2, new TypeReference<List<TotalDemand>>(){});
+//							req.setAttribute("TotalProcurementDetails",totaldemand);
+//						} catch (JsonProcessingException e) {
+//							e.printStackTrace();
+//						}
+//					}
+//	 
+//	    	List<Object[]> procurementStatusList=(List<Object[]>)service.ProcurementStatusList(proid);
+//	    	List<Object[]> procurementOnDemand=null;
+//	    	List<Object[]> procurementOnSanction=null;
+//	    	
+//
+//	    	if(procurementStatusList!=null)
+//	    	{
+//		    	Map<Object, List<Object[]>> map = procurementStatusList.stream().collect(Collectors.groupingBy(c -> c[9])); 
+//		    	Collection<?> keys = map.keySet();
+//		    	for(Object key:keys)
+//		    	{
+//		    		if(key.toString().equals("D")) {
+//		    			procurementOnDemand=map.get(key);
+//			    	}else if(key.toString().equals("S")) {
+//			    		procurementOnSanction=map.get(key);
+//			    	}
+//		    	 }
+//	    	}
+////	    	procurementOnDemandlist.add(procurementStatusList);
+////	    	procurementOnDemandlist.add(procurementOnDemand);
+////	    	procurementOnSanctionlist.add(procurementOnSanction);
+//	    	
 //	    	procurementOnDemandlist.add(procurementOnDemand);
 //	    	procurementOnSanctionlist.add(procurementOnSanction);
-	    	
-	    	procurementOnDemandlist.add(procurementOnDemand);
-	    	procurementOnSanctionlist.add(procurementOnSanction);
-	    	
-	    	req.setAttribute("procurementOnDemand", procurementOnDemand);
-	    	req.setAttribute("procurementOnSanction", procurementOnSanction);
-	    }
-/* -------------------------------------------------------------------------------------------------------------  */
-		Map<Integer,String> mappmrc = new HashMap<>();
- 		int pmrccount=0;
- 		System.out.println(ReviewMeetingListPMRC.size()+"------"+ReviewMeetingList.size());
- 		for (Object []obj:ReviewMeetingListPMRC.get(0)) {
- 			mappmrc.put(++pmrccount,obj[3].toString());
- 		}
-		int ebcount=0;
-		Map<Integer,String> mapEB = new HashMap<>();
-		for (Object []obj:ReviewMeetingList.get(0)) {
-		mapEB.put(++ebcount,obj[3].toString());
-		}
-	    
-		
-		
-		
-		// new code
-	 	List<Object[]>totalMileStones=service.totalProjectMilestones(projectid);//get all the milestones details based on projectid
-	 	List<Object[]>first=null;   //store the milestones with levelid 1
-	 	List<Object[]>second=null;	// store the milestones with levelid 2
-	 	List<Object[]>three= null; // store the milestones with levelid 3
-	 	Map<Integer,String> treeMapLevOne = new TreeMap<>();  // store the milestoneid with level id 1 and counts 
-	 	Map<Integer,String>treeMapLevTwo= new TreeMap<>(); // store the milestonidid with level id 2 and counts
-	 	Map<Integer,String>treeMapLevThree= new TreeMap<>();  // store the milestoneid with level id 3 and counts 
-	 	 TreeSet<Integer> AllMilestones = new TreeSet<>();   // store the number of milestone in sorted order
-	 	 if(!totalMileStones.isEmpty()) {
-	 	 for(Object[]obj:totalMileStones){
-	 	 AllMilestones.add(Integer.parseInt(obj[0].toString())); // getting the milestones from list
-	 	 }
-	 	
-	 	 for(Integer mile:AllMilestones) {
-	 	 int count=1;
-	 	 first=totalMileStones.stream().
- 			   filter(i->i[26].toString().equalsIgnoreCase("1") && i[22].toString().equalsIgnoreCase(mile+""))
- 				.map(objectArray -> new Object[]{objectArray[0], objectArray[2]})
- 				.collect(Collectors.toList());
-	 		for(Object[]obj:first) {
-	 		treeMapLevOne.put(Integer.parseInt(obj[1].toString()),"A"+(count++));// to get the first level
-	 		}
-	 	}
-	 	for (Map.Entry<Integer,String> entry : treeMapLevOne.entrySet()) {
-	 		int count=1;
-	 		second=totalMileStones.stream().
-	 			   filter(i->i[26].toString().equalsIgnoreCase("2") && i[2].toString().equalsIgnoreCase(entry.getKey()+""))
-	 			    .map(objectArray -> new Object[] {entry.getKey(),objectArray[3]})
-	 			   .collect(Collectors.toList());
-	 	for(Object[]obj:second) {
-	 		treeMapLevTwo.put(Integer.parseInt(obj[1].toString()),entry.getValue()+"-B"+(count++));
-	 	}
-	 	}
-	 	for(Map.Entry<Integer,String>entry: treeMapLevTwo.entrySet()) {
-	 		int count=1;
-	 		three=totalMileStones.stream().
-	 				filter(i->i[26].toString().equalsIgnoreCase("3") && i[3].toString().equalsIgnoreCase(entry.getKey()+""))
-	 				.map(objectArray -> new Object[] {entry.getKey(),objectArray[4]})
-	 				.collect(Collectors.toList());
-	 		for(Object[]obj:three) {
-				treeMapLevThree.put(Integer.parseInt(obj[1].toString()), "C"+(count++)); 
-	 			
-	 		}
-	 	}
-	 }
-	 	req.setAttribute("overallfinance", overallfinance);
-				 	 req.setAttribute("treeMapLevOne", treeMapLevOne);
-				 	 req.setAttribute("treeMapLevTwo", treeMapLevTwo);
-				 	 // new code end
-	    	req.setAttribute("mappmrc", mappmrc);
-	    	req.setAttribute("mapEB", mapEB);
-	    	req.setAttribute("projectslist", projectslist);
-	    	req.setAttribute("committeeData", committee);
-	    	
-	    	req.setAttribute("projectattributes",projectattributes);
-    		req.setAttribute("ebandpmrccount", ebandpmrccount);	    		
-    		req.setAttribute("milestonesubsystems", milestonesubsystems);
-    		req.setAttribute("milestones", milestones);	  
-    		req.setAttribute("lastpmrcactions", lastpmrcactions);
-    		req.setAttribute("lastpmrcminsactlist", lastpmrcminsactlist);
-    		req.setAttribute("ProjectDetails", ProjectDetails);
-    		req.setAttribute("ganttchartlist", ganttchartlist );
-    		req.setAttribute("oldpmrcissueslist",oldpmrcissueslist);	    		
-    		req.setAttribute("riskmatirxdata",riskmatirxdata);	    		
-    		req.setAttribute("lastpmrcdecisions" , lastpmrcdecisions);	    		
-    		req.setAttribute("actionplanthreemonths" , actionplanthreemonths);  	
-    		req.setAttribute("projectdatadetails",projectdatadetails);
-    		req.setAttribute("ReviewMeetingList",ReviewMeetingList);
-    		req.setAttribute("ProjectRevList", ProjectRevList);
-    		req.setAttribute("ReviewMeetingListPMRC",ReviewMeetingListPMRC);
-    		req.setAttribute("financialDetails",financialDetails);
-    		req.setAttribute("procurementOnDemandlist",procurementOnDemandlist);
-    		req.setAttribute("procurementOnSanctionlist",procurementOnSanctionlist);
-        	
-    		req.setAttribute("projectidlist",Pmainlist);
-    		req.setAttribute("projectid",projectid);
-    		req.setAttribute("committeeid",tempid);
-	    	
-    		req.setAttribute("pdffiles",pdffiles);
-    		req.setAttribute("TechWorkDataList",TechWorkDataList);
-    		req.setAttribute("ProjectCost",ProjectCost);
-    		
-    		req.setAttribute("milestoneactivitystatus", service.MilestoneActivityStatus());
-    		req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);  
-    		req.setAttribute("TechImages", TechImages);   
-    		req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
-    		req.setAttribute("projectLabCode",projectLabCode);
-    		req.setAttribute("SpecialCommitteesList",SpecialCommitteesList);
-    		req.setAttribute("labInfo", service.LabDetailes(projectLabCode));
-	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(projectLabCode));
-	    	req.setAttribute("Drdologo", LogoUtil.getDRDOLogoAsBase64String());
-	    	req.setAttribute("thankYouImg", LogoUtil.getThankYouImageAsBase64String());
-	    	req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
-	    	Object[] nextmeetVenue = (Object[])service.BriefingMeetingVenue(projectid, committeeid);
-	    	req.setAttribute("nextMeetVenue", nextmeetVenue);
-	    	if(nextmeetVenue!=null && nextmeetVenue[0]!=null) {
-	    		req.setAttribute("recdecDetails", service.GetRecDecDetails(nextmeetVenue[0].toString()));
-	    	}
-	    	req.setAttribute("RiskTypes", service.RiskTypes());
-	    	
-	    	
-	    	
-    		String LevelId= "2";
-			
-			if(service.MileStoneLevelId(projectid,committeeid) != null) {
-				LevelId= service.MileStoneLevelId(projectid,committeeid)[0].toString();
-			}
-			  		
-			req.setAttribute("levelid", LevelId);
-    		
-    		try {
-    	        if(projectid==null) {
-    	        	try {
-    	        		Object[] pro=projlist.get(0);
-    	        		projectid=pro[0].toString();
-    	        	}catch (Exception e) {
-    					
-    				}
-    	           
-    	        }
-    	        List<Object[]> main=milservice.MilestoneActivityList(projectid);
-    	            	        
-    			req.setAttribute("MilestoneActivityList",main );
-    			req.setAttribute("ProjectList",projlist);
-    			req.setAttribute("ProjectId", projectid);
-    			if(projectid!=null) {
-    				req.setAttribute("ProjectDetailsMil", milservice.ProjectDetails(projectid).get(0));
-    				int MainCount=1;
-    				for(Object[] objmain:main ) {
-    				 int countA=1;
-						List<Object[]> MilestoneActivityA = milservice.MilestoneActivityLevel(objmain[0].toString(),"1"); /* CALL Pfms_Milestone_Level_List(:id,:levelid) */
-    					req.setAttribute(MainCount+"MilestoneActivityA", MilestoneActivityA);
-    					for(Object[] obj:MilestoneActivityA) {
-    						List<Object[]>  MilestoneActivityB=milservice.MilestoneActivityLevel(obj[0].toString(),"2");
-    						req.setAttribute(MainCount+"MilestoneActivityB"+countA, MilestoneActivityB);
-    						int countB=1;
-    						for(Object[] obj1:MilestoneActivityB) {
-    							List<Object[]>  MilestoneActivityC=milservice.MilestoneActivityLevel(obj1[0].toString(),"3");
-    							req.setAttribute(MainCount+"MilestoneActivityC"+countA+countB, MilestoneActivityC);
-    							int countC=1;
-    							for(Object[] obj2:MilestoneActivityC) {
-    								List<Object[]>  MilestoneActivityD=milservice.MilestoneActivityLevel(obj2[0].toString(),"4");
-    								req.setAttribute(MainCount+"MilestoneActivityD"+countA+countB+countC, MilestoneActivityD);
-    								int countD=1;
-    								for(Object[] obj3:MilestoneActivityD) {
-    									List<Object[]>  MilestoneActivityE=milservice.MilestoneActivityLevel(obj3[0].toString(),"5");
-    									req.setAttribute(MainCount+"MilestoneActivityE"+countA+countB+countC+countD, MilestoneActivityE);
-    									countD++;
-    								}
-    								countC++;
-    							}
-    							countB++;
-    						}
-    						countA++;
-    					}
-    					MainCount++;
-    				}
-    			}
-
-    			return 1;
-    		}
-    		catch (Exception e) {
-    			e.printStackTrace(); 
-    			logger.error(new Date() +" Inside ProjectBriefingPaper.htm (Milestone ActivityLogic) "+UserId, e); 
-    			return 0;
-    		}
-    		
-			}	
-			catch (Exception e) {
-    			e.printStackTrace(); 
-    			logger.error(new Date() +" Inside ProjectBriefingPaper.htm (Milestone ActivityLogic) ", e); 
-    			return 0;
-    		}
-    		
-    		
-    		
-		
-	}
-	
+//	    	
+//	    	req.setAttribute("procurementOnDemand", procurementOnDemand);
+//	    	req.setAttribute("procurementOnSanction", procurementOnSanction);
+//	    }
+///* -------------------------------------------------------------------------------------------------------------  */
+//		Map<Integer,String> mappmrc = new HashMap<>();
+// 		int pmrccount=0;
+// 		System.out.println(ReviewMeetingListPMRC.size()+"------"+ReviewMeetingList.size());
+// 		for (Object []obj:ReviewMeetingListPMRC.get(0)) {
+// 			mappmrc.put(++pmrccount,obj[3].toString());
+// 		}
+//		int ebcount=0;
+//		Map<Integer,String> mapEB = new HashMap<>();
+//		for (Object []obj:ReviewMeetingList.get(0)) {
+//		mapEB.put(++ebcount,obj[3].toString());
+//		}
+//	    
+//		
+//		
+//		
+//		// new code
+//	 	List<Object[]>totalMileStones=service.totalProjectMilestones(projectid);//get all the milestones details based on projectid
+//	 	List<Object[]>first=null;   //store the milestones with levelid 1
+//	 	List<Object[]>second=null;	// store the milestones with levelid 2
+//	 	List<Object[]>three= null; // store the milestones with levelid 3
+//	 	Map<Integer,String> treeMapLevOne = new TreeMap<>();  // store the milestoneid with level id 1 and counts 
+//	 	Map<Integer,String>treeMapLevTwo= new TreeMap<>(); // store the milestonidid with level id 2 and counts
+//	 	Map<Integer,String>treeMapLevThree= new TreeMap<>();  // store the milestoneid with level id 3 and counts 
+//	 	 TreeSet<Integer> AllMilestones = new TreeSet<>();   // store the number of milestone in sorted order
+//	 	 if(!totalMileStones.isEmpty()) {
+//	 	 for(Object[]obj:totalMileStones){
+//	 	 AllMilestones.add(Integer.parseInt(obj[0].toString())); // getting the milestones from list
+//	 	 }
+//	 	
+//	 	 for(Integer mile:AllMilestones) {
+//	 	 int count=1;
+//	 	 first=totalMileStones.stream().
+// 			   filter(i->i[26].toString().equalsIgnoreCase("1") && i[22].toString().equalsIgnoreCase(mile+""))
+// 				.map(objectArray -> new Object[]{objectArray[0], objectArray[2]})
+// 				.collect(Collectors.toList());
+//	 		for(Object[]obj:first) {
+//	 		treeMapLevOne.put(Integer.parseInt(obj[1].toString()),"A"+(count++));// to get the first level
+//	 		}
+//	 	}
+//	 	for (Map.Entry<Integer,String> entry : treeMapLevOne.entrySet()) {
+//	 		int count=1;
+//	 		second=totalMileStones.stream().
+//	 			   filter(i->i[26].toString().equalsIgnoreCase("2") && i[2].toString().equalsIgnoreCase(entry.getKey()+""))
+//	 			    .map(objectArray -> new Object[] {entry.getKey(),objectArray[3]})
+//	 			   .collect(Collectors.toList());
+//	 	for(Object[]obj:second) {
+//	 		treeMapLevTwo.put(Integer.parseInt(obj[1].toString()),entry.getValue()+"-B"+(count++));
+//	 	}
+//	 	}
+//	 	for(Map.Entry<Integer,String>entry: treeMapLevTwo.entrySet()) {
+//	 		int count=1;
+//	 		three=totalMileStones.stream().
+//	 				filter(i->i[26].toString().equalsIgnoreCase("3") && i[3].toString().equalsIgnoreCase(entry.getKey()+""))
+//	 				.map(objectArray -> new Object[] {entry.getKey(),objectArray[4]})
+//	 				.collect(Collectors.toList());
+//	 		for(Object[]obj:three) {
+//				treeMapLevThree.put(Integer.parseInt(obj[1].toString()), "C"+(count++)); 
+//	 			
+//	 		}
+//	 	}
+//	 }
+//	 	req.setAttribute("overallfinance", overallfinance);
+//				 	 req.setAttribute("treeMapLevOne", treeMapLevOne);
+//				 	 req.setAttribute("treeMapLevTwo", treeMapLevTwo);
+//				 	 // new code end
+//	    	req.setAttribute("mappmrc", mappmrc);
+//	    	req.setAttribute("mapEB", mapEB);
+//	    	req.setAttribute("projectslist", projectslist);
+//	    	req.setAttribute("committeeData", committee);
+//	    	
+//	    	req.setAttribute("projectattributes",projectattributes);
+//    		req.setAttribute("ebandpmrccount", ebandpmrccount);	    		
+//    		req.setAttribute("milestonesubsystems", milestonesubsystems);
+//    		req.setAttribute("milestones", milestones);	  
+//    		req.setAttribute("lastpmrcactions", lastpmrcactions);
+//    		req.setAttribute("lastpmrcminsactlist", lastpmrcminsactlist);
+//    		req.setAttribute("ProjectDetails", ProjectDetails);
+//    		req.setAttribute("ganttchartlist", ganttchartlist );
+//    		req.setAttribute("oldpmrcissueslist",oldpmrcissueslist);	    		
+//    		req.setAttribute("riskmatirxdata",riskmatirxdata);	    		
+//    		req.setAttribute("lastpmrcdecisions" , lastpmrcdecisions);	    		
+//    		req.setAttribute("actionplanthreemonths" , actionplanthreemonths);  	
+//    		req.setAttribute("projectdatadetails",projectdatadetails);
+//    		req.setAttribute("ReviewMeetingList",ReviewMeetingList);
+//    		req.setAttribute("ProjectRevList", ProjectRevList);
+//    		req.setAttribute("ReviewMeetingListPMRC",ReviewMeetingListPMRC);
+//    		req.setAttribute("financialDetails",financialDetails);
+//    		req.setAttribute("procurementOnDemandlist",procurementOnDemandlist);
+//    		req.setAttribute("procurementOnSanctionlist",procurementOnSanctionlist);
+//        	
+//    		req.setAttribute("projectidlist",Pmainlist);
+//    		req.setAttribute("projectid",projectid);
+//    		req.setAttribute("committeeid",tempid);
+//	    	
+//    		req.setAttribute("pdffiles",pdffiles);
+//    		req.setAttribute("TechWorkDataList",TechWorkDataList);
+//    		req.setAttribute("ProjectCost",ProjectCost);
+//    		
+//    		req.setAttribute("milestoneactivitystatus", service.MilestoneActivityStatus());
+//    		req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);  
+//    		req.setAttribute("TechImages", TechImages);   
+//    		req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
+//    		req.setAttribute("projectLabCode",projectLabCode);
+//    		req.setAttribute("SpecialCommitteesList",SpecialCommitteesList);
+//    		req.setAttribute("labInfo", service.LabDetailes(projectLabCode));
+//	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(projectLabCode));
+//	    	req.setAttribute("Drdologo", LogoUtil.getDRDOLogoAsBase64String());
+//	    	req.setAttribute("thankYouImg", LogoUtil.getThankYouImageAsBase64String());
+//	    	req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
+//	    	Object[] nextmeetVenue = (Object[])service.BriefingMeetingVenue(projectid, committeeid);
+//	    	req.setAttribute("nextMeetVenue", nextmeetVenue);
+//	    	if(nextmeetVenue!=null && nextmeetVenue[0]!=null) {
+//	    		req.setAttribute("recdecDetails", service.GetRecDecDetails(nextmeetVenue[0].toString()));
+//	    	}
+//	    	req.setAttribute("RiskTypes", service.RiskTypes());
+//	    	
+//	    	
+//	    	
+//    		String LevelId= "2";
+//			
+//			if(service.MileStoneLevelId(projectid,committeeid) != null) {
+//				LevelId= service.MileStoneLevelId(projectid,committeeid)[0].toString();
+//			}
+//			  		
+//			req.setAttribute("levelid", LevelId);
+//    		
+//    		try {
+//    	        if(projectid==null) {
+//    	        	try {
+//    	        		Object[] pro=projlist.get(0);
+//    	        		projectid=pro[0].toString();
+//    	        	}catch (Exception e) {
+//    					
+//    				}
+//    	           
+//    	        }
+//    	        List<Object[]> main=milservice.MilestoneActivityList(projectid);
+//    	            	        
+//    			req.setAttribute("MilestoneActivityList",main );
+//    			req.setAttribute("ProjectList",projlist);
+//    			req.setAttribute("ProjectId", projectid);
+//    			if(projectid!=null) {
+//    				req.setAttribute("ProjectDetailsMil", milservice.ProjectDetails(projectid).get(0));
+//    				int MainCount=1;
+//    				for(Object[] objmain:main ) {
+//    				 int countA=1;
+//						List<Object[]> MilestoneActivityA = milservice.MilestoneActivityLevel(objmain[0].toString(),"1"); /* CALL Pfms_Milestone_Level_List(:id,:levelid) */
+//    					req.setAttribute(MainCount+"MilestoneActivityA", MilestoneActivityA);
+//    					for(Object[] obj:MilestoneActivityA) {
+//    						List<Object[]>  MilestoneActivityB=milservice.MilestoneActivityLevel(obj[0].toString(),"2");
+//    						req.setAttribute(MainCount+"MilestoneActivityB"+countA, MilestoneActivityB);
+//    						int countB=1;
+//    						for(Object[] obj1:MilestoneActivityB) {
+//    							List<Object[]>  MilestoneActivityC=milservice.MilestoneActivityLevel(obj1[0].toString(),"3");
+//    							req.setAttribute(MainCount+"MilestoneActivityC"+countA+countB, MilestoneActivityC);
+//    							int countC=1;
+//    							for(Object[] obj2:MilestoneActivityC) {
+//    								List<Object[]>  MilestoneActivityD=milservice.MilestoneActivityLevel(obj2[0].toString(),"4");
+//    								req.setAttribute(MainCount+"MilestoneActivityD"+countA+countB+countC, MilestoneActivityD);
+//    								int countD=1;
+//    								for(Object[] obj3:MilestoneActivityD) {
+//    									List<Object[]>  MilestoneActivityE=milservice.MilestoneActivityLevel(obj3[0].toString(),"5");
+//    									req.setAttribute(MainCount+"MilestoneActivityE"+countA+countB+countC+countD, MilestoneActivityE);
+//    									countD++;
+//    								}
+//    								countC++;
+//    							}
+//    							countB++;
+//    						}
+//    						countA++;
+//    					}
+//    					MainCount++;
+//    				}
+//    			}
+//
+//    			return 1;
+//    		}
+//    		catch (Exception e) {
+//    			e.printStackTrace(); 
+//    			logger.error(new Date() +" Inside ProjectBriefingPaper.htm (Milestone ActivityLogic) "+UserId, e); 
+//    			return 0;
+//    		}
+//    		
+//			}	
+//			catch (Exception e) {
+//    			e.printStackTrace(); 
+//    			logger.error(new Date() +" Inside ProjectBriefingPaper.htm (Milestone ActivityLogic) ", e); 
+//    			return 0;
+//    		}
+//    		
+//    		
+//    		
+//		
+//	}
 	
 	@RequestMapping(value="ProjectBriefingPaper.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String ProjectBriefingPaper(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res)	throws Exception 
@@ -2912,47 +2676,460 @@ public class PrintController {
 		logger.info(new Date() +"Inside ProjectBriefingPaper.htm "+UserId);		
 		try
 		{
-			int flag = setBriefingDataToResponse(model, req, ses, redir, res);
-		
+			int flag = setBriefingDataToResponseOpt(model, req, ses, redir, res);
+
 			if(flag==0) 
-	        {				
+			{				
 				redir.addAttribute("resultfail", "No Project is Assigned to you.");
 				return "redirect:/MainDashBoard.htm";
 			}
 			req.setAttribute("IsIbasConnected", IsIbasConnected);
 			return "print/ProjectBriefingPaperNew";
 		}
-	    catch(Exception e) {	    		
-    		logger.error(new Date() +" Inside ProjectBriefing.htm "+UserId, e);
-    		e.printStackTrace();
-    		return "static/Error";
-    	}		
+		catch(Exception e) {	    		
+			logger.error(new Date() +" Inside ProjectBriefing.htm "+UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		}		
 	}
+	
+//	@RequestMapping(value="BriefingPresentation.htm", method = {RequestMethod.GET,RequestMethod.POST})
+//	public String BriefingPresentation(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res)	throws Exception 
+//	{
+//		String UserId = (String) ses.getAttribute("Username");
+//		logger.info(new Date() +"Inside BriefingPresentation.htm "+UserId);		
+//		try
+//		{
+//			int flag = setBriefingDataToResponse(model, req, ses, redir, res);
+//			int milFlag = setMilestoneDetailsToResponse(model, req, ses, redir, res);
+//			if(flag==0) 
+//			{		
+//
+//				redir.addAttribute("cc", "No Project is Assigned to you.");
+//				return "redirect:/MainDashBoard.htm";
+//			}  
+//			req.setAttribute("IsIbasConnected", IsIbasConnected);
+//			return "print/BriefingPresentation";
+//		}
+//		catch(Exception e) {	    		
+//			logger.error(new Date() +" Inside BriefingPresentation.htm "+UserId, e);
+//			e.printStackTrace();
+//			return "static/Error";
+//
+//		}		
+//	}
+	
+	/* ******************************* Briefing Paper Presentation New Changes ************************ */
 	@RequestMapping(value="BriefingPresentation.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String BriefingPresentation(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res)	throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside BriefingPresentation.htm "+UserId);		
+		logger.info(new Date() +"Inside BriefingPresentationOpt.htm "+UserId);		
 		try
 		{
-			int flag = setBriefingDataToResponse(model, req, ses, redir, res);
-			int milFlag = setMilestoneDetailsToResponse(model, req, ses, redir, res);
+			// Run both tasks in parallel
+			CompletableFuture<Integer> flagFuture = CompletableFuture.supplyAsync(() ->
+			setBriefingDataToResponseOpt(model, req, ses, redir, res)
+					);
+
+			CompletableFuture<Integer> milFlagFuture = CompletableFuture.supplyAsync(() ->
+			setMilestoneDetailsToResponse(model, req, ses, redir, res)
+					);
+
+			// Wait for both to finish
+			CompletableFuture.allOf(flagFuture, milFlagFuture).join();
+
+			int flag = flagFuture.get();
+			int milFlag = milFlagFuture.get();
+
 			if(flag==0) 
-	        {				
+			{		
+
 				redir.addAttribute("cc", "No Project is Assigned to you.");
 				return "redirect:/MainDashBoard.htm";
 			}  
-			req.setAttribute("IsIbasConnected", IsIbasConnected);
+
 			return "print/BriefingPresentation";
 		}
-	    catch(Exception e) {	    		
-    		logger.error(new Date() +" Inside BriefingPresentation.htm "+UserId, e);
-    		e.printStackTrace();
-    		return "static/Error";
+		catch(Exception e) {	    		
+			logger.error(new Date() +" Inside BriefingPresentationOpt.htm "+UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+
+		}		
+	}
 	
-    	}		
+	private int setBriefingDataToResponseOpt(Model model, HttpServletRequest req, HttpSession ses, RedirectAttributes redir, HttpServletResponse res) {
+		
+		try {
+			String UserId = (String) ses.getAttribute("Username");
+			String LabCode = (String)ses.getAttribute("labcode");
+			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			String Logintype= (String)ses.getAttribute("LoginType");
+			
+			String projectid=req.getParameter("projectid");
+			String committeeid = req.getParameter("committeeid");
+
+			List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+			List<Object[]> SpecialCommitteesList =  service.SpecialCommitteesList(LabCode);
+
+			if (projectslist.isEmpty()) {
+			    if (projectid == null) {
+			        return 0;
+			    } else {
+			        projectslist.addAll(service.ProjectDetails(projectid));
+			    }
+			}
+
+			if (projectid == null && !projectslist.isEmpty()) {
+			    projectid = projectslist.get(0)[0].toString();
+			}
+
+			if(committeeid==null || (committeeid!=null && Long.parseLong(committeeid)==0)) {
+				committeeid = SpecialCommitteesList!=null && SpecialCommitteesList.size()>0 ? SpecialCommitteesList.get(0)[0].toString(): "0";
+			}
+	
+			Committee committee = service.getCommitteeData(committeeid);
+			List<Object[]> projectDetails2 = service.ProjectDetails(projectid);
+			String projectLabCode = projectDetails2.get(0)[5].toString();
+			
+	    	req.setAttribute("committeeData", committee);
+			req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, committee.getCommitteeShortName().trim()) );
+			
+			processProjectData(req, projectid, committeeid, uri, projectLabCode, UserId, IsIbasConnected);
+	    	
+			Map<String, List<Object[]>> reviewMeetingListMap = new HashMap<String, List<Object[]>>();
+			for(Object[] obj : SpecialCommitteesList) {
+				reviewMeetingListMap.put(obj[1]+"", service.ReviewMeetingList(projectid, obj[1]+""));
+			}
+			req.setAttribute("reviewMeetingListMap", reviewMeetingListMap);
+			
+			milestoneLevelDataMap(req, reviewMeetingListMap, projectid, committee.getCommitteeShortName().trim());
+			
+			Object[] nextmeetVenue = (Object[])service.BriefingMeetingVenue(projectid, committeeid);
+	    	req.setAttribute("nextMeetVenue", nextmeetVenue);
+	    	req.setAttribute("projectslist", projectslist);
+	    	req.setAttribute("SpecialCommitteesList",SpecialCommitteesList);
+	    	req.setAttribute("otherMeetingList", service.otherMeetingList(projectid));
+	    	if(nextmeetVenue!=null && nextmeetVenue[0]!=null) {
+	    		req.setAttribute("recdecDetails", service.GetRecDecDetails(nextmeetVenue[0].toString()));
+	    	}
+	    	req.setAttribute("RiskTypes", service.RiskTypes());
+	    	
+	    	req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
+    		req.setAttribute("projectLabCode",projectLabCode);
+	    	req.setAttribute("labInfo", service.LabDetailes(projectLabCode));
+	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(projectLabCode));
+	    	req.setAttribute("Drdologo", LogoUtil.getDRDOLogoAsBase64String());
+	    	req.setAttribute("thankYouImg", LogoUtil.getThankYouImageAsBase64String());
+    		req.setAttribute("projectid", projectid);
+    		req.setAttribute("committeeid", committeeid);
+    		req.setAttribute("ProjectCost",ProjectCost);
+    		req.setAttribute("isCCS",projectDetails2.get(0)[6].toString());
+    		req.setAttribute("IsIbasConnected", IsIbasConnected);
+    		
+    		milestoneLevelListforBP(req, projectslist, projectid, committeeid);
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	public int processProjectData(HttpServletRequest req, String projectid, String committeeid, String uri, String LabCode, String UserId, String IsIbasConnected) throws Exception{
+	    List<Object[]> projectattributes = new ArrayList<>();
+	    List<List<Object[]>> ebandpmrccount = new ArrayList<>();
+	    List<List<Object[]>> milestonesubsystemsnew = new ArrayList<>();
+	    List<List<Object[]>> milestones = new ArrayList<>();
+	    List<List<Object[]>> lastpmrcactions = new ArrayList<>();
+	    List<List<Object[]>> lastpmrcminsactlist = new ArrayList<>();
+	    List<Object[]> ProjectDetails = new ArrayList<>();
+	    List<List<Object[]>> ganttchartlist = new ArrayList<>();
+	    List<List<Object[]>> oldpmrcissueslist = new ArrayList<>();
+	    List<List<Object[]>> riskmatirxdata = new ArrayList<>();
+	    List<List<Object[]>> actionplanthreemonths = new ArrayList<>();
+	    List<Object[]> projectdatadetails = new ArrayList<>();
+	    List<List<ProjectFinancialDetails>> financialDetails = new ArrayList<>();
+	    List<List<Object[]>> procurementOnDemandlist = new ArrayList<>();
+	    List<List<Object[]>> procurementOnSanctionlist = new ArrayList<>();
+	    List<Object[]> pdffiles = new ArrayList<>();
+	    List<Object[]> TechWorkDataList = new ArrayList<>();
+	    List<List<Object[]>> ProjectRevList = new ArrayList<>();
+	    List<List<TechImages>> TechImages = new ArrayList<>();
+	    List<List<Object[]>> overallfinance = new ArrayList<>();
+
+	    try {
+
+	    	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
+
+	    	for (String proid : Pmainlist) {
+	    		Object[] projectattribute = service.ProjectAttributes(proid);
+	    		projectattributes.add(projectattribute);
+	    		TechImages.add(service.getTechList(proid));
+	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
+	    		milestones.add(service.Milestones(proid, committeeid));
+	    		lastpmrcactions.add(service.LastPMRCActions(proid, committeeid));
+	    		lastpmrcminsactlist.add(service.LastPMRCActions1(proid, committeeid));
+	    		List<Object[]> projDetails = service.ProjectDetails(proid);
+	    		ProjectDetails.add(!projDetails.isEmpty() ? projDetails.get(0) : new Object[0]);
+	    		ganttchartlist.add(service.GanttChartList(proid));
+	    		oldpmrcissueslist.add(service.OldPMRCIssuesList(proid));
+	    		riskmatirxdata.add(service.RiskMatirxData(proid));
+	    		actionplanthreemonths.add(service.ActionPlanSixMonths(proid, committeeid));
+	    		TechWorkDataList.add(service.TechWorkData(proid));
+	    		ProjectRevList.add(service.ProjectRevList(proid));
+	    		milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid, committeeid));
+
+	    		Object[] prodetails = service.ProjectDataDetails(proid);
+	    		projectdatadetails.add(prodetails);
+	    		
+	    		if(prodetails!=null) {
+		    		String[] pdfs = new String[4];
+		    		String basePath = env.getProperty("ApplicationFilesDrive") + prodetails[2] + File.separator;
+		    		pdfs[0] = encodeFile(basePath, prodetails[3]);
+		    		pdfs[1] = encodeFile(basePath, prodetails[5]);
+		    		pdfs[2] = encodeFile(basePath, prodetails[6]);
+		    		pdfs[3] = encodeFile(basePath, prodetails[4]);
+		    		pdffiles.add(pdfs);
+	    		}
+	    		req.setAttribute("envisagedDemandlist", service.getEnvisagedDemandList(projectid));
+
+	    		List<ProjectFinancialDetails> projectDetails = fetchFromApi(
+	    				uri + "/pfms_serv/financialStatusBriefing?ProjectCode=" + projectattribute[0] + "&rupess=10000000",
+	    				LabCode,
+	    				new TypeReference<List<ProjectFinancialDetails>>() {}
+	    				);
+	    		financialDetails.add(projectDetails);
+
+	    		if ("N".equalsIgnoreCase(IsIbasConnected)) {
+	    			overallfinance.add(service.getrOverallFinance(proid));
+	    		}
+
+	    		List<TotalDemand> totaldemand = fetchFromApi(
+	    				uri + "/pfms_serv/getTotalDemand",
+	    				LabCode,
+	    				new TypeReference<List<TotalDemand>>() {}
+	    				);
+	    		req.setAttribute("TotalProcurementDetails", totaldemand);
+
+	    		List<Object[]> procurementStatusList = service.ProcurementStatusList(proid);
+	    		if (procurementStatusList != null) {
+	    			Map<String, List<Object[]>> map = procurementStatusList.stream()
+	    					.filter(c -> c != null && c.length > 9)
+	    					.collect(Collectors.groupingBy(c -> String.valueOf(c[9])));
+
+	    			List<Object[]> onDemand = map.getOrDefault("D", new ArrayList<>());
+	    			List<Object[]> onSanction = map.getOrDefault("S", new ArrayList<>());
+
+	    			procurementOnDemandlist.add(onDemand);
+	    			procurementOnSanctionlist.add(onSanction);
+
+	    			req.setAttribute("procurementOnDemand", onDemand);
+	    			req.setAttribute("procurementOnSanction", onSanction);
+	    		}
+	    	}
+
+	    	req.setAttribute("projectattributes", projectattributes);
+	    	req.setAttribute("ebandpmrccount", ebandpmrccount);
+	    	req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
+	    	req.setAttribute("milestones", milestones);	 
+	    	req.setAttribute("lastpmrcactions", lastpmrcactions);
+	    	req.setAttribute("lastpmrcminsactlist", lastpmrcminsactlist);
+	    	req.setAttribute("ProjectDetails", ProjectDetails);
+	    	req.setAttribute("ganttchartlist", ganttchartlist );
+	    	req.setAttribute("oldpmrcissueslist",oldpmrcissueslist);
+	    	req.setAttribute("riskmatirxdata",riskmatirxdata);	    		
+	    	req.setAttribute("actionplanthreemonths" , actionplanthreemonths); 
+	    	req.setAttribute("projectdatadetails",projectdatadetails);
+	    	req.setAttribute("financialDetails",financialDetails);
+	    	req.setAttribute("procurementOnDemandlist",procurementOnDemandlist);
+	    	req.setAttribute("procurementOnSanctionlist",procurementOnSanctionlist);
+	    	req.setAttribute("pdffiles",pdffiles);
+	    	req.setAttribute("TechWorkDataList",TechWorkDataList);
+	    	req.setAttribute("ProjectRevList", ProjectRevList);
+	    	req.setAttribute("TechImages", TechImages);   
+	    	req.setAttribute("overallfinance", overallfinance);
+	    	req.setAttribute("projectidlist", Pmainlist);
+
+	    	return 1;
+	    }catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	    
+	}
+	
+	private String encodeFile(String basePath, Object filename) {
+	    if (filename == null) return null;
+	    try {
+	        Path path = Paths.get(basePath + filename);
+	        if (Files.exists(path)) {
+	            return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(path.toFile()));
+	        }
+	    } catch (Exception e) {
+	        logger.error("Error encoding file: " + filename, e);
+	    }
+	    return null;
 	}
 
+	private <T> List<T> fetchFromApi(String url, String labCode, TypeReference<List<T>> typeRef) {
+	    try {
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+	        headers.set("labcode", labCode);
+	        HttpEntity<String> entity = new HttpEntity<>(headers);
+	        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
+	        String json = response.getBody();
+	        if (json != null) {
+	            ObjectMapper mapper = new ObjectMapper();
+	            mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+	            mapper.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
+	            return mapper.readValue(json, typeRef);
+	        }
+	    } catch (Exception e) {
+	        logger.error("Error fetching from API: " + url, e);
+	    }
+	    return Collections.emptyList();
+	}
+	
+	private int milestoneLevelDataMap(HttpServletRequest req, Map<String, List<Object[]>> reviewMeetingListMap, String projectid, String committeCode) {
+		try {
+			Map<Integer, String> committeeWiseMap = new HashMap<>();
+
+			List<Object[]> meetingList = reviewMeetingListMap.get(committeCode);
+
+			IntStream.range(0, meetingList.size()).forEach(i -> committeeWiseMap.put(i + 1, String.valueOf(meetingList.get(i)[3])));
+
+			// Milestone Mapping
+			List<Object[]> totalMilestones = service.totalProjectMilestones(projectid);
+
+			Map<Integer, String> levelOneMap = new TreeMap<>();
+			Map<Integer, String> levelTwoMap = new TreeMap<>();
+			Map<Integer, String> levelThreeMap = new TreeMap<>();
+
+			if (!totalMilestones.isEmpty()) {
+
+			    // Group milestones by Level (26th index) and Parent ID (indexes: 2 for Level 2, 3 for Level 3)
+			    Map<String, List<Object[]>> levelGroup = totalMilestones.stream()
+			            .collect(Collectors.groupingBy(row -> row[26].toString()));
+
+			    Set<Integer> allMilestoneIds = totalMilestones.stream()
+			            .map(row -> Integer.parseInt(row[0].toString()))
+			            .collect(Collectors.toCollection(TreeSet::new));
+
+			    // LEVEL 1
+			    for (Integer milestoneId : allMilestoneIds) {
+			        List<Object[]> levelOne = levelGroup.getOrDefault("1", Collections.emptyList()).stream()
+			                .filter(row -> row[22].toString().equals(String.valueOf(milestoneId)))
+			                .collect(Collectors.toList());
+
+			        int count = 1;
+			        for (Object[] row : levelOne) {
+			            levelOneMap.put(Integer.parseInt(row[2].toString()), "A" + (count++));
+			        }
+			    }
+
+			    // LEVEL 2
+			    for (Map.Entry<Integer, String> entry : levelOneMap.entrySet()) {
+			        int parentId = entry.getKey();
+			        String parentLabel = entry.getValue();
+
+			        List<Object[]> levelTwo = levelGroup.getOrDefault("2", Collections.emptyList()).stream()
+			                .filter(row -> row[2].toString().equals(String.valueOf(parentId)))
+			                .collect(Collectors.toList());
+
+			        int count = 1;
+			        for (Object[] row : levelTwo) {
+			            levelTwoMap.put(Integer.parseInt(row[3].toString()), parentLabel + "-B" + (count++));
+			        }
+			    }
+
+			    // LEVEL 3
+			    for (Map.Entry<Integer, String> entry : levelTwoMap.entrySet()) {
+			        int parentId = entry.getKey();
+
+			        List<Object[]> levelThree = levelGroup.getOrDefault("3", Collections.emptyList()).stream()
+			                .filter(row -> row[3].toString().equals(String.valueOf(parentId)))
+			                .collect(Collectors.toList());
+
+			        int count = 1;
+			        for (Object[] row : levelThree) {
+			            levelThreeMap.put(Integer.parseInt(row[4].toString()), "C" + (count++));
+			        }
+			    }
+			}
+			req.setAttribute("treeMapLevOne", levelOneMap);
+			req.setAttribute("treeMapLevTwo", levelTwoMap);
+			req.setAttribute("committeeWiseMap", committeeWiseMap);
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	private int milestoneLevelListforBP(HttpServletRequest req, List<Object[]> projectslist, String projectid, String committeeid) throws Exception {
+
+		Object[] mileStoneLevelId = service.MileStoneLevelId(projectid,committeeid);  		
+		req.setAttribute("levelid", mileStoneLevelId!=null?mileStoneLevelId[0].toString():"2");
+		try {
+	        if(projectid==null) {
+	        	try {
+	        		Object[] pro=projectslist.get(0);
+	        		projectid=pro[0].toString();
+	        	}catch (Exception e) {
+					
+				}
+	           
+	        }
+	        List<Object[]> main=milservice.MilestoneActivityList(projectid);
+	            	        
+			req.setAttribute("MilestoneActivityList",main );
+			req.setAttribute("ProjectList",projectslist);
+			req.setAttribute("ProjectId", projectid);
+			if(projectid!=null) {
+				req.setAttribute("ProjectDetailsMil", milservice.ProjectDetails(projectid).get(0));
+				int MainCount=1;
+				for(Object[] objmain:main ) {
+				 int countA=1;
+					List<Object[]> MilestoneActivityA = milservice.MilestoneActivityLevel(objmain[0].toString(),"1"); /* CALL Pfms_Milestone_Level_List(:id,:levelid) */
+					req.setAttribute(MainCount+"MilestoneActivityA", MilestoneActivityA);
+					for(Object[] obj:MilestoneActivityA) {
+						List<Object[]>  MilestoneActivityB=milservice.MilestoneActivityLevel(obj[0].toString(),"2");
+						req.setAttribute(MainCount+"MilestoneActivityB"+countA, MilestoneActivityB);
+						int countB=1;
+						for(Object[] obj1:MilestoneActivityB) {
+							List<Object[]>  MilestoneActivityC=milservice.MilestoneActivityLevel(obj1[0].toString(),"3");
+							req.setAttribute(MainCount+"MilestoneActivityC"+countA+countB, MilestoneActivityC);
+							int countC=1;
+							for(Object[] obj2:MilestoneActivityC) {
+								List<Object[]>  MilestoneActivityD=milservice.MilestoneActivityLevel(obj2[0].toString(),"4");
+								req.setAttribute(MainCount+"MilestoneActivityD"+countA+countB+countC, MilestoneActivityD);
+								int countD=1;
+								for(Object[] obj3:MilestoneActivityD) {
+									List<Object[]>  MilestoneActivityE=milservice.MilestoneActivityLevel(obj3[0].toString(),"5");
+									req.setAttribute(MainCount+"MilestoneActivityE"+countA+countB+countC+countD, MilestoneActivityE);
+									countD++;
+								}
+								countC++;
+							}
+							countB++;
+						}
+						countA++;
+					}
+					MainCount++;
+				}
+			}
+
+			return 1;
+		}
+		catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside ProjectBriefingPaper.htm (Milestone ActivityLogic) "+ e); 
+			return 0;
+		}
+	}
+	/* ******************************* Briefing Paper Presentation New Changes ************************ */
 	
 	private int setMilestoneDetailsToResponse(Model model, HttpServletRequest req, HttpSession ses,
 			RedirectAttributes redir, HttpServletResponse res) {
@@ -3830,7 +4007,8 @@ public class PrintController {
 				req.setAttribute("AgendaDocList",service.AgendaLinkedDocList(scheduleid));
 				req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
 				req.setAttribute("scheduledata", scheduledata);
-				req.setAttribute("SplCommitteeCodes",SplCommitteeCodes);
+				List<Object[]> specialCommitteesList = service.SpecialCommitteesList(projectLabCode);
+				req.setAttribute("SplCommitteeCodes", specialCommitteesList.stream().map(e -> e[1].toString()).collect(Collectors.toList()));
 				req.setAttribute("recommendationList",recommendationList);
 
 				req.setAttribute("projectid", projectid);

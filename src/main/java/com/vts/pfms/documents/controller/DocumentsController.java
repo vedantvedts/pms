@@ -1712,6 +1712,7 @@ public class DocumentsController {
 			IGILogicalInterfaces logicalInterface = logicalInterfaceId.equalsIgnoreCase("0")? new IGILogicalInterfaces(): service.getIGILogicalInterfaceById(logicalInterfaceId);
 
 			logicalInterface.setMsgType(req.getParameter("msgType"));
+			logicalInterface.setMsgName(req.getParameter("msgName"));
 			logicalInterface.setLogicalChannelId(logicalChannel!=null?Long.parseLong(logicalChannel[0]):0L);
 			logicalInterface.setDataRate(req.getParameter("dataRate"));
 			logicalInterface.setMsgDescription(req.getParameter("msgDescription"));
@@ -1728,12 +1729,12 @@ public class DocumentsController {
 				String channelCode = logicalChannel!=null?logicalChannel[1]:"-";
 				
 				logicalInterface.setMsgCode(channelCode + "_" + logicalInterface.getMsgType().substring(0,3).toUpperCase() + "_" + seqCount );
-				logicalInterface.setMsgName(logicalInterface.getMsgType().substring(0,3)+" "+req.getParameter("msgName"));
+				//String msgTypeCode = logicalInterface.getMsgType().equalsIgnoreCase("Command")?"Cmd": logicalInterface.getMsgType().substring(0,3);
+				//logicalInterface.setMsgName(msgTypeCode+req.getParameter("msgName"));
 				logicalInterface.setCreatedBy(UserId);
 				logicalInterface.setCreatedDate(sdtf.format(new Date()));
 				logicalInterface.setIsActive(1);
 			}else {
-				logicalInterface.setMsgName(req.getParameter("msgName"));
 				logicalInterface.setModifiedBy(UserId);
 				logicalInterface.setModifiedDate(sdtf.format(new Date()));
 				

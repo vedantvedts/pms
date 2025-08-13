@@ -339,6 +339,7 @@ public class MasterDaoImpl implements MasterDao {
 		try {
 			dvEmp.setModifiedBy(dto.getModifiedBy());
 			dvEmp.setModifiedDate(dto.getModifiedDate());
+			dvEmp.setIsActive(0);
 			return 1;
 		} catch (Exception e) {
 			e.printStackTrace();

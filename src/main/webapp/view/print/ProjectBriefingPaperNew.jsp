@@ -24,7 +24,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.time.LocalDate"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-   
 <!DOCTYPE html>
 <html>
 <head>
@@ -402,14 +401,7 @@ ul, #myUL {
 }
 
 </style>
-
-
-
-
-
-
 <meta charset="ISO-8859-1">
-
 </head>
 <body >
 <%
@@ -417,7 +409,6 @@ DecimalFormat df=new DecimalFormat("####################.##");
 FormatConverter fc=new FormatConverter(); 
 SimpleDateFormat sdf=fc.getRegularDateFormat();
 SimpleDateFormat sdf1=fc.getSqlDateFormat();
-
 
 int addcount=0; 
 NFormatConvertion nfc=new NFormatConvertion();
@@ -431,7 +422,6 @@ Committee committee=(Committee)request.getAttribute("committeeData");
 
 List<Object[]> projectattributeslist = (List<Object[]> )request.getAttribute("projectattributes");
 List<List<Object[]>> ebandpmrccount = (List<List<Object[]>> )request.getAttribute("ebandpmrccount");
-List<List<Object[]>> milestonesubsystems= (List<List<Object[]>>)request.getAttribute("milestonesubsystems");
 List<List<Object[]>> milestones= (List<List<Object[]>>)request.getAttribute("milestones");
 List<List<Object[]>> lastpmrcactions = (List<List<Object[]>>)request.getAttribute("lastpmrcactions");
 List<List<Object[]>> lastpmrcminsactlist = (List<List<Object[]>>)request.getAttribute("lastpmrcminsactlist");
@@ -443,7 +433,6 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 List<List<Object[]>> procurementOnDemand = (List<List<Object[]>>)request.getAttribute("procurementOnDemandlist");
 List<List<Object[]>> procurementOnSanction = (List<List<Object[]>>)request.getAttribute("procurementOnSanctionlist");
 List<List<Object[]>> riskmatirxdata = (List<List<Object[]>>)request.getAttribute("riskmatirxdata");
-List<Object[]> lastpmrcdecisions = (List<Object[]>)request.getAttribute("lastpmrcdecisions");
 List<List<Object[]>> actionplanthreemonths = (List<List<Object[]>>)request.getAttribute("actionplanthreemonths");
 List<Object[]> TechWorkDataList=(List<Object[]>)request.getAttribute("TechWorkDataList");
 List<Object[]> ProjectDetail=(List<Object[]>)request.getAttribute("ProjectDetails"); 
@@ -453,30 +442,29 @@ List<Object[]> milestoneactivitystatus =(List<Object[]>)request.getAttribute("mi
 List<Object[]> MilestoneList=(List<Object[]>)request.getAttribute("MilestoneActivityList");
 String ProjectId=(String)request.getAttribute("projectid");
 List<TotalDemand> totalprocurementdetails = (List<TotalDemand>)request.getAttribute("TotalProcurementDetails");
-List<List<Object[]>> ReviewMeetingList=(List<List<Object[]>>)request.getAttribute("ReviewMeetingList");
-List<List<Object[]>> ReviewMeetingListPMRC=(List<List<Object[]>>)request.getAttribute("ReviewMeetingListPMRC");
-
+//List<List<Object[]>> ReviewMeetingList=(List<List<Object[]>>)request.getAttribute("ReviewMeetingList");
+//List<List<Object[]>> ReviewMeetingListPMRC=(List<List<Object[]>>)request.getAttribute("ReviewMeetingListPMRC");
+Map<String, List<Object[]>> reviewMeetingListMap = (Map<String, List<Object[]>>) request.getAttribute("reviewMeetingListMap");
 List<List<Object[]>> ProjectRevList = (List<List<Object[]>>)request.getAttribute("ProjectRevList");
 List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttribute("milestonedatalevel6");//b
 List<List<TechImages>> TechImages = (List<List<TechImages>>)request.getAttribute("TechImages");
 
 List<Object[]> SpecialCommitteesList = (List<Object[]>)request.getAttribute("SpecialCommitteesList");
 
-LocalDate before6months = LocalDate.now().minusMonths(6);
 
-Committee committeeData=(Committee)request.getAttribute("committeeData");
 long ProjectCost = (long)request.getAttribute("ProjectCost"); 
 String levelid= (String) request.getAttribute("levelid");
-
+LocalDate before6months = LocalDate.now().minusDays(committee.getPeriodicDuration());
 String No2=null;
 SimpleDateFormat sdfg=new SimpleDateFormat("yyyy");
-if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ 
-	before6months = LocalDate.now().minusMonths(3);
-	No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
-}else if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")){
-	before6months = LocalDate.now().minusMonths(6);
-	No2="E"+(Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1);
-} 
+
+if(ebandpmrccount!=null && ebandpmrccount.size()>0){
+	List<Object[]> ebandpmrcsub = ebandpmrccount.get(0);
+	Object[] comcount = ebandpmrcsub.stream().filter(e -> e[0].toString().equalsIgnoreCase(committee.getCommitteeShortName())).findFirst().orElse(null);
+	No2=committee.getCommitteeShortName()+(Long.parseLong(comcount!=null? comcount[1].toString() : "0")+1);
+	
+}
+
 
 Object[] nextMeetVenue =  (Object[]) request.getAttribute("nextMeetVenue");
 List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetails");
@@ -488,37 +476,33 @@ Map<Integer,String> treeMapLevTwo =(Map<Integer,String>)request.getAttribute("tr
 List<Object[]> envisagedDemandlist = (List<Object[]>)request.getAttribute("envisagedDemandlist");
 SimpleDateFormat inputFormat = new SimpleDateFormat("ddMMMyyyy");
 SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
-Map<Integer,String> mappmrc=(Map<Integer,String>)request.getAttribute("mappmrc");
-Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
+Map<Integer,String> committeeWiseMap=(Map<Integer,String>)request.getAttribute("committeeWiseMap");
+//Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 
 List<Object[]> otherMeetingList = (List<Object[]>)request.getAttribute("otherMeetingList");
 List<List<Object[]>> overallfinance = (List<List<Object[]>>)request.getAttribute("overallfinance");//b
 String thankYouImg = (String)request.getAttribute("thankYouImg");
 String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
+String isCCS = (String)request.getAttribute("isCCS");
 %>
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	
-	<div align="center">
-	
-		<div class="alert alert-danger" role="alert">
-	       <%=ses1 %>
-	    </div>
-	</div>
-		<%}if(ses!=null){ %>
-		<div align="center">
-		<div class="alert alert-success" role="alert" >
-	                     <%=ses %>
+	<% String ses = (String) request.getParameter("result"); 
+       String ses1 = (String) request.getParameter("resultfail");
+       if (ses1 != null) { %>
+        <div align="center">
+            <div class="alert alert-danger" role="alert">
+                <%= ses1 %>
+            </div>
         </div>
-            
-    </div>
-<%} %>
- <div id="spinner" class="spinner" style="display:none;">
-                <img id="img-spinner" style="width: 200px;height: 200px;" src="view/images/spinner1.gif" alt="Loading"/>
-                </div>
-<div class="container-fluid">
+    <% } if (ses != null) { %>
+        <div align="center">
+            <div class="alert alert-success" role="alert">
+                <%= ses %>
+            </div>
+        </div>
+ 	<% } %>
+	<div id="spinner" class="spinner" style="display:none;"><img id="img-spinner" style="width: 200px;height: 200px;" src="view/images/spinner1.gif" alt="Loading"/></div>
+ 
+	<div class="container-fluid">
 		<div class="row" id="main">
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
@@ -537,30 +521,23 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 											<%for(Object[] obj : projectslist){ 
 												String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
 											%>
-												<option <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value=<%=obj[0]%> ><%=obj[4] +projectshortName%></option>
+												<option value=<%=obj[0]%> <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %> ><%=obj[4] +projectshortName%></option>
 											<%} %>
 										</select>
 									</td>
 									<td  style="border: 0;padding-top: 13px; "><h6>Committee</h6></td>
 									<td  style="border: 0 ">
-										
 										<select class="form-control items" name="committeeid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
-											
-											<%for(Object[] comm : SpecialCommitteesList){ %>
-												<%if((Double.parseDouble(projectattributeslist.get(0)[7].toString())*100000)>500 && !comm[1].toString().equalsIgnoreCase("PMRC")){ %>
-													
+											<%
+											for(Object[] comm : SpecialCommitteesList){ %>
+												<%-- <%if((Double.parseDouble(projectattributeslist.get(0)[7].toString())*100000)>500 && !comm[1].toString().equalsIgnoreCase("PMRC")){ %>
 													<option <%if(Long.parseLong(committeeid)==Long.parseLong(comm[0].toString())){ %>selected<%} %> value="<%=comm[0] %>" ><%=comm[1] %></option>
-													
 												<%}else if(comm[1].toString().equalsIgnoreCase("PMRC")){ %>
-													
 													<option <%if(Long.parseLong(committeeid)==Long.parseLong(comm[0].toString())){ %>selected<%} %> value="<%=comm[0] %>" ><%=comm[1] %></option>
-														
-												<%} %>
-												
+												<%} %> --%>
+												<option <%if(committeeid.equalsIgnoreCase(comm[0].toString())){ %>selected<%} %> value="<%=comm[0] %>" ><%=comm[1] %></option>
 											<%} %>
-												
 										</select>
-										
 									</td>
 									
 									<td style="border: 0 "> 
@@ -733,10 +710,15 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 																			 	
 										<tr>
 											<td  style="width: 20px; padding: 5px; padding-left: 10px">(j)</td>
-											<td style="width: 150px;padding: 5px; padding-left: 10px"><b>No. of EBs and PMRCs held</b> </td>
-								 			<td colspan="2" ><b>EB :</b> <%=ebandpmrccount.get(z).get(1)[1] %></td>
-								 			<td colspan="2"><b>PMRC :</b> <%=ebandpmrccount.get(z).get(0)[1] %></td>
-								 			
+											<td style="width: 150px;padding: 5px; padding-left: 10px"><b>No. of Meetings held</b> </td>
+											<td colspan="4">
+												<% if(ebandpmrccount!=null && ebandpmrccount.size()>0){
+													List<Object[]> ebandpmrcsub = ebandpmrccount.get(z); 
+													for(Object[] ebandpmrc: ebandpmrcsub) { %>
+												 	<b><%=ebandpmrc[0] %> : </b>
+													<span><%=ebandpmrc[1] %></span> &emsp;&emsp;
+												<%} }%>
+											</td>
 										</tr>
 										<tr>
 											<td  style="width: 20px; padding: 5px; padding-left: 10px">(k)</td>
@@ -967,23 +949,12 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 								
 									
 			 						<span style="font-weight: bold;">	
-								<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("pmrc")){ %>
-								<%for (Map.Entry<Integer, String> entry : mappmrc.entrySet()) {
+								<%for (Map.Entry<Integer, String> entry : committeeWiseMap.entrySet()) {
 									Date date = inputFormat.parse(obj[5].toString().split("/")[3]);
 									 String formattedDate = outputFormat.format(date);
 									 if(entry.getValue().equalsIgnoreCase(formattedDate)){
 										 key2=entry.getKey().toString();
-									 } }}else{%>
-									 <%
-									 for (Map.Entry<Integer, String> entry : mapEB.entrySet()) {
-											Date date = inputFormat.parse(obj[5].toString().split("/")[3]);
-											 String formattedDate = outputFormat.format(date);
-											 if(entry.getValue().equalsIgnoreCase(formattedDate)){
-												 key2=entry.getKey().toString();
-											 }
-									 }
-									 %>
-									 <%} %>
+									 } }%>
 								
 								<%=committee.getCommitteeShortName().trim().toUpperCase()+"-"+key2+"/"+obj[5].toString().split("/")[4] %>
 								
@@ -1105,23 +1076,13 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 									<td>
 										<%if(obj[17]!=null && Long.parseLong(obj[17].toString())>0){ %>
 								<span style="font-weight: bold">
-								<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("pmrc")){ %>
-								<%for (Map.Entry<Integer, String> entry : mappmrc.entrySet()) {
+								<%for (Map.Entry<Integer, String> entry : committeeWiseMap.entrySet()) {
+									String actionNo = obj[1].toString();
 									Date date = inputFormat.parse(obj[1].toString().split("/")[3]);
 									 String formattedDate = outputFormat.format(date);
 									 if(entry.getValue().equalsIgnoreCase(formattedDate)){
 										 key=entry.getKey().toString();
-									 } }}else{%>
-									 <%
-									 for (Map.Entry<Integer, String> entry : mapEB.entrySet()) {
-											Date date = inputFormat.parse(obj[1].toString().split("/")[3]);
-											 String formattedDate = outputFormat.format(date);
-											 if(entry.getValue().equalsIgnoreCase(formattedDate)){
-												 key=entry.getKey().toString();
-											 }
-									 }
-									 %>
-									 <%} %>
+									 } }%>
 								
 								<%=committee.getCommitteeShortName().trim().toUpperCase()+"-"+key+"/"+obj[1].toString().split("/")[4] %>
 								</span> 
@@ -1194,131 +1155,56 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 			<div align="left" style="margin-left: 15px;">(c) Details of Technical/ User Reviews (if any).</div>
 						
 							
-						<div align="center" style="width:990px">
+						<div align="center" style="width:1100px">
 
 							<form action="CommitteeMinutesNewDownload.htm" method="get" target="_blank">
-									
-								<div align="center" style="width:990px">
-									<div align="center" style="margin-left:25px;max-width:300px;float:left;">
-										<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 300px; border-collapse: collapse; float: left;">
+							<div class="row">
+							<%for(Map.Entry<String, List<Object[]>> entry : reviewMeetingListMap.entrySet()) { 
+								if(entry.getValue().size()>0) { %>
+									<div class="col-md-4 mt-2">
+										<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 350px; border-collapse: collapse; float: left;">
 											<thead>
 												<tr>
-													 <th  style="width: 140px; ">Committee</th>
-													 <th  style="width: 140px; "> Date Held</th>
+													<th  style="width: 140px; ">Committee</th>
+													<th  style="width: 140px; "> Date Held</th>
 												</tr>
 											</thead>
 											<tbody>
-												<%if(ReviewMeetingList.get(z).size()==0){ %>
-												<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
-												<%}
-												else if(ReviewMeetingList.size()>0)
-												  {int i=1;
-												for(Object[] obj:ReviewMeetingList.get(z)){ %>
+												<%int i=0;
+												for(Object[] obj : entry.getValue()){ %>
 													<tr>
 														<td >
-															<button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>">
-																<%=obj[1]%> #<%=i %>
-															</button>
+															<button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>"> <%=entry.getKey()%> #<%=++i %></button>
 														</td>												
-														<td  style="text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+														<td style="text-align: center; " ><%= fc.sdfTordf(obj[3].toString())%></td>
 													</tr>				
-												<%i++;
-												}}else{ %>
-												<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
-												<%} %> 
-										</tbody>
-									</table>
+												<%} %>
+											</tbody>
+										</table>
 									</div>
-								
-									<%int t=1; %>
-									<div align="center" style="max-width:300px; display:inline-block; ;">
-										<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 300px; border-collapse: collapse; float: left;">
-											<thead>
-												<tr>
-													 <th  style="width: 140px; ">Committee</th>
-													 <th  style="width: 140px; "> Date Held</th>
-												</tr>
-											</thead>
-											<tbody>
-												<%if(ReviewMeetingListPMRC.get(z).size()==0){ %>
-													<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
-												<%} else if(ReviewMeetingListPMRC.size()>0)
-												  { 
-													for(Object[] obj:ReviewMeetingListPMRC.get(z)){ %>
-												
-												<%if(t<=20){ %>
-													<tr>
-														<td>
-															<button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>">
-																<%=obj[1]%> #<%=t++ %>
-															</button>
-														</td>												
-														<td  style="text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
-													</tr>			
-												<%};
-												}}else{ %>
-												
-													<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
-												
-											<%} %> 
-										</tbody>
-									</table>
-									</div>
-									<% if(t>20) { %>
-									<div align="left" style="max-width:300px; float:right; ;">
-										<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 300px; border-collapse: collapse; float: left;">
-											<thead>
-												<tr>
-													 <th  style="width: 140px; ">Committee</th>
-													 <th  style="width: 140px; "> Date Held</th>
-												</tr>
-											</thead>
-											<tbody>
-												<%if(ReviewMeetingListPMRC.get(z).size()==0){ %>
-												<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
-												<%}
-												else if(ReviewMeetingListPMRC.size()>0)
-												  {
-												for(Object[] obj:ReviewMeetingListPMRC.get(z).stream().skip(20).collect(Collectors.toList())){ %>
-													<tr>
-														<td >
-															<button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>">
-																<%=obj[1]%> #<%=t %>
-															</button>
-														</td>												
-														<td  style="text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
-													</tr>			
-												<%t++;
-												}}else{ %>
-												
-													<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
-												
-											<%} %> 
-										</tbody>
-									</table>
-									</div>
-									<%} %>
-								</div>
-								
-							</form>
+								<%} %>	
+							<%} %>
+							</div>
+						</form>
 						
-				
-				<%if(otherMeetingList!=null && otherMeetingList.size()>0) {
+									<%if(otherMeetingList!=null && otherMeetingList.size()>0) {
 					int count=0;
 				%>
 				<div align="left" class="mb-2 ml-4"><b><%="Other Meetings" %></b></div>
-			      <form action="CommitteeMinutesViewAllDownload.htm" method="get" target="_blank">
-					<div align="left" class="mb-2"><table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 350px; border-collapse: collapse;">
+						<div align="left" class="mb-2"><table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 350px; border-collapse: collapse;">
 						<thead><tr> <th style="width: 140px; ">Committee</th> <th  style="width: 140px; "> Date Held</th></tr></thead>
-				     <%for(Object[]obj:otherMeetingList) {%>
-						<tbody>
-							<tr>
-							    <td><button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>"><%=obj[3]%> </button></td>												
-								<td  style="text-align: center; " ><%= sdf.format(sdf1.parse(obj[1].toString()))%></td>
-							</tr>
-						</tbody>
-			     	<%}%></table></div></form> <%} %>
+				<%for(Object[]obj:otherMeetingList) {%>
+				
+											<tbody>
+									<tr><td><button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>"><%=obj[3]%> </button>
+														</td>												
+														<td  style="text-align: center; " ><%= sdf.format(sdf1.parse(obj[1].toString()))%></td>
+													</tr>
+									</tbody>
+				
+				<%}%></table></div> <%} %>
 						</div>
+															
 					<%} %>
 					 
 				</details>
@@ -1326,7 +1212,7 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->				
 				 
 						<details>
-   						<summary role="button" tabindex="0"><b>5. Milestones achieved prior to this <%=committeeData.getCommitteeShortName().trim().toUpperCase() %> period.</b>  </summary>
+   						<summary role="button" tabindex="0"><b>5. Milestones achieved prior to this <%=committee.getCommitteeShortName().trim().toUpperCase() %> period.</b>  </summary>
 							<div class="content">
 				
 								<%for(int z=0;z<1;z++){ %>
@@ -1568,7 +1454,7 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->
 				 	
 						<details>
-   						<summary role="button" tabindex="0" id="leveltab"><b>6. Details of work and current status of sub system with major milestones (since last <%=committeeData.getCommitteeShortName().trim().toUpperCase()%>)</b>  </summary>
+   						<summary role="button" tabindex="0" id="leveltab"><b>6. Details of work and current status of sub system with major milestones (since last <%=committee.getCommitteeShortName().trim().toUpperCase()%>)</b>  </summary>
 						<div class="content">
 							
 							<%for(int z=0;z<1;z++){ %>
@@ -2613,7 +2499,7 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->
 						
 					<details>
-						<%if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")){ %>
+						<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("EB")){ %>
    							<summary role="button" tabindex="0"><b>9. Action Plan for Next Six months </b>    </summary>
 						<%}else { %>
 							<summary role="button" tabindex="0"><b>9. Action Plan for Next Three months </b>    </summary>
@@ -3038,25 +2924,9 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->
  
 					<details>
-   						<summary role="button" tabindex="0"><b>12. Decision/Recommendations sought from <%=committeeData.getCommitteeShortName().trim().toUpperCase() %></b>     </summary>
+   						<summary role="button" tabindex="0"><b>12. Decision/Recommendations sought from <%=committee.getCommitteeShortName().trim().toUpperCase() %></b>     </summary>
    						
 						  <div class="content">
-						 
-						 <%--  <%for(int z=0;z<projectidlist.size();z++){ %>
-						  	<%if(ProjectDetail.size()>1){ %>
-								<div>
-									<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
-								</div>	
-							<%} %>	
-							<%if(lastpmrcdecisions.get(z)!=null && lastpmrcdecisions.get(z)[0]!=null && !lastpmrcdecisions.get(z)[0].toString().trim().equals("")){ %>
-							
-								<%=lastpmrcdecisions.get(z)[0] %>
-							<%}else{ %>
-						  	Nil 
-						  	
-						  	<%} %>
-						  
-						  <%} %> --%>
 						  
 						  <%if(nextMeetVenue!=null && nextMeetVenue[0]!=null){%>
 						  
@@ -3142,7 +3012,7 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
 					<details>
    						<summary role="button" tabindex="0"><b> 13. Other Relevant Points (if any) 
-   							<%if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")){ %>
+   							<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("EB")){ %>
    								and Technical Work Carried Out For Last Six Months
 							<%}else { %>
 								and Technical Work Carried Out For Last Three Months
@@ -3700,7 +3570,7 @@ String IsIbasConnected=(String)request.getAttribute("IsIbasConnected");
 	      		<div class="col-md-3">
 	      			<h6>
 	      				<b>Committee :</b> 
-	      				<%=committeeData.getCommitteeShortName().trim().toUpperCase() %>
+	      				<%=committee.getCommitteeShortName().trim().toUpperCase() %>
 	      			</h6>
 	      		</div>
 	      		<div class="col-md-1"><b>Level</b></div>
