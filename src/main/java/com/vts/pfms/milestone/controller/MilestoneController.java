@@ -75,6 +75,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -99,13 +100,16 @@ import com.vts.pfms.milestone.dto.MilestoneActivityDto;
 import com.vts.pfms.milestone.dto.MilestoneScheduleDto;
 import com.vts.pfms.milestone.model.FileDocMaster;
 import com.vts.pfms.milestone.model.FileRepMaster;
+import com.vts.pfms.milestone.model.FileRepMasterPreProject;
 import com.vts.pfms.milestone.model.FileRepNew;
 import com.vts.pfms.milestone.model.FileRepUploadNew;
+import com.vts.pfms.milestone.model.FileRepUploadPreProject;
 import com.vts.pfms.milestone.model.MilestoneActivity;
 import com.vts.pfms.milestone.model.MilestoneActivityLevel;
 import com.vts.pfms.milestone.model.MilestoneActivitySub;
 import com.vts.pfms.milestone.service.MilestoneService;
 import com.vts.pfms.print.service.PrintService;
+import com.vts.pfms.requirements.service.RequirementService;
 import com.vts.pfms.timesheet.service.TimeSheetService;
 import com.vts.pfms.utils.InputValidator;
 
@@ -132,6 +136,9 @@ public class MilestoneController {
 	
 	@Autowired
 	ActionService actionservice;
+	
+	@Autowired
+	RequirementService reqservice;
 	
 	private static final Logger logger=LogManager.getLogger(MilestoneController.class);
 	@Value("${File_Size}")
@@ -4163,6 +4170,333 @@ public class MilestoneController {
 	                && !LocalDate.parse(e[3].toString()).isBefore(from)
 	                && !LocalDate.parse(e[3].toString()).isAfter(to))
 	        .collect(Collectors.toList());
+	}
+	
+	@RequestMapping(value = "PreProjectDocRep.htm")
+	public String PreProjectDocRep(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LoginType = (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LabCode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside PreProjectDocRep.htm "+UserId);
+
+		try {
+			List<Object[] > projectslist= reqservice.getPreProjectList(LoginType, LabCode, EmpId);				
+			String initiationId=req.getParameter("initiationId");
+			Map md = model.asMap();
+			if(initiationId==null) {		
+				md = model.asMap();
+				initiationId = (String) md.get("initiationId");   
+			}
+			if(initiationId==null) {
+				try {
+					initiationId=projectslist.get(0)[0].toString();
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+			req.setAttribute("projectslist", projectslist);
+			req.setAttribute("initiationId",initiationId);		
+		}		
+		catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside PreProjectDocRep.htm "+UserId, e); 
+			return "static/Error";
+		}
+		return "filerepo/PreProjectRepMaster";
+	}
+	
+ 	@RequestMapping(value = "preProjectMainFolderList.htm", method = RequestMethod.GET)
+		public @ResponseBody String getPreProjectMainFolderList(HttpServletRequest req, HttpSession ses) throws Exception {
+
+			String UserId = (String) ses.getAttribute("Username");
+			String labcode = (String) ses.getAttribute("labcode");
+			
+			String initiationId=req.getParameter("initiationId");
+			List<Object[]> folderList =null;
+			logger.info(new Date() +"Inside MainSystemList.htm "+UserId);
+			try {
+				folderList=service.getPreProjectFolderList(initiationId,labcode);
+			}catch (Exception e) {
+				e.printStackTrace();  logger.error(new Date() +" Inside preProjectMainFolderList.htm "+UserId, e); return "static/Error";
+			}
+			Gson json = new Gson();
+			return json.toJson(folderList);
+
+		}
+ 	
+ 	@RequestMapping(value = "preProjectSubFolderList.htm", method = RequestMethod.GET)
+ 	public @ResponseBody String getPreProjectSubFolderList(HttpServletRequest req, HttpSession ses) throws Exception {
+ 		
+ 		String UserId = (String) ses.getAttribute("Username");
+ 		String labcode = (String) ses.getAttribute("labcode");
+ 		
+ 		String initiationId=req.getParameter("initiationId");
+ 		String mainLevelId=req.getParameter("mainLevelId");
+ 		List<Object[]> folderList =null;
+ 		logger.info(new Date() +"Inside MainSystemList.htm "+UserId);
+ 		try {
+ 			folderList=service.getPreProjectSubFolderList(initiationId,mainLevelId,labcode);
+ 		}catch (Exception e) {
+ 			e.printStackTrace();  logger.error(new Date() +" Inside preProjectMainFolderList.htm "+UserId, e); return "static/Error";
+ 		}
+ 		Gson json = new Gson();
+ 		return json.toJson(folderList);
+ 	}
+ 	
+ 	@RequestMapping(value = "checkPreProjectFolderNames.htm", method = RequestMethod.GET)
+	public @ResponseBody String getPreProjectFileRepMasterNames(HttpServletRequest req,HttpSession ses) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside getPreProjectFileRepMasterNames"+UserId);
+		int count = 0;
+		Gson json = new Gson();
+		try {				
+			
+			String initiationId=req.getParameter("initiationId");
+			String fileId=req.getParameter("fileId");
+			String fileType=req.getParameter("fileType");
+			String fileName=req.getParameter("fileName");
+			count=service.getPreProjectFileRepMasterNames(initiationId,fileType,fileId,fileName);
+		}
+		catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside checkPreProjectFolderNames.htm"+UserId, e);
+		}
+		return json.toJson(count);	
+	}
+ 	
+	@RequestMapping(value="PreProjectFileRepAdd.htm",method = RequestMethod.POST)
+	public @ResponseBody String addPreProjectFileRep(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside PreProjectFileRepAdd.htm "+UserId);
+		long count = 0l;
+		Gson json = new Gson();
+		try {
+			FileRepMasterPreProject fileRepo=new FileRepMasterPreProject();
+			fileRepo.setLabCode(LabCode);
+			fileRepo.setLevelName(req.getParameter("levelName").trim());
+			fileRepo.setInitiationId(Long.parseLong(req.getParameter("initiationId")));
+			fileRepo.setCreatedBy(UserId);
+			count=service.preProjectRepMasterInsert(fileRepo);
+		}
+		catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside PreProjectFileRepAdd.htm "+UserId, e); 
+		}
+		return json.toJson(count);	
+	}
+	
+	@RequestMapping(value="PreProjectFileRepMasterSubAdd.htm",method = RequestMethod.POST)
+	public @ResponseBody String preProjectFileMasterSubAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside PreProjectFileRepMasterSubAdd.htm "+UserId);
+		long count = 0l;
+		Gson json = new Gson();
+		try {
+			FileRepMasterPreProject fileRepo=new FileRepMasterPreProject();
+			fileRepo.setLabCode(LabCode);
+			fileRepo.setInitiationId(Long.parseLong(req.getParameter("initiationId")));
+			fileRepo.setLevelName(req.getParameter("levelName").trim());
+			fileRepo.setParentLevelId(Long.parseLong(req.getParameter("parentLevelId")));
+			fileRepo.setLevelId(Long.parseLong(req.getParameter("levelId"))+1);
+			fileRepo.setCreatedBy(UserId);
+			count=service.preProjectFileRepMasterSubInsert(fileRepo);
+		}
+		catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside PreProjectFileRepMasterSubAdd.htm "+UserId, e); 
+		}
+		return json.toJson(count);	
+	}
+	
+	@RequestMapping(value = "PreProjectFolderNameEdit.htm")
+	public @ResponseBody String PreProjectFolderNameEdit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside PreProjectFolderNameEdit.htm "+UserId);		
+		long count = 0l;
+		Gson json = new Gson();
+		try {
+			String filerepmasterid = req.getParameter("filerepmasterid");
+			String levelname = req.getParameter("levelname").trim();
+			String levelType = req.getParameter("levelType");
+			count = service.preProjectfileEditSubmit(filerepmasterid, levelname, levelType);
+		}
+		catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside PreProjectFolderNameEdit.htm "+UserId, e); 
+		}
+		return json.toJson(count);	
+	}
+	
+	
+	@RequestMapping(value = "getPreProjectOldFileNames.htm", method = RequestMethod.GET)
+	public @ResponseBody String getPreProjectOldFileNames(HttpServletRequest req,HttpSession ses) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside getPreProjectOldFileNames"+UserId);
+		List<Object[]> fileDocNameList=null;
+		Gson json = new Gson();
+		try {				
+			String initiationId=req.getParameter("initiationId");
+			String fileId=req.getParameter("fileId");
+			String fileType=req.getParameter("fileType");
+			fileDocNameList=service.getPreProjectOldFileNames(initiationId,fileType,fileId);
+		}
+		catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside getPreProjectOldFileNames"+UserId, e);
+		}
+		return json.toJson(fileDocNameList);	
+	}
+	
+	@RequestMapping(value = "uploadPreProjectFile.htm", method = RequestMethod.POST)
+	public @ResponseBody String uploadPreProjectFile(HttpServletRequest req,HttpSession ses,
+			@RequestParam(name = "fileAttach", required = false) MultipartFile file,
+			@RequestParam("docName") String docName,
+			@RequestParam("fileRepId") String fileRepId,
+			@RequestParam("initiationId") String initiationId,
+			@RequestParam("mainLevelId") String mainLevelId,
+			@RequestParam("subLevelId") String subLevelId,
+			@RequestParam("isnewversion") String isnewversion,
+        	@RequestParam("fileType") String fileType) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside uploadPreProjectFile"+UserId);
+		long result = 0l;
+		Gson json = new Gson();
+		try {
+			
+			FileUploadDto upload = new FileUploadDto();
+			upload.setFileId(fileRepId);
+			upload.setFileRepMasterId(mainLevelId);
+			upload.setSubL1(subLevelId);
+			upload.setDocumentName(docName);
+			upload.setIS(file.getInputStream());
+			upload.setFileNamePath(file.getOriginalFilename());
+			upload.setInitiationId(initiationId);
+			upload.setUserId(UserId);
+			upload.setLabCode(labcode);
+			upload.setIsNewVersion(isnewversion);
+			
+			result=service.uploadPreProjectFile(upload,fileType);
+		}
+		catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside uploadPreProjectFile"+UserId, e);
+		}
+		return json.toJson(result);	
+	}
+	
+	
+	@RequestMapping(value = "preProjectFileDownload.htm/{id}", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<Resource> downloadPreProjectFile(
+			 @PathVariable("id") Long id,
+		     @RequestParam("fileType") String fileType,
+	        HttpServletRequest req) throws Exception {
+
+	    Optional<FileRepUploadPreProject> optionalFile = service.getPreProjectFileById(id);
+	    if (!optionalFile.isPresent()) {
+	        return ResponseEntity.notFound().build();
+	    }
+
+	    FileRepUploadPreProject fileEntity = optionalFile.get();
+	    if (fileEntity.getFilePath() == null || fileEntity.getFileName() == null) {
+	        return ResponseEntity.badRequest().build();
+	    }
+
+	    try {
+	        Zipper zip = new Zipper();
+
+	        // Build zip file path
+	        String[] parts = fileEntity.getFilePath().replaceAll("[/\\\\]", ",").split(",");
+	        String zipName = String.format("%s%s-%s.zip",
+	                fileEntity.getFileNameUi(),
+	                fileEntity.getVersionDoc(),
+	                fileEntity.getReleaseDoc());
+
+	        Path zipFilePath;
+	        if ("mainLevel".equalsIgnoreCase(fileType)) {
+	            zipFilePath = Paths.get(FilePath, parts[0], parts[1], parts[2], parts[3], zipName);
+	        } else {
+	            zipFilePath = Paths.get(FilePath, parts[0], parts[1], parts[2], parts[3], parts[4], zipName);
+	        }
+
+	        if (!Files.exists(zipFilePath)) {
+	            return ResponseEntity.notFound().build();
+	        }
+
+	        // Extract zip to a temp folder
+	        String tempDirPath = req.getServletContext().getRealPath("/view/temp/" + UUID.randomUUID());
+	        File tempDir = new File(tempDirPath);
+	        tempDir.mkdirs();
+
+	        zip.unpack(zipFilePath.toString(), tempDirPath, fileEntity.getFilePass());
+
+	        // Find the single PDF inside
+	        File[] pdfFiles = tempDir.listFiles((d, name) -> name.toLowerCase().endsWith(".pdf"));
+	        if (pdfFiles == null || pdfFiles.length == 0) {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	        }
+
+	        File pdfFile = pdfFiles[0];
+	        Resource resource = new UrlResource(pdfFile.toURI());
+
+	        return ResponseEntity.ok()
+	                .contentType(MediaType.APPLICATION_PDF)
+	                .header(HttpHeaders.CONTENT_DISPOSITION,
+	                        "inline; filename=\"" + pdfFile.getName() + "\"")
+	                .body(resource);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	    }
+	}
+	
+	
+	@RequestMapping(value = "getPreProjectDocVersionList.htm", method = RequestMethod.GET)
+	public @ResponseBody String getPreProjectDocVersionList(HttpServletRequest req,HttpSession ses) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside getFileRepDocList"+UserId);
+		List<Object[]> fileDocList= new ArrayList<>();
+		Gson json = new Gson();
+		try {				
+			String fileRepId=req.getParameter("fileRepId");
+			fileDocList=service.preProjectFileRepDocsList(fileRepId);
+		}
+		catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside getFileRepDocList"+UserId, e);
+		}
+		return json.toJson(fileDocList);	
+	}
+	
+	@RequestMapping(value = "PreProjectFileRepMasterListAllAjax.htm", method = RequestMethod.GET)
+	public @ResponseBody String PreProjectFileRepMasterListAllAjax(Model model,HttpServletRequest req, HttpSession ses,HttpServletResponse res)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside PreProjectFileRepMasterListAllAjax.htm "+UserId);
+
+		String initiationId= req.getParameter("initiationId");	
+		List<Object[]> FileLevelSublevelName = service.getPreProjectFileRepMasterListAll(initiationId,LabCode);
+
+		Gson json = new Gson();
+		return json.toJson(FileLevelSublevelName);
+	}
+	
+	@GetMapping("/pdf-viewer")
+	public String pdfViewerPage() {
+	    return "filerepo/pdfViewer"; 
 	}
 	
 }

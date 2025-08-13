@@ -14,8 +14,10 @@ import com.vts.pfms.milestone.dto.MileEditDto;
 import com.vts.pfms.milestone.dto.MilestoneActivityDto;
 import com.vts.pfms.milestone.dto.MilestoneScheduleDto;
 import com.vts.pfms.milestone.model.FileDocMaster;
+import com.vts.pfms.milestone.model.FileRepMasterPreProject;
 import com.vts.pfms.milestone.model.FileRepNew;
 import com.vts.pfms.milestone.model.FileRepUploadNew;
+import com.vts.pfms.milestone.model.FileRepUploadPreProject;
 import com.vts.pfms.milestone.model.MilestoneActivity;
 import com.vts.pfms.milestone.model.MilestoneActivityLevel;
 
@@ -120,4 +122,15 @@ public interface MilestoneService {
 	public List<Object[]> actionAssigneeList(String EmpId) throws Exception;
 	public long ActionAssignInsert(ActionAssign assign) throws Exception;
 	public List<Object[]> getMilestoneActivityProgressList() throws Exception;
+	public List<Object[]> getPreProjectFolderList(String initiationId, String labcode) throws Exception;
+	public List<Object[]> getPreProjectSubFolderList(String initiationId, String mainLevelId, String labcode) throws Exception;
+	public int getPreProjectFileRepMasterNames(String initiationId, String fileType, String fileId, String fileName) throws Exception;
+	public long preProjectRepMasterInsert(FileRepMasterPreProject fileRepo) throws Exception;
+	public long preProjectFileRepMasterSubInsert(FileRepMasterPreProject fileRepo) throws Exception;
+	public long preProjectfileEditSubmit(String filerepmasterid, String levelname, String levelType) throws Exception;
+	public List<Object[]> getPreProjectOldFileNames(String initiationId, String fileType, String fileId)throws Exception;
+	public long uploadPreProjectFile(FileUploadDto upload, String fileType)throws Exception;
+	public Optional<FileRepUploadPreProject> getPreProjectFileById(Long id)throws Exception;
+	public List<Object[]> preProjectFileRepDocsList(String fileRepId)throws Exception;
+	public List<Object[]> getPreProjectFileRepMasterListAll(String initiationId, String labCode)throws Exception;
 }

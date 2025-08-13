@@ -354,15 +354,7 @@ textarea {
 							        }
 							    }
 							%>
-					
-				     <!-- <div class="d-flex flex-wrap gap-4">
-							    <div class="pdf-item text-center">
-							        <div class="file-icon-wrapper">
-							            <i class="fa fa-file-pdf-o fileicon" aria-hidden="true"></i>
-							        </div>
-							        <span>test.pdf</span>
-							    </div>
-							</div> -->
+
 							<div id="pdf-wrapper"></div>
 					
 							</div>	   
@@ -1205,32 +1197,19 @@ function fileDownload(fileId, fileType) {
 
               // Create a blob URL and open it in a new tab
               const blobUrl = URL.createObjectURL(blob);
-              window.open(blobUrl, '_blank');
+              const viewerUrl = '<%=request.getContextPath()%>/pdf-viewer?url=' + encodeURIComponent(blobUrl);
+              window.open(viewerUrl, '_blank');
 
               // Optional: release memory later
               setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
         	
-       /*   const disposition = xhr.getResponseHeader('Content-Disposition');
-            let filename = "downloaded_file";
-            if (disposition && disposition.indexOf('filename=') !== -1) {
-                filename = disposition.split('filename=')[1].replace(/"/g, '');
-            }
-            const url = window.URL.createObjectURL(data);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            window.URL.revokeObjectURL(url); */
-            
         },
         error: function (xhr, status, error) {
             alert("Failed to download/open file: " + (xhr.responseText || error));
             console.error("Download error:", error);
         }
     });
-}
+ }
 
 function showVersionModal(fileRepId,fileName,fileType) {
 	  $('#versionModal').modal('show');

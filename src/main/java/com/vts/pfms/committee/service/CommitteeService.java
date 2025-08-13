@@ -33,6 +33,7 @@ import com.vts.pfms.committee.model.PmsEnote;
 import com.vts.pfms.committee.model.ProgrammeProjects;
 import com.vts.pfms.committee.model.ProgrammeMaster;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
+import com.vts.pfms.milestone.model.FileRepUploadPreProject;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.MinutesFinanceList;
@@ -330,5 +331,7 @@ public interface CommitteeService {
 	public List<Object[]> getdraftMomList(String empId, String pageSize)throws Exception;
 	public long saveCommitteeSchedulesMomDraftRemarks(CommitteeSchedulesMomDraftRemarks cmd)throws Exception;
 	public List<Object[]> getCommitteeSchedulesMomDraftRemarks(Long scheduleId)throws Exception;
+	public List<Object[]> preProjectlist(String labCode)throws Exception;
+	public FileRepUploadPreProject getPreProjectAgendaDocById(String filerepid)throws Exception;
 }
 

@@ -66,6 +66,8 @@
 		String CommitteeName = committeeData.getCommitteeName().trim();
 		String projectid = scheduledata[9].toString();
 		String scheduletype = scheduledata[26]!=null?scheduledata[26].toString():"N";
+		String initiationid=scheduledata[17].toString();
+		
 		
 		String ProjectCode="General";
 				if(projectattributes!=null){
@@ -335,7 +337,11 @@
 											if(obj[0].toString().equalsIgnoreCase(doc[1].toString())){%>
 												<tr>
 													<td><%=doc[3] %></td>
-													<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
+												    <%if(Long.parseLong(initiationid) > 0){ %>
+														   <td style="width:1% ;white-space: nowrap;" ><a href="PrePRojectAgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
+													<%}else{ %>
+															<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
+													<%} %>
 												<tr>													
 											<%} }%>
 										</table>

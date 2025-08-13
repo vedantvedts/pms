@@ -11,8 +11,11 @@ import com.vts.pfms.milestone.model.FileDocAmendment;
 import com.vts.pfms.milestone.model.FileDocMaster;
 import com.vts.pfms.milestone.model.FileProjectDoc;
 import com.vts.pfms.milestone.model.FileRepMaster;
+import com.vts.pfms.milestone.model.FileRepMasterPreProject;
 import com.vts.pfms.milestone.model.FileRepNew;
+import com.vts.pfms.milestone.model.FileRepNewPreProject;
 import com.vts.pfms.milestone.model.FileRepUploadNew;
+import com.vts.pfms.milestone.model.FileRepUploadPreProject;
 import com.vts.pfms.milestone.model.MilestoneActivity;
 import com.vts.pfms.milestone.model.MilestoneActivityLevel;
 import com.vts.pfms.milestone.model.MilestoneActivityRev;
@@ -141,5 +144,24 @@ public interface MilestoneDao {
 	public MilestoneActivity getMilestoneActivityById(String id);
 	public List<Object[]> actionAssigneeList(String EmpId) throws Exception;
 	public List<Object[]> getMilestoneActivityProgressList() throws Exception;
+	public List<Object[]> getPreProjectFolderList(String initiationId, String labcode) throws Exception;
+	public List<Object[]> getPreProjectSubFolderList(String initiationId, String mainLevelId, String labcode) throws Exception;
+	public int getPreProjectFileRepMasterNames(String initiationId, String fileType, String fileId, String fileName) throws Exception;
+	public long preProjectRepMasterInsert(FileRepMasterPreProject fileRepo) throws Exception;
+	public long preProjectFileRepMasterSubInsert(FileRepMasterPreProject fileRepo) throws Exception;
+	public Optional<FileRepMasterPreProject> getPreProjectFileRepById(long id) throws Exception;
+	public Optional<FileRepMasterPreProject> getPreProjectMainFileById(Long parentId) throws Exception;
+	public List<Object[]> findByPreProjectFilePath(String levelType, Long initoationId, Long mainRepMasterId,Long subRepMasterId, String oldName) throws Exception;
+	public long preProjectfileEditSubmit(String filerepmasterid, String levelname) throws Exception;
+	public void updatePreProjectFileById(Long uploadId, String updatedPath) throws Exception;
+	public List<Object[]> getPreProjectOldFileNames(String initiationId, String fileType, String fileId) throws Exception;
+	public FileRepNewPreProject getPreProjectFileById(long repId) throws Exception;
+	public long prepRojectFileUpdate(FileRepNewPreProject fileRepNew)throws Exception;
+	public long preProjectFileUploadInsert(FileRepUploadPreProject uploadNew)throws Exception;
+	public long preProjectFileSubInsert(FileRepNewPreProject fileRepNew)throws Exception;
+	public Object[] preProjectRepMaster(String fileRepMasterId)throws Exception;
+	public Optional<FileRepUploadPreProject> getPreProjectUploadFileById(Long id)throws Exception;
+	public List<Object[]> preProjectFileRepoDocsList(String fileRepId)throws Exception;
+	public List<Object[]> getPreProjectFileRepMasterListAll(String initiationId, String labCode)throws Exception;
 	
 }
