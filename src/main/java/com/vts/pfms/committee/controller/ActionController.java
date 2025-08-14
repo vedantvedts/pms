@@ -1106,6 +1106,7 @@ public class ActionController {
 			mainDto.setPriority(req.getParameter("Priority"));
 			mainDto.setCategory(req.getParameter("Category"));
 			mainDto.setActionStatus("A");
+			mainDto.setScheduleId(req.getParameter("ScheduleId"));
 			// Prudhvi - 13/03/2024
 			String rodflag = req.getParameter("rodflag");
 			redir.addAttribute("rodflag", rodflag);

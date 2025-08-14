@@ -1950,7 +1950,7 @@ function DownloadDocPDF(){
 	           			{
 	                    	image: 'data:image/png;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(imagepathFile))%>',
 	                    	width: 500,
-	                       	height: 100,
+	                       	height: 400,
 	                       	alignment: 'center',
 	                       	margin: [0, 5, 0, 5],
 	                   	},
