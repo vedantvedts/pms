@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -75,6 +76,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -99,13 +101,17 @@ import com.vts.pfms.milestone.dto.MilestoneActivityDto;
 import com.vts.pfms.milestone.dto.MilestoneScheduleDto;
 import com.vts.pfms.milestone.model.FileDocMaster;
 import com.vts.pfms.milestone.model.FileRepMaster;
+import com.vts.pfms.milestone.model.FileRepMasterPreProject;
 import com.vts.pfms.milestone.model.FileRepNew;
 import com.vts.pfms.milestone.model.FileRepUploadNew;
+import com.vts.pfms.milestone.model.FileRepUploadPreProject;
 import com.vts.pfms.milestone.model.MilestoneActivity;
 import com.vts.pfms.milestone.model.MilestoneActivityLevel;
+import com.vts.pfms.milestone.model.MilestoneActivityLevelRemarks;
 import com.vts.pfms.milestone.model.MilestoneActivitySub;
 import com.vts.pfms.milestone.service.MilestoneService;
 import com.vts.pfms.print.service.PrintService;
+import com.vts.pfms.requirements.service.RequirementService;
 import com.vts.pfms.timesheet.service.TimeSheetService;
 import com.vts.pfms.utils.InputValidator;
 
@@ -118,6 +124,7 @@ import jakarta.servlet.http.HttpSession;
 public class MilestoneController {
 
 	FormatConverter fc = new FormatConverter();
+	private SimpleDateFormat sdtf = fc.getSqlDateAndTimeFormat();
 	
 	@Autowired CommitteeService committeservice;
 
@@ -132,6 +139,9 @@ public class MilestoneController {
 	
 	@Autowired
 	ActionService actionservice;
+	
+	@Autowired
+	RequirementService reqservice;
 	
 	private static final Logger logger=LogManager.getLogger(MilestoneController.class);
 	@Value("${File_Size}")
@@ -174,7 +184,7 @@ public class MilestoneController {
 				}
 			}
 			req.setAttribute("EmployeeList", service.EmployeeList());
-			
+
 			List<Object[]> main=service.MilestoneActivityList(ProjectId);
 			req.setAttribute("MilestoneActivityList",main );
 			req.setAttribute("ProjectList",projlist);
@@ -3471,6 +3481,7 @@ public class MilestoneController {
 			String empId = req.getParameter("empId");
 			empId = empId == null?EmpId : empId;
 			String finalEmpId = empId;
+			
 			List<Object[]> roleWiseEmployeeList = timesheetservice.getRoleWiseEmployeeList(labcode, LoginType, empId);
 			List<Object[]> mainList = service.getAllMilestoneActivityList();
 			List<Object[]> subList = service.getAllMilestoneActivityLevelList();
@@ -3482,10 +3493,13 @@ public class MilestoneController {
 				totalAssignedMainList.addAll(mainList.stream()
 						.filter(e -> (e[10].toString().equalsIgnoreCase(finalEmpId) || e[11].toString().equalsIgnoreCase(finalEmpId)))
 						.collect(Collectors.toList()));
-
+				
+				Map<String, List<Object[]>> groupedByParentIdAndLevel = subList.stream().collect(Collectors.groupingBy(e -> e[1].toString() + "_" + e[2].toString()));
+				
 				for(Object[] objmain : mainList ) {
 
-					List<Object[]> MilestoneActivityA = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(objmain[0].toString()) && Integer.parseInt(e[2].toString())==1).collect(Collectors.toList());
+					//List<Object[]> MilestoneActivityA = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(objmain[0].toString()) && Integer.parseInt(e[2].toString())==1).collect(Collectors.toList());
+					List<Object[]> MilestoneActivityA = groupedByParentIdAndLevel.getOrDefault(objmain[0].toString() + "_1", Collections.emptyList());
 					int countA = 1;
 					for(Object[] obj:MilestoneActivityA) {
 						
@@ -3498,7 +3512,8 @@ public class MilestoneController {
 					        totalAssignedSubList.add(newRow);
 					    }
 						
-						List<Object[]> MilestoneActivityB = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj[0].toString()) && Integer.parseInt(e[2].toString())==2).collect(Collectors.toList());
+						//List<Object[]> MilestoneActivityB = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj[0].toString()) && Integer.parseInt(e[2].toString())==2).collect(Collectors.toList());
+						List<Object[]> MilestoneActivityB = groupedByParentIdAndLevel.getOrDefault(obj[0].toString() + "_2", Collections.emptyList());
 						int countB = 1;
 						for(Object[] obj1:MilestoneActivityB) {
 							
@@ -3511,12 +3526,13 @@ public class MilestoneController {
 						        totalAssignedSubList.add(newRow);
 						    }
 							
-							List<Object[]> MilestoneActivityC = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj1[0].toString()) && Integer.parseInt(e[2].toString())==3).collect(Collectors.toList());
+							//List<Object[]> MilestoneActivityC = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj1[0].toString()) && Integer.parseInt(e[2].toString())==3).collect(Collectors.toList());
+							List<Object[]> MilestoneActivityC = groupedByParentIdAndLevel.getOrDefault(obj1[0].toString() + "_3", Collections.emptyList());
 							int countC = 1;
 							for(Object[] obj2:MilestoneActivityC) {
 
 								if (obj2[10].toString().equalsIgnoreCase(finalEmpId) || obj2[11].toString().equalsIgnoreCase(finalEmpId)) {
-							        Object[] newRow = Arrays.copyOf(obj1, obj1.length + 4);
+							        Object[] newRow = Arrays.copyOf(obj2, obj2.length + 4);
 							        newRow[obj2.length] = objmain[0].toString();
 							        newRow[obj2.length + 1] = "A"+countA+"-B"+countB+"-C"+countC;
 							        newRow[obj2.length + 2] = objmain[2];
@@ -3524,12 +3540,13 @@ public class MilestoneController {
 							        totalAssignedSubList.add(newRow);
 							    }
 								
-								List<Object[]> MilestoneActivityD = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj2[0].toString()) && Integer.parseInt(e[2].toString())==4).collect(Collectors.toList());
+								//List<Object[]> MilestoneActivityD = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj2[0].toString()) && Integer.parseInt(e[2].toString())==4).collect(Collectors.toList());
+								List<Object[]> MilestoneActivityD = groupedByParentIdAndLevel.getOrDefault(obj2[0].toString() + "_4", Collections.emptyList());
 								int countD = 1;
 								for(Object[] obj3:MilestoneActivityD) {
 									
 									if (obj3[10].toString().equalsIgnoreCase(finalEmpId) || obj3[11].toString().equalsIgnoreCase(finalEmpId)) {
-								        Object[] newRow = Arrays.copyOf(obj1, obj1.length + 4);
+								        Object[] newRow = Arrays.copyOf(obj3, obj3.length + 4);
 								        newRow[obj3.length] = objmain[0].toString();
 								        newRow[obj3.length + 1] = "A"+countA+"-B"+countB+"-C"+countC+"-D"+countD;
 								        newRow[obj3.length + 2] = objmain[2];
@@ -3537,12 +3554,13 @@ public class MilestoneController {
 								        totalAssignedSubList.add(newRow);
 								    }
 									
-									List<Object[]> MilestoneActivityE = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj3[0].toString()) && Integer.parseInt(e[2].toString())==5).collect(Collectors.toList());
+									//List<Object[]> MilestoneActivityE = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj3[0].toString()) && Integer.parseInt(e[2].toString())==5).collect(Collectors.toList());
+									List<Object[]> MilestoneActivityE = groupedByParentIdAndLevel.getOrDefault(obj3[0].toString() + "_5", Collections.emptyList());
 									int countE = 1;
 									for(Object[] obj4:MilestoneActivityE) {
 										
 										if (obj4[10].toString().equalsIgnoreCase(finalEmpId) || obj4[11].toString().equalsIgnoreCase(finalEmpId)) {
-									        Object[] newRow = Arrays.copyOf(obj1, obj1.length + 4);
+									        Object[] newRow = Arrays.copyOf(obj4, obj4.length + 4);
 									        newRow[obj4.length] = objmain[0].toString();
 									        newRow[obj4.length + 1] = "A"+countA+"-B"+countB+"-C"+countC+"-D"+countD+"-E"+countE;
 									        newRow[obj4.length + 2] = objmain[2];
@@ -3851,16 +3869,27 @@ public class MilestoneController {
 			String isMasterData = req.getParameter("isMasterData");
 			
 			MilestoneActivityLevel level1= service.getMilestoneActivityLevelById(milesMainId);
+			
+			System.out.println(level1.getLinkedMilestonId());
+			if (!level1.getLinkedMilestonId().toString().equalsIgnoreCase("0")  ) {
+				MilestoneActivityLevel level3= service.getMilestoneActivityLevelById(level1.getLinkedMilestonId().toString());
+				level3.setLinkedMilestonId(0l);
+				level3.setIsMasterData("N");
+				service.MilestoneActivityLevelSave(level3);;
+			}
+			
 			level1.setLinkedMilestonId(Long.parseLong(mileIdLink));
-			level1.setIsMasterData(isMasterData.equalsIgnoreCase("Y")?"N":"Y");
+			level1.setIsMasterData(isMasterData);
 			
 			long count =service.MilestoneActivityLevelSave(level1);
 			
 			MilestoneActivityLevel level2= service.getMilestoneActivityLevelById(mileIdLink);
 			level2.setLinkedMilestonId(Long.parseLong(milesMainId));
-			level2.setIsMasterData(isMasterData);
+			level2.setIsMasterData(isMasterData.equalsIgnoreCase("Y")?"L":"Y");
 			
 			long count1= service.MilestoneActivityLevelSave(level2);
+			
+			
 			
 			return json.toJson(count+count1);
 			
@@ -3883,8 +3912,14 @@ public class MilestoneController {
 		try {
 		
 			String id = req.getParameter("id");
+			//String flag = req.getParameter("flag");
 			System.out.println("id "+id);
+		
 			String projectId = service.getProjectIdByMainLevelId(id);
+			
+//			if(flag!=null  && flag.equalsIgnoreCase("Y") ) {
+//				return json.toJson(projectId);
+//			}
 			
 			Object[]projectDetails =  service.ProjectDetails(projectId).get(0);
 			List<Object[]> main=service.MilestoneActivityList(projectId);
@@ -3897,27 +3932,27 @@ public class MilestoneController {
 					int countA=1;
 					for(Object[] obj:MilestoneActivityA) {
 						totalAssignedSubList.add(obj);
-						map.put(obj[0].toString(), "M"+count+"-A"+countA+"/"+obj[4]+"/"+projectDetails[1]);
+						map.put(obj[0].toString(), "M"+count+"-A"+countA+"/"+obj[4]+"/"+projectDetails[1]+"/"+projectDetails[0]);
 						List<Object[]>  MilestoneActivityB=service.MilestoneActivityLevel(obj[0].toString(),"2");
 						int countb=1;
 						for(Object[] obj1:MilestoneActivityB) {
 							totalAssignedSubList.add(obj1);
-							map.put(obj1[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"/"+obj1[4]+"/"+projectDetails[1]);
+							map.put(obj1[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"/"+obj1[4]+"/"+projectDetails[1]+"/"+projectDetails[0]);
 							List<Object[]>  MilestoneActivityC=service.MilestoneActivityLevel(obj1[0].toString(),"3");
 							int countc=1;
 							for(Object[] obj2:MilestoneActivityC) {
 								totalAssignedSubList.add(obj2);
-								map.put(obj2[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"/"+obj2[4]+"/"+projectDetails[1]);
+								map.put(obj2[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"/"+obj2[4]+"/"+projectDetails[1]+"/"+projectDetails[0]);
 								List<Object[]>  MilestoneActivityD=service.MilestoneActivityLevel(obj2[0].toString(),"4");
 								int countD=1;
 								for(Object[] obj3:MilestoneActivityD) {
 									totalAssignedSubList.add(obj3);
-									map.put(obj3[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"-D"+countD+"/"+obj3[4]+"/"+projectDetails[1]);
+									map.put(obj3[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"-D"+countD+"/"+obj3[4]+"/"+projectDetails[1]+"/"+projectDetails[0]);
 									List<Object[]>  MilestoneActivityE=service.MilestoneActivityLevel(obj3[0].toString(),"5");
 									int countE=1;
 									for(Object[] obj4:MilestoneActivityE) {
 										totalAssignedSubList.add(obj4);
-										map.put(obj4[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"-D"+countD+"-E"+countE+"/"+obj4[4]+"/"+projectDetails[1]);
+										map.put(obj4[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"-D"+countD+"-E"+countE+"/"+obj4[4]+"/"+projectDetails[1]+"/"+projectDetails[0]);
 										countE++;
 									}
 									countD++;
@@ -4018,7 +4053,7 @@ public class MilestoneController {
 			String projectId = req.getParameter("projectId");
 			String fromDate = req.getParameter("fromDate");
 			String toDate = req.getParameter("toDate");
-			
+			String sancDate = req.getParameter("sancDate");
 			List<Object[]> projectList = service.LoginProjectDetailsList(EmpId, LoginType, labcode);
 			Object[] projectData = null;
 			if(projectList!=null && projectList.size()>0) {
@@ -4033,8 +4068,9 @@ public class MilestoneController {
 			
 			LocalDate today=LocalDate.now();
 			if(fromDate==null || (oldProjectId!=null && oldProjectId!=null && !oldProjectId.equalsIgnoreCase(projectId))) {
-				fromDate = projectData!=null ? projectData[12].toString(): today.toString();
+				fromDate = today.minusWeeks(1).toString();
 				toDate = today.toString();
+				sancDate = projectData!=null ? projectData[12].toString(): today.toString();
 			}else{
 				fromDate=fc.rdfTosdf(fromDate);
 				toDate=fc.rdfTosdf(toDate);
@@ -4043,12 +4079,14 @@ public class MilestoneController {
 			String finalProjectId = projectId;
 			List<Object[]> mainList = service.getAllMilestoneActivityList();
 			List<Object[]> subList = service.getAllMilestoneActivityLevelList();
+			List<Object[]> progressList = service.getMilestoneActivityProgressList();
 			
 			LocalDate fromDateL = LocalDate.parse(fromDate);
 			LocalDate toDateL = LocalDate.parse(toDate);
 			
 			List<Object[]> totalAssignedMainList = new ArrayList<>();
 			List<Object[]> totalAssignedSubList = new ArrayList<>();
+			Map<Long, List<Object[]>> progressListMap = new HashMap<Long, List<Object[]>>();
 			
 			if (mainList != null && !mainList.isEmpty()) {
 				mainList = mainList.stream().filter(e -> e[1].toString().equalsIgnoreCase(finalProjectId) ).collect(Collectors.toList());
@@ -4057,72 +4095,80 @@ public class MilestoneController {
 											.filter(e -> !LocalDate.parse(e[6].toString()).isBefore(fromDateL) && !LocalDate.parse(e[7].toString()).isAfter(toDateL) )
 											.collect(Collectors.toList()));
 				
+				Map<String, List<Object[]>> groupedByParentIdAndLevel = subList.stream().collect(Collectors.groupingBy(e -> e[1].toString() + "_" + e[2].toString()));
+
 				for(Object[] objmain : mainList ) {
 
-					List<Object[]> MilestoneActivityA = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(objmain[0].toString()) && Integer.parseInt(e[2].toString())==1).collect(Collectors.toList());
+					//List<Object[]> MilestoneActivityA = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(objmain[0].toString()) && Integer.parseInt(e[2].toString())==1).collect(Collectors.toList());
+					List<Object[]> MilestoneActivityA = groupedByParentIdAndLevel.getOrDefault(objmain[0].toString()+"_1", Collections.emptyList());
 					int countA = 1;
 					for(Object[] obj:MilestoneActivityA) {
 						
-						if (!LocalDate.parse(obj[6].toString()).isBefore(fromDateL) && !LocalDate.parse(obj[7].toString()).isAfter(toDateL)) {
-					        Object[] newRow = Arrays.copyOf(obj, obj.length + 4);
-					        newRow[obj.length] = objmain[0].toString();
-					        newRow[obj.length + 1] = "A" + countA;
-					        newRow[obj.length + 2] = objmain[2];
-					        newRow[obj.length + 3] = objmain[1].toString();
-					        totalAssignedSubList.add(newRow);
-					    }
+						progressListMap.put(Long.parseLong(obj[0].toString()), filteredProgressList(progressList, obj[0].toString(), fromDateL, toDateL));
 						
-						List<Object[]> MilestoneActivityB = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj[0].toString()) && Integer.parseInt(e[2].toString())==2).collect(Collectors.toList());
+						Object[] newRow1 = Arrays.copyOf(obj, obj.length + 4);
+				        newRow1[obj.length] = objmain[0].toString();
+				        newRow1[obj.length + 1] = "A" + countA;
+				        newRow1[obj.length + 2] = objmain[2];
+				        newRow1[obj.length + 3] = objmain[1].toString();
+				        totalAssignedSubList.add(newRow1);
+						
+						//List<Object[]> MilestoneActivityB = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj[0].toString()) && Integer.parseInt(e[2].toString())==2).collect(Collectors.toList());
+						List<Object[]> MilestoneActivityB = groupedByParentIdAndLevel.getOrDefault(obj[0].toString()+"_2", Collections.emptyList());
 						int countB = 1;
 						for(Object[] obj1:MilestoneActivityB) {
+													
+							progressListMap.put(Long.parseLong(obj1[0].toString()), filteredProgressList(progressList, obj1[0].toString(), fromDateL, toDateL));
+
+					        Object[] newRow2 = Arrays.copyOf(obj1, obj1.length + 4);
+					        newRow2[obj1.length] = objmain[0].toString();
+					        newRow2[obj1.length + 1] = "A"+countA+"-B"+countB;
+					        newRow2[obj1.length + 2] = objmain[2];
+					        newRow2[obj1.length + 3] = objmain[1].toString();
+					        totalAssignedSubList.add(newRow2);
 							
-							if (!LocalDate.parse(obj1[6].toString()).isBefore(fromDateL) && !LocalDate.parse(obj1[7].toString()).isAfter(toDateL)) {
-						        Object[] newRow = Arrays.copyOf(obj1, obj1.length + 4);
-						        newRow[obj1.length] = objmain[0].toString();
-						        newRow[obj1.length + 1] = "A"+countA+"-B"+countB;
-						        newRow[obj1.length + 2] = objmain[2];
-						        newRow[obj1.length + 3] = objmain[1].toString();
-						        totalAssignedSubList.add(newRow);
-						    }
-							
-							List<Object[]> MilestoneActivityC = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj1[0].toString()) && Integer.parseInt(e[2].toString())==3).collect(Collectors.toList());
+							//List<Object[]> MilestoneActivityC = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj1[0].toString()) && Integer.parseInt(e[2].toString())==3).collect(Collectors.toList());
+							List<Object[]> MilestoneActivityC = groupedByParentIdAndLevel.getOrDefault(obj1[0].toString()+"_3", Collections.emptyList());
 							int countC = 1;
 							for(Object[] obj2:MilestoneActivityC) {
 
-								if (!LocalDate.parse(obj2[6].toString()).isBefore(fromDateL) && !LocalDate.parse(obj2[7].toString()).isAfter(toDateL)) {
-							        Object[] newRow = Arrays.copyOf(obj1, obj1.length + 4);
-							        newRow[obj2.length] = objmain[0].toString();
-							        newRow[obj2.length + 1] = "A"+countA+"-B"+countB+"-C"+countC;
-							        newRow[obj2.length + 2] = objmain[2];
-							        newRow[obj2.length + 3] = objmain[1].toString();
-							        totalAssignedSubList.add(newRow);
-							    }
+								progressListMap.put(Long.parseLong(obj2[0].toString()), filteredProgressList(progressList, obj2[0].toString(), fromDateL, toDateL));
+
+						        Object[] newRow3 = Arrays.copyOf(obj2, obj2.length + 4);
+						        newRow3[obj2.length] = objmain[0].toString();
+						        newRow3[obj2.length + 1] = "A"+countA+"-B"+countB+"-C"+countC;
+						        newRow3[obj2.length + 2] = objmain[2];
+						        newRow3[obj2.length + 3] = objmain[1].toString();
+						        totalAssignedSubList.add(newRow3);
 								
-								List<Object[]> MilestoneActivityD = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj2[0].toString()) && Integer.parseInt(e[2].toString())==4).collect(Collectors.toList());
+								//List<Object[]> MilestoneActivityD = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj2[0].toString()) && Integer.parseInt(e[2].toString())==4).collect(Collectors.toList());
+								List<Object[]> MilestoneActivityD = groupedByParentIdAndLevel.getOrDefault(obj2[0].toString()+"_4", Collections.emptyList());
 								int countD = 1;
 								for(Object[] obj3:MilestoneActivityD) {
+
+									progressListMap.put(Long.parseLong(obj3[0].toString()), filteredProgressList(progressList, obj3[0].toString(), fromDateL, toDateL));
+
+							        Object[] newRow4 = Arrays.copyOf(obj3, obj3.length + 4);
+							        newRow4[obj3.length] = objmain[0].toString();
+							        newRow4[obj3.length + 1] = "A"+countA+"-B"+countB+"-C"+countC+"-D"+countD;
+							        newRow4[obj3.length + 2] = objmain[2];
+							        newRow4[obj3.length + 3] = objmain[1].toString();
+							        totalAssignedSubList.add(newRow4);
 									
-									if (!LocalDate.parse(obj3[6].toString()).isBefore(fromDateL) && !LocalDate.parse(obj3[7].toString()).isAfter(toDateL)) {
-								        Object[] newRow = Arrays.copyOf(obj1, obj1.length + 4);
-								        newRow[obj3.length] = objmain[0].toString();
-								        newRow[obj3.length + 1] = "A"+countA+"-B"+countB+"-C"+countC+"-D"+countD;
-								        newRow[obj3.length + 2] = objmain[2];
-								        newRow[obj3.length + 3] = objmain[1].toString();
-								        totalAssignedSubList.add(newRow);
-								    }
-									
-									List<Object[]> MilestoneActivityE = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj3[0].toString()) && Integer.parseInt(e[2].toString())==5).collect(Collectors.toList());
+									//List<Object[]> MilestoneActivityE = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj3[0].toString()) && Integer.parseInt(e[2].toString())==5).collect(Collectors.toList());
+									List<Object[]> MilestoneActivityE = groupedByParentIdAndLevel.getOrDefault(obj3[0].toString()+"_5", Collections.emptyList());
 									int countE = 1;
 									for(Object[] obj4:MilestoneActivityE) {
-										
-										if (!LocalDate.parse(obj4[6].toString()).isBefore(fromDateL) && !LocalDate.parse(obj4[7].toString()).isAfter(toDateL)) {
-									        Object[] newRow = Arrays.copyOf(obj1, obj1.length + 4);
-									        newRow[obj4.length] = objmain[0].toString();
-									        newRow[obj4.length + 1] = "A"+countA+"-B"+countB+"-C"+countC+"-D"+countD+"-E"+countE;
-									        newRow[obj4.length + 2] = objmain[2];
-									        newRow[obj4.length + 3] = objmain[1].toString();
-									        totalAssignedSubList.add(newRow);
-									    }
+
+										progressListMap.put(Long.parseLong(obj4[0].toString()), filteredProgressList(progressList, obj4[0].toString(), fromDateL, toDateL));
+
+								        Object[] newRow5 = Arrays.copyOf(obj4, obj4.length + 4);
+								        newRow5[obj4.length] = objmain[0].toString();
+								        newRow5[obj4.length + 1] = "A"+countA+"-B"+countB+"-C"+countC+"-D"+countD+"-E"+countE;
+								        newRow5[obj4.length + 2] = objmain[2];
+								        newRow5[obj4.length + 3] = objmain[1].toString();
+								        totalAssignedSubList.add(newRow5);
+									        
 										countE++;
 									}
 									countD++;
@@ -4139,8 +4185,10 @@ public class MilestoneController {
 			req.setAttribute("projectId", projectId);
 			req.setAttribute("fromDate", fromDate);
 			req.setAttribute("toDate", toDate);
+			req.setAttribute("sancDate", sancDate);
 			req.setAttribute("totalAssignedMainList", totalAssignedMainList);
 			req.setAttribute("totalAssignedSubList", totalAssignedSubList);
+			req.setAttribute("progressListMap", progressListMap);
 			req.setAttribute("projectList", projectList);
 			
 			return "milestone/MilestoneActivityProgress";
@@ -4151,6 +4199,522 @@ public class MilestoneController {
 		}
 	}
 
+	@RequestMapping(value = "delteSubMilestoneActivity.htm", method = RequestMethod.GET)
+	public @ResponseBody String delteSubMilestoneActivity(HttpServletRequest req, HttpSession ses,HttpServletResponse res
+			)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside removeFileAttachment.htm "+UserId);
+		try {
+			 String activityId = req.getParameter("activityId");
+		
+			//long result = service.deleteMilsetone(activityId);
+			
+		System.out.println(activityId+"----activityId");
+		
+		List<String>activityIds = new ArrayList<String>();
+			
+		if(activityId!=null) {
+			activityIds = 	Arrays.asList(activityId.split(","));
+		}
+		int deleteCount = 0;
+		for(String s:activityIds) {
+			deleteCount = deleteCount+service.deleteMilsetone(s);
+		}
+		Gson json = new Gson();
+		
+		return json.toJson(deleteCount);
+		} catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside removeFileAttachment.htm "+UserId, e); 
+			return "static/Error";
+		}
+	
+	}
+
+
+	private List<Object[]> filteredProgressList(List<Object[]> progressList, String activityId, LocalDate from, LocalDate to) {
+	    return progressList.stream()
+	        .filter(e -> e[1].toString().equalsIgnoreCase(activityId)
+	                && !LocalDate.parse(e[3].toString()).isBefore(from)
+	                && !LocalDate.parse(e[3].toString()).isAfter(to))
+	        .collect(Collectors.toList());
+	}
+	
+	@RequestMapping(value = "PreProjectDocRep.htm")
+	public String PreProjectDocRep(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LoginType = (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LabCode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside PreProjectDocRep.htm "+UserId);
+
+		try {
+			List<Object[] > projectslist= reqservice.getPreProjectList(LoginType, LabCode, EmpId);				
+			String initiationId=req.getParameter("initiationId");
+			Map md = model.asMap();
+			if(initiationId==null) {		
+				md = model.asMap();
+				initiationId = (String) md.get("initiationId");   
+			}
+			if(initiationId==null) {
+				try {
+					initiationId=projectslist.get(0)[0].toString();
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+			req.setAttribute("projectslist", projectslist);
+			req.setAttribute("initiationId",initiationId);		
+		}		
+		catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside PreProjectDocRep.htm "+UserId, e); 
+			return "static/Error";
+		}
+		return "filerepo/PreProjectRepMaster";
+	}
+	
+ 	@RequestMapping(value = "preProjectMainFolderList.htm", method = RequestMethod.GET)
+		public @ResponseBody String getPreProjectMainFolderList(HttpServletRequest req, HttpSession ses) throws Exception {
+
+			String UserId = (String) ses.getAttribute("Username");
+			String labcode = (String) ses.getAttribute("labcode");
+			
+			String initiationId=req.getParameter("initiationId");
+			List<Object[]> folderList =null;
+			logger.info(new Date() +"Inside MainSystemList.htm "+UserId);
+			try {
+				folderList=service.getPreProjectFolderList(initiationId,labcode);
+			}catch (Exception e) {
+				e.printStackTrace();  logger.error(new Date() +" Inside preProjectMainFolderList.htm "+UserId, e); return "static/Error";
+			}
+			Gson json = new Gson();
+			return json.toJson(folderList);
+
+		}
+ 	
+ 	@RequestMapping(value = "preProjectSubFolderList.htm", method = RequestMethod.GET)
+ 	public @ResponseBody String getPreProjectSubFolderList(HttpServletRequest req, HttpSession ses) throws Exception {
+ 		
+ 		String UserId = (String) ses.getAttribute("Username");
+ 		String labcode = (String) ses.getAttribute("labcode");
+ 		
+ 		String initiationId=req.getParameter("initiationId");
+ 		String mainLevelId=req.getParameter("mainLevelId");
+ 		List<Object[]> folderList =null;
+ 		logger.info(new Date() +"Inside MainSystemList.htm "+UserId);
+ 		try {
+ 			folderList=service.getPreProjectSubFolderList(initiationId,mainLevelId,labcode);
+ 		}catch (Exception e) {
+ 			e.printStackTrace();  logger.error(new Date() +" Inside preProjectMainFolderList.htm "+UserId, e); return "static/Error";
+ 		}
+ 		Gson json = new Gson();
+ 		return json.toJson(folderList);
+ 	}
+ 	
+ 	@RequestMapping(value = "checkPreProjectFolderNames.htm", method = RequestMethod.GET)
+	public @ResponseBody String getPreProjectFileRepMasterNames(HttpServletRequest req,HttpSession ses) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside getPreProjectFileRepMasterNames"+UserId);
+		int count = 0;
+		Gson json = new Gson();
+		try {				
+			
+			String initiationId=req.getParameter("initiationId");
+			String fileId=req.getParameter("fileId");
+			String fileType=req.getParameter("fileType");
+			String fileName=req.getParameter("fileName");
+			count=service.getPreProjectFileRepMasterNames(initiationId,fileType,fileId,fileName);
+		}
+		catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside checkPreProjectFolderNames.htm"+UserId, e);
+		}
+		return json.toJson(count);	
+	}
+ 	
+	@RequestMapping(value="PreProjectFileRepAdd.htm",method = RequestMethod.POST)
+	public @ResponseBody String addPreProjectFileRep(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside PreProjectFileRepAdd.htm "+UserId);
+		long count = 0l;
+		Gson json = new Gson();
+		try {
+			FileRepMasterPreProject fileRepo=new FileRepMasterPreProject();
+			fileRepo.setLabCode(LabCode);
+			fileRepo.setLevelName(req.getParameter("levelName").trim());
+			fileRepo.setInitiationId(Long.parseLong(req.getParameter("initiationId")));
+			fileRepo.setCreatedBy(UserId);
+			count=service.preProjectRepMasterInsert(fileRepo);
+		}
+		catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside PreProjectFileRepAdd.htm "+UserId, e); 
+		}
+		return json.toJson(count);	
+	}
+	
+	@RequestMapping(value="PreProjectFileRepMasterSubAdd.htm",method = RequestMethod.POST)
+	public @ResponseBody String preProjectFileMasterSubAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside PreProjectFileRepMasterSubAdd.htm "+UserId);
+		long count = 0l;
+		Gson json = new Gson();
+		try {
+			FileRepMasterPreProject fileRepo=new FileRepMasterPreProject();
+			fileRepo.setLabCode(LabCode);
+			fileRepo.setInitiationId(Long.parseLong(req.getParameter("initiationId")));
+			fileRepo.setLevelName(req.getParameter("levelName").trim());
+			fileRepo.setParentLevelId(Long.parseLong(req.getParameter("parentLevelId")));
+			fileRepo.setLevelId(Long.parseLong(req.getParameter("levelId"))+1);
+			fileRepo.setCreatedBy(UserId);
+			count=service.preProjectFileRepMasterSubInsert(fileRepo);
+		}
+		catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside PreProjectFileRepMasterSubAdd.htm "+UserId, e); 
+		}
+		return json.toJson(count);	
+	}
+	
+	@RequestMapping(value = "PreProjectFolderNameEdit.htm")
+	public @ResponseBody String PreProjectFolderNameEdit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside PreProjectFolderNameEdit.htm "+UserId);		
+		long count = 0l;
+		Gson json = new Gson();
+		try {
+			String filerepmasterid = req.getParameter("filerepmasterid");
+			String levelname = req.getParameter("levelname").trim();
+			String levelType = req.getParameter("levelType");
+			count = service.preProjectfileEditSubmit(filerepmasterid, levelname, levelType);
+		}
+		catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside PreProjectFolderNameEdit.htm "+UserId, e); 
+		}
+		return json.toJson(count);	
+	}
+	
+	
+	@RequestMapping(value = "getPreProjectOldFileNames.htm", method = RequestMethod.GET)
+	public @ResponseBody String getPreProjectOldFileNames(HttpServletRequest req,HttpSession ses) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside getPreProjectOldFileNames"+UserId);
+		List<Object[]> fileDocNameList=null;
+		Gson json = new Gson();
+		try {				
+			String initiationId=req.getParameter("initiationId");
+			String fileId=req.getParameter("fileId");
+			String fileType=req.getParameter("fileType");
+			fileDocNameList=service.getPreProjectOldFileNames(initiationId,fileType,fileId);
+		}
+		catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside getPreProjectOldFileNames"+UserId, e);
+		}
+		return json.toJson(fileDocNameList);	
+	}
+	
+	@RequestMapping(value = "uploadPreProjectFile.htm", method = RequestMethod.POST)
+	public @ResponseBody String uploadPreProjectFile(HttpServletRequest req,HttpSession ses,
+			@RequestParam(name = "fileAttach", required = false) MultipartFile file,
+			@RequestParam("docName") String docName,
+			@RequestParam("fileRepId") String fileRepId,
+			@RequestParam("initiationId") String initiationId,
+			@RequestParam("mainLevelId") String mainLevelId,
+			@RequestParam("subLevelId") String subLevelId,
+			@RequestParam("isnewversion") String isnewversion,
+        	@RequestParam("fileType") String fileType) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside uploadPreProjectFile"+UserId);
+		long result = 0l;
+		Gson json = new Gson();
+		try {
+			
+			FileUploadDto upload = new FileUploadDto();
+			upload.setFileId(fileRepId);
+			upload.setFileRepMasterId(mainLevelId);
+			upload.setSubL1(subLevelId);
+			upload.setDocumentName(docName);
+			upload.setIS(file.getInputStream());
+			upload.setFileNamePath(file.getOriginalFilename());
+			upload.setInitiationId(initiationId);
+			upload.setUserId(UserId);
+			upload.setLabCode(labcode);
+			upload.setIsNewVersion(isnewversion);
+			
+			result=service.uploadPreProjectFile(upload,fileType);
+		}
+		catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside uploadPreProjectFile"+UserId, e);
+		}
+		return json.toJson(result);	
+	}
+	
+	
+	@RequestMapping(value = "preProjectFileDownload.htm/{id}", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<Resource> downloadPreProjectFile(
+			 @PathVariable("id") Long id,
+		     @RequestParam("fileType") String fileType,
+	        HttpServletRequest req) throws Exception {
+
+	    Optional<FileRepUploadPreProject> optionalFile = service.getPreProjectFileById(id);
+	    if (!optionalFile.isPresent()) {
+	        return ResponseEntity.notFound().build();
+	    }
+
+	    FileRepUploadPreProject fileEntity = optionalFile.get();
+	    if (fileEntity.getFilePath() == null || fileEntity.getFileName() == null) {
+	        return ResponseEntity.badRequest().build();
+	    }
+
+	    try {
+	        Zipper zip = new Zipper();
+
+	        // Build zip file path
+	        String[] parts = fileEntity.getFilePath().replaceAll("[/\\\\]", ",").split(",");
+	        String zipName = String.format("%s%s-%s.zip",
+	                fileEntity.getFileNameUi(),
+	                fileEntity.getVersionDoc(),
+	                fileEntity.getReleaseDoc());
+
+	        Path zipFilePath;
+	        if ("mainLevel".equalsIgnoreCase(fileType)) {
+	            zipFilePath = Paths.get(FilePath, parts[0], parts[1], parts[2], parts[3], zipName);
+	        } else {
+	            zipFilePath = Paths.get(FilePath, parts[0], parts[1], parts[2], parts[3], parts[4], zipName);
+	        }
+
+	        if (!Files.exists(zipFilePath)) {
+	            return ResponseEntity.notFound().build();
+	        }
+
+	        // Extract zip to a temp folder
+	        String tempDirPath = req.getServletContext().getRealPath("/view/temp/" + UUID.randomUUID());
+	        File tempDir = new File(tempDirPath);
+	        tempDir.mkdirs();
+
+	        zip.unpack(zipFilePath.toString(), tempDirPath, fileEntity.getFilePass());
+
+	        // Find the single PDF inside
+	        File[] pdfFiles = tempDir.listFiles((d, name) -> name.toLowerCase().endsWith(".pdf"));
+	        if (pdfFiles == null || pdfFiles.length == 0) {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	        }
+
+	        File pdfFile = pdfFiles[0];
+	        Resource resource = new UrlResource(pdfFile.toURI());
+
+	        return ResponseEntity.ok()
+	                .contentType(MediaType.APPLICATION_PDF)
+	                .header(HttpHeaders.CONTENT_DISPOSITION,
+	                        "inline; filename=\"" + pdfFile.getName() + "\"")
+	                .body(resource);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	    }
+	}
+	
+	
+	@RequestMapping(value = "getPreProjectDocVersionList.htm", method = RequestMethod.GET)
+	public @ResponseBody String getPreProjectDocVersionList(HttpServletRequest req,HttpSession ses) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside getFileRepDocList"+UserId);
+		List<Object[]> fileDocList= new ArrayList<>();
+		Gson json = new Gson();
+		try {				
+			String fileRepId=req.getParameter("fileRepId");
+			fileDocList=service.preProjectFileRepDocsList(fileRepId);
+		}
+		catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside getFileRepDocList"+UserId, e);
+		}
+		return json.toJson(fileDocList);	
+	}
+	
+	@RequestMapping(value = "PreProjectFileRepMasterListAllAjax.htm", method = RequestMethod.GET)
+	public @ResponseBody String PreProjectFileRepMasterListAllAjax(Model model,HttpServletRequest req, HttpSession ses,HttpServletResponse res)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside PreProjectFileRepMasterListAllAjax.htm "+UserId);
+
+		String initiationId= req.getParameter("initiationId");	
+		List<Object[]> FileLevelSublevelName = service.getPreProjectFileRepMasterListAll(initiationId,LabCode);
+
+		Gson json = new Gson();
+		return json.toJson(FileLevelSublevelName);
+	}
+	
+	@GetMapping("/pdf-viewer")
+	public String pdfViewerPage() {
+	    return "filerepo/pdfViewer"; 
+	}
+	
+	@RequestMapping(value="submitMilestoneFeedBack.htm")
+	public @ResponseBody String submitMilestoneFeedBack(HttpServletRequest req, HttpSession ses,HttpServletResponse res
+			)throws Exception 
+	{
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside removeFileAttachment.htm "+UserId);
+		try {
+			String activityId = req.getParameter("activityId");
+			String remarks = req.getParameter("remarks");
+			//long result = service.deleteMilsetone(activityId);
+			
+			
+			System.out.println("remarks--->"+remarks);
+			System.out.println("activityId--->"+activityId);
+			
+			MilestoneActivityLevelRemarks cmd = new MilestoneActivityLevelRemarks();
+			
+			cmd.setEmpid(Long.parseLong(EmpId));
+			cmd.setActivityId(Long.parseLong(activityId));
+			cmd.setRemarks(remarks);
+			cmd.setCreatedDate(sdtf.format(new Date()));
+			cmd.setIsactive(1);	
+			
+			
+			Gson json = new Gson();
+			
+			return json.toJson(service.saveMilestoneActivityLevelRemarks(cmd));
+		} catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside submitMilestoneFeedBack.htm "+UserId, e); 
+			return "static/Error";
+		}
+		
+	}
+	
+	@RequestMapping(value = "getMilestoneDraftRemarks.htm", method = RequestMethod.GET)
+	public @ResponseBody String getMilestoneDraftRemarks(HttpSession ses, HttpServletRequest req) throws Exception 
+	{
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String LoginType = (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		List<Object[]>list = new ArrayList<Object[]>();
+		Gson json = new Gson();
+		try {
+			
+					
+			Long activityId = Long.parseLong(req.getParameter("activityId") );			
+			
+		
+			
+	
+			list = service.getMilestoneDraftRemarks(activityId);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return json.toJson(list);
+	}
+	
+	
+	@RequestMapping(value = "MilestoneActivityManage.htm")
+	public String MilestoneActivityManage(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
+		
+		String UserId = (String) ses.getAttribute("Username");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LabCode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside MilestoneActivityList.htm "+UserId);		
+		try {
+			String ProjectId=req.getParameter("ProjectId");
+			if(ProjectId==null)  {
+				Map md=model.asMap();
+				ProjectId=(String)md.get("ProjectId");
+			}	
+			List<Object[] > projlist= service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+			
+			if(projlist.size()==0) 
+			{				
+				redir.addAttribute("resultfail", "No Project is Assigned to you.");
+				return "redirect:/MainDashBoard.htm";
+			}
+			
+			
+			
+			if(ProjectId==null) {
+				try {
+					Object[] pro=projlist.get(0);
+					ProjectId=pro[0].toString();
+				}catch (Exception e) {
+					
+				}
+			}
+			req.setAttribute("EmployeeList", service.EmployeeList());
+			
+			List<Object[]> main=service.MilestoneActivityList(ProjectId);
+			req.setAttribute("MilestoneActivityList",main );
+			req.setAttribute("ProjectList",projlist);
+			req.setAttribute("ProjectId", ProjectId);
+			req.setAttribute("EmployeeList", service.EmployeeList());
+			if(ProjectId!=null) {
+				req.setAttribute("ProjectDetails", service.ProjectDetails(ProjectId).get(0));
+				int MainCount=1;
+				for(Object[] objmain:main ) {
+					int countA=1;
+					List<Object[]>  MilestoneActivityA=service.MilestoneActivityLevel(objmain[0].toString(),"1");
+					req.setAttribute(MainCount+"MilestoneActivityA", MilestoneActivityA);
+					for(Object[] obj:MilestoneActivityA) {
+						List<Object[]>  MilestoneActivityB=service.MilestoneActivityLevel(obj[0].toString(),"2");
+						req.setAttribute(MainCount+"MilestoneActivityB"+countA, MilestoneActivityB);
+						int countB=1;
+						for(Object[] obj1:MilestoneActivityB) {
+							List<Object[]>  MilestoneActivityC=service.MilestoneActivityLevel(obj1[0].toString(),"3");
+							req.setAttribute(MainCount+"MilestoneActivityC"+countA+countB, MilestoneActivityC);
+							int countC=1;
+							for(Object[] obj2:MilestoneActivityC) {
+								List<Object[]>  MilestoneActivityD=service.MilestoneActivityLevel(obj2[0].toString(),"4");
+								req.setAttribute(MainCount+"MilestoneActivityD"+countA+countB+countC, MilestoneActivityD);
+								int countD=1;
+								for(Object[] obj3:MilestoneActivityD) {
+									List<Object[]>  MilestoneActivityE=service.MilestoneActivityLevel(obj3[0].toString(),"5");
+									req.setAttribute(MainCount+"MilestoneActivityE"+countA+countB+countC+countD, MilestoneActivityE);
+									countD++;
+								}
+								countC++;
+							}
+							countB++;
+						}
+						countA++;
+					}
+					MainCount++;
+				}
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside MilestoneActivityList.htm "+UserId, e); 
+			return "static/Error";
+			
+		}
+		return "milestone/MilestoneActivityManage";
+	}
 }
 
 

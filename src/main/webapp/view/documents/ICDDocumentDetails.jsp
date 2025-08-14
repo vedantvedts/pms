@@ -848,7 +848,7 @@
 												<td ><%=obj[2] %></td>
 												<td class="center" >
 												    <form id="deleteForm_<%= obj[0] %>" action="#" method="POST" name="myfrm" style="display: inline">
-												        <button type="submit" class="editable-clicko" formaction="ExternalElementDelete.htm" onclick="return confirmDeletion('<%=obj[5] %>');">
+												        <button type="submit" class="editable-clicko" formaction="ExternalElementDelete.htm" onclick="return confirm('Are you sure to delete?')">
 												            <img src="view/images/delete.png" alt="Delete">
 												        </button>
 												        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
@@ -1950,7 +1950,7 @@ function DownloadDocPDF(){
 	           			{
 	                    	image: 'data:image/png;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(imagepathFile))%>',
 	                    	width: 500,
-	                       	height: 100,
+	                       	height: 400,
 	                       	alignment: 'center',
 	                       	margin: [0, 5, 0, 5],
 	                   	},

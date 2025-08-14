@@ -180,7 +180,7 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 
 <div class="col-md-3">
   <div class="form-group">
-    <label>Division:<span class="mandatory" style="color: red;">*</span></label>
+    <label>Division:</label>
     <select class="form-control selectdee" id="Division" name="Division" data-container="body" data-live-search="true" required="required" style="font-size: 5px;">
       <option value="0">--Select--</option>
       <% for (Object[] obj : DivisionList) { %>

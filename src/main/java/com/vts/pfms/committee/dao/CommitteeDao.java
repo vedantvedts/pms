@@ -33,7 +33,8 @@ import com.vts.pfms.committee.model.CommitteeSubSchedule;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.committee.model.PmsEnote;
 import com.vts.pfms.committee.model.PmsEnoteTransaction;
-import com.vts.pfms.committee.model.ProgammeProjects;
+import com.vts.pfms.committee.model.ProgrammeProjects;
+import com.vts.pfms.milestone.model.FileRepUploadPreProject;
 import com.vts.pfms.committee.model.ProgrammeMaster;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
@@ -44,7 +45,7 @@ public interface CommitteeDao {
 	public List<Object[]> EmployeeList(String LabCode) throws Exception;
 	public Object[] CommitteeName(String CommitteeMainId)throws Exception;
 	public long CommitteeDetailsSubmit(CommitteeMain committeemain) throws Exception;
-	public Long LastCommitteeId(String CommitteeId,String projectid,String divisionid,String initiationid, String carsInitiationId) throws Exception;
+	public Long LastCommitteeId(String CommitteeId,String projectid,String divisionid,String initiationid, String carsInitiationId, String programmeId) throws Exception;
 	public Long UpdateCommitteemainValidto(CommitteeMain committeemain) throws Exception;
 	public long CommitteeNewAdd(Committee committeeModel) throws Exception;
 	public List<Object[]> CommitteeNamesCheck(String name, String sname,String projectid,String LabCode) throws Exception;
@@ -342,7 +343,7 @@ public interface CommitteeDao {
 	public Long getCommitteeMainIdByProgrammeId(String programmeId) throws Exception;
 	public List<Object[]> prgmScheduleList(String programmeId) throws Exception;
 	public Long prgmMeetingCount(String programmeId) throws Exception;
-	public List<ProgammeProjects> getProgammeProjectsList(String programmeId) throws Exception;
+	public List<ProgrammeProjects> getProgrammeProjectsList(String programmeId) throws Exception;
 	public List<Object[]> prgmProjectList(String programmeId) throws Exception;
 	public ProgrammeMaster getProgrammeMasterById(String programmeId) throws Exception;
 	/* ********************************************* Programme AD End************************************************ */
@@ -351,4 +352,6 @@ public interface CommitteeDao {
 	public List<Object[]> getdraftMomList(String empId, String pageSize)throws Exception;
 	public long saveCommitteeSchedulesMomDraftRemarks(CommitteeSchedulesMomDraftRemarks cmd)throws Exception;
 	public List<Object[]> getCommitteeSchedulesMomDraftRemarks(Long scheduleId)throws Exception;
+	public List<Object[]> preProjectlist(String labCode)throws Exception;
+	public FileRepUploadPreProject getPreProjectAgendaDocById(String filerepid)throws Exception;
 }

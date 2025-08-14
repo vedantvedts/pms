@@ -63,7 +63,7 @@
 		               				<option value="" disabled selected>Choose...</option>
 		               				<%for(Object[] obj : dataTypeMasterList ){
 		                			 %>
-										<option value="<%=obj[0]%>" <%if(fieldMaster!=null && fieldMaster.getDataTypeMasterId()!=null && fieldMaster.getDataTypeMasterId()==Long.parseLong(obj[0].toString())) {%>selected<%} %> ><%=obj[1] %><%=obj[3] %></option>
+										<option value="<%=obj[0]%>" <%if(fieldMaster!=null && fieldMaster.getDataTypeMasterId()!=null && fieldMaster.getDataTypeMasterId()==Long.parseLong(obj[0].toString())) {%>selected<%} %> ><%=obj[3] %></option>
 									<%} %>
 								</select>
 							</div>

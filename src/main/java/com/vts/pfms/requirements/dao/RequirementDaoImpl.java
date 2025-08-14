@@ -524,7 +524,7 @@ public class RequirementDaoImpl implements RequirementDao {
 
 	}
 
-	private static final String GETPREPROJECTLIST = "SELECT a.InitiationId,a.ProjectProgramme,a.ProjectShortName,a.ProjectTitle FROM pfms_initiation a WHERE a.IsActive AND a.LabCode=:LabCode AND (CASE WHEN :LoginType IN ('A','Z','E','L') THEN 1=1 ELSE a.EmpId=:EmpId END)";
+	private static final String GETPREPROJECTLIST = "SELECT a.InitiationId,a.ProjectProgramme,a.ProjectShortName,a.ProjectTitle,a.EmpId FROM pfms_initiation a WHERE a.IsActive AND a.LabCode=:LabCode AND (CASE WHEN :LoginType IN ('A','Z','E','L') THEN 1=1 ELSE a.EmpId=:EmpId END)";
 	@Override
 	public List<Object[]> getPreProjectList(String loginType,String labcode, String empId) throws Exception {
 		try {
@@ -1613,7 +1613,7 @@ public class RequirementDaoImpl implements RequirementDao {
 	}
 	
 	
-	private static final String MILISACTIVE = "UPDATE milestone_activity SET isactive= '0' WHERE MilestoneActivityId=:id";
+	private static final String MILISACTIVE = "DELETE from  milestone_activity  WHERE MilestoneActivityId=:id";
 	@Override
 	public int setMilestoneInActive(String id) throws Exception {
 	

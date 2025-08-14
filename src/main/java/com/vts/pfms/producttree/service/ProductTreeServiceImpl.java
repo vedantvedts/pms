@@ -253,5 +253,16 @@ public class ProductTreeServiceImpl implements ProductTreeService {
 		return 0;
 	}
 
+	@Override
+	public ProductTree getProductTreeById(long mainId) throws Exception {
+		
+		return dao.getLevelNameById(mainId);
+	}
+	
+	@Override
+	public long LevelNameEdit(ProductTree productTree) throws Exception {
+		
+		return dao.LevelNameEdit(productTree);
+	}
 }
 		

@@ -3,12 +3,18 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+ 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/sweetalert2.min.css"
+	var="sweetalertCss" />
+<spring:url value="/resources/js/sweetalert2.min.js" var="sweetalertJs" />
+<link href="${sweetalertCss}" rel="stylesheet" />
+<script src="${sweetalertJs}"></script>
 <title>Milestone Assignee List</title>
 <style type="text/css">
 label{
@@ -89,9 +95,119 @@ cursor: pointer;
 }
 
 .customTooltip {
+  position: fixed; /* Center the modal */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  z-index: 9999;
+
+  width: 60%;  /* Adjust modal width */
+  max-width: 600px;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-size: 1.3rem;
+  color: #333;
   transition: opacity 0.2s ease;
-  max-width: 450px;
-  white-space: normal;
+}
+.customTooltip .closeModal {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #888;
+}
+.customTooltip .closeModal:hover {
+  color: #333;
+}
+
+
+.chat-container {
+	max-width: 800px;
+	height: 600px;
+	margin: 30px auto;
+	background-color: #f8f9fa;
+	border: 1px solid #dee2e6;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.chat-body {
+	flex-grow: 1;
+	overflow-y: auto;
+}
+
+.chat-message {
+	margin: 10px 0;
+	padding: 12px 16px;
+	border-radius: 20px;
+	max-width: 75%;
+	word-break: break-word;
+	font-size: 14px;
+}
+
+.user-msg {
+	background-color: #ffffff;
+	border: 1px solid #dee2e6;
+	align-self: flex-start;
+}
+
+.admin-msg {
+	background-color: #d1e7dd;
+	border: 1px solid #badbcc;
+	align-self: flex-end;
+	margin-left: auto;
+}
+
+.chat-message strong {
+	display: block;
+	font-size: 13px;
+	color: #343a40;
+	margin-bottom: 4px;
+}
+
+.timestamp {
+	font-size: 11px;
+	color: #6c757d;
+	text-align: right;
+	margin-top: 6px;
+	font-weight: bold;
+}
+
+.chat-input {
+	position: sticky;
+	bottom: 0;
+	z-index: 10;
+}
+
+.sender-name {
+	font-weight: bold;
+	display: block;
+	color: #343a40;
+}
+
+/* .btn.submit {
+    width: 150px;
+    border-radius: 25px;
+    padding: 8px 20px;
+    font-weight: 600;
+} */
+@media ( max-width : 768px) {
+	.chat-container {
+		height: auto;
+	}
+	.chat-message {
+		max-width: 90%;
+	}
+	.btn.submit {
+		width: 100%;
+	}
 }
 </style>
 </head>
@@ -106,6 +222,9 @@ cursor: pointer;
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
   String ProjectId=(String)request.getAttribute("ProjectId");
+  Long empId = (Long)session.getAttribute("EmpId");
+  String LoginType = (String)session.getAttribute("LoginType");
+  Long projectDirector =0l;
  %>
  
  	<% String ses = (String) request.getParameter("result"); 
@@ -145,7 +264,7 @@ cursor: pointer;
      			<select class="form-control selectdee" id="ProjectId" required="required" name="ProjectId" onchange="this.form.submit()">
      				<option disabled="disabled"  selected value="">Choose...</option>
      				<% for (Object[] obj : ProjectList) {
-    					String projectshortName=(obj[17]!=null)?" ("+obj[17].toString()+") ":""; %>
+     					projectDirector = Long.parseLong(obj[23].toString());	String projectshortName=(obj[17]!=null)?" ("+obj[17].toString()+") ":""; %>
 	 					<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>><%=obj[4]+projectshortName%>  </option>
 	 				<%} %>
      			</select>
@@ -201,7 +320,7 @@ cursor: pointer;
 									%>
 										<tr>
 											<td class="center">
-												<%=++slno %>
+												<%=++slno %>.
 											</td>
 											<td class="center">M<%=obj[5]%></td>
 											<td class="center"></td>
@@ -312,7 +431,7 @@ cursor: pointer;
 											Object[] levelsMapData = milestoneActivityLevelsMap.get(Long.parseLong(obj[0].toString()));
 									%>
 										<tr>
-											<td class="center"><%=++slno %> </td>
+											<td class="center"><%=++slno %>. </td>
 											<td class="center"><%=levelsMapData[2] %></td>
 											<td class="center"><%=levelsMapData[1] %> </td>
 											<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;">
@@ -361,12 +480,13 @@ cursor: pointer;
 												<%} %>
 											</td>
                                                       
-											<td>
+											<td style="display: flex;justify-content: space-around;">
 												<%if(obj[22]!=null && Integer.parseInt(obj[22].toString())==0){
+													String activityType = "";
 													if(Integer.parseInt(obj[5].toString())<100) { 
 														if(!obj[10].toString().equalsIgnoreCase("0")){ 
 															if(Integer.parseInt(obj[6].toString())>0){
-																String activityType = "";
+															
 																int activityLevelId = obj[23]!=null?Integer.parseInt(obj[23].toString()):0;
 																if(activityLevelId==1) {
 																	activityType = "A";
@@ -380,11 +500,13 @@ cursor: pointer;
 																	activityType = "E";
 																}
 																%>
-																<%-- <%if(obj[24]!=null &&  !obj[24].toString().equalsIgnoreCase("0")  && !obj[25].toString().equalsIgnoreCase("Y")) {%>
+																 <%if(obj[24]!=null &&  !obj[24].toString().equalsIgnoreCase("0")  && obj[25].toString().equalsIgnoreCase("L")) { %>
                                                          		<span class="hover text-primary" style="color:blue ; font-weight: bold" onmouseover="showContent('<%=obj[24].toString() %>',this)">Linked Milestone </span>
-                                                         			<div class="customTooltip" id="customTooltip<%=obj[24].toString() %>" style="position:absolute; display:none; z-index:9999; background:#fff; border:1px solid #ccc; padding:8px 10px; border-radius:6px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); font-size:13px; color:#333; pointer-events:none;"></div>
+		                                                         			<div class="customTooltip" id="customTooltip<%=obj[24].toString() %>">
+		  																		<span class="closeModal" onclick="closeModal('<%=obj[24].toString() %>')">&times;</span>
+																			</div>
                                                          	
-                                                         		<%}else{ %> --%>
+                                                         		<%}else{ %> 
                                                          		<form class="form-inline"  method="POST" action="M-A-Update.htm">
                         	                                  		<button class="btn edit"  data-toggle="tooltip" data-placement="top"  title="UPDATE"> <i class="fa fa-wrench"  aria-hidden="true"></i> </button>
                                                                  	<input type="hidden" name="MilestoneActivityId"	value="<%=levelsMapData[0] %>" /> 
@@ -394,14 +516,31 @@ cursor: pointer;
                                                                   	<input type="hidden" name="ActivityType" value="<%=activityType %>" /> 
                                                                     <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
                                                         		</form>
-                                                        	<%-- 	<%} %> --%>
+                                                        		  <button class="btn btn-primary" type="button" onclick="showModal('<%=obj[0].toString()%>','<%=levelsMapData[2] %>','<%=levelsMapData[1] %>','<%=obj[4].toString() %>')" data-toggle="tooltip" data-placement="top"  title="FeedBack"><i class="fa fa-comments" style="color:white" aria-hidden="true"></i></button>
+                                                        		<%} %> 
+                                                        		
+                                                        		
                                            					<%}else{ %>
                                                             	Weightage Not Set 
                                                                    
                                                         <%}}else{ %>
                                                         	Base Line Not Set
                                                  	<%} }else{ %> 
-                                                    	Completed 
+                                                 		
+                                                 	<%if(LoginType.equalsIgnoreCase("A")||empId.equals(projectDirector)){ %>
+                                                 		<form class="form-inline"  method="POST" action="M-A-Update.htm">
+                        	                                  		<button class="btn edit"  data-toggle="tooltip" data-placement="top"  title="REOPEN">	<i class="fa fa-window-restore" aria-hidden="true"></i></button>
+                                                                 	<input type="hidden" name="MilestoneActivityId"	value="<%=levelsMapData[0] %>" /> 
+                                                                  	<input type="hidden" name="ActivityId" value="<%=obj[0] %>" /> 
+                                                                  	<input type="hidden" name="startdate" value="<%=obj[2].toString() %>" >
+                                                                  	<input type="hidden" name="ProjectId" value="<%=ProjectId %>" /> 
+                                                                  	<input type="hidden" name="ActivityType" value="<%=activityType %>" /> 
+                                                                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+                                                        		</form>
+                                                 
+                                                 	<%}else{ %>
+                                                    	Completed
+                                                    	<%} %> 
                                                 	<%} %>
                                             	<%} %>
                                         	</td>	
@@ -449,7 +588,7 @@ cursor: pointer;
 				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
 				
 				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
-					<b class="text-primary">Assign Weightage </b>
+					<b class="text-primary">Assign Weightage1 </b>
 				</td>
 				<td class="trup" style="width: 10px; height: 20px;"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
@@ -538,10 +677,113 @@ cursor: pointer;
 		</div>
 	</div>
 			
-						
+			
+		<!-- Chat Modal  -->	
+				
+		<div class="modal fade" id="chatModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="width: 200%; margin-left: -50%;">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Feedbacks</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="chat-container d-flex flex-column">
+
+						<!-- Scrollable chat body -->
+						<div class="chat-body flex-grow-1 overflow-auto px-3 py-2" id="messageEditor">
+
+						</div>
+
+						<!-- Fixed input section -->
+						<div class="chat-input border-top p-3 bg-white">
+
+							<div class="form-group mb-2">
+								<label for="Remarks"><strong>Comment:</strong></label>
+								<textarea rows="2" class="form-control" id="RemarksEdit"
+									name="Remarks" placeholder="Enter Comments" required></textarea>
+							</div>
+							<div class="text-center">
+								<input type="button" class="btn btn-primary btn-sm submit"
+									value="Submit" name="sub" onclick="submitRemarks()"> 
+									
+								<!-- <input type="button" class="btn btn-danger btn-sm delete"
+									value="Close" name="sub"
+									onclick="return confirm('Are You Sure To Close?')"> -->
+							</div>
+
+
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>		
+				
 </body>
 
 <script>
+
+
+var activityId="0";
+function showModal(a,b,c,d){
+	console.log(a)
+	
+	var feedBack = "Feedback for "+d+ " ("+ b+"-"+c+")"
+	 $.ajax({
+	
+		type:'GET',
+		url:'getMilestoneDraftRemarks.htm',
+		datatype:'json',
+		data:{
+			activityId:a,
+		},
+		success : function (result){
+			var ajaxresult = JSON.parse(result);
+			
+			var empid = '<%=empId %>'
+			
+			var html = "";
+		
+			for (var i=0;i<ajaxresult.length;i++){
+				
+				var sender = ajaxresult[i][4];
+				if(sender==empid){
+					html=html +'<div class="chat-message user-msg">'
+				}else{
+					html=html +'<div class="chat-message admin-msg">'
+				}
+				
+				var senderName = ajaxresult[i][0]+", "+ajaxresult[i][1];
+				var message = ajaxresult[i][2];
+				var arr= ajaxresult[i][3].split(" ");
+				var msgdate = arr[0].split("-")[2]+"-"+arr[0].split("-")[1]+"-"+arr[0].split("-")[0];
+				
+				var msgtime = arr[1].substring(0,5);
+				
+				html = html +
+						'<strong class="sender-name">'+senderName +'</strong>'+message 
+						+'<div class="timestamp">'+msgdate+' '+ msgtime+'</div></div>'
+			}
+			$('#messageEditor').html(html);
+		}
+		
+		
+	})
+	
+	$('#exampleModalLabel').html(feedBack)
+	activityId=a;
+	
+$('#chatModal').modal('show');
+}
+
+
 	$('#DateCompletion').daterangepicker({
 			"singleDatePicker" : true,
 			"linkedCalendars" : false,
@@ -645,7 +887,8 @@ cursor: pointer;
 					        tooltip.style.top = (e.pageY + 10) + "px"; */
 					        tooltip.innerHTML =
 					        	"<span style='font-weight:bold'>Project Code </span>: "+arr[2]+"<br> <span style='font-weight:bold'>Milestone Name: <br></span>"
-					        	+arr[1] + "<br> ( " + arr[0] +" )";
+					        	+arr[1] + "<br> ( " + arr[0] +" )<br>"
+					        	+ "<span class='text-danger' style='font-size:18px;font-weight:bold'>This milestone will progress based on the linked milestone !</span>"
 					   }); 
 					
 					   ele.addEventListener("mouseleave", function () {
@@ -657,7 +900,70 @@ cursor: pointer;
 		})
 	}
 	
-	
+	function submitRemarks(){
+		console.log(activityId)
+		
+		
+		var remarks = $('#RemarksEdit').val().trim();
+		console.log(remarks)
+		
+		if(remarks.length==0){
+			Swal.fire({
+				  icon: "error",
+				  title: "Oops...",
+				  text: "Remarks can not be empty!",
+				
+				});
+			
+			event.preventDefault();
+			return false;
+		}
+		console.log(remarks +"remarks")
+		
+		Swal.fire({
+	title: 'Are you sure?',
+	text: "Do you want to submit the remarks?",
+	icon: 'warning',
+	showCancelButton: true,
+	confirmButtonText: 'Yes',
+	cancelButtonText: 'No'
+	}).then((result) => {
+	if (result.isConfirmed) {
+	     $.ajax({
+	        type: 'GET',
+	        url: 'submitMilestoneFeedBack.htm',
+	        dataType: 'json',  
+	        data: {
+	        	activityId: activityId,
+	            remarks: remarks
+	        },
+	        success: function (result) {
+	            var ajaxresult = JSON.parse(result);
+	            if (Number(ajaxresult) > 0) {
+	                $('#chatModal').modal('hide'); // hide modal first
+
+	                Swal.fire({
+	                    icon: "success",
+	                    title: "SUCCESS",
+	                    text: "Feedback Given",
+	                    allowOutsideClick: false
+	                }).then(() => {
+	                    // After Swal is closed, reopen the modal
+	                    $('#RemarksEdit').val('');
+	                    showModal(scheduleId);
+	                });
+	            }
+	        },
+	        error: function () {
+	            // Optional: show error message
+	            Swal.fire('Error', 'There was an issue submitting your remarks.', 'error');
+	        }
+	    }); 
+	}
+	})
+		
+		
+	}
 	</script>  
 
 </html>

@@ -455,11 +455,11 @@ String labcode= (String)session.getAttribute("labcode");
 												&nbsp;&nbsp; PD Manual
 											</a>
 											<%} %>
-                                            <a class="dropdown-item" href="TimeSheetWorkFlowPdf.htm"
+                                            <!-- <a class="dropdown-item" href="TimeSheetWorkFlowPdf.htm"
 												target="_blank"> <img src="view/images/calendar.png" />
 												&nbsp;&nbsp; Work Register Work Flow
-											</a>
-                                            <a class="dropdown-item" href="userGuide.htm"
+											</a> -->
+                                            <a class="dropdown-item" href="PMSHelpGuide.htm"
 												target="_blank"> <i class="fa fa-question-circle help-icon" aria-hidden="true"></i>
 												&nbsp;&nbsp; Help
 											</a>

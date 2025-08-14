@@ -2,12 +2,13 @@ package com.vts.pfms.master.dao;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
 import com.vts.pfms.committee.model.PfmsEmpRoles;
+import com.vts.pfms.committee.model.ProgrammeMaster;
+import com.vts.pfms.committee.model.ProgrammeProjects;
 import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.model.DivisionEmployee;
 import com.vts.pfms.master.model.DivisionGroup;
@@ -338,6 +339,7 @@ public class MasterDaoImpl implements MasterDao {
 		try {
 			dvEmp.setModifiedBy(dto.getModifiedBy());
 			dvEmp.setModifiedDate(dto.getModifiedDate());
+			dvEmp.setIsActive(0);
 			return 1;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1039,4 +1041,72 @@ public class MasterDaoImpl implements MasterDao {
 				return 0;
 			}
 		}
+		
+		/* **************************** Programme Master - Naveen R  - 16/07/2025 **************************************** */
+		private static final String ProgramMasterList = "SELECT a.ProgrammeId, a.PrgmCode, a.PrgmName, a.PrgmDirector, a.SanctionedOn, CONCAT(IFNULL(CONCAT(b.Title,' '),(IFNULL(CONCAT(b.Salutation, ' '), ''))), b.EmpName) AS 'EmpName', c.Designation FROM pfms_programme_master a, employee b, employee_desig c WHERE a.IsActive = 1 AND a.PrgmDirector = b.EmpId AND b.DesigId= c.DesigId ORDER BY a.ProgrammeId DESC";
+		@Override
+		public List<Object[]> getProgramMasterList() throws Exception {
+			try {
+				Query query = manager.createNativeQuery(ProgramMasterList);
+				return (List<Object[]>)query.getResultList();
+			}catch (Exception e) {
+				e.printStackTrace();
+				return new ArrayList<Object[]>();	
+			}
+				
+		}
+
+		@Override
+		public long addProgrammeMaster(ProgrammeMaster master) throws Exception {
+			try {
+				manager.persist(master);
+				manager.flush();
+				return master.getProgrammeId();
+			}catch (Exception e) {
+				e.printStackTrace();
+				return 0;
+			}
+		}
+
+		private static String PPROGRAMPROJECTLINKEDDELETE = "UPDATE pfms_programme_projects SET IsActive='0' WHERE ProgrammeId=:ProgrammeId ";
+		@Override
+		public int removeProjectLinked(String programmeId) throws Exception {
+			try {
+				Query query =manager.createNativeQuery(PPROGRAMPROJECTLINKEDDELETE);
+				query.setParameter("ProgrammeId", Long.parseLong(programmeId));
+				return query.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+				return 0;
+			}
+		}
+
+		@Override
+		public long addProgrammeProjects(ProgrammeProjects prgmprojects) throws Exception {
+			try {
+				manager.persist(prgmprojects);
+				manager.flush();
+				return prgmprojects.getPrgmProjLinkedId();
+			}catch (Exception e) {
+				e.printStackTrace();
+				return 0;
+			}
+		}
+
+		private static final String PROGRAMCODECHECK = "SELECT COUNT(PrgmCode) FROM pfms_programme_master WHERE IsActive= '1' AND ProgrammeId!=:ProgrammeId AND PrgmCode=:PrgmCode";
+		@Override
+		public Long ProgramCodeCheck(String PrgmCode, String ProgrammeId) throws Exception {
+			try {
+				Query query = manager.createNativeQuery(PROGRAMCODECHECK);
+				query.setParameter("PrgmCode", PrgmCode);
+				query.setParameter("ProgrammeId", ProgrammeId);
+				return (Long) query.getSingleResult();
+			} catch (Exception e) {
+				e.printStackTrace();
+				return 0L;
+			}
+		}
+		/* **************************** Programme Master - Naveen R  - 16/07/2025 End**************************************** */
+
+
 }

@@ -18,6 +18,14 @@ String committeeid=(String)request.getAttribute("committeeid");
     <div class="modal-content">
       <div class="modal-header bg-primary text-light"  >
         <h5 class="modal-title" id="exampleModalLabel">Upload Overall Finance</h5>
+        <div >
+      <form action="#">
+      <input type="hidden" id="mainprojectidDownload" name="mainprojectid" value="<%=projectid%>">
+      <input type="hidden" name="committeeid" value="1">
+      <input type="hidden" name="_csrf" value="ec4f5ad7-8aa0-4cfc-abf5-a08beb4c43a7">
+       <button class="btn" id="downloadExcelBtn" style="display: none;" type="submit" formaction="excelSheetWithFinanceData.htm"    data-toggle="tooltip"  data-toggle="tooltip" data-placement="top"  title="Download Excel Sheet with Data" ><i class="fa fa-download" aria-hidden="true"></i></button>
+      </form>
+      </div>
 		<form action="OverallFinanceExcel.htm" method="post">
 		<button class="btn btn-sm"  data-toggle="tooltip" type="submit" data-toggle="tooltip" data-placement="top"  title="Download Format" ><i class="fa fa-download fa-lg" aria-hidden="true"></i>
 		&nbsp; Sample Format
@@ -74,8 +82,17 @@ String committeeid=(String)request.getAttribute("committeeid");
       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
       <button type="submit" class="btn btn-sm submit" onclick="return confirm('Are you sure to submit?')">Submit</button>
       <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" style="font-weight: 600;text-transform: uppercase;">Close</button>
+    
       </div>
       </form>
+    <%--   <div>
+      <form action="#">
+      <input type="hidden" id="mainprojectidDownload" name="mainprojectid" value="<%=projectid%>">
+      <input type="hidden" name="committeeid" value="<%=committeeid%>">
+      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+       <button class="btn" id="downloadExcelBtn" style="display: none;" type="submit" formaction="excelSheetWithFinanceData.htm"><i class="fa fa-download" aria-hidden="true"></i></button>
+      </form>
+      </div> --%>
     </div>
   </div>
 </div>
@@ -84,12 +101,16 @@ function showModal(projectid,mainprojectid,a){
 	$('#overallfinace').modal('show');
 	$('#financeprojectid').val(projectid)
 	$('#mainprojectid').val(mainprojectid)
+
 	$('#exampleModalLabel').html('Upload Overall Finance( '+ a+' )');
 	
 	var data=$("#tbody"+mainprojectid).html();
 	var trCount = $("#tbody" + mainprojectid).find("tr").length;
 	excel_file.value = '';
 	if(trCount>2){
+		console.log("Hiii")
+		$('#downloadExcelBtn').show();
+		$('#mainprojectidDownload').val(mainprojectid)
 		$('#overalltbody').html(data)
 	}
 }
@@ -113,6 +134,8 @@ excel_file.addEventListener('change', (event) => {
     	
     	var sheet_data = XLSX.utils.sheet_to_json(work_book.Sheets[sheet_name[0]],{header:1});
     	
+    	console.log(sheet_data)
+    	
     	const code = [];
     	const gname = [];
     	const abbreviationname1 = [];
@@ -132,13 +155,14 @@ excel_file.addEventListener('change', (event) => {
 
     				for(var cell =0;cell<=13;cell++){
     					if(row==0){
-    					if(cell==0 && "Head"!= sheet_data[row][cell]){checkExcel++;}
-    					if(cell==2 && "Sanction( in Cr )"!= sheet_data[row][cell]){checkExcel++;}
-    					if(cell==4 && "Expenditure( in Cr )"!= sheet_data[row][cell]){checkExcel++;}
-    					if(cell==6 && "Out Commitment( in Cr )"!= sheet_data[row][cell]){checkExcel++;}
-    					if(cell==8 && "Balance( in Cr )"!= sheet_data[row][cell]){checkExcel++;}
-    					if(cell==10 && "DIPL( in Cr )"!= sheet_data[row][cell]){checkExcel++;}
-    					if(cell==12 && "Notional Balance( in Cr )"!= sheet_data[row][cell]){checkExcel++;}
+    					
+    					if(cell==0 && !sheet_data[row][cell].startsWith("Head")){checkExcel++;}
+    					if(cell==2 && !sheet_data[row][cell].startsWith("Sanction")){checkExcel++;}
+    					if(cell==4 && !sheet_data[row][cell].startsWith("Expenditure") ){checkExcel++;}
+    					if(cell==6 && !sheet_data[row][cell].startsWith("Out Commitment") ){checkExcel++;}
+    					if(cell==8 && !sheet_data[row][cell].startsWith("Balance")){checkExcel++;}
+    					if(cell==10 && !sheet_data[row][cell].startsWith("DIPL") ){checkExcel++;}
+    					if(cell==12 && !sheet_data[row][cell].startsWith("Notional") ){checkExcel++;}
     					}
     					
     					if(checkExcel>0){

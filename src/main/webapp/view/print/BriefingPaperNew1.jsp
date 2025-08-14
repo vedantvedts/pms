@@ -60,14 +60,8 @@ SimpleDateFormat inputFormat = new SimpleDateFormat("ddMMMyyyy");
 SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");	
 Object[] committeeMetingsCount =  (Object[]) request.getAttribute("committeeMetingsCount");
 String CommitteeCode = committee.getCommitteeShortName().trim();
-String No2=null;
+String No2 = CommitteeCode+(Long.parseLong(committeeMetingsCount[1].toString())+1);
 
-if(CommitteeCode.equalsIgnoreCase("PMRC")){ 
-No2="P"+(Long.parseLong(committeeMetingsCount[1].toString())+1);
-}else if(CommitteeCode.equalsIgnoreCase("EB")){
-	No2="E"+(Long.parseLong(committeeMetingsCount[1].toString())+1);
-}
-LocalDate before6months = LocalDate.now().minusMonths(6);
 List<Object[]> otherMeetingList = (List<Object[]>)request.getAttribute("otherMeetingList");
 
 List<List<Object[]>> overallfinance = (List<List<Object[]>>)request.getAttribute("overallfinance");//b
@@ -379,7 +373,6 @@ List<List<Object[]>> lastpmrcactions = (List<List<Object[]>>)request.getAttribut
 
 List<Object[]> TechWorkDataList=(List<Object[]>)request.getAttribute("TechWorkDataList");
 List<List<Object[]>> milestones= (List<List<Object[]>>)request.getAttribute("milestones");
-List<List<Object[]>> milestonesubsystems = (List<List<Object[]>>)request.getAttribute("milestonesubsystems");
 List<List<ProjectFinancialDetails>> projectFinancialDetails =(List<List<ProjectFinancialDetails>>)request.getAttribute("financialDetails");
 List<List<Object[]>> ganttchartlist=(List<List<Object[]>>)request.getAttribute("ganttchartlist"); 
 List<List<Object[]>> oldpmrcissueslist=(List<List<Object[]>>)request.getAttribute("oldpmrcissueslist");
@@ -387,14 +380,14 @@ List<List<Object[]>> riskmatirxdata = (List<List<Object[]>> )request.getAttribut
 List<List<Object[]>> procurementOnDemand = (List<List<Object[]>>)request.getAttribute("procurementOnDemandlist");
 List<List<Object[]>> procurementOnSanction = (List<List<Object[]>>)request.getAttribute("procurementOnSanctionlist");
 List<List<Object[]>> actionplanthreemonths = (List<List<Object[]>>)request.getAttribute("actionplanthreemonths");
-List<Object[]> lastpmrcdecisions = (List<Object[]> )request.getAttribute("lastpmrcdecisions");
 List<Object[]> ProjectDetail=(List<Object[]>)request.getAttribute("ProjectDetails");
 List<String> projectidlist = (List<String>)request.getAttribute("projectidlist");
 List<List<Object[]>> ProjectRevList = (List<List<Object[]>>)request.getAttribute("ProjectRevList");
 List<List<Object[]>> ebandpmrccount = (List<List<Object[]>>)request.getAttribute("ebandpmrccount");
 
-List<List<Object[]>> ReviewMeetingList=(List<List<Object[]>>)request.getAttribute("ReviewMeetingList");
-List<List<Object[]>> ReviewMeetingListPMRC=(List<List<Object[]>>)request.getAttribute("ReviewMeetingListPMRC");
+//List<List<Object[]>> ReviewMeetingList=(List<List<Object[]>>)request.getAttribute("ReviewMeetingList");
+//List<List<Object[]>> ReviewMeetingListPMRC=(List<List<Object[]>>)request.getAttribute("ReviewMeetingListPMRC");
+Map<String, List<Object[]>> reviewMeetingListMap = (Map<String, List<Object[]>>) request.getAttribute("reviewMeetingListMap");
 List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 AESCryptor cryptor = new AESCryptor();
 long ProjectCost = (long)request.getAttribute("ProjectCost");
@@ -411,17 +404,14 @@ Object[] nextMeetVenue =  (Object[]) request.getAttribute("nextMeetVenue");
 String text=(String)request.getAttribute("text");
 List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetails");
 //newly added on 13th sept
-	Map<Integer,String> mappmrc=(Map<Integer,String>)request.getAttribute("mappmrc");
-	Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
+	Map<Integer,String> committeeWiseMap=(Map<Integer,String>)request.getAttribute("committeeWiseMap");
+	//Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 	Map<Integer,String> treeMapLevOne =(Map<Integer,String>)request.getAttribute("treeMapLevOne");
 	Map<Integer,String> treeMapLevTwo =(Map<Integer,String>)request.getAttribute("treeMapLevTwo");
 
 Committee committeeData = (Committee) request.getAttribute("committeeData");
-if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ 
-	before6months = LocalDate.now().minusMonths(3);
-}else if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")){
-	before6months = LocalDate.now().minusMonths(6);
-} 
+LocalDate before6months = LocalDate.now().minusDays(committeeData.getPeriodicDuration());
+ 
 List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envisagedDemandlist");
 
 %>
@@ -640,10 +630,15 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 																			 	
 										<tr>
 											<td  style="width: 20px; padding: 5px; padding-left: 10px">(j)</td>
-											<th style="width: 150px;padding: 5px; padding-left: 10px"><b>No. of EBs and PMRCs held</b> </th>
-								 			<td colspan="2" ><b>EB :</b> <%=ebandpmrccount.get(z).get(1)[1] %></td>
-								 			<td colspan="2"><b>PMRC :</b> <%=ebandpmrccount.get(z).get(0)[1] %></td>
-								 			
+											<th style="width: 150px;padding: 5px; padding-left: 10px"><b>No. of Meetings held</b> </th>
+								 			<td colspan="4">
+												<% if(ebandpmrccount!=null && ebandpmrccount.size()>0){
+													List<Object[]> ebandpmrcsub = ebandpmrccount.get(z); 
+													for(Object[] ebandpmrc: ebandpmrcsub) { %>
+												 	<b><%=ebandpmrc[0] %> : </b>
+													<span><%=ebandpmrc[1] %></span> &emsp;&emsp;
+												<%} }%>
+											</td>
 										</tr>
 										<tr>
 											<td  style="width: 20px; padding: 5px; padding-left: 10px">(k)</td>
@@ -835,23 +830,12 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 								
 									
 									<span style="font-size: 0.85rem;;">	<!-- <i class="fa fa-info-circle fa-lg " style="color: #145374" aria-hidden="true"></i> -->
-								<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("pmrc")){ %>
-								<%for (Map.Entry<Integer, String> entry : mappmrc.entrySet()) {
+								<%for (Map.Entry<Integer, String> entry : committeeWiseMap.entrySet()) {
 									Date date = inputFormat.parse(obj[5].toString().split("/")[3]);
 									 String formattedDate = outputFormat.format(date);
 									 if(entry.getValue().equalsIgnoreCase(formattedDate)){
 										 key2=entry.getKey().toString();
-									 } }}else{%>
-									 <%
-									 for (Map.Entry<Integer, String> entry : mapEB.entrySet()) {
-											Date date = inputFormat.parse(obj[5].toString().split("/")[3]);
-											 String formattedDate = outputFormat.format(date);
-											 if(entry.getValue().equalsIgnoreCase(formattedDate)){
-												 key2=entry.getKey().toString();
-											 }
-									 }
-									 %>
-									 <%} %>
+									 } }%>
 								
 								<%=committee.getCommitteeShortName().trim().toUpperCase()+"-"+key2+"/"+obj[5].toString().split("/")[4] %>
 								
@@ -926,24 +910,13 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 									<td <%if(text!=null && text.equalsIgnoreCase("p")) {%>style="font-weight: bold;"<%} %>>	
 								<!--newly added on 13th sept  -->	
 								<span style="font-size: 12px;"><%if(obj[17]!=null && Long.parseLong(obj[17].toString())>0){ %>
-								<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("pmrc")){ %>
-								<%for (Map.Entry<Integer, String> entry : mappmrc.entrySet()) {
+								<%for (Map.Entry<Integer, String> entry : committeeWiseMap.entrySet()) {
 									Date date = inputFormat.parse(obj[1].toString().split("/")[3]);
 									 String formattedDate = outputFormat.format(date);
 									 if(entry.getValue().equalsIgnoreCase(formattedDate)){
 										 key=entry.getKey().toString();
-									 } }}else{%>
-									 <%
-									 for (Map.Entry<Integer, String> entry : mapEB.entrySet()) {
-											Date date = inputFormat.parse(obj[1].toString().split("/")[3]);
-											 String formattedDate = outputFormat.format(date);
-											 if(entry.getValue().equalsIgnoreCase(formattedDate)){
-												 key=entry.getKey().toString();
-											 }
-									 }
-									 %>
-									 <%} %>
-								<%=committee.getCommitteeShortName().trim().toUpperCase()+key+"/"+obj[1].toString().split("/")[4] %>
+									 } } %>
+								<%=committee.getCommitteeShortName().trim().toUpperCase()+"-"+key+"/"+obj[1].toString().split("/")[4] %>
 								<%}%> </span>
 								</td>
 									<td  style="text-align: justify ;"><%=obj[2] %></td>
@@ -991,102 +964,40 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 						<% for(int z=0 ; z<1;z++) {   %>
 					<h1 class="break"></h1>
 						<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(c) Details of Technical/ User Reviews (if any).</b></div>
-							
-								<div align="center">
-							
-								<div align="center" style="max-width:300px;float:left;">
-								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 20px;max-width:200px;  border-collapse:collapse;float:left;" >
-								<thead>
-									<tr>
-										 <th  style="max-width:50px; ">Committee</th>
-										 <th  style="max-width: 55px; "> Date Held</th>
-									</tr>
-								</thead>
-								<tbody>
-									<%if(ReviewMeetingList.get(z).size()==0){ %>
-									<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
-									<% }
-									else if(ReviewMeetingList.size()>0)
-									{ 
-										int i=1;
-									
-									for(Object[] obj:ReviewMeetingList.get(z)){ %>
-										<tr>
-											<td  style="max-width: 50px;font-size:16px !important; "><%=obj[1] %> #<%=i %></td>												
-											<td  style="max-width: 55px;text-align: center;font-size:16px !important; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
-										</tr>			
-									<%i++;
-									}}else{ %>
-									<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
-									<%} %> 
-								</tbody>
-							</table>
-							</div>
-							<%  int t=1;
-							%>
-							<div align="center" style="max-width:300px;float:left;">
-								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 20px  ;max-width:200px;  border-collapse:collapse; " >
-									<thead>
-										<tr>
-											<th  style="max-width: 70px; ">Committee</th>
-											<th  style="max-width: 80px; "> Date Held</th>
-										</tr>
-									</thead>
-									<tbody>
-										<% if(ReviewMeetingListPMRC.size()>0)
-										  { 
-										for(Object[] obj:ReviewMeetingListPMRC.get(z)){ %>
-										<%if(t==21) break; %>
-										<%if(t<=20){ %>
-											<tr>
-												<td  style="max-width: 70px;font-size:16px !important;"><%=obj[1] %> #<%=t %></td>												
-												<td  style="max-width: 80px;text-align: center;font-size:16px !important; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
-											</tr>
-										<%} 
-										t++;}}
-										else{ %>
-											<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
-									<%} %> 
-								</tbody>
-							</table>
-						</div>
-						<% if(t>20) {%>
-							<div align="center" style="max-width:300px;float:left;">
-								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 20px  ;max-width:200px;  border-collapse:collapse; " >
-									<thead>
-										<tr>
-											 <th  style="max-width: 70px; ">Committee</th>
-											 <th  style="max-width: 80px; "> Date Held</th>
-										</tr>
-									</thead>
-									<tbody>
-										<% if(ReviewMeetingListPMRC.size()>0)
-										  { 
-										for(Object[] obj:ReviewMeetingListPMRC.get(z).stream().skip(20).collect(Collectors.toList())){ %>
-										<%if(t>=20){ %>
-											<tr>
-												<td  style="max-width: 70px;font-size:16px !important;"><%=obj[1] %> #<%=t %></td>												
-												<%-- <td  style="max-width: 200px;font-size:12px !important;" ><%= obj[4]%></td> --%>
-												<td  style="max-width: 80px;text-align: center;font-size:16px !important; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
-											</tr>
-										<%}
-										t++;}}
-										else{ %>
-											<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
-										
-									<%}} %> 
-								</tbody>
-							</table>
-						</div>
-						</div>
-						
+							<div >
+							<%for(Map.Entry<String, List<Object[]>> entry : reviewMeetingListMap.entrySet()) { 
+								if(entry.getValue().size()>0) {%>
+									<div >
+										<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 300px; border-collapse: collapse; float: left;">
+											<thead>
+												<tr>
+													<th  style="width: 140px; ">Committee</th>
+													<th  style="width: 140px; "> Date Held</th>
+												</tr>
+											</thead>
+											<tbody>
+												<%int i=0;
+												for(Object[] obj : entry.getValue()){ %>
+													<tr>
+														<td >
+															<%=entry.getKey()%> #<%=++i %>
+														</td>												
+														<td style="text-align: center; " ><%= fc.sdfTordf(obj[3].toString())%></td>
+													</tr>				
+												<%} %>
+											</tbody>
+										</table>
+									</div>
+								<%} %>
+							<%} %>
+							</div>	
 						<div>
 						<%if(otherMeetingList!=null && otherMeetingList.size()>0) { %>
 						<div align="left"><b><%="Other Meetings" %></b></div>
 						<div align="left"><table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 350px; border-collapse: collapse;">
 						<thead><tr> <th style="width: 140px; ">Committee</th> <th  style="width: 140px; "> Date Held</th></tr></thead>
 						<%for(Object[]obj:otherMeetingList) {%>
-						<tbody><tr><td><%=obj[2]%></td>												
+						<tbody><tr><td><%=obj[3]%></td>												
 								<td  style="text-align: center; " ><%= sdf.format(sdf1.parse(obj[1].toString()))%></td>
 								</tr>
 									</tbody><%}%></table></div> <%} %>		</div>
@@ -2618,9 +2529,15 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 		<h1 class="break"></h1> 
 
 		<!-- <div align="center" style="text-align: center; vertical-align: middle ;font-size:60px;font-weight: 600;margin: auto; position: relative;color: #145374 !important" >THANK YOU</div> -->
+       <%if(thankYouImg!=null ){ %>
        <div class="content" >
-					<img class="" style="width: 100%; height: 100%;" <%if(thankYouImg!=null ){ %> src="data:image/*;base64,<%=thankYouImg%>" alt="Logo"<%}else{ %> alt="Image Not Found" <%} %> > 
-				</div>	
+       			
+					<img class="" style="width: 100%; height: 100%;"  src="data:image/*;base64,<%=thankYouImg%>" alt="Logo" > 
+					</div>	
+				<%}else{ %>
+			 <div align="center" style="text-align: center; vertical-align: middle ;font-size:60px;font-weight: 600;margin-top: 250px; position: relative;color: #145374 !important" >THANK YOU</div>
+				<%} %>
+			
 </body>
 </html>
 

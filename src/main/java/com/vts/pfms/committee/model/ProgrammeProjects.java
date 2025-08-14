@@ -12,8 +12,8 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "pfms_programme_master")
-public class ProgammeProjects implements Serializable {
+@Table(name = "pfms_programme_projects")
+public class ProgrammeProjects implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id

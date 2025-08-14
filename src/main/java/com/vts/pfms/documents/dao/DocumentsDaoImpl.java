@@ -770,7 +770,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 
-	private static final String FIELDMASTER="SELECT a.FieldMasterId, a.FieldName, a.FieldShortName, a.FieldCode, a.FieldDesc, a.DataTypeMasterId, a.TypicalValue, a.FieldMinValue, a.FieldMaxValue, a.InitValue, a.FieldOffSet, a.Quantum, a.FieldUnit, a.Remarks, b.DataTypePrefix, b.DataLength, b.AliasName, b.DataStandardName, (SELECT GROUP_CONCAT(c.FieldGroupId SEPARATOR ',') FROM pfms_field_group_linked c WHERE c.FieldMasterId = a.FieldMasterId AND c.IsActive=1) AS FieldGroupIds FROM pfms_field_master a, pfms_data_type_master b WHERE a.IsActive = 1 AND a.DataTypeMasterId=b.DataTypeMasterId ORDER BY a.FieldMasterId DESC";
+	private static final String FIELDMASTER="SELECT a.FieldMasterId, a.FieldName, a.FieldShortName, a.FieldCode, a.FieldDesc, a.DataTypeMasterId, a.TypicalValue, a.FieldMinValue, a.FieldMaxValue, a.InitValue, a.FieldOffSet, a.Quantum, a.FieldUnit, a.Remarks, b.DataTypePrefix, b.DataLength, b.AliasName, b.DataStandardName, (SELECT GROUP_CONCAT(c.FieldGroupId SEPARATOR ',') FROM pfms_field_group_linked c WHERE c.FieldMasterId = a.FieldMasterId AND c.IsActive=1) AS FieldGroupIds FROM pfms_field_master a, pfms_data_type_master b WHERE a.IsActive = 1 AND a.DataTypeMasterId=b.DataTypeMasterId ORDER BY a.FieldMasterId, a.FieldName ASC";
 	@Override
 	public List<Object[]> fieldMasterList() throws Exception {
 		try {
@@ -1891,7 +1891,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 
 	private static final String GETIRSFIELDDESCRIPTIONLIST = "SELECT a.IRSFieldDescId, a.LogicalInterfaceId, a.FieldMasterId, a.DataTypeMasterId, c.DataLength, a.FieldDesc, a.Quantum, a.Remarks, a.FieldName, a.FieldShortName, a.FieldCode, c.DataTypePrefix, a.FieldGroupId, a.TypicalValue, a.FieldMinValue, a.FieldMaxValue, a.InitValue, a.FieldOffSet, a.FieldUnit, a.IRSSpecificationId, a.ArrayMasterId, d.ArrayName, d.ArrayValue, e.GroupName, e.GroupCode, e.GroupType, a.GroupVariable, c.AliasName, c.DataStandardName, a.FieldSlNo \r\n"
 			+ "FROM pfms_irs_field_desc a JOIN pfms_irs_document_specifications b ON a.IRSSpecificationId = b.IRSSpecificationId AND b.IsActive=1 JOIN pfms_data_type_master c ON a.DataTypeMasterId = c.DataTypeMasterId LEFT JOIN pfms_irs_array_master d ON a.ArrayMasterId = d.ArrayMasterId LEFT JOIN pfms_field_group e ON a.FieldGroupId = e.FieldGroupId \r\n"
-			+ "WHERE a.IsActive=1 AND b.IRSDocId=:IRSDocId ORDER BY a.FieldSlNo, a.IRSFieldDescId";
+			+ "WHERE a.IsActive=1 AND b.IRSDocId=:IRSDocId ORDER BY CASE WHEN a.FieldGroupId = 0 THEN 1 ELSE 0 END, a.FieldGroupId, a.FieldName, a.FieldMasterId";
 	@Override
 	public List<Object[]> getIRSFieldDescriptionList(String irsDocId)throws Exception {
 		try {
@@ -2177,7 +2177,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 
-	private static final String GETFIELDDESCRIPTIONLIST = "SELECT a.FieldDescId, a.LogicalInterfaceId, a.FieldMasterId, b.DataTypeMasterId, c.DataLength, b.FieldDesc, b.Quantum, b.Remarks, b.FieldName, b.FieldShortName, b.FieldCode, c.DataTypePrefix, a.FieldGroupId, b.TypicalValue, b.FieldMinValue, b.FieldMaxValue, b.InitValue, b.FieldOffSet, b.FieldUnit, c.AliasName, c.DataStandardName FROM pfms_igi_field_desc a, pfms_field_master b, pfms_data_type_master c WHERE a.IsActive=1 AND a.FieldMasterId = b.FieldMasterId AND b.DataTypeMasterId=c.DataTypeMasterId";
+	private static final String GETFIELDDESCRIPTIONLIST = "SELECT a.FieldDescId, a.LogicalInterfaceId, a.FieldMasterId, b.DataTypeMasterId, c.DataLength, b.FieldDesc, b.Quantum, b.Remarks, b.FieldName, b.FieldShortName, b.FieldCode, c.DataTypePrefix, a.FieldGroupId, b.TypicalValue, b.FieldMinValue, b.FieldMaxValue, b.InitValue, b.FieldOffSet, b.FieldUnit, c.AliasName, c.DataStandardName FROM pfms_igi_field_desc a, pfms_field_master b, pfms_data_type_master c WHERE a.IsActive=1 AND a.FieldMasterId = b.FieldMasterId AND b.DataTypeMasterId=c.DataTypeMasterId ORDER BY CASE WHEN a.FieldGroupId = 0 THEN 1 ELSE 0 END, a.FieldGroupId, b.FieldName, a.FieldMasterId";
 	@Override
 	public List<Object[]> getIGIFieldDescriptionList()throws Exception {
 		try {

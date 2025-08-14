@@ -310,7 +310,7 @@ label {
 		       								</div>
 			                    		    <div class="col-md-3">
 		       									<label class="form-lable">Message Name <span class="mandatory">*</span></label>
-		       									<input type="text" class="form-control" name="msgName" <%if(logicalInterface!=null && logicalInterface.getMsgName()!=null) {%>value="<%=logicalInterface.getMsgName() %>"<%} %> placeholder="Enter Message Name" maxlength="255" required>
+		       									<input type="text" class="form-control" name="msgName" id="msgName" <%if(logicalInterface!=null && logicalInterface.getMsgName()!=null) {%>value="<%=logicalInterface.getMsgName() %>"<%} %> placeholder="Enter Message Name" maxlength="255" required>
 		       								</div>
 		       								
 			                    		    <div class="col-md-2">
@@ -581,61 +581,19 @@ label {
 			toggleInterface('<%=buttonId %>', '<%=listId %>');
 		<%} %>
 		
-		// Define a common Summernote configuration
-		var summernoteConfig = {
-		    width: 900,
-		    toolbar: [
-		        ['style', ['bold', 'italic', 'underline', 'clear']],
-		        ['font', ['fontsize', 'fontname', 'color', 'superscript', 'subscript']],
-		        ['insert', ['picture', 'table']],
-		        ['para', ['ul', 'ol', 'paragraph']],
-		        ['height', ['height']]
-		    ],
-		    fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '24', '36', '48', '64', '82', '150'],
-		    fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana','Segoe UI','Segoe UI Emoji','Segoe UI Symbol'],
-		    buttons: {
-		        superscript: function() {
-		            return $.summernote.ui.button({
-		                contents: '<sup>S</sup>',
-		                tooltip: 'Superscript',
-		                click: function() {
-		                    document.execCommand('superscript');
-		                }
-		            }).render();
-		        },
-		        subscript: function() {
-		            return $.summernote.ui.button({
-		                contents: '<sub>S</sub>',
-		                tooltip: 'Subscript',
-		                click: function() {
-		                    document.execCommand('subscript');
-		                }
-		            }).render();
-		        }
-		    },
-		    height: 300
-		};
-		
-
-		// Diagram Editor Configure
-		$('#diagramEditor').summernote(summernoteConfig);
-		
-		// Description Editor Configure
-		$('#descriptionEditor').summernote(summernoteConfig);
-		
-		// Update the values of Editors
-
-		// Set the values to the form when submitting.
-		$('#myform').submit(function() {
-
-			 var data1 = $('#diagramEditor').summernote('code');
-			 $('textarea[name=interfaceDiagram]').val(data1);
-			 
-			 var data2 = $('#descriptionEditor').summernote('code');
-			 $('textarea[name=interfaceDescription]').val(data2);
-			
+		$('#msgType').on('change', function(){
+			var msgtype = $(this).val();
+			var msgtypecode = "";
+			var logicalInterfaceId = $('#logicalInterfaceId').val();
+			//if(logicalInterfaceId==0){
+				if(msgtype=='Command'){
+					msgtypecode = "CMD_";
+				}else{
+					msgtypecode = msgtype.substring(0, 3).toUpperCase()+"_";
+				}
+			//}
+			$('#msgName').val(msgtypecode);
 		});
-		
 		/* $('#logicalChannelId').on('change', function(){
 			var logicalChannelId = $(this).val();
 			if(logicalChannelId=='addNew') {
@@ -770,6 +728,8 @@ label {
 		        return;
 		    }
 
+		    let $lastInsertedRow = $originalRow; // Start from the original row
+
 		    // If multiple fields exist, populate current row and clone only remaining ones
 		    fieldList.forEach((field, index) => {
 		        if (index === 0) {
@@ -814,7 +774,8 @@ label {
 		            $newRow.find('.unit').val(field.unit || '');
 		            // $newRow.find('.remarks').val(field.remarks || '');
 
-		            $originalRow.after($newRow);
+		            $lastInsertedRow.after($newRow);
+        			$lastInsertedRow = $newRow; // Update reference
 		        }
 		    });
 

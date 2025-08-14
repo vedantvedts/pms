@@ -1,0 +1,107 @@
+<%@page import="com.vts.pfms.master.model.Employee"%>
+<%@page import="com.vts.pfms.FormatConverter"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<jsp:include page="../static/header.jsp"></jsp:include>
+</head>
+<body>
+	<%
+		FormatConverter fc = new FormatConverter();
+		List<Object[]> programeMasterList = (List<Object[]>) request.getAttribute("programeMasterList");
+		List<Object[]> directorsList = (List<Object[]>) request.getAttribute("directorsList");
+	%>
+	
+	<% String ses = (String) request.getParameter("result"); 
+       String ses1 = (String) request.getParameter("resultfail");
+       if (ses1 != null) { %>
+        <div align="center">
+            <div class="alert alert-danger" role="alert">
+                <%= ses1 %>
+            </div>
+        </div>
+    <% } if (ses != null) { %>
+        <div align="center">
+            <div class="alert alert-success" role="alert">
+                <%= ses %>
+            </div>
+        </div>
+    <% } %>
+    
+	<div class="container-fluid">
+			<div class="card shadow-nohover">
+				<div class="card-header">
+					<div class="row">
+						<div class="col-md">
+							<h4>
+								<b>Programme Master List</b>
+							</h4>
+						</div>
+					</div>
+				</div>
+				
+				<div class="card-body">
+					<form method="post" action="ProgrammeMaster.htm" name="programform">
+						<div class="table-responsive" style="width: 70%;margin-left: 18rem;">
+							<table class="table table-bordered table-hovered table-striped table-condensed datatable" id="myTable" style="width: 100%;">
+								<thead class="center">
+									<tr>
+										<td width="10%" >Select</td>
+										<td width="17%" >Programme Code</td>
+										<td width="28%" >Programme Name</td>
+										<td width="30%" >Programme Director</td>
+										<td width="15%" >Sanctioned On</td>
+									</tr>
+								</thead>
+								<tbody>
+									<%
+									for(Object[] obj : programeMasterList ){ %>
+										<tr>
+											<td class="text-center"><input type="radio" id="ProgrammeId" name="ProgrammeId" value=<%=obj[0] %> /></td>
+											<td><%=obj[1] %></td>
+											<td><%=obj[2] %></td>
+											<td><%=obj[5] %>, <%=obj[6] %></td>
+											<td class="text-center"><%=obj[4]!=null?fc.sdfTordf(obj[4].toString()):"-" %></td>
+										</tr>	
+									<%}%>
+								</tbody>
+							</table>
+						</div>
+						<div align="center" class="mb-5">
+							<button type="submit" class="btn btn-primary btn-sm add" name="action" value="Add">Add</button>&nbsp;&nbsp;
+							<% if(programeMasterList!=null && programeMasterList.size()>0){%>
+								<button type="submit" class="btn btn-warning btn-sm edit" name="action" value="Edit" onclick="validateEdit()" >EDIT</button> &nbsp;&nbsp;
+							<%} %>
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	
+	<script>
+	$(document).ready(function() {
+	       $('#myTable').DataTable({
+	           "lengthMenu": [10, 25, 50, 75, 100],
+	           "pagingType": "simple",
+	           "pageLength": 10
+	       });
+	});
+		
+	function validateEdit() {
+		var fields = $("input[name='ProgrammeId']:checked").serializeArray();
+
+		if (fields.length === 0) {
+			alert("Please select a record from the list.");
+			event.preventDefault();
+			return false;
+		}
+		return true;
+	}
+	</script>
+</body>
+</html>

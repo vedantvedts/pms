@@ -80,12 +80,16 @@ label {
 		
     		<div class="card" style=" ">
     	
-	    		<div class="card-header" style="background-color: #055C9D;">
-      				<h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> FRACAS Item :  <%=fracasassigndata[12] %> 
-                     <span style="float: right;font-size: 17px;margin-top: 5px">Assigner : <%=fracasassigndata[8] %> </span>
-      				 </h6>
-      				
-      			</div>
+	    		<div class="card-header" style="background-color: #055C9D;height: auto;">
+  					<div class="row">
+    					<div class="col-md-12">
+					    	<h6 class="mb-4" style="color: white;font-size: 1.2rem !important;">
+					        	<span>FRACAS Item: <%= fracasassigndata[12] %></span>
+					        	<span style="font-size: 1rem;float: right;margin-top: 1.8rem;">Assigner: <%= fracasassigndata[8] %></span>
+					      	</h6>
+						</div>
+					</div>
+				</div>
       		
 	      		<div class="card-body">
 	      			<form method="post" action="FracasSubSubmit.htm" enctype="multipart/form-data">
