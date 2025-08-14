@@ -98,6 +98,7 @@ import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.model.PfmsIRSDocument;
 import com.vts.pfms.documents.service.DocumentsService;
 import com.vts.pfms.producttree.dto.ProductTreeDto;
+import com.vts.pfms.producttree.model.ProductTree;
 import com.vts.pfms.producttree.service.ProductTreeService;
 import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.requirements.service.RequirementService;
@@ -817,6 +818,7 @@ public class DocumentsController {
 			redir.addAttribute("docId", docId);
 			redir.addAttribute("docType", docType);
 			redir.addAttribute("shortCodeType", shortCodeType);
+			redir.addAttribute("documentNo", req.getParameter("documentNo"));
 			
 			return "redirect:/IGIShortCodesDetails.htm";
 			
@@ -3114,6 +3116,33 @@ public class DocumentsController {
 		}
 	}
 
+	@RequestMapping(value="ExternalElementDelete.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String externalElementDelete(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ExternalElementDelete.htm "+UserId);
+		try {
+			String mainId = req.getParameter("mainId");
+			mainId = mainId!=null?mainId:"0";
+			ProductTree productTree = prodservice.getProductTreeById(Long.parseLong(mainId));
+			productTree.setIsActive(0);
+			
+			long result = prodservice.LevelNameEdit(productTree);
+			
+			if (result > 0) {
+				redir.addAttribute("result", "External Element Deleted Successfully");
+			}else {
+				redir.addAttribute("resultfail", "External Elements Delete Unsuccessful");	
+			}	
+			
+			redir.addAttribute("icdDocId", req.getParameter("docId"));
+			return "redirect:/ICDDocumentDetails.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ExternalElementDelete.htm "+UserId, e);
+			return "static/Error";			
+		}
+	}
+	
 	@RequestMapping(value = "PurposeMaster.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String purposeMasterList(HttpServletRequest req, HttpSession ses) throws Exception 
 	{

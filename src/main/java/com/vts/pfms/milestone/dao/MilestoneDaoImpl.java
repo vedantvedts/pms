@@ -17,10 +17,14 @@ import com.vts.pfms.milestone.model.FileDocAmendment;
 import com.vts.pfms.milestone.model.FileDocMaster;
 import com.vts.pfms.milestone.model.FileProjectDoc;
 import com.vts.pfms.milestone.model.FileRepMaster;
+import com.vts.pfms.milestone.model.FileRepMasterPreProject;
 import com.vts.pfms.milestone.model.FileRepNew;
+import com.vts.pfms.milestone.model.FileRepNewPreProject;
 import com.vts.pfms.milestone.model.FileRepUploadNew;
+import com.vts.pfms.milestone.model.FileRepUploadPreProject;
 import com.vts.pfms.milestone.model.MilestoneActivity;
 import com.vts.pfms.milestone.model.MilestoneActivityLevel;
+import com.vts.pfms.milestone.model.MilestoneActivityLevelRemarks;
 import com.vts.pfms.milestone.model.MilestoneActivitySub;
 import com.vts.pfms.milestone.model.MilestoneActivitySubRev;
 import com.vts.pfms.milestone.model.MilestoneSchedule;
@@ -111,8 +115,8 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	private static final String PROJECTDOCUMETSADD ="SELECT DocAmendmentId,FileRepUploadId,FileName,Description,AmendVersion,FilePath,FilePass,Amendmentname FROM file_doc_amendment WHERE FileRepUploadId=:FileRepUploadId ORDER BY AmendVersion DESC";
 	private static final String DOCUMENTAMENDMENTDATA ="SELECT DocAmendmentId,FileRepUploadId,FileName,Description,AmendVersion,FilePath,FilePass,Amendmentname FROM file_doc_amendment WHERE DocAmendmentId=:docammendmentid ORDER BY AmendVersion DESC";
 	
-//	private static final String REPMASTERDATA ="SELECT filerepmasterid,projectid,levelname,parentLevelId,levelId FROM file_rep_master WHERE filerepmasterid=:filerepmasterid";
 	private static final String REPMASTERDATA ="SELECT a.filerepmasterid,a.projectid,a.levelname,a.parentLevelId,a.levelId,(SELECT m.levelname FROM file_rep_master m WHERE m.FileRepMasterId = a.parentLevelId) AS 'parentLevelName' FROM file_rep_master a WHERE a.FileRepMasterId=:filerepmasterid";
+	private static final String PREPROJECTREPMASTER ="SELECT a.filerepmasterid,a.initiationId,a.levelname,a.parentLevelId,a.levelId,(SELECT m.levelname FROM file_rep_master_preproject m WHERE m.FileRepMasterId = a.parentLevelId) AS 'parentLevelName' FROM file_rep_master_preproject a WHERE a.FileRepMasterId=:filerepmasterid";
 	private static final String REPMASTERALLDOCLISTS="CALL Pfms_FileRepo_SubLev_list(:filerepmasterid);";
 	private static final String MAINSYSTEM1 ="SELECT a.filerepmasterid, a.parentlevelid, a.levelid,  a.levelname FROM file_rep_master a WHERE a.levelid='1' AND a.filerepmasterid=:filerepmasterid";
     private static final String WEIGHTAGELEVEL="SELECT a.activityid AS obid,a.enddate,a.progressstatus,a.Weightage FROM milestone_activity_level a WHERE    a.parentactivityid=:inActivityId   and a.activitylevelid=:levelid";
@@ -1269,7 +1273,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 			}
 		}
 		
-		private static final String ALLMILESTONEACTIVITYLIST = "SELECT a.MilestoneActivityId, a.ProjectId, a.MilestoneNo, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.RevisionNo, a.OicEmpId, a.OicEmpId1, a.ActivityStatusId, a.Weightage, b.ProjectCode, b.ProjectShortName, b.ProjectName, a.Loading FROM milestone_activity a LEFT JOIN project_master b ON a.ProjectId=b.ProjectId WHERE a.IsActive=1 ORDER BY a.ProjectId, a.MilestoneActivityId";
+		private static final String ALLMILESTONEACTIVITYLIST = "SELECT a.MilestoneActivityId, a.ProjectId, a.MilestoneNo, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.RevisionNo, a.OicEmpId, a.OicEmpId1, a.ActivityStatusId, a.Weightage, b.ProjectCode, b.ProjectShortName, b.ProjectName, a.Loading, a.StatusRemarks FROM milestone_activity a LEFT JOIN project_master b ON a.ProjectId=b.ProjectId WHERE a.IsActive=1 ORDER BY a.ProjectId, a.MilestoneActivityId";
 		@Override
 		public List<Object[]> getAllMilestoneActivityList() throws Exception {
 			try {
@@ -1281,11 +1285,11 @@ public class MilestoneDaoImpl implements MilestoneDao {
 			}
 		}
 		
-		//private static final String ALLMILESTONEACTIVITYLEVELLIST = "SELECT a.ActivityId, a.ParentActivityId, a.ActivityLevelId, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.Revision, a.OicEmpId, a.OicEmpId1 FROM milestone_activity_level a WHERE a.IsActive=1";
-		private static final String ALLMILESTONEACTIVITYLEVELLIST = "SELECT a.ActivityId AS obid, a.ParentActivityId, a.ActivityLevelId, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.Revision, a.OicEmpId, a.OicEmpId1, a.ActivityStatusId, a.Weightage, a.Loading FROM milestone_activity_level a WHERE a.IsActive=1 AND a.Revision=0\r\n"
-				+ "UNION\r\n"
-				+ "SELECT a.ActivityId AS obid, a.ParentActivityId, a.ActivityLevelId, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.Revision, a.OicEmpId, a.OicEmpId1, a.ActivityStatusId, a.Weightage, a.Loading FROM milestone_activity_level a, milestone_activity_sub_rev b WHERE a.IsActive=1 AND a.Revision=b.Revision AND a.ActivityId=b.ActivityId \r\n"
-				+ "ORDER BY obid ASC";
+		private static final String ALLMILESTONEACTIVITYLEVELLIST = "SELECT a.ActivityId, a.ParentActivityId, a.ActivityLevelId, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.Revision, a.OicEmpId, a.OicEmpId1, a.ActivityStatusId, a.Weightage, a.Loading, a.StatusRemarks, a.IsMasterData FROM milestone_activity_level a WHERE a.IsActive=1";
+//		private static final String ALLMILESTONEACTIVITYLEVELLIST = "SELECT a.ActivityId AS obid, a.ParentActivityId, a.ActivityLevelId, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.Revision, a.OicEmpId, a.OicEmpId1, a.ActivityStatusId, a.Weightage, a.Loading, a.StatusRemarks FROM milestone_activity_level a WHERE a.IsActive=1 AND a.Revision=0\r\n"
+//				+ "UNION\r\n"
+//				+ "SELECT a.ActivityId AS obid, a.ParentActivityId, a.ActivityLevelId, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.Revision, a.OicEmpId, a.OicEmpId1, a.ActivityStatusId, a.Weightage, a.Loading, a.StatusRemarks FROM milestone_activity_level a, milestone_activity_sub_rev b WHERE a.IsActive=1 AND a.Revision=b.Revision AND a.ActivityId=b.ActivityId \r\n"
+//				+ "ORDER BY obid ASC";
 		@Override
 		public List<Object[]> getAllMilestoneActivityLevelList() throws Exception {
 			try {
@@ -1514,13 +1518,315 @@ public class MilestoneDaoImpl implements MilestoneDao {
 			return null;
 		}
 	}
+
 	private static final String DELETEMIL = "DELETE FROM milestone_activity_level WHERE ActivityId =:ActivityId ";
 	@Override
 	public int deleteMilsetone(String activityId) throws Exception {
-		
+
 		Query query = manager.createNativeQuery(DELETEMIL);
 		query.setParameter("ActivityId", Long.parseLong(activityId));
 		
 		return (int)query.executeUpdate();
+
+	
+}
+	
+	
+	private static final String MILESTONEACTIVITYPROGRESSLIST="SELECT a.ActivitySubId, a.ActivityId, a.Progress, a.ProgressDate, a.AttachName, a.AttachFile, a.Remarks, c.EmpId, CONCAT(IFNULL(CONCAT(c.Title,' '),(IFNULL(CONCAT(c.Salutation, ' '), ''))), c.EmpName) AS 'EmpName', d.Designation FROM milestone_activity_sub a LEFT JOIN login b ON a.CreatedBy=b.UserName LEFT JOIN employee c ON b.EmpId=c.EmpId LEFT JOIN employee_desig d ON c.DesigId=d.DesigId WHERE a.IsActive=1 ORDER BY a.ProgressDate DESC";
+	@Override
+	public List<Object[]> getMilestoneActivityProgressList() throws Exception {
+		try {
+			Query query=manager.createNativeQuery(MILESTONEACTIVITYPROGRESSLIST);
+			return (List<Object[]>)query.getResultList();	
+		}catch (Exception e) {
+			logger.error( "Inside DAO getMilestoneActivityProgressList "+e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+	private static final String PREPROJECTMAINFOLDERLIST="SELECT a.FileRepMasterId,a.ParentLevelId,a.LevelId,a.LevelName,b.ProjectShortName FROM file_rep_master_preproject a LEFT JOIN pfms_initiation b ON a.InitiationId = b.InitiationId WHERE a.FileRepMasterId > 0 AND a.ParentLevelId=0 AND a.InitiationId =:initiationId AND a.LabCode =:labcode";
+	@Override
+	public List<Object[]> getPreProjectFolderList(String initiationId, String labcode) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(PREPROJECTMAINFOLDERLIST);
+			query.setParameter("initiationId", initiationId);
+			query.setParameter("labcode", labcode);
+			return (List<Object[]>)query.getResultList();	
+		}catch (Exception e) {
+			logger.error( "Inside DAO getPreProjectFolderList "+e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+	private static final String PREPROJECTSUBFOLDERLIST="SELECT a.FileRepMasterId,a.ParentLevelId,a.LevelId,a.LevelName,b.ProjectShortName FROM file_rep_master_preproject a LEFT JOIN pfms_initiation b ON a.InitiationId = b.InitiationId WHERE a.FileRepMasterId > 0 AND a.ParentLevelId=:mainLevelId AND a.InitiationId =:initiationId AND a.LabCode =:labcode";
+	@Override
+	public List<Object[]> getPreProjectSubFolderList(String initiationId, String mainLevelId, String labcode)
+			throws Exception {
+		try {
+			Query query=manager.createNativeQuery(PREPROJECTSUBFOLDERLIST);
+			query.setParameter("initiationId", initiationId);
+			query.setParameter("mainLevelId", mainLevelId);
+			query.setParameter("labcode", labcode);
+			return (List<Object[]>)query.getResultList();	
+		}catch (Exception e) {
+			logger.error( "Inside DAO getPreProjectSubFolderList "+e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	private static final String GETPREPROJECTFILEREPNAME="SELECT COUNT(a.levelname) AS levelname\r\n"
+			+ "FROM file_rep_master_preproject a "
+			+ "WHERE a.initiationId = :initiationId AND a.IsActive = '1' "
+			+ "  AND ("
+			+ "    (:fileType = 'mainLevel' AND a.parentLevelId = :fileId AND a.levelId = '1' AND a.levelname = :fileName) "
+			+ "    OR "
+			+ "    (:fileType = 'subLevel' AND a.parentLevelId = :fileId AND a.levelId = '2' AND a.levelname = :fileName) "
+			+ "  ); ";
+	@Override
+	public int getPreProjectFileRepMasterNames(String initiationId, String fileType, String fileId, String fileName)
+			throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETPREPROJECTFILEREPNAME);
+			query.setParameter("initiationId", initiationId);
+			query.setParameter("fileType", fileType);
+			query.setParameter("fileId", fileId);
+			query.setParameter("fileName", fileName);
+		    Object result = query.getSingleResult();
+		        if (result != null) {
+		            Number count = (Number) result;
+		            return count.intValue();
+		        } else {
+		            return 0;
+		        }
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	@Override
+	public long preProjectRepMasterInsert(FileRepMasterPreProject fileRepo) throws Exception {
+		manager.persist(fileRepo);
+		manager.flush();
+		return fileRepo.getFileRepMasterId();
+	}
+	
+	@Override
+	public long preProjectFileRepMasterSubInsert(FileRepMasterPreProject fileRepo) throws Exception {
+		manager.persist(fileRepo);
+		manager.flush();
+		return fileRepo.getFileRepMasterId();
+	}
+	
+	@Override
+	public Optional<FileRepMasterPreProject> getPreProjectFileRepById(long id) throws Exception {
+		 try {
+			 FileRepMasterPreProject fileRepMaster = manager.find(FileRepMasterPreProject.class, id);
+		    	return Optional.ofNullable(fileRepMaster);
+		} catch (Exception e) {
+				return Optional.empty();
+		}
+	}
+	
+	@Override
+	public Optional<FileRepMasterPreProject> getPreProjectMainFileById(Long parentId) throws Exception {
+		 try {
+			    FileRepMasterPreProject fileRepMaster = manager.find(FileRepMasterPreProject.class, parentId);
+		    	return Optional.ofNullable(fileRepMaster);
+		} catch (Exception e) {
+				return Optional.empty();
+		}
+	}
+	
+	private static final String GETPREPROJECTFILENAME ="SELECT c.filerepuploadId, c.filerepId, c.filenameUi, c.fileName, c.filePath " +
+		    "FROM file_rep_new_preproject b JOIN file_rep_upload_preproject c ON b.filerepId = c.filerepId " +
+		    "WHERE b.initiationId = :initiationId AND b.isActive = '1' AND c.isActive = '1' AND " +
+		    "(" +
+		    "  (:levelType = 'mainlevel' AND b.filerepmasterId = :mainRepMasterId AND c.filePath LIKE :prefix) " +
+		    "  OR " +
+		    "  (:levelType = 'sublevel' AND b.filerepmasterId = :mainRepMasterId AND b.subL1 = :subRepMasterId AND c.filePath LIKE :prefix) " +
+		    ")";
+	@Override
+	 public List<Object[]> findByPreProjectFilePath(String levelType, Long initiationId, Long mainRepMasterId, Long subRepMasterId, String oldName) {
+			try {
+				Query query = manager.createNativeQuery(GETPREPROJECTFILENAME);
+				query.setParameter("prefix", "%" + oldName + "%");
+				query.setParameter("levelType", levelType);
+				query.setParameter("initiationId", initiationId);
+				query.setParameter("mainRepMasterId", mainRepMasterId);
+				query.setParameter("subRepMasterId", subRepMasterId);
+				return (List<Object[]>)query.getResultList();
+			} catch (Exception e) {
+				e.printStackTrace();
+				return Collections.emptyList();
+			}
+	    }
+	 
+	 @Override
+	public long preProjectfileEditSubmit(String filerepmasterid, String levelname) throws Exception {
+		 
+		 FileRepMasterPreProject repmaster=manager.find(FileRepMasterPreProject.class,Long.parseLong(filerepmasterid));	
+			repmaster.setLevelName(levelname);
+			repmaster=manager.merge(repmaster);
+			if(repmaster!=null) {
+				return 1;
+			}else
+			{
+				return 0;
+			}
+	}
+	 
+	 
+	private static final String UPDATEPREPROJECTFILEUPLOAD="UPDATE file_rep_upload_preproject SET filePath=:filePath WHERE filerepuploadId=:filerepuploadId";
+	@Override
+	public void updatePreProjectFileById(Long uploadId, String updatedPath) throws Exception {
+		try {
+       		Query query = manager.createNativeQuery(UPDATEPREPROJECTFILEUPLOAD);
+				query.setParameter("filerepuploadId", uploadId);
+				query.setParameter("filePath", updatedPath);
+				query.executeUpdate();
+		} catch (Exception e) {
+				e.printStackTrace();
+		}		
+	}
+	
+	private static final String GETPREPROJECTOLDDOCS="SELECT a.FileRepId,a.InitiationId,a.FileRepMasterId,a.SubL1,a.VersionDoc,a.ReleaseDoc,a.DocumentName, (SELECT b.FileRepUploadId FROM file_rep_upload_preproject b WHERE a.FileRepId = b.FileRepId ORDER BY b.FileRepUploadId DESC LIMIT 1) AS 'FileRepUploadId' FROM file_rep_new_preproject a WHERE a.initiationId=:initiationId AND a.IsActive='1' AND ((:fileType = 'mainLevel' AND a.FileRepMasterId = :fileId AND a.SubL1 = '0') OR (:fileType = 'subLevel' AND a.SubL1 = :fileId))";
+	@Override
+	public List<Object[]> getPreProjectOldFileNames(String initiationId, String fileType, String fileId)
+			throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETPREPROJECTOLDDOCS);
+			query.setParameter("initiationId", initiationId);
+			query.setParameter("fileType", fileType);
+			query.setParameter("fileId", fileId);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+	}
+	
+	@Override
+	public FileRepNewPreProject getPreProjectFileById(long repId) throws Exception {
+
+
+		 return manager.find(FileRepNewPreProject.class,repId);	
+	}
+	
+	private static final String PREPROJECTFILEREPUPDATE="UPDATE file_rep_new_preproject SET VersionDoc=:VersionDoc,ReleaseDoc=:ReleaseDoc,CreatedBy=:CreatedBy,CreatedDate=:CreatedDate WHERE FileRepId=:FileRepId";
+	@Override
+	public long prepRojectFileUpdate(FileRepNewPreProject rep) throws Exception {
+		Query query = manager.createNativeQuery(PREPROJECTFILEREPUPDATE);
+		query.setParameter("FileRepId", rep.getFileRepId());
+		query.setParameter("VersionDoc", rep.getVersionDoc());
+		query.setParameter("ReleaseDoc", rep.getReleaseDoc());
+		query.setParameter("CreatedBy", rep.getCreatedBy());
+		query.setParameter("CreatedDate", rep.getCreatedDate());
+		return query.executeUpdate();
+	}
+	
+	@Override
+	public long preProjectFileUploadInsert(FileRepUploadPreProject uploadNew) throws Exception {
+		manager.persist(uploadNew);
+		manager.flush();
+		return uploadNew.getFileRepUploadId();
+	}
+	
+	@Override
+	public long preProjectFileSubInsert(FileRepNewPreProject fileRepNew) throws Exception {
+		manager.persist(fileRepNew);
+		manager.flush();
+		return fileRepNew.getFileRepId();
+	}
+	
+	@Override
+	public Object[] preProjectRepMaster(String fileRepMasterId) throws Exception {
+		Query query=manager.createNativeQuery(PREPROJECTREPMASTER);
+		query.setParameter("filerepmasterid", fileRepMasterId);
+		List<Object[]> RepMasterData=(List<Object[]>)query.getResultList();
+		if(RepMasterData.size()>0) {
+			return RepMasterData.get(0);
+		}else
+		{
+			return null;
+		}
+	}
+	
+	@Override
+	public Optional<FileRepUploadPreProject> getPreProjectUploadFileById(Long id) throws Exception {
+		 try {
+			 FileRepUploadPreProject fileRepUploadNew = manager.find(FileRepUploadPreProject.class, id);
+		    	return Optional.ofNullable(fileRepUploadNew);
+		 } catch (Exception e) {
+				return Optional.empty();
+		 }
+	}
+	
+	
+	private static final String PREPROJECTFILEREPDOCSLIST="""
+				SELECT a.FileRepUploadId,a.FileRepId,a.FileNameUi,a.FileName,a.VersionDoc,a.ReleaseDoc,a.CreatedDate,
+				CONCAT(IFNULL(CONCAT(e.title, ' '), ''), e.empname) AS empname,ed.designation
+				FROM file_rep_upload_preproject a
+				LEFT JOIN login c ON c.UserName = a.CreatedBy AND c.IsActive = 1
+				LEFT JOIN employee e ON e.empId = c.EmpId AND e.isactive = 1
+				LEFT JOIN employee_desig ed ON e.desigid = ed.desigid
+				WHERE a.IsActive = 1 AND a.FileRepId = :fileRepId
+				ORDER BY a.FileRepUploadId DESC
+			""";
+	@Override
+	public List<Object[]> preProjectFileRepoDocsList(String fileRepId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(PREPROJECTFILEREPDOCSLIST);
+			query.setParameter("fileRepId", fileRepId);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+	}
+	
+	
+	private static final String PREPROJECTFILRREPALLLIST="SELECT a.filerepmasterid,a.parentlevelid,a.levelid,a.levelname,b.ProjectShortName FROM file_rep_master_preproject a LEFT JOIN pfms_initiation b ON a.initiationId = b.initiationId WHERE a.filerepmasterid > 0 AND a.initiationId =:initiationId AND a.labCode =:labCode";
+	@Override
+	public List<Object[]> getPreProjectFileRepMasterListAll(String initiationId, String labCode) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(PREPROJECTFILRREPALLLIST);
+			query.setParameter("initiationId", initiationId);
+			query.setParameter("labCode", labCode);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+
+	}
+	
+	@Override
+	public int saveMilestoneActivityLevelRemarks(MilestoneActivityLevelRemarks cmd) throws Exception {
+		manager.persist(cmd);
+		manager.flush();
+		
+		return cmd.getRemarksId().intValue();
+	}
+	
+	
+	private static final String MILEREMARKS ="SELECT CONCAT(IFNULL(CONCAT(b.title,' '),IFNULL(CONCAT(b.salutation,' '),'')), b.empname) AS 'empname',c.designation , \r\n"
+			+ "a.remarks , a.createdDate,a.empid, a.activityId  FROM employee b ,milestone_activity_level_remarks a, employee_desig c WHERE a.empid=b.empid AND b.desigid=c.desigid\r\n"
+			+ "AND a.activityId=:activityId  AND a.isactive=1";
+	
+	@Override
+	public List<Object[]> getMilestoneDraftRemarks(Long activityId) throws Exception {
+
+		Query query   = manager.createNativeQuery(MILEREMARKS)	;
+		query.setParameter("activityId", activityId);
+		
+		
+		return (List<Object[]>)query.getResultList();
 	}
 }

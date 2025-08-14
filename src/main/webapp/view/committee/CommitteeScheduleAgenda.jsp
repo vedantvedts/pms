@@ -249,6 +249,7 @@ ul, #myUL {
   List<Object[]> AllLabList=(List<Object[]>) request.getAttribute("AllLabList");
   Object[] scheduledata=(Object[])request.getAttribute("scheduledata");
   List<Object[]> projectlist=  (List<Object[]> ) request.getAttribute("projectlist");
+  List<Object[]> preProjectlist=  (List<Object[]> ) request.getAttribute("preProjectlist");
   List<Object[]> committeeagendalist =  (List<Object[]>)request.getAttribute("committeeagendalist");
   List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filerepmasterlistall");
   List<Object[]> AgendaDocList=(List<Object[]>) request.getAttribute("AgendaDocList");
@@ -260,7 +261,6 @@ ul, #myUL {
   String divisionid=scheduledata[16].toString();
   String initiationid=scheduledata[17].toString();
   
-
  %>
  
  
@@ -330,9 +330,13 @@ ul, #myUL {
 									    			<%} 
 									    		}%>					
 												</select>
-											<%}else if(Long.parseLong(initiationid) > 0) {%>
+											<%}else if(Long.parseLong(initiationid) > 0) { %>
 												<select class="form-control child  items" name="projectid"  required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
-											    	<option value="0"><%=labdata[1] %>(GEN)</option>		
+											    	 <% for (Object[] obj : preProjectlist) {
+												    	if(obj[0].toString().equals(initiationid)){%>						    				 	
+										     				<option value="<%=obj[0]%>"><%=obj[3]%> (<%=obj[4] %>)</option>
+										    			<%} 
+										    		}%>			
 												</select>
 											<%}else{ %>									
 												<select class="form-control items" name="projectid" required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
@@ -451,14 +455,23 @@ ul, #myUL {
 												<input type="text" class="form-control form-control" name="agendaitem" value="<%=obj[3].toString()%>"  maxlength="255" >	 
 											</td>
 											<td width="4%">
+										
 												<%if(Long.parseLong(projectid) > 0) { %>
-													<select class="form-control" name="projectid"  required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
+													<select class="form-control child  items" name="projectid"  required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
 														<% for (Object[] obj1 : projectlist) {
 															if(obj1[0].toString().equals(projectid)){%>						    				 	
 											     				<option value="<%=obj1[0]%>"><%=obj1[3]%> (<%=obj1[2] %>)</option>
 											    			<%} 
 											    		}%>					
 													</select>
+												<%}else if(Long.parseLong(initiationid) > 0) { %>
+												  <select class="form-control child  items" name="projectid"  required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
+												      <% for (Object[] obj2 : preProjectlist) {
+												    	 if(obj2[0].toString().equals(initiationid)){%>						    				 	
+										     				<option value="<%=obj2[0]%>"><%=obj2[3]%> (<%=obj2[4] %>)</option>
+										    			<%} 
+										    		  }%>
+										    		</select>
 												<%}else{ %>
 													<select class="form-control items" name="projectid"  required="required" style=" font-weight: bold; text-align-last: left; width: 220px;" data-live-search="true" data-container="body">
 										          		<option value="0" ><%=labdata[1] %></option>
@@ -495,7 +508,11 @@ ul, #myUL {
 													if(obj[0].toString().equalsIgnoreCase(doc[1].toString())){%>
 													<tr>
 														<td><%= doc[3] + " <span class='text-muted'> Ver " + doc[4] + "." + doc[5] + "</span>" %></td>
-														<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
+														 <%if(Long.parseLong(initiationid) > 0){ %>
+														   <td style="width:1% ;white-space: nowrap;" ><a href="PrePRojectAgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
+														 <%}else{ %>
+															<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
+														 <%} %>
 														<td style="width:1% ;white-space: nowrap;" ><a type="button" onclick="removeDocRow(this,<%=doc[0] %>);" > <i class=" fa fa-minus" style="color: red;"   ></i> </a></td>
 													<tr>													
 												<%} }%>
@@ -899,6 +916,7 @@ var mainAgendaId="";
 var attachRepIds = [];
 var agendadocId=[];
 function openMainModal(agendaid,scheduleid,agendaname,projectid,cloneId,agendatype){
+	const initiationId = <%=initiationid%>;
 	mainAgendaId="";
 	$('#addoredit').val(agendatype);
 	$('#agendano').val(cloneId);
@@ -926,10 +944,23 @@ function openMainModal(agendaid,scheduleid,agendaname,projectid,cloneId,agendaty
           }); 
 	}
 	
+	    let ajaxUrl = "";
+	    let ajaxData = {};
+
+	    if (initiationId && initiationId != 0) {
+	        // If initiationId is valid
+	         ajaxUrl = "PreProjectFileRepMasterListAllAjax.htm";
+	         ajaxData = { initiationId: initiationId };
+	    } else {
+	        // If projectid is 0 or ids
+	    	ajaxUrl = "FileRepMasterListAllAjax.htm";
+		    ajaxData = { projectid: projectid };
+	    }
+	
     $.ajax({
         type: "GET",
-        url: "FileRepMasterListAllAjax.htm",
-        data: { projectid: projectid },
+        url: ajaxUrl,
+        data: ajaxData,
         success: function(result) {
             var data = JSON.parse(result);
             var folderMap = {};
@@ -981,8 +1012,11 @@ function openMainModal(agendaid,scheduleid,agendaname,projectid,cloneId,agendaty
                         html += '</ul></li>';
                     }
                 }
-            }else {
+            }else if(initiationId > 0){
                 html += '<div>No Data Available.</div></br>';
+	            html += '<div>Please go to <span style="font-weight: 500; color: blue;">Document Repository Module &rarr; Pre Project Doc Repo</span>, create a folder, and upload pdfs.</div></br>';
+            }else{
+	           	html += '<div>No Data Available.</div></br>';
                 html += '<div>Please go to <span style="font-weight: 500; color: blue;">Document Repository Module &rarr; Document Rep Master</span>, create a folder, and upload pdfs.</div></br>';
             }
 
@@ -1032,14 +1066,26 @@ function toggleFolder(element, folderId, projecId, type, agendatype, agendaid) {
 }
 
 function loadFolderFiles(folderId, projecId, type, agendatype, agendaid) {
+	
+	const initiationId = <%= initiationid %>;
+
+    let ajaxUrl = "";
+    let ajaxData = {};
+    
+    if (initiationId && initiationId != 0) {
+        // If initiationId is valid
+    	 ajaxUrl = "getPreProjectOldFileNames.htm";
+         ajaxData = { initiationId : initiationId, fileId : folderId, fileType : type,};
+    } else {
+        // If projectid is 0 or ids
+    	 ajaxUrl = "getOldFileDocNames.htm";
+         ajaxData = { projectId : projecId, fileId : folderId, fileType : type,};
+    }
+
     $.ajax({
         type: "GET",
-        url: "getOldFileDocNames.htm",
-        data : {
-   			projectId : projecId,
-   			fileId : folderId,
-   			fileType : type,
-	    },
+        url: ajaxUrl,
+        data: ajaxData,
         success: function(result) {
             var data = JSON.parse(result);
             var html = '';
@@ -1055,7 +1101,11 @@ function loadFolderFiles(folderId, projecId, type, agendatype, agendaid) {
                 html += '<i class="fa fa-file-pdf-o text-danger"></i> ' + fileName;
                 html += '<span class="text-muted" style="font-size:13px"> Ver '+data[i][4]+'.'+data[i][5]+'</span>';
                 html += '<i class="fa fa-download" style="cursor: pointer; margin-left:8px;" onclick="fileDownload(' + data[i][7] + ', \'' + type + '\')"></i>';
-                html += '<i class="fa fa-upload" aria-hidden="true" style="color: #0a5dff; cursor: pointer; margin-left:12px;" onclick="fileUpload(\''+data[i][0]+'\')"></i></button><br/>';
+                if (initiationId && initiationId >=0 ) {
+                    html += '';
+                }else{
+                    html += '<i class="fa fa-upload" aria-hidden="true" style="color: #0a5dff; cursor: pointer; margin-left:12px;" onclick="fileUpload(\''+data[i][0]+'\')"></i></button><br/>';
+                }
                 html += '<label for="fileInput" id="uploadlabel'+data[i][0]+'" style="margin-left: 20px; margin-top: 10px; display: none;">'
                 html += '<input type="file" name="docFileInput" id="fileInput'+data[i][0]+'" required="required"  accept="application/pdf"/> '
                 html += '<button type="button" class="btn btn-sm back" onclick="fileSubmit(\''+type+'\',\''+data[i][0]+'\',\''+data[i][2]+'\',\''+data[i][3]+'\',\''+data[i][4]+'\',\''+data[i][5]+'\',\''+data[i][6]+'\', '+agendaid+')">Upload</button>'
@@ -1073,8 +1123,19 @@ function loadFolderFiles(folderId, projecId, type, agendatype, agendaid) {
 }
 
 function fileDownload(fileId, fileType) {
+	
+	const initiationId = <%= initiationid %>;
+	
+	let ajaxUrl = "";
+
+	 if (initiationId && initiationId != 0) {
+		 ajaxUrl = "preProjectFileDownload.htm";
+    } else {
+    	 ajaxUrl = "fileDownload.htm";
+    }
+	
     $.ajax({
-        url: 'fileDownload.htm/' + fileId + '?fileType=' + encodeURIComponent(fileType),
+    	url: ajaxUrl + '/' + fileId + '?fileType=' + encodeURIComponent(fileType),
         type: 'GET',
         xhrFields: {
             responseType: 'blob'
@@ -1082,7 +1143,8 @@ function fileDownload(fileId, fileType) {
         success: function (data, status, xhr) {
         	  const blob = new Blob([data], { type: 'application/pdf' });
               const blobUrl = URL.createObjectURL(blob);
-              window.open(blobUrl, '_blank');
+              const viewerUrl = '<%=request.getContextPath()%>/pdf-viewer?url=' + encodeURIComponent(blobUrl);
+              window.open(viewerUrl, '_blank');
               setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
         },
         error: function (xhr, status, error) {

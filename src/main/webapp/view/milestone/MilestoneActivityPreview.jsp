@@ -15,6 +15,15 @@ font-weight: bold;
 body{
 overflow-x: hidden; 
 }
+
+  .container-fluid form {
+    border: 2px solid #055C9D;
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 10px;
+    color:#055C9D;
+    background-color: #f9f9f9; /* optional for better visibility */
+  }
 </style>
 
 </head>
@@ -27,7 +36,8 @@ List<Object[]> MilestoneActivityA=(List<Object[]>)request.getAttribute("Mileston
 Long EmpId =  (Long)session.getAttribute("EmpId") ;
 String LoginType = (String)session.getAttribute("LoginType");
 String projectDirector = (String)request.getAttribute("projectDirector");
-	%>
+List<String> changes = new ArrayList<>();
+%>
 <script type="text/javascript">
 function changeempoic1(id,id3)
 {
@@ -93,11 +103,14 @@ var s = '';
 <body>
 
   <nav class="navbar navbar-light bg-light" style="margin-top: -1%;">
+  	<div class="row text-danger m-3" style="font-weight: 600; font-size: 14px; "> 
+Kindly note that only the Project Director, the Admin, and the OICs of the Parent Milestone are authorized to edit milestones.
+</div>
   <a class="navbar-brand"></a>
   <form class="form-inline"  method="POST" action="MilestoneActivityList.htm">
     <%if( Arrays.asList(getMA[8].toString(),projectDirector,getMA[9].toString()).contains(EmpId.toString()) || LoginType.equalsIgnoreCase("A")  ){ %>
    <%if(getMA[13]!=null){ %>
-    <input type="submit" class="btn btn-primary btn-sm submit "  value="Set Base Line ( <%=RevisionCount %> )" onclick="return confirm('Are You Sure To Submit ?')" formaction="M-A-Set-BaseLine.htm" > 
+    <input type="submit" class="btn btn-primary btn-sm submit " id="baseLineBtn"  value="Set Base Line ( <%=RevisionCount %> )" onclick="return confirm('Are You Sure To Submit ?')" formaction="M-A-Set-BaseLine.htm" > 
   
   <%} %>
   <%} %>
@@ -113,9 +126,7 @@ var s = '';
 <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 </form>
 </nav>
-	<div class="row text-danger ml-3" style="font-weight: 600; font-size: 14px; "> 
-Kindly note that only the Project Director, the Admin, and the OICs of the Parent Milestone are authorized to edit milestones. Please ensure all details are accurate before adding a new milestone.
-</div>
+
 <%
 
 String ses=(String)request.getParameter("result"); 
@@ -131,16 +142,15 @@ String ses=(String)request.getParameter("result");
 	<div class="alert alert-success" role="alert"  >
                      <%=ses %>
                    </div></center>
-                      <br />
                     <%} %>
 
- 
+    <br />
 
 
-<div class="container-fluid mt-2">
+<div class="container-fluid">
 <div class="row" >
 <div class="col-md-12">
-<div  class="panel-group" style="  "><h5 class="text-white" style="font-weight: bold;font-size: large;background-color: #055C9D; text-align: center;"><%=getMA[1] %> Milestone Activity Details  </h5>  
+<div  class="panel-group" style="  "><h5 class="text-white" style="font-weight: bold;font-size: large;background-color: #055C9D; text-align: center;padding: 10px"><%=getMA[1] %> Milestone Activity Details  </h5>  
 <form   method="POST" action="MilestoneActivityEditSubmit.htm" id="form<%=getMA[0] %>M<%=getMA[10] %>">
 <div class="row container-fluid" >
                              <div class="col-md-1 " ><br><label class="control-label">Type</label>  <br>  <b >Main</b>                    		
@@ -257,6 +267,8 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
 	int countA=1;
 	for(Object[] ActivityA:MilestoneActivityA){
 		List<Object[]> MilestoneActivityB=(List<Object[]>)request.getAttribute("MilestoneActivityB"+countA);
+
+		changes.add(ActivityA[26].toString());
 %>
 
 
@@ -422,6 +434,7 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
 	int countB=1;
 	for(Object[] ActivityB:MilestoneActivityB){
 		List<Object[]> MilestoneActivityC=(List<Object[]>)request.getAttribute("MilestoneActivityC"+countA+countB);	
+		changes.add(ActivityB[26].toString());
 %>
 
 
@@ -580,8 +593,7 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
 	int countC=1;
 	for(Object[] ActivityC:MilestoneActivityC){
 		List<Object[]> MilestoneActivityD=(List<Object[]>)request.getAttribute("MilestoneActivityD"+countA+countB+countC);	
-
-		
+		changes.add(ActivityC[26].toString());
 %>
 
 
@@ -738,6 +750,7 @@ if(MilestoneActivityD!=null&&MilestoneActivityD.size()>0){
 	int countD=1;
 	for(Object[] ActivityD:MilestoneActivityD){
 		List<Object[]> MilestoneActivityE=(List<Object[]>)request.getAttribute("MilestoneActivityE"+countA+countB+countC+countD);	
+		changes.add(ActivityD[26].toString());
 %>
 
 
@@ -893,7 +906,7 @@ $( document ).ready(function() {
 if(MilestoneActivityE!=null&&MilestoneActivityE.size()>0){
 	int countE=1;
 	for(Object[] ActivityE:MilestoneActivityE){
-		
+		changes.add(ActivityE[26].toString());
 %>
 
 
@@ -1097,6 +1110,15 @@ $( document ).ready(function() {
 	<br><br><br><br><br>
 	</div>
 	</div>
+	
+	<% boolean anychange = changes.stream().anyMatch(e->e.equalsIgnoreCase("1")); 
+	if(!anychange){
+	%>
+	<script type="text/javascript">
+	console.log("No change to do BaseLine")
+	$('#baseLineBtn').hide();
+	</script>
+	<%} %>
 	
 
 									</div>	

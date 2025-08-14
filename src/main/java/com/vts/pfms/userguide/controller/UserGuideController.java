@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class UserGuideController {
 	
-	@GetMapping(value = "userGuide.htm")
-	public String getUserGuide() {
-		return "help/UserGuide";
+	@GetMapping(value = "PMSHelpGuide.htm")
+	public String getPMSHelpGuide() {
+		return "help/OverallUserGuide";
 	}
 	
 	@GetMapping(value = "CommitteeUserGuide.htm")

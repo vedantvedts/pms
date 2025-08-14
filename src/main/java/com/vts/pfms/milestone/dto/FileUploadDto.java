@@ -10,6 +10,7 @@ public class FileUploadDto {
 	private String UserId;
 	private String PathName;
 	private String ProjectId;
+	private String InitiationId;
 	private String FileId;
 	private String FileName;
     private String FileNamePath;

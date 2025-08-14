@@ -114,7 +114,7 @@ input[type=checkbox] {
   String LoginType = (String)session.getAttribute("LoginType");
   List<String> actionAllowedFor =  Arrays.asList("A", "P");
   Long projectDirector = 0L;
-  
+  String selectedProject = "";
   Long empId = (Long)session.getAttribute("EmpId");
  %>
 
@@ -134,9 +134,9 @@ input[type=checkbox] {
                               		<select class="form-control selectdee" id="ProjectId" required="required" name="ProjectId">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : ProjectList) {
-    										 projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+    										 projectshortName=(obj[17]!=null)?" ("+obj[17].toString()+") ":"";
     										%>
-											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%projectDirector = Long.parseLong(obj[23].toString()); %> <%} %>> <%=obj[4]+projectshortName%>  </option>
+											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%projectDirector = Long.parseLong(obj[23].toString());selectedProject=projectshortName; %> <%} %>> <%=obj[4]+projectshortName%>  </option>
 											<%} %>
   									</select>
   									</div>
@@ -305,7 +305,7 @@ if(ses1!=null){	%>
 															                     </div> 
 																			</button>
 																		<%} %>
-																		  <%if("N".equalsIgnoreCase(obj[10].toString())){ %>
+																		  <%if(Arrays.asList("N","B").contains(obj[10].toString()) ){ %>
 																		  	<%if("A".equalsIgnoreCase(LoginType) || projectDirector.equals(empId) || Long.parseLong(obj[17].toString())==(empId)) { %>
 																		  
 			                                                              <button  class="editable-click" name="sub" value="C"  id="EditWeightage<%=obj[0].toString()%>">
@@ -324,15 +324,6 @@ if(ses1!=null){	%>
 														                      </div>
 														                     </div>
 														                  </button>
-														                  <br>
-														                 <%--     <button type="button" id="deleteBtn<%=obj[0].toString() %>"  class="editable-click deleteBtn" name="sub" value="<%=obj[0].toString() %>"    >
-																			<div class="cc-rockmenu">
-																			 <div class="rolling">	
-														                        <figure class="rolling_icon"><img src="view/images/delete.png" ></figure>
-														                        <span>Delete</span>
-														                      </div>
-														                     </div>
-														                  </button> --%>  
 														                  <%} %>
 			                                                              <%}else if("Y".equalsIgnoreCase(obj[10].toString())){ %>
 <%-- 			                                                              <%if("A".equalsIgnoreCase(LoginType) || projectDirector.equals(empId) || Long.parseLong(obj[17].toString())==(empId)) { %>
@@ -445,17 +436,18 @@ if(ses1!=null){	%>
 														<tr class="collapse row<%=obj[0]  %> trclass<%=obj[0]%>"  >
 														
 															<td style="width:2% !important; " class="center">
+													
 															</td>
 															<td class="center"> 
-															<%if(MilestoneB!=null && MilestoneB.size()>0) {%>
+															<%if(MilestoneB!=null && MilestoneB.size()>0) { %>
 															<span class="clickable" data-toggle="collapse" id="row_<%=objA[0] %>" data-target=".row_<%=objA[0]  %>">
 																	<button class="btn btn-sm btn-success" id="btn<%=objA[0]  %>"  onclick="ChangeButton('<%=objA[0]  %>')">
 																		<i class="fa fa-plus"  id="fa<%=objA[0] %>"></i> 
 																	</button>
 																</span>
 																<%}else{ %>
-<%-- 																<button type="button"  class="btn" onclick="supersedingMilestone('<%=objA[0] %>','<%=objA[4] %>', 'M<%=obj[5]%>-A<%=countA%>'  )"> <i class="fa fa-info" aria-hidden="true" style="color: #055C9D"></i></button>
- --%>																<%} %>
+													
+ 																<%} %>
 															</td>
 															<td style="text-align: left;width: 5%;"> A-<%=countA%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
@@ -469,12 +461,7 @@ if(ses1!=null){	%>
 															<td><%=objA[14]%>
 															<br>
 																
-															<%= EmployeeList.stream()
-															.filter(e->e[0].toString().equalsIgnoreCase(objA[15].toString()))
-															.map(e -> (e[4]!=null?e[4].toString():e[3]!=null?e[3].toString():" " )+   e[1].toString() + ", " + e[2].toString())
-															.findFirst()
-														    .orElse("-")
-															%>	
+															<%=objA[27] %>	
 															
 															
 															</td>
@@ -540,7 +527,11 @@ if(ses1!=null){	%>
 	
 																%>
 														<tr class="collapse row_<%=objA[0]  %> trclass<%=obj[0]%> trclass<%=objA[0]%>"  >
-															<td style="width:2% !important; " class="center"> </td>
+															<td style="width:2% !important; " class="center">
+
+															
+															
+															 </td>
 																<td class="center"> 
 															<%if(MilestoneC!=null && MilestoneC.size()>0) {%>
 															<span class="clickable" data-toggle="collapse" id="row_<%=objB[0] %>" data-target=".row_<%=objB[0]  %>">
@@ -549,8 +540,8 @@ if(ses1!=null){	%>
 																	</button>
 																</span>
 																<%}else{ %>
-<%-- 																<button type="button"  class="btn" onclick="supersedingMilestone('<%=objB[0] %>','<%=objB[4] %>', 'M<%=obj[5]%>-A<%=countA%>-B<%=countB%>'  )"> <i class="fa fa-info" aria-hidden="true" style="color: #055C9D"></i></button>
- --%>																<%} %>
+																
+																<%}%>
 															</td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;B-<%=countB%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
@@ -563,12 +554,7 @@ if(ses1!=null){	%>
 															<td style="width:8% !important; "><%=sdf.format(objB[3])%></td>
 															<td><%=objB[14]%>
 															<br>
-															<%= EmployeeList.stream()
-															.filter(e->e[0].toString().equalsIgnoreCase(objB[15].toString()))
-															.map(e -> (e[4]!=null?e[4].toString():e[3]!=null?e[3].toString():" " )+   e[1].toString() + ", " + e[2].toString())
-															.findFirst()
-														    .orElse("-")
-															%>
+															<%=objB[27]%>
 															</td>
 															<td class="width-30px"><%if(objB[9].toString().equalsIgnoreCase("3")||objB[9].toString().equalsIgnoreCase("5")){ %>
 														      <%if(objB[7]!=null){ %>   <%=sdf.format(objB[7]) %> <%}else{ %><%=objB[8] %> <%} %>
@@ -629,7 +615,10 @@ if(ses1!=null){	%>
 													         List<Object[]> MilestoneD=(List<Object[]>)request.getAttribute(count+"MilestoneActivityD"+countA+countB+countC);
 																%>
 														<tr class="collapse row_<%=objB[0] %> trclass<%=obj[0]%> trclass<%=objA[0]%> trclass<%=objB[0]%>" >
-															<td style="width:2% !important; " class="center"> </td>
+															<td style="width:2% !important; " class="center">
+
+															
+															 </td>
 															<td class="center">
 															<%if(MilestoneD!=null && MilestoneD.size()>0) {%>
 															<span class="clickable" data-toggle="collapse" id="row_<%=objC[0] %>" data-target=".row_<%=objC[0]  %>">
@@ -638,8 +627,8 @@ if(ses1!=null){	%>
 																	</button>
 																</span>
 																<%}else{ %>
-<%-- 																<button type="button"  class="btn" onclick="supersedingMilestone('<%=objC[0] %>','<%=objC[4] %>', 'M<%=obj[5]%>-A<%=countA%>-B<%=countB%>-C<%=countC%>'  )"> <i class="fa fa-info" aria-hidden="true" style="color: #055C9D"></i></button>
- --%>																<%} %>
+															
+															<% } %>
 															</td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C-<%=countC%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
@@ -652,13 +641,8 @@ if(ses1!=null){	%>
 															<td style="width:8% !important; "><%=sdf.format(objC[3])%></td>
 															<td><%=objC[14]%>
 															<br>
-															
-															<%= EmployeeList.stream()
-															.filter(e->e[0].toString().equalsIgnoreCase(objC[15].toString()))
-															.map(e -> (e[4]!=null?e[4].toString():e[3]!=null?e[3].toString():" " )+   e[1].toString() + ", " + e[2].toString())
-															.findFirst()
-														    .orElse("-")
-															%>
+															<%=objC[27]%>
+													
 															</td>
 															<td class="width-30px"><%if(objC[9].toString().equalsIgnoreCase("3")||objC[9].toString().equalsIgnoreCase("5")){ %>
 														     <%if(objC[7]!=null){ %>   <%=sdf.format(objC[7]) %> <%}else{ %><%=objC[8] %> <%} %>
@@ -720,17 +704,20 @@ if(ses1!=null){	%>
 	
 																%>
 														<tr class="collapse row_<%=objC[0] %> trclass<%=obj[0]%> trclass<%=objA[0]%> trclass<%=objB[0]%> trclass<%=objC[0]%>" >
-															<td style="width:2% !important; " class="center"> </td>
+															<td style="width:2% !important; " class="center">
+
+															
+															 </td>
 															<td class="center">
 																<%if(MilestoneE!=null && MilestoneE.size()>0) {%>
 															<span class="clickable" data-toggle="collapse" id="row_<%=objD[0] %>" data-target=".row_<%=objD[0]  %>">
-																	<button class="btn btn-sm btn-success" id="btn<%=objD[0]  %>"  onclick="ChangeButton('<%=objD[0]  %>')">
+																	<button class="btn btn-sm btn-success" id="btn<%=objD[0]  %>"  onclick="ChangeButton('<%=objD[0]%>')">
 																		<i class="fa fa-plus"  id="fa<%=objD[0] %>"></i> 
 																	</button>
 																</span>
 																<%}else{ %>
-<%-- 																<button type="button"  class="btn" onclick="supersedingMilestone('<%=objD[0] %>','<%=objD[4] %>', 'M<%=obj[5]%>-A<%=countA%>-B<%=countB%>-C<%=countC%>-D<%=countD%>'  )"> <i class="fa fa-info" aria-hidden="true" style="color: #055C9D"></i></button>
- --%>																<%} %>
+													
+ 																	<%} %>
 															
 															</td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D-<%=countD%></td>
@@ -744,12 +731,7 @@ if(ses1!=null){	%>
 															<td style="width:8% !important; "><%=sdf.format(objB[3])%></td>
 															<td><%=objD[14]%>
 															<br>
-															<%= EmployeeList.stream()
-															.filter(e->e[0].toString().equalsIgnoreCase(objD[15].toString()))
-															.map(e -> (e[4]!=null?e[4].toString():e[3]!=null?e[3].toString():" " )+   e[1].toString() + ", " + e[2].toString())
-															.findFirst()
-														    .orElse("-")
-															%>
+														<%=objD[27]%>
 															
 															</td>
 															<td class="width-30px"><%if(objD[9].toString().equalsIgnoreCase("3")||objD[9].toString().equalsIgnoreCase("5")){ %>
@@ -782,7 +764,7 @@ if(ses1!=null){	%>
 															</div> <%} %>
 															</td>
 															<td>
-													                                                   <%if("A".equalsIgnoreCase(LoginType) || projectDirector.equals(empId) || Long.parseLong(objD[13].toString())==(empId)) { %>											
+													      <%if("A".equalsIgnoreCase(LoginType) || projectDirector.equals(empId) || Long.parseLong(objD[13].toString())==(empId)) { %>											
                                                          		
 			                                                     <div style="display: flex; justify-content: center;">
 			                                                         <div style="display: flex;width:80%">
@@ -809,10 +791,15 @@ if(ses1!=null){	%>
 																
 																%>
 														<tr class="collapse row_<%=objD[0] %> trclass<%=obj[0]%> trclass<%=objA[0]%> trclass<%=objB[0]%> trclass<%=objC[0]%> trclass<%=objD[0]%>"  style="" >
-															<td style="width:2% !important; " class="center"> </td>
+															<td style="width:2% !important; " class="center">
+												
+															
+															 </td>
 															<td class="center">
-<%-- 									         				<button type="button"  class="btn" onclick="supersedingMilestone('<%=objE[0] %>','<%=objE[4] %>', 'M<%=obj[5]%>-A<%=countA%>-B<%=countB%>-C<%=countC%>-D<%=countD%>-E<%=countE%>'  )"> <i class="fa fa-info" aria-hidden="true" style="color: #055C9D"></i></button>
- --%>															</td>
+															<%if(!objE[24].toString().equalsIgnoreCase("0") ){ %>
+														
+ 															<%} %>
+ 															</td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E-<%=countE%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;"
@@ -824,13 +811,7 @@ if(ses1!=null){	%>
 															<td style="width:8% !important; "><%=sdf.format(objE[3])%></td>
 															<td><%=objE[14]%>
 															<br>
-															<%= EmployeeList.stream()
-															.filter(e->e[0].toString().equalsIgnoreCase(objE[15].toString()))
-															.map(e -> (e[4]!=null?e[4].toString():e[3]!=null?e[3].toString():" " )+   e[1].toString() + ", " + e[2].toString())
-															.findFirst()
-														    .orElse("-")
-															%>
-															
+															<%=objE[27]%>
 															</td>
 															<td class="width-30px"><%if(objE[9].toString().equalsIgnoreCase("3")||objE[9].toString().equalsIgnoreCase("5")){ %>
 														     <%if(objE[7]!=null){ %>   <%=sdf.format(objE[7]) %> <%}else{ %><%=objE[8] %> <%} %>
@@ -898,12 +879,7 @@ if(ses1!=null){	%>
 												 var mileId = '<%=obj[0].toString() %>';
 												 
 												<%--  var progress = '<%=obj[12]%>'; --%>
-												    console.log(empListJs+ "---");
-												    console.log(empId+ "---"+typeof empId);
-												    console.log(empListJs.includes(empId))
-												    console.log(empId===projectDirector)
-												    console.log(loginType==='A')
-												    console.log(mileId)
+												  
 												    
 												    
 												   if( empListJs.includes(empId) || empId===projectDirector || loginType==='A') {
@@ -923,7 +899,7 @@ if(ses1!=null){	%>
 												<%} %>
 												<% count++; } %>
 												
-												
+												<%if(LoginType.equalsIgnoreCase("A") || projectDirector.toString().equalsIgnoreCase(""+empId)) { %>
 													<tr>
 														<td></td>
 														<td colspan=1 style="display: flex;justify-content: center;align-items: center">
@@ -935,6 +911,7 @@ if(ses1!=null){	%>
 					              						</td>
 														<td colspan="9"></td>
 													</tr>
+													<% } %>
 												<% }else{%>
 												<tr >
 													<td colspan="11" style="text-align: center" class="center">No List Found</td>
@@ -1148,72 +1125,7 @@ if(ses1!=null){	%>
 	</div>
 	<!-- -------------------------------------------- Milestone Status Remarks Modal End -------------------------------------------- -->
 
-<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document"> <!-- Use modal-lg here -->
-    <div class="modal-content" style=" width: 150%;margin-left: -22%;">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalheader">Choose Milestone for Linking & Superseding</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-					<div class="row">
-						<div class="col-md-3">
-							<label class="control-label">Project Name :</label>
-						</div>
-						<div class="col-md-5" style="">
-							<select class="form-control selectdee" id="projectIds"
-								required="required" style="width: 100%" onchange="getProjectMilestones()">
-								<option  selected value="0">Choose...</option>
-								<%
-								for (Object[] obj : ProjectList) {
-								if(!ProjectId.equalsIgnoreCase(obj[0].toString())){
-									//String projectshortName = (obj[17] != null) ? " ( " + obj[17].toString() + " ) " : "";
-								%>
-								<option value="<%=obj[0]%>"><%=obj[4] %></option>
-								<%
-								}}
-								%>
-							</select>
-						</div>
-					</div>
-					
-						<div class="row mt-4">
-						<div class="col-md-3">
-							<label class="control-label">Milestone List:</label>
-						</div>
-						<div class="col-md-8" style="">
-							<select class="form-control selectdee" id="mileIdLink"
-								required="required" style="width: 100%" >
-								
-							
-								
-							</select>
-						</div>
-					</div>
-					
-						<div class="row mt-4" id="IsMasterDiv" style="display: none;">
-						<div class="col-md-6">
-							<label class="control-label" id="masterDataLabel">Is Master Data:</label>
-						</div>
-						<div class="col-md-1" id="IsMasterDivDetails" style="">
-							<input type="radio"  name="IsMaster" value="Y" checked="checked">&nbsp;&nbsp;YES
-						</div>
-						<div class="col-md-1" id="IsMasterDivDetails" style="">
-							<input type="radio"  name="IsMaster" value="N"> &nbsp;&nbsp;NO
-						</div>
-					</div>
-					
-				<div align="center" class="mt-4">
-				        <button class="btn btn-sm submit" onclick="saveData()">SUBMIT</button>
-				        <input type="hidden" id="milesMainId"> 
-				      </div>
-				</div>
-     
-    </div>
-  </div>
-</div>
+
 	
 <script type="text/javascript">
 function MainDOCEditModal(mainid, DOC)
@@ -1447,158 +1359,12 @@ function ChangeButton(id) {
 		$('#milestoneStatusRemarksModal').modal('show');
 	}
 	
-	$(".deleteBtn").click(function(){
-		
-		var id = this.value;
-		if(confirm('Kindly Note if you remove a milestone sub-milestones will also get removed.Are you sure to delete this Milestone?')){
-			
-			$.ajax({
-				type:'GET',
-				url:'MilestoneIsActive.htm',
-				datatype:'json',
-				data:{
-					id:id,
-				},
-				success:function(result){
-					var ajaxresult = JSON.parse(result);
-					
-					if(ajaxresult=='1'){
-						alert('Milestone Deleted successfully!')
-						window.location.reload()
-					}else{
-						alert('Milestone Delete unsuccessful!')
-					}
-				}
-			})
-		}else{
-			
-		}
-		
-		
-		});
+	
+	$(function () {
+		$('[data-toggle="tooltip"]').tooltip()
+	})
 	
 	
-	
-	function supersedingMilestone(a,b ,c){
-		
-		$('#largeModal').modal('show');
-		$("#mileIdLink").html("<option disabled selected value=''>Choose...</option>");
-		$("#modalheader").html(" Linking & Superseding for "+b+ " ( "+ c + " )" +    "<%=projectshortName %>"    );
-		$('#projectIds').val('0').trigger('change');
-		$('#IsMasterDiv').hide();
-		$('#milesMainId').val(a);
-	}
-	
-	
-	function getProjectMilestones(){
-		
-		var projectid = $('#projectIds').val();
-		
-		
-	
-			$.ajax({
-			type:'GET',
-			url:'getProjectMilestones.htm',
-			datatype:'json',
-			data:{
-				projectid:projectid,
-			},
-			success:function (result){
-				var data = JSON.parse(result);
-			
-				var html = "<option disabled selected value=''>Choose...</option>";	
-				for (var key in data) {
-					  if (data.hasOwnProperty(key)) {
-					    var val = data[key]; 
-					/*  console.log(val[22]+"---"+val[24]+"---"+val[5]) */
-					  if((val[22]+"")==="0" && (val[24]+"")==="0"){
-						  if((val[5]+"")==="0"){
-						html += "<option value='" + val[0] + "'>" + val[4] +"(" +key.split("/")[0] + ")"+ "</option>";
-					  }}
-					  }
-					}
-				$("#mileIdLink").html(html);
-			
-				
-			}
-		})
-	}
-	
-	
-	$('#mileIdLink').on('change', function () {
-	    var selectedValue = $(this).val();                // Gets the value
-	    var selectedText = $(this).find("option:selected").text(); // Gets the displayed text
-	    console.log("Selected Value:", selectedValue);
-	    console.log("Selected Text:", selectedText);
-	    
-	    $('#IsMasterDiv').show();
-	    $('#masterDataLabel').html('Is '+selectedText +" master Data ?");
-	});
-	
-	function saveData(){
-		
-		var mileIdLink = $('#mileIdLink').val();
-		var milesMainId = $('#milesMainId').val();
-		
-		var selectedValue = $('input[name="IsMaster"]:checked').val();
-		
-		
-		
-			  if (!mileIdLink || mileIdLink.trim() === "") {
-				  console.log("mileIdLink--"+mileIdLink)
-    			Swal.fire({
-       			 icon: 'error',
-       			 title: 'Milestone Required',
-       			 text: 'You need to choose a milestone to link. If no milestones are visible, it may be because all milestones for the selected project have already started progressing.',
-   			 });
-				  return;
-}
-       Swal.fire({
-            title: 'Are you sure to upload?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: 'green',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes'
-        }).then((result) => {
-            if (result.isConfirmed) {
-		$.ajax({
-			
-			type:'GET',
-			url:'updateMilestonSuperSeding.htm',
-			datatype:'json',
-			data:{
-				mileIdLink:mileIdLink,
-				milesMainId:milesMainId,
-				isMasterData:selectedValue
-			},
-			   success: function(response) {
-	            	
-	            	  Swal.fire({
-			    	       	title: "Success",
-			                text: "Milestone Linked Successfully",
-			                icon: "success",
-			                allowOutsideClick :false
-			         		});
-	            	 
-	            	  $('.swal2-confirm').click(function (){
-	      	                location.reload();
-	      	        	})
-	            },
-	            error: function(xhr, status, error) {
-	            	  Swal.fire({
-	                      icon: 'error',
-	                      title: 'Error',
-	                      text: 'An error occurred while uploading the file'
-	                  });
-	                  console.log(xhr.responseText);
-	             }
-			
-		})
-            }
-        });
-		
-	}
 </script>  
 
 

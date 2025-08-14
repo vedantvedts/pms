@@ -33,6 +33,7 @@ import com.vts.pfms.committee.model.PmsEnote;
 import com.vts.pfms.committee.model.ProgrammeProjects;
 import com.vts.pfms.committee.model.ProgrammeMaster;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
+import com.vts.pfms.milestone.model.FileRepUploadPreProject;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.MinutesFinanceList;
@@ -201,7 +202,7 @@ public interface CommitteeService {
 	public int CommitteeMemberUpdate(CommitteeMember model) throws Exception;
 	public int CommitteeMainMemberUpdate(CommitteeMembersEditDto dto,CommitteeMainDto cmd) throws Exception;
 	public Object[] CommitteMainData(String committeemainid) throws Exception;
-	public Long LastCommitteeId(String CommitteeId, String projectid, String divisionid,String initiationid, String carsInitiationId) throws Exception;
+	public Long LastCommitteeId(String CommitteeId, String projectid, String divisionid,String initiationid, String carsInitiationId, String programmeId) throws Exception;
 	public long InitiationCommitteeAdd(String initiation, String[] Committee, String UserId) throws Exception;
 	public long InitiationCommitteeDelete(String[] CommitteeProject, String user) throws Exception;
 	public Object[] Initiationdetails(String initiationid) throws Exception;
@@ -330,5 +331,7 @@ public interface CommitteeService {
 	public List<Object[]> getdraftMomList(String empId, String pageSize)throws Exception;
 	public long saveCommitteeSchedulesMomDraftRemarks(CommitteeSchedulesMomDraftRemarks cmd)throws Exception;
 	public List<Object[]> getCommitteeSchedulesMomDraftRemarks(Long scheduleId)throws Exception;
+	public List<Object[]> preProjectlist(String labCode)throws Exception;
+	public FileRepUploadPreProject getPreProjectAgendaDocById(String filerepid)throws Exception;
 }
 

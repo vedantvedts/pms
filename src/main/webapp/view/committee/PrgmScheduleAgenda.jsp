@@ -249,7 +249,7 @@ ul, #myUL {
   List<Object[]> agendaDocList = (List<Object[]>) request.getAttribute("agendaDocList");
   String filesize=  (String)request.getAttribute("filesize");
   String labcode = (String)request.getAttribute("labcode");
-  
+  List<Object[]> labEmpList=(List<Object[]>)request.getAttribute("labEmpList");
   String scheduleid=scheduledata[6].toString();
   String projectid=scheduledata[9].toString();
  %>
@@ -306,19 +306,26 @@ ul, #myUL {
 										</thead>
 										<tbody>
 											<%if(prgmProjectList!=null && prgmProjectList.size()>0) {
-												for(Object[] obj : prgmProjectList) {%>
+												int slno = 0;
+												for(Object[] obj : prgmProjectList) { %>
 												<tr>
 													<td>
 														<input type="text" class="form-control" name="agendaitem" value="<%=obj[3] %> (<%=obj[1] %>)" maxlength="500" required="required" />
 														<input type="hidden" name="projectid" value="<%=obj[0]%>">
 														<input type="hidden" name="PresLabCode" value="<%=labcode%>">
-														<input type="hidden" name="presenterid" value="<%=obj[4]%>">
+														<%-- <input type="hidden" name="presenterid" value="<%=obj[4]%>"> --%>
 													</td>
 													<td>
 														<input type="text" class="form-control" name="remarks" maxlength="255" required="required" />
 													</td>
 													<td>
-														<span><%=obj[5] %>, <%=obj[6] %></span>
+														<select class="form-control items presenterid" name="presenterid" id="presenterid_<%=++slno %>"  required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body" onchange="getEmployee(this)">
+											        		<option disabled="disabled" selected value="">Choose...</option>
+													        <% for(Object[] emp : labEmpList){ %>
+													        	<option value="<%=emp[0] %>" <%if(obj[4].toString().equalsIgnoreCase(emp[0].toString())) {%>selected<%} %> ><%=emp[1] %>(<%=emp[3] %>)</option>
+													        <%} %>
+														</select>
+														<%-- <span><%=obj[5] %>, <%=obj[6] %></span> --%>
 													</td>
 													<td>
 														<input type="number" name="duration" class="form-control" min="1" placeholder="Minutes" required/>
@@ -387,7 +394,13 @@ ul, #myUL {
 																	<input form="inlineeditform_<%=count%>" type="text" class="form-control" name="remarks" value="<%=obj[6].toString()%>"  maxlength="255" >
 																</td>
 																<td>
-																	<span><%=obj[10] %>, <%=obj[11] %></span>
+																	<select class="form-control items presenterid" name="presenterid" id="presenterid_<%=count %>"  required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body" onchange="getEmployee(this)">
+														        		<option disabled="disabled" selected value="">Choose...</option>
+																        <% for(Object[] emp : labEmpList){ %>
+																        	<option value="<%=emp[0] %>" <%if(obj[9].toString().equalsIgnoreCase(emp[0].toString())) {%>selected<%} %> ><%=emp[1] %>(<%=emp[3] %>)</option>
+																        <%} %>
+																	</select>
+																	<%-- <span><%=obj[10] %>, <%=obj[11] %></span> --%>
 																</td>	
 																<td>
 																	<input form="inlineeditform_<%=count%>" type="number" name="duration" class="form-control item_name" min="1"  placeholder="Minutes " value="<%=obj[12] %>" required />
@@ -416,7 +429,7 @@ ul, #myUL {
 										                                <input type="hidden" name="${_csrf.parameterName}"   value="${_csrf.token}" />
 										                                <input type="hidden" name="projectid" value="<%=obj[5]%>">
 																		<input type="hidden" name="PresLabCode" value="<%=labcode%>">
-																		<input type="hidden" name="presenterid" value="<%=obj[9]%>">
+																		<%-- <input type="hidden" name="presenterid" value="<%=obj[9]%>"> --%>
 																		<input type="hidden" name="prgmflag" value="Y">
 																		<input type="hidden"  name="AgendaPriority" value="<%=obj[8]%>"/>
 																		<input type="hidden" name="committeescheduleagendaid" id="committeescheduleagendaid" value="<%=obj[0]%>"/>
