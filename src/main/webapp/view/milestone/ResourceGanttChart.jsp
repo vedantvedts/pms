@@ -1,3 +1,4 @@
+<%@page import="java.util.stream.Collectors"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.util.Map"%>
@@ -129,6 +130,8 @@ h6{
 	
 	FormatConverter fc = new FormatConverter();
 	
+	// Remove Linked Milestones
+	totalAssignedSubList = totalAssignedSubList.stream().filter(e -> e[16]!=null && !e[16].toString().equalsIgnoreCase("L")).collect(Collectors.toList());
 	totalAssignedSubList.sort((o1, o2) -> {
 		
 	    // Null safety, if needed
@@ -375,10 +378,10 @@ h6{
 						                            		for(Object[] obj : totalAssignedSubList) { 
 						                            			int progress = obj[8]!=null?Integer.parseInt(obj[8].toString()):0;
 						                            			if(progress>99) continue;
-						                    	   				Object[] projectDetails = projectList.stream().filter(e -> Long.parseLong(e[0].toString())== Long.parseLong(obj[obj.length - 2].toString())).findFirst().orElse(null);
+						                    	   				Object[] projectDetails = projectList.stream().filter(e -> Long.parseLong(e[0].toString())== Long.parseLong(obj[obj.length - 1].toString())).findFirst().orElse(null);
 						                            		%>
 						                            		<tr>
-						                            			<td class="center"><%=++slno %></td>
+						                            			<td class="center"><%=++slno %> </td>
 						                            			<td class="center"><%=projectDetails!=null?(projectDetails[1]+" ("+projectDetails[3]+")"):"-"%></td>
 						                            			<td class="center">M<%=obj[obj.length - 2] %> <%=obj[obj.length - 3] %></td>
 						                            			<td><%=obj[3]%></td>
@@ -643,7 +646,7 @@ h6{
 		   		<%for(Object[] obj : totalAssignedSubList){ 
 		   			int progress = obj[8]!=null?Integer.parseInt(obj[8].toString()):0;
         			if(progress>99) continue;
-	   				Object[] projectDetails = projectList.stream().filter(e -> Long.parseLong(e[0].toString())== Long.parseLong(obj[obj.length - 2].toString())).findFirst().orElse(null);
+	   				Object[] projectDetails = projectList.stream().filter(e -> Long.parseLong(e[0].toString())== Long.parseLong(obj[obj.length - 1].toString())).findFirst().orElse(null);
 		   		  %>
 		
 						{
@@ -1072,7 +1075,7 @@ $('#empId').on('change',function(){
 	        <% for (Object[] obj : totalAssignedSubList) {
 	        	int progress = obj[8]!=null?Integer.parseInt(obj[8].toString()):0;
     			if(progress>99) continue;
-	            Object[] projectDetails = projectList.stream().filter(e -> Long.parseLong(e[0].toString()) == Long.parseLong(obj[obj.length - 2].toString())).findFirst().orElse(null);
+	            Object[] projectDetails = projectList.stream().filter(e -> Long.parseLong(e[0].toString()) == Long.parseLong(obj[obj.length - 1].toString())).findFirst().orElse(null);
 				String taskshortname = obj[3]!=null && obj[3].toString().length()>90?obj[3].toString().substring(0, 90)+"....":obj[3].toString();
 	        %>
 		        {

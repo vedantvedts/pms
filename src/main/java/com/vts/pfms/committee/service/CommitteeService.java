@@ -202,7 +202,7 @@ public interface CommitteeService {
 	public int CommitteeMemberUpdate(CommitteeMember model) throws Exception;
 	public int CommitteeMainMemberUpdate(CommitteeMembersEditDto dto,CommitteeMainDto cmd) throws Exception;
 	public Object[] CommitteMainData(String committeemainid) throws Exception;
-	public Long LastCommitteeId(String CommitteeId, String projectid, String divisionid,String initiationid, String carsInitiationId) throws Exception;
+	public Long LastCommitteeId(String CommitteeId, String projectid, String divisionid,String initiationid, String carsInitiationId, String programmeId) throws Exception;
 	public long InitiationCommitteeAdd(String initiation, String[] Committee, String UserId) throws Exception;
 	public long InitiationCommitteeDelete(String[] CommitteeProject, String user) throws Exception;
 	public Object[] Initiationdetails(String initiationid) throws Exception;

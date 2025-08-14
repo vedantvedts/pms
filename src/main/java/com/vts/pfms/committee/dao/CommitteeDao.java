@@ -45,7 +45,7 @@ public interface CommitteeDao {
 	public List<Object[]> EmployeeList(String LabCode) throws Exception;
 	public Object[] CommitteeName(String CommitteeMainId)throws Exception;
 	public long CommitteeDetailsSubmit(CommitteeMain committeemain) throws Exception;
-	public Long LastCommitteeId(String CommitteeId,String projectid,String divisionid,String initiationid, String carsInitiationId) throws Exception;
+	public Long LastCommitteeId(String CommitteeId,String projectid,String divisionid,String initiationid, String carsInitiationId, String programmeId) throws Exception;
 	public Long UpdateCommitteemainValidto(CommitteeMain committeemain) throws Exception;
 	public long CommitteeNewAdd(Committee committeeModel) throws Exception;
 	public List<Object[]> CommitteeNamesCheck(String name, String sname,String projectid,String LabCode) throws Exception;

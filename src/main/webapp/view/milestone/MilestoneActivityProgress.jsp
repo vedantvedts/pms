@@ -6,10 +6,16 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<spring:url value="/resources/pdfmake/xlsx.full.min.js" var="excelConverter" />
+<script src="${excelConverter}"></script>
+<spring:url value="/resources/css/sweetalert2.min.css" var="sweetalertCss" />
+<spring:url value="/resources/js/sweetalert2.min.js" var="sweetalertJs" />
+<link href="${sweetalertCss}" rel="stylesheet" />
+<script src="${sweetalertJs}"></script>
 <jsp:include page="../static/header.jsp"></jsp:include>
 
 <style type="text/css">
@@ -50,7 +56,7 @@
 	String fromDate = (String)request.getAttribute("fromDate");
 	String toDate = (String)request.getAttribute("toDate");
 	String sancDate = (String)request.getAttribute("sancDate");
-	
+	String project = "";
 	FormatConverter fc = new FormatConverter();
 	
 	totalAssignedSubList.sort((o1, o2) -> {
@@ -114,12 +120,12 @@
                     			<tr>
                     				<th width="10%" class="right"><label class="form-label">Project:</label></th>
                     				<td width="34%">
-                    					<select class="form-control selectdee" name="projectId" onchange="this.form.submit()" >
+                    					<select class="form-control selectdee" name="projectId" id="projectId" onchange="this.form.submit()" >
 											<option selected disabled>---Select---</option>
 											<%if(projectList!=null && projectList.size()>0) {
 												for(Object[] obj : projectList) {
 													String projectshortName=(obj[17]!=null)?" ("+obj[17].toString()+") ":""; %>
-													<option value="<%=obj[0]%>" <%if(projectId.equalsIgnoreCase(obj[0]+"")) {%>selected<%} %> >
+													<option value="<%=obj[0]%>" <%if(projectId.equalsIgnoreCase(obj[0]+"")) { project = obj[4]+projectshortName; %>selected<%} %> >
 														<%=obj[4]+projectshortName %>
 													</option>
 											<%} }%>
@@ -133,6 +139,11 @@
                     				<td width="18%">
                     					<input type="text" class="form-control " name="toDate" id="toDate" value="<%=toDateR %>" onchange="this.form.submit()">
                     				</td>
+                    				<td width="18%">
+                    					<button type="button" class="btn btn-sm" name="action" value="GenerateExcel" onclick="exportMultipleTablesToExcel()" formtarget="blank" data-toggle="tooltip" data-placement="top" title="Excel Report" style="background-color: #fff">
+											<i style="color: #009900;font-size: 24px;" class="fa fa-file-excel-o" aria-hidden="true"></i>
+									  	</button>
+                    				</td>
                     			</tr>
 	                    	</table>
 	                    </div>
@@ -142,6 +153,7 @@
             <div class="card-body">
             	<div class="row">
 					<div class="col-md-12">
+						
 						<div class="table-responsive">
 							<table class="table table-bordered table-hover table-striped table-condensed" id="myTable">
 					        	<thead class="center">
@@ -295,6 +307,45 @@
         }
     });
 
+    
+    function exportMultipleTablesToExcel() {
+    	
+    	 // Step 1: Show SweetAlert2 loading
+   	  Swal.fire({
+   	    title: 'Please wait...',
+   	    text: 'Preparing your Excel file',
+   	    allowOutsideClick: false,
+   	    allowEscapeKey: false,
+   	    didOpen: () => {
+   	      Swal.showLoading();
+   	    }
+   	  });
+
+   	  // Step 2: Delay Excel generation by 3 seconds
+   	  setTimeout(() => {
+   	    var wb = XLSX.utils.book_new();
+
+   	    var projectname = $('#projectId :selected').text().trim();
+   	    console.log(projectname);
+   	    var fromdate = $('#fromDate').val();
+   	    var todate = $('#toDate').val();
+   	    var tables = [
+   	      { id: "myTable", name: "Milestone Progress" }
+   	    ];
+
+   	    tables.forEach(table => {
+   	      var el = document.getElementById(table.id);
+   	      if (el) {
+   	        var ws = XLSX.utils.table_to_sheet(el);
+   	        XLSX.utils.book_append_sheet(wb, ws, table.name);
+   	      }
+   	    });
+
+   	    XLSX.writeFile(wb, "Mil_Progress_"+projectname+"_"+fromdate+"_"+todate+".xlsx");
+   	    Swal.close();
+   	  }, 1000); // 3 seconds
+   	  
+   }
 </script>   
 </body>
 </html>

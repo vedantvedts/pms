@@ -160,7 +160,7 @@ input[type="file"]::-webkit-file-upload-button {
 
 								<div class="col-md-3">
 									<div class="form-group">
-										<label class="control-label">Progress:</label> <input
+										<label class="control-label">Progress</label> <input
 											type="number" name="Progress" id="progressid"
 											value="<%=EditData[5] %>" class="form-control item_name" required="required"
 											max="100" min="1" />
@@ -189,9 +189,9 @@ input[type="file"]::-webkit-file-upload-button {
 							
 								<div class="col-md-12">
 									<div class="form-group">
-										<label class="control-label">Remarks:</label> <input
+										<label class="control-label">Remarks</label> <input
 											type="text" name="Remarks" class="form-control item_name"
-											maxlength="255" required="required" value="<%=EditData[6]%>" />
+											maxlength="255" required="required" value="Nil" />
 									</div>
 							</div>
 						

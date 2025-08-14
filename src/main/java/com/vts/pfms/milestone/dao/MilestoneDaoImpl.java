@@ -24,6 +24,7 @@ import com.vts.pfms.milestone.model.FileRepUploadNew;
 import com.vts.pfms.milestone.model.FileRepUploadPreProject;
 import com.vts.pfms.milestone.model.MilestoneActivity;
 import com.vts.pfms.milestone.model.MilestoneActivityLevel;
+import com.vts.pfms.milestone.model.MilestoneActivityLevelRemarks;
 import com.vts.pfms.milestone.model.MilestoneActivitySub;
 import com.vts.pfms.milestone.model.MilestoneActivitySubRev;
 import com.vts.pfms.milestone.model.MilestoneSchedule;
@@ -547,16 +548,22 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public int ActivityLevelSum(String Id, String ActivityId,String LevelId) throws Exception {
-		try {	
-			Query query = manager.createNativeQuery(ACTIVITYLEVELSUM);
-			query.setParameter("activityid", Long.parseLong(ActivityId));
-			query.setParameter("id", Long.parseLong(Id));
-			query.setParameter("levelid", Long.parseLong(LevelId));
-			return (Integer)query.getSingleResult();
-		}catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
+		try {
+	        Query query = manager.createNativeQuery(ACTIVITYLEVELSUM);
+	        query.setParameter("activityid", Long.parseLong(ActivityId));
+	        query.setParameter("id", Long.parseLong(Id));
+	        query.setParameter("levelid", Long.parseLong(LevelId));
+
+	        Object result = query.getSingleResult();
+	     
+	        if (result == null) return 0;
+
+	        return ((Number) result).intValue();  
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return 0;
+	    }
 	}
 	
 
@@ -1278,7 +1285,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 			}
 		}
 		
-		private static final String ALLMILESTONEACTIVITYLEVELLIST = "SELECT a.ActivityId, a.ParentActivityId, a.ActivityLevelId, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.Revision, a.OicEmpId, a.OicEmpId1, a.ActivityStatusId, a.Weightage, a.Loading, a.StatusRemarks FROM milestone_activity_level a WHERE a.IsActive=1";
+		private static final String ALLMILESTONEACTIVITYLEVELLIST = "SELECT a.ActivityId, a.ParentActivityId, a.ActivityLevelId, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.Revision, a.OicEmpId, a.OicEmpId1, a.ActivityStatusId, a.Weightage, a.Loading, a.StatusRemarks, a.IsMasterData FROM milestone_activity_level a WHERE a.IsActive=1";
 //		private static final String ALLMILESTONEACTIVITYLEVELLIST = "SELECT a.ActivityId AS obid, a.ParentActivityId, a.ActivityLevelId, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.Revision, a.OicEmpId, a.OicEmpId1, a.ActivityStatusId, a.Weightage, a.Loading, a.StatusRemarks FROM milestone_activity_level a WHERE a.IsActive=1 AND a.Revision=0\r\n"
 //				+ "UNION\r\n"
 //				+ "SELECT a.ActivityId AS obid, a.ParentActivityId, a.ActivityLevelId, a.Activityname, a.OrgStartDate, a.orgEndDate, a.StartDate, a.EndDate, a.ProgressStatus, a.Revision, a.OicEmpId, a.OicEmpId1, a.ActivityStatusId, a.Weightage, a.Loading, a.StatusRemarks FROM milestone_activity_level a, milestone_activity_sub_rev b WHERE a.IsActive=1 AND a.Revision=b.Revision AND a.ActivityId=b.ActivityId \r\n"
@@ -1511,6 +1518,19 @@ public class MilestoneDaoImpl implements MilestoneDao {
 			return null;
 		}
 	}
+
+	private static final String DELETEMIL = "DELETE FROM milestone_activity_level WHERE ActivityId =:ActivityId ";
+	@Override
+	public int deleteMilsetone(String activityId) throws Exception {
+
+		Query query = manager.createNativeQuery(DELETEMIL);
+		query.setParameter("ActivityId", Long.parseLong(activityId));
+		
+		return (int)query.executeUpdate();
+
+	
+}
+	
 	
 	private static final String MILESTONEACTIVITYPROGRESSLIST="SELECT a.ActivitySubId, a.ActivityId, a.Progress, a.ProgressDate, a.AttachName, a.AttachFile, a.Remarks, c.EmpId, CONCAT(IFNULL(CONCAT(c.Title,' '),(IFNULL(CONCAT(c.Salutation, ' '), ''))), c.EmpName) AS 'EmpName', d.Designation FROM milestone_activity_sub a LEFT JOIN login b ON a.CreatedBy=b.UserName LEFT JOIN employee c ON b.EmpId=c.EmpId LEFT JOIN employee_desig d ON c.DesigId=d.DesigId WHERE a.IsActive=1 ORDER BY a.ProgressDate DESC";
 	@Override
@@ -1694,7 +1714,8 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	
 	@Override
 	public FileRepNewPreProject getPreProjectFileById(long repId) throws Exception {
-		
+
+
 		 return manager.find(FileRepNewPreProject.class,repId);	
 	}
 	
@@ -1783,5 +1804,29 @@ public class MilestoneDaoImpl implements MilestoneDao {
 			e.printStackTrace();
 			return new ArrayList<>();
 		}
+
+	}
+	
+	@Override
+	public int saveMilestoneActivityLevelRemarks(MilestoneActivityLevelRemarks cmd) throws Exception {
+		manager.persist(cmd);
+		manager.flush();
+		
+		return cmd.getRemarksId().intValue();
+	}
+	
+	
+	private static final String MILEREMARKS ="SELECT CONCAT(IFNULL(CONCAT(b.title,' '),IFNULL(CONCAT(b.salutation,' '),'')), b.empname) AS 'empname',c.designation , \r\n"
+			+ "a.remarks , a.createdDate,a.empid, a.activityId  FROM employee b ,milestone_activity_level_remarks a, employee_desig c WHERE a.empid=b.empid AND b.desigid=c.desigid\r\n"
+			+ "AND a.activityId=:activityId  AND a.isactive=1";
+	
+	@Override
+	public List<Object[]> getMilestoneDraftRemarks(Long activityId) throws Exception {
+
+		Query query   = manager.createNativeQuery(MILEREMARKS)	;
+		query.setParameter("activityId", activityId);
+		
+		
+		return (List<Object[]>)query.getResultList();
 	}
 }

@@ -1,3 +1,5 @@
+<%@page import="java.util.stream.Collectors"%>
+<%@page import="java.util.stream.Collector"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -102,6 +104,15 @@ List<Object[]> ProjectMainList=(List<Object[]>) request.getAttribute("ProjectMai
 String Onboarding = (String)request.getAttribute("Onboarding");
 DecimalFormat df=new DecimalFormat("0.00");
 NFormatConvertion nfc=new NFormatConvertion();
+
+String logintype = (String)session.getAttribute("LoginType");
+Long empId = (Long)session.getAttribute("EmpId");
+if(logintype.equalsIgnoreCase("P")){
+	ProjectMainList= ProjectMainList.stream()
+			.filter(e->e[14].toString().equalsIgnoreCase(empId+""))
+			.collect(Collectors.toList());
+}
+
 %>
 
 

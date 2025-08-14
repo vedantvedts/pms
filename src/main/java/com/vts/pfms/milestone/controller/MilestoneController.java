@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -106,6 +107,7 @@ import com.vts.pfms.milestone.model.FileRepUploadNew;
 import com.vts.pfms.milestone.model.FileRepUploadPreProject;
 import com.vts.pfms.milestone.model.MilestoneActivity;
 import com.vts.pfms.milestone.model.MilestoneActivityLevel;
+import com.vts.pfms.milestone.model.MilestoneActivityLevelRemarks;
 import com.vts.pfms.milestone.model.MilestoneActivitySub;
 import com.vts.pfms.milestone.service.MilestoneService;
 import com.vts.pfms.print.service.PrintService;
@@ -122,6 +124,7 @@ import jakarta.servlet.http.HttpSession;
 public class MilestoneController {
 
 	FormatConverter fc = new FormatConverter();
+	private SimpleDateFormat sdtf = fc.getSqlDateAndTimeFormat();
 	
 	@Autowired CommitteeService committeservice;
 
@@ -181,7 +184,7 @@ public class MilestoneController {
 				}
 			}
 			req.setAttribute("EmployeeList", service.EmployeeList());
-			
+
 			List<Object[]> main=service.MilestoneActivityList(ProjectId);
 			req.setAttribute("MilestoneActivityList",main );
 			req.setAttribute("ProjectList",projlist);
@@ -3478,6 +3481,7 @@ public class MilestoneController {
 			String empId = req.getParameter("empId");
 			empId = empId == null?EmpId : empId;
 			String finalEmpId = empId;
+			
 			List<Object[]> roleWiseEmployeeList = timesheetservice.getRoleWiseEmployeeList(labcode, LoginType, empId);
 			List<Object[]> mainList = service.getAllMilestoneActivityList();
 			List<Object[]> subList = service.getAllMilestoneActivityLevelList();
@@ -3489,10 +3493,13 @@ public class MilestoneController {
 				totalAssignedMainList.addAll(mainList.stream()
 						.filter(e -> (e[10].toString().equalsIgnoreCase(finalEmpId) || e[11].toString().equalsIgnoreCase(finalEmpId)))
 						.collect(Collectors.toList()));
-
+				
+				Map<String, List<Object[]>> groupedByParentIdAndLevel = subList.stream().collect(Collectors.groupingBy(e -> e[1].toString() + "_" + e[2].toString()));
+				
 				for(Object[] objmain : mainList ) {
 
-					List<Object[]> MilestoneActivityA = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(objmain[0].toString()) && Integer.parseInt(e[2].toString())==1).collect(Collectors.toList());
+					//List<Object[]> MilestoneActivityA = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(objmain[0].toString()) && Integer.parseInt(e[2].toString())==1).collect(Collectors.toList());
+					List<Object[]> MilestoneActivityA = groupedByParentIdAndLevel.getOrDefault(objmain[0].toString() + "_1", Collections.emptyList());
 					int countA = 1;
 					for(Object[] obj:MilestoneActivityA) {
 						
@@ -3505,7 +3512,8 @@ public class MilestoneController {
 					        totalAssignedSubList.add(newRow);
 					    }
 						
-						List<Object[]> MilestoneActivityB = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj[0].toString()) && Integer.parseInt(e[2].toString())==2).collect(Collectors.toList());
+						//List<Object[]> MilestoneActivityB = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj[0].toString()) && Integer.parseInt(e[2].toString())==2).collect(Collectors.toList());
+						List<Object[]> MilestoneActivityB = groupedByParentIdAndLevel.getOrDefault(obj[0].toString() + "_2", Collections.emptyList());
 						int countB = 1;
 						for(Object[] obj1:MilestoneActivityB) {
 							
@@ -3518,7 +3526,8 @@ public class MilestoneController {
 						        totalAssignedSubList.add(newRow);
 						    }
 							
-							List<Object[]> MilestoneActivityC = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj1[0].toString()) && Integer.parseInt(e[2].toString())==3).collect(Collectors.toList());
+							//List<Object[]> MilestoneActivityC = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj1[0].toString()) && Integer.parseInt(e[2].toString())==3).collect(Collectors.toList());
+							List<Object[]> MilestoneActivityC = groupedByParentIdAndLevel.getOrDefault(obj1[0].toString() + "_3", Collections.emptyList());
 							int countC = 1;
 							for(Object[] obj2:MilestoneActivityC) {
 
@@ -3531,7 +3540,8 @@ public class MilestoneController {
 							        totalAssignedSubList.add(newRow);
 							    }
 								
-								List<Object[]> MilestoneActivityD = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj2[0].toString()) && Integer.parseInt(e[2].toString())==4).collect(Collectors.toList());
+								//List<Object[]> MilestoneActivityD = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj2[0].toString()) && Integer.parseInt(e[2].toString())==4).collect(Collectors.toList());
+								List<Object[]> MilestoneActivityD = groupedByParentIdAndLevel.getOrDefault(obj2[0].toString() + "_4", Collections.emptyList());
 								int countD = 1;
 								for(Object[] obj3:MilestoneActivityD) {
 									
@@ -3544,7 +3554,8 @@ public class MilestoneController {
 								        totalAssignedSubList.add(newRow);
 								    }
 									
-									List<Object[]> MilestoneActivityE = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj3[0].toString()) && Integer.parseInt(e[2].toString())==5).collect(Collectors.toList());
+									//List<Object[]> MilestoneActivityE = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj3[0].toString()) && Integer.parseInt(e[2].toString())==5).collect(Collectors.toList());
+									List<Object[]> MilestoneActivityE = groupedByParentIdAndLevel.getOrDefault(obj3[0].toString() + "_5", Collections.emptyList());
 									int countE = 1;
 									for(Object[] obj4:MilestoneActivityE) {
 										
@@ -3858,16 +3869,27 @@ public class MilestoneController {
 			String isMasterData = req.getParameter("isMasterData");
 			
 			MilestoneActivityLevel level1= service.getMilestoneActivityLevelById(milesMainId);
+			
+			System.out.println(level1.getLinkedMilestonId());
+			if (!level1.getLinkedMilestonId().toString().equalsIgnoreCase("0")  ) {
+				MilestoneActivityLevel level3= service.getMilestoneActivityLevelById(level1.getLinkedMilestonId().toString());
+				level3.setLinkedMilestonId(0l);
+				level3.setIsMasterData("N");
+				service.MilestoneActivityLevelSave(level3);;
+			}
+			
 			level1.setLinkedMilestonId(Long.parseLong(mileIdLink));
-			level1.setIsMasterData(isMasterData.equalsIgnoreCase("Y")?"N":"Y");
+			level1.setIsMasterData(isMasterData);
 			
 			long count =service.MilestoneActivityLevelSave(level1);
 			
 			MilestoneActivityLevel level2= service.getMilestoneActivityLevelById(mileIdLink);
 			level2.setLinkedMilestonId(Long.parseLong(milesMainId));
-			level2.setIsMasterData(isMasterData);
+			level2.setIsMasterData(isMasterData.equalsIgnoreCase("Y")?"L":"Y");
 			
 			long count1= service.MilestoneActivityLevelSave(level2);
+			
+			
 			
 			return json.toJson(count+count1);
 			
@@ -3890,8 +3912,14 @@ public class MilestoneController {
 		try {
 		
 			String id = req.getParameter("id");
+			//String flag = req.getParameter("flag");
 			System.out.println("id "+id);
+		
 			String projectId = service.getProjectIdByMainLevelId(id);
+			
+//			if(flag!=null  && flag.equalsIgnoreCase("Y") ) {
+//				return json.toJson(projectId);
+//			}
 			
 			Object[]projectDetails =  service.ProjectDetails(projectId).get(0);
 			List<Object[]> main=service.MilestoneActivityList(projectId);
@@ -3904,27 +3932,27 @@ public class MilestoneController {
 					int countA=1;
 					for(Object[] obj:MilestoneActivityA) {
 						totalAssignedSubList.add(obj);
-						map.put(obj[0].toString(), "M"+count+"-A"+countA+"/"+obj[4]+"/"+projectDetails[1]);
+						map.put(obj[0].toString(), "M"+count+"-A"+countA+"/"+obj[4]+"/"+projectDetails[1]+"/"+projectDetails[0]);
 						List<Object[]>  MilestoneActivityB=service.MilestoneActivityLevel(obj[0].toString(),"2");
 						int countb=1;
 						for(Object[] obj1:MilestoneActivityB) {
 							totalAssignedSubList.add(obj1);
-							map.put(obj1[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"/"+obj1[4]+"/"+projectDetails[1]);
+							map.put(obj1[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"/"+obj1[4]+"/"+projectDetails[1]+"/"+projectDetails[0]);
 							List<Object[]>  MilestoneActivityC=service.MilestoneActivityLevel(obj1[0].toString(),"3");
 							int countc=1;
 							for(Object[] obj2:MilestoneActivityC) {
 								totalAssignedSubList.add(obj2);
-								map.put(obj2[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"/"+obj2[4]+"/"+projectDetails[1]);
+								map.put(obj2[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"/"+obj2[4]+"/"+projectDetails[1]+"/"+projectDetails[0]);
 								List<Object[]>  MilestoneActivityD=service.MilestoneActivityLevel(obj2[0].toString(),"4");
 								int countD=1;
 								for(Object[] obj3:MilestoneActivityD) {
 									totalAssignedSubList.add(obj3);
-									map.put(obj3[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"-D"+countD+"/"+obj3[4]+"/"+projectDetails[1]);
+									map.put(obj3[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"-D"+countD+"/"+obj3[4]+"/"+projectDetails[1]+"/"+projectDetails[0]);
 									List<Object[]>  MilestoneActivityE=service.MilestoneActivityLevel(obj3[0].toString(),"5");
 									int countE=1;
 									for(Object[] obj4:MilestoneActivityE) {
 										totalAssignedSubList.add(obj4);
-										map.put(obj4[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"-D"+countD+"-E"+countE+"/"+obj4[4]+"/"+projectDetails[1]);
+										map.put(obj4[0].toString(),"M"+count+"-A"+countA+"-B"+countb+"-C"+countc+"-D"+countD+"-E"+countE+"/"+obj4[4]+"/"+projectDetails[1]+"/"+projectDetails[0]);
 										countE++;
 									}
 									countD++;
@@ -4067,9 +4095,12 @@ public class MilestoneController {
 											.filter(e -> !LocalDate.parse(e[6].toString()).isBefore(fromDateL) && !LocalDate.parse(e[7].toString()).isAfter(toDateL) )
 											.collect(Collectors.toList()));
 				
+				Map<String, List<Object[]>> groupedByParentIdAndLevel = subList.stream().collect(Collectors.groupingBy(e -> e[1].toString() + "_" + e[2].toString()));
+
 				for(Object[] objmain : mainList ) {
 
-					List<Object[]> MilestoneActivityA = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(objmain[0].toString()) && Integer.parseInt(e[2].toString())==1).collect(Collectors.toList());
+					//List<Object[]> MilestoneActivityA = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(objmain[0].toString()) && Integer.parseInt(e[2].toString())==1).collect(Collectors.toList());
+					List<Object[]> MilestoneActivityA = groupedByParentIdAndLevel.getOrDefault(objmain[0].toString()+"_1", Collections.emptyList());
 					int countA = 1;
 					for(Object[] obj:MilestoneActivityA) {
 						
@@ -4082,7 +4113,8 @@ public class MilestoneController {
 				        newRow1[obj.length + 3] = objmain[1].toString();
 				        totalAssignedSubList.add(newRow1);
 						
-						List<Object[]> MilestoneActivityB = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj[0].toString()) && Integer.parseInt(e[2].toString())==2).collect(Collectors.toList());
+						//List<Object[]> MilestoneActivityB = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj[0].toString()) && Integer.parseInt(e[2].toString())==2).collect(Collectors.toList());
+						List<Object[]> MilestoneActivityB = groupedByParentIdAndLevel.getOrDefault(obj[0].toString()+"_2", Collections.emptyList());
 						int countB = 1;
 						for(Object[] obj1:MilestoneActivityB) {
 													
@@ -4095,7 +4127,8 @@ public class MilestoneController {
 					        newRow2[obj1.length + 3] = objmain[1].toString();
 					        totalAssignedSubList.add(newRow2);
 							
-							List<Object[]> MilestoneActivityC = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj1[0].toString()) && Integer.parseInt(e[2].toString())==3).collect(Collectors.toList());
+							//List<Object[]> MilestoneActivityC = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj1[0].toString()) && Integer.parseInt(e[2].toString())==3).collect(Collectors.toList());
+							List<Object[]> MilestoneActivityC = groupedByParentIdAndLevel.getOrDefault(obj1[0].toString()+"_3", Collections.emptyList());
 							int countC = 1;
 							for(Object[] obj2:MilestoneActivityC) {
 
@@ -4108,7 +4141,8 @@ public class MilestoneController {
 						        newRow3[obj2.length + 3] = objmain[1].toString();
 						        totalAssignedSubList.add(newRow3);
 								
-								List<Object[]> MilestoneActivityD = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj2[0].toString()) && Integer.parseInt(e[2].toString())==4).collect(Collectors.toList());
+								//List<Object[]> MilestoneActivityD = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj2[0].toString()) && Integer.parseInt(e[2].toString())==4).collect(Collectors.toList());
+								List<Object[]> MilestoneActivityD = groupedByParentIdAndLevel.getOrDefault(obj2[0].toString()+"_4", Collections.emptyList());
 								int countD = 1;
 								for(Object[] obj3:MilestoneActivityD) {
 
@@ -4121,7 +4155,8 @@ public class MilestoneController {
 							        newRow4[obj3.length + 3] = objmain[1].toString();
 							        totalAssignedSubList.add(newRow4);
 									
-									List<Object[]> MilestoneActivityE = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj3[0].toString()) && Integer.parseInt(e[2].toString())==5).collect(Collectors.toList());
+									//List<Object[]> MilestoneActivityE = subList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj3[0].toString()) && Integer.parseInt(e[2].toString())==5).collect(Collectors.toList());
+									List<Object[]> MilestoneActivityE = groupedByParentIdAndLevel.getOrDefault(obj3[0].toString()+"_5", Collections.emptyList());
 									int countE = 1;
 									for(Object[] obj4:MilestoneActivityE) {
 
@@ -4163,6 +4198,41 @@ public class MilestoneController {
 			return "static/Error";
 		}
 	}
+
+	@RequestMapping(value = "delteSubMilestoneActivity.htm", method = RequestMethod.GET)
+	public @ResponseBody String delteSubMilestoneActivity(HttpServletRequest req, HttpSession ses,HttpServletResponse res
+			)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside removeFileAttachment.htm "+UserId);
+		try {
+			 String activityId = req.getParameter("activityId");
+		
+			//long result = service.deleteMilsetone(activityId);
+			
+		System.out.println(activityId+"----activityId");
+		
+		List<String>activityIds = new ArrayList<String>();
+			
+		if(activityId!=null) {
+			activityIds = 	Arrays.asList(activityId.split(","));
+		}
+		int deleteCount = 0;
+		for(String s:activityIds) {
+			deleteCount = deleteCount+service.deleteMilsetone(s);
+		}
+		Gson json = new Gson();
+		
+		return json.toJson(deleteCount);
+		} catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside removeFileAttachment.htm "+UserId, e); 
+			return "static/Error";
+		}
+	
+	}
+
 
 	private List<Object[]> filteredProgressList(List<Object[]> progressList, String activityId, LocalDate from, LocalDate to) {
 	    return progressList.stream()
@@ -4499,6 +4569,152 @@ public class MilestoneController {
 	    return "filerepo/pdfViewer"; 
 	}
 	
+	@RequestMapping(value="submitMilestoneFeedBack.htm")
+	public @ResponseBody String submitMilestoneFeedBack(HttpServletRequest req, HttpSession ses,HttpServletResponse res
+			)throws Exception 
+	{
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside removeFileAttachment.htm "+UserId);
+		try {
+			String activityId = req.getParameter("activityId");
+			String remarks = req.getParameter("remarks");
+			//long result = service.deleteMilsetone(activityId);
+			
+			
+			System.out.println("remarks--->"+remarks);
+			System.out.println("activityId--->"+activityId);
+			
+			MilestoneActivityLevelRemarks cmd = new MilestoneActivityLevelRemarks();
+			
+			cmd.setEmpid(Long.parseLong(EmpId));
+			cmd.setActivityId(Long.parseLong(activityId));
+			cmd.setRemarks(remarks);
+			cmd.setCreatedDate(sdtf.format(new Date()));
+			cmd.setIsactive(1);	
+			
+			
+			Gson json = new Gson();
+			
+			return json.toJson(service.saveMilestoneActivityLevelRemarks(cmd));
+		} catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside submitMilestoneFeedBack.htm "+UserId, e); 
+			return "static/Error";
+		}
+		
+	}
+	
+	@RequestMapping(value = "getMilestoneDraftRemarks.htm", method = RequestMethod.GET)
+	public @ResponseBody String getMilestoneDraftRemarks(HttpSession ses, HttpServletRequest req) throws Exception 
+	{
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String LoginType = (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		List<Object[]>list = new ArrayList<Object[]>();
+		Gson json = new Gson();
+		try {
+			
+					
+			Long activityId = Long.parseLong(req.getParameter("activityId") );			
+			
+		
+			
+	
+			list = service.getMilestoneDraftRemarks(activityId);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return json.toJson(list);
+	}
+	
+	
+	@RequestMapping(value = "MilestoneActivityManage.htm")
+	public String MilestoneActivityManage(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
+		
+		String UserId = (String) ses.getAttribute("Username");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LabCode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside MilestoneActivityList.htm "+UserId);		
+		try {
+			String ProjectId=req.getParameter("ProjectId");
+			if(ProjectId==null)  {
+				Map md=model.asMap();
+				ProjectId=(String)md.get("ProjectId");
+			}	
+			List<Object[] > projlist= service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+			
+			if(projlist.size()==0) 
+			{				
+				redir.addAttribute("resultfail", "No Project is Assigned to you.");
+				return "redirect:/MainDashBoard.htm";
+			}
+			
+			
+			
+			if(ProjectId==null) {
+				try {
+					Object[] pro=projlist.get(0);
+					ProjectId=pro[0].toString();
+				}catch (Exception e) {
+					
+				}
+			}
+			req.setAttribute("EmployeeList", service.EmployeeList());
+			
+			List<Object[]> main=service.MilestoneActivityList(ProjectId);
+			req.setAttribute("MilestoneActivityList",main );
+			req.setAttribute("ProjectList",projlist);
+			req.setAttribute("ProjectId", ProjectId);
+			req.setAttribute("EmployeeList", service.EmployeeList());
+			if(ProjectId!=null) {
+				req.setAttribute("ProjectDetails", service.ProjectDetails(ProjectId).get(0));
+				int MainCount=1;
+				for(Object[] objmain:main ) {
+					int countA=1;
+					List<Object[]>  MilestoneActivityA=service.MilestoneActivityLevel(objmain[0].toString(),"1");
+					req.setAttribute(MainCount+"MilestoneActivityA", MilestoneActivityA);
+					for(Object[] obj:MilestoneActivityA) {
+						List<Object[]>  MilestoneActivityB=service.MilestoneActivityLevel(obj[0].toString(),"2");
+						req.setAttribute(MainCount+"MilestoneActivityB"+countA, MilestoneActivityB);
+						int countB=1;
+						for(Object[] obj1:MilestoneActivityB) {
+							List<Object[]>  MilestoneActivityC=service.MilestoneActivityLevel(obj1[0].toString(),"3");
+							req.setAttribute(MainCount+"MilestoneActivityC"+countA+countB, MilestoneActivityC);
+							int countC=1;
+							for(Object[] obj2:MilestoneActivityC) {
+								List<Object[]>  MilestoneActivityD=service.MilestoneActivityLevel(obj2[0].toString(),"4");
+								req.setAttribute(MainCount+"MilestoneActivityD"+countA+countB+countC, MilestoneActivityD);
+								int countD=1;
+								for(Object[] obj3:MilestoneActivityD) {
+									List<Object[]>  MilestoneActivityE=service.MilestoneActivityLevel(obj3[0].toString(),"5");
+									req.setAttribute(MainCount+"MilestoneActivityE"+countA+countB+countC+countD, MilestoneActivityE);
+									countD++;
+								}
+								countC++;
+							}
+							countB++;
+						}
+						countA++;
+					}
+					MainCount++;
+				}
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside MilestoneActivityList.htm "+UserId, e); 
+			return "static/Error";
+			
+		}
+		return "milestone/MilestoneActivityManage";
+	}
 }
 
 

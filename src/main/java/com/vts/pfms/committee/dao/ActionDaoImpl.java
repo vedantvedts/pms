@@ -394,7 +394,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> ActionReports(String EmpId,String Term,String Position,String Type,String LabCode) throws Exception {
 		
 		Query query=manager.createNativeQuery(ACTIONREPORT);
-		query.setParameter("empid", EmpId);
+		query.setParameter("empid", Long.parseLong(EmpId));
 		query.setParameter("term",Term);
 		query.setParameter("position",Position);
 		query.setParameter("type",Type);

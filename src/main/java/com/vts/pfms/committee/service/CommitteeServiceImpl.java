@@ -265,6 +265,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		committeemain.setInitiationId(Long.parseLong(committeemaindto.getInitiationId()));
 		committeemain.setDivisionId(Long.parseLong(committeemaindto.getDivisionId()));
 		committeemain.setCARSInitiationId(Long.parseLong(committeemaindto.getCARSInitiationId()));
+		committeemain.setProgrammeId(Long.parseLong(committeemaindto.getProgrammeId()));
 		committeemain.setPreApproved(committeemaindto.getPreApproved());
 		committeemain.setReferenceNo(committeemaindto.getReferenceNo());
 		committeemain.setFormationDate(java.sql.Date.valueOf(formationDate));;
@@ -277,7 +278,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			committeemain.setIsActive(1);
 		}
 		if( committeemaindto.getPreApproved().equalsIgnoreCase("Y")) {
-			long lastcommitteeid=dao.LastCommitteeId(committeemaindto.getCommitteeId(),committeemaindto.getProjectId(),committeemaindto.getDivisionId(),committeemaindto.getInitiationId(), committeemaindto.getCARSInitiationId());		
+			long lastcommitteeid=dao.LastCommitteeId(committeemaindto.getCommitteeId(),committeemaindto.getProjectId(),committeemaindto.getDivisionId(),committeemaindto.getInitiationId(), committeemaindto.getCARSInitiationId(), committeemaindto.getProgrammeId());		
 			if(lastcommitteeid!=0 )
 			{
 				CommitteeMain committeemain1= new CommitteeMain();
@@ -393,8 +394,8 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 
 	@Override
-	public Long LastCommitteeId(String CommitteeId,String projectid,String divisionid,String initiationid, String carsInitiationId) throws Exception {
-		return dao.LastCommitteeId(CommitteeId, projectid, divisionid,initiationid, carsInitiationId );
+	public Long LastCommitteeId(String CommitteeId,String projectid,String divisionid,String initiationid, String carsInitiationId, String programmeId) throws Exception {
+		return dao.LastCommitteeId(CommitteeId, projectid, divisionid,initiationid, carsInitiationId, programmeId);
 	}
 	
 	@Override
@@ -2841,7 +2842,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 			LocalDate fromDate = LocalDate.parse(committeemaindata[6].toString());
 			
-			long lastcommitteeid=dao.LastCommitteeId(committeemaindata[1].toString(),committeemaindata[2].toString(),committeemaindata[3].toString(),committeemaindata[4].toString(),committeemaindata[13].toString());	
+			long lastcommitteeid=dao.LastCommitteeId(committeemaindata[1].toString(),committeemaindata[2].toString(),committeemaindata[3].toString(),committeemaindata[4].toString(),committeemaindata[13].toString(),committeemaindata[14].toString());	
 			if(lastcommitteeid!=0)
 			{
 				CommitteeMain committeemain1= new CommitteeMain();
