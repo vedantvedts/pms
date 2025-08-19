@@ -21,8 +21,8 @@ import com.vts.pfms.milestone.model.FileRepUploadPreProject;
 import com.vts.pfms.milestone.model.MilestoneActivity;
 import com.vts.pfms.milestone.model.MilestoneActivityLevel;
 import com.vts.pfms.milestone.model.MilestoneActivityLevelRemarks;
-import com.vts.pfms.milestone.model.MilestoneActivityLevelRemarks;
-import com.vts.pfms.milestone.model.MilestoneActivityLevelRemarks;
+import com.vts.pfms.milestone.model.MilestoneActivityPredecessor;
+import com.vts.pfms.milestone.model.MilestoneActivitySub;
 
 public interface MilestoneService {
 	public List<Object[]> MilestoneActivityList(String ProjectId) throws Exception;
@@ -144,4 +144,10 @@ public interface MilestoneService {
 	
 	public int saveMilestoneActivityLevelRemarks(MilestoneActivityLevelRemarks cmd)throws Exception;
 	public List<Object[]> getMilestoneDraftRemarks(Long activityId)throws Exception;
+	
+	public Long saveMilestoneActivityPredecessor(MilestoneActivityPredecessor mp)throws Exception;
+	public List<Object[]> predecessorList(String successor)throws Exception;
+	public List<Object[]> getsuccessorList(String activityId)throws Exception;
+	public int deleteMilestoneActivityPredecessor(String successor)throws Exception;
+	public long saveMilestoneSub(MilestoneActivitySub attach)throws Exception;
 }

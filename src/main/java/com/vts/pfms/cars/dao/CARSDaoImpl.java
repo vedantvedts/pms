@@ -780,7 +780,7 @@ public class CARSDaoImpl implements CARSDao{
 		}
 	}
 
-	private static final String EMPLOYEELISTBYLABCODE="SELECT e.EmpId,e.EmpName,e.EmpNo,d.Designation FROM employee e,employee_desig d WHERE e.DesigId=d.DesigId AND e.IsActive='1' AND e.LabCode=:LabCode ORDER BY SrNo";
+	private static final String EMPLOYEELISTBYLABCODE="SELECT e.EmpId, CONCAT(IFNULL(CONCAT(e.Title,' '),(IFNULL(CONCAT(e.Salutation, ' '), ''))), e.EmpName) AS 'EmpName',e.EmpNo,d.Designation FROM employee e,employee_desig d WHERE e.DesigId=d.DesigId AND e.IsActive='1' AND e.LabCode=:LabCode ORDER BY SrNo=0, SrNo";
 	@Override
 	public List<Object[]> getEmployeeListByLabCode(String labCode) throws Exception {
 		try {

@@ -441,8 +441,9 @@ public class ActionServiceImpl implements ActionService {
 			{
 				lab=dao.LabDetails();
 				
-				schedule = committeeDao.CommitteeScheduleEditData(main.getScheduleId());
-				
+				if(main.getScheduleId()!=null && !main.getScheduleId().equalsIgnoreCase("0")) {
+					schedule = committeeDao.CommitteeScheduleEditData(main.getScheduleId());
+				}				
 				if(main.getActionType().toString().equalsIgnoreCase("S")) {
 				comishortname = dao.CommitteeShortName(main.getScheduleMinutesId());
 				}
@@ -463,7 +464,7 @@ public class ActionServiceImpl implements ActionService {
 							count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
 						}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname[1].toString().equalsIgnoreCase("DMC")) {
 							count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
-						}else if(main.getProjectId().equalsIgnoreCase("0") && !schedule[26].toString().equalsIgnoreCase("0")) {
+						}else if(main.getProjectId().equalsIgnoreCase("0") && schedule!=null && !schedule[26].toString().equalsIgnoreCase("0")) {
 							count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
 						}else {
 							count=dao.ActionGenCount(main.getProjectId(),main.getType())+1;
@@ -473,7 +474,7 @@ public class ActionServiceImpl implements ActionService {
 						count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
 					}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname[1].toString().equalsIgnoreCase("DMC")) {
 						count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
-					}else if(main.getProjectId().equalsIgnoreCase("0") && !schedule[26].toString().equalsIgnoreCase("0")) {
+					}else if(main.getProjectId().equalsIgnoreCase("0") && schedule!=null && !schedule[26].toString().equalsIgnoreCase("0")) {
 						count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
 					}else {
 						count=dao.ActionGenCount(main.getProjectId(),main.getType())+1;
@@ -482,7 +483,7 @@ public class ActionServiceImpl implements ActionService {
 					count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
 				}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname!=null && comishortname[1].toString().equalsIgnoreCase("DMC")) {
 					count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
-				}else if(main.getProjectId().equalsIgnoreCase("0") && !schedule[26].toString().equalsIgnoreCase("0")) {
+				}else if(main.getProjectId().equalsIgnoreCase("0") && schedule!=null && !schedule[26].toString().equalsIgnoreCase("0")) {
 					count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
 				}else {
 					count=dao.ActionGenCount(main.getProjectId(),main.getType())+1;
@@ -523,7 +524,7 @@ public class ActionServiceImpl implements ActionService {
 				Project="/"+comishortname[1]+"/";
 			}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname!=null && comishortname[1].toString().equalsIgnoreCase("DMC")) {
 				Project="/"+comishortname[1]+"/";
-			}else if(main.getProjectId().equalsIgnoreCase("0") && !schedule[26].toString().equalsIgnoreCase("0")) {
+			}else if(main.getProjectId().equalsIgnoreCase("0") && schedule!=null && !schedule[26].toString().equalsIgnoreCase("0")) {
 				ProgrammeMaster programmeMaster = committeeDao.getProgrammeMasterById(schedule[26].toString());
 				Project= "/"+programmeMaster.getPrgmCode()+"/"+comishortname[1]+"/";
 			}else{

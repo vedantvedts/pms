@@ -25,6 +25,7 @@ import com.vts.pfms.milestone.model.FileRepUploadPreProject;
 import com.vts.pfms.milestone.model.MilestoneActivity;
 import com.vts.pfms.milestone.model.MilestoneActivityLevel;
 import com.vts.pfms.milestone.model.MilestoneActivityLevelRemarks;
+import com.vts.pfms.milestone.model.MilestoneActivityPredecessor;
 import com.vts.pfms.milestone.model.MilestoneActivitySub;
 import com.vts.pfms.milestone.model.MilestoneActivitySubRev;
 import com.vts.pfms.milestone.model.MilestoneSchedule;
@@ -51,7 +52,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	private static final String PROJECTMASTER="SELECT a.ProjectId, a.ProjectCode, a.ProjectName, a.ProjectShortName FROM project_master a WHERE a.IsActive='1'";
 	private static final String EMPLOYEELISTALL="select a.empid,a.empname,b.designation,a.Title,a.Salutation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId ORDER BY a.srno=0,a.srno";
     private static final String MILESTONECOUNT="Select count(*) from milestone_activity where isactive='1' and projectid=:ProjectId";
-	private static final String MA="select a.milestoneactivityid,b.projectname,a.startdate,a.enddate,a.activityname,a.milestoneno,c.empname,d.empname as emp,a.oicempid,a.oicempid1,a.projectid,a.progressstatus,a.revisionno,a.acceptedby,a.accepteddate,a.activitytype,a.Weightage,e.activitytype as type from milestone_activity a,project_master b, employee c,employee d, milestone_activity_type e where a.activitytype=e.activitytypeid and a.projectid=b.projectid and a.oicempid=c.empid and a.oicempid1=d.empid and a.milestoneactivityid=:id";
+	private static final String MA="select a.milestoneactivityid,b.projectname,a.startdate,a.enddate,a.activityname,a.milestoneno,c.empname,d.empname as emp,a.oicempid,a.oicempid1,a.projectid,a.progressstatus,a.revisionno,a.acceptedby,a.accepteddate,a.activitytype,a.Weightage,e.activitytype as type, c.LabCode AS 'LabCode1', d.LabCode AS 'LabCode2' from milestone_activity a,project_master b, employee c,employee d, milestone_activity_type e where a.activitytype=e.activitytypeid and a.projectid=b.projectid and a.oicempid=c.empid and a.oicempid1=d.empid and a.milestoneactivityid=:id";
 	private static final String MILEACTIVITYLEVEL="CALL Pfms_Milestone_Level_List(:id,:levelid)";
     private static final String MAREVISION="SELECT MAX(revisionno) FROM milestone_activity_rev WHERE milestoneactivityid=:id ";
 	private static final String MADETAILS="FROM MilestoneActivity WHERE MilestoneActivityId=:Id";
@@ -76,8 +77,8 @@ public class MilestoneDaoImpl implements MilestoneDao {
     private static final String SUBDATA="FROM MilestoneActivitySub WHERE ActivitySubId=:id"; 
 	private static final String PROJECTDETAILS="SELECT a.projectid,a.projectcode,a.projectname,a.ProjectShortName FROM project_master a WHERE a.projectid=:projectid";
 	private static final String MAASSIGNEELIST="CALL Pfms_Milestone_Oic_List(:ProjectId,:empid)";
-	private static final String PROJECTEMPLIST="SELECT a.empid,  CONCAT(IFNULL(a.title,''), a.empname)AS 'empname',b.designation FROM employee a,employee_desig b,project_employee pe  WHERE a.isactive='1' AND pe.isactive='1' AND a.DesigId=b.DesigId  AND pe.empid=a.empid AND pe.projectid=:projectid AND a.labcode=:labcode ORDER BY a.srno=0,a.srno";
-	private static final String PROJECTEMPLISTEDIT="SELECT a.empid,a.empname,b.designation,a.srno as srno FROM employee a,employee_desig b,project_employee pe  WHERE a.isactive='1' AND a.DesigId=b.DesigId  AND pe.empid=a.empid AND pe.projectid=:projectid  union SELECT a.empid,a.empname,b.designation,a.srno as srno FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId  AND a.empid=:id ORDER BY srno";
+	private static final String PROJECTEMPLIST="SELECT a.empid, CONCAT(IFNULL(CONCAT(a.Title,' '),(IFNULL(CONCAT(a.Salutation, ' '), ''))), a.EmpName) AS 'EmpName',b.designation FROM employee a,employee_desig b,project_employee pe  WHERE a.isactive='1' AND pe.isactive='1' AND a.DesigId=b.DesigId  AND pe.empid=a.empid AND pe.projectid=:projectid AND a.labcode=:labcode ORDER BY a.srno=0,a.srno";
+	private static final String PROJECTEMPLISTEDIT="SELECT a.empid, CONCAT(IFNULL(CONCAT(a.Title,' '),(IFNULL(CONCAT(a.Salutation, ' '), ''))), a.EmpName) AS 'EmpName',b.designation,a.srno as srno FROM employee a,employee_desig b,project_employee pe  WHERE a.isactive='1' AND a.DesigId=b.DesigId  AND pe.empid=a.empid AND pe.projectid=:projectid  union SELECT a.empid, CONCAT(IFNULL(CONCAT(a.Title,' '),(IFNULL(CONCAT(a.Salutation, ' '), ''))), a.EmpName) AS 'EmpName',b.designation,a.srno as srno FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId  AND a.empid=:id ORDER BY srno=0, srno";
 	private static final String PROJECTASSINEE="SELECT DISTINCT(a.projectid),a.projectcode,a.projectname FROM project_master a,milestone_activity b WHERE a.projectid=b.projectid and (b.oicempid=:empid or b.oicempid1=:empid) and   a.isactive='1'";
 	private static final String ASSIGNUPDATE="UPDATE milestone_activity SET isaccepted='A',ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE milestoneactivityid=:id";
 	private static final String ACCEPTUPDATE="UPDATE milestone_activity SET isaccepted='Y',acceptedby=:acceptedby,accepteddate=:accepteddate,ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE milestoneactivityid=:id";
@@ -95,7 +96,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
    
     private static final String FILEREPREV="UPDATE file_rep_new SET ReleaseDoc=:release,VersionDoc=:version where filerepid=:id";
     private static final String FILEDETAILS="SELECT * FROM(SELECT a.filerepid,b.filerepuploadid,b.filepath,b.filenameui,b.filename,b.filepass,b.ReleaseDoc,b.VersionDoc FROM file_rep_new a,file_rep_upload b WHERE a.filerepid=b.filerepid AND b.filerepuploadid=:fileid)AS a JOIN (SELECT MAX(DocAmendmentId) AS 'AmendmentDocId' FROM file_doc_amendment WHERE FileRepUploadId=:fileid ) AS b  ";
-    private static final String ALLEMPNAMEDESIGLIST="SELECT e.empid , e.empname, ed.designation FROM employee e, employee_desig ed WHERE e.desigid=ed.desigid and e.labcode=:labcode ";
+    private static final String ALLEMPNAMEDESIGLIST="SELECT e.empid , CONCAT(IFNULL(CONCAT(e.Title,' '),(IFNULL(CONCAT(e.Salutation, ' '), ''))), e.EmpName) AS 'EmpName', ed.designation FROM employee e, employee_desig ed WHERE e.IsActive=1 AND e.desigid=ed.desigid and e.labcode=:labcode ";
 	
     private static final String MILESTONESCHEDULELIST="SELECT milestonescheduleid,projectid,activityname,milestoneno,orgstartdate,orgenddate,startdate,enddate,statusremarks FROM milestone_schedule WHERE isactive=1 AND projectid=:projectid";
     private static final String MILESTONESCHEDULECOUNT="SELECT COUNT(*) FROM milestone_schedule WHERE isactive='1' AND projectid=:projectid";
@@ -1828,5 +1829,44 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		
 		
 		return (List<Object[]>)query.getResultList();
+	}
+	
+
+	@Override
+	public Long saveMilestoneActivityPredecessor(MilestoneActivityPredecessor mp) throws Exception {
+		manager.persist(mp);
+		manager.flush();
+		return mp.getId();
+	}
+	
+	
+	private static String PREDECESSORLIST = "SELECT a.id,a.successorId,a.predecessorId FROM milestone_activity_predecessor a WHERE a.successorId=:successorId";
+	@Override
+	public List<Object[]> predecessorList(String successor) throws Exception {
+		
+		Query query = manager.createNativeQuery(PREDECESSORLIST);
+		query.setParameter("successorId", successor);		
+		return (List<Object[]>)query.getResultList() ;
+	}
+	private static String SUCCESSORLIST = "SELECT a.id,a.successorId,a.predecessorId FROM milestone_activity_predecessor a WHERE a.predecessorId=:predecessorId";
+
+	@Override
+	public List<Object[]> getsuccessorList(String predecessorId) throws Exception {
+		
+		Query query = manager.createNativeQuery(SUCCESSORLIST);
+		
+		query.setParameter("predecessorId", predecessorId);		
+		
+		return (List<Object[]>)query.getResultList();
+		
+		
+	}
+	
+	private static String PREDECESSORDELETE = "DELETE FROM  milestone_activity_predecessor where successorId=:successorId";
+	@Override
+	public int deleteMilestoneActivityPredecessor(String successor) throws Exception {
+		Query query = manager.createNativeQuery(PREDECESSORDELETE);
+		query.setParameter("successorId",successor);
+		return query.executeUpdate();
 	}
 }
