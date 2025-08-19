@@ -2136,7 +2136,8 @@ public class MasterController {
 			return 0;
 		}
 	}
-
+	
+	@RequestMapping(value = "industryPartnerAdd.htm" , method = {RequestMethod.GET})
 	public @ResponseBody String industryPartnerAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() + "Inside industryPartnerAdd.htm " + UserId);

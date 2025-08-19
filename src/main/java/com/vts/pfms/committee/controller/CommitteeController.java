@@ -10530,6 +10530,7 @@ public class CommitteeController {
 			req.setAttribute("committeeMainId", committeeMainId);
 			req.setAttribute("committeeId", committeeId);
 			req.setAttribute("programmeId", programmeId);
+			req.setAttribute("designationlist", adminservice.DesignationList());
 			
 			return "committee/PrgmCommitteeConstitution";
 		}catch (Exception e) {

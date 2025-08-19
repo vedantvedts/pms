@@ -2935,7 +2935,6 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 								Zipper zip = new Zipper();
 								zip.unpack(techPath.toString(), path, TechWorkDataList.get(z)[9].toString());
 								File techattachfile = new File(path+File.separator+ TechWork[8]); %>
-				<%=techattachfile%>
 								<%
 								if (fileExt.equalsIgnoreCase("pdf")) {%>
 								<iframe  src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(techattachfile))%>#view=FitV" style="width:100%;height:70vh" id="pearl<%=ProjectDetail.get(z)[0]%>"></iframe>
