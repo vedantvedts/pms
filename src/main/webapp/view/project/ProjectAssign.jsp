@@ -179,16 +179,17 @@ b{
 														<tbody>
 															<tr>
 																<td width="35%">
-																	<select class="form-control selectdee" name="roleMasterId" id="roleMasterId" required>
-																		<option disabled="disabled" selected value="">Role</option>
+																	<label>Role</label>
+																	<select class="form-control selectdee" name="roleMasterId" id="roleMasterId" data-placeholder="Role">
+																		<option selected value="0">Not Applicable</option>
 																	    <% for (RoleMaster role : roleMasterList) { 
-																	    	if(role.getRoleMasterId()==1) continue;
-																	    %>
+																	    	if(role.getRoleMasterId()==1) continue; %>
 																	    	<option value="<%=role.getRoleMasterId()%>"><%=role.getRoleName()%></option>
 																	    <%}%>
 																	</select>
 																</td>
 																<td width="15%">
+																	<label>Lab</label>
 																	<select class="form-control selectdee" name="labCode" id="labCode" required onchange="renderEmployeeList()" data-placeholder= "Lab Name">
 																		<!-- <option disabled="true"  selected value="">Lab Name</option> -->
 																	    <% for (Object[] obj : allLabList) { %>
@@ -197,6 +198,7 @@ b{
 																	</select>
 																</td>
 																<td width="50%">
+																	<label>Employees</label>
 																	<select class="form-control selectdee" name="empId" id="empId" required multiple="multiple" data-placeholder= "Select Employees"  >
 																	</select>
 																</td>
@@ -251,9 +253,10 @@ b{
 										</div>
 										<div class="col-md-4">
 											<label>Role</label>
-											<select class="form-control selectdee" name="roleMasterId" id="roleMasterIdEdit" required>
-												<option disabled="disabled" selected value="">Role</option>
-											    <% for (RoleMaster role : roleMasterList) { %>
+											<select class="form-control selectdee" name="roleMasterId" id="roleMasterIdEdit" data-placeholder="Role">
+												<option selected value="0">Not Applicable</option>
+											    <% for (RoleMaster role : roleMasterList) { 
+											    	if(role.getRoleMasterId()==1) continue;%>
 											    	<option value="<%=role.getRoleMasterId()%>"><%=role.getRoleName()%></option>
 											    <%}%>
 											</select>
