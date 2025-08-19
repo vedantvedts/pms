@@ -140,7 +140,7 @@
 			         	<table  class="table table-bordered table-hover table-striped table-condensed ">
 			            	<thead>
 			               		<tr>
-			                    	<th>Sn</th>
+			                    	<th>SN</th>
 			                       	<th>Agenda Item</th> 
 			                       	<th>Project</th>
 			                       	<th>Remarks</th>
@@ -149,37 +149,32 @@
 			                       	<th>Attachment</th>
 			                    </tr>
 			              	</thead> 
+			              	<tbody>
 			              		<%	int count=0;
-							for(Object[] 	obj:agendalist){ count++;%>  
-							                     
-				    		<tbody>
-							
-								<tr>
-										
-									<td><%=count%></td>
-									<td><%=obj[3] %></td>
-									<td><%=obj[4] %>  </td>									
-									<td><%=obj[6] %></td>									
-									<td><%=obj[10]%>(<%=obj[11] %>)  </td>
-									<td><%=obj[12] %></td>
-									<td>
-										<table>
-											<%for(Object[] doc : AgendaDocList) { 
-											if(obj[0].toString().equalsIgnoreCase(doc[1].toString())){%>
-												<tr>
-													<td><%=doc[3] %></td>
-													<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
-												<tr>													
-											<%} }%>
-										</table>
-						
-									</td>
-									
-								</tr>
-									
+								for(Object[] obj:agendalist){ count++;%>  
+									<tr>
+										<td><%=count%></td>
+										<td><%=obj[3] %></td>
+										<td><%=obj[4] %>  </td>									
+										<td><%=obj[6] %></td>									
+										<td><%=obj[10]%>(<%=obj[11] %>)  </td>
+										<td><%=obj[12] %></td>
+										<td>
+											<table>
+												<%for(Object[] doc : AgendaDocList) { 
+												if(obj[0].toString().equalsIgnoreCase(doc[1].toString())){%>
+													<tr>
+														<td><%=doc[3] %></td>
+														<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
+													<tr>													
+												<%} }%>
+											</table>
+										</td>
+									</tr>
+								<%} %>	
 							</tbody>
 				    		</table>
-								<%}} else if(agendaList!=null && agendaList.size()>0) {%>
+								<%} else if(agendaList!=null && agendaList.size()>0) {%>
 									<table class="table table-bordered table-hover table-condensed " style="margin-top:10px;width:100% ">
 						     	      	<thead>
 						            		<tr>

@@ -226,12 +226,14 @@ div {
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	Object[] getMA = (Object[]) request.getAttribute("MilestoneActivity");
 	List<Object[]> ActivityTypeList = (List<Object[]>) request.getAttribute("ActivityTypeList");
+	List<Object[]> allLabList=(List<Object[]>)request.getAttribute("allLabList");
 	List<Object[]> EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
 	String projectId=(String)request.getAttribute("ProjectId");
 	String Logintype=(String)session.getAttribute("LoginType");
 	String projectDirector=(String)request.getAttribute("projectDirector");
 	
 	Long EmpId =  (Long)session.getAttribute("EmpId") ;
+	String labcode =  (String)session.getAttribute("labcode") ;
 	
 	%>
 	
@@ -634,6 +636,15 @@ div {
 																													</div>
 
 																													<div class="row container-fluid">
+																														<div class="col-md-2">
+																															<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																															<select class="form-control selectdee" name="labCode1" id="labCode1E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>" required 
+																															onchange="renderEmployeeList('1','E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>')" data-placeholder= "Lab Name">
+																															    <% for (Object[] lab : allLabList) { %>
+																															    	<option value="<%=lab[3]%>" <%if(labcode.equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+																															    <%}%>
+																															</select>
+																														</div>
 																														<div class="col-md-4">
 																							                        		<div class="form-group">
 																							                            		<label class="control-label">First OIC  </label>
@@ -649,6 +660,15 @@ div {
 																							  									</select>
 																							                        		</div>
 																							                    		</div>
+																							                    		<div class="col-md-2">
+																															<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																															<select class="form-control selectdee" name="labCode2" id="labCode2E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>" required 
+																															onchange="renderEmployeeList('2','E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>')" data-placeholder= "Lab Name">
+																															    <% for (Object[] lab : allLabList) { %>
+																															    	<option value="<%=lab[3]%>" <%if(labcode.equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+																															    <%}%>
+																															</select>
+																														</div>
 																							                    		<div class="col-md-4 ">
 																							                        		<div class="form-group">
 																							                            		<label class="control-label">Second OIC </label>
@@ -839,6 +859,15 @@ $( document ).ready(function() {
 																									</div>
 
 																									<div class="row container-fluid">
+																										<div class="col-md-2">
+																											<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																											<select class="form-control selectdee" name="labCode1" id="labCode1D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>" required 
+																											onchange="renderEmployeeList('1','D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>')" data-placeholder= "Lab Name">
+																											    <% for (Object[] lab : allLabList) { %>
+																											    	<option value="<%=lab[3]%>" <%if(labcode.equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+																											    <%}%>
+																											</select>
+																										</div>
 																										<div class="col-md-4">
 																			                        		<div class="form-group">
 																			                            		<label class="control-label">First OIC  </label>
@@ -854,6 +883,15 @@ $( document ).ready(function() {
 																			  									</select>
 																			                        		</div>
 																			                    		</div>
+																			                    		<div class="col-md-2">
+																			                    			<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																				                    		<select class="form-control selectdee" name="labCode2" id="labCode2D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>" required 
+																											onchange="renderEmployeeList('2','D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>')" data-placeholder= "Lab Name">
+																											    <% for (Object[] lab : allLabList) { %>
+																											    	<option value="<%=lab[3]%>" <%if(labcode.equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+																											    <%}%>
+																											</select>
+																										</div>
 																			                    		<div class="col-md-4 ">
 																			                        		<div class="form-group">
 																			                            		<label class="control-label">Second OIC </label>
@@ -1045,6 +1083,15 @@ $( document ).ready(function() {
 																					</div>
 
 																					<div class="row container-fluid">
+																						<div class="col-md-2">
+																							<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																							<select class="form-control selectdee" name="labCode1" id="labCode1C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>" required 
+																							onchange="renderEmployeeList('1','C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>')" data-placeholder= "Lab Name">
+																							    <% for (Object[] lab : allLabList) { %>
+																							    	<option value="<%=lab[3]%>" <%if(labcode.equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+																							    <%}%>
+																							</select>
+																						</div>
 																						<div class="col-md-4">
 															                        		<div class="form-group">
 															                            		<label class="control-label">First OIC  </label>
@@ -1060,6 +1107,15 @@ $( document ).ready(function() {
 															  									</select>
 															                        		</div>
 															                    		</div>
+															                    		<div class="col-md-2">
+																							<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																							<select class="form-control selectdee" name="labCode2" id="labCode2C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>" required 
+																							onchange="renderEmployeeList('2','C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>')" data-placeholder= "Lab Name">
+																							    <% for (Object[] lab : allLabList) { %>
+																							    	<option value="<%=lab[3]%>" <%if(labcode.equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+																							    <%}%>
+																							</select>
+																						</div>
 															                    		<div class="col-md-4 ">
 															                        		<div class="form-group">
 															                            		<label class="control-label">Second OIC </label>
@@ -1249,6 +1305,15 @@ $( document ).ready(function() {
 																	</div>
 
 																	<div class="row container-fluid">
+																		<div class="col-md-2">
+																			<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																			<select class="form-control selectdee" name="labCode1" id="labCode1B<%=ProjectSubCount%><%=Sub1Count%>" required 
+																			onchange="renderEmployeeList('1','B<%=ProjectSubCount%><%=Sub1Count%>')" data-placeholder= "Lab Name">
+																			    <% for (Object[] lab : allLabList) { %>
+																			    	<option value="<%=lab[3]%>" <%if(labcode.equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+																			    <%}%>
+																			</select>
+																		</div>
 																		<div class="col-md-4">
 											                        		<div class="form-group">
 											                            		<label class="control-label">First OIC  </label>
@@ -1264,6 +1329,15 @@ $( document ).ready(function() {
 											  									</select>
 											                        		</div>
 											                    		</div>
+											                    		<div class="col-md-2">
+																			<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																			<select class="form-control selectdee" name="labCode2" id="labCode2B<%=ProjectSubCount%><%=Sub1Count%>" required 
+																			onchange="renderEmployeeList('2','B<%=ProjectSubCount%><%=Sub1Count%>')" data-placeholder= "Lab Name">
+																			    <% for (Object[] lab : allLabList) { %>
+																			    	<option value="<%=lab[3]%>" <%if(labcode.equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+																			    <%}%>
+																			</select>
+																		</div>
 											                    		<div class="col-md-4 ">
 											                        		<div class="form-group">
 											                            		<label class="control-label">Second OIC </label>
@@ -1455,6 +1529,15 @@ $( document ).ready(function() {
 													</div>
 
 													<div class="row container-fluid">
+														<div class="col-md-2">
+															<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+															<select class="form-control selectdee" name="labCode1" id="labCode1A<%=ProjectSubCount%>" required 
+															onchange="renderEmployeeList('1','A<%=ProjectSubCount%>')" data-placeholder= "Lab Name">
+															    <% for (Object[] lab : allLabList) { %>
+															    	<option value="<%=lab[3]%>" <%if(labcode.equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+															    <%}%>
+															</select>
+														</div>
 														<div class="col-md-4">
 							                        		<div class="form-group">
 							                            		<label class="control-label">First OIC  </label>
@@ -1470,6 +1553,15 @@ $( document ).ready(function() {
 							  									</select>
 							                        		</div>
 							                    		</div>
+							                    		<div class="col-md-2">
+															<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+															<select class="form-control selectdee" name="labCode2" id="labCode2A<%=ProjectSubCount%>" required 
+															onchange="renderEmployeeList('2','A<%=ProjectSubCount%>')" data-placeholder= "Lab Name">
+															    <% for (Object[] lab : allLabList) { %>
+															    	<option value="<%=lab[3]%>" <%if(labcode.equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+															    <%}%>
+															</select>
+														</div>
 							                    		<div class="col-md-4 ">
 							                        		<div class="form-group">
 							                            		<label class="control-label">Second OIC </label>
@@ -1503,6 +1595,7 @@ $( document ).ready(function() {
 													<input type="hidden" name="ActivityId" value="<%=getMA[0]%>" />
 													<input type="hidden" name="OicEmpId" value="<%=getMA[8]%>" />
 													<input type="hidden" name="OicEmpId1" value="<%=getMA[9]%>" />
+													<input type="hidden" id="currLabCode" value="<%=labcode%>" />
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 												</form>
 											</div>
@@ -1672,7 +1765,48 @@ if(FormName!=null){
 <%}}%>
 </script>
 
-
+<script type="text/javascript">
+	function renderEmployeeList(rowId, level) {
+		var labCode  = $('#labCode'+rowId+level).val();
+		var currLabCode  = $('#currLabCode').val();
+		
+		employeeListByLabCode(rowId, level, labCode);
+		
+		if(currLabCode!=labCode) {
+			$('#allempcheckbox'+rowId+level).hide();
+		}else {
+			$('#allempcheckbox'+rowId+level).show();
+			$('#allempcheckbox'+rowId+level).prop('checked', true);
+		}
+	}
+	
+	function employeeListByLabCode(rowId, level, labcode) {
+	
+		var rowIdShort = rowId==1?"":(rowId-1);
+		$('#EmpId'+rowIdShort+level).empty(); 
+		$.ajax({
+		       type: "GET",
+		       url: "GetLabcodeEmpList.htm",
+		       data: {
+		       	LabCode: labcode
+		       },
+		       dataType: 'json',
+		       success: function(result) {
+		    	   if (result != null) {
+		    		   $('#EmpId'+rowIdShort+level).append('<option disabled="disabled" selected value="">Choose...</option>');
+		                for (var i = 0; i < result.length; i++) {
+		                    var data = result[i];
+		                    var optionValue = data[0];
+		                    var optionText = data[1].trim() + ", " + data[3]; 
+		                    var option = $("<option></option>").attr("value", optionValue).text(optionText);
+		                    $('#EmpId'+rowIdShort+level).append(option); 
+		                }
+		                //$('#EmpId'+(rowId==1?"":rowId)).select2('refresh');
+		           }
+		       }
+		});
+	}
+</script>
 
 </body>
 </html>

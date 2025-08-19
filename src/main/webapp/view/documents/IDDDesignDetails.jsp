@@ -533,7 +533,7 @@ var fieldGroupMap = {};
             {
             	value: "<%= field[0] %>",
                 text: "<%= field[1] %>",
-                datatype: "<%= field[14] %><%= field[16] %> (<%= field[15] %>)",
+                datatype: "<%= field[16] %>",
                 typicalval: "<%= field[6] %>",
                 minval: "<%= field[7] %>",
                 maxval: "<%= field[8] %>",

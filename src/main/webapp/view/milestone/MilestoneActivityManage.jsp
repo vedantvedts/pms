@@ -426,7 +426,59 @@ if(ses1!=null){	%>
 												data-original-data="" title="Linked Predecessor"  onclick="linkPredecessor('<%=objA[0] %>','<%=objA[4] %>', 'M<%=obj[5]%>-A<%=countA%>' , '<%=objA[24].toString()%>' )">
 										<i class="fa fa-angle-left" aria-hidden="true"></i>-<i class="fa fa-angle-right" aria-hidden="true"></i>
 											</button>
-
+											<div id="MIL_<%=objA[0] %>">
+											
+											</div>
+											<script>
+											$(document).ready(function() {
+												$.ajax({
+													type:'GET',
+													url:'getProjectMilestones.htm',
+													datatype:'json',
+													data:{
+														projectid:<%=ProjectId%>,
+													},
+													success:function (result){
+														var data = JSON.parse(result);
+														console.log(data)
+										
+													
+														
+														
+														  $.ajax({
+															  type:'GET',
+															  url:'predecessorList.htm',
+															  datatype:'json',
+															  data:{
+																  successor:'<%=objA[0]%>',
+															  },
+															  success:function(result){
+																  var ajaxresult = JSON.parse(result);
+																  console.log(ajaxresult);
+																	
+																  var html="";
+																  for(var i=0;i<ajaxresult.length;i++){
+																	  for (var key in data) {
+																		 
+																		  if(key.split("/")[1]===ajaxresult[i]){
+																			 var val = data[key];
+																			 html = html+"<div class='text-primary'> "+val[4]+ " (" + key.split("/")[0]+ ") </div>"
+																		  }
+																		  
+																		}
+																  }
+																  var id = 'MIL_<%=objA[0]%>';
+																  $('#'+id).html(html) 
+															  }
+															  
+														  }) 
+														  
+														
+												        
+													}
+												})
+											});
+											</script>
 										</td>
 									</tr>
 
@@ -536,7 +588,59 @@ if(ses1!=null){	%>
 												data-original-data="" title="Linked Predecessor"  onclick="linkPredecessor('<%=objB[0] %>','<%=objB[4] %>', 'M<%=obj[5]%>-A<%=countA%>-B<%=countB%>' , '<%=objB[24].toString()%>' )">
 										<i class="fa fa-angle-left" aria-hidden="true"></i>-<i class="fa fa-angle-right" aria-hidden="true"></i>
 											</button>
+										<div id="MIL_<%=objB[0] %>">
+											
+											</div>
+											<script>
+											$(document).ready(function() {
+												$.ajax({
+													type:'GET',
+													url:'getProjectMilestones.htm',
+													datatype:'json',
+													data:{
+														projectid:<%=ProjectId%>,
+													},
+													success:function (result){
+														var data = JSON.parse(result);
+														console.log(data)
 										
+													
+														
+														
+														  $.ajax({
+															  type:'GET',
+															  url:'predecessorList.htm',
+															  datatype:'json',
+															  data:{
+																  successor:'<%=objB[0]%>',
+															  },
+															  success:function(result){
+																  var ajaxresult = JSON.parse(result);
+																  console.log(ajaxresult);
+																	
+																  var html="";
+																  for(var i=0;i<ajaxresult.length;i++){
+																	  for (var key in data) {
+																		 
+																		  if(key.split("/")[1]===ajaxresult[i]){
+																			 var val = data[key];
+																			 html = html+"<div class='text-primary'> "+val[4]+ " (" + key.split("/")[0]+ ") </div>"
+																		  }
+																		  
+																		}
+																  }
+																  var id = 'MIL_<%=objB[0]%>';
+																  $('#'+id).html(html) 
+															  }
+															  
+														  }) 
+														  
+														
+												        
+													}
+												})
+											});
+											</script>
 										</td>
 										
 										
@@ -640,7 +744,66 @@ if(ses1!=null){	%>
 													Not Started</div>
 											</div> <%} %>
 										</td>
-										<td></td>
+										<td>
+										
+											<button type="button" class="btn btn-lg" style="color: green" data-toggle="tooltip" data-placement="top"
+												data-original-data="" title="Linked Predecessor"  onclick="linkPredecessor('<%=objC[0] %>','<%=objC[4] %>', 'M<%=obj[5]%>-A<%=countA%>-B<%=countB%>-C<%=countC%>' , '<%=objC[24].toString()%>' )">
+										<i class="fa fa-angle-left" aria-hidden="true"></i>-<i class="fa fa-angle-right" aria-hidden="true"></i>
+											</button>
+											<div id="MIL_<%=objC[0] %>">
+											
+											</div>
+											<script>
+											$(document).ready(function() {
+												$.ajax({
+													type:'GET',
+													url:'getProjectMilestones.htm',
+													datatype:'json',
+													data:{
+														projectid:<%=ProjectId%>,
+													},
+													success:function (result){
+														var data = JSON.parse(result);
+														console.log(data)
+										
+													
+														
+														
+														  $.ajax({
+															  type:'GET',
+															  url:'predecessorList.htm',
+															  datatype:'json',
+															  data:{
+																  successor:'<%=objC[0]%>',
+															  },
+															  success:function(result){
+																  var ajaxresult = JSON.parse(result);
+																  console.log(ajaxresult);
+																	
+																  var html="";
+																  for(var i=0;i<ajaxresult.length;i++){
+																	  for (var key in data) {
+																		 
+																		  if(key.split("/")[1]===ajaxresult[i]){
+																			 var val = data[key];
+																			 html = html+"<div class='text-primary'> "+val[4]+ " (" + key.split("/")[0]+ ") </div>"
+																		  }
+																		  
+																		}
+																  }
+																  var id = 'MIL_<%=objC[0]%>';
+																  $('#'+id).html(html) 
+															  }
+															  
+														  }) 
+														  
+														
+												        
+													}
+												})
+											});
+											</script>
+										</td>
 									</tr>
 									<% int countD=1;
 														 	if(MilestoneD!=null&&MilestoneD.size()>0){
@@ -744,7 +907,65 @@ if(ses1!=null){	%>
 													Not Started</div>
 											</div> <%} %>
 										</td>
-										<td></td>
+										<td>
+										<button type="button" class="btn btn-lg" style="color: green" data-toggle="tooltip" data-placement="top"
+										data-original-data="" title="Linked Predecessor"  onclick="linkPredecessor('<%=objD[0] %>','<%=objD[4] %>', 'M<%=obj[5]%>-A<%=countA%>-B<%=countB%>-C<%=countC%>-D<%=countD%>' , '<%=objD[24].toString()%>' )">
+										<i class="fa fa-angle-left" aria-hidden="true"></i>-<i class="fa fa-angle-right" aria-hidden="true"></i>
+										</button>
+												<div id="MIL_<%=objD[0] %>">
+											
+											</div>
+											<script>
+											$(document).ready(function() {
+												$.ajax({
+													type:'GET',
+													url:'getProjectMilestones.htm',
+													datatype:'json',
+													data:{
+														projectid:<%=ProjectId%>,
+													},
+													success:function (result){
+														var data = JSON.parse(result);
+														console.log(data)
+										
+													
+														
+														
+														  $.ajax({
+															  type:'GET',
+															  url:'predecessorList.htm',
+															  datatype:'json',
+															  data:{
+																  successor:'<%=objD[0]%>',
+															  },
+															  success:function(result){
+																  var ajaxresult = JSON.parse(result);
+																  console.log(ajaxresult);
+																	
+																  var html="";
+																  for(var i=0;i<ajaxresult.length;i++){
+																	  for (var key in data) {
+																		 
+																		  if(key.split("/")[1]===ajaxresult[i]){
+																			 var val = data[key];
+																			 html = html+"<div class='text-primary'> "+val[4]+ " (" + key.split("/")[0]+ ") </div>"
+																		  }
+																		  
+																		}
+																  }
+																  var id = 'MIL_<%=objD[0]%>';
+																  $('#'+id).html(html) 
+															  }
+															  
+														  }) 
+														  
+														
+												        
+													}
+												})
+											});
+											</script>
+										</td>
 									</tr>
 									<% int countE=1;
 														 	if(MilestoneE!=null&&MilestoneE.size()>0){
@@ -837,7 +1058,68 @@ if(ses1!=null){	%>
 											</div> <%} %>
 										</td>
 
-										<td></td>
+										<td>
+										<button type="button" class="btn btn-lg" style="color: green" data-toggle="tooltip" data-placement="top"
+										data-original-data="" title="Linked Predecessor"  onclick="linkPredecessor('<%=objE[0] %>','<%=objE[4] %>', 'M<%=obj[5]%>-A<%=countA%>-B<%=countB%>-C<%=countC%>-D<%=countD%>-E<%=countE%>' , '<%=objE[24].toString()%>' )">
+										<i class="fa fa-angle-left" aria-hidden="true"></i>-<i class="fa fa-angle-right" aria-hidden="true"></i>
+										</button>
+										
+												<div id="MIL_<%=objE[0] %>">
+											
+											</div>
+											<script>
+											$(document).ready(function() {
+												$.ajax({
+													type:'GET',
+													url:'getProjectMilestones.htm',
+													datatype:'json',
+													data:{
+														projectid:<%=ProjectId%>,
+													},
+													success:function (result){
+														var data = JSON.parse(result);
+														console.log(data)
+										
+													
+														
+														
+														  $.ajax({
+															  type:'GET',
+															  url:'predecessorList.htm',
+															  datatype:'json',
+															  data:{
+																  successor:'<%=objE[0]%>',
+															  },
+															  success:function(result){
+																  var ajaxresult = JSON.parse(result);
+																  console.log(ajaxresult);
+																	
+																  var html="";
+																  for(var i=0;i<ajaxresult.length;i++){
+																	  for (var key in data) {
+																		 
+																		  if(key.split("/")[1]===ajaxresult[i]){
+																			 var val = data[key];
+																			 html = html+"<div class='text-primary'> "+val[4]+ " (" + key.split("/")[0]+ ") </div>"
+																		  }
+																		  
+																		}
+																  }
+																  var id = 'MIL_<%=objE[0]%>';
+																  $('#'+id).html(html) 
+															  }
+															  
+														  }) 
+														  
+														
+												        
+													}
+												})
+											});
+											</script>
+										
+										
+										</td>
 									</tr>
 
 									<% countE++;} }%>
@@ -1449,7 +1731,7 @@ function ChangeButton(id) {
 	var successor = "";
 	function linkPredecessor(a,b ,c ,d ){
 		successor=a;
-		$('#predecessorModal').modal('show');
+
 
 		$("#modalheaderP").html("Predecessor Of "+b+ " ("+ c + ") - " +    "<%=selectedProject %>");
 	
@@ -1517,7 +1799,7 @@ function ChangeButton(id) {
 			}
 		})
 		
-		
+		$('#predecessorModal').modal('show');
 		
 		
 	}
@@ -1623,7 +1905,8 @@ function ChangeButton(id) {
 	                        icon: "success",
 	                        allowOutsideClick: false
 	                    }).then(() => {
-	                        /* location.reload(); */
+	                        location.reload(); 
+	                	    /* $('#predecessorModal').modal('hide'); */
 	                    });
 	                },
 	                error: function (xhr, status, error) {
@@ -1640,7 +1923,7 @@ function ChangeButton(id) {
 	        }
 	        // If result.isDismissed: do nothing (user clicked Cancel)
 	    });
-		console.log("value ----- >  "+value)
+
 	}
 	
 	function saveData(){

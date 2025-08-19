@@ -806,6 +806,8 @@ public class ActionController {
 			//req.setAttribute("LinkList", service.SubList(req.getParameter("ActionLinkId")));
 			req.setAttribute("actionslist", service.ActionSubLevelsList(req.getParameter("ActionAssignId")));
 			req.setAttribute("flag", req.getParameter("flag"));
+			req.setAttribute("AttachmentList", service.getActionMainAttachMent(req.getParameter("ActionMainId"))); // 18-08
+
 			}
 			catch (Exception e) {
 					e.printStackTrace();

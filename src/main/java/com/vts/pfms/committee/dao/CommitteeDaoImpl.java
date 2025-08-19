@@ -214,7 +214,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 			SELECT sad.agendadocid,sad.agendaid,sad.filedocid,fru.filenameui,fru.VersionDoc,fru.ReleaseDoc 
 			FROM committee_schedule_agenda_docs sad, committee_schedules_agenda sa, file_rep_upload fru,committee_schedule cs 
 			WHERE sad.agendaid=sa.scheduleagendaid AND sad.filedocid = fru.FileRepUploadId AND sad.isactive=1 
-			AND sa.isactive=1 AND sa.scheduleid=:scheduleid AND sa.scheduleid=cs.scheduleid AND sa.projectid=cs.projectid
+			AND sa.isactive=1 AND sa.scheduleid=:scheduleid AND CASE WHEN cs.ProgrammeId<>0 THEN 1=1 ELSE sa.scheduleid=cs.scheduleid AND sa.projectid=cs.projectid END
 			UNION
 			SELECT sad.agendadocid,sad.agendaid,sad.filedocid,fru.filenameui,fru.VersionDoc,fru.ReleaseDoc 
 			FROM committee_schedule_agenda_docs sad, committee_schedules_agenda sa, file_rep_upload_preproject fru,committee_schedule cs
@@ -507,7 +507,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		SELECT a.scheduleagendaid,a.scheduleid,a.schedulesubid,a.agendaitem,b.projectname,b.projectid,a.remarks,b.projectcode,
 		a.agendapriority,a.presenterid ,CONCAT(IFNULL(CONCAT(j.Title,' '),(IFNULL(CONCAT(j.Salutation, ' '), ''))), j.EmpName) AS 'EmpName' ,h.designation,a.duration,
 		j.desigid, a.PresentorLabCode  FROM project_master b,employee j,employee_desig h,committee_schedules_agenda a,committee_schedule cs
-		WHERE a.projectid=cs.projectid AND cs.projectid=b.projectid AND a.scheduleid=cs.scheduleid AND a.scheduleid=:committeescheduleid AND a.isactive=1 AND a.projectid<>0 AND a.presenterid=j.empid AND 
+		WHERE CASE WHEN cs.ProgrammeId<>0 THEN a.ProjectId=b.ProjectId ELSE a.projectid=cs.projectid AND cs.projectid=b.projectid AND a.scheduleid=cs.scheduleid END AND a.scheduleid=:committeescheduleid AND a.isactive=1 AND a.projectid<>0 AND a.presenterid=j.empid AND 
 		j.desigid=h.desigid AND a.PresentorLabCode<>'@EXP'
 		UNION
 		SELECT a.scheduleagendaid,a.scheduleid,a.schedulesubid,a.agendaitem,b.projectname,b.projectid,a.remarks,b.projectcode,
@@ -3744,7 +3744,7 @@ private static final String ENOTEAPPROVELIST="SELECT MAX(a.EnoteId) AS EnoteId,M
 		}
 	}
 	
-	private static final String GETCOMMITTEEMAINIDBYCOMMITTEECODE = "SELECT COALESCE((SELECT a.CommitteeMainId FROM committee_main a INNER JOIN committee b ON a.CommitteeId = b.CommitteeId WHERE a.ProjectId = '0' AND a.DivisionId = '0' AND a.InitiationId = '0' AND a.ProgrammeId =:ProgrammeId AND CURDATE() BETWEEN a.ValidFrom AND a.ValidTo AND a.IsActive = 1 ORDER BY a.CommitteeMainId DESC LIMIT 1), 0) AS CommitteeMainId";
+	private static final String GETCOMMITTEEMAINIDBYCOMMITTEECODE = "SELECT COALESCE((SELECT a.CommitteeMainId FROM committee_main a INNER JOIN committee b ON a.CommitteeId = b.CommitteeId WHERE a.ProjectId = '0' AND a.DivisionId = '0' AND a.InitiationId = '0' AND a.ProgrammeId<>0 AND a.ProgrammeId =:ProgrammeId AND CURDATE() BETWEEN a.ValidFrom AND a.ValidTo AND a.IsActive = 1 ORDER BY a.CommitteeMainId DESC LIMIT 1), 0) AS CommitteeMainId";
 	@Override
 	public Long getCommitteeMainIdByProgrammeId(String programmeId) throws Exception {
 		try {

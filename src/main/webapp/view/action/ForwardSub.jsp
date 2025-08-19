@@ -309,7 +309,7 @@ td
   List<Object[]> LinkList=(List<Object[]> ) request.getAttribute("LinkList");
   String actionno= (String) request.getAttribute("actionno");
   String flag = (String) request.getAttribute("flag");
-  
+  Object[] AttachmentList=(Object[]) request.getAttribute("AttachmentList");
  %>
 
 
@@ -351,9 +351,21 @@ td
 				<%}%>	
 					<span style="float: right;font-size: 17px;margin-top: 5px">Assignee : <%=Assignee[11] %> &nbsp;(<%=Assignee[17] %>)</span>
       				 </h6>
+      				
+      				 
+      				
       			</div>
       		
-      		
+      			<div style="background-color: #055C9D;">
+      			<%if(AttachmentList!=null){ %>
+      				<form>
+      				 <h6 style="color: white;font-weight: bold;font-size: 1.1rem !important ; margin-left: 20px" align="left"> Attachment: 
+      				&nbsp;&nbsp;<button formaction="ActionMainAttachDownload.htm" formmethod="get" class="btn" type="submit" name="MainId" value="<%=Assignee[0] %>"><i class="fa fa-download"></i></button>
+      				</h6>
+      				</form>
+      			   <%} %>
+      			
+      			</div>
 	      		<div class="card-body">
 	      			
 	        		<div class="row">

@@ -53,6 +53,7 @@ import com.vts.pfms.milestone.model.FileRepUploadPreProject;
 import com.vts.pfms.milestone.model.MilestoneActivity;
 import com.vts.pfms.milestone.model.MilestoneActivityLevel;
 import com.vts.pfms.milestone.model.MilestoneActivityLevelRemarks;
+import com.vts.pfms.milestone.model.MilestoneActivityPredecessor;
 import com.vts.pfms.milestone.model.MilestoneActivityRev;
 import com.vts.pfms.milestone.model.MilestoneActivitySub;
 import com.vts.pfms.milestone.model.MilestoneActivitySubRev;
@@ -2767,5 +2768,32 @@ public class MilestoneServiceImpl implements MilestoneService {
 	
 		return dao.getMilestoneDraftRemarks(activityId);
 	}
-    
+
+	@Override
+	public Long saveMilestoneActivityPredecessor(MilestoneActivityPredecessor mp) throws Exception {
+		
+		return dao.saveMilestoneActivityPredecessor(mp);
+	}
+	
+	@Override
+	public List<Object[]> predecessorList(String successor) throws Exception {
+		
+		return dao.predecessorList(successor);
+	}
+	
+	@Override
+	public List<Object[]> getsuccessorList(String activityId) throws Exception {
+		return dao.getsuccessorList(activityId);
+	}
+	
+	@Override
+	public int deleteMilestoneActivityPredecessor(String successor) throws Exception {
+		
+		return dao.deleteMilestoneActivityPredecessor(successor);
+	}
+	
+	@Override
+	public long  saveMilestoneSub(MilestoneActivitySub attach) throws Exception {
+		return dao.MilestoneActivitySubInsert(attach);
+	}
 }

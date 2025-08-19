@@ -21,6 +21,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -108,6 +109,7 @@ import com.vts.pfms.milestone.model.FileRepUploadPreProject;
 import com.vts.pfms.milestone.model.MilestoneActivity;
 import com.vts.pfms.milestone.model.MilestoneActivityLevel;
 import com.vts.pfms.milestone.model.MilestoneActivityLevelRemarks;
+import com.vts.pfms.milestone.model.MilestoneActivityPredecessor;
 import com.vts.pfms.milestone.model.MilestoneActivitySub;
 import com.vts.pfms.milestone.service.MilestoneService;
 import com.vts.pfms.print.service.PrintService;
@@ -442,6 +444,7 @@ public class MilestoneController {
 		logger.info(new Date() +"Inside MilestoneActivityAdd.htm "+UserId);
 		try {
 			String ProjectId=req.getParameter("ProjectId");
+			req.setAttribute("allLabList", committeservice.AllLabList());
 			req.setAttribute("EmployeeList", service.ProjectEmpList(ProjectId , LabCode));
 			req.setAttribute("ProjectDetails", service.ProjectDetails(ProjectId).get(0));
 			req.setAttribute("ActivityTypeList", service.ActivityTypeList());
@@ -544,6 +547,7 @@ public class MilestoneController {
 			req.setAttribute("ActivityTypeList", service.ActivityTypeList());
 			String projectId=req.getParameter("ProjectId");
 			req.setAttribute("EmployeeList", service.ProjectEmpList(projectId , LabCode));
+			req.setAttribute("allLabList", committeservice.AllLabList());
 			req.setAttribute("ProjectId", projectId);
 			req.setAttribute("projectDirector", req.getParameter("projectDirector"));
 			if("C".equalsIgnoreCase(req.getParameter("sub"))) {
@@ -657,6 +661,7 @@ public class MilestoneController {
 			req.setAttribute("FromName",FromName);
 			String projectId=req.getParameter("ProjectId");
 			req.setAttribute("EmployeeList", service.ProjectEmpList(projectId , LabCode));
+			req.setAttribute("allLabList", committeservice.AllLabList());
 			req.setAttribute("ProjectId", projectId);
 			req.setAttribute("projectDirector", req.getParameter("projectDirector"));
 		}
@@ -805,6 +810,7 @@ public class MilestoneController {
 			req.setAttribute("RevisionCount", service.MilestoneRevisionCount(MainId));
 			req.setAttribute("ActivityTypeList", service.ActivityTypeList());
 			req.setAttribute("EmployeeList", service.EmployeeList());
+			req.setAttribute("allLabList", committeservice.AllLabList());
 			req.setAttribute("projectDirector", req.getParameter("projectDirector"));
 		}
 		catch (Exception e) {
@@ -3887,6 +3893,12 @@ public class MilestoneController {
 			level2.setLinkedMilestonId(Long.parseLong(milesMainId));
 			level2.setIsMasterData(isMasterData.equalsIgnoreCase("Y")?"L":"Y");
 			
+			if(isMasterData.equalsIgnoreCase("Y")) {
+				updateMilestoneRemarks(milesMainId,mileIdLink,UserId);
+			}else {
+				updateMilestoneRemarks(mileIdLink,milesMainId,UserId);
+			}
+			
 			long count1= service.MilestoneActivityLevelSave(level2);
 			
 			
@@ -3900,6 +3912,46 @@ public class MilestoneController {
 		}
 	
 	}
+	
+	// 18-08
+	@Async
+	private void updateMilestoneRemarks(String id1, String id2,String UserId) {
+		MileEditDto mainDto = new MileEditDto();
+		
+		mainDto.setActivityId(id1);
+		
+		mainDto.setActivityType("A");
+		
+		try {
+			List<Object[]>subList = service.MilestoneActivitySub(mainDto);
+			
+			for(Object[]obj:subList) {
+				MilestoneActivitySub attach=new MilestoneActivitySub();
+				
+				attach.setActivityId(Long.parseLong(id2));
+				attach.setRemarks(obj[3].toString());
+				attach.setCreatedBy(UserId);
+				attach.setCreatedDate(LocalDateTime.now().toString());
+				attach.setProgress(Integer.parseInt(obj[1].toString()));
+				attach.setAttachName(obj[4].toString());				
+				java.sql.Date sqlDate = java.sql.Date.valueOf(obj[2].toString());
+			
+				attach.setProgressDate(sqlDate);
+				attach.setIsActive(1);
+			
+				service.saveMilestoneSub(attach);
+			}
+			
+			
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		
+	
+		
+	}
+	
 	@RequestMapping(value = "MilestoneLinked.htm", method = RequestMethod.GET)
 	public @ResponseBody String MilestoneLinked(HttpServletRequest req, HttpSession ses,HttpServletResponse res)throws Exception 
 	{
@@ -4715,6 +4767,77 @@ public class MilestoneController {
 		}
 		return "milestone/MilestoneActivityManage";
 	}
+	
+	// Milestone predecessor
+	@RequestMapping(value = "predecessorActivity.htm", method = RequestMethod.GET)
+	public @ResponseBody String predecessorActivity(HttpSession ses, HttpServletRequest req) throws Exception 
+	{
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String LoginType = (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		Long count =0l;
+		Gson json = new Gson();
+		try {
+
+
+			String activityIds = req.getParameter("activityIds") ;			
+			String successor = req.getParameter("successor") ;			
+
+
+			int deleteResult = service.deleteMilestoneActivityPredecessor(successor);
+
+
+			String []activityId = activityIds.split(",");			
+
+			for(String s:activityId) {
+				MilestoneActivityPredecessor mp = new MilestoneActivityPredecessor();
+				mp.setSuccessorId(Long.parseLong(successor));
+				mp.setPredecessorId(Long.parseLong(s));
+				mp.setCreatedBy(UserId);				
+				mp.setCreatedDate(LocalDate.now().toString());	
+
+				count = service.saveMilestoneActivityPredecessor(mp);			
+			}
+
+
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return json.toJson(count);
+	}
+	@RequestMapping(value = "predecessorList.htm", method = RequestMethod.GET)
+	public @ResponseBody String predecessorList(HttpSession ses, HttpServletRequest req) throws Exception 
+	{
+		String UserId = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String LoginType = (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		List<Object[]>predecessorList = new ArrayList<>();
+		Gson json = new Gson();
+		try {
+
+
+
+			String successor = req.getParameter("successor") ;			
+
+			System.out.println("successor----"+successor);
+
+			predecessorList = service.predecessorList(successor);
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return json.toJson(predecessorList!=null && !predecessorList.isEmpty()
+				?predecessorList.stream().map(e->e[2].toString()).collect(Collectors.toList())
+						:predecessorList
+				);
+
+	}
+
 }
 
 

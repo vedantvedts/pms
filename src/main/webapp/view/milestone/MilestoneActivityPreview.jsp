@@ -37,6 +37,7 @@ Long EmpId =  (Long)session.getAttribute("EmpId") ;
 String LoginType = (String)session.getAttribute("LoginType");
 String projectDirector = (String)request.getAttribute("projectDirector");
 List<String> changes = new ArrayList<>();
+List<Object[]> allLabList=(List<Object[]>)request.getAttribute("allLabList");
 %>
 <script type="text/javascript">
 function changeempoic1(id,id3)
@@ -100,6 +101,55 @@ var s = '';
 
 }  
 </script>	
+<script type="text/javascript">
+	function renderEmployeeList(rowId, level, empid) {
+		var labCode  = $('#labCode'+rowId+level).val();
+		var currLabCode  = $('#currLabCode').val();
+		
+		console.log('rowId', rowId);
+		console.log('level', level);
+		console.log('empid', empid);
+		console.log('labCode', labCode);
+		console.log('******************************');
+		employeeListByLabCode(rowId, level, labCode, empid);
+		
+		if(currLabCode!=labCode) {
+			$('#allempcheckbox'+rowId+level).hide();
+		}else {
+			$('#allempcheckbox'+rowId+level).show();
+			$('#allempcheckbox'+rowId+level).prop('checked', true);
+		}
+	}
+	
+	function employeeListByLabCode(rowId, level, labcode, empid) {
+	
+		var rowIdShort = rowId==1?"":(rowId-1);
+		$('#EmpId'+rowIdShort+level).empty(); 
+		$.ajax({
+		       type: "GET",
+		       url: "GetLabcodeEmpList.htm",
+		       data: {
+		       	LabCode: labcode
+		       },
+		       dataType: 'json',
+		       success: function(result) {
+		    	   if (result != null) {
+		    		   $('#EmpId'+rowIdShort+level).append('<option disabled="disabled" selected value="">Choose...</option>');
+		                for (var i = 0; i < result.length; i++) {
+		                    var data = result[i];
+		                    var optionValue = data[0];
+		                    var optionText = data[1].trim() + ", " + data[3]; 
+		                    var option = $("<option></option>").attr("value", optionValue).text(optionText);
+		                    $('#EmpId'+rowIdShort+level).append(option); 
+		                }
+		                //$('#EmpId'+(rowId==1?"":rowId)).select2('refresh');
+		                $('#EmpId'+rowIdShort+level).val(empid==0?"":empid).trigger('change'); 
+		           }
+		       }
+		});
+	}
+</script>
+	
 <body>
 
   <nav class="navbar navbar-light bg-light" style="margin-top: -1%;">
@@ -160,13 +210,13 @@ String ses=(String)request.getParameter("result");
                     		 <textarea rows="1" cols="50" class="form-control "  <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=getMA[4] %></textarea> 
                         	</div>
                         	
-                        	<div class="col-md-2 " align="center"><br>
-                        	<label class="control-label">From Date:</label><br>
+                        	<div class="col-md-1 " align="center"><br>
+                        	<label class="control-label">From:</label><br>
                         	<input class="form-control " name="ValidFrom" id="DateCompletion"  value="<%=sdf.format(getMA[2]) %>"  required="required"  style="width:120px;" >
                         	
                         	</div>
-                        	<div class="col-md-2 " align="center"><br>
-                        		<label class="control-label">To Date:</label><br>
+                        	<div class="col-md-1 " align="center"><br>
+                        		<label class="control-label">To:</label><br>
                         	<input class="form-control form-control" name="ValidTo" id="DateCompletion2"  value="<%=sdf.format(getMA[3]) %>"  required="required" style="width:120px;" >
                         		</div>
                         		<div class="col-md-1 " align="center" ><br>
@@ -175,7 +225,17 @@ String ses=(String)request.getParameter("result");
 
                     		 
                         	</div>
-                        	
+                        	<div class="col-md-2 " ><br>
+	                        	<%if(RevisionCount==0) { %>
+	                    		<label class="control-label">Activity Type  </label>
+	                              		<select class="form-control selectdee" id="ActivityTypeIdM" required="required" name="ActivityTypeId">
+	    									<option disabled="true"  selected value="">Choose...</option>
+	    										<% for (Object[] obj : ActivityTypeList) {%>
+											<option value="<%=obj[0]%>" <%if(getMA[15].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
+												<%} %>
+	  									</select>
+	                        	<%}%>
+                        	</div>
                         	<div class="col-md-1 " ><br><label class="control-label"> &nbsp;&nbsp;Update<br></label><br>
                         				<%if( Arrays.asList(projectDirector).contains(EmpId.toString()) || LoginType.equalsIgnoreCase("A")  ){ %>
                         	  <button type="button" class="btn btn-sm edit" onclick="weightage_sum('<%=getMA[0] %>','<%=getMA[10] %>','M');" >
@@ -195,34 +255,40 @@ String ses=(String)request.getParameter("result");
                        		</div>
                        		
                        		<div class="row container-fluid" >
-                             <div class="col-md-1 " >                    		
+                        	<div class="col-md-1"><br></div>
+                        	<div class="col-md-2"><br>
+                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<select class="form-control selectdee" name="labCode1" id="labCode1M" required 
+								onchange="renderEmployeeList('1','M','0')" data-placeholder= "Lab Name">
+								    <% for (Object[] lab : allLabList) { %>
+								    	<option value="<%=lab[3]%>" <%if(getMA[18].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    <%}%>
+								</select>
                         	</div>
-                        	<%if(RevisionCount==0) { %>
-                    		<div class="col-md-3 " ><br>
-                    		<label class="control-label">Activity Type  </label>
-                              		<select class="form-control selectdee" id="ActivityTypeIdM" required="required" name="ActivityTypeId">
-    									<option disabled="true"  selected value="">Choose...</option>
-    										<% for (Object[] obj : ActivityTypeList) {%>
-										<option value="<%=obj[0]%>" <%if(getMA[15].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
-											<%} %>
-  									</select>
-                    	      	</div>
-                        	<%} %>
                         	<div class="col-md-3 " align="center"><br>
                         	<label class="control-label">First OIC  </label>
-                        	<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
+                        	<%-- <div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
 										<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox1M" onchange="changeempoic1('<%=getMA[8]%>','M')" >
-									</div>
+									</div> --%>
                               		<select class="form-control selectdee" id="EmpIdM" required="required" name="EmpId">
     									
 											
   									</select>
                         	</div>
+                        	<div class="col-md-2"><br>
+                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<select class="form-control selectdee" name="labCode2" id="labCode2M" required 
+								onchange="renderEmployeeList('2','M','0')" data-placeholder= "Lab Name">
+								    <% for (Object[] lab : allLabList) { %>
+								    	<option value="<%=lab[3]%>" <%if(getMA[19].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    <%}%>
+								</select>
+                        	</div>
                         	<div class="col-md-3 " align="center"><br>
                         		<label class="control-label">Second OIC </label>
-                        		<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
+                        		<%-- <div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
 										<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2M" onchange="changeempoic2('<%=getMA[9]%>','M')" >
-									</div>
+									</div> --%>
                               		<select class="form-control selectdee" id="EmpId1M" required="required" name="EmpId1">
     									
   									</select>
@@ -235,11 +301,8 @@ String ses=(String)request.getParameter("result");
                        		
 <script type="text/javascript">
 
-changeempoic1(<%=getMA[8] %>,'M');
-changeempoic2(<%=getMA[9] %>,'M');
-
-
-
+renderEmployeeList('1','M', '<%=getMA[8]%>');
+renderEmployeeList('2','M', '<%=getMA[9]%>');
 		
 </script>
    
@@ -286,20 +349,25 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
                     		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityA[4] %></textarea> 
                         	</div>
                         	
-                        	<div class="col-md-2 " align="center"><br>
+                        	<div class="col-md-1 " align="center"><br>
                         	<input class="form-control " name="ValidFrom" id="DateCompletionA<%=ActivityA[0] %>"  value="<%=sdf.format(ActivityA[2]) %>"  required="required" style="width:120px;;" >
                         	
                         	</div>
-                        	<div class="col-md-2 " align="center"><br>
+                        	<div class="col-md-1 " align="center"><br>
                         	<input class="form-control " name="ValidTo" id="DateCompletionA2<%=ActivityA[0] %>"  value="<%=sdf.format(ActivityA[3]) %>"  required="required"  style="width:120px;;" >
-                        		</div>
-                        		<div class="col-md-1 " align="center" ><br>      
-
-
-                    		<input type="number" class="form-control "  name="Weightage" id="Weightage<%=getMA[0] %>A<%=ActivityA[0] %>" required="required" min="0" max="100" value="<%=ActivityA[6] %>" style="width:95px;" >
-                    	
-                    		
-                    		 
+                        	</div>
+                       		<div class="col-md-1 " align="center" ><br>      
+                   				<input type="number" class="form-control "  name="Weightage" id="Weightage<%=getMA[0] %>A<%=ActivityA[0] %>" required="required" min="0" max="100" value="<%=ActivityA[6] %>" style="width:95px;" >
+                       		</div>
+                       		<div class="col-md-2 " ><br>
+                       			<%if(RevisionCount==0) { %>
+                              		<select class="form-control selectdee" id="ActivityTypeId<%=ActivityA[0] %>" required="required" name="ActivityTypeId">
+    									<option disabled="true"  selected value="">Choose...</option>
+    										<% for (Object[] obj : ActivityTypeList) {%>
+										<option value="<%=obj[0]%>" <%if(ActivityA[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
+											<%} %>
+  									</select>
+                        		<%} %>
                         	</div>
                             <div class="col-md-1 "><br>
                             <%if( Arrays.asList(getMA[8].toString(),projectDirector,getMA[9].toString() ).contains(EmpId.toString()) || LoginType.equalsIgnoreCase("A")  ){ %>
@@ -320,33 +388,41 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
                        		<div class="row container-fluid" >
                              <div class="col-md-1 " >                    		
                         	</div>
-                        	<%if(RevisionCount==0) { %>
-                    		<div class="col-md-3 " ><br>
-                    		<label class="control-label">Activity Type  </label>
-                              		<select class="form-control selectdee" id="ActivityTypeId<%=ActivityA[0] %>" required="required" name="ActivityTypeId">
-    									<option disabled="true"  selected value="">Choose...</option>
-    										<% for (Object[] obj : ActivityTypeList) {%>
-										<option value="<%=obj[0]%>" <%if(ActivityA[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
-											<%} %>
-  									</select>
-                    	      	</div>
-                        	<%} %>
+                        	
+                        	<div class="col-md-2"><br>
+                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<select class="form-control selectdee" name="labCode1" id="labCode1A<%=ActivityA[0] %>" required 
+								onchange="renderEmployeeList('1','A<%=ActivityA[0] %>','0')" data-placeholder= "Lab Name">
+								    <% for (Object[] lab : allLabList) { %>
+								    	<option value="<%=lab[3]%>" <%if(ActivityA[28].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    <%}%>
+								</select>
+                        	</div>
                         	<div class="col-md-3 " align="center"><br>
                         	<label class="control-label">First OIC  </label>
-                        	<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
+                        	<%-- <div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
 										<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox1<%=ActivityA[0] %>" onchange="changeempoic1('<%=ActivityA[13]%>','<%=ActivityA[0] %>')" >
-									</div>
-                              		<select class="form-control selectdee" id="EmpId<%=ActivityA[0] %>" required="required" name="EmpId">
+									</div> --%>
+                              		<select class="form-control selectdee" id="EmpIdA<%=ActivityA[0] %>" required="required" name="EmpId">
     									
 											
   									</select>
                         	</div>
+                        	<div class="col-md-2"><br>
+                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<select class="form-control selectdee" name="labCode2" id="labCode2A<%=ActivityA[0] %>" required 
+								onchange="renderEmployeeList('2','A<%=ActivityA[0] %>','0')" data-placeholder= "Lab Name">
+								    <% for (Object[] lab : allLabList) { %>
+								    	<option value="<%=lab[3]%>" <%if(ActivityA[29].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    <%}%>
+								</select>
+                        	</div>
                         	<div class="col-md-3 " align="center"><br>
                         		<label class="control-label">Second OIC </label>
-                        		<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
+                        		<%-- <div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
 										<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2<%=ActivityA[0] %>" onchange="changeempoic2('<%=ActivityA[15]%>','<%=ActivityA[0] %>')" >
-									</div>
-                              		<select class="form-control selectdee" id="EmpId1<%=ActivityA[0] %>" required="required" name="EmpId1">
+									</div> --%>
+                              		<select class="form-control selectdee" id="EmpId1A<%=ActivityA[0] %>" required="required" name="EmpId1">
     									
   									</select>
   										</div>
@@ -354,8 +430,11 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
   							</div>			
   <script type="text/javascript">
 
-changeempoic1(<%=ActivityA[13] %>,<%=ActivityA[0] %>);
-changeempoic2(<%=ActivityA[15] %>,<%=ActivityA[0] %>);
+  renderEmployeeList('1','A<%=ActivityA[0] %>', '<%=ActivityA[13]%>');
+  renderEmployeeList('2','A<%=ActivityA[0] %>', '<%=ActivityA[15]%>');
+  
+<%-- changeempoic1(<%=ActivityA[13] %>,<%=ActivityA[0] %>);
+changeempoic2(<%=ActivityA[15] %>,<%=ActivityA[0] %>); --%>
 
 
 </script>
@@ -448,21 +527,27 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
                     		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityB[4] %></textarea> 
                         	</div>
                         	
-                        	<div class="col-md-2 " align="center"><br>
+                        	<div class="col-md-1 " align="center"><br>
                         	<input class="form-control " name="ValidFrom" id="DateCompletionB<%=ActivityA[0] %><%=ActivityB[0] %>"  value="<%=sdf.format(ActivityB[2]) %>"  required="required"  style="width:120px;;" >
                         	
                         	</div>
-                        	<div class="col-md-2 " align="center"><br>
+                        	<div class="col-md-1 " align="center"><br>
                         	<input class="form-control " name="ValidTo" id="DateCompletionB2<%=ActivityA[0] %><%=ActivityB[0] %>"  value="<%=sdf.format(ActivityB[3]) %>"  required="required"  style="width:120px;;" >
                         		</div>
                             <div class="col-md-1 " align="center" ><br>      
-                    				
-
                     		<input type="number" class="form-control "  name="Weightage" id="Weightage<%=ActivityA[0] %>B<%=ActivityB[0] %>" required="required" min="0" max="100" value="<%=ActivityB[6] %>"  style="width:95px;" >
-                    	
-                    		
-                    		 
-                        	</div>
+                    		</div>
+                    		<div class="col-md-2 " ><br>
+                    			<%if(RevisionCount==0) { %>
+                              		<select class="form-control selectdee" id="ActivityTypeId<%=ActivityA[0] %><%=ActivityB[0] %>" required="required" name="ActivityTypeId">
+    									<option disabled="true"  selected value="">Choose...</option>
+    										<% for (Object[] obj : ActivityTypeList) {%>
+										<option value="<%=obj[0]%>" <%if(ActivityB[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
+											<%} %>
+  									</select>
+                    	      	
+                        		<%} %>
+                    		</div> 
                         	<div class="col-md-1 "><br>
                         	                            <%if( Arrays.asList(getMA[8].toString(),projectDirector,getMA[9].toString(),ActivityA[13].toString(),ActivityA[15].toString() ).contains(EmpId.toString()) || LoginType.equalsIgnoreCase("A")  ){ %>
                         	
@@ -483,33 +568,41 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
                        		<div class="row container-fluid" >
                              <div class="col-md-1 " >                    		
                         	</div>
-                        	<%if(RevisionCount==0) { %>
-                    		<div class="col-md-3 " ><br>
-                    		<label class="control-label">Activity Type  </label>
-                              		<select class="form-control selectdee" id="ActivityTypeId<%=ActivityA[0] %><%=ActivityB[0] %>" required="required" name="ActivityTypeId">
-    									<option disabled="true"  selected value="">Choose...</option>
-    										<% for (Object[] obj : ActivityTypeList) {%>
-										<option value="<%=obj[0]%>" <%if(ActivityB[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
-											<%} %>
-  									</select>
-                    	      	</div>
-                        	<%} %>
-                       <div class="col-md-3 " align="center"><br>
-                        	<label class="control-label">First Oic  </label>
-                        	<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
+                        	
+                        	<div class="col-md-2"><br>
+                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<select class="form-control selectdee" name="labCode1" id="labCode1B<%=ActivityA[0] %><%=ActivityB[0] %>" required 
+								onchange="renderEmployeeList('1','B<%=ActivityA[0] %><%=ActivityB[0] %>','0')" data-placeholder= "Lab Name">
+								    <% for (Object[] lab : allLabList) { %>
+								    	<option value="<%=lab[3]%>" <%if(ActivityB[28].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    <%}%>
+								</select>
+                        	</div>
+                       		<div class="col-md-3 " align="center"><br>
+                        	<label class="control-label">First OIC  </label>
+                        	<%-- <div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
 										<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox1<%=ActivityA[0] %><%=ActivityB[0] %>" onchange="changeempoic1('<%=ActivityB[13]%>','<%=ActivityA[0] %><%=ActivityB[0] %>')" >
-									</div>
-                              		<select class="form-control selectdee" id="EmpId<%=ActivityA[0] %><%=ActivityB[0] %>" required="required" name="EmpId">
+									</div> --%>
+                              		<select class="form-control selectdee" id="EmpIdB<%=ActivityA[0] %><%=ActivityB[0] %>" required="required" name="EmpId">
     									
 											
   									</select>
                         	</div>
+                        	<div class="col-md-2"><br>
+                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<select class="form-control selectdee" name="labCode2" id="labCode2B<%=ActivityA[0] %><%=ActivityB[0] %>" required 
+								onchange="renderEmployeeList('2','B<%=ActivityA[0] %><%=ActivityB[0] %>','0')" data-placeholder= "Lab Name">
+								    <% for (Object[] lab : allLabList) { %>
+								    	<option value="<%=lab[3]%>" <%if(ActivityB[29].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    <%}%>
+								</select>
+                        	</div>
                         	<div class="col-md-3 " align="center"><br>
-                        		<label class="control-label">Second Oic </label>
-                        		<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
+                        		<label class="control-label">Second OIC </label>
+                        		<%-- <div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
 										<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2<%=ActivityA[0] %><%=ActivityB[0] %>" onchange="changeempoic2('<%=ActivityB[15]%>','<%=ActivityA[0] %><%=ActivityB[0] %>')" >
-									</div>
-                              		<select class="form-control selectdee" id="EmpId1<%=ActivityA[0] %><%=ActivityB[0] %>" required="required" name="EmpId1">
+									</div> --%>
+                              		<select class="form-control selectdee" id="EmpId1B<%=ActivityA[0] %><%=ActivityB[0] %>" required="required" name="EmpId1">
     									
   									</select>
   										</div>
@@ -517,9 +610,11 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
   							</div>			
   <script type="text/javascript">
 
-changeempoic1(<%=ActivityB[13] %>,<%=ActivityA[0] %><%=ActivityB[0] %>);
-changeempoic2(<%=ActivityB[15] %>,<%=ActivityA[0] %><%=ActivityB[0] %>);
+<%-- changeempoic1(<%=ActivityB[13] %>,<%=ActivityA[0] %><%=ActivityB[0] %>);
+changeempoic2(<%=ActivityB[15] %>,<%=ActivityA[0] %><%=ActivityB[0] %>); --%>
 
+renderEmployeeList('1','B<%=ActivityA[0] %><%=ActivityB[0] %>', '<%=ActivityB[13]%>');
+renderEmployeeList('2','B<%=ActivityA[0] %><%=ActivityB[0] %>', '<%=ActivityB[15]%>');
 
 </script>
                        		
@@ -611,17 +706,26 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
                     		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityC[4] %></textarea> 
                         	</div>
                         	
-                        	<div class="col-md-2 " align="center"><br>
+                        	<div class="col-md-1 " align="center"><br>
                         	<input class="form-control " name="ValidFrom" id="DateCompletionC<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>"  value="<%=sdf.format(ActivityC[2]) %>"  required="required" style="width:120px;;" >
                         	
                         	</div>
-                        	<div class="col-md-2 " align="center"><br>
+                        	<div class="col-md-1 " align="center"><br>
                         	<input class="form-control " name="ValidTo" id="DateCompletionC2<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>"  value="<%=sdf.format(ActivityC[3]) %>"  required="required"  style="width:120px;;" >
                         		</div>
                         		<div class="col-md-1 " align="center" ><br>      
                     		<input type="number" class="form-control " name="Weightage" id="Weightage<%=ActivityB[0] %>C<%=ActivityC[0] %>" required="required" min="0" max="100" value="<%=ActivityC[6] %>"  style="width:95px;">
-                    		
-                    		 
+                        	</div>
+                        	
+                        	<div class="col-md-2 " ><br>
+                        		<%if(RevisionCount==0) { %>
+                              		<select class="form-control selectdee" id="ActivityTypeId<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>" required="required" name="ActivityTypeId">
+    									<option disabled="true"  selected value="">Choose...</option>
+    										<% for (Object[] obj : ActivityTypeList) {%>
+										<option value="<%=obj[0]%>" <%if(ActivityC[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
+											<%} %>
+  									</select>
+                        		<%} %>
                         	</div>
                         	<div class="col-md-1 "><br>
                           <%if( Arrays.asList(getMA[8].toString(),projectDirector,getMA[9].toString(),ActivityA[13].toString(),ActivityA[15].toString(),ActivityB[13].toString(),ActivityB[15].toString() ).contains(EmpId.toString()) || LoginType.equalsIgnoreCase("A")  ){ %>
@@ -642,33 +746,41 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
                        		<div class="row container-fluid" >
                              <div class="col-md-1 " >                    		
                         	</div>
-                        	<%if(RevisionCount==0) { %>
-                    		<div class="col-md-3 " ><br>
-                    		<label class="control-label">Activity Type  </label>
-                              		<select class="form-control selectdee" id="ActivityTypeId<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>" required="required" name="ActivityTypeId">
-    									<option disabled="true"  selected value="">Choose...</option>
-    										<% for (Object[] obj : ActivityTypeList) {%>
-										<option value="<%=obj[0]%>" <%if(ActivityC[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
-											<%} %>
-  									</select>
-                    	      	</div>
-                        	<%} %>
+                        	
+                        	<div class="col-md-2"><br>
+                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<select class="form-control selectdee" name="labCode1" id="labCode1C<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>" required 
+								onchange="renderEmployeeList('1','C<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>','0')" data-placeholder= "Lab Name">
+								    <% for (Object[] lab : allLabList) { %>
+								    	<option value="<%=lab[3]%>" <%if(ActivityC[28].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    <%}%>
+								</select>
+                        	</div>
                        <div class="col-md-3 " align="center"><br>
-                        	<label class="control-label">First Oic  </label>
-                        	<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
+                        	<label class="control-label">First OIC  </label>
+                        	<%-- <div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
 										<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox1<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>" onchange="changeempoic1('<%=ActivityC[13]%>','<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>')" >
-									</div>
-                              		<select class="form-control selectdee" id="EmpId<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>" required="required" name="EmpId">
+									</div> --%>
+                              		<select class="form-control selectdee" id="EmpIdC<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>" required="required" name="EmpId">
     									
 											
   									</select>
                         	</div>
+                        	<div class="col-md-2"><br>
+                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<select class="form-control selectdee" name="labCode2" id="labCode2C<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>" required 
+								onchange="renderEmployeeList('2','C<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>','0')" data-placeholder= "Lab Name">
+								    <% for (Object[] lab : allLabList) { %>
+								    	<option value="<%=lab[3]%>" <%if(ActivityC[29].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    <%}%>
+								</select>
+                        	</div>
                         	<div class="col-md-3 " align="center"><br>
-                        		<label class="control-label">Second Oic </label>
-                        		<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
+                        		<label class="control-label">Second OIC </label>
+                        		<%-- <div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
 										<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>" onchange="changeempoic2('<%=ActivityC[15]%>','<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>')" >
-									</div>
-                              		<select class="form-control selectdee" id="EmpId1<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>" required="required" name="EmpId1">
+									</div> --%>
+                              		<select class="form-control selectdee" id="EmpId1C<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>" required="required" name="EmpId1">
     									
   									</select>
   										</div>
@@ -676,9 +788,11 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
   							</div>			
   <script type="text/javascript">
 
-changeempoic1(<%=ActivityC[13] %>,<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>);
-changeempoic2(<%=ActivityC[15] %>,<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>);
+<%-- changeempoic1(<%=ActivityC[13] %>,<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>);
+changeempoic2(<%=ActivityC[15] %>,<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>); --%>
 
+renderEmployeeList('1','C<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>', '<%=ActivityC[13]%>');
+renderEmployeeList('2','C<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>', '<%=ActivityC[15]%>');
 
 </script>
                        		
@@ -764,21 +878,28 @@ if(MilestoneActivityD!=null&&MilestoneActivityD.size()>0){
                     		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityD[4] %></textarea> 
                         	</div>
                         	
-                        	<div class="col-md-2 " align="center"><br>
+                        	<div class="col-md-1 " align="center"><br>
                         	<input class="form-control " name="ValidFrom" id="DateCompletionB<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>"  value="<%=sdf.format(ActivityD[2]) %>"  required="required"  style="width:120px;;" >
                         	
                         	</div>
-                        	<div class="col-md-2 " align="center"><br>
+                        	<div class="col-md-1 " align="center"><br>
                         	<input class="form-control " name="ValidTo" id="DateCompletionB2<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>"  value="<%=sdf.format(ActivityD[3]) %>"  required="required"  style="width:120px;;" >
                         		</div>
                             <div class="col-md-1 " align="center" ><br>      
-                    				
-
                     		<input type="number" class="form-control "  name="Weightage" id="Weightage<%=ActivityC[0] %>D<%=ActivityD[0] %>" required="required" min="0" max="100" value="<%=ActivityD[6] %>"  style="width:95px;" >
-                    	
-                    		
-                    		 
                         	</div>
+                        	
+                        	<div class="col-md-2 " ><br>
+                        		<%if(RevisionCount==0) { %>
+                              		<select class="form-control selectdee" id="ActivityTypeId<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>" required="required" name="ActivityTypeId">
+    									<option disabled="true"  selected value="">Choose...</option>
+    										<% for (Object[] obj : ActivityTypeList) {%>
+										<option value="<%=obj[0]%>" <%if(ActivityD[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
+											<%} %>
+  									</select>
+                    	    	<%} %>
+                    	    </div>
+                    	      	
                         	<div class="col-md-1 "><br>
                         	
                        <%if( Arrays.asList(getMA[8].toString(),projectDirector,getMA[9].toString(),ActivityA[13].toString(),ActivityA[15].toString(),ActivityB[13].toString(),ActivityB[15].toString(),ActivityC[13].toString(),ActivityC[15].toString() ).contains(EmpId.toString()) || LoginType.equalsIgnoreCase("A")  ){ %>
@@ -798,33 +919,42 @@ if(MilestoneActivityD!=null&&MilestoneActivityD.size()>0){
                        		<div class="row container-fluid" >
                              <div class="col-md-1 " >                    		
                         	</div>
-                        	<%if(RevisionCount==0) { %>
-                    		<div class="col-md-3 " ><br>
-                    		<label class="control-label">Activity Type  </label>
-                              		<select class="form-control selectdee" id="ActivityTypeId<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>" required="required" name="ActivityTypeId">
-    									<option disabled="true"  selected value="">Choose...</option>
-    										<% for (Object[] obj : ActivityTypeList) {%>
-										<option value="<%=obj[0]%>" <%if(ActivityD[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
-											<%} %>
-  									</select>
-                    	      	</div>
-                    	    <%} %>  	
+                        	
+                        	<div class="col-md-2"><br>
+                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<select class="form-control selectdee" name="labCode1" id="labCode1D<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>" required 
+								onchange="renderEmployeeList('1','D<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>','0')" data-placeholder= "Lab Name">
+								    <% for (Object[] lab : allLabList) { %>
+								    	<option value="<%=lab[3]%>" <%if(ActivityD[28].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    <%}%>
+								</select>
+                        	</div>
+                        	
                             <div class="col-md-3 " align="center"><br>
-                        	<label class="control-label">First Oic  </label>
-                        	<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
+                        	<label class="control-label">First OIC  </label>
+                        	<%-- <div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
 										<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox1<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>" onchange="changeempoic1('<%=ActivityD[13]%>','<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>')" >
-									</div>
-                              		<select class="form-control selectdee" id="EmpId<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>" required="required" name="EmpId">
+									</div> --%>
+                              		<select class="form-control selectdee" id="EmpIdD<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>" required="required" name="EmpId">
     									
 											
   									</select>
                         	</div>
+                        	<div class="col-md-2"><br>
+                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<select class="form-control selectdee" name="labCode2" id="labCode2D<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>" required 
+								onchange="renderEmployeeList('2','D<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>','0')" data-placeholder= "Lab Name">
+								    <% for (Object[] lab : allLabList) { %>
+								    	<option value="<%=lab[3]%>" <%if(ActivityD[29].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    <%}%>
+								</select>
+                        	</div>
                         	<div class="col-md-3 " align="center"><br>
-                        		<label class="control-label">Second Oic </label>
-                        		<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
+                        		<label class="control-label">Second OIC </label>
+                        		<%-- <div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
 										<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>" onchange="changeempoic2('<%=ActivityD[15]%>','<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>')" >
-									</div>
-                              		<select class="form-control selectdee" id="EmpId1<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>" required="required" name="EmpId1">
+									</div> --%>
+                              		<select class="form-control selectdee" id="EmpId1D<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>" required="required" name="EmpId1">
     									
   									</select>
   										</div>
@@ -832,10 +962,11 @@ if(MilestoneActivityD!=null&&MilestoneActivityD.size()>0){
   							</div>			
   <script type="text/javascript">
 
-changeempoic1(<%=ActivityD[13] %>,<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>);
-changeempoic2(<%=ActivityD[15] %>,<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>);
+<%-- changeempoic1(<%=ActivityD[13] %>,<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>);
+changeempoic2(<%=ActivityD[15] %>,<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>); --%>
 
-
+renderEmployeeList('1','D<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>', '<%=ActivityD[13]%>');
+renderEmployeeList('2','D<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>', '<%=ActivityD[15]%>');
 </script>
 								
 						 </form>   
@@ -924,17 +1055,25 @@ if(MilestoneActivityE!=null&&MilestoneActivityE.size()>0){
                     		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityE[4] %></textarea> 
                         	</div>
                         	
-                        	<div class="col-md-2 " align="center"><br>
+                        	<div class="col-md-1 " align="center"><br>
                         	<input class="form-control " name="ValidFrom" id="DateCompletionC<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>"  value="<%=sdf.format(ActivityE[2]) %>"  required="required" style="width:120px;;" >
                         	
                         	</div>
-                        	<div class="col-md-2 " align="center"><br>
+                        	<div class="col-md-1 " align="center"><br>
                         	<input class="form-control " name="ValidTo" id="DateCompletionC2<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>"  value="<%=sdf.format(ActivityE[3]) %>"  required="required"  style="width:120px;;" >
                         		</div>
                         		<div class="col-md-1 " align="center" ><br>      
                     		<input type="number" class="form-control " name="Weightage" id="Weightage<%=ActivityD[0] %>E<%=ActivityE[0] %>" required="required" min="0" max="100" value="<%=ActivityE[6] %>"  style="width:95px;">
-                    		
-                    		 
+                        	</div>
+                        	<div class="col-md-2 " ><br>
+                        		<%if(RevisionCount==0) { %>
+                              		<select class="form-control selectdee" id="ActivityTypeId<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>" required="required" name="ActivityTypeId">
+    									<option disabled="true"  selected value="">Choose...</option>
+    										<% for (Object[] obj : ActivityTypeList) {%>
+										<option value="<%=obj[0]%>" <%if(ActivityE[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
+											<%} %>
+  									</select>
+                        		<%} %>
                         	</div>
                         	<div class="col-md-1 "><br>
                   			<%if( Arrays.asList(getMA[8].toString(),projectDirector,getMA[9].toString(),ActivityA[13].toString(),ActivityA[15].toString(),ActivityB[13].toString(),ActivityB[15].toString(),ActivityC[13].toString(),ActivityC[15].toString(),ActivityD[13].toString(),ActivityD[15].toString() ).contains(EmpId.toString()) || LoginType.equalsIgnoreCase("A")  ){ %>
@@ -954,33 +1093,44 @@ if(MilestoneActivityE!=null&&MilestoneActivityE.size()>0){
                        		<div class="row container-fluid" >
                              <div class="col-md-1 " >                    		
                         	</div>
-                        	<%if(RevisionCount==0) { %>
-                    		<div class="col-md-3 " ><br>
-                    		<label class="control-label">Activity Type  </label>
-                              		<select class="form-control selectdee" id="ActivityTypeId<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>" required="required" name="ActivityTypeId">
-    									<option disabled="true"  selected value="">Choose...</option>
-    										<% for (Object[] obj : ActivityTypeList) {%>
-										<option value="<%=obj[0]%>" <%if(ActivityE[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
-											<%} %>
-  									</select>
-                    	      	</div>
-                        	<%} %>
+                        	
+                        	<div class="col-md-2"><br>
+                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<select class="form-control selectdee" name="labCode1" id="labCode1E<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>" required 
+								onchange="renderEmployeeList('1','E<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>','0')" data-placeholder= "Lab Name">
+								    <% for (Object[] lab : allLabList) { %>
+								    	<option value="<%=lab[3]%>" <%if(ActivityE[28].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    <%}%>
+								</select>
+                        	</div>
+                        	
                         <div class="col-md-3 " align="center"><br>
-                        	<label class="control-label">First Oic  </label>
-                        	<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
+                        	<label class="control-label">First OIC  </label>
+                        	<%-- <div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
 										<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox1<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>" onchange="changeempoic1('<%=ActivityE[13]%>','<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>')" >
-									</div>
-                              		<select class="form-control selectdee" id="EmpId<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>" required="required" name="EmpId">
+									</div> --%>
+                              		<select class="form-control selectdee" id="EmpIdE<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>" required="required" name="EmpId">
     									
 											
   									</select>
                         	</div>
+                        	
+                        	<div class="col-md-2"><br>
+                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<select class="form-control selectdee" name="labCode2" id="labCode2E<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>" required 
+								onchange="renderEmployeeList('2','E<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>','0')" data-placeholder= "Lab Name">
+								    <% for (Object[] lab : allLabList) { %>
+								    	<option value="<%=lab[3]%>" <%if(ActivityE[29].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    <%}%>
+								</select>
+                        	</div>
+                        	
                         	<div class="col-md-3 " align="center"><br>
-                        		<label class="control-label">Second Oic </label>
-                        		<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
+                        		<label class="control-label">Second OIC </label>
+                        		<%-- <div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
 										<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>" onchange="changeempoic2('<%=ActivityE[15]%>','<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>')" >
-									</div>
-                              		<select class="form-control selectdee" id="EmpId1<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>" required="required" name="EmpId1">
+									</div> --%>
+                              		<select class="form-control selectdee" id="EmpId1E<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>" required="required" name="EmpId1">
     									
   									</select>
   										</div>
@@ -988,10 +1138,11 @@ if(MilestoneActivityE!=null&&MilestoneActivityE.size()>0){
   							</div>			
   <script type="text/javascript">
 
-changeempoic1(<%=ActivityE[13] %>,<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>);
-changeempoic2(<%=ActivityE[15] %>,<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>);
+<%-- changeempoic1(<%=ActivityE[13] %>,<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>);
+changeempoic2(<%=ActivityE[15] %>,<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>); --%>
 
-
+renderEmployeeList('1','E<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>', '<%=ActivityE[13]%>');
+renderEmployeeList('2','E<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>', '<%=ActivityE[15]%>');
 </script>
                         	
 	                        </form> 
@@ -1224,6 +1375,7 @@ $( document ).ready(function() {
   
 	    
 	</script>  
-	
+
+
 </body>
 </html>

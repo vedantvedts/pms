@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.vts.pfms.committee.model.CommitteeInitiation;
 import com.vts.pfms.committee.model.PfmsNotification;
+import com.vts.pfms.master.model.RoleMaster;
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
 import com.vts.pfms.project.dto.PfmsRiskDto;
 import com.vts.pfms.project.model.InitiationAbbreviations;
@@ -419,4 +420,7 @@ public interface ProjectDao {
 	public List<Object[]> EnoteTransactionList(String enoteTrackId)throws Exception;
 	public List<Object[]> initiationApprovalList(long empId, String fromDate, String toDate)throws Exception;
 	public List<Object[]> InitiationAprrovalPrintDetails(long enoteid)throws Exception;
+	public List<Object[]> getProjectTeamListByLabCode(String labCode, String projectId);
+	public List<RoleMaster> getRoleMasterList() throws Exception;
+	public ProjectAssign getProjectAssignById(String projectEmployeeId) throws Exception;
 }

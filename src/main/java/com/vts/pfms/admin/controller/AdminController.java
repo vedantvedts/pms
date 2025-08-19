@@ -24,6 +24,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -1467,9 +1468,10 @@ public class AdminController {
 	
 	}
 	
-	
-	
-	
+	@GetMapping(value = "PMSHelpGuide.htm")
+	public String getPMSHelpGuide() {
+		return "static/OverallUserGuide";
+	}
 	
 	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
 	    redir.addAttribute("resultfail", message);
