@@ -343,7 +343,9 @@ ul, #myUL {
 	text-align: left !important;
 } 
  
-
+.select2-container {
+	width: 100% !important;
+}
 
 </style>
 
@@ -379,44 +381,34 @@ List<Object[]> MilestoneActivityList=(List<Object[]>)request.getAttribute("Miles
 							<h3>Project Charter</h3>
 						</div>	  
 						<div class="col-md-6" style="float: right;">
-							
-					   
-						<form method="get" action="ProjectCharter.htm" id="projectchange"  class="form-inline">
-							
-								 <div class="col-md-3">
-                            		<label class="control-label"style="font-size: 17px"><b>Project Name :</b></label>
+							<form method="get" action="ProjectCharter.htm" id="projectchange" >
+								<div class="row">
+									<div class="col-md-4 right">
+                            			<label class="control-label"style="font-size: 17px"><b>Project Name :</b></label>
                             		</div>
-										<div class="col-md-2" style="margin-top: -10px;">
-										
-										<select class="form-control items" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="this.form.submit();">
+								 
+									<div class="col-md-4" style="margin-top: -10px;">
+											
+										<select class="form-control items selectdee" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="this.form.submit();">
 											<option disabled="true"  selected value="">Choose...</option>
 											<%for(Object[] obj : proList){ 
-												String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
-											%>
+												String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":""; %>
 												<option  value="<%=obj[0] %>" <%if (Project.equalsIgnoreCase(obj[0].toString())) {%>
-														selected="selected" <%}%>><%=obj[4] +projectshortName%></option>
+												selected="selected" <%}%>><%=obj[4] +projectshortName%></option>
 											<%} %>
 										</select>
-										</div>
+									</div>
 									
-									
-									
-										
+									<div class="col-md-2 left">
 										<button  type="submit" class="btn btn-sm " style="border: 0 ;border-radius: 3px;color: red;margin-left: 170px;margin-top: -15px;size: 25px" formmethod="GET" formaction="ProjectCharterDownload.htm" formtarget="_blank">
-											<i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+											<i class="fa fa-lg fa-file-pdf-o" aria-hidden="true"></i>
 										</button>
-										
-							
-									
-									
-									
-	                         
-								
-							
-							
-							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-					</form>				
-			</div>
+									</div>	
+									<div class="col-md-2"></div>
+								</div>
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							</form>				
+						</div>
 				
 						<div class="card-body" style="background-color: white;">	
 						
@@ -467,39 +459,34 @@ List<Object[]> MilestoneActivityList=(List<Object[]>)request.getAttribute("Miles
 								
 									
 					      <table class="subtables projectattributetable" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
-					                  <tr>
-											 <td style="width: 85px !important; padding: 5px; padding-left: 10px"></td>
-											 <td style="width: 120px;padding: 5px; padding-left: 10px"><b> Name, Designation</b></td>
-											  <!-- <td style="width:90px;padding: 5px; padding-left: 10px"><b> Department</b></td> -->
-											   <td style="width: 100px;padding: 5px; padding-left: 10px"><b> Telephone</b></td>
-											    <td style="width: 90px;padding: 5px; padding-left: 10px"><b> Email</b></td>
-											
-										</tr>
+					            <tr>
+									<td style="width: 85px !important; padding: 5px; padding-left: 10px">Role</td>
+									<td style="width: 120px;padding: 5px; padding-left: 10px"><b>Member</b></td>
+									<td style="width:90px;padding: 5px; padding-left: 10px"><b> Lab</b></td>
+									<td style="width: 100px;padding: 5px; padding-left: 10px"><b> Telephone</b></td>
+									<td style="width: 90px;padding: 5px; padding-left: 10px"><b> Email</b></td>
+								</tr>
 										
 										
-										<tr>
+										<%-- <tr>
 										<td   style="width: 125px !important; padding: 5px; padding-left: 10px">	Project Director</td>
 										 <td style="width: 150px;padding: 5px; padding-left: 10px"><b><%=ProjectEditData1[28] %>, <%=ProjectEditData1[29] %></b></td>
-											 <%--  <td style="width: 90px;padding: 5px; padding-left: 10px"><b> <%=ProjectEditData1[29] %></b></td> --%>
+											  <td style="width: 90px;padding: 5px; padding-left: 10px"><b> <%=ProjectEditData1[29] %></b></td>
 											   <td style="width: 100px;padding: 5px; padding-left: 10px"><b> <%=ProjectEditData1[30] %></b></td>
 											    <td style="width: 90px;padding: 5px; padding-left: 10px"><b><%=ProjectEditData1[31] %> </b></td>
-										</tr>
+										</tr> --%>
 										
-										<tr>
+										<%-- <tr>
 									 <td  rowspan="<%=ProjectAssignListsize+1 %>" style="width: 85px !important; padding: 5px; padding-left: 10px">Team Members</td>
-										</tr>
+										</tr> --%>
 										<% for(Object[]o:ProjectAssignList){%>
-										<tr>
-										
-											 
-											 
-											 <td style="width: 180px;padding: 5px; padding-left: 10px"><b><%=o[3] %>, <%=o[4] %> </b></td>
-											  <%-- <td style="width: 30px;padding: 5px; padding-left: 10px"><b><%=o[4] %></b></td> --%>
-											   <td style="width: 100px;padding: 5px; padding-left: 10px"><b><%=o[6] %> </b></td>
-											    <td style="width: 90px;padding: 5px; padding-left: 10px"><b><%=o[7] %> </b></td>
-											
-										
-										</tr>
+											<tr>
+												<td style="width: 85px !important; padding: 5px; padding-left: 10px"><%=o[12]!=null?o[12]:"-" %></td>
+												<td style="width: 180px;padding: 5px; padding-left: 10px"><b><%=o[3] %>, <%=o[4] %></b></td>
+												<td style="width: 30px;padding: 5px; padding-left: 10px"><b><%=o[9]!=null?o[9]:"-" %></b></td>
+												<td style="width: 100px;padding: 5px; padding-left: 10px"><b><%=o[6] %> </b></td>
+												<td style="width: 90px;padding: 5px; padding-left: 10px"><b><%=o[7] %> </b></td>
+											</tr>
 										<%} %>
 									
 									</table>

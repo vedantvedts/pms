@@ -192,49 +192,40 @@ List<Object[]> MilestoneActivityList=(List<Object[]>)request.getAttribute("Miles
 <div style="font-size: 20px;background-color: purple;color: white;padding: 5px">
 2. Project Team 
 </div>
-<div class="content">
-								
-								
+						<div class="content">
 									
 					      <table class="subtables projectattributetable" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;margin-right:10px;   border-collapse:collapse;" >
-					                  <tr>
-											 <td style="width: 85px !important; padding: 5px; padding-left: 10px"></td>
-											 <td style="width: 120px;padding: 5px; padding-left: 10px"><b> Name, Designation</b></td>
-											  <!-- <td style="width:90px;padding: 5px; padding-left: 10px"><b> Department</b></td> -->
-											   <td style="width: 100px;padding: 5px; padding-left: 10px"><b> Telephone</b></td>
-											    <td style="width: 90px;padding: 5px; padding-left: 10px"><b> Email</b></td>
-											
-										</tr>
+					      	<tr>
+								<td style="width: 85px !important; padding: 5px; padding-left: 10px">Role</td>
+								<td style="width: 120px;padding: 5px; padding-left: 10px"><b>Member</b></td>
+								<td style="width:90px;padding: 5px; padding-left: 10px"><b> Lab</b></td>
+								<td style="width: 100px;padding: 5px; padding-left: 10px"><b> Telephone</b></td>
+								<td style="width: 90px;padding: 5px; padding-left: 10px"><b> Email</b></td>
+							</tr>
 										
 										
-										<tr>
+										<%-- <tr>
 										<td   style="width: 125px !important; padding: 5px; padding-left: 10px">	Project Director</td>
 										 <td style="width: 130px;padding: 5px; padding-left: 10px"><b><%=ProjectEditData1[28] %>, <%=ProjectEditData1[29] %></b></td>
-											  <%-- <td style="width: 90px;padding: 5px; padding-left: 10px"><b> <%=ProjectEditData1[29] %></b></td> --%>
+											  <td style="width: 90px;padding: 5px; padding-left: 10px"><b> <%=ProjectEditData1[29] %></b></td>
 											   <td style="width: 100px;padding: 5px; padding-left: 10px"><b> <%=ProjectEditData1[30] %></b></td>
 											    <td style="width: 90px;padding: 5px; padding-left: 10px"><b><%=ProjectEditData1[31] %> </b></td>
-										</tr>
+										</tr> --%>
 										
-										<tr>
-									 <td  rowspan="<%=ProjectAssignListsize+1 %>" style="width: 85px !important; padding: 5px; padding-left: 10px">Team Members</td>
-										</tr>
-										<% for(Object[]o:ProjectAssignList){%>
-										<tr>
-										
-											 
-											 
-											 <td style="width: 180px;padding: 5px; padding-left: 10px"><b><%=o[3] %>, <%=o[4] %> </b></td>
-											 <%--  <td style="width: 30px;padding: 5px; padding-left: 10px"><b><%=o[4] %></b></td> --%>
-											   <td style="width: 100px;padding: 5px; padding-left: 10px"><b><%=o[6] %> </b></td>
-											    <td style="width: 90px;padding: 5px; padding-left: 10px"><b><%=o[7] %> </b></td>
-											
-										
-										</tr>
-										<%} %>
-									
-									</table>
-		
-							</div>
+							<%-- <tr>
+								<td  rowspan="<%=ProjectAssignListsize+1 %>" style="width: 85px !important; padding: 5px; padding-left: 10px">Team Members</td>
+							</tr> --%>
+							<% for(Object[]o:ProjectAssignList){%>
+								<tr>
+									<td style="width: 85px !important; padding: 5px; padding-left: 10px"><%=o[12]!=null?o[12]:"-" %></td>
+									<td style="width: 180px;padding: 5px; padding-left: 10px"><b><%=o[3] %>, <%=o[4] %></b></td>
+									<td style="width: 30px;padding: 5px; padding-left: 10px"><b><%=o[9]!=null?o[9]:"-" %></b></td>
+									<td style="width: 100px;padding: 5px; padding-left: 10px"><b><%=o[6] %> </b></td>
+									<td style="width: 90px;padding: 5px; padding-left: 10px"><b><%=o[7] %> </b></td>
+								</tr>
+							<%} %>
+						</table>
+					</div>
 							
 							
 <div style="font-size: 20px;background-color: purple;color: white;padding: 5px">

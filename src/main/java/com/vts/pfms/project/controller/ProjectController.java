@@ -4633,6 +4633,7 @@ public class ProjectController
 		String ProjectId=null; 
 		logger.info(new Date() +"Inside ProjectProSubmit.htm "+Username);
 		try {
+			
 			if(req.getParameter("ProjectId")!=null) {
 
 				ProjectId=(String)req.getParameter("ProjectId");
@@ -4652,46 +4653,55 @@ public class ProjectController
 
 			req.setAttribute("ProjectAssignList", service.ProjectAssignList(ProjectId));
 			req.setAttribute("ProjectList", ProjectList);
-			req.setAttribute("OfficerList", service.UserList(ProjectId).stream().filter(e->e[2]!=null ).filter(e-> LabCode.equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()));
+			req.setAttribute("allLabList", comservice.AllLabList());
+			req.setAttribute("roleMasterList", service.getRoleMasterList());
 			req.setAttribute("ProjectCode", service.ProjectData(ProjectId));
 			req.setAttribute("ProjectId", ProjectId);
+			
+//			String action = req.getParameter("action");
+//			if(action!=null && action.equalsIgnoreCase("edit")) {
+//				String ProjectEmployeeId = req.getParameter("ProjectEmployeeId");
+//				req.setAttribute("projectAssign", service.getProjectAssignById(ProjectEmployeeId));
+//				req.setAttribute("action", action);
+//			}
+			return "project/ProjectAssign";
 		}catch (Exception e) {
 
-			e.printStackTrace(); logger.error(new Date() +" Inside ProjectProSubmit.htm "+Username, e);
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside ProjectProSubmit.htm "+Username, e);
+			return "static/Error";
 		}
-		return "project/ProjectAssign";
 
 	}
 
 	@RequestMapping(value = "ProjectAssignSubmit.htm", method = RequestMethod.POST)
-	public String ProjectAssignSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
-			throws Exception {
-		long count=0;
+	public String ProjectAssignSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String Username = (String) ses .getAttribute("Username");
-		String ProjectId= req.getParameter("ProjectId");
-		String EmpId[]= req.getParameterValues("EmpId");
-		ProjectAssignDto proAssigndto=new ProjectAssignDto();
 		logger.info(new Date() +"Inside ProjectAssignSubmit.htm "+Username);
 		try {
-
-			proAssigndto.setProjectId(ProjectId);
+			String action = req.getParameter("action");
+			String projectEmployeeId = req.getParameter("projectEmployeeId");
+			ProjectAssignDto proAssigndto=new ProjectAssignDto();
+			proAssigndto.setProjectEmployeeId(projectEmployeeId!=null?Long.parseLong(projectEmployeeId):0);
+			proAssigndto.setProjectId(req.getParameter("ProjectId"));
+			proAssigndto.setRoleMasterId(req.getParameter("roleMasterId"));
 			proAssigndto.setCreatedBy(Username);
 			proAssigndto.setCreatedDate(sdf1.format(new Date()));
-			proAssigndto.setEmpId(EmpId);
-			count=service.ProjectAssignAdd(proAssigndto);
+			proAssigndto.setEmpId(req.getParameterValues("empId"));
+			long count=service.ProjectAssignAdd(proAssigndto);
 			if(count>0) {
-				redir.addAttribute("result","Project Assigned Successfully");
-			}else
-			{
-				redir.addAttribute("resultfail","Project Assign  Unsuccessfully");
+				redir.addAttribute("result","Project Team "+ action +"ed Successfully");
+			}else{
+				redir.addAttribute("resultfail","Project Team"+ action +"Unsuccessful");
 			} 
 
-			redir.addFlashAttribute("ProjectId", req.getParameter("ProjectId"));
+			redir.addAttribute("ProjectId", req.getParameter("ProjectId"));
+			return "redirect:/ProjectProSubmit.htm";
 		}catch (Exception e) {
 			e.printStackTrace(); 
 			logger.error(new Date() +" Inside ProjectAssignSubmit.htm "+Username, e);
+			return "static/Error";
 		}
-		return "redirect:/ProjectProSubmit.htm";
 	}
 
 	@RequestMapping(value = "ProjectRevokeSubmit.htm", method = RequestMethod.POST)
@@ -11475,5 +11485,18 @@ public class ProjectController
 			logger.error(new Date() +"Inside InitiationFlowTrack.htm "+Username,e);
 			return "static/Error";
 		}
-}
+	}
+	
+	@RequestMapping(value = "ProjectTeamByLabCode.htm", method = RequestMethod.GET)
+	public @ResponseBody String ExternalEmployeeListFormation(HttpServletRequest req,HttpSession ses) throws Exception {
+
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside ProjectTeamByLabCode.htm"+ UserId);
+
+		List<Object[]> projectTeamByLabCode = service.getProjectTeamListByLabCode(req.getParameter("labCode"), req.getParameter("projectId"));
+
+		Gson json = new Gson();
+		return json.toJson(projectTeamByLabCode);	
+	}
+	
 }
