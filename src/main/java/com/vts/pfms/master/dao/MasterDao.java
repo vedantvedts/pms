@@ -18,6 +18,7 @@ import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
 import com.vts.pfms.master.model.PfmsFeedbackTrans;
+import com.vts.pfms.master.model.RoleMaster;
 import com.vts.pfms.model.LabMaster;
 
 public interface MasterDao  {
@@ -114,4 +115,7 @@ public interface MasterDao  {
 	public long addProgrammeProjects(ProgrammeProjects programmeprojects) throws Exception;
 	public Long ProgramCodeCheck(String programmeCode, String prgrammeId) throws Exception;
 	/* **************************** Programme Master - Naveen R  - 16/07/2025 End**************************************** */
+	
+	public Long addRoleMaster(RoleMaster roleMaster)throws Exception;
+	
 }

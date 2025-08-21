@@ -180,11 +180,12 @@ b{
 															<tr>
 																<td width="35%">
 																	<label>Role</label>
-																	<select class="form-control selectdee" name="roleMasterId" id="roleMasterId" data-placeholder="Role">
+																	<select class="form-control selectdee roleMasterId" name="roleMasterId" id="roleMasterId" data-placeholder="Role">
+																		<option value="-1">Add New Role</option>
 																		<option selected value="0">Not Applicable</option>
 																	    <% for (RoleMaster role : roleMasterList) { 
 																	    	if(role.getRoleMasterId()==1) continue; %>
-																	    	<option value="<%=role.getRoleMasterId()%>"><%=role.getRoleName()%></option>
+																	    	<option value="<%=role.getRoleMasterId()%>"><%=role.getRoleName()%> (<%=role.getRoleCode()%>)</option>
 																	    <%}%>
 																	</select>
 																</td>
@@ -253,11 +254,12 @@ b{
 										</div>
 										<div class="col-md-4">
 											<label>Role</label>
-											<select class="form-control selectdee" name="roleMasterId" id="roleMasterIdEdit" data-placeholder="Role">
+											<select class="form-control selectdee roleMasterId" name="roleMasterId" id="roleMasterIdEdit" data-placeholder="Role">
+												<option value="-1">Add New Role</option>
 												<option selected value="0">Not Applicable</option>
 											    <% for (RoleMaster role : roleMasterList) { 
 											    	if(role.getRoleMasterId()==1) continue;%>
-											    	<option value="<%=role.getRoleMasterId()%>"><%=role.getRoleName()%></option>
+											    	<option value="<%=role.getRoleMasterId()%>"><%=role.getRoleName()%> (<%=role.getRoleCode()%>)</option>
 											    <%}%>
 											</select>
 										</div>
@@ -274,6 +276,47 @@ b{
 		</div>
 	</div>			
 	<!-- -------------------------------------------- Project Team Edit Modal End ------------------------------------------------------------- -->		
+	
+	<!-- ----------------------------------------------- Add New Role Modal --------------------------------------------------------------- -->
+	<div class="modal fade bd-example-modal-lg center" id="addNewRoleModal" tabindex="-1" role="dialog" aria-labelledby="addNewRoleModal" aria-hidden="true" style="margin-top: 10%;">
+		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
+			<div class="modal-content" style="width: 150%;margin-left: -27%;">
+				<div class="modal-header" style="background: #055C9D;color: white;">
+		        	<h5 class="modal-title ">Add New Role</h5>
+			        <button type="button" class="close roleclose" style="text-shadow: none !important" data-dismiss="modal" aria-label="Close">
+			          <span class="text-light" aria-hidden="true">&times;</span>
+			        </button>
+		      	</div>
+     			<div class="modal-body">
+     				<div class="container-fluid mt-3">
+     					<div class="row">
+							<div class="col-md-12 " align="left">
+								<form action="#" method="POST" id="myform">
+									<div class="form-group">
+			       						<div class="row">
+			                    		    <div class="col-md-4">
+		       									<label class="form-label">Role Name <span class="mandatory">*</span></label>
+		       									<input type="text" class="form-control field" name="roleName" id="roleName" placeholder="Enter Role Name" maxlength="255" required>
+		       								</div>
+			                    		    <div class="col-md-3">
+		       									<label class="form-label">Role Code <span class="mandatory">*</span></label>
+		       									<input type="text" class="form-control field" name="roleCode" id="roleCode" placeholder="Enter Role Code" maxlength="5" required>
+		       								</div>
+		       								<div class="col-md-2" style="margin-top: auto;">
+		       									<button type="button"class="btn btn-sm submit" onclick="addNewRoleDetails()">SUBMIT</button>
+		       								</div>
+	                  				 	</div>
+                  				 	</div>
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+								</form>
+							</div>
+						</div>
+     				</div>
+     			</div>
+     		</div>
+		</div>
+	</div>	
+	<!-- ----------------------------------------------- Add New Role Modal End --------------------------------------------------------------- -->
 	
 <script>
 	$(document).ready(function () {
@@ -345,10 +388,56 @@ b{
 				return false;
 			}
 		}
-		
-			
 	}
 
+	$('#roleMasterId,#roleMasterIdEdit').on('change', function(){
+		var selectedValue = $(this).val();
+		if(selectedValue=='-1') {
+			$('.field').val('');
+			$('#addNewRoleModal').modal('show');
+		}
+	});
+	
+	function addNewRoleDetails() {
+		if(confirm('Are you sure to Add?')){
+			
+			var roleName = $('#roleName').val();
+			var roleCode = $('#roleCode').val();
+			
+			if(roleName==null || roleName =="null" || roleName=='') {
+				alert('Please fill Role Name');
+				return false;
+			}else if(roleCode==null || roleCode =="null" || roleCode=='') {
+				alert('Please fill Role Code');
+				return false;
+			}else {
+				$.ajax({
+					Type:'GET',
+					url:'RoleMasterDetailsSubmit.htm',
+					datatype:'json',
+					data:{
+						roleName : roleName,
+						roleCode : roleCode,
+					},
+					success:function(result){
+						var values = JSON.parse(result);
+						var x="<option value="+values[0]+" selected='selected'>"+ values[1] + " (" + values[2] + ")" + "</option>";     
+						//$('#fieldGroupId option[value="-1"]').prop('selected', false);
+						$('.roleMasterId').append(x).val(values[0]).trigger('change');
+						$('.close.roleclose').click();
+					}
+				});
+				
+				return true;
+			}
+			 
+			return true;
+		}else{
+			event.PreventDefault();
+			return false;
+		}
+	}
+	
 </script>
 </body>
 </html>

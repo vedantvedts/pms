@@ -1644,6 +1644,9 @@ public class ProjectServiceImpl implements ProjectService {
 		}else {
 			ProjectAssign projectAssign = dao.getProjectAssignById(dto.getProjectEmployeeId()+"");
 			projectAssign.setRoleMasterId(Long.parseLong(dto.getRoleMasterId()));
+			if(dto.getEmpId()!=null && dto.getEmpId().length>0) {
+				projectAssign.setEmpId(Long.parseLong(dto.getEmpId()[0]));
+			}
 			projectAssign.setModifiedBy(dto.getCreatedBy());
 			projectAssign.setModifiedDate(sdf1.format(new Date()));
 			
@@ -3892,6 +3895,12 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 	public ProjectAssign getProjectAssignById(String projectEmployeeId) throws Exception {
 		
 		return dao.getProjectAssignById(projectEmployeeId);
+	}
+	
+	@Override
+	public Long getProjectEmployeeIdByProjectId(String projectId, String roleMasterId) throws Exception {
+		
+		return dao.getProjectEmployeeIdByProjectId(projectId, roleMasterId);
 	}
 	
 }

@@ -46,6 +46,7 @@ import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
 import com.vts.pfms.master.model.PfmsFeedbackTrans;
+import com.vts.pfms.master.model.RoleMaster;
 import com.vts.pfms.master.service.MasterService;
 import com.vts.pfms.utils.InputValidator;
 
@@ -2386,5 +2387,33 @@ public class MasterController {
 	}
 	/* **************************** Programme Master - Naveen R - 16/07/2025 End **************************************** */
 
-
+	@RequestMapping(value = "RoleMasterDetailsSubmit.htm", method = {RequestMethod.GET})
+	public @ResponseBody String roleMasterDetailsSubmit(HttpServletRequest req, HttpSession ses) throws Exception{
+		String Username=(String)ses.getAttribute("Username");
+		logger.info(new Date() + " Inside RoleMasterDetailsSubmit.htm "+Username);
+		Gson json = new Gson();
+		Object[] data = new Object[3];
+		try {
+			String roleName = req.getParameter("roleName");
+			String roleCode = req.getParameter("roleCode");
+			
+			RoleMaster roleMaster = new RoleMaster();
+			roleMaster.setRoleName(roleName);
+			roleMaster.setRoleCode(roleCode);
+			roleMaster.setCreatedBy(Username);
+			roleMaster.setCreatedDate(sdtf.format(new Date()));
+			roleMaster.setIsActive(1);
+			
+			Long roleMasterId = service.addRoleMaster(roleMaster);
+			data[0] = roleMasterId;
+			data[1] = roleName;
+			data[2] = roleCode;
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside RoleMasterDetailsSubmit.htm "+Username, e);
+		}
+		return json.toJson(data);
+	}
+	
 }

@@ -43,6 +43,7 @@ import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
 import com.vts.pfms.master.model.PfmsFeedbackTrans;
+import com.vts.pfms.master.model.RoleMaster;
 import com.vts.pfms.model.LabMaster;
 
 @Service
@@ -830,5 +831,11 @@ public class MasterServiceImpl implements MasterService {
 		}
 		/* **************************** Programme Master - Naveen R  - 16/07/2025 End**************************************** */
 
+		@Override
+		public Long addRoleMaster(RoleMaster roleMaster) throws Exception {
+			
+			return dao.addRoleMaster(roleMaster);
+		}
+		
 }
 
