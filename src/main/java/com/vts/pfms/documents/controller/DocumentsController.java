@@ -1983,6 +1983,24 @@ public class DocumentsController {
 		} 
 	}
 	
+	@RequestMapping(value = "FieldNameDuplicateCheck.htm", method = RequestMethod.GET)
+	public @ResponseBody String fieldNameDuplicateCheck(HttpSession ses, HttpServletRequest req) throws Exception 
+	{
+		String UserId=(String)ses.getAttribute("Username");
+		Long count = null;
+		logger.info(new Date() +"Inside FieldNameDuplicateCheck.htm "+UserId);
+		try
+		{	  
+			count = service.getDuplicateFieldNameCount(req.getParameter("fieldName"),req.getParameter("fieldMasterId"));
+		}
+		catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +"Inside FieldNameDuplicateCheck.htm "+UserId,e);
+		}
+		Gson json = new Gson();
+		return json.toJson(count); 
+	}
+
 	@RequestMapping(value = "DataTypeMaster.htm",method = {RequestMethod.GET,RequestMethod.POST})
 	public String dataTypeMasterList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
@@ -2119,6 +2137,41 @@ public class DocumentsController {
 		}
 	}
 
+	@RequestMapping(value = "GroupNameDuplicateCheck.htm", method = RequestMethod.GET)
+	public @ResponseBody String groupNameDuplicateCheck(HttpSession ses, HttpServletRequest req) throws Exception 
+	{
+		String UserId=(String)ses.getAttribute("Username");
+		Long count = null;
+		logger.info(new Date() +"Inside GroupNameDuplicateCheck.htm "+UserId);
+		try
+		{	  
+			count = service.getDuplicateGroupNameCount(req.getParameter("groupName"),req.getParameter("fieldGroupId"));
+		}
+		catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +"Inside GroupNameDuplicateCheck.htm "+UserId,e);
+		}
+		Gson json = new Gson();
+		return json.toJson(count); 
+	}
+
+	@RequestMapping(value = "GroupCodeDuplicateCheck.htm", method = RequestMethod.GET)
+	public @ResponseBody String groupCodeDuplicateCheck(HttpSession ses, HttpServletRequest req) throws Exception 
+	{
+		String UserId=(String)ses.getAttribute("Username");
+		Long count = null;
+		logger.info(new Date() +"Inside GroupCodeDuplicateCheck.htm "+UserId);
+		try
+		{	  
+			count = service.getDuplicateGroupCodeCount(req.getParameter("groupCode"),req.getParameter("fieldGroupId"));
+		}
+		catch (Exception e) {
+			e.printStackTrace(); logger.error(new Date() +"Inside GroupCodeDuplicateCheck.htm "+UserId,e);
+		}
+		Gson json = new Gson();
+		return json.toJson(count); 
+	}
+	
 	@RequestMapping(value = "ConnectorMaster.htm",method = {RequestMethod.GET,RequestMethod.POST})
 	public String connectorMasterList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");

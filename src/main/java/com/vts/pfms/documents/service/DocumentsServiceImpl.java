@@ -917,6 +917,24 @@ public class DocumentsServiceImpl implements DocumentsService{
 		
 	}
 
+	@Override
+	public Long getDuplicateFieldNameCount(String fieldName, String fieldMasterId) throws Exception {
+		
+		return dao.getDuplicateFieldNameCount(fieldName, fieldMasterId);
+	}
+	
+	@Override
+	public Long getDuplicateGroupNameCount(String groupName, String fieldGroupId) throws Exception {
+		
+		return dao.getDuplicateGroupNameCount(groupName, fieldGroupId);
+	}
+	
+	@Override
+	public Long getDuplicateGroupCodeCount(String groupCode, String fieldGroupId) throws Exception {
+		
+		return dao.getDuplicateGroupCodeCount(groupCode, fieldGroupId);
+	}
+	
 	/* ************************************************ IGI Document End ***************************************************** */
 	
 	/* ************************************************ ICD Document ***************************************************** */
