@@ -229,7 +229,7 @@ h6{
 			   <input type="hidden" name="projectDirector" value="<%=projectDirector%>">  
 		
 		</div>
-      <input type="hidden" name="ProjectId"	value="<%=ProjectId %>" /> 
+      <input type="hidden" name="ProjectId" id="ProjectId" value="<%=ProjectId %>" /> 
 
 	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
  	</form>
@@ -253,48 +253,53 @@ h6{
 
 <script type="text/javascript">
 
+	var ProjectId = $('#ProjectId').val();
+
 	function changeempoic1() {
+		var labCode  = $('#labCode1').val();
 		if (document.getElementById('allempcheckbox1').checked)  {
-	    	employeefetch(0,'EmpId');
+	    	employeefetch(0,'EmpId', labCode);
 	  	} else {
-			employeefetch(<%=ProjectId%>,'EmpId');
+			employeefetch(ProjectId,'EmpId', labCode);
 	  	}
 	}
 	
 	
 	function changeempoic2() {
+		var labCode  = $('#labCode2').val();
 		if (document.getElementById('allempcheckbox2').checked) {
-	    	employeefetch(0,'EmpId1');
+	    	employeefetch(0,'EmpId1', labCode);
 	  	} else {
-			employeefetch(<%=ProjectId%>,'EmpId1');
+			employeefetch(ProjectId,'EmpId1', labCode);
 	  	}
 	}
 
-	function employeefetch(ProID,dropdownid){
+	function employeefetch(ProID, dropdownid, labCode){
+
 		$.ajax({		
 			type : "GET",
 			url : "ProjectEmpListFetch.htm",
 			data : {
-				projectid : ProID
+				projectid : ProID,
+				labCode : labCode
 				   },
 			datatype : 'json',
 			success : function(result) {
 	
-			var result = JSON.parse(result);
-				
-			var values = Object.keys(result).map(function(e) {
-						 return result[e]
-					  
-			});
-				
-			var s = '';
-			s += '<option value="">'+"--Select--"+ '</option>';
+				var result = JSON.parse(result);
+					
+				var values = Object.keys(result).map(function(e) {
+							 return result[e]
+						  
+				});
+					
+				var s = '<option value="">'+"--Select--"+ '</option>';
 				 for (i = 0; i < values.length; i++) {									
 					s += '<option value="'+values[i][0]+'">'
 							+values[i][1] + ", " +values[i][2] 
 							+ '</option>';
 				} 
-				 
+					 
 				$('#'+dropdownid).html(s);
 				
 			}
@@ -368,19 +373,24 @@ function SubmitBack(){
 <script type="text/javascript">
 	function renderEmployeeList(rowId) {
 		var labCode  = $('#labCode'+rowId).val();
-		var currLabCode  = $('#currLabCode').val();
+		/* var currLabCode  = $('#currLabCode').val(); */
 		
-		employeeListByLabCode(rowId, labCode);
+		var rowIdShort = rowId==1?"":(rowId-1);
+		
+		employeefetch(ProjectId, 'EmpId'+rowIdShort, labCode);
+		
+		$('#allempcheckbox'+rowId).prop('checked', false);
+		/* employeeListByLabCode(rowId, labCode);
 		
 		if(currLabCode!=labCode) {
 			$('#allempcheckbox'+rowId).hide();
 		}else {
 			$('#allempcheckbox'+rowId).show();
 			$('#allempcheckbox'+rowId).prop('checked', true);
-		}
+		} */
 	}
 	
-	function employeeListByLabCode(rowId, labcode) {
+	/* function employeeListByLabCode(rowId, labcode) {
 
 		var rowIdShort = rowId==1?"":(rowId-1);
 		$('#EmpId'+rowIdShort).empty(); 
@@ -405,7 +415,7 @@ function SubmitBack(){
 		           }
 		       }
 		   });
-	}
+	} */
 </script>
 
 </body>

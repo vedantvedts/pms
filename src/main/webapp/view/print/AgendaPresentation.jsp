@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.committee.model.ProgrammeMaster"%>
 <%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalTime"%>
@@ -90,6 +91,15 @@
 			closeActionDetails = ActionDetails.stream().filter(e->e[3].toString().equalsIgnoreCase("C")).collect(Collectors.toList());
 		}
 		
+		ProgrammeMaster programmeMaster = (ProgrammeMaster) request.getAttribute("programmeMaster");
+		String programmeId = (String)request.getAttribute("programmeId");
+		if(programmeMaster!=null) {
+			ProjectCode = programmeMaster.getPrgmCode();
+		}
+		
+		Map<Long, List<Object[]>> openActionsMap = OpenActionDetails.stream().collect(Collectors.groupingBy(row -> Long.parseLong(row[20].toString()) ));
+		Map<Long, List<Object[]>> closeActionsMap = closeActionDetails.stream().collect(Collectors.groupingBy(row -> Long.parseLong(row[20].toString()) ));
+
 	%>
 
 
@@ -594,16 +604,114 @@
 
 					</table>
 
-
-
-
-
-
 				</div>
 
 			</div>
 
+			<%if(programmeId!=null && !programmeId.isEmpty() && Long.parseLong(programmeId)>0 && !AgendaList.isEmpty()) {
+				int sn = 0;
+				for(Object[] agenda : AgendaList) {%>
+				
+					<div class="carousel-item">
+						<div class="content-header row ">
 
+							<div class="col-md-1">
+								<img class="logo"
+									style="width: 45px; margin-left: 5px; margin-top: -2px;"
+									<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
+									alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+							</div>
+							<div class="col-md-1" align="left" style="padding-top: 19px;">
+								<b style="margin-left: -35px;"><%=agenda[7]!=null?StringEscapeUtils.escapeHtml4(agenda[7].toString()): " - " %></b>
+							</div>
+							<div class="col-md-8">
+								<h3>Open Action Points From Previous Meetings - <%=agenda[7]!=null?StringEscapeUtils.escapeHtml4(agenda[7].toString()): " - " %></h3>
+							</div>
+							<div class="col-md-1" align="right" style="padding-top: 19px;">
+								<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
+							</div>
+							<div class="col-md-1">
+								<img class="logo"
+									style="width: 45px; margin-left: 5px; margin-top: -2px;"
+									<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
+									alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+							</div>
+		
+						</div>
+
+						<div class="content">
+
+							<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+								<thead>
+									<tr>
+										<td colspan="10" style="">
+											<p style="font-size: 12px; text-align: center">
+												<span class="assigned">AA</span> : Activity Assigned
+												&nbsp;&nbsp; <span class="ongoing">OG</span> : On Going
+												&nbsp;&nbsp; <span class="delay">DO</span> : Delay - On Going
+												&nbsp;&nbsp; <span class="delay">FD</span> : Forwarded With
+												Delay &nbsp;&nbsp;<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
+											</p>
+										</td>
+									</tr>
+									<tr>
+										<th class="std" style="width: 20px;">SN</th>
+										<th class="std" style="width: 60px;">Action No</th>
+										<th class="std" style="width: 300px;">Action Point</th>
+										<th class="std" style="width: 100px;">PDC</th>
+										<th class="std" style="width: 80px;">Progress</th>
+										<th class="std" style="width: 100px;">Responsibility</th>
+										<th class="std" style="width: 70px;">Status<!-- (DD) --></th>
+									</tr>
+								</thead>
+
+								<tbody>
+									<%
+									List<Object[]> projectOpenAction = openActionsMap.get(Long.parseLong(agenda[5].toString()));
+									
+									if(projectOpenAction!=null && projectOpenAction.size()>0) { 
+										int count1=0;
+										for(Object[] obj : projectOpenAction){ %>
+											<tr>
+												<td class="std" align="center"
+													style="padding: 5px; text-align: center;"><%=++count1 %>.
+												</td>
+												<td class="std" style="text-align: center; padding: 2px; font-weight: 600">
+													<button class="btn btn-sm" style="text-align: justify; padding: 4px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
+												</td>
+												<td class="std" style="text-align: justify; padding: 2px">
+													<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%>
+												</td>
+												<td class="std" style="text-align: center;"><%=sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[10].toString()))) %></td>
+												<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
+												<td class="std" style="font-size: 14px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+												<td class="std">
+													<%if(obj[4]!= null){ %> <%	String actionstatus = obj[3].toString();
+																		int progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
+																		LocalDate pdcorg = LocalDate.parse(obj[10].toString());
+																		LocalDate lastdate = obj[14]!=null ? LocalDate.parse(obj[14].toString()): null;
+																		LocalDate today = LocalDate.now();
+																	%> <%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
+													<span class="ongoing">RC</span> <%}else if(actionstatus.equals("F")  && pdcorg.isBefore(lastdate)) { %>
+													<span class="delay">FD</span> <%}else if((pdcorg.isAfter(today) || pdcorg.isEqual(today)) && progress>0){  %>
+													<span class="ongoing">OG</span> <%}else if(pdcorg.isBefore(today) && progress>0){  %>
+													<span class="delay">DO <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  --%>
+													</span> <%}else if( progress==0) {%> <span class="assigned">AA</span> <%} %>
+													<%}else { %> <span class="notassign">NA</span> <%} %>
+												</td>
+											</tr>
+										<% }%>
+									<%}else{ %>
+										<tr>
+											<td colspan="6" style="text-align: center;">No Data Available</td>
+										</tr>
+									<%} %>
+								</tbody>
+							</table>
+						</div>
+					</div>
+			<%} }%>
+			
 
 			<div class="carousel-item">
 
@@ -710,15 +818,120 @@
 
 					</table>
 
-
-
-
-
-
 				</div>
 
 			</div>
+			
+			<%if(programmeId!=null && !programmeId.isEmpty() && Long.parseLong(programmeId)>0 && !AgendaList.isEmpty()) {
+				int sn = 0;
+				for(Object[] agenda : AgendaList) { %>
+					<div class="carousel-item">
 
+						<div class="content-header row ">
+
+							<div class="col-md-1">
+								<img class="logo"
+									style="width: 45px; margin-left: 5px; margin-top: -2px;"
+									<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
+									alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+							</div>
+							<div class="col-md-1" align="left" style="padding-top: 19px;">
+								<b style="margin-left: -35px;"><%=agenda[7]!=null?StringEscapeUtils.escapeHtml4(agenda[7].toString()): " - " %></b>
+							</div>
+							<div class="col-md-8">
+								<h3>Close Action Points From Previous Meetings - <%=agenda[7]!=null?StringEscapeUtils.escapeHtml4(agenda[7].toString()): " - " %></h3>
+							</div>
+							<div class="col-md-1" align="right" style="padding-top: 19px;">
+								<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
+							</div>
+							<div class="col-md-1">
+								<img class="logo"
+									style="width: 45px; margin-left: 5px; margin-top: -2px;"
+									<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
+									alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+							</div>
+		
+						</div>
+
+						<div class="content">
+
+							<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+								<thead>
+									<tr>
+										<td colspan="10" style="">
+											<p style="font-size: 12px; text-align: center">
+												<span class="completed">CO</span> :Completed &nbsp;&nbsp; <span
+													class="completeddelay">CD</span> : Completed with Delay
+												&nbsp;&nbsp;
+											</p>
+										</td>
+		
+									</tr>
+									<tr>
+										<th class="std" style="width: 20px;">SN</th>
+										<th class="std" style="width: 60px;">Action No</th>
+										<th class="std" style="width: 300px;">Action Point</th>
+										<th class="std" style="width: 100px;">PDC</th>
+										<th class="std" style="width: 80px;">Progress</th>
+										<th class="std" style="width: 100px;">Responsibility</th>
+										<th class="std" style="width: 70px;">Status<!-- (DD) --></th>
+									</tr>
+								</thead>
+
+								<tbody>
+									<%
+									List<Object[]> projectCloseAction = closeActionsMap.get(Long.parseLong(agenda[5].toString()));
+									
+									if(projectCloseAction!=null && projectCloseAction.size()>0) { 
+										int count1=0;
+										for(Object[] obj : projectCloseAction){ %>
+											<tr>
+												<td class="std" align="center"
+													style="padding: 5px; text-align: center;"><%=++count1 %>.
+												</td>
+												<td class="std" style="text-align: center; padding: 2px; font-weight: 600">
+													<button class="btn btn-sm" style="text-align: justify; padding: 2px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
+												</td>
+												<td class="std" style="text-align: justify; padding: 2px">
+													<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %>
+												</td>
+												<td class="std"><%=sdf.format(sdf1.parse(obj[10].toString())) %></td>
+												<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
+												<td class="std" style="font-size: 14px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+												<td class="std">
+													<%if(obj[4]!= null){ %> <%	String actionstatus = obj[3].toString();
+																		int progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
+																		LocalDate pdcorg = LocalDate.parse(obj[10].toString());
+																		LocalDate lastdate = obj[14]!=null ? LocalDate.parse(obj[14].toString()): null;
+																		LocalDate today = LocalDate.now();
+																	%> <% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
+													<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
+													<span class="completed">CO</span> <%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>
+													<span class="completeddelay">CD <%-- (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>)  --%></span>
+													<%} %> <%}else{ %> <%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
+													<span class="ongoing">RC</span> <%}else if(actionstatus.equals("F")  && pdcorg.isBefore(lastdate)) { %>
+													<span class="delay">FD</span> <%}else if((pdcorg.isAfter(today) || pdcorg.isEqual(today)) && progress>0){  %>
+													<span class="ongoing">OG</span> <%}else if(pdcorg.isBefore(today) && progress>0){  %>
+													<span class="delay">DO <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  --%>
+													</span> <%}else if( progress==0) {%> <span class="assigned">AA</span> <%} %>
+													<%} %> <%}else { %> <span class="notassign">NA</span> <%} %>
+
+												</td>
+											</tr>
+										<% }%>
+									<%}else{ %>
+										<tr>
+											<td colspan="6" style="text-align: center;">No Data Available</td>
+										</tr>
+									<%} %>
+								</tbody>
+
+							</table>
+
+						</div>
+
+					</div>
+			<%} } %>
 
 			<div class="carousel-item">
 
@@ -1060,30 +1273,47 @@
 		</span> <span class="sr-only">Next</span>
 		</a>
 
+		<%int slidecount = 0; %>
 		<ol class="carousel-indicators">
 			<li data-target="#presentation-slides" data-slide-to="0"
 				class="carousel-indicator active" data-toggle="tooltip"
 				data-placement="top" title="Start"><b><i class="fa fa-home"
 					aria-hidden="true"></i></b></li>
-			<li data-target="#presentation-slides" data-slide-to="1"
+			<li data-target="#presentation-slides" data-slide-to="<%=++slidecount %>"
 				class="carousel-indicator" data-toggle="tooltip"
 				data-placement="top" title="Agenda"><b>1</b></li>
-			<li data-target="#presentation-slides" data-slide-to="2"
+			<li data-target="#presentation-slides" data-slide-to="<%=++slidecount %>"
 				class="carousel-indicator" data-toggle="tooltip"
 				data-placement="top" title="Previous Meetings"><b>2</b></li>
-			<li data-target="#presentation-slides" data-slide-to="3"
+			<li data-target="#presentation-slides" data-slide-to="<%=++slidecount %>"
 				class="carousel-indicator" data-toggle="tooltip"
 				data-placement="top" title="Open Action Points"><b>3</b></li>
-			<li data-target="#presentation-slides" data-slide-to="4"
+			<%
+			if(programmeId!=null && !programmeId.isEmpty() && Long.parseLong(programmeId)>0 && !AgendaList.isEmpty()) {
+				int sn = 0;
+				for(Object[] obj : AgendaList) {%>
+					<li data-target="#presentation-slides" data-slide-to="<%=++slidecount %>"
+					class="carousel-indicator" data-toggle="tooltip"
+					data-placement="top" title="OPA <%=obj[7]%>"><b>3.<%=++sn %></b></li>
+			<%} }%>
+			<li data-target="#presentation-slides" data-slide-to="<%=++slidecount %>"
 				class="carousel-indicator" data-toggle="tooltip"
 				data-placement="top" title="Close Action Points"><b>4</b></li>
-			<li data-target="#presentation-slides" data-slide-to="5"
+			<%
+			if(programmeId!=null && !programmeId.isEmpty() && Long.parseLong(programmeId)>0 && !AgendaList.isEmpty()) {
+				int sn = 0;
+				for(Object[] obj : AgendaList) {%>
+					<li data-target="#presentation-slides" data-slide-to="<%=++slidecount %>"
+					class="carousel-indicator" data-toggle="tooltip"
+					data-placement="top" title="CAP <%=obj[7]%>"><b>4.<%=++sn %></b></li>
+			<%} }%>
+			<li data-target="#presentation-slides" data-slide-to="<%=++slidecount %>"
 				class="carousel-indicator" data-toggle="tooltip"
 				data-placement="top" title="All Action Points"><b>5</b></li>
-					<li data-target="#presentation-slides" data-slide-to="6"
+					<li data-target="#presentation-slides" data-slide-to="<%=++slidecount %>"
 				class="carousel-indicator" data-toggle="tooltip"
 				data-placement="top" title="All Recommendation Points"><b>6</b></li>
-					<li data-target="#presentation-slides" data-slide-to="7"
+					<li data-target="#presentation-slides" data-slide-to="<%=++slidecount %>"
 				class="carousel-indicator" data-toggle="tooltip"
 				data-placement="top" title="All Decesions"><b>7</b></li>
 		</ol>

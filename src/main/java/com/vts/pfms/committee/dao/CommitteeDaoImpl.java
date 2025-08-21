@@ -3068,7 +3068,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	}
 	
 	private static final String NONPROJECTACTIONS="SELECT d.ActionAssignId,d.ActionNo,CONCAT(IFNULL(CONCAT(e.title,' '),IFNULL(CONCAT(e.salutation,' '),'')), e.empname) AS 'empname',\r\n"
-			+ "			d.ActionStatus,c.ActionMainId,c.ActionItem,b.ScheduleMinutesId,a.ScheduleId,a.MeetingId,a.ScheduleDate,d.PDCOrg,d.PDC1,d.PDC2,d.Progress,d.ProgressDate,a.projectId,a.InitiationId,a.Divisionid, a.CARSInitiationId, a.ProgrammeId\r\n"
+			+ "			d.ActionStatus,c.ActionMainId,c.ActionItem,b.ScheduleMinutesId,a.ScheduleId,a.MeetingId,a.ScheduleDate,d.PDCOrg,d.PDC1,d.PDC2,d.Progress,d.ProgressDate,a.projectId,a.InitiationId,a.Divisionid, a.CARSInitiationId, a.ProgrammeId, c.ProjectId AS actionprojecid\r\n"
 			+ "			FROM committee_schedule a, committee_schedules_minutes_details b , action_main c,action_assign d, employee e\r\n"
 			+ "			WHERE a.CommitteeId = :committeeId AND a.isactive = 1 AND a.ScheduleId=b.ScheduleId AND c.type='A'  \r\n"
 			+ "			AND c.ScheduleMinutesId=b.ScheduleMinutesId AND c.ActionMainId=d.ActionMainId AND d.Assignee=e.empid AND d.AssigneeLabCode <> '@EXP'  \r\n"
@@ -3076,7 +3076,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 			+ "	UNION \r\n"
 			+ "	\r\n"
 			+ "SELECT d.ActionAssignId,d.ActionNo,CONCAT(IFNULL(CONCAT(e.title,' '),IFNULL(CONCAT(e.salutation,' '),'')), e.expertname) AS 'empname',\r\n"
-			+ "			d.ActionStatus,c.ActionMainId,c.ActionItem,b.ScheduleMinutesId,a.ScheduleId,a.MeetingId,a.ScheduleDate,d.PDCOrg,d.PDC1,d.PDC2,d.Progress,d.ProgressDate,a.projectId,a.InitiationId,a.Divisionid, a.CARSInitiationId, a.ProgrammeId\r\n"
+			+ "			d.ActionStatus,c.ActionMainId,c.ActionItem,b.ScheduleMinutesId,a.ScheduleId,a.MeetingId,a.ScheduleDate,d.PDCOrg,d.PDC1,d.PDC2,d.Progress,d.ProgressDate,a.projectId,a.InitiationId,a.Divisionid, a.CARSInitiationId, a.ProgrammeId, c.ProjectId AS actionprojecid\r\n"
 			+ "			FROM committee_schedule a, committee_schedules_minutes_details b , action_main c,action_assign d, expert e\r\n"
 			+ "			WHERE a.CommitteeId = :committeeId AND a.isactive = 1 AND a.ScheduleId=b.ScheduleId AND c.type='A' \r\n"
 			+ "			AND c.ScheduleMinutesId=b.ScheduleMinutesId AND c.ActionMainId=d.ActionMainId AND d.Assignee=e.expertid AND d.AssigneeLabCode = '@EXP'  ORDER BY ScheduleDate ASC";
@@ -3680,9 +3680,8 @@ private static final String ENOTEAPPROVELIST="SELECT MAX(a.EnoteId) AS EnoteId,M
 		return dto;
 		}
 		
-	private static final String PREVIOUSMEETINGS="SELECT a.ScheduleId,a.MeetingId,a.ScheduleDate,a.projectId,a.InitiationId,a.Divisionid,a.ScheduleFlag \r\n"
-			+ "		, b.committeeshortname	FROM committee_schedule a, committee b  \r\n"
-			+ "			WHERE a.CommitteeId = :committeeid AND a.isactive = 1  AND a.ScheduleFlag IN ( 'MKV','MMR','MMF','MMS','MMA' ) AND a.CommitteeId = b.CommitteeId ORDER BY ScheduleDate ";	
+		private static final String PREVIOUSMEETINGS="SELECT a.ScheduleId,a.MeetingId,a.ScheduleDate,a.projectId,a.InitiationId,a.Divisionid,a.ScheduleFlag, b.committeeshortname, a.CARSInitiationId, a.ProgrammeId FROM committee_schedule a, committee b  \r\n"
+				+ "			WHERE a.CommitteeId = :committeeid AND a.isactive = 1  AND a.ScheduleFlag IN ( 'MKV','MMR','MMF','MMS','MMA' ) AND a.CommitteeId = b.CommitteeId ORDER BY ScheduleDate ";	
 		
 	@Override
 	public List<Object[]> previousMeetingHeld(String committeeid) throws Exception {
@@ -3693,13 +3692,13 @@ private static final String ENOTEAPPROVELIST="SELECT MAX(a.EnoteId) AS EnoteId,M
 	}
 	
 	private static final String RECOMMENDATIONS = "SELECT d.ActionAssignId,d.ActionNo,CONCAT(IFNULL(CONCAT(e.title,' '),IFNULL(CONCAT(e.salutation,' '),'')), e.empname) AS 'empname',\r\n"
-			+ "d.ActionStatus,c.ActionMainId,c.ActionItem,b.ScheduleMinutesId,a.ScheduleId,a.MeetingId,a.ScheduleDate,d.PDCOrg,d.PDC1,d.PDC2,d.Progress,d.ProgressDate,a.projectId,a.InitiationId,a.Divisionid\r\n"
+			+ "d.ActionStatus,c.ActionMainId,c.ActionItem,b.ScheduleMinutesId,a.ScheduleId,a.MeetingId,a.ScheduleDate,d.PDCOrg,d.PDC1,d.PDC2,d.Progress,d.ProgressDate,a.projectId,a.InitiationId,a.Divisionid, a.CARSInitiationId, a.ProgrammeId\r\n"
 			+ "FROM committee_schedule a, committee_schedules_minutes_details b , action_main c,action_assign d, employee e\r\n"
 			+ "WHERE a.CommitteeId = :committeeid AND a.isactive = 1 AND a.ScheduleId=b.ScheduleId AND c.type='R'   AND b.IDARCK = 'R'\r\n"
 			+ "AND c.ScheduleMinutesId=b.ScheduleMinutesId AND c.ActionMainId=d.ActionMainId AND d.Assignee=e.empid AND d.AssigneeLabCode <> '@EXP'  					\r\n"
 			+ "UNION 	\r\n"
 			+ "SELECT d.ActionAssignId,d.ActionNo,CONCAT(IFNULL(CONCAT(e.title,' '),IFNULL(CONCAT(e.salutation,' '),'')), e.expertname) AS 'empname',\r\n"
-			+ "d.ActionStatus,c.ActionMainId,c.ActionItem,b.ScheduleMinutesId,a.ScheduleId,a.MeetingId,a.ScheduleDate,d.PDCOrg,d.PDC1,d.PDC2,d.Progress,d.ProgressDate,a.projectId,a.InitiationId,a.Divisionid\r\n"
+			+ "d.ActionStatus,c.ActionMainId,c.ActionItem,b.ScheduleMinutesId,a.ScheduleId,a.MeetingId,a.ScheduleDate,d.PDCOrg,d.PDC1,d.PDC2,d.Progress,d.ProgressDate,a.projectId,a.InitiationId,a.Divisionid, a.CARSInitiationId, a.ProgrammeId\r\n"
 			+ "FROM committee_schedule a, committee_schedules_minutes_details b , action_main c,action_assign d, expert e\r\n"
 			+ "WHERE a.CommitteeId = :committeeid AND a.isactive = 1 AND a.ScheduleId=b.ScheduleId AND  c.type='R'   AND b.IDARCK = 'R'\r\n"
 			+ "AND c.ScheduleMinutesId=b.ScheduleMinutesId AND c.ActionMainId=d.ActionMainId AND d.Assignee=e.expertid AND d.AssigneeLabCode = '@EXP'  ORDER BY ScheduleDate ASC";
@@ -3715,7 +3714,7 @@ private static final String ENOTEAPPROVELIST="SELECT MAX(a.EnoteId) AS EnoteId,M
 	}
 	
 	
-	private static final String DECESIONS = "SELECT b.ScheduleMinutesId,b.Details,a.scheduledate, a.projectId,a.InitiationId,a.Divisionid FROM committee_schedule a,\r\n"
+	private static final String DECESIONS = "SELECT b.ScheduleMinutesId,b.Details,a.scheduledate, a.projectId,a.InitiationId,a.Divisionid, a.CARSInitiationId, a.ProgrammeId FROM committee_schedule a,\r\n"
 			+ "committee_schedules_minutes_details b WHERE b.idarck ='D' AND a.CommitteeId = :committeeid  AND a.isactive = 1 AND a.ScheduleId=b.ScheduleId ";
 	@Override
 	public List<Object[]> getDecisionsofCommittee(String committeeid) throws Exception {

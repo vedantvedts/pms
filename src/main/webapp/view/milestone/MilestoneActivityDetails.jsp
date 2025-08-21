@@ -267,7 +267,7 @@ div {
 					<div align="right" class="m-1" >
 					<form action="#">
 					<input type="submit" class="btn btn-primary btn-sm back " id="sub" value="Back" name="sub" formaction="MilestoneActivityList.htm" formnovalidate="formnovalidate">
-					<input type="hidden" name="ProjectId" value="<%=getMA[10]%>" />
+					<input type="hidden" name="ProjectId" id="ProjectId" value="<%=getMA[10]%>" />
 					</form>
 					</div>
 					 
@@ -1679,61 +1679,54 @@ $( document ).ready(function() {
     	});
   });
 
-
-
-function changeempoic1(level) {
-  if (document.getElementById('allempcheckbox1'+level).checked) 
-  {
-    employeefetch(0,'EmpId'+level);
-  } else {
-	  employeefetch(<%=projectId%>,'EmpId'+level);
-  }
-}
-
-
-function changeempoic2(level) {
-  if (document.getElementById('allempcheckbox2'+level).checked) 
-  {
-    employeefetch(0,'EmpId1'+level);
-  } else {
-	  employeefetch(<%=projectId%>,'EmpId1'+level);
-  }
-}
-
-
+	var ProjectId = $('#ProjectId').val();
 	
-	function employeefetch(ProID,dropdownid){
-			
+	function changeempoic1(level) {
+		var labCode  = $('#labCode1'+level).val();
+		if (document.getElementById('allempcheckbox1'+level).checked) {
+			employeefetch(0,'EmpId'+level, labCode);
+	  	} else {
+			employeefetch(ProjectId,'EmpId'+level, labCode);
+		}
+	}
+	
+	
+	function changeempoic2(level) {
+		var labCode  = $('#labCode2'+level).val();
+		if (document.getElementById('allempcheckbox2'+level).checked) {
+			employeefetch(0,'EmpId1'+level, labCode);
+		} else {
+			employeefetch(ProjectId,'EmpId1'+level, labCode);
+	  	}
+	}
+	
+	function employeefetch(ProID,dropdownid, labCode){
 				
-						$.ajax({		
-							type : "GET",
-							url : "ProjectEmpListFetch.htm",
-							data : {
-								projectid : ProID
-								   },
-							datatype : 'json',
-							success : function(result) {
+		$.ajax({		
+			type : "GET",
+			url : "ProjectEmpListFetch.htm",
+			data : {
+				projectid : ProID,
+				labCode : labCode
+			},
+			datatype : 'json',
+			success : function(result) {
 		
-							var result = JSON.parse(result);
-								
-							var values = Object.keys(result).map(function(e) {
-										 return result[e]
-									  
+				var result = JSON.parse(result);
+									
+				var values = Object.keys(result).map(function(e) {
+								return result[e]
 							});
+									
+				var s = '<option value="">'+"--Select--"+ '</option>';
+				for (i = 0; i < values.length; i++) {									
+					s += '<option value="'+values[i][0]+'">'+values[i][1] + ", " +values[i][2] + '</option>';
+				} 
+									 
+				$('#'+dropdownid).html(s);
 								
-					var s = '';
-						s += '<option value="">'+"--Select--"+ '</option>';
-								 for (i = 0; i < values.length; i++) {									
-									s += '<option value="'+values[i][0]+'">'
-											+values[i][1] + ", " +values[i][2] 
-											+ '</option>';
-								} 
-								 
-								$('#'+dropdownid).html(s);
-								
-							}
-						});
-		
+			}
+		});
 		
 	}
 		
@@ -1768,19 +1761,23 @@ if(FormName!=null){
 <script type="text/javascript">
 	function renderEmployeeList(rowId, level) {
 		var labCode  = $('#labCode'+rowId+level).val();
-		var currLabCode  = $('#currLabCode').val();
+		/* var currLabCode  = $('#currLabCode').val(); */
 		
-		employeeListByLabCode(rowId, level, labCode);
+		var rowIdShort = rowId==1?"":(rowId-1);
 		
-		if(currLabCode!=labCode) {
+		employeefetch(ProjectId, 'EmpId'+rowIdShort+level, labCode);
+		
+		$('#allempcheckbox'+rowId+level).prop('checked', false);
+		
+		/* if(currLabCode!=labCode) {
 			$('#allempcheckbox'+rowId+level).hide();
 		}else {
 			$('#allempcheckbox'+rowId+level).show();
 			$('#allempcheckbox'+rowId+level).prop('checked', true);
-		}
+		} */
 	}
 	
-	function employeeListByLabCode(rowId, level, labcode) {
+	/* function employeeListByLabCode(rowId, level, labcode) {
 	
 		var rowIdShort = rowId==1?"":(rowId-1);
 		$('#EmpId'+rowIdShort+level).empty(); 
@@ -1805,7 +1802,7 @@ if(FormName!=null){
 		           }
 		       }
 		});
-	}
+	} */
 </script>
 
 </body>

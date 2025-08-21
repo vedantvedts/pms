@@ -197,7 +197,7 @@ if(ses1!=null){	%>
                             	<input type="hidden" name="ProjectId"	value="<%=ProjectId %>" /> 
                              <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
                               <input type="hidden" name="projectDirector" value="<%=projectDirector%>">  
-                               <input type="submit"  value="Add Activity" class="btn btn-sm add" style="float: right;">
+                               <input type="submit"  value="Add Milestone" class="btn btn-sm add" style="float: right;">
                           
                      </form>
                           <%} %>

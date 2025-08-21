@@ -3957,23 +3957,31 @@ public class PrintController {
 
 				String initiationid= scheduleeditdata[17].toString();
 				String divisionid= scheduleeditdata[16].toString();
+				String carsInitiationId= scheduleeditdata[25].toString();
+				String programmeId= scheduleeditdata[26].toString();
 				List<Object[]>ActionDetails=comservice.actionDetailsForNonProject(committeeId,scheduledate);
 				List<Object[]>actionSubDetails=new ArrayList();
 				if(ActionDetails.size()>0) {
 					actionSubDetails=ActionDetails.stream().filter(i -> LocalDate.parse(i[9].toString()).isBefore(LocalDate.parse(scheduledate))).collect(Collectors.toList());
 					if(actionSubDetails.size()>0) {
-						actionSubDetails=actionSubDetails.stream().filter(i -> i[15].toString().equalsIgnoreCase(projectid) && i[16].toString().equalsIgnoreCase(initiationid) && i[17].toString().equalsIgnoreCase(divisionid)).collect(Collectors.toList());
+						actionSubDetails=actionSubDetails.stream().filter(i -> i[15].toString().equalsIgnoreCase(projectid) && 
+																			i[16].toString().equalsIgnoreCase(initiationid) && 
+																			i[17].toString().equalsIgnoreCase(divisionid) &&
+																			i[18].toString().equalsIgnoreCase(carsInitiationId) &&
+																			i[19].toString().equalsIgnoreCase(programmeId)
+																			).collect(Collectors.toList());
 					}
 				}
 
 				List<Object[]>meetingsHeld = comservice.previousMeetingHeld(committeeid);
 				if(meetingsHeld !=null && meetingsHeld.size()>0 ) {
 					meetingsHeld=meetingsHeld.stream().filter(i -> LocalDate.parse(i[2].toString()).isBefore(LocalDate.parse(scheduledate))).collect(Collectors.toList());
-					meetingsHeld = meetingsHeld.stream()
-							.filter(
-									i -> i[3].toString().equalsIgnoreCase(projectid) && i[4].toString().equalsIgnoreCase(initiationid) && i[5].toString().equalsIgnoreCase(divisionid)	
-									)
-							.collect(Collectors.toList());
+					meetingsHeld = meetingsHeld.stream().filter(i -> i[3].toString().equalsIgnoreCase(projectid) && 
+																	i[4].toString().equalsIgnoreCase(initiationid) && 
+																	i[5].toString().equalsIgnoreCase(divisionid) &&	
+																	i[8].toString().equalsIgnoreCase(carsInitiationId) &&	
+																	i[9].toString().equalsIgnoreCase(programmeId)
+																	).collect(Collectors.toList());
 				}
 
 				List<Object[]>recommendationList = comservice.getRecommendationsOfCommittee(committeeid) ;
@@ -3982,7 +3990,12 @@ public class PrintController {
 				if(recommendationList.size()>0) {
 					recommendationList=recommendationList.stream().filter(i -> LocalDate.parse(i[9].toString()).isBefore(LocalDate.parse(scheduledate))).collect(Collectors.toList());
 					if(recommendationList.size()>0) {
-						recommendationList=recommendationList.stream().filter(i -> i[15].toString().equalsIgnoreCase(projectid) && i[16].toString().equalsIgnoreCase(initiationid) && i[17].toString().equalsIgnoreCase(divisionid)).collect(Collectors.toList());
+						recommendationList=recommendationList.stream().filter(i -> i[15].toString().equalsIgnoreCase(projectid) && 
+																					i[16].toString().equalsIgnoreCase(initiationid) && 
+																					i[17].toString().equalsIgnoreCase(divisionid) &&
+																					i[18].toString().equalsIgnoreCase(carsInitiationId) &&
+																					i[19].toString().equalsIgnoreCase(programmeId) 
+																					).collect(Collectors.toList());
 					}
 				}
 
@@ -3991,10 +4004,12 @@ public class PrintController {
 				if(decesions.size()>0) {
 					decesions=decesions.stream().filter(i -> LocalDate.parse(i[2].toString()).isBefore(LocalDate.parse(scheduledate))).collect(Collectors.toList());
 					if(decesions.size()>0) {
-						decesions=decesions.stream().filter(i ->
-						i[3].toString().equalsIgnoreCase(projectid) &&
-						i[4].toString().equalsIgnoreCase(initiationid) && 
-						i[5].toString().equalsIgnoreCase(divisionid)).collect(Collectors.toList());
+						decesions=decesions.stream().filter(i -> i[3].toString().equalsIgnoreCase(projectid) &&
+																i[4].toString().equalsIgnoreCase(initiationid) && 
+																i[5].toString().equalsIgnoreCase(divisionid) &&
+																i[6].toString().equalsIgnoreCase(carsInitiationId) &&
+																i[7].toString().equalsIgnoreCase(programmeId)
+																).collect(Collectors.toList());
 					}
 				}
 
@@ -4016,7 +4031,10 @@ public class PrintController {
 				req.setAttribute("ActionDetails", actionSubDetails);
 				req.setAttribute("meetingsHeld", meetingsHeld);
 				req.setAttribute("decesions", decesions);
-
+				if(programmeId!=null && !programmeId.isEmpty()) {
+					req.setAttribute("programmeMaster", comservice.getProgrammeMasterById(programmeId));
+					req.setAttribute("programmeId", programmeId);
+				}
 				return "print/AgendaPresentation";
 			}catch (Exception e) {
 				e.printStackTrace(); 
@@ -4025,7 +4043,6 @@ public class PrintController {
 
 			}
 		}
-	    
 	    
 	    @RequestMapping(value="FrozenBriefingAdd.htm", method = {RequestMethod.GET,RequestMethod.POST})
 		public String FrozenBriefingAdd(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res,@RequestParam(name = "briefingpaper")MultipartFile BPaper ,@RequestParam(name="briefingpresent")MultipartFile pname,@RequestParam(name="Momfile")MultipartFile mom)	throws Exception 
