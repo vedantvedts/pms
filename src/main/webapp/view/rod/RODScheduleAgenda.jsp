@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -265,18 +266,21 @@ ul, #myUL {
  
  
 <% 
-	String ses=(String)request.getParameter("result"); 
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null)
-	{ %>
-		<div align="center">	
-			<div class="alert alert-danger" role="alert" >  <%=ses1 %>  </div>
-		</div>
-	<%} if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert"  >  <%=ses %> </div>
-	     </div>
-   <%} %>
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 <div class="container-fluid">
@@ -285,11 +289,11 @@ ul, #myUL {
     	
 	    	<form action="RODScheduleView.htm" name="myfrm" id="myfrm" method="post">
 	    		<div class="card-header" style="background-color: #055C9D;">
-      				<h6 style="color: orange;font-weight: bold;font-size: 1.2rem !important " align="left"><%=scheduledata[7] %> <span> (Meeting Date and Time :      				
-	      				 &nbsp;<%=sdf.format(sdf1.parse(scheduledata[2].toString()))%> - <%=scheduledata[3] %>) </span>      				
+      				<h6 style="color: orange;font-weight: bold;font-size: 1.2rem !important " align="left"><%=scheduledata[7]!=null?StringEscapeUtils.escapeHtml4(scheduledata[7].toString()): " - " %> <span> (Meeting Date and Time :      				
+	      				 &nbsp;<%=sdf.format(sdf1.parse(scheduledata[2].toString()))%> - <%=scheduledata[3]!=null?StringEscapeUtils.escapeHtml4(scheduledata[3].toString()): " - " %>) </span>      				
 						<input type="hidden" name="projectid" value="<%=projectid%>"/>
 	      				<input type="submit" class="btn  btn-sm view" value="VIEW" style="float:right;" />
-	      				<span  style="float:right;margin: 5px 12px;" > (Meeting Id : <%=scheduledata[11] %>) </span> 
+	      				<span  style="float:right;margin: 5px 12px;" > (Meeting Id : <%=scheduledata[11]!=null?StringEscapeUtils.escapeHtml4(scheduledata[11].toString()): " - " %>) </span> 
 	      				<input type="hidden" name="scheduleid" value="<%=scheduledata[6] %>">
 	      				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />      				
       				 </h6>
@@ -324,7 +328,7 @@ ul, #myUL {
 												
 											    <% for (Object[] obj : projectlist) {
 											    	if(obj[0].toString().equals(projectid)){%>						    				 	
-									     				<option value="<%=obj[0]%>"><%=obj[3]%> (<%=obj[2] %>)</option>
+									     				<option value="<%=obj[0]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> (<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>)</option>
 									    			<%} 
 									    		}%>					
 												</select>
@@ -338,7 +342,7 @@ ul, #myUL {
 									        		<option disabled  selected value="">Choose...</option>
 									        		<option value="0"><%=labdata[1] %>(GEN)</option>
 											  		<% for (Object[] obj : projectlist) {%>						    				 	
-								     					<option value="<%=obj[0]%>"><%=obj[3]%> (<%=obj[2] %>)</option>
+								     					<option value="<%=obj[0]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> (<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>)</option>
 								    				<%} %>					
 												</select>
 											<%} %>
@@ -349,7 +353,7 @@ ul, #myUL {
 						         		 	<select class="form-control items PresLabCode" name="PresLabCode" id="PresLabCode_0"  required="required" style="width: 200px" onchange="AgendaPresentors('0')"  data-live-search="true" data-container="body">
 												<option disabled="disabled"  selected value="">Lab Name</option>
 											    <% for (Object[] obj : AllLabList) {%>
-												    <option value="<%=obj[3]%>" <%if(LabCode.equalsIgnoreCase(obj[3].toString())){ %>selected <%} %>  ><%=obj[3]%></option>
+												    <option value="<%=obj[3]%>" <%if(LabCode.equalsIgnoreCase(obj[3].toString())){ %>selected <%} %>  ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 											    <%} %>
 											    <option value="@EXP">Expert</option>
 											</select>
@@ -360,7 +364,7 @@ ul, #myUL {
 											<select class="form-control items presenterid" name="presenterid" id="presenterid_0"  required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
 								        		<option disabled="disabled" selected value="">Choose...</option>
 										        <% for(Object[] emp : LabEmpList){ %>
-										        	<option value="<%=emp[0] %>"><%=emp[1] %>(<%=emp[3] %>)</option>
+										        	<option value="<%=emp[0] %>"><%=emp[1]!=null?StringEscapeUtils.escapeHtml4(emp[1].toString()): " - " %>(<%=emp[3]!=null?StringEscapeUtils.escapeHtml4(emp[3].toString()): " - " %>)</option>
 										        <%} %>
 											</select>
 										</td>		
@@ -453,7 +457,7 @@ ul, #myUL {
 													<select class="form-control" name="projectid"  required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
 														<% for (Object[] obj1 : projectlist) {
 															if(obj1[0].toString().equals(projectid)){%>						    				 	
-											     				<option value="<%=obj1[0]%>"><%=obj1[3]%> (<%=obj1[2] %>)</option>
+											     				<option value="<%=obj1[0]%>"><%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): " - "%> (<%=obj1[2]!=null?StringEscapeUtils.escapeHtml4(obj1[2].toString()): " - " %>)</option>
 											    			<%} 
 											    		}%>					
 													</select>
@@ -461,7 +465,7 @@ ul, #myUL {
 													<select class="form-control items" name="projectid"  required="required" style=" font-weight: bold; text-align-last: left; width: 220px;" data-live-search="true" data-container="body">
 										          		<option value="0" ><%=labdata[1] %></option>
 												    	<% for (Object[] obj1 : projectlist) {%>
-									     					<option value="<%=obj1[0]%>" <%if(obj[5].toString().equals(obj1[0].toString()))  {%> selected <%} %>><%=obj1[3]%> (<%=obj1[2] %>)</option>
+									     					<option value="<%=obj1[0]%>" <%if(obj[5].toString().equals(obj1[0].toString()))  {%> selected <%} %>><%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): " - "%> (<%=obj1[2]!=null?StringEscapeUtils.escapeHtml4(obj1[2].toString()): " - " %>)</option>
 									    				<%} %>					
 													</select>
 												<%} %>
@@ -473,7 +477,7 @@ ul, #myUL {
 							         		 	<select class="form-control items " name="PresLabCode" id="PresLabCode_Edit_<%=obj[0] %>"  required="required" style="width: 200px" onchange="AgendaPresentors('Edit_<%=obj[0] %>')"  data-live-search="true" data-container="body">
 													<option disabled="disabled"  selected value="">Lab Name</option>
 												    <% for (Object[] lab : AllLabList) {%>
-													    <option value="<%=lab[3]%>" <%if(obj[14].toString().equalsIgnoreCase(lab[3].toString())){ %>selected <%} %>><%=lab[3]%></option>
+													    <option value="<%=lab[3]%>" <%if(obj[14].toString().equalsIgnoreCase(lab[3].toString())){ %>selected <%} %>><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
 												    <%} %>
 												    <option value="@EXP" <%if(obj[14].toString().equalsIgnoreCase("@EXP")) {%>selected<%} %>>Expert</option>
 												</select>
@@ -566,7 +570,7 @@ ul, #myUL {
 										{%>  
 										<li>
 											<span class="caret" id="system<%=obj[0]%>"  onclick="onclickchangeMain(this);" >
-							             		<%=obj[3] %>
+							             		<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %>
 							             	</span>
 							             	<span>
 									           
@@ -580,7 +584,7 @@ ul, #myUL {
 														{%>  
 														<li>
 															<span class="caret" id="system<%=obj1[0]%>" onclick="onclickchangeMain(this);" >
-							             						<%=obj1[3] %>
+							             						<%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): " - " %>
 							             					</span>
 															<span>
 																<button type="button" id="upbutton<%=obj1[0]%>" class="btn" data-target="#exampleModalCenter" style="background-color: transparent;margin: -5px 0px;" onclick="modalbox('<%=obj[0]%>','<%=obj[3] %>','<%=obj1[0]%>','<%=obj1[3] %>','-','','-','','-','',1)">
@@ -597,7 +601,7 @@ ul, #myUL {
 																			{ %>  
 																			<li>
 																				<span class="caret" id="system<%=obj2[0]%>" onclick="onclickchangeMain(this);" >
-																					<%=obj2[3] %>
+																					<%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - " %>
 																				</span>
 																				<span>
 																					<button type="button" id="upbutton<%=obj2[0]%>" class="btn" data-target="#exampleModalCenter" style="background-color: transparent;margin: -5px 0px;" onclick="modalbox('<%=obj[0]%>','<%=obj[3] %>','<%=obj1[0]%>','<%=obj1[3] %>','<%=obj2[0]%>','<%=obj2[3] %>','-','','-','',2)">
@@ -615,7 +619,7 @@ ul, #myUL {
 																								{%>  
 																								<li>
 																									<span class="caret" id="system<%=obj3[0]%>"  onclick="onclickchangeMain(this);" >
-																										<%=obj3[3] %>
+																										<%=obj3[3]!=null?StringEscapeUtils.escapeHtml4(obj3[3].toString()): " - " %>
 																									</span>
 																									<span>
 																										<button type="button" id="upbutton<%=obj3[0]%>" class="btn" data-target="#exampleModalCenter" style="background-color: transparent;margin: -5px 0px;" onclick="modalbox('<%=obj[0]%>','<%=obj[3] %>','<%=obj1[0]%>','<%=obj1[3] %>','<%=obj2[0]%>','<%=obj2[3] %>','<%=obj3[0]%>','<%=obj3[3] %>','-','',3)">
@@ -633,7 +637,7 @@ ul, #myUL {
 																												<li>
 																													
 																														<span class="caret-last"  id="system<%=obj4[0]%>" onclick="onclickchangeMain(this);" >
-																															<%=obj4[3] %>
+																															<%=obj4[3]!=null?StringEscapeUtils.escapeHtml4(obj4[3].toString()): " - " %>
 																														</span>
 																														<span> 
 																															<button type="button" id="upbutton<%=obj4[0]%>" class="btn" data-target="#exampleModalCenter" style="background-color: transparent;margin: -5px 0px;" onclick="modalbox('<%=obj[0]%>','<%=obj[3] %>','<%=obj1[0]%>','<%=obj1[3] %>','<%=obj2[0]%>','<%=obj2[3] %>','<%=obj3[0]%>','<%=obj3[3] %>','<%=obj4[0]%>','<%=obj4[3] %>',4)">

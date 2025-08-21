@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.util.stream.Collectors"%>
@@ -128,7 +129,7 @@ String labcode = (String) session.getAttribute("labcode");
 					<div align="center" ><h2 style="color: #145374 !important;">of</h2></div>
 							
 					<div align="center" >
-						<h2 style="color: #145374 !important;" >  <%if(labInfo!=null && labInfo.getLabCode() !=null){ %><%=labInfo.getLabCode()%><%} %> Projects</h2>
+						<h2 style="color: #145374 !important;" >  <%if(labInfo!=null && labInfo.getLabCode() !=null){ %><%=StringEscapeUtils.escapeHtml4(labInfo.getLabCode())%><%} %> Projects</h2>
 			   		</div>
 					
 					<div align="center" ><h2 style=" color: #145374 !important;"></h2></div>
@@ -164,7 +165,7 @@ String labcode = (String) session.getAttribute("labcode");
 					<table class="executive home-table" style="align: center;margin-bottom:5px; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;font-weight: bold;"  >
 						<% if(labInfo!=null){ %>
 							<tr>
-								<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: bolder;font-size: 22px"> <h2 style="color: #145374 !important;font-weight: bolder;"> <%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %> ( <%if(labInfo!=null && labInfo.getLabCode() !=null){ %><%=labInfo.getLabCode()%><%} %> ) </h2> </th>
+								<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: bolder;font-size: 22px"> <h2 style="color: #145374 !important;font-weight: bolder;"> <%if(labInfo.getLabName()!=null){ %><%=StringEscapeUtils.escapeHtml4(labInfo.getLabName())  %><%}else{ %>LAB NAME<%} %> ( <%if(labInfo!=null && labInfo.getLabCode() !=null){ %><%=StringEscapeUtils.escapeHtml4(labInfo.getLabCode())%><%} %> ) </h2> </th>
 							</tr>
 						<%}%>
 						<tr>
@@ -174,7 +175,7 @@ String labcode = (String) session.getAttribute("labcode");
 							<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: 700;font-size:20px">Defence Research & Development Organization</th>
 						</tr>
 						<tr>
-							<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: 700;font-size:20px"><%if(labInfo.getLabAddress() !=null){ %><%=labInfo.getLabAddress()  %> , <%=labInfo.getLabCity() %><%}else{ %>LAB ADDRESS<%} %> </th>
+							<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: 700;font-size:20px"><%if(labInfo.getLabAddress() !=null){ %><%=labInfo.getLabAddress()  %> , <%=StringEscapeUtils.escapeHtml4(labInfo.getLabCity()) %><%}else{ %>LAB ADDRESS<%} %> </th>
 						</tr>
 					</table>
 				</div>
@@ -224,7 +225,7 @@ String labcode = (String) session.getAttribute("labcode");
 										<tr class="clickable " data-target="#presentation-slides" data-slide-to="<%=(++pageCOunt)%>" data-toggle="tooltip" data-placement="top" title="" style="cursor: pointer;">
 											<td style="text-align: center;font-weight: bold;"><%=1+i %> </td>
 											<td style="text-align: center;font-weight: bold;">
-												<%=mainProjectList.get(i)[12]!=null?mainProjectList.get(i)[12]:"-" %>
+												<%=mainProjectList.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(mainProjectList.get(i)[12].toString()):"-" %>
 											</td>
 											<td style="font-weight: bold;"  >
 											<div class="container-fluid">
@@ -280,7 +281,7 @@ String labcode = (String) session.getAttribute("labcode");
 														</div>
 														<div class="col">
 															<%if (mainProjectList.get(i) != null )
-																if(mainProjectList.get(i)[1] != null) { %><%=mainProjectList.get(i)[1]%> - <%=mainProjectList.get(i)[13]!=null?mainProjectList.get(i)[13]:"-"%> 
+																if(mainProjectList.get(i)[1] != null) { %><%=StringEscapeUtils.escapeHtml4(mainProjectList.get(i)[1].toString())%> - <%=mainProjectList.get(i)[13]!=null?StringEscapeUtils.escapeHtml4(mainProjectList.get(i)[13].toString()):"-"%> 
 															<%}%>
 														</div>
 													</div>
@@ -288,7 +289,7 @@ String labcode = (String) session.getAttribute("labcode");
 											</td>
 											
 											<td style="font-weight: bold;text-align: center;">
-												<%if(mainProjectList.get(i)[32]!=null){%><%=mainProjectList.get(i)[32] %><%}else {%>-<%} %>
+												<%if(mainProjectList.get(i)[32]!=null){%><%=StringEscapeUtils.escapeHtml4(mainProjectList.get(i)[32].toString()) %><%}else {%>-<%} %>
 											</td>
 											<%-- <td>
 											<%=mainProjectList.get(i)[32]%>
@@ -384,7 +385,7 @@ String labcode = (String) session.getAttribute("labcode");
 											<tr class="clickable " data-target="#presentation-slides" data-slide-to="<%=(++pageCOunt)%>" data-toggle="tooltip" data-placement="top" title="" style="cursor: pointer;">
 												<td style="text-align: center;font-weight: bold;"><%=1+i %> </td>
 												<td style="text-align: center;font-weight: bold;">
-													<%=subProjectList.get(i)[12]!=null?subProjectList.get(i)[12]:"-" %>
+													<%=subProjectList.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(subProjectList.get(i)[12].toString()):"-" %>
 												</td>
 												<td  style="font-weight: bold;"  >
 													<div class="container-fluid">
@@ -438,7 +439,7 @@ String labcode = (String) session.getAttribute("labcode");
 															</div>
 															<div class="col">
 																<%if (subProjectList.get(i) != null )
-																	if(subProjectList.get(i)[1] != null) { %><%=subProjectList.get(i)[1]%> - <%=subProjectList.get(i)[13]!=null?subProjectList.get(i)[13]:"-"%>
+																	if(subProjectList.get(i)[1] != null) { %><%=StringEscapeUtils.escapeHtml4(subProjectList.get(i)[1].toString())%> - <%=subProjectList.get(i)[13]!=null?StringEscapeUtils.escapeHtml4(subProjectList.get(i)[13].toString()):"-"%>
 																<%}%>
 															</div>
 														</div>
@@ -448,7 +449,7 @@ String labcode = (String) session.getAttribute("labcode");
 														
 												</td>
 												<td style="font-weight: bold;text-align: center;">
-													<%if(subProjectList.get(i)[32]!=null){%><%=subProjectList.get(i)[32] %><%}else {%>-<%} %>
+													<%if(subProjectList.get(i)[32]!=null){%><%=StringEscapeUtils.escapeHtml4(subProjectList.get(i)[32].toString()) %><%}else {%>-<%} %>
 												</td>
 												<%-- <td style="font-weight: bold;text-align: right;">
 													<%if (subProjectList.get(i) != null )
@@ -550,7 +551,7 @@ String labcode = (String) session.getAttribute("labcode");
 													</div>
 													<h2 style="color: black;<%if(projects.get(i) != null && projects.get(i)[1] != null && projects.get(i)[1].toString().length()>60){ %>   font-size: 1.5rem!important; <%}%>" class="col-md-9" align="center">
 															<%if (projects.get(i) != null )if(projects.get(i)[1] != null) {
-															%><%=projects.get(i)[1]%> - <%=projects.get(i)[13]!=null?projects.get(i)[13]:"-"%> (<%=projects.get(i)[12]!=null?projects.get(i)[12]:"-" %>)
+															%><%=StringEscapeUtils.escapeHtml4(projects.get(i)[1].toString())%> - <%=projects.get(i)[13]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[13].toString()):"-"%> (<%=projects.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[12].toString()):"-" %>)
 															<%}%>
 													</h2>
 													<h6 class="col">
@@ -586,7 +587,7 @@ String labcode = (String) session.getAttribute("labcode");
 																	
 																</tr>
 																<tr>
-																	<td colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[12]!=null?projects.get(i)[12]:"--"%></td>
+																	<td colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[12].toString()):"--"%></td>
 																	<td colspan="1" style="width: 12%;color:#002CCD;text-align:center"><%=sdf.format(projects.get(i)[5])%> </td>
 																	<td colspan="1" style="width: 12%;color:#002CCD;text-align:center;">
 																	
@@ -599,19 +600,19 @@ String labcode = (String) session.getAttribute("labcode");
 																<%}%>
 																	"><%=sdf.format(projects.get(i)[4])%></span>
 																	 <%if(projects.get(i)[35]!=null) {%><br><span style="color: black;font-size: 1.25rem !important;"><%=sdf.format(projects.get(i)[35]) %></span> <%} %></td>
-																	<td colspan="1" style="text-align:center;color:#002CCD;"><%=projects.get(i)[6]!=null?projects.get(i)[6]:"--"%></td>
-																	<td colspan="1" style="text-align:center;color:#002CCD;"><%=projects.get(i)[32]!=null?projects.get(i)[32]:"--"%></td>
+																	<td colspan="1" style="text-align:center;color:#002CCD;"><%=projects.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[6].toString()):"--"%></td>
+																	<td colspan="1" style="text-align:center;color:#002CCD;"><%=projects.get(i)[32]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[32].toString()):"--"%></td>
 																	<td colspan="1" style="color:#002CCD;text-align:right;width:15%;text-align:center;"><%=nfc.convert(cost / 10000000)%> / <span style="font-size: 1.25! important;color: green;"><%=nfc.convert(exp / 10000000)%></span></td>
-																	<td colspan="1" style="color:#002CCD; font-size: 16px!important;width:18%;text-align:center;"> <%if (projects.get(i) != null && projects.get(i)[33] != null) {%> <%=projects.get(i)[33]%>, <%if(projects.get(i)[34] != null){ %> <%=projects.get(i)[34].toString() %><%} %>
+																	<td colspan="1" style="color:#002CCD; font-size: 16px!important;width:18%;text-align:center;"> <%if (projects.get(i) != null && projects.get(i)[33] != null) {%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[33].toString())%>, <%if(projects.get(i)[34] != null){ %> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[34].toString()) %><%} %>
 																		<%} else {%> -- <%}%></td>
-																	<td colspan="1" style="color:#002CCD;width:15%;text-align:center; font-size: 16px!important;"> <%if(projects.get(i)[14]!=null){%> <%=projects.get(i)[14]%>
+																	<td colspan="1" style="color:#002CCD;width:15%;text-align:center; font-size: 16px!important;"> <%if(projects.get(i)[14]!=null){%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[14].toString())%>
 																		<%} else {%> -- <%}%></td>
 																</tr>
 																<tr>
 																	<td colspan="1" style=" font-weight: bold; color: #021B79;vertical-align: top;font-size:1.25rem">Brief :</td>
 																	<td colspan="7" style="color: black;font-size:1.05rem!important;">
 																		<%if(projects.get(i)[28]!=null){%>
-																			<%=projects.get(i)[28]%>
+																			<%=StringEscapeUtils.escapeHtml4(projects.get(i)[28].toString())%>
 																		<%}else{%>
 																			--
 																		<%}%>
@@ -621,7 +622,7 @@ String labcode = (String) session.getAttribute("labcode");
 																	<td colspan="1"><b style=" font-weight: bold; color: #021B79;font-size:1.25rem">Objectives : </b></td>
 																	<td colspan="7"style="color: black;font-size:1.05rem!important;">
 																			<%if(projects.get(i)[7]!=null) {%>
-																				<%=projects.get(i)[7]%> 
+																				<%=StringEscapeUtils.escapeHtml4(projects.get(i)[7].toString())%> 
 																			<%} else{%>
 																				--
 																			<%} %>
@@ -642,7 +643,7 @@ String labcode = (String) session.getAttribute("labcode");
 																	<td colspan="1"><b style=" font-weight: bold; color: #021B79;font-size:1.25rem">Deliverables : </b> </td>
 																	<td colspan="7"style="color: black;font-size:1.05rem!important;">
 																			<%if(projects.get(i)[8]!=null) {%>
-																				<%=projects.get(i)[8]%> 
+																				<%=StringEscapeUtils.escapeHtml4(projects.get(i)[8].toString())%> 
 																			<%} else{%>
 																				--
 																			<%} %>
@@ -680,7 +681,7 @@ String labcode = (String) session.getAttribute("labcode");
 																				 </p>
 																				<%if(projects.get(i)!=null && projects.get(i)[20]!=null && projects.get(i)[20].toString().length()>0) {%>
 																				<%-- 	<%=projects.get(i)[20].toString().substring(3,projects.get(i)[20].toString().length()-1 )%> --%>
-																				<div class="ml-3" style="text-align: left;"><%=projects.get(i)[20]%></div>
+																				<div class="ml-3" style="text-align: left;"><%=StringEscapeUtils.escapeHtml4(projects.get(i)[20].toString())%></div>
 																				<%} else{%>-<%} %>
 																	</div>
 																
@@ -695,7 +696,7 @@ String labcode = (String) session.getAttribute("labcode");
 																			</span></p>
 																	<%-- 	<%=projects.get(i)[31].toString().substring(3,projects.get(i)[31].toString().length()-1 )%> --%>
 																		<div class="ml-3">
-																				<%=projects.get(i)[31].toString() %>
+																				<%=StringEscapeUtils.escapeHtml4(projects.get(i)[31].toString()) %>
 																				</div>
 																	</div>
 																		
@@ -778,7 +779,7 @@ String labcode = (String) session.getAttribute("labcode");
 							 						<div class="col-md-1" align="left" style="padding-top:5px;" >
 														<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 													</div>
-													<h2 style="color: black;<%if(projects.get(i) != null && projects.get(i)[1] != null && projects.get(i)[1].toString().length()>60){ %>   font-size: 1.5rem!important; <%}%>" class="col-md-9" align="center"> <%if(projects.get(i)!=null )if( projects.get(i)[1]!=null){%><%=projects.get(i)[1]%> - <%=projects.get(i)[13]!=null?projects.get(i)[13]:"-"%> (<%=projects.get(i)[12]!=null?projects.get(i)[12]:"-" %>)  <%}%></h2>
+													<h2 style="color: black;<%if(projects.get(i) != null && projects.get(i)[1] != null && projects.get(i)[1].toString().length()>60){ %>   font-size: 1.5rem!important; <%}%>" class="col-md-9" align="center"> <%if(projects.get(i)!=null )if( projects.get(i)[1]!=null){%><%=StringEscapeUtils.escapeHtml4(projects.get(i)[1].toString())%> - <%=projects.get(i)[13]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[13].toString()):"-"%> (<%=projects.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[12].toString()):"-" %>)  <%}%></h2>
 							 					<%-- 	<h6 class="col">
 							 							<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[27]).exists()){%>
 															<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" ><b>Show more</b></a>
@@ -807,7 +808,7 @@ String labcode = (String) session.getAttribute("labcode");
 															<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold; color: maroon;width: 17%">Current Stage </td>
 														</tr>
 														<tr>
-															<td colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[12]!=null?projects.get(i)[12]:"--"%></td>
+															<td colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[12]!=null?StringEscapeUtils.escapeHtml4( projects.get(i)[12].toString()):"--"%></td>
 															<td colspan="1" style="width: 12%;color:#002CCD;text-align:center"><%=sdf.format(projects.get(i)[5])%></td>
 															<td colspan="1" style="width: 12%;color:#002CCD;text-align:center;">
 																<span style="font-size: 1.25rem !important;
@@ -819,12 +820,12 @@ String labcode = (String) session.getAttribute("labcode");
 																<%}%>
 																	"><%=sdf.format(projects.get(i)[4])%></span>
 															<%if(projects.get(i)[35]!=null) {%><br><span style="color: black;font-size: 1.25rem !important;"><%=sdf.format(projects.get(i)[35]) %></span> <%} %></td>
-															<td colspan="1" style="text-align:center;color:#002CCD;"><%=projects.get(i)[6]!=null?projects.get(i)[6]:"--"%></td>
-															<td colspan="1" style="text-align:center;color:#002CCD;"><%=projects.get(i)[32]!=null?projects.get(i)[32]:"--"%></td>
+															<td colspan="1" style="text-align:center;color:#002CCD;"><%=projects.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[6].toString()):"--"%></td>
+															<td colspan="1" style="text-align:center;color:#002CCD;"><%=projects.get(i)[32]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[32].toString()):"--"%></td>
 															<td colspan="1" style="color:#002CCD;text-align:right;width:15%;text-align:center;"><%=nfc.convert(cost / 10000000)%> / <span style="font-size: 1.25! important;color: green;"><%=nfc.convert(exp / 10000000)%></span> </td>
-															<td colspan="1" style="color:#002CCD;width:18%;font-size:16px!important;text-align:center;"> <%if (projects.get(i) != null && projects.get(i)[33] != null) {%> <%=projects.get(i)[33]%>, <%if(projects.get(i)[34] != null){ %> <%=projects.get(i)[34].toString() %><%} %>
+															<td colspan="1" style="color:#002CCD;width:18%;font-size:16px!important;text-align:center;"> <%if (projects.get(i) != null && projects.get(i)[33] != null) {%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[33].toString())%>, <%if(projects.get(i)[34] != null){ %> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[34].toString()) %><%} %>
 																<%} else {%> -- <%}%></td>
-															<td colspan="1" style="color:#002CCD;width:15%;text-align:center; font-size: 16px!important;"> <%if(projects.get(i)[14]!=null){%> <%=projects.get(i)[14]%>
+															<td colspan="1" style="color:#002CCD;width:15%;text-align:center; font-size: 16px!important;"> <%if(projects.get(i)[14]!=null){%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[14].toString())%>
 																<%} else {%> -- <%}%></td>
 														</tr>
 													</table>
@@ -839,7 +840,7 @@ String labcode = (String) session.getAttribute("labcode");
 																			</td>
 																			<td colspan="3" style="border-top: none;vertical-align: top;color: black;font-size:1.05rem!important;">
 																				<%if(projects.get(i)[28]!=null){%>
-																					<%=projects.get(i)[28]%>
+																					<%=StringEscapeUtils.escapeHtml4(projects.get(i)[28].toString())%>
 																				<%}else{%>
 																					--
 																				<%}%>
@@ -850,7 +851,7 @@ String labcode = (String) session.getAttribute("labcode");
 																				<b style="font-weight: bold;color: #021B79;vertical-align: top;font-size:1.05rem!important;">Objectives : </b>
 																			</td>
 																			<td colspan="3" style="color: black;font-size:1.05rem!important;"> 
-																					<%=projects.get(i)[7]==null?"--":projects.get(i)[7]%> 
+																					<%=projects.get(i)[7]==null?"--":StringEscapeUtils.escapeHtml4(projects.get(i)[7].toString())%> 
 																			</td>
 																		</tr>
 																		<%-- <tr>
@@ -867,7 +868,7 @@ String labcode = (String) session.getAttribute("labcode");
 																				<b style="font-weight: bold;color: #021B79;vertical-align: top;font-size:1.25rem">Deliverables : </b>
 																			</td>
 																			<td colspan="3" style="color: black;font-size:1.05rem!important;"> 
-																					<%=projects.get(i)[8]==null?"--":projects.get(i)[8]%> 
+																					<%=projects.get(i)[8]==null?"--":StringEscapeUtils.escapeHtml4(projects.get(i)[8].toString())%> 
 																			</td>
 																		</tr>
 																					
@@ -903,7 +904,7 @@ String labcode = (String) session.getAttribute("labcode");
 														<%} %>
 																			<%if(projects.get(i)!=null && projects.get(i)[20]!=null) {%>
 																				<%-- <%=projects.get(i)[20].toString().substring(3, projects.get(i)[20].toString().length())%> --%>
-																					<div class="ml-3" style="text-align: left;"><%=projects.get(i)[20]%></div>
+																					<div class="ml-3" style="text-align: left;"><%=StringEscapeUtils.escapeHtml4(projects.get(i)[20].toString())%></div>
 																			<%} else{%>-<%} %> 
 																		</div>
 																	</div>
@@ -913,7 +914,7 @@ String labcode = (String) session.getAttribute("labcode");
 																				<span style="text-align: left;font-size: 1.25rem !important; font-weight: bold; color: maroon;">
 																					<u>Way Forward : </u></span> 
 																				<div class="ml-3">
-																				<%=projects.get(i)[31].toString() %>
+																				<%=StringEscapeUtils.escapeHtml4(projects.get(i)[31].toString()) %>
 																				</div>
 																			</div>
 																		</div>
@@ -1021,7 +1022,7 @@ String labcode = (String) session.getAttribute("labcode");
 													
 													<h2 style="color: black;<%if(projects.get(i) != null && projects.get(i)[1] != null && projects.get(i)[1].toString().length()>60){ %>   font-size: 1.5rem!important; <%}%>" class="col-md-10" align="center">
 														<%if (projects.get(i) != null )if(projects.get(i)[1] != null) {
-														%><%=projects.get(i)[1]%> (<%=projects.get(i)[12]%>)
+														%><%=StringEscapeUtils.escapeHtml4(projects.get(i)[1].toString())%> (<%=StringEscapeUtils.escapeHtml4(projects.get(i)[12].toString())%>)
 														<%}%>
 													</h2>
 							 						<div class="col-md-1" align="right" style="padding-top:5px;" >
@@ -1045,7 +1046,7 @@ String labcode = (String) session.getAttribute("labcode");
 																	<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold;color: maroon;">Current Stage </td>
 																</tr>
 																<tr>
-																	<td colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[12]!=null?projects.get(i)[12]:"--"%></td>
+																	<td colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[12].toString()):"--"%></td>
 																	<td colspan="1" style="width: 12%;color:#002CCD;text-align:center"><%=sdf.format(projects.get(i)[5])%></td>
 																	<td colspan="1" style="width: 12%;color:#002CCD;text-align:center;">
 																				<span style="font-size: 1.25rem !important;
@@ -1058,12 +1059,12 @@ String labcode = (String) session.getAttribute("labcode");
 																	"><%=sdf.format(projects.get(i)[4])%></span>
 																	
 																	<%if(projects.get(i)[35]!=null) {%><br><span style="color: black;font-size: 1.25rem !important;"><%=sdf.format(projects.get(i)[35]) %></span><%} %></td>
-																	<td colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[6]!=null?projects.get(i)[6]:"--"%></td>
-																	<td colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[32]!=null?projects.get(i)[32]:"--"%></td>
+																	<td colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[6].toString()):"--"%></td>
+																	<td colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[32]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[32].toString()):"--"%></td>
 																	<td colspan="1" style="color:#002CCD;text-align:right;width:15%;text-align:center;"><%=nfc.convert(cost / 10000000)%> / <span style="font-size: 1.25! important;color: green;"><%=nfc.convert(exp / 10000000)%></span> </td>
-																	<td colspan="1" style="color:#002CCD;font-size: 16px!important;width:15%;text-align:center;"> <%if (projects.get(i) != null && projects.get(i)[33] != null) {%> <%=projects.get(i)[33]%>, <%if(projects.get(i)[34] != null){ %> <%=projects.get(i)[34].toString() %><%} %>
+																	<td colspan="1" style="color:#002CCD;font-size: 16px!important;width:15%;text-align:center;"> <%if (projects.get(i) != null && projects.get(i)[33] != null) {%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[33].toString())%>, <%if(projects.get(i)[34] != null){ %> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[34].toString()) %><%} %>
 																		<%} else {%> -- <%}%></td>
-																	<td colspan="1" style="color:#002CCD;width:15%;text-align:center; font-size: 16px!important;"> <%if(projects.get(i)[14]!=null){%> <%=projects.get(i)[14]%>
+																	<td colspan="1" style="color:#002CCD;width:15%;text-align:center; font-size: 16px!important;"> <%if(projects.get(i)[14]!=null){%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[14].toString())%>
 																		<%} else {%> -- <%}%></td>
 																</tr>
 																<tr>
@@ -1076,9 +1077,9 @@ String labcode = (String) session.getAttribute("labcode");
 																	<td colspan="1"><b style="; font-weight: bold; color: #021B79;font-size:1.25rem">Objectives : </b></td>
 																	<td colspan="7" style="color: black;font-size:1.25rem">
 																	 <%if(projects.get(i)[7] != null && projects.get(i)[7].toString().length() > 320) {%>
-																		<%=projects.get(i)[7].toString().substring(0, 280)%>
+																		<%=StringEscapeUtils.escapeHtml4(projects.get(i)[7].toString()).substring(0, 280)%>
 																	<%} else {%> 
-																		<%=projects.get(i)[7]!=null?projects.get(i)[7]:"--"%> 
+																		<%=projects.get(i)[7]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[7].toString()):"--"%> 
 																	<%}%>
 																	</td>
 																</tr>
@@ -1088,9 +1089,9 @@ String labcode = (String) session.getAttribute("labcode");
 																	<td colspan="1"><b style=" font-weight: bold; color: #021B79;">Deliverables : </b> </td>
 																	<td colspan="7" style="color: black;font-size: 1.05rem!important;">
 																		<% if (projects.get(i)[8] != null && projects.get(i)[8].toString().length() > 320) {%>
-																			<%=projects.get(i)[8].toString().substring(0, 280)%>
+																			<%=StringEscapeUtils.escapeHtml4(projects.get(i)[8].toString()).substring(0, 280)%>
 																		<%} else {%> 
-																			<%=projects.get(i)[8]!=null?projects.get(i)[8]:"--"%> 
+																			<%=projects.get(i)[8]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[8].toString()):"--"%> 
 																		<% } %>
 																	</td>
 																</tr>
@@ -1107,7 +1108,7 @@ String labcode = (String) session.getAttribute("labcode");
 															<div class="col">
 															
 																	<%if(projects.get(i)!=null && projects.get(i)[20]!=null) {%>
-																				<div class="ml-3" style="text-align: left;"><%=projects.get(i)[20]%></div>
+																				<div class="ml-3" style="text-align: left;"><%=StringEscapeUtils.escapeHtml4(projects.get(i)[20].toString())%></div>
 																		<%} else{%>-<%} %> 
 						
 															</div>

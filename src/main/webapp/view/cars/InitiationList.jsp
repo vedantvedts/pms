@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.util.List"%>
@@ -316,22 +317,22 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("InitiationL
 String committeeId = (String)request.getAttribute("committeeId");
 %>
 
-<% String ses=(String)request.getParameter("result");
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 <br>
 <div class="container-fluid">
@@ -453,7 +454,7 @@ String committeeId = (String)request.getAttribute("committeeId");
 										<div class="container">
 				  							<div class="row">
 					  							<div class="col-lg">
-													<h4 class="card-title" ><%=obj[2] %></h4></div>
+													<h4 class="card-title" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></h4></div>
 											<%-- <div class="col-">
 												<p> <%if(obj[8]!=null){if(obj[8].equals('Y')){%><%="MAIN" %>
 													<%}else{ %><%="SUB" %> <% }}else{ %> - <%} %>
@@ -490,7 +491,7 @@ String committeeId = (String)request.getAttribute("committeeId");
 												Title : 
 														<%if(obj[4]!=null){%>
 														    <span>
-														    	<%if(carstitle.length()<100){%> <%=carstitle%> <%}else{%><%=carstitle.substring(0,100)%>
+														    	<%if(carstitle.length()<100){%> <%=carstitle!=null?StringEscapeUtils.escapeHtml4(carstitle): " - "%> <%}else{%><%=carstitle!=null?StringEscapeUtils.escapeHtml4(carstitle).substring(0,100):" - "%>
 														    </span>
 															<span>
 																<b><span style="color:#1176ab;font-size: 14px;"><a href="#" onclick="titlemodal('<%=obj[0]%>','<%=obj[4]%>')" style="text-decoration: none;">......(View More)</a></span></b>
@@ -510,10 +511,10 @@ String committeeId = (String)request.getAttribute("committeeId");
 										<div class="container">
 					  						<div class="row">
 					  							<div class="col-xl" style="text-align: left;">
-													Date : <%if(obj[3]!=null) {%><%=fc.SqlToRegularDate(obj[3].toString()) %><%} else {%>-<%} %>
+													Date : <%if(obj[3]!=null) {%><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(obj[3].toString())) %><%} else {%>-<%} %>
 												</div>
 												<div class="col-">
-													Funds from : <%if(obj[7]!=null) {%> <%if(obj[7].toString().equalsIgnoreCase("0")) {%>Buildup<%} else{%>Project<%} }%>
+													Funds from : <%if(obj[7]!=null) {%> <%if(StringEscapeUtils.escapeHtml4(obj[7].toString()).equalsIgnoreCase("0")) {%>Buildup<%} else{%>Project<%} }%>
 												</div>
 												
 											</div>
@@ -525,7 +526,7 @@ String committeeId = (String)request.getAttribute("committeeId");
 													Cost : <%=amount %> Lakhs
 												</div>
 												<div class="col-">
-													Duration : <%=obj[33]!=null?obj[33].toString():(obj[8]!=null?obj[8].toString():"0") %> Months
+													Duration : <%=obj[33]!=null?StringEscapeUtils.escapeHtml4(obj[33].toString()):(obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()):"0") %> Months
 												</div>
 											</div>
 										</div>
@@ -546,7 +547,7 @@ String committeeId = (String)request.getAttribute("committeeId");
 				                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				                                        	<input type="hidden" name="carsInitiationId" value="<%=obj[0] %>">
 				                                       	  	<button type="submit" class="btn btn-sm btn-link w-100 btn-status" formaction=CARSTransStatus.htm value="<%=obj[0] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[11] %>; font-weight: 600;" formtarget="_blank">
-											    			<%=obj[10] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+											    			<%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 											    			</button>
 	                                        			</form>
 													<br/>

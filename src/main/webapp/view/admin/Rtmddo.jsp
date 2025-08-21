@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -43,20 +44,22 @@ NFormatConvertion nfc=new NFormatConvertion();
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 <br>
 	
@@ -75,7 +78,7 @@ NFormatConvertion nfc=new NFormatConvertion();
         		<div class="row " style=" background-color: #e4f9f5;margin-bottom: 10px; ">
 
                     		<div class="col-md-6 " ><br>
-                    		<label class="control-label">Active RTMDDO : <%if(Rtmddo!=null){%> <%=Rtmddo[2] %>, <%=Rtmddo[3] %><%} %></label>
+                    		<label class="control-label">Active RTMDDO : <%if(Rtmddo!=null){%> <%=Rtmddo[2]!=null?StringEscapeUtils.escapeHtml4(Rtmddo[2].toString()): " - " %>, <%=Rtmddo[3]!=null?StringEscapeUtils.escapeHtml4(Rtmddo[3].toString()): " - " %><%} %></label>
                         	</div>
                         	<div class="col-md-3 "><br>
                         	<label class="control-label">Valid From : <%if(Rtmddo!=null){%> <%=sdf.format(Rtmddo[4]) %><%} %></label>
@@ -94,7 +97,7 @@ NFormatConvertion nfc=new NFormatConvertion();
                               		<select class="form-control selectdee" id="EmpId" required="required" name="EmpId">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : EmployeeList) {%>
-										<option value="<%=obj[0]%>"><%=obj[1]%>,  <%=obj[2] %> </option>
+										<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>,  <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> </option>
 											<%} %>
   									</select>
                         		</div>

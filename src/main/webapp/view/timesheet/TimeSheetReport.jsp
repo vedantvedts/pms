@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.Set"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.LinkedHashMap"%>
@@ -262,22 +263,22 @@ List<Object[]> notSubmittedEmployees = employeeList.stream().filter(e -> !newTim
 FormatConverter fc = new FormatConverter();
 %>
 
-	<% String ses=(String)request.getParameter("result");
-	 	String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-		%>
-		<div align="center">
-			<div class="alert alert-danger" role="alert">
-		    <%=ses1 %>
-		    </div>
-		</div>
-		<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-		    	<%=ses %>
-			</div>
-		</div>
-	<%} %>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 	<div class="container-fluid">
 		<div class="row">
@@ -378,16 +379,16 @@ FormatConverter fc = new FormatConverter();
 													<%if(i==0) {%>
 														<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=++slno%></td>
 											    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;">
-											    			<%=obj[17]!=null?obj[17]+", "+(obj[18]!=null?obj[18]:"-"):"-" %>
+											    			<%=obj[17]!=null?StringEscapeUtils.escapeHtml4(obj[17].toString())+", "+(obj[18]!=null?StringEscapeUtils.escapeHtml4(obj[18].toString()):"-"):"-" %>
 											    		</td>
 			         								<%} %>
-			         								<td class="center"><%=obj[16]!=null?obj[16]:"-" %></td>
-			    									<td ><%=obj[5]!=null?obj[5]:"-" %></td>
-			    									<td class="center"><%=obj[8]!=null?obj[8]:"-" %></td>
-			    									<td><%=obj[10]!=null?obj[10]+", "+(obj[11]!=null?obj[11]:"-"):"Not Available" %></td>
-			    									<td class="center"><%=obj[13]!=null?obj[13].toString():"-" %></td>
-			    									<td><%=obj[14]!=null?obj[14]:"-" %></td>
-			    									<td class="center"><%=obj[15]!=null?(obj[15].toString().equalsIgnoreCase("A")?"AN":(obj[15].toString().equalsIgnoreCase("F")?"FN":"Full day")):"-" %></td>
+			         								<td class="center"><%=obj[16]!=null?StringEscapeUtils.escapeHtml4(obj[16].toString()):"-" %></td>
+			    									<td ><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %></td>
+			    									<td class="center"><%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()):"-" %></td>
+			    									<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString())+", "+(obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()):"-"):"Not Available" %></td>
+			    									<td class="center"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()):"-" %></td>
+			    									<td><%=obj[14]!=null?StringEscapeUtils.escapeHtml4(obj[14].toString()):"-" %></td>
+			    									<td class="center"><%=obj[15]!=null?(StringEscapeUtils.escapeHtml4(obj[15].toString()).equalsIgnoreCase("A")?"AN":(StringEscapeUtils.escapeHtml4(obj[15].toString()).equalsIgnoreCase("F")?"FN":"Full day")):"-" %></td>
 												</tr>
 											<% ++i; } } } else{%>
 												<tr>
@@ -424,8 +425,8 @@ FormatConverter fc = new FormatConverter();
 												<tr>
 													<td class="center"><%=++slno%></td>
 										    		<td style="vertical-align: middle;">
-										    			<%=obj[1]!=null?obj[1]:obj[2] %>
-										    			<%=obj[5]!=null?(obj[5]+", "+(obj[6]!=null?obj[6]:"-")):"-" %>
+										    			<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):StringEscapeUtils.escapeHtml4(obj[2].toString())%>
+										    			<%=obj[5]!=null?(StringEscapeUtils.escapeHtml4(obj[5].toString())+", "+(obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"-")):"-" %>
 										    		</td>
 			         								<td class="center" colspan="7">No Data Available</td>
 												</tr>

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -57,20 +58,22 @@ h6{
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
- if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br/>
 
@@ -151,9 +154,9 @@ h6{
 																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 																			</form>
 																		</td>
-																		<td><%=sdf.format(obj[3])%> - <%=obj[4] %></td>
-																		<td> <%=obj[9]%></td>
-																		<td><%if(obj[10]!=null){%> <%=obj[10]%> <%}else{ %> &nbsp;&nbsp;&nbsp;&nbsp;- <%} %></td>																	
+																		<td><%=obj[3]!=null?sdf.format(obj[3]): " - " %> - <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
+																		<td> <%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - "%></td>
+																		<td><%if(obj[10]!=null){%> <%=StringEscapeUtils.escapeHtml4(obj[10].toString())%> <%}else{ %> &nbsp;&nbsp;&nbsp;&nbsp;- <%} %></td>																	
 																		<%-- <td>
 																			<%if("CS".equalsIgnoreCase(obj[6].toString())){ %> Member Secretary <%} %>
 																			<%if("CC".equalsIgnoreCase(obj[6].toString())){ %> Chairperson <%} %>

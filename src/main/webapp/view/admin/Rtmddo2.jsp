@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
@@ -46,19 +47,22 @@ if(pdomtrt!=null&&pdomtrt.size()>0){
 map = pdomtrt.stream().collect(Collectors.groupingBy(c -> c[4])); 
 }
 %>
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){%>
-<center>
-<div class="alert alert-danger" role="alert" >
-<%=ses1 %>
-</div></center>
-<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	<div class="container">
 	<div class="row">
 
@@ -83,7 +87,7 @@ if(ses1!=null){%>
                               		<select class="form-control selectdee" id="EmpId" required="required" name="EmpId"  ">
     									<option disabled="true"  selected="selected"  value="">Select </option>
     										<% for (Object[] obj : EmployeeList) {%>
-										<option value="<%=obj[0]%>" <%if(pdomtrt!=null&& map.get("DO-RTMD")!=null && obj[0].toString().equals(map.get("DO-RTMD").get(0)[1].toString())){%> selected="selected" <%} %> ><%=obj[1]%>,  <%=obj[2] %> </option>
+										<option value="<%=obj[0]%>" <%if(pdomtrt!=null&& map.get("DO-RTMD")!=null && obj[0].toString().equals(map.get("DO-RTMD").get(0)[1].toString())){%> selected="selected" <%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>,  <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> </option>
 											<%} %>
   									</select>
                         		</div>
@@ -123,7 +127,7 @@ if(ses1!=null){%>
                               		<select class="form-control selectdee" id="EmpId2" required="required" name="EmpId">
     									<option disabled="true"  selected="selected" value="">Select </option>
     										<% for (Object[] obj : EmployeeList) {%>
-										<option value="<%=obj[0]%>" <%if(pdomtrt!=null&& map.get("AD")!=null &&obj[0].toString().equals(map.get("AD").get(0)[1].toString())){ %> selected="selected" <%} %>><%=obj[1]%>,  <%=obj[2] %> </option>
+										<option value="<%=obj[0]%>" <%if(pdomtrt!=null&& map.get("AD")!=null &&obj[0].toString().equals(map.get("AD").get(0)[1].toString())){ %> selected="selected" <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>,  <%=obj[2] !=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> </option>
 											<%} %>
   									</select>
                         		</div>

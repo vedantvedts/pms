@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.time.LocalDate"%>
@@ -176,7 +177,7 @@ String year=(String)request.getAttribute("year");
            for(Object[] obj:AnnualReport){
 	   %>
 	   <tr>
-	   <td><%=obj[4] %></td>
+	   <td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
 	   <td><b id="<%=obj[0]%>M1" ></b></td>
 	   <td><b id="<%=obj[0]%>M2" ></b></td>
 	   <td><b id="<%=obj[0]%>M3" ></b></td>

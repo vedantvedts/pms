@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
@@ -37,19 +38,22 @@ List<Object[]> LabList=(List<Object[]>) request.getAttribute("LabList");
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%><center>
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -83,9 +87,9 @@ List<Object[]> LabList=(List<Object[]>) request.getAttribute("LabList");
     <tbody>
 	    <%for(Object[] 	obj:LabList){ %>
 	    <tr>
-	  <td><input type="checkbox" name="Pid" value=<%=obj[0] %>  ></td> 
-	   <td><%=obj[1] %></td>
-	  <td><%=obj[2] %></td>
+	  <td><input type="checkbox" name="Pid" value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): "" %>  ></td> 
+	   <td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
+	  <td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 	   
 	    
 	    </tr>

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
@@ -227,21 +228,22 @@ cursor: pointer;
   Long projectDirector =0l;
  %>
  
- 	<% String ses = (String) request.getParameter("result"); 
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-        <div align="center">
-            <div class="alert alert-danger" role="alert">
-                <%= ses1 %>
-            </div>
+ 	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
         </div>
-    <% } if (ses != null) { %>
-        <div align="center">
-            <div class="alert alert-success" role="alert">
-                <%= ses %>
-            </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
         </div>
-    <% } %>
+    </div>
+<% } %>
     
 	<form class="form-inline"  method="POST" action="M-A-AssigneeList.htm">
   		<div class="row W-100" style="width: 100%;">
@@ -265,7 +267,7 @@ cursor: pointer;
      				<option disabled="disabled"  selected value="">Choose...</option>
      				<% for (Object[] obj : ProjectList) {
      					projectDirector = Long.parseLong(obj[23].toString());	String projectshortName=(obj[17]!=null)?" ("+obj[17].toString()+") ":""; %>
-	 					<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>><%=obj[4]+projectshortName%>  </option>
+	 					<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%>  </option>
 	 				<%} %>
      			</select>
 			</div>
@@ -285,7 +287,7 @@ cursor: pointer;
 								<%if(ProjectId!=null){
 									Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");
 								%>
-									<%=ProjectDetail[2] %> (<%=ProjectDetail[1]%>) 
+									<%=ProjectDetail[2]!=null?StringEscapeUtils.escapeHtml4(ProjectDetail[2].toString()): " - " %> (<%=ProjectDetail[1]!=null?StringEscapeUtils.escapeHtml4(ProjectDetail[1].toString()): " - "%>) 
 								<%} %>
 					 			Milestone List
 					 		</h5>
@@ -322,16 +324,16 @@ cursor: pointer;
 											<td class="center">
 												<%=++slno %>.
 											</td>
-											<td class="center">M<%=obj[5]%></td>
+											<td class="center">M<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%></td>
 											<td class="center"></td>
 											<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;">
-												<%=obj[4] %>
+												<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %>
 											</td>
 											<td class="center"><%=sdf.format(obj[2])%></td>
 											<td class="center"><%=sdf.format(obj[3])%></td>
-											<td><%=obj[6]%></td>
+											<td><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%></td>
 											<td class="center">-</td>
-											<td class="center"><%=obj[13]%></td>	
+											<td class="center"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - "%></td>	
 											<td>
 												<%if(!obj[12].toString().equalsIgnoreCase("0")){ %>
 													<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -346,7 +348,7 @@ cursor: pointer;
 																bg-warning
 															<%}  %>
 															" role="progressbar" style=" width: <%=obj[12] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															<%=obj[12] %>
+															<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %>
 														</div> 
 													</div> 
 												<%}else{ %>
@@ -432,10 +434,10 @@ cursor: pointer;
 									%>
 										<tr>
 											<td class="center"><%=++slno %>. </td>
-											<td class="center"><%=levelsMapData[2] %></td>
-											<td class="center"><%=levelsMapData[1] %> </td>
+											<td class="center"><%=levelsMapData[2]!=null?StringEscapeUtils.escapeHtml4(levelsMapData[2].toString()): " - " %></td>
+											<td class="center"><%=levelsMapData[1]!=null?StringEscapeUtils.escapeHtml4(levelsMapData[1].toString()): " - " %> </td>
 											<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;">
-												<%=obj[4] %>
+												<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %>
 											</td>
 															
 											<td class="center"><%=sdf.format(obj[2])%></td>
@@ -446,14 +448,14 @@ cursor: pointer;
 													<%if(obj[7]!=null){ %>
 														<%=sdf.format(obj[7]) %>
 													<%}else{ %>
-														<%=obj[8] %>
+														<%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - " %>
 													<%} %>
 												<%}else{ %>
-													<%=obj[8] %>
+													<%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - " %>
 												<%} %>
 												
 											</td>
-											<td class="center"><%=obj[6] %></td>
+											<td class="center"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %></td>
 											<td>
 												<%if(!obj[5].toString().equalsIgnoreCase("0")){ %>
 													<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -468,7 +470,7 @@ cursor: pointer;
 																bg-warning
 															<%}  %>
 															" role="progressbar" style=" width: <%=obj[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															<%=obj[5] %>
+															<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %>
 														</div> 
 													</div> 
 												<%}else{ %>

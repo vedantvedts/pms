@@ -1,4 +1,5 @@
- <%@page import="com.vts.pfms.requirements.model.RequirementInitiation"%>
+ <%@page import="org.apache.commons.text.StringEscapeUtils"%>
+<%@page import="com.vts.pfms.requirements.model.RequirementInitiation"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.time.LocalDate"%>
@@ -398,25 +399,22 @@ List<String>SpecNames = specsList.stream().filter(e->e[13].toString().equalsIgno
 String count1="10";
 %>
 
-	<%String ses=(String)request.getParameter("result"); 
- 	  String ses1=(String)request.getParameter("resultfail");
-	  if(ses1!=null){
-	%>
-	
-	<div align="center">
-
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</div>
-	<%} %>	
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
 
 
 	<div id="reqmain" class="card-slider">
@@ -487,7 +485,7 @@ String count1="10";
 					<div class="subdivs" id="div<%=obj[0]%>" style="display:none;">
 					<%for(Object[]obj1:specsListSub) {%>
 					<div style="display: flex; align-items: center; margin-top: 8px; width: 90%">
-					<button type="button" class="btn btn-secondary viewbtn mt-2" onclick="showDetails(<%=obj1[0].toString() %>)" id="btn<%=obj1[0].toString()%>"><%=count+"."+(++subcount)+". "+obj1[1].toString() %> </button>
+					<button type="button" class="btn btn-secondary viewbtn mt-2" onclick="showDetails(<%=obj1[0].toString() %>)" id="btn<%=obj1[0].toString()%>"><%=count+"."+(++subcount)+". "+obj1[1]!=null?StringEscapeUtils.escapeHtml4(obj1[1].toString()): " - " %> </button>
 					
 					<button class="btn btn-sm bg-transparent" type="button" onclick="deleteSpc(<%=obj1[0].toString()%>)">
 					<i class="fa fa-trash-o" aria-hidden="true" style="color:red;"></i>
@@ -504,7 +502,7 @@ String count1="10";
 					%>
 						
 						<div  style="display: flex; align-items: center; margin-top: 8px; width: 100%">
-						<button style="" type="button" class="btn btn-secondary  mt-2 btnM" onclick="showDetails(<%=obj[0].toString() %>,'M')" id="btn<%=obj[0].toString()%>"><%=(++count)+" . "+obj[1].toString() %>  </button>
+						<button style="" type="button" class="btn btn-secondary  mt-2 btnM" onclick="showDetails(<%=obj[0].toString() %>,'M')" id="btn<%=obj[0].toString()%>"><%=(++count)+" . "+obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>  </button>
 						<button class="btn btn-sm bg-transparent" type="button" onclick="deleteSpc(<%=obj[0].toString()%>)">
 								<i class="fa fa-trash-o" aria-hidden="true" style="color:red;"></i>
 						</button>
@@ -520,7 +518,7 @@ String count1="10";
 					for(Object[]obj1:specsListSubFromMain) {
 					%>
 					<div style="display: flex; align-items: center; margin-top: 8px; width: 90%">
-					<button type="button" class="btn btn-secondary viewbtn mt-2" onclick="showDetails(<%=obj1[0].toString() %>,'M',<%=obj[0].toString() %>)" id="btn<%=obj1[0].toString()%>"><%=count+"."+(++subcount1)+". "+obj1[1].toString() %> </button>
+					<button type="button" class="btn btn-secondary viewbtn mt-2" onclick="showDetails(<%=obj1[0].toString() %>,'M',<%=obj[0].toString() %>)" id="btn<%=obj1[0].toString()%>"><%=count+"."+(++subcount1)+". "+obj1[1]!=null?StringEscapeUtils.escapeHtml4(obj1[1].toString()): " - " %> </button>
 					
 					<button class="btn btn-sm bg-transparent" type="button" onclick="deleteSpc(<%=obj1[0].toString()%>)">
 					<i class="fa fa-trash-o" aria-hidden="true" style="color:red;"></i>
@@ -569,7 +567,7 @@ String count1="10";
 												<select  class="form-control selectdee" name="linkedRequirements" id="linkedRequirements" data-width="80%" data-live-search="true" multiple onchange="getReqDetails()">
 													<option value="" disabled="disabled">SELECT</option>
 													<%for (Object[] obj : RequirementLists) {%>
-														<option value="<%=obj[0]%>"><%=obj[1]%></option>
+														<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
 													<%}%>
 												</select>
 											<%} else {%>
@@ -673,7 +671,7 @@ String count1="10";
 												<select class="form-control selectdee" name="LinkedSub" id="LinkedSub" data-width="80%" data-live-search="true" multiple >
 													<option value="" disabled="disabled">---Choose----</option>
 													<%for (Object[] obj : productTreeList) {%>
-														<option value="<%=obj[0]%>"><%=obj[1]+" "+obj[2] %></option>
+														<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "+" "+obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
 													<%}%>
 												</select>
 											<%} else {%>
@@ -826,9 +824,9 @@ String count1="10";
      <div class="row">
      <%for(Object[]obj:SpecMasterListsub) {%>
      <div class="col-md-4">
-     		       		<input name="specValue" type="checkbox" value="<%=obj[0].toString()+"/"+obj[1].toString()+"/"+obj[3].toString()%>">
+     		       		<input name="specValue" type="checkbox" value="<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "+"/"+obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "+"/"+obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%>">
 						       		<input name="SpecNames" type="hidden" value="<%=obj[1].toString()%>">
-						       		<span class="ml-1 mt-2 text-primary" style="font-weight: 600"><%=obj[1].toString() %></span><br>
+						       		<span class="ml-1 mt-2 text-primary" style="font-weight: 600"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span><br>
      </div>
      <%} %>
      
@@ -917,15 +915,15 @@ String count1="10";
 							<tr style="font-size: 1rem !important;">
 							<td style="text-align: center;">
 							<%if (obj[14].toString().equalsIgnoreCase("0")) {%>
-							<input type="checkbox" class="MasterIds" name="MasterIds" value="<%=obj[0]%>"> 
+							<input type="checkbox" class="MasterIds" name="MasterIds" value="<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): ""%>"> 
 							<%}%>
 							</td>
-							<td><%=obj[5]%></td>
-							<td><%=obj[3]%></td>
-							<td><%=obj[16]!= null ? obj[16]:"-"%></td>
-							<td><%=obj[6]!=null ? obj[6] :"-"%></td>
-							<td><%=obj[15]!=null ? obj[15]:"-"%></td>
-							<td><%=obj[4]!=null ? obj[4] :"-"%></td>
+							<td><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%></td>
+							<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>
+							<td><%=obj[16]!=null?StringEscapeUtils.escapeHtml4(obj[16].toString()): " - "%></td>
+							<td><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%></td>
+							<td><%=obj[15]!=null?StringEscapeUtils.escapeHtml4(obj[15].toString()): " - "%></td>
+							<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%></td>
 							</tr>
 							<%}%>
 							<%}}%>

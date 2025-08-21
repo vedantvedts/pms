@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -32,27 +33,22 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 %>
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	
-	
-	<center>
-	
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-            </div>
-            
-    </center>
-    
-    
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 <div class="container-fluid">		
@@ -78,7 +74,7 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 					<select class="form-control selectdee" id="labId" name="labId" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
 									<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
 										<% for ( Object[]  obj :LabList) {%>
-								<option value="<%=obj[2] %>"  > <%=obj[2] %></option><%} %>
+								<option value="<%=obj[2] %>"  > <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %></option><%} %>
 					</select> 
 			</div>
 </div>
@@ -128,7 +124,7 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 					<select class="form-control selectdee" id="Designation" name="Designation" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
 								<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
 								<%  for ( Object[]  obj :DesignationList) {%>
-								<option value="<%=obj[0] %>"> <%=obj[2] %></option><%} %>
+								<option value="<%=obj[0] %>"> <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %></option><%} %>
 					</select> 
 		</div>
 </div>
@@ -184,7 +180,7 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
     <select class="form-control selectdee" id="Division" name="Division" data-container="body" data-live-search="true" required="required" style="font-size: 5px;">
       <option value="0">--Select--</option>
       <% for (Object[] obj : DivisionList) { %>
-        <option value="<%= obj[0] %>"><%= obj[1] %></option>
+        <option value="<%= obj[0] %>"><%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-" %></option>
       <% } %>
     </select>
   </div>

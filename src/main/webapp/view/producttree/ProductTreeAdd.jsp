@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.print.model.ProjectSlides"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -310,9 +311,9 @@ height:18px;
                               		<select class="form-control selectdee" id="ProjectId" required="required" name="ProjectId">
     									<option disabled selected value="">Choose...</option>
     										<% for (Object[] obj : ProjectList) {
-    										String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+    										String projectshortName=(obj[17]!=null)?" ( "+StringEscapeUtils.escapeHtml4(obj[17].toString())+" ) ":"";
     										%>
-											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>> <%=obj[4]+projectshortName%>  </option>
+											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>> <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"-"+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):"-"%>  </option>
 											<%} %>
   									</select>
   									</div>
@@ -324,7 +325,7 @@ height:18px;
                               		<select class="form-control selectdee" id="initiationId" required="required" name="initiationId" onchange="submit(myfrm1)">
     									<option disabled selected value="">Choose...</option>
     									<%for(Object[]obj:preProjectList){ %>
-    							<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(initiationId)){ %>selected="selected" <%} %>> <%=obj[2]%>  </option>
+    							<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(initiationId)){ %>selected="selected" <%} %>> <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%>  </option>
     									<%} %>
   									</select>
   									</div>
@@ -378,7 +379,7 @@ height:18px;
 					for (Object[] obj : systemList) {
 					%>
 					<option value="<%=obj[0]%>"  <%if(systemId.equalsIgnoreCase(obj[0].toString())) {%>  selected <%} %>>
-					<%=obj[2]%>
+					<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%>
 					</option>
 					<%
 					}
@@ -401,23 +402,22 @@ height:18px;
 	<div style="background-color:#FFFFFF;" class="body genealogy-body genealogy-scroll">
 	
 	
-	<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert" >
-	    <%=ses1 %>
-	     <br />
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert"  >
-	    	<%=ses %>
-	    	 <br />
-	    </div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 	
 	    <div class="genealogy-tree">
@@ -441,7 +441,7 @@ if(ses1!=null){	%>
 			                         	<div  class="action-box-header" >
 			                         	
 			                         	 <span style="cursor:pointer;font-weight: 600;font-size: 1.7em;">
-	                          			 <%=ProjectName %>
+	                          			 <%=ProjectName!=null?StringEscapeUtils.escapeHtml4(ProjectName):"-" %>
 			                          		 </span>
 			                         			 
 										</div>
@@ -489,7 +489,7 @@ if(ses1!=null){	%>
 												 
 												
 										             <span  class="<%=level1[12].toString()%>" style="cursor:pointer;font-weight: 600;font-size: 1.7em;"  <%if(!level1[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level1[13].toString() %>, <%=level1[10] %>"  <%} %>> 
-										           <%=level1[3] %>
+										           <%=level1[3]!=null?StringEscapeUtils.escapeHtml4(level1[3].toString()):"-" %>
 										                
 										             </span> 
 										             
@@ -553,7 +553,7 @@ if(ses1!=null){	%>
 																 );" >
 															  
 															       <span class="<%=level2[12].toString()%>" style="cursor:pointer;font-weight: 600;font-size: 1.7em;"  <%if(!level2[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level2[13].toString() %>, <%=level2[10] %>"  <%} %>> 
-			                          			                              <%=level2[3] %>
+			                          			                              <%=level2[3]!=null?StringEscapeUtils.escapeHtml4(level2[3].toString()):"-" %>
 			                          			                   </span>
 			                          			                   
 			                          			                    <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
@@ -617,7 +617,7 @@ if(ses1!=null){	%>
 																		
 																		<span class="<%=level3[12].toString()%>" style="cursor:pointer;font-weight: 600;font-size: 1.7em;"   <%if(!level3[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level3[13].toString() %>, <%=level3[10] %>"  <%} %>>
 			                          			                             
-			                          			                                <%=level3[3] %>
+			                          			                                <%=level3[3]!=null?StringEscapeUtils.escapeHtml4(level3[3].toString()):"-" %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
@@ -683,7 +683,7 @@ if(ses1!=null){	%>
 																		
 																		<span class="<%=level4[12].toString()%>" style="cursor:pointer;font-weight: 600;font-size: 1.7em;"  <%if(!level4[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level4[13].toString() %>, <%=level4[10] %>"  <%} %>>
 			                          			                             
-			                          			                                <%=level4[3] %>
+			                          			                                <%=level4[3]!=null?StringEscapeUtils.escapeHtml4(level4[3].toString()):"-" %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
@@ -749,7 +749,7 @@ if(ses1!=null){	%>
 																		
 																		<span class="<%=level5[12].toString()%>" style="cursor:pointer;font-weight: 600;font-size: 1.7em;"  <%if(!level5[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level5[13].toString() %>, <%=level5[10] %>"  <%} %>>
 			                          			                             
-			                          			                                <%=level5[3] %>
+			                          			                                <%=level5[3]!=null?StringEscapeUtils.escapeHtml4(level5[3].toString()):"-" %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
@@ -813,7 +813,7 @@ if(ses1!=null){	%>
 																		
 																		<span class="<%=level6[12].toString()%>" style="cursor:pointer;font-weight: 600;font-size: 1.7em;"  <%if(!level6[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level6[13].toString() %>, <%=level6[10] %>"  <%} %>>
 			                          			                             
-			                          			                                <%=level6[3] %>
+			                          			                                <%=level6[3]!=null?StringEscapeUtils.escapeHtml4(level6[3].toString()):"-" %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
@@ -878,7 +878,7 @@ if(ses1!=null){	%>
 																		
 																		<span class="<%=level7[12].toString()%>" style="cursor:pointer;font-weight: 600;font-size: 1.7em;" <%if(!level7[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level7[13].toString() %>, <%=level7[10] %>"  <%} %> >
 			                          			                             
-			                          			                                <%=level7[3] %>
+			                          			                                <%=level7[3]!=null?StringEscapeUtils.escapeHtml4(level7[3].toString()):"-" %>
 			                          			                                
 			                          			                          </span>
 			                          			                            			
@@ -1090,7 +1090,7 @@ if(ses1!=null){	%>
 					            <form action="LevelNameAdd.htm" method="get">
 						            <input type="text" name="LevelName" required>
 						            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#1#0#<%=count %>#<%=initiationId %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
-									           <input type="hidden" name="ProjectType" value="<%=ProjectType%>">   
+									           <input type="hidden" name="ProjectType" value="<%=ProjectType!=null?StringEscapeUtils.escapeHtml4(ProjectType):""%>">   
 							   </form>    
 					                 
 					        </span> 	

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="com.vts.pfms.master.dto.DemandDetails"%>
 <%@page import="com.vts.pfms.master.dto.ProjectFinancialDetails"%>
@@ -196,9 +197,9 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 										
 											<tr>
 												<td><%=count++ %></td>
-												<td><%=demand.getDemandNo() %></td>
-												<td><%=sdf.format(sdf1.parse(demand.getDemandDate())) %></td>
-												<td><%=demand.getItemFor() %></td>
+												<td><%=demand.getDemandNo()!=null?StringEscapeUtils.escapeHtml4(demand.getDemandNo()):"-" %></td>
+												<td><%=demand.getDemandDate()!=null?sdf.format(sdf1.parse(demand.getDemandDate())):"-" %></td>
+												<td><%=demand.getItemFor()!=null?StringEscapeUtils.escapeHtml4(demand.getItemFor()):"-" %></td>
 												<td style="text-align: right;">
 									               <%if(demand.getEstimatedCost()!=null) {%>
 									                 <%=format.format(new BigDecimal(demand.getEstimatedCost().toString())).substring(1)%>

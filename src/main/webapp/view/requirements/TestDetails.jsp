@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.requirements.model.TestPlanMaster"%>
 <%@page import="com.vts.pfms.requirements.model.TestSetupMaster"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
@@ -407,24 +408,22 @@ margin-left: -21px;
 
 <body style="background-color: white;">
 
-	<%String ses=(String)request.getParameter("result"); 
- 	  String ses1=(String)request.getParameter("resultfail");
-	  if(ses1!=null){
-	%>
-	<div align="center">
-
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</div>
-	<%} %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
 
 	<%if(TestDetailsList==null ) {%>
 		<div
@@ -445,8 +444,8 @@ margin-left: -21px;
 										Test Details - 
 										<small>
 											<%if(projectDetails!=null) {%>
-												<%=projectDetails[2]!=null?projectDetails[2]:"-" %>
-												(<%=projectDetails[1]!=null?projectDetails[1]:"-" %>)
+												<%=projectDetails[2]!=null?StringEscapeUtils.escapeHtml4(projectDetails[2].toString()):"-" %>
+												(<%=projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()):"-" %>)
 											<%} %>
 										</small>
 									</h5>
@@ -496,7 +495,7 @@ margin-left: -21px;
 												data-live-search="true" data-placeholder="Choose" onchange="createTestStagePDF(this)">
 													<option val="" selected disabled>Choose...</option>
 													<%for (Object[] obj : StagesApplicable) {%>
-													<option value="<%=obj[3]%>"><%=obj[3]%></option>
+													<option value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 													<%}%>
 											</select>
 								</div>
@@ -510,7 +509,7 @@ margin-left: -21px;
 								<%int count=1;
 									for(Object []obj:TestDetailsList) {%>
 										<button type="button" style="width:80%" class="btn btn-primary viewbtn mt-2" id="Test<%=obj[0] %>" value="<%=obj[0]%>" onclick="TestDetailsShow('<%=obj[0]%>')">
-											<span style="font-weight: bold;;"><%=obj[1] %></span>
+											<span style="font-weight: bold;;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span>
 										</button>
 								<button class="btn btn-sm mt-2 " onclick="deleteTestPlan(<%=obj[0].toString()%>)">
 							<i class="fa fa-trash" aria-hidden="true" style="color:red;"></i>
@@ -767,7 +766,7 @@ margin-left: -21px;
 															<select required="required" class="form-control selectdee" name="SpecId" id="select" data-width="80%" data-live-search="true" multiple onchange="onchangeSpec()">
 																<option value="" disabled="disabled">---Choose----</option>
 																<%for (Object[] obj : specificationList) {%>
-																	<option value="<%=obj[0]%>"><%=obj[1]%></option>
+																	<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
 																<%}%>
 															</select>
 														<%} else {%>
@@ -857,7 +856,7 @@ margin-left: -21px;
 																	<!-- <option disabled="disabled" value="" selected="selected">Choose..</option> -->
 																	<option value="" >---Choose----</option>
 																	<%for (TestSetupMaster t :master) {%>
-																<option value="<%=t.getSetupId()%>"   ><%=t.getTestSetUpId() %></option>
+																<option value="<%=t.getSetupId()%>"   ><%=t.getTestSetUpId()!=null?StringEscapeUtils.escapeHtml4(t.getTestSetUpId()): " - " %></option>
 																	<%} %>
 																	
 																</select>
@@ -1055,7 +1054,7 @@ margin-left: -21px;
 													for (Object[] obj : StagesApplicable) {
 													
 													%>
-													<option value="<%=obj[3]%>"><%=obj[3]%></option>
+													<option value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 													<%
 													}
 													%>
@@ -1108,7 +1107,7 @@ margin-left: -21px;
 															<select required="required" class="form-control selectdee" name="SpecId" id="SpecIdEdit" data-width="80%" data-live-search="true" multiple onchange="">
 																<option value="" disabled="disabled">---Choose----</option>
 																<%for (Object[] obj : specificationList) {%>
-																	<option value="<%=obj[0]%>"><%=obj[1]%></option>
+																	<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
 																<%}%>
 															</select>
 														<%} else {%>
@@ -1201,7 +1200,7 @@ margin-left: -21px;
 																		data-live-search="true" style="margin-top: 5%"  >
 																		<option value="" disabled="disabled">---Choose----</option>
 																				<%for (TestSetupMaster t :master) {%>
-																<option value="<%=t.getSetupId()%>"   ><%=t.getTestSetUpId() %></option>
+																<option value="<%=t.getSetupId()%>"   ><%=t.getTestSetUpId()!=null?StringEscapeUtils.escapeHtml4(t.getTestSetUpId()): " - " %></option>
 																	<%} %>
 																		
 																	</select>
@@ -1388,7 +1387,7 @@ margin-left: -21px;
 													for (Object[] obj : StagesApplicable) {
 													
 													%>
-													<option value="<%=obj[3]%>"><%=obj[3]%></option>
+													<option value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 													<%
 													}
 													%>
@@ -1539,9 +1538,9 @@ margin-left: -21px;
        		for(TestPlanMaster tp:TestPlanMasterList){
        		%>
        		<tr style="font-size: 1rem !important;">
-       		<td style="text-align: center;"> <input type="checkbox" class="TestMasterIds" name="TestMasterIds" value="<%=tp.getTestMasterId() %>"></td>
-       		<td><%=tp.getName() %></td>
-       		<td><%=tp.getDescription() %></td>
+       		<td style="text-align: center;"> <input type="checkbox" class="TestMasterIds" name="TestMasterIds" value="<%=tp.getTestMasterId()!=null?StringEscapeUtils.escapeHtml4(tp.getTestMasterId().toString()): " - " %>"></td>
+       		<td><%=tp.getName()!=null?StringEscapeUtils.escapeHtml4(tp.getName()): " - " %></td>
+       		<td><%=tp.getDescription()!=null?StringEscapeUtils.escapeHtml4(tp.getDescription()): " - " %></td>
        		</tr>
        		<%}} %>
        		</tbody>

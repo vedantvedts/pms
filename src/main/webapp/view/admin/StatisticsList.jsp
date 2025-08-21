@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -33,25 +34,24 @@ String toDt=(String)request.getAttribute("toDt");
 
 List<Object[]> employeelist=(List<Object[]>)request.getAttribute("ds");
 Long EmployeeId=(Long)request.getAttribute("EmployeeId");
-String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	
-	<div align="center">
-	
-		<div class="alert alert-danger" role="alert">
-	       <%=ses1 %>
-	    </div>
-	</div>
-		<%}if(ses!=null){ %>
-		<div align="center">
-		<div class="alert alert-success" role="alert" >
-	                     <%=ses %>
+%>
+
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
         </div>
-            
     </div>
-<%} %>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
  
 		<div class="container-fluid">	
 			<div class="nav navbar auditnavbar" style="background-color: white; padding: 10px;">		
@@ -61,7 +61,7 @@ String ses=(String)request.getParameter("result");
 					<select class="form-control form-control selectdee" id="SelectedEmpId" required="required" data-live-search="true" name="SelectedEmpId"style="margin-left: 12px;"  >
 					<%if (StatsEmployeeList != null && StatsEmployeeList.size() > 0) {
 					for (Object[] obj : StatsEmployeeList) {%>
-					<option value=<%=obj[0]%> <%if(EmployeeId.toString().equalsIgnoreCase(obj[0].toString())) {%>selected="selected"<%} %>><%=obj[1]%>, <%=obj[2] %></option>
+					<option value=<%=obj[0]%> <%if(EmployeeId.toString().equalsIgnoreCase(obj[0].toString())) {%>selected="selected"<%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
 						<%}}%>
 						</select> 
 		
@@ -120,11 +120,11 @@ String ses=(String)request.getParameter("result");
 								<tr>
 								<td style="text-align: center;"><%=++count %></td>
 								<td style="text-align: center;"><%if(obj[6]!=null) {%><%=sdf.format(obj[6])%><%}else {%>-<%} %></td>
-								<td style="text-align: center;"><%if(obj[5]!=null) {%><%=obj[5].toString()%><%}else {%>-<%} %></td>
-								<td style="text-align: center;"><%if(obj[7]!=null) {%><%=obj[7].toString()%><%}else {%>-<%} %></td>
-								<td style="text-align: center;"><%if(obj[10]!=null) {%><%=obj[10].toString()%><%}else {%>-<%} %></td>
-								<td style="text-align: center;"><%if(obj[8]!=null) {%><%=obj[8].toString()%><%}else {%>-<%} %></td>
-								<td style="text-align: center;"><%if(obj[9]!=null) {%><%=obj[9].toString()%><%}else {%>-<%} %></td>
+								<td style="text-align: center;"><%if(obj[5]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[5].toString())%><%}else {%>-<%} %></td>
+								<td style="text-align: center;"><%if(obj[7]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[7].toString())%><%}else {%>-<%} %></td>
+								<td style="text-align: center;"><%if(obj[10]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[10].toString())%><%}else {%>-<%} %></td>
+								<td style="text-align: center;"><%if(obj[8]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[8].toString())%><%}else {%>-<%} %></td>
+								<td style="text-align: center;"><%if(obj[9]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[9].toString())%><%}else {%>-<%} %></td>
 								</tr>
 								<%} }%>
 							</tbody>

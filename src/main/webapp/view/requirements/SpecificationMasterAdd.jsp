@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.requirements.model.SpecificationTypes"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.requirements.model.SpecificationMaster"%>
@@ -145,7 +146,7 @@ body {
    									<% 
    									String sid = sp.getSid()!=null?sp.getSid()+"":"1";
    									for (Object[] obj : systemList) {%>
-										<option value="<%=obj[0]%>" data-system="<%=obj[2].toString() %>" <%if(sid.equalsIgnoreCase(obj[0].toString())) {%> selected <%} %> > <%=obj[2]%>  </option>
+										<option value="<%=obj[0]%>" data-system="<%=obj[2].toString() %>" <%if(sid.equalsIgnoreCase(obj[0].toString())) {%> selected <%} %> > <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>  </option>
 									<%} %>
   								</select>
   							</div>
@@ -173,7 +174,7 @@ body {
     									<option value="<%=specificationType.getSpecTypeId()+"/"+specificationType.getSpecTypeCode() %>" 
     									<%if(sp.getSpecTypeId()!=null && sp.getSpecTypeId().equals(specificationType.getSpecTypeId()) || 
     									(specTypeId!=null && Long.parseLong(specTypeId)==specificationType.getSpecTypeId())) {%> selected <%} %>>
-    										<%=specificationType.getSpecType() %>
+    										<%=specificationType.getSpecType()!=null?StringEscapeUtils.escapeHtml4(specificationType.getSpecType()): " - " %>
     									</option>
     								<%} }%>
   								</select>
@@ -208,7 +209,7 @@ body {
 									<label style="font-size: 17px; margin-top: 5%; color: #07689f">Description: <span class="mandatory" style="color: red;">*</span></label>
 								</div>
 								<div class="col-md-9">
-			   						<textarea class="form-control" name="description"   id="ConclusionDetails" rows="4" maxlength="1000" placeholder="Maximum 1000 characters"><%=sp.getDescription()!=null?sp.getDescription():"" %></textarea>	
+			   						<textarea class="form-control" name="description"   id="ConclusionDetails" rows="4" maxlength="1000" placeholder="Maximum 1000 characters"><%=sp.getDescription()!=null?StringEscapeUtils.escapeHtml4(sp.getDescription()):"" %></textarea>	
 								</div>
    								
 							</div>
@@ -220,33 +221,33 @@ body {
 									<label style="font-size: 15px; margin-top: 5%; color: #07689f">Parameter: <span class="mandatory" style="color: red;">*</span></label>
 								</div>
 								<div class="col-md-3">
-									<input type="text" class="form-control" name="specParameter" id="specParameter" required="required" value="<%=sp.getSpecsParameter()!=null?sp.getSpecsParameter():"" %>">
+									<input type="text" class="form-control" name="specParameter" id="specParameter" required="required" value="<%=sp.getSpecsParameter()!=null?StringEscapeUtils.escapeHtml4(sp.getSpecsParameter()):"" %>">
 								</div>
 								
 								<div class="col-md-1">
 									<label style="font-size: 15px; margin-top: 5%;float:right; color: #07689f">Unit: <span class="mandatory" style="color: red;">*</span></label>
 								</div>
 								<div class="col-md-1">
-									<input type="text" class="form-control" name="specUnit" id="specUnit" required="required" value="<%=sp.getSpecsUnit()!=null?sp.getSpecsUnit():"" %>">
+									<input type="text" class="form-control" name="specUnit" id="specUnit" required="required" value="<%=sp.getSpecsUnit()!=null?StringEscapeUtils.escapeHtml4(sp.getSpecsUnit()):"" %>">
 								</div>
 								<div class="">
 									<label style="font-size: 15px; margin-top: 5%;float:right; color: #07689f">Min Value: </label>
 								</div>
 								<div class="col-md-1">
-									<input type="text" class="form-control" name="minValue" id="minValue"  value="<%=sp.getMinimumValue()!=null?sp.getMinimumValue():"" %>">
+									<input type="text" class="form-control" name="minValue" id="minValue"  value="<%=sp.getMinimumValue()!=null?StringEscapeUtils.escapeHtml4(sp.getMinimumValue()):"" %>">
 								</div>
 								<div class="">
 									<label style="font-size: 15px; margin-top: 5%;float:right; color: #07689f">Typical Value: <span class="mandatory" style="color: red;">*</span></label>
 								</div>
 								<div class="col-md-1">
-									<input type="text" class="form-control" name="specValue" id="specValue" required="required" value="<%=sp.getSpecValue()!=null?sp.getSpecValue():"" %>">
+									<input type="text" class="form-control" name="specValue" id="specValue" required="required" value="<%=sp.getSpecValue()!=null?StringEscapeUtils.escapeHtml4(sp.getSpecValue()):"" %>">
 								</div>
 							
 								<div class="">
 									<label style="font-size: 15px; margin-top: 5%;float:right; color: #07689f">Max Value:</label>
 								</div>
 								<div class="col-md-1">
-									<input type="text" class="form-control" name="maxValue" id="maxValue"  value="<%=sp.getMaximumValue()!=null?sp.getMaximumValue():"" %>">
+									<input type="text" class="form-control" name="maxValue" id="maxValue"  value="<%=sp.getMaximumValue()!=null?StringEscapeUtils.escapeHtml4(sp.getMaximumValue()):"" %>">
 								</div>
 							</div>
 						</div>
@@ -273,15 +274,15 @@ body {
 									for(Object[]obj:subLevel1Child){ %>
 										<tr class="main-row" data-row="<%=++count%>">
 											<td><%=count%>.</td>
-											<td><input type="text" class="form-control specParameter" name="specParameter_<%=count %>" required="required" value="<%=obj[3]!=null?obj[3].toString():"" %>"></td>
-											<td><input type="text" class="form-control specUnit" name="specUnit_<%=count %>" required="required" value="<%=obj[4]!=null?obj[4].toString():"" %>"></td>
-																		<td><input type="text" class="form-control minValue" name="minValue_<%=count %>" required="required" value="<%=obj[16]!=null?obj[16].toString():"" %>"></td>
-											<td><input type="text" class="form-control specValue" name="specValue_<%=count %>" required="required" value="<%=obj[6]!=null?obj[6].toString():"" %>">
+											<td><input type="text" class="form-control specParameter" name="specParameter_<%=count %>" required="required" value="<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):"" %>"></td>
+											<td><input type="text" class="form-control specUnit" name="specUnit_<%=count %>" required="required" value="<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"" %>"></td>
+																		<td><input type="text" class="form-control minValue" name="minValue_<%=count %>" required="required" value="<%=obj[16]!=null?StringEscapeUtils.escapeHtml4(obj[16].toString()):"" %>"></td>
+											<td><input type="text" class="form-control specValue" name="specValue_<%=count %>" required="required" value="<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"" %>">
 											</td>
-											<td><input type="text" class="form-control maxValue" name="maxValue_<%=count %>" required="required" value="<%=obj[15]!=null?obj[15].toString():"" %>"></td>
+											<td><input type="text" class="form-control maxValue" name="maxValue_<%=count %>" required="required" value="<%=obj[15]!=null?StringEscapeUtils.escapeHtml4(obj[15].toString()):"" %>"></td>
 				
 											<td>
-											<textarea class="form-control description" name="description_<%=count %>" required="required"><%=obj[2].toString() %></textarea></td>
+											<textarea class="form-control description" name="description_<%=count %>" required="required"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): "" %></textarea></td>
 											<td>
 											<button type="button" class="btn btn-sm add-sub-row" data-row="<%=count %>"><i class="fa fa-plus" aria-hidden="true" style="color:green"></i></button>
 											</td></tr>
@@ -292,13 +293,13 @@ body {
 											
 											<tr class="sub-row" data-parent="<%=count %>" data-sub-row="<%=++subrowCount%>">
 											<td style="text-align:center;"><%=count %>.<%=subrowCount %></td>
-											<td><input type="text" class="form-control specParameter" name="<%=count %>_specParameter" required="required" value="<%=obj1[3]!=null?obj1[3].toString():"" %>"></td>
-											<td><input type="text" class="form-control specUnit" name="<%=count %>_specUnit" required="required" value="<%=obj1[4]!=null?obj1[4].toString():"" %>"></td>
-																		<td><input type="text" class="form-control minValue" name="<%=count %>_minValue" required="required" value="<%=obj1[16]!=null? obj1[16].toString():"" %>"></td>
-											<td><input type="text" class="form-control specValue" name="<%=count %>_specValue" required="required" value="<%=obj1[6]!=null?obj1[6].toString():"" %>"></td>
-											<td><input type="text" class="form-control maxValue" name="<%=count %>_maxValue" required="required" value="<%=obj1[15]!=null?obj1[15].toString():"" %>"></td>
+											<td><input type="text" class="form-control specParameter" name="<%=count %>_specParameter" required="required" value="<%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()):"" %>"></td>
+											<td><input type="text" class="form-control specUnit" name="<%=count %>_specUnit" required="required" value="<%=obj1[4]!=null?StringEscapeUtils.escapeHtml4(obj1[4].toString()):"" %>"></td>
+																		<td><input type="text" class="form-control minValue" name="<%=count %>_minValue" required="required" value="<%=obj1[16]!=null? StringEscapeUtils.escapeHtml4(obj1[16].toString()):"" %>"></td>
+											<td><input type="text" class="form-control specValue" name="<%=count %>_specValue" required="required" value="<%=obj1[6]!=null?StringEscapeUtils.escapeHtml4(obj1[6].toString()):"" %>"></td>
+											<td><input type="text" class="form-control maxValue" name="<%=count %>_maxValue" required="required" value="<%=obj1[15]!=null?StringEscapeUtils.escapeHtml4(obj1[15].toString()):"" %>"></td>
 				
-											<td><textarea type="text" class="form-control decription" name="<%=count %>_description" required="required"><%=obj1[2]!=null? obj1[2].toString():"" %></textarea></td>
+											<td><textarea type="text" class="form-control decription" name="<%=count %>_description" required="required"><%=obj1[2]!=null? StringEscapeUtils.escapeHtml4(obj1[2].toString()):"" %></textarea></td>
 											<td>
 											<button type="button" class="btn btn-sm remove-sub-row" data-parent="<%=count %>"><i class="fa fa-minus" aria-hidden="true" style="color:red"></i></button>
 											</td>

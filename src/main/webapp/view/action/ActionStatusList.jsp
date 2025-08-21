@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -107,20 +108,22 @@ h6{
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br/>
 
@@ -204,7 +207,7 @@ h6{
 																		<td class="center"><%=count %></td>
 																		<td>
 																		<form action="ActionDetails.htm" method="POST" >
-																			   <button  type="submit" class="btn btn-outline-info"   ><%=obj[9] %></button>
+																			   <button  type="submit" class="btn btn-outline-info"   ><%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()):"" %></button>
 																			   <input type="hidden" name="ActionLinkId" value="<%=obj[10]%>"/>
 																	           <input type="hidden" name="Assignee" value="<%=obj[1]%>,<%=obj[2]%>"/>
 																	           <input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
@@ -213,11 +216,11 @@ h6{
  																			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 																			</form> 
                                                                         </td>
-																		<td> <%=obj[5]%></td>
-																		<td><%=sdf.format(obj[3])%></td>
-																		<td><%=sdf.format(obj[4])%></td>																		
-																		<td><%=obj[1]%>, <%=obj[2]%></td>
-																	  	<td><%=obj[7]%>, <%=obj[8]%></td>
+																		<td> <%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):" - "%></td>
+																		<td><%=obj[3]!=null ? sdf.format(obj[3]):" - "%></td>
+																		<td><%=obj[4]!=null ? sdf.format(obj[4]):" - "%></td>																		
+																		<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></td>
+																	  	<td><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()):" - "%>, <%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()):" - "%></td>
 																		<td>
 																			<%if(obj[6]!=null && obj[6].toString().equalsIgnoreCase("A"))
 																			{%>
@@ -239,7 +242,7 @@ h6{
 																		<td style="width:8% !important; "><%if(obj[11]!=null){ %>
 															            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															            <div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[11]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															            <%=obj[11]%>
+															            <%=StringEscapeUtils.escapeHtml4(obj[11].toString())%>
 															            </div> 
 															            </div> <%}else{ %>
 															            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">

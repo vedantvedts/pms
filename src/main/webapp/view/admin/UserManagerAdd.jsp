@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -43,28 +44,22 @@ List<Object[]> LoginTypeList=(List<Object[]>)request.getAttribute("LoginTypeList
 
 
 
-<%
-String ses=(String)request.getParameter("result"); 
-String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){
-%>
-	
-	
-<div align="center">	
-
-	<div class="alert alert-danger" role="alert">
-           <%=ses1 %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
     </div>
-    
-	<%}if(ses!=null){ %>
-	
-	<div class="alert alert-success" role="alert" >
-          <%=ses %>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
     </div>
-            
-</div>
-    
-  <%} %>
+<% } %>
 	
 
 	
@@ -136,7 +131,7 @@ if(ses1!=null){
 				<%
 					for (Object[] obj : DivisionList) {
 				%>
-				<option value="<%=obj[0]%>"><%=obj[1]%></option>
+				<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
 				<%
 					}
 				%>
@@ -178,7 +173,7 @@ if(ses1!=null){
 				<%
 					for (Object[] obj : LoginTypeList) {
 				%>
-				<option value="<%=obj[0]%>"><%=obj[1]%></option>
+				<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
 				<%
 					}
 				%>
@@ -199,7 +194,7 @@ if(ses1!=null){
 				<%
 					for (Object[] obj : EmpList) {
 				%>
-				<option value="<%=obj[0]%>"><%=obj[1]%></option>
+				<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
 				<%
 					}
 				%>

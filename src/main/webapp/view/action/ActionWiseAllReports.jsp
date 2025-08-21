@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -88,7 +89,7 @@ h6{
 				    										for (Object[] obj : ProjectList) {
 				    											String projectshortName=(obj[4]!=null)?" ( "+obj[4].toString()+" ) ":"";
 				    										%>
-														<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>><%=obj[2]+projectshortName%></option>
+														<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - "%></option>
 															<%}} %>
 				  								</select>
                             					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
@@ -188,7 +189,7 @@ h6{
 																		<td><%=count %></td>
 																		<td>
 																		<form action="ActionDetails.htm" method="POST" >
-																				<button  type="submit" class="btn btn-outline-info"  formtarget="_blank" ><%=obj[2] %></button>
+																				<button  type="submit" class="btn btn-outline-info"  formtarget="_blank" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - " %></button>
 																			   <input type="hidden" name="ActionLinkId" value="<%=obj[13]%>"/>
 																	           <input type="hidden" name="Assignee" value="<%=obj[3]%>,<%=obj[4]%>"/>
 																	           <input type="hidden" name="ActionMainId" value="<%=obj[1]%>"/>
@@ -198,13 +199,13 @@ h6{
 																			
 																			</form>  
                                                                         </td>
-																		<td><%=sdf.format(obj[8])%></td>																		
-																		<td><%=obj[3]%>, <%=obj[4]%></td>
-																	  	<td>Ext: <%=obj[5]%>, Mob: <%=obj[6]%></td>
+																		<td><%=obj[8]!=null?sdf.format(obj[8]):" - "%></td>																		
+																		<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - "%>, <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%></td>
+																	  	<td>Ext: <%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):" - "%>, Mob: <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):" - "%></td>
 																		<td style="width:8% !important; "><%if(obj[14]!=null){ %>
 															            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															            <div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[14]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															            <%=obj[14]%>
+															            <%=StringEscapeUtils.escapeHtml4(obj[14].toString()) %>
 															            </div> 
 															            </div> <%}else{ %>
 															            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.pfms.*,java.text.SimpleDateFormat,java.text.DecimalFormat"%>
 <!DOCTYPE html>
@@ -43,19 +44,22 @@ List<Object[]> securityClassificationList=(List<Object[]>) request.getAttribute(
 List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"); /* srikant */
 %>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%><center>
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -95,7 +99,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 </th>
  <td >
  <input type="text"   name="pcode"
-								class="form-control alphanum-symbols-no-leading-space" maxlength="20" value="<%=ProjectMainEditData[3] %>" required="required">
+								class="form-control alphanum-symbols-no-leading-space" maxlength="20" value="<%=ProjectMainEditData[3]!=null?StringEscapeUtils.escapeHtml4(ProjectMainEditData[3].toString()): "" %>" required="required">
  
 </td>
   <th>
@@ -104,7 +108,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 </label>
 </th>
  <td >
-<input type="text"   name="pname"  class="form-control alphanum-symbols-no-leading-space" value="<%=ProjectMainEditData[4] %>" maxlength="255" required="required">
+<input type="text"   name="pname"  class="form-control alphanum-symbols-no-leading-space" value="<%=ProjectMainEditData[4]!=null?StringEscapeUtils.escapeHtml4(ProjectMainEditData[4].toString()): ""  %>" maxlength="255" required="required">
 
  
 </td>
@@ -117,7 +121,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 </label>
 </th>
  <td >
-	<input type="text"  name="desc" value="<%=ProjectMainEditData[5] %>"
+	<input type="text"  name="desc" value="<%=ProjectMainEditData[5]!=null?StringEscapeUtils.escapeHtml4(ProjectMainEditData[5].toString()): ""  %>"
 								class="form-control alphanum-symbols-no-leading-space" maxlength="100" required="required">
  
 </td>
@@ -127,7 +131,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 </label>
 </th>
  <td >
-	<input type="text"   name="unicode" <%if(ProjectMainEditData[6]!=null){ %>value="<%=ProjectMainEditData[6] %>" <%} %>
+	<input type="text"   name="unicode" <%if(ProjectMainEditData[6]!=null){ %>value="<%=StringEscapeUtils.escapeHtml4(ProjectMainEditData[6].toString()) %>" <%} %>
 								class="form-control alphanum-symbols-no-leading-space" maxlength="20">
  
 </td>
@@ -145,7 +149,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 				<option value="OH" <%if(ProjectMainEditData[24]!=null && ProjectMainEditData[24].equals("OH")){ %> selected<%} %>>Others</option>
 	</select></td>  
  <th><label style="margin-bottom: -10px;"> Project Short Name:<span class="mandatory" style="color: red;">*</span></label></th>
-<td><input type="text"   name="projectshortname" placeholder="Enter Project Short Name" <%if(ProjectMainEditData!=null && ProjectMainEditData[26]!=null ){%>value="<%=ProjectMainEditData[26]%>" <%}%>	class="form-control alphanum-symbols-no-leading-space" maxlength="20" required="required"></td> 
+<td><input type="text"   name="projectshortname" placeholder="Enter Project Short Name" <%if(ProjectMainEditData!=null && ProjectMainEditData[26]!=null ){%>value="<%=StringEscapeUtils.escapeHtml4(ProjectMainEditData[26].toString())%>" <%}%>	class="form-control alphanum-symbols-no-leading-space" maxlength="20" required="required"></td> 
  </tr>
   <tr>
   <th>
@@ -160,7 +164,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 	                           %>
 								<option value="<%=protype[0] %>" <%if(protype[0].toString().equalsIgnoreCase(ProjectMainEditData[1].toString())){ %>
 								 selected="selected"  <%} %>
-								><%=protype[1] %></option>
+								><%=protype[1] !=null?StringEscapeUtils.escapeHtml4(protype[1].toString()): " - "%></option>
 								<%} %>
 						</select>
 </td>
@@ -174,7 +178,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 															<%
 															for (Object[] protype : securityClassificationList) {													
 															%>
-															<option value="<%=protype[0]%>" <%if(ProjectMainEditData[22]!=null && protype[0].toString().equals(ProjectMainEditData[22].toString())){%> selected="selected" <%} %>><%=protype[1]%></option>
+															<option value="<%=protype[0]%>" <%if(ProjectMainEditData[22]!=null && protype[0].toString().equals(ProjectMainEditData[22].toString())){%> selected="selected" <%} %>><%=protype[1]!=null?StringEscapeUtils.escapeHtml4(protype[1].toString()): " - "%></option>
 															<%
 															}
 															%>
@@ -196,7 +200,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 								<option value="<%=protype[0] %>"
 								 <%if(protype[0].toString().equalsIgnoreCase(ProjectMainEditData[13].toString())){ %>
 								 selected="selected"  <%} %>
-								><%=protype[2]%>, <%=protype[3] %></option>
+								><%=protype[2]!=null?StringEscapeUtils.escapeHtml4(protype[2].toString()): " - "%>, <%=protype[3]!=null?StringEscapeUtils.escapeHtml4(protype[3].toString()): " - " %></option>
 								<%} %>
 							</select>
 </td>
@@ -329,7 +333,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 </label>
 </th>
  <td >
-<input type="text"   id="fecostid" name="sancostfe" value="<%=ProjectMainEditData[10] %>"
+<input type="text"   id="fecostid" name="sancostfe" value="<%=ProjectMainEditData[10]!=null?StringEscapeUtils.escapeHtml4(ProjectMainEditData[10].toString()): ""  %>"
 								class="form-control decimal-format"  maxlength="18" required="required">
 </td>
  </tr>
@@ -361,7 +365,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 </label>
 </th>
  <td >
-<input type="text"  name="sancostre" id="Recostid" value="<%=ProjectMainEditData[9] %>"  readonly="readonly"  
+<input type="text"  name="sancostre" id="Recostid" value="<%=ProjectMainEditData[9]!=null?StringEscapeUtils.escapeHtml4(ProjectMainEditData[9].toString()): ""  %>"  readonly="readonly"  
 								class="form-control decimal-format"  maxlength="18" required="required">
 </td>
 
@@ -375,7 +379,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 								<%for(Object[] protype:PlatformList ){%>
 								<option value="<%=protype[0] %>" <%if(ProjectMainEditData[27].toString()!="0" && protype[0].toString().equalsIgnoreCase(ProjectMainEditData[27].toString())){ %>
 								 selected="selected"  <%} %>
-								><%=protype[1] %></option>
+								><%=protype[1]!=null?StringEscapeUtils.escapeHtml4(protype[1].toString()): " - " %></option>
 								<%}%>
 						</select></td>
 								</tr>
@@ -383,11 +387,11 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 <!-- srikant code end-->
  <tr>
 		<th colspan="1"><label style="margin-bottom: -10px;">Nodal & Participating Lab:<span class="mandatory" style="color: red;">*</span></label></th>
-		<td colspan="3"><input required="required"	name="Nodal" class="form-control alphanum-symbols-no-leading-space" maxlength="5000" value="<%if(ProjectMainEditData[21]!=null ){%><%=ProjectMainEditData[21] %><%} %>" /></td>
+		<td colspan="3"><input required="required"	name="Nodal" class="form-control alphanum-symbols-no-leading-space" maxlength="5000" value="<%if(ProjectMainEditData[21]!=null ){%><%=StringEscapeUtils.escapeHtml4(ProjectMainEditData[21].toString()) %><%} %>" /></td>
 </tr>
  <tr>
 		<th colspan="1"><label style="margin-bottom: -10px;">Application:<span class="mandatory" style="color: red;">*</span></label></th>
-		<td colspan="3"><textarea required="required" name="application" placeholder="Enter maximum 50 charcters " class="form-control " maxlength="49" rows="1" cols="53"><%if(ProjectMainEditData[25]!=null){%> <%=ProjectMainEditData[25]%> <%}%></textarea></td>
+		<td colspan="3"><textarea required="required" name="application" placeholder="Enter maximum 50 charcters " class="form-control " maxlength="49" rows="1" cols="53"><%if(ProjectMainEditData[25]!=null){%> <%=StringEscapeUtils.escapeHtml4(ProjectMainEditData[25].toString())%> <%}%></textarea></td>
 </tr>
  <tr>
 	<th colspan="1"><label style="margin-bottom: -10px;">Scope:
@@ -396,7 +400,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 	</th>
 	<td colspan="3"><textarea required="required"
 		name="scope" class="form-control " maxlength="5000"
-			rows="3" cols="53"><%if(ProjectMainEditData[23]!=null){%><%=ProjectMainEditData[23] %><%} %></textarea>
+			rows="3" cols="53"><%if(ProjectMainEditData[23]!=null){%><%=StringEscapeUtils.escapeHtml4(ProjectMainEditData[23].toString()) %><%} %></textarea>
 	</td>
 </tr>		
  
@@ -410,7 +414,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 </th>
  <td colspan="3">
 	<textarea required="required"  name="Objective" 
-	class="form-control " maxlength="5000" rows="5" cols="53"><%=ProjectMainEditData[19] %></textarea>
+	class="form-control " maxlength="5000" rows="5" cols="53"><%=ProjectMainEditData[19]!=null?StringEscapeUtils.escapeHtml4(ProjectMainEditData[19].toString()): ""  %></textarea>
 								
 							
 </td>
@@ -423,7 +427,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 </th>
  <td colspan="3">
 	<textarea required="required" name="Deliverable" 
-	class="form-control "  maxlength="5000" rows="5" cols="53"><%=ProjectMainEditData[20] %></textarea>
+	class="form-control "  maxlength="5000" rows="5" cols="53"><%=ProjectMainEditData[20]!=null?StringEscapeUtils.escapeHtml4(ProjectMainEditData[20].toString()): ""  %></textarea>
 								
 								
 </td>

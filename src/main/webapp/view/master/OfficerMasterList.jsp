@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -134,27 +135,22 @@ List<Object[]> AllOfficerlist =(List<Object[]>)request.getAttribute("AllOfficerL
 %>
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	
-	
-	<center>
-	
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-            </div>
-            
-    </center>
-    
-    
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 	
@@ -226,14 +222,14 @@ List<Object[]> AllOfficerlist =(List<Object[]>)request.getAttribute("AllOfficerL
         <tbody>
 	       <%for(Object[] obj:OfficerList){ %>
 	         <tr>
-	             <td align="center"><input type="radio" name="Did" value=<%=obj[0]%>  ></td> 
-	             <td><%=obj[9]%></td> 
-	             <td ><%=obj[1] %></td>
-	             <td style="text-align: left"><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></td>
-	             <td style="text-align: left"> <%if(obj[3]!=null){%><%=obj[3] %><%}else{ %>-<%} %></td>
-	             <td style="text-align: left"><%if(obj[4]!=null){%><%=obj[4] %><%}else{ %>-<%} %></td>
-	             <td><%if(obj[5]!=null){%><%=obj[5] %><%}else{ %>-<%} %></td>
-	   	         <td><%if(obj[6]!=null){%><%=obj[6] %><%}else{ %>-<%} %></td>
+	             <td align="center"><input type="radio" name="Did" value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):""%>  ></td> 
+	             <td><%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()):"-"%></td> 
+	             <td ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-" %></td>
+	             <td style="text-align: left"><%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString())%><%}else{ %>-<%} %></td>
+	             <td style="text-align: left"> <%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %><%}else{ %>-<%} %></td>
+	             <td style="text-align: left"><%if(obj[4]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString()) %><%}else{ %>-<%} %></td>
+	             <td><%if(obj[5]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[5].toString()) %><%}else{ %>-<%} %></td>
+	   	         <td><%if(obj[6]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[6].toString()) %><%}else{ %>-<%} %></td>
 	   			 <td><%if(Integer.parseInt(obj[10].toString())==1){%>Active<%}else{ %><span style="color: red;">InActive</span><%} %></td>
 	      </tr>
 	    <%} %>
@@ -419,7 +415,7 @@ function Delete(myfrm){
              table_output += ' <tbody>';
              document.getElementById('myTable1').innerHTML = table_output;
               
-              var EmployeeNojsArray = [<%int i=0; for (Object[] obj:AllOfficerlist) { %>"<%= obj[1] %>"<%= i + 1 < AllOfficerlist.size() ? ",":"" %><% } %>];
+              var EmployeeNojsArray = [<%int i=0; for (Object[] obj:AllOfficerlist) { %>"<%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"" %>"<%= i + 1 < AllOfficerlist.size() ? ",":"" %><% } %>];
                      
               var employeeNo=[];
               for (var i in sheet_data) {

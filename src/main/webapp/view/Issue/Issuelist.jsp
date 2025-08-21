@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -136,24 +137,22 @@ String action = (String)request.getAttribute("action");
 
 
 
-<%String ses=(String)request.getParameter("result"); 
-String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){
-%>
-	<div align="center">
-	
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</div>
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 <div class="container-fluid">
 		<div class="row">
@@ -222,7 +221,7 @@ if(ses1!=null){
 					%>
 							<tr>
 								<td class="center"><%=i+1 %></td>
-								<td style="text-align: justify;"><%=issuedatalist.get(i)[1] %></td>
+								<td style="text-align: justify;"><%=issuedatalist.get(i)[1]!=null?StringEscapeUtils.escapeHtml4(issuedatalist.get(i)[1].toString()):" - " %></td>
 								<td class="center">
 									<%if(issuedatalist.get(i)[3].toString().equals("I")){ %>
 										In Progress
@@ -237,7 +236,7 @@ if(ses1!=null){
 								<td><%if(issuedatalist!=null && issuedatalist.size()>0 && issuedatalist.get(i)[8]!=null){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=issuedatalist.get(i)[8]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															<%=issuedatalist.get(i)[8]%>
+															<%=StringEscapeUtils.escapeHtml4(issuedatalist.get(i)[8].toString())%>
 															</div> 
 															</div> <%}else{ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.util.List"%>
@@ -286,22 +287,22 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 
 FormatConverter fc = new FormatConverter();
 %>
-<% String ses=(String)request.getParameter("result");
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 	<div class="container-fluid">
 		<div class="row">
@@ -337,7 +338,7 @@ FormatConverter fc = new FormatConverter();
 													for (Object[] obj : ProjectList) {
 														String projectshortName1 = (obj[17] != null) ? " ( " + obj[17].toString() + " ) " : ""; %>
 														<option value="<%=obj[0]%>"  <%if(obj[0].toString().equalsIgnoreCase(projectId)){ %> selected <%} %>>
-															<%=obj[4]+projectshortName1 %>
+															<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "+projectshortName1!=null?StringEscapeUtils.escapeHtml4(projectshortName1): " - " %>
 														</option>
 											<%} }%>
 										</select>
@@ -349,7 +350,7 @@ FormatConverter fc = new FormatConverter();
 													for (Object[] obj : preProjectList) {
 														%>
 														<option value="<%=obj[0]%>"  <%if(obj[0].toString().equalsIgnoreCase(initiationId)){ %> selected <%} %>>
-															<%=obj[3]+"( "+obj[2]+" )" %>
+															<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "+"( "+obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "+" )" %>
 														</option>
 											<%} }%>
 										</select>	
@@ -371,14 +372,14 @@ FormatConverter fc = new FormatConverter();
 									<div class="col-md-8">
 										<select class="form-control selectdee" id="productTreeMainId" name="productTreeMainId" onchange="this.form.submit()" style="width: 200px;">
 											<%if(projectDetails!=null) {%>
-												<option value="0"><%=projectDetails[1]+"( "+projectDetails[2]+")" %> </option>
+												<option value="0"><%=projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()): " - "+"( "+projectDetails[2]!=null?StringEscapeUtils.escapeHtml4(projectDetails[2].toString()): " - "+")" %> </option>
 											<%} %>
 											<%
 												if(productTreeList!=null && productTreeList.size()>0){
 													for (Object[] obj : productTreeList) {
 														 %>
 														<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(productTreeMainId)){ %> selected <%} %>>
-															<%=obj[1]+" "+obj[2] %>
+															<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "+" "+obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>
 														</option>
 											<%} }%>
 										</select>
@@ -415,16 +416,16 @@ FormatConverter fc = new FormatConverter();
 	                      				for(Object[] obj:initiationSpecList) {%>
 	                      			<tr>
 	                      				<td align="center" ><%=++slno %> </td>
-	                      				<td><%=obj[6]+", "+obj[7] %></td>
-	                      				<td align="center"><%if(obj[5]!=null) {%><%=fc.SqlToRegularDate(obj[5].toString()) %><%} else{%><%} %></td>
-	                      				<td align="center" >v<%=obj[8]%></td>
+	                      				<td><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "+", "+obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %></td>
+	                      				<td align="center"><%if(obj[5]!=null) {%><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(obj[5].toString())) %><%} else{%><%} %></td>
+	                      				<td align="center" >v<%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - "%></td>
 	                      				<td align="center" >
 	                      					<form action="#">
 				                            	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				                            	<input type="hidden" name="testPlanInitiationId" value="<%=obj[0] %>">
 				                            	<input type="hidden" name="docType" value="S">
 				                            	<button type="submit" class="btn btn-sm btn-link w-70 btn-status" formaction="ProjectDocTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[11] %>; font-weight: 600;" formtarget="_blank">
-											    	<%=obj[10] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+											    	<%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 												</button>
 	                                        </form>
 	                      				</td>
@@ -537,7 +538,7 @@ FormatConverter fc = new FormatConverter();
 		           			<table align="center"  >
 		        				<tr>
 		        					<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
-		         						Prepared By - <%if(tempflow!=null) {%><%=tempflow[0] %> <%} else{%>Prepared By<%} %>
+		         						Prepared By - <%if(tempflow!=null && tempflow[0]!=null) {%><%=StringEscapeUtils.escapeHtml4(tempflow[0].toString()) %> <%} else{%>Prepared By<%} %>
 		         					</td>
 		             		
 		                    		<td rowspan="2">
@@ -545,7 +546,7 @@ FormatConverter fc = new FormatConverter();
 		             				</td>
 		             						
 		        					<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
-		        						Reviewer - <%if(tempflow!=null) {%><%=tempflow[1] %> <%} else{%>Reviewer<%} %>
+		        						Reviewer - <%if(tempflow!=null && tempflow[1]!=null) {%><%=StringEscapeUtils.escapeHtml4(tempflow[1].toString()) %> <%} else{%>Reviewer<%} %>
 		        	    			</td>
 		             	    				
 		                    		<td rowspan="2">
@@ -553,7 +554,7 @@ FormatConverter fc = new FormatConverter();
 		             				</td>
 		             						
 		             				<td class="trup" style="background: linear-gradient(to top, #9b999a 10%, transparent 115%);">
-		             					Approver - <%if(tempflow!=null) {%><%=tempflow[2] %> <%} else{%>Approver<%} %>
+		             					Approver - <%if(tempflow!=null && tempflow[2]!=null) {%><%=StringEscapeUtils.escapeHtml4(tempflow[2].toString()) %> <%} else{%>Approver<%} %>
 		             	    		</td>
 		            			</tr> 	
 		            	    </table>			             

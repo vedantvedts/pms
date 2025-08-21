@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.documents.dto.ICDConnectionDTO"%>
 <%@page import="java.util.LinkedHashMap"%>
 <%@page import="com.vts.pfms.documents.model.ICDPurpose"%>
@@ -125,21 +126,22 @@ label {
 	
 %>
 
-	<% String ses = (String) request.getParameter("result"); 
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-        <div align="center">
-            <div class="alert alert-danger" role="alert">
-                <%= ses1 %>
-            </div>
-        </div>
-    <% } if (ses != null) { %>
-        <div align="center">
-            <div class="alert alert-success" role="alert">
-                <%= ses %>
-            </div>
-        </div>
-    <% } %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
     
     <div class="container-fluid">
        
@@ -148,7 +150,7 @@ label {
             	<div class="row">
                		<div class="col-md-9 left">
 	                    <h5 id="text" style="margin-left: 1%; font-weight: 600">
-	                      Connection-Interface List - <%=documentNo %>
+	                      Connection-Interface List - <%=documentNo!=null?StringEscapeUtils.escapeHtml4(documentNo): " - " %>
 	                    </h5>
                 	</div>
                 	<div class="col-md-3 right">
@@ -196,10 +198,10 @@ label {
 							%>
                     			<tr>
 									<td class="center middle"><%=++slno %></td>
-									<td ><%=con.getLevelNamesS1() %></td>
-									<td ><%=con.getLevelNamesS2() %></td>
-									<td ><%=con.getInterfaceNames()!=null?con.getInterfaceNames():"-" %></td>
-									<td ><%=con.getPurpose()!=null?con.getPurpose():"-" %></td>
+									<td ><%=con.getLevelNamesS1()!=null?StringEscapeUtils.escapeHtml4(con.getLevelNamesS1()): " - " %></td>
+									<td ><%=con.getLevelNamesS2()!=null?StringEscapeUtils.escapeHtml4(con.getLevelCodesS2()): " - " %></td>
+									<td ><%=con.getInterfaceNames()!=null?StringEscapeUtils.escapeHtml4(con.getInterfaceNames()):"-" %></td>
+									<td ><%=con.getPurpose()!=null?StringEscapeUtils.escapeHtml4(con.getPurpose()):"-" %></td>
                     				<td class="center middle">
                     					<form action="#" method="post" id="inlineactform<%=slno%>">
 	                    					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

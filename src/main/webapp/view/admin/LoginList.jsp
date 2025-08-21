@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -126,19 +127,22 @@ font-weight: bold;
 
 
 	
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%><div align="center">
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-                   </div></div>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 <br>	
 
@@ -177,10 +181,10 @@ font-weight: bold;
 													   
 													    <tr>
 													 
-													   <td ><%if(obj[0]!=null){%><%=obj[0] %><%}else{ %>-<%} %></td>
-													   <td><%=obj[1] %></td>
-													 	<td><%=obj[2] %></td>
-													     <td ><%if(obj[3]!=null){%><%=obj[3] %><%}else{ %>-<%} %></td>
+													   <td ><%if(obj[0]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[0].toString()) %><%}else{ %>-<%} %></td>
+													   <td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
+													 	<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+													     <td ><%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %><%}else{ %>-<%} %></td>
 														
 													<td  class="left width">
 														

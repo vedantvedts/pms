@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -48,24 +49,28 @@ List<Object[]> divisionemplist=(List<Object[]>) request.getAttribute("divisionem
 List<Object[]> empoyeelist=(List<Object[]>) request.getAttribute("empoyeelist");
 Object[] divisiondata=(Object[]) request.getAttribute("divisiondata");
 String divisionid=divisiondata[0].toString();
+
+//divisiondata[2]="<h1>sdgfsgf</h1>";
+
 %>
 
 
-                    
-
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%><center>
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -96,7 +101,7 @@ String divisionid=divisiondata[0].toString();
 	
 	                           %>
 	                           
-								<option value="<%=obj[0] %>" <%if(divisionid!=null){ if(obj[0].toString().equalsIgnoreCase(divisionid)){%> selected="selected" <%}} %>><%=obj[2]%></option> 
+								<option value="<%=obj[0] %>" <%if(divisionid!=null){ if(obj[0].toString().equalsIgnoreCase(divisionid)){%> selected="selected" <%}} %>><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%></option> 
 							
 								<%} %>
 					</select>
@@ -124,7 +129,7 @@ String divisionid=divisiondata[0].toString();
 	   <table class="table table-bordered table-hover table-striped table-condensed" id="myTable"> 
 	   <thead style=" text-align: center;">
 	   <tr style="background-color: white;color: black">
-	   <th colspan="5">List Of User Assigned for <%if(divisiondata!=null){ %><%=divisiondata[1]%><%} %></th>
+	   <th colspan="5">List Of User Assigned for <%if(divisiondata!=null){ %><%=divisiondata[1]!=null?StringEscapeUtils.escapeHtml4(divisiondata[1].toString()):"-"%><%} %></th>
 	  </tr>
 	   <tr>
 	   <th style="width:5%; ">Select</th>
@@ -141,10 +146,10 @@ String divisionid=divisiondata[0].toString();
 	 <%if(divisionemplist!=null && divisionemplist.size() > 0){
 	 for(Object[] obj:divisionemplist){ %>
 	    <tr>
-	  <td><input type="radio" name="divisionempid" value=<%=obj[0]%>></td>
+	  <td><input type="radio" name="divisionempid" value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):" - "%>></td>
 	    
-        <td style="text-align: left;"><%=obj[1].toString() %></td>
-        <td style="text-align: left;"><%=obj[2].toString() %></td>
+        <td style="text-align: left;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%> </td>
+        <td style="text-align: left;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%> </td>
 	    </tr>
 	    <%} } else if(divisionemplist == null) {%>
 	     <tr class="center">     
@@ -189,7 +194,7 @@ String divisionid=divisiondata[0].toString();
 	   <table class="table table-bordered table-hover table-striped table-condensed"  > 
 	   <thead>
 	   <tr>
-	   <th colspan="4">Select User  for <%if(divisiondata!=null){ %><%=divisiondata[2]%><%} %></th>
+	   <th colspan="4">Select User  for <%if(divisiondata!=null){ %><%=divisiondata[2]!=null?StringEscapeUtils.escapeHtml4(divisiondata[2].toString()):"-"%><%} %></th>
 	  </tr>
 	 </thead>
     <tbody>
@@ -201,7 +206,7 @@ String divisionid=divisiondata[0].toString();
 			             for(Object[] obj:empoyeelist){ %> 
 			           
 			            <option value="<%=obj[0] %>">
-				        	<%=obj[1].toString()%>, <%=obj[2].toString()%></option>
+				        	<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%></option>
 			        <% }} %>	  	
 				 	</select>
 	    </td>

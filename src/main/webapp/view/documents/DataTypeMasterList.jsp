@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1" %>
@@ -17,21 +18,22 @@
 	<%
 	List<Object[]> dataTypeMasterList = (List<Object[]>) request.getAttribute("dataTypeMasterList");
 	%>
-	<% String ses = (String) request.getParameter("result"); 
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-        <div align="center">
-            <div class="alert alert-danger" role="alert">
-                <%= ses1 %>
-            </div>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
         </div>
-    <% } if (ses != null) { %>
-        <div align="center">
-            <div class="alert alert-success" role="alert">
-                <%= ses %>
-            </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
         </div>
-    <% } %>
+    </div>
+<% } %>
     
 	<div class="container-fluid">
 		<div class="col-md-12">
@@ -71,12 +73,12 @@
 											<input type="hidden" id="aliasName_<%=obj[0]%>" value="<%=obj[3]%>"> 
 											<input type="hidden" id="dataStandardName_<%=obj[0]%>" value="<%=obj[4]%>"> 
 										</td>
-										<td class="center"><%=obj[4]%></td>
-										<td><%=obj[1]%></td>
-										<td class="center"><%=obj[3]%></td>
+										<td class="center"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%></td>
+										<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></td>
+										<td class="center"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>
 										<td class="center">
-											<%=obj[2]%>
-											(<%=Integer.parseInt(obj[2].toString()) * 0.125 %>)
+											<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()) + (Integer.parseInt(obj[2].toString()) * 0.125 ): " - "%>
+											
 										</td>
 									</tr>
 									<% } %>

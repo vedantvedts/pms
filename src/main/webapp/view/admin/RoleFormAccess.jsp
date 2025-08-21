@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.LocalTime"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
@@ -59,24 +60,22 @@ if(!logintype.equalsIgnoreCase("A")) {
 }
 %>
 
-<%String ses=(String)request.getParameter("result"); 
-String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){
-%>
-	<center>
-	
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</center>
-	<%}if(ses!=null){ %>
-	<center>
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</center>
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -115,7 +114,7 @@ if(ses1!=null){
 							<div class="col-sm-2">			
 										 <select class="form-control" id="logintype" required="required" name="logintype" style="margin-top: -9px;" onchange='submitForm();' >
 						   						<% for (Object[] obj : LoginTypeRoles) {%>
-												<option value="<%=obj[1]%>" <%if(obj[1].toString().equalsIgnoreCase(logintype)){ %>selected<% } %> ><%=obj[2]%></option>
+												<option value="<%=obj[1]%>" <%if(obj[1].toString().equalsIgnoreCase(logintype)){ %>selected<% } %> ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></option>
 												<%} %>
 						  				</select>
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -131,7 +130,7 @@ if(ses1!=null){
 										 <select class="form-control" id="moduleid" required="required" name="moduleid" style="margin-top: -9px;" onchange='submitForm();' >
 										 		<option value="A" >All </option>
 						   						<% for (Object[] obj : FormModulesList) {%>
-												<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(moduleid)){ %>selected<% } %> ><%=obj[1]%></option>
+												<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(moduleid)){ %>selected<% } %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
 												<%} %>
 						  				</select>
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
@@ -169,7 +168,7 @@ if(ses1!=null){
 													   
 								<tr>
 									<td ><%=count %></td>
-									<td><%=obj[2] %></td>
+									<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 									<td>
 											<input name="access"  value="<%=obj[0]%>"  onchange="UpdateIsActive('<%=obj[0]%>','<%=obj[5]%>','<%=obj[3]%>','<%=moduleid%>','<%=logintype%>');"  type="checkbox"  <%if(obj[1]!=null && obj[1].toString().equalsIgnoreCase("A")){ %> disabled <%} %> <%if(obj[3]!=null && obj[3].toString().equalsIgnoreCase("1")){ %>checked<%}%> data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="105" data-height="15" data-on="<i class='fa fa-check' aria-hidden='true'></i> Active" data-off="<i class='fa fa-times' aria-hidden='true'></i> Inactive" >
 											<input type="hidden" name="sample" value="attendance<%=count %>" >	

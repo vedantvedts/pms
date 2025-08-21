@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.login.Login"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
@@ -45,28 +46,22 @@ List<Object[]> LoginTypeList=(List<Object[]>)request.getAttribute("LoginTypeList
 
 
 
-<%
-String ses=(String)request.getParameter("result"); 
-String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){
-%>
-	
-	
-<div align="center">	
-
-	<div class="alert alert-danger" role="alert">
-           <%=ses1 %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
     </div>
-    
-	<%}if(ses!=null){ %>
-	
-	<div class="alert alert-success" role="alert" >
-          <%=ses %>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
     </div>
-            
-</div>
-    
-  <%} %>
+<% } %>
 	
 <br>
 	
@@ -75,7 +70,7 @@ if(ses1!=null){
 
 		<div class="col-md-12">
 		<div align="center">
-		<div class="badge badge-success" >LoginType:<%=login.getLoginType() %>&nbsp;&nbsp;||&nbsp;Username:<%=login.getUsername() %> </div></div>
+		<div class="badge badge-success" >LoginType:<%=login.getLoginType()!=null?StringEscapeUtils.escapeHtml4(login.getLoginType()): " - " %>&nbsp;&nbsp;||&nbsp;Username:<%=login.getUsername()!=null?StringEscapeUtils.escapeHtml4(login.getUsername()): " - " %> </div></div>
  			<div class="card shadow-nohover" >
 				
 				<div class="card-header" style=" background-color: #055C9D;margin-top: ">
@@ -103,7 +98,7 @@ if(ses1!=null){
 														<option value="" disabled="disabled" selected="selected"
 															hidden="true">--Select--</option>
 														<% for (Object[] obj : DivisionList) { %>
-														<option value="<%=obj[0]%>" <%if (Integer.parseInt(obj[0].toString()) == login.getDivisionId()) {%> selected="selected" <%}%>><%=obj[1]%></option>
+														<option value="<%=obj[0]%>" <%if (Integer.parseInt(obj[0].toString()) == login.getDivisionId()) {%> selected="selected" <%}%>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
 														<% } %>
 
 												</select></td>
@@ -124,7 +119,7 @@ if(ses1!=null){
 														%>
 														<option value="<%=obj[0]%>"
 															<%if (obj[0].toString().equalsIgnoreCase(login.getLoginType())) {%>
-															selected="selected" <%}%>><%=obj[1]%></option>
+															selected="selected" <%}%>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
 														<%
 														}
 														%>
@@ -144,7 +139,7 @@ if(ses1!=null){
 														%>
 														<option value="<%=obj[0]%>"
 															<%if (Long.parseLong(obj[0].toString()) == login.getEmpId()) {%>
-															selected="selected" <%}%>><%=obj[1]%></option>
+															selected="selected" <%}%>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
 														<%
 														}
 														%>

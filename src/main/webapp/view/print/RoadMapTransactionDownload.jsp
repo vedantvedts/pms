@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.roadmap.model.RoadMap"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
@@ -123,15 +124,15 @@ SimpleDateFormat time=new SimpleDateFormat("HH:mm");
 
 <table id="tabledata">
 	<tr>
-		<td colspan="2" style="text-align: center;"><%=roadMap.getProjectTitle()%> </td>
+		<td colspan="2" style="text-align: center;"><%=roadMap.getProjectTitle()!=null?StringEscapeUtils.escapeHtml4(roadMap.getProjectTitle()): " - "%> </td>
 	</tr>
 	<%if(statuslist!=null && statuslist.size()>0) {
 		for(Object[] obj : statuslist){
 	%>
  	<tr>
- 		<td style="font-weight: bold;"><%=obj[6] %> </td>
+ 		<td style="font-weight: bold;"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %> </td>
  		<td>
- 			<%if(obj[2]!=null) {%> <%=obj[2] %><%} %> , <%if(obj[3]!=null) {%> <%=obj[3] %><%} %><br>
+ 			<%if(obj[2]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%} %> , <%if(obj[3]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %><%} %><br>
  			[ <span style="font-size: 13px;">On</span> : 
  			  <span style="color: #0289BF;font-size: 13px;">
  			  	<%=day.format(obj[4]) %> <%=month.format(obj[4]) %> <%=year.format(obj[4]) %>, <%=time.format(obj[4]) %>

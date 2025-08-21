@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.documents.model.StandardDocuments"%>
 <%@page import="java.util.List"%>
@@ -74,21 +75,22 @@
 	String jsonigiApplicableDocNames = gson.toJson(igiApplicableDocNames);
 %>
 	
-	<% String ses = (String) request.getParameter("result"); 
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-        <div align="center">
-            <div class="alert alert-danger" role="alert">
-                <%= ses1 %>
-            </div>
-        </div>
-    <% } if (ses != null) { %>
-        <div align="center">
-            <div class="alert alert-success" role="alert">
-                <%= ses %>
-            </div>
-        </div>
-    <% } %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
     
     <div class="container-fluid">
        
@@ -142,7 +144,7 @@
 		      						%>
 										<tr>
 								      		<td class="center"><%=++slno %></td>
-								      		<td><%=obj[2].toString() %></td>
+								      		<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 								      		<td class="center">
 								      			 <form action="IGIApplicableDocumentDelete.htm" method="POST" id="inlineapprform<%=slno%>">
 											        <button type="submit" class="editable-clicko" onclick="return confirm('Are you sure to delete?')">
@@ -220,7 +222,7 @@
 									        		<input type="checkbox" class="shortcode_<%=rowcount %>" name="applicableDocId" value="<%=applicableDoc.getStandardDocumentId()%>">
 									        	</td>
 								            	<td>
-								            		<%=applicableDoc.getDocumentName() %>
+								            		<%=applicableDoc.getDocumentName() !=null?StringEscapeUtils.escapeHtml4(applicableDoc.getDocumentName()): " - "%>
 								            	</td>
 								            	<td style="border: 0px;">&nbsp;</td>
 								        		<%if ((i + 1) % 3 == 0) { %>

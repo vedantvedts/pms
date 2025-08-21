@@ -1,4 +1,5 @@
 
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.math.BigDecimal"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.text.ParseException,java.math.BigInteger"%>
 <%@page import="com.vts.pfms.IndianRupeeFormat" %>
@@ -545,7 +546,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 							      <hr>
 							      <div class="row">
 							      	<div class="col-md-6 circular-progress">
-							      		 <div class="progress " data-value='<%=(ProjectHealthTotalData[29] )%>'>
+							      		 <div class="progress " data-value='<%=(ProjectHealthTotalData[29]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[29].toString()): " - " )%>'>
 								          <span class="progress-left">
 								          		<span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[29].toString())<=25){%> border-danger <%}%>
 																													   <%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=50)){%> border-orange<%}%>
@@ -561,7 +562,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 																					"></span>   
 								          </span>
 								          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-								            <div class="h4 font-weight-bold" id="pmrcprogress" ><%=(ProjectHealthTotalData[29] )%>%</div>
+								            <div class="h4 font-weight-bold" id="pmrcprogress" ><%=(ProjectHealthTotalData[29]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[29].toString()): " - " )%>%</div>
 								          </div>
 								        </div>
 								        <div><h6 style="margin-bottom: 5px">PMRC</h6></div>
@@ -569,13 +570,13 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 								        <table class="countstable" style="margin: 0px auto">
 								        	<tr>
 								        		<td style="font-size: 14px" id="meetingsvaluepmrc" data-toggle="tooltip" title="Held / To be Held / Total to be Held" >
-								        			<%if(ProjectHealthTotalData !=null){%> <span><%=ProjectHealthTotalData[0] %> / <%=ProjectHealthTotalData[2] %> / <%=ProjectHealthTotalData[46] %></span> <%}%>
+								        			<%if(ProjectHealthTotalData !=null){%> <span><%=ProjectHealthTotalData[0]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[0].toString()): " - " %> / <%=ProjectHealthTotalData[2]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[2].toString()): " - " %> / <%=ProjectHealthTotalData[46]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[46].toString()): " - " %></span> <%}%>
 								        		</td>
 								        	</tr>
 								        </table>
 							      	</div>
 							      	<div class="col-md-6 circular-progress">
-							      		 <div class="progress "  data-value='<%=(ProjectHealthTotalData[31] )%>'>
+							      		 <div class="progress "  data-value='<%=(ProjectHealthTotalData[31]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[31].toString()): " - " )%>'>
 								          <span class="progress-left">
 								          		<span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[31].toString())<=25){%> border-danger<%}%>
 																													   <%if( (Integer.parseInt(ProjectHealthTotalData[31].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[31].toString())<=50)){%> border-orange<%}%>
@@ -591,7 +592,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 																					"></span>   
 								          </span>
 								          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-								            <div class="h4 font-weight-bold" ><%=(ProjectHealthTotalData[31] )%>%</div>
+								            <div class="h4 font-weight-bold" ><%=(ProjectHealthTotalData[31]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[31].toString()): " - " )%>%</div>
 								          </div>
 								        </div>
 								        <div><h6 style="margin-bottom: 5px">EB</h6></div>
@@ -599,7 +600,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 								        <table class="countstable" style="margin: 0px auto">
 									        	<tr>
 									        		<td style="font-size: 14px" id="meetingsvalueeb"  data-toggle="tooltip" title="Held / To be Held / Total to be Held"  >
-									        		<%if(ProjectHealthTotalData !=null){%> <span><%=ProjectHealthTotalData[3] %> / <%=ProjectHealthTotalData[5] %> / <%=ProjectHealthTotalData[47] %></span> <%}%>
+									        		<%if(ProjectHealthTotalData !=null){%> <span><%=ProjectHealthTotalData[3]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[3].toString()): " - " %> / <%=ProjectHealthTotalData[5]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[5].toString()): " - " %> / <%=ProjectHealthTotalData[47]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[47].toString()): " - " %></span> <%}%>
 									        		</td>
 									        	</tr>
 									     </table>
@@ -630,18 +631,18 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 																					"></span>   
 								          </span>
 								          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-								            <div class="h4 font-weight-bold"><span id="milestonepercentage"><%if(ProjectHealthTotalData[10] !=null){%><%=ProjectHealthTotalData[10] %><%} %>%</span></div>
+								            <div class="h4 font-weight-bold"><span id="milestonepercentage"><%if(ProjectHealthTotalData[10] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[10].toString()) %><%} %>%</span></div>
 								          </div>
 								     	</div>
 							      	</div>
 							      	<div class="col-md-6">
 							      		<div class="bigcount">
-							      			<h1><%if(ProjectHealthTotalData[8] !=null){%><%=ProjectHealthTotalData[8] %><%} %></h1>
+							      			<h1><%if(ProjectHealthTotalData[8] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[8].toString()) %><%} %></h1>
 							      			<p class="textfont"><span class="green legend-shadow">&#x220E;</span> &nbsp;Completed</p>
 							      		</div>
 							      		
 							      		<div class="bigcount">
-							      			<h4><%if(ProjectHealthTotalData[9] !=null){%><%=ProjectHealthTotalData[9] %><%} %></h4>
+							      			<h4><%if(ProjectHealthTotalData[9] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[9].toString()) %><%} %></h4>
 							      			<p class="textfont">Total</p>
 							      		</div>
 							      	</div>
@@ -650,8 +651,8 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 							    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
 									  <thead>
 									  	<tr>
-									  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" >&nbsp;<%if(ProjectHealthTotalData[7] !=null){%><%=ProjectHealthTotalData[7] %><%} %></td>
-									  		<td data-toggle="tooltip" title="Pending"  >&nbsp;<%if(ProjectHealthTotalData[6] !=null){%><%=ProjectHealthTotalData[6] %><%} %></td>
+									  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" >&nbsp;<%if(ProjectHealthTotalData[7] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[7].toString()) %><%} %></td>
+									  		<td data-toggle="tooltip" title="Pending"  >&nbsp;<%if(ProjectHealthTotalData[6] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[6].toString()) %><%} %></td>
 									  	</tr>
 									  </thead>
 									  <tbody>
@@ -668,7 +669,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 							      <hr>
 							      <div class="row">
 							      	<div class="col-md-6 circular-progress">
-							      		<div class="progress " data-value='<%if(ProjectHealthTotalData[37] !=null){%><%=ProjectHealthTotalData[37] %><%} %>'>
+							      		<div class="progress " data-value='<%if(ProjectHealthTotalData[37] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[37].toString()) %><%} %>'>
 								          <span class="progress-left">
 								                        <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[37].toString())<=25){%> border-danger<%}%>
 																					<%if( (Integer.parseInt(ProjectHealthTotalData[37].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[37].toString())<=50)){%> border-orange<%}%>
@@ -684,17 +685,17 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 																					"></span>   
 								          </span>
 								          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-								            <div class="h4 font-weight-bold"><%if(ProjectHealthTotalData[37] !=null){%><%=ProjectHealthTotalData[37] %><%} %>%</div>
+								            <div class="h4 font-weight-bold"><%if(ProjectHealthTotalData[37] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[37].toString()) %><%} %>%</div>
 								          </div>
 								     	</div>
 							      	</div>
 							      	<div class="col-md-6">
 							      		<div class="bigcount">
-							      			<h1><%if(ProjectHealthTotalData[14] !=null){ %><%=ProjectHealthTotalData[14] %><% } %></h1>
+							      			<h1><%if(ProjectHealthTotalData[14] !=null){ %><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[14].toString()) %><% } %></h1>
 							      			<p class="textfont"><span class="green legend-shadow">&#x220E;</span> &nbsp;Completed</p>
 							      		</div>
 							      		<div class="bigcount">
-							      			<h4><%if(ProjectHealthTotalData[15] !=null){ %><%=ProjectHealthTotalData[15] %><% } %></h4>
+							      			<h4><%if(ProjectHealthTotalData[15] !=null){ %><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[15].toString()) %><% } %></h4>
 							      			<p class="textfont">Total</p>
 							      		</div>
 							      	</div>
@@ -703,9 +704,9 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 							    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
 									  <thead>
 									  	<tr>
-									  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" ><%if(ProjectHealthTotalData[13] !=null){%>&nbsp;<%=ProjectHealthTotalData[13] %><%} %></td>
-									  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Forwarded" ><%if(ProjectHealthTotalData[12] !=null){%> &nbsp;<%=ProjectHealthTotalData[12] %><%} %></td>
-									  		<td data-toggle="tooltip" title="Pending" ><%if(ProjectHealthTotalData[11] !=null){%>&nbsp;<%=ProjectHealthTotalData[11] %><%} %></td>
+									  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" ><%if(ProjectHealthTotalData[13] !=null){%>&nbsp;<%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[13].toString()) %><%} %></td>
+									  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Forwarded" ><%if(ProjectHealthTotalData[12] !=null){%> &nbsp;<%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[12].toString()) %><%} %></td>
+									  		<td data-toggle="tooltip" title="Pending" ><%if(ProjectHealthTotalData[11] !=null){%>&nbsp;<%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[11].toString()) %><%} %></td>
 									  	</tr>
 									  </thead>
 									  <tbody>
@@ -723,7 +724,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 							      <hr>
 							      <div class="row">
 							      	<div class="col-md-6 circular-progress">
-							      		<div class="progress " data-value='<%if(ProjectHealthTotalData[39] !=null){%><%=ProjectHealthTotalData[39] %><%} %>'>
+							      		<div class="progress " data-value='<%if(ProjectHealthTotalData[39] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[39].toString()) %><%} %>'>
 								          <span class="progress-left">
 								                         <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[39].toString())<=25){%> border-danger<%}%>
 																													   <%if( (Integer.parseInt(ProjectHealthTotalData[39].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[39].toString())<=50)){%> border-orange<%}%>
@@ -739,17 +740,17 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 																					"></span>  
 								          </span>
 								          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-								            <div class="h4 font-weight-bold"><%if(ProjectHealthTotalData[39] !=null){%><%=ProjectHealthTotalData[39] %><%} %>%</div>
+								            <div class="h4 font-weight-bold"><%if(ProjectHealthTotalData[39] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[39].toString()) %><%} %>%</div>
 								          </div>
 								     	</div>
 							      	</div>
 							      	<div class="col-md-6">
 							      		<div class="bigcount">
-							      			<h1><%if(ProjectHealthTotalData[16] !=null){%><%=ProjectHealthTotalData[16] %><%} %></h1>
+							      			<h1><%if(ProjectHealthTotalData[16] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[16].toString()) %><%} %></h1>
 							      			<p class="textfont"><span class="green legend-shadow">&#x220E;</span> &nbsp;Completed</p>
 							      		</div>
 							      		<div class="bigcount">
-							      			<h4><%if(ProjectHealthTotalData[18] !=null){%><%=ProjectHealthTotalData[18] %><%} %></h4>
+							      			<h4><%if(ProjectHealthTotalData[18] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[18].toString()) %><%} %></h4>
 							      			<p class="textfont">Total</p>
 							      		</div>
 							      	</div>
@@ -759,7 +760,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 									  <thead>
 									  	<tr>
 									  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" >&nbsp;0</td>
-									  		<td data-toggle="tooltip" title="Pending" ><%if(ProjectHealthTotalData[17] !=null){%>&nbsp;<%=ProjectHealthTotalData[17] %><%} %></td>
+									  		<td data-toggle="tooltip" title="Pending" ><%if(ProjectHealthTotalData[17] !=null){%>&nbsp;<%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[17].toString()) %><%} %></td>
 									  	</tr>
 									  </thead>
 									 <tbody>
@@ -802,8 +803,8 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 									  <tbody>
 									  	<tr>
 									      <th scope="row">Revenue</th>
-									      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(0)[3] %></td>
-									      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(0)[4] %></td>
+									      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(0)[3]!=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(0)[3].toString()): " - " %></td>
+									      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(0)[4]!=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(0)[4].toString()): " - " %></td>
 									      <%  revBal = new BigDecimal(DashboardFinance.get(0)[3].toString()).subtract(new BigDecimal(DashboardFinance.get(0)[4].toString())) ; %>
 									      <td><span style="color:green">&#8377;</span> <%=revBal%></td>
 									    </tr>
@@ -812,8 +813,8 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 									     <% balance	= balance.add(revBal); %>
 									     <tr>
 									      <th scope="row">Capital</th>
-									      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(1)[3] %></td>
-									      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(1)[4] %></td>
+									      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(1)[3]!=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(1)[3].toString()): " - " %></td>
+									      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(1)[4]!=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(1)[4].toString()): " - " %></td>
 									      <%  capBal = new BigDecimal(DashboardFinance.get(1)[3].toString()).subtract(new BigDecimal(DashboardFinance.get(1)[4].toString())) ; %>
 									      <td><span style="color:green">&#8377;</span> <%=capBal %></td>
 									    </tr>
@@ -823,8 +824,8 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 									    
 									    <tr>
 									      <th scope="row">Others</th>
-									      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(2)[3] %></td>
-									      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(2)[4] %></td>
+									      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(2)[3]!=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(2)[3].toString()): " - " %></td>
+									      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(2)[4]!=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(2)[4].toString()): " - " %></td>
 									      <%  othBal = new BigDecimal(DashboardFinance.get(2)[3].toString()).subtract(new BigDecimal(DashboardFinance.get(2)[4].toString())) ; %>
 									      <td><span style="color:green">&#8377;</span> <%=othBal %></td>
 									    </tr> 
@@ -894,9 +895,9 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 													else {%> -  <%} }else{ %>-<%}%>">
 												
 														  &#11044;&nbsp; <span class="tableprojectname" style="color:black !important;font-size: 13px"> 
-														  	<%if(obj[46]!=null){%><%=obj[46] %><%}else {%>-<%} %> /
-														  	<%if(obj[3]!=null){%><%=obj[3] %><%}else {%>-<%} %> /
-														  	<%if(obj[44]!=null){%><%=obj[44] %><%}else {%>-<%} %>
+														  	<%if(obj[46]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[46].toString()) %><%}else {%>-<%} %> /
+														  	<%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %><%}else {%>-<%} %> /
+														  	<%if(obj[44]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[44].toString())%><%}else {%>-<%} %>
 														  	</span> 	
 												
 													</div>
@@ -908,8 +909,8 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 														<div class="row">
 															<div class="col-md-10">
 															    <div class="progress"  >
-																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirect('<%=obj[2]%>','1', 'B')" style="width:<%=obj[5]%>%;" data-toggle="tooltip" title="PMRC Held : <%=obj[4]%> / <%=obj[8] %>" ></div>
-																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirect('<%=obj[2]%>','1', 'C' )" style="width:<%=obj[7]%>%;" data-toggle="tooltip" title="PMRC Pending : <%=obj[6]%> / <%=obj[8] %>" ></div>
+																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirect('<%=obj[2]%>','1', 'B')" style="width:<%=obj[5]%>%;" data-toggle="tooltip" title="PMRC Held : <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> / <%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - " %>" ></div>
+																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirect('<%=obj[2]%>','1', 'C' )" style="width:<%=obj[7]%>%;" data-toggle="tooltip" title="PMRC Pending : <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%> / <%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - " %>" ></div>
 																</div>
 														  	</div>
 															<div class="col-md-2" style="padding-left: 0px !important">
@@ -917,7 +918,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 																								   <%if( (Integer.parseInt(obj[7].toString())>25) && (Integer.parseInt(obj[7].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
 																								   <%if( (Integer.parseInt(obj[7].toString())>50) && (Integer.parseInt(obj[7].toString())<=75)){%> background-color: #EE5007 <%}%>
 																								   <%if( (Integer.parseInt(obj[7].toString())>75) && (Integer.parseInt(obj[7].toString())<=100)){%> background-color:red <%}%>
-																"><%=obj[7] %></span>
+																"><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %></span>
 															</div>
 														</div>
 						
@@ -934,8 +935,8 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 														<div class="row">
 															<div class="col-md-10">
 																<div class="progress" >
-																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirect('<%=obj[2]%>','2', 'B')" style="width:<%=obj[10]%>%;" data-toggle="tooltip" title="EB Held : <%=obj[9]%> / <%=obj[13] %>" ></div>
-																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirect('<%=obj[2]%>','2', 'C')" style="width:<%=obj[12]%>%;" data-toggle="tooltip" title="EB Pending :  <%=obj[11]%> / <%=obj[13] %>" ></div>
+																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirect('<%=obj[2]%>','2', 'B')" style="width:<%=obj[10]%>%;" data-toggle="tooltip" title="EB Held : <%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - "%> / <%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %>" ></div>
+																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirect('<%=obj[2]%>','2', 'C')" style="width:<%=obj[12]%>%;" data-toggle="tooltip" title="EB Pending :  <%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "%> / <%=obj[13] !=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - "%>" ></div>
 																</div>
 															</div>
 															<div class="col-md-2" style="padding-left: 0px !important">
@@ -943,7 +944,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 																								   <%if( (Integer.parseInt(obj[12].toString())>25) && (Integer.parseInt(obj[12].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
 																								   <%if( (Integer.parseInt(obj[12].toString())>50) && (Integer.parseInt(obj[12].toString())<=75)){%> background-color: #EE5007 <%}%>
 																								   <%if( (Integer.parseInt(obj[12].toString())>75) && (Integer.parseInt(obj[12].toString())<=100)){%> background-color:red <%}%>
-																"><%=obj[12] %></span>
+																"><%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %></span>
 															</div>
 														</div>
 													<%}else{ %>
@@ -959,9 +960,9 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 													<div class="row">
 														<div class="col-md-10">
 															<div class="progress" onclick="overallcommonredirect('mil','<%=obj[2]%>')">
-															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[19]%>%" data-toggle="tooltip" title="Completed : <%=obj[18]%> / <%=obj[20] %>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[17]%>%" data-toggle="tooltip" title="Delayed : <%=obj[16]%> / <%=obj[20] %>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[15]%>%" data-toggle="tooltip" title="Pending : <%=obj[14]%> / <%=obj[20] %>" ></div>															  
+															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[19]%>%" data-toggle="tooltip" title="Completed : <%=obj[18]!=null?StringEscapeUtils.escapeHtml4(obj[18].toString()): " - "%> / <%=obj[20]!=null?StringEscapeUtils.escapeHtml4(obj[20].toString()): " - " %>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[17]%>%" data-toggle="tooltip" title="Delayed : <%=obj[16]!=null?StringEscapeUtils.escapeHtml4(obj[16].toString()): " - "%> / <%=obj[20]!=null?StringEscapeUtils.escapeHtml4(obj[20].toString()): " - " %>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[15]%>%" data-toggle="tooltip" title="Pending : <%=obj[14]!=null?StringEscapeUtils.escapeHtml4(obj[14].toString()): " - "%> / <%=obj[20]!=null?StringEscapeUtils.escapeHtml4(obj[20].toString()): " - " %>" ></div>															  
 															</div>
 														</div>
 														<div class="col-md-2" style="padding-left: 0px !important">
@@ -969,7 +970,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 																								   <%if( (Integer.parseInt(obj[15].toString())>25) && (Integer.parseInt(obj[15].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
 																								   <%if( (Integer.parseInt(obj[15].toString())>50) && (Integer.parseInt(obj[15].toString())<=75)){%> background-color: #EE5007 <%}%>
 																								   <%if( (Integer.parseInt(obj[15].toString())>75) && (Integer.parseInt(obj[15].toString())<=100)){%> background-color:red <%}%>
-																"><%=obj[15] %></span>
+																"><%=obj[15]!=null?StringEscapeUtils.escapeHtml4(obj[15].toString()): " - " %></span>
 														</div>
 													</div>
 													<%}else{ %>
@@ -985,10 +986,10 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 													<div class="row">
 														<div class="col-md-10">
 															<div class="progress" onclick="overallcommonredirect('action','<%=obj[2]%>')">
-															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[28]%>%" data-toggle="tooltip" title="Completed : <%=obj[27]%> / <%=obj[29]%>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[26]%>%" data-toggle="tooltip" title="Delayed : <%=obj[25]%> / <%=obj[29]%>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-primary" style="width:<%=obj[24]%>%" data-toggle="tooltip" title="Forwarded : <%=obj[23]%> / <%=obj[29]%>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[22]%>%" data-toggle="tooltip" title="Pending : <%=obj[21]%> / <%=obj[29]%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[28]%>%" data-toggle="tooltip" title="Completed : <%=obj[27]!=null?StringEscapeUtils.escapeHtml4(obj[27].toString()): " - "%> / <%=obj[29]!=null?StringEscapeUtils.escapeHtml4(obj[29].toString()): " - "%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[26]%>%" data-toggle="tooltip" title="Delayed : <%=obj[25]!=null?StringEscapeUtils.escapeHtml4(obj[25].toString()): " - "%> / <%=obj[29]!=null?StringEscapeUtils.escapeHtml4(obj[29].toString()): " - "%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-primary" style="width:<%=obj[24]%>%" data-toggle="tooltip" title="Forwarded : <%=obj[23]!=null?StringEscapeUtils.escapeHtml4(obj[23].toString()): " - "%> / <%=obj[29]!=null?StringEscapeUtils.escapeHtml4(obj[29].toString()): " - "%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[22]%>%" data-toggle="tooltip" title="Pending : <%=obj[21]!=null?StringEscapeUtils.escapeHtml4(obj[21].toString()): " - "%> / <%=obj[29]!=null?StringEscapeUtils.escapeHtml4(obj[29].toString()): " - "%>" ></div>
 															</div>
 														</div>
 														<div class="col-md-2" style="padding-left: 0px !important">
@@ -996,7 +997,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 																									   <%if( (Integer.parseInt(obj[22].toString())>25) && (Integer.parseInt(obj[22].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
 																									   <%if( (Integer.parseInt(obj[22].toString())>50) && (Integer.parseInt(obj[22].toString())<=75)){%> background-color: #EE5007 <%}%>
 																									   <%if( (Integer.parseInt(obj[22].toString())>75) && (Integer.parseInt(obj[22].toString())<=100)){%> background-color:red <%}%>
-															"><%=obj[22] %></span>
+															"><%=obj[22]!=null?StringEscapeUtils.escapeHtml4(obj[22].toString()): " - " %></span>
 														</div>
 													</div>
 													<%}else{ %>
@@ -1012,8 +1013,8 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 													<div class="row">
 														<div class="col-md-10">
 															<div class="progress" onclick="overallcommonredirect('risk','<%=obj[2]%>')">
-															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[31]%>%" data-toggle="tooltip" title="Completed : <%=obj[30]%> / <%=obj[34] %>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[33]%>%" data-toggle="tooltip" title="Pending : <%=obj[32]%> / <%=obj[34] %>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[31]%>%" data-toggle="tooltip" title="Completed : <%=obj[30]!=null?StringEscapeUtils.escapeHtml4(obj[30].toString()): " - "%> / <%=obj[34]!=null?StringEscapeUtils.escapeHtml4(obj[34].toString()): " - " %>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[33]%>%" data-toggle="tooltip" title="Pending : <%=obj[32]!=null?StringEscapeUtils.escapeHtml4(obj[32].toString()): " - "%> / <%=obj[34]!=null?StringEscapeUtils.escapeHtml4(obj[34].toString()): " - " %>" ></div>
 															</div>
 														</div>
 														<div class="col-md-2" style="padding-left: 0px !important">
@@ -1021,7 +1022,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 																										   <%if( (Integer.parseInt(obj[33].toString())>25) && (Integer.parseInt(obj[33].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
 																										   <%if( (Integer.parseInt(obj[33].toString())>50) && (Integer.parseInt(obj[33].toString())<=75)){%> background-color: #EE5007 <%}%>
 																										   <%if( (Integer.parseInt(obj[33].toString())>75) && (Integer.parseInt(obj[33].toString())<=100)){%> background-color:red <%}%>
-																"><%=obj[33] %></span>
+																"><%=obj[33]!=null?StringEscapeUtils.escapeHtml4(obj[33].toString()): " - " %></span>
 														</div>
 													</div>
 													<%}else{ %>
@@ -1050,7 +1051,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 																											   <%if( (Integer.parseInt(obj[36].toString())>25) && (Integer.parseInt(obj[36].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
 																											   <%if( (Integer.parseInt(obj[36].toString())>50) && (Integer.parseInt(obj[36].toString())<=75)){%> background-color: #EE5007 <%}%>
 																											   <%if( (Integer.parseInt(obj[36].toString())>75) && (Integer.parseInt(obj[36].toString())<=100)){%> background-color:red <%}%>
-																	"><%=obj[36] %></span>
+																	"><%=obj[36]!=null?StringEscapeUtils.escapeHtml4(obj[36].toString()): " - " %></span>
 														</div>
 														<div class="col-md-1" style="padding-left: 0px !important">
 														</div>
@@ -1146,7 +1147,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 			<div id="overalldivdg"  class="card" style="background: transparent;display:none" >
 			
 			<div class="card-header">
-						<h3><%=ProjectHealthTotalData[45] %> - Cluster Details</h3>
+						<h3><%=ProjectHealthTotalData[45]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[45].toString()): " - " %> - Cluster Details</h3>
 						<a class="btn btn-info btn-sm back"   href="MainDashBoard.htm" style="float: right">Back</a>
 				</div>
 		
@@ -1182,8 +1183,8 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 														<div class="row">
 															<div class="col-md-11">
 															    <div class="progress"  >
-																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'B')" style="width:<%=obj[29]%>%;" data-toggle="tooltip" title="PMRC Held : <%=obj[0]%> / <%=obj[2] %>" ></div>
-																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'C' )" style="width:<%=obj[30]%>%;" data-toggle="tooltip" title="PMRC Pending : <%=obj[1]%> / <%=obj[2] %>" ></div>
+																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'B')" style="width:<%=obj[29]%>%;" data-toggle="tooltip" title="PMRC Held : <%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%> / <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>" ></div>
+																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'C' )" style="width:<%=obj[30]%>%;" data-toggle="tooltip" title="PMRC Pending : <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> / <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>" ></div>
 																</div>
 														  	</div>
 															<div class="col-md-1" style="padding-left: 0px !important">
@@ -1191,7 +1192,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 																								   <%if( (Integer.parseInt(obj[30].toString())>25) && (Integer.parseInt(obj[30].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
 																								   <%if( (Integer.parseInt(obj[30].toString())>50) && (Integer.parseInt(obj[30].toString())<=75)){%> background-color: #EE5007 <%}%>
 																								   <%if( (Integer.parseInt(obj[30].toString())>75) && (Integer.parseInt(obj[30].toString())<=100)){%> background-color:red <%}%>
-																"><%=obj[30] %></span>
+																"><%=obj[30]!=null?StringEscapeUtils.escapeHtml4(obj[30].toString()): " - " %></span>
 															</div>
 											
 														</div>
@@ -1210,8 +1211,8 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 														<div class="row">
 															<div class="col-md-11">
 															    <div class="progress"  >
-																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'B')" style="width:<%=obj[31]%>%;" data-toggle="tooltip" title="EB Held : <%=obj[3]%> / <%=obj[5] %>" ></div>
-																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'C' )" style="width:<%=obj[32]%>%;" data-toggle="tooltip" title="EB Pending : <%=obj[4]%> / <%=obj[5] %>" ></div>
+																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'B')" style="width:<%=obj[31]%>%;" data-toggle="tooltip" title="EB Held : <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> / <%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %>" ></div>
+																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'C' )" style="width:<%=obj[32]%>%;" data-toggle="tooltip" title="EB Pending : <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> / <%=obj[5] !=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%>" ></div>
 																</div>
 														  	</div>
 															<div class="col-md-1" style="padding-left: 0px !important">
@@ -1219,7 +1220,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 																								   <%if( (Integer.parseInt(obj[32].toString())>25) && (Integer.parseInt(obj[32].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
 																								   <%if( (Integer.parseInt(obj[32].toString())>50) && (Integer.parseInt(obj[32].toString())<=75)){%> background-color: #EE5007 <%}%>
 																								   <%if( (Integer.parseInt(obj[32].toString())>75) && (Integer.parseInt(obj[32].toString())<=100)){%> background-color:red <%}%>
-																"><%=obj[32] %></span>
+																"><%=obj[32]!=null?StringEscapeUtils.escapeHtml4(obj[32].toString()): " - " %></span>
 															</div>
 														</div>
 						
@@ -1236,9 +1237,9 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 													<div class="row">
 														<div class="col-md-11">
 															<div class="progress" onclick="overallcommonredirectdg('mil','<%=obj[2]%>')">
-															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[10]%>%" data-toggle="tooltip" title="Completed : <%=obj[8]%> / <%=obj[9] %>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[33]%>%" data-toggle="tooltip" title="Delayed : <%=obj[7]%> / <%=obj[9] %>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[44]%>%" data-toggle="tooltip" title="Pending : <%=obj[6]%> / <%=obj[9] %>" ></div>															  
+															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[10]%>%" data-toggle="tooltip" title="Completed : <%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - "%> / <%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - " %>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[33]%>%" data-toggle="tooltip" title="Delayed : <%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%> / <%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - " %>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[44]%>%" data-toggle="tooltip" title="Pending : <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%> / <%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - " %>" ></div>															  
 															</div>
 														</div>
 														<div class="col-md-1" style="padding-left: 0px !important">
@@ -1246,7 +1247,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 																								   <%if( (Integer.parseInt(obj[44].toString())>25) && (Integer.parseInt(obj[44].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
 																								   <%if( (Integer.parseInt(obj[44].toString())>50) && (Integer.parseInt(obj[44].toString())<=75)){%> background-color: #EE5007 <%}%>
 																								   <%if( (Integer.parseInt(obj[44].toString())>75) && (Integer.parseInt(obj[44].toString())<=100)){%> background-color:red <%}%>
-																"><%=obj[44] %></span>
+																"><%=obj[44]!=null?StringEscapeUtils.escapeHtml4(obj[44].toString()): " - " %></span>
 														</div>
 													</div>
 													<%}else{ %>
@@ -1262,10 +1263,10 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 													<div class="row">
 														<div class="col-md-11">
 															<div class="progress" onclick="overallcommonredirect('action','<%=obj[2]%>')">
-															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[37]%>%" data-toggle="tooltip" title="Completed : <%=obj[14]%> / <%=obj[15]%>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[36]%>%" data-toggle="tooltip" title="Delayed : <%=obj[13]%> / <%=obj[15]%>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-primary" style="width:<%=obj[35]%>%" data-toggle="tooltip" title="Forwarded : <%=obj[12]%> / <%=obj[15]%>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[34]%>%" data-toggle="tooltip" title="Pending : <%=obj[11]%> / <%=obj[15]%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[37]%>%" data-toggle="tooltip" title="Completed : <%=obj[14]!=null?StringEscapeUtils.escapeHtml4(obj[14].toString()): " - "%> / <%=obj[15]!=null?StringEscapeUtils.escapeHtml4(obj[15].toString()): " - "%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[36]%>%" data-toggle="tooltip" title="Delayed : <%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - "%> / <%=obj[15]!=null?StringEscapeUtils.escapeHtml4(obj[15].toString()): " - "%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-primary" style="width:<%=obj[35]%>%" data-toggle="tooltip" title="Forwarded : <%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - "%> / <%=obj[15]!=null?StringEscapeUtils.escapeHtml4(obj[15].toString()): " - "%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[34]%>%" data-toggle="tooltip" title="Pending : <%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "%> / <%=obj[15]!=null?StringEscapeUtils.escapeHtml4(obj[15].toString()): " - "%>" ></div>
 															</div>
 														</div>
 														<div class="col-md-1" style="padding-left: 0px !important">
@@ -1273,7 +1274,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 																									   <%if( (Integer.parseInt(obj[34].toString())>25) && (Integer.parseInt(obj[34].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
 																									   <%if( (Integer.parseInt(obj[34].toString())>50) && (Integer.parseInt(obj[34].toString())<=75)){%> background-color: #EE5007 <%}%>
 																									   <%if( (Integer.parseInt(obj[34].toString())>75) && (Integer.parseInt(obj[34].toString())<=100)){%> background-color:red <%}%>
-															"><%=obj[34] %></span>
+															"><%=obj[34]!=null?StringEscapeUtils.escapeHtml4(obj[34].toString()): " - " %></span>
 														</div>
 													</div>
 													<%}else{ %>
@@ -1289,8 +1290,8 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 													<div class="row">
 														<div class="col-md-11">
 															<div class="progress" onclick="overallcommonredirect('risk','<%=obj[2]%>')">
-															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[39]%>%" data-toggle="tooltip" title="Completed : <%=obj[16]%> / <%=obj[18] %>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[38]%>%" data-toggle="tooltip" title="Pending : <%=obj[17]%> / <%=obj[18] %>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[39]%>%" data-toggle="tooltip" title="Completed : <%=obj[16]!=null?StringEscapeUtils.escapeHtml4(obj[16].toString()): " - "%> / <%=obj[18]!=null?StringEscapeUtils.escapeHtml4(obj[18].toString()): " - " %>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[38]%>%" data-toggle="tooltip" title="Pending : <%=obj[17]!=null?StringEscapeUtils.escapeHtml4(obj[17].toString()): " - "%> / <%=obj[18]!=null?StringEscapeUtils.escapeHtml4(obj[18].toString()): " - " %>" ></div>
 															</div>
 														</div>
 														<div class="col-md-1" style="padding-left: 0px !important">
@@ -1298,7 +1299,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 																										   <%if( (Integer.parseInt(obj[38].toString())>25) && (Integer.parseInt(obj[38].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
 																										   <%if( (Integer.parseInt(obj[38].toString())>50) && (Integer.parseInt(obj[38].toString())<=75)){%> background-color: #EE5007 <%}%>
 																										   <%if( (Integer.parseInt(obj[38].toString())>75) && (Integer.parseInt(obj[38].toString())<=100)){%> background-color:red <%}%>
-																"><%=obj[38] %></span>
+																"><%=obj[38]!=null?StringEscapeUtils.escapeHtml4(obj[38].toString()): " - " %></span>
 														</div>
 													</div>
 													<%}else{ %>
@@ -1327,7 +1328,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 																											   <%if( (Integer.parseInt(obj[40].toString())>25) && (Integer.parseInt(obj[40].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
 																											   <%if( (Integer.parseInt(obj[40].toString())>50) && (Integer.parseInt(obj[40].toString())<=75)){%> background-color: #EE5007 <%}%>
 																											   <%if( (Integer.parseInt(obj[40].toString())>75) && (Integer.parseInt(obj[40].toString())<=100)){%> background-color:red <%}%>
-																	"><%=obj[40] %></span>
+																	"><%=obj[40]!=null?StringEscapeUtils.escapeHtml4(obj[40].toString()): " - " %></span>
 														</div>
 														<div class="col-md-1" style="padding-left: 0px !important">
 														</div>

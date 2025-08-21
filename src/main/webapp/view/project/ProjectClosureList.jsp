@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.util.List"%>
@@ -289,22 +290,22 @@ List<Object[]> closureList = (List<Object[]>)request.getAttribute("ClosureList")
 List<String> closurecategory = Arrays.asList("Completed Successfully","Partial Success","Stage Closure","Cancellation");
 %>
 
-<% String ses=(String)request.getParameter("result");
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 <br>
 <div class="container-fluid">
@@ -342,7 +343,7 @@ List<String> closurecategory = Arrays.asList("Completed Successfully","Partial S
 										<div class="container">
 					  						<div class="row">
 						  						<div class="col-lg">
-													<h4 class="card-title" ><%=obj[4] %></h4></div>
+													<h4 class="card-title" ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></h4></div>
 												<div class="col-">
 													<p> <%if(obj[6]!=null){if(obj[6].toString().equalsIgnoreCase("1")){%><%="MAIN" %>
 														<%}else{ %><%="SUB" %> <% }}else{ %> - <%} %>
@@ -354,11 +355,11 @@ List<String> closurecategory = Arrays.asList("Completed Successfully","Partial S
 										<div class="container">
 					  						<div class="row">
 						  						<div class="col-lg">
-													<h6> <%if(obj[2]!=null && obj[3]!=null){%><%=obj[2]+" ("+obj[3]+")" %><%} %></h6>
+													<h6> <%if(obj[2]!=null && obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString())+" ("+StringEscapeUtils.escapeHtml4(obj[3].toString())+")" %><%} %></h6>
 												</div>
 												<div class="col-" style="text-align: right;">
 													<h6><%if(obj[5]!=null){ %>
-													<%=String.format("%.2f", Double.parseDouble(obj[5].toString()) / 100000) %> lakhs
+													<%=String.format("%.2f", Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[5].toString())) / 100000) %> lakhs
 													<%}else{ %>-<%} %>
 													</h6> 
 												</div>
@@ -368,7 +369,7 @@ List<String> closurecategory = Arrays.asList("Completed Successfully","Partial S
 										<div class="container">
 					  						<div class="row">
 												<div class="col-xl">
-												Sanctioned on : <%if(obj[7]!=null){%><%=fc.SqlToRegularDate(obj[7].toString()) %>
+												Sanctioned on : <%if(obj[7]!=null){%><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(obj[7].toString())) %>
 												<%}else{ %>-<%} %>
 												<br/>
 												</div>
@@ -378,7 +379,7 @@ List<String> closurecategory = Arrays.asList("Completed Successfully","Partial S
 										<div class="container">
 					  						<div class="row">
 												<div class="col-xl">
-												PDC : <%if(obj[8]!=null){%><%=fc.SqlToRegularDate(obj[8].toString()) %>
+												PDC : <%if(obj[8]!=null){%><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(obj[8].toString())) %>
 												<%}else{ %>-<%} %>
 												<br/>
 												</div>
@@ -393,7 +394,7 @@ List<String> closurecategory = Arrays.asList("Completed Successfully","Partial S
 													<form action="ProjectClosureSubmit.htm" method="post" id="closureform<%=obj[0]%>">
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 														<input type="hidden" name="projectId" value="<%=obj[0]%>">
-														<input type="hidden" name="closureId" value="<%if(obj[14]!=null) {%><%=obj[14] %><%}else{%>0<%}%>">
+														<input type="hidden" name="closureId" value="<%if(obj[14]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[14].toString()) %><%}else{%>0<%}%>">
 														<select name="closureCategory" id="closureCategory<%=obj[0]%>" class="form-control  form-control" data-width="70%" data-live-search="true" required>
 			                								<option value="-1" disabled="disabled" selected="selected">--Select--</option>
 												        		<%
@@ -421,11 +422,11 @@ List<String> closurecategory = Arrays.asList("Completed Successfully","Partial S
 				                                        	<input type="hidden" name="closureId" value="<%=obj[14] %>">
 				                                       	  	<%if(obj[15]!=null && obj[15].toString().equalsIgnoreCase("SoC")) {%>
 					                                       	  	<button type="submit" class="btn btn-sm btn-link w-100 btn-status" formaction=ProjectClosureSoCTransStatus.htm value="<%=obj[14] %>" name="closureId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[13] %>; font-weight: 600;" formtarget="_blank">
-												    				<%=obj[12] %> <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
+												    				<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
 												    			</button>
 											    			<%} else if(obj[15]!=null && obj[15].toString().equalsIgnoreCase("ACR")) {%>
 											    				<button type="submit" class="btn btn-sm btn-link w-100 btn-status" formaction=ProjectClosureACPTransStatus.htm value="<%=obj[14] %>" name="closureId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[13] %>; font-weight: 600;" formtarget="_blank">
-											    					<%=obj[12] %> <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
+											    					<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
 											    				</button>
 											    			<%} %>
 											    			

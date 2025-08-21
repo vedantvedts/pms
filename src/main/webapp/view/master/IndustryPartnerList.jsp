@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
@@ -131,23 +132,22 @@ Map<String, List<Object[]>> industryPartnerToListMap = industryPartnerList.strea
 %>
 
 
-<% String ses=(String)request.getParameter("result"); 
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-<%} %>
-
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 	
 <br>	
@@ -221,13 +221,13 @@ Map<String, List<Object[]>> industryPartnerToListMap = industryPartnerList.strea
 			           								<tr>
 			           									<td style="text-align: center;"><%=++slno %></td>
 			           									<%if(i==0) {%>
-													    	<td  rowspan="<%=values.size() %>" style="vertical-align: middle;"><%=obj[1] %></td>
-													    	<td  rowspan="<%=values.size() %>" style="vertical-align: middle;"><%=obj[2]+", "+obj[9]+" - "+obj[10] %></td>
+													    	<td  rowspan="<%=values.size() %>" style="vertical-align: middle;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%> %></td>
+													    	<td  rowspan="<%=values.size() %>" style="vertical-align: middle;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%>+", "+<%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()):" - "%>+" - "+<%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()):" -"%> %></td>
 			           									<%} %>
-												        <td><%=obj[4] %></td>
-												        <td><%=obj[5] %></td>
-												        <td style="text-align: center;"><%=obj[6] %></td>
-												        <td><%=obj[7] %></td>
+												        <td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"-"%> %></td>
+												        <td><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-"%> %></td>
+												        <td style="text-align: center;"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"-"%> %></td>
+												        <td><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()):"-"%> %></td>
 												        <td style="text-align: center;">
 			                                               <%if(Boolean.parseBoolean(obj[8].toString())) {%>
 			                                                     <span class="badge badge-success">Active</span>  

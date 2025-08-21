@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -56,22 +57,22 @@ String committeeId = (String)request.getAttribute("committeeId");
 String clusterLabCode = (String)request.getAttribute("clusterLabCode");
 String labCode = (String)session.getAttribute("labcode");
 %>
-	<% String ses=(String)request.getParameter("result");
-	 	String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-		%>
-		<div align="center">
-			<div class="alert alert-danger" role="alert">
-		    <%=ses1 %>
-		    </div>
-		</div>
-		<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-		    	<%=ses %>
-			</div>
-		</div>
-	<%} %>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 	<div class="container-fluid mb-3">
 		<div class="card shadow-nohover">

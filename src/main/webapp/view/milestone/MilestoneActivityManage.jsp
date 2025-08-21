@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
@@ -152,7 +153,7 @@ input[type=checkbox] {
 						selected="selected"
 						<%projectDirector = Long.parseLong(obj[23].toString());selectedProject=projectshortName; %>
 						<%} %>>
-						<%=obj[4]+projectshortName%>
+						<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%>
 					</option>
 					<%} %>
 				</select>
@@ -163,23 +164,22 @@ input[type=checkbox] {
 		</div>
 	</form>
 
-	<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-			<br />
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			
-			<br />
-		</div>
-	</div>
-	<%} %>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -197,9 +197,9 @@ if(ses1!=null){	%>
 								<%if(ProjectId!=null){
 						Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");
 						%>
-								<%=ProjectDetail[2] %>
+								<%=ProjectDetail[2]!=null?StringEscapeUtils.escapeHtml4(ProjectDetail[2].toString()): "" %>
 								(
-								<%=ProjectDetail[1] %>
+								<%=ProjectDetail[1]!=null?StringEscapeUtils.escapeHtml4(ProjectDetail[1].toString()): "" %>
 								)
 								<%} %>
 								Milestone List
@@ -252,19 +252,19 @@ if(ses1!=null){	%>
 											value="<%=obj[11]!=null?obj[11].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):"-"%>">
 										</td>
 
-										<td style="text-align: left; width: 5%;">Mil-<%=obj[5]%></td>
+										<td style="text-align: left; width: 5%;">Mil-<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%></td>
 										<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 										<td
 											style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important; max-width: 20% !important; min-width: 20% !important; cursor: pointer;"
-											onclick="showMilestoneStatusProgress('<%=obj[0]%>')"><%=obj[4] %>
+											onclick="showMilestoneStatusProgress('<%=obj[0]%>')"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %>
 										</td>
 
-										<td style="width: 8% !important;"><%=sdf.format(obj[2])%></td>
-										<td style="width: 8% !important;"><%=sdf.format(obj[3])%></td>
-										<td style="width: 15% !important;"><%=obj[6]%> <br>
-											<%=obj[7]%></td>
+										<td style="width: 8% !important;"><%=sdf.format(StringEscapeUtils.escapeHtml4(obj[2].toString()))%></td>
+										<td style="width: 8% !important;"><%=sdf.format(StringEscapeUtils.escapeHtml4(obj[3].toString()))%></td>
+										<td style="width: 15% !important;"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%> <br>
+											<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%></td>
 										<td style="width: 8% !important;">-</td>
-										<td style="width: 7% !important;" align="center"><%=obj[13]%></td>
+										<td style="width: 7% !important;" align="center"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - "%></td>
 										<td>
 											<%if(!obj[12].toString().equalsIgnoreCase("0")){ %>
 											<div class="progress"
@@ -283,7 +283,7 @@ if(ses1!=null){	%>
 																"
 													role="progressbar" style=" width: <%=obj[12] %>%;  "
 													aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-													<%=obj[12] %>
+													<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %>
 												</div>
 											</div> <%}else{ %>
 											<div class="progress"
@@ -379,18 +379,18 @@ if(ses1!=null){	%>
 										<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 										<td
 											style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important; max-width: 20% !important; min-width: 20% !important; cursor: pointer;">
-											<%=objA[4] %>
+											<%=objA[4]!=null?StringEscapeUtils.escapeHtml4(objA[4].toString()): " - " %>
 										</td>
 
-										<td class="width-30px"><%=sdf.format(objA[2])%></td>
-										<td style="width: 8% !important;"><%=sdf.format(objA[3])%></td>
-										<td><%=objA[14]%></td>
+										<td class="width-30px"><%=sdf.format(StringEscapeUtils.escapeHtml4(objA[2].toString()))%></td>
+										<td style="width: 8% !important;"><%=sdf.format(StringEscapeUtils.escapeHtml4(objA[3].toString()))%></td>
+										<td><%=objA[14]!=null?StringEscapeUtils.escapeHtml4(objA[14].toString()): " - "%></td>
 										<td class="width-30px">
 											<%if(objA[9].toString().equalsIgnoreCase("3")||objA[9].toString().equalsIgnoreCase("5")){ %>
-											<%if(objA[7]!=null){ %> <%=sdf.format(objA[7]) %> <%}else{ %><%=objA[8] %>
-											<%} %> <%}else{ %> <%=objA[8] %> <%} %>
+											<%if(objA[7]!=null){ %> <%=sdf.format(StringEscapeUtils.escapeHtml4(objA[7].toString())) %> <%}else{ %><%=objA[8]!=null?StringEscapeUtils.escapeHtml4(objA[8].toString()): " - " %>
+											<%} %> <%}else{ %> <%=objA[8]!=null?StringEscapeUtils.escapeHtml4(objA[8].toString()): " - " %> <%} %>
 										</td>
-										<td align="center"><%=objA[6] %></td>
+										<td align="center"><%=objA[6]!=null?StringEscapeUtils.escapeHtml4(objA[6].toString()): " - " %></td>
 										<td>
 											<%if(!objA[5].toString().equalsIgnoreCase("0")){ %>
 											<div class="progress"
@@ -409,7 +409,7 @@ if(ses1!=null){	%>
 															"
 													role="progressbar" style=" width: <%=objA[5] %>%;  "
 													aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-													<%=objA[5] %>
+													<%=objA[5]!=null?StringEscapeUtils.escapeHtml4(objA[5].toString()): " - " %>
 												</div>
 											</div> <%}else{ %>
 											<div class="progress"
@@ -450,7 +450,7 @@ if(ses1!=null){	%>
 															  url:'predecessorList.htm',
 															  datatype:'json',
 															  data:{
-																  successor:'<%=objA[0]%>',
+																  successor:'<%=objA[0]!=null?StringEscapeUtils.escapeHtml4(objA[0].toString()): ""%>',
 															  },
 															  success:function(result){
 																  var ajaxresult = JSON.parse(result);
@@ -467,7 +467,7 @@ if(ses1!=null){	%>
 																		  
 																		}
 																  }
-																  var id = 'MIL_<%=objA[0]%>';
+																  var id = 'MIL_<%=objA[0]!=null?StringEscapeUtils.escapeHtml4(objA[0].toString()): ""%>';
 																  $('#'+id).html(html) 
 															  }
 															  
@@ -543,18 +543,18 @@ if(ses1!=null){	%>
 										<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 										<td
 											style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important; max-width: 20% !important; min-width: 20% !important; cursor: pointer;">
-											<%=objB[4] %>
+											<%=objB[4]!=null?StringEscapeUtils.escapeHtml4(objB[4].toString()): " - " %>
 										</td>
 
-										<td class="width-30px"><%=sdf.format(objB[2])%></td>
-										<td style="width: 8% !important;"><%=sdf.format(objB[3])%></td>
-										<td><%=objB[14]%></td>
+										<td class="width-30px"><%=sdf.format(StringEscapeUtils.escapeHtml4(objB[2].toString()))%></td>
+										<td style="width: 8% !important;"><%=sdf.format(StringEscapeUtils.escapeHtml4(objB[3].toString()))%></td>
+										<td><%=objB[14]!=null?StringEscapeUtils.escapeHtml4(objB[14].toString()): " - "%></td>
 										<td class="width-30px">
 											<%if(objB[9].toString().equalsIgnoreCase("3")||objB[9].toString().equalsIgnoreCase("5")){ %>
-											<%if(objB[7]!=null){ %> <%=sdf.format(objB[7]) %> <%}else{ %><%=objB[8] %>
-											<%} %> <%}else{ %> <%=objB[8] %> <%} %>
+											<%if(objB[7]!=null){ %> <%=sdf.format(objB[7]) %> <%}else{ %><%=objB[8]!=null?StringEscapeUtils.escapeHtml4(objB[8].toString()): " - " %>
+											<%} %> <%}else{ %> <%=objB[8]!=null?StringEscapeUtils.escapeHtml4(objB[8].toString()): " - " %> <%} %>
 										</td>
-										<td align="center"><%=objB[6] %></td>
+										<td align="center"><%=objB[6]!=null?StringEscapeUtils.escapeHtml4(objB[6].toString()): " - " %></td>
 										<td>
 											<%if(!objB[5].toString().equalsIgnoreCase("0")){ %>
 											<div class="progress"
@@ -573,7 +573,7 @@ if(ses1!=null){	%>
 															"
 													role="progressbar" style=" width: <%=objB[5] %>%;  "
 													aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-													<%=objB[5] %>
+													<%=objB[5]!=null?StringEscapeUtils.escapeHtml4(objB[5].toString()): " - " %>
 												</div>
 											</div> <%}else{ %>
 											<div class="progress"
@@ -612,7 +612,7 @@ if(ses1!=null){	%>
 															  url:'predecessorList.htm',
 															  datatype:'json',
 															  data:{
-																  successor:'<%=objB[0]%>',
+																  successor:'<%=objB[0]!=null?StringEscapeUtils.escapeHtml4(objB[0].toString()): ""%>',
 															  },
 															  success:function(result){
 																  var ajaxresult = JSON.parse(result);
@@ -629,7 +629,7 @@ if(ses1!=null){	%>
 																		  
 																		}
 																  }
-																  var id = 'MIL_<%=objB[0]%>';
+																  var id = 'MIL_<%=objB[0]!=null?StringEscapeUtils.escapeHtml4(objB[0].toString()): ""%>';
 																  $('#'+id).html(html) 
 															  }
 															  
@@ -704,18 +704,18 @@ if(ses1!=null){	%>
 										<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 										<td
 											style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important; max-width: 20% !important; min-width: 20% !important; cursor: pointer;">
-											<%=objC[4] %>
+											<%=objC[4]!=null?StringEscapeUtils.escapeHtml4(objC[4].toString()): " - " %>
 										</td>
 
-										<td class="width-30px"><%=sdf.format(objC[2])%></td>
-										<td style="width: 8% !important;"><%=sdf.format(objC[3])%></td>
-										<td><%=objC[14]%></td>
+										<td class="width-30px"><%=sdf.format(StringEscapeUtils.escapeHtml4(objC[2].toString()))%></td>
+										<td style="width: 8% !important;"><%=sdf.format(StringEscapeUtils.escapeHtml4(objC[3].toString()))%></td>
+										<td><%=objC[14]!=null?StringEscapeUtils.escapeHtml4(objC[14].toString()): " - " %></td>
 										<td class="width-30px">
 											<%if(objC[9].toString().equalsIgnoreCase("3")||objC[9].toString().equalsIgnoreCase("5")){ %>
-											<%if(objC[7]!=null){ %> <%=sdf.format(objC[7]) %> <%}else{ %><%=objC[8] %>
-											<%} %> <%}else{ %> <%=objC[8] %> <%} %>
+											<%if(objC[7]!=null){ %> <%=sdf.format(objC[7]) %> <%}else{ %><%=objC[8]!=null?StringEscapeUtils.escapeHtml4(objC[8].toString()): " - "  %>
+											<%} %> <%}else{ %> <%=objC[8]!=null?StringEscapeUtils.escapeHtml4(objC[8].toString()): " - "  %> <%} %>
 										</td>
-										<td align="center"><%=objC[6] %></td>
+										<td align="center"><%=objC[6]!=null?StringEscapeUtils.escapeHtml4(objC[6].toString()): " - "  %></td>
 										<td>
 											<%if(!objC[5].toString().equalsIgnoreCase("0")){ %>
 											<div class="progress"
@@ -734,7 +734,7 @@ if(ses1!=null){	%>
 																	"
 													role="progressbar" style=" width: <%=objC[5] %>%;  "
 													aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-													<%=objC[5] %>
+													<%=objC[5]!=null?StringEscapeUtils.escapeHtml4(objC[5].toString()): " - "  %>
 												</div>
 											</div> <%}else{ %>
 											<div class="progress"
@@ -774,7 +774,7 @@ if(ses1!=null){	%>
 															  url:'predecessorList.htm',
 															  datatype:'json',
 															  data:{
-																  successor:'<%=objC[0]%>',
+																  successor:'<%=objC[0]!=null?StringEscapeUtils.escapeHtml4(objC[0].toString()): "" %>',
 															  },
 															  success:function(result){
 																  var ajaxresult = JSON.parse(result);
@@ -791,7 +791,7 @@ if(ses1!=null){	%>
 																		  
 																		}
 																  }
-																  var id = 'MIL_<%=objC[0]%>';
+																  var id = 'MIL_<%=objC[0]!=null?StringEscapeUtils.escapeHtml4(objC[0].toString()): "" %>';
 																  $('#'+id).html(html) 
 															  }
 															  
@@ -867,18 +867,18 @@ if(ses1!=null){	%>
 										<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 										<td
 											style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important; max-width: 20% !important; min-width: 20% !important; cursor: pointer;">
-											<%=objD[4] %>
+											<%=objD[4]!=null?StringEscapeUtils.escapeHtml4(objD[4].toString()): " - "  %>
 										</td>
 
-										<td class="width-30px"><%=sdf.format(objB[2])%></td>
-										<td style="width: 8% !important;"><%=sdf.format(objB[3])%></td>
-										<td><%=objD[14]%></td>
+										<td class="width-30px"><%=sdf.format(StringEscapeUtils.escapeHtml4(objD[2].toString()))%></td>
+										<td style="width: 8% !important;"><%=sdf.format(StringEscapeUtils.escapeHtml4(objD[3].toString()))%></td>
+										<td><%=objD[14]!=null?StringEscapeUtils.escapeHtml4(objD[14].toString()): " - "%></td>
 										<td class="width-30px">
 											<%if(objD[9].toString().equalsIgnoreCase("3")||objD[9].toString().equalsIgnoreCase("5")){ %>
-											<%if(objD[7]!=null){ %> <%=sdf.format(objD[7]) %> <%}else{ %><%=objD[8] %>
-											<%} %> <%}else{ %> <%=objD[8] %> <%} %>
+											<%if(objD[7]!=null){ %> <%=sdf.format(objD[7]) %> <%}else{ %><%=objD[8]!=null?StringEscapeUtils.escapeHtml4(objD[8].toString()): " - " %>
+											<%} %> <%}else{ %> <%=objD[8]!=null?StringEscapeUtils.escapeHtml4(objD[8].toString()): " - " %> <%} %>
 										</td>
-										<td align="center"><%=objD[6] %></td>
+										<td align="center"><%=objD[6]!=null?StringEscapeUtils.escapeHtml4(objD[6].toString()): " - " %></td>
 										<td>
 											<%if(!objD[5].toString().equalsIgnoreCase("0")){ %>
 											<div class="progress"
@@ -897,7 +897,7 @@ if(ses1!=null){	%>
 															"
 													role="progressbar" style=" width: <%=objD[5] %>%;  "
 													aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-													<%=objD[5] %>
+													<%=objD[5]!=null?StringEscapeUtils.escapeHtml4(objD[5].toString()): " - " %>
 												</div>
 											</div> <%}else{ %>
 											<div class="progress"
@@ -936,7 +936,7 @@ if(ses1!=null){	%>
 															  url:'predecessorList.htm',
 															  datatype:'json',
 															  data:{
-																  successor:'<%=objD[0]%>',
+																  successor:'<%=objD[0]!=null?StringEscapeUtils.escapeHtml4(objD[0].toString()): ""%>',
 															  },
 															  success:function(result){
 																  var ajaxresult = JSON.parse(result);
@@ -953,7 +953,7 @@ if(ses1!=null){	%>
 																		  
 																		}
 																  }
-																  var id = 'MIL_<%=objD[0]%>';
+																  var id = 'MIL_<%=objD[0]!=null?StringEscapeUtils.escapeHtml4(objD[0].toString()): ""%>';
 																  $('#'+id).html(html) 
 															  }
 															  
@@ -1017,18 +1017,18 @@ if(ses1!=null){	%>
 										<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 										<td
 											style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important; max-width: 20% !important; min-width: 20% !important; cursor: pointer;">
-											<%=objE[4] %>
+											<%=objE[4]!=null?StringEscapeUtils.escapeHtml4(objE[4].toString()): " - " %>
 										</td>
 
-										<td class="width-30px"><%=sdf.format(objE[2])%></td>
-										<td style="width: 8% !important;"><%=sdf.format(objE[3])%></td>
-										<td><%=objE[14]%></td>
+										<td class="width-30px"><%=sdf.format(StringEscapeUtils.escapeHtml4(objE[2].toString()))%></td>
+										<td style="width: 8% !important;"><%=sdf.format(StringEscapeUtils.escapeHtml4(objE[3].toString()))%></td>
+										<td><%=objE[14]!=null?StringEscapeUtils.escapeHtml4(objE[14].toString()): " - "%></td>
 										<td class="width-30px">
 											<%if(objE[9].toString().equalsIgnoreCase("3")||objE[9].toString().equalsIgnoreCase("5")){ %>
-											<%if(objE[7]!=null){ %> <%=sdf.format(objE[7]) %> <%}else{ %><%=objE[8] %>
-											<%} %> <%}else{ %> <%=objE[8] %> <%} %>
+											<%if(objE[7]!=null){ %> <%=sdf.format(objE[7]) %> <%}else{ %><%=objE[8]!=null?StringEscapeUtils.escapeHtml4(objE[8].toString()): " - " %>
+											<%} %> <%}else{ %> <%=objE[8]!=null?StringEscapeUtils.escapeHtml4(objE[8].toString()): " - " %> <%} %>
 										</td>
-										<td align="center"><%=objE[6] %></td>
+										<td align="center"><%=objE[6]!=null?StringEscapeUtils.escapeHtml4(objE[6].toString()): " - " %></td>
 										<td>
 											<%if(!objE[5].toString().equalsIgnoreCase("0")){ %>
 											<div class="progress"
@@ -1047,7 +1047,7 @@ if(ses1!=null){	%>
 															"
 													role="progressbar" style=" width: <%=objE[5] %>%;  "
 													aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-													<%=objE[5] %>
+													<%=objE[5]!=null?StringEscapeUtils.escapeHtml4(objE[5].toString()): " - " %>
 												</div>
 											</div> <%}else{ %>
 											<div class="progress"
@@ -1088,7 +1088,7 @@ if(ses1!=null){	%>
 															  url:'predecessorList.htm',
 															  datatype:'json',
 															  data:{
-																  successor:'<%=objE[0]%>',
+																  successor:'<%=objE[0]!=null?StringEscapeUtils.escapeHtml4(objE[0].toString()): ""%>',
 															  },
 															  success:function(result){
 																  var ajaxresult = JSON.parse(result);
@@ -1105,7 +1105,7 @@ if(ses1!=null){	%>
 																		  
 																		}
 																  }
-																  var id = 'MIL_<%=objE[0]%>';
+																  var id = 'MIL_<%=objE[0]!=null?StringEscapeUtils.escapeHtml4(objE[0].toString()): ""%>';
 																  $('#'+id).html(html) 
 															  }
 															  
@@ -1370,7 +1370,7 @@ if(ses1!=null){	%>
 								if(!ProjectId.equalsIgnoreCase(obj[0].toString())){
 									String projectshortName1= (obj[17] != null) ? " (" + obj[17].toString() + ") " : "";
 								%>
-								<option value="<%=obj[0]%>"><%=obj[4] %><%=projectshortName1 %></option>
+								<option value="<%=obj[0]%>"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %><%=projectshortName1!=null?StringEscapeUtils.escapeHtml4(projectshortName1): " - " %></option>
 								<%
 								}}
 								%>

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -153,28 +154,22 @@ String toyear=(String)request.getAttribute("toyear");
 
 
 
-	<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-
-
-	<center>
-
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</center>
-	<%}if(ses!=null){ %>
-	<center>
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</center>
-
-
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -230,8 +225,8 @@ String toyear=(String)request.getAttribute("toyear");
 														<tr>
 															<td><%=sdf1.format(sdf.parse(obj[1].toString()))%></td>
 															<td><%=sdf1.format(sdf.parse(obj[2].toString()))%></td>
-															<td><%=obj[3]%>&nbsp;(<%=obj[6] %>)</td>
-															<td><%=obj[4]%>&nbsp;(<%=obj[7] %>)</td>
+															<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%>&nbsp;(<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %>)</td>
+															<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>&nbsp;(<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %>)</td>
 															
 															<td class="left width">
 

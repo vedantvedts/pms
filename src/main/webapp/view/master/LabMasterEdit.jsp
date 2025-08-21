@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -150,7 +151,7 @@ List<Object[]> lablist=(List<Object[]>)request.getAttribute("lablist");
 	<%if(LabMasterEditData[1]!=null){ %> 
  
  	<input  class="form-control" type="text" name="LabCode" required="required" maxlength="255" style="font-size: 15px;"  id="LabCode" 
- 	 value="<%=LabMasterEditData[1]%> " >
+ 	 value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[1].toString()) %> " >
  
 	<%}else{ %>-<%} %>
  
@@ -179,7 +180,7 @@ List<Object[]> lablist=(List<Object[]>)request.getAttribute("lablist");
 		<%if(LabMasterEditData[2]!=null){ %>			
 					
  	<input  class="form-control form-control" type="text" name="LabName" required="required" maxlength="255" style="font-size: 15px;text-transform:capitalize;"  
- 	 value="<%=LabMasterEditData[2] %>" > 
+ 	 value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[2].toString()) %>" > 
 			
 	
 	<%}else{ %>-<%} %>			
@@ -206,7 +207,7 @@ List<Object[]> lablist=(List<Object[]>)request.getAttribute("lablist");
 		<%if(LabMasterEditData[4]!=null){ %>			
 					
  	<input  class="form-control form-control" type="text" name="LabAddress" required="required" maxlength="255" style="font-size: 15px;text-transform:capitalize;width:88%" 
- 	  value="<%=LabMasterEditData[4] %>" >
+ 	  value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[4].toString())%>" >
 			
 		<%}else{ %>-<%} %>
  
@@ -234,7 +235,7 @@ List<Object[]> lablist=(List<Object[]>)request.getAttribute("lablist");
 		<%if(LabMasterEditData[5]!=null){ %>			
 					
  	<input  class="form-control form-control" type="text" name="LabCity" required="required" maxlength="255" style="font-size: 15px;text-transform:capitalize;"  
- 	 value="<%=LabMasterEditData[5] %>" >  
+ 	 value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[5].toString()) %>" >  
 			
 	<%}else{ %>-<%} %>
 			
@@ -251,7 +252,7 @@ List<Object[]> lablist=(List<Object[]>)request.getAttribute("lablist");
 		<%if(LabMasterEditData[9]!=null){ %>			
 					
  	<input  class="form-control form-control" type="text" name="LabEmail" required="required" maxlength="30" style="font-size: 15px;" 
- 	  value="<%=LabMasterEditData[9] %>" >
+ 	  value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[9].toString()) %>" >
 			
 		<%}else{ %>-<%} %>	
 
@@ -276,7 +277,7 @@ List<Object[]> lablist=(List<Object[]>)request.getAttribute("lablist");
 		<%if(LabMasterEditData[6]!=null){ %>			
 					
  	<input  class="form-control form-control" type="text" name="LabPin" required="required" maxlength="6" style="font-size: 15px;"  
-value="<%=LabMasterEditData[6] %>" > 
+value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[6].toString()) %>" > 
 			
 		<%}else{ %>-<%} %>
 
@@ -296,7 +297,7 @@ value="<%=LabMasterEditData[6] %>" >
 <%if(LabMasterEditData[3]!=null){ %>		
 					
  	<input  class="form-control form-control" type="number" name="LabUnitCode" required="required" maxlength="255" style="font-size: 15px;"  id="LabCode" 
- 	 value="<%=LabMasterEditData[3] %>" >  
+ 	 value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[3].toString()) %>" >  
 			
 <%}else{ %>-<%} %>
 			
@@ -321,7 +322,7 @@ value="<%=LabMasterEditData[6] %>" >
 		<%if(LabMasterEditData[7]!=null){ %>			
 					
  	<input  class="form-control form-control" type="text" name="LabTelephone" required="required" maxlength="15" style="font-size: 15px;"  
- 	 value="<%=LabMasterEditData[7] %>" >
+ 	 value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[7].toString()) %>" >
 			
 		<%}else{ %>-<%} %>
 
@@ -341,7 +342,7 @@ value="<%=LabMasterEditData[6] %>" >
 			<%if(LabMasterEditData[8]!=null){ %>		
 					
  	<input  class="form-control form-control" type="number" name="LabFaxNo" required="required" maxlength="255" style="font-size: 15px;"  id="" 
-  value="<%=LabMasterEditData[8] %>" >
+  value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[8].toString()) %>" >
 			
 	<%}else{ %>-<%} %>
 			
@@ -370,7 +371,7 @@ value="<%=LabMasterEditData[6] %>" >
 					
 					
  	<input  class="form-control form-control" type="text" name="LabAuthority" required="required" maxlength="30" style="font-size: 15px;"  
- <%if(LabMasterEditData[10]!=null){ %> value="<%=LabMasterEditData[10] %>" <%}else{ %>value=""<%} %> >
+ <%if(LabMasterEditData[10]!=null){ %> value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[10].toString()) %>" <%}else{ %>value=""<%} %> >
 			
 		
 
@@ -393,7 +394,7 @@ value="<%=LabMasterEditData[6] %>" >
 				
 				<% for (  Object[] obj : EmployeeList){ %>
 		
-				<option value=<%=obj[0]%> <%if(obj[0].toString().equalsIgnoreCase(LabMasterEditData[11].toString())) {%> selected="selected"  <%} %>><%=obj[1]%> </option>
+				<option value=<%=obj[0]%> <%if(obj[0].toString().equalsIgnoreCase(LabMasterEditData[11].toString())) {%> selected="selected"  <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%> </option>
 			
 				<%} %>
 
@@ -426,7 +427,7 @@ value="<%=LabMasterEditData[6] %>" >
 				
 				<% for (  Object[] obj : lablist){ %>
 		
-				<option value="<%=obj[0]%>,<%=obj[1]%>" <%if(obj[0].toString().equalsIgnoreCase(LabMasterEditData[14].toString())) {%> selected="selected"  <%} %>><%=obj[2]%> (<%=obj[3]%>) </option>
+				<option value="<%=obj[0]%>,<%=obj[1]%>" <%if(obj[0].toString().equalsIgnoreCase(LabMasterEditData[14].toString())) {%> selected="selected"  <%} %>><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%> (<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):"-"%>) </option>
 			
 				<%} %>
 
@@ -457,7 +458,7 @@ value="<%=LabMasterEditData[6] %>" >
 		<%if(LabMasterEditData[12]!=null){ %>			
 					
  	<input  class="form-control form-control" type="text" name="LabRFPEmail" required="required" maxlength="30" style="font-size: 15px;"  
- 	 value="<%=LabMasterEditData[12] %>" >
+ 	 value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[12].toString()) %>" >
 			
 		<%}else{ %>-<%} %>
 

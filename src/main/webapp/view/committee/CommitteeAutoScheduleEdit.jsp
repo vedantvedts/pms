@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.format.TextStyle"%>
 <%@page import="java.time.LocalDate"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -56,20 +57,22 @@ String initiationid=scheduledata[17].toString();
 String projectstatus=(String)request.getAttribute("projectstatus");
 %>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br />
     
@@ -85,16 +88,16 @@ String projectstatus=(String)request.getAttribute("projectstatus");
 					<div class="row">
 					
 						<div class="col-md-4">	
-							<h3 class="control-label" ><%=scheduledata[8] %> Schedule Edit </h3> 
+							<h3 class="control-label" ><%=scheduledata[8]!=null?StringEscapeUtils.escapeHtml4(scheduledata[8].toString()): " - " %> Schedule Edit </h3> 
 						</div>
 						
 						<div class="col-md-5">	
 								<h3><%String day=LocalDate.parse(scheduledata[2] .toString()).getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.US);%>							
-								<span<%if(day.equalsIgnoreCase("sunday") || day.equalsIgnoreCase("saturday")){ %> style="color: red" <%} %> > <%=day%> </span>&nbsp; 
+								<span<%if(day.equalsIgnoreCase("sunday") || day.equalsIgnoreCase("saturday")){ %> style="color: red" <%} %> > <%=day!=null?StringEscapeUtils.escapeHtml4(day): " - "%> </span>&nbsp; 
 								- &nbsp;<%=LocalDate.parse(scheduledata[2] .toString()).getMonth().getDisplayName(TextStyle.FULL, Locale.US)%> &nbsp; 
 								- &nbsp; <%= sdf.format(sdf1.parse( scheduledata[2] .toString()))%></h3>  
 						</div>
-						<div class="col-md-3"><h3 class="control-label" > <%if(projectname!=null){%><%=projectname %><%} %></h3>	</div>
+						<div class="col-md-3"><h3 class="control-label" > <%if(projectname!=null){%><%=StringEscapeUtils.escapeHtml4(projectname) %><%} %></h3>	</div>
 						
 						
 							

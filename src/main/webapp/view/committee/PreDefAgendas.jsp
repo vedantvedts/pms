@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -18,21 +19,22 @@
 %>
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert" >
-         	<%=ses1 %>
-         </div>
-    </div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert"  >
-        	<%=ses %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
         </div>
     </div>
-    <%} %>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 	<div class="container-fluid">
 		<div class="card" >
@@ -48,7 +50,7 @@
 									</td><td>
 										<select class="form-control selectdee" name="committeeid" onchange="this.form.submit();" >
 											<%for(Object[] committee : committeeslist){ %>
-												<option value="<%=committee[0] %>" <%if( committee[0].toString().equalsIgnoreCase(committeeid)){ committeecode = committee[1].toString(); %> selected <%} %>  > <%=committee[1] %> </option>
+												<option value="<%=committee[0] %>" <%if( committee[0].toString().equalsIgnoreCase(committeeid)){ committeecode = committee[1].toString(); %> selected <%} %>  > <%=committee[1]!=null?StringEscapeUtils.escapeHtml4(committee[1].toString()): " - " %> </option>
 											<% } %>
 										</select>
 									</td>
@@ -117,9 +119,9 @@
 									for(Object[] obj : DefAgendas){ %>
 									<tr>
 										<td><%=count++ %></td>
-										<td><%=obj[2] %></td>
-										<td><%=obj[3] %></td>
-										<td><%=obj[4] %></td>
+										<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+										<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
+										<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
 										<td> 
 											<form method="post" action="PreDefinedAgendaDelete.htm" >
 												<button type="button" class="btn btn-sm" data-toggle="modal"  onclick="showEditModal('<%=obj[0] %>' , ' <%=obj[2] %>', '<%=obj[3] %>', '<%=obj[4] %>' );"><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></button>

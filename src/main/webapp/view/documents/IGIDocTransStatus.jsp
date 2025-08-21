@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"  import="java.util.*,java.text.SimpleDateFormat"%>
  
@@ -187,13 +188,13 @@ String docId = (String)request.getAttribute("docId");
 						<span class="month"><%=month.format(object[4]) %></span>
 						<span class="year"><%=year.format(object[4]) %></span>
 					</span>
-					<h2 style="background-color: <%=object[7]%>;--my-color-var: <%=object[7]%>;" ><%=object[6] %> at <%=time.format(object[4]) %></h2> 
+					<h2 style="background-color: <%=object[7]%>;--my-color-var: <%=object[7]%>;" ><%=object[6]!=null?StringEscapeUtils.escapeHtml4(object[1].toString()):" - " %> at <%=time.format(object[4]) %></h2> 
 					<p style="background-color:  #f0f2f5;">
 						<span class="remarks_title">Action By : </span>
-						<%=object[2] %>, <%=object[3] %><br>
+						<%=StringEscapeUtils.escapeHtml4(object[2].toString()) %>, <%=StringEscapeUtils.escapeHtml4(object[3].toString()) %><br>
 						<%if(object[5]!= null) { %>
 							<span class="remarks_title">Remarks : </span>
-							<%=object[5] %>
+							<%=StringEscapeUtils.escapeHtml4(object[5].toString())%>
 						<%}else{ %> 
 							<span class="remarks_title">No Remarks </span> 
 						<%} %>

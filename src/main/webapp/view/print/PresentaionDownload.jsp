@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.LocalTime"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.net.Inet4Address"%>
@@ -67,7 +68,7 @@ String InitiationId=(String)request.getAttribute("InitiationId");
           padding-left:10px;
 		  padding-right:10px;       
        @bottom-left {          		
-             content: "<%=LabList[1]%>";
+             content: "<%=LabList[1]!=null?StringEscapeUtils.escapeHtml4(LabList[1].toString()): " - "%>";
              margin-bottom: 30px;
              margin-right: 10px;
              font-size: 13px;
@@ -79,13 +80,13 @@ String InitiationId=(String)request.getAttribute("InitiationId");
 		}
 		
 		@top-right {
-             content: "Proposed Project: <%=PfmsInitiationList[4]%>";
+             content: "Proposed Project: <%=PfmsInitiationList[4]!=null?StringEscapeUtils.escapeHtml4(PfmsInitiationList[4].toString()): " - " %>";
              margin-top: 30px;
              font-size: 13px;
          }
          
         @top-left {
-             content: "<%=PfmsInitiationList[3]%>";
+             content: "<%=PfmsInitiationList[3]!=null?StringEscapeUtils.escapeHtml4(PfmsInitiationList[3].toString()): " - " %>";
              margin-top: 30px;
              font-size: 13px;
         }
@@ -233,17 +234,17 @@ padding-top: 5px !important;
 
 	<div class="firstpage"  > 
 
-						<div align="center" ><h2 style="color: #145374 !important;font-family: 'Muli'!important">Presentation for<%if(PfmsInitiationList[5]!=null){ %><br><%=PfmsInitiationList[5] %><%}else{ %><i>Project Title</i><%} %></h2></div>
-					     <div align="center" ><h3 style="color: #4C9100 !important"><%if(PfmsInitiationList[4]!=null){ %>(<%=PfmsInitiationList[4] %>)<%}else{ %><i> - </i><%} %></h3></div>	
+						<div align="center" ><h2 style="color: #145374 !important;font-family: 'Muli'!important">Presentation for<%if(PfmsInitiationList[5]!=null){ %><br><%=StringEscapeUtils.escapeHtml4(PfmsInitiationList[5].toString()) %><%}else{ %><i>Project Title</i><%} %></h2></div>
+					     <div align="center" ><h3 style="color: #4C9100 !important"><%if(PfmsInitiationList[4]!=null){ %>(<%=StringEscapeUtils.escapeHtml4(PfmsInitiationList[4].toString()) %>)<%}else{ %><i> - </i><%} %></h3></div>	
 					     <div align="center" ><h3 style="color: #145374 !important"><%if(PfmsInitiationList[10]!=null){%> <%=sdf2.format(PfmsInitiationList[10])%><%}else{ %>-<%} %></h3></div>
 					    <br><br><br><br>
 					     <div align="center" ><h3 style="color: #145374 !important"><img class="logo" style="width:120px;height: 120px;margin-bottom: 5px"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Configuration"<%}else{ %> alt="File Not Found" <%} %> ></h3></div>
 						<br><br>
 						<br>
-						<div align="center"><h4 style="color: #145374 !important"><%if(LabList[1]!=null){ %><%=LabList[1] %><%}else{ %>-<%} %></h4></div>
+						<div align="center"><h4 style="color: #145374 !important"><%if(LabList[1]!=null){ %><%=StringEscapeUtils.escapeHtml4(LabList[1].toString()) %><%}else{ %>-<%} %></h4></div>
 						<div align="center"><h5 style="color: #145374 !important" >Government of India, Ministry of Defence</h5></div>
 						<div align="center"><h5 style="color: #145374 !important" >Defence Research & Development Organization</h5></div>
-						<div align="center"><h5 style="color: #145374 !important" ><%if(LabList[2]!=null){ %><%=LabList[2] %><%}else{ %> - <%} %></h5></div>
+						<div align="center"><h5 style="color: #145374 !important" ><%if(LabList[2]!=null){ %><%=StringEscapeUtils.escapeHtml4(LabList[2].toString()) %><%}else{ %> - <%} %></h5></div>
 						</div>
 
 
@@ -279,7 +280,7 @@ padding-top: 5px !important;
 					<th  class="border_black normal center" ><span >1.</span></th>
 					<td class="border_black normal left" >
 						<span class="bold">Title of the Project / Name of the project</span>
-						<span style="color:#309322;"><%if(obj[5]!=null){ %><b> - <%=obj[5] %><%}else{ %><i></i><%} %></b></span>
+						<span style="color:#309322;"><%if(obj[5]!=null){ %><b> - <%=StringEscapeUtils.escapeHtml4(obj[5].toString()) %><%}else{ %><i></i><%} %></b></span>
 					</td>
 				</tr> 
 				
@@ -288,7 +289,7 @@ padding-top: 5px !important;
 					<th rowspan="3"  class="border_black normal center" style="vertical-align:top;"><span >2.</span></th>
 					<td class="border_black normal left" >
 						<span class="bold" >Name of the Main project</span>
-						<span style="color:#309322;"> <%if(obj[12].toString().equalsIgnoreCase("N")){ %> - <%=obj[13]%><%} else{ %> <i> - NA </i> <%} %></span>
+						<span style="color:#309322;"> <%if(obj[12].toString().equalsIgnoreCase("N")){ %> - <%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - "%><%} else{ %> <i> - NA </i> <%} %></span>
 					</td>
 				</tr> 
 				
@@ -311,7 +312,7 @@ padding-top: 5px !important;
 					<th  class="border_black normal center" ><span >3.</span></th>
 					<td class="border_black normal left" >
 						<span class="bold">Security Classification</span>
-						<span ><%if(obj[3]!=null){ %> - <%=obj[3] %><%}else{ %><i></i><%} %></span>
+						<span ><%if(obj[3]!=null){ %> - <%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %><%}else{ %><i></i><%} %></span>
 					</td>
 				</tr>
 				
@@ -329,7 +330,7 @@ padding-top: 5px !important;
 					<th  class="border_black normal center" ><span >5.</span></th>
 					<td class="border_black normal left" >
 						<span class="bold">PDC </span>
-						<span ><%if(obj[7]!=null){ %> - <%=obj[7] %> Months<%}else{ %><i></i><%} %></span>
+						<span ><%if(obj[7]!=null){ %> - <%=StringEscapeUtils.escapeHtml4(obj[7].toString()) %> Months<%}else{ %><i></i><%} %></span>
 					</td>
 				</tr>
 				
@@ -337,7 +338,7 @@ padding-top: 5px !important;
 					<th  class="border_black normal center" ><span >6.</span></th>
 					<td class="border_black normal left" >
 						<span class="bold">Whether Plan/Non Plan Project</span>
-						<span ><%if(obj[8]!=null){ if(obj[8].toString().equalsIgnoreCase("P")){%> - Plan <%}if(obj[8].toString().equalsIgnoreCase("N")){ %> - Non-Plan - <%if(obj[14]!=null){ %> (Remarks : <%=obj[14]%> ) <%}else{ %> Nil <%} %> <%}}else{ %><%} %></span>
+						<span ><%if(obj[8]!=null){ if(obj[8].toString().equalsIgnoreCase("P")){%> - Plan <%}if(obj[8].toString().equalsIgnoreCase("N")){ %> - Non-Plan - <%if(obj[14]!=null){ %> (Remarks : <%=StringEscapeUtils.escapeHtml4(obj[14].toString())%> ) <%}else{ %> Nil <%} %> <%}}else{ %><%} %></span>
 					</td>
 				</tr>
 				
@@ -349,7 +350,7 @@ padding-top: 5px !important;
 						<span class="bold" ><u>Need of the Project</u> :</span>
 						<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span  style="font-size:15px; max-width:200px; word-wrap:break-word;"><%if(obj[19]!=null){ %><%=obj[19] %><%}else{ %><i>-</i><%} %></span>
+							<span  style="font-size:15px; max-width:200px; word-wrap:break-word;"><%if(obj[19]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[19].toString()) %><%}else{ %><i>-</i><%} %></span>
 						<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -362,7 +363,7 @@ padding-top: 5px !important;
 						<span class="bold"><u>Requirements</u> : </span>
 						<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span  style="font-size:15px;" ><%if(obj[13]!=null){ %><%=obj[13] %><%}else{ %><i>-</i><%} %></span>
+							<span  style="font-size:15px;" ><%if(obj[13]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[13].toString()) %><%}else{ %><i>-</i><%} %></span>
 					<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -375,7 +376,7 @@ padding-top: 5px !important;
 						<span class="bold"><u>World Scenario</u> :</span>
 						<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span style="font-size:15px;" ><%if(obj[24]!=null){ %><%=obj[24] %><%}else{ %><i>-</i><%} %></span>
+							<span style="font-size:15px;" ><%if(obj[24]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[24].toString()) %><%}else{ %><i>-</i><%} %></span>
 						<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -388,7 +389,7 @@ padding-top: 5px !important;
 						<span class="bold"><u>Objective</u> : </span>
 						<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span style="font-size:15px;" ><%if(obj[14]!=null){ %><%=obj[14] %><%}else{ %><i>-</i><%} %></span>
+							<span style="font-size:15px;" ><%if(obj[14]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[14].toString()) %><%}else{ %><i>-</i><%} %></span>
 						<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -401,7 +402,7 @@ padding-top: 5px !important;
 						<span class="bold"><u>Scope</u> :</span>
 						<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span style="font-size:15px;" ><%if(obj[15]!=null){ %><%=obj[15] %><%}else{ %><i>-</i><%} %></span>
+							<span style="font-size:15px;" ><%if(obj[15]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[15].toString()) %><%}else{ %><i>-</i><%} %></span>
 					<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -414,7 +415,7 @@ padding-top: 5px !important;
 					<th  class="border_black normal center" ><span >12.</span></th>
 					<td class="border_black normal left main-text" >
 						<span class="bold"><u>Deliverables/Output</u> : </span>
-						<span style="font-size:15px;" ><%if(obj[11]!=null){ %> <br><%=obj[11] %><%}else{ %><i>-</i><%} %></span>
+						<span style="font-size:15px;" ><%if(obj[11]!=null){ %> <br><%=StringEscapeUtils.escapeHtml4(obj[11].toString())%><%}else{ %><i>-</i><%} %></span>
 					</td>
 				</tr>
 				
@@ -426,7 +427,7 @@ padding-top: 5px !important;
 						<span class="bold"><u>Participating Labs with Work share</u> : </span>
 						<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span style="font-size:15px;"" ><%if(obj[16]!=null){ %><%=obj[16] %><%}else{ %><i>-</i><%} %></span>
+							<span style="font-size:15px;"" ><%if(obj[16]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[16].toString()) %><%}else{ %><i>-</i><%} %></span>
 					<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -439,7 +440,7 @@ padding-top: 5px !important;
 						<span class="bold"><u>Brief of earlier work done</u> : </span>
 							<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span style="font-size:15px;" ><%if(obj[17]!=null){ %><%=obj[17] %><%}else{ %><i>-</i><%} %></span>
+							<span style="font-size:15px;" ><%if(obj[17]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[17].toString()) %><%}else{ %><i>-</i><%} %></span>
 						<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -452,7 +453,7 @@ padding-top: 5px !important;
 						<span class="bold"><u>Competency Established</u> : </span>
 							<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span style="font-size:15px;" ><%if(obj[18]!=null){ %><%=obj[18] %><%}else{ %><i>-</i><%} %></span>
+							<span style="font-size:15px;" ><%if(obj[18]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[18].toString())%><%}else{ %><i>-</i><%} %></span>
 						<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -466,7 +467,7 @@ padding-top: 5px !important;
 						<span class="bold"><u>Technology Challenges/Issues foreseen</u> : </span>
 							<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span style="font-size:15px;" ><%if(obj[20]!=null){ %><%=obj[20] %><%}else{ %><i>-</i><%} %></span>
+							<span style="font-size:15px;" ><%if(obj[20]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[20].toString()) %><%}else{ %><i>-</i><%} %></span>
 						<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -479,7 +480,7 @@ padding-top: 5px !important;
 						<span class="bold"><u>Risk involved and Mitigation Plan</u> : </span>
 						<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span style="font-size:15px;" ><%if(obj[21]!=null){ %><%=obj[21] %><%}else{ %><i>-</i><%} %></span>
+							<span style="font-size:15px;" ><%if(obj[21]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[21].toString()) %><%}else{ %><i>-</i><%} %></span>
 					<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -492,7 +493,7 @@ padding-top: 5px !important;
 						<span class="bold"><u>Proposal</u> : </span>
 						<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span style="font-size:15px;" ><%if(obj[22]!=null){ %><%=obj[22] %><%}else{ %><i>-</i><%} %></span>
+							<span style="font-size:15px;" ><%if(obj[22]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[22].toString()) %><%}else{ %><i>-</i><%} %></span>
 						<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -505,7 +506,7 @@ padding-top: 5px !important;
 						<span class="bold"><u>Realization Plan</u> :</span>
 						<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span class="editor-text" ><%if(obj[23]!=null){ %><%=obj[23] %><%}else{ %><i>-</i><%} %></span>
+							<span class="editor-text" ><%if(obj[23]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[23].toString()) %><%}else{ %><i>-</i><%} %></span>
 						<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -537,7 +538,7 @@ padding-top: 5px !important;
 
 								for (Object[] obj : DetailsList) {
 							if(obj[6]!=null){%>
-							<%=obj[6]%>
+							<%=StringEscapeUtils.escapeHtml4(obj[6].toString())%>
 							<%}else{ %>
 							 <br><br><br>
 						  <br><br><br>
@@ -572,7 +573,7 @@ padding-top: 5px !important;
 								for (Object[] obj : DetailsList) {
 									if (obj[12] != null) {
 							%>
-							<%=obj[12]%>
+							<%=StringEscapeUtils.escapeHtml4(obj[12].toString())%>
 							<%
 							} else {
 							%>
@@ -613,7 +614,7 @@ padding-top: 5px !important;
 								for (Object[] obj : DetailsList) {
 									if (obj[1] != null) {
 							%>
-							<%=obj[1]%>
+							<%=StringEscapeUtils.escapeHtml4(obj[1].toString())%>
 							<%
 							} else {
 							%>
@@ -654,7 +655,7 @@ padding-top: 5px !important;
 								for (Object[] obj : DetailsList) {
 									if (obj[2] != null) {
 							%>
-							<%=obj[2]%>
+							<%=StringEscapeUtils.escapeHtml4(obj[2].toString())%>
 							<%
 							} else {
 							%>
@@ -694,7 +695,7 @@ padding-top: 5px !important;
 						  <br><br><br>
 						  <br><br><br>
 						   <br><br><br>
-						 <span style="font-size: 20px;"><%=PfmsInitiationList[11]%></span>
+						 <span style="font-size: 20px;"><%=StringEscapeUtils.escapeHtml4(PfmsInitiationList[11].toString())%></span>
 						 <%} else{%>
 						
 						 <span style="font-size: 20px;"><i> To be filled</i></span>
@@ -726,7 +727,7 @@ padding-top: 5px !important;
 								for (Object[] obj : DetailsList) {
 									if (obj[4] != null) {
 							%>
-							<%=obj[4]%>
+							<%=StringEscapeUtils.escapeHtml4(obj[4].toString())%>
 							<%
 							} else {
 							%>
@@ -765,7 +766,7 @@ padding-top: 5px !important;
 								for (Object[] obj : DetailsList) {
 									if (obj[5] != null) {
 							%>
-							<%=obj[5]%>
+							<%=StringEscapeUtils.escapeHtml4(obj[5].toString())%>
 							<%
 							} else {
 							%>
@@ -804,7 +805,7 @@ padding-top: 5px !important;
 								for (Object[] obj : DetailsList) {
 									if (obj[8] != null) {
 							%>
-							<%=obj[8]%>
+							<%=StringEscapeUtils.escapeHtml4(obj[8].toString())%>
 							<%
 							} else {
 							%>
@@ -843,7 +844,7 @@ padding-top: 5px !important;
 								for (Object[] obj : DetailsList) {
 									if (obj[9] != null) {
 							%>
-							<%=obj[9]%>
+							<%=StringEscapeUtils.escapeHtml4(obj[9].toString())%>
 							<%
 							} else {
 							%>
@@ -1018,7 +1019,7 @@ count++;
 								for (Object[] obj : DetailsList) {
 									if (obj[10] != null) {
 							%>
-							<%=obj[10]%>
+							<%=StringEscapeUtils.escapeHtml4(obj[10].toString())%>
 							<%
 							} else {
 							%>

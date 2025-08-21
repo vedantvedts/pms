@@ -1,4 +1,5 @@
- <%@page import="com.vts.pfms.requirements.model.RequirementInitiation"%>
+ <%@page import="org.apache.commons.text.StringEscapeUtils"%>
+<%@page import="com.vts.pfms.requirements.model.RequirementInitiation"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.time.LocalDate"%>
@@ -410,22 +411,22 @@ List<Object[]>RequirementMainList=(List<Object[]>)request.getAttribute("Requirem
 
 Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 %>
-	<%String ses=(String)request.getParameter("result"); 
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){ %>
-		<div align="center">
-	
-			<div class="alert alert-danger" role="alert">
-				<%=ses1 %>
-			</div>
-		</div>
-	<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert">
-				<%=ses %>
-			</div>
-		</div>
-	<%} %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
 	
 		<!-- Verification Master -->
 					<form action="RequirementVerifyMaster.htm" method="GET" id="myStatus1">
@@ -449,9 +450,8 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 									Requirements - 
 									<small>
 										<%if(projectDetails!=null) {%>
-											<%=projectDetails[2]!=null?projectDetails[2]:"-" %>
-											(<%=projectDetails[1]!=null?projectDetails[1]:"-" %>)
-										<%} %>
+											<%=projectDetails[2]!=null?StringEscapeUtils.escapeHtml4(projectDetails[2].toString()):"-" %>
+											(<%=projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()):"-" %>)										<%} %>
 									</small>
 								</h5>
 							</div>
@@ -515,7 +515,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 			<%int count=0;
 				for(Object []obj:subReqList) {%>
 				<div>	<button  type="button" class="btn btn-secondary  mt-2" style="width:84%;font-size: 13px;" id="<%=obj[0] %>" value="<%=obj[14].toString()%>"  onclick="showDetails(<%=obj[0].toString()%>,'M')">
-						 <%=(++count)+". "+ obj[3] %>
+						 <%=(++count)+". "+ obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %>
 					</button>&nbsp;
 					<button style="width:10%;background: white;" class="btn btn-sm" onclick="openSubReqModal(<%=obj[14].toString()%>,<%=obj[0].toString()%>)" data-toggle="tooltip" data-placement="top" data-original-data="" title="">
 						<i class="fa fa-plus-square" aria-hidden="true"></i>
@@ -532,7 +532,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 				
 							<button type="button" class="btn btn-secondary viewbtn mt-2" id="<%=obj1[0] %>" value="<%=obj1[0]%>/<%=obj[0].toString()%>"  <%-- onclick="showDetailss(<%=obj1[0].toString()%>,<%=obj[0].toString()%>)"  --%>>
 								<i class="fa fa-caret-right" aria-hidden="true" style="color:white;"></i> &nbsp;  
-								<%=count+"."+(++subcount)+". "+  obj1[1] %>
+								<%=count+"."+(++subcount)+". "+  obj1[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>
 							</button>
 							<button class="btn btn-sm bg-transparent" type="button" onclick="deleteReq(<%=obj1[0] %>)">
 							<i class="fa fa-trash-o" aria-hidden="true" style="color:red;"></i>
@@ -748,7 +748,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 												<select class="form-control selectdee" name="LinkedPara" id="LinkedPara" data-width="80%" data-live-search="true" multiple onchange="getParaDetails()">
 													<option value="" disabled="disabled">---Choose----</option>
 													<%for (Object[] obj : ProjectParaDetails) {%>
-														<option value="<%=obj[0]%>"><%=obj[3]%></option>
+														<option value="<%=obj[0]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 													<%}%>
 												</select>
 											<%} else {%>
@@ -874,7 +874,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 												<%if((DemonstrationList!=null) &&(!DemonstrationList.isEmpty())){
 													int count1=0;
 													for(Object[] obj:DemonstrationList){ %>
-														<option value="<%="D"+(++count1) %>" title=<%=obj[3] %>><%=obj[3]%></option>
+														<option value="<%="D"+(++count1) %>" title=<%=obj[3] %>><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 													<%}%>
 												<%}%>
 											</select>
@@ -900,7 +900,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 												<%if((TestList!=null) &&(!TestList.isEmpty())){
 													int count1=0;
 													for(Object[] obj:TestList){ %>
-														<option value="T<%=++count1 %>" title=<%=obj[3] %>><%=obj[3]%></option>
+														<option value="T<%=++count1 %>" title=<%=obj[3] %>><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 													<%}%>
 												<%}%>
 											</select>
@@ -954,7 +954,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 												<%if((DesignList!=null) &&(!DesignList.isEmpty())){
 													int count1=0;
 													for(Object[] obj:DesignList){ %>
-														<option value="A<%=++count1%>" title=<%=obj[3] %>><%=obj[3]%></option>
+														<option value="A<%=++count1%>" title=<%=obj[3] %>><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 													<%}%>
 												<%}%>
 											</select>
@@ -981,7 +981,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 												<%if((InspectionList!=null) &&(!InspectionList.isEmpty())){
 													int count1=0;
 													for(Object[] obj:InspectionList){ %>
-														<option value="I<%=++count1%>" title=<%=obj[3] %>><%=obj[3]%></option>
+														<option value="I<%=++count1%>" title=<%=obj[3] %>><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 													<%}%>
 												<%}%>
 											</select>
@@ -1009,7 +1009,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 												<%if((specialMethods!=null) &&(!specialMethods.isEmpty())){
 													int count1=0;
 													for(Object[] obj:specialMethods){ %>
-														<option value="S<%=++count1%>" title=<%=obj[3] %>><%=obj[3]%></option>
+														<option value="S<%=++count1%>" title=<%=obj[3] %>><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 													<%}%>
 												<%}%>
 											</select>
@@ -1092,7 +1092,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 												<select class="form-control selectdee" name="LinkedPara" id="LinkedParaEdit" data-width="80%" data-live-search="true" multiple onchange="getParaDetailsEdit()">
 													<option value="" disabled="disabled">---Choose----</option>
 													<%for (Object[] obj : ProjectParaDetails) {%>
-														<option value="<%=obj[0]%>"><%=obj[3]%></option>
+														<option value="<%=obj[0]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 													<%}%>
 												</select>
 											<%} else {%>
@@ -1226,7 +1226,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 												<%if((DemonstrationList!=null) &&(!DemonstrationList.isEmpty())){
 													int count2=0;
 													for(Object[] obj:DemonstrationList){ %>
-													<option value="<%="D"+(++count2) %>" title=<%=obj[3] %>><%=obj[3]%></option>
+													<option value="<%="D"+(++count2) %>" title=<%=obj[3] %>><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 													<%}%>
 												<%}%>
 											</select>
@@ -1252,7 +1252,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 												<%if((TestList!=null) &&(!TestList.isEmpty())){
 													int count2=0;
 													for(Object[] obj:TestList){ %>
-														<option value="T<%=++count2 %>" title=<%=obj[3] %>><%=obj[3]%></option>
+														<option value="T<%=++count2 %>" title=<%=obj[3] %>><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 													<%}%>
 												<%}%>
 											</select>
@@ -1300,7 +1300,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 												<%if((DesignList!=null) &&(!DesignList.isEmpty())){
 													int count2=0;
 													for(Object[] obj:DesignList){ %>
-														<option value="A<%=++count2%>" title=<%=obj[3] %>><%=obj[3]%></option>
+														<option value="A<%=++count2%>" title=<%=obj[3] %>><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 													<%}%>
 												<%}%>
 											</select>
@@ -1327,7 +1327,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 												<%if((InspectionList!=null) &&(!InspectionList.isEmpty())){
 													int count2=0;
 													for(Object[] obj:InspectionList){ %>
-														<option value="I<%=++count2%>" title=<%=obj[3] %>><%=obj[3]%></option>
+														<option value="I<%=++count2%>" title=<%=obj[3] %>><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 													<%}%>
 												<%}%>
 											</select>
@@ -1351,7 +1351,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 													<%if((specialMethods!=null) &&(!specialMethods.isEmpty())){
 														int count2=0;
 														for(Object[] obj:specialMethods){ %>
-															<option value="S<%=++count2%>" title=<%=obj[3] %>><%=obj[3]%></option>
+															<option value="S<%=++count2%>" title=<%=obj[3] %>><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 														<%}%>
 											       <%}%>
 												</select>
@@ -1450,8 +1450,8 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
         					Choose Requirements - 
         					<small>
 								<%if(projectDetails!=null) {%>
-									<%=projectDetails[2]!=null?projectDetails[2]:"-" %>
-									(<%=projectDetails[1]!=null?projectDetails[1]:"-" %>)
+									<%=projectDetails[2]!=null?StringEscapeUtils.escapeHtml4(projectDetails[2].toString()):"-" %>
+									(<%=projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()):"-" %>)
 								<%} %>
 							</small>
         				</h5>
@@ -1600,7 +1600,7 @@ var productreelist = [];
 <%if(productTreeList!= null &&  productTreeList.size()>0){ 
 	for(Object[]obj:productTreeList){
 	%>
-	productreelist.push(['<%= obj[0].toString() %>', '<%= obj[2].toString() %>']);
+	productreelist.push(['<%= obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %>', '<%= obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>']);
 
 <%}}%>
 
@@ -2471,7 +2471,7 @@ var RequirementMainList = [];
 if(RequirementMainList!=null && RequirementMainList.size()>0){
 for(Object[]obj:RequirementMainList){
 %>
-RequirementMainList.push(['<%=obj[0].toString()%>','<%=obj[1].toString()%>','<%=obj[4]%>'])
+RequirementMainList.push(['<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%>','<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>','<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>'])
 <%} }%>
 
 function getReqDetails(){

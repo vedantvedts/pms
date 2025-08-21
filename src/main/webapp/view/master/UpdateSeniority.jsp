@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -130,27 +131,22 @@ Object[] officerData=(Object[])request.getAttribute("officersDetalis");
 %>
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	
-	
-	<center>
-	
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-            </div>
-            
-    </center>
-    
-    
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 	
@@ -169,26 +165,26 @@ Object[] officerData=(Object[])request.getAttribute("officersDetalis");
 						<div class="col-md-1"></div>
 						<div class="col-md-1">
 							<label class="control-label">SrNo :</label> 
-							<input class="form-control " type="number" min="0" name="UpdatedSrNo"  onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" id="SrNo" value="<%=officerData[9]%>">
+							<input class="form-control " type="number" min="0" name="UpdatedSrNo"  onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" id="SrNo" value="<%=officerData[9]!=null?StringEscapeUtils.escapeHtml4(officerData[9].toString()):""%>">
 							<input type="hidden" name="empid" value="<%=officerData[0]%>" >					
 						</div>
 						<div class="col-md-2">
 							<label class="control-label">Employee No :</label> 
-							<input class="form-control " value="<%=officerData[1]%>"  readonly="readonly">
+							<input class="form-control " value="<%=officerData[1]!=null?StringEscapeUtils.escapeHtml4(officerData[1].toString()):""%>"  readonly="readonly">
 						</div>
 						<div class="col-md-3">
 							<label class="control-label">Employee Name :</label> 
-							<input class="form-control " value="<%=officerData[2]%>"  readonly="readonly">
+							<input class="form-control " value="<%=officerData[2]!=null?StringEscapeUtils.escapeHtml4(officerData[2].toString()):""%>"  readonly="readonly">
 						</div>
 						<div class="col-md-2">
 							<label class="control-label">Designation  :</label> 
-							<input class="form-control " value="<%=officerData[3]%>" readonly="readonly">
+							<input class="form-control " value="<%=officerData[3]!=null?StringEscapeUtils.escapeHtml4(officerData[3].toString()):""%>" readonly="readonly">
 						</div>
 						
 
                         <div class="col-md-2">
 							<label class="control-label">Division :</label> 
-							<input class="form-control " value="<%=officerData[6]%>" readonly="readonly">
+							<input class="form-control " value="<%=officerData[6]!=null?StringEscapeUtils.escapeHtml4(officerData[6].toString()):""%>" readonly="readonly">
 						</div>
 				
 						

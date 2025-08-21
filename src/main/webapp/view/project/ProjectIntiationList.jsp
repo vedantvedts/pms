@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
@@ -244,26 +245,22 @@ String labcode= (String) session.getAttribute("labcode");
 
 
 
-	<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getAttribute("resultfail");
-	if(ses1!=null){
-	%>
-
-
-	<div align="center">
-
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</div>
-	<%} %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
 
 
 	<br>
@@ -448,7 +445,7 @@ String labcode= (String) session.getAttribute("labcode");
 									<div class="container">
 				  						<div class="row">
 					  						<div class="col-lg">
-												<h4 class="card-title" ><%=obj[5] %></h4></div>
+												<h4 class="card-title" ><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></h4></div>
 											<div class="col-">
 												<p> <%if(obj[8]!=null){if(obj[8].equals('Y')){%><%="MAIN" %>
 													<%}else{ %><%="SUB" %> <% }}else{ %> - <%} %>
@@ -460,10 +457,10 @@ String labcode= (String) session.getAttribute("labcode");
 									<div class="container">
 				  						<div class="row">
 					  						<div class="col-lg">
-												<h6> <%if(obj[2]!=null){%><%=obj[2] %></h6>
+												<h6> <%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %></h6>
 											</div>
 											<div class="col-" style="text-align: right;">
-												<h6><%if(obj[6]!=null){%><%=obj[6] %> lakhs
+												<h6><%if(obj[6]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[6].toString()) %> lakhs
 												<%}else{ %>-<%} %>
 												</h6> 
 											</div>
@@ -474,7 +471,7 @@ String labcode= (String) session.getAttribute("labcode");
 									<div class="container">
 				  						<div class="row">
 											<div class="col-xl">
-											code: <%if(obj[4]!=null){%><%=obj[4] %>
+											code: <%if(obj[4]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString()) %>
 											<%}else{ %>-<%} %>
 											<br/></div>
 										</div>
@@ -483,7 +480,7 @@ String labcode= (String) session.getAttribute("labcode");
 									<div class="container">
 				  						<div class="row">
 											<div class="col-xl">
-											security classification: <%if(obj[3]!=null){%><%=obj[3] %>
+											security classification: <%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %>
 											<%}else{ %>-<%} %>
 											<br/>
 											</div>
@@ -493,7 +490,7 @@ String labcode= (String) session.getAttribute("labcode");
 									<div class="container" style="height: 50px;">
 				  						<div class="row">
 											<div class="col-xl">
-												duration: <%if(obj[7]!=null){%><%=obj[7] %> months
+												duration: <%if(obj[7]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[7].toString()) %> months
 												<%}else{ %>-<%} %>
 												<br/>
 											</div>
@@ -1386,7 +1383,7 @@ function openActualDate(){
 
    $('#mileDropdown').empty().append('<option value="">Select an option</option>');
    <% for (Object[] item : milelist) { %>
-       $('#mileDropdown').append('<option value="<%= item[0] %>"><%= item[1] %></option>');
+       $('#mileDropdown').append('<option value="<%= item[0] %>"><%= item[1]!=null?StringEscapeUtils.escapeHtml4(item[1].toString()): " - " %></option>');
    <%}%>
    
    $('.date-picker1').each(function() {

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
@@ -48,19 +49,22 @@ FormatConverter fc = new FormatConverter();
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%><center>
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 <div class="container">
@@ -72,7 +76,7 @@ FormatConverter fc = new FormatConverter();
 				
 				<div class="card-header" style=" /* background: linear-gradient(to right, #334d50, #cbcaa5); */ /* background-color:rgba(6,103,200,1); */ background-color: #055C9D;margin-top: ">
                     <b class="text-white">SECTION I: PROJECT INITIATION EDIT</b> 
-                    <span class="text-white" style="float:right;font-weight: 600"><%if(ProjectEditData[17].toString().equalsIgnoreCase("N")){ %> Main Project : <%=ProjectEditData[18] %> <%} %> </span>
+                    <span class="text-white" style="float:right;font-weight: 600"><%if(ProjectEditData[17].toString().equalsIgnoreCase("N")){ %> Main Project : <%=ProjectEditData[18]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[18].toString()): " - " %> <%} %> </span>
         		</div>
         
         		<div class="card-body">
@@ -98,7 +102,7 @@ FormatConverter fc = new FormatConverter();
 									    <select class="custom-select" id="ProjectType" required="required" name="ProjectType" <%if(ProjectEditData[17].toString().equalsIgnoreCase("N")){ %> disabled  <%} %>>
 										    <option disabled="true"  selected value="">Choose...</option>
 										    <% for (Object[] obj : PfmsCategoryList) {%>
-											<option value="<%=obj[0]%>" <%if(ProjectEditData[4].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1]%></option>
+											<option value="<%=obj[0]%>" <%if(ProjectEditData[4].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
 											<%} %>
 									  </select>
 					            </div>
@@ -110,7 +114,7 @@ FormatConverter fc = new FormatConverter();
 		                              <select class="custom-select" id="Category" required="required" name="Category" <%if(ProjectEditData[17].toString().equalsIgnoreCase("N")){ %> disabled="true"  <%} %> >
 										    <option disabled="true"  selected value="">Choose...</option>
 										    	<% for (Object[] obj : ProjectTypeList) {%>
-											<option value="<%=obj[0]%>" <%if(ProjectEditData[5].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1]%></option>
+											<option value="<%=obj[0]%>" <%if(ProjectEditData[5].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
 												<%} %>
 		  								</select>
 		                        </div>
@@ -123,7 +127,7 @@ FormatConverter fc = new FormatConverter();
 		  							<select class="custom-select selectdee" id="NodalLab" required="required" name="NodalLab" <%if(ProjectEditData[17].toString().equalsIgnoreCase("N")){ %> disabled  <%} %> >
 											    <option disabled="true"  selected value="">Choose...</option>
 											   	<% for (Object[] obj : NodalLabList) {%>
-												<option value="<%=obj[0]%>" <%if(ProjectEditData[15]!=null && ProjectEditData[15].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[3]%></option>
+												<option value="<%=obj[0]%>" <%if(ProjectEditData[15]!=null && ProjectEditData[15].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 												<%} %>
 									</select>
 		                        </div>
@@ -168,7 +172,7 @@ FormatConverter fc = new FormatConverter();
 		                     <div class="col-md-4 ">
 		                        <div class="form-group">
 		                            <label class="control-label">Deliverable</label>
-										<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="Deliverable" name="Deliverable" placeholder="max 255 characters"  <% if (ProjectEditData[12]!=null){ %>  value="<%=ProjectEditData[12]%>" <%}else {%> value="" <%} %>maxlength="250" >
+										<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="Deliverable" name="Deliverable" placeholder="max 255 characters"  <% if (ProjectEditData[12]!=null){ %>  value="<%=StringEscapeUtils.escapeHtml4(ProjectEditData[12].toString())%>" <%}else {%> value="" <%} %>maxlength="250" >
 		                        </div>
 		                    </div> 
 		                    
@@ -187,7 +191,7 @@ FormatConverter fc = new FormatConverter();
 	                        	<div class="form-group" id="Remarks" style="display:none;">
 		                            <label class="control-label">Remarks</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-		  							<input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Remarks" name="Remarks" <%if(ProjectEditData[16]!=null) {%>value="<%=ProjectEditData[16]%>" <%} %> maxlength="255" placeholder="Enter Remark" >
+		  							<input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Remarks" name="Remarks" <%if(ProjectEditData[16]!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(ProjectEditData[16].toString())%>" <%} %> maxlength="255" placeholder="Enter Remark" >
 		                        </div>
 	       					</div> 
 
@@ -203,7 +207,7 @@ FormatConverter fc = new FormatConverter();
 									    <select class="custom-select" id="PDD" name="PDD" <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E") || !LoginType.equalsIgnoreCase("C")|| !LoginType.equalsIgnoreCase("I")   ) {%> disabled <%} %>  >
 										    <option disabled="true"  selected value="">Choose...</option>
 										    <% for (Object[] obj : EmployeeList) {%>
-											<option value="<%=obj[0]%>" <%if(ProjectEditData[1].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1]%>, <%=obj[2] %> </option>
+											<option value="<%=obj[0]%>" <%if(ProjectEditData[1].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> </option>
 											<%} %>
 									  </select>
 									  
@@ -215,21 +219,21 @@ FormatConverter fc = new FormatConverter();
 					         <div class="col-md-3 ">
 		                        <div class="form-group">
 		                            <label class="control-label">Indicative Duration (Months)</label>
-		  								<input type="text" class="form-control numeric-only"  aria-describedby="inputGroup-sizing-sm" id="PCDuration" name="PCDuration"  <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E") || !LoginType.equalsIgnoreCase("C")|| !LoginType.equalsIgnoreCase("I")  ) {%> readonly <%} %>  <% if (ProjectEditData[19]!=null){ %>  value="<%=ProjectEditData[19]%>" <%}else{ %> value="" <%} %>required>
+		  								<input type="text" class="form-control numeric-only"  aria-describedby="inputGroup-sizing-sm" id="PCDuration" name="PCDuration"  <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E") || !LoginType.equalsIgnoreCase("C")|| !LoginType.equalsIgnoreCase("I")  ) {%> readonly <%} %>  <% if (ProjectEditData[19]!=null){ %>  value="<%=StringEscapeUtils.escapeHtml4(ProjectEditData[19].toString())%>" <%}else{ %> value="" <%} %>required>
 		                        </div>
 		                    </div>
                      
                      		<div class="col-md-3 ">
 		                        <div class="form-group">
 		                            <label class="control-label">Indicative Cost (&#8377;)</label>
-		  								<input type="text" class="form-control decimal-format"  aria-describedby="inputGroup-sizing-sm" id="IndicativeCost" name="IndicativeCost" <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E") || !LoginType.equalsIgnoreCase("C")|| !LoginType.equalsIgnoreCase("I")  ) {%> readonly<%} %> <% if (ProjectEditData[20]!=null){ %>  value="<%=ProjectEditData[20]%>" <%}else{ %> value="" <%} %>>
+		  								<input type="text" class="form-control decimal-format"  aria-describedby="inputGroup-sizing-sm" id="IndicativeCost" name="IndicativeCost" <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E") || !LoginType.equalsIgnoreCase("C")|| !LoginType.equalsIgnoreCase("I")  ) {%> readonly<%} %> <% if (ProjectEditData[20]!=null){ %>  value="<%=StringEscapeUtils.escapeHtml4(ProjectEditData[20].toString())%>" <%}else{ %> value="" <%} %>>
 		                        </div>
 		                    </div>
                      
 		                     <div class="col-md-3 ">
 		                        <div class="form-group">
 		                            <label class="control-label">P&C Remarks</label>
-										<input type="text" class="form-control" required="required" aria-describedby="inputGroup-sizing-sm" id="PCRemarks" name="PCRemarks" <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E") || !LoginType.equalsIgnoreCase("C")|| !LoginType.equalsIgnoreCase("I")  ) {%> readonly <%} %> <% if (ProjectEditData[21]!=null){ %>  value="<%=ProjectEditData[21]%>" <%}else{ %> value="" <%} %> required>
+										<input type="text" class="form-control" required="required" aria-describedby="inputGroup-sizing-sm" id="PCRemarks" name="PCRemarks" <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E") || !LoginType.equalsIgnoreCase("C")|| !LoginType.equalsIgnoreCase("I")  ) {%> readonly <%} %> <% if (ProjectEditData[21]!=null){ %>  value="<%=StringEscapeUtils.escapeHtml4(ProjectEditData[21].toString())%>" <%}else{ %> value="" <%} %> required>
 		                        </div>
 		                    </div> 
 		                    

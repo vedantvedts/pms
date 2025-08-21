@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
 <!DOCTYPE html>
@@ -213,21 +214,22 @@ div {
 		</form>
 </nav>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
-
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
     
 
 <div class="container-fluid">   
@@ -242,7 +244,7 @@ div {
          
 			      		<div class="panel-heading ">
 			        		<h4 class="panel-title">
-			          			<span  style="font-size:14px"><%=ProjectName%></span>  
+			          			<span  style="font-size:14px"><%=ProjectName!=null?StringEscapeUtils.escapeHtml4(ProjectName): " - "%></span>  
 			        		</h4>
 			         	
 			         		<div style="float: right !important; margin-top:-23px;">  </div>
@@ -278,7 +280,7 @@ div {
 					        <h4 class="panel-title">
 					        	<div>
 						          	<form  id="myForm<%=ProjectSubCount %>" action="FileProjectSubAdd.htm" method="post">
-										<span  style="font-size:14px"><%=ProjectSubCount %>. <%=obj[4] %></span>
+										<span  style="font-size:14px"><%=ProjectSubCount %>. <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></span>
 						          	</form>
 					       		</div>
 					        </h4>
@@ -317,7 +319,7 @@ div {
 					                                        <input type="hidden" name="LevelId" value="<%=obj1[3] %>" >
 															<input type="hidden" name="formname" value="<%=ProjectSubCount %>/<%=Sub1Count %>" />
 															<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-											          		<span  style="font-size:14px"><%=ProjectSubCount %>.<%=Sub1Count %> <%=obj1[4] %></span>
+											          		<span  style="font-size:14px"><%=ProjectSubCount %>.<%=Sub1Count %> <%=obj1[4]!=null?StringEscapeUtils.escapeHtml4(obj1[4].toString()): " - " %></span>
 											          	</form>
 										       		</div>
 										        </h4>
@@ -354,7 +356,7 @@ div {
 											                                        <input type="hidden" name="LevelId" value="<%=obj2[3] %>" >
 																					<input type="hidden" name="formname" value="<%=ProjectSubCount %>/<%=Sub1Count %>/<%=Sub2Count %>" />
 																					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-																	          		<span  style="font-size:14px"><%=ProjectSubCount %>.<%=Sub1Count %>.<%=Sub2Count %> <%=obj2[4] %> </span>
+																	          		<span  style="font-size:14px"><%=ProjectSubCount %>.<%=Sub1Count %>.<%=Sub2Count %> <%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - " %> </span>
 																	          	</form>
 																       		</div>
 																        </h4>
@@ -394,7 +396,7 @@ div {
 																										
 																										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 																						
-																						          		<span  style="font-size:14px"><%=ProjectSubCount %>.<%=Sub1Count %>.<%=Sub2Count %>.<%=Sub3Count %> <%=obj3[4] %> </span>
+																						          		<span  style="font-size:14px"><%=ProjectSubCount %>.<%=Sub1Count %>.<%=Sub2Count %>.<%=Sub3Count %> <%=obj3[4]!=null?StringEscapeUtils.escapeHtml4(obj3[4].toString()): " - " %> </span>
 																						          				
 																						          	
 																						          		
@@ -435,7 +437,7 @@ div {
 																					                                        <input type="hidden" name="LevelId" value="<%=obj4[3] %>" >
 																															<input type="hidden" name="formname" value="<%=ProjectSubCount %>/<%=Sub1Count %>/<%=Sub2Count %>/<%=Sub3Count %>/<%=Sub4Count %>" />
 																															<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-																											          		<span  style="font-size:14px"><%=ProjectSubCount %>.<%=Sub1Count %>.<%=Sub2Count %>.<%=Sub3Count %>.<%=Sub4Count %> <%=obj4[4] %> </span>
+																											          		<span  style="font-size:14px"><%=ProjectSubCount %>.<%=Sub1Count %>.<%=Sub2Count %>.<%=Sub3Count %>.<%=Sub4Count %> <%=obj4[4]!=null?StringEscapeUtils.escapeHtml4(obj4[4].toString()): " - " %> </span>
 																											          	</form>
 																										       		</div>
 																										        </h4>
@@ -473,7 +475,7 @@ div {
 																																			
 																																			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 																															
-																															          		<span  style="font-size:14px"><%=ProjectSubCount %>.<%=Sub1Count %>.<%=Sub2Count %>.<%=Sub3Count %>.<%=Sub4Count %>.<%=Sub5Count %> <%=obj5[4] %> </span>
+																															          		<span  style="font-size:14px"><%=ProjectSubCount %>.<%=Sub1Count %>.<%=Sub2Count %>.<%=Sub3Count %>.<%=Sub4Count %>.<%=Sub5Count %> <%=obj5[4]!=null?StringEscapeUtils.escapeHtml4(obj5[4].toString()): " - " %> </span>
 																															          				
 																															          	
 																															          		
@@ -514,7 +516,7 @@ div {
 																																				                  
 																															                                    <span  style="font-size:14px">
 																																					          		<%if(!obj6[5].toString().equalsIgnoreCase("0")){ %>
-																																					          		<%=obj6[6] %> Ver.<%=Integer.parseInt(obj6[5].toString()) %>
+																																					          		<%=obj6[6]!=null?StringEscapeUtils.escapeHtml4(obj6[6].toString()): " - " %> Ver.<%=Integer.parseInt(obj6[5].toString()) %>
 																																					          			
 																																					          			<button type="submit" name="sub" class="btn btn-light btn-sm"  form="myForm<%=ProjectSubCount %><%=Sub1Count %><%=Sub2Count %><%=Sub3Count %><%=Sub4Count %><%=Sub5Count %><%=Sub6Count %>" formaction="FileUnpack.htm"  style="margin-top:-10px;width:30px; height: 22px; font-size:12px; font-weight: bold; text-align: justify; "><i class="fa fa-download" aria-hidden="true"></i></button>
 																																					          		
@@ -584,7 +586,7 @@ div {
 																																								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 																																				                      <span  style="font-size:14px">
 																																				          		<%if(!obj5[5].toString().equalsIgnoreCase("0")){ %>
-																																				          		<%=obj5[6] %> Ver.<%=Integer.parseInt(obj5[5].toString()) %>
+																																				          		<%=obj5[6]!=null?StringEscapeUtils.escapeHtml4(obj5[6].toString()): " - " %> Ver.<%=Integer.parseInt(obj5[5].toString()) %>
 																																				          		<%}else{ %>
 																																				          		<%=ProjectSubCount %>.<%=Sub1Count %>.<%=Sub2Count %>.<%=Sub3Count %>.<%=Sub4Count %>.<%=Sub5Count %>.<%=Sub6Count %>
 																																				          		<%} %>
@@ -635,7 +637,7 @@ div {
 																																				          		<div style="margin-left: 270px;margin-top: -38px;margin-bottom:9px; " >
 																																				          		
 																																				          		<input type="text" name="FileName"   class="form-control " placeholder="Fill File Name" required="required" maxlength="255" style="width:260px;" 
-																																				          		<%if(!obj5[5].toString().equalsIgnoreCase("0")){ %> value="<%=obj5[6] %>"  readonly="readonly" <%} %>
+																																				          		<%if(!obj5[5].toString().equalsIgnoreCase("0")){ %> value="<%=obj5[6]!=null?StringEscapeUtils.escapeHtml4(obj5[6].toString()): "" %>"  readonly="readonly" <%} %>
 																																				          		 />
 																																				          		
 																																				          		</div>		
@@ -686,7 +688,7 @@ div {
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 							              <span  style="font-size:14px">
 						          		<%if(!obj4[5].toString().equalsIgnoreCase("0")){ %>
-						          		<%=obj4[6] %> Ver.<%=Integer.parseInt(obj4[5].toString()) %>
+						          		<%=obj4[6]!=null?StringEscapeUtils.escapeHtml4(obj4[6].toString()): " - " %> Ver.<%=Integer.parseInt(obj4[5].toString()) %>
 						          		<%}else{ %>
 						          		<%=ProjectSubCount %>.<%=Sub1Count %>.<%=Sub2Count %>.<%=Sub3Count %>.<%=Sub4Count %>.<%=Sub5Count %>
 						          		<%} %>
@@ -786,7 +788,7 @@ div {
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 						  			<span  style="font-size:14px">
 						          		<%if(!obj3[5].toString().equalsIgnoreCase("0")){ %>
-						          		<%=obj3[6] %> Ver.<%=Integer.parseInt(obj3[5].toString()) %>
+						          		<%=obj3[6]!=null?StringEscapeUtils.escapeHtml4(obj3[6].toString()): " - " %> Ver.<%=Integer.parseInt(obj3[5].toString()) %>
 						          		<%}else{ %>
 						          		<%=ProjectSubCount %>.<%=Sub1Count %>.<%=Sub2Count %>.<%=Sub3Count %>.<%=Sub4Count %>
 						          		<%} %>
@@ -796,7 +798,7 @@ div {
 						          		<select class="form-control selectdee" id="ProjectId" required="required" name="MasterId" style="width: 500px; ">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] sublist4 : SubSystemList4) {%>
-										<option value="<%=sublist4[0]%>"  ><%=sublist4[3]%> </option>
+										<option value="<%=sublist4[0]%>"  ><%=sublist4[3]!=null?StringEscapeUtils.escapeHtml4(sublist4[3].toString()): " - "%> </option>
 											<%} %>
   									</select>
 						          		</div>
@@ -891,7 +893,7 @@ div {
 						
 						          	     			<span  style="font-size:14px">
 						          		<%if(!obj2[5].toString().equalsIgnoreCase("0")){ %>
-						          		<%=obj2[6] %> Ver.<%=Integer.parseInt(obj2[5].toString()) %>
+						          		<%=obj2[6] !=null?StringEscapeUtils.escapeHtml4(obj2[6].toString()): " - "%> Ver.<%=Integer.parseInt(obj2[5].toString()) %>
 						          		<%}else{ %>
 						          		<%=ProjectSubCount %>.<%=Sub1Count %>.<%=Sub2Count %>.<%=Sub3Count %>
 						          		<%} %>
@@ -901,7 +903,7 @@ div {
 						          		<select class="form-control selectdee" id="ProjectId" required="required" name="MasterId" style="width: 500px; ">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] sublist3 : SubSystemList3) {%>
-										<option value="<%=sublist3[0]%>"  ><%=sublist3[3]%> </option>
+										<option value="<%=sublist3[0]%>"  ><%=sublist3[3]!=null?StringEscapeUtils.escapeHtml4(sublist3[3].toString()): " - "%> </option>
 											<%} %>
   									</select>
 						          		</div>
@@ -994,7 +996,7 @@ div {
 						
 						          			<span  style="font-size:14px">
 						          		<%if(!obj1[5].toString().equalsIgnoreCase("0")){ %>
-						          		<%=obj1[6] %> Ver.<%=Integer.parseInt(obj1[5].toString()) %>
+						          		<%=obj1[6]!=null?StringEscapeUtils.escapeHtml4(obj1[6].toString()): " - " %> Ver.<%=Integer.parseInt(obj1[5].toString()) %>
 						          		<%}else{ %>
 						          		<%=ProjectSubCount %>.<%=Sub1Count %>.<%=Sub2Count %>
 						          		<%} %>
@@ -1006,7 +1008,7 @@ div {
 						          		<select class="form-control selectdee" id="ProjectId" required="required" name="MasterId" style="width: 500px; ">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] sublist2 : SubSystemList2) {%>
-										<option value="<%=sublist2[0]%>"  ><%=sublist2[3]%> </option>
+										<option value="<%=sublist2[0]%>"  ><%=sublist2[3]!=null?StringEscapeUtils.escapeHtml4(sublist2[3].toString()): " - "%> </option>
 											<%} %>
   									</select>
 						          		</div>
@@ -1099,7 +1101,7 @@ div {
 						
 						          		<span  style="font-size:14px">
 						          		<%if(!obj[5].toString().equalsIgnoreCase("0")){ %>
-						          		<%=obj[6] %> Ver.<%=Integer.parseInt(obj[5].toString()) %>
+						          		<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %> Ver.<%=Integer.parseInt(obj[5].toString()) %>
 						          		<%}else{ %>
 						          		<%=ProjectSubCount %>.<%=Sub1Count %>
 						          		<%} %>
@@ -1110,7 +1112,7 @@ div {
 						          		<select class="form-control selectdee" id="ProjectId" required="required" name="MasterId" style="width: 500px; ">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] sublist1 : SubSystemList1) {%>
-										<option value="<%=sublist1[0]%>"  ><%=sublist1[3]%> </option>
+										<option value="<%=sublist1[0]%>"  ><%=sublist1[3]!=null?StringEscapeUtils.escapeHtml4(sublist1[3].toString()): " - "%> </option>
 											<%} %>
   									</select>
 						          		</div>
@@ -1203,7 +1205,7 @@ div {
 						          		<select class="form-control selectdee" id="ProjectId" required="required" name="MasterId" style="width: 500px; ">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : MainSystemList) {%>
-										<option value="<%=obj[0]%>"  ><%=obj[3]%> </option>
+										<option value="<%=obj[0]%>"  ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> </option>
 											<%} %>
   									</select>
 						          		</div>

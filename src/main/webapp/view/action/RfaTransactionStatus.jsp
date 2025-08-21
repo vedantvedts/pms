@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"  import="java.util.*,java.text.SimpleDateFormat"%>
@@ -197,7 +198,7 @@ List<String>forwardList=statuslist.stream().filter(e->e[9].toString().equalsIgno
 %>
 
 <div>
-	    <h3 align="center" style="color: #9C27B0;font-weight: 600">RFA Transaction of <%=rfaNo %></h3>
+	    <h3 align="center" style="color: #9C27B0;font-weight: 600">RFA Transaction of <%=rfaNo!=null?StringEscapeUtils.escapeHtml4(rfaNo):" - " %></h3>
 	</div>
 <div class="page card dashboard-card" style="height:80vh;overflow:auto;" id="scrollclass;">
 	<section id="timeline">
@@ -224,17 +225,17 @@ List<String>forwardList=statuslist.stream().filter(e->e[9].toString().equalsIgno
 					<span class="year"><%=year.format(object[5]) %></span>
 				</span>
 				<%if(currentStatus.equalsIgnoreCase(object[9].toString()) && actionDate.equalsIgnoreCase(object[5].toString()) && !currentStatus.equalsIgnoreCase("ARC")){ %>
-				<h2 style="background-color:red;--my-color-var: red" ><%=object[7]%> at <%=time.format(object[5]) %></h2>
+				<h2 style="background-color:red;--my-color-var: red" ><%=object[7]!=null?StringEscapeUtils.escapeHtml4(object[7].toString()):" - "%> at <%=object[5]!=null?time.format(object[5]):" - " %></h2>
 				<%}else{%>
-				<h2 style="background-color:green;--my-color-var: green" ><%=object[7]%> at <%=time.format(object[5]) %></h2>
+				<h2 style="background-color:green;--my-color-var: green" ><%=object[7]!=null?StringEscapeUtils.escapeHtml4(object[7].toString()):" - "%> at <%=object[5]!=null?time.format(object[5]):" - " %></h2>
 				<%}%>
 				<%-- <h2 style="background-color:<%=object[8]%>;--my-color-var: <%=object[8]%>" ><%=object[7]%> at <%=time.format(object[5]) %></h2> --%> 
 				<p style="background-color:  #f0f2f5;">
 					<span class="remarks_title">Action By : </span>
-					<%=object[3] %>, <%=object[4] %><br>
+					<%=object[3]!=null?StringEscapeUtils.escapeHtml4(object[3].toString()):" - " %>, <%=object[4]!=null?StringEscapeUtils.escapeHtml4(object[4].toString()):" - " %><br>
 					<%if(object[6]!= null) { %>
 						<span class="remarks_title">Remarks : </span>
-							<%=object[6] %>
+							<%=StringEscapeUtils.escapeHtml4(object[6].toString()) %>
 					<%}else{ %> 
 						<span class="remarks_title">No Remarks </span> 
 					<%} %>
@@ -246,7 +247,7 @@ List<String>forwardList=statuslist.stream().filter(e->e[9].toString().equalsIgno
 					<%if(object[9].toString().equalsIgnoreCase("AV") || object[9].toString().equalsIgnoreCase("RFR") ){ %>
 					 <%=forwardList.toString().replace("[", "").replace("]", "") %>
 					<%}else{ %>
-					   <%=object[10] %>
+					   <%=object[10]!=null?StringEscapeUtils.escapeHtml4(object[10].toString()):" - " %>
 					<%} %>
 				   <%} %>
 				</p>

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.math.BigDecimal"%> 
@@ -109,24 +110,22 @@ Object[] riskdata=(Object[] )request.getAttribute("riskdata");
 Object[] riskmatrixdata=(Object[])request.getAttribute("riskmatrixdata");
 List<Object[]> projectriskmatrixrevlist=(List<Object[]>)request.getAttribute("projectriskmatrixrevlist");
 %>
-<%String ses=(String)request.getParameter("result"); 
-String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){
-%>
-	<div align="center">
-	
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</div>
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 <div class="container-fluid">
 		<div class="row">
@@ -136,9 +135,9 @@ if(ses1!=null){
 					<div class="row card-header" style="margin-left: -13px;width: 102%;">
 			   			<div class="col-md-6">
 			   			<%if(riskmatrixdata==null){ %>
-							<h4>Add Risk Data (<%=riskdata[7] %>)</h4>
+							<h4>Add Risk Data (<%=riskdata[7]!=null?StringEscapeUtils.escapeHtml4(riskdata[7].toString()): " - " %>)</h4>
 						<%}else{ %>
-							<h4>Risk Data (<%=riskdata[7] %>)</h4>
+							<h4>Risk Data (<%=riskdata[7]!=null?StringEscapeUtils.escapeHtml4(riskdata[7].toString()): " - " %>)</h4>
 						<%} %>
 						</div>
 						<div class="col-md-6 justify-content-end" >
@@ -159,12 +158,12 @@ if(ses1!=null){
 								    					General
 								    				<%}else if(Long.parseLong(projectid)>0){ 					    					
 														for(Object[] obj : projectslist){ %>
-															<%if(projectid!=null && projectid.equals(obj[0].toString())) { %><%=obj[1] %> <%} 
+															<%if(projectid!=null && projectid.equals(obj[0].toString())) { %><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> <%} 
 														} 
 													}%>						    			
 								    		</td>
 								    		<td style="width: 60%">
-							    					<label ><b>Description : </b></label> <%=riskdata[1] %> 
+							    					<label ><b>Description : </b></label> <%=riskdata[1]!=null?StringEscapeUtils.escapeHtml4(riskdata[1].toString()): " - " %> 
 								    		</td>
 								    		
 								    		<%if(riskdata[5].toString().equalsIgnoreCase(riskdata[6].toString())){ %>
@@ -273,7 +272,7 @@ if(ses1!=null){
 							    			<td colspan="1" style="max-width: 40%">
 									    		<select class="form-control" name="risk_type" required="required" style="width:20% ">
 									    			<%for(Object[] risktpye : risktypelist){ %>
-									    				<option value="<%=risktpye[0]%>"><%=risktpye[1]%></option>
+									    				<option value="<%=risktpye[0]%>"><%=risktpye[1]!=null?StringEscapeUtils.escapeHtml4(risktpye[1].toString()): " - "%></option>
 									    			<%} %>
 									    		</select>							    				
 							    			</td>
@@ -304,12 +303,12 @@ if(ses1!=null){
 									    					General
 									    				<%}else if(Long.parseLong(projectid)>0){ 					    					
 															for(Object[] obj : projectslist){ %>
-																<%if(projectid!=null && projectid.equals(obj[0].toString())) { %><%=obj[1] %> <%} 
+																<%if(projectid!=null && projectid.equals(obj[0].toString())) { %><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> <%} 
 															} 
 														}%>						    			
 									    		</td>
 									    		<td style="width: 60%">
-								    					<label ><b>Description : </b></label> <%=riskdata[1] %> 
+								    					<label ><b>Description : </b></label> <%=riskdata[1]!=null?StringEscapeUtils.escapeHtml4(riskdata[1].toString()): " - " %> 
 									    		</td>
 									    		
 									    		<%if(riskdata[5].toString().equalsIgnoreCase(riskdata[6].toString())){ %>
@@ -385,7 +384,7 @@ if(ses1!=null){
 								    				<label ><b>Mitigation Plans :</b> <span class="mandatory" style="color: red;">*</span> </label> 
 								    			</td> 
 								    			<td colspan="5" style="max-width: 40%">
-										    		<input class="form-control" type="text" name="mitigationplans" value="<%=riskmatrixdata[6] %>" required  maxlength="950" style="line-height: 4">							    				
+										    		<input class="form-control" type="text" name="mitigationplans" value="<%=riskmatrixdata[6]!=null?StringEscapeUtils.escapeHtml4(riskmatrixdata[6].toString()): "" %>" required  maxlength="950" style="line-height: 4">							    				
 								    			</td>
 								    		</tr>		
 								    		<tr>
@@ -393,7 +392,7 @@ if(ses1!=null){
 								    				<label ><b>Impact :</b> <span class="mandatory" style="color: red;">*</span> </label> 
 								    			</td> 
 								    			<td colspan="5" style="max-width: 40%">
-										    		<input class="form-control" type="text" name="Impact" value="<%=riskmatrixdata[10] %>" required  maxlength="1000" style="line-height: 4">							    				
+										    		<input class="form-control" type="text" name="Impact" value="<%=riskmatrixdata[10]!=null?StringEscapeUtils.escapeHtml4(riskmatrixdata[10].toString()): "" %>" required  maxlength="1000" style="line-height: 4">							    				
 								    			</td>
 								    		</tr>	
 								    		<tr>
@@ -414,7 +413,7 @@ if(ses1!=null){
 								    			<td colspan="1" style="max-width: 40%">
 										    		<select class="form-control" name="risk_type" required="required" style="width:20% ">
 										    			<%for(Object[] risktpye : risktypelist){ %>
-										    				<option value="<%=risktpye[0]%>" <%if(riskmatrixdata[12].toString().equalsIgnoreCase(risktpye[0].toString())){ %> selected <%} %>><%=risktpye[1]%></option>
+										    				<option value="<%=risktpye[0]%>" <%if(riskmatrixdata[12].toString().equalsIgnoreCase(risktpye[0].toString())){ %> selected <%} %>><%=risktpye[1]!=null?StringEscapeUtils.escapeHtml4(risktpye[1].toString()): " - "%></option>
 										    			<%} %>
 										    		</select>							    				
 								    			</td>
@@ -431,7 +430,7 @@ if(ses1!=null){
 								    			<td style="width: 20%">
 								    				<label ><b>Remarks</b> : </label> 
 								    			</td> 
-								    			<td colspan="1" style="max-width: 40%"><%=riskmatrixdata[14]%></td>
+								    			<td colspan="1" style="max-width: 40%"><%=riskmatrixdata[14]!=null?StringEscapeUtils.escapeHtml4(riskmatrixdata[14].toString()): " - "%></td>
 								    		</tr>	
 								    	<%}%>						
 								    		<tr>
@@ -501,16 +500,16 @@ if(ses1!=null){
 							<tbody>
 								<%for(Object[] obj : projectriskmatrixrevlist){ %>
 									<tr>
-										<td class="center"><%=Long.parseLong(obj[7].toString()) %></td>
-										<td class=""><%=obj[3] %></td>
-										<td class="center"><%=obj[4] %></td>
-										<td class="center"><%=obj[5] %></td>
-										<td class="center"><%=obj[9] %></td>
-										<td class=""><%=obj[6] %></td>
-										<td class=""><%=obj[10] %></td>
-										<td class="center"><%=sdf.format(sdf1.parse(obj[8].toString()) )%></td>
+										<td class="center"><%=Long.parseLong(StringEscapeUtils.escapeHtml4(obj[7].toString())) %></td>
+										<td class=""><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
+										<td class="center"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
+										<td class="center"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></td>
+										<td class="center"><%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - " %></td>
+										<td class=""><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %></td>
+										<td class=""><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %></td>
+										<td class="center"><%=sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[8].toString())) )%></td>
 										<td class=""><%if(obj[11].toString().equalsIgnoreCase("I")){ %>Internal <%}else{ %> External<%} %></td>
-										<td class=""><%=obj[13] %></td>
+										<td class=""><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
 									</tr>
 								<%} %>
 							</tbody>
@@ -542,7 +541,7 @@ if(ses1!=null){
 								    					General
 								    				<%}else if(Long.parseLong(projectid)>0){ 					    					
 														for(Object[] obj : projectslist){ %>
-															<%if(projectid!=null && projectid.equals(obj[0].toString())) { %><%=obj[1] %> <%} 
+															<%if(projectid!=null && projectid.equals(obj[0].toString())) { %><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> <%} 
 														} 
 													}%>
 	  	      		</div>
@@ -557,7 +556,7 @@ if(ses1!=null){
 					<%}%>
 	  	      		</div>
 	  	      		<div class="col-md-12">
-	  	      			<label ><b>Description : </b></label> <%=riskdata[1] %>
+	  	      			<label ><b>Description : </b></label> <%=riskdata[1]!=null?StringEscapeUtils.escapeHtml4(riskdata[1].toString()): " - " %>
 	  	      		</div>
 					<div class="col-md-12" > <label ><b>Remarks : </b></label><br>
   	      		    		<textarea rows="3" maxlength="999"  style="display:block; " class="form-control"  id="Remarks" name="Remarks"  placeholder="Enter Remarks..!!"  required="required"></textarea>

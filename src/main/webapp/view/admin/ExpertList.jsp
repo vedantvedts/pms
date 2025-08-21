@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -128,27 +129,22 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 List<Object[]> expertList=(List<Object[]>)request.getAttribute("ExpertList");
 %>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	
-	
-	<center>
-	
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-            </div>
-            
-    </center>
-    
-    
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 	
@@ -205,10 +201,10 @@ List<Object[]> expertList=(List<Object[]>)request.getAttribute("ExpertList");
 			                                            <%for(Object[] expert:expertList){ %>
 			                                            <tr>
 			                                                <td><%=srno++%></td>
-			                                               <td><%=expert[1]%></td>
-			                                               <td><%=expert[2]%></td>
-			                                               <td><%=expert[3]%></td>
-			                                               <td><%=expert[7]%></td>
+			                                               <td><%=expert[1]!=null?StringEscapeUtils.escapeHtml4(expert[1].toString()): " - "%></td>
+			                                               <td><%=expert[2]!=null?StringEscapeUtils.escapeHtml4(expert[2].toString()): " - "%></td>
+			                                               <td><%=expert[3]!=null?StringEscapeUtils.escapeHtml4(expert[3].toString()): " - "%></td>
+			                                               <td><%=expert[7]!=null?StringEscapeUtils.escapeHtml4(expert[7].toString()): " - "%></td>
 			                                               <td>
 			                                               <%
 			                                            

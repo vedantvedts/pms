@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"  pageEncoding="ISO-8859-1"%>
 <%@page import="java.util.List , java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
@@ -47,7 +48,7 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 												<select class="form-control selectdee"  data-container="body" data-live-search="true"  name="projectinitiationid"  required="required" style="width:200px;"  onchange="this.form.submit()">
 													<option disabled  selected value="">Choose...</option>
 													<%if(projectslist!=null){ for(Object[] obj : projectslist){ %>
-													<option value="<%=obj[0]%>" <%if(projectid!=null && projectid.equalsIgnoreCase(obj[0].toString())){%> selected="selected" <%}%>><%=obj[1] %></option>
+													<option value="<%=obj[0]%>" <%if(projectid!=null && projectid.equalsIgnoreCase(obj[0].toString())){%> selected="selected" <%}%>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></option>
 													<%}} %> 
 												</select>
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -64,13 +65,22 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 	     </div>
 </div>
 
-	<%String ses=(String)request.getParameter("result"); 
-	 String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){%>
-	<center><div class="alert alert-danger" role="alert"><%=ses1 %></div></center>
-	<%}if(ses!=null){%>
-	<center><div class="alert alert-success" role="alert" ><%=ses %> </div> </center>
-    <%}%>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
     
     
     
@@ -87,10 +97,10 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 
 <%if(initiationSanctionlist!=null && editdata==null){ %>
 <div align="right" style="padding-right: 35px;">
-		<p align="right" > No.<%if(initiationSanctionlist[1]!=null){%> <%=initiationSanctionlist[1]%> <%} %>/D(R&D)</p>
+		<p align="right" > No.<%if(initiationSanctionlist[1]!=null){%> <%=StringEscapeUtils.escapeHtml4(initiationSanctionlist[1].toString())%> <%} %>/D(R&D)</p>
 <div style="width: 30%;margin-top: -40px; ">
-		<br><%if(initiationSanctionlist[7]!=null){%> <%=initiationSanctionlist[7]%> <%}%> 
-		<br><%if(initiationSanctionlist[8]!=null){%> <%=initiationSanctionlist[8]%> <%} %>- <%if(initiationSanctionlist[10]!=null){%><%=initiationSanctionlist[10]%><%}%>
+		<br><%if(initiationSanctionlist[7]!=null){%> <%=StringEscapeUtils.escapeHtml4(initiationSanctionlist[7].toString())%> <%}%> 
+		<br><%if(initiationSanctionlist[8]!=null){%> <%=StringEscapeUtils.escapeHtml4(initiationSanctionlist[8].toString())%> <%} %>- <%if(initiationSanctionlist[10]!=null){%><%=StringEscapeUtils.escapeHtml4(initiationSanctionlist[10].toString())%><%}%>
 		<br>Date :<%if(initiationSanctionlist[16]!=null){%> <%=sdf.format(initiationSanctionlist[16])%> <%}%>
 </div>
 </div>
@@ -101,7 +111,7 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
                           <select name="FromDepartment"  id="FromDepartment" class="form-control  form-control selectdee" data-width="100%" data-live-search="true">
 							  <option disabled="disabled" selected="selected" value="">Choose From Department...</option>
 							  <%for(Object[] obj:initiationdept){ %>
-							  	<option value="<%=obj[0]%>" <%if(initiationSanctionlist!=null && initiationSanctionlist[17]!=null && obj[0].equals(initiationSanctionlist[17])){%> selected="selected" <%}%>> <%=obj[1]%> (<%=obj[2] %>)</option>
+							  	<option value="<%=obj[0]%>" <%if(initiationSanctionlist!=null && initiationSanctionlist[17]!=null && obj[0].equals(initiationSanctionlist[17])){%> selected="selected" <%}%>> <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> (<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>)</option>
 							  <%}%>
 							  </select>
 </div> 
@@ -112,23 +122,23 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 <p style="padding-left: 35px;">To,<br></p>
 <%if(initiationSanctionlist!=null  && editdata==null){ %>
 <div style="width: 30%; padding-left: 50px;">
-<%=initiationSanctionlist[2] %><br>
-<%=initiationSanctionlist[3]%><br>
-<%=initiationSanctionlist[4]%>-<%=initiationSanctionlist[6]%>
+<%=initiationSanctionlist[2]!=null?StringEscapeUtils.escapeHtml4(initiationSanctionlist[2].toString()): " - " %><br>
+<%=initiationSanctionlist[3]!=null?StringEscapeUtils.escapeHtml4(initiationSanctionlist[3].toString()): " - "%><br>
+<%=initiationSanctionlist[4]!=null?StringEscapeUtils.escapeHtml4(initiationSanctionlist[4].toString()): " - "%>-<%=initiationSanctionlist[6]!=null?StringEscapeUtils.escapeHtml4(initiationSanctionlist[6].toString()): " - "%>
 </div>
 <%}else{ %>
 
     <div style="width: 30%; padding-left: 50px;"><select name="Authority" id="Authority"	class="form-control  form-control selectdee" data-width="100%" data-live-search="true">
 							  <option disabled="disabled" selected="selected" value="">Choose Authority...</option>
 							  <%for(Object[] obj:authoritylist){ %>
-							  	<option value="<%=obj[0]%>" <%if(initiationSanctionlist!=null && initiationSanctionlist[19]!=null && obj[0].equals(initiationSanctionlist[19])){%> selected="selected" <%}%>> <%=obj[1] %></option>
+							  	<option value="<%=obj[0]%>" <%if(initiationSanctionlist!=null && initiationSanctionlist[19]!=null && obj[0].equals(initiationSanctionlist[19])){%> selected="selected" <%}%>> <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></option>
 							  <%}%>
 							  </select></div> 
 <div style="width: 30%; padding-left: 50px;">
                           <select name="ToDepartment" id="ToDepartment" class="form-control  form-control selectdee" data-width="100%" data-live-search="true">
 							  <option disabled="disabled" selected="selected" value="">Choose To Department...</option>
 							  <%for(Object[] obj:initiationdept){ %>
-							  	<option value="<%=obj[0]%>" <%if(initiationSanctionlist!=null && initiationSanctionlist[18]!=null && obj[0].equals(initiationSanctionlist[18])){%> selected="selected" <%}%>> <%=obj[1]%> (<%=obj[2] %>)</option>
+							  	<option value="<%=obj[0]%>" <%if(initiationSanctionlist!=null && initiationSanctionlist[18]!=null && obj[0].equals(initiationSanctionlist[18])){%> selected="selected" <%}%>> <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> (<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>)</option>
 							  <%}%>
 							  </select>
 </div> 
@@ -144,13 +154,13 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 	<tr>
 		<td style="width: 5%;">1.</td>
 		<td style="width: 30%;">Title of the project</td>
-		<td style="width: 60%;">:<b><%if(projectdata[0]!=null){%> <%=projectdata[0]%><%}else{%>&nbsp;&nbsp;&nbsp;&nbsp; --<%}%></b></td>
+		<td style="width: 60%;">:<b><%if(projectdata[0]!=null){%> <%=StringEscapeUtils.escapeHtml4(projectdata[0].toString())%><%}else{%>&nbsp;&nbsp;&nbsp;&nbsp; --<%}%></b></td>
 	</tr>
 	
 	<tr>
 		<td style="width: 5%;">2.</td>
 		<td style="width: 30%;">Nodal Lab</td>
-		<td style="width: 60%;">:<b><%if(projectdata[11]!=null){%> <%=projectdata[11]%><%}else{%>&nbsp;&nbsp;&nbsp;&nbsp; --<%}%></b></td>
+		<td style="width: 60%;">:<b><%if(projectdata[11]!=null){%> <%=StringEscapeUtils.escapeHtml4(projectdata[11].toString())%><%}else{%>&nbsp;&nbsp;&nbsp;&nbsp; --<%}%></b></td>
 	</tr>
 	
 	<tr>
@@ -195,7 +205,7 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 	<tr>
 		<td style="width: 5%;">6.</td>
 		<td style="width: 30%;">Total estimated cost <br>(Rupees in words)</td>
-		<td style="width: 60%;">:<b> &#8377; <%if(projectdata[1]!=null){%><%=projectdata[1] %> <%}else{%>&nbsp;&nbsp;&nbsp;&nbsp; --<%}%>Cr</b> (FE:&#8377;<b> <%if(projectdata[3]!=null){%><%=projectdata[3] %> <%}else{%>--<%}%>Cr)</b></td>
+		<td style="width: 60%;">:<b> &#8377; <%if(projectdata[1]!=null){%><%=StringEscapeUtils.escapeHtml4(projectdata[1].toString()) %> <%}else{%>&nbsp;&nbsp;&nbsp;&nbsp; --<%}%>Cr</b> (FE:&#8377;<b> <%if(projectdata[3]!=null){%><%=projectdata[3] %> <%}else{%>--<%}%>Cr)</b></td>
 	</tr>
 	
 	<tr>
@@ -217,13 +227,13 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 	<tr>
 		<td style="width: 5%;">8.</td>
 		<td style="width: 30%;">PDC (Months & Date) </td>
-		<td style="width: 60%;">:<b><%if(projectdata[7]!=null){%> <%=projectdata[7]%> Months <%}else{%>&nbsp;&nbsp;&nbsp;&nbsp; --<%}%></b></td>
+		<td style="width: 60%;">:<b><%if(projectdata[7]!=null){%> <%=StringEscapeUtils.escapeHtml4(projectdata[7].toString())%> Months <%}else{%>&nbsp;&nbsp;&nbsp;&nbsp; --<%}%></b></td>
 	</tr>
 	
 	<tr>
 		<td style="width: 5%;">9.</td>
 		<td style="width: 30%;">Objectives</td>
-		<td style="width: 60%;">:<b><%if(projectdata[9]!=null){%><br> <%=projectdata[9] %> <%}else{%>&nbsp;&nbsp;&nbsp;&nbsp; --<%}%></b></td>
+		<td style="width: 60%;">:<b><%if(projectdata[9]!=null){%><br> <%=StringEscapeUtils.escapeHtml4(projectdata[9].toString()) %> <%}else{%>&nbsp;&nbsp;&nbsp;&nbsp; --<%}%></b></td>
 	</tr>
 <!-- 	<tr>
 		<td style="width: 5%;"></td>
@@ -239,13 +249,13 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 	<tr>
 		<td style="width: 5%;">10.</td>
 		<td style="width: 30%;">Scope</td>
-		<td style="width: 60%;">:<b><%if(projectdata[10]!=null){%><br> <%= projectdata[10] %> <%}else{%>&nbsp;&nbsp;&nbsp;&nbsp; --<%}%></b></td>
+		<td style="width: 60%;">:<b><%if(projectdata[10]!=null){%><br> <%= StringEscapeUtils.escapeHtml4(projectdata[10].toString()) %> <%}else{%>&nbsp;&nbsp;&nbsp;&nbsp; --<%}%></b></td>
 	</tr>    
 	
 	<tr>
 		<td style="width: 5%;">11.</td>
 		<td style="width: 30%;">Deliverables/Output</td>
-		<td style="width: 60%;">: <b><%if(projectdata[6]!=null){%><%= projectdata[6] %> <%}else{%>&nbsp;&nbsp;&nbsp;&nbsp;    --<%}%> </b></td>
+		<td style="width: 60%;">: <b><%if(projectdata[6]!=null){%><%= StringEscapeUtils.escapeHtml4(projectdata[6].toString()) %> <%}else{%>&nbsp;&nbsp;&nbsp;&nbsp;    --<%}%> </b></td>
 	</tr>
 	
 	<tr>
@@ -254,7 +264,7 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 		<%if(initiationSanctionlist!=null && editdata==null){%>
 		<td style="width: 60%;">: <b><%if(initiationSanctionlist[12]!=null){%> <%=initiationSanctionlist[12]%> <%}%> </b></td>
 		<%}else{ %>
-		<td style="width: 60%;">:&nbsp;<input type="number" name="EstimateCost" <%if(initiationSanctionlist!=null && initiationSanctionlist[12]!=null){%> value="<%=initiationSanctionlist[12]%>" <%}%>  id="EstimateCost" required="required"> </td>
+		<td style="width: 60%;">:&nbsp;<input type="number" name="EstimateCost" <%if(initiationSanctionlist!=null && initiationSanctionlist[12]!=null){%> value="<%=StringEscapeUtils.escapeHtml4(initiationSanctionlist[12].toString())%>" <%}%>  id="EstimateCost" required="required"> </td>
 		<%}%>
 	</tr>
 	
@@ -362,9 +372,9 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 		</tr> -->
 		<%if(itemlist!=null){ for(Object[] obj:itemlist){%>
 		<tr style=" border: 1px solid black;">
-			<td style=" border: 1px solid black;"><%=obj[0]%></td>
-			<td style=" border: 1px solid black;"><%=obj[1]%><%=obj[2]%><%=obj[4]%></td>
-			<td style=" border: 1px solid black;"><%=obj[3]%></td>
+			<td style=" border: 1px solid black;"><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%></td>
+			<td style=" border: 1px solid black;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%></td>
+			<td style=" border: 1px solid black;"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>
 			<td style=" border: 1px solid black;"></td>
 			<td style=" border: 1px solid black;"></td>
 			
@@ -506,9 +516,9 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 		</tr>-->
 		<%if(itemlist!=null){ for(Object[] obj:itemlist){%>
 		<tr style=" border: 1px solid black;">
-			<td style=" border: 1px solid black;"><%=obj[0]%></td>
-			<td style=" border: 1px solid black;"><%=obj[1]%><%=obj[2]%><%=obj[4]%></td>
-			<td style=" border: 1px solid black;"><%=obj[3]%></td>
+			<td style=" border: 1px solid black;"><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%></td>
+			<td style=" border: 1px solid black;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%></td>
+			<td style=" border: 1px solid black;"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>
 			<td style=" border: 1px solid black;"></td>
 			<td style=" border: 1px solid black;"></td>
 			
@@ -602,9 +612,9 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 				<%for(Object[] obj :copyaddresslist ){ %>
 				<tr> 
 				<td style=" border: 1px solid black;">
-					<%if(obj[1]!=null){%><%=obj[1]%><%}%> 
-					<%if(obj[2]!=null){%><%=obj[2]%><%}%>
-					<%if(obj[3]!=null){%><%=obj[3]%><%}%>
+					<%if(obj[1]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[1].toString())%><%}%> 
+					<%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString())%><%}%>
+					<%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString())%><%}%>
 				</td>
 				</tr>
 				<%}%>
@@ -627,7 +637,7 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 									 selected="selected"
 								 <%}}}%>
 						
-						> <%=obj[1]%> <%if(obj[2]!=null){%><%=obj[2]%><%}%></option>
+						> <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> <%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString())%><%}%></option>
 						<%}%>
 					</select>
 				</div>

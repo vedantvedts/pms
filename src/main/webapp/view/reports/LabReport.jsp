@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.report.model.PfmsLabReportMilestone"%>
 <%@page import="java.io.File"%>
 <%@page import="org.apache.commons.io.FileUtils"%>
@@ -430,20 +431,22 @@ if(proList!=null && proList.size()>0){
 
 
 %>
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br/>
     
@@ -479,7 +482,7 @@ if(proList!=null && proList.size()>0){
 												String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
 											%>
 												<option  value="<%=obj[0] %>" <%if (Project.equalsIgnoreCase(obj[0].toString())) {%>
-														selected="selected" <%}%>><%=obj[4] +projectshortName%></option>
+														selected="selected" <%}%>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"" +projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):""%></option>
 											<%} %>
 										</select>
 							   </div>
@@ -521,7 +524,7 @@ if(proList!=null && proList.size()>0){
             <!-- Project Name -->
             <div class="attribute">
                 <h5 style="font-weight: bold;">Project Name</h5>
-                <p style="color: black;"><%=ProjectEditData[2] %></p>
+                <p style="color: black;"><%=ProjectEditData[2]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[2].toString()):"" %></p>
             </div>
             
             <div class="attribute">
@@ -533,7 +536,7 @@ if(proList!=null && proList.size()>0){
 											
 											File tecfile = techPath.toFile();
 											if(tecfile.exists()){ %>
-											<img style="max-width:25cm;max-height:17cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(tecfile))%>" > 											
+											<img style="max-width:25cm;max-height:17cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(tecfile))!=null?StringEscapeUtils.escapeHtml4(Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(tecfile))):""%>" > 											
 											<%} %>
 										
                 <%}else{ %>
@@ -551,7 +554,7 @@ if(proList!=null && proList.size()>0){
                   
                   
                <textarea class="form-control" maxlength="2000" rows="4"  id="introduction">
-               <%if(editorData!=null && editorData[5]!=null ){ %><%=editorData[5] %><%}else if( ProjectEditData[17]!=null){ %><%=  ProjectEditData[17] %>  <%} %>
+               <%if(editorData!=null && editorData[5]!=null ){ %><%=StringEscapeUtils.escapeHtml4(editorData[5].toString()) %><%}else if( ProjectEditData[17]!=null){ %><%=  StringEscapeUtils.escapeHtml4(ProjectEditData[17].toString()) %>  <%} %>
                </textarea>   
                <div align="left" class="mt-2"><button class="btn btn-sm submit" onclick="submitIntroduction()">SUBMIT</button></div>
             </div>
@@ -560,7 +563,7 @@ if(proList!=null && proList.size()>0){
             <div class="attribute mt-3">
                 <h5 style="font-weight: bold;">Total Cost</h5>
                 <p style="color: black;"><%if(ProjectEditData[6]!=null){ %>
-                <p style="color: black;">  <%=ProjectEditData[6] %><span style="font-weight: 800;color:black;">(in Lakhs)</span> </p>
+                <p style="color: black;">  <%=StringEscapeUtils.escapeHtml4(ProjectEditData[6].toString()) %><span style="font-weight: 800;color:black;">(in Lakhs)</span> </p>
                 <%}else{ %>
                   <p style="color: black;"> - </p>
                   <%} %></p>
@@ -570,7 +573,7 @@ if(proList!=null && proList.size()>0){
             <div class="attribute mt-3">
                 <h5 style="font-weight: bold;">Category</h5>
                 <%if(ProjectEditData[19]!=null){ %>
-                <p style="color: black;">  <%=ProjectEditData[19] %> </p>
+                <p style="color: black;">  <%=StringEscapeUtils.escapeHtml4(ProjectEditData[19].toString()) %> </p>
                 <%}else{ %>
                   <p style="color: black;"> - </p>
                   <%} %>
@@ -581,7 +584,7 @@ if(proList!=null && proList.size()>0){
             <h5 style="font-weight: bold;">Participating Lab</h5>
             <%if(ProjectEditData[10]!=null){ %>
             <p style="color: black;">  
-            <%=ProjectEditData[10] %> 
+            <%=StringEscapeUtils.escapeHtml4(ProjectEditData[10].toString()) %> 
             </p>
             <%}else{ %>
             <p style="color: black;"> - </p>
@@ -592,7 +595,7 @@ if(proList!=null && proList.size()>0){
             <div class="attribute mt-3">
                 <h5 style="font-weight: bold;">Scope</h5>
                   <%if(ProjectEditData[11]!=null){ %>
-                <p style="color: black;">  <%=ProjectEditData[11] %> </p>
+                <p style="color: black;">  <%=StringEscapeUtils.escapeHtml4(ProjectEditData[11].toString()) %> </p>
                 <%}else{ %>
                   <p style="color: black;"> - </p>
                   <%} %>
@@ -602,7 +605,7 @@ if(proList!=null && proList.size()>0){
             <div class="attribute mt-3">
                 <h5 style="font-weight: bold;">Objective</h5>
                 <p style="color: black;">  <%if(ProjectEditData[9]!=null){ %>
-                <p style="color: black;">  <%=ProjectEditData[9] %> </p>
+                <p style="color: black;">  <%=StringEscapeUtils.escapeHtml4(ProjectEditData[9].toString()) %> </p>
                 <%}else{ %>
                   <p style="color: black;"> - </p>
                   <%} %></p>
@@ -611,8 +614,8 @@ if(proList!=null && proList.size()>0){
             <!-- Details of Review held till YR -->
             <div class="attribute mt-3">
                 <h5 style="font-weight: bold;">Details of Review held till <%=PastYr%></h5>
-                <p style="color: black;"><b>EB:</b> <%=ProjectEditData[16] %></p>
-                <p style="color: black;"><b>PMRC:</b> <%=ProjectEditData[15] %></p>
+                <p style="color: black;"><b>EB:</b> <%=ProjectEditData[16]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[16].toString()):" - " %></p>
+                <p style="color: black;"><b>PMRC:</b> <%=ProjectEditData[15]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[15].toString()):" - " %></p>
               <%--   <table>
                 <tr><td><b>EB:</b> <%=ProjectEditData[16] %></td>
                 <td><b>PMRC:</b> <%=ProjectEditData[15] %></td>
@@ -623,7 +626,7 @@ if(proList!=null && proList.size()>0){
             <div class="attribute mt-3">
                 <h5 style="font-weight: bold;">Current Stage of Project</h5>
                 <%if(ProjectEditData[14]!=null){ %>
-                <p style="color: black;">  <%=ProjectEditData[14] %> </p>
+                <p style="color: black;">  <%=StringEscapeUtils.escapeHtml4(ProjectEditData[14].toString()) %> </p>
                 <%}else{ %>
                   <p style="color: black;"> - </p>
                   <%} %>
@@ -671,7 +674,7 @@ if(proList!=null && proList.size()>0){
             		 %>
             	<tr>
              	<td style="text-align: center;"><%=(++count1) %>.</td>
-             	<td style="text-align: justify ;"><%= pm.getActivityName() %></td> 
+             	<td style="text-align: justify ;"><%= pm.getActivityName()!=null?StringEscapeUtils.escapeHtml4(pm.getActivityName()):" - " %></td> 
              	</tr>
              	<%}}} %>
       			 <%} %>
@@ -709,7 +712,7 @@ if(proList!=null && proList.size()>0){
             <tbody>
             <tr>
            	<td style="text-align: center"><%=++sn %>.</td>
-           	<td style="text-align: left;"><%=pm.getActivityName()%></td>
+           	<td style="text-align: left;"><%=pm.getActivityName()!=null?StringEscapeUtils.escapeHtml4(pm.getActivityName()):" - "%></td>
             </tr>
             </tbody>
              <%}} %>
@@ -753,10 +756,10 @@ if(proList!=null && proList.size()>0){
             <tbody>
             <tr>
             <td style="text-align: center;">
-            <input type="checkbox" class="" style="transform:scale(2)" name="ActivityIdS"  <%if(activityidsNextYear.contains(activity[9].toString())){ %> checked <%} %>   value="<%=activity[9].toString()%>" >
+            <input type="checkbox" class="" style="transform:scale(2)" name="ActivityIdS"  <%if(activityidsNextYear.contains(activity[9].toString())){ %> checked <%} %>   value="<%=activity[9]!=null?StringEscapeUtils.escapeHtml4(activity[9].toString()):""%>" >
             </td>
             <td style="text-align: center;"> <%=++count1 %></td>
-            <td style="text-align: center;">Milestone - <%=activity[10].toString()%></td>
+            <td style="text-align: center;">Milestone - <%=activity[10]!=null?StringEscapeUtils.escapeHtml4(activity[10].toString()):" - "%></td>
             <td> 
         	  <%--   <textarea class="form-control" id="text<%=activity[9].toString()%>" > <%=activity[1].toString() %></textarea> --%>
         
@@ -764,16 +767,16 @@ if(proList!=null && proList.size()>0){
 			<textarea  name="description" style="display: none;" class="form-control" id="textNext<%=activity[9].toString()%>" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters">
 			
 			<%if(NextYearMilestoneData!=null && NextYearMilestoneData.size()>0){ %>
-			<%=NextYearMilestoneData.get(0).getActivityName() %>
+			<%=NextYearMilestoneData.get(0).getActivityName()!=null?StringEscapeUtils.escapeHtml4(NextYearMilestoneData.get(0).getActivityName()):" - " %>
 			<%}else{ %>
-			<%=activity[1].toString() %>
+			<%=activity[1]!=null?StringEscapeUtils.escapeHtml4(activity[1].toString()):" - " %>
 			
 			<%} %>
 			</textarea>
 			    <script>
             
             document.addEventListener("DOMContentLoaded", function () {
-                var editorId = 'textNext<%=activity[9].toString()%>';
+                var editorId = 'textNext<%=activity[9]!=null?StringEscapeUtils.escapeHtml4(activity[9].toString()):"-"%>';
                 CKEDITOR.replace(editorId, editor_config1);
 
                 // Ensure changes in CKEditor are reflected in the textarea for form submission
@@ -784,7 +787,7 @@ if(proList!=null && proList.size()>0){
             </script>
              </td>
             <td style="text-align: center;">
-        		<%=activity[11].toString()%>
+        		<%=activity[11]!=null?StringEscapeUtils.escapeHtml4(activity[11].toString()):" - "%>
             </td>
             </tr>
             </tbody>
@@ -835,10 +838,10 @@ if(proList!=null && proList.size()>0){
             <tbody>
             <tr>
             <td style="text-align: center;">
-            <input type="checkbox" class="" style="transform:scale(2)" name="ActivityId"  <%if(activityids.contains(activity[9].toString())){ %> checked <%} %>   value="<%=activity[9].toString()%>" >
+            <input type="checkbox" class="" style="transform:scale(2)" name="ActivityId"  <%if(activityids.contains(activity[9].toString())){ %> checked <%} %>   value="<%=activity[9]!=null?StringEscapeUtils.escapeHtml4(activity[9].toString()):" - "%>" >
             </td>
             <td style="text-align: center;"> <%=++count %></td>
-            <td style="text-align: center;">Milestone - <%=activity[10].toString()%></td>
+            <td style="text-align: center;">Milestone - <%=activity[10]!=null?StringEscapeUtils.escapeHtml4(activity[10].toString()):" - "%></td>
             <td> 
         	  <%--   <textarea class="form-control" id="text<%=activity[9].toString()%>" > <%=activity[1].toString() %></textarea> --%>
         
@@ -846,16 +849,16 @@ if(proList!=null && proList.size()>0){
 			<textarea  name="description" style="display: none;" class="form-control" id="text<%=activity[9].toString()%>" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters">
 			
 			<%if(SubLabReportMilestoneData!=null && SubLabReportMilestoneData.size()>0){ %>
-			<%=SubLabReportMilestoneData.get(0).getActivityName() %>
+			<%=SubLabReportMilestoneData.get(0).getActivityName()!=null?StringEscapeUtils.escapeHtml4(SubLabReportMilestoneData.get(0).getActivityName()):" - " %>
 			<%}else{ %>
-			<%=activity[1].toString() %>
+			<%=activity[1]!=null?StringEscapeUtils.escapeHtml4(activity[1].toString()):" - " %>
 			
 			<%} %>
 			</textarea>
 			    <script>
             
             document.addEventListener("DOMContentLoaded", function () {
-                var editorId = 'text<%=activity[9].toString()%>';
+                var editorId = 'text<%=activity[9]!=null?StringEscapeUtils.escapeHtml4(activity[1].toString()):"-"%>';
                 CKEDITOR.replace(editorId, editor_config1);
 
                 // Ensure changes in CKEditor are reflected in the textarea for form submission
@@ -866,7 +869,7 @@ if(proList!=null && proList.size()>0){
             </script>
              </td>
             <td style="text-align: center;">
-        		<%=activity[11].toString()%>
+        		<%=activity[11]!=null?StringEscapeUtils.escapeHtml4(activity[11].toString()):"-"%>
             </td>
             </tr>
             </tbody>
@@ -894,7 +897,7 @@ if(proList!=null && proList.size()>0){
         <div class="section-content p-3" style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
             <form action="LabReportDataAdd.htm" method="get">
                 <div class="form-group">
-                    <textarea class="form-control" name="SpinOffData" id="ckeditor"  rows="5" cols="50" maxlength="5" placeholder="Enter Spin-Off details here..."><%if(editorData!=null && editorData[2]!=null){ %> <%=editorData[2] %>  <%}%></textarea> 
+                    <textarea class="form-control" name="SpinOffData" id="ckeditor"  rows="5" cols="50" maxlength="5" placeholder="Enter Spin-Off details here..."><%if(editorData!=null && editorData[2]!=null){ %> <%=StringEscapeUtils.escapeHtml4(editorData[2].toString()) %>  <%}%></textarea> 
                 </div>
                 <div align="center">
                 <button type="submit" class="btn btn-primary btn-sm submit" onclick="return confirm('Are You Sure To Submit ?');"> Submit</button>
@@ -916,7 +919,7 @@ if(proList!=null && proList.size()>0){
             <form action="LabReportDataAdd.htm" method="get">
                 <div class="form-group">
 
-                 <textarea id="Editor1" style="display:none;" class="form-control" name="NominatedDetails"   rows="5" cols="50" maxlength="5" placeholder="Enter Details of LSI/DCPP/PA (If Nominated)..."><%if(editorData!=null && editorData[3]!=null){ %> <%=editorData[3] %> <%}else{%>  <%} %></textarea>
+                 <textarea id="Editor1" style="display:none;" class="form-control" name="NominatedDetails"   rows="5" cols="50" maxlength="5" placeholder="Enter Details of LSI/DCPP/PA (If Nominated)..."><% if(editorData!=null && editorData[3]!=null){ %> <%=StringEscapeUtils.escapeHtml4(editorData[3].toString()) %> <%}else{%>  <%} %></textarea>
  
                 </div>
                 <div align="center">
@@ -1021,8 +1024,8 @@ if(proList!=null && proList.size()>0){
       if(MainProjectList!=null && MainProjectList.size()>0){
       for(Object[]obj:MainProjectList) {%>
       <div class="col-md-2 ml-4 mt-3" style="font-weight: 800;">
-      <input class="mainProject" type="checkbox" name="projectId" style="transform:scale(1.5)" value="<%=obj[0].toString()%>"> 
-         &nbsp;   <span style="font-weight: 700;"><%=obj[4].toString() %>&nbsp;/&nbsp;<%=obj[17].toString() %></span> 
+      <input class="mainProject" type="checkbox" name="projectId" style="transform:scale(1.5)" value="<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):""%>"> 
+         &nbsp;   <span style="font-weight: 700;"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"-" %>&nbsp;/&nbsp;<%=obj[17]!=null?StringEscapeUtils.escapeHtml4(obj[17].toString()):"-" %></span> 
       </div>
        <%}} %>
        </div> 
@@ -1037,8 +1040,8 @@ if(proList!=null && proList.size()>0){
       <%if(subProjectList!=null && subProjectList.size()>0){
       for(Object[]obj:subProjectList) {%>
        <div class="col-md-2 ml-4 mt-3" >
-       <input class="subProject" style="transform:scale(1.5)" type="checkbox" name="projectId" value="<%=obj[0].toString()%>">
-       &nbsp;<span style="font-weight: 700;"><%=obj[4].toString() %>&nbsp;/&nbsp;<%=obj[17].toString() %></span> 
+       <input class="subProject" style="transform:scale(1.5)" type="checkbox" name="projectId" value="<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):""%>">
+       &nbsp;<span style="font-weight: 700;"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"-" %>&nbsp;/&nbsp;<%=obj[17]!=null?StringEscapeUtils.escapeHtml4(obj[17].toString()):"-" %></span> 
       </div>
       <%}} %>
       </div>

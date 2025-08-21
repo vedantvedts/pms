@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -131,24 +132,22 @@ font-weight: bold;
 </head>
 <body>
 <% 	
-List<Object[]> tdlist=(List<Object[]>) request.getAttribute("TDList");
-String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-	
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-            </div>
-            
+	List<Object[]> tdlist=(List<Object[]>) request.getAttribute("TDList");
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
     </div>
-    <%}%>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 <br>	
 	
 <div class="container-fluid">		
@@ -184,11 +183,11 @@ String ses=(String)request.getParameter("result");
 			                    <tbody>
 	                                 <%for(Object[] obj:tdlist){ %>
 	                                     <tr>
-	                                         <td><input type="radio" name="tdid" value=<%=obj[0]%>  ></td> 
-	                                        <td><%=obj[6]!=null?obj[6].toString():"" %></td>
-	                                         <td><%=obj[1]!=null?obj[1].toString():"" %></td>
-	                                         <td style="text-align: left;"><%if(obj[2]!=null){%><%=obj[2].toString() %><%}else{ %>-<%} %></td>
-	                                         <td style="text-align: left;"> <%if(obj[3]!=null){%><%=obj[4].toString()+", "+obj[5].toString()%><%}else{ %>-<%} %></td>
+	                                         <td><input type="radio" name="tdid" value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):" - "%>  ></td> 
+	                                        <td><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):" - " %></td>
+	                                         <td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %></td>
+	                                         <td style="text-align: left;"><%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%}else{ %>-<%} %></td>
+	                                         <td style="text-align: left;"> <%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString())+", "+StringEscapeUtils.escapeHtml4(obj[5].toString())%><%}else{ %>-<%} %></td>
 	                                     </tr>
 	                                 <%} %>
 	                             </tbody>

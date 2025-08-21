@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -31,7 +32,7 @@
     const pdfUrl = new URLSearchParams(window.location.search).get("url");
 
     // Injected from JSP session (role type)
-    const userRole = "<%= logintype %>";
+    const userRole = "<%= logintype!=null?StringEscapeUtils.escapeHtml4(logintype): "" %>";
 
     const iframe = document.getElementById("pdfFrame");
 

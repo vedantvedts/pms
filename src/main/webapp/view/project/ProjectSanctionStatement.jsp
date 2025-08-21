@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat ,  java.util.stream.Collectors"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -392,7 +393,7 @@ strong {
 					%>
 											<option value="<%=obj[0] + "/" + obj[4] + "/" + obj[5]%>"
 												<%if (obj[4].toString().equalsIgnoreCase(projectshortName)) {%>
-												selected <%}else{%>disabled<%} %>><%=obj[4]%></option>
+												selected <%}else{%>disabled<%} %>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%></option>
 											<%
 					}
 					}
@@ -420,27 +421,27 @@ strong {
 										<tr>
 											<td style="width: 60%"><h5>1. Name of laboratory:</h5></td>
 											<td>
-												<h5><%=session.getAttribute("labcode") %></h5>
+												<h5><%=session.getAttribute("labcode")!=null?StringEscapeUtils.escapeHtml4(session.getAttribute("labcode").toString()): " - " %></h5>
 											</td>
 										</tr>
 										<tr>
 											<td><h5>2. Title of the Project/Programme:</h5></td>
-											<td><h5><%=ProjectDetailes[7] + "(" + ProjectDetailes[6] + ")"%></h5></td>
+											<td><h5><%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " + "(" + ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " + ")"%></h5></td>
 										</tr>
 										<tr>
 											<td><h5>3. Category of Project:</h5></td>
 											<td><h5>
-													<%=ProjectDetailes[4]%></h5></td>
+													<%=ProjectDetailes[4]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[4].toString()): " - "%></h5></td>
 										</tr>
 										<tr>
 											<td><h5>4. Security classification of
 													Project/Programme:</h5></td>
-											<td><h5><%=ProjectDetailes[5]%></h5></td>
+											<td><h5><%=ProjectDetailes[5]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[5].toString()): " - "%></h5></td>
 										</tr>
 										<tr>
 											<td><h5>5. Name of the Project Director/Programme
 													Director (for approval of Competent Authority) :</h5></td>
-											<td><h5><%=ProjectDetailes[1]%></h5></td>
+											<td><h5><%=ProjectDetailes[1]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[1].toString()): " - "%></h5></td>
 										</tr>
 										<tr>
 											<td><h5>6. Cost( &#8377; in Cr):</h5></td>
@@ -465,10 +466,10 @@ strong {
 												<h5>
 													<%
 													if (ProjectDetailes[9] != null && Integer.parseInt(ProjectDetailes[9].toString()) > 0) {
-													%><%=ProjectDetailes[9]%>
+													%><%=StringEscapeUtils.escapeHtml4(ProjectDetailes[9].toString())%>
 													<%
 													} else if (ProjectDetailes[18] != null) {
-													%><%=ProjectDetailes[18]%>
+													%><%=StringEscapeUtils.escapeHtml4(ProjectDetailes[18].toString())%>
 													<%
 													} else {
 													%>-<%
@@ -483,7 +484,7 @@ strong {
 													<%
 													if (ProjectDetailes[12] != null && !ProjectDetailes[12].toString().equalsIgnoreCase("")) {
 													%>
-													<%=ProjectDetailes[12]%>
+													<%=StringEscapeUtils.escapeHtml4(ProjectDetailes[12].toString())%>
 													<%
 													} else {
 													%>-<%
@@ -606,7 +607,7 @@ strong {
 											for (Object[] obj : sanctionlistdetails) {
 											%>
 											<tr>
-												<td><h5><%=Integer.parseInt(obj[0].toString()) + 10 + "." + " " + obj[1]%></h5></td>
+												<td><h5><%=Integer.parseInt(obj[0].toString()) + 10 + "." + " " + obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></h5></td>
 												<%
 												if (i == 5 && !projectTypeId.equalsIgnoreCase("1")) {
 												%>
@@ -637,7 +638,7 @@ strong {
 												%>
 											
 											<tr>
-												<td><h5><%=Integer.parseInt(obj[0].toString()) + 10 + "." + " " + obj[1]%></h5></td>
+												<td><h5><%=Integer.parseInt(obj[0].toString()) + 10 + "." + " " + obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></h5></td>
 												<%
 													if (i == 5 && !projectTypeId.equalsIgnoreCase("1")) {
 													%>
@@ -711,7 +712,7 @@ strong {
 										<h5 class="ml-1">
 											1.&nbsp;&nbsp;a.&nbsp;&nbsp;Title of the Project
 											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;
-											<p><%=ProjectDetailes[7].toString()%></p>
+											<p><%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[1].toString()): " - "%></p>
 										</h5>
 									</div>
 								</div>
@@ -720,7 +721,7 @@ strong {
 										<h5 class="ml-1">
 											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b.&nbsp;&nbsp;Short Name or
 											Acronym &nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;
-											<p><%=ProjectDetailes[6]%></p>
+											<p><%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - "%></p>
 										</h5>
 									</div>
 								</div>
@@ -744,7 +745,7 @@ strong {
 													if (obj[1] != null) {
 														if (obj[1].toString().length() > 60) {
 												%>
-											<%=obj[1].toString().substring(0,60)%>
+											<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()).substring(0,60):" - "%>
 											<button class="btn" style="background: transparent;"
 												type="button" onclick="showModal('Objective')">
 												<span
@@ -756,7 +757,7 @@ strong {
 											<p>Not Mentioned</p>
 											<%}else {
 												%>
-											<%=obj[1]%>
+											<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>
 											<%
 												}
 												}else{%>
@@ -779,7 +780,7 @@ strong {
 													if (obj[2] != null) {
 														if (obj[2].toString().length() > 60) {
 												%>
-											<%=obj[2].toString().substring(0, 60)%>
+											<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ".substring(0, 60)%>
 
 											<button class="btn" style="background: transparent;"
 												type="button" onclick="showModal('Scope')">
@@ -792,7 +793,7 @@ strong {
 											<p>Not Mentioned</p>
 											<%}else {
 												%>
-											<%=obj[2]%>
+											<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>
 											<%
 												}
 												}else{%>
@@ -881,7 +882,7 @@ strong {
 										<h5 class="mt-1" style="font-weight: 600">
 											PD / LabDirector Remarks on Technology<br> </h5> 
 											<div id="PDRemarks" class="center">
-											<%if(MacroDetails.length>0 && MacroDetails[15]!=null  ){ %> <%=MacroDetails[15].toString() %> <%} %>
+											<%if(MacroDetails.length>0 && MacroDetails[15]!=null  ){ %> <%=StringEscapeUtils.escapeHtml4(MacroDetails[15].toString()) %> <%} %>
 											</div>
 											
 											<span class="text-center" id="protospan"> 
@@ -925,7 +926,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;"
 										id="divmethodologyeditor">
 										<div id="methodologydiv" class="center">
-											<%if(MacroDetails[3]!=null){ %><%=MacroDetails[3].toString()%>
+											<%if(MacroDetails[3]!=null){ %><%=StringEscapeUtils.escapeHtml4(MacroDetails[3].toString())%>
 											<%} %>
 										</div>
 										<div class="row"></div>
@@ -976,7 +977,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;"
 										id="divadditonaleditor">
 										<div id="Additionaldiv" class="center">
-											<%if(MacroDetails[2]!=null){ %><%=MacroDetails[2].toString()%>
+											<%if(MacroDetails[2]!=null){ %><%=StringEscapeUtils.escapeHtml4(MacroDetails[2].toString())%>
 											<%} %>
 										</div>
 										<div class="row"></div>
@@ -1028,7 +1029,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;"
 										id="divotherinformationeditor">
 										<div id="otherinformationDiv" class="center">
-											<%if(MacroDetails[4]!=null){ %><%=MacroDetails[4].toString()%>
+											<%if(MacroDetails[4]!=null){ %><%=StringEscapeUtils.escapeHtml4(MacroDetails[4].toString())%>
 											<%} %>
 										</div>
 										<div class="row"></div>
@@ -1079,7 +1080,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;"
 										id="divEnclosureseditor">
 										<div id="EnclosuresDiv" class="center">
-											<%if(MacroDetails[5]!=null){ %><%=MacroDetails[5].toString()%>
+											<%if(MacroDetails[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(MacroDetails[5].toString())%>
 											<%} %>
 										</div>
 										<div class="row"></div>
@@ -1103,7 +1104,7 @@ strong {
 										<h5 class="mt-1" id="deliverables">
 											13.Proposed project deliverables<br> </h5> 
 											<div id="prototypeDiv" class="center">
-												<%if(MacroDetails.length>0 && MacroDetails[14]!=null ){ %><%=MacroDetails[14].toString()%>
+												<%if(MacroDetails.length>0 && MacroDetails[14]!=null ){ %><%=StringEscapeUtils.escapeHtml4(MacroDetails[14].toString())%>
 											<%} %>
 											</div>
 											<textarea name="prototypeDetails" style="display: none;"></textarea>
@@ -1185,7 +1186,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv2Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[12]!=null){ %>
-											<%=BriefList[12].toString() %>
+											<%=StringEscapeUtils.escapeHtml4(BriefList[12].toString()) %>
 											<%}else{%>
 											<%}%>
 										</div>
@@ -1238,7 +1239,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv4Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[2]!=null){ %>
-											<%=BriefList[2].toString() %>
+											<%=StringEscapeUtils.escapeHtml4(BriefList[2].toString()) %>
 											<%}else{%>
 											<%}%>
 										</div>
@@ -1273,7 +1274,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv5Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[3]!=null){ %>
-											<%=BriefList[3].toString() %>
+											<%=StringEscapeUtils.escapeHtml4(BriefList[3].toString()) %>
 											<%}else{%>
 											<%}%>
 										</div>
@@ -1309,7 +1310,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv6Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[4]!=null){ %>
-											<%=BriefList[4].toString() %>
+											<%=StringEscapeUtils.escapeHtml4(BriefList[4].toString()) %>
 											<%}else{%>
 											<%}%>
 										</div>
@@ -1361,7 +1362,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv8Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[5]!=null){ %>
-											<%=BriefList[5].toString() %>
+											<%=StringEscapeUtils.escapeHtml4(BriefList[5].toString()) %>
 											<%}else{%>
 											<%}%>
 
@@ -1431,7 +1432,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv11Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[6]!=null){ %>
-											<%=BriefList[6].toString() %>
+											<%=StringEscapeUtils.escapeHtml4(BriefList[6].toString()) %>
 											<%}else{%>
 											<%}%>
 
@@ -1466,7 +1467,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv12Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[7]!=null){ %>
-											<%=BriefList[7].toString() %>
+											<%=StringEscapeUtils.escapeHtml4(BriefList[7].toString()) %>
 											<%}else{%>
 											<%}%>
 										</div>
@@ -1500,7 +1501,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv13Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[8]!=null){ %>
-											<%=BriefList[8].toString() %>
+											<%=StringEscapeUtils.escapeHtml4(BriefList[8].toString()) %>
 											<%}else{%>
 											<%}%>
 
@@ -1535,7 +1536,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv14Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[9]!=null){ %>
-											<%=BriefList[9].toString() %>
+											<%=StringEscapeUtils.escapeHtml4(BriefList[9].toString()) %>
 											<%}else{%>
 											<%}%>
 										</div>
@@ -1569,7 +1570,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv15Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[10]!=null){ %>
-											<%=BriefList[10].toString() %>
+											<%=StringEscapeUtils.escapeHtml4(BriefList[10].toString()) %>
 											<%}else{%>
 											<%}%>
 
@@ -1604,7 +1605,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv16Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[11]!=null){ %>
-											<%=BriefList[11].toString() %>
+											<%=StringEscapeUtils.escapeHtml4(BriefList[11].toString()) %>
 											<%}else{%>
 											<%}%>
 
@@ -1639,7 +1640,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv17Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[13]!=null){ %>
-											<%=BriefList[13].toString() %>
+											<%=StringEscapeUtils.escapeHtml4(BriefList[13].toString()) %>
 											<%}else{%>
 											<%}%>
 
@@ -1678,7 +1679,7 @@ strong {
 									id="majorcapitalEditor">
 									<div id="majorcapital" class="center">
 										<%if(macrodetailsTwo.length!=0&&macrodetailsTwo[5]!=null) {%>
-										<%=macrodetailsTwo[5].toString() %>
+										<%=StringEscapeUtils.escapeHtml4(macrodetailsTwo[5].toString()) %>
 										<%} %>
 									</div>
 									<div class="row"></div>
@@ -1829,7 +1830,7 @@ strong {
 								<div class="col-md-12 mt-2" id="projectdeliverablesContent"
 									style="display: none">
 									<div id="subProjectDetails" class="center"> <% if(MacroDetails.length>0 && MacroDetails[19] != null) { %>
-                <%= MacroDetails[19].toString() %>
+                <%= StringEscapeUtils.escapeHtml4(MacroDetails[19].toString()) %>
             <% } %></div>
 									<textarea name="" style="display: none;"></textarea>
 									<span class="text-center" id="protospan">
@@ -1846,7 +1847,7 @@ strong {
     <div id="designIterationContent" style="display: none;">
         <div id="designIteration" class="center">
           <% if(MacroDetails.length>0&& MacroDetails[18] != null) { %>
-                <%= MacroDetails[18].toString() %>
+                <%= StringEscapeUtils.escapeHtml4(MacroDetails[18].toString()) %>
             <% } %>
         </div>
 
@@ -1961,7 +1962,7 @@ strong {
 								<div class="row mt-1 information1" style="display: none;">
 									<div class="col-md-12">
 										<textarea id="information1" class="form-control"
-											maxlength="255 characters"><%=macrodetailsTwo[2].toString() %></textarea>
+											maxlength="255 characters"><%=StringEscapeUtils.escapeHtml4(macrodetailsTwo[2].toString()) %></textarea>
 									</div>
 									<div class="col-md-12 mt-1 submit1" align="center">
 										<button type="submit" class="btn btn-sm btn-warning"
@@ -1998,7 +1999,7 @@ strong {
 								<div class="row mt-1 information2" style="display: none;">
 									<div class="col-md-12">
 										<textarea id="information2" class="form-control"
-											maxlength="255 characters"><%=macrodetailsTwo[3].toString() %></textarea>
+											maxlength="255 characters"><%=StringEscapeUtils.escapeHtml4(macrodetailsTwo[3].toString()) %></textarea>
 									</div>
 									<div class="col-md-12 mt-1 submit2" align="center">
 										<button type="button" class="btn btn-sm btn-warning"
@@ -2035,7 +2036,7 @@ strong {
 								<div class="row mt-1 information3" style="display: none;">
 									<div class="col-md-12">
 										<textarea id="information3" class="form-control"
-											maxlength="255 characters"><%=macrodetailsTwo[4].toString() %></textarea>
+											maxlength="255 characters"><%=StringEscapeUtils.escapeHtml4(macrodetailsTwo[4].toString()) %></textarea>
 									</div>
 									<div class="col-md-12 mt-1 submit3" align="center">
 										<button type="button" class="btn btn-sm btn-warning"
@@ -2059,7 +2060,7 @@ strong {
 										<h5 class="mt-1" id="">
 											13.Details need to be certified by Lab Director<br> </h5> 
 											<div id="LabdirectorDetails" class="center">
-												<%if(MacroDetails.length>0 && MacroDetails[16]!=null){ %><%=MacroDetails[16].toString()%>
+												<%if(MacroDetails.length>0 && MacroDetails[16]!=null){ %><%=StringEscapeUtils.escapeHtml4(MacroDetails[16].toString())%>
 											<%} %>
 											</div>
 											<textarea name="" style="display: none;"></textarea>
@@ -2161,8 +2162,8 @@ strong {
 								boolean case5=Integer.parseInt(obj[5].toString())>=monthDivision;
 								boolean case6 = Integer.parseInt(obj[5].toString())>i && Integer.parseInt(obj[6].toString())>=((i*6)+6);
 								if((case1)&&(case2||case3)){
-								%> <%="MIL -"+obj[0].toString() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-											<%}else if(case5 &&case4){%> <%="MIL -"+obj[0].toString() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								%> <%="MIL -"+obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											<%}else if(case5 &&case4){%> <%="MIL -"+obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 											<%}else if(case6){%> 
 											<% }}%>
 										</td>

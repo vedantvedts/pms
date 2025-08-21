@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -48,20 +49,22 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-	</div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -107,7 +110,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 								data-width="100%" data-live-search="true" required="required">
 									<option disabled="disabled" selected="selected" value="">Choose...</option>
 									<%for(Object[] protype:ProjectMainListNotAdded ){%>
-										<option value="<%=protype[0] %>"><%=protype[1] %></option>
+										<option value="<%=protype[0] %>"><%=protype[1]!=null?StringEscapeUtils.escapeHtml4(protype[1].toString()): " - " %></option>
 									<%} %>
 								</select>
 							</td>
@@ -165,7 +168,7 @@ function validateismaincheck()
 								<%for(Object[] protype:ProjectMainList ){
 	
 	                           %>
-								<option value="<%=protype[0] %>"><%=protype[1] %></option>
+								<option value="<%=protype[0] %>"><%=protype[1]!=null?StringEscapeUtils.escapeHtml4(protype[1].toString()): " - " %></option>
 								<%} %>
 					</select>
 </td>
@@ -215,7 +218,7 @@ function validateismaincheck()
 							<%for(Object[] protype:OfficerList ){
 	
 	                           %>
-								<option value="<%=protype[0] %>"><%=protype[2]%>, <%=protype[3].toString() %></option>
+								<option value="<%=protype[0] %>"><%=protype[2]!=null?StringEscapeUtils.escapeHtml4(protype[2].toString()): " - "%>, <%=protype[3]!=null?StringEscapeUtils.escapeHtml4(protype[3].toString()): " - " %></option>
 								<%} %>
 							</select>
 </td>
@@ -392,7 +395,7 @@ function validateismaincheck()
    <th><label style="margin-bottom: -10px;"> Category: <span class="mandatory" style="color: red;">*</span></label></th>
    <td><select required="required" id="selectbasic1" class="form-control form-control selectdee" data-width="100%" data-live-search="true" disabled="disabled" >
 			<%for (Object[] protype : ProjectTypeList) {%>
-					<option value="<%=protype[0]%>" <%if(ProjectCatSecDetalis.size()>0 && protype[0].toString().equals(ProjectCatSecDetalis.get(0)[0].toString()) ){ %> selected="selected" <%} %>><%=protype[1]%></option>
+					<option value="<%=protype[0]%>" <%if(ProjectCatSecDetalis.size()>0 && protype[0].toString().equals(ProjectCatSecDetalis.get(0)[0].toString()) ){ %> selected="selected" <%} %>><%=protype[1]!=null?StringEscapeUtils.escapeHtml4(protype[1].toString()): " - "%></option>
 			<%}%>
 		</select>
 	<input name="projectTypeID" id="projectTypeIDid" hidden="hidden" <%if(ProjectCatSecDetalis.size()>0){ %> value="<%=ProjectCatSecDetalis.get(0)[0].toString() %>" <%} %>>
@@ -401,7 +404,7 @@ function validateismaincheck()
  		<td>
 			<select required="required"  class="form-control form-control selectdee" id="selectbasic2" 	data-width="80%" disabled="disabled">
 				<%for(Object[] protype:CategoryList ){%>
-					<option value="<%=protype[0]%>" <%if(ProjectCatSecDetalis.size()>0 && protype[0].toString().equals(ProjectCatSecDetalis.get(0)[1].toString()) ){ %> selected="selected" <%} %>><%=protype[1].toString() %></option>
+					<option value="<%=protype[0]%>" <%if(ProjectCatSecDetalis.size()>0 && protype[0].toString().equals(ProjectCatSecDetalis.get(0)[1].toString()) ){ %> selected="selected" <%} %>><%=protype[1]!=null?StringEscapeUtils.escapeHtml4(protype[1].toString()): " - " %></option>
 				<%}%>
 			</select>
 			<input name="projectcategory" id="projectcategoryID" hidden="hidden" <%if(ProjectCatSecDetalis.size()>0){ %> value="<%=ProjectCatSecDetalis.get(0)[1].toString() %>" <%} %>>
@@ -413,7 +416,7 @@ function validateismaincheck()
 <td><select required="required" name="platformName" class="form-control  form-control selectdee" id="platformName" data-width="100%"	data-live-search="true" >
 <option disabled="disabled" value="" selected="selected">Choose..</option>
 <% for (Object[] protype : PlatformList) {%>
-<option value="<%=protype[0]%>"><%=protype[1]%></option>
+<option value="<%=protype[0]%>"><%=protype[1]!=null?StringEscapeUtils.escapeHtml4(protype[1].toString()): " - "%></option>
 <% } %>
 </select></td>
 </tr>

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.LocalTime"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -120,7 +121,7 @@ table {
 						<div style="margin-left: 15px;">
 									<div align="left" style="margin-top: 15px;margin-bottom: 10px;">
 										<b style="padding-left: 100px; font-size: 32px;">	
-											<%=employeedata %> &nbsp;&nbsp;  - &nbsp;&nbsp;
+											<%=employeedata!=null?StringEscapeUtils.escapeHtml4(employeedata): " - " %> &nbsp;&nbsp;  - &nbsp;&nbsp;
 											<%=sdf.format(sdf1.parse(fromdate.toString())) %>
 										</b>
 									</div>
@@ -149,7 +150,7 @@ table {
 													if (( target.isAfter( starttime ) || target.equals( starttime )  )  &&   target.isBefore( endtime ) ) 
 													{ %>	
 													
-														<%=obj[4] %> &nbsp;-&nbsp; <%=obj[1] %> &nbsp;-&nbsp; <%=target %> 	&nbsp;-&nbsp; <%=obj[6] %> 	<br>
+														<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %> &nbsp;-&nbsp; <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> &nbsp;-&nbsp; <%=target %> 	&nbsp;-&nbsp; <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%> 	<br>
 																												
 													<%}%>
 												<%} %>
@@ -169,7 +170,7 @@ table {
 						<div style="margin-left: 15px;">
 									<div align="left" style="margin-top: 15px;margin-bottom: 10px;">
 										<b style="padding-left: 100px; font-size: 32px;">	
-											<%=employeedata %> &nbsp;&nbsp;  - &nbsp;&nbsp;
+											<%=employeedata!=null?StringEscapeUtils.escapeHtml4(employeedata): " - " %> &nbsp;&nbsp;  - &nbsp;&nbsp;
 											<%=sdf.format(sdf1.parse(fromdate.toString()))%> &nbsp;to&nbsp; <%=sdf.format(sdf1.parse(todate.toString()))%>
 										</b>
 									</div>
@@ -210,7 +211,7 @@ table {
 													if (( targettime.isAfter( starttime ) || targettime.equals( starttime )  )  &&   targettime.isBefore( endtime ) && targetdate.equals(fromdate1) ) 
 													{ %>	
 													
-														<%=obj[4] %> &nbsp;-&nbsp; <%=targettime%> 	<br>
+														<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %> &nbsp;-&nbsp; <%=targettime%> 	<br>
 																												
 													<%}%>
 												<%} %>
@@ -233,7 +234,7 @@ table {
 							<div style="margin-left: 15px;">
 										<div align="left" style="margin-top: 15px;margin-bottom: 10px;">
 										<b style="padding-left: 100px; font-size: 32px;">	
-												<%=employeedata %> &nbsp;&nbsp;  - &nbsp;&nbsp;
+												<%=employeedata!=null?StringEscapeUtils.escapeHtml4(employeedata): " - " %> &nbsp;&nbsp;  - &nbsp;&nbsp;
 											<%=fromdate.getMonth() %>,&nbsp;<%=fromdate.getYear() %>
 										</b>
 									</div>
@@ -260,7 +261,7 @@ table {
 																	{ Object[] obj=employeeScheduleList.get(k);
 																		if(LocalDate.parse(obj[2].toString()).isEqual(monthdays.get(temp)))
 																		{%>
-																			<br><%=obj[4] %> &nbsp;-&nbsp;  <%=obj[3] %> 
+																			<br><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %> &nbsp;-&nbsp;  <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %> 
 																	<%	
 																		}
 																	}%>
@@ -274,7 +275,7 @@ table {
 																	{ Object[] obj=employeeScheduleList.get(k);
 																		if(LocalDate.parse(obj[2].toString()).isEqual(monthdays.get(temp)))
 																		{%>
-																			<br><%=obj[4] %> &nbsp;-&nbsp;  <%=obj[3] %> 
+																			<br><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %> &nbsp;-&nbsp;  <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %> 
 																	<%	
 																		}
 																	}%>

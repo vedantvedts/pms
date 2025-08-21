@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.util.List"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -130,7 +131,7 @@ FormatConverter fc = new FormatConverter();
 					<option value="<%=obj[0]%>"
 						<%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>
 						selected="selected" <%} %>>
-						<%=obj[4]+projectshortName%>
+						<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - "%>
 					</option>
 					<%} %>
 				</select> <input type="hidden" name="${_csrf.parameterName}"
@@ -206,9 +207,9 @@ FormatConverter fc = new FormatConverter();
 											<%} %>
 										</td> 
 										<td class="center"><%=++count %></td>
-										<td><%=level1[9]!=null?level1[9]:"-" %></td>
-										<td><%=level1[10]!=null?level1[10]:"-" %></td>
-										<td><%=level1[4]!=null?level1[4]:"-" %>, <%=level1[5]!=null?level1[5]:"-" %></td>
+										<td><%=level1[9]!=null?StringEscapeUtils.escapeHtml4(level1[9].toString()):" - "%></td>
+										<td><%=level1[10]!=null?StringEscapeUtils.escapeHtml4(level1[10].toString()):"-" %></td>
+										<td><%=level1[4]!=null?StringEscapeUtils.escapeHtml4(level1[4].toString()):"-" %>, <%=level1[5]!=null?StringEscapeUtils.escapeHtml4(level1[5].toString()):"-" %></td>
 										<td class="center"><%=level1[11]!=null?fc.sdfTordf(level1[11].toString()):"-" %></td>
 										<td class="center"><%=level1[12]!=null?fc.sdfTordf(level1[12].toString()):"-" %></td>
 						 				<td>

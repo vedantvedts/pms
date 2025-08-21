@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="org.hibernate.internal.build.AllowSysOut"%>
 <%@page import="java.time.LocalTime"%>
@@ -125,7 +126,7 @@ System.out.println("committeeid: "+committeeid);
 				<select class="form-control selectdee" id="committeeid" required="required" name="committeeid" onchange='submitForm();' >
 	   				<option disabled selected value="">Choose...</option>
 	   				<% for (Object[] obj : CommitteList) {%>
-					<option value="<%=obj[1]%>" <%if(committeeid!=null && committeeid.equals(obj[1].toString())){%>selected <%}%> ><%=obj[4]%>(<%=obj[5]%>)</option>
+					<option value="<%=obj[1]%>" <%if(committeeid!=null && committeeid.equals(obj[1].toString())){%>selected <%}%> ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>(<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%>)</option>
 					<%} %>   
 	  			</select></td></tr></table>
 	  			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
@@ -135,24 +136,22 @@ System.out.println("committeeid: "+committeeid);
 	</div>
 </div>
 
-<%String ses=(String)request.getParameter("result"); 
-String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){
-%>
-	<div align="center">
-	
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</div>
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 <%if(committeeid!=null)
@@ -170,7 +169,7 @@ if(ses1!=null){
 					 <form class="form-check-inline" action="CommitteeScheduleAddSubmit.htm" method="POST" name="myfrm" id="myfrm" > 
 					
 						<div class="col-md-3">
-							<h3><%=committeedetails[1] %></h3>
+							<h3><%=committeedetails[1]!=null?StringEscapeUtils.escapeHtml4(committeedetails[1].toString()): " - " %></h3>
 							<input type="hidden" name="committeename" value="<%=committeedetails[2] %>">
 						</div>
 						
@@ -212,8 +211,8 @@ if(ses1!=null){
 						<%if(!committeeschedulelist.isEmpty()){
 							for(Object[]obj:committeeschedulelist){
 							%>
-						 <a class="tag meetingsp" style="text-decoration: none;" href="CommitteeScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[6].toString()%>
-						&nbsp;&nbsp; Date: <%= sdf2.format(sdf3.parse(obj[3].toString())) %>
+						 <a class="tag meetingsp" style="text-decoration: none;" href="CommitteeScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%>
+						&nbsp;&nbsp; Date: <%=obj[3]!=null? sdf2.format(sdf3.parse(StringEscapeUtils.escapeHtml4(obj[3].toString()))): " - "  %>
 							</a>
 						<%}}else{ %>
 						<p class="meetingsp ml-3 mr-3"> No Meetings Listed !</p>
@@ -284,10 +283,10 @@ myEvents = [
 	 { 
 	    id: "required-id-1",
 	    name: "Meeting Details",
-	    scheduleid: "<%if(obj[0]!=null){%><%=obj[0].toString()%><%}%>",
-	    time: "<%=obj[4].toString()%>",
-	    ComCode : "<%=obj[6]%>" ,
-	    date: "<%=obj[3].toString()%>", 
+	    scheduleid: "<%if(obj[0]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[0].toString())%><%}%>",
+	    time: "<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): ""%>",
+	    ComCode : "<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): ""%>" ,
+	    date: "<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): ""%>", 
 	    url: "CommitteeScheduleView.htm",
 	    type: "event",  
 	    color: "#0383F3",

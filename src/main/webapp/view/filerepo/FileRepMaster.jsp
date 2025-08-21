@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -154,20 +155,22 @@ textarea {
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></div>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     
 
@@ -199,7 +202,7 @@ textarea {
 														<%if (ProjectId.equalsIgnoreCase(obj[0].toString())) {
 															projectDirectorId = Long.parseLong(obj[23].toString());
 														%>
-														selected="selected" <%}%>><%=obj[4] + projectshortName%>
+														selected="selected" <%}%>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " + projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%>
 													</option>
 													<%
 													}
@@ -244,7 +247,7 @@ textarea {
 									</div>
 							    
 											<!-- View Mode -->
-											<span id="span_<%=obj[0]%>"> <%=obj[3]%> 
+											<span id="span_<%=obj[0]%>"> <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> 
 											    <br/>
 											    <%if(empId!=null && empId.equals(projectDirectorId) || logintype!=null && logintype.equalsIgnoreCase("A") ){ %>
 												<i class="fa fa-pencil-square-o"
@@ -263,7 +266,7 @@ textarea {
 											<textarea name="levelname" id="input_<%=obj[0]%>"
 												maxlength="255"
 												style="display: none; width: 90px; resize: none; overflow-wrap: break-word; height: auto;"
-												rows="2"><%=obj[3]%></textarea>
+												rows="2"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): ""%></textarea>
 												
 											<div class="row">
 												<button type="button" id="btn_<%=obj[0]%>"
@@ -307,7 +310,7 @@ textarea {
 											</div>
 							                
 											<!-- View Mode -->
-											<span id="span_<%=sub[0]%>"> <%=sub[3]%>
+											<span id="span_<%=sub[0]%>"> <%=sub[3]!=null?StringEscapeUtils.escapeHtml4(sub[3].toString()): " - "%>
 											    <br/>
 											    <%if(empId!=null && empId.equals(projectDirectorId) || logintype!=null && logintype.equalsIgnoreCase("A") ){ %>
 											    <i class="fa fa-pencil-square-o"
@@ -327,7 +330,7 @@ textarea {
 											<textarea name="levelname" id="input_<%=sub[0]%>"
 												maxlength="255"
 												style="display: none; width: 90px; resize: none; overflow-wrap: break-word; height: auto;"
-												rows="2"><%=sub[3]%></textarea>
+												rows="2"><%=sub[3]!=null?StringEscapeUtils.escapeHtml4(sub[3].toString()): " - "%></textarea>
 											<div class="row">
 												<button type="button" id="btn_<%=sub[0]%>"
 													style="display: none;" class="btn btn-sm btn-success" onclick="submitLevelEdit('sublevel', '<%=sub[0]%>', '<%=parentId%>', '<%=sub[3]%>')">

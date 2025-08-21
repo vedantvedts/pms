@@ -1,4 +1,5 @@
-	<%@page import="java.text.SimpleDateFormat"%>
+	<%@page import="org.apache.commons.text.StringEscapeUtils"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.math.BigDecimal,java.util.stream.Collectors"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
@@ -61,7 +62,7 @@ text-align:justify !important;
           }
            @top-right {
           	 
-          	 content : "Project : <%=ProjectTitle %>";
+          	 content : "Project : <%=ProjectTitle!=null?StringEscapeUtils.escapeHtml4(ProjectTitle): " - "  %>";
              margin-top: 30px;
              margin-right: 10px;
           }
@@ -119,12 +120,12 @@ background:black;
 								%>
 							<tr style="">
 							<td class="border-black" style="width:5%;text-align"><h6 style="padding-top:18px;padding-bottom: 18px;"><%=++i %></h6></td>
-							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[2] %></h6></td>
-							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"> <%=obj[3] %></h6></td>
-							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[4] %></h6></td>
-							<td class="border-black" align="center"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[5] %></h6></td>
-							<td class="border-black right"  align="right"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=nfc.convert(Double.parseDouble(obj[7].toString())/10000000)%></h6></td>
-							<td class="border-black " ><h6 style="padding:18px; padding-bottom: 18px;"><%=obj[6] %></h6></td>
+							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></h6></td>
+							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"> <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></h6></td>
+							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></h6></td>
+							<td class="border-black" align="center"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></h6></td>
+							<td class="border-black right"  align="right"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=nfc.convert(Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[7].toString()))/10000000)%></h6></td>
+							<td class="border-black " ><h6 style="padding:18px; padding-bottom: 18px;"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %></h6></td>
 							</tr>
 							<%}}else{ %>
 							<tr><td class="border-black"  colspan="7" style="padding:15px;"><h4>Not Specified</h4></td></tr>
@@ -156,11 +157,11 @@ background:black;
 								%>
 							<tr style="">
 							<td class="border-black" style="width:5%;text-align"><h6 style="padding-top:18px;padding-bottom: 18px;"><%=++i %></h6></td>
-							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[2] %></h6></td>
-							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"> <%=obj[3] %></h6></td>
-							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[4] %><br><%=obj[5] %></h6></td>
-							<td class="border-black right"  align="right"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=nfc.convert(Double.parseDouble(obj[7].toString())/10000000)%></h6></td>
-								<td class="border-black" align="center"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[6] %></h6></td>
+							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></h6></td>
+							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"> <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></h6></td>
+							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %><br><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></h6></td>
+							<td class="border-black right"  align="right"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=nfc.convert(Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[7].toString()))/10000000)%></h6></td>
+								<td class="border-black" align="center"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %></h6></td>
 							</tr>
 							<%}}else{ %>
 							<tr><td class="border-black"  colspan="7"><h4 style="padding:15px;">Not Specified</h4></td></tr>
@@ -192,12 +193,12 @@ background:black;
 								%>
 							<tr style="">
 							<td class="border-black" style="width:5%;text-align"><h6 style="padding-top:18px;padding-bottom: 18px;"><%=++i %></h6></td>
-							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[2] %></h6></td>
-							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"> <%=obj[3] %></h6></td>
-							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[4] %></h6></td>
-							<td class="border-black right"  align="right"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=nfc.convert(Double.parseDouble(obj[5].toString())/10000000)%></h6></td>
-							<td class="border-black" align="center"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[6] %></h6></td>
-							<td class="border-black " ><h6 style="padding:18px; padding-bottom: 18px;"><%=obj[7] %></h6></td>
+							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></h6></td>
+							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"> <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></h6></td>
+							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></h6></td>
+							<td class="border-black right"  align="right"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=nfc.convert(Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[5].toString()))/10000000)%></h6></td>
+							<td class="border-black" align="center"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %></h6></td>
+							<td class="border-black " ><h6 style="padding:18px; padding-bottom: 18px;"><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %></h6></td>
 							</tr>
 							<%}}else{ %>
 							<tr><td class="border-black"  colspan="7" style="padding:15px;"><h4>Not Specified</h4></td></tr>
@@ -228,12 +229,12 @@ background:black;
 								%>
 							<tr style="">
 							<td class="border-black" style="width:5%;text-align"><h6 style="padding-top:18px;padding-bottom: 18px;"><%=++i %></h6></td>
-							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[2] %></h6></td>
+							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></h6></td>
 <%-- 							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"> <%=obj[3] %></h6></td> --%>
-							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[4] %></h6></td>
-							<td class="border-black right"  align="right"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=nfc.convert(Double.parseDouble(obj[5].toString())/10000000)%></h6></td>
-							<td class="border-black" align="center"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[6] %></h6></td>
-							<td class="border-black " ><h6 style="padding:18px; padding-bottom: 18px;"><%=obj[7] %></h6></td>
+							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></h6></td>
+							<td class="border-black right"  align="right"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=nfc.convert(Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[5].toString()))/10000000)%></h6></td>
+							<td class="border-black" align="center"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %></h6></td>
+							<td class="border-black " ><h6 style="padding:18px; padding-bottom: 18px;"><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %></h6></td>
 							</tr>
 							<%}}else{ %>
 							<tr><td class="border-black"  colspan="7" style="padding:15px;"><h4>Not Specified</h4></td></tr>
@@ -265,11 +266,11 @@ background:black;
 								%>
 							<tr style="">
 							<td class="border-black" style="width:5%;text-align"><h6 style="padding-top:18px;padding-bottom: 18px;"><%=++i %></h6></td>
-							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[2] %></h6></td>
-							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"> <%=obj[3] %></h6></td>
-							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[4] %><br></h6></td>
-							<td class="border-black right"  align="right"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=nfc.convert(Double.parseDouble(obj[5].toString())/10000000)%></h6></td>
-								<td class="border-black" align="center"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[6] %></h6></td>
+							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></h6></td>
+							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"> <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></h6></td>
+							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %><br></h6></td>
+							<td class="border-black right"  align="right"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=nfc.convert(Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[5].toString()))/10000000)%></h6></td>
+								<td class="border-black" align="center"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %></h6></td>
 							</tr>
 							<%}}else{ %>
 							<tr><td class="border-black"  colspan="7"><h4 style="padding:15px;">Not Specified</h4></td></tr>
@@ -300,11 +301,11 @@ background:black;
 								%>
 							<tr style="">
 							<td class="border-black" style="width:5%;text-align"><h6 style="padding-top:18px;padding-bottom: 18px;"><%=++i %></h6></td>
-							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[2] %></h6></td>
-							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"> <%=obj[3] %></h6></td>
-							<td class="border-black" align="center"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[4] %><br></h6></td>
-							<td class="border-black right"  align="center"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[5]%></h6></td>
-								<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[6] %></h6></td>
+							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></h6></td>
+							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"> <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></h6></td>
+							<td class="border-black" align="center"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %><br></h6></td>
+							<td class="border-black right"  align="center"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%></h6></td>
+								<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %></h6></td>
 							</tr>
 							<%}}else{ %>
 							<tr><td class="border-black"  colspan="7"><h4 style="padding:15px;">Not Specified</h4></td></tr>

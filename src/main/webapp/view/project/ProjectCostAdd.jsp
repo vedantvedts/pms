@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -60,24 +61,22 @@ List<Object[]> BudgetHeadList=(List<Object[]>)request.getAttribute("BudgetHeadLi
 %>
 
 
-<%
- String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){ %>
-	
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	           <%=ses1 %>
-	    </div>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
     </div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	          <%=ses %>
-		</div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
     </div>
-<%} %>
-
+<% } %>
 
 
 <div class="container-fluid">
@@ -92,7 +91,7 @@ List<Object[]> BudgetHeadList=(List<Object[]>)request.getAttribute("BudgetHeadLi
 		  				<div class="col-md-1"><h3>Cost </h3></div>
 						<div class="col-md-11" style="float: right;">
 		 					<form action="ProjectCostAddSubmit.htm" method="POST" name="myfrm3" id="myfrm3" >
-		   						<b style="color: green;">Title :&nbsp;<%=ProjectDetailes[7] %> (<%=ProjectDetailes[6] %>)&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;Fe Cost :&nbsp;&#8377; <%if(ProjectDetailes[14]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[14].toString())) %><%}else{%>0.00<%} %>&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;Re Cost  :&nbsp;&nbsp;&#8377;<%if(ProjectDetailes[15]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[15].toString())) %><%}else{ %>0.00<%} %> &nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp; Total Cost  :&nbsp;&nbsp;&#8377; <%if(ProjectDetailes[8]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[8].toString())) %><%}else{ %>0.00<%} %> 
+		   						<b style="color: green;">Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %> (<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;Fe Cost :&nbsp;&#8377; <%if(ProjectDetailes[14]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[14].toString())) %><%}else{%>0.00<%} %>&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;Re Cost  :&nbsp;&nbsp;&#8377;<%if(ProjectDetailes[15]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[15].toString())) %><%}else{ %>0.00<%} %> &nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp; Total Cost  :&nbsp;&nbsp;&#8377; <%if(ProjectDetailes[8]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[8].toString())) %><%}else{ %>0.00<%} %> 
 		   
 								<%--    || &nbsp;&nbsp;&nbsp;&nbsp;Cost Utilized:&nbsp;<%=nfc.convert(TotalIntiationCost) %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Remaining Cost :&nbsp;<%if(ProjectDetailes[8]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[8].toString())-TotalIntiationCost) %><%}else{ %><%=TotalIntiationCost %><%} %> --%>  
 								 	
@@ -118,7 +117,7 @@ List<Object[]> BudgetHeadList=(List<Object[]>)request.getAttribute("BudgetHeadLi
 										 <select class="custom-select" id="BudgetHead" required="required" name="BudgetHead">
 										    <option disabled="true"  selected value="">Choose...</option>
 										    <% for (Object[] obj : BudgetHeadList) {%>
-										<option value="<%=obj[0]%>"><%=obj[1]%></option>
+										<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
 										<%} %>
 										  </select>
 					             </div>
@@ -179,7 +178,7 @@ List<Object[]> BudgetHeadList=(List<Object[]>)request.getAttribute("BudgetHeadLi
 	    	
 	    					<tr>
 	    						<td>
-	    							<b><%=entry.getKey()%></b>
+	    							<b><%=entry.getKey()!=null?StringEscapeUtils.escapeHtml4(entry.getKey()): " - "%></b>
 	    						</td>
 	    					</tr>
 	    			    	<%Double cost=0.0;
@@ -196,7 +195,7 @@ List<Object[]> BudgetHeadList=(List<Object[]>)request.getAttribute("BudgetHeadLi
 												<% for (Object[] obj2 : BudgetItemMap.get(entry.getKey())) { 
 												if(obj2[3].toString().equalsIgnoreCase(ProjectDetailes[21].toString())){
 												%>
-												<option value="<%=obj2[0]%>" <%if((obj[3].toString().equalsIgnoreCase(obj2[1].toString()))&&(obj[6].toString().equalsIgnoreCase(obj2[2].toString())) ){ %> selected="selected" <%} %>><%=obj2[1]%> (<%=obj2[2]%>) (<%=obj2[4]%>)</option>
+												<option value="<%=obj2[0]%>" <%if((obj[3].toString().equalsIgnoreCase(obj2[1].toString()))&&(obj[6].toString().equalsIgnoreCase(obj2[2].toString())) ){ %> selected="selected" <%} %>><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - "%> (<%=obj2[2]!=null?StringEscapeUtils.escapeHtml4(obj2[2].toString()): " - "%>) (<%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "%>)</option>
 												<%} }%>
 	 							 		</select>
 	 							 	</td>
@@ -227,7 +226,7 @@ List<Object[]> BudgetHeadList=(List<Object[]>)request.getAttribute("BudgetHeadLi
 								
 	    					<tr>
 	    						<td colspan="2" align="right">
-	    							<b style="color: green;"> <%=entry.getKey() %> Cost</b>
+	    							<b style="color: green;"> <%=entry.getKey()!=null?StringEscapeUtils.escapeHtml4(entry.getKey()): " - " %> Cost</b>
 	    						</td>
 	    						<td  align="right">
 	    							<b style="color: green; text-align: right;">&#8377; <%=nfc.convert(cost) %></b>

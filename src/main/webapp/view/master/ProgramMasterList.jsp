@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.master.model.Employee"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.util.List"%>
@@ -16,21 +17,22 @@
 		List<Object[]> directorsList = (List<Object[]>) request.getAttribute("directorsList");
 	%>
 	
-	<% String ses = (String) request.getParameter("result"); 
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-        <div align="center">
-            <div class="alert alert-danger" role="alert">
-                <%= ses1 %>
-            </div>
-        </div>
-    <% } if (ses != null) { %>
-        <div align="center">
-            <div class="alert alert-success" role="alert">
-                <%= ses %>
-            </div>
-        </div>
-    <% } %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
     
 	<div class="container-fluid">
 			<div class="card shadow-nohover">
@@ -61,10 +63,10 @@
 									<%
 									for(Object[] obj : programeMasterList ){ %>
 										<tr>
-											<td class="text-center"><input type="radio" id="ProgrammeId" name="ProgrammeId" value=<%=obj[0] %> /></td>
-											<td><%=obj[1] %></td>
-											<td><%=obj[2] %></td>
-											<td><%=obj[5] %>, <%=obj[6] %></td>
+											<td class="text-center"><input type="radio" id="ProgrammeId" name="ProgrammeId" value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):"" %> /></td>
+											<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-" %></td>
+											<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %></td>
+											<td><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %>, <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"-" %></td>
 											<td class="text-center"><%=obj[4]!=null?fc.sdfTordf(obj[4].toString()):"-" %></td>
 										</tr>	
 									<%}%>

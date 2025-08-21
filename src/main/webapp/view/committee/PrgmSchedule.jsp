@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.committee.model.ProgrammeMaster"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="org.hibernate.internal.build.AllowSysOut"%>
@@ -110,24 +111,22 @@ background: blue;
 		FormatConverter fc=new FormatConverter(); 
 	%>
 
-	<%String ses=(String)request.getParameter("result"); 
-	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-	
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</div>
-	<%} %>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 	<div class="container-fluid">
@@ -148,7 +147,7 @@ background: blue;
 	   											<option disabled selected value="">Choose...</option>
 	   											<% for (ProgrammeMaster prgm : programmeList) {%>
 													<option value="<%=prgm.getProgrammeId()%>" <%if(programmeId!=null && prgm.getProgrammeId()==Long.parseLong(programmeId)){ %>selected <%}%> >
-														<%=prgm.getPrgmName() %> (<%=prgm.getPrgmCode() %>)
+														<%=prgm.getPrgmName()!=null?StringEscapeUtils.escapeHtml4(prgm.getPrgmName()): " - " %> (<%=prgm.getPrgmCode()!=null?StringEscapeUtils.escapeHtml4(prgm.getPrgmCode()): " - " %>)
 													</option>
 												<%} %>   
 	  										</select>
@@ -201,7 +200,7 @@ background: blue;
 								<%if(!committeeschedulelist.isEmpty()){
 									for(Object[]obj:committeeschedulelist){ %>
 				 						<a class="tag meetingsp" style="text-decoration: none;" href="CommitteeScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[6].toString()%>
-											&nbsp;&nbsp; Date: <%=fc.SqlToRegularDate(obj[3].toString()) %>
+											&nbsp;&nbsp; Date: <%=obj[3]!=null?fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(obj[3].toString())):" - " %>
 										</a>
 								<%}}else{ %>
 									<p class="meetingsp ml-3 mr-3"> No Meetings Listed !</p>

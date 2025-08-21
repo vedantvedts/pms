@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.time.LocalDate"%>
@@ -60,7 +61,7 @@ String toDate = today.toString();
                                                     for (Object[] obj : ProjectsList) {
                                                         String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";			 
                                                 %>
-                                                    <option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectid)){ %>selected<%} %> ><%=obj[4]+projectshortName%></option>
+                                                    <option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectid)){ %>selected<%} %> ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - "%></option>
                                                 <%}} %>
                                              <option value="0" <%if("0".equals(projectid)){ %>selected<%} %>>General</option>
                                             </select>
@@ -131,14 +132,14 @@ String toDate = today.toString();
 																		
 																		 <td>
 																			<form action="CommitteeMinutesViewAll.htm" >
-																				<button  type="submit" class="btn btn-outline-info" formtarget="_blank" > <%=obj[1]%></button>
+																				<button  type="submit" class="btn btn-outline-info" formtarget="_blank" > <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%></button>
 																				<input type="hidden" name="committeescheduleid" value="<%=obj[0] %>" />
 																			</form> 
 																		</td>
-																		<td><%=sdf.format(obj[2])%> - <%=obj[3]%></td>																		
-																		<td><%=obj[5]%></td>
-																	  	<td><%if(obj[4]!=null){%><%=obj[4]%><%}else{ %>-<%} %></td>
-																	  	<td><%if(obj[6]!=null){%><%=obj[6]%><%}else{%>-<%} %></td>
+																		<td><%=obj[2]!=null?sdf.format(obj[2]):" - "%> - <%=obj[3]%></td>																		
+																		<td><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):" - "%></td>
+																	  	<td><%if(obj[4]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString())%><%}else{ %>-<%} %></td>
+																	  	<td><%if(obj[6]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[6].toString())%><%}else{%>-<%} %></td>
 																	  	<td>
 																	  	
 																	  	<form method="GET">

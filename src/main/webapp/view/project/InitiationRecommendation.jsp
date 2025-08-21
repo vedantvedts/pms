@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.master.model.IndustryPartner"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -82,7 +83,7 @@ List<Object[]>employeelist = (List<Object[]>)request.getAttribute("employeelist"
 					<div class="card-header">
 					<h4 style="color:#055C9D" >
 						
-							Approval Flow for Project <%=initiationdata[6].toString() %>
+							Approval Flow for Project <%=initiationdata[6]!=null?StringEscapeUtils.escapeHtml4(initiationdata[6].toString()): " - " %>
 							</h4>
 					</div>
 						<div class="card-body">	
@@ -103,7 +104,7 @@ List<Object[]>employeelist = (List<Object[]>)request.getAttribute("employeelist"
 					
 					<tr>
 					<td class="text-primary"> Initiated By -</td>
-					<td colspan="3"> <%if(ApprovalData!=null && ApprovalData[17]!=null){%><%=ApprovalData[17].toString() %>, <%=ApprovalData[18].toString()%><%} %></td>
+					<td colspan="3"> <%if(ApprovalData!=null && ApprovalData[17]!=null){%><%=StringEscapeUtils.escapeHtml4(ApprovalData[17].toString()) %>, <%=ApprovalData[18]!=null?StringEscapeUtils.escapeHtml4(ApprovalData[18].toString()): " - "%><%} %></td>
 					</tr>
 					
 					<tr>
@@ -113,7 +114,7 @@ List<Object[]>employeelist = (List<Object[]>)request.getAttribute("employeelist"
 					for(Object[] obj:employeelist){
 					if(obj[0].toString().equalsIgnoreCase(ApprovalData[6].toString())){
 					%>
-					<%=obj[1].toString() %>, <%=ApprovalData[7].toString() %> 
+					<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>, <%=ApprovalData[7]!=null?StringEscapeUtils.escapeHtml4(ApprovalData[7].toString()): " - " %> 
 					<%}}} %>
 					</td>
 					</tr>
@@ -126,7 +127,7 @@ List<Object[]>employeelist = (List<Object[]>)request.getAttribute("employeelist"
 					<%for(Object[] obj:employeelist){
 					if(obj[0].toString().equalsIgnoreCase(ApprovalData[8].toString())){
 					%>
-					<%=obj[1].toString() %>, <%=ApprovalData[9].toString() %> 
+					<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>, <%=ApprovalData[9].toString()!=null?StringEscapeUtils.escapeHtml4(ApprovalData[9].toString()): " - " %> 
 					<%}} %>
 					</td>
 					</tr>
@@ -141,7 +142,7 @@ List<Object[]>employeelist = (List<Object[]>)request.getAttribute("employeelist"
 					<%for(Object[] obj:employeelist){
 					if(obj[0].toString().equalsIgnoreCase(ApprovalData[10].toString())){
 					%>
-					<%=obj[1].toString() %>, <%=ApprovalData[11].toString() %> 
+					<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>, <%=ApprovalData[11].toString()!=null?StringEscapeUtils.escapeHtml4(ApprovalData[11].toString()): " - " %> 
 					<%}} %>
 					</td>
 					</tr>
@@ -155,7 +156,7 @@ List<Object[]>employeelist = (List<Object[]>)request.getAttribute("employeelist"
 					<%for(Object[] obj:employeelist){
 					if(obj[0].toString().equalsIgnoreCase(ApprovalData[12].toString())){
 					%>
-					<%=obj[1].toString() %>, <%=ApprovalData[13].toString() %> 
+					<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=ApprovalData[13].toString()!=null?StringEscapeUtils.escapeHtml4(ApprovalData[13].toString()): " - " %> 
 					<%}} %>
 					</td>
 					</tr>
@@ -218,7 +219,7 @@ List<Object[]>employeelist = (List<Object[]>)request.getAttribute("employeelist"
 				                		<%} %><br>
 				                			Initiated By (PDD)
 				                			<br>
-				                			<%=NewApprovalList[0].toString() %>
+				                			<%=NewApprovalList[0]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[0].toString()): " - " %>
 				                		</td>
 				                		<%if(NewApprovalList!=null && NewApprovalList[2]!=null){ %>
 				                		<td rowspan="2">
@@ -232,7 +233,7 @@ List<Object[]>employeelist = (List<Object[]>)request.getAttribute("employeelist"
 				                			Recommended Officer 1
 				                		
 				                			<br>
-				                			<%=NewApprovalList[1].toString() %>
+				                			<%=NewApprovalList[1]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[1].toString()): " - "  %>
 				                		</td>
 				                		
 				                		<%} %>
@@ -249,7 +250,7 @@ List<Object[]>employeelist = (List<Object[]>)request.getAttribute("employeelist"
 				                		Recommended Officer 2
 				                	
 				                		<br>
-				                			<%=NewApprovalList[3].toString() %>
+				                			<%=NewApprovalList[3]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[3].toString()): " - "  %>
 				                		</td>
 				                		<%} %>
 				                		<%if(NewApprovalList!=null && NewApprovalList[6]!=null){ %>
@@ -265,7 +266,7 @@ List<Object[]>employeelist = (List<Object[]>)request.getAttribute("employeelist"
 				                			Recommended Officer 3
 				                		
 				                			<br>
-				                			<%=NewApprovalList[5].toString() %>
+				                			<%=NewApprovalList[5]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[5].toString()): " - " %>
 				                		</td>
 				                		<%} %>
 				                		<%if(NewApprovalList!=null && NewApprovalList[8]!=null){ %>
@@ -276,7 +277,7 @@ List<Object[]>employeelist = (List<Object[]>)request.getAttribute("employeelist"
 				                		<td class="trup" style="background: #F4A261;" >
 				                			Approving Officer
 				                			<br>
-				                			<%=NewApprovalList[7].toString() %>
+				                			<%=NewApprovalList[7]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[7].toString()): " - "  %>
 				                		</td>
 				                		<%} %>
 				                			                		

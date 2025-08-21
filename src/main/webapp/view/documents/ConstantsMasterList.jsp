@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.documents.model.IGIConstants"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -18,21 +19,22 @@
 	<%
 	List<IGIConstants> constantsMasterList = (List<IGIConstants>) request.getAttribute("constantsMasterList");
 	%>
-	<% String ses = (String) request.getParameter("result"); 
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-        <div align="center">
-            <div class="alert alert-danger" role="alert">
-                <%= ses1 %>
-            </div>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
         </div>
-    <% } if (ses != null) { %>
-        <div align="center">
-            <div class="alert alert-success" role="alert">
-                <%= ses %>
-            </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
         </div>
-    <% } %>
+    </div>
+<% } %>
     
 	<div class="container-fluid">
 		<div class="col-md-12">
@@ -70,9 +72,9 @@
 											<input type="hidden" id="constantName_<%=con.getConstantId()%>" value="<%=con.getConstantName()%>"> 
 											<input type="hidden" id="constantValue_<%=con.getConstantId()%>" value="<%=con.getConstantValue()%>"> 
 										</td>
-										<td><%=con.getGroupName()%></td>
-										<td><%=con.getConstantName()%></td>
-										<td class="center"><%=con.getConstantValue()%></td>
+										<td><%=con.getGroupName()!=null?StringEscapeUtils.escapeHtml4(con.getGroupName()): " - "%></td>
+										<td><%=con.getConstantName()!=null?StringEscapeUtils.escapeHtml4(con.getConstantName()): " - "%></td>
+										<td class="center"><%=con.getConstantValue()!=null?StringEscapeUtils.escapeHtml4(con.getConstantValue()): " - "%></td>
 									</tr>
 									<% } %>
 								</tbody>

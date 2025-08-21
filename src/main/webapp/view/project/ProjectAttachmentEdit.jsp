@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -46,19 +47,22 @@ String FileName=(String) request.getAttribute("FileName");
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%><center>
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -84,7 +88,7 @@ String FileName=(String) request.getAttribute("FileName");
          <div class="col-md-4 ">
                <div class="form-group">
                             <label class="control-label">File Name</label>
-  <input type="text" class="form-control" required="required" aria-describedby="inputGroup-sizing-sm" id="FileName" name="FileName" value="<%=FileName %>" >
+  <input type="text" class="form-control" required="required" aria-describedby="inputGroup-sizing-sm" id="FileName" name="FileName" value="<%=FileName!=null?StringEscapeUtils.escapeHtml4(FileName): "" %>" >
 
                         </div>
                         

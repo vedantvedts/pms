@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -19,32 +20,28 @@ String filesize=  (String)request.getAttribute("filesize");
 %>
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	
-	
-	<div align="center">
-	
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-            </div>
-            
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
     </div>
-    
-<%} %>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
                     
 	<div class="container-fluid">
 		<div class="card">
 			<div class="card-header">
 				<div class="row">
-					<div class="col-6"><h4><%=projectdata[1] %></h4></div>
+					<div class="col-6"><h4><%=projectdata[1]!=null?StringEscapeUtils.escapeHtml4(projectdata[1].toString()): " - " %></h4></div>
 					<div class="col-6"><a class="btn btn-sm back" href="ProjectList.htm" style="float: right;">BACK</a></div>
 				</div>
 			</div>	
@@ -68,7 +65,7 @@ String filesize=  (String)request.getAttribute("filesize");
 									<tr class="tr_clone">
 									<td align="center"><%=count%></td>
 										<td style="width:70% ;" >
-											<%=attach[1] %>
+											<%=attach[1]!=null?StringEscapeUtils.escapeHtml4(attach[1].toString()): " - " %>
 										</td>	
 										<td style="width:20% ; ">
 										<div class="row" style="margin-right: 0px !important;">

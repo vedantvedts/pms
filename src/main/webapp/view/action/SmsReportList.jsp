@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.List"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -21,23 +22,22 @@
 		Date todate=dateFormat.parse(toDt);
 		List<Object[]> SmsReportList=(List<Object[]>)request.getAttribute("SmsReportList");
 		%>
-		<%
-		String ses=(String)request.getParameter("result"); 
- 		String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-		%>
-		<div align="center">
-			<div class="alert alert-danger" role="alert">
-	    		<%=ses1 %>
-	    	</div>
-    	</div>
-		<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-        		<%=ses %>
-        	</div>
-    	</div>
-    	<%} %>
+		<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 		
 		</div>
 		
@@ -52,7 +52,7 @@
           <input type="hidden" name="tdate" value="<%=toDt%>">
           <span><b>PMS Action Report (SMS) </b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <button type="submit" style="margin-top: -10px;" formaction="PMSSmsReportListExcel.htm" formmethod="post" class="btn btn-sm icon-btn SmsExcelDownload" ><img alt="Excel" src="view/images/ExcelSheet.jpg"></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-          <span><b>SMS Action Report Excel List ( <%=sdf.format(fromdate)+" to "+sdf.format(todate) %> )</b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <span><b>SMS Action Report Excel List ( <%=fromdate!=null?sdf.format(fromdate):" - "+" to "+todate!=null?sdf.format(todate):" - " %> )</b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <button type="submit" style="margin-top: -10px;" formaction="SmsActionReportExcel.htm" formmethod="post" class="btn btn-sm icon-btn SmsExcelDownload" ><img alt="Excel" src="view/images/ExcelSheet.jpg"></button>&nbsp;&nbsp;&nbsp; 
               <label for="fromdate" style="text-align:  center;font-size: 16px;width:50px; ">From	</label>&nbsp;&nbsp;
               <input type="text" style="width:120px; margin-top: -10px; " class="form-control input-sm mydate" readonly="readonly" value="" id="fromdate" name="FromDate" required="required"> 
@@ -92,17 +92,17 @@
 							%>
 								<tr>
 									<td style="width:10px; text-align: center;"><%=count%></td>
-                                     <td class="wrap" style="text-align: left; width:200px;"><%if(obj[0]!=null && obj[1]!=null){ %><%=obj[0].toString().trim()+", "+obj[1].toString() %><%}else{ %>-<%} %></td>
-                                    <td class="wrap" style="text-align: center; width:80px;"><%if(obj[11]!=null){ %><%=obj[11].toString() %><%}else{ %>-<%} %></td>
-									<td class="wrap" style="text-align: center; width:50px;" ><%if(obj[2]!=null){ %><%=obj[2].toString() %><%}else{ %>-<%} %></td>
-									<td  class="wrap" style="text-align: center; width:50px;"><%if(obj[3]!=null){ %><%=obj[3].toString() %><%}else{ %>-<%} %></td> 
-									<td  class="wrap" style="text-align: center; width:50px;"><%if(obj[4]!=null){ %><%=obj[4].toString()%><%}else{%>-<%} %></td> 
-									<td  class="wrap" style="text-align: center; width:50px;"><%if(obj[5]!=null){ %><%=obj[5].toString()%><%}else{%>-<%} %></td>
-									<td  class="wrap" style="text-align: center; width:50px;"><%if(obj[6]!=null){ %><%=obj[6].toString()%><%}else{%>-<%} %></td>
-									<td  class="wrap" style="text-align: center; width:50px;"><%if(obj[7]!=null){ %><%=obj[7].toString()%><%}else{%>-<%} %></td>
-									<td  class="wrap" style="text-align: center; width:50px;"><%if(obj[8]!=null){ %><%=obj[8].toString()%><%}else{%>-<%} %></td>
-									<td  class="wrap" style="text-align: center; width:50px;"><%if(obj[9]!=null){ %><%=obj[9].toString()%><%}else{%>-<%} %></td>
-									<td  class="wrap" style="text-align: center; width:50px;"><%if(obj[10]!=null){ %><%=obj[10].toString()%><%}else{%>-<%} %></td>
+                                     <td class="wrap" style="text-align: left; width:200px;"><%if(obj[0]!=null && obj[1]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[0].toString()).trim()+", "+StringEscapeUtils.escapeHtml4(obj[1].toString()) %><%}else{ %>-<%} %></td>
+                                    <td class="wrap" style="text-align: center; width:80px;"><%if(obj[11]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[11].toString())%><%}else{ %>-<%} %></td>
+									<td class="wrap" style="text-align: center; width:50px;" ><%if(obj[2]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%}else{ %>-<%} %></td>
+									<td  class="wrap" style="text-align: center; width:50px;"><%if(obj[3]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %><%}else{ %>-<%} %></td> 
+									<td  class="wrap" style="text-align: center; width:50px;"><%if(obj[4]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[4].toString())%><%}else{%>-<%} %></td> 
+									<td  class="wrap" style="text-align: center; width:50px;"><%if(obj[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[5].toString())%><%}else{%>-<%} %></td>
+									<td  class="wrap" style="text-align: center; width:50px;"><%if(obj[6]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[6].toString())%><%}else{%>-<%} %></td>
+									<td  class="wrap" style="text-align: center; width:50px;"><%if(obj[7]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[7].toString())%><%}else{%>-<%} %></td>
+									<td  class="wrap" style="text-align: center; width:50px;"><%if(obj[8]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[8].toString())%><%}else{%>-<%} %></td>
+									<td  class="wrap" style="text-align: center; width:50px;"><%if(obj[9]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[9].toString())%><%}else{%>-<%} %></td>
+									<td  class="wrap" style="text-align: center; width:50px;"><%if(obj[10]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[10].toString())%><%}else{%>-<%} %></td>
 									</tr>
 									<%
 									count++;}}}

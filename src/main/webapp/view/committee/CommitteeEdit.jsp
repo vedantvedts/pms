@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
     <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -44,21 +45,22 @@ Object[] committeedetails=(Object[])request.getAttribute("committeedetails");
 String projectid=committeedetails[12].toString();
 Object[] projectdetails=(Object[])request.getAttribute("projectdetails"); 
 %>
-<%
-String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br />
     
@@ -74,7 +76,7 @@ String ses=(String)request.getParameter("result");
 							</div>
 							<div class="col-md-6">
 								<%if(Long.parseLong(projectid)>0){ %>
-								<div align="right"><b class="text-white"  >Project : <%=projectdetails[4] %></b></div>
+								<div align="right"><b class="text-white"  >Project : <%=projectdetails[4]!=null?StringEscapeUtils.escapeHtml4(projectdetails[4].toString()): " - " %></b></div>
 								<%} %>
 							</div>
 						</div>
@@ -87,7 +89,7 @@ String ses=(String)request.getParameter("result");
 								<div class="col-md-4">
 									<div class="form-group">
 										<label class="control-label">Committee Code</label>
-										<input class="form-control" type="text" name="committeeshortname" required value="<%=committeedetails[1]%>" maxlength="20">
+										<input class="form-control" type="text" name="committeeshortname" required value="<%=committeedetails[1]!=null?StringEscapeUtils.escapeHtml4(committeedetails[1].toString()): ""%>" maxlength="20">
 									</div>
 								</div>
 							
@@ -95,7 +97,7 @@ String ses=(String)request.getParameter("result");
 								<div class="col-md-4">
 									<div class="form-group">
 										<label class="control-label">Committee Name</label>
-										<input class="form-control" type="text" name="committeename" required value="<%=committeedetails[2]%>" maxlength="255">
+										<input class="form-control" type="text" name="committeename" required value="<%=committeedetails[2]!=null?StringEscapeUtils.escapeHtml4(committeedetails[2].toString()): ""%>" maxlength="255">
 									</div>
 								</div>
 
@@ -159,7 +161,7 @@ String ses=(String)request.getParameter("result");
 							<div class="col-md-3" <%if(!committeedetails[7].toString().equalsIgnoreCase("P")){ %> style="display: none" <%} %> id="periodicduration">
 								<div class="form-group">
 									<label class="control-label">Periodic Duration (Days)</label>
-									<input class="form-control numeric-only" type="number" id="periodicdurationfield" name="periodicduration" required min="1" placeholder="Days" <%if(committeedetails[7].toString().equalsIgnoreCase("P")){ %> value="<%=committeedetails[8]%>" <%} %>>
+									<input class="form-control numeric-only" type="number" id="periodicdurationfield" name="periodicduration" required min="1" placeholder="Days" <%if(committeedetails[7].toString().equalsIgnoreCase("P")){ %> value="<%=committeedetails[8]!=null?StringEscapeUtils.escapeHtml4(committeedetails[8].toString()): ""%>" <%} %>>
 								</div>
 							</div>
 							
@@ -183,7 +185,7 @@ String ses=(String)request.getParameter("result");
 								
 								<div class="form-group">
 									<label class="control-label">Guidelines</label>
-									<input class="form-control" type="text" name="guidelines" required value="<%if(committeedetails[6]!=null){ %><%=committeedetails[6]%><%} %>" maxlength="255">
+									<input class="form-control" type="text" name="guidelines" required value="<%if(committeedetails[6]!=null){ %><%=StringEscapeUtils.escapeHtml4(committeedetails[6].toString())%><%} %>" maxlength="255">
 									
 								</div>
 
@@ -197,7 +199,7 @@ String ses=(String)request.getParameter("result");
 									<%-- <textarea class="form-control"  name="description" required placeholder="Enter Description" rows="5" cols="50" maxlength="1000"><%if(committeedetails[10]!=null){ %><%=committeedetails[10]%><%} %></textarea> --%>
 								
 									<div id="Editordescription" class="center">
-									<%if(committeedetails[10]!=null){ %><%=committeedetails[10]%><%} %>
+									<%if(committeedetails[10]!=null){ %><%=StringEscapeUtils.escapeHtml4(committeedetails[10].toString())%><%} %>
 															<textarea name="description"  id="description" ></textarea>
 														</div>
 								
@@ -211,7 +213,7 @@ String ses=(String)request.getParameter("result");
 										<%-- 									<textarea class="form-control"  name="TOR" required placeholder="Enter Terms Of Reference" rows="5" cols="50" maxlength="1000"><%if(committeedetails[11]!=null){ %><%=committeedetails[11]%><%} %></textarea>
  --%>
 										<div id="EditorReference" class="center">
-										<%if(committeedetails[11]!=null){ %><%=committeedetails[11]%><%} %>
+										<%if(committeedetails[11]!=null){ %><%=StringEscapeUtils.escapeHtml4(committeedetails[11].toString())%><%} %>
 											<textarea name="TOR" id="TOR"></textarea>
 										</div>
 

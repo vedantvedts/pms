@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.documents.model.IGIDocumentIntroduction"%>
 <%@page import="java.util.List"%>
@@ -292,21 +293,22 @@ div {
 	IGIDocumentIntroduction igiIntroduction = igiDocumentIntroductionList.stream().filter(e -> e.getIntroductionId()==Long.parseLong(introductionId)).findFirst().orElse(null);
 %>
 
-	<% String ses = (String) request.getParameter("result"); 
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-        <div align="center">
-            <div class="alert alert-danger" role="alert">
-                <%= ses1 %>
-            </div>
-        </div>
-    <% } if (ses != null) { %>
-        <div align="center">
-            <div class="alert alert-success" role="alert">
-                <%= ses %>
-            </div>
-        </div>
-    <% } %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
     
     <div class="container-fluid">
        
@@ -315,7 +317,7 @@ div {
             	<div class="row">
                		<div class="col-md-9" align="left">
 	                    <h5 id="text" style="margin-left: 1%; font-weight: 600">
-	                      Introduction Details - <%=documentNo %>
+	                      Introduction Details - <%=documentNo!=null?StringEscapeUtils.escapeHtml4(documentNo): " - " %>
 	                    </h5>
                 	</div>
                 	<div class="col-md-2"  align="right">
@@ -376,7 +378,7 @@ div {
 															<div style="display: flex; align-items: center; gap: 10px;">
 																<span style="font-size:14px"><%=Sub0Count %>. </span>
 																<span  style="font-size:14px" id="span_<%=intro.getIntroductionId()%>"> 
-																	<%=intro.getChapterName() %> 
+																	<%=intro.getChapterName()!=null?StringEscapeUtils.escapeHtml4(intro.getChapterName()): " - " %> 
 																	&emsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=intro.getIntroductionId() %>')"></i> 
 																</span>	
 												          		<input type="text" class="hiddeninput" name="chapterName" pattern="^(?!\s)[\w\W]*?(?<!\s)$" title="Spaces allowed between characters but not at the start or end." maxlength="255" id="input_<%=intro.getIntroductionId()%>" value="<%=intro.getChapterName() %>" style="display: none;width: 350px;height: 25px;" required="required">
@@ -389,7 +391,7 @@ div {
 															<input type="hidden" name="docType" value="<%=docType%>">
 															<input type="hidden" name="documentNo" value="<%=documentNo%>">
 												          	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-											          		<textarea id="chapterContentEdit<%=intro.getIntroductionId()%>" style="display: none;"><%=intro.getChapterContent()!=null?intro.getChapterContent():""%></textarea>
+											          		<textarea id="chapterContentEdit<%=intro.getIntroductionId()%>" style="display: none;"><%=intro.getChapterContent()!=null?StringEscapeUtils.escapeHtml4(intro.getChapterContent()):""%></textarea>
 											          	</form>
 										       		</div>
 										        </h4>
@@ -430,14 +432,14 @@ div {
 																			<div style="display: flex; align-items: center; gap: 10px;">
 																				<span style="font-size:14px"><%=Sub0Count %>.<%=Sub1Count %>. </span>
 																				<span  style="font-size:14px" id="span_<%=intro1.getIntroductionId()%>"> 
-																					<%=intro1.getChapterName() %> 
+																					<%=intro1.getChapterName()!=null?StringEscapeUtils.escapeHtml4(intro1.getChapterName()): " - " %> 
 																					&emsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=intro1.getIntroductionId() %>')"></i> 
 																				</span>	
 																          		<input type="text" class="hiddeninput" name="chapterName" pattern="^(?!\s)[\w\W]*?(?<!\s)$" title="Spaces allowed between characters but not at the start or end." maxlength="255" id="input_<%=intro1.getIntroductionId()%>" value="<%=intro1.getChapterName() %>" style="display: none;width: 350px;height: 25px;" required="required">
 																          		<button type="submit" class="btn btn-sm edit" id="btn_<%=intro1.getIntroductionId()%>" onclick="return confirm('Are you sure to Edit?')" style="width: 42px;height: 25px;font-size: 10px;font-weight: bold;display: none;">Edit</button>
 																				<button type="button" class="btnx" style="color: red;display: none;" id="btnx_<%=intro1.getIntroductionId() %>" onclick="moduleeditdisable('<%=intro1.getIntroductionId()%>')"><i class="fa fa-times fa-lg " aria-hidden="true"  ></i></button>
 																			</div>
-																			<textarea id="chapterContentEdit<%=intro1.getIntroductionId()%>" style="display: none;"><%=intro1.getChapterContent()!=null?intro1.getChapterContent():""%></textarea>
+																			<textarea id="chapterContentEdit<%=intro1.getIntroductionId()%>" style="display: none;"><%=intro1.getChapterContent()!=null?StringEscapeUtils.escapeHtml4(intro1.getChapterContent()):""%></textarea>
 						          		
 						          										</form>
 					       											</div>
@@ -538,7 +540,7 @@ div {
         					<div class="card mt-3">
         						<div class="card-body">
         							<form action="IGIIntroductionDetailsSubmit.htm" method="POST" id="myform">
-        								<span class="btn edit" id="editorHeading" style="border-radius: 1rem;"><%=igiIntroduction!=null && igiIntroduction.getChapterName()!=null?igiIntroduction.getChapterName():"-" %></span>
+        								<span class="btn edit" id="editorHeading" style="border-radius: 1rem;"><%=igiIntroduction!=null && igiIntroduction.getChapterName()!=null?StringEscapeUtils.escapeHtml4(igiIntroduction.getChapterName()):"-" %></span>
 										<div id="introductionEditor" class="center"></div>
 										<textarea id="chapterContent" name="chapterContent" style="display: none;"></textarea>
 										<div class="mt-2" align="center" id="detailsSubmit">
@@ -653,7 +655,7 @@ var summernoteConfig = {
 $('#introductionEditor').summernote(summernoteConfig);
 
 //Update the values of Editors
-var html1 = '<%=igiIntroduction!=null && igiIntroduction.getChapterContent()!=null?igiIntroduction.getChapterContent().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):""%>';
+var html1 = '<%=igiIntroduction!=null && igiIntroduction.getChapterContent()!=null?StringEscapeUtils.escapeHtml4(igiIntroduction.getChapterContent()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):""%>';
 $('#introductionEditor').summernote('code', html1);
 
 //Set the values to the form when submitting.

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -104,7 +105,7 @@ tr.custom-GrandTotal-row{
 						<div class="row">
 						 <div class="float-container">
 						  <div id="label1" style="width: 100%;float: left;text-align: left"> 
-						 <b><font size="4" >Cash Out Go Details Of Project :<%=ProjectCode %>, Budget Head : <%=BudgetHead %>, Financial Year : <%=FinYear %>(In <%=DigitType %>)</font></b>  
+						 <b><font size="4" >Cash Out Go Details Of Project :<%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %>, Budget Head : <%=BudgetHead!=null?StringEscapeUtils.escapeHtml4(BudgetHead): " - " %>, Financial Year : <%=FinYear!=null?StringEscapeUtils.escapeHtml4(FinYear): " - " %>(In <%=DigitType!=null?StringEscapeUtils.escapeHtml4(DigitType): " - " %>)</font></b>  
 						  </div>
 						   <div class="label2" style="float: left;text-align: right">
 						   
@@ -164,7 +165,7 @@ tr.custom-GrandTotal-row{
 		       %>
 	<!-- ----------------------------SubHead----------------------------------------------- -->	       
 		       <tr class="custom-Heading-row">  
-						<td align="center" colspan="7"><font size="3"><b>Cash Out Go Of <%=qType %></b></font></td>
+						<td align="center" colspan="7"><font size="3"><b>Cash Out Go Of <%=qType!=null?StringEscapeUtils.escapeHtml4(qType): " - " %></b></font></td>
 				</tr>
 				<%
             /***2nd loop starts************/
@@ -177,18 +178,18 @@ tr.custom-GrandTotal-row{
 	<!-- ----------------------------Values----------------------------------------------- -->	
 	              <tr>  
 						<td style="text-align:center"><%=count %></td>
-						<td style="text-align:left" ><%=obj[2]%></td>
-						<td style="text-align:left"><%= obj[3]%></td>
-						<td style="text-align:left"><%= obj[4]%></td>
+						<td style="text-align:left" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></td>
+						<td style="text-align:left"><%= obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>
+						<td style="text-align:left"><%= obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%></td>
 						<td style="text-align:right"><%= df.format(new BigDecimal(obj[5].toString()))%></td><!--Pay Amount -->
-						<td style="text-align:center"><%if(obj[6]!=null) {%><%=sdf.format(obj[6])%><%} %></td><!--Pay Date -->
+						<td style="text-align:center"><%if(obj[6]!=null) {%><%=sdf.format(obj[6])%><%} else { %> - <%}%> </td><!--Pay Date -->
 				</tr>		       				
 					
 		  <% /***2nd loop ends************/} %>
 		  <!-- ----------------------------Total----------------------------------------------- -->	
 		  	   <tr class="custom-Total-row">  
-						<td colspan="4" ><font size="3"><b>Total Amount OF <%=qType %>:</b></font></td>
-						<td style="text-align:right"><b><%= df.format(totalpayAmount)%></b></td>
+						<td colspan="4" ><font size="3"><b>Total Amount OF <%=qType!=null?StringEscapeUtils.escapeHtml4(qType): " - " %>:</b></font></td>
+						<td style="text-align:right"><b><%=totalpayAmount!=null?df.format(totalpayAmount) : " - " %></b></td>
 						<td ></td>
 					</tr>
 		  
@@ -199,7 +200,7 @@ tr.custom-GrandTotal-row{
             <!-- ----------------------------Grand Total----------------------------------------------- -->	
             <tr class="custom-GrandTotal-row">  
 						<td colspan="4" ><font size="3"><b>Grand Total Amount :</b></font></td>
-						<td align="right"><%= df.format(grandPayAmount)%></td>
+						<td align="right"><%=grandPayAmount!=null? df.format(grandPayAmount):" - "%></td>
 						<td ></td>
 					</tr>
 		       </tbody>
@@ -221,7 +222,7 @@ tr.custom-GrandTotal-row{
         <div class="card-body">
        <div class="table-responsive" >
        
-      <div class="row text-center"><b><font face="Maiandra " size="5" color="#800000">Expenditure Details Of Project : <%=obj[0]%>(In <%=DigitType %>)</font></b></div>
+      <div class="row text-center"><b><font face="Maiandra " size="5" color="#800000">Expenditure Details Of Project : <%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%>(In <%=DigitType!=null?StringEscapeUtils.escapeHtml4(DigitType): " - " %>)</font></b></div>
 			  <table class="table table-bordered table-hover table-striped table-condensed" id="CCMReportExp" > 
 		       <thead >
 		       <tr>
@@ -237,18 +238,18 @@ tr.custom-GrandTotal-row{
 		       <tbody>		
 		       <tr>
 		        <td style="text-align:center"><%=count %></td>
-		        <td ><%=obj[2]%></td>
-				<td ><%= obj[3]%></td>
-				<td ><%= obj[4]%></td>
-				<td ><%= obj[5]%></td>
-				<td style="text-align:right"><%= df.format(new BigDecimal(obj[6].toString()))%></td><!--Pay Amount -->
-				<td style="text-align:center"><%if(obj[7]!=null) {%><%=sdf.format(obj[7])%><%} %></td><!--Pay Date -->
+		        <td ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></td>
+				<td ><%= obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>
+				<td ><%= obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%></td>
+				<td ><%= obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%></td>
+				<td style="text-align:right"><%= obj[6]!=null? df.format(new BigDecimal(StringEscapeUtils.escapeHtml4(obj[6].toString()))):" -" %></td><!--Pay Amount -->
+				<td style="text-align:center"><%if(obj[7]!=null) {%><%=sdf.format(obj[7])%><%} else { %> - <%}%> </td><!--Pay Date -->
 		       </tr>
 		       </tbody>
 		       <tfoot>
 						<tr> 
 							<td colspan="5"></td>
-							<td align="right"><%= df.format(totalExpenditure)%></td>
+							<td align="right"><%=totalExpenditure!=null?df.format(totalExpenditure):" - "%></td>
 							<td></td>
 						</tr>
 					</tfoot>	

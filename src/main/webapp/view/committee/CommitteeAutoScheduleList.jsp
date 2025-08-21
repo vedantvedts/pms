@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.LocalDate,java.time.format.TextStyle"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
@@ -171,27 +172,22 @@ String projectstatus=(String) request.getAttribute("projectstatus");
 
  <!-- ----------------------------------message ------------------------- -->
 
-	<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-
-
-	<center>
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</center>
-	<%}if(ses!=null){ %>
-	<center>
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</center>
-
-
-	<%} %>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 <!-- ----------------------------------message ------------------------- -->
 
@@ -213,7 +209,7 @@ String projectstatus=(String) request.getAttribute("projectstatus");
 			
 					  				<select class="form-control" id="projectid" required="required" name="projectid" onchange='submitForm("myform");' >
 						   						<% for (Object[] obj : ProjectsList) {%>
-												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectid)){ %>selected<%  } %> ><%=obj[4]%></option>
+												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectid)){ %>selected<%  } %> ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%></option>
 													
 												<%} %>
 						  			</select>
@@ -234,7 +230,7 @@ String projectstatus=(String) request.getAttribute("projectstatus");
 									 <select class="form-control"  id="committeeid" required="required" name="committeeid" onchange='submitForm("myform2");' >
 					   						<option value="all" <%if(committeeid.equals("all")){ %>selected<% } %> >All</option>
 					   						<% for (Object[] obj : committeelist) {%>					   						
-											<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(committeeid)){ %>selected<% } %> ><%=obj[3]%></option>												
+											<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(committeeid)){ %>selected<% } %> ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>												
 											<%} %>											
 					  				</select>
 					  				<input type="hidden" name="projectname"	value="<%=projectname%>" />
@@ -341,13 +337,13 @@ String projectstatus=(String) request.getAttribute("projectstatus");
 															<td><%=count %></td>
 															
 															<%if(committeeid.equals("all")){ %>
-																<td><%=obj[3] %></td>															
+																<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>															
 															<%}else{ %>
-																<td><%=obj[3] %>&nbsp;<%=count1-- %></td>															
+																<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %>&nbsp;<%=count1-- %></td>															
 															<%} %>
 																<%String day=LocalDate.parse(obj[0].toString()).getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.US);%>														
 															<td   >	
-																	<span<%if(day.equalsIgnoreCase("sunday") || day.equalsIgnoreCase("saturday")){ %> style="color: red" <%} %> > <%=day%> </span>&nbsp; 
+																	<span<%if(day.equalsIgnoreCase("sunday") || day.equalsIgnoreCase("saturday")){ %> style="color: red" <%} %> > <%=StringEscapeUtils.escapeHtml4(day)%> </span>&nbsp; 
 																	- &nbsp;<%=LocalDate.parse(obj[0].toString()).getMonth().getDisplayName(TextStyle.FULL, Locale.US)%> &nbsp; 
 																	- &nbsp; <%= sdf1.format(sdf.parse( obj[0].toString()))%>  
 															</td>
@@ -360,7 +356,7 @@ String projectstatus=(String) request.getAttribute("projectstatus");
 																<%if(obj[5].toString().equalsIgnoreCase("MAR") || obj[5].toString().equalsIgnoreCase("MMR") ){ %> style="color:red"<%} %>
 																<%if(obj[5].toString().equalsIgnoreCase("MAS") || obj[5].toString().equalsIgnoreCase("MMS") ){ %> style="color:orange"<%} %>
 																
-																 ><%=obj[6] %><%}else{ %>-<%} %></a>
+																 ><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %><%}else{ %>-<%} %></a>
 															</td>
 															<td class="left width" align="center" >
 																<%if(Long.parseLong(obj[7].toString())<7){ %>

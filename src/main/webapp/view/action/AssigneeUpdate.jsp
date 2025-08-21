@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -59,25 +60,28 @@ h6{
   if(Assignee!=null && Assignee[5]!=null){
 	  length=Assignee[5].toString().length();
   }
- %>
+  %>
 
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></div>
-                    <%} %>
+
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br/>
     
@@ -95,13 +99,13 @@ h6{
 	    		<div class="card-header" style="background-color: #055C9D; padding: 10px; box-sizing: border-box;display: table;"
 	    		>
       				  <h6 style="color: white;font-weight: bold;font-size: 1.1rem !important " align="left"> Action : <%if(Assignee!=null && Assignee[5]!=null){%> 
-      				  <%if(Assignee[5].toString().length()>100){ %>
-      				  <%=Assignee[5].toString().substring(0,100) %> 
-      				  <input type="hidden" id="actionValue" value='"<%=Assignee[5].toString()%>"'>
-      				  <span style="text-decoration: underline;font-size:13px;color: greenyellow;cursor: pointer;" onclick="showAction('<%=actiono.toString()%>')">show more..</span>
-      				  (<%=actiono %>)
+      				  <%if(Assignee[5]!=null && Assignee[5].toString().length()>100){ %>
+	      				  <%=StringEscapeUtils.escapeHtml4(Assignee[5].toString()).substring(0,100) %> 
+	      				  <input type="hidden" id="actionValue" value='"<%=Assignee[5].toString()%>"'>
+	      				  <span style="text-decoration: underline;font-size:13px;color: greenyellow;cursor: pointer;" onclick="showAction('<%=actiono.toString()%>')">show more..</span>
+      				  (<%=actiono!=null?StringEscapeUtils.escapeHtml4(actiono):" - " %>)
       				  <%}else{ %>
-      				  <%=Assignee[5] %> (<%=actiono %>)<%}}%>
+      				  <%=Assignee[5]!=null?StringEscapeUtils.escapeHtml4(Assignee[5].toString()):" - " %> (<%=actiono!=null?StringEscapeUtils.escapeHtml4(actiono):" - " %>)<%}}%>
       				  
                      	<span style="float: right;font-size: 17px;margin-top: 5px">Assigner :<%if(Assignee!=null && Assignee[1]!=null){%> <%=Assignee[1] %><%}%> </span>
                       </h6>
@@ -206,7 +210,7 @@ h6{
 				    				<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" style="margin-top: 20px;">
 										<thead>
 											<tr>
-												<th colspan="7" style="background-color: #346691; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;text-transform: capitalize;" >Old Action  Details  <%=AssigneeDetails[0] %><%=AssigneeDetails[1] %> </th>									
+												<th colspan="7" style="background-color: #346691; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;text-transform: capitalize;" >Old Action  Details  <%=AssigneeDetails[0]!=null?StringEscapeUtils.escapeHtml4(AssigneeDetails[0].toString()):" - " %><%=AssigneeDetails[1]!=null?StringEscapeUtils.escapeHtml4(AssigneeDetails[1].toString()):" - " %> </th>									
 											</tr>	
 											<tr>					
 												<th style="text-align: left;">As On Date</th>
@@ -222,19 +226,19 @@ h6{
 																		
 										<tr >
 												<td width="12%">
-													<%=sdf.format(obj[3])%>
+													<%=obj[3]!=null?sdf.format(obj[3]):""%>
 												</td>
 												
 												<td width="6%">
 													
 													<div class="progress" style="background-color:#cdd0cb !important">
-				  										<div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%=obj[2]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]%></div>
+				  										<div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%=obj[2]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></div>
 													</div>
 								
 														</td>
 												
 												<td style="text-align: left; width: 10%;"> 
-													<%=obj[4]%>
+													<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%>
 												</td>
 												
 												<td style="text-align: left; width: 3%;">
@@ -291,13 +295,13 @@ h6{
 										for(Object[] obj: SubList){ %>
 																		
 										<tr>
-											<td width="12%"><%=sdf.format(obj[3])%></td>
+											<td width="12%"><%=obj[3]!=null?sdf.format(obj[3]):""%></td>
 											<td width="6%">
 													<div class="progress" style="background-color:#cdd0cb !important">
-				  										<div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%=obj[2]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]%></div>
+				  										<div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%=obj[2]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></div>
 													</div>
 											</td>
-											<td style="text-align: left; width: 10%;"><%=obj[4]%></td>
+											<td style="text-align: left; width: 10%;"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%></td>
 											<td style="text-align: left; width: 3%;">
 												<%if( obj[5]!=null){%>
 											        <div  align="center">

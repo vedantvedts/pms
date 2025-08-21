@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat,com.vts.pfms.milestone.dto.MileEditDto"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -120,7 +121,7 @@ h6{
                           <div class="form-group">
                            <label  >Activity Name: <span class="mandatory" style="color: red;" >*</span>
                            </label><br>
-                             <input class="form-control " type="text"name="ActivityName" id="ActivityName" value="<%=EditData[3] %>"  style="width:100% " maxlength="1000" required="required">
+                             <input class="form-control " type="text"name="ActivityName" id="ActivityName" value="<%=EditData[3]!=null?StringEscapeUtils.escapeHtml4(EditData[3].toString()):" - " %>"  style="width:100% " maxlength="1000" required="required">
                            </div>
                            </div>             
                            
@@ -132,7 +133,7 @@ h6{
                               		<select class="form-control selectdee" id="ActivityTypeId" required="required" name="ActivityTypeId">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : ActivityTypeList) {%>
-										<option value="<%=obj[0]%>" <%if(EditData[9].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
+										<option value="<%=obj[0]%>" <%if(EditData[9].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%> </option>
 											<%} %>
   									</select>
                         		</div>
@@ -144,7 +145,7 @@ h6{
                               		<select class="form-control selectdee" id="EmpId" required="required" name="EmpId">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : EmployeeList) {%>
-										<option value="<%=obj[0]%>" <%if(EditData[7].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%>, <%=obj[2]%> </option>
+										<option value="<%=obj[0]%>" <%if(EditData[7].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%> </option>
 											<%} %>
 											
 											
@@ -157,7 +158,7 @@ h6{
                               		<select class="form-control selectdee" id="EmpId1" required="required" name="EmpId1">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : EmployeeList) {%>
-										<option value="<%=obj[0]%>" <%if(EditData[8].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%>, <%=obj[2]%> </option>
+										<option value="<%=obj[0]%>" <%if(EditData[8].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%> </option>
 											<%} %>
   									</select>
                         		</div>
@@ -167,7 +168,7 @@ h6{
                                 	<div class="col-md-2">
                         		<div class="form-group">
                             			<label class="control-label">Weightage <span class="mandatory" style="color: red;" >*</span></label>
-    					            <input type="number" class="form-control " name="Weightage" id="Weightage" required="required" min="0" max="100" value="<%=EditData[7] %>"  >
+    					            <input type="number" class="form-control " name="Weightage" id="Weightage" required="required" min="0" max="100" value="<%=EditData[7]!=null?StringEscapeUtils.escapeHtml4(EditData[7].toString()):" - " %>"  >
                       
                         		</div>
                     		</div>
@@ -177,13 +178,13 @@ h6{
                     		<div class="col-md-2">
                         		<div class="form-group">
                             		<label class="control-label">From</label>
-    					            <input class="form-control " name="ValidFrom" id="DateCompletion"  value="<%=sdf.format(EditData[1]) %>"  required="required" readonly="readonly" >
+    					            <input class="form-control " name="ValidFrom" id="DateCompletion"  value="<%=EditData[1]!=null?sdf.format(EditData[1]):" - " %>"  required="required" readonly="readonly" >
                         		</div>
                     		</div>
                     		<div class="col-md-2">
                         		<div class="form-group">
                             		<label class="control-label">To</label>
-    					            <input class="form-control " name="ValidTo" id="DateCompletion2"  value="<%=sdf.format(EditData[2]) %>"  required="required"  readonly="readonly">
+    					            <input class="form-control " name="ValidTo" id="DateCompletion2"  value="<%= EditData[2]!=null?sdf.format(EditData[2]):" - " %>"  required="required"  readonly="readonly">
     					            
                         		</div>
                     		</div>

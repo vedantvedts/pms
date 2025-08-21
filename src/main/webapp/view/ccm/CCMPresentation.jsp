@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.fasterxml.jackson.databind.ObjectMapper"%>
 <%@page import="java.util.Set"%>
 <%@page import="com.vts.pfms.ccm.model.CCMAchievements"%>
@@ -320,22 +321,22 @@ input,select,table,div,label,span {
 		FormatConverter fc = new FormatConverter();
 	%>
 
-	<% String ses=(String)request.getParameter("result");
-	 	String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-		%>
-		<div align="center">
-			<div class="alert alert-danger" role="alert">
-		    <%=ses1 %>
-		    </div>
-		</div>
-		<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-		    	<%=ses %>
-			</div>
-		</div>
-	<%} %>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 	<div class="container-fluid mb-3">
 		<div class="card shadow-nohover">
@@ -469,7 +470,7 @@ input,select,table,div,label,span {
 	 										<table class="table table-bordered table-hover table-striped table-condensed data-table" id="atrTable">
 												<thead style="background-color: #4B70F5; color: #ffff !important;">
 													<tr style="background-color: #4C3BCF;border-radius: 1rem;">
-														<th colspan="6" style="border-radius: 1rem;"> <h5>Action Taken Report of CCM(<%=seqDate %>)</h5></th>
+														<th colspan="6" style="border-radius: 1rem;"> <h5>Action Taken Report of CCM(<%=seqDate!=null?StringEscapeUtils.escapeHtml4(seqDate):" - " %>)</h5></th>
 													</tr>
 													<tr>
 														<th style="width: 5%;">SN</th>
@@ -505,15 +506,15 @@ input,select,table,div,label,span {
 																				 key=entry.getKey().toString();
 																			 } }}%>
 																		
-																		<%=committee.getCommitteeShortName().trim().toUpperCase()+"-"+key+"-("+seqDate+")/"+obj[1].toString().split("/")[3] %>
+																		<%=committee.getCommitteeShortName()!=null?StringEscapeUtils.escapeHtml4(committee.getCommitteeShortName()).trim().toUpperCase():" - "+"-"+key+"-("+seqDate!=null?StringEscapeUtils.escapeHtml4(seqDate):" - " +")/"+obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()).split("/")[3]:" - " %>
 																	</button>
 																<%}%> 
 															<!--  -->
 															</td>
 															<%if(i==0) {%>
-													    		<td rowspan="<%=values.size() %>" style="text-align: justify;vertical-align: middle;"><%=obj[2] %></td>
+													    		<td rowspan="<%=values.size() %>" style="text-align: justify;vertical-align: middle;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 			           										<%} %>
-															<td style="text-align: justify;"><%=obj[11]+", "+obj[12]%></td>
+															<td style="text-align: justify;"><%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "+", "+obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - "%></td>
 															<td style="text-align: center;">
 																<%	String actionstatus = obj[9].toString();
 																	int progress = obj[15]!=null ? Integer.parseInt(obj[15].toString()) : 0;
@@ -533,12 +534,12 @@ input,select,table,div,label,span {
 																	<%} %>
 																<br> --%>
 																<span <%if(endPdc.isAfter(today) || endPdc.isEqual(today)) {%>style="color:black;font-weight: bold;" <%} else{%> style="color:maroon ;font-weight:bolder;" <%} %>>
-																<%= sdf.format(sdf1.parse(obj[4].toString()))%> 
+																<%=obj[4]!=null?sdf.format(sdf1.parse(obj[4].toString())):" - "%> 
 																</span> 
 																<%if(!pdcorg.equals(endPdc)) { %>
 																<br> 
 																<span <%if(pdcorg.isAfter(today) || pdcorg.isEqual(today)) {%>style="color:black;font-weight: bold;" <%} else{%> style="color:maroon ;font-weight:bolder;" <%} %>>
-																<%= sdf.format(sdf1.parse(obj[3].toString()))%> 
+																<%= obj[3]!=null?sdf.format(sdf1.parse(obj[3].toString())):" - "%> 
 																</span>	
 																<%} %>
 															</td>
@@ -550,7 +551,7 @@ input,select,table,div,label,span {
 																</button>
 															</td> -->
 															<td style="text-align: justify;">
-																<% if (obj[16] != null) { %><%=obj[16]%> <% } else{%>-<%} %>
+																<% if (obj[16] != null) { %><%=StringEscapeUtils.escapeHtml4(obj[16].toString())%> <% } else{%>-<%} %>
 															</td>
 										
 														</tr>
@@ -600,15 +601,15 @@ input,select,table,div,label,span {
 																				 key=entry.getKey().toString();
 																			 } }}%>
 																		
-																		<%=committee.getCommitteeShortName().trim().toUpperCase()+"-"+key+"-("+(obj[20].toString().substring(2, 7))+")/"+obj[1].toString().split("/")[3] %>
+																		<%=committee.getCommitteeShortName()!=null?StringEscapeUtils.escapeHtml4(committee.getCommitteeShortName()).trim().toUpperCase():" - "+"-"+key+"-("+(obj[20]!=null?StringEscapeUtils.escapeHtml4(obj[20].toString()).substring(2, 7):" - ")+")/"+obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()).split("/")[3]:" - " %>
 																	</button>
 																<%}%> 
 															<!--  -->
 															</td>
 															<%if(i==0) {%>
-													    		<td rowspan="<%=values.size() %>" style="text-align: justify;vertical-align: middle;"><%=obj[2] %></td>
+													    		<td rowspan="<%=values.size() %>" style="text-align: justify;vertical-align: middle;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 			           										<%} %>
-															<td style="text-align: justify;"><%=obj[11]+", "+obj[12]%></td>
+															<td style="text-align: justify;"><%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "+", "+obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - "%></td>
 															<td style="text-align: center;">
 																<%	String actionstatus = obj[9].toString();
 																	int progress = obj[15]!=null ? Integer.parseInt(obj[15].toString()) : 0;
@@ -628,12 +629,12 @@ input,select,table,div,label,span {
 																	<%} %>
 																<br> --%>
 																<span <%if(endPdc.isAfter(today) || endPdc.isEqual(today)) {%>style="color:black;font-weight: bold;" <%} else{%> style="color:maroon ;font-weight:bolder;" <%} %>>
-																<%= sdf.format(sdf1.parse(obj[4].toString()))%> 
+																<%= obj[4]!=null?sdf.format(sdf1.parse(obj[4].toString())):" - "%> 
 																</span>  
 																<%if(!pdcorg.equals(endPdc)) { %>
 																<br> 
 																<span <%if(pdcorg.isAfter(today) || pdcorg.isEqual(today)) {%>style="color:black;font-weight: bold;" <%} else{%> style="color:maroon ;font-weight:bolder;" <%} %>>
-																<%= sdf.format(sdf1.parse(obj[3].toString()))%> 
+																<%= obj[3]!=null?sdf.format(sdf1.parse(obj[3].toString())):" - "%> 
 																</span>	
 																<%} %>
 															</td>
@@ -645,7 +646,7 @@ input,select,table,div,label,span {
 																</button>
 															</td> -->
 															<td style="text-align: justify;">
-																<% if (obj[16] != null) { %><%=obj[16]%> <% } else{%>-<%} %>
+																<% if (obj[16] != null) { %><%=StringEscapeUtils.escapeHtml4(obj[16].toString())%> <% } else{%>-<%} %>
 															</td>
 										
 														</tr>
@@ -660,7 +661,7 @@ input,select,table,div,label,span {
 										</div>	
 										<div class="center mt-2 mb-2">
 											<button type="button" class="btn btn-sm btn-outline-secondary fw-bold atr-btn" style="border-radius: 0.75rem;">
-												ATR of <%=seqDate %> 
+												ATR of <%=seqDate!=null?StringEscapeUtils.escapeHtml4(seqDate):" - "  %> 
 											</button>
 											<button type="button" class="btn btn-sm btn-outline-info fw-bold pending-point-btn" style="border-radius: 0.75rem;">
 												Pending Points 
@@ -738,7 +739,7 @@ input,select,table,div,label,span {
 																				 key=entry.getKey().toString();
 																			 } }}%>
 																		
-																		<%=committee.getCommitteeShortName().trim().toUpperCase()+"-"+key+"-("+(obj[20].toString().substring(2, 7))+")/"+obj[1].toString().split("/")[3] %>
+																		<%=committee.getCommitteeShortName()!=null?StringEscapeUtils.escapeHtml4(committee.getCommitteeShortName()).trim().toUpperCase():" - "+"-"+key+"-("+(obj[20]!=null?StringEscapeUtils.escapeHtml4(obj[20].toString()).substring(2, 7):" - ")+")/"+obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()).split("/")[3]:" - " %>
 																	</button>
 																<%}%> 
 															<!--  -->
@@ -746,7 +747,7 @@ input,select,table,div,label,span {
 															<%if(i==0) {%>
 													    		<td rowspan="<%=values.size() %>" style="text-align: justify;vertical-align: middle;"><%=obj[2] %></td>
 			           										<%} %>
-															<td style="text-align: justify;"><%=obj[11]+", "+obj[12]%></td>
+															<td style="text-align: justify;"><%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "+", "+obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - "%></td>
 															<td style="text-align: center;">
 																<%	String actionstatus = obj[9].toString();
 																	int progress = obj[15]!=null ? Integer.parseInt(obj[15].toString()) : 0;
@@ -766,12 +767,12 @@ input,select,table,div,label,span {
 																	<%} %>
 																<br> --%>
 																<span <%if(endPdc.isAfter(today) || endPdc.isEqual(today)) {%>style="color:black;font-weight: bold;" <%} else{%> style="color:maroon ;font-weight:bolder;" <%} %>>
-																<%= sdf.format(sdf1.parse(obj[4].toString()))%> 
+																<%=obj[4]!=null? sdf.format(sdf1.parse(obj[4].toString())):" - "%> 
 																</span>  
 																<%if(!pdcorg.equals(endPdc)) { %>
 																<br> 
 																<span <%if(pdcorg.isAfter(today) || pdcorg.isEqual(today)) {%>style="color:black;font-weight: bold;" <%} else{%> style="color:maroon ;font-weight:bolder;" <%} %>>
-																<%= sdf.format(sdf1.parse(obj[3].toString()))%> 
+																<%=obj[3]!=null? sdf.format(sdf1.parse(obj[3].toString())):" - "%> 
 																</span>	
 																<%} %>
 															</td>
@@ -783,7 +784,7 @@ input,select,table,div,label,span {
 																</button>
 															</td> -->
 															<td style="text-align: justify;">
-																<% if (obj[16] != null) { %><%=obj[16]%> <% } else{%>-<%} %>
+																<% if (obj[16] != null) { %><%=StringEscapeUtils.escapeHtml4(obj[16].toString())%> <% } else{%>-<%} %>
 															</td>
 										
 														</tr>
@@ -874,7 +875,7 @@ input,select,table,div,label,span {
 														for(Object[] obj : ebCalendarData) {
 													%>
 														<tr>
-															<td style="width: 10%;"><%=obj[0] %></td>
+															<td style="width: 10%;"><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %></td>
 															<td style="width: 30%;">
 																<%if(obj[1]!=null) {
 																	String[] split = obj[1].toString().split(", ");
@@ -888,7 +889,7 @@ input,select,table,div,label,span {
 																            }
 																        }
 																    }
-																	 out.print(result.toString());
+																	 out.print(result!=null?StringEscapeUtils.escapeHtml4(result.toString()): " - ");
 																} else {
 																    out.print("-");
 																} %>
@@ -906,13 +907,13 @@ input,select,table,div,label,span {
 																            }
 																        }
 																    }
-																	 out.print(result.toString());
+																	 out.print(result!=null?StringEscapeUtils.escapeHtml4(result.toString()): " - ");
 																} else {
 																    out.print("-");
 																} %>
 															</td>
 															<td style="width: 30%;">
-																<%if(obj[3]!=null) {%><%=obj[3] %><%} %>
+																<%if(obj[3]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[3].toString())%><%} %>
 																
 																<% if(obj[1]!=null) {
 																	String[] split = obj[1].toString().split(", ");
@@ -926,7 +927,7 @@ input,select,table,div,label,span {
 																            }
 																        }
 																    }
-																	 out.print((obj[3]!=null?",&emsp;":"")+result.toString());
+																	 out.print((obj[3]!=null?",&emsp;":"")+result!=null?StringEscapeUtils.escapeHtml4(result.toString()): " - ");
 																} %>
 																<%if(obj[3]==null && obj[1]==null) {%>-<%} %>
 															</td>
@@ -972,7 +973,7 @@ input,select,table,div,label,span {
 														for(Object[] obj : pmrcCalendarData) {
 													%>
 														<tr>
-															<td style="width: 10%;"><%=obj[0] %></td>
+															<td style="width: 10%;"><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %></td>
 															<td style="width: 30%;">
 																<%if(obj[1]!=null) {
 																	String[] split = obj[1].toString().split(", ");
@@ -986,7 +987,7 @@ input,select,table,div,label,span {
 																            }
 																        }
 																    }
-																	 out.print(result.toString());
+																	 out.print(result!=null?StringEscapeUtils.escapeHtml4(result.toString()): " - ");
 																} else {
 																    out.print("-");
 																} %>
@@ -1004,13 +1005,13 @@ input,select,table,div,label,span {
 																            }
 																        }
 																    }
-																	 out.print(result.toString());
+																	 out.print(result!=null?StringEscapeUtils.escapeHtml4(result.toString()): " - ");
 																} else {
 																    out.print("-");
 																} %>
 															</td>
 															<td style="width: 30%;">
-																<%if(obj[3]!=null) {%><%=obj[3] %><%} %>
+																<%if(obj[3]!=null) {%><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %><%} %>
 																
 																<% if(obj[1]!=null) {
 																	String[] split = obj[1].toString().split(", ");
@@ -1024,7 +1025,7 @@ input,select,table,div,label,span {
 																            }
 																        }
 																    }
-																	 out.print((obj[3]!=null?",&emsp;":"")+result.toString());
+																	 out.print((obj[3]!=null?",&emsp;":"")+result!=null?StringEscapeUtils.escapeHtml4(result.toString()): " - ");
 																} %>
 																<%if(obj[3]==null && obj[1]==null) {%>-<%} %>
 															</td>
@@ -1071,7 +1072,7 @@ input,select,table,div,label,span {
 																				<%if(clusterLabList!=null && clusterLabList.size()>0) {
 																					for(Object[] obj : clusterLabList) {
 																				%>
-																					<option value="<%=obj[2]%>" <%if(labCode.equalsIgnoreCase(obj[2].toString())) {%>selected<%} %> ><%=obj[2] %></option>
+																					<option value="<%=obj[2]%>" <%if(labCode.equalsIgnoreCase(obj[2].toString())) {%>selected<%} %> ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
 																				<%} }%>
 																			</select>
 																		</div>
@@ -1104,41 +1105,41 @@ input,select,table,div,label,span {
 														<tr>
 															<td class="center"><%=++slno %></td>
 															<td class="left">
-																<%=obj[3]!=null?obj[3]:"-" %> <br>
-																Cat&emsp;: <%=obj[5]!=null?obj[5]:"-" %> <br>
-																Cost&nbsp;&nbsp; : <%=obj[6]!=null?String.format("%.2f", Double.parseDouble(obj[6].toString())/10000000):"-" %> (In Cr) <br>
-																PDC&nbsp;&nbsp;&nbsp;: <%=obj[7]!=null?obj[7]:"-" %> (In Months) <br>
-																PDD&emsp;&nbsp;: <%=obj[8]!=null?obj[8]:"-" %> <br>
+																<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):"-" %> <br>
+																Cat&emsp;: <%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %> <br>
+																Cost&nbsp;&nbsp; : <%=obj[6]!=null?String.format("%.2f", Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[6].toString()))/10000000):"-" %> (In Cr) <br>
+																PDC&nbsp;&nbsp;&nbsp;: <%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()):"-" %> (In Months) <br>
+																PDD&emsp;&nbsp;: <%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()):"-" %> <br>
 															</td>
 															<td class="center">
-																<span style="color: blue;"><%=obj[9]!=null?fc.sdfTordf(obj[9].toString()):"-" %></span> <br>
-																<span style="color: red;"><%=obj[10]!=null?fc.sdfTordf(obj[10].toString()):"-" %></span> <br>
-																<span style="color: green;"><%=obj[11]!=null?fc.sdfTordf(obj[11].toString()):"-" %></span>
+																<span style="color: blue;"><%=obj[9]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[9].toString())):"-" %></span> <br>
+																<span style="color: red;"><%=obj[10]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[10].toString())):"-" %></span> <br>
+																<span style="color: green;"><%=obj[11]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[11].toString())):"-" %></span>
 															</td>
 															<td class="center">
-																<span style="color: blue;"><%=obj[12]!=null?fc.sdfTordf(obj[12].toString()):"-" %></span> <br>
-																<span style="color: red;"><%=obj[13]!=null?fc.sdfTordf(obj[13].toString()):"-" %></span> <br>
-																<span style="color: green;"><%=obj[14]!=null?fc.sdfTordf(obj[14].toString()):"-" %></span>
+																<span style="color: blue;"><%=obj[12]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[12].toString())):"-" %></span> <br>
+																<span style="color: red;"><%=obj[13]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[13].toString())):"-" %></span> <br>
+																<span style="color: green;"><%=obj[14]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[14].toString())):"-" %></span>
 															</td>
 															<td class="center">
-																<span style="color: blue;"><%=obj[15]!=null?fc.sdfTordf(obj[15].toString()):"-" %></span> <br>
-																<span style="color: red;"><%=obj[16]!=null?fc.sdfTordf(obj[16].toString()):"-" %></span> <br>
-																<span style="color: green;"><%=obj[17]!=null?fc.sdfTordf(obj[17].toString()):"-" %></span>
+																<span style="color: blue;"><%=obj[15]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[15].toString())):"-" %></span> <br>
+																<span style="color: red;"><%=obj[16]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[16].toString())):"-" %></span> <br>
+																<span style="color: green;"><%=obj[17]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[17].toString())):"-" %></span>
 															</td>
 															<td class="center">
-																<span style="color: blue;"><%=obj[18]!=null?fc.sdfTordf(obj[18].toString()):"-" %></span> <br>
-																<span style="color: red;"><%=obj[19]!=null?fc.sdfTordf(obj[19].toString()):"-" %></span> <br>
-																<span style="color: green;"><%=obj[20]!=null?fc.sdfTordf(obj[20].toString()):"-" %></span>
+																<span style="color: blue;"><%=obj[18]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[18].toString())):"-" %></span> <br>
+																<span style="color: red;"><%=obj[19]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[19].toString())):"-" %></span> <br>
+																<span style="color: green;"><%=obj[20]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[20].toString())):"-" %></span>
 															</td>
 															<td class="center">
-																<span style="color: blue;"><%=obj[21]!=null?fc.sdfTordf(obj[21].toString()):"-" %></span> <br>
-																<span style="color: red;"><%=obj[22]!=null?fc.sdfTordf(obj[22].toString()):"-" %></span> <br>
-																<span style="color: green;"><%=obj[23]!=null?fc.sdfTordf(obj[23].toString()):"-" %></span>
+																<span style="color: blue;"><%=obj[21]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[21].toString())):"-" %></span> <br>
+																<span style="color: red;"><%=obj[22]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[22].toString())):"-" %></span> <br>
+																<span style="color: green;"><%=obj[23]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[23].toString())):"-" %></span>
 															</td>
 															<td class="center">
-																<span style="color: blue;"><%=obj[24]!=null?fc.sdfTordf(obj[24].toString()):"-" %></span> <br>
-																<span style="color: red;"><%=obj[25]!=null?fc.sdfTordf(obj[25].toString()):"-" %></span> <br>
-																<span style="color: green;"><%=obj[26]!=null?fc.sdfTordf(obj[26].toString()):"-" %></span>
+																<span style="color: blue;"><%=obj[24]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[24].toString())):"-" %></span> <br>
+																<span style="color: red;"><%=obj[25]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[25].toString())):"-" %></span> <br>
+																<span style="color: green;"><%=obj[26]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[26].toString())):"-" %></span>
 															</td>
 															<td>
 																<form action="CCMASPStatusSubmit.htm" method="post" id="aspform_<%=slno%>">
@@ -1147,7 +1148,7 @@ input,select,table,div,label,span {
 											     					<input type="hidden" name="tabName" value="<%=tabName%>">
 											     					<input type="hidden" name="ccmScheduleId" value="<%=ccmScheduleId%>">
 											     					<input type="hidden" name="initiationId" value="<%=obj[1]%>">
-																	<input type="text" name="milestoneStatus" maxlength="1000" placeholder="Enter Maximum 1000 characters" <%if(obj[27]!=null) {%>value="<%=obj[27] %>"<%} %> style="border-left: 0;border-top: 0;border-right: 0;width: 85%;">
+																	<input type="text" name="milestoneStatus" maxlength="1000" placeholder="Enter Maximum 1000 characters" <%if(obj[27]!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(obj[27].toString())%>"<%} %> style="border-left: 0;border-top: 0;border-right: 0;width: 85%;">
 																	<button type="submit" class="btn btn-sm ml-2" name="ccmASPStatusId" value="<%=obj[28] %>" onclick="return confirm('Are you sure to Update?')" style="background: linear-gradient(135deg, #FDC830, #F37335);line-height: 1">
 																		<i class="fa fa-edit" style="padding: 0px;color: #ffff;font-size: 1.2rem;" aria-hidden="true"></i>
 																	</button>
@@ -1198,7 +1199,7 @@ input,select,table,div,label,span {
 																				<%if(clusterLabList!=null && clusterLabList.size()>0) {
 																					for(Object[] obj : clusterLabList) {
 																				%>
-																					<option value="<%=obj[2]%>" <%if(labCode.equalsIgnoreCase(obj[2].toString())) {%>selected<%} %> ><%=obj[2] %></option>
+																					<option value="<%=obj[2]%>" <%if(labCode.equalsIgnoreCase(obj[2].toString())) {%>selected<%} %> ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
 																				<%} }%>
 																			</select>
 																		</div>
@@ -1228,31 +1229,31 @@ input,select,table,div,label,span {
 														<tr>
 															<%-- <td><%=obj[1]!=null?obj[1]:"-" %></td> --%>
 															<td>
-																<%=obj[3]!=null?obj[3]:"-" %> <br>
-																Cat&emsp;: <%=obj[5]!=null?obj[5]:"-" %> <br>
-																Cost&nbsp;&nbsp; : <%=obj[6]!=null?String.format("%.2f", Double.parseDouble(obj[6].toString())/10000000):"-" %> (In Cr) <br>
-																PD&emsp;&nbsp;: <%=obj[7]!=null?obj[7]:"-" %> 
+																<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):"-" %> <br>
+																Cat&emsp;: <%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %> <br>
+																Cost&nbsp;&nbsp; : <%=obj[6]!=null?String.format("%.2f", Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[6].toString()))/10000000):"-" %> (In Cr) <br>
+																PD&emsp;&nbsp;: <%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()):"-" %> 
 															</td>
 															<td class="center">
-																<%=obj[8]!=null?fc.sdfTordf(obj[8].toString()):"-" %> / <br> <%=obj[9]!=null?fc.sdfTordf(obj[9].toString()):"-" %> 
+																<%=obj[8]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[8].toString())):"-" %> / <br> <%=obj[9]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[9].toString())):"-" %> 
 															</td>
-															<td><%=obj[10]!=null?obj[10]:"-" %></td>
-															<td><%=obj[11]!=null?obj[11]:"-" %></td>
-															<td><%=obj[12]!=null?obj[12]:"-" %></td>
-															<td><%=obj[13]!=null?obj[13]:"-" %></td>
+															<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()):"-" %></td>
+															<td><%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()):"-" %></td>
+															<td><%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()):"-" %></td>
+															<td><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()):"-" %></td>
 															<td class="center">
 																<form action="#">
 																	<input type="hidden" name="action" value="Edit">
 																	<input type="hidden" name="tabName" value="<%=tabName%>">
-																	<textarea id="recommendationEditData_<%=slno %>" style="display: none;"><%=obj[10] %></textarea>
-																	<textarea id="tcrStatusEditData_<%=slno %>" style="display: none;"><%=obj[11] %></textarea>
-																	<textarea id="acrStatusEditData_<%=slno %>" style="display: none;"><%=obj[12] %></textarea>
-																	<textarea id="activityStatusEditData_<%=slno %>" style="display: none;"><%=obj[13] %></textarea>
+																	<textarea id="recommendationEditData_<%=slno %>" style="display: none;"><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): "" %></textarea>
+																	<textarea id="tcrStatusEditData_<%=slno %>" style="display: none;"><%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): "" %></textarea>
+																	<textarea id="acrStatusEditData_<%=slno %>" style="display: none;"><%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): "" %></textarea>
+																	<textarea id="activityStatusEditData_<%=slno %>" style="display: none;"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): "" %></textarea>
 																	<button type="button" class="btn btn-lg" formmethod="post" data-toggle="tooltip" data-placement="top" title="Edit Closure Status"
 																	 onclick="openClosureStatusModalEdit('<%=obj[0]%>', '<%=obj[1]%>', '<%=obj[3]%>', '<%=slno%>')">
 																		<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 																	</button>
-																	<button type="submit" class="btn btn-lg" name="ccmClosureId" value="<%=obj[0] %>" formmethod="get" formaction="CCMClosureStatusDelete.htm" onclick="return confirm('Are you sure To Delete?')" data-toggle="tooltip" data-placement="top" title="Delete Closure Status"> 
+																	<button type="submit" class="btn btn-lg" name="ccmClosureId" value="<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): "" %>" formmethod="get" formaction="CCMClosureStatusDelete.htm" onclick="return confirm('Are you sure To Delete?')" data-toggle="tooltip" data-placement="top" title="Delete Closure Status"> 
 																		<i class="fa fa-trash" aria-hidden="true"></i>
 																	</button>
 																</form>
@@ -1320,7 +1321,7 @@ input,select,table,div,label,span {
 																				<%if(clusterLabList!=null && clusterLabList.size()>0) {
 																					for(Object[] obj : clusterLabList) {
 																				%>
-																					<option value="<%=obj[2]%>" <%if(labcode.equalsIgnoreCase(obj[2].toString())) {%>selected <%} %> ><%=obj[2] %></option>
+																					<option value="<%=obj[2]%>" <%if(labcode.equalsIgnoreCase(obj[2].toString())) {%>selected <%} %> ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
 																				<%} }%>
 																			</select>
 									     								</td>
@@ -1501,7 +1502,7 @@ input,select,table,div,label,span {
 																						for(Object[] obj : clusterLabList) {
 																							if(obj[3]!=null && obj[3].toString().equalsIgnoreCase("Y")) continue;
 																					%>
-																						<option value="<%=obj[2]%>" <%if(labCode.equalsIgnoreCase(obj[2].toString())) {%>selected<%} %> ><%=obj[2] %></option>
+																						<option value="<%=obj[2]%>" <%if(labCode.equalsIgnoreCase(obj[2].toString())) {%>selected<%} %> ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
 																					<%} }%>
 																				</select>
 																			</div>
@@ -1550,7 +1551,7 @@ input,select,table,div,label,span {
 														<%if(!budgetHead.equalsIgnoreCase(obj[6].toString()) || slno==0 ) { %>
 														 	<%if(slno!=0) {%>
 															 	<tr>
-																	<td class="right" colspan="2"><b>Total Amount (<%=budgetHead %>) : </b> </td>
+																	<td class="right" colspan="2"><b>Total Amount (<%=StringEscapeUtils.escapeHtml4(budgetHead)%>) : </b> </td>
 																	<td class="right"><%=String.format(decimalPoint, allotment/lakh) %></td>
 																	<td class="right"><%=String.format(decimalPoint, expenditure/lakh) %></td>
 																	<td class="right"><%=String.format(decimalPoint, balance/lakh) %></td>
@@ -1570,7 +1571,7 @@ input,select,table,div,label,span {
 																	<td class="right"><b><%=String.format(decimalPoint, addl/lakh) %></b></td>
 																</tr>	
 														 	<%} %>
-														 	<%budgetHead = obj[6].toString(); %>
+														 	<%budgetHead = obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): ""; %>
 															<tr>
 																<td colspan="<%=12-quarter %>" class="center" style="background-color: aliceblue;"><b>Budget Head : <%=budgetHead %></b></td>
 															</tr>
@@ -1599,7 +1600,7 @@ input,select,table,div,label,span {
 														%>
 														<tr>
 															<td class="center"><%=++slno %></td>
-															<td ><%=obj[4] %></td>
+															<td ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
 															<%-- <td><%=obj[6] %></td> --%>
 															<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[7]!=null?obj[7].toString():"0.00")/lakh) %></td>
 															<td class="right"><%=String.format(decimalPoint, Double.parseDouble(obj[8]!=null?obj[8].toString():"0.00")/lakh) %></td>
@@ -1719,12 +1720,12 @@ input,select,table,div,label,span {
 													%>
 														<tr>
 															<td class="center"><%=++slno %></td>
-															<td><%=achmnts.getLabCode() %></td>
-															<td><%=achmnts.getAchievement() %></td>
+															<td><%=achmnts.getLabCode()!=null?StringEscapeUtils.escapeHtml4(achmnts.getLabCode()): " - " %></td>
+															<td><%=achmnts.getAchievement()!=null?StringEscapeUtils.escapeHtml4(achmnts.getAchievement()): " - " %></td>
 															<td class="center">
 																<form action="#">
 																	<input type="hidden" name="action" value="Edit">
-																	<textarea class="achievement" name="achievement" id="achievement_<%=slno %>" style="display: none;"><%=achmnts.getAchievement() %></textarea>
+																	<textarea class="achievement" name="achievement" id="achievement_<%=slno %>" style="display: none;"><%=achmnts.getAchievement()!=null?StringEscapeUtils.escapeHtml4(achmnts.getAchievement()): "" %></textarea>
 																	<button type="button" class="btn btn-lg" formmethod="post" formaction="CCMAchievementSubmit.htm" data-toggle="tooltip" data-placement="top" title="Edit Achievement"
 																	 onclick="openAchievementsModalEdit('<%=slno %>','<%=achmnts.getAchievementId() %>','<%=achmnts.getLabCode() %>', '<%=achmnts.getTopicType() %>','<%=achmnts.getImageName() %>','<%=achmnts.getAttachmentName() %>','<%=achmnts.getVideoName() %>')">
 																		<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -1795,12 +1796,12 @@ input,select,table,div,label,span {
 													%>
 														<tr>
 															<td class="center"><%=++slno %></td>
-															<td><%=achmnts.getLabCode() %></td>
-															<td><%=achmnts.getAchievement() %></td>
+															<td><%=achmnts.getLabCode()!=null?StringEscapeUtils.escapeHtml4(achmnts.getLabCode()): " - " %></td>
+															<td><%=achmnts.getAchievement()!=null?StringEscapeUtils.escapeHtml4(achmnts.getAchievement()): " - " %></td>
 															<td class="center">
 																<form action="#">
 																	<input type="hidden" name="action" value="Edit">
-																	<textarea class="achievement" name="achievement" id="achievement_<%=slno %>" style="display: none;"><%=achmnts.getAchievement() %></textarea>
+																	<textarea class="achievement" name="achievement" id="achievement_<%=slno %>" style="display: none;"><%=achmnts.getAchievement()!=null?StringEscapeUtils.escapeHtml4(achmnts.getAchievement()): "" %></textarea>
 																	<button type="button" class="btn btn-lg" formmethod="post" formaction="CCMAchievementSubmit.htm" data-toggle="tooltip" data-placement="top" title="Edit Achievement"
 																	 onclick="openAchievementsModalEdit('<%=slno %>','<%=achmnts.getAchievementId() %>','<%=achmnts.getLabCode() %>', '<%=achmnts.getTopicType() %>','<%=achmnts.getImageName() %>','<%=achmnts.getAttachmentName() %>','<%=achmnts.getVideoName() %>')">
 																		<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -1870,12 +1871,12 @@ input,select,table,div,label,span {
 													%>
 														<tr>
 															<td class="center"><%=++slno %></td>
-															<td><%=achmnts.getLabCode() %></td>
-															<td><%=achmnts.getAchievement() %></td>
+															<td><%=achmnts.getLabCode()!=null?StringEscapeUtils.escapeHtml4(achmnts.getLabCode()): " - " %></td>
+															<td><%=achmnts.getAchievement()!=null?StringEscapeUtils.escapeHtml4(achmnts.getAchievement()): " - " %></td>
 															<td class="center">
 																<form action="#">
 																	<input type="hidden" name="action" value="Edit">
-																	<textarea class="achievement" name="achievement" id="achievement_<%=slno %>" style="display: none;"><%=achmnts.getAchievement() %></textarea>
+																	<textarea class="achievement" name="achievement" id="achievement_<%=slno %>" style="display: none;"><%=achmnts.getAchievement() !=null?StringEscapeUtils.escapeHtml4(achmnts.getAchievement()): ""%></textarea>
 																	<button type="button" class="btn btn-lg" formmethod="post" formaction="CCMAchievementSubmit.htm" data-toggle="tooltip" data-placement="top" title="Edit Achievement"
 																	 onclick="openAchievementsModalEdit('<%=slno %>','<%=achmnts.getAchievementId() %>','<%=achmnts.getLabCode() %>', '<%=achmnts.getTopicType() %>','<%=achmnts.getImageName() %>','<%=achmnts.getAttachmentName() %>','<%=achmnts.getVideoName() %>')">
 																		<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -2053,7 +2054,7 @@ input,select,table,div,label,span {
 											for(Object[] obj : clusterLabListFilter) {
 												if(obj[3]!=null && obj[3].toString().equalsIgnoreCase("Y")) continue;
 										%>
-											<option value="<%=obj[2]%>" ><%=obj[2] %></option>
+											<option value="<%=obj[2]%>" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
 										<%} }%>
 									</select>
     							</div>

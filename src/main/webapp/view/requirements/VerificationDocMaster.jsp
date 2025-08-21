@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.time.LocalDate"%>
@@ -55,29 +56,22 @@ String verificationId =(String)request.getAttribute("verificationId");
 			</form>
 		</nav>
 
-	<%
-	String ses = (String) request.getParameter("result");
-	String ses1 = (String) request.getParameter("resultfail");
-	if (ses1 != null) {
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-			<%=ses1%>
-		</div>
-	</div>
-	<%
-	}
-	if (ses != null) {
-	%>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses%>
-		</div>
-
-	</div>
-	<%
-	}
-	%>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 	<div class="card mt-3" style="">
 		<div class="col-md-10 row">
@@ -88,7 +82,7 @@ String verificationId =(String)request.getAttribute("verificationId");
 					%>
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2"
 						onclick="showDemonstration('<%=obj[0]%>','<%=obj[1]%>')"><img
-						alt="" src="view/images/requirements.png">&nbsp;&nbsp;<%=obj[1]%></span>
+						alt="" src="view/images/requirements.png">&nbsp;&nbsp;<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></span>
 					<%
 					}
 					%>
@@ -113,7 +107,7 @@ String verificationId =(String)request.getAttribute("verificationId");
 												for (Object[] obj : VerifiyMasterList) {
 													%>
 													<option <%if(verificationId!=null && verificationId.equalsIgnoreCase(obj[0].toString())) {%>selected="selected"<%} %> value="<%=obj[0]%>">
-														<%=obj[1]%>
+														<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>
 													</option>
 													<%
 													}
@@ -152,12 +146,12 @@ String verificationId =(String)request.getAttribute("verificationId");
 						%>
 						<tr>
 							<td style="text-align: center;"><%=sn %>.</td>
-							<td style="text-align: center;"> <%=obj1[1].toString().substring(0,1)+(sn)%></td>
+							<td style="text-align: center;"> <%=obj1[1]!=null?StringEscapeUtils.escapeHtml4(obj1[1].toString()).substring(0,1)+(sn):" - "%></td>
 							<td style="width: 30%">
-							<textarea rows="" cols="" class="form-control" name="TestType<%=obj1[0] %>" required="required"><%=obj1[2]%></textarea>
+							<textarea rows="" cols="" class="form-control" name="TestType<%=obj1[0] %>" required="required"><%=obj1[2]!=null?StringEscapeUtils.escapeHtml4(obj1[2].toString()): " - "%></textarea>
 							</td>
 							<td>
-							<textarea rows="" cols="" class="form-control" name="Purpose<%=obj1[0] %>" required="required"><%=obj1[3]%></textarea>
+							<textarea rows="" cols="" class="form-control" name="Purpose<%=obj1[0] %>" required="required"><%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): " - "%></textarea>
 							</td>
 							<td style="text-align: center;width:8%">
 							   <button class="fa fa-pencil-square-o btn " type="submit" name="verificationDataId" value="<%=obj1[0] %>"  onclick="return confirm('Are You Sure To Edit ?');"></button>

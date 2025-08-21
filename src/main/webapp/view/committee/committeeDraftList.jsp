@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.List"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -198,7 +199,7 @@ String errorInPageSize=(String)request.getAttribute("errorInPageSize");
 	%>
 	<div align="center">
 		<div class="alert alert-danger" role="alert">
-			<%=errorInPageSize %>
+			<%=StringEscapeUtils.escapeHtml4(errorInPageSize) %>
 		</div>
 	</div>
 	<%}	%>
@@ -285,8 +286,8 @@ String errorInPageSize=(String)request.getAttribute("errorInPageSize");
 							for(Object[]obj:draftMomList){ %>
 										<tr>
 											<td style="text-align: center;"><%=++snCount %>.</td>
-											<td><%=obj[0].toString().split("/")[2] %></td>
-											<td><%=obj[0].toString() %></td>
+											<td><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()).split("/")[2]: " - " %></td>
+											<td><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %></td>
 											<td style="text-align: center;">
 												<%if(!obj[1].toString().equalsIgnoreCase("0")){ %>
 												<form action="CommitteeMinutesNewDownload.htm" method="get"

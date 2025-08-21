@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -18,35 +19,22 @@
 	Object[] designationdata = (Object[]) request.getAttribute("designationdata");
 	%>
 
-	<%
-	String ses = (String) request.getParameter("result");
-	String ses1 = (String) request.getParameter("resultfail");
-	if (ses1 != null) {
-	%>
-
-
-	<center>
-
-		<div class="alert alert-danger" role="alert">
-			<%=ses1%>
-		</div>
-	</center>
-	<%
-	}
-	if (ses != null) {
-	%>
-	<center>
-		<div class="alert alert-success" role="alert">
-			<%=ses%>
-		</div>
-
-	</center>
-
-
-	<%
-	}
-	%>
-
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 	<br>
@@ -75,7 +63,7 @@
 											class="form-control form-control description-input" type="text"
 											name="desigcode" id="desigcode" required="required"
 											maxlength="10" style="font-size: 15px; width: 80%;"
-											value="<%=designationdata[1]%>">
+											value="<%=designationdata[1]!=null?StringEscapeUtils.escapeHtml4(designationdata[1].toString()): ""%>">
 									</div>
 								</div>
 
@@ -87,7 +75,7 @@
 											class="form-control form-control description-input" type="text"
 											name="designation" id="designation" required="required"
 											maxlength="100" style="font-size: 15px; width: 100%;"
-											value="<%=designationdata[2]%>">
+											value="<%=designationdata[2]!=null?StringEscapeUtils.escapeHtml4(designationdata[2].toString()): ""%>">
 									</div>
 								</div>
 
@@ -97,7 +85,7 @@
 											style="color: red;">*</span></label> <input
 											class="form-control form-control numeric-only" type="number" name="limit"
 											required="required" style="font-size: 15px; width: 80%;"
-											value="<%=designationdata[3]%>">
+											value="<%=designationdata[3]!=null?StringEscapeUtils.escapeHtml4(designationdata[3].toString()): ""%>">
 									</div>
 								</div>
 
@@ -108,7 +96,7 @@
 											class="form-control numeric-only " type="number"
 											name="desigsr" required="required"
 											style="font-size: 15px; width: 80%;"
-											value="<%=designationdata[4]%>">
+											value="<%=designationdata[4]!=null?StringEscapeUtils.escapeHtml4(designationdata[4].toString()): ""%>">
 									</div>
 								</div>
 								

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.math.BigDecimal"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -56,7 +57,7 @@ if(ProjectList!=null && ProjectList.size()>0){
       <%if(DashBoardsList!=null && DashBoardsList.size()>0) {
       for(Object[]obj:DashBoardsList){
       %>
-      <option value="<%=obj[0].toString()%>" <%if(DashBoardId!=null && obj[0].toString().equalsIgnoreCase(DashBoardId)) {%> selected <%} %>><%=obj[1].toString() %></option>
+      <option value="<%=obj[0].toString()%>" <%if(DashBoardId!=null && obj[0].toString().equalsIgnoreCase(DashBoardId)) {%> selected <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></option>
       <%}} %>
       <option value="0">Add Favourites</option>
       </select>
@@ -77,7 +78,7 @@ if(ProjectList!=null && ProjectList.size()>0){
       if(MainProjectList!=null && MainProjectList.size()>0){
       for(Object[]obj:MainProjectList) {%>
       <div class="col-md-2 ml-4 mt-3">
-      <input class="mainProject" type="checkbox" name="projectId" style="transform:scale(1.5)" value="<%=obj[0].toString()%>"> <span ><%=obj[4].toString() %>&nbsp;/&nbsp;<%=obj[17].toString() %></span>
+      <input class="mainProject" type="checkbox" name="projectId" style="transform:scale(1.5)" value="<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): ""%>"> <span ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %>&nbsp;/&nbsp;<%=obj[17]!=null?StringEscapeUtils.escapeHtml4(obj[17].toString()): " - " %></span>
       </div>
        <%}} %>
        </div> 
@@ -92,7 +93,7 @@ if(ProjectList!=null && ProjectList.size()>0){
       <%if(subProjectList!=null && subProjectList.size()>0){
       for(Object[]obj:subProjectList) {%>
        <div class="col-md-2 ml-4 mt-3" >
-       <input class="subProject" style="transform:scale(1.5)" type="checkbox" name="projectId" value="<%=obj[0].toString()%>"> <%=obj[4].toString() %>&nbsp;/&nbsp;<%=obj[17].toString() %>
+       <input class="subProject" style="transform:scale(1.5)" type="checkbox" name="projectId" value="<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): ""%>"> <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %>&nbsp;/&nbsp;<%=obj[17]!=null?StringEscapeUtils.escapeHtml4(obj[17].toString()): " - " %>
       </div>
       <%}} %>
       </div>

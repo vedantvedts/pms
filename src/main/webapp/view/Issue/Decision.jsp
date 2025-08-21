@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
@@ -52,24 +53,22 @@ Map<String,List<List<Object[]>>> actualdecisionsought = (Map<String,List<List<Ob
 
 %>
 
-<%String ses=(String)request.getParameter("result"); 
-String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){
-%>
-<div align="center">
-	
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</div>
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 <div class="container-fluid">
 		<div class="row">
@@ -96,7 +95,7 @@ if(ses1!=null){
 													<%for(Object[] obj : projectlist){ 
 													  String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
 													%>
-													<option <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value="<%=obj[0]%>" ><%=obj[4]+projectshortName %></option>
+													<option <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value="<%=obj[0]%>" ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>
 													<%} %>
 												</select>
 										</td>
@@ -130,7 +129,7 @@ if(ses1!=null){
 													<option disabled  selected value="">Choose...</option>
 													<option value="A"  <%if(committeeid!=null && committeeid.equals("A")){ %>selected <%} %> >All</option>
 									   				<% for (Object[] obj : projapplicommitteelist) {%>
-													<option value="<%=obj[0]%>"  <%if(committeeid!=null && obj[0].toString().equals(committeeid)){ %>selected<%} %> ><%=obj[3]%></option>
+													<option value="<%=obj[0]%>"  <%if(committeeid!=null && obj[0].toString().equals(committeeid)){ %>selected<%} %> ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - "%></option>
 													<%} %>
 											</select>	
 										</td>
@@ -188,15 +187,15 @@ if(ses1!=null){
 																<td style="text-align: center;"><%=++count %></td>
 																<td>
 																	<form action="CommitteeMinutesNewDownload.htm" method="get" >
-																					<button  type="submit" class="btn btn-outline-info" formtarget="_blank" ><%=obj[2] %></button>
+																					<button  type="submit" class="btn btn-outline-info" formtarget="_blank" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"" %></button>
 																					<input type="hidden" name="committeescheduleid" value="<%=obj[1] %>" />
 																					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 																	</form>
 																</td>
 																<td>
-																	<%=obj[3]%>
+																	<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - "%>
 																 </td>
-																<td> <%=obj[4] %> </td>
+																<td> <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - " %> </td>
 														</tr>
 														<%}%> </tbody>
 															<%}}else{%>
@@ -220,7 +219,7 @@ if(ses1!=null){
 																	<td style="text-align: center;"><%=++count %></td>
 																	<td>
 																		<form action="CommitteeMinutesNewDownload.htm" method="get" >
-																						<button  type="submit" class="btn btn-outline-info" formtarget="_blank" > <%=key[0]%></button>
+																						<button  type="submit" class="btn btn-outline-info" formtarget="_blank" > <%=key[0]!=null?StringEscapeUtils.escapeHtml4(key[0].toString()):" - "%></button>
 																						<input type="hidden" name="committeescheduleid" value="<%=key[1]%>" />
 																						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 																		</form>
@@ -230,7 +229,7 @@ if(ses1!=null){
 																		<% int i=0;for(Object[] obj : actualsought){%>
 																			<tr style="border: 1px solid black; border-collapse: collapse;">
 																				<td style="border: 1px solid black; border-collapse: collapse;"><%=++i %></td>
-																				<td style="border: 1px solid black; border-collapse: collapse;"><%=obj[1] %></td>
+																				<td style="border: 1px solid black; border-collapse: collapse;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %></td>
 																			</tr>
 																			<%}%>
 																		</table>
@@ -240,7 +239,7 @@ if(ses1!=null){
 																		<% int j=0;for(Object[] obj : sought){%>
 																		<tr style="border: 1px solid black; border-collapse: collapse;">
 																			<td style="border: 1px solid black; border-collapse: collapse;"><%=++j %></td>
-																			<td style="border: 1px solid black; border-collapse: collapse;"><%=obj[0] %></td>
+																			<td style="border: 1px solid black; border-collapse: collapse;"><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):" - " %></td>
 																		</tr>
 																		<%}%>
 																		</table>

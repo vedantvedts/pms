@@ -1,4 +1,5 @@
 
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.documents.model.FieldGroupMaster"%>
 <%@page import="com.vts.pfms.documents.model.IGIFieldDescription"%>
 <%@page import="com.vts.pfms.documents.model.IGILogicalChannel"%>
@@ -140,22 +141,22 @@ label {
 		}
 	%>
 	
-	<% String ses=(String)request.getParameter("result");
-	 	String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-		%>
-		<div align="center">
-			<div class="alert alert-danger" role="alert">
-		    <%=ses1 %>
-		    </div>
-		</div>
-		<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-		    	<%=ses %>
-			</div>
-		</div>
-	<%} %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
 	
 	<div class="container-fluid mb-3">
 		<div class="card shadow-nohover">
@@ -260,7 +261,7 @@ label {
 								                        <% if (iface.getLogicalInterfaceId().equals(Long.parseLong(logicalInterfaceId))) { %>
 								                        style="background-color: green; color: white; border-color: green; width: 86%;" 
 								                        <% } else { %> style="width: 86%;" <% } %>>
-								                        <%=(interfaceMainCount) + "." + (++interfaceSubCount) + ". " + iface.getMsgCode()%>
+								                        <%=(interfaceMainCount) + "." + (++interfaceSubCount) + ". " + iface.getMsgCode()!=null?StringEscapeUtils.escapeHtml4(iface.getMsgCode()): " - "%>
 								                    </button>
 								                </form>
 								            </div>
@@ -275,7 +276,7 @@ label {
        				<div style="width: 82%;">
        					<div class="card ml-3 mr-3">
        						<div class="card-header">
-       							<h4 class="text-dark">Interface Details <%if(logicalInterface!=null) {%>- <%=logicalInterface.getMsgCode() %><%} else{%>Add<%} %> </h4>
+       							<h4 class="text-dark">Interface Details <%if(logicalInterface!=null) {%>- <%=logicalInterface.getMsgCode()!=null?StringEscapeUtils.escapeHtml4(logicalInterface.getMsgCode()): " - " %><%} else{%>Add<%} %> </h4>
        						</div>
        						<div class="card-body m-2">
        							<form action="IGILogicalInterfaceDetailsSubmit.htm" method="post" id="myform">
@@ -294,7 +295,7 @@ label {
 		       											<option value="<%=channel.getLogicalChannelId()+"/"+channel.getLogicalChannel() %>" 
 		       											<%if(logicalInterface!=null && logicalInterface.getLogicalChannelId()!=null && logicalInterface.getLogicalChannelId().equals(channel.getLogicalChannelId()) ||
 		       													Long.parseLong(logicalChannelId)==channel.getLogicalChannelId()) {%>selected<%} %>>
-		       												<%=channel.getLogicalChannel()+" ("+channel.getChannelCode()+")" %>
+		       												<%=channel.getLogicalChannel()!=null?StringEscapeUtils.escapeHtml4(channel.getLogicalChannel()): " - "+" ("+channel.getChannelCode()!=null?StringEscapeUtils.escapeHtml4(channel.getChannelCode()): " - "+")" %>
 		       											</option>
 		       										<%} %>
 		       									</select>
@@ -304,18 +305,18 @@ label {
 		       									<select class="form-control" id="msgType" name="msgType" required>
 		       										<option value="" selected disabled>----select----</option>
 		       										<%for(String msgType : msgTypesList) {%>
-		       											<option value="<%=msgType %>" <%if(logicalInterface!=null && logicalInterface.getMsgType()!=null && logicalInterface.getMsgType().equalsIgnoreCase(msgType)) {%>selected<%} %>><%=msgType %></option>
+		       											<option value="<%=msgType %>" <%if(logicalInterface!=null && logicalInterface.getMsgType()!=null && logicalInterface.getMsgType().equalsIgnoreCase(msgType)) {%>selected<%} %>><%=msgType!=null?StringEscapeUtils.escapeHtml4(msgType): " - " %></option>
 		       										<%} %>
 		       									</select>
 		       								</div>
 			                    		    <div class="col-md-3">
 		       									<label class="form-lable">Message Name <span class="mandatory">*</span></label>
-		       									<input type="text" class="form-control" name="msgName" id="msgName" <%if(logicalInterface!=null && logicalInterface.getMsgName()!=null) {%>value="<%=logicalInterface.getMsgName() %>"<%} %> placeholder="Enter Message Name" maxlength="255" required>
+		       									<input type="text" class="form-control" name="msgName" id="msgName" <%if(logicalInterface!=null && logicalInterface.getMsgName()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(logicalInterface.getMsgName()) %>"<%} %> placeholder="Enter Message Name" maxlength="255" required>
 		       								</div>
 		       								
 			                    		    <div class="col-md-2">
 		       									<label class="form-lable">Data Rate </label>
-		       									<input type="text" class="form-control" name="dataRate" <%if(logicalInterface!=null && logicalInterface.getDataRate()!=null) {%>value="<%=logicalInterface.getDataRate() %>"<%} %> placeholder="Enter Data Rate" maxlength="255">
+		       									<input type="text" class="form-control" name="dataRate" <%if(logicalInterface!=null && logicalInterface.getDataRate()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(logicalInterface.getDataRate()) %>"<%} %> placeholder="Enter Data Rate" maxlength="255">
 		       								</div>
 	                  				 	</div>
                   				 	</div>
@@ -324,15 +325,15 @@ label {
 			       						<div class="row">
 			                    		    <div class="col-md-3">
 		       									<label class="form-lable">Description </label>
-		       									<textarea class="form-control" name="msgDescription" rows="2" placeholder="Enter Msg Description" maxlength="255" ><%if(logicalInterface!=null && logicalInterface.getMsgDescription()!=null) {%><%=logicalInterface.getMsgDescription() %><%} %></textarea>
+		       									<textarea class="form-control" name="msgDescription" rows="2" placeholder="Enter Msg Description" maxlength="255" ><%if(logicalInterface!=null && logicalInterface.getMsgDescription()!=null) {%><%=StringEscapeUtils.escapeHtml4(logicalInterface.getMsgDescription()) %><%} %></textarea>
 		       								</div>
 			                    		    <div class="col-md-3">
 		       									<label class="form-lable">Protocols </label>
-		       									<textarea class="form-control" name="protocols" rows="2" placeholder="Enter Underlying Protocols" maxlength="255"><%if(logicalInterface!=null && logicalInterface.getProtocals()!=null) {%><%=logicalInterface.getProtocals() %><%} %></textarea>
+		       									<textarea class="form-control" name="protocols" rows="2" placeholder="Enter Underlying Protocols" maxlength="255"><%if(logicalInterface!=null && logicalInterface.getProtocals()!=null) {%><%=StringEscapeUtils.escapeHtml4(logicalInterface.getProtocals()) %><%} %></textarea>
 		       								</div>
 			                    		    <div class="col-md-3">
 		       									<label class="form-lable">Additional Info </label>
-		       									<textarea class="form-control" name="additionalInfo" rows="2" placeholder="Enter Additional Info" maxlength="255"><%if(logicalInterface!=null && logicalInterface.getAdditionalInfo()!=null) {%><%=logicalInterface.getAdditionalInfo() %><%} %></textarea>
+		       									<textarea class="form-control" name="additionalInfo" rows="2" placeholder="Enter Additional Info" maxlength="255"><%if(logicalInterface!=null && logicalInterface.getAdditionalInfo()!=null) {%><%=StringEscapeUtils.escapeHtml4(logicalInterface.getAdditionalInfo()) %><%} %></textarea>
 		       								</div>
 	                  				 	</div>
                   				 	</div>
@@ -341,12 +342,12 @@ label {
                   				 		<div class="form-row">
                   				 			<div class="col-md-2">
 		       									<label class="form-lable">Message Length <span class="mandatory">*</span></label>
-		       									<input type="number" class="form-control" name="msgLength" <%if(logicalInterface!=null && logicalInterface.getMsgLength()!=null) {%>value="<%=logicalInterface.getMsgLength() %>"<%} %> min="0" max="9999999999" required>
+		       									<input type="number" class="form-control" name="msgLength" <%if(logicalInterface!=null && logicalInterface.getMsgLength()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(logicalInterface.getMsgLength().toString()) %>"<%} %> min="0" max="9999999999" required>
 		       								</div>
 		       								
 			                    		    <div class="col-md-2">
 		       									<label class="form-lable">Message Number <span class="mandatory">*</span></label>
-		       									<input type="text" class="form-control" name="msgNo" <%if(logicalInterface!=null && logicalInterface.getMsgNo()!=null) {%>value="<%=logicalInterface.getMsgNo() %>"<%} %> placeholder="Enter Message No" maxlength="255" required>
+		       									<input type="text" class="form-control" name="msgNo" <%if(logicalInterface!=null && logicalInterface.getMsgNo()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(logicalInterface.getMsgNo()) %>"<%} %> placeholder="Enter Message No" maxlength="255" required>
 		       								</div>
                   				 		</div>
                   				 	</div>
@@ -389,7 +390,7 @@ label {
 											               				<%for(FieldGroupMaster fieldGroup : fieldGroupList){
 											                			 %>
 																			<option value="<%=fieldGroup.getFieldGroupId()%>" <%if(desc[12]!=null && Long.parseLong(desc[12].toString())==(fieldGroup.getFieldGroupId())) {%>selected<%} %> >
-																				<%=fieldGroup.getGroupName()+" ("+fieldGroup.getGroupCode()+")" %>
+																				<%=fieldGroup.getGroupName()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupName()): " - "+" ("+fieldGroup.getGroupCode()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupCode()): " - "+")" %>
 																			</option>
 																		<%} %>
 																	</select>
@@ -400,19 +401,19 @@ label {
 											               				<%for(Object[] obj : fieldMasterList ){
 											                			 %>
 																			<option value="<%=obj[0]%>" <%if(desc[2]!=null && Long.parseLong(desc[2].toString())==Long.parseLong(obj[0].toString())) {%>selected<%} %> >
-																				<%=obj[1] %>
+																				<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>
 																			</option>
 																		<%} %>
 																	</select>
 																</td>	
 																<td>
-																	<input type="text" class="form-control dataType" name="dataType" id="dataType_<%=slno %>" <%if(desc[19]!=null) {%> value="<%=desc[19] %>" <%} %> readonly>
+																	<input type="text" class="form-control dataType" name="dataType" id="dataType_<%=slno %>" <%if(desc[19]!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(desc[19].toString()) %>" <%} %> readonly>
 																</td>	
 																<td>
-																	<input type="text" class="form-control quantum" name="quantum" id="quantum_<%=slno %>" value="<%=desc[6] %>" readonly>
+																	<input type="text" class="form-control quantum" name="quantum" id="quantum_<%=slno %>" value="<%=StringEscapeUtils.escapeHtml4(desc[6].toString()) %>" readonly>
 																</td>
 																<td>
-																	<input type="text" class="form-control unit" name="unit" id="unit_<%=slno %>" value="<%=desc[18] %>" readonly>
+																	<input type="text" class="form-control unit" name="unit" id="unit_<%=slno %>" value="<%=StringEscapeUtils.escapeHtml4(desc[18].toString()) %>" readonly>
 																</td>	
 																<%-- <td>
 																	<input type="text" class="form-control remarks" name="remarks" id="remarks_<%=slno %>" value="<%=desc.getRemarks() %>" readonly>
@@ -430,7 +431,7 @@ label {
 											               				<%for(FieldGroupMaster fieldGroup : fieldGroupList){
 											                			 %>
 																			<option value="<%=fieldGroup.getFieldGroupId()%>">
-																				<%=fieldGroup.getGroupName()+" ("+fieldGroup.getGroupCode()+")" %>
+																				<%=fieldGroup.getGroupName()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupName()): " - "+" ("+fieldGroup.getGroupCode()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupCode()): " - "+")" %>
 																			</option>
 																		<%} %>
 																	</select>

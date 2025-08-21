@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
@@ -47,19 +48,22 @@ List<Object[]> BudgetItemList=(List<Object[]>)request.getAttribute("BudgetItemLi
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%><center>
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -74,7 +78,7 @@ List<Object[]> BudgetItemList=(List<Object[]>)request.getAttribute("BudgetItemLi
 
  <div class="card shadow-nohover" >
   <div class="card-header">
-  <b style="color: green;">TITLE:&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)&nbsp;||&nbsp;COST:&nbsp;<%=ProjectDetailes[8] %> </b>
+  <b style="color: green;">TITLE:&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)&nbsp;||&nbsp;COST:&nbsp;<%=ProjectDetailes[8]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[8].toString()): " - " %> </b>
   </div>
         
         <div class="card-body">
@@ -100,7 +104,7 @@ List<Object[]> BudgetItemList=(List<Object[]>)request.getAttribute("BudgetItemLi
  <select class="custom-select" id="BudgetHead" required="required" name="BudgetHead">
     <option disabled="true"  selected value="">Choose...</option>
     <% for (Object[] obj : BudgetHead) {%>
-<option value="<%=obj[0]%>" <%if(ProjectCostEditData[2].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1]%></option>
+<option value="<%=obj[0]%>" <%if(ProjectCostEditData[2].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
 <%} %>
   </select>
                         </div>
@@ -113,7 +117,7 @@ List<Object[]> BudgetItemList=(List<Object[]>)request.getAttribute("BudgetItemLi
  <select class="custom-select" id="Item" required="required" name="Item">
     <option disabled="true"  selected value="">Choose...</option>
 <% for (Object[] obj : BudgetItemList) {%>
-<option value="<%=obj[0]%>" <%if(ProjectCostEditData[3].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1]%></option>
+<option value="<%=obj[0]%>" <%if(ProjectCostEditData[3].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
 <%} %>
   </select>
                         </div>
@@ -128,13 +132,13 @@ List<Object[]> BudgetItemList=(List<Object[]>)request.getAttribute("BudgetItemLi
                     <div class="col-md-3 ">
                         <div class="form-group lab_count">
                             <label class="control-label">Item Detail</label>
-   <input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="ItemDetail" name="ItemDetail" required="required" value="<%=ProjectCostEditData[4]%>">                      </div>
+   <input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="ItemDetail" name="ItemDetail" required="required" value="<%=ProjectCostEditData[4]!=null?StringEscapeUtils.escapeHtml4(ProjectCostEditData[4].toString()): ""%>">                      </div>
                     </div> 
           
                <div class="col-md-2 ">
                         <div class="form-group">
                             <label class="control-label">Cost</label>
-  <input type="number" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="Cost" name="Cost" required="required" value="<%=ProjectCostEditData[5]%>"> 
+  <input type="number" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="Cost" name="Cost" required="required" value="<%=ProjectCostEditData[5]!=null?StringEscapeUtils.escapeHtml4(ProjectCostEditData[5].toString()): ""%>"> 
 
                         </div>
                     </div> 

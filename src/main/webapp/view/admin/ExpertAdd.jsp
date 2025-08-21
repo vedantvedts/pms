@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
@@ -52,20 +53,22 @@ String expno=(String)request.getAttribute("expno");
 List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 %>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br />
     
@@ -89,7 +92,7 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 								<div class="col-md-2">
 									<div class="form-group">
 										<label class="control-label">Expert No.</label>
-										<input class="form-control" id="ExpertNo" type="text" value="<%=expno %>" readonly="readonly"  name="expertno" required maxlength="50">
+										<input class="form-control" id="ExpertNo" type="text" value="<%=expno!=null?StringEscapeUtils.escapeHtml4(expno): "" %>" readonly="readonly"  name="expertno" required maxlength="50">
 									</div>
 								</div>
 							<div class="col-md-3">
@@ -138,7 +141,7 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 									<select class="custom-select" id="selectDesig" required="required" name="designationId">
 										<option disabled="true"  selected value="">Choose...</option>
 										<%for(Object[] desig:desigList){ %>
-										<option  value="<%=desig[0]%>"><%=desig[2]%></option>
+										<option  value="<%=desig[0]%>"><%=desig[2]!=null?StringEscapeUtils.escapeHtml4(desig[2].toString()): " - "%></option>
 										<%}%>
 									
 									</select>

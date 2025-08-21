@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -114,21 +115,23 @@ tr.custom-GrandTotal-row{
 
 
   %>
-  <div align="center" style="margin-top:0.5rem;">
-    <%String sesSucess=(String)request.getParameter("resultSuccess"); 
-    String sesFail=(String)request.getParameter("resultFail");
-    
-     if(sesSucess!=null){ %>
-	            <div class="alert alert-success" role="alert" >
-                    <%=sesSucess%>
-                  </div>
-     <%}if(sesFail!=null){%>
-               	<div class="alert alert-danger" role="alert">
-                <%=sesFail %>
-               </div>
-     <%}%>
-               
- 	</div>
+     
+     <% 
+	    String ses = (String) request.getParameter("resultSuccess");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
       
       <div class="container-fluid">
 		<div class="row">
@@ -153,7 +156,7 @@ tr.custom-GrandTotal-row{
 					   						</td>
 					   						<td >
 					   						  <input onchange="this.form.submit()"  class="form-control date" type="text"  name="DateCCM" id="date"  
-                                                 readonly="readonly"style="width: 11rem; background-color:white; text-align: left;"   <%if(Date!=null){ %>value="<%=Date%>"<%} %>> 
+                                                 readonly="readonly"style="width: 11rem; background-color:white; text-align: left;"   <%if(Date!=null){ %>value="<%=StringEscapeUtils.escapeHtml4(Date)%>"<%} %>> 
 					   						</td>
 					   						
 					   						<td >
@@ -181,7 +184,7 @@ tr.custom-GrandTotal-row{
 			    <hr style="border: 1px solid #0e6fb6; width: 100%"> </div>
       
             <div class="float-container">
-            <div id="label1" style="width: 50%;float: left;text-align: left"> <b><font size="4" >CCM Report AS On Date : <%=Date %>&nbsp;(In <%=DigitType %>)</font></b></div>
+            <div id="label1" style="width: 50%;float: left;text-align: left"> <b><font size="4" >CCM Report AS On Date : <%=Date!=null?StringEscapeUtils.escapeHtml4(Date): " - " %>&nbsp;(In <%=DigitType!=null?StringEscapeUtils.escapeHtml4(DigitType): " - " %>)</font></b></div>
             <div class="label2" style="width: 50%;float: left;text-align: right">
             
 					</div>
@@ -246,16 +249,16 @@ tr.custom-GrandTotal-row{
 <!--1st loop O--><%for (String ccm : CCMMap.keySet()) { %>
 					<tr class="custom-Heading-row">
 					   <%if("Q1".equalsIgnoreCase(QuarterType)){ %>
-	                    <td align="center" colspan="10"><font size="3"><b>Budget Head : <%=ccm %></b></font></td>
+	                    <td align="center" colspan="10"><font size="3"><b>Budget Head : <%=ccm!=null?StringEscapeUtils.escapeHtml4(ccm): " - " %></b></font></td>
 	                   <%} %>
 					  <%if("Q2".equalsIgnoreCase(QuarterType)){ %>
-						 <td align="center" colspan="9"><font size="3"><b>Budget Head : <%=ccm %></b></font></td>
+						 <td align="center" colspan="9"><font size="3"><b>Budget Head : <%=ccm!=null?StringEscapeUtils.escapeHtml4(ccm): " - " %></b></font></td>
 	                  <%} %>
 	                  <%if("Q3".equalsIgnoreCase(QuarterType)){ %>
-						  <td align="center" colspan="8"><font size="3"><b>Budget Head : <%=ccm %></b></font></td>
+						  <td align="center" colspan="8"><font size="3"><b>Budget Head : <%=ccm!=null?StringEscapeUtils.escapeHtml4(ccm): " - " %></b></font></td>
 	                  <%} %>
 	                  <%if("Q4".equalsIgnoreCase(QuarterType)){ %>
-						  <td align="center" colspan="7"><font size="3"><b>Budget Head : <%=ccm %></b></font></td>
+						  <td align="center" colspan="7"><font size="3"><b>Budget Head : <%=ccm!=null?StringEscapeUtils.escapeHtml4(ccm): " - " %></b></font></td>
 	                  <%} %>
 					</tr>
 					
@@ -305,10 +308,10 @@ tr.custom-GrandTotal-row{
                   <tr class='clickable-row' title="Click Here For Details"
                   data-href="CCMReportDetailsData.htm?fromYear=<%=FromYear%>&toYear=<%=ToYear%>&projectid=<%=obj[0]%>&Budgetheadid=<%=obj[2]%>&date=<%=Date %>&digitvalue=<%=DigitValue %>&digittype=<%=DigitType %>&quartertype=<%=QuarterType%>"
                     >
-                  	<td ><%=obj[1]%></td><!-- Project Code -->
-                  	<td align="right"><%= df.format(new BigDecimal(obj[4].toString()))%></td><!--Allotment -->
-                  	<td align="right"><%= df.format(new BigDecimal(obj[5].toString()))%></td><!--Expenditure -->
-                  	<td align="right"><%= df.format(new BigDecimal(obj[6].toString()))%></td><!-- Balance -->
+                  	<td ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></td><!-- Project Code -->
+                  	<td align="right"><%= obj[1]!=null? df.format(new BigDecimal(StringEscapeUtils.escapeHtml4(obj[4].toString()))):" - " %></td><!--Allotment -->
+                  	<td align="right"><%= obj[1]!=null? df.format(new BigDecimal(StringEscapeUtils.escapeHtml4(obj[5].toString()))):" - "%></td><!--Expenditure -->
+                  	<td align="right"><%= obj[1]!=null? df.format(new BigDecimal(StringEscapeUtils.escapeHtml4(obj[6].toString()))):" - "%></td><!-- Balance -->
                   	 <%
                   	    if (!(obj[4].toString()).equalsIgnoreCase("0.00") && !obj[5].toString().equalsIgnoreCase("0.00")) {
                   	        expenditurePer = (new BigDecimal(obj[5].toString()).divide(new BigDecimal(obj[4].toString()), 2, RoundingMode.HALF_UP)).multiply(new BigDecimal("100.00"));
@@ -321,48 +324,48 @@ tr.custom-GrandTotal-row{
 														<!-- Apr,May, Jun is Q1 -->
 					<%if("Q1".equalsIgnoreCase(QuarterType)){ %>
 						<%if(Double.parseDouble(cogQ1)>=0){ %>
-					<td align="right"><%= df.format(Double.parseDouble(obj[7].toString()))%></td>
+					<td align="right"><%=obj[7]!=null? df.format(Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[7].toString()))):" - "%></td>
 						<%} %>
 						<%if(Double.parseDouble(cogQ2)>=0){ %>
-					<td align="right"><%= df.format(Double.parseDouble(obj[8].toString()))%></td>
+					<td align="right"><%=obj[8]!=null? df.format(Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[8].toString()))):" - "%></td>
 						<%} %>
 						<%if(Double.parseDouble(cogQ3)>=0){ %>
-					<td align="right"><%= df.format(Double.parseDouble(obj[9].toString()))%></td>
+					<td align="right"><%=obj[9]!=null? df.format(Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[9].toString()))):" - "%></td>
 						<%} %>
 					   <%if(Double.parseDouble(cogQ4)>=0){ %>
-					<td align="right"><%= df.format(Double.parseDouble(obj[10].toString()))%></td>
+					<td align="right"><%=obj[10]!=null? df.format(Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[10].toString()))):" - "%></td>
 					   <%} %>
 					<%} %>
 							
 					  		<!-- July,Aug, Sept is Q2 -->
 					<%if("Q2".equalsIgnoreCase(QuarterType)){ %>
 						<%if(Double.parseDouble(cogQ2)>=0){ %>
-					<td align="right"><%= df.format(Double.parseDouble(obj[8].toString()))%></td>
+					<td align="right"><%= obj[8]!=null? df.format(Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[8].toString()))):" - "%></td>
 						<%} %>
 						<%if(Double.parseDouble(cogQ3)>=0){ %>
-					<td align="right"><%= df.format(Double.parseDouble(obj[9].toString()))%></td>
+					<td align="right"><%=obj[9]!=null? df.format(Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[9].toString()))):" - "%></td>
 						<%} %>
 					    <%if(Double.parseDouble(cogQ4)>=0){ %>
-					<td align="right"><%= df.format(Double.parseDouble(obj[10].toString()))%></td>
+					<td align="right"><%= obj[10]!=null? df.format(Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[10].toString()))):" - "%></td>
 						<%} %>
 					<%} %>
 	                        <!-- Oct,Nov, Dec is Q3 -->
 					<%if("Q3".equalsIgnoreCase(QuarterType)){ %>
 						<%if(Double.parseDouble(cogQ3)>=0){ %>
-					<td align="right"><%= df.format(Double.parseDouble(obj[9].toString()))%></td>
+					<td align="right"><%= obj[9]!=null? df.format(Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[9].toString()))):" - "%></td>
 						<%} %>
 					   <%if(Double.parseDouble(cogQ4)>=0){ %>
-					<td align="right"><%= df.format(Double.parseDouble(obj[10].toString()))%></td>
+					<td align="right"><%= obj[10]!=null? df.format(Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[10].toString()))):" - "%></td>
 						<%} %>
 					<%} %>
 							<!-- Jan,Feb, Mar is Q4-->
 					<%if("Q4".equalsIgnoreCase(QuarterType)){ %>
 						<%if(Double.parseDouble(cogQ4)>=0){ %>
-					<td align="right"><%= df.format(Double.parseDouble(obj[10].toString()))%></td>
+					<td align="right"><%= obj[10]!=null? df.format(Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[10].toString()))):" - "%></td>
 						<%} %>
 					<%} %>
 							
-					 <td align="right"><b><font size="3"><%= df.format(Double.parseDouble(obj[11].toString()))%></font></b></td>
+					 <td align="right"><b><font size="3"><%= obj[11]!=null? df.format(Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[11].toString()))):" - "%></font></b></td>
 					
 					</tr>	
 		
@@ -373,56 +376,57 @@ tr.custom-GrandTotal-row{
 <!-- ---------------------------------CLICKABLE ROW END---------------------------------------------------------- -->
  <!-- --------------------------------- TOTAL AMOUNT ROW STARTS---------------------------------------------------------- --> 
              <tr class="custom-Total-row" >
-             <td align="center" colspan="1"><font size="3"><b>Total Amount (<%=ccm %>) :</b></font></td>
-             <td align="right"><%= df.format(totalAllot)%></td>
-			 <td align="right"><%= df.format(totalExp)%></td>
-			 <td align="right"><%= df.format(totalBalance)%></td>
-			 <td align="right"><%=dfPercF.format(totalExpPer) %> %</td>
+             <td align="center" colspan="1"><font size="3"><b>Total Amount (<%=ccm!=null?StringEscapeUtils.escapeHtml4(ccm): " - " %>) :</b></font></td>
+             <td align="right"><%=totalAllot!=null? df.format(totalAllot):" - "%></td>
+			 <td align="right"><%=totalExp!=null? df.format(totalExp):" - "%></td>
+			 <td align="right"><%=totalBalance!=null? df.format(totalBalance):" - "%></td>
+			 <td align="right"><%=totalExpPer!=null? dfPercF.format(totalExpPer):" - " %> %</td>
 			     <!-- Apr,May, Jun is Q1 -->
+			     
 		     <%if("Q1".equalsIgnoreCase(QuarterType)){ %>   
 		        <%if(Double.parseDouble(cogQ1)>=0){ %>
-			<td align="right"><%= df.format(totalCogQ1)%></td>
+			<td align="right"><%=totalCogQ1!=null? df.format(totalCogQ1):" - "%></td>
 				<%} %>
 			    <%if(Double.parseDouble(cogQ2)>=0){ %>
-			<td align="right"><%= df.format(totalCogQ2)%></td>
+			<td align="right"><%=totalCogQ2!=null? df.format(totalCogQ2):" - "%></td>
 				<%} %>
 				<%if(Double.parseDouble(cogQ3)>=0){ %>
-			<td align="right"><%= df.format(totalCogQ3)%></td>
+			<td align="right"><%=totalCogQ3!=null? df.format(totalCogQ3):" - "%></td>
 				<%} %>
 				<%if(Double.parseDouble(cogQ4)>=0){ %>
-			<td align="right"><%= df.format(totalCogQ4)%></td>
+			<td align="right"><%=totalCogQ4!=null? df.format(totalCogQ4):" - "%></td>
 				<%} %>
 		     <%} %>  
 		     
 		          <!-- July,Aug, Sept is Q2 -->
 		    <%if("Q2".equalsIgnoreCase(QuarterType)){ %> 
 		       <%if(Double.parseDouble(cogQ2)>=0){ %> 
-		    <td align="right"><%= df.format(totalCogQ2)%></td>
+		    <td align="right"><%= totalCogQ2!=null?df.format(totalCogQ2):" - "%></td>
 				<%} %>
 				<%if(Double.parseDouble(cogQ3)>=0){ %>
-			<td align="right"><%= df.format(totalCogQ3)%></td>
+			<td align="right"><%=totalCogQ3!=null? df.format(totalCogQ3):" - "%></td>
 				<%} %>
 				<%if(Double.parseDouble(cogQ4)>=0){ %>
-			<td align="right"><%= df.format(totalCogQ4)%></td>
+			<td align="right"><%=totalCogQ4!=null? df.format(totalCogQ4):" - "%></td>
 				<%} %>  
 		    <%} %>  
 		       <!-- Oct,Nov, Dec is Q3 -->
 		   <%if("Q3".equalsIgnoreCase(QuarterType)){ %> 
 		       <%if(Double.parseDouble(cogQ3)>=0){ %>
-			<td align="right"><%= df.format(totalCogQ3)%></td>
+			<td align="right"><%=totalCogQ3!=null? df.format(totalCogQ3):" - "%></td>
 				<%} %>
 				<%if(Double.parseDouble(cogQ4)>=0){ %>
-			<td align="right"><%= df.format(totalCogQ4)%></td>
+			<td align="right"><%=totalCogQ4!=null? df.format(totalCogQ4):" - "%></td>
 				<%} %> 
 		    <%} %>  
 		           <!-- Jan,Feb, Mar is Q4-->
 			<%if("Q4".equalsIgnoreCase(QuarterType)){ %>
 				<%if(Double.parseDouble(cogQ4)>=0){ %>
-			<td align="right"><%= df.format(totalCogQ4)%></td>
+			<td align="right"><%= totalCogQ4!=null?df.format(totalCogQ4):" - "%></td>
 				<%} %>
 			<%} %>
  
-            <td align="right"><b><font size="3"><%= df.format(totalAddSurr)%></font></b></td>
+            <td align="right"><b><font size="3"><%=totalAddSurr!=null? df.format(totalAddSurr):" - "%></font></b></td>
             
             </tr>
                 <% 
@@ -443,58 +447,58 @@ tr.custom-GrandTotal-row{
  <!-- --------------------------------- GRAND TOTAL AMOUNT ROW STARTS---------------------------------------------------------- -->
 	              <tr class="custom-GrandTotal-row">
 	              <td align="center" colspan="1"><font size="3"><b>Grand Total Amount : </b></font></td>
-	              <td align="right"><font size="2"><%= df.format(grandtotalAllot)%></font></td>
-				  <td align="right"><%= df.format(grandtotalExp)%></td>
-				  <td align="right"><%= df.format(grandtotalBalance)%></td>
-				  <td align="right"><%=dfPercF.format(grandtotalExpPer) %> %</td>
+	              <td align="right"><font size="2"><%=grandtotalAllot!=null? df.format(grandtotalAllot):" - "%></font></td>
+				  <td align="right"><%=grandtotalExp!=null? df.format(grandtotalExp):" - "%></td>
+				  <td align="right"><%=grandtotalBalance!=null? df.format(grandtotalBalance):" - "%></td>
+				  <td align="right"><%=grandtotalExpPer!=null?dfPercF.format(grandtotalExpPer):" - " %> %</td>
 				  
 				       <!-- Apr,May, Jun is Q1 -->
 				  <%if("Q1".equalsIgnoreCase(QuarterType)){ %>
 					 <%if(Double.parseDouble(cogQ1)>=00){ %>
-				  <td align="right"><%= df.format(grandtotalCogQ1)%></td>
+				  <td align="right"><%=grandtotalCogQ1!=null? df.format(grandtotalCogQ1):" - "%></td>
 					  <%} %>
 					  <%if(Double.parseDouble(cogQ2)>=0){ %>
-				  <td align="right"><%= df.format(grandtotalCogQ2)%></td>
+				  <td align="right"><%= grandtotalCogQ2!=null?df.format(grandtotalCogQ2):" - "%></td>
 					   <%} %>
 					   <%if(Double.parseDouble(cogQ3)>=0){ %>
-				  <td align="right"><%= df.format(grandtotalCogQ3)%></td>
+				  <td align="right"><%=grandtotalCogQ3!=null? df.format(grandtotalCogQ3):" - "%></td>
 						<%} %>
 						<%if(Double.parseDouble(cogQ4)>=0){ %>
-				  <td align="right"><%= df.format(grandtotalCogQ4)%></td>
+				  <td align="right"><%=grandtotalCogQ4!=null? df.format(grandtotalCogQ4):" - "%></td>
 						<%} %>
 					<%} %>
 							
 							<!-- July,Aug, Sept is Q2 -->
 					<%if("Q2".equalsIgnoreCase(QuarterType)){ %>
 						<%if(Double.parseDouble(cogQ2)>=0){ %>
-					<td align="right"><%= df.format(grandtotalCogQ2)%></td>
+					<td align="right"><%=grandtotalCogQ2!=null? df.format(grandtotalCogQ2):" - "%></td>
 						<%} %>
 						<%if(Double.parseDouble(cogQ3)>=0){ %>
-					<td align="right"><%= df.format(grandtotalCogQ3)%></td>
+					<td align="right"><%=grandtotalCogQ3!=null? df.format(grandtotalCogQ3):" - "%></td>
 						<%} %>
 					    <%if(Double.parseDouble(cogQ4)>=0){ %>
-					<td align="right"><%= df.format(grandtotalCogQ4)%></td>
+					<td align="right"><%=grandtotalCogQ4!=null? df.format(grandtotalCogQ4):" - "%></td>
 						<%} %>
 					<%} %>
 							
 								<!-- Oct,Nov, Dec is Q3 -->
 					<%if("Q3".equalsIgnoreCase(QuarterType)){ %>
 						<%if(Double.parseDouble(cogQ3)>=0){ %>
-					<td align="right"><%= df.format(grandtotalCogQ3)%></td>
+					<td align="right"><%=grandtotalCogQ3!=null? df.format(grandtotalCogQ3):" - "%></td>
 						<%} %>
 					    <%if(Double.parseDouble(cogQ4)>=0){ %>
-					<td align="right"><%= df.format(grandtotalCogQ4)%></td>
+					<td align="right"><%=grandtotalCogQ4!=null? df.format(grandtotalCogQ4):" - "%></td>
 						<%} %>
 					<%} %>
 							
 								<!-- Jan,Feb, Mar is Q4-->
 					<%if("Q4".equalsIgnoreCase(QuarterType)){ %>
 						<%if(Double.parseDouble(cogQ4)>=0){ %>
-					<td align="right"><%= df.format(grandtotalCogQ4)%></td>
+					<td align="right"><%=grandtotalCogQ4!=null? df.format(grandtotalCogQ4):" - "%></td>
 						<%} %>
 					<%} %>   
 				       
-				   <td align="right"><b><font size="3"><%= df.format(grandTotalAddSurr)%></font></b></td>
+				   <td align="right"><b><font size="3"><%=grandTotalAddSurr!=null? df.format(grandTotalAddSurr):" - "%></font></b></td>
 				
 	              </tr>
 	

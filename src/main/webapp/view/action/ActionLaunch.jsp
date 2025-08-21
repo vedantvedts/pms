@@ -115,20 +115,22 @@ a:hover {
 
 
 
-	<%String ses=(String)request.getParameter("result"); 
-	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert" >
-			<%=ses1 %>
-		</div></div>
-		<%}if(ses!=null){%>
-		<div align="center">
-			<div class="alert alert-success" role="alert"  >
-				<%=ses %>
-			</div></div>
-			<%} %>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 			<div class="container-fluid">
 
@@ -142,13 +144,13 @@ a:hover {
 								<div class="col-sm-7" align="left"  >
 									<h3 style="color: white;font-weight: bold;font-size: 1.0rem !important " align="left">
 									<%if(ActionData!=null &&ActionData[2]!=null){%>
-									             <%=ActionData[2]%>
+									             <%=StringEscapeUtils.escapeHtml4(ActionData[2].toString())%>
 									<%}else{%>
 										New Action 
 									<%}%> 
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									<%if(ActionData!=null &&ActionData[6]!=null){%>
-									           PDC :  <%=sdf.format(ActionData[6])%>
+									           PDC :  <%=StringEscapeUtils.escapeHtml4(sdf.format(ActionData[6]))%>
 										<%}%>
 									</h3>
 								</div>     
@@ -193,12 +195,12 @@ a:hover {
 										<%if(projectdata!=null){
 										 String projectshortName=(projectdata[3]!=null)?" ( "+projectdata[3].toString()+" ) ":"";
 										%>
-										    <option value="<%=projectdata[0] %>" <%if(projectdata!=null && projectdata[0]!=null && projectdata[0].toString().equalsIgnoreCase(ActionData[5].toString())){%> selected="selected" <%}%>><%=projectdata[1]+projectshortName%></option>
+										    <option value="<%=projectdata[0] %>" <%if(projectdata!=null && projectdata[0]!=null && projectdata[0].toString().equalsIgnoreCase(ActionData[5].toString())){%> selected="selected" <%}%>><%=projectdata[1]!=null?StringEscapeUtils.escapeHtml4(projectdata[1].toString()):" - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - "%></option>
 										<%}else{%>
 										<%for(Object[] obj:ProjectList){
 										  String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
 										%>
-											<option value="<%=obj[0] %>" ><%=obj[4]+projectshortName%></option>	
+											<option value="<%=obj[0] %>" ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - "%></option>	
 										<%}}%>
 										<option value="0" <%if(ActionData!=null && ActionData[5]!=null && "0".equalsIgnoreCase(ActionData[5].toString())){%> selected="selected" <%}%>>General</option>	
 									</select>	
@@ -368,14 +370,14 @@ a:hover {
 															for(Object[] obj: AssignedList){ %>
 															<tr>
 															<td style="width:1% !important; " class="center"><%=count %></td>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%= obj[5].toString() %></td>
-															<td class="width-30px" ><%=sdf.format(obj[4])%></td>
-															<td style="width:8% !important; "><%=sdf.format(obj[3])%></td>
-															<td ><%=obj[1]%>, <%=obj[2]%></td>
+															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%= obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %></td>
+															<td class="width-30px" ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(sdf.format(obj[4])):" - " %></td>
+															<td style="width:8% !important; "><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(sdf.format(obj[3])):" - "%></td>
+															<td ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></td>
 															<td style="width:20% !important; "><%if(obj[7]!=null  && !obj[7].toString().equalsIgnoreCase("0")){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[7]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															<%=obj[7]%>
+															<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()):"-"%>
 															</div> 
 															</div> <%}else{ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -468,7 +470,7 @@ a:hover {
 											    for(Object[] lab : AllLabList){
 											    	if(clusterid!=null && clusterid.equalsIgnoreCase(lab[1].toString())){
 											 %>
-												<option  value="<%=lab[3] %>" <%if(LabCode.equalsIgnoreCase(lab[3].toString())){ %>selected <%} %>><%=lab[3] %></option>
+												<option  value="<%=lab[3] %>" <%if(LabCode.equalsIgnoreCase(lab[3].toString())){ %>selected <%} %>><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()):"-" %></option>
 											<%}}}%> 
 											<option  value="@EXP">Expert</option>
 										</select>
@@ -527,7 +529,7 @@ a:hover {
 																for (Object[] obj  : AllLabList) {
 															if(clusterid!=null && clusterid.equalsIgnoreCase(obj[1].toString())){
 															%>
-														     	<option value="<%=obj[3]%>" <%if(LabCode!=null && LabCode.equalsIgnoreCase(obj[3].toString())){ %>selected <%} %> ><%=obj[3] %> </option>
+														     	<option value="<%=obj[3]%>" <%if(LabCode!=null && LabCode.equalsIgnoreCase(obj[3].toString())){ %>selected <%} %> ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):"-" %> </option>
 															<%}}}%>
 															<option value="@EXP"> Expert</option>
 														</select>	
@@ -1014,7 +1016,7 @@ excel_file.addEventListener('change', (event) => {
              table_output += ' <tbody>';
              document.getElementById('myTable1').innerHTML = table_output;
              
-              var projectcode = [<%int i=0; for (Object[] obj:ProjectList) { %>"<%= obj[4].toString().toUpperCase() %>"<%= i + 1 < ProjectList.size() ? ",":"" %><% } %>];
+              var projectcode = [<%int i=0; for (Object[] obj:ProjectList) { %>"<%= obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString().toUpperCase()):" - " %>"<%= i + 1 < ProjectList.size() ? ",":"" %><% } %>];
               
             
               var code = []; 

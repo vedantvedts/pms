@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.IndianRupeeFormat"%>
 <%@page import="com.vts.pfms.cars.model.CARSSoCMilestones"%>
 <%@page import="com.vts.pfms.cars.model.CARSSoC"%>
@@ -106,7 +107,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 		<div id="container pageborder" align="center"  class="firstpage" id="firstpage">
 			<div class="firstpage" id="firstpage"> 	
 				<div style="text-align: right;">
-					<h5 style="font-weight: bold;margin-right: 2rem;"><%=labMaster.getLabCode() %>: CARS-03</h5>
+					<h5 style="font-weight: bold;margin-right: 2rem;"><%=labMaster.getLabCode()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabCode()): " - " %>: CARS-03</h5>
 				</div>
 				
 		    	<table style="margin-left : 10px;border-collapse : collapse;width : 98.5%; <%if(pdfFlag!=null) {%>margin-top: -20px;<%}%>">
@@ -133,27 +134,27 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    		<tr>
 			    			<td colspan="2" style="width:47.25%;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				1) Short title of Research Service to be provided: <br>
-			    				&nbsp;<%if(carsIni!=null) {%><%=carsIni.getInitiationTitle() %> <%} %>
+			    				&nbsp;<%if(carsIni!=null) {%><%=StringEscapeUtils.escapeHtml4(carsIni.getInitiationTitle()) %> <%} %>
 			    				<br>
 			    			</td>
 			    			<td colspan="2" style="width:47.25%;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
-			    				Contract No.: &nbsp;<%if(carsContract!=null && carsContract.getContractNo()!=null) {%><%=carsContract.getContractNo() %><%} else{%>-<%} %>
+			    				Contract No.: &nbsp;<%if(carsContract!=null && carsContract.getContractNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsContract.getContractNo()) %><%} else{%>-<%} %>
 			    				<br> <br>
-			    				Date: &nbsp;<%if(carsContract!=null && carsContract.getContractDate()!=null) {%><%=fc.SqlToRegularDate(carsContract.getContractDate()) %><%} else{%>-<%} %>
+			    				Date: &nbsp;<%if(carsContract!=null && carsContract.getContractDate()!=null) {%><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(carsContract.getContractDate())) %><%} else{%>-<%} %>
 			    			</td>
 			    		</tr>
 			    		<tr>
 			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				2) RSQR Ref: No & Date: <br>
-			    				 <%if(rsqr!=null && rsqr[11]!=null) {%><%=rsqr[11] %><%} else{%>-<%} %> & <%if(carsIni!=null && carsIni.getInitiationApprDate()!=null) {%><%=fc.SqlToRegularDate(carsIni.getInitiationApprDate()) %> <%} %> 
+			    				 <%if(rsqr!=null && rsqr[11]!=null) {%><%=StringEscapeUtils.escapeHtml4(rsqr[11].toString()) %><%} else{%>-<%} %> & <%if(carsIni!=null && carsIni.getInitiationApprDate()!=null) {%><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(carsIni.getInitiationApprDate())) %> <%} %> 
 			    			</td>
 			    			<td  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 								Issuing DRDO Establishment: <br>
 								<%if(labMaster!=null) {%>
-									<%if(labMaster.getLabCode()!=null) {%><%=labMaster.getLabCode() %><%} else{%>-<%} %>
-									<%if(labMaster.getLabAddress()!=null) {%><%=", "+labMaster.getLabAddress() %><%} else{%>-<%} %>
-									<%if(labMaster.getLabCity()!=null) {%><%=", "+labMaster.getLabCity() %><%} else{%>-<%} %>
-									<%if(labMaster.getLabPin()!=null) {%><%=" - "+labMaster.getLabPin() %><%} else{%>-<%} %>
+									<%if(labMaster.getLabCode()!=null) {%><%=StringEscapeUtils.escapeHtml4(labMaster.getLabCode()) %><%} else{%>-<%} %>
+									<%if(labMaster.getLabAddress()!=null) {%><%=", "+StringEscapeUtils.escapeHtml4(labMaster.getLabAddress()) %><%} else{%>-<%} %>
+									<%if(labMaster.getLabCity()!=null) {%><%=", "+StringEscapeUtils.escapeHtml4(labMaster.getLabCity()) %><%} else{%>-<%} %>
+									<%if(labMaster.getLabPin()!=null) {%><%=" - "+StringEscapeUtils.escapeHtml4(labMaster.getLabPin()) %><%} else{%>-<%} %>
 									
 								<%} %>
 								 <!-- <br><br><br><br> --> 
@@ -165,29 +166,29 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    		<tr>
 			    			<td colspan="2"  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				3) Name and address of Research Service Provider (RSP): <br>
-			    					&nbsp;&nbsp;&nbsp;&nbsp;<%if(carsIni!=null) {%><%=carsIni.getPITitle()+". "+carsIni.getPIName()+", "+carsIni.getPIDesig() %> <%} else{%>-<%} %>
+			    					&nbsp;&nbsp;&nbsp;&nbsp;<%if(carsIni!=null) {%><%=StringEscapeUtils.escapeHtml4(carsIni.getPITitle())+". "+StringEscapeUtils.escapeHtml4(carsIni.getPIName())+", "+StringEscapeUtils.escapeHtml4(carsIni.getPIDesig()) %> <%} else{%>-<%} %>
 			    				  <br>	
-			    				  	&nbsp;&nbsp;&nbsp;&nbsp;<%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> <%} else{%>-<%} %>	<br>
-			    				  	&nbsp;&nbsp;&nbsp;&nbsp;<%if(carsIni!=null) {%><%=carsIni.getRSPAddress()+", "+carsIni.getRSPCity()+", "+carsIni.getRSPState()+" - "+carsIni.getRSPPinCode() %> <%} else{%>-<%} %> <br>
-			    				&nbsp;&nbsp;&nbsp;&nbsp;Phone :&nbsp;<%if(carsIni!=null) {%><%=carsIni.getPIMobileNo() %> <%} else{%>-<%} %> <br>
-			    				&nbsp;&nbsp;&nbsp;&nbsp;Fax :&nbsp;<%if(carsIni!=null && carsIni.getPIFaxNo()!=null) {%><%=carsIni.getPIFaxNo() %> <%} else{%>-<%} %> <br>
-			    				&nbsp;&nbsp;&nbsp;&nbsp;Email :&nbsp;<%if(carsIni!=null) {%><%=carsIni.getPIEmail() %> <%} else{%>-<%} %> <br>
+			    				  	&nbsp;&nbsp;&nbsp;&nbsp;<%if(carsIni!=null) {%><%=StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute())+", "+StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()) %> <%} else{%>-<%} %>	<br>
+			    				  	&nbsp;&nbsp;&nbsp;&nbsp;<%if(carsIni!=null) {%><%=StringEscapeUtils.escapeHtml4(carsIni.getRSPAddress())+", "+StringEscapeUtils.escapeHtml4(carsIni.getRSPCity())+", "+StringEscapeUtils.escapeHtml4(carsIni.getRSPState())+" - "+StringEscapeUtils.escapeHtml4(carsIni.getRSPPinCode()) %> <%} else{%>-<%} %> <br>
+			    				&nbsp;&nbsp;&nbsp;&nbsp;Phone :&nbsp;<%if(carsIni!=null) {%><%=StringEscapeUtils.escapeHtml4(carsIni.getPIMobileNo()) %> <%} else{%>-<%} %> <br>
+			    				&nbsp;&nbsp;&nbsp;&nbsp;Fax :&nbsp;<%if(carsIni!=null && carsIni.getPIFaxNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsIni.getPIFaxNo()) %> <%} else{%>-<%} %> <br>
+			    				&nbsp;&nbsp;&nbsp;&nbsp;Email :&nbsp;<%if(carsIni!=null) {%><%=StringEscapeUtils.escapeHtml4(carsIni.getPIEmail()) %> <%} else{%>-<%} %> <br>
 			    				
 			    			</td>
 			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				4) RSP's Offer Ref: <br>
-			    				<%if(carsContract!=null && carsContract.getRSPOfferRef()!=null) {%><%=carsContract.getRSPOfferRef() %><%} else{%>-<%} %>	
+			    				<%if(carsContract!=null && carsContract.getRSPOfferRef()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsContract.getRSPOfferRef()) %><%} else{%>-<%} %>	
 			    				<br><br>
 			    				Date:&nbsp;
-			    				<%if(carsContract!=null && carsContract.getRSPOfferDate()!=null) {%><%=fc.SqlToRegularDate(carsContract.getRSPOfferDate()) %><%} else{%>-<%} %>
+			    				<%if(carsContract!=null && carsContract.getRSPOfferDate()!=null) {%><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(carsContract.getRSPOfferDate())) %><%} else{%>-<%} %>
 			    			</td>
 			    		</tr>
 			    		<tr>
 			    			<td colspan="4" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				5) This contract will require a formal amendment if the following key professionals are not available to RSP:  <br>
-			    				&nbsp;&nbsp;<%if(carsContract!=null && carsContract.getKP1Details()!=null) {%><%=carsContract.getKP1Details() %> <%} else{%><%} %>
+			    				&nbsp;&nbsp;<%if(carsContract!=null && carsContract.getKP1Details()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsContract.getKP1Details()) %> <%} else{%><%} %>
 			    				<br>
-			    				&nbsp;&nbsp;<%if(carsContract!=null && carsContract.getKP2Details()!=null) {%><%=carsContract.getKP2Details() %> <%} else{%><%} %>
+			    				&nbsp;&nbsp;<%if(carsContract!=null && carsContract.getKP2Details()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsContract.getKP2Details()) %> <%} else{%><%} %>
 			    			</td>
 			    		</tr>
 			    		<tr>
@@ -205,10 +206,10 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    							<%for(CARSContractConsultants con : consultants) {%>
 			    							<tr>
 			    								<td style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
-			    									<%if(con.getConsultantName()!=null) {%><%=con.getConsultantName() %> <%} else{%>-<%} %>
+			    									<%if(con.getConsultantName()!=null) {%><%=StringEscapeUtils.escapeHtml4(con.getConsultantName()) %> <%} else{%>-<%} %>
 			    								</td>
 			    								<td style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
-			    									<%if(con.getConsultantCompany()!=null) {%><%=con.getConsultantCompany() %> <%} else{%>-<%} %>
+			    									<%if(con.getConsultantCompany()!=null) {%><%=StringEscapeUtils.escapeHtml4(con.getConsultantCompany()) %> <%} else{%>-<%} %>
 			    								</td>
 			    							</tr>
 			    							<%} %>
@@ -237,7 +238,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    							<%for(CARSContractEquipment eqp : equipment) {%>
 			    							<tr>
 			    								<td style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
-			    									<%if(eqp.getDescription()!=null) {%><%=eqp.getDescription() %> <%} else{%>-<%} %>
+			    									<%if(eqp.getDescription()!=null) {%><%=StringEscapeUtils.escapeHtml4(eqp.getDescription()) %> <%} else{%>-<%} %>
 			    								</td>
 			    							</tr>
 			    							<%} %>
@@ -253,7 +254,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    	<tbody>
 			    		<tr>
 			    			<td colspan="3" style="border-top: 0 !important;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">9) The technical performance of this contract shall be complete when RSP submits the Final Report before (date) </td>
-			    			<td colspan="2" style="border-top: 0 !important;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> Months:&nbsp;<%if(carsSoC!=null) {%><%=carsSoC.getSoCDuration() %><%} else{%>-<%} %></td>
+			    			<td colspan="2" style="border-top: 0 !important;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> Months:&nbsp;<%if(carsSoC!=null) {%><%=StringEscapeUtils.escapeHtml4(carsSoC.getSoCDuration()) %><%} else{%>-<%} %></td>
 			    		</tr>
 			    		<tr>
 			    			<td colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">10.1 Expenditure on items below shall not exceed sums shown against each: </td>
@@ -263,7 +264,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    			<td colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;&nbsp;&nbsp;&nbsp;(a) Personnel</td>
 			    			<td colspan="2" style="text-align : right;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				<%if(carsContract!=null && carsContract.getExpndPersonnelCost()!=null) {%>
-			    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(carsContract.getExpndPersonnelCost())) %>
+			    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(carsContract.getExpndPersonnelCost()))) %>
 			    				<%} else{%>
 			    					-
 			    				<%} %> 
@@ -274,7 +275,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    			<td colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;&nbsp;&nbsp;&nbsp;(b) Equipment</td>
 			    			<td colspan="2" style="text-align : right;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				<%if(carsContract!=null && carsContract.getExpndEquipmentCost()!=null) {%>
-			    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(carsContract.getExpndEquipmentCost())) %>
+			    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(carsContract.getExpndEquipmentCost()))) %>
 			    				<%} else{%>
 			    					-
 			    				<%} %>
@@ -285,7 +286,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    			<td colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;&nbsp;&nbsp;&nbsp;(c) Others (Travel, Contingency, Consultancy, Institution head)</td>
 			    			<td colspan="2" style="text-align : right;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				<%if(carsContract!=null && carsContract.getExpndOthersCost()!=null) {%>
-			    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(carsContract.getExpndOthersCost())) %>
+			    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(carsContract.getExpndOthersCost()))) %>
 			    				<%} else{%>
 			    					-
 			    				<%} %>
@@ -296,7 +297,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    			<td colspan="3" style="text-align : right;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">Sub-Total&nbsp;&nbsp;</td>
 			    			<td colspan="2" style="text-align : right;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				<%if(carsContract!=null && carsContract.getExpndTotalCost()!=null) {%>
-			    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(carsContract.getExpndTotalCost())- Double.parseDouble(carsContract.getExpndGST())) %>
+			    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(carsContract.getExpndTotalCost()))- Double.parseDouble(StringEscapeUtils.escapeHtml4(carsContract.getExpndGST()))) %>
 			    				<%} else{%>
 			    					-
 			    				<%} %>
@@ -307,7 +308,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    			<td colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">Goods Services Tax inclusive (claimed along with Milestones payment proportionately)</td>
 			    			<td colspan="2" style="text-align : right;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				<%if(carsContract!=null && carsContract.getExpndGST()!=null) {%>
-			    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(carsContract.getExpndGST())) %>
+			    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(carsContract.getExpndGST()))) %>
 			    				<%} else{%>
 			    					-
 			    				<%} %>
@@ -318,7 +319,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    			<td colspan="3" style="text-align: right;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">Total&nbsp;&nbsp;</td>
 			    			<td colspan="2" style="text-align : right;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				<%if(carsContract!=null && carsContract.getExpndTotalCost()!=null) {%>
-			    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(carsContract.getExpndTotalCost())) %>
+			    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(carsContract.getExpndTotalCost()))) %>
 			    				<%} else{%>
 			    					-
 			    				<%} %>
@@ -332,11 +333,11 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    		</tr>
 			    		<%if(milestones!=null && milestones.size()>0) { char a='a';%>
 			    		<tr>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;&nbsp;&nbsp;&nbsp;(a) Initial Advance &nbsp;&nbsp;(<%=milestones.get(0).getPaymentPercentage() %>%) </td>
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;&nbsp;&nbsp;&nbsp;(a) Initial Advance &nbsp;&nbsp;(<%=StringEscapeUtils.escapeHtml4(milestones.get(0).getPaymentPercentage()) %>%) </td>
 			    			<td colspan="1" style="text-align : center;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">T0*</td>
 			    			<td colspan="2" style="text-align : right;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				<%if(milestones.get(0).getActualAmount()!=null) {%>
-			    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestones.get(0).getActualAmount())) %>
+			    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(milestones.get(0).getActualAmount()))) %>
 			    				<%} else{%>
 			    					-
 			    				<%} %>
@@ -345,8 +346,8 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    		</tr>
 			    		<% for(int i=1;i<milestones.size()-1;i++) { %>
 			    		<tr>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;&nbsp;&nbsp;&nbsp;(<%=++a %>) at Performance Milestone-<%=i %> of RSQR &nbsp;&nbsp;(<%=milestones.get(i).getPaymentPercentage() %>%) </td>
-			    			<td colspan="1" style="text-align : center;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">T0+<%=milestones.get((i)).getMonths() %> </td>
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;&nbsp;&nbsp;&nbsp;(<%=++a %>) at Performance Milestone-<%=i %> of RSQR &nbsp;&nbsp;(<%=StringEscapeUtils.escapeHtml4(milestones.get(i).getPaymentPercentage()) %>%) </td>
+			    			<td colspan="1" style="text-align : center;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">T0+<%=StringEscapeUtils.escapeHtml4(milestones.get((i)).getMonths()) %> </td>
 			    			<td colspan="2" style="text-align : right;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				<%if(milestones.get(i).getActualAmount()!=null) {%>
 			    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestones.get(i).getActualAmount())) %>
@@ -358,11 +359,11 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    		</tr>
 			    		<%}%>
 			    		<tr>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;&nbsp;&nbsp;&nbsp;(<%=++a %>) on submission of final report &nbsp;&nbsp;(<%=milestones.get(milestones.size()-1).getPaymentPercentage() %>%) </td>
-			    			<td colspan="1" style="text-align : center;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">T0+<%=milestones.get(milestones.size()-1).getMonths() %> </td>
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;&nbsp;&nbsp;&nbsp;(<%=++a %>) on submission of final report &nbsp;&nbsp;(<%=StringEscapeUtils.escapeHtml4(milestones.get(milestones.size()-1).getPaymentPercentage()) %>%) </td>
+			    			<td colspan="1" style="text-align : center;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">T0+<%=StringEscapeUtils.escapeHtml4(milestones.get(milestones.size()-1).getMonths()) %> </td>
 			    			<td colspan="2" style="text-align : right;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				<%if(milestones.get(milestones.size()-1).getActualAmount()!=null) {%>
-			    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestones.get(milestones.size()-1).getActualAmount())) %>
+			    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(milestones.get(milestones.size()-1).getActualAmount()))) %>
 			    				<%} else{%>
 			    					-
 			    				<%} %>
@@ -381,7 +382,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    				if(milestones!=null && milestones.size()>0) {
 			    				double milestonetotal = 0.0;
 			    					for(CARSSoCMilestones mil :milestones) {
-			    						milestonetotal+=Double.parseDouble(mil.getActualAmount());
+			    						milestonetotal+=Double.parseDouble(StringEscapeUtils.escapeHtml4(mil.getActualAmount()));
 			    					}
 			    				%>
 			    				<%=IndianRupeeFormat.getRupeeFormat(milestonetotal) %>
@@ -416,12 +417,12 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    				Designation: <br>
 			    				Address:&nbsp;
 			    				    <%if(labMaster!=null) {%>
-										<%if(labMaster.getLabCode()!=null) {%><%=labMaster.getLabCode() %><%} else{%>-<%} %>
-										<%if(labMaster.getLabAddress()!=null) {%><%=", "+labMaster.getLabAddress() %><%} else{%>-<%} %>
-										<%if(labMaster.getLabCity()!=null) {%><%=", "+labMaster.getLabCity() %><%} else{%>-<%} %>
-										<%if(labMaster.getLabPin()!=null) {%><%=" - "+labMaster.getLabPin() %><%} else{%>-<%} %> <br>
-										<%if(labMaster.getLabTelNo()!=null) {%>Ph: <%=labMaster.getLabTelNo() %><%} else{%>-<%} %>
-										<%if(labMaster.getLabFaxNo()!=null) {%><%=", Fax: "+labMaster.getLabFaxNo() %><%} else{%>-<%} %>
+										<%if(labMaster.getLabCode()!=null) {%><%=StringEscapeUtils.escapeHtml4(labMaster.getLabCode()) %><%} else{%>-<%} %>
+										<%if(labMaster.getLabAddress()!=null) {%><%=", "+StringEscapeUtils.escapeHtml4(labMaster.getLabAddress()) %><%} else{%>-<%} %>
+										<%if(labMaster.getLabCity()!=null) {%><%=", "+StringEscapeUtils.escapeHtml4(labMaster.getLabCity()) %><%} else{%>-<%} %>
+										<%if(labMaster.getLabPin()!=null) {%><%=" - "+StringEscapeUtils.escapeHtml4(labMaster.getLabPin()) %><%} else{%>-<%} %> <br>
+										<%if(labMaster.getLabTelNo()!=null) {%>Ph: <%=StringEscapeUtils.escapeHtml4(labMaster.getLabTelNo())%><%} else{%>-<%} %>
+										<%if(labMaster.getLabFaxNo()!=null) {%><%=", Fax: "+StringEscapeUtils.escapeHtml4(labMaster.getLabFaxNo()) %><%} else{%>-<%} %>
 								<%} %>
 			    			</td>
 			    		</tr>

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -269,7 +270,7 @@ font-size:2rem;
     										<% for (Object[] obj : ProjectList) {
     										String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
     										%>
-											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>> <%=obj[4]+projectshortName%>  </option>
+											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>> <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - "%>  </option>
 											<%} %>
   									</select>
   									</div>
@@ -286,23 +287,22 @@ font-size:2rem;
 	<div style="background-color:#FFFFFF;overflow-y:auto ;" class="body genealogy-body genealogy-scroll">
 	
 	
-	<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert" >
-	    <%=ses1 %>
-	     <br />
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert"  >
-	    	<%=ses %>
-	    	 <br />
-	    </div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 	
 	    <div class="genealogy-tree">
@@ -319,7 +319,7 @@ if(ses1!=null){	%>
 			                         	 <span style="cursor:pointer;font-weight: 600;font-size: 1.7em;">
 	                          			        <%if(ProjectId!=null){	
 				                                       Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");%>  
-			                                              <%=ProjectDetail[1] %>
+			                                              <%=ProjectDetail[1]!=null?StringEscapeUtils.escapeHtml4(ProjectDetail[1].toString()):" - " %>
 	                          			               <%} %>
 			                          		 </span>
 			                         			 
@@ -342,7 +342,7 @@ if(ses1!=null){	%>
 												<div  class="action-box-header" > 
 												
 										             <span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
-										           <%=level1[3] %>
+										           <%=level1[3]!=null?StringEscapeUtils.escapeHtml4(level1[3].toString()):" - " %>
 										                
 										             </span> 
 										             <br>
@@ -375,7 +375,7 @@ if(ses1!=null){	%>
 															  <div class="action-box-header" >
 														
 															       <span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
-			                          			                              <%=level2[3] %>
+			                          			                              <%=level2[3]!=null?StringEscapeUtils.escapeHtml4(level2[3].toString()):" - " %>
 			                          			                   </span>
 			                          			                   
 			                          			                   
@@ -408,7 +408,7 @@ if(ses1!=null){	%>
 																		
 																		<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;" >
 			                          			                             
-			                          			                                <%=level3[3] %>
+			                          			                                <%=level3[3]!=null?StringEscapeUtils.escapeHtml4(level3[3].toString()):" - " %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
@@ -443,7 +443,7 @@ if(ses1!=null){	%>
 																		
 																		<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;" >
 			                          			                             
-			                          			                                <%=level4[3] %>
+			                          			                                <%=level4[3]!=null?StringEscapeUtils.escapeHtml4(level4[3].toString()):" - " %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
@@ -478,7 +478,7 @@ if(ses1!=null){	%>
 																		
 																		<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;" >
 			                          			                             
-			                          			                                <%=level5[3] %>
+			                          			                                <%=level5[3]!=null?StringEscapeUtils.escapeHtml4(level5[3].toString()):" - " %>
 			                          			                                
 			                          			                          </span>
 			                          			                          

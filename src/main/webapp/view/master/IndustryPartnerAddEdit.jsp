@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.List"%>
 <%@page import="com.vts.pfms.master.model.IndustryPartner"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -46,22 +47,22 @@ input[type=number] {
 Object[] IPDetails = (Object[])request.getAttribute("IndustryPartnerDetails");
 List<IndustryPartner> IPNamesList = (List<IndustryPartner>)request.getAttribute("IndustryNamesList");
 %>
-<% String ses=(String)request.getParameter("result"); 
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 <br>
 
@@ -87,7 +88,7 @@ List<IndustryPartner> IPNamesList = (List<IndustryPartner>)request.getAttribute(
 								<div class="form-group">
 									<label class="control-label">Name</label><span class="mandatory" style="color: red;">*</span>
 										<span id="industrypartnerinputfield" style="display: flex;">
-											<input class="form-control alphanum-no-leading-space" type="text" id="industryPartnerName" name="industryPartnerName" value="<%if(IPDetails!=null && IPDetails[1]!=null) {%><%=IPDetails[1] %><%} %>" maxlength="255" placeholder="Enter Industry Partner" >
+											<input class="form-control alphanum-no-leading-space" type="text" id="industryPartnerName" name="industryPartnerName" value="<%if(IPDetails!=null && IPDetails[1]!=null) {%><%=StringEscapeUtils.escapeHtml4(IPDetails[1].toString()) %><%} %>" maxlength="255" placeholder="Enter Industry Partner" >
 											<button type="button" class="btn btn-sm ml-2" formnovalidate="formnovalidate" onclick="closeeditindustrypartnername()" title="Close" style="padding: 0px 5px 0px 7px;"> 
 												<i class="fa fa-close"  style="color: red;"></i>
 											</button>
@@ -104,7 +105,7 @@ List<IndustryPartner> IPNamesList = (List<IndustryPartner>)request.getAttribute(
 	                    							data-city="<%=industry.getIndustryCity() %>"
 	                    							data-pincode="<%=industry.getIndustryPinCode() %>"
 	                    							<% if(IPDetails!=null && industry.getIndustryPartnerId()==Long.parseLong(IPDetails[0].toString())) { %>selected<% } %> >
-	                    							<%=industry.getIndustryName()%>
+	                    							<%=industry.getIndustryName()!=null?StringEscapeUtils.escapeHtml4(industry.getIndustryName().toString()):"-"%>%>
 	                    							</option>
 	                							<% } %>   
 											</select>
@@ -178,20 +179,20 @@ List<IndustryPartner> IPNamesList = (List<IndustryPartner>)request.getAttribute(
 							<div class="col-md-3">
 								<div class="form-group">
 									<label class="control-label">Name</label><span class="mandatory" style="color: red;">*</span>
-									<input class="form-control alpha-dot-no-leading-space" type="text" id="repName" name="repName" maxlength="255" placeholder="Enter Rep Name" <%if(IPDetails!=null && IPDetails[4]!=null) {%> value="<%=IPDetails[4] %>" <%} %> required>
+									<input class="form-control alpha-dot-no-leading-space" type="text" id="repName" name="repName" maxlength="255" placeholder="Enter Rep Name" <%if(IPDetails!=null && IPDetails[4]!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(IPDetails[4].toString()) %>" <%} %> required>
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
 									<label class="control-label">Designation</label><span class="mandatory" style="color: red;">*</span>
-									<input class="form-control alphanum-no-leading-space" type="text" name="repDesignation" placeholder="Enter Rep Designation" <%if(IPDetails!=null && IPDetails[5]!=null) {%> value="<%=IPDetails[5] %>" <%} %> maxlength="255" required>
+									<input class="form-control alphanum-no-leading-space" type="text" name="repDesignation" placeholder="Enter Rep Designation" <%if(IPDetails!=null && IPDetails[5]!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(IPDetails[5].toString()) %>" <%} %> maxlength="255" required>
 								</div>
 							</div>
 						
 							<div class="col-md-3">
 								<div class="form-group">
 									<label class="control-label">Mobile No</label><span class="mandatory" style="color: red;">*</span>
-									<input class="form-control indian-mobile" type="tel" id="repMobileNo"  maxlength="10"  name="repMobileNo" oninput="validateMobileLength(this)" placeholder="Enter Rep Mobile No" <%if(IPDetails!=null && IPDetails[6]!=null) {%> value="<%=IPDetails[6] %>" <%} %> required>
+									<input class="form-control indian-mobile" type="tel" id="repMobileNo"  maxlength="10"  name="repMobileNo" oninput="validateMobileLength(this)" placeholder="Enter Rep Mobile No" <%if(IPDetails!=null && IPDetails[6]!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(IPDetails[6].toString()) %>" <%} %> required>
 								</div>
 							</div>
 								
@@ -199,7 +200,7 @@ List<IndustryPartner> IPNamesList = (List<IndustryPartner>)request.getAttribute(
 							<div class="col-md-3">
 								<div class="form-group">
 									<label class="control-label">Email</label><span class="mandatory" style="color: red;">*</span>
-									<input class="form-control email-input" type="email" id="repEmail" name="repEmail" maxlength="255" placeholder="Enter Rep Email" <%if(IPDetails!=null && IPDetails[7]!=null) {%> value="<%=IPDetails[7] %>" <%} %> required>
+									<input class="form-control email-input" type="email" id="repEmail" name="repEmail" maxlength="255" placeholder="Enter Rep Email" <%if(IPDetails!=null && IPDetails[7]!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(IPDetails[7].toString())%>" <%} %> required>
 								</div>
 							</div>
 						</div>

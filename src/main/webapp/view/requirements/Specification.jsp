@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="org.apache.commons.io.FileUtils"%>
 <%@page import="java.io.File"%>
@@ -122,24 +123,22 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
 
 %>
 <body <%if(isPdf!=null && isPdf.equalsIgnoreCase("Y")) {%> style="display:none;" <%} %>>
-	<%String ses=(String)request.getParameter("result"); 
- 	  String ses1=(String)request.getParameter("resultfail");
-	  if(ses1!=null){
-	%>
-	<div align="center">
-
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</div>
-	<%} %>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 	<div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white; font-size: 20px; font-weight: bold;">
     <div class="spinner" style="border: 4px solid rgba(255, 255, 255, 0.3); border-top: 4px solid #021B79; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px;"></div>
@@ -211,7 +210,7 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
 						</tr>
 						<tr>
 							<td  class="text-primary" colspan="2">8.&nbsp; Additional Information:
-								<%if(DocumentSummary!=null && DocumentSummary[0]!=null) {%><span class="text-dark"><%=DocumentSummary[0]%></span> <%} %>
+								<%if(DocumentSummary!=null && DocumentSummary[0]!=null) {%><span class="text-dark"><%=StringEscapeUtils.escapeHtml4(DocumentSummary[0].toString())%></span> <%} %>
 							</td>
 						</tr>
 					    <tr>
@@ -219,19 +218,19 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
 						</tr>
 						<tr>
 							<td  class="text-primary" colspan="2">10.&nbsp; Abstract:
-								<%if(DocumentSummary!=null && DocumentSummary[1]!=null) {%> <span class="text-dark"><%=DocumentSummary[1]%></span><%} %>
+								<%if(DocumentSummary!=null && DocumentSummary[1]!=null) {%> <span class="text-dark"><%=StringEscapeUtils.escapeHtml4(DocumentSummary[1].toString())%></span><%} %>
 							</td>
 						</tr>
 						<tr>
 							<td  class="text-primary" colspan="2">11.&nbsp; Keywords:
-								<%if(DocumentSummary!=null && DocumentSummary[2]!=null) {%> <span class="text-dark"><%=DocumentSummary[2]%></span><%} %>
+								<%if(DocumentSummary!=null && DocumentSummary[2]!=null) {%> <span class="text-dark"><%=StringEscapeUtils.escapeHtml4(DocumentSummary[2].toString())%></span><%} %>
 							</td>
 						</tr>
 						<tr>
 							<td  class="text-primary" colspan="2">12.&nbsp; Organization and address:
 								<span class="text-dark">		
 									<%if (LabList[1] != null) {%>
-										<%=LabList[1].toString() + "(" + LabList[0].toString() + ")"%>
+										<%=StringEscapeUtils.escapeHtml4(LabList[1].toString()) + "(" +LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()):" - "+ ")"%>
 									<%} else {%>
 										-
 									<%}%>
@@ -239,7 +238,7 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
 									Government of India, Ministry of Defence,Defence
 									Research & Development Organization
 									<%if (LabList[2] != null && LabList[3] != null && LabList[5] != null) {%>
-										<%=LabList[2] + " , " + LabList[3].toString() + ", PIN-" + LabList[5].toString()+"."%>
+										<%=StringEscapeUtils.escapeHtml4(LabList[2].toString())+" , "+StringEscapeUtils.escapeHtml4(LabList[3].toString())+", PIN-"+StringEscapeUtils.escapeHtml4(LabList[5].toString())+"."%>
 									<%}else{ %>
 										-
 									<%} %>
@@ -248,7 +247,7 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
 						</tr>
 						<tr>
 							<td  class="text-primary" colspan="2">13.&nbsp; Distribution:
-								<%if(DocumentSummary!=null && DocumentSummary[3]!=null) {%> <span class="text-dark"><%=DocumentSummary[3]%></span><%} %>
+								<%if(DocumentSummary!=null && DocumentSummary[3]!=null) {%> <span class="text-dark"><%=StringEscapeUtils.escapeHtml4(DocumentSummary[3].toString())%></span><%} %>
 							</td>
 						</tr>
 						<tr>
@@ -256,17 +255,17 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
 						</tr>
 						<tr>
 							<td  class="text-primary" colspan="2">15.&nbsp; Prepared by:
-								<%if(DocumentSummary!=null && DocumentSummary[10]!=null) {%> <span class="text-dark"><%=DocumentSummary[10]%></span><%}else {%><span class="text-dark">-</span>  <%} %> <span class="text-dark"></span> 
+								<%if(DocumentSummary!=null && DocumentSummary[10]!=null) {%> <span class="text-dark"><%=StringEscapeUtils.escapeHtml4(DocumentSummary[10].toString())%></span><%}else {%><span class="text-dark">-</span>  <%} %> <span class="text-dark"></span> 
 							</td>
 						</tr>
 						<tr>
 							<td  class="text-primary" colspan="2">16.&nbsp; Reviewed by: 
-								<%if(DocumentSummary!=null && DocumentSummary[7]!=null) {%> <span class="text-dark"><%=DocumentSummary[7]%></span><%}else {%><span class="text-dark">-</span>  <%} %> 
+								<%if(DocumentSummary!=null && DocumentSummary[7]!=null) {%> <span class="text-dark"><%=StringEscapeUtils.escapeHtml4(DocumentSummary[7].toString())%></span><%}else {%><span class="text-dark">-</span>  <%} %> 
 							</td>
 						</tr>
 						<tr>
 							<td  class="text-primary" colspan="2">17.&nbsp; Approved by: 
-								<%if(DocumentSummary!=null && DocumentSummary[6]!=null) {%> <span class="text-dark"><%=DocumentSummary[6]%></span><%}else {%><span class="text-dark">-</span>  <%} %> 
+								<%if(DocumentSummary!=null && DocumentSummary[6]!=null) {%> <span class="text-dark"><%=StringEscapeUtils.escapeHtml4(DocumentSummary[6].toString())%></span><%}else {%><span class="text-dark">-</span>  <%} %> 
 							</td>
 						</tr>
 					</table>
@@ -299,7 +298,7 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
    							</div>
 				   			<div class="col-md-8">
 				   				<textarea required="required" name="information" class="form-control" id="additionalReq" maxlength="4000"
-								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[0]!=null){%><%=DocumentSummary[0]%><%}else{%><%}%></textarea>
+								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[0]!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[0].toString())%><%}else{%><%}%></textarea>
 				   			</div>
    						</div>
 			   			<div class="row mt-2">
@@ -308,7 +307,7 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
 				   			</div>
 				   			<div class="col-md-8">
 				   				<textarea required="required" name="abstract" class="form-control" id="" maxlength="4000"
-								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[1]!=null){%><%=DocumentSummary[1]%><%}else{%><%}%></textarea>
+								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[1]!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[1].toString())%><%}else{%><%}%></textarea>
 				   			</div>
 			   			</div>
    			
@@ -318,7 +317,7 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
 				   			</div>
 				   			<div class="col-md-8">
 				   				<textarea required="required" name="keywords" class="form-control" id="" maxlength="4000"
-								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[2]!=null){%><%=DocumentSummary[2]%><%}else{%><%}%></textarea>
+								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[2]!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[2].toString())%><%}else{%><%}%></textarea>
 				   			</div>
    						</div>
    			
@@ -328,7 +327,7 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
 				   			</div>
 				   			<div class="col-md-8">
 				   				<input required="required" name="distribution" class="form-control" id="" maxlength="255"
-								 placeholder="Maximum 255 Chararcters" required value="<%if(DocumentSummary!=null && DocumentSummary[3]!=null){%><%=DocumentSummary[3]%><%}else{%><%}%>">
+								 placeholder="Maximum 255 Chararcters" required value="<%if(DocumentSummary!=null && DocumentSummary[3]!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[3].toString())%><%}else{%><%}%>">
 				   			</div>
    						</div>
    						
@@ -341,7 +340,7 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
 	          						<option value="" selected disabled>--SELECT--</option>
 	        						<%for(Object[]obj:TotalEmployeeList){ %>
 	        							<option value="<%=obj[0].toString()%>" <%if(DocumentSummary!=null && DocumentSummary[9]!=null && DocumentSummary[9].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
-	        								<%=obj[1].toString() %>,<%=(obj[2].toString()) %>
+	        								<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>,<%=(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ") %>
 	        							</option>
 	        						<%} %>
 	        					</select>
@@ -358,7 +357,7 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
 	       		 					<option value="" selected disabled="disabled">--SELECT--</option>
 	       		 					<%for(Object[]obj:TotalEmployeeList){ %>
 	        							<option value="<%=obj[0].toString()%>" <%if(DocumentSummary!=null && DocumentSummary[4]!=null &&  DocumentSummary[4].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
-	        								<%=obj[1].toString() %>,<%=(obj[2].toString()) %>
+	        								<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>,<%=(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ") %>
 	        							</option>
 	        						<%} %>
 	        					</select>
@@ -373,7 +372,7 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
 		       						<option value="" selected disabled="disabled">--SELECT--</option>
 	        						<%for(Object[]obj:TotalEmployeeList){ %>
 	       	 							<option value="<%=obj[0].toString()%>" <%if(DocumentSummary!=null && DocumentSummary[5]!=null && DocumentSummary[5].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
-	        								<%=obj[1].toString() %>,<%=(obj[2].toString()) %>
+	        								<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>,<%=(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ") %>
 	        							</option>
 	        						<%} %>
 		        				</select>
@@ -430,8 +429,8 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
 										for(Object[]obj:MemberList) {%>
 											<tr>
 												<td style="text-align: center;width:10%;"><%=++rowCount %></td>
-												<td style="width:50%;margin-left: 10px;"><%=obj[1].toString() %></td>
-												<td style="width:40%;margin-left: 10px;"><%=obj[2].toString() %></td>
+												<td style="width:50%;margin-left: 10px;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
+												<td style="width:40%;margin-left: 10px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 												  <td style="width:40%; margin-left: 10px;">
 												    <form id="deleteForm_<%= obj[5] %>" action="#" method="POST" name="myfrm" style="display: inline">
 												        <button type="submit" class="editable-clicko" formaction="DeleteSpecificationMembers.htm" onclick="return confirmDeletion('<%= obj[5] %>');">
@@ -459,7 +458,7 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
 							<div class="col-md-10">
 								<select class="form-control selectdee"name="Assignee" id="Assignee"data-width="100%" data-live-search="true" multiple required>
 							        <%for(Object[]obj:EmployeeList){ %>
-							        	<option value="<%=obj[0].toString()%>"> <%=obj[1].toString() %>,<%=(obj[2].toString()) %></option>
+							        	<option value="<%=obj[0].toString()%>"> <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>,<%=(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ") %></option>
 							        <%} %>
         						</select>
         					</div>
@@ -510,7 +509,7 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
 			   				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f"> Conclusion:</label>
 			   			</div>
 			   			  <div id="summernote" style="height: 500;">
-					                <%if(Conclusion!=null) {%> <%=Conclusion %> <%} %>
+					                <%if(Conclusion!=null) {%> <%=StringEscapeUtils.escapeHtml4(Conclusion) %> <%} %>
 					           </div>
 			   			
    						<textarea name="Details" style="display: none;"  id="ConclusionDetails"></textarea>	
@@ -591,8 +590,8 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
 									for (Object[] AbbDetails : AbbreviationDetails) {%>
 										<tr>
 								            <td><%= counter %></td>
-								            <td><%= AbbDetails[1] %></td>
-								            <td><%= AbbDetails[2] %></td>
+								            <td><%= AbbDetails[1]!=null?StringEscapeUtils.escapeHtml4(AbbDetails[1].toString()): " - " %></td>
+								            <td><%= AbbDetails[2]!=null?StringEscapeUtils.escapeHtml4(AbbDetails[2].toString()): " - " %></td>
 								        </tr>
 							<% counter++;}} %>
 						</table>
@@ -620,8 +619,7 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
 				    <div class="col-md-3"><label style="font-size: 17px; color: #07689f;font-weight:bold">Comment 
 					</label></div>
 				    <div class="col-md-8">
-				    <textarea name="description" class="form-control" id="descriptionadd" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"><%if(SpecProducTree!=null && SpecProducTree.size()>0) {%> <%=SpecProducTree.get(0)[2].toString() %> <%} else{%> Guidance: 
-The product Tree shall comprises the complete physical products / subsystems of the radar in the order of flow as a figure with unique ID 
+				    <textarea name="description" class="form-control" id="descriptionadd" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"><%if(SpecProducTree!=null && SpecProducTree.size()>0) {%> <%=SpecProducTree.get(0)[2]!=null?StringEscapeUtils.escapeHtml4(SpecProducTree.get(0)[2].toString()): " - " %> <%} else{%> Guidance: The product Tree shall comprises the complete physical products / subsystems of the radar in the order of flow as a figure with unique ID 
 				     <%} %> </textarea>
 				    </div>
 				    </div>
@@ -878,7 +876,7 @@ excel_file.addEventListener('change', (event) => {
     		}
     		else{
     			
-		 var AbbreviationDetailsList=[<%int i=0; for (Object [] obj:AbbreviationDetails ) {%> "<%= obj[1] %>"<%= i+1 < AbbreviationDetails.size() ? ",":""%><%}%>];	
+		 var AbbreviationDetailsList=[<%int i=0; for (Object [] obj:AbbreviationDetails ) {%> "<%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>"<%= i+1 < AbbreviationDetails.size() ? ",":""%><%}%>];	
 		
 		var AbbreDetails = [];
 		
@@ -954,13 +952,13 @@ function DownloadDocPDF(){
 	 document.getElementById('loadingOverlay').style.display = 'flex';;
 	var chapterCount = 0;
     var mainContentCount = 0;
-	var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
+	var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=StringEscapeUtils.escapeHtml4(DocTempAtrr[12].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
 	
 	var docDefinition = {
             content: [
                 // Cover Page with Project Name and Logo
                 {
-                    text: htmlToPdfmake('<h4 class="heading-color ">SYSTEM SPECIFICATIONS <br><br> FOR  <br><br>PROJECT <%=projectShortName %> </h4>'),
+                    text: htmlToPdfmake('<h4 class="heading-color ">SYSTEM SPECIFICATIONS <br><br> FOR  <br><br>PROJECT <%=projectShortName !=null?StringEscapeUtils.escapeHtml4(projectShortName): " - "%> </h4>'),
                     style: 'DocumentName',
                     alignment: 'center',
                     fontSize: 18,
@@ -977,7 +975,7 @@ function DownloadDocPDF(){
                 <% } %>
                 
                 {
-                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + ")" %> <% } else { %> '-' <% } %></h5>'),
+                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " + ")" %> <% } else { %> '-' <% } %></h5>'),
                     alignment: 'center',
                     fontSize: 16,
                     bold: true,
@@ -991,7 +989,7 @@ function DownloadDocPDF(){
                     margin: [0, 10, 0, 10]
                 },
                 {
-                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %><%}else{ %>-<%} %></h6>'),
+                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(LabList[2].toString())+" , "+StringEscapeUtils.escapeHtml4(LabList[3].toString())+", PIN-"+StringEscapeUtils.escapeHtml4(LabList[5].toString()) %><%}else{ %>-<%} %></h6>'),
                     alignment: 'center',
                     fontSize: 14,
                     bold: true,
@@ -1030,9 +1028,9 @@ function DownloadDocPDF(){
 	                            <% int slno = 0; for (Object[] obj : MemberList) { %>
 	                            [
 	                                { text: '<%= ++slno %>', style: 'tableData',alignment: 'center' },
-	                                { text: '<%= obj[1] %>', style: 'tableData' },
-	                                { text: '<%= obj[2] %>', style: 'tableData' },
-	                                { text: '<%= obj[3] %>', style: 'tableData',alignment: 'center' }
+	                                { text: '<%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>', style: 'tableData' },
+	                                { text: '<%= obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>', style: 'tableData' },
+	                                { text: '<%= obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %>', style: 'tableData',alignment: 'center' }
 	                            ],
 	                            <% } %>
                             <% } else{%>
@@ -1077,7 +1075,7 @@ function DownloadDocPDF(){
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Title', style: 'tableData' },
-                                { text: 'System Segment Specification Document For Project <%=projectShortName %>', style: 'tableData' },
+                                { text: 'System Segment Specification Document For Project <%=projectShortName!=null?StringEscapeUtils.escapeHtml4(projectShortName): " - " %>', style: 'tableData' },
                             ],
                             
                             [
@@ -1089,7 +1087,7 @@ function DownloadDocPDF(){
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Classification', style: 'tableData' },
-                                { text: '<%=Classification %>', style: 'tableData' },
+                                { text: '<%=Classification!=null?StringEscapeUtils.escapeHtml4(Classification): " - " %>', style: 'tableData' },
                             ],
                             
                             [
@@ -1119,65 +1117,65 @@ function DownloadDocPDF(){
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Additional Information', style: 'tableData' },
-                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[0] %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[0].toString()) %><%} %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Project Name', style: 'tableData' },
-                                { text: '<%=projectShortName %>', style: 'tableData' },
+                                { text: '<%=projectShortName!=null?StringEscapeUtils.escapeHtml4(projectShortName): " - " %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Abstract', style: 'tableData' },
-                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[1] %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[1]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary[1].toString()): " - " %><%} %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Keywords', style: 'tableData' },
-                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[2] %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[2]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary[2].toString()): " - " %><%} %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Organization and address', style: 'tableData' },
-                                { text: '<% if (LabList!=null && LabList[1] != null) {%> <%=LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + ")"%> <%} else {%> - <%}%>'
+                                { text: '<% if (LabList!=null && LabList[1] != null) {%> <%=StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") :" - "+ ")"%> <%} else {%> - <%}%>'
 										+'Government of India, Ministry of Defence,Defence Research & Development Organization'
 								+'<% if (LabList!=null && LabList[2] != null && LabList[3] != null && LabList[5] != null) { %>'
-									+'<%=LabList[2] + " , " + LabList[3].toString() + ", PIN-" + LabList[5].toString()+"."%>'
+									+'<%=StringEscapeUtils.escapeHtml4(LabList[2].toString())+" , "+StringEscapeUtils.escapeHtml4(LabList[3].toString())+", PIN-"+StringEscapeUtils.escapeHtml4(LabList[5].toString())+"."%>'
 								+'<%}else{ %> - <%} %>' , style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Distribution', style: 'tableData' },
-                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[3] %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[3]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary[3].toString()): " - " %><%} %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Revision', style: 'tableData' },
-                                { text: '<%=version!=null ?version:"-" %>', style: 'tableData' },
+                                { text: '<%=version!=null ?StringEscapeUtils.escapeHtml4(version):"-" %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Prepared by', style: 'tableData' },
-                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[10] %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[10]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary[10].toString()): " - "  %><%} %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Reviewed by', style: 'tableData' },
-                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[7] %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[7]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary[7].toString()): " - "  %><%} %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Approved by', style: 'tableData' },
-                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[6] %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[6]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary[6].toString()): " - "  %><%} %>', style: 'tableData' },
                             ],
 
                         ]
@@ -1234,8 +1232,8 @@ function DownloadDocPDF(){
 		                        <% int slno = 0; for (Object[] obj : AbbreviationDetails) { %>
 		                            [
 		                                { text: '<%= ++slno %>', style: 'tableData',alignment: 'center' },
-		                                { text: '<%= obj[1] %>', style: 'tableData',alignment: 'center' },
-		                                { text: '<%= obj[2] %>', style: 'tableData' },
+		                                { text: '<%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "  %>', style: 'tableData',alignment: 'center' },
+		                                { text: '<%= obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "  %>', style: 'tableData' },
 		                            ],
 		                        <% } %>
                             <% } else{%>
@@ -1276,7 +1274,7 @@ function DownloadDocPDF(){
 	                <%int introCount=0;
 	                for(Object[] obj: SpecsIntro) {%>
 		                {
-		                	text: mainContentCount+'.<%=++introCount %>. <%=obj[1].toString() %>',	
+		                	text: mainContentCount+'.<%=++introCount %>. <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>',	
 		                	style: 'chapterSubHeader',
 		                    tocItem: true,
 		                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=introCount %>',
@@ -1284,7 +1282,7 @@ function DownloadDocPDF(){
 		                },
 	                
 		                {
-		                	stack: [htmlToPdfmake(setImagesWidth('<%if(obj[2]!=null) {%><%=obj[2].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
+		                	stack: [htmlToPdfmake(setImagesWidth('<%if(obj[2]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
 		                		  +'<%}else {%> No Details Added! <%} %>', 500))],
 		                    margin: [10, 0, 0, 0],
 		                },
@@ -1317,7 +1315,7 @@ function DownloadDocPDF(){
                 },
                 {
                 	<%if(SpecProducTree!=null && SpecProducTree.size()>0){ %>
-                		stack: [htmlToPdfmake(setImagesWidth('<%=SpecProducTree.get(0)[2].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 500))],
+                		stack: [htmlToPdfmake(setImagesWidth('<%=SpecProducTree.get(0)[2]!=null?StringEscapeUtils.escapeHtml4(SpecProducTree.get(0)[2].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " %>', 500))],
                 	<%} else{%>
                 		text: 'Guidance: The product Tree shall comprises the complete physical products / subsystems of the radar in the order of flow as a figure with unique ID',
                 		style: 'chapterContent',
@@ -1358,11 +1356,11 @@ function DownloadDocPDF(){
             		{
             		    text: [
             		        {
-            		            text: mainContentCount+'.<%=++specCount %> <%=obj[1].toString()  %> ',
+            		            text: mainContentCount+'.<%=++specCount %> <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "  %> ',
             		            tocItem: true // Only this text goes to TOC
             		        },
             		        {
-            		            text: '<%=obj[5]!=null?"( "+ obj[5] +" )":"" %>'
+            		            text: '<%=obj[5]!=null?"( "+ StringEscapeUtils.escapeHtml4(obj[5].toString()) +" )":"" %>'
             		        }
             		    ],
             		    style: 'chapterSubHeader',
@@ -1387,7 +1385,7 @@ function DownloadDocPDF(){
 	            				
 	            				<% if(!obj[0].toString().equalsIgnoreCase(obj1[0].toString())){%>
 	            				{
-	    	                       	text: mainContentCount+'.<%=specCount+"."+ (++parameterCount) %>. <%=obj1[5]!=null?"Parameter - "+ obj1[5] :"" %>',
+	    	                       	text: mainContentCount+'.<%=specCount+"."+ (++parameterCount) %>. <%=obj1[5]!=null?"Parameter - "+ StringEscapeUtils.escapeHtml4(obj1[5].toString()) :"" %>',
 	    	                       	style: 'chapterSubHeader',
 	    	                        tocItem: true,
 	    		                  <%--   id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=specCount+"-"+parameterCount %>', --%>
@@ -1410,7 +1408,7 @@ function DownloadDocPDF(){
 		    	                            [
 		    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
 		    	                                { text: 'Specification Id', style: 'tableData' },
-		    	                                { text: '<%=obj1[1]!=null?obj1[1]:"-" %>', style: 'tableData' },
+		    	                                { text: '<%=obj1[1]!=null?StringEscapeUtils.escapeHtml4(obj1[1].toString()):"-" %>', style: 'tableData' },
 		    	                            ],
 		    	                            
 		    	                            [
@@ -1425,35 +1423,35 @@ function DownloadDocPDF(){
 		    	                            
 		    	                            [
 		    	                            	 { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
-		    	                                { stack: [htmlToPdfmake(setImagesWidth('Description: - <%if(obj1[2]!=null){ %> <%=obj1[2].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
+		    	                                { stack: [htmlToPdfmake(setImagesWidth('Description: - <%if(obj1[2]!=null){ %> <%=StringEscapeUtils.escapeHtml4(obj1[2].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
 		    	                            ],
 		    	                            
 		    	                            [
 		    	                            	 { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
 		    	                                { text: 'Parameter', style: 'tableData' },
-		    	                                { text: '<%=obj1[5]!=null?obj1[5]:"-" %>', style: 'tableData' },
+		    	                                { text: '<%=obj1[5]!=null?StringEscapeUtils.escapeHtml4(obj1[5].toString()):"-" %>', style: 'tableData' },
 		    	                            ],
 		    	                            
 		    	                            [
 		    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
 		    	                                { text: 'Unit', style: 'tableData' },
-		    	                                { text: '<%=obj1[6]!=null?obj1[6]:"-" %>', style: 'tableData' },
+		    	                                { text: '<%=obj1[6]!=null?StringEscapeUtils.escapeHtml4(obj1[6].toString()):"-" %>', style: 'tableData' },
 		    	                            ],
 		    	                            
 		    	                            [
 		    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
 		    	                                { text: 'Typical Value', style: 'tableData' },
-		    	                                { text: '<%=obj1[9]!=null?obj1[9]:"-" %>', style: 'tableData' },
+		    	                                { text: '<%=obj1[9]!=null?StringEscapeUtils.escapeHtml4(obj1[9].toString()):"-" %>', style: 'tableData' },
 		    	                            ],
 		    	                            [
 		    	                                { text: '<%= ++snCount %>.', style: 'tableData',alignment: 'center' },
 		    	                                { text: 'Maximum Value', style: 'tableData' },
-		    	                                { text: '<%=obj1[11]!=null?obj1[11]:"-" %>', style: 'tableData' },
+		    	                                { text: '<%=obj1[11]!=null?StringEscapeUtils.escapeHtml4(obj1[11].toString()):"-" %>', style: 'tableData' },
 		    	                            ],
 		    	                            [
 		    	                                { text: '<%= ++snCount %>.', style: 'tableData',alignment: 'center' },
 		    	                                { text: 'Minimum Value', style: 'tableData' },
-		    	                                { text: '<%=obj1[12]!=null?obj1[12]:"-" %>', style: 'tableData' },
+		    	                                { text: '<%=obj1[12]!=null?StringEscapeUtils.escapeHtml4(obj1[12].toString()):"-" %>', style: 'tableData' },
 		    	                            ],
 		    	                            [
 		    	                                { text: '<%= ++snCount %>.', style: 'tableData',alignment: 'center' },
@@ -1511,7 +1509,7 @@ function DownloadDocPDF(){
     							
     							[
 	        						{text: '<%=++slno %>', style:'tableData', alignment: 'center'},
-	        						{text: '<%=obj[1] %>', style:'tableData',},
+	        						{text: '<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>', style:'tableData',},
 	        						{text: '<% List<String>linkedReq= new ArrayList<>(); List<String>tempReq = new ArrayList<>(); %>'	
 			    						  +'<%if(obj[4]!=null){ tempReq= Arrays.asList(obj[4].toString().split(",")); } %>'
 			    						  +'<%if(RequirementLists!=null && RequirementLists.size()>0){ for(Object[]obj1:RequirementLists){ if(tempReq.contains(obj1[0].toString())){ linkedReq.add(obj1[1].toString()); } }} %>'	
@@ -1573,7 +1571,7 @@ function DownloadDocPDF(){
     							
 	    							[
 		        						{text: '<%=++slno %>', style:'tableData', alignment: 'center'},
-		        						{text: '<%=obj[1] %>', style:'tableData',},
+		        						{text: '<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>', style:'tableData',},
 		        						{text: '<%if(specid.size()>0) { for(String s:specid){ %> <%=s %> \n <%}}else{ %> - <%} %>', style:'tableData', alignment: 'center'},
 		        					],
 	        					
@@ -1610,7 +1608,7 @@ function DownloadDocPDF(){
                 },
                 {
                 	<%if(Conclusion!=null){ %>
-                		stack: [htmlToPdfmake(setImagesWidth('<%=Conclusion.replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 500))],
+                		stack: [htmlToPdfmake(setImagesWidth('<%=StringEscapeUtils.escapeHtml4(Conclusion).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 500))],
                 	<%} else{%>
                 		text: 'No Details Added!',
                 	<%} %>
@@ -1647,7 +1645,7 @@ function DownloadDocPDF(){
                             },
                             {
                                 columns: [
-                                    { text: '<%if(docnumber!=null) {%><%=docnumber %><%} %>', alignment: 'left', margin: [30, 0, 0, 0], fontSize: 8 },
+                                    { text: '<%if(docnumber!=null) {%><%=StringEscapeUtils.escapeHtml4(docnumber) %><%} %>', alignment: 'left', margin: [30, 0, 0, 0], fontSize: 8 },
                                     { text: currentPage.toString() + ' of ' + pageCount, alignment: 'right', margin: [0, 0, 30, 0], fontSize: 8 }
                                 ]
                             },

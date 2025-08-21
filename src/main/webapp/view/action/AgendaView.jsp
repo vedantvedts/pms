@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
 
@@ -29,7 +30,7 @@ Object[] obj=(Object[])request.getAttribute("Content");
                        <b id="action" style="font-size:18px " ></b><br>
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<div>
 <label style="text-decoration: underline; font-weight: bolder;font-size: larger;">Content</label><br>
-<%=obj[1] %></div>
+<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %></div>
 <hr>
 
 <input type="button"  class="btn btn-info btn-xs center-block"   id="printPageButton" value="Print" onClick="window.print()">

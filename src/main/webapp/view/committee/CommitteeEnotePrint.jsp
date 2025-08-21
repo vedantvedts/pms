@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -157,17 +158,17 @@ Object[]NewApprovalList = (Object[])request.getAttribute("NewApprovalList");
 %>
 
 <div align="center">
-<div style="width: 100%;border: 0;text-align: center;"><h3> <b style="font-size:18px;text-decoration:underline">Note&nbsp;:&nbsp;<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[2]!=null){%>Note/<%=sdf.format(sdf1.parse(CommitteMainEnoteList[2].toString()))%><%} %></b></h3></div>
-<div style="width: 100%;border: 0;text-align: center;"> <span style="float: left;"><b style="font-size:18px; margin-left: 14px;">Ref No&nbsp; : &nbsp;<span style="color: blue; font-size: 16px;"><%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[1]!=null){%><%=CommitteMainEnoteList[1].toString()%><%}else{%>-<%}%></span></b></span><span style="float: right;"><b style="font-size:16px;">Date : &nbsp;<%=sdf.format(sdf1.parse(CommitteMainEnoteList[2].toString()))%></b></span> </div>
+<div style="width: 100%;border: 0;text-align: center;"><h3> <b style="font-size:18px;text-decoration:underline">Note&nbsp;:&nbsp;<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[2]!=null){%>Note/<%=sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[2].toString())))%><%} %></b></h3></div>
+<div style="width: 100%;border: 0;text-align: center;"> <span style="float: left;"><b style="font-size:18px; margin-left: 14px;">Ref No&nbsp; : &nbsp;<span style="color: blue; font-size: 16px;"><%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[1]!=null){%><%=StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[1].toString())%><%}else{%>-<%}%></span></b></span><span style="float: right;"><b style="font-size:16px;">Date : &nbsp;<%=sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[2].toString())))%></b></span> </div>
 <br><br><br>
 	<table style="border-collapse: collapse;">
 	<tr>
 	<td style="border: none; width: 25%;"><span style="font-size: 14px; color: blue;"><b style="margin-left:20px; color:black; ">Subject :</b></span></td>
-	<td style="border: none;"><span style="font-size: 14px; color: blue;"><%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[3]!=null){%><%=CommitteMainEnoteList[3].toString()%><%}else{%>-<%}%></span></td>
+	<td style="border: none;"><span style="font-size: 14px; color: blue;"><%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[3]!=null){%><%=StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[3].toString())%><%}else{%>-<%}%></span></td>
 	</tr>
 	<tr>
 	<td style="border: none; width:25%;"><span style=" font-size: 14px; color: blue;"><b style="margin-left:20px; color: black;">Comment :</b></span></td>
-	<td style="border: none;"><span style="font-size: 14px; color: blue;"><%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[4]!=null && CommitteMainEnoteList[4].toString().length()>0){%><%=CommitteMainEnoteList[4].toString().replaceAll("\n", "<br>")%><%}else{%>-<%}%></span> </td>
+	<td style="border: none;"><span style="font-size: 14px; color: blue;"><%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[4]!=null && CommitteMainEnoteList[4].toString().length()>0){%><%=StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[4].toString()).replaceAll("\n", "<br>")%><%}else{%>-<%}%></span> </td>
 	</tr>
 	<tr>
 	<td style="border: none; width:25%;"><span style=" font-size: 14px; color: blue;"><b style="margin-left:20px; color: black;">Attachment : </b></span></td>
@@ -184,8 +185,8 @@ Object[]NewApprovalList = (Object[])request.getAttribute("NewApprovalList");
 	<% if(EnotePrintDetails!=null && EnotePrintDetails.size()>0){
    for(Object[] ad :EnotePrintDetails) {
      if(ad[8].toString().equalsIgnoreCase("FWD")){%>
-	<div align="right" style="">&nbsp;<span class="text-blue" style="font-size :16px;"><span style="color: black;font-size: 10px;">Forwarded By</span><br><b><%=ad[2].toString().trim() %>, &nbsp; <%=ad[3].toString() %></b></span> </div>
-	  <div align="right" style="font-size :12px;">[Forwarded On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=fc.sdtfTordtf(ad[4].toString()) %> </span>]</div>
+	<div align="right" style="">&nbsp;<span class="text-blue" style="font-size :16px;"><span style="color: black;font-size: 10px;">Forwarded By</span><br><b><%=ad[2]!=null?StringEscapeUtils.escapeHtml4(ad[2].toString().trim()): " - " %>, &nbsp; <%=ad[3]!=null?StringEscapeUtils.escapeHtml4(ad[3].toString()): " - " %></b></span> </div>
+	  <div align="right" style="font-size :12px;">[Forwarded On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=ad[4]!=null?fc.sdtfTordtf(StringEscapeUtils.escapeHtml4(ad[4].toString())):" - " %> </span>]</div>
 	  <br>
 <%}}}%>
 <br><br><br><br>  
@@ -193,47 +194,47 @@ Object[]NewApprovalList = (Object[])request.getAttribute("NewApprovalList");
 if(EnotePrintDetails!=null && EnotePrintDetails.size()>0){
        for(Object[] ad :EnotePrintDetails) {
 		if(ad[8]!=null && ad[8].toString().equalsIgnoreCase("RC1")){%>
-		<div align="left" style="margin-left: 15px !important; font-size: 12px;"><p><%if(ad[5]!=null){ %><%=ad[5].toString() %><%} %></p></div>
-		<div align="left" style="margin-left:12px !important;">&nbsp;<span class="text-blue" style="font-size :16px;"><%if(!ad[1].toString().equalsIgnoreCase(ad[9].toString())){%></span> <span class="text-blue" style="font-size :14px;"> <b><%=ad[2].toString().trim() %>, &nbsp;<%=ad[3].toString() %><%}%></b></span> </div><br>
-	    <div align="left" style="margin-left:15px !important;font-size :12px;">[Recommended On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=fc.sdtfTordtf(ad[4].toString()) %> </span>]</div>
+		<div align="left" style="margin-left: 15px !important; font-size: 12px;"><p><%if(ad[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(ad[5].toString()) %><%} %></p></div>
+		<div align="left" style="margin-left:12px !important;">&nbsp;<span class="text-blue" style="font-size :16px;"><%if(!ad[1].toString().equalsIgnoreCase(ad[9].toString())){%></span> <span class="text-blue" style="font-size :14px;"> <b><%=ad[2]!=null?StringEscapeUtils.escapeHtml4(ad[2].toString().trim()): " - " %>, &nbsp;<%=ad[3]!=null?StringEscapeUtils.escapeHtml4(ad[3].toString()): " - " %><%}%></b></span> </div><br>
+	    <div align="left" style="margin-left:15px !important;font-size :12px;">[Recommended On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=ad[4]!=null?fc.sdtfTordtf(StringEscapeUtils.escapeHtml4(ad[4].toString())):" - " %> </span>]</div>
 	    <br><br><br>
 	   <%}else if(ad[8]!=null && ad[8].toString().equalsIgnoreCase("RR1")){%>
-	   <div align="left" style="margin-left: 15px !important; font-size: 12px;"><p><%if(ad[5]!=null){ %><%=ad[5].toString() %><%} %></p></div>
-	   <div align="left" style="margin-left:15px !important;">&nbsp;<span class="text-blue" style="font-size :16px;"><%if(!ad[1].toString().equalsIgnoreCase(ad[9].toString())){%></span> <span class="text-blue" style="font-size :14px;">  <b><%=ad[2].toString().trim()%>, &nbsp;<%=ad[3].toString() %><%}%></b></span> </div><br>
-	    <div align="left" style="margin-left:15px !important;font-size :12px;">[Returned On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=fc.sdtfTordtf(ad[4].toString()) %> </span>]</div>
+	   <div align="left" style="margin-left: 15px !important; font-size: 12px;"><p><%if(ad[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(ad[5].toString())%><%} %></p></div>
+	   <div align="left" style="margin-left:15px !important;">&nbsp;<span class="text-blue" style="font-size :16px;"><%if(!ad[1].toString().equalsIgnoreCase(ad[9].toString())){%></span> <span class="text-blue" style="font-size :14px;">  <b><%=ad[2]!=null?StringEscapeUtils.escapeHtml4(ad[2].toString().trim()): " - "%>, &nbsp;<%=ad[3]!=null?StringEscapeUtils.escapeHtml4(ad[3].toString()): " - " %><%}%></b></span> </div><br>
+	    <div align="left" style="margin-left:15px !important;font-size :12px;">[Returned On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=ad[4]!=null?fc.sdtfTordtf(StringEscapeUtils.escapeHtml4(ad[4].toString())):" - " %> </span>]</div>
 	     <br><br><br>
 	   <%}else if(ad[8]!=null && ad[8].toString().equalsIgnoreCase("RC2")){ %>
-	   <div align="left" style="margin-left: 15px !important; font-size: 12px;"><p><%if(ad[5]!=null){ %><%=ad[5].toString() %><%} %></p></div>
-	    <div align="left" style="margin-left:15px !important;">&nbsp;<span class="text-blue" style="font-size :16px;"><%if(!ad[1].toString().equalsIgnoreCase(ad[9].toString())){%></span> <span class="text-blue" style="font-size :14px;">  <b><%=ad[2].toString().trim() %>, &nbsp;<%=ad[3].toString() %><%}%></b></span> </div><br>
-	    <div align="left" style="margin-left:15px !important;font-size :12px;">[Recommended On :&nbsp;<span class="text-blue" style="font-size :12px;"> <%=fc.sdtfTordtf(ad[4].toString()) %> </span>]</div>
+	   <div align="left" style="margin-left: 15px !important; font-size: 12px;"><p><%if(ad[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(ad[5].toString()) %><%} %></p></div>
+	    <div align="left" style="margin-left:15px !important;">&nbsp;<span class="text-blue" style="font-size :16px;"><%if(!ad[1].toString().equalsIgnoreCase(ad[9].toString())){%></span> <span class="text-blue" style="font-size :14px;">  <b><%=ad[2]!=null?StringEscapeUtils.escapeHtml4(ad[2].toString().trim()): " - " %>, &nbsp;<%=ad[3]!=null?StringEscapeUtils.escapeHtml4(ad[3].toString()): " - " %><%}%></b></span> </div><br>
+	    <div align="left" style="margin-left:15px !important;font-size :12px;">[Recommended On :&nbsp;<span class="text-blue" style="font-size :12px;"> <%=ad[4]!=null?fc.sdtfTordtf(StringEscapeUtils.escapeHtml4(ad[4].toString())):" - " %> </span>]</div>
 	      <br><br><br>
 	   <%}else if (ad[8]!=null && ad[8].toString().equalsIgnoreCase("RR2")){ %>
-	   <div align="left" style="margin-left: 15px !important; font-size: 12px;"><p><%if(ad[5]!=null){ %><%=ad[5].toString() %><%} %></p></div>
-	    <div align="left" style="margin-left:15px !important;">&nbsp;<span class="text-blue" style="font-size :16px;"><%if(!ad[1].toString().equalsIgnoreCase(ad[9].toString())){%></span> <span class="text-blue" style="font-size :14px;">  <b><%=ad[2].toString().trim() %>, &nbsp;<%=ad[3].toString() %><%}%></b></span> </div><br>
-	    <div align="left" style="margin-left:15px !important;font-size :12px;">[Returned On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=fc.sdtfTordtf(ad[4].toString()) %>  </span>]</div>
+	   <div align="left" style="margin-left: 15px !important; font-size: 12px;"><p><%if(ad[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(ad[5].toString())%><%} %></p></div>
+	    <div align="left" style="margin-left:15px !important;">&nbsp;<span class="text-blue" style="font-size :16px;"><%if(!ad[1].toString().equalsIgnoreCase(ad[9].toString())){%></span> <span class="text-blue" style="font-size :14px;">  <b><%=ad[2]!=null?StringEscapeUtils.escapeHtml4(ad[2].toString().trim()): " - " %>, &nbsp;<%=ad[3]!=null?StringEscapeUtils.escapeHtml4(ad[3].toString()): " - " %><%}%></b></span> </div><br>
+	    <div align="left" style="margin-left:15px !important;font-size :12px;">[Returned On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=ad[4]!=null?fc.sdtfTordtf(StringEscapeUtils.escapeHtml4(ad[4].toString())):" - " %>  </span>]</div>
 	      <br><br><br>
 	   <%}else if(ad[8]!=null && ad[8].toString().equalsIgnoreCase("RC3")) {%>
-	   <div align="left" style="margin-left: 15px !important; font-size: 12px;"><p><%if(ad[5]!=null){ %><%=ad[5].toString() %><%} %></p></div>
-	    <div align="left" style="margin-left:15px !important;">&nbsp;<span class="text-blue" style="font-size :16px;"><%if(!ad[1].toString().equalsIgnoreCase(ad[9].toString())){%></span> <span class="text-blue" style="font-size :14px;">  <b><%=ad[2].toString().trim() %>, &nbsp;<%=ad[3].toString() %><%}%></b></span> </div><br>
-	   <div align="left" style="margin-left:15px !important;font-size :12px;">[Recommended On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=fc.sdtfTordtf(ad[4].toString()) %>  </span>]</div>
+	   <div align="left" style="margin-left: 15px !important; font-size: 12px;"><p><%if(ad[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(ad[5].toString()) %><%} %></p></div>
+	    <div align="left" style="margin-left:15px !important;">&nbsp;<span class="text-blue" style="font-size :16px;"><%if(!ad[1].toString().equalsIgnoreCase(ad[9].toString())){%></span> <span class="text-blue" style="font-size :14px;">  <b><%=ad[2]!=null?StringEscapeUtils.escapeHtml4(ad[2].toString().trim()): " - " %>, &nbsp;<%=ad[3]!=null?StringEscapeUtils.escapeHtml4(ad[3].toString()): " - " %><%}%></b></span> </div><br>
+	   <div align="left" style="margin-left:15px !important;font-size :12px;">[Recommended On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=ad[4]!=null?fc.sdtfTordtf(StringEscapeUtils.escapeHtml4(ad[4].toString())):" - " %>  </span>]</div>
 	      <br><br><br><br>
 	   <%}else if(ad[8]!=null && ad[8].toString().equalsIgnoreCase("RR3")){ %>
-	   <div align="left" style="margin-left: 15px !important; font-size: 12px;"><p><%if(ad[5]!=null){ %><%=ad[5].toString() %><%} %></p></div>
-	    <div align="left" style="margin-left:15px !important;">&nbsp;<span class="text-blue" style="font-size :16px;"><%if(!ad[1].toString().equalsIgnoreCase(ad[9].toString())){%></span> <span class="text-blue" style="font-size :14px;">  <b><%=ad[2].toString().trim() %>, &nbsp;<%=ad[3].toString() %><%}%></b></span> </div><br>
-  <div align="left" style="margin-left:15px !important;font-size :12px;">[Returned On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=fc.sdtfTordtf(ad[4].toString()) %>  </span>]</div> 
+	   <div align="left" style="margin-left: 15px !important; font-size: 12px;"><p><%if(ad[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(ad[5].toString()) %><%} %></p></div>
+	    <div align="left" style="margin-left:15px !important;">&nbsp;<span class="text-blue" style="font-size :16px;"><%if(!ad[1].toString().equalsIgnoreCase(ad[9].toString())){%></span> <span class="text-blue" style="font-size :14px;">  <b><%=ad[2]!=null?StringEscapeUtils.escapeHtml4(ad[2].toString().trim()): " - " %>, &nbsp;<%=ad[3]!=null?StringEscapeUtils.escapeHtml4(ad[3].toString()): " - " %><%}%></b></span> </div><br>
+  <div align="left" style="margin-left:15px !important;font-size :12px;">[Returned On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=ad[4]!=null?fc.sdtfTordtf(StringEscapeUtils.escapeHtml4(ad[4].toString())):" - " %>  </span>]</div> 
 	      <br><br><br><br>
 	   <%}else if(ad[8]!=null && ad[8].toString().equalsIgnoreCase("APR")){ %>
 		<br><br>
          <div align="center" style="text-align:center;"> 
          <span style="font-weight: 600; font-size: 16px; color: green;">APPROVED</span><br>
-         <span style="font-weight: 400; font-size: 12px; color: green;"><%if(ad[5]!=null){ %><%=ad[5].toString() %><%} %></span><br><br>
-         <span style="font-weight: 500; font-size: 14px; color: green;"><span class="text-blue" style="font-size :14px; color: green;">  <b><%=ad[2].toString().trim() %>, &nbsp;<%=ad[3].toString() %></b></span></span><br><br>
-  <span style="font-weight: 400; font-size: 12px; color: green;">[Approved On :&nbsp;<span class="text-blue" style="font-size:12px; color: green;"><%=fc.sdtfTordtf(ad[4].toString()) %> </span>]</span> 
+         <span style="font-weight: 400; font-size: 12px; color: green;"><%if(ad[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(ad[5].toString()) %><%} %></span><br><br>
+         <span style="font-weight: 500; font-size: 14px; color: green;"><span class="text-blue" style="font-size :14px; color: green;">  <b><%=ad[2]!=null?StringEscapeUtils.escapeHtml4(ad[2].toString().trim()): " - " %>, &nbsp;<%=ad[3]!=null?StringEscapeUtils.escapeHtml4(ad[3].toString()): " - " %></b></span></span><br><br>
+  <span style="font-weight: 400; font-size: 12px; color: green;">[Approved On :&nbsp;<span class="text-blue" style="font-size:12px; color: green;"><%=ad[4]!=null?fc.sdtfTordtf(StringEscapeUtils.escapeHtml4(ad[4].toString())):" - " %> </span>]</span> 
          </div>
      <%   } else if(ad[8]!=null && ad[8].toString().equalsIgnoreCase("RAP")){%>
-		   <div align="left" style="margin-left: 15px !important; font-size: 12px;"><p><%if(ad[5]!=null){ %><%=ad[5].toString() %><%} %></p></div>
-	   		 <div align="left" style="margin-left:15px !important;">&nbsp;<span class="text-blue" style="font-size :16px;"><%if(!ad[1].toString().equalsIgnoreCase(ad[9].toString())){%></span> <span class="text-blue" style="font-size :14px;">  <b><%=ad[2].toString().trim() %>, &nbsp;<%=ad[3].toString() %><%}%></b></span> </div><br>
-  			<div align="left" style="margin-left:15px !important;font-size :12px;">[Returned On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=fc.sdtfTordtf(ad[4].toString()) %>  </span>]</div> 
+		   <div align="left" style="margin-left: 15px !important; font-size: 12px;"><p><%if(ad[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(ad[5].toString())%><%} %></p></div>
+	   		 <div align="left" style="margin-left:15px !important;">&nbsp;<span class="text-blue" style="font-size :16px;"><%if(!ad[1].toString().equalsIgnoreCase(ad[9].toString())){%></span> <span class="text-blue" style="font-size :14px;">  <b><%=ad[2]!=null?StringEscapeUtils.escapeHtml4(ad[2].toString().trim()): " - " %>, &nbsp;<%=ad[3]!=null?StringEscapeUtils.escapeHtml4(ad[3].toString()): " - " %><%}%></b></span> </div><br>
+  			<div align="left" style="margin-left:15px !important;font-size :12px;">[Returned On :&nbsp;<span class="text-blue" style="font-size :12px;"><%=ad[4]!=null?fc.sdtfTordtf(StringEscapeUtils.escapeHtml4(ad[4].toString())):" - " %>  </span>]</div> 
 	      <br><br><br><br>
      <%} }}%>
      

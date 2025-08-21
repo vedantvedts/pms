@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -22,27 +23,22 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 String seslabid=(String)session.getAttribute("labid");
 %>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	
-	
-	<center>
-	
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-            </div>
-            
-    </center>
-    
-    
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -70,9 +66,9 @@ String seslabid=(String)session.getAttribute("labid");
 							<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
 								<%  for ( Object[]  obj :LabList) {%>
 								<%if(OfficerEditData.length==13){ %>
-								<option value="<%=obj[2] %>" <%if(obj[2].equals(OfficerEditData[10])) {%> selected="selected"  <%} %>> <%=obj[2] %></option>
+								<option value="<%=obj[2] %>" <%if(obj[2].equals(OfficerEditData[10])) {%> selected="selected"  <%} %>> <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %></option>
 								<%}else{ %>
-								<option value="<%=obj[2] %>" <%if(obj[2].toString().equalsIgnoreCase(seslabid)) {%> selected="selected" <%} %>> <%=obj[2] %></option>
+								<option value="<%=obj[2] %>" <%if(obj[2].toString().equalsIgnoreCase(seslabid)) {%> selected="selected" <%} %>> <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %></option>
 								<%} %>
 								<%} %>
 				     </select> 
@@ -103,7 +99,7 @@ String seslabid=(String)session.getAttribute("labid");
 <div class="col-md-3">
               <div class="form-group">
 						<label >Employee No:<span class="mandatory" style="color: red;">*</span></label>
-						<input  class="form-control alphanum-only"  type="text" id="EmpNo" name="EmpNo" required="required" maxlength="255" style="font-size: 15px;" readonly	value="<%=OfficerEditData[1] %>">
+						<input  class="form-control alphanum-only"  type="text" id="EmpNo" name="EmpNo" required="required" maxlength="255" style="font-size: 15px;" readonly	value="<%=OfficerEditData[1]!=null?StringEscapeUtils.escapeHtml4(OfficerEditData[1].toString()):"" %>">
 				</div>
 </div>
 </div>
@@ -113,7 +109,7 @@ String seslabid=(String)session.getAttribute("labid");
 <div class="col-md-3">
               <div class="form-group">
 						<label >Employee Name:<span class="mandatory" style="color: red;">*</span></label>
-						<input  class="form-control alpha-no-leading-space"  type="text" id="Empname" name="EmpName" required="required" maxlength="255" style=" font-size: 15px;text-transform: capitalize; width: 100%;" 	value="<%=OfficerEditData[2] %>">
+						<input  class="form-control alpha-no-leading-space"  type="text" id="Empname" name="EmpName" required="required" maxlength="255" style=" font-size: 15px;text-transform: capitalize; width: 100%;" 	value="<%=OfficerEditData[2]!=null?StringEscapeUtils.escapeHtml4(OfficerEditData[2].toString()):"" %>">
 				</div>
 </div>
 
@@ -125,7 +121,7 @@ String seslabid=(String)session.getAttribute("labid");
 						<select class="form-control selectdee" id="Designation" name="Designation" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;width: 80%;">
 										<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>					
 												<%  for ( Object[]  obj :DesignationList) {%>			
-												<option value="<%=obj[0] %>" <%if(OfficerEditData[3].toString().equalsIgnoreCase(obj[0].toString())) {%> selected="selected" <%} %>> <%=obj[2] %> </option>			
+												<option value="<%=obj[0] %>" <%if(OfficerEditData[3].toString().equalsIgnoreCase(obj[0].toString())) {%> selected="selected" <%} %>> <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %> </option>			
 												<%} %>
 						</select> 
 				</div>
@@ -136,7 +132,7 @@ String seslabid=(String)session.getAttribute("labid");
 <div class="col-md-3">
  <div class="form-group">
 					<label >Extension No:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control alphanum-only"  type="text" id="ExtNo"  name="ExtNo" required="required" maxlength="10" style="font-size: 15px;width: 80%;" value="<%=OfficerEditData[4] %>">
+					<input  class="form-control alphanum-only"  type="text" id="ExtNo"  name="ExtNo" required="required" maxlength="10" style="font-size: 15px;width: 80%;" value="<%=OfficerEditData[4]!=null?StringEscapeUtils.escapeHtml4(OfficerEditData[4].toString()):"" %>">
 				</div>
            
 </div>
@@ -145,7 +141,7 @@ String seslabid=(String)session.getAttribute("labid");
 <div class="col-md-3">
               <div class="form-group">
 					<label >Mobile No:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control indian-mobile" type="text"  id="mobilenumber"  name="mobilenumber" required maxlength="10" style="font-size: 15px;width:100%" value="<%=OfficerEditData[9]%>" id="">
+					<input  class="form-control indian-mobile" type="text"  id="mobilenumber"  name="mobilenumber" required maxlength="10" style="font-size: 15px;width:100%" value="<%=OfficerEditData[9]!=null?StringEscapeUtils.escapeHtml4(OfficerEditData[9].toString()):""%>" id="">
 			  </div>
 </div>
 </div>
@@ -154,7 +150,7 @@ String seslabid=(String)session.getAttribute("labid");
 <div class="col-md-3">
               <div class="form-group">
 					<label >Lab Email:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control email-input"  type="text" id="Email" name="Email" required="required" maxlength="255" style="font-size: 15px;width: 80%;" value="<%=OfficerEditData[5] %>">
+					<input  class="form-control email-input"  type="text" id="Email" name="Email" required="required" maxlength="255" style="font-size: 15px;width: 80%;" value="<%=OfficerEditData[5]!=null?StringEscapeUtils.escapeHtml4(OfficerEditData[5].toString()):"" %>">
 			  </div>
 </div>
 
@@ -162,7 +158,7 @@ String seslabid=(String)session.getAttribute("labid");
 <div class="col-md-3">
               <div class="form-group">
 					<label >Drona Email:</label>
-					<input  class="form-control email-input" type="email" id="DronaEmail" name="DronaEmail" maxlength="255" style="font-size: 15px;width:100%"  value="<%=OfficerEditData[7] %>" id="">
+					<input  class="form-control email-input" type="email" id="DronaEmail" name="DronaEmail" maxlength="255" style="font-size: 15px;width:100%"  value="<%=OfficerEditData[7]!=null?StringEscapeUtils.escapeHtml4(OfficerEditData[7].toString()):""%>" id="">
 			</div>
 </div>
 
@@ -170,7 +166,7 @@ String seslabid=(String)session.getAttribute("labid");
 <div class="col-md-3">
               <div class="form-group">
 					<label >Internet Email:</label>
-					<input  class="form-control email-input" type="email" id="InternetEmail" name="InternetEmail"  maxlength="255" style="font-size: 15px;width:100%" value="<%=OfficerEditData[8] %>"  id="">
+					<input  class="form-control email-input" type="email" id="InternetEmail" name="InternetEmail"  maxlength="255" style="font-size: 15px;width:100%" value="<%=OfficerEditData[8]!=null?StringEscapeUtils.escapeHtml4(OfficerEditData[8].toString()):"" %>"  id="">
 			</div>
 </div>
 
@@ -181,7 +177,7 @@ String seslabid=(String)session.getAttribute("labid");
 					<select class="form-control selectdee" name="Division" id="Division" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;width: 80%;">
 									<option value="0">--Select--</option>
 										<%  for ( Object[]  obj :DivisionList) {%>
-								     <option value="<%=obj[0] %>" <%if(OfficerEditData[6].toString().equalsIgnoreCase(obj[0].toString())) {%> selected="selected" <%} %>> <%=obj[1] %></option>
+								     <option value="<%=obj[0] %>" <%if(OfficerEditData[6].toString().equalsIgnoreCase(obj[0].toString())) {%> selected="selected" <%} %>> <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-" %></option>
 								     <%} %>
 					</select> 
 			  </div>

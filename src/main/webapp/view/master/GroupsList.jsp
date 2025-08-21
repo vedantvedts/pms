@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -136,23 +137,19 @@ List<Object[]> groupslist=(List<Object[]>) request.getAttribute("groupslist");
 String Onboarding = (String)request.getAttribute("Onboarding");
 String ses=(String)request.getParameter("result"); 
  String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	
-	
-	<div align="center">
-	
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-            </div>
-            
-    </div>
-    <%}%>
+ if (ses1 != null) { %>
+ <div align="center">
+     <div class="alert alert-danger" role="alert">
+         <%=StringEscapeUtils.escapeHtml4(ses1) %>
+     </div>
+ </div>
+<% }if (ses != null) { %>
+ <div align="center">
+     <div class="alert alert-success" role="alert">
+         <%=StringEscapeUtils.escapeHtml4(ses) %>
+     </div>
+ </div>
+<% } %>
 <br>	
 	
 <div class="container-fluid">		
@@ -227,16 +224,14 @@ String ses=(String)request.getParameter("result");
 	                                 <%for(Object[] obj:groupslist){ %>
 	                                     <tr>
 	                                         <td><input type="radio" name="groupid" value=<%=obj[0]%>  ></td> 
-	                                         <td><%=obj[6] %></td>
-	                                         <td><%=obj[1] %></td>
-	                                         <td style="text-align: left;"><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></td>
-	                                         <td style="text-align: left;"> <%if(obj[3]!=null){%><%=obj[4]%>, <%=obj[5]%><%}else{ %>-<%} %></td>
-	                                         <td ><%if(obj[7]!=null){%><%=obj[7] %><%}else{ %>-<%} %></td>
+	                                         <td><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"-"%></td>
+	                                         <td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%></td>
+	                                         <td style="text-align: left;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%></td>
+	                                         <td style="text-align: left;"> <%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString())%>, <%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):""%><%}else{ %>-<%} %></td>
+	                                         <td ><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()):"-"%></td>
 	                                     </tr>
 	                                 <%} %>
-	                             </tbody>
-				    				
-				    
+	                             </tbody>				    
 			                     </table>
 			                      
 			                   </div>
@@ -357,7 +352,7 @@ excel_file.addEventListener('change', (event) => {
             document.getElementById('myTable1').innerHTML = table_output;
             
            
-             var GroupCodejsArray = [<%int i=0; for (Object[] obj:groupslist) { %>"<%= obj[1] %>"<%= i + 1 < groupslist.size() ? ",":"" %><% } %>];
+             var GroupCodejsArray = [<%int i=0; for (Object[] obj:groupslist) { %>"<%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"" %>"<%= i + 1 < groupslist.size() ? ",":"" %><% } %>];
                      
              var groupcode=[];
              for (var i in sheet_data) {

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -55,22 +56,22 @@ h6 {
 
 
 
-	<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getAttribute("resultfail");
- if(ses1!=null){
-	%>
-	<center>
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</center>
-	<%}if(ses!=null){ %>
-	<center>
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-	</center>
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 	<br />
 <% List<Object[]> data = (List<Object[]>) request.getAttribute("tabledata");%>
@@ -101,7 +102,7 @@ h6 {
 													for (int i = 0; i < projects.size(); i++) {
 													%>
 													<option value="<%=projects.get(i)[0]%>">
-														<%=projects.get(i)[4]%> (<%=projects.get(i)[17]%>)
+														<%=projects.get(i)[4]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[4].toString()):"-"%> (<%=projects.get(i)[17]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[17].toString()):"-"%>)
 													</option>
 													<%}%>
 											</select></td>
@@ -157,15 +158,15 @@ h6 {
 
 
 
-															<td ><div style="text-align: center;"><%= data.get(i)[3] %></div></td>
-															<td ><div style="text-align: center;"><%= data.get(i)[2] %></div></td>
-															<td ><div style="text-align: center;"><%= data.get(i)[7] %></div></td>
-															<td ><div style="text-align: center;"><%= data.get(i)[5] %></div></td>
-															<td><div style="text-align: center;"><%= data.get(i)[4] %></div></td>
-															<td><div style="text-align: center;"><%= data.get(i)[9] %></div></td>
+															<td ><div style="text-align: center;"><%= data.get(i)[3]!=null?StringEscapeUtils.escapeHtml4(data.get(i)[3].toString()):"-" %></div></td>
+															<td ><div style="text-align: center;"><%= data.get(i)[2]!=null?StringEscapeUtils.escapeHtml4(data.get(i)[2].toString()):"-" %></div></td>
+															<td ><div style="text-align: center;"><%= data.get(i)[7]!=null?StringEscapeUtils.escapeHtml4(data.get(i)[7].toString()):"-" %></div></td>
+															<td ><div style="text-align: center;"><%= data.get(i)[5]!=null?StringEscapeUtils.escapeHtml4(data.get(i)[5].toString()):"-" %></div></td>
+															<td><div style="text-align: center;"><%= data.get(i)[4]!=null?StringEscapeUtils.escapeHtml4(data.get(i)[4].toString()):"-" %></div></td>
+															<td><div style="text-align: center;"><%= data.get(i)[9]!=null?StringEscapeUtils.escapeHtml4(data.get(i)[9].toString()):"-" %></div></td>
 
-															<td id='trimname'><%= data.get(i)[1] %></td>
-															<td><%= data.get(i)[10] %></td>
+															<td id='trimname'><%= data.get(i)[1]!=null?StringEscapeUtils.escapeHtml4(data.get(i)[1].toString()):"-" %></td>
+															<td><%= data.get(i)[10]!=null?StringEscapeUtils.escapeHtml4(data.get(i)[10].toString()):"-" %></td>
 														</tr>
 														<%} %>
 													</tbody>

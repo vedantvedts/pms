@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"   pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
@@ -296,17 +297,17 @@ scheduleId=rodscheduleeditdata[6].toString();
 	%>
 	<div align="center">
 	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
+                     <%=StringEscapeUtils.escapeHtml4(ses1) %>
                     </div></div>
 	<%}if(ses!=null){ %>
 	<div align="center">
 	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
+                     <%=StringEscapeUtils.escapeHtml4(ses) %>
                    </div></div>
                     <%}if(errorMsg!=null){ %>
                     	<div align="center">
 	<div class="alert alert-danger" role="alert" >
-                     <%=errorMsg %>
+                     <%=StringEscapeUtils.escapeHtml4(errorMsg)%>
                    </div></div>
            <%} %>         
                     
@@ -314,7 +315,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 <nav class="navbar navbar-light bg-light justify-content-between" id="main1" style="margin-top: -1%">
 	<a class="navbar-brand">
 		
-		<b style="color: #585858; font-size:19px;font-weight: bold;text-align: left; float:left" ><span style="color:#31708f"><%=rodscheduleeditdata[7] %> </span> <span style="color:#31708f;font-size: 15px"> (Meeting Date and Time : <%=sdf.format(sdf1.parse(rodscheduleeditdata[2].toString()))%> - <%=rodscheduleeditdata[3] %>)</span></b>
+		<b style="color: #585858; font-size:19px;font-weight: bold;text-align: left; float:left" ><span style="color:#31708f"><%=rodscheduleeditdata[7]!=null?StringEscapeUtils.escapeHtml4(rodscheduleeditdata[7].toString()): " - "%> </span> <span style="color:#31708f;font-size: 15px"> (Meeting Date and Time : <%=sdf.format(sdf1.parse(rodscheduleeditdata[2].toString()))%> - <%=rodscheduleeditdata[3]!=null?StringEscapeUtils.escapeHtml4(rodscheduleeditdata[3].toString()): " - " %>)</span></b>
 
 	</a>
 	
@@ -587,7 +588,7 @@ scheduleId=rodscheduleeditdata[6].toString();
       		<div class="panel-heading">
         		
         		<h4 class="panel-title">
-                	<span  style="font-size:14px">3.<%=unitcount %> <%=Unit %></span> 
+                	<span  style="font-size:14px">3.<%=unitcount %> <%=Unit!=null?StringEscapeUtils.escapeHtml4(Unit): " - " %></span> 
                 </h4>
        
        			<div style="float: right !important; margin-top:-20px; " >
@@ -647,9 +648,9 @@ scheduleId=rodscheduleeditdata[6].toString();
 	          						<span  style="font-size:14px">3.<%=unitcount %>.1.<%=unit11 %>. 
 	          						<!-- newly added by sankha 12-10-2023 -->
 	          						<%if(hlod[5].toString().length()>30){ %>
-									<%=hlod[5].toString().substring(0,20)+"...." %>	 <span style="font-size: 11px;color:crimson;cursor: pointer;]" onclick='showModal("<%=hlod[5].toString()%>")'>(<%=hlod[9] %>)</span>         						
+									<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()).substring(0,20)+"....": " - " %>	 <span style="font-size: 11px;color:crimson;cursor: pointer;]" onclick='showModal("<%=hlod[5].toString()%>")'>(<%=hlod[9]!=null?StringEscapeUtils.escapeHtml4(hlod[9].toString()): " - " %>)</span>         						
 	          						<%}else{ %>
-	          						<%=hlod[5].toString() %><span style="font-size: 11px;color:crimson" >(<%=hlod[9] %>)</span>
+	          						<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()): " - " %><span style="font-size: 11px;color:crimson" >(<%=hlod[9]!=null?StringEscapeUtils.escapeHtml4(hlod[9].toString()): " - " %>)</span>
 	          						<%} %></span>
 	          						<!-- end -->
 	          						  </h4>
@@ -779,13 +780,13 @@ scheduleId=rodscheduleeditdata[6].toString();
 	          						<span  style="font-size:14px">3.<%=unitcount %>.2.<%=unit12 %>. 
 	          						<!-- newly added by sankha 12-10-2023 -->
 	          						<%if(hlod[5].toString().length()>30){ %>
-									<%=hlod[5].toString().substring(0,20)+"...." %>	          						
+									<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()).substring(0,20)+"....": " - " %>	          						
 	          						<%}else{ %>
-	          						<%=hlod[5].toString() %>
+	          						<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()): " - " %>
 	          						<%} %>
 	          						<!-- end -->
 	          						</span>
-	          				<span style="color:crimson;font-size:11px;" onclick="showModal('<%=hlod[5].toString() %>')">(<%=hlod[9] %>)</span>  </h4>
+	          				<span style="color:crimson;font-size:11px;" onclick="showModal('<%=hlod[5].toString() %>')">(<%=hlod[9]!=null?StringEscapeUtils.escapeHtml4(hlod[9].toString()): " - " %>)</span>  </h4>
 	          				
 		       						<div   style="float: right !important; margin-top:-23px; ">
 									 	<table style="text-align: center;" >
@@ -915,12 +916,12 @@ scheduleId=rodscheduleeditdata[6].toString();
 	          						<span  style="font-size:14px">3.<%=unitcount %>.3.<%=unit13 %>.
 	          						<!-- newly added by sankha  on 12/10 -->
 	          						<%if(hlod[5].toString().length()>30) {%>    
-										<%=hlod[5].toString().substring(0,20) +"..."%>
+										<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()).substring(0,20) +"...": " - "%>
 									<%}else{ %>
-										    <%=hlod[5].toString() %>
+										    <%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()): " - " %>
 									<%} %></span>
 									<!-- end -->      						
-	          						<span style="color:crimson;font-size:11px;" onclick="showModal('<%=hlod[5].toString()%>')"> (<%=hlod[8] %>)</span>  </h4>
+	          						<span style="color:crimson;font-size:11px;" onclick="showModal('<%=hlod[5].toString()%>')"> (<%=hlod[8]!=null?StringEscapeUtils.escapeHtml4(hlod[8].toString()): " - " %>)</span>  </h4>
 	       						<div   style="float: right !important; margin-top:-23px; ">
 								 	<table style="text-align: center;" >
 						     			<thead>
@@ -975,7 +976,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 	          						<div style="margin-top:-22px; margin-left: 55px;">
 	          							<select  name="OutComesId" id="OutComesId" required="required"  data-live-search="true"  style="width: 165px;"  >
 	                                        <%for(Object[] obj:minutesoutcomelist){ %>	
-												<option value="<%=obj[0]%>"><%=obj[1]%></option>	
+												<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>	
 											<%} %>
 										</select>
 	          						
@@ -1200,9 +1201,9 @@ scheduleId=rodscheduleeditdata[6].toString();
 	          						<span  style="font-size:14px">5.<%=unitcount1 %> 
 	          						<!-- Newly added by sankha 12-10-2023 -->
 	          						<%if(hlo[5].toString().length()>40) {%>
-	          						<%=hlo[5].toString().substring(0, 35)+"...." %><span style="font-size: 11px;color:crimson;cursor: pointer;"onclick='showModal("<%=hlo[5].toString()%>")'>(<%=hlo[8] %> )</span>
+	          						<%=hlo[5]!=null?StringEscapeUtils.escapeHtml4(hlo[5].toString()).substring(0, 35)+"....": " - " %><span style="font-size: 11px;color:crimson;cursor: pointer;"onclick='showModal("<%=hlo[5].toString()%>")'>(<%=hlo[8]!=null?StringEscapeUtils.escapeHtml4(hlo[8].toString()): " - " %> )</span>
 	          						<%}else{ %>
-	          						<%=hlo[5].toString()%>&nbsp;<span style="font-size: 11px;color:crimson;">(<%=hlo[8] %> )</span>
+	          						<%=hlo[5]!=null?StringEscapeUtils.escapeHtml4(hlo[5].toString()): " - "%>&nbsp;<span style="font-size: 11px;color:crimson;">(<%=hlo[8]!=null?StringEscapeUtils.escapeHtml4(hlo[8].toString()): " - " %> )</span>
 	          						<%} %></span>
 	          						<!-- end  -->
 	          						  </h4>
@@ -1258,7 +1259,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 	          						<div style="margin-top:-22px; margin-left: 25px;">
 		          						<select  name="OutComesId" id="Assignee" required="required"  data-live-search="true"  style="width: 165px;"  >
 		                                    <%for(Object[] obj:minutesoutcomelist){ %>	
-												<option value="<%=obj[0]%>"><%=obj[1]%></option>	
+												<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>	
 											<%} %>
 										</select>
 	          						</div>
@@ -1512,7 +1513,7 @@ function showAttachmentModal(){
 						<div class="card-body" style="margin-top: -8px" >       	
 							<table class="table table-bordered table-hover table-striped table-condensed" >					
 									<tr>
-										<td><%=minutesattachmentlist.get(0)[2] %></td>
+										<td><%=minutesattachmentlist.get(0)[2]!=null?StringEscapeUtils.escapeHtml4(minutesattachmentlist.get(0)[2].toString()): " - " %></td>
 										<td><%if(minutesattachmentlist.get(0)[2].toString().endsWith(".pdf")) {%>
 											<div  align="center">
 												<a  href="MinutesAttachDownloadprotected.htm?attachmentid=<%=minutesattachmentlist.get(0)[0]%>"  data-toggle="tooltip" data-placement="top" title="Protected PDF"
@@ -1733,7 +1734,7 @@ function showAttachmentModal(){
   	                               <select  class="form-control" name="darc" id="OutComeAir" required="required"  data-live-search="true"  >
                                         <%for(Object[] obj:minutesoutcomelist){ %>	
 																	
-											<option value="<%=obj[0]%>"><%=obj[1]%></option>	
+											<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>	
 															
 										<%} %>
 									</select>
@@ -1807,7 +1808,7 @@ function showAttachmentModal(){
 						<div class="card-body" style="margin-top: -8px" >       	
 							<table class="table table-bordered table-hover table-striped table-condensed" >					
 									<tr>
-										<td><%=minutesattachmentlist.get(0)[2] %></td>
+										<td><%=minutesattachmentlist.get(0)[2]!=null?StringEscapeUtils.escapeHtml4(minutesattachmentlist.get(0)[1].toString()): " - " %></td>
 										<td>
 											
 											<div  align="center">

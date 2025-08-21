@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.committee.model.ProgrammeMaster"%>
 <%@page import="com.vts.pfms.cars.model.CARSInitiation"%>
 <%@page import="java.util.stream.Collectors"%>
@@ -130,22 +131,22 @@ sp::before {
 		String labcode = (String)session.getAttribute("labcode");
 		Long EmpId = (Long) session.getAttribute("EmpId");
 	%>
-	<% String ses=(String)request.getParameter("result");
-	 	String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-		%>
-		<div align="center">
-			<div class="alert alert-danger" role="alert">
-		    <%=ses1 %>
-		    </div>
-		</div>
-		<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-		    	<%=ses %>
-			</div>
-		</div>
-	<%} %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
    
 	<div class="container-fluid">
 		<div class="row">
@@ -171,7 +172,7 @@ sp::before {
 											}
 											for(ProgrammeMaster prgm : programmeList) {
 										%>
-											<option value="<%=prgm.getProgrammeId()%>" <%if(prgm.getProgrammeId()==Long.parseLong(programmeId)) {%>selected<%} %> ><%=prgm.getPrgmName() %> (<%=prgm.getPrgmCode() %>)</option>
+											<option value="<%=prgm.getProgrammeId()%>" <%if(prgm.getProgrammeId()==Long.parseLong(programmeId)) {%>selected<%} %> ><%=prgm.getPrgmName()!=null?StringEscapeUtils.escapeHtml4(prgm.getPrgmName()): " - " %> (<%=prgm.getPrgmCode()!=null?StringEscapeUtils.escapeHtml4(prgm.getPrgmCode()): " - " %>)</option>
 										<%} } %>
 									</select>
 								</form>
@@ -206,7 +207,7 @@ sp::before {
 													<select class="form-control selectdee" name="CpLabCode" tabindex="-1" required="required" style="width: 200px" id="CpLabCode" onchange="chairpersonfetch('1')">
 														<option disabled="disabled"  selected value="">Lab Name</option>
 													    <% for (Object[] obj : allLabList) {%>
-														    <option <%if(chairperson!=null && chairperson[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]%></option>
+														    <option <%if(chairperson!=null && chairperson[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 													    <%} %>
 													    <option <%if(chairperson!=null && chairperson[9].toString().equalsIgnoreCase("@EXP")){ %>selected <%} %>value="@EXP">Expert</option>
 													</select>
@@ -234,7 +235,7 @@ sp::before {
 													<select class="form-control selectdee" name="msLabCode" tabindex="-1" required="required" style="width: 200px" id="mSLabCode" onchange="msfetch('1')">
 														<option disabled="disabled"  selected value="">Lab Name</option>
 													    <% for (Object[] obj : allLabList) {%>
-														    <option <%if(secretary!=null&& secretary[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]%></option>
+														    <option <%if(secretary!=null&& secretary[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 													    <%} %>
 													    <option <%if(secretary!=null && secretary[9].toString().equalsIgnoreCase("@EXP")){ %>selected <%} %>value="@EXP">Expert</option>
 													</select>
@@ -259,7 +260,7 @@ sp::before {
 										<select class="form-control selectdee" id="proxysecretary" required="required" name="proxysecretary"style="margin-top: -5px">
 				    						<option value="0"  selected >None</option>
 				    						<% for (Object[] obj : employeeList1) {%>
-												<option value="<%=obj[0]%>" <%if(proxysecretary!=null && proxysecretary[5].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]%>, <%=obj[3] %></option>
+												<option value="<%=obj[0]%>" <%if(proxysecretary!=null && proxysecretary[5].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></option>
 											<%} %>
 				  						</select>
 				  						<%if(proxysecretary!=null){ %>
@@ -382,25 +383,25 @@ sp::before {
 			              							for(Object[]obj:tempcommitteemembersall){%>
 			              								<tr>
 			              									<td style="display: flex;justify-content: center;align-items: center;">
-			            										<input type="number" class="form-control" name="newslno" value="<%=obj[11] %>" min="1" max="<%=tempcommitteemembersall.size()%>" style="width:50%"> 
+			            										<input type="number" class="form-control" name="newslno" value="<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): "" %>" min="1" max="<%=tempcommitteemembersall.size()%>" style="width:50%"> 
 			              										<input type="hidden" name="memberId" value="<%=obj[0].toString() %>">
 			              									</td>
-			              									<td><%=obj[2].toString() %>,<%=obj[4].toString() %></td>
+			              									<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>,<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
 			              									<td> 
 																<%  if(obj[8].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
 																	else if(obj[8].toString().equalsIgnoreCase("CS") ){	 %> Member Secretary<%}
 																	else if(obj[8].toString().equalsIgnoreCase("CH") ){	 %> Co-Chairperson<%}
 																	else if(obj[8].toString().equalsIgnoreCase("PS") ) { %>Member Secretary (Proxy) <%}
 																	else if(obj[8].toString().equalsIgnoreCase("CI")){   %> Internal<%}
-																	else if(obj[8].toString().equalsIgnoreCase("CW")){	 %> External(<%=obj[12] %>)<%}
-																	else if(obj[8].toString().equalsIgnoreCase("CO")){	 %> External(<%=obj[12]%>)<%}
+																	else if(obj[8].toString().equalsIgnoreCase("CW")){	 %> External(<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %>)<%}
+																	else if(obj[8].toString().equalsIgnoreCase("CO")){	 %> External(<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - "%>)<%}
 																	else if(obj[8].toString().equalsIgnoreCase("P") ){	 %>Presenter <%}
 																	else if(obj[8].toString().equalsIgnoreCase("I")){	 %> Addl. Internal<%}
-																	else if(obj[8].toString().equalsIgnoreCase("W") ){	 %> Addl. External(<%=obj[12] %>)<%}
-																	else if(obj[8].toString().equalsIgnoreCase("E") )    {%> Addl. External(<%=obj[12] %>)<%}
+																	else if(obj[8].toString().equalsIgnoreCase("W") ){	 %> Addl. External(<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %>)<%}
+																	else if(obj[8].toString().equalsIgnoreCase("E") )    {%> Addl. External(<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %>)<%}
 																    // Prudhvi - 27/03/2024 start
-																	else if(obj[8].toString().equalsIgnoreCase("CIP") )    {%> Industry Partner(<%=obj[12] %>)<%}
-																	else if(obj[8].toString().equalsIgnoreCase("IP") )    {%> Addl. Industry Partner(<%=obj[12] %>)<%}
+																	else if(obj[8].toString().equalsIgnoreCase("CIP") )    {%> Industry Partner(<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %>)<%}
+																	else if(obj[8].toString().equalsIgnoreCase("IP") )    {%> Addl. Industry Partner(<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %>)<%}
 																%>
 										
 															</td>
@@ -503,7 +504,7 @@ sp::before {
 															<div class="input select">
 																<select class="form-control selectdee " name="InternalMemberIds" data-live-search="true" required  data-placeholder="Select Members" multiple style="width:400px">
 												                <%for(Object[] obj:employeeList){ %>																							
-																	<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>																				
+																	<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></option>																				
 																<%} %>
 																</select>
 															<input type="hidden" name="InternalLabCode" value="<%=labcode%>"> 	
@@ -546,7 +547,7 @@ sp::before {
 																	<option disabled="true"  selected value="">Lab Name</option>
 																	    <% for (Object[] obj : allLabList) {
 																	    if(!labcode.equals(obj[3].toString())){%>
-																	    <option value="<%=obj[3]%>"><%=obj[3]%></option>
+																	    <option value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 																	    <%}
 																	    }%>
 																</select>
@@ -591,7 +592,7 @@ sp::before {
 															<div class="input select ">
 																<select class="selectdee" name="ExpertMemberIds"  id="ExpertMemberIds"  data-live-search="true" style="width: 350px"  data-placeholder="Select Members" required multiple>
 													            	<%for(Object[] obj:expertList){ %>																									
-																		<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>	
+																		<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></option>	
 																														
 																	<%} %>
 																						
@@ -634,7 +635,7 @@ sp::before {
 													%>
 														<option value="<%=partner.getIndustryPartnerId()%>"
 														data-subtext="(<%=partner.getIndustryCity()+" - "+partner.getIndustryPinCode() %>)"
-														><%=partner.getIndustryName()%> (<%=partner.getIndustryCity()+" - "+partner.getIndustryPinCode() %>)</option>
+														><%=partner.getIndustryName()!=null?StringEscapeUtils.escapeHtml4(partner.getIndustryName()): " - "%> (<%=partner.getIndustryCity()!=null?StringEscapeUtils.escapeHtml4(partner.getIndustryCity()): " - "+" - "+partner.getIndustryPinCode()!=null?StringEscapeUtils.escapeHtml4(partner.getIndustryPinCode()): " - " %>)</option>
 														
 													<%}%>
 													<option value="0">ADD NEW</option>
@@ -682,7 +683,7 @@ sp::before {
 											  			<select class="form-control selectdee" id="repids" name="repids" style="" data-placeholder="Select Rep Types" multiple="multiple" >
 															<option  disabled="disabled" value="0">Choose...</option>
 															<%	for (Object[] obj  : committeerepnotaddedlist) {%>
-														     	<option value="<%=obj[0]%>" ><%=obj[2]%>  </option>
+														     	<option value="<%=obj[0]%>" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>  </option>
 															<% } %>
 														</select>
 													</td>
@@ -710,7 +711,7 @@ sp::before {
 													int count = 1;
 													for (Object[] obj : committeeMemberreplist) { %>
 														<tr id="repmem<%=obj[0] %>">
-															<td><sp> <%=obj[3]%> </sp></td>
+															<td><sp> <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> </sp></td>
 															<td>
 																<button class="fa fa-trash btn btn-danger " type="button"  style="background-color: white;border-color: white;" onclick="memberrepdelete('<%=obj[0] %>');" ></button>
 															</td>
@@ -769,7 +770,7 @@ sp::before {
 										<%
 										for (Object[] obj : allLabList) {
 										    if(!labcode.equals(obj[3].toString())){%>
-										    <option value="<%=obj[3]%>"><%=obj[3]%></option>
+										    <option value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 										    <%}
 										    }%>
 									</select>
@@ -839,7 +840,7 @@ sp::before {
 											hidden="true">--Select--</option>
 										 <%  for ( Object[]  obj :DesignationList) {%>
 										<option value="<%=obj[0] %>">
-											<%=obj[2] %></option>
+											<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
 										<%} %>
 									</select>
 								</div>
@@ -931,7 +932,7 @@ sp::before {
 											hidden="true">--Select--</option>
 										 <%  for ( Object[]  obj :DesignationList) {%>
 										<option value="<%=obj[0] %>">
-											<%=obj[2] %></option>
+											<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
 										<%} %>
 									</select>
 								</div>
@@ -1251,8 +1252,8 @@ function replacerepdd(){
 								} 
 								 
 								$('#chairperson').html(s);
-								if(hint=='0' && $CpLabCode =='<%=chairperson!=null?chairperson[9]:"-"%>'){
-									$('#chairperson').val('<%=chairperson!=null?chairperson[5]:"-"%>');
+								if(hint=='0' && $CpLabCode =='<%=chairperson!=null?StringEscapeUtils.escapeHtml4(chairperson[9].toString()):"-"%>'){
+									$('#chairperson').val('<%=chairperson!=null?StringEscapeUtils.escapeHtml4(chairperson[5].toString()):"-"%>');
 								}
 															
 							}

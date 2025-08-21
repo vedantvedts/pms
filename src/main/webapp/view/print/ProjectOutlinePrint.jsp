@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.vts.pfms.model.LabMaster"%>
@@ -118,14 +119,14 @@ projects.addAll(subProjectList);
 										<tr style="margin-bottom: 15px">
 											<td style="text-align: center;font-weight: bold;"><%=1+i %> </td>
 											<td style="text-align: center;font-weight: bold;">
-												<%=mainProjectList.get(i)[12]!=null?mainProjectList.get(i)[12]:"-" %>
+												<%=mainProjectList.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(mainProjectList.get(i)[12].toString()):"-" %>
 											</td>
 											<td style="font-weight: bold;"  >
 											<div class="container-fluid">
 													<div class="row">
 														<div>
 															<%if (mainProjectList.get(i) != null )
-																if(mainProjectList.get(i)[1] != null) { %><%=mainProjectList.get(i)[1]%> - <%=mainProjectList.get(i)[13]!=null?mainProjectList.get(i)[13]:"-"%>
+																if(mainProjectList.get(i)[1] != null) { %><%=StringEscapeUtils.escapeHtml4(mainProjectList.get(i)[1].toString())%> - <%=mainProjectList.get(i)[13]!=null?StringEscapeUtils.escapeHtml4(mainProjectList.get(i)[13].toString()):"-"%>
 															<%}%>
 														</div>
 													</div>
@@ -133,7 +134,7 @@ projects.addAll(subProjectList);
 											</td>
 											
 											<td style="font-weight: bold;text-align: center;">
-												<%if(mainProjectList.get(i)[32]!=null){%><%=mainProjectList.get(i)[32] %><%}else {%>-<%} %>
+												<%if(mainProjectList.get(i)[32]!=null){%><%=StringEscapeUtils.escapeHtml4(mainProjectList.get(i)[32].toString()) %><%}else {%>-<%} %>
 											</td>
 											<%-- <td>
 											<%=mainProjectList.get(i)[32]%>
@@ -229,14 +230,14 @@ projects.addAll(subProjectList);
 											<tr class="clickable " data-target="#presentation-slides" data-slide-to="<%=2+val%>" data-toggle="tooltip" data-placement="top" title="" style="cursor: pointer;">
 												<td style="text-align: center;font-weight: bold;"><%=1+i %> </td>
 												<td style="text-align: center;font-weight: bold;">
-													<%=subProjectList.get(i)[12]!=null?subProjectList.get(i)[12]:"-" %>
+													<%=subProjectList.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(subProjectList.get(i)[12].toString()):"-" %>
 												</td>
 												<td  style="font-weight: bold;margin-top: -20px"  >
 													<div class="container-fluid">
 														<div class="row">
 															<div>
 																<%if (subProjectList.get(i) != null )
-																	if(subProjectList.get(i)[1] != null) { %><%=subProjectList.get(i)[1]%> - <%=subProjectList.get(i)[13]!=null?subProjectList.get(i)[13]:"-"%>
+																	if(subProjectList.get(i)[1] != null) { %><%=StringEscapeUtils.escapeHtml4(subProjectList.get(i)[1].toString())%> - <%=subProjectList.get(i)[13]!=null?StringEscapeUtils.escapeHtml4(subProjectList.get(i)[13].toString()):"-"%>
 																<%}%>
 															</div>
 														</div>
@@ -246,7 +247,7 @@ projects.addAll(subProjectList);
 														
 												</td>
 												<td style="font-weight: bold;text-align: center;">
-													<%if(subProjectList.get(i)[32]!=null){%><%=subProjectList.get(i)[32] %><%}else {%>-<%} %>
+													<%if(subProjectList.get(i)[32]!=null){%><%=StringEscapeUtils.escapeHtml4(subProjectList.get(i)[32].toString()) %><%}else {%>-<%} %>
 												</td>
 												<%-- <td style="font-weight: bold;text-align: right;">
 													<%if (subProjectList.get(i) != null )

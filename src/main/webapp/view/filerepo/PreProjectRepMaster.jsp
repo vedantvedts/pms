@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
 	import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -133,20 +134,22 @@ textarea {
 	%>
 	
 	
-	<%String ses=(String)request.getParameter("result"); 
-		String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-		%>
-		<div align="center">
-		<div class="alert alert-danger" role="alert" >
-            <%=ses1 %>
-           </div></div>
-		<%}if(ses!=null){ %>
-		<div align="center">
-		<div class="alert alert-success" role="alert"  >
-      <%=ses %>
-       </div></div>
-     <%} %>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 	<div class="container-fluid">
 		<div class="row">
@@ -173,7 +176,7 @@ textarea {
 													<option value="<%=obj[0]%>"
 														<%if (InitiationId.equalsIgnoreCase(obj[0].toString())) {
 	                                                            projectDirectorId = Long.parseLong(obj[4].toString());%>
-														selected="selected" <%}%>><%=obj[3] + " ( " + obj[2] + " )"%>
+														selected="selected" <%}%>><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " + " ( " + obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " + " )"%>
 													</option>
 													<%
 													}

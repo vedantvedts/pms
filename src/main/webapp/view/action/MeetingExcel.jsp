@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.committee.dto.MeetingExcelDto"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -81,10 +82,10 @@ List<MeetingExcelDto> MeetingList=(List<MeetingExcelDto>)request.getAttribute("M
                     	
                        %>
                        <tr> 	
-                        <td  style="width: 1%;"><%=ls.getMobileNo() %></td>
-                        <td style="width: 5%;word-wrap: break-word;word-break: break-all;white-space: normal !important;"><%=ls.getMeetings().substring(0,ls.getMeetings().length()-3)%></td>
+                        <td  style="width: 1%;"><%=ls.getMobileNo()!=null?StringEscapeUtils.escapeHtml4(ls.getMobileNo()):" - " %></td>
+                        <td style="width: 5%;word-wrap: break-word;word-break: break-all;white-space: normal !important;"><%=ls.getMeetings()!=null?StringEscapeUtils.escapeHtml4(ls.getMeetings().substring(0,ls.getMeetings().length()-3)):" - " %></td>
                         
-                        <td style="width: 6%;"><%=ls.getVenue() %></td>
+                        <td style="width: 6%;"><%=ls.getVenue()!=null?StringEscapeUtils.escapeHtml4(ls.getVenue()):" - " %></td>
                      </tr> 
                      <%}}%>
                      

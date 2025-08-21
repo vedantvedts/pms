@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.time.LocalDate"%>
@@ -97,24 +98,22 @@ if(!divisionchedulelist.isEmpty()){
 
 
 
-<%String ses=(String)request.getParameter("result"); 
-String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){
-%>
-	<center>
-	
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</center>
-	<%}if(ses!=null){ %>
-	<center>
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</center>
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -141,7 +140,7 @@ if(ses1!=null){
 							<div class="col ">
 								 <select class="form-control selectdee" id="divisionid" required="required" name="divisionid" onchange='submitForm1();' >
 				   						<% for (Object[] obj : divisionslist) {%>
-										<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(divisionid)){ %>selected<%} %> ><%=obj[1]%></option>
+										<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(divisionid)){ %>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
 										<%} %>
 										
 				  				</select>
@@ -156,7 +155,7 @@ if(ses1!=null){
 								 <select class="form-control selectdee" id="committeeid" required="required" name="committeeid" onchange='submitForm();' >
 							   				<option value="all"  <%if(committeeid.equals("all")){ %>selected <%} %> >All</option>
 							   				<% for (Object[] obj : projapplicommitteelist) {%>
-											<option value="<%=obj[0]%>"  <%if(obj[0].toString().equals(committeeid)){ %>selected<%} %> ><%=obj[3]%></option>
+											<option value="<%=obj[0]%>"  <%if(obj[0].toString().equals(committeeid)){ %>selected<%} %> ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 											<%} %>   
 							  	</select>
 				  			</div>	
@@ -175,7 +174,7 @@ if(ses1!=null){
 							<div class="col ">
 								 <select class="form-control selectdee" id="initiationid" required="required" name="initiationid" onchange='submitForm1();' >
 				   						<% for (Object[] obj : divisionslist) {%>
-										<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(initiationid)){ %>selected<%} %> ><%=obj[4]%></option>
+										<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(initiationid)){ %>selected<%} %> ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%></option>
 										<%} %>
 										
 				  				</select>
@@ -189,7 +188,7 @@ if(ses1!=null){
 								 <select class="form-control selectdee" id="committeeid" required="required" name="committeeid" onchange='submitForm();' >
 							   				<option value="all"  <%if(committeeid.equals("all")){ %>selected <%} %> >All</option>
 							   				<% for (Object[] obj : projapplicommitteelist) {%>
-											<option value="<%=obj[0]%>"  <%if(obj[0].toString().equals(committeeid)){ %>selected<%} %> ><%=obj[3]%></option>
+											<option value="<%=obj[0]%>"  <%if(obj[0].toString().equals(committeeid)){ %>selected<%} %> ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 											<%} %>   
 							  	</select>
 				  			</div>	
@@ -247,8 +246,8 @@ if(ses1!=null){
 							int i=0;
 							for(Object[]obj:PreviousmeetingList){
 							%>
-						 <a class="tag meetingsp" style="text-decoration: none;" href="CommitteeScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[6].toString()%>
-						&nbsp;&nbsp;Date: <%= sdf2.format(sdf3.parse(obj[3].toString())) %>
+						 <a class="tag meetingsp" style="text-decoration: none;" href="CommitteeScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%>
+						&nbsp;&nbsp;Date: <%= obj[3]!=null?sdf2.format(sdf3.parse(obj[3].toString())):" - " %>
 							</a>
 						<%}}else{ %>
 						<p class="meetingsp ml-3 mr-3"> No Previous Meetings held !</p>

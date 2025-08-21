@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.Set"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="java.util.ArrayList"%>
@@ -115,21 +116,22 @@ label {
 			    .collect(Collectors.toList());
 		
 	%>
-	<% String ses = (String) request.getParameter("result"); 
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-        <div align="center">
-            <div class="alert alert-danger" role="alert">
-                <%= ses1 %>
-            </div>
-        </div>
-    <% } if (ses != null) { %>
-        <div align="center">
-            <div class="alert alert-success" role="alert">
-                <%= ses %>
-            </div>
-        </div>
-    <% } %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
     
     <div class="container-fluid">
     	<div class="card shadow-nohover" style="margin-top: -0.6pc">
@@ -137,7 +139,7 @@ label {
             	<div class="row">
                		<div class="col-md-6" class="left">
 	                    <h5 id="text" style="margin-left: 1%; font-weight: 600">
-	                      Field Description Details - <%=documentNo %>
+	                      Field Description Details - <%=documentNo!=null?StringEscapeUtils.escapeHtml4(documentNo): " - " %>
 	                    </h5>
                 	</div>
                 	
@@ -220,38 +222,38 @@ label {
 						               				<%for(Object[] obj : fieldMasterList ){
 						                			 %>
 														<option value="<%=obj[0]%>" <%if(desc[2]!=null && Long.parseLong(desc[2].toString())==Long.parseLong(obj[0].toString())) {%>selected<%} %> >
-															<%=obj[1] %>
+															<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>
 														</option>
 													<%} %>
 												</select>
 												<input form="inlinesubform<%=slno1%>" type="hidden" name="fieldMasterId" value="<%=desc[2] != null ? desc[2] : "" %>"/>
 											</td>	
 											<td>
-												<input form="inlinesubform<%=slno1%>" type="text" class="form-control dataType" name="dataType" id="dataType_<%=slno1 %>" <%if(desc[27]!=null) {%> value="<%=desc[27] %>" <%} %> readonly>
+												<input form="inlinesubform<%=slno1%>" type="text" class="form-control dataType" name="dataType" id="dataType_<%=slno1 %>" <%if(desc[27]!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(desc[27].toString()) %>" <%} %> readonly>
 											</td>	
 											<td>
-												<input form="inlinesubform<%=slno1%>" type="text" class="form-control typicalValue" name="typicalValue" id="typicalValue_<%=slno1 %>" value="<%=desc[13] %>" maxlength="255" required>
+												<input form="inlinesubform<%=slno1%>" type="text" class="form-control typicalValue" name="typicalValue" id="typicalValue_<%=slno1 %>" value="<%=desc[13]!=null?StringEscapeUtils.escapeHtml4(desc[13].toString()): " - " %>" maxlength="255" required>
 											</td>
 											<td>
-												<input form="inlinesubform<%=slno1%>" type="text" class="form-control minValue" name="minValue" id="minValue_<%=slno1 %>" value="<%=desc[14] %>" maxlength="255" required>
+												<input form="inlinesubform<%=slno1%>" type="text" class="form-control minValue" name="minValue" id="minValue_<%=slno1 %>" value="<%=desc[14]!=null?StringEscapeUtils.escapeHtml4(desc[14].toString()): " - "  %>" maxlength="255" required>
 											</td>
 											<td>
-												<input form="inlinesubform<%=slno1%>" type="text" class="form-control maxValue" name="maxValue" id="maxValue_<%=slno1 %>" value="<%=desc[15] %>" maxlength="255" required>
+												<input form="inlinesubform<%=slno1%>" type="text" class="form-control maxValue" name="maxValue" id="maxValue_<%=slno1 %>" value="<%=desc[15]!=null?StringEscapeUtils.escapeHtml4(desc[15].toString()): " - "  %>" maxlength="255" required>
 											</td>
 											<td>
-												<input form="inlinesubform<%=slno1%>" type="text" class="form-control initValue" name="initValue" id="initValue_<%=slno1 %>" value="<%=desc[16] %>" maxlength="255" required>
+												<input form="inlinesubform<%=slno1%>" type="text" class="form-control initValue" name="initValue" id="initValue_<%=slno1 %>" value="<%=desc[16]!=null?StringEscapeUtils.escapeHtml4(desc[16].toString()): " - "  %>" maxlength="255" required>
 											</td>
 											<td>
-												<input form="inlinesubform<%=slno1%>" type="text" class="form-control quantum" name="quantum" id="quantum_<%=slno1 %>" value="<%=desc[6] %>" maxlength="255" required>
+												<input form="inlinesubform<%=slno1%>" type="text" class="form-control quantum" name="quantum" id="quantum_<%=slno1 %>" value="<%=desc[6]!=null?StringEscapeUtils.escapeHtml4(desc[6].toString()): " - "  %>" maxlength="255" required>
 											</td>
 											<td>
-												<input form="inlinesubform<%=slno1%>" type="text" class="form-control unit" name="unit" id="unit_<%=slno1 %>" value="<%=desc[18] %>" maxlength="255" required>
+												<input form="inlinesubform<%=slno1%>" type="text" class="form-control unit" name="unit" id="unit_<%=slno1 %>" value="<%=desc[18]!=null?StringEscapeUtils.escapeHtml4(desc[18].toString()): " - "  %>" maxlength="255" required>
 											</td>	
 											<td>
-												<input form="inlinesubform<%=slno1%>" type="text" class="form-control description" name="description" id="description_<%=slno1 %>" value="<%=desc[5] %>" maxlength="255" >
+												<input form="inlinesubform<%=slno1%>" type="text" class="form-control description" name="description" id="description_<%=slno1 %>" value="<%=desc[5]!=null?StringEscapeUtils.escapeHtml4(desc[5].toString()): " - "  %>" maxlength="255" >
 											</td>	
 											<td>
-												<input form="inlinesubform<%=slno1%>" type="text" class="form-control remarks" name="remarks" id="remarks_<%=slno1 %>" value="<%=desc[7] %>" maxlength="500">
+												<input form="inlinesubform<%=slno1%>" type="text" class="form-control remarks" name="remarks" id="remarks_<%=slno1 %>" value="<%=desc[7]!=null?StringEscapeUtils.escapeHtml4(desc[7].toString()): " - "  %>" maxlength="500">
 											</td>	
 											<td class="center">
 												<form action="IRSFieldDescModifySubmit.htm" method="post" id="inlinesubform<%=slno1%>">

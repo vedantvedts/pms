@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
 <!DOCTYPE html>
@@ -219,7 +220,7 @@ div {
          
       		<div class="panel-heading ">
         		<h4 class="panel-title">
-          			<span  style="font-size:14px"><%=ProjectName%></span>  
+          			<span  style="font-size:14px"><%=ProjectName!=null?StringEscapeUtils.escapeHtml4(ProjectName): " - "%></span>  
         		</h4>
          	<div   style="float: right !important; margin-top:-23px; ">
 		 		
@@ -250,7 +251,7 @@ div {
 					        	<div>
 						          
 						 
-									<span  style="font-size:14px"><%=ProjectSubCount %>...../L<%=obj[4]%>/<%=obj[5]%>/<%=obj[3]%>  Ver.<%=obj[6]%></span>
+									<span  style="font-size:14px"><%=ProjectSubCount %>...../L<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>/<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%>/<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%>  Ver.<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%></span>
 						          		
 						          		
 						          		

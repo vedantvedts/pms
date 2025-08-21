@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.cars.model.CARSContract"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -104,7 +105,7 @@ String labcode = (String)session.getAttribute("labcode");
 <br>
 <table style="width: 100%;font-size: 14px !important;">
 	<tr>
-		<td style="text-align: left;width: 50%;">No&nbsp;:&nbsp;<span style="font-size: 13px"><%if(carsIni!=null) {%><%=carsIni.getCARSNo() %> <%} %></span></td>
+		<td style="text-align: left;width: 50%;">No&nbsp;:&nbsp;<span style="font-size: 13px"><%if(carsIni!=null) {%><%=carsIni.getCARSNo()!=null?StringEscapeUtils.escapeHtml4(carsIni.getCARSNo()): " - " %> <%} %></span></td>
 		<td style="text-align: right;width: 50%;">Date&nbsp;:&nbsp;<span style="font-size: 13px"><%if(carsContract!=null && carsContract.getFinalSoODate()!=null) {%><%=fc.SqlToRegularDate(carsContract.getFinalSoODate()) %> <%} %></span></td>
 	</tr>
 </table>
@@ -118,17 +119,17 @@ String labcode = (String)session.getAttribute("labcode");
 	<tr>
 		<td>
 			The Registrar <br>
-			<%=carsIni.getRSPInstitute() %> <br>
-			<%=carsIni.getRSPAddress()+", " %> <br>
-			<%=carsIni.getRSPCity()+", " %> 
-			<%=carsIni.getRSPState()+" - " %> 
-			<%=carsIni.getRSPPinCode() %>.
+			<%=carsIni.getRSPInstitute()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute()): " - " %> <br>
+			<%=carsIni.getRSPAddress()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPAddress()): " - "+", " %> <br>
+			<%=carsIni.getRSPCity()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()): " - "+", " %> 
+			<%=carsIni.getRSPState()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPState()): " - "+" - " %> 
+			<%=carsIni.getRSPPinCode()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPPinCode()): " - " %>.
 		</td>
 	</tr>
 	<tr><td></td></tr>
 	<tr><td></td></tr>
 	<tr>
-		<td style="font-weight: 600;">Kind Attn : <%if(carsIni!=null) {%><%=carsIni.getPITitle()+". "+carsIni.getPIName()+", "+carsIni.getPIDesig() %><%} %></td>
+		<td style="font-weight: 600;">Kind Attn : <%if(carsIni!=null) {%><%=carsIni.getPITitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPITitle()): " - "+". "+carsIni.getPIName()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIName()): " - "+", "+carsIni.getPIDesig()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIDesig()): " - " %><%} %></td>
 	</tr>
 	<tr><td></td></tr>
 	<tr><td></td></tr>
@@ -138,7 +139,7 @@ String labcode = (String)session.getAttribute("labcode");
 	<tr><td></td></tr>
 	<tr><td></td></tr>
 	<tr>
-		<td  style="font-weight: 600;text-indent: 20px;"><%if(carsIni!=null && carsIni.getInitiationTitle()!=null) {%>"<%=carsIni.getInitiationTitle()%>".<%} %></td>
+		<td  style="font-weight: 600;text-indent: 20px;"><%if(carsIni!=null && carsIni.getInitiationTitle()!=null) {%>"<%=StringEscapeUtils.escapeHtml4(carsIni.getInitiationTitle())%>".<%} %></td>
 	</tr>
 	<tr><td></td></tr>
 	<tr><td></td></tr>
@@ -151,8 +152,8 @@ String labcode = (String)session.getAttribute("labcode");
 	<tr>
 		<td style="width: 5%;vertical-align: top;">2. </td>
 		<td>
-			Contract for Acquisition of Research Services (CARS) between <%=labcode %> and <%=carsIni.getRSPInstitute()+", "+carsIni.getRSPAddress() %>, 
-			Bearing No. <%if(carsContract!=null && carsContract.getContractNo()!=null) {%><%=carsContract.getContractNo() %><%} %> 
+			Contract for Acquisition of Research Services (CARS) between <%=labcode!=null?StringEscapeUtils.escapeHtml4(labcode): " - " %> and <%=carsIni.getRSPInstitute()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute()): " - "+", "+carsIni.getRSPAddress()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPAddress()): " - " %>, 
+			Bearing No. <%if(carsContract!=null && carsContract.getContractNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsContract.getContractNo()) %><%} %> 
 			Dated <%if(carsContract!=null && carsContract.getContractDate()!=null) {%><%=fc.SqlToRegularDate(carsContract.getContractDate()) %><%} %>
 			on the subject is sent herewith for your necessary action please.
 		</td>
@@ -188,7 +189,7 @@ String labcode = (String)session.getAttribute("labcode");
 		<td style="width: 5%;vertical-align: top;">5. </td>
 		<td>
 			As per General Conditions of CARS (refer 2.2 C, Which is printed on back of the enclosed Original Contract form), you are requested to maintain
-			copies of books, bills, vouchers, and other financial records related to the contract for submission to <%=labcode %> during final Milestone Payment &
+			copies of books, bills, vouchers, and other financial records related to the contract for submission to <%=labcode!=null?StringEscapeUtils.escapeHtml4(labcode): " - " %> during final Milestone Payment &
 			financial closure of CARS.
 		</td>	
 	</tr>
@@ -202,15 +203,15 @@ String labcode = (String)session.getAttribute("labcode");
 	<tr><td></td></tr>
 	<tr>
 		<td></td>
-		<td style="text-align: right;">(<%if(dPandC!=null) {%><%if(dPandC[4]!=null) {%><%=dPandC[4] %><%} else{%><%=dPandC[5] %><%} %><%=dPandC[1] %> <%} %>)</td>
+		<td style="text-align: right;">(<%if(dPandC!=null) {%><%if(dPandC[4]!=null) {%><%=StringEscapeUtils.escapeHtml4(dPandC[4].toString()) %><%} else{%><%=dPandC[5]!=null?StringEscapeUtils.escapeHtml4(dPandC[5].toString()): " - " %><%} %><%=dPandC[1]!=null?StringEscapeUtils.escapeHtml4(dPandC[1].toString()): " - " %> <%} %>)</td>
 	</tr>
 	<tr>
 		<td></td>
-		<td style="text-align: right;"><%if(dPandC!=null && dPandC[2]!=null) {%><%=dPandC[2] %><%} %></td>
+		<td style="text-align: right;"><%if(dPandC!=null && dPandC[2]!=null) {%><%=StringEscapeUtils.escapeHtml4(dPandC[2].toString()) %><%} %></td>
 	</tr>
 	<tr>
 		<td></td>
-		<td style="text-align: right;">For Director, <%=labcode %></td>
+		<td style="text-align: right;">For Director, <%=labcode!=null?StringEscapeUtils.escapeHtml4(labcode): " - " %></td>
 	</tr>
 </table>
 <h1 class="break"></h1>
@@ -220,8 +221,8 @@ String labcode = (String)session.getAttribute("labcode");
 		<td style="width: 58%;vertical-align: top;">
 			<ul style="list-style-type: none;">
 				<li>The CDA (R&D)</li>
-				<li><%=labMaster.getLabAddress() %> </li>
-				<li><%=labMaster.getLabCity()+" - "+labMaster.getLabPin() %></li>
+				<li><%=labMaster.getLabAddress()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabAddress()): " - " %> </li>
+				<li><%=labMaster.getLabCity()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabCity()): " - "+" - "+labMaster.getLabPin() !=null?StringEscapeUtils.escapeHtml4(labMaster.getLabPin()): " - "%></li>
 			</ul>
 		</td>
 		<td style="width: 42%;vertical-align: top;">
@@ -239,8 +240,8 @@ String labcode = (String)session.getAttribute("labcode");
 				<li>The Director General (ECS)</li>
 				<li>Ministry of Defence, DRDO</li>
 				<li><%=labcode %></li>
-				<li><%=labMaster.getLabAddress() %> </li>
-				<li><%=labMaster.getLabCity()+" - "+labMaster.getLabPin() %></li>
+				<li><%=labMaster.getLabAddress()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabAddress()): " - " %> </li>
+				<li><%=labMaster.getLabCity()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabCity()): " - "+" - "+labMaster.getLabPin()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabPin()): " - " %></li>
 			</ul>
 		</td>
 		<td style="width: 42%;vertical-align: top;">

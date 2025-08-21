@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -45,20 +46,22 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 
 
 
-<%
-String ses=(String)request.getParameter("result"); 
-String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%><center>
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -123,7 +126,7 @@ String ses1=(String)request.getParameter("resultfail");
 															<%
 															for (Object[] protype : ProjectTypeList) {
 															%>
-															<option value="<%=protype[0]%>"><%=protype[1]%></option>
+															<option value="<%=protype[0]%>"><%=protype[1]!=null?StringEscapeUtils.escapeHtml4(protype[1].toString()): " - "%></option>
 															<%
 															}
 															%>
@@ -137,7 +140,7 @@ String ses1=(String)request.getParameter("resultfail");
 																for (Object[] protype : securityClassificationList) 
 															{
 															%>
-															<option value="<%=protype[0]%>"><%=protype[1]%></option>
+															<option value="<%=protype[0]%>"><%=protype[1]!=null?StringEscapeUtils.escapeHtml4(protype[1].toString()): " - "%></option>
 															<%
 															}}
 															%>
@@ -153,7 +156,7 @@ String ses1=(String)request.getParameter("resultfail");
 															<%
 															if(OfficerList!=null && OfficerList.size()>0){for (Object[] protype : OfficerList) {
 															%>
-															<option value="<%=protype[0]%>"><%=protype[2]%>, <%=protype[3] %></option>
+															<option value="<%=protype[0]%>"><%=protype[2]!=null?StringEscapeUtils.escapeHtml4(protype[2].toString()): " - "%>, <%=protype[3]!=null?StringEscapeUtils.escapeHtml4(protype[3].toString()): " - " %></option>
 															<%
 															}}
 															%>
@@ -214,7 +217,7 @@ String ses1=(String)request.getParameter("resultfail");
 															<%
 															for (Object[] protype : PlatformList) {
 															%>
-															<option value="<%=protype[0]%>"><%=protype[1]%></option>
+															<option value="<%=protype[0]%>"><%=protype[1]!=null?StringEscapeUtils.escapeHtml4(protype[1].toString()): " - "%></option>
 															<%
 															}
 															%>

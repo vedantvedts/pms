@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -219,23 +220,22 @@ h6 {
   
 	List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName"); 
 %>
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-	</div>
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	<div id="reqmain" class="card-slider">
 		<form class="form-inline" method="POST"
 			action="PreProjectFileUpload.htm">
@@ -251,7 +251,7 @@ h6 {
                                         for(Object[]obj:ProjectIntiationList){%>
 						<option value="<%=obj[0]+"/"+obj[4]+"/"+obj[5]+"/"+obj[11]%>"
 							<%if(obj[4].toString().equalsIgnoreCase(projectshortName)) {%>
-							selected <%} %>><%=obj[4] %></option>
+							selected <%} %>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></option>
 						<%}} %>
 					</select>
 			
@@ -269,7 +269,7 @@ h6 {
 							style="background: #C4DDFF; box-shadow: 2px 2px 2px grey;">
 							<div class="col-md-10" id="projecthead">
 								<h5 style="margin-left: 1%;">
-									<%="Document Upload for  Project "+projectshortName %>
+									<%="Document Upload for  Project "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - " %>
 								</h5>
 							</div>
 							<div class="col-md-2" id="addReqButton">
@@ -287,7 +287,7 @@ h6 {
 										<ul style="margin-left: -4%;">
 											<%for(Object[]obj:steps) {%>
 											<li><span class="caret" id="span<%=obj[0] %>"
-												onclick="onclickchange(this,'<%=obj[0]%>','<%=obj[1]%>');"><%=obj[1] %></span>
+												onclick="onclickchange(this,'<%=obj[0]%>','<%=obj[1]%>');"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span>
 												<ul class="nested" id="<%=obj[0]%>"></ul></li>
 											<%} %>
 										</ul>

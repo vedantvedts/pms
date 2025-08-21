@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
@@ -45,23 +46,22 @@ h6{
   
 %>
 
-
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
- if(ses1!=null){
-	%>
-		<div align="center">
-			<div class="alert alert-danger" role="alert" >
-		    <%=ses1 %>
-		    </div>
-		</div>
-<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert"  >
-	    		<%=ses %>
-	    	</div>
-	    </div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br/>
 
@@ -82,7 +82,7 @@ h6{
 						   						<td style="text-align: left;">
 	                                            	<select class="form-control selectdee " name="projectid" required="required"  data-live-search="true" >
 	                                                 	<% for(Object[] obj:ProjectsList){ %>
-															<option value="<%=obj[0] %>" <%if(projectid.equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[4] %></option>	
+															<option value="<%=obj[0] %>" <%if(projectid.equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - " %></option>	
 														<%} %>
 													</select>	       
 												</td>
@@ -155,7 +155,7 @@ h6{
 												   		{ %>
 														<tr>	
 															<td class="center"><%=count %>	</td>
-															<td><%=action[2] %></td>
+															<td><%=action[2]!=null?StringEscapeUtils.escapeHtml4(action[2].toString()):" - " %></td>
 															<td class="center">
 																<%
 																	LocalDate pdc = LocalDate.parse(action[5].toString());
@@ -181,8 +181,8 @@ h6{
 																<td  class="center"> <%if(action[17]!=null){ %><%=rdf.format(sdf.parse(action[17].toString())) %> <%}else{ %> - <%} %>
 															<%} %>
 															
-															<td><%=action[13] %>, <%=action[14] %></td>
-															<td><%=action[15] %>, <%=action[16] %></td>
+															<td><%=action[13]!=null?StringEscapeUtils.escapeHtml4(action[13].toString()):" - " %>, <%=action[14]!=null?StringEscapeUtils.escapeHtml4(action[14].toString()):" - " %></td>
+															<td><%=action[15]!=null?StringEscapeUtils.escapeHtml4(action[15].toString()):" - " %>, <%=action[16]!=null?StringEscapeUtils.escapeHtml4(action[16].toString()):" - " %></td>
 															<td>
 																<%if(action[12]==null || Integer.parseInt(action[12].toString())==0){ %>
 																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -193,7 +193,7 @@ h6{
 															     <%} else if(action[12]!=null || Integer.parseInt(action[12].toString())>0){ %>
 															     <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															     	<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action[12]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-															            <%=action[12]%>
+															            <%=action[12]!=null?StringEscapeUtils.escapeHtml4(action[12].toString()):" - "%>
 															        </div> 
 															     </div>
 																<%} %>

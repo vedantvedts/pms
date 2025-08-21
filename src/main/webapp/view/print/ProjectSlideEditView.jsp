@@ -1031,7 +1031,8 @@ function ViewInModel(val) {
 </html>
  --%>
  
- <%@page import="java.nio.file.Path"%>
+ <%@page import="org.apache.commons.text.StringEscapeUtils"%>
+<%@page import="java.nio.file.Path"%>
  <%@page import="java.io.File"%>
 <%@page import="java.nio.file.Paths"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"  pageEncoding="ISO-8859-1"
@@ -1163,24 +1164,22 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 }
 %>
 
-<%String ses=(String)request.getParameter("result"); 
-String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){
-%>
-	<div align="center">
-	
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</div>
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 <div id="presentation-slides" class="carousel slide " data-ride="carousel">
 	<div class="carousel-inner" align="center">
 	<!-- ----------------------------------------  View  Div ----------------------------------------------------- -->
@@ -1192,7 +1191,7 @@ if(ses1!=null){
 						<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-						<h2 style="color: black;font-weight: 500;" class="col-md-9" align="center"> <%if(projectdata!=null && projectdata[1]!=null){%><%=projectdata[1]%> - <%=projectdata[13]!=null?projectdata[13]:"--"%> (<%=projectdata[12]!=null?projectdata[12]:"--"%>) <%}%></h2>
+						<h2 style="color: black;font-weight: 500;" class="col-md-9" align="center"> <%if(projectdata!=null && projectdata[1]!=null){%><%=StringEscapeUtils.escapeHtml4(projectdata[1].toString())%> - <%=projectdata[13]!=null?StringEscapeUtils.escapeHtml4(projectdata[13].toString()):"--"%> (<%=projectdata[12]!=null?StringEscapeUtils.escapeHtml4(projectdata[12].toString()):"--"%>) <%}%></h2>
 						
 						<div class="col-md-1" align="right" style="padding-top:5px;" >
 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
@@ -1215,14 +1214,14 @@ if(ses1!=null){
 										<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: maroon;">Current Stage</td>
 									</tr>
 									<tr>
-										<td colspan="1" style="width: 12%;color: #007bff;"><%=projectdata[12]!=null?projectdata[12]:"--"%></td>
+										<td colspan="1" style="width: 12%;color: #007bff;"><%=projectdata[12]!=null?StringEscapeUtils.escapeHtml4(projectdata[12].toString()):"--"%></td>
 										<td colspan="1" style="width: 12%;color: #007bff;"><%=sdf.format(projectdata[5])%></td>
 										<td colspan="1" style="color: #007bff;"><%=sdf.format(projectdata[4])%></td>
-										<td colspan="1" style="width: 12%;color: #007bff;"><%=projectdata[6]!=null?projectdata[6]:"--"%>
-										<td colspan="1" style="width: 12%;color: #007bff;"><%=projectdata[32]!=null?projectdata[32]:"--"%></td>
+										<td colspan="1" style="width: 12%;color: #007bff;"><%=projectdata[6]!=null?StringEscapeUtils.escapeHtml4(projectdata[6].toString()):"--"%>
+										<td colspan="1" style="width: 12%;color: #007bff;"><%=projectdata[32]!=null?StringEscapeUtils.escapeHtml4(projectdata[32].toString()):"--"%></td>
 										<td colspan="1" style="color: #007bff;"><%=nfc.convert(cost / 10000000)%></td>
-										<td colspan="1" style="color: #007bff;"><%if (projectdata != null && projectdata[33] != null) {%><%=projectdata[33]%><%} else {%>--<%}%>, <%if(projectdata[34]!=null) {%> <%=projectdata[34].toString() %> <%} %> </td>
-										<td colspan="1" style="color: #007bff;"><%if(projectdata[14]!=null){%><%=projectdata[14]%><%} else {%>--<%}%></td>
+										<td colspan="1" style="color: #007bff;"><%if (projectdata != null && projectdata[33] != null) {%><%=StringEscapeUtils.escapeHtml4(projectdata[33].toString())%><%} else {%>--<%}%>, <%if(projectdata[34]!=null) {%> <%=StringEscapeUtils.escapeHtml4(projectdata[34].toString()) %> <%} %> </td>
+										<td colspan="1" style="color: #007bff;"><%if(projectdata[14]!=null){%><%=StringEscapeUtils.escapeHtml4(projectdata[14].toString())%><%} else {%>--<%}%></td>
 									</tr>
 
 									<tr>
@@ -1230,7 +1229,7 @@ if(ses1!=null){
 										<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">
 										Brief : </b>  </td>
 										<td colspan="7" style="font-weight: bold;color:#212529 ">
-											<%=projectdata[15]!=null?projectdata[15]:"--"%>
+											<%=projectdata[15]!=null?StringEscapeUtils.escapeHtml4(projectdata[15].toString()):"--"%>
 										</td>
 									</tr>
 									<tr>
@@ -1239,7 +1238,7 @@ if(ses1!=null){
 												Objectives :
 											</b>
 										</td>
-										<td colspan="7" style="font-weight: bold;color:#212529 "><%=projectdata[7]!=null?projectdata[7]:"--"%>
+										<td colspan="7" style="font-weight: bold;color:#212529 "><%=projectdata[7]!=null?StringEscapeUtils.escapeHtml4(projectdata[7].toString()):"--"%>
 										</td>
 									</tr>
 								<%-- 	<tr>
@@ -1253,7 +1252,7 @@ if(ses1!=null){
 										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9; vertical-align: top;">
 											<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">Deliverables : </b> 
 										</td>
-										<td colspan="7" style="font-weight: bold;color:#212529 "><%=projectdata[8]!=null?projectdata[8]:"--"%>
+										<td colspan="7" style="font-weight: bold;color:#212529 "><%=projectdata[8]!=null?StringEscapeUtils.escapeHtml4(projectdata[8].toString()):"--"%>
 										</td>
 									</tr>
 								</table>
@@ -1286,7 +1285,7 @@ if(ses1!=null){
 													<%=projectdata[20].toString().substring(3,projectdata[20].toString().length()-1 )%>
 												<%} else{%>-<%} %>  --%>
 												<div class="ml-3" style="text-align: left;">
-												<%=projectdata[20].toString()%>
+												<%=projectdata[20]!=null?StringEscapeUtils.escapeHtml4(projectdata[20].toString()): " - "%>
 												</div>
 										</div>
 									
@@ -1299,7 +1298,7 @@ if(ses1!=null){
 											</span>
 											<%-- <%=projectdata[31].toString().substring(3,projectdata[31].toString().length()-1 )%> --%>
 										<div class="ml-3">
-												<%=projectdata[31].toString()%>
+												<%=StringEscapeUtils.escapeHtml4(projectdata[31].toString())%>
 												</div>
 									
 										</div>
@@ -1375,14 +1374,14 @@ if(ses1!=null){
 											<td colspan="1" style="font-size: 1.2rem; font-weight: bold; color: maroon;">Current Stage</td>
 										</tr>
 										<tr>
-											<td colspan="1" style="width: 12%;color: #007bff"><%=projectdata[12]!=null?projectdata[12]:"--"%></td>
+											<td colspan="1" style="width: 12%;color: #007bff"><%=projectdata[12]!=null?StringEscapeUtils.escapeHtml4(projectdata[12].toString()):"--"%></td>
 											<td colspan="1" style="width: 12%;color: #007bff"><%=sdf.format(projectdata[5])%></td>
 											<td colspan="1" style="color: #007bff"><%=sdf.format(projectdata[4])%></td>
-											<td colspan="1" style="width: 12%;color: #007bff"><%=projectdata[6]!=null?projectdata[6]:"-"%></td>
-											<td colspan="1" style="width: 12%;color: #007bff"><%=projectdata[32]!=null?projectdata[32]:"--"%></td>
+											<td colspan="1" style="width: 12%;color: #007bff"><%=projectdata[6]!=null?StringEscapeUtils.escapeHtml4(projectdata[6].toString()):"-"%></td>
+											<td colspan="1" style="width: 12%;color: #007bff"><%=projectdata[32]!=null?StringEscapeUtils.escapeHtml4(projectdata[32].toString()):"--"%></td>
 											<td colspan="1" style="color: #007bff"><%=nfc.convert(cost / 10000000)%></td>
-											<td colspan="1" style="color: #007bff"><%if (projectdata != null && projectdata[33] != null) {%><%=projectdata[33]%><%} else {%>--<%}%>, <%if(projectdata[34]!=null) {%> <%=projectdata[34].toString() %> <% }%></td>
-											<td colspan="1" style="color: #007bff"><%if(projectdata[14]!=null){%><%=projectdata[14]%><%} else {%>--<%}%></td>
+											<td colspan="1" style="color: #007bff"><%if (projectdata != null && projectdata[33] != null) {%><%=StringEscapeUtils.escapeHtml4(projectdata[33].toString())%><%} else {%>--<%}%>, <%if(projectdata[34]!=null) {%> <%=StringEscapeUtils.escapeHtml4(projectdata[34].toString())%> <% }%></td>
+											<td colspan="1" style="color: #007bff"><%if(projectdata[14]!=null){%><%=StringEscapeUtils.escapeHtml4(projectdata[14].toString())%><%} else {%>--<%}%></td>
 										</tr>
 									</table>
 								<div class="row" style="height: 80%">
@@ -1395,7 +1394,7 @@ if(ses1!=null){
 																<b style="font-size: 1.02rem;font-weight: bold;color:#021B79;vertical-align: top;">Brief:</b>
 															</td>
 															<td style="border-top: none;color:#212529;">
-																<%=projectdata[15]!=null?projectdata[15]:"--"%>
+																<%=projectdata[15]!=null?StringEscapeUtils.escapeHtml4(projectdata[15].toString()):"--"%>
 															</td>
 														</tr>
 														<tr>
@@ -1403,7 +1402,7 @@ if(ses1!=null){
 																<b style="font-size: 1.02rem;font-weight: bold;color:#021B79;vertical-align: top;">Objectives:</b>
 															</td>
 															<td style="color:#212529;">
-																<%=projectdata[7]!=null?projectdata[7]:"--"%>
+																<%=projectdata[7]!=null?StringEscapeUtils.escapeHtml4(projectdata[7].toString()):"--"%>
 															</td>
 														</tr>
 												<%-- 		<tr>
@@ -1419,7 +1418,7 @@ if(ses1!=null){
 																<b style="font-size: 1.02rem;font-weight: bold;color:#021B79;vertical-align: top;">Deliverables:</b>
 															</td>
 															<td style="color:#212529;">
-																<%=projectdata[8]!=null?projectdata[8]:"--"%>
+																<%=projectdata[8]!=null?StringEscapeUtils.escapeHtml4(projectdata[8].toString()):"--"%>
 															</td>
 														</tr>
 
@@ -1441,7 +1440,7 @@ if(ses1!=null){
 																	<%=projectdata[20].toString().substring(3,projectdata[20].toString().length()-1 )%>
 																<%} else{%>-<%} %>  --%>
 																<div class="ml-3"  style="text-align: left;">
-												<%=projectdata[20].toString()%>
+												<%=projectdata[20]!=null?StringEscapeUtils.escapeHtml4(projectdata[20].toString()): " - "%>
 												</div>
 														</div>
 													</div>
@@ -1455,7 +1454,7 @@ if(ses1!=null){
 <%-- 															<%=projectdata[31].toString().substring(3,projectdata[31].toString().length()-1 )%>
  --%>														
  											<div class="ml-3">
-												<%=projectdata[31].toString()%>
+												<%=projectdata[31]!=null?StringEscapeUtils.escapeHtml4(projectdata[31].toString()): " - "%>
 												</div>
  </div>
 														</div>
@@ -1539,17 +1538,17 @@ if(ses1!=null){
 													<td
 														style="font-size: 1.02rem; font-weight: bold; color: #115bc9; width: 150px;">Project
 														No :</td>
-													<td style="width: 286px;"><%=projectdata[12]%></td>
+													<td style="width: 286px;"><%=projectdata[12]!=null?StringEscapeUtils.escapeHtml4(projectdata[12].toString()): " - "%></td>
 													<td
 														style="font-size: 1.02rem; font-weight: bold; color: #115bc9; width: 80px;">User
 														:</td>
-													<td style="width: 150px;"><%=enduser%></td>
+													<td style="width: 150px;"><%=enduser!=null?StringEscapeUtils.escapeHtml4(enduser): " - "%></td>
 												</tr>
 												<tr>
 													<td
 														style="font-size: 1.02rem; font-weight: bold; color: #115bc9;">Category
 														:</td>
-													<td><%=projectdata[2]%></td>
+													<td><%=projectdata[2]!=null?StringEscapeUtils.escapeHtml4(projectdata[2].toString()): " - "%></td>
 													<td
 														style="font-size: 1.02rem; font-weight: bold; color: #115bc9;">DoS
 														:</td>
@@ -1571,7 +1570,7 @@ if(ses1!=null){
 														style="font-size: 1.02rem; font-weight: bold; color: #115bc9;">Project Director
 														:</td>
 													<td colspan="4">
-														<%if(projectdata!=null && projectdata[33]!=null){%><%=projectdata[33]%><%}else{%> -- <%}%>, <%if(projectdata!=null && projectdata[34]!=null){%><%=projectdata[34]%><%}else{%> -- <%}%>
+														<%if(projectdata!=null && projectdata[33]!=null){%><%=StringEscapeUtils.escapeHtml4(projectdata[33].toString())%><%}else{%> -- <%}%>, <%if(projectdata!=null && projectdata[34]!=null){%><%=StringEscapeUtils.escapeHtml4(projectdata[34].toString())%><%}else{%> -- <%}%>
 													</td>
 												</tr>
 											</table>
@@ -1580,9 +1579,9 @@ if(ses1!=null){
 								</div>
 								<div class="col">
 								<table style="font-weight: bold;width: 100%">
-										<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Objectives : </b> <%if(projectdata[7]!=null && projectdata[7].toString().length()>320){%> <%=projectdata[7].toString().substring(0,280)%><span onclick="ViewInModel('O')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span><%}else{%> <%=projectdata[7]!=null?projectdata[7]:"--"%> <%}%></td></tr>
+										<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Objectives : </b> <%if(projectdata[7]!=null && projectdata[7].toString().length()>320){%> <%=StringEscapeUtils.escapeHtml4(projectdata[7].toString()).substring(0,280)%><span onclick="ViewInModel('O')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span><%}else{%> <%=projectdata[7]!=null?StringEscapeUtils.escapeHtml4(projectdata[7].toString()):"--"%> <%}%></td></tr>
 <%-- 										<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Scope : </b><%if(projectdata[9]!=null && projectdata[9].toString().length()>320){%> <%=projectdata[9].toString().substring(0,280)%><span onclick="ViewInModel('S')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span> <%}else{%> <%=projectdata[9]!=null?projectdata[9]:"--"%> <%}%></td></tr>
- --%>										<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Deliverables : </b> <%if(projectdata[8]!=null && projectdata[8].toString().length()>320){%> <%=projectdata[8].toString().substring(0,280)%><span onclick="ViewInModel('D')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span> <%}else{%> <%=projectdata[8]!=null?projectdata[8]:"--"%> <%}%></td></tr>
+ --%>										<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Deliverables : </b> <%if(projectdata[8]!=null && projectdata[8].toString().length()>320){%> <%=StringEscapeUtils.escapeHtml4(projectdata[8].toString()).substring(0,280)%><span onclick="ViewInModel('D')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span> <%}else{%> <%=projectdata[8]!=null?StringEscapeUtils.escapeHtml4(projectdata[8].toString()):"--"%> <%}%></td></tr>
 								</table>
 							</div>
 						</div>	
@@ -1707,7 +1706,7 @@ if(ses1!=null){
 			  <%for(int i=0;i<FreezingHistory.size();i++){ %>
 			    <tr>
 			      <th scope="row"><%=i+1 %></th>
-			      <td style="text-align: center;"><%=FreezingHistory.get(i)[1] %></td>
+			      <td style="text-align: center;"><%=FreezingHistory.get(i)[1]!=null?StringEscapeUtils.escapeHtml4(FreezingHistory.get(i)[1].toString()): " - " %></td>
 			      <td style="text-align: center;"><%=sdf.format(FreezingHistory.get(i)[2]) %></td>
 			      <td style="text-align: center;"><a href='SlidefileShow.htm?projectid=<%=projectdata[0]%>&freezeid=<%= FreezingHistory.get(i)[5] %>' target="_blank">OpenSlide</a></td>
 			    </tr>
@@ -1772,10 +1771,10 @@ if(ses1!=null){
 						<div class="modal-body" style="max-height: 25rem; overflow-y:auto;">
 			  	      		<div class="row">
 								<div class="col-md-12" > 
-										<span id="Objective" style="display: none;"><%=projectdata[7]%></span>
-							<%-- 			<span id="Scope" style="display: none;"><%=projectdata[9]%></span> --%>
-										<span id="Deliverable" style="display: none;"><%=projectdata[8]%></span>
-										<span id="projectdata2" style="display: none;"><%=projectslidedata[0]%></span>
+										<span id="Objective" style="display: none;"><%=projectdata[7]!=null?StringEscapeUtils.escapeHtml4(projectdata[7].toString()): " - "%></span>
+							<%-- 			<span id="Scope" style="display: none;"><%=projectdata[9]!=null?StringEscapeUtils.escapeHtml4(projectdata[9].toString()): " - "%></span> --%>
+										<span id="Deliverable" style="display: none;"><%=projectdata[8]!=null?StringEscapeUtils.escapeHtml4(projectdata[8].toString()): " - "%></span>
+										<span id="projectdata2" style="display: none;"><%=projectslidedata[0]!=null?StringEscapeUtils.escapeHtml4(projectslidedata[0].toString()): " - "%></span>
 			  	      		    </div>
 			  	      		</div>
   	      				</div>		
