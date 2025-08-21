@@ -1,4 +1,5 @@
-	<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	<%@page import="org.apache.commons.text.StringEscapeUtils"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
 <%@page import="java.util.List , java.util.stream.Collectors,com.vts.pfms.*"%>
 <!DOCTYPE html>
@@ -111,24 +112,23 @@ List<Object[]> favouritelist = (List<Object[]>)request.getAttribute("FavouriteLi
 String empid = ((Long) session.getAttribute("EmpId")).toString();
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 %>
-<%String ses=(String)request.getParameter("result"); 
-String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){
-%>
-	<div align="center">
-	
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
-	</div>
-	<%} %>
 <div class="container-fluid">
 	<div class="card shadow-nohover">
 	<div class="card-header" style="height: 30px;"> <h5 style="margin-top: -8px;"> To-Do Review</h5> </div>
@@ -288,15 +288,15 @@ if(ses1!=null){
 			                          									'<%=obj[16].toString().trim()%>', <!-- assignee -->
 			                          									'<%=obj[17]%>' <!-- action type -->
 			                          									);" 
-									 >  &nbsp;<%=ActionNo%></button>
+									 >  &nbsp;<%=ActionNo!=null?StringEscapeUtils.escapeHtml4(ActionNo):" - " %></button>
 									</td>
-									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[1]%></td>
-									<td style="text-align: center;font-size: 13px;font-weight: 600; width: 80px;"><%=sdf.format(obj[4])%></td>
+									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%></td>
+									<td style="text-align: center;font-size: 13px;font-weight: 600; width: 80px;"><%= obj[4]!=null?sdf.format(obj[4]):" - "%></td>
 									<td style="width: 100px;">
 									<%if(obj[14]!=null){%>
 										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
 										<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[14]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-											<%=obj[14]%>
+											<%=StringEscapeUtils.escapeHtml4(obj[4].toString())%>
 										</div> 
 										</div> <%}else{%>
 										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
@@ -350,15 +350,15 @@ if(ses1!=null){
 			                          									'<%=obj[16].toString().trim()%>', <!-- assignee -->
 			                          									'<%=obj[17]%>' <!-- action type -->
 			                          									);" 
-									 >  &nbsp;<%=ActionNo%></button>
+									 >  &nbsp;<%=ActionNo!=null?StringEscapeUtils.escapeHtml4(ActionNo):" - "%></button>
 									</td>
-									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[1]%></td>
-									<td style="text-align: center;font-size: 13px;font-weight: 600;width: 80px;"><%=sdf.format(obj[4])%></td>
+									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%></td>
+									<td style="text-align: center;font-size: 13px;font-weight: 600;width: 80px;"><%=obj[4]!=null?sdf.format(obj[4]):" - "%></td>
 									<td style="width: 100px;">
 									<%if(obj[14]!=null){%>
 										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
 										<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[14]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-											<%=obj[14]%>
+											<%=StringEscapeUtils.escapeHtml4(obj[14].toString()) %>
 										</div> 
 										</div> <%}else{%>
 										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
@@ -409,15 +409,15 @@ if(ses1!=null){
 			                          									'<%=obj[16].toString().trim()%>', <!-- assignee -->
 			                          									'<%=obj[17]%>' <!-- action type -->
 			                          									);" 
-									 >  &nbsp;<%=ActionNo%></button>
+									 >  &nbsp;<%=ActionNo!=null?StringEscapeUtils.escapeHtml4(ActionNo):" - "%></button>
 									</td>
-									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[1]%></td>
-									<td style="text-align: center;font-size: 13px;font-weight: 600;width: 80px;"><%=sdf.format(obj[4])%></td>
+									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%></td>
+									<td style="text-align: center;font-size: 13px;font-weight: 600;width: 80px;"><%=obj[4]!=null?sdf.format(obj[4]):" - " %></td>
 									<td style="width: 100px;">
 									<%if(obj[14]!=null){%>
 										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
 										<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[14]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-											<%=obj[14]%>
+											<%=StringEscapeUtils.escapeHtml4(obj[14].toString())%>
 										</div> 
 										</div> <%}else{%>
 										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
@@ -468,15 +468,15 @@ if(ses1!=null){
 			                          									'<%=obj[16].toString().trim()%>', <!-- assignee -->
 			                          									'<%=obj[17]%>' <!-- action type -->
 			                          									);" 
-									 >  &nbsp;<%=ActionNo%></button>
+									 >  &nbsp;<%=ActionNo!=null?StringEscapeUtils.escapeHtml4(ActionNo):" - "%></button>
 									</td>
-									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[16]%></td>
-									<td style="text-align: center;font-size: 13px;font-weight: 600;width: 80px;"><%=sdf.format(obj[4])%></td>
+									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[16]!=null?StringEscapeUtils.escapeHtml4(obj[16].toString()):" - "%></td>
+									<td style="text-align: center;font-size: 13px;font-weight: 600;width: 80px;"><%=obj[4]!=null?sdf.format(obj[4]):" - "%></td>
 									<td style="width: 100px;">
 									<%if(obj[14]!=null){%>
 										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
 										<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[14]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-											<%=obj[14]%>
+											<%=StringEscapeUtils.escapeHtml4(obj[14].toString())%>
 										</div> 
 										</div> <%}else{%>
 										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
@@ -527,15 +527,15 @@ if(ses1!=null){
 			                          									'<%=obj[16].toString().trim()%>', <!-- assignee -->
 			                          									'<%=obj[17]%>' <!-- action type -->
 			                          									);" 
-									 >  &nbsp;<%=ActionNo%></button>
+									 >  &nbsp;<%=ActionNo!=null?StringEscapeUtils.escapeHtml4(ActionNo):" - "%></button>
 									</td>
-									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[16]%></td>
-									<td style="text-align: center;font-size: 13px;font-weight: 600; width: 80px;"><%=sdf.format(obj[4])%></td>
+									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[16]!=null?StringEscapeUtils.escapeHtml4(obj[16].toString()):" - "%></td>
+									<td style="text-align: center;font-size: 13px;font-weight: 600; width: 80px;"><%=obj[4]!=null?sdf.format(obj[4]):" - "%></td>
 									<td style="width: 100px;">
 									<%if(obj[14]!=null){%>
 										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
 										<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[14]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-											<%=obj[14]%>
+											<%=StringEscapeUtils.escapeHtml4(obj[14].toString())%>
 										</div> 
 										</div> <%}else{%>
 										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
@@ -586,14 +586,14 @@ if(ses1!=null){
 			                          									'<%=obj[16].toString().trim()%>', <!-- assignee -->
 			                          									'<%=obj[17]%>' <!-- action type -->
 			                          									);" 
-									 >  &nbsp;<%=ActionNo%></button>
+									 >  &nbsp;<%=ActionNo!=null?StringEscapeUtils.escapeHtml4(ActionNo):" - "%></button>
 									</td>
-									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[16]%></td>
-									<td style="text-align: center;font-size: 13px;font-weight: 600;width: 80px;"><%=sdf.format(obj[4])%></td>
+									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[16]!=null?StringEscapeUtils.escapeHtml4(obj[16].toString()):" - "%></td>
+									<td style="text-align: center;font-size: 13px;font-weight: 600;width: 80px;"><%=obj[4]!=null?sdf.format(obj[4]):" - "%></td>
 									<td style="width: 100px; "><%if(obj[14]!=null){%>
 										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
 										<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[14]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-											<%=obj[14]%>
+											<%=StringEscapeUtils.escapeHtml4(obj[14].toString())%>
 										</div> 
 										</div> <%}else{%>
 										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
@@ -647,14 +647,14 @@ if(ses1!=null){
 			                          									'<%=obj[13].toString().trim()%>', <!-- assignee -->
 			                          									'<%=obj[14]%>' <!-- action type -->
 			                          									);" 
-									 >  &nbsp;<%=ActionNo%></button>
+									 >  &nbsp;<%=ActionNo!=null?StringEscapeUtils.escapeHtml4(ActionNo):" - "%></button>
 									</td>
-									<td style="text-align: center;font-size: 14px;font-weight: 600;"><%=sdf.format(obj[4])%></td>
-									<td style="text-align: left;font-size: 14px;font-weight: 600;"><%=obj[13]%></td>
+									<td style="text-align: center;font-size: 14px;font-weight: 600;"><%=obj[4]!=null?sdf.format(obj[4]):" - "%></td>
+									<td style="text-align: left;font-size: 14px;font-weight: 600;"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()):" - "%></td>
 									<td style="text-align: center;font-size: 14px;font-weight: 600;"><%if(obj[11]!=null){%>
 										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
 										<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[11]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-											<%=obj[11]%>
+											<%=StringEscapeUtils.escapeHtml4(obj[11].toString())%>
 										</div> 
 										</div> <%}else{%>
 										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
@@ -753,7 +753,7 @@ if(ses1!=null){
 					   						<select class="form-control selectdee "  style="width: 113px;" name="Project"  id="Project" required="required"   data-live-search="true" id="projectid" >                                                     
 												<option value="0" >General</option>	
 												<%for(Object[] obj:ProjectList){%>
-													<option value="<%=obj[0] %>" ><%=obj[4]%></option>	
+													<option value="<%=obj[0] %>" ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%></option>	
 												<%}%>
 											</select>	
 					   					</td>

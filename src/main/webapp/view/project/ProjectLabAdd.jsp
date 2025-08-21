@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
@@ -49,19 +50,22 @@ Object[] ProjectDetailes=(Object[])request.getAttribute("ProjectDetailes");
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%><center>
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -78,7 +82,7 @@ Object[] ProjectDetailes=(Object[])request.getAttribute("ProjectDetailes");
   <div class="card-header">
  <div class="row" >
 <div class="col-md-12 ">
-  <b style="color: green;">Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LAB COUNT:&nbsp;<%if(ProjectDetailes[13]!=null) { %><%=ProjectDetailes[13]%><%}else{ %>0<%} %>
+  <b style="color: green;">Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LAB COUNT:&nbsp;<%if(ProjectDetailes[13]!=null) { %><%=StringEscapeUtils.escapeHtml4(ProjectDetailes[13].toString())%><%}else{ %>0<%} %>
   	
   	</b>
 
@@ -105,8 +109,8 @@ Object[] ProjectDetailes=(Object[])request.getAttribute("ProjectDetailes");
 	    	<tbody>
 									    <%for(Object[] 	obj:ProjectIntiationLabList){ %>
 									<tr>
-									 	<td><input type="radio" name="btSelectItem" value=<%=obj[1] %>  ></td> 
-									   	<td><%=obj[2] %></td>
+									 	<td><input type="radio" name="btSelectItem" value=<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): "" %>  ></td> 
+									   	<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 									
 									     
 								 	</tr>
@@ -154,9 +158,9 @@ Object[] ProjectDetailes=(Object[])request.getAttribute("ProjectDetailes");
 	    	<tbody>
 									    <%for(Object[] 	obj:LabList){ %>
 									<tr>
-									 	<td class="center"><input type="checkbox" name="Lid" value=<%=obj[0] %>  ></td> 
-									   	<td class="center"><%=obj[2] %></td>
-									<td><%=obj[1] %></td>
+									 	<td class="center"><input type="checkbox" name="Lid" value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): "" %>  ></td> 
+									   	<td class="center"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+									<td><%=obj[1] !=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></td>
 									     
 								 	</tr>
 								

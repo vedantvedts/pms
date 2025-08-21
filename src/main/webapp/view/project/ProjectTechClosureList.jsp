@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -181,22 +182,23 @@ font-weight: bold;
 	
 	ProjectMaster projectMaster = (ProjectMaster)request.getAttribute("ProjectDetails");
 	
-
-	String ses=(String)request.getParameter("result"); 
-	 String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){%>
-		
-		
-	<div align="center">
-		    <div class="alert alert-danger" role="alert"><%=ses1 %></div>
-	</div>
-	<%}if(ses!=null){ %>
-	
-		<div align="center">
-		      <div class="alert alert-success" role="alert" ><%=ses %> </div>
-	    </div>
-	    
-	 <%}%>
+%>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	 
 <br>	
 	
@@ -207,7 +209,7 @@ font-weight: bold;
 			<div class="card shadow-nohover" >
 			<div class="card-header">
 			<div class="row">
-			   <div class="col-md-10"><h4>Technical Project Closure Record Of Amendments -  <%if(projectMaster!=null) {%><%=projectMaster.getProjectShortName()+" ("+projectMaster.getProjectCode()+")" %> <%} %></h4></div>
+			   <div class="col-md-10"><h4>Technical Project Closure Record Of Amendments -  <%if(projectMaster!=null) {%><%=StringEscapeUtils.escapeHtml4(projectMaster.getProjectShortName())+" ("+projectMaster.getProjectCode()+")" %> <%} %></h4></div>
 			   <div class="col-md-2" align="right">
 			   <a class="btn btn-info btn-sm  back"   href="ProjectClosureList.htm">Back</a>
 				</div>
@@ -246,14 +248,14 @@ font-weight: bold;
 			                    
 			                    <tr>
 			                            <td><%=++count%></td>
-			                            <td><%=obj[1]%></td>
+			                            <td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></td>
 			                           
-			                            <td><%=obj[2]%></td>
-			                            <td><%=fc.SqlToRegularDate(obj[3].toString())%></td>
+			                            <td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></td>
+			                            <td><%=obj[3]!=null?fc.SqlToRegularDate(obj[3].toString()):" - "%></td>
 			                            
 			                            <td >
 			                            <button type="submit" class="btn btn-sm btn-link  btn-status" formaction="ProjectTechClosureTransStatus.htm" value="<%=obj[0] %>" name="TechClosureId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style="font-weight: 600;" formtarget="_blank">
-							    				<%=obj[5] %> <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
+							    				<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
 							    			</button>
 			                            </td>
 			                            
@@ -328,7 +330,7 @@ font-weight: bold;
   									             &nbsp;
   									           
   									             
-  									       <button type="submit" class="btn btn-warning btn-sm edit" name="Amend" value="<%=obj[1]%>//<%=Integer.parseInt(obj[2].toString()) + 1%>//<%=closureId %>//<%=obj[0]%>" formaction="AmendTechClosureList.htm" onclick="return confirm('Are You Sure To Amend')" >AMEND</button>
+  									       <button type="submit" class="btn btn-warning btn-sm edit" name="Amend" value="<%=obj[1]%>//<%=Integer.parseInt(StringEscapeUtils.escapeHtml4(obj[2].toString())) + 1%>//<%=closureId!=null?StringEscapeUtils.escapeHtml4(closureId): " - "%>//<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%>" formaction="AmendTechClosureList.htm" onclick="return confirm('Are You Sure To Amend')" >AMEND</button>
 						                 	
 						    			<%}else if(obj[4].toString().equalsIgnoreCase("TAM")) { %>
 						    				
@@ -388,35 +390,35 @@ font-weight: bold;
 			              					<table align="center"  >
 			               						<tr>
 			               							<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
-			                							PD -  <%=PDData[2] %>
+			                							PD -  <%=PDData[2]!=null?StringEscapeUtils.escapeHtml4(PDData[2].toString()): " - "%>
 			                						</td>
 			                		
 		                        					<td rowspan="2">
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
 			                						<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
-			                							GD - <%if(GD!=null) {%><%=GD[1] %> <%} else{%>GD<%} %>
+			                							GD - <%if(GD!=null) {%><%=GD[1]!=null?StringEscapeUtils.escapeHtml4(GD[1].toString()): " - " %> <%} else{%>GD<%} %>
 			                	    				</td>
 			                	    				
 			                	    				<td rowspan="2">
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
 			                						<td class="trup" style="background: linear-gradient(to top, #9b999a 10%, transparent 115%);">
-			                							AD - <%if(AD!=null) {%><%=AD[1] %> <%} else{%>AD<%} %>
+			                							AD - <%if(AD!=null) {%><%=AD[1]!=null?StringEscapeUtils.escapeHtml4(AD[1].toString()): " - " %> <%} else{%>AD<%} %>
 			                	    				</td>
 			                	    				
 			                	    				<td rowspan="2">
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
 			                						<td class="trup" style="background: linear-gradient(to top, #76ebcb 10%, transparent 115%);">
-			                							GD-DP&C - <%if(GDDPandC!=null) {%><%=GDDPandC[1] %> <%} else{%>GD-DP&C<%} %>
+			                							GD-DP&C - <%if(GDDPandC!=null) {%><%=GDDPandC[1]!=null?StringEscapeUtils.escapeHtml4(GDDPandC[1].toString()): " - " %> <%} else{%>GD-DP&C<%} %>
 			                	    				</td>
 			                	    				
 			                	    				<td rowspan="2">
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
 			                						<td class="trup" style="background: linear-gradient(to top, #13f816 10%, transparent 115%);">
-			                							Director - <%if(Director!=null) {%><%=Director[1] %> <%} else{%>Director<%} %>
+			                							Director - <%if(Director!=null) {%><%=Director[1]!=null?StringEscapeUtils.escapeHtml4(Director[1].toString()): " - " %> <%} else{%>Director<%} %>
 			                	    				</td>
 			                	    				
 			                	    				<td rowspan="2">
@@ -504,7 +506,7 @@ font-weight: bold;
    			  </div>
    			 <div class="col-md-8">
    				<textarea required="required" name="information"class="form-control" id="additionalReq" maxlength="4000"
-				rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[0]!=null){%><%=DocumentSummary[0]%><%}else{%><%}%></textarea>
+				rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[0]!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[0].toString())%><%}else{%><%}%></textarea>
    			 </div> 
    			</div>
    			
@@ -514,7 +516,7 @@ font-weight: bold;
    			   </div>
 	   			<div class="col-md-8">
 	   				<textarea required="required" name="abstract" class="form-control" id="" maxlength="4000"
-					rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[1]!=null){%><%=DocumentSummary[1]%><%}else{%><%}%></textarea>
+					rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[1]!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[1].toString())%><%}else{%><%}%></textarea>
 	   			</div> 
    			</div>
    			
@@ -525,7 +527,7 @@ font-weight: bold;
    			<div class="col-md-8">
    				<textarea required="required" name="keywords"
 				class="form-control" id="" maxlength="4000"
-				rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[2]!=null){%><%=DocumentSummary[2]%><%}else{%><%}%></textarea>
+				rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[2]!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[2].toString())%><%}else{%><%}%></textarea>
    			</div> 
    		</div>
    			
@@ -535,7 +537,7 @@ font-weight: bold;
    			   </div>
    			<div class="col-md-8">
    				<input required="required" name="distribution" class="form-control" id="" maxlength="255"
-				 placeholder="Maximum 255 Chararcters" required value="<%if(DocumentSummary!=null && DocumentSummary[3]!=null){%><%=DocumentSummary[3]%><%}else{%><%}%>">
+				 placeholder="Maximum 255 Chararcters" required value="<%if(DocumentSummary!=null && DocumentSummary[3]!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[3].toString())%><%}else{%><%}%>">
    			</div> 
    		</div>
    				<div class="row mt-2">
@@ -548,7 +550,7 @@ font-weight: bold;
 				           <%for(Object[]obj:TotalEmployeeList){ %>
 				            <option value="<%=obj[0].toString()%>"
 				                <%if(DocumentSummary!=null && DocumentSummary[9]!=null && DocumentSummary[9].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
-				                      <%=obj[1].toString() %>,<%=(obj[2].toString()) %></option>
+				                      <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>,<%=(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ") %></option>
 				                <%} %> 
 		                 </select>
 	   				</div>
@@ -563,7 +565,7 @@ font-weight: bold;
 				        <%for(Object[]obj:TotalEmployeeList){ %>
 				        <option value="<%=obj[0].toString()%>"
 				        <%if(DocumentSummary!=null && DocumentSummary[4]!=null && DocumentSummary[4].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
-				        <%=obj[1].toString() %>,<%=(obj[2].toString()) %></option>
+				        <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>,<%=(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ") %></option>
 			           <%} %> 
 	             </select>
    				
@@ -578,7 +580,7 @@ font-weight: bold;
 					        <%for(Object[]obj:TotalEmployeeList){ %>
 					        <option value="<%=obj[0].toString()%>"
 					        <%if(DocumentSummary!=null && DocumentSummary[5]!=null && DocumentSummary[5].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
-					        <%=obj[1].toString() %>,<%=(obj[2].toString()) %></option>
+					        <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>,<%=(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ") %></option>
 				        <%} %> 
 		            </select>
    				</div>
@@ -638,7 +640,7 @@ font-weight: bold;
 									id="Assignee" data-width="100%" data-live-search="true"
 									multiple required>
 									<% for (Object[] obj : EmployeeList) { %>
-									    <option value="<%=obj[0].toString()%>"><%=obj[1].toString()%>,<%=(obj[2].toString())%></option>
+									    <option value="<%=obj[0].toString()%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>,<%=(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ")%></option>
 									<%}%>
 								</select>
 							</div>

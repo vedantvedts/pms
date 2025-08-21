@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
     
@@ -122,27 +123,22 @@ List<Object[]> DivisionHeadListAdd=(List<Object[]>)request.getAttribute("Divisio
 
 %>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	
-	
-	<center>
-	
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-            </div>
-            
-    </center>
-    
-    
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 	
@@ -186,7 +182,7 @@ List<Object[]> DivisionHeadListAdd=(List<Object[]>)request.getAttribute("Divisio
 								
 								<% for (  Object[] obj : DivisionGroupListAdd){ %>
 						
-								<option value=<%=obj[0]%>><%=obj[1]%> </option>
+								<option value=<%=obj[0]%>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> </option>
 							
 								<%} %>
 				</select>
@@ -201,7 +197,7 @@ List<Object[]> DivisionHeadListAdd=(List<Object[]>)request.getAttribute("Divisio
 								
 								<% for (  Object[] obj : DivisionHeadListAdd){ %>
 						
-								<option value=<%=obj[0]%>><%=obj[1]%>, <%=obj[3] %> </option>
+								<option value=<%=obj[0]%>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %> </option>
 							
 								<%} %>
 				</select>

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.documents.model.ICDPurpose"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -18,21 +19,22 @@
 	<%
 	List<ICDPurpose> purposeMasterList = (List<ICDPurpose>) request.getAttribute("purposeMasterList");
 	%>
-	<% String ses = (String) request.getParameter("result"); 
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-        <div align="center">
-            <div class="alert alert-danger" role="alert">
-                <%= ses1 %>
-            </div>
-        </div>
-    <% } if (ses != null) { %>
-        <div align="center">
-            <div class="alert alert-success" role="alert">
-                <%= ses %>
-            </div>
-        </div>
-    <% } %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
     
 	<div class="container-fluid">
 		<div class="col-md-12">
@@ -64,12 +66,12 @@
 									for (ICDPurpose purp : purposeMasterList) { %>
 									<tr>
 										<td class="center">
-											<input type="radio" name="purposeIdSelect" value="<%=purp.getPurposeId()%>">
+											<input type="radio" name="purposeIdSelect" value="<%=purp.getPurposeId()!=null?StringEscapeUtils.escapeHtml4(purp.getPurposeId().toString()): ""%>">
 											<input type="hidden" id="purpose_<%=purp.getPurposeId()%>" value="<%=purp.getPurpose()%>"> 
 											<input type="hidden" id="purposeCode_<%=purp.getPurposeId()%>" value="<%=purp.getPurposeCode()%>"> 
 										</td>
-										<td class="center"><%=purp.getPurposeCode()%></td>
-										<td><%=purp.getPurpose()%></td>
+										<td class="center"><%=purp.getPurposeCode()!=null?StringEscapeUtils.escapeHtml4(purp.getPurposeCode()): " - "%></td>
+										<td><%=purp.getPurpose()!=null?StringEscapeUtils.escapeHtml4(purp.getPurpose()): " - "%></td>
 									</tr>
 									<% } %>
 								</tbody>

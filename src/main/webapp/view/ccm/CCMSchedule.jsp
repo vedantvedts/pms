@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="com.vts.pfms.committee.model.CommitteeSchedule"%>
 <%@page import="java.util.Comparator"%>
@@ -342,22 +343,22 @@ if(ccmSchedule!=null) {
 	endDate = fc.sdfTordf(scheduleMonthEndDate);
 }
 %>
-	<% String ses=(String)request.getParameter("result");
-	 	String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-		%>
-		<div align="center">
-			<div class="alert alert-danger" role="alert">
-		    <%=ses1 %>
-		    </div>
-		</div>
-		<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-		    	<%=ses %>
-			</div>
-		</div>
-	<%} %>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 	<div class="container-fluid mb-3">
 		<div class="card shadow-nohover">
@@ -511,7 +512,7 @@ if(ccmSchedule!=null) {
 					        										<label class="control-label">Venue :</label>
 					        									</div>
 					        									<div class="col-md-4 left">
-					        										<input type="text" class="form-control description-input" name="meetingVenue" id="meetingVenue" placeholder="Enter Venue Details" maxlength="1000" required  <%if(ccmSchedule!=null && ccmSchedule.getMeetingVenue()!=null ) {%> value="<%=ccmSchedule.getMeetingVenue() %>" <%} else{%> form="agendaForm"<%} %> >
+					        										<input type="text" class="form-control description-input" name="meetingVenue" id="meetingVenue" placeholder="Enter Venue Details" maxlength="1000" required  <%if(ccmSchedule!=null && ccmSchedule.getMeetingVenue()!=null ) {%> value="<%=StringEscapeUtils.escapeHtml4(ccmSchedule.getMeetingVenue()) %>" <%} else{%> form="agendaForm"<%} %> >
 					        									</div>
 					        									<%if(ccmSchedule!=null) {%>
 					        										<input type="hidden" name="ccmScheduleId" id="ccmScheduleId" value="<%=ccmScheduleId%>">
@@ -581,7 +582,7 @@ if(ccmSchedule!=null) {
 																				</td>
 																				<td style="width: 20%;">
 																					<button type="button" class="form-control" id="agendaItemBtn_Edit_<%=count %>" onclick="openEditor('Edit_', '<%=count %>', '0')" style="border: 1px solid #ced4da;height: 35px;width: 22rem;">
-																						<%=level1[4] %>
+																						<%=level1[4]!=null?StringEscapeUtils.escapeHtml4(level1[4].toString()): " - " %>
 																					</button>
 																					<textarea form="agendaEditForm-<%=count %>" class="form-control" name="agendaItem" id="agendaItem_Edit_<%=count %>" style="display: none;"><%=level1[4] %></textarea>
 																					<%-- <input type="text" form="agendaEditForm-<%=count %>" class="form-control" name="agendaItem" value="<%=level1[4] %>" required> --%>
@@ -590,7 +591,7 @@ if(ccmSchedule!=null) {
 																					<select form="agendaEditForm-<%=count %>" class="form-control items prepsLabCode" name="prepsLabCode" id="prepsLabCode_Edit_<%=count %>" style="width: 200px" onchange="AgendaPresentors('Edit_<%=count %>')"  data-live-search="true" data-container="body">
 																						<option value="0">Lab Name</option>
 																					    <% for (Object[] obj : allLabList) {%>
-																						    <option value="<%=obj[3]%>" <%if(level1[5].toString().equalsIgnoreCase(obj[3].toString())){ %>selected <%} %>  ><%=obj[3]%></option>
+																						    <option value="<%=obj[3]%>" <%if(level1[5].toString().equalsIgnoreCase(obj[3].toString())){ %>selected <%} %>  ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 																					    <%} %>
 																					    <option value="@EXP" <%if(level1[5].toString().equalsIgnoreCase("@EXP")){ %>selected <%} %> >Expert</option>
 																					</select>
@@ -674,7 +675,7 @@ if(ccmSchedule!=null) {
 																									</td>
 																									<td style="width: 26%;">
 																										<button type="button" class="form-control" id="agendaItemBtn_Edit_<%=count %>_<%=countA %>" onclick="openEditor('Edit_', '<%=count %>', '<%=countA %>')" style="border: 1px solid #ced4da;height: 35px;width: 22rem;">
-																											<%=level2[4] %>
+																											<%=level2[4]!=null?StringEscapeUtils.escapeHtml4(level2[4].toString()): " - " %>
 																										</button>
 																										<textarea form="subAgendaEditForm-<%=count %>-<%=countA %>" class="form-control" name="agendaItem" id="agendaItem_Edit_<%=count %>_<%=countA %>" style="display: none;"><%=level2[4] %></textarea>
 																										<%-- <input type="text" form="subAgendaEditForm-<%=count %>-<%=countA %>" class="form-control" name="agendaItem" value="<%=level2[4] %>" required> --%>
@@ -683,7 +684,7 @@ if(ccmSchedule!=null) {
 																										<select form="subAgendaEditForm-<%=count %>-<%=countA %>" class="form-control items prepsLabCode" name="prepsLabCode" id="prepsLabCode_Edit_<%=count %>_<%=countA %>" style="width: 200px" onchange="AgendaPresentors('Edit_<%=count %>_<%=countA %>')" data-live-search="true" data-container="body">
 																											<option value="0">Lab Name</option>
 																										    <% for (Object[] obj : allLabList) {%>
-																											    <option value="<%=obj[3]%>" <%if(level2[5].toString().equalsIgnoreCase(obj[3].toString())){ %>selected <%} %>  ><%=obj[3]%></option>
+																											    <option value="<%=obj[3]%>" <%if(level2[5].toString().equalsIgnoreCase(obj[3].toString())){ %>selected <%} %>  ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 																										    <%} %>
 																										    <option value="@EXP" <%if(level2[5].toString().equalsIgnoreCase("@EXP")){ %>selected <%} %> >Expert</option>
 																										</select>
@@ -810,7 +811,7 @@ if(ccmSchedule!=null) {
 															         		 	<select class="form-control items main prepsLabCode" name="agenda[0].prepsLabCode" id="prepsLabCode_1" data-live-search="true" data-container="body" style="width: 200px" onchange="AgendaPresentors('1')">
 																					<option value="0">Lab Name</option>
 																				    <% for (Object[] obj : allLabList) {%>
-																					    <option value="<%=obj[3]%>"><%=obj[3]%></option>
+																					    <option value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 																				    <%} %>
 																				    <option value="@EXP">Expert</option>
 																				</select>
@@ -821,7 +822,7 @@ if(ccmSchedule!=null) {
 																				<select class="form-control items main presenterId" name="agenda[0].presenterId" id="presenterId_1" data-live-search="true" data-container="body" style="font-weight: bold; text-align-last: left; width: 300px;">
 																	        		<option value="0">Choose...</option>
 																			        <% for(Object[] emp : labEmpList){ %>
-																			        	<option value="<%=emp[0] %>"><%=emp[1] %>, <%=emp[3] %></option>
+																			        	<option value="<%=emp[0] %>"><%=emp[1]!=null?StringEscapeUtils.escapeHtml4(emp[1].toString()): " - " %>, <%=emp[3]!=null?StringEscapeUtils.escapeHtml4(emp[3].toString()): " - " %></option>
 																			        <%} %>
 																				</select>
 																			</td>		
@@ -877,7 +878,7 @@ if(ccmSchedule!=null) {
 															         		 	<select class="form-control itemssub sub prepsLabCode" name="agenda[0].subAgendas[0].prepsLabCode" id="prepsLabCode_0_0"  style="width: 200px" onchange="AgendaPresentors('0','0')"  data-live-search="true" data-container="body">
 																					<option value="0">Lab Name</option>
 																				    <% for (Object[] obj : allLabList) {%>
-																					    <option value="<%=obj[3]%>"><%=obj[3]%></option>
+																					    <option value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 																				    <%} %>
 																				    <option value="@EXP">Expert</option>
 																				</select>
@@ -888,7 +889,7 @@ if(ccmSchedule!=null) {
 																				<select class="form-control itemssub sub presenterId" name="agenda[0].subAgendas[0].presenterId" id="presenterId_0_0" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
 																	        		<option value="0">Choose...</option>
 																			        <% for(Object[] emp : labEmpList){ %>
-																			        	<option value="<%=emp[0] %>"><%=emp[1] %>, <%=emp[3] %></option>
+																			        	<option value="<%=emp[0] %>"><%=emp[1]!=null?StringEscapeUtils.escapeHtml4(emp[1].toString()): " - " %>, <%=emp[3]!=null?StringEscapeUtils.escapeHtml4(emp[3].toString()): " - " %></option>
 																			        <%} %>
 																				</select>
 																			</td>		
@@ -1101,7 +1102,7 @@ if(ccmSchedule!=null) {
 					         		 	<select class="form-control itemsubedit agendaedit prepsLabCode" name="prepsLabCode" id="prepsLabCode_edit_0" style="width: 200px" onchange="AgendaPresentors('edit_0')" data-live-search="true" data-container="body">
 											<option value="0">Lab Name</option>
 										    <% for (Object[] obj : allLabList) {%>
-											    <option value="<%=obj[3]%>"><%=obj[3]%></option>
+											    <option value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 										    <%} %>
 										    <option value="@EXP">Expert</option>
 										</select>
@@ -1111,7 +1112,7 @@ if(ccmSchedule!=null) {
 										<select class="form-control itemsubedit agendaedit presenterId" name="presenterId" id="presenterId_edit_0" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
 							        		<option value="0">Choose...</option>
 									        <% for(Object[] emp : labEmpList){ %>
-									        	<option value="<%=emp[0] %>"><%=emp[1] %>, <%=emp[3] %></option>
+									        	<option value="<%=emp[0] %>"><%=emp[1]!=null?StringEscapeUtils.escapeHtml4(emp[1].toString()): " - " %>, <%=emp[3]!=null?StringEscapeUtils.escapeHtml4(emp[3].toString()): " - " %></option>
 									        <%} %>
 										</select>
 									</td>		

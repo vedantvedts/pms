@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -25,30 +26,22 @@
 	List<Object[]> RequirementApprovalList = (List<Object[]>) request.getAttribute("RequirementApprovalList");
 	%>
 
-	<%
-	String ses = (String) request.getParameter("result");
-	String ses1 = (String) request.getParameter("resultfail");
-	if (ses1 != null) {
-	%>
-
-
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-			<%=ses1%>
-		</div>
-	</div>
-	<%
-	}
-	if (ses != null) {
-	%>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses%>
-		</div>
-	</div>
-	<%
-	}
-	%>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	<div class="container-fluid" style="display:" id="main">
 		<div class="row">
 			<div class="col-md-12">
@@ -82,17 +75,17 @@
 								%>
 								<tr>
 									<td align="center"><%=++i%></td>
-									<td><%=obj[3].toString()%></td>
+									<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>
 									<td style="text-align: center;"><%=obj[7].toString()%></td>
 									<td>
 										<%
 										if(obj[1].toString().equalsIgnoreCase("RFU")) {
-										%> Created By: &nbsp;<%=obj[5].toString()%><br> Date:&nbsp;<%=sdf.format(obj[6])%>
+										%> Created By: &nbsp;<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%><br> Date:&nbsp;<%=obj[6]!=null?sdf.format(StringEscapeUtils.escapeHtml4(obj[6].toString())):" - "%>
 										<%
 										}
 										%> <%
  										if (obj[1].toString().equalsIgnoreCase("RFD")) {
- 										%> Reviewed By: &nbsp;<%=obj[5].toString()%><br> Date: &nbsp;<%=sdf.format(obj[6])%>
+ 										%> Reviewed By: &nbsp;<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%><br> Date: &nbsp;<%=obj[6]!=null?sdf.format(StringEscapeUtils.escapeHtml4(obj[6].toString())):" - "%>
 										<%
 										}
 										%> <br> <%
@@ -100,7 +93,7 @@
  										%>Remarks : &nbsp; No remarks <%
  										} else {
  										%>
-										<%="Remarks : " + obj[2].toString()%> <%
+										<%="Remarks : " + obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%
  										}
  										%>
 									</td>

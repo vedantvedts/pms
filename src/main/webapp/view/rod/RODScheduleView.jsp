@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="org.apache.logging.log4j.core.pattern.IntegerPatternConverter"%>
 <%@page import="java.sql.Date"%>
 <%@page import="java.time.LocalDate"%>
@@ -105,22 +106,22 @@
 	
 %>
 	
-<%String ses=(String)request.getParameter("result"); 
-	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null)
-	{ %>
-		<div align="center">
-			<div class="alert alert-danger" role="alert" >
-	        	<%=ses1 %>
-	        </div>
-	    </div>
-	<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-	        	<%=ses %>
-	        </div>
-	    </div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 	<div class="container-fluid">
 			<div class="row" style="">
@@ -168,7 +169,7 @@
 							
 					 <%if( Integer.parseInt(rodscheduleeditdata[10].toString())<5){%>	 
 					 <form action="RODScheduleDelete.htm"  method="post" ><%} %>
-			   			<h5 style="color:#07689f">Schedule (Meeting Id : <%=rodscheduleeditdata[11]%>)
+			   			<h5 style="color:#07689f">Schedule (Meeting Id : <%=rodscheduleeditdata[11]!=null?StringEscapeUtils.escapeHtml4(rodscheduleeditdata[11].toString()): " - "%>)
 			   			<%if(Integer.parseInt(rodscheduleeditdata[10].toString())<5){%>	 
 				   				<button class="fa fa-trash btn btn-danger" type="submit" style="background-color: white;border-color: white;"  onclick="return confirm('Are You Sure To Delete this Meeting?');" ></button>				   					   				
 				   				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
@@ -202,7 +203,7 @@
 		                        	
 										<th style="padding-left: 40px;">
 											 <%-- <%if(useraccess>=1){ %> --%>
-									 			 <input type="hidden" name="scheduleid" value="<%=rodscheduleeditdata[6]%>">							 	
+									 			 <input type="hidden" name="scheduleid" value="<%=rodscheduleeditdata[6]!=null?StringEscapeUtils.escapeHtml4(rodscheduleeditdata[6].toString()): " - "%>">							 	
 						   							<%					   		
 						   							if(Integer.parseInt(rodscheduleeditdata[10].toString())<6 ) { %>
 						   								<input type="submit" id="update"  class="btn  btn-sm submit"  value="SUBMIT" onclick="Add(myfrm)">	
@@ -224,7 +225,7 @@
 									<table style="margin-top: 10px; width: 95%" >
 										<tr>
 											<td style="width:100px"> 	<label class="control-label" style="padding-right: 10px;">Venue : &nbsp;</label></td>
-											<td >	<input class="form-control" type="text" name="venue" id="venue" required="required"  placeholder="Enter the Venue" <%if(rodscheduleeditdata[12]!=null){ %> value="<%=rodscheduleeditdata[12] %>" <%} %> ></td>
+											<td >	<input class="form-control" type="text" name="venue" id="venue" required="required"  placeholder="Enter the Venue" <%if(rodscheduleeditdata[12]!=null){ %> value="<%=StringEscapeUtils.escapeHtml4(rodscheduleeditdata[12].toString()) %>" <%} %> ></td>
 		       							 
 		             			
 				                       
@@ -249,7 +250,7 @@
 		                  				</tr> --%>
 		                  				<tr >  
 		                  					<td> <label style="margin-top: 25px;margin-bottom:-20px;  ">Reference : &nbsp;</label></td>
-						       				<td colspan="3"><input class="form-control" type="text" name="reference" id="reference"   placeholder="Reference for this Meeting" <%if(rodscheduleeditdata[14]!=null){ %> value="<%=rodscheduleeditdata[14] %>" <%} %> ></td>
+						       				<td colspan="3"><input class="form-control" type="text" name="reference" id="reference"   placeholder="Reference for this Meeting" <%if(rodscheduleeditdata[14]!=null){ %> value="<%=StringEscapeUtils.escapeHtml4(rodscheduleeditdata[14].toString()) %>" <%} %> ></td>
 		                  				</tr>
 		                  				<tr >
 		                  					<td colspan="4"  align="center"   >
@@ -312,18 +313,18 @@
 								<tr>
 										
 									<td style="text-align: center;"><%=count%></td>
-									<td><%=obj[3] %></td>
-									<td><%=obj[4] %>  </td>									
-									<td><%=obj[6] %></td>									
-									<td><%=obj[10]%>(<%=obj[11] %>)  </td>
-									<td><%=obj[12] %></td>
+									<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
+									<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %>  </td>									
+									<td><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %></td>									
+									<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - "%>(<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>)  </td>
+									<td><%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %></td>
 									<td>
 								
 							 			<table>
 											<%for(Object[] doc : AgendaDocList) { 
 											if(obj[0].toString().equalsIgnoreCase(doc[1].toString())){%>
 												<tr>
-													<td><%=doc[3] %></td>
+													<td><%=doc[3]!=null?StringEscapeUtils.escapeHtml4(doc[3].toString()): " - " %></td>
 													<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
 												<tr>													
 											<%} }%>

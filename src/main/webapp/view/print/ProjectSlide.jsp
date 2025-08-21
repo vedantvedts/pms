@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"  import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
 <%@page import="java.util.List , java.util.stream.Collectors,com.vts.pfms.*"%>
@@ -56,7 +57,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 %>
 <div class="container-fluid">
 	<div class="card shadow-nohover" style="border-radius: 36px;border-color: green; border-width: 6px;">
-		<h4 class="card-title" align="center" style="color: #c72626;margin-top: 5px;height:"> <%if(projectdata!=null && projectdata[1]!=null){%><%=projectdata[1]%> <%}%></h4>
+		<h4 class="card-title" align="center" style="color: #c72626;margin-top: 5px;height:"> <%if(projectdata!=null && projectdata[1]!=null){%><%=StringEscapeUtils.escapeHtml4(projectdata[1].toString())%> <%}%></h4>
 		<div class="card-body" style="padding: 0.25rem;">
 			<div class="row">
 				<div class="col-md-7">
@@ -64,11 +65,11 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 					<table class="table meeting" style="font-weight: bold;" >
 						<tr>
 							<td style="font-size: 1.02rem;font-weight: bold; color: #115bc9;">Project No :</td>
-							<td style="width: 310px;"><%=projectdata[11]!=null?projectdata[11]:"--"%></td>
+							<td style="width: 310px;"><%=projectdata[11]!=null?StringEscapeUtils.escapeHtml4(projectdata[11].toString()):"--"%></td>
 						</tr>
 						<tr>
 							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Category :</td>
-							<td><%=projectdata[2]!=null?projectdata[2]:"--"%></td>
+							<td><%=projectdata[2]!=null?StringEscapeUtils.escapeHtml4(projectdata[2].toString()):"--"%></td>
 						</tr>
 						<tr>
 							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Cost Rs.:</td>
@@ -77,7 +78,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 						
 						<tr>
 							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Application :</td>
-							<td><%if(projectdata!=null && projectdata[10]!=null){%><%=projectdata[10]%><%}else{%> -- <%}%></td>
+							<td><%if(projectdata!=null && projectdata[10]!=null){%><%=StringEscapeUtils.escapeHtml4(projectdata[10].toString())%><%}else{%> -- <%}%></td>
 						</tr>
 					</table>
 					</div>
@@ -103,15 +104,15 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 					<table class="table meeting" style="font-weight: bold;" >
 						<tr>
 							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;width: 500px;">Objectives :</td>
-							<td style="width: 740px;"><%=projectdata[7]!=null?projectdata[7]:"--"%></td>
+							<td style="width: 740px;"><%=projectdata[7]!=null?StringEscapeUtils.escapeHtml4(projectdata[7].toString()):"--"%></td>
 						</tr>
 						<tr>
 							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;width: 500px;">Scope :</td>
-							<td style="width: 720px;"><%if(projectdata!=null && projectdata[9]!=null){%><%=projectdata[9]%><%}else{%> -- <%}%></td>
+							<td style="width: 720px;"><%if(projectdata!=null && projectdata[9]!=null){%><%=StringEscapeUtils.escapeHtml4(projectdata[9].toString())%><%}else{%> -- <%}%></td>
 						</tr>
 						<tr>
 							<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;width: 500px;">Deliverables :</td>
-							<td style="width: 720px;"><%=projectdata[8]!=null?projectdata[8]:"--"%></td>
+							<td style="width: 720px;"><%=projectdata[8]!=null?StringEscapeUtils.escapeHtml4(projectdata[8].toString()):"--"%></td>
 						</tr>
 					</table>
 				</div>

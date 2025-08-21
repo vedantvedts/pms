@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
 
@@ -47,20 +48,22 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 String projectappliacble=(String)request.getAttribute("projectappliacble");
 %>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></div>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
     <br />
     
     
@@ -75,7 +78,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 							</div>
 							<div class="col-md-6">
 								<%if(Long.parseLong(projectid)>0){ %>
-								<div align="right"><b class="text-white"  >Project : <%=projectdetails[4] %></b></div>
+								<div align="right"><b class="text-white"  >Project : <%=projectdetails[4]!=null?StringEscapeUtils.escapeHtml4(projectdetails[4].toString()): " - " %></b></div>
 								<%} %>
 							</div>
 						</div>

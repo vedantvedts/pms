@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -136,27 +137,22 @@ NFormatConvertion nfc=new NFormatConvertion();
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	
-	
-	<center>
-	
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-            </div>
-            
-    </center>
-    
-    
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 	
@@ -195,14 +191,14 @@ NFormatConvertion nfc=new NFormatConvertion();
 										   
 										    <tr>
 										 
-										   <td class="center"><%if(obj[0]!=null){%><%=obj[0] %><%}else{ %>-<%} %></td>
-										   <td><%=obj[2] %></td>
-										 	<td><%=obj[3] %></td>
-										 	<td><%if(obj[1]!=null){%><%=obj[1] %><%}else{ %>-<%} %></td>
-									     	<td class="right" ><%if(obj[4]!=null){%><%=nfc.convert(Double.parseDouble(obj[4].toString())/100000) %><%}else{ %>-<%} %></td>
-										     <td class="center"><%if(obj[5]!=null){%><%=obj[5] %><%}else{ %>-<%} %></td>
+										   <td class="center"><%if(obj[0]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[0].toString()) %><%}else{ %>-<%} %></td>
+										   <td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+										 	<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
+										 	<td><%if(obj[1]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[1].toString()) %><%}else{ %>-<%} %></td>
+									     	<td class="right" ><%if(obj[4]!=null){%><%=nfc.convert(Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[4].toString()))/100000) %><%}else{ %>-<%} %></td>
+										     <td class="center"><%if(obj[5]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[5].toString()) %><%}else{ %>-<%} %></td>
 											<td class="editable-click"><%if(obj[6]!=null){%>
-											<a class="font" href="ProjectApprovalTracking.htm?Initiationid=<%=obj[7]%>" target="_blank" ><%=obj[6] %><%}else{ %>-<%} %></a></td>	
+											<a class="font" href="ProjectApprovalTracking.htm?Initiationid=<%=obj[7]%>" target="_blank" ><%=StringEscapeUtils.escapeHtml4(obj[6].toString()) %><%}else{ %>-<%} %></a></td>	
 	
 										    </tr>
 
@@ -280,7 +276,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 				                			<%if(projectapprovalflowempdata.size()>0){ %>
 							                     <%for(Object[] obj : projectapprovalflowempdata){ %>
 							                     	<%if(obj[3].toString().equals("DO-RTMD") ){ %>
-							                     		<%=obj[1] %>,<%=obj[2] %>
+							                     		<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>,<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>
 							                     	<%} %>
 							                     <%} %>
 							               <%} %>
@@ -289,7 +285,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 				                			<%if(projectapprovalflowempdata.size()>0){ %>
 							                     <%for(Object[] obj : projectapprovalflowempdata){ %>
 							                     	<%if(obj[3].toString().equals("AD") ){ %>
-							                     		<%=obj[1] %>,<%=obj[2] %>
+							                     		<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>,<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>
 							                     	<%} %>
 							                     <%} %>
 							               <%} %>
@@ -298,7 +294,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 				                			<%if(projectapprovalflowempdata.size()>0){ %>
 							                     <%for(Object[] obj : projectapprovalflowempdata){ %>
 							                     	<%if(obj[3].toString().equals("TCM") ){ %>
-							                     		<%=obj[1] %>,<%=obj[2] %>
+							                     		<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>,<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>
 							                     	<%} %>
 							                     <%} %>
 							               <%} %>

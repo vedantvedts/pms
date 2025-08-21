@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
@@ -177,22 +178,22 @@ Kindly note that only the Project Director, the Admin, and the OICs of the Paren
 </form>
 </nav>
 
-<%
-
-String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br />
 
@@ -200,14 +201,14 @@ String ses=(String)request.getParameter("result");
 <div class="container-fluid">
 <div class="row" >
 <div class="col-md-12">
-<div  class="panel-group" style="  "><h5 class="text-white" style="font-weight: bold;font-size: large;background-color: #055C9D; text-align: center;padding: 10px"><%=getMA[1] %> Milestone Activity Details  </h5>  
+<div  class="panel-group" style="  "><h5 class="text-white" style="font-weight: bold;font-size: large;background-color: #055C9D; text-align: center;padding: 10px"><%=getMA[1]!=null?StringEscapeUtils.escapeHtml4(getMA[1].toString()): " - " %> Milestone Activity Details  </h5>  
 <form   method="POST" action="MilestoneActivityEditSubmit.htm" id="form<%=getMA[0] %>M<%=getMA[10] %>">
 <div class="row container-fluid" >
                              <div class="col-md-1 " ><br><label class="control-label">Type</label>  <br>  <b >Main</b>                    		
                         	</div>
                     		<div class="col-md-5 " ><br>
                     		<label class="control-label"> Activity Name:</label> <br> 
-                    		 <textarea rows="1" cols="50" class="form-control "  <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=getMA[4] %></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control "  <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=getMA[4]!=null?StringEscapeUtils.escapeHtml4(getMA[4].toString()): "" %></textarea> 
                         	</div>
                         	
                         	<div class="col-md-1 " align="center"><br>
@@ -221,7 +222,7 @@ String ses=(String)request.getParameter("result");
                         		</div>
                         		<div class="col-md-1 " align="center" ><br>
                     		<label class="control-label">Weightage <br> </label>
-                    		<input type="number" class="form-control " name="Weightage" id="Weightage<%=getMA[0] %>M<%=getMA[10] %>" required="required" min="1" max="100" value="<%=getMA[16] %>"  style="width:95px;">
+                    		<input type="number" class="form-control " name="Weightage" id="Weightage<%=getMA[0] %>M<%=getMA[10] %>" required="required" min="1" max="100" value="<%=getMA[16]!=null?StringEscapeUtils.escapeHtml4(getMA[16].toString()): "" %>"  style="width:95px;">
 
                     		 
                         	</div>
@@ -231,7 +232,7 @@ String ses=(String)request.getParameter("result");
 	                              		<select class="form-control selectdee" id="ActivityTypeIdM" required="required" name="ActivityTypeId">
 	    									<option disabled="true"  selected value="">Choose...</option>
 	    										<% for (Object[] obj : ActivityTypeList) {%>
-											<option value="<%=obj[0]%>" <%if(getMA[15].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
+											<option value="<%=obj[0]%>" <%if(getMA[15].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> </option>
 												<%} %>
 	  									</select>
 	                        	<%}%>
@@ -261,7 +262,7 @@ String ses=(String)request.getParameter("result");
                         		<select class="form-control selectdee" name="labCode1" id="labCode1M" required 
 								onchange="renderEmployeeList('1','M','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
-								    	<option value="<%=lab[3]%>" <%if(getMA[18].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    	<option value="<%=lab[3]%>" <%if(getMA[18].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
 								    <%}%>
 								</select>
                         	</div>
@@ -280,7 +281,7 @@ String ses=(String)request.getParameter("result");
                         		<select class="form-control selectdee" name="labCode2" id="labCode2M" required 
 								onchange="renderEmployeeList('2','M','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
-								    	<option value="<%=lab[3]%>" <%if(getMA[19].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    	<option value="<%=lab[3]%>" <%if(getMA[19].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
 								    <%}%>
 								</select>
                         	</div>
@@ -301,8 +302,8 @@ String ses=(String)request.getParameter("result");
                        		
 <script type="text/javascript">
 
-renderEmployeeList('1','M', '<%=getMA[8]%>');
-renderEmployeeList('2','M', '<%=getMA[9]%>');
+renderEmployeeList('1','M', '<%=getMA[8]!=null?StringEscapeUtils.escapeHtml4(getMA[8].toString()): " - "%>');
+renderEmployeeList('2','M', '<%=getMA[9]!=null?StringEscapeUtils.escapeHtml4(getMA[9].toString()): " - "%>');
 		
 </script>
    
@@ -346,7 +347,7 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
                     		
                         	</div>
 						  <div class="col-md-5 " ><br>
-                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityA[4] %></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityA[4]!=null?StringEscapeUtils.escapeHtml4(ActivityA[4].toString()): " - " %></textarea> 
                         	</div>
                         	
                         	<div class="col-md-1 " align="center"><br>
@@ -357,14 +358,14 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
                         	<input class="form-control " name="ValidTo" id="DateCompletionA2<%=ActivityA[0] %>"  value="<%=sdf.format(ActivityA[3]) %>"  required="required"  style="width:120px;;" >
                         	</div>
                        		<div class="col-md-1 " align="center" ><br>      
-                   				<input type="number" class="form-control "  name="Weightage" id="Weightage<%=getMA[0] %>A<%=ActivityA[0] %>" required="required" min="0" max="100" value="<%=ActivityA[6] %>" style="width:95px;" >
+                   				<input type="number" class="form-control "  name="Weightage" id="Weightage<%=getMA[0] %>A<%=ActivityA[0] %>" required="required" min="0" max="100" value="<%=ActivityA[6]!=null?StringEscapeUtils.escapeHtml4(ActivityA[6].toString()): "" %>" style="width:95px;" >
                        		</div>
                        		<div class="col-md-2 " ><br>
                        			<%if(RevisionCount==0) { %>
                               		<select class="form-control selectdee" id="ActivityTypeId<%=ActivityA[0] %>" required="required" name="ActivityTypeId">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : ActivityTypeList) {%>
-										<option value="<%=obj[0]%>" <%if(ActivityA[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
+										<option value="<%=obj[0]%>" <%if(ActivityA[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> </option>
 											<%} %>
   									</select>
                         		<%} %>
@@ -394,7 +395,7 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
                         		<select class="form-control selectdee" name="labCode1" id="labCode1A<%=ActivityA[0] %>" required 
 								onchange="renderEmployeeList('1','A<%=ActivityA[0] %>','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
-								    	<option value="<%=lab[3]%>" <%if(ActivityA[28].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    	<option value="<%=lab[3]%>" <%if(ActivityA[28].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
 								    <%}%>
 								</select>
                         	</div>
@@ -413,7 +414,7 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
                         		<select class="form-control selectdee" name="labCode2" id="labCode2A<%=ActivityA[0] %>" required 
 								onchange="renderEmployeeList('2','A<%=ActivityA[0] %>','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
-								    	<option value="<%=lab[3]%>" <%if(ActivityA[29].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    	<option value="<%=lab[3]%>" <%if(ActivityA[29].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
 								    <%}%>
 								</select>
                         	</div>
@@ -430,8 +431,8 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
   							</div>			
   <script type="text/javascript">
 
-  renderEmployeeList('1','A<%=ActivityA[0] %>', '<%=ActivityA[13]%>');
-  renderEmployeeList('2','A<%=ActivityA[0] %>', '<%=ActivityA[15]%>');
+  renderEmployeeList('1','A<%=ActivityA[0]!=null?StringEscapeUtils.escapeHtml4(ActivityA[0].toString()): " - " %>', '<%=ActivityA[13]!=null?StringEscapeUtils.escapeHtml4(ActivityA[13].toString()): " - "%>');
+  renderEmployeeList('2','A<%=ActivityA[0]!=null?StringEscapeUtils.escapeHtml4(ActivityA[0].toString()): " - " %>', '<%=ActivityA[15]!=null?StringEscapeUtils.escapeHtml4(ActivityA[15].toString()): " - "%>');
   
 <%-- changeempoic1(<%=ActivityA[13] %>,<%=ActivityA[0] %>);
 changeempoic2(<%=ActivityA[15] %>,<%=ActivityA[0] %>); --%>
@@ -524,7 +525,7 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
                     		
                         	</div>
 						    <div class="col-md-5 " ><br>
-                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityB[4] %></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityB[4]!=null?StringEscapeUtils.escapeHtml4(ActivityB[4].toString()): " - " %></textarea> 
                         	</div>
                         	
                         	<div class="col-md-1 " align="center"><br>
@@ -535,14 +536,14 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
                         	<input class="form-control " name="ValidTo" id="DateCompletionB2<%=ActivityA[0] %><%=ActivityB[0] %>"  value="<%=sdf.format(ActivityB[3]) %>"  required="required"  style="width:120px;;" >
                         		</div>
                             <div class="col-md-1 " align="center" ><br>      
-                    		<input type="number" class="form-control "  name="Weightage" id="Weightage<%=ActivityA[0] %>B<%=ActivityB[0] %>" required="required" min="0" max="100" value="<%=ActivityB[6] %>"  style="width:95px;" >
+                    		<input type="number" class="form-control "  name="Weightage" id="Weightage<%=ActivityA[0] %>B<%=ActivityB[0] %>" required="required" min="0" max="100" value="<%=ActivityB[6]!=null?StringEscapeUtils.escapeHtml4(ActivityB[6].toString()): "" %>"  style="width:95px;" >
                     		</div>
                     		<div class="col-md-2 " ><br>
                     			<%if(RevisionCount==0) { %>
                               		<select class="form-control selectdee" id="ActivityTypeId<%=ActivityA[0] %><%=ActivityB[0] %>" required="required" name="ActivityTypeId">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : ActivityTypeList) {%>
-										<option value="<%=obj[0]%>" <%if(ActivityB[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
+										<option value="<%=obj[0]%>" <%if(ActivityB[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> </option>
 											<%} %>
   									</select>
                     	      	
@@ -574,7 +575,7 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
                         		<select class="form-control selectdee" name="labCode1" id="labCode1B<%=ActivityA[0] %><%=ActivityB[0] %>" required 
 								onchange="renderEmployeeList('1','B<%=ActivityA[0] %><%=ActivityB[0] %>','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
-								    	<option value="<%=lab[3]%>" <%if(ActivityB[28].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    	<option value="<%=lab[3]%>" <%if(ActivityB[28].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
 								    <%}%>
 								</select>
                         	</div>
@@ -593,7 +594,7 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
                         		<select class="form-control selectdee" name="labCode2" id="labCode2B<%=ActivityA[0] %><%=ActivityB[0] %>" required 
 								onchange="renderEmployeeList('2','B<%=ActivityA[0] %><%=ActivityB[0] %>','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
-								    	<option value="<%=lab[3]%>" <%if(ActivityB[29].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    	<option value="<%=lab[3]%>" <%if(ActivityB[29].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
 								    <%}%>
 								</select>
                         	</div>
@@ -613,8 +614,8 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
 <%-- changeempoic1(<%=ActivityB[13] %>,<%=ActivityA[0] %><%=ActivityB[0] %>);
 changeempoic2(<%=ActivityB[15] %>,<%=ActivityA[0] %><%=ActivityB[0] %>); --%>
 
-renderEmployeeList('1','B<%=ActivityA[0] %><%=ActivityB[0] %>', '<%=ActivityB[13]%>');
-renderEmployeeList('2','B<%=ActivityA[0] %><%=ActivityB[0] %>', '<%=ActivityB[15]%>');
+renderEmployeeList('1','B<%=ActivityA[0]!=null?StringEscapeUtils.escapeHtml4(ActivityA[0].toString()): " - " %><%=ActivityB[0]!=null?StringEscapeUtils.escapeHtml4(ActivityB[0].toString()): " - " %>', '<%=ActivityB[13]!=null?StringEscapeUtils.escapeHtml4(ActivityB[13].toString()): " - "%>');
+renderEmployeeList('2','B<%=ActivityA[0]!=null?StringEscapeUtils.escapeHtml4(ActivityA[0].toString()): " - " %><%=ActivityB[0]!=null?StringEscapeUtils.escapeHtml4(ActivityB[0].toString()): " - " %>', '<%=ActivityB[15]!=null?StringEscapeUtils.escapeHtml4(ActivityB[15].toString()): " - "%>');
 
 </script>
                        		
@@ -703,7 +704,7 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
                         	</div>
                         	
 						    <div class="col-md-5 " ><br>
-                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityC[4] %></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityC[4]!=null?StringEscapeUtils.escapeHtml4(ActivityC[4].toString()): " - " %></textarea> 
                         	</div>
                         	
                         	<div class="col-md-1 " align="center"><br>
@@ -714,7 +715,7 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
                         	<input class="form-control " name="ValidTo" id="DateCompletionC2<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>"  value="<%=sdf.format(ActivityC[3]) %>"  required="required"  style="width:120px;;" >
                         		</div>
                         		<div class="col-md-1 " align="center" ><br>      
-                    		<input type="number" class="form-control " name="Weightage" id="Weightage<%=ActivityB[0] %>C<%=ActivityC[0] %>" required="required" min="0" max="100" value="<%=ActivityC[6] %>"  style="width:95px;">
+                    		<input type="number" class="form-control " name="Weightage" id="Weightage<%=ActivityB[0] %>C<%=ActivityC[0] %>" required="required" min="0" max="100" value="<%=ActivityC[6]!=null?StringEscapeUtils.escapeHtml4(ActivityC[6].toString()): "" %>"  style="width:95px;">
                         	</div>
                         	
                         	<div class="col-md-2 " ><br>
@@ -722,7 +723,7 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
                               		<select class="form-control selectdee" id="ActivityTypeId<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>" required="required" name="ActivityTypeId">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : ActivityTypeList) {%>
-										<option value="<%=obj[0]%>" <%if(ActivityC[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
+										<option value="<%=obj[0]%>" <%if(ActivityC[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> </option>
 											<%} %>
   									</select>
                         		<%} %>
@@ -752,7 +753,7 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
                         		<select class="form-control selectdee" name="labCode1" id="labCode1C<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>" required 
 								onchange="renderEmployeeList('1','C<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
-								    	<option value="<%=lab[3]%>" <%if(ActivityC[28].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    	<option value="<%=lab[3]%>" <%if(ActivityC[28].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
 								    <%}%>
 								</select>
                         	</div>
@@ -771,7 +772,7 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
                         		<select class="form-control selectdee" name="labCode2" id="labCode2C<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>" required 
 								onchange="renderEmployeeList('2','C<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
-								    	<option value="<%=lab[3]%>" <%if(ActivityC[29].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    	<option value="<%=lab[3]%>" <%if(ActivityC[29].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
 								    <%}%>
 								</select>
                         	</div>
@@ -791,8 +792,8 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
 <%-- changeempoic1(<%=ActivityC[13] %>,<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>);
 changeempoic2(<%=ActivityC[15] %>,<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>); --%>
 
-renderEmployeeList('1','C<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>', '<%=ActivityC[13]%>');
-renderEmployeeList('2','C<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>', '<%=ActivityC[15]%>');
+renderEmployeeList('1','C<%=ActivityA[0]!=null?StringEscapeUtils.escapeHtml4(ActivityA[0].toString()): " - " %><%=ActivityB[0]!=null?StringEscapeUtils.escapeHtml4(ActivityB[0].toString()): " - " %><%=ActivityC[0]!=null?StringEscapeUtils.escapeHtml4(ActivityC[0].toString()): " - " %>', '<%=ActivityC[13]!=null?StringEscapeUtils.escapeHtml4(ActivityC[13].toString()): " - "%>');
+renderEmployeeList('2','C<%=ActivityA[0]!=null?StringEscapeUtils.escapeHtml4(ActivityA[0].toString()): " - " %><%=ActivityB[0]!=null?StringEscapeUtils.escapeHtml4(ActivityB[0].toString()): " - " %><%=ActivityC[0]!=null?StringEscapeUtils.escapeHtml4(ActivityC[0].toString()): " - " %>', '<%=ActivityC[15]!=null?StringEscapeUtils.escapeHtml4(ActivityC[15].toString()): " - "%>');
 
 </script>
                        		
@@ -875,7 +876,7 @@ if(MilestoneActivityD!=null&&MilestoneActivityD.size()>0){
                     		
                         	</div>
 						    <div class="col-md-5 " ><br>
-                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityD[4] %></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityD[4]!=null?StringEscapeUtils.escapeHtml4(ActivityD[4].toString()): " - " %></textarea> 
                         	</div>
                         	
                         	<div class="col-md-1 " align="center"><br>
@@ -886,7 +887,7 @@ if(MilestoneActivityD!=null&&MilestoneActivityD.size()>0){
                         	<input class="form-control " name="ValidTo" id="DateCompletionB2<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>"  value="<%=sdf.format(ActivityD[3]) %>"  required="required"  style="width:120px;;" >
                         		</div>
                             <div class="col-md-1 " align="center" ><br>      
-                    		<input type="number" class="form-control "  name="Weightage" id="Weightage<%=ActivityC[0] %>D<%=ActivityD[0] %>" required="required" min="0" max="100" value="<%=ActivityD[6] %>"  style="width:95px;" >
+                    		<input type="number" class="form-control "  name="Weightage" id="Weightage<%=ActivityC[0] %>D<%=ActivityD[0] %>" required="required" min="0" max="100" value="<%=ActivityD[6]!=null?StringEscapeUtils.escapeHtml4(ActivityD[6].toString()): " - " %>"  style="width:95px;" >
                         	</div>
                         	
                         	<div class="col-md-2 " ><br>
@@ -894,7 +895,7 @@ if(MilestoneActivityD!=null&&MilestoneActivityD.size()>0){
                               		<select class="form-control selectdee" id="ActivityTypeId<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>" required="required" name="ActivityTypeId">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : ActivityTypeList) {%>
-										<option value="<%=obj[0]%>" <%if(ActivityD[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
+										<option value="<%=obj[0]%>" <%if(ActivityD[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): ""%> </option>
 											<%} %>
   									</select>
                     	    	<%} %>
@@ -925,7 +926,7 @@ if(MilestoneActivityD!=null&&MilestoneActivityD.size()>0){
                         		<select class="form-control selectdee" name="labCode1" id="labCode1D<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>" required 
 								onchange="renderEmployeeList('1','D<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
-								    	<option value="<%=lab[3]%>" <%if(ActivityD[28].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    	<option value="<%=lab[3]%>" <%if(ActivityD[28].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
 								    <%}%>
 								</select>
                         	</div>
@@ -945,7 +946,7 @@ if(MilestoneActivityD!=null&&MilestoneActivityD.size()>0){
                         		<select class="form-control selectdee" name="labCode2" id="labCode2D<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>" required 
 								onchange="renderEmployeeList('2','D<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
-								    	<option value="<%=lab[3]%>" <%if(ActivityD[29].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    	<option value="<%=lab[3]%>" <%if(ActivityD[29].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
 								    <%}%>
 								</select>
                         	</div>
@@ -965,8 +966,8 @@ if(MilestoneActivityD!=null&&MilestoneActivityD.size()>0){
 <%-- changeempoic1(<%=ActivityD[13] %>,<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>);
 changeempoic2(<%=ActivityD[15] %>,<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>); --%>
 
-renderEmployeeList('1','D<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>', '<%=ActivityD[13]%>');
-renderEmployeeList('2','D<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>', '<%=ActivityD[15]%>');
+renderEmployeeList('1','D<%=ActivityA[0]!=null?StringEscapeUtils.escapeHtml4(ActivityA[0].toString()): " - " %><%=ActivityB[0]!=null?StringEscapeUtils.escapeHtml4(ActivityB[0].toString()): " - " %><%=ActivityC[0]!=null?StringEscapeUtils.escapeHtml4(ActivityC[0].toString()): " - " %><%=ActivityD[0]!=null?StringEscapeUtils.escapeHtml4(ActivityD[0].toString()): " - " %>', '<%=ActivityD[13]!=null?StringEscapeUtils.escapeHtml4(ActivityD[13].toString()): " - "%>');
+renderEmployeeList('2','D<%=ActivityA[0]!=null?StringEscapeUtils.escapeHtml4(ActivityA[0].toString()): " - " %><%=ActivityB[0]!=null?StringEscapeUtils.escapeHtml4(ActivityB[0].toString()): " - " %><%=ActivityC[0]!=null?StringEscapeUtils.escapeHtml4(ActivityC[0].toString()): " - " %><%=ActivityD[0]!=null?StringEscapeUtils.escapeHtml4(ActivityD[0].toString()): " - " %>', '<%=ActivityD[15]!=null?StringEscapeUtils.escapeHtml4(ActivityD[15].toString()): " - "%>');
 </script>
 								
 						 </form>   
@@ -1052,7 +1053,7 @@ if(MilestoneActivityE!=null&&MilestoneActivityE.size()>0){
                         	</div>
                         	
 						    <div class="col-md-5 " ><br>
-                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityE[4] %></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityE[4] !=null?StringEscapeUtils.escapeHtml4(ActivityE[4].toString()): " - "%></textarea> 
                         	</div>
                         	
                         	<div class="col-md-1 " align="center"><br>
@@ -1063,14 +1064,14 @@ if(MilestoneActivityE!=null&&MilestoneActivityE.size()>0){
                         	<input class="form-control " name="ValidTo" id="DateCompletionC2<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>"  value="<%=sdf.format(ActivityE[3]) %>"  required="required"  style="width:120px;;" >
                         		</div>
                         		<div class="col-md-1 " align="center" ><br>      
-                    		<input type="number" class="form-control " name="Weightage" id="Weightage<%=ActivityD[0] %>E<%=ActivityE[0] %>" required="required" min="0" max="100" value="<%=ActivityE[6] %>"  style="width:95px;">
+                    		<input type="number" class="form-control " name="Weightage" id="Weightage<%=ActivityD[0] %>E<%=ActivityE[0] %>" required="required" min="0" max="100" value="<%=ActivityE[6]!=null?StringEscapeUtils.escapeHtml4(ActivityE[6].toString()): "" %>"  style="width:95px;">
                         	</div>
                         	<div class="col-md-2 " ><br>
                         		<%if(RevisionCount==0) { %>
                               		<select class="form-control selectdee" id="ActivityTypeId<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>" required="required" name="ActivityTypeId">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : ActivityTypeList) {%>
-										<option value="<%=obj[0]%>" <%if(ActivityE[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]%> </option>
+										<option value="<%=obj[0]%>" <%if(ActivityE[11].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <% }%>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> </option>
 											<%} %>
   									</select>
                         		<%} %>
@@ -1099,7 +1100,7 @@ if(MilestoneActivityE!=null&&MilestoneActivityE.size()>0){
                         		<select class="form-control selectdee" name="labCode1" id="labCode1E<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>" required 
 								onchange="renderEmployeeList('1','E<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
-								    	<option value="<%=lab[3]%>" <%if(ActivityE[28].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    	<option value="<%=lab[3]%>" <%if(ActivityE[28].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
 								    <%}%>
 								</select>
                         	</div>
@@ -1120,7 +1121,7 @@ if(MilestoneActivityE!=null&&MilestoneActivityE.size()>0){
                         		<select class="form-control selectdee" name="labCode2" id="labCode2E<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>" required 
 								onchange="renderEmployeeList('2','E<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
-								    	<option value="<%=lab[3]%>" <%if(ActivityE[29].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]%></option>
+								    	<option value="<%=lab[3]%>" <%if(ActivityE[29].toString().equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
 								    <%}%>
 								</select>
                         	</div>
@@ -1141,8 +1142,8 @@ if(MilestoneActivityE!=null&&MilestoneActivityE.size()>0){
 <%-- changeempoic1(<%=ActivityE[13] %>,<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>);
 changeempoic2(<%=ActivityE[15] %>,<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>); --%>
 
-renderEmployeeList('1','E<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>', '<%=ActivityE[13]%>');
-renderEmployeeList('2','E<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>', '<%=ActivityE[15]%>');
+renderEmployeeList('1','E<%=ActivityA[0]!=null?StringEscapeUtils.escapeHtml4(ActivityA[0].toString()): " - " %><%=ActivityB[0]!=null?StringEscapeUtils.escapeHtml4(ActivityB[0].toString()): " - " %><%=ActivityC[0]!=null?StringEscapeUtils.escapeHtml4(ActivityC[0].toString()): " - " %><%=ActivityD[0]!=null?StringEscapeUtils.escapeHtml4(ActivityD[0].toString()): " - " %><%=ActivityE[0]!=null?StringEscapeUtils.escapeHtml4(ActivityE[0].toString()): " - " %>', '<%=ActivityE[13]!=null?StringEscapeUtils.escapeHtml4(ActivityE[13].toString()): " - "%>');
+renderEmployeeList('2','E<%=ActivityA[0]!=null?StringEscapeUtils.escapeHtml4(ActivityA[0].toString()): " - " %><%=ActivityB[0]!=null?StringEscapeUtils.escapeHtml4(ActivityB[0].toString()): " - " %><%=ActivityC[0]!=null?StringEscapeUtils.escapeHtml4(ActivityC[0].toString()): " - " %><%=ActivityD[0]!=null?StringEscapeUtils.escapeHtml4(ActivityD[0].toString()): " - " %><%=ActivityE[0]!=null?StringEscapeUtils.escapeHtml4(ActivityE[0].toString()): " - " %>', '<%=ActivityE[15]!=null?StringEscapeUtils.escapeHtml4(ActivityE[15].toString()): " - "%>');
 </script>
                         	
 	                        </form> 

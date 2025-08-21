@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
@@ -173,20 +174,22 @@ a:hover {
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
   
     
     
@@ -210,7 +213,7 @@ a:hover {
 												<% for (Object[] obj : projectslist) {
     										    String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
     										     %>
-											    <option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(projectid)){ %>selected="selected" <%} %>> <%=obj[4]+projectshortName%>  </option>
+											    <option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(projectid)){ %>selected="selected" <%} %>> <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%>  </option>
 											    <%} %>
 												<%-- <%for(Object[] obj:projectslist){ %>
 													<option <%if(projectid.equals(obj[0].toString())){ %>selected <%} %> value="<%=obj[0]%>"><%=obj[4]%></option>	
@@ -243,10 +246,10 @@ a:hover {
 														<%for(int i=0;i<projectmainitemslist.size();i++){ %>
 															<tr>
 																<td><%=i+1 %></td>
-																<td><%=projectmainitemslist.get(i)[6] %></td>
-																<td><%=projectmainitemslist.get(i)[5] %></td>
-																<td><%= projectmainitemslist.get(i)[2] %></td>
-																<td><%= sdf.format(sdf1.parse( projectmainitemslist.get(i)[3].toString() ))%></td>
+																<td><%=projectmainitemslist.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(projectmainitemslist.get(i)[6].toString()): " - " %></td>
+																<td><%=projectmainitemslist.get(i)[5]!=null?StringEscapeUtils.escapeHtml4(projectmainitemslist.get(i)[5].toString()): " - " %></td>
+																<td><%= projectmainitemslist.get(i)[2]!=null?StringEscapeUtils.escapeHtml4(projectmainitemslist.get(i)[2].toString()): " - " %></td>
+																<td><%=projectmainitemslist.get(i)[3]!=null?sdf.format(sdf1.parse( projectmainitemslist.get(i)[3].toString() )):" - " %></td>
 																<td>
 																	<%if(projectmainitemslist.get(i)[7]!=null){ %>
 																		<form action="FracasAttachDownload.htm" method="post" target="_blank" >

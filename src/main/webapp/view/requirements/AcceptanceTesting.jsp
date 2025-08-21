@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
         <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -362,8 +363,8 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 				<span style="color:#31708f">ACCEPTANCE TESTING - </span> 
 				<span style="color:#31708f;font-size: 19px">
 					<%if(projectDetails!=null) {%>
-						<%=projectDetails[2]!=null?projectDetails[2]:"-" %>
-						(<%=projectDetails[1]!=null?projectDetails[1]:"-" %>)
+						<%=projectDetails[2]!=null?StringEscapeUtils.escapeHtml4(projectDetails[2].toString()):"-" %>
+						(<%=projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()):"-" %>)
 					<%} %>
 				</span>
 			</b>
@@ -377,24 +378,22 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 	     	<button class="btn btn-info btn-sm  back ml-2 mt-1" formaction="ProjectTestPlanDetails.htm" formmethod="get" formnovalidate="formnovalidate" style="float:right;">BACK</button>
 		</form>
 	</nav>
- 	<%String ses=(String)request.getParameter("result"); 
- 	  String ses1=(String)request.getParameter("resultfail");
-	  if(ses1!=null){
-	%>
-	<div align="center">
-
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</div>
-	<%} %>
+ 	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
 
 	<div class="container-fluid">
 		<div class="row">

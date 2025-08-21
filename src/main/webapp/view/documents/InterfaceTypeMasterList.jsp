@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1" %>
@@ -15,28 +16,22 @@
 	<%
 	List<Object[]> InterfaceTypeMasterList = (List<Object[]>) request.getAttribute("InterfaceTypeMasterList");
 	%>
-	<%
-	String result = (String) request.getParameter("result");
-	String resultfail = (String) request.getParameter("resultfail");
-	if (resultfail != null) {
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-			<%=resultfail%>
-		</div>
-	</div>
-	<%
-	}
-	if (result != null) {
-	%>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=result%>
-		</div>
-	</div>
-	<%
-	}
-	%>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	<div class="container-fluid">
 		<div class="col-md-12">
 			<div class="card shadow-nohover">
@@ -70,9 +65,9 @@
 									%>
 									<tr>
 										<td align="center"><input type="radio" name="interfaceTypeId"
-											value=<%=obj[0]%>></td>
-										<td><%=obj[1]%></td>
-										<td><%=obj[2]%></td>
+											value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%>></td>
+										<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></td>
+										<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></td>
 									</tr>
 									<%
 									}

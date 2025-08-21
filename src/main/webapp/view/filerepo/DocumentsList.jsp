@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.List"%>
 <%@page import="com.vts.pfms.milestone.model.FileDocMaster"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -124,24 +125,22 @@ List<FileDocMaster> docmasterlist=(List<FileDocMaster>)request.getAttribute("doc
 <body>
 
 
-<% String ses=(String)request.getParameter("result"); 
-String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){
-%>
-	<div align="center">
-	
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</div>
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -164,7 +163,7 @@ if(ses1!=null){
 										<li >
 										<form   method="get">
 											<span class="caret"  onclick="onclickchange(this);" >
-								            		<%=obj.getLevelName() %>
+								            		<%=obj.getLevelName()!=null?StringEscapeUtils.escapeHtml4(obj.getLevelName()): " - " %>
 								            	</span>
 								            	<span  style="font-size:14px" id="span_<%=obj.getFileUploadMasterId()%>"> &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj.getFileUploadMasterId() %>')"></i> </span>	
 											     <input type="text" name="levelname" class="hiddeninput description-input"   id="inputx_<%=obj.getFileUploadMasterId()%>"  value="<%=obj.getLevelName()%>" style="display: none;" maxlength="255" >
@@ -181,7 +180,7 @@ if(ses1!=null){
 														<li>
 														<form   method="get">	
 																<span class="caret" onclick="onclickchange(this);" >
-								             						<%=obj1.getLevelName() %>
+								             						<%=obj1.getLevelName()!=null?StringEscapeUtils.escapeHtml4(obj1.getLevelName()): " - " %>
 								             					</span>
 																
 															<span  style="font-size:14px" id="span_<%=obj1.getFileUploadMasterId()%>">  &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj1.getFileUploadMasterId() %>')"></i> </span>
@@ -201,7 +200,7 @@ if(ses1!=null){
 																   			 <form action="#">
 																				<span>
 																					<span class="caret-last" onclick="onclickchange(this);" >
-																						<%=obj2.getLevelName() %>(<%=obj2.getDocShortName() %>)
+																						<%=obj2.getLevelName()!=null?StringEscapeUtils.escapeHtml4(obj2.getLevelName()): " - " %>(<%=obj2.getDocShortName()!=null?StringEscapeUtils.escapeHtml4(obj2.getDocShortName()): " - " %>)
 																					</span>
 																					<span  style="font-size:14px" id="span_<%=obj2.getFileUploadMasterId()%>">  &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj2.getFileUploadMasterId() %>')"></i> </span>	
 																				      <input type="text" name="levelname" class="hiddeninput description-input" id="inputx_<%=obj2.getFileUploadMasterId()%>" value="<%=obj2.getLevelName()%>" style="display: none;" maxlength="255" >

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
     <%@page import="java.time.LocalTime"%>
@@ -46,20 +47,22 @@ String divisionid=(String)request.getAttribute("divisionid");
 String initiationid=(String)request.getAttribute("initiationid");
 %>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br />
     <div class="container-fluid">
@@ -79,7 +82,7 @@ String initiationid=(String)request.getAttribute("initiationid");
 						<div class="col-md-5">	</div>
 						
 						<div class="col-md-3">	
-							<h5 class="control-label" > Project : <%=ProjectName %></h5> 
+							<h5 class="control-label" > Project : <%=ProjectName!=null?StringEscapeUtils.escapeHtml4(ProjectName): " - " %></h5> 
 						</div>
 					</div>
 				</div><!-- card header -->
@@ -184,8 +187,8 @@ String initiationid=(String)request.getAttribute("initiationid");
 								%>		
 												
 									<tr>
-										<td style="text-align: left;"><%=obj[0]%>(<%=obj[1]%>)</td>
-										<td style="text-align: left;"><%if(obj[4].toString().equalsIgnoreCase("P")){ %><%=obj[5] %> days<%} else{%>Non-Periodic<%} %> </td>
+										<td style="text-align: left;"><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%>(<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>)</td>
+										<td style="text-align: left;"><%if(obj[4].toString().equalsIgnoreCase("P")){ %><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %> days<%} else{%>Non-Periodic<%} %> </td>
 									</tr>
 								<%
 									}

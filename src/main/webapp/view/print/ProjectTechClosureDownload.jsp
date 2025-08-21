@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.net.URL"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
@@ -252,7 +253,7 @@ border-collapse:collapse;
 					<h4 style="font-size: 20px;font-family: <%= FontFamily %>;">
 					
 						<% if(LabList!=null && LabList[1] != null) { %>
-						        <%=LabList[1].toString()+"("+LabList[0].toString()+")"%>
+						        <%=StringEscapeUtils.escapeHtml4(LabList[1].toString())+"("+LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()): " - "+")"%>
 						<%}else{
 						
 						%>-<%}%>
@@ -267,7 +268,7 @@ border-collapse:collapse;
 				</div>
 				<h4 style="font-family: <%= FontFamily %>;">
 					<%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %>
-					<%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %>
+					<%=StringEscapeUtils.escapeHtml4(LabList[2].toString())+" , "+StringEscapeUtils.escapeHtml4(LabList[3].toString())+", PIN-"+StringEscapeUtils.escapeHtml4(LabList[5].toString()) %>
 					<%}else{ %>
 					-
 					<%} %>
@@ -305,8 +306,8 @@ border-collapse:collapse;
 						  
 		      <tr>
                   <td align="center" class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;"><span class="text-dark"></span><%=++count%></td>
-		          <td align="center" class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;"><span class="text-dark"></span><%=obj[1]%></td>
-		          <td align="center" class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;"><span class="text-dark"></span><%=obj[2]%></td>
+		          <td align="center" class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;"><span class="text-dark"></span><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></td>
+		          <td align="center" class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;"><span class="text-dark"></span><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></td>
 		          <td align="center" class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;"><span class="text-dark"></span><%=fc.SqlToRegularDate(obj[3].toString())%></td>
              </tr>
         
@@ -342,9 +343,9 @@ border-collapse:collapse;
 			        
          <tr>
                 <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;"><%=  i+++"."%></td>
-                <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;"><%= mlist[1] %></td>
-                <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><%= mlist[2] %></td>
-                 <td class="text-dark"  style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><%= mlist[3] %></td>
+                <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;"><%= mlist[1]!=null?StringEscapeUtils.escapeHtml4(mlist[1].toString()): " - " %></td>
+                <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><%= mlist[2]!=null?StringEscapeUtils.escapeHtml4(mlist[2].toString()): " - " %></td>
+                 <td class="text-dark"  style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><%= mlist[3]!=null?StringEscapeUtils.escapeHtml4(mlist[3].toString()): " - " %></td>
                  <%-- <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;">copy for Record</td> --%>
          </tr>
          
@@ -362,12 +363,12 @@ border-collapse:collapse;
 				<table style="width: 650px; margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;font-family: <%= FontFamily %>;border-collapse: collapse;">
 				
 				<tr>
-					  <td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;text-align:left">1.&nbsp; Title: <span class="text-darks">Technical Project Closure Report  - <% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[12] %><%} %></span></td>
+					  <td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;text-align:left">1.&nbsp; Title: <span class="text-darks">Technical Project Closure Report  - <% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[12]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[12].toString()): " - " %><%} %></span></td>
 			   </tr>
 			   
 				<tr>
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">2.&nbsp; Type of Document:<span class="text-darks">Technical Closure Report for  <% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[12] %><%} %></span></td>
-					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">3.&nbsp; Classification: <span class="text-darks"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[13] %><%} %></span></td>
+					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">2.&nbsp; Type of Document:<span class="text-darks">Technical Closure Report for  <% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[12]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[12].toString()): " - " %><%} %></span></td>
+					<td class="text-darks" style="border:1px solid black;font-family: <%= FontFamily %>;">3.&nbsp; Classification: <span class="text-darks"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[13]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[13].toString()): " - " %><%} %></span></td>
 			   </tr>
 			   
 			   <tr>
@@ -381,26 +382,26 @@ border-collapse:collapse;
 			  </tr>
 			  
 			   <tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">8.&nbsp; Additional Information:<span class="text-darks"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[0] %><%} %></span></td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">8.&nbsp; Additional Information:<span class="text-darks"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[0]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[0].toString()): " - " %><%} %></span></td>
 			   </tr>
 			   
 				<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">9.&nbsp; Project No & Name: <span class="text-darks"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[11] %> - <%=DocumentSummary.get(0)[12] %><%} %> </span></td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">9.&nbsp; Project No & Name: <span class="text-darks"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[11]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[11].toString()): " - " %> - <%=DocumentSummary.get(0)[12]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[12].toString()): " - " %><%} %> </span></td>
 				</tr>
 				
 				<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">10.&nbsp; Abstract:<span class="text-darks"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[1] %><%} %></span>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">10.&nbsp; Abstract:<span class="text-darks"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[1]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[1].toString()): " - " %><%} %></span>
 			   </tr>
 			   
 				<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">11.&nbsp; Keywords:<span class="text-darks"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[2] %><%} %></span> </td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">11.&nbsp; Keywords:<span class="text-darks"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[2]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[2].toString()): " - " %><%} %></span> </td>
 				</tr>
 				
 				<tr>
 					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">12.&nbsp; Organization and address:
 						<span class="text-darks" style="font-family: <%= FontFamily %>;"><%
 										if (LabList!=null && LabList[1] != null) {
-										%><%=LabList[1].toString() + "(" + LabList[0].toString() + ")"%>
+										%><%=StringEscapeUtils.escapeHtml4(LabList[1].toString()) + "(" +LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()): " - " + ")"%>
 										<%
 										} else {
 										%>-<%
@@ -411,7 +412,7 @@ border-collapse:collapse;
 										<%
 									if (LabList!=null && LabList[2] != null && LabList[3] != null && LabList[5] != null) {
 									%>
-									<%=LabList[2] + " , " + LabList[3].toString() + ", PIN-" + LabList[5].toString()+"."%>
+									<%=StringEscapeUtils.escapeHtml4(LabList[2].toString())+" , "+StringEscapeUtils.escapeHtml4(LabList[3].toString())+", PIN-"+StringEscapeUtils.escapeHtml4(LabList[5].toString())+"."%>
 									<%}else{ %>
 									-
 									<%} %>
@@ -420,7 +421,7 @@ border-collapse:collapse;
 				</tr>
 				
 				<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">13.&nbsp; Distribution:<span class="text-darks"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[3] %><%} %></span></td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">13.&nbsp; Distribution:<span class="text-darks"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[3]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[3].toString()): " - " %><%} %></span></td>
 				</tr>
 				
 				<tr>
@@ -428,14 +429,14 @@ border-collapse:collapse;
 				</tr>
 				
 				<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">15.&nbsp; Prepared by:<span class="text-darks"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[10] %><%} %></span></td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">15.&nbsp; Prepared by:<span class="text-darks"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[10]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[10].toString()): " - " %><%} %></span></td>
 			   </tr>
 				<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">16.&nbsp; Reviewed by: <span class="text-darks"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[7] %><%} %></span> </td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">16.&nbsp; Reviewed by: <span class="text-darks"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[7]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[7].toString()): " - " %><%} %></span> </td>
 				</tr>
 				
 				<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">17.&nbsp; Approved by: <span class="text-darks"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[6] %><%} %></span> </td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">17.&nbsp; Approved by: <span class="text-darks"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[6]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[6].toString()): " - "%><%} %></span> </td>
 				</tr>
 				
 			</table>
@@ -449,11 +450,11 @@ border-collapse:collapse;
 		if (obj[1].toString().equalsIgnoreCase("0")) {
 	%>
 	<h1 style="font-family: <%= FontFamily %>; font-size: <%= fontSize %>pt; font-weight: <%= HeaderFontWeight %>;" class="heading-colors">
-                                 <%=++maincount%>.&nbsp;<%=obj[3].toString() %>
+                                 <%=++maincount%>.&nbsp;<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %>
                        </h1>
              <div>
 				   <div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt;font-weight:<%=ParaFontWeight%>" >
-					     <div style="text-align: justify;font-family: <%= FontFamily %>;font-weight:200;"><%if(obj[4]!=null) {%><%=obj[4]%><%}%>
+					     <div style="text-align: justify;font-family: <%= FontFamily %>;font-weight:200;"><%if(obj[4]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[4].toString())%><%}%>
 				
 					     </div>
 					</div>
@@ -475,8 +476,8 @@ border-collapse:collapse;
 					        
 			        <tr>
 			               <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;"><%=i+++"."%></td>
-			               <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;"><% if(alist[1]!=null){ %><%=alist[1] %><%}%></td>
-			               <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><% if(alist[2]!=null){ %><%=alist[2] %><%}%></td>
+			               <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;"><% if(alist[1]!=null){ %><%=StringEscapeUtils.escapeHtml4(alist[1].toString()) %><%}%></td>
+			               <td class="text-dark" style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><% if(alist[2]!=null){ %><%=StringEscapeUtils.escapeHtml4(alist[2].toString())%><%}%></td>
 			               <td class="text-dark"  style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;">
 			               
 			                <%if(alist[3]!=null && !alist[3].toString().isEmpty()) {%>
@@ -504,11 +505,11 @@ border-collapse:collapse;
 				if(obj1[1].toString().equalsIgnoreCase(obj[0].toString())){ %>
 			
 			            <h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt;"class="heading-colors">
-					&nbsp; <%=maincount%>. <%=++level1count%>&nbsp;<%=obj1[3].toString() %>
+					&nbsp; <%=maincount%>. <%=++level1count%>&nbsp;<%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): " - "%>
 				       </h2>
              <div>
 				   <div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify;font-weight:<%=ParaFontWeight%>" >
-					     <div style="text-align: justify;font-family: <%= FontFamily %>;font-weight:200;"><% if(obj1[4]!=null){%><%=obj1[4] %><%} %></div>
+					     <div style="text-align: justify;font-family: <%= FontFamily %>;font-weight:200;"><% if(obj1[4]!=null){%><%=StringEscapeUtils.escapeHtml4(obj1[4].toString()) %><%} %></div>
 					</div>
 					
 		</div>
@@ -519,11 +520,11 @@ border-collapse:collapse;
 				if(obj2[1].toString().equalsIgnoreCase(obj1[0].toString())){ %>
 			
 			            <h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt;"class="heading-colors">
-					&nbsp; <%=maincount%>. <%=level1count%>. <%=++level2count%>&nbsp;<%=obj2[3].toString() %>
+					&nbsp; <%=maincount%>. <%=level1count%>. <%=++level2count%>&nbsp;<%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - " %>
 				       </h2>
              <div>
 				   <div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify;font-weight:<%=ParaFontWeight%>" >
-					     <div style="text-align: justify;font-family: <%= FontFamily %>;font-weight:200;"><% if(obj2[4]!=null){%><%=obj2[4] %><%} %></div>
+					     <div style="text-align: justify;font-family: <%= FontFamily %>;font-weight:200;"><% if(obj2[4]!=null){%><%=StringEscapeUtils.escapeHtml4(obj2[4].toString()) %><%} %></div>
 					</div>
 			</div>
 			

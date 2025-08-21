@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
@@ -116,22 +117,22 @@ th{
 
 %>
 
-<% String ses=(String)request.getParameter("result"); 
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 <div class="container-fluid">
 		<div class="row">
@@ -203,11 +204,11 @@ th{
                       							 			%>
                         									<tr>
                             									<td style="text-align: center;width: 5%;"><%=++SN%></td>
-                            									<td style="width: 30%;"><%=form[2]+", "+form[3]%></td>
-                            									<td style="text-align: center;width: 10%;"><%=form[1]%></td>
-                            									<td style="text-align: center;width: 15%;"><%=form[6]%></td>
-                            									<td style="text-align: center;width: 10%;"><%=fc.SqlToRegularDate(form[5].toString())%></td>
-                            									<td style="text-align: center;width: 10%;"><%=form[7]%></td>
+                            									<td style="width: 30%;"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
+                            									<td style="text-align: center;width: 10%;"><%=form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "%></td>
+                            									<td style="text-align: center;width: 15%;"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - "%></td>
+                            									<td style="text-align: center;width: 10%;"><%=form[5]!=null?fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(form[5].toString())):" - "%></td>
+                            									<td style="text-align: center;width: 10%;"><%=form[7]!=null?StringEscapeUtils.escapeHtml4(form[7].toString()): " - "%></td>
                             									<td style="text-align: center;width: 20%;">
                             										<%if(form[7]!=null && form[7].toString().equalsIgnoreCase("RSQR")) {%>
                             										<button type="submit" class="btn btn-sm view-icon" formaction="CARSInitiationDetails.htm" name="carsInitiationIdApprovals" value="<%=form[4]%>/Y/3" data-toggle="tooltip" data-placement="top" title="CARS RSQR Approval" style="font-weight: 600;" >
@@ -286,11 +287,11 @@ th{
                        										%>
                        										<tr>
                        											<td style="text-align: center;width: 5%;"><%=++SN%></td>
-                            									<td style="width: 30%;"><%=form[9]+", "+form[10]%></td>
-                            									<td style="text-align: center;width: 10%;"><%=form[8]%></td>
-                            									<td style="text-align: center;width: 15%;"><%=form[6]%></td>
-                            									<td style="text-align: center;width: 10%;"><%=fc.SqlToRegularDate(form[5].toString())%></td>
-                            									<td style="text-align: center;width: 10%;"><%=form[7]%></td>
+                            									<td style="width: 30%;"><%=form[9]!=null?StringEscapeUtils.escapeHtml4(form[9].toString()): " - "+", "+form[10]!=null?StringEscapeUtils.escapeHtml4(form[10].toString()): " - "%></td>
+                            									<td style="text-align: center;width: 10%;"><%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - "%></td>
+                            									<td style="text-align: center;width: 15%;"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - "%></td>
+                            									<td style="text-align: center;width: 10%;"><%=form[5]!=null?fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(form[5].toString())):" - "%></td>
+                            									<td style="text-align: center;width: 10%;"><%=form[7]!=null?StringEscapeUtils.escapeHtml4(form[7].toString()): " - "%></td>
                             									<td style="text-align: center;width: 20%;">
                             										<button type="submit" class="btn btn-sm view-icon" formaction="CARSDPCSoCDetails.htm" name="carsInitiationIdSoCApprovals" value="<%=form[4]%>/P/2" data-toggle="tooltip" data-placement="top" title="CARS DPC SoC" style="font-weight: 600;" >
 								   										<div class="cc-rockmenu">
@@ -323,11 +324,11 @@ th{
                        										%>
                        										<tr>
                        											<td style="text-align: center;width: 5%;"><%=++SN%></td>
-                            									<td style="width: 30%;"><%=form[9]+", "+form[10]%></td>
-                            									<td style="text-align: center;width: 10%;"><%=form[8]%></td>
-                            									<td style="text-align: center;width: 15%;"><%=form[6]%></td>
-                            									<td style="text-align: center;width: 10%;"><%=fc.SqlToRegularDate(form[5].toString())%></td>
-                            									<td style="text-align: center;width: 10%;"><%=form[7]%></td>
+                            									<td style="width: 30%;"><%=form[9]!=null?StringEscapeUtils.escapeHtml4(form[9].toString()): " - "+", "+form[10]!=null?StringEscapeUtils.escapeHtml4(form[10].toString()): " - "%></td>
+                            									<td style="text-align: center;width: 10%;"><%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - "%></td>
+                            									<td style="text-align: center;width: 15%;"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - "%></td>
+                            									<td style="text-align: center;width: 10%;"><%=form[5]!=null?fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(form[5].toString())):" - "%></td>
+                            									<td style="text-align: center;width: 10%;"><%=form[7]!=null?StringEscapeUtils.escapeHtml4(form[7].toString()): " - "%></td>
                             									<td style="text-align: center;width: 20%;">
                             										<button type="submit" class="btn btn-sm view-icon" formaction="CARSContractSignatureDetails.htm" name="carsInitiationIdCSDocApprovals" value="<%=form[4]%>/C/2" data-toggle="tooltip" data-placement="top" title="CARS Contract Signature" style="font-weight: 600;" >
 								   										<div class="cc-rockmenu">
@@ -361,11 +362,11 @@ th{
                        										%>
                        										<tr>
                        											<td style="text-align: center;width: 5%;"><%=++SN%></td>
-                            									<td style="width: 30%;"><%=form[9]+", "+form[10]%></td>
-                            									<td style="text-align: center;width: 10%;"><%=form[8]%></td>
-                            									<td style="text-align: center;width: 15%;"><%=form[6]%></td>
-                            									<td style="text-align: center;width: 10%;"><%=fc.SqlToRegularDate(form[5].toString())%></td>
-                            									<td style="text-align: center;width: 10%;"><%=form[7]%></td>
+                            									<td style="width: 30%;"><%=form[9]!=null?StringEscapeUtils.escapeHtml4(form[9].toString()): " - "+", "+form[10]!=null?StringEscapeUtils.escapeHtml4(form[10].toString()): " - "%></td>
+                            									<td style="text-align: center;width: 10%;"><%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - "%></td>
+                            									<td style="text-align: center;width: 15%;"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - "%></td>
+                            									<td style="text-align: center;width: 10%;"><%=form[5]!=null?fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(form[5].toString())):" - "%></td>
+                            									<td style="text-align: center;width: 10%;"><%=form[7]!=null?StringEscapeUtils.escapeHtml4(form[7].toString()): " - "%></td>
                             									<td style="text-align: center;width: 20%;">
                             										<button type="submit" class="btn btn-sm view-icon" formaction="CARSMilestonePaymentDetails.htm" name="carsInitiationIdMPDocApprovals" value="<%=form[4]%>/M/2/<%=form[11] %>" data-toggle="tooltip" data-placement="top" title="CARS Payment Approval" style="font-weight: 600;" >
 								   										<div class="cc-rockmenu">
@@ -411,13 +412,13 @@ th{
 																		<td> From Date :&nbsp; </td>
 							        									<td> 
 																			<input type="text" class="form-control input-sm mydate" onchange="this.form.submit()"  readonly="readonly"  <%if(fromdate!=null){%>
-								        										value="<%=fc.SqlToRegularDate(fromdate)%>" <%}%> value=""  id="fromdate" name="fromdate"  required="required"   > 
+								        										value="<%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(fromdate))%>" <%}%> value=""  id="fromdate" name="fromdate"  required="required"   > 
 																		</td>
 																		<td></td>
 																		<td >To Date :&nbsp;</td>
 																		<td>					
 																			<input type="text"  class="form-control input-sm mydate" onchange="this.form.submit()"  readonly="readonly" <%if(todate!=null){%>
-								        	 									value="<%=fc.SqlToRegularDate(todate)%>" <%}%>  value=""  id="todate" name="todate"  required="required"  > 							
+								        	 									value="<%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(todate))%>" <%}%>  value=""  id="todate" name="todate"  required="required"  > 							
 																		</td>
 																	</tr>
 																</table>
@@ -448,18 +449,18 @@ th{
                        													    %>
                         													<tr>
                             													<td style="text-align: center;width: 5%;"><%=++SNA%></td>
-                            													<td style="text-align: left;width: 22%;"><%=form[2]+", "+form[3]%></td>
-                            													<td style="text-align: center;width: 5%;"><%=form[1] %> </td>
-                            													<td style="text-align: center;width: 15%;"><%=form[6] %> </td>
-                            													<td style="text-align: center;width: 8%;"><%=form[12] %> </td>
+                            													<td style="text-align: left;width: 22%;"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
+                            													<td style="text-align: center;width: 5%;"><%=form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - " %> </td>
+                            													<td style="text-align: center;width: 15%;"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - " %> </td>
+                            													<td style="text-align: center;width: 8%;"><%=form[12]!=null?StringEscapeUtils.escapeHtml4(form[12].toString()): " - " %> </td>
                             													<td style="text-align: center;width: 25%;">
                             														<%if(form[12]!=null && form[12].toString().equalsIgnoreCase("RSQR")) {%>
 																					<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSRSQRTransStatus.htm" value="<%=form[4] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
-								    													<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    													<%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 								    												</button>
 								    												<%} else if(form[12]!=null && form[12].toString().equalsIgnoreCase("SoC")) {%>
 								    												<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSSoCTransStatus.htm" value="<%=form[4] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
-								    													<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    													<%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 								    												</button>
 								    												<%} %>
 						 														</td>
@@ -541,13 +542,13 @@ th{
                        													    %>
                         													<tr>
                             													<td style="text-align: center;width: 5%;"><%=++SNA%></td>
-                            													<td style="text-align: left;width: 22%;"><%=form[14]+", "+form[15]%></td>
-                            													<td style="text-align: center;width: 5%;"><%=form[13] %> </td>
-                            													<td style="text-align: center;width: 15%;"><%=form[6] %> </td>
-                            													<td style="text-align: center;width: 8%;"><%=form[12] %> </td>
+                            													<td style="text-align: left;width: 22%;"><%=form[14]!=null?StringEscapeUtils.escapeHtml4(form[14].toString()): " - "+", "+form[15]!=null?StringEscapeUtils.escapeHtml4(form[15].toString()): " - "%></td>
+                            													<td style="text-align: center;width: 5%;"><%=form[13]!=null?StringEscapeUtils.escapeHtml4(form[13].toString()): " - " %> </td>
+                            													<td style="text-align: center;width: 15%;"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - " %> </td>
+                            													<td style="text-align: center;width: 8%;"><%=form[12]!=null?StringEscapeUtils.escapeHtml4(form[12].toString()): " - " %> </td>
                             													<td style="text-align: center;width: 30%;">
 								    												<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSDPCSoCTransStatus.htm" value="<%=form[4] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
-								    													<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    													<%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 								    												</button>
 						 														</td>
 						 														<td style="text-align: center;width: 15%;">
@@ -582,13 +583,13 @@ th{
                        													    %>
                         													<tr>
                             													<td style="text-align: center;width: 5%;"><%=++SNA%></td>
-                            													<td style="text-align: left;width: 22%;"><%=form[14]+", "+form[15]%></td>
-                            													<td style="text-align: center;width: 5%;"><%=form[13] %> </td>
-                            													<td style="text-align: center;width: 15%;"><%=form[6] %> </td>
-                            													<td style="text-align: center;width: 8%;"><%=form[12] %> </td>
+                            													<td style="text-align: left;width: 22%;"><%=form[14]!=null?StringEscapeUtils.escapeHtml4(form[14].toString()): " - "+", "+form[15]!=null?StringEscapeUtils.escapeHtml4(form[15].toString()): " - "%></td>
+                            													<td style="text-align: center;width: 5%;"><%=form[13]!=null?StringEscapeUtils.escapeHtml4(form[13].toString()): " - " %> </td>
+                            													<td style="text-align: center;width: 15%;"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - " %> </td>
+                            													<td style="text-align: center;width: 8%;"><%=form[12]!=null?StringEscapeUtils.escapeHtml4(form[12].toString()): " - " %> </td>
                             													<td style="text-align: center;width: 30%;">
 								    												<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSTransStatus.htm" value="<%=form[4] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
-								    													<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    													<%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 								    												</button>
 						 														</td>
 						 														<td style="text-align: center;width: 15%;">
@@ -623,13 +624,13 @@ th{
                        													    %>
                         													<tr>
                             													<td style="text-align: center;width: 5%;"><%=++SNA%></td>
-                            													<td style="text-align: left;width: 22%;"><%=form[14]+", "+form[15]%></td>
-                            													<td style="text-align: center;width: 5%;"><%=form[13] %> </td>
-                            													<td style="text-align: center;width: 15%;"><%=form[6] %> </td>
-                            													<td style="text-align: center;width: 8%;"><%=form[12] %> </td>
+                            													<td style="text-align: left;width: 22%;"><%=form[14]!=null?StringEscapeUtils.escapeHtml4(form[14].toString()): " - "+", "+form[15]!=null?StringEscapeUtils.escapeHtml4(form[15].toString()): " - "%></td>
+                            													<td style="text-align: center;width: 5%;"><%=form[13]!=null?StringEscapeUtils.escapeHtml4(form[13].toString()): " - " %> </td>
+                            													<td style="text-align: center;width: 15%;"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - " %> </td>
+                            													<td style="text-align: center;width: 8%;"><%=form[12]!=null?StringEscapeUtils.escapeHtml4(form[12].toString()): " - " %> </td>
                             													<td style="text-align: center;width: 30%;">
 								    												<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSTransStatus.htm" value="<%=form[4] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
-								    													<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    													<%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 								    												</button>
 						 														</td>
 						 														<td style="text-align: center;width: 15%;">

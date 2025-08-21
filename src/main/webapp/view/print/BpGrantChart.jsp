@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
@@ -148,21 +149,21 @@ $('#interval').on('change',function(){
 									    	  {
 									    		  
 									    		 
-									    		    id: "<%=obj[0]%>",
-									    		    name: "<%=obj[2]%>",
+									    		    id: "<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%>",
+									    		    name: "<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>",
 									    		    <%if(!obj[8].toString().equalsIgnoreCase("0") && !obj[8].toString().equalsIgnoreCase("1")){%>
-									    		    baselineStart: "<%=obj[3]%>",
-									    		    baselineEnd: "<%=obj[4]%>",
+									    		    baselineStart: "<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%>",
+									    		    baselineEnd: "<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>",
 									    		    baseline: {fill: "#F5A623 0.5", stroke: "0.5 #dd2c00"},
-									    		    actualStart: "<%=obj[5]%>",
-									    		    actualEnd: "<%=obj[6]%>",
+									    		    actualStart: "<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%>",
+									    		    actualEnd: "<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%>",
 									    		    actual: {fill: "#455a64", stroke: "0.8 #455a64"},
 									    		    baselineProgressValue: "<%= Math.round((int)obj[7])%>%",
 									    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
 									    		    progressValue: "<%= Math.round((int)obj[7])%>%", 
 									    		    <%} else{%>
-									    		    baselineStart: "<%=obj[3]%>",
-									    		    baselineEnd: "<%=obj[4]%>",
+									    		    baselineStart: "<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%>",
+									    		    baselineEnd: "<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>",
 									    		    baseline:{fill: "#455a64", stroke: "0.8 #455a64"},
 									    		    baselineProgressValue: "<%= Math.round((int)obj[7])%>%",
 									    		    progressValue: "<%= Math.round((int)obj[7])%>%",
@@ -177,22 +178,22 @@ $('#interval').on('change',function(){
 									    		    		
 									    		   		<% if(obj[0].toString().equalsIgnoreCase(objA[1].toString()) ) {%>	
 									    		   			{
-												    		    id: "<%=obj[0]%>_<%=objA[0]%>",
-												    		    name: "<%=objA[2]%>",
+												    		    id: "<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%>_<%=objA[0]!=null?StringEscapeUtils.escapeHtml4(objA[0].toString()): " - "%>",
+												    		    name: "<%=objA[2]!=null?StringEscapeUtils.escapeHtml4(objA[2].toString()): " - "%>",
 												    		    <%if(!objA[8].toString().equalsIgnoreCase("0") && !objA[8].toString().equalsIgnoreCase("1")){%>
-												    		    baselineStart: "<%=objA[3]%>",
-												    		    baselineEnd: "<%=objA[4]%>",
+												    		    baselineStart: "<%=objA[3]!=null?StringEscapeUtils.escapeHtml4(objA[3].toString()): " - "%>",
+												    		    baselineEnd: "<%=objA[4]!=null?StringEscapeUtils.escapeHtml4(objA[4].toString()): " - "%>",
 												    		    baseline: {fill: "#F5A623 0.5", stroke: "0.5 #dd2c00"},
-												    		    actualStart: "<%=objA[5]%>",
-												    		    actualEnd: "<%=objA[6]%>",
+												    		    actualStart: "<%=objA[5]!=null?StringEscapeUtils.escapeHtml4(objA[5].toString()): " - "%>",
+												    		    actualEnd: "<%=objA[6]!=null?StringEscapeUtils.escapeHtml4(objA[6].toString()): " - "%>",
 												    		    actual: {fill: "#455a64", stroke: "0.8 #455a64"},
 												    		    baselineProgressValue: "<%= Math.round((int)objA[7])%>%",
 												    		    progressValue: "<%= Math.round((int)objA[7])%>%",
 												    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
 												    		    rowHeight: "55",
 												    		    <%}else{%>
-												    		    baselineStart: "<%=objA[5]%>",
-												    		    baselineEnd: "<%=objA[6]%>",
+												    		    baselineStart: "<%=objA[5]!=null?StringEscapeUtils.escapeHtml4(objA[5].toString()): " - "%>",
+												    		    baselineEnd: "<%=objA[6]!=null?StringEscapeUtils.escapeHtml4(objA[6].toString()): " - "%>",
 												    		    baseline:{fill: "#455a64", stroke: "0.8 #455a64"},
 												    		    baselineProgressValue: "<%= Math.round((int)objA[7])%>%",
 												    		    progressValue: "<%= Math.round((int)objA[7])%>%",
@@ -205,22 +206,22 @@ $('#interval').on('change',function(){
 													    		    		
 													    		   		<% if(objA[0].toString().equalsIgnoreCase(objB[1].toString()) ) {%>	
 													    		   			{
-																    		    id: "<%=objA[0]%>_<%=objB[0]%>",
-																    		    name: "<%=objB[2]%>",
+																    		    id: "<%=objA[0]!=null?StringEscapeUtils.escapeHtml4(objA[0].toString()): " - "%>_<%=objB[0]!=null?StringEscapeUtils.escapeHtml4(objB[0].toString()): " - "%>",
+																    		    name: "<%=objB[2]!=null?StringEscapeUtils.escapeHtml4(objB[2].toString()): " - "%>",
 																    		    <%if(!objB[8].toString().equalsIgnoreCase("0") && !objB[8].toString().equalsIgnoreCase("1")){%>
-																    		    actualStart: "<%=objB[5]%>",
-																    		    actualEnd: "<%=objB[6]%>",
+																    		    actualStart: "<%=objB[5]!=null?StringEscapeUtils.escapeHtml4(objB[5].toString()): " - "%>",
+																    		    actualEnd: "<%=objB[6]!=null?StringEscapeUtils.escapeHtml4(objB[6].toString()): " - "%>",
 																    		    actual: {fill: "#455a64", stroke: "0.8 #455a64"},
 																    		    baselineProgressValue: "<%= Math.round((int)objB[7])%>%",
-																    		    baselineStart: "<%=objB[3]%>",
-																    		    baselineEnd: "<%=objB[4]%>",
+																    		    baselineStart: "<%=objB[3]!=null?StringEscapeUtils.escapeHtml4(objB[3].toString()): " - "%>",
+																    		    baselineEnd: "<%=objB[4]!=null?StringEscapeUtils.escapeHtml4(objB[4].toString()): " - "%>",
 																    		    baseline: {fill: "#F5A623 0.5", stroke: "0.5 #dd2c00"},
 																    		    progressValue: "<%= Math.round((int)objB[7])%>%",
 																    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
 																    		    rowHeight: "55",
 																    		    <%}else{%>
-																    		    baselineStart: "<%=objB[5]%>",
-																    		    baselineEnd: "<%=objB[6]%>",
+																    		    baselineStart: "<%=objB[5]!=null?StringEscapeUtils.escapeHtml4(objB[5].toString()): " - "%>",
+																    		    baselineEnd: "<%=objB[6]!=null?StringEscapeUtils.escapeHtml4(objB[6].toString()): " - "%>",
 																    		    baseline: {fill: "#455a64", stroke: "0.8 #455a64"},
 																    		    baselineProgressValue: "<%= Math.round((int)objB[7])%>%",
 																    		    progressValue: "<%= Math.round((int)objB[7])%>%",
@@ -236,22 +237,22 @@ $('#interval').on('change',function(){
 																	    		    		
 																	    		   		<% if(objB[0].toString().equalsIgnoreCase(objC[1].toString()) ) {%>	
 																	    		   			{
-																				    		    id: "<%=objB[0]%>_<%=objC[0]%>",
-																				    		    name: "<%=objC[2]%>",
+																				    		    id: "<%=objB[0]!=null?StringEscapeUtils.escapeHtml4(objB[0].toString()): " - "%>_<%=objC[0]!=null?StringEscapeUtils.escapeHtml4(objC[0].toString()): " - "%>",
+																				    		    name: "<%=objC[2]!=null?StringEscapeUtils.escapeHtml4(objC[2].toString()): " - "%>",
 																				    		    <%if(!objC[8].toString().equalsIgnoreCase("0") && !objC[8].toString().equalsIgnoreCase("1")){%>
-																				    		    actualStart: "<%=objC[5]%>",
-																				    		    actualEnd: "<%=objC[6]%>",
+																				    		    actualStart: "<%=objC[5]!=null?StringEscapeUtils.escapeHtml4(objC[5].toString()): " - "%>",
+																				    		    actualEnd: "<%=objC[6]!=null?StringEscapeUtils.escapeHtml4(objC[6].toString()): " - "%>",
 																				    		    actual: {fill: "#455a64", stroke: "0.8 #455a64"},
-																				    		    baselineStart: "<%=objC[3]%>",
-																				    		    baselineEnd: "<%=objC[4]%>",
+																				    		    baselineStart: "<%=objC[3]!=null?StringEscapeUtils.escapeHtml4(objC[3].toString()): " - "%>",
+																				    		    baselineEnd: "<%=objC[4]!=null?StringEscapeUtils.escapeHtml4(objC[4].toString()): " - "%>",
 																				    		    baseline: {fill: "#F5A623 0.5", stroke: "0.5 #dd2c00"},
 																				    		    progressValue: "<%= Math.round((int)objC[7])%>%",
 																				    		    baselineProgressValue: "<%= Math.round((int)objB[7])%>%",
 																				    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
 																				    		    rowHeight: "55",
 																				    		    <%}else{%>
-																				    		    baselineStart: "<%=objC[5]%>",
-																				    		    baselineEnd: "<%=objC[6]%>",
+																				    		    baselineStart: "<%=objC[5]!=null?StringEscapeUtils.escapeHtml4(objC[5].toString()): " - "%>",
+																				    		    baselineEnd: "<%=objC[6]!=null?StringEscapeUtils.escapeHtml4(objC[6].toString()): " - "%>",
 																				    		    baseline: {fill: "#455a64", stroke: "0.8 #dd2c00"},
 																				    		    progressValue: "<%= Math.round((int)objC[7])%>%",
 																				    		    baselineProgressValue: "<%= Math.round((int)objB[7])%>%",
@@ -266,22 +267,22 @@ $('#interval').on('change',function(){
 																					    		    		
 																					    		   		<% if(objC[0].toString().equalsIgnoreCase(objD[1].toString()) ) {%>	
 																					    		   			{
-																								    		    id: "<%=objC[0]%>_<%=objD[0]%>",
-																								    		    name: "<%=objD[2]%>",
+																								    		    id: "<%=objC[0]!=null?StringEscapeUtils.escapeHtml4(objC[0].toString()): " - "%>_<%=objD[0]!=null?StringEscapeUtils.escapeHtml4(objD[0].toString()): " - "%>",
+																								    		    name: "<%=objD[2]!=null?StringEscapeUtils.escapeHtml4(objD[2].toString()): " - "%>",
 																								    		    <%if(!objD[8].toString().equalsIgnoreCase("0") && !objD[8].toString().equalsIgnoreCase("1")){%>
-																								    		    actualStart: "<%=objD[5]%>",
-																								    		    actualEnd: "<%=objD[6]%>",
+																								    		    actualStart: "<%=objD[5]!=null?StringEscapeUtils.escapeHtml4(objD[5].toString()): " - "%>",
+																								    		    actualEnd: "<%=objD[6]!=null?StringEscapeUtils.escapeHtml4(objD[6].toString()): " - "%>",
 																								    		    actual: {fill: "#455a64", stroke: "0.8 #455a64"},
-																								    		    baselineStart: "<%=objD[3]%>",
-																								    		    baselineEnd: "<%=objD[4]%>",
+																								    		    baselineStart: "<%=objD[3]!=null?StringEscapeUtils.escapeHtml4(objD[3].toString()): " - "%>",
+																								    		    baselineEnd: "<%=objD[4]!=null?StringEscapeUtils.escapeHtml4(objD[4].toString()): " - "%>",
 																								    		    baseline: {fill: "#F5A623 0.5", stroke: "0.5 #dd2c00"},
 																								    		    progressValue: "<%= Math.round((int)objD[7])%>%",
 																								    		    baselineProgressValue: "<%= Math.round((int)objD[7])%>%",
 																								    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
 																								    		    rowHeight: "55",
 																								    		    <%}else{%>
-																								    		    baselineStart: "<%=objD[5]%>",
-																								    		    baselineEnd: "<%=objD[6]%>",
+																								    		    baselineStart: "<%=objD[5]!=null?StringEscapeUtils.escapeHtml4(objD[5].toString()): " - "%>",
+																								    		    baselineEnd: "<%=objD[6]!=null?StringEscapeUtils.escapeHtml4(objD[6].toString()): " - "%>",
 																								    		    baseline: {fill: "#455a64", stroke: "0.5 #455a64"},
 																								    		    progressValue: "<%= Math.round((int)objD[7])%>%",
 																								    		    baselineProgressValue: "<%= Math.round((int)objD[7])%>%",
@@ -295,22 +296,22 @@ $('#interval').on('change',function(){
 																									    		    		
 																									    		   		<% if(objD[0].toString().equalsIgnoreCase(objE[1].toString()) ) {%>	
 																									    		   			{
-																												    		    id: "<%=objD[0]%>_<%=objE[0]%>",
-																												    		    name: "<%=objE[2]%>",
+																												    		    id: "<%=objD[0]!=null?StringEscapeUtils.escapeHtml4(objD[0].toString()): " - "%>_<%=objE[0]!=null?StringEscapeUtils.escapeHtml4(objE[0].toString()): " - "%>",
+																												    		    name: "<%=objE[2]!=null?StringEscapeUtils.escapeHtml4(objE[2].toString()): " - "%>",
 																												    		    <%if(!objE[8].toString().equalsIgnoreCase("0") && !objE[8].toString().equalsIgnoreCase("1")){%>
-																												    		    actualStart: "<%=objE[5]%>",
-																												    		    actualEnd: "<%=objE[6]%>",
+																												    		    actualStart: "<%=objE[5]!=null?StringEscapeUtils.escapeHtml4(objE[5].toString()): " - "%>",
+																												    		    actualEnd: "<%=objE[6]!=null?StringEscapeUtils.escapeHtml4(objE[6].toString()): " - "%>",
 																												    		    actual: {fill: "#455a64", stroke: "0.8 #455a64"},
-																												    		    baselineStart: "<%=objE[3]%>",
-																												    		    baselineEnd: "<%=objE[4]%>",
+																												    		    baselineStart: "<%=objE[3]!=null?StringEscapeUtils.escapeHtml4(objE[3].toString()): " - "%>",
+																												    		    baselineEnd: "<%=objE[4]!=null?StringEscapeUtils.escapeHtml4(objE[4].toString()): " - "%>",
 																												    		    baseline: {fill: "#F5A623 0.5", stroke: "0.5 #dd2c00"},
 																												    		    progressValue: "<%= Math.round((int)objE[7])%>%",
 																												    		    baselineProgressValue: "<%= Math.round((int)objE[7])%>%",
 																												    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
 																												    		    rowHeight: "55",
 																												    		    <%}else{%>
-																												    		    baselineStart: "<%=objE[5]%>",
-																												    		    baselineEnd: "<%=objE[6]%>",
+																												    		    baselineStart: "<%=objE[5]!=null?StringEscapeUtils.escapeHtml4(objE[5].toString()): " - "%>",
+																												    		    baselineEnd: "<%=objE[6]!=null?StringEscapeUtils.escapeHtml4(objE[6].toString()): " - "%>",
 																												    		    baseline: {fill: "#455a64", stroke: "0.5 #455a64"},
 																												    		    progressValue: "<%= Math.round((int)objE[7])%>%",
 																												    		    baselineProgressValue: "<%= Math.round((int)objE[7])%>%",

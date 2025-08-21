@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.LocalTime"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
@@ -54,24 +55,22 @@ String initiationid=(String)request.getAttribute("initiationid");
 %>
 
 
-<%String ses=(String)request.getParameter("result"); 
-String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){
-%>
-	<center>
-	
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</center>
-	<%}if(ses!=null){ %>
-	<center>
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</center>
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 	<%Object[] Projectdetails=(Object[])request.getAttribute("Projectdetails");
@@ -96,7 +95,7 @@ if(ses1!=null){
 										 <select class="form-control" id="initiationid" required="required" name="initiationid" onchange='submitForm();' >
 						   						<% for (Object[] obj : ProjectsList) {
 						   						%>
-												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(initiationid)){ %>selected<%  } %> ><%=obj[4]%></option>
+												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(initiationid)){ %>selected<%  } %> ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%></option>
 												<%} %>
 						  				</select>
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
@@ -172,8 +171,8 @@ if(ses1!=null){
 													<tr>
 														<td style="text-align: center;"><input type="checkbox" class="checkboxall1" name="committeeid"
 															value=<%=obj[0]%>></td>
-														<td style="text-align: left;"><%=obj[2]%>(<%=obj[1]%>)</td>
-														<td style="text-align: left;"><%if(obj[6].toString().equalsIgnoreCase("P")){ %><%=obj[7] %> days<%} else{%>Non-Periodic<%} %> </td>
+														<td style="text-align: left;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>(<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>)</td>
+														<td style="text-align: left;"><%if(obj[6].toString().equalsIgnoreCase("P")){ %><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): "" %> days<%} else{%>Non-Periodic<%} %> </td>
 													</tr>
 													<%
 														}
@@ -264,8 +263,8 @@ if(ses1!=null){
 														
 														
 														</td>
-														<td style="text-align: left;"><%=obj[0]%> (<%=obj[1]%>)</td>
-														<td style="text-align: left;"><%if(obj[4].toString().equalsIgnoreCase("P")){ %><%=obj[5] %> days<%} else{%>Non-Periodic<%} %> </td>
+														<td style="text-align: left;"><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%> (<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>)</td>
+														<td style="text-align: left;"><%if(obj[4].toString().equalsIgnoreCase("P")){ %><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): "" %> days<%} else{%>Non-Periodic<%} %> </td>
 														<td style="text-align: center;"><%if(obj[6].toString().equalsIgnoreCase("Y")) {%><img src="view/images/check.png"/><%}else{ %><img src="view/images/cancel.png"/><%} %></td>
 														<td> 
 															<%if(checkcount>0){ %>

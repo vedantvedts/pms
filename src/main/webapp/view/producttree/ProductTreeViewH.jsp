@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="org.apache.logging.log4j.core.pattern.EqualsIgnoreCaseReplacementConverter"%>
 <%@page import="java.math.BigDecimal"%>
 
@@ -317,7 +318,7 @@ table,td{
 			                         	 <span style="cursor:pointer;font-weight: bold;font-size: 1.0em;color:#40A2E3;">
 	                          			        <%if(ProjectId!=null){	
 				                                       Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");%>  
-			                                              <%=ProjectDetail[1] %>
+			                                              <%=ProjectDetail[1]!=null?StringEscapeUtils.escapeHtml4(ProjectDetail[1].toString()):"-" %>
 	                          			               <%} %>
 			                          		 </span>
 			                         			 
@@ -368,7 +369,7 @@ table,td{
 																			 );" >
 												
 										             <span  style="cursor:pointer;font-weight:bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;"> 
-										                  <%=level1[3] %>
+										                  <%=level1[3]!=null?StringEscapeUtils.escapeHtml4(level1[3].toString()):"-" %>
 										                
 										             </span>  
 										            
@@ -419,7 +420,7 @@ table,td{
 																			 );" >
 														
 															       <span style="cursor:pointer;font-weight:bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;"> 
-			                          			                              <%=level2[3] %>
+			                          			                              <%=level2[3]!=null?StringEscapeUtils.escapeHtml4(level2[3].toString()):"-" %>
 			                          			                   </span>
 			                          			                   
 			                          			                <!--   <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div> -->
@@ -476,7 +477,7 @@ table,td{
 																		
 																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;" >
 			                          			                             
-			                          			                                <%=level3[3] %>
+			                          			                                <%=level3[3]!=null?StringEscapeUtils.escapeHtml4(level3[3].toString()):"-" %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
@@ -537,7 +538,7 @@ table,td{
 																		
 																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;" >
 			                          			                             
-			                          			                                <%=level4[3] %>
+			                          			                                <%=level4[3]!=null?StringEscapeUtils.escapeHtml4(level4[3].toString()):"-" %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
@@ -594,7 +595,7 @@ table,td{
 																		
 																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;" >
 			                          			                             
-			                          			                                <%=level5[3] %>
+			                          			                                <%=level5[3]!=null?StringEscapeUtils.escapeHtml4(level5[3].toString()):"-" %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
@@ -652,7 +653,7 @@ table,td{
 																		
 																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;" >
 			                          			                             
-			                          			                                <%=level6[3] %>
+			                          			                                <%=level6[3]!=null?StringEscapeUtils.escapeHtml4(level6[3].toString()):"-" %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
@@ -710,7 +711,7 @@ table,td{
 																		
 																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;" >
 			                          			                             
-			                          			                                <%=level7[3] %>
+			                          			                                <%=level7[3]!=null?StringEscapeUtils.escapeHtml4(level7[3].toString()):"-" %>
 			                          			                                
 			                          			                          </span>
 			                          			                          

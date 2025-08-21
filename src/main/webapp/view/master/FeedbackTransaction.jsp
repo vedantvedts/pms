@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -108,21 +109,23 @@
 		FormatConverter fc = new FormatConverter();
 	%>
 	
-	<% String ses = (String) request.getParameter("result"); 
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-        <div align="center">
-            <div class="alert alert-danger" role="alert">
-                <%= ses1 %>
-            </div>
-        </div>
-    <% } if (ses != null) { %>
-        <div align="center">
-            <div class="alert alert-success" role="alert">
-                <%= ses %>
-            </div>
-        </div>
-    <% } %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
+    
     
 	<div class="container-fluid">
 		<div class="col-md-12">
@@ -145,7 +148,7 @@
 							<h5>Feedback : </h5>
 						</div>
 						<div class="col-md-10">
-							<h6 class="mt-1"><%=feedBackData[3] %> </h6>
+							<h6 class="mt-1"><%=feedBackData[3]!=null?StringEscapeUtils.escapeHtml4(feedBackData[3].toString()):"" %> </h6>
 						</div>
 					</div>
 					
@@ -163,8 +166,8 @@
 					                    String timestamp = fc.sdtfTordtf2(transaction[4].toString());
 					            %>
 					                <div class="chat-message <%= sender.equalsIgnoreCase(EmpId) ? "admin-msg" : "user-msg" %>">
-					                    <strong class="sender-name"><%=senderName %></strong>: <%= message %>
-					                    <div class="timestamp"><%= timestamp %></div>
+					                    <strong class="sender-name"><%=senderName!=null?StringEscapeUtils.escapeHtml4(senderName):"-" %></strong>: <%= message!=null?StringEscapeUtils.escapeHtml4(message):"-" %>
+					                    <div class="timestamp"><%= timestamp!=null?StringEscapeUtils.escapeHtml4(timestamp):"-" %></div>
 					                </div>
 					            <% }} %>
 					        </div>

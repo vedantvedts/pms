@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.LinkedHashMap"%>
 <%@page import="com.vts.pfms.documents.model.ICDPurpose"%>
 <%@page import="com.vts.pfms.documents.model.PfmsICDDocument"%>
@@ -139,21 +140,22 @@ label {
 	
 %>
 
-	<% String ses = (String) request.getParameter("result"); 
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-        <div align="center">
-            <div class="alert alert-danger" role="alert">
-                <%= ses1 %>
-            </div>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
         </div>
-    <% } if (ses != null) { %>
-        <div align="center">
-            <div class="alert alert-success" role="alert">
-                <%= ses %>
-            </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
         </div>
-    <% } %>
+    </div>
+<% } %>
     
     <div class="container-fluid">
        
@@ -162,7 +164,7 @@ label {
             	<div class="row">
                		<div class="col-md-9" align="left">
 	                    <h5 id="text" style="margin-left: 1%; font-weight: 600">
-	                      Connection Details - <%=documentNo %>
+	                      Connection Details - <%=documentNo!=null?StringEscapeUtils.escapeHtml4(documentNo): " - " %>
 	                    </h5>
                 	</div>
                 	<div class="col-md-2"  align="right">
@@ -211,7 +213,7 @@ label {
 									        	<option value="" disabled selected>Choose...</option>
 										        <%
 										        for(Object[] obj : productTreeList){ %>
-										        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>" ><%=obj[2]+" ("+obj[7]+")" %></option>
+										        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "+" ("+obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "+")" %></option>
 										        <%} %>
 											</select>
 		        						</div>
@@ -221,7 +223,7 @@ label {
 			        						data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
 												<option value="" disabled selected>Choose...</option>
 										        <% for(Object[] obj : productTreeList){ %>
-										        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>"><%=obj[2]+" ("+obj[7]+")" %></option>
+										        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "+" ("+obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "+")" %></option>
 										        <%} %>
 											</select>
 	        							</div>
@@ -234,7 +236,7 @@ label {
 		        								<option value="" disabled selected>Choose...</option>
 										        <%
 										        for(Object[] obj : productTreeSubList){ %>
-										        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>" ><%=obj[2]+" ("+obj[7]+")" %></option>
+										        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "+" ("+obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "+")" %></option>
 										        <%} %>
 											</select>
 		        						</div>	
@@ -245,7 +247,7 @@ label {
 			        							<option value="" disabled selected>Choose...</option>
 										        <%
 										        for(Object[] obj : productTreeSubList){ %>
-										        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>" ><%=obj[2]+" ("+obj[7]+")" %></option>
+										        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "+" ("+obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "+")" %></option>
 										        <%} %>
 											</select>
 			        					</div>
@@ -261,7 +263,7 @@ label {
 									        	data-interfaceloss="<%=iface.getInterfaceLoss() %>"
 									        	data-cableradius="<%=iface.getCableBendingRadius() %>"
 									        	>
-									        		<%=iface.getInterfaceName() %>
+									        		<%=iface.getInterfaceName()!=null?StringEscapeUtils.escapeHtml4(iface.getInterfaceName()): " - " %>
 									        	</option>
 									        <%} %>
 										</select>
@@ -270,7 +272,7 @@ label {
 	        							<label class="form-lable">Purpose<span class="mandatory">*</span></label>
 		        						<select class="form-control selectdee purpose" name="purpose" id="purposeAdd" multiple data-placeholder="Choose..." data-live-search="true" data-container="body" required>
 									        <% for(ICDPurpose icdPurpose : icdPurposeList){ %>
-									        	<option value="<%=icdPurpose.getPurposeId() %>"><%=icdPurpose.getPurpose() %></option>
+									        	<option value="<%=icdPurpose.getPurposeId() %>"><%=icdPurpose.getPurpose()!=null?StringEscapeUtils.escapeHtml4(icdPurpose.getPurpose()): " - " %></option>
 									        <%} %>
 										</select>
 	        						</div>
@@ -372,7 +374,7 @@ label {
                     				<td class="center"><%=++slno %></td>
                     				<td id="connectionId_<%=slno%>">
                     					<%-- <%=obj[4] + "_" + obj[5] + "_" + obj[8] + ((count>=100)?"_"+count:((count>=10)?"_0"+count:"_00"+count)) %> --%>
-                    					<%=obj[32] %>
+                    					<%=obj[32]!=null?StringEscapeUtils.escapeHtml4(obj[32].toString()): " - " %>
                     				</td>
                     				<%-- <td class="center"><%=obj[4] %></td>
                     				<td class="center"><%=obj[5] %></td>
@@ -386,13 +388,13 @@ label {
                     				<td><%=obj[11] %></td> --%>
 									
 									<%if(i==0) {%>
-										<td rowspan="<%=values.size() %>" style="vertical-align: middle;"><%=obj[20]!=null?obj[20]: (obj[18]!=null?obj[18]: "-") %></td>
-						    			<td rowspan="<%=values.size() %>" style="vertical-align: middle;"><%=obj[21]!=null?obj[21]: (obj[19]!=null?obj[19]: "-") %></td>
+										<td rowspan="<%=values.size() %>" style="vertical-align: middle;"><%=obj[20]!=null?StringEscapeUtils.escapeHtml4(obj[20].toString()): (obj[18]!=null?StringEscapeUtils.escapeHtml4(obj[18].toString()): "-") %></td>
+						    			<td rowspan="<%=values.size() %>" style="vertical-align: middle;"><%=obj[21]!=null?StringEscapeUtils.escapeHtml4(obj[21].toString()): (obj[19]!=null?StringEscapeUtils.escapeHtml4(obj[19].toString()): "-") %></td>
 									<%} %>
-						    		<td><%=obj[28]!=null?obj[28]:"-" %></td>
-                    				<td><%=obj[29]!=null?obj[29]:"-" %></td>
-                    				<td><%=obj[30]!=null?obj[30]:"-" %></td>
-                    				<td><%=obj[31]!=null?obj[31]:"-" %></td>
+						    		<td><%=obj[28]!=null?StringEscapeUtils.escapeHtml4(obj[28].toString()):"-" %></td>
+                    				<td><%=obj[29]!=null?StringEscapeUtils.escapeHtml4(obj[29].toString()):"-" %></td>
+                    				<td><%=obj[30]!=null?StringEscapeUtils.escapeHtml4(obj[30].toString()):"-" %></td>
+                    				<td><%=obj[31]!=null?StringEscapeUtils.escapeHtml4(obj[31].toString()):"-" %></td>
                     				<%-- <td class="center">
 								       	<button type="button" class="editable-clicko" onclick="openNewConnectionAddModal('<%=slno%>')" data-toggle="tooltip" title="Add New Connections">
 								            <i class="fa fa-plus-square fa-lg" style="padding: 0px;color: green;font-size: 25px;" aria-hidden="true"></i>
@@ -475,7 +477,7 @@ label {
         							<label class="form-lable">Interface<span class="mandatory">*</span></label>
 	        						<select class="form-control selectdee interfaceId" name="interfaceId" id="interfaceIdEdit" multiple data-placeholder="Choose..." data-live-search="true" data-container="body" required>
 								        <% for(IGIInterface igiinterface : igiInterfaceList){ %>
-								        	<option value="<%=igiinterface.getInterfaceId()+"/"+igiinterface.getInterfaceCode() %>"><%=igiinterface.getInterfaceName() %></option>
+								        	<option value="<%=igiinterface.getInterfaceId()+"/"+igiinterface.getInterfaceCode() %>"><%=igiinterface.getInterfaceName()!=null?StringEscapeUtils.escapeHtml4(igiinterface.getInterfaceName()): " - " %></option>
 								        <%} %>
 									</select>
         						</div>
@@ -520,7 +522,7 @@ label {
         							<label class="form-lable">Purpose<span class="mandatory">*</span></label>
 	        						<select class="form-control selectdee purpose" name="purpose" id="purpose" multiple data-placeholder="Choose..." data-live-search="true" data-container="body" required>
 								        <% for(ICDPurpose icdPurpose : icdPurposeList){ %>
-								        	<option value="<%=icdPurpose.getPurposeId() %>"><%=icdPurpose.getPurpose() %></option>
+								        	<option value="<%=icdPurpose.getPurposeId() %>"><%=icdPurpose.getPurpose()!=null?StringEscapeUtils.escapeHtml4(icdPurpose.getPurpose()): " - " %></option>
 								        <%} %>
 									</select>
 	        					</div>

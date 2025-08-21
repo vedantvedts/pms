@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
@@ -30,20 +31,22 @@ String projectid=(String)request.getAttribute("projectid");
 </form>
 </nav>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br />
 
@@ -56,14 +59,14 @@ String projectid=(String)request.getAttribute("projectid");
                            <div class="col-md-1 " ><br><label class="control-label">Type</label>  <br>  <b >Main</b>                    		
                         	</div>
                     		<div class="col-md-5 " ><br>
-                    		<label class="control-label"> Activity Name:</label> <br>  <%=getMA!=null?getMA[4]:"-" %> 
+                    		<label class="control-label"> Activity Name:</label> <br>  <%=getMA[4]!=null?StringEscapeUtils.escapeHtml4(getMA[4].toString()):" - " %> 
                         	</div>
                         	<div class="col-md-1 " align="center" ><br>
                     		<label class="control-label">Progress <br> </label>
                     		<%if(getMA!=null && !getMA[11].toString().equalsIgnoreCase("0")){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=getMA[11] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															<%=getMA[11] %>
+															<%=getMA[11]!=null?StringEscapeUtils.escapeHtml4(getMA[11].toString()):" - " %>
 															</div> 
 															</div> <%}else{ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -74,14 +77,14 @@ String projectid=(String)request.getAttribute("projectid");
                     		 
                         	</div>
                         	<div class="col-md-2 " align="center" ><br>
-                        	<label class="control-label">PDC<br>From :  <%=getMA!=null?sdf.format(getMA[2]):"-" %> <br> To :  <%=getMA!=null?sdf.format(getMA[3]):"-" %> <br></label>
+                        	<label class="control-label">PDC<br>From :  <%=getMA[2]!=null?sdf.format(getMA[2]):"-" %> <br> To :  <%=getMA[3]!=null?sdf.format(getMA[3]):"-" %> <br></label>
                         	</div>
                         	<div class="col-md-2 " align="center" style="margin-left: -10px;">
                         	<br><label class="control-label">Completed On<br>
                         	<%if(getMA!=null && getMA[14]!=null){ %>
                         	<%=sdf.format(getMA[14]) %>
                         	<%}else{ %>
-                        	<%=getMA!=null?getMA[15]:"-" %>
+                        	<%=getMA!=null?StringEscapeUtils.escapeHtml4(getMA[15].toString()):" - " %>
                         	<%} %>
                         	</label>
                         	</div>
@@ -131,7 +134,7 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
                     		
                         	</div>
 						   <div  class="col-sm-5" align="left" >
-                    		<label class="control-label"> Activity   Name: <br>  <%=ActivityA[4] %> </label>
+                    		<label class="control-label"> Activity   Name: <br>  <%=ActivityA[4]!=null?StringEscapeUtils.escapeHtml4(ActivityA[4].toString()):" - " %> </label>
                     		<br>
                         	</div>
                         	<div class="col-md-1 " align="center" style="margin-left: -5px;"><br>
@@ -139,7 +142,7 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
                     		<%if(!ActivityA[5].toString().equalsIgnoreCase("0")){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=ActivityA[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															<%=ActivityA[5] %>
+															<%=ActivityA[5]!=null?StringEscapeUtils.escapeHtml4(ActivityA[5].toString()):" - " %>
 															</div> 
 															</div> <%}else{ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -150,7 +153,7 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
                     		 
                         	</div>
                         	 <div  class="col-sm-2" align="center" style="margin-left: 5px;"> <br> 
-                    		<label class="control-label">From: <%=sdf.format(ActivityA[2]) %> <br>To: <%=sdf.format(ActivityA[3]) %></label>
+                    		<label class="control-label">From: <%= ActivityA[2]!=null?sdf.format(ActivityA[2]):" - " %> <br>To: <%=ActivityA[3]!=null?sdf.format(ActivityA[3]):" - " %></label>
                     		<br>
                         	</div>
                         	<div class="col-md-2 " align="center" style="margin-left: -0px;">
@@ -158,7 +161,7 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
                         	<%if(ActivityA[8]!=null){ %>
                         	<%=sdf.format(ActivityA[8]) %>
                         	<%}else{ %>
-                        	<%=ActivityA[9] %>
+                        	<%=ActivityA[9]!=null?StringEscapeUtils.escapeHtml4(ActivityA[9].toString()):" - " %>
                         	<%} %>
                         	</label>
                         	</div>
@@ -201,7 +204,7 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
                     		
                         	</div>
 						   <div  class="col-sm-5" align="left" >
-                    		<label class="control-label"> Activity   Name:  <br> <%=ActivityB[4] %> </label>
+                    		<label class="control-label"> Activity   Name:  <br> <%=ActivityB[4]!=null?StringEscapeUtils.escapeHtml4(ActivityB[4].toString()):" - " %> </label>
                     		<br>
                         	</div>
                         	<div class="col-md-1 " align="center" style="margin-left: -14px;"><br>
@@ -209,7 +212,7 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
                     		<%if(!ActivityB[5].toString().equalsIgnoreCase("0")){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=ActivityB[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															<%=ActivityB[5] %>
+															<%=ActivityB[5]!=null?StringEscapeUtils.escapeHtml4(ActivityB[5].toString()):" - " %>
 															</div> 
 															</div> <%}else{ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -220,7 +223,7 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
                     		 
                         	</div>
                         	 <div  class="col-sm-2" align="center"  style="margin-left: 0px;"> <br> 
-                    		<label class="control-label">From: <%=sdf.format(ActivityB[2]) %>  <br> To: <%=sdf.format(ActivityB[3]) %></label>
+                    		<label class="control-label">From: <%=ActivityB[2]!=null?sdf.format(ActivityB[2]): " - "  %>  <br> To: <%=ActivityB[2]!=null?sdf.format(ActivityB[3]):" - " %></label>
                     		<br>
                        
                         	</div>
@@ -229,7 +232,7 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
                         	<%if(ActivityB[8]!=null){ %>
                         	<%=sdf.format(ActivityB[8]) %>
                         	<%}else{ %>
-                        	<%=ActivityB[9] %>
+                        	<%=ActivityB[9]!=null?StringEscapeUtils.escapeHtml4(ActivityB[9].toString()):" - " %>
                         	<%} %>
                         	</label>
                         	</div>
@@ -273,7 +276,7 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
                     		
                         	</div>
 						   <div  class="col-sm-5" align="left" >
-                    		<label class="control-label">  Activity   Name: <br> <%=ActivityC[4] %> </label>
+                    		<label class="control-label">  Activity   Name: <br> <%=ActivityC[4]!=null?StringEscapeUtils.escapeHtml4(ActivityC[4].toString()):" - " %> </label>
                     		<br>
                         	</div>
                         	<div class="col-md-1 " align="center" style="margin-left: -35px;" ><br>
@@ -281,7 +284,7 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
                     		<%if(!ActivityC[5].toString().equalsIgnoreCase("0")){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=ActivityC[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															<%=ActivityC[5] %>
+															<%=ActivityC[5]!=null?StringEscapeUtils.escapeHtml4(ActivityC[5].toString()):" - " %>
 															</div> 
 															</div> <%}else{ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -292,7 +295,7 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
                     		 
                         	</div>
                         	 <div  class="col-sm-2" align="center"   style="margin-left: 0px;"><br>
-                    		<label class="control-label">From: <%=sdf.format(ActivityC[2]) %>  <br> To: <%=sdf.format(ActivityC[3]) %></label>
+                    		<label class="control-label">From: <%=ActivityC[4]!=null?sdf.format(ActivityC[2]) :" - "%>  <br> To: <%=ActivityC[4]!=null?sdf.format(ActivityC[3]):" - " %></label>
                     		<br>
                        
                         	</div>
@@ -301,7 +304,7 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
                         	<%if(ActivityC[8]!=null){ %>
                         	<%=sdf.format(ActivityC[8]) %>
                         	<%}else{ %>
-                        	<%=ActivityC[9] %>
+                        	<%=ActivityC[9]!=null?StringEscapeUtils.escapeHtml4(ActivityC[9].toString()):" - " %>
                         	<%} %>
                         	</label>
                         	</div>

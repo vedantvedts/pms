@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.master.model.IndustryPartner"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -104,7 +105,7 @@ String ses=(String)request.getParameter("result");
 	Swal.fire({
 		  icon: "warning",
 		  title: "Sorry",
-		  text: "<%=ses1%>",
+		  text: "<%=StringEscapeUtils.escapeHtml4(ses1)%>",
 		  allowOutsideClick :false
 		});
 	</script>
@@ -117,7 +118,7 @@ String ses=(String)request.getParameter("result");
 	Swal.fire({
 		  icon: "success",
 		  title: "SUCCESS",
-		  text: "<%=ses%>",
+		  text: "<%=StringEscapeUtils.escapeHtml4(ses)%>",
 		  allowOutsideClick :false
 		});
 	</script>
@@ -136,7 +137,7 @@ String ses=(String)request.getParameter("result");
 							<div class="col-md-12"><h3 style="color:#055C9D" ><%=committeedata[8] %> 
 						
 							<span style="float: right;">
-									<%if(Long.parseLong(projectid)>0){ %> Project: <%=projectdata[4] %><%}else if (Long.parseLong(divisionid)>0){ %>  Division: <%=divisiondata[1] %> <%}else if(Long.parseLong(initiationid)>0){ %>Pre-Project: <%=initiationdata[1]%> <%}else{ %>Non-Project<%} %>
+									<%if(Long.parseLong(projectid)>0){ %> Project: <%=projectdata[4]!=null?StringEscapeUtils.escapeHtml4(projectdata[4].toString()): " - " %><%}else if (Long.parseLong(divisionid)>0){ %>  Division: <%=divisiondata[1]!=null?StringEscapeUtils.escapeHtml4(divisiondata[1].toString()): " - "  %> <%}else if(Long.parseLong(initiationid)>0){ %>Pre-Project: <%=initiationdata[1]!=null?StringEscapeUtils.escapeHtml4(initiationdata[1].toString()): " - " %> <%}else{ %>Non-Project<%} %>
 								</span>
 						
 							</div>	
@@ -153,7 +154,7 @@ String ses=(String)request.getParameter("result");
 					</div>
 					<div class="col-md-2">
 					<input class="form-control" type="text" name="RefNo"  readonly="readonly"
-					 value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[1]!=null){%><%=CommitteMainEnoteList[1].toString() %><%}else{%><%=committeedata[11]!=null? committeedata[11].toString():"" %> <%}%>">
+					 value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[1]!=null){%><%=StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[1].toString()) %><%}else{%><%=committeedata[11]!=null? StringEscapeUtils.escapeHtml4(committeedata[11].toString()):"" %> <%}%>">
 					</div>
 					
 					<div class="col-md-2">
@@ -161,7 +162,7 @@ String ses=(String)request.getParameter("result");
 					</div>
 					<div class="col-md-2">
 					<input class="form-control" type="text" name="RefDate" readonly
-					 value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[2]!=null){%><%=sdf.format(sdf1.parse(CommitteMainEnoteList[2].toString()))%><%}else{%><%=committeedata[12]%><%}%>">
+					 value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[2]!=null){%><%=sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[2].toString())))%><%}else{%><%=committeedata[12]!=null?StringEscapeUtils.escapeHtml4(committeedata[12].toString()): "" %><%}%>">
 					</div>
 					</div>
 				
@@ -170,14 +171,14 @@ String ses=(String)request.getParameter("result");
 					<label class="control-label" style="margin-bottom: 4px !important">Subject :</label>
 					</div>
 					<div class="col-md-5">
-					<textarea class="form-control" rows="2" cols="40" name="subject" placeholder="max 500 Characters" maxlength="498"><%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[3]!=null){%><%=CommitteMainEnoteList[3].toString()%><%}else{%><%="Formation of " + committeedata[8]+" Committee." %><%} %></textarea>
+					<textarea class="form-control" rows="2" cols="40" name="subject" placeholder="max 500 Characters" maxlength="498"><%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[3]!=null){%><%=StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[3].toString())%><%}else{%><%="Formation of " + committeedata[8]!=null?StringEscapeUtils.escapeHtml4(committeedata[8].toString()): ""+" Committee." %><%} %></textarea>
 					</div>
 					
 					<div class="col-md-1">
 					<label class="control-label" style="margin-bottom: 4px !important">Comment :</label>
 					</div>
 					<div class="col-md-4">
-					<textarea class="form-control" rows="2" cols="30" name="Comment" placeholder="max 500 Characters" maxlength="498"><%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[4]!=null){%><%=CommitteMainEnoteList[4].toString()%><%}else{%><%} %></textarea>
+					<textarea class="form-control" rows="2" cols="30" name="Comment" placeholder="max 500 Characters" maxlength="498"><%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[4]!=null){%><%=StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[4].toString())%><%}else{%><%} %></textarea>
 					</div>
 					</div>
 					<div class="row mt-4">
@@ -185,7 +186,7 @@ String ses=(String)request.getParameter("result");
 					<div class="col-md-3">
 					<select class="form-control selectdee" name="InitiatedBy" id="InitiatedBy" >
 					<%for(Object[]obj:employeelist){ %>
-					<option value="<%=obj[0].toString()%>"   <%if(CommitteMainEnoteList!=null && obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[17].toString())) {%> selected  <%} %>><%=obj[1].toString() %>, <%=obj[2].toString() %></option>
+					<option value="<%=obj[0].toString()%>"   <%if(CommitteMainEnoteList!=null && obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[17].toString())) {%> selected  <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
 					<%} %>
 					</select>
 					</div>
@@ -196,7 +197,7 @@ String ses=(String)request.getParameter("result");
 					<label class="control-label" style="margin-bottom: 4px !important;" >Officer1 Role: &nbsp;<span class="mandatory" style="color: red;">*</span></label>
 					</div>
 					<div class="col-md-2">
-					<input class="form-control" required="required" maxlength="18" name="Rec1_Role" value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[8]!=null) {%><%=CommitteMainEnoteList[8].toString() %> <%}%>">
+					<input class="form-control" required="required" maxlength="18" name="Rec1_Role" value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[8]!=null) {%><%=StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[8].toString()) %> <%}%>">
 					</div>
 					<div class="col-md-2">
 					<label class="control-label" style="margin-bottom: 4px !important">Recommended Officer 1: &nbsp;<span class="mandatory" style="color: red;">*</span></label>
@@ -205,7 +206,7 @@ String ses=(String)request.getParameter("result");
 					<select class="form-control selectdee" name="Recommend1" id="Recommend1" required ="required" title ="Please select officer 1">
 					<option   selected value="">SELECT</option>
 					<%for(Object[]obj:employeelist){ %>
-					<option value="<%=obj[0].toString()%>"  <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[7]!=null &&  obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[7].toString())) {%> selected  <%} %>><%=obj[1].toString() %>, <%=obj[2].toString() %></option>
+					<option value="<%=obj[0].toString()%>"  <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[7]!=null &&  obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[7].toString())) {%> selected  <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
 					<%} %>
 					</select>
 					</div>
@@ -218,7 +219,7 @@ String ses=(String)request.getParameter("result");
 					<label class="control-label" style="margin-bottom: 4px !important;">Officer2 Role: &nbsp;</label>
 					</div>
 					<div class="col-md-2">
-					<input class="form-control" maxlength="18" name="Rec2_Role" id="Rec2_Role" value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[10]!=null) {%><%=CommitteMainEnoteList[10].toString() %> <%}%>">
+					<input class="form-control" maxlength="18" name="Rec2_Role" id="Rec2_Role" value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[10]!=null) {%><%=CommitteMainEnoteList[10]!=null?StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[10].toString()): "" %> <%}%>">
 					</div>
 					<div class="col-md-2">
 					<label class="control-label" style="margin-bottom: 4px !important">Recommended Officer 2: &nbsp;</label>
@@ -227,7 +228,7 @@ String ses=(String)request.getParameter("result");
 					<select class="form-control selectdee" name="Recommend2" id="Recommend2">
 					<option   selected value="">SELECT</option>
 					<%for(Object[]obj:employeelist){ %>
-					<option value="<%=obj[0].toString()%>"  <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[9]!=null &&  obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[9].toString())) {%> selected  <%} %>><%=obj[1].toString() %>, <%=obj[2].toString() %></option>
+					<option value="<%=obj[0].toString()%>"  <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[9]!=null &&  obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[9].toString())) {%> selected  <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
 					<%} %>
 					</select>
 					</div>
@@ -241,7 +242,7 @@ String ses=(String)request.getParameter("result");
 					<label class="control-label" style="margin-bottom: 4px !important;">Officer3 Role: &nbsp;</label>
 					</div>
 					<div class="col-md-2">
-					<input class="form-control" maxlength="18" name="Rec3_Role" id="Rec3_Role" value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[12]!=null) {%><%=CommitteMainEnoteList[12].toString() %> <%}%>">
+					<input class="form-control" maxlength="18" name="Rec3_Role" id="Rec3_Role" value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[12]!=null) {%><%=StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[12].toString()) %> <%}%>">
 					</div>
 					<div class="col-md-2">
 					<label class="control-label" style="margin-bottom: 4px !important">Recommended Officer 3: &nbsp;</label>
@@ -250,7 +251,7 @@ String ses=(String)request.getParameter("result");
 					<select class="form-control selectdee" name="Recommend3" id="Recommend3">
 					<option   selected value="">SELECT</option>
 					<%for(Object[]obj:employeelist){ %>
-					<option value="<%=obj[0].toString()%>"  <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[11]!=null &&  obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[11].toString())) {%> selected  <%} %>><%=obj[1].toString() %>, <%=obj[2].toString() %></option>
+					<option value="<%=obj[0].toString()%>"  <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[11]!=null &&  obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[11].toString())) {%> selected  <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
 					<%} %>
 					</select>
 					</div>
@@ -267,7 +268,7 @@ String ses=(String)request.getParameter("result");
 					<div class="col-md-2">
 					<input class="form-control" name="Approving_Role" maxlength="18" 
 					<%if(CommitteMainEnoteList!=null && !forwardstatus.contains(CommitteMainEnoteList[15].toString())) {%> readonly="readonly" <%} %>
-					value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[14]!=null) {%><%=CommitteMainEnoteList[14].toString() %> <%}%>" required="required">
+					value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[14]!=null) {%><%=StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[14].toString()) %> <%}%>" required="required">
 					</div>
 					<div class="col-md-2">
 					<label class="control-label" style="margin-bottom: 4px !important">Approving Officer: &nbsp;<span class="mandatory" style="color: red;">*</span></label>
@@ -276,7 +277,7 @@ String ses=(String)request.getParameter("result");
 					<select class="form-control selectdee" style="width: 80%;" name="ApprovingOfficerLabCode" id="ApprovingOfficerLabCode" required="required"  onchange="chooseEmp()">
 					<option   selected value="">SELECT</option>
 					<%for(Object[]obj:AllLabList){ %>
-					<option value="<%=obj[3].toString()%>"  <%if (CommitteMainEnoteList!=null &&  CommitteMainEnoteList[22]!=null && obj[3].toString().equalsIgnoreCase(CommitteMainEnoteList[22].toString())) {%> selected  <%} %>><%=obj[3].toString() %></option>
+					<option value="<%=obj[3].toString()%>"  <%if (CommitteMainEnoteList!=null &&  CommitteMainEnoteList[22]!=null && obj[3].toString().equalsIgnoreCase(CommitteMainEnoteList[22].toString())) {%> selected  <%} %>><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 					<%} %>
 					</select>
 					</div>
@@ -356,7 +357,7 @@ String ses=(String)request.getParameter("result");
 				                		<%} %><br>
 				                			Constituted By 
 				                			<br>
-				                			<%=NewApprovalList[0].toString() %>
+				                			<%=NewApprovalList[0]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[0].toString()): " - "%>
 				                		</td>
 				                		<%if(NewApprovalList!=null && NewApprovalList[2]!=null){ %>
 				                		<td rowspan="2">
@@ -370,7 +371,7 @@ String ses=(String)request.getParameter("result");
 				                			Recommended Officer 1
 				                		
 				                			<br>
-				                			<%=NewApprovalList[1].toString() %>
+				                			<%=NewApprovalList[1]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[1].toString()): " - " %>
 				                		</td>
 				                		
 				                		<%} %>
@@ -387,7 +388,7 @@ String ses=(String)request.getParameter("result");
 				                		Recommended Officer 2
 				                	
 				                		<br>
-				                			<%=NewApprovalList[3].toString() %>
+				                			<%=NewApprovalList[3]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[3].toString()): " - " %>
 				                		</td>
 				                		<%} %>
 				                		<%if(NewApprovalList!=null && NewApprovalList[6]!=null){ %>
@@ -403,7 +404,7 @@ String ses=(String)request.getParameter("result");
 				                			Recommended Officer 3
 				                		
 				                			<br>
-				                			<%=NewApprovalList[5].toString() %>
+				                			<%=NewApprovalList[5]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[5].toString()): " - " %>
 				                		</td>
 				                		<%} %>
 				                		<%if(NewApprovalList!=null && NewApprovalList[8]!=null){ %>
@@ -418,7 +419,7 @@ String ses=(String)request.getParameter("result");
 				                		<br>
 				                			Approving Officer
 				                			<br>
-				                			<%=NewApprovalList[7].toString() %>, <%=NewApprovalList[9].toString() %>
+				                			<%=NewApprovalList[7]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[7].toString()): " - " %>, <%=NewApprovalList[9]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[9].toString()): " - " %>
 				                	
 				                		</td>
 				                		<%} %>
@@ -430,11 +431,11 @@ String ses=(String)request.getParameter("result");
 				                <br><div class="col-md-12" >
 				                <%if(CommitteMainEnoteList[22]!=null && !CommitteMainEnoteList[22].toString().equalsIgnoreCase((String)session.getAttribute("labcode"))){ %>
 				                	<%if(NewApprovalList[5]!=null) {%>
-				                <h6 style="color:red">Note : This committee will be approved once it receives a recommendation from <%=NewApprovalList[5] %>.</h6>
+				                <h6 style="color:red">Note : This committee will be approved once it receives a recommendation from <%=StringEscapeUtils.escapeHtml4(NewApprovalList[5].toString()) %>.</h6>
 				                <%}else if(NewApprovalList[3]!=null){ %>
-				             <h6 style="color:red">Note : This committee will be approved once it receives a recommendation from <%=NewApprovalList[3] %>.</h6>
+				             <h6 style="color:red">Note : This committee will be approved once it receives a recommendation from <%=StringEscapeUtils.escapeHtml4(NewApprovalList[3].toString()) %>.</h6>
 				                <%}else if(NewApprovalList[1]!=null){ %>
-				             <h6 style="color:red">Note : This committee will be approved once it receives a recommendation from <%=NewApprovalList[1] %>.</h6>
+				             <h6 style="color:red">Note : This committee will be approved once it receives a recommendation from <%=StringEscapeUtils.escapeHtml4(NewApprovalList[1].toString()) %>.</h6>
 				                <%}} %>
 				                </div>	
 				                	</div>

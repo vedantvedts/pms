@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.vts.pfms.roadmap.model.AnnualTargets"%>
 <%@page import="java.util.stream.Collectors"%>
@@ -69,22 +70,22 @@ String aspFlag = (String)request.getAttribute("aspFlag");
 
 FormatConverter fc = new FormatConverter();
 %>
-<% String ses=(String)request.getParameter("result");
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 	<div class="container-fluid">
 		<div class="row">
@@ -154,7 +155,7 @@ FormatConverter fc = new FormatConverter();
 															<select class="form-control selectdee" id="divisionId" name="divisionId" data-live-search="true">
 					   											<option value="" disabled="disabled" selected="selected">--Select--</option>
 					   											<% for (Object[] obj : divisionList) {%>
-																	<option value="<%=obj[0]%>" <%if(roadMap!=null && roadMap.getDivisionId()!=null && roadMap.getDivisionId()==Long.parseLong(obj[0].toString())) {%>selected<%} %> ><%=obj[2]%></option>
+																	<option value="<%=obj[0]%>" <%if(roadMap!=null && roadMap.getDivisionId()!=null && roadMap.getDivisionId()==Long.parseLong(obj[0].toString())) {%>selected<%} %> ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></option>
 																<%} %>
 					  										</select>
 														</td>
@@ -199,7 +200,7 @@ FormatConverter fc = new FormatConverter();
 															<select class="form-control selectdee" id="references" name="references" data-live-search="true" required style="width: 50%;" onchange="otherReferenceHandle()">
 					   											<option value="" disabled="disabled" selected="selected">--Select--</option>
 					   											<% for (String ref : referencesList) {%>
-																	<option value="<%=ref%>" <%if(roadMap!=null && roadMap.getReference()!=null && roadMap.getReference().equalsIgnoreCase(ref)) {%>selected<%} %> ><%=ref%></option>
+																	<option value="<%=ref%>" <%if(roadMap!=null && roadMap.getReference()!=null && roadMap.getReference().equalsIgnoreCase(ref)) {%>selected<%} %> ><%=ref!=null?StringEscapeUtils.escapeHtml4(ref): " - "%></option>
 																<%} %>
 					  										</select>
 														</td>
@@ -259,7 +260,7 @@ FormatConverter fc = new FormatConverter();
 																		<% for(AnnualTargets annualTarget : annualTargetsList) {%>
 																			
 																			<%if(!idsList.contains(annualTarget.getAnnualTargetId())) {%>
-            																	<option value="<%=annualTarget.getAnnualTargetId() %>" ><%=annualTarget.getAnnualTarget()%></option>
+            																	<option value="<%=annualTarget.getAnnualTargetId() %>" ><%=annualTarget.getAnnualTarget()!=null?StringEscapeUtils.escapeHtml4(annualTarget.getAnnualTarget()): " - "%></option>
             																<%} %>
             															<%}%>
             															<%for(Long id : idsList) {%>
@@ -269,7 +270,7 @@ FormatConverter fc = new FormatConverter();
             																												.filter(e->e.getAnnualTargets().getAnnualTargetId()==id)
             																												.collect(Collectors.toList());
             																	%>
-            																	<%=roadMapAT.get(0).getAnnualTargets().getAnnualTarget() %>
+            																	<%=roadMapAT.get(0).getAnnualTargets().getAnnualTarget()!=null?StringEscapeUtils.escapeHtml4(roadMapAT.get(0).getAnnualTargets().getAnnualTarget()): " - " %>
             																	</option>
             															<%} %>
 																</select>

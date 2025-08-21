@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="com.vts.pfms.documents.dto.ICDConnectionDTO"%>
 <%@page import="java.util.Objects"%>
@@ -109,21 +110,22 @@
 	
 %>
 
-	<% String ses = (String) request.getParameter("result"); 
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-        <div align="center">
-            <div class="alert alert-danger" role="alert">
-                <%= ses1 %>
-            </div>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
         </div>
-    <% } if (ses != null) { %>
-        <div align="center">
-            <div class="alert alert-success" role="alert">
-                <%= ses %>
-            </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
         </div>
-    <% } %>
+    </div>
+<% } %>
     
     <div class="container-fluid">
        
@@ -132,7 +134,7 @@
             	<div class="row">
                		<div class="col-md-9" align="left">
 	                    <h5 id="text" style="margin-left: 1%; font-weight: 600">
-	                      Interface Matrix Details - <%=documentNo %>
+	                      Interface Matrix Details - <%=documentNo!=null?StringEscapeUtils.escapeHtml4(documentNo): " - " %>
 	                    </h5>
                 	</div>
                 	<div class="col-md-2"  align="right">
@@ -250,7 +252,7 @@
 								            <th width="3%">SN</th>
 								            <th width="10%">Sub-System</th>
 								            <% for (Object[] subsystem : productTreeList) { %>
-								                <th><%= subsystem[2] + " (" + subsystem[7] + ")" %></th>
+								                <th><%= subsystem[2]!=null?StringEscapeUtils.escapeHtml4(subsystem[2].toString()): " - " + " (" + subsystem[7]!=null?StringEscapeUtils.escapeHtml4(subsystem[7].toString()): " - " + ")" %></th>
 								            <% } %>
 								        </tr>
 								    </thead>
@@ -262,7 +264,7 @@
 								        %>
 								            <tr>
 								                <td class="center"><%= ++slnoA %></td>
-								                <td><%= rowSubsystem[2] + " (" + rowSubsystem[7] + ")" %></td>
+								                <td><%= rowSubsystem[2]!=null?StringEscapeUtils.escapeHtml4(rowSubsystem[2].toString()): " - " + " (" + rowSubsystem[7]!=null?StringEscapeUtils.escapeHtml4(rowSubsystem[7].toString()): " - " + ")" %></td>
 								                <% for (Object[] colSubsystem : productTreeList) { %>
 								                    <td>
 								                        <% 
@@ -271,7 +273,7 @@
 								                        //} else {
 								                            String key = rowSubsystem[7] + "_" + colSubsystem[7];
 								                            String connections = connectionMap.getOrDefault(key, "-");
-								                            out.print(connections);
+								                            out.print(StringEscapeUtils.escapeHtml4(connections));
 								                        //}
 								                        %>
 								                    </td>
@@ -296,7 +298,7 @@
 							            <th width="3%">SN</th>
 							            <th width="10%">Sub-System</th>
 							            <% for (Object[] subsystem : productTreeListInternal) { %>
-							                <th><%= subsystem[2] + " (" + subsystem[7] + ")" %></th>
+							                <th><%= subsystem[2]!=null?StringEscapeUtils.escapeHtml4(subsystem[2].toString()): " - " + " (" + subsystem[7]!=null?StringEscapeUtils.escapeHtml4(subsystem[7].toString()): " - " + ")" %></th>
 							            <% } %>
 							        </tr>
 							    </thead>
@@ -308,7 +310,7 @@
 							        %>
 							            <tr>
 							                <td class="center"><%= ++slnoI %></td>
-							                <td><%= rowSubsystem[2] + " (" + rowSubsystem[7] + ")" %></td>
+							                <td><%= rowSubsystem[2]!=null?StringEscapeUtils.escapeHtml4(rowSubsystem[2].toString()): " - " + " (" + rowSubsystem[7]!=null?StringEscapeUtils.escapeHtml4(rowSubsystem[7].toString()): " - " + ")" %></td>
 							                <% for (Object[] colSubsystem : productTreeListInternal) { %>
 							                    <td>
 							                        <% 
@@ -317,7 +319,7 @@
 							                        //} else {
 							                            String key = rowSubsystem[7] + "_" + colSubsystem[7];
 							                            String connections = connectionMap.getOrDefault(key, "-");
-							                            out.print(connections);
+							                            out.print(StringEscapeUtils.escapeHtml4(connections));
 							                        //}
 							                        %>
 							                    </td>
@@ -341,7 +343,7 @@
 							            <th width="3%">SN</th>
 							            <th width="10%">Sub-System</th>
 							            <% for (Object[] subsystem : productTreeListExternal) { %>
-							                <th><%= subsystem[2] + " (" + subsystem[7] + ")" %></th>
+							                <th><%= subsystem[2]!=null?StringEscapeUtils.escapeHtml4(subsystem[2].toString()): " - " + " (" + subsystem[7]!=null?StringEscapeUtils.escapeHtml4(subsystem[7].toString()): " - " + ")" %></th>
 							            <% } %>
 							        </tr>
 							    </thead>
@@ -353,7 +355,7 @@
 							        %>
 							            <tr>
 							                <td class="center"><%= ++slnoE %></td>
-							                <td><%= rowSubsystem[2] + " (" + rowSubsystem[7] + ")" %></td>
+							                <td><%= rowSubsystem[2]!=null?StringEscapeUtils.escapeHtml4(rowSubsystem[2].toString()): " - " + " (" + rowSubsystem[7]!=null?StringEscapeUtils.escapeHtml4(rowSubsystem[7].toString()): " - " + ")" %></td>
 							                <% for (Object[] colSubsystem : productTreeListExternal) { %>
 							                    <td>
 							                        <% 
@@ -362,7 +364,7 @@
 							                        } else {
 							                            String key = rowSubsystem[7] + "_" + colSubsystem[7];
 							                            String connections = connectionMap.getOrDefault(key, "-");
-							                            out.print(connections);
+							                            out.print(StringEscapeUtils.escapeHtml4(connections));
 							                        }
 							                        %>
 							                    </td>

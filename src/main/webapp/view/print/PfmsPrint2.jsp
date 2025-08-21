@@ -1,5 +1,6 @@
 
-	<%@page import="java.text.SimpleDateFormat"%>
+	<%@page import="org.apache.commons.text.StringEscapeUtils"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.math.BigDecimal"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
@@ -56,7 +57,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
        counter-increment:page;
        
        @bottom-left {          		
-             content: "<%=LabList[1]%>";
+             content: "<%=LabList[1]!=null?StringEscapeUtils.escapeHtml4(LabList[1].toString()): " - "%>";
              margin-bottom: 30px;
              margin-right: 10px;
              font-size: 13px;
@@ -68,13 +69,13 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 		}
 		
 		@top-right {
-             content: "Proposed Project: <%=PfmsInitiationList[4]%>";
+             content: "Proposed Project: <%=PfmsInitiationList[4]!=null?StringEscapeUtils.escapeHtml4(PfmsInitiationList[4].toString()): " - "%>";
              margin-top: 30px;
              font-size: 13px;
          }
          
         @top-left {
-             content: "<%=PfmsInitiationList[3]%>";
+             content: "<%=PfmsInitiationList[3]!=null?StringEscapeUtils.escapeHtml4(PfmsInitiationList[3].toString()): " - "%>";
              margin-top: 30px;
              font-size: 13px;
         }
@@ -252,12 +253,12 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 		
 	
 		<tr>
-				<th colspan="8" style="  text-align: center; padding: 0 5px 5px;font-size:28px"><%if(PfmsInitiationList[5]!=null){ %><br><%=PfmsInitiationList[5] %><%}else{ %><i>Project Title</i><%} %>
+				<th colspan="8" style="  text-align: center; padding: 0 5px 5px;font-size:28px"><%if(PfmsInitiationList[5]!=null){ %><br><%=StringEscapeUtils.escapeHtml4(PfmsInitiationList[5].toString()) %><%}else{ %><i>Project Title</i><%} %>
 			</th>
 		</tr>
 	
 		<tr>
-			<th colspan="8" style="  text-align: center; padding: 0 5px 5px;font-size:24px"><%if(PfmsInitiationList[4]!=null){ %>(<%=PfmsInitiationList[4] %>)<%}else{ %><i> - </i><%} %>
+			<th colspan="8" style="  text-align: center; padding: 0 5px 5px;font-size:24px"><%if(PfmsInitiationList[4]!=null){ %>(<%=StringEscapeUtils.escapeHtml4(PfmsInitiationList[4].toString()) %>)<%}else{ %><i> - </i><%} %>
 			</th>
 		</tr>
 		
@@ -292,7 +293,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 			<th colspan="8" style="text-align: center; height:80px; font-weight: 700;font-size:22px;padding-top: 50px;"></th>
 		</tr>
 		<tr>
-			<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><br><%if(LabList[1]!=null){ %><%=LabList[1] %><%}else{ %>-<%} %></th>
+			<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><br><%if(LabList[1]!=null){ %><%=StringEscapeUtils.escapeHtml4(LabList[1].toString()) %><%}else{ %>-<%} %></th>
 		</tr>
 		
 		<tr>
@@ -302,7 +303,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 			<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px">Defence Research & Development Organization</th>
 		</tr>
 		<tr>
-			<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><%if(LabList[2]!=null){ %><%=LabList[2] %><%}else{ %> - <%} %></th>			
+			<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><%if(LabList[2]!=null){ %><%=StringEscapeUtils.escapeHtml4(LabList[2].toString()) %><%}else{ %> - <%} %></th>			
 		</tr>
 
 	</tbody>
@@ -331,7 +332,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 	<tbody>
 		<tr>
 			<th  class="border_black weight_700 left" ><span >Title of the Project</span></th>
-			<td  class="border_black weight_700 left" ><span ><%if(PfmsInitiationList[5]!=null){ %><%=PfmsInitiationList[5] %><%}else{ %><i></i><%} %></span></td>
+			<td  class="border_black weight_700 left" ><span ><%if(PfmsInitiationList[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(PfmsInitiationList[5].toString()) %><%}else{ %><i></i><%} %></span></td>
 		</tr>
 		<tr>
 			<th  class="border_black weight_700 left" ><span >Cost</span></th>
@@ -339,15 +340,15 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 		</tr>
 		<tr>
 			<th	 class="border_black weight_700 left" ><span >PDC</span></th>
-			<td  class="border_black weight_700 left" ><span ><%if(PfmsInitiationList[7]!=null){ %><%=PfmsInitiationList[7] %> Months <%}else{ %><i></i><%} %></span></td>
+			<td  class="border_black weight_700 left" ><span ><%if(PfmsInitiationList[7]!=null){ %><%=StringEscapeUtils.escapeHtml4(PfmsInitiationList[7].toString()) %> Months <%}else{ %><i></i><%} %></span></td>
 		</tr>
 		<tr>
 			<th  class="border_black weight_700 left"> <span >Security Classification</span></th>
-			<td  class="border_black weight_700 left" ><span ><%if(PfmsInitiationList[3]!=null){ %><%=PfmsInitiationList[3] %><%}else{ %><i></i><%} %></span></td>
+			<td  class="border_black weight_700 left" ><span ><%if(PfmsInitiationList[3]!=null){ %><%=StringEscapeUtils.escapeHtml4(PfmsInitiationList[3].toString()) %><%}else{ %><i></i><%} %></span></td>
 		</tr>
 		<tr>
 			<th  class="border_black weight_700 left"> <span >Whether Plan/Non-Plan</span></th>
-			<td class="border_black weight_700 left" ><span ><%if(PfmsInitiationList[8]!=null){ if(PfmsInitiationList[8].toString().equalsIgnoreCase("P")){%> Plan <%}if(PfmsInitiationList[8].toString().equalsIgnoreCase("N")){ %>Non-Plan - <%if(PfmsInitiationList[14]!=null){ %> (Remarks : <%=PfmsInitiationList[14]%> ) <%}else{ %> No  Remarks <%} %> <%}}else{ %><%} %></span></td>
+			<td class="border_black weight_700 left" ><span ><%if(PfmsInitiationList[8]!=null){ if(PfmsInitiationList[8].toString().equalsIgnoreCase("P")){%> Plan <%}if(PfmsInitiationList[8].toString().equalsIgnoreCase("N")){ %>Non-Plan - <%if(PfmsInitiationList[14]!=null){ %> (Remarks : <%=StringEscapeUtils.escapeHtml4(PfmsInitiationList[14].toString())%> ) <%}else{ %> No  Remarks <%} %> <%}}else{ %><%} %></span></td>
 		</tr> 
 		
 	</tbody>
@@ -377,7 +378,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 	
 		<tr>
 		<%if(obj[6]!=null){  %>
-		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=obj[6] %></td>
+		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=StringEscapeUtils.escapeHtml4(obj[6].toString()) %></td>
 		<%}else{ %>
 		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" ><i class="normal">To be filled</i></td>
 		<%} %>
@@ -428,7 +429,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
   for(Object obj[]:RequirementList){ %>
   <tr>
 		<td style="font-size: 17px;  padding:10px; border-collapse:collapse; border:1px solid black;"><%=i+"." %></td>
- 			 	<td style="font-size: 17px; padding:7px; border-collapse:collapse; border:1px solid black;"><%=obj[1] %></td>
+ 			 	<td style="font-size: 17px; padding:7px; border-collapse:collapse; border:1px solid black;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
 	 			   	<td style="text-align:justify; font-size: 17px; padding-top:7px;  border-collapse:collapse; border:1px solid black;"><%=obj[3] %></td>
 	 			   	 </tr>
 	 		
@@ -482,7 +483,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 	
 		<tr>
 		<%if(obj[12]!=null){  %>
-		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=obj[12] %></td>
+		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=StringEscapeUtils.escapeHtml4(obj[12].toString()) %></td>
 		<%}else{ %>
 		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" ><i class="normal">To be filled</i></td>
 		<%} %>
@@ -523,7 +524,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 	
 		<tr>
 		<%if(obj[1]!=null){  %>
-		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=obj[1] %></td>
+		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=StringEscapeUtils.escapeHtml4(obj[1].toString()) %></td>
 		<%}else{ %>
 		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" ><i class="normal">To be filled</i></td>
 		<%} %>
@@ -564,7 +565,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 	
 		<tr>
 		<%if(obj[2]!=null){  %>
-		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=obj[2] %></td>
+		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %></td>
 		<%}else{ %>
 		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" ><i class="normal">To be filled</i></td>
 		<%} %>
@@ -605,7 +606,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><br>
 		
 		
-		<%=PfmsInitiationList[11] %></td>
+		<%=StringEscapeUtils.escapeHtml4(PfmsInitiationList[11].toString()) %></td>
 		<%}
 		else{ %>
 		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px"><i class="normal">To be filled</i></td>
@@ -658,7 +659,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 <table  style="margin-top:10px; margin-bottom: 10px;margin-left: 0px;width:715px; font-size: 22px; ">
 	<tbody>
 		<tr>
-			<td colspan="8" style="  text-align: left; padding: 0 5px 5px;font-size:20px" class="editor-text"><%if(obj1[3]!=null){%><%=obj1[3]%><%}else{%>To be filled<%} %>
+			<td colspan="8" style="  text-align: left; padding: 0 5px 5px;font-size:20px" class="editor-text"><%if(obj1[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj1[3].toString())%><%}else{%>To be filled<%} %>
 			</td>
 		</tr>
 	</tbody>
@@ -692,7 +693,7 @@ for(Object[] obj : DetailsList){   %>
 		<tbody>
 			<tr>
 			<%if(obj[4]!=null){  %>
-			<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=obj[4] %></td>
+			<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=StringEscapeUtils.escapeHtml4(obj[4].toString()) %></td>
 			<%}else{ %>
 			<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px"><i class="normal">To be filled</i></td>
 			<%} %>
@@ -730,7 +731,7 @@ for(Object[] obj : DetailsList){   %>
 		<tbody>
 			<tr>
 			<%if(obj[5]!=null){  %>
-			<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=obj[5] %></td>
+			<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=StringEscapeUtils.escapeHtml4(obj[5].toString()) %></td>
 			<%}else{ %>
 			<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px"><i class="normal">To be filled</i></td>
 			<%} %>
@@ -770,7 +771,7 @@ for(Object[] obj : DetailsList){   %>
 	
 		<tr>
 		<%if(obj[7]!=null){  %>
-		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=obj[7] %></td>
+		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=StringEscapeUtils.escapeHtml4(obj[7].toString()) %></td>
 		<%}else{ %>
 		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" ><i class="normal">To be filled</i></td>
 		<%} %>
@@ -811,7 +812,7 @@ for(Object[] obj : DetailsList){   %>
 	
 		<tr>
 		<%if(obj[8]!=null){  %>
-		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=obj[8] %></td>
+		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=StringEscapeUtils.escapeHtml4(obj[8].toString()) %></td>
 		<%}else{ %>
 		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" ><i class="normal">To be filled</i></td>
 		<%} %>
@@ -852,7 +853,7 @@ for(Object[] obj : DetailsList){   %>
 		<tbody>
 			<tr>
 			<%if(obj[9]!=null){  %>
-			<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=obj[9] %></td>
+			<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=StringEscapeUtils.escapeHtml4(obj[9].toString()) %></td>
 			<%}else{ %>
 			<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px"><i class="normal">To be filled</i></td>
 			<%} %>
@@ -898,8 +899,8 @@ for(Object[] obj : DetailsList){   %>
 		for(Object[] obj : CostDetailsList){ %> 
 	<tr>
 		<td colspan="1" class="border_black weight_700 center" style="width:7%;"><span ><%=count %>.</span></td>
-		<td colspan="4" class=" left" style="padding-left:5px"   ><span ><%=obj[0]+"("+obj[5]+")"%><br><%="("+obj[1]+")" %></span></td>
-		<td colspan="2" class=" left" style="padding-left:5px" ><span ><%=obj[2] %></span></td>
+		<td colspan="4" class=" left" style="padding-left:5px"   ><span ><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "+"("+obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "+")"%><br><%="("+obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "+")" %></span></td>
+		<td colspan="2" class=" left" style="padding-left:5px" ><span ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></span></td>
 		<td colspan="2" class="border_black weight_700 right" style="padding-right:5px" ><span >&#8377; <span><%=nfc.convert(Double.parseDouble(obj[3].toString())/100000)%></span></span></td>
 	</tr> 
 	</tbody>
@@ -1480,9 +1481,9 @@ for(Object[] obj : DetailsList){   %>
 		for(Object[] obj : ScheduleList){ %> 
 		<tr>
 		<td colspan="1" class="border_black weight_700 center" style=";width:7%;font-weight: 300"><span ><%=count %>.</span></td>
-		<td colspan="3" class="border_black weight_700 left" style="padding:5px;font-weight: 300;text-align:justify;" ><span ><%=obj[1] %></span></td>
-		<td colspan="4" class="border_black  center" style="font-weight: 300"><%if(obj[5]!=null && obj[2]!=null){ %><%= "T"%><sub><%=obj[5] %></sub><%="+"%><%=obj[2]%><%}else{ %> - <%} %></td>
-		<td colspan="2" class="border_black weight_700 center" style="font-weight: 300"><span ><%=obj[4]%></span></td>
+		<td colspan="3" class="border_black weight_700 left" style="padding:5px;font-weight: 300;text-align:justify;" ><span ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span></td>
+		<td colspan="4" class="border_black  center" style="font-weight: 300"><%if(obj[5]!=null && obj[2]!=null){ %><%= "T"%><sub><%=StringEscapeUtils.escapeHtml4(obj[5].toString()) %></sub><%="+"%><%=StringEscapeUtils.escapeHtml4(obj[2].toString())%><%}else{ %> - <%} %></td>
+		<td colspan="2" class="border_black weight_700 center" style="font-weight: 300"><span ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%></span></td>
 		</tr> 
 <%
 count++;
@@ -1491,7 +1492,7 @@ count++;
 				<%if(PfmsInitiationList!= null) { Object[] obj = PfmsInitiationList; %>
 			
 			<tr>
-				<td colspan="12" class="border_black right" style=""  ><span ><b style="background: white; margin-right:190px;"><%if(obj[7]!=null && Integer.parseInt(obj[7].toString()) >0 ){ %>Total Duration :&nbsp;<%=obj[7]+" Months" %></b ></span><%}%></td>
+				<td colspan="12" class="border_black right" style=""  ><span ><b style="background: white; margin-right:190px;"><%if(obj[7]!=null && Integer.parseInt(obj[7].toString()) >0 ){ %>Total Duration :&nbsp;<%=StringEscapeUtils.escapeHtml4(obj[7].toString())+" Months" %></b ></span><%}%></td>
 			</tr>
 			<%} %>
 </table>
@@ -1537,7 +1538,7 @@ for(Object[] obj : DetailsList){   %>
 		<tbody>
 			<tr>
 			<%if(obj[10]!=null){  %>
-			<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=obj[10] %></td>
+			<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=StringEscapeUtils.escapeHtml4(obj[10].toString()) %></td>
 			<%}else{ %>
 			<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px"><i class="normal">To be filled</i></td>
 			<%} %>

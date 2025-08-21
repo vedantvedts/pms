@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.requirements.model.TestPlanMaster"%>
 <%@page import="com.vts.pfms.requirements.model.TestSetupMaster"%>
@@ -159,24 +160,22 @@ height:300px!important;
      objMap.put("S", "Special Verification Methods");
 	%>
 	
-	<%String ses=(String)request.getParameter("result"); 
-	String ses1=(String)request.getParameter("resultfail");
-	  if(ses1!=null){
-	%>
-	<div align="center">
-
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</div>
-	<%} %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
 	
 	<div class="container-fluid">
 		<div class="row">
@@ -189,8 +188,8 @@ height:300px!important;
 								Project Test Plan Details - 
 								<small>
 									<%if(projectDetails!=null) {%>
-										<%=projectDetails[2]!=null?projectDetails[2]:"-" %>
-										(<%=projectDetails[1]!=null?projectDetails[1]:"-" %>)
+										<%=projectDetails[2]!=null?StringEscapeUtils.escapeHtml4(projectDetails[2].toString()):"-" %>
+										(<%=projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()):"-" %>)
 									<%} %>
 								</small>
 							</h5>
@@ -250,7 +249,7 @@ height:300px!important;
 						</tr>
 						<tr>
 							<td  class="text-primary" colspan="2">8.&nbsp; Additional Information:
-								<%if(DocumentSummary!=null && DocumentSummary[0]!=null) {%><span class="text-dark"><%=DocumentSummary[0]%></span> <%} %>
+								<%if(DocumentSummary!=null && DocumentSummary[0]!=null) {%><span class="text-dark"><%=StringEscapeUtils.escapeHtml4(DocumentSummary[0].toString())%></span> <%} %>
 							</td>
 						</tr>
 					    <tr>
@@ -258,19 +257,19 @@ height:300px!important;
 						</tr>
 						<tr>
 							<td  class="text-primary" colspan="2">10.&nbsp; Abstract:
-								<%if(DocumentSummary!=null && DocumentSummary[1]!=null) {%> <span class="text-dark"><%=DocumentSummary[1]%></span><%} %>
+								<%if(DocumentSummary!=null && DocumentSummary[1]!=null) {%> <span class="text-dark"><%=StringEscapeUtils.escapeHtml4(DocumentSummary[1].toString())%></span><%} %>
 							</td>
 						</tr>
 						<tr>
 							<td  class="text-primary" colspan="2">11.&nbsp; Keywords:
-								<%if(DocumentSummary!=null && DocumentSummary[2]!=null) {%> <span class="text-dark"><%=DocumentSummary[2]%></span><%} %>
+								<%if(DocumentSummary!=null && DocumentSummary[2]!=null) {%> <span class="text-dark"><%=StringEscapeUtils.escapeHtml4(DocumentSummary[2].toString())%></span><%} %>
 							</td>
 						</tr>
 						<tr>
 							<td  class="text-primary" colspan="2">12.&nbsp; Organization and address:
 								<span class="text-dark">		
 									<%if (LabList[1] != null) {%>
-										<%=LabList[1].toString() + "(" + LabList[0].toString() + ")"%>
+										<%=StringEscapeUtils.escapeHtml4(LabList[1].toString()) + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()): " - " + ")"%>
 									<%} else {%>
 										-
 									<%}%>
@@ -278,7 +277,7 @@ height:300px!important;
 									Government of India, Ministry of Defence,Defence
 									Research & Development Organization
 									<%if (LabList[2] != null && LabList[3] != null && LabList[5] != null) {%>
-										<%=LabList[2] + " , " + LabList[3].toString() + ", PIN-" + LabList[5].toString()+"."%>
+										<%=StringEscapeUtils.escapeHtml4(LabList[2].toString()) + " , " + StringEscapeUtils.escapeHtml4(LabList[3].toString()) + ", PIN-" + StringEscapeUtils.escapeHtml4(LabList[5].toString())+"."%>
 									<%}else{ %>
 										-
 									<%} %>
@@ -287,7 +286,7 @@ height:300px!important;
 						</tr>
 						<tr>
 							<td  class="text-primary" colspan="2">13.&nbsp; Distribution:
-								<%if(DocumentSummary!=null && DocumentSummary[3]!=null) {%> <span class="text-dark"><%=DocumentSummary[3]%></span><%} %>
+								<%if(DocumentSummary!=null && DocumentSummary[3]!=null) {%> <span class="text-dark"><%=StringEscapeUtils.escapeHtml4(DocumentSummary[3].toString())%></span><%} %>
 							</td>
 						</tr>
 						<tr>
@@ -295,17 +294,17 @@ height:300px!important;
 						</tr>
 						<tr>
 							<td  class="text-primary" colspan="2">15.&nbsp; Prepared by:
-								<%if(DocumentSummary!=null && DocumentSummary[10]!=null) {%> <span class="text-dark"><%=DocumentSummary[10]%></span><%}else {%><span class="text-dark">-</span>  <%} %> <span class="text-dark"></span> 
+								<%if(DocumentSummary!=null && DocumentSummary[10]!=null) {%> <span class="text-dark"><%=StringEscapeUtils.escapeHtml4(DocumentSummary[10].toString())%></span><%}else {%><span class="text-dark">-</span>  <%} %> <span class="text-dark"></span> 
 							</td>
 						</tr>
 						<tr>
 							<td  class="text-primary" colspan="2">16.&nbsp; Reviewed by: 
-								<%if(DocumentSummary!=null && DocumentSummary[7]!=null) {%> <span class="text-dark"><%=DocumentSummary[7]%></span><%}else {%><span class="text-dark">-</span>  <%} %> 
+								<%if(DocumentSummary!=null && DocumentSummary[7]!=null) {%> <span class="text-dark"><%=StringEscapeUtils.escapeHtml4(DocumentSummary[7].toString())%></span><%}else {%><span class="text-dark">-</span>  <%} %> 
 							</td>
 						</tr>
 						<tr>
 							<td  class="text-primary" colspan="2">17.&nbsp; Approved by: 
-								<%if(DocumentSummary!=null && DocumentSummary[6]!=null) {%> <span class="text-dark"><%=DocumentSummary[6]%></span><%}else {%><span class="text-dark">-</span>  <%} %> 
+								<%if(DocumentSummary!=null && DocumentSummary[6]!=null) {%> <span class="text-dark"><%=StringEscapeUtils.escapeHtml4(DocumentSummary[6].toString())%></span><%}else {%><span class="text-dark">-</span>  <%} %> 
 							</td>
 						</tr>
 					</table>
@@ -369,8 +368,8 @@ height:300px!important;
 									for (Object[] AbbDetails : AbbreviationDetails) {%>
 										<tr>
 								            <td><%= counter %></td>
-								            <td><%= AbbDetails[1] %></td>
-								            <td><%= AbbDetails[2] %></td>
+								            <td><%= AbbDetails[1]!=null?StringEscapeUtils.escapeHtml4(AbbDetails[1].toString()): " - " %></td>
+								            <td><%= AbbDetails[2]!=null?StringEscapeUtils.escapeHtml4(AbbDetails[2].toString()): " - " %></td>
 								        </tr>
 							<% counter++;}} %>
 						</table>
@@ -475,7 +474,7 @@ height:300px!important;
    							</div>
 				   			<div class="col-md-8">
 				   				<textarea required="required" name="information" class="form-control" id="additionalReq" maxlength="4000"
-								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[0]!=null){%><%=DocumentSummary[0]%><%}else{%><%}%></textarea>
+								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[0]!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[0].toString())%><%}else{%><%}%></textarea>
 				   			</div>
    						</div>
 			   			<div class="row mt-2">
@@ -484,7 +483,7 @@ height:300px!important;
 				   			</div>
 				   			<div class="col-md-8">
 				   				<textarea required="required" name="abstract" class="form-control" id="" maxlength="4000"
-								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[1]!=null){%><%=DocumentSummary[1]%><%}else{%><%}%></textarea>
+								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[1]!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[1].toString())%><%}else{%><%}%></textarea>
 				   			</div>
 			   			</div>
    			
@@ -494,7 +493,7 @@ height:300px!important;
 				   			</div>
 				   			<div class="col-md-8">
 				   				<textarea required="required" name="keywords" class="form-control" id="" maxlength="4000"
-								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[2]!=null){%><%=DocumentSummary[2]%><%}else{%><%}%></textarea>
+								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[2]!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[2].toString())%><%}else{%><%}%></textarea>
 				   			</div>
    						</div>
    			
@@ -504,7 +503,7 @@ height:300px!important;
 				   			</div>
 				   			<div class="col-md-8">
 				   				<input required="required" name="distribution" class="form-control" id="" maxlength="255"
-								 placeholder="Maximum 255 Chararcters" required value="<%if(DocumentSummary!=null && DocumentSummary[3]!=null){%><%=DocumentSummary[3]%><%}else{%><%}%>">
+								 placeholder="Maximum 255 Chararcters" required value="<%if(DocumentSummary!=null && DocumentSummary[3]!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[3].toString())%><%}else{%><%}%>">
 				   			</div>
    						</div>
    							<div class="row mt-2">
@@ -513,7 +512,7 @@ height:300px!important;
 			   				</div>	
    				
    				 			<div class="col-md-4">
-	   							<input id="pdc-date" data-date-format="dd/mm/yyyy" readonly name="pdc" <%if(DocumentSummary!=null && DocumentSummary[11]!=null){%> value="<%=DocumentSummary[11].toString() %> " <%}%> class="form-control form-control">
+	   							<input id="pdc-date" data-date-format="dd/mm/yyyy" readonly name="pdc" <%if(DocumentSummary!=null && DocumentSummary[11]!=null){%> value="<%=StringEscapeUtils.escapeHtml4(DocumentSummary[11].toString()) %> " <%}%> class="form-control form-control">
    				
    							</div>
    				
@@ -522,7 +521,7 @@ height:300px!important;
 						   	</div>	
    							<div class="col-md-4">
 		   						<input required="required" name="Document" class="form-control" id="" maxlength="255"
-								 placeholder="Maximum 20 Chararcters" required value="<%if(DocumentSummary!=null && DocumentSummary[12]!=null){%><%=DocumentSummary[12]%><%}else{%><%}%>" >
+								 placeholder="Maximum 20 Chararcters" required value="<%if(DocumentSummary!=null && DocumentSummary[12]!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[12].toString())%><%}else{%><%}%>" >
    							</div>
    						</div>
    						<div class="row mt-2">
@@ -534,7 +533,7 @@ height:300px!important;
 	          						<option value="" selected disabled>--SELECT--</option>
 	        						<%for(Object[]obj:TotalEmployeeList){ %>
 	        							<option value="<%=obj[0].toString()%>" <%if(DocumentSummary!=null && DocumentSummary[9]!=null && DocumentSummary[9].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
-	        								<%=obj[1].toString() %>,<%=(obj[2].toString()) %>
+	        								<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>,<%=(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ") %>
 	        							</option>
 	        						<%} %>
 	        					</select>
@@ -551,7 +550,7 @@ height:300px!important;
 	       		 					<option value="" selected disabled="disabled">--SELECT--</option>
 	       		 					<%for(Object[]obj:TotalEmployeeList){ %>
 	        							<option value="<%=obj[0].toString()%>" <%if(DocumentSummary!=null && DocumentSummary[4]!=null &&  DocumentSummary[4].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
-	        								<%=obj[1].toString() %>,<%=(obj[2].toString()) %>
+	        								<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>,<%=(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ") %>
 	        							</option>
 	        						<%} %>
 	        					</select>
@@ -566,7 +565,7 @@ height:300px!important;
 		       						<option value="" selected disabled="disabled">--SELECT--</option>
 	        						<%for(Object[]obj:TotalEmployeeList){ %>
 	       	 							<option value="<%=obj[0].toString()%>" <%if(DocumentSummary!=null && DocumentSummary[5]!=null && DocumentSummary[5].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
-	        								<%=obj[1].toString() %>,<%=(obj[2].toString()) %>
+	        								<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>,<%=(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ") %>
 	        							</option>
 	        						<%} %>
 		        				</select>
@@ -611,7 +610,7 @@ height:300px!important;
    								<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Test Approach:</label>
    							</div>
    							<div id="summernote2" class="center" style="height: 500;">
-   								<%if(Approach!=null){ %><%= Approach%><% }%>
+   								<%if(Approach!=null){ %><%= StringEscapeUtils.escapeHtml4(Approach)%><% }%>
    							</div>
    							
    							<textarea name="Details" style="display: none;" id="Approchdetails"></textarea>		
@@ -670,7 +669,7 @@ height:300px!important;
 				   				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Test Schedule:</label>
 				   			</div>
 				   			 <div id="summernote1" style="height: 500;  ">
-				   				<% if(Schedule!=null){%> <%=Schedule%>  <% }%>
+				   				<% if(Schedule!=null){%> <%=StringEscapeUtils.escapeHtml4(Schedule)%>  <% }%>
 				   			</div>
 				   			<textarea name="Details" style="display: none; height: 150px;" id="ScheduleDetails"></textarea>
 				   			
@@ -721,7 +720,7 @@ height:300px!important;
 			   			</div>
 			   			
 			   			<div id="summernote3" class="center">
-			   				<%if(Conclusion!=null) {%><%=Conclusion%><%} %>
+			   				<%if(Conclusion!=null) {%><%=StringEscapeUtils.escapeHtml4(Conclusion)%><%} %>
 			   			</div>
    						<textarea name="Details" style="display: none;"  id="ConclusionDetails"></textarea>	
    		
@@ -776,8 +775,8 @@ height:300px!important;
 										for(Object[]obj:MemberList) {%>
 											<tr>
 												<td style="text-align: center;width:10%;"><%=++rowCount %></td>
-												<td style="width:50%;margin-left: 10px;"><%=obj[1].toString() %></td>
-												<td style="width:40%;margin-left: 10px;"><%=obj[2].toString() %></td>
+												<td style="width:50%;margin-left: 10px;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
+												<td style="width:40%;margin-left: 10px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 												 <td style="width:40%; margin-left: 10px;">
 												    <form id="deleteForm_<%= obj[5] %>" action="#" method="POST" name="myfrm" style="display: inline">
 												        <button type="submit" class="editable-clicko" formaction="DeleteTestPlanMembers.htm" onclick="return confirmDeletion('<%= obj[5] %>');">
@@ -805,7 +804,7 @@ height:300px!important;
 							<div class="col-md-10">
 								<select class="form-control selectdee"name="Assignee" id="Assignee"data-width="100%" data-live-search="true" multiple required>
 							        <%for(Object[]obj:EmployeeList){ %>
-							        	<option value="<%=obj[0].toString()%>"> <%=obj[1].toString() %>,<%=(obj[2].toString()) %></option>
+							        	<option value="<%=obj[0].toString()%>"> <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>,<%=(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ") %></option>
 							        <%} %>
         						</select>
         					</div>
@@ -995,7 +994,7 @@ height:300px!important;
 	    		}
 	    		else{
 	    			
-    		 var AbbreviationDetailsList=[<%int i=0; for (Object [] obj:AbbreviationDetails ) {%> "<%= obj[1] %>"<%= i+1 < AbbreviationDetails.size() ? ",":""%><%}%>];	
+    		 var AbbreviationDetailsList=[<%int i=0; for (Object [] obj:AbbreviationDetails ) {%> "<%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): "" %>"<%= i+1 < AbbreviationDetails.size() ? ",":""%><%}%>];	
     		
     		var AbbreDetails = [];
     		
@@ -1253,13 +1252,13 @@ height:300px!important;
 function DownloadDocPDF(){
 	var chapterCount = 0;
 	var mainContentCount = 0;
-	var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
+	var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=StringEscapeUtils.escapeHtml4(DocTempAtrr[12].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
 		
 	var docDefinition = {
             content: [
                 // Cover Page with Project Name and Logo
                 {
-                    text: htmlToPdfmake('<h4 class="heading-color ">SYSTEM TEST PLAN <br><br> FOR  <br><br>PROJECT <%=projectShortName %> </h4>'),
+                    text: htmlToPdfmake('<h4 class="heading-color ">SYSTEM TEST PLAN <br><br> FOR  <br><br>PROJECT <%=projectShortName!=null?StringEscapeUtils.escapeHtml4(projectShortName): " - " %> </h4>'),
                     style: 'DocumentName',
                     alignment: 'center',
                     fontSize: 18,
@@ -1276,7 +1275,7 @@ function DownloadDocPDF(){
                 <% } %>
                 
                 {
-                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + ")" %> <% } else { %> '-' <% } %></h5>'),
+                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") : " - " + ")" %> <% } else { %> '-' <% } %></h5>'),
                     alignment: 'center',
                     fontSize: 16,
                     bold: true,
@@ -1290,7 +1289,7 @@ function DownloadDocPDF(){
                     margin: [0, 10, 0, 10]
                 },
                 {
-                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %><%}else{ %>-<%} %></h6>'),
+                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(LabList[2].toString())+" , "+LabList[3].toString()+", PIN-"+StringEscapeUtils.escapeHtml4(LabList[5].toString()) %><%}else{ %>-<%} %></h6>'),
                     alignment: 'center',
                     fontSize: 14,
                     bold: true,
@@ -1329,9 +1328,9 @@ function DownloadDocPDF(){
 	                            <% int slno = 0; for (Object[] obj : MemberList) { %>
 	                            [
 	                                { text: '<%= ++slno %>', style: 'tableData',alignment: 'center' },
-	                                { text: '<%= obj[1] %>', style: 'tableData' },
-	                                { text: '<%= obj[2] %>', style: 'tableData' },
-	                                { text: '<%= obj[3] %>', style: 'tableData',alignment: 'center' }
+	                                { text: '<%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>', style: 'tableData' },
+	                                { text: '<%= obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>', style: 'tableData' },
+	                                { text: '<%= obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %>', style: 'tableData',alignment: 'center' }
 	                            ],
 	                            <% } %>
                             <% } else{%>
@@ -1376,7 +1375,7 @@ function DownloadDocPDF(){
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Title', style: 'tableData' },
-                                { text: 'System Segment Specification Document For Project <%=projectShortName %>', style: 'tableData' },
+                                { text: 'System Segment Specification Document For Project <%=projectShortName!=null?StringEscapeUtils.escapeHtml4(projectShortName): " - " %>', style: 'tableData' },
                             ],
                             
                             [
@@ -1418,65 +1417,65 @@ function DownloadDocPDF(){
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Additional Information', style: 'tableData' },
-                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[0] %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[0]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary[0].toString()): " - " %><%} %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Project Name', style: 'tableData' },
-                                { text: '<%=projectShortName %>', style: 'tableData' },
+                                { text: '<%=projectShortName!=null?StringEscapeUtils.escapeHtml4(projectShortName): " - " %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Abstract', style: 'tableData' },
-                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[1] %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[1]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary[1].toString()): " - " %><%} %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Keywords', style: 'tableData' },
-                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[2] %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[2]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary[2].toString()): " - " %><%} %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Organization and address', style: 'tableData' },
-                                { text: '<% if (LabList!=null && LabList[1] != null) {%> <%=LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + ")"%> <%} else {%> - <%}%>'
+                                { text: '<% if (LabList!=null && LabList[1] != null) {%> <%=StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " + ")"%> <%} else {%> - <%}%>'
 										+'Government of India, Ministry of Defence,Defence Research & Development Organization'
 								+'<% if (LabList!=null && LabList[2] != null && LabList[3] != null && LabList[5] != null) { %>'
-									+'<%=LabList[2] + " , " + LabList[3].toString() + ", PIN-" + LabList[5].toString()+"."%>'
+									+'<%=StringEscapeUtils.escapeHtml4(LabList[2].toString()) + " , " + StringEscapeUtils.escapeHtml4(LabList[3].toString()) + ", PIN-" + StringEscapeUtils.escapeHtml4(LabList[5].toString())+"."%>'
 								+'<%}else{ %> - <%} %>' , style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Distribution', style: 'tableData' },
-                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[3] %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[3].toString()) %><%} %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Revision', style: 'tableData' },
-                                { text: '<%=version!=null ?version:"-" %>', style: 'tableData' },
+                                { text: '<%=version!=null ?StringEscapeUtils.escapeHtml4(version):"-" %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Prepared by', style: 'tableData' },
-                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[10] %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[10].toString()) %><%} %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Reviewed by', style: 'tableData' },
-                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[7] %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[7].toString()) %><%} %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Approved by', style: 'tableData' },
-                                { text: '<% if(DocumentSummary!=null){%><%=DocumentSummary[6] %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[6].toString()) %><%} %>', style: 'tableData' },
                             ],
 
                         ]
@@ -1533,8 +1532,8 @@ function DownloadDocPDF(){
 		                        <% int slno = 0; for (Object[] obj : AbbreviationDetails) { %>
 		                            [
 		                                { text: '<%= ++slno %>', style: 'tableData',alignment: 'center' },
-		                                { text: '<%= obj[1] %>', style: 'tableData',alignment: 'center' },
-		                                { text: '<%= obj[2] %>', style: 'tableData' },
+		                                { text: '<%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>', style: 'tableData',alignment: 'center' },
+		                                { text: '<%= obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>', style: 'tableData' },
 		                            ],
 		                        <% } %>
                             <% } else{%>
@@ -1581,7 +1580,7 @@ function DownloadDocPDF(){
 	                },
 	                {
 	                	<%if(TestScopeIntro[1]!=null) {%>
-		            		stack: [htmlToPdfmake(setImagesWidth('<%=TestScopeIntro[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
+		            		stack: [htmlToPdfmake(setImagesWidth('<%=StringEscapeUtils.escapeHtml4(TestScopeIntro[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
 						<%}else {%>
 							text: 'No Details Added!',
 						<%} %>
@@ -1597,7 +1596,7 @@ function DownloadDocPDF(){
 	                },
 	                {
 	                	<%if(TestScopeIntro[2]!=null) {%>
-	            			stack: [htmlToPdfmake(setImagesWidth('<%=TestScopeIntro[2].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
+	            			stack: [htmlToPdfmake(setImagesWidth('<%=StringEscapeUtils.escapeHtml4(TestScopeIntro[2].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
 						<%}else {%>
 							text: 'No Details Added!',
 						<%} %>
@@ -1612,7 +1611,7 @@ function DownloadDocPDF(){
 	                },
 	                {
 	                	<%if(TestScopeIntro[3]!=null) {%>
-		        			stack: [htmlToPdfmake(setImagesWidth('<%=TestScopeIntro[3].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
+		        			stack: [htmlToPdfmake(setImagesWidth('<%=StringEscapeUtils.escapeHtml4(TestScopeIntro[3].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
 						<%}else {%>
 							text: 'No Details Added!',
 						<%} %>
@@ -1647,7 +1646,7 @@ function DownloadDocPDF(){
                 
                 {
                 	<%if(Approach!=null) {%>
-	        			stack: [htmlToPdfmake(setImagesWidth('<%=Approach.replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
+	        			stack: [htmlToPdfmake(setImagesWidth('<%=StringEscapeUtils.escapeHtml4(Approach).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
 					<%}else {%>
 						text: 'No Details Added!',
 					<%} %>
@@ -1667,7 +1666,7 @@ function DownloadDocPDF(){
                 
                 {
                 	<%if(RoleResponsibility!=null) {%>
-	        			stack: [htmlToPdfmake(setImagesWidth('<%=RoleResponsibility.replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
+	        			stack: [htmlToPdfmake(setImagesWidth('<%=StringEscapeUtils.escapeHtml4(RoleResponsibility).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
 					<%}else {%>
 						text: 'No Details Added!',
 					<%} %>
@@ -1680,7 +1679,7 @@ function DownloadDocPDF(){
             	<%}%> --%>
             	<% if(htmlContentRoleResponsibility!=null) { %>
 	                {
-	                	stack: [htmlToPdfmake("<%=htmlContentRoleResponsibility %>")],
+	                	stack: [htmlToPdfmake("<%=StringEscapeUtils.escapeHtml4(htmlContentRoleResponsibility) %>")],
 	                },
          		<%}%>
                 /* ************************************** Role & Responsibility End *********************************** */
@@ -1719,8 +1718,8 @@ function DownloadDocPDF(){
 	                          	for (Object[] obj : TestSuiteList) { %>
 		                          	[
 		                                { text: '<%=++slno %>', style: 'tableData', alignment: 'center' },
-		                                { text: '<%=obj[1]!=null?obj[1]:"-" %>', style: 'tableData' },
-		                                { text: '<%=obj[3]!=null?obj[3]:"-" %>', style: 'tableData' },
+		                                { text: '<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-" %>', style: 'tableData' },
+		                                { text: '<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):"-" %>', style: 'tableData' },
 		                            ],
 		                          <% } %>
                 			],
@@ -1755,7 +1754,7 @@ function DownloadDocPDF(){
                 },
                 {
                 	<%if(TestSetUpDiagram!=null) {%>
-	        			stack: [htmlToPdfmake(setImagesWidth('<%=TestSetUpDiagram.replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
+	        			stack: [htmlToPdfmake(setImagesWidth('<%=StringEscapeUtils.escapeHtml4(TestSetUpDiagram).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
 					<%}else {%>
 						text: 'No Details Added!',
 					<%} %>
@@ -1765,7 +1764,7 @@ function DownloadDocPDF(){
                 <% if(htmlContentTestSetUpDiagram!=null) { 
                 %>
 	                {
-	                	stack: [htmlToPdfmake("<%=htmlContentTestSetUpDiagram %>")],
+	                	stack: [htmlToPdfmake("<%=StringEscapeUtils.escapeHtml4(htmlContentTestSetUpDiagram) %>")],
 	                },
      			<%}%>
             	
@@ -1794,10 +1793,10 @@ function DownloadDocPDF(){
                               	for (Object[] obj : TestSuiteList) { %>
 	                              	[
 		                                { text: '<%=++slno %>', style: 'tableData', alignment: 'center' },
-		                                { text: '<%=obj[1]!=null?obj[1]:"-" %>', style: 'tableData' },
+		                                { text: '<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-" %>', style: 'tableData' },
 		                                { text: '<% List<String>list = new ArrayList<>(); list = TestDetailsList.stream().filter(ix->ix[10]!=null && Arrays.asList(ix[10].toString().split(",")).contains(obj[0].toString())).map(ix->ix[1].toString()).collect(Collectors.toList()); %>'
                            						+'<%if(list.size()!=0) {%> <%=list.toString().replace("[", "").replace("]", "") %><%}else{ %>-<%} %>', style: 'tableData' },
-		                                { text: '<%=obj[3]!=null?obj[3]:"-" %>', style: 'tableData' },
+		                                { text: '<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):"-" %>', style: 'tableData' },
 		                            ],
                               	<% } %>
                 			],
@@ -1831,7 +1830,7 @@ function DownloadDocPDF(){
                 },
                 {
                 	<%if(TestVerification!=null) {%>
-	        			stack: [htmlToPdfmake(setImagesWidth('<%=TestVerification.replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
+	        			stack: [htmlToPdfmake(setImagesWidth('<%=StringEscapeUtils.escapeHtml4(TestVerification).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
 					<%}else {%>
 						text: 'No Details Added!',
 					<%} %>
@@ -1840,7 +1839,7 @@ function DownloadDocPDF(){
                 },
              	<% if(htmlContentTestVerification!=null) { %>
 	                {
-	                	text: [htmlToPdfmake("<%=htmlContentTestVerification %>")],
+	                	text: [htmlToPdfmake("<%=StringEscapeUtils.escapeHtml4(htmlContentTestVerification) %>")],
 	                },
  				<%}%>
                 /* ************************************** Acceptance Testing End *********************************** */
@@ -1856,7 +1855,7 @@ function DownloadDocPDF(){
                 },
                 {
                 	<%if(Schedule!=null) {%>
- 	        			stack: [htmlToPdfmake(setImagesWidth('<%=Schedule.replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
+ 	        			stack: [htmlToPdfmake(setImagesWidth('<%=StringEscapeUtils.escapeHtml4(Schedule).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>' , 500))],
  					<%}else {%>
  						text: 'No Details Added!',
  					<%} %>
@@ -1878,7 +1877,7 @@ function DownloadDocPDF(){
     				int subslno=0;
     				for (Object[] obj : TestDetailsList) { int slno=0;%>	
 	    				{
-	                    	text: mainContentCount+'.<%=++subslno %>.'+' Test ID: <%=obj[1] %>',	
+	                    	text: mainContentCount+'.<%=++subslno %>.'+' Test ID: <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>',	
 	                     	style: 'chapterSubHeader',
 	                        tocItem: true,
 	                        id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=subslno %>',
@@ -1906,26 +1905,26 @@ function DownloadDocPDF(){
 		            					{text: '<%if(obj[19]!=null){ List<Object[]>list = new ArrayList<>();%>'
 		            						  +'<%if(specificationList.size()>0){ list = specificationList.stream().filter(e->Arrays.asList(obj[19].toString().split(",")).contains(e[0].toString())).collect(Collectors.toList());}%>'
 		            						  +'<%for(Object[] obj1 : list) {%>'
-		            						  +'<%=obj1[1]+" ("+(obj1[5]!=null?obj1[5]:"-")+" "+(obj1[9]!=null?obj1[9]:"-")+" "+(obj1[6]!=null?obj1[6]:"-")+")"%>\n'
+		            						  +'<%=obj1[1]!=null?StringEscapeUtils.escapeHtml4(obj1[1].toString()): " - "+" ("+(obj1[5]!=null?StringEscapeUtils.escapeHtml4(obj1[5].toString()):"-")+" "+(obj1[9]!=null?StringEscapeUtils.escapeHtml4(obj1[9].toString()):"-")+" "+(obj1[6]!=null?StringEscapeUtils.escapeHtml4(obj1[6].toString()):"-")+")"%>\n'
 		            						  +'<%} } else {%>-<%}%>', style: 'tableData',},
 		            				],
 		            				
 		            				[
 		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
 		            					{text: 'ID', style: 'tableData',},
-		            					{text: '<% if(obj[1]!=null){%><%=obj[1] %><% } else {%>-<%}%>', style: 'tableData',},
+		            					{text: '<% if(obj[1]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[1].toString()) %><% } else {%>-<%}%>', style: 'tableData',},
 		            				],
 		            				
 		            				[
 		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
 		            					{text: 'Name', style: 'tableData',},
-		            					{text: '<% if(obj[2]!=null){%><%=obj[2] %><% } else {%>-<%}%>', style: 'tableData',},
+		            					{text: '<% if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><% } else {%>-<%}%>', style: 'tableData',},
 		            				],
 		            				
 		            				[
 		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
 		            					{text: 'Objective', style: 'tableData',},
-		            					{text: '<% if(obj[3]!=null){%><%=obj[3] %><% } else {%>-<%}%>', style: 'tableData',},
+		            					{text: '<% if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %><% } else {%>-<%}%>', style: 'tableData',},
 		            				],
 		            				
 		            				[
@@ -1933,7 +1932,7 @@ function DownloadDocPDF(){
 		            					{text: 'Description', style: 'tableData', colSpan: '2'},
 		            				],
 		            				[
-		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(obj[4]!=null){%><%=obj[4].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
+		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(obj[4]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
 		            				],
 		            				
 		            				[
@@ -1941,7 +1940,7 @@ function DownloadDocPDF(){
 		            					{text: 'Pre-Conditions', style: 'tableData', colSpan: '2'},
 		            				],
 		            				[
-		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(obj[5]!=null){%><%=obj[5].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
+		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(obj[5]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[5].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
 		            				],
 		            				
 		            				[
@@ -1949,13 +1948,13 @@ function DownloadDocPDF(){
 		            					{text: 'Post-Conditions', style: 'tableData', colSpan: '2'},
 		            				],
 		            				[
-		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(obj[6]!=null){%><%=obj[6].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
+		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(obj[6]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[6].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
 		            				],
 
 		            				[
 		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
 		            					{text: 'Constraints', style: 'tableData',},
-		            					{text: '<% if(obj[7]!=null){%><%=obj[7] %><% } else {%>-<%}%>', style: 'tableData',},
+		            					{text: '<% if(obj[7]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[7].toString()) %><% } else {%>-<%}%>', style: 'tableData',},
 		            				],
 
 		            				[
@@ -1963,13 +1962,13 @@ function DownloadDocPDF(){
 		            					{text: 'Safety Requirements', style: 'tableData', colSpan: '2'},
 		            				],
 		            				[
-		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(obj[8]!=null){%><%=obj[8].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
+		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(obj[8]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[8].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
 		            				],
 
 		            				[
 		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
 		            					{text: 'Methodology', style: 'tableData',},
-		            					{text: '<% if(obj[9]!=null){%><%=objMap.get(obj[9].toString()) %><% } else {%>-<%}%>', style: 'tableData',},
+		            					{text: '<% if(obj[9]!=null){%><%=objMap.get(StringEscapeUtils.escapeHtml4(obj[9].toString())) %><% } else {%>-<%}%>', style: 'tableData',},
 		            				],
 
 		            				[
@@ -1998,15 +1997,15 @@ function DownloadDocPDF(){
 			            			
 		            				],
 		            				[
-		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(tp!=null && tp.getObjective()!=null){%><%= "<b>Objective</b>"+ tp.getObjective().toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
+		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(tp!=null && tp.getObjective()!=null){%><%= "<b>Objective</b>"+StringEscapeUtils.escapeHtml4( tp.getObjective().toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
 		            					
 		            				],
 		            				[
-		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(tp!=null && tp.getTestProcedure()!=null){%><%= "<b>Test Procedure</b>"+ tp.getTestProcedure().toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
+		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(tp!=null && tp.getTestProcedure()!=null){%><%= "<b>Test Procedure</b>"+ StringEscapeUtils.escapeHtml4(tp.getTestProcedure().toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
 		            					
 		            				],
 		            				[
-		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(tp!=null && tp.getTestSetUp()!=null){%><%= "<b>Test Set Up</b>"+ tp.getTestSetUp().toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
+		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(tp!=null && tp.getTestSetUp()!=null){%><%= "<b>Test Set Up</b>"+StringEscapeUtils.escapeHtml4( tp.getTestSetUp().toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
 		            					
 		            				],
 		            				
@@ -2016,31 +2015,31 @@ function DownloadDocPDF(){
 		            					{text: 'Personnel Resources', style: 'tableData', colSpan: '2'},
 		            				],
 		            				[
-		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(obj[11]!=null){%><%=obj[11].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
+		            					{stack: [htmlToPdfmake(setImagesWidth('<%if(obj[11]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[11].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %><% } else {%>-<%}%>', 500))], colSpan: 3},
 		            				],
 
 		            				[
 		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
 		            					{text: 'Estimated Time/Iteration', style: 'tableData',},
-		            					{text: '<% if(obj[12]!=null){%><%=obj[12] %><% } else {%>-<%}%>', style: 'tableData',},
+		            					{text: '<% if(obj[12]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[12].toString())%><% } else {%>-<%}%>', style: 'tableData',},
 		            				],
 
 		            				[
 		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
 		            					{text: 'Iterations', style: 'tableData',},
-		            					{text: '<% if(obj[13]!=null){%><%=obj[13] %><% } else {%>-<%}%>', style: 'tableData',},
+		            					{text: '<% if(obj[13]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[13].toString()) %><% } else {%>-<%}%>', style: 'tableData',},
 		            				],
 
 		            				[
 		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
 		            					{text: 'Schedule', style: 'tableData',},
-		            					{text: '<% if(obj[14]!=null){%><%=obj[14] %><% } else {%>-<%}%>', style: 'tableData',},
+		            					{text: '<% if(obj[14]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[14].toString()) %><% } else {%>-<%}%>', style: 'tableData',},
 		            				],
 
 		            				[
 		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
 		            					{text: 'Pass/Fail Criteria', style: 'tableData',},
-		            					{text: '<% if(obj[15]!=null){%><%=obj[15] %><% } else {%>-<%}%>', style: 'tableData',},
+		            					{text: '<% if(obj[15]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[15].toString())%><% } else {%>-<%}%>', style: 'tableData',},
 		            				],
 
 		            				[
@@ -2062,7 +2061,7 @@ function DownloadDocPDF(){
 		            				[
 		            					{text: '<%=++slno%>', style: 'tableData', alignment: 'center'},
 		            					{text: 'Remarks', style: 'tableData',},
-		            					{text: '<% if(obj[15]!=null){%><%=obj[15] %><% } else {%>-<%}%>', style: 'tableData',},
+		            					{text: '<% if(obj[15]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[15].toString()) %><% } else {%>-<%}%>', style: 'tableData',},
 		            				],
 
 		            			],
@@ -2116,14 +2115,14 @@ function DownloadDocPDF(){
 								for(Object[] obj:TestDetailsList){ %>
                 			[
                 				{text: '<%=++slno %>', style: 'tableData', alignment: 'center'},
-                				{text: '<%=obj[1]!=null?obj[1]:"-" %>', style: 'tableData', },
+                				{text: '<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-" %>', style: 'tableData', },
                 				
                 				<% List<String> specid = obj[19]!=null?Arrays.asList(obj[19].toString() .split(",")):new ArrayList<>();
         						List<Object[]>newSpecList = new ArrayList<>();
         						newSpecList = specificationList.stream().filter(spec->specid.contains(spec[0].toString())).collect(Collectors.toList()); 
         						%>
         						
-        						{text: '<%if(newSpecList.size()!=0) { for(Object[]obj1:newSpecList){ %><%=obj1[1]+" ("+(obj1[5]!=null?obj1[5]:"-")+" "+(obj1[9]!=null?obj1[9]:"-")+" "+(obj1[6]!=null?obj1[6]:"-")+")"%>\n<%}}else{ %> - <%} %>', style: 'tableData', },
+        						{text: '<%if(newSpecList.size()!=0) { for(Object[]obj1:newSpecList){ %><%=obj1[1]!=null?StringEscapeUtils.escapeHtml4(obj1[1].toString()): " - "+" ("+(obj1[5]!=null?StringEscapeUtils.escapeHtml4(obj1[5].toString()):"-")+" "+(obj1[9]!=null?StringEscapeUtils.escapeHtml4(obj1[9].toString()):"-")+" "+(obj1[6]!=null?StringEscapeUtils.escapeHtml4(obj1[6].toString()):"-")+")"%>\n<%}}else{ %> - <%} %>', style: 'tableData', },
         						
                 			],
                 			<%}}else{ %>
@@ -2177,7 +2176,7 @@ function DownloadDocPDF(){
 								for(Object[] obj:specificationList){ %>
                 			[
                 				{text: '<%=++slno %>', style: 'tableData', alignment: 'center'},
-                				{text: '<%=obj[1]+" ("+(obj[5]!=null?obj[5]:"-")+" "+(obj[9]!=null?obj[9]:"-")+" "+(obj[6]!=null?obj[6]:"-")+")" %>', style: 'tableData', },
+                				{text: '<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "+" ("+(obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-")+" "+(obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()):"-")+" "+(obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"-")+")" %>', style: 'tableData', },
                 				
                 				<%
 								List<Object[]>newTestList = new ArrayList<>(); 
@@ -2185,7 +2184,7 @@ function DownloadDocPDF(){
 									newTestList = TestDetailsList.stream().filter(e->e[19]!=null &&  Arrays.asList(e[19].toString().split(",")).contains(obj[0].toString())).collect(Collectors.toList());
 								}%>
         						
-        						{text: '<%if(newTestList.size()>0){ for(Object[] obj1: newTestList){ %><%=obj1[1] %>\n<%}}else{ %> - <%} %>', style: 'tableData', },
+        						{text: '<%if(newTestList.size()>0){ for(Object[] obj1: newTestList){ %><%=obj1[1]!=null?StringEscapeUtils.escapeHtml4(obj1[1].toString()): " - " %>\n<%}}else{ %> - <%} %>', style: 'tableData', },
                 			],
                 			<%}}else{ %>
                 				[{text: 'No Data Available !', style: 'tableData', colSpan: 3, alignment: 'center'}],

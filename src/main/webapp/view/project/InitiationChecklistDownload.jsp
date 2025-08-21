@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -8,7 +9,7 @@
 <meta charset="ISO-8859-1">
 <%String clno= (String)request.getAttribute("clno");
 Object[] initiationdata= (Object[])request.getAttribute("initiationdata");%>
-<title>Checklist - <%=clno %></title>
+<title>Checklist - <%=clno!=null?StringEscapeUtils.escapeHtml4(clno): " - " %></title>
 <style type="text/css">
 
 td{
@@ -38,7 +39,7 @@ td{
           }
           @top-right {
           	 
-          	 content : "Project : <%=initiationdata[9] %>";
+          	 content : "Project : <%=initiationdata[9]!=null?StringEscapeUtils.escapeHtml4(initiationdata[9].toString()): " - " %>";
              margin-top: 30px;
              margin-right: 10px;
           }
@@ -55,7 +56,7 @@ td{
           
            @top-center { 
           margin-top: 30px;
-          content: "Checklist - 0<%=clno %>" ; 
+          content: "Checklist - 0<%=clno!=null?StringEscapeUtils.escapeHtml4(clno): " - " %>" ; 
           
           }
 
@@ -93,15 +94,15 @@ td{
 					<%if(!clsn1.contains(item[2].toString() ))
 					{
 						clsn1.add(item[2].toString() );%>
-						<%=item[2] %>
+						<%=item[2]!=null?StringEscapeUtils.escapeHtml4(item[2].toString()): " - " %>
 					<%} %>
 				</td>			
 				  					
 				<td colspan="4"  style=" overflow-wrap: break-word; width: 80%">
 					<%if(Integer.parseInt(item[3].toString())>0) { %>	
-						<%=item[4] %>
+						<%=item[4]!=null?StringEscapeUtils.escapeHtml4(item[4].toString()): " - " %>
 					<%}else if(Integer.parseInt(item[3].toString())==0){ %>
-						<b><%=item[4] %></b>
+						<b><%=item[4]!=null?StringEscapeUtils.escapeHtml4(item[4].toString()): " - " %></b>
 					<%} %>
 				</td>
 				<td style="width: 10%" >

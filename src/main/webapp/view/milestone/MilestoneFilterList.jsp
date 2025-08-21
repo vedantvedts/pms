@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" import="java.util.*"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -310,7 +311,7 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 					 <h5><%if(ProjectId!=null){
 						Object[] ProjectDetail123=(Object[])request.getAttribute("ProjectDetailsMil");
 						%>
-						<%=ProjectDetail123[2] %> ( <%=ProjectDetail123[1] %> ) 
+						<%=ProjectDetail123[2]!=null?StringEscapeUtils.escapeHtml4(ProjectDetail123[2].toString()):" - " %> ( <%=ProjectDetail123[1]!=null?StringEscapeUtils.escapeHtml4(ProjectDetail123[1].toString()):" - " %> ) 
 					<%} %>
 					</h5> 
 					</div>
@@ -319,7 +320,7 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 											<select class="form-control items" name="milestoneactivity"  required="required" style="width:300px;" data-live-search="true" data-container="body" onchange="this.form.submit()">
 												<option selected value="A" <%if(MilestoneActivity!=null && "A".equalsIgnoreCase(MilestoneActivity)){%> selected="selected" <%}%>>All</option>
 												<%if(milestoneactivitystatus!=null && milestoneactivitystatus.size()>0){ for(Object[] obj : milestoneactivitystatus){%>
-													<option value=<%=obj[0]%> <%if(MilestoneActivity!=null && obj[0].toString().equalsIgnoreCase(MilestoneActivity)){%> selected="selected" <%}%>><%=obj[1] %> (<%=obj[2] %>)</option>
+													<option value=<%=obj[0]%> <%if(MilestoneActivity!=null && obj[0].toString().equalsIgnoreCase(MilestoneActivity)){%> selected="selected" <%}%>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %> (<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - " %>)</option>
 												<%}}%>
 											</select>
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -365,14 +366,14 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 																	 </button>
 																</span>
 															</td>
-															<td style="text-align: left;width: 7%;"> Mil-<%=obj[5]%></td>
+															<td style="text-align: left;width: 7%;"> Mil-<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):" - "%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=obj[4] %></td>
+															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - " %></td>
 															
-															<td  style="width:8% !important; "><%=sdf.format(obj[2])%></td>
-															<td style="width:8% !important; "><%=sdf.format(obj[3])%></td>
-															<td  style="width:15% !important; "><%=obj[6]%></td>
-															<td  style="width:9% !important; " align="center"><%=obj[13]%></td>	
+															<td  style="width:8% !important; "><%=obj[2]!=null?sdf.format(obj[2]):" - "%></td>
+															<td style="width:8% !important; "><%=obj[3]!=null?sdf.format(obj[3]):" - "%></td>
+															<td  style="width:15% !important; "><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):" - "%></td>
+															<td  style="width:9% !important; " align="center"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()):" - "%></td>	
 															<td>
 															<%if(!obj[12].toString().equalsIgnoreCase("0")){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -387,7 +388,7 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															  bg-warning
 															<%}  %>
 															" role="progressbar" style=" width: <%=obj[12] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															<%=obj[12] %>
+															<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()):" - " %>
 															</div> 
 															</div> <%}else{ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -422,14 +423,14 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															<td style="text-align: left;width: 5%;"> A-<%=countA%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objA[4] %></td>
-															<td class="width-30px"><%=sdf.format(objA[2])%></td>
-															<td style="width:8% !important; "><%=sdf.format(objA[3])%></td>
+															<td class="width-30px"><%=objA[2]!=null?sdf.format(objA[2]):" - "%></td>
+															<td style="width:8% !important; "><%=objA[3]!=null?sdf.format(objA[3]):" - "%></td>
 															<td class="width-30px"><%if(objA[9].toString().equalsIgnoreCase("3")||objA[9].toString().equalsIgnoreCase("5")){ %>
-														     <%if(objA[7]!=null){ %>   <%=sdf.format(objA[7]) %> <%}else{ %><%=objA[8] %> <%} %>
+														     <%if(objA[7]!=null){ %>   <%=sdf.format(objA[7]) %> <%}else{ %><%=objA[8]!=null?StringEscapeUtils.escapeHtml4(objA[8].toString()):" - " %> <%} %>
 														         <%}else{ %>
-														         <%=objA[8] %>
+														         <%=objA[8]!=null?StringEscapeUtils.escapeHtml4(objA[8].toString()):" - " %>
 															 <%} %></td>
-															 <td align="center"><%=objA[6] %></td>
+															 <td align="center"><%=objA[6]!=null?StringEscapeUtils.escapeHtml4(objA[6].toString()):" - " %></td>
 															<td>
 															<%if(!objA[5].toString().equalsIgnoreCase("0")){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -444,7 +445,7 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															  bg-warning
 															<%}  %>
 															" role="progressbar" style=" width: <%=objA[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															<%=objA[5] %>
+															<%=objA[5]!=null?StringEscapeUtils.escapeHtml4(objA[5].toString()):" - " %>
 															</div> 
 															</div> <%}else{ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -468,13 +469,13 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objB[4] %></td>
 															
-															<td class="width-30px"><%=sdf.format(objB[2])%></td>
-															<td style="width:8% !important; "><%=sdf.format(objB[3])%></td>
+															<td class="width-30px"><%=objB[2]!=null?sdf.format(objB[2]):" - "%></td>
+															<td style="width:8% !important; "><%=objB[3]!=null?sdf.format(objB[3]):" - "%></td>
 															
 															<td class="width-30px"><%if(objB[9].toString().equalsIgnoreCase("3")||objB[9].toString().equalsIgnoreCase("5")){ %>
-														      <%if(objB[7]!=null){ %>   <%=sdf.format(objB[7]) %> <%}else{ %><%=objB[8] %> <%} %>
+														      <%if(objB[7]!=null){ %>   <%=sdf.format(objB[7]) %> <%}else{ %><%=objB[8]!=null?StringEscapeUtils.escapeHtml4(objB[8].toString()):" - " %> <%} %>
 														         <%}else{ %>
-														         <%=objB[8] %>
+														         <%=objB[8]!=null?StringEscapeUtils.escapeHtml4(objB[8].toString()):" - " %>
 															 <%} %></td>
 															  <td align="center"><%=objB[6] %></td>
 															<td>
@@ -517,15 +518,15 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objC[4] %></td>
 															
-															<td class="width-30px"><%=sdf.format(objC[2])%></td>
-															<td style="width:8% !important; "><%=sdf.format(objC[3])%></td>
+															<td class="width-30px">objC[2]!=null?<%=sdf.format(objC[2])%>:" - "</td>
+															<td style="width:8% !important; "><%=objC[3]!=null?sdf.format(objC[3]):" - "%></td>
 															
 															<td class="width-30px"><%if(objC[9].toString().equalsIgnoreCase("3")||objC[9].toString().equalsIgnoreCase("5")){ %>
-														     <%if(objC[7]!=null){ %>   <%=sdf.format(objC[7]) %> <%}else{ %><%=objC[8] %> <%} %>
+														     <%if(objC[7]!=null){ %>   <%=sdf.format(objC[7]) %> <%}else{ %><%=objC[8]!=null?StringEscapeUtils.escapeHtml4(objC[8].toString()):" - " %> <%} %>
 														         <%}else{ %>
-														         <%=objC[8] %>
+														         <%=objC[8]!=null?StringEscapeUtils.escapeHtml4(objC[8].toString()):" - " %>
 															 <%} %></td>	
-															  <td align="center"><%=objC[6] %></td>
+															  <td align="center"><%=objC[6]!=null?StringEscapeUtils.escapeHtml4(objC[6].toString()):" - " %></td>
 															<td>
 															<%if(!objC[5].toString().equalsIgnoreCase("0")){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -565,15 +566,15 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objD[4] %></td>
 															
-															<td class="width-30px"><%=sdf.format(objB[2])%></td>
-															<td style="width:8% !important; "><%=sdf.format(objB[3])%></td>
+															<td class="width-30px"><%=objD[4]!=null?sdf.format(objB[2]):" - "%></td>
+															<td style="width:8% !important; "><%=objD[4]!=null?sdf.format(objB[3]):" - "%></td>
 															
 															<td class="width-30px"><%if(objD[9].toString().equalsIgnoreCase("3")||objD[9].toString().equalsIgnoreCase("5")){ %>
-														      <%if(objD[7]!=null){ %>   <%=sdf.format(objD[7]) %> <%}else{ %><%=objD[8] %> <%} %>
+														      <%if(objD[7]!=null){ %>   <%=sdf.format(objD[7]) %> <%}else{ %><%=objD[8]!=null?StringEscapeUtils.escapeHtml4(objD[8].toString()):" - " %> <%} %>
 														         <%}else{ %>
-														         <%=objD[8] %>
+														         <%=objD[8]!=null?StringEscapeUtils.escapeHtml4(objD[8].toString()):" - " %>
 															 <%} %></td>
-															  <td align="center"><%=objD[6] %></td>
+															  <td align="center"><%=objD[6]!=null?StringEscapeUtils.escapeHtml4(objD[6].toString()):" - " %></td>
 															<td>
 															<%if(!objD[5].toString().equalsIgnoreCase("0")){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -612,15 +613,15 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objE[4] %></td>
 															
-															<td class="width-30px"><%=sdf.format(objE[2])%></td>
-															<td style="width:8% !important; "><%=sdf.format(objE[3])%></td>
+															<td class="width-30px"><%=objE[2]!=null?sdf.format(objE[2]):" - "%></td>
+															<td style="width:8% !important; "><%=objE[3]!=null?sdf.format(objE[3]):" - "%></td>
 															
 															<td class="width-30px"><%if(objE[9].toString().equalsIgnoreCase("3")||objE[9].toString().equalsIgnoreCase("5")){ %>
-														     <%if(objE[7]!=null){ %>   <%=sdf.format(objE[7]) %> <%}else{ %><%=objE[8] %> <%} %>
+														     <%if(objE[7]!=null){ %>   <%=sdf.format(objE[7]) %> <%}else{ %><%=objE[8]!=null?StringEscapeUtils.escapeHtml4(objE[8].toString()):" - " %> <%} %>
 														         <%}else{ %>
-														         <%=objE[8] %>
+														         <%=objE[8]!=null?StringEscapeUtils.escapeHtml4(objE[8].toString()):" - " %>
 															 <%} %></td>	
-															  <td align="center"><%=objE[6] %></td>
+															  <td align="center"><%=objE[6]!=null?StringEscapeUtils.escapeHtml4(objE[6].toString()):" - " %></td>
 															<td>
 															<%if(!objE[5].toString().equalsIgnoreCase("0")){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">

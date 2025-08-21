@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -19,28 +20,23 @@ List<Object[]> empList=(List<Object[]>) request.getAttribute("empList");
 List<Object[]> LabList =(List<Object[]>)request.getAttribute("LabList");
 String labcode = (String)request.getAttribute("labcode");
 %>
-
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	
-	
-	<center>
-	
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-            </div>
-            
-    </center>
+<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
     
-    
-                    <%} %>
 
 <div class="container-fluid">		
 <div class="col-md-12">
@@ -59,7 +55,7 @@ String labcode = (String)request.getAttribute("labcode");
 	<select class="form-control selectdee" id="labcode" name="labcode" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
 				<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
 										<% for ( Object[]  obj :LabList) {%>
-								<option value="<%=obj[2] %>"  <%if(labcode.equalsIgnoreCase(obj[2].toString())){ %>  selected <%} %> > <%=obj[2] %></option><%} %>
+								<option value="<%=obj[2] %>"  <%if(labcode.equalsIgnoreCase(obj[2].toString())){ %>  selected <%} %> > <%=obj[2]!=null? StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %></option><%} %>
 					<option value="@EXP" <%if(labcode.equalsIgnoreCase("@EXP")){ %>  selected <%} %>>Expert</option>
 					</select> 
 	
@@ -94,12 +90,12 @@ String labcode = (String)request.getAttribute("labcode");
 	   %>
 	   <tr>
 	   <td style="text-align: center;"><%=++sn %></td>
-	   <td style=""><%=obj[5].toString() %></td>
-	   <td style=""><%=obj[3].toString() %> <%if(labcode.equalsIgnoreCase("@EXP")) {%> ( <%=obj[2].toString() %> )  <%} %></td>
-	   <td style=""><%=obj[4]!=null ?  obj[4].toString():"-" %></td>
+	   <td style=""><%=obj[5]!=null? StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %></td>
+	   <td style=""><%=obj[3]!=null? StringEscapeUtils.escapeHtml4(obj[3].toString()):"-" %> <%if(labcode.equalsIgnoreCase("@EXP")) {%> ( <%=obj[2]!=null? StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %> )  <%} %></td>
+	   <td style=""><%=obj[4]!=null? StringEscapeUtils.escapeHtml4(obj[4].toString()):"-" %></td>
 	   <td>
 	   
-	   <button class="btn bg-transparent" onclick="showRole('<%=obj[5].toString()%>','<%=obj[1]%>','<%=obj[2]%>','<%=obj[4]%>')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+	   <button class="btn bg-transparent" onclick="showRole('<%=obj[5]!=null? StringEscapeUtils.escapeHtml4(obj[5].toString()):"-"%>','<%=obj[1]!=null? StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%>','<%=obj[2]!=null? StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%>','<%=obj[4]!=null? StringEscapeUtils.escapeHtml4(obj[4].toString()):"-"%>')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
 	   
 	   </td>
 	   </tr>

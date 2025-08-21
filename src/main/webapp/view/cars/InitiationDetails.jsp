@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.cars.model.CARSContractEquipment"%>
 <%@page import="com.vts.pfms.cars.model.CARSContractConsultants"%>
 <%@page import="com.vts.pfms.cars.model.CARSContract"%>
@@ -295,22 +296,22 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 String labcode=(String)session.getAttribute("labcode"); 
 %>
 
-<% String ses=(String)request.getParameter("result"); 
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 <div class="container-fluid">
    <div class="row">
@@ -318,7 +319,7 @@ String labcode=(String)session.getAttribute("labcode");
        <div class="card slider">
        <!-- This is for Slider Headers -->
          <div class="card-header slider_header" style="padding:0px; font-size:12px!important; height: 130px;">
-             <h3 class="category">Initiation Details <%if(carsIni!=null && carsIni.getCARSNo()!=null) {%>- <%=carsIni.getCARSNo() %> <%} %>
+             <h3 class="category">Initiation Details <%if(carsIni!=null && carsIni.getCARSNo()!=null) {%>- <%=StringEscapeUtils.escapeHtml4(carsIni.getCARSNo()) %> <%} %>
                <a class="btn btn-info btn-sm  shadow-nohover back" 
                <%if(isApproval!=null && (isApproval.equalsIgnoreCase("Y") || isApproval.equalsIgnoreCase("S") )) {%>
                		href="CARSRSQRApprovals.htm"
@@ -456,7 +457,7 @@ String labcode=(String)session.getAttribute("labcode");
                         		<div class="column b" style="width:50%;border-top-left-radius: 5px;">
                             		<label class="control-label">CARS Title</label><span class="mandatory">*</span>
                               		<input  class="form-control form-control" type="text" name="initiationTitle" id="initiationTitle" maxlength="1000" style="font-size: 15px;"
-                              		 placeholder="Enter CARS Title" value="<%if(carsIni!=null && carsIni.getInitiationTitle()!=null){ %><%=carsIni.getInitiationTitle()%><%} %>" required> 
+                              		 placeholder="Enter CARS Title" value="<%if(carsIni!=null && carsIni.getInitiationTitle()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getInitiationTitle()) %><%} %>" required> 
                         		</div>
                         		<div class="column b" style="width: 17%;">
                             		<label class="control-label">Funds From</label><span class="mandatory">*</span>
@@ -467,7 +468,7 @@ String labcode=(String)session.getAttribute("labcode");
 			                				for(Object[] protype: projectList ){
 			                					String projectshortName=(protype[17]!=null)?" ("+protype[17].toString()+") ":"";
 			                			 %>
-											<option value="<%=protype[0] %>" <%if(carsIni!=null && carsIni.getFundsFrom()!=null){ if(protype[0].toString().equalsIgnoreCase(carsIni.getFundsFrom())){%>selected="selected" <%}} %>><%=protype[4]+projectshortName %></option>
+											<option value="<%=protype[0] %>" <%if(carsIni!=null && carsIni.getFundsFrom()!=null){ if(protype[0].toString().equalsIgnoreCase(carsIni.getFundsFrom())){%>selected="selected" <%}} %>><%=protype[4]!=null?StringEscapeUtils.escapeHtml4(protype[4].toString()): " - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - " %></option>
 										<%} %>
 									</select>
                         		</div>
@@ -479,7 +480,7 @@ String labcode=(String)session.getAttribute("labcode");
                         		<div class="column b" style="width: 13.5%;border-top-right-radius: 5px;">
                             		<label class="control-label">Duration (In months)</label><span class="mandatory">*</span>
                               		<input  class="form-control form-control" type="text" name="duration" id="duration" maxlength="100" style="font-size: 15px;"
-                              		 placeholder="Enter Duration" value="<%if(carsIni!=null && carsIni.getDuration()!=null){ %><%=carsIni.getDuration()%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required> 
+                              		 placeholder="Enter Duration" value="<%if(carsIni!=null && carsIni.getDuration()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getDuration())%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required> 
                         		</div>
                     		 </div>
                     		 
@@ -493,7 +494,7 @@ String labcode=(String)session.getAttribute("labcode");
                               		 	<%if(carsIni!=null && carsIni.getInitiationAim()!=null){ %><%=carsIni.getInitiationAim()%><%} %>
                               		 </textarea> --%>
                               		 <textarea class="form-control form-control" name="initiationAim" id="initiationAim" maxlength="2000" rows="2" cols="65" style="font-size: 15px;" 
-                              		  placeholder="Enter CARS Aim" required><%if(carsIni!=null && carsIni.getInitiationAim()!=null){ %><%=carsIni.getInitiationAim()%><%} %></textarea>
+                              		  placeholder="Enter CARS Aim" required><%if(carsIni!=null && carsIni.getInitiationAim()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getInitiationAim())%><%} %></textarea>
                         		</div>
                     		 </div>
                     		 
@@ -502,7 +503,7 @@ String labcode=(String)session.getAttribute("labcode");
                     		 	<div class="column b" style="width: 94.5%;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
                             		<label class="control-label">Justification</label><span class="mandatory">*</span>
                               		<textarea  class="form-control form-control" name="justification" id="justification" maxlength="3000" rows="3" cols="65" style="font-size: 15px;"
-                              		 placeholder="Enter CARS Justification" required><%if(carsIni!=null && carsIni.getJustification()!=null){ %><%=carsIni.getJustification()%><%} %></textarea>
+                              		 placeholder="Enter CARS Justification" required><%if(carsIni!=null && carsIni.getJustification()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getJustification())%><%} %></textarea>
                         		</div>
                     		 </div>
                     		 
@@ -516,22 +517,22 @@ String labcode=(String)session.getAttribute("labcode");
                         		<div class="column b" style="width: 25%;border-top-left-radius: 5px;border-bottom-left-radius: 5px;">
                             		<label class="control-label">Name of Institute</label><span class="mandatory">*</span>
                               		<input  class="form-control form-control" type="text" name="rspInstitute" id="rspInstitute" maxlength="1000" style="font-size: 15px;"
-                              		 placeholder="Enter Name of Institute" value="<%if(carsIni!=null && carsIni.getRSPInstitute()!=null){ %><%=carsIni.getRSPInstitute()%><%} %>" required> 
+                              		 placeholder="Enter Name of Institute" value="<%if(carsIni!=null && carsIni.getRSPInstitute()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute())%><%} %>" required> 
                         		</div>
                         		<div class="column b" style="width: 25%;border-top-left-radius: 5px;">
                             		<label class="control-label">Address</label><span class="mandatory">*</span>
                               		<input  class="form-control form-control" type="text" name="rspAddress" id="rspAddress" maxlength="1000" style="font-size: 15px;"
-                              		 placeholder="Enter Address" value="<%if(carsIni!=null && carsIni.getRSPAddress()!=null){ %><%=carsIni.getRSPAddress()%><%} %>" required> 
+                              		 placeholder="Enter Address" value="<%if(carsIni!=null && carsIni.getRSPAddress()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getRSPAddress())%><%} %>" required> 
                         		</div>
                         		<div class="column b" style="width: 15%;">
                             		<label class="control-label">City</label><span class="mandatory">*</span>
                               		<input  class="form-control form-control" type="text" name="rspCity" id="rspCity" maxlength="500" style="font-size: 15px;"
-                              		 placeholder="Enter City" value="<%if(carsIni!=null && carsIni.getRSPCity()!=null){ %><%=carsIni.getRSPCity()%><%} %>" required> 
+                              		 placeholder="Enter City" value="<%if(carsIni!=null && carsIni.getRSPCity()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getRSPCity())%><%} %>" required> 
                         		</div>
                         		<div class="column b" style="width: 10%;">
                             		<label class="control-label">Pin Code</label><span class="mandatory">*</span>
                               		<input  class="form-control form-control" type="text" name="rspPinCode" id="rspPinCode" maxlength="6" style="font-size: 15px;"
-                              		 placeholder="Enter Pin Code" value="<%if(carsIni!=null && carsIni.getRSPPinCode()!=null){ %><%=carsIni.getRSPPinCode()%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" onchange="validatePinCodeInput(this);" required> 
+                              		 placeholder="Enter Pin Code" value="<%if(carsIni!=null && carsIni.getRSPPinCode()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getRSPPinCode())%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" onchange="validatePinCodeInput(this);" required> 
                         		</div>
                         		<div class="column b" style="width: 19.4%;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">
                             		<label class="control-label">State</label><span class="mandatory">*</span>
@@ -540,7 +541,7 @@ String labcode=(String)session.getAttribute("labcode");
 			               				 <%
 			                				for(String state: statesList ){
 			                			 %>
-											<option value="<%=state%>" <%if(carsIni!=null && carsIni.getRSPState()!=null){ if(state.equalsIgnoreCase(carsIni.getRSPState())){%>selected="selected" <%}} %>><%=state %></option>
+											<option value="<%=state%>" <%if(carsIni!=null && carsIni.getRSPState()!=null){ if(state.equalsIgnoreCase(carsIni.getRSPState())){%>selected="selected" <%}} %>><%=StringEscapeUtils.escapeHtml4(state) %></option>
 										<%} %>
 									</select>
                         		</div>
@@ -567,32 +568,32 @@ String labcode=(String)session.getAttribute("labcode");
                         		<div class="column b" style="width: 20%;">
                             		<label class="control-label">Name</label><span class="mandatory">*</span>
                               		<input  class="form-control form-control" type="text" name="piName" id="piName" maxlength="500" style="font-size: 15px;"
-                              		 placeholder="Enter Name of PI" value="<%if(carsIni!=null && carsIni.getPIName()!=null){ %><%=carsIni.getPIName()%><%} %>" required> 
+                              		 placeholder="Enter Name of PI" value="<%if(carsIni!=null && carsIni.getPIName()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getPIName())%><%} %>" required> 
                         		</div>
                         		<div class="column b" style="width: 18%;">
                             		<label class="control-label">Designation</label><span class="mandatory">*</span>
                               		<input  class="form-control form-control" type="text" name="piDesig" id="piDesig" maxlength="500" style="font-size: 15px;"
-                              		 placeholder="Enter Designation of PI" value="<%if(carsIni!=null && carsIni.getPIDesig()!=null){ %><%=carsIni.getPIDesig()%><%} %>" required> 
+                              		 placeholder="Enter Designation of PI" value="<%if(carsIni!=null && carsIni.getPIDesig()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getPIDesig())%><%} %>" required> 
                         		</div>
                         		<div class="column b" style="width: 18%;">
                             		<label class="control-label">Department</label><span class="mandatory">*</span>
                               		<input  class="form-control form-control" type="text" name="piDept" id="piDept" maxlength="500" style="font-size: 15px;"
-                              		 placeholder="Enter Department of PI" value="<%if(carsIni!=null && carsIni.getPIDept()!=null){ %><%=carsIni.getPIDept()%><%} %>" required> 
+                              		 placeholder="Enter Department of PI" value="<%if(carsIni!=null && carsIni.getPIDept()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getPIDept())%><%} %>" required> 
                         		</div>
                         		<div class="column b" style="width: 12%;">
                             		<label class="control-label">Mobile Number</label><span class="mandatory">*</span>
                               		<input  class="form-control form-control" type="text" name="piMobileNo" id="piMobileNo" maxlength="10" style="font-size: 15px;"
-                              		 placeholder="Enter Mobile No of PI" value="<%if(carsIni!=null && carsIni.getPIMobileNo()!=null){ %><%=carsIni.getPIMobileNo()%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" onchange="validateMobileNoInput(this);" required> 
+                              		 placeholder="Enter Mobile No of PI" value="<%if(carsIni!=null && carsIni.getPIMobileNo()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getPIMobileNo())%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" onchange="validateMobileNoInput(this);" required> 
                         		</div>
                         		<div class="column b" style="width: 12%;">
                             		<label class="control-label">Email</label><span class="mandatory">*</span>
                               		<input  class="form-control form-control" type="text" name="piEmail" id="piEmail" maxlength="50" style="font-size: 15px;"
-                              		 placeholder="Enter Email of PI" value="<%if(carsIni!=null && carsIni.getPIEmail()!=null){ %><%=carsIni.getPIEmail()%><%} %>" onchange="validateEmailInput(this);" required> 
+                              		 placeholder="Enter Email of PI" value="<%if(carsIni!=null && carsIni.getPIEmail()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getPIEmail())%><%} %>" onchange="validateEmailInput(this);" required> 
                         		</div>
                         		<div class="column b" style="width: 9.5%;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">
                             		<label class="control-label">Fax No</label>
                               		<input  class="form-control form-control" type="text" name="piFaxNo" id="piFaxNo" maxlength="10" style="font-size: 15px;" 
-                              		 placeholder="Enter Fax No of PI" value="<%if(carsIni!=null && carsIni.getPIFaxNo()!=null){ %><%=carsIni.getPIFaxNo()%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"> 
+                              		 placeholder="Enter Fax No of PI" value="<%if(carsIni!=null && carsIni.getPIFaxNo()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getPIFaxNo())%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"> 
                         		</div>
                     		 </div>
                     		 
@@ -736,7 +737,7 @@ String labcode=(String)session.getAttribute("labcode");
 										<div class="panel panel-info" style="margin-top: 10px;">
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++rsqrslno %>. Scope of <%=labcode %></span>
+													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++rsqrslno %>. Scope of <%=StringEscapeUtils.escapeHtml4(labcode) %></span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor8" onclick="showEditor('<%=labcode %> Scope')">
@@ -831,19 +832,19 @@ String labcode=(String)session.getAttribute("labcode");
 							 					   	for(CARSRSQRMajorRequirements mr :majorReqr) {%>
 							 						<tr class="tr_clone_majorreqr">
 														<td style="padding: 10px 5px 0px 5px;width: 10%;">
-															<input type="text" class="form-control item" name="reqId" id="reqId" value="<%if(mr.getReqId()!=null) {%><%=mr.getReqId() %><%} %>" maxlength="50" style="text-align: center;" readonly>
+															<input type="text" class="form-control item" name="reqId" id="reqId" value="<%if(mr.getReqId()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getReqId()) %><%} %>" maxlength="50" style="text-align: center;" readonly>
 														</td>	
 														<td style="padding: 10px 5px 0px 5px;width: 30%;">
-															<input type="text" class="form-control item" name="reqDescription" value="<%if(mr.getReqDescription()!=null) {%><%=mr.getReqDescription() %><%} %>" maxlength="1000" required="required" >
+															<input type="text" class="form-control item" name="reqDescription" value="<%if(mr.getReqDescription()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getReqDescription()) %><%} %>" maxlength="1000" required="required" >
 														</td>	
 														<td style="padding: 10px 5px 0px 5px;width: 20%;">
-															<input type="text" class="form-control item" name="relevantSpecs" value="<%if(mr.getRelevantSpecs()!=null) {%><%=mr.getRelevantSpecs() %><%} %>" maxlength="1000">
+															<input type="text" class="form-control item" name="relevantSpecs" value="<%if(mr.getRelevantSpecs()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getRelevantSpecs()) %><%} %>" maxlength="1000">
 														</td>	
 														<td style="padding: 10px 5px 0px 5px;width: 20%;">
-															<input type="text" class="form-control item" name="validationMethod" value="<%if(mr.getValidationMethod()!=null) {%><%=mr.getValidationMethod() %><%} %>" maxlength="1000">
+															<input type="text" class="form-control item" name="validationMethod" value="<%if(mr.getValidationMethod()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getValidationMethod()) %><%} %>" maxlength="1000">
 														</td>	
 														<td style="padding: 10px 5px 0px 5px;width: 15%;">
-															<input type="text" class="form-control item" name="remarks" value="<%if(mr.getRemarks()!=null) {%><%=mr.getRemarks() %><%} %>" maxlength="1000" >
+															<input type="text" class="form-control item" name="remarks" value="<%if(mr.getRemarks()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getRemarks()) %><%} %>" maxlength="1000" >
 														</td>	
 														<td style="width: 5% ; ">
 															<button type="button" class=" btn btn_rem_majorreqr " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
@@ -912,7 +913,7 @@ String labcode=(String)session.getAttribute("labcode");
 								 					   for(CARSRSQRDeliverables del :deliverables) {%>
 													<tr class="tr_clone_deliverables">
 														<td style="width: 80%;padding: 10px 5px 0px 5px;" >
-															<input type="text" class="form-control item" name="description" value="<%if(del.getDescription()!=null) {%><%=del.getDescription() %><%} %>" maxlength="1000" required="required" >
+															<input type="text" class="form-control item" name="description" value="<%if(del.getDescription()!=null) {%><%=StringEscapeUtils.escapeHtml4(del.getDescription()) %><%} %>" maxlength="1000" required="required" >
 														</td>	
 														<td style="width: 10%;padding: 10px 5px 0px 5px;">
 															<select class="form-control deliverabletype" name="deliverableType" required="required">
@@ -987,16 +988,16 @@ String labcode=(String)session.getAttribute("labcode");
 								 					   for(CARSSoCMilestones mil :milestones) {%>
 													<tr class="tr_clone_milestones">
 														<td style="width: 10%;padding: 10px 5px 0px 5px;" >
-															<input type="text" class="form-control item" name="milestoneno" id="milestoneno" value="<%if(mil.getMilestoneNo()!=null) {%><%=mil.getMilestoneNo() %><%} %>" style="text-align: center;" required="required"  readonly="readonly">
+															<input type="text" class="form-control item" name="milestoneno" id="milestoneno" value="<%if(mil.getMilestoneNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getMilestoneNo()) %><%} %>" style="text-align: center;" required="required"  readonly="readonly">
 														</td>	
 														<td style="width: 25%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="taskDesc" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required" ><%if(mil.getTaskDesc()!=null) {%><%=mil.getTaskDesc() %><%} %></textarea>
+															<textarea class="form-control" name="taskDesc" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required" ><%if(mil.getTaskDesc()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getTaskDesc()) %><%} %></textarea>
 														</td>	
 														<td style="width: 5%;padding: 10px 5px 0px 5px;">
-															<input type="number" class="form-control " name="months" min="0" max="<%if(carsIni!=null){%><%=carsIni.getDuration()%><%} %>" value="<%if(mil.getMonths()!=null) {%><%=mil.getMonths() %><%} %>" required="required">
+															<input type="number" class="form-control " name="months" min="0" max="<%if(carsIni!=null){%><%=carsIni.getDuration()%><%} %>" value="<%if(mil.getMonths()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getMonths()) %><%} %>" required="required">
 														</td>	
 														<td style="width: 25%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} %></textarea>
+															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getDeliverables()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getDeliverables()) %><%} %></textarea>
 														</td>
 														<%-- <td style="width: 5%;padding: 10px 5px 0px 5px;">
 															<input type="number" class="form-control" name="paymentPercentage" min="0" max="100" value="<%if(mil.getPaymentPercentage()!=null) {%><%=mil.getPaymentPercentage() %><%} %>" required="required" oninput="return checkPaymentPercentage(this)">
@@ -1017,7 +1018,7 @@ String labcode=(String)session.getAttribute("labcode");
 															<textarea class="form-control" name="taskDesc" rows="3" cols="" maxlength="2000" style="width: 100%;" required="required"></textarea>
 														</td>	
 														<td style="width: 5%;padding: 10px 5px 0px 5px;">
-															<input type="number" class="form-control" name="months" min="0" max="<%if(carsIni!=null) {%><%=carsIni.getDuration() %><%} %>" required="required">
+															<input type="number" class="form-control" name="months" min="0" max="<%if(carsIni!=null) {%><%=StringEscapeUtils.escapeHtml4(carsIni.getDuration()) %><%} %>" required="required">
 														</td>	
 														<td style="width: 25%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"></textarea>
@@ -1101,35 +1102,35 @@ String labcode=(String)session.getAttribute("labcode");
                									<td style="width: 5%;text-align: center;">1.</td>
                									<td style="width: 40%;">RSQR Title</td>
                									<td style="width: 53%;color: blue;">
-               										Research Service Qualitative Requirement (RSQR) for <%=carsIni.getInitiationTitle() %>
+               										Research Service Qualitative Requirement (RSQR) for <%=carsIni.getInitiationTitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getInitiationTitle()): " - " %>
                									</td>
                								</tr>
                								<tr>
                									<td style="width: 3%;text-align: center;">2.</td>
                									<td style="width: 40%;">Name and address of the Academic Institution</td>
                									<td style="width: 53%;color: blue;">
-               										<%=carsIni.getRSPInstitute() %> <br>
-               										<%=carsIni.getRSPAddress()+", "+carsIni.getRSPCity()+", "+carsIni.getRSPState()+" - "+carsIni.getRSPPinCode() %>.
+               										<%=carsIni.getRSPInstitute()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute()): " - " %> <br>
+               										<%=carsIni.getRSPAddress()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPAddress()): " - "+", "+carsIni.getRSPCity()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()): " - "+", "+carsIni.getRSPState()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPState()): " - "+" - "+carsIni.getRSPPinCode() !=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPPinCode()): " - "%>.
                									</td>
                								</tr>
                								<tr>
 						    					<td style="width: 5%;text-align: center;" >3.</td>
 						    					<td style="width: 40%;" >Name of the Principal Investigator</td>
 						    					<td style="width: 53%;color: blue;" >
-						    						<%=carsIni.getPITitle()+". "+carsIni.getPIName() %>,
-						    						<%=carsIni.getPIDesig() %> <br>
-						    						<%=carsIni.getPIDept() %> <br>
-						    						<%=carsIni.getPIMobileNo() %> <br>
-						    						<%=carsIni.getPIEmail() %> <br>
+						    						<%=carsIni.getPITitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPITitle()): " - "+". "+carsIni.getPIName()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIName()): " - " %>,
+						    						<%=carsIni.getPIDesig()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIDesig()): " - " %> <br>
+						    						<%=carsIni.getPIDept()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIDept()): " - " %> <br>
+						    						<%=carsIni.getPIMobileNo()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIMobileNo()): " - " %> <br>
+						    						<%=carsIni.getPIEmail()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIEmail()): " - " %> <br>
 						    						<%if(carsIni.getPIFaxNo()!=null && !carsIni.getPIFaxNo().isEmpty()){ %>
-														<br> <%=carsIni.getPIFaxNo() %>
+														<br> <%=StringEscapeUtils.escapeHtml4(carsIni.getPIFaxNo()) %>
 													<%} %>
 						    					</td>
 						    				</tr>
 						    				<tr>
 						    					<td style="width: 5%;text-align: center;" >4.</td>
 						    					<td style="width: 40%;">Duration of the Contract (Months)</td>
-						    					<td style="width: 53%;color: blue;"><%=carsIni.getDuration() %> </td>
+						    					<td style="width: 53%;color: blue;"><%=carsIni.getDuration()!=null?StringEscapeUtils.escapeHtml4(carsIni.getDuration()): " - " %> </td>
 						    				</tr>
 						    				<tr>
 						    					<td colspan="3" style="width: 100%;font-size: 14px;">
@@ -1145,10 +1146,10 @@ String labcode=(String)session.getAttribute("labcode");
                							    <div style="width: 49%;text-align: left;margin-left: 10px;line-height: 10px;">
                							    	<div style="font-size: 15px;">Signature of the initiating officer</div>
 												<label style="text-transform: capitalize;margin-top: 15px !important;">
-													<%if(emp!=null && emp[1]!=null){%> <%=emp[1]%><%} %>,
+													<%if(emp!=null && emp[1]!=null){%> <%=StringEscapeUtils.escapeHtml4(emp[1].toString())%><%} %>,
 												</label><!-- <br> -->
 												<label style="text-transform: capitalize;">
-													<%if(emp!=null && emp[2]!=null){%> <%=emp[2]%><%} %>
+													<%if(emp!=null && emp[2]!=null){%> <%=StringEscapeUtils.escapeHtml4(emp[2].toString())%><%} %>
 												</label><br>
 												<label style="font-size: 12px;">
 													Date&nbsp;:&nbsp;<%if(carsIni.getInitiationDate()!=null) {%> <%=fc.SqlToRegularDate(carsIni.getInitiationDate()) %><%} else{%><%=rdf.format(new Date()) %> <%} %>
@@ -1159,9 +1160,9 @@ String labcode=(String)session.getAttribute("labcode");
                								 	<div style="font-size: 15px;"> Signature of the <%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>GD<%} else{%>PD<%} %></div>
 				               					<%for(Object[] apprInfo : rsqrApprovalEmpData){ %>
 				   			   					<%if(apprInfo[8].toString().equalsIgnoreCase("AGD") || apprInfo[8].toString().equalsIgnoreCase("APD")){ %>
-				   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
-				   								<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-				   								<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+				   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+				   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+				   								<label style="font-size: 12px; ">[Approved On:&nbsp; <%= apprInfo[3]!=null? fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString().substring(0, 10)))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString().substring(11,19)) : " - " %>]</label>
 				   			    				<%break;}} %>  
 				            			 	</div>	
 										
@@ -1180,8 +1181,8 @@ String labcode=(String)session.getAttribute("labcode");
 															<%for(Object[] obj : rsqrRemarksHistory){%>
 															<tr>
 																<td style="border:none;width: 80%;overflow-wrap: anywhere;padding: 0px">
-																	<%=obj[3]%>&nbsp; :
-																	<span style="border:none; color: blue;">	<%=obj[1] %></span>
+																	<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%>&nbsp; :
+																	<span style="border:none; color: blue;">	<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span>
 																</td>
 															</tr>
 															<%} %>
@@ -1241,7 +1242,7 @@ String labcode=(String)session.getAttribute("labcode");
 	              					<table align="center"  >
 	               						<tr>
 	               							<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
-	                							Initiator -  <%=emp[1] %>
+	                							Initiator -  <%=emp[1]!=null?StringEscapeUtils.escapeHtml4(emp[1].toString()): " - " %>
 	                						</td>
 	                		
                         					<td rowspan="2">
@@ -1250,9 +1251,9 @@ String labcode=(String)session.getAttribute("labcode");
 	                						
 	                						<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
 	                							<%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>
-	                								GD - <%if(GDs!=null) {%><%=GDs[2] %><%} else{%>GD<%} %>
+	                								GD - <%if(GDs!=null) {%><%=StringEscapeUtils.escapeHtml4(GDs[2].toString()) %><%} else{%>GD<%} %>
 	                							<%} else{%>
-	                								PD - <%if(PDs!=null) {%><%=PDs[2] %><%} else{%>PD<%} %>
+	                								PD - <%if(PDs!=null) {%><%=StringEscapeUtils.escapeHtml4(PDs[2].toString()) %><%} else{%>PD<%} %>
 	                							<%} %>
 	                	    				</td>
 	               						</tr> 	
@@ -1331,7 +1332,7 @@ String labcode=(String)session.getAttribute("labcode");
                         						<div class="column b" style="width: 10.5%;border-top-right-radius: 5px;">
                             						<label class="control-label">Duration (In months)</label><span class="mandatory">*</span>
                               						<input  class="form-control form-control" type="text" name="socDuration" id="socDuration" maxlength="20" style="font-size: 15px;"
-                              		 					placeholder="Enter Duration" value="<%if(carsSoC!=null && carsSoC.getSoCDuration()!=null){ %><%=carsSoC.getSoCDuration()%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required> 
+                              		 					placeholder="Enter Duration" value="<%if(carsSoC!=null && carsSoC.getSoCDuration()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsSoC.getSoCDuration())%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required> 
                         						</div>
                         						<%-- <div class="column b" style="width: 10.5%;border-top-right-radius: 5px;">
                             					 	<label class="control-label">Alignment with</label><span class="mandatory">*</span>
@@ -1346,11 +1347,11 @@ String labcode=(String)session.getAttribute("labcode");
                     		 				<div class="row details">
                     		 					<div class="column b" style="width: 47.25%;">
                             					 	<label class="control-label">Alignment with</label><span class="mandatory">*</span>
-                              		      			<textarea class="form-control" name="alignment" placeholder="Enter Alignement with" cols="" rows="2" maxlength="" maxlength="2000" required><%if(carsSoC!=null && carsSoC.getAlignment()!=null) {%><%=carsSoC.getAlignment() %><%} %></textarea>
+                              		      			<textarea class="form-control" name="alignment" placeholder="Enter Alignement with" cols="" rows="2" maxlength="" maxlength="2000" required><%if(carsSoC!=null && carsSoC.getAlignment()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsSoC.getAlignment()) %><%} %></textarea>
                         						</div>
                     		 					<div class="column b" style="width: 47.25%;">
                             					 	<label class="control-label">Justification for time reasonability</label><span class="mandatory">*</span>
-                              		      			<textarea class="form-control" name="timeReasonability" placeholder="Enter Justification for time reasonability" cols="" rows="2" maxlength="2000" required><%if(carsSoC!=null && carsSoC.getTimeReasonability()!=null) {%><%=carsSoC.getTimeReasonability() %><%} %></textarea>
+                              		      			<textarea class="form-control" name="timeReasonability" placeholder="Enter Justification for time reasonability" cols="" rows="2" maxlength="2000" required><%if(carsSoC!=null && carsSoC.getTimeReasonability()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsSoC.getTimeReasonability()) %><%} %></textarea>
                         						</div>
                     		 				</div>
                     		 				
@@ -1358,11 +1359,11 @@ String labcode=(String)session.getAttribute("labcode");
                     		 				<div class="row details">
                     		 					<div class="column b" style="width: 47.25%;">
                             					 	<label class="control-label">Justification for cost reasonability</label><span class="mandatory">*</span>
-                              		      			<textarea class="form-control" name="costReasonability" placeholder="Enter Justification for cost reasonability" cols="" rows="2" maxlength="2000" required><%if(carsSoC!=null && carsSoC.getCostReasonability()!=null) {%><%=carsSoC.getCostReasonability() %><%} %></textarea>
+                              		      			<textarea class="form-control" name="costReasonability" placeholder="Enter Justification for cost reasonability" cols="" rows="2" maxlength="2000" required><%if(carsSoC!=null && carsSoC.getCostReasonability()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsSoC.getCostReasonability()) %><%} %></textarea>
                         						</div>
                     		 					<div class="column b" style="width: 47.25%;">
                             					 	<label class="control-label">Justification for selection of RSP</label><span class="mandatory">*</span>
-                              		      			<textarea class="form-control" name="rspSelection" placeholder="Enter Justification for selection of RSP" cols="" rows="2" maxlength="2000" required><%if(carsSoC!=null && carsSoC.getRSPSelection()!=null) {%><%=carsSoC.getRSPSelection() %><%} %></textarea>
+                              		      			<textarea class="form-control" name="rspSelection" placeholder="Enter Justification for selection of RSP" cols="" rows="2" maxlength="2000" required><%if(carsSoC!=null && carsSoC.getRSPSelection()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsSoC.getRSPSelection()) %><%} %></textarea>
                         						</div>
                     		 				</div>
                     		 				
@@ -1370,16 +1371,16 @@ String labcode=(String)session.getAttribute("labcode");
                     		 				<div class="row details">
                     		 					<div class="column b" style="width: 47.25%;">
                             					 	<label class="control-label">Success / Acceptance Criterion</label><span class="mandatory">*</span>
-                              		      			<textarea class="form-control" name="socCriterion" placeholder="Enter Success / Acceptance Criterion" cols="" rows="2" maxlength="2000" required><%if(carsSoC!=null && carsSoC.getSoCCriterion()!=null) {%><%=carsSoC.getSoCCriterion() %><%} %></textarea>
+                              		      			<textarea class="form-control" name="socCriterion" placeholder="Enter Success / Acceptance Criterion" cols="" rows="2" maxlength="2000" required><%if(carsSoC!=null && carsSoC.getSoCCriterion()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsSoC.getSoCCriterion() )%><%} %></textarea>
                         						</div>
                     		 					<div class="column b" style="width: 37.25%;">
                             					 	<label class="control-label">RSP's Offer Ref:</label><span class="mandatory">*</span>
-                              		      			<textarea class="form-control" name="rspOfferRef" placeholder="Enter RSP`s Offer Ref" cols="" rows="2" maxlength="1000" required><%if(carsContract!=null && carsContract.getRSPOfferRef()!=null) {%><%=carsContract.getRSPOfferRef() %><%} %></textarea>
+                              		      			<textarea class="form-control" name="rspOfferRef" placeholder="Enter RSP`s Offer Ref" cols="" rows="2" maxlength="1000" required><%if(carsContract!=null && carsContract.getRSPOfferRef()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsContract.getRSPOfferRef()) %><%} %></textarea>
                         						</div>
                     		 					<div class="column b" style="width: 10%;">
                             					 	<label class="control-label">RSP's Offer Date:</label><span class="mandatory">*</span>
                               		      			<input class="form-control form-control" type="text" name="rspOfferDate" id="rspOfferDate"
-                              		 					value="<%if(carsContract!=null && carsContract.getRSPOfferDate()!=null){ %><%=fc.SqlToRegularDate(carsContract.getRSPOfferDate())%><%} %>" required>
+                              		 					value="<%if(carsContract!=null && carsContract.getRSPOfferDate()!=null){ %><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(carsContract.getRSPOfferDate()))%><%} %>" required>
                         						</div>
                     		 					 
                     		 				</div>
@@ -1388,11 +1389,11 @@ String labcode=(String)session.getAttribute("labcode");
                     		 				<div class="row details">
                     		 					<div class="column b" style="width: 47.25%;">
                             					 	<label class="control-label">Key Professional-1 Details:</label><span class="mandatory">*</span>
-                              		      			<textarea class="form-control" name="kp1Details" placeholder="Title, Name, Designation, Department, Institute" cols="" rows="1" maxlength="2000" required><%if(carsContract!=null && carsContract.getKP1Details()!=null) {%><%=carsContract.getKP1Details() %><%} %></textarea>
+                              		      			<textarea class="form-control" name="kp1Details" placeholder="Title, Name, Designation, Department, Institute" cols="" rows="1" maxlength="2000" required><%if(carsContract!=null && carsContract.getKP1Details()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsContract.getKP1Details()) %><%} %></textarea>
                         						</div>
                     		 					<div class="column b" style="width: 47.25%;">
                             					 	<label class="control-label">Key Professional-2 Details:</label><span class="mandatory">*</span>
-                              		      			<textarea class="form-control" name="kp2Details" placeholder="Title, Name, Designation, Department, Institute" cols="" rows="1" maxlength="2000" required><%if(carsContract!=null && carsContract.getKP2Details()!=null) {%><%=carsContract.getKP2Details() %><%} %></textarea>
+                              		      			<textarea class="form-control" name="kp2Details" placeholder="Title, Name, Designation, Department, Institute" cols="" rows="1" maxlength="2000" required><%if(carsContract!=null && carsContract.getKP2Details()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsContract.getKP2Details()) %><%} %></textarea>
                         						</div>
                     		 				</div>
                     		 				
@@ -1416,11 +1417,11 @@ String labcode=(String)session.getAttribute("labcode");
 									 						<tr class="tr_clone_consultants">
 																<td style="padding: 10px 5px 0px 5px;width: 40%;">
 																	<input type="text" class="form-control item" name="consultantName" id="consultantName" placeholder="Enter Consultant Name" 
-																	value="<%if(con.getConsultantName()!=null) {%><%=con.getConsultantName() %><%} %>" maxlength="500" >
+																	value="<%if(con.getConsultantName()!=null) {%><%=StringEscapeUtils.escapeHtml4(con.getConsultantName()) %><%} %>" maxlength="500" >
 																</td>	
 																<td style="padding: 10px 5px 0px 5px;">
 																	<input type="text" class="form-control item" name="consultantCompany" placeholder="Enter Consultant Company"
-																	value="<%if(con.getConsultantCompany()!=null) {%><%=con.getConsultantCompany() %><%} %>" maxlength="500" >
+																	value="<%if(con.getConsultantCompany()!=null) {%><%=StringEscapeUtils.escapeHtml4(con.getConsultantCompany()) %><%} %>" maxlength="500" >
 																</td>	
 															
 																<td style="width: 5% ; ">
@@ -1461,7 +1462,7 @@ String labcode=(String)session.getAttribute("labcode");
 									 						<tr class="tr_clone_equipment">
 																<td style="padding: 10px 5px 0px 5px;width: 40%;">
 																	<input type="text" class="form-control item" name="equipmentDescription" placeholder="Enter Equipment Description" maxlength="1000"
-																	 value="<%if(eq.getDescription()!=null) {%><%=eq.getDescription() %><%} %>">
+																	 value="<%if(eq.getDescription()!=null) {%><%=StringEscapeUtils.escapeHtml4(eq.getDescription()) %><%} %>">
 																</td>	
 															
 																<td style="width: 5% ; ">
@@ -1496,18 +1497,18 @@ String labcode=(String)session.getAttribute("labcode");
                     		 					<div class="column b" style="width: 10%;border-bottom-left-radius: 5px;border-top-left-radius: 5px;">
                             					 	<label class="control-label">(a) Personnel (&#8377;):</label><span class="mandatory">*</span>
                               		      			<input class="form-control form-control" type="number" name="expndPersonnelCost" id="expndPersonnelCost" placeholder="Personnel Cost" min="0" max="1000000000" step=".01"
-                              		      			  <%if(carsContract!=null && carsContract.getExpndPersonnelCost()!=null) {%> value="<%=carsContract.getExpndPersonnelCost()%>"<%} %> required>
+                              		      			  <%if(carsContract!=null && carsContract.getExpndPersonnelCost()!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(carsContract.getExpndPersonnelCost())%>"<%} %> required>
                         						</div>
                     		 					<div class="column b" style="width: 10%;">
                             					 	<label class="control-label">(b) Equipment (&#8377;):</label><span class="mandatory">*</span>
                             					 	<input class="form-control form-control" type="number" name="expndEquipmentCost" id="expndEquipmentCost" placeholder="Equipment Cost" min="0" max="1000000000" step=".01"
-                              		      			  <%if(carsContract!=null && carsContract.getExpndEquipmentCost()!=null) {%> value="<%=carsContract.getExpndEquipmentCost()%>"<%} %> required>
+                              		      			  <%if(carsContract!=null && carsContract.getExpndEquipmentCost()!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(carsContract.getExpndEquipmentCost())%>"<%} %> required>
                         						</div>
                     		 					<div class="column b" id="othersdiv" style="width: 12%;text-align: left;">
                             					 	<label class="control-label">(c) Others (&#8377;): <button type="button" id="othersInfo" value="0" class="btn btn-info btn-sm" style="padding: 0px 5px 0px 5px;background: blueviolet;"><i class="fa fa-info-circle" aria-hidden="true"></i></button></label>
                             					 	&nbsp;<span id="othersInfoContent" style="color: darkblue;"> (Travel, Contingency, Consultancy, Institution Head) </span>
                             					 	<input class="form-control form-control" type="number" name="expndOthersCost" id="expndOthersCost" placeholder="Others Cost" min="0" max="1000000000" step=".01"
-                              		      			  <%if(carsContract!=null && carsContract.getExpndOthersCost()!=null) {%> value="<%=carsContract.getExpndOthersCost()%>"<%} %> >
+                              		      			  <%if(carsContract!=null && carsContract.getExpndOthersCost()!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(carsContract.getExpndOthersCost())%>"<%} %> >
                         						</div>
                     		 					<div class="column b" style="width: 10%;">
                             					 	<label class="control-label">Sub-Total (&#8377;):</label><span class="mandatory">*</span>
@@ -1521,12 +1522,12 @@ String labcode=(String)session.getAttribute("labcode");
                     		 					<div class="column b" style="width: 10%;">
                             					 	<label class="control-label">GST (&#8377;):</label><span class="mandatory">*</span>
                             					 	<input class="form-control form-control" type="number" name="expndGST" id="expndGST" placeholder="Enter GST" min="0" max="1000000000" step=".01"
-                              		      				<%if(carsContract!=null && carsContract.getExpndGST()!=null) {%> value="<%=carsContract.getExpndGST()%>"<%} %> required>
+                              		      				<%if(carsContract!=null && carsContract.getExpndGST()!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(carsContract.getExpndGST())%>"<%} %> required>
                         						</div> 
                         						<div class="column b" style="width: 10%;border-bottom-right-radius: 5px;border-top-right-radius: 5px;">
                             					 	<label class="control-label">Total (&#8377;):</label><span class="mandatory">*</span>
                             					 	<input class="form-control form-control" type="number" name="expndTotalCost" id="expndTotalCost" min="0" max="1000000000" step=".01"
-                            					 		<%if(carsContract!=null && carsContract.getExpndTotalCost()!=null) {%> value="<%=carsContract.getExpndTotalCost()%>"<%} %> readonly required style="background: #fff;">
+                            					 		<%if(carsContract!=null && carsContract.getExpndTotalCost()!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(carsContract.getExpndTotalCost())%>"<%} %> readonly required style="background: #fff;">
                         						</div>
                     		 				</div>
                     					</div>
@@ -1672,7 +1673,7 @@ String labcode=(String)session.getAttribute("labcode");
 										<div class="panel panel-info" style="margin-top: 10px;">
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++finalrsqrslno %>. Scope of <%=labcode %></span>
+													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++finalrsqrslno %>. Scope of <%=labcode!=null?StringEscapeUtils.escapeHtml4(labcode): " - " %></span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor18" onclick="showEditor2('<%=labcode %> Scope')">
@@ -1768,19 +1769,19 @@ String labcode=(String)session.getAttribute("labcode");
 							 					   	for(CARSRSQRMajorRequirements mr :majorReqr) {%>
 							 						<tr class="tr_clone_majorreqr2">
 														<td style="padding: 10px 5px 0px 5px;width: 10%;">
-															<input type="text" class="form-control item" name="reqId" id="reqId2" value="<%if(mr.getReqId()!=null) {%><%=mr.getReqId() %><%} %>" maxlength="50" style="text-align: center;" readonly>
+															<input type="text" class="form-control item" name="reqId" id="reqId2" value="<%if(mr.getReqId()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getReqId()) %><%} %>" maxlength="50" style="text-align: center;" readonly>
 														</td>	
 														<td style="padding: 10px 5px 0px 5px;width: 30%;">
-															<input type="text" class="form-control item" name="reqDescription" value="<%if(mr.getReqDescription()!=null) {%><%=mr.getReqDescription() %><%} %>" maxlength="1000" required="required" >
+															<input type="text" class="form-control item" name="reqDescription" value="<%if(mr.getReqDescription()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getReqDescription()) %><%} %>" maxlength="1000" required="required" >
 														</td>	
 														<td style="padding: 10px 5px 0px 5px;width: 20%;">
-															<input type="text" class="form-control item" name="relevantSpecs" value="<%if(mr.getRelevantSpecs()!=null) {%><%=mr.getRelevantSpecs() %><%} %>" maxlength="1000">
+															<input type="text" class="form-control item" name="relevantSpecs" value="<%if(mr.getRelevantSpecs()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getRelevantSpecs()) %><%} %>" maxlength="1000">
 														</td>	
 														<td style="padding: 10px 5px 0px 5px;width: 20%;">
-															<input type="text" class="form-control item" name="validationMethod" value="<%if(mr.getValidationMethod()!=null) {%><%=mr.getValidationMethod() %><%} %>" maxlength="1000">
+															<input type="text" class="form-control item" name="validationMethod" value="<%if(mr.getValidationMethod()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getValidationMethod()) %><%} %>" maxlength="1000">
 														</td>	
 														<td style="padding: 10px 5px 0px 5px;width: 15%;">
-															<input type="text" class="form-control item" name="remarks" value="<%if(mr.getRemarks()!=null) {%><%=mr.getRemarks() %><%} %>" maxlength="1000" >
+															<input type="text" class="form-control item" name="remarks" value="<%if(mr.getRemarks()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getRemarks()) %><%} %>" maxlength="1000" >
 														</td>	
 														<td style="width: 5% ; ">
 															<button type="button" class=" btn btn_rem_majorreqr2 " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
@@ -1850,7 +1851,7 @@ String labcode=(String)session.getAttribute("labcode");
 								 					   for(CARSRSQRDeliverables del :deliverables) {%>
 													<tr class="tr_clone_deliverables2">
 														<td style="width: 80%;padding: 10px 5px 0px 5px;" >
-															<input type="text" class="form-control item" name="description" value="<%if(del.getDescription()!=null) {%><%=del.getDescription() %><%} %>" maxlength="1000" required="required" >
+															<input type="text" class="form-control item" name="description" value="<%if(del.getDescription()!=null) {%><%=StringEscapeUtils.escapeHtml4(del.getDescription()) %><%} %>" maxlength="1000" required="required" >
 														</td>	
 														<td style="width: 10%;padding: 10px 5px 0px 5px;">
 															<select class="form-control deliverabletype" name="deliverableType" required="required">
@@ -1927,26 +1928,26 @@ String labcode=(String)session.getAttribute("labcode");
 								 					   for(CARSSoCMilestones mil :milestones) {%>
 													<tr class="tr_clone_milestones2">
 														<td style="width: 8%;padding: 10px 5px 0px 5px;" >
-															<input type="text" class="form-control item" name="milestoneno" id="milestoneno2" value="<%if(mil.getMilestoneNo()!=null) {%><%=mil.getMilestoneNo() %><%} %>" style="text-align: center;" required="required"  readonly="readonly">
+															<input type="text" class="form-control item" name="milestoneno" id="milestoneno2" value="<%if(mil.getMilestoneNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getMilestoneNo()) %><%} %>" style="text-align: center;" required="required"  readonly="readonly">
 														</td>	
 														<td style="width: 25%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="taskDesc" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required" ><%if(mil.getTaskDesc()!=null) {%><%=mil.getTaskDesc() %><%} %></textarea>
+															<textarea class="form-control" name="taskDesc" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required" ><%if(mil.getTaskDesc()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getTaskDesc()) %><%} %></textarea>
 														</td>	
 														<td style="width: 7%;padding: 10px 5px 0px 5px;">
-															<input type="number" class="form-control " name="months" min="0" max="<%if(carsSoC!=null) {%><%=carsSoC.getSoCDuration() %><%} %>" value="<%if(mil.getMonths()!=null) {%><%=mil.getMonths() %><%} %>" required="required">
+															<input type="number" class="form-control " name="months" min="0" max="<%if(carsSoC!=null) {%><%=StringEscapeUtils.escapeHtml4(carsSoC.getSoCDuration()) %><%} %>" value="<%if(mil.getMonths()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getMonths()) %><%} %>" required="required">
 														</td>	
 														<td style="width: 25%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} %></textarea>
+															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getDeliverables()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getDeliverables()) %><%} %></textarea>
 														</td>
 														<td style="width: 6%;padding: 10px 5px 0px 5px;">
-															<input type="number" class="form-control" name="paymentPercentage" min="0" max="100" value="<%if(mil.getPaymentPercentage()!=null) {%><%=mil.getPaymentPercentage() %><%} %>" required="required" oninput="return checkPaymentPercentage(this)">
+															<input type="number" class="form-control" name="paymentPercentage" min="0" max="100" value="<%if(mil.getPaymentPercentage()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getPaymentPercentage()) %><%} %>" required="required" oninput="return checkPaymentPercentage(this)">
 														</td>
 														<td style="width: 10%;padding: 10px 5px 0px 5px;">
-															<input type="number" class="form-control" name="actualAmount" min="0" max="<%if(carsSoC!=null) {%> <%=carsSoC.getSoCAmount() %><%} %>" value="<%if(mil.getActualAmount()!=null) {%><%=String.format("%.2f", Double.parseDouble(mil.getActualAmount())) %><%} %>" required="required" 
+															<input type="number" class="form-control" name="actualAmount" min="0" max="<%if(carsSoC!=null) {%> <%=StringEscapeUtils.escapeHtml4(carsSoC.getSoCAmount()) %><%} %>" value="<%if(mil.getActualAmount()!=null) {%><%=String.format("%.2f", Double.parseDouble(mil.getActualAmount())) %><%} %>" required="required" 
 															 min="0" max="1000000000" step=".01" oninput="return checkActualAmount(this)">
 														</td>
 														<td style="width: 10%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" ><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} %></textarea>
+															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" ><%if(mil.getPaymentTerms()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getPaymentTerms()) %><%} %></textarea>
 														</td>
 														<td style="width: 5% ; ">
 															<button style="padding: 3px 7px 3px 7px;" type="button" class=" btn btn_rem_milestones2" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
@@ -1961,7 +1962,7 @@ String labcode=(String)session.getAttribute("labcode");
 															<textarea class="form-control" name="taskDesc" rows="3" cols="" maxlength="2000" style="width: 100%;" required="required"></textarea>
 														</td>	
 														<td style="width: 7%;padding: 10px 5px 0px 5px;">
-															<input type="number" class="form-control" name="months" min="0" max="<%if(carsSoC!=null) {%> <%=carsSoC.getSoCDuration() %><%} %>" required="required">
+															<input type="number" class="form-control" name="months" min="0" max="<%if(carsSoC!=null) {%> <%=StringEscapeUtils.escapeHtml4(carsSoC.getSoCDuration()) %><%} %>" required="required">
 														</td>	
 														<td style="width: 25%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"></textarea>
@@ -2179,7 +2180,7 @@ String labcode=(String)session.getAttribute("labcode");
                							</div>
                							<table id="socforwardtable">
 	               							<tr>
-	               								<td colspan="2" style="text-align: left;border:none;">No. <span><%=carsIni.getCARSNo() %></span> </td>
+	               								<td colspan="2" style="text-align: left;border:none;">No. <span><%=carsIni.getCARSNo()!=null?StringEscapeUtils.escapeHtml4(carsIni.getCARSNo()): " - " %></span> </td>
 	               								<td style="text-align: right;border:none;">Date : 
 	               									<span><%if(carsSoC.getSoCDate()!=null) {%> <%=fc.SqlToRegularDate(carsSoC.getSoCDate()) %><%} else{%><%=rdf.format(new Date()) %> <%} %></span> 
 	               								</td>
@@ -2187,22 +2188,22 @@ String labcode=(String)session.getAttribute("labcode");
                								<tr>
                									<td style="width: 5%;text-align: center;"><%=++socforwardslno %>.</td>
                									<td style="width: 20%;">Title</td>
-               									<td style="width: 73%;color: blue;"><%=carsIni.getInitiationTitle() %></td>
+               									<td style="width: 73%;color: blue;"><%=carsIni.getInitiationTitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getInitiationTitle()): " - " %></td>
                								</tr>
                								<tr>
                									<td style="width: 5%;text-align: center;"><%=++socforwardslno %>.</td>
                									<td style="width: 20%;">Aim</td>
-               									<td style="width: 73%;color: blue;"><%=carsIni.getInitiationAim() %></td>
+               									<td style="width: 73%;color: blue;"><%=carsIni.getInitiationAim()!=null?StringEscapeUtils.escapeHtml4(carsIni.getInitiationAim()): " - " %></td>
                								</tr>
                								<tr>
 						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 						    					<td style="width: 20%;" >Scope</td>
-						    					<td style="width: 73%;color: blue;"><%if(rsqrDetails[6]!=null) {%> <%=rsqrDetails[6] %><%} else{%>-<%} %></td>
+						    					<td style="width: 73%;color: blue;"><%if(rsqrDetails[6]!=null) {%> <%=StringEscapeUtils.escapeHtml4(rsqrDetails[6].toString()) %><%} else{%>-<%} %></td>
 						    				</tr>
 						    				<tr>
 						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 						    					<td style="width: 20%;">Duration (Months)</td>
-						    					<td style="width: 73%;color: blue;"><%=carsSoC.getSoCDuration() %> </td>
+						    					<td style="width: 73%;color: blue;"><%=carsSoC.getSoCDuration()!=null?StringEscapeUtils.escapeHtml4(carsSoC.getSoCDuration()): " - " %> </td>
 						    				</tr>
 						    				<tr>
 						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
@@ -2211,7 +2212,7 @@ String labcode=(String)session.getAttribute("labcode");
 						    						<%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>
 						    							Build-up
 						    						<%} else {%>
-						    							<%if(PDs!=null) {%><%=PDs[4]+" ("+PDs[0]+")" %> <%} %>
+						    							<%if(PDs!=null) {%><%=PDs[4]!=null?StringEscapeUtils.escapeHtml4(PDs[4].toString()): " - "+" ("+PDs[0]!=null?StringEscapeUtils.escapeHtml4(PDs[0].toString()): " - "+")" %> <%} %>
 						    						<%} %>
 						    					</td>
 						    				</tr>
@@ -2220,7 +2221,7 @@ String labcode=(String)session.getAttribute("labcode");
 						    					<td style="width: 20%;">Alignment with </td>
 						    					<td style="width: 73%;color: blue;">
 						    						<%if(carsSoC.getAlignment()!=null) {%>
-						    							<%=carsSoC.getAlignment() %>
+						    							<%=StringEscapeUtils.escapeHtml4(carsSoC.getAlignment()) %>
 						    						<%} else {%>
 						    							-
 						    						<%} %>
@@ -2249,39 +2250,39 @@ String labcode=(String)session.getAttribute("labcode");
 						    				<tr>
 						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 						    					<td style="width: 20%;">Justification for raising CARS</td>
-						    					<td style="width: 73%;color: blue;"><%=carsIni.getJustification() %> </td>
+						    					<td style="width: 73%;color: blue;"><%=carsIni.getJustification()!=null?StringEscapeUtils.escapeHtml4(carsIni.getJustification()): " - " %> </td>
 						    				</tr>
 						    				<tr>
 						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 						    					<td style="width: 20%;">Justification for time reasonability</td>
-						    					<td style="width: 73%;color: blue;"><%=carsSoC.getTimeReasonability() %> </td>
+						    					<td style="width: 73%;color: blue;"><%=carsSoC.getTimeReasonability()!=null?StringEscapeUtils.escapeHtml4(carsSoC.getTimeReasonability()): " - " %> </td>
 						    				</tr>
 						    				<tr>
 						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 						    					<td style="width: 20%;">Justification for cost reasonability</td>
-						    					<td style="width: 73%;color: blue;"><%=carsSoC.getCostReasonability() %> </td>
+						    					<td style="width: 73%;color: blue;"><%=carsSoC.getCostReasonability()!=null?StringEscapeUtils.escapeHtml4(carsSoC.getCostReasonability()): " - " %> </td>
 						    				</tr>
 						    				<tr>
 						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 						    					<td style="width: 20%;">Justification for selection of RSP</td>
-						    					<td style="width: 73%;color: blue;"><%=carsSoC.getRSPSelection() %> </td>
+						    					<td style="width: 73%;color: blue;"><%=carsSoC.getRSPSelection()!=null?StringEscapeUtils.escapeHtml4(carsSoC.getRSPSelection()): " - " %> </td>
 						    				</tr>
 						    				<tr>
 						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 						    					<td style="width: 20%;">Research Service Provider</td>
 						    					<td style="width: 73%;color: blue;">
-						    						<%=carsIni.getPITitle()+". "+carsIni.getPIName() %>,
-						    						<%=carsIni.getPIDesig() %> <br>
-						    						<%=carsIni.getPIDept() %> <br>
-						    						<%=carsIni.getPIMobileNo() %> <br>
-						    						<%=carsIni.getPIEmail() %> <br>
+						    						<%=carsIni.getPITitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPITitle()): " - "+". "+carsIni.getPIName()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIName()): " - " %>,
+						    						<%=carsIni.getPIDesig()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIDesig()): " - " %> <br>
+						    						<%=carsIni.getPIDept()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIDept()): " - " %> <br>
+						    						<%=carsIni.getPIMobileNo()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIMobileNo()) : " - "%> <br>
+						    						<%=carsIni.getPIEmail()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIEmail()): " - " %> <br>
 						    						<%if(carsIni.getPIFaxNo()!=null && !carsIni.getPIFaxNo().isEmpty()){ %>
-														<br> <%=carsIni.getPIFaxNo() %>
+														<br> <%=StringEscapeUtils.escapeHtml4(carsIni.getPIFaxNo()) %>
 													<%} %>
 						    						
 						    						<span style="color: black;">From</span> <br>
-						    						<%=carsIni.getRSPInstitute() %> <br>
-               										<%=carsIni.getRSPAddress()+", "+carsIni.getRSPCity()+", "+carsIni.getRSPState()+" - "+carsIni.getRSPPinCode() %>.
+						    						<%=carsIni.getRSPInstitute()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute()): " - " %> <br>
+               										<%=carsIni.getRSPAddress()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPAddress()): " - "+", "+carsIni.getRSPCity()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()): " - "+", "+carsIni.getRSPState()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPState()): " - "+" - "+carsIni.getRSPPinCode()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPPinCode()): " - " %>.
 						    					</td>
 						    				</tr>
 						    				<tr>
@@ -2297,7 +2298,7 @@ String labcode=(String)session.getAttribute("labcode");
 						    				<tr>
 						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 						    					<td style="width: 20%;">Success / Acceptance Criterion</td>
-						    					<td style="width: 73%;color: blue;"><%=carsSoC.getSoCCriterion() %> </td>
+						    					<td style="width: 73%;color: blue;"><%=carsSoC.getSoCCriterion()!=null?StringEscapeUtils.escapeHtml4(carsSoC.getSoCCriterion()): " - " %> </td>
 						    				</tr>
 						    				<tr>
 						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
@@ -2346,10 +2347,10 @@ String labcode=(String)session.getAttribute("labcode");
                							    <div style="width: 49%;text-align: left;margin-left: 10px;line-height: 10px;">
                							    	<div style="font-size: 15px;">Signature of the initiating officer</div>
 												<label style="text-transform: capitalize;margin-top: 15px !important;">
-													<%if(emp!=null && emp[1]!=null){%> <%=emp[1]%><%} %>,
+													<%if(emp!=null && emp[1]!=null){%> <%=StringEscapeUtils.escapeHtml4(emp[1].toString())%><%} %>,
 												</label><!-- <br> -->
 												<label style="text-transform: capitalize;">
-													<%if(emp!=null && emp[2]!=null){%> <%=emp[2]%><%} %>
+													<%if(emp!=null && emp[2]!=null){%> <%=StringEscapeUtils.escapeHtml4(emp[2].toString())%><%} %>
 												</label><br>
 												<label style="font-size: 12px;">
 													Date&nbsp;:&nbsp;<%if(carsSoC.getSoCDate()!=null) {%> <%=fc.SqlToRegularDate(carsSoC.getSoCDate()) %><%} else{%><%=rdf.format(new Date()) %> <%} %>
@@ -2360,9 +2361,9 @@ String labcode=(String)session.getAttribute("labcode");
                								 	<div style="font-size: 15px;"> Signature of the <%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>GD<%} else{%>PD<%} %></div>
 				               					<%for(Object[] apprInfo : socApprovalEmpData){ %>
 				   			   					<%if(apprInfo[8].toString().equalsIgnoreCase("SFG") || apprInfo[8].toString().equalsIgnoreCase("SFP")){ %>
-				   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
-				   								<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-				   								<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+				   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+				   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+				   								<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%= apprInfo[4]!=null?fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString().substring(0, 10)))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString().substring(11,19)) : " - " %>]</label>
 				   			    				<%break;}} %>  
 				            			 	</div>	
 										
@@ -2381,8 +2382,8 @@ String labcode=(String)session.getAttribute("labcode");
 															<%for(Object[] obj : socRemarksHistory){%>
 															<tr>
 																<td style="border:none;width: 80%;overflow-wrap: anywhere;padding: 0px">
-																	<%=obj[3]%>&nbsp; :
-																	<span style="border:none; color: blue;">	<%=obj[1] %></span>
+																	<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%>&nbsp; :
+																	<span style="border:none; color: blue;">	<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span>
 																</td>
 															</tr>
 															<%} %>
@@ -2459,7 +2460,7 @@ String labcode=(String)session.getAttribute("labcode");
 	              					<table align="center"  >
 	               						<tr>
 	               							<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
-	                							Initiator -  <%=emp[1] %>
+	                							Initiator -  <%=emp[1]!=null?StringEscapeUtils.escapeHtml4(emp[1].toString()): " - " %>
 	                						</td>
 	                		
                         					<td rowspan="2">
@@ -2468,9 +2469,9 @@ String labcode=(String)session.getAttribute("labcode");
 	                						
 	                						<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
 	                							<%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>
-	                								GD - <%if(GDs!=null) {%><%=GDs[2] %><%} else{%>GD<%} %>
+	                								GD - <%if(GDs!=null) {%><%=StringEscapeUtils.escapeHtml4(GDs[2].toString()) %><%} else{%>GD<%} %>
 	                							<%} else{%>
-	                								PD - <%if(PDs!=null) {%><%=PDs[2] %><%} else{%>PD<%} %>
+	                								PD - <%if(PDs!=null) {%><%=StringEscapeUtils.escapeHtml4(PDs[2].toString()) %><%} else{%>PD<%} %>
 	                							<%} %>
 	                	    				</td>
 	               						</tr> 	

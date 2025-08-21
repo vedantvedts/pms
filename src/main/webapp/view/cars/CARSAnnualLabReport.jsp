@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.google.gson.GsonBuilder"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="java.util.stream.Collectors"%>
@@ -94,21 +95,21 @@
     
 %>
 	<% 
-	    String ses = (String) request.getParameter("result");
-	    String ses1 = (String) request.getParameter("resultfail");
-	    if (ses1 != null) { %>
-	    <div align="center">
-	        <div class="alert alert-danger" role="alert">
-	            <%= ses1 %>
-	        </div>
-	    </div>
-	<% } if (ses != null) { %>
-	    <div align="center">
-	        <div class="alert alert-success" role="alert">
-	            <%= ses %>
-	        </div>
-	    </div>
-	<% }  %>
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 	<div class="container-fluid">        
 	    <div class="col-md-12">
@@ -158,30 +159,30 @@
 	                                <tr>
 	                                    <td class="center" ><%= ++slno %></td>
 										<td class="center">
-											<input type="checkbox" class="carsInitiationId" id="carsInitiationId" name="carsInitiationId" value="<%=obj[0] %>"
+											<input type="checkbox" class="carsInitiationId" id="carsInitiationId" name="carsInitiationId" value="<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):"" %>"
 											<% if(carsInitiationIds.size()>0){
 												if(carsInitiationIds.contains(Long.parseLong(obj[0].toString()))) {%>checked <%} %> 
 											<%} else{%>
 												checked
 											<%} %>  > 
 										</td>
-	                                    <td ><%=obj[4]!=null?obj[4]:"-" %></td>
+	                                    <td ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"-" %></td>
 	                                    <td >
-	                                    	<%=(obj[21]!=null?obj[21]:"-")+", "+(obj[23]!=null?obj[23]:"-") %>	<br>
-			    				  			<%=(obj[22]!=null?obj[22]:"-")+", "+(obj[23]!=null?obj[23]:"-")+", "+(obj[24]!=null?obj[24]:"-")+" - "+(obj[25]!=null?obj[25]:"-") %> <br>
-			    							Phone : <%=(obj[30]!=null?obj[30]:"-") %> <br>
-			    				 			Fax :&nbsp;<%=(obj[32]!=null?obj[32]:"-") %> <br>
-			    							Email :&nbsp;<%=(obj[31]!=null?obj[31]:"-") %><br>
+	                                    	<%=(obj[21]!=null?StringEscapeUtils.escapeHtml4(obj[21].toString()):"-")+", "+(obj[23]!=null?StringEscapeUtils.escapeHtml4(obj[23].toString()):"-") %>	<br>
+			    				  			<%=(obj[22]!=null?StringEscapeUtils.escapeHtml4(obj[22].toString()):"-")+", "+(obj[23]!=null?StringEscapeUtils.escapeHtml4(obj[23].toString()):"-")+", "+(obj[24]!=null?StringEscapeUtils.escapeHtml4(obj[24].toString()):"-")+" - "+(obj[25]!=null?StringEscapeUtils.escapeHtml4(obj[25].toString()):"-") %> <br>
+			    							Phone : <%=(obj[30]!=null?StringEscapeUtils.escapeHtml4(obj[30].toString()):"-") %> <br>
+			    				 			Fax :&nbsp;<%=(obj[32]!=null?StringEscapeUtils.escapeHtml4(obj[32].toString()):"-") %> <br>
+			    							Email :&nbsp;<%=(obj[31]!=null?StringEscapeUtils.escapeHtml4(obj[31].toString()):"-") %><br>
 			    						</td>
 	                                    <td > 
-	                                    	<%=(obj[26]!=null?obj[26]:"-")+". "+(obj[27]!=null?obj[27]:"-")+", "+(obj[28]!=null?obj[28]:"-") %>
+	                                    	<%=(obj[26]!=null?StringEscapeUtils.escapeHtml4(obj[26].toString()):"-")+". "+(obj[27]!=null?StringEscapeUtils.escapeHtml4(obj[27].toString()):"-")+", "+(obj[28]!=null?StringEscapeUtils.escapeHtml4(obj[28].toString()):"-") %>
 	                                    </td>
 	                                   	<td>
 	                                   		<form action="#">
 	                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	                                        	<input type="hidden" name="carsInitiationId" value="<%=obj[0] %>">
-	                                       	  	<button type="submit" class="btn btn-sm btn-link w-100 btn-status" formaction=CARSTransStatus.htm value="<%=obj[0] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[11] %>; font-weight: 600;" formtarget="_blank">
-								    				<%=obj[10] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+	                                       	  	<button type="submit" class="btn btn-sm btn-link w-100 btn-status" formaction=CARSTransStatus.htm value="<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[11] %>; font-weight: 600;" formtarget="_blank">
+								    				<%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 								    			</button>
                                       		</form>
 	                                   	</td>

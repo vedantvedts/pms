@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -91,7 +92,7 @@ String projectType=(String)request.getAttribute("projectType");
 											    	 if(obj[0].toString().equalsIgnoreCase(RfaAction[2].toString())){
 															Project=obj[0].toString();
 											     %>
-												 <input class="form-control" name="projectCode" value="<%=obj[4].toString()%>" readonly="readonly">
+												 <input class="form-control" name="projectCode" value="<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):""%>" readonly="readonly">
 												<%}} %>
 				  							<%}else{ %>
 												<% if(preProjectList!=null && preProjectList.size()>0){
@@ -99,7 +100,7 @@ String projectType=(String)request.getAttribute("projectType");
 															if(obj[0].toString().equalsIgnoreCase(RfaAction[2].toString())){
 																Project=obj[0].toString();
 														%>
-												<input class="form-control" name="projectCode" value="<%=obj[2].toString()%>" readonly="readonly">
+												<input class="form-control" name="projectCode" value="<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):""%>" readonly="readonly">
 												<%} } }%>
 				  						<%} %>
 		                        </div>
@@ -109,7 +110,7 @@ String projectType=(String)request.getAttribute("projectType");
 		                       <div class="form-group">
 		                            <label class="control-label"> RFA No.</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-		                            <input  class="form-control"  name="rfano" id="rfano" readonly="readonly"  value="<%=RfaAction[3]%>">	
+		                            <input  class="form-control"  name="rfano" id="rfano" readonly="readonly"  value="<%=RfaAction[3]!=null?StringEscapeUtils.escapeHtml4(RfaAction[3].toString()):" - "%>">	
 		                      </div>
 		                   </div> 
 		                    
@@ -120,7 +121,7 @@ String projectType=(String)request.getAttribute("projectType");
 		                            	<select class="custom-select"  required="required"name="priority" id="priority">
 										    <option disabled="true"  selected value="">Choose...</option>
 											<% for (Object[] obj : PriorityList) {%>
-											<option value="<%=obj[0]%>"<%if(obj[0].toString().equalsIgnoreCase(RfaAction[5].toString())){ %> selected <%} %>><%= "(" + obj[0] + ")" + obj[1]%></option>
+											<option value="<%=obj[0]%>"<%if(obj[0].toString().equalsIgnoreCase(RfaAction[5].toString())){ %> selected <%} %>><%= "(" + obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):" - " + ")" + obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%></option>
 											<%} %>
 		  								</select>
 		                        </div>
@@ -129,7 +130,7 @@ String projectType=(String)request.getAttribute("projectType");
 		                       <div class="form-group">
 		                            <label class="control-label">RFA Date</label>
 						  			<input  class="form-control form-control date"  data-date-format="dd-mm-yyyy" id="datepicker1" name="rfadate"  
-						  			value="<%=new FormatConverter().SqlToRegularDate(  RfaAction[4].toString() )%>">						
+						  			value="<%= RfaAction[4]!=null?new FormatConverter().SqlToRegularDate(  StringEscapeUtils.escapeHtml4(RfaAction[4].toString()) ):""%>">						
 		                        </div>
 		                    </div> 
 		                   </div>
@@ -143,7 +144,7 @@ String projectType=(String)request.getAttribute("projectType");
 		                            <option  value="" selected>SELECT</option>
 		                            <% if(vendorList!=null && vendorList.size()>0){
 		                            for(Object[] obj : vendorList) { %>
-		                            <option value="<%=obj[0]+"/"+obj[3]%>"   <%if((assigneeLab).equalsIgnoreCase(obj[0].toString())) {%> selected <%}else {%> disabled <%} %>><%=obj[1]%>( <%=obj[0] %> )</option>
+		                            <option value="<%=obj[0]+"/"+obj[3]%>"   <%if((assigneeLab).equalsIgnoreCase(obj[0].toString())) {%> selected <%}else {%> disabled <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>( <%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):" - " %> )</option>
 		                            <%}} %>
 		                           </select>
 		                           <!--  <input  class="form-control"  name="rfano" id="rfano"  required="required"  placeholder="Enter RFA Number" > -->	
@@ -155,7 +156,7 @@ String projectType=(String)request.getAttribute("projectType");
 		                            <label class="control-label">Assigned To</label>
 		                     <select class="form-control selectdee" required="required" name="assignee" id="assignee" multiple="multiple" data-placeholder= "Select Employees">                   
 		                         <% for(Object[] obj : EmployeeList) { %>
-		                         <option value="<%=obj[0]%>"><%=obj[1]%> , <%=obj[2]%></option>
+		                         <option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%> , <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></option>
 		                         <%} %>
 		                      </select>
 		                  </div>
@@ -166,7 +167,7 @@ String projectType=(String)request.getAttribute("projectType");
 		                         <label class="control-label">CC To</label>
 		                         <select class="form-control selectdee" name="CCEmpName" id="CCEmpName" multiple="multiple" data-placeholder= "Select Employees">                   
 		                         <% for(Object[] obj : EmployeeList) { %>
-		                         <option value="<%=obj[0].toString()%>/<%=obj[3].toString()%>"><%=obj[1]%> , <%=obj[2]%></option>
+		                         <option value="<%=obj[0].toString()%>/<%=obj[3].toString()%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%> , <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></option>
 		                         <%} %>
 		                      </select>
 		                  </div>
@@ -180,7 +181,7 @@ String projectType=(String)request.getAttribute("projectType");
 		            <div class="form-group"> 
 		               <label class="control-label"> Box No.   <span class="mandatory" style="color: #cd0a0a;">*</span></label>
 		           
-		           <input type="text" class="form-control" name="boxno" maxlength="250" value="<%=RfaAction[16].toString().trim()  %>" required="required">
+		           <input type="text" class="form-control" name="boxno" maxlength="250" value="<%=RfaAction[16]!=null?StringEscapeUtils.escapeHtml4(RfaAction[1].toString().trim()):""  %>" required="required">
 		            </div>
 		            </div>
 		            
@@ -201,7 +202,7 @@ String projectType=(String)request.getAttribute("projectType");
 		            <div class="form-group"> 
 		               <label class="control-label"> FPGA Version.   <span class="mandatory" style="color: #cd0a0a;">*</span></label>
 		           
-		           <input type="text" class="form-control" name="FPGA" maxlength="250" value="<%=RfaAction[18].toString().trim() %>" required="required">
+		           <input type="text" class="form-control" name="FPGA" maxlength="250" value="<%=RfaAction[18]!=null?StringEscapeUtils.escapeHtml4(RfaAction[18].toString().trim()):"" %>" required="required">
 		            </div>
 		            </div>
 		             <%} %>
@@ -211,7 +212,7 @@ String projectType=(String)request.getAttribute("projectType");
 		            <div class="form-group"> 
 		               <label class="control-label"> Rig S/W Version.   <span class="mandatory" style="color: #cd0a0a;">*</span></label>
 		           
-		           <input type="text" class="form-control" name="RigVersion" maxlength="250"   required="required" <%if(RfaAction[19].toString().trim().length()>0) {%>    value="<%=RfaAction[19].toString().trim() %>"  <%}else{ %>   value="-" <%} %>>
+		           <input type="text" class="form-control" name="RigVersion" maxlength="250"   required="required" <%if(RfaAction[19].toString().trim().length()>0) {%>    value="<%=RfaAction[19]!=null?StringEscapeUtils.escapeHtml4(RfaAction[19].toString().trim()):" - " %>"  <%}else{ %>   value="-" <%} %>>
 		            </div>
 		            </div>
 		            <%} %>
@@ -223,7 +224,7 @@ String projectType=(String)request.getAttribute("projectType");
 		                      <label class="control-label"> Problem Statement</label>
 		                  </div>
 		                  <div class="col-md-10">
-		                      <textarea class="form-control" rows="2" cols="30" name="statement" id="statement"><%=RfaAction[6].toString() %></textarea>
+		                      <textarea class="form-control" rows="2" cols="30" name="statement" id="statement"><%=RfaAction[6]!=null?StringEscapeUtils.escapeHtml4(RfaAction[6].toString()):" - " %></textarea>
 		                  </div>
 		            </div>
 		            
@@ -258,7 +259,7 @@ String projectType=(String)request.getAttribute("projectType");
 		                      <label class="control-label">References</label>
 		                  </div>
 		                  <div class="col-md-10">
-		                       <textarea class="form-control" rows="2" cols="30" name="reference" id="reference"><%=RfaAction[8].toString() %></textarea>
+		                       <textarea class="form-control" rows="2" cols="30" name="reference" id="reference"><%=RfaAction[8]!=null?StringEscapeUtils.escapeHtml4(RfaAction[8].toString()):" - " %></textarea>
 		                  </div> 
 		            </div>
 		            
@@ -270,7 +271,7 @@ String projectType=(String)request.getAttribute("projectType");
 		                      <span class="mandatory" style="color: #cd0a0a;">*</span>
 		                  </div>
 		                  <div class="col-md-10">
-		                     <input type="text" class="form-control" name="rfaRaisedBy" maxlength="500" value="<%=RfaAction[20] %>"   placeholder="maximum 500 Characters">
+		                     <input type="text" class="form-control" name="rfaRaisedBy" maxlength="500" value="<%=RfaAction[20]!=null?StringEscapeUtils.escapeHtml4(RfaAction[20].toString()):"" %>"   placeholder="maximum 500 Characters">
 		                  </div>
 		            </div>
 		           <%} %>
@@ -287,7 +288,7 @@ String projectType=(String)request.getAttribute("projectType");
 		                      <span><%=rfaAttachDownload[3]%></span>
 		                  </div>
 		                    <input type="hidden" name="type" value="ARD">
-		                    <input type="hidden" name="rfaId" value="<%=rfaAttachDownload[1]%>">
+		                    <input type="hidden" name="rfaId" value="<%=rfaAttachDownload[1]!=null?StringEscapeUtils.escapeHtml4(rfaAttachDownload[1].toString()):""%>">
 		                 <%} %>
 		                  <div id="filealert"></div>
 		            </div>

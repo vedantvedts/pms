@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="jakarta.persistence.criteria.CriteriaBuilder.In"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
@@ -84,21 +85,21 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 									<div class="col-md-2">
 										<div class="form-group">
 											<label class="control-label">From </label>
-											 <input  class="form-control"  data-date-format="dd/mm/yyyy" value="<%=sdf.format(notice[3])%>"  readonly="readonly" id="fdate" name="fdate"  required="required" >
+											 <input  class="form-control"  data-date-format="dd/mm/yyyy" value="<%=notice[3]!=null?sdf.format(notice[3]):""%>"  readonly="readonly" id="fdate" name="fdate"  required="required" >
 										</div>
 									</div>
 
 									<div class="col-md-2">
 										<div class="form-group">
 											<label class="control-label">To </label> 
-											<input  class="form-control"  data-date-format="dd/mm/yyyy" readonly="readonly" value="<%=sdf.format(notice[4])%>" id="tdate" name="tdate"  required="required">
+											<input  class="form-control"  data-date-format="dd/mm/yyyy" readonly="readonly" value="<%=notice[4]!=null?sdf.format(notice[4]):""%>" id="tdate" name="tdate"  required="required">
 										</div>
 									</div>
 										 
                                      <div class="col-md-8">
 										<div class="form-group">
 											<label class="control-label">Notice</label> 
-										    <textarea class="form-control" name="noticeFiled" style="height: 9rem;" maxlength="255" required="required" placeholder="Enter Notice here with max 255 characters" ><%=notice[2]%></textarea>
+										    <textarea class="form-control" name="noticeFiled" style="height: 9rem;" maxlength="255" required="required" placeholder="Enter Notice here with max 255 characters" ><%=notice[2]!=null?StringEscapeUtils.escapeHtml4(notice[2].toString()): ""%></textarea>
 										</div>
 									</div>     
 									      <input type="hidden"  id="noticeId" name="noticeId" value="<%=notice[0]%>"/>  

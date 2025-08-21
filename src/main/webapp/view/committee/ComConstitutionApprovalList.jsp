@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -156,28 +157,22 @@ List<Object[]> committeelist=(List<Object[]>)request.getAttribute("approvallist"
 
  <!-- ----------------------------------message ------------------------- -->
 
-	<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-
-
-	<center>
-
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</center>
-	<%}if(ses!=null){ %>
-	<center>
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</center>
-
-
-	<%} %>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 <!-- ----------------------------------message ------------------------- -->
 
@@ -226,8 +221,8 @@ List<Object[]> committeelist=(List<Object[]>)request.getAttribute("approvallist"
 												   	for (Object[] obj :committeelist) {   %>
 														<tr>
 															<td><%=count %></td>
-															<td><%=obj[2] %></td>
-															<td><%=obj[4] %></td>
+															<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+															<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
 															<td class="left width">		
 																
 																<form action="ComConstitutionApprovalDetails.htm" method="POST" name="myfrm" style="display: inline">

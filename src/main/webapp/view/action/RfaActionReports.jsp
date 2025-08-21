@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -104,12 +105,12 @@ String projectCode=projectType.equalsIgnoreCase("P") ?
 								                    <% for(Object[] obj : ProjectList) {
 								                        String projectshortName = (obj[17] != null) ? " ( " + obj[17].toString() + " ) " : "";
 								                    %>
-								                        <option value="<%=obj[0]%>" <%if(projectid.equalsIgnoreCase(obj[0].toString())){ %> selected <% } %>><%=obj[4] + projectshortName %></option>
+								                        <option value="<%=obj[0]%>" <%if(projectid.equalsIgnoreCase(obj[0].toString())){ %> selected <% } %>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - " + projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>
 								                    <% } %>
 								            <% } else { %>
 								                    <% if(preProjectList != null && preProjectList.size() > 0) {
 								                        for(Object[] obj : preProjectList) { %>
-								                            <option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(projectid)) { %> selected <% } %>><%=obj[3] + " ( " + obj[2] + " )" %></option>
+								                            <option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(projectid)) { %> selected <% } %>><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - " + " ( " + obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - " + " )" %></option>
 								                    <% } } %>
 								            <% } %>
 								         </select>
@@ -121,7 +122,7 @@ String projectCode=projectType.equalsIgnoreCase("P") ?
 			                                          <option value="-" <%if(rfatypeid.equalsIgnoreCase("")) {%> selected <%} %>>ALL</option>
 						   			        	<%if(RfaNoTypeList!=null && RfaNoTypeList.size()>0){
 						   			        	  for (Object[] obj : RfaNoTypeList) {%>
-										     <option value="<%=obj[1].toString()%>" <%if(rfatypeid!=null && rfatypeid.equalsIgnoreCase(obj[1].toString())){%>selected<%} %>><%=obj[1].toString()%></option>
+										     <option value="<%=obj[1].toString()%>" <%if(rfatypeid!=null && rfatypeid.equalsIgnoreCase(obj[1].toString())){%>selected<%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%></option>
 										        <%}} %>   
 						  	             </select>
 							        </div>
@@ -187,18 +188,18 @@ String projectCode=projectType.equalsIgnoreCase("P") ?
 													<tr>
 													<td style="text-align: center;"><%=++count %></td>
 													
-													<td <%if(obj[13]!=null && obj[13].toString().equalsIgnoreCase("RFC")){ %>style="color: red"<%} %>><%if(obj[1]!=null){%><%=obj[1].toString() %><%}else{ %>-<%} %></td>
+													<td <%if(obj[13]!=null && obj[13].toString().equalsIgnoreCase("RFC")){ %>style="color: red"<%} %>><%if(obj[1]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[1].toString()) %><%}else{ %>-<%} %></td>
 													
 													<td><%if(obj[2]!=null){%><%=sdf.format(obj[2])%><%}else{ %>-<%} %></td>
-													<td><%if(obj[14]!=null){%><%=obj[14].toString()%><%}else{ %><%=obj[15].toString()%><%} %></td>
+													<td><%if(obj[14]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[14].toString())%><%}else{ %><%=StringEscapeUtils.escapeHtml4(obj[15].toString())%><%} %></td>
 													<td>
 													   <%if(obj[5]!=null){%>
 														<%if(obj[5].toString().length()>70){ %>
-														 <%=obj[5].toString().substring(0, 70) %>
+														 <%=StringEscapeUtils.escapeHtml4(obj[5].toString()).substring(0, 70) %>
 														    <input type="hidden" value='"<%=obj[5].toString()%>"' id="tdpro<%=obj[0].toString()%>">
 														    <span style="text-decoration: underline;font-size:13px;color: #145374;cursor: pointer;font-weight: bolder" onclick="showProblem('<%=obj[0].toString()%>','<%=obj[1].toString()%>')">show more..</span>
 														<%}else{ %>
-														<%=obj[5].toString() %>
+														<%=StringEscapeUtils.escapeHtml4(obj[5].toString()) %>
 														<%} %>
 													   <%}else{ %>-<%} %>
 													</td>	
@@ -207,7 +208,7 @@ String projectCode=projectType.equalsIgnoreCase("P") ?
 															for(Object[] obj1 : AssigneeList){
 																if(obj1[0].toString().equalsIgnoreCase(obj[0].toString())){
 																%>
-														      <p style="margin-bottom:0px !important;"> <%=obj1[1].toString()+", "+obj1[2].toString() %> (<%=obj1[4].toString() %>) </p>          
+														      <p style="margin-bottom:0px !important;"> <%=obj1[1]!=null?StringEscapeUtils.escapeHtml4(obj1[1].toString()):" - "+", "+obj1[2]!=null?StringEscapeUtils.escapeHtml4(obj1[2].toString()):" - " %> (<%=obj1[4]!=null?StringEscapeUtils.escapeHtml4(obj1[4].toString()):" - " %>) </p>          
 														<% }}}%>
 													</td>
 													<td><%if(obj[9]!=null){%><%=sdf.format(obj[9])%><%}else{ %>-<%} %></td>

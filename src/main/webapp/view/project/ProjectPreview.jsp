@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
@@ -249,11 +250,11 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
      	 
      	 <%if(ProjectDetailes[16]!=null){%><%if(ProjectDetailes[16].toString().equalsIgnoreCase("N")) {%>
      	 
-     	 	            <h4>Project Title : <%if(ProjectDetailes[7]!=null){%><%=ProjectDetailes[6] %><%}else{ %>-<%} %><span style="float: right"><%if(ProjectDetailes[16]!=null){%><%if(ProjectDetailes[16].toString().equalsIgnoreCase("N")) {%>Main Project : <%=ProjectDetailes[17]%><%}}else{ %>-<%} %></span> </h4>
+     	 	            <h4>Project Title : <%if(ProjectDetailes[7]!=null){%><%=StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()) %><%}else{ %>-<%} %><span style="float: right"><%if(ProjectDetailes[16]!=null){%><%if(StringEscapeUtils.escapeHtml4(ProjectDetailes[16].toString()).equalsIgnoreCase("N")) {%>Main Project : <%=ProjectDetailes[17]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[17].toString()): " - "%><%}}else{ %>-<%} %></span> </h4>
      	 	
      	 <%} else{%>
      	 
-     	 		<h4>Project Title : <%if(ProjectDetailes[7]!=null){%><%=ProjectDetailes[7] %> (<%=ProjectDetailes[6] %>)<%}else{ %>-<%} %><span style="float: right"><%if(ProjectDetailes[16]!=null){%><%if(ProjectDetailes[16].toString().equalsIgnoreCase("N")) {%>Main Project : <%=ProjectDetailes[17]%><%}}else{ %>-<%} %></span> </h4>
+     	 		<h4>Project Title : <%if(ProjectDetailes[7]!=null){%><%=StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()) %> (<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)<%}else{ %>-<%} %><span style="float: right"><%if(ProjectDetailes[16]!=null){%><%if(StringEscapeUtils.escapeHtml4(ProjectDetailes[16].toString()).equalsIgnoreCase("N")) {%>Main Project : <%=ProjectDetailes[17]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[17].toString()): " - "%><%}}else{ %>-<%} %></span> </h4>
      	 				
      	 <%} }%>
      	 
@@ -323,11 +324,11 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 							  </div>
 							   <div class="column b" style="width:23%;border-bottom: 2px solid #394989;">
 							    <h6>Category</h6>
-							    <p><%if(ProjectDetailes[4]!=null){%><%=ProjectDetailes[4] %><%}else{ %>-<%} %></p>
+							    <p><%if(ProjectDetailes[4]!=null){%><%=StringEscapeUtils.escapeHtml4(ProjectDetailes[4].toString())%><%}else{ %>-<%} %></p>
 							  </div>
 							  <div class="column a" style="width:23%;border-bottom: 2px solid #394989;">
 							    <h6>Security Classification</h6>
-							    <p><%if(ProjectDetailes[5]!=null){%><%=ProjectDetailes[5] %><%}else{ %>-<%} %></p>
+							    <p><%if(ProjectDetailes[5]!=null){%><%=StringEscapeUtils.escapeHtml4(ProjectDetailes[5].toString()) %><%}else{ %>-<%} %></p>
 							  </div>
 							  <div class="column b" style="width:23%;border-bottom: 2px solid #394989;border-top-right-radius: 5px">
 							    <h6>Planned</h6>
@@ -338,35 +339,35 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 							<div class="row details">
 								<div class="column b" style="width:23%;border-bottom: 2px solid #394989;">
 								    <h6>Short Name</h6>
-								    <p><%if(ProjectDetailes[6]!=null){%><%=ProjectDetailes[6] %><%}else{ %>-<%} %></p>
+								    <p><%if(ProjectDetailes[6]!=null){%><%=StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()) %><%}else{ %>-<%} %></p>
 							  	</div>
 								
 								<div class="column a" style="width:69%;border-bottom: 2px solid #394989;">
 								    <h6>Title</h6>
-								    <p><%if(ProjectDetailes[7]!=null){%><%=ProjectDetailes[7] %><%}else{ %>-<%} %></p>
+								    <p><%if(ProjectDetailes[7]!=null){%><%=StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()) %><%}else{ %>-<%} %></p>
 							  	</div>		
 							</div>
 							
 							<div class="row details">
 							  <div class="column a" style="width:23%;border-bottom: 4px solid #394989;border-bottom-left-radius: 5px">
 							    <h6>Deliverable</h6>
-							    <p><%if(ProjectDetailes[12]!=null){%>	<%=ProjectDetailes[12] %><%}else{ %>-<%} %></p>
+							    <p><%if(ProjectDetailes[12]!=null){%>	<%=StringEscapeUtils.escapeHtml4(ProjectDetailes[12].toString()) %><%}else{ %>-<%} %></p>
 							  </div>
 							   <div class="column b" style="width:23%;border-bottom: 4px solid #394989;">
 							    <div class="row">
 							   		<div class="col">
 							   			<h6>Fe Cost</h6>
-							    	<p><%if(ProjectDetailes[14]!=null){%> &#8377; <%=ProjectDetailes[14] %><%}else{ %>-<%} %></p>
+							    	<p><%if(ProjectDetailes[14]!=null){%> &#8377; <%=StringEscapeUtils.escapeHtml4(ProjectDetailes[14].toString()) %><%}else{ %>-<%} %></p>
 							   	</div>
 							   	<div class="col">
 							   			<h6>Re Cost</h6>
-							    	<p><%if(ProjectDetailes[15]!=null){%> &#8377; <%=ProjectDetailes[15] %><%}else{ %>-<%} %></p>
+							    	<p><%if(ProjectDetailes[15]!=null){%> &#8377; <%=StringEscapeUtils.escapeHtml4(ProjectDetailes[15].toString()) %><%}else{ %>-<%} %></p>
 							   	</div>
 							   </div>
 							  </div>
 							  <div class="column a" style="width:23%;border-bottom: 4px solid #394989;">
 							    <h6>Duration (Months)</h6>
-							    <p><%if(ProjectDetailes[9]!=null){%><%=ProjectDetailes[9] %><%}else{ %>-<%} %></p>
+							    <p><%if(ProjectDetailes[9]!=null){%><%=StringEscapeUtils.escapeHtml4(ProjectDetailes[9].toString()) %><%}else{ %>-<%} %></p>
 							  </div>
 							  <div class="column b" style="width:23%;border-bottom: 4px solid #394989;border-bottom-right-radius: 5px">
 							    <h6>Multi Lab</h6>
@@ -420,7 +421,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 							  </div>
 							  <div class="column a" style="width:23%;border-bottom: 2px solid #394989;">
 							    <h6>Letter Number</h6>
-							    <p><%if(AuthorityAttachment[4]!=null){%> <%=AuthorityAttachment[4] %> <%}else{ %> - <%}%></p>
+							    <p><%if(AuthorityAttachment[4]!=null){%> <%=StringEscapeUtils.escapeHtml4(AuthorityAttachment[4].toString()) %> <%}else{ %> - <%}%></p>
 							  </div>
 							   <div class="column b" style="width:23%;border-bottom: 2px solid #394989;">
 							    <h6>Letter</h6>
@@ -491,97 +492,97 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 						                    <h3>World Scenario</h3>
 						                    <hr>
 											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800;font-size: 20px; color:#07689f; font-family: Lato;">Brief</label>
-											<p><%if(obj[24]!=null){%><%=obj[24] %><%}else{ %>-<%} %></p>
+											<p><%if(obj[24]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[24].toString()) %><%}else{ %>-<%} %></p>
 											<hr>					                
 											<div style="">
 											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800; font-family: Lato;	font-size: 20px; color:#07689f;">Detailed</label>
-											<p><%if(obj[12]!=null){%><%=obj[12] %><%}else{ %>-<%} %></p></div>
+											<p><%if(obj[12]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[12].toString()) %><%}else{ %>-<%} %></p></div>
 						                </div>
 						                <div class="tab-pane fade " id="req-vertical" role="tabpanel" aria-labelledby="req-vertical-tab">
 						                    <h3>Requirement</h3><hr>
 											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800;font-size: 20px; font-family: Lato; color:#07689f;">Brief</label>
-											<p><%if(obj[13]!=null){%><%=obj[13] %><%}else{ %>-<%} %></p><hr>				                
+											<p><%if(obj[13]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[13].toString()) %><%}else{ %>-<%} %></p><hr>				                
 										
 						                </div>
 						                <div class="tab-pane fade" id="obj-vertical" role="tabpanel" aria-labelledby="obj-vertical-tab">
 						                    <h3>Objective</h3><hr>
 											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800;font-size: 20px;font-family: Lato; color:#07689f;">Brief</label>
-											<p><%if(obj[14]!=null){%><%=obj[14] %><%}else{ %>-<%} %></p><hr>					                
+											<p><%if(obj[14]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[14].toString()) %><%}else{ %>-<%} %></p><hr>					                
 											<div style="">
 											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800; font-family: Lato;	font-size: 20px; color:#07689f;">Detailed</label>
-											<p><%if(obj[1]!=null){%><%=obj[1] %><%}else{ %>-<%} %></p></div>					                
+											<p><%if(obj[1]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[1].toString()) %><%}else{ %>-<%} %></p></div>					                
 										</div>
 						                <div class="tab-pane fade" id="scope-vertical" role="tabpanel" aria-labelledby="scope-vertical-tab">
 						                    <h3>Scope</h3><hr>
 											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800;font-size: 20px; font-family: Lato; color:#07689f;">Brief</label>
-											<p><%if(obj[15]!=null){%><%=obj[15] %><%}else{ %>-<%} %></p><hr>					                
+											<p><%if(obj[15]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[15].toString()) %><%}else{ %>-<%} %></p><hr>					                
 											<div style="">
 											<label style="margin-top:0px; margin-bottom:0px;; margin-left:0px;font-weight: 800; font-family: Lato;	font-size: 20px; color:#07689f;">Detailed</label>
-											<p><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></p></div>					                
+											<p><%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%}else{ %>-<%} %></p></div>					                
 										</div>
 						                <div class="tab-pane fade" id="multilab-vertical" role="tabpanel" aria-labelledby="multilab-vertical-tab">
 						                    <h3>Multi Lab Work Share</h3><hr>
 											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800;font-size: 20px; font-family: Lato; color:#07689f;">Brief</label>
-											<p><%if(obj[16]!=null){%><%=obj[16] %><%}else{ %>-<%} %></p><hr>				                
+											<p><%if(obj[16]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[16].toString()) %><%}else{ %>-<%} %></p><hr>				                
 											<div style="">
 											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800;font-family: Lato; 	font-size: 20px; color:#07689f;">Detailed</label>
-											<p><%if(obj[3]!=null){%><%=obj[3] %><%}else{ %>-<%} %></p></div>					                
+											<p><%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %><%}else{ %>-<%} %></p></div>					                
 										</div>
 						                <div class="tab-pane fade" id="earlierwork-vertical" role="tabpanel" aria-labelledby="earlierwork-vertical-tab">
 						                    <h3>Earlier Work</h3><hr>
 											<label style="margin-top:0px; margin-bottom:0px;; margin-left:0px;font-weight: 800;font-size: 20px; font-family: Lato; color:#07689f;">Brief</label>
-											<p><%if(obj[17]!=null){%><%=obj[17] %><%}else{ %>-<%} %></p><hr>					                
+											<p><%if(obj[17]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[17].toString()) %><%}else{ %>-<%} %></p><hr>					                
 											<div style="">
 											<label style="margin-top:0px; margin-bottom:0px;; margin-left:0px;font-weight: 800; font-family: Lato;	font-size: 20px; color:#07689f;">Detailed</label>
-											<p><%if(obj[4]!=null){%><%=obj[4] %><%}else{ %>-<%} %></p></div>					                
+											<p><%if(obj[4]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString()) %><%}else{ %>-<%} %></p></div>					                
 										</div>
 						                <div class="tab-pane fade" id="competency-vertical" role="tabpanel" aria-labelledby="competency-vertical-tab">
 						                    <h3>Competency Established</h3><hr>
 											<label style="margin-top:0px; margin-bottom:0px;; margin-left:0px;font-weight: 800;font-size: 20px; font-family: Lato; color:#07689f;">Brief</label>
-											<p><%if(obj[18]!=null){%><%=obj[18] %><%}else{ %>-<%} %></p><hr>				                
+											<p><%if(obj[18]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[18].toString()) %><%}else{ %>-<%} %></p><hr>				                
 											<div style="">
 											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800; font-family: Lato;	font-size: 20px; color:#07689f;">Detailed</label>
-											<p><%if(obj[5]!=null){%><%=obj[5] %><%}else{ %>-<%} %></p></div>						                
+											<p><%if(obj[5]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[5].toString()) %><%}else{ %>-<%} %></p></div>						                
 										</div>
 						                <div class="tab-pane fade show active" id="needofprj-vertical" role="tabpanel" aria-labelledby="needofprj-vertical-tab">
 						                    <h3>Need Of Project</h3><hr>
 											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800;font-size: 20px; font-family: Lato; color:#07689f;">Brief</label>
-											<p><%if(obj[19]!=null){%><%=obj[19] %><%}else{ %>-<%} %></p><hr>					                
+											<p><%if(obj[19]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[19].toString()) %><%}else{ %>-<%} %></p><hr>					                
 											<div>
 											<label style="margin-top:0px; margin-bottom:0px;; margin-left:0px;font-weight: 800; font-family: Lato;	font-size: 20px; color:#07689f;">Detailed</label>
-											<p><%if(obj[6]!=null){%><%=obj[6] %><%}else{ %>-<%} %></p></div>					                
+											<p><%if(obj[6]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[6].toString()) %><%}else{ %>-<%} %></p></div>					                
 											</div>
 						                <div class="tab-pane fade" id="technology-vertical" role="tabpanel" aria-labelledby="technology-vertical-tab">
 						                    <h3>Technology Challenges</h3><hr>
 											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800;font-size: 20px; font-family: Lato; color:#07689f;">Brief</label>
-											<p><%if(obj[20]!=null){%><%=obj[20] %><%}else{ %>-<%} %></p><hr>					                
+											<p><%if(obj[20]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[20].toString()) %><%}else{ %>-<%} %></p><hr>					                
 											<div style="">
 											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800; font-family: Lato;	font-size: 20px; color:#07689f;">Detailed</label>
-											<p><%if(obj[7]!=null){%><%=obj[7] %><%}else{ %>-<%} %></p></div>					                
+											<p><%if(obj[7]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[7].toString())%><%}else{ %>-<%} %></p></div>					                
 										</div>
 						                <div class="tab-pane fade" id="risk-vertical" role="tabpanel" aria-labelledby="risk-vertical-tab">
 						                    <h3>Risk Mitigation</h3><hr>
 											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800;font-size: 20px; font-family: Lato; color:#07689f;">Brief</label>
-											<p><%if(obj[21]!=null){%><%=obj[21] %><%}else{ %>-<%} %></p><hr>				                
+											<p><%if(obj[21]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[21].toString()) %><%}else{ %>-<%} %></p><hr>				                
 											<div style="">
 											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800; font-family: Lato;	font-size: 20px; color:#07689f;">Detailed</label>
-											<p><%if(obj[8]!=null){%><%=obj[8] %><%}else{ %>-<%} %></p></div>					                
+											<p><%if(obj[8]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[8].toString()) %><%}else{ %>-<%} %></p></div>					                
 										</div>
 						                <div class="tab-pane fade" id="proposal-vertical" role="tabpanel" aria-labelledby="proposal-vertical-tab">
 						                    <h3>Proposal</h3><hr>
 											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800;font-size: 20px; font-family: Lato; color:#07689f;">Brief</label>
-											<p><%if(obj[22]!=null){%><%=obj[22] %><%}else{ %>-<%} %></p><hr>					                
+											<p><%if(obj[22]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[22].toString()) %><%}else{ %>-<%} %></p><hr>					                
 											<div style="">
 											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800; font-family: Lato;	font-size: 20px; color:#07689f;">Detailed</label>
-											<p><%if(obj[9]!=null){%><%=obj[9] %><%}else{ %>-<%} %></p></div>					                
+											<p><%if(obj[9]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[9].toString()) %><%}else{ %>-<%} %></p></div>					                
 										</div>
 						                <div class="tab-pane fade" id="realization-vertical" role="tabpanel" aria-labelledby="realization-vertical-tab">
 						                    <h3>Realization Plan</h3><hr>
 											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800;font-size: 20px; font-family: Lato; color:#07689f;">Brief</label>
-											<p><%if(obj[23]!=null){%><%=obj[23] %><%}else{ %>-<%} %></p><hr>					                
+											<p><%if(obj[23]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[23].toString()) %><%}else{ %>-<%} %></p><hr>					                
 											<div style="">
 											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800; font-family: Lato;	font-size: 20px; color:#07689f;">Detailed</label>
-											<p><%if(obj[10]!=null){%><%=obj[10] %><%}else{ %>-<%} %></p></div>						                
+											<p><%if(obj[10]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[10].toString()) %><%}else{ %>-<%} %></p></div>						                
 										</div>
 						            </div>
 						            
@@ -613,8 +614,8 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 				                        <%if(RequirementList !=null){
 				                          for(Object []obj :RequirementList){%>
 				                          <tr>
-				                 						<td><%=obj[1] %></td>
-				                 		          		<td><%=obj[3] %></td>
+				                 						<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
+				                 		          		<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
 				                 		          		<td style="text-align: center;">
 				                 		          		<input type="hidden" id="Req<%=obj[0]%>" value ="<%=obj[4] %>" />
 					<button type="button" class=""    id="reqbtn2" onclick="showdata('<%=obj[0]%>','<%=obj[1]%>')"   >
@@ -682,10 +683,10 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 				                            <tr>
 <!-- 				                                <th> <label class="customcheckbox"> <input type="checkbox" class="listCheckbox"> <span class="checkmark"></span> </label> </th>
  -->				                                     
-				                                <td><%if(obj[0]!=null){%><%=obj[0] %><%}else{ %>-<%} %></td>
-				                                <td><%if(obj[1]!=null){%><%=obj[1]+"("+obj[4]+")" %><%}else{ %>-<%} %></td>
-				                                <td><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></td>
-				                                <td class="right">&#8377; <%if(obj[3]!=null && Double.parseDouble(obj[3].toString())>0){%><%=Double.parseDouble(obj[3].toString())/100000 %> Lakhs<%}else{ %>0.00<%} %></td>
+				                                <td><%if(obj[0]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[0].toString()) %><%}else{ %>-<%} %></td>
+				                                <td><%if(obj[1]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[1].toString())+"("+obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "+")" %><%}else{ %>-<%} %></td>
+				                                <td><%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%}else{ %>-<%} %></td>
+				                                <td class="right">&#8377; <%if(obj[3]!=null && Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[3].toString()))>0){%><%=Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[3].toString()))/100000 %> Lakhs<%}else{ %>0.00<%} %></td>
 				                    
 				                            </tr>
 				                            
@@ -725,9 +726,9 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 				                            <tr>
 <!-- 				                                <th> <label class="customcheckbox"> <input type="checkbox" class="listCheckbox"> <span class="checkmark"></span> </label> </th>
  -->				                                     
-				                                <td class="center"><%if(obj[0]!=null){%><%=obj[0] %><%}else{ %>-<%} %></td>
-				                                <td><%if(obj[1]!=null){%><%=obj[1] %><%}else{ %>-<%} %></td>
-				                                <td class="center"><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></td>
+				                                <td class="center"><%if(obj[0]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[0].toString()) %><%}else{ %>-<%} %></td>
+				                                <td><%if(obj[1]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[1].toString()) %><%}else{ %>-<%} %></td>
+				                                <td class="center"><%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%}else{ %>-<%} %></td>
 				                    
 				                            </tr>
 				                            
@@ -767,9 +768,9 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 				                        	<%for(Object[] 	obj:IntiationAttachment){ %>
 				                            <tr>
 				                                     
-				                                <td class="left"><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></td>
-				                                <td><%if(obj[4]!=null){%><%=obj[4] %><%}else{ %>-<%} %></td>
-				                                <td class="left"><%if(obj[5]!=null){%><%=sdf1.format(obj[5]) %><%}else{ %>-<%} %></td>
+				                                <td class="left"><%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%}else{ %>-<%} %></td>
+				                                <td><%if(obj[4]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString()) %><%}else{ %>-<%} %></td>
+				                                <td class="left"><%if(obj[5]!=null){%><%=sdf1.format(StringEscapeUtils.escapeHtml4(obj[5].toString())) %><%}else{ %>-<%} %></td>
 				                    			 <td class="center"><div ><a  href="ProjectAttachDownload.htm?InitiationAttachmentId=<%=obj[6]%>" target="_blank"><i class="fa fa-download"></i></a></div> </td>	
 				                    			
 				                            </tr>

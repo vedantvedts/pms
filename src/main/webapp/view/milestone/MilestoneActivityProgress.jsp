@@ -126,7 +126,7 @@
 												for(Object[] obj : projectList) {
 													String projectshortName=(obj[17]!=null)?" ("+obj[17].toString()+") ":""; %>
 													<option value="<%=obj[0]%>" <%if(projectId.equalsIgnoreCase(obj[0]+"")) { project = obj[4]+projectshortName; %>selected<%} %> >
-														<%=obj[4]+projectshortName %>
+														<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - " %>
 													</option>
 											<%} }%>
 										</select>
@@ -219,17 +219,17 @@
 						            %>
 		                            		<tr>
 		                            			<td class="center"><%=++slno %></td>
-		                            			<td class="center">M<%=obj[obj.length - 2] %></td>
-		                            			<td class="center"><%=obj[obj.length - 3] %></td>
-		                            			<td><%=obj[3]%></td>
-		                            			<td><%=prog[8]%>, <%=prog[9]%></td>
+		                            			<td class="center">M<%=obj[obj.length - 2]!=null?StringEscapeUtils.escapeHtml4(obj[obj.length-2].toString()): " - " %></td>
+		                            			<td class="center"><%=obj[obj.length - 3]!=null?StringEscapeUtils.escapeHtml4(obj[obj.length-3].toString()): " - " %></td>
+		                            			<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>
+		                            			<td><%=prog[8]!=null?StringEscapeUtils.escapeHtml4(prog[8].toString()): " - "%>, <%=prog[9]!=null?StringEscapeUtils.escapeHtml4(prog[9].toString()): " - "%></td>
 		                            			<td class="center"><%=prog[3]!=null?fc.sdfTordf(prog[3].toString()):"-" %></td>
 		                            			<td>
 		                            				<%if(!prog[2].toString().equalsIgnoreCase("0")){ %>
 														<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar progress-bar-striped
 																" role="progressbar" style=" width: <%=prog[2] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																<%=prog[2] %>
+																<%=prog[2]!=null?StringEscapeUtils.escapeHtml4(prog[2].toString()): " - " %>
 															</div> 
 														</div> 
 													<%}else{ %>
@@ -240,7 +240,7 @@
 														</div> 
 													<%} %>
 		                            			</td>
-		                            			<td><%=prog[6]!=null?prog[6]:"-"%></td>
+		                            			<td><%=prog[6]!=null?StringEscapeUtils.escapeHtml4(prog[6].toString()):"-"%></td>
 		                            		</tr>
 						            <%} } }%>
 					         	</tbody>

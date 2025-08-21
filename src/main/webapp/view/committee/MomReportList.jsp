@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -52,7 +53,7 @@ SimpleDateFormat sdfInput = new SimpleDateFormat("HH:mm:ss");
 										 for (Object[] obj : projectList) {
 											 String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";			 
 										 %>
-												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectId)){ %>selected<%} %> ><%=obj[4]+projectshortName%></option>
+												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectId)){ %>selected<%} %> ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%></option>
 										<%}} %>
 								             </select>       
 											</td>
@@ -63,7 +64,7 @@ SimpleDateFormat sdfInput = new SimpleDateFormat("HH:mm:ss");
                                               <select class="form-control selectdee" id="committeeid" required="required" name="committeeid" onchange='submitForm();' >
 							   			        	<%if(projectCommitteList!=null && projectCommitteList.size()>0){
 							   			        	  for (Object[] obj : projectCommitteList) {%>
-											     <option value="<%=obj[0]%>"  <%if(obj[0].toString().equals(committeeId)){ %>selected<%} %> ><%=obj[3]%></option>
+											     <option value="<%=obj[0]%>"  <%if(obj[0].toString().equals(committeeId)){ %>selected<%} %> ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 											        <%}} %>   
 							  	             </select>
 											</td>
@@ -109,10 +110,10 @@ SimpleDateFormat sdfInput = new SimpleDateFormat("HH:mm:ss");
 													   
 													    <tr>
 													    <td align="center"><%=++count %></td>
-													    <td ><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></td>
+													    <td ><%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%}else{ %>-<%} %></td>
 													    <td align="center"><%if(obj[3]!=null){%><%=sdf.format(obj[3]) %><%}else{ %>-<%} %></td>
 													    <td align="center"><%=ScheduleTime %></td>
-													    <td ><%if(obj[5]!=null){%><%=obj[5] %><%}else{ %>-<%} %></td>
+													    <td ><%if(obj[5]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[5].toString()) %><%}else{ %>-<%} %></td>
 													    <td align="center">
 													    <button type="submit" class="btn  btn-sm view"  formaction="CommitteeMinutesNewDownload.htm" id=<%="committeescheduleid"+obj[0]%> value="<%=obj[0] %>" name="committeescheduleid" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;">MINUTES
 	                                                        <i class="fa fa-download blink" aria-hidden="true" style="color:white;"></i>

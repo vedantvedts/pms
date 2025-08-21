@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -124,21 +125,23 @@ label {
 
 	<%List<Object[]> designationlist=(List<Object[]>)request.getAttribute("designationlist"); %>
 
-	<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%><div align="center">
-		<div class="alert alert-danger" role="alert" style="width: 100%">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" style="width: 100%">
-			<%=ses %>
-		</div>
-	</div>
-	<%} %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
+	
 	<br>
 	<div class="container-fluid">
 		<div class="row">
@@ -176,11 +179,11 @@ label {
 	   	 							count++; %>
 										<tr>
 											<td><%=count %></td>
-											<td><%=obj[4] %></td>
-											<td><%=obj[1] %></td>
-											<td><%=obj[2] %></td>
-											<td><%=obj[5]!=null?obj[5]:"-" %></td>
-											<td><%=obj[3] %></td>
+											<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
+											<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
+											<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+											<td><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></td>
+											<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
 											<td>
 
 												<button class="editable-click" name="desigid"

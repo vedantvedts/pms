@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -38,24 +39,22 @@ DecimalFormat df=new DecimalFormat("0.00");
 NFormatConvertion nfc=new NFormatConvertion();
 %>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-
-	<center>
-	
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-            </div>
-            
-    </center>
-	 <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 <br>	
 	
@@ -78,7 +77,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 				<div class="card-header">
 					<div class="row" >
 						<div class="col-md-11" style="margin-top: 4px">
-							<h6 ><%=count%> . &nbsp;&nbsp;&nbsp;Project Title : <%=obj[2] %> (<%=obj[1] %>)</h6>
+							<h6 ><%=count%> . &nbsp;&nbsp;&nbsp;Project Title : <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> (<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>)</h6>
 						</div>
 						
 						<form action="PreviewPage.htm" method="POST" name="myfrm" id="myfrm">
@@ -101,7 +100,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 					      <tbody>
 						    	<tr>
 						    		<td style="width:20%"> <b>Project Category</b> </td>
-						    		<td><%=obj[6] %></td>
+						    		<td><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %></td>
 						    		<td rowspan="5" style="width:40%">
 						      			<textarea rows="6" type="text" class="form-control"   name="Remark" required="required"  placeholder="Enter Remarks here"></textarea>
 						    			</td>
@@ -114,35 +113,35 @@ NFormatConvertion nfc=new NFormatConvertion();
 						    		
 						    		<tr>
 						    			<td> <b>Security Classification</b> </td>
-						    			<td><%=obj[7] %></td>
+						    			<td><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %></td>
 						    		</tr>
 						    		
 						    		<tr>
 						    			<td> <b>Deliverable</b></td>
 						    			</td>
-						    			<td><%=obj[8]%></td>
+						    			<td><%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - "%></td>
 						    		</tr>
 						    		
 						    		<tr>
 						    			<td> <b>Fe Cost (Lakhs) :</b></td>
-						    			<td><%=nfc.convert(Double.parseDouble(obj[9].toString())) %></td>
+						    			<td><%=obj[9]!=null?nfc.convert(Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[9].toString()))):" - " %></td>
 						    		</tr>
 						    		
 						    		<tr >
 						    			<td> <b>Re Cost (Lakhs) :</b></td>
-						    			<td><%=nfc.convert(Double.parseDouble(obj[10].toString())) %></td>
+						    			<td><%=obj[10]!=null?nfc.convert(Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[10].toString()))) :" - "%></td>
 						    		</tr>
 						    	
 						    		<tr >
 						    			<td> <b>Duration (Months) :</b> </td>
-						    			<td><%=obj[4] %></td>
+						    			<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
 						    			<!-- <td>Action</td> -->
 						    			<td >
 						    			<label style="font-size: 17px;font-family: 'Lato',sans-serif;"> <b>&nbsp;Action :&nbsp;&nbsp;&nbsp;</b> </label>
 						        			<select class="custom-select" id="" required="required" name="Status" onchange="myconfirm(this,'myfrm<%=obj[5] %>')" style="width:85%">
 					    						<option disabled="true"  selected value="">Choose...</option>
 					    							<% for (Object[] obj1 : ProjectActionList) {%>
-														<option value="<%=obj1[1]%>"><%=obj1[2]%></option>
+														<option value="<%=obj1[1]%>"><%=obj1[2]!=null?StringEscapeUtils.escapeHtml4(obj1[2].toString()): " - "%></option>
 													<%} %>
 					  						</select>
 						    			</td> 
@@ -161,11 +160,11 @@ NFormatConvertion nfc=new NFormatConvertion();
 					      <tbody>
 					      		<tr>
 						    		<td><b>Forwarded By :</b></td>
-						    		<td><%=obj[11] %> (<%=obj[12] %>)</td>
+						    		<td><%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %> (<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %>)</td>
 						    		<td><b>Forwarded Date :</b></td>
-						    		<td><%=sdf.format(obj[13]) %></td>
+						    		<td><%=obj[13]!=null?sdf.format(StringEscapeUtils.escapeHtml4(obj[13].toString())):" - " %></td>
 						    		<td><b>Division Name :</b></td>
-						    		<td><%=obj[14] %></td>
+						    		<td><%=obj[14]!=null?StringEscapeUtils.escapeHtml4(obj[14].toString()): " - " %></td>
 						    	</tr>
 					      </tbody>
 					</table>	

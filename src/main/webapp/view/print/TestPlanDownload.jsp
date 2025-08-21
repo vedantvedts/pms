@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.net.URL"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="java.util.*"%>
@@ -200,7 +201,7 @@ if (TestContentList != null) {
     				    				<%
 				if(LabList[0] != null) {
 				%>
-				<%=LabList[0].toString()%>:SSTP:....................</h4>
+				<%=StringEscapeUtils.escapeHtml4(LabList[0].toString())%>:SSTP:....................</h4>
   						<h6 style="margin: 0; padding: 0;font-family: <%= FontFamily %>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copy No.01</h6>
 						<%
 				}else {
@@ -231,7 +232,7 @@ if (TestContentList != null) {
 				<h4 style="font-size: 18px; text-decoration: underline;font-family: <%= FontFamily %>;">Test Plan 
 					No.</h4>
 				<h4 style="font-family: <%= FontFamily %>;">
-					<%if (reqStatus!=null && reqStatus[3] != null) {%><%=reqStatus[3].toString()%>
+					<%if (reqStatus!=null && reqStatus[3] != null) {%><%=StringEscapeUtils.escapeHtml4(reqStatus[3].toString())%>
 					<%} else {%>-<%}%>
 				</h4>
 					<div align="center" >
@@ -245,7 +246,7 @@ if (TestContentList != null) {
 				<%
 				if(LabList[1] != null) {
 				%>
-				<%=LabList[1].toString()+"("+LabList[0].toString()+")"%>
+				<%=StringEscapeUtils.escapeHtml4(LabList[1].toString())+"("+LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()): " - "+")"%>
 				<%
 				}else {
 				%>-<%
@@ -259,7 +260,7 @@ if (TestContentList != null) {
 				</div>
 				<h4 style="font-family: <%= FontFamily %>;">
 					<%if(LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %>
-					<%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %>
+					<%=StringEscapeUtils.escapeHtml4(LabList[2].toString())+" , "+StringEscapeUtils.escapeHtml4(LabList[3].toString())+", PIN-"+StringEscapeUtils.escapeHtml4(LabList[5].toString()) %>
 					<%}else{ %>
 					-
 					<%} %>
@@ -330,9 +331,9 @@ if (TestContentList != null) {
 %>
  <tr>
                 <td style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;"><%=  i+++"."%></td>
-                <td style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;"><%= mlist[1] %></td>
-                <td style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><%= mlist[2] %></td>
-                 <td style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><%= mlist[3] %></td>
+                <td style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;"><%= mlist[1]!=null?StringEscapeUtils.escapeHtml4(mlist[1].toString()): " - " %></td>
+                <td style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><%= mlist[2]!=null?StringEscapeUtils.escapeHtml4(mlist[2].toString()): " - " %></td>
+                 <td style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><%= mlist[3]!=null?StringEscapeUtils.escapeHtml4(mlist[3].toString()): " - " %></td>
                  <td style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;">copy for Record</td>
                              </tr>
  <% 
@@ -371,7 +372,7 @@ if (TestContentList != null) {
 					<td class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;">7.&nbsp; Related Document:</td>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">8.&nbsp; Additional Information:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[0] %><%} %></span>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">8.&nbsp; Additional Information:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[0]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[0].toString()): " - " %><%} %></span>
 				</td>
 					</tr>
 				     <tr>
@@ -379,16 +380,16 @@ if (TestContentList != null) {
 					<%-- <td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">9.&nbsp; Project Number and Project Name: <span class="text-dark"><%=projectName %> (<%= projectshortName %>) </span></td> --%>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">10.&nbsp; Abstract:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[1] %><%} %></span>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">10.&nbsp; Abstract:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[1]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[1].toString()): " - " %><%} %></span>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">11.&nbsp; Keywords:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[2] %><%} %></span> </td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">11.&nbsp; Keywords:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[2]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[2].toString()): " - " %><%} %></span> </td>
 					</tr>
 					<tr>
 					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">12.&nbsp; Organization and address:
 						<span class="text-dark" style="font-family: <%= FontFamily %>;">		<%
 										if (LabList[1] != null) {
-										%><%=LabList[1].toString() + "(" + LabList[0].toString() + ")"%>
+										%><%=StringEscapeUtils.escapeHtml4(LabList[1].toString()) + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()): " - " + ")"%>
 										<%
 										} else {
 										%>-<%
@@ -399,7 +400,7 @@ if (TestContentList != null) {
 										<%
 									if (LabList[2] != null && LabList[3] != null && LabList[5] != null) {
 									%>
-									<%=LabList[2] + " , " + LabList[3].toString() + ", PIN-" + LabList[5].toString()+"."%>
+									<%=StringEscapeUtils.escapeHtml4(LabList[2].toString())+" , "+StringEscapeUtils.escapeHtml4(LabList[3].toString())+", PIN-"+StringEscapeUtils.escapeHtml4(LabList[5].toString())+"."%>
 									<%}else{ %>
 									-
 									<%} %>
@@ -407,20 +408,20 @@ if (TestContentList != null) {
 							</td>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">13.&nbsp; Distribution:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[3] %><%} %></span>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">13.&nbsp; Distribution:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[3]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[3].toString()): " - " %><%} %></span>
 					</td>
 					</tr>
 					<tr>
 					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">14.&nbsp; Revision:</td>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">15.&nbsp; Prepared by:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[10] %><%} %></span> </td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">15.&nbsp; Prepared by:<span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[10]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[10].toString()): " - " %><%} %></span> </td>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">16.&nbsp; Reviewed by: <span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[7] %><%} %></span> </td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">16.&nbsp; Reviewed by: <span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[7]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[7].toString()): " - " %><%} %></span> </td>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">17.&nbsp; Approved by: <span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[6] %><%} %></span> </td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">17.&nbsp; Approved by: <span class="text-dark"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[6]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[6].toString()): " - " %><%} %></span> </td>
 					</tr>
 										</table>
 							<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>	
@@ -441,8 +442,8 @@ if (TestContentList != null) {
 %>
               <tr>
                 <td style="text-align: justify;border: 1px solid black;font-family: <%= FontFamily %>;"><%=  i+++"."%></td>
-                <td style="text-align: justify;border: 1px solid black;font-family: <%= FontFamily %>;"><%= alist[1] %></td>
-                <td style="text-align: justify;border: 1px solid black; padding-left: 10px;font-family: <%= FontFamily %>;"><%= alist[2] %></td>
+                <td style="text-align: justify;border: 1px solid black;font-family: <%= FontFamily %>;"><%= alist[1]!=null?StringEscapeUtils.escapeHtml4(alist[1].toString()): " - " %></td>
+                <td style="text-align: justify;border: 1px solid black; padding-left: 10px;font-family: <%= FontFamily %>;"><%= alist[2]!=null?StringEscapeUtils.escapeHtml4(alist[2].toString()): " - " %></td>
             </tr>
             <% 
    }} 
@@ -472,7 +473,7 @@ if (TestContentList != null) {
 				</h2>
 				<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify;font-weight:<%=ParaFontWeight%>" >
 				 
-					<%if(TestScopeIntro[1]!=null) {%><%=TestScopeIntro[1]%>
+					<%if(TestScopeIntro[1]!=null) {%><%=TestScopeIntro[1]!=null?StringEscapeUtils.escapeHtml4(TestScopeIntro[1].toString()): " - "%>
 					<%}else {%><div style="text-align: center;font-family: <%= FontFamily %>;">No Details Added!</div>
 					<%} %>
 					
@@ -483,7 +484,7 @@ if (TestContentList != null) {
 					&nbsp;System Identification
 				</h2>
 				<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size: <%=ParaFontSize%>pt;text-align: justify; font-weight:<%=ParaFontWeight%>">
-					<%if(TestScopeIntro[2]!=null) {%><%=TestScopeIntro[2]%>
+					<%if(TestScopeIntro[2]!=null) {%><%=TestScopeIntro[2]!=null?StringEscapeUtils.escapeHtml4(TestScopeIntro[2].toString()): " - "%>
 					<%}else {%><div style="font-family: <%= FontFamily %>;text-align: center;">No Details Added!</div>
 					<%} %>
 				</div>
@@ -493,7 +494,7 @@ if (TestContentList != null) {
 					&nbsp;System Overview
 				</h2>
 				<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size: <%=ParaFontSize%>pt;text-align: justify; font-weight:<%=ParaFontWeight%>">
-					<%if(TestScopeIntro[3]!=null) {%><%=TestScopeIntro[3]%>
+					<%if(TestScopeIntro[3]!=null) {%><%=TestScopeIntro[3]!=null?StringEscapeUtils.escapeHtml4(TestScopeIntro[3].toString()): " - "%>
 					<%}else {%><div style="text-align: center;font-family: <%= FontFamily %>;">No Details Added!</div>
 					<%} %>
 				</div>
@@ -566,7 +567,7 @@ Non-Government Publications
 TEST APPROACH
 </h1>
 <div style="margin-left: 20px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify; font-weight:<%=ParaFontWeight%>">
-<%if(Approach!=null) {%><%=Approach%><%} %> 
+<%if(Approach!=null) {%><%=StringEscapeUtils.escapeHtml4(Approach)%><%} %> 
 </div>
 				<!-- Test Approach  end-->
 				
@@ -611,8 +612,8 @@ Role & RESPONSIBILITY FOR CARRYING OUT EACH LEVEL OF SYSTEM/ SUB-SYSTEM TESTING
 %>
               <tr>
                 <td style="text-align: center;border: 1px solid black;font-family: <%= FontFamily %>;text-align:justify"><%=  i+++"."%></td>
-                <td style="text-align: center;border: 1px solid black;font-family: <%= FontFamily %>;text-align:justify"><% if(tslist[1]!=null){%>  <%= tslist[1] %> <% }else{%> <%} %></td>
-                <td style="border: 1px solid black; padding-left: 10px;font-family: <%= FontFamily %>;text-align:justify"><%if(tslist[3]!=null){%> <%= tslist[3] %> <% }else{%><%} %>
+                <td style="text-align: center;border: 1px solid black;font-family: <%= FontFamily %>;text-align:justify"><% if(tslist[1]!=null){%>  <%= StringEscapeUtils.escapeHtml4(tslist[1].toString()) %> <% }else{%> <%} %></td>
+                <td style="border: 1px solid black; padding-left: 10px;font-family: <%= FontFamily %>;text-align:justify"><%if(tslist[3]!=null){%> <%= StringEscapeUtils.escapeHtml4(tslist[3].toString()) %> <% }else{%><%} %>
                 </td>
             </tr>
             <% 
@@ -627,7 +628,7 @@ Role & RESPONSIBILITY FOR CARRYING OUT EACH LEVEL OF SYSTEM/ SUB-SYSTEM TESTING
 			</div>
 		<h2 style="font-family: <%= FontFamily %>;font-size:<%= SubHeaderFontsize%>pt;font-weight:<%=SubHeaderFontweight%>;margin-left: 20px;text-align:justify"><%=maincount %>.2 Test Set Up Diagram</h2>
 		<div style="margin-left: 20px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify; font-weight:<%=ParaFontWeight%>;text-align:justify">
-		<%if(TestSetUpDiagram!=null) {%><%=TestSetUpDiagram%><%} %> 
+		<%if(TestSetUpDiagram!=null) {%><%=StringEscapeUtils.escapeHtml4(TestSetUpDiagram)%><%} %> 
 		</div>
 		<div style="font-family: <%= FontFamily %>;">
 			${htmlContentTestSetUpDiagram}
@@ -653,7 +654,7 @@ Role & RESPONSIBILITY FOR CARRYING OUT EACH LEVEL OF SYSTEM/ SUB-SYSTEM TESTING
               <tr>
                 <td style="text-align: center;border: 1px solid black;font-family: <%= FontFamily %>;text-align:justify"><%=  i+++"."%></td>
                 <td style="text-align: center;border: 1px solid black;font-family: <%= FontFamily %>;text-align:justify">
-                <% if(tlist[1]!=null){%> <%= tlist[1] %> <% }else{%> <% }%>
+                <% if(tlist[1]!=null){%> <%= StringEscapeUtils.escapeHtml4(tlist[1].toString()) %> <% }else{%> <% }%>
                 </td>
                 <td style="border: 1px solid black; padding-left: 10px;font-family: <%= FontFamily %>;text-align:justify"> 
                <%
@@ -669,7 +670,7 @@ Role & RESPONSIBILITY FOR CARRYING OUT EACH LEVEL OF SYSTEM/ SUB-SYSTEM TESTING
                <%} %>
                 </td>
                  <td style="border: 1px solid black; padding-left: 10px;font-family: <%= FontFamily %>;text-align:justify">
-                 	<% if(tlist[3]!=null){%>  <%= tlist[3] %> 	 <%}else{ %>   <%} %>
+                 	<% if(tlist[3]!=null){%>  <%= StringEscapeUtils.escapeHtml4(tlist[3].toString()) %> 	 <%}else{ %>   <%} %>
                  </td>
             </tr>
             <% 
@@ -684,7 +685,7 @@ Role & RESPONSIBILITY FOR CARRYING OUT EACH LEVEL OF SYSTEM/ SUB-SYSTEM TESTING
 			<!--Test Details  Ends -->	
 					<h2 style="font-family: <%= FontFamily %>;font-size:<%= SubHeaderFontsize%>pt;font-weight:<%=SubHeaderFontweight%>;margin-left: 20px;"><%=maincount %>.4 Test Verification Table</h2>
 			<div style="margin-left: 20px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify; font-weight:<%=ParaFontWeight%>">
-			<%if(TestVerification!=null) {%><%=TestVerification%><%} %> 
+			<%if(TestVerification!=null) {%><%=StringEscapeUtils.escapeHtml4(TestVerification)%><%} %> 
 				</div>
 				<div style="font-family: <%= FontFamily %>;">
 			${htmlContentTestVerification}
@@ -700,7 +701,7 @@ Role & RESPONSIBILITY FOR CARRYING OUT EACH LEVEL OF SYSTEM/ SUB-SYSTEM TESTING
 			style="margin-left: 20px;font-family: <%=FontFamily%>;font-size:<%=ParaFontSize%>pt; text-align: justify; font-weight:<%=ParaFontWeight%>">
 			<%
 			if (Schedule != null) {
-			%><%=Schedule%>
+			%><%=StringEscapeUtils.escapeHtml4(Schedule)%>
 			<%
 			}
 			%>
@@ -719,7 +720,7 @@ Role & RESPONSIBILITY FOR CARRYING OUT EACH LEVEL OF SYSTEM/ SUB-SYSTEM TESTING
 				 for (Object[] tDlist : TestDetailsList) {
 			%>	
 			<div style="margin-left: 20px; margin-top: 15px; font-weight: 600;font-family: <%= FontFamily %>;">
-			<h2 style="font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt"><%=maincount+"."+(++testcount)%>&nbsp;&nbsp;Test ID : &nbsp;&nbsp;<%= tDlist[1] %></h2>
+			<h2 style="font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt"><%=maincount+"."+(++testcount)%>&nbsp;&nbsp;Test ID : &nbsp;&nbsp;<%= tDlist[1]!=null?StringEscapeUtils.escapeHtml4(tDlist[1].toString()): " - " %></h2>
 </div>
 
 <table class="border-black"
@@ -737,52 +738,52 @@ Role & RESPONSIBILITY FOR CARRYING OUT EACH LEVEL OF SYSTEM/ SUB-SYSTEM TESTING
      <tr>
         	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">1.</td>
             <th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Spec ID</span></th>
-			 <td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><% if(tDlist[19]!=null){%>  <%= tDlist[19] %> <% } %></td>
+			 <td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><% if(tDlist[19]!=null){%>  <%= StringEscapeUtils.escapeHtml4(tDlist[19].toString()) %> <% } %></td>
         </tr>
         <tr>
         	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">2.</td>
             <th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">ID</span></th>
-			 <td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><% if(tDlist[1]!=null){%>  <%= tDlist[1] %> <% } %></td>
+			 <td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><% if(tDlist[1]!=null){%>  <%= StringEscapeUtils.escapeHtml4(tDlist[1].toString()) %> <% } %></td>
         </tr>
         <tr>
         	        	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">3.</td>
             <th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Name</span></th>
-          	 <td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[2]!=null){%> <%= tDlist[2] %> <% } %></td>
+          	 <td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[2]!=null){%> <%= StringEscapeUtils.escapeHtml4(tDlist[2].toString()) %> <% } %></td>
         </tr>
         <tr>
           	        	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">4.</td>
           	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Objective</span></th>
-                  	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[3]!=null){%> <%= tDlist[3] %> <% } %></td>
+                  	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[3]!=null){%> <%= StringEscapeUtils.escapeHtml4(tDlist[3].toString()) %> <% } %></td>
         </tr>
         <tr>
           	        	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">5.</td>
            	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Description</span></th>
-                    	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[4]!=null){%> <%= tDlist[4] %> <% } %></td>
+                    	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[4]!=null){%> <%= StringEscapeUtils.escapeHtml4(tDlist[4].toString()) %> <% } %></td>
         </tr>
         <tr>
           	        	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">6.</td>
          	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Pre-Conditions</span></th>
-                    	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[5]!=null){%> <%= tDlist[5] %> <% } %></td>
+                    	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[5]!=null){%> <%= StringEscapeUtils.escapeHtml4(tDlist[5].toString()) %> <% } %></td>
         </tr>
         <tr>
                  	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">7.</td>
     	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Post-Conditions</span></th>
-         	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[6]!=null){%> <%= tDlist[6] %> <% } %></td>
+         	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[6]!=null){%> <%= StringEscapeUtils.escapeHtml4(tDlist[6].toString()) %> <% } %></td>
         </tr>
         <tr>
                  	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">8.</td>
            	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Constraints</span></th>
-           <td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[7]!=null){%> <%= tDlist[7] %> <% } %></td>
+           <td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[7]!=null){%> <%= StringEscapeUtils.escapeHtml4(tDlist[7].toString()) %> <% } %></td>
         </tr>
         <tr>
                	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">9.</td>
           	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Safety Requirements</span></th>
-            <td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[8]!=null){%> <%= tDlist[8] %> <% } %></td>
+            <td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[8]!=null){%> <%= StringEscapeUtils.escapeHtml4(tDlist[8].toString())%> <% } %></td>
         </tr>
         <tr>
                  	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">10.</td>
         	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Methodology</span></th>
- 		<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[9]!=null){%> <%= tDlist[9] %> <% } %></td>
+ 		<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[9]!=null){%> <%=StringEscapeUtils.escapeHtml4(tDlist[9].toString())%> <% } %></td>
         </tr>
         <tr>
                   	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">11.</td>
@@ -808,27 +809,27 @@ Role & RESPONSIBILITY FOR CARRYING OUT EACH LEVEL OF SYSTEM/ SUB-SYSTEM TESTING
         <tr>
                 	<td class="border-black"style="text-align: justify;padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">12.</td>
           	<th class="border-black"style="text-align: justify;padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Personnel Resources</span></th>
- 	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[11]!=null){%> <%= tDlist[11] %> <% } %></td>
+ 	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[11]!=null){%> <%= StringEscapeUtils.escapeHtml4(tDlist[11].toString())%> <% } %></td>
         </tr>
         <tr>
                 	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">13.</td>
           	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Estimated Time / Iteration</span></th>
-        <td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[12]!=null){%> <%= tDlist[12] %> <% } %></td>
+        <td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[12]!=null){%> <%= StringEscapeUtils.escapeHtml4(tDlist[12].toString()) %> <% } %></td>
         </tr>
         <tr>
                	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">14.</td>
           	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Iterations</span></th>
-             <td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[13]!=null){%> <%= tDlist[13] %> <% } %></td>
+             <td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[13]!=null){%> <%= StringEscapeUtils.escapeHtml4(tDlist[13].toString()) %> <% } %></td>
         </tr>
         <tr>
                   	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">15.</td>
           	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Schedule</span></th>
-			        	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[14]!=null){%> <%= tDlist[14] %> <% } %></td>
+			        	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[14]!=null){%> <%= StringEscapeUtils.escapeHtml4(tDlist[14].toString()) %> <% } %></td>
         </tr>
         <tr>
                   	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">16.&nbsp;</td>
      	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Pass-Fail Criteria</span></th>
-                   	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[15]!=null){%> <%= tDlist[15] %> <% } %></td>
+                   	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[15]!=null){%> <%= StringEscapeUtils.escapeHtml4(tDlist[15].toString()) %> <% } %></td>
         </tr>
         
         
@@ -857,7 +858,7 @@ Role & RESPONSIBILITY FOR CARRYING OUT EACH LEVEL OF SYSTEM/ SUB-SYSTEM TESTING
         <tr>
           	        	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;">17.&nbsp;&nbsp;&nbsp;</td>
 	<th class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><span class="text-dark">Remarks</span></th>
-               	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[15]!=null){%> <%= tDlist[15] %> <% } %></td>
+               	<td class="border-black"style="padding: 5px; text-align: center; border: 1px solid black; border-collapse: collapse;font-family: <%= FontFamily %>;text-align: justify;"><%if(tDlist[15]!=null){%> <%= StringEscapeUtils.escapeHtml4(tDlist[15].toString()) %> <% } %></td>
         </tr>
        
     </tbody>
@@ -878,7 +879,7 @@ CONCLUSION
 </h1>
 <div style="margin-left: 20px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify; font-weight:<%=ParaFontWeight%>">
 				<%if(Conclusion!=null) {%> 
-				<%=Conclusion%><%} %> 
+				<%=StringEscapeUtils.escapeHtml4(Conclusion)%><%} %> 
 				</div>
 				<!-- Test  Conclusion  end-->	
 </body>

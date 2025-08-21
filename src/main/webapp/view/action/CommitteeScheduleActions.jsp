@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -262,21 +263,22 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 %>
 
 
-	<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%><center>
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</center>
-	<%}if(ses!=null){ %>
-	<center>
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-	</center>
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 	<nav class="navbar navbar-light bg-light" style="margin-top: -1%">
@@ -341,12 +343,12 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 							<div class="panel-heading " id="div<%=obj[0].toString()%>">
 								<h4 class="panel-title" id="<%=obj[0].toString()%>">
 									<span style="font-size: 14px">
-										<%=(ccmFlag!=null&&ccmFlag.equalsIgnoreCase("Y")?"3":(dmcFlag!=null&&dmcFlag.equalsIgnoreCase("Y")?"1":obj[7]) )+"."+(count++) +". "%> <%-- <%=obj[4] %> --%>  
+										<%=(ccmFlag!=null&&ccmFlag.equalsIgnoreCase("Y")?"3":(dmcFlag!=null&&dmcFlag.equalsIgnoreCase("Y")?"1":obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()):" - ") )+"."+(count++) +". "%> <%-- <%=obj[4] %> --%>  
 									<input type="hidden" id="Data<%=obj[0].toString()%>" value="<%=obj[1].toString()%>">
-									<%if(obj[1].toString().length()>50) {%>
-									<%=obj[1].toString().substring(0,50) %><span style="font-size: 11px;color:crimson;cursor: pointer;" onclick='showModal("<%=obj[0].toString()%>")'>&nbsp;( view more)</span>
+									<%if(obj[1]!=null && obj[1].toString().length()>50) {%>
+									<%=StringEscapeUtils.escapeHtml4(obj[1].toString().substring(0,50)) %><span style="font-size: 11px;color:crimson;cursor: pointer;" onclick='showModal("<%=obj[0].toString()%>")'>&nbsp;( view more)</span>
 									<%}else {%>
-									<%=obj[1].toString() %>
+									<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %>
 									<%} %>	
 										<br>
 										<%if("3".equalsIgnoreCase(obj[7].toString())){%><%-- / <%=obj[5] %> / --%>
@@ -492,7 +494,7 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 											<%for(Object[] lab : Alllablist){%>
 											<option value="<%=lab[3] %>"
 												<%if(labcode.equalsIgnoreCase(lab[3].toString())){%>
-												selected="selected" <%}%>><%=lab[3] %></option>
+												selected="selected" <%}%>><%=lab[3] !=null?StringEscapeUtils.escapeHtml4(lab[3].toString()):" - "%></option>
 											<%}%>
 											<option value="@EXP"
 												<%if("@EXP".equalsIgnoreCase(labcode)){%>
@@ -1061,7 +1063,7 @@ function AssigneeEmpList(){
 	var $AssigneeLabCode = $('#AssigneeLabCode').val();
 	var mainlabcode = "<%=labcode.toString()%>" ;
 	
-	let projectid = <%=committeescheduleeditdata[9]%> ;
+	let projectid = <%=committeescheduleeditdata[9]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[9].toString()):""%> ;
 	
 	var div = document.getElementById("main");
 	if(mainlabcode===$AssigneeLabCode){
@@ -1223,8 +1225,8 @@ function showEmployee(){
 	    //all lab list
 	    $('#AssigneeLabName').empty();
 	    <%for(Object[] obj2:Alllablist){%>
-        var optionValue = '<%=obj2[3]%>';
-	    var optionText = '<%=obj2[3]%>';
+        var optionValue = '<%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()):""%>';
+	    var optionText = '<%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()):" - "%>';
         var option = $("<option></option>").attr("value", optionValue).text(optionText);
         if (assigneeLab == optionValue) {
             option.prop('selected', true);

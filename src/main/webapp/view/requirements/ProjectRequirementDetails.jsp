@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.vts.pfms.requirements.model.RequirementInitiation"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
@@ -73,24 +74,22 @@ FormatConverter fc = new FormatConverter();
 </head>
 <body>
 
-	<%String ses=(String)request.getParameter("result"); 
- 	  String ses1=(String)request.getParameter("resultfail");
-	  if(ses1!=null){
-	%>
-	<div align="center">
-
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</div>
-	<%} %>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 	<div class="container-fluid">
 		<div class="row">
@@ -103,8 +102,8 @@ FormatConverter fc = new FormatConverter();
 								Project Requirements - 
 								<small>
 									<%if(projectDetails!=null) {%>
-										<%=projectDetails[2]!=null?projectDetails[2]:"-" %>
-										(<%=projectDetails[1]!=null?projectDetails[1]:"-" %>)
+										<%=projectDetails[2]!=null?StringEscapeUtils.escapeHtml4(projectDetails[2].toString()):"-" %>
+										(<%=projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()):"-" %>)
 									<%} %>
 								</small>
 							</h5>
@@ -218,14 +217,14 @@ FormatConverter fc = new FormatConverter();
 							<td align="center" colspan="2" class="text-primary">DOCUMENT SUMMARY</td>
 						</tr>
 						<tr>
-							<td  class="text-primary" colspan="2">1.&nbsp; Title: <span class="text-dark">System Requirements Document for <%=projectDetails[1] %></span></td>
+							<td  class="text-primary" colspan="2">1.&nbsp; Title: <span class="text-dark">System Requirements Document for <%=projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()): " - " %></span></td>
 						</tr>
 						<tr>
 							<td class="text-primary">2.&nbsp; Type of Document:<span class="text-dark">System Requirements Document</span></td>
-							<td class="text-primary">3.&nbsp; Classification: <span class="text-dark"><%=classification %></span></td>
+							<td class="text-primary">3.&nbsp; Classification: <span class="text-dark"><%=classification!=null?StringEscapeUtils.escapeHtml4(classification): " - " %></span></td>
 						</tr>
 				    	<tr >
-							<td class="text-primary">4.&nbsp; Document Number: <%if(DocumentSummary!=null && DocumentSummary[11]!=null) {%><span style="color:black;font-weight:400;">  SRD-<%=DocumentSummary[11].toString().replaceAll("-", "")%>-<%=session.getAttribute("labcode") %>-<%=projectDetails[1] %>-V<%=DocumentVersion %> <%} %></td>
+							<td class="text-primary">4.&nbsp; Document Number: <%if(DocumentSummary!=null && DocumentSummary[11]!=null) {%><span style="color:black;font-weight:400;">  SRD-<%=StringEscapeUtils.escapeHtml4(DocumentSummary[11].toString()).replaceAll("-", "")%>-<%=session.getAttribute("labcode") %>-<%=projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()): " - " %>-V<%=DocumentVersion!=null?StringEscapeUtils.escapeHtml4(DocumentVersion): " - " %> <%} %></td>
 							<td class="text-primary">5.&nbsp; Month Year: <span style="color:black;"><%=months.toString().substring(0,3) %>&nbsp;&nbsp;<%=years %></span></td>
 						</tr>
 						<tr>
@@ -234,29 +233,29 @@ FormatConverter fc = new FormatConverter();
 						</tr>
 						<tr>
 							<td  class="text-primary" colspan="2">8.&nbsp; Additional Information:
-								<%if(DocumentSummary!=null && DocumentSummary[0]!=null) {%><span class="text-dark"><%=DocumentSummary[0]%></span> <%} %>
+								<%if(DocumentSummary!=null && DocumentSummary[0]!=null) {%><span class="text-dark"><%=StringEscapeUtils.escapeHtml4(DocumentSummary[0].toString())%></span> <%} %>
 							</td>
 						</tr>
 				    	<tr>
 							<td  class="text-primary" colspan="2">9.&nbsp; Project Number and Project Name: 
-								<%if(projectDetails!=null) {%> <span class="text-dark"><%=projectDetails[11]+" & "+projectDetails[3]+" ( "+projectDetails[1]+" )" %> </span> <%} %>
+								<%if(projectDetails!=null) {%> <span class="text-dark"><%=projectDetails[11]!=null?StringEscapeUtils.escapeHtml4(projectDetails[11].toString()): " - "+" & "+projectDetails[3]!=null?StringEscapeUtils.escapeHtml4(projectDetails[3].toString()): " - "+" ( "+projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()): " - "+" )" %> </span> <%} %>
 							</td>
 						</tr>
 						<tr>
 							<td  class="text-primary" colspan="2">10.&nbsp; Abstract:
-								<%if(DocumentSummary!=null && DocumentSummary[1]!=null) {%> <span class="text-dark"><%=DocumentSummary[1]%></span><%} %>
+								<%if(DocumentSummary!=null && DocumentSummary[1]!=null) {%> <span class="text-dark"><%=StringEscapeUtils.escapeHtml4(DocumentSummary[1].toString())%></span><%} %>
 							</td>
 						</tr>
 						<tr>
 							<td  class="text-primary" colspan="2">11.&nbsp; Keywords:
-								<%if(DocumentSummary!=null && DocumentSummary[2]!=null) {%> <span class="text-dark"><%=DocumentSummary[2]%></span><%} %>
+								<%if(DocumentSummary!=null && DocumentSummary[2]!=null) {%> <span class="text-dark"><%=StringEscapeUtils.escapeHtml4(DocumentSummary[2].toString())%></span><%} %>
 							</td>
 						</tr>
 						<tr>
 							<td  class="text-primary" colspan="2">12.&nbsp; Organization and address:
 								<span class="text-dark">
 									<%if (LabList[1] != null) {%>
-										<%=LabList[1].toString() + "(" + LabList[0].toString() + ")"%>
+										<%=StringEscapeUtils.escapeHtml4(LabList[1].toString()) + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()): " - " + ")"%>
 									<%} else {%>
 										-
 									<%}%>
@@ -264,7 +263,7 @@ FormatConverter fc = new FormatConverter();
 									Government of India, Ministry of Defence,Defence Research & Development Organization
 									
 									<%if (LabList[2] != null && LabList[3] != null && LabList[5] != null) {%>
-										<%=LabList[2] + " , " + LabList[3].toString() + ", PIN-" + LabList[5].toString()+"."%>
+										<%=StringEscapeUtils.escapeHtml4(LabList[2].toString()) + " , " + StringEscapeUtils.escapeHtml4(LabList[3].toString()) + ", PIN-" + StringEscapeUtils.escapeHtml4(LabList[5].toString())+"."%>
 									<%}else{ %>
 										-
 									<%} %>
@@ -273,20 +272,20 @@ FormatConverter fc = new FormatConverter();
 						</tr>
 						<tr>
 							<td  class="text-primary" colspan="2">13.&nbsp; Distribution:
-								<%if(DocumentSummary!=null && DocumentSummary[3]!=null) {%> <span class="text-dark"><%=DocumentSummary[3]%></span><%} %>
+								<%if(DocumentSummary!=null && DocumentSummary[3]!=null) {%> <span class="text-dark"><%=StringEscapeUtils.escapeHtml4(DocumentSummary[3].toString())%></span><%} %>
 							</td>
 						</tr>
 						<tr>
 							<td  class="text-primary" colspan="2">14.&nbsp; Revision:</td>
 						</tr>
 						<tr>
-							<td  class="text-primary" colspan="2">15.&nbsp; Prepared by: <%if(DocumentSummary!=null && DocumentSummary[10]!=null) {%> <span class="text-dark"><%=DocumentSummary[10]%></span><%}else {%><span class="text-dark">-</span>  <%} %> </td>
+							<td  class="text-primary" colspan="2">15.&nbsp; Prepared by: <%if(DocumentSummary!=null && DocumentSummary[10]!=null) {%> <span class="text-dark"><%=StringEscapeUtils.escapeHtml4(DocumentSummary[10].toString())%></span><%}else {%><span class="text-dark">-</span>  <%} %> </td>
 						</tr>
 						<tr>
-							<td  class="text-primary" colspan="2">16.&nbsp; Reviewed by: <%if(DocumentSummary!=null && DocumentSummary[7]!=null) {%> <span class="text-dark"><%=DocumentSummary[7]%></span><%}else {%><span class="text-dark">-</span>  <%} %> </td>
+							<td  class="text-primary" colspan="2">16.&nbsp; Reviewed by: <%if(DocumentSummary!=null && DocumentSummary[7]!=null) {%> <span class="text-dark"><%=StringEscapeUtils.escapeHtml4(DocumentSummary[7].toString())%></span><%}else {%><span class="text-dark">-</span>  <%} %> </td>
 						</tr>
 						<tr>
-							<td  class="text-primary" colspan="2">17.&nbsp; Approved by: <%if(DocumentSummary!=null && DocumentSummary[6]!=null) {%> <span class="text-dark"><%=DocumentSummary[6]%></span><%}else {%><span class="text-dark">-</span>  <%} %> </td>
+							<td  class="text-primary" colspan="2">17.&nbsp; Approved by: <%if(DocumentSummary!=null && DocumentSummary[6]!=null) {%> <span class="text-dark"><%=StringEscapeUtils.escapeHtml4(DocumentSummary[6].toString())%></span><%}else {%><span class="text-dark">-</span>  <%} %> </td>
 						</tr>
 					</table>
 				</div>
@@ -316,7 +315,7 @@ FormatConverter fc = new FormatConverter();
 				   			</div>
    							<div class="col-md-8">
    								<textarea required="required" name="information" class="form-control" id="additionalReq" maxlength="4000"
-								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[0]!=null){%><%=DocumentSummary[0]%><%}else{%><%}%></textarea>
+								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[0]!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[0].toString())%><%}else{%><%}%></textarea>
    							</div>
    						</div>
    						<div class="row mt-2">
@@ -325,7 +324,7 @@ FormatConverter fc = new FormatConverter();
 			   				</div>
 			   				<div class="col-md-8">
 			   					<textarea required="required" name="abstract" class="form-control" id="" maxlength="4000"
-								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[1]!=null){%><%=DocumentSummary[1]%><%}else{%><%}%></textarea>
+								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[1]!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[1].toString())%><%}else{%><%}%></textarea>
 			   				</div>
    						</div>
    			
@@ -335,7 +334,7 @@ FormatConverter fc = new FormatConverter();
 			   				</div>
 			   				<div class="col-md-8">
 			   					<textarea required="required" name="keywords" class="form-control" id="" maxlength="4000"
-								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[2]!=null){%><%=DocumentSummary[2]%><%}else{%><%}%></textarea>
+								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[2]!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[2].toString())%><%}else{%><%}%></textarea>
 			   				</div>
    						</div>
    			
@@ -345,7 +344,7 @@ FormatConverter fc = new FormatConverter();
    							</div>
    							<div class="col-md-8">
    								<input required="required" name="distribution" class="form-control" id="" maxlength="255"
-				 				placeholder="Maximum 255 Chararcters" required value="<%if(DocumentSummary!=null && DocumentSummary[3]!=null){%><%=DocumentSummary[3]%><%}else{%><%}%>">
+				 				placeholder="Maximum 255 Chararcters" required value="<%if(DocumentSummary!=null && DocumentSummary[3]!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[3].toString())%><%}else{%><%}%>">
    							</div>
    						</div>
    						<div class="row mt-2">
@@ -353,7 +352,7 @@ FormatConverter fc = new FormatConverter();
 			   	 				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Release Date:</label>
 			   				</div>
 			   				<div class="col-md-2">
-			   				<input id="pdc-date" data-date-format="dd/mm/yyyy" readonly name="pdc" <%if(DocumentSummary!=null && DocumentSummary[11]!=null){%> value="<%=DocumentSummary[11].toString() %>" <%}%> class="form-control form-control">
+			   				<input id="pdc-date" data-date-format="dd/mm/yyyy" readonly name="pdc" <%if(DocumentSummary!=null && DocumentSummary[11]!=null){%> value="<%=StringEscapeUtils.escapeHtml4(DocumentSummary[11].toString()) %>" <%}%> class="form-control form-control">
 			   				</div>
    						
 			   				<div class="col-md-2">
@@ -364,7 +363,7 @@ FormatConverter fc = new FormatConverter();
 	          						<option value="" selected>--SELECT--</option>
 	       	 						<%for(Object[]obj:TotalEmployeeList){ %>
 	        							<option value="<%=obj[0].toString()%>" <%if(DocumentSummary!=null && DocumentSummary[9]!=null && DocumentSummary[9].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
-	        								<%=obj[1].toString() %>,<%=(obj[2].toString()) %>
+	        								<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>,<%=(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ") %>
 	        							</option>
 	        						<%} %>
 	        					</select>
@@ -382,7 +381,7 @@ FormatConverter fc = new FormatConverter();
 	        						<%for(Object[]obj:TotalEmployeeList){ %>
 	        							<option value="<%=obj[0].toString()%>"
 	        								<%if(DocumentSummary!=null && DocumentSummary[4]!=null && DocumentSummary[4].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
-	        									<%=obj[1].toString() %>,<%=(obj[2].toString()) %>
+	        									<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>,<%=(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ") %>
 	        							</option>
 	       							<%} %>
 	        					</select>
@@ -397,7 +396,7 @@ FormatConverter fc = new FormatConverter();
 		       						<option value="" selected>--SELECT--</option>
 		        					<%for(Object[]obj:TotalEmployeeList){ %>
 		        						<option value="<%=obj[0].toString()%>" <%if(DocumentSummary!=null && DocumentSummary[5]!=null && DocumentSummary[5].toString().equalsIgnoreCase(obj[0].toString())){%>selected<%}%>>
-		        							<%=obj[1].toString() %>,<%=(obj[2].toString()) %>
+		        							<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>,<%=(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ") %>
 		        						</option>
 		        					<%} %>
 		        				</select>
@@ -499,8 +498,8 @@ FormatConverter fc = new FormatConverter();
 										for(Object[]obj:MemberList) {%>
 											<tr>
 												<td style="text-align: center;width:10%;"><%=++rowCount %></td>
-												<td style="width:50%;margin-left: 10px;"><%=obj[1].toString() %></td>
-												<td style="width:40%;margin-left: 10px;"><%=obj[2].toString() %></td>
+												<td style="width:50%;margin-left: 10px;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></td>
+												<td style="width:40%;margin-left: 10px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 												<td style="width:10%; margin-left: 10px;">
 												    <button type="submit" class="editable-clicko" onclick="return confirmDeletion('<%=obj[5]%>');">
 												        <img src="view/images/delete.png" alt="Delete">
@@ -518,7 +517,7 @@ FormatConverter fc = new FormatConverter();
 							<div class="col-md-10">
 								<select class="form-control selectdee"name="Assignee" id="Assignee"data-width="100%" data-live-search="true" multiple required>
 							        <%for(Object[]obj:EmployeeList){ %>
-							        	<option value="<%=obj[0].toString()%>"> <%=obj[1].toString() %>,<%=(obj[2].toString()) %></option>
+							        	<option value="<%=obj[0].toString()%>"> <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>,<%=(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ") %></option>
 							        <%} %>
 							    </select>
 						    </div>
@@ -591,9 +590,9 @@ FormatConverter fc = new FormatConverter();
 									for(Object[] AbbDetails:AbbreviationDetails){
 								%>
 									<tr>
-										<td><%=AbbDetails[0]%></td>
-										<td><%=AbbDetails[1]%></td>
-										<td><%=AbbDetails[2]%></td>
+										<td><%=AbbDetails[0]!=null?StringEscapeUtils.escapeHtml4(AbbDetails[0].toString()): " - "%></td>
+										<td><%=AbbDetails[1]!=null?StringEscapeUtils.escapeHtml4(AbbDetails[1].toString()): " - "%></td>
+										<td><%=AbbDetails[2]!=null?StringEscapeUtils.escapeHtml4(AbbDetails[2].toString()): " - "%></td>
 									</tr>
 								<% }}%>
 						</table>
@@ -634,7 +633,7 @@ FormatConverter fc = new FormatConverter();
       						%>
 								<tr>
 						      		<td style="text-align: center"><%=++snCount %></td>
-						      		<td><%=obj[1].toString() %></td>
+						      		<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
 						      		<td></td>
 						      	</tr>
       						<%}}else{ %>
@@ -651,7 +650,7 @@ FormatConverter fc = new FormatConverter();
 					      	<div>
 					      		<input class="form-control" name="addDoc" type="checkbox" value="<%=obj[0].toString()%>"style="width:50%;display:inline">
 					      	
-					      		<span><%=obj[1].toString() %></span>
+					      		<span><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span>
 					      	</div>
       
       					<%}} %>
@@ -794,7 +793,7 @@ const excel_file = document.getElementById('excel_file');
 		    		}
 		    		else{
 		    			
-	    		var AbbreviationDetailsList=[<%int i=0; for (Object [] obj:AbbreviationDetails ) {%> "<%= obj[1] %>"<%= i+1 < AbbreviationDetails.size() ? ",":""%><%}%>];	
+	    		var AbbreviationDetailsList=[<%int i=0; for (Object [] obj:AbbreviationDetails ) {%> "<%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>"<%= i+1 < AbbreviationDetails.size() ? ",":""%><%}%>];	
 	    		
 	    		var AbbreDetails = [];
 	    		

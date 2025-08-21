@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -53,20 +54,22 @@ label {
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-     <%=ses1 %>
- </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br />
     
@@ -84,8 +87,8 @@ label {
   					<div class="row">
     					<div class="col-md-12">
 					    	<h6 class="mb-4" style="color: white;font-size: 1.2rem !important;">
-					        	<span>FRACAS Item: <%= fracasassigndata[12] %></span>
-					        	<span style="font-size: 1rem;float: right;margin-top: 1.8rem;">Assigner: <%= fracasassigndata[8] %></span>
+					        	<span>FRACAS Item: <%= fracasassigndata[12]!=null?StringEscapeUtils.escapeHtml4(fracasassigndata[12].toString()): " - " %></span>
+					        	<span style="font-size: 1rem;float: right;margin-top: 1.8rem;">Assigner: <%= fracasassigndata[8]!=null?StringEscapeUtils.escapeHtml4(fracasassigndata[8].toString()): " - " %></span>
 					      	</h6>
 						</div>
 					</div>
@@ -93,7 +96,7 @@ label {
       		
 	      		<div class="card-body">
 	      			<form method="post" action="FracasSubSubmit.htm" enctype="multipart/form-data">
-	        			<div class=""><label>Remarks: </label> <%=fracasassigndata[2] %>   </div>
+	        			<div class=""><label>Remarks: </label> <%=fracasassigndata[2] !=null?StringEscapeUtils.escapeHtml4(fracasassigndata[2].toString()): " - "%>   </div>
 	        			<div class="col-md-12">
 	          				<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="myTable20" style="margin-top: 30px;">
 								<thead>  
@@ -182,13 +185,13 @@ label {
 							<% int i=0;
 							for(Object[] obj:fracassublist){ %>		
 								<tr>
-									<td><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
-									<td><%=obj[4] %></td>
+									<td><%=obj[3]!=null?sdf.format(sdf1.parse(obj[3].toString())):" - " %></td>
+									<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
 									<td style="width:15%;">									
 											<%if(!obj[2].toString().equals("0")){ %>
 									           <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 										            <div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[2]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-											            <%=obj[2]%>
+											            <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>
 											        </div> 
 											   </div> 
 											<%}else{ %>

@@ -1,4 +1,5 @@
-	<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	<%@page import="org.apache.commons.text.StringEscapeUtils"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
 <html>
@@ -64,20 +65,22 @@ List<Object[]> clusterlablist=(List<Object[]>) request.getAttribute("clusterlabl
 String LabCode=(String) request.getAttribute("LabCode");
 %>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-                   </div></div>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -92,7 +95,7 @@ String LabCode=(String) request.getAttribute("LabCode");
 					  			<h4><%=rodscheduledata[9] %> Invitations </h4>
 							 </div>
 							 <div class="col-md-9" align="right" style="margin-top: 3px;" >
-					 			<h5 style="color: white"  > (Meeting Date & Time : <%= sdf.format(sdf1.parse( rodscheduledata[2].toString()))%>  &  <%=rodscheduledata[3] %>)</h5>
+					 			<h5 style="color: white"  > (Meeting Date & Time : <%= sdf.format(sdf1.parse( rodscheduledata[2].toString()))%>  &  <%=rodscheduledata[3]!=null?StringEscapeUtils.escapeHtml4(rodscheduledata[3].toString()): " - " %>)</h5>
 							 </div>
 					 	</div>
 			  </div>
@@ -105,7 +108,7 @@ String LabCode=(String) request.getAttribute("LabCode");
 				<div class="col-md-10">
 
 				<div align="center">
-					<h5 style="color:#145374" >(Meeting Id : <%=rodscheduledata[12] %>) </h5>
+					<h5 style="color:#145374" >(Meeting Id : <%=rodscheduledata[12]!=null?StringEscapeUtils.escapeHtml4(rodscheduledata[12].toString()): " - "  %>) </h5>
 				</div>
 
 				<%
@@ -138,18 +141,18 @@ String LabCode=(String) request.getAttribute("LabCode");
 											else if(obj[3].toString().equalsIgnoreCase("CH") ){	 %> Co-Chairperson<%}
 											else if(obj[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary (Proxy) <%}
 											else if(obj[3].toString().equalsIgnoreCase("CI")){   %> Internal<%}
-											else if(obj[3].toString().equalsIgnoreCase("CW")){	 %> External(<%=obj[11] %>)<%}
-											else if(obj[3].toString().equalsIgnoreCase("CO")){	 %> External(<%=obj[11]%>)<%}
+											else if(obj[3].toString().equalsIgnoreCase("CW")){	 %> External(<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>)<%}
+											else if(obj[3].toString().equalsIgnoreCase("CO")){	 %> External(<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "%>)<%}
 											else if(obj[3].toString().equalsIgnoreCase("P") ){	 %>Presenter <%}
 											else if(obj[3].toString().equalsIgnoreCase("I")){	 %> Internal<%}
-											else if(obj[3].toString().equalsIgnoreCase("W") ){	 %> External(<%=obj[11] %>)<%}
-											else if(obj[3].toString().equalsIgnoreCase("E") )    {%>External(<%=obj[11] %>)<%}
+											else if(obj[3].toString().equalsIgnoreCase("W") ){	 %> External(<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>)<%}
+											else if(obj[3].toString().equalsIgnoreCase("E") )    {%>External(<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>)<%}
 											else if(obj[3].toString().equalsIgnoreCase("IP") )    {%>Industry Partner(<%=obj[11] %>)<%}
-											else {%> REP_<%=obj[3].toString()%> (<%=obj[11] %>)  <%}
+											else {%> REP_<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> (<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>)  <%}
 										%>
 										
 									</td>
-									<td><%=obj[6] %> (<%=obj[7]%>)(<%=obj[11]%>)</td>        
+									<td><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %> (<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%>)(<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "%>)</td>        
 									
 									<td>
 											<input name="attendance"  onchange="FormNameEdit(<%=obj[1]%>)"  type="checkbox" <%if((obj[4]).toString().equalsIgnoreCase("P")){ %>checked<%}%> data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="112" data-height="15" data-on="<i class='fa fa-user' aria-hidden='true'></i> Present" data-off="<i class='fa fa-user-times' aria-hidden='true'></i> Absent" >
@@ -237,7 +240,7 @@ String LabCode=(String) request.getAttribute("LabCode");
 									 <div class="input select external">
 										 <select class="form-control selectdee " name="internalmember" id="internalmember"  data-live-search="true"   data-placeholder="Select Members" multiple required>
 							                 <% for (Object[] obj : EmployeeList) {%>
-									       		<option value="<%=obj[0]%>,I,<%=obj[3]%>"><%=obj[1]%> ( <%=obj[2] %> ) </option>
+									       		<option value="<%=obj[0]%>,I,<%=obj[3]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> ( <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> ) </option>
 									    	<%} %>
 										</select>
 										<input type="hidden" name="InternalLabId" value="<%=LabCode %>" />
@@ -279,7 +282,7 @@ String LabCode=(String) request.getAttribute("LabCode");
 										<option disabled="true"  selected value="">Lab Name</option>
 											<% for (Object[] obj : clusterlablist) {
 											if(!LabCode.equals(obj[3].toString())){%>
-												<option value="<%=obj[3]%>"><%=obj[3]%></option>
+												<option value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 											<%} 
 											}%>
 									</select>
@@ -328,7 +331,7 @@ String LabCode=(String) request.getAttribute("LabCode");
 								<div class="input select external">
 									<select  class= "form-control selectdee" name="externalmember" id="expertmember"   data-live-search="true"   data-placeholder="Select Members" multiple required>
 										<% for (Object[] obj : ExpertList) {%>
-									       	<option value="<%=obj[0]%>,E,<%=obj[3]%>"><%=obj[1]%> ( <%=obj[2] %> ) </option>
+									       	<option value="<%=obj[0]%>,E,<%=obj[3]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> ( <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> ) </option>
 									    <%} %>
 									</select>
 									<input type="hidden" name="LabId1" value="@EXP" />

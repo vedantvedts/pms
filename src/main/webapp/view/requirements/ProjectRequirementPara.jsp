@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -327,8 +328,8 @@ keyframes blinker { 50% {
 				</span>
 				<span style="color: #31708f; font-size: 19px">
 					<%if(projectDetails!=null) {%>
-						<%=projectDetails[2]!=null?projectDetails[2]:"-" %>
-						(<%=projectDetails[1]!=null?projectDetails[1]:"-" %>)
+						<%=projectDetails[2]!=null?StringEscapeUtils.escapeHtml4(projectDetails[2].toString()):"-" %>
+						(<%=projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()):"-" %>)
 					<%} %>
 				</span>
 			</b>
@@ -342,7 +343,7 @@ keyframes blinker { 50% {
 	<select id="sqrImport" class="form-control selectdee" style="width:30%"  onchange="importSqr()">
 	<option  selected="selected" disabled="disabled">SELECT</option>
 	<%for(Object[]obj:TotalSqr){ %>
-	<option value="<%=obj[14].toString() %>"><%=obj[4].toString() %></option>
+	<option value="<%=obj[14].toString() %>"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></option>
 	<%} %>
 	</select>
 	<%} %>
@@ -366,23 +367,22 @@ keyframes blinker { 50% {
 			<input type="hidden" name="projectShortName">
 		</form>
 	</nav>
-	<%
-	String ses = (String) request.getParameter("result");
-	String ses1 = (String) request.getParameter("resultfail");
-	if (ses1 != null) {
-	%>
-	<div class="mt-2" align="center">
-		<div class="alert alert-danger" role="alert">
-			<%=ses1%>
-		</div>
-	</div>
-	<%}if (ses != null) {%>
-	<div class="mt-2" align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses%>
-		</div>
-	</div>
-	<%}%>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
 
 	<%if (SQRFile != null) {%>
 	
@@ -402,14 +402,14 @@ keyframes blinker { 50% {
 										<h4 class="panel-title">
 											<span class="ml-2" style="font-size: 14px">
 												<%-- Para - <%=++count%>&nbsp;&nbsp;&nbsp;  --%>
-										<input type="number" class="form-control inputx serial" style="width: 8%" value="<%=obj[5]!=null?obj[5].toString():"0"%>" min="0" max="<%=ParaDetails.size()%>">
+										<input type="number" class="form-control inputx serial" style="width: 8%" value="<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"0"%>" min="0" max="<%=ParaDetails.size()%>">
 										<input class="paraidclass" type="hidden" value="<%=obj[0].toString()%>">
 												<input type="hidden" id="paracount<%=obj[0].toString()%>" name="paracount" value="<%=count%>"> 
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 												<input type="hidden" name="projectId" value="<%=projectId%>">
 												<input type="hidden" name="productTreeMainId" value=<%=productTreeMainId%>> 
 												<input type="hidden" name="reqInitiationId" value=<%=reqInitiationId%>> 
-												<input type="text" class="form-control inputx" id="input<%=obj[0].toString()%>" name="ParaNo" maxlength="250 characters" placeholder="Enter Text" value="<%=obj[3].toString()%>" readonly style="width: 40%">
+												<input type="text" class="form-control inputx" id="input<%=obj[0].toString()%>" name="ParaNo" maxlength="250 characters" placeholder="Enter Text" value="<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): ""%>" readonly style="width: 40%">
 												<input type="hidden" name="paraid" value=<%=obj[0].toString()%>>
 												<button class="btn btn-sm ml-1 bg-transparent" type="button"
 													id="btns<%=obj[0].toString()%>"
@@ -536,8 +536,8 @@ keyframes blinker { 50% {
 						Staff Qualification Requirement -
 						<small>
 							<%if(projectDetails!=null) {%>
-								<%=projectDetails[2]!=null?projectDetails[2]:"-" %>
-								(<%=projectDetails[1]!=null?projectDetails[1]:"-" %>)
+								<%=projectDetails[2]!=null?StringEscapeUtils.escapeHtml4(projectDetails[2].toString()):"-" %>
+								(<%=projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()):"-" %>)
 							<%} %>
 						</small>
 					</h5>
@@ -580,16 +580,16 @@ keyframes blinker { 50% {
 									<%}%>
 								</td>
 								<td>
-									<%if(SQRFile[1] != null) {%><%=SQRFile[1].toString()%><%}%>
+									<%if(SQRFile[1] != null) {%><%=StringEscapeUtils.escapeHtml4(SQRFile[1].toString())%><%}%>
 								</td>
 								<td>
 									<%if(SQRFile[5] != null) {%><%=(sdf.format(SQRFile[5]))%><%}%>
 								</td>
 								<td style="text-align: right">
-									<%if(SQRFile[4] != null) {%><%=SQRFile[4].toString()%><%}%>
+									<%if(SQRFile[4] != null) {%><%=StringEscapeUtils.escapeHtml4(SQRFile[4].toString())%><%}%>
 								</td>
 								<td>
-									<%if(SQRFile[3] != null) {%><%=SQRFile[3].toString()%><%}%>
+									<%if(SQRFile[3] != null) {%><%=StringEscapeUtils.escapeHtml4(SQRFile[3].toString())%><%}%>
 								</td>
 								<td align="center">
 									<form action="#">
@@ -617,7 +617,7 @@ keyframes blinker { 50% {
 									<div class="col-md-6">
 									
 										<input class="form-control modals" type="text" name="Qrtitle" maxlength="10" placeholder="Enter Maximum 10 characters" 
-										value="<%if (SQRFile != null && SQRFile[13] != null) {%><%=SQRFile[13].toString()%><%}%>" style="width: 421px;"required>
+										value="<%if (SQRFile != null && SQRFile[13] != null) {%><%=StringEscapeUtils.escapeHtml4(SQRFile[13].toString())%><%}%>" style="width: 421px;"required>
 									</div>
 									
 								</div>
@@ -663,7 +663,7 @@ keyframes blinker { 50% {
 									</div>
 									<div class="col-md-6">
 										<input class="form-control modals" type="text" name="refNo" maxlength="255" placeholder="Enter Maximum 255 characters" 
-										value="<%if (SQRFile != null && SQRFile[1] != null) {%><%=SQRFile[1].toString()%><%}%>" required>
+										value="<%if (SQRFile != null && SQRFile[1] != null) {%><%=StringEscapeUtils.escapeHtml4(SQRFile[1].toString())%><%}%>" required>
 									</div>
 								</div>
 								
@@ -675,7 +675,7 @@ keyframes blinker { 50% {
 								      	 
 						      			<div class="col-md-6" style="">
 						      				<input class="form-control modals" id="previoussqrno" type="text" name="previousSQRNo" maxlength="255" placeholder="Enter Maximum 255 characters"
-						      				value="<%if(SQRFile!=null && SQRFile[8]!=null) {%><%=SQRFile[8].toString()%><%} %>" required>
+						      				value="<%if(SQRFile!=null && SQRFile[8]!=null) {%><%=StringEscapeUtils.escapeHtml4(SQRFile[8].toString())%><%} %>" required>
 						     			</div>
 						      		</div>  
       
@@ -687,7 +687,7 @@ keyframes blinker { 50% {
       									</div>
 								      	<div class="col-md-6" style="" >
 								      		<textarea rows="2" class="form-control modals"  maxlength="1000" placeholder="Enter Maximum 1000 characters"
-								      		required name="MeetingReference"><%if(SQRFile!=null && SQRFile[9]!=null) {%><%=SQRFile[9].toString()%><%} %></textarea>
+								      		required name="MeetingReference"><%if(SQRFile!=null && SQRFile[9]!=null) {%><%=StringEscapeUtils.escapeHtml4(SQRFile[9].toString())%><%} %></textarea>
 								     	</div>
       								</div> 
 
@@ -712,7 +712,7 @@ keyframes blinker { 50% {
 									</div>
 									<div class="col-md-6" style="">
 										<input type="text" class="form-control modals" name="IssuingAuthority" required maxlength="255" placeholder="Enter Maximum 255 characters"
-										value="<%if (SQRFile != null && SQRFile[3] != null) {%><%=SQRFile[3].toString()%><%}%>">
+										value="<%if (SQRFile != null && SQRFile[3] != null) {%><%=StringEscapeUtils.escapeHtml4(SQRFile[3].toString())%><%}%>">
 									</div>
 								</div>
 								<div class="row mt-2">
@@ -725,7 +725,7 @@ keyframes blinker { 50% {
 											type="number" style="" required
 											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
 											name="version"
-											value="<%if (SQRFile != null && SQRFile[4] != null) {%><%=SQRFile[4].toString()%><%}%>"
+											value="<%if (SQRFile != null && SQRFile[4] != null) {%><%=StringEscapeUtils.escapeHtml4(SQRFile[4].toString())%><%}%>"
 											<%if (SQRFile != null) {%> readonly <%}%>>
 									</div>
 								</div>
@@ -785,7 +785,7 @@ keyframes blinker { 50% {
        </div>
        <div align="center" id="submit" class="mt-2"> 
        	<input type="hidden" id="reqInitiationId" value="<%=reqInitiationId%>">
-			<input type="hidden" id="sqrid" value="<%=SQRFile!=null&& SQRFile[7]!=null ?  SQRFile[7].toString():""%>"> 
+			<input type="hidden" id="sqrid" value="<%=SQRFile!=null&& SQRFile[7]!=null ?  StringEscapeUtils.escapeHtml4(SQRFile[7].toString()):""%>"> 
 
        <button class="btn btn-sm submit" onclick="submitImportSqr()">SUBMIT</button>
        </div>

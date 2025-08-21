@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.util.List"%>
@@ -105,22 +106,22 @@ a:hover {
 	SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 %>
 
-<% String ses=(String)request.getParameter("result"); 
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	<div class="container-fluid">
 		<div class="container" style="margin-bottom:20px;">
 			<div class="card" style=" ">
@@ -205,15 +206,15 @@ a:hover {
 															for(Object[] obj: assignedList){ %>
 															<tr>
 																<td style="width:1% !important; " class="center"><%=count %></td>
-																<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=obj[5] %></td>
-																<td class="width-30px" ><%=sdf.format(obj[4])%></td>
-																<td style="width:8% !important; "><%=sdf.format(obj[3])%></td>
-																<td ><%=obj[1]%>, <%=obj[2]%></td>
+																<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></td>
+																<td class="width-30px" ><%=obj[4]!=null?sdf.format(obj[4]):" - "%></td>
+																<td style="width:8% !important; "><%=obj[3]!=null?sdf.format(obj[3]):" - "%></td>
+																<td ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></td>
 																<td style="width:20% !important; ">
 																	<%if(obj[7]!=null  && !obj[7].toString().equalsIgnoreCase("0")){ %>
 																		<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 																			<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[7]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																				<%=obj[7]%>
+																				<%=StringEscapeUtils.escapeHtml4(obj[7].toString())%>
 																			</div> 
 																		</div>
 																	<%}else{ %>

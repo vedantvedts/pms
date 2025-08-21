@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -109,7 +110,7 @@ h6{
            	<select class="form-control selectdee" id="ProjectId" required="required" name="ProjectId">
     			<option disabled="true"  selected value="">Choose...</option>
     					<% for (Object[] obj : ProjectList) {%>
-							<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>><%=obj[2]%>( <%=obj[1]%> ) </option>
+							<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%>( <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%> ) </option>
 						<%} %>
   			</select>
 			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
@@ -117,20 +118,22 @@ h6{
 	</form>
 </nav> 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br />
 
@@ -145,7 +148,7 @@ h6{
 						<h3 ><%if(ProjectId!=null){
 							Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");
 							%>
-							<%=ProjectDetail[2] %> ( <%=ProjectDetail[1] %> ) 
+							<%=ProjectDetail[2]!=null?StringEscapeUtils.escapeHtml4(ProjectDetail[2].toString()):" - " %> ( <%=ProjectDetail[1]!=null?StringEscapeUtils.escapeHtml4(ProjectDetail[1].toString()):" - " %> ) 
 							<%} %>
 					 		Milestone Schedule List</h3>
 					</div>
@@ -186,11 +189,11 @@ h6{
 									for(Object[] obj: MilestoneScheduleList){ %>
 								<tr>
 									<td style="text-align: center;"><%=count %></td>
-									<td style="text-align: left;"> Mil-<%=obj[3]%></td>
-									<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=obj[2] %></td>
-									<td ><%=sdf.format(obj[4])%></td>
-									<td ><%=sdf.format(obj[5])%></td>
-									<td style="text-align: center;" ><%if(obj[8]!=null){%><%=obj[8]%><%}else {%>-<%} %></td>
+									<td style="text-align: left;"> Mil-<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - "%></td>
+									<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - " %></td>
+									<td ><%=obj[4]!=null?sdf.format(obj[4]):" - "%></td>
+									<td ><%=obj[5]!=null?sdf.format(obj[5]):" - "%></td>
+									<td style="text-align: center;" ><%if(obj[8]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[8].toString())%><%}else {%>-<%} %></td>
 									<td class="left width">		
 										<form action="MilestoneActivityDetails.htm" method="POST" name="myfrm"  style="display: inline">
 															

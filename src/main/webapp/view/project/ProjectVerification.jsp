@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -393,7 +394,7 @@ String verificationId=(String)request.getAttribute("verificationId");
 		<a class="navbar-brand"> <b
 			style="color: #585858; font-size: 19px; font-weight: bold; text-align: left; float: left"><span
 				style="color: #31708f">Verification Provisions for Project </span> <span
-				style="color: #31708f; font-size: 19px"> <%=projectDetails!=null?projectDetails[1].toString():"-" %></span></b>
+				style="color: #31708f; font-size: 19px"> <%=projectDetails!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()):"-" %></span></b>
 		</a>
 		<form action="#">
 			<input type="hidden" name="${_csrf.parameterName}"
@@ -409,22 +410,22 @@ String verificationId=(String)request.getAttribute("verificationId");
 				formnovalidate="formnovalidate" style="float: right;">BACK</button>
 		</form>
 	</nav>
-	<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div class="mt-2" align="center">
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div class="mt-2" align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-	</div>
-	<%} %>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 	<div class="container-fluid">
 		<div class="row">
@@ -443,7 +444,7 @@ String verificationId=(String)request.getAttribute("verificationId");
 
 									<h4 class="panel-title">
 										<span class="ml-2" style="font-size: 14px"> <%=++count%>.
-											<input type="text" name="Provisions" readonly class="form-control inputx inputs" id="input<%=obj[0].toString() %>" value="<%=obj[1].toString() %>">
+											<input type="text" name="Provisions" readonly class="form-control inputx inputs" id="input<%=obj[0].toString() %>" value="<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): "" %>">
 											<button class="btn btn-sm ml-1 bg-transparent" type="button"
 												id="btns<%=obj[0].toString()%>"
 												style="width: 44px; height: 24px; font-size: 10px; font-weight: bold; text-align: justify; display: inline-block;"

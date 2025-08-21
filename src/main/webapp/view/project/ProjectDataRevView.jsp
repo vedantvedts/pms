@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.math.BigDecimal"%> 
@@ -134,24 +135,22 @@ String projectdatarevid=(String)request.getAttribute("projectdatarevid");
 
 
 %>
-<%String ses=(String)request.getParameter("result"); 
-String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){
-%>
-	<center>
-	
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</center>
-	<%}if(ses!=null){ %>
-	<center>
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</center>
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 <div class="container-fluid">
 		<div class="row">
@@ -174,7 +173,7 @@ if(ses1!=null){
 											     String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
 												%>
 												<%-- <option <%if(projectid.equals(obj[0].toString())){ %> selected <%} %> value="<%=obj[0] %>" ><%=obj[4] %></option> --%>
-												<option <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value="<%=obj[0]%>" ><%=obj[4]+projectshortName %></option>
+												<option <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value="<%=obj[0]%>" ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - " %></option>
 												<%} %>
 											</select>
 											<button type="submit" class="btn  btn-sm back" formaction="ProjectData.htm" >Back</button>
@@ -202,7 +201,7 @@ if(ses1!=null){
 													<select class="form-control items" name="projectdatarevid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('revchange');">
 														<option disabled  selected value="">Choose...</option>
 														<%for(Object[] obj : projectdatarevlist){ %>
-														<option <%if(projectdatarevid.equals(obj[0].toString())){ %> selected <%} %> value="<%=obj[0] %>" >REV - <%=obj[2] %> (<%=sdf.format(sdf1.parse(obj[3].toString()) )%>)</option>
+														<option <%if(projectdatarevid.equals(obj[0].toString())){ %> selected <%} %> value="<%=obj[0] %>" >REV - <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> (<%=sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[3].toString())) )%>)</option>
 														<%} %>
 													</select>
 													<input type="hidden" name="projectid" value="<%=projectid %>" >												
@@ -216,7 +215,7 @@ if(ses1!=null){
 							   
 							    	<table  style="border-collapse: collapse; border: 0px; width:100%; ">
 							    		<tr>
-							    			<td colspan="4" align="center"><label>Revision Date: &nbsp;<%=projectdatarevdata[4] %></label></td>
+							    			<td colspan="4" align="center"><label>Revision Date: &nbsp;<%=projectdatarevdata[4]!=null?StringEscapeUtils.escapeHtml4(projectdatarevdata[4]): " - " %></label></td>
 							    		</tr>
 							    		<tr>
 							    			<td>

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -104,22 +105,22 @@ String projectCode=ProjectList.stream().filter(project -> project[0] != null && 
                                        .orElse(null);
 %>
 
-	<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</center>
-	<%}if(ses!=null){ %>
-	<center>
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-	</center>
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 	<div class="container-fluid">
 		<div class="row">
@@ -138,7 +139,7 @@ String projectCode=ProjectList.stream().filter(project -> project[0] != null && 
 									<% for (Object[] obj : ProjectList) {
 									String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
 									%>
-								<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(projectId)){ %>selected="selected" <%} %>> <%=obj[4]+projectshortName%>  </option>
+								<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(projectId)){ %>selected="selected" <%} %>> <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - "%>  </option>
 								<%} %>
   						</select>
 	                   </div>
@@ -168,14 +169,14 @@ String projectCode=ProjectList.stream().filter(project -> project[0] != null && 
 										int i=0;
 										for(Object[] obj:oldRfaUploadList) { %>
 								        <tr>
-								           <td style="text-align: center;"><%=++i %> <input type="hidden" name="fileUploadId" value="<%= obj[0]%>"> </td>
-										   <td style="text-align: center;"><%=obj[1] %></td>
-										   <td style="text-align: center;"><%=sdf.format(obj[2])%></td>
+								           <td style="text-align: center;"><%=++i %> <input type="hidden" name="fileUploadId" value="<%= obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):" - "%>"> </td>
+										   <td style="text-align: center;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %></td>
+										   <td style="text-align: center;"><%=obj[4]!=null?sdf.format(obj[2]):" - "%></td>
 										   <td style="text-align: center;"><%if(obj[3]!=null){%>
-										   <a href="OldRfaFileDownload.htm?id=<%=obj[0]%>&rfano=<%=obj[1] %>&file1=<%=obj[3]%>&projectCode=<%=projectCode %>" target="_blank"><%=obj[3]%></a><%}else{ %>--<%} %>
+										   <a href="OldRfaFileDownload.htm?id=<%=obj[0]%>&rfano=<%=obj[1] %>&file1=<%=obj[3]%>&projectCode=<%=projectCode %>" target="_blank"><%=StringEscapeUtils.escapeHtml4(obj[3].toString())%></a><%}else{ %>--<%} %>
 										   </td>
 										   <td style="text-align: center;"><%if(obj[4]!=null){%>
-										   <a href="OldRfaFileDownload.htm?id=<%=obj[0]%>&rfano=<%=obj[1] %>&file2=<%=obj[4]%>&projectCode=<%=projectCode %>" target="_blank"><%=obj[4]%></a><%}else{ %>--<%} %>
+										   <a href="OldRfaFileDownload.htm?id=<%=obj[0]%>&rfano=<%=obj[1] %>&file2=<%=obj[4]%>&projectCode=<%=projectCode %>" target="_blank"><%=StringEscapeUtils.escapeHtml4(obj[4].toString())%></a><%}else{ %>--<%} %>
 										   </td>
 										   <td style="text-align: center;">
 										       <button class="btn bg-transparent"

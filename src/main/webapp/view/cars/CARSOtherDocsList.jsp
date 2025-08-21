@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.vts.pfms.cars.model.CARSSoC"%>
 <%@page import="java.util.Date"%>
@@ -427,22 +428,22 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 %>
 
-<% String ses=(String)request.getParameter("result"); 
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 <br>
 <div class="container-fluid">
@@ -482,14 +483,14 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 					              		<div class="row">
 					                		<div class="col-md-12">
 					                			<span class="cssideheading">Title:</span>
-					                			&emsp;<span class="cssideheadingdata"><%if(carsIni!=null && carsIni.getInitiationTitle()!=null) {%><%=carsIni.getInitiationTitle() %> <%} else{%>-<%} %></span>
+					                			&emsp;<span class="cssideheadingdata"><%if(carsIni!=null && carsIni.getInitiationTitle()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsIni.getInitiationTitle()) %> <%} else{%>-<%} %></span>
 					                		</div>
 					                	</div>
 					                	<br>
 					                	<div class="row">
 					                		<div class="col-md-4">
 					                			<span class="cssideheading">CARS. No:</span>
-					                			&emsp;<span class="cssideheadingdata"><%if(carsIni!=null && carsIni.getCARSNo()!=null) {%><%=carsIni.getCARSNo() %> <%} else{%>-<%} %></span>
+					                			&emsp;<span class="cssideheadingdata"><%if(carsIni!=null && carsIni.getCARSNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsIni.getCARSNo()) %> <%} else{%>-<%} %></span>
 					                		</div>
 					                		<div class="col-md-4">
 					                			<span class="cssideheading">Funds from:</span>
@@ -497,14 +498,14 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 					                			<%if(carsIni!=null && carsIni.getFundsFrom()!=null && carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>
 					                				Buildup
 					                			 <%} else{%>
-					                			 	 <%if(PDs!=null && PDs[4]!=null) {%><%=PDs[4] %><%} %>
+					                			 	 <%if(PDs!=null && PDs[4]!=null) {%><%=StringEscapeUtils.escapeHtml4(PDs[4].toString()) %><%} %>
 					                			 <%} %></span>
 					                		</div>
 					                		<div class="col-md-4">
 					                			<span class="cssideheading">Amount:</span>
 					                			&emsp;<span class="cssideheadingdata">
 					                				<%if(carsSoC!=null && carsSoC.getSoCAmount()!=null) {%>
-					                					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(carsSoC.getSoCAmount())) %>
+					                					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(carsSoC.getSoCAmount()))) %>
 					                				<%} else{%>-<%} %></span>
 					                		</div>
 					                	</div>
@@ -536,11 +537,11 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 					              			<div class="row">
 					                			<div class="col-md-2">
 					                				<span class="cssideheading">Date:</span>
-					                				&emsp;<span class="cssideheadingdata"><%if(csdetails!=null && csdetails.getOtherDocDate()!=null) {%><%=fc.SqlToRegularDate(csdetails.getOtherDocDate()) %> <%} else{%>-<%} %></span>
+					                				&emsp;<span class="cssideheadingdata"><%if(csdetails!=null && csdetails.getOtherDocDate()!=null) {%><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(csdetails.getOtherDocDate())) %> <%} else{%>-<%} %></span>
 					                			</div>
 					                			<div class="col-md-3">
 					                				<span class="cssideheading">File No:</span>
-					                				&emsp;<span class="cssideheadingdata"><%if(carsContract!=null && carsContract.getContractNo()!=null) {%><%=carsContract.getContractNo() %> <%} else{%>-<%} %></span>
+					                				&emsp;<span class="cssideheadingdata"><%if(carsContract!=null && carsContract.getContractNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsContract.getContractNo()) %> <%} else{%>-<%} %></span>
 					                			</div>
 					                			<div class="col-md-4">
 					                				<form action="#" method="post" id="transform">
@@ -549,8 +550,8 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 					                				<span class="cssideheading">Status:</span>
 					                				&emsp;<span>
 					                					
-					                					<button type="submit" form="transform" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSTransStatus.htm" formnovalidate="formnovalidate" value="<%=carsInitiationId %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%if(statusdetails!=null) {%><%=statusdetails[3] %><%} %>; font-weight: 600;" formtarget="_blank">
-													    	<%if(statusdetails!=null) {%><%=statusdetails[2] %><%} else{%>--<%} %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+					                					<button type="submit" form="transform" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSTransStatus.htm" formnovalidate="formnovalidate" value="<%=carsInitiationId %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%if(statusdetails!=null && statusdetails[3]!=null) {%><%=StringEscapeUtils.escapeHtml4(statusdetails[3].toString()) %><%} %>; font-weight: 600;" formtarget="_blank">
+													    	<%if(statusdetails!=null && statusdetails[2]!=null ) {%><%=StringEscapeUtils.escapeHtml4(statusdetails[2].toString()) %><%} else{%>--<%} %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 													    </button>
 					                				</span>
 					                			</div>
@@ -667,15 +668,15 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 					               	<%}} %> --%>
 					               	<%if(milestones!=null && milestones.size()>0) { char a='a';%>
 							    		<tr>
-							    			<td style="text-align : left;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;(a) Initial Advance &nbsp;&nbsp;(<%=milestones.get(0).getPaymentPercentage() %>%) </td>
+							    			<td style="text-align : left;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;(a) Initial Advance &nbsp;&nbsp;(<%=milestones.get(0).getPaymentPercentage()!=null?StringEscapeUtils.escapeHtml4(milestones.get(0).getPaymentPercentage()): " - " %>%) </td>
 							    			<%-- <td style="text-align : center;vertical-align: top;"><%=milestones.get(0).getMilestoneNo() %></td> --%>
 							    			<td style="text-align : center;vertical-align: top;">T0*</td>
 							    			<td style="text-align : center;vertical-align: top;">
-							    				<%if(carsContract.getT0Date()!=null) {%><%=fc.SqlToRegularDate(carsContract.getT0Date()) %><%} %> 
+							    				<%if(carsContract.getT0Date()!=null) {%><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(carsContract.getT0Date())) %><%} %> 
 							    			</td>
 							    			<td style="text-align : right;vertical-align: top;">
 							    				<%if(milestones.get(0).getActualAmount()!=null) {%>
-							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestones.get(0).getActualAmount())) %>
+							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(milestones.get(0).getActualAmount()))) %>
 							    				<%} else{%>
 							    					-
 							    				<%} %>
@@ -765,9 +766,9 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 							    		</tr>
 							    		<% for(int i=1;i<milestones.size()-1;i++) { %>
 							    		<tr>
-							    			<td style="text-align : left;vertical-align: top;">&nbsp;(<%=++a %>) Performance Milestone-<%=(i) %> of RSQR &nbsp;&nbsp;(<%=milestones.get(i).getPaymentPercentage() %>%) </td>
+							    			<td style="text-align : left;vertical-align: top;">&nbsp;(<%=++a %>) Performance Milestone-<%=(i) %> of RSQR &nbsp;&nbsp;(<%=milestones.get(i).getPaymentPercentage()!=null?StringEscapeUtils.escapeHtml4(milestones.get(i).getPaymentPercentage()): " - " %>%) </td>
 							    			<%-- <td style="text-align : center;vertical-align: top;"><%=milestones.get((i)).getMilestoneNo() %> </td> --%>
-							    			<td style="text-align : center;vertical-align: top;">T0+<%=milestones.get((i)).getMonths() %> </td>
+							    			<td style="text-align : center;vertical-align: top;">T0+<%=milestones.get((i)).getMonths()!=null?StringEscapeUtils.escapeHtml4(milestones.get((i)).getMonths()): " - " %> </td>
 							    			<td style="text-align : center;vertical-align: top;">
 							    				<%if(carsContract.getT0Date()!=null) {
 							    					LocalDate sqldate = LocalDate.parse(carsContract.getT0Date()).plusMonths(Long.parseLong(milestones.get((i)).getMonths()));
@@ -777,7 +778,7 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 							    			</td>
 							    			<td style="text-align : right;vertical-align: top;">
 							    				<%if(milestones.get(i).getActualAmount()!=null) {%>
-							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestones.get(i).getActualAmount())) %>
+							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(milestones.get(i).getActualAmount()))) %>
 							    				<%} else{%>
 							    					-
 							    				<%} %>
@@ -873,9 +874,9 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 							    		<%}%>
 							    		<%if(milestones.size()>1) {%>
 							    		<tr>
-							    			<td style="text-align : left;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;(<%=++a %>) on submission of final report &nbsp;&nbsp;(<%=milestones.get(milestones.size()-1).getPaymentPercentage() %>%) </td>
+							    			<td style="text-align : left;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;(<%=++a %>) on submission of final report &nbsp;&nbsp;(<%=milestones.get(milestones.size()-1).getPaymentPercentage()!=null?StringEscapeUtils.escapeHtml4(milestones.get(milestones.size()-1).getPaymentPercentage()): " - " %>%) </td>
 							    			<%-- <td style="text-align : center;vertical-align: top;"><%=milestones.get(milestones.size()-1).getMilestoneNo() %> </td> --%>
-							    			<td style="text-align : center;vertical-align: top;">T0+<%=milestones.get(milestones.size()-1).getMonths() %> </td>
+							    			<td style="text-align : center;vertical-align: top;">T0+<%=milestones.get(milestones.size()-1).getMonths()!=null?StringEscapeUtils.escapeHtml4(milestones.get(milestones.size()-1).getMonths()): " - " %> </td>
 							    			<td style="text-align : center;vertical-align: top;">
 							    				<%if(carsContract.getT0Date()!=null) {
 							    					LocalDate sqldate = LocalDate.parse(carsContract.getT0Date()).plusMonths(Long.parseLong(milestones.get((milestones.size()-1)).getMonths()));
@@ -885,7 +886,7 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 							    			</td>
 							    			<td style="text-align : right;vertical-align: top;">
 							    				<%if(milestones.get(milestones.size()-1).getActualAmount()!=null) {%>
-							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestones.get(milestones.size()-1).getActualAmount())) %>
+							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(milestones.get(milestones.size()-1).getActualAmount()))) %>
 							    				<%} else{%>
 							    					-
 							    				<%} %>

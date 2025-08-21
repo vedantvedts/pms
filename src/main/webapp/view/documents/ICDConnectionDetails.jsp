@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="com.vts.pfms.documents.dto.ICDConnectionDTO"%>
 <%@page import="java.util.LinkedHashMap"%>
@@ -122,21 +123,22 @@ label {
 	ICDConnectionDTO condto = icdConnectionsList.stream().filter(e -> e.getICDConnectionId()==Long.parseLong(icdConnectionId)).findFirst().orElse(null);
 %>
 
-	<% String ses = (String) request.getParameter("result"); 
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-        <div align="center">
-            <div class="alert alert-danger" role="alert">
-                <%= ses1 %>
-            </div>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
         </div>
-    <% } if (ses != null) { %>
-        <div align="center">
-            <div class="alert alert-success" role="alert">
-                <%= ses %>
-            </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
         </div>
-    <% } %>
+    </div>
+<% } %>
     
     <div class="container-fluid">
        
@@ -202,7 +204,7 @@ label {
 									        	%>
 									        		<%if(s1List.contains(Long.parseLong(obj[0].toString()))) {%>selected<%} %>
 									        	<%} %>
-									        	 ><%=obj[2]+" ("+obj[7]+")" %></option>
+									        	 ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "+" ("+obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "+")" %></option>
 									        <%} %>
 										</select>
 	        						</div>
@@ -224,7 +226,7 @@ label {
 									        	%>
 									        		<%if(s2List.contains(Long.parseLong(obj[0].toString()))) {%>selected<%} %>
 									        	<%} %>
-									        	><%=obj[2]+" ("+obj[7]+")" %></option>
+									        	><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "+" ("+obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "+")" %></option>
 									        <%} %>
 										</select>
         							</div>
@@ -249,7 +251,7 @@ label {
 									        		<%if(ifaceList.contains(iface.getInterfaceId())) {%>selected<%} %>
 									        	<%} %>
 									        	>
-									        		<%=iface.getInterfaceName() %>
+									        		<%=iface.getInterfaceName()!=null?StringEscapeUtils.escapeHtml4(iface.getInterfaceName()): " - " %>
 									        	</option>
 									        <%} %>
 										</select>
@@ -277,7 +279,7 @@ label {
 									        	%>
 									        		<%if(purpList.contains(icdPurpose.getPurposeId())) {%>selected<%} %>
 									        	<%} %>
-									        	><%=icdPurpose.getPurpose() %></option>
+									        	><%=icdPurpose.getPurpose()!=null?StringEscapeUtils.escapeHtml4(icdPurpose.getPurpose()): " - " %></option>
 									        <%} %>
 										</select>
 	        						</div>

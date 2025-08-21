@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.math.BigDecimal"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -626,7 +627,7 @@
 					<% List<Object[]> projectEmp = (List<Object[]>)request.getAttribute("projectsOfEmp"); %>
 						<%  for (int i=0;i< projectEmp.size();i++){ %>
 						
-							<option class="form-control" value="<%= projectEmp.get(i)[0] %>"><%= projectEmp.get(i)[6] %> (<%= projectEmp.get(i)[4] %>)</option>
+							<option class="form-control" value="<%= projectEmp.get(i)[0] %>"><%= projectEmp.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(projectEmp.get(i)[6].toString()): " - " %> (<%= projectEmp.get(i)[4]!=null?StringEscapeUtils.escapeHtml4(projectEmp.get(i)[4].toString()): " - " %>)</option>
 						
 						<%} %>
 					</select></p>
@@ -736,7 +737,7 @@
 	document.getElementById("showmodal").click();
 
 	<% if(projectdet!=null)for (int i=0;i<projectdet.size();i++){ %>
-	if(document.getElementById('UProjects').value== <%=projectdet.get(i)[1]%> ){document.getElementById('lastupdatedate').innerHTML='last update date: '+'<%=projectdet.get(i)[0] %>';<%i++;%>}
+	if(document.getElementById('UProjects').value== <%=projectdet.get(i)[1]%> ){document.getElementById('lastupdatedate').innerHTML='last update date: '+'<%=projectdet.get(i)[0]!=null?StringEscapeUtils.escapeHtml4(projectEmp.get(i)[0].toString()): " - " %>';<%i++;%>}
 	else {document.getElementById('lastupdatedate').innerHTML='last update date: '+'----';}<%}%>
 	document.getElementById('Usubmit').value=document.getElementById('UProjects').value;
 	
@@ -900,20 +901,22 @@ List<Object[]> projecthealthtotaldg = (List<Object[]>)request.getAttribute("proj
 String IsDG = (String)request.getAttribute("IsDG");
 
 %>
-<%
- String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
- if(ses1!=null){
-%>	
-	<div align="center">
-		<div class="alert alert-danger" role="alert"><%=ses1 %></div>
-	</div>
-<%} 
-if(ses!=null){ %>
-<div align="center">
-	<div class="alert alert-success" role="alert" ><%=ses %></div>
-</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 <!-- @@@@@@@@ CONTAINER FLUID START @@@@@@@ -->
@@ -946,7 +949,7 @@ if(ses!=null){ %>
 										 <div class="carousel-item" id="projectname<%=obj[0]%>">
 										 	<div class="row" style="margin:0px !important">
 												<div class="col-md-12" style="text-transform: uppercase;font-size: 22px; ">
-													<%=obj[4]+projectshortName %>
+													<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - " %>
 													<br><br>
 												</div>
 											</div>
@@ -987,8 +990,8 @@ if(ses!=null){ %>
 															<li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important; padding : 10px 0px !important;">
 																 <a href="javascript:void(0)" onclick="location.href='CommitteeScheduleView.htm?scheduleid=<%=obj[2] %>' " style="color:black" >
 													                <i class="fa fa-arrow-right faa-pulse animated faa-fast" aria-hidden="true" style="color: green;font-size: 1.3rem !important"></i> 
-															    	<%=obj[7] %> -
-															    	<i class="fa fa-clock-o" aria-hidden="true"></i> <%=obj[4] %> &nbsp;&nbsp;
+															    	<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %> -
+															    	<i class="fa fa-clock-o" aria-hidden="true"></i> <%=obj[4] !=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> &nbsp;&nbsp;
 															    </a>
 														 	</li>
 														</ul>
@@ -1079,7 +1082,7 @@ if(ses!=null){ %>
 									<%	for (Object[] obj2 : ProjectList) {
 										String projectshortName=(obj2[17]!=null)?" ( "+obj2[17].toString()+" ) ":"";
 										%>
-										<option value="<%=obj2[0]%>"  style="text-align: left !important" ><%=obj2[4]+projectshortName%></option>
+										<option value="<%=obj2[0]%>"  style="text-align: left !important" ><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%></option>
 									<%} %>
 								</select>
 								<br><br>
@@ -1102,7 +1105,7 @@ if(ses!=null){ %>
 									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
 										<a class="navbar-brand" href="ProjectApprovalPd.htm" style="color:black;" id="" >Initiation (DO)
 										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i> 
-										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1] %></span> 
+										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span> 
 										</a>
 									</div>
 										<%approvalcount++; }} %>
@@ -1110,21 +1113,21 @@ if(ses!=null){ %>
 									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
 										<a class="navbar-brand" href="ProjectApprovalRtmddo.htm" style="color:black" id="" >Initiation (P&C-DO)
 										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i>
-										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1] %></span></a>
+										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span></a>
 									</div>
 										<%approvalcount++;} }%>
 										<%if((obj[0]).toString().equalsIgnoreCase("AD")){ if(Integer.valueOf((String) obj[1].toString())>0){  %>
 									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
 										<a class="navbar-brand" href="ProjectApprovalAd.htm" style="color:black" id="" >Initiation (AD)
 										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i>
-										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1] %></span></a>
+										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span></a>
 									</div>
 										<%approvalcount++;} }%>
 										<%if((obj[0]).toString().equalsIgnoreCase("TCM")){ if(Integer.valueOf((String) obj[1].toString())>0){  %>
 									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
 										<a class="navbar-brand" href="ProjectApprovalTcc.htm" style="color:black" id="" >Initiation (TCM)
 										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i>
-										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1] %></span></a>
+										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span></a>
 									</div> 
 										<%approvalcount++;}} %>
 										<%if((obj[0]).toString().equalsIgnoreCase("Meeting")){ if(Integer.valueOf((String) obj[1].toString())>0){  %>
@@ -1139,7 +1142,7 @@ if(ses!=null){ %>
 									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
 										<a class="navbar-brand" href="CommitteeMainApprovalList.htm" style="color:black" id="" >Committee
 										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i>
-										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1] %></span></a>
+										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span></a>
 									</div> 
 										<%approvalcount++;}} %>
 									<%} %>
@@ -1166,11 +1169,11 @@ if(ses!=null){ %>
 										 <div class="carousel-item" id="projectinfo<%=obj[0]%>">
 										 	<div class="row" style="margin:0px !important">
 												<div class="col-md-12" style="text-align: left;">
-													<h6><%if(!obj[0].toString().equals("0")){%><%=obj[4]%><%} %></h6>
+													<h6><%if(!obj[0].toString().equals("0")){%><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%><%} %></h6>
 													<%if(!obj[0].toString().equals("0")){ if(obj[1].toString().chars().count()>17){ %>
-														<div style="font-size: 12px;margin-bottom: 0px !important;min-height: 48px"><%=obj[1]%></div>
+														<div style="font-size: 12px;margin-bottom: 0px !important;min-height: 48px"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></div>
 													<%}else{ %>
-														<h6><%=obj[1]%><br><br></h6>
+														<h6><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%><br><br></h6>
 													<%} %>
 													<%} %>
 													<h6><%if(!obj[12].toString().equals("0")){%><%= sdf.format(sdf1.parse( obj[12].toString()))%><%}else{ %><%} %></h6>
@@ -1200,7 +1203,7 @@ if(ses!=null){ %>
 	 <!-- -----------------PROJECT DASHBOARD SELECTED FINANCIAL PERFORMANCE DISPLAY START---------------------------- -->	
 	 	 
 		<%if(error!=null){ %>
-				<h4 style="color:#ce1212;margin-top: 25%;display:none" id="financialdataerror" ><%=error %></h4>  
+				<h4 style="color:#ce1212;margin-top: 25%;display:none" id="financialdataerror" ><%=StringEscapeUtils.escapeHtml4(error)%></h4>  
 		 <%} %> 
 		 <% if(!logintype.equalsIgnoreCase("U")){ %>
 			 <%if(budgetlist!=null && budgetlist.size()>0){ %>	
@@ -1237,11 +1240,11 @@ if(ses!=null){ %>
 											       		<td  style="padding : 0px 30px;"><span style="font-size :12px;font-weight: bold;  ">BAL</span></td>	       			
 											       	</tr>
 													<tr>
-														<td align="center"><button type="button"  class="btn btn-sm " style="background-color: #f7be16; "  ><%=obj.getSancAmt() %> L </button></td>
-														<td align="center"><button type="button"  class="btn btn-sm " style="background-color: #ac0d0d;color:white; "><%=obj.getExpAmt() %> L</button></td>
-													    <td align="center"><button type="button"  class="btn btn-sm " style="background-color: #fb7813;color:white; "><%=obj.getOsComAmt() %> L</button></td>
-													    <td align="center"><button type="button"  class="btn btn-sm " style="background-color: #0e49b5;color:white; "><%=obj.getDipl() %> L</button></td>
-													    <td align="center"><button type="button"  class="btn btn-sm " style="background-color: #06623b;color:white; "><%=obj.getBalAmt() %> L</button></td>					
+														<td align="center"><button type="button"  class="btn btn-sm " style="background-color: #f7be16; "  ><%=obj.getSancAmt()!=null?StringEscapeUtils.escapeHtml4(obj.getSancAmt().toString()): " - " %> L </button></td>
+														<td align="center"><button type="button"  class="btn btn-sm " style="background-color: #ac0d0d;color:white; "><%=obj.getExpAmt()!=null?StringEscapeUtils.escapeHtml4(obj.getExpAmt().toString()): " - " %> L</button></td>
+													    <td align="center"><button type="button"  class="btn btn-sm " style="background-color: #fb7813;color:white; "><%=obj.getOsComAmt()!=null?StringEscapeUtils.escapeHtml4(obj.getOsComAmt().toString()): " - " %> L</button></td>
+													    <td align="center"><button type="button"  class="btn btn-sm " style="background-color: #0e49b5;color:white; "><%=obj.getDipl()!=null?StringEscapeUtils.escapeHtml4(obj.getDipl().toString()): " - " %> L</button></td>
+													    <td align="center"><button type="button"  class="btn btn-sm " style="background-color: #06623b;color:white; "><%=obj.getBalAmt()!=null?StringEscapeUtils.escapeHtml4(obj.getBalAmt().toString()): " - " %> L</button></td>					
 											       	</tr>
 												</table>
 											</div>	
@@ -1257,10 +1260,10 @@ if(ses!=null){ %>
 					anychart.onDocumentReady(function () {
 					    // create data
 					    var data = [
-					      {x: "EXP ", value: <%=obj.getExpAmt()%>, fill : "#ac0d0d"},
-					      {x: "OS ", value: <%=obj.getOsComAmt()%> , fill : "#fb7813"},
-					      {x: "DIPL ", value: <%=obj.getDipl()%> , fill : "#0e49b5"},
-					      {x: "BAL  ", value: <%=obj.getBalAmt()%>, fill : "#06623b"},
+					      {x: "EXP ", value: <%=obj.getExpAmt()!=null?StringEscapeUtils.escapeHtml4(obj.getExpAmt().toString()): " - "%>, fill : "#ac0d0d"},
+					      {x: "OS ", value: <%=obj.getOsComAmt()!=null?StringEscapeUtils.escapeHtml4(obj.getOsComAmt().toString()): " - "%> , fill : "#fb7813"},
+					      {x: "DIPL ", value: <%=obj.getDipl()!=null?StringEscapeUtils.escapeHtml4(obj.getDipl().toString()): " - "%> , fill : "#0e49b5"},
+					      {x: "BAL  ", value: <%=obj.getBalAmt()!=null?StringEscapeUtils.escapeHtml4(obj.getBalAmt().toString()): " - "%>, fill : "#06623b"},
 					      
 					    ];
 					    // create a chart and set the data
@@ -1330,22 +1333,22 @@ if(ses!=null){ %>
 														<%int actionCounts=0;
 														for(Object[] obj : MyTaskList){
 														  	if(obj[0].toString().equalsIgnoreCase("Actions")){ %>
-														<td><button type="button" onclick="actionformtask('N','N')" class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> <%} %> " style="background-color: green;color:white; "><%=obj[1] %></button></td>
-														<td><button type="button" onclick="actionformtask('I','N')"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
-														<td><button type="button" <%if(!obj[3].toString().equals("0")){ %> onclick="document.location='AssigneeList.htm'"<%} %>  class="btn btn-sm  <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
+														<td><button type="button" onclick="actionformtask('N','N')" class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> <%} %> " style="background-color: green;color:white; "><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></button></td>
+														<td><button type="button" onclick="actionformtask('I','N')"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></button></td>
+														<td><button type="button" <%if(!obj[3].toString().equals("0")){ %> onclick="document.location='AssigneeList.htm'"<%} %>  class="btn btn-sm  <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></button></td>
 <%-- 														<td><button type="button" onclick="actionformtask('S','N')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
- --%>														<td><button type="button" onclick="document.location='ActionForwardList.htm'"  class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
+ --%>														<td><button type="button" onclick="document.location='ActionForwardList.htm'"  class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></button></td>
 														<% actionCounts+=Integer.parseInt(obj[3].toString());}   } %>
 													</tr>
 													<tr>
 														<td  style="padding : 5px 0px 5px 0px;text-align: left">Meeting</td>
 														<%for(Object[] obj : MyTaskList){
 														  	if(obj[0].toString().equalsIgnoreCase("Meeting")){ %>
-														<td><button type="button" onclick="actionformtask('N','S')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %>  <%} %> " style="background-color: green;color:white; "><%=obj[1] %></button></td>   <!--changed 'E' to 'N'  -->   
-														<td><button type="button" onclick="actionformtask('I','S')"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
-														<td><button type="button" <%if(!obj[3].toString().equals("0")){ %> onclick="document.location='AssigneeList.htm'"<%} %> class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
+														<td><button type="button" onclick="actionformtask('N','S')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %>  <%} %> " style="background-color: green;color:white; "><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></button></td>   <!--changed 'E' to 'N'  -->   
+														<td><button type="button" onclick="actionformtask('I','S')"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></button></td>
+														<td><button type="button" <%if(!obj[3].toString().equals("0")){ %> onclick="document.location='AssigneeList.htm'"<%} %> class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></button></td>
 <%-- 														<td><button type="button" onclick="actionformtask('S','S')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
- --%>														<td><button type="button" onclick="document.location='ActionForwardList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
+ --%>														<td><button type="button" onclick="document.location='ActionForwardList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></button></td>
 														<% actionCounts+=Integer.parseInt(obj[3].toString());}  } %>
 													<tr>
 													<%if(!IsDG.equalsIgnoreCase("Yes")){ %>
@@ -1353,22 +1356,22 @@ if(ses!=null){ %>
 														<td  style="padding : 5px 0px 5px 0px;text-align: left">Milestone</td>
 														<%for(Object[] obj : MyTaskList){
 														  	if(obj[0].toString().equalsIgnoreCase("Milestone")){ %>
-														<td><button type="button" onclick="actionformtask('N','M')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %>  <%} %> " style="background-color: green;color:white; "><%=obj[1] %></button></td>
-														<td><button type="button" onclick="actionformtask('I','M')"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
-														<td><button type="button" <%if(!obj[3].toString().equals("0")){ %> onclick="document.location='AssigneeList.htm'"<%} %>  class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
+														<td><button type="button" onclick="actionformtask('N','M')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %>  <%} %> " style="background-color: green;color:white; "><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></button></td>
+														<td><button type="button" onclick="actionformtask('I','M')"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></button></td>
+														<td><button type="button" <%if(!obj[3].toString().equals("0")){ %> onclick="document.location='AssigneeList.htm'"<%} %>  class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></button></td>
 <%-- 														<td><button type="button" onclick="actionformtask('S','A')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
- --%>														<td><button type="button" onclick="document.location='ActionForwardList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
+ --%>														<td><button type="button" onclick="document.location='ActionForwardList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></button></td>
 														<% actionCounts+=Integer.parseInt(obj[3].toString());} } %>
 													</tr>
 													<tr>
 														<td  style="padding : 5px 0px 5px 0px;text-align: left">Fracas</td>
 														<%for(Object[] obj : MyTaskList){
 														  	if(obj[0].toString().equalsIgnoreCase("Fracas")){ %>
-														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %>  <%} %> " style="background-color: green;color:white; "><%=obj[1] %></button></td>
-														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
-														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
+														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %>  <%} %> " style="background-color: green;color:white; "><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></button></td>
+														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></button></td>
+														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></button></td>
 <%-- 														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
- --%>														<td><button type="button" onclick="document.location='FracasToReviewList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
+ --%>														<td><button type="button" onclick="document.location='FracasToReviewList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></button></td>
 														<% actionCounts+=Integer.parseInt(obj[3].toString());} } %>
 													</tr>
 													<%} %>
@@ -1415,7 +1418,7 @@ if(ses!=null){ %>
 								 				</form>
 								 				
 												<%if(!obj1[0].toString().equalsIgnoreCase("0")){ %>
-														<span style="font-size: 15px;text-transform: capitalize;color:white"><%=obj1[14] %> (<%=obj1[11] %>)</span>
+														<span style="font-size: 15px;text-transform: capitalize;color:white"><%=obj1[14]!=null?StringEscapeUtils.escapeHtml4(obj1[14].toString()): " - " %> (<%=obj1[11]!=null?StringEscapeUtils.escapeHtml4(obj1[11].toString()): " - " %>)</span>
 												<%} %>
 								 				<form method="post" action="ProjectBriefingPaper.htm">
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -1446,14 +1449,14 @@ if(ses!=null){ %>
 								    			  if(obj1[0].toString().equalsIgnoreCase(obj[1].toString())){
 								    			  %>	
 								    		  {
-								    			  id: "<%=obj[3]%>",
-									    		    name: "<%=obj[2]%>",
+								    			  id: "<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): ""%>",
+									    		    name: "<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): ""%>",
 									    		    <%if(!obj[9].toString().equalsIgnoreCase("0") && !obj[9].toString().equalsIgnoreCase("1")){ %>
-									    		   	baselineStart: "<%=obj[6]%>",
-									    		    baselineEnd: "<%=obj[7]%>", 
+									    		   	baselineStart: "<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): ""%>",
+									    		    baselineEnd: "<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): ""%>", 
 									    		    baseline: {fill: "#f25287 0.5", stroke: "0.0 #f25287"},
-									    		    actualStart: "<%=obj[4]%>",
-									    		    actualEnd: "<%=obj[5]%>",
+									    		    actualStart: "<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): ""%>",
+									    		    actualEnd: "<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): ""%>",
 									    		    actual: {fill: "#29465B", stroke: "0.8 #29465B"},
 									    		    baselineProgressValue: "<%= Math.round((int)obj[8])%>%",
 									    		    progress: {fill: "#FF7F3E 0.0", stroke: "0.0 #FF7F3E"},
@@ -1461,8 +1464,8 @@ if(ses!=null){ %>
 									    		    <%} else{%>
 								    		   		<%-- baselineStart: "<%=obj[6]%>",
 									    		    baselineEnd: "<%=obj[7]%>",  --%>
-									    		    baselineStart: "<%=obj[4]%>",
-									    		    baselineEnd: "<%=obj[5]%>", 
+									    		    baselineStart: "<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): ""%>",
+									    		    baselineEnd: "<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): ""%>", 
 									    		    baseline: {fill: "#29465B", stroke: "0.8 #29465B"},
 									    		    baselineProgressValue: "<%= Math.round((int)obj[8])%>%",
 									    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
@@ -1636,9 +1639,9 @@ if(ses!=null){ %>
 										<tbody>
 											<tr>
 												<td><a href="javascript:void(0)" onclick="location.href='CommitteeScheduleView.htm?scheduleid=<%=obj[2] %>' " ><i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
-												<td><%=sdf.format(obj[3]) %></td>
-												<td><%=obj[4] %></td>
-												<td><%=obj[7] %></td>
+												<td><%=obj[3]!=null?sdf.format(obj[3]):" - " %></td>
+												<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
+												<td><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %></td>
 											</tr>
 											<%count1++;newsize++;}}} %>
 											<%if(newsize==0){%>
@@ -1688,9 +1691,9 @@ if(ses!=null){ %>
 										<tbody>
 											<tr>
 												<td><a href="javascript:MyTaskDetails(<%=obj[0]%>)"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
-												<td style="text-align:justify; "><%=obj[2] %></td>
-												<td style="width:100px"><%=sdf.format(obj[4]) %></td>
-												<td><%=obj[12] %>
+												<td style="text-align:justify; "><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+												<td style="width:100px"><%=obj[4]!=null?sdf.format(obj[4]):" - " %></td>
+												<td><%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %>
 													<form name="MyTaskDetails<%=obj[0]%>" id="MyTaskDetails<%=obj[0]%>" action="<%=obj[14] %>" method="POST" >
 														<input type="hidden" name="Assigner" value="<%=obj[12]%>,<%=obj[13]%>"/>													
 		                                                <input type="hidden" name="ActionLinkId" value="<%=obj[15]%>"/>
@@ -1725,7 +1728,7 @@ if(ses!=null){ %>
 							<div class="multi-button" id="quicklinks" style="display: none">
 									  <span><span class="badge badge-success"><i class="fa fa-link" aria-hidden="true"></i></span>  Links : </span>
 									<%for(Object[] obj : QuickLinkList){ %>
-										<a class="button" href="<%=obj[1] %>" id="cut"><span><%=obj[0] %> &nbsp;<i class="fa fa-file-text" aria-hidden="true"></i></span></a>									  <%} %>
+										<a class="button" href="<%=obj[1] %>" id="cut"><span><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %> &nbsp;<i class="fa fa-file-text" aria-hidden="true"></i></span></a>									  <%} %>
 										</div>
 									<%} %>
 							<%} %>
@@ -1788,8 +1791,8 @@ if(ses!=null){ %>
 										  for(Object[] obj : notice){
 											  	%>
 								            <div class="carousel-item " id="notice" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black ;">
-											    <p style="font-weight: lighter; font-size: 12px;text-align:justify;  text-justify: inter-word;" align = "center" ><%if(notice!=null && notice.size()>0){ %> <%=obj[1] %> <%} %> </p>
-												<p style="font-weight: lighter; font-size: 12px;" align="right" > <%if(notice!=null && notice.size()>0){ %>-&nbsp; <%=obj[2]%> <%} %> </p> 
+											    <p style="font-weight: lighter; font-size: 12px;text-align:justify;  text-justify: inter-word;" align = "center" ><%if(notice!=null && notice.size()>0){ %> <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> <%} %> </p>
+												<p style="font-weight: lighter; font-size: 12px;" align="right" > <%if(notice!=null && notice.size()>0){ %>-&nbsp; <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%} %> </p> 
 								            </div>
 											<%} }else{%>
 										 	<p style="font-weight: lighter; font-size: 12px;" align="right" > No Notice. </p> 
@@ -1837,55 +1840,55 @@ if(ses!=null){ %>
 									                <tr>
 									                  <%if(obj2[0].toString().equalsIgnoreCase("Actions")){ %>
 														<td  style="padding : 5px 0px 5px 0px;text-align: left" >Action Items</td>
-													   	<td><button type="button" onclick="submitForm('P','NA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;; "><%=obj2[1] %> </button></td>
-											            <td><button type="button" onclick="submitForm('F','NA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea; color:white; "><%=obj2[2] %> </button></td>
-											            <td><button type="button" onclick="submitForm('C','NA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3] %> </button></td>
-											            <td><button type="button" onclick="submitForm('D','NA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4] %> </button></td>					
+													   	<td><button type="button" onclick="submitForm('P','NA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;; "><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - " %> </button></td>
+											            <td><button type="button" onclick="submitForm('F','NA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea; color:white; "><%=obj2[2]!=null?StringEscapeUtils.escapeHtml4(obj2[2].toString()): " - " %> </button></td>
+											            <td><button type="button" onclick="submitForm('C','NA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - " %> </button></td>
+											            <td><button type="button" onclick="submitForm('D','NA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - " %> </button></td>					
 									       			  <% }%>
 									       			</tr>
 									       			 <tr>
 									       			   <%if(obj2[0].toString().equalsIgnoreCase("Milestone")){ %>
 														<td  style="padding : 5px 0px 5px 0px;text-align: left">Milestones</td>
-													   	<td><button type="button" onclick="submitForm('P','MLA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; "><%=obj2[1] %></button></td>
-											            <td><button type="button" onclick="submitForm('F','MLA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[2] %></button></td>
-											            <td><button type="button" onclick="submitForm('C','MLA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3] %></button></td>
-											            <td><button type="button" onclick="submitForm('D','MLA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4] %></button></td>					
+													   	<td><button type="button" onclick="submitForm('P','MLA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; "><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('F','MLA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[2]!=null?StringEscapeUtils.escapeHtml4(obj2[2].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('C','MLA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('D','MLA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "  %></button></td>					
 									       			   <% }%>
 									       			</tr>
 									       			<tr>
 									       			    <%if(obj2[0].toString().equalsIgnoreCase("Meeting")){ %>
 														<td  style="padding : 5px 0px 5px 0px;text-align: left">Meetings</td>
-													   	<td><button type="button" onclick="submitForm('P','MA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; "><%=obj2[1] %></button></td>
-											            <td><button type="button" onclick="submitForm('F','MA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[2] %></button></td>
-											            <td><button type="button" onclick="submitForm('C','MA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3] %></button></td>
-											            <td><button type="button" onclick="submitForm('D','MA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4] %></button></td>					
+													   	<td><button type="button" onclick="submitForm('P','MA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; "><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('F','MA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[2]!=null?StringEscapeUtils.escapeHtml4(obj2[2].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('C','MA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('D','MA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "  %></button></td>					
 									       			    <% }%>
 									       			</tr>
 									       			<tr>
 									       			    <%if(obj2[0].toString().equalsIgnoreCase("Risk")){ %>
 														<td  style="padding : 5px 0px 5px 0px;text-align: left">Risks</td>
-													   	<td><button type="button" onclick="submitForm('P','RK','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; "><%=obj2[1] %></button></td>
-											            <td><button type="button" onclick="submitForm('F','RK','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[2] %></button></td>
-											            <td><button type="button" onclick="submitForm('C','RK','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3] %></button></td>
-											            <td><button type="button" onclick="submitForm('D','RK','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4] %></button></td>					
+													   	<td><button type="button" onclick="submitForm('P','RK','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; "><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('F','RK','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[2]!=null?StringEscapeUtils.escapeHtml4(obj2[2].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('C','RK','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('D','RK','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "  %></button></td>					
 									       			    <% }%>
 									       			</tr>
 									       			<tr>
 									       			    <%if(obj2[0].toString().equalsIgnoreCase("Issue")){ %>
 														<td  style="padding : 5px 0px 5px 0px;text-align: left;">Issues</td>
-													   	<td><button type="button" onclick="submitForm('P','IU','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; "><%=obj2[1] %></button></td>
-											            <td><button type="button" onclick="submitForm('F','IU','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[2] %></button></td>
-											            <td><button type="button" onclick="submitForm('C','IU','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3] %></button></td>
-											            <td><button type="button" onclick="submitForm('D','IU','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4] %></button></td>					
+													   	<td><button type="button" onclick="submitForm('P','IU','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; "><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('F','IU','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[2]!=null?StringEscapeUtils.escapeHtml4(obj2[2].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('C','IU','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('D','IU','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "  %></button></td>					
 									       			    <% }%>
 									       			</tr>
 									       			<tr>
 									       			    <%if(obj2[0].toString().equalsIgnoreCase("Recommendation")){ %>
 														<td  style="padding : 5px 0px 5px 0px;text-align: left;">Recommendations</td>
-													   	<td><button type="button" onclick="submitForm('P','RC','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; "><%=obj2[1] %></button></td>
-											            <td><button type="button" onclick="submitForm('F','RC','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[2] %></button></td>
-											            <td><button type="button" onclick="submitForm('C','RC','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3] %></button></td>
-											            <td><button type="button" onclick="submitForm('D','RC','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4] %></button></td>					
+													   	<td><button type="button" onclick="submitForm('P','RC','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; "><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('F','RC','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[2]!=null?StringEscapeUtils.escapeHtml4(obj2[2].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('C','RC','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('D','RC','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "  %></button></td>					
 									       			    <% }%>
 									       			</tr> 
 													<%}%>
@@ -1941,7 +1944,7 @@ if(ses!=null){ %>
 																	    	<%if("2".equalsIgnoreCase(obj[8].toString())){ %> box-shadow: 0 0 0 2px 	#DC143C; <%} %>
 																    		transition: all 200ms ease-out;color:black;font-weight:bold;"> 
 																    	<!-- <i class="fa fa-arrow-right" aria-hidden="true" style="color: #1687a7;font-size: 1.00 rem !important"></i>  -->
-																    		<%=obj[11] %> <br> <%=obj[0] %> &nbsp;&nbsp;
+																    		<%=obj[11] !=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "%> <br> <%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %> &nbsp;&nbsp;
 																    	</a> 
 														   			 </li>
 																 <%formcount++;}} }else{%>
@@ -1987,7 +1990,7 @@ if(ses!=null){ %>
 																	    	<%if("C".equalsIgnoreCase(obj[3].toString())&&"1".equalsIgnoreCase(obj[8].toString())){ %> box-shadow: 0 0 0 2px #00917c; <%} %>
 																	    	<%if("2".equalsIgnoreCase(obj[8].toString())){ %> box-shadow: 0 0 0 2px 	#DC143C; <%} %>
 																    		transition: all 200ms ease-out;color:black;font-weight:bold;"> 
-																    		<%=obj[1] %> <br> <%=obj[0] %> &nbsp;&nbsp;
+																    		<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> <br> <%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %> &nbsp;&nbsp;
 																    	</a> 
 														   			 </li>
 																 <%formcount1++;} }}else{%>
@@ -2037,21 +2040,21 @@ if(ses!=null){ %>
 														  <!-- (project status) ==> all = All, B = held and C = remaining -->
 													<tr>
 														<td  style="padding : 5px 0px 5px 0px;text-align: left">EB</td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',2,'all');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[0] %></button></td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',2,'B');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[1] %></button></td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',2,'C');" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj2[2] %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',2,'all');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[0]!=null?StringEscapeUtils.escapeHtml4(obj2[0].toString()): " - "  %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',2,'B');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - "  %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',2,'C');" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj2[2]!=null?StringEscapeUtils.escapeHtml4(obj2[2].toString()): " - "  %></button></td>
 													</tr>
 													<tr>
 														<td  style="padding : 5px 0px 5px 0px;text-align: left">PMRC</td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',1,'all');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[3] %></button></td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',1,'B');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[4] %></button></td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',1,'C');" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj2[5] %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',1,'all');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - "  %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',1,'B');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "  %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',1,'C');" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj2[5]!=null?StringEscapeUtils.escapeHtml4(obj2[5].toString()): " - "  %></button></td>
 													<tr>
 													<tr>
 														<td  style="padding : 5px 0px 5px 0px;text-align: left">Others</td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>','others','all');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[6] %></button></td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>','others','B');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[7] %></button></td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>','others','C');" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj2[8] %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>','others','all');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[6]!=null?StringEscapeUtils.escapeHtml4(obj2[6].toString()): " - "  %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>','others','B');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[7]!=null?StringEscapeUtils.escapeHtml4(obj2[7].toString()): " - "  %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>','others','C');" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj2[8]!=null?StringEscapeUtils.escapeHtml4(obj2[8].toString()): " - "  %></button></td>
 													</tr>
 													
 													 <%}%>
@@ -2217,9 +2220,9 @@ if(ses!=null){ %>
 													else {%> -  <%} }else{ %>-<%}%>">
 												
 														  &#11044;&nbsp; <span class="tableprojectname" style="color:black !important;font-size: 13px"> 
-														  	<%if(obj[46]!=null){%><%=obj[46] %><%}else {%>-<%} %> /
-														  	<%if(obj[3]!=null){%><%=obj[3] %><%}else {%>-<%} %> /
-														  	<%if(obj[44]!=null){%><%=obj[44] %><%}else {%>-<%} %>
+														  	<%if(obj[46]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[46].toString())%><%}else {%>-<%} %> /
+														  	<%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %><%}else {%>-<%} %> /
+														  	<%if(obj[44]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[44].toString()) %><%}else {%>-<%} %>
 														  	</span> 	
 												
 													</div>
@@ -2284,7 +2287,7 @@ if(ses!=null){ %>
 																								   <%if( (Integer.parseInt(obj[10].toString())>25) && (Integer.parseInt(obj[10].toString())<=50)){%> background-color:#EE5007; <%}%>
 																								   <%if( (Integer.parseInt(obj[10].toString())>50) && (Integer.parseInt(obj[10].toString())<=75)){%> background-color:#F8CB2E;color:black; <%}%>
 																								   <%if( (Integer.parseInt(obj[10].toString())>75)){%> background-color:green<%}%>
-																"><%=obj[10] %></span>
+																"><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %></span>
 															</div>
 														</div>
 													<%}else{ %>
@@ -2308,7 +2311,7 @@ if(ses!=null){ %>
 																								   <%if((Integer.parseInt(obj[60].toString())>25) && (Integer.parseInt(obj[60].toString())<=50)){%> background-color:#EE5007; <%}%>
 																								   <%if((Integer.parseInt(obj[60].toString())>50) && (Integer.parseInt(obj[60].toString())<=75)){%> background-color:#F8CB2E;color:black; <%}%>
 																								   <%if((Integer.parseInt(obj[60].toString())>75)){%> background-color:green<%}%>
-																"><%=obj[60] %></span>
+																"><%=obj[60]!=null?StringEscapeUtils.escapeHtml4(obj[60].toString()): " - " %></span>
 															</div>
 														</div>
 													<%}else{ %>
@@ -2340,7 +2343,7 @@ if(ses!=null){ %>
 																<%if(Integer.parseInt(obj[5].toString())>100){ %>
 																	100
 																<%}else{ %>
-																<%=obj[5] %>
+																<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %>
 																<%} %>
 																</span>
 															</div>
@@ -2372,7 +2375,7 @@ if(ses!=null){ %>
 																<%if(Integer.parseInt(obj[54].toString())>100){ %>
 																	100
 																<%}else{ %>
-																<%=obj[54] %>
+																<%=obj[54]!=null?StringEscapeUtils.escapeHtml4(obj[54].toString()): " - " %>
 																<%} %>
 																</span>
 															</div>
@@ -2406,7 +2409,7 @@ if(ses!=null){ %>
 																								   <%if( (Integer.parseInt(obj[19].toString())>25) && (Integer.parseInt(obj[19].toString())<=50)){%> background-color: #EE5007;<%}%>
 																								   <%if( (Integer.parseInt(obj[19].toString())>50) && (Integer.parseInt(obj[19].toString())<=75)){%> background-color:#F8CB2E;color:black;<%}%>
 																								   <%if( (Integer.parseInt(obj[19].toString())>75) && (Integer.parseInt(obj[19].toString())<=100)){%> background-color:green <%}%>
-																"><%=obj[19] %></span>
+																"><%=obj[19]!=null?StringEscapeUtils.escapeHtml4(obj[19].toString()): " - " %></span>
 														</div>
 													</div>
 													<%}else{ %>
@@ -2433,7 +2436,7 @@ if(ses!=null){ %>
 																									   <%if( (Integer.parseInt(obj[28].toString())>25) && (Integer.parseInt(obj[28].toString())<=50)){%> background-color: #EE5007; <%}%>
 																									   <%if( (Integer.parseInt(obj[28].toString())>50) && (Integer.parseInt(obj[28].toString())<=75)){%> background-color: #F8CB2E;color:black <%}%>
 																									   <%if( (Integer.parseInt(obj[28].toString())>75) && (Integer.parseInt(obj[28].toString())<=100)){%> background-color:green <%}%>
-															"><%=obj[28] %></span>
+															"><%=obj[28]!=null?StringEscapeUtils.escapeHtml4(obj[28].toString()): " - " %></span>
 														</div>
 													</div>
 													<%}else{ %>
@@ -2458,7 +2461,7 @@ if(ses!=null){ %>
 																										   <%if( (Integer.parseInt(obj[31].toString())>25) && (Integer.parseInt(obj[31].toString())<=50)){%> background-color: #EE5007; <%}%>
 																										   <%if( (Integer.parseInt(obj[31].toString())>50) && (Integer.parseInt(obj[31].toString())<=75)){%> background-color: #F8CB2E;color:black <%}%>
 																										   <%if( (Integer.parseInt(obj[31].toString())>75) && (Integer.parseInt(obj[31].toString())<=100)){%> background-color:green <%}%>
-																"><%=obj[31] %></span>
+																"><%=obj[31]!=null?StringEscapeUtils.escapeHtml4(obj[31].toString()): " - " %></span>
 														</div>
 													</div>
 													<%}else{ %>
@@ -2499,7 +2502,7 @@ if(ses!=null){ %>
 																											   <%if( (Integer.parseInt(obj[42].toString())>25) && (Integer.parseInt(obj[42].toString())<=50)){%> background-color: #EE5007; <%}%>
 																											   <%if( (Integer.parseInt(obj[42].toString())>50) && (Integer.parseInt(obj[42].toString())<=75)){%> background-color: #F8CB2E;color:black <%}%>
 																											   <%if( (Integer.parseInt(obj[42].toString())>75) && (Integer.parseInt(obj[42].toString())<=100)){%> background-color:green <%}%>"
-																	><%=obj[42] %></span>
+																	><%=obj[42]!=null?StringEscapeUtils.escapeHtml4(obj[42].toString()): " - " %></span>
 														</div>
 														<div class="col-md-1" style="padding-left: 0px !important">
 														</div>
@@ -2745,7 +2748,7 @@ if(ses!=null){ %>
 												<td>
 												<%-- <%=obj[2] %> --%>
 												<a href="javascript:LabDetails('<%=obj[45] %>')"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
-												<td style="font-weight: 800; font-size:0.75rem;text-align:left;"><%=obj[45] %>	</td>
+												<td style="font-weight: 800; font-size:0.75rem;text-align:left;"><%=obj[45]!=null?StringEscapeUtils.escapeHtml4(obj[45].toString()): " - " %>	</td>
 												<%-- <td class="custom-td">
 													<%if(Integer.parseInt(obj[62].toString())>0){ %>
 														<div class="row">
@@ -2788,7 +2791,7 @@ if(ses!=null){ %>
 																								   <%if( (Integer.parseInt(obj[31].toString())>25) && (Integer.parseInt(obj[31].toString())<=50)){%> background-color: #EE5007; <%}%>
 																								   <%if( (Integer.parseInt(obj[31].toString())>50) && (Integer.parseInt(obj[31].toString())<=75)){%> background-color: #F8CB2E;color:black <%}%>
 																								   <%if( (Integer.parseInt(obj[31].toString())>75) && (Integer.parseInt(obj[31].toString())<=100)){%> background-color: green <%}%>
-																"><%=obj[31] %></span>
+																"><%=obj[31]!=null?StringEscapeUtils.escapeHtml4(obj[31].toString()): " - " %></span>
 															</div>
 														</div>
 						
@@ -2814,7 +2817,7 @@ if(ses!=null){ %>
 																								   <%if( (Integer.parseInt(obj[29].toString())>25) && (Integer.parseInt(obj[29].toString())<=50)){%> background-color: #EE5007; <%}%>
 																								   <%if( (Integer.parseInt(obj[29].toString())>50) && (Integer.parseInt(obj[29].toString())<=75)){%> background-color: #F8CB2E;color:black <%}%>
 																								   <%if( (Integer.parseInt(obj[29].toString())>75) && (Integer.parseInt(obj[29].toString())<=100)){%> background-color:green <%}%>
-																"><%=obj[29] %></span>
+																"><%=obj[29]!=null?StringEscapeUtils.escapeHtml4(obj[29].toString()): " - " %></span>
 															</div>
 											
 														</div>
@@ -2842,7 +2845,7 @@ if(ses!=null){ %>
 																								   <%if( (Integer.parseInt(obj[10].toString())>25) && (Integer.parseInt(obj[10].toString())<=50)){%> background-color: #EE5007; <%}%>
 																								   <%if( (Integer.parseInt(obj[10].toString())>50) && (Integer.parseInt(obj[10].toString())<=75)){%> background-color: #F8CB2E;color:black <%}%>
 																								   <%if( (Integer.parseInt(obj[10].toString())>75) && (Integer.parseInt(obj[10].toString())<=100)){%> background-color:green <%}%>
-																"><%=obj[10] %></span>
+																"><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %></span>
 														</div>
 													</div>
 													<%}else{ %>
@@ -2869,7 +2872,7 @@ if(ses!=null){ %>
 																									   <%if( (Integer.parseInt(obj[37].toString())>25) && (Integer.parseInt(obj[37].toString())<=50)){%> background-color: #EE5007; <%}%>
 																									   <%if( (Integer.parseInt(obj[37].toString())>50) && (Integer.parseInt(obj[37].toString())<=75)){%> background-color: #F8CB2E;color:black <%}%>
 																									   <%if( (Integer.parseInt(obj[37].toString())>75) && (Integer.parseInt(obj[37].toString())<=100)){%> background-color:green <%}%>
-															"><%=obj[37] %></span>
+															"><%=obj[37]!=null?StringEscapeUtils.escapeHtml4(obj[37].toString()): " - " %></span>
 														</div>
 													</div>
 													<%}else{ %>
@@ -2894,7 +2897,7 @@ if(ses!=null){ %>
 																										   <%if( (Integer.parseInt(obj[39].toString())>25) && (Integer.parseInt(obj[39].toString())<=50)){%> background-color: #EE5007; <%}%>
 																										   <%if( (Integer.parseInt(obj[39].toString())>50) && (Integer.parseInt(obj[39].toString())<=75)){%> background-color: #F8CB2E;color:black<%}%>
 																										   <%if( (Integer.parseInt(obj[39].toString())>75) && (Integer.parseInt(obj[39].toString())<=100)){%> background-color: green <%}%>
-																"><%=obj[39] %></span>
+																"><%=obj[39]!=null?StringEscapeUtils.escapeHtml4(obj[39].toString()): " - " %></span>
 														</div>
 													</div>
 													<%}else{ %>
@@ -2923,7 +2926,7 @@ if(ses!=null){ %>
 																											   <%if( (Integer.parseInt(obj[43].toString())>25) && (Integer.parseInt(obj[43].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
 																											   <%if( (Integer.parseInt(obj[43].toString())>50) && (Integer.parseInt(obj[43].toString())<=75)){%> background-color: #EE5007 <%}%>
 																											   <%if( (Integer.parseInt(obj[43].toString())>75) && (Integer.parseInt(obj[43].toString())<=100)){%> background-color:red <%}%>
-																	"><%=obj[43] %></span>
+																	"><%=obj[43]!=null?StringEscapeUtils.escapeHtml4(obj[43].toString()): " - " %></span>
 														</div>
 														<div class="col-md-1" style="padding-left: 0px !important">
 														</div>

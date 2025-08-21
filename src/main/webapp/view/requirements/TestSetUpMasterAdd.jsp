@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.requirements.model.TestSetUpAttachment"%>
 <%@page import="com.vts.pfms.requirements.model.TestSetupMaster"%>
 <%@page import="com.vts.pfms.requirements.model.TestInstrument"%>
@@ -146,7 +147,7 @@ String htmlContent = (String)request.getAttribute("htmlContent");
 						<div class="col-md-3">
 								<div class="form-group">
                             	<label style="font-size: 17px;  color: #07689f">Test SetUp Id :<span class="mandatory" style="color: red;">*</span></label>
-                         		<input type="text" class="form-control" required="required" name="testSetUpId" id="testSetUpId"  value="<%= tp!= null?tp.getTestSetUpId():""%>" onchange="checkSetUpId()">
+                         		<input type="text" class="form-control" required="required" name="testSetUpId" id="testSetUpId"  value="<%= tp!= null ? tp.getTestSetUpId()!=null?StringEscapeUtils.escapeHtml4(tp.getTestSetUpId()): "":""%>" onchange="checkSetUpId()">
                          	</div>
                          </div>
                          	
@@ -160,7 +161,7 @@ String htmlContent = (String)request.getAttribute("htmlContent");
 					<div class="col-md-11">
 						<div class="form-group">
 					 	<label style="font-size: 17px; color: #07689f">Specific Facility Required :<span class="mandatory" style="color: red;">*</span></label>
-							<textarea rows="2" cols="100" class="form-control" required="required" maxlength="500" placeholder="Maximum 500 characters" name="facility"><%= tp!= null?tp.getFacilityRequired():""%></textarea>
+							<textarea rows="2" cols="100" class="form-control" required="required" maxlength="500" placeholder="Maximum 500 characters" name="facility"><%= tp!= null?tp.getFacilityRequired()!=null?StringEscapeUtils.escapeHtml4(tp.getFacilityRequired()): "":""%></textarea>
 						</div>
 					 </div>
 					</div>
@@ -176,7 +177,7 @@ String htmlContent = (String)request.getAttribute("htmlContent");
 											
 												<select class="form-control selectdee" name="testInstrument" id="testInstrument" data-width="80%" data-live-search="true" multiple onchange="addTestInstrument()">
 													<%for (TestInstrument t :instrumentList) {%>
-														<option value="<%=t.getInstrumentId()%>"  <%if(instruements.contains(t.getInstrumentId()+"")){ %> selected <%} %>><%=t.getInstrumentName() %></option>
+														<option value="<%=t.getInstrumentId()%>"  <%if(instruements.contains(t.getInstrumentId()+"")){ %> selected <%} %>><%=t.getInstrumentName()!=null?StringEscapeUtils.escapeHtml4(t.getInstrumentName()): "" %></option>
 													<%} %>
 													<option value="0"> ADD NEW</option>
 												</select>
@@ -195,7 +196,7 @@ String htmlContent = (String)request.getAttribute("htmlContent");
 										</div>
 										<%if(tp!=null && tp.getTdrsData()!=null ) {%>
 										<div class="col-md-2" style="display: flex;justify-content:center;align-items: center;">
-										<button class="btn btn-link" onclick ="showData()">  <%=tp.getTdrsData()!=null ?"  "+ tp.getTdrsData().split("_")[1]:"" %> </button>
+										<button class="btn btn-link" onclick ="showData()">  <%=tp.getTdrsData()!=null ?"  "+ StringEscapeUtils.escapeHtml4(tp.getTdrsData()).split("_")[1]:"" %> </button>
 										<button class="btn btn-sm" type="button" onclick="setDownloadTdrs()"  data-toggle="tooltip"
 										data-placement="top" data-original-data=""
 										title="TDRS file Download" >
@@ -212,7 +213,7 @@ String htmlContent = (String)request.getAttribute("htmlContent");
 							<div class="form-group">
 							<label style="font-size: 17px;  color: #07689f">Test Set UP: <span class="mandatory" style="color: red;">*</span></label>
 							<div id="Editor">
-			   				<%= tp!= null?tp.getTestSetUp().trim():""%>
+			   				<%= tp!= null?tp.getTestSetUp()!=null?StringEscapeUtils.escapeHtml4(tp.getTestSetUp()).trim():"":""%>
 
 							</div>
 							</div>
@@ -223,7 +224,7 @@ String htmlContent = (String)request.getAttribute("htmlContent");
 							<div class="form-group">
 							<label style="font-size: 17px;  color: #07689f">Test Procedure: <span class="mandatory" style="color: red;">*</span></label>
 							<div id="Editor1">
-			   			<%= tp!= null?tp.getTestProcedure().trim():""%>
+			   			<%= tp!= null?tp.getTestProcedure()!=null?StringEscapeUtils.escapeHtml4(tp.getTestProcedure()).trim():"":""%>
 
 							</div>
 							</div>
@@ -237,7 +238,7 @@ String htmlContent = (String)request.getAttribute("htmlContent");
 							<div class="form-group">
 							<label style="font-size: 17px;  color: #07689f">Objective: <span class="mandatory" style="color: red;">*</span></label>
 							<div id="Editor3">
-			   			<%= tp!= null?tp.getObjective().trim():""%>
+			   			<%= tp!= null?tp.getObjective()!=null?StringEscapeUtils.escapeHtml4(tp.getObjective()).trim():"":""%>
 
 							</div>
 							</div>
@@ -633,7 +634,7 @@ $('#Editor3').summernote({
    if(testIds.size()>0){
    for(String s:testIds){
    %>
-   testids.push('<%=s%>')
+   testids.push('<%=s!=null?StringEscapeUtils.escapeHtml4(s): " - "%>')
    
    <%}}%>
  function  checkSetUpId(){

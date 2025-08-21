@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -171,22 +172,22 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
  <!-- ----------------------------------message ------------------------- -->
 
 	
-<%String ses=(String)request.getParameter("result"); 
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 <!-- ----------------------------------message ------------------------- -->
 
@@ -195,7 +196,7 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 				<div class="row">
 					<div class="col-md-6">
 						<h4>
-							Committees List 	<%if(Long.parseLong(projectid)>0){ %>	(Project : <%=projectdetails[4] %>)		<%} %>
+							Committees List 	<%if(Long.parseLong(projectid)>0){ %>	(Project : <%=projectdetails[4]!=null?StringEscapeUtils.escapeHtml4(projectdetails[4].toString()): " - "%>)		<%} %>
 						</h4>
 					</div>
 					<div class="col-md-6">
@@ -273,8 +274,8 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 										   			   %>
 														<tr>
 															<td><%=count1 %></td>
-															<td class="fullname"><%=obj[2] %></td>
-															<td><%=obj[1] %></td>
+															<td class="fullname"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+															<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
 															<td>
 															<%if(obj[3].toString().equals("S")){%>Standard<%}else{ %>Adhoc<%} %>
 															</td>															

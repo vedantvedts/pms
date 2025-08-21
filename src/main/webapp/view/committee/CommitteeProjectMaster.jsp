@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.LocalTime"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
@@ -55,24 +56,22 @@ String initiationid=(String)request.getAttribute("initiationid");
 %>
 
 
-<%String ses=(String)request.getParameter("result"); 
-String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){
-%>
-	<div align="center">
-	
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</div>
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 	<%Object[] Projectdetails=(Object[])request.getAttribute("Projectdetails");
@@ -96,7 +95,7 @@ if(ses1!=null){
 						   						<% for (Object[] obj : ProjectsList) {
 						   							String projectshortName=(obj[17]!=null)?" ("+obj[17].toString()+") ":"";
 						   						%>
-												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectid)){ %>selected<% Project=obj[4].toString(); } %> ><%=obj[4]+projectshortName%></option>
+												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectid)){ %>selected<% Project=obj[4].toString(); } %> ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%></option>
 													
 												<%} %>
 						  				</select>
@@ -111,7 +110,7 @@ if(ses1!=null){
 										 <select class="form-control" id="projectid" required="required" name="initiationid" onchange='submitForm();' >
 										 
 						   						<% for (Object[] obj : ProjectsList) {%>
-												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(initiationid)){ %>selected<% Project=obj[4].toString(); } %> ><%=obj[4]%></option>
+												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(initiationid)){ %>selected<% Project=obj[4].toString(); } %> ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%></option>
 												<%} %>
 						  				</select>
 						  				
@@ -190,9 +189,9 @@ if(ses1!=null){
 													%>
 													<tr>
 														<td style="text-align: center;"><input type="checkbox" class="checkboxall1" name="committeeid"
-															value=<%=obj[0]%>></td>
-														<td style="text-align: left;"><%=obj[2]%>(<%=obj[1]%>)</td>
-														<td style="text-align: left;"><%if(obj[6].toString().equalsIgnoreCase("P")){ %><%=obj[7] %> days<%} else{%>Non-Periodic<%} %> </td>
+															value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): ""%>></td>
+														<td style="text-align: left;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>(<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>)</td>
+														<td style="text-align: left;"><%if(obj[6].toString().equalsIgnoreCase("P")){ %><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %> days<%} else{%>Non-Periodic<%} %> </td>
 													</tr>
 													<%
 														}
@@ -272,21 +271,21 @@ if(ses1!=null){
 															}
 															
 															if(obj[6].toString().equalsIgnoreCase("N") && checkcount >0) {	%>
-																<input type="checkbox" class="checkboxall" name="committeeprojectid" value="<%=obj[3]%>">
+																<input type="checkbox" class="checkboxall" name="committeeprojectid" value="<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%>">
 															<%} else{ %>
 																<input type="checkbox" disabled >
 															<%} %>
 															
 														</td>
-														<td style="text-align: left;"><%=obj[0]%> (<%=obj[1]%>)</td>
-														<td style="text-align: left;"><%if(obj[4].toString().equalsIgnoreCase("P")){ %><%=obj[5] %> days<%} else{%>Non-Periodic<%} %> </td>
+														<td style="text-align: left;"><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%> (<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>)</td>
+														<td style="text-align: left;"><%if(obj[4].toString().equalsIgnoreCase("P")){ %><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %> days<%} else{%>Non-Periodic<%} %> </td>
 														<td style="text-align: center;"><%if(obj[6].toString().equalsIgnoreCase("Y")) {%><img src="view/images/check.png"/><%}else{ %><img src="view/images/cancel.png"/><%} %></td>
 														<td> 
 														
 															<%if(checkcount>0){ %>
-																<button type="submit" value="<%=obj[2] %>" name="sub" class="btn btn-sm view" style="background-color: maroon !important; font-size: 12px;">Constitute</button>
+																<button type="submit" value="<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): "" %>" name="sub" class="btn btn-sm view" style="background-color: maroon !important; font-size: 12px;">Constitute</button>
 															<%}else{ %>
-																<button type="submit" value="<%=obj[2] %>" name="sub" class="btn btn-sm view" style="background-color: green !important; font-size: 12px;" >Constitute</button>
+																<button type="submit" value="<%=obj[2] !=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): ""%>" name="sub" class="btn btn-sm view" style="background-color: green !important; font-size: 12px;" >Constitute</button>
 															<%} %>
 														</td>
 														<td style="text-align: center;cursor: pointer;">

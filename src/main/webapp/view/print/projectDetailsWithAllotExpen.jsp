@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.Map"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -83,25 +84,25 @@ if(ProjectDetails!=null && ProjectDetails.size()>0){
  		}
  		%>
  		<div align="right"><b>
- 		(<%=inRupeeValue %>)</b></div>
+ 		(<%=inRupeeValue!=null?StringEscapeUtils.escapeHtml4(inRupeeValue): " - " %>)</b></div>
  		<%} %>
  		</td>
  		</tr>
  		<tr>
         <td class="tdSize2" align="center">1</td>
  		<td class="tdSize" colspan="4">Project Title</td>
- 		<td colspan="5"><%if(obj[0]!=null){%><%=obj[0]%><%}else{ %>-<%} %></td>
+ 		<td colspan="5"><%if(obj[0]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[0].toString())%><%}else{ %>-<%} %></td>
  		</tr>
  		
 		<tr>
 		<td class="tdSize2" align="center">2</td>
  		<td class="tdSize" colspan="4">Project No.</td>
- 		<td colspan="5"><%if(obj[1]!=null){%><%=obj[1]%><%}else{ %>-<%} %></td>
+ 		<td colspan="5"><%if(obj[1]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[1].toString())%><%}else{ %>-<%} %></td>
  		</tr>
 	<tr>
 		<td class="tdSize2" align="center">3</td>
  		<td class="tdSize" colspan="4">Unit Code</td>
- 		<td colspan="5"><%if(obj[9]!=null){%><%=obj[9]%><%}else{ %>-<%} %></td>
+ 		<td colspan="5"><%if(obj[9]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[9].toString())%><%}else{ %>-<%} %></td>
  		</tr>
  		
 		<tr>
@@ -118,7 +119,7 @@ if(ProjectDetails!=null && ProjectDetails.size()>0){
 		<td class="tdSize2" align="center">5</td>
  		<td class="tdSize" colspan="4">Revised Cost</td>
  		<%if(obj[6]!=null && OrCost!=0){ %>
- 		<td colspan="5"><%=obj[2] %> (FE : <%=df.format(obj[8]) %>)</td>
+ 		<td colspan="5"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> (FE : <%=df.format(obj[8]) %>)</td>
  		<%}else{ %>
  		<td colspan="5">No Revision.</td>
  		<%} %>
@@ -127,7 +128,7 @@ if(ProjectDetails!=null && ProjectDetails.size()>0){
 		<tr>
 		<td class="tdSize2" align="center">6</td>
  		<td class="tdSize" colspan="4">Sanction Letter No. & Date</td>
- 		<td colspan="5"><%if(obj[3]!=null){%><%=obj[3]%><%} %>&nbsp;&nbsp;&nbsp;Dt.- <%if(obj[4]!=null){%><%=outputDateFormat.format(inputDateFormat.parse(obj[4].toString()))%><%} %></td>
+ 		<td colspan="5"><%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString())%><%} %>&nbsp;&nbsp;&nbsp;Dt.- <%if(obj[4]!=null){%><%=outputDateFormat.format(inputDateFormat.parse(obj[4].toString()))%><%} %></td>
  		</tr>
  		
 		<tr>
@@ -144,7 +145,7 @@ if(ProjectDetails!=null && ProjectDetails.size()>0){
 		<td class="tdSize2" align="center">8</td>
  		<td class="tdSize" colspan="4">Revised PDC</td>
  		<%if(obj[7]!=null){ %>
- 		<td colspan="5"><%-- <%=format.format(obj[5]) %> --%> <%=GetPdc.substring(1) %></td>
+ 		<td colspan="5"><%-- <%=format.format(obj[5]) %> --%> <%=GetPdc.substring(1)!=null?StringEscapeUtils.escapeHtml4(GetPdc.substring(1)): " - " %></td>
  		<%}else{ %>
  		<td colspan="5">No revision.</td>
  		<%} %>
@@ -297,7 +298,7 @@ if(ProjectDetails!=null && ProjectDetails.size()>0){
      	<%}%>
      	
      	 <%! public String nullCheck(String data){
-     			  return data == null? "-" : data;} %>
+     			  return data == null? "-" : StringEscapeUtils.escapeHtml4(data);} %>
      			  
      	<%
      		int count=0;
@@ -309,7 +310,7 @@ if(ProjectDetails!=null && ProjectDetails.size()>0){
      		<tr>
      		
      		<td align="center"><%=count %></td>
-     		<td align="center"><%=Year %></td>
+     		<td align="center"><%=Year!=null?StringEscapeUtils.escapeHtml4(Year): " - " %></td>
      		
      		<!-- Revenue -->
      		<%if(REV>0){ %>

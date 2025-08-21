@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.master.model.MilestoneActivityType"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -98,22 +99,22 @@ LocalDate endOfWeek = localdate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATU
 FormatConverter fc = new FormatConverter();
 %>
 
-	<% String ses=(String)request.getParameter("result");
-	 	String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-		%>
-		<div align="center">
-			<div class="alert alert-danger" role="alert">
-		    <%=ses1 %>
-		    </div>
-		</div>
-		<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-		    	<%=ses %>
-			</div>
-		</div>
-	<%} %>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 	<div class="container-fluid">
 		<div class="row">
@@ -133,19 +134,19 @@ FormatConverter fc = new FormatConverter();
 											<label class="form-label mt-2">Date: </label>
 										</div>
 										<div class="col-md-2">
-											<input type="text" class="form-control " name="activityWeekDate" id="activityWeekDate" value="<%=activityWeekDate%>" onchange="this.form.submit()">
+											<input type="text" class="form-control " name="activityWeekDate" id="activityWeekDate" value="<%=activityWeekDate!=null?StringEscapeUtils.escapeHtml4(activityWeekDate):"-"%>" onchange="this.form.submit()">
 										</div>
 										<div class="col-md-2">
 											<label class="form-label mt-2">Start Date: </label>
 										</div>
 										<div class="col-md-2">
-											<input type="text" class="form-control " id="activityWeekStartDate" value="<%=fc.SqlToRegularDate(startOfWeek.toString()) %>" readonly>
+											<input type="text" class="form-control " id="activityWeekStartDate" value="<%=startOfWeek!=null?fc.SqlToRegularDate(startOfWeek.toString()):"-" %>" readonly>
 										</div>
 										<div class="col-md-2">
 											<label class="form-label mt-2">End Date: </label>
 										</div>
 										<div class="col-md-2">
-											<input type="text" class="form-control " id="activityWeekEndDate" value="<%=fc.SqlToRegularDate(endOfWeek.toString()) %>" readonly>
+											<input type="text" class="form-control " id="activityWeekEndDate" value="<%=endOfWeek!=null?fc.SqlToRegularDate(endOfWeek.toString()):"-" %>" readonly>
 										</div>
 									</div>
 								</form>
@@ -160,13 +161,13 @@ FormatConverter fc = new FormatConverter();
 		                            	<tr>
 		                            		<th>Expand</th>
 		                            		<th>Employee</th>
-											<th>Sunday <br> <span class="datecolor"><%=fc.SqlToRegularDate(startOfWeek.toString()) %></span></th>
-											<th>Monday <br> <span class="datecolor"><%=fc.SqlToRegularDate(startOfWeek.plusDays(1).toString()) %></span></th>
-											<th>Tuesday <br> <span class="datecolor"><%=fc.SqlToRegularDate(startOfWeek.plusDays(2).toString()) %></span></th>
-											<th>Wednesday <br> <span class="datecolor"><%=fc.SqlToRegularDate(startOfWeek.plusDays(3).toString()) %></span></th>
-											<th>Thursday <br> <span class="datecolor"><%=fc.SqlToRegularDate(startOfWeek.plusDays(4).toString()) %></span></th>
-											<th>Friday <br> <span class="datecolor"><%=fc.SqlToRegularDate(startOfWeek.plusDays(5).toString()) %></span></th>
-											<th>Saturday <br> <span class="datecolor"><%=fc.SqlToRegularDate(endOfWeek.toString()) %></span></th>
+											<th>Sunday <br> <span class="datecolor"><%=startOfWeek!=null?fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(startOfWeek.toString())) :"-"%></span></th>
+											<th>Monday <br> <span class="datecolor"><%=startOfWeek!=null?fc.SqlToRegularDate(startOfWeek.plusDays(1).toString()) :"-"%></span></th>
+											<th>Tuesday <br> <span class="datecolor"><%=startOfWeek!=null?fc.SqlToRegularDate(startOfWeek.plusDays(2).toString()):"-" %></span></th>
+											<th>Wednesday <br> <span class="datecolor"><%=startOfWeek!=null?fc.SqlToRegularDate(startOfWeek.plusDays(3).toString()):"-" %></span></th>
+											<th>Thursday <br> <span class="datecolor"><%=startOfWeek!=null?fc.SqlToRegularDate(startOfWeek.plusDays(4).toString()):"-" %></span></th>
+											<th>Friday <br> <span class="datecolor"><%=startOfWeek!=null?fc.SqlToRegularDate(startOfWeek.plusDays(5).toString()):"-" %></span></th>
+											<th>Saturday <br> <span class="datecolor"><%=endOfWeek!=null?fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(endOfWeek.toString())):"-" %></span></th>
 											<th>Approve / Return</th>
 										</tr>
 									</thead>
@@ -194,7 +195,7 @@ FormatConverter fc = new FormatConverter();
 															<div class="row">
 																<div class="col-md-4 right">
 																	<%if(timeSheet!=null && timeSheet.getTimeSheetStatus().equalsIgnoreCase("FWD")) {%>
-																		<input form="inlineapprform<%=count%>" type="checkbox" class="form-control mt-1" name="timeSheetId" value="<%=timeSheet.getTimeSheetId() %>" style="transform: scale(1.5);margin-left: 100%;" checked>
+																		<input form="inlineapprform<%=count%>" type="checkbox" class="form-control mt-1" name="timeSheetId" value="<%=timeSheet.getTimeSheetId()!=null?StringEscapeUtils.escapeHtml4(timeSheet.getTimeSheetId().toString()):"-" %>" style="transform: scale(1.5);margin-left: 100%;" checked>
 																	<%} else if(timeSheet!=null && timeSheet.getTimeSheetStatus().equalsIgnoreCase("ABS")){%>
 																		<span style="margin-left: 100%;">
 																			<i class="fa fa-check" aria-hidden="true" style="color: green;font-size: 20px;"></i>
@@ -206,7 +207,7 @@ FormatConverter fc = new FormatConverter();
 																	<%} %>
 																</div>
 																<div class="col-md-7 left ml-2">
-																	<span style="color: <%if(some.before(time)){%>red<%}else{%>green<%}%>"><%=timeSheet.getTotalDuration() %></span>
+																	<span style="color: <%if(some.before(time)){%>red<%}else{%>green<%}%>"><%=timeSheet.getTotalDuration()!=null?StringEscapeUtils.escapeHtml4(timeSheet.getTotalDuration().toString()):"-" %></span>
 																</div>
 															</div>
 														<%} else{%>
@@ -264,7 +265,7 @@ FormatConverter fc = new FormatConverter();
 																	<td class="center">
 																		
 																		<%if(timeSheet.getTimeSheetStatus().equalsIgnoreCase("FWD")) {%>
-																			<input form="apprform<%=count %>" type="checkbox" class="form-control" name="timeSheetId" value="<%=timeSheet.getTimeSheetId() %>" style="transform: scale(1.5);" checked>
+																			<input form="apprform<%=count %>" type="checkbox" class="form-control" name="timeSheetId" value="<%=timeSheet.getTimeSheetId()!=null?StringEscapeUtils.escapeHtml4(timeSheet.getTimeSheetId().toString()):"-" %>" style="transform: scale(1.5);" checked>
 																		<%} else if(timeSheet.getTimeSheetStatus().equalsIgnoreCase("ABS")){%>
 																			<span>
 																				<i class="fa fa-check" aria-hidden="true" style="color: green;font-size: 20px;"></i>
@@ -278,7 +279,7 @@ FormatConverter fc = new FormatConverter();
 																	</td>
 																	<td colspan="4">
 																		<span style="font-weight: bold;font-size: 16px;color: <%if(timeSheet.getTimeSheetStatus().equalsIgnoreCase("ABS")) {%>green<%}else if(timeSheet.getTimeSheetStatus().equalsIgnoreCase("RBS")){%>red<%}%> ">
-																		<%=fc.SqlToRegularDate(date.toString()) %>
+																		<%=date!=null?fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(date.toString())):"-" %>
 																		</span>
 																	</td>
 																</tr>
@@ -301,7 +302,7 @@ FormatConverter fc = new FormatConverter();
 																		<%if(act.getActivityId()==Long.parseLong("0")) {%>
 																			NIL
 																		<%} else {%>
-																			<%=activity!=null&&activity[9]!=null?activity[9]:"-" %>			
+																			<%=activity!=null&&activity[9]!=null?StringEscapeUtils.escapeHtml4(activity[9].toString()):"-" %>			
 																		<%} %>
 																	</td>
 																	<td>
@@ -322,21 +323,21 @@ FormatConverter fc = new FormatConverter();
 																			out.println(activityName);
 																		%>
 																		<%} else{%>
-																			<%=activity!=null&&activity[5]!=null?activity[5]:"-" %>	
+																			<%=activity!=null&&activity[5]!=null?StringEscapeUtils.escapeHtml4(activity[5].toString()):"-" %>	
 																		<%} %>
 																	</td>
 																	<td class="center">
-																		<%if(act.getActivityDuration()!=null) {%><%=act.getActivityDuration()%><%} %>
+																		<%if(act.getActivityDuration()!=null) {%><%=StringEscapeUtils.escapeHtml4(act.getActivityDuration()) %><%} %>
 																	</td>
 																	<td>
-																		<%if(act.getRemarks()!=null && !act.getRemarks().isEmpty()) {%><%=act.getRemarks()%><%} else{%>-<%} %>
+																		<%if(act.getRemarks()!=null && !act.getRemarks().isEmpty()) {%><%=StringEscapeUtils.escapeHtml4(act.getRemarks())%><%} else{%>-<%} %>
 																	</td>
 																</tr>
 																<%} %>
 																<tr>
 																	<td class="right" colspan="3" style="font-weight: bold;">Work Duration</td>
 																	<td colspan="1" class="center">
-																		<%if(timeSheet!=null && timeSheet.getTotalDuration()!=null) {%><%=timeSheet.getTotalDuration() %><%} else{%>00:00<%} %>
+																		<%if(timeSheet!=null && timeSheet.getTotalDuration()!=null) {%><%=StringEscapeUtils.escapeHtml4(timeSheet.getTotalDuration()) %><%} else{%>00:00<%} %>
 																	</td>
 																	<td colspan="1"></td>
 																</tr>

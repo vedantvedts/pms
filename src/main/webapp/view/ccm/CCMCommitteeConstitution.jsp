@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.fasterxml.jackson.databind.ObjectMapper"%>
 <%@page import="java.util.Comparator"%>
 <%@page import="java.util.stream.Collectors"%>
@@ -92,23 +93,23 @@ jsonemployeeList1 = jsonemployeeList1.replace("\\", "\\\\").replace("\"", "\\\""
 					.replace("\t", "\\t");
 
 %>
-	<% String ses=(String)request.getParameter("result");
-	 	String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-		%>
-		<div align="center">
-			<div class="alert alert-danger" role="alert">
-		    <%=ses1 %>
-		    </div>
-		</div>
-		<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-		    	<%=ses %>
-			</div>
-		</div>
-	<%} %>
-	
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
+
 	<div class="container-fluid mb-3">
 		<div class="card shadow-nohover">
  			<div class="card-header" style="background-color: transparent;">
@@ -155,8 +156,8 @@ jsonemployeeList1 = jsonemployeeList1.replace("\\", "\\\\").replace("\"", "\\\""
 								<select class="form-control dynamicdropdown" name="chairperson" id="chairperson" data-live-search="true" required="required"   data-placeholder="Select Chairperson" >
 											             
 								</select>	
-								<%if(chairperson!=null) {%>
-									<input type="hidden" name="cpmemberid"  value="<%=chairperson[0]%>" >
+								<%if(chairperson[0]!=null) {%>
+									<input type="hidden" name="cpmemberid"  value="<%=StringEscapeUtils.escapeHtml4(chairperson[0].toString())%>" >
 								<%} %> 
 							</div>		
 							
@@ -167,8 +168,8 @@ jsonemployeeList1 = jsonemployeeList1.replace("\\", "\\\\").replace("\"", "\\\""
 								<select class="form-control dynamicdropdown" id="co_chairperson" required="required" name="co_chairperson">
 					    			
 					  			</select>
-					  			<%if(co_chairperson!=null){ %>
-					  				<input type="hidden" name="comemberid"value="<%=co_chairperson[0]%>">
+					  			<%if(co_chairperson[0]!=null){ %>
+					  				<input type="hidden" name="comemberid"value="<%=StringEscapeUtils.escapeHtml4(co_chairperson[0].toString())%>">
 					  			<%} %>	
 							</div>		
 							
@@ -200,8 +201,8 @@ jsonemployeeList1 = jsonemployeeList1.replace("\\", "\\\\").replace("\"", "\\\""
 								<select class="form-control dynamicdropdown" name="Secretary" id="secretary" data-live-search="true" required="required"   data-placeholder="Select Member secretary" >
 													             
 								</select>	
-								<%if(secretary!=null){ %>
-					  				<input type="hidden" name="msmemberid" value="<%=secretary[0]%>">
+								<%if(secretary[0]!=null){ %>
+					  				<input type="hidden" name="msmemberid" value="<%=StringEscapeUtils.escapeHtml4(secretary[0].toString())%>">
 					  			<%} %>						
 							</div>		
 							
@@ -212,8 +213,8 @@ jsonemployeeList1 = jsonemployeeList1.replace("\\", "\\\\").replace("\"", "\\\""
 								<select class="form-control dynamicdropdown" id="proxysecretary" required="required" name="proxysecretary"style="margin-top: -5px">
 		    						
 					  			</select>
-					  			<%if(proxysecretary!=null){ %>
-					  				<input type="hidden" name="psmemberid" value="<%=proxysecretary[0]%>">
+					  			<%if(proxysecretary[0]!=null){ %>
+					  				<input type="hidden" name="psmemberid" value="<%=StringEscapeUtils.escapeHtml4(proxysecretary[0].toString())%>">
 					  			<%}%> 
 							</div>	
 							
@@ -282,12 +283,12 @@ jsonemployeeList1 = jsonemployeeList1.replace("\\", "\\\\").replace("\"", "\\\""
 		            									<input type="number" class="form-control" name="newslno" value="<%=obj[11] %>" min="1" max="<%=tempcommitteemembersall.size()%>" style="width:50%"> 
 		              									<input type="hidden" name="memberId" value="<%=obj[0].toString() %>">
 		              								</td>
-									              	<td><%=obj[2].toString() %>, <%=obj[4].toString() %></td>
+									              	<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>, <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
 									              	<td> 
 														<%  if(obj[9].toString().equalsIgnoreCase("@EXP")) 
-																out.println(obj[12]);
+																out.println(obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - ");
 															else
-																out.println(obj[9]);
+																out.println(obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - ");
 														%>
 													</td>
 													<td align="center">
@@ -376,7 +377,7 @@ jsonemployeeList1 = jsonemployeeList1.replace("\\", "\\\\").replace("\"", "\\\""
 													<div class="input select">
 														<select class="form-control selectdee " name="InternalMemberIds" data-live-search="true" required  data-placeholder="Select Members" multiple style="width:400px">
 										                <%for(Object[] obj:employeeList){ %>																							
-															<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>																				
+															<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></option>																				
 														<%} %>
 														</select>
 													<input type="hidden" name="InternalLabCode" value="<%=labCode%>"> 	
@@ -418,7 +419,7 @@ jsonemployeeList1 = jsonemployeeList1.replace("\\", "\\\\").replace("\"", "\\\""
 															<option disabled="true"  selected value="">Lab Name</option>
 															    <% for (Object[] obj : allLabList) {
 															    if(!labCode.equals(obj[3].toString())){%>
-															    <option value="<%=obj[3]%>"><%=obj[3]%></option>
+															    <option value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 															    <%}
 															    }%>
 														</select>
@@ -465,7 +466,7 @@ jsonemployeeList1 = jsonemployeeList1.replace("\\", "\\\\").replace("\"", "\\\""
 													<div class="input select ">
 														<select class="selectdee" name="ExpertMemberIds"   data-live-search="true" style="width: 350px"  data-placeholder="Select Members" required multiple>
 											            	<%for(Object[] obj:expertList){ %>																									
-																<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>	
+																<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></option>	
 															<%} %>
 														</select>
 													</div>

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -39,22 +40,22 @@
 		Object[] projectDetails = (Object[])request.getAttribute("projectDetails");
 		String projectId = (String)request.getParameter("ProjectId");
 	%>
-	<% String ses=(String)request.getParameter("result");
-	 	String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-		%>
-		<div align="center">
-			<div class="alert alert-danger" role="alert">
-		    <%=ses1 %>
-		    </div>
-		</div>
-		<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-		    	<%=ses %>
-			</div>
-		</div>
-	<%} %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
 	
 	<div class="container-fluid mb-3">
 		<div class="card shadow-nohover">
@@ -62,7 +63,7 @@
 			<div class="card-header" style="background-color: transparent;height: 3rem;">
  				<div class="row">
  					<div class="col-md-7">
- 						<h3 class="text-dark" style="font-weight: bold;">Procurement Status - <%=projectDetails!=null?(projectDetails[3]+" ("+projectDetails[1]+")"):"" %> </h3>
+ 						<h3 class="text-dark" style="font-weight: bold;">Procurement Status - <%=projectDetails!=null?(projectDetails[3]!=null?StringEscapeUtils.escapeHtml4(projectDetails[3].toString()):" - "+" ("+projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()):" - "+")"):"" %> </h3>
  					</div>
  					<div class="col-md-3"></div>
  					<div class="col-md-2 right">
@@ -94,8 +95,8 @@
 						%>
 							<tr>
 								<td class="center"><%=++slno %></td>
-								<td class="center"><%=obj[1] %></td>
-								<td ><%=obj[3] %></td>
+								<td class="center"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %></td>
+								<td ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - " %></td>
 								<td class="right">
 									<%
 									Object[] proc = procurementStatusList.stream().filter(e -> e[1].toString().equalsIgnoreCase(obj[1].toString())).findFirst().orElse(null);

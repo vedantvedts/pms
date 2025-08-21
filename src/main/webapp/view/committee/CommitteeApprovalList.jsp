@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.List"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -39,8 +40,6 @@ display:none;
 <body>
 
 	<%
-	String ses=(String)request.getParameter("result"); 
-	String ses1=(String)request.getParameter("resultfail");
 	FormatConverter fc = new FormatConverter();
 	SimpleDateFormat sdf = fc.getRegularDateFormat();
 	SimpleDateFormat sdf1 = fc.getSqlDateFormat();
@@ -53,20 +52,22 @@ display:none;
 		List<Object[]> EnoteApprovedList=(List<Object[]>)request.getAttribute("eNoteApprovalList");
 	
 	%>
-	<%
-
-	if(ses1!=null){
-	%>
-	<div align="center">
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-	</div></div>
-                    <%} %>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 <div class="container-fluid" >
 	<div class="row">
 		<div class="col-md-12">	
@@ -140,27 +141,27 @@ display:none;
 							for(Object[] obj: EnoteApprovalPendingList) {%>
 							<tr>
 							<td style="text-align: center;"> <%=++firstCount %></td>
-							<td style="text-align: center;"><%=obj[9].toString() %></td>
-							<td style="text-align: center;"><%=obj[10].toString() %></td>
+							<td style="text-align: center;"><%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - " %></td>
+							<td style="text-align: center;"><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %></td>
 							<td style="text-align: center;"> 
 							<%if (obj[1]!=null){%>
-							<%=obj[1] .toString() %>
+							<%=StringEscapeUtils.escapeHtml4(obj[1].toString()) %>
 							<%}else{ %>
 								-
 							<%} %>
 							<br>
 							<%if (obj[2]!=null){%>
-							<%=sdf.format(sdf1.parse(obj[2].toString())) %>
+							<%=sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[2].toString()))) %>
 							<%}else{ %>
 								-
 							<%} %>
 							
 				</td>
-				<td style="text-align: justify;"><%if(obj[3]!=null) {%> <%= obj[3].toString()%><%}else{%> -<%} %> </td>
+				<td style="text-align: justify;"><%if(obj[3]!=null) {%> <%= StringEscapeUtils.escapeHtml4(obj[3].toString())%><%}else{%> -<%} %> </td>
 				<td>
 				<div align="center" style="margin-top:1%;">
 				<form action="#">
-				<button type ="submit"  class="btn btn-sm btn-link w-100 btn-status" formaction="EnoteStatusTrack.htm" value="<%=obj[0]%>" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="Transaction History" name="EnoteTrackId" style=" color: <%=obj[7].toString()%>; font-weight: 600;display: contents" > <%=obj[6].toString() %> 
+				<button type ="submit"  class="btn btn-sm btn-link w-100 btn-status" formaction="EnoteStatusTrack.htm" value="<%=obj[0]%>" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="Transaction History" name="EnoteTrackId" style=" color: <%=obj[7].toString()%>; font-weight: 600;display: contents" > <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %> 
 				<i class="fa fa-external-link" aria-hidden="true"></i></button>
 				</form>
 				</div> 
@@ -224,7 +225,7 @@ display:none;
               <label class="control-label" for="todate" style="text-align: center;font-size: 16px;width:20px; ">To</label>&nbsp;&nbsp;
               <input type="text" style="width:113px;  margin-top: -10px;" class="form-control input-sm mydate" readonly="readonly" value="" id="todate" name="ToDate" required="required"> 
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                <input type="hidden" id="redirectedvalue" name="redirectedvalue" value="<%if(redirectedvalue!=null){%><%=redirectedvalue %><%}%>">
+                <input type="hidden" id="redirectedvalue" name="redirectedvalue" value="<%if(redirectedvalue!=null){%><%=StringEscapeUtils.escapeHtml4(redirectedvalue) %><%}%>">
           </div>
         </div>
      
@@ -250,23 +251,23 @@ display:none;
 						%>
 						<tr>
 						<td style="text-align: center;width:20px;"><%=++count %></td>
-						<td style="text-align: center;"><%=obj[10].toString() %></td>
-						<td style="text-align: center;"><%=obj[11].toString() %></td>
+						<td style="text-align: center;"><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - "%></td>
+						<td style="text-align: center;"><%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "%></td>
 						<td style="text-align: center;"> 
 							<%if (obj[1]!=null){%>
-							<%=obj[1] .toString() %>
+							<%=StringEscapeUtils.escapeHtml4(obj[1].toString()) %>
 							<%}else{ %>
 								-
 							<%} %>
 							<br>
 							<%if (obj[2]!=null){%>
-							<%=sdf.format(sdf1.parse(obj[2].toString())) %>
+							<%=sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[2].toString()))) %>
 							<%}else{ %>
 								-
 							<%} %>
 							
 							</td>
-							<td style="text-align: center;"><%=obj[3].toString() %></td>
+							<td style="text-align: center;"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
 							<td style="text-align: justify;">
 							
 							<div align="center" style="margin-top:1%;">

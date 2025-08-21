@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalDateTime"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -53,11 +54,11 @@ p{
           }
           @top-right {
           		<%if( Long.parseLong(projectid)>0){%>
-             content: "<%=projectdetails[1]%>";
+             content: "<%=projectdetails[1]!=null?StringEscapeUtils.escapeHtml4(projectdetails[1].toString()): " - "%>";
              <%}else if(Long.parseLong(divisionid)>0){%>
-               	content: "Division:<%=divisiondetails[1]%>";
+               	content: "Division:<%=divisiondetails[1]!=null?StringEscapeUtils.escapeHtml4(divisiondetails[1].toString()): " - "%>";
              <%}else {%>
-             	content: "<%=labdetails[1]%>";
+             	content: "<%=labdetails[1]!=null?StringEscapeUtils.escapeHtml4(labdetails[1].toString()): " - "%>";
              <%}%>
              margin-top: 30px;
              margin-right: 10px;
@@ -66,20 +67,20 @@ p{
           @top-left {
           	margin-top: 30px;
             margin-left: 10px;
-            content: "<%=committeescheduleeditdata[11] %>";
+            content: "<%=committeescheduleeditdata[11]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[11].toString()): " - " %>";
             font-size: 13px;
           }            
           
           @top-center { 
           margin-top: 30px;
-          content: "<%=committeescheduleeditdata[15]%>"; 
+          content: "<%=committeescheduleeditdata[15]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[15].toString()): " - "%>"; 
            font-size: 13px;
           
           }
          
           @bottom-center { 
 	          margin-bottom: 30px;
-	          content: "<%=committeescheduleeditdata[15]%>"; 
+	          content: "<%=committeescheduleeditdata[15]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[15].toString()): " - "%>"; 
           
           }
           
@@ -115,7 +116,7 @@ p{
  
 </style>
 <meta charset="ISO-8859-1">
-<title><%=committeescheduleeditdata[8]%> Minutes View</title>
+<title><%=committeescheduleeditdata[8]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[8].toString()): " - "%> Minutes View</title>
 </head>
 <body>
 	
@@ -150,9 +151,9 @@ p{
 											for(Object obj[]:values){
 												 count1++; %>
 												<%if(count1==1 ){ %>
-													<%if(obj[3]!=null){ %> <%= obj[3]%><%}else{ %> - <%} %>
+													<%if(obj[3]!=null){ %> <%= StringEscapeUtils.escapeHtml4(obj[3].toString())%><%}else{ %> - <%} %>
 												<%}else if(count1==values.size() ){ %>
-													<%if(obj[3]!=null){ %> <br> - <br> <%= obj[3]%> <%}else{ %> - <%} %>
+													<%if(obj[3]!=null){ %> <br> - <br> <%= StringEscapeUtils.escapeHtml4(obj[3].toString())%> <%}else{ %> - <%} %>
 												<%} %>
 										<%} %>
 									</td>
@@ -161,7 +162,7 @@ p{
 									<td  class="std" >
 									<%	int count2=0;
 										for(Object obj[]:values){ %>
-										<%if(obj[13]!=null){ %> <%= obj[13]%>,&nbsp;<%=obj[14] %>
+										<%if(obj[13]!=null){ %> <%=StringEscapeUtils.escapeHtml4(obj[13].toString())%>,&nbsp;<%=obj[14]!=null?StringEscapeUtils.escapeHtml4(obj[14].toString()): " - " %>
 											<%if(count2>=0 && count2<values.size()-1){ %>
 											,&nbsp;
 											<%} %>

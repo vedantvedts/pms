@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -245,7 +246,7 @@ SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
     										<% for (Object[] obj : systemList) {
     										
     										%>
-											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(sid)){ %>selected="selected" <%} %>> <%=obj[2]%>  </option>
+											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(sid)){ %>selected="selected" <%} %>> <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%>  </option>
 											<%} %>
   									</select>
   									</div>
@@ -266,23 +267,22 @@ SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
 
 </form>
 <div style="background-color:#FFFFFF;" class="body genealogy-body genealogy-scroll">
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert" >
-	    <%=ses1 %>
-	     <br />
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert"  >
-	    	<%=ses %>
-	    	 <br />
-	    </div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 	
 <%-- 	    <div class="genealogy-tree" id="treeView" style="">
@@ -980,7 +980,7 @@ if(ses1!=null){	%>
 			     <div class="col-md-11">
 					<h5 ><%if(sid!=null){	
 				        Object[] systemListDetail=systemList.stream().filter(e->e[0].toString().equalsIgnoreCase(sid)).collect(Collectors.toList()).get(0);%>  
-			           <%=systemListDetail[2] %>(<%=systemListDetail[1]!=null?systemListDetail[1].toString():"" %>)
+			           <%=systemListDetail[2]!=null?StringEscapeUtils.escapeHtml4(systemListDetail[2].toString()):"-" %>(<%=systemListDetail[1]!=null?StringEscapeUtils.escapeHtml4(systemListDetail[1].toString()):"-" %>)
 	                      <%} %>
 					</h5>
 					</div>
@@ -1017,8 +1017,8 @@ if(ses1!=null){	%>
 														 		for(Object[]obj:ProductTreeList){%>
 														 		<tr>
 														 		<td style="text-align: center" ><%=++countx %>. </td>
-														 		<td> <%=obj[3] %></td>
-														 		<td><%=obj[10]!=null?obj[10]:"-" %> </td>
+														 		<td> <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):"-" %></td>
+														 		<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()):"-" %> </td>
 														 		
 														 		<%if(obj[11]!=null){ %>
 														 		<%if(obj[11].toString().equalsIgnoreCase("S")) {%>

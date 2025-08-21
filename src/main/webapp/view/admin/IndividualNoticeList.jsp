@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -128,29 +129,22 @@ String Todate=(String)request.getAttribute("tdate");
 
 %>
 
-	<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-
-
-	<center>
-
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</center>
-	<%}if(ses!=null){ %>
-	<center>
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</center>
-
-
-	<%} %>
-
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
 
 
 	<br>
@@ -171,14 +165,14 @@ String Todate=(String)request.getAttribute("tdate");
 									Date:</label> <input class="form-control form-control date"
 									data-date-format="dd-mm-yyyy" id="datepicker1" name="fdate"
 									required="required" style="width: 120px;"
-									<%if(Fromdate!=null){%> value="<%=(Fromdate) %>" <%} %>>
+									<%if(Fromdate!=null){%> value="<%=StringEscapeUtils.escapeHtml4(Fromdate) %>" <%} %>>
 
 
 								<label
 									style="margin-left: 20px; margin-right: 20px; font-weight: 800">To
 									Date:</label> <input class="form-control" data-date-format="dd-mm-yyyy"
 									id="datepicker3" name="tdate" style="width: 120px;"
-									<%if(Todate!=null){%> value="<%=(Todate) %>" <%} %>>
+									<%if(Todate!=null){%> value="<%=StringEscapeUtils.escapeHtml4(Todate) %>" <%} %>>
 
 								<button type="submit" class="btn btn-primary btn-sm submit"
 									style="margin-left: 12px;" id="submit">SUBMIT</button>
@@ -207,9 +201,9 @@ String Todate=(String)request.getAttribute("tdate");
 								<%for(Object[] notiec:notiecList){ %>
 								<tr>
 									<td><%=srno++%></td>
-									<td><%=sdf.format(notiec[2])%></td>
-									<td><%=sdf.format(notiec[3])%></td>
-									<td style="word-break: break-all;"><%=notiec[1]%></td>
+									<td><%=notiec[2]!=null?sdf.format(notiec[2]):" - "%></td>
+									<td><%=notiec[3]!=null?sdf.format(notiec[3]):" - "%></td>
+									<td style="word-break: break-all;"><%=notiec[1]!=null?StringEscapeUtils.escapeHtml4(notiec[1].toString()): " - "%></td>
 
 									<td class="left width">
 

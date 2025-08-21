@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.documents.model.IGIConnectorAttach"%>
 <%@page import="com.vts.pfms.documents.model.IGIConnector"%>
@@ -25,21 +26,22 @@
 	List<IGIConnector> connectorMasterList = (List<IGIConnector>) request.getAttribute("connectorMasterList");
 	List<IGIConnectorAttach> connectorAttachList = (List<IGIConnectorAttach>) request.getAttribute("connectorAttachList");
 	%>
-	<% String ses = (String) request.getParameter("result"); 
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-        <div align="center">
-            <div class="alert alert-danger" role="alert">
-                <%= ses1 %>
-            </div>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
         </div>
-    <% } if (ses != null) { %>
-        <div align="center">
-            <div class="alert alert-success" role="alert">
-                <%= ses %>
-            </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
         </div>
-    <% } %>
+    </div>
+<% } %>
     
 	<div class="container-fluid">
 		<div class="col-md-12">
@@ -102,7 +104,7 @@
 												%>
 													<tr>
 														<td class="center"><%=++sn %></td>
-														<td><%=attach.getAttachment() %></td>
+														<td><%=attach.getAttachment()!=null?StringEscapeUtils.escapeHtml4(attach.getAttachment()): " - " %></td>
 														<td class="center">
 															<form action="#" method="post">
 																<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -124,13 +126,13 @@
 											</tbody>
 										</table>
 									</td>
-									<td><%=con.getPartNo()%></td>
-									<td><%=con.getConnectorMake()%></td>
-									<td><%=con.getStandardName()%></td>
-									<td><%=con.getProtection()%></td>
-									<td><%=con.getRefInfo()%></td>
-									<td><%=con.getRemarks()%></td>
-									<td class="center"><%=con.getPinCount()%></td>
+									<td><%=con.getPartNo()!=null?StringEscapeUtils.escapeHtml4(con.getPartNo()): " - "%></td>
+									<td><%=con.getConnectorMake()!=null?StringEscapeUtils.escapeHtml4(con.getConnectorMake()): " - "%></td>
+									<td><%=con.getStandardName()!=null?StringEscapeUtils.escapeHtml4(con.getStandardName()): " - "%></td>
+									<td><%=con.getProtection()!=null?StringEscapeUtils.escapeHtml4(con.getProtection()): " - "%></td>
+									<td><%=con.getRefInfo()!=null?StringEscapeUtils.escapeHtml4(con.getRefInfo()): " - "%></td>
+									<td><%=con.getRemarks()!=null?StringEscapeUtils.escapeHtml4(con.getRemarks()): " - "%></td>
+									<td class="center"><%=con.getPinCount()!=null?StringEscapeUtils.escapeHtml4(con.getPinCount().toString()): " - "%></td>
 								</tr>
 								<% } }%>
 							</tbody>

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.master.model.HolidayMaster"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -37,6 +38,23 @@ SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
   HolidayMaster holiday=(HolidayMaster)request.getAttribute("Holidaydata");
   String action=(String)request.getAttribute("Action");
 %>
+
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
   
 <div class="container">
 	<div class="row" style="">
@@ -60,7 +78,7 @@ SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			
 										<tr>
 										<th><label>Holiday Name<span class="mandatory" style="color:red">*</span></label> </th>
-										<td><input type="text" class="form-control form-control" placeholder="" id="" name="HoliName" value="<% if(holiday!=null && holiday.getHolidayName()!=null){ %><%=holiday.getHolidayName() %><%} %>"  required="required"></td>
+										<td><input type="text" class="form-control form-control" placeholder="" id="" name="HoliName" value="<% if(holiday!=null && holiday.getHolidayName()!=null){ %><%=StringEscapeUtils.escapeHtml4(holiday.getHolidayName()) %><%} %>"  required="required"></td>
 										</tr>
 										
 										<tr>

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -191,27 +192,23 @@ NFormatConvertion nfc=new NFormatConvertion();
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	
-	
-	<center>
-	
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-            </div>
-            
-    </center>
-    
-    
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
+
 <br>	
 <div class="container-fluid">		
 	<div class="row">
@@ -219,7 +216,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 			<div class="row">
 				<div class="col-md-9 card-header" style="margin-bottom: 10px;margin-top: -30px; background-color: white;">
 					<h3 style="color:  #055C9D" >
-						<%if(Long.parseLong(projectid)>0){ %> Project : <%=projectdata[4] %><%}else if (Long.parseLong(divisionid)>0){ %>  Division : <%=divisiondata[1] %> <%}else if(Long.parseLong(initiationid)>0){ %>Initiated Project : <%=initiationdata[1]%> <%} %>
+						<%if(Long.parseLong(projectid)>0){ %> Project : <%=projectdata[4]!=null?StringEscapeUtils.escapeHtml4(projectdata[4].toString()): " - " %><%}else if (Long.parseLong(divisionid)>0){ %>  Division : <%=divisiondata[1]!=null?StringEscapeUtils.escapeHtml4(divisiondata[1].toString()): " - " %> <%}else if(Long.parseLong(initiationid)>0){ %>Initiated Project : <%=initiationdata[1]!=null?StringEscapeUtils.escapeHtml4(initiationdata[1].toString()): " - "%> <%} %>
 					</h3>			
 				</div>
 				<div class="col-md-6">
@@ -243,17 +240,17 @@ NFormatConvertion nfc=new NFormatConvertion();
 			  <article>
 			    <div class="inner">
 			      <span class="date">
-			        <span class="day"><%=day.format(object[6]) %></span>
-			        <span class="month"><%=month.format(object[6]) %></span>
-			        <span class="year"><%=year.format(object[6]) %></span>
+			        <span class="day"><%=object[6]!=null?day.format(object[6]):" - " %></span>
+			        <span class="month"><%=object[6]!=null?month.format(object[6]):" - " %></span>
+			        <span class="year"><%=object[6]!=null?year.format(object[6]):" - " %></span>
 			      </span>
-			      <h2><%=object[7] %> at <%=time.format(object[6]) %></h2> 
+			      <h2><%=object[7]!=null?StringEscapeUtils.escapeHtml4(object[7].toString()): " - " %> at <%=object[6]!=null?time.format(object[6]):" - " %></h2> 
 				  <p>
 				  <span class="remarks_title">Action By : </span>
-				  				<%=object[8] %>, <%=object[9] %><br>
+				  				<%=object[8]!=null?StringEscapeUtils.escapeHtml4(object[8].toString()): " - " %>, <%=object[9]!=null?StringEscapeUtils.escapeHtml4(object[9].toString()): " - " %><br>
 				  	<%if(object[3]!= null && object[3].toString().trim().length()>0){%>
 				  		<span class="remarks_title">Remarks : </span>
-				  				<%=object[3] %>
+				  				<%=StringEscapeUtils.escapeHtml4(object[3].toString()) %>
 					<%}else{ %> 
 						<span class="remarks_title">No Remarks </span> 
 					<%} %>

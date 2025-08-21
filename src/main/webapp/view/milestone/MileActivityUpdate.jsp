@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page
 	import="com.ibm.icu.text.DecimalFormat,com.vts.pfms.milestone.dto.MileEditDto"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -125,20 +126,20 @@ input[type="file"]::-webkit-file-upload-button {
 	  enddate=LocalDate.now().toString();
   }
   Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert" align="center">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" align="center">
-			<%=ses %>
-		</div>
-	</div>
-	<%} %>
+  
+  if (ses1 != null) { %>
+  <div align="center">
+      <div class="alert alert-danger" role="alert">
+          <%=StringEscapeUtils.escapeHtml4(ses1) %>
+      </div>
+  </div>
+<% }if (ses != null) { %>
+  <div align="center">
+      <div class="alert alert-success" role="alert">
+          <%=StringEscapeUtils.escapeHtml4(ses) %>
+      </div>
+  </div>
+<% } %>
 
 	<div class="container-fluid">
 		<div class="row" style="margin-top: -0px; margin-bottom: 5px;">
@@ -149,8 +150,8 @@ input[type="file"]::-webkit-file-upload-button {
 
 					<div class="card-header"
 						style="background-color: #055C9D; margin-top:">
-						<b class="text-white"> Activity Update: <%=EditData[3] %></b><b
-							class="text-white" style="float: right;"><%=projectdetails[1]%></b>
+						<b class="text-white"> Activity Update: <%=EditData[3]!=null?StringEscapeUtils.escapeHtml4(EditData[3].toString()): " - " %></b><b
+							class="text-white" style="float: right;"><%=projectdetails[1]!=null?StringEscapeUtils.escapeHtml4(projectdetails[1].toString()): " - "%></b>
 					</div>
 
 					<div class="card-body">
@@ -301,7 +302,7 @@ input[type="file"]::-webkit-file-upload-button {
 											%>
 											<option value="<%=obj[3]%>"
 												<%if(LabCode!=null && LabCode.equalsIgnoreCase(obj[3].toString())){ %>
-												selected <%} %>><%=obj[3] %>
+												selected <%} %>><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %>
 											</option>
 											<%}}}%>
 											<option value="@EXP">Expert</option>
@@ -327,8 +328,8 @@ input[type="file"]::-webkit-file-upload-button {
 
 											<%for(Object[] obj:EmpList){ %>
 
-											<option value="<%=obj[0]%>"><%=obj[1]%>,
-												<%=obj[2]%></option>
+											<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>,
+												<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></option>
 
 											<%} %>
 										</select>
@@ -414,14 +415,14 @@ input[type="file"]::-webkit-file-upload-button {
 										style="background-color: #cdd0cb !important">
 										<div class="progress-bar progress-bar-striped"
 											role="progressbar" style="width: <%=obj[1]%>%;"
-											aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[1]%></div>
+											aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></div>
 									</div>
 
 								</td>
 
 								<td
 									style="word-wrap: break-word !important; min-width: 10%; max-width: 15%; white-space: normal !important; text-align: justify; word-break: break-all;">
-									<%=obj[3]%>
+									<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%>
 								</td>
 
 								<td style="text-align: left; width: 3%;">
@@ -494,7 +495,7 @@ input[type="file"]::-webkit-file-upload-button {
 
 
 
-								<td style="width: 18% !important;"><%=obj[1]%>, <%=obj[2]%></td>
+								<td style="width: 18% !important;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></td>
 								<td width="12%"><%=sdf.format(obj[3])%></td>
 								<td width="12%"><%=sdf.format(obj[4])%></td>
 								<td style="width: 8% !important;">
@@ -504,7 +505,7 @@ input[type="file"]::-webkit-file-upload-button {
 										<div class="progress-bar progress-bar-striped"
 											role="progressbar" style=" width: <%=obj[11]%>%;  "
 											aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-											<%=obj[11]%>
+											<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "%>
 										</div>
 									</div> <%}else{ %>
 									<div class="progress"

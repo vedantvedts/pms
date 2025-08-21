@@ -1,4 +1,5 @@
 
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -73,7 +74,7 @@ h6{
                             	<select class="form-control selectdee" id="ProjectId" required="required" name="ProjectId" style="width:220px !important">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : ProjectList) {%>
-										<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>> <%=obj[1]%> </option>
+										<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>> <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> </option>
 											<%} %>
   								</select>
                             	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
@@ -151,7 +152,7 @@ h6{
 								    		  
 								    		  {
 								    		    id: "<%=obj[3]%>",
-								    		    name: "<%=obj[2]%>",
+								    		    name: "<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): ""%>",
 								    		    <%if(!obj[9].toString().equalsIgnoreCase("0") && !obj[9].toString().equalsIgnoreCase("1")){ %>
 								    		   	baselineStart: "<%=obj[6]%>",
 								    		    baselineEnd: "<%=obj[7]%>", 

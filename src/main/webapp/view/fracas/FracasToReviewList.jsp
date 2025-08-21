@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -101,20 +102,22 @@ a:hover {
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br />
     
@@ -151,15 +154,15 @@ a:hover {
 										   			   %>
 														<tr>
 															<td class="center"><%=count %></td>
-															<td><%=obj[12] %></td>
-															<td><%=sdf.format(obj[3])%></td>
-															<td><%=sdf.format(obj[6])%></td>
-															<td><%=obj[10]%>, <%=obj[11]%></td>
+															<td><%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %></td>
+															<td><%=obj[3]!=null?sdf.format(obj[3]):" - " %></td>
+															<td><%=obj[6]!=null?sdf.format(obj[6]):" - " %></td>
+															<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - "%>, <%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "%></td>
 															<td style="width:15%;">									
 																	<%if(obj[13]!=null){ %>
 															           <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 																            <div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[13]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																	            <%=obj[13]%>
+																	            <%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - "%>
 																	        </div> 
 																	   </div> 
 																	<%}else{ %>
@@ -170,7 +173,7 @@ a:hover {
 																	   </div> <%} %>
 															</td>	
 															
-															<td><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></td>
+															<td><%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%}else{ %>-<%} %></td>
 																													
 															<td class="left width">		
 																

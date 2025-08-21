@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.net.URL"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
@@ -116,9 +117,9 @@ String productTreeMainId =(String)request.getAttribute("productTreeMainId");
 						%>
 						<tr>
 						<td  style="text-align: center;"><%=++paraCount %>.</td>
-						<td onmouseover="showContent('<%=obj[0].toString()%>')" onmouseout="hideContent('<%=obj[0].toString()%>')"><span class="viewbtn" ><%=obj[3].toString() %></span>
+						<td onmouseover="showContent('<%=obj[0].toString()%>')" onmouseout="hideContent('<%=obj[0].toString()%>')"><span class="viewbtn" ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></span>
 						 <div class="popup-content" id="popupContent<%=obj[0].toString()%>">
-         					<%=obj[4]!=null?obj[4].toString():"No Details Added" %>
+         					<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"No Details Added" %>
        					 </div>
 						
 						</td>
@@ -127,9 +128,9 @@ String productTreeMainId =(String)request.getAttribute("productTreeMainId");
 							++idCount;
 						for(Object[]obj1:ReqId){
 						%>
-						<div class="RDiv" id ='<%=idCount+"R"+obj1[0].toString()%>' style="" onclick="showReqDiv('<%=idCount+"R"+obj1[0].toString()%>')"><%=obj1[1] %></div>
+						<div class="RDiv" id ='<%=idCount+"R"+obj1[0].toString()%>' style="" onclick="showReqDiv('<%=idCount+"R"+obj1[0].toString()%>')"><%=obj1[1]!=null?StringEscapeUtils.escapeHtml4(obj1[1].toString()): " - " %></div>
 						 <div class="popup-content" id="popReqContent<%=idCount+"R"+obj1[0].toString()%>" onclick="hideContent()">
-         					<%=obj1[4]!=null?obj1[4].toString():"No Details Added" %>
+         					<%=obj1[4]!=null?StringEscapeUtils.escapeHtml4(obj1[4].toString()):"No Details Added" %>
        					 </div>
 						<%}} %>
 						</td>
@@ -166,7 +167,7 @@ String productTreeMainId =(String)request.getAttribute("productTreeMainId");
 					<%if(objs[12]!=null) {%>
 					<tr>
 					<td  style="text-align: center;" ><%=++snCount %>.</td>
-					<td  ><%=objs[1].toString() %></td>
+					<td  ><%=objs[1]!=null?StringEscapeUtils.escapeHtml4(objs[1].toString()): " - " %></td>
 					 <td  >
 					
 					
@@ -184,7 +185,7 @@ String productTreeMainId =(String)request.getAttribute("productTreeMainId");
 								%>
 								<% for(String s:paras){
 								%>
-							<div style="border: 1px solid #dee2e6"><%=s %></div>
+							<div style="border: 1px solid #dee2e6"><%=s!=null?StringEscapeUtils.escapeHtml4(s): " - " %></div>
 								<%} %>
 								<%--  <%=ProjectParaDetails.stream().filter(e->e[0].toString().equalsIgnoreCase(s)).map(e->e[3].toString()).collect(Collectors.joining(",")) %> <br> --%>
 								<%}else{ %>

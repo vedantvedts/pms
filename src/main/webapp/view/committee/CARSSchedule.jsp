@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="org.hibernate.internal.build.AllowSysOut"%>
 <%@page import="java.time.LocalTime"%>
@@ -135,24 +136,22 @@ background: blue;
 	</div>
 </div> --%>
 
-<%String ses=(String)request.getParameter("result"); 
-String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){
-%>
-	<div align="center">
-	
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</div>
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 	<div class="container-fluid">
@@ -172,8 +171,8 @@ if(ses1!=null){
 						    	 			<select class="form-control selectdee" id="carsInitiationId" required="required" name="carsInitiationId" onchange='this.form.submit();' >
 	   											<option disabled selected value="">Choose...</option>
 	   											<% for (Object[] obj : carsInitiationList) {%>
-													<option value="<%=obj[0]%>" <%if(carsInitiationId!=null && carsInitiationId.equals(obj[0].toString())){ committeeMainId = obj[19]!=null?obj[19].toString():committeeMainId; %>selected <%}%> >
-														(<%=obj[2] %>), <%=obj[4].toString().length()>55? obj[4].toString().substring(0, 55)+"...":obj[4].toString()%>
+													<option value="<%=obj[0]%>" <%if(carsInitiationId!=null && carsInitiationId.equals(obj[0].toString())){ committeeMainId = obj[19]!=null?StringEscapeUtils.escapeHtml4(obj[19].toString()):committeeMainId; %>selected <%}%> >
+														(<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>), <%=obj[4]!=null ? (obj[4].toString().length()>55? StringEscapeUtils.escapeHtml4(obj[4].toString()).substring(0, 55)+"...":StringEscapeUtils.escapeHtml4(obj[4].toString())):" - "%>
 													</option>
 												<%} %>   
 	  										</select>
@@ -225,7 +224,7 @@ if(ses1!=null){
 							<div class="mt-4" id="scrollclass" style="height:520px;overflow: auto">
 								<%if(!committeeschedulelist.isEmpty()){
 									for(Object[]obj:committeeschedulelist){ %>
-				 						<a class="tag meetingsp" style="text-decoration: none;" href="CommitteeScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[6].toString()%>
+				 						<a class="tag meetingsp" style="text-decoration: none;" href="CommitteeScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%>
 											&nbsp;&nbsp; Date: <%= sdf2.format(sdf3.parse(obj[3].toString())) %>
 										</a>
 								<%}}else{ %>

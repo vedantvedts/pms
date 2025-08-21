@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
         <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -51,19 +52,22 @@ String Parameter=(String) request.getAttribute("details_param");
 
 %>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%><center>
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -85,7 +89,7 @@ String Parameter=(String) request.getAttribute("details_param");
 											
 											<h3 class="card-header">
 												Objective
-											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 											</h3>
 										
 											<div class="card-body">
@@ -147,7 +151,7 @@ String Parameter=(String) request.getAttribute("details_param");
 										
 											<h3 class="card-header">
 												Scope
-											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 											</h3>
 										
 											<div class="card-body">
@@ -209,7 +213,7 @@ String Parameter=(String) request.getAttribute("details_param");
 											
 											<h3 class="card-header">
 												Multi-Lab Work Share
-											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 											</h3>
 										
 											<div class="card-body">
@@ -271,7 +275,7 @@ String Parameter=(String) request.getAttribute("details_param");
 										
 											<h3 class="card-header">
 												Earlier Work
-											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 											</h3>
 											
 										
@@ -334,7 +338,7 @@ String Parameter=(String) request.getAttribute("details_param");
 											
 											<h3 class="card-header">
 												Competency Established
-											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - "%>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 											</h3>
 										
 											<div class="card-body">
@@ -396,7 +400,7 @@ String Parameter=(String) request.getAttribute("details_param");
 					
 								<h3 class="card-header">
 							Requirement
-						<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+						<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 						</h3>				
 											
 						<div class="card-body">
@@ -458,7 +462,7 @@ String Parameter=(String) request.getAttribute("details_param");
 											
 											<h3 class="card-header">
 												Technology Challenges
-											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 											</h3>
 										
 											<div class="card-body">
@@ -519,7 +523,7 @@ String Parameter=(String) request.getAttribute("details_param");
 										
 											<h3 class="card-header">
 												Risk Mitigation
-											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 											</h3>
 										
 											<div class="card-body">
@@ -580,7 +584,7 @@ String Parameter=(String) request.getAttribute("details_param");
 										
 											<h3 class="card-header">
 												Proposal
-											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 											</h3>
 										
 											<div class="card-body">
@@ -639,7 +643,7 @@ String Parameter=(String) request.getAttribute("details_param");
 										
 											<h3 class="card-header">
 												Realization Plan
-											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 											</h3>
 										
 											<div class="card-body">
@@ -701,7 +705,7 @@ String Parameter=(String) request.getAttribute("details_param");
 										
 											<h3 class="card-header">
 												World Scenario
-											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 											</h3>
 										
 											<div class="card-body">
@@ -766,7 +770,7 @@ String Parameter=(String) request.getAttribute("details_param");
 										
 											<h3 class="card-header">
 												Need of Project
-											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 											</h3>
 										
 											<div class="card-body">

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.net.URL"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
@@ -111,7 +112,7 @@ specsList=specsList.stream().filter(e->!e[7].toString().equalsIgnoreCase("0")).c
 						for(Object[]obj:specsList) {%>
 						<tr>
 						<td style="text-align: center;"> <%=++rowCOunt %>. </td>
-						<td > <%=obj[1].toString() %> </td>
+						<td > <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> </td>
 						<td > 
 							<%
 							List<Object[]>linkedReq= new ArrayList<>();
@@ -129,7 +130,7 @@ specsList=specsList.stream().filter(e->!e[7].toString().equalsIgnoreCase("0")).c
 							<%if(linkedReq.size()>0) {
 							for(Object[]obj2:linkedReq){
 							%>
-							<div class="RDiv" id ='' style="" onclick="showReqDiv()"><%=obj2[1] %></div>
+							<div class="RDiv" id ='' style="" onclick="showReqDiv()"><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - " %></div>
 							<% %>
 						
 							<%}}else{ %>
@@ -165,11 +166,11 @@ specsList=specsList.stream().filter(e->!e[7].toString().equalsIgnoreCase("0")).c
 					}%><%} %>
 					<tr>
 					<td style="text-align: center;"> <%=++rowCOunt %>. </td>
-					<td> <%=obj[1].toString() %> </td>
+					<td> <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </td>
 					<td> 
 					<%if(specid.size()>0){
 					for(Object[]spec:specid){%>
-					<div class="RDiv"><%=spec[1]!=null?spec[1].toString():"-" %></div>
+					<div class="RDiv"><%=spec[1]!=null?StringEscapeUtils.escapeHtml4(spec[1].toString()):"-" %></div>
 					<%}}else{ %>
 					<div align="center">-</div>
 					<%} %>

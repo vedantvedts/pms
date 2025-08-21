@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.model.LabMaster"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -135,7 +136,7 @@ String labcode=(String)session.getAttribute("labcode");
 <br>
 <table style="width: 100%;font-size: 14px !important;">
 	<tr>
-		<td style="text-align: left;width: 50%;">No&nbsp;:&nbsp;<span style="font-size: 13px"><%if(carsIni!=null) {%><%=carsIni.getCARSNo() %> <%} %></span></td>
+		<td style="text-align: left;width: 50%;">No&nbsp;:&nbsp;<span style="font-size: 13px"><%if(carsIni!=null) {%><%=carsIni.getCARSNo()!=null?StringEscapeUtils.escapeHtml4(carsIni.getCARSNo()): " - " %> <%} %></span></td>
 		<td style="text-align: right;width: 50%;">Date&nbsp;:&nbsp;<span style="font-size: 13px"><%if(carsIni!=null && carsIni.getInvForSoODate()!=null) {%><%=fc.SqlToRegularDate(carsIni.getInvForSoODate()) %> <%} %></span></td>
 	</tr>
 </table>
@@ -148,17 +149,17 @@ String labcode=(String)session.getAttribute("labcode");
 	<tr><td></td></tr>
 	<tr>
 		<td>
-			<%=carsIni.getRSPInstitute() %> <br>
-			<%=carsIni.getRSPAddress()+", " %> <br>
-			<%=carsIni.getRSPCity()+", " %> <br>
-			<%=carsIni.getRSPState() %> <br>
-			<%=carsIni.getRSPPinCode() %>.
+			<%=carsIni.getRSPInstitute()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute()): " - " %> <br>
+			<%=carsIni.getRSPAddress()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPAddress()): " - "+", " %> <br>
+			<%=carsIni.getRSPCity()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()): " - "+", " %> <br>
+			<%=carsIni.getRSPState()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPState()): " - " %> <br>
+			<%=carsIni.getRSPPinCode()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPPinCode()): " - " %>.
 		</td>
 	</tr>
 	<tr><td></td></tr>
 	<tr><td></td></tr>
 	<tr>
-		<td>Kind Attn : <%if(carsIni!=null) {%><%=carsIni.getPITitle()+". "+carsIni.getPIName()+", "+carsIni.getPIDesig() %><%} %></td>
+		<td>Kind Attn : <%if(carsIni!=null) {%><%=carsIni.getPITitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPITitle()): " - "+". "+carsIni.getPIName()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIName()): " - "+", "+carsIni.getPIDesig()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIDesig()): " - " %><%} %></td>
 	</tr>
 	<tr><td></td></tr>
 	<tr><td></td></tr>
@@ -174,7 +175,7 @@ String labcode=(String)session.getAttribute("labcode");
 	<tr><td></td></tr>
 	<tr>
 		<td>
-			Research Service Qualitative Requirement for "<%if(carsIni!=null) {%><%=carsIni.getInitiationTitle() %> <%} %>" is enclosed herewith. 
+			Research Service Qualitative Requirement for "<%if(carsIni!=null) {%><%=carsIni.getInitiationTitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getInitiationTitle()): " - " %> <%} %>" is enclosed herewith. 
 			It is requested to furnish a feasibility study report along with budgetary proposal in the enclosed format at the earliest. 
 		</td>
 	</tr>
@@ -200,7 +201,7 @@ String labcode=(String)session.getAttribute("labcode");
 	<tr><td></td></tr>
 	<tr><td></td></tr>
 	<tr>
-		<td style="text-align: right;"><%if(dPandC!=null) {%><%if(dPandC[4]!=null) {%><%=dPandC[4] %><%} else{%><%=dPandC[5] %><%} %><%=dPandC[1] %> <%} %></td>
+		<td style="text-align: right;"><%if(dPandC!=null) {%><%if(dPandC[4]!=null) {%><%=StringEscapeUtils.escapeHtml4(dPandC[4].toString()) %><%} else{%><%=dPandC[5]!=null?StringEscapeUtils.escapeHtml4(dPandC[5].toString()): " - " %><%} %><%=dPandC[1]!=null?StringEscapeUtils.escapeHtml4(dPandC[1].toString()): " - " %> <%} %></td>
 	</tr>
 	<tr>
 		<td style="text-align: right;">GD-P&C</td>
@@ -208,7 +209,7 @@ String labcode=(String)session.getAttribute("labcode");
 	<tr><td></td></tr>
 	<tr><td></td></tr>
 	<tr>
-		<td style="text-align: right;">For Director, <%=labcode %></td>
+		<td style="text-align: right;">For Director, <%=labcode!=null?StringEscapeUtils.escapeHtml4(labcode): " - " %></td>
 	</tr>
 	<tr><td></td></tr>
 	<tr><td></td></tr>
@@ -239,7 +240,7 @@ String labcode=(String)session.getAttribute("labcode");
 	</tr>
 	<tr><td></td></tr>
 	<tr>
-		<td><%if(emp!=null) {%><%if(emp[4]!=null) {%><%=emp[4] %><%} else{%><%=emp[5] %><%} %> <%=emp[1] %> <%} %> - for kind information and follow up</td>
+		<td><%if(emp!=null) {%><%if(emp[4]!=null) {%><%=StringEscapeUtils.escapeHtml4(emp[4].toString()) %><%} else{%><%=emp[5]!=null?StringEscapeUtils.escapeHtml4(emp[5].toString()): " - " %><%} %> <%=emp[1]!=null?StringEscapeUtils.escapeHtml4(emp[1].toString()): " - " %> <%} %> - for kind information and follow up</td>
 	</tr>
 </table>
 </body>

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.List"%>
 <%@page import="com.vts.pfms.documents.model.IGIInterfaceContent"%>
 <%@page import="com.vts.pfms.documents.model.IGIInterfaceTypes"%>
@@ -74,7 +75,7 @@
 											name="interfaceType" id="interfaceType"
 											placeholder="Enter Interface Type" required="required"
 											<%if (InterfaceType != null) {%>
-											value="<%=InterfaceType.getInterfaceType()%>" <%}%>
+											value="<%=InterfaceType.getInterfaceType()!=null?StringEscapeUtils.escapeHtml4(InterfaceType.getInterfaceType()): ""%>" <%}%>
 											maxlength="100"
 											style="font-size: 15px; text-transform: capitalize;">
 									</div>
@@ -147,14 +148,14 @@
 											id="interfaceContentCode_<%=rowIndex%>"
 											placeholder="Enter Interface Content Code"
 											onchange="handleInputChangeCon(this, <%=content.getInterfaceContentId()%>)"
-											value="<%if (content.getInterfaceContentCode() != null) {%><%=content.getInterfaceContentCode()%><%}%>"
+											value="<%if (content.getInterfaceContentCode() != null) {%><%=StringEscapeUtils.escapeHtml4(content.getInterfaceContentCode())%><%}%>"
 											maxlength="10"
 											style="font-size: 15px; text-transform: uppercase;"
 											required="required"></td>
 										<td style="width:; padding: 10px 5px 0px 5px;"><input
 											type="text" class="form-control form-control"
 											name="interfaceContent" placeholder="Enter Interface Content"
-											value="<%if (content.getInterfaceContent() != null) {%><%=content.getInterfaceContent()%><%}%>"
+											value="<%if (content.getInterfaceContent() != null) {%><%=StringEscapeUtils.escapeHtml4(content.getInterfaceContent())%><%}%>"
 											maxlength="100"
 											style="font-size: 15px; text-transform: capitalize;"
 											required="required"></td>
@@ -225,7 +226,7 @@
 								<button type="submit" class="btn btn-sm btn-warning edit"
 									name="action" value="Edit" style="align-self: center;">UPDATE</button>
 								<input type="hidden" name="interfaceTypeId"
-									value="<%=InterfaceType.getInterfaceTypeId()%>" />
+									value="<%=InterfaceType.getInterfaceTypeId()!=null?StringEscapeUtils.escapeHtml4(InterfaceType.getInterfaceType()): ""%>" />
 								<%
 								} else {
 								%>

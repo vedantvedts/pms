@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.util.List"%>
@@ -142,22 +143,22 @@ SimpleDateFormat sdf = fc.getSqlDateFormat();
 SimpleDateFormat rdf = fc.getRegularDateFormat();
 %>
 
-<% String ses=(String)request.getParameter("result"); 
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 <div class="container-fluid">
@@ -233,15 +234,15 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                       							 		%>
                         									<tr>
                             									<td class="center"><%=++SN%></td>
-                            									<td ><%=form[2]+", "+form[3]%></td>
+                            									<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
                             									<td class="center">
-                            										<%=form[11]!=null?form[11]:form[12] %>
+                            										<%=form[11]!=null?StringEscapeUtils.escapeHtml4(form[11].toString()):form[12]!=null?StringEscapeUtils.escapeHtml4(form[12].toString()): " - " %>
                             										<%if(form[13]!=null) {%>
-                            											(<%=form[13]%>)
+                            											(<%=StringEscapeUtils.escapeHtml4(form[13].toString())%>)
                             										<%} %>
                             									</td>
-                            									<td class="center"><%=fc.SqlToRegularDate(form[5].toString())%></td>
-                            									<td class="center"><%=form[6]%></td>
+                            									<td class="center"><%=form[5]!=null?fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(form[5].toString())):" - "%></td>
+                            									<td class="center"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - "%></td>
                             									<td class="center"> 
                             										<form action="#" id="pendingform_status_<%=SN%>">
 																		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -312,15 +313,15 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                       							 		%>
                         									<tr>
                             									<td class="center"><%=++SN%></td>
-                            									<td ><%=form[2]+", "+form[3]%></td>
+                            									<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
                             									<td class="center">
-                            										<%=form[11]!=null?form[11]:form[12] %>
+                            										<%=form[11]!=null?StringEscapeUtils.escapeHtml4(form[11].toString()):form[12]!=null?StringEscapeUtils.escapeHtml4(form[12].toString()): " - " %>
                             										<%if(form[13]!=null) {%>
-                            											(<%=form[13]%>)
+                            											(<%=StringEscapeUtils.escapeHtml4(form[13].toString())%>)
                             										<%} %>
                             									</td>
-                            									<td class="center"><%=fc.SqlToRegularDate(form[5].toString())%></td>
-                            									<td class="center"><%=form[6]%></td>
+                            									<td class="center"><%=form[5]!=null?fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(form[5].toString())):" - "%></td>
+                            									<td class="center"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - "%></td>
                             									<td class="center"> 
                             										<form action="#" id="pendingform_status_<%=SN%>">
 																		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -371,15 +372,15 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                       							 		%>
                         									<tr>
                             									<td class="center"><%=++SN%></td>
-                            									<td ><%=form[2]+", "+form[3]%></td>
+                            									<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
                             									<td class="center">
-                            										<%=form[11]!=null?form[11]:form[12] %>
+                            										<%=form[11]!=null?StringEscapeUtils.escapeHtml4(form[11].toString()):form[12]!=null?StringEscapeUtils.escapeHtml4(form[12].toString()): " - " %>
                             										<%if(form[13]!=null) {%>
-                            											(<%=form[13]%>)
+                            											(<%=StringEscapeUtils.escapeHtml4(form[13].toString())%>)
                             										<%} %>
                             									</td>
-                            									<td class="center"><%=fc.SqlToRegularDate(form[5].toString())%></td>
-                            									<td class="center"><%=form[6]%></td>
+                            									<td class="center"><%=form[5]!=null?fc.SqlToRegularDate(form[5].toString()):" - "%></td>
+                            									<td class="center"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - "%></td>
                             									<td class="center"> 
                             										<form action="#" id="pendingform_status_<%=SN%>">
 																		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -430,12 +431,12 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                       							 		%>
                         									<tr>
                             									<td class="center"><%=++SN%></td>
-                            									<td ><%=form[2]+", "+form[3]%></td>
+                            									<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
                             									<td class="center">
                             										For Lab
                             									</td>
-                            									<td class="center"><%=fc.SqlToRegularDate(form[5].toString())%></td>
-                            									<td class="center"><%=form[6]%></td>
+																<td class="center"><%=form[5]!=null?fc.SqlToRegularDate(form[5].toString()):" - "%></td>
+                            									<td class="center"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - "%></td>
                             									<td class="center"> 
                             										<form action="#" id="pendingform_status_<%=SN%>">
 																		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -488,12 +489,12 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                       							 		%>
                         									<tr>
                             									<td class="center"><%=++SN%></td>
-                            									<td ><%=form[2]+", "+form[3]%></td>
+                            									<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
                             									<td class="center">
-                            										<%=form[11]!=null?form[11]:form[10] %>
+                            										<%=form[11]!=null?StringEscapeUtils.escapeHtml4(form[11].toString()):form[10]!=null?StringEscapeUtils.escapeHtml4(form[10].toString()): " - " %>
                             									</td>
-                            									<td class="center"><%=fc.SqlToRegularDate(form[5].toString())%></td>
-                            									<td class="center"><%=form[6]%></td>
+                            									<td class="center"><%=form[5]!=null?fc.SqlToRegularDate(form[5].toString()):" - "%></td>
+                            									<td class="center"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - "%></td>
                             									<td class="center"> 
                             										<form action="#" id="pendingform_status_<%=SN%>">
 																		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -544,12 +545,12 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                       							 		%>
                         									<tr>
                             									<td class="center"><%=++SN%></td>
-                            									<td ><%=form[2]+", "+form[3]%></td>
+                            									<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
                             									<td class="center">
-                            										<%=form[11]!=null?form[11]:form[10] %>
+                            										<%=form[11]!=null?StringEscapeUtils.escapeHtml4(form[11].toString()):form[10]!=null?StringEscapeUtils.escapeHtml4(form[10].toString()): " - " %>
                             									</td>
-                            									<td class="center"><%=fc.SqlToRegularDate(form[5].toString())%></td>
-                            									<td class="center"><%=form[6]%></td>
+                            									<td class="center"><%=form[5]!=null?fc.SqlToRegularDate(form[5].toString()):" - "%></td>
+                            									<td class="center"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - "%></td>
                             									<td class="center"> 
                             										<form action="#" id="pendingform_status_<%=SN%>">
 																		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -600,12 +601,12 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                       							 		%>
                         									<tr>
                             									<td class="center"><%=++SN%></td>
-                            									<td ><%=form[2]+", "+form[3]%></td>
+                            									<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
                             									<td class="center">
-                            										<%=form[11]!=null?form[11]:form[10] %>
+                            										<%=form[11]!=null?StringEscapeUtils.escapeHtml4(form[11].toString()):form[10]!=null?StringEscapeUtils.escapeHtml4(form[10].toString()): " - " %>
                             									</td>
-                            									<td class="center"><%=fc.SqlToRegularDate(form[5].toString())%></td>
-                            									<td class="center"><%=form[6]%></td>
+                            									<td class="center"><%=form[5]!=null?fc.SqlToRegularDate(form[5].toString()):" - "%></td>
+                            									<td class="center"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - "%></td>
                             									<td class="center"> 
                             										<form action="#" id="pendingform_status_<%=SN%>">
 																		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -706,22 +707,22 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                        												%>
                         											<tr>
                             											<td class="center"><%=++SNA%></td>
-                            											<td ><%=form[2]+", "+form[3]+" ("+form[1]+")"%></td>
+                            											<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "+" ("+form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "+")"%></td>
                             											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
                             											<td class="center">
-                            												<%=form[15]!=null?form[15]:form[16] %>
+                            												<%=form[15]!=null?StringEscapeUtils.escapeHtml4(form[15].toString()):form[16]!=null?StringEscapeUtils.escapeHtml4(form[16].toString()): " - " %>
 		                            										<%if(form[17]!=null) {%>
-		                            											(<%=form[17]%>)
+		                            											(<%=StringEscapeUtils.escapeHtml4(form[17].toString())%>)
 		                            										<%} %>
                             											</td>
-                            											<td class="center"><%=form[6] %> </td>
+		                            									<td class="center"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - "%></td>
                             											<td class="center">
                             												<form action="#" id="approvalform_status_<%=SNA%>">
 																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 																				<input type="hidden" name="reqInitiationId" value="<%=form[4]%>"> 
 																				<input type="hidden" name="docType" value="R"> 
 																				<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="ProjectRequirementTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
-								    												<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    												<%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 								    											</button>
 																			</form>
                             												
@@ -770,22 +771,22 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                        												%>
                         											<tr>
                             											<td class="center"><%=++SNA%></td>
-                            											<td><%=form[2]+", "+form[3]+" ("+form[1]+")"%></td>
+                            											<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "+" ("+form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "+")"%></td>
                             											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
                             											<td class="center">
-                            												<%=form[15]!=null?form[15]:form[16] %>
+                            												<%=form[15]!=null?StringEscapeUtils.escapeHtml4(form[15].toString()):form[16]!=null?StringEscapeUtils.escapeHtml4(form[16].toString()): " - " %>
 		                            										<%if(form[17]!=null) {%>
-		                            											(<%=form[17]%>)
+		                            											(<%=StringEscapeUtils.escapeHtml4(form[17].toString())%>)
 		                            										<%} %>
                             											</td>
-                            											<td class="center"><%=form[6] %> </td>
+                            											<td class="center"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - "%></td>
                             											<td class="center">
                             												<form action="#" id="approvalform_status_<%=SNA%>">
 																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 																				<input type="hidden" name="testPlanInitiationId" value="<%=form[4]%>"> 
 																				<input type="hidden" name="docType" value="T"> 
 																				<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="ProjectDocTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
-								    												<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    												<%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 								    											</button>
 																			</form>
                             												
@@ -834,22 +835,22 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                        												%>
                         											<tr>
                             											<td class="center"><%=++SNA%></td>
-                            											<td><%=form[2]+", "+form[3]+" ("+form[1]+")"%></td>
+                            											<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "+" ("+form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "+")"%></td>
                             											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
                             											<td class="center">
-                            												<%=form[15]!=null?form[15]:form[16] %>
+                            												<%=form[15]!=null?StringEscapeUtils.escapeHtml4(form[15].toString()):form[16]!=null?StringEscapeUtils.escapeHtml4(form[16].toString()): " - " %>
 		                            										<%if(form[17]!=null) {%>
-		                            											(<%=form[17]%>)
+		                            											(<%=StringEscapeUtils.escapeHtml4(form[17].toString())%>)
 		                            										<%} %>
                             											</td>
-                            											<td class="center"><%=form[6] %> </td>
+                            											<td class="center"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - "%></td>
                             											<td class="center">
                             												<form action="#" id="approvalform_status_<%=SNA%>">
 																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 																				<input type="hidden" name="SpecsInitiationId" value="<%=form[4]%>"> 
 																				<input type="hidden" name="docType" value="S"> 
 																				<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="ProjectDocTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
-								    												<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    												<%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - "%> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 								    											</button>
 																			</form>
                             												
@@ -898,19 +899,19 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                        												%>
                         											<tr>
                             											<td class="center"><%=++SNA%></td>
-                            											<td ><%=form[2]+", "+form[3]+" ("+form[1]+")"%></td>
+                            											<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "+" ("+form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "+")"%></td>
                             											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
                             											<td class="center">
                             												For Lab
                             											</td>
-                            											<td class="center"><%=form[6] %> </td>
+                            											<td class="center"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - "%></td>
                             											<td class="center">
                             												<form action="#" id="approvalform_status_<%=SNA%>">
 																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 																				<input type="hidden" name="docId" value="<%=form[4]%>"> 
 																				<input type="hidden" name="docType" value="A"> 
 																				<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="IGIDocTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
-								    												<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    												<%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 								    											</button>
 																			</form>
                             												
@@ -939,19 +940,19 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                        												%>
                         											<tr>
                             											<td class="center"><%=++SNA%></td>
-                            											<td ><%=form[2]+", "+form[3]+" ("+form[1]+")"%></td>
+                            											<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "+" ("+form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "+")"%></td>
                             											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
                             											<td class="center">
-                            												<%=form[15]!=null?form[15]:form[14] %>
+                            												<%=form[15]!=null?StringEscapeUtils.escapeHtml4(form[15].toString()):form[14]!=null?StringEscapeUtils.escapeHtml4(form[14].toString()): " - " %>
                             											</td>
-                            											<td class="center"><%=form[6] %> </td>
+                            											<td class="center"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - "%></td>
                             											<td class="center">
                             												<form action="#" id="approvalform_status_<%=SNA%>">
 																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 																				<input type="hidden" name="docId" value="<%=form[4]%>"> 
 																				<input type="hidden" name="docType" value="B"> 
 																				<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="IGIDocTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
-								    												<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    												<%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 								    											</button>
 																			</form>
                             												
@@ -980,19 +981,19 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                        												%>
                         											<tr>
                             											<td class="center"><%=++SNA%></td>
-                            											<td ><%=form[2]+", "+form[3]+" ("+form[1]+")"%></td>
+                            											<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "+" ("+form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "+")"%></td>
                             											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
                             											<td class="center">
-                            												<%=form[15]!=null?form[15]:form[14] %>
+                            												<%=form[15]!=null?StringEscapeUtils.escapeHtml4(form[15].toString()):form[14]!=null?StringEscapeUtils.escapeHtml4(form[14].toString()): " - " %>
                             											</td>
-                            											<td class="center"><%=form[6] %> </td>
+                            											<td class="center"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - "%></td>
                             											<td class="center">
                             												<form action="#" id="approvalform_status_<%=SNA%>">
 																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 																				<input type="hidden" name="docId" value="<%=form[4]%>"> 
 																				<input type="hidden" name="docType" value="C"> 
 																				<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="IGIDocTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
-								    												<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    												<%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 								    											</button>
 																			</form>
                             												
@@ -1021,19 +1022,19 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                        												%>
                         											<tr>
                             											<td class="center"><%=++SNA%></td>
-                            											<td ><%=form[2]+", "+form[3]+" ("+form[1]+")"%></td>
+                            											<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "+" ("+form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "+")"%></td>
                             											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
                             											<td class="center">
-                            												<%=form[15]!=null?form[15]:form[14] %>
+                            												<%=form[15]!=null?StringEscapeUtils.escapeHtml4(form[15].toString()):form[14]!=null?StringEscapeUtils.escapeHtml4(form[14].toString()): " - " %>
                             											</td>
-                            											<td class="center"><%=form[6] %> </td>
+                            											<td class="center"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - "%></td>
                             											<td class="center">
                             												<form action="#" id="approvalform_status_<%=SNA%>">
 																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 																				<input type="hidden" name="docId" value="<%=form[4]%>"> 
 																				<input type="hidden" name="docType" value="D"> 
 																				<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="IGIDocTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
-								    												<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    												<%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 								    											</button>
 																			</form>
                             												

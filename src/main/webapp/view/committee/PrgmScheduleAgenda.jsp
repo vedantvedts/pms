@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -258,18 +259,21 @@ ul, #myUL {
  
  
 <% 
-	String ses=(String)request.getParameter("result"); 
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null)
-	{ %>
-		<div align="center">	
-			<div class="alert alert-danger" role="alert" >  <%=ses1 %>  </div>
-		</div>
-	<%} if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert"  >  <%=ses %> </div>
-	     </div>
-   <%} %>
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 	<div class="container-fluid">
@@ -278,8 +282,8 @@ ul, #myUL {
     	
 	    		<form action="CommitteeScheduleView.htm" name="myfrm" id="myfrm" method="post">
 	    			<div class="card-header" style="background-color: #055C9D;">
-	      				<h6 style="color: orange;font-weight: bold;font-size: 1.2rem !important " align="left"><%=scheduledata[7] %> <span> (Meeting Date and Time :      				
-		      				 &nbsp;<%=sdf.format(sdf1.parse(scheduledata[2].toString()))%> - <%=scheduledata[3] %>) </span>      				
+	      				<h6 style="color: orange;font-weight: bold;font-size: 1.2rem !important " align="left"><%=scheduledata[7]!=null?StringEscapeUtils.escapeHtml4(scheduledata[7].toString()): " - " %> <span> (Meeting Date and Time :      				
+		      				 &nbsp;<%=scheduledata[2]!=null?sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(scheduledata[2].toString()))):" - " %> - <%=scheduledata[3]!=null?StringEscapeUtils.escapeHtml4(scheduledata[3].toString()): " - " %>) </span>      				
 							<input type="hidden" name="projectid" value="<%=projectid%>"/>
 		      				<input type="submit" class="btn  btn-sm view" value="VIEW" style="float:right;" />
 		      				<span  style="float:right;margin: 5px 12px;" > (Meeting Id : <%=scheduledata[11] %>) </span> 
@@ -322,7 +326,7 @@ ul, #myUL {
 														<select class="form-control items presenterid" name="presenterid" id="presenterid_<%=++slno %>"  required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body" onchange="getEmployee(this)">
 											        		<option disabled="disabled" selected value="">Choose...</option>
 													        <% for(Object[] emp : labEmpList){ %>
-													        	<option value="<%=emp[0] %>" <%if(obj[4].toString().equalsIgnoreCase(emp[0].toString())) {%>selected<%} %> ><%=emp[1] %>(<%=emp[3] %>)</option>
+													        	<option value="<%=emp[0] %>" <%if(obj[4].toString().equalsIgnoreCase(emp[0].toString())) {%>selected<%} %> ><%=emp[1]!=null?StringEscapeUtils.escapeHtml4(emp[1].toString()): " - " %>(<%=emp[3]!=null?StringEscapeUtils.escapeHtml4(emp[3].toString()): " - " %>)</option>
 													        <%} %>
 														</select>
 														<%-- <span><%=obj[5] %>, <%=obj[6] %></span> --%>
@@ -397,7 +401,7 @@ ul, #myUL {
 																	<select class="form-control items presenterid" name="presenterid" id="presenterid_<%=count %>"  required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body" onchange="getEmployee(this)">
 														        		<option disabled="disabled" selected value="">Choose...</option>
 																        <% for(Object[] emp : labEmpList){ %>
-																        	<option value="<%=emp[0] %>" <%if(obj[9].toString().equalsIgnoreCase(emp[0].toString())) {%>selected<%} %> ><%=emp[1] %>(<%=emp[3] %>)</option>
+																        	<option value="<%=emp[0] %>" <%if(obj[9].toString().equalsIgnoreCase(emp[0].toString())) {%>selected<%} %> ><%=emp[1]!=null?StringEscapeUtils.escapeHtml4(emp[1].toString()): " - " %>(<%=emp[3]!=null?StringEscapeUtils.escapeHtml4(emp[3].toString()): " - " %>)</option>
 																        <%} %>
 																	</select>
 																	<%-- <span><%=obj[10] %>, <%=obj[11] %></span> --%>
@@ -410,7 +414,7 @@ ul, #myUL {
 																	<%for(Object[] doc : agendaDocList) { 
 																		if(obj[0].toString().equalsIgnoreCase(doc[1].toString())){%>
 																		<tr>
-																			<td><%= doc[3] + " <span class='text-muted'> Ver " + doc[4] + "." + doc[5] + "</span>" %></td>
+																			<td><%= doc[3]!=null?StringEscapeUtils.escapeHtml4(doc[3].toString()): " - " + " <span class='text-muted'> Ver " + doc[4]!=null?StringEscapeUtils.escapeHtml4(doc[4].toString()): " - " + "." + doc[5]!=null?StringEscapeUtils.escapeHtml4(doc[5].toString()): " - " + "</span>" %></td>
 																			<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
 																			<td style="width:1% ;white-space: nowrap;" ><a type="button" onclick="removeDocRow(this,<%=doc[0] %>);" > <i class=" fa fa-minus" style="color: red;"   ></i> </a></td>
 																		<tr>													
@@ -696,7 +700,7 @@ function FileDownload(fileid1)
 
 $(document).ready(function(){
 	<%for( Object[] agenda : committeeAgendaList){ %>
-		EditAgendaPresentors('<%=agenda[0]%>','<%=agenda[9]%>');
+		EditAgendaPresentors('<%=agenda[0]!=null?StringEscapeUtils.escapeHtml4(agenda[0].toString()): " - "%>','<%=agenda[9]!=null?StringEscapeUtils.escapeHtml4(agenda[9].toString()): " - "%>');
 	<%}%>
 	
 });

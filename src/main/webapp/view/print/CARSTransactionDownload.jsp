@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.vts.pfms.cars.model.CARSInitiation"%>
 <%@page import="java.util.List"%>
@@ -123,18 +124,18 @@ SimpleDateFormat time=new SimpleDateFormat("HH:mm");
 
 <table id="tabledata">
 	<tr>
-		<td colspan="2" style="text-align: center;"><%=carsIni.getCARSNo() %> </td>
+		<td colspan="2" style="text-align: center;"><%=carsIni.getCARSNo()!=null?StringEscapeUtils.escapeHtml4(carsIni.getCARSNo()): " - " %> </td>
 	</tr>
 	<%if(statuslist!=null && statuslist.size()>0) {
 		for(Object[] obj : statuslist){
 	%>
  	<tr>
- 		<td style="font-weight: bold;"><%=obj[6] %> </td>
+ 		<td style="font-weight: bold;"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %> </td>
  		<td>
- 			<%if(obj[2]!=null) {%> <%=obj[2] %><%} else{%><%=obj[9] %><%} %> , <%if(obj[3]!=null) {%> <%=obj[3] %><%} else{%>Expert<%} %><br>
+ 			<%if(obj[2]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj[2].toString())%><%} else{%><%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - " %><%} %> , <%if(obj[3]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %><%} else{%>Expert<%} %><br>
  			[ <span style="font-size: 13px;">On</span> : 
  			  <span style="color: #0289BF;font-size: 13px;">
- 			  	<%=day.format(obj[4]) %> <%=month.format(obj[4]) %> <%=year.format(obj[4]) %>, <%=time.format(obj[4]) %>
+ 			  	<%=day.format(StringEscapeUtils.escapeHtml4(obj[4].toString())) %> <%=month.format(StringEscapeUtils.escapeHtml4(obj[4].toString())) %> <%=year.format(StringEscapeUtils.escapeHtml4(obj[4].toString())) %>, <%=time.format(StringEscapeUtils.escapeHtml4(obj[4].toString())) %>
  			  </span>
  			 ]
  		</td>

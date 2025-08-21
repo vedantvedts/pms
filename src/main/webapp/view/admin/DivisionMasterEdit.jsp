@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -39,27 +40,22 @@ Object[] DivisionMasterEditData=(Object[])request.getAttribute("DivisionMasterEd
 
 %>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	
-	
-	<center>
-	
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-            </div>
-            
-    </center>
-    
-    
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 <div id="ajaxError" style="display: none;">
     <div align="center">
@@ -91,7 +87,7 @@ Object[] DivisionMasterEditData=(Object[])request.getAttribute("DivisionMasterEd
 <div class="col-3">
        <div  class="form-group">	
 				<label >Division Code: <span class="mandatory" style="color: red;">*</span></label>
-				<input  class="form-control alphanum-only" type="text" name="DivisionCode" required="required" maxlength="3" style="font-size: 18px;"  readonly	 value="<%=DivisionMasterEditData[1]%>" >
+				<input  class="form-control alphanum-only" type="text" name="DivisionCode" required="required" maxlength="3" style="font-size: 18px;"  readonly	 value="<%=DivisionMasterEditData[1]!=null?StringEscapeUtils.escapeHtml4(DivisionMasterEditData[1].toString()): ""%>" >
        </div>
 </div>
 
@@ -99,7 +95,7 @@ Object[] DivisionMasterEditData=(Object[])request.getAttribute("DivisionMasterEd
 <div class="col-3">	
        <div class="form-group"> 
 				<label >Division Name:<span class="mandatory" style="color: red;">*</span></label>
-				<input  class="form-control form-control alphanum-no-leading-space"  type="text" name="DivisionName" required="required" maxlength="255" style="font-size: 18px;" value="<%=DivisionMasterEditData[2] %>">
+				<input  class="form-control form-control alphanum-no-leading-space"  type="text" name="DivisionName" required="required" maxlength="255" style="font-size: 18px;" value="<%=DivisionMasterEditData[2]!=null?StringEscapeUtils.escapeHtml4(DivisionMasterEditData[2].toString()): "" %>">
 		</div>
 </div>
 
@@ -111,7 +107,7 @@ Object[] DivisionMasterEditData=(Object[])request.getAttribute("DivisionMasterEd
 									<option value="" disabled="true" selected="selected" hidden="true">--Select--</option>
 									
 									<% for (  Object[] obj : DivisionGroupList){ %>
-									<option value=<%=obj[0]%> <%if(obj[0].toString().equalsIgnoreCase(DivisionMasterEditData[4].toString())) {%> selected="selected"  <%} %>><%=obj[1]%> </option>
+									<option value=<%=obj[0]%> <%if(obj[0].toString().equalsIgnoreCase(DivisionMasterEditData[4].toString())) {%> selected="selected"  <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> </option>
 									<%} %>
 					</select> 
 		</div>
@@ -126,7 +122,7 @@ Object[] DivisionMasterEditData=(Object[])request.getAttribute("DivisionMasterEd
 						<option value="" disabled selected="selected">--Select--</option>
 									
 			<% for (  Object[] obj : DivisionHeadList){ %>							
-			<option value=<%=obj[0]%> <%if(obj[0].toString().equalsIgnoreCase(DivisionMasterEditData[3].toString())) {%> selected="selected" <%} %>><%=obj[1]%>, <%=obj[3] %> </option><%}%>
+			<option value=<%=obj[0]%> <%if(obj[0].toString().equalsIgnoreCase(DivisionMasterEditData[3].toString())) {%> selected="selected" <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %> </option><%}%>
 					</select> 
 		</div>
 </div>
@@ -146,7 +142,7 @@ Object[] DivisionMasterEditData=(Object[])request.getAttribute("DivisionMasterEd
         <div class="form-group"> 
 				<label >Division Short Name:<span class="mandatory" style="color: red;">*</span></label>
 				<input class="form-control alphanum-no-leading-space " type="text" name="DivisionShortName" id="DivisionShortName" required="required" maxlength="255" style="font-size: 18px;" 
-       value="<%= DivisionMasterEditData[6] != null ? DivisionMasterEditData[6] : "" %>">
+       value="<%= DivisionMasterEditData[6] != null ? StringEscapeUtils.escapeHtml4(DivisionMasterEditData[6].toString()) : "" %>">
 
 
 		</div>

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -147,7 +148,7 @@ Object[]Requirement=(Object[])request.getAttribute("Requirement");
 			<%if(Requirement!=null) %>
 			<div class="card shadow-nohover"  style="min-width: 60%; margin-top:2%;box-shadow: 10px 10px 5px lightgrey;">
 			 <div class="card-header" style=" background-color: #055C9D;margin-top: ;padding:5px;">
-                    <h3 class="text-white" style="margin-top:10px;margin-left: 24px;">Requirements <label style="color:white; float:right; font-size:12px;margin-right: 22px;">ID-<%=Requirement[4] %></label></h3>
+                    <h3 class="text-white" style="margin-top:10px;margin-left: 24px;">Requirements <label style="color:white; float:right; font-size:12px;margin-right: 22px;">ID-<%=Requirement[4]!=null?StringEscapeUtils.escapeHtml4(Requirement[4].toString()): " - " %></label></h3>
                    
         		</div>
         			<div class="card-body" id="cardbody">
@@ -162,7 +163,7 @@ Object[]Requirement=(Object[])request.getAttribute("Requirement");
 							<option disabled="disabled" value="" selected="selected">Choose..</option>
 							<%if(!RequirementTypeList.isEmpty()){
 							for(Object[] obj:RequirementTypeList){ %>
-							<option value="<%=obj[0]+" "+obj[1]+" "+obj[3]%>" <%if(Requirement[1].toString().equalsIgnoreCase(obj[0].toString())) {%> selected="selected"<%}%>><%=obj[2]%></option>
+							<option value="<%=obj[0]+" "+obj[1]+" "+obj[3]%>" <%if(Requirement[1].toString().equalsIgnoreCase(obj[0].toString())) {%> selected="selected"<%}%>><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></option>
 							<%}} %>
 							</select>
 									</div>

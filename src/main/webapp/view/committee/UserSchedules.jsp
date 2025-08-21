@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.LocalTime"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
@@ -35,24 +36,22 @@ List<Object[]> userschedulelist=(List<Object[]>)request.getAttribute("userschedu
 
 %>
 
-<%String ses=(String)request.getParameter("result"); 
-String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){
-%>
-	<center>
-	
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</center>
-	<%}if(ses!=null){ %>
-	<center>
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</center>
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 <div class="container-fluid">
@@ -132,11 +131,11 @@ myEvents = [
 	 { 
 	    id: "required-id-1",
 	    name: "Meeting Details",
-	    scheduleid: "<%if(obj[2]!=null){%><%=obj[2].toString()%><%}%>",
-	    membertype: "<%if(obj[6]!=null){%><%=obj[6].toString()%><%}%>",
-	    time: "<%=obj[4].toString()%>",
-	    ComCode : "<%=obj[7]%>" ,
-	    date: "<%=obj[3].toString()%>",  
+	    scheduleid: "<%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString())%><%}%>",
+	    membertype: "<%if(obj[6]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[6].toString())%><%}%>",
+	    time: "<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): ""%>",
+	    ComCode : "<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): ""%>" ,
+	    date: "<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): ""%>",  
 	    url: "CommitteeUserScheduleView.htm",
 	    type: "event",  
 	    color: "#0383F3",

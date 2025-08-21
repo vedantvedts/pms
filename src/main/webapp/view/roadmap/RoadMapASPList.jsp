@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -248,22 +249,22 @@ List<String> roadmapforward = Arrays.asList("RIN","RRD","RRA","RRV");
 FormatConverter fc = new FormatConverter();
 %>
 
-<% String ses=(String)request.getParameter("result");
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 <br>
 <div class="container-fluid">
@@ -338,10 +339,10 @@ FormatConverter fc = new FormatConverter();
 										<div class="container">
 					  						<div class="row">
 					  							<div class="col-xl" style="text-align: left;">
-													Duration : <%if(obj[10]!=null) {%><%=obj[10] %><%} else {%>0<%} %> Months
+													Duration : <%if(obj[10]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[10].toString())%><%} else {%>0<%} %> Months
 												</div>
 												<div class="col-">
-													Ref : <%if(obj[11]!=null) {%><%=obj[11] %><%} else {%>-<%} %>
+													Ref : <%if(obj[11]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[11].toString()) %><%} else {%>-<%} %>
 												</div>
 												
 											</div>
@@ -368,7 +369,7 @@ FormatConverter fc = new FormatConverter();
 				                                        	<%-- <input type="hidden" name="roadMapId" value="<%=obj[0] %>"> --%>
 				                                       	  	
 										    				<button type="submit" class="btn btn-sm btn-link w-100 btn-status" formaction=RoadMapTransStatus.htm value="<%=obj[0] %>" name="roadMapId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[16] %>; font-weight: 600;" formtarget="_blank">
-										    					<%=obj[15] %> <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
+										    					<%=obj[15]!=null?StringEscapeUtils.escapeHtml4(obj[15].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
 										    				</button>
 											    			
 	                                        			</form>

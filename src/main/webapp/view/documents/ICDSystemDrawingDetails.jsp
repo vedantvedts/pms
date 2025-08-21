@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.documents.model.ICDSystemAttach"%>
 <%@page import="com.vts.pfms.documents.dto.ICDConnectionDTO"%>
 <%@page import="java.util.List"%>
@@ -33,21 +34,22 @@
 	
 %>
 
-	<% String ses = (String) request.getParameter("result"); 
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-        <div align="center">
-            <div class="alert alert-danger" role="alert">
-                <%= ses1 %>
-            </div>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
         </div>
-    <% } if (ses != null) { %>
-        <div align="center">
-            <div class="alert alert-success" role="alert">
-                <%= ses %>
-            </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
         </div>
-    <% } %>
+    </div>
+<% } %>
     
     <div class="container-fluid">
     	<div class="card shadow-nohover" style="margin-top: -0.6pc">
@@ -55,7 +57,7 @@
         		<div class="row">
                		<div class="col-md-9 left">
 	                    <h5 id="text" style="margin-left: 1%; font-weight: 600">
-	                      System Drawing List - <%=documentNo %>
+	                      System Drawing List - <%=documentNo!=null?StringEscapeUtils.escapeHtml4(documentNo): " - " %>
 	                    </h5>
                 	</div>
                 	<div class="col-md-3 right">
@@ -95,12 +97,12 @@
 							%>
                     			<tr>
                     				<td class="center"><%=++slno %></td>
-                    				<td><%=obj[2] %> (<%=obj[7] %>)</td>
+                    				<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> (<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %>)</td>
                     				<td>
                     					<input form="uploadform_<%=slno%>" type="file" class="form-control" name="attachment" accept="image/png, image/jpeg" <%if(attach==null) { %>required<%} %>>
                     				</td>
                     				<td>
-                    					<input form="uploadform_<%=slno%>" type="text" class="form-control" name="description" <%if(attach!=null && attach.getDescription()!=null) {%>value="<%=attach.getDescription()%>"<%} %> >
+                    					<input form="uploadform_<%=slno%>" type="text" class="form-control" name="description" <%if(attach!=null && attach.getDescription()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(attach.getDescription())%>"<%} %> >
                     				</td>
                     				<td class="center">
                     					<form action="ICDSystemDrawingDetailsSubmit.htm" method="post" id="uploadform_<%=slno%>" enctype="multipart/form-data">
@@ -122,7 +124,7 @@
                     				</td>
                     				<td class="center">
                     					<%if(attach!=null && attach.getAttachment()!=null && !attach.getAttachment().isEmpty()) {%>
-	                    					<button form="uploadform_<%=slno%>" type="submit" class="btn btn-sm" name="drawingAttach" value="<%=attach.getAttachment() %>" formaction="ICDSystemDrawingAttachDownload.htm" formmethod="get" formnovalidate="formnovalidate" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Download">
+	                    					<button form="uploadform_<%=slno%>" type="submit" class="btn btn-sm" name="drawingAttach" value="<%=StringEscapeUtils.escapeHtml4(attach.getAttachment()) %>" formaction="ICDSystemDrawingAttachDownload.htm" formmethod="get" formnovalidate="formnovalidate" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Download">
 			                      				<i class="fa fa-download fa-lg"></i>
 			                      			</button>
 		                      			<%} else{%>

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.LocalTime"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
@@ -210,25 +211,22 @@ List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filer
 
 
 
-	<%
-String ses=(String)request.getParameter("result"); 
-String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){
-%>
-	<div align="center">
-
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</div>
-	<%} %>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -257,7 +255,7 @@ if(ses1!=null){
 													<option value="<%=obj[0]%>"
 														<%if(ProjectId.equalsIgnoreCase(obj[0].toString())){ projectname=obj[4].toString(); %>
 														selected="selected" <%} %>>
-														<%=obj[4]+projectshortName%>
+														<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%>
 													</option>
 													<%} %>
 													<option value="0"
@@ -289,7 +287,7 @@ if(ses1!=null){
 								{%>
 										<li><span class="caret" id="system<%=obj[0]%>"
 											onclick="doclist('<%=obj[0]%>','<%=obj[3] %>','-','','-','','-','','-','',0,this)">
-												<%=obj[3] %>
+												<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %>
 										</span> <span>
 												<button type="button" class="btn"
 													style="background-color: transparent; margin: -5px 0px"
@@ -307,7 +305,7 @@ if(ses1!=null){
 												
 												<li><span class="caret" id="system<%=obj1[0]%>"
 													onclick="doclist('<%=obj[0]%>','<%=obj[3] %>','<%=obj1[0]%>','<%=obj1[3] %>','-','','-','','-','',1,this)">
-														<%=obj1[3] %>
+														<%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): " - " %>
 												</span> <span>
 														<button type="button" id="upbutton<%=obj1[0]%>"
 															class="btn" data-target="#exampleModalCenter"
@@ -332,7 +330,7 @@ if(ses1!=null){
 														
 														<li><span class="caret" id="system<%=obj2[0]%>"
 															onclick="doclist('<%=obj[0]%>','<%=obj[3] %>','<%=obj1[0]%>','<%=obj1[3] %>','<%=obj2[0]%>','<%=obj2[3] %>','-','','-','',2,this)">
-																<%=obj2[3] %>
+																<%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - " %>
 														</span> <span>
 																<button type="button" id="upbutton<%=obj2[0]%>"
 																	class="btn" data-target="#exampleModalCenter"
@@ -358,7 +356,7 @@ if(ses1!=null){
 																
 																<li><span class="caret" id="system<%=obj3[0]%>"
 																	onclick="doclist('<%=obj[0]%>','<%=obj[3] %>','<%=obj1[0]%>','<%=obj1[3] %>','<%=obj2[0]%>','<%=obj2[3] %>','<%=obj3[0]%>','<%=obj3[3] %>','-','',3,this)">
-																		<%=obj3[3] %>
+																		<%=obj3[3]!=null?StringEscapeUtils.escapeHtml4(obj3[3].toString()): " - " %>
 																</span> <span>
 																		<button type="button" id="upbutton<%=obj3[0]%>"
 																			class="btn" data-target="#exampleModalCenter"
@@ -384,7 +382,7 @@ if(ses1!=null){
 																		<li><span class="caret-last"
 																			id="system<%=obj4[0]%>"
 																			onclick="doclist('<%=obj[0]%>','<%=obj[3] %>','<%=obj1[0]%>','<%=obj1[3] %>','<%=obj2[0]%>','<%=obj2[3] %>','<%=obj3[0]%>','<%=obj3[3] %>','<%=obj4[0]%>','<%=obj4[3] %>',4,this)">
-																				<%=obj4[3] %>
+																				<%=obj4[3]!=null?StringEscapeUtils.escapeHtml4(obj4[3].toString()): " - " %>
 																		</span> <span>
 																				<button type="button" id="upbutton<%=obj4[0]%>"
 																					class="btn" data-target="#exampleModalCenter"

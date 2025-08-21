@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.requirements.model.TestSetupMaster"%>
 <%@page import="com.vts.pfms.requirements.model.TestPlanMaster"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
@@ -126,7 +127,7 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 											name="linkedSpec" id="linkedSpec" data-width="80%"
 											data-live-search="true" data-placeholder="Choose" multiple>
 											<%for(Object[] obj:specificarionMasterList){ %>
-											<option value="<%=obj[0]%>"  <%if(specId.contains(obj[0].toString())) {%> selected <%} %>><%=obj[5]%></option>
+											<option value="<%=obj[0]%>"  <%if(specId.contains(obj[0].toString())) {%> selected <%} %>><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%></option>
 											<%}%>
 										</select>
 										<%} else{%>
@@ -155,7 +156,7 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 						
 								<input type="text" name="name" class="form-control" id="NameAdd"
 									maxlength="255" required="required"
-									placeholder="Maximum 250 Chararcters" value="<%if(tp.getName()!=null){%><%=tp.getName() %> <%}%>">
+									placeholder="Maximum 250 Chararcters" value="<%if(tp.getName()!=null){%><%=StringEscapeUtils.escapeHtml4(tp.getName()) %> <%}%>">
 							</div></div>
 
 							<div class="col-md-6">
@@ -168,7 +169,7 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 								<input type="text" name="Objective" class="form-control"
 									id="ObjectiveAdd" maxlength="255" required="required"
 									placeholder="Maximum 250 Chararcters"
-								 value="<%if(tp.getObjective()!=null){%><%=tp.getObjective() %> <%}%>">
+								 value="<%if(tp.getObjective()!=null){%><%=StringEscapeUtils.escapeHtml4(tp.getObjective()) %> <%}%>">
 							</div></div>
 						</div>
 
@@ -210,7 +211,7 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 											required="required"  value="<%if(tp.getToolsSetup()!=null){%><%=tp.getToolsSetup() %> <%}%>"> --%>
 									<select class="form-control selectdee" name="ToolsSetup" id="ToolsSetup" data-width="100%" data-live-search="true"   data-placeholder="Choose"">
 										<option value="" selected  disabled="disabled">SELECT</option>
-									<%for (TestSetupMaster t :master) {%><option value="<%=t.getSetupId()%>"   <%if(testTool.contains(t.getSetupId()+"")){ %> selected <%} %>><%=t.getTestSetUpId() %></option>
+									<%for (TestSetupMaster t :master) {%><option value="<%=t.getSetupId()%>"   <%if(testTool.contains(t.getSetupId()+"")){ %> selected <%} %>><%=t.getTestSetUpId()!=null?StringEscapeUtils.escapeHtml4(t.getTestSetUpId()): " - " %></option>
 													<%} %>
 												</select>
 									</div>
@@ -228,7 +229,7 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 									<div class="col-md-12" style="">
 										<input type="text" name="Constraints" class="form-control"
 											id="ConstraintsAdd" maxlength="255" required
-											placeholder="Maximum 250 Chararcters" value="<%if(tp.getConstraints()!=null){%><%=tp.getConstraints() %> <%}%>">
+											placeholder="Maximum 250 Chararcters" value="<%if(tp.getConstraints()!=null){%><%=StringEscapeUtils.escapeHtml4(tp.getConstraints()) %> <%}%>">
 									</div>
 								</div>
 							</div>
@@ -244,7 +245,7 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 										<input type="text" name="EstimatedTimeIteration"
 											class="form-control" id="EstimatedTimeIterationAdd"
 											min="1" required="required" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
-											 value="<%if(tp.getEstimatedTimeIteration()!=null){%><%=Integer.parseInt(tp.getEstimatedTimeIteration()) %><%}%>">
+											 value="<%if(tp.getEstimatedTimeIteration()!=null){%><%=Integer.parseInt(StringEscapeUtils.escapeHtml4(tp.getEstimatedTimeIteration())) %><%}%>">
 									</div>
 									<div class="col-md-2">
 									<select class="form-control" required="required" name="TimeType">
@@ -269,7 +270,7 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 								
 										<input type="text" name="Iterations" class="form-control"
 											id="IterationsAdd" maxlength="255" required="required"
-											placeholder="Maximum 250 Chararcters"  value="<%if(tp.getIterations()!=null){%><%=tp.getIterations() %> <%}%>">
+											placeholder="Maximum 250 Chararcters"  value="<%if(tp.getIterations()!=null){%><%=StringEscapeUtils.escapeHtml4(tp.getIterations()) %> <%}%>">
 									</div>
 								
 							</div>
@@ -283,7 +284,7 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 									
 										<input type="text" name="Schedule" class="form-control"
 											id="ScheduleAdd" min="1" required="required"
-											value="<%if(tp.getSchedule()!=null){%><%=tp.getSchedule()%> <%}%>">
+											value="<%if(tp.getSchedule()!=null){%><%=StringEscapeUtils.escapeHtml4(tp.getSchedule())%> <%}%>">
 									</div>
 								
 								
@@ -300,7 +301,7 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 								
 										<input type="text" name="PassFailCriteria"
 											class="form-control" id="PassFailCriteriaAdd" maxlength="255"
-											required="required" placeholder="Maximum 250 Chararcters" value="<%if(tp.getPass_Fail_Criteria()!=null){%><%=tp.getPass_Fail_Criteria()%> <%}%>">
+											required="required" placeholder="Maximum 250 Chararcters" value="<%if(tp.getPass_Fail_Criteria()!=null){%><%=StringEscapeUtils.escapeHtml4(tp.getPass_Fail_Criteria())%> <%}%>">
 									</div>
 							
 							</div>
@@ -338,7 +339,7 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 									Conditions <span class="mandatory" style="color: red;">*</span>
 								</label>
 
-								<div id="EditorPreConditions" class="center"> <%if(tp.getPreConditions()!=null){%><%=tp.getPreConditions()%> <%}%></div>
+								<div id="EditorPreConditions" class="center"> <%if(tp.getPreConditions()!=null){%><%=StringEscapeUtils.escapeHtml4(tp.getPreConditions())%> <%}%></div>
 								<textarea name="PreConditions" id="PreConditionsAdd"
 									style="display: none"></textarea>
 							</div>
@@ -347,7 +348,7 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 								<label style="font-size: 17px; color: #07689f"> Post
 									Conditions <span class="mandatory" style="color: red;">*</span>
 								</label>
-								<div id="EditorPostConditions" class="center">  <%if(tp.getPostConditions()!=null){%><%=tp.getPostConditions()%> <%}%></div>
+								<div id="EditorPostConditions" class="center">  <%if(tp.getPostConditions()!=null){%><%=StringEscapeUtils.escapeHtml4(tp.getPostConditions())%> <%}%></div>
 								<textarea name="PostConditions" id="PostConditionsAdd"
 									style="display: none;"></textarea>
 							</div>
@@ -359,7 +360,7 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 									Requirements <span class="mandatory" style="color: red;">*</span>
 								</label>
 
-								<div id="EditorSafetyReq" class="center">  <%if(tp.getSafetyRequirements()!=null){%><%=tp.getSafetyRequirements()%> <%}%></div>
+								<div id="EditorSafetyReq" class="center">  <%if(tp.getSafetyRequirements()!=null){%><%=StringEscapeUtils.escapeHtml4(tp.getSafetyRequirements())%> <%}%></div>
 								<textarea name="SafetyReq" id="SafetyReqAdd"
 									style="display: none;"></textarea>
 							</div>
@@ -369,7 +370,7 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 									Personnel Resources <span class="mandatory" style="color: red;">*</span>
 								</label>
 
-								<div id="EditorPersonnelResources" class="center">  <%if(tp.getPersonnelResources()!=null){%><%=tp.getPersonnelResources()%> <%}%></div>
+								<div id="EditorPersonnelResources" class="center">  <%if(tp.getPersonnelResources()!=null){%><%=StringEscapeUtils.escapeHtml4(tp.getPersonnelResources())%> <%}%></div>
 								<textarea name="PersonnelResources" id="PersonnelResourcesAdd"
 									style="display: none;"></textarea>
 
@@ -381,7 +382,7 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 								<label style="font-size: 17px; color: #07689f;">
 									Description <span class="mandatory" style="color: red;">*</span>
 								</label>
-								<div id="descriptioneditor" class="center"><%if(tp.getDescription()!=null){%><%=tp.getDescription()%> <%}%>
+								<div id="descriptioneditor" class="center"><%if(tp.getDescription()!=null){%><%=StringEscapeUtils.escapeHtml4(tp.getDescription())%> <%}%>
 							</div>
 								<textarea name="Description"  id="DescriptionAdd" style="display: none;"></textarea>
 							</div>
@@ -409,9 +410,9 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 										%>
 									<tr><td><%=stages.get(i) %></td>
 									<td><%if(rows!=null && stages!=null && rows.size()==stages.size()) {%>
-									 <%=rows.get(i) %> <%}else {%>  0 <%} %></td>
+									 <%=rows.get(i)!=null?StringEscapeUtils.escapeHtml4(rows.get(i).toString()): " - " %> <%}else {%>  0 <%} %></td>
 										<td colspan="2"> <%if(cycles!=null && stages!=null && cycles.size()==stages.size()) {%>
-									 <%=cycles.get(i) %> <%}else {%>  0 <%} %></td>
+									 <%=cycles.get(i)!=null?StringEscapeUtils.escapeHtml4(cycles.get(i)): " - " %> <%}else {%>  0 <%} %></td>
 									</tr>
 									<%}} %>
 								</tbody>
@@ -439,7 +440,7 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 													for (Object[] obj : StagesApplicable) {
 													if(stage!=null  && !stage.contains(obj[3].toString()))	{
 													%>
-													<option value="<%=obj[3]%>"><%=obj[3]%></option>
+													<option value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 													<%
 													}}
 													%>
@@ -468,7 +469,7 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 									<div  style="">
 										<textarea  name="remarks" class="form-control"
 											id="remarksAdd" maxlength="255" required="required"
-											placeholder="Maximum 250 Chararcters" ><%if(tp.getRemarks()!=null){%><%=tp.getRemarks()%> <%}%></textarea>
+											placeholder="Maximum 250 Chararcters" ><%if(tp.getRemarks()!=null){%><%=StringEscapeUtils.escapeHtml4(tp.getRemarks())%> <%}%></textarea>
 									</div>
 								
 							</div>
@@ -802,7 +803,7 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 	            content: [
 	                // Cover Page with Project Name and Logo
 	                {
-	                    text: htmlToPdfmake('<h4 class="heading-color ">Test Stage Document for <br> <br> '+'<%if(tp.getName()!=null){%><%=tp.getName().trim() %> <%}%>' +' </h4>'),
+	                    text: htmlToPdfmake('<h4 class="heading-color ">Test Stage Document for <br> <br> '+'<%if(tp.getName()!=null){%><%=StringEscapeUtils.escapeHtml4(tp.getName()).trim() %> <%}%>' +' </h4>'),
 	                    style: 'DocumentName',
 	                    alignment: 'center',
 	                    fontSize: 18,

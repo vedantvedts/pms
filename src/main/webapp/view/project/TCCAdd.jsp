@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
@@ -36,25 +37,22 @@ hr{
 List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList");
 String Pfmstccid = (String)request.getAttribute("Pfmstccid");
 %>
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%><center>
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
-
-
-
-
-
-
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <div class="container">
     
@@ -89,7 +87,7 @@ String Pfmstccid = (String)request.getAttribute("Pfmstccid");
                               <select class="custom-select" id="ChairMain" required="required" name="ChairMain" style="margin-top: -5px"> 
     <option disabled="true"  selected value="">Choose...</option>
     <% for (Object[] obj : EmployeeList) {%>
-<option value="<%=obj[0]%>"><%=obj[1]%> (<%=obj[2] %>) </option>
+<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> (<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>) </option>
 <%} %>
   </select>
                         </div>
@@ -102,7 +100,7 @@ String Pfmstccid = (String)request.getAttribute("Pfmstccid");
     <select class="custom-select" id="secretary" required="required" name="Secretary" style="margin-top: -5px">
     <option disabled="true"  selected value="">Choose...</option>
     <% for (Object[] obj : EmployeeList) {%>
-<option value="<%=obj[0]%>"><%=obj[1]%> (<%=obj[2] %>)</option>
+<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> (<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>)</option>
 <%} %>
   </select>
                         </div>
@@ -120,7 +118,7 @@ String Pfmstccid = (String)request.getAttribute("Pfmstccid");
 																
 	          <option disabled="true"  selected value="">Choose...</option>
 			    <% for (Object[] obj : EmployeeList) {%>
-     <option value="<%=obj[0]%>"><%=obj[1]%> (<%=obj[2] %>)</option>
+     <option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> (<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>)</option>
     <%} %>					
 </select>
 </td>									

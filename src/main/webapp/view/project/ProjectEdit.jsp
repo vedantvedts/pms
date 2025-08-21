@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.pfms.*,java.text.SimpleDateFormat,java.text.DecimalFormat"%>
 <!DOCTYPE html>
@@ -42,19 +43,22 @@ List<Object[]> ProjectTypeList=(List<Object[]>) request.getAttribute("ProjectTyp
 List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"); /* srikant */
 %>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%><center>
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -98,7 +102,7 @@ Project Edit</h4>
 	                           %>
 								<option value="<%=protype[0] %>" <%if(protype[0].toString().equalsIgnoreCase(ProjectEditData[1].toString())){ %>
 								 selected="selected"  <%} %>
-								><%=protype[1] %></option>
+								><%=protype[1]!=null?StringEscapeUtils.escapeHtml4(protype[1].toString()): " - " %></option>
 								<%} %>
 						</select>
 </td>
@@ -108,7 +112,7 @@ Project Edit</h4>
 </label>
 </th>
  <td >
-<input type="text"   name="pname"  class="form-control alphanum-symbols-no-leading-space" value="<%=ProjectEditData[4] %>" maxlength="255" required="required">
+<input type="text"   name="pname"  class="form-control alphanum-symbols-no-leading-space" value="<%=ProjectEditData[4]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[4].toString()): " - " %>" maxlength="255" required="required">
 
  
 </td>
@@ -121,7 +125,7 @@ Project Edit</h4>
 </label>
 </th>
  <td >
-	<input type="text"  name="desc" value="<%=ProjectEditData[5] %>"
+	<input type="text"  name="desc" value="<%=ProjectEditData[5]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[5].toString()): " - " %>"
 								class="form-control alphanum-symbols-no-leading-space" maxlength="100" required="required">
  
 </td>
@@ -131,7 +135,7 @@ Project Edit</h4>
 </label>
 </th>
  <td >
-	<input type="text"   name="unicode" value="<%=ProjectEditData[6] %>" 
+	<input type="text"   name="unicode" value="<%=ProjectEditData[6]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[6].toString()): " - " %>"
 	class="form-control alphanum-symbols-no-leading-space" maxlength="20" required="required">
  
 </td>
@@ -163,7 +167,7 @@ Project Edit</h4>
 </label>
 </th>
  <td >
- <%=ProjectEditData[3] %>
+ <%=ProjectEditData[3]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[3].toString()): " - " %>
  <input type="hidden"   name="pcode" class="form-control alphanum-symbols-no-leading-space" maxlength="20" value="<%=ProjectEditData[3] %>"  required="required">
  
 </td>
@@ -174,7 +178,7 @@ Project Edit</h4>
 </label>
 </th>
 <td>
- <input type="text"   name="projectshortname" <%if(ProjectEditData[23]!=null){%> value="<%=ProjectEditData[23] %>"<%} %>	class="form-control alphanum-symbols-no-leading-space" maxlength="20" required="required">
+ <input type="text"   name="projectshortname" <%if(ProjectEditData[23]!=null){%> value="<%=StringEscapeUtils.escapeHtml4(ProjectEditData[23].toString()) %>"<%} %>	class="form-control alphanum-symbols-no-leading-space" maxlength="20" required="required">
 </td>
   <%-- <th>
  <label style="margin-bottom: -10px;"> IsMainWorkCenter:
@@ -226,7 +230,7 @@ Project Edit</h4>
  <td >
 			<select required="required" name="projectdirector" class="form-control form-control selectdee" id="officerPunchNo" data-width="100%" data-live-search="true">
 				<%for(Object[] officer:OfficerList ){  %>
-					<option value="<%=officer[0] %>"  <%if(officer[0].toString().equalsIgnoreCase(ProjectEditData[13].toString())){ %> selected="selected"  <%} %> ><%=officer[2] %>, <%=officer[3].toString() %></option> 
+					<option value="<%=officer[0] %>"  <%if(officer[0].toString().equalsIgnoreCase(ProjectEditData[13].toString())){ %> selected="selected"  <%} %> ><%=officer[2]!=null?StringEscapeUtils.escapeHtml4(officer[2].toString()): " - " %>, <%=officer[3]!=null?StringEscapeUtils.escapeHtml4(officer[3].toString()): " - " %></option> 
 				<%} %>
 			</select>
 </td>
@@ -272,7 +276,7 @@ Project Edit</h4>
 </label>
 </th>
  <td >
-<input type="text"   name="sano"  value="<%=ProjectEditData[7] %>"
+<input type="text"   name="sano"  value="<%=ProjectEditData[7]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[7].toString()): "" %>"
 								class="form-control alphanum-symbols-no-leading-space" maxlength="100" required="required">
 </td>
  </tr>
@@ -351,7 +355,7 @@ Project Edit</h4>
 </label>
 </th>
  <td >
-<input type="text"  name="sancostre" id="Recostid" value="<%=ProjectEditData[9] %>"
+<input type="text"  name="sancostre" id="Recostid" value="<%=ProjectEditData[9]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[9].toString()): "" %>"
 								class="form-control decimal-format"  maxlength="18" readonly="readonly" value="0.0">
 </td>
  </tr>
@@ -366,12 +370,12 @@ Project Edit</h4>
 															<%
 															for (Object[] protype : ProjectTypeList) {
 															%>
-															<option value="<%=protype[0]%>" <%if(ProjectEditData[22]!=null && protype[0].toString().equals(ProjectEditData[22].toString())) {%>selected="selected" <%} %>><%=protype[1]%></option>
+															<option value="<%=protype[0]%>" <%if(ProjectEditData[22]!=null && protype[0].toString().equals(ProjectEditData[22].toString())) {%>selected="selected" <%} %>><%=protype[1]!=null?StringEscapeUtils.escapeHtml4(protype[1].toString()): " - "%></option>
 															<%
 															}
 															%>
 													</select>
-													<input name="projectTypeID" id="projectTypeIDid" hidden="hidden"  value="<%=ProjectEditData[22]%>" >
+													<input name="projectTypeID" id="projectTypeIDid" hidden="hidden"  value="<%=ProjectEditData[22]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[22].toString()): ""%>" >
 													</td>
   <th>
  <label style="margin-bottom: -10px;">Security Classification:
@@ -383,7 +387,7 @@ Project Edit</h4>
 			<%for(Object[] protype:CategoryList ){%>
 				<option value="<%=protype[0] %>"
 								 <%if(protype[0].toString().equalsIgnoreCase(ProjectEditData[21].toString())){ %>
-								 selected="selected"  <%} %>><%=protype[1].toString() %></option>
+								 selected="selected"  <%} %>><%=protype[1]!=null?StringEscapeUtils.escapeHtml4(protype[1].toString()): " - " %></option>
 								<%}%>
 		</select>			
 </td>
@@ -396,7 +400,7 @@ Project Edit</h4>
 								<%for(Object[] protype:PlatformList ){%>
 								<option value="<%=protype[0] %>" <%if(ProjectEditData[33].toString()!="0" && protype[0].toString().equalsIgnoreCase(ProjectEditData[33].toString())){ %>
 								 selected="selected"  <%} %>
-								><%=protype[1] %></option>
+								><%=protype[1]!=null?StringEscapeUtils.escapeHtml4(protype[1].toString()): " - " %></option>
 								<%}%>
 						</select></td>
 								</tr>
@@ -404,23 +408,23 @@ Project Edit</h4>
 <!-- srikant code end-->
 <tr>
 	   <th colspan="1"><label style="margin-bottom: -10px;">Nodal & Participating Lab:<span class="mandatory" style="color: red;">*</span></label></th>
-	  <td colspan="3"><input required="required" name="Nodal" placeholder="Enter Nodal & Participating Lab" class="form-control alphanum-symbols-no-leading-space" maxlength="250" <%if(ProjectEditData!=null && ProjectEditData[27]!=null){%>value="<%=ProjectEditData[27]%>" <%}%> /></td>
+	  <td colspan="3"><input required="required" name="Nodal" placeholder="Enter Nodal & Participating Lab" class="form-control alphanum-symbols-no-leading-space" maxlength="250" <%if(ProjectEditData!=null && ProjectEditData[27]!=null){%>value="<%=StringEscapeUtils.escapeHtml4(ProjectEditData[27].toString())%>" <%}%> /></td>
 </tr>
  <tr>
 		<th colspan="1"><label style="margin-bottom: -10px;">Application:<span class="mandatory" style="color: red;">*</span></label></th>
-		<td colspan="3"><textarea required="required" placeholder="Enter maximum 50 charcters " name="application" class="form-control " maxlength="50" rows="1" cols="53"><%=ProjectEditData[26]%></textarea></td>
+		<td colspan="3"><textarea required="required" placeholder="Enter maximum 50 charcters " name="application" class="form-control " maxlength="50" rows="1" cols="53"><%=ProjectEditData[26]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[26].toString()): " - "%></textarea></td>
 </tr>
 <tr>
 		<th colspan="1"><label style="margin-bottom: -10px;">Scope:<span class="mandatory" style="color: red;">*</span></label></th>
-		<td colspan="3"><textarea required="required" name="scope" class="form-control " placeholder="Enter maximum 5000 charcters " maxlength="5000" rows="3" cols="53"><%=ProjectEditData[25] %></textarea></td>
+		<td colspan="3"><textarea required="required" name="scope" class="form-control " placeholder="Enter maximum 5000 charcters " maxlength="5000" rows="3" cols="53"><%=ProjectEditData[25]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[25].toString()): " - " %></textarea></td>
 </tr>
  <tr>
 		  <th colspan="1"><label style="margin-bottom: -10px;">Objective:<span class="mandatory" style="color: red;">*</span></label></th>
-		  <td colspan="3"><textarea required="required"  name="Objective" class="form-control " placeholder="Enter maximum 5000 charcters " maxlength="5000" rows="3" cols="53"><%=ProjectEditData[19] %></textarea></td>	 
+		  <td colspan="3"><textarea required="required"  name="Objective" class="form-control " placeholder="Enter maximum 5000 charcters " maxlength="5000" rows="3" cols="53"><%=ProjectEditData[19]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[19].toString()): " - " %></textarea></td>	 
  </tr>
   <tr>
 		  <th colspan="1"><label style="margin-bottom: -10px;">Deliverable:<span class="mandatory" style="color: red;">*</span></label></th>
-		  <td colspan="3"><textarea required="required" name="Deliverable" class="form-control " placeholder="Enter maximum 5000 charcters "  maxlength="5000" rows="3" cols="53"><%=ProjectEditData[20] %></textarea></td>
+		  <td colspan="3"><textarea required="required" name="Deliverable" class="form-control " placeholder="Enter maximum 5000 charcters "  maxlength="5000" rows="3" cols="53"><%=ProjectEditData[20]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[20].toString()): " - " %></textarea></td>
  </tr>
  </thead>
  </table>

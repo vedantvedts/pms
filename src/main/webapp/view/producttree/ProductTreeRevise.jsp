@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -243,7 +244,7 @@ height:18px;
  <form>
   <div class="row" style="width: 100%;">
 
-  <div class="card-header" style="width:94%;"><h4>Project Revision For <%=ProjectName.get(0)[1] %></h4></div>
+  <div class="card-header" style="width:94%;"><h4>Project Revision For <%=ProjectName.get(0)[1]!=null?StringEscapeUtils.escapeHtml4(ProjectName.get(0)[1].toString()):" - " %></h4></div>
        
    <input type="submit" class="btn btn-primary btn-sm back "  value="Back"  onclick="SubmitBack()"  formaction="ProductTree.htm"> 
 	
@@ -263,23 +264,22 @@ height:18px;
 	<div style="background-color:#FFFFFF;" class="body genealogy-body genealogy-scroll">
 	
 	
-	<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert" >
-	    <%=ses1 %>
-	     <br />
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert"  >
-	    	<%=ses %>
-	    	 <br />
-	    </div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 	
 	    <div class="genealogy-tree">
@@ -293,7 +293,7 @@ if(ses1!=null){	%>
 			                         	
 			                         	 <span style="cursor:pointer;font-weight: 600;font-size: 1.7em;">
 	                          			        <%if(ProjectId!=null){%>
-	                          			        	     <%=ProjectName.get(0)[1] %>
+	                          			        	     <%=ProjectName.get(0)[1]!=null?StringEscapeUtils.escapeHtml4(ProjectName.get(0)[1].toString()):"-" %>
 			                                     <%} %>
 			                                     
 			                          		 </span>
@@ -335,7 +335,7 @@ if(ses1!=null){	%>
 												 
 												
 										             <span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
-										           <%=level1[3] %>
+										           <%=level1[3]!=null?StringEscapeUtils.escapeHtml4(level1[3].toString()):"-" %>
 										                
 										             </span> 
 										             
@@ -388,7 +388,7 @@ if(ses1!=null){	%>
 																 );" >
 															  
 															       <span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
-			                          			                              <%=level2[3] %>
+			                          			                              <%=level2[3]!=null?StringEscapeUtils.escapeHtml4(level2[3].toString()):"-" %>
 			                          			                   </span>
 			                          			                   
 			                          			                    <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
@@ -442,7 +442,7 @@ if(ses1!=null){	%>
 																		
 																		<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;" >
 			                          			                             
-			                          			                                <%=level3[3] %>
+			                          			                                <%=level3[3]!=null?StringEscapeUtils.escapeHtml4(level3[3].toString()):"-" %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
@@ -498,7 +498,7 @@ if(ses1!=null){	%>
 																		
 																		<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;" >
 			                          			                             
-			                          			                                <%=level4[3] %>
+			                          			                                <%=level4[3]!=null?StringEscapeUtils.escapeHtml4(level4[3].toString()):"-" %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
@@ -555,7 +555,7 @@ if(ses1!=null){	%>
 																		
 																		<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;" >
 			                          			                             
-			                          			                                <%=level5[3] %>
+			                          			                                <%=level5[3]!=null?StringEscapeUtils.escapeHtml4(level5[3].toString()):"-" %>
 			                          			                                
 			                          			                          </span>
 			                          			                          

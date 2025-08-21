@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -176,27 +177,22 @@ NFormatConvertion nfc=new NFormatConvertion();
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	
-	
-	<center>
-	
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-            </div>
-            
-    </center>
-    
-    
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 	
@@ -240,17 +236,17 @@ NFormatConvertion nfc=new NFormatConvertion();
 			  <article>
 			    <div class="inner">
 			      <span class="date">
-			        <span class="day"><%=day.format(object[5]) %></span>
-			        <span class="month"><%=month.format(object[5]) %></span>
-			        <span class="year"><%=year.format(object[5]) %></span>
+			        <span class="day"><%=object[5]!=null?day.format(StringEscapeUtils.escapeHtml4(object[1].toString())):" - " %></span>
+			        <span class="month"><%=object[5]!=null?month.format(StringEscapeUtils.escapeHtml4(object[1].toString())):" - " %></span>
+			        <span class="year"><%=object[5]!=null?year.format(StringEscapeUtils.escapeHtml4(object[1].toString())) :" - "%></span>
 			      </span>
-			      <h2><%=object[7] %> at <%=time.format(object[5]) %></h2> 
+			      <h2><%=object[7]!=null?StringEscapeUtils.escapeHtml4(object[7].toString()): " - " %> at <%=object[5]!=null?time.format(StringEscapeUtils.escapeHtml4(object[5].toString())):" - " %></h2> 
 				  <p>
 				  <span class="remarks_title">Action By : </span>
-				  				<%=object[2] %>, <%=object[3] %><br>
+				  				<%=object[2]!=null?StringEscapeUtils.escapeHtml4(object[2].toString()): " - " %>, <%=object[3]!=null?StringEscapeUtils.escapeHtml4(object[3].toString()): " - " %><br>
 				  	<%if(object[6]!= null){%>
 				  		<span class="remarks_title">Remarks : </span>
-				  				<%=object[6] %>
+				  				<%=object[6]!=null?StringEscapeUtils.escapeHtml4(object[6].toString()): " - " %>
 				  						<%}else{ %> <span class="remarks_title">No Remarks </span> <%} %>
 				  </p>
 			    </div>

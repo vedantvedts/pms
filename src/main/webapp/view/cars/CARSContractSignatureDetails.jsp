@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.cars.model.CARSSoC"%>
 <%@page import="com.vts.pfms.IndianRupeeFormat"%>
 <%@page import="com.vts.pfms.cars.model.CARSContract"%>
@@ -307,22 +308,22 @@ String statuscode = carsIni.getCARSStatusCode();
 
 %>
 
-<% String ses=(String)request.getParameter("result"); 
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 <div class="container-fluid">
 	<div class="row">
@@ -339,7 +340,7 @@ String statuscode = carsIni.getCARSStatusCode();
 					        			<span class="cssideheading">Title:</span>
 					                </div>
 					            	<div class="col-md-11" style="margin-left: -5%;">
-					                	<span class="cssideheadingdata"><%if(carsIni!=null && carsIni.getInitiationTitle()!=null) {%><%=carsIni.getInitiationTitle() %> <%} else{%>-<%} %></span>
+					                	<span class="cssideheadingdata"><%if(carsIni!=null && carsIni.getInitiationTitle()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsIni.getInitiationTitle()) %> <%} else{%>-<%} %></span>
 					                </div>
 					                
 					            </div>
@@ -347,7 +348,7 @@ String statuscode = carsIni.getCARSStatusCode();
 					            <div class="row">
 					            	<div class="col-md-4">
 					                	<span class="cssideheading">CARS. No:</span>
-					                	&emsp;<span class="cssideheadingdata"><%if(carsIni!=null && carsIni.getCARSNo()!=null) {%><%=carsIni.getCARSNo() %> <%} else{%>-<%} %></span>
+					                	&emsp;<span class="cssideheadingdata"><%if(carsIni!=null && carsIni.getCARSNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsIni.getCARSNo()) %> <%} else{%>-<%} %></span>
 					            	</div>
 					            <div class="col-md-1"></div>
 					            <div class="col-md-3">
@@ -356,7 +357,7 @@ String statuscode = carsIni.getCARSStatusCode();
 					                	<%if(carsIni!=null && carsIni.getFundsFrom()!=null && carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>
 					                		Buildup
 					                	<%} else{%>
-					                		<%if(PDs!=null && PDs[3]!=null) {%><%=PDs[3]+" ("+PDs[0]+")" %><%} %>
+					                		<%if(PDs!=null && PDs[3]!=null) {%><%=StringEscapeUtils.escapeHtml4(PDs[3].toString())+" ("+PDs[0]!=null?StringEscapeUtils.escapeHtml4(PDs[0].toString()): " - "+")" %><%} %>
 					                	<%} %>
 					                	</span>
 					            </div>
@@ -450,7 +451,7 @@ String statuscode = carsIni.getCARSStatusCode();
 												        		<div class="form-group">
 												                	<label class="control-label">Date:</label><span class="mandatory">*</span>
 												                    <input  class="form-control form-control" type="text" name="csOtherDocDate" id="csOtherDocDate"
-												                     value="<%if(csdetails!=null && csdetails.getOtherDocDate()!=null) {%><%=fc.SqlToRegularDate(csdetails.getOtherDocDate()) %><%} %>" required readonly> 
+												                     value="<%if(csdetails!=null && csdetails.getOtherDocDate()!=null) {%><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(csdetails.getOtherDocDate())) %><%} %>" required readonly> 
 												                </div>
 												            </div>
 												        	
@@ -556,12 +557,12 @@ String statuscode = carsIni.getCARSStatusCode();
                										<div class="row">
 					               		   				<!-- <div class="col-md-1"></div> -->
 					               		   				<div class="col-md-3">
-					               		   					<span>No:</span> <span><%=carsContract.getContractNo() %> </span>
+					               		   					<span>No:</span> <span><%=carsContract.getContractNo() !=null?StringEscapeUtils.escapeHtml4(carsContract.getContractNo()): " - "%> </span>
 					               		   				</div>
 					               		   				<div class="col-md-6">
 					               		   				</div>
 					               		   				<div class="col-md-3">
-					               		   					<span>Date:</span> <span><%if(csdetails.getOtherDocDate()!=null) {%> <%=fc.SqlToRegularDate(csdetails.getOtherDocDate()) %><%} else{%><%=rdf.format(new Date()) %><%} %> </span>
+					               		   					<span>Date:</span> <span><%if(csdetails.getOtherDocDate()!=null) {%> <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(csdetails.getOtherDocDate())) %><%} else{%><%=rdf.format(new Date()) %><%} %> </span>
 					               		   				</div>
 					               		   				<!-- <div class="col-md-1"></div> -->
 			               		   					</div>
@@ -570,7 +571,7 @@ String statuscode = carsIni.getCARSStatusCode();
 					               		   				<div class="col-md-12 mt-2" align="center">
 		               										<h5 style="font-weight: bold;margin-top: 1.5rem;">CARS contract signature</h5>
 		               											
-		               										<span style="font-size: large;"><%=carsIni.getInitiationTitle() %> </span>
+		               										<span style="font-size: large;"><%=carsIni.getInitiationTitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getInitiationTitle()): " - " %> </span>
 		               									</div>
 					               		   			</div>
 			               		   					<br>
@@ -582,9 +583,9 @@ String statuscode = carsIni.getCARSStatusCode();
 					               		   						<%if(carsIni!=null && carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>
 					               		   							Directorate
 					               		   						<%} else{%>
-					               		   							<%if(PDs!=null) {%><%=PDs[4] %><%} else{%>-<%} %>
+					               		   							<%if(PDs[4]!=null) {%><%=StringEscapeUtils.escapeHtml4(PDs[4].toString()) %><%} else{%>-<%} %>
 					               		   						<%} %>  
-					               		   						for CARS collaboration with <%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> <%} %> has been approved by CFA. (Flag-A)
+					               		   						for CARS collaboration with <%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute()): " - "+", "+carsIni.getRSPCity()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()): " - " %> <%} %> has been approved by CFA. (Flag-A)
 					               		   					</span>
 					               		   					<span>
 					               		   						<%if(csdetails!=null && csdetails.getAttachFlagA()!=null) {%>
@@ -639,9 +640,9 @@ String statuscode = carsIni.getCARSStatusCode();
 				               							<div style="font-size: 15px;"> Signature of GD-DP&C</div>
 								               			<%for(Object[] apprInfo : othersCSApprovalEmpData){ %>
 								   			   				<%if(apprInfo[8].toString().equalsIgnoreCase("CFW")){ %>
-								   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-								   								<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+								   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+								   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+								   								<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%=apprInfo[4]!=null?(fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10)) +" "+ StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19)):" - " %>]</label>
 								   			    		<%break;}} %>  
 									            	</div>
 							            	
@@ -650,14 +651,14 @@ String statuscode = carsIni.getCARSStatusCode();
 										            			 		
 										            		<%if(apprInfo[8].toString().equalsIgnoreCase("CFA")){ %>
 									            				<div style="font-size: 15px;"> Signature of AD-P&C</div>
-										   						<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
-										   						<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-										   						<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+										   						<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+										   						<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+										   						<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=apprInfo[4]!=null?(fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10)) +" "+ StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19)):" - " %>]</label>
 										   					<%} else if(apprInfo[8].toString().equalsIgnoreCase("CAD")) {%> 
 									   			    			<div style="font-size: 15px;"> Signature of Director</div>
-									   			    			<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
-										   						<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-										   						<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+									   			    			<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+										   						<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+										   						<label style="font-size: 12px; ">[Approved On:&nbsp; <%=apprInfo[4]!=null?(fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10)) +" "+ StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19)):" - " %>]</label>
 									   			    					
 									   			    		<%} %>
 									   			    	</div>
@@ -677,8 +678,8 @@ String statuscode = carsIni.getCARSStatusCode();
 																		<%for(Object[] obj : othersCSRemarksHistory){%>
 																			<tr>
 																				<td style="border:none;width: 80%;overflow-wrap: anywhere;padding: 0px">
-																					<%=obj[3]%>&nbsp; :
-																					<span style="border:none; color: blue;">	<%=obj[1] %></span>
+																					<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%>&nbsp; :
+																					<span style="border:none; color: blue;">	<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span>
 																				</td>
 																			</tr>
 																		<%} %>
@@ -746,7 +747,7 @@ String statuscode = carsIni.getCARSStatusCode();
 			              					<table align="center"  >
 			               						<tr>
 			               							<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
-			                							GD-DP&C - <%if(GDDPandC!=null) {%> <%=GDDPandC[1] %> <%} else {%> GD-DP&C <%} %>
+			                							GD-DP&C - <%if(GDDPandC!=null) {%> <%=StringEscapeUtils.escapeHtml4(GDDPandC[1].toString()) %> <%} else {%> GD-DP&C <%} %>
 			                						</td>
 			                		
 		                        					<td rowspan="2">
@@ -754,7 +755,7 @@ String statuscode = carsIni.getCARSStatusCode();
 			                						</td>
 			                						
 			                						<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
-			                							AD-D&C - <%if(ADDPandC!=null) {%> <%=ADDPandC[1] %> <%} else {%> AD-P&C <%} %>
+			                							AD-D&C - <%if(ADDPandC!=null) {%> <%=StringEscapeUtils.escapeHtml4(ADDPandC[1].toString()) %> <%} else {%> AD-P&C <%} %>
 			                	    				</td>
 			                	    				
 			                	    				<td rowspan="2">
@@ -762,7 +763,7 @@ String statuscode = carsIni.getCARSStatusCode();
 			                						</td>
 			                						
 			                						<td class="trup" style="background: linear-gradient(to top, #09f21b 10%, transparent 115%);">
-			                							DIRECTOR - <%if(Director!=null) {%> <%=Director[1] %> <%} else {%> DIRECTOR <%} %>
+			                							DIRECTOR - <%if(Director!=null) {%> <%=StringEscapeUtils.escapeHtml4(Director[1].toString()) %> <%} else {%> DIRECTOR <%} %>
 			                	    				</td>
 			               						</tr> 	
 			               	    			</table>			             
@@ -821,9 +822,9 @@ String statuscode = carsIni.getCARSStatusCode();
 																	<%if(carsIni!=null && carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>
 																		Directorate
 																	<%} else{%>
-																	<%if(PDs!=null) {%><%=PDs[4] %><%} else{%>-<%} %>
+																	<%if(PDs!=null) {%><%=StringEscapeUtils.escapeHtml4(PDs[4].toString()) %><%} else{%>-<%} %>
 																	<%} %>  
-																	for CARS collaboration with <%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> <%} %> has been approved by CFA. (Flag-A)
+																	for CARS collaboration with <%if(carsIni!=null) {%><%=StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute())+", "+StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()) %> <%} %> has been approved by CFA. (Flag-A)
 			               										</td>
 			               										<td>
 			               											<%if(csdetails!=null && csdetails.getAttachFlagA()!=null) {%>

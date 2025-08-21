@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -59,19 +60,22 @@ FormatConverter fc = new FormatConverter();
 %>
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%><center>
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -91,7 +95,7 @@ FormatConverter fc = new FormatConverter();
 
 <div class="col-md-4" ><h3> Schedule</h3></div>
 <div class="col-md-8" >
- <b style="color: green; float: right;">Title :&nbsp;<%=ProjectDetailes[7] %> (<%=ProjectDetailes[6] %>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp;Total Months :&nbsp;<%=ProjectDetailes[9] %>	</b>
+ <b style="color: green; float: right;">Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %> (<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp;Total Months :&nbsp;<%=ProjectDetailes[9]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[9].toString()): " - " %>	</b>
  </div>
 
  
@@ -136,7 +140,7 @@ FormatConverter fc = new FormatConverter();
 				                     <input type="hidden" name="IntiationId" value="<%=IntiationId %>" /> 
 				                      <input type="hidden" name="initiationscheduleid" value="<%=obj[3] %>" /> 	
 				                      	
-									 	<td><input type="hidden" name="milestoneno" value="<%=obj[0] %>" /> 	MIL-<%=obj[0] %></td> 
+									 	<td><input type="hidden" name="milestoneno" value="<%=obj[0] %>" /> 	MIL-<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %></td> 
 									 	<td style="width: 300px;"><input type="text" class="form-control" name="MilestoneActivityEdit"  required="required" value="<%=obj[1] %>" placeholder="Maximum 4000 Chararcters" maxlength="4000"></td> 
 									 	<td >
 										<%--  	<select class="form-control selectdee"  name="MilestoneFrom">
@@ -155,8 +159,8 @@ FormatConverter fc = new FormatConverter();
 									 		-
 									 		<%=obj[8]!=null?fc.SqlToRegularDate(obj[8].toString()):"" %>
 									 	</td>
-									   	<td style="width: 200px;"><input type="number" class="form-control " name="MilestoneMonthEdit" min="0" required="required" value="<%=obj[2] %>"></td>
-									   	<td><input type="text" class="form-control " name="MilestoneRemarkEdit"  required="required" value="<%=obj[4]%>"></td>
+									   	<td style="width: 200px;"><input type="number" class="form-control " name="MilestoneMonthEdit" min="0" required="required" value="<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>"></td>
+									   	<td><input type="text" class="form-control " name="MilestoneRemarkEdit"  required="required" value="<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>"></td>
 									    <td  style="width: 150px;">
 							
 									  <button class="fa fa-pencil-square-o btn " type="submit"  onclick="return confirm('Are You Sure To Edit this Schedule?');"></button>
@@ -201,7 +205,7 @@ FormatConverter fc = new FormatConverter();
 														<option value="0 0 <%=LocalDate.now() %>"  selected="selected"	hidden="true">MIL-0</option>
 												 	    <%if(MilestoneTotalMonth.size()!=0){ %>
 														<%for(Object []obj:MilestoneTotalMonth) {%>
-															<option value="<%=obj[0]+" "+obj[1]%>">MIL-<%=obj[1] %></option>
+															<option value="<%=obj[0]+" "+obj[1]%>">MIL-<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></option>
 														<%}}%>
 														</select>
 														</td>
@@ -255,7 +259,7 @@ var ProjectScheduleMonth="<%=ProjectScheduleMonth%>";
 
 
 
-var TotalMilestoneMonth="<%=ProjectDetailes[9] %>";
+var TotalMilestoneMonth="<%=ProjectDetailes[9]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[9].toString()): " - " %>";
 
 
 function MilestoneAdd(){

@@ -1,4 +1,5 @@
 
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*"%>
 <%@ page import="java.time.LocalDate"%>
@@ -210,8 +211,8 @@ String labcode= (String)session.getAttribute("labcode");
 							style="font-family: Lato, sans-serif; font-size: 15px; padding: 0px 16px 0px 10px; text-transform: capitalize !important;"><%=LocalDate.now().getMonth() %>
 								&nbsp; <%=LocalDate.now().getYear() %> </span> <img style="width: 4%"
 							src="view/images/project.png" alt=""><b> &nbsp;
-								<%=loginPage.equalsIgnoreCase("login")?"PMS":"WR" %>&nbsp;<span style="font-size: 13px;">(<%=labcode %>) -
-									<%=EmpName %> (<%=FormRoleName %>)
+								<%=loginPage.equalsIgnoreCase("login")?"PMS":"WR" %>&nbsp;<span style="font-size: 13px;">(<%=labcode!=null?StringEscapeUtils.escapeHtml4(labcode): " - " %>) -
+									<%=EmpName!=null?StringEscapeUtils.escapeHtml4(EmpName): " - " %> (<%=FormRoleName!=null?StringEscapeUtils.escapeHtml4(FormRoleName): " - " %>)
 							</span>
 						</b>
 						</a>
@@ -412,7 +413,7 @@ String labcode= (String)session.getAttribute("labcode");
 											role="button" data-toggle="dropdown" aria-haspopup="true"
 											aria-expanded="false"> <span
 											class="mr-2 d-none d-lg-inline text-gray-600 "
-											style="color: white"><b><%=Username %></b></span> <i
+											style="color: white"><b><%=Username!=null?StringEscapeUtils.escapeHtml4(Username): " - " %></b></span> <i
 											class="fa fa-user-o" aria-hidden="true" style="color: white"></i>
 										</a>
 

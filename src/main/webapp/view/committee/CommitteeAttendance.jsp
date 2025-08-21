@@ -1,4 +1,5 @@
-	<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	<%@page import="org.apache.commons.text.StringEscapeUtils"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
 <html>
@@ -68,20 +69,22 @@ String committeeMainId = (String) request.getAttribute("committeeMainId");
 String committeeId = (String) request.getAttribute("committeeId");
 %>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-                   </div></div>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -93,10 +96,10 @@ String committeeId = (String) request.getAttribute("committeeId");
 			 <div class="card-header">
 				 <div class="row">
 							<div class="col-md-3" >
-					  			<h4><%=committeescheduledata[8] %> Invitations </h4>
+					  			<h4><%=committeescheduledata[8]!=null?StringEscapeUtils.escapeHtml4(committeescheduledata[8].toString()): " - " %> Invitations </h4>
 							 </div>
 							 <div class="col-md-9" align="right" style="margin-top: 3px;" >
-					 			<h5 style="color: white"  > (Meeting Date & Time : <%= sdf.format(sdf1.parse( committeescheduledata[2].toString()))%>  &  <%=committeescheduledata[3] %>)</h5>
+					 			<h5 style="color: white"  > (Meeting Date & Time : <%= committeescheduledata[2]!=null?sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(committeescheduledata[2].toString()))) : " - "%>  &  <%=committeescheduledata[3]!=null?StringEscapeUtils.escapeHtml4(committeescheduledata[3].toString()): " - " %>)</h5>
 							 </div>
 					 	</div>
 			  </div>
@@ -109,7 +112,7 @@ String committeeId = (String) request.getAttribute("committeeId");
 				<div class="col-md-12">
 
 				<div align="center">
-					<h5 style="color:#145374" >(Meeting Id : <%=committeescheduledata[12] %>) </h5>
+					<h5 style="color:#145374" >(Meeting Id : <%=committeescheduledata[12]!=null?StringEscapeUtils.escapeHtml4(committeescheduledata[12].toString()): " - " %>) </h5>
 				</div>
 
 				<%
@@ -134,7 +137,7 @@ String committeeId = (String) request.getAttribute("committeeId");
 										
 								<tr>
 									<td>
-										<input type="number" class="form-control" name="newslno" value="<%=obj[12] %>" min="1" max="<%=committeeinvitedlist.size()%>"> 
+										<input type="number" class="form-control" name="newslno" value="<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): "" %>" min="1" max="<%=committeeinvitedlist.size()%>"> 
 										<input type="hidden" name="invitationid" value="<%=obj[1] %>">
 									</td>	
 									<td> 
@@ -143,27 +146,27 @@ String committeeId = (String) request.getAttribute("committeeId");
 											else if(obj[3].toString().equalsIgnoreCase("CH") ){	 %> Co-Chairperson<%}
 											else if(obj[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary (Proxy) <%}
 											else if(obj[3].toString().equalsIgnoreCase("CI")){   %> Internal<%}
-											else if(obj[3].toString().equalsIgnoreCase("CW")){	 %> External(<%=obj[11] %>)<%}
-											else if(obj[3].toString().equalsIgnoreCase("CO")){	 %> External(<%=obj[11]%>)<%}
+											else if(obj[3].toString().equalsIgnoreCase("CW")){	 %> External(<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>)<%}
+											else if(obj[3].toString().equalsIgnoreCase("CO")){	 %> External(<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "%>)<%}
 											else if(obj[3].toString().equalsIgnoreCase("P") ){	 %>Presenter <%}
 											else if(obj[3].toString().equalsIgnoreCase("I")){	 %> Addl. Internal<%}
-											else if(obj[3].toString().equalsIgnoreCase("W") ){	 %> Addl. External(<%=obj[11] %>)<%}
-											else if(obj[3].toString().equalsIgnoreCase("E") )    {%> Addl. External(<%=obj[11] %>)<%}
+											else if(obj[3].toString().equalsIgnoreCase("W") ){	 %> Addl. External(<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>)<%}
+											else if(obj[3].toString().equalsIgnoreCase("E") )    {%> Addl. External(<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>)<%}
 										    // Prudhvi - 27/03/2024 start
-											else if(obj[3].toString().equalsIgnoreCase("CIP") )    {%> Industry Partner(<%=obj[11] %>)<%}
-											else if(obj[3].toString().equalsIgnoreCase("IP") )    {%> Addl. Industry Partner(<%=obj[11] %>)<%}
+											else if(obj[3].toString().equalsIgnoreCase("CIP") )    {%> Industry Partner(<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>)<%}
+											else if(obj[3].toString().equalsIgnoreCase("IP") )    {%> Addl. Industry Partner(<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>)<%}
 											else if(obj[3].toString().equalsIgnoreCase("SPL") )    {%> Special Invitee<%}
 											
 										// Prudhvi - 27/03/2024 end
-											else {%> REP_<%=obj[3].toString()%> (<%=obj[11] %>)  <%}
+											else {%> REP_<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> (<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>)  <%}
 										%>
 										
 									</td>
-									<td><%=obj[6] %>, <%=obj[7]%> (<%=obj[11]%>)</td>        
+									<td><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %>, <%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%> (<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "%>)</td>        
 									
 									<td>
 									
-									<input class="form-control" name="Role" maxlength="255" id="<%=obj[1] %>"  value="<%= obj[15]!=null ? obj[15]: (obj[14]!=null ? obj[14]:"")%>">
+									<input class="form-control" name="Role" maxlength="255" id="<%=obj[1] %>"  value="<%= obj[15]!=null ? StringEscapeUtils.escapeHtml4(obj[15].toString()): (obj[14]!=null ? StringEscapeUtils.escapeHtml4(obj[14].toString()):"")%>">
 									<input type="hidden" name="LabCode"  id="LabCode<%=obj[1]%>" value="<%=obj[11]!=null?obj[11].toString():"-" %>">
 									<input type="hidden" name="EmpNo" id="EmpNo<%=obj[1]%>" value="<%=obj[5]!=null?obj[5].toString():"-" %>">
 									</td>
@@ -248,7 +251,7 @@ String committeeId = (String) request.getAttribute("committeeId");
 									<select class="form-control selectdee " name="reptype" id="reptype"  data-live-search="true" onchange="setreptype();" >
 											<option selected value="0"  > Choose... </option>
 										<% for (Object[] obj : committeereplist) {%>					
-											<option value="<%=obj[2]%>"> <%=obj[3]%> </option>
+											<option value="<%=obj[2]%>"> <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> </option>
 										<%} %>
 									</select>
 								</td>
@@ -273,7 +276,7 @@ String committeeId = (String) request.getAttribute("committeeId");
 									 <div class="input select external">
 										 <select class="form-control selectdee " name="internalmember" id="internalmember"  data-live-search="true"   data-placeholder="Select Members" multiple required>
 							                 <% for (Object[] obj : EmployeeList) {%>
-									       		<option value="<%=obj[0]%>,I,<%=obj[3]%>"><%=obj[1]%> ( <%=obj[2] %> ) </option>
+									       		<option value="<%=obj[0]%>,I,<%=obj[3]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> ( <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> ) </option>
 									    	<%} %>
 										</select>
 										<input type="hidden" name="InternalLabId" value="<%=LabCode %>" />
@@ -315,7 +318,7 @@ String committeeId = (String) request.getAttribute("committeeId");
 										<option disabled="true"  selected value="">Lab Name</option>
 											<% for (Object[] obj : clusterlablist) {
 											if(!LabCode.equals(obj[3].toString())){%>
-												<option value="<%=obj[3]%>"><%=obj[3]%></option>
+												<option value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 											<%} 
 											}%>
 									</select>
@@ -364,7 +367,7 @@ String committeeId = (String) request.getAttribute("committeeId");
 								<div class="input select external">
 									<select  class= "form-control selectdee" name="externalmember" id="expertmember"   data-live-search="true"   data-placeholder="Select Members" multiple required>
 										<% for (Object[] obj : ExpertList) {%>
-									       	<option value="<%=obj[0]%>,E,<%=obj[3]%>"><%=obj[1]%> ( <%=obj[2] %> ) </option>
+									       	<option value="<%=obj[0]%>,E,<%=obj[3]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> ( <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> ) </option>
 									    <%} %>
 									</select>
 									<input type="hidden" name="LabId1" value="@EXP" />

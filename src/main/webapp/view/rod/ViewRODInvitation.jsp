@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.master.model.IndustryPartner"%>
 <%@page import="java.awt.Container"%>
 <%@page import="java.util.stream.Collectors"%>
@@ -88,23 +89,22 @@ h5,h6{
 	List<IndustryPartner> industryPartnerList = (List<IndustryPartner>)request.getAttribute("industryPartnerList");
 	%>		
 		
-	<%	String ses = (String) request.getParameter("result");
-		String ses1 = (String) request.getParameter("resultfail");
-		if (ses1 != null) { %>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-			<%=ses1%>
-		</div>
-	</div>
-	<%}
-	if (ses != null) {
-	%>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses%>
-		</div>
-	</div>
-	<%}%>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
 
 	<div class="container-fluid">
 		<div class="row">
@@ -116,10 +116,10 @@ h5,h6{
 					<div class="card-header">
 						<div class="row">
 							<div class="col-md-3" >
-					  			<h4><%=rodscheduledata[8] %> Invitations</h4>
+					  			<h4><%=rodscheduledata[8]!=null?StringEscapeUtils.escapeHtml4(rodscheduledata[8].toString()): " - " %> Invitations</h4>
 							 </div>
 							 <div class="col-md-9" align="right" style="margin-top: 3px;" >
-					 			<h5 style="color: white"  >(Meeting Id : <%=rodscheduledata[12] %>) &nbsp;&nbsp; - &nbsp;&nbsp; (Meeting Date & Time : <%= sdf.format(sdf1.parse( rodscheduledata[2].toString()))%>  &  <%=rodscheduledata[3] %>)</h5>
+					 			<h5 style="color: white"  >(Meeting Id : <%=rodscheduledata[12]!=null?StringEscapeUtils.escapeHtml4(rodscheduledata[12].toString()): " - " %>) &nbsp;&nbsp; - &nbsp;&nbsp; (Meeting Date & Time : <%= sdf.format(sdf1.parse( rodscheduledata[2].toString()))%>  &  <%=rodscheduledata[3]!=null?StringEscapeUtils.escapeHtml4(rodscheduledata[3].toString()): " - " %>)</h5>
 							 </div>
 					 	</div>
 					</div>
@@ -167,7 +167,7 @@ h5,h6{
 											<tr>
 
 												<td>
-													<%=intcount%> . <%=rodinvitedlist.get(i)[6]%> (<%=rodinvitedlist.get(i)[7]%>)
+													<%=intcount%> . <%=rodinvitedlist.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(rodinvitedlist.get(i)[6].toString()): " - "%> (<%=rodinvitedlist.get(i)[7]!=null?StringEscapeUtils.escapeHtml4(rodinvitedlist.get(i)[7].toString()): " - "%>)
 												</td>
 												<%if( rodinvitedlist.get(i)[9].toString().equalsIgnoreCase("Y")){ %>
 													<td style="padding-left: 10px">
@@ -228,7 +228,7 @@ h5,h6{
 								{%>		
 										
 										<tr>
-										<td><%=extcountwithin%> . <%=rodinvitedlist.get(i)[6]%> (<%=rodinvitedlist.get(i)[7]%>) (<%=rodinvitedlist.get(i)[11]%>)</td> 
+										<td><%=extcountwithin%> . <%=rodinvitedlist.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(rodinvitedlist.get(i)[6].toString()): " - "%> (<%=rodinvitedlist.get(i)[7]!=null?StringEscapeUtils.escapeHtml4(rodinvitedlist.get(i)[7].toString()): " - "%>) (<%=rodinvitedlist.get(i)[11]!=null?StringEscapeUtils.escapeHtml4(rodinvitedlist.get(i)[11].toString()): " - "%>)</td> 
 										<td style="padding-left: 30px">
 										
 										<%if(Long.parseLong(rodscheduledata[10].toString())<11 ){ %>
@@ -301,7 +301,7 @@ h5,h6{
 								{%>		
 										
 										<tr>
-										<td><%=extcount%> . <%=rodinvitedlist.get(i)[6]%> (<%=rodinvitedlist.get(i)[7]%>)(<%=rodinvitedlist.get(i)[11]%>)</td> 
+										<td><%=extcount%> . <%=rodinvitedlist.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(rodinvitedlist.get(i)[6].toString()): " - "%> (<%=rodinvitedlist.get(i)[7]!=null?StringEscapeUtils.escapeHtml4(rodinvitedlist.get(i)[7].toString()): " - "%>)(<%=rodinvitedlist.get(i)[11]!=null?StringEscapeUtils.escapeHtml4(rodinvitedlist.get(i)[11].toString()): " - "%>)</td> 
 										<td style="padding-left: 30px">
 										
 										<%if(Long.parseLong(rodscheduledata[10].toString())<11 ){ %>
@@ -375,7 +375,7 @@ h5,h6{
 								{%>		
 										
 										<tr>
-										<td><%=extcountwithin%> . <%=rodinvitedlist.get(i)[6]%> (<%=rodinvitedlist.get(i)[7]%>) (<%=rodinvitedlist.get(i)[11]%>)</td> 
+										<td><%=extcountwithin%> . <%=rodinvitedlist.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(rodinvitedlist.get(i)[6].toString()): " - "%> (<%=rodinvitedlist.get(i)[7]!=null?StringEscapeUtils.escapeHtml4(rodinvitedlist.get(i)[7].toString()): " - "%>) (<%=rodinvitedlist.get(i)[11]!=null?StringEscapeUtils.escapeHtml4(rodinvitedlist.get(i)[11].toString()): " - "%>)</td> 
 										<td style="padding-left: 30px">
 										
 										<%if(Long.parseLong(rodscheduledata[10].toString())<11 ){ %>
@@ -473,7 +473,7 @@ h5,h6{
 											 <select class="form-control selectdee" name="internalmember" id="internalmember"  data-live-search="true"   data-placeholder="Select Members" multiple required>
 								               
 								                 <% for (Object[] obj : EmployeeList) {%>
-										       			<option value="<%=obj[0]%>,I,<%=obj[3]%>"><%=obj[1]%> ( <%=obj[2] %> ) </option>
+										       			<option value="<%=obj[0]%>,I,<%=obj[3]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> ( <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> ) </option>
 										    	<%} %>
 											</select>
 											<input type="hidden" name="internallabcode" value="<%=labcode %>" />
@@ -516,7 +516,7 @@ h5,h6{
 												<option disabled="true"  selected value="">Lab Name</option>
 													<% for (Object[] obj : clusterlablist) {
 													if(!labcode.equals(obj[3].toString())){%>
-														<option value="<%=obj[3]%>"><%=obj[3]%></option>
+														<option value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 													<%} 
 													}%>
 											</select>
@@ -564,7 +564,7 @@ h5,h6{
 										<div class="input select external">
 											<select  class= "form-control selectdee" name="expertmember" id=""   data-live-search="true"   data-placeholder="Select Members" multiple required>
 												<% for (Object[] obj : ExpertList) {%>
-											       	<option value="<%=obj[0]%>,E,<%=obj[3]%>"><%=obj[1]%> ( <%=obj[2] %> ) </option>
+											       	<option value="<%=obj[0]%>,E,<%=obj[3]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> ( <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> ) </option>
 											    <%} %>
 											</select>
 											<input type="hidden" name="expertlabid" value="@EXP" />
@@ -610,7 +610,7 @@ h5,h6{
 													%>
 														<option value="<%=partner.getIndustryPartnerId()%>"
 														data-subtext="(<%=partner.getIndustryCity()+" - "+partner.getIndustryPinCode() %>)"
-														><%=partner.getIndustryName()%> (<%=partner.getIndustryCity()+" - "+partner.getIndustryPinCode() %>)</option>
+														><%=partner.getIndustryName()!=null?StringEscapeUtils.escapeHtml4(partner.getIndustryName()): " - "%> (<%=partner.getIndustryCity()!=null?StringEscapeUtils.escapeHtml4(partner.getIndustryCity()): " - "+" - "+partner.getIndustryPinCode()!=null?StringEscapeUtils.escapeHtml4(partner.getIndustryPinCode()): " - " %>)</option>
 														
 													<%}%>
 											</select>

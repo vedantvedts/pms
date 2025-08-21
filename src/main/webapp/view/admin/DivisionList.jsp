@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -133,27 +134,22 @@ String Onboarding = (String)request.getAttribute("Onboarding");
 
 %>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	
-	
-	<center>
-	
-	<div class="alert alert-danger" role="alert" style="width: 100%">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"style="width: 100%" >
-                     <%=ses %>
-            </div>
-            
-    </center>
-    
-    
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
                    
 	
 <br>	
@@ -229,13 +225,13 @@ String Onboarding = (String)request.getAttribute("Onboarding");
 			                    <tbody>
 	                                 <%for(Object[] obj:DivisionMasterList){ %>
 	                                     <tr>
-	                                         	 <td align="center"><input type="radio" name="Did" value=<%=obj[0]%>  ></td> 
-	                                             <td><%=obj[5] %></td>
-	                                             <td><%=obj[1] %></td>
-												 <td style="text-align: left"><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></td>
-												 <td style="text-align: left"><%if(obj[7]!=null){%><%=obj[7] %><%}else{ %>-<%} %></td> <!--srikant  -->
-	                                             <td style="text-align: left"><%if(obj[3]!=null && obj[6]!= null){%><%=obj[3]%>, <%=obj[6]%><%}else{ %>-<%} %></td>
-	                                             <td style="text-align: left"><%if(obj[4]!=null ){%><%=obj[4]  %><%}else{ %>-<%} %></td>
+	                                         	 <td align="center"><input type="radio" name="Did" value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): ""%>  ></td> 
+	                                             <td><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></td>
+	                                             <td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
+												 <td style="text-align: left"><%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%}else{ %>-<%} %></td>
+												 <td style="text-align: left"><%if(obj[7]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[7].toString()) %><%}else{ %>-<%} %></td> <!--srikant  -->
+	                                             <td style="text-align: left"><%if(obj[3]!=null && obj[6]!= null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString())%>, <%=StringEscapeUtils.escapeHtml4(obj[6].toString())%><%}else{ %>-<%} %></td>
+	                                             <td style="text-align: left"><%if(obj[4]!=null ){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString())  %><%}else{ %>-<%} %></td>
 	                                      </tr>
 	                                   <%}%>
 	                             </tbody>
@@ -355,7 +351,7 @@ excel_file.addEventListener('change', (event) => {
             table_output += ' <tbody></table>';
             document.getElementById('myTable1').innerHTML = table_output;
              
-             var DivisionCodejsArray = [<%int i=0; for (Object[] obj:DivisionMasterList) { %>"<%= obj[1] %>"<%= i + 1 < DivisionMasterList.size() ? ",":"" %><% } %>];
+             var DivisionCodejsArray = [<%int i=0; for (Object[] obj:DivisionMasterList) { %>"<%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): "" %>"<%= i + 1 < DivisionMasterList.size() ? ",":"" %><% } %>];
                     
              var divisioncode=[];
              for (var i in sheet_data) {

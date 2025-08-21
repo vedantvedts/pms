@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.vts.pfms.committee.model.CommitteeSchedule"%>
 <%@page import="java.util.List"%>
@@ -166,11 +167,11 @@ input,select,table,div,label,span {
 		       						for(Object[] obj : ccmScheduleList) {%>
 		       							<tr class="center">
 		       								<td style="padding: 0.8rem !important;"><%=++slno %></td>
-		       								<td style="padding: 0.8rem !important;"><b><%=obj[4] %></b></td>
-		       								<td style="padding: 0.8rem !important;"><%=fc.sdfTordf(obj[5].toString()) %> & <%=obj[6] %></td>
-		       								<td style="padding: 0.8rem !important;"><%=obj[9] %></td>
-		       								<td style="padding: 0.8rem !important;"><%=obj[10] %></td>
-		       								<td style="padding: 0.8rem !important;"><%=obj[11] %></td>
+		       								<td style="padding: 0.8rem !important;"><b><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></b></td>
+		       								<td style="padding: 0.8rem !important;"><%=obj[5]!=null?fc.sdfTordf(obj[5].toString()):" - " %> & <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %></td>
+		       								<td style="padding: 0.8rem !important;"><%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - " %></td>
+		       								<td style="padding: 0.8rem !important;"><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %></td>
+		       								<td style="padding: 0.8rem !important;"><%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %></td>
 		       								<td class="center" style="padding: 0.8rem !important;">
 		       									<form action="#"> 
 													<button type="submit" class="btn btn-sm " formaction="CCMAgendaPresentation.htm" formmethod="GET" formtarget="_blank" title="" style="border: 0 ;border-radius: 3px;" data-toggle="tooltip" data-placement="top" data-original-title="Presentation">

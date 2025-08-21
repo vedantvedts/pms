@@ -1,4 +1,5 @@
 
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.documents.model.IGIConnector"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="java.util.HashMap"%>
@@ -210,22 +211,22 @@ label {
 		
 	%>
 	
-	<% String ses=(String)request.getParameter("result");
-	 	String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-		%>
-		<div align="center">
-			<div class="alert alert-danger" role="alert">
-		    <%=ses1 %>
-		    </div>
-		</div>
-		<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-		    	<%=ses %>
-			</div>
-		</div>
-	<%} %>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 	<div class="container-fluid mb-3">
 		<div class="card shadow-nohover">
@@ -285,7 +286,7 @@ label {
 								            <button type="button" class="btn btn-outline-secondary fw-bold customeSidebarBtn left" 
 								                id="<%=buttonId%>" value="1" style="padding: 0.2rem;" 
 								                data-toggle="tooltip" data-placement="top" title="<%=interfaceType%> Interfaces">
-								                <span style="font-weight: bold;"><%=(++interfaceMainCount) + ". " + interfaceType%></span>
+								                <span style="font-weight: bold;"><%=(++interfaceMainCount) + ". " + interfaceType!=null?StringEscapeUtils.escapeHtml4(interfaceType): " - "%></span>
 								                <% if (interfaceList.size() > 0) { %>
 								                &nbsp; <i class="fa fa-caret-up"></i>
 								                <% } %>
@@ -308,7 +309,7 @@ label {
 								                        <% if (iface.getInterfaceId().equals(Long.parseLong(interfaceId))) { %>
 								                        style="background-color: green; color: white; border-color: green; width: 89%;" 
 								                        <% } else { %> style="width: 89%;" <% } %>>
-								                        <%=(interfaceMainCount) + "." + (++interfaceSubCount) + ". " + iface.getInterfaceCode()%>
+								                        <%=(interfaceMainCount) + "." + (++interfaceSubCount) + ". " + iface.getInterfaceCode()!=null?StringEscapeUtils.escapeHtml4(iface.getInterfaceCode()): " - "%>
 								                    </button>
 								                </form>
 								            </div>
@@ -329,7 +330,7 @@ label {
 										                        <% if (ifacesub.getInterfaceId().equals(Long.parseLong(interfaceId))) { %>
 										                        style="background-color: green; color: white; border-color: green; width: 86%;" 
 										                        <% } else { %> style="width: 86%;" <% } %>>
-										                        <%=(interfaceMainCount) + "." + (interfaceSubCount) + "." +(++interfaceSubSubCount) + ". " + ifacesub.getInterfaceCode()%>
+										                        <%=(interfaceMainCount) + "." + (interfaceSubCount) + "." +(++interfaceSubSubCount) + ". " + ifacesub.getInterfaceCode()!=null?StringEscapeUtils.escapeHtml4(iface.getInterfaceCode()): " - "%>
 										                    </button>
 										                </form>
 										            </div>
@@ -346,7 +347,7 @@ label {
        					<div class="card ml-3 mr-3">
        						<div class="card-header">
        							<div class="d-flex justify-content-between" style="margin-top: -0.5rem;">
-       									<h4 class="text-dark mt-2">Interface Details <%if(igiInterface!=null) {%>- <%=igiInterface.getInterfaceName() %><%} else{%>Add<%} %> </h4>
+       									<h4 class="text-dark mt-2">Interface Details <%if(igiInterface!=null) {%>- <%=StringEscapeUtils.escapeHtml4(igiInterface.getInterfaceName()) %><%} else{%>Add<%} %> </h4>
        									<%if(Long.parseLong(parentId)==0 && (Long.parseLong(interfaceId)!=0) && (igiInterface!=null && igiInterface.getParentId()==0L)) {%>
 	       									<form action="IGIInterfacesList.htm" method="GET">
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -380,7 +381,7 @@ label {
 			       											<%if(igiInterface!=null && igiInterface.getInterfaceTypeId()!=null && igiInterface.getInterfaceTypeId().equals(interfaceType.getInterfaceTypeId())) {%>selected<%} %>
 			       											<%if(igiInterfaceParent!=null && igiInterfaceParent.getInterfaceTypeId()!=null && igiInterfaceParent.getInterfaceTypeId().equals(interfaceType.getInterfaceTypeId())) {%>selected
 			       											<%interfaceTypeParent = interfaceType.getInterfaceTypeId()+"/"+interfaceType.getInterfaceTypeCode()+"/"+interfaceType.getInterfaceType(); %> <%} %>>
-			       											<%=interfaceType.getInterfaceType()+" ("+interfaceType.getInterfaceTypeCode()+")" %>
+			       											<%=interfaceType.getInterfaceType()!=null?StringEscapeUtils.escapeHtml4(interfaceType.getInterfaceType()): " - "+" ("+interfaceType.getInterfaceTypeCode()!=null?StringEscapeUtils.escapeHtml4(interfaceType.getInterfaceTypeCode()): " - "+")" %>
 		       											</option>
 		       										<%} %>
 		       									</select>
@@ -399,7 +400,7 @@ label {
 											        %>
 											        	<option value="<%=interfaceContent.getInterfaceContentId()+"/"+interfaceContent.getInterfaceContentCode()+"/"+interfaceContent.getInterfaceContent() %>" 
 												        	<%if(igiInterface!=null && igiInterface.getInterfaceContentId()!=null && igiInterface.getInterfaceContentId().equals(interfaceContent.getInterfaceContentId())) {%>selected<%} %>>
-												        	<%=interfaceContent.getInterfaceContent()+" ("+interfaceContent.getInterfaceContentCode()+")" %>
+												        	<%=interfaceContent.getInterfaceContent()!=null?StringEscapeUtils.escapeHtml4(interfaceContent.getInterfaceContent()): " - "+" ("+interfaceContent.getInterfaceContentCode()!=null?StringEscapeUtils.escapeHtml4(interfaceContent.getInterfaceContentCode()): " - "+")" %>
 											        	</option>
 											        <%} }%>
 											        <%if(igiInterfaceParent!=null) { 
@@ -412,7 +413,7 @@ label {
 											        	<option value="<%=interfaceContent.getInterfaceContentId()+"/"+interfaceContent.getInterfaceContentCode()+"/"+interfaceContent.getInterfaceContent() %>" 
 												        	<%if(igiInterfaceParent!=null && igiInterfaceParent.getInterfaceContentId()!=null && igiInterfaceParent.getInterfaceContentId().equals(interfaceContent.getInterfaceContentId())) {%>selected
 												        	<%interfaceContentParent = interfaceContent.getInterfaceContentId()+"/"+interfaceContent.getInterfaceContentCode()+"/"+interfaceContent.getInterfaceContent(); %> <%} %>>
-												        	<%=interfaceContent.getInterfaceContent()+" ("+interfaceContent.getInterfaceContentCode()+")" %>
+												        	<%=interfaceContent.getInterfaceContent()!=null?StringEscapeUtils.escapeHtml4(interfaceContent.getInterfaceContent()): " - "+" ("+interfaceContent.getInterfaceContentCode()!=null?StringEscapeUtils.escapeHtml4(interfaceContent.getInterfaceContentCode()): " - "+")" %>
 											        	</option>
 											        <%} }%>
 											    </select>
@@ -420,8 +421,8 @@ label {
 											<div class="col-md-3">
 		       									<label class="form-lable">Parameter</label>
 		       									<input type="text" class="form-control" name="parameterData" 
-		       									<%if(igiInterface!=null && igiInterface.getParameterData()!=null) {%> value="<%=igiInterface.getParameterData() %>" <%} %> 
-		       									<%if(igiInterfaceParent!=null && igiInterfaceParent.getParameterData()!=null) {%> value="<%=igiInterfaceParent.getParameterData() %>" readonly <%} %> 
+		       									<%if(igiInterface!=null && igiInterface.getParameterData()!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(igiInterface.getParameterData()) %>" <%} %> 
+		       									<%if(igiInterfaceParent!=null && igiInterfaceParent.getParameterData()!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(igiInterfaceParent.getParameterData()) %>" readonly <%} %> 
 		       									<%if(igiInterface!=null && igiInterface.getParentId()!=0) {%> readonly <%} %> 
 		       									placeholder="Enter Parameter" maxlength="255">
 		       								</div>
@@ -446,7 +447,7 @@ label {
 		       											<option value="<%=interfaceSpeed %>" 
 			       											<%if(igiInterface!=null && igiInterface.getInterfaceSpeed()!=null && igiInterface.getInterfaceSpeed().equalsIgnoreCase(interfaceSpeed)) {%>selected<%} %>
 			       											<%if(igiInterfaceParent!=null && igiInterfaceParent.getInterfaceSpeed()!=null && igiInterfaceParent.getInterfaceSpeed().equalsIgnoreCase(interfaceSpeed)) {%>selected<%} %>>
-		       												<%=interfaceSpeed %>
+		       												<%=interfaceSpeed !=null?StringEscapeUtils.escapeHtml4(interfaceSpeed): " - "%>
 		       											</option>
 		       										<%} %>
 		       									</select>
@@ -479,7 +480,7 @@ label {
 												    <%for(IGIConnector con : connectorMasterList){ %>
 												    	<option value="<%=con.getConnectorId() %>"
 												    	<%if(igiInterface!=null && igiInterface.getConnectorIdEOne().equals(con.getConnectorId())) {%>selected<%} %>>
-												      		<%=con.getPartNo() %> (<%=con.getConnectorMake() %>)
+												      		<%=con.getPartNo()!=null?StringEscapeUtils.escapeHtml4(con.getPartNo()): " - " %> (<%=con.getConnectorMake()!=null?StringEscapeUtils.escapeHtml4(con.getConnectorMake()): " - " %>)
 												    	</option>
 												    <% }%>
 												</select>
@@ -493,7 +494,7 @@ label {
 												    <%for(IGIConnector con : connectorMasterList){ %>
 												    	<option value="<%=con.getConnectorId() %>"
 												    	<%if(igiInterface!=null && igiInterface.getConnectorIdETwo().equals(con.getConnectorId())) {%>selected<%} %>>
-												      		<%=con.getPartNo() %> (<%=con.getConnectorMake() %>)
+												      		<%=con.getPartNo()!=null?StringEscapeUtils.escapeHtml4(con.getPartNo()): " - " %> (<%=con.getConnectorMake()!=null?StringEscapeUtils.escapeHtml4(con.getConnectorMake()): " - " %>)
 												    	</option>
 												    <% }%>
 												</select>
@@ -506,19 +507,19 @@ label {
 		       								
 		       								<div class="col-md-3">
 		       									<label class="form-lable">Info</label>
-		       									<input type="text" class="form-control" name="cableInfo" <%if(igiInterface!=null && igiInterface.getCableInfo()!=null) {%> value="<%=igiInterface.getCableInfo() %>" <%} %> placeholder="Enter Maximum of 255 Characters" maxlength="255">
+		       									<input type="text" class="form-control" name="cableInfo" <%if(igiInterface!=null && igiInterface.getCableInfo()!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(igiInterface.getCableInfo()) %>" <%} %> placeholder="Enter Maximum of 255 Characters" maxlength="255">
 		       								</div>
 		       								<div class="col-md-3">
 		       									<label class="form-lable">Constraint</label>
-		       									<input type="text" class="form-control" name="cableConstraint" <%if(igiInterface!=null && igiInterface.getCableConstraint()!=null) {%> value="<%=igiInterface.getCableConstraint() %>" <%} %> placeholder="Enter Maximum of 255 Characters" maxlength="255">
+		       									<input type="text" class="form-control" name="cableConstraint" <%if(igiInterface!=null && igiInterface.getCableConstraint()!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(igiInterface.getCableConstraint()) %>" <%} %> placeholder="Enter Maximum of 255 Characters" maxlength="255">
 		       								</div>
 		       								<div class="col-md-3">
 		       									<label class="form-lable">Diameter</label>
-		       									<input type="text" class="form-control" name="cableDiameter" <%if(igiInterface!=null && igiInterface.getCableDiameter()!=null) {%> value="<%=igiInterface.getCableDiameter() %>" <%} %> placeholder="Enter Maximum of 255 Characters" maxlength="255">
+		       									<input type="text" class="form-control" name="cableDiameter" <%if(igiInterface!=null && igiInterface.getCableDiameter()!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(igiInterface.getCableDiameter()) %>" <%} %> placeholder="Enter Maximum of 255 Characters" maxlength="255">
 		       								</div>
 		       								<div class="col-md-3">
 		       									<label class="form-lable">Details </label>
-		       									<input type="text" class="form-control" name="cableDetails" <%if(igiInterface!=null && igiInterface.getCableDetails()!=null) {%> value="<%=igiInterface.getCableDetails() %>" <%} %> placeholder="Enter Maximum of 255 Characters" maxlength="255">
+		       									<input type="text" class="form-control" name="cableDetails" <%if(igiInterface!=null && igiInterface.getCableDetails()!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(igiInterface.getCableDetails()) %>" <%} %> placeholder="Enter Maximum of 255 Characters" maxlength="255">
 		       								</div>
 		       							</div>
 		       							
@@ -526,15 +527,15 @@ label {
 		       								
 		       								<div class="col-md-3">
 		       									<label class="form-lable">Max Length (In Meters)<span class="mandatory">*</span></label>
-		       									<input type="number" step="1" class="form-control" name="cableMaxLength" <%if(igiInterface!=null && igiInterface.getCableMaxLength()!=null) {%> value="<%=igiInterface.getCableMaxLength() %>" <%} %> placeholder="Enter Maximum Length" min="0" max="1000000000" required>
+		       									<input type="number" step="1" class="form-control" name="cableMaxLength" <%if(igiInterface!=null && igiInterface.getCableMaxLength()!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(igiInterface.getCableMaxLength().toString()) %>" <%} %> placeholder="Enter Maximum Length" min="0" max="1000000000" required>
 		       								</div>
 		       								<div class="col-md-3">
 		       									<label class="form-lable">Interface Loss per Meter<span class="mandatory">*</span></label>
-		       									<input type="number" step="1" class="form-control" name="interfaceLoss" <%if(igiInterface!=null && igiInterface.getInterfaceLoss()!=null) {%> value="<%=igiInterface.getInterfaceLoss() %>" <%} %> placeholder="Enter Interface Loss per Meter" min="0" max="1000000000" required>
+		       									<input type="number" step="1" class="form-control" name="interfaceLoss" <%if(igiInterface!=null && igiInterface.getInterfaceLoss()!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(igiInterface.getInterfaceLoss().toString()) %>" <%} %> placeholder="Enter Interface Loss per Meter" min="0" max="1000000000" required>
 		       								</div>
 		       								<div class="col-md-3">
 		       									<label class="form-lable">Bending Radius<span class="mandatory">*</span></label>
-		       									<input type="number" step="any" class="form-control" name="cableBendingRadius" <%if(igiInterface!=null && igiInterface.getCableBendingRadius()!=null) {%> value="<%=igiInterface.getCableBendingRadius() %>" <%} %> placeholder="Enter Bending Radius" min="0" max="1000000000" required>
+		       									<input type="number" step="any" class="form-control" name="cableBendingRadius" <%if(igiInterface!=null && igiInterface.getCableBendingRadius()!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(igiInterface.getCableBendingRadius().toString()) %>" <%} %> placeholder="Enter Bending Radius" min="0" max="1000000000" required>
 		       								</div>
 		       							</div>
 		       						</div>
@@ -631,8 +632,8 @@ label {
 		$('#descriptionEditor').summernote(summernoteConfig);
 		
 		// Update the values of Editors
-		var html1 = '<%=igiInterface!=null && igiInterface.getInterfaceDiagram()!=null?igiInterface.getInterfaceDiagram().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):""%>';
-		var html2 = '<%=igiInterface!=null && igiInterface.getInterfaceDescription()!=null?igiInterface.getInterfaceDescription().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):""%>';
+		var html1 = '<%=igiInterface!=null && igiInterface.getInterfaceDiagram()!=null?StringEscapeUtils.escapeHtml4(igiInterface.getInterfaceDiagram()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):""%>';
+		var html2 = '<%=igiInterface!=null && igiInterface.getInterfaceDescription()!=null?StringEscapeUtils.escapeHtml4(igiInterface.getInterfaceDescription()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):""%>';
 		$('#diagramEditor').summernote('code', html1);
 		$('#descriptionEditor').summernote('code', html2);		
 		
@@ -654,11 +655,11 @@ label {
 	        <% for (IGIInterfaceContent content : interfaceContentList) { 
 	            if (content.getInterfaceTypeId().equals(interfaceType.getInterfaceTypeId())) { %>
 	                contentList.push({
-	                    value: "<%= content.getInterfaceContentId() +"/"+ content.getInterfaceContentCode() +"/"+ content.getInterfaceContent() %>",
-	                    text: "<%= content.getInterfaceContent()+" ("+content.getInterfaceContentCode()+")" %>"
+	                    value: "<%= content.getInterfaceContentId()!=null?StringEscapeUtils.escapeHtml4(content.getInterfaceContentId().toString()): " - " +"/"+ content.getInterfaceContentCode()!=null?StringEscapeUtils.escapeHtml4(content.getInterfaceContentCode()): " - " +"/"+ content.getInterfaceContent()!=null?StringEscapeUtils.escapeHtml4(content.getInterfaceContent()): " - " %>",
+	                    text: "<%= content.getInterfaceContent()!=null?StringEscapeUtils.escapeHtml4(content.getInterfaceContent()): " - "+" ("+content.getInterfaceContentCode()!=null?StringEscapeUtils.escapeHtml4(content.getInterfaceContentCode()): " - "+")" %>"
 	                });
 	        <% } } %>
-	        interfaceContentMap["<%= interfaceType.getInterfaceTypeId() +"/"+interfaceType.getInterfaceTypeCode() +"/"+ interfaceType.getInterfaceType() %>"] = contentList;
+	        interfaceContentMap["<%= interfaceType.getInterfaceTypeId()!=null?StringEscapeUtils.escapeHtml4(interfaceType.getInterfaceTypeId().toString()): " - " +"/"+interfaceType.getInterfaceTypeCode()!=null?StringEscapeUtils.escapeHtml4(interfaceType.getInterfaceTypeCode()): " - " +"/"+ interfaceType.getInterfaceType()!=null?StringEscapeUtils.escapeHtml4(interfaceType.getInterfaceType()): " - " %>"] = contentList;
 	    <% } %>
 
 	    $('.selectdee').select2({

@@ -1,4 +1,5 @@
-	<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	<%@page import="org.apache.commons.text.StringEscapeUtils"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
 <html>
@@ -39,19 +40,22 @@ List<Object[]> EmployeeList1=(List<Object[]>)request.getAttribute("EmployeeList1
 
 %>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%><center>
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -81,14 +85,14 @@ List<Object[]> EmployeeList1=(List<Object[]>)request.getAttribute("EmployeeList1
                 <div class="col-md-6 ">
                         <div class="form-group">
                             <label class="control-label">Chairperson : </label>
-                              <b> <%=TccData[3]%> (<%=TccData[5] %>) </b>
+                              <b> <%=TccData[3]!=null?StringEscapeUtils.escapeHtml4(TccData[3].toString()): " - " %> (<%=TccData[5]!=null?StringEscapeUtils.escapeHtml4(TccData[5].toString()): " - "  %>) </b>
                         </div>
                     </div>
                     
                 <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Member Secretary : </label>
-                              <b> <%=TccData[4]%> (<%=TccData[6] %>) </b>
+                              <b> <%=TccData[4]!=null?StringEscapeUtils.escapeHtml4(TccData[4].toString()): " - " %> (<%=TccData[6]!=null?StringEscapeUtils.escapeHtml4(TccData[6].toString()): " - " %>) </b>
                         </div>
                     </div>
                     
@@ -145,7 +149,7 @@ List<Object[]> EmployeeList1=(List<Object[]>)request.getAttribute("EmployeeList1
                               <select class="form-control "name="ChairMain" required="required" style=" font-weight: bold; text-align-last: left; width: 280px	;" data-live-search="true" data-container="body">										
 				          					<option disabled="true"  selected value="">Choose...</option>
 						    					<% for (Object[] obj : EmployeeList1) {%>
-			       									<option value="<%=obj[0]%>" <%if(TccData[8].toString().equals(obj[0].toString())){ %>selected<%} %>><%=obj[1]%> ( <%=obj[2] %> ) </option>
+			       									<option value="<%=obj[0]%>" <%if(TccData[8].toString().equals(obj[0].toString())){ %>selected<%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> ( <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> ) </option>
 			    								<%} %>					
 										</select></td></tr>
 	  					</table>
@@ -165,7 +169,7 @@ List<Object[]> EmployeeList1=(List<Object[]>)request.getAttribute("EmployeeList1
                               <select class="form-control "name="Secretary"  required="required" style=" font-weight: bold; text-align-last: left; width: 280px;" data-live-search="true" data-container="body">										
 				          					<option disabled="true"  selected value="">Choose...</option>
 						    					<% for (Object[] obj : EmployeeList1) {%>
-			       									<option value="<%=obj[0]%>" <%if(TccData[7].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]%> ( <%=obj[2] %> ) </option>
+			       									<option value="<%=obj[0]%>" <%if(TccData[7].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> ( <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> ) </option>
 			    								<%} %>					
 										</select></td>
 							</tr>
@@ -237,7 +241,7 @@ List<Object[]> EmployeeList1=(List<Object[]>)request.getAttribute("EmployeeList1
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 						        <input type="hidden" name="PfmsTccMemberId" value="<%=obj[2] %>" /> 	
 						        <input type="hidden" name="pfmstccid" value="<%=obj[0] %>" /> 		
-								<td><%=obj[1] %> ( <%=obj[3] %> )</td>
+								<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> ( <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %> )</td>
 								<td>
 									<button class="fa fa-trash btn btn-danger " type="submit" ></button>
 								</td>
@@ -265,7 +269,7 @@ List<Object[]> EmployeeList1=(List<Object[]>)request.getAttribute("EmployeeList1
 										<select class="form-control "name="Member" id="Member0" required="required" style=" font-weight: bold; text-align-last: left; width: 500px;" data-live-search="true" data-container="body">										
 				          					<option disabled="true"  selected value="">Choose...</option>
 						    					<% for (Object[] obj : EmployeeList) {%>
-			       									<option value="<%=obj[0]%>"><%=obj[1]%> ( <%=obj[2] %> ) </option>
+			       									<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> ( <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> ) </option>
 			    								<%} %>					
 										</select>
 									</td>									

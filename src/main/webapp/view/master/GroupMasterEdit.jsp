@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -50,26 +51,19 @@ Object[] groupsdata=(Object[])request.getAttribute("groupsdata");
 
 <%String ses=(String)request.getParameter("result"); 
  String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	
-	
-	<center>
-	
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-            </div>
-            
-    </center>
-    
-    
-                    <%} %>
-
+ if (ses1 != null) { %>
+ <div align="center">
+     <div class="alert alert-danger" role="alert">
+         <%=StringEscapeUtils.escapeHtml4(ses1) %>
+     </div>
+ </div>
+<% }if (ses != null) { %>
+ <div align="center">
+     <div class="alert alert-success" role="alert">
+         <%=StringEscapeUtils.escapeHtml4(ses) %>
+     </div>
+ </div>
+<% } %>
 
 <div id="ajaxError" style="display: none;">
     <div align="center">
@@ -103,13 +97,13 @@ Object[] groupsdata=(Object[])request.getAttribute("groupsdata");
                     		<div class="col-md-3">
                         		<div class="form-group">
                             		<label class="control-label">Group Code</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control "  type="text" name="groupcode" readonly="readonly" id="groupCode" value="<%=groupsdata[1]%>" required="required" maxlength="3" style="font-size: 15px;"> 
+                              		<input  class="form-control form-control "  type="text" name="groupcode" readonly="readonly" id="groupCode" value="<%=groupsdata[1]!=null? StringEscapeUtils.escapeHtml4(groupsdata[1].toString()):""%>" required="required" maxlength="3" style="font-size: 15px;"> 
                         		</div>
                     		</div>
          					<div class="col-md-3">
                         		<div class="form-group">
                             		<label class="control-label">Group Name</label><span class="mandatory">*</span>
-                            		<input  class="form-control form-control " value="<%=groupsdata[2] %>"  type="text" name="groupname" id="groupName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize; width: 90%;" > 
+                            		<input  class="form-control form-control " value="<%=groupsdata[2]!=null? StringEscapeUtils.escapeHtml4(groupsdata[2].toString()):"" %>"  type="text" name="groupname" id="groupName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize; width: 90%;" > 
                         		</div>
                     		</div>
                     		<div class="col-md-4">
@@ -120,7 +114,7 @@ Object[] groupsdata=(Object[])request.getAttribute("groupsdata");
 													
 													<% for (  Object[] obj : groupheadlist){ %>
 											
-													<option value=<%=obj[0]%> <%if(obj[0].toString().equalsIgnoreCase(groupsdata[3].toString())) {%> selected="selected" <%} %>><%=obj[1]%>, <%=obj[2] %> </option>
+													<option value=<%=obj[0]%> <%if(obj[0].toString().equalsIgnoreCase(groupsdata[3].toString())) {%> selected="selected" <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%> </option>
 												
 													<%} %>
 									</select>
@@ -134,7 +128,7 @@ Object[] groupsdata=(Object[])request.getAttribute("groupsdata");
 													
 													<% for (  Object[] obj : tdaddlist){ %>
 											
-											        	<option value=<%=obj[0]%> <%if(obj[0].toString().equalsIgnoreCase(groupsdata[7].toString())) {%> selected="selected" <%} %>><%=obj[1] %> (<%=obj[2] %>)</option>
+											        	<option value=<%=obj[0]%> <%if(obj[0].toString().equalsIgnoreCase(groupsdata[7].toString())) {%> selected="selected" <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%> (<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%>)</option>
 												
 													<%} %>
 									</select>

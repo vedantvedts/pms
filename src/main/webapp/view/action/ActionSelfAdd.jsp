@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.time.LocalTime"%>
@@ -162,20 +163,22 @@ String fromdate=(String)request.getAttribute("fromdate");
 String todate=(String)request.getAttribute("todate");
 %>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
- if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br/>
 
@@ -298,9 +301,9 @@ String todate=(String)request.getAttribute("todate");
 															for(Object[] obj : ActionSelfList){%>
 																<tr>
 																	<td ><%=count%></td>
-																	<td><span  <%if(LocalDate.now().toString().equals(obj[3].toString())){ %>style="color: red;font-weight: bold; " <%} %> ><%=obj[2] %></span></td>
-																	<td><span  <%if(LocalDate.now().toString().equals(obj[3].toString())){ %>style="color: red;font-weight: bold; " <%} %> ><%=sdf.format(obj[3])%></span></td>
-																	<td><%=obj[4] %></td>
+																	<td><span  <%if(LocalDate.now().toString().equals(obj[3].toString())){ %>style="color: red;font-weight: bold; " <%} %> ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - " %></span></td>
+																	<td><span  <%if(LocalDate.now().toString().equals(obj[3].toString())){ %>style="color: red;font-weight: bold; " <%} %> ><%=obj[3]!=null?sdf.format(obj[3]):" - "%></span></td>
+																	<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - " %></td>
 																	<td><%if(obj[5].toString().equalsIgnoreCase("M")){ %> Meeting<%}else if(obj[5].toString().equalsIgnoreCase("N")){ %> Normal <%} %>  </td>
 																	<td> 
 																		<form action="ActionSelfReminderDelete.htm" method="Post">

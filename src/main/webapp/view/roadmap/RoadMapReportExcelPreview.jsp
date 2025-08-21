@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.roadmap.model.RoadMapAnnualTargets"%>
 <%@page import="com.vts.pfms.roadmap.model.RoadMap"%>
 <%@page import="java.util.ArrayList"%>
@@ -159,9 +160,9 @@ preProjectList = preProjectList.stream().filter(e -> initiationIdSet.contains(e[
 					%>
 								<tr>
 									<td width="3%" class="center"><%=++slno %></td>
-									<td width="20%"><%=obj[3]!=null?obj[3].toString():"-" %></td>
-									<td width="25%"><%=obj[4]!=null?obj[4].toString():"-" %></td>
-									<td width="10%" class="center"><%=obj[5]!=null?obj[5].toString():"-" %></td>
+									<td width="20%"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):"-" %></td>
+									<td width="25%"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"-" %></td>
+									<td width="10%" class="center"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %></td>
 									<td width="10%" class="center">Existing</td>
 									<%
 										for(int i=startYear;i<=endYear;i++) {
@@ -175,7 +176,7 @@ preProjectList = preProjectList.stream().filter(e -> initiationIdSet.contains(e[
 	
 	
 									%>
-										<td <%if(targetsList.isEmpty()) {%> class="center"<%} %> ><%=annualTarget %></td>
+										<td <%if(targetsList.isEmpty()) {%> class="center"<%} %> ><%=annualTarget!=null?StringEscapeUtils.escapeHtml4(annualTarget): " - "  %></td>
 									<%} %>
 								</tr>
 							<%} %>
@@ -194,9 +195,9 @@ preProjectList = preProjectList.stream().filter(e -> initiationIdSet.contains(e[
 					%>
 								<tr>
 									<td width="3%" class="center"><%=++slno %></td>
-									<td width="20%"><%=obj[3]!=null?obj[3].toString():"-" %></td>
-									<td width="25%"><%=obj[4]!=null?obj[4].toString():"-" %></td>
-									<td width="10%" class="center"><%=obj[5]!=null?obj[5].toString():"-" %></td>
+									<td width="20%"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):"-" %></td>
+									<td width="25%"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"-" %></td>
+									<td width="10%" class="center"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %></td>
 									<td width="10%" class="center">Initiation</td>
 									<%
 										for(int i=startYear;i<=endYear;i++) {
@@ -210,7 +211,7 @@ preProjectList = preProjectList.stream().filter(e -> initiationIdSet.contains(e[
 	
 	
 									%>
-										<td <%if(targetsList.isEmpty()) {%> class="center"<%} %> ><%=annualTarget %></td>
+										<td <%if(targetsList.isEmpty()) {%> class="center"<%} %> ><%=annualTarget!=null?StringEscapeUtils.escapeHtml4(annualTarget): " - "  %></td>
 									<%} %>
 								</tr>
 							<%} %>
@@ -246,7 +247,7 @@ preProjectList = preProjectList.stream().filter(e -> initiationIdSet.contains(e[
 										String annualTarget = targetsList.isEmpty() ? "NA" : String.join(", ", targetsList);
 	
 									%>
-										<td <%if(targetsList.isEmpty()) {%> class="center"<%} %> ><%=annualTarget %></td>
+										<td <%if(targetsList.isEmpty()) {%> class="center"<%} %> ><%=annualTarget!=null?StringEscapeUtils.escapeHtml4(annualTarget): " - " %></td>
 									<%} %>
 								</tr>
 							<%} %>
