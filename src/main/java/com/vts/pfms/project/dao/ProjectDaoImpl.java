@@ -4566,5 +4566,19 @@ public class ProjectDaoImpl implements ProjectDao {
 			return null;
 		}
 	}
+	
+	private static final String GETPROJECTEMPLOYEEIDBYPROJECTID = "SELECT COALESCE((SELECT ProjectEmployeeId FROM project_employee WHERE ProjectId =:ProjectId AND RoleMasterId =:RoleMasterId LIMIT 1), 0) AS ProjectEmployeeId";
+	@Override
+	public Long getProjectEmployeeIdByProjectId(String projectId, String roleMasterId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETPROJECTEMPLOYEEIDBYPROJECTID);
+			query.setParameter("ProjectId", projectId);
+			query.setParameter("RoleMasterId", roleMasterId);
+			return (Long)query.getSingleResult();	
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
+	}
 }
 

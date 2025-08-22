@@ -22,6 +22,8 @@ import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -865,15 +867,6 @@ public class MilestoneController {
 			System.out.println(req.getParameter("Weightage")+"------------");
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			redir.addFlashAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
-			
-			String activityName=req.getParameter("ActivityName");
-			if(InputValidator.isContainsHTMLTags(activityName)) {
-				redir.addAttribute("ProjectId", req.getParameter("ProjectId"));
-				redir.addAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
-				redir.addAttribute("formname", req.getParameter("formname"));
-				redir.addAttribute("sub","C");
-				return redirectWithError(redir, "MilestoneActivityDetails.htm", "'Activity Name' should not contain HTML Tags.!");
-			}
 			MileEditDto mainDto=new MileEditDto();
 			mainDto.setMilestoneActivityId(req.getParameter("MilestoneActivityId"));
 			mainDto.setRevisionNo(req.getParameter("RevId"));
@@ -882,11 +875,28 @@ public class MilestoneController {
 			mainDto.setActivityTypeId(req.getParameter("ActivityTypeId"));
 			mainDto.setOicEmpId(req.getParameter("EmpId"));
 			mainDto.setOicEmpId1(req.getParameter("EmpId1"));
-			mainDto.setActivityName(activityName);
+			mainDto.setActivityName(req.getParameter("ActivityName"));
 			mainDto.setStartDate(req.getParameter("ValidFrom"));
 			mainDto.setEndDate(req.getParameter("ValidTo"));
 			mainDto.setWeightage(req.getParameter("Weightage"));
 			mainDto.setCreatedBy(UserId);
+			
+			
+			System.out.println("Valid To -" +req.getParameter("ValidTo"));
+			
+			MilestoneActivityLevel level = service.getMilestoneActivityLevelById(req.getParameter("ActivityId"));
+			
+			System.out.println(level.getEndDate());
+		   
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			LocalDate date = LocalDate.parse(req.getParameter("ValidTo"), formatter);
+			LocalDate date1 = LocalDate.parse(level.getEndDate().toString());
+			
+			long daysBetween = ChronoUnit.DAYS.between(date1, date);
+			if(daysBetween!=0) {
+				updateTheLinkMilstoneTimeLine(req.getParameter("ActivityId"),daysBetween,UserId);
+			}
+	
 			int count =service.MilestoneActivityUpdate(mainDto);
 
 			if (count > 0) {
@@ -894,8 +904,9 @@ public class MilestoneController {
 			} else {
 				redir.addAttribute("resultfail", "Milestone Activity Update Unsuccessful");
 			}
+			
 			redir.addAttribute("projectDirector",req.getParameter("projectDirector"));
-		}
+			}
 		catch (Exception e) {
 			e.printStackTrace();  
 			logger.error(new Date() +" Inside MilestoneActivityEditSubmit.htm "+UserId, e); 
@@ -906,6 +917,70 @@ public class MilestoneController {
 		return "redirect:/MA-PreviewRedirect.htm";
 	}
 
+	@Async
+	private void updateTheLinkMilstoneTimeLine(String ActivityId,long daysBetween,String UserId) {
+		
+		try {
+			List<String >list = new ArrayList<>();
+			List<String>successorIds = getSuccessorIds(ActivityId,list);
+			
+			System.out.println(ActivityId+"----"+successorIds);
+			
+			//List<Object[]>successorList = service.getsuccessorList(ActivityId);
+			
+			
+			if(successorIds!=null && successorIds.size()>0)
+			{
+				for(String s:successorIds) {
+					MilestoneActivityLevel level = service.getMilestoneActivityLevelById(s);
+					LocalDate endDate = LocalDate.parse(level.getEndDate().toString()).plusDays(daysBetween);
+					LocalDate startDate = LocalDate.parse(level.getStartDate().toString()).plusDays(daysBetween);
+					
+					java.sql.Date sqlEndDate = java.sql.Date.valueOf(endDate);
+					java.sql.Date sqlstartDate = java.sql.Date.valueOf(startDate);
+					
+					level.setEndDate(sqlEndDate);
+					level.setStartDate(sqlstartDate);;
+					
+					level.setModifiedBy(UserId);					
+					level.setModifiedDate(LocalDate.now().toString());
+					
+					service.MilestoneActivityLevelSave(level);
+				}
+			}
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+	}
+	
+	@Async
+	private List<String> getSuccessorIds(String activityId,List<String> list) {
+		
+		try {
+			List<Object[]>successorList = service.getsuccessorList(activityId);
+			
+			if(successorList==null||successorList.size()==0) {
+				if(!list.contains(activityId)) {
+					list.add(activityId);
+				}
+			}else {
+				for(Object[]obj:successorList) {
+					list.add(obj[1].toString());
+					getSuccessorIds(obj[1].toString(),list);
+				}
+			}
+			
+			return list;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 	@RequestMapping(value = "MilestoneActivityCompare.htm")
 	public String MilestoneActivityCompare(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 	{
@@ -2316,13 +2391,14 @@ public class MilestoneController {
 		String projectid = req.getParameter("projectid");
 		String LabCode =(String) ses.getAttribute("labcode");
 
+		String labCode = req.getParameter("labCode");
 		List<Object[]> EmployeeList=null;
 		if(Long.parseLong(projectid)>0)
 		{
-			EmployeeList=service.ProjectEmpList(projectid , LabCode);
+			EmployeeList=service.ProjectEmpList(projectid , labCode!=null && !labCode.isBlank()?labCode:LabCode);
 		}else if(Long.parseLong(projectid)==0)
 		{
-			EmployeeList=service.AllEmpNameDesigList(LabCode);
+			EmployeeList=service.AllEmpNameDesigList(labCode!=null && !labCode.isBlank()?labCode:LabCode);
 		}
 		Gson json = new Gson();
 		return json.toJson(EmployeeList);	

@@ -132,10 +132,10 @@
 					<div class="center">
 						<%if (fieldMaster!= null) { %>
 							<button type="submit" class="btn btn-sm btn-warning edit" name="action" value="Edit" onclick="return confirm('Are you sure to Update?')" >UPDATE</button>
-							<input type="hidden" name="fieldMasterId" id="fieldName" value="<%=fieldMaster.getFieldMasterId()%>" />
+							<input type="hidden" name="fieldMasterId" id="fieldMasterId" value="<%=fieldMaster.getFieldMasterId()%>" />
 						<% } else { %>
 							<button type="submit" class="btn btn-sm submit" name="action" value="Add" onclick="return confirm('Are you sure to Submit?')" >SUBMIT</button>
-							<input type="hidden" name="fieldMasterId" id="fieldName" value="0" />
+							<input type="hidden" name="fieldMasterId" id="fieldMasterId" value="0" />
 						<% } %>
 						
 						<a class="btn  btn-sm  back" href="FieldMaster.htm">BACK</a>
@@ -263,6 +263,86 @@
 			return false;
 		}
 	}
+	
+	// Field Name Duplicate Check
+	$('#fieldName').on('change', function(){
+		var fieldMasterId = $('#fieldMasterId').val();
+		var fieldName = $(this).val();
+		$.ajax({
+            type: "GET",
+            url: "FieldNameDuplicateCheck.htm",
+            data: {
+            	fieldName: fieldName,
+            	fieldMasterId: fieldMasterId
+            },
+            datatype: 'json',
+            success: function(result) {
+                var ajaxresult = JSON.parse(result); 
+
+                // Check if the Field Name already exists
+                if (ajaxresult > 0) {
+                	$('#fieldName').val(''); 
+                    alert('Field Name Already Exists');
+                }
+            },
+            error: function() {
+                alert('An error occurred while checking the Field Name.');
+            }
+        });
+	});
+	
+	// Group Name Duplicate Check
+	$('#groupName').on('change', function(){
+		var groupName = $(this).val();
+		$.ajax({
+            type: "GET",
+            url: "GroupNameDuplicateCheck.htm",
+            data: {
+            	groupName: groupName,
+            	fieldGroupId: '0'
+            },
+            datatype: 'json',
+            success: function(result) {
+                var ajaxresult = JSON.parse(result); 
+
+                // Check if the Group Name already exists
+                if (ajaxresult > 0) {
+                	$('#groupName').val('');
+                    alert('Group Name Already Exists');
+                }
+            },
+            error: function() {
+                alert('An error occurred while checking the Group Name.');
+            }
+        });
+	});
+	
+	// Group Code Duplicate Check
+	$('#groupCode').on('change', function(){
+		var groupCode = $(this).val();
+		$.ajax({
+            type: "GET",
+            url: "GroupCodeDuplicateCheck.htm",
+            data: {
+            	groupCode: groupCode,
+            	fieldGroupId: '0'
+            },
+            datatype: 'json',
+            success: function(result) {
+                var ajaxresult = JSON.parse(result); 
+
+                // Check if the Group Code already exists
+                if (ajaxresult > 0) {
+                	$('#groupCode').val('');
+                    alert('Group Code Already Exists');
+                }
+            },
+            error: function() {
+                alert('An error occurred while checking the Group Code.');
+            }
+        });
+	});
+
 </script>
 </body>
 

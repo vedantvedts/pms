@@ -22,6 +22,7 @@ import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
 import com.vts.pfms.master.model.PfmsFeedbackTrans;
+import com.vts.pfms.master.model.RoleMaster;
 import com.vts.pfms.model.LabMaster;
 
 import jakarta.persistence.EntityManager;
@@ -1108,5 +1109,16 @@ public class MasterDaoImpl implements MasterDao {
 		}
 		/* **************************** Programme Master - Naveen R  - 16/07/2025 End**************************************** */
 
-
+		@Override
+		public Long addRoleMaster(RoleMaster roleMaster)throws Exception {
+			try {
+				manager.persist(roleMaster);
+				manager.flush();
+				return roleMaster.getRoleMasterId();
+			}catch (Exception e) {
+				e.printStackTrace();
+				return 0L;
+			}
+		}
+		
 }

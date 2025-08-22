@@ -377,6 +377,64 @@
 	    $('#' + datatarget).addClass('active');
 	});
 	
+	// Group Name Duplicate Check
+	function checkDuplicateGroupName(rowId){
+		
+		var groupName = $('#groupName_'+rowId).val();
+		var fieldGroupId = $('#fieldGroupId_'+rowId).val();
+		
+		$.ajax({
+            type: "GET",
+            url: "GroupNameDuplicateCheck.htm",
+            data: {
+            	groupName: groupName,
+            	fieldGroupId: fieldGroupId
+            },
+            datatype: 'json',
+            success: function(result) {
+                var ajaxresult = JSON.parse(result); 
+
+                // Check if the Group Name already exists
+                if (ajaxresult > 0) {
+                	$('#groupName_'+rowId).val('');
+                    alert('Group Name Already Exists');
+                }
+            },
+            error: function() {
+                alert('An error occurred while checking the Group Name.');
+            }
+        });
+	}
+	
+	// Group Code Duplicate Check
+	function checkDuplicateGroupCode(rowId){
+		
+		var groupCode = $('#groupCode_'+rowId).val();
+		var fieldGroupId = $('#fieldGroupId_'+rowId).val();
+		
+		$.ajax({
+            type: "GET",
+            url: "GroupCodeDuplicateCheck.htm",
+            data: {
+            	groupCode: groupCode,
+            	fieldGroupId: fieldGroupId
+            },
+            datatype: 'json',
+            success: function(result) {
+                var ajaxresult = JSON.parse(result); 
+
+                // Check if the Group Code already exists
+                if (ajaxresult > 0) {
+                	$('#groupCode_'+rowId).val('');
+                    alert('Group Code Already Exists');
+                }
+            },
+            error: function() {
+                alert('An error occurred while checking the Group Code.');
+            }
+        });
+	}
+
 </script>
 </body>
 </html>

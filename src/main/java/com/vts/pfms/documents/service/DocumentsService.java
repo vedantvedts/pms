@@ -128,7 +128,10 @@ public interface DocumentsService {
 	public List<IGIConnectorAttach> getIGIConnectorAttachList();
 	public IGIConnectorAttach getIGIConnectorAttachById(String connectorAttachId) throws Exception;
 	public long addIGIConnectorAttach(IGIConnectorAttach connectorAttach, MultipartFile attachment, String labcode) throws Exception;
-	
+	public Long getDuplicateFieldNameCount(String fieldName,String fieldMasterId) throws Exception;
+	public Long getDuplicateGroupNameCount(String groupName,String fieldGroupId) throws Exception;
+	public Long getDuplicateGroupCodeCount(String groupCode,String fieldGroupId) throws Exception;
+
 	/* ************************************************ IGI Document End***************************************************** */
 	
 	/* ************************************************ ICD Document ***************************************************** */

@@ -4459,7 +4459,15 @@ public class ProjectController
 					redir.addAttribute("resultfail","Project  Adding  Unsuccessfully");
 				}
 
-
+				ProjectAssignDto proAssigndto=new ProjectAssignDto();
+				proAssigndto.setProjectEmployeeId(0);
+				proAssigndto.setProjectId(count+"");
+				proAssigndto.setRoleMasterId("1");
+				proAssigndto.setCreatedBy(Username);
+				proAssigndto.setCreatedDate(sdf1.format(new Date()));
+				proAssigndto.setEmpId(new String[]{protype.getProjectDirector()+""});
+				service.ProjectAssignAdd(proAssigndto);
+				
 				return "redirect:/ProjectList.htm";
 			}
 			if("edit".equalsIgnoreCase(sub)) {
@@ -4561,7 +4569,16 @@ public class ProjectController
 				}else
 				{
 					redir.addAttribute("resultfail","Project Editing  Unsuccessfully");
-				}       	
+				} 
+				
+				ProjectAssignDto proAssigndto=new ProjectAssignDto();
+				proAssigndto.setProjectEmployeeId(service.getProjectEmployeeIdByProjectId(ProjectId, "1"));
+				proAssigndto.setRoleMasterId("1");
+				proAssigndto.setCreatedBy(Username);
+				proAssigndto.setCreatedDate(sdf1.format(new Date()));
+				proAssigndto.setEmpId(new String[]{protype.getProjectDirector()+""});
+				service.ProjectAssignAdd(proAssigndto);
+				
 				return "redirect:/ProjectList.htm";
 			}
 

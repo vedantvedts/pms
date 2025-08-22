@@ -397,4 +397,5 @@ public interface ProjectService {
 	public List<Object[]> getProjectTeamListByLabCode(String labCode, String projectId);
 	public List<RoleMaster> getRoleMasterList() throws Exception;
 	public ProjectAssign getProjectAssignById(String projectEmployeeId) throws Exception;
+	public Long getProjectEmployeeIdByProjectId(String projectId, String roleMasterId) throws Exception;
 }

@@ -225,7 +225,7 @@
 								font-size: 20px;
 							}
 
-							.sidebar.collapsed .menu-item span {
+							.sidebar.collapsed .menu-item span:not(.tooltip-icon) {
 								display: none;
 							}
 
@@ -247,26 +247,7 @@
 								justify-content: space-between;
 							}
 
-							.sidebar.collapsed .menu-item:hover::after {
-								content: attr(data-target);
-								position: absolute;
-								/* left: 60px; */
-								background: #333;
-								color: #fff;
-								font-weight: bold;
-								padding: 5px 10px;
-								border-radius: 4px;
-								white-space: nowrap;
-								z-index: 100;
-								top: 50%;
-								transform: translateY(-50%);
-								pointer-events: none;
-							}
 
-							/* .menu-text {
-								margin-left: 5px;
-								transition: opacity 0.3s ease;
-							} */
 
 							.sidebar .menu-item i {
 								display: none;
@@ -275,7 +256,20 @@
 							.sidebar.collapsed .menu-item i {
 								display: block;
 							}
-							
+
+							.tooltip {
+								pointer-events: none;
+							}
+
+							.tooltip-inner {
+								background-color: #0d6efd !important;
+								color: white !important;
+								font-weight: bold;
+							}
+
+							.bs-tooltip-right .arrow {
+								border-right: #0d6efd !important;
+							}
 						</style>
 
 				</head>
@@ -290,39 +284,50 @@
 							</div>
 							<div class="menu-container mt-3">
 								<div class="menu">
-									<a href="#" class="menu-item active" data-target="ProjectManagement">
+									<a href="#" class="menu-item active" data-target="ProjectManagement"
+										data-toggle="tooltip" data-placement="right" title="Project">
+
 										<i class="fa fa-play"></i>
+
 										<span class="menu-text">Project</span>
 									</a>
-									<a href="#" class="menu-item" data-target="PreProjectInitiation">
+									<a href="#" class="menu-item" data-target="PreProjectInitiation"
+										data-toggle="tooltip" data-placement="right" title="Pre-Project">
 										<i class="fa fa-hourglass-start"></i>
 										<span class="menu-text">Pre-Project</span>
 									</a>
-									<a href="#" class="menu-item" data-target="Committee">
+									<a href="#" class="menu-item" data-target="Committee" data-toggle="tooltip"
+										data-placement="right" title="Committee">
 										<i class="fa fa-users"></i>
 										<span class="menu-text">Committee</span>
 									</a>
-									<a href="#" class="menu-item" data-target="Schedule">
+									<a href="#" class="menu-item" data-target="Schedule" data-toggle="tooltip"
+										data-placement="right" title="Schedule">
 										<i class="fa fa-calendar"></i>
 										<span class="menu-text">Schedule</span>
 									</a>
-									<a href="#" class="menu-item" data-target="Action">
+									<a href="#" class="menu-item" data-target="Action" data-toggle="tooltip"
+										data-placement="right" title="Action">
 										<i class="fa fa-tasks"></i>
 										<span class="menu-text">Action</span>
 									</a>
-									<a href="#" class="menu-item" data-target="Milestone">
+									<a href="#" class="menu-item" data-target="Milestone" data-toggle="tooltip"
+										data-placement="right" title="Milestone">
 										<i class="fa fa-flag-checkered"></i>
 										<span class="menu-text">Milestone</span>
 									</a>
-									<a href="#" class="menu-item" data-target="Procurement">
+									<a href="#" class="menu-item" data-target="Procurement" data-toggle="tooltip"
+										data-placement="right" title="Procurement">
 										<i class="fa fa-shopping-cart"></i>
 										<span class="menu-text">Procurement</span>
 									</a>
-									<a href="#" class="menu-item" data-target="CARS">
+									<a href="#" class="menu-item" data-target="CARS" data-toggle="tooltip"
+										data-placement="right" title="CARS">
 										<i class="fa fa-book"></i>
 										<span class="menu-text">CARS</span>
 									</a>
-									<a href="#" class="menu-item" data-target="WorkRegister">
+									<a href="#" class="menu-item" data-target="WorkRegister" data-toggle="tooltip"
+										data-placement="right" title="Work Register">
 										<i class="fa fa-list-alt"></i>
 										<span class="menu-text">Work Register</span>
 									</a>
@@ -1148,10 +1153,6 @@
 														</div>
 														<div class="collapse" id="constitute-members">
 															<div class="card-body">
-																<!-- <h6 class="text-danger">Note:You can select
-																	project/division/pre-project at the top left corner
-																	that you
-																	want to constitute.</h6> -->
 																<div class="alert alert-info" role="alert">
 																	<i class="fa fa-info-circle me-2"></i>
 																	You can select
@@ -1172,14 +1173,6 @@
 																	</li>
 
 																	<li class="list-group-item">
-																		<!-- <h6 class="text-danger mt-2 lh-lg">
-																			<strong>Note: While constituting committee
-																				for
-																				Division/ Initiation/ Project, Select
-																				and <strong class="text-success">Add
-																					Committees.</strong>
-																			</strong>
-																		</h6>  -->
 																		<div class="alert alert-info" role="alert">
 																			<i class="fa fa-info-circle me-2"></i>
 																			<strong>Note: While constituting committee
@@ -1208,18 +1201,22 @@
 																	<li class="list-group-item">Update <strong
 																			class="text-success">Serial No
 																			List.</strong>
-																		<h6 class="text-danger font-weight-bold">Note:
+																		<h6 class="alert alert-info font-weight-bold">
+																			Note:
 																			Kindly
 																			update the serial number list to ensure that
 																			the employee
 																			order is accurately reflected in the
 																			reports.</h6>
 																	</li>
-
-																	<h6 class="font-weight-bold text-danger">If
-																		Committee
-																		is Not Pre-Approved Follow these Additional
-																		Steps</h6>
+																	<div class="alert alert-danger mt-2" role="alert">
+																		<i class="fa fa-info-circle me-2"></i>
+																		<strong>If
+																			Committee
+																			is Not Pre-Approved Follow these Additional
+																			Steps
+																		</strong>
+																	</div>
 																	<li class="list-group-item">Click <strong
 																			class="text-primary">Preview</strong> <i
 																			class="fa fa-chevron-right"></i> Select
@@ -1227,11 +1224,12 @@
 																			Officer</strong> and
 																		<strong class="text-success">Approving
 																			Officer.</strong>
-																		<h6 class="text-danger"
-																			style="text-indent: 30px;">
+																		<div class="alert alert-info" role="alert">
+																			<i class="fa fa-info-circle me-2"></i>
 																			Note: One Approving Officer and Recommending
 																			Officer
-																			Mandatory.</h6>
+																			Mandatory.
+																		</div>
 																	</li>
 																	<li class="list-group-item">Click <strong
 																			class="text-warning">Update</strong> <i
@@ -1239,11 +1237,12 @@
 																			class="text-success">Forward</strong> to
 																		Recommending
 																		Officer.
-																		<h6 class="text-danger"
-																			style="text-indent: 30px;">
+																		<div class="alert alert-info" role="alert">
+																			<i class="fa fa-info-circle me-2"></i>
 																			Note: If Recommending Officer has not
 																			recommended ,the
-																			user can revoke the request.</h6>
+																			user can revoke the request.
+																		</div>
 																	</li>
 
 																	<li class="list-group-item">Recommending Officer or
@@ -1270,7 +1269,7 @@
 														<div class="card-header card-heading card-hover text-danger"
 															data-toggle="collapse" data-target="#auto-schedule"
 															aria-expanded="false" aria-controls="auto-schedule">
-															<span style="font-size: 15px;"> <i
+															<span style="font-size: 16px;"> <i
 																	class="fa fa-calendar me-2"></i>
 																Auto-Schedule Meeting (Periodic Type)- Non-Project/
 																Project/
@@ -1434,8 +1433,11 @@
 																	class="text-info">Add
 																	Schedule.</strong>
 															</li>
-															<h6 class="text-danger">Note: Right-side panel displays
-																list of scheduled meetings for the committee.</h6>
+															<div class="alert alert-info mt-2" role="alert">
+																<i class="fa fa-info-circle me-2"></i>
+																Right-side panel displays
+																list of scheduled meetings for the committee.
+															</div>
 															<li class="list-group-item">You can delete the meeting by
 																clicking above <strong class="text-danger"><i
 																		class="fa fa-trash"></i>
@@ -1445,8 +1447,11 @@
 																meeting by changing <strong class="text-primary">
 																	Meeting Date and Meeting Time </strong>.
 															</li>
-															<h6 class="text-danger">Note: Once Agenda Approved, can't
-																delete the meeting.</h6>
+															<div class="alert alert-info mt-2" role="alert">
+																<i class="fa fa-info-circle me-2"></i>
+																Once Agenda Approved, can't
+																delete the meeting.
+															</div>
 														</ul>
 													</div>
 												</div>
@@ -1461,10 +1466,13 @@
 												</div>
 												<div class="collapse" id="schedule-detail">
 													<div class="card-body">
-														<h6 class="text-danger">Note: Member Secretary and
+														<div class="alert alert-info mt-2" role="alert">
+															<i class="fa fa-info-circle me-2"></i>
+															Member Secretary and
 															Chairperson can only approve agenda. Notification will be
 															sent
-															to both.</h6>
+															to both.
+														</div>
 														<ul class="list-group list-group-numbered">
 															<li class="list-group-item">Fill Agenda form: <em>Agenda
 																	Items, References, Remarks, Lab,Presenter, Duration,
@@ -1477,11 +1485,13 @@
 																	class="fa fa-chevron-right"></i> Click <strong
 																	class="text-warning font-weight-bold">Update.</strong>
 															</li>
-															<h6 class="text-danger">
-																Note: You can edit agenda by clicking on <strong
+															<div class="alert alert-info mt-2" role="alert">
+																<i class="fa fa-info-circle me-2"></i>
+																You can edit agenda by clicking on <strong
 																	class="text-primary font-weight-bold">Edit
 																	Button.</strong>
-															</h6>
+															</div>
+
 															<li class="list-group-item">Click <strong
 																	class="text-success">Invite</strong> <i
 																	class="fa fa-chevron-right"></i> Select Members <i
@@ -1595,9 +1605,8 @@
 																	class="text-warning">Update.</strong> <i
 																	class="fa fa-chevron-right"></i> Click <strong
 																	class="text-success">Back.</strong>
-																<h6 class="text-danger font-weight-bold"
-																	style="text-indent: 30px;">
-																	Note: Kindly update the
+																<h6 class="alert alert-danger ">
+																	Kindly update the
 																	serial number list to ensure that the employee order
 																	is
 																	accurately reflected in the reports.</h6>
@@ -1631,11 +1640,14 @@
 																			Remark
 																			(if any). Click Submit. </i>
 																		</li>
-																		<h6 class="text-danger">Note: Outcome is
+																		<div class="alert alert-info mt-2" role="alert">
+																			<i class="fa fa-info-circle me-2"></i>
+																			Outcome is
 																			classified
 																			into six types: Action, Comment, Decision,
 																			Issue,
-																			Recommendation, and Risk.</h6>
+																			Recommendation, and Risk.
+																		</div>
 																		<li class="list-group-item">Outcomes: Select the
 																			outcome type from the dropdown menu <i
 																				class="fa fa-chevron-right"></i> Click
@@ -1671,22 +1683,24 @@
 																	class="text-primary">Assign Action
 																	<i class="fa fa-thumbs-up"></i>.
 																</strong></li>
-															<h6 class="text-danger font-weight-bold">Note: On the
+															<div class="alert alert-info mt-2" role="alert">
+																<i class="fa fa-info-circle me-2"></i>
+																On the
 																left-hand side, you can choose the action you want to
 																assign
-																by clicking on it.</h6>
+																by clicking on it.
+															</div>
 															<li class="list-group-item">Enter <em>PDC,Priority,
 																	Category ,Lab, Assignee(s) </em> <i
 																	class="fa fa-chevron-right"></i>
 																Click <strong class="text-success">Submit.</strong>
-																<h6 class="text-danger font-weight-bold"
-																	style="text-indent: 30px;">
-																	Note: Actions can be
+																<div class="alert alert-info" role="alert">
+																	<i class="fa fa-info-circle me-2"></i>
+																	Actions can be
 																	assigned to multiple employees and to another lab as
-																	well.</h6>
+																	well.
+																</div>
 															</li>
-
-
 															<li class="list-group-item"><strong
 																	class="text-primary">Edit
 																</strong>or <strong class="text-danger">Delete
@@ -1701,14 +1715,17 @@
 												<div class="card-header card-hover text-dark card-heading"
 													data-toggle="collapse" data-target="#mom-approval"
 													aria-expanded="false" aria-controls="mom-approval">
-													<span><i class="fa fa-check-circle me-2"></i> Minutes Approval</span> 
-													<i class="fa fa-chevron-down"></i>
+													<span><i class="fa fa-check-circle me-2"></i> Minutes of
+														Approval</span> <i class="fa fa-chevron-down"></i>
 												</div>
 												<div id="mom-approval" class="collapse">
 													<div class="card-body">
 														<ul class="list-group list-group-numbered">
-															<h6 class="text-danger">Note: Once the MOM is approved,
-																no further changes can be made.</h6>
+															<div class="alert alert-info" role="alert">
+																<i class="fa fa-info-circle me-2"></i>
+																Once the MOM is approved,
+																no further changes can be made.
+															</div>
 															<li class="list-group-item"><strong
 																	class="text-primary">Click
 																	<i class="fa fa-chevron-right"></i> Minutes
@@ -1718,9 +1735,11 @@
 															<li class="list-group-item">Enter Officer role and select
 																<strong class="text-success"> Recommending Officers
 																	and Approving Officers . </strong>
-																<h6 class="text-danger" style="text-indent: 30px;">Note:
+																<div class="alert alert-info mt-2" role="alert">
+																	<i class="fa fa-info-circle me-2"></i>
 																	One Recommending Officer and Approving Officer is
-																	Mandatory</h6>
+																	Mandatory
+																</div>
 															</li>
 															<li class="list-group-item">Click <strong
 																	class="text-warning">Update</strong> <i
@@ -1730,8 +1749,10 @@
 																	class="text-danger">Revoke.</strong>
 															</li>
 															<li class="list-group-item">
-																<h6 class="text-danger" style="text-indent: 30px;">Note:
-																	Recommending Officer will get Notification</h6>
+																<div class="alert alert-info" role="alert">
+																	<i class="fa fa-info-circle me-2"></i>
+																	Recommending Officer will get Notification
+																</div>
 																Recommending
 																Officer will navigate to notification or Click <strong
 																	class="text-success">Approvals <i
@@ -1784,8 +1805,11 @@
 											</div>
 											<div id="create-action-item" class="collapse show">
 												<div class="card-body">
-													<h6 class="text-danger font-weight-bold">Note: Only users
-														with higher-level roles can assign action items.</h6>
+													<div class="alert alert-info" role="alert">
+														<i class="fa fa-info-circle me-2"></i>
+														Only users
+														with higher-level roles can assign action items.</strong>
+													</div>
 													<ul class="list-group list-group-numbered ">
 														<li class="list-group-item">Click <strong
 																class="text-primary">Action Items <i
@@ -1803,10 +1827,14 @@
 														</li>
 
 														<li class="list-group-item">
-															<h6 class="text-danger font-weight-bold">Note: Actions
+															<div class="alert alert-info" role="alert">
+																<i class="fa fa-info-circle me-2"></i>
+																Actions
 																can be assigned to multiple employees and to another lab
 																as
-																well.</h6> Select <strong class="text-success">Lab,
+																well.</strong>
+															</div>
+															Select <strong class="text-success">Lab,
 																Assignee</strong> and upload <strong
 																class="text-success">attachment</strong>
 															(if any).
@@ -1853,8 +1881,11 @@
 											<div id="update-work-progress" class="collapse">
 												<div class="card-body">
 													<ul class="list-group list-group-numbered ">
-														<h6 class="text-danger font-weight-bold">Note: Action item
-															can be from Meetings also.</h6>
+														<div class="alert alert-info" role="alert">
+															<i class="fa fa-info-circle me-2"></i>
+															Action item
+															can be from Meetings also.
+														</div>
 														<li class="list-group-item">Click <strong
 																class="text-primary">Action items <i
 																	class="fa fa-chevron-right"></i> To Act <i
@@ -1935,18 +1966,25 @@
 											</div>
 											<div id="action-report" class="collapse">
 												<div class="card-body">
-													<h6 class="text-danger font-weight-bold">Note: You can view
+													<div class="alert alert-info" role="alert">
+														<i class="fa fa-info-circle me-2"></i>
+														You can view
 														all the action report according to status
-														(ex:In-Progress,All,Not-started etc)</h6>
+														(ex:In-Progress,All,Not-started etc)
+													</div>
 													<ul class="list-group list-group-numbered ">
 														<li class="list-group-item">Click <strong
 																class="text-primary">Reports <i
 																	class="fa fa-chevron-right"></i> Action Report.
 															</strong></li>
 														<li class="list-group-item">
-															<h6 class="text-danger">Note: Based on the user's login
+															<div class="alert alert-info" role="alert">
+																<i class="fa fa-info-circle me-2"></i>
+																Based on the user's login
 																role, the project list and assigned employees will be
-																displayed accordingly.</h6> At the top of the screen,
+																displayed accordingly.
+															</div>
+															At the top of the screen,
 															Filter based
 															on <em class="text-success">Project, Assignee, Type
 																(Action,Milestone,Meeting), Status
@@ -1981,8 +2019,11 @@
 											</div>
 											<div id="creating-milestone" class="collapse show">
 												<div class="card-body">
-													<h6 class="text-danger">Note: Only Project Director or
-														Admin can add Milestone activity.</h6>
+													<div class="alert alert-info" role="alert">
+														<i class="fa fa-info-circle me-2"></i>
+														Only Project Director or
+														Admin can add Milestone activity.
+													</div>
 													<ul class="list-group list-group-numbered">
 														<li class="list-group-item">Click <i
 																class="fa fa-chevron-right"></i> <strong
@@ -1996,8 +2037,11 @@
 														</li>
 
 														<li class="list-group-item"><strong class="text-info">
-																<h6 class="text-danger" style="text-indent: 30px;">Note:
-																	Check 'All' to load all employees.</h6> Enter the
+																<div class="alert alert-info" role="alert">
+																	<i class="fa fa-info-circle me-2"></i>
+																	Check 'All' to load all employees.
+																</div>
+																Enter the
 																details:
 															</strong> <em> Activity name, Type, From, To, First OIC,
 																Second OIC
@@ -2008,11 +2052,13 @@
 																Submit </strong> after completing each sub-activity
 															details.
 														</li>
-														<h6 class="text-danger font-weight-bold">Note: Project
+														<div class="alert alert-info" role="alert">
+															<i class="fa fa-info-circle me-2"></i>
+															Project
 															Director, the Admin, and the OICs of the Parent Milestone
 															are
 															authorized to add, edit and assigning weights to milestones.
-														</h6>
+														</div>
 													</ul>
 												</div>
 											</div>
@@ -2028,9 +2074,12 @@
 											<div id="assigning-weights" class="collapse">
 												<div class="card-body">
 													<ul class="list-group list-group-numbered">
-														<h6 class="text-danger">Note: Ensure that the total
+														<div class="alert alert-info" role="alert">
+															<i class="fa fa-info-circle me-2"></i>
+															Note: Ensure that the total
 															weightage for each of milestones, activities, and
-															sub-activities is 100.</h6>
+															sub-activities is 100.
+														</div>
 														<li class="list-group-item">Click <i
 																class="fa fa-chevron-right"></i> <strong
 																class="text-success">Milestone</strong>
@@ -2109,9 +2158,11 @@
 																Attach file (if any) and Remarks. Click <strong
 																	class="text-success">Submit.</strong>
 															</em>
-															<h6 class="text-danger" style="text-indent: 20px;">Note:
+															<div class="alert alert-info" role="alert">
+																<i class="fa fa-info-circle me-2"></i>
 																Select an employee from the right side to reassign the
-																activity to another person.</h6>
+																activity to another person.
+															</div>
 														</li>
 
 													</ul>
@@ -2145,8 +2196,11 @@
 															and then Click <strong class="text-success">Set
 																Baseline </strong> Button.
 														</li>
-														<h6 class="text-danger">After any change in milestone,
-															baseline should be set to get it displayed latest data.</h6>
+														<div class="alert alert-info mt-2" role="alert">
+															<i class="fa fa-info-circle me-2"></i>
+															After any change in milestone,
+															baseline should be set to get it displayed latest data.
+														</div>
 													</ul>
 												</div>
 											</div>
@@ -2164,11 +2218,14 @@
 									</div>
 
 									<div class="card-body">
-										<h6 class="text-danger font-weight-bold">Note: You can create
+										<div class="alert alert-info" role="alert">
+											<i class="fa fa-info-circle me-2"></i>
+											Note: You can create
 											a procurement in four ways: by selecting existing demands from
 											IBAS, by manually entering individual product demands, by creating
 											envisaged (future) demands, or by bulk uploading demands using the
-											Excel template provided.</h6>
+											Excel template provided.
+										</div>
 										<!-- Add Demand Form IBAS -->
 										<div class="card border-primary mb-4">
 											<div class="card-header card-heading card-hover text-primary"
@@ -2181,15 +2238,18 @@
 											<div class="collapse-show " id="procurement-ibas">
 												<div class="card-body">
 													<ul class="list-group list-group-numbered">
-														<h6 class="text-danger">Note: At the top right corner, you
+														<div class="alert alert-info" role="alert">
+															<i class="fa fa-info-circle me-2"></i>
+															At the top right corner, you
 															can select the project for which you want to create the
-															procurement.</h6>
+															procurement.
+														</div>
 														<li class="list-group-item">Click <strong class="text-success">
 																Procurement <i class="fa fa-chevron-right"></i>
 																Procurement Status <i class="fa fa-chevron-right"></i>
 																Add Demand From IBAS.
 															</strong></li>
-														<h6 class="text-danger font-weight-bold">You can select
+														<h6 class="alert alert-danger mt-2">You can select
 															one demand at a time.</h6>
 														<li class="list-group-item">A list of demand's will be
 															displayed. Click on <strong class="text-success"><i
@@ -2209,12 +2269,13 @@
 																	class="fa fa-times"></i>
 																Demand Inactive</strong>.
 														</li>
-														<h6 class="text-danger">
+														<div class="alert alert-info mt-2" role="alert">
+															<i class="fa fa-info-circle me-2"></i>
 															Note: When the demand reaches the Order Placement stage, you
 															can view the order details by clicking on <strong
 																class="text-success">Order
 																View</strong> button.
-														</h6>
+														</div>
 													</ul>
 												</div>
 											</div>
@@ -2230,15 +2291,18 @@
 											<div class="collapse " id="manual-demand">
 												<div class="card-body">
 													<ul class="list-group list-group-numbered">
-														<h6 class="text-danger">Note: At the top right corner, you
+														<div class="alert alert-info" role="alert">
+															<i class="fa fa-info-circle me-2"></i>
+															At the top right corner, you
 															can select the project for which you want to create the
-															procurement.</h6>
+															procurement.
+														</div>
 														<li class="list-group-item">Click <strong class="text-success">
 																Procurement <i class="fa fa-chevron-right"></i>
 																Procurement Status <i class="fa fa-chevron-right"></i>
 																Manual Demand.
 															</strong></li>
-														<h6 class="text-danger font-weight-bold">You can add one
+														<h6 class="alert alert-danger mt-2">You can add one
 															demand at a time and Demand No should be unique.</h6>
 														<li class="list-group-item">Fill the details: <em>Demand
 																No, Demand Date, Estimated Cost(In Rupees), Item
@@ -2262,9 +2326,11 @@
 																Procurement Status, Enter Event Date and Remarks.</em>
 															<i class="fa fa-chevron-right"></i> Click <strong
 																class="text-success">Submit.</strong>
-
-															<h6 class="text-danger">Note: Fill in the Order Details
-																when the demand reaches the Order Placement stage.</h6>
+															<div class="alert alert-info mt-2" role="alert">
+																<i class="fa fa-info-circle me-2"></i>
+																Fill in the Order Details
+																when the demand reaches the Order Placement stage.
+															</div>
 															<br>
 															<h6 class="text-primary">Instructions for Order Placement
 																Stage</h6>
@@ -2328,7 +2394,8 @@
 														<li class="list-group-item">Click on <strong
 																class="text-primary">View</strong>
 															button to view the
-															procurement milestone dashboard. <br> The dashboard is
+															procurement milestone dashboard. <br> The procurement
+															milestone dashboard is
 															divided into four quarters, displaying: The Probable Date
 															(planned milestone date) The Actual Date (when the milestone
 															was actually completed) A comparison showing whether the
@@ -2353,9 +2420,12 @@
 											<div class="collapse " id="envisaged-demand">
 												<div class="card-body">
 													<ul class="list-group list-group-numbered">
-														<h6 class="text-danger">Note: At the top right corner, you
+														<div class="alert alert-info" role="alert">
+															<i class="fa fa-info-circle me-2"></i>
+															At the top right corner, you
 															can select the project for which you want to create the
-															procurement.</h6>
+															procurement.
+														</div>
 														<li class="list-group-item">Click <strong class="text-success">
 																Procurement <i class="fa fa-chevron-right"></i>
 																Procurement Status <i class="fa fa-chevron-right"></i>
@@ -2399,9 +2469,12 @@
 											<div class="collapse " id="update-bulk-demand">
 												<div class="card-body">
 													<ul class="list-group list-group-numbered">
-														<h6 class="text-danger">Note: At the top right corner, you
+														<div class="alert alert-info" role="alert">
+															<i class="fa fa-info-circle me-2"></i>
+															At the top right corner, you
 															can select the project for which you want to create the
-															procurement.</h6>
+															procurement.
+														</div>
 														<li class="list-group-item">Click <strong class="text-success">
 																Procurement <i class="fa fa-chevron-right"></i>
 																Procurement Status <i class="fa fa-chevron-right"></i>
@@ -2497,12 +2570,18 @@
 															</h6>
 														</li>
 
-														<h6 class="text-danger">Note: A notification will be sent
-															to the Project Director/GD.</h6>
-														<h6 class="text-danger">Approver will get the CARS RSQR
+														<div class="alert alert-info mt-2" role="alert">
+															<i class="fa fa-info-circle me-2"></i>
+															A notification will be sent
+															to the Project Director/GD.
+														</div>
+
+														<div class="alert alert-info mt-2" role="alert">
+															<i class="fa fa-info-circle me-2"></i>
+															Approver will get the CARS RSQR
 															PDF to view before approval and RSQR approval form to
 															download
-														</h6>
+														</div>
 														<li class="list-group-item">Project Director/GD will
 															navigate to notification or Click <strong
 																class="text-danger">CARS</strong>
@@ -2527,10 +2606,13 @@
 															can <strong class="text-success">Recommend</strong> or
 															<strong class="text-danger">Return.</strong>
 														</li>
-														<h6 class="text-danger font-weight-bold">
+														<div class="alert alert-info mt-2" role="alert">
+															<i class="fa fa-info-circle me-2"></i>
 															Once <strong>RSQR Approved </strong>. A notification will be
 															sent to <strong class="text-danger">DP&C.</strong>
 														</h6>
+														</div>
+															
 														<li class="list-group-item">DP&C will navigate to <strong
 																class="text-primary">CARS</strong> <i
 																class="fa fa-chevron-right"></i>
@@ -2561,7 +2643,8 @@
 															of Research
 															Services
 														</li>
-														<h6 class="text-danger">DP&C will download the RSQR
+
+														<h6 class="alert alert-danger mt-2">DP&C will download the RSQR
 															file,SoO Invitation,Pro form documents, and send them to the
 															respective institution for completion.</h6>
 														<li class="list-group-item">Initiated person will Navigate
@@ -2590,7 +2673,7 @@
 																	class="fa fa-chevron-right"></i> Click <strong
 																	class="text-success">Next.</strong>
 															</em></li>
-														<h6 class="text-danger">In Final RSQR, you can update any
+														<h6 class="alert alert-danger mt-2">In Final RSQR, you can update any
 															detail, but Milestone and Timelines section is mandatory to
 															update.</h6>
 														<li class="list-group-item">Navigate to <strong
@@ -2606,6 +2689,7 @@
 
 
 														<li class="list-group-item">
+
 															<h6 class="text-danger">Notification will be sent to
 																Project Director/GD.</h6> Project Director/GD will
 															navigate to
@@ -2663,16 +2747,18 @@
 																class="text-success">Submit</strong></li>
 														<li class="list-group-item text-success">Update <strong>Serial
 																No List.</strong>
-
-															<h6 class="text-danger font-weight-bold"
-																style="text-indent: 30px;">Note:
+															<div class="alert alert-info" role="alert">
+																<i class="fa fa-info-circle me-2"></i>
 																Kindly update the
 																serial number list to ensure that the employee order is
-																accurately reflected in the reports.</h6>
+																accurately reflected in the reports.
+															</div>
 														</li>
-
-														<h6 class="font-weight-bold text-danger">If Committee is
-															Not Pre-Approved Follow these Additional Steps</h6>
+														<div class="alert alert-danger mt-2" role="alert">
+															<i class="fa fa-info-circle me-2"></i>
+															If Committee is Not Pre-Approved Follow these Additional
+															Steps
+														</div>
 														<li class="list-group-item">Click <strong
 																class="text-primary">Preview</strong><i
 																class="fa fa-chevron-right"></i>
@@ -2688,10 +2774,12 @@
 																class="text-success">Forward</strong>
 															to Recommending Officer.
 														</li>
-														<h6 class="text-danger" style="text-indent: 30px;">Note:
+														<div class="alert alert-info mt-2" role="alert">
+															<i class="fa fa-info-circle me-2"></i>
+															Note:
 															If Recommending Officer has not recommended ,the user can
-															revoke the request.</h6>
-
+															revoke the request.
+														</div>
 														<li class="list-group-item"><strong
 																class="text-danger">Recommending
 																Officer </strong> can <strong
@@ -2719,9 +2807,12 @@
 											<div id="mom-upload-cars" class="collapse">
 												<div class="card-body ">
 													<ul class="list-group list-group-numbered">
-														<h6 class="text-danger">Once the meeting is completed,the
+														<div class="alert alert-info" role="alert">
+															<i class="fa fa-info-circle me-2"></i>
+															Once the meeting is completed,the
 															Minutes of Meeting will be uploaded to the designated
-															location.</h6>
+															location.
+														</div>
 
 														<li class="list-group-item">Navigate to <strong
 																class="text-success">CARS</strong> <i
@@ -2812,12 +2903,14 @@
 																</li>
 															</ul>
 														</li>
-
-														<h6 class="text-danger">Note:In flow if there is IFA and
+														<div class="alert alert-info mt-2" role="alert">
+															<i class="fa fa-info-circle me-2"></i>
+															In flow if there is IFA and
 															JSA those officers are external officers. Hence on behalf of
 															them, DP & C officers himself will approve on obtaining
 															manual
-															approval from them.</h6>
+															approval from them.
+														</div>
 
 														<li class="list-group-item">After approval flow is
 															completed All the docs are available to download in <strong
@@ -2854,9 +2947,11 @@
 																details:</strong> <br> <em> Contract Date, T0 Date, T0
 																Remarks </em>
 														</li>
-														<h6 class="text-danger">DP&C will download the CARS-03
+														<div class="alert alert-info mt-2" role="alert">
+															<i class="fa fa-info-circle me-2"></i>
+															DP&C will download the CARS-03
 															word and pdf, and send them to the respective institution.
-														</h6>
+														</div>
 														<li class="list-group-item ">Click on <strong
 																class="text-success">other
 																Doc</strong> after updating
@@ -2885,8 +2980,11 @@
 															page. Revert option also available if forwarded record is
 															not
 															yet approved by the next approver
-															<h6 class="text-danger">Note: only GD DP & C is able to
-																forward the payment for approval.</h6>
+															<div class="alert alert-info mt-2" role="alert">
+																<i class="fa fa-info-circle me-2"></i>
+																Only GD DP & C is able to
+																forward the payment for approval.
+															</div>
 														</li>
 														<li class="list-group-item">Upload related documents in <strong
 																class="text-success"> Doc Upload tab. </strong>
@@ -2961,11 +3059,12 @@
 															Click on <strong class="text-success">Add New
 																Activity Row</strong>.
 														</li>
-														<h6 class="text-danger">
+														<div class="alert alert-info mt-2" role="alert">
+															<i class="fa fa-info-circle me-2"></i>
 															Note: Work Register cannot be filled for future dates. <br>
 															Entries can be added for the past 15 days from the current
 															date.
-														</h6>
+														</div>
 													</ul>
 												</div>
 											</div>
@@ -3065,6 +3164,14 @@
 							</div>
 						</div>
 					</div>
+					<script>
+						$(function () {
+							$('[data-toggle="tooltip"]').tooltip({
+								container: 'body',
+								boundary: 'window'
+							})
+						})
+					</script>
 					<script>
 						function toggleSidebar() {
 							const sidebar = document.getElementById('sidebar');

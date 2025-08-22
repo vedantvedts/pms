@@ -965,9 +965,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 		 
 		if(dto.getActivityType().equalsIgnoreCase("Accept")) {
 			int tot=MileActivityAssignCheck(dto);
-			if(tot==0) {
 		  result=dao.MilestoneActivityAccept(dto, dt);	
-		  if(result>0) {
 			  
 			  long count=1;
 			  MilestoneActivity getMA=dao.MileActivityDetails(Long.parseLong(dto.getActivityId()));
@@ -1102,10 +1100,6 @@ public class MilestoneServiceImpl implements MilestoneService {
 				Trans.setIsActive(1);
 				dao.ActivityTransactionInsert(Trans);
 				
-		  }
-			}else {
-				result=4;
-			}
 		}else if(dto.getActivityType().equalsIgnoreCase("Back")) 
 		{
 			result=dao.MilestoneActivityBack(dto);
