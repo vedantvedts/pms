@@ -175,7 +175,7 @@ console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint")
 											<div class="login-form-container">
 												
 												
-												   <form action="${contextPath}/login" method="post" >
+												   <form action="${contextPath}/login" method="post" id="loginForm" >
 												   
 										
 													<div class="form-row">
@@ -186,7 +186,7 @@ console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint")
 														</div>
 														
 														<div class="form-group col-12 position-relative">
-															<input name="password" type="password" placeholder="Password"  class="form-control" autocomplete="current-password">
+															<input name="password" type="password" placeholder="Password" id="password"  class="form-control" autocomplete="current-password">
 															<i class="fa fa-lock fa-lg position-absolute"></i>	
 														</div>
 															
@@ -210,9 +210,9 @@ console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint")
 															</div>
 														</div>
 														
-														
 													</div>
-													
+													<input type="hidden" id="sessionKey" name="encKey" value="<%=(String)request.getAttribute("sessionKey")%>" />
+													<input type="hidden" id="sessionIv"  name="encIv"  value="<%=(String)request.getAttribute("sessionIv")%>" />
 													
 												</form>
 												
@@ -288,7 +288,6 @@ console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint")
   		</div>
 	</footer>
 	</div> 
-</body>
 
 <script type="text/javascript">
 $("#success-alert") .fadeTo(3000, 1000).slideUp(1000, function ( ) {
@@ -337,8 +336,7 @@ $("#myTable1,#myTable2,#myTable3").DataTable({
 
 });
 
-</script>
-<script>
+
         var marquee = document.getElementById('marquee');
 
         function stopMarquee() {
@@ -349,4 +347,39 @@ $("#myTable1,#myTable2,#myTable3").DataTable({
             marquee.start();
         }
     </script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var form = document.getElementById("loginForm");
+  if (!form) return;
+
+  form.addEventListener("submit", function(e) {
+    var pwdField = document.getElementById("password");
+    var pwd = pwdField.value;
+
+    var keyBase64 = (document.getElementById("sessionKey") || {}).value || "";
+    var ivBase64  = (document.getElementById("sessionIv")  || {}).value || "";
+
+    var key = CryptoJS.enc.Base64.parse(keyBase64);
+    var iv  = CryptoJS.enc.Base64.parse(ivBase64);
+
+    if (pwd) {
+      var encrypted = CryptoJS.AES.encrypt(
+        CryptoJS.enc.Utf8.parse(pwd),
+        key,
+        { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 }
+      );
+
+      var encryptedBase64 = CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
+      pwdField.value = encryptedBase64;
+
+      /* var keyInput = document.getElementsByName('encKey')[0];
+      var ivInput  = document.getElementsByName('encIv')[0];
+      if (keyInput) keyInput.value = keyBase64;
+      if (ivInput)  ivInput.value  = ivBase64; */
+    }
+
+  });
+});
+</script>
+</body>
 </html>

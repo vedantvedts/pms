@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import com.vts.pfms.login.CustomLogoutHandler;
@@ -31,6 +32,9 @@ public class SecurityConfiguration{
 	@Autowired
     private LoginSuccessHandler successHandler;
 	
+	@Autowired
+	private PasswordDecryptFilter passwordDecryptFilter;
+
 	@Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		
@@ -81,6 +85,8 @@ public class SecurityConfiguration{
         		        response.setDateHeader("Expires", 0);
         		    })
         		)
+        	.addFilterBefore(passwordDecryptFilter, UsernamePasswordAuthenticationFilter.class);
+
         	;
           return http.build();
     }
