@@ -422,8 +422,12 @@ public class HeaderController {
 	public String PasswordChange(HttpServletRequest req, HttpSession ses) throws Exception {
 
 		String UserId = (String) ses.getAttribute("Username");
+		String sessionKey = (String) ses.getAttribute("LOGIN_AES_KEY");
+		String sessionIv = (String) ses.getAttribute("LOGIN_AES_IV");
 		logger.info(new Date() +"Inside PasswordChange.htm "+UserId);	
 		req.setAttribute("ForcePwd", "N");
+		req.setAttribute("sessionKey", sessionKey);
+ 		req.setAttribute("sessionIv", sessionIv);
 		return "admin/PasswordChange";
 	}
 	

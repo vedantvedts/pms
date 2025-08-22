@@ -2,6 +2,7 @@ package com.vts.pfms.login;
 
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -10,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -214,6 +216,28 @@ public class LoginController {
 // 		} catch (ExpiredJwtException ex) {
 // 			expstatus = false;
 // 		}
+ 		
+ 		// only generate once per session
+ 		String sessionKey = (String) req.getSession().getAttribute("LOGIN_AES_KEY");
+ 		String sessionIv  = (String) req.getSession().getAttribute("LOGIN_AES_IV");
+
+ 		if (sessionKey == null || sessionIv == null) {
+ 		    byte[] keyBytes = new byte[16];
+ 		    new SecureRandom().nextBytes(keyBytes);
+ 		    sessionKey = Base64.getEncoder().encodeToString(keyBytes);
+
+ 		    byte[] ivBytes = new byte[16];
+ 		    new SecureRandom().nextBytes(ivBytes);
+ 		    sessionIv = Base64.getEncoder().encodeToString(ivBytes);
+
+ 		    req.getSession().setAttribute("LOGIN_AES_KEY", sessionKey);
+ 		    req.getSession().setAttribute("LOGIN_AES_IV", sessionIv);
+
+ 		}
+
+ 		req.setAttribute("sessionKey", sessionKey);
+ 		req.setAttribute("sessionIv", sessionIv);
+
  		req.setAttribute("expstatus", expstatus);
 		return "static/login";
 	}
@@ -287,6 +311,27 @@ public class LoginController {
 //			expstatus = false;
 //		}
 		
+		// only generate once per session
+ 		String sessionKey = (String) req.getSession().getAttribute("LOGIN_AES_KEY");
+ 		String sessionIv  = (String) req.getSession().getAttribute("LOGIN_AES_IV");
+
+ 		if (sessionKey == null || sessionIv == null) {
+ 		    byte[] keyBytes = new byte[16];
+ 		    new SecureRandom().nextBytes(keyBytes);
+ 		    sessionKey = Base64.getEncoder().encodeToString(keyBytes);
+
+ 		    byte[] ivBytes = new byte[16];
+ 		    new SecureRandom().nextBytes(ivBytes);
+ 		    sessionIv = Base64.getEncoder().encodeToString(ivBytes);
+
+ 		    req.getSession().setAttribute("LOGIN_AES_KEY", sessionKey);
+ 		    req.getSession().setAttribute("LOGIN_AES_IV", sessionIv);
+
+ 		}
+
+ 		req.setAttribute("sessionKey", sessionKey);
+ 		req.setAttribute("sessionIv", sessionIv);
+		 		
 		req.setAttribute("expstatus", expstatus);
 		return "static/login-wr";
 	}
