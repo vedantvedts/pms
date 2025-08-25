@@ -18,6 +18,7 @@ import com.vts.pfms.committee.dto.CommitteeScheduleDto;
 import com.vts.pfms.committee.dto.MeetingCheckDto;
 import com.vts.pfms.committee.model.CommitteScheduleMinutesDraft;
 import com.vts.pfms.committee.model.Committee;
+import com.vts.pfms.committee.model.CommitteeCARS;
 import com.vts.pfms.committee.model.CommitteeConstitutionApproval;
 import com.vts.pfms.committee.model.CommitteeConstitutionHistory;
 import com.vts.pfms.committee.model.CommitteeDefaultAgenda;
@@ -42,10 +43,9 @@ import com.vts.pfms.committee.model.CommitteeSubSchedule;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.committee.model.PmsEnote;
 import com.vts.pfms.committee.model.PmsEnoteTransaction;
-import com.vts.pfms.committee.model.ProgrammeProjects;
-import com.vts.pfms.milestone.model.FileRepMasterPreProject;
-import com.vts.pfms.milestone.model.FileRepUploadPreProject;
 import com.vts.pfms.committee.model.ProgrammeMaster;
+import com.vts.pfms.committee.model.ProgrammeProjects;
+import com.vts.pfms.milestone.model.FileRepUploadPreProject;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.MinutesFinanceList;
@@ -3898,6 +3898,44 @@ private static final String ENOTEAPPROVELIST="SELECT MAX(a.EnoteId) AS EnoteId,M
 	public FileRepUploadPreProject getPreProjectAgendaDocById(String filerepid) throws Exception {
 		FileRepUploadPreProject repmaster=manager.find(FileRepUploadPreProject.class,Long.parseLong(filerepid));
 		return repmaster;
+	}
+	
+	private static final String CARSCOMMITTEEDESCRIPTIONTOR ="SELECT ComCARSInitiationId, Description, TermsOfReference, CommitteeId, CARSInitiationId FROM committee_cars WHERE CommitteeId=:CommitteeId AND CARSInitiationId=:CARSInitiationId";
+	@Override
+	public Object[] carsCommitteeDescriptionTOR(String carsInitiationId, String committeeId) throws Exception
+	{		
+		try {
+			Query query=manager.createNativeQuery(CARSCOMMITTEEDESCRIPTIONTOR);
+			query.setParameter("CommitteeId", committeeId);	
+			query.setParameter("CARSInitiationId", carsInitiationId);	
+			return (Object[])query.getSingleResult();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	@Override
+	public CommitteeCARS getCommitteeCARSById(String comCARSInitiationId) throws Exception {
+		try {
+			return manager.find(CommitteeCARS.class, Long.parseLong(comCARSInitiationId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@Override
+	public Long addCommitteeCARS(CommitteeCARS committeeCARS) throws Exception {
+		try {
+			manager.persist(committeeCARS);
+			manager.flush();
+			return committeeCARS.getComCARSInitiationId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
 	}
 	
 }
