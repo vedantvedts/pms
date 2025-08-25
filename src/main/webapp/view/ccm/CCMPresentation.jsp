@@ -506,7 +506,7 @@ input,select,table,div,label,span {
 																				 key=entry.getKey().toString();
 																			 } }}%>
 																		
-																		<%=committee.getCommitteeShortName()!=null?StringEscapeUtils.escapeHtml4(committee.getCommitteeShortName()).trim().toUpperCase():" - "+"-"+key+"-("+seqDate!=null?StringEscapeUtils.escapeHtml4(seqDate):" - " +")/"+obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()).split("/")[3]:" - " %>
+																		<%=committee.getCommitteeShortName()!=null?StringEscapeUtils.escapeHtml4(committee.getCommitteeShortName()).trim().toUpperCase():" - "%> - <%=key%> -(<%=seqDate!=null?StringEscapeUtils.escapeHtml4(seqDate):" - " %>)/<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()).split("/")[3]:" - " %>
 																	</button>
 																<%}%> 
 															<!--  -->
@@ -514,7 +514,7 @@ input,select,table,div,label,span {
 															<%if(i==0) {%>
 													    		<td rowspan="<%=values.size() %>" style="text-align: justify;vertical-align: middle;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 			           										<%} %>
-															<td style="text-align: justify;"><%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "+", "+obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - "%></td>
+															<td style="text-align: justify;"><%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "%>, <%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - "%></td>
 															<td style="text-align: center;">
 																<%	String actionstatus = obj[9].toString();
 																	int progress = obj[15]!=null ? Integer.parseInt(obj[15].toString()) : 0;
@@ -601,7 +601,7 @@ input,select,table,div,label,span {
 																				 key=entry.getKey().toString();
 																			 } }}%>
 																		
-																		<%=committee.getCommitteeShortName()!=null?StringEscapeUtils.escapeHtml4(committee.getCommitteeShortName()).trim().toUpperCase():" - "+"-"+key+"-("+(obj[20]!=null?StringEscapeUtils.escapeHtml4(obj[20].toString()).substring(2, 7):" - ")+")/"+obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()).split("/")[3]:" - " %>
+																		<%=committee.getCommitteeShortName()!=null?StringEscapeUtils.escapeHtml4(committee.getCommitteeShortName()).trim().toUpperCase():" - "%>-<%=key%>-(<%=(obj[20]!=null?StringEscapeUtils.escapeHtml4(obj[20].toString()).substring(2, 7):" - ")%>)/ <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()).split("/")[3]:" - " %>
 																	</button>
 																<%}%> 
 															<!--  -->
@@ -609,7 +609,7 @@ input,select,table,div,label,span {
 															<%if(i==0) {%>
 													    		<td rowspan="<%=values.size() %>" style="text-align: justify;vertical-align: middle;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 			           										<%} %>
-															<td style="text-align: justify;"><%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "+", "+obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - "%></td>
+															<td style="text-align: justify;"><%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "%>, <%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - "%></td>
 															<td style="text-align: center;">
 																<%	String actionstatus = obj[9].toString();
 																	int progress = obj[15]!=null ? Integer.parseInt(obj[15].toString()) : 0;
@@ -739,7 +739,7 @@ input,select,table,div,label,span {
 																				 key=entry.getKey().toString();
 																			 } }}%>
 																		
-																		<%=committee.getCommitteeShortName()!=null?StringEscapeUtils.escapeHtml4(committee.getCommitteeShortName()).trim().toUpperCase():" - "+"-"+key+"-("+(obj[20]!=null?StringEscapeUtils.escapeHtml4(obj[20].toString()).substring(2, 7):" - ")+")/"+obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()).split("/")[3]:" - " %>
+																		<%=committee.getCommitteeShortName()!=null?StringEscapeUtils.escapeHtml4(committee.getCommitteeShortName()).trim().toUpperCase():" - "%>-<%=key%>-(<%=(obj[20]!=null?StringEscapeUtils.escapeHtml4(obj[20].toString()).substring(2, 7):" - ")%>)/<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()).split("/")[3]:" - " %>
 																	</button>
 																<%}%> 
 															<!--  -->
@@ -747,7 +747,7 @@ input,select,table,div,label,span {
 															<%if(i==0) {%>
 													    		<td rowspan="<%=values.size() %>" style="text-align: justify;vertical-align: middle;"><%=obj[2] %></td>
 			           										<%} %>
-															<td style="text-align: justify;"><%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "+", "+obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - "%></td>
+															<td style="text-align: justify;"><%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "%>, <%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - "%></td>
 															<td style="text-align: center;">
 																<%	String actionstatus = obj[9].toString();
 																	int progress = obj[15]!=null ? Integer.parseInt(obj[15].toString()) : 0;
@@ -889,7 +889,7 @@ input,select,table,div,label,span {
 																            }
 																        }
 																    }
-																	 out.print(result!=null?StringEscapeUtils.escapeHtml4(result.toString()): " - ");
+																	 out.print(result);
 																} else {
 																    out.print("-");
 																} %>
@@ -907,7 +907,7 @@ input,select,table,div,label,span {
 																            }
 																        }
 																    }
-																	 out.print(result!=null?StringEscapeUtils.escapeHtml4(result.toString()): " - ");
+																	 out.print(result);
 																} else {
 																    out.print("-");
 																} %>
@@ -927,7 +927,7 @@ input,select,table,div,label,span {
 																            }
 																        }
 																    }
-																	 out.print((obj[3]!=null?",&emsp;":"")+result!=null?StringEscapeUtils.escapeHtml4(result.toString()): " - ");
+																	 out.print((obj[3]!=null?",&emsp;":"")+result);
 																} %>
 																<%if(obj[3]==null && obj[1]==null) {%>-<%} %>
 															</td>
@@ -987,7 +987,7 @@ input,select,table,div,label,span {
 																            }
 																        }
 																    }
-																	 out.print(result!=null?StringEscapeUtils.escapeHtml4(result.toString()): " - ");
+																	 out.print(result);
 																} else {
 																    out.print("-");
 																} %>
@@ -1005,7 +1005,7 @@ input,select,table,div,label,span {
 																            }
 																        }
 																    }
-																	 out.print(result!=null?StringEscapeUtils.escapeHtml4(result.toString()): " - ");
+																	 out.print(result);
 																} else {
 																    out.print("-");
 																} %>
@@ -1025,7 +1025,7 @@ input,select,table,div,label,span {
 																            }
 																        }
 																    }
-																	 out.print((obj[3]!=null?",&emsp;":"")+result!=null?StringEscapeUtils.escapeHtml4(result.toString()): " - ");
+																	 out.print((obj[3]!=null?",&emsp;":"")+result);
 																} %>
 																<%if(obj[3]==null && obj[1]==null) {%>-<%} %>
 															</td>
@@ -1720,8 +1720,8 @@ input,select,table,div,label,span {
 													%>
 														<tr>
 															<td class="center"><%=++slno %></td>
-															<td><%=achmnts.getLabCode()!=null?StringEscapeUtils.escapeHtml4(achmnts.getLabCode()): " - " %></td>
-															<td><%=achmnts.getAchievement()!=null?StringEscapeUtils.escapeHtml4(achmnts.getAchievement()): " - " %></td>
+															<td><%=achmnts.getLabCode()!=null?achmnts.getLabCode(): " - " %></td>
+															<td><%=achmnts.getAchievement()!=null?achmnts.getAchievement(): " - " %></td>
 															<td class="center">
 																<form action="#">
 																	<input type="hidden" name="action" value="Edit">
@@ -1796,8 +1796,8 @@ input,select,table,div,label,span {
 													%>
 														<tr>
 															<td class="center"><%=++slno %></td>
-															<td><%=achmnts.getLabCode()!=null?StringEscapeUtils.escapeHtml4(achmnts.getLabCode()): " - " %></td>
-															<td><%=achmnts.getAchievement()!=null?StringEscapeUtils.escapeHtml4(achmnts.getAchievement()): " - " %></td>
+															<td><%=achmnts.getLabCode()!=null?achmnts.getLabCode(): " - " %></td>
+															<td><%=achmnts.getAchievement()!=null?achmnts.getAchievement(): " - " %></td>
 															<td class="center">
 																<form action="#">
 																	<input type="hidden" name="action" value="Edit">
@@ -1871,8 +1871,8 @@ input,select,table,div,label,span {
 													%>
 														<tr>
 															<td class="center"><%=++slno %></td>
-															<td><%=achmnts.getLabCode()!=null?StringEscapeUtils.escapeHtml4(achmnts.getLabCode()): " - " %></td>
-															<td><%=achmnts.getAchievement()!=null?StringEscapeUtils.escapeHtml4(achmnts.getAchievement()): " - " %></td>
+															<td><%=achmnts.getLabCode()!=null?achmnts.getLabCode(): " - " %></td>
+															<td><%=achmnts.getAchievement()!=null?achmnts.getAchievement(): " - " %></td>
 															<td class="center">
 																<form action="#">
 																	<input type="hidden" name="action" value="Edit">

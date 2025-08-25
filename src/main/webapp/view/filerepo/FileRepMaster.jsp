@@ -202,7 +202,7 @@ textarea {
 														<%if (ProjectId.equalsIgnoreCase(obj[0].toString())) {
 															projectDirectorId = Long.parseLong(obj[23].toString());
 														%>
-														selected="selected" <%}%>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " + projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%>
+														selected="selected" <%}%>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %> <%= projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%>
 													</option>
 													<%
 													}

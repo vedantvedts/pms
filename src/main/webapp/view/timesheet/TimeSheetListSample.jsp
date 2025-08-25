@@ -718,7 +718,7 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 												               				<%for(Object[] pro: projectList ){
 												                				String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
 												                			 %>
-																				<option value="<%=pro[0]%>" <%if(act.getProjectId()==Long.parseLong(pro[0].toString())) {%>selected<%} %> ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[1].toString()):" - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>
+																				<option value="<%=pro[0]%>" <%if(act.getProjectId()==Long.parseLong(pro[0].toString())) {%>selected<%} %> ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[1].toString()):" - "%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>
 																			<%} %>
 																		</select>
 																	</td>
@@ -779,7 +779,7 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 												               				<%for(Object[] pro: projectList ){
 												                				String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
 												                			 %>
-																				<option value="<%=pro[0]%>" ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[4].toString()):"-"+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):"-" %></option>
+																				<option value="<%=pro[0]%>" ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[4].toString()):"-"%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):"-" %></option>
 																			<%} %>
 																		</select>
 																	</td>

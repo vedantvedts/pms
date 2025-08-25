@@ -168,7 +168,7 @@ Object[]NewApprovalList = (Object[])request.getAttribute("NewApprovalList");
 	</tr>
 	<tr>
 	<td style="border: none; width:25%;"><span style=" font-size: 14px; color: blue;"><b style="margin-left:20px; color: black;">Comment :</b></span></td>
-	<td style="border: none;"><span style="font-size: 14px; color: blue;"><%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[4]!=null && CommitteMainEnoteList[4].toString().length()>0){%><%=StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[4].toString()).replaceAll("\n", "<br>")%><%}else{%>-<%}%></span> </td>
+	<td style="border: none;"><span style="font-size: 14px; color: blue;"><%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[4]!=null && CommitteMainEnoteList[4].toString().length()>0){%><%=CommitteMainEnoteList[4].toString().replaceAll("\n", "<br>")%><%}else{%>-<%}%></span> </td>
 	</tr>
 	<tr>
 	<td style="border: none; width:25%;"><span style=" font-size: 14px; color: blue;"><b style="margin-left:20px; color: black;">Attachment : </b></span></td>

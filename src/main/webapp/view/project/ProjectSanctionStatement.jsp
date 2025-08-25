@@ -426,7 +426,7 @@ strong {
 										</tr>
 										<tr>
 											<td><h5>2. Title of the Project/Programme:</h5></td>
-											<td><h5><%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " + "(" + ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " + ")"%></h5></td>
+											<td><h5><%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - "%> (<%= ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</h5></td>
 										</tr>
 										<tr>
 											<td><h5>3. Category of Project:</h5></td>
@@ -607,7 +607,7 @@ strong {
 											for (Object[] obj : sanctionlistdetails) {
 											%>
 											<tr>
-												<td><h5><%=Integer.parseInt(obj[0].toString()) + 10 + "." + " " + obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></h5></td>
+												<td><h5><%=Integer.parseInt(obj[0].toString()) + 10 + "." + " " + (obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - ")%></h5></td>
 												<%
 												if (i == 5 && !projectTypeId.equalsIgnoreCase("1")) {
 												%>
@@ -638,7 +638,7 @@ strong {
 												%>
 											
 											<tr>
-												<td><h5><%=Integer.parseInt(obj[0].toString()) + 10 + "." + " " + obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></h5></td>
+												<td><h5><%=Integer.parseInt(obj[0].toString()) + 10 + "." + " " + (obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - ")%></h5></td>
 												<%
 													if (i == 5 && !projectTypeId.equalsIgnoreCase("1")) {
 													%>
@@ -2162,8 +2162,8 @@ strong {
 								boolean case5=Integer.parseInt(obj[5].toString())>=monthDivision;
 								boolean case6 = Integer.parseInt(obj[5].toString())>i && Integer.parseInt(obj[6].toString())>=((i*6)+6);
 								if((case1)&&(case2||case3)){
-								%> <%="MIL -"+obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-											<%}else if(case5 &&case4){%> <%="MIL -"+obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								%> <%="MIL -"+(obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - ")%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											<%}else if(case5 &&case4){%> <%="MIL -"+(obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - ") %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 											<%}else if(case6){%> 
 											<% }}%>
 										</td>

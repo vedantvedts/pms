@@ -220,7 +220,7 @@ Project Type:
 														<% for (Object[] obj : ProjectsList) {
 															String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";			 
 														%>
-															<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectId)){ %>selected<%} %> ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%></option>
+															<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectId)){ %>selected<%} %> ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%><%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%></option>
 														<%} %>
 														
 													</select>

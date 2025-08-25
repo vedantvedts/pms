@@ -221,13 +221,13 @@ Map<String, List<Object[]>> industryPartnerToListMap = industryPartnerList.strea
 			           								<tr>
 			           									<td style="text-align: center;"><%=++slno %></td>
 			           									<%if(i==0) {%>
-													    	<td  rowspan="<%=values.size() %>" style="vertical-align: middle;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%> %></td>
-													    	<td  rowspan="<%=values.size() %>" style="vertical-align: middle;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%>+", "+<%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()):" - "%>+" - "+<%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()):" -"%> %></td>
+													    	<td  rowspan="<%=values.size() %>" style="vertical-align: middle;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%> </td>
+													    	<td  rowspan="<%=values.size() %>" style="vertical-align: middle;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%>, <%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()):" - "%> - <%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()):" -"%> </td>
 			           									<%} %>
-												        <td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"-"%> %></td>
-												        <td><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-"%> %></td>
-												        <td style="text-align: center;"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"-"%> %></td>
-												        <td><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()):"-"%> %></td>
+												        <td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"-"%> </td>
+												        <td><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-"%> </td>
+												        <td style="text-align: center;"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"-"%> </td>
+												        <td><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()):"-"%> </td>
 												        <td style="text-align: center;">
 			                                               <%if(Boolean.parseBoolean(obj[8].toString())) {%>
 			                                                     <span class="badge badge-success">Active</span>  

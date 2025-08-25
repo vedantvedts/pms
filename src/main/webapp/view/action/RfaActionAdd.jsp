@@ -107,7 +107,7 @@ String DesgId = ((String)session.getAttribute("DesgId"));
 		                            <option  value="" selected>SELECT</option>
 		                            <% if(vendorList!=null && vendorList.size()>0){
 		                            for(Object[] obj : vendorList) { %>
-		                            <option value="<%=obj[0]+"/"+obj[3]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>( <%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):" - " %> )</option>
+		                            <option value="<%=obj[0]+"/"+obj[3]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%> (<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):" - " %>)</option>
 		                            <%}} %>
 		                           </select>
 		                           <!--  <input  class="form-control"  name="rfano" id="rfano"  required="required"  placeholder="Enter RFA Number" > -->	
@@ -127,14 +127,14 @@ String DesgId = ((String)session.getAttribute("DesgId"));
 											    	 String projectshortName=(obj[17]!=null) ? " ( "+obj[17].toString()+" ) ":"";
 											     %>
 												 <option value="<%=obj[0] %>" <%if(projectId.equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>>
-												       <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %>
+												       <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%> <%= projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %>
 												 </option>	
 												<%} %>
 				  							<%}else{ %>
 												<% if(preProjectList!=null && preProjectList.size()>0){
 														for (Object[] obj : preProjectList) {%>
 												<option value="<%=obj[0]%>"  <%if(obj[0].toString().equalsIgnoreCase(initiationId)){ %> selected <%} %>>
-														<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - "+"( "+obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "+" )" %>
+														<%=(obj[3] != null ? StringEscapeUtils.escapeHtml4(obj[3].toString())  : " - ")+ " ( " + (obj[2] != null  ? StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ")+ " )"%>
 												</option>
 												<%} }%>
 				  							<%} %>
@@ -165,7 +165,7 @@ String DesgId = ((String)session.getAttribute("DesgId"));
 		                            	<select class="custom-select"  required="required"name="priority" id="priority" >
 										    <option disabled="true"  selected value="">Choose...</option>
 											 <% for (Object[] obj : PriorityList) {%>
-											<option value="<%=obj[0]%>"><%= "(" + obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):" - " + ")" + obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%></option>
+											<option value="<%=obj[0]%>"><%=  "("  + (obj[0] != null  ? StringEscapeUtils.escapeHtml4(obj[0].toString())  : " - ") + ") "+ (obj[1] != null  ? StringEscapeUtils.escapeHtml4(obj[1].toString())  : " - ")%></option>
 											<%} %>
 		  								</select>
 		                        </div>

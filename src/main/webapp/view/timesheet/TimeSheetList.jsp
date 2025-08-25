@@ -592,7 +592,7 @@ statusMap.put("RBS", "#fe4e4e");
 											                				for(Object[] pro: projectList ){
 											                					String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
 											                			 %>
-																			<option value="<%=pro[0]%>" <%if(act.getProjectId()==Long.parseLong(pro[0].toString())) {%>selected<%} %>  ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[4].toString()):"-"+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):"-" %></option>
+																			<option value="<%=pro[0]%>" <%if(act.getProjectId()==Long.parseLong(pro[0].toString())) {%>selected<%} %>  ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[4].toString()):"-"%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):"-" %></option>
 																		<%} %>
 																	</select>
 																</td>
@@ -649,7 +649,7 @@ statusMap.put("RBS", "#fe4e4e");
 											                				for(Object[] pro: projectList ){
 											                					String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
 											                			 %>
-																			<option value="<%=pro[0]%>" ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[4].toString()):" - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>
+																			<option value="<%=pro[0]%>" ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[4].toString()):" - "%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>
 																		<%} %>
 																	</select>
 																</td>
@@ -965,7 +965,7 @@ function toggleDiv(divId) {
     				for(Object[] pro: projectList ){
     					String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
     			 %>
-    			 newRow+='<option value="<%=pro[0]%>" ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[4].toString()):" - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>';
+    			 newRow+='<option value="<%=pro[0]%>" ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[4].toString()):" - "%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>';
 				<%} %>
 		newRow+='</select></td>';
 		newRow+='<td><span id="activityName-'+newId+'"></span>';

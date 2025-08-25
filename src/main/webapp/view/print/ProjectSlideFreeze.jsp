@@ -113,7 +113,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 	<div style="margin-top: -28px;margin-right: 75px;">
 		<p style="font-size: 1.02rem;font-weight: bold; color: #021B79;padding: 3px;margin: 0px 0px 0px 0px;float: right;margin-top: -35px;">
 			<%if(new File(filePath +projectdata[25]+projectdata[27]).exists()){%>
-			<a href="<%=filePath!=null?StringEscapeUtils.escapeHtml4(filePath): " - " +projectdata[25]!=null?StringEscapeUtils.escapeHtml4(projectdata[25].toString()): " - "+projectdata[27]!=null?StringEscapeUtils.escapeHtml4(projectdata[27].toString()): " - "%>"  target="_blank" title="PDF File">
+			<a href="<%=filePath!=null?StringEscapeUtils.escapeHtml4(filePath): " - " %> <%=projectdata[25]!=null?StringEscapeUtils.escapeHtml4(projectdata[25].toString()): " - "%> <%=projectdata[27]!=null?StringEscapeUtils.escapeHtml4(projectdata[27].toString()): " - "%>"  target="_blank" title="PDF File">
 				Show More
 			</a> 
 			<%} %>
@@ -122,7 +122,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 		
 		<p style="font-size: 1.02rem;font-weight: bold; color: #021B79;padding: 3px;margin: 0px 0px 0px 0px;float: right;margin-top: -30px;">
 			<%if(new File(filePath +projectdata[25]+projectdata[30]).exists()){%>
-			<a href="<%=filePath!=null?StringEscapeUtils.escapeHtml4(filePath): " - " +projectdata[25]!=null?StringEscapeUtils.escapeHtml4(projectdata[25].toString()): " - "+projectdata[30]!=null?StringEscapeUtils.escapeHtml4(projectdata[30].toString()): " - "%>"  target="_blank" title="Video File">
+			<a href="<%=filePath!=null?StringEscapeUtils.escapeHtml4(filePath): " - " %> <%=projectdata[25]!=null?StringEscapeUtils.escapeHtml4(projectdata[25].toString()): " - "%> <%=projectdata[30]!=null?StringEscapeUtils.escapeHtml4(projectdata[30].toString()): " - "%>"  target="_blank" title="Video File">
 				Show Video
 			</a> 
 			<%} %>

@@ -119,7 +119,7 @@ text-align:justify !important;
              margin-right: 10px;
           }
           @top-right {
-          	 content : "Project : <%=ProjectTitle!=null?StringEscapeUtils.escapeHtml4(ProjectTitle): " - " %>";
+          	 content : "Project : <%=ProjectTitle!=null?ProjectTitle: " - " %>";
              margin-top: 30px;
              margin-right: 10px;
           }
@@ -179,15 +179,15 @@ td>table{
     <table class="border-black" style="margin-left:20px; margin-top:15px;border:1px solid black;border-collapse:collapse;font-family:FontAwesome; width:650px;">
 	<tr >
 	<td  style="width:300px;text-align: left;padding: 1px !important; border:1px solid plack;"><h4 class="mainTD">&nbsp;1.&nbsp;&nbsp;a.&nbsp;&nbsp; Title of the Project:</h4></td>
-	<td align="left" style="border:1px solid plack;"><%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %></td>
+	<td align="left" style="border:1px solid plack;"><%=ProjectDetailes[7]!=null?ProjectDetailes[7].toString(): " - " %></td>
 	</tr>
 	<tr style="">
 	<td  style="width:300px;text-align: left;padding: 1px !important;border:1px solid plack;"><h4 class="mainTD">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b.&nbsp;&nbsp; Short Name or Acronym :</h4></td>
-	<td align="left"style="border:1px solid plack;"><%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - "  %></td>
+	<td align="left"style="border:1px solid plack;"><%=ProjectDetailes[6]!=null?ProjectDetailes[6].toString(): " - "  %></td>
 	</tr>
 	<tr>
 	<td class="mainTD" class="border-black" style="width:300px;padding: 1px !important;text-align: left;"><h4 class="mainTD">&nbsp;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Title of the Programme:<br>(If the Project is part of a Programme) </h4></td>
-	<td class="border-black" align="left"><%=MacroDetails!=null && MacroDetails.length>0 && MacroDetails[13]!=null?StringEscapeUtils.escapeHtml4(MacroDetails[13].toString()):"-" %></td>
+	<td class="border-black" align="left"><%=MacroDetails!=null && MacroDetails.length>0 && MacroDetails[13]!=null?MacroDetails[13].toString():"-" %></td>
 	</tr>
 	</table>
 	<h1 class="break"></h1>
@@ -206,7 +206,7 @@ td>table{
 													<p align="center"> Not Mentioned</p>
 													<%}else {
 												%>
-												<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>
+												<%=obj[1]!=null?obj[1].toString(): " - "%>
 												<%}}}}else{ %>
 												<p align="center">Not Mentioned</p>
 												<%} %>
@@ -221,7 +221,7 @@ td>table{
 	<td style="width:650px;text-align:left;">
      <%	if(!DetailsList.isEmpty()){for (Object[] obj : DetailsList) {
 		if (obj[2] != null) {%><% if(obj[2].toString().trim().length()==0){%>
-		<p align="center"> Not Mentioned</p><%}else {%><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%><%}}}}else{ %>
+		<p align="center"> Not Mentioned</p><%}else {%><%=obj[2]!=null?obj[2].toString(): " - "%><%}}}}else{ %>
 		<p align="center">Not Mentioned</p><%} %>
     </td>
 	</tr>
@@ -235,7 +235,7 @@ td>table{
 	</table>
 	<div style="margin-left:50px;">
 	
-		<%if(MacroDetails!=null && MacroDetails.length>0 && MacroDetails[14]!=null){ %><%=StringEscapeUtils.escapeHtml4(MacroDetails[14].toString())%>
+		<%if(MacroDetails!=null && MacroDetails.length>0 && MacroDetails[14]!=null){ %><%=MacroDetails[14].toString()%>
 		<%}else{ %><p>Not Specified</p><%} %>
 	</div>
 
@@ -258,7 +258,7 @@ td>table{
  	if (!ProjectInitiationLabList.isEmpty()) {
 	for (Object[] obj : ProjectInitiationLabList) {
 	count++;%>
-	<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "+"("+obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "+")" %><%if(count<ProjectInitiationLabList.size()){ %>,<%} %>
+	<%=obj[2]!=null?obj[2].toString(): " - "%> <%="("%> <%=obj[3]!=null?obj[3].toString(): " - "%> <%=")" %><%if(count<ProjectInitiationLabList.size()){ %>,<%} %>
 	<%}} %>					
  </h5></td></tr>
 	</table>
@@ -267,7 +267,7 @@ td>table{
 	<td style="width:300px;text-align: left;"><h4 class="mainTD">7.&nbsp;&nbsp;&nbsp;&nbsp;Specify the User  </h4></td>
 	<td>
 	<%if(ProjectDetailes[22]!=null){%>
-		<%=StringEscapeUtils.escapeHtml4(ProjectDetailes[22].toString()) %>
+		<%=ProjectDetailes[22].toString()%>
 	<%}else{ %>Not Specified<%}%>
 	</td>
 	</tr>
@@ -280,14 +280,14 @@ td>table{
 	<tr colspan="1">
 	<td style="padding: 7px;">
 	<%if(MacroDetails.length!=0){ %>
-	<%if(MacroDetails[3]!=null){ %><div><%=StringEscapeUtils.escapeHtml4(MacroDetails[3].toString())%></div><%}else{ %> <p>Not Specified</p> <%} %>
+	<%if(MacroDetails[3]!=null){ %><div><%=MacroDetails[3].toString()%></div><%}else{ %> <p>Not Specified</p> <%} %>
 	<%}else{ %>
 	<p>Not Specified</p>
 	<%} %>
 	</td>
 	</tr>
 	<tr>
-	<td style="width:300px;text-align: left;"><span class="mainTD">9. PDC of Main Project -</span> 	<%if(MacroDetails.length != 0 && MacroDetails[12]!= null) { String[]temp = MacroDetails[12].toString().split("-");String datetemp = temp[2]+"-"+temp[1]+"-"+temp[0];%><%=datetemp!=null?StringEscapeUtils.escapeHtml4(datetemp): " - "%><%}else{%>Not Specified <%}%>
+	<td style="width:300px;text-align: left;"><span class="mainTD">9. PDC of Main Project -</span> 	<%if(MacroDetails.length != 0 && MacroDetails[12]!= null) { String[]temp = MacroDetails[12].toString().split("-");String datetemp = temp[2]+"-"+temp[1]+"-"+temp[0];%><%=datetemp!=null?datetemp: " - "%><%}else{%>Not Specified <%}%>
 	</td>
 	
 	</tr>
@@ -730,7 +730,7 @@ td>table{
 		<tr>
 	<td style="width:650px; ">
 	<%if(MacroDetails.length!=0){ %>
-	<%if(MacroDetails[2]!=null){ %><%=StringEscapeUtils.escapeHtml4(MacroDetails[2].toString())%><%}else { %> 	<p style="text-align: center;">Not Specified</p> <%} %>
+	<%if(MacroDetails[2]!=null){ %><%=MacroDetails[2].toString()%><%}else { %> 	<p style="text-align: center;">Not Specified</p> <%} %>
 	<%}else{ %>
 	<p>Not Specified</p>
 	<%} %>
@@ -780,7 +780,7 @@ td>table{
 								<%}else if(case5 &&case4){%>
 								<%=obj[1].toString() %><br>
 								<%} %> --%>
-								<div><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></div>
+								<div><%=obj[1]!=null?obj[1].toString(): " - " %></div>
 								
 								<%}}%>
 							</h5>	</td>
@@ -790,7 +790,7 @@ td>table{
 								if( milstonetotalMont>((i)*6) && milstonetotalMont<=((i+1)*6) ){
 								%>
 								
-								<p style="text-align: right !important;"><%=nfc.convert(Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[9].toString()))) %></p>
+								<p style="text-align: right !important;"><%=nfc.convert(Double.parseDouble(obj[9].toString())) %></p>
 								<%}}%>
 								
 								</td>
@@ -828,13 +828,13 @@ td>table{
 							for(Object[]obj:ProcurementList){
 							%><tr style="font-size: 13px;">
 							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=(++i) %></td>
-							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
-							<td class="border-black" style="width:2%;text-align: center; padding:10px;" ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>
-							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%></td>
-							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></td>
-							<td class="border-black" style="width:2%;text-align: right;padding: 5px;"><%=nfc.convert(Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[6].toString()))/10000000)%></td>
-							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - " %></td>
-							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - " %></td>
+							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[2]!=null?obj[2].toString(): " - " %></td>
+							<td class="border-black" style="width:2%;text-align: center; padding:10px;" ><%=obj[3]!=null?obj[3].toString(): " - "%></td>
+							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[4]!=null?obj[4].toString(): " - "%></td>
+							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[5]!=null?obj[5].toString(): " - " %></td>
+							<td class="border-black" style="width:2%;text-align: right;padding: 5px;"><%=nfc.convert(Double.parseDouble(obj[6].toString())/10000000)%></td>
+							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[8]!=null?obj[8].toString(): " - " %></td>
+							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[9]!=null?obj[9].toString(): " - " %></td>
 							</tr>
 							<%}} %>
 							</tbody>
@@ -874,10 +874,10 @@ td>table{
 							%>	
 							<tr>
 							<td class="border-black" style="padding:px;"><%=j %></td>
-							<td class="border-black"style="padding:px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
-							<td class="border-black"style="padding:px;"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
-							<td class="border-black"style="padding:px;"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></td>
-							<td class="border-black"style="padding:px;"><%=nfc.convert(Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[6].toString()))/10000000)%></td>
+							<td class="border-black"style="padding:px;"><%=obj[2]!=null?obj[2].toString(): " - " %></td>
+							<td class="border-black"style="padding:px;"><%=obj[4]!=null?obj[4].toString(): " - " %></td>
+							<td class="border-black"style="padding:px;"><%=obj[5]!=null?obj[5].toString(): " - " %></td>
+							<td class="border-black"style="padding:px;"><%=nfc.convert(Double.parseDouble(obj[6].toString())/10000000)%></td>
 							</tr>
 							<%
 							j++;}
@@ -895,7 +895,7 @@ td>table{
 					if (MacroDetails.length != 0) {
 					%> <%
  					if (MacroDetails[4] != null) {
- 					%><%=StringEscapeUtils.escapeHtml4(MacroDetails[4].toString())%>
+ 					%><%=MacroDetails[4].toString()%>
 					<%
 					}else{
 					%> 
@@ -919,7 +919,7 @@ td>table{
 					if (MacroDetails.length != 0) {
 					%> <%
  					if (MacroDetails[5] != null) {
- 					%><%=StringEscapeUtils.escapeHtml4(MacroDetails[5].toString())%>
+ 					%><%=MacroDetails[5].toString()%>
 					<%
 					}else{
 					%> 
@@ -937,9 +937,9 @@ td>table{
 			</td></tr>
 		
 			</table>
-			<div style="margin-left: 50px;"> 	<%if(MacroDetails!=null && MacroDetails.length>0 && MacroDetails[15]!=null){ %> <%=StringEscapeUtils.escapeHtml4(MacroDetails[15].toString()) %> <%} %></div>
+			<div style="margin-left: 50px;"> 	<%if(MacroDetails!=null && MacroDetails.length>0 && MacroDetails[15]!=null){ %> <%=MacroDetails[15].toString() %> <%} %></div>
 			<br></br>	
-			<h4 style="width:35%;margin-left:10px;"><%=ProjectDetailes[1]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[1].toString()): " - "  %><hr style="padding-bottom: 0px;">
+			<h4 style="width:35%;margin-left:10px;"><%=ProjectDetailes[1]!=null?ProjectDetailes[1].toString(): " - "  %><hr style="padding-bottom: 0px;">
 			</h4><h4 style="text-align:left;margin-left: 80px;margin-top:0px;"> Project Director </h4>
 
 

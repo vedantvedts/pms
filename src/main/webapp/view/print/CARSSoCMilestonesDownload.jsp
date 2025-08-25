@@ -88,7 +88,7 @@ CARSInitiation carsIni =(CARSInitiation)request.getAttribute("CARSInitiationData
           
           @top-left {
           	margin-top: 30px;
-            content: "<%=carsIni.getCARSNo()!=null?StringEscapeUtils.escapeHtml4(carsIni.getCARSNo()): " - "%>";
+            content: "<%=carsIni.getCARSNo()!=null?carsIni.getCARSNo(): " - "%>";
             font-size: 13px;
           }               
           
@@ -208,14 +208,14 @@ CARSSoC carsSoC =(CARSSoC)request.getAttribute("CARSSoCData");
    				<tbody>
    					<%int i=0; for(CARSSoCMilestones mil : milestones) { %>
    						<tr>
-   							<td style="text-align: center;width: 5%;"><%if(mil.getMilestoneNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getMilestoneNo()) %><%} else{%>-<%} %></td>
-   							<td style="width: 20%;"><%if(mil.getTaskDesc()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getTaskDesc()) %><%} else{%>-<%} %></td>
-   							<td style="text-align: center;width: 10%;"><%if(mil.getMonths()!=null) {%><%="T0 + "+StringEscapeUtils.escapeHtml4(mil.getMonths()) %><%} else{%>-<%} %></td>
-   							<td style=""><%if(mil.getDeliverables()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getDeliverables()) %><%} else{%>-<%} %></td>
+   							<td style="text-align: center;width: 5%;"><%if(mil.getMilestoneNo()!=null) {%><%=mil.getMilestoneNo() %><%} else{%>-<%} %></td>
+   							<td style="width: 20%;"><%if(mil.getTaskDesc()!=null) {%><%=mil.getTaskDesc() %><%} else{%>-<%} %></td>
+   							<td style="text-align: center;width: 10%;"><%if(mil.getMonths()!=null) {%><%="T0 + "%> <%=mil.getMonths() %><%} else{%>-<%} %></td>
+   							<td style=""><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} else{%>-<%} %></td>
    							<%if(carsSoC!=null) {%>
-   							<td style="text-align: center;width: 5%;"><%if(mil.getPaymentPercentage()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getPaymentPercentage()) %><%} else{%>-<%} %></td>
+   							<td style="text-align: center;width: 5%;"><%if(mil.getPaymentPercentage()!=null) {%><%=mil.getPaymentPercentage() %><%} else{%>-<%} %></td>
    							<td style="width: 10%;text-align: right;"><%if(mil.getActualAmount()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(mil.getActualAmount())) %><%} else{%>-<%} %></td>
-   							<td style="width: 10%;"><%if(mil.getPaymentTerms()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getPaymentTerms()) %><%} else{%>-<%} %></td>
+   							<td style="width: 10%;"><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} else{%>-<%} %></td>
    							<%} %>
    						</tr>
    					<%} %>
@@ -232,10 +232,10 @@ CARSSoC carsSoC =(CARSSoC)request.getAttribute("CARSSoCData");
 			<div style="line-height: 17px;">
     			<div style="font-size: 15px;margin-bottom: 10px;">Signature of the initiating officer</div>
 				<label style="text-transform: capitalize;">
-					<%if(emp!=null && emp[1]!=null){%> <%=StringEscapeUtils.escapeHtml4(emp[1].toString())%><%} %>,
+					<%if(emp!=null && emp[1]!=null){%> <%=emp[1].toString()%><%} %>,
 				</label><!-- <br> -->
 				<label style="text-transform: capitalize;">
-					<%if(emp!=null && emp[2]!=null){%> <%=StringEscapeUtils.escapeHtml4(emp[2].toString())%><%} %>
+					<%if(emp!=null && emp[2]!=null){%> <%=emp[2].toString()%><%} %>
 				</label><br>
 			</div>
 		</td>

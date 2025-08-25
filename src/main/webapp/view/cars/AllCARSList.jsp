@@ -409,7 +409,7 @@ String carstodate   = (String)request.getAttribute("carstodate");
 					                       				%>
 					                        			<tr>
 					                            			<td style="text-align: center;width: 5%;"><%=++SNA%></td>
-					                            			<td style="text-align: left;width: 20%;"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+" ("+form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "+"), "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
+					                            			<td style="text-align: left;width: 20%;"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%> (<%=form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "%>), <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
 					                            			<td style="text-align: center;width: 15%;"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - " %> </td>
 					                            			<td style="text-align: right;width: 10%;"><%=form[11]!=null?StringEscapeUtils.escapeHtml4(form[11].toString()): " - " %> </td>
 					                            			<td style="text-align: center;width: 28%;">
@@ -585,7 +585,7 @@ String carstodate   = (String)request.getAttribute("carstodate");
 						                       				%>
 						                        			<tr>
 						                            			<td style="text-align: center;width: 5%;"><%=++SNA%></td>
-						                            			<td style="text-align: left;width: 20%;"><%=form[9]!=null?StringEscapeUtils.escapeHtml4(form[9].toString()): " - "+" ("+form[13]!=null?StringEscapeUtils.escapeHtml4(form[13].toString()): " - "+"), "+form[14]!=null?StringEscapeUtils.escapeHtml4(form[14].toString()): " - "%></td>
+						                            			<td style="text-align: left;width: 20%;"><%=form[9]!=null?StringEscapeUtils.escapeHtml4(form[9].toString()): " - "%> (<%=form[13]!=null?StringEscapeUtils.escapeHtml4(form[13].toString()): " - "%>), <%=form[14]!=null?StringEscapeUtils.escapeHtml4(form[14].toString()): " - "%></td>
 						                            			<td style="text-align: center;width: 15%;"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - " %> </td>
 						                            			<td style="text-align: right;width: 10%;"><%=form[15]!=null?StringEscapeUtils.escapeHtml4(form[15].toString()): " - " %> </td>
 						                            			<td style="text-align: center;width: 33%;">
@@ -694,7 +694,7 @@ String carstodate   = (String)request.getAttribute("carstodate");
 						                       				%>
 						                        			<tr>
 						                            			<td style="text-align: center;width: 5%;"><%=++SNA%></td>
-						                            			<td style="text-align: left;width: 20%;"><%=form[9]!=null?StringEscapeUtils.escapeHtml4(form[9].toString()): " - "+" ("+form[13]!=null?StringEscapeUtils.escapeHtml4(form[13].toString()): " - "+"), "+form[14]!=null?StringEscapeUtils.escapeHtml4(form[14].toString()): " - "%></td>
+						                            			<td style="text-align: left;width: 20%;"><%=form[9]!=null?StringEscapeUtils.escapeHtml4(form[9].toString()): " - "%> (<%=form[13]!=null?StringEscapeUtils.escapeHtml4(form[13].toString()): " - "%>), <%=form[14]!=null?StringEscapeUtils.escapeHtml4(form[14].toString()): " - "%></td>
 						                            			<td style="text-align: center;width: 15%;"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - " %> </td>
 						                            			<td style="text-align: right;width: 10%;"><%=form[15]!=null?StringEscapeUtils.escapeHtml4(form[15].toString()): " - " %> </td>
 						                            			<td style="text-align: center;width: 33%;">

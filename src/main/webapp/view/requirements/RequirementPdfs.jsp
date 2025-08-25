@@ -192,7 +192,7 @@ function openModal() {
 	                <% } %>
 	                
 	                {
-	                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " + ")" %> <% } else { %> '-' <% } %></h5>'),
+	                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + (LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - ") + ")" %> <% } else { %> '-' <% } %></h5>'),
 	                    alignment: 'center',
 	                    fontSize: 16,
 	                    bold: true,
@@ -326,7 +326,7 @@ function openModal() {
 	    	                                		+ '<%String [] a=obj1[17].toString().split(", "); %>'
 	    	                                		+ '<%for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		 + '<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - " +" . "+ TestList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		 + '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ TestList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -343,7 +343,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[18].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                			+ '<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - " +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                			+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    											+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -356,7 +356,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[19].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		+ '<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - " +" . "+ InspectionList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ InspectionList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -369,7 +369,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[20].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		+ '<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - " +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -662,7 +662,7 @@ function openModal() {
 	    	                                		+ '<%String [] a=obj1[17].toString().split(", "); %>'
 	    	                                		+ '<%for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		 + '<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - " +" . "+ TestList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		 + '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ TestList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -679,7 +679,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[18].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                			+ '<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - " +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                			+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    											+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -692,7 +692,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[19].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		+ '<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - " +" . "+ InspectionList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ InspectionList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -705,7 +705,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[20].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		+ '<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - " +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - " )+" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -863,7 +863,7 @@ function openModal() {
 	                <% } %>
 	                
 	                {
-	                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " + ")" %> <% } else { %> '-' <% } %></h5>'),
+	                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" +( LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - ") + ")" %> <% } else { %> '-' <% } %></h5>'),
 	                    alignment: 'center',
 	                    fontSize: 16,
 	                    bold: true,
@@ -997,7 +997,7 @@ function openModal() {
 	    	                                		+ '<%String [] a=obj1[17].toString().split(", "); %>'
 	    	                                		+ '<%for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		 + '<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - " +" . "+ TestList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		 + '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ TestList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -1014,7 +1014,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[18].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                			+ '<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - " +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                			+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    											+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -1027,7 +1027,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[19].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		+ '<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - " +" . "+ InspectionList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ InspectionList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -1040,7 +1040,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[20].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		+ '<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - " +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -1198,7 +1198,7 @@ function openModal() {
 	                <% } %>
 	                
 	                {
-	                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " + ")" %> <% } else { %> '-' <% } %></h5>'),
+	                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" +( LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - ") + ")" %> <% } else { %> '-' <% } %></h5>'),
 	                    alignment: 'center',
 	                    fontSize: 16,
 	                    bold: true,
@@ -1332,7 +1332,7 @@ function openModal() {
 	    	                                		+ '<%String [] a=obj1[17].toString().split(", "); %>'
 	    	                                		+ '<%for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		 + '<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - " +" . "+ TestList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		 + '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ TestList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -1349,7 +1349,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[18].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                			+ '<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - " +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                			+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    											+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -1362,7 +1362,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[19].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		+ '<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - " +" . "+ InspectionList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ InspectionList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -1375,7 +1375,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[20].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		+ '<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - " +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],

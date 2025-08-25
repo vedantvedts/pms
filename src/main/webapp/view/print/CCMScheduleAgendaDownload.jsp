@@ -77,7 +77,7 @@ List<Object[]> agendaList = (List<Object[]>) request.getAttribute("agendaList");
 	
 	@top-left {
 	  margin-top: 30px;
-	  content: "<%=ccmSchedule.getMeetingId()!=null?StringEscapeUtils.escapeHtml4(ccmSchedule.getMeetingId()): " - "%>";
+	  content: "<%=ccmSchedule.getMeetingId()!=null?ccmSchedule.getMeetingId(): " - "%>";
 	  font-size: 13px;
 	  margin-left: 10px;
 	}               
@@ -154,7 +154,7 @@ List<Object[]> agendaList = (List<Object[]>) request.getAttribute("agendaList");
 				<tr>
 					<td class="center" style="width: 5%;"><%=count %></td>
 					
-					<td style="width: 35%;"><%=level1[4]!=null?StringEscapeUtils.escapeHtml4(level1[4].toString()): " - " %></td>
+					<td style="width: 35%;"><%=level1[4]!=null?level1[4].toString(): " - " %></td>
 					
 					<%-- <td class="center" style="width: 10%;">
 						<%if(level1[5]!=null && !level1[5].toString().equalsIgnoreCase("0")) {%>
@@ -166,7 +166,7 @@ List<Object[]> agendaList = (List<Object[]>) request.getAttribute("agendaList");
 						
 					<td style="width: 25%;">
 						<%if(level1[6]!=null && !level1[6].toString().equalsIgnoreCase("0")) {%>
-							<%=level1[9]!=null?StringEscapeUtils.escapeHtml4(level1[9].toString()): " - " %>
+							<%=level1[9]!=null?level1[9].toString(): " - " %>
 						<%} else {%>
 							-
 						<%} %>
@@ -179,7 +179,7 @@ List<Object[]> agendaList = (List<Object[]>) request.getAttribute("agendaList");
 					<td class="center" style="width: 13%;">
 						<%if(level1[8]!=null && !level1[8].toString().isEmpty()) {%>
 							<a class="btn btn-sm" href="CCMScheduleAgendaFileDownload.htm?scheduleAgendaId=<%=level1[0] %>&count=<%=count %>&subCount=0" target="_blank">
-								Annex-<%=level1[3]!=null?StringEscapeUtils.escapeHtml4(level1[3].toString()): " - " %>
+								Annex-<%=level1[3]!=null?level1[3].toString(): " - " %>
                				</a>
 						<%} else{%>	
 							-
@@ -206,7 +206,7 @@ List<Object[]> agendaList = (List<Object[]>) request.getAttribute("agendaList");
 										<tr>
 											<%-- <td class="center"><%=level2[3] %></td> --%>
 											
-											<td style="width: 37.3%;"><%=level2[4]!=null?StringEscapeUtils.escapeHtml4(level2[4].toString()): " - " %></td>
+											<td style="width: 37.3%;"><%=level2[4]!=null?level2[4].toString(): " - " %></td>
 											
 											<%-- <td class="center" style="width: 11%;">
 												<%if(level2[5]!=null && !level2[5].toString().equalsIgnoreCase("0")) {%>
@@ -218,7 +218,7 @@ List<Object[]> agendaList = (List<Object[]>) request.getAttribute("agendaList");
 												
 											<td style="width: 27.7%;">
 												<%if(level2[6]!=null && !level2[6].toString().equalsIgnoreCase("0")) {%>
-													<%=level2[9]!=null?StringEscapeUtils.escapeHtml4(level2[9].toString()): " - " %>
+													<%=level2[9]!=null?level2[9].toString(): " - " %>
 												<%} else {%>
 													-
 												<%} %>

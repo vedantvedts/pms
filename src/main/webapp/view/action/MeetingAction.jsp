@@ -175,7 +175,7 @@ String scheduleid =(String)request.getAttribute("scheduleid");
 										 for (Object[] obj : ProjectsList) {
 											 String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";			 
 										 %>
-												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectid)){ %>selected<%} %> ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - "%></option>
+												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectid)){ %>selected<%} %> ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%> <%= projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>
 										<%}} %>
 								             </select>       
 											</td>
@@ -197,7 +197,8 @@ String scheduleid =(String)request.getAttribute("scheduleid");
                                                    <select class="form-control selectdee" id="meettingid" required="required" name="meettingid" onchange='submitForm();'>
 							   			        	<% if(meetingcount!=null && meetingcount.size()>0){
 							   			        	 for (Object[] obj : meetingcount) {%>
-											         <option value="<%=obj[0]%>" <%if(obj[0].toString().equals(scheduleid)){ %>selected<%} %>><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - "+"-"+meettingcount!=null?StringEscapeUtils.escapeHtml4(meetingcount.toString()):" - "%></option>
+											         <option value="<%=obj[0]%>" <%if(obj[0].toString().equals(scheduleid)){ %>selected<%} %>><%= (obj[3] != null ? StringEscapeUtils.escapeHtml4(obj[3].toString())  : " - ") + " - " + (meetingcount != null ? StringEscapeUtils.escapeHtml4(meetingcount.toString()) : " - ")%>
+</option>
 											        <%meettingcount++;} }%>   
 							  	                  </select>				   						
 											</td> 	   									

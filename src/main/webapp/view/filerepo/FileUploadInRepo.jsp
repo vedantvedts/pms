@@ -205,7 +205,7 @@ div {
 		    	<select class="form-control selectdee" id="ProjectId" required="required" name="ProjectId">
 		    		<option disabled="true"  selected value="">Choose...</option>
 		    			<% for (Object[] obj : ProjectList) {%>
-							<option value="<%=obj[0]%>"  <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>><%=obj[2]%>( <%=obj[1]%> ) </option>
+							<option value="<%=obj[0]%>"  <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> (<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>) </option>
 						<%} %>
 		  		</select>
 				<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 

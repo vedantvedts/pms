@@ -429,7 +429,7 @@ h6{
 													%>
 													<option value="<%=obj[0]%>"
 														<%if (projectid.equalsIgnoreCase(obj[0].toString())) {%>
-														selected="selected" <%}%>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " + projectShortName!=null?StringEscapeUtils.escapeHtml4(projectShortName): " - "%></option>
+														selected="selected" <%}%>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %> <%= projectShortName!=null?StringEscapeUtils.escapeHtml4(projectShortName): " - "%></option>
 													<%
 													}
 													%>       

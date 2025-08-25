@@ -234,7 +234,7 @@
 							<td  class="text-primary" colspan="2">12.&nbsp; Organization and address:
 								<span class="text-dark">		
 									<%if (LabList[1] != null) {%>
-										<%=StringEscapeUtils.escapeHtml4(LabList[1].toString()) + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()): " - " + ")"%>
+										<%=StringEscapeUtils.escapeHtml4(LabList[1].toString()) + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()): " - " %>)
 									<%} else {%>
 										-
 									<%} %>

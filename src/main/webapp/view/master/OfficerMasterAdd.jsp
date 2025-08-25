@@ -170,7 +170,7 @@ List<Object[]> OfficerList = (List<Object[]>)request.getAttribute("OfficerList")
 		<select class="form-control selectdee" id="superiorOfficer" name="superiorOfficer" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
 			<option value="0" selected="selected" hidden="true">--Select--</option>
 			<%  for ( Object[]  obj :OfficerList) {%>			
-				<option value="<%=obj[0] %>"> <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"+", "+obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):"-" %></option>			
+				<option value="<%=obj[0] %>"> <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%>, <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):"-" %></option>			
 			<%} %>
 		</select> 
 	</div>

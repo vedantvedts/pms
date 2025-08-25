@@ -424,7 +424,7 @@ String toDateR = fc.sdfTordf(toDate);
 															<%if(employeeList!=null && employeeList.size()>0) {
 																for(Object[] obj : employeeList) {%>
 																	<option value="<%=obj[0]%>" <%if(empIdW.equalsIgnoreCase(obj[0]+"")) {%>selected<%} %> >
-																		<%=(obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):""))+""+obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):""+", "+obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"" %>
+																		<%=(obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):""))%> <%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):""%>, <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"" %>
 																	</option>
 															<%} }%>
 														</select>
@@ -487,7 +487,7 @@ String toDateR = fc.sdfTordf(toDate);
 														<span class="clickable" data-toggle="collapse" id="row<%=count %>" data-target=".row<%=count %>"><button class="btn btn-sm btn-success" id="btn<%=count %>"  onclick="ChangeButton('<%=count %>')"><i class="fa fa-plus"  id="fa<%=count%>"></i> </button></span>
 													</td>
 													<td class="center"><%=count %></td>
-													<td><%=(obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):""))+""+obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):""+", "+obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"" %></td>
+													<td><%=(obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):""))%> <%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):""%>, <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"" %></td>
 													<%for (LocalDate date = startOfWeek; !date.isAfter(endOfWeek); date = date.plusDays(1)) { 
 														TimeSheet timeSheet = employeeTimesheet.get(date);
 													%>
@@ -677,7 +677,7 @@ String toDateR = fc.sdfTordf(toDate);
 															<%if(employeeList!=null && employeeList.size()>0) {
 																for(Object[] obj : employeeList) {%>
 																	<option value="<%=obj[0]%>" <%if(empId.equalsIgnoreCase(obj[0]+"")) {%>selected<%} %> >
-																		<%=(obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):""))+""+obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-"+", "+obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"-" %>
+																		<%=(obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):""))%> <%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-"%>, <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"-" %>
 																	</option>
 															<%} }%>
 														</select>
@@ -753,7 +753,7 @@ String toDateR = fc.sdfTordf(toDate);
 										<div class="col-md-5">
 											<%Object[] emp2 = employeeList!=null && employeeList.size()>0?employeeList.stream()
 															.filter(e -> empIdP.equalsIgnoreCase(e[0]+"")).findFirst().orElse(null):null; %>
-											<b class="ml-2">Report</b> of <b><%=emp2!=null?((emp2[1]!=null?StringEscapeUtils.escapeHtml4(emp2[1].toString()):(emp2[2]!=null?StringEscapeUtils.escapeHtml4(emp2[2].toString()):""))+""+emp2[5]!=null?StringEscapeUtils.escapeHtml4(emp2[5].toString()):""+", "+emp2[6]!=null?StringEscapeUtils.escapeHtml4(emp2[6].toString()):""):"-" %></b>
+											<b class="ml-2">Report</b> of <b><%= emp2 != null ? ((emp2[1] != null ? StringEscapeUtils.escapeHtml4(emp2[1].toString()): (emp2[2] != null ? StringEscapeUtils.escapeHtml4(emp2[2].toString())  : "") )+ (emp2[5] != null ? StringEscapeUtils.escapeHtml4(emp2[5].toString())  : "") + ", " + (emp2[6] != null  ? StringEscapeUtils.escapeHtml4(emp2[6].toString())  : "")  ): "-"%></b>
 										</div>
 										<div class="col-md-7">
 											<form action="TimeSheetView.htm" method="get">
@@ -772,13 +772,13 @@ String toDateR = fc.sdfTordf(toDate);
 															<%if(employeeList!=null && employeeList.size()>0) {
 																for(Object[] obj : employeeList) {%>
 																	<option value="<%=obj[0]%>" <%if(empIdP.equalsIgnoreCase(obj[0]+"")) {%>selected<%} %> >
-																		<%=(obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):""))+""+obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):""+", "+obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"" %>
+																		<%=(obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):""))%> <%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):""%>, <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"" %>
 																	</option>
 															<%} }%>
 														</select>
 													</div>
 													<input type="hidden" name="activityDate" value="<%=activityDate%>">
-													<input type="hidden" name="empName" value="<%=emp2!=null?((emp2[1]!=null?StringEscapeUtils.escapeHtml4(emp2[1].toString()):(emp2[2]!=null?StringEscapeUtils.escapeHtml4(emp2[2].toString()):""))+""+emp2[5]!=null?StringEscapeUtils.escapeHtml4(emp2[5].toString()):""+", "+emp2[6]!=null?StringEscapeUtils.escapeHtml4(emp2[6].toString()):""):"-" %>">
+													<input type="hidden" name="empName" value="<%=emp2 != null ? ((emp2[1] != null ? StringEscapeUtils.escapeHtml4(emp2[1].toString()): (emp2[2] != null ? StringEscapeUtils.escapeHtml4(emp2[2].toString())  : "") )+ (emp2[5] != null ? StringEscapeUtils.escapeHtml4(emp2[5].toString())  : "") + ", " + (emp2[6] != null  ? StringEscapeUtils.escapeHtml4(emp2[6].toString())  : "")  ): "-" %>">
 													<div class="col-md-1 right">
 														<label class="form-label mt-2">From: </label>
 													</div>

@@ -126,7 +126,7 @@ p{
            font-size: 13px;
           	margin-top: 30px;
             margin-left: 10px;
-            content: "<%=no[0]!=null?StringEscapeUtils.escapeHtml4(no[0].toString()): " - "+"/"+no[1]!=null?StringEscapeUtils.escapeHtml4(no[1].toString()): " - "+"/"+no[2]!=null?StringEscapeUtils.escapeHtml4(no[2].toString()): " - " %><%if(meetingcount>0){ %>#<%=meetingcount %><%} %><%="/"+no[3]!=null?StringEscapeUtils.escapeHtml4(no[3].toString()): " - "%>";
+            content: "<%=no[0]!=null?StringEscapeUtils.escapeHtml4(no[0].toString()): " - "%>/<%=no[1]!=null?StringEscapeUtils.escapeHtml4(no[1].toString()): " - "%>/<%=no[2]!=null?StringEscapeUtils.escapeHtml4(no[2].toString()): " - " %><%if(meetingcount>0){ %>#<%=meetingcount %><%} %>/<%=no[3]!=null?StringEscapeUtils.escapeHtml4(no[3].toString()): " - "%>";
           }            
           
           @top-center { 
@@ -834,7 +834,7 @@ for( Object[]obj:specialMembers){ %>
 									 }
 									 %>
 									 <%} %>
-							<span style="font-size: 14px;">	<%=committeescheduleeditdata[8]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[8].toString()).toUpperCase():" - "+StringEscapeUtils.escapeHtml4(key)+"/"+obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()).split("/")[4]:" - " %></span>
+							<span style="font-size: 14px;">	<%=committeescheduleeditdata[8]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[8].toString()).toUpperCase():" - "%> <%=StringEscapeUtils.escapeHtml4(key)%>/<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()).split("/")[4]:" - " %></span>
 								<%}%> 
 								</td>
 									<td class="std"   style="text-align: justify ;"><%=obj[2] %></td>

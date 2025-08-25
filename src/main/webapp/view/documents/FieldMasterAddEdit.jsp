@@ -121,7 +121,7 @@
 									<option value="0">Add New Group</option>
 							        <% for(FieldGroupMaster group : fieldGroupList){ %>
 							        	<option value="<%=group.getFieldGroupId() %>" <%if(likedGroupIds!=null && likedGroupIds.contains(group.getFieldGroupId())) {%>selected<%} %> >
-							        		<%=group.getGroupName()!=null?StringEscapeUtils.escapeHtml4(group.getGroupName()): " - "+" ("+group.getGroupCode()!=null?StringEscapeUtils.escapeHtml4(group.getGroupCode()): " - "+")" %>
+							        		<%=group.getGroupName()!=null?StringEscapeUtils.escapeHtml4(group.getGroupName()): " - "%> <%=" ("+(group.getGroupCode()!=null?StringEscapeUtils.escapeHtml4(group.getGroupCode()): " - ")+")" %>
 							        	</option>
 							        <%} %>
 								</select>

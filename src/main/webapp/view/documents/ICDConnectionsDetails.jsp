@@ -213,7 +213,7 @@ label {
 									        	<option value="" disabled selected>Choose...</option>
 										        <%
 										        for(Object[] obj : productTreeList){ %>
-										        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "+" ("+obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "+")" %></option>
+										        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%=" ("+(obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - ")+")" %></option>
 										        <%} %>
 											</select>
 		        						</div>
@@ -223,7 +223,7 @@ label {
 			        						data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
 												<option value="" disabled selected>Choose...</option>
 										        <% for(Object[] obj : productTreeList){ %>
-										        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "+" ("+obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "+")" %></option>
+										        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%=" ("+(obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - ")+")" %></option>
 										        <%} %>
 											</select>
 	        							</div>
@@ -236,7 +236,7 @@ label {
 		        								<option value="" disabled selected>Choose...</option>
 										        <%
 										        for(Object[] obj : productTreeSubList){ %>
-										        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "+" ("+obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "+")" %></option>
+										        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%=" ("+(obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - ")+")" %></option>
 										        <%} %>
 											</select>
 		        						</div>	
@@ -247,7 +247,7 @@ label {
 			        							<option value="" disabled selected>Choose...</option>
 										        <%
 										        for(Object[] obj : productTreeSubList){ %>
-										        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "+" ("+obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "+")" %></option>
+										        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%=" ("+(obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - ")+")" %></option>
 										        <%} %>
 											</select>
 			        					</div>

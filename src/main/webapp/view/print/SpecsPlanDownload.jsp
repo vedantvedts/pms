@@ -162,7 +162,7 @@ String FontFamily="Times New Roman";
     				    				<%
 				if(LabList[0] != null) {
 				%>
-				<%=StringEscapeUtils.escapeHtml4(LabList[0].toString())%>:SSTP:....................</h4>
+				<%=LabList[0].toString()%>:SSTP:....................</h4>
   						<h6 style="margin: 0; padding: 0;font-family: <%= FontFamily %>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copy No.01</h6>
 						<%
 				}else {
@@ -205,7 +205,7 @@ String FontFamily="Times New Roman";
 				<%
 				if(LabList[1] != null) {
 				%>
-				<%=StringEscapeUtils.escapeHtml4(LabList[1].toString())+"("+LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()): " - "+")"%>
+				<%=LabList[1].toString()+"("+(LabList[0]!=null?LabList[0].toString(): " - ")+")"%>
 				<%
 				}else {
 				%>-<%
@@ -219,7 +219,7 @@ String FontFamily="Times New Roman";
 				</div>
 				<h4 style="font-family: <%= FontFamily %>;">
 					<%if(LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %>
-					<%=StringEscapeUtils.escapeHtml4(LabList[2].toString())+" , "+StringEscapeUtils.escapeHtml4(LabList[3].toString())+", PIN-"+StringEscapeUtils.escapeHtml4(LabList[5].toString()) %>
+					<%=LabList[2].toString()+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %>
 					<%}else{ %>
 					-
 					<%} %>
@@ -288,9 +288,9 @@ String FontFamily="Times New Roman";
 		%>
  <tr>
                 <td style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;"><%=  i+++"."%></td>
-                <td style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;"><%= mlist[1]!=null?StringEscapeUtils.escapeHtml4(mlist[1].toString()): " - " %></td>
-                <td style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><%= mlist[2]!=null?StringEscapeUtils.escapeHtml4(mlist[2].toString()): " - " %></td>
-                 <td style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><%= mlist[3]!=null?StringEscapeUtils.escapeHtml4(mlist[3].toString()): " - " %></td>
+                <td style="font-family: <%= FontFamily %>;border: 1px solid black;padding-left: 10px;"><%= mlist[1]!=null?mlist[1].toString(): " - " %></td>
+                <td style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><%= mlist[2]!=null?mlist[2].toString(): " - " %></td>
+                 <td style="font-family: <%= FontFamily %>;border: 1px solid black; padding-left: 10px;"><%= mlist[3]!=null?mlist[3].toString(): " - " %></td>
              
                              </tr>
  <% 
@@ -331,7 +331,7 @@ String FontFamily="Times New Roman";
 					<td class="text-dark" style="border:1px solid black;font-family: <%= FontFamily %>;">7.&nbsp; Related Document:</td>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">8.&nbsp; Additional Information:<span class="text-dark"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[0]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[0].toString()): " - " %><%} %></span>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">8.&nbsp; Additional Information:<span class="text-dark"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[0]!=null?DocumentSummary.get(0)[0].toString(): " - " %><%} %></span>
 				</td>
 					</tr>
 				     <tr>
@@ -339,16 +339,16 @@ String FontFamily="Times New Roman";
 					<%-- <td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">9.&nbsp; Project Number and Project Name: <span class="text-dark"><%=projectName %> (<%= projectshortName %>) </span></td> --%>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">10.&nbsp; Abstract:<span class="text-dark"><% if(DocumentSummary!=null && DocumentSummary.size()>0  ){%><%=DocumentSummary.get(0)[1]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[1].toString()): " - " %><%} %></span>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">10.&nbsp; Abstract:<span class="text-dark"><% if(DocumentSummary!=null && DocumentSummary.size()>0  ){%><%=DocumentSummary.get(0)[1]!=null?DocumentSummary.get(0)[1].toString(): " - " %><%} %></span>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">11.&nbsp; Keywords:<span class="text-dark"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[2]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[2].toString()): " - " %><%} %></span> </td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">11.&nbsp; Keywords:<span class="text-dark"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[2]!=null?DocumentSummary.get(0)[2].toString(): " - " %><%} %></span> </td>
 					</tr>
 					<tr>
 					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">12.&nbsp; Organization and address:
 						<span class="text-dark" style="font-family: <%= FontFamily %>;">		<%
 										if (LabList[1] != null) {
-										%><%=StringEscapeUtils.escapeHtml4(LabList[1].toString()) + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()): " - " + ")"%>
+										%><%=LabList[1].toString() + "(" + LabList[0]!=null?LabList[0].toString(): " - " + ")"%>
 										<%
 										} else {
 										%>-<%
@@ -359,7 +359,7 @@ String FontFamily="Times New Roman";
 										<%
 									if (LabList[2] != null && LabList[3] != null && LabList[5] != null) {
 									%>
-									<%=StringEscapeUtils.escapeHtml4(LabList[2].toString())+" , "+StringEscapeUtils.escapeHtml4(LabList[3].toString())+", PIN-"+StringEscapeUtils.escapeHtml4(LabList[5].toString())+"."%>
+									<%=LabList[2].toString()+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString()+"."%>
 									<%}else{ %>
 									-
 									<%} %>
@@ -367,20 +367,20 @@ String FontFamily="Times New Roman";
 							</td>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">13.&nbsp; Distribution:<span class="text-dark"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[3]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[3].toString()): " - " %><%} %></span>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">13.&nbsp; Distribution:<span class="text-dark"><% if(DocumentSummary!=null && DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[3]!=null?DocumentSummary.get(0)[3].toString(): " - " %><%} %></span>
 					</td>
 					</tr>
 					<tr>
 					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">14.&nbsp; Revision:</td>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">15.&nbsp; Prepared by:<span class="text-dark"><% if(DocumentSummary!=null && DocumentSummary.size()>0  ){%><%=DocumentSummary.get(0)[10]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[10].toString()): " - " %><%} %></span> </td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">15.&nbsp; Prepared by:<span class="text-dark"><% if(DocumentSummary!=null && DocumentSummary.size()>0  ){%><%=DocumentSummary.get(0)[10]!=null?DocumentSummary.get(0)[10].toString(): " - " %><%} %></span> </td>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">16.&nbsp; Reviewed by: <span class="text-dark"><% if(DocumentSummary!=null && DocumentSummary.size()>0  ){%><%=DocumentSummary.get(0)[7]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[7].toString()): " - " %><%} %></span> </td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">16.&nbsp; Reviewed by: <span class="text-dark"><% if(DocumentSummary!=null && DocumentSummary.size()>0  ){%><%=DocumentSummary.get(0)[7]!=null?DocumentSummary.get(0)[7].toString(): " - " %><%} %></span> </td>
 					</tr>
 					<tr>
-					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">17.&nbsp; Approved by: <span class="text-dark"><% if(DocumentSummary!=null && DocumentSummary.size()>0  ){%><%=DocumentSummary.get(0)[6]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[6].toString()): " - " %><%} %></span> </td>
+					<td  class="text-dark" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">17.&nbsp; Approved by: <span class="text-dark"><% if(DocumentSummary!=null && DocumentSummary.size()>0  ){%><%=DocumentSummary.get(0)[6]!=null?DocumentSummary.get(0)[6].toString(): " - " %><%} %></span> </td>
 					</tr>
 					</table>
 												<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>	
@@ -404,8 +404,8 @@ String FontFamily="Times New Roman";
 %>
               <tr>
                 <td style="text-align: justify;border: 1px solid black;font-family: <%= FontFamily %>;"><%=  i+++"."%></td>
-                <td style="text-align: justify;border: 1px solid black;font-family: <%= FontFamily %>;"><%= alist[1]!=null?StringEscapeUtils.escapeHtml4(alist[1].toString()): " - " %></td>
-                <td style="text-align: justify;border: 1px solid black; padding-left: 10px;font-family: <%= FontFamily %>;"><%= alist[2]!=null?StringEscapeUtils.escapeHtml4(alist[1].toString()): " - " %></td>
+                <td style="text-align: justify;border: 1px solid black;font-family: <%= FontFamily %>;"><%= alist[1]!=null?alist[1].toString(): " - " %></td>
+                <td style="text-align: justify;border: 1px solid black; padding-left: 10px;font-family: <%= FontFamily %>;"><%= alist[2]!=null?alist[1].toString(): " - " %></td>
             </tr>
             <% 
    }} 
@@ -433,10 +433,10 @@ String FontFamily="Times New Roman";
 <%int introCount=0;
 for(Object[]obj:SpecsIntro) {%>
 <h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>; font-size: <%= SubHeaderFontsize%>pt;"><%=maincount+"." %><%=++introCount %>
-					&nbsp;<%=obj[1].toString()!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>
+					&nbsp;<%=obj[1].toString()!=null?obj[1].toString(): " - " %>
 				</h2>
 	<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify;font-weight:<%=ParaFontWeight%>" >
-	<%if(obj[2]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[2].toString())%>
+	<%if(obj[2]!=null) {%><%=obj[2].toString()%>
 					<%}else {%><div style="text-align: center;font-family: <%= FontFamily %>;">No Details Added!</div>
 					<%} %>
 	</div>			
@@ -464,7 +464,7 @@ for(Object[]obj:SpecsIntro) {%>
 			%>
 	<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify;font-weight:<%=ParaFontWeight%>" >
 	<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify;font-weight:<%=ParaFontWeight%>" >
-	<%if(SpecProducTree!=null && SpecProducTree.size()>0){ %> <%=SpecProducTree.get(0)[2]!=null?StringEscapeUtils.escapeHtml4(SpecProducTree.get(0)[2].toString()): " - "%> <%} else{%> Guidance: 
+	<%if(SpecProducTree!=null && SpecProducTree.size()>0){ %> <%=SpecProducTree.get(0)[2]!=null?SpecProducTree.get(0)[2].toString(): " - "%> <%} else{%> Guidance: 
 The product Tree shall comprises the complete physical products / subsystems of the radar in the order of flow as a figure with unique ID 
 <%} %>
 	</div>
@@ -494,7 +494,7 @@ The product Tree shall comprises the complete physical products / subsystems of 
 		for(Object[]obj:specsList){
 		int snCount=0;
 		%>
-		<h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>; font-size: <%= SubHeaderFontsize%>pt;"><%=maincount+"." %><%=++specCount %> <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></h2>
+		<h2 style="font-family: <%= FontFamily %>;margin-left: 10px;font-weight:<%=SubHeaderFontweight%>; font-size: <%= SubHeaderFontsize%>pt;"><%=maincount+"." %><%=++specCount %> <%=obj[1]!=null?obj[1].toString(): " - " %></h2>
 		<br>
 					<table class=""
 					style="margin-left: 20px;;width: 650px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt">
@@ -516,7 +516,7 @@ The product Tree shall comprises the complete physical products / subsystems of 
 							<td class="border-black"
 								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;">Specification Id</td>
 							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></td>
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%=obj[1]!=null?obj[1].toString(): " - "%></td>
 						</tr>
 						
 							<tr>
@@ -552,7 +552,7 @@ The product Tree shall comprises the complete physical products / subsystems of 
 							<td class="border-black"
 								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;"> Description</td>
 							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%=obj[2]!=null?obj[2].toString(): " - " %></td>
 							</tr>
 							
 							<tr>
@@ -561,7 +561,7 @@ The product Tree shall comprises the complete physical products / subsystems of 
 							<td class="border-black"
 								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;"> Specification Parameter</td>
 							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%if(obj[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[5].toString()) %> <%}else{ %> <%} %></td>
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%if(obj[5]!=null){ %><%=obj[5].toString() %> <%}else{ %> <%} %></td>
 							</tr>
 							
 							<tr>
@@ -570,7 +570,7 @@ The product Tree shall comprises the complete physical products / subsystems of 
 							<td class="border-black"
 								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;"> Specification Unit</td>
 							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%if(obj[6]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[6].toString()) %> <%}else{ %> <%} %></td>
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%if(obj[6]!=null){ %><%=obj[6].toString()%> <%}else{ %> <%} %></td>
 							</tr>
 						</tbody>
 						</table>
@@ -597,7 +597,7 @@ The product Tree shall comprises the complete physical products / subsystems of 
 						for(Object[]obj:specsList) {%>
 						<tr>
 						<td style=" border: 1px solid black; border-collapse: collapse;text-align: center;"> <%=++rowCOunt %>. </td>
-						<td style=" border: 1px solid black; border-collapse: collapse;text-align: center;"> <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </td>
+						<td style=" border: 1px solid black; border-collapse: collapse;text-align: center;"> <%=obj[1]!=null?obj[1].toString(): " - " %> </td>
 						<td style=" border: 1px solid black; border-collapse: collapse;text-align: center;"> 
 							<%
 							List<String>linkedReq= new ArrayList<>();
@@ -615,7 +615,7 @@ The product Tree shall comprises the complete physical products / subsystems of 
 							<%if(linkedReq.size()>0) {
 							for(int i=0;i<linkedReq.size();i++){
 							%>
-							<%=(i+1)%>.<%=linkedReq.get(0)!=null?StringEscapeUtils.escapeHtml4(linkedReq.get(0)): " - " %><br>
+							<%=(i+1)%>.<%=linkedReq.get(0)!=null?linkedReq.get(0): " - " %><br>
 							<%}}else{ %>
 								-
 							<%} %>
@@ -635,7 +635,7 @@ The product Tree shall comprises the complete physical products / subsystems of 
 					
 	<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify;font-weight:<%=ParaFontWeight%>" >
 	<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify;font-weight:<%=ParaFontWeight%>" >
-	<%if(Conclusion!=null){ %> <%=StringEscapeUtils.escapeHtml4(Conclusion)%> <%} else{%> No Data Available<%} %>
+	<%if(Conclusion!=null){ %> <%=Conclusion%> <%} else{%> No Data Available<%} %>
 	</div>
 	</div>
 			</div>

@@ -635,7 +635,7 @@ sp::before {
 													%>
 														<option value="<%=partner.getIndustryPartnerId()%>"
 														data-subtext="(<%=partner.getIndustryCity()+" - "+partner.getIndustryPinCode() %>)"
-														><%=partner.getIndustryName()!=null?StringEscapeUtils.escapeHtml4(partner.getIndustryName()): " - "%> (<%=partner.getIndustryCity()!=null?StringEscapeUtils.escapeHtml4(partner.getIndustryCity()): " - "+" - "+partner.getIndustryPinCode()!=null?StringEscapeUtils.escapeHtml4(partner.getIndustryPinCode()): " - " %>)</option>
+														><%=partner.getIndustryName()!=null?StringEscapeUtils.escapeHtml4(partner.getIndustryName()): " - "%> (<%=partner.getIndustryCity()!=null?StringEscapeUtils.escapeHtml4(partner.getIndustryCity()): " - "%>-<%=partner.getIndustryPinCode()!=null?StringEscapeUtils.escapeHtml4(partner.getIndustryPinCode()): " - " %>)</option>
 														
 													<%}%>
 													<option value="0">ADD NEW</option>

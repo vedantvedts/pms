@@ -294,7 +294,7 @@ p{
 										    	k++; %>
 											<tr>
 												<td class="std"  style=" border: 1px solid black;"><%=k%></td>
-												<td class="std"  style=" border: 1px solid black;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(StringEscapeUtils.escapeHtml4(obj[1].toString())): " - "%><br><%=obj[3]!=null?sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[3].toString()))):" - "%></td>
+												<td class="std"  style=" border: 1px solid black;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%><br><%=obj[3]!=null?sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[3].toString()))):" - "%></td>
 <%-- 												<td class="std"  style=" border: 1px solid black;"><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
  --%>												<td class="std" colspan="4" ><%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - "%></td>
 												<td class="std" style=" text-align:right;"> <%=obj[5]!=null?format.format(new BigDecimal(StringEscapeUtils.escapeHtml4(obj[5].toString()))).substring(1):" - "%></td>

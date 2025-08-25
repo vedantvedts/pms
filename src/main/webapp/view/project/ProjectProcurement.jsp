@@ -121,7 +121,7 @@ margin-left: -6%;
 							style="background: #C4DDFF; box-shadow: 2px 2px 2px grey;">
 							<div class="col-md-6" id="projecthead">
 								<h5>
-									<%="Procurement Plan for  Project "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - " %>
+									<%="Procurement Plan for  Project "+(projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - ") %>
 								</h5>
 							</div>
 							<div class="col-md-6">

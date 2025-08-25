@@ -333,7 +333,7 @@ FormatConverter fc = new FormatConverter();
 													for (Object[] obj : ProjectList) {
 														String projectshortName1 = (obj[17] != null) ? " ( " + obj[17].toString() + " ) " : ""; %>
 														<option value="<%=obj[0]%>"  <%if(obj[0].toString().equalsIgnoreCase(projectId)){ %> selected <%} %>>
-															<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "+projectshortName1!=null?StringEscapeUtils.escapeHtml4(projectshortName1): " - " %>
+															<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> <%=projectshortName1!=null?StringEscapeUtils.escapeHtml4(projectshortName1): " - " %>
 														</option>
 											<%} }%>
 										</select>
@@ -345,7 +345,7 @@ FormatConverter fc = new FormatConverter();
 													for (Object[] obj : preProjectList) {
 														%>
 														<option value="<%=obj[0]%>"  <%if(obj[0].toString().equalsIgnoreCase(initiationId)){ %> selected <%} %>>
-															<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "+"( "+obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "+" )" %>
+															<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> <%="( "+(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ")+" )" %>
 														</option>
 											<%} }%>
 										</select>	
@@ -374,7 +374,7 @@ FormatConverter fc = new FormatConverter();
 													for (Object[] obj : productTreeList) {
 														 %>
 														<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(productTreeMainId)){ %> selected <%} %>>
-															<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "+" "+obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>
+															<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> <%=" "+(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ") %>
 														</option>
 											<%} }%>
 										</select>
@@ -410,7 +410,7 @@ FormatConverter fc = new FormatConverter();
 	                      				for(Object[] obj:initiationReqList) {%>
 	                      			<tr>
 	                      				<td align="center" ><%=++slno %> </td>
-	                      				<td><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "+", "+obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %></td>
+	                      				<td><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%>, <%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %></td>
 	                      				<td align="center"><%if(obj[5]!=null) {%><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(obj[5].toString())) %><%} else{%><%} %></td>
 	                      				<td align="center" >v<%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - "%></td>
 	                      				<td align="center" >

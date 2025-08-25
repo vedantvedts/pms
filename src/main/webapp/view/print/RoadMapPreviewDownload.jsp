@@ -143,7 +143,7 @@ FormatConverter fc = new FormatConverter();
 			<th style="width: 20%;">Title</th>
 			<td style="width: 78%;">
 				<%if(roadMap.getProjectTitle()!=null) {%>
-					<%=StringEscapeUtils.escapeHtml4(roadMap.getProjectTitle()) %>
+					<%=roadMap.getProjectTitle() %>
 				<%} else{%>-<%} %>
 			</td>
 		</tr>
@@ -159,11 +159,11 @@ FormatConverter fc = new FormatConverter();
 			<th>Start & End Date</th>
 			<td>
 				<%if(roadMap.getStartDate()!=null) {%>
-					<%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(roadMap.getStartDate())) %>
+					<%=fc.SqlToRegularDate(roadMap.getStartDate()) %>
 				<%} %>
 				&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
 				<%if(roadMap.getEndDate()!=null) {%>
-					<%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(roadMap.getEndDate())) %>
+					<%=fc.SqlToRegularDate(roadMap.getEndDate()) %>
 				<%} %>
 			</td>
 		</tr>
@@ -171,7 +171,7 @@ FormatConverter fc = new FormatConverter();
 			<th>Aim & Objectives</th>
 			<td>
 				<%if(roadMap.getAimObjectives()!=null) {%>
-					<%=StringEscapeUtils.escapeHtml4(roadMap.getAimObjectives()) %>
+					<%=roadMap.getAimObjectives() %>
 				<%} else{%>-<%} %>
 			</td>
 		</tr>
@@ -179,7 +179,7 @@ FormatConverter fc = new FormatConverter();
 			<th>Scope</th>
 			<td>
 				<%if(roadMap.getScope()!=null) {%>
-					<%=StringEscapeUtils.escapeHtml4(roadMap.getScope()) %>
+					<%=roadMap.getScope() %>
 				<%} else{%>-<%} %>
 			</td>
 		</tr>
@@ -187,7 +187,7 @@ FormatConverter fc = new FormatConverter();
 			<th>Reference</th>
 			<td>
 				<%if(roadMap.getReference()!=null) {%>
-					<%=StringEscapeUtils.escapeHtml4(roadMap.getReference()) %>
+					<%=roadMap.getReference() %>
 				<%} else{%>-<%} %>
 			</td>
 		</tr>
@@ -217,9 +217,9 @@ FormatConverter fc = new FormatConverter();
 					<td>
 						<%int count=1; for(String targets : targetssList) {%>
 							<%if(count==1) {%>
-								<%=targets!=null?StringEscapeUtils.escapeHtml4(targets): " - " %>
+								<%=targets!=null?targets: " - " %>
 							<%} else{%>
-								<%=", "+targets!=null?StringEscapeUtils.escapeHtml4(targets): " - " %>
+								<%=", "+(targets!=null?targets: " - ") %>
 							<%} %>
 						<%count++;} %>
 					</td>
@@ -234,9 +234,9 @@ FormatConverter fc = new FormatConverter();
      	<div style="font-size: 15px;"> Signature of Initiator</div>
          <%for(Object[] apprInfo : roadMapApprovalEmpData){ %>
 			<%if(apprInfo[8].toString().equalsIgnoreCase("RFW")){ %>
-				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-				<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-				<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19) %>]</label>
+				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+				<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+				<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString()).substring(0, 10)  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
  		<%break;}} %>  
  	</div>
 							            
@@ -245,9 +245,9 @@ FormatConverter fc = new FormatConverter();
 							            			 		
 			<%if(apprInfo[8].toString().equalsIgnoreCase("RAD")){ %>
 				<div style="font-size: 15px;"> Signature of Director</div>
-				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-				<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-				<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19) %>]</label>
+				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+				<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+				<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString()).substring(0, 10)  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
 			<%} %>
 		</div>	
 	<%} %>

@@ -2,6 +2,7 @@ package com.vts.pfms.master.dao;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -1044,11 +1045,11 @@ public class MasterDaoImpl implements MasterDao {
 		}
 		
 		/* **************************** Programme Master - Naveen R  - 16/07/2025 **************************************** */
-		private static final String ProgramMasterList = "SELECT a.ProgrammeId, a.PrgmCode, a.PrgmName, a.PrgmDirector, a.SanctionedOn, CONCAT(IFNULL(CONCAT(b.Title,' '),(IFNULL(CONCAT(b.Salutation, ' '), ''))), b.EmpName) AS 'EmpName', c.Designation FROM pfms_programme_master a, employee b, employee_desig c WHERE a.IsActive = 1 AND a.PrgmDirector = b.EmpId AND b.DesigId= c.DesigId ORDER BY a.ProgrammeId DESC";
+		private static final String PROGRAMMASTERLIST = "SELECT a.ProgrammeId, a.PrgmCode, a.PrgmName, a.PrgmDirector, a.SanctionedOn, CONCAT(IFNULL(CONCAT(b.Title,' '),(IFNULL(CONCAT(b.Salutation, ' '), ''))), b.EmpName) AS 'EmpName', c.Designation FROM pfms_programme_master a, employee b, employee_desig c WHERE a.IsActive = 1 AND a.PrgmDirector = b.EmpId AND b.DesigId= c.DesigId ORDER BY a.ProgrammeId DESC";
 		@Override
 		public List<Object[]> getProgramMasterList() throws Exception {
 			try {
-				Query query = manager.createNativeQuery(ProgramMasterList);
+				Query query = manager.createNativeQuery(PROGRAMMASTERLIST);
 				return (List<Object[]>)query.getResultList();
 			}catch (Exception e) {
 				e.printStackTrace();
@@ -1069,7 +1070,7 @@ public class MasterDaoImpl implements MasterDao {
 			}
 		}
 
-		private static String PPROGRAMPROJECTLINKEDDELETE = "UPDATE pfms_programme_projects SET IsActive='0' WHERE ProgrammeId=:ProgrammeId ";
+		private static final String PPROGRAMPROJECTLINKEDDELETE = "UPDATE pfms_programme_projects SET IsActive='0' WHERE ProgrammeId=:ProgrammeId ";
 		@Override
 		public int removeProjectLinked(String programmeId) throws Exception {
 			try {
@@ -1120,5 +1121,34 @@ public class MasterDaoImpl implements MasterDao {
 				return 0L;
 			}
 		}
+
+		// 22/8/2025  Naveen R RoleName and RoleCode Duplicate Check start
+		private static final String DUPLICATEROLENAMECOUNT = "SELECT COUNT(RoleName) FROM pfms_role_master WHERE RoleName=:RoleName AND IsActive=1";
+		@Override
+		public Long getRoleNameDulicateCount(String roleName) throws Exception {
+			try {
+				Query query = manager.createNativeQuery(DUPLICATEROLENAMECOUNT);
+				query.setParameter("RoleName", roleName);
+				return (Long)query.getSingleResult();
+			}catch (Exception e) {
+				e.printStackTrace();
+				return 0L;
+			}
+		}
+
+		private static final String DUPLICATEROLECODECOUNT = "SELECT COUNT(RoleCode) FROM pfms_role_master WHERE RoleCode=:RoleCode AND IsActive=1";
+		@Override
+		public Long getRoleCodeDuplicateCount(String roleCode) throws Exception {
+			try {
+				Query query = manager.createNativeQuery(DUPLICATEROLECODECOUNT);
+				query.setParameter("RoleCode", roleCode);
+				return (Long)query.getSingleResult();
+			}catch (Exception e) {
+				e.printStackTrace();
+				return 0L;
+			}
+		}
+		
+		// 22/8/2025  Naveen R RoleName and RoleCode Duplicate Check End
 		
 }

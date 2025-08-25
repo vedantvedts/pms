@@ -2416,4 +2416,39 @@ public class MasterController {
 		return json.toJson(data);
 	}
 	
+	// 22/8/2025  Naveen R RoleName and RoleCode Duplicate Check start
+	
+	@RequestMapping(value = "RoleNameDuplicateCheck.htm", method = RequestMethod.GET)
+	public @ResponseBody String roleNameDuplicateCheck(HttpSession ses,HttpServletRequest req) {
+		String UserId = (String)ses.getAttribute("Username");
+		String roleName = req.getParameter("roleName");
+		Long count = null;
+		logger.info(new Date() + " Inside RoleNameDuplicateCheck.htm "+ UserId );
+		try {
+			count = service.getRoleNameDuplicateCount(roleName);
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside RoleNameDuplicateCheck.htm " + UserId);
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
+	
+	@RequestMapping(value = "RoleCodeDuplicateCheck.htm", method = RequestMethod.GET)
+	public @ResponseBody String roleCodeDuplicateCheck(HttpSession ses,HttpServletRequest req) {
+		String UserId = (String)ses.getAttribute("Username");
+		String roleCode =req.getParameter("roleCode");
+		Long count = null;
+		logger.info(new Date() + " Inside RoleCodeDuplicateCheck.htm "+ UserId );
+		try {
+			count = service.getRoleCodeDuplicateCount(roleCode);
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside RoleCodeDuplicateCheck.htm " + UserId);
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
+	// 22/8/2025  Naveen R RoleName and RoleCode Duplicate Check End
+	
 }

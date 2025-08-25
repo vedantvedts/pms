@@ -836,6 +836,21 @@ public class MasterServiceImpl implements MasterService {
 			
 			return dao.addRoleMaster(roleMaster);
 		}
+
+		// 22/8/2025  Naveen R RoleName and RoleCode Duplicate Check start
 		
+		@Override
+		public Long getRoleNameDuplicateCount(String roleName) throws Exception {
+			
+			return dao.getRoleNameDulicateCount(roleName);
+		}
+
+		@Override
+		public Long getRoleCodeDuplicateCount(String roleCode) throws Exception {
+			
+			return dao.getRoleCodeDuplicateCount(roleCode);
+		}
+		
+		// 22/8/2025  Naveen R RoleName and RoleCode Duplicate Check End
 }
 

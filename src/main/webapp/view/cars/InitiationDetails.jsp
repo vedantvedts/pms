@@ -468,7 +468,7 @@ String labcode=(String)session.getAttribute("labcode");
 			                				for(Object[] protype: projectList ){
 			                					String projectshortName=(protype[17]!=null)?" ("+protype[17].toString()+") ":"";
 			                			 %>
-											<option value="<%=protype[0] %>" <%if(carsIni!=null && carsIni.getFundsFrom()!=null){ if(protype[0].toString().equalsIgnoreCase(carsIni.getFundsFrom())){%>selected="selected" <%}} %>><%=protype[4]!=null?StringEscapeUtils.escapeHtml4(protype[4].toString()): " - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - " %></option>
+											<option value="<%=protype[0] %>" <%if(carsIni!=null && carsIni.getFundsFrom()!=null){ if(protype[0].toString().equalsIgnoreCase(carsIni.getFundsFrom())){%>selected="selected" <%}} %>><%=protype[4]!=null?StringEscapeUtils.escapeHtml4(protype[4].toString()): " - "%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - " %></option>
 										<%} %>
 									</select>
                         		</div>
@@ -1110,14 +1110,14 @@ String labcode=(String)session.getAttribute("labcode");
                									<td style="width: 40%;">Name and address of the Academic Institution</td>
                									<td style="width: 53%;color: blue;">
                										<%=carsIni.getRSPInstitute()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute()): " - " %> <br>
-               										<%=carsIni.getRSPAddress()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPAddress()): " - "+", "+carsIni.getRSPCity()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()): " - "+", "+carsIni.getRSPState()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPState()): " - "+" - "+carsIni.getRSPPinCode() !=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPPinCode()): " - "%>.
+               										<%=carsIni.getRSPAddress()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPAddress()): " - "%>, <%=carsIni.getRSPCity()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()): " - "%>, <%=carsIni.getRSPState()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPState()): " - "%>, <%=carsIni.getRSPPinCode() !=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPPinCode()): " - "%>.
                									</td>
                								</tr>
                								<tr>
 						    					<td style="width: 5%;text-align: center;" >3.</td>
 						    					<td style="width: 40%;" >Name of the Principal Investigator</td>
 						    					<td style="width: 53%;color: blue;" >
-						    						<%=carsIni.getPITitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPITitle()): " - "+". "+carsIni.getPIName()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIName()): " - " %>,
+						    						<%=carsIni.getPITitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPITitle()): " - "%>, <%=carsIni.getPIName()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIName()): " - " %>,
 						    						<%=carsIni.getPIDesig()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIDesig()): " - " %> <br>
 						    						<%=carsIni.getPIDept()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIDept()): " - " %> <br>
 						    						<%=carsIni.getPIMobileNo()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIMobileNo()): " - " %> <br>
@@ -2212,7 +2212,7 @@ String labcode=(String)session.getAttribute("labcode");
 						    						<%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>
 						    							Build-up
 						    						<%} else {%>
-						    							<%if(PDs!=null) {%><%=PDs[4]!=null?StringEscapeUtils.escapeHtml4(PDs[4].toString()): " - "+" ("+PDs[0]!=null?StringEscapeUtils.escapeHtml4(PDs[0].toString()): " - "+")" %> <%} %>
+						    							<%if(PDs!=null) {%><%=PDs[4]!=null?StringEscapeUtils.escapeHtml4(PDs[4].toString()): " - "%> (<%=PDs[0]!=null?StringEscapeUtils.escapeHtml4(PDs[0].toString()): " - "%>) <%} %>
 						    						<%} %>
 						    					</td>
 						    				</tr>
@@ -2271,7 +2271,7 @@ String labcode=(String)session.getAttribute("labcode");
 						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 						    					<td style="width: 20%;">Research Service Provider</td>
 						    					<td style="width: 73%;color: blue;">
-						    						<%=carsIni.getPITitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPITitle()): " - "+". "+carsIni.getPIName()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIName()): " - " %>,
+						    						<%=carsIni.getPITitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPITitle()): " - "%> . <%=carsIni.getPIName()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIName()): " - " %>,
 						    						<%=carsIni.getPIDesig()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIDesig()): " - " %> <br>
 						    						<%=carsIni.getPIDept()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIDept()): " - " %> <br>
 						    						<%=carsIni.getPIMobileNo()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIMobileNo()) : " - "%> <br>
@@ -2282,7 +2282,7 @@ String labcode=(String)session.getAttribute("labcode");
 						    						
 						    						<span style="color: black;">From</span> <br>
 						    						<%=carsIni.getRSPInstitute()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute()): " - " %> <br>
-               										<%=carsIni.getRSPAddress()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPAddress()): " - "+", "+carsIni.getRSPCity()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()): " - "+", "+carsIni.getRSPState()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPState()): " - "+" - "+carsIni.getRSPPinCode()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPPinCode()): " - " %>.
+               										<%=carsIni.getRSPAddress()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPAddress()): " - "%>, <%=carsIni.getRSPCity()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()): " - "%>, <%=carsIni.getRSPState()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPState()): " - "%> - <%=carsIni.getRSPPinCode()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPPinCode()): " - " %>.
 						    					</td>
 						    				</tr>
 						    				<tr>

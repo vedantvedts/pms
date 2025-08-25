@@ -199,7 +199,7 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 									<%-- <textarea class="form-control"  name="description" required placeholder="Enter Description" rows="5" cols="50" maxlength="1000"><%if(committeedetails[10]!=null){ %><%=committeedetails[10]%><%} %></textarea> --%>
 								
 									<div id="Editordescription" class="center">
-									<%if(committeedetails[10]!=null){ %><%=StringEscapeUtils.escapeHtml4(committeedetails[10].toString())%><%} %>
+									<%if(committeedetails[10]!=null){ %><%=committeedetails[10].toString()%><%} %>
 															<textarea name="description"  id="description" ></textarea>
 														</div>
 								
@@ -213,7 +213,7 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 										<%-- 									<textarea class="form-control"  name="TOR" required placeholder="Enter Terms Of Reference" rows="5" cols="50" maxlength="1000"><%if(committeedetails[11]!=null){ %><%=committeedetails[11]%><%} %></textarea>
  --%>
 										<div id="EditorReference" class="center">
-										<%if(committeedetails[11]!=null){ %><%=StringEscapeUtils.escapeHtml4(committeedetails[11].toString())%><%} %>
+										<%if(committeedetails[11]!=null){ %><%=committeedetails[11].toString()%><%} %>
 											<textarea name="TOR" id="TOR"></textarea>
 										</div>
 

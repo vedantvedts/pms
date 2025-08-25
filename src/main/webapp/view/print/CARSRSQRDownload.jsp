@@ -91,7 +91,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
           
           @top-left {
           	margin-top: 30px;
-            content: "<%if(rsqr!=null && rsqr[11]!=null) {%><%=StringEscapeUtils.escapeHtml4(rsqr[11].toString())%><%}%>";
+            content: "<%if(rsqr!=null && rsqr[11]!=null) {%><%=rsqr[11].toString()%><%}%>";
             font-size: 13px;
           }               
           
@@ -177,19 +177,19 @@ List<CARSSoCMilestones> milestones = (List<CARSSoCMilestones>)request.getAttribu
 CARSSoC carsSoC =(CARSSoC)request.getAttribute("CARSSoCData"); 
 %>
 	<div align="center">
-       <h5 style="font-weight: bold;margin-top: 1.5rem;">Research Service Qualitative Requirement (RSQR) for <%=carsIni.getInitiationTitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getInitiationTitle()): " - " %></h5>
+       <h5 style="font-weight: bold;margin-top: 1.5rem;">Research Service Qualitative Requirement (RSQR) for <%=carsIni.getInitiationTitle()!=null?carsIni.getInitiationTitle(): " - " %></h5>
     </div>
     <div>
     	<h4 style="margin-left: 10px;">1. Introduction</h4>
-    	<div class="editor-data"><%if(rsqr!=null && rsqr[2]!=null) {%><%=StringEscapeUtils.escapeHtml4(rsqr[2].toString())%><%}else {%><div style="text-align: center;">No Details Added!</div><%} %></div>
+    	<div class="editor-data"><%if(rsqr!=null && rsqr[2]!=null) {%><%=rsqr[2].toString()%><%}else {%><div style="text-align: center;">No Details Added!</div><%} %></div>
     </div>
     <div>
     	<h4 style="margin-left: 10px;">2. Overview of the Research Work</h4>
-    	<div class="editor-data"><%if(rsqr!=null && rsqr[3]!=null) {%><%=StringEscapeUtils.escapeHtml4(rsqr[3].toString())%><%}else {%><div style="text-align: center;">No Details Added!</div><%} %></div>
+    	<div class="editor-data"><%if(rsqr!=null && rsqr[3]!=null) {%><%=rsqr[3].toString()%><%}else {%><div style="text-align: center;">No Details Added!</div><%} %></div>
     </div>
     <div>
     	<h4 style="margin-left: 10px;">3. Objectives</h4>
-    	<div class="editor-data"><%if(rsqr!=null && rsqr[4]!=null) {%><%=StringEscapeUtils.escapeHtml4(rsqr[4].toString())%><%}else {%><div style="text-align: center;">No Details Added!</div><%} %></div>
+    	<div class="editor-data"><%if(rsqr!=null && rsqr[4]!=null) {%><%=rsqr[4].toString()%><%}else {%><div style="text-align: center;">No Details Added!</div><%} %></div>
     </div>
     <div>
     	<h4 style="margin-left: 10px;">4. Major Requirements</h4>
@@ -210,11 +210,11 @@ CARSSoC carsSoC =(CARSSoC)request.getAttribute("CARSSoCData");
     					<%int i=0; for(CARSRSQRMajorRequirements mr : majorReqr) { %>
     						<tr>
     							<%-- <td><%=++i %> </td> --%>
-    							<td style="text-align: center;"><%if(mr.getReqId()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getReqId()) %><%} else{%>-<%} %></td>
-    							<td><%if(mr.getReqDescription()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getReqDescription()) %><%} else{%>-<%} %></td>
-    							<td><%if(mr.getRelevantSpecs()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getRelevantSpecs()) %><%} else{%>-<%} %></td>
-    							<td><%if(mr.getValidationMethod()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getValidationMethod()) %><%} else{%>-<%} %></td>
-    							<td><%if(mr.getRemarks()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getRemarks()) %><%} else{%>-<%} %></td>
+    							<td style="text-align: center;"><%if(mr.getReqId()!=null) {%><%=mr.getReqId() %><%} else{%>-<%} %></td>
+    							<td><%if(mr.getReqDescription()!=null) {%><%=mr.getReqDescription() %><%} else{%>-<%} %></td>
+    							<td><%if(mr.getRelevantSpecs()!=null) {%><%=mr.getRelevantSpecs() %><%} else{%>-<%} %></td>
+    							<td><%if(mr.getValidationMethod()!=null) {%><%=mr.getValidationMethod() %><%} else{%>-<%} %></td>
+    							<td><%if(mr.getRemarks()!=null) {%><%=mr.getRemarks() %><%} else{%>-<%} %></td>
     						</tr>
     					<%} %>
     				</tbody>
@@ -238,7 +238,7 @@ CARSSoC carsSoC =(CARSSoC)request.getAttribute("CARSSoCData");
     					<%for(CARSRSQRDeliverables del : deliverables) {%>
     						<tr>
     							<td style="text-align: center;width: 5%;"><%=++j %> </td>
-    							<td style="width: 87.5%;"><%if(del.getDescription()!=null) {%><%=StringEscapeUtils.escapeHtml4(del.getDescription()) %><%} else{%>-<%} %></td>
+    							<td style="width: 87.5%;"><%if(del.getDescription()!=null) {%><%=del.getDescription() %><%} else{%>-<%} %></td>
     							<td style="width: 6%">
     								<%if(del.getDeliverableType()!=null) {%>
     									<%if(del.getDeliverableType().equalsIgnoreCase("S")) {%>Software
@@ -275,14 +275,14 @@ CARSSoC carsSoC =(CARSSoC)request.getAttribute("CARSSoCData");
 	   				<tbody>
 	   					<%int i=0; for(CARSSoCMilestones mil : milestones) { %>
 	   						<tr>
-	   							<td style="text-align: center;width: 5%;"><%if(mil.getMilestoneNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getMilestoneNo()) %><%} else{%>-<%} %></td>
-	   							<td style="width: 20%;"><%if(mil.getTaskDesc()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getTaskDesc()) %><%} else{%>-<%} %></td>
-	   							<td style="text-align: center;width: 10%;"><%if(mil.getMonths()!=null) {%><%="T0 + "+StringEscapeUtils.escapeHtml4(mil.getMonths()) %><%} else{%>-<%} %></td>
-	   							<td style=""><%if(mil.getDeliverables()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getDeliverables()) %><%} else{%>-<%} %></td>
+	   							<td style="text-align: center;width: 5%;"><%if(mil.getMilestoneNo()!=null) {%><%=mil.getMilestoneNo() %><%} else{%>-<%} %></td>
+	   							<td style="width: 20%;"><%if(mil.getTaskDesc()!=null) {%><%=mil.getTaskDesc() %><%} else{%>-<%} %></td>
+	   							<td style="text-align: center;width: 10%;"><%if(mil.getMonths()!=null) {%><%="T0 + "%> <%=mil.getMonths() %><%} else{%>-<%} %></td>
+	   							<td style=""><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} else{%>-<%} %></td>
 	   							<%if(carsSoC!=null) {%>
-	   							<td style="text-align: center;width: 5%;"><%if(mil.getPaymentPercentage()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getPaymentPercentage()) %><%} else{%>-<%} %></td>
-	   							<td style="width: 10%;"><%if(mil.getActualAmount()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(mil.getActualAmount()))) %><%} else{%>-<%} %></td>
-	   							<td style="width: 10%;"><%if(mil.getPaymentTerms()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getPaymentTerms()) %><%} else{%>-<%} %></td>
+	   							<td style="text-align: center;width: 5%;"><%if(mil.getPaymentPercentage()!=null) {%><%=mil.getPaymentPercentage() %><%} else{%>-<%} %></td>
+	   							<td style="width: 10%;"><%if(mil.getActualAmount()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(mil.getActualAmount())) %><%} else{%>-<%} %></td>
+	   							<td style="width: 10%;"><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} else{%>-<%} %></td>
 	   							<%} %>
 	   						</tr>
 	   					<%} %>
@@ -293,19 +293,19 @@ CARSSoC carsSoC =(CARSSoC)request.getAttribute("CARSSoCData");
     </div>
     <div>
     	<h4 style="margin-left: 10px;">7. Scope of RSP</h4>
-    	<div class="editor-data"><%if(rsqr!=null && rsqr[6]!=null) {%><%=StringEscapeUtils.escapeHtml4(rsqr[6].toString())%><%}else {%><div style="text-align: center;">No Details Added!</div><%} %></div>
+    	<div class="editor-data"><%if(rsqr!=null && rsqr[6]!=null) {%><%=rsqr[6].toString()%><%}else {%><div style="text-align: center;">No Details Added!</div><%} %></div>
     </div>
     <div>
     	<h4 style="margin-left: 10px;">8. Scope of LRDE</h4>
-    	<div class="editor-data"><%if(rsqr!=null && rsqr[7]!=null) {%><%=StringEscapeUtils.escapeHtml4(rsqr[7].toString())%><%}else {%><div style="text-align: center;">No Details Added!</div><%} %></div>
+    	<div class="editor-data"><%if(rsqr!=null && rsqr[7]!=null) {%><%=rsqr[7].toString()%><%}else {%><div style="text-align: center;">No Details Added!</div><%} %></div>
     </div>
     <div>
     	<h4 style="margin-left: 10px;">9. Success Criterion</h4>
-    	<div class="editor-data"><%if(rsqr!=null && rsqr[8]!=null) {%><%=StringEscapeUtils.escapeHtml4(rsqr[8].toString())%><%}else {%><div style="text-align: center;">No Details Added!</div><%} %></div>
+    	<div class="editor-data"><%if(rsqr!=null && rsqr[8]!=null) {%><%=rsqr[8].toString()%><%}else {%><div style="text-align: center;">No Details Added!</div><%} %></div>
     </div>
     <div>
     	<h4 style="margin-left: 10px;">10. Literature Reference if any</h4>
-    	<div class="editor-data"><%if(rsqr!=null && rsqr[9]!=null) {%><%=StringEscapeUtils.escapeHtml4(rsqr[9].toString())%><%}else {%><div style="text-align: center;">No Details Added!</div><%} %></div>
+    	<div class="editor-data"><%if(rsqr!=null && rsqr[9]!=null) {%><%=rsqr[9].toString()%><%}else {%><div style="text-align: center;">No Details Added!</div><%} %></div>
     </div>
     
     <%if(rsqr==null && majorReqr==null && deliverables==null) {%>

@@ -5,7 +5,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<html>
+<html> 
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
@@ -234,7 +234,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                       							 		%>
                         									<tr>
                             									<td class="center"><%=++SN%></td>
-                            									<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
+                            									<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
                             									<td class="center">
                             										<%=form[11]!=null?StringEscapeUtils.escapeHtml4(form[11].toString()):form[12]!=null?StringEscapeUtils.escapeHtml4(form[12].toString()): " - " %>
                             										<%if(form[13]!=null) {%>
@@ -313,7 +313,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                       							 		%>
                         									<tr>
                             									<td class="center"><%=++SN%></td>
-                            									<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
+                            									<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
                             									<td class="center">
                             										<%=form[11]!=null?StringEscapeUtils.escapeHtml4(form[11].toString()):form[12]!=null?StringEscapeUtils.escapeHtml4(form[12].toString()): " - " %>
                             										<%if(form[13]!=null) {%>
@@ -372,7 +372,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                       							 		%>
                         									<tr>
                             									<td class="center"><%=++SN%></td>
-                            									<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
+                            									<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
                             									<td class="center">
                             										<%=form[11]!=null?StringEscapeUtils.escapeHtml4(form[11].toString()):form[12]!=null?StringEscapeUtils.escapeHtml4(form[12].toString()): " - " %>
                             										<%if(form[13]!=null) {%>
@@ -431,7 +431,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                       							 		%>
                         									<tr>
                             									<td class="center"><%=++SN%></td>
-                            									<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
+                            									<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
                             									<td class="center">
                             										For Lab
                             									</td>
@@ -489,7 +489,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                       							 		%>
                         									<tr>
                             									<td class="center"><%=++SN%></td>
-                            									<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
+                            									<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
                             									<td class="center">
                             										<%=form[11]!=null?StringEscapeUtils.escapeHtml4(form[11].toString()):form[10]!=null?StringEscapeUtils.escapeHtml4(form[10].toString()): " - " %>
                             									</td>
@@ -545,7 +545,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                       							 		%>
                         									<tr>
                             									<td class="center"><%=++SN%></td>
-                            									<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
+                            									<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
                             									<td class="center">
                             										<%=form[11]!=null?StringEscapeUtils.escapeHtml4(form[11].toString()):form[10]!=null?StringEscapeUtils.escapeHtml4(form[10].toString()): " - " %>
                             									</td>
@@ -601,7 +601,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                       							 		%>
                         									<tr>
                             									<td class="center"><%=++SN%></td>
-                            									<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
+                            									<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
                             									<td class="center">
                             										<%=form[11]!=null?StringEscapeUtils.escapeHtml4(form[11].toString()):form[10]!=null?StringEscapeUtils.escapeHtml4(form[10].toString()): " - " %>
                             									</td>
@@ -707,7 +707,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                        												%>
                         											<tr>
                             											<td class="center"><%=++SNA%></td>
-                            											<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "+" ("+form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "+")"%></td>
+                            											<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%> <%=" ("+(form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - ")+")"%></td>
                             											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
                             											<td class="center">
                             												<%=form[15]!=null?StringEscapeUtils.escapeHtml4(form[15].toString()):form[16]!=null?StringEscapeUtils.escapeHtml4(form[16].toString()): " - " %>
@@ -771,7 +771,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                        												%>
                         											<tr>
                             											<td class="center"><%=++SNA%></td>
-                            											<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "+" ("+form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "+")"%></td>
+                            											<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%> <%=" ("+(form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - ")+")"%></td>
                             											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
                             											<td class="center">
                             												<%=form[15]!=null?StringEscapeUtils.escapeHtml4(form[15].toString()):form[16]!=null?StringEscapeUtils.escapeHtml4(form[16].toString()): " - " %>
@@ -835,7 +835,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                        												%>
                         											<tr>
                             											<td class="center"><%=++SNA%></td>
-                            											<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "+" ("+form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "+")"%></td>
+                            											<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%> <%=" ("+(form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - ")+")"%></td>
                             											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
                             											<td class="center">
                             												<%=form[15]!=null?StringEscapeUtils.escapeHtml4(form[15].toString()):form[16]!=null?StringEscapeUtils.escapeHtml4(form[16].toString()): " - " %>
@@ -899,7 +899,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                        												%>
                         											<tr>
                             											<td class="center"><%=++SNA%></td>
-                            											<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "+" ("+form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "+")"%></td>
+                            											<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%> <%=" ("+(form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - ")+")"%></td>
                             											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
                             											<td class="center">
                             												For Lab
@@ -940,7 +940,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                        												%>
                         											<tr>
                             											<td class="center"><%=++SNA%></td>
-                            											<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "+" ("+form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "+")"%></td>
+                            											<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%> <%=" ("+(form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - ")+")"%></td>
                             											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
                             											<td class="center">
                             												<%=form[15]!=null?StringEscapeUtils.escapeHtml4(form[15].toString()):form[14]!=null?StringEscapeUtils.escapeHtml4(form[14].toString()): " - " %>
@@ -981,7 +981,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                        												%>
                         											<tr>
                             											<td class="center"><%=++SNA%></td>
-                            											<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "+" ("+form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "+")"%></td>
+                            											<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%> <%=" ("+(form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - ")+")"%></td>
                             											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
                             											<td class="center">
                             												<%=form[15]!=null?StringEscapeUtils.escapeHtml4(form[15].toString()):form[14]!=null?StringEscapeUtils.escapeHtml4(form[14].toString()): " - " %>
@@ -1022,7 +1022,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                        												%>
                         											<tr>
                             											<td class="center"><%=++SNA%></td>
-                            											<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "+" ("+form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "+")"%></td>
+                            											<td ><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%> <%=" ("+(form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - ")+")"%></td>
                             											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
                             											<td class="center">
                             												<%=form[15]!=null?StringEscapeUtils.escapeHtml4(form[15].toString()):form[14]!=null?StringEscapeUtils.escapeHtml4(form[14].toString()): " - " %>

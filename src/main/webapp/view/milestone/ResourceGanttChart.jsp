@@ -189,7 +189,7 @@ h6{
 								<%if(employeeList!=null && employeeList.size()>0) {
 									for(Object[] obj : employeeList) {%>
 										<option value="<%=obj[0]%>" <%if(empId.equalsIgnoreCase(obj[0]+"")) {%>selected<%} %> >
-											<%=(obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):""))+" "+obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "+", "+obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %>
+											<%=(obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):""))+" "+(obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - ")+", "+(obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - ") %>
 										</option>
 								<%} }%>
 							</select>
@@ -327,7 +327,7 @@ h6{
 						                            			%>
 						                            		<tr>
 						                            			<td class="center"><%=++slno %></td>
-						                            			<td class="center"><%=obj[14]!=null?StringEscapeUtils.escapeHtml4(obj[14].toString()): " - "+" ("+obj[15]!=null?StringEscapeUtils.escapeHtml4(obj[15].toString()): " - "+")"%></td>
+						                            			<td class="center"><%=obj[14]!=null?StringEscapeUtils.escapeHtml4(obj[14].toString()): " - "%> <%=" ("%> <%=obj[15]!=null?StringEscapeUtils.escapeHtml4(obj[15].toString()): " - "%>)</td>
 						                            			<td class="center">M<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></td>
 						                            			<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>
 						                            			<td class="center"><%=obj[6]!=null?fc.sdfTordf(obj[6].toString()):"-" %></td>
@@ -384,7 +384,7 @@ h6{
 						                            		%>
 						                            		<tr>
 						                            			<td class="center"><%=++slno %> </td>
-						                            			<td class="center"><%=projectDetails!=null?(projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()): " - "+" ("+projectDetails[3]!=null?StringEscapeUtils.escapeHtml4(projectDetails[3].toString()): " - "+")"):"-"%></td>
+						                            			<td class="center"><%=projectDetails!=null?((projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()): " - ")+" ("+(projectDetails[3]!=null?StringEscapeUtils.escapeHtml4(projectDetails[3].toString()): " - ")+")"):"-"%></td>
 						                            			<td class="center">M<%=obj[obj.length - 2]!=null?StringEscapeUtils.escapeHtml4(obj[obj.length-2].toString()): " - " %> <%=obj[obj.length - 3]!=null?StringEscapeUtils.escapeHtml4(obj[obj.length-3].toString()): " - " %></td>
 						                            			<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>
 						                            			<td class="center"><%=obj[6]!=null?fc.sdfTordf(obj[6].toString()):"-" %></td>
@@ -621,7 +621,7 @@ h6{
 					{
 						id: "<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>",
 					    name: "<%=obj[3].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", " ").replaceAll("\r", "")%>",
-						project: "<%=obj[14]!=null?StringEscapeUtils.escapeHtml4(obj[14].toString()): " - "+" ("+obj[15]!=null?StringEscapeUtils.escapeHtml4(obj[15].toString()): " - "+")"%>",
+						project: "<%=obj[14]!=null?StringEscapeUtils.escapeHtml4(obj[14].toString()): " - "%> <%=" ("+(obj[15]!=null?StringEscapeUtils.escapeHtml4(obj[15].toString()): " - ")+")"%>",
 						<%if(!obj[9].toString().equalsIgnoreCase("0") && !obj[9].toString().equalsIgnoreCase("1")){ %>
 							baselineStart: "<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%>",
 							baselineEnd: "<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%>", 
@@ -654,7 +654,7 @@ h6{
 						{
 							id: "<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>",
 						    name: "<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - ".replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", " ").replaceAll("\r", "")%>",
-						    project: "<%=projectDetails!=null?(projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()): " - "+" ("+projectDetails[3]!=null?StringEscapeUtils.escapeHtml4(projectDetails[3].toString()): " - "+")"):"-"%>",
+						    project: "<%=projectDetails!=null?((projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()): " - ")+" ("+(projectDetails[3]!=null?StringEscapeUtils.escapeHtml4(projectDetails[3].toString()): " - ")+")"):"-"%>",
 							<%if(!obj[9].toString().equalsIgnoreCase("0") && !obj[9].toString().equalsIgnoreCase("1")){ %>
 								baselineStart: "<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%>",
 								baselineEnd: "<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%>", 

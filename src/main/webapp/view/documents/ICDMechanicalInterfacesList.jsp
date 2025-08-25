@@ -198,7 +198,7 @@ label {
 											        <%
 											        for(Object[] obj : productTreeAllList){ %>
 											        	<option value="<%=obj[0]+"/"+obj[7] %>" <%if(mechanicalInterface!=null && mechanicalInterface.getSubSystemMainIdOne()==Long.parseLong(obj[0].toString())) {%>selected<%} %> >
-											        		<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "+" ("+obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "+")" %>
+											        		<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%=" ("+(obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - ")+")" %>
 											        	</option>
 											        <%} %>
 												</select>
@@ -210,7 +210,7 @@ label {
 													<option value="" disabled selected>Choose...</option>
 											        <% for(Object[] obj : productTreeAllList){ %>
 											        	<option value="<%=obj[0]+"/"+obj[7] %>" <%if(mechanicalInterface!=null && mechanicalInterface.getSubSystemMainIdTwo()==Long.parseLong(obj[0].toString())) {%>selected<%} %> >
-											        		<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "+" ("+obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "+")" %>
+											        		<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%=" ("+(obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - ")+")" %>
 											        	</option>
 											        <%} %>
 												</select>

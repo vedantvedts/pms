@@ -154,7 +154,7 @@ String filesize=(String) request.getAttribute("filesize");
 												<%for(Object[] obj : projectslist){ 
 											     String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
 												%>
-												<option <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value=<%=obj[0]%> ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - " %></option>
+												<option <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value=<%=obj[0]%> ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - " %></option>
 												<%} %>
 											</select>
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

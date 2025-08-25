@@ -540,7 +540,7 @@
 										<td  class="text-primary" colspan="2"><%=++docsumslno %>.&nbsp; Organization and address:
 											<span class="text-dark">		
 												<%if (labDetails[1] != null) {%>
-													<%=StringEscapeUtils.escapeHtml4(labDetails[1].toString()) + "(" + labDetails[0]!=null?StringEscapeUtils.escapeHtml4(labDetails[0].toString()): " - " + ")"%>
+													<%=StringEscapeUtils.escapeHtml4(labDetails[1].toString()) + "(" + (labDetails[0]!=null?StringEscapeUtils.escapeHtml4(labDetails[0].toString()): " - ") + ")"%>
 												<%} else {%>
 													-
 												<%}%>
@@ -947,7 +947,7 @@
    								<select class="form-control selectdee" name="systemId" id="systemId" onchange="this.form.submit()">
    									<option value="" selected disabled>Choose...</option>
    									<%for(Object[] obj : productTreeList) {%>
-   										<option value="<%=obj[0]%>"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " + " (" + obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " + ")" %></option>
+   										<option value="<%=obj[0]%>"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> <%=" (" + (obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - ") + ")" %></option>
    									<%} %>
    								</select>
    							</div>
@@ -1074,7 +1074,7 @@ function DownloadDocPDF(){
                 <% } %>
                 
                 {
-                    text: htmlToPdfmake('<h5><% if (labDetails != null && labDetails[1] != null) { %> <%= StringEscapeUtils.escapeHtml4(labDetails[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + labDetails[0]!=null?StringEscapeUtils.escapeHtml4(labDetails[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " + ")" %> <% } else { %> '-' <% } %></h5>'),
+                    text: htmlToPdfmake('<h5><% if (labDetails != null && labDetails[1] != null) { %> <%= StringEscapeUtils.escapeHtml4(labDetails[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + (labDetails[0]!=null?StringEscapeUtils.escapeHtml4(labDetails[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - ") + ")" %> <% } else { %> '-' <% } %></h5>'),
                     alignment: 'center',
                     fontSize: 16,
                     bold: true,
@@ -1240,7 +1240,7 @@ function DownloadDocPDF(){
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Organization and address', style: 'tableData' },
-                                { text: '<% if (labDetails!=null && labDetails[1] != null) {%> <%=StringEscapeUtils.escapeHtml4(labDetails[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + labDetails[0]!=null?StringEscapeUtils.escapeHtml4(labDetails[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") :" - " + ")"%> <%} else {%> - <%}%>'
+                                { text: '<% if (labDetails!=null && labDetails[1] != null) {%> <%=StringEscapeUtils.escapeHtml4(labDetails[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + (labDetails[0]!=null?StringEscapeUtils.escapeHtml4(labDetails[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") :" - ") + ")"%> <%} else {%> - <%}%>'
 										+'\n Government of India, Ministry of Defence,Defence Research & Development Organization'
 								+'<% if (labDetails!=null && labDetails[2] != null && labDetails[3] != null && labDetails[5] != null) { %>'
 									+'<%=StringEscapeUtils.escapeHtml4(labDetails[2].toString())+ " , " + StringEscapeUtils.escapeHtml4(labDetails[3].toString()) + ", PIN-" + StringEscapeUtils.escapeHtml4(labDetails[5].toString())+"."%>'
@@ -1447,7 +1447,7 @@ function DownloadDocPDF(){
 	                    tocMargin: [10, 0, 0, 0],
 	                },
 	                {
-	                	stack: [htmlToPdfmake(setImagesWidth('<%if(intro.getChapterContent()!=null) {%><%=StringEscapeUtils.escapeHtml4(intro.getChapterContent()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
+	                	stack: [htmlToPdfmake(setImagesWidth('<%if(intro.getChapterContent()!=null) {%><%=intro.getChapterContent().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
 	                		  +'<%}else {%> - <%} %>', 500))],
 	                    margin: [15, 0, 0, 0],
 	                },
@@ -1465,7 +1465,7 @@ function DownloadDocPDF(){
 		                    tocMargin: [20, 0, 0, 0],
 		                },
 		                {
-		                	stack: [htmlToPdfmake(setImagesWidth('<%if(intro1.getChapterContent()!=null) {%><%=StringEscapeUtils.escapeHtml4(intro1.getChapterContent()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
+		                	stack: [htmlToPdfmake(setImagesWidth('<%if(intro1.getChapterContent()!=null) {%><%=intro1.getChapterContent().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
 		                		  +'<%}else {%> - <%} %>', 500))],
 		                    margin: [25, 0, 0, 0],
 		                },
@@ -1510,7 +1510,7 @@ function DownloadDocPDF(){
 		                                {
 		                                    text: 'Download',
 		                                    style: 'tableData',
-		                                    link: '<%= request.getRequestURL().toString().replace(request.getRequestURI(), "") + request.getContextPath() + "/StandardDocumentsDownload.htm?StandardDocumentId=" + obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): "" %>',
+		                                    link: '<%= request.getRequestURL().toString().replace(request.getRequestURI(), "") + request.getContextPath() + "/StandardDocumentsDownload.htm?StandardDocumentId=" + (obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): "") %>',
 		                                    color: 'blue',
 		                                    decoration: 'underline',
 		                                    alignment: 'center',
@@ -1586,7 +1586,7 @@ function DownloadDocPDF(){
                                 { text: 'SN', style: 'tableHeader2' },
                                 { text: 'Sub-System', style: 'tableHeader2' },
                                 <% for (Object[] subsystem : productTreeList) { %>
-                                    { text: '<%= subsystem != null ? subsystem[2]!=null?StringEscapeUtils.escapeHtml4(subsystem[2].toString()): " - " + " (" + subsystem[7]!=null?StringEscapeUtils.escapeHtml4(subsystem[7].toString()): " - " + ")" : "" %>', style: 'tableHeader2' },
+                                    { text: '<%= subsystem != null ? ((subsystem[2]!=null?StringEscapeUtils.escapeHtml4(subsystem[2].toString()): " - ") + " (" + (subsystem[7]!=null?StringEscapeUtils.escapeHtml4(subsystem[7].toString()): " - ") + ")" ): "" %>', style: 'tableHeader2' },
                                 <% } %>
                             ],
 
@@ -1598,7 +1598,7 @@ function DownloadDocPDF(){
                             for (Object[] rowSubsystem : productTreeList) { %>
                                 [
                                     { text: '<%= ++slnoA%>', style: 'tableData2', alignment: 'center' },
-                                    { text: '<%= rowSubsystem != null ? rowSubsystem[2]!=null?StringEscapeUtils.escapeHtml4(rowSubsystem[2].toString()): " - " + " (" + rowSubsystem[7]!=null?StringEscapeUtils.escapeHtml4(rowSubsystem[7].toString()): " - " + ")" : "" %>', style: 'tableData2', alignment: 'left' },
+                                    { text: '<%= rowSubsystem != null ? ((rowSubsystem[2]!=null?StringEscapeUtils.escapeHtml4(rowSubsystem[2].toString()): " - " )+ " (" + (rowSubsystem[7]!=null?StringEscapeUtils.escapeHtml4(rowSubsystem[7].toString()): " - " )+ ")" ): "" %>', style: 'tableData2', alignment: 'left' },
                                     <% for (Object[] colSubsystem : productTreeList) { %>
                                         { text: 
                                             <%-- <% if (rowSubsystem.equalsIgnoreCase(colSubsystem)) { %>
@@ -1607,7 +1607,7 @@ function DownloadDocPDF(){
                                                 String key = rowSubsystem[7] + "_" + colSubsystem[7];
                                                 String connections = connectionMap.getOrDefault(key, "-");
                                             %>
-                                                htmlToPdfmake('<%= connections != null ? StringEscapeUtils.escapeHtml4(connections) : "-" %>')
+                                                htmlToPdfmake('<%= connections != null ? connections : "-" %>')
                                             <% //} %>, 
                                             style: 'tableData2',  },
                                     <% } %>
@@ -1679,7 +1679,7 @@ function DownloadDocPDF(){
                             for (Object[] rowSubsystem : productTreeListInternal) { %>
                                 [
                                     { text: '<%= ++slnoI%>', style: 'tableData2', alignment: 'center' },
-                                    { text: '<%= rowSubsystem != null ? rowSubsystem[2]!=null?StringEscapeUtils.escapeHtml4(rowSubsystem[2].toString()): " - " + " (" + rowSubsystem[7]!=null?StringEscapeUtils.escapeHtml4(rowSubsystem[7].toString()): " - " + ")" : "" %>', style: 'tableData2', alignment: 'left' },
+                                    { text: '<%= rowSubsystem != null ? ((rowSubsystem[2]!=null?StringEscapeUtils.escapeHtml4(rowSubsystem[2].toString()): " - ") + " (" + (rowSubsystem[7]!=null?StringEscapeUtils.escapeHtml4(rowSubsystem[7].toString()): " - ") + ")") : "" %>', style: 'tableData2', alignment: 'left' },
                                     <% for (Object[] colSubsystem : productTreeListInternal) { %>
                                         { text: 
                                             <%-- <% if (rowSubsystem.equalsIgnoreCase(colSubsystem)) { %>
@@ -1688,7 +1688,7 @@ function DownloadDocPDF(){
                                                 String key = rowSubsystem[7] + "_" + colSubsystem[7];
                                                 String connections = connectionMap.getOrDefault(key, "-");
                                             %>
-                                                htmlToPdfmake('<%= connections != null ? StringEscapeUtils.escapeHtml4(connections) : "-" %>')
+                                                htmlToPdfmake('<%= connections != null ? connections : "-" %>')
                                             <% //} %>, 
                                             style: 'tableData2',  },
                                     <% } %>
@@ -1749,7 +1749,7 @@ function DownloadDocPDF(){
                                 { text: 'SN', style: 'tableHeader2' },
                                 { text: 'Sub-System', style: 'tableHeader2' },
                                 <% for (Object[] subsystem : productTreeListExternal) { %>
-                                    { text: '<%= subsystem != null ? subsystem[2]!=null?StringEscapeUtils.escapeHtml4(subsystem[2].toString()): " - " + " (" + subsystem[7]!=null?StringEscapeUtils.escapeHtml4(subsystem[7].toString()): " - " + ")" : "" %>', style: 'tableHeader2' },
+                                    { text: '<%= subsystem != null ? ((subsystem[2]!=null?StringEscapeUtils.escapeHtml4(subsystem[2].toString()): " - ") + " (" + (subsystem[7]!=null?StringEscapeUtils.escapeHtml4(subsystem[7].toString()): " - " )+ ")" ): "" %>', style: 'tableHeader2' },
                                 <% } %>
                             ],
 
@@ -1761,7 +1761,7 @@ function DownloadDocPDF(){
                             for (Object[] rowSubsystem : productTreeListExternal) { %>
                                 [
                                     { text: '<%= ++slnoE%>', style: 'tableData2', alignment: 'center' },
-                                    { text: '<%= rowSubsystem != null ? rowSubsystem[2]!=null?StringEscapeUtils.escapeHtml4(rowSubsystem[2].toString()): " - " + " (" + rowSubsystem[7]!=null?StringEscapeUtils.escapeHtml4(rowSubsystem[7].toString()): " - " + ")" : "" %>', style: 'tableData2', alignment: 'left' },
+                                    { text: '<%= rowSubsystem != null ? ((rowSubsystem[2]!=null?StringEscapeUtils.escapeHtml4(rowSubsystem[2].toString()): " - ") + " (" +( rowSubsystem[7]!=null?StringEscapeUtils.escapeHtml4(rowSubsystem[7].toString()): " - " )+ ")" ): "" %>', style: 'tableData2', alignment: 'left' },
                                     <% for (Object[] colSubsystem : productTreeListExternal) { %>
                                         { text: 
                                             <% if (rowSubsystem[11].toString().equalsIgnoreCase("I") && colSubsystem[11].toString().equalsIgnoreCase("I")) { %>
@@ -1770,7 +1770,7 @@ function DownloadDocPDF(){
                                                 String key = rowSubsystem[7] + "_" + colSubsystem[7];
                                                 String connections = connectionMap.getOrDefault(key, "-");
                                             %>
-                                                htmlToPdfmake('<%= connections != null ? StringEscapeUtils.escapeHtml4(connections) : "-" %>')
+                                                htmlToPdfmake('<%= connections != null ? connections: "-" %>')
                                             <% } %>, 
                                             style: 'tableData2',  },
                                     <% } %>
@@ -1936,7 +1936,7 @@ function DownloadDocPDF(){
                 %>
                 
                 {
-                	text: mainContentCount+'.<%=++slno%>. <%=firstRow!=null? firstRow.getLevelNameE1()!=null?StringEscapeUtils.escapeHtml4(firstRow.getLevelNameE1()): " - "+"("+firstRow.getLevelCodeE1()!=null?StringEscapeUtils.escapeHtml4(firstRow.getLevelCodeE1()): " - "+")":"-" %>',	
+                	text: mainContentCount+'.<%=++slno%>. <%=firstRow!=null? ((firstRow.getLevelNameE1()!=null?StringEscapeUtils.escapeHtml4(firstRow.getLevelNameE1()): " - ")+"("+(firstRow.getLevelCodeE1()!=null?StringEscapeUtils.escapeHtml4(firstRow.getLevelCodeE1()): " - ")+")"):"-" %>',	
                 	style: 'chapterSubHeader',
                     tocItem: true,
                     id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=slno%>',
@@ -2260,7 +2260,7 @@ function DownloadDocPDF(){
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Description', style: 'tableData', bold: true},
 	                                <%if(iface.getInterfaceDescription()!=null && !iface.getInterfaceDescription().isEmpty()) {%>
-	                                	{ stack: [htmlToPdfmake(setImagesWidth('<%=iface.getInterfaceDescription()!=null?StringEscapeUtils.escapeHtml4(iface.getInterfaceDescription()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " %>', 600))],},
+	                                	{ stack: [htmlToPdfmake(setImagesWidth('<%=iface.getInterfaceDescription()!=null?iface.getInterfaceDescription().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " %>', 600))],},
 	                                <%}else {%>
 	                                	{ text: '-', style: 'tableData'},
 	                                <%} %>
@@ -2785,7 +2785,7 @@ function DownloadDocPDF(){
                             {
                                 columns: [
                                     {
-                                        text: '<%if(documentNo!=null) {%><%=StringEscapeUtils.escapeHtml4(documentNo) %><%} %>',
+                                        text: '<%if(documentNo!=null) {%><%=documentNo %><%} %>',
                                         alignment: 'left',
                                         margin: [margin, 0, 0, 0],
                                         fontSize: 8

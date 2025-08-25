@@ -213,7 +213,7 @@ a:hover {
 												<% for (Object[] obj : projectslist) {
     										    String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
     										     %>
-											    <option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(projectid)){ %>selected="selected" <%} %>> <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%>  </option>
+											    <option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(projectid)){ %>selected="selected" <%} %>> <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%>  </option>
 											    <%} %>
 												<%-- <%for(Object[] obj:projectslist){ %>
 													<option <%if(projectid.equals(obj[0].toString())){ %>selected <%} %> value="<%=obj[0]%>"><%=obj[4]%></option>	

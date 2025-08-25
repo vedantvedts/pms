@@ -276,7 +276,7 @@
                                 %>
                                 <tr>
                                     <td class="center" ><%= count %></td>
-                                    <td ><%= obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - "+", "+obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %></td>
+                                    <td ><%= obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - "%> <%=", "+(obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - ") %></td>
                                     <td class="center"><%= obj[4]!=null?fc.sdfTordf(obj[4].toString()):" - " %></td>
                                     <td class="center" >v<%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
                                     <td align="center" >

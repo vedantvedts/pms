@@ -204,7 +204,7 @@ label {
 									        	%>
 									        		<%if(s1List.contains(Long.parseLong(obj[0].toString()))) {%>selected<%} %>
 									        	<%} %>
-									        	 ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "+" ("+obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "+")" %></option>
+									        	 ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%=" ("+(obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - ")+")" %></option>
 									        <%} %>
 										</select>
 	        						</div>
@@ -226,7 +226,7 @@ label {
 									        	%>
 									        		<%if(s2List.contains(Long.parseLong(obj[0].toString()))) {%>selected<%} %>
 									        	<%} %>
-									        	><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "+" ("+obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "+")" %></option>
+									        	><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%=" ("+(obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - ")+")" %></option>
 									        <%} %>
 										</select>
         							</div>

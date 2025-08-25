@@ -153,7 +153,7 @@ input[type=checkbox] {
 						selected="selected"
 						<%projectDirector = Long.parseLong(obj[23].toString());selectedProject=projectshortName; %>
 						<%} %>>
-						<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%>
+						<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%>
 					</option>
 					<%} %>
 				</select>

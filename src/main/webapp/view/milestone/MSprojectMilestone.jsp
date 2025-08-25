@@ -131,7 +131,7 @@ FormatConverter fc = new FormatConverter();
 					<option value="<%=obj[0]%>"
 						<%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>
 						selected="selected" <%} %>>
-						<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - "%>
+						<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - "%>
 					</option>
 					<%} %>
 				</select> <input type="hidden" name="${_csrf.parameterName}"

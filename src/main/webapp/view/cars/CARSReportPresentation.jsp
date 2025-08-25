@@ -452,12 +452,12 @@ tr.clickable:hover{
 							        <h2 class="card-title">Research Service Provider (RSP)</h2>
 							        <div class="card-section">
 							            <span class="label">Name:</span>
-							            <span class="value"><%= obj[26]!=null?StringEscapeUtils.escapeHtml4(obj[26].toString()): " - " + ". " + obj[27]!=null?StringEscapeUtils.escapeHtml4(obj[27].toString()): " - " + ", " + obj[28]!=null?StringEscapeUtils.escapeHtml4(obj[28].toString()): " - " %></span>
+							            <span class="value"><%= obj[26]!=null?StringEscapeUtils.escapeHtml4(obj[26].toString()): " - " %> . <%=obj[27]!=null?StringEscapeUtils.escapeHtml4(obj[27].toString()): " - " %>, <%= obj[28]!=null?StringEscapeUtils.escapeHtml4(obj[28].toString()): " - " %></span>
 							        </div>
 							        <div class="card-section">
 							            <span class="label">Address:</span>
 							            <span class="value">
-							                <%= obj[21]!=null?StringEscapeUtils.escapeHtml4(obj[21].toString()): " - " + ", " + obj[22]!=null?StringEscapeUtils.escapeHtml4(obj[22].toString()): " - " + ", " + obj[23]!=null?StringEscapeUtils.escapeHtml4(obj[23].toString()): " - " + ", " + obj[24]!=null?StringEscapeUtils.escapeHtml4(obj[24].toString()): " - " + " - " + obj[25]!=null?StringEscapeUtils.escapeHtml4(obj[25].toString()): " - " %> <br>
+							                <%= obj[21]!=null?StringEscapeUtils.escapeHtml4(obj[21].toString()): " - " %>, <%= obj[22]!=null?StringEscapeUtils.escapeHtml4(obj[22].toString()): " - " %>, <%= obj[23]!=null?StringEscapeUtils.escapeHtml4(obj[23].toString()): " - " %>, <%= obj[24]!=null?StringEscapeUtils.escapeHtml4(obj[24].toString()): " - " %> - <%= obj[25]!=null?StringEscapeUtils.escapeHtml4(obj[25].toString()): " - " %> <br>
 							                Phone: <%= obj[30]!=null?StringEscapeUtils.escapeHtml4(obj[30].toString()): " - " %><br>
 							                Email: <%= obj[31]!=null?StringEscapeUtils.escapeHtml4(obj[31].toString()): " - " %><br>
 							                Fax: <%= obj[32]!=null?StringEscapeUtils.escapeHtml4(obj[32].toString()): " - " %>

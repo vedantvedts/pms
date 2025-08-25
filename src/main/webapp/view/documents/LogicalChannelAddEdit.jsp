@@ -42,7 +42,7 @@
 									        for(Object[] obj : softwareList){ %>
 									        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>" 
 									        	<%if(igiLogicalChannel!= null && igiLogicalChannel.getSourceId()==Long.parseLong(obj[0].toString())) {%>selected<%} %> >
-									        		<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "+" ("+obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "+")" %>
+									        		<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%=" ("+(obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - ")+")" %>
 									        	</option>
 									        <%} %>
 										</select>
@@ -55,7 +55,7 @@
 									        <% for(Object[] obj : softwareList){ %>
 									        	<option value="<%=obj[0]+"/"+obj[7] %>" data-id="<%=obj[0]%>" 
 									        		<%if(igiLogicalChannel!= null && igiLogicalChannel.getDestinationId()==Long.parseLong(obj[0].toString())) {%>selected<%} %> >
-									        		<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "+" ("+obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "+")" %>
+									        		<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%=" ("+(obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - ")+")" %>
 									        	</option>
 									        <%} %>
 										</select>

@@ -225,7 +225,7 @@ top: 6px;
 												<%for(Object[] obj : projectslist){ 
 											     String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
 												%>
-													<option <%if(revProjectId!=null && revProjectId!="null" && revProjectId.equals(obj[0].toString())) { %>selected <%} else if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value="<%=obj[0]%>" ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - " %></option>
+													<option <%if(revProjectId!=null && revProjectId!="null" && revProjectId.equals(obj[0].toString())) { %>selected <%} else if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value="<%=obj[0]%>" ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - " %></option>
 												<%} %>
 											</select>
 										</td>
@@ -236,7 +236,6 @@ top: 6px;
 											<select class="form-control items" name="committeecode" id="committeecode"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="this.form.submit();" >
 												<%if(commiteeName!=null ){
 												if(commiteeName.equalsIgnoreCase("EB")){
-													System.out.println("commiteeName--------- "+commiteeName);
 													%>
 													<option value="PMRC" >PMRC</option>
 												<option selected value="EB" >EB</option>

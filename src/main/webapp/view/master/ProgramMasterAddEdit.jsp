@@ -111,7 +111,7 @@
 										<select class="form-control selectdee" multiple="multiple"  name="prgmprojectids" id="prgmprojectids" data-placeholder="Choose..."	>
 											<% for (Object[] obj : projectsList){ %>
 												<option value="<%= obj[0] %>" <%if(programmeMaster!=null && linkedProjectIds!=null && linkedProjectIds.contains(Long.parseLong(obj[0].toString()))) {%> selected="selected" <%} %> >
-													<%=obj[2]!=null? StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%> ( <%=obj[4]!=null? StringEscapeUtils.escapeHtml4(obj[4].toString()):"-"%> )
+													<%=obj[2]!=null? StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%> (<%=obj[4]!=null? StringEscapeUtils.escapeHtml4(obj[4].toString()):"-"%>)
 												</option>
 											<%} %>
 										</select>
@@ -153,9 +153,7 @@
 		function handleInputChange(value,prgmId) {
 		    var uppercasedValue = value.trim().toUpperCase();
 		    $('#ProgrammeCode').val(uppercasedValue);
-		    console.log(uppercasedValue);
 		    if (uppercasedValue.length >=2) {
-		    	  console.log("inside Condition");
 		        $.ajax({
 		            type: "GET",
 		            url: "ProgrammeCodeCheck.htm",
@@ -166,8 +164,7 @@
 		            datatype: 'json',
 		            success: function(result) {
 		                var ajaxresult = JSON.parse(result); 
-		                //console.log(ajaxresult);
-		                //Check if the group code already exists
+		                //Check if the Programme code already exists
 		                if (ajaxresult >= 1) {
 		                	 $('#ProgrammeCode').val('');
 		                    alert('Programme Code Already Exists');

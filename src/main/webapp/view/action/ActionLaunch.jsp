@@ -195,12 +195,12 @@ a:hover {
 										<%if(projectdata!=null){
 										 String projectshortName=(projectdata[3]!=null)?" ( "+projectdata[3].toString()+" ) ":"";
 										%>
-										    <option value="<%=projectdata[0] %>" <%if(projectdata!=null && projectdata[0]!=null && projectdata[0].toString().equalsIgnoreCase(ActionData[5].toString())){%> selected="selected" <%}%>><%=projectdata[1]!=null?StringEscapeUtils.escapeHtml4(projectdata[1].toString()):" - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - "%></option>
+										    <option value="<%=projectdata[0] %>" <%if(projectdata!=null && projectdata[0]!=null && projectdata[0].toString().equalsIgnoreCase(ActionData[5].toString())){%> selected="selected" <%}%>><%=projectdata[1]!=null?StringEscapeUtils.escapeHtml4(projectdata[1].toString()) + projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - ":" - "%></option>
 										<%}else{%>
 										<%for(Object[] obj:ProjectList){
 										  String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
 										%>
-											<option value="<%=obj[0] %>" ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - "%></option>	
+											<option value="<%=obj[0] %>" ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%> <%= projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>	
 										<%}}%>
 										<option value="0" <%if(ActionData!=null && ActionData[5]!=null && "0".equalsIgnoreCase(ActionData[5].toString())){%> selected="selected" <%}%>>General</option>	
 									</select>	

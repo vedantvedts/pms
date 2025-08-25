@@ -292,7 +292,7 @@ String projectid=(String) request.getAttribute("projectid");
 										<select class="form-control "name="Member" id="Member0" required="required" style=" font-weight: bold; text-align-last: left; width: 500px;" data-live-search="true" data-container="body">										
 				          					<option disabled="true"  selected value="">Choose...</option>
 						    					<% for (Object[] obj : EmployeeList) {%>
-			       									<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> ( <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> ) </option>
+			       									<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> (<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>) </option>
 			    								<%} %>					
 										</select>
 									</td>									

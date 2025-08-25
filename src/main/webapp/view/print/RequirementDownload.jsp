@@ -113,13 +113,13 @@
 	
         var chapterCount = 0;
         var mainContentCount = 0;
-        var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=StringEscapeUtils.escapeHtml4(DocTempAtrr[12].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
+        var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
 		
         var docDefinition = {
             content: [
                 // Cover Page with Project Name and Logo
                 {
-                    text: htmlToPdfmake('<h4 class="heading-color ">SYSTEM REQUIREMENTS <br><br> FOR  <br><br>PROJECT <%=projectShortName!=null?StringEscapeUtils.escapeHtml4(projectShortName): " - " %> </h4>'),
+                    text: htmlToPdfmake('<h4 class="heading-color ">SYSTEM REQUIREMENTS <br><br> FOR  <br><br>PROJECT <%=projectShortName!=null?projectShortName: " - " %> </h4>'),
                     style: 'DocumentName',
                     alignment: 'center',
                     fontSize: 18,
@@ -136,7 +136,7 @@
                 <% } %>
                 
                 {
-                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " + ")" %> <% } else { %> '-' <% } %></h5>'),
+                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0]!=null?LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " + ")" %> <% } else { %> '-' <% } %></h5>'),
                     alignment: 'center',
                     fontSize: 16,
                     bold: true,
@@ -150,7 +150,7 @@
                     margin: [0, 10, 0, 10]
                 },
                 {
-                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(LabList[2].toString())+" , "+StringEscapeUtils.escapeHtml4(LabList[3].toString())+", PIN-"+StringEscapeUtils.escapeHtml4(LabList[5].toString()) %><%}else{ %>-<%} %></h6>'),
+                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=LabList[2].toString()+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %><%}else{ %>-<%} %></h6>'),
                     alignment: 'center',
                     fontSize: 14,
                     bold: true,
@@ -189,9 +189,9 @@
 	                            <% int slno = 0; for (Object[] obj : MemberList) { %>
 	                            [
 	                                { text: '<%= ++slno %>', style: 'tableData',alignment: 'center' },
-	                                { text: '<%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>', style: 'tableData' },
-	                                { text: '<%= obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>', style: 'tableData' },
-	                                { text: '<%= obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %>', style: 'tableData',alignment: 'center' }
+	                                { text: '<%= obj[1]!=null?obj[1].toString(): " - " %>', style: 'tableData' },
+	                                { text: '<%= obj[2]!=null?obj[2].toString(): " - " %>', style: 'tableData' },
+	                                { text: '<%= obj[3]!=null?obj[3].toString(): " - " %>', style: 'tableData',alignment: 'center' }
 	                            ],
 	                            <% } %>
                             <% } else{%>
@@ -236,7 +236,7 @@
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Title', style: 'tableData' },
-                                { text: 'System Requirements Document for <%=projectShortName!=null?StringEscapeUtils.escapeHtml4(projectShortName): " - " %>', style: 'tableData' },
+                                { text: 'System Requirements Document for <%=projectShortName!=null?projectShortName: " - " %>', style: 'tableData' },
                             ],
                             
                             [
@@ -248,13 +248,13 @@
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Classification', style: 'tableData' },
-                                { text: '<%=Classification!=null?StringEscapeUtils.escapeHtml4(Classification): " - " %>', style: 'tableData' },
+                                { text: '<%=Classification!=null?Classification: " - " %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Document Number', style: 'tableData' },
-                                { text: '<%if(docnumber!=null) {%><%=StringEscapeUtils.escapeHtml4(docnumber) %><%} %>', style: 'tableData' },
+                                { text: '<%if(docnumber!=null) {%><%=docnumber %><%} %>', style: 'tableData' },
                             ],
                             
                             [
@@ -278,41 +278,41 @@
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Additional Information', style: 'tableData' },
-                                { text: '<% if(DocumentSummary.size()>0 ){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "").replaceAll("\r", "") %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "").replaceAll("\r", "") %><%} %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Project Name', style: 'tableData' },
-                                { text: '<%=projectShortName!=null?StringEscapeUtils.escapeHtml4(projectShortName): " - " %>', style: 'tableData' },
+                                { text: '<%=projectShortName!=null?projectShortName: " - " %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Abstract', style: 'tableData' },
-                                { text: '<% if(DocumentSummary.size()>0 ){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "").replaceAll("\r", "") %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "").replaceAll("\r", "") %><%} %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Keywords', style: 'tableData' },
-                                { text: '<% if(DocumentSummary.size()>0 ){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[2].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "").replaceAll("\r", "") %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[2].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "").replaceAll("\r", "") %><%} %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Organization and address', style: 'tableData' },
-                                { text: '<% if (LabList!=null && LabList[1] != null) {%> <%=StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "").replaceAll("\r", "") + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()): " - " + ")"%> <%} else {%> - <%}%>'
+                                { text: '<% if (LabList!=null && LabList[1] != null) {%> <%=LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "").replaceAll("\r", "") + "(" + LabList[0]!=null?LabList[0].toString(): " - " + ")"%> <%} else {%> - <%}%>'
 										+'Government of India, Ministry of Defence,Defence Research & Development Organization'
 								+'<% if (LabList!=null && LabList[2] != null && LabList[3] != null && LabList[5] != null) { %>'
-									+'<%=StringEscapeUtils.escapeHtml4(LabList[2].toString())+" , "+StringEscapeUtils.escapeHtml4(LabList[3].toString())+", PIN-"+StringEscapeUtils.escapeHtml4(LabList[5].toString())+"."%>'
+									+'<%=LabList[2].toString()+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString()+"."%>'
 								+'<%}else{ %> - <%} %>' , style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Distribution', style: 'tableData' },
-                                { text: '<% if(DocumentSummary.size()>0 ){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[3].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "").replaceAll("\r", "") %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[3].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "").replaceAll("\r", "") %><%} %>', style: 'tableData' },
                             ],
                             
                             [
@@ -324,19 +324,19 @@
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Prepared by', style: 'tableData' },
-                                { text: '<% if(DocumentSummary.size()>0 ){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[10].toString()) %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[10].toString() %><%} %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Reviewed by', style: 'tableData' },
-                                { text: '<% if(DocumentSummary.size()>0 ){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[7].toString()) %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[7].toString() %><%} %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Approved by', style: 'tableData' },
-                                { text: '<% if(DocumentSummary.size()>0 ){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[6].toString()) %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[6].toString() %><%} %>', style: 'tableData' },
                             ],
 
                         ]
@@ -394,8 +394,8 @@
 		                        <% int slno = 0; for (Object[] obj : AbbreviationDetails) { %>
 		                            [
 		                                { text: '<%= ++slno %>', style: 'tableData',alignment: 'center' },
-		                                { text: '<%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>', style: 'tableData',alignment: 'center' },
-		                                { text: '<%= obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>', style: 'tableData' },
+		                                { text: '<%= obj[1]!=null?obj[1].toString(): " - " %>', style: 'tableData',alignment: 'center' },
+		                                { text: '<%= obj[2]!=null?obj[2].toString(): " - " %>', style: 'tableData' },
 		                            ],
 		                        <% } %>
                             <% } else{%>
@@ -441,7 +441,7 @@
                     tocMargin: [10, 0, 0, 0],
                 },
                 {
-                	stack: [htmlToPdfmake(setImagesWidth('<%if(ReqIntro!=null && ReqIntro[1]!=null) {%><%=StringEscapeUtils.escapeHtml4(ReqIntro[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>'
+                	stack: [htmlToPdfmake(setImagesWidth('<%if(ReqIntro!=null && ReqIntro[1]!=null) {%><%=ReqIntro[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>'
                 		  +'<%}else {%> Guidance: This paragraph should contain a full identification of the system to which this document applies. <%} %>', 600))],
                     margin: [10, 0, 0, 0],
                 },
@@ -453,7 +453,7 @@
                     tocMargin: [10, 0, 0, 0],
                 },
                 {
-                	stack: [htmlToPdfmake(setImagesWidth('<%if(ReqIntro!=null && ReqIntro[3]!=null) {%> <%=StringEscapeUtils.escapeHtml4(ReqIntro[3].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>'
+                	stack: [htmlToPdfmake(setImagesWidth('<%if(ReqIntro!=null && ReqIntro[3]!=null) {%> <%=ReqIntro[3].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>'
                 		  +'<%}else {%> Guidance: This paragraph should briefly describe the general nature of the system required. It summarizes the objectives of the system from various perspectives (Operational, Maintenance, Deployment, Technological, Environmental and so on...), should give a brief description of the operating scenario and desired configuration of the system. It should also state the identified project sponsor, acquirer, developer, and support agencies; along with current and planned operating sites. <%} %>', 600))],
                     margin: [10, 0, 0, 0],
                 },
@@ -465,7 +465,7 @@
                     tocMargin: [10, 0, 0, 0],
                 },
                 {
-                	stack: [htmlToPdfmake(setImagesWidth('<%if(ReqIntro!=null && ReqIntro[4]!=null) {%> <%=StringEscapeUtils.escapeHtml4(ReqIntro[4].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>'
+                	stack: [htmlToPdfmake(setImagesWidth('<%if(ReqIntro!=null && ReqIntro[4]!=null) {%> <%=ReqIntro[4].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>'
                 		  +'<%}else {%> This document brings out the system requirements of the radar system. The document gives a brief overview of the system, states the modes of operation of the radar (operational, maintenance, training and so on..) along with types of operational modes. All requirements are classified under various categories and stated in a brief unambiguous manner after resolving all conflicts and identifying derived requirements. The various design and construction constraints imposed on the system either by the User or by the designer are clearly brought out. This document also brings out the precedence and criticality of the requirements. Verification methodologies such as Demonstration /Test / Analysis / Inspection / Special verification methods employed to validate the system requirements are clearly listed. This document also contains a tabularized verification matrix for every system requirement, Requirements Traceability matrix and states the key performance parameters/key system attributes. <%} %>', 600))],
                     margin: [10, 0, 0, 0],
                 },
@@ -492,7 +492,7 @@
    					for(Object[]obj:mainReqList){
    				%>
 	   				{
-	                	text: (mainContentCount)+'.<%=++mainReqCount %>. <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %>',	
+	                	text: (mainContentCount)+'.<%=++mainReqCount %>. <%=obj[3]!=null?obj[3].toString(): " - " %>',	
 	                	style: 'chapterSubHeader',
 	                    tocItem: true,
 	                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=mainReqCount %>',
@@ -500,7 +500,7 @@
 	                },
 					<%if(obj[4]!=null) {%>
 						{
-		                	stack: [htmlToPdfmake(setImagesWidth('<%if(obj[4]!=null){ %> <%=StringEscapeUtils.escapeHtml4(obj[4].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))],	
+		                	stack: [htmlToPdfmake(setImagesWidth('<%if(obj[4]!=null){ %> <%=obj[4].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))],	
 		                    margin: [10, 5, 5, 5],
 		                },
 
@@ -517,7 +517,7 @@
     				%>
     					<%if(!ReqName.equalsIgnoreCase(obj1[3].toString()) && !obj1[3].toString().equalsIgnoreCase(obj[3].toString())) {%>
 	    					{
-			                	text: (mainContentCount)+'.<%=mainReqCount+"."+(++subReqCount)%>. <%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): " - "%>',	
+			                	text: (mainContentCount)+'.<%=mainReqCount+"."+(++subReqCount)%>. <%=obj1[3]!=null?obj1[3].toString(): " - "%>',	
 			                    tocItem: true,
 			                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=mainReqCount+"."+(subReqCount) %>',
 			                    style: 'chapterSubSubHeader',
@@ -541,7 +541,7 @@
     	                            [
     	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
     	                                { text: 'ID', style: 'tableData' },
-    	                                { text: '<%=obj1[1]!=null?StringEscapeUtils.escapeHtml4(obj1[1].toString()): " - " %><%=obj1[25]!=null&&obj1[25].toString().equalsIgnoreCase("Y") ? "  (D)":"" %>', style: 'tableData' },
+    	                                { text: '<%=obj1[1]!=null?obj1[1].toString(): " - " %><%=obj1[25]!=null&&obj1[25].toString().equalsIgnoreCase("Y") ? "  (D)":"" %>', style: 'tableData' },
     	                            ],
 
     	                            [
@@ -553,13 +553,13 @@
     	                            [
     	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
     	                                { text: 'Priority', style: 'tableData' },
-    	                                { text: '<%if(obj1[5]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[5].toString()) %> <%}else{%>-<%} %>', style: 'tableData' },
+    	                                { text: '<%if(obj1[5]!=null) {%> <%=obj1[5].toString() %> <%}else{%>-<%} %>', style: 'tableData' },
     	                            ],
     	                            
     	                            [
     	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
     	                                { text: 'Criticality', style: 'tableData' },
-    	                                { text: '<%if(obj1[21]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[21].toString()) %> <%}else{%>-<%} %>', style: 'tableData' },
+    	                                { text: '<%if(obj1[21]!=null) {%> <%=obj1[21].toString() %> <%}else{%>-<%} %>', style: 'tableData' },
     	                            ],
     	                            
     	                            [
@@ -573,19 +573,19 @@
     	                            ], --%>
     	                            
     	                           	[
-    	                                { stack: [htmlToPdfmake(setImagesWidth('<%=++snCount %>.Description: <%if(obj1[4]!=null){ %> <%=StringEscapeUtils.escapeHtml4(obj1[4].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 3 }
+    	                                { stack: [htmlToPdfmake(setImagesWidth('<%=++snCount %>.Description: <%if(obj1[4]!=null){ %> <%=obj1[4].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 3 }
     	                            ],
     	                            
     	                            [
     	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
     	                                { text: 'Remarks', style: 'tableData' },
-    	                                { text: '<%if(obj1[7]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[7].toString()) %> <%}else{%>-<%} %>', style: 'tableData' },
+    	                                { text: '<%if(obj1[7]!=null) {%> <%=obj1[7].toString() %> <%}else{%>-<%} %>', style: 'tableData' },
     	                            ],
 
     	                            [
     	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
     	                                { text: 'Constraints', style: 'tableData' },
-    	                                { text: '<%if(obj1[9]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[9].toString())%> <%}else{%>-<%} %>', style: 'tableData' },
+    	                                { text: '<%if(obj1[9]!=null) {%> <%=obj1[9].toString()%> <%}else{%>-<%} %>', style: 'tableData' },
     	                            ],
 
     	                           [
@@ -595,7 +595,7 @@
     	                                	    + '<% List<Object[]> DemonList = VerificationDataList.stream().filter(e -> e[1].toString().equalsIgnoreCase("1")).collect(Collectors.toList()); %>'
     	                                	    + '<% String[] a = obj1[16].toString().split(", "); %>'
     	                                	    + '<% for (int i = 0; i < a.length; i++) { %>'
-    	                                	    + '<%= a[i]!=null?StringEscapeUtils.escapeHtml4(a[i].toString()): " - " %> . <%= DemonList.get(Integer.parseInt(a[i].substring(1)) - 1)[3].toString() %><br>'
+    	                                	    + '<%= a[i]!=null?a[i].toString(): " - " %> . <%= DemonList.get(Integer.parseInt(a[i].substring(1)) - 1)[3].toString() %><br>'
     	                                	    + '<% } %>'
     	                                	    + '<% } else { %>-<% } %>'), style: 'tableData' },
     	                            ],
@@ -608,14 +608,14 @@
     	                                		+ '<%String [] a=obj1[17].toString().split(", "); %>'
     	                                		+ '<%for(int i=0;i<a.length;i++){ %>'
     												
-    	                                		 + '<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i].toString()): " - " +" . "+ TestList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+    	                                		 + '<%=	a[i]!=null?a[i].toString(): " - " +" . "+ TestList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
     	                                		+ '<%} %>'
     	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
     	                            ],
     	                            [
     	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
     	                                { text: 'Test Stage', style: 'tableData' },
-    	                                { text: '<%if(obj1[24]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[24].toString()) %> <%}else{%>-<%} %>', style: 'tableData' },
+    	                                { text: '<%if(obj1[24]!=null) {%> <%=obj1[24].toString() %> <%}else{%>-<%} %>', style: 'tableData' },
     	                            ],
     	                            [
     	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
@@ -625,7 +625,7 @@
     	                                		+ '<% String [] a=obj1[18].toString().split(", "); %>'
     	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
     												
-    	                                			+ '<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i].toString()): " - " +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+    	                                			+ '<%=	a[i]!=null?a[i].toString(): " - " +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
     	                                		+ '<%} %>'
     											+ '<%}else{%>-<%} %>'), style: 'tableData' },
     	                            ],
@@ -638,7 +638,7 @@
     	                                		+ '<% String [] a=obj1[19].toString().split(", "); %>'
     	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
     												
-    	                                		+ '<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i].toString()): " - " +" . "+ InspectionList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+    	                                		+ '<%=	a[i]!=null?a[i].toString(): " - " +" . "+ InspectionList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
     	                                		+ '<%} %>'
     	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
     	                            ],
@@ -651,7 +651,7 @@
     	                                		+ '<% String [] a=obj1[20].toString().split(", "); %>'
     	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
     												
-    	                                		+ '<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i].toString()): " - " +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+    	                                		+ '<%=	a[i]!=null?a[i].toString(): " - " +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
     	                                		+ '<%} %>'
     	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
     	                            ],
@@ -717,9 +717,9 @@
 	                                <% int rcount = 0; for (Object[] obj : nonMainReqList) { if(obj[21]!=null){ %>
 	                                [
 	                                    { text: '<%= ++rcount %>', style: 'tableData',alignment: 'center' },
-	                                    { text: '<%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>', style: 'tableData' },
-	                                    { text: '<%if(obj[5]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[5].toString())%><%}else{ %>-<%} %> ', style: 'tableData',alignment: 'center' },
-	                                    { text: '<%if(obj[21]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[21].toString())%><%}else{ %>-<%} %> ', style: 'tableData' },
+	                                    { text: '<%= obj[1]!=null?obj[1].toString(): " - " %>', style: 'tableData' },
+	                                    { text: '<%if(obj[5]!=null) {%><%=obj[5].toString()%><%}else{ %>-<%} %> ', style: 'tableData',alignment: 'center' },
+	                                    { text: '<%if(obj[21]!=null) {%><%=obj[21].toString()%><%}else{ %>-<%} %> ', style: 'tableData' },
 	                                ],
 	                                <% } }%>
 	                                <% } %>
@@ -785,7 +785,7 @@
 						},
 						<%if(obj[3]!=null) {%>
 						{
-							stack: [htmlToPdfmake(setImagesWidth('<%=StringEscapeUtils.escapeHtml4(obj[3].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>', 500))],	
+							stack: [htmlToPdfmake(setImagesWidth('<%=obj[3].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>', 500))],	
 		                    margin: [15, 0, 0, 15],
 		                },
 
@@ -817,14 +817,14 @@
 				                            [
 				                                <%if(index ==0) {%>
 				                                	{ text: '<%=++slno %>', style: 'tableData', rowSpan: <%=values.size() %>, alignment: 'center' },
-									    			{ text: '<%=obj[2] !=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>', style: 'tableData', rowSpan: <%=values.size() %> },
+									    			{ text: '<%=obj[2] !=null?obj[2].toString(): " - "%>', style: 'tableData', rowSpan: <%=values.size() %> },
        											<% } else { %>
        												{},
 					                                {},
 					                            <% } %>
 				                                <%if(!data.equalsIgnoreCase(obj[2].toString())){ subcount=0; } %> 
-				                                { text: '<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()).substring(0,1)+(++subcount):" - "+". "+obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %>', style: 'tableData' },
-				                                { text: '<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "").replaceAll("\r", ""):" - "%>', style: 'tableData' },
+				                                { text: '<%=obj[2]!=null?obj[2].toString().substring(0,1)+(++subcount):" - "+". "+obj[3]!=null?obj[3].toString(): " - " %>', style: 'tableData' },
+				                                { text: '<%=obj[4]!=null?obj[4].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "").replaceAll("\r", ""):" - "%>', style: 'tableData' },
 				                            ],
                             <% data = obj[2].toString();  ++index;} %>
                             <% } }%>
@@ -893,8 +893,8 @@
         					%>
 	        					[
 	        						{text: '<%=++slCount %>', style:'tableData', alignment: 'center'},
-	        						{text: '<%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): " - " %>', style:'tableData',},
-	        						{text: '<%if(ReqId.size()>0) { for(Object[]obj2:ReqId){ %> <%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - " %>\n <%}}else{ %> --- <%} %>', style:'tableData', alignment: 'center'},
+	        						{text: '<%=obj1[3]!=null?obj1[3].toString(): " - " %>', style:'tableData',},
+	        						{text: '<%if(ReqId.size()>0) { for(Object[]obj2:ReqId){ %> <%=obj2[1]!=null?obj2[1].toString(): " - " %>\n <%}}else{ %> --- <%} %>', style:'tableData', alignment: 'center'},
 	        					],
         					
         					<%}} %>
@@ -939,10 +939,10 @@
                         	<%int snCount=0; for(Object[] objs: subList) { if(objs[12]!=null) {%>
 	        					[
 	        						{text: '<%=++snCount %>', style:'tableData', alignment: 'center'},
-	        						{text: '<%=objs[1]!=null?StringEscapeUtils.escapeHtml4(objs[1].toString()): " - " %>', style:'tableData', alignment: 'center'},
+	        						{text: '<%=objs[1]!=null?objs[1].toString(): " - " %>', style:'tableData', alignment: 'center'},
 	        						{text: htmlToPdfmake('<%if(objs[12]!=null) { String [] a=objs[12].toString().split(", "); List<String>paras= new ArrayList<>(); %>'
 	        								+'<%for(String s:a){ for(Object[]obj:ProjectParaDetails){ if(obj[0].toString().equalsIgnoreCase(s)){ paras.add(obj[3].toString()); } } }%>'
-		    								+'<% for(String s:paras){%><%=s!=null?StringEscapeUtils.escapeHtml4(s): " - " %> <br><%} %>'
+		    								+'<% for(String s:paras){%><%=s!=null?s: " - " %> <br><%} %>'
 		    								+'<%}else{ %> - <%} %>'), style:'tableData'},
 	        					],
         					
@@ -1001,8 +1001,8 @@
                         	<% if (AcronymsList != null) { int slno = 0; for (Object[] obj : AcronymsList) { %>
 	        					[
 	        						{text: '<%=++slno %>', style:'tableData', alignment: 'center'},
-	        						{text: '<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>', style:'tableData', },
-	        						{text: '<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>', style:'tableData', },
+	        						{text: '<%=obj[1]!=null?obj[1].toString(): " - " %>', style:'tableData', },
+	        						{text: '<%=obj[2]!=null?obj[2].toString(): " - " %>', style:'tableData', },
 	        					],
         					
         					<%}} %>
@@ -1055,8 +1055,8 @@
                         	<% if (PerformanceList != null) { int slno = 0; for (Object[] obj : PerformanceList) { %>
 	        					[
 	        						{text: '<%=++slno %>', style:'tableData', alignment: 'center'},
-	        						{text: '<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>', style:'tableData', },
-	        						{text: '<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "  %>', style:'tableData', },
+	        						{text: '<%=obj[1]!=null?obj[1].toString(): " - " %>', style:'tableData', },
+	        						{text: '<%=obj[2]!=null?obj[2].toString(): " - "  %>', style:'tableData', },
 	        					],
         					
         					<%}} %>
@@ -1118,26 +1118,26 @@
         			        %>
 		        			        <%if(submainReqList.size()>0){%>
 			        			        [
-			        						{text: '<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %>:-', style:'tableData', colSpan: 6},
+			        						{text: '<%=obj[3]!=null?obj[3].toString(): " - " %>:-', style:'tableData', colSpan: 6},
 			        					],
 		        			          
 		        			           <%String ReqName="";
 		        			            	for(Object[]obj1:submainReqList){ %>
 		        			           	<%if(!ReqName.equalsIgnoreCase(obj1[3].toString()) && !obj1[3].toString().equalsIgnoreCase(obj[3].toString())) {%>
 			        			           	[
-				        						{text: '<%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): " - " %>', style:'tableData', colSpan: 6},
+				        						{text: '<%=obj1[3]!=null?obj1[3].toString(): " - " %>', style:'tableData', colSpan: 6},
 				        					],
 		        						<%} %>
 		        			           
 		        						[
 			        						{text: '<%=obj1[1] %>', style:'tableData',},
-			        						{text: '<%if(obj1[16]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj1[16].toString()) %> <%}else{ %>-<%} %>', style:'tableData',},
-			        						{text: '<%if(obj1[17]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj1[17].toString()) %> <%}else{ %>-<%} %>', style:'tableData',},
-			        						{text: '<%if(obj1[18]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj1[18].toString()) %> <%}else{ %>-<%} %>', style:'tableData',},
-			        						{text: '<%if(obj1[19]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj1[19].toString()) %> <%}else{ %>-<%} %>', style:'tableData',},
-			        						{text: '<%if(obj1[20]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj1[20].toString()) %> <%}else{ %>-<%} %>', style:'tableData',},
+			        						{text: '<%if(obj1[16]!=null) {%><%=obj1[16].toString() %> <%}else{ %>-<%} %>', style:'tableData',},
+			        						{text: '<%if(obj1[17]!=null) {%><%=obj1[17].toString() %> <%}else{ %>-<%} %>', style:'tableData',},
+			        						{text: '<%if(obj1[18]!=null) {%><%=obj1[18].toString() %> <%}else{ %>-<%} %>', style:'tableData',},
+			        						{text: '<%if(obj1[19]!=null) {%><%=obj1[19].toString() %> <%}else{ %>-<%} %>', style:'tableData',},
+			        						{text: '<%if(obj1[20]!=null) {%><%=obj1[20].toString() %> <%}else{ %>-<%} %>', style:'tableData',},
 			        					],
-		        			           <% ReqName=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): " - ";
+		        			           <% ReqName=obj1[3]!=null?obj1[3].toString(): " - ";
 		        			           } %>
 		        					<%} %>
         			    	<%}} %>
@@ -1191,7 +1191,7 @@
                             },
                             {
                                 columns: [
-                                    { text: '<%if(docnumber!=null) {%><%=StringEscapeUtils.escapeHtml4(docnumber) %><%} %>', alignment: 'left', margin: [30, 0, 0, 0], fontSize: 8 },
+                                    { text: '<%if(docnumber!=null) {%><%=docnumber %><%} %>', alignment: 'left', margin: [30, 0, 0, 0], fontSize: 8 },
                                     { text: currentPage.toString() + ' of ' + pageCount, alignment: 'right', margin: [0, 0, 30, 0], fontSize: 8 }
                                 ]
                             },

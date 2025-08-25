@@ -207,14 +207,14 @@ long otherDocDetailsId = mpdetails!=null ? mpdetails.getOtherDocDetailsId():0;
 %>
 
 	<div align="center">
-    	<h5 style="font-weight: bold;"><%=labcode!=null?StringEscapeUtils.escapeHtml4(labcode): " - " %></h5>
+    	<h5 style="font-weight: bold;"><%=labcode!=null?labcode: " - " %></h5>
         <span style="font-size: larger; text-decoration: underline;">Directorate of Planning & Coordination</span>
     </div>
      
      <table style="border-collapse: collapse;width: 98%;margin-top: 10px;">
      	<tr>
      		<td>
-     			<span>No:</span> <span><%=carsContract.getContractNo()!=null?StringEscapeUtils.escapeHtml4(carsContract.getContractNo()): " - " %> </span>
+     			<span>No:</span> <span><%=carsContract.getContractNo()!=null?carsContract.getContractNo(): " - " %> </span>
      		</td>
      		<td style="text-align: right;" >
      			<span>Date:</span> <span><%if(mpdetails.getOtherDocDate()!=null) {%> <%=fc.SqlToRegularDate(mpdetails.getOtherDocDate()) %><%} else{%><%=rdf.format(new Date()) %><%} %> </span>
@@ -234,7 +234,7 @@ long otherDocDetailsId = mpdetails!=null ? mpdetails.getOtherDocDetailsId():0;
 	<div class="row">
 		<div align="center">
 			<h5 style="font-weight: bold;margin-top: 1.5rem;">Approval for <%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-0")) {%>Milestone<%} else{%>Initial Advance<%} %> Payment </h5>
-		    <span style="font-size: large;"><%=carsIni.getInitiationTitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getInitiationTitle()): " - " %> </span>
+		    <span style="font-size: large;"><%=carsIni.getInitiationTitle()!=null?carsIni.getInitiationTitle(): " - " %> </span>
 		</div>
 	</div>
 	<br>
@@ -243,7 +243,7 @@ long otherDocDetailsId = mpdetails!=null ? mpdetails.getOtherDocDetailsId():0;
 		<div style="text-align: left;">
 			<span>
 				<%=++paymentslno %>) Reference is made to the CARS Contract No. 
-				<%if(carsContract!=null) {%><%=carsContract.getContractNo()!=null?StringEscapeUtils.escapeHtml4(carsContract.getContractNo()): " - " %> <%} %>
+				<%if(carsContract!=null) {%><%=carsContract.getContractNo()!=null?carsContract.getContractNo(): " - " %> <%} %>
 				dt. <%if(carsContract!=null && carsContract.getContractDate()!=null) {%><%=fc.SqlToRegularDate(carsContract.getContractDate()) %> <%} %>.
 				
 			</span>
@@ -259,17 +259,17 @@ long otherDocDetailsId = mpdetails!=null ? mpdetails.getOtherDocDetailsId():0;
 		<div class="col-md-12" style="text-align: left;">
 			<%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-0")) {%>
 				<span>
-					<%=++paymentslno %>) <%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute()): " - "+", "+carsIni.getRSPCity()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()): " - " %> <%} %> has submitted
-					invoice No. <%if(mpdetails!=null && mpdetails.getInvoiceNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(mpdetails.getInvoiceNo()) %> <%} %>
+					<%=++paymentslno %>) <%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()!=null?carsIni.getRSPInstitute(): " - "%> <%=", "%> <%=carsIni.getRSPCity()!=null?carsIni.getRSPCity(): " - " %> <%} %> has submitted
+					invoice No. <%if(mpdetails!=null && mpdetails.getInvoiceNo()!=null) {%><%=mpdetails.getInvoiceNo() %> <%} %>
 					dt. <%if(mpdetails!=null && mpdetails.getInvoiceDate()!=null) {%><%=fc.SqlToRegularDate(mpdetails.getInvoiceDate()) %> <%} %>
-					for Payment towards Milestone No <%=MilestoneNo!=null?StringEscapeUtils.escapeHtml4(MilestoneNo): " - " %>
+					for Payment towards Milestone No <%=MilestoneNo!=null?MilestoneNo: " - " %>
 					for an amount of Rs. <%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestonedetails.getActualAmount())) %>
 					and the invoice is placed opposite (Flag-B).
 				</span>
 			<%} else{%>
 				<span>
-					<%=++paymentslno %>) <%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute()): " - "+", "+carsIni.getRSPCity()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()): " - " %> <%} %> has submitted
-					invoice No. <%if(mpdetails!=null && mpdetails.getInvoiceNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(mpdetails.getInvoiceNo()) %> <%} %>
+					<%=++paymentslno %>) <%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()!=null?carsIni.getRSPInstitute(): " - "%> <%=", "%> <%=carsIni.getRSPCity()!=null?carsIni.getRSPCity(): " - " %> <%} %> has submitted
+					invoice No. <%if(mpdetails!=null && mpdetails.getInvoiceNo()!=null) {%><%=mpdetails.getInvoiceNo() %> <%} %>
 					dt. <%if(mpdetails!=null && mpdetails.getInvoiceDate()!=null) {%><%=fc.SqlToRegularDate(mpdetails.getInvoiceDate()) %> <%} %>
 					for Initial Advance Payment of Rs. <%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestonedetails.getActualAmount())) %>
 					and the invoice is placed opposite.
@@ -313,9 +313,9 @@ long otherDocDetailsId = mpdetails!=null ? mpdetails.getOtherDocDetailsId():0;
 		<div style="font-size: 15px;"> Signature of GD-DP&C</div>
 		<%for(Object[] apprInfo : othersMPApprovalEmpData){ %>
 			<%if(apprInfo[8].toString().equalsIgnoreCase("MFW")){ %>
-				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-				<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-				<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19) %>]</label>
+				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+				<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+				<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString()).substring(0, 10)  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
 		<%break;}} %>  
 	</div>
 							            	
@@ -324,19 +324,19 @@ long otherDocDetailsId = mpdetails!=null ? mpdetails.getOtherDocDetailsId():0;
 										            			 		
 			<%if(apprInfo[8].toString().equalsIgnoreCase("MFA")){ %>
 				<div style="font-size: 15px;"> Signature of AD-P&C</div>
-				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-				<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-				<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19) %>]</label>
+				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+				<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+				<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString()).substring(0, 10)  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
 			<%} else if(apprInfo[8].toString().equalsIgnoreCase("MFC")) {%> 
 				<div style="font-size: 15px;"> Signature of Chairperson (CARS Committee)</div>
-				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-				<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-				<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19) %>]</label>
+				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+				<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+				<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString()).substring(0, 10)  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
 			<%} else if(apprInfo[8].toString().equalsIgnoreCase("MAD")) {%> 
 				<div style="font-size: 15px;"> Signature of Director</div>
-				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-				<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-				<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19) %>]</label>
+				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+				<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+				<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString()).substring(0, 10)  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
 									   			    					
 			<%} %>
 		</div>

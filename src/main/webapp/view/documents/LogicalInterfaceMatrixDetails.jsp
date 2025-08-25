@@ -108,7 +108,7 @@
 					            <th width="3%">SN</th>
 					            <th width="10%">Sub-System</th>
 					            <% for (Object[] subsystem : softwareList) { %>
-					                <th><%= subsystem[2]!=null?StringEscapeUtils.escapeHtml4(subsystem[2].toString()): " - " + " (" + subsystem[7]!=null?StringEscapeUtils.escapeHtml4(subsystem[7].toString()): " - " + ")" %></th>
+					                <th><%= subsystem[2]!=null?subsystem[2].toString(): " - " %> <%= " (" + (subsystem[7]!=null?subsystem[7].toString(): " - ") + ")" %></th>
 					            <% } %>
 					        </tr>
 					    </thead>
@@ -120,7 +120,7 @@
 					        %>
 					            <tr>
 					                <td class="center"><%= ++slnoSS %></td>
-					                <td><%= rowSubsystem[2]!=null?StringEscapeUtils.escapeHtml4(rowSubsystem[2].toString()): " - " + " (" + rowSubsystem[7] !=null?StringEscapeUtils.escapeHtml4(rowSubsystem[7].toString()): " - "+ ")" %></td>
+					                <td><%= rowSubsystem[2]!=null?rowSubsystem[2].toString(): " - " %> <%= " (" + (rowSubsystem[7] !=null?rowSubsystem[7].toString(): " - ")+ ")" %></td>
 					                <% for (Object[] colSubsystem : softwareList) { %>
 					                    <td>
 					                        <% 

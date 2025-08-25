@@ -276,7 +276,7 @@ String committeeId = (String) request.getAttribute("committeeId");
 									 <div class="input select external">
 										 <select class="form-control selectdee " name="internalmember" id="internalmember"  data-live-search="true"   data-placeholder="Select Members" multiple required>
 							                 <% for (Object[] obj : EmployeeList) {%>
-									       		<option value="<%=obj[0]%>,I,<%=obj[3]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> ( <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> ) </option>
+									       		<option value="<%=obj[0]%>,I,<%=obj[3]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> (<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>) </option>
 									    	<%} %>
 										</select>
 										<input type="hidden" name="InternalLabId" value="<%=LabCode %>" />
@@ -367,7 +367,7 @@ String committeeId = (String) request.getAttribute("committeeId");
 								<div class="input select external">
 									<select  class= "form-control selectdee" name="externalmember" id="expertmember"   data-live-search="true"   data-placeholder="Select Members" multiple required>
 										<% for (Object[] obj : ExpertList) {%>
-									       	<option value="<%=obj[0]%>,E,<%=obj[3]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> ( <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> ) </option>
+									       	<option value="<%=obj[0]%>,E,<%=obj[3]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> (<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>) </option>
 									    <%} %>
 									</select>
 									<input type="hidden" name="LabId1" value="@EXP" />

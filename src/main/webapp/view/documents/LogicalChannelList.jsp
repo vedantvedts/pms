@@ -113,8 +113,8 @@
                                     	<input type="radio" name="logicalChannelId" value=<%=obj[0]%> required>
 									</td>
                                    	<td class="center"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
-                                   	<td class="center"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "+" ("+obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "+")" %></td>
-                                   	<td class="center"><%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - "+" ("+obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - "+")" %></td>
+                                   	<td class="center"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%> <%=" ("+(obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - ")+")" %></td>
+                                   	<td class="center"><%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - "%> <%=" ("+(obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - ")+")" %></td>
                                    	<td class="center"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
                                 </tr>
                                 

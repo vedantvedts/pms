@@ -744,7 +744,7 @@ String InitiationId=(String)request.getAttribute("InitiationId");
 							<tr>
 								<td colspan="1" class="border_black weight_700 center"
 									style="width: 7%;"><span><%=count%>.</span></td>
-								<td colspan="4" class=" left" style="padding-left: 5px"><span><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " + "(" + obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " + ")"%><br><%="(" + obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " + ")"%></span></td>
+								<td colspan="4" class=" left" style="padding-left: 5px"><span><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %> <%= "(" %> <%= obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %> <%= ")"%><br><%="(" %> <%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> <%= ")"%></span></td>
 								<td colspan="2" class=" left" style="padding-left: 5px"><span><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></span></td>
 								<td colspan="2" class="border_black weight_700 right"
 									style="padding-right: 5px;color:maroon;"><span>&#8377; <span><%=nfc.convert(Double.parseDouble(obj[3].toString()) / 100000)%></span></span></td>

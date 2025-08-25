@@ -887,7 +887,7 @@ function DownloadDocPDF(){
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Organization and address', style: 'tableData' },
-                                { text: '<% if (labDetails!=null && labDetails[1] != null) {%> <%=StringEscapeUtils.escapeHtml4(labDetails[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + labDetails[0]!=null?StringEscapeUtils.escapeHtml4(labDetails[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") : " - " + ")"%> <%} else {%> - <%}%>'
+                                { text: '<% if (labDetails!=null && labDetails[1] != null) {%> <%=StringEscapeUtils.escapeHtml4(labDetails[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + (labDetails[0]!=null?StringEscapeUtils.escapeHtml4(labDetails[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") : " - " )+ ")"%> <%} else {%> - <%}%>'
 										+'\n Government of India, Ministry of Defence,Defence Research & Development Organization'
 								+'<% if (labDetails!=null && labDetails[2] != null && labDetails[3] != null && labDetails[5] != null) { %>'
 									+'<%=StringEscapeUtils.escapeHtml4(labDetails[2].toString()) + " , " + StringEscapeUtils.escapeHtml4(labDetails[3].toString()) + ", PIN-" + StringEscapeUtils.escapeHtml4(labDetails[5].toString())+"."%>'
@@ -1088,13 +1088,13 @@ function DownloadDocPDF(){
                 		if(intro.getLevelId()==1) {
                 %>
 	                {
-	                    text: '<%=Sub0Count+". "+intro.getChapterName()!=null?StringEscapeUtils.escapeHtml4(intro.getChapterName()): " - "%>',
+	                    text: '<%=Sub0Count+". "+(intro.getChapterName()!=null?StringEscapeUtils.escapeHtml4(intro.getChapterName()): " - ")%>',
 	                    style: 'chapterSubHeader',
 	                    tocItem: true,
 	                    tocMargin: [10, 0, 0, 0],
 	                },
 	                {
-	                	stack: [htmlToPdfmake(setImagesWidth('<%if(intro.getChapterContent()!=null) {%><%=StringEscapeUtils.escapeHtml4(intro.getChapterContent()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
+	                	stack: [htmlToPdfmake(setImagesWidth('<%if(intro.getChapterContent()!=null) {%><%=intro.getChapterContent().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
 	                		  +'<%}else {%> - <%} %>', 500))],
 	                    margin: [15, 0, 0, 0],
 	                },
@@ -1106,13 +1106,13 @@ function DownloadDocPDF(){
 	                %>
 	                
 		                {
-		                    text: '<%=Sub0Count+". "+Sub1Count+". "+intro1.getChapterName()!=null?StringEscapeUtils.escapeHtml4(intro1.getChapterName()): " - "%>',
+		                    text: '<%=Sub0Count+". "+Sub1Count+". "+(intro1.getChapterName()!=null?StringEscapeUtils.escapeHtml4(intro1.getChapterName()): " - ")%>',
 		                    style: 'chapterSubSubHeader',
 		                    tocItem: true,
 		                    tocMargin: [20, 0, 0, 0],
 		                },
 		                {
-		                	stack: [htmlToPdfmake(setImagesWidth('<%if(intro1.getChapterContent()!=null) {%><%=StringEscapeUtils.escapeHtml4(intro1.getChapterContent()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
+		                	stack: [htmlToPdfmake(setImagesWidth('<%if(intro1.getChapterContent()!=null) {%><%=intro1.getChapterContent().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
 		                		  +'<%}else {%> - <%} %>', 500))],
 		                    margin: [25, 0, 0, 0],
 		                },
@@ -1432,7 +1432,7 @@ function DownloadDocPDF(){
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Logical Channel Name', style: 'tableData', bold: true},
-	                                { text: '<%=channel.getLogicalChannel()!=null?StringEscapeUtils.escapeHtml4(channel.getLogicalChannel()): " - " + " (" + channel.getChannelCode()!=null?StringEscapeUtils.escapeHtml4(channel.getChannelCode()): " - " + ")" %>', style: 'tableData' },
+	                                { text: '<%=channel.getLogicalChannel()!=null?StringEscapeUtils.escapeHtml4(channel.getLogicalChannel()): " - " %> <%= " (" + (channel.getChannelCode()!=null?StringEscapeUtils.escapeHtml4(channel.getChannelCode()): " - ")+ ")" %>', style: 'tableData' },
 	                            ],
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
@@ -1479,7 +1479,7 @@ function DownloadDocPDF(){
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Action at Destination', style: 'tableData', bold: true},
 	                                {
-	        		                	stack: [htmlToPdfmake(setImagesWidth('<%if(obj[5]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[5].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
+	        		                	stack: [htmlToPdfmake(setImagesWidth('<%if(obj[5]!=null) {%><%=obj[5].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
 	        		                		  +'<%}else {%> - <%} %>', 500))],
 	        		                },
 	                            ],

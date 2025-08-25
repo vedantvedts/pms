@@ -266,7 +266,7 @@ margin-left:15x;
 				<%
 				if(LabList!=null && LabList[1] != null) {
 				%>
-				<%=StringEscapeUtils.escapeHtml4(LabList[1].toString())+"("+LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()):" - "+")"%>
+				<%=StringEscapeUtils.escapeHtml4(LabList[1].toString())+"("+(LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()):" - ")+")"%>
 				<%
 				}else {
 				%>-<%
@@ -417,7 +417,7 @@ margin-left:15x;
 					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">12.&nbsp; Organization and address:
 						<span class="text-darks" style="font-family: <%= FontFamily %>;">		<%
 										if (LabList!=null && LabList[1] != null) {
-										%><%=StringEscapeUtils.escapeHtml4(LabList[1].toString()) + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()):" - " + ")"%>
+										%><%=StringEscapeUtils.escapeHtml4(LabList[1].toString()) + "(" + (LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()):" - ") + ")"%>
 										<%
 										} else {
 										%>-<%
@@ -891,8 +891,8 @@ List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null&&!e[
 							<%if(!data.equalsIgnoreCase(obj[2].toString())){
 								subcount=0;
 							} %> 
-							<td class="border-black"style="padding: 5px; text-align: justify; border: 1px solid black; border-collapse: collapse;">  <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()).substring(0,1)+(++subcount):" - "+". "+obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
-							<td class="border-black"style="padding: 5px; text-align: justify; border: 1px solid black; border-collapse: collapse;"><%=obj[4]%></td>
+							<td class="border-black"style="padding: 5px; text-align: justify; border: 1px solid black; border-collapse: collapse;">  <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()).substring(0,1)+(++subcount):" - "%> . <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
+							<td class="border-black"style="padding: 5px; text-align: justify; border: 1px solid black; border-collapse: collapse;"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%></td>
 						</tr>
 					 <%
 					 data = obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ";
@@ -1070,7 +1070,7 @@ This appendix contains acronyms and provides standard definitions for terminolog
              <tr>
                 <td class="border-black" style="width:10px;text-align: center;border: 1px solid black;"><%=  i+++"."%></td>
                 <td class="border-black"style="border: 1px solid black;padding-left: 10px;"><%= plist[1]!=null?StringEscapeUtils.escapeHtml4(plist[1].toString()): " - " %></td>
-                <td class="border-black" style="border: 1px solid black; padding-left: 10px;text-align:center"><%= "-"+plist[2]!=null?StringEscapeUtils.escapeHtml4(plist[2].toString()): " - " +"-"%></td>
+                <td class="border-black" style="border: 1px solid black; padding-left: 10px;text-align:center"><%= "-"+(plist[2]!=null?StringEscapeUtils.escapeHtml4(plist[2].toString()): " - " )+"-"%></td>
             </tr>
             <% 
    }}%> 

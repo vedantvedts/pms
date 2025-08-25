@@ -395,7 +395,7 @@ p{
 								<div align="center" >
 								    <table style="margin-top: 00px; margin-bottom: 0px; margin-left: 0px; width: 650px; font-size: 16px; border-collapse: collapse;">
 										<tr>								
-											<td colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?StringEscapeUtils.escapeHtml4(committeemin[0].toString()): " - "+"."+agendaid%>.&nbsp;&nbsp;&nbsp;<%=agenda[3]!=null?StringEscapeUtils.escapeHtml4(agenda[3].toString()): " - "%></td>
+											<td colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?StringEscapeUtils.escapeHtml4(committeemin[0].toString()): " - "%> . <%=agendaid%>.&nbsp;&nbsp;&nbsp;<%=agenda[3]!=null?StringEscapeUtils.escapeHtml4(agenda[3].toString()): " - "%></td>
 										</tr>
 								<%
 									int index = 1;
@@ -403,7 +403,7 @@ p{
 									{
 								%>				
 										<tr >
-											<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?StringEscapeUtils.escapeHtml4(committeemin[0].toString()): " - "+"."+agendaid+"."+index%>.&nbsp;&nbsp;&nbsp;<%=minssub[1]!=null?StringEscapeUtils.escapeHtml4(minssub[1].toString()): " - "%></th>
+											<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?StringEscapeUtils.escapeHtml4(committeemin[0].toString()): " - "%> <%="."+agendaid+"."+index%>.&nbsp;&nbsp;&nbsp;<%=minssub[1]!=null?StringEscapeUtils.escapeHtml4(minssub[1].toString()): " - "%></th>
 										</tr>								
 								<%
 										int count=0;
@@ -433,7 +433,7 @@ p{
 												<%}else if(speclist[5].toString().equals("9")){
 												%>
 													<tr >
-														<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?StringEscapeUtils.escapeHtml4(committeemin[0].toString()): " - "+"."+agendaid+"."+index+"."+index1%>.&nbsp;&nbsp;&nbsp;<%=speclist[9]!=null?StringEscapeUtils.escapeHtml4(speclist[9].toString()): " - "%></th>
+														<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?StringEscapeUtils.escapeHtml4(committeemin[0].toString()): " - "%> <%="."+agendaid+"."+index+"."+index1%>.&nbsp;&nbsp;&nbsp;<%=speclist[9]!=null?StringEscapeUtils.escapeHtml4(speclist[9].toString()): " - "%></th>
 													</tr>	
 													<td style="text-align: left;">
 														<div align="left" style="padding-left: 70px"><%=speclist[1]!=null?StringEscapeUtils.escapeHtml4(speclist[1].toString()): " - "%></div>
@@ -499,7 +499,7 @@ p{
 								<%}else if(speclist[3].toString().equals("5")){
 								%>
 								<tr>
-									<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?StringEscapeUtils.escapeHtml4(committeemin[0].toString()): " - "+"."+count%>.&nbsp;&nbsp;&nbsp;<%=speclist[9]!=null?StringEscapeUtils.escapeHtml4(speclist[9].toString()): " - "%></th>
+									<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?StringEscapeUtils.escapeHtml4(committeemin[0].toString()): " - "%> <%="."+count%>.&nbsp;&nbsp;&nbsp;<%=speclist[9]!=null?StringEscapeUtils.escapeHtml4(speclist[9].toString()): " - "%></th>
 								</tr>
 									<td style="text-align: left;">
 									<div align="left" style="padding-left: 70px">

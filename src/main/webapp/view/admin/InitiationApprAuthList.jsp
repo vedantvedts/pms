@@ -135,7 +135,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 						                                 for(Object[] obj:InitiationApprAuthList){ %>
 						                                     <tr>
 							                                     <td style="text-align: center;"><input type="radio" name="RtmddoId" value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):""%>  ></td> 
-							                                     <td style="text-align: left;"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " +" ("+obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "+"), "+obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - " %></td>
+							                                     <td style="text-align: left;"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %> (<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%>), <%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - " %></td>
 							                                     <td style="text-align: center;"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></td>
 																 <td style="text-align: center;"><%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(rdf.format(obj[3])) %><%}else{ %>-<%} %></td>
 																 <td style="text-align: center;"><%if(obj[4]!=null){%><%=StringEscapeUtils.escapeHtml4(rdf.format(obj[4])) %><%}else{ %>-<%} %></td>

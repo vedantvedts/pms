@@ -269,7 +269,7 @@ height:300px!important;
 							<td  class="text-primary" colspan="2">12.&nbsp; Organization and address:
 								<span class="text-dark">		
 									<%if (LabList[1] != null) {%>
-										<%=StringEscapeUtils.escapeHtml4(LabList[1].toString()) + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()): " - " + ")"%>
+										<%=StringEscapeUtils.escapeHtml4(LabList[1].toString()) + "(" + (LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()): " - ") + ")"%>
 									<%} else {%>
 										-
 									<%}%>
@@ -610,7 +610,7 @@ height:300px!important;
    								<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Test Approach:</label>
    							</div>
    							<div id="summernote2" class="center" style="height: 500;">
-   								<%if(Approach!=null){ %><%= StringEscapeUtils.escapeHtml4(Approach)%><% }%>
+   								<%if(Approach!=null){ %><%= Approach%><% }%>
    							</div>
    							
    							<textarea name="Details" style="display: none;" id="Approchdetails"></textarea>		
@@ -669,7 +669,7 @@ height:300px!important;
 				   				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Test Schedule:</label>
 				   			</div>
 				   			 <div id="summernote1" style="height: 500;  ">
-				   				<% if(Schedule!=null){%> <%=StringEscapeUtils.escapeHtml4(Schedule)%>  <% }%>
+				   				<% if(Schedule!=null){%> <%=Schedule%>  <% }%>
 				   			</div>
 				   			<textarea name="Details" style="display: none; height: 150px;" id="ScheduleDetails"></textarea>
 				   			
@@ -720,7 +720,7 @@ height:300px!important;
 			   			</div>
 			   			
 			   			<div id="summernote3" class="center">
-			   				<%if(Conclusion!=null) {%><%=StringEscapeUtils.escapeHtml4(Conclusion)%><%} %>
+			   				<%if(Conclusion!=null) {%><%=Conclusion%><%} %>
 			   			</div>
    						<textarea name="Details" style="display: none;"  id="ConclusionDetails"></textarea>	
    		
@@ -1275,7 +1275,7 @@ function DownloadDocPDF(){
                 <% } %>
                 
                 {
-                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") : " - " + ")" %> <% } else { %> '-' <% } %></h5>'),
+                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" +( LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - ")  %> <% } else { %> '-' <% } %></h5>'),
                     alignment: 'center',
                     fontSize: 16,
                     bold: true,
@@ -1441,7 +1441,7 @@ function DownloadDocPDF(){
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Organization and address', style: 'tableData' },
-                                { text: '<% if (LabList!=null && LabList[1] != null) {%> <%=StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " + ")"%> <%} else {%> - <%}%>'
+                                { text: '<% if (LabList!=null && LabList[1] != null) {%> <%=StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + (LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - ") %> <%} else {%> - <%}%>'
 										+'Government of India, Ministry of Defence,Defence Research & Development Organization'
 								+'<% if (LabList!=null && LabList[2] != null && LabList[3] != null && LabList[5] != null) { %>'
 									+'<%=StringEscapeUtils.escapeHtml4(LabList[2].toString()) + " , " + StringEscapeUtils.escapeHtml4(LabList[3].toString()) + ", PIN-" + StringEscapeUtils.escapeHtml4(LabList[5].toString())+"."%>'

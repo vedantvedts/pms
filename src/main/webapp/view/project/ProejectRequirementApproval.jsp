@@ -93,7 +93,7 @@
  										%>Remarks : &nbsp; No remarks <%
  										} else {
  										%>
-										<%="Remarks : " + obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%
+										<%="Remarks : " + (obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ")%> <%
  										}
  										%>
 									</td>
