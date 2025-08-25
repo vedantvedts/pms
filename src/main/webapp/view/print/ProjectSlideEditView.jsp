@@ -1252,7 +1252,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9; vertical-align: top;">
 											<b style="font-size: 1.02rem;font-weight: bold;color:#021B79 ; vertical-align: top;">Deliverables : </b> 
 										</td>
-										<td colspan="7" style="font-weight: bold;color:#212529 "><%=projectdata[8]!=null?StringEscapeUtils.escapeHtml4(projectdata[8].toString()):"--"%>
+										<td colspan="7" style="font-weight: bold;color:#212529 "><%=projectdata[8]!=null?projectdata[8].toString():"--"%>
 										</td>
 									</tr>
 								</table>
@@ -1285,7 +1285,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 													<%=projectdata[20].toString().substring(3,projectdata[20].toString().length()-1 )%>
 												<%} else{%>-<%} %>  --%>
 												<div class="ml-3" style="text-align: left;">
-												<%=projectdata[20]!=null?StringEscapeUtils.escapeHtml4(projectdata[20].toString()): " - "%>
+												<%=projectdata[20]!=null?projectdata[20].toString(): " - "%>
 												</div>
 										</div>
 									
@@ -1298,7 +1298,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 											</span>
 											<%-- <%=projectdata[31].toString().substring(3,projectdata[31].toString().length()-1 )%> --%>
 										<div class="ml-3">
-												<%=StringEscapeUtils.escapeHtml4(projectdata[31].toString())%>
+												<%=projectdata[31].toString()%>
 												</div>
 									
 										</div>
@@ -1440,7 +1440,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 																	<%=projectdata[20].toString().substring(3,projectdata[20].toString().length()-1 )%>
 																<%} else{%>-<%} %>  --%>
 																<div class="ml-3"  style="text-align: left;">
-												<%=projectdata[20]!=null?StringEscapeUtils.escapeHtml4(projectdata[20].toString()): " - "%>
+												<%=projectdata[20]!=null?projectdata[20].toString(): " - "%>
 												</div>
 														</div>
 													</div>
@@ -1454,7 +1454,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 <%-- 															<%=projectdata[31].toString().substring(3,projectdata[31].toString().length()-1 )%>
  --%>														
  											<div class="ml-3">
-												<%=projectdata[31]!=null?StringEscapeUtils.escapeHtml4(projectdata[31].toString()): " - "%>
+												<%=projectdata[31]!=null?projectdata[31].toString(): " - "%>
 												</div>
  </div>
 														</div>

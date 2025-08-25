@@ -255,7 +255,7 @@ List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filer
 													<option value="<%=obj[0]%>"
 														<%if(ProjectId.equalsIgnoreCase(obj[0].toString())){ projectname=obj[4].toString(); %>
 														selected="selected" <%} %>>
-														<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%>
+														<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%>
 													</option>
 													<%} %>
 													<option value="0"

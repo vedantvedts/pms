@@ -391,7 +391,7 @@ div {
 															<input type="hidden" name="docType" value="<%=docType%>">
 															<input type="hidden" name="documentNo" value="<%=documentNo%>">
 												          	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-											          		<textarea id="chapterContentEdit<%=intro.getIntroductionId()%>" style="display: none;"><%=intro.getChapterContent()!=null?StringEscapeUtils.escapeHtml4(intro.getChapterContent()):""%></textarea>
+											          		<textarea id="chapterContentEdit<%=intro.getIntroductionId()%>" style="display: none;"><%=intro.getChapterContent()!=null?intro.getChapterContent():""%></textarea>
 											          	</form>
 										       		</div>
 										        </h4>
@@ -655,7 +655,7 @@ var summernoteConfig = {
 $('#introductionEditor').summernote(summernoteConfig);
 
 //Update the values of Editors
-var html1 = '<%=igiIntroduction!=null && igiIntroduction.getChapterContent()!=null?StringEscapeUtils.escapeHtml4(igiIntroduction.getChapterContent()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):""%>';
+var html1 = '<%=igiIntroduction!=null && igiIntroduction.getChapterContent()!=null?igiIntroduction.getChapterContent().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):""%>';
 $('#introductionEditor').summernote('code', html1);
 
 //Set the values to the form when submitting.

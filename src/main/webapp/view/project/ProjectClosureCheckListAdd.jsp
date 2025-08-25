@@ -349,7 +349,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
        		<div class="card slider">
        			<!-- This is for Slider Headers -->
          		<div class="card-header slider_header" style="padding:0px; font-size:12px!important; height: 0%;">
-             		<h4 class="category">Project Closure Check List - <%if(projectMaster!=null) {%><%=projectMaster.getProjectShortName()!=null?StringEscapeUtils.escapeHtml4(projectMaster.getProjectShortName()): " - "+" ("+projectMaster.getProjectCode()!=null?StringEscapeUtils.escapeHtml4(projectMaster.getProjectCode()): " - "+")" %> <%} %>
+             		<h4 class="category">Project Closure Check List - <%if(projectMaster!=null) {%><%=projectMaster.getProjectShortName()!=null?StringEscapeUtils.escapeHtml4(projectMaster.getProjectShortName()): " - "%> (<%=projectMaster.getProjectCode()!=null?StringEscapeUtils.escapeHtml4(projectMaster.getProjectCode()): " - "%>) <%} %>
 
              			<a class="btn btn-info btn-sm  shadow-nohover back"
              				<%if(isApproval!=null && isApproval.equalsIgnoreCase("Y") ) {%>

@@ -112,7 +112,7 @@
            font-size: 13px;
           	margin-top: 30px;
             margin-left: 10px;
-            content: "<%=no[0]!=null?StringEscapeUtils.escapeHtml4(no[0].toString()): " - "+"/"+no[1]!=null?StringEscapeUtils.escapeHtml4(no[1].toString()): " - "+"/"+no[2]!=null?StringEscapeUtils.escapeHtml4(no[2].toString()): " - " %><%if(meetingcount>0){ %>#<%=meetingcount %><%} %><%="/"+no[3]!=null?StringEscapeUtils.escapeHtml4(no[3].toString()): " - "%>";
+            content: "<%=no[0]!=null?StringEscapeUtils.escapeHtml4(no[0].toString()): " - "%>/<%=no[1]!=null?StringEscapeUtils.escapeHtml4(no[1].toString()): " - "%>/<%=no[2]!=null?StringEscapeUtils.escapeHtml4(no[2].toString()): " - " %><%if(meetingcount>0){ %>#<%=meetingcount %><%} %>/<%=no[3]!=null?StringEscapeUtils.escapeHtml4(no[3].toString()): " - "%>";
           }            
           
           @top-center { 
@@ -1406,7 +1406,7 @@ for(Object[] temp : invitedlist){
 									 %>
 									<%if(speclist[7].toString().equalsIgnoreCase("R")){ count++; %>
 									<tr>
-										<th  style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?StringEscapeUtils.escapeHtml4(committeemin[0].toString()): " - "+"."+count%>.&nbsp;&nbsp;&nbsp;<%=speclist[9]!=null?StringEscapeUtils.escapeHtml4(speclist[9].toString()): " - "%></th>
+										<th  style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?StringEscapeUtils.escapeHtml4(committeemin[0].toString()): " - "%><%="."+count%>.&nbsp;&nbsp;&nbsp;<%=speclist[9]!=null?StringEscapeUtils.escapeHtml4(speclist[9].toString()): " - "%></th>
 									</tr>
 									<tr>
 										<td style="text-align: justify;padding-left: 30px">

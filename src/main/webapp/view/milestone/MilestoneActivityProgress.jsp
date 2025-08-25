@@ -126,7 +126,7 @@
 												for(Object[] obj : projectList) {
 													String projectshortName=(obj[17]!=null)?" ("+obj[17].toString()+") ":""; %>
 													<option value="<%=obj[0]%>" <%if(projectId.equalsIgnoreCase(obj[0]+"")) { project = obj[4]+projectshortName; %>selected<%} %> >
-														<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - " %>
+														<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - " %>
 													</option>
 											<%} }%>
 										</select>

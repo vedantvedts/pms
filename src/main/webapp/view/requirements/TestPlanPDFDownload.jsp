@@ -353,7 +353,7 @@ margin-left:8px;
 				<%
 				if(LabList[1] != null) {
 				%>
-				<%=StringEscapeUtils.escapeHtml4(LabList[1].toString())+"("+LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()): " - "+")"%>
+				<%=StringEscapeUtils.escapeHtml4(LabList[1].toString())+"("+(LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()): " - ")+")"%>
 				<%
 				}else {
 				%>-<%
@@ -497,7 +497,7 @@ margin-left:8px;
 					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">12.&nbsp; Organization and address:
 						<span class="text-darks" style="font-family: <%= FontFamily %>;">		<%
 										if (LabList[1] != null) {
-										%><%=StringEscapeUtils.escapeHtml4(LabList[1].toString())+"("+LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()): " - "+")"%>
+										%><%=StringEscapeUtils.escapeHtml4(LabList[1].toString())+"("+(LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()): " - ")+")"%>
 										<%
 										} else {
 										%>-<%

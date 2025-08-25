@@ -202,14 +202,14 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 %>
 
 	<div align="center">
-    	<h5 style="font-weight: bold;"><%=labcode!=null?StringEscapeUtils.escapeHtml4(labcode): " - " %></h5>
+    	<h5 style="font-weight: bold;"><%=labcode!=null?labcode: " - " %></h5>
         <span style="font-size: larger; text-decoration: underline;">Directorate of Planning & Coordination</span>
     </div>
      
      <table style="border-collapse: collapse;width: 98%;margin-top: 10px;">
      	<tr>
      		<td>
-     			<span>No:</span> <span><%=carsContract.getContractNo()!=null?StringEscapeUtils.escapeHtml4(carsContract.getContractNo()): " - " %> </span>
+     			<span>No:</span> <span><%=carsContract.getContractNo()!=null?carsContract.getContractNo(): " - " %> </span>
      		</td>
      		<td style="text-align: right;" >
      			<span>Date:</span> <span><%if(csdetails.getOtherDocDate()!=null) {%> <%=fc.SqlToRegularDate(csdetails.getOtherDocDate()) %><%} else{%><%=rdf.format(new Date()) %><%} %> </span>
@@ -229,7 +229,7 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 	<div class="row">
 		<div align="center">
 			<h5 style="font-weight: bold;margin-top: 1.5rem;">CARS contract signature</h5>
-		    <span style="font-size: large;"><%=carsIni.getInitiationTitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getInitiationTitle()): " - " %> </span>
+		    <span style="font-size: large;"><%=carsIni.getInitiationTitle()!=null?carsIni.getInitiationTitle(): " - " %> </span>
 		</div>
 	</div>
 	<br>
@@ -240,9 +240,9 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 				<%if(carsIni!=null && carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>
 					Directorate
 				<%} else{%>
-				<%if(PDs!=null) {%><%=PDs[4]!=null?StringEscapeUtils.escapeHtml4(PDs[4].toString()): " - " %><%} else{%>-<%} %>
+				<%if(PDs!=null) {%><%=PDs[4]!=null?PDs[4].toString(): " - " %><%} else{%>-<%} %>
 				<%} %>  
-				for CARS collaboration with <%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute()): " - "+", "+carsIni.getRSPCity()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()): " - " %> <%} %> has been approved by CFA.
+				for CARS collaboration with <%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()!=null?carsIni.getRSPInstitute(): " - "%>, <%=carsIni.getRSPCity()!=null?carsIni.getRSPCity(): " - " %> <%} %> has been approved by CFA.
 			</span>
 			<span>
 				<%if(csdetails!=null && csdetails.getAttachFlagA()!=null) {%>
@@ -284,9 +284,9 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 		<div style="font-size: 15px;"> Signature of GD-DP&C</div>
 		<%for(Object[] apprInfo : othersCSApprovalEmpData){ %>
 			<%if(apprInfo[8].toString().equalsIgnoreCase("CFW")){ %>
-				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-				<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-				<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19) %>]</label>
+				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+				<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+				<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString()).substring(0, 10)  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
 		<%break;}} %>  
 	</div>
 							            	
@@ -295,14 +295,14 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 										            			 		
 			<%if(apprInfo[8].toString().equalsIgnoreCase("CFA")){ %>
 				<div style="font-size: 15px;"> Signature of AD-P&C</div>
-				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-				<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-				<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19) %>]</label>
+				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+				<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+				<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString()).substring(0, 10)  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
 			<%} else if(apprInfo[8].toString().equalsIgnoreCase("CAD")) {%> 
 				<div style="font-size: 15px;"> Signature of Director</div>
-				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-				<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-				<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19) %>]</label>
+				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+				<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+				<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString()).substring(0, 10)  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
 									   			    					
 			<%} %>
 		</div>

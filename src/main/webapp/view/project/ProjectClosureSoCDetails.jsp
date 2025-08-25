@@ -335,7 +335,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
        		<div class="card slider">
        			<!-- This is for Slider Headers -->
          		<div class="card-header slider_header" style="padding:0px; font-size:12px!important; height: 0%;">
-             		<h4 class="category">Project Closure SoC - <%if(projectMaster!=null) {%><%=projectMaster.getProjectShortName()!=null?StringEscapeUtils.escapeHtml4(projectMaster.getProjectShortName()): " - "+" ("+projectMaster.getProjectCode()!=null?StringEscapeUtils.escapeHtml4(projectMaster.getProjectCode()): " - "+")" %> <%} %>
+             		<h4 class="category">Project Closure SoC - <%if(projectMaster!=null) {%><%=projectMaster.getProjectShortName()!=null?StringEscapeUtils.escapeHtml4(projectMaster.getProjectShortName()): " - "%> (<%=projectMaster.getProjectCode()!=null?StringEscapeUtils.escapeHtml4(projectMaster.getProjectCode()): " - " %>) <%} %>
 
              			<a class="btn btn-info btn-sm  shadow-nohover back"
              				<%if(isApproval!=null && isApproval.equalsIgnoreCase("Y") ) {%>
@@ -603,7 +603,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>
 												    		<td style="width: 40%;">Name of Lab/Est</td>
-												    		<td>: <%=labMaster.getLabName()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabName()): " - "+ " (" + labMaster.getLabCode()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabCode()): " - " +  "), "+ labMaster.getLabAddress()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabAddress()): " - "%> </td>
+												    		<td>: <%=labMaster.getLabName()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabName()): " - "%> (<%= labMaster.getLabCode()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabCode()): " - " %>), <%=labMaster.getLabAddress()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabAddress()): " - "%> </td>
 												    	</tr>
 												    	<tr>
 												    		<td style="width: 4%;"><%=++slno %>.</td>

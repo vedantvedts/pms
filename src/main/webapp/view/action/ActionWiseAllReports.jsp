@@ -89,7 +89,7 @@ h6{
 				    										for (Object[] obj : ProjectList) {
 				    											String projectshortName=(obj[4]!=null)?" ( "+obj[4].toString()+" ) ":"";
 				    										%>
-														<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - "%></option>
+														<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%> <%= projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>
 															<%}} %>
 				  								</select>
                             					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 

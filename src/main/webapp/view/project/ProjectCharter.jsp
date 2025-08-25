@@ -395,7 +395,7 @@ List<Object[]> MilestoneActivityList=(List<Object[]>)request.getAttribute("Miles
 											<%for(Object[] obj : proList){ 
 												String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":""; %>
 												<option  value="<%=obj[0] %>" <%if (Project.equalsIgnoreCase(obj[0].toString())) {%>
-												selected="selected" <%}%>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " +projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%></option>
+												selected="selected" <%}%>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%></option>
 											<%} %>
 										</select>
 									</div>

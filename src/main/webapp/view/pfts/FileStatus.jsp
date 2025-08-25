@@ -320,7 +320,7 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 											<% for (Object[] obj : projectslist) {
     										String projectshortName=(obj[17]!=null)?" ( "+StringEscapeUtils.escapeHtml4(obj[17].toString()) +" ) ":"";
     										%>
-											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(projectId)){ %>selected="selected" <%} %>> <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "+ projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - "%>  </option>
+											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(projectId)){ %>selected="selected" <%} %>> <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%> <%= projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - "%>  </option>
 											<%} %>
 											</select>
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -733,7 +733,7 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 											String projectshortName=(obj[17]!=null)?" ( "+StringEscapeUtils.escapeHtml4(obj[17].toString())+" ) ":"";
 											%>
 											<%if(projectId!=null && projectId.equalsIgnoreCase(obj[0].toString())){ %>
-											<option value="<%=obj[0]%>"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"-"+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):"-"%></option>
+											<option value="<%=obj[0]%>"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"-"%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):"-"%></option>
 											<%}} %> 
   								  </select>
 		                   </div>

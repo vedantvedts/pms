@@ -261,7 +261,7 @@ label {
 								                        <% if (iface.getLogicalInterfaceId().equals(Long.parseLong(logicalInterfaceId))) { %>
 								                        style="background-color: green; color: white; border-color: green; width: 86%;" 
 								                        <% } else { %> style="width: 86%;" <% } %>>
-								                        <%=(interfaceMainCount) + "." + (++interfaceSubCount) + ". " + iface.getMsgCode()!=null?StringEscapeUtils.escapeHtml4(iface.getMsgCode()): " - "%>
+								                        <%=(interfaceMainCount) + "." + (++interfaceSubCount) + ". " %> <%= iface.getMsgCode()!=null?StringEscapeUtils.escapeHtml4(iface.getMsgCode()): " - "%>
 								                    </button>
 								                </form>
 								            </div>
@@ -295,7 +295,7 @@ label {
 		       											<option value="<%=channel.getLogicalChannelId()+"/"+channel.getLogicalChannel() %>" 
 		       											<%if(logicalInterface!=null && logicalInterface.getLogicalChannelId()!=null && logicalInterface.getLogicalChannelId().equals(channel.getLogicalChannelId()) ||
 		       													Long.parseLong(logicalChannelId)==channel.getLogicalChannelId()) {%>selected<%} %>>
-		       												<%=channel.getLogicalChannel()!=null?StringEscapeUtils.escapeHtml4(channel.getLogicalChannel()): " - "+" ("+channel.getChannelCode()!=null?StringEscapeUtils.escapeHtml4(channel.getChannelCode()): " - "+")" %>
+		       												<%=channel.getLogicalChannel()!=null?StringEscapeUtils.escapeHtml4(channel.getLogicalChannel()): " - "%> <%=" ("+(channel.getChannelCode()!=null?StringEscapeUtils.escapeHtml4(channel.getChannelCode()): " - ")+")" %>
 		       											</option>
 		       										<%} %>
 		       									</select>
@@ -390,7 +390,7 @@ label {
 											               				<%for(FieldGroupMaster fieldGroup : fieldGroupList){
 											                			 %>
 																			<option value="<%=fieldGroup.getFieldGroupId()%>" <%if(desc[12]!=null && Long.parseLong(desc[12].toString())==(fieldGroup.getFieldGroupId())) {%>selected<%} %> >
-																				<%=fieldGroup.getGroupName()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupName()): " - "+" ("+fieldGroup.getGroupCode()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupCode()): " - "+")" %>
+																				<%=fieldGroup.getGroupName()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupName()): " - "%> <%=" ("+(fieldGroup.getGroupCode()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupCode()): " - ")+")" %>
 																			</option>
 																		<%} %>
 																	</select>
@@ -431,7 +431,7 @@ label {
 											               				<%for(FieldGroupMaster fieldGroup : fieldGroupList){
 											                			 %>
 																			<option value="<%=fieldGroup.getFieldGroupId()%>">
-																				<%=fieldGroup.getGroupName()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupName()): " - "+" ("+fieldGroup.getGroupCode()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupCode()): " - "+")" %>
+																				<%=fieldGroup.getGroupName()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupName()): " - "%> <%=" ("+(fieldGroup.getGroupCode()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupCode()): " - ")+")" %>
 																			</option>
 																		<%} %>
 																	</select>

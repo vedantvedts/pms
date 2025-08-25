@@ -684,7 +684,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 <!-- 				                                <th> <label class="customcheckbox"> <input type="checkbox" class="listCheckbox"> <span class="checkmark"></span> </label> </th>
  -->				                                     
 				                                <td><%if(obj[0]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[0].toString()) %><%}else{ %>-<%} %></td>
-				                                <td><%if(obj[1]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[1].toString())+"("+obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "+")" %><%}else{ %>-<%} %></td>
+				                                <td><%if(obj[1]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[1].toString())%> (<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>)<%}else{ %>-<%} %></td>
 				                                <td><%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%}else{ %>-<%} %></td>
 				                                <td class="right">&#8377; <%if(obj[3]!=null && Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[3].toString()))>0){%><%=Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[3].toString()))/100000 %> Lakhs<%}else{ %>0.00<%} %></td>
 				                    

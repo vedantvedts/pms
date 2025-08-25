@@ -1212,13 +1212,13 @@ function DownloadDocPDF(){
                 		if(intro.getLevelId()==1) {
                 %>
 	                {
-	                    text: '<%=Sub0Count+". "+intro.getChapterName()!=null?StringEscapeUtils.escapeHtml4(intro.getChapterName()): " - "%>',
+	                    text: '<%=Sub0Count+". "+(intro.getChapterName()!=null?StringEscapeUtils.escapeHtml4(intro.getChapterName()): " - ")%>',
 	                    style: 'chapterSubHeader',
 	                    tocItem: true,
 	                    tocMargin: [10, 0, 0, 0],
 	                },
 	                {
-	                	stack: [htmlToPdfmake(setImagesWidth('<%if(intro.getChapterContent()!=null) {%><%=StringEscapeUtils.escapeHtml4(intro.getChapterContent()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
+	                	stack: [htmlToPdfmake(setImagesWidth('<%if(intro.getChapterContent()!=null) {%><%=intro.getChapterContent().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
 	                		  +'<%}else {%> - <%} %>', 500))],
 	                    margin: [15, 0, 0, 0],
 	                },
@@ -1230,13 +1230,13 @@ function DownloadDocPDF(){
 	                %>
 	                
 		                {
-		                    text: '<%=Sub0Count+". "+Sub1Count+". "+intro1.getChapterName()!=null?StringEscapeUtils.escapeHtml4(intro1.getChapterName()): " - "%>',
+		                    text: '<%=Sub0Count+". "+Sub1Count+". "+(intro1.getChapterName()!=null?StringEscapeUtils.escapeHtml4(intro1.getChapterName()): " - ")%>',
 		                    style: 'chapterSubSubHeader',
 		                    tocItem: true,
 		                    tocMargin: [20, 0, 0, 0],
 		                },
 		                {
-		                	stack: [htmlToPdfmake(setImagesWidth('<%if(intro1.getChapterContent()!=null) {%><%=StringEscapeUtils.escapeHtml4(intro.getChapterContent()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
+		                	stack: [htmlToPdfmake(setImagesWidth('<%if(intro1.getChapterContent()!=null) {%><%=intro.getChapterContent().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
 		                		  +'<%}else {%> - <%} %>', 500))],
 		                    margin: [25, 0, 0, 0],
 		                },
@@ -1411,7 +1411,7 @@ function DownloadDocPDF(){
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Description', style: 'tableData', bold: true},
 	                                <%if(iface.getInterfaceDescription()!=null && !iface.getInterfaceDescription().isEmpty()) {%>
-	                                	{ stack: [htmlToPdfmake(setImagesWidth('<%=StringEscapeUtils.escapeHtml4(iface.getInterfaceDescription()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))],},
+	                                	{ stack: [htmlToPdfmake(setImagesWidth('<%=iface.getInterfaceDescription().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))],},
 	                                <%}else {%>
 	                                	{ text: '-', style: 'tableData'},
 	                                <%} %>
@@ -1486,7 +1486,7 @@ function DownloadDocPDF(){
 		                                { text: 'Diagram', style: 'tableData', bold: true, colSpan: 2 },
 		                            ],
 		                            [
-	                        			{ stack: [htmlToPdfmake(setImagesWidth('<%=StringEscapeUtils.escapeHtml4(iface.getInterfaceDiagram()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))], colSpan: 3,},
+	                        			{ stack: [htmlToPdfmake(setImagesWidth('<%=iface.getInterfaceDiagram().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 600))], colSpan: 3,},
 	                            	],
 	                            <%} %>
 	                        ]
@@ -1775,7 +1775,7 @@ function DownloadDocPDF(){
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Logical Channel Name', style: 'tableData', bold: true},
-	                                { text: '<%=channel.getLogicalChannel() !=null?StringEscapeUtils.escapeHtml4(channel.getLogicalChannel()): " - "+ " (" + channel.getChannelCode() !=null?StringEscapeUtils.escapeHtml4(channel.getChannelCode()): " - "+ ")" %>', style: 'tableData' },
+	                                { text: '<%=channel.getLogicalChannel() !=null?StringEscapeUtils.escapeHtml4(channel.getLogicalChannel()): " - "%> <%= " (" + (channel.getChannelCode() !=null?StringEscapeUtils.escapeHtml4(channel.getChannelCode()): " - ")+ ")" %>', style: 'tableData' },
 	                            ],
 	                            [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
@@ -1875,7 +1875,7 @@ function DownloadDocPDF(){
                                 { text: 'SN', style: 'tableHeader2' },
                                 { text: 'Sub-System', style: 'tableHeader2' },
                                 <% for (Object[] subsystem : softwareList) { %>
-                                    { text: '<%= subsystem != null ? subsystem[2]!=null?StringEscapeUtils.escapeHtml4(subsystem[2].toString()): " - "  + " (" + subsystem[7]!=null?StringEscapeUtils.escapeHtml4(subsystem[7].toString()): " - "  + ")" : "" %>', style: 'tableHeader2' },
+                                    { text: '<%= subsystem != null ? ((subsystem[2]!=null?StringEscapeUtils.escapeHtml4(subsystem[2].toString()): " - " ) + " (" + (subsystem[7]!=null?StringEscapeUtils.escapeHtml4(subsystem[7].toString()): " - " ) + ")" ): "" %>', style: 'tableHeader2' },
                                 <% } %>
                             ],
 
@@ -1886,7 +1886,7 @@ function DownloadDocPDF(){
                             for (Object[] rowSubsystem : softwareList) { %>
                                 [
                                     { text: '<%= ++slnoS%>', style: 'tableData2', alignment: 'center' },
-                                    { text: '<%= rowSubsystem != null ? rowSubsystem[2]!=null?StringEscapeUtils.escapeHtml4(rowSubsystem[2].toString()): " - "  + " (" + rowSubsystem[7]!=null?StringEscapeUtils.escapeHtml4(rowSubsystem[7].toString()): " - " + ")" : "" %>', style: 'tableData2', alignment: 'left' },
+                                    { text: '<%= rowSubsystem != null ? ((rowSubsystem[2]!=null?StringEscapeUtils.escapeHtml4(rowSubsystem[2].toString()): " - ")  + " (" + (rowSubsystem[7]!=null?StringEscapeUtils.escapeHtml4(rowSubsystem[7].toString()): " - ") + ")" ): "" %>', style: 'tableData2', alignment: 'left' },
                                     <% for (Object[] colSubsystem : softwareList) { %>
                                         { text: 
                                             <%-- <% if (rowSubsystem.equalsIgnoreCase(colSubsystem)) { %>

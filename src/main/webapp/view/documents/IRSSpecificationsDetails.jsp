@@ -243,7 +243,7 @@
 											<option value="0" selected disabled>----select----</option>
 									        <% for(IGILogicalChannel channel : logicalChannelList){ %>
 									        	<option value="<%=channel.getLogicalChannelId() %>" <%if(logicalChannelId.equals(channel.getLogicalChannelId())) {%>selected<%} %>>
-									        		<%=channel.getLogicalChannel()!=null?StringEscapeUtils.escapeHtml4(channel.getLogicalChannel()): " - "+" ("+channel.getChannelCode()!=null?StringEscapeUtils.escapeHtml4(channel.getChannelCode()): " - "+")" %>
+									        		<%=channel.getLogicalChannel()!=null?StringEscapeUtils.escapeHtml4(channel.getLogicalChannel()): " - "%> <%=" ("+(channel.getChannelCode()!=null?StringEscapeUtils.escapeHtml4(channel.getChannelCode()): " - ")+")" %>
 									        	</option>
 									        <%} %>
 										</select>
@@ -337,7 +337,7 @@
 						               				<%for(FieldGroupMaster fieldGroup : fieldGroupList){
 						                			 %>
 														<option value="<%=fieldGroup.getFieldGroupId()%>" <%if(groupId==(fieldGroup.getFieldGroupId())) {%>selected<%} %> >
-															<%=fieldGroup.getGroupName()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupName()): " - "+" ("+fieldGroup.getGroupCode()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupCode()): " - "+")" %>
+															<%=fieldGroup.getGroupName()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupName()): " - "%> <%=" ("+(fieldGroup.getGroupCode()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupCode()): " - ")+")" %>
 														</option>
 													<%} %>
 												</select>
@@ -527,7 +527,7 @@
 							               				<%for(FieldGroupMaster fieldGroup : fieldGroupList){
 							                			 %>
 															<option value="<%=fieldGroup.getFieldGroupId()%>">
-																<%=fieldGroup.getGroupName()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupName()): " - "+" ("+fieldGroup.getGroupCode()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupCode()): " - "+")" %>
+																<%=fieldGroup.getGroupName()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupName()): " - "%> <%=" ("+(fieldGroup.getGroupCode()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupCode()): " - ")+")" %>
 															</option>
 														<%} %>
 													</select>
@@ -756,17 +756,17 @@
         fieldGroupMap["<%= entry.getKey() %>"] = [
             <% for (Object[] field : entry.getValue()) { %>
                 {
-                	value: "<%= field[0]!=null?StringEscapeUtils.escapeHtml4(field[0].toString()): " - " %>",
-                    text: "<%= field[1]!=null?StringEscapeUtils.escapeHtml4(field[1].toString()): " - " %>",
-                    datatype: "<%= field[16]!=null?StringEscapeUtils.escapeHtml4(field[16].toString()): " - " %>",
-                    typicalval: "<%= field[6]!=null?StringEscapeUtils.escapeHtml4(field[6].toString()): " - " %>",
-                    minval: "<%= field[7]!=null?StringEscapeUtils.escapeHtml4(field[7].toString()): " - " %>",
-                    maxval: "<%= field[8]!=null?StringEscapeUtils.escapeHtml4(field[8].toString()): " - " %>",
-                    initval: "<%= field[9] !=null?StringEscapeUtils.escapeHtml4(field[9].toString()): " - "%>",
-                    quantum: "<%= field[11] !=null?StringEscapeUtils.escapeHtml4(field[11].toString()): " - "%>",
-                    unit: "<%= field[12]!=null?StringEscapeUtils.escapeHtml4(field[12].toString()): " - " %>",
-                    description: "<%= field[4]!=null?StringEscapeUtils.escapeHtml4(field[4].toString()): " - " %>",
-                    remarks: "<%= field[13]!=null?StringEscapeUtils.escapeHtml4(field[13].toString()): " - " %>"
+                	value: "<%= field[0]!=null?field[0].toString(): " - " %>",
+                    text: "<%= field[1]!=null?field[1].toString(): " - " %>",
+                    datatype: "<%= field[16]!=null?field[16].toString(): " - " %>",
+                    typicalval: "<%= field[6]!=null?field[6].toString(): " - " %>",
+                    minval: "<%= field[7]!=null?field[7].toString(): " - " %>",
+                    maxval: "<%= field[8]!=null?field[8].toString(): " - " %>",
+                    initval: "<%= field[9] !=null?field[9].toString(): " - "%>",
+                    quantum: "<%= field[11] !=null?field[11].toString(): " - "%>",
+                    unit: "<%= field[12]!=null?field[12].toString(): " - " %>",
+                    description: "<%= field[4]!=null?field[4].toString(): " - " %>",
+                    remarks: "<%= field[13]!=null?field[13].toString(): " - " %>"
                 },
             <% } %>
         ];

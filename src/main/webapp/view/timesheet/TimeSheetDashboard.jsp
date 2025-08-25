@@ -276,7 +276,7 @@
 													            <%for(Object[] pro: projectList ){
 													            	String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
 													            %>
-																	<option value="<%=pro[0]%>" ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[4].toString()):" - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>
+																	<option value="<%=pro[0]%>" ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[4].toString()):" - "%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>
 																<%} %>
 															</select>
 														</td>
@@ -288,7 +288,7 @@
 																<%
 																if(empList!=null && empList.size()>0){
 																for(Object[] obj : empList) {%>
-																	<option value="<%=obj[0]%>" <%if(sesEmpId.equalsIgnoreCase(obj[0].toString())) {%>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"+", "+obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %></option>
+																	<option value="<%=obj[0]%>" <%if(sesEmpId.equalsIgnoreCase(obj[0].toString())) {%>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %></option>
 																<%} }%>
 															</select>
 														</td>
@@ -352,7 +352,7 @@
 																<%
 																if(empList!=null && empList.size()>0){
 																for(Object[] obj : empList) {%>
-																	<option value="<%=obj[0]%>" <%if(sesEmpId.equalsIgnoreCase(obj[0].toString())) {%>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"+", "+obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %></option>
+																	<option value="<%=obj[0]%>" <%if(sesEmpId.equalsIgnoreCase(obj[0].toString())) {%>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %></option>
 																<%} }%>
 															</select>
 														</td>
@@ -364,7 +364,7 @@
 													            <%for(Object[] pro: projectList ){
 													            	String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
 													            %>
-																	<option value="<%=pro[0]%>" ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[4].toString()):"-"+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):"-" %></option>
+																	<option value="<%=pro[0]%>" ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[4].toString()):"-"%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):"-" %></option>
 																<%} %>
 															</select>
 														</td>
@@ -430,7 +430,7 @@
 																	<option value="<%=pro[0]%>"
 																	data-sancdate="<%=pro[12] %>"
 																	data-projectname="<%=pro[4]+projectshortName %>"
-																	 ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[4].toString()):"-"+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):"-" %></option>
+																	 ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[4].toString()):"-"%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):"-" %></option>
 																<%} %>
 															</select>
 														</td>
@@ -596,7 +596,7 @@
 																for(Object[] obj : empList) {%>
 																	<option value="<%=obj[0]%>" 
 																	data-employee="<%=obj[1]+", "+obj[2] %>"
-																	<%if(sesEmpId.equalsIgnoreCase(obj[0].toString())) {%>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"+", "+obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %></option>
+																	<%if(sesEmpId.equalsIgnoreCase(obj[0].toString())) {%>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %></option>
 																<%} }%>
 															</select>
 														</td>

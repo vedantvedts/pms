@@ -414,7 +414,7 @@ ul, #myUL {
 																	<%for(Object[] doc : agendaDocList) { 
 																		if(obj[0].toString().equalsIgnoreCase(doc[1].toString())){%>
 																		<tr>
-																			<td><%= doc[3]!=null?StringEscapeUtils.escapeHtml4(doc[3].toString()): " - " + " <span class='text-muted'> Ver " + doc[4]!=null?StringEscapeUtils.escapeHtml4(doc[4].toString()): " - " + "." + doc[5]!=null?StringEscapeUtils.escapeHtml4(doc[5].toString()): " - " + "</span>" %></td>
+																			<td><%= doc[3]!=null?StringEscapeUtils.escapeHtml4(doc[3].toString()): " - " %> <%= " <span class='text-muted'> Ver " %> <%= doc[4]!=null?StringEscapeUtils.escapeHtml4(doc[4].toString()): " - " %> . <%= doc[5]!=null?StringEscapeUtils.escapeHtml4(doc[5].toString()): " - " %> <%= "</span>" %></td>
 																			<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
 																			<td style="width:1% ;white-space: nowrap;" ><a type="button" onclick="removeDocRow(this,<%=doc[0] %>);" > <i class=" fa fa-minus" style="color: red;"   ></i> </a></td>
 																		<tr>													

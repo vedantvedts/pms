@@ -165,7 +165,7 @@ List<Object[]> workingHrsList = (List<Object[]>)request.getAttribute("workingHrs
 			%>
 				<tr>
 					<td class="center"><%=++slno %></td>
-					<td><%=(obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-")+", "+(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-") %></td>
+					<td><%=(obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-")%> <%=", "%> <%=(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-") %></td>
 					<td class="center"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
 					<td class="center"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
 				</tr>

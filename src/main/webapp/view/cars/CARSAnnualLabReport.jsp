@@ -168,14 +168,14 @@
 										</td>
 	                                    <td ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"-" %></td>
 	                                    <td >
-	                                    	<%=(obj[21]!=null?StringEscapeUtils.escapeHtml4(obj[21].toString()):"-")+", "+(obj[23]!=null?StringEscapeUtils.escapeHtml4(obj[23].toString()):"-") %>	<br>
-			    				  			<%=(obj[22]!=null?StringEscapeUtils.escapeHtml4(obj[22].toString()):"-")+", "+(obj[23]!=null?StringEscapeUtils.escapeHtml4(obj[23].toString()):"-")+", "+(obj[24]!=null?StringEscapeUtils.escapeHtml4(obj[24].toString()):"-")+" - "+(obj[25]!=null?StringEscapeUtils.escapeHtml4(obj[25].toString()):"-") %> <br>
+	                                    	<%=(obj[21]!=null?StringEscapeUtils.escapeHtml4(obj[21].toString()):"-")%>, <%=(obj[23]!=null?StringEscapeUtils.escapeHtml4(obj[23].toString()):"-") %>	<br>
+			    				  			<%=(obj[22]!=null?StringEscapeUtils.escapeHtml4(obj[22].toString()):"-")%>, <%=(obj[23]!=null?StringEscapeUtils.escapeHtml4(obj[23].toString()):"-")%>, <%=(obj[24]!=null?StringEscapeUtils.escapeHtml4(obj[24].toString()):"-")%> - <%=(obj[25]!=null?StringEscapeUtils.escapeHtml4(obj[25].toString()):"-") %> <br>
 			    							Phone : <%=(obj[30]!=null?StringEscapeUtils.escapeHtml4(obj[30].toString()):"-") %> <br>
 			    				 			Fax :&nbsp;<%=(obj[32]!=null?StringEscapeUtils.escapeHtml4(obj[32].toString()):"-") %> <br>
 			    							Email :&nbsp;<%=(obj[31]!=null?StringEscapeUtils.escapeHtml4(obj[31].toString()):"-") %><br>
 			    						</td>
 	                                    <td > 
-	                                    	<%=(obj[26]!=null?StringEscapeUtils.escapeHtml4(obj[26].toString()):"-")+". "+(obj[27]!=null?StringEscapeUtils.escapeHtml4(obj[27].toString()):"-")+", "+(obj[28]!=null?StringEscapeUtils.escapeHtml4(obj[28].toString()):"-") %>
+	                                    	<%=(obj[26]!=null?StringEscapeUtils.escapeHtml4(obj[26].toString()):"-")%> . <%=(obj[27]!=null?StringEscapeUtils.escapeHtml4(obj[27].toString()):"-")%>, <%=(obj[28]!=null?StringEscapeUtils.escapeHtml4(obj[28].toString()):"-") %>
 	                                    </td>
 	                                   	<td>
 	                                   		<form action="#">

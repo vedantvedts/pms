@@ -121,7 +121,7 @@ String projectType=(String)request.getAttribute("projectType");
 		                            	<select class="custom-select"  required="required"name="priority" id="priority">
 										    <option disabled="true"  selected value="">Choose...</option>
 											<% for (Object[] obj : PriorityList) {%>
-											<option value="<%=obj[0]%>"<%if(obj[0].toString().equalsIgnoreCase(RfaAction[5].toString())){ %> selected <%} %>><%= "(" + obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):" - " + ")" + obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%></option>
+											<option value="<%=obj[0]%>"<%if(obj[0].toString().equalsIgnoreCase(RfaAction[5].toString())){ %> selected <%} %>><%= "(" + (obj[0] != null ? StringEscapeUtils.escapeHtml4(obj[0].toString()) : " - ")   + ") "+ (obj[1] != null ? StringEscapeUtils.escapeHtml4(obj[1].toString()) : " - ")%></option>
 											<%} %>
 		  								</select>
 		                        </div>
@@ -144,7 +144,7 @@ String projectType=(String)request.getAttribute("projectType");
 		                            <option  value="" selected>SELECT</option>
 		                            <% if(vendorList!=null && vendorList.size()>0){
 		                            for(Object[] obj : vendorList) { %>
-		                            <option value="<%=obj[0]+"/"+obj[3]%>"   <%if((assigneeLab).equalsIgnoreCase(obj[0].toString())) {%> selected <%}else {%> disabled <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>( <%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):" - " %> )</option>
+		                            <option value="<%=obj[0]+"/"+obj[3]%>"   <%if((assigneeLab).equalsIgnoreCase(obj[0].toString())) {%> selected <%}else {%> disabled <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%> (<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):" - " %>)</option>
 		                            <%}} %>
 		                           </select>
 		                           <!--  <input  class="form-control"  name="rfano" id="rfano"  required="required"  placeholder="Enter RFA Number" > -->	

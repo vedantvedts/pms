@@ -151,7 +151,7 @@
 	        						%>
 	        							<tr>
 	        								<td class="center"><%=++slno %></td>
-	        								<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "+" ("+obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "+")" %></td>
+	        								<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%=" ("+(obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - ")+")" %></td>
 	        								<td class="center">
 	        									<form action="IGIShortCodesLinkedDelete.htm" method="POST" id="inlineapprform<%=slno%>">
 											        <button type="submit" class="btn btn-sm" onclick="return confirm('Are you sure to delete?')">
@@ -236,7 +236,7 @@
 										        		<input type="checkbox" class="shortcode_<%=rowcount %>" name="shortCodeId" value="<%=shortCodes.getShortCodeId()%>">
 										        	</td>
 									            	<td>
-									            		<%=shortCodes.getFullName()!=null?StringEscapeUtils.escapeHtml4(shortCodes.getFullName()): " - "+" ("+shortCodes.getShortCode()!=null?StringEscapeUtils.escapeHtml4(shortCodes.getShortCode()): " - "+")" %>
+									            		<%=shortCodes.getFullName()!=null?StringEscapeUtils.escapeHtml4(shortCodes.getFullName()): " - "%> <%=" ("+(shortCodes.getShortCode()!=null?StringEscapeUtils.escapeHtml4(shortCodes.getShortCode()): " - ")+")" %>
 									            	</td>
 									            	<td style="border: 0px;">&nbsp;</td>
 									        		<%if ((i + 1) % 3 == 0) { %>

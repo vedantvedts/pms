@@ -78,7 +78,7 @@ class="body genealogy-body">
 			                         	
 			                         	 <span style="cursor:pointer;font-weight: 600;font-size: 1.0em;white-space:normal;"> 
 	                          			       
-			                                              <%=ProjectDetail.get(0)[1]!=null?StringEscapeUtils.escapeHtml4(ProjectDetail.get(0)[1].toString()): " - " %>
+			                                              <%=ProjectDetail.get(0)[1]!=null?ProjectDetail.get(0)[1].toString(): " - " %>
 			                                              
 	                          			  </span>            
 	                          			   
@@ -122,7 +122,7 @@ class="body genealogy-body">
 												 );" > 
 												
 										             <span style="cursor:pointer;font-weight: 600;font-size: 1.0em;white-space:normal;"> 
-										           <%=level1[3]!=null?StringEscapeUtils.escapeHtml4(level1[3].toString()): " - " %>
+										           <%=level1[3]!=null?level1[3].toString(): " - " %>
 										                
 										             </span> 
 										             
@@ -172,7 +172,7 @@ class="body genealogy-body">
 																 );" >
 														
 															       <span style="cursor:pointer;font-weight: 600;font-size: 1.0em;white-space:normal;"> 
-			                          			                              <%=level2[3]!=null?StringEscapeUtils.escapeHtml4(level2[3].toString()): " - " %>
+			                          			                              <%=level2[3]!=null?level2[3].toString(): " - " %>
 			                          			                   </span>
 			                          			                   
 			                          			                   <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
@@ -220,7 +220,7 @@ class="body genealogy-body">
 																		
 																		<span style="cursor:pointer;font-weight: 600;font-size: 1.0em;white-space:normal;" >
 			                          			                             
-			                          			                                <%=level3[3]!=null?StringEscapeUtils.escapeHtml4(level3[3].toString()): " - " %>
+			                          			                                <%=level3[3]!=null?level3[3].toString(): " - " %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
@@ -273,7 +273,7 @@ class="body genealogy-body">
 																		
 																		<span style="cursor:pointer;font-weight: 600;font-size: 1.0em;white-space:normal;" >
 			                          			                             
-			                          			                                <%=level4[3]!=null?StringEscapeUtils.escapeHtml4(level4[3].toString()): " - " %>
+			                          			                                <%=level4[3]!=null?level4[3].toString(): " - " %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
@@ -324,7 +324,7 @@ class="body genealogy-body">
 																		
 																		<span style="cursor:pointer;font-weight: 600;font-size: 1.0em;white-space:normal;" >
 			                          			                             
-			                          			                                <%=level5[3]!=null?StringEscapeUtils.escapeHtml4(level5[3].toString()): " - " %>
+			                          			                                <%=level5[3]!=null?level5[3].toString(): " - " %>
 			                          			                                
 			                          			                          </span>
 			                          			                          

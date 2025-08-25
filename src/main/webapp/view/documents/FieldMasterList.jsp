@@ -202,7 +202,7 @@
 				                %>
 				                	<div class="tab <%if(Long.parseLong(fieldGroupId)==fieldGroup.getFieldGroupId()) {%> active <%} %> " data-target="<%=fieldGroup.getFieldGroupId() %>" 
 				                	 data-fieldgroupid="<%=fieldGroup.getFieldGroupId()%>">
-				                		<%=fieldGroup.getGroupName()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupName()): " - "+" ("+fieldGroup.getGroupCode()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupCode()): " - "+")" %>
+				                		<%=fieldGroup.getGroupName()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupName()): " - "%> <%=" ("+(fieldGroup.getGroupCode()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupCode()): " - ")+")" %>
 				                	</div>
 				                <%} }%>
 				            </div>
