@@ -53,6 +53,7 @@ import com.vts.pfms.committee.dto.EmpAccessCheckDto;
 import com.vts.pfms.committee.dto.MeetingCheckDto;
 import com.vts.pfms.committee.model.CommitteScheduleMinutesDraft;
 import com.vts.pfms.committee.model.Committee;
+import com.vts.pfms.committee.model.CommitteeCARS;
 import com.vts.pfms.committee.model.CommitteeConstitutionApproval;
 import com.vts.pfms.committee.model.CommitteeConstitutionHistory;
 import com.vts.pfms.committee.model.CommitteeDefaultAgenda;
@@ -78,8 +79,8 @@ import com.vts.pfms.committee.model.PfmsEmpRoles;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.committee.model.PmsEnote;
 import com.vts.pfms.committee.model.PmsEnoteTransaction;
-import com.vts.pfms.committee.model.ProgrammeProjects;
 import com.vts.pfms.committee.model.ProgrammeMaster;
+import com.vts.pfms.committee.model.ProgrammeProjects;
 import com.vts.pfms.mail.CustomJavaMailSender;
 import com.vts.pfms.master.dao.MasterDao;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
@@ -4077,4 +4078,23 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 		
 		return dao.getPreProjectAgendaDocById(filerepid);
 	}
+	
+	@Override
+	public Object[] carsCommitteeDescriptionTOR(String carsInitiationId, String committeeId) throws Exception {
+		
+		return dao.carsCommitteeDescriptionTOR(carsInitiationId, committeeId);
+	}
+	
+	@Override
+	public CommitteeCARS getCommitteeCARSById(String comCARSInitiationId) throws Exception {
+		
+		return dao.getCommitteeCARSById(comCARSInitiationId);
+	}
+	
+	@Override
+	public Long addCommitteeCARS(CommitteeCARS committeeCARS) throws Exception {
+		
+		return dao.addCommitteeCARS(committeeCARS);
+	}
+	
 }
