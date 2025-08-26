@@ -59,7 +59,7 @@ td{
           }
           @top-right {
           	 
-          	 content : "Project : <%=ProjectTitle!=null?StringEscapeUtils.escapeHtml4(ProjectTitle): " - " %>";
+          	 content : "Project : <%=ProjectTitle!=null?ProjectTitle: " - " %>";
              margin-top: 30px;
              margin-right: 10px;
           }
@@ -116,7 +116,7 @@ background:black;
 					<th colspan="8" style="text-align: center; font-weight: 700;font-size:22px;padding-top: 50px;"></th>
 				</tr>
 				<tr>
-					<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><br><br><br><br><br><br><br><%if(LabList[1]!=null){ %><%=StringEscapeUtils.escapeHtml4(LabList[1].toString()) %><%}else{ %>LAB NAME<%} %></th>
+					<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><br><br><br><br><br><br><br><%if(LabList[1]!=null){ %><%=LabList[1].toString() %><%}else{ %>LAB NAME<%} %></th>
 				</tr>
 
 
@@ -130,7 +130,7 @@ background:black;
 				<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px">Defence Research & Development Organization</th>
 			</tr>
 			<tr>
-				<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><%if(LabList[2]!=null){ %><%=StringEscapeUtils.escapeHtml4(LabList[2].toString()) %><%}else{ %>LAB NAME<%} %></th>
+				<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><%if(LabList[2]!=null){ %><%=LabList[2].toString() %><%}else{ %>LAB NAME<%} %></th>
 			</tr> 
 
 				<% } %>
@@ -154,15 +154,15 @@ background:black;
 	</tr>
 	<tr  class="tr-style">
 	<td class="mainTD" style="width:350px;text-align: left;border:1px solid black;">2. Title of the Project/Programme:</td>
-	<td  style="border:1px solid black;text-align: left"><p><%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - "  %></p></td>
+	<td  style="border:1px solid black;text-align: left"><p><%=ProjectDetailes[7]!=null?ProjectDetailes[7].toString(): " - "  %></p></td>
 	</tr>
 	<tr  class="tr-style">
 	<td class="mainTD" style="width:350px;text-align: left;border:1px solid black;">3. Category of Project:</td>
-	<td  style="border:1px solid black;text-align: left"><p><%=ProjectDetailes[4]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[4].toString()): " - "  %></p></td>
+	<td  style="border:1px solid black;text-align: left"><p><%=ProjectDetailes[4]!=null?ProjectDetailes[4].toString(): " - "  %></p></td>
 	</tr>
 	<tr  class="tr-style">
 	<td class="mainTD" style="width:350px;text-align: left;border:1px solid black">4. Security classification of Project/Programme: </td>
-	<td  style="border:1px solid black;text-align: left"><p><%=ProjectDetailes[5]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[5].toString()): " - "  %></p></td>
+	<td  style="border:1px solid black;text-align: left"><p><%=ProjectDetailes[5]!=null?ProjectDetailes[5].toString(): " - "  %></p></td>
 	</tr>
 	<%--  --%>
 		<tr  class="tr-style">
@@ -171,7 +171,7 @@ background:black;
 	<%if(!ProjectDetailes[21].toString().equalsIgnoreCase("1")||ProjectDetailes[21].toString().equalsIgnoreCase("8")) {%>
 							<td style="border:1px solid black;text-align: left"><p>Not Applicable</p></td>
 							<%}else {%><td style="border:1px solid black;text-align: left">
-						<p>	<%=sanctionlistdetails.get(sanctionlistdetails.size()-1)[4]!=null?StringEscapeUtils.escapeHtml4(sanctionlistdetails.get(sanctionlistdetails.size()-1)[4].toString()):"-" %></p>
+						<p>	<%=sanctionlistdetails.get(sanctionlistdetails.size()-1)[4]!=null?sanctionlistdetails.get(sanctionlistdetails.size()-1)[4].toString():"-" %></p>
 							 </td><%} %>
 	</tr>
 	
@@ -184,7 +184,7 @@ background:black;
 							<% int i=0;
 							for(Object[]obj:sanctionlistdetails){i++;%>
 								<%if(i==9) {%>								
-								<%if(obj[3]!=null) {%><td  style="border:1px solid black;text-align: left"><p><%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %></p></td><%} else{%><td style="border:1px solid black;text-align: left"><p>Not specified</p></td><%break;%><%} %>	
+								<%if(obj[3]!=null) {%><td  style="border:1px solid black;text-align: left"><p><%=obj[3].toString() %></p></td><%} else{%><td style="border:1px solid black;text-align: left"><p>Not specified</p></td><%break;%><%} %>	
 							<%}}} %>
 	</tr>
 	 <tr  class="tr-style">
@@ -193,7 +193,7 @@ background:black;
 	</tr>
 		<tr  class="tr-style">
 	<td class="mainTD" style="width:350px;text-align: left;border:1px solid black">8. Schedule (Months): </td>
-	<td style="border:1px solid black;text-align: left"><%if(ProjectDetailes[9]!=null && Integer.parseInt(ProjectDetailes[9].toString())>0){ %><p><%=StringEscapeUtils.escapeHtml4(ProjectDetailes[9].toString())%></p><%}else if(ProjectDetailes[18]!=null){ %><p><%=StringEscapeUtils.escapeHtml4(ProjectDetailes[18].toString())%></p><%}else{ %>-<%} %></td>
+	<td style="border:1px solid black;text-align: left"><%if(ProjectDetailes[9]!=null && Integer.parseInt(ProjectDetailes[9].toString())>0){ %><p><%=ProjectDetailes[9].toString()%></p><%}else if(ProjectDetailes[18]!=null){ %><p><%=ProjectDetailes[18].toString()%></p><%}else{ %>-<%} %></td>
 	</tr>
 
 	<%
@@ -201,7 +201,7 @@ background:black;
 		int i=1;
 	for(Object[]obj:sanctionlistdetails) {%>
 	<tr  class="tr-style">
-	<td class="mainTD" style="width:350px;text-align: left;border:1px solid black;padding:10px;"><%=Integer.parseInt(obj[0].toString())+8+". "+obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "  %></td>
+	<td class="mainTD" style="width:350px;text-align: left;border:1px solid black;padding:10px;"><%=Integer.parseInt(obj[0].toString())+8+". "+(obj[1]!=null?obj[1].toString(): " - ")  %></td>
 	<td align="" style="border:1px solid black;text-align: left">No</td>
 	</tr>
 	
@@ -210,7 +210,7 @@ background:black;
 	int i=1;
 	for(Object[]obj:sanctionlistdetails){%>
 	<tr  class="tr-style">
-	<td class="mainTD" style="width:350px;text-align: left;border:1px solid black;padding:10px;"><p><%=Integer.parseInt(obj[0].toString())+8+". "+obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "  %></p></td>
+	<td class="mainTD" style="width:350px;text-align: left;border:1px solid black;padding:10px;"><p><%=Integer.parseInt(obj[0].toString())+8+". "+(obj[1]!=null?obj[1].toString(): " - ")  %></p></td>
 	<td align="left" style="border:1px solid black;text-align: left">
 	<p><%if(DocumentId.contains(obj[0])) {%>&nbsp;&nbsp;Yes&nbsp;&nbsp;&nbsp;
 	<%-- 		<%for(Object[]obj1:projectFiles) {
@@ -229,11 +229,11 @@ background:black;
 	
 	<tr  class="tr-style">
 	<td class="mainTD" style="width:350px;text-align: left;border:1px solid black;">17. Project Deliverables/Output:  </td>
-	<td style="border:1px solid black;text-align: left"><p><%if(ProjectDetailes[12]!=null && !ProjectDetailes[12].toString().equalsIgnoreCase("")){%>	<%=StringEscapeUtils.escapeHtml4(ProjectDetailes[12].toString()) %><%}else{ %>-<%} %></p></td>
+	<td style="border:1px solid black;text-align: left"><p><%if(ProjectDetailes[12]!=null && !ProjectDetailes[12].toString().equalsIgnoreCase("")){%>	<%=ProjectDetailes[12].toString() %><%}else{ %>-<%} %></p></td>
 	</tr>
 		<tr  class="tr-style">
 	<td class="mainTD" style="width:350px;text-align: left;border:1px solid black;">18. Name of the Project Director/Programme Director (for approval of Competent Authority) : </td>
-	<td style="border:1px solid black;text-align: left"><p><%=ProjectDetailes[1]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[1].toString()): " - "  %></p></td>
+	<td style="border:1px solid black;text-align: left"><p><%=ProjectDetailes[1]!=null?ProjectDetailes[1].toString(): " - "  %></p></td>
 	</tr>
 	</table>
 	

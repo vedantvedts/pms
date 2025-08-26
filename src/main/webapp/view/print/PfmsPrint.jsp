@@ -88,7 +88,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
           border: 1px solid black; 
           
           @bottom-left {          		
-             content: "<%=LabList[1]!=null?StringEscapeUtils.escapeHtml4(LabList[1].toString()): " - "%>";
+             content: "<%=LabList[1]!=null?LabList[1].toString(): " - "%>";
              margin-bottom: 30px;
              margin-right: 10px;
              font-size: 13px;
@@ -100,13 +100,13 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
             margin-bottom: 30px;
           }
            @top-right {
-             content: "Proposed Project: <%= PfmsInitiation[4]!=null?StringEscapeUtils.escapeHtml4(PfmsInitiation[4].toString()): " - " %>";
+             content: "Proposed Project: <%= PfmsInitiation[4]!=null?PfmsInitiation[4].toString(): " - " %>";
              margin-top: 30px;
              font-size: 13px;
           }
           
           @top-center {
-             content: "<%= PfmsInitiation[3]!=null?StringEscapeUtils.escapeHtml4(PfmsInitiation[3].toString()): " - "  %>";
+             content: "<%= PfmsInitiation[3]!=null?PfmsInitiation[3].toString(): " - "  %>";
              margin-top: 30px;
              font-size: 13px;
           }
@@ -190,8 +190,8 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 		
 		<%if ( PfmsInitiation != null){ %>
 			<br>
-			<div align="center" ><h2 style="font-size:22px !important;"><%if(PfmsInitiation[5]!=null){%><%=StringEscapeUtils.escapeHtml4(PfmsInitiation[5].toString()) %><%}else{ %> - <%} %></h2></div>
-			<div align="center" ><h2 style="font-size:22px !important;"><%if(PfmsInitiation[4]!=null){%>(<%=StringEscapeUtils.escapeHtml4(PfmsInitiation[4].toString()) %>)<%}else{ %> - <%} %></h2></div>
+			<div align="center" ><h2 style="font-size:22px !important;"><%if(PfmsInitiation[5]!=null){%><%=PfmsInitiation[5].toString() %><%}else{ %> - <%} %></h2></div>
+			<div align="center" ><h2 style="font-size:22px !important;"><%if(PfmsInitiation[4]!=null){%>(<%=PfmsInitiation[4].toString() %>)<%}else{ %> - <%} %></h2></div>
 			<br>
 			<div align="center" ><h2 style="font-size:22px !important;"><%if(PfmsInitiation[10]!=null){%> <%=sdf2.format(PfmsInitiation[10])%><%}else{ %>Month Year<%} %></h2></div>
 		<%} %>	
@@ -211,7 +211,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 				
 				
 					<div align="center" >
-					<h1 style="text-align: center; font-weight: 700;font-size: 22px"><br><br><br><br><%if(LabList[1]!=null){ %><%=StringEscapeUtils.escapeHtml4(LabList[1].toString()) %><%}else{ %>LAB NAME<%} %></h1>
+					<h1 style="text-align: center; font-weight: 700;font-size: 22px"><br><br><br><br><%if(LabList[1]!=null){ %><%=LabList[1].toString() %><%}else{ %>LAB NAME<%} %></h1>
 				</div>
 
 
@@ -225,7 +225,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 				<h1 style="text-align: center; font-weight: 700;font-size:15px">Defence Research & Development Organization</h1>
 			</div>
 			<div align="center" >
-				<h1  style="text-align: center; font-weight: 700;font-size:15px"><%if(LabList[2]!=null){ %><%=StringEscapeUtils.escapeHtml4(LabList[2].toString()) %><%}else{ %>LAB NAME<%} %></h1>
+				<h1  style="text-align: center; font-weight: 700;font-size:15px"><%if(LabList[2]!=null){ %><%=LabList[2].toString() %><%}else{ %>LAB NAME<%} %></h1>
 		</div>
 
 				<% } %>
@@ -257,7 +257,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 					<th  class="border_black normal center" ><span >1.</span></th>
 					<td class="border_black normal left" >
 						<span class="bold">Title of the Project / Name of the project</span>
-						<span ><%if(obj[5]!=null){ %> - <%=StringEscapeUtils.escapeHtml4(obj[5].toString()) %><%}else{ %><i></i><%} %></span>
+						<span ><%if(obj[5]!=null){ %> - <%=obj[5].toString() %><%}else{ %><i></i><%} %></span>
 					</td>
 				</tr> 
 				
@@ -266,7 +266,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 					<th rowspan="3"  class="border_black normal center" style="vertical-align:top;"><span >2.</span></th>
 					<td class="border_black normal left" >
 						<span class="bold" >Name of the Main project</span>
-						<span > <%if(obj[12].toString().equalsIgnoreCase("N")){ %> - <%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - "%><%} else{ %> <i>- <%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "  %></i> <%} %></span>
+						<span > <%if(obj[12].toString().equalsIgnoreCase("N")){ %> - <%=obj[13]!=null?obj[13].toString(): " - "%><%} else{ %> <i>- <%=obj[5]!=null?obj[5].toString(): " - "  %></i> <%} %></span>
 					</td>
 				</tr> 
 				
@@ -289,7 +289,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 					<th  class="border_black normal center" ><span >3.</span></th>
 					<td class="border_black normal left" >
 						<span class="bold">Security Classification</span>
-						<span ><%if(obj[3]!=null){ %> - <%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %><%}else{ %><i></i><%} %></span>
+						<span ><%if(obj[3]!=null){ %> - <%=obj[3].toString()%><%}else{ %><i></i><%} %></span>
 					</td>
 				</tr>
 				
@@ -299,7 +299,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 						<span class="bold">Cost </span>
 						<span class="editor-text" style=" font-family: 'Times New Roman', Times, serif; font-size: 15px !important" >
 						<%if(obj[6]!=null){%>
-										  - &#8377;  <span><%=nfc.convert(Double.parseDouble(StringEscapeUtils.escapeHtml4(obj[6].toString()))/100000)%></span>  Lakhs<%}else{ %><i></i><%} %></span>
+										  - &#8377;  <span><%=nfc.convert(Double.parseDouble(obj[6].toString())/100000)%></span>  Lakhs<%}else{ %><i></i><%} %></span>
 					</td>
 				</tr>
 			
@@ -307,7 +307,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 					<th  class="border_black normal center" ><span >5.</span></th>
 					<td class="border_black normal left" >
 						<span class="bold">PDC </span>
-						<span ><%if(obj[7]!=null){ %> - <%=StringEscapeUtils.escapeHtml4(obj[7].toString()) %> Months<%}else{ %><i></i><%} %></span>
+						<span ><%if(obj[7]!=null){ %> - <%=obj[7].toString() %> Months<%}else{ %><i></i><%} %></span>
 					</td>
 				</tr>
 				
@@ -315,7 +315,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 					<th  class="border_black normal center" ><span >6.</span></th>
 					<td class="border_black normal left" >
 						<span class="bold">Whether Plan/Non Plan Project</span>
-						<span ><%if(obj[8]!=null){ if(obj[8].toString().equalsIgnoreCase("P")){%> - Plan <%}if(obj[8].toString().equalsIgnoreCase("N")){ %> - Non-Plan - <%if(obj[14]!=null){ %> (Remarks : <%=StringEscapeUtils.escapeHtml4(obj[14].toString())%> ) <%}else{ %> Nil <%} %> <%}}else{ %><%} %></span>
+						<span ><%if(obj[8]!=null){ if(obj[8].toString().equalsIgnoreCase("P")){%> - Plan <%}if(obj[8].toString().equalsIgnoreCase("N")){ %> - Non-Plan - <%if(obj[14]!=null){ %> (Remarks : <%=obj[14].toString()%> ) <%}else{ %> Nil <%} %> <%}}else{ %><%} %></span>
 					</td>
 				</tr>
 				
@@ -327,7 +327,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 						<span class="bold" ><u>Need of the Project</u> :</span>
 						<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span  style="font-size:15px; max-width:200px; word-wrap:break-word;"><%if(obj[19]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[19].toString()) %><%}else{ %><i>-</i><%} %></span>
+							<span  style="font-size:15px; max-width:200px; word-wrap:break-word;"><%if(obj[19]!=null){ %><%=obj[19].toString() %><%}else{ %><i>-</i><%} %></span>
 						<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -340,7 +340,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 						<span class="bold"><u>Requirements</u> : </span>
 						<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span  style="font-size:15px;" ><%if(obj[13]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[13].toString()) %><%}else{ %><i>-</i><%} %></span>
+							<span  style="font-size:15px;" ><%if(obj[13]!=null){ %><%=obj[13].toString() %><%}else{ %><i>-</i><%} %></span>
 					<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -353,7 +353,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 						<span class="bold"><u>World Scenario</u> :</span>
 						<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span style="font-size:15px;" ><%if(obj[24]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[24].toString()) %><%}else{ %><i>-</i><%} %></span>
+							<span style="font-size:15px;" ><%if(obj[24]!=null){ %><%=obj[24].toString() %><%}else{ %><i>-</i><%} %></span>
 						<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -366,7 +366,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 						<span class="bold"><u>Objective</u> : </span>
 						<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span style="font-size:15px;" ><%if(obj[14]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[14].toString()) %><%}else{ %><i>-</i><%} %></span>
+							<span style="font-size:15px;" ><%if(obj[14]!=null){ %><%=obj[14].toString() %><%}else{ %><i>-</i><%} %></span>
 						<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -379,7 +379,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 						<span class="bold"><u>Scope</u> :</span>
 						<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span style="font-size:15px;" ><%if(obj[15]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[15].toString()) %><%}else{ %><i>-</i><%} %></span>
+							<span style="font-size:15px;" ><%if(obj[15]!=null){ %><%=obj[15].toString() %><%}else{ %><i>-</i><%} %></span>
 					<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -392,7 +392,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 					<th  class="border_black normal center" ><span >12.</span></th>
 					<td class="border_black normal left main-text" >
 						<span class="bold"><u>Deliverables/Output</u> : </span>
-						<span style="font-size:15px;" ><%if(obj[11]!=null){ %> <br><%=StringEscapeUtils.escapeHtml4(obj[11].toString()) %><%}else{ %><i>-</i><%} %></span>
+						<span style="font-size:15px;" ><%if(obj[11]!=null){ %> <br><%=obj[11].toString() %><%}else{ %><i>-</i><%} %></span>
 					</td>
 				</tr>
 				
@@ -404,7 +404,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 						<span class="bold"><u>Participating Labs with Work share</u> : </span>
 						<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span style="font-size:15px;"" ><%if(obj[16]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[16].toString()) %><%}else{ %><i>-</i><%} %></span>
+							<span style="font-size:15px;"" ><%if(obj[16]!=null){ %><%=obj[16].toString() %><%}else{ %><i>-</i><%} %></span>
 					<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -417,7 +417,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 						<span class="bold"><u>Brief of earlier work done</u> : </span>
 							<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span style="font-size:15px;" ><%if(obj[17]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[17].toString())%><%}else{ %><i>-</i><%} %></span>
+							<span style="font-size:15px;" ><%if(obj[17]!=null){ %><%=obj[17].toString()%><%}else{ %><i>-</i><%} %></span>
 						<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -430,7 +430,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 						<span class="bold"><u>Competency Established</u> : </span>
 							<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span style="font-size:15px;" ><%if(obj[18]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[18].toString()) %><%}else{ %><i>-</i><%} %></span>
+							<span style="font-size:15px;" ><%if(obj[18]!=null){ %><%=obj[18].toString() %><%}else{ %><i>-</i><%} %></span>
 						<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -444,7 +444,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 						<span class="bold"><u>Technology Challenges/Issues foreseen</u> : </span>
 							<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span style="font-size:15px;" ><%if(obj[20]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[20].toString()) %><%}else{ %><i>-</i><%} %></span>
+							<span style="font-size:15px;" ><%if(obj[20]!=null){ %><%=obj[20].toString() %><%}else{ %><i>-</i><%} %></span>
 						<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -457,7 +457,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 						<span class="bold"><u>Risk involved and Mitigation Plan</u> : </span>
 						<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span style="font-size:15px;" ><%if(obj[21]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[21].toString())%><%}else{ %><i>-</i><%} %></span>
+							<span style="font-size:15px;" ><%if(obj[21]!=null){ %><%=obj[21].toString()%><%}else{ %><i>-</i><%} %></span>
 					<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -470,7 +470,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 						<span class="bold"><u>Proposal</u> : </span>
 						<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span style="font-size:15px;" ><%if(obj[22]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[22].toString()) %><%}else{ %><i>-</i><%} %></span>
+							<span style="font-size:15px;" ><%if(obj[22]!=null){ %><%=obj[22].toString() %><%}else{ %><i>-</i><%} %></span>
 						<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -499,7 +499,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 						<span class="bold"><u>Realization Plan</u> :</span>
 						<%if(!DetailsList.isEmpty()){%>
 						<%for (Object[] obj : DetailsList){ %>
-							<span class="editor-text" ><%if(obj[23]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[23].toString()) %><%}else{ %><i>-</i><%} %></span>
+							<span class="editor-text" ><%if(obj[23]!=null){ %><%=obj[23].toString() %><%}else{ %><i>-</i><%} %></span>
 						<%}}else{ %>
 						<span><i>-</i></span>
 						<%} %>
@@ -534,7 +534,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 			<tr>
 			<td colspan="1" class="border_black  center" style=";width:7%"><span ><%=count %>. </span></td>
 		<%-- 	<td colspan="2" class="border_black  left" ><span ><%if(obj[1]!=null){ %><%=obj[1] %><%}else{ %> - <%} %></span></td> --%>
-			<td colspan="5" class="border_black  left" ><span ><%if(obj[0]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[0].toString())+"("+obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "+")"%><%}else{ %> - <%} %></span></td>
+			<td colspan="5" class="border_black  left" ><span ><%if(obj[0]!=null){ %><%=obj[0].toString()+"("+(obj[1]!=null?obj[1].toString(): " - ")+")"%><%}else{ %> - <%} %></span></td>
 			<td colspan="2" class="border_black right"  ><span ><%if(obj[2]!=null && Double.parseDouble(obj[2].toString()) >0){ %>&#8377; <span><%=nfc.convert(Double.parseDouble(obj[2].toString())/100000)%></span> <%}else{ %> - <%} %></span></td>
 			</tr> 
 			
@@ -576,13 +576,13 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 			for (Object[] obj: ScheduleList) {%>
 			 
 			<tr>
-			<td colspan="1" class="border_black  center" ><span ><%if(obj[0]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[0].toString()) %><%}else{ %> - <%} %></span></td>
-			<td colspan="5" class="border_black  left" ><span ><%if(obj[1]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[1].toString()) %><%}else{ %> - <%} %></span></td>
+			<td colspan="1" class="border_black  center" ><span ><%if(obj[0]!=null){ %><%=obj[0].toString() %><%}else{ %> - <%} %></span></td>
+			<td colspan="5" class="border_black  left" ><span ><%if(obj[1]!=null){ %><%=obj[1].toString() %><%}else{ %> - <%} %></span></td>
 <!-- 			<td colspan="1" class="border_black  left" ><span ></span></td> -->
-			<td colspan="4" class="border_black center" ><span ><%if(obj[5]!=null && obj[2]!=null){ %><%= "T"%><sub><%=StringEscapeUtils.escapeHtml4(obj[5].toString()) %></sub><%="+"%><%=StringEscapeUtils.escapeHtml4(obj[2].toString())%><%}else{ %> - <%} %>
+			<td colspan="4" class="border_black center" ><span ><%if(obj[5]!=null && obj[2]!=null){ %><%= "T"%><sub><%=obj[5].toString() %></sub><%="+"%><%=obj[2].toString()%><%}else{ %> - <%} %>
 			
 			</span></td>
-			<td colspan="2" class="border_black  left" ><span ><%if(obj[4]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[4].toString()) %><%}else{ %> - <%} %></span></td>
+			<td colspan="2" class="border_black  left" ><span ><%if(obj[4]!=null){ %><%=obj[4].toString() %><%}else{ %> - <%} %></span></td>
 			</tr> 
 			
 			<%
@@ -591,7 +591,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 						<%if(PfmsInitiation!= null) { Object[] obj = PfmsInitiation; %>
 			
 			<tr style="  font-weight: bold;">
-				<td colspan="12" class="border_black right"  ><%if(obj[7]!=null && Integer.parseInt(StringEscapeUtils.escapeHtml4(obj[7].toString())) >0 ){ %><span ><b>Total Duration : <%=StringEscapeUtils.escapeHtml4(obj[7].toString())+"Months" %></b></span><%}%></td>
+				<td colspan="12" class="border_black right"  ><%if(obj[7]!=null && Integer.parseInt(obj[7].toString()) >0 ){ %><span ><b>Total Duration : <%=obj[7].toString()+"Months" %></b></span><%}%></td>
 			</tr>
 			
 			<%}else{%>

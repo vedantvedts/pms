@@ -464,7 +464,7 @@ for(Object[] temp : invitedlist){
 							<%tempagenda=Long.parseLong(speclists.get(i)[6].toString());
 							} %>
 							<tr>
-								<td style="text-align :center ;border:1px solid black;vertical-align: top;"  ><%=projectdetails[4]!=null?StringEscapeUtils.escapeHtml4(projectdetails[4].toString()): " - "+"/"%><br><%=committeescheduleeditdata[8]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[8].toString()).toUpperCase():" - "+"#"+meetingcount +"_"%>  <%=countcm%> </td>
+								<td style="text-align :center ;border:1px solid black;vertical-align: top;"  ><%=projectdetails[4]!=null?StringEscapeUtils.escapeHtml4(projectdetails[4].toString()): " - "%>/<br><%=committeescheduleeditdata[8]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[8].toString()).toUpperCase():" - "%><%="#"+meetingcount +"_"%>  <%=countcm%> </td>
 								
 								<td  class="std" style="border:1px solid black;padding:  5px 5px 5px 5px ;width: 600px;text-align: justify;"><%=speclists.get(i)[1]%></td>
 								<td class="std" style="text-align :center !important;border:1px solid black; padding: 5px 5px 5px 5px ; vertical-align: top;" >							 
@@ -536,7 +536,7 @@ for(Object[] temp : invitedlist){
 									<%if(speclist[7].toString().equalsIgnoreCase("R")){ count2++; %>	
 									<tr>
 										<td style="text-align: justify;padding-left: 30px;"> 
-											<p style="font-weight: 600;">9.<%=count2+"."+speclist[9]!=null?StringEscapeUtils.escapeHtml4(speclist[9].toString()): " - "%></p> 
+											<p style="font-weight: 600;">9.<%=count2+"."%><%=speclist[9]!=null?StringEscapeUtils.escapeHtml4(speclist[9].toString()): " - "%></p> 
 										</td>		
 									</tr>
 									<tr>	

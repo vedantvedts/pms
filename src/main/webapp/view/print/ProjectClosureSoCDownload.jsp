@@ -208,7 +208,7 @@ df.setMinimumFractionDigits(4);
 			<tr>
 				<td style="width: 5%;"><%=++slno %>.</td>
 				<td style="width: 35%;">Name of Lab/Est</td>
-				<td>: <%=labMaster.getLabName()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabName()): " - "+ " (" + labMaster.getLabCode()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabCode()): " - " +  "), "+ labMaster.getLabAddress()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabAddress()): " - "%> </td>
+				<td>: <%=labMaster.getLabName()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabName()): " - "%> <%= " (" %> <%=labMaster.getLabCode()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabCode()): " - " %> <%=  "), "%> <%=labMaster.getLabAddress()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabAddress()): " - "%> </td>
 			</tr>
 			<tr>
 				<td style="width: 5%;"><%=++slno %>.</td>

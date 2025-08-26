@@ -455,7 +455,7 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
              <div class="panel panel-info" style="margin-top: 10px;" id="">
 		       <div class="panel-heading ">
 		         <h4 class="panel-title">
-                      <span class="ml-2" style="font-size:14px"><%=Sub0Count+" . "+obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %> </span>  
+                      <span class="ml-2" style="font-size:14px"><%=Sub0Count+" . "+(obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " )%> </span>  
                 </h4>
          	       <div style="float: right !important; margin-top:-32px; ;" id="tablediv" >
 		 		       <table style="text-align: right;" >

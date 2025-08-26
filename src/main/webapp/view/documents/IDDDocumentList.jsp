@@ -286,7 +286,7 @@
 											for (Object[] obj : projectList) {
 												String projectshortName1 = (obj[17] != null) ? " ( " + obj[17].toString() + " ) " : ""; %>
 												<option value="<%=obj[0]%>"  <%if(obj[0].toString().equalsIgnoreCase(projectId)){ %> selected <%} %>>
-													<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "+projectshortName1!=null?StringEscapeUtils.escapeHtml4(projectshortName1): " - " %>
+													<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> <%=projectshortName1!=null?StringEscapeUtils.escapeHtml4(projectshortName1): " - " %>
 												</option>
 										<%} }%>
 									</select>
@@ -296,7 +296,7 @@
 										<%if(preProjectList!=null && preProjectList.size()>0){
 											for (Object[] obj : preProjectList) {%>
 												<option value="<%=obj[0]%>"  <%if(obj[0].toString().equalsIgnoreCase(initiationId)){ %> selected <%} %>>
-													<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "+"( "+obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "+" )" %>
+													<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> <%="( "+(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ")+" )" %>
 												</option>
 										<%} }%>
 									</select>	
@@ -314,7 +314,7 @@
 									<%if(productTreeList!=null && productTreeList.size()>0){
 										for (Object[] obj : productTreeList) { %>
 											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(productTreeMainId)){ %> selected <%} %>>
-												<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "+" "+obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>
+												<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> <%=" "+(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ") %>
 											</option>
 										<%} }%>
 								</select>
@@ -344,7 +344,7 @@
 	                                %>
 	                                <tr>
 	                                    <td class="center" ><%= count %></td>
-	                                    <td ><%= obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - "+", "+obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %></td>
+	                                    <td ><%= obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - "%> <%=", "+(obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - ") %></td>
 	                                    <td class="center"><%= obj[4]!=null?fc.sdfTordf(obj[4].toString()):" - " %></td>
 	                                    <td class="center" >v<%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
 	                                    <td align="center" >

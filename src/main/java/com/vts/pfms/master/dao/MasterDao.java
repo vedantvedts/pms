@@ -118,4 +118,8 @@ public interface MasterDao  {
 	
 	public Long addRoleMaster(RoleMaster roleMaster)throws Exception;
 	
+	// 22/8/2025  Naveen R RoleName and RoleCode Duplicate Check start
+	public Long getRoleNameDulicateCount(String roleName) throws Exception;
+	public Long getRoleCodeDuplicateCount(String roleCode) throws Exception;
+	// 22/8/2025  Naveen R RoleName and RoleCode Duplicate Check end
 }

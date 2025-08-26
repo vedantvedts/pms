@@ -98,8 +98,8 @@ String projectCode=projectType.equalsIgnoreCase("P") ?
              <div class="col-md-8" style="display: inline-block;float: none;">
 		     <div style="font-size: 30px;padding: 20px;font-weight: 600;text-decoration: underline;">RFA Reports From &nbsp; <%= fdate!=null?sdf.format(sdf1.parse(fdate)):" - "%>  &nbsp; To &nbsp; <%=tdate!=null?sdf.format(sdf1.parse(tdate)):" - "%></div>
 	         <div class="col-md-12">
-				<div class="col-md-6" style="display: inline-block; margin-right: 90px;font-size: 22px;font-weight: 600;">Project : <%=projectCode!=null?StringEscapeUtils.escapeHtml4(projectCode):" - " %></div>
-                <div  class="col-md-6" style="display: inline-block; margin-left: 90px;font-size: 22px;font-weight: 600;">RFA Type : <%if(rfatypeid!=null && rfatypeid.equalsIgnoreCase("-")){%><%="All"%><%}else{%><%=StringEscapeUtils.escapeHtml4(rfatypeid) %><%} %></div>
+				<div class="col-md-6" style="display: inline-block; margin-right: 90px;font-size: 22px;font-weight: 600;">Project : <%=projectCode!=null?projectCode:" - " %></div>
+                <div  class="col-md-6" style="display: inline-block; margin-left: 90px;font-size: 22px;font-weight: 600;">RFA Type : <%if(rfatypeid!=null && rfatypeid.equalsIgnoreCase("-")){%><%="All"%><%}else{%><%=rfatypeid %><%} %></div>
              </div>
              </div>
               <div class="col-md-2" style="display: inline-block;float: right !important;">
@@ -126,20 +126,20 @@ String projectCode=projectType.equalsIgnoreCase("P") ?
         %>
         <tr>
           <td><%=++count %></td>
-          <td><%if(obj[1]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[1].toString())%><%}else{ %>-<%} %></td>
+          <td><%if(obj[1]!=null){%><%=obj[1].toString()%><%}else{ %>-<%} %></td>
           <td><%if(obj[2]!=null){%><%=sdf.format(sdf1.parse(obj[2].toString()))%><%}else{ %>-<%} %></td>
-          <td><%if(obj[14]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[14].toString())%><%}else{ %><%=obj[15].toString()%><%} %></td>
-          <td style=" text-align: justify;padding:5px;"><%if(obj[5]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[5].toString())%><%}else{ %>-<%} %></td>
+          <td><%if(obj[14]!=null){%><%=obj[14].toString()%><%}else{ %><%=obj[15].toString()%><%} %></td>
+          <td style=" text-align: justify;padding:5px;"><%if(obj[5]!=null){%><%=obj[5].toString()%><%}else{ %>-<%} %></td>
           <%-- <td style=" text-align: justify;padding:5px;"><%if(obj[10]!=null){%><%=obj[10].toString()%><%}else{ %>-<%} %></td> --%>
           <td>
 			<%if(AssigneeList!=null ){ 
 				for(Object[] obj1 : AssigneeList){
 					if(obj1[0].toString().equalsIgnoreCase(obj[0].toString())){
 					%>
-			      <div style="margin-bottom:0px !important;"> <%=obj1[1]!=null?StringEscapeUtils.escapeHtml4(obj1[1].toString()):" - " +", "+obj1[2]!=null?StringEscapeUtils.escapeHtml4(obj1[2].toString()):" - " %> (<%=obj1[4]!=null?StringEscapeUtils.escapeHtml4(obj1[4].toString()):" - " %>) </div>          
+			      <div style="margin-bottom:0px !important;"> <%= (obj1[1] != null   ? obj1[1].toString() : " - ") + ", " + (obj1[2] != null ? obj1[2].toString()  : " - ")%> (<%=obj1[4]!=null?obj1[4].toString():" - " %>) </div>          
 			<% }}}%>
 		  </td>
-          <td><%if(obj[11]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[11].toString())%><%}else{ %>-<%} %></td>
+          <td><%if(obj[11]!=null){%><%=obj[11].toString()%><%}else{ %>-<%} %></td>
           <td><%if(obj[9]!=null){%><%=sdf.format(sdf1.parse(obj[9].toString()))%><%}else{ %>-<%} %></td>
         </tr>
         <%}} %>

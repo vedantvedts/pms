@@ -258,7 +258,7 @@ label {
 				               				<%for(FieldGroupMaster fieldGroup : fieldGroupList){
 				                			 %>
 												<option value="<%=fieldGroup.getFieldGroupId()%>" <%if(groupId==(fieldGroup.getFieldGroupId())) {%>selected<%} %> >
-													<%=fieldGroup.getGroupName()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupName()): " - "+" ("+fieldGroup.getGroupCode()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupCode()): " - "+")" %>
+													<%=fieldGroup.getGroupName()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupName()): " - "%> <%=" ("+(fieldGroup.getGroupCode()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupCode()): " - ")+")" %>
 												</option>
 											<%} %>
 										</select>
@@ -450,7 +450,7 @@ label {
 				               				<%for(FieldGroupMaster fieldGroup : fieldGroupList){
 				                			 %>
 												<option value="<%=fieldGroup.getFieldGroupId()%>">
-													<%=fieldGroup.getGroupName()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupName()): " - "+" ("+fieldGroup.getGroupCode()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupCode()): " - "+")" %>
+													<%=fieldGroup.getGroupName()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupName()): " - "%> <%=" ("+(fieldGroup.getGroupCode()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupCode()): " - ")+")" %>
 												</option>
 											<%} %>
 										</select>

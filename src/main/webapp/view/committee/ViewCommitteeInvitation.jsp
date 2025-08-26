@@ -1159,7 +1159,7 @@ h5,h6{
 													%>
 														<option value="<%=partner.getIndustryPartnerId()%>"
 														data-subtext="(<%=partner.getIndustryCity()+" - "+partner.getIndustryPinCode() %>)"
-														><%=partner.getIndustryName()%> (<%=partner.getIndustryCity()!=null?StringEscapeUtils.escapeHtml4(partner.getIndustryCity()): " - "+" - "+partner.getIndustryPinCode()!=null?StringEscapeUtils.escapeHtml4(partner.getIndustryPinCode()): " - " %>)</option>
+														><%=partner.getIndustryName()%> (<%=partner.getIndustryCity()!=null?StringEscapeUtils.escapeHtml4(partner.getIndustryCity()): " - "%> <%=" - "+partner.getIndustryPinCode()!=null?StringEscapeUtils.escapeHtml4(partner.getIndustryPinCode()): " - " %>)</option>
 														
 													<%}%>
 													<option value="0">ADD NEW</option>

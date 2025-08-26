@@ -41,7 +41,7 @@ String FontFamily="Times New Roman";
           }
           
           @top-right {
-         	 content : "Project : <%=projectDetails!=null && projectDetails[2]!=null?StringEscapeUtils.escapeHtml4(projectDetails[2].toString()):"-" %>";
+         	 content : "Project : <%=projectDetails!=null && projectDetails[2]!=null?projectDetails[2].toString():"-" %>";
              margin-top: 30px;
              margin-right: 10px;
           }
@@ -73,7 +73,7 @@ String FontFamily="Times New Roman";
           @bottom-left { 
            font-size: 13px;
 	       margin-bottom: 30px;
-	       content: "<%=projectDetails!=null && projectDetails[12]!=null?StringEscapeUtils.escapeHtml4(projectDetails[12].toString()):"-"%>"; 
+	       content: "<%=projectDetails!=null && projectDetails[12]!=null?projectDetails[12].toString():"-"%>"; 
           }   
  }
  #headerdiv {
@@ -118,7 +118,7 @@ String FontFamily="Times New Roman";
 	<div style="position: absolute; top: 470px; left:-400px;  transform: rotate(-90deg); font-size: 7px; color: #000; width:900px;opacity:0.5; ">
 				  <!--   <b style="font-size: 12px;text-decoration: underline;">RESTRICTION ON USE, DUPLICATION OR DISCLOSURE OF PROPRIETARY INFORMATION</b><br>
 				    <span style="text-decoration: none; font-size: 11px;">This document contains information, which is the sole property of LRDE, DRDO. The document is submitted to the recipient for his use only. The recipient undertakes not to duplicate the document or to disclosure in part of or the whole of any of the information contained herein to any third party without receiving beforehand, written permission from the submitter. If you are not the intended recipient please notify the sender at director <a href="@lrde.gov.in" target="_blank">@lrde.gov.in</a> immediately and destroy all copies of this document.</span> -->
-				<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=StringEscapeUtils.escapeHtml4(DocTempAtrr[12].toString()) %> <%} %>
+				<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString() %> <%} %>
 				
 				</div>
    </div>
@@ -140,7 +140,7 @@ String FontFamily="Times New Roman";
 				<%
 				if(LabList!=null && LabList[1] != null) {
 				%>
-				<%=StringEscapeUtils.escapeHtml4(LabList[1].toString())+"("+LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()): " - "+")"%>
+				<%=LabList[1].toString()+"("+LabList[0]!=null?LabList[0].toString(): " - "+")"%>
 				<%
 				}else {
 				%>-<%
@@ -154,7 +154,7 @@ String FontFamily="Times New Roman";
 				</div>
 				<h4 style="font-family: "";">
 					<%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %>
-					<%=StringEscapeUtils.escapeHtml4(LabList[2].toString())+" , "+StringEscapeUtils.escapeHtml4(LabList[3].toString())+", PIN-"+StringEscapeUtils.escapeHtml4(LabList[5].toString()) %>
+					<%=LabList[2].toString()+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %>
 					<%}else{ %>
 					-
 					<%} %>
@@ -169,7 +169,7 @@ String FontFamily="Times New Roman";
 	<div style="page-break-before:always"></div> 
 	<div style="text-align: center;width: 645px !important;padding:10px;">
 		<h3 style="text-transform:uppercase;">DRAFT GENERAL STAFF QUALITATIVE REQUIREMENT FOR 
-			<%=projectDetails!=null && projectDetails[3]!=null?StringEscapeUtils.escapeHtml4(projectDetails[3].toString()):"-" %> (<%=projectDetails!=null && projectDetails[2]!=null?StringEscapeUtils.escapeHtml4(projectDetails[2].toString()):"-" %>)
+			<%=projectDetails!=null && projectDetails[3]!=null?projectDetails[3].toString():"-" %> (<%=projectDetails!=null && projectDetails[2]!=null?projectDetails[2].toString():"-" %>)
 		</h3>
 		<!-- <hr style="width:80%;"> -->
 		
@@ -181,44 +181,44 @@ String FontFamily="Times New Roman";
 				<th align="center" style="width: 2%;"><%=++slno %>.</th>
 				<th style="width: 49%;">&nbsp;&nbsp;Ref to General Staff Policy Statement No.</th>
 				<td style="width: 1%;">:</td>
-				<td style="width: 48%;"><%=sqrFile!=null && sqrFile[1]!=null?StringEscapeUtils.escapeHtml4(sqrFile[1].toString()):"-" %></td>
+				<td style="width: 48%;"><%=sqrFile!=null && sqrFile[1]!=null?sqrFile[1].toString():"-" %></td>
 			</tr>
 			<tr>
 				<th align="center"><%=++slno %>.</th>
 				<th>&nbsp;&nbsp;SQR No.</th>
 				<td>:</td>
-				<td><%=sqrFile!=null && sqrFile[6]!=null?StringEscapeUtils.escapeHtml4(sqrFile[6].toString()):"-" %></td>
+				<td><%=sqrFile!=null && sqrFile[6]!=null?sqrFile[6].toString():"-" %></td>
 			<tr>
 				<th align="center"><%=++slno %>.</th>
 				<th>&nbsp;&nbsp;Other Previous SQR No.</th>
 				<td>:</td>
-				<td><%=sqrFile!=null && sqrFile[8]!=null?StringEscapeUtils.escapeHtml4(sqrFile[8].toString()):"-" %></td>
+				<td><%=sqrFile!=null && sqrFile[8]!=null?sqrFile[8].toString():"-" %></td>
 			</tr>
 			<tr>
 				<th align="center"><%=++slno %>.</th>
 				<th>&nbsp;&nbsp;Ref of Meeting</th>
 				<td style="vertical-align: top;">:</td>
-				<td style="vertical-align: top;"><%=sqrFile!=null && sqrFile[9]!=null?StringEscapeUtils.escapeHtml4(sqrFile[9].toString()):"-" %></td>
+				<td style="vertical-align: top;"><%=sqrFile!=null && sqrFile[9]!=null?sqrFile[9].toString():"-" %></td>
 			</tr>
 			<tr>
 				<th align="center"><%=++slno %>.</th>
 				<th>&nbsp;&nbsp;Line Directorate File No.</th>
 				<td>:</td>
-				<td><a href="SQRDownload.htm?reqInitiationId=<%=sqrFile[2]!=null?StringEscapeUtils.escapeHtml4(sqrFile[2].toString()): " - "%>" target="blank">Download</a></td>
+				<td><a href="SQRDownload.htm?reqInitiationId=<%=sqrFile[2]!=null?sqrFile[2].toString(): " - "%>" target="blank">Download</a></td>
 			</tr>
 			<tr>
 				<th align="center"><%=++slno %>.</th>
 				<th>&nbsp;&nbsp;Nomenclature</th>
 				<td>:</td>
 				<td>
-					<%=projectDetails!=null && projectDetails[3]!=null?StringEscapeUtils.escapeHtml4(projectDetails[3].toString()):"-" %> (<%=projectDetails!=null && projectDetails[2]!=null?StringEscapeUtils.escapeHtml4(projectDetails[2].toString()):"-" %>)
+					<%=projectDetails!=null && projectDetails[3]!=null?projectDetails[3].toString():"-" %> (<%=projectDetails!=null && projectDetails[2]!=null?projectDetails[2].toString():"-" %>)
 				</td>
 			</tr>
 			<tr>
 				<th align="center"><%=++slno %>.</th>
 				<th>&nbsp;&nbsp;Security Classification</th>
 				<td>:</td>
-				<td><%=projectDetails!=null && projectDetails[12]!=null?StringEscapeUtils.escapeHtml4(projectDetails[12].toString()):"-"%></td>
+				<td><%=projectDetails!=null && projectDetails[12]!=null?projectDetails[12].toString():"-"%></td>
 			</tr>
 			<tr>
 				<th align="center"><%=++slno %>.</th>
@@ -239,7 +239,7 @@ String FontFamily="Times New Roman";
 					</span>
 				</div>
 				<%if(obj[4]!=null){ %>
-					<%=StringEscapeUtils.escapeHtml4(obj[4].toString())%>
+					<%=obj[4].toString()%>
 				<%}else {%>
 					No Details added
 				<%} %>

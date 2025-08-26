@@ -76,8 +76,8 @@ Integer endYear = Integer.parseInt((String)request.getAttribute("endYear")) ;
 			<%if(roadMapAnnualTargetDetails.size()>0) {%>
 			<tr>
 				<td style="text-align: center;"><%=++slno %></td>
-				<td><%=roadMap.getProjectTitle()!=null?StringEscapeUtils.escapeHtml4(roadMap.getProjectTitle()): " - " %></td>
-				<td><%=roadMap.getAimObjectives()!=null?StringEscapeUtils.escapeHtml4(roadMap.getAimObjectives()): " - " %></td>
+				<td><%=roadMap.getProjectTitle()!=null?roadMap.getProjectTitle(): " - " %></td>
+				<td><%=roadMap.getAimObjectives()!=null?roadMap.getAimObjectives(): " - " %></td>
 				<td style="text-align: center;"><%=roadMap.getDuration()%></td>
 				
 				<%if(roadMapAnnualTargetDetails!=null) { 
@@ -94,9 +94,9 @@ Integer endYear = Integer.parseInt((String)request.getAttribute("endYear")) ;
 						<td>
 							<%int count=1; for(String targets : targetssList) {%>
 								<%if(count==1) {%>
-									<%=targets!=null?StringEscapeUtils.escapeHtml4(targets): " - " %>
+									<%=targets!=null?targets: " - " %>
 								<%} else{%>
-									<%=", "+targets!=null?StringEscapeUtils.escapeHtml4(targets): " - " %>
+									<%=", "+(targets!=null?targets: " - ") %>
 								<%} %>
 							<%count++;} %>
 						</td>

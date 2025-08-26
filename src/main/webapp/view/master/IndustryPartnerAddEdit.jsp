@@ -105,7 +105,7 @@ List<IndustryPartner> IPNamesList = (List<IndustryPartner>)request.getAttribute(
 	                    							data-city="<%=industry.getIndustryCity() %>"
 	                    							data-pincode="<%=industry.getIndustryPinCode() %>"
 	                    							<% if(IPDetails!=null && industry.getIndustryPartnerId()==Long.parseLong(IPDetails[0].toString())) { %>selected<% } %> >
-	                    							<%=industry.getIndustryName()!=null?StringEscapeUtils.escapeHtml4(industry.getIndustryName().toString()):"-"%>%>
+	                    							<%=industry.getIndustryName()!=null?StringEscapeUtils.escapeHtml4(industry.getIndustryName().toString()):"-"%>
 	                    							</option>
 	                							<% } %>   
 											</select>

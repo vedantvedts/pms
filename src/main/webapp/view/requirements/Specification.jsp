@@ -230,7 +230,7 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
 							<td  class="text-primary" colspan="2">12.&nbsp; Organization and address:
 								<span class="text-dark">		
 									<%if (LabList[1] != null) {%>
-										<%=StringEscapeUtils.escapeHtml4(LabList[1].toString()) + "(" +LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()):" - "+ ")"%>
+										<%=StringEscapeUtils.escapeHtml4(LabList[1].toString()) + "(" +(LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()):" - ")+ ")"%>
 									<%} else {%>
 										-
 									<%}%>
@@ -509,7 +509,7 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
 			   				<label class="" style="font-size: 1rem;font-weight: bold;color:#07689f"> Conclusion:</label>
 			   			</div>
 			   			  <div id="summernote" style="height: 500;">
-					                <%if(Conclusion!=null) {%> <%=StringEscapeUtils.escapeHtml4(Conclusion) %> <%} %>
+					                <%if(Conclusion!=null) {%> <%=Conclusion %> <%} %>
 					           </div>
 			   			
    						<textarea name="Details" style="display: none;"  id="ConclusionDetails"></textarea>	
@@ -975,7 +975,7 @@ function DownloadDocPDF(){
                 <% } %>
                 
                 {
-                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " + ")" %> <% } else { %> '-' <% } %></h5>'),
+                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + (LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - ") + ")" %> <% } else { %> '-' <% } %></h5>'),
                     alignment: 'center',
                     fontSize: 16,
                     bold: true,
@@ -1141,7 +1141,7 @@ function DownloadDocPDF(){
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Organization and address', style: 'tableData' },
-                                { text: '<% if (LabList!=null && LabList[1] != null) {%> <%=StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") :" - "+ ")"%> <%} else {%> - <%}%>'
+                                { text: '<% if (LabList!=null && LabList[1] != null) {%> <%=StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + (LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") :" - ")+ ")"%> <%} else {%> - <%}%>'
 										+'Government of India, Ministry of Defence,Defence Research & Development Organization'
 								+'<% if (LabList!=null && LabList[2] != null && LabList[3] != null && LabList[5] != null) { %>'
 									+'<%=StringEscapeUtils.escapeHtml4(LabList[2].toString())+" , "+StringEscapeUtils.escapeHtml4(LabList[3].toString())+", PIN-"+StringEscapeUtils.escapeHtml4(LabList[5].toString())+"."%>'
@@ -1282,7 +1282,7 @@ function DownloadDocPDF(){
 		                },
 	                
 		                {
-		                	stack: [htmlToPdfmake(setImagesWidth('<%if(obj[2]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
+		                	stack: [htmlToPdfmake(setImagesWidth('<%if(obj[2]!=null) {%><%=obj[2].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>'
 		                		  +'<%}else {%> No Details Added! <%} %>', 500))],
 		                    margin: [10, 0, 0, 0],
 		                },
@@ -1315,7 +1315,7 @@ function DownloadDocPDF(){
                 },
                 {
                 	<%if(SpecProducTree!=null && SpecProducTree.size()>0){ %>
-                		stack: [htmlToPdfmake(setImagesWidth('<%=SpecProducTree.get(0)[2]!=null?StringEscapeUtils.escapeHtml4(SpecProducTree.get(0)[2].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " %>', 500))],
+                		stack: [htmlToPdfmake(setImagesWidth('<%=SpecProducTree.get(0)[2]!=null?SpecProducTree.get(0)[2].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " %>', 500))],
                 	<%} else{%>
                 		text: 'Guidance: The product Tree shall comprises the complete physical products / subsystems of the radar in the order of flow as a figure with unique ID',
                 		style: 'chapterContent',
@@ -1423,7 +1423,7 @@ function DownloadDocPDF(){
 		    	                            
 		    	                            [
 		    	                            	 { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
-		    	                                { stack: [htmlToPdfmake(setImagesWidth('Description: - <%if(obj1[2]!=null){ %> <%=StringEscapeUtils.escapeHtml4(obj1[2].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
+		    	                                { stack: [htmlToPdfmake(setImagesWidth('Description: - <%if(obj1[2]!=null){ %> <%=obj1[2].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
 		    	                            ],
 		    	                            
 		    	                            [
@@ -1608,7 +1608,7 @@ function DownloadDocPDF(){
                 },
                 {
                 	<%if(Conclusion!=null){ %>
-                		stack: [htmlToPdfmake(setImagesWidth('<%=StringEscapeUtils.escapeHtml4(Conclusion).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 500))],
+                		stack: [htmlToPdfmake(setImagesWidth('<%=Conclusion.replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %>', 500))],
                 	<%} else{%>
                 		text: 'No Details Added!',
                 	<%} %>
@@ -1645,7 +1645,7 @@ function DownloadDocPDF(){
                             },
                             {
                                 columns: [
-                                    { text: '<%if(docnumber!=null) {%><%=StringEscapeUtils.escapeHtml4(docnumber) %><%} %>', alignment: 'left', margin: [30, 0, 0, 0], fontSize: 8 },
+                                    { text: '<%if(docnumber!=null) {%><%=docnumber %><%} %>', alignment: 'left', margin: [30, 0, 0, 0], fontSize: 8 },
                                     { text: currentPage.toString() + ' of ' + pageCount, alignment: 'right', margin: [0, 0, 30, 0], fontSize: 8 }
                                 ]
                             },

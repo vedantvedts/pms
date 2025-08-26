@@ -192,7 +192,7 @@
 	                                           		<%for(Object[] obj:projectList){
 	                                                    String projectShortName=(obj[17]!=null)?" ("+obj[17].toString()+")":"";
 	                                                %>
-														<option value="<%=obj[0] %>" <%if(projectId.equalsIgnoreCase(obj[0].toString())){ projectName = obj[4]+projectShortName; %> selected="selected" <%}%>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "+projectShortName!=null?StringEscapeUtils.escapeHtml4(projectShortName):" - "%></option>	
+														<option value="<%=obj[0] %>" <%if(projectId.equalsIgnoreCase(obj[0].toString())){ projectName = obj[4]+projectShortName; %> selected="selected" <%}%>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%> <%= projectShortName!=null?StringEscapeUtils.escapeHtml4(projectShortName):" - " %></option>	
 													<%}%>
 												</select>	        
 											</td>
@@ -209,7 +209,10 @@
 																<%if(empId.equalsIgnoreCase(obj[0]+"")) { assigneeName = (obj[1]!=null?obj[1]:(obj[2]!=null?obj[2]:""))+" "+obj[5]+", "+obj[6];%>
 																	selected
 																<%} %> >
-																<%=(obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):""))+" "+obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):" - "+", "+obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):" - " %>
+																<%= (obj[1] != null ? StringEscapeUtils.escapeHtml4(obj[1].toString()): (obj[2] != null ? StringEscapeUtils.escapeHtml4(obj[2].toString()) : ""))
+																+ " " + (obj[5] != null ? StringEscapeUtils.escapeHtml4(obj[5].toString()) : " - ")+ ", "+ (obj[6] != null ? StringEscapeUtils.escapeHtml4(obj[6].toString()) : " - ")
+%>
+
 															</option>
 													<%} }%>
 												</select>	        

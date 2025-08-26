@@ -319,7 +319,7 @@ FormatConverter fc = new FormatConverter();
 													<input form="myform" type="checkbox" class="form-control" name="roadMapId" value="<%=obj[0] %>" style="transform: scale(1.5);">
 				  								</div>
 					  							<div class="col-lg">
-													<h4 class="card-title" ><%=obj[6] %></h4>
+													<h4 class="card-title" ><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "  %></h4>
 												</div>
 												<div class="col-">
 													<p> 

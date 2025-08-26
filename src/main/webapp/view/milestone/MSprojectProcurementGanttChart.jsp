@@ -70,7 +70,7 @@ h6{
 			<div class="card-header" style="background-color: transparent;height: 3rem;">
  				<div class="row">
  					<div class="col-md-7">
- 						<h3 class="text-dark" style="font-weight: bold;">Procurement Gantt Chart - <%=projectDetails!=null?(projectDetails[3]!=null?StringEscapeUtils.escapeHtml4(projectDetails[3].toString()):" - "+" ("+projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()):" - "+")"):"" %> </h3>
+ 						<h3 class="text-dark" style="font-weight: bold;">Procurement Gantt Chart - <%=projectDetails!=null?((projectDetails[3]!=null?StringEscapeUtils.escapeHtml4(projectDetails[3].toString()):" - ")+" ("+(projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()):" - ")+")"):"" %> </h3>
  					</div>
  					<div class="col-md-3 justify-content-end" align="right" >
 						<div>

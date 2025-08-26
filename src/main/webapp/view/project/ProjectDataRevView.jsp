@@ -173,7 +173,7 @@ String projectdatarevid=(String)request.getAttribute("projectdatarevid");
 											     String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
 												%>
 												<%-- <option <%if(projectid.equals(obj[0].toString())){ %> selected <%} %> value="<%=obj[0] %>" ><%=obj[4] %></option> --%>
-												<option <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value="<%=obj[0]%>" ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - " %></option>
+												<option <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value="<%=obj[0]%>" ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - " %></option>
 												<%} %>
 											</select>
 											<button type="submit" class="btn  btn-sm back" formaction="ProjectData.htm" >Back</button>

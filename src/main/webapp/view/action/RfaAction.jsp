@@ -174,7 +174,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 					                    <% for(Object[] obj : ProjectList) {
 					                        String projectshortName = (obj[17] != null) ? " ( " + obj[17].toString() + " ) " : "";
 					                    %>
-					                        <option value="<%=obj[0]%>" <%if(projectId.equalsIgnoreCase(obj[0].toString())){ %> selected <% } %>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - " + projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>
+					                        <option value="<%=obj[0]%>" <%if(projectId.equalsIgnoreCase(obj[0].toString())){ %> selected <% } %>><%=(obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - ")%> <%= projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>
 					                    <% } %>
 					                </select>
 					            <% } else { %>
@@ -182,7 +182,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 					                    <option value="A" <%if(initiationId.equalsIgnoreCase("A")){%> selected <%}%>>ALL</option>
 					                    <% if(preProjectList != null && preProjectList.size() > 0) {
 					                        for(Object[] obj : preProjectList) { %>
-					                            <option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(initiationId)) { %> selected <% } %>><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - " + " ( " + obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - " + " )" %></option>
+					                            <option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(initiationId)) { %> selected <% } %>><%= (obj[3] != null ? StringEscapeUtils.escapeHtml4(obj[3].toString()) : " - ") + " ( " + (obj[2] != null ? StringEscapeUtils.escapeHtml4(obj[2].toString())  : " - ") + " )"%></option>
 					                    <% } } %>
 					                </select>
 					            <% } %>
@@ -254,7 +254,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 												for(Object[] obj1 : AssigneeList){
 													if(obj1[0].toString().equalsIgnoreCase(obj[0].toString())){
 													%>
-											      <p style="margin-bottom:0px !important;"> <%=obj1[1]!=null?StringEscapeUtils.escapeHtml4(obj1[1].toString()):" - "+","+obj1[2]!=null?StringEscapeUtils.escapeHtml4(obj1[2].toString()):" - " %> (<%=obj1[4]!=null?StringEscapeUtils.escapeHtml4(obj1[4].toString()):" - " %>) </p>          
+											      <p style="margin-bottom:0px !important;"> <%=  (obj1[1] != null ? StringEscapeUtils.escapeHtml4(obj1[1].toString())  : " - ") + ","+ (obj1[2] != null ? StringEscapeUtils.escapeHtml4(obj1[2].toString())  : " - ")%> (<%=obj1[4]!=null?StringEscapeUtils.escapeHtml4(obj1[4].toString()):" - " %>) </p>          
 											<% }}}%>
 											</td>
 											<td style="text-align: center;">

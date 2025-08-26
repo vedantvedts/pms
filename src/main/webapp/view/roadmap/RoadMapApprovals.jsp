@@ -195,7 +195,7 @@ th{
                       							 			%>
                         									<tr>
                             									<td style="text-align: center;width: 5%;"><%=++SN%></td>
-                            									<td style="width: 30%;"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
+                            									<td style="width: 30%;"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
                             									<%-- <td style="text-align: center;width: 10%;"><%=form[1]%></td>
                             									<td style="text-align: center;width: 15%;"><%=form[6]%></td> --%>
                             									<td style="text-align: center;width: 10%;"><%=form[5]!=null?fc.SqlToRegularDate(form[5].toString()):" - " %></td>
@@ -284,7 +284,7 @@ th{
                        													    %>
                         													<tr>
                             													<td style="text-align: center;width: 5%;"><%=++SNA%></td>
-                            													<td style="text-align: left;width: 22%;"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "+", "+form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
+                            													<td style="text-align: left;width: 22%;"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
                             													<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td>
                             													<td style="text-align: center;width: 15%;"><%=form[6] %> </td> --%>
                             													<td style="text-align: center;width: 8%;"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - " %> </td>

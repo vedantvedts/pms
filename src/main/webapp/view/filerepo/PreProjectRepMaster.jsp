@@ -176,7 +176,7 @@ textarea {
 													<option value="<%=obj[0]%>"
 														<%if (InitiationId.equalsIgnoreCase(obj[0].toString())) {
 	                                                            projectDirectorId = Long.parseLong(obj[4].toString());%>
-														selected="selected" <%}%>><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " + " ( " + obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " + " )"%>
+														selected="selected" <%}%>><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %> (<%= obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>)
 													</option>
 													<%
 													}

@@ -515,7 +515,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 			<%int count=0;
 				for(Object []obj:subReqList) {%>
 				<div>	<button  type="button" class="btn btn-secondary  mt-2" style="width:84%;font-size: 13px;" id="<%=obj[0] %>" value="<%=obj[14].toString()%>"  onclick="showDetails(<%=obj[0].toString()%>,'M')">
-						 <%=(++count)+". "+ obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %>
+						 <%=(++count)+". "+ (obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - ") %>
 					</button>&nbsp;
 					<button style="width:10%;background: white;" class="btn btn-sm" onclick="openSubReqModal(<%=obj[14].toString()%>,<%=obj[0].toString()%>)" data-toggle="tooltip" data-placement="top" data-original-data="" title="">
 						<i class="fa fa-plus-square" aria-hidden="true"></i>
@@ -532,7 +532,7 @@ Object[] projectDetails = (Object[]) request.getAttribute("projectDetails");
 				
 							<button type="button" class="btn btn-secondary viewbtn mt-2" id="<%=obj1[0] %>" value="<%=obj1[0]%>/<%=obj[0].toString()%>"  <%-- onclick="showDetailss(<%=obj1[0].toString()%>,<%=obj[0].toString()%>)"  --%>>
 								<i class="fa fa-caret-right" aria-hidden="true" style="color:white;"></i> &nbsp;  
-								<%=count+"."+(++subcount)+". "+  obj1[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>
+								<%=count+"."+(++subcount)+". "+  (obj1[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - ") %>
 							</button>
 							<button class="btn btn-sm bg-transparent" type="button" onclick="deleteReq(<%=obj1[0] %>)">
 							<i class="fa fa-trash-o" aria-hidden="true" style="color:red;"></i>

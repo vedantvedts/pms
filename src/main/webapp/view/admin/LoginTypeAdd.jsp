@@ -86,7 +86,7 @@ NFormatConvertion nfc=new NFormatConvertion();
                               		<select class="form-control selectdee" id="EmployeeId" required="required" name="EmployeeId">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : EmployeeList) {%>
-										<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> ( <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> )</option>
+										<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> (<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>)</option>
 											<%} %>
   									</select>
                         		</div>

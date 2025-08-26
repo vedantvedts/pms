@@ -357,7 +357,7 @@ String statuscode = carsIni.getCARSStatusCode();
 					                	<%if(carsIni!=null && carsIni.getFundsFrom()!=null && carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>
 					                		Buildup
 					                	<%} else{%>
-					                		<%if(PDs!=null && PDs[3]!=null) {%><%=StringEscapeUtils.escapeHtml4(PDs[3].toString())+" ("+PDs[0]!=null?StringEscapeUtils.escapeHtml4(PDs[0].toString()): " - "+")" %><%} %>
+					                		<%if(PDs!=null && PDs[3]!=null) {%><%=StringEscapeUtils.escapeHtml4(PDs[3].toString())%> (<%=PDs[0]!=null?StringEscapeUtils.escapeHtml4(PDs[0].toString()): " - " %>)<%} %>
 					                	<%} %>
 					                	</span>
 					            </div>
@@ -585,7 +585,7 @@ String statuscode = carsIni.getCARSStatusCode();
 					               		   						<%} else{%>
 					               		   							<%if(PDs[4]!=null) {%><%=StringEscapeUtils.escapeHtml4(PDs[4].toString()) %><%} else{%>-<%} %>
 					               		   						<%} %>  
-					               		   						for CARS collaboration with <%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute()): " - "+", "+carsIni.getRSPCity()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()): " - " %> <%} %> has been approved by CFA. (Flag-A)
+					               		   						for CARS collaboration with <%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute()): " - "%>, <%=carsIni.getRSPCity()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()): " - " %> <%} %> has been approved by CFA. (Flag-A)
 					               		   					</span>
 					               		   					<span>
 					               		   						<%if(csdetails!=null && csdetails.getAttachFlagA()!=null) {%>

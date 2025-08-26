@@ -320,7 +320,7 @@
 														    <option value="" disabled selected>Choose...</option>
 														    <% for(Object[] obj : productTreeS1List){ %>
 														      <option value="<%=obj[0] %>"  <%if(e1Data!=null && e1Data[4]!=null && e1Data[4].toString().equalsIgnoreCase(obj[0].toString())) {%>selected<%} %>>
-														        <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "+" ("+obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "+")" %>
+														        <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%=" ("+(obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - ")+")" %>
 														      </option>
 														    <% } %>
 														</select>
@@ -557,7 +557,7 @@
 														    <option value="" disabled selected>Choose...</option>
 														    <% for(Object[] obj : productTreeS2List){ %>
 														      <option value="<%=obj[0] %>"  <%if(e2Data!=null && e2Data[4]!=null && e2Data[4].toString().equalsIgnoreCase(obj[0].toString())) {%>selected<%} %>>
-														        <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "+" ("+obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "+")" %>
+														        <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%=" ("+(obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - ")+")" %>
 														      </option>
 														    <% } %>
 														</select>

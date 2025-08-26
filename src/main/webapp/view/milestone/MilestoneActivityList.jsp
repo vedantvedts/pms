@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -136,7 +137,7 @@ input[type=checkbox] {
     										<% for (Object[] obj : ProjectList) {
     										 projectshortName=(obj[17]!=null)?" ("+obj[17].toString()+") ":"";
     										%>
-											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%projectDirector = Long.parseLong(obj[23].toString());selectedProject=projectshortName; %> <%} %>> <%=obj[4]+projectshortName%>  </option>
+											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%projectDirector = Long.parseLong(obj[23].toString());selectedProject=projectshortName; %> <%} %>> <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%>  </option>
 											<%} %>
   									</select>
   									</div>
@@ -146,23 +147,22 @@ input[type=checkbox] {
 </form>
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert" >
-	    <%=ses1 %>
-	     <br />
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert"  >
-	    	<%=ses %>
-	    	 <br />
-	    </div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
    
   
@@ -179,7 +179,7 @@ if(ses1!=null){	%>
 					<h5 ><%if(ProjectId!=null){
 						Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");
 						%>
-						<%=ProjectDetail[2] %> ( <%=ProjectDetail[1] %> ) 
+						<%=ProjectDetail[2]!=null?StringEscapeUtils.escapeHtml4(ProjectDetail[2].toString()): " - " %> ( <%=ProjectDetail[1]!=null?StringEscapeUtils.escapeHtml4(ProjectDetail[1].toString()): " - " %> ) 
 					<%} %>
 					 Milestone List</h5>
 					</div>
@@ -249,7 +249,7 @@ if(ses1!=null){	%>
 																<input class="form-control" form="slnoupdateform" type="number" name="newslno" value="<%=obj[5]%>" min="1" max="<%=MilestoneList.size()%>">
 																<input type="hidden" form="slnoupdateform" name="milestoneActivityId" value="<%=obj[0]%>"/>
 															</td>
-															<td style="text-align: left;width: 5%;"> Mil-<%=obj[5]%></td>
+															<td style="text-align: left;width: 5%;"> Mil-<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;" 
 															onclick="showMilestoneStatusProgress('<%=obj[0]%>')">
@@ -258,9 +258,9 @@ if(ses1!=null){	%>
 															
 															<td style="width:8% !important; "><%=sdf.format(obj[2])%></td>
 															<td style="width:8% !important; "><%=sdf.format(obj[3])%></td>
-															<td  style="width:15% !important; "><%=obj[6]%> <br> <%=obj[7]%> </td>
+															<td  style="width:15% !important; "><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%> <br> <%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%> </td>
 															<td  style="width: 8% !important; ">-</td>
-															<td  style="width:7% !important; " align="center"><%=obj[13]%></td>	
+															<td  style="width:7% !important; " align="center"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - "%></td>	
 															<td>
 																<%if(!obj[12].toString().equalsIgnoreCase("0")){ %>
 																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -275,7 +275,7 @@ if(ses1!=null){	%>
 																  bg-warning
 																<%}  %>
 																" role="progressbar" style=" width: <%=obj[12] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																<%=obj[12] %>
+																<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %>
 																</div> 
 																</div> <%}else{ %>
 																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -453,7 +453,7 @@ if(ses1!=null){	%>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;"
 															 onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objA[0]%>', '<%=ProjectId%>', 'A')">
-															<%=objA[4] %>
+															<%=objA[4]!=null?StringEscapeUtils.escapeHtml4(objA[4].toString()): " - " %>
 															</td>
 															
 															<td class="width-30px"><%=sdf.format(objA[2])%></td>
@@ -461,18 +461,18 @@ if(ses1!=null){	%>
 															<td><%=objA[14]%>
 															<br>
 																
-															<%=objA[27] %>	
+															<%=objA[27]!=null?StringEscapeUtils.escapeHtml4(objA[27].toString()): " - " %>	
 															
 															
 															</td>
 															
 															<td class="width-30px"><%if(objA[9].toString().equalsIgnoreCase("3")||objA[9].toString().equalsIgnoreCase("5")){ %>
-														     <%if(objA[7]!=null){ %>   <%=sdf.format(objA[7]) %> <%}else{ %><%=objA[8] %> <%} %>
+														     <%if(objA[7]!=null){ %>   <%=sdf.format(objA[7]) %> <%}else{ %><%=objA[8]!=null?StringEscapeUtils.escapeHtml4(objA[8].toString()): " - " %> <%} %>
 														         <%}else{ %>
-														         <%=objA[8] %>
+														         <%=objA[8]!=null?StringEscapeUtils.escapeHtml4(objA[8].toString()): " - " %>
 															 <%} %>
 															 </td>
-															 <td align="center"><%=objA[6] %></td>
+															 <td align="center"><%=objA[6]!=null?StringEscapeUtils.escapeHtml4(objA[6].toString()): " - " %></td>
 															<td>
 															<%if(!objA[5].toString().equalsIgnoreCase("0")){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -487,7 +487,7 @@ if(ses1!=null){	%>
 															  bg-warning
 															<%}  %>
 															" role="progressbar" style=" width: <%=objA[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															<%=objA[5] %>
+															<%=objA[5]!=null?StringEscapeUtils.escapeHtml4(objA[5].toString()): " - " %>
 															</div> 
 															</div> <%}else{ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -502,9 +502,9 @@ if(ses1!=null){	%>
 		                                                         
 			                                                         <div style="display: flex; justify-content: center;">
 			                                                         <div style="display: flex;width:80%">
-			                                                		5<input type="checkbox" <%if(objA[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control point5"  value="<%=objA[0].toString()+"/"+objA[19].toString()+"/point5"%>" onchange="updateBpPoints(this)">
-			                                                        6.a<input type="checkbox" <%if(objA[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control point6"  value="<%=objA[0].toString()+"/"+objA[20].toString()+"/point6"%>" onchange="updateBpPoints(this)">
-			                                                        9<input type="checkbox" <%if(objA[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control point9"  value="<%=objA[0].toString()+"/"+objA[21].toString()+"/point9"%>" onchange="updateBpPoints(this)">
+			                                                		5<input type="checkbox" <%if(objA[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control point5"  value="<%=objA[0]!=null?StringEscapeUtils.escapeHtml4(objA[0].toString()): " - "%> <%="/"%> <%=objA[19]!=null?StringEscapeUtils.escapeHtml4(objA[19].toString()): " - "%> <%="/point5"%>" onchange="updateBpPoints(this)">
+			                                                        6.a<input type="checkbox" <%if(objA[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control point6"  value="<%=objA[0]!=null?StringEscapeUtils.escapeHtml4(objA[0].toString()): " - "%> <%="/"%> <%=objA[20]!=null?StringEscapeUtils.escapeHtml4(objA[20].toString()): " - "%> <%="/point6"%>" onchange="updateBpPoints(this)">
+			                                                        9<input type="checkbox" <%if(objA[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control point9"  value="<%=objA[0]!=null?StringEscapeUtils.escapeHtml4(objA[0].toString()): " - "%> <%="/"%> <%=objA[21]!=null?StringEscapeUtils.escapeHtml4(objA[21].toString()): " - "%> <%="/point9"%>" onchange="updateBpPoints(this)">
 			                                                         </div>
 			                                                         </div>
 		                                                         
@@ -547,21 +547,21 @@ if(ses1!=null){	%>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;"
 															 onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objB[0]%>', '<%=ProjectId%>', 'B')">
-																<%=objB[4] %>
+																<%=objB[4]!=null?StringEscapeUtils.escapeHtml4(objB[4].toString()): " - " %>
 															</td>
 															
 															<td class="width-30px"><%=sdf.format(objB[2])%></td>
 															<td style="width:8% !important; "><%=sdf.format(objB[3])%></td>
-															<td><%=objB[14]%>
+															<td><%=objB[14]!=null?StringEscapeUtils.escapeHtml4(objB[14].toString()): " - "%>
 															<br>
-															<%=objB[27]%>
+															<%=objB[27]!=null?StringEscapeUtils.escapeHtml4(objB[27].toString()): " - "%>
 															</td>
 															<td class="width-30px"><%if(objB[9].toString().equalsIgnoreCase("3")||objB[9].toString().equalsIgnoreCase("5")){ %>
-														      <%if(objB[7]!=null){ %>   <%=sdf.format(objB[7]) %> <%}else{ %><%=objB[8] %> <%} %>
+														      <%if(objB[7]!=null){ %>   <%=sdf.format(objB[7]) %> <%}else{ %><%=objB[8]!=null?StringEscapeUtils.escapeHtml4(objB[8].toString()): " - " %> <%} %>
 														         <%}else{ %>
-														         <%=objB[8] %>
+														         <%=objB[8]!=null?StringEscapeUtils.escapeHtml4(objB[8].toString()): " - " %>
 															 <%} %></td>
-															  <td align="center"><%=objB[6] %></td>
+															  <td align="center"><%=objB[6]!=null?StringEscapeUtils.escapeHtml4(objB[6].toString()): " - " %></td>
 															<td>
 															<%if(!objB[5].toString().equalsIgnoreCase("0")){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -576,7 +576,7 @@ if(ses1!=null){	%>
 															  bg-warning
 															<%}  %>
 															" role="progressbar" style=" width: <%=objB[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															<%=objB[5] %>
+															<%=objB[5]!=null?StringEscapeUtils.escapeHtml4(objB[5].toString()): " - " %>
 															</div> 
 															</div> <%}else{ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -591,9 +591,9 @@ if(ses1!=null){	%>
 	                                                         
 			                                                        <div style="display: flex; justify-content: center;">
 			                                                         <div style="display: flex;width:80%">
-			                                                        5 <input  type="checkbox" <%if(objB[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objB[0].toString()+"/"+objB[19].toString()+"/point5"%>" onchange="updateBpPoints(this)">
-			                                                        6.a <input type="checkbox" <%if(objB[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objB[0].toString()+"/"+objB[20].toString()+"/point6"%>" onchange="updateBpPoints(this)">
-			                                                         9<input type="checkbox" <%if(objB[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objB[0].toString()+"/"+objB[21].toString()+"/point9"%>" onchange="updateBpPoints(this)">
+			                                                        5 <input  type="checkbox" <%if(objB[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objB[0]!=null?StringEscapeUtils.escapeHtml4(objB[0].toString()): " - "%> <%="/"%> <%=objB[19]!=null?StringEscapeUtils.escapeHtml4(objB[19].toString()): " - "%> <%="/point5"%>" onchange="updateBpPoints(this)">
+			                                                        6.a <input type="checkbox" <%if(objB[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objB[0]!=null?StringEscapeUtils.escapeHtml4(objB[0].toString()): " - "%> <%="/"%> <%=objB[20]!=null?StringEscapeUtils.escapeHtml4(objB[20].toString()): " - "%> <%="/point6"%>" onchange="updateBpPoints(this)">
+			                                                         9<input type="checkbox" <%if(objB[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objB[0]!=null?StringEscapeUtils.escapeHtml4(objB[0].toString()): " - "%> <%="/"%> <%=objB[21]!=null?StringEscapeUtils.escapeHtml4(objB[21].toString()): " - "%> <%="/point9"%>" onchange="updateBpPoints(this)">
 			                                                         </div>
 			                                                         </div>
 			                                                         
@@ -634,22 +634,22 @@ if(ses1!=null){	%>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;"
 															 onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objC[0]%>', '<%=ProjectId%>', 'C')">
-															<%=objC[4] %>
+															<%=objC[4]!=null?StringEscapeUtils.escapeHtml4(objC[4].toString()): " - " %>
 															</td>
 															
 															<td class="width-30px"><%=sdf.format(objC[2])%></td>
 															<td style="width:8% !important; "><%=sdf.format(objC[3])%></td>
-															<td><%=objC[14]%>
+															<td><%=objC[14]!=null?StringEscapeUtils.escapeHtml4(objC[14].toString()): " - "%>
 															<br>
-															<%=objC[27]%>
+															<%=objC[27]!=null?StringEscapeUtils.escapeHtml4(objC[27].toString()): " - "%>
 													
 															</td>
 															<td class="width-30px"><%if(objC[9].toString().equalsIgnoreCase("3")||objC[9].toString().equalsIgnoreCase("5")){ %>
-														     <%if(objC[7]!=null){ %>   <%=sdf.format(objC[7]) %> <%}else{ %><%=objC[8] %> <%} %>
+														     <%if(objC[7]!=null){ %>   <%=sdf.format(objC[7]) %> <%}else{ %><%=objC[8]!=null?StringEscapeUtils.escapeHtml4(objC[8].toString()): " - " %> <%} %>
 														         <%}else{ %>
-														         <%=objC[8] %>
+														         <%=objC[8]!=null?StringEscapeUtils.escapeHtml4(objC[8].toString()): " - " %>
 															 <%} %></td>	
-															  <td align="center"><%=objC[6] %></td>
+															  <td align="center"><%=objC[6]!=null?StringEscapeUtils.escapeHtml4(objC[6].toString()): " - " %></td>
 															<td>
 															<%if(!objC[5].toString().equalsIgnoreCase("0")){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -664,7 +664,7 @@ if(ses1!=null){	%>
 																	  bg-warning
 																	<%}  %>
 																	" role="progressbar" style=" width: <%=objC[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																	<%=objC[5] %>
+																	<%=objC[5]!=null?StringEscapeUtils.escapeHtml4(objC[5].toString()): " - " %>
 																</div> 
 															</div> <%}else{ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -679,9 +679,9 @@ if(ses1!=null){	%>
                                                          
 			                                                    	<div style="display: flex; justify-content: center;">
 			                                                         <div style="display: flex;width:80%">
-			                                                       5.  <input type="checkbox" <%if(objC[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objC[0].toString()+"/"+objC[19].toString()+"/point5"%>" onchange="updateBpPoints(this)">
-			                                                       6.a  <input type="checkbox" <%if(objC[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objC[0].toString()+"/"+objC[20].toString()+"/point6"%>" onchange="updateBpPoints(this)">
-			                                                        9. <input type="checkbox" <%if(objC[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objC[0].toString()+"/"+objC[21].toString()+"/point9"%>" onchange="updateBpPoints(this)">
+			                                                       5.  <input type="checkbox" <%if(objC[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objC[0]!=null?StringEscapeUtils.escapeHtml4(objC[0].toString()): " - "%> <%="/"%> <%=objC[19]!=null?StringEscapeUtils.escapeHtml4(objC[19].toString()): " - "%> <%="/point5"%>" onchange="updateBpPoints(this)">
+			                                                       6.a  <input type="checkbox" <%if(objC[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objC[0]!=null?StringEscapeUtils.escapeHtml4(objC[0].toString()): " - "%> <%="/"%> <%=objC[20]!=null?StringEscapeUtils.escapeHtml4(objC[20].toString()): " - "%> <%="/point6"%>" onchange="updateBpPoints(this)">
+			                                                        9. <input type="checkbox" <%if(objC[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objC[0]!=null?StringEscapeUtils.escapeHtml4(objC[0].toString()): " - "%> <%="/"%> <%=objC[21]!=null?StringEscapeUtils.escapeHtml4(objC[21].toString()): " - "%> <%="/point9"%>" onchange="updateBpPoints(this)">
 			                                                        </div> </div>
                                                          
                                                          
@@ -724,22 +724,22 @@ if(ses1!=null){	%>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;"
 															 onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objD[0]%>', '<%=ProjectId%>', 'D')">
-															 <%=objD[4] %>
+															 <%=objD[4]!=null?StringEscapeUtils.escapeHtml4(objD[4].toString()): " - " %>
 															 </td>
 															
 															<td class="width-30px"><%=sdf.format(objB[2])%></td>
 															<td style="width:8% !important; "><%=sdf.format(objB[3])%></td>
-															<td><%=objD[14]%>
+															<td><%=objD[14]!=null?StringEscapeUtils.escapeHtml4(objD[14].toString()): " - "%>
 															<br>
-														<%=objD[27]%>
+														<%=objD[27]!=null?StringEscapeUtils.escapeHtml4(objD[27].toString()): " - "%>
 															
 															</td>
 															<td class="width-30px"><%if(objD[9].toString().equalsIgnoreCase("3")||objD[9].toString().equalsIgnoreCase("5")){ %>
-														      <%if(objD[7]!=null){ %>   <%=sdf.format(objD[7]) %> <%}else{ %><%=objD[8] %> <%} %>
+														      <%if(objD[7]!=null){ %>   <%=sdf.format(objD[7]) %> <%}else{ %><%=objD[8]!=null?StringEscapeUtils.escapeHtml4(objD[8].toString()): " - " %> <%} %>
 														         <%}else{ %>
-														         <%=objD[8] %>
+														         <%=objD[8]!=null?StringEscapeUtils.escapeHtml4(objD[8].toString()): " - " %>
 															 <%} %></td>
-															  <td align="center"><%=objD[6] %></td>
+															  <td align="center"><%=objD[6]!=null?StringEscapeUtils.escapeHtml4(objD[6].toString()): " - " %></td>
 															<td>
 															<%if(!objD[5].toString().equalsIgnoreCase("0")){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -754,7 +754,7 @@ if(ses1!=null){	%>
 															  bg-warning
 															<%}  %>
 															" role="progressbar" style=" width: <%=objD[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															<%=objD[5] %>
+															<%=objD[5]!=null?StringEscapeUtils.escapeHtml4(objD[5].toString()): " - " %>
 															</div> 
 															</div> <%}else{ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -768,9 +768,9 @@ if(ses1!=null){	%>
                                                          		
 			                                                     <div style="display: flex; justify-content: center;">
 			                                                         <div style="display: flex;width:80%">
-			                                                        5. <input type="checkbox" <%if(objD[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objD[0].toString()+"/"+objD[19].toString()+"/point5"%>" onchange="updateBpPoints(this)">
-			                                                        6.a <input type="checkbox" <%if(objD[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objD[0].toString()+"/"+objD[20].toString()+"/point6"%>" onchange="updateBpPoints(this)">
-			                                                        9. <input type="checkbox" <%if(objD[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objD[0].toString()+"/"+objD[21].toString()+"/point9"%>" onchange="updateBpPoints(this)">
+			                                                        5. <input type="checkbox" <%if(objD[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objD[0]!=null?StringEscapeUtils.escapeHtml4(objD[0].toString()): " - "%> <%="/"%> <%=objD[19]!=null?StringEscapeUtils.escapeHtml4(objD[19].toString()): " - "%> <%="/point5"%>" onchange="updateBpPoints(this)">
+			                                                        6.a <input type="checkbox" <%if(objD[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objD[0]!=null?StringEscapeUtils.escapeHtml4(objD[0].toString()): " - "%> <%="/"%> <%=objD[20]!=null?StringEscapeUtils.escapeHtml4(objD[20].toString()): " - "%> <%="/point6"%>" onchange="updateBpPoints(this)">
+			                                                        9. <input type="checkbox" <%if(objD[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objD[0]!=null?StringEscapeUtils.escapeHtml4(objD[0].toString()): " - "%> <%="/"%> <%=objD[21]!=null?StringEscapeUtils.escapeHtml4(objD[21].toString()): " - "%> <%="/point9"%>" onchange="updateBpPoints(this)">
 			                                                      </div>   </div>
                                                          
                                                          
@@ -804,21 +804,21 @@ if(ses1!=null){	%>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;"
 															onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objE[0]%>', '<%=ProjectId%>', 'E')">
-															<%=objE[4] %>
+															<%=objE[4]!=null?StringEscapeUtils.escapeHtml4(objE[4].toString()): " - " %>
 															</td>
 															
 															<td class="width-30px"><%=sdf.format(objE[2])%></td>
 															<td style="width:8% !important; "><%=sdf.format(objE[3])%></td>
-															<td><%=objE[14]%>
+															<td><%=objE[14]!=null?StringEscapeUtils.escapeHtml4(objE[14].toString()): " - "%>
 															<br>
-															<%=objE[27]%>
+															<%=objE[27]!=null?StringEscapeUtils.escapeHtml4(objE[27].toString()): " - "%>
 															</td>
 															<td class="width-30px"><%if(objE[9].toString().equalsIgnoreCase("3")||objE[9].toString().equalsIgnoreCase("5")){ %>
-														     <%if(objE[7]!=null){ %>   <%=sdf.format(objE[7]) %> <%}else{ %><%=objE[8] %> <%} %>
+														     <%if(objE[7]!=null){ %>   <%=sdf.format(objE[7]) %> <%}else{ %><%=objE[8]!=null?StringEscapeUtils.escapeHtml4(objE[8].toString()): " - " %> <%} %>
 														         <%}else{ %>
-														         <%=objE[8] %>
+														         <%=objE[8]!=null?StringEscapeUtils.escapeHtml4(objE[8].toString()): " - " %>
 															 <%} %></td>	
-															  <td align="center"><%=objE[6] %></td>
+															  <td align="center"><%=objE[6]!=null?StringEscapeUtils.escapeHtml4(objE[6].toString()): " - " %></td>
 															<td>
 															<%if(!objE[5].toString().equalsIgnoreCase("0")){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -833,7 +833,7 @@ if(ses1!=null){	%>
 															  bg-warning
 															<%}  %>
 															" role="progressbar" style=" width: <%=objE[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															<%=objE[5] %>
+															<%=objE[5]!=null?StringEscapeUtils.escapeHtml4(objE[5].toString()): " - " %>
 															</div> 
 															</div> <%}else{ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -847,9 +847,9 @@ if(ses1!=null){	%>
                                                          		
 			                                                         <div style="display: flex;justify-content: center;">
 			                                                         <div style="display: flex;width:80%;">
-			                                                        5. <input type="checkbox" <%if(objE[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objE[0].toString()+"/"+objE[19].toString()+"/point5"%>" onchange="updateBpPoints(this)">
-			                                                        6.a <input type="checkbox" <%if(objE[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objE[0].toString()+"/"+objE[20].toString()+"/point6"%>" onchange="updateBpPoints(this)">
-			                                                        9 <input type="checkbox" <%if(objE[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objE[0].toString()+"/"+objE[21].toString()+"/point9"%>" onchange="updateBpPoints(this)">
+			                                                        5. <input type="checkbox" <%if(objE[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objE[0]!=null?StringEscapeUtils.escapeHtml4(objE[0].toString()): " - "%> <%="/"%> <%=objE[19]!=null?StringEscapeUtils.escapeHtml4(objE[19].toString()): " - "%> <%="/point5"%>" onchange="updateBpPoints(this)">
+			                                                        6.a <input type="checkbox" <%if(objE[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objE[0]!=null?StringEscapeUtils.escapeHtml4(objE[0].toString()): " - "%> <%="/"%> <%=objE[20]!=null?StringEscapeUtils.escapeHtml4(objE[20].toString()): " - "%> <%="/point6"%>" onchange="updateBpPoints(this)">
+			                                                        9 <input type="checkbox" <%if(objE[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objE[0]!=null?StringEscapeUtils.escapeHtml4(objE[0].toString()): " - "%> <%="/"%> <%=objE[21]!=null?StringEscapeUtils.escapeHtml4(objE[21].toString()): " - "%> <%="/point9"%>" onchange="updateBpPoints(this)">
 			                                                       </div>
 			                                                         </div>
                                                          

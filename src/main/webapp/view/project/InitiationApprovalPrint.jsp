@@ -222,7 +222,7 @@ Ref No&nbsp; : &nbsp;
 	<td style="border: none; width: 25%;">
 	<span style="font-size: 14px; color: blue;">
 	<b style="margin-left:20px; color:black; ">
-	Initiated By (PDD) : </b></span>  <%=ApprovalData!=null ?StringEscapeUtils.escapeHtml4(ApprovalData[17].toString())+", "+ApprovalData[18]!=null?StringEscapeUtils.escapeHtml4(ApprovalData[18].toString()): " - " : "-" %></td>
+	Initiated By (PDD) : </b></span>  <%=ApprovalData!=null ?StringEscapeUtils.escapeHtml4(ApprovalData[17].toString())+", "+(ApprovalData[18]!=null?StringEscapeUtils.escapeHtml4(ApprovalData[18].toString()): " - ") : "-" %></td>
 	</tr>
 	</table>
 	

@@ -438,9 +438,9 @@
 						<tr>
 						<td> 
 						<%if(!obj[3].toString().equalsIgnoreCase("0")){ %>
-						 <a target="blank" href="CommitteeMinutesNewDownload.htm?committeescheduleid=<%=obj[0].toString() %>"><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "+"#"+(++meetingCount) %> </a> 
+						 <a target="blank" href="CommitteeMinutesNewDownload.htm?committeescheduleid=<%=obj[0].toString() %>"><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%> <%="#"+(++meetingCount) %> </a> 
 						<%}else{ %>
-				<a target="blank" href="CommitteeMinutesViewAllDownload.htm?committeescheduleid=<%=obj[0].toString() %>"><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "+"#"+(++meetingCount) %> </a> 
+				<a target="blank" href="CommitteeMinutesViewAllDownload.htm?committeescheduleid=<%=obj[0].toString() %>"><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%> <%="#"+(++meetingCount) %> </a> 
 						
 						<%} %>
 						</td>
@@ -476,11 +476,11 @@
 											if (!obj[3].toString().equalsIgnoreCase("0")) {
 											%> <a
 											target="blank"
-											href="CommitteeMinutesNewDownload.htm?committeescheduleid=<%=obj[0].toString()%>"><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " + "#" + (++meetingCount)%>
+											href="CommitteeMinutesNewDownload.htm?committeescheduleid=<%=obj[0].toString()%>"><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %> <%= "#" + (++meetingCount)%>
 										</a> <%
 											 } else {
 											 %> <a target="blank"
-											href="CommitteeMinutesViewAllDownload.htm?committeescheduleid=<%=obj[0].toString()%>"><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "+ "#" + (++meetingCount)%>
+											href="CommitteeMinutesViewAllDownload.htm?committeescheduleid=<%=obj[0].toString()%>"><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%> <%= "#" + (++meetingCount)%>
 										</a> <%} %>
 										</td>
 						<td style="text-align: center;"> <%= sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[2].toString())))%> </td>

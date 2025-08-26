@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.project.model.ProjectAssign"%>
 <%@page import="com.vts.pfms.master.model.RoleMaster"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
@@ -54,21 +55,22 @@ b{
 		String labcode = (String)session.getAttribute("labcode");
 	%>
 
-	<% String ses = (String) request.getParameter("result"); 
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-        <div align="center">
-            <div class="alert alert-danger" role="alert">
-                <%= ses1 %>
-            </div>
-        </div>
-    <% } if (ses != null) { %>
-        <div align="center">
-            <div class="alert alert-success" role="alert">
-                <%= ses %>
-            </div>
-        </div>
-    <% } %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
     
 	<div class="container-fluid">
 		<div class="col-md-12">
@@ -96,7 +98,7 @@ b{
 					                for(Object[] protype:ProjectList ){
 					                	String projectshortName=(protype[17]!=null)?" ("+protype[17].toString()+") ":"";
 					                	%>
-										<option value="<%=protype[0] %>" <%if(ProjectId!=null){ if(protype[0].toString().equalsIgnoreCase(ProjectId)){%>selected="selected" <%}} %>><%=protype[4]+projectshortName %></option>
+										<option value="<%=protype[0] %>" <%if(ProjectId!=null){ if(protype[0].toString().equalsIgnoreCase(ProjectId)){%>selected="selected" <%}} %>><%=protype[4]!=null?StringEscapeUtils.escapeHtml4(protype[4].toString()): " - "%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - " %></option>
 									<%} %>
 								</select>
 							</div>
@@ -118,7 +120,7 @@ b{
 													<table class="table table-bordered table-hover table-striped table-condensed" id="myTable"> 
 														<thead style=" text-align: center;">
 															<tr style="background-color: white;color: black">
-																<th colspan="5">List Of User Assigned for <%if(ProjectCode!=null){ %><%=ProjectCode[1]%><%} %></th>
+																<th colspan="5">List Of User Assigned for <%if(ProjectCode!=null){ %><%=StringEscapeUtils.escapeHtml4(ProjectCode[1].toString())%><%} %></th>
 															</tr>
 															<tr>
 	   															<th style="width:5%; ">Select</th>
@@ -139,10 +141,10 @@ b{
 	  																		<input type="hidden" id="empId_<%=obj[0]%>" value="<%=obj[1] %>">
 	  																		<input type="hidden" id="roleMasterId_<%=obj[0]%>" value="<%=obj[8] %>">
 	  																	</td>
-																		<td style="text-align: left;"><%=obj[9]!=null?obj[9]:"-" %></td>
-																		<td style="text-align: left;"><%=obj[3] %>, <%=obj[4] %></td>
-																        <td style="text-align: left;"><%=obj[5]!=null?obj[5]:"-" %></td>
-																        <td style="text-align: left;"><%=obj[12]!=null?obj[12]:"-" %></td>
+																		<td style="text-align: left;"><%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()):"-" %></td>
+																		<td style="text-align: left;"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %>, <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
+																        <td style="text-align: left;"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %></td>
+																        <td style="text-align: left;"><%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()):"-" %></td>
 																	</tr>
 															<%} }%>
 														</tbody>
@@ -173,7 +175,7 @@ b{
 													<table class="table table-bordered table-hover table-striped table-condensed" style="width: 100%;" > 
 														<thead style = "background-color: #055C9D; color: white;">
 															<tr>
-	   															<th width="100%" colspan="3">Select Users  for <%if(ProjectCode!=null){ %><%=ProjectCode[1]%><%} %></th>
+	   															<th width="100%" colspan="3">Select Users  for <%if(ProjectCode!=null){ %><%=StringEscapeUtils.escapeHtml4(ProjectCode[1].toString())%><%} %></th>
 	  														</tr>
 	   													</thead>
 														<tbody>
@@ -185,7 +187,7 @@ b{
 																		<option selected value="0">Not Applicable</option>
 																	    <% for (RoleMaster role : roleMasterList) { 
 																	    	if(role.getRoleMasterId()==1) continue; %>
-																	    	<option value="<%=role.getRoleMasterId()%>"><%=role.getRoleName()%> (<%=role.getRoleCode()%>)</option>
+																	    	<option value="<%=role.getRoleMasterId()%>"><%=role.getRoleName()!=null?StringEscapeUtils.escapeHtml4(role.getRoleName()): " - "%> (<%=role.getRoleCode()!=null?StringEscapeUtils.escapeHtml4(role.getRoleCode()): " - "%>)</option>
 																	    <%}%>
 																	</select>
 																</td>
@@ -194,7 +196,7 @@ b{
 																	<select class="form-control selectdee" name="labCode" id="labCode" required onchange="renderEmployeeList()" data-placeholder= "Lab Name">
 																		<!-- <option disabled="true"  selected value="">Lab Name</option> -->
 																	    <% for (Object[] obj : allLabList) { %>
-																	    	<option value="<%=obj[3]%>" <%if(labcode.equalsIgnoreCase(obj[3].toString())) {%>selected<%} %> ><%=obj[3]%></option>
+																	    	<option value="<%=obj[3]%>" <%if(labcode.equalsIgnoreCase(obj[3].toString())) {%>selected<%} %> ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 																	    <%}%>
 																	</select>
 																</td>
@@ -259,7 +261,7 @@ b{
 												<option selected value="0">Not Applicable</option>
 											    <% for (RoleMaster role : roleMasterList) { 
 											    	if(role.getRoleMasterId()==1) continue;%>
-											    	<option value="<%=role.getRoleMasterId()%>"><%=role.getRoleName()%> (<%=role.getRoleCode()%>)</option>
+											    	<option value="<%=role.getRoleMasterId()%>"><%=role.getRoleName()!=null?StringEscapeUtils.escapeHtml4(role.getRoleName()): " - "%> (<%=role.getRoleCode()!=null?StringEscapeUtils.escapeHtml4(role.getRoleCode()): " - "%>)</option>
 											    <%}%>
 											</select>
 										</div>
@@ -437,6 +439,56 @@ b{
 			return false;
 		}
 	}
+	
+	// Role Name Duplicate Check
+	$('#roleName').on('change', function(){
+		var roleName = $(this).val();
+		$.ajax({
+            type: "GET",
+            url: "RoleNameDuplicateCheck.htm",
+            data: {
+            	roleName: roleName,
+            },
+            datatype: 'json',
+            success: function(result) {
+                var ajaxresult = JSON.parse(result); 
+
+                // Check if the Role Name already exists
+                if (ajaxresult > 0) {
+                	$('#roleName').val('');
+                    alert('Role Name Already Exists');
+                }
+            },
+            error: function() {
+                alert('An error occurred while checking the Role Name.');
+            }
+        });
+	});
+	
+	// Role Code Duplicate Check
+	$('#roleCode').on('change', function(){
+		var roleCode = $(this).val();
+		$.ajax({
+            type: "GET",
+            url: "RoleCodeDuplicateCheck.htm",
+            data: {
+            	roleCode: roleCode,
+            },
+            datatype: 'json',
+            success: function(result) {
+                var ajaxresult = JSON.parse(result); 
+
+                // Check if the Role Code already exists
+                if (ajaxresult > 0) {
+                	$('#roleCode').val('');
+                    alert('Role Code Already Exists');
+                }
+            },
+            error: function() {
+                alert('An error occurred while checking the Role Code.');
+            }
+        });
+	});
 	
 </script>
 </body>

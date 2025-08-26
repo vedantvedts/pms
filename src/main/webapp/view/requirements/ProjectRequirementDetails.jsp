@@ -238,7 +238,7 @@ FormatConverter fc = new FormatConverter();
 						</tr>
 				    	<tr>
 							<td  class="text-primary" colspan="2">9.&nbsp; Project Number and Project Name: 
-								<%if(projectDetails!=null) {%> <span class="text-dark"><%=projectDetails[11]!=null?StringEscapeUtils.escapeHtml4(projectDetails[11].toString()): " - "+" & "+projectDetails[3]!=null?StringEscapeUtils.escapeHtml4(projectDetails[3].toString()): " - "+" ( "+projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()): " - "+" )" %> </span> <%} %>
+								<%if(projectDetails!=null) {%> <span class="text-dark"><%=projectDetails[11]!=null?StringEscapeUtils.escapeHtml4(projectDetails[11].toString()): " - "%> <%=" & "%> <%=projectDetails[3]!=null?StringEscapeUtils.escapeHtml4(projectDetails[3].toString()): " - "%> <%=" ( "%> <%=projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()): " - "%> <%=" )" %> </span> <%} %>
 							</td>
 						</tr>
 						<tr>
