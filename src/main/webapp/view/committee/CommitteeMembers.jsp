@@ -669,7 +669,7 @@ String logintype = (String)session.getAttribute("LoginType");
 				             		</td>
 			             		
 										
-								<%if( (Long.parseLong(divisionid)>0 || Long.parseLong(projectid)>0 ||Long.parseLong(initiationid)>0)){ %>
+								<%if( Long.parseLong(divisionid)>0 || Long.parseLong(projectid)>0 || Long.parseLong(initiationid)>0 || Long.parseLong(carsInitiationId)>0){ %>
 								 	<td>
 										<form  method="post" action="ProjectCommitteeDescriptionTOREdit.htm">
 											<button  type="submit" class="btn btn-sm edit">DESCRIPTION</button>

@@ -15,7 +15,6 @@
 	<link href="${contentCss}" rel="stylesheet" />
 
 
-	<title> ADD COMMITTEE</title>
 	<style type="text/css">
 		.input-group-text {
 			font-weight: bold;
@@ -92,7 +91,9 @@ String committeemainid=committeemaindata[0].toString();
 									<%-- <textarea class="form-control"  name="description" required placeholder="Enter Description" rows="5" cols="50" maxlength="1000"><%if(committeeprojectdata[1]!=null){ %><%=committeeprojectdata[1] %>   <% }%></textarea> --%>
 								
 												<div id="Editordescription" class="center">
-												<%if(committeeprojectdata[1]!=null){ %><%=committeeprojectdata[1].toString() %>   <% }%>
+
+												<%if(committeeprojectdata!=null && committeeprojectdata[1]!=null){ %><%=StringEscapeUtils.escapeHtml4(committeeprojectdata[1].toString()) %>   <% }%>
+
 															<textarea name="description"  id="description" >
 															</textarea>
 														</div>
@@ -105,7 +106,9 @@ String committeemainid=committeemaindata[0].toString();
 									<label class="control-label">Terms Of Reference </label>
 									<%-- <textarea class="form-control"  name="TOR" required placeholder="Enter Terms Of Reference" rows="5" cols="50" maxlength="1000"><%if(committeeprojectdata[2]!=null){ %><%=committeeprojectdata[2] %>   <% }%></textarea> --%>
 									<div id="EditorReference" class="center">
-						<%if(committeeprojectdata[2]!=null){ %><%=committeeprojectdata[2].toString() %>   <% }%>
+
+						<%if(committeeprojectdata!=null && committeeprojectdata[2]!=null){ %><%=StringEscapeUtils.escapeHtml4(committeeprojectdata[2].toString()) %>   <% }%>
+
 									
 															<textarea name="TOR"  id="TOR" >
 															</textarea>
@@ -121,7 +124,7 @@ String committeemainid=committeemaindata[0].toString();
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								
 								
-								<input type="hidden" name="committeeprojectid" value="<%=committeeprojectdata[0] %>" />
+								<input type="hidden" name="committeeprojectid" value="<%=committeeprojectdata!=null?committeeprojectdata[0]:"0" %>" />
 								<input type="hidden" name="committeemainid" value="<%=committeemainid %>" />
 								
 							

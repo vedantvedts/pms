@@ -123,6 +123,7 @@ import com.vts.pfms.committee.dto.EmpAccessCheckDto;
 import com.vts.pfms.committee.dto.MeetingCheckDto;
 import com.vts.pfms.committee.model.CommitteScheduleMinutesDraft;
 import com.vts.pfms.committee.model.Committee;
+import com.vts.pfms.committee.model.CommitteeCARS;
 import com.vts.pfms.committee.model.CommitteeDefaultAgenda;
 import com.vts.pfms.committee.model.CommitteeDivision;
 import com.vts.pfms.committee.model.CommitteeInitiation;
@@ -6033,7 +6034,7 @@ public class CommitteeController {
 			String projectid=committeemaindata[2].toString() ;
 			String divisionid=committeemaindata[3].toString() ;
 			String initiationid=committeemaindata[4].toString() ;
-
+			String carsInitiationId=committeemaindata[13]!=null?committeemaindata[13].toString(): "0" ;
 
 			if(projectid!=null && Long.parseLong(projectid)>0)
 			{
@@ -6042,19 +6043,24 @@ public class CommitteeController {
 			else if(divisionid!=null && Long.parseLong(divisionid)>0)
 			{
 				ProjectCommitteeDescriptionTOR=service.DivisionCommitteeDescriptionTOR(divisionid, committeeid);
-			}
-			if(Long.parseLong(initiationid)>0)
+			}else if(Long.parseLong(initiationid)>0)
 			{					
 				ProjectCommitteeDescriptionTOR = service.InitiationCommitteeDescriptionTOR(initiationid,committeeid);
+			}else if(Long.parseLong(carsInitiationId)>0)
+			{
+				ProjectCommitteeDescriptionTOR = service.carsCommitteeDescriptionTOR(carsInitiationId, committeeid);
 			}
-			req.setAttribute("committeeprojectdata",ProjectCommitteeDescriptionTOR);
-			req.setAttribute("committeemaindata",committeemaindata);
+			req.setAttribute("committeeprojectdata", ProjectCommitteeDescriptionTOR);
+			req.setAttribute("committeemaindata", committeemaindata);
+			
+			return "committee/CommitteeProjectDescriptionTOREdit";
+		
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside ProjectCommitteeDescriptionTOREdit.htm "+UserId, e);
+			return "static/Error";
 		}
-		return "committee/CommitteeProjectDescriptionTOREdit";
 	}
 
 
@@ -6070,7 +6076,8 @@ public class CommitteeController {
 			String projectid=committeemaindata[2].toString() ;
 			String divisionid=committeemaindata[3].toString() ;
 			String initiationid=committeemaindata[4].toString() ;
-			int count=0;
+			String carsInitiationId=committeemaindata[13]!=null?committeemaindata[13].toString(): "0" ;
+			long count=0;
 			if(Long.parseLong(projectid)>0)
 			{
 				CommitteeProject  committeeproject = new CommitteeProject();
@@ -6096,6 +6103,26 @@ public class CommitteeController {
 				committeeinitiation.setTermsOfReference(req.getParameter("TOR"));
 				committeeinitiation.setModifiedBy(UserId);
 				count= service.InitiationCommitteeDescriptionTOREdit(committeeinitiation);
+			}else if(Long.parseLong(carsInitiationId)>0)
+			{
+				String committeeprojectid = req.getParameter("committeeprojectid");
+				Long comCARSInitiationId = committeeprojectid!=null?Long.parseLong(committeeprojectid): 0;
+				CommitteeCARS committeeCARS = comCARSInitiationId>0? service.getCommitteeCARSById(comCARSInitiationId+"") : new CommitteeCARS(); 
+				if(comCARSInitiationId==0) {
+					committeeCARS.setCARSInitiationId(Long.parseLong(carsInitiationId));
+					committeeCARS.setCommitteeId(Long.parseLong(committeeid));
+					committeeCARS.setAutoSchedule("N");
+					committeeCARS.setCreatedBy(UserId);
+					committeeCARS.setCreatedDate(LocalDate.now().toString());
+				}else {
+					committeeCARS.setModifiedBy(UserId);
+					committeeCARS.setModifiedDate(LocalDate.now().toString());
+				}
+				
+				committeeCARS.setDescription(req.getParameter("description"));
+				committeeCARS.setTermsOfReference(req.getParameter("TOR"));
+				
+				count= service.addCommitteeCARS(committeeCARS);
 			}
 
 			if (count > 0) {
@@ -6103,13 +6130,16 @@ public class CommitteeController {
 			} else {
 				redir.addAttribute("resultfail", "Description and Terms of Reference Edit unSuccessfull");
 			}
-			redir.addFlashAttribute("committeemainid",committeemainid);
+			redir.addAttribute("committeemainid",committeemainid);
+			
+			return "redirect:/ProjectCommitteeDescriptionTOREdit.htm";
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside ProjectCommitteeDescriptionTOREditSubmit.htm "+UserId, e);
+			return "static/Error";
 		}
-		return "redirect:/ProjectCommitteeDescriptionTOREdit.htm";
+		
 	}
 
 	@RequestMapping(value = "AgendasFromPreviousMeetingsAdd.htm")
