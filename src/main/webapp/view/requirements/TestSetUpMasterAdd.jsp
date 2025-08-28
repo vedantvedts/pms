@@ -196,7 +196,7 @@ String htmlContent = (String)request.getAttribute("htmlContent");
 										</div>
 										<%if(tp!=null && tp.getTdrsData()!=null ) {%>
 										<div class="col-md-2" style="display: flex;justify-content:center;align-items: center;">
-										<button class="btn btn-link" onclick ="showData()">  <%=tp.getTdrsData()!=null ?"  "+ StringEscapeUtils.escapeHtml4(tp.getTdrsData()).split("_")[1]:"" %> </button>
+										<button class="btn btn-lintp.getTdrsData()!=null ?"  "+ StringEscapeUtils.escapeHtml4(tp.getTdrsData()).split("_")[1]:"" %> </button>
 										<button class="btn btn-sm" type="button" onclick="setDownloadTdrs()"  data-toggle="tooltip"
 										data-placement="top" data-original-data=""
 										title="TDRS file Download" >
@@ -213,7 +213,7 @@ String htmlContent = (String)request.getAttribute("htmlContent");
 							<div class="form-group">
 							<label style="font-size: 17px;  color: #07689f">Test Set UP: <span class="mandatory" style="color: red;">*</span></label>
 							<div id="Editor">
-			   				<%= tp!= null?tp.getTestSetUp()!=null?StringEscapeUtils.escapeHtml4(tp.getTestSetUp()).trim():"":""%>
+			   				<%= tp!= null?tp.getTestSetUp()!=null?tp.getTestSetUp().trim():"":""%>
 
 							</div>
 							</div>
@@ -224,7 +224,7 @@ String htmlContent = (String)request.getAttribute("htmlContent");
 							<div class="form-group">
 							<label style="font-size: 17px;  color: #07689f">Test Procedure: <span class="mandatory" style="color: red;">*</span></label>
 							<div id="Editor1">
-			   			<%= tp!= null?tp.getTestProcedure()!=null?StringEscapeUtils.escapeHtml4(tp.getTestProcedure()).trim():"":""%>
+			   			<%= tp!= null?tp.getTestProcedure()!=null?tp.getTestProcedure().trim():"":""%>
 
 							</div>
 							</div>
@@ -238,7 +238,7 @@ String htmlContent = (String)request.getAttribute("htmlContent");
 							<div class="form-group">
 							<label style="font-size: 17px;  color: #07689f">Objective: <span class="mandatory" style="color: red;">*</span></label>
 							<div id="Editor3">
-			   			<%= tp!= null?tp.getObjective()!=null?StringEscapeUtils.escapeHtml4(tp.getObjective()).trim():"":""%>
+			   			<%= tp!= null?tp.getObjective()!=null?tp.getObjective().trim():"":""%>
 
 							</div>
 							</div>

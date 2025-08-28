@@ -223,12 +223,12 @@ String drdologo = (String)request.getAttribute("drdologo");
 								%>
 								<tr>
 								<td align="center">
-								<input type="radio" name="Did" value=<%=t.getSetupId()!=null?StringEscapeUtils.escapeHtml4(t.getTestSetUp()) : ""%>  > 
+								<input type="radio" name="Did" value=<%=t.getSetupId()!=null?t.getSetupId() : ""%>  > 
 								</td>
 								
-								<td style="text-align: center;"> <%=t.getTestSetUpId()!=null?StringEscapeUtils.escapeHtml4(t.getTestSetUpId()) : " - " %> </td>
-								<td style="text-align: left;"> <%=t.getObjective()!=null?StringEscapeUtils.escapeHtml4(t.getObjective()) : " - " %> </td>
-								<td style="text-align: left;"> <%=t.getFacilityRequired()!=null?StringEscapeUtils.escapeHtml4(t.getFacilityRequired()) : " - " %> </td>
+								<td style="text-align: center;"> <%=t.getTestSetUpId()!=null?t.getTestSetUpId() : " - " %> </td>
+								<td style="text-align: left;"> <%=t.getObjective()!=null?t.getObjective() : " - " %> </td>
+								<td style="text-align: left;"> <%=t.getFacilityRequired()!=null?t.getFacilityRequired() : " - " %> </td>
 						<%-- 		<td>
 								
 								<%
@@ -346,7 +346,7 @@ String drdologo = (String)request.getAttribute("drdologo");
 			 document.getElementById('loadingOverlay').style.display = 'flex';;
 			var chapterCount = 0;
 		    var mainContentCount = 0;
-			var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=StringEscapeUtils.escapeHtml4(DocTempAtrr[12].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
+			var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
 			
 			var docDefinition = {
 		            content: [
@@ -369,7 +369,7 @@ String drdologo = (String)request.getAttribute("drdologo");
 		                <% } %>
 		                
 		                {
-		                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + (LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - ") + ")" %> <% } else { %> '-' <% } %></h5>'),
+		                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + (LabList[0]!=null?LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - ") + ")" %> <% } else { %> '-' <% } %></h5>'),
 		                    alignment: 'center',
 		                    fontSize: 16,
 		                    bold: true,
@@ -383,7 +383,7 @@ String drdologo = (String)request.getAttribute("drdologo");
 		                    margin: [0, 10, 0, 10]
 		                },
 		                {
-		                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(LabList[2].toString())+" , "+StringEscapeUtils.escapeHtml4(LabList[3].toString())+", PIN-"+StringEscapeUtils.escapeHtml4(LabList[5].toString()) %><%}else{ %>-<%} %></h6>'),
+		                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=LabList[2].toString()+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %><%}else{ %>-<%} %></h6>'),
 		                    alignment: 'center',
 		                    fontSize: 14,
 		                    bold: true,
@@ -411,7 +411,7 @@ String drdologo = (String)request.getAttribute("drdologo");
 			            	{
 		            		    text: [
 		            		        {
-		            		            text: '<%=++speccount %>. <%=t.getTestSetUpId()!=null?StringEscapeUtils.escapeHtml4(t.getTestSetUpId()) : ""  %> ',
+		            		            text: '<%=++speccount %>. <%=t.getTestSetUpId()!=null?t.getTestSetUpId() : ""  %> ',
 		            		            tocItem: true ,// Only this text goes to TOC
 		            		        },
 		            		       
@@ -438,16 +438,16 @@ String drdologo = (String)request.getAttribute("drdologo");
 	    	                            [
 	    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
 	    	                                { text: 'Id', style: 'tableData' },
-	    	                                { text: '<%=t.getTestSetUpId()!=null?StringEscapeUtils.escapeHtml4(t.getTestSetUpId()) :"-" %>', style: 'tableData' },
+	    	                                { text: '<%=t.getTestSetUpId()!=null?t.getTestSetUpId() :"-" %>', style: 'tableData' },
 	    	                            ],
 	    	                            [
 	    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
-	    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="font-weight:bold;text-align:left;">Objective</p>'+ '<%if(t.getObjective() !=null){ %> <%=StringEscapeUtils.escapeHtml4(t.getObjective()).trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
+	    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="font-weight:bold;text-align:left;">Objective</p>'+ '<%if(t.getObjective() !=null){ %> <%=t.getObjective().trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
 	    	                            ],
 	    	                            [
 	    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
 	    	                                { text: 'Specific Facility Required ', style: 'tableData' },
-	    	                                { text: '<%=t.getFacilityRequired()!=null?StringEscapeUtils.escapeHtml4(t.getFacilityRequired()):"-" %>', style: 'tableData' },
+	    	                                { text: '<%=t.getFacilityRequired()!=null?t.getFacilityRequired():"-" %>', style: 'tableData' },
 	    	                            ],
 	    	                            
 	    	                            [
@@ -458,12 +458,12 @@ String drdologo = (String)request.getAttribute("drdologo");
 	    	                            
 	    	                            [
 	    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
-	    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="font-weight:bold;text-align:center;">Test Set UP</p>'+ '<%if(t.getTestSetUp()!=null){ %> <%=StringEscapeUtils.escapeHtml4(t.getTestSetUp()).trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
+	    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="font-weight:bold;text-align:center;">Test Set UP</p>'+ '<%if(t.getTestSetUp()!=null){ %> <%=t.getTestSetUp().trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
 	    	                            ],
 	    	                            
 	    	                            [
 	    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
-	    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="font-weight:bold;text-align:center;">Test Procedure</p>'+ '<%if(t.getTestProcedure()!=null){ %> <%=StringEscapeUtils.escapeHtml4(t.getTestProcedure()).trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
+	    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="font-weight:bold;text-align:center;">Test Procedure</p>'+ '<%if(t.getTestProcedure()!=null){ %> <%=t.getTestProcedure().trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
 	    	                            ],
 	    	                            
 	    	                        <%--     [

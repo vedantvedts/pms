@@ -339,7 +339,7 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 									Conditions <span class="mandatory" style="color: red;">*</span>
 								</label>
 
-								<div id="EditorPreConditions" class="center"> <%if(tp.getPreConditions()!=null){%><%=StringEscapeUtils.escapeHtml4(tp.getPreConditions())%> <%}%></div>
+								<div id="EditorPreConditions" class="center"> <%if(tp.getPreConditions()!=null){%><%=tp.getPreConditions()%> <%}%></div>
 								<textarea name="PreConditions" id="PreConditionsAdd"
 									style="display: none"></textarea>
 							</div>
@@ -348,7 +348,7 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 								<label style="font-size: 17px; color: #07689f"> Post
 									Conditions <span class="mandatory" style="color: red;">*</span>
 								</label>
-								<div id="EditorPostConditions" class="center">  <%if(tp.getPostConditions()!=null){%><%=StringEscapeUtils.escapeHtml4(tp.getPostConditions())%> <%}%></div>
+								<div id="EditorPostConditions" class="center">  <%if(tp.getPostConditions()!=null){%><%=tp.getPostConditions()%> <%}%></div>
 								<textarea name="PostConditions" id="PostConditionsAdd"
 									style="display: none;"></textarea>
 							</div>
@@ -360,7 +360,7 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 									Requirements <span class="mandatory" style="color: red;">*</span>
 								</label>
 
-								<div id="EditorSafetyReq" class="center">  <%if(tp.getSafetyRequirements()!=null){%><%=StringEscapeUtils.escapeHtml4(tp.getSafetyRequirements())%> <%}%></div>
+								<div id="EditorSafetyReq" class="center">  <%if(tp.getSafetyRequirements()!=null){%><%=tp.getSafetyRequirements()%> <%}%></div>
 								<textarea name="SafetyReq" id="SafetyReqAdd"
 									style="display: none;"></textarea>
 							</div>
@@ -370,7 +370,7 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 									Personnel Resources <span class="mandatory" style="color: red;">*</span>
 								</label>
 
-								<div id="EditorPersonnelResources" class="center">  <%if(tp.getPersonnelResources()!=null){%><%=StringEscapeUtils.escapeHtml4(tp.getPersonnelResources())%> <%}%></div>
+								<div id="EditorPersonnelResources" class="center">  <%if(tp.getPersonnelResources()!=null){%><%=tp.getPersonnelResources()%> <%}%></div>
 								<textarea name="PersonnelResources" id="PersonnelResourcesAdd"
 									style="display: none;"></textarea>
 
@@ -382,7 +382,7 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 								<label style="font-size: 17px; color: #07689f;">
 									Description <span class="mandatory" style="color: red;">*</span>
 								</label>
-								<div id="descriptioneditor" class="center"><%if(tp.getDescription()!=null){%><%=StringEscapeUtils.escapeHtml4(tp.getDescription())%> <%}%>
+								<div id="descriptioneditor" class="center"><%if(tp.getDescription()!=null){%><%=tp.getDescription()%> <%}%>
 							</div>
 								<textarea name="Description"  id="DescriptionAdd" style="display: none;"></textarea>
 							</div>

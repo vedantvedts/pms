@@ -64,7 +64,7 @@ h6{
                                                            <option value="0" <%if(projectid.equalsIgnoreCase("0")){ %> selected="selected" <%} %>>General</option>	
                                                            <%
                                                            for(Object[] obj:projectslist){ %>
-														   <option value="<%=obj[0] %>" <%if(projectid.equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></option>	
+														   <option value="<%=obj[0] %>" <%if(projectid.equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> <%=obj[12]!=null?" ("+StringEscapeUtils.escapeHtml4(obj[12].toString())+") ": "" %></option>	
 														<%} %>
 																</select>	
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
