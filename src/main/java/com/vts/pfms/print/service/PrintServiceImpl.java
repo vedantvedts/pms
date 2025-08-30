@@ -202,8 +202,8 @@ public class PrintServiceImpl implements PrintService {
 	}
 
 	@Override
-	public Object[] ProjectCommitteeMeetingsCount(String projectid, String CommitteeCode) throws Exception {
-		return dao.ProjectCommitteeMeetingsCount(projectid, CommitteeCode);
+	public Object[] ProjectCommitteeMeetingsCount(String projectId, String divisionId, String initiationId, String carsInitiationId, String programmeId, String committeeCode) throws Exception {
+		return dao.ProjectCommitteeMeetingsCount(projectId, divisionId, initiationId, carsInitiationId, programmeId, committeeCode);
 	}
 
 	@Override
@@ -1208,6 +1208,10 @@ public List<Object[]> otherMeetingList(String projectid) throws Exception {
 	return dao.otherMeetingList(projectid);
 }
 
-
+@Override
+public List<Object[]> getMilestoneOpenActionListByProjectId(String projectId) throws Exception {
+	
+	return dao.getMilestoneOpenActionListByProjectId(projectId);
+}
 
 }
