@@ -331,7 +331,7 @@ label {
 			 document.getElementById('loadingOverlay').style.display = 'flex';;
 			var chapterCount = 0;
 		    var mainContentCount = 0;
-			var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=StringEscapeUtils.escapeHtml4(DocTempAtrr[12].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
+			var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
 			
 			var docDefinition = {
 		            content: [
@@ -354,7 +354,7 @@ label {
 		                <% } %>
 		                
 		                {
-		                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" +( LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") :" - ")+ ")" %> <% } else { %> '-' <% } %></h5>'),
+		                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" +( LabList[0]!=null?LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") :" - ")+ ")" %> <% } else { %> '-' <% } %></h5>'),
 		                    alignment: 'center',
 		                    fontSize: 16,
 		                    bold: true,
@@ -368,7 +368,7 @@ label {
 		                    margin: [0, 10, 0, 10]
 		                },
 		                {
-		                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(LabList[2].toString())+" , "+StringEscapeUtils.escapeHtml4(LabList[3].toString())+", PIN-"+StringEscapeUtils.escapeHtml4(LabList[5].toString()) %><%}else{ %>-<%} %></h6>'),
+		                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=LabList[2].toString()+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString()%><%}else{ %>-<%} %></h6>'),
 		                    alignment: 'center',
 		                    fontSize: 14,
 		                    bold: true,
@@ -396,7 +396,7 @@ label {
 			            	{
 		            		    text: [
 		            		        {
-		            		            text: '<%=++speccount %>. <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> ',
+		            		            text: '<%=++speccount %>. <%=obj[1]!=null?obj[1].toString(): " - " %> ',
 		            		            tocItem: true ,// Only this text goes to TOC
 		            		        },
 		            		       
@@ -422,45 +422,45 @@ label {
 	    	                            [
 	    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
 	    	                                { text: 'Test Name', style: 'tableData' },
-	    	                                { text: '<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-" %>', style: 'tableData' },
+	    	                                { text: '<%=obj[1]!=null?obj[1].toString():"-" %>', style: 'tableData' },
 	    	                            ],
 	    	                            [
 	    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
 	    	                                { text: 'Objective', style: 'tableData' },
-	    	                                { text: '<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %>', style: 'tableData' },
+	    	                                { text: '<%=obj[2]!=null?obj[2].toString():"-" %>', style: 'tableData' },
 	    	                            ],
 	    	                            
 	    	                            [
 	    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
-	    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="text-align:center;font-weight:bold;">Description:</p>'+' <%if(obj[3]!=null){ %> <%=StringEscapeUtils.escapeHtml4(obj[3].toString()).trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
+	    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="text-align:center;font-weight:bold;">Description:</p>'+' <%if(obj[3]!=null){ %> <%=obj[3].toString().trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
 	    	                              
 	    	                            ],
 	    	                            
 	    	                            [
 	    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
-	    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="text-align:center;font-weight:bold;">Pre Conditions</p>'+' <%if(obj[5]!=null){ %> <%=StringEscapeUtils.escapeHtml4(obj[5].toString()).trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
+	    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="text-align:center;font-weight:bold;">Pre Conditions</p>'+' <%if(obj[5]!=null){ %> <%=obj[5].toString().trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
 	    	                              
 	    	                            ],
 	    	                            [
 	    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
-	    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="text-align:center;font-weight:bold;">Post Conditions</p>'+' <%if(obj[6]!=null){ %> <%=StringEscapeUtils.escapeHtml4(obj[6].toString()).trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
+	    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="text-align:center;font-weight:bold;">Post Conditions</p>'+' <%if(obj[6]!=null){ %> <%=obj[6].toString().trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
 	    	                              
 	    	                            ],
 	    	                            [
 	    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
-	    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="text-align:center;font-weight:bold;">Safety Requirements</p>'+' <%if(obj[8]!=null){ %> <%=StringEscapeUtils.escapeHtml4(obj[8].toString()).trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
+	    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="text-align:center;font-weight:bold;">Safety Requirements</p>'+' <%if(obj[8]!=null){ %> <%=obj[8].toString().trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
 	    	                              
 	    	                            ],
 	    	                            [
 	    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
-	    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="text-align:center;font-weight:bold;">Personnel Resources </p>'+' <%if(obj[11]!=null){ %> <%=StringEscapeUtils.escapeHtml4(obj[11].toString()).trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
+	    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="text-align:center;font-weight:bold;">Personnel Resources </p>'+' <%if(obj[11]!=null){ %> <%=obj[11].toString().trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
 	    	                              
 	    	                            ],
 	    	                            
 	    	                            [
 	    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
 	    	                                { text: 'Remarks', style: 'tableData' },
-	    	                                { text: '<%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()).trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):"-" %>', style: 'tableData' },
+	    	                                { text: '<%=obj[13]!=null?obj[13].toString().trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):"-" %>', style: 'tableData' },
 	    	                            ],
 	    	                        ],
 	    	                    },
@@ -732,7 +732,7 @@ label {
 					
 						var chapterCount = 0;
 					    var mainContentCount = 0;
-						var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=StringEscapeUtils.escapeHtml4(DocTempAtrr[12].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
+						var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
 						
 						var docDefinition = {
 					            content: [
@@ -797,7 +797,7 @@ label {
 						            	{
 					            		    text: [
 					            		        {
-					            		            text: '<%=++speccount %>. <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "  %> ',
+					            		            text: '<%=++speccount %>. <%=obj[1]!=null?obj[1].toString(): " - "  %> ',
 					            		            tocItem: true ,// Only this text goes to TOC
 					            		        },
 					            		       
@@ -823,45 +823,45 @@ label {
 				    	                            [
 				    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
 				    	                                { text: 'Test Name', style: 'tableData' },
-				    	                                { text: '<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-" %>', style: 'tableData' },
+				    	                                { text: '<%=obj[1]!=null?obj[1].toString():"-" %>', style: 'tableData' },
 				    	                            ],
 				    	                            [
 				    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
 				    	                                { text: 'Objective', style: 'tableData' },
-				    	                                { text: '<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %>', style: 'tableData' },
+				    	                                { text: '<%=obj[2]!=null?obj[2].toString():"-" %>', style: 'tableData' },
 				    	                            ],
 				    	                            
 				    	                            [
 				    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
-				    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="text-align:center;font-weight:bold;">Description:</p>'+' <%if(obj[3]!=null){ %> <%=StringEscapeUtils.escapeHtml4(obj[3].toString()).trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
+				    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="text-align:center;font-weight:bold;">Description:</p>'+' <%if(obj[3]!=null){ %> <%=obj[3].toString().trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
 				    	                              
 				    	                            ],
 				    	                            
 				    	                            [
 				    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
-				    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="text-align:center;font-weight:bold;">Pre Conditions</p>'+' <%if(obj[5]!=null){ %> <%=StringEscapeUtils.escapeHtml4(obj[5].toString()).trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
+				    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="text-align:center;font-weight:bold;">Pre Conditions</p>'+' <%if(obj[5]!=null){ %> <%=obj[5].toString().trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
 				    	                              
 				    	                            ],
 				    	                            [
 				    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
-				    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="text-align:center;font-weight:bold;">Post Conditions</p>'+' <%if(obj[6]!=null){ %> <%=StringEscapeUtils.escapeHtml4(obj[6].toString()).trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
+				    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="text-align:center;font-weight:bold;">Post Conditions</p>'+' <%if(obj[6]!=null){ %> <%=obj[6].toString().trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
 				    	                              
 				    	                            ],
 				    	                            [
 				    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
-				    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="text-align:center;font-weight:bold;">Safety Requirements</p>'+' <%if(obj[8]!=null){ %> <%=StringEscapeUtils.escapeHtml4(obj[8].toString()).trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
+				    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="text-align:center;font-weight:bold;">Safety Requirements</p>'+' <%if(obj[8]!=null){ %> <%=obj[8].toString().trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
 				    	                              
 				    	                            ],
 				    	                            [
 				    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
-				    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="text-align:center;font-weight:bold;">Personnel Resources </p>'+' <%if(obj[11]!=null){ %> <%=StringEscapeUtils.escapeHtml4(obj[11].toString()).trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
+				    	                                { stack: [htmlToPdfmake(setImagesWidth('<p style="text-align:center;font-weight:bold;">Personnel Resources </p>'+' <%if(obj[11]!=null){ %> <%=obj[11].toString().trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 2 }
 				    	                              
 				    	                            ],
 				    	                            
 				    	                            [
 				    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
 				    	                                { text: 'Remarks', style: 'tableData' },
-				    	                                { text: '<%=obj[13]!=null? StringEscapeUtils.escapeHtml4(obj[13].toString()).trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):"-" %>', style: 'tableData' },
+				    	                                { text: '<%=obj[13]!=null? obj[13].toString().trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):"-" %>', style: 'tableData' },
 				    	                            ],
 				    	                        ],
 				    	                    },

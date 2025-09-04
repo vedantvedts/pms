@@ -213,7 +213,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 					<%if(apprInfo[8].toString().equalsIgnoreCase("AGD") || apprInfo[8].toString().equalsIgnoreCase("APD")){ %>
 						<label style="text-transform: capitalize;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
 						<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
-						<label style="font-size: 12px;">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString()).substring(0, 10)  +" "+apprInfo[4].toString()).substring(11,19) %>]</label>
+						<label style="font-size: 12px;">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString()).substring(0, 10)  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
 				<%break;}} %>  
 			</div>	
 		</td>
