@@ -242,6 +242,7 @@ public class CommitteeController {
 	private SimpleDateFormat rdf=new SimpleDateFormat("dd-MM-yyyy");
 	private static final Logger logger=LogManager.getLogger(CommitteeController.class);
 	private SimpleDateFormat sdtf = fc.getSqlDateAndTimeFormat();
+	
 	@RequestMapping(value = "CommitteeAdd.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String CommitteeAddPage(HttpServletRequest req, HttpSession ses) throws Exception
 	{	
@@ -308,6 +309,8 @@ public class CommitteeController {
 			committeeDto.setTermsOfReference(req.getParameter("TOR").trim());
 			committeeDto.setIsGlobal(projectid);
 			committeeDto.setReferenceNo(req.getParameter("refno"));
+			committeeDto.setIsBriefing(req.getParameter("IsBriefing"));
+			
 			if(req.getParameter("periodic").equalsIgnoreCase("P"))
 			{
 				String PeriodicDuration=req.getParameter("periodicduration");
@@ -483,11 +486,12 @@ public class CommitteeController {
 			committeeDto.setTermsOfReference(req.getParameter("TOR"));
 			committeeDto.setIsGlobal(req.getParameter("projectid"));
 			committeeDto.setLabCode(LabCode);
+			committeeDto.setIsBriefing(req.getParameter("IsBriefing"));
 			if(req.getParameter("periodic").equalsIgnoreCase("P"))
 			{
 				committeeDto.setPeriodicDuration(PeriodicDuration);
 			}
-			else
+			else 
 			{
 				committeeDto.setPeriodicDuration("0");
 			}				
@@ -10896,6 +10900,133 @@ public class CommitteeController {
 
 		}
 
+	}
+	
+//	------------------------------------ MOM Check -------------------------------------------
+	@RequestMapping(value = "MOMCheckDownload.htm")
+	public void getMomCheck(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res) throws Exception
+	{
+
+		String UserId=(String)ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside MOMCheckDownload.htm "+UserId);
+		try
+		{
+			String committeescheduleid = req.getParameter("committeescheduleid");
+			Object[] committeescheduleeditdata=service.CommitteeScheduleEditData(committeescheduleid);
+			String projectid= committeescheduleeditdata[9].toString();
+			if(projectid!=null && Integer.parseInt(projectid)>0)
+			{
+				req.setAttribute("projectdetails", service.projectdetails(projectid));
+			}
+			String divisionid= committeescheduleeditdata[16].toString();
+			if(divisionid!=null && Integer.parseInt(divisionid)>0)
+			{
+				req.setAttribute("divisiondetails", service.DivisionData(divisionid));
+			}
+			String initiationid= committeescheduleeditdata[17].toString();
+			if(initiationid!=null && Integer.parseInt(initiationid)>0)
+			{
+				req.setAttribute("initiationdetails", service.Initiationdetails(initiationid));
+			}
+
+			List<Object[]> actionlist= service.MinutesViewAllActionList(committeescheduleid);
+			HashMap< String, ArrayList<Object[]>> actionsdata=new LinkedHashMap<String, ArrayList<Object[]>>();
+
+			for(Object obj[] : actionlist) {
+
+				ArrayList<Object[]> values=new ArrayList<Object[]>(); 
+				for(Object obj1[] : actionlist ) {
+					if(obj1[0].equals(obj[0])) {
+						values.add(obj1);
+					}
+				}
+				if(!actionsdata.containsKey(obj[0].toString())) {
+					actionsdata.put(obj[0].toString(), values);
+				}
+			} 
+
+			req.setAttribute("actionsdata",actionsdata );
+
+			req.setAttribute("committeeminutesspeclist",service.CommitteeScheduleMinutesforAction(committeescheduleid) );
+			req.setAttribute("committeescheduleeditdata", committeescheduleeditdata);
+			//req.setAttribute("CommitteeAgendaList", service.CommitteeAgendaList(committeescheduleid));
+			req.setAttribute("committeeminutes",service.CommitteeMinutesSpecdetails());
+			//req.setAttribute("committeeminutessub",service.CommitteeMinutesSub());
+			List<Object[]> invitedlists= service.CommitteeAtendance(committeescheduleid);
+			
+			Map<Object,List<Object[]>> invitedlist = invitedlists.stream().filter(row->row[4].toString().equalsIgnoreCase("P")).collect(Collectors.groupingBy(row -> row[3]));
+			List<Map.Entry<Object, List<Object[]>>> entries = new ArrayList<>(invitedlist.entrySet());
+
+			int mid = (entries.size() + 1) / 2;
+
+			Map<Object, List<Object[]>> leftMap = new LinkedHashMap<>();
+			Map<Object, List<Object[]>> rightMap = new LinkedHashMap<>();
+
+			for (int i = 0; i < mid; i++) { 
+			    leftMap.put(entries.get(i).getKey(), entries.get(i).getValue());
+			}
+			for (int i = mid; i < entries.size(); i++) {
+			    rightMap.put(entries.get(i).getKey(), entries.get(i).getValue());
+			}
+			
+			req.setAttribute("leftMap", leftMap);
+			req.setAttribute("rightMap", rightMap);
+			
+			req.setAttribute("committeeinvitedlist", invitedlists);
+			req.setAttribute("projectid", projectid);				
+			req.setAttribute("actionlist", service.MinutesViewAllActionList(committeescheduleid));
+			req.setAttribute("labdetails", service.LabDetails(committeescheduleeditdata[24].toString()));
+			req.setAttribute("isprint", "Y");
+			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
+			req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
+			req.setAttribute("labInfo", service.LabDetailes(LabCode));
+			req.setAttribute("ActionPlanSixMonths", service.ActionPlanSixMonths(projectid));
+			String filename=committeescheduleeditdata[11].toString().replace("/", "-");
+
+			req.setAttribute("flagforView", "M");			
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path);
+
+			req.setAttribute("ccmFlag", req.getParameter("ccmFlag"));
+
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/committee/MoMCheck.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
+			req.setAttribute("tableactionlist",  actionsdata);
+
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+
+			PdfDocument pdfDocument = new PdfDocument(pdf1);
+
+			pdfDocument.close();
+			pdf1.close();	       
+
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition","inline;filename="+filename+".pdf");
+
+			File f = new File(path + File.separator + filename + ".pdf");
+			try (OutputStream out = res.getOutputStream();
+			     FileInputStream in = new FileInputStream(f)) {
+
+			    byte[] buffer = new byte[4096];
+			    int length;
+			    while ((length = in.read(buffer)) > 0) {
+			        out.write(buffer, 0, length);
+			    }
+			    out.flush();
+			}
+
+			Files.deleteIfExists(Paths.get(path + File.separator + filename + ".pdf"));
+
+
+
+		}
+		catch (Exception e) {
+			e.printStackTrace(); logger.error(new Date() +"Inside MOMCheckDownload.htm "+UserId,e);
+		}
 	}
 	
 }
