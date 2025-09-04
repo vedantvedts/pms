@@ -1,3 +1,4 @@
+<%@page import="java.util.stream.Collectors"%>
 <%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -250,7 +251,9 @@ ul, #myUL {
   List<Object[]> agendaDocList = (List<Object[]>) request.getAttribute("agendaDocList");
   String filesize=  (String)request.getAttribute("filesize");
   String labcode = (String)request.getAttribute("labcode");
-  List<Object[]> labEmpList=(List<Object[]>)request.getAttribute("labEmpList");
+  List<Object[]> labEmpList = (List<Object[]>)request.getAttribute("labEmpList");
+  List<Object[]> allLabList = (List<Object[]>)request.getAttribute("allLabList");
+  Map<String, List<Object[]>> labEmpListMap = labEmpList.stream().collect(Collectors.groupingBy(e -> e[4].toString()));
   String scheduleid=scheduledata[6].toString();
   String projectid=scheduledata[9].toString();
  %>
@@ -299,63 +302,75 @@ ul, #myUL {
 		        			<div >
 		          				<div style="float: right;"><span style="font-size: 15px ;color: blue ; font-weight: ">Duration in Minutes</span></div>
 		          					<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="myTable20" style="margin-top: 30px;">
-										<thead>  
+									<thead>  
+										<tr>
+											<th>Agenda Item</th>
+											<th>Remarks</th>
+											<th>Lab</th>
+											<th>Presenter</th>
+											<th>Duration </th>
+											<th>Attach File </th> 
+										</tr>
+									</thead>
+									<tbody>
+										<%if(prgmProjectList!=null && prgmProjectList.size()>0) {
+											int slno = 0;
+											for(Object[] obj : prgmProjectList) {
+												++slno;
+												List<Object[]> empList = labEmpListMap.get(obj[7].toString()); %>
 											<tr>
-												<th>Agenda Item</th>
-												<th>Remarks</th>
-												<th>Presenter</th>
-												<th>Duration </th>
-												<th>Attach File </th> 
+												<td>
+													<input type="text" class="form-control" name="agendaitem" value="<%=obj[3] %> (<%=obj[1] %>)" maxlength="500" required="required" />
+													<input type="hidden" name="projectid" value="<%=obj[0]%>">
+													<%-- <input type="hidden" name="PresLabCode" value="<%=labcode%>"> --%>
+													<%-- <input type="hidden" name="presenterid" value="<%=obj[4]%>"> --%>
+												</td>
+												<td>
+													<input type="text" class="form-control" name="remarks" value="NIL" maxlength="255" required="required" />
+												</td>
+												<td>
+								         		 	<select class="form-control items PresLabCode" name="PresLabCode" id="PresLabCode_<%=slno %>" required="required" style="width: 200px" onchange="AgendaPresentors('<%=slno %>')"  data-live-search="true" data-container="body">
+														<option disabled="disabled"  selected value="">Lab Name</option>
+													    <% for (Object[] lab : allLabList) {%>
+														    <option value="<%=lab[3]%>" <%if(obj[7].toString().equalsIgnoreCase(lab[3].toString())){ %>selected <%} %>  ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
+													    <%} %>
+													    <!-- <option value="@EXP">Expert</option> -->
+													</select>
+								         		</td>
+												<td>
+													<select class="form-control items presenterid" name="presenterid" id="presenterid_<%=slno %>"  required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body" onchange="getEmployee(this)">
+										        		<option disabled="disabled" selected value="">Choose...</option>
+												        <% for(Object[] emp : empList){ %>
+												        	<option value="<%=emp[0] %>" <%if(obj[4].toString().equalsIgnoreCase(emp[0].toString())) {%>selected<%} %> ><%=emp[1]!=null?StringEscapeUtils.escapeHtml4(emp[1].toString()): " - " %>(<%=emp[3]!=null?StringEscapeUtils.escapeHtml4(emp[3].toString()): " - " %>)</option>
+												        <%} %>
+													</select>
+													<%-- <span><%=obj[5] %>, <%=obj[6] %></span> --%>
+												</td>
+												<td>
+													<input type="number" name="duration" class="form-control" min="1" value="20" placeholder="Minutes" required/>
+												</td>
+												<td style="text-align: left; width: 15%;">
+													<button type="button" class=" btn btn-sm btnfileattachment" name="add" onclick="openMainModal('0','0',' ','<%=projectid %>','0','add')" > <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button> 
+													<br>
+													<table class="attachlist" id="attachlistdiv_0">
+														
+													</table>										
+												</td>
 											</tr>
-										</thead>
-										<tbody>
-											<%if(prgmProjectList!=null && prgmProjectList.size()>0) {
-												int slno = 0;
-												for(Object[] obj : prgmProjectList) { %>
-												<tr>
-													<td>
-														<input type="text" class="form-control" name="agendaitem" value="<%=obj[3] %> (<%=obj[1] %>)" maxlength="500" required="required" />
-														<input type="hidden" name="projectid" value="<%=obj[0]%>">
-														<input type="hidden" name="PresLabCode" value="<%=labcode%>">
-														<%-- <input type="hidden" name="presenterid" value="<%=obj[4]%>"> --%>
-													</td>
-													<td>
-														<input type="text" class="form-control" name="remarks" maxlength="255" required="required" />
-													</td>
-													<td>
-														<select class="form-control items presenterid" name="presenterid" id="presenterid_<%=++slno %>"  required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body" onchange="getEmployee(this)">
-											        		<option disabled="disabled" selected value="">Choose...</option>
-													        <% for(Object[] emp : labEmpList){ %>
-													        	<option value="<%=emp[0] %>" <%if(obj[4].toString().equalsIgnoreCase(emp[0].toString())) {%>selected<%} %> ><%=emp[1]!=null?StringEscapeUtils.escapeHtml4(emp[1].toString()): " - " %>(<%=emp[3]!=null?StringEscapeUtils.escapeHtml4(emp[3].toString()): " - " %>)</option>
-													        <%} %>
-														</select>
-														<%-- <span><%=obj[5] %>, <%=obj[6] %></span> --%>
-													</td>
-													<td>
-														<input type="number" name="duration" class="form-control" min="1" placeholder="Minutes" required/>
-													</td>
-													<td style="text-align: left; width: 15%;">
-														<button type="button" class=" btn btn-sm btnfileattachment" name="add" onclick="openMainModal('0','0',' ','<%=projectid %>','0','add')" > <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button> 
-														<br>
-														<table class="attachlist" id="attachlistdiv_0">
-															
-														</table>										
-													</td>
-												</tr>
-											<%} }%>	
-										</tbody>	
-									</table>
+										<%} }%>	
+									</tbody>	
+								</table>
 	
-			          				<div align="center">
-						            	<input type="submit"  class="btn  btn-sm submit" value="SUBMIT" onclick="return allfilessizecheck('addagendafrm'); "/> <!-- return confirm('Are You Sure To Add This Agenda(s) ?') -->
-			          				</div>
-		        				</div>
+			          			<div align="center">
+						            <input type="submit"  class="btn  btn-sm submit" value="SUBMIT" onclick="return allfilessizecheck('addagendafrm'); "/> <!-- return confirm('Are You Sure To Add This Agenda(s) ?') -->
+			          			</div>
+		        			</div>
 		        		
-					        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
-					        	<input type="hidden" name="scheduleid" value="<%=scheduledata[6] %>">
-					     		<input type="hidden" name="schedulesub" value="<%=scheduledata[5]%>"/>
-				    			<input type="hidden" name="prgmflag" value="Y">
-		      				</form>
+				        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
+				        	<input type="hidden" name="scheduleid" value="<%=scheduledata[6] %>">
+				     		<input type="hidden" name="schedulesub" value="<%=scheduledata[5]%>"/>
+			    			<input type="hidden" name="prgmflag" value="Y">
+		      			</form>
 		    		</div>
 				<%} %>
 			
@@ -370,12 +385,13 @@ ul, #myUL {
 			    								<table class="table table-bordered table-hover  table-condensed" id="myTable3" style="margin-top: 20px;">
 													<thead>
 														<tr>
-															<th colspan="8" style="background-color: #346691; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;" >Agenda Details</th>									
+															<th colspan="9" style="background-color: #346691; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;" >Agenda Details</th>									
 														</tr>	
 														<tr>			
 															<th>Priority</th>		
 															<th>Agenda Item</th>
-															<th>Remarks</th>	
+															<th>Remarks</th>
+															<th>Lab</th>	
 														 	<th>Presenter</th>
 														 	<th>Duration </th>
 														 	<th>Attachment</th>
@@ -398,7 +414,16 @@ ul, #myUL {
 																	<input form="inlineeditform_<%=count%>" type="text" class="form-control" name="remarks" value="<%=obj[6].toString()%>"  maxlength="255" >
 																</td>
 																<td>
-																	<select class="form-control items presenterid" name="presenterid" id="presenterid_<%=count %>"  required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body" onchange="getEmployee(this)">
+												         		 	<select form="inlineeditform_<%=count%>" class="form-control items PresLabCode" name="PresLabCode" id="PresLabCode_<%=count %>" required="required" style="width: 200px" onchange="AgendaPresentors('<%=count %>')"  data-live-search="true" data-container="body">
+																		<option disabled="disabled"  selected value="">Lab Name</option>
+																	    <% for (Object[] lab : allLabList) {%>
+																		    <option value="<%=lab[3]%>" <%if(obj[14].toString().equalsIgnoreCase(lab[3].toString())){ %>selected <%} %>  ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
+																	    <%} %>
+																	    <!-- <option value="@EXP">Expert</option> -->
+																	</select>
+												         		</td>
+																<td>
+																	<select form="inlineeditform_<%=count%>" class="form-control items presenterid" name="presenterid" id="presenterid_<%=count %>"  required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body" onchange="getEmployee(this)">
 														        		<option disabled="disabled" selected value="">Choose...</option>
 																        <% for(Object[] emp : labEmpList){ %>
 																        	<option value="<%=emp[0] %>" <%if(obj[9].toString().equalsIgnoreCase(emp[0].toString())) {%>selected<%} %> ><%=emp[1]!=null?StringEscapeUtils.escapeHtml4(emp[1].toString()): " - " %>(<%=emp[3]!=null?StringEscapeUtils.escapeHtml4(emp[3].toString()): " - " %>)</option>
@@ -432,7 +457,7 @@ ul, #myUL {
 																	<form name="myForm1" id="inlineeditform_<%=count%>" action="CommitteeScheduleAgendaEdit.htm" method="POST"  >
 										                                <input type="hidden" name="${_csrf.parameterName}"   value="${_csrf.token}" />
 										                                <input type="hidden" name="projectid" value="<%=obj[5]%>">
-																		<input type="hidden" name="PresLabCode" value="<%=labcode%>">
+																		<%-- <input type="hidden" name="PresLabCode" value="<%=labcode%>"> --%>
 																		<%-- <input type="hidden" name="presenterid" value="<%=obj[9]%>"> --%>
 																		<input type="hidden" name="prgmflag" value="Y">
 																		<input type="hidden"  name="AgendaPriority" value="<%=obj[8]%>"/>
@@ -450,7 +475,7 @@ ul, #myUL {
 														<%if( committeeAgendaList.size()!=1 ){ %>
 															<tr>
 																<td class="center"><input type="submit" value="UPDATE" class="btn btn-sm edit" onclick="return confirm('Are You Sure to Update the Priorities ?');" form="priority_form"></td>
-																<td colspan="7"></td>
+																<td colspan="8"></td>
 															</tr>
 														<%} %>
 													</tbody>
@@ -698,12 +723,6 @@ function FileDownload(fileid1)
 	$('#downloadform').submit();
 }
 
-$(document).ready(function(){
-	<%for( Object[] agenda : committeeAgendaList){ %>
-		EditAgendaPresentors('<%=agenda[0]!=null?StringEscapeUtils.escapeHtml4(agenda[0].toString()): " - "%>','<%=agenda[9]!=null?StringEscapeUtils.escapeHtml4(agenda[9].toString()): " - "%>');
-	<%}%>
-	
-});
 </script>
 
 <!--  -----------------------------------------------agenda attachment js ---------------------------------------------- -->
@@ -757,67 +776,36 @@ var filexcount=0;
 </script>
 	
 <script type="text/javascript">
-		function AgendaPresentors($AddrowId){
-			$('#presenterid_'+$AddrowId).val("");
-				var $PresLabCode = $('#PresLabCode_'+$AddrowId).val();
-						if($PresLabCode !=""){
-						$.ajax({		
-							type : "GET",
-							url : "CommitteeAgendaPresenterList.htm",
-							data : {
-								PresLabCode : $PresLabCode,
-								   },
-							datatype : 'json',
-							success : function(result) {
-		
-							var result = JSON.parse(result);	
-							var values = Object.keys(result).map(function(e) {
-										 return result[e]
-							});
-								
-					var s = '';
-						s += '<option value="" selected disabled>Choose...</option>';
-								 for (i = 0; i < values.length; i++) {									
-									s += '<option value="'+values[i][0]+'">'
-											+values[i][1] + " (" +values[i][3]+")" 
-											+ '</option>';
-								} 
-								$('#presenterid_'+$AddrowId).html(s);
-							}
+function AgendaPresentors($AddrowId){
+	$('#presenterid_'+$AddrowId).val("");
+	var $PresLabCode = $('#PresLabCode_'+$AddrowId).val();
+	if($PresLabCode !=""){
+		$.ajax({		
+		type : "GET",
+		url : "CommitteeAgendaPresenterList.htm",
+		data : {
+			PresLabCode : $PresLabCode,
+		},
+		datatype : 'json',
+		success : function(result) {
+	
+			var result = JSON.parse(result);	
+			var values = Object.keys(result).map(function(e) {
+									 return result[e]
 						});
+							
+			var s = '<option value="" selected disabled>Choose...</option>';
+			for (i = 0; i < values.length; i++) {									
+				s += '<option value="'+values[i][0]+'">'
+					+values[i][1] + " (" +values[i][3]+")" 
+					+ '</option>';
+			} 
+			$('#presenterid_'+$AddrowId).html(s);
 		}
+		});
 	}
-		function EditAgendaPresentors($AddrowId,PresentorID){
-			$('#presenterid_Edit_'+$AddrowId).val("");
-				var $PresLabCode = $('#PresLabCode_Edit_'+$AddrowId).val();
-						if($PresLabCode !=""){
-						$.ajax({		
-							type : "GET",
-							url : "CommitteeAgendaPresenterList.htm",
-							data : {
-								PresLabCode : $PresLabCode,
-								   },
-							datatype : 'json',
-							success : function(result) {
-		
-							var result = JSON.parse(result);	
-							var values = Object.keys(result).map(function(e) {
-										 return result[e]
-							});
-								
-					var s = '';
-						s += '<option value="" selected disabled>Choose...</option>';
-								 for (i = 0; i < values.length; i++) {									
-									s += '<option value="'+values[i][0]+'">'
-											+values[i][1] + " (" +values[i][3]+")" 
-											+ '</option>';
-								} 
-								$('#presenterid_Edit_'+$AddrowId).html(s);
-								$('#presenterid_Edit_'+$AddrowId).val(PresentorID).trigger('change');
-							}
-						});
-		}
-	}
+}
+
 var mainAgendaId="";
 var attachRepIds = [];
 var agendadocId=[];

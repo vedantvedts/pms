@@ -259,8 +259,8 @@ input[type=checkbox] {
 											onclick="showMilestoneStatusProgress('<%=obj[0]%>')"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %>
 										</td>
 
-										<td style="width: 8% !important;"><%=sdf.format(StringEscapeUtils.escapeHtml4(obj[2].toString()))%></td>
-										<td style="width: 8% !important;"><%=sdf.format(StringEscapeUtils.escapeHtml4(obj[3].toString()))%></td>
+										<td style="width: 8% !important;"><%=sdf.format(obj[2])%></td>
+										<td style="width: 8% !important;"><%=sdf.format(obj[3])%></td>
 										<td style="width: 15% !important;"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%> <br>
 											<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%></td>
 										<td style="width: 8% !important;">-</td>
@@ -382,8 +382,8 @@ input[type=checkbox] {
 											<%=objA[4]!=null?StringEscapeUtils.escapeHtml4(objA[4].toString()): " - " %>
 										</td>
 
-										<td class="width-30px"><%=sdf.format(StringEscapeUtils.escapeHtml4(objA[2].toString()))%></td>
-										<td style="width: 8% !important;"><%=sdf.format(StringEscapeUtils.escapeHtml4(objA[3].toString()))%></td>
+										<td class="width-30px"><%=sdf.format(objA[2])%></td>
+										<td style="width: 8% !important;"><%=sdf.format(objA[3])%></td>
 										<td><%=objA[14]!=null?StringEscapeUtils.escapeHtml4(objA[14].toString()): " - "%></td>
 										<td class="width-30px">
 											<%if(objA[9].toString().equalsIgnoreCase("3")||objA[9].toString().equalsIgnoreCase("5")){ %>
@@ -546,8 +546,8 @@ input[type=checkbox] {
 											<%=objB[4]!=null?StringEscapeUtils.escapeHtml4(objB[4].toString()): " - " %>
 										</td>
 
-										<td class="width-30px"><%=sdf.format(StringEscapeUtils.escapeHtml4(objB[2].toString()))%></td>
-										<td style="width: 8% !important;"><%=sdf.format(StringEscapeUtils.escapeHtml4(objB[3].toString()))%></td>
+										<td class="width-30px"><%=sdf.format(objB[2])%></td>
+										<td style="width: 8% !important;"><%=sdf.format(objB[3])%></td>
 										<td><%=objB[14]!=null?StringEscapeUtils.escapeHtml4(objB[14].toString()): " - "%></td>
 										<td class="width-30px">
 											<%if(objB[9].toString().equalsIgnoreCase("3")||objB[9].toString().equalsIgnoreCase("5")){ %>
@@ -707,8 +707,8 @@ input[type=checkbox] {
 											<%=objC[4]!=null?StringEscapeUtils.escapeHtml4(objC[4].toString()): " - " %>
 										</td>
 
-										<td class="width-30px"><%=sdf.format(StringEscapeUtils.escapeHtml4(objC[2].toString()))%></td>
-										<td style="width: 8% !important;"><%=sdf.format(StringEscapeUtils.escapeHtml4(objC[3].toString()))%></td>
+										<td class="width-30px"><%=sdf.format(objC[2])%></td>
+										<td style="width: 8% !important;"><%=sdf.format(objC[3])%></td>
 										<td><%=objC[14]!=null?StringEscapeUtils.escapeHtml4(objC[14].toString()): " - " %></td>
 										<td class="width-30px">
 											<%if(objC[9].toString().equalsIgnoreCase("3")||objC[9].toString().equalsIgnoreCase("5")){ %>
@@ -870,8 +870,8 @@ input[type=checkbox] {
 											<%=objD[4]!=null?StringEscapeUtils.escapeHtml4(objD[4].toString()): " - "  %>
 										</td>
 
-										<td class="width-30px"><%=sdf.format(StringEscapeUtils.escapeHtml4(objD[2].toString()))%></td>
-										<td style="width: 8% !important;"><%=sdf.format(StringEscapeUtils.escapeHtml4(objD[3].toString()))%></td>
+										<td class="width-30px"><%=sdf.format(objD[2])%></td>
+										<td style="width: 8% !important;"><%=sdf.format(objD[3])%></td>
 										<td><%=objD[14]!=null?StringEscapeUtils.escapeHtml4(objD[14].toString()): " - "%></td>
 										<td class="width-30px">
 											<%if(objD[9].toString().equalsIgnoreCase("3")||objD[9].toString().equalsIgnoreCase("5")){ %>
@@ -1020,8 +1020,8 @@ input[type=checkbox] {
 											<%=objE[4]!=null?StringEscapeUtils.escapeHtml4(objE[4].toString()): " - " %>
 										</td>
 
-										<td class="width-30px"><%=sdf.format(StringEscapeUtils.escapeHtml4(objE[2].toString()))%></td>
-										<td style="width: 8% !important;"><%=sdf.format(StringEscapeUtils.escapeHtml4(objE[3].toString()))%></td>
+										<td class="width-30px"><%=sdf.format(objE[2])%></td>
+										<td style="width: 8% !important;"><%=sdf.format(objE[3])%></td>
 										<td><%=objE[14]!=null?StringEscapeUtils.escapeHtml4(objE[14].toString()): " - "%></td>
 										<td class="width-30px">
 											<%if(objE[9].toString().equalsIgnoreCase("3")||objE[9].toString().equalsIgnoreCase("5")){ %>

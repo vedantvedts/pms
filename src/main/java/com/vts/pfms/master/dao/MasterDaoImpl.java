@@ -45,7 +45,7 @@ public class MasterDaoImpl implements MasterDao {
 	private static final String EMPNOCHECK="SELECT empno FROM employee";
 	private static final String EMPEXTNOCHECK="SELECT empno FROM employee_external";
 	private static final String CLUSTERLAB="SELECT LabId, ClusterId, LabCode FROM cluster_lab";
-	private static final String EXTERNALOFFICERLIST="SELECT a.empid, a.empno, CONCAT(IFNULL(CONCAT(a.title, ' '), ''), a.empname) AS 'empname', b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid, 'active', a.isactive FROM employee a JOIN employee_desig b ON a.desigid = b.desigid LEFT JOIN division_master c ON a.divisionid = c.divisionid WHERE a.Labcode <>:labcode ORDER BY a.empid DESC";
+	private static final String EXTERNALOFFICERLIST="SELECT a.empid, a.empno, CONCAT(IFNULL(CONCAT(a.Title,' '),(IFNULL(CONCAT(a.Salutation, ' '), ''))), a.EmpName) AS 'EmpName', b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid, 'active', a.isactive, a.labcode FROM employee a JOIN employee_desig b ON a.desigid = b.desigid LEFT JOIN division_master c ON a.divisionid = c.divisionid WHERE a.Labcode <>:labcode ORDER BY a.empid DESC";
 	private static final String EXTERNALOFFICEREDITDATA="select empid,empno,empname,desigid,extno,email,divisionid,DronaEmail,InternetEmail,MobileNo,Labcode,title , salutation from employee  where empid=:empid";
 	private static final String EXTERNALOFFICERMASTERUPDATE="UPDATE employee SET salutation=:salutation ,title=:title, labcode=:labcode,empno=:empno, empname=:empname, desigid=:desigid, extno=:extno, MobileNo=:mobileno, email=:email,DronaEmail=:dronaemail, InternetEmail=:internalemail , divisionid=:divisionid, modifiedby=:modifiedby, modifieddate=:modifieddate WHERE empid=:empid" ;
 

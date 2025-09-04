@@ -10678,9 +10678,6 @@ public class CommitteeController {
 	@RequestMapping(value="PrgmScheduleAgenda.htm", method= {RequestMethod.GET, RequestMethod.POST})
 	public String prgmScheduleAgenda(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");
-		String labcode = (String)ses.getAttribute("labcode");
-		String LoginType = (String)ses.getAttribute("LoginType");
-		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +" Inside PrgmScheduleAgenda.htm "+UserId);
 		try {
 			String scheduleid = req.getParameter("scheduleid");
@@ -10691,8 +10688,8 @@ public class CommitteeController {
 			req.setAttribute("committeeAgendaList", service.AgendaList(scheduleid));
 			req.setAttribute("agendaDocList",service.AgendaLinkedDocList(scheduleid));
 			req.setAttribute("filesize",file_size);
-			req.setAttribute("labcode",labcode);
-			req.setAttribute("labEmpList",service.PreseneterForCommitteSchedule(labcode));
+			req.setAttribute("labEmpList",service.PreseneterForCommitteSchedule("A"));
+			req.setAttribute("allLabList", service.AllLabList());
 
 			return "committee/PrgmScheduleAgenda";
 		}catch (Exception e) {
