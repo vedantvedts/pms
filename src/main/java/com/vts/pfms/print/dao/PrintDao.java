@@ -82,7 +82,7 @@ public interface PrintDao {
 	public Committee getCommitteeData(String committeeid) throws Exception;
 	public long FreezeBriefingAdd(CommitteeProjectBriefingFrozen briefing)throws Exception;
 	public CommitteeProjectBriefingFrozen getFrozenProjectBriefing(String scheduleId) throws Exception;
-	public Object[] ProjectCommitteeMeetingsCount(String projectid, String CommitteeCode) throws Exception;
+	public Object[] ProjectCommitteeMeetingsCount(String projectId, String divisionId, String initiationId, String carsInitiationId, String programmeId, String committeeCode) throws Exception;
 	public List<Object[]> AgendaList(String scheduleId) throws Exception;
 	public List<Object[]> AgendaLinkedDocList(String scheduleid) throws Exception;
 	public List<Object[]> BriefingScheduleList(String labcode,String committeeshortname, String projectid) throws Exception;
@@ -137,5 +137,6 @@ public interface PrintDao {
 	public long addOverallFinace(List<ProjectOverallFinance> list, String projectid)throws Exception;
 	public List<Object[]> getrOverallFinance(String proid)throws Exception;
 	public List<Object[]> otherMeetingList(String projectid)throws Exception;
+	public List<Object[]> getMilestoneOpenActionListByProjectId(String projectId) throws Exception;
 
 }

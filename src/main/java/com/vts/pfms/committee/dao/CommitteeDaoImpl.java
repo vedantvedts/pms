@@ -130,7 +130,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String EXTERNALEMPLOYEELISTINVITATIONS =" SELECT a.empid, a.empname,a.empno,b.designation, a.desigid  FROM employee a,employee_desig b   WHERE a.isActive='1' AND labcode=:labcode AND a.desigid=b.desigid AND a.empid NOT IN (SELECT empid  FROM committee_schedules_invitation WHERE  committeescheduleid=:scheduleid AND labcode=:labcode)  ";
 	private static final String EMPLOYEELISTNOINVITEDMEMBERS="SELECT a.empid, CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) as 'empname' ,b.designation,a.desigid FROM employee a,employee_desig b WHERE a.isactive='1' AND a.LabCode = :LabCode AND a.DesigId=b.DesigId AND a.empid NOT IN ( SELECT c.empid FROM committee_schedules_invitation c WHERE c.committeescheduleid=:scheduleid AND c.labcode=:LabCode ) ORDER BY a.srno=0,a.srno";
 	private static final String EXPERTLISTNOINVITEDMEMBERS = "SELECT a.expertid,CONCAT(IFNULL(CONCAT(a.title,' '),''),a.expertname) as 'expertname'  ,b.designation,a.desigid FROM expert a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.expertid NOT IN( SELECT empid FROM committee_schedules_invitation WHERE committeescheduleid=:scheduleid AND labcode='@EXP'  ) ORDER BY a.expertname ";
-	private static final String ALLPROJECTDETAILSLIST ="SELECT a.projectid,a.projectcode,a.projectname,a.ProjectMainId,a.ProjectDescription,a.UnitCode,a.ProjectType,a.ProjectCategory,a.SanctionNo,a.SanctionDate,a.PDC,a.ProjectDirector FROM project_master a WHERE a.isactive=1 ";
+	private static final String ALLPROJECTDETAILSLIST ="SELECT a.projectid,a.projectcode,a.projectname,a.ProjectMainId,a.ProjectDescription,a.UnitCode,a.ProjectType,a.ProjectCategory,a.SanctionNo,a.SanctionDate,a.PDC,a.ProjectDirector, a.ProjectShortName FROM project_master a WHERE a.isactive=1 ";
 	private static final String PROJECTCOMMITTEEDESCRIPTIONTOR="SELECT committeeprojectid,description , termsofreference, committeeid , projectid  FROM committee_project WHERE committeeid=:committeeid AND projectid=:projectid";
 	private static final String PROJECTCOMMITTEEFORMATIONCHECKLIST="SELECT a.committeeprojectid,b.committeemainid FROM committee_project a LEFT JOIN committee_main b ON a.projectid = b.projectid AND a.committeeid = b.committeeid AND b.isactive=1 WHERE a.projectid = :projectid";
 	private static final String UPDATECOMMITTEEINVITATIONEMAILSENT="UPDATE committee_schedules_invitation SET emailsent ='Y' WHERE membertype NOT IN ('CW','W','E','CO') AND committeescheduleid=:committeescheduleid";
@@ -1622,7 +1622,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		List<Object[]> ChairpersonEmployeeListFormation=(List<Object[]>)query.getResultList();
 		return ChairpersonEmployeeListFormation;
 	}
-	private static final String PRESENETERFORCOMMITTE="SELECT a.empid, CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) as 'empname' ,a.empno,b.designation FROM employee a,employee_desig b WHERE a.isactive=1 AND a.desigid=b.desigid AND a.labcode=:labcode ";
+	private static final String PRESENETERFORCOMMITTE="SELECT a.EmpId, CONCAT(IFNULL(CONCAT(a.Title,' '),(IFNULL(CONCAT(a.Salutation, ' '), ''))), a.EmpName) AS 'EmpName' ,a.empno,b.designation, a.LabCode FROM employee a,employee_desig b WHERE a.isactive=1 AND a.desigid=b.desigid AND CASE WHEN 'A'=:labcode THEN 1=1 ELSE a.labcode=:labcode END ";
 	@Override
 	public List<Object[]> PreseneterForCommitteSchedule(String LabCode)throws Exception
 	{
@@ -3797,7 +3797,7 @@ private static final String ENOTEAPPROVELIST="SELECT MAX(a.EnoteId) AS EnoteId,M
 		}
 	}
 
-	private static final String PROGRAMMEPROJECTLIST = "SELECT b.ProjectId, b.ProjectCode, b.ProjectShortName, b.ProjectName, c.EmpId, CONCAT(IFNULL(CONCAT(c.Title,' '),(IFNULL(CONCAT(c.Salutation, ' '), ''))), c.EmpName) AS 'EmpName', d.Designation FROM pfms_programme_projects a, project_master b, employee c, employee_desig d WHERE a.IsActive=1 AND a.ProjectId=b.ProjectId AND b.ProjectDirector=c.EmpId AND c.DesigId=d.DesigId AND a.ProgrammeId=:ProgrammeId";
+	private static final String PROGRAMMEPROJECTLIST = "SELECT b.ProjectId, b.ProjectCode, b.ProjectShortName, b.ProjectName, c.EmpId, CONCAT(IFNULL(CONCAT(c.Title,' '),(IFNULL(CONCAT(c.Salutation, ' '), ''))), c.EmpName) AS 'EmpName', d.Designation, c.LabCode FROM pfms_programme_projects a, project_master b, employee c, employee_desig d WHERE a.IsActive=1 AND a.ProjectId=b.ProjectId AND b.ProjectDirector=c.EmpId AND c.DesigId=d.DesigId AND a.ProgrammeId=:ProgrammeId";
 	@Override
 	public List<Object[]> prgmProjectList(String programmeId) throws Exception {
 		try {

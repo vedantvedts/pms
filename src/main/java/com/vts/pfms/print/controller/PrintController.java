@@ -664,7 +664,7 @@ public class PrintController {
 	    	req.setAttribute("thankYouImg", LogoUtil.getThankYouImageAsBase64String());
             req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
     		req.setAttribute("ApplicationFilesDrive",env.getProperty("ApplicationFilesDrive"));
-    		req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
+    		req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, "0", "0", "0", "0", CommitteeCode) );
     		Object[] nextmeetVenue = (Object[])service.BriefingMeetingVenue(projectid, committeeid);
 	    	req.setAttribute("nextMeetVenue", nextmeetVenue);
 	    	if(nextmeetVenue!=null && nextmeetVenue[0]!=null) {
@@ -1386,7 +1386,7 @@ public class PrintController {
             req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
             req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
     		req.setAttribute("ApplicationFilesDrive",env.getProperty("ApplicationFilesDrive"));
-    		req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
+    		req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, "0", "0", "0", "0", CommitteeCode) );
     		req.setAttribute("nextMeetVenue", service.BriefingMeetingVenue(projectid, committeeid));
     		
     		String LevelId= "2";
@@ -2794,7 +2794,7 @@ public class PrintController {
 			String projectLabCode = projectDetails2.get(0)[5].toString();
 			
 	    	req.setAttribute("committeeData", committee);
-			req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, committee.getCommitteeShortName().trim()) );
+			req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, "0", "0", "0", "0", committee.getCommitteeShortName().trim()) );
 			
 			processProjectData(req, projectid, committeeid, uri, projectLabCode, UserId, IsIbasConnected);
 	    	
@@ -3650,7 +3650,7 @@ public class PrintController {
 	                req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
 	                req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
 	        		req.setAttribute("ApplicationFilesDrive",env.getProperty("ApplicationFilesDrive"));
-	        		req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
+	        		req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, "0", "0", "0", "0", CommitteeCode) );
 	        		req.setAttribute("nextMeetVenue", service.BriefingMeetingVenue(projectid, committeeid));
 	        		
 	        		String LevelId= "2";
@@ -3952,13 +3952,14 @@ public class PrintController {
 
 				Object[] scheduleeditdata= comservice.CommitteeScheduleEditData(scheduleid);
 
-				String committeeId=scheduleeditdata[0].toString();
-				String scheduledate=scheduleeditdata[2].toString();
+				String committeeId = scheduleeditdata!=null && scheduleeditdata[0]!=null? scheduleeditdata[0].toString():"0";
+				String scheduledate = scheduleeditdata[2].toString();
 
-				String initiationid= scheduleeditdata[17].toString();
-				String divisionid= scheduleeditdata[16].toString();
-				String carsInitiationId= scheduleeditdata[25].toString();
-				String programmeId= scheduleeditdata[26].toString();
+				String initiationid = scheduleeditdata!=null && scheduleeditdata[17]!=null? scheduleeditdata[17].toString():"0";
+				String divisionid = scheduleeditdata!=null && scheduleeditdata[16]!=null? scheduleeditdata[16].toString():"0";
+				String carsInitiationId = scheduleeditdata!=null && scheduleeditdata[25]!=null? scheduleeditdata[25].toString():"0";
+				String programmeId = scheduleeditdata!=null && scheduleeditdata[26]!=null? scheduleeditdata[26].toString():"0";
+				
 				List<Object[]>ActionDetails=comservice.actionDetailsForNonProject(committeeId,scheduledate);
 				List<Object[]>actionSubDetails=new ArrayList();
 				if(ActionDetails.size()>0) {
@@ -4020,7 +4021,7 @@ public class PrintController {
 				req.setAttribute("projectattributes", service.ProjectAttributes(projectid));
 				req.setAttribute("AgendaList", service.AgendaList(scheduleid));
 				req.setAttribute("AgendaDocList",service.AgendaLinkedDocList(scheduleid));
-				req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
+				req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, divisionid, initiationid, carsInitiationId, programmeId, CommitteeCode) );
 				req.setAttribute("scheduledata", scheduledata);
 				List<Object[]> specialCommitteesList = service.SpecialCommitteesList(projectLabCode);
 				req.setAttribute("SplCommitteeCodes", specialCommitteesList.stream().map(e -> e[1].toString()).collect(Collectors.toList()));
@@ -6262,4 +6263,186 @@ public class PrintController {
 
 				    return null;
 				}
+	@RequestMapping(value="PrgmBriefingPresentation.htm", method= {RequestMethod.POST, RequestMethod.GET})
+	public String prgmBriefingPresentation(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		logger.info(new Date()+" Inside PrgmBriefingPresentation.htm "+UserId);
+		try {
+			String projectid=req.getParameter("projectid");
+			String committeeid = req.getParameter("committeeid");
+			
+			Committee committee = service.getCommitteeData(committeeid);
+			List<Object[]> projectDetails2 = service.ProjectDetails(projectid);
+			String projectLabCode = projectDetails2.get(0)[5].toString();
+			
+	    	req.setAttribute("committeeData", committee);
+			req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, "0", "0", "0", "0", committee.getCommitteeShortName().trim()) );
+			
+			Object[] nextmeetVenue = (Object[])service.BriefingMeetingVenue(projectid, committeeid);
+	    	req.setAttribute("nextMeetVenue", nextmeetVenue);
+	    	if(nextmeetVenue!=null && nextmeetVenue[0]!=null) {
+	    		req.setAttribute("recdecDetails", service.GetRecDecDetails(nextmeetVenue[0].toString()));
+	    	}
+	    	req.setAttribute("RiskTypes", service.RiskTypes());
+	    	
+	    	req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
+    		req.setAttribute("projectLabCode", projectLabCode);
+	    	req.setAttribute("labInfo", service.LabDetailes(projectLabCode));
+	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(projectLabCode));
+	    	req.setAttribute("Drdologo", LogoUtil.getDRDOLogoAsBase64String());
+	    	req.setAttribute("thankYouImg", LogoUtil.getThankYouImageAsBase64String());
+    		req.setAttribute("projectid", projectid);
+    		req.setAttribute("committeeid", committeeid);
+    		req.setAttribute("ProjectCost", ProjectCost);
+    		req.setAttribute("isCCS", projectDetails2.get(0)[6].toString());
+    		req.setAttribute("IsIbasConnected", IsIbasConnected);
+    		req.setAttribute("projectDetails", prservice.getProjectDetails(labcode, projectid, "E"));
+    		
+    		List<Object[]> SpecialCommitteesList =  service.SpecialCommitteesList(labcode);
+	    	Map<String, List<Object[]>> reviewMeetingListMap = new HashMap<String, List<Object[]>>();
+	    	Map<String, List<Object[]>> lastMeetingActionsListMap = new HashMap<String, List<Object[]>>();
+	    	Map<Integer, String> committeeWiseMap = new HashMap<>();
+			for(Object[] obj : SpecialCommitteesList) {
+				reviewMeetingListMap.put(obj[1]+"", service.ReviewMeetingList(projectid, obj[1]+""));
+				List<Object[]> lastMeetingActions = service.LastPMRCActions(projectid, obj[0]+"");
+				if(lastMeetingActions!=null && lastMeetingActions.size()>0) {
+					lastMeetingActionsListMap.put(obj[1]+"", lastMeetingActions);
+					List<Object[]> meetingList = reviewMeetingListMap.get(obj[1]+"");
+					IntStream.range(0, meetingList.size()).forEach(i -> committeeWiseMap.put(i + 1, String.valueOf(meetingList.get(i)[3])));
+				}
+			}
+	    	req.setAttribute("reviewMeetingListMap",reviewMeetingListMap);
+	    	req.setAttribute("otherMeetingList", service.otherMeetingList(projectid));
+	    	req.setAttribute("lastMeetingActionsListMap",lastMeetingActionsListMap);
+			req.setAttribute("committeeWiseMap", committeeWiseMap);
+			
+	    	List<Object[]> milestoneMainList = milservice.getAllMilestoneActivityList();
+			List<Object[]> milestoneSubList = milservice.getAllMilestoneActivityLevelList();
+			List<Object[]> progressList = milservice.getMilestoneActivityProgressList();
+			
+			getAllMilestoneList(req, milestoneMainList, milestoneSubList, progressList, projectid);
+			
+			req.setAttribute("milestoneOpenActionList", service.getMilestoneOpenActionListByProjectId(projectid));
+			
+			return "print/PrgmBriefingPresentation";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.info(new Date()+" Inside PrgmBriefingPresentation.htm "+UserId, e);
+			return "static/Error";
+		}
+	}
+	
+	private long getAllMilestoneList(HttpServletRequest req, List<Object[]> milestoneMainList, List<Object[]> milestoneSubList, List<Object[]> progressList, String projectId) throws Exception {
+		try {
+			LocalDate todayL = LocalDate.now();
+			LocalDate fromDateL = todayL.minusWeeks(1);
+			
+			Map<String, List<Object[]>> milestoneSubListMap = new HashMap<String, List<Object[]>>();
+			Map<Long, List<Object[]>> milestoneProgressListMap = new HashMap<Long, List<Object[]>>();
+
+			if (milestoneMainList != null && !milestoneMainList.isEmpty()) {
+				milestoneMainList = milestoneMainList.stream().filter(e -> e[1].toString().equalsIgnoreCase(projectId) ).collect(Collectors.toList());
+
+				Map<String, List<Object[]>> groupedByParentIdAndLevel = milestoneSubList.stream().collect(Collectors.groupingBy(e -> e[1].toString() + "_" + e[2].toString()));
+
+				for(Object[] objmain : milestoneMainList ) {
+					List<Object[]> totalAssignedSubList = new ArrayList<>();
+					List<Object[]> MilestoneActivityA = groupedByParentIdAndLevel.getOrDefault(objmain[0].toString()+"_1", Collections.emptyList());
+					int countA = 1;
+					for(Object[] obj:MilestoneActivityA) {
+
+						milestoneProgressListMap.put(Long.parseLong(obj[0].toString()), filteredProgressList(progressList, obj[0].toString(), fromDateL, todayL));
+
+						Object[] newRow1 = Arrays.copyOf(obj, obj.length + 4);
+						newRow1[obj.length] = objmain[0].toString();
+						newRow1[obj.length + 1] = "A" + countA;
+						newRow1[obj.length + 2] = objmain[2];
+						newRow1[obj.length + 3] = objmain[1].toString();
+						totalAssignedSubList.add(newRow1);
+
+						List<Object[]> MilestoneActivityB = groupedByParentIdAndLevel.getOrDefault(obj[0].toString()+"_2", Collections.emptyList());
+						int countB = 1;
+						for(Object[] obj1:MilestoneActivityB) {
+
+							milestoneProgressListMap.put(Long.parseLong(obj1[0].toString()), filteredProgressList(progressList, obj1[0].toString(), fromDateL, todayL));
+
+							Object[] newRow2 = Arrays.copyOf(obj1, obj1.length + 4);
+							newRow2[obj1.length] = objmain[0].toString();
+							newRow2[obj1.length + 1] = "A"+countA+"-B"+countB;
+							newRow2[obj1.length + 2] = objmain[2];
+							newRow2[obj1.length + 3] = objmain[1].toString();
+							totalAssignedSubList.add(newRow2);
+
+							List<Object[]> MilestoneActivityC = groupedByParentIdAndLevel.getOrDefault(obj1[0].toString()+"_3", Collections.emptyList());
+							int countC = 1;
+							for(Object[] obj2:MilestoneActivityC) {
+
+								milestoneProgressListMap.put(Long.parseLong(obj2[0].toString()), filteredProgressList(progressList, obj2[0].toString(), fromDateL, todayL));
+
+								Object[] newRow3 = Arrays.copyOf(obj2, obj2.length + 4);
+								newRow3[obj2.length] = objmain[0].toString();
+								newRow3[obj2.length + 1] = "A"+countA+"-B"+countB+"-C"+countC;
+								newRow3[obj2.length + 2] = objmain[2];
+								newRow3[obj2.length + 3] = objmain[1].toString();
+								totalAssignedSubList.add(newRow3);
+
+								List<Object[]> MilestoneActivityD = groupedByParentIdAndLevel.getOrDefault(obj2[0].toString()+"_4", Collections.emptyList());
+								int countD = 1;
+								for(Object[] obj3:MilestoneActivityD) {
+
+									milestoneProgressListMap.put(Long.parseLong(obj3[0].toString()), filteredProgressList(progressList, obj3[0].toString(), fromDateL, todayL));
+
+									Object[] newRow4 = Arrays.copyOf(obj3, obj3.length + 4);
+									newRow4[obj3.length] = objmain[0].toString();
+									newRow4[obj3.length + 1] = "A"+countA+"-B"+countB+"-C"+countC+"-D"+countD;
+									newRow4[obj3.length + 2] = objmain[2];
+									newRow4[obj3.length + 3] = objmain[1].toString();
+									totalAssignedSubList.add(newRow4);
+
+									List<Object[]> MilestoneActivityE = groupedByParentIdAndLevel.getOrDefault(obj3[0].toString()+"_5", Collections.emptyList());
+									int countE = 1;
+									for(Object[] obj4:MilestoneActivityE) {
+										
+										milestoneProgressListMap.put(Long.parseLong(obj4[0].toString()), filteredProgressList(progressList, obj4[0].toString(), fromDateL, todayL));
+
+										Object[] newRow5 = Arrays.copyOf(obj4, obj4.length + 4);
+										newRow5[obj4.length] = objmain[0].toString();
+										newRow5[obj4.length + 1] = "A"+countA+"-B"+countB+"-C"+countC+"-D"+countD+"-E"+countE;
+										newRow5[obj4.length + 2] = objmain[2];
+										newRow5[obj4.length + 3] = objmain[1].toString();
+										totalAssignedSubList.add(newRow5);
+
+										countE++;
+									}
+									countD++;
+								}
+								countC++;
+							}
+							countB++;
+						}
+						countA++;
+					}
+					milestoneSubListMap.put(objmain[0].toString(), totalAssignedSubList);
+				}
+			}
+			
+			req.setAttribute("milestoneMainList", milestoneMainList);
+			req.setAttribute("milestoneSubListMap", milestoneSubListMap);
+			req.setAttribute("milestoneProgressListMap", milestoneProgressListMap);
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	private List<Object[]> filteredProgressList(List<Object[]> progressList, String activityId, LocalDate from, LocalDate to) {
+	    return progressList.stream()
+	        .filter(e -> e[1].toString().equalsIgnoreCase(activityId)
+	                && !LocalDate.parse(e[3].toString()).isBefore(from)
+	                && !LocalDate.parse(e[3].toString()).isAfter(to))
+	        .collect(Collectors.toList());
+	}
+	
 }

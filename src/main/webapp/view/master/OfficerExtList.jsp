@@ -165,6 +165,7 @@ List<Object[]> OfficerList=(List<Object[]>) request.getAttribute("OfficerList");
 	   <thead style = "text-align:center">
 	   <tr>
 	   <th>Select</th>
+	  <th>Lab</th>
 	  <th>Employee No</th>
 	  <th>Employee Name</th>
 	  <th>Designation</th>
@@ -178,6 +179,7 @@ List<Object[]> OfficerList=(List<Object[]>) request.getAttribute("OfficerList");
 	       <%for(Object[] obj:OfficerList){ %>
 	         <tr>
 	             <td align="center"><input type="radio" name="Did" value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):"-"%>  ></td> 
+	             <td><%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()):"-"  %></td>
 	             <td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"  %></td>
 	             <td style="text-align: left"><%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%}else{ %>-<%} %></td>
 	             <td style="text-align: left"> <%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %><%}else{ %>-<%} %></td>

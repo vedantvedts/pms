@@ -38,7 +38,7 @@
 							/* Sticky sidebar */
 							.sidebar {
 								width: 200px;
-								background-color: #0d6efd;
+								background: linear-gradient(to right, #021B79);
 								color: #ffffff;
 								padding: 20px 10px;
 								display: flex;
@@ -270,13 +270,33 @@
 							.bs-tooltip-right .arrow {
 								border-right: #0d6efd !important;
 							}
+
+							#topBtn {
+								position: fixed;
+								bottom: 30px;
+								right: 30px;
+								z-index: 999;
+								background-color: #28a745;
+								color: white;
+								border: none;
+								padding: 10px 15px;
+								border-radius: 50%;
+								font-size: 16px;
+								cursor: pointer;
+								display: none;
+								box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+							}
+
+							#topBtn:hover {
+								background-color: #1d7b34;
+							}
 						</style>
 
 				</head>
 
 				<body>
 					<div class="main-wrapper">
-						<!-- Sidebar -->
+						<!-- Starting line of Sidebar Content -->
 						<div class="sidebar" id="sidebar"> <!-- 'collapsed' class controls the state -->
 							<div class="d-flex gap-2 align-items-center sidebar-header">
 								<h5 class="sidebar-title">PMS Guide</h5>
@@ -286,9 +306,7 @@
 								<div class="menu">
 									<a href="#" class="menu-item active" data-target="ProjectManagement"
 										data-toggle="tooltip" data-placement="right" title="Project">
-
 										<i class="fa fa-play"></i>
-
 										<span class="menu-text">Project</span>
 									</a>
 									<a href="#" class="menu-item" data-target="PreProjectInitiation"
@@ -334,11 +352,10 @@
 								</div>
 							</div>
 						</div>
-
-
+						<!-- Ending line of Sidebar Content -->
 						<!-- Main content -->
 						<div class="main-content">
-							<!-- Project -->
+							<!-- Starting line of Project Content -->
 							<div id="ProjectManagement" class="content-section active">
 								<div class="card border-success">
 									<div class="card-header bg-success text-white">
@@ -353,6 +370,11 @@
 												Main</strong> section.
 											For any Sub-Project, you must also enter the <strong>Main Project</strong>
 											details to which it belongs.
+										</div>
+										<div class="alert alert-info" role="alert">
+											<i class="fa fa-info-circle me-2"></i>
+											Only users with the roles of Admin or Project Director are authorized to
+											create new projects.
 										</div>
 
 										<!-- Project Main -->
@@ -477,7 +499,8 @@
 															</strong> <i class="fa fa-chevron-right"></i> Click <strong
 																class="text-success">Revise</strong>.
 
-															<h6 class="alert alert-danger mt-2" role="alert">
+															<h6 class="alert alert-info mt-2" role="alert">
+																<i class="fa fa-info-circle"></i>
 																<strong>Note:</strong> Once a project is revised, you
 																<strong>cannot edit</strong> that project.
 															</h6>
@@ -496,6 +519,22 @@
 																	class="fa fa-chevron-right"></i> Attachments.
 															</strong>.
 														</li>
+														<li class="list-group-item">On the Right hand side, Enter file
+															name and upload files <i class="fa fa-chevron-right"></i>
+															Click <strong class="text-success">Submit</strong>.
+															<div class="alert alert-info mt-2" role="alert">
+																<i class="fa fa-info-circle me-2"></i>
+																You can upload multiple files by clicking on <i
+																	class="fa fa-plus"></i> icon.
+															</div>
+														</li>
+														<li class="list-group-item">On the Left hand side, you can
+															download or delete that particular file by clicking on
+															<i class="fa fa-download text-success"></i> or <i
+																class="fa fa-trash text-danger"></i> buttons.
+														</li>
+
+
 													</ul>
 													<strong class="text-primary">To View a Project</strong>
 													<ul class="list-group list-group-numbered">
@@ -588,7 +627,8 @@
 									</div>
 								</div>
 							</div>
-							<!-- Pre-Project -->
+							<!-- Ending line of Project Content -->
+							<!-- Starting line of Pre-Project Content -->
 							<div id="PreProjectInitiation" class="content-section">
 								<div class="card border-success ">
 									<div class="card-header bg-success text-white">
@@ -1036,7 +1076,9 @@
 									</div>
 								</div>
 							</div>
-							<!-- Committee -->
+							<!-- Ending line of Pre-Project Content -->
+
+							<!-- Starting line of Committee Content -->
 							<div id="Committee" class="content-section">
 								<div class="card border-success">
 									<div class="card-header bg-success text-white">
@@ -1364,7 +1406,9 @@
 									</div>
 								</div>
 							</div>
-							<!-- Schedule -->
+							<!-- Ending line of Committee Content -->
+
+							<!-- Starting line of Schedule Content -->
 							<div id="Schedule" class="content-section">
 								<div class="card border-primary">
 									<div class="card-header bg-primary text-white">
@@ -1785,7 +1829,9 @@
 									</div>
 								</div>
 							</div>
-							<!-- Action -->
+							<!-- Ending line of Schedule Content -->
+
+							<!-- Starting line of Action Content -->
 							<div id="Action" class="content-section">
 								<div class="card border-info ">
 									<div class="card-header bg-info text-white">
@@ -1999,7 +2045,9 @@
 									</div>
 								</div>
 							</div>
-							<!-- Milestone -->
+							<!-- Ending line of Action Content -->
+
+							<!-- Starting line of Milestone Content -->
 							<div id="Milestone" class="content-section">
 								<div class="card border-danger ">
 									<div class="card-header bg-danger text-white">
@@ -2208,7 +2256,9 @@
 									</div>
 								</div>
 							</div>
-							<!-- Procurement -->
+							<!-- Ending line of Milestone Content -->
+
+							<!-- Starting line of Procurement Content -->
 							<div id="Procurement" class="content-section">
 								<div class="card" style="border-color: #4b7bec;">
 									<div class="card-header text-white" style="background-color: #4b7bec;">
@@ -2504,7 +2554,9 @@
 									</div>
 								</div>
 							</div>
-							<!-- CARS -->
+							<!-- Ending line of Procurement Content -->
+
+							<!-- Starting line of CARS Content -->
 							<div id="CARS" class="content-section">
 								<div class="card border-warning">
 									<div class="card-header bg-warning text-dark">
@@ -2561,7 +2613,7 @@
 																class="text-dark">Remarks</strong> <i
 																class="fa fa-chevron-right"></i>
 															Click <strong class="text-success">Forward.</strong>
-															<h6 class="text-danger" style="margin-left: 20px;">
+															<h6 class="alert alert-danger mt-2">
 																Note: User can revoke the CARS by navigating to CARS <i
 																	class="fa fa-chevron-right"></i> Initiated List <i
 																	class="fa fa-chevron-right"></i> Click <strong
@@ -2610,9 +2662,9 @@
 															<i class="fa fa-info-circle me-2"></i>
 															Once <strong>RSQR Approved </strong>. A notification will be
 															sent to <strong class="text-danger">DP&C.</strong>
-														</h6>
+															</h6>
 														</div>
-															
+
 														<li class="list-group-item">DP&C will navigate to <strong
 																class="text-primary">CARS</strong> <i
 																class="fa fa-chevron-right"></i>
@@ -2673,7 +2725,8 @@
 																	class="fa fa-chevron-right"></i> Click <strong
 																	class="text-success">Next.</strong>
 															</em></li>
-														<h6 class="alert alert-danger mt-2">In Final RSQR, you can update any
+														<h6 class="alert alert-danger mt-2">In Final RSQR, you can
+															update any
 															detail, but Milestone and Timelines section is mandatory to
 															update.</h6>
 														<li class="list-group-item">Navigate to <strong
@@ -2765,7 +2818,7 @@
 															Select <strong class="text-success">Recommending
 																Officer</strong> and
 															<strong class="text-success">Approving Officer.</strong>
-															<h6 class="text-danger">Note: One Approving Officer and
+															<h6 class="alert alert-info mt-2">Note: One Approving Officer and
 																Recommending Officer Mandatory.</h6>
 														</li>
 														<li class="list-group-item">Click <strong
@@ -2967,7 +3020,7 @@
 															approved and upload related documents in <strong
 																class="text-success"> Doc
 																Upload tab. </strong>
-															<h6 class="text-danger">Note: Approval flow is
+															<h6 class="alert alert-danger mt-2">Note: Approval flow is
 																auto-generated and shown below.</h6>
 														</li>
 														<li class="list-group-item">Click on details action of any
@@ -2995,7 +3048,7 @@
 															Click on it and update the Payment Date.
 														</li>
 														<li class="list-group-item">After updating the payment
-															date payment letter can be downloaded.</li>
+															date, payment letter can be downloaded.</li>
 													</ul>
 												</div>
 											</div>
@@ -3004,7 +3057,9 @@
 									</div>
 								</div>
 							</div>
-							<!-- Work-Register -->
+							<!-- Ending line of CARS Content -->
+
+							<!-- Starting line of WorkRegister Content -->
 							<div id="WorkRegister" class="content-section">
 								<div class="card border-secondary">
 									<div class="card-header bg-secondary text-white">
@@ -3026,8 +3081,8 @@
 												<div class="card-body">
 													<ul class="list-group list-group-numbered">
 														<li class="list-group-item">Click <strong
-																class="text-success">Work Register <i
-																	class="fa fa-chevron-right">.</i> Work Register
+																class="text-success">Work Register. <i
+																	class="fa fa-chevron-right"></i> Work Register
 																Entry
 															</strong></li>
 														<li class="list-group-item"><em>Select: Activity
@@ -3162,8 +3217,33 @@
 									</div>
 								</div>
 							</div>
+							<!-- Ending line of WorkRegister Content -->
 						</div>
 					</div>
+					<!-- Back to Top Button -->
+					<button onclick="scrollToTop()" id="topBtn" title="Go to top">
+						<i class="fa fa-arrow-up"></i>
+					</button>
+					<script>
+						// Show the button after scrolling down 100px
+						window.onscroll = function () {
+							const topBtn = document.getElementById("topBtn");
+							if (document.body.scrollTop > 100
+								|| document.documentElement.scrollTop > 100) {
+								topBtn.style.display = "block";
+							} else {
+								topBtn.style.display = "none";
+							}
+						};
+
+						// Smooth scroll to top
+						function scrollToTop() {
+							window.scrollTo({
+								top: 0,
+								behavior: 'smooth'
+							});
+						}
+					</script>
 					<script>
 						$(function () {
 							$('[data-toggle="tooltip"]').tooltip({
