@@ -139,7 +139,7 @@ String value=(String)request.getAttribute("value");
 		                      <span class="mandatory" style="color: #cd0a0a;">*</span></label>
 		                  </div>
 		                  <div class="col-md-10" style="max-width: 75%">
-		                   <textarea class="form-control" rows="2" cols="30" placeholder="Max 150 Characters" name="remarks" id="remarks" maxlength="150" ><%if(remarks!=null){ %> <%=remarks!=null?StringEscapeUtils.escapeHtml4(remarks):"" %> <%} %></textarea>
+		                   <textarea class="form-control" rows="2" cols="30" placeholder="Max 150 Characters" name="remarks" id="remarks" maxlength="150" ><%if(remarks!=null){ %> <%=remarks!=null?remarks:"" %> <%} %></textarea>
 		                     <!--  <input class="form-control" placeholder="Max 100 Characters" name="reference" id="reference" maxlength="100"> -->
 		                  </div>
 		            </div>

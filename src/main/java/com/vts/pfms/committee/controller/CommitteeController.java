@@ -10899,14 +10899,14 @@ public class CommitteeController {
 
 	}
 	
-//	------------------------------------ MOM Check -------------------------------------------
-	@RequestMapping(value = "MOMCheckDownload.htm")
+//	------------------------------------ Naveen R 3/9/25 MOM TabularMinutesDownload.htm -------------------------------------------
+	@RequestMapping(value = "MOMTabularMinutesDownload.htm")
 	public void getMomCheck(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res) throws Exception
 	{
 
 		String UserId=(String)ses.getAttribute("Username");
 		String LabCode =(String) ses.getAttribute("labcode");
-		logger.info(new Date() +"Inside MOMCheckDownload.htm "+UserId);
+		logger.info(new Date() +"Inside MOMTabularMinutesDownload.htm "+UserId);
 		try
 		{
 			String committeescheduleid = req.getParameter("committeescheduleid");
@@ -10954,21 +10954,6 @@ public class CommitteeController {
 			
 			Map<Object,List<Object[]>> invitedlist = invitedlists.stream().filter(row->row[4].toString().equalsIgnoreCase("P")).collect(Collectors.groupingBy(row -> row[3]));
 			List<Map.Entry<Object, List<Object[]>>> entries = new ArrayList<>(invitedlist.entrySet());
-
-			int mid = (entries.size() + 1) / 2;
-
-			Map<Object, List<Object[]>> leftMap = new LinkedHashMap<>();
-			Map<Object, List<Object[]>> rightMap = new LinkedHashMap<>();
-
-			for (int i = 0; i < mid; i++) { 
-			    leftMap.put(entries.get(i).getKey(), entries.get(i).getValue());
-			}
-			for (int i = mid; i < entries.size(); i++) {
-			    rightMap.put(entries.get(i).getKey(), entries.get(i).getValue());
-			}
-			
-			req.setAttribute("leftMap", leftMap);
-			req.setAttribute("rightMap", rightMap);
 			
 			req.setAttribute("committeeinvitedlist", invitedlists);
 			req.setAttribute("projectid", projectid);				
@@ -11013,7 +10998,7 @@ public class CommitteeController {
 			    while ((length = in.read(buffer)) > 0) {
 			        out.write(buffer, 0, length);
 			    }
-			    out.flush();
+			    out.flush(); 
 			}
 
 			Files.deleteIfExists(Paths.get(path + File.separator + filename + ".pdf"));
@@ -11022,7 +11007,7 @@ public class CommitteeController {
 
 		}
 		catch (Exception e) {
-			e.printStackTrace(); logger.error(new Date() +"Inside MOMCheckDownload.htm "+UserId,e);
+			e.printStackTrace(); logger.error(new Date() +"Inside MOMTabularMinutesDownload.htm "+UserId,e);
 		}
 	}
 	

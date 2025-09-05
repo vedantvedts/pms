@@ -338,6 +338,9 @@ public interface CommitteeService {
 	public Object[] carsCommitteeDescriptionTOR(String carsInitiationId, String committeeId) throws Exception;
 	public CommitteeCARS getCommitteeCARSById(String comCARSInitiationId) throws Exception;
 	public Long addCommitteeCARS(CommitteeCARS committeeCARS) throws Exception;
+	
+//	---------------------------------- Naveen R 3/9/25 MOM Check ------------------------------------------
+	public List<Object[]> CommitteeScheduleMinutesforAction(String committeescheduleid);
 
 }
 

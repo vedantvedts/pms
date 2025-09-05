@@ -80,12 +80,12 @@
 									<td>
 										<%
 										if(obj[1].toString().equalsIgnoreCase("RFU")) {
-										%> Created By: &nbsp;<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%><br> Date:&nbsp;<%=obj[6]!=null?sdf.format(StringEscapeUtils.escapeHtml4(obj[6].toString())):" - "%>
+										%> Created By: &nbsp;<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%><br> Date:&nbsp;<%=obj[6]!=null?sdf.format(obj[6]):" - "%>
 										<%
 										}
 										%> <%
  										if (obj[1].toString().equalsIgnoreCase("RFD")) {
- 										%> Reviewed By: &nbsp;<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%><br> Date: &nbsp;<%=obj[6]!=null?sdf.format(StringEscapeUtils.escapeHtml4(obj[6].toString())):" - "%>
+ 										%> Reviewed By: &nbsp;<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%><br> Date: &nbsp;<%=obj[6]!=null?sdf.format(obj[6]):" - "%>
 										<%
 										}
 										%> <br> <%

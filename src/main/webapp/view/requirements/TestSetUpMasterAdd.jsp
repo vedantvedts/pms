@@ -161,7 +161,7 @@ String htmlContent = (String)request.getAttribute("htmlContent");
 					<div class="col-md-11">
 						<div class="form-group">
 					 	<label style="font-size: 17px; color: #07689f">Specific Facility Required :<span class="mandatory" style="color: red;">*</span></label>
-							<textarea rows="2" cols="100" class="form-control" required="required" maxlength="500" placeholder="Maximum 500 characters" name="facility"><%= tp!= null?tp.getFacilityRequired()!=null?StringEscapeUtils.escapeHtml4(tp.getFacilityRequired()): "":""%></textarea>
+							<textarea rows="2" cols="100" class="form-control" required="required" maxlength="500" placeholder="Maximum 500 characters" name="facility"><%= tp!= null?tp.getFacilityRequired()!=null?tp.getFacilityRequired(): "":""%></textarea>
 						</div>
 					 </div>
 					</div>

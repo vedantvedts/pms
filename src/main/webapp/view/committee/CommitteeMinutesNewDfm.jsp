@@ -972,7 +972,7 @@ for(Object[] temp : invitedlist){
 										    
 										    <tr>
 										    	<td class="std" colspan="5" style="text-align: right;"><b>Total</b></td>
-										    	<td class="std" style="text-align: right;"><b><%=estcost!=null?df.format(StringEscapeUtils.escapeHtml4(estcost.toString())): " - " %></b></td>
+										    	<td class="std" style="text-align: right;"><b><%=estcost!=null?df.format(estcost): " - " %></b></td>
 										    	
 										    	<td class="std" colspan="2" style="text-align: right;"></td>
 
@@ -1052,7 +1052,7 @@ for(Object[] temp : invitedlist){
 										   	 
 										    <tr>
 										    	<td colspan="6" class="std" style="text-align: right;"><b>Total</b></td>
-										    	<td colspan="2" class="std" style="text-align: right;"><b><%=socost!=null?df.format(StringEscapeUtils.escapeHtml4(socost.toString())): " - " %></b></td>
+										    	<td colspan="2" class="std" style="text-align: right;"><b><%=socost!=null?df.format(socost): " - " %></b></td>
 										    	
 										    </tr>
 										     <% }else{%>

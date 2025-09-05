@@ -926,7 +926,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;"
 										id="divmethodologyeditor">
 										<div id="methodologydiv" class="center">
-											<%if(MacroDetails[3]!=null){ %><%=StringEscapeUtils.escapeHtml4(MacroDetails[3].toString())%>
+											<%if(MacroDetails[3]!=null){ %><%=MacroDetails[3].toString()%>
 											<%} %>
 										</div>
 										<div class="row"></div>
@@ -977,7 +977,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;"
 										id="divadditonaleditor">
 										<div id="Additionaldiv" class="center">
-											<%if(MacroDetails[2]!=null){ %><%=StringEscapeUtils.escapeHtml4(MacroDetails[2].toString())%>
+											<%if(MacroDetails[2]!=null){ %><%=MacroDetails[2].toString()%>
 											<%} %>
 										</div>
 										<div class="row"></div>
@@ -1029,7 +1029,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;"
 										id="divotherinformationeditor">
 										<div id="otherinformationDiv" class="center">
-											<%if(MacroDetails[4]!=null){ %><%=StringEscapeUtils.escapeHtml4(MacroDetails[4].toString())%>
+											<%if(MacroDetails[4]!=null){ %><%=MacroDetails[4].toString()%>
 											<%} %>
 										</div>
 										<div class="row"></div>
@@ -1080,7 +1080,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;"
 										id="divEnclosureseditor">
 										<div id="EnclosuresDiv" class="center">
-											<%if(MacroDetails[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(MacroDetails[5].toString())%>
+											<%if(MacroDetails[5]!=null){ %><%=MacroDetails[5].toString()%>
 											<%} %>
 										</div>
 										<div class="row"></div>
@@ -1104,7 +1104,7 @@ strong {
 										<h5 class="mt-1" id="deliverables">
 											13.Proposed project deliverables<br> </h5> 
 											<div id="prototypeDiv" class="center">
-												<%if(MacroDetails.length>0 && MacroDetails[14]!=null ){ %><%=StringEscapeUtils.escapeHtml4(MacroDetails[14].toString())%>
+												<%if(MacroDetails.length>0 && MacroDetails[14]!=null ){ %><%=MacroDetails[14].toString()%>
 											<%} %>
 											</div>
 											<textarea name="prototypeDetails" style="display: none;"></textarea>
@@ -1186,7 +1186,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv2Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[12]!=null){ %>
-											<%=StringEscapeUtils.escapeHtml4(BriefList[12].toString()) %>
+											<%=BriefList[12].toString() %>
 											<%}else{%>
 											<%}%>
 										</div>
@@ -1239,7 +1239,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv4Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[2]!=null){ %>
-											<%=StringEscapeUtils.escapeHtml4(BriefList[2].toString()) %>
+											<%=BriefList[2].toString() %>
 											<%}else{%>
 											<%}%>
 										</div>
@@ -1274,7 +1274,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv5Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[3]!=null){ %>
-											<%=StringEscapeUtils.escapeHtml4(BriefList[3].toString()) %>
+											<%=BriefList[3].toString() %>
 											<%}else{%>
 											<%}%>
 										</div>
@@ -1310,7 +1310,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv6Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[4]!=null){ %>
-											<%=StringEscapeUtils.escapeHtml4(BriefList[4].toString()) %>
+											<%=BriefList[4].toString() %>
 											<%}else{%>
 											<%}%>
 										</div>
@@ -1362,7 +1362,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv8Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[5]!=null){ %>
-											<%=StringEscapeUtils.escapeHtml4(BriefList[5].toString()) %>
+											<%=BriefList[5].toString()%>
 											<%}else{%>
 											<%}%>
 
@@ -1432,7 +1432,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv11Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[6]!=null){ %>
-											<%=StringEscapeUtils.escapeHtml4(BriefList[6].toString()) %>
+											<%=BriefList[6].toString() %>
 											<%}else{%>
 											<%}%>
 
@@ -1467,7 +1467,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv12Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[7]!=null){ %>
-											<%=StringEscapeUtils.escapeHtml4(BriefList[7].toString()) %>
+											<%=BriefList[7].toString() %>
 											<%}else{%>
 											<%}%>
 										</div>
@@ -1501,7 +1501,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv13Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[8]!=null){ %>
-											<%=StringEscapeUtils.escapeHtml4(BriefList[8].toString()) %>
+											<%=BriefList[8].toString() %>
 											<%}else{%>
 											<%}%>
 
@@ -1536,7 +1536,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv14Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[9]!=null){ %>
-											<%=StringEscapeUtils.escapeHtml4(BriefList[9].toString()) %>
+											<%=BriefList[9].toString() %>
 											<%}else{%>
 											<%}%>
 										</div>
@@ -1570,7 +1570,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv15Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[10]!=null){ %>
-											<%=StringEscapeUtils.escapeHtml4(BriefList[10].toString()) %>
+											<%=BriefList[10].toString() %>
 											<%}else{%>
 											<%}%>
 
@@ -1605,7 +1605,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv16Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[11]!=null){ %>
-											<%=StringEscapeUtils.escapeHtml4(BriefList[11].toString()) %>
+											<%=BriefList[11].toString() %>
 											<%}else{%>
 											<%}%>
 
@@ -1640,7 +1640,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv17Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[13]!=null){ %>
-											<%=StringEscapeUtils.escapeHtml4(BriefList[13].toString()) %>
+											<%=BriefList[13].toString() %>
 											<%}else{%>
 											<%}%>
 
@@ -1679,7 +1679,7 @@ strong {
 									id="majorcapitalEditor">
 									<div id="majorcapital" class="center">
 										<%if(macrodetailsTwo.length!=0&&macrodetailsTwo[5]!=null) {%>
-										<%=StringEscapeUtils.escapeHtml4(macrodetailsTwo[5].toString()) %>
+										<%=macrodetailsTwo[5].toString() %>
 										<%} %>
 									</div>
 									<div class="row"></div>
@@ -1830,7 +1830,7 @@ strong {
 								<div class="col-md-12 mt-2" id="projectdeliverablesContent"
 									style="display: none">
 									<div id="subProjectDetails" class="center"> <% if(MacroDetails.length>0 && MacroDetails[19] != null) { %>
-                <%= StringEscapeUtils.escapeHtml4(MacroDetails[19].toString()) %>
+                <%= MacroDetails[19].toString() %>
             <% } %></div>
 									<textarea name="" style="display: none;"></textarea>
 									<span class="text-center" id="protospan">
@@ -1847,7 +1847,7 @@ strong {
     <div id="designIterationContent" style="display: none;">
         <div id="designIteration" class="center">
           <% if(MacroDetails.length>0&& MacroDetails[18] != null) { %>
-                <%= StringEscapeUtils.escapeHtml4(MacroDetails[18].toString()) %>
+                <%= MacroDetails[18].toString() %>
             <% } %>
         </div>
 
@@ -1962,7 +1962,7 @@ strong {
 								<div class="row mt-1 information1" style="display: none;">
 									<div class="col-md-12">
 										<textarea id="information1" class="form-control"
-											maxlength="255 characters"><%=StringEscapeUtils.escapeHtml4(macrodetailsTwo[2].toString()) %></textarea>
+											maxlength="255 characters"><%=macrodetailsTwo[2].toString() %></textarea>
 									</div>
 									<div class="col-md-12 mt-1 submit1" align="center">
 										<button type="submit" class="btn btn-sm btn-warning"
@@ -1999,7 +1999,7 @@ strong {
 								<div class="row mt-1 information2" style="display: none;">
 									<div class="col-md-12">
 										<textarea id="information2" class="form-control"
-											maxlength="255 characters"><%=StringEscapeUtils.escapeHtml4(macrodetailsTwo[3].toString()) %></textarea>
+											maxlength="255 characters"><%=macrodetailsTwo[3].toString() %></textarea>
 									</div>
 									<div class="col-md-12 mt-1 submit2" align="center">
 										<button type="button" class="btn btn-sm btn-warning"
@@ -2036,7 +2036,7 @@ strong {
 								<div class="row mt-1 information3" style="display: none;">
 									<div class="col-md-12">
 										<textarea id="information3" class="form-control"
-											maxlength="255 characters"><%=StringEscapeUtils.escapeHtml4(macrodetailsTwo[4].toString()) %></textarea>
+											maxlength="255 characters"><%=macrodetailsTwo[4].toString()%></textarea>
 									</div>
 									<div class="col-md-12 mt-1 submit3" align="center">
 										<button type="button" class="btn btn-sm btn-warning"
@@ -2060,7 +2060,8 @@ strong {
 										<h5 class="mt-1" id="">
 											13.Details need to be certified by Lab Director<br> </h5> 
 											<div id="LabdirectorDetails" class="center">
-												<%if(MacroDetails.length>0 && MacroDetails[16]!=null){ %><%=StringEscapeUtils.escapeHtml4(MacroDetails[16].toString())%>
+												<%if(MacroDetails.length>0 && MacroDetails[16]!=null){ %>
+												<%=MacroDetails[16].toString()%>
 											<%} %>
 											</div>
 											<textarea name="" style="display: none;"></textarea>

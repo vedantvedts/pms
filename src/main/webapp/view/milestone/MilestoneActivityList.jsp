@@ -374,7 +374,7 @@ input[type=checkbox] {
 										                                     <div class="col-md-12">
 																				<div class="form-group">
 																					<label class="control-label">Remark</label> 
-																				    <textarea class="form-control" readonly="readonly" name="Remarks" style="height: 9rem;" maxlength="255" required="required" placeholder="Enter Send Back Remark here with max 255 characters"> <%=obj[11] %>  </textarea>
+																				    <textarea class="form-control" readonly="readonly" name="Remarks" style="height: 9rem;" maxlength="255" required="required" placeholder="Enter Send Back Remark here with max 255 characters"> <%=obj[11]!=null?obj[11].toString():"" %>  </textarea>
 																				</div>
 																			</div>       
 																

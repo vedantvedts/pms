@@ -236,11 +236,11 @@ NFormatConvertion nfc=new NFormatConvertion();
 			  <article>
 			    <div class="inner">
 			      <span class="date">
-			        <span class="day"><%=object[5]!=null?day.format(StringEscapeUtils.escapeHtml4(object[1].toString())):" - " %></span>
-			        <span class="month"><%=object[5]!=null?month.format(StringEscapeUtils.escapeHtml4(object[1].toString())):" - " %></span>
-			        <span class="year"><%=object[5]!=null?year.format(StringEscapeUtils.escapeHtml4(object[1].toString())) :" - "%></span>
+			        <span class="day"><%=object[5]!=null?day.format(object[1]):" - " %></span>
+			        <span class="month"><%=object[5]!=null?month.format(object[1]):" - " %></span>
+			        <span class="year"><%=object[5]!=null?year.format(object[1]) :" - "%></span>
 			      </span>
-			      <h2><%=object[7]!=null?StringEscapeUtils.escapeHtml4(object[7].toString()): " - " %> at <%=object[5]!=null?time.format(StringEscapeUtils.escapeHtml4(object[5].toString())):" - " %></h2> 
+			      <h2><%=object[7]!=null?StringEscapeUtils.escapeHtml4(object[7].toString()): " - " %> at <%=object[5]!=null?time.format(object[5]):" - " %></h2> 
 				  <p>
 				  <span class="remarks_title">Action By : </span>
 				  				<%=object[2]!=null?StringEscapeUtils.escapeHtml4(object[2].toString()): " - " %>, <%=object[3]!=null?StringEscapeUtils.escapeHtml4(object[3].toString()): " - " %><br>

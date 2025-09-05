@@ -61,7 +61,7 @@ List<Object[]> projectslidelist=(List<Object[]>)request.getAttribute("ProjectSli
 												<tr>
 													 <td style="text-align: center;"><%=++sn%></td>
 													 <td class="wrap"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></td>
-													 <td  style="text-align: center;"><%=sdf.format(StringEscapeUtils.escapeHtml4(obj[2].toString())) %></td>
+													 <td  style="text-align: center;"><%=sdf.format(obj[2]) %></td>
 													 <%-- <td><%=obj[3] %></td> --%>
 													 <td>
 													 	<div  align="center">

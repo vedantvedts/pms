@@ -171,14 +171,14 @@ String ses=(String)request.getParameter("result");
 					<label class="control-label" style="margin-bottom: 4px !important">Subject :</label>
 					</div>
 					<div class="col-md-5">
-					<textarea class="form-control" rows="2" cols="40" name="subject" placeholder="max 500 Characters" maxlength="498"><%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[3]!=null){%><%=StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[3].toString())%><%}else{%><%="Formation of " + (committeedata[8]!=null?StringEscapeUtils.escapeHtml4(committeedata[8].toString()): "")+" Committee." %><%} %></textarea>
+					<textarea class="form-control" rows="2" cols="40" name="subject" placeholder="max 500 Characters" maxlength="498"><%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[3]!=null){%><%=CommitteMainEnoteList[3].toString()%><%}else{%><%="Formation of " + (committeedata[8]!=null?StringEscapeUtils.escapeHtml4(committeedata[8].toString()): "")+" Committee." %><%} %></textarea>
 					</div>
 					
 					<div class="col-md-1">
 					<label class="control-label" style="margin-bottom: 4px !important">Comment :</label>
 					</div>
 					<div class="col-md-4">
-					<textarea class="form-control" rows="2" cols="30" name="Comment" placeholder="max 500 Characters" maxlength="498"><%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[4]!=null){%><%=StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[4].toString())%><%}else{%><%} %></textarea>
+					<textarea class="form-control" rows="2" cols="30" name="Comment" placeholder="max 500 Characters" maxlength="498"><%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[4]!=null){%><%=CommitteMainEnoteList[4].toString()%><%}else{%><%} %></textarea>
 					</div>
 					</div>
 					<div class="row mt-4">

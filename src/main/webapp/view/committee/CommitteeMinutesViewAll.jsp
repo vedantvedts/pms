@@ -113,7 +113,7 @@ th,td
           @top-center { 
             font-size: 13px;
           margin-top: 30px;
-          content: "<%=committeescheduleeditdata[15]!=null?committeescheduleeditdata[1].toString(): " - "%>"; 
+          content: "<%=committeescheduleeditdata[15]!=null?committeescheduleeditdata[15].toString(): " - "%>"; 
           
           }
          @bottom-center { 

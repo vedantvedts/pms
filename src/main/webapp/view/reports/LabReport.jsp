@@ -554,7 +554,7 @@ if(proList!=null && proList.size()>0){
                   
                   
                <textarea class="form-control" maxlength="2000" rows="4"  id="introduction">
-               <%if(editorData!=null && editorData[5]!=null ){ %><%=StringEscapeUtils.escapeHtml4(editorData[5].toString()) %><%}else if( ProjectEditData[17]!=null){ %><%=  StringEscapeUtils.escapeHtml4(ProjectEditData[17].toString()) %>  <%} %>
+               <%if(editorData!=null && editorData[5]!=null ){ %><%=editorData[5].toString() %><%}else if( ProjectEditData[17]!=null){ %><%= ProjectEditData[17].toString() %>  <%} %>
                </textarea>   
                <div align="left" class="mt-2"><button class="btn btn-sm submit" onclick="submitIntroduction()">SUBMIT</button></div>
             </div>
@@ -767,9 +767,9 @@ if(proList!=null && proList.size()>0){
 			<textarea  name="description" style="display: none;" class="form-control" id="textNext<%=activity[9].toString()%>" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters">
 			
 			<%if(NextYearMilestoneData!=null && NextYearMilestoneData.size()>0){ %>
-			<%=NextYearMilestoneData.get(0).getActivityName()!=null?StringEscapeUtils.escapeHtml4(NextYearMilestoneData.get(0).getActivityName()):" - " %>
+			<%=NextYearMilestoneData.get(0).getActivityName()!=null?NextYearMilestoneData.get(0).getActivityName():" - " %>
 			<%}else{ %>
-			<%=activity[1]!=null?StringEscapeUtils.escapeHtml4(activity[1].toString()):" - " %>
+			<%=activity[1]!=null?activity[1].toString():" - " %>
 			
 			<%} %>
 			</textarea>
@@ -849,9 +849,9 @@ if(proList!=null && proList.size()>0){
 			<textarea  name="description" style="display: none;" class="form-control" id="text<%=activity[9].toString()%>" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters">
 			
 			<%if(SubLabReportMilestoneData!=null && SubLabReportMilestoneData.size()>0){ %>
-			<%=SubLabReportMilestoneData.get(0).getActivityName()!=null?StringEscapeUtils.escapeHtml4(SubLabReportMilestoneData.get(0).getActivityName()):" - " %>
+			<%=SubLabReportMilestoneData.get(0).getActivityName()!=null?SubLabReportMilestoneData.get(0).getActivityName():" - " %>
 			<%}else{ %>
-			<%=activity[1]!=null?StringEscapeUtils.escapeHtml4(activity[1].toString()):" - " %>
+			<%=activity[1]!=null?activity[1].toString():" - " %>
 			
 			<%} %>
 			</textarea>
@@ -897,7 +897,7 @@ if(proList!=null && proList.size()>0){
         <div class="section-content p-3" style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
             <form action="LabReportDataAdd.htm" method="get">
                 <div class="form-group">
-                    <textarea class="form-control" name="SpinOffData" id="ckeditor"  rows="5" cols="50" maxlength="5" placeholder="Enter Spin-Off details here..."><%if(editorData!=null && editorData[2]!=null){ %> <%=StringEscapeUtils.escapeHtml4(editorData[2].toString()) %>  <%}%></textarea> 
+                    <textarea class="form-control" name="SpinOffData" id="ckeditor"  rows="5" cols="50" maxlength="5" placeholder="Enter Spin-Off details here..."><%if(editorData!=null && editorData[2]!=null){ %> <%=editorData[2].toString() %>  <%}%></textarea> 
                 </div>
                 <div align="center">
                 <button type="submit" class="btn btn-primary btn-sm submit" onclick="return confirm('Are You Sure To Submit ?');"> Submit</button>
@@ -919,7 +919,7 @@ if(proList!=null && proList.size()>0){
             <form action="LabReportDataAdd.htm" method="get">
                 <div class="form-group">
 
-                 <textarea id="Editor1" style="display:none;" class="form-control" name="NominatedDetails"   rows="5" cols="50" maxlength="5" placeholder="Enter Details of LSI/DCPP/PA (If Nominated)..."><% if(editorData!=null && editorData[3]!=null){ %> <%=StringEscapeUtils.escapeHtml4(editorData[3].toString()) %> <%}else{%>  <%} %></textarea>
+                 <textarea id="Editor1" style="display:none;" class="form-control" name="NominatedDetails"   rows="5" cols="50" maxlength="5" placeholder="Enter Details of LSI/DCPP/PA (If Nominated)..."><% if(editorData!=null && editorData[3]!=null){ %> <%=editorData[3].toString() %> <%}else{%>  <%} %></textarea>
  
                 </div>
                 <div align="center">

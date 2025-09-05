@@ -121,7 +121,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 						</div>
 						
 						<div class="row">
-						 <div class="col-md-3">
+						 <div class="col-md-2">
 								<div class="form-group">
 									<label class="control-label">Project Applicable<span class="mandatory" style="color: red;">*</span></label>
 									<select class="custom-select" id="proapplicable" required="required" name="projectapplicable" style="margin-top: -5px">
@@ -137,7 +137,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 							</div> 
 							
 							
-							<div class="col-md-3">
+							<div class="col-md-2">
 								<div class="form-group">
 									<label class="control-label">Tech / Non-Tech<span class="mandatory" style="color: red;">*</span></label>
 									<select class="custom-select" id="technontech" required="required" name="technontech" style="margin-top: -5px">
@@ -148,7 +148,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 								</div>
 							</div>
 							
-							<div class="col-md-3">
+							<div class="col-md-2">
 								<div class="form-group">
 									<label class="control-label">Periodic / Non-Periodic<span class="mandatory" style="color: red;">*</span></label>
 									<select class="custom-select" id="periodic" required="required" name="periodic" style="margin-top: -5px" >
@@ -158,14 +158,23 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 									</select>
 								</div>
 							</div>
-							
-							<div class="col-md-3" style="display: none" id="periodicduration">
+													
+							<div class="col-md-2" style="display: none" id="periodicduration">
 								<div class="form-group">
-									<label class="control-label">Periodic Duration (Days)<span class="mandatory" style="color: red;">*</span></label>
-									<input class="form-control" type="number" min="1" name="periodicduration" id="periodicdurationfield" placeholder="Days">
+									<label class="control-label" >Periodic Duration (Days)<span class="mandatory" style="color: red;">*</span></label>
+									<input class="form-control" type="number" min="1" name="periodicduration" id="periodicdurationfield" style="margin-top: -5px"  placeholder="Days">
 								</div>
 							</div>
-							
+							<div class="col-md-2">
+								<div class="form-group">
+									<label class="control-label">Is Briefing<span class="mandatory" style="color: red;">*</span></label>
+									<select class="custom-select" id="IsBriefing" required="required" name=IsBriefing style="margin-top: -5px" >
+										<option disabled  value="">Choose...</option>
+										<option  value="N" selected>No</option>
+										<option  value="Y">Yes</option>
+									</select>
+								</div>
+							</div>
 						</div>	
 						
 						<div class="row">

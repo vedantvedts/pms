@@ -770,7 +770,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 				                                     
 				                                <td class="left"><%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%}else{ %>-<%} %></td>
 				                                <td><%if(obj[4]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString()) %><%}else{ %>-<%} %></td>
-				                                <td class="left"><%if(obj[5]!=null){%><%=sdf1.format(StringEscapeUtils.escapeHtml4(obj[5].toString())) %><%}else{ %>-<%} %></td>
+				                                <td class="left"><%if(obj[5]!=null){%><%=sdf1.format(obj[5]) %><%}else{ %>-<%} %></td>
 				                    			 <td class="center"><div ><a  href="ProjectAttachDownload.htm?InitiationAttachmentId=<%=obj[6]%>" target="_blank"><i class="fa fa-download"></i></a></div> </td>	
 				                    			
 				                            </tr>

@@ -501,7 +501,8 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 					<i class="fa fa-paper-plane-o" aria-hidden="true"></i>&nbsp; EMAIL</button> 
 		<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formtarget="_blank"  style="font-size:12px;">MINUTES</button>
 		<%} %>
-		<input type="submit" class="btn  btn-sm view" value="TABULAR MINUTES" formaction="MeetingTabularMinutesDownload.htm" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
+		<input type="hidden" class="btn  btn-sm view" value="TABULAR MINUTES" formaction="MeetingTabularMinutesDownload.htm" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" /> 
+		<input type="submit" class="btn  btn-sm view" value="TABULAR MINUTES" formaction="MOMTabularMinutesDownload.htm" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />		
 		<input type="hidden" name="isFrozen" value="<%=committeescheduleeditdata[22]%>">
 		<input type="hidden" name="membertype" value="<%=membertype%>">
 		<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6]%>">
@@ -769,7 +770,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
       		<div class="panel-heading">
         		
         		<h4 class="panel-title">
-                	<span  style="font-size:14px">3.<%=unitcount %> <%=Unit %></span> 
+                	<span  style="font-size:14px">3.<%=unitcount %> <%=StringEscapeUtils.escapeHtml4(Unit) %></span> 
                 </h4>
        
        			<div style="float: right !important; margin-top:-20px; " >

@@ -266,7 +266,7 @@ textarea {
 											<textarea name="levelname" id="input_<%=obj[0]%>"
 												maxlength="255"
 												style="display: none; width: 90px; resize: none; overflow-wrap: break-word; height: auto;"
-												rows="2"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): ""%></textarea>
+												rows="2"><%=obj[3]!=null?obj[3].toString(): ""%></textarea>
 												
 											<div class="row">
 												<button type="button" id="btn_<%=obj[0]%>"
@@ -330,7 +330,7 @@ textarea {
 											<textarea name="levelname" id="input_<%=sub[0]%>"
 												maxlength="255"
 												style="display: none; width: 90px; resize: none; overflow-wrap: break-word; height: auto;"
-												rows="2"><%=sub[3]!=null?StringEscapeUtils.escapeHtml4(sub[3].toString()): " - "%></textarea>
+												rows="2"><%=sub[3]!=null?sub[3].toString(): " - "%></textarea>
 											<div class="row">
 												<button type="button" id="btn_<%=sub[0]%>"
 													style="display: none;" class="btn btn-sm btn-success" onclick="submitLevelEdit('sublevel', '<%=sub[0]%>', '<%=parentId%>', '<%=sub[3]%>')">

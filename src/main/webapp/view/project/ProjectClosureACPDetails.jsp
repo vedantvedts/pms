@@ -1153,7 +1153,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																	 			<label class="control-label">Details of Facilities Created: </label><span class="mandatory">*</span>
 																				<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 																					<div id="facilitiesnote" class="center"> </div>
-																					<input type="hidden" id="facilitiescreatedhidden" value="<%if(acp!=null && acp.getFacilitiesCreated()!=null) {%><%=StringEscapeUtils.escapeHtml4(acp.getFacilitiesCreated()) %><%}%>">
+																					<input type="hidden" id="facilitiescreatedhidden" value="<%if(acp!=null && acp.getFacilitiesCreated()!=null) {%><%=acp.getFacilitiesCreated() %><%}%>">
 																				</div>
 																	  			<textarea name="facilitiesCreated" style="display:none;"></textarea>
 																				<input type="hidden" name="details" value="facilitiescreated"> 
@@ -1279,7 +1279,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																	        		<div class="form-group">
 																	                	<label class="control-label">Brief:</label><span class="mandatory">*</span>
 																	                    <textarea class="form-control form-control" name="trialResults" maxlength="5000" rows="3" cols="65" style="font-size: 15px;" 
-					                              		  								 placeholder="Enter maximum 5000 charecters" required><%if(acp!=null && acp.getTrialResults()!=null){ %><%=acp.getTrialResults()!=null?StringEscapeUtils.escapeHtml4(acp.getTrialResults()): " - " %><%} %></textarea> 
+					                              		  								 placeholder="Enter maximum 5000 charecters" required><%if(acp!=null && acp.getTrialResults()!=null){ %><%=acp.getTrialResults()!=null?acp.getTrialResults(): " - " %><%} %></textarea> 
 																	                </div>
 																	            </div>
 											       	 						</div>

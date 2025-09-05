@@ -3941,15 +3941,19 @@ private static final String ENOTEAPPROVELIST="SELECT MAX(a.EnoteId) AS EnoteId,M
 	
 //	---------------------------------- Naveen R 3/9/25 MOM Check ------------------------------------------
 	
-	private static final String AGENDAACTIONLIST = "SELECT a.ScheduleMinutesId, a.Details, a.ScheduleId, a.MinutesId, a.ScheduleSubId, a.MinutesSubOfSubId, a.MinutesSubId, a.idarck, a.remarks, b.outcomename,\r\n"
-			+ "c.agendaitem AS agenda, a.agendasubhead, e.PDCOrg,GROUP_CONCAT( CONCAT( IFNULL(CONCAT(f.Title,' '), IFNULL(CONCAT(f.Salutation,' '),'')),         f.EmpName    ) SEPARATOR ', \n') AS Assignees   "
-			+ "  FROM committee_schedules_minutes_details a JOIN committee_schedules_minutes_outcome b  ON a.idarck = b.idarck JOIN committee_schedules_agenda c  ON c.scheduleagendaid = a.minutessubid\r\n"
+	private static final String AGENDAACTIONLIST = "SELECT DISTINCT a.ScheduleMinutesId, a.Details, a.ScheduleId, a.MinutesId, a.ScheduleSubId, a.MinutesSubOfSubId, a.MinutesSubId, a.idarck, a.remarks, b.outcomename,\r\n"
+			+ "c.agendaitem AS agenda, a.agendasubhead, e.PDCOrg,CONCAT( IFNULL(CONCAT(f.Title,' '), IFNULL(CONCAT(f.Salutation,' '),'')),CONCAT(f.EmpName,', '),g.Designation )  AS Assignees \r\n"
+			+ "FROM committee_schedules_minutes_details a JOIN committee_schedules_minutes_outcome b  ON a.idarck = b.idarck JOIN committee_schedules_agenda c  ON c.scheduleagendaid = a.minutessubid\r\n"
 			+ "LEFT JOIN action_main d  ON a.ScheduleMinutesId = d.ScheduleMinutesId LEFT JOIN action_assign e ON d.ActionMainId = e.ActionMainId AND e.isActive = 1\r\n"
-			+ "LEFT JOIN employee f ON e.Assignee = f.EmpId WHERE a.scheduleid = :InScheduleId AND a.minutesid = '3' GROUP BY a.ScheduleMinutesId, a.Details, a.ScheduleId,\r\n"
-			+ "a.MinutesId, a.ScheduleSubId, a.MinutesSubOfSubId, a.MinutesSubId, a.idarck, a.remarks, b.outcomename, c.agendaitem, a.agendasubhead, e.PDCOrg\r\n"
-			+ "UNION SELECT a.ScheduleMinutesId, a.Details, a.ScheduleId, a.MinutesId, a.ScheduleSubId, a.MinutesSubOfSubId, a.MinutesSubId, a.idarck, a.remarks, b.outcomename,\r\n"
+			+ "LEFT JOIN employee f ON e.Assignee = f.EmpId LEFT JOIN employee_desig g ON g.DesigId = f.DesigId\r\n"
+			+ "WHERE a.scheduleid = :InScheduleId\r\n"
+			+ " AND a.minutesid = '3' GROUP BY a.ScheduleMinutesId, a.Details, a.ScheduleId,\r\n"
+			+ "a.MinutesId, a.ScheduleSubId, a.MinutesSubOfSubId, a.MinutesSubId, a.idarck, a.remarks, b.outcomename, c.agendaitem, a.agendasubhead, e.PDCOrg,f.Title, f.Salutation, f.EmpName, g.Designation\r\n"
+			+ "UNION SELECT DISTINCT a.ScheduleMinutesId, a.Details, a.ScheduleId, a.MinutesId, a.ScheduleSubId, a.MinutesSubOfSubId, a.MinutesSubId, a.idarck, a.remarks, b.outcomename,\r\n"
 			+ "CASE WHEN a.minutesid = '4' THEN 'Other Discussion' ELSE 'Other Outcomes' END AS agenda, a.agendasubhead, NULL AS PDCOrg, NULL AS Assignees\r\n"
-			+ "FROM committee_schedules_minutes_details a JOIN committee_schedules_minutes_outcome b ON a.idarck = b.idarck WHERE a.scheduleid = :InScheduleId AND a.minutesid <> '3'\r\n"
+			+ "FROM committee_schedules_minutes_details a JOIN committee_schedules_minutes_outcome b ON a.idarck = b.idarck \r\n"
+			+ "WHERE a.scheduleid = :InScheduleId\r\n"
+			+ " AND a.minutesid <> '3'\r\n"
 			+ "ORDER BY  CASE WHEN MinutesId = '3' THEN 1 ELSE 2 END, agenda, ScheduleMinutesId;";
 
 	@Override

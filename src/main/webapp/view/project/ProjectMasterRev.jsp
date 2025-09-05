@@ -419,7 +419,7 @@ Project Revision</h4>
 </tr>
  <tr>
 		<th colspan="1"><label style="margin-bottom: -10px;">Application:<span class="mandatory" style="color: red;">*</span></label></th>
-		<td colspan="3"><textarea required="required" name="Application"  class="form-control " rows="1" cols="53"><%if(ProjectEditData[26]!=null){%> <%=StringEscapeUtils.escapeHtml4(ProjectEditData[26].toString())%> <%}%></textarea></td>
+		<td colspan="3"><textarea required="required" name="Application"  class="form-control " rows="1" cols="53"><%if(ProjectEditData[26]!=null){%> <%=ProjectEditData[26].toString()%> <%}%></textarea></td>
 </tr>
    <tr>
   <th colspan="1">
@@ -429,7 +429,7 @@ Project Revision</h4>
 </th>
  <td colspan="3">
 	<textarea required="required" name="Scope" 
-	class="form-control "  maxlength="5000" rows="5" cols="53"><%=ProjectEditData[25]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[25].toString()): "" %></textarea>
+	class="form-control "  maxlength="5000" rows="5" cols="53"><%=ProjectEditData[25]!=null?ProjectEditData[25].toString(): "" %></textarea>
 </td>
  </tr>
  <tr>
@@ -440,7 +440,7 @@ Project Revision</h4>
 </th>
  <td colspan="3">
 	<textarea required="required"  name="Objective" 
-	class="form-control " maxlength="5000" rows="5" cols="53"><%=ProjectEditData[19]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[19].toString()): "" %></textarea>
+	class="form-control " maxlength="5000" rows="5" cols="53"><%=ProjectEditData[19]!=null?ProjectEditData[19].toString(): "" %></textarea>
 </td>
  </tr>
   <tr>
@@ -451,7 +451,7 @@ Project Revision</h4>
 </th>
  <td colspan="3">
 	<textarea required="required" name="Deliverable" 
-	class="form-control "  maxlength="5000" rows="5" cols="53"><%=ProjectEditData[20]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[20].toString()): "" %></textarea>
+	class="form-control "  maxlength="5000" rows="5" cols="53"><%=ProjectEditData[20]!=null?ProjectEditData[20].toString(): "" %></textarea>
 </td>
  </tr>
   <tr>

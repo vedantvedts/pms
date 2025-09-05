@@ -469,7 +469,7 @@ List<String>cycles =tp.getNumberofCycles()!=null? Arrays.asList(tp.getNumberofCy
 									<div  style="">
 										<textarea  name="remarks" class="form-control"
 											id="remarksAdd" maxlength="255" required="required"
-											placeholder="Maximum 250 Chararcters" ><%if(tp.getRemarks()!=null){%><%=StringEscapeUtils.escapeHtml4(tp.getRemarks())%> <%}%></textarea>
+											placeholder="Maximum 250 Chararcters" ><%if(tp.getRemarks()!=null){%><%=tp.getRemarks()%> <%}%></textarea>
 									</div>
 								
 							</div>

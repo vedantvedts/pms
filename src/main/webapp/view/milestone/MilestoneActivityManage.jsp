@@ -387,7 +387,7 @@ input[type=checkbox] {
 										<td><%=objA[14]!=null?StringEscapeUtils.escapeHtml4(objA[14].toString()): " - "%></td>
 										<td class="width-30px">
 											<%if(objA[9].toString().equalsIgnoreCase("3")||objA[9].toString().equalsIgnoreCase("5")){ %>
-											<%if(objA[7]!=null){ %> <%=sdf.format(StringEscapeUtils.escapeHtml4(objA[7].toString())) %> <%}else{ %><%=objA[8]!=null?StringEscapeUtils.escapeHtml4(objA[8].toString()): " - " %>
+											<%if(objA[7]!=null){ %> <%=sdf.format(objA[7]) %> <%}else{ %><%=objA[8]!=null?StringEscapeUtils.escapeHtml4(objA[8].toString()): " - " %>
 											<%} %> <%}else{ %> <%=objA[8]!=null?StringEscapeUtils.escapeHtml4(objA[8].toString()): " - " %> <%} %>
 										</td>
 										<td align="center"><%=objA[6]!=null?StringEscapeUtils.escapeHtml4(objA[6].toString()): " - " %></td>

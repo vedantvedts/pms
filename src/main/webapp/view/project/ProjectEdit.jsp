@@ -412,19 +412,19 @@ Project Edit</h4>
 </tr>
  <tr>
 		<th colspan="1"><label style="margin-bottom: -10px;">Application:<span class="mandatory" style="color: red;">*</span></label></th>
-		<td colspan="3"><textarea required="required" placeholder="Enter maximum 50 charcters " name="application" class="form-control " maxlength="50" rows="1" cols="53"><%=ProjectEditData[26]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[26].toString()): " - "%></textarea></td>
+		<td colspan="3"><textarea required="required" placeholder="Enter maximum 50 charcters " name="application" class="form-control " maxlength="50" rows="1" cols="53"><%=ProjectEditData[26]!=null?ProjectEditData[26].toString(): " - "%></textarea></td>
 </tr>
 <tr>
 		<th colspan="1"><label style="margin-bottom: -10px;">Scope:<span class="mandatory" style="color: red;">*</span></label></th>
-		<td colspan="3"><textarea required="required" name="scope" class="form-control " placeholder="Enter maximum 5000 charcters " maxlength="5000" rows="3" cols="53"><%=ProjectEditData[25]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[25].toString()): " - " %></textarea></td>
+		<td colspan="3"><textarea required="required" name="scope" class="form-control " placeholder="Enter maximum 5000 charcters " maxlength="5000" rows="3" cols="53"><%=ProjectEditData[25]!=null?ProjectEditData[25].toString(): " - " %></textarea></td>
 </tr>
  <tr>
 		  <th colspan="1"><label style="margin-bottom: -10px;">Objective:<span class="mandatory" style="color: red;">*</span></label></th>
-		  <td colspan="3"><textarea required="required"  name="Objective" class="form-control " placeholder="Enter maximum 5000 charcters " maxlength="5000" rows="3" cols="53"><%=ProjectEditData[19]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[19].toString()): " - " %></textarea></td>	 
+		  <td colspan="3"><textarea required="required"  name="Objective" class="form-control " placeholder="Enter maximum 5000 charcters " maxlength="5000" rows="3" cols="53"><%=ProjectEditData[19]!=null?ProjectEditData[19].toString(): " - " %></textarea></td>	 
  </tr>
   <tr>
 		  <th colspan="1"><label style="margin-bottom: -10px;">Deliverable:<span class="mandatory" style="color: red;">*</span></label></th>
-		  <td colspan="3"><textarea required="required" name="Deliverable" class="form-control " placeholder="Enter maximum 5000 charcters "  maxlength="5000" rows="3" cols="53"><%=ProjectEditData[20]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[20].toString()): " - " %></textarea></td>
+		  <td colspan="3"><textarea required="required" name="Deliverable" class="form-control " placeholder="Enter maximum 5000 charcters "  maxlength="5000" rows="3" cols="53"><%=ProjectEditData[20]!=null?ProjectEditData[20].toString(): " - " %></textarea></td>
  </tr>
  </thead>
  </table>

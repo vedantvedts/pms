@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.stream.Collectors"%>
@@ -22,12 +23,13 @@
 <body>
 
 	<%
+		FormatConverter fc = new FormatConverter();
 		ProgrammeMaster programmeMaster = (ProgrammeMaster)request.getAttribute("prgmMaster");
 		List<ProgrammeProjects> prgmprojectsList = (List<ProgrammeProjects>) request.getAttribute("prgmprojectsList");
 		List<Object[]> directorsList = (List<Object[]>) request.getAttribute("directorsList");
 		List<Object[]> projectsList = (List<Object[]>) request.getAttribute("projectsList");
 	
-		List<Long> linkedProjectIds = prgmprojectsList!=null?prgmprojectsList.stream().map(e -> e.getProjectId()).collect(Collectors.toList()):new ArrayList();
+		List<Long> linkedProjectIds = prgmprojectsList!=null?prgmprojectsList.stream().map(e -> e.getProjectId()).collect(Collectors.toList()):new ArrayList<Long>();
 	%>
 	
 	<% 
@@ -97,9 +99,9 @@
 								<div class="col-md-3">
 									<div class="form-group">
 										<label class="form-label"><b class="heading">Sanctioned On:</b><span class="mandatory" style="color:red;">*</span></label>
-										<input type="text" data-date-format="dd/mm/yyyy" id="sanc-date" name="sanctionDate" value=""class="form-control" required="required"
-										<%if(programmeMaster!=null){%>
-										 value="<%=programmeMaster.getSanctionedOn()!=null?StringEscapeUtils.escapeHtml4(programmeMaster.getSanctionedOn()):"" %>" 
+										<input type="text"  id="sanc-date" name="sanctionDate" class="form-control" required="required"
+										<%if(programmeMaster!=null && programmeMaster.getSanctionedOn()!=null){%>
+											value="<%=fc.sdfTordf(programmeMaster.getSanctionedOn()) %>"
 										<%} %> readonly="readonly">
 									</div>
 								</div>
@@ -138,18 +140,18 @@
 	</div>
 	
 	<script type="text/javascript">			
+
+	$('#sanc-date').daterangepicker({
 		
-		$('#sanc-date').daterangepicker({
-			
-			"singleDatePicker": true,
-			"showDropdowns": true,
-			"cancelClass": "btn-default",
-			"maxDate":moment(), 
-			"startDate":moment(),
-			locale: {
-		    	format: 'DD-MM-YYYY'
-				}
-		});
+		"singleDatePicker": true,
+		"showDropdowns": true,
+		"cancelClass": "btn-default",
+		"maxDate":new Date() ,
+		locale: {
+	    	format: 'DD-MM-YYYY'
+			}
+	});
+	
 		function handleInputChange(value,prgmId) {
 		    var uppercasedValue = value.trim().toUpperCase();
 		    $('#ProgrammeCode').val(uppercasedValue);

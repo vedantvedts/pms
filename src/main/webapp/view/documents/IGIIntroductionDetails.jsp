@@ -439,7 +439,7 @@ div {
 																          		<button type="submit" class="btn btn-sm edit" id="btn_<%=intro1.getIntroductionId()%>" onclick="return confirm('Are you sure to Edit?')" style="width: 42px;height: 25px;font-size: 10px;font-weight: bold;display: none;">Edit</button>
 																				<button type="button" class="btnx" style="color: red;display: none;" id="btnx_<%=intro1.getIntroductionId() %>" onclick="moduleeditdisable('<%=intro1.getIntroductionId()%>')"><i class="fa fa-times fa-lg " aria-hidden="true"  ></i></button>
 																			</div>
-																			<textarea id="chapterContentEdit<%=intro1.getIntroductionId()%>" style="display: none;"><%=intro1.getChapterContent()!=null?StringEscapeUtils.escapeHtml4(intro1.getChapterContent()):""%></textarea>
+																			<textarea id="chapterContentEdit<%=intro1.getIntroductionId()%>" style="display: none;"><%=intro1.getChapterContent()!=null?intro1.getChapterContent():""%></textarea>
 						          		
 						          										</form>
 					       											</div>

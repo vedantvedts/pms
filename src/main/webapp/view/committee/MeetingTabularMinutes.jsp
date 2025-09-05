@@ -157,8 +157,8 @@ p{
 				<br>
 				<table style="align: center; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px"  border="0">
 					<tr style="margin-top: 10px">
-						 <th  style="text-align: center; width: 650px;font-size: 20px "> <u>Meeting Id </u> </th></tr><tr>
-						 <th  style="text-align: center;  width: 650px;font-size: 20px  "> <%=committeescheduleeditdata[11]!=null?committeescheduleeditdata[11].toString(): " - " %> </th>				
+						 <th  style="text-align: center; width: 650px;font-size: 20px"> <u>Meeting Id </u> </th></tr><tr>
+						 <th  style="text-align: center;  width: 650px;font-size: 20px"> <%=committeescheduleeditdata[11]!=null?committeescheduleeditdata[11].toString(): " - " %> </th>				
 					 </tr>
 				</table>
 				

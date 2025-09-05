@@ -319,7 +319,7 @@
 											           	<input type="hidden" name="ActionAssignId" id="actionAssignId_<%=slno %>" value="<%=obj[14]%>"/>
 											           	<input type="hidden" name="ActionAssignid" id="actionAssignId_<%=slno %>" value="<%=obj[14]%>"/>
 											           	<input type="hidden" name="ActionNo" id="actionNo_<%=slno %>" value="<%=obj[0]%>"/>
-											           	<textarea name="ActionName" id="actionName_<%=slno %>" style="display: none;"><%=actionName!=null?StringEscapeUtils.escapeHtml4(actionName):""%></textarea>
+											           	<textarea name="ActionName" id="actionName_<%=slno %>" style="display: none;"><%=actionName!=null?actionName:""%></textarea>
 											           	<input type="hidden" name="ProjectId" value="<%=obj[18]%>"/>
 											           	<input type="hidden" name="projectid" value="<%=projectId%>"/>
 											           	<input type="hidden" name="empId" value="<%=empId%>"/>
