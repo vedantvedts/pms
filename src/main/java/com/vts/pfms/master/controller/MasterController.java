@@ -2279,7 +2279,7 @@ public class MasterController {
 			if(action!=null && "Add".equalsIgnoreCase(action)) {
 				
 				req.setAttribute("directorsList", service.OfficerList());
-				req.setAttribute("projectsList", committeeservice.ProjectList(labcode));
+				req.setAttribute("projectsList", service.getProjectList(labcode));
 				return "master/ProgramMasterAddEdit";
 			}else if(action!=null && "Edit".equalsIgnoreCase(action)) {
 				
@@ -2287,7 +2287,7 @@ public class MasterController {
 				req.setAttribute("prgmMaster", committeeservice.getProgrammeMasterById(ProgrammeId));
 				req.setAttribute("prgmprojectsList", committeeservice.getProgrammeProjectsList(ProgrammeId));
 				req.setAttribute("directorsList", service.OfficerList());
-				req.setAttribute("projectsList", committeeservice.ProjectList(labcode));
+				req.setAttribute("projectsList", service.getProjectList(labcode,ProgrammeId));
 				
 				return "master/ProgramMasterAddEdit";
 			}else {
@@ -2333,14 +2333,11 @@ public class MasterController {
 			Long result = service.addProgrammeMaster(master);
 			
 			String[] prgmProjectsIds = req.getParameterValues("prgmprojectids");
-//			System.out.println(Arrays.toString(prgmProjectsIds));
-
+			
 			if(prgmProjectsIds!=null && prgmProjectsIds.length>0) {
 				for(int i=0; i<prgmProjectsIds.length; i++) {
-//					System.out.println("Inside loop");
 
 					if(prgmProjectsIds[i]!=null && !prgmProjectsIds[i].equalsIgnoreCase("0")) {
-//						System.out.println("Inside condition"+prgmProjectsIds[i]);
 
 						ProgrammeProjects linked = new ProgrammeProjects();
 						linked.setProgrammeId(result);

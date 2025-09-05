@@ -156,6 +156,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		committeeModel.setCreatedBy(committeeDto.getCreatedBy());
 		committeeModel.setCreatedDate(sdf1.format(new Date()));
 		committeeModel.setIsActive(1);
+		committeeModel.setIsBriefing(committeeDto.getIsBriefing());
 		count = dao.CommitteeNewAdd(committeeModel);
 		
 		return count;
@@ -229,7 +230,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		committeemodel.setIsGlobal(Long.parseLong(committeeDto.getIsGlobal()));
 		committeemodel.setModifiedBy(committeeDto.getModifiedBy());
 		committeemodel.setModifiedDate(sdf1.format(new Date()));
-		
+		committeemodel.setIsBriefing(committeeDto.getIsBriefing());
 		return dao.CommitteeEditSubmit(committeemodel);	
 	}	
 	
@@ -4095,6 +4096,13 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 	public Long addCommitteeCARS(CommitteeCARS committeeCARS) throws Exception {
 		
 		return dao.addCommitteeCARS(committeeCARS);
+	}
+
+//	---------------------------------- Naveen R 3/9/25 MOM Check ------------------------------------------
+	
+	@Override
+	public List<Object[]> CommitteeScheduleMinutesforAction(String committeescheduleid) {
+		return dao.CommitteeScheduleMinutesforAction(committeescheduleid);
 	}
 	
 }

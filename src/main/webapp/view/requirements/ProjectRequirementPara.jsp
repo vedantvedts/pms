@@ -687,7 +687,7 @@ keyframes blinker { 50% {
       									</div>
 								      	<div class="col-md-6" style="" >
 								      		<textarea rows="2" class="form-control modals"  maxlength="1000" placeholder="Enter Maximum 1000 characters"
-								      		required name="MeetingReference"><%if(SQRFile!=null && SQRFile[9]!=null) {%><%=StringEscapeUtils.escapeHtml4(SQRFile[9].toString())%><%} %></textarea>
+								      		required name="MeetingReference"><%if(SQRFile!=null && SQRFile[9]!=null) {%><%=SQRFile[9].toString()%><%} %></textarea>
 								     	</div>
       								</div> 
 

@@ -33,6 +33,7 @@ public class Committee
 	private String ModifiedBy;
 	private String ModifiedDate;
 	private int IsActive;
+	private String IsBriefing;
 	
 	
 	

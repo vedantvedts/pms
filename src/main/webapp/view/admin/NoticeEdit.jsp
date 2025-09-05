@@ -99,7 +99,7 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
                                      <div class="col-md-8">
 										<div class="form-group">
 											<label class="control-label">Notice</label> 
-										    <textarea class="form-control" name="noticeFiled" style="height: 9rem;" maxlength="255" required="required" placeholder="Enter Notice here with max 255 characters" ><%=notice[2]!=null?StringEscapeUtils.escapeHtml4(notice[2].toString()): ""%></textarea>
+										    <textarea class="form-control" name="noticeFiled" style="height: 9rem;" maxlength="255" required="required" placeholder="Enter Notice here with max 255 characters" ><%=notice[2]!=null?notice[2].toString(): ""%></textarea>
 										</div>
 									</div>     
 									      <input type="hidden"  id="noticeId" name="noticeId" value="<%=notice[0]%>"/>  

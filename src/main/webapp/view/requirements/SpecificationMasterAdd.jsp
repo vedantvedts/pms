@@ -209,7 +209,7 @@ body {
 									<label style="font-size: 17px; margin-top: 5%; color: #07689f">Description: <span class="mandatory" style="color: red;">*</span></label>
 								</div>
 								<div class="col-md-9">
-			   						<textarea class="form-control" name="description"   id="ConclusionDetails" rows="4" maxlength="1000" placeholder="Maximum 1000 characters"><%=sp.getDescription()!=null?StringEscapeUtils.escapeHtml4(sp.getDescription()):"" %></textarea>	
+			   						<textarea class="form-control" name="description"   id="ConclusionDetails" rows="4" maxlength="1000" placeholder="Maximum 1000 characters"><%=sp.getDescription()!=null?sp.getDescription():"" %></textarea>	
 								</div>
    								
 							</div>
@@ -282,7 +282,7 @@ body {
 											<td><input type="text" class="form-control maxValue" name="maxValue_<%=count %>" required="required" value="<%=obj[15]!=null?StringEscapeUtils.escapeHtml4(obj[15].toString()):"" %>"></td>
 				
 											<td>
-											<textarea class="form-control description" name="description_<%=count %>" required="required"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): "" %></textarea></td>
+											<textarea class="form-control description" name="description_<%=count %>" required="required"><%=obj[2]!=null?obj[2].toString(): "" %></textarea></td>
 											<td>
 											<button type="button" class="btn btn-sm add-sub-row" data-row="<%=count %>"><i class="fa fa-plus" aria-hidden="true" style="color:green"></i></button>
 											</td></tr>

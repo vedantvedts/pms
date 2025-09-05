@@ -1108,6 +1108,34 @@ public class MasterDaoImpl implements MasterDao {
 				return 0L;
 			}
 		}
+		
+		private static final String PROJECTLIST = "SELECT DISTINCT projectid, projectmainid, projectcode, projectname, ProjectShortName FROM project_master WHERE isactive=1 AND labcode=:labCode AND projectid NOT IN (SELECT projectid FROM pfms_programme_projects WHERE isActive=1)";
+		@Override
+		public List<Object[]> getProjectList(String labcode) throws Exception {
+			try {
+				Query query = manager.createNativeQuery(PROJECTLIST);
+				query.setParameter("labCode", labcode);
+				return (List<Object[]>)query.getResultList();
+			}catch (Exception e) {
+				e.printStackTrace(); 
+				return new ArrayList<Object[]>();	
+			}
+		} 
+		
+		private static final String PROJECTLISTFORPROGRAMMEID = "SELECT a.projectid, a.projectmainid, a.projectcode, a.projectname, a.ProjectShortName FROM project_master a LEFT JOIN pfms_programme_projects b ON a.projectid = b.projectId AND b.isActive = 1 LEFT JOIN pfms_programme_master c ON b.programmeId = c.programmeId AND c.isActive = 1 WHERE a.isActive = 1 AND a.labcode = :labCode AND ( b.projectId IS NULL OR ( c.programmeId =:programmeId AND a.projectid IN ( SELECT projectId FROM pfms_programme_projects WHERE isActive = 1 GROUP BY projectId HAVING COUNT(DISTINCT programmeId) = 1 ))) ORDER BY a.projectid ASC;";
+		@Override
+		public List<Object[]> getProjectList(String labcode, String programmeId) throws Exception {
+			try {
+				Query query = manager.createNativeQuery(PROJECTLISTFORPROGRAMMEID);
+				query.setParameter("labCode", labcode);
+				query.setParameter("programmeId", programmeId);
+				return (List<Object[]>)query.getResultList();
+			}catch (Exception e) {
+				e.printStackTrace();
+				return new ArrayList<Object[]>();	
+			}
+		}
+				
 		/* **************************** Programme Master - Naveen R  - 16/07/2025 End**************************************** */
 
 		@Override
@@ -1148,6 +1176,7 @@ public class MasterDaoImpl implements MasterDao {
 				return 0L;
 			}
 		}
+
 		
 		// 22/8/2025  Naveen R RoleName and RoleCode Duplicate Check End
 		

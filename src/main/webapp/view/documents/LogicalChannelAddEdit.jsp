@@ -71,7 +71,7 @@
 	       						<div class="row">
 	                    		    <div class="col-md-12">
        									<label class="form-lable">Description <span class="mandatory">*</span></label>
-       									<textarea class="form-control" name="description" id="description" rows="2" placeholder="Enter Channel Description" maxlength="1000" required><%if(igiLogicalChannel!= null) { %><%=StringEscapeUtils.escapeHtml4(igiLogicalChannel.getDescription()) %><%} %></textarea>
+       									<textarea class="form-control" name="description" id="description" rows="2" placeholder="Enter Channel Description" maxlength="1000" required><%if(igiLogicalChannel!= null) { %><%=igiLogicalChannel.getDescription() %><%} %></textarea>
        								</div>
                  				 </div>
                 			</div>

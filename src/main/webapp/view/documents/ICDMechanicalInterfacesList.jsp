@@ -248,11 +248,11 @@ label {
        									<div class="row">
        										<div class="col-md-6">
        											<label class="form-lable">Part-1 <span class="mandatory">*</span></label>
-		       									<textarea rows="3" class="form-control" name="partOne" placeholder="Enter Part-1 Details" maxlength="500" required><%if(mechanicalInterface!=null && mechanicalInterface.getPartOne()!=null) {%><%=StringEscapeUtils.escapeHtml4(mechanicalInterface.getPartOne()) %><%} %></textarea>
+		       									<textarea rows="3" class="form-control" name="partOne" placeholder="Enter Part-1 Details" maxlength="500" required><%if(mechanicalInterface!=null && mechanicalInterface.getPartOne()!=null) {%><%=mechanicalInterface.getPartOne() %><%} %></textarea>
        										</div>
        										<div class="col-md-6">
        											<label class="form-lable">Part-2 <span class="mandatory">*</span></label>
-		       									<textarea rows="3" class="form-control" name="partTwo" placeholder="Enter Part-2 Details" maxlength="500" required><%if(mechanicalInterface!=null && mechanicalInterface.getPartTwo()!=null) {%><%=StringEscapeUtils.escapeHtml4(mechanicalInterface.getPartTwo()) %><%} %></textarea>
+		       									<textarea rows="3" class="form-control" name="partTwo" placeholder="Enter Part-2 Details" maxlength="500" required><%if(mechanicalInterface!=null && mechanicalInterface.getPartTwo()!=null) {%><%=mechanicalInterface.getPartTwo() %><%} %></textarea>
        										</div>
        									</div>
        								</div>
@@ -261,11 +261,11 @@ label {
        									<div class="row">
        										<div class="col-md-6">
        											<label class="form-lable">Description <span class="mandatory">*</span></label>
-		       									<textarea rows="3" class="form-control" name="description" placeholder="Enter Description" maxlength="500" required><%if(mechanicalInterface!=null && mechanicalInterface.getDescription()!=null) {%><%=StringEscapeUtils.escapeHtml4(mechanicalInterface.getDescription()) %><%} %></textarea>
+		       									<textarea rows="3" class="form-control" name="description" placeholder="Enter Description" maxlength="500" required><%if(mechanicalInterface!=null && mechanicalInterface.getDescription()!=null) {%><%=mechanicalInterface.getDescription() %><%} %></textarea>
        										</div>
        										<div class="col-md-6">
        											<label class="form-lable">Applicable Standards <span class="mandatory">*</span></label>
-		       									<textarea rows="3" class="form-control" name="standards" placeholder="Enter Applicable Standards" maxlength="500" required><%if(mechanicalInterface!=null && mechanicalInterface.getStandards()!=null) {%><%=StringEscapeUtils.escapeHtml4(mechanicalInterface.getStandards()) %><%} %></textarea>
+		       									<textarea rows="3" class="form-control" name="standards" placeholder="Enter Applicable Standards" maxlength="500" required><%if(mechanicalInterface!=null && mechanicalInterface.getStandards()!=null) {%><%=mechanicalInterface.getStandards() %><%} %></textarea>
        										</div>
        									</div>
        								</div>
@@ -274,11 +274,11 @@ label {
        									<div class="row">
        										<div class="col-md-6">
        											<label class="form-lable">Precautions <span class="mandatory">*</span></label>
-		       									<textarea rows="3" class="form-control" name="precautions" placeholder="Enter Precautions" maxlength="500" required><%if(mechanicalInterface!=null && mechanicalInterface.getPrecautions()!=null) {%><%=StringEscapeUtils.escapeHtml4(mechanicalInterface.getPrecautions()) %><%} %></textarea>
+		       									<textarea rows="3" class="form-control" name="precautions" placeholder="Enter Precautions" maxlength="500" required><%if(mechanicalInterface!=null && mechanicalInterface.getPrecautions()!=null) {%><%=mechanicalInterface.getPrecautions() %><%} %></textarea>
        										</div>
        										<div class="col-md-6">
        											<label class="form-lable">Handling Instructions <span class="mandatory">*</span></label>
-		       									<textarea rows="3" class="form-control" name="instructions" placeholder="Enter Handling Instructions" maxlength="500" required><%if(mechanicalInterface!=null && mechanicalInterface.getInstructions()!=null) {%><%=StringEscapeUtils.escapeHtml4(mechanicalInterface.getInstructions()) %><%} %></textarea>
+		       									<textarea rows="3" class="form-control" name="instructions" placeholder="Enter Handling Instructions" maxlength="500" required><%if(mechanicalInterface!=null && mechanicalInterface.getInstructions()!=null) {%><%=mechanicalInterface.getInstructions() %><%} %></textarea>
        										</div>
        									</div>
        								</div>
@@ -287,7 +287,7 @@ label {
        									<div class="row">
        										<div class="col-md-6">
        											<label class="form-lable">Remarks</label>
-		       									<textarea rows="3" class="form-control" name="remarks" placeholder="Enter Remarks" maxlength="500"><%if(mechanicalInterface!=null && mechanicalInterface.getRemarks()!=null) {%><%=StringEscapeUtils.escapeHtml4(mechanicalInterface.getRemarks()) %><%} %></textarea>
+		       									<textarea rows="3" class="form-control" name="remarks" placeholder="Enter Remarks" maxlength="500"><%if(mechanicalInterface!=null && mechanicalInterface.getRemarks()!=null) {%><%=mechanicalInterface.getRemarks() %><%} %></textarea>
        										</div>
        										<div class="col-md-6">
        										</div>

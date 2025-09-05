@@ -325,15 +325,15 @@ label {
 			       						<div class="row">
 			                    		    <div class="col-md-3">
 		       									<label class="form-lable">Description </label>
-		       									<textarea class="form-control" name="msgDescription" rows="2" placeholder="Enter Msg Description" maxlength="255" ><%if(logicalInterface!=null && logicalInterface.getMsgDescription()!=null) {%><%=StringEscapeUtils.escapeHtml4(logicalInterface.getMsgDescription()) %><%} %></textarea>
+		       									<textarea class="form-control" name="msgDescription" rows="2" placeholder="Enter Msg Description" maxlength="255" ><%if(logicalInterface!=null && logicalInterface.getMsgDescription()!=null) {%><%=logicalInterface.getMsgDescription() %><%} %></textarea>
 		       								</div>
 			                    		    <div class="col-md-3">
 		       									<label class="form-lable">Protocols </label>
-		       									<textarea class="form-control" name="protocols" rows="2" placeholder="Enter Underlying Protocols" maxlength="255"><%if(logicalInterface!=null && logicalInterface.getProtocals()!=null) {%><%=StringEscapeUtils.escapeHtml4(logicalInterface.getProtocals()) %><%} %></textarea>
+		       									<textarea class="form-control" name="protocols" rows="2" placeholder="Enter Underlying Protocols" maxlength="255"><%if(logicalInterface!=null && logicalInterface.getProtocals()!=null) {%><%=logicalInterface.getProtocals() %><%} %></textarea>
 		       								</div>
 			                    		    <div class="col-md-3">
 		       									<label class="form-lable">Additional Info </label>
-		       									<textarea class="form-control" name="additionalInfo" rows="2" placeholder="Enter Additional Info" maxlength="255"><%if(logicalInterface!=null && logicalInterface.getAdditionalInfo()!=null) {%><%=StringEscapeUtils.escapeHtml4(logicalInterface.getAdditionalInfo()) %><%} %></textarea>
+		       									<textarea class="form-control" name="additionalInfo" rows="2" placeholder="Enter Additional Info" maxlength="255"><%if(logicalInterface!=null && logicalInterface.getAdditionalInfo()!=null) {%><%=logicalInterface.getAdditionalInfo() %><%} %></textarea>
 		       								</div>
 	                  				 	</div>
                   				 	</div>

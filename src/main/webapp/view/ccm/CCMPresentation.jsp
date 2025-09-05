@@ -1245,10 +1245,10 @@ input,select,table,div,label,span {
 																<form action="#">
 																	<input type="hidden" name="action" value="Edit">
 																	<input type="hidden" name="tabName" value="<%=tabName%>">
-																	<textarea id="recommendationEditData_<%=slno %>" style="display: none;"><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): "" %></textarea>
-																	<textarea id="tcrStatusEditData_<%=slno %>" style="display: none;"><%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): "" %></textarea>
-																	<textarea id="acrStatusEditData_<%=slno %>" style="display: none;"><%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): "" %></textarea>
-																	<textarea id="activityStatusEditData_<%=slno %>" style="display: none;"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): "" %></textarea>
+																	<textarea id="recommendationEditData_<%=slno %>" style="display: none;"><%=obj[10]!=null?obj[10].toString(): "" %></textarea>
+																	<textarea id="tcrStatusEditData_<%=slno %>" style="display: none;"><%=obj[11]!=null?obj[11].toString(): "" %></textarea>
+																	<textarea id="acrStatusEditData_<%=slno %>" style="display: none;"><%=obj[12]!=null?obj[12].toString(): "" %></textarea>
+																	<textarea id="activityStatusEditData_<%=slno %>" style="display: none;"><%=obj[13]!=null?obj[13].toString(): "" %></textarea>
 																	<button type="button" class="btn btn-lg" formmethod="post" data-toggle="tooltip" data-placement="top" title="Edit Closure Status"
 																	 onclick="openClosureStatusModalEdit('<%=obj[0]%>', '<%=obj[1]%>', '<%=obj[3]%>', '<%=slno%>')">
 																		<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -1725,7 +1725,7 @@ input,select,table,div,label,span {
 															<td class="center">
 																<form action="#">
 																	<input type="hidden" name="action" value="Edit">
-																	<textarea class="achievement" name="achievement" id="achievement_<%=slno %>" style="display: none;"><%=achmnts.getAchievement()!=null?StringEscapeUtils.escapeHtml4(achmnts.getAchievement()): "" %></textarea>
+																	<textarea class="achievement" name="achievement" id="achievement_<%=slno %>" style="display: none;"><%=achmnts.getAchievement()!=null?achmnts.getAchievement(): "" %></textarea>
 																	<button type="button" class="btn btn-lg" formmethod="post" formaction="CCMAchievementSubmit.htm" data-toggle="tooltip" data-placement="top" title="Edit Achievement"
 																	 onclick="openAchievementsModalEdit('<%=slno %>','<%=achmnts.getAchievementId() %>','<%=achmnts.getLabCode() %>', '<%=achmnts.getTopicType() %>','<%=achmnts.getImageName() %>','<%=achmnts.getAttachmentName() %>','<%=achmnts.getVideoName() %>')">
 																		<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -1801,7 +1801,7 @@ input,select,table,div,label,span {
 															<td class="center">
 																<form action="#">
 																	<input type="hidden" name="action" value="Edit">
-																	<textarea class="achievement" name="achievement" id="achievement_<%=slno %>" style="display: none;"><%=achmnts.getAchievement()!=null?StringEscapeUtils.escapeHtml4(achmnts.getAchievement()): "" %></textarea>
+																	<textarea class="achievement" name="achievement" id="achievement_<%=slno %>" style="display: none;"><%=achmnts.getAchievement()!=null?achmnts.getAchievement(): "" %></textarea>
 																	<button type="button" class="btn btn-lg" formmethod="post" formaction="CCMAchievementSubmit.htm" data-toggle="tooltip" data-placement="top" title="Edit Achievement"
 																	 onclick="openAchievementsModalEdit('<%=slno %>','<%=achmnts.getAchievementId() %>','<%=achmnts.getLabCode() %>', '<%=achmnts.getTopicType() %>','<%=achmnts.getImageName() %>','<%=achmnts.getAttachmentName() %>','<%=achmnts.getVideoName() %>')">
 																		<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -1876,7 +1876,7 @@ input,select,table,div,label,span {
 															<td class="center">
 																<form action="#">
 																	<input type="hidden" name="action" value="Edit">
-																	<textarea class="achievement" name="achievement" id="achievement_<%=slno %>" style="display: none;"><%=achmnts.getAchievement() !=null?StringEscapeUtils.escapeHtml4(achmnts.getAchievement()): ""%></textarea>
+																	<textarea class="achievement" name="achievement" id="achievement_<%=slno %>" style="display: none;"><%=achmnts.getAchievement() !=null?achmnts.getAchievement(): ""%></textarea>
 																	<button type="button" class="btn btn-lg" formmethod="post" formaction="CCMAchievementSubmit.htm" data-toggle="tooltip" data-placement="top" title="Edit Achievement"
 																	 onclick="openAchievementsModalEdit('<%=slno %>','<%=achmnts.getAchievementId() %>','<%=achmnts.getLabCode() %>', '<%=achmnts.getTopicType() %>','<%=achmnts.getImageName() %>','<%=achmnts.getAttachmentName() %>','<%=achmnts.getVideoName() %>')">
 																		<i class="fa fa-pencil-square-o" aria-hidden="true"></i>

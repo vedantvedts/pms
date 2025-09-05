@@ -391,7 +391,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 </tr>
  <tr>
 		<th colspan="1"><label style="margin-bottom: -10px;">Application:<span class="mandatory" style="color: red;">*</span></label></th>
-		<td colspan="3"><textarea required="required" name="application" placeholder="Enter maximum 50 charcters " class="form-control " maxlength="49" rows="1" cols="53"><%if(ProjectMainEditData[25]!=null){%> <%=StringEscapeUtils.escapeHtml4(ProjectMainEditData[25].toString())%> <%}%></textarea></td>
+		<td colspan="3"><textarea required="required" name="application" placeholder="Enter maximum 50 charcters " class="form-control " maxlength="49" rows="1" cols="53"><%if(ProjectMainEditData[25]!=null){%> <%=ProjectMainEditData[25].toString()%> <%}%></textarea></td>
 </tr>
  <tr>
 	<th colspan="1"><label style="margin-bottom: -10px;">Scope:
@@ -400,7 +400,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 	</th>
 	<td colspan="3"><textarea required="required"
 		name="scope" class="form-control " maxlength="5000"
-			rows="3" cols="53"><%if(ProjectMainEditData[23]!=null){%><%=StringEscapeUtils.escapeHtml4(ProjectMainEditData[23].toString()) %><%} %></textarea>
+			rows="3" cols="53"><%if(ProjectMainEditData[23]!=null){%><%=ProjectMainEditData[23].toString() %><%} %></textarea>
 	</td>
 </tr>		
  
@@ -414,7 +414,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 </th>
  <td colspan="3">
 	<textarea required="required"  name="Objective" 
-	class="form-control " maxlength="5000" rows="5" cols="53"><%=ProjectMainEditData[19]!=null?StringEscapeUtils.escapeHtml4(ProjectMainEditData[19].toString()): ""  %></textarea>
+	class="form-control " maxlength="5000" rows="5" cols="53"><%=ProjectMainEditData[19]!=null?ProjectMainEditData[19].toString(): ""  %></textarea>
 								
 							
 </td>
@@ -427,7 +427,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 </th>
  <td colspan="3">
 	<textarea required="required" name="Deliverable" 
-	class="form-control "  maxlength="5000" rows="5" cols="53"><%=ProjectMainEditData[20]!=null?StringEscapeUtils.escapeHtml4(ProjectMainEditData[20].toString()): ""  %></textarea>
+	class="form-control "  maxlength="5000" rows="5" cols="53"><%=ProjectMainEditData[20]!=null?ProjectMainEditData[20].toString(): ""  %></textarea>
 								
 								
 </td>

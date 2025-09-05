@@ -73,7 +73,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String COMMITTEENAMESCHECK="SELECT SUM(IF(CommitteeShortName =:committeeshortname,1,0))   AS 'shortname',SUM(IF(CommitteeName = :committeename,1,0)) AS 'name'FROM committee where isactive=1 AND labcode=:labcode ";
 	private static final String COMMITTEELISTALL="SELECT committeeid,committeeshortname,committeename,CommitteeType,projectapplicable,isactive FROM committee";
 	private static final String COMMITTEELISTACTIVE="SELECT committeeid,committeeshortname,committeename,CommitteeType,projectapplicable,isactive,periodicnon,periodicduration,TechNonTech,Guidelines,Description,TermsOfReference,isglobal FROM committee WHERE isactive=1 AND isglobal=:isglobal AND projectapplicable=:projectapplicable  AND labcode=:labcode ;";
-	private static final String COMMITTEEDETAILS="SELECT committeeid,committeeshortname,committeename,CommitteeType,projectapplicable,technontech,guidelines,periodicnon,periodicduration,isactive,Description,TermsOfReference,isglobal,labcode FROM committee WHERE isactive=1 AND (CASE WHEN 'A'=:committeeid THEN committeeid=committeeid ELSE committeeid=:committeeid END)"; //added referenceNo
+	private static final String COMMITTEEDETAILS="SELECT committeeid,committeeshortname,committeename,CommitteeType,projectapplicable,technontech,guidelines,periodicnon,periodicduration,isactive,Description,TermsOfReference,isglobal,labcode,IsBriefing FROM committee WHERE isactive=1 AND (CASE WHEN 'A'=:committeeid THEN committeeid=committeeid ELSE committeeid=:committeeid END)"; //added referenceNo
 	private static final String COMMITTEEMAINLIST="SELECT a.committeemainid, a.committeeid,a.validfrom,a.validto, b.committeename,b.committeeshortname FROM committee_main a, committee b WHERE b.projectapplicable='N' AND a.isactive='1' AND a.committeeid=b.committeeid  AND a.divisionid=0 AND a.projectid=0 AND a.initiationid=0 AND TRIM(b.labcode)=:labcode" ;
 	private static final String COMMITTEESCHEDULELIST="SELECT cs.scheduleid, cs.committeeid,cs.committeemainid,cs.scheduledate,cs.schedulestarttime,cs.projectid , c.committeeshortname FROM committee_schedule cs,committee c WHERE cs.committeeid=c.committeeid AND  cs.divisionid=0 AND cs.committeeid=:committeeid AND cs.projectid=0 AND cs.divisionid=0 AND cs.initiationid=0 AND cs.isactive=1 ";
 	private static final String COMMITTEESCHEDULEEDITDATA="SELECT a.committeeid,a.committeemainid,a.scheduledate,a.schedulestarttime,a.scheduleflag,a.schedulesub,a.scheduleid,b.committeename,b.committeeshortname,a.projectid,c.meetingstatusid,a.meetingid,a.meetingvenue,a.confidential,a.Reference,(SELECT d.classification FROM pfms_security_classification d WHERE a.confidential=d.classificationid) AS 'classification',a.divisionid  ,a.initiationid ,a.pmrcdecisions,a.kickoffotp ,(SELECT minutesattachmentid FROM committee_minutes_attachment WHERE scheduleid=a.scheduleid) AS 'attachid', b.periodicNon,a.MinutesFrozen,a.briefingpaperfrozen,a.labcode, a.CARSInitiationId, a.ProgrammeId FROM committee_schedule a,committee b ,committee_meeting_status c WHERE a.scheduleflag=c.MeetingStatus AND a.scheduleid=:committeescheduleid AND a.committeeid=b.committeeid";
@@ -301,6 +301,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 			ExistingCommittee.setDescription(committeemodel.getDescription());
 			ExistingCommittee.setTermsOfReference(committeemodel.getTermsOfReference());
 			ExistingCommittee.setIsGlobal(committeemodel.getIsGlobal());
+			ExistingCommittee.setIsBriefing(committeemodel.getIsBriefing());
 			return 1L;
 		}
 		else {
@@ -3937,6 +3938,33 @@ private static final String ENOTEAPPROVELIST="SELECT MAX(a.EnoteId) AS EnoteId,M
 			return 0L;
 		}
 	}
+	
+//	---------------------------------- Naveen R 3/9/25 MOM Check ------------------------------------------
+	
+	private static final String AGENDAACTIONLIST = "SELECT DISTINCT a.ScheduleMinutesId, a.Details, a.ScheduleId, a.MinutesId, a.ScheduleSubId, a.MinutesSubOfSubId, a.MinutesSubId, a.idarck, a.remarks, b.outcomename,\r\n"
+			+ "c.agendaitem AS agenda, a.agendasubhead, e.PDCOrg,CONCAT( IFNULL(CONCAT(f.Title,' '), IFNULL(CONCAT(f.Salutation,' '),'')),CONCAT(f.EmpName,', '),g.Designation )  AS Assignees \r\n"
+			+ "FROM committee_schedules_minutes_details a JOIN committee_schedules_minutes_outcome b  ON a.idarck = b.idarck JOIN committee_schedules_agenda c  ON c.scheduleagendaid = a.minutessubid\r\n"
+			+ "LEFT JOIN action_main d  ON a.ScheduleMinutesId = d.ScheduleMinutesId LEFT JOIN action_assign e ON d.ActionMainId = e.ActionMainId AND e.isActive = 1\r\n"
+			+ "LEFT JOIN employee f ON e.Assignee = f.EmpId LEFT JOIN employee_desig g ON g.DesigId = f.DesigId\r\n"
+			+ "WHERE a.scheduleid = :InScheduleId\r\n"
+			+ " AND a.minutesid = '3' GROUP BY a.ScheduleMinutesId, a.Details, a.ScheduleId,\r\n"
+			+ "a.MinutesId, a.ScheduleSubId, a.MinutesSubOfSubId, a.MinutesSubId, a.idarck, a.remarks, b.outcomename, c.agendaitem, a.agendasubhead, e.PDCOrg,f.Title, f.Salutation, f.EmpName, g.Designation\r\n"
+			+ "UNION SELECT DISTINCT a.ScheduleMinutesId, a.Details, a.ScheduleId, a.MinutesId, a.ScheduleSubId, a.MinutesSubOfSubId, a.MinutesSubId, a.idarck, a.remarks, b.outcomename,\r\n"
+			+ "CASE WHEN a.minutesid = '4' THEN 'Other Discussion' ELSE 'Other Outcomes' END AS agenda, a.agendasubhead, NULL AS PDCOrg, NULL AS Assignees\r\n"
+			+ "FROM committee_schedules_minutes_details a JOIN committee_schedules_minutes_outcome b ON a.idarck = b.idarck \r\n"
+			+ "WHERE a.scheduleid = :InScheduleId\r\n"
+			+ " AND a.minutesid <> '3'\r\n"
+			+ "ORDER BY  CASE WHEN MinutesId = '3' THEN 1 ELSE 2 END, agenda, ScheduleMinutesId;";
+
+	@Override
+	public List<Object[]> CommitteeScheduleMinutesforAction(String committeescheduleid) {
+		Query query=manager.createNativeQuery(AGENDAACTIONLIST);
+		query.setParameter("InScheduleId", Long.parseLong(committeescheduleid));
+		List<Object[]> CommitteeScheduleMinutes =(List<Object[]>)query.getResultList();
+		return CommitteeScheduleMinutes;
+	}
+	
+	
 	
 }
 

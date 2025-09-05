@@ -109,6 +109,8 @@ public interface MasterService {
 	public int removeProjectsLinked(String programmeId) throws Exception;
 	public long addProgrammeProjects(ProgrammeProjects linked) throws Exception;
 	public Long ProgramCodeCheck(String programmeCode, String prgrammeId) throws Exception ;
+	public List<Object[]> getProjectList(String labcode) throws Exception;
+	public List<Object[]> getProjectList(String labcode, String programmeId) throws Exception;
 	/* **************************** Programme Master - Naveen R  - 16/07/2025 End**************************************** */
 
 	public Long addRoleMaster(RoleMaster roleMaster)throws Exception;

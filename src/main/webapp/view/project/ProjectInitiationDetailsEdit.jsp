@@ -174,7 +174,7 @@ small{
 								<div class="row"  style="margin-bottom:10px; margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%if(obj[1]!=null && !obj[1].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[1].toString())%><%}else{%><%}%></div>
+										<div  id="summernote" class="center"><%if(obj[1]!=null && !obj[1].equals("-")){%><%=obj[1].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									 
@@ -237,7 +237,7 @@ small{
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%if(obj[2]!=null && !obj[2].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString())%><%}else{%><%}%></div>
+										<div  id="summernote" class="center"><%if(obj[2]!=null && !obj[2].equals("-")){%><%=obj[2].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -297,7 +297,7 @@ small{
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%if(obj[3]!=null && !obj[3].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString())%><%}else{%><%}%></div>
+										<div  id="summernote" class="center"><%if(obj[3]!=null && !obj[3].equals("-")){%><%=obj[3].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -358,7 +358,7 @@ small{
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%if(obj[4]!=null && !obj[4].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString())%><%}else{%><%}%></div>
+										<div  id="summernote" class="center"><%if(obj[4]!=null && !obj[4].equals("-")){%><%=obj[4].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -419,7 +419,7 @@ small{
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%if(obj[5]!=null&& !obj[5].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[5].toString())%><%}else{%><%}%></div>
+										<div  id="summernote" class="center"><%if(obj[5]!=null&& !obj[5].equals("-")){%><%=obj[5].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -480,7 +480,7 @@ small{
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%if(obj[6]!=null&& !obj[6].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[6].toString())%><%}else{%><%}%></div>
+										<div  id="summernote" class="center"><%if(obj[6]!=null&& !obj[6].equals("-")){%><%=obj[6].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -542,7 +542,7 @@ small{
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%if(obj[7]!=null&& !obj[7].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[7].toString())%><%}else{%><%}%></div>
+										<div  id="summernote" class="center"><%if(obj[7]!=null&& !obj[7].equals("-")){%><%=obj[7].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -602,7 +602,7 @@ small{
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%if(obj[8]!=null&& !obj[8].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[8].toString())%><%}else{%><%}%></div>
+										<div  id="summernote" class="center"><%if(obj[8]!=null&& !obj[8].equals("-")){%><%=obj[8].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -661,7 +661,7 @@ small{
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%if(obj[9]!=null&& !obj[9].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[9].toString())%><%}else{%><%}%></div>
+										<div  id="summernote" class="center"><%if(obj[9]!=null&& !obj[9].equals("-")){%><%=obj[9].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -721,7 +721,7 @@ small{
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%if(obj[10]!=null&& !obj[10].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[10].toString())%><%}else{%><%}%></div>
+										<div  id="summernote" class="center"><%if(obj[10]!=null&& !obj[10].equals("-")){%><%=obj[10].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -785,7 +785,7 @@ small{
 									
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%if(obj[12]!=null&& !obj[12].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[12].toString())%><%}else{%><%}%></div>
+										<div  id="summernote" class="center"><%if(obj[12]!=null&& !obj[12].equals("-")){%><%=obj[12].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  

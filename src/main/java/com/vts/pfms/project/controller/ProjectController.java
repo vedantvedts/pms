@@ -6911,6 +6911,7 @@ public class ProjectController
 			req.setAttribute("ProjectTitle", req.getParameter("projectshortName"));
 			String initiationid=req.getParameter("IntiationId");
 			req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(initiationid));
+			req.setAttribute("MacroDetails", service.projectMacroDetails(initiationid));
 			req.setAttribute("ScheduleList", service.ProjectIntiationScheduleList(initiationid));
 			req.setAttribute("ConsultancyList", service.ConsultancyList(initiationid));
 			req.setAttribute("CarsList", service.CarsList(initiationid));

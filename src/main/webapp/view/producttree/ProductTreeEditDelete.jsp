@@ -175,7 +175,7 @@ input[type=checkbox] {
 															
 															 <td style=""><%=count %></td>
 															
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level1[3]!=null?StringEscapeUtils.escapeHtml4(level1[1].toString()):"-" %></td>
+															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level1[3]!=null?StringEscapeUtils.escapeHtml4(level1[3].toString()):"-" %></td>
 															
 															<td><% if(level1[6]!=null){%><%=StringEscapeUtils.escapeHtml4(level1[6].toString())%><%}else { %> -- <%} %></td>
 															<td><% if(level1[7]!=null){%><%=StringEscapeUtils.escapeHtml4(level1[7].toString()) %><%}else { %> -- <%} %></td>

@@ -653,7 +653,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				                               
 				                                
 				                                </td>
-				                                <td><%=obj[3]!=null?sdf.format(StringEscapeUtils.escapeHtml4(obj[3].toString())):" - "%></td>
+				                                <td><%=obj[3]!=null?sdf.format(obj[3]):" - "%></td>
 				                                <td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
 				                               	<td>
 				                               		<div >

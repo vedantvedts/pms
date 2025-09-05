@@ -118,7 +118,7 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 						
 						<div class="row">
 						
-						 <div class="col-md-3">
+						 <div class="col-md-2">
 								<div class="form-group">
 									<label class="control-label">Project Applicable</label>
 									<select class="custom-select" id="secretary" required="required" name="projectapplicable" style="margin-top: -5px">
@@ -136,7 +136,7 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 							
 							
 							
-							<div class="col-md-3">
+							<div class="col-md-2">
 								<div class="form-group">
 									<label class="control-label">Tech / Non-Tech</label>
 									<select class="custom-select" id="" required="required" name="technontech" style="margin-top: -5px">
@@ -147,7 +147,7 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 								</div>
 							</div>
 							
-							<div class="col-md-3">
+							<div class="col-md-2">
 								<div class="form-group">
 									<label class="control-label">Periodic / Non-Periodic</label>
 									<select class="custom-select" id="periodic"  name="periodic" style="margin-top: -5px" >
@@ -157,14 +157,22 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 									</select>
 								</div>
 							</div>
-							
-							<div class="col-md-3" <%if(!committeedetails[7].toString().equalsIgnoreCase("P")){ %> style="display: none" <%} %> id="periodicduration">
+							<div class="col-md-2" <%if(!committeedetails[7].toString().equalsIgnoreCase("P")){ %> style="display: none" <%} %> id="periodicduration">
 								<div class="form-group">
 									<label class="control-label">Periodic Duration (Days)</label>
-									<input class="form-control numeric-only" type="number" id="periodicdurationfield" name="periodicduration" required min="1" placeholder="Days" <%if(committeedetails[7].toString().equalsIgnoreCase("P")){ %> value="<%=committeedetails[8]!=null?StringEscapeUtils.escapeHtml4(committeedetails[8].toString()): ""%>" <%} %>>
+									<input class="form-control numeric-only" type="number" id="periodicdurationfield" name="periodicduration" required min="1" style="margin-top: -5px" placeholder="Days" <%if(committeedetails[7].toString().equalsIgnoreCase("P")){ %> value="<%=committeedetails[8]!=null?StringEscapeUtils.escapeHtml4(committeedetails[8].toString()): ""%>" <%} %>>
 								</div>
 							</div>
-							
+							<div class="col-md-2">
+								<div class="form-group">
+									<label class="control-label">Is Briefing<span class="mandatory" style="color: red;">*</span></label>
+									<select class="custom-select" id="IsBriefing" required="required" name="IsBriefing" style="margin-top: -5px" >
+										<option disabled value="">Choose...</option>
+										<option <%if(committeedetails[14].toString().equalsIgnoreCase("N")){ %>selected <%} %> value="N">No</option>
+										<option <%if(committeedetails[14].toString().equalsIgnoreCase("Y")){ %>selected <%} %> value="Y">Yes</option>
+									</select>
+								</div>
+							</div>
 						</div>	
 						
 						<div class="row">

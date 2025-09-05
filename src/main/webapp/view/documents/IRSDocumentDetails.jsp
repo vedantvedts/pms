@@ -536,7 +536,7 @@
    							</div>
 				   			<div class="col-md-8">
 				   				<textarea required="required" name="information" class="form-control" id="additionalReq" maxlength="4000"
-								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(documentSummary!=null && documentSummary[1]!=null){%><%=StringEscapeUtils.escapeHtml4(documentSummary[1].toString())%><%}else{%><%}%></textarea>
+								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(documentSummary!=null && documentSummary[1]!=null){%><%=documentSummary[1].toString()%><%}else{%><%}%></textarea>
 				   			</div>
    				 		</div>
    				 
@@ -546,7 +546,7 @@
 				   			</div>
 				   			<div class="col-md-8">
 				   				<textarea required="required" name="abstract" class="form-control" id="" maxlength="4000"
-								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(documentSummary!=null && documentSummary[2]!=null){%><%=StringEscapeUtils.escapeHtml4(documentSummary[2].toString())%><%}else{%><%}%></textarea>
+								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(documentSummary!=null && documentSummary[2]!=null){%><%=documentSummary[2].toString()%><%}else{%><%}%></textarea>
 				   			</div>
 			   			</div>
 			   	
@@ -556,7 +556,7 @@
 				   			</div>
 				   			<div class="col-md-8">
 				   				<textarea required="required" name="keywords" class="form-control" id="" maxlength="4000"
-								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(documentSummary!=null && documentSummary[3]!=null){%><%=StringEscapeUtils.escapeHtml4(documentSummary[3].toString())%><%}else{%><%}%></textarea>
+								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(documentSummary!=null && documentSummary[3]!=null){%><%=documentSummary[3].toString()%><%}else{%><%}%></textarea>
 				   			</div>
    						</div>
    			

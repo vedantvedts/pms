@@ -137,7 +137,7 @@ String committeeId = (String) request.getAttribute("committeeId");
 										
 								<tr>
 									<td>
-										<input type="number" class="form-control" name="newslno" value="<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): "" %>" min="1" max="<%=committeeinvitedlist.size()%>"> 
+										<input type="number" class="form-control" name="newslno" value="<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): "" %>" min="1" max="<%=committeeinvitedlist.size()%>"> 
 										<input type="hidden" name="invitationid" value="<%=obj[1] %>">
 									</td>	
 									<td> 

@@ -148,10 +148,10 @@ String verificationId =(String)request.getAttribute("verificationId");
 							<td style="text-align: center;"><%=sn %>.</td>
 							<td style="text-align: center;"> <%=obj1[1]!=null?StringEscapeUtils.escapeHtml4(obj1[1].toString()).substring(0,1)+(sn):" - "%></td>
 							<td style="width: 30%">
-							<textarea rows="" cols="" class="form-control" name="TestType<%=obj1[0] %>" required="required"><%=obj1[2]!=null?StringEscapeUtils.escapeHtml4(obj1[2].toString()): " - "%></textarea>
+							<textarea rows="" cols="" class="form-control" name="TestType<%=obj1[0] %>" required="required"><%=obj1[2]!=null?obj1[2].toString(): " - "%></textarea>
 							</td>
 							<td>
-							<textarea rows="" cols="" class="form-control" name="Purpose<%=obj1[0] %>" required="required"><%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): " - "%></textarea>
+							<textarea rows="" cols="" class="form-control" name="Purpose<%=obj1[0] %>" required="required"><%=obj1[3]!=null?obj1[3].toString(): " - "%></textarea>
 							</td>
 							<td style="text-align: center;width:8%">
 							   <button class="fa fa-pencil-square-o btn " type="submit" name="verificationDataId" value="<%=obj1[0] %>"  onclick="return confirm('Are You Sure To Edit ?');"></button>

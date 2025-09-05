@@ -740,7 +740,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                	<label class="control-label">Remarks</label>
 												                   
                               		      							<textarea class="form-control form-control" name="PRRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getPRRemark1()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getPRRemark1()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getPRRemark1()!=null) {%><%=chlist.getPRRemark1() %><%} %></textarea> 
                               		      							
 												                </div>
 												              </div>
@@ -768,7 +768,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                	<label class="control-label">Remarks</label>
 												                   
                               		      							<textarea class="form-control form-control" name="PRRemark2" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getPRRemark2()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getPRRemark2()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getPRRemark2()!=null) {%><%=chlist.getPRRemark2() %><%} %></textarea> 
                               		      							
 												                </div>
 												              </div>
@@ -803,7 +803,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                	<label class="control-label">Remarks</label>
 												                   
                               		      							<textarea class="form-control form-control" name="PECRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getPECRemark1()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getPECRemark1()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getPECRemark1()!=null) {%><%=chlist.getPECRemark1() %><%} %></textarea> 
                               		      							
 												                </div>
 												              </div>
@@ -928,7 +928,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                	<label class="control-label">Remarks</label>
 												                   
                               		      							<textarea class="form-control form-control" name="SRRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getSRRemark1()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getSRRemark1()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getSRRemark1()!=null) {%><%=chlist.getSRRemark1() %><%} %></textarea> 
                               		      							
 												                </div>
 												              </div>
@@ -1007,7 +1007,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                	<label class="control-label">Remarks</label>
 												                   
                               		      							<textarea class="form-control form-control" name="CSRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getCSRemark1()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getCSRemark1()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getCSRemark1()!=null) {%><%=chlist.getCSRemark1() %><%} %></textarea> 
                               		      							
 												                </div>
 												              </div>
@@ -1063,7 +1063,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">If not through main stores, reason thereof </label><span class="mandatory">*</span>
 												                    <textarea class="form-control form-control" name="NCSReason" maxlength="3000" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getNCSReason()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getNCSReason()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getNCSReason()!=null) {%><%=chlist.getNCSReason() %><%} %></textarea> 
 												                    
 												                </div>
 												              </div>
@@ -1090,7 +1090,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                	<label class="control-label">Remarks</label>
 												                   
                               		      							<textarea class="form-control form-control" name="NCSRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getNCSRemark1()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getNCSRemark1()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getNCSRemark1()!=null) {%><%=chlist.getNCSRemark1() %><%} %></textarea> 
                               		      							
 												                </div>
 												              </div>
@@ -1122,7 +1122,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                	<label class="control-label">Remarks</label>
 												                   
                               		      							<textarea class="form-control form-control" name="NCSRemark2" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getNCSRemark2()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getNCSRemark2()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getNCSRemark2()!=null) {%><%=chlist.getNCSRemark2() %><%} %></textarea> 
                               		      							
 												                </div>
 												              </div>
@@ -1151,7 +1151,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                	<label class="control-label">Remarks</label>
 												                   
                               		      							<textarea class="form-control form-control" name="NCSRemark3" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getNCSRemark3()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getNCSRemark3()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getNCSRemark3()!=null) {%><%=chlist.getNCSRemark3() %><%} %></textarea> 
                               		      							
 												                </div>
 												              </div>
@@ -1209,7 +1209,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                	<label class="control-label">Remarks</label>
 												                   
                               		      							<textarea class="form-control form-control" name="EquipmentRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getEquipmentRemark1()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getEquipmentRemark1()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getEquipmentRemark1()!=null) {%><%=chlist.getEquipmentRemark1() %><%} %></textarea> 
                               		      							
 												                </div>
 												              </div>
@@ -1218,7 +1218,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">If yes, reason assigned </label><span class="mandatory">*</span>
 												                     <textarea class="form-control form-control" name="EquipReason" maxlength="3000" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" > <% if(chlist!=null && chlist.getEquipReason()!=null ) {%><%=StringEscapeUtils.escapeHtml4(chlist.getEquipReason())%><%} %></textarea> 
+                              		  								 placeholder="Enter Reason" > <% if(chlist!=null && chlist.getEquipReason()!=null ) {%><%=chlist.getEquipReason()%><%} %></textarea> 
 												                </div>
 												              </div>
 												              
@@ -1248,7 +1248,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                	<label class="control-label">Remarks</label>
 												                   
                               		      							<textarea class="form-control form-control" name="EquipmentRemark2" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getEquipmentRemark2()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getEquipmentRemark2()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getEquipmentRemark2()!=null) {%><%=chlist.getEquipmentRemark2() %><%} %></textarea> 
                               		      							
 												                </div>
 												              </div>
@@ -1293,7 +1293,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                	<label class="control-label">Remarks</label>
 												                   
                               		      							<textarea class="form-control form-control" name="EquipmentRemark3" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getEquipmentRemark3()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getEquipmentRemark3()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getEquipmentRemark3()!=null) {%><%=chlist.getEquipmentRemark3() %><%} %></textarea> 
                               		      							
 												                </div>
 												              </div>
@@ -1372,7 +1372,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                	<label class="control-label">Remarks</label>
 												                   
                               		      							<textarea class="form-control form-control" name="BudgetRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getBudgetRemark1()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getBudgetRemark1()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getBudgetRemark1()!=null) {%><%=chlist.getBudgetRemark1()%><%} %></textarea> 
                               		      							
 												                </div>
 												              </div>
@@ -1382,7 +1382,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">What is the mechanism for monitoring/ control of head-wise expenditure? </label><span class="mandatory">*</span>
 												                    <textarea class="form-control form-control" name="BudgetMechanism" maxlength="3000" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getBudgetMechanism()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getBudgetMechanism()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getBudgetMechanism()!=null) {%><%=chlist.getBudgetMechanism() %><%} %></textarea> 
 												                    
 												                </div>
 												              </div>
@@ -1420,7 +1420,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                	<label class="control-label">Remarks</label>
 												                   
                               		      							<textarea class="form-control form-control" name="BudgetRemark2" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getBudgetRemark2()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getBudgetRemark2()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getBudgetRemark2()!=null) {%><%=chlist.getBudgetRemark2() %><%} %></textarea> 
                               		      							
 												                </div>
 												              </div>
@@ -1448,7 +1448,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                	<label class="control-label">Remarks</label>
 												                   
                               		      							<textarea class="form-control form-control" name="BudgetRemark3" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getBudgetRemark3()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getBudgetRemark3()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getBudgetRemark3()!=null) {%><%=chlist.getBudgetRemark3()%><%} %></textarea> 
                               		      							
 												                </div>
 												              </div>
@@ -1473,7 +1473,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                	<label class="control-label">Remarks</label>
 												                   
                               		      							<textarea class="form-control form-control" name="BudgetRemark4" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getBudgetRemark4()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getBudgetRemark4()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getBudgetRemark4()!=null) {%><%=chlist.getBudgetRemark4() %><%} %></textarea> 
                               		      							
 												                </div>
 												              </div>
@@ -1567,7 +1567,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                	<label class="control-label">Remarks</label>
 												                   
                               		      							<textarea class="form-control form-control" name="UtilizationRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getUtilizationRemark1()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getUtilizationRemark1()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getUtilizationRemark1()!=null) {%><%=chlist.getUtilizationRemark1() %><%} %></textarea> 
                               		      							
 												                </div>
 												              </div>
@@ -1608,7 +1608,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                	<label class="control-label">Remarks</label>
 												                   
                               		      							<textarea class="form-control form-control" name="StaffRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getStaffRemark1()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getStaffRemark1()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getStaffRemark1()!=null) {%><%=chlist.getStaffRemark1() %><%} %></textarea> 
                               		      							
 												                </div>
 												              </div>
@@ -1670,7 +1670,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                	<label class="control-label">Remarks</label>
 												                   
                               		      							<textarea class="form-control form-control" name="CWRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getCWRemark1()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getCWRemark1()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getCWRemark1()!=null) {%><%=chlist.getCWRemark1() %><%} %></textarea> 
                               		      							
 												                </div>
 												              </div>
@@ -1865,7 +1865,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                	<label class="control-label">Remarks</label>
 												                   
                               		      							<textarea class="form-control form-control" name="ProjectRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getProjectRemark1()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getProjectRemark1()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getProjectRemark1()!=null) {%><%=chlist.getProjectRemark1() %><%} %></textarea> 
                               		      							
 												                </div>
 												              </div>
@@ -1890,7 +1890,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">Reason, if Cost Over-run</label><span class="mandatory">*</span>
                                                                     <textarea class="form-control form-control" name="CRcostoverin" maxlength="3000" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><%if(chlist!=null && chlist.getCRcostoverin()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getCRcostoverin())%><%}%></textarea> 											                    
+                              		  								 placeholder="Enter Reason" ><%if(chlist!=null && chlist.getCRcostoverin()!=null){%><%=chlist.getCRcostoverin()%><%}%></textarea> 											                    
 												                </div>
 												           </div>  
 												           
@@ -1925,7 +1925,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">Overall Review Remarks/Recommendations </label><span class="mandatory">*</span>
                                                                     <textarea class="form-control form-control" name="OverAllReason" maxlength="3000" rows="1" cols="100" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Reason" ><%if(chlist!=null && chlist.getRemarks()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getRemarks())%><%}%></textarea> 											                    
+                              		  								 placeholder="Enter Reason" ><%if(chlist!=null && chlist.getRemarks()!=null){%><%=chlist.getRemarks()%><%}%></textarea> 											                    
 												                </div>
 												             </div>  
 												        </div> 

@@ -549,7 +549,7 @@ td
 														
 							<tr>
 								<td width="12%">
-									<%=obj[3]!=null?sdf.format(StringEscapeUtils.escapeHtml4(obj[3].toString())):" - "%>
+									<%=obj[3]!=null?sdf.format(obj[3]):" - "%>
 								</td>
 								
 								<td width="6%">
@@ -625,7 +625,7 @@ td
 							
 		
 								<td width="12%">
-									<%=obj[3]!=null?sdf.format(StringEscapeUtils.escapeHtml4(obj[3].toString())):" - "%>
+									<%=obj[3]!=null?sdf.format(obj[3]):" - "%>
 								</td>
 								
 								<td width="6%">

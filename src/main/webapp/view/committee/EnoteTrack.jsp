@@ -167,7 +167,7 @@ List<Object[]> EnoteTransactionList = (List<Object[]>)request.getAttribute("Enot
 				<span class="date">
 					<span class="day"><%=object[4]!=null?day.format(object[4]):" - " %></span>
 					<span class="month"><%=object[4]!=null?month.format(object[4]) :" - "%></span>
-					<span class="year"><%=object[14]!=null?year.format(object[4]):" - " %></span>
+					<span class="year"><%=object[4]!=null?year.format(object[4]):" - " %></span>
 				</span>
 				<%
 				String extractedWord=null;

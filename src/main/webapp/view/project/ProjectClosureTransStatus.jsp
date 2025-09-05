@@ -173,11 +173,11 @@ String closureId = (String)request.getAttribute("closureId");
 	      <article>
 		  	<div class="inner">
 				<span class="date">
-					<span class="day"><%=object[4]!=null?day.format(StringEscapeUtils.escapeHtml4(object[4].toString())):" - "  %></span>
-					<span class="month"><%=object[4]!=null?month.format(StringEscapeUtils.escapeHtml4(object[4].toString())):" - "  %></span>
-					<span class="year"><%=object[4]!=null?year.format(StringEscapeUtils.escapeHtml4(object[4].toString())):" - "  %></span>
+					<span class="day"><%=object[4]!=null?day.format(object[4]):" - "  %></span>
+					<span class="month"><%=object[4]!=null?month.format(object[4]):" - "  %></span>
+					<span class="year"><%=object[4]!=null?year.format(object[4]):" - "  %></span>
 				</span>
-				<h2 style="background-color: <%=object[7]%>;--my-color-var: <%=object[7]%>;" ><%=object[6]!=null?StringEscapeUtils.escapeHtml4(object[6].toString()): " - " %> at <%=object[4]!=null?time.format(StringEscapeUtils.escapeHtml4(object[4].toString())):" - " %></h2> 
+				<h2 style="background-color: <%=object[7]%>;--my-color-var: <%=object[7]%>;" ><%=object[6]!=null?StringEscapeUtils.escapeHtml4(object[6].toString()): " - " %> at <%=object[4]!=null?time.format(object[4]):" - " %></h2> 
 				<p style="background-color:  #f0f2f5;">
 					<span class="remarks_title">Action By : </span>
 					<%=object[2]!=null?StringEscapeUtils.escapeHtml4(object[2].toString()): " - " %>, <%=object[3]!=null?StringEscapeUtils.escapeHtml4(object[3].toString()): " - " %><br>

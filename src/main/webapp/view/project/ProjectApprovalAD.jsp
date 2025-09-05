@@ -166,7 +166,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 						    		<td><b>Forwarded By :</b></td>
 						    		<td><%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %> (<%=obj[12] !=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - "%>)</td>
 						    		<td><b>Forwarded Date :</b></td>
-						    		<td><%=obj[13]!=null?sdf.format(StringEscapeUtils.escapeHtml4(obj[13].toString())):" - " %></td>
+						    		<td><%=obj[13]!=null?sdf.format(obj[13]):" - " %></td>
 						    		<td><b>Division Name :</b></td>
 						    		<td><%=obj[14]!=null?StringEscapeUtils.escapeHtml4(obj[14].toString()): " - " %></td>
 						    	</tr>

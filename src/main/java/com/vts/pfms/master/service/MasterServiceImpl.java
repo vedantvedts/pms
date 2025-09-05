@@ -829,6 +829,16 @@ public class MasterServiceImpl implements MasterService {
 			
 			return dao.ProgramCodeCheck(programmeCode,prgrammeId);
 		}
+		
+		@Override
+		public List<Object[]> getProjectList(String labcode) throws Exception {
+			return dao.getProjectList(labcode);
+		}
+		
+		@Override
+		public List<Object[]> getProjectList(String labcode, String programmeId) throws Exception {
+			return dao.getProjectList(labcode,programmeId);
+		}
 		/* **************************** Programme Master - Naveen R  - 16/07/2025 End**************************************** */
 
 		@Override
@@ -850,6 +860,10 @@ public class MasterServiceImpl implements MasterService {
 			
 			return dao.getRoleCodeDuplicateCount(roleCode);
 		}
+
+		
+
+		
 		
 		// 22/8/2025  Naveen R RoleName and RoleCode Duplicate Check End
 }

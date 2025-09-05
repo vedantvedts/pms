@@ -464,14 +464,14 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        		<div class="form-group">
 												                	<label class="control-label">Present Status:</label><span class="mandatory">*</span>
 												                    <textarea class="form-control form-control" name="presentStatus" maxlength="5000" rows="2" cols="65" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Present Status" required><%if(soc!=null && soc.getPresentStatus()!=null){ %><%=StringEscapeUtils.escapeHtml4(soc.getPresentStatus()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Present Status" required><%if(soc!=null && soc.getPresentStatus()!=null){ %><%=soc.getPresentStatus() %><%} %></textarea> 
 												                </div>
 												            </div>
 												            <div class="col-md-6" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Detailed reasons/considerations for closure:</label><span class="mandatory">*</span>
 												                    <textarea class="form-control form-control" name="reason" maxlength="5000" rows="2" cols="65" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Detailed reasons/considerations for closure" required><%if(soc!=null && soc.getReason()!=null){ %><%=StringEscapeUtils.escapeHtml4(soc.getReason()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Detailed reasons/considerations for closure" required><%if(soc!=null && soc.getReason()!=null){ %><%=soc.getReason() %><%} %></textarea> 
 												                </div>
 												            </div>
 												        </div>
@@ -481,7 +481,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        		<div class="form-group">
 												                	<label class="control-label">Recommendation of Review Committee for Project success:</label><span class="mandatory">*</span>
 												                    <textarea class="form-control form-control" name="recommendation" maxlength="5000" rows="2" cols="65" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Recommendation of Review Committee for Project success"><%if(soc!=null && soc.getRecommendation()!=null){ %><%=StringEscapeUtils.escapeHtml4(soc.getRecommendation()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Recommendation of Review Committee for Project success"><%if(soc!=null && soc.getRecommendation()!=null){ %><%=soc.getRecommendation() %><%} %></textarea> 
 												                </div>
 												            </div>
 												        </div>
@@ -491,14 +491,14 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												        		<div class="form-group">
 												                	<label class="control-label">Recommendations of the highest monitoring committee for closure:</label><span class="mandatory">*</span>
 												                    <textarea class="form-control form-control" name="monitoringCommittee" maxlength="5000" rows="2" cols="65" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Minutes of Monitoring Committee Meetings held so far and recommendations of the highest monitoring committee for closure of the project/programme" required><%if(soc!=null && soc.getMonitoringCommittee()!=null){ %><%=StringEscapeUtils.escapeHtml4(soc.getMonitoringCommittee()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Minutes of Monitoring Committee Meetings held so far and recommendations of the highest monitoring committee for closure of the project/programme" required><%if(soc!=null && soc.getMonitoringCommittee()!=null){ %><%=soc.getMonitoringCommittee() %><%} %></textarea> 
 												                </div>
 												            </div>
 												            <div class="col-md-6" style="">
 												        		<div class="form-group">
 												                	<label class="control-label">Other relevant details:</label>
 												                    <textarea class="form-control form-control" name="otherRelevant" maxlength="5000" rows="2" cols="65" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Other relevant details" ><%if(soc!=null && soc.getOtherRelevant()!=null){ %><%=StringEscapeUtils.escapeHtml4(soc.getOtherRelevant()) %><%} %></textarea> 
+                              		  								 placeholder="Enter Other relevant details" ><%if(soc!=null && soc.getOtherRelevant()!=null){ %><%=soc.getOtherRelevant() %><%} %></textarea> 
 												                </div>
 												            </div>
 												        </div>

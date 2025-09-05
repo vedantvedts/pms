@@ -298,7 +298,7 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
    							</div>
 				   			<div class="col-md-8">
 				   				<textarea required="required" name="information" class="form-control" id="additionalReq" maxlength="4000"
-								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[0]!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[0].toString())%><%}else{%><%}%></textarea>
+								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[0]!=null){%><%=DocumentSummary[0].toString()%><%}else{%><%}%></textarea>
 				   			</div>
    						</div>
 			   			<div class="row mt-2">
@@ -307,7 +307,7 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
 				   			</div>
 				   			<div class="col-md-8">
 				   				<textarea required="required" name="abstract" class="form-control" id="" maxlength="4000"
-								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[1]!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[1].toString())%><%}else{%><%}%></textarea>
+								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[1]!=null){%><%=DocumentSummary[1].toString()%><%}else{%><%}%></textarea>
 				   			</div>
 			   			</div>
    			
@@ -317,7 +317,7 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
 				   			</div>
 				   			<div class="col-md-8">
 				   				<textarea required="required" name="keywords" class="form-control" id="" maxlength="4000"
-								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[2]!=null){%><%=StringEscapeUtils.escapeHtml4(DocumentSummary[2].toString())%><%}else{%><%}%></textarea>
+								rows="3" cols="53" placeholder="Maximum 4000 Chararcters" required><%if(DocumentSummary!=null && DocumentSummary[2]!=null){%><%=DocumentSummary[2].toString()%><%}else{%><%}%></textarea>
 				   			</div>
    						</div>
    			
@@ -619,7 +619,7 @@ List<Object[]>productTreeList=(List<Object[]>)request.getAttribute("productTreeL
 				    <div class="col-md-3"><label style="font-size: 17px; color: #07689f;font-weight:bold">Comment 
 					</label></div>
 				    <div class="col-md-8">
-				    <textarea name="description" class="form-control" id="descriptionadd" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"><%if(SpecProducTree!=null && SpecProducTree.size()>0) {%> <%=SpecProducTree.get(0)[2]!=null?StringEscapeUtils.escapeHtml4(SpecProducTree.get(0)[2].toString()): " - " %> <%} else{%> Guidance: The product Tree shall comprises the complete physical products / subsystems of the radar in the order of flow as a figure with unique ID 
+				    <textarea name="description" class="form-control" id="descriptionadd" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters"><%if(SpecProducTree!=null && SpecProducTree.size()>0) {%> <%=SpecProducTree.get(0)[2]!=null?SpecProducTree.get(0)[2].toString(): " - " %> <%} else{%> Guidance: The product Tree shall comprises the complete physical products / subsystems of the radar in the order of flow as a figure with unique ID 
 				     <%} %> </textarea>
 				    </div>
 				    </div>
