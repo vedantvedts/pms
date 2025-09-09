@@ -377,7 +377,7 @@ public class LoginController {
 		    ses.setAttribute("IsDG", IsDG);
 		 
 		 	req.setAttribute("loginTypeList", headerservice.loginTypeList(Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType()));
-		    req.setAttribute("DashboardDemandCount", headerservice.DashboardDemandCount().get(0));
+//		    req.setAttribute("DashboardDemandCount", headerservice.DashboardDemandCount().get(0));
 		
 		    String empNo=rfpmainservice.getEmpNo(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId());
 		    ses.setAttribute("empNo", empNo);
@@ -744,7 +744,7 @@ public class LoginController {
 			req.setAttribute("statsUrl", statsUrl);
 			System.out.println("statsUrl###########"+statsUrl);
 			req.setAttribute("loginTypeList", headerservice.loginTypeList(LoginType));
-			req.setAttribute("DashboardDemandCount", headerservice.DashboardDemandCount().get(0));
+//			req.setAttribute("DashboardDemandCount", headerservice.DashboardDemandCount().get(0));
 			req.setAttribute("todayschedulelist", headerservice.TodaySchedulesList(EmpId, LocalDate.now().toString()));
             //req.setAttribute("todayactionlist", headerservice.TodayActionList(EmpId)); // CALL Pfms_Action_PDC(:empid)
 			req.setAttribute("dashbordNotice", rfpmainservice.GetNotice(LabCode));

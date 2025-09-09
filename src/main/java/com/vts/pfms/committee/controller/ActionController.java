@@ -5332,10 +5332,12 @@ public class ActionController {
 			type = type==null?"A":type;
 			String status = req.getParameter("status");
 			status = status==null?"I":status;
+			String labCode = req.getParameter("labCode");
+			labCode = labCode==null?LabCode:labCode;
 			
 			List<Object[]> projectList = service.LoginProjectDetailsList(EmpId, Logintype, LabCode);
-			List<Object[]> roleWiseEmployeeList = timesheetservice.getRoleWiseEmployeeList(LabCode, Logintype, EmpId);
-			List<Object[]> allActionsList = service.ActionReports((empId!=null && empId.equalsIgnoreCase("E")?"A":empId), status, projectId , type, LabCode);
+			List<Object[]> roleWiseEmployeeList = timesheetservice.getRoleWiseEmployeeList(labCode, Logintype, EmpId);
+			List<Object[]> allActionsList = service.ActionReports((empId!=null && empId.equalsIgnoreCase("E")?"A":empId), status, projectId , type, labCode);
 			
 			//List<Object[]> allActionsListFiltered = new ArrayList<Object[]>();
 					
@@ -5354,6 +5356,8 @@ public class ActionController {
 			req.setAttribute("projectId", projectId);
 			req.setAttribute("type", type);
 			req.setAttribute("status", status);
+			req.setAttribute("labCode", labCode);
+			req.setAttribute("allLabList", committeservice.AllLabList());
 			req.setAttribute("projectList", projectList);
 			req.setAttribute("roleWiseEmployeeList", roleWiseEmployeeList);
 			req.setAttribute("allActionsList", allActionsList);
