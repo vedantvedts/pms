@@ -28,4 +28,7 @@ public class IGIConstants implements Serializable {
     private String ModifiedBy;
     private String ModifiedDate;
 	private int IsActive;
+	private Long UnitMasterId;
+	private String Remarks;
+	private String Description;
 }

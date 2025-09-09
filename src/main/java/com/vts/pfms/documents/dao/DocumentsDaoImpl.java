@@ -48,6 +48,7 @@ import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.model.PfmsIGITransaction;
 import com.vts.pfms.documents.model.PfmsIRSDocument;
 import com.vts.pfms.documents.model.StandardDocuments;
+import com.vts.pfms.documents.model.UnitMaster;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -770,7 +771,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 
-	private static final String FIELDMASTER="SELECT a.FieldMasterId, a.FieldName, a.FieldShortName, a.FieldCode, a.FieldDesc, a.DataTypeMasterId, a.TypicalValue, a.FieldMinValue, a.FieldMaxValue, a.InitValue, a.FieldOffSet, a.Quantum, a.FieldUnit, a.Remarks, b.DataTypePrefix, b.DataLength, b.AliasName, b.DataStandardName, (SELECT GROUP_CONCAT(c.FieldGroupId SEPARATOR ',') FROM pfms_field_group_linked c WHERE c.FieldMasterId = a.FieldMasterId AND c.IsActive=1) AS FieldGroupIds FROM pfms_field_master a, pfms_data_type_master b WHERE a.IsActive = 1 AND a.DataTypeMasterId=b.DataTypeMasterId ORDER BY a.FieldMasterId, a.FieldName ASC";
+	private static final String FIELDMASTER="SELECT a.FieldMasterId, a.FieldName, a.FieldShortName, a.FieldCode, a.FieldDesc, a.DataTypeMasterId, a.TypicalValue, a.FieldMinValue, a.FieldMaxValue, a.InitValue, a.FieldOffSet, a.Quantum, c.Unit, a.Remarks, b.DataTypePrefix, b.DataLength, b.AliasName, b.DataStandardName, (SELECT GROUP_CONCAT(c.FieldGroupId SEPARATOR ',') FROM pfms_field_group_linked c WHERE c.FieldMasterId = a.FieldMasterId AND c.IsActive=1) AS FieldGroupIds  FROM pfms_field_master a, pfms_data_type_master b, pfms_unit_master c WHERE a.IsActive = 1 AND a.DataTypeMasterId=b.DataTypeMasterId AND a.UnitMasterId = c.UnitMasterId ORDER BY a.FieldMasterId, a.FieldName ASC";
 	@Override
 	public List<Object[]> fieldMasterList() throws Exception {
 		try {
@@ -2253,6 +2254,47 @@ public class DocumentsDaoImpl implements DocumentsDao{
 			logger.error(new Date() +" Inside DocumentsDAOImpl getMechanicalInterfaceCount "+ e);
 			e.printStackTrace();
 			return 0;
+		}
+	}
+
+	/*********************************************** Naveen 4/9/25 **************************************************/
+	
+	@Override
+	public UnitMaster getUnitMasterById(long unitMasterId) throws Exception {
+		try{
+			return manager.find(UnitMaster.class, unitMasterId);
+		}catch (Exception e){
+			logger.error(new Date()  + "Inside DAO getUnitMasterById " + e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+
+	@Override
+	public long addUnitMaster(UnitMaster unitmaster) throws Exception{
+		try {
+		    manager.persist(unitmaster);
+		    manager.flush();
+			return unitmaster.getUnitMasterId();
+		}
+		catch (Exception e) {
+			logger.error(new Date()  + " Inside DocumentsDAOImpl addUnitMaster " + e);
+			e.printStackTrace();
+			return 0 ;
+		}
+	}
+
+
+	@Override
+	public List<Object[]> unitMasterList() throws Exception{
+		try {
+			Query query = manager.createNativeQuery("SELECT * FROM pfms_unit_master");
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside DocumentsDAOImpl unitMasterList "+ e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
 		}
 	}
 }
