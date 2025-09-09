@@ -1233,8 +1233,18 @@ public class CommitteeServiceImpl implements CommitteeService{
 			}
 			else
 			{
-				committeeinvitation.setSerialNo(slno);
-				
+				if(committeeinvitationdto.getInviteFlag()!=null && committeeinvitationdto.getInviteFlag().equalsIgnoreCase("Y")) {
+					if(MemberType[1].equalsIgnoreCase("CC")) {
+						committeeinvitation.setSerialNo(1);
+					}else if(MemberType[1].equalsIgnoreCase("CS")) {
+						committeeinvitation.setSerialNo(committeeinvitationdto.getEmpIdList().size());
+					}else {
+						committeeinvitation.setSerialNo(MemberType.length>3?Integer.parseInt(MemberType[3]):slno);
+					}
+				}else {
+					committeeinvitation.setSerialNo(slno);
+				}
+
 				slno++;
 				ret=dao.CommitteeInvitationCreate(committeeinvitation);
 			}
