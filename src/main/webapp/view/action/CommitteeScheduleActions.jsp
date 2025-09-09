@@ -242,7 +242,7 @@ List<Object[]> EmpList=(List<Object[]>)request.getAttribute("EmployeeList");
 List<Object[]> EmpNameList=(List<Object[]>)request.getAttribute("EmpNameList");
 String labcode = (String)request.getAttribute("labcode");
 List<Object[]> Alllablist = (List<Object[]>)request.getAttribute("AllLabList");
-String projectid=committeescheduleeditdata[9].toString();
+String projectid=committeescheduleeditdata!=null?committeescheduleeditdata[9].toString():"";
 
 String GenId="GenAdd";
 String MinutesBack=null;
@@ -284,10 +284,10 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 	<nav class="navbar navbar-light bg-light" style="margin-top: -1%">
 		<a class="navbar-brand"> <b
 			style="color: #585858; font-size: 19px; font-weight: bold; text-align: left; float: left"><span
-				style="color: #31708f"><%=committeescheduleeditdata[7] %> </span> <span
+				style="color: #31708f"><%=committeescheduleeditdata!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[7].toString()):"" %> </span> <span
 				style="color: #31708f; font-size: 15px"> (Meeting Date and
-					Time : <%=sdf.format(sdf1.parse(committeescheduleeditdata[2].toString()))%>
-					- <%=committeescheduleeditdata[3] %>)
+					Time : <%=committeescheduleeditdata!=null?sdf.format(sdf1.parse(committeescheduleeditdata[2].toString())):""%>
+					- <%=committeescheduleeditdata!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[3].toString()):"" %>)
 			</span></b>
 
 		</a>
@@ -296,13 +296,13 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 		<!-- Prudhvi - 13/03/2024 -->
 		<a class="btn  btn-sm back"
 		    <%if(rodflag!=null && rodflag.equalsIgnoreCase("Y")) {%>
-		    	href="RODScheduleMinutes.htm?committeescheduleid=<%=committeescheduleeditdata[6] %>"
+		    	href="RODScheduleMinutes.htm?committeescheduleid=<%=committeescheduleeditdata!=null?committeescheduleeditdata[6]:"" %>"
 		    <%} else if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>	
-		    	href="CommitteeScheduleMinutes.htm?committeescheduleid=<%=committeescheduleeditdata[6] %>&ccmFlag=Y&committeeMainId=<%=committeeMainId %>&committeeId=<%=committeeId %>"
+		    	href="CommitteeScheduleMinutes.htm?committeescheduleid=<%=committeescheduleeditdata!=null?committeescheduleeditdata[6]:"" %>&ccmFlag=Y&committeeMainId=<%=committeeMainId %>&committeeId=<%=committeeId %>"
 		    <%} else if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) {%>	
-		    	href="CommitteeScheduleMinutes.htm?committeescheduleid=<%=committeescheduleeditdata[6] %>&dmcFlag=Y&committeeId=<%=committeeId %>"
+		    	href="CommitteeScheduleMinutes.htm?committeescheduleid=<%=committeescheduleeditdata!=null?committeescheduleeditdata[6]:"" %>&dmcFlag=Y&committeeId=<%=committeeId %>"
 		    <%} else{%>
-				href="CommitteeScheduleMinutes.htm?committeescheduleid=<%=committeescheduleeditdata[6] %>"
+				href="CommitteeScheduleMinutes.htm?committeescheduleid=<%=committeescheduleeditdata!=null?committeescheduleeditdata[6]:"" %>"
 			<%} %>
 			style="margin-left: 50px; font-size: 12px; font-weight: bold; width: 62px; margin-top: -2px;">BACK</a>
 
@@ -324,9 +324,9 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 
 			<div class="col-md-5">
 				<div class="card" style="border-color: #00DADA; margin-top: 2%;">
-					<div class="card-body" <%if(committeescheduledata.size()>5) {%>style="height: 70vh;overflow: auto;background-image: repeating-linear-gradient(45deg, #ffffff 40%, #C4DDFF) !important;"<%} else{%>style=" background-image: repeating-linear-gradient(45deg, #ffffff 40%, #C4DDFF) !important;"<%} %>>
+					<div class="card-body" <%if(committeescheduledata!=null && committeescheduledata.size()>5) {%>style="height: 70vh;overflow: auto;background-image: repeating-linear-gradient(45deg, #ffffff 40%, #C4DDFF) !important;"<%} else{%>style=" background-image: repeating-linear-gradient(45deg, #ffffff 40%, #C4DDFF) !important;"<%} %>>
 				<div>
-						<%
+						<% 
 						String prev=""; // for holding the point number
 						String next=""; // to store the prev point number
 						int count=1;
@@ -433,7 +433,7 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 										type="hidden" name="specname" id="specnameadd"> <input
 										type="hidden" name="minutesback" value="<%=MinutesBack %>">
 										<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
-											<input type="hidden" name="ccmScheduleId" value="<%=committeescheduleeditdata[6] %>">
+											<input type="hidden" name="ccmScheduleId" value="<%=committeescheduleeditdata!=null?committeescheduleeditdata[6]:"" %>">
 											<input type="hidden" name="committeeMainId" value="<%=committeeMainId %>">
 											<input type="hidden" name="committeeId" value="<%=committeeId %>">
 											<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>">
@@ -461,7 +461,7 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 										<label>PDC: <span class="mandatory"
 											style="color: red;">*</span></label> 
 											<input class="form-control " name="DateCompletion" id="DateCompletion" required="required" placeholder=""> 
-											<input type="hidden" name="meetingdate" value="<%=committeescheduleeditdata[2]%>">
+											<input type="hidden" name="meetingdate" value="<%=committeescheduleeditdata!=null?committeescheduleeditdata[2]:""%>">
 									</div>
 								</div>
 								<div class="col-sm-4" align="left">
@@ -513,7 +513,7 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 												</div>
 											<%} %> --%>
 										<br> <select class="form-control selectdee"
-											name="Assignee" id="Assignee"<%if(committees.contains(committeescheduleeditdata[8].toString())) {%> required="required" <%} %>
+											name="Assignee" id="Assignee"<%if(committeescheduleeditdata!=null && committees.contains(committeescheduleeditdata[8].toString())) {%> required="required" <%} %>
 									onchange="removeAttri()"		data-live-search="true" data-placeholder="Select Assignee"
 											multiple>
 
@@ -536,7 +536,7 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 									</div>
 								</div> -->
 								<!-- Prudhvi - 13/03/2024 -->
-								<%if(!committees.contains(committeescheduleeditdata[8].toString()) && rodflag==null) {%>
+								<%if(committeescheduleeditdata!=null && !committees.contains(committeescheduleeditdata[8].toString()) && rodflag==null) {%>
 								<div class="col-sm-4" align="left" id="main">
 									<div class="form-group" >
 										<label>Multiple Assignee : </label><br> 
@@ -609,6 +609,9 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 		<input type="hidden" name="committeeSchId" id="committeeSchId" value="" /> 	
 		<input type="hidden" name="minutesback" value="<%=MinutesBack%>" /> 
 		<input type="hidden" name="specValueId" id="specValueId" value="">
+		<%if(rodflag!=null) {%>
+			<input type="hidden" name="rodflag" value="Y">	
+		<%} %>
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	</form>
 	
@@ -730,8 +733,11 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 							<input type="hidden" name="minutesback" value="<%=MinutesBack%>" /> 
 							<input type="hidden" name="specnamevalue" id="specValue" value="">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							<%if(rodflag!=null) {%>
+								<input type="hidden" name="rodflag" value="Y">	
+							<%} %>
 							<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
-								<input type="hidden" name="ccmScheduleId" value="<%=committeescheduleeditdata[6] %>">
+								<input type="hidden" name="ccmScheduleId" value="<%=committeescheduleeditdata!=null?committeescheduleeditdata[6]:"" %>">
 								<input type="hidden" name="committeeMainId" value="<%=committeeMainId %>">
 								<input type="hidden" name="committeeId" value="<%=committeeId %>">
 								<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>">
@@ -757,7 +763,7 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 				employeefetch(0, $labcode);
 			} else {
 				employeefetch(
-	<%=committeescheduleeditdata[9]%> , $labcode);
+	<%=committeescheduleeditdata!=null?committeescheduleeditdata[9]:""%> , $labcode);
   }
 }
 
@@ -1063,7 +1069,7 @@ function AssigneeEmpList(){
 	var $AssigneeLabCode = $('#AssigneeLabCode').val();
 	var mainlabcode = "<%=labcode.toString()%>" ;
 	
-	let projectid = <%=committeescheduleeditdata[9]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[9].toString()):""%> ;
+	let projectid = <%=committeescheduleeditdata!=null && committeescheduleeditdata[9]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[9].toString()):""%> ;
 	
 	var div = document.getElementById("main");
 	if(mainlabcode===$AssigneeLabCode){

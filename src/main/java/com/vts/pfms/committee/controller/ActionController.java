@@ -1098,6 +1098,7 @@ public class ActionController {
 					}
 					
 				}
+				
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			
 			ActionMainDto mainDto=new ActionMainDto();
@@ -1148,7 +1149,8 @@ public class ActionController {
 			assign.setMeetingDate(req.getParameter("meetingdate"));
 			assign.setMultipleAssigneeList(emp);
 			long count =service.ActionMainInsert(mainDto,assign);
-				
+			
+			
 			if (count > 0) {
 				redir.addAttribute("result", "Action Assigned Successfully");
 			} else {
@@ -1157,12 +1159,13 @@ public class ActionController {
 			redir.addAttribute("ScheduleId", req.getParameter("ScheduleId"));
 			redir.addAttribute("specname", req.getParameter("specname"));
 			redir.addAttribute("minutesback", req.getParameter("minutesback"));
+			redir.addAttribute("committeescheduledata",service.CommitteeActionList(req.getParameter("ScheduleId")));
 			}
 			catch (Exception e) {
 				e.printStackTrace();
 				logger.error(new Date() +" Inside CommitteeActionSubmit.htm "+UserId, e);
 			}
-		
+			
 			// CCM Handling
 			String ccmFlag = req.getParameter("ccmFlag");
 			if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
@@ -1207,7 +1210,6 @@ public class ActionController {
 			String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside AgendaView.htm "+UserId);		
 			try {
-
 			
 				req.setAttribute("Content",service.MeetingContent(req.getParameter("ActionMainId")).get(0) );
 				
@@ -4690,7 +4692,7 @@ public class ActionController {
           	//worked
         	 @PostMapping(value="ActionProgressAjaxSubmit.htm")
       		public @ResponseBody String ActionProgressAjaxSubmit(HttpServletRequest req,
-      				HttpSession ses, 
+      				HttpSession ses,  
       				@RequestParam(name = "file", required = false) MultipartFile file,
       				@RequestParam("progressDate") String progressDate
       				,@RequestParam("Progress") String Progress
@@ -4886,7 +4888,17 @@ public class ActionController {
         			redir.addFlashAttribute("ScheduleId", CommitteeScheduleId);
         			redir.addFlashAttribute("minutesback", req.getParameter("minutesback"));
         			redir.addFlashAttribute("specname", req.getParameter("specnamevalue"));
-        			
+
+        			//rod Handling
+        			String rodflag = req.getParameter("rodflag");
+        			if(rodflag!=null && rodflag.equalsIgnoreCase("Y")) {
+        				redir.addFlashAttribute("committeescheduledata",service.CommitteeActionList(CommitteeScheduleId));
+        				redir.addFlashAttribute("committeescheduleeditdata", rodservice.RODScheduleEditData(CommitteeScheduleId));
+        				redir.addFlashAttribute("AllLabList", service.AllLabList());
+        				redir.addFlashAttribute("labcode", LabCode); 
+        				redir.addFlashAttribute("EmpNameList", service.EmployeeList(LabCode));
+        				redir.addFlashAttribute("rodflag", "Y");
+        			}
         			// CCM Handling
         			String ccmFlag = req.getParameter("ccmFlag");
         			if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
@@ -5253,7 +5265,17 @@ public class ActionController {
         			redir.addFlashAttribute("ScheduleId", CommitteeScheduleId);
         			redir.addFlashAttribute("minutesback", req.getParameter("minutesback"));
         			redir.addFlashAttribute("specname", req.getParameter("specValueId"));
-        			
+
+        			//rod Handling
+        			String rodflag = req.getParameter("rodflag");
+        			if(rodflag!=null && rodflag.equalsIgnoreCase("Y")) {
+        				redir.addFlashAttribute("committeescheduledata",service.CommitteeActionList(CommitteeScheduleId));
+        				redir.addFlashAttribute("committeescheduleeditdata", rodservice.RODScheduleEditData(CommitteeScheduleId));
+        				redir.addFlashAttribute("AllLabList", service.AllLabList());
+        				redir.addFlashAttribute("labcode", LabCode); 
+        				redir.addFlashAttribute("EmpNameList", service.EmployeeList(LabCode));
+        				redir.addFlashAttribute("rodflag", "Y");
+        			}
         			// CCM Handling
 //        			String ccmFlag = req.getParameter("ccmFlag");
 //        			if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
@@ -5452,7 +5474,6 @@ public class ActionController {
 		   String labCode = (String)ses.getAttribute("labcode");
 			Gson json = new Gson();
 			Long count =0l; 
-			System.out.println("Inside coming");
 			try {
 				CommitteeMinutesAttachmentDto dto= new CommitteeMinutesAttachmentDto();
 				dto.setScheduleId(req.getParameter("ScheduleId"));

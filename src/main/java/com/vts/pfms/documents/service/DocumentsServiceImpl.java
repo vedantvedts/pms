@@ -69,6 +69,7 @@ import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.model.PfmsIGITransaction;
 import com.vts.pfms.documents.model.PfmsIRSDocument;
 import com.vts.pfms.documents.model.StandardDocuments;
+import com.vts.pfms.documents.model.UnitMaster;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -1748,6 +1749,22 @@ public class DocumentsServiceImpl implements DocumentsService{
 	public long getMechanicalInterfaceCount() throws Exception {
 	
 		return dao.getMechanicalInterfaceCount();
+	}
+
+	/*********************************************** Naveen 4/9/25 **************************************************/
+	@Override
+	public UnitMaster getUnitMasterById(long unitMasterId)throws Exception {
+		return dao.getUnitMasterById(unitMasterId);
+	}
+
+	@Override
+	public long addUnitMaster(UnitMaster unitmaster)throws Exception {
+		return dao.addUnitMaster(unitmaster);
+	}
+
+	@Override
+	public List<Object[]> unitMasterList()throws Exception {
+		return dao.unitMasterList();
 	}
 	
 }
