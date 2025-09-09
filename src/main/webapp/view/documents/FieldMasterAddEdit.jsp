@@ -24,6 +24,7 @@
 <body>
 
 	<%
+		List<Object[]> unitMasterList = (List<Object[]>)request.getAttribute("unitMasterList");
 		List<Object[]> dataTypeMasterList = (List<Object[]>) request.getAttribute("dataTypeMasterList");
 		List<FieldGroupMaster> fieldGroupList = (List<FieldGroupMaster>) request.getAttribute("fieldGroupList");
 		List<FieldGroupLinked> fieldGroupLinkedList = (List<FieldGroupLinked>) request.getAttribute("fieldGroupLinkedList");
@@ -99,8 +100,17 @@
 								<input class="form-control" type="text" name="quantum" <%if(fieldMaster!=null && fieldMaster.getQuantum()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(fieldMaster.getQuantum())%>" <%}%> placeholder="Enter Quantum" maxlength="255" required>
 							</div>
 							<div class="col-md-3">
-								<label class="form-label">Unit:<span class="mandatory">*</span></label> 
-								<input class="form-control" type="text" name="unit" <%if(fieldMaster!=null && fieldMaster.getFieldUnit()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(fieldMaster.getFieldUnit())%>" <%}%> placeholder="Enter Unit" maxlength="255" required>
+								<div class="form-group">
+									<label class="form-label">Unit<span class="mandatory" style="color: red;">*</span></label>
+									<select class="form-control selectdee" name="unitMasterId" id="unitMasterId" data-live-search="true" data-container="body" required  >
+										<option disabled selected value="">Choose...</option>
+										<%
+											for(Object[] obj:unitMasterList){
+										%>
+											<option value="<%=obj[0] %>"  <%if(fieldMaster!=null && fieldMaster.getUnitMasterId()!=null && fieldMaster.getUnitMasterId()==Long.parseLong(obj[0].toString())) {%>selected<%} %>><%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %> </option>
+										<%} %>
+									</select>
+								</div>
 							</div>
 							<div class="col-md-3">
 								<label class="form-label">Description:</label> 

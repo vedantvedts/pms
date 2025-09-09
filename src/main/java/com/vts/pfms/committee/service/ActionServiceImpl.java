@@ -441,14 +441,14 @@ public class ActionServiceImpl implements ActionService {
 			{
 				lab=dao.LabDetails();
 				
-				if(main.getScheduleId()!=null && !main.getScheduleId().equalsIgnoreCase("0")) {
+				if(main.getScheduleId()!=null && !main.getScheduleId().equalsIgnoreCase("0") && !main.getActionType().equalsIgnoreCase("R")) {
 					schedule = committeeDao.CommitteeScheduleEditData(main.getScheduleId());
 				}				
 				if(main.getActionType().toString().equalsIgnoreCase("S")) {
 				comishortname = dao.CommitteeShortName(main.getScheduleMinutesId());
 				}
 				
-				if(!main.getScheduleMinutesId().equalsIgnoreCase("0") && main.getActionType().equalsIgnoreCase("S")) {
+				if(!main.getScheduleMinutesId().equalsIgnoreCase("0") && main.getActionType().equalsIgnoreCase("S") || main.getActionType().equalsIgnoreCase("R")) {
 					List<Object[]>mainIds = dao.getMainIds(main.getScheduleMinutesId());
 					
 					if(mainIds.size()>0) {

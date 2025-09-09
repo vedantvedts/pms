@@ -113,17 +113,18 @@
 	  <table style=" border:1px solid black;  border-collapse: collapse; width:100%;">
 	    <tr>
 	      <!-- Left column with right border -->
-	      <td width="30%" align="left" style="border-right:1px solid black; padding:5px; padding-left: 10px;">
+	     <%--  <td width="30%" align="left" style="border-right:1px solid black; padding:5px; padding-left: 10px;">
 	        <img style="width: 3cm; height: 3cm;" src="data:image/png;base64,<%=lablogo%>"><br>
 	        <h4 style=" margin:0; padding:0;">RCI/PROGRAMME AD</h4>
 	        <p style="margin:0; padding:0;">Kanchanbagh P.O., <br> Hyderabad - 58 </p>
-	      </td>
+	      </td> --%>
 	      
-	      <%-- <td width="30%" align="left" style="border-right:1px solid black; padding:5px; padding-left: 10px;">
+	       <td width="30%" align="left" style="border-right:1px solid black; padding:5px; padding-left: 10px;">
 	        <img style="width: 3cm; height: 3cm;" src="data:image/png;base64,<%=lablogo%>"><br>
 	        <h4 style=" margin:0; padding:0;"><%=labdetails[2]!=null?labdetails[2].toString(): " - " %> (<%=labdetails[1]!=null?labdetails[1].toString(): " - "%>)</h4>
-	        <p style="margin:0; padding:0;"><%=labdetails[4]!=null?labdetails[4].toString(): " - " %>, &nbsp;<%=labdetails[5]!=null?labdetails[5].toString(): " - " %>, &nbsp;<%=labdetails[6]!=null?labdetails[6].toString(): " - " %> </p>
-	      </td> --%>
+	        <p style="margin:0; padding:0;"><%=labdetails[4]!=null?labdetails[4].toString(): " - " %></p>
+	        <p style="margin:0; padding:0;"><%=labdetails[5]!=null?labdetails[5].toString(): " - " %> - <%=labdetails[6]!=null?labdetails[6].toString(): " - " %> </p>
+	      </td> 
 	
 	      <!-- Right column -->
 	      <td width="70%" align="left" style="padding:5px;">
@@ -169,7 +170,7 @@
 
 				for (Object[] speclist : speclists)
 				{
-					if (speclist[3].toString().equals(committeemin[0].toString())) 
+					if (speclist[3].toString().equals(committeemin[0].toString()) && speclist[1]!=null && !speclist[1].toString().trim().isEmpty()) 
 					{
 						count++;
 				%>	
@@ -239,7 +240,8 @@
 			 	if(invitedlist.get(i)[4].toString().equals("P") && membertypes.contains( invitedlist.get(i)[3].toString()) )
 			 	{ j++;
 			 		if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ) membersec=invitedlist.get(i); 
-			 		if(invitedlist.get(i)[6].toString()!=null && invitedlist.get(i)[7].toString()!=null)	members.add(invitedlist.get(i)[12].toString()+". "+ invitedlist.get(i)[6].toString()+", "+invitedlist.get(i)[7].toString());
+			 		if(invitedlist.get(i)[6].toString()!=null && invitedlist.get(i)[7].toString()!=null)	members.add(invitedlist.get(i)[6].toString()+", "+invitedlist.get(i)[7].toString());
+			 		//if(invitedlist.get(i)[6].toString()!=null && invitedlist.get(i)[7].toString()!=null)	members.add(invitedlist.get(i)[12].toString()+". "+ invitedlist.get(i)[6].toString()+", "+invitedlist.get(i)[7].toString());
 			 		}
 			 	}} %>
 	  		<%if(memAbscent > 0){ %>
@@ -257,7 +259,8 @@
 				{
 			 	if(invitedlist.get(i)[4].toString().equals("P") && !membertypes.contains( invitedlist.get(i)[3].toString()) )
 			 	{ j++;
-			 	if(invitedlist.get(i)[6].toString()!=null && invitedlist.get(i)[7].toString()!=null) members.add(invitedlist.get(i)[12].toString()+". "+ invitedlist.get(i)[6].toString()+", "+invitedlist.get(i)[7].toString());
+			 	//if(invitedlist.get(i)[6].toString()!=null && invitedlist.get(i)[7].toString()!=null) members.add(invitedlist.get(i)[12].toString()+". "+ invitedlist.get(i)[6].toString()+", "+invitedlist.get(i)[7].toString());
+			 	if(invitedlist.get(i)[6].toString()!=null && invitedlist.get(i)[7].toString()!=null) members.add( invitedlist.get(i)[6].toString()+", "+invitedlist.get(i)[7].toString());
 			 		
 			 	}}} %>
 	  			<%if(parAbscent > 0){ %>
@@ -282,11 +285,12 @@
 			 	  int rightsize = members.size()-leftsize;
 			 	  List<String> leftlist = new ArrayList<String>(members.subList(0, leftsize));
 			 	  List<String> rightlist = new ArrayList<String>(members.subList(leftsize,members.size()));
+			 	  int ji=leftsize;
 			 	  for(int i=0;i<leftsize || i<rightsize;i++){
 			 	%>
 			 	<tr>
-			 		<td width="50%" align="left" style="padding-left: 30px; padding:5px; border:1px solid black; "><%=leftlist.get(i) %></td>
-	  				<td width="50%" align="left" style="padding-left: 30px; padding:5px; border:1px solid black; "><%if(i<rightsize){ %><%=rightlist.get(i) %> <%} %></td>
+			 		<td width="50%" align="left" style="padding-left: 30px; padding:5px; border:1px solid black; "><%=(i+1)+". " + leftlist.get(i) %></td>
+	  				<td width="50%" align="left" style="padding-left: 30px; padding:5px; border:1px solid black; "><%if(i<rightsize){ %><%=++ji +". "+ rightlist.get(i) %> <%} %></td>
 			 	</tr>
 			 	<%} %> 
 			 	
@@ -324,7 +328,7 @@
 						    int i=1;
 						    for (Object[] obj : values) {
 						    	
-						        if(obj[3] != null && Integer.parseInt(obj[3].toString()) == 3){
+						        if(obj[3] != null && Integer.parseInt(obj[3].toString()) == 3 && obj[7].toString().equalsIgnoreCase("A") || obj[7].toString().equalsIgnoreCase("D")){
 						        		//&& Integer.parseInt(obj[3].toString()) < 6 && obj[7]!=null && obj[7].toString().equalsIgnoreCase("A") || obj[7].toString().equalsIgnoreCase("D")) {
 						            
 						            if(obj[10] != null && !obj[10].toString().equalsIgnoreCase(agenda)) {

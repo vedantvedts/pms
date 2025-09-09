@@ -18,6 +18,9 @@
 	font-weight: bold;
 }
 
+html, body {
+  overflow-x: hidden;
+}
 
 /* Container for the tabs */
 
