@@ -10974,7 +10974,7 @@ public class CommitteeController {
 			req.setAttribute("ccmFlag", req.getParameter("ccmFlag"));
 
 			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
-			req.getRequestDispatcher("/view/committee/MoMCheck.jsp").forward(req, customResponse);
+			req.getRequestDispatcher("/view/committee/MoMTabularMinutes.jsp").forward(req, customResponse);
 			String html = customResponse.getOutput();
 
 			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
@@ -11003,8 +11003,6 @@ public class CommitteeController {
 			}
 
 			Files.deleteIfExists(Paths.get(path + File.separator + filename + ".pdf"));
-
-
 
 		}
 		catch (Exception e) {
