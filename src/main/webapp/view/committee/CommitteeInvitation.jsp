@@ -121,8 +121,8 @@ h5,h6{
 												Object[] obj=committeeallmemberlist.get(i);
 												if(obj[8].toString().equalsIgnoreCase("CC")){%>
 												<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>, <%= obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> (<%= obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - "%>)
-													<input type="hidden" name="chairperson" value="<%=obj[5]%>,CC,<%=obj[3]%>">
-													<input type="hidden" name="empid" value="<%=obj[5]%>,CC,<%=obj[3]%>">
+													<input type="hidden" name="chairperson" value="<%=obj[5]%>,CC,<%=obj[3]%>,<%=obj[11]%>">
+													<input type="hidden" name="empid" value="<%=obj[5]%>,CC,<%=obj[3]%>,<%=obj[11]%>">
 													<input type="hidden" name="Labcode" value="<%=obj[9] %>" />
 												</td>
 											<%	committeeallmemberlist.remove(i);
@@ -144,7 +144,7 @@ h5,h6{
 													Object[] obj=committeeallmemberlist.get(i);
 													if(obj[8].toString().equalsIgnoreCase("CS")){%>
 													<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>, <%= obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> (<%= obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - "%>)
-														<input type="hidden" name="empid" value="<%=obj[5]%>,CS,<%=obj[3]%>">
+														<input type="hidden" name="empid" value="<%=obj[5]%>,CS,<%=obj[3]%>,<%=obj[11]%>">
 														<input type="hidden" name="Labcode" value="<%=obj[9] %>" />
 													</td>
 												<%	committeeallmemberlist.remove(i);
@@ -166,7 +166,7 @@ h5,h6{
 													Object[] obj=committeeallmemberlist.get(i);
 													if(obj[8].toString().equalsIgnoreCase("CH")){%>
 													<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>, <%= obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> (<%= obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - "%>)
-														<input type="hidden" name="empid" value="<%=obj[5]%>,CH,<%=obj[3]%>">
+														<input type="hidden" name="empid" value="<%=obj[5]%>,CH,<%=obj[3]%>,<%=obj[11]%>">
 														<input type="hidden" name="Labcode" value="<%=obj[9] %>" />
 													</td>
 												<%	committeeallmemberlist.remove(i);
@@ -200,7 +200,7 @@ h5,h6{
 														<tr>
 														<td class="tdclass"><%=count%> )</td> 
 														<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>, <%= obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> (<%= obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - "%>)
-															<input type="hidden" name="empid" value="<%=obj[5]%>,CI,<%=obj[3]%>">
+															<input type="hidden" name="empid" value="<%=obj[5]%>,CI,<%=obj[3]%>,<%=obj[11]%>">
 															<input type="hidden" name="Labcode" value="<%=obj[9] %>" />
 														</td>						
 														
@@ -234,7 +234,7 @@ h5,h6{
 												<tr>
 													<td class="tdclass"><%=count1%> )</td> 
 													<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>, <%= obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> (<%= obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - "%>)
-														<input type="hidden" name="empid" value="<%=obj[5]%>,CW,<%=obj[3]%>">
+														<input type="hidden" name="empid" value="<%=obj[5]%>,CW,<%=obj[3]%>,<%=obj[11]%>">
 														<input type="hidden" name="Labcode" value="<%=obj[9] %>" />
 													</td>						
 												</tr>
@@ -268,7 +268,7 @@ h5,h6{
 												<tr>
 													<td class="tdclass"><%=count2%> )</td> 
 													<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>, <%= obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> (<%= obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - "%>)
-														<input type="hidden" name="empid" value="<%=obj[5]%>,CO,<%=obj[3]%>">
+														<input type="hidden" name="empid" value="<%=obj[5]%>,CO,<%=obj[3]%>,<%=obj[11]%>">
 														<input type="hidden" name="Labcode" value="<%=obj[9] %>" />
 													</td>						
 																																										
@@ -305,7 +305,7 @@ h5,h6{
 												<tr>
 													<td class="tdclass"><%=count2%> )</td> 
 													<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>, <%= obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> (<%= obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - "%>)
-														<input type="hidden" name="empid" value="<%=obj[5]%>,CIP,<%=obj[3]%>">
+														<input type="hidden" name="empid" value="<%=obj[5]%>,CIP,<%=obj[3]%>,<%=obj[11]%>">
 														<input type="hidden" name="Labcode" value="<%=obj[9] %>" />
 													</td>						
 																																										
@@ -403,6 +403,7 @@ h5,h6{
 									<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid%>">
 									<input type="hidden" name="Committeeidmainid" value="<%=committeemainid%>">
 									<input type="hidden" name="ccmFlag" value="<%=ccmFlag%>">
+									<input type="hidden" name="inviteFlag" value="Y">
 									<button class="btn btn-info btn-sm  shadow-nohover back" type="button" onclick="submitForm('backfrm1');">Back</button>
 								</div>
 							</div>

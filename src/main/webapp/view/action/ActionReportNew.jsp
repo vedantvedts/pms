@@ -136,7 +136,9 @@
 	  	String projectId = (String)request.getAttribute("projectId");
 	  	String type = (String)request.getAttribute("type");
 	  	String status = (String)request.getAttribute("status");
+	  	String labCode = (String)request.getAttribute("labCode");
 	  	
+	  	List<Object[]> allLabList = (List<Object[]>)request.getAttribute("allLabList");
 	  	List<Object[]> projectList = (List<Object[]>)request.getAttribute("projectList");
 		List<Object[]> roleWiseEmployeeList = (List<Object[]>)request.getAttribute("roleWiseEmployeeList");
 		List<Object[]> allActionsList = (List<Object[]>)request.getAttribute("allActionsList");
@@ -195,6 +197,18 @@
 														<option value="<%=obj[0] %>" <%if(projectId.equalsIgnoreCase(obj[0].toString())){ projectName = obj[4]+projectShortName; %> selected="selected" <%}%>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%> <%= projectShortName!=null?StringEscapeUtils.escapeHtml4(projectShortName):" - " %></option>	
 													<%}%>
 												</select>	        
+											</td>
+											<td>
+					   							<label class="control-label">Lab: </label>
+					   						</td>
+					   						<td>
+                                            	<select class="form-control selectdee" name="labCode" id="labCode" required="required" onchange="this.form.submit()"  data-live-search="true" data-container="body">
+													<option disabled="disabled"  selected value="">Lab Name</option>
+												    <% for (Object[] lab : allLabList) {%>
+													    <option value="<%=lab[3]%>" <%if(labCode.equalsIgnoreCase(lab[3].toString())){ %>selected <%} %>  ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
+												    <%} %>
+												    <!-- <option value="@EXP">Expert</option> -->
+												</select>  
 											</td>
 											<td>
 					   							<label class="control-label">Assignee: </label>

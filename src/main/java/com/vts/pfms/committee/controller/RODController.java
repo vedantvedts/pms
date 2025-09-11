@@ -314,6 +314,7 @@ public class RODController {
 			req.setAttribute("AllLabList", committeeservice.AllLabList());
 			req.setAttribute("scheduledata",scheduledata);
 			req.setAttribute("projectlist", committeeservice.ProjectList(LabCode));
+			req.setAttribute("preProjectlist", committeeservice.preProjectlist(LabCode));
 			req.setAttribute("rodagendalist", committeeagendalist);
 			req.setAttribute("labdata", committeeservice.LabDetails(scheduledata[24].toString()));			
 			req.setAttribute("filesize",file_size);

@@ -2943,7 +2943,7 @@ public class CommitteeController {
 			committeeinvitationdto.setEmpIdList(emplist);
 			committeeinvitationdto.setLabCodeList(labCodelist);
 			committeeinvitationdto.setReptype(reptype);
-
+			committeeinvitationdto.setInviteFlag(req.getParameter("inviteFlag"));
 
 			long count =  service.CommitteeInvitationCreate(committeeinvitationdto);
 
@@ -6687,6 +6687,7 @@ public class CommitteeController {
 
 			}	
 			
+			if(EmpNo!=null)
 			service.InvitationRoleoUpdate(Role,EmpNo,LabCode,UserId,invitationid);
 			
 			redir.addAttribute("committeescheduleid", committeescheduleid);

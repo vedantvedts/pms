@@ -324,7 +324,7 @@
 											<%for(Object[] doc : AgendaDocList) { 
 											if(obj[0].toString().equalsIgnoreCase(doc[1].toString())){%>
 												<tr>
-													<td><%=doc[3]!=null?StringEscapeUtils.escapeHtml4(doc[3].toString()): " - " %></td>
+													<td><%= doc[3]!=null ? StringEscapeUtils.escapeHtml4(doc[3].toString()): " - "   %> <%=" <span class='text-muted'> Ver " +StringEscapeUtils.escapeHtml4(doc[4]!=null ? doc[4].toString() : "") + "." + StringEscapeUtils.escapeHtml4(doc[5]!=null ? doc[5].toString() : "") + "</span>" %></td>
 													<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
 												<tr>													
 											<%} }%>
