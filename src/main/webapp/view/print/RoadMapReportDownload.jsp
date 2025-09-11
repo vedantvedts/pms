@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.roadmap.model.RoadMapAnnualTargets"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.roadmap.model.RoadMap"%>
@@ -75,9 +76,9 @@ Integer endYear = Integer.parseInt((String)request.getAttribute("endYear")) ;
 			<%if(roadMapAnnualTargetDetails.size()>0) {%>
 			<tr>
 				<td style="text-align: center;"><%=++slno %></td>
-				<td><%=roadMap.getProjectTitle() %></td>
-				<td><%=roadMap.getAimObjectives() %></td>
-				<td style="text-align: center;"><%=roadMap.getDuration() %></td>
+				<td><%=roadMap.getProjectTitle()!=null?roadMap.getProjectTitle(): " - " %></td>
+				<td><%=roadMap.getAimObjectives()!=null?roadMap.getAimObjectives(): " - " %></td>
+				<td style="text-align: center;"><%=roadMap.getDuration()%></td>
 				
 				<%if(roadMapAnnualTargetDetails!=null) { 
 					int OrigAnnualYear=0,TempAnnualYear=0;
@@ -93,9 +94,9 @@ Integer endYear = Integer.parseInt((String)request.getAttribute("endYear")) ;
 						<td>
 							<%int count=1; for(String targets : targetssList) {%>
 								<%if(count==1) {%>
-									<%=targets %>
+									<%=targets!=null?targets: " - " %>
 								<%} else{%>
-									<%=", "+targets %>
+									<%=", "+(targets!=null?targets: " - ") %>
 								<%} %>
 							<%count++;} %>
 						</td>

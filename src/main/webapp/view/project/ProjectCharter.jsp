@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -343,7 +344,9 @@ ul, #myUL {
 	text-align: left !important;
 } 
  
-
+.select2-container {
+	width: 100% !important;
+}
 
 </style>
 
@@ -379,44 +382,34 @@ List<Object[]> MilestoneActivityList=(List<Object[]>)request.getAttribute("Miles
 							<h3>Project Charter</h3>
 						</div>	  
 						<div class="col-md-6" style="float: right;">
-							
-					   
-						<form method="get" action="ProjectCharter.htm" id="projectchange"  class="form-inline">
-							
-								 <div class="col-md-3">
-                            		<label class="control-label"style="font-size: 17px"><b>Project Name :</b></label>
+							<form method="get" action="ProjectCharter.htm" id="projectchange" >
+								<div class="row">
+									<div class="col-md-4 right">
+                            			<label class="control-label"style="font-size: 17px"><b>Project Name :</b></label>
                             		</div>
-										<div class="col-md-2" style="margin-top: -10px;">
-										
-										<select class="form-control items" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="this.form.submit();">
+								 
+									<div class="col-md-4" style="margin-top: -10px;">
+											
+										<select class="form-control items selectdee" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="this.form.submit();">
 											<option disabled="true"  selected value="">Choose...</option>
 											<%for(Object[] obj : proList){ 
-												String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
-											%>
+												String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":""; %>
 												<option  value="<%=obj[0] %>" <%if (Project.equalsIgnoreCase(obj[0].toString())) {%>
-														selected="selected" <%}%>><%=obj[4] +projectshortName%></option>
+												selected="selected" <%}%>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%></option>
 											<%} %>
 										</select>
-										</div>
+									</div>
 									
-									
-									
-										
+									<div class="col-md-2 left">
 										<button  type="submit" class="btn btn-sm " style="border: 0 ;border-radius: 3px;color: red;margin-left: 170px;margin-top: -15px;size: 25px" formmethod="GET" formaction="ProjectCharterDownload.htm" formtarget="_blank">
-											<i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+											<i class="fa fa-lg fa-file-pdf-o" aria-hidden="true"></i>
 										</button>
-										
-							
-									
-									
-									
-	                         
-								
-							
-							
-							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-					</form>				
-			</div>
+									</div>	
+									<div class="col-md-2"></div>
+								</div>
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							</form>				
+						</div>
 				
 						<div class="card-body" style="background-color: white;">	
 						
@@ -431,14 +424,14 @@ List<Object[]> MilestoneActivityList=(List<Object[]>)request.getAttribute("Miles
 										<tr>
 											 <td style="width: 5px !important; padding: 5px; padding-left: 10px">(a)</td>
 											 <td style="width: 150px;padding: 5px; padding-left: 10px"><b>Project Name</b></td>
-											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"><%=ProjectEditData[1] %></td>
+											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"><%=ProjectEditData[1]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[1].toString()): " - " %></td>
 											
 										</tr>
 										
 										<tr>
 											 <td  style=" padding: 5px; padding-left: 10px">(b)</td>
 											 <td  style="width: 150px;padding: 5px; padding-left: 10px"><b>Category</b></td>
-											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"><%=ProjectEditData[14] %></td>
+											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"><%=ProjectEditData[14]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[14].toString()): " - " %></td>
 										</tr>
 										<tr>
 											 <td  style="padding: 5px; padding-left: 10px">(c)</td>
@@ -448,7 +441,7 @@ List<Object[]> MilestoneActivityList=(List<Object[]>)request.getAttribute("Miles
 										<tr>
 											 <td  style="width: 20px; padding: 5px; padding-left: 10px">(d)</td>
 											 <td  style="width: 150px;padding: 5px; padding-left: 10px"><b>User</b></td>
-											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"> <%if(ProjectEditData[16]!=null ){%> <%=ProjectEditData[16] %> <%} %></td>
+											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"> <%if(ProjectEditData[16]!=null ){%> <%=StringEscapeUtils.escapeHtml4(ProjectEditData[16].toString()) %> <%} %></td>
 										</tr>
 										
 									
@@ -467,39 +460,34 @@ List<Object[]> MilestoneActivityList=(List<Object[]>)request.getAttribute("Miles
 								
 									
 					      <table class="subtables projectattributetable" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
-					                  <tr>
-											 <td style="width: 85px !important; padding: 5px; padding-left: 10px"></td>
-											 <td style="width: 120px;padding: 5px; padding-left: 10px"><b> Name, Designation</b></td>
-											  <!-- <td style="width:90px;padding: 5px; padding-left: 10px"><b> Department</b></td> -->
-											   <td style="width: 100px;padding: 5px; padding-left: 10px"><b> Telephone</b></td>
-											    <td style="width: 90px;padding: 5px; padding-left: 10px"><b> Email</b></td>
-											
-										</tr>
+					            <tr>
+									<td style="width: 85px !important; padding: 5px; padding-left: 10px">Role</td>
+									<td style="width: 120px;padding: 5px; padding-left: 10px"><b>Member</b></td>
+									<td style="width:90px;padding: 5px; padding-left: 10px"><b> Lab</b></td>
+									<td style="width: 100px;padding: 5px; padding-left: 10px"><b> Telephone</b></td>
+									<td style="width: 90px;padding: 5px; padding-left: 10px"><b> Email</b></td>
+								</tr>
 										
 										
-										<tr>
+										<%-- <tr>
 										<td   style="width: 125px !important; padding: 5px; padding-left: 10px">	Project Director</td>
 										 <td style="width: 150px;padding: 5px; padding-left: 10px"><b><%=ProjectEditData1[28] %>, <%=ProjectEditData1[29] %></b></td>
-											 <%--  <td style="width: 90px;padding: 5px; padding-left: 10px"><b> <%=ProjectEditData1[29] %></b></td> --%>
+											  <td style="width: 90px;padding: 5px; padding-left: 10px"><b> <%=ProjectEditData1[29] %></b></td>
 											   <td style="width: 100px;padding: 5px; padding-left: 10px"><b> <%=ProjectEditData1[30] %></b></td>
 											    <td style="width: 90px;padding: 5px; padding-left: 10px"><b><%=ProjectEditData1[31] %> </b></td>
-										</tr>
+										</tr> --%>
 										
-										<tr>
+										<%-- <tr>
 									 <td  rowspan="<%=ProjectAssignListsize+1 %>" style="width: 85px !important; padding: 5px; padding-left: 10px">Team Members</td>
-										</tr>
+										</tr> --%>
 										<% for(Object[]o:ProjectAssignList){%>
-										<tr>
-										
-											 
-											 
-											 <td style="width: 180px;padding: 5px; padding-left: 10px"><b><%=o[3] %>, <%=o[4] %> </b></td>
-											  <%-- <td style="width: 30px;padding: 5px; padding-left: 10px"><b><%=o[4] %></b></td> --%>
-											   <td style="width: 100px;padding: 5px; padding-left: 10px"><b><%=o[6] %> </b></td>
-											    <td style="width: 90px;padding: 5px; padding-left: 10px"><b><%=o[7] %> </b></td>
-											
-										
-										</tr>
+											<tr>
+												<td style="width: 85px !important; padding: 5px; padding-left: 10px"><%=o[12]!=null?StringEscapeUtils.escapeHtml4(o[12].toString()):"-" %></td>
+												<td style="width: 180px;padding: 5px; padding-left: 10px"><b><%=o[3]!=null?StringEscapeUtils.escapeHtml4(o[3].toString()): " - " %>, <%=o[4]!=null?StringEscapeUtils.escapeHtml4(o[4].toString()): " - " %></b></td>
+												<td style="width: 30px;padding: 5px; padding-left: 10px"><b><%=o[9]!=null?StringEscapeUtils.escapeHtml4(o[9].toString()):"-" %></b></td>
+												<td style="width: 100px;padding: 5px; padding-left: 10px"><b><%=o[6]!=null?StringEscapeUtils.escapeHtml4(o[6].toString()): " - " %> </b></td>
+												<td style="width: 90px;padding: 5px; padding-left: 10px"><b><%=o[7]!=null?StringEscapeUtils.escapeHtml4(o[7].toString()): " - " %> </b></td>
+											</tr>
 										<%} %>
 									
 									</table>
@@ -526,20 +514,20 @@ List<Object[]> MilestoneActivityList=(List<Object[]>)request.getAttribute("Miles
 					               <tr>
 											 <td style="width: 5px !important; padding: 5px; padding-left: 10px">(a)</td>
 											 <td style="width: 150px;padding: 5px; padding-left: 10px"><b>Project Scope</b></td>
-											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"><%=ProjectEditData[17] %></td>
+											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"><%=ProjectEditData[17]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[17].toString()): " - " %></td>
 											
 										</tr>
 										
 										<tr>
 											 <td  style=" padding: 5px; padding-left: 10px">(b)</td>
 											 <td  style="width: 150px;padding: 5px; padding-left: 10px"><b>Objectives</b></td>
-											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"><%=ProjectEditData[4] %></td>
+											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"><%=ProjectEditData[4]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[4].toString()): " - " %></td>
 										</tr>
 										
 											<tr>
 											 <td  style=" padding: 5px; padding-left: 10px">(c)</td>
 											 <td  style="width: 150px;padding: 5px; padding-left: 10px"><b>Deliverables</b></td>
-											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"><%=ProjectEditData[5] %></td>
+											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"><%=ProjectEditData[5]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[5].toString()): " - " %></td>
 										</tr>
 						
 		                      </table>
@@ -555,8 +543,8 @@ List<Object[]> MilestoneActivityList=(List<Object[]>)request.getAttribute("Miles
 									
 										%>
 										<tr>
-											 <td style="width: 60px !important; padding: 5px; padding-left: 10px">Mil-<%=o[5]%></td>
-											 <td style="width: 150px;padding: 5px; padding-left: 10px"><b><%=o[4] %></b></td>
+											 <td style="width: 60px !important; padding: 5px; padding-left: 10px">Mil-<%=o[5]!=null?StringEscapeUtils.escapeHtml4(o[5].toString()): " - "%></td>
+											 <td style="width: 150px;padding: 5px; padding-left: 10px"><b><%=o[4]!=null?StringEscapeUtils.escapeHtml4(o[4].toString()): " - " %></b></td>
 										
 										</tr>
 									
@@ -581,7 +569,7 @@ List<Object[]> MilestoneActivityList=(List<Object[]>)request.getAttribute("Miles
 										<%if(riskdatalist.size()>0){ %>
 									<%for(Object[]o:riskdatalist){ %>
 										<tr>
-											 <td style="width: 5px !important; padding: 5px; padding-left: 10px"><%=o[1] %></td>
+											 <td style="width: 5px !important; padding: 5px; padding-left: 10px"><%=o[1]!=null?StringEscapeUtils.escapeHtml4(o[1].toString()): " - " %></td>
 											 <td style="width: 150px;padding: 5px; padding-left: 10px"><b>Risk</b></td>
 										</tr>
 									<%}}else{ %>

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.cars.model.CARSOtherDocDetails"%>
 <%@page import="com.vts.pfms.cars.model.CARSContract"%>
 <%@page import="java.time.LocalDate"%>
@@ -222,22 +223,22 @@ tr.clickable:hover{
 		List<CARSOtherDocDetails> allCARSOtherDocDetailsList = (List<CARSOtherDocDetails>)request.getAttribute("allCARSOtherDocDetailsList");
 		FormatConverter fc = new FormatConverter();
 	%>
-	<% String ses=(String)request.getParameter("result");
-	   String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-		%>
-		<div align="center">
-			<div class="alert alert-danger" role="alert">
-		    <%=ses1 %>
-		    </div>
-		</div>
-		<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-		    	<%=ses %>
-			</div>
-		</div>
-	<%} %>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 	<div id="presentation-slides" class="carousel slide " data-ride="carousel">
 		<div class="carousel-inner" align="center">
@@ -271,7 +272,7 @@ tr.clickable:hover{
 						<table class="executive home-table" style="align: center;margin-bottom:5px; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;font-weight: bold;"  >
 							<% if(labInfo!=null){ %>
 								<tr>
-									<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: bolder;font-size: 22px"> <h2 style="color: #145374 !important;font-weight: bolder;"> <%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %> ( <%if(labInfo!=null && labInfo.getLabCode() !=null){ %><%=labInfo.getLabCode()%><%} %> ) </h2> </th>
+									<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: bolder;font-size: 22px"> <h2 style="color: #145374 !important;font-weight: bolder;"> <%if(labInfo.getLabName()!=null){ %><%=StringEscapeUtils.escapeHtml4(labInfo.getLabName())  %><%}else{ %>LAB NAME<%} %> ( <%if(labInfo!=null && labInfo.getLabCode() !=null){ %><%=StringEscapeUtils.escapeHtml4(labInfo.getLabCode())%><%} %> ) </h2> </th>
 								</tr>
 							<%}%>
 							<tr>
@@ -281,7 +282,7 @@ tr.clickable:hover{
 								<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: 700;font-size:20px">Defence Research & Development Organization</th>
 							</tr>
 							<tr>
-								<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: 700;font-size:20px"><%if(labInfo.getLabAddress() !=null){ %><%=labInfo.getLabAddress()  %> , <%=labInfo.getLabCity() %><%}else{ %>LAB ADDRESS<%} %> </th>
+								<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: 700;font-size:20px"><%if(labInfo.getLabAddress() !=null){ %><%=StringEscapeUtils.escapeHtml4(labInfo.getLabAddress())  %> , <%=labInfo.getLabCity()!=null?StringEscapeUtils.escapeHtml4(labInfo.getLabCity()): "" %><%}else{ %>LAB ADDRESS<%} %> </th>
 							</tr>
 						</table>
 					</div>
@@ -335,11 +336,11 @@ tr.clickable:hover{
 				            	%>
 				            		<tr class="clickable " data-target="#presentation-slides" data-slide-to="<%=(slno+1)%>" data-toggle="tooltip" data-placement="top" title="" style="cursor: pointer;">
 				            			<td class="center"><%=slno %></td>
-	                                    <td class="center"><%=obj[2]!=null?obj[2]:"-" %></td>
-	                                    <td class="left"><%=obj[4]!=null?obj[4]:"-" %></td>
-	                                    <td class="left"><%=obj[18]!=null?obj[18]:"-" %></td>
-	                                    <td class="center"><%=obj[33]!=null?obj[33]:(obj[8]!=null?obj[8]:"-") %></td>
-	                                    <td class="right"><%=amount %></td>
+	                                    <td class="center"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %></td>
+	                                    <td class="left"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"-" %></td>
+	                                    <td class="left"><%=obj[18]!=null?StringEscapeUtils.escapeHtml4(obj[18].toString()):"-" %></td>
+	                                    <td class="center"><%=obj[33]!=null?StringEscapeUtils.escapeHtml4(obj[33].toString()):(obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()):"-") %></td>
+	                                    <td class="right"><%=amount!=null?StringEscapeUtils.escapeHtml4(amount): " - " %></td>
 				            		</tr>
 				            	<%++slno;} }%>
 				            </tbody>
@@ -384,7 +385,7 @@ tr.clickable:hover{
 							<b class="refNoHeading"></b>
 						</div>
 						<div class="col-md-7">
-							<h3 class="slideNames"><%=obj[2] %></h3>
+							<h3 class="slideNames"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></h3>
 						</div>
 						<div class="col-md-1" align="right"  style="padding-top:19px;" >
 							<b style="margin-right: -35px;"><%="" %></b>
@@ -403,11 +404,11 @@ tr.clickable:hover{
 							        <h1 class="card-title">CARS Information</h1>
 							        <div class="card-section">
 							            <span class="label">Title:</span> 
-							            <span class="value"><%=obj[4]!=null?obj[4]:"-" %></span>
+							            <span class="value"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"-" %></span>
 							        </div>
 							        <div class="card-section">
 							            <span class="label">Current Status:</span> 
-							            <span class="value"><%=obj[34]!=null?obj[34]:"-" %></span>
+							            <span class="value"><%=obj[34]!=null?StringEscapeUtils.escapeHtml4(obj[34].toString()):"-" %></span>
 							        </div>
 							    </div>
     
@@ -416,7 +417,7 @@ tr.clickable:hover{
 							        <h2 class="card-title">Cost & Duration</h2>
 							        <div class="card-section">
 							            <span class="label">Funds from:</span> 
-							            <span class="value"><%=obj[18]!=null?obj[18]:"-" %></span>
+							            <span class="value"><%=obj[18]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()):"-" %></span>
 							        </div>
 							        <div class="card-section">
 							            <span class="label">Cost:</span> 
@@ -426,7 +427,7 @@ tr.clickable:hover{
 							            <span class="label">Start Date:</span>
 							            <span class="value">
 							                <% if (carsContract != null && carsContract.getContractDate() != null) { %>
-							                    <%= fc.SqlToRegularDate(carsContract.getContractDate()) %>
+							                    <%= fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(carsContract.getContractDate())) %>
 							                <% } else { %> - <% } %>
 							            </span>
 							        </div>
@@ -442,7 +443,7 @@ tr.clickable:hover{
 							        </div>
 							        <div class="card-section">
 							            <span class="label">Duration:</span> 
-							            <span class="value"><%=duration %> <%if(Integer.parseInt(duration)>1) {%>Months<%} else{%>Month<%} %> </span>
+							            <span class="value"><%=duration!=null?StringEscapeUtils.escapeHtml4(duration): " - " %> <%if(Integer.parseInt(duration)>1) {%>Months<%} else{%>Month<%} %> </span>
 							        </div>
 							    </div>
 
@@ -451,15 +452,15 @@ tr.clickable:hover{
 							        <h2 class="card-title">Research Service Provider (RSP)</h2>
 							        <div class="card-section">
 							            <span class="label">Name:</span>
-							            <span class="value"><%= obj[26] + ". " + obj[27] + ", " + obj[28] %></span>
+							            <span class="value"><%= obj[26]!=null?StringEscapeUtils.escapeHtml4(obj[26].toString()): " - " %> . <%=obj[27]!=null?StringEscapeUtils.escapeHtml4(obj[27].toString()): " - " %>, <%= obj[28]!=null?StringEscapeUtils.escapeHtml4(obj[28].toString()): " - " %></span>
 							        </div>
 							        <div class="card-section">
 							            <span class="label">Address:</span>
 							            <span class="value">
-							                <%= obj[21] + ", " + obj[22] + ", " + obj[23] + ", " + obj[24] + " - " + obj[25] %> <br>
-							                Phone: <%= obj[30] %><br>
-							                Email: <%= obj[31] %><br>
-							                Fax: <%= obj[32] %>
+							                <%= obj[21]!=null?StringEscapeUtils.escapeHtml4(obj[21].toString()): " - " %>, <%= obj[22]!=null?StringEscapeUtils.escapeHtml4(obj[22].toString()): " - " %>, <%= obj[23]!=null?StringEscapeUtils.escapeHtml4(obj[23].toString()): " - " %>, <%= obj[24]!=null?StringEscapeUtils.escapeHtml4(obj[24].toString()): " - " %> - <%= obj[25]!=null?StringEscapeUtils.escapeHtml4(obj[25].toString()): " - " %> <br>
+							                Phone: <%= obj[30]!=null?StringEscapeUtils.escapeHtml4(obj[30].toString()): " - " %><br>
+							                Email: <%= obj[31]!=null?StringEscapeUtils.escapeHtml4(obj[31].toString()): " - " %><br>
+							                Fax: <%= obj[32]!=null?StringEscapeUtils.escapeHtml4(obj[32].toString()): " - " %>
 							            </span>
 							        </div>
 							    </div>
@@ -481,14 +482,14 @@ tr.clickable:hover{
 					            	
 					               	<%if(milestones!=null && milestones.size()>0) { char a='a'; Object[] progressData = null;%>
 							    		<tr>
-							    			<td style="text-align : left;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;(a) Initial Advance &nbsp;&nbsp;(<%=milestones.get(0).getPaymentPercentage() %>%) </td>
+							    			<td style="text-align : left;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;(a) Initial Advance &nbsp;&nbsp;(<%=StringEscapeUtils.escapeHtml4(milestones.get(0).getPaymentPercentage()) %>%) </td>
 							    			<td style="text-align : center;vertical-align: top;">T0*</td>
 							    			<td style="text-align : center;vertical-align: top;">
-							    				<%if(carsContract!=null && carsContract.getT0Date()!=null) {%><%=fc.SqlToRegularDate(carsContract.getT0Date()) %><%} %> 
+							    				<%if(carsContract!=null && carsContract.getT0Date()!=null) {%><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(carsContract.getT0Date())) %><%} %> 
 							    			</td>
 							    			<td style="text-align : right;vertical-align: top;">
 							    				<%if(milestones.get(0).getActualAmount()!=null) {%>
-							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestones.get(0).getActualAmount())) %>
+							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(milestones.get(0).getActualAmount()))) %>
 							    				<%} else{%>
 							    					-
 							    				<%} %>
@@ -526,10 +527,10 @@ tr.clickable:hover{
 													        <%
 													        progressData = milestoneProgressList!=null && milestoneProgressList.size()>0?milestoneProgressList.stream().filter(e -> e[5].toString().equalsIgnoreCase(milestones.get(0).getMilestoneNo())).findFirst().orElse(null): null;
 													        %>
-													        <%if(progressData!=null) {%>
+													        <%if(progressData[2]!=null) {%>
 																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 																	<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=progressData[2] %>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																		<%=progressData[2] %>
+																		<%=StringEscapeUtils.escapeHtml4(progressData[2].toString()) %>
 																	</div> 
 																</div>	
 															<%}else{ %>
@@ -548,8 +549,8 @@ tr.clickable:hover{
 							    			String milestoneNo = milestones.get(i).getMilestoneNo();
 							    		%>
 							    		<tr>
-							    			<td style="text-align : left;vertical-align: top;">&nbsp;(<%=++a %>) Performance Milestone-<%=(i) %> of RSQR &nbsp;&nbsp;(<%=milestones.get(i).getPaymentPercentage() %>%) </td>
-							    			<td style="text-align : center;vertical-align: top;">T0+<%=milestones.get((i)).getMonths() %> </td>
+							    			<td style="text-align : left;vertical-align: top;">&nbsp;(<%=++a %>) Performance Milestone-<%=(i) %> of RSQR &nbsp;&nbsp;(<%=milestones.get(i).getPaymentPercentage()!=null?StringEscapeUtils.escapeHtml4(milestones.get(i).getPaymentPercentage()): " - " %>%) </td>
+							    			<td style="text-align : center;vertical-align: top;">T0+<%=milestones.get((i)).getMonths()!=null?StringEscapeUtils.escapeHtml4(milestones.get(i).getMonths()): " - "%> </td>
 							    			<td style="text-align : center;vertical-align: top;">
 							    				<%if(carsContract!=null && carsContract.getT0Date()!=null) {
 							    					LocalDate sqldate = LocalDate.parse(carsContract.getT0Date()).plusMonths(Long.parseLong(milestones.get((i)).getMonths()));
@@ -559,7 +560,7 @@ tr.clickable:hover{
 							    			</td>
 							    			<td style="text-align : right;vertical-align: top;">
 							    				<%if(milestones.get(i).getActualAmount()!=null) {%>
-							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestones.get(i).getActualAmount())) %>
+							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(milestones.get(i).getActualAmount()))) %>
 							    				<%} else{%>
 							    					-
 							    				<%} %>
@@ -597,10 +598,10 @@ tr.clickable:hover{
 													        <%
 													        progressData = milestoneProgressList!=null && milestoneProgressList.size()>0?milestoneProgressList.stream().filter(e -> e[5].toString().equalsIgnoreCase(milestoneNo)).findFirst().orElse(null): null;
 													        %>
-													        <%if(progressData!=null) {%>
+													        <%if(progressData[2]!=null) {%>
 																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 																	<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=progressData[2] %>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																		<%=progressData[2] %>
+																		<%=StringEscapeUtils.escapeHtml4(progressData[2].toString()) %>
 																	</div> 
 																</div>	
 															<%}else{ %>
@@ -619,8 +620,8 @@ tr.clickable:hover{
 							    		<%}%>
 							    		<%if(milestones.size()>1) {%>
 							    		<tr>
-							    			<td style="text-align : left;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;(<%=++a %>) on submission of final report &nbsp;&nbsp;(<%=milestones.get(milestones.size()-1).getPaymentPercentage() %>%) </td>
-							    			<td style="text-align : center;vertical-align: top;">T0+<%=milestones.get(milestones.size()-1).getMonths() %> </td>
+							    			<td style="text-align : left;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;(<%=++a %>) on submission of final report &nbsp;&nbsp;(<%=milestones.get(milestones.size()-1).getPaymentPercentage()!=null?StringEscapeUtils.escapeHtml4(milestones.get(milestones.size()-1).getPaymentPercentage()): " - " %>%) </td>
+							    			<td style="text-align : center;vertical-align: top;">T0+<%=milestones.get(milestones.size()-1).getMonths()!=null?StringEscapeUtils.escapeHtml4(milestones.get(milestones.size()-1).getMonths()): " - " %> </td>
 							    			<td style="text-align : center;vertical-align: top;">
 							    				<%if(carsContract!=null && carsContract.getT0Date()!=null) {
 							    					LocalDate sqldate = LocalDate.parse(carsContract.getT0Date()).plusMonths(Long.parseLong(milestones.get((milestones.size()-1)).getMonths()));
@@ -630,7 +631,7 @@ tr.clickable:hover{
 							    			</td>
 							    			<td style="text-align : right;vertical-align: top;">
 							    				<%if(milestones.get(milestones.size()-1).getActualAmount()!=null) {%>
-							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestones.get(milestones.size()-1).getActualAmount())) %>
+							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(milestones.get(milestones.size()-1).getActualAmount()))) %>
 							    				<%} else{%>
 							    					-
 							    				<%} %>
@@ -667,10 +668,10 @@ tr.clickable:hover{
 													        <%
 													        progressData = milestoneProgressList!=null && milestoneProgressList.size()>0?milestoneProgressList.stream().filter(e -> e[5].toString().equalsIgnoreCase(milestones.get(milestones.size()-1).getMilestoneNo())).findFirst().orElse(null): null;
 													        %>
-													        <%if(progressData!=null) {%>
+													        <%if(progressData[2]!=null) {%>
 																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 																	<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=progressData[2] %>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																		<%=progressData[2] %>
+																		<%=StringEscapeUtils.escapeHtml4(progressData[2].toString()) %>
 																	</div> 
 																</div>	
 															<%}else{ %>

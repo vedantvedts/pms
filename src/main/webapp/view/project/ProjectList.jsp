@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -135,27 +136,22 @@ String logintype = (String)session.getAttribute("LoginType");
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	
-	
-	<center>
-	
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-            </div>
-            
-    </center>
-    
-    
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 	
@@ -197,15 +193,15 @@ Project List</h3>
 <tr>
 <td align="center">
 <%if(Integer.parseInt(obj[20].toString())==0){ %>
-<input type="radio" name="ProjectId" value="<%=obj[0] %>" onchange="$('#editbtn').attr('disabled',false); "  > 
+<input type="radio" name="ProjectId" value="<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): "" %>" onchange="$('#editbtn').attr('disabled',false); "  > 
 <%}else if(Integer.parseInt(obj[20].toString())>0){  %>
-<input type="radio" name="ProjectId" value="<%=obj[0] %>" onchange="$('#editbtn').attr('disabled',true); " > 
+<input type="radio" name="ProjectId" value="<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): "" %>" onchange="$('#editbtn').attr('disabled',true); " > 
 <%} %>
 </td>
 <td><%=count %></td>
-<td><%=obj[21] %></td>
-<td align="center"><%=obj[4] %></td>
-<td ><%=obj[1]%></td>
+<td><%=obj[21]!=null?StringEscapeUtils.escapeHtml4(obj[21].toString()): " - " %></td>
+<td align="center"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
+<td ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></td>
 <%-- <td ><%=projectDescription %></td> --%>
 <%-- <td ><%=unitCode %></td> --%>
 
@@ -217,14 +213,14 @@ Project List</h3>
 String v = df1.format((Double.valueOf(obj[19].toString()).doubleValue()/100000 )); 
 NFormatConvertion nfc1=new NFormatConvertion();
 %>
-<td ><%=v%></td>
+<td ><%=v!=null?StringEscapeUtils.escapeHtml4(v): " - "%></td>
 <%
 
  %>
 
 <td class="text-nowrap"><%=sdf.format(obj[9]) %></td>
-<td><%=obj[14].toString() %></td>
-<td ><%=obj[20]%></td>
+<td><%=obj[14]!=null?StringEscapeUtils.escapeHtml4(obj[14].toString()): " - " %></td>
+<td ><%=obj[20]!=null?StringEscapeUtils.escapeHtml4(obj[20].toString()): " - "%></td>
 </tr>
 
 <%count++;} }%>

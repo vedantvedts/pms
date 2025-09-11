@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.cars.model.CARSInitiation"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.master.model.IndustryPartner"%>
@@ -155,21 +156,22 @@ List<String>loginTypes = Arrays.asList("A","P");
 String logintype = (String)session.getAttribute("LoginType");
 %>
 
-<%
-String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-	</div></div>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br />
    
@@ -181,20 +183,20 @@ String ses=(String)request.getParameter("result");
 						
 					<div class="card-header">						
 						<div class="row">										
-							<div class="col-md-12"><h3 style="color:  #055C9D" ><%=committeedata[8] %>
+							<div class="col-md-12"><h3 style="color:  #055C9D" ><%=committeedata[8]!=null?StringEscapeUtils.escapeHtml4(committeedata[8].toString()): " - " %>
 							
 								<p style="float: right;">
 									
 									<%if(Long.parseLong(projectid)>0){ %> 
-										Project: <%=projectdata[4] %>
+										Project: <%=projectdata[4]!=null?StringEscapeUtils.escapeHtml4(projectdata[4].toString()): " - "  %>
 									<%}else if (Long.parseLong(divisionid)>0){ %>  
-										Division: <%=divisiondata[1] %> 
+										Division: <%=divisiondata[1]!=null?StringEscapeUtils.escapeHtml4(divisiondata[1].toString()): " - "  %> 
 									<%}else if(Long.parseLong(initiationid)>0){ %>
-										Pre-Project: <%=initiationdata[1]%> 
+										Pre-Project: <%=initiationdata[1]!=null?StringEscapeUtils.escapeHtml4(initiationdata[1].toString()): " - " %> 
 									<%}else if(Long.parseLong(initiationid)>0){ %>
-										Pre-Project: <%=initiationdata[1]%> 
+										Pre-Project: <%=initiationdata[1]!=null?StringEscapeUtils.escapeHtml4(initiationdata[1].toString()): " - " %> 
 									<%}else if(Long.parseLong(carsInitiationId)>0){ %>
-										CARS No: <%=carsInitiationData.getCARSNo() %> 
+										CARS No: <%=carsInitiationData.getCARSNo()!=null?StringEscapeUtils.escapeHtml4(carsInitiationData.getCARSNo()): " - "  %> 
 									<%}else{ %>Non-Project<%} %>
 									
 								</p>
@@ -218,7 +220,7 @@ String ses=(String)request.getParameter("result");
 														<select class="form-control selectdee" name="CpLabCode" tabindex="-1" required="required" style="width: 200px" id="CpLabCode" onchange="chairpersonfetch('1')">
 															<option disabled="disabled"  selected value="">Lab Name</option>
 														    <% for (Object[] obj : AllLabList) {%>
-															    <option <%if(chairperson[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]%></option>
+															    <option <%if(chairperson[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 														    <%} %>
 														    <option <%if(chairperson[9].toString().equalsIgnoreCase("@EXP")){ %>selected <%} %>value="@EXP">Expert</option>
 														</select>
@@ -248,7 +250,7 @@ String ses=(String)request.getParameter("result");
 														<select class="form-control selectdee" name="msLabCode" tabindex="-1" required="required" style="width: 200px" id="mSLabCode" onchange="msfetch('1')">
 															<option disabled="disabled"  selected value="">Lab Name</option>
 														    <% for (Object[] obj : AllLabList) {%>
-															    <option <%if(secretary!=null&& secretary[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]%></option>
+															    <option <%if(secretary!=null&& secretary[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 														    <%} %>
 														    <option <%if(secretary!=null && secretary[9].toString().equalsIgnoreCase("@EXP")){ %>selected <%} %>value="@EXP">Expert</option>
 														</select>
@@ -275,7 +277,7 @@ String ses=(String)request.getParameter("result");
 										<select class="form-control selectdee" id="proxysecretary" required="required" name="proxysecretary"style="margin-top: -5px">
 				    						<option value="0"  selected >None</option>
 				    						<% for (Object[] obj : EmployeeList1) {%>
-												<option value="<%=obj[0]%>" <%if(proxysecretary!=null && proxysecretary[5].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]%>, <%=obj[3] %></option>
+												<option value="<%=obj[0]%>" <%if(proxysecretary!=null && proxysecretary[5].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></option>
 											<%} %>
 				  						</select>
 				  						<%if(proxysecretary!=null){ %>
@@ -293,7 +295,7 @@ String ses=(String)request.getParameter("result");
 														<select class="form-control selectdee" name="ccplabocode" tabindex="-1"  style="width: 200px" id="ccplabocode" onchange="ccchairpersonfetch('1')">
 															<option disabled="disabled"  selected value="">SELECT</option>
 														    <% for (Object[] obj : AllLabList) {%>
-															    <option <%if(co_chairperson!=null &&   co_chairperson[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]%></option>
+															    <option <%if(co_chairperson!=null &&   co_chairperson[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 														    <%} %>
 														    <option <%if(co_chairperson!=null && co_chairperson[9].toString().equalsIgnoreCase("@EXP")){ %>selected <%} %>value="@EXP">Expert</option>
 														</select>
@@ -337,7 +339,7 @@ String ses=(String)request.getParameter("result");
 							<label class="control-label">Reference No.</label>
 							
 												
-							<input type="text" class="form-control"   name="Reference No." value="<%= committeedata[11] != null ? committeedata[11] : "--" %>" >
+							<input type="text" class="form-control"   name="Reference No." value="<%= committeedata[11] != null ? StringEscapeUtils.escapeHtml4(committeedata[11].toString()) : "--" %>" >
 							
 							</div>
 							</div>
@@ -345,7 +347,7 @@ String ses=(String)request.getParameter("result");
 							<div class="col-md-4">
 				         	<div class="form-group">
 				            	<label class="control-label" >Formation Date</label>
-				  				<input type="date" class="form-control"  data-date-format="dd/mm/yyyy" id="Formationdate" name="Formationdates"  value="<%= committeedata[12] != null ? committeedata[12] : '-' %>"  >
+				  				<input type="date" class="form-control"  data-date-format="dd/mm/yyyy" id="Formationdate" name="Formationdates"  value="<%= committeedata[12] != null ? StringEscapeUtils.escapeHtml4(committeedata[12].toString()) : '-' %>"  >
 				        	</div>
 				        </div>
 							
@@ -401,22 +403,22 @@ String ses=(String)request.getParameter("result");
 			            <input type="number" class="form-control" name="newslno" value="<%=obj[11] %>" min="1" max="<%=tempcommitteemembersall.size()%>" style="width:50%"> 
 			              	<input type="hidden" name="memberId" value="<%=obj[0].toString() %>">
 			              	</td>
-			              	<td><%=obj[2].toString() %>,<%=obj[4].toString() %></td>
+			              	<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>,<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
 			              	<td> 
 										<%  if(obj[8].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
 											else if(obj[8].toString().equalsIgnoreCase("CS") ){	 %> Member Secretary<%}
 											else if(obj[8].toString().equalsIgnoreCase("CH") ){	 %> Co-Chairperson<%}
 											else if(obj[8].toString().equalsIgnoreCase("PS") ) { %>Member Secretary (Proxy) <%}
 											else if(obj[8].toString().equalsIgnoreCase("CI")){   %> Internal<%}
-											else if(obj[8].toString().equalsIgnoreCase("CW")){	 %> External(<%=obj[12] %>)<%}
-											else if(obj[8].toString().equalsIgnoreCase("CO")){	 %> External(<%=obj[12]%>)<%}
+											else if(obj[8].toString().equalsIgnoreCase("CW")){	 %> External(<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %>)<%}
+											else if(obj[8].toString().equalsIgnoreCase("CO")){	 %> External(<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - "%>)<%}
 											else if(obj[8].toString().equalsIgnoreCase("P") ){	 %>Presenter <%}
 											else if(obj[8].toString().equalsIgnoreCase("I")){	 %> Addl. Internal<%}
-											else if(obj[8].toString().equalsIgnoreCase("W") ){	 %> Addl. External(<%=obj[12] %>)<%}
-											else if(obj[8].toString().equalsIgnoreCase("E") )    {%> Addl. External(<%=obj[12] %>)<%}
+											else if(obj[8].toString().equalsIgnoreCase("W") ){	 %> Addl. External(<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %>)<%}
+											else if(obj[8].toString().equalsIgnoreCase("E") )    {%> Addl. External(<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %>)<%}
 										    // Prudhvi - 27/03/2024 start
-											else if(obj[8].toString().equalsIgnoreCase("CIP") )    {%> Industry Partner(<%=obj[12] %>)<%}
-											else if(obj[8].toString().equalsIgnoreCase("IP") )    {%> Addl. Industry Partner(<%=obj[12] %>)<%}
+											else if(obj[8].toString().equalsIgnoreCase("CIP") )    {%> Industry Partner(<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %>)<%}
+											else if(obj[8].toString().equalsIgnoreCase("IP") )    {%> Addl. Industry Partner(<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %>)<%}
 										%>
 										
 									</td>
@@ -667,7 +669,7 @@ String ses=(String)request.getParameter("result");
 				             		</td>
 			             		
 										
-								<%if( (Long.parseLong(divisionid)>0 || Long.parseLong(projectid)>0 ||Long.parseLong(initiationid)>0)){ %>
+								<%if( Long.parseLong(divisionid)>0 || Long.parseLong(projectid)>0 || Long.parseLong(initiationid)>0 || Long.parseLong(carsInitiationId)>0){ %>
 								 	<td>
 										<form  method="post" action="ProjectCommitteeDescriptionTOREdit.htm">
 											<button  type="submit" class="btn btn-sm edit">DESCRIPTION</button>
@@ -854,7 +856,7 @@ String ses=(String)request.getParameter("result");
 				                		<%} %>
 				                			Constituted By 
 				                			<br>
-				                			<%=NewApprovalList[0].toString() %>
+				                			<%=NewApprovalList[0]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[0].toString()): " - " %>
 				                		</td>
 				                		<%if(NewApprovalList!=null && NewApprovalList[2]!=null){ %>
 				                		<td rowspan="2">
@@ -868,7 +870,7 @@ String ses=(String)request.getParameter("result");
 				                			Recommended Officer 1
 				                		
 				                			<br>
-				                			<%=NewApprovalList[1].toString() %>
+				                			<%=NewApprovalList[1]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[1].toString()): " - "  %>
 				                		</td>
 				                		
 				                		<%} %>
@@ -885,7 +887,7 @@ String ses=(String)request.getParameter("result");
 				                		Recommended Officer 2
 				                	
 				                		<br>
-				                			<%=NewApprovalList[3].toString() %>
+				                			<%=NewApprovalList[3]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[3].toString()): " - "  %>
 				                		</td>
 				                		<%} %>
 				                		<%if(NewApprovalList!=null && NewApprovalList[6]!=null){ %>
@@ -901,7 +903,7 @@ String ses=(String)request.getParameter("result");
 				                			Recommended Officer 3
 				                		
 				                			<br>
-				                			<%=NewApprovalList[5].toString() %>
+				                			<%=NewApprovalList[5]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[5].toString()): " - "  %>
 				                		</td>
 				                		<%} %>
 				                		<%if(NewApprovalList!=null && NewApprovalList[8]!=null){ %>
@@ -916,7 +918,7 @@ String ses=(String)request.getParameter("result");
 				                		
 				                			Approving Officer
 				                			<br>
-				                			<%=NewApprovalList[7].toString() %>
+				                			<%=NewApprovalList[7]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[7].toString()): " - "  %>
 				                		</td>
 				                		<%} %>
 				                			                		
@@ -953,7 +955,7 @@ String ses=(String)request.getParameter("result");
 																<div class="input select">
 																	<select class="form-control selectdee " name="InternalMemberIds" data-live-search="true" required  data-placeholder="Select Members" multiple style="width:400px">
 													                <%for(Object[] obj:EmployeeList){ %>																							
-																		<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>																				
+																		<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></option>																				
 																	<%} %>
 																	</select>
 																<input type="hidden" name="InternalLabCode" value="<%=LabCode%>"> 	
@@ -996,7 +998,7 @@ String ses=(String)request.getParameter("result");
 																<option disabled="true"  selected value="">Lab Name</option>
 																    <% for (Object[] obj : AllLabList) {
 																    if(!LabCode.equals(obj[3].toString())){%>
-																    <option value="<%=obj[3]%>"><%=obj[3]%></option>
+																    <option value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 																    <%}
 																    }%>
 															</select>
@@ -1042,7 +1044,7 @@ String ses=(String)request.getParameter("result");
 														<div class="input select ">
 															<select class="selectdee" name="ExpertMemberIds" id="ExpertMemberIds"   data-live-search="true" style="width: 350px"  data-placeholder="Select Members" required multiple>
 												            	<%for(Object[] obj:expertlist){ %>																									
-																	<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>	
+																	<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></option>	
 																													
 																<%} %>
 																					
@@ -1128,7 +1130,7 @@ String ses=(String)request.getParameter("result");
 											  			<select class="form-control selectdee" id="repids" name="repids" style="" data-placeholder="Select Rep Types" multiple="multiple" >
 															<option  disabled="disabled" value="0">Choose...</option>
 															<%	for (Object[] obj  : committeerepnotaddedlist) {%>
-														     	<option value="<%=obj[0]%>" ><%=obj[2]%>  </option>
+														     	<option value="<%=obj[0]%>" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>  </option>
 															<% } %>
 														</select>
 													</td>
@@ -1156,8 +1158,8 @@ String ses=(String)request.getParameter("result");
 														int count = 1;
 														for (Object[] obj : committeeMemberreplist) {
 													%>
-													<tr id="repmem<%=obj[0] %>">
-														<td><sp> <%=obj[3]%> </sp></td>
+													<tr id="repmem<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %>">
+														<td><sp> <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> </sp></td>
 														<td>
 															<%if(status.equals("A") || (status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) ){ %>
 															<button class="fa fa-trash btn btn-danger " type="button"  style="background-color: white;border-color: white;" onclick="memberrepdelete('<%=obj[0] %>');" ></button>
@@ -1243,7 +1245,7 @@ String ses=(String)request.getParameter("result");
 										<%
 										for (Object[] obj : AllLabList) {
 										    if(!LabCode.equals(obj[3].toString())){%>
-										    <option value="<%=obj[3]%>"><%=obj[3]%></option>
+										    <option value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 										    <%}
 										    }%>
 									</select>
@@ -1313,7 +1315,7 @@ String ses=(String)request.getParameter("result");
 											hidden="true">--Select--</option>
 										 <%  for ( Object[]  obj :DesignationList) {%>
 										<option value="<%=obj[0] %>">
-											<%=obj[2] %></option>
+											<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
 										<%} %>
 									</select>
 								</div>
@@ -1405,7 +1407,7 @@ String ses=(String)request.getParameter("result");
 											hidden="true">--Select--</option>
 										 <%  for ( Object[]  obj :DesignationList) {%>
 										<option value="<%=obj[0] %>">
-											<%=obj[2] %></option>
+											<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
 										<%} %>
 									</select>
 								</div>

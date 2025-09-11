@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.LocalTime"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -56,17 +57,22 @@ th ,td {
 
 
 
-<% String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
- if(ses1!=null){%>
-		<div align="left" class="alert alert-danger" role="alert" >
-        	<%=ses1 %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
         </div>
-	<%}if(ses!=null){ %>
-		<div align="left"  class="alert alert-success" role="alert"  >
-        	<%=ses %>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
         </div>
-    <%} %>
+    </div>
+<% } %>
 
   
 <div class="container-fluid">
@@ -90,7 +96,7 @@ th ,td {
 					                <td style="border: 0px;">
 					                	<select class="form-control selectdee" name="empid" id="empid" required="required" onchange="this.form.submit();"  >
 											<%for(Object[] obj :employeeList){ %>
-												<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(empid)){ %>selected="selected" <%} %>  ><%=obj[1] %>, <%=obj[2] %></option>
+												<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(empid)){ %>selected="selected" <%} %>  ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
 											<%} %>
 										 </select>
 									</td>	
@@ -247,11 +253,11 @@ th ,td {
 											</td>
 											<td style="padding-left: 15px;padding-top: 5px;padding-bottom: 5px;" >
 												<%for(Object[] obj:employeeScheduleList){ 
-													LocalTime target = LocalTime.parse( obj[3].toString()) ;
+													LocalTime target = LocalTime.parse(StringEscapeUtils.escapeHtml4(obj[3].toString())) ;
 													if (( target.isAfter( starttime ) || target.equals( starttime )  )  &&   target.isBefore( endtime ) ) 
 													{ %>	
 													
-														<%=obj[4] %> &nbsp;-&nbsp; <%=obj[1] %> &nbsp;-&nbsp; <%=target %> 	&nbsp;-&nbsp; <%=obj[6] %> 	<br>
+														<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %> &nbsp;-&nbsp; <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> &nbsp;-&nbsp; <%=target %> 	&nbsp;-&nbsp; <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %> 	<br>
 																												
 													<%}%>
 												<%} %>
@@ -308,7 +314,7 @@ th ,td {
 													if (( targettime.isAfter( starttime ) || targettime.equals( starttime )  )  &&   targettime.isBefore( endtime ) && targetdate.equals(fromdate1) ) 
 													{ %>	
 													
-														<%=obj[4] %> &nbsp;-&nbsp; <%=targettime%> 	<br>
+														<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %> &nbsp;-&nbsp; <%=targettime%> 	<br>
 																												
 													<%}%>
 												<%} %>
@@ -356,7 +362,7 @@ th ,td {
 																	{ Object[] obj=employeeScheduleList.get(k);
 																		if(LocalDate.parse(obj[2].toString()).isEqual(monthdays.get(temp)))
 																		{%>
-																			<br><%=obj[4] %> &nbsp;-&nbsp;  <%=obj[3] %> 
+																			<br><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %> &nbsp;-&nbsp;  <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %> 
 																	<%	
 																		}
 																	}%>
@@ -370,7 +376,7 @@ th ,td {
 																	{ Object[] obj=employeeScheduleList.get(k);
 																		if(LocalDate.parse(obj[2].toString()).isEqual(monthdays.get(temp)))
 																		{%>
-																			<br><%=obj[4] %> &nbsp;-&nbsp;  <%=obj[3] %> 
+																			<br><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %> &nbsp;-&nbsp;  <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %> 
 																	<%	
 																		}
 																	}%>

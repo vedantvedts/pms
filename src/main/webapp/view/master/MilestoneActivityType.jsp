@@ -1,4 +1,5 @@
 
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
 	import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
@@ -123,28 +124,22 @@ th, td {
 
 </head>
 <body>
-	<%
-	String ses = (String) request.getParameter("result");
-	String ses1 = (String) request.getParameter("resultfail");
-	if (ses1 != null) {
-	%>
-	<center>
-		<div class="alert alert-danger" role="alert">
-			<%=ses1%>
-		</div>
-	</center>
-	<%
-	}
-	if (ses != null) {
-	%>
-	<center>
-		<div class="alert alert-success" role="alert">
-			<%=ses%>
-		</div>
-	</center>
-	<%
-	}
-	%>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 	<br />
 	<%
@@ -199,15 +194,15 @@ th, td {
 																		for (Object[] obj : MilestoneActivityType) {
 																		%>
 																		<tr>
-																			<td><input type="radio" name="Did" value=<%=obj[0]%>></td>
+																			<td><input type="radio" name="Did" value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):""%>></td>
 																				
 																			<td id="<%=obj[0]%>"> 
-																				<%=obj[1]!= null?obj[1]:"-"%>
+																				<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%>
 																				<input type="hidden" name="<%=obj[0]%>" value="<%=obj[1]%>" >
 																			</td>
 																			<td id="<%=obj[0]%>"> 
-																				<%=obj[3]!= null?obj[3]:"-"%>
-																				<input type="hidden" name="<%=obj[0]%>" value="<%=obj[3]!= null?obj[3]:"-"%>" >
+																				<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):"-"%>
+																				<input type="hidden" name="<%=obj[0]%>" value="<%=obj[3]%>" >
 																			</td>
 																			<td id="<%=obj[0]%>">
 																				<%=obj[2]!= null && obj[2].toString().equalsIgnoreCase("Y")? "Yes":"No"%>

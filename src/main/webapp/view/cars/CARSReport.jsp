@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="java.util.List"%>
@@ -240,22 +241,22 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("initiationL
 
 %>
 
-<% String ses=(String)request.getParameter("result");
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 	<div class="container-fluid mb-3">
 		<div class="card shadow-nohover">
@@ -322,7 +323,7 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("initiationL
                                         	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                        	  	<button type="submit" class="btn btn-outline-primary link-button" formaction=CARSTransStatus.htm value="<%=obj[0] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" formtarget="_blank"
                                        	  	 onmouseover="ShowProjectDetails('<%=obj[2] %>','<%=projectName %>','<%=obj[18] %>','<%=obj[33]!=null?obj[33]:(obj[8]!=null?obj[8]:"-") %>','<%=amount %>')">
-							    				<%=obj[2] %>
+							    				<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>
 							    			</button>
                                      	</form>
 									</td>

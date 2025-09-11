@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.google.gson.GsonBuilder"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="com.vts.pfms.requirements.model.SpecificationTypes"%>
@@ -286,22 +287,22 @@ label {
 	%>
 
 
-	<% String ses=(String)request.getParameter("result");
-	 	String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-		%>
-		<div align="center">
-			<div class="alert alert-danger" role="alert">
-		    <%=ses1 %>
-		    </div>
-		</div>
-		<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-		    	<%=ses %>
-			</div>
-		</div>
-	<%} %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
 
 	<div class="container-fluid">
 		<div class="col-md-12">
@@ -358,7 +359,7 @@ label {
                               	<select class="form-control selectdee" id="sid" required="required" name="sid" onchange="getSubSystem()" >
     								<option disabled selected value="">Choose...</option>
    									<% for (Object[] obj : systemList) {%>
-										<option value="<%=obj[0]%>" data-system="<%=obj[2].toString() %>" <%if(sid!=null && sid.equalsIgnoreCase(obj[0].toString())) {%> selected <%} %> > <%=obj[2]%>  </option>
+										<option value="<%=obj[0]%>" data-system="<%=obj[2].toString() %>" <%if(sid!=null && sid.equalsIgnoreCase(obj[0].toString())) {%> selected <%} %> > <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>  </option>
 									<%} %>
   								</select>
   					
@@ -373,7 +374,7 @@ label {
     								<option disabled selected value="">Choose...</option>
     								<option  value="0" <%if(mainid.equalsIgnoreCase("0")) {%> selected <%} %>>RADAR</option>
    									<% for (Object[] obj : proList) {%>
-										<option value="<%=obj[0]%>" data-system="<%=obj[2].toString() %>"  <%if(mainid.equalsIgnoreCase(obj[0].toString())){ %>selected <%} %> > <%=obj[3]%>  ( <%=obj[10] %> ) </option>
+										<option value="<%=obj[0]%>" data-system="<%=obj[2].toString() %>"  <%if(mainid.equalsIgnoreCase(obj[0].toString())){ %>selected <%} %> > <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%>  ( <%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %> ) </option>
 									<%} %>
   								</select>
   					
@@ -394,7 +395,7 @@ label {
 				                %>
 				                	<div class="tab <%if(Long.parseLong(specTypeId)==specificationType.getSpecTypeId()) {%> active <%} %> " data-target="<%=specificationType.getSpecTypeCode()!=null?specificationType.getSpecTypeCode():"-" %>" 
 				                	 data-spectypeid="<%=specificationType.getSpecTypeId()%>">
-				                		<%=specificationType.getSpecType()!=null?specificationType.getSpecType():"-" %>
+				                		<%=specificationType.getSpecType()!=null?StringEscapeUtils.escapeHtml4(specificationType.getSpecType()):"-" %>
 				                	</div>
 				                <%} }%>
 				            </div>
@@ -438,16 +439,16 @@ label {
 										%>
 											<tr<%if(obj[14].toString().equalsIgnoreCase("0")){ %> style="background: #9ae59a;"	 <%} %>>
 									   			<td align="center">
-									   				<input type="radio" name="Did" value=<%=obj[0]%> <%if(!obj[14].toString().equalsIgnoreCase("0")){ %>class="subDid" <%} else {%>class="Did"<%} %> > 
+									   				<input type="radio" name="Did" value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): ""%> <%if(!obj[14].toString().equalsIgnoreCase("0")){ %>class="subDid" <%} else {%>class="Did"<%} %> > 
 									   			</td>
 												<%-- <td><%=obj[1]%></td> --%>
-												<td><%=obj[5]%></td>
+												<td><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%></td>
 											
-												<td><%=obj[3]%></td>
-												<td><%=obj[16]!=null?obj[16]:"-"%></td>
-												<td><%=obj[6]!=null?obj[6]:"-"%></td>
-												<td><%=obj[15]!=null ? obj[15]:"-"%></td>
-												 <td><%=obj[4]!=null?obj[4]:"-" %></td> 
+												<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>
+												<td><%=obj[16]!=null?StringEscapeUtils.escapeHtml4(obj[16].toString()):"-"%></td>
+												<td><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"-"%></td>
+												<td><%=obj[15]!=null ?StringEscapeUtils.escapeHtml4(obj[15].toString()):"-"%></td>
+												 <td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"-" %></td> 
 											</tr>
 										<% } %>
 									</tbody>

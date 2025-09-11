@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -176,19 +177,19 @@ h6{
 						<label style="margin-left: 100px; margin-right: 10px;font-weight: 800">User Name: <span class="mandatory" style="color: red;">*</span></label>
 						<select class="form-control form-control selectdee" name="loginid" style="margin-left: 12px;" required="required" id="username" >
 							<%	for (Object[] obj : usernamelist) { %>
-								<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(loginid)){ empname = obj[3].toString(); %>  selected <%} %>  > <%=obj[2] %> (<%=obj[3] %>) </option>
+								<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(loginid)){ empname = obj[3].toString(); %>  selected <%} %>  > <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> (<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %>) </option>
 							<%} %> 
 						</select>
 		
 						<label style="margin-left: 80px; margin-right: 20px; font-weight: 800">From Date:</label>
 						<input  class="form-control form-control date"  data-date-format="dd-mm-yyyy" id="datepicker1" name="Fromdate"  required="required"  style="width: 120px;"
-						<%if(Fromdate!=null){%> value="<%=(Fromdate) %>" <%} %> >
+						<%if(Fromdate!=null){%> value="<%=StringEscapeUtils.escapeHtml4(Fromdate) %>" <%} %> >
 							  
 			
 						<label style="margin-left: 20px; margin-right: 20px;font-weight: 800">To Date:</label>
 						
 						<input  class="form-control form-control" data-date-format="dd-mm-yyyy" id="datepicker3" name="Todate"  style="width: 120px;"
-					 	<%if(Todate!=null){%> value="<%=(Todate) %>" <%} %>  >
+					 	<%if(Todate!=null){%> value="<%=StringEscapeUtils.escapeHtml4(Todate) %>" <%} %>  >
 							  
 			
 						<button type="submit" class="btn btn-primary btn-sm submit" style="margin-left: 12px;padding: 5px;" id="submit">SUBMIT</button>
@@ -201,7 +202,7 @@ h6{
 				<div class="row">
 					<div class="col-md-12" align="center">
 						<div class="badge badge-info" style="padding: 8px; ">
-							<h6> Login Activity of <b><%=empname.toUpperCase()%></b> from <span class="datefont"><%=Fromdate%></span> to <span class="datefont"><%=Todate %></span></h6>
+							<h6> Login Activity of <b><%=empname.toUpperCase()%></b> from <span class="datefont"><%=Fromdate!=null?StringEscapeUtils.escapeHtml4(Fromdate): " - "%></span> to <span class="datefont"><%=Todate!=null?StringEscapeUtils.escapeHtml4(Todate): " - " %></span></h6>
 						</div>
 					</div>
 				</div>
@@ -229,11 +230,11 @@ h6{
 					    			<tbody>
 						    			<%for(Object[] obj:auditstampinglist){ %>	
 						    			<tr>
-						   					<td><%=sdf.format(obj[1]) %></td>
-						    				<td><%=sdf1.format(obj[2])%></td>
-						    				<td><%=obj[3] %></td>
-						    				<td><%if(obj[4]!= null){%><%=obj[4] %> <% }else{%> - <%} %></td> 
-						    				<td><%if(obj[5]!= null){%><%=obj[5] %> <% }else{%> S <%} %> </td> 
+						   					<td><%=obj[1]!=null?sdf.format(obj[1]):" - " %></td>
+						    				<td><%=obj[2]!=null?sdf1.format(obj[2]):" - "%></td>
+						    				<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
+						    				<td><%if(obj[4]!= null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString()) %> <% }else{%> - <%} %></td> 
+						    				<td><%if(obj[5]!= null){%><%=StringEscapeUtils.escapeHtml4(obj[5].toString()) %> <% }else{%> S <%} %> </td> 
 						    				<td><%if(obj[6]!= null){%><%= sdf2.format(obj[6]) %> <% }else{%> - <%} %></td> 
 						    			</tr>
 						    			<%} %>

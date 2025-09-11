@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -269,25 +270,24 @@ if(btnId==null){
 	btnId="1";
 }
 
-
-String ses=(String)request.getParameter("result"); 
-
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center" class="mt-2">
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center" class="mt-2">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-	</div>
-	<%}%>
-		<div class="container-fluid">
+%>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
+	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-5">
 				<div class="card" style="border-color: #00DADA; margin-top: 2%;">
@@ -298,7 +298,7 @@ String ses=(String)request.getParameter("result");
 							<div class="panel-heading ">
 								<h4 class="panel-title">
 									<span class="ml-2" style="font-size: 14px">
-										<%=m.id %>. <%=m.moduleName %></span>
+										<%=m.id %>. <%=m.moduleName!=null?StringEscapeUtils.escapeHtml4(m.moduleName): " - " %></span>
 								</h4>
 								<button class="btn bg-transparent buttonEd" type="button"
 									id="btnEditor<%=m.id %>" onclick="showEditor('<%=m.id %>','<%=m.moduleName %>')">

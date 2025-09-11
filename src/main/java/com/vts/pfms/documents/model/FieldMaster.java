@@ -38,5 +38,6 @@ public class FieldMaster implements Serializable {
 	private String ModifiedBy;
 	private String ModifiedDate;
 	private Integer IsActive;
+	private Long UnitMasterId;
 
 }

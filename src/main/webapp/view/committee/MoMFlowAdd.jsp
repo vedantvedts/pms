@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.master.model.IndustryPartner"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -99,7 +100,7 @@ String ses=(String)request.getParameter("result");
 	Swal.fire({
 		  icon: "warning",
 		  title: "Sorry",
-		  text: "<%=ses1%>",
+		  text: "<%=StringEscapeUtils.escapeHtml4(ses1)%>",
 		  allowOutsideClick :false
 		});
 	</script>
@@ -109,7 +110,7 @@ String ses=(String)request.getParameter("result");
 	Swal.fire({
 		  icon: "success",
 		  title: "SUCCESS",
-		  text: "<%=ses%>",
+		  text: "<%=StringEscapeUtils.escapeHtml4(ses)%>",
 		  allowOutsideClick :false
 		});
 	</script>
@@ -139,7 +140,7 @@ String ses=(String)request.getParameter("result");
 					</div>
 					<div class="col-md-3">
 					<input class="form-control" type="text" name="RefNo"  readonly="readonly"
-					 value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[1]!=null){%><%=CommitteMainEnoteList[1].toString() %><%}%>">
+					 value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[1]!=null){%><%=StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[1].toString()) %><%}%>">
 					</div>
 					
 					<div class="col-md-2">
@@ -147,7 +148,7 @@ String ses=(String)request.getParameter("result");
 					</div>
 					<div class="col-md-2">
 					<input class="form-control" type="text" name="RefDate" readonly
-					 value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[2]!=null){%><%=sdf.format(sdf1.parse(CommitteMainEnoteList[2].toString()))%><%}else{%>-<%}%>">
+					 value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[2]!=null){%><%=sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[2].toString())))%><%}else{%>-<%}%>">
 					</div>
 					</div>
 				
@@ -171,7 +172,7 @@ String ses=(String)request.getParameter("result");
 					<div class="col-md-3">
 					<select class="form-control selectdee" name="InitiatedBy" id="InitiatedBy" onchange="checkNewEmp()">
 					<%for(Object[]obj:employeelist){ %>
-					<option value="<%=obj[0].toString()%>"   <%if(CommitteMainEnoteList!=null && obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[17].toString())) {%> selected  <%} %>><%=obj[1].toString() %>, <%=obj[2].toString() %></option>
+					<option value="<%=obj[0].toString()%>"   <%if(CommitteMainEnoteList!=null && obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[17].toString())) {%> selected  <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
 					<%} %>
 					</select>
 					</div>
@@ -182,7 +183,7 @@ String ses=(String)request.getParameter("result");
 					<label class="control-label" style="margin-bottom: 4px !important;" >Officer1 Role: &nbsp;<span class="mandatory" style="color: red;">*</span></label>
 					</div>
 					<div class="col-md-2">
-					<input class="form-control" required="required" maxlength="18" name="Rec1_Role" value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[8]!=null) {%><%=CommitteMainEnoteList[8].toString() %> <%}%>">
+					<input class="form-control" required="required" maxlength="18" name="Rec1_Role" value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[8]!=null) {%><%=StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[8].toString()) %> <%}%>">
 					</div>
 					<div class="col-md-2">
 					<label class="control-label" style="margin-bottom: 4px !important">Recommended Officer 1: &nbsp;<span class="mandatory" style="color: red;">*</span></label>
@@ -191,7 +192,7 @@ String ses=(String)request.getParameter("result");
 					<select class="form-control selectdee" name="Recommend1" id="Recommend1" required ="required" title ="Please select officer 1">
 					<option   selected value="">SELECT</option>
 					<%for(Object[]obj:employeelist){ %>
-					<option value="<%=obj[0].toString()%>"  <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[7]!=null &&  obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[7].toString())) {%> selected  <%} %>><%=obj[1].toString() %>, <%=obj[2].toString() %></option>
+					<option value="<%=obj[0].toString()%>"  <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[7]!=null &&  obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[7].toString())) {%> selected  <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
 					<%} %>
 					</select>
 					</div>
@@ -204,7 +205,7 @@ String ses=(String)request.getParameter("result");
 					<label class="control-label" style="margin-bottom: 4px !important;">Officer2 Role: &nbsp;</label>
 					</div>
 					<div class="col-md-2">
-					<input class="form-control" maxlength="18" name="Rec2_Role" id="Rec2_Role" value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[10]!=null) {%><%=CommitteMainEnoteList[10].toString() %> <%}%>">
+					<input class="form-control" maxlength="18" name="Rec2_Role" id="Rec2_Role" value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[10]!=null) {%><%=StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[10].toString()) %> <%}%>">
 					</div>
 					<div class="col-md-2">
 					<label class="control-label" style="margin-bottom: 4px !important">Recommended Officer 2: &nbsp;</label>
@@ -213,7 +214,7 @@ String ses=(String)request.getParameter("result");
 					<select class="form-control selectdee" name="Recommend2" id="Recommend2">
 					<option   selected value="">SELECT</option>
 					<%for(Object[]obj:employeelist){ %>
-					<option value="<%=obj[0].toString()%>"  <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[9]!=null &&  obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[9].toString())) {%> selected  <%} %>><%=obj[1].toString() %>, <%=obj[2].toString() %></option>
+					<option value="<%=obj[0].toString()%>"  <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[9]!=null &&  obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[9].toString())) {%> selected  <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
 					<%} %>
 					</select>
 					</div>
@@ -227,7 +228,7 @@ String ses=(String)request.getParameter("result");
 					<label class="control-label" style="margin-bottom: 4px !important;">Officer3 Role: &nbsp;</label>
 					</div>
 					<div class="col-md-2">
-					<input class="form-control" maxlength="18" name="Rec3_Role" id="Rec3_Role" value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[12]!=null) {%><%=CommitteMainEnoteList[12].toString() %> <%}%>">
+					<input class="form-control" maxlength="18" name="Rec3_Role" id="Rec3_Role" value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[12]!=null) {%><%=StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[12].toString()) %> <%}%>">
 					</div>
 					<div class="col-md-2">
 					<label class="control-label" style="margin-bottom: 4px !important">Recommended Officer 3: &nbsp;</label>
@@ -236,7 +237,7 @@ String ses=(String)request.getParameter("result");
 					<select class="form-control selectdee" name="Recommend3" id="Recommend3">
 					<option   selected value="">SELECT</option>
 					<%for(Object[]obj:employeelist){ %>
-					<option value="<%=obj[0].toString()%>"  <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[11]!=null &&  obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[11].toString())) {%> selected  <%} %>><%=obj[1].toString() %>, <%=obj[2].toString() %></option>
+					<option value="<%=obj[0].toString()%>"  <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[11]!=null &&  obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[11].toString())) {%> selected  <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
 					<%} %>
 					</select>
 					</div>
@@ -253,7 +254,7 @@ String ses=(String)request.getParameter("result");
 					<div class="col-md-2">
 					<input class="form-control" name="Approving_Role" maxlength="18" 
 					<%if(CommitteMainEnoteList!=null && !forwardstatus.contains(CommitteMainEnoteList[15].toString())) {%> readonly="readonly" <%} %>
-					value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[14]!=null) {%><%=CommitteMainEnoteList[14].toString() %> <%}%>" required="required">
+					value="<%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[14]!=null) {%><%=StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[14].toString()) %> <%}%>" required="required">
 					</div>
 					<div class="col-md-2">
 					<label class="control-label" style="margin-bottom: 4px !important">Approving Officer: &nbsp;<span class="mandatory" style="color: red;">*</span></label>
@@ -264,7 +265,7 @@ String ses=(String)request.getParameter("result");
 					>
 					<option   selected value="">SELECT</option>
 					<%for(Object[]obj:employeelist){ %>
-					<option value="<%=obj[0].toString()%>"  <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[13]!=null &&  obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[13].toString())) {%> selected  <%} %>><%=obj[1].toString() %>, <%=obj[2].toString() %></option>
+					<option value="<%=obj[0].toString()%>"  <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[13]!=null &&  obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[13].toString())) {%> selected  <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
 					<%} %>
 					</select>
 					</div>
@@ -338,7 +339,7 @@ String ses=(String)request.getParameter("result");
 		<div align="center" style="margin-top:1%;">
 		<form action="#">
 				<label class="control-label" style="margin-bottom: 4px !important;">Status History: &nbsp;</label>
-				<button type ="submit"  class="btn btn-sm btn-link w-100 btn-status" formaction="EnoteStatusTrack.htm" value="<%=CommitteMainEnoteList[0]%>" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="Transaction History" name="EnoteTrackId" style=" color: <%=CommitteMainEnoteList[21].toString()%>; font-weight: 600;display: contents" > <%=CommitteMainEnoteList[20].toString() %> 
+				<button type ="submit"  class="btn btn-sm btn-link w-100 btn-status" formaction="EnoteStatusTrack.htm" value="<%=CommitteMainEnoteList[0]%>" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="Transaction History" name="EnoteTrackId" style=" color: <%=CommitteMainEnoteList[21].toString()%>; font-weight: 600;display: contents" > <%=CommitteMainEnoteList[20]!=null?StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[20].toString()): " - "%> 
 				<i class="fa fa-external-link" aria-hidden="true"></i></button>
 				</form>
 				
@@ -362,14 +363,14 @@ String ses=(String)request.getParameter("result");
 
 								<td class="trup" style="background: #B5EAEA;">&nbsp;<%if(Arrays.asList("FWD","RC1","RC2","RC3","APR").contains(CommitteMainEnoteList[15].toString())) {%>
 									<img src="view/images/check.png"> <br><%} %>
-									Initiated By <br> <%=NewApprovalList[0].toString() %>
+									Initiated By <br> <%=NewApprovalList[0]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[0].toString()): " - " %>
 								</td>
 								<%if(NewApprovalList!=null && NewApprovalList[2]!=null){ %>
 								<td rowspan="2"><b>----------&gt;</b></td>
 
 								<td class="trup" style="background: #C6B4CE;">&nbsp;<%if(Arrays.asList("RC1","RC2","RC3","APR").contains(CommitteMainEnoteList[15].toString())) {%>
 									<img src="view/images/check.png"> <br><%} %>
-									Recommended Officer 1 <br> <%=NewApprovalList[1].toString() %>
+									Recommended Officer 1 <br> <%=NewApprovalList[1]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[0].toString()): " - "  %>
 								</td>
 
 								<%} %>
@@ -378,7 +379,7 @@ String ses=(String)request.getParameter("result");
 
 								<td class="trup" style="background: #E8E46E;">&nbsp;<%if(Arrays.asList("RC2","RC3","APR").contains(CommitteMainEnoteList[15].toString())) {%>
 									<img src="view/images/check.png"><br> <%} %> 
-									Recommended Officer 2 <br> <%=NewApprovalList[3].toString() %>
+									Recommended Officer 2 <br> <%=NewApprovalList[3]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[0].toString()): " - "  %>
 								</td>
 								<%} %>
 								<%if(NewApprovalList!=null && NewApprovalList[6]!=null){ %>
@@ -386,14 +387,14 @@ String ses=(String)request.getParameter("result");
 
 								<td class="trup" style="background: #FBC7F7;">&nbsp;<%if(Arrays.asList("RC3","APR").contains(CommitteMainEnoteList[15].toString())) {%>
 									<img src="view/images/check.png"> <br> <%} %>
-									Recommended Officer 3 <br> <%=NewApprovalList[5].toString() %>
+									Recommended Officer 3 <br> <%=NewApprovalList[5]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[0].toString()): " - "  %>
 								</td>
 								<% } %>
 								<%if(NewApprovalList!=null && NewApprovalList[8]!=null){ %>
 								<td rowspan="2"><b>----------&gt;</b></td>
 								<td class="trup" style="background: #F4A261;">&nbsp;<%if(Arrays.asList("APR").contains(CommitteMainEnoteList[15].toString())) {%>
 									<img src="view/images/check.png"> <br><%} %> 
-									Approving Officer <br> <%=NewApprovalList[7].toString() %>
+									Approving Officer <br> <%=NewApprovalList[7]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[0].toString()): " - "  %>
 								</td>
 								<%} %>
 							</tr>

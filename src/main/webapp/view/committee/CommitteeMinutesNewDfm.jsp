@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.temporal.ChronoUnit"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.vts.pfms.model.TotalDemand"%>
@@ -95,13 +96,13 @@
           }
           @top-right {
           		<%if( Long.parseLong(projectid)>0){%>
-             content: "Project:<%=projectdetails[4]%>";
+             content: "Project:<%=projectdetails[4]!=null?projectdetails[4].toString(): " - "%>";
              <%}else if(Long.parseLong(divisionid)>0){%>
-               	content: "Division:<%=divisiondetails[1]%>";
+               	content: "Division:<%=divisiondetails[1]!=null?divisiondetails[1].toString(): " - "%>";
              <%}else if(Long.parseLong(initiationid)>0){ %>
-             	content: "Pre-Project :<%=initiationdetails[1]%>";
+             	content: "Pre-Project :<%=initiationdetails[1]!=null?initiationdetails[1].toString(): " - "%>";
              <%} else{%>
-             	content: "<%=labdetails[1]%>";
+             	content: "<%=labdetails[1]!=null?labdetails[1].toString(): " - "%>";
              <%}%>
              margin-top: 30px;
              margin-right: 10px;
@@ -111,20 +112,20 @@
            font-size: 13px;
           	margin-top: 30px;
             margin-left: 10px;
-            content: "<%=no[0]+"/"+no[1]+"/"+no[2] %><%if(meetingcount>0){ %>#<%=meetingcount %><%} %><%="/"+no[3]%>";
+            content: "<%=no[0]!=null?no[0].toString(): " - "%>/<%=no[1]!=null?no[1].toString(): " - "%>/<%=no[2]!=null?no[2].toString(): " - " %><%if(meetingcount>0){ %>#<%=meetingcount %><%} %>/<%=no[3]!=null?no[3].toString(): " - "%>";
           }            
           
           @top-center { 
            font-size: 13px;
           margin-top: 30px;
-          content: "<%=committeescheduleeditdata[15]%>"; 
+          content: "<%=committeescheduleeditdata[15]!=null?committeescheduleeditdata[15].toString(): " - "%>"; 
           
           }
           
  @bottom-center { 
              font-size: 13px;
 	          margin-bottom: 30px;
-	          content: "<%=committeescheduleeditdata[15]%>"; 
+	          content: "<%=committeescheduleeditdata[15]!=null?committeescheduleeditdata[15].toString(): " - "%>"; 
           
           } 
           
@@ -231,7 +232,7 @@
  
 </style>
 <meta charset="ISO-8859-1">
-<title><%=committeescheduleeditdata[8]%> Minutes View</title>
+<title><%=committeescheduleeditdata[8]!=null?committeescheduleeditdata[8].toString(): " - "%> Minutes View</title>
 </head>
 <body>
 	<div id="container pageborder" align="center"  class="firstpage" id="firstpage">
@@ -240,32 +241,32 @@
 			<br>
 			<div align="center" ><h1>MINUTES OF MEETING</h1></div>
 			<br>
-			<div align="center" ><h2 style="margin-bottom: 2px;"><%=committeescheduleeditdata[7].toString().toUpperCase()%>  (<%=committeescheduleeditdata[8].toString().toUpperCase() %><%if(meetingcount>0){ %>&nbsp;&nbsp;#<%=meetingcount %><%} %>) </h2></div>				
+			<div align="center" ><h2 style="margin-bottom: 2px;"><%=committeescheduleeditdata[7]!=null?committeescheduleeditdata[7].toString().toUpperCase():" - "%>  (<%=committeescheduleeditdata[8]!=null?committeescheduleeditdata[8].toString().toUpperCase():" - " %><%if(meetingcount>0){ %>&nbsp;&nbsp;#<%=meetingcount %><%} %>) </h2></div>				
 				<%if(Integer.parseInt(projectid)>0){ %>					
 					<h3 style="margin-top: 5px; margin-bottom: 5px">For</h3>	  
-				    <h2 style="margin-top: 1px">Project  : &nbsp;<%=projectdetails[1] %>  (<%=projectdetails[4]%>)</h2>
+				    <h2 style="margin-top: 1px">Project  : &nbsp;<%=projectdetails[1]!=null?projectdetails[1].toString(): " - " %>  (<%=projectdetails[4]!=null?projectdetails[4].toString(): " - "%>)</h2>
 				<%}else if(Integer.parseInt(divisionid)>0){ %>					
 					<h3 style="margin-top: 5px; margin-bottom: 5px">For</h3>	  
-			 	   	<h2 style="margin-top: 1px">Division :&nbsp;<%=divisiondetails[2] %>  (<%=divisiondetails[1]%>)</h2>
+			 	   	<h2 style="margin-top: 1px">Division :&nbsp;<%=divisiondetails[2]!=null?divisiondetails[2].toString(): " - " %>  (<%=divisiondetails[1]!=null?divisiondetails[1].toString(): " - "%>)</h2>
 				<%}else if(Integer.parseInt(initiationid)>0){ %>					
 					<h3 style="margin-top: 5px; margin-bottom: 5px">For</h3>	  
-				    <h2 style="margin-top: 1px">Pre-Project  : &nbsp;<%=initiationdetails[2] %>  (<%=initiationdetails[1]%>)</h2>
+				    <h2 style="margin-top: 1px">Pre-Project  : &nbsp;<%=initiationdetails[2]!=null?initiationdetails[2].toString(): " - " %>  (<%=initiationdetails[1]!=null?initiationdetails[1].toString(): " - "%>)</h2>
 				<%}else{%>
 					<br><br><br><br><br>
 				<%} %>
 				<br>
 			<figure><img style="width: 4cm; height: 4cm"  src="data:image/png;base64,<%=lablogo%>"></figure>   
 						<br><br><br>
-			<div align="center" ><h3><%=labdetails[2] %> (<%=labdetails[1]%>)</h3></div>
+			<div align="center" ><h3><%=labdetails[2]!=null?labdetails[2].toString(): " - " %> (<%=labdetails[1]!=null?labdetails[1].toString(): " - "%>)</h3></div>
 			
-			<div align="center" ><h3><%=labdetails[4] %>, &nbsp;<%=labdetails[5] %>, &nbsp;<%=labdetails[6] %></h3></div>
+			<div align="center" ><h3><%=labdetails[4]!=null?labdetails[4].toString(): " - " %>, &nbsp;<%=labdetails[5]!=null?labdetails[5].toString(): " - " %>, &nbsp;<%=labdetails[6]!=null?labdetails[6].toString(): " - " %></h3></div>
 		
 		      <br><br><br><br><br>
 		
 			<table style="align: center; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 975px; font-size: 16px"  border="0">
 					<tr style="margin-top: 10px">
 						 <th  style="text-align: center; width: 975px;font-size: 20px "> <u>Meeting Id </u> </th></tr><tr>
-						 <th  style="text-align: center;  width: 975px;font-size: 20px  "> <%=committeescheduleeditdata[11] %> </th>				
+						 <th  style="text-align: center;  width: 975px;font-size: 20px  "> <%=committeescheduleeditdata[11]!=null?committeescheduleeditdata[11].toString(): " - " %> </th>				
 					 </tr>
 				</table>
 				
@@ -278,7 +279,7 @@
 			
 			 <tr>
 				 <td  style="text-align: center;  width: 975px;font-size: 20px ;padding-top: 5px"> <b><%=sdf3.format(sdf1.parse(committeescheduleeditdata[2].toString()))%></b></td>
-				 <td  style="text-align: center;  width: 975px;font-size: 20px ;padding-top: 5px "> <b><%=committeescheduleeditdata[3]%></b></td>
+				 <td  style="text-align: center;  width: 975px;font-size: 20px ;padding-top: 5px "> <b><%=committeescheduleeditdata[3]!=null?committeescheduleeditdata[3].toString(): " - " %></b></td>
 			 </tr>
 			 
 		 </table>
@@ -286,7 +287,7 @@
 		 <table style="align: center; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 975px; font-size: 16px"  border="0">
 					<tr style="margin-top: 10px">
 						 <th  style="text-align: center; width: 975px;font-size: 20px "> <u>Meeting Venue</u> </th></tr><tr>
-						 <th  style="text-align: center;  width: 975px;font-size: 20px  "> <% if(committeescheduleeditdata[12]!=null){ %><%=committeescheduleeditdata[12] %> <%}else{ %> - <%} %></th>				
+						 <th  style="text-align: center;  width: 975px;font-size: 20px  "> <% if(committeescheduleeditdata[12]!=null){ %><%=committeescheduleeditdata[12].toString() %> <%}else{ %> - <%} %></th>				
 					 </tr>
 				</table>
 		
@@ -364,11 +365,11 @@ for(Object[] temp : invitedlist){
 	 	 <td style="border: 1px solid black; padding: 7px;text-align: center"><%=j%> </td>
 	 	  	<td style="border: 1px solid black; padding: 5px;text-align: left">  
 	 	  	
-	 			<%= invitedlist.get(i)[6]%>,&nbsp;<%=invitedlist.get(i)[7] %>  
+	 			<%= invitedlist.get(i)[6]!=null?invitedlist.get(i)[6].toString(): " - "%>,&nbsp;<%=invitedlist.get(i)[7]!=null?invitedlist.get(i)[7].toString(): " - "%>  
 		 	</td>
 		 	<td style="border: 1px solid black; padding: 5px;text-align: left;">  
 	 	  	
-	 			<%= invitedlist.get(i)[11]%>  
+	 			<%= invitedlist.get(i)[11]!=null?invitedlist.get(i)[11].toString(): " - "%>  
 		 	</td>	
 		 	<td style="border: 1px solid black;padding: 5px ;text-align: left">
 		 		<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
@@ -381,7 +382,7 @@ for(Object[] temp : invitedlist){
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
-					else {%> REP_<%=invitedlist.get(i)[3].toString()%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
+					else {%> REP_<%=invitedlist.get(i)[3]!=null?invitedlist.get(i)[3].toString(): " - "%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
 				%>
 	 		</td>	
 	 		</tr>
@@ -407,11 +408,11 @@ for(Object[] temp : invitedlist){
 	 	 <tr > 	
 	 	  <td style="border: 1px solid black; padding: 5px;text-align: center"> <%=j%> </td>
 	 	 <td style="border: 1px solid black ;padding: 5px;text-align: left " >  
-	 		<%= invitedlist.get(i)[6]%>,&nbsp;<%=invitedlist.get(i)[7] %>
+	 		<%= invitedlist.get(i)[6]!=null?invitedlist.get(i)[6].toString(): " - "%>,&nbsp;<%=invitedlist.get(i)[7]!=null?invitedlist.get(i)[7].toString(): " - " %>
 	 		</td>	
 	 		<td style="border: 1px solid black; padding: 5px;text-align: left;">  
 	 	  	
-	 			<%= invitedlist.get(i)[11]%>  
+	 			<%= invitedlist.get(i)[11]!=null?invitedlist.get(i)[11].toString(): " - "%>  
 		 	</td>
 	 		<td style="border: 1px solid black ;padding: 5px ;text-align: left "> 
 	 			<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
@@ -424,7 +425,7 @@ for(Object[] temp : invitedlist){
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
-					else {%> REP_<%=invitedlist.get(i)[3].toString()%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
+					else {%> REP_<%=invitedlist.get(i)[3]!=null?invitedlist.get(i)[3].toString(): " - "%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
 				%>
 	 		</td>	
 	 	</tr>
@@ -457,11 +458,11 @@ for(Object[] temp : invitedlist){
 	 	 <td style="border: 1px solid black; padding: 5px;text-align: center"> <%=j%> </td>
 	 	  	<td style="border: 1px solid black; padding: 5px;text-align: left">  
 	 	  	
-	 			<%= invitedlist.get(i)[6]%>,&nbsp;<%=invitedlist.get(i)[7] %>
+	 			<%= invitedlist.get(i)[6]!=null?invitedlist.get(i)[6].toString(): " - "%>,&nbsp;<%=invitedlist.get(i)[7]!=null?invitedlist.get(i)[7].toString(): " - " %>
 		 	</td>	
 		 	<td style="border: 1px solid black; padding: 5px;text-align: left;">  
 	 	  	
-	 			<%= invitedlist.get(i)[11]%>  
+	 			<%= invitedlist.get(i)[11]!=null?invitedlist.get(i)[11].toString(): " - "%>  
 		 	</td>
 		 	<td style="border: 1px solid black;padding: 5px ;text-align: left">
 		 		<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
@@ -474,7 +475,7 @@ for(Object[] temp : invitedlist){
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
-					else {%> REP_<%=invitedlist.get(i)[3].toString()%>&nbsp; (<%=invitedlist.get(i)[11] %>)  <%}
+					else {%> REP_<%=invitedlist.get(i)[3]!=null?invitedlist.get(i)[3].toString(): " - "%>&nbsp; (<%=invitedlist.get(i)[11]!=null?invitedlist.get(i)[11].toString(): " - " %>)  <%}
 				%>
 	 		</td>	
 	 		</tr>
@@ -504,11 +505,11 @@ for(Object[] temp : invitedlist){
 	 	 <tr > 	
 	 	  <td style="border: 1px solid black; padding: 5px;text-align: center"> <%=j%> </td>
 	 	 <td style="border: 1px solid black ;padding: 5px;text-align: left " >  
-	 		<%= invitedlist.get(i)[6]%>,&nbsp;<%=invitedlist.get(i)[7] %>
+	 		<%= invitedlist.get(i)[6]!=null?invitedlist.get(i)[6].toString(): " - "%>,&nbsp;<%=invitedlist.get(i)[7]!=null?invitedlist.get(i)[7].toString(): " - " %>
 	 		</td>	
 	 		<td style="border: 1px solid black; padding: 5px;text-align: left;">  
 	 	  	
-	 			<%= invitedlist.get(i)[11]%>  
+	 			<%= invitedlist.get(i)[11]!=null?invitedlist.get(i)[11].toString(): " - "%>  
 		 	</td>
 	 		
 	 		<td style="border: 1px solid black ;padding: 5px ;text-align: left "> 
@@ -522,7 +523,7 @@ for(Object[] temp : invitedlist){
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
-					else {%> REP_<%=invitedlist.get(i)[3].toString()%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
+					else {%> REP_<%=invitedlist.get(i)[3]!=null?invitedlist.get(i)[3].toString(): " - "%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
 				%>
 	 		</td>	
 	 	</tr>
@@ -557,7 +558,7 @@ for(Object[] temp : invitedlist){
 		<table style="margin-top: 0px; margin-left: 10px; width: 975px; font-size: 16px; border-collapse: collapse;">
 			<tbody>
 				<tr>
-					<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%></th>
+					<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?committeemin[0].toString(): " - "%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]!=null?committeemin[1].toString(): " - "%></th>
 				</tr>
 				<tr>
 						<%
@@ -571,7 +572,7 @@ for(Object[] temp : invitedlist){
 						%>
 					
 					<td style="text-align: left;">
-					<div align="left" style="padding-left: 30px"><%=speclist[1]%></div>
+					<div align="left" style="padding-left: 30px"><%=speclist[1]!=null?speclist[1].toString(): " - "%></div>
 					</td>
 
 					<%	break;		
@@ -598,7 +599,7 @@ for(Object[] temp : invitedlist){
 		<table style="margin-top: 0px; margin-left: 10px; width: 975px; font-size: 16px; border-collapse: collapse;">
 			<tbody>
 				<tr>
-					<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%></th>
+					<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?committeemin[0].toString(): " - "%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]!=null?committeemin[1].toString(): " - "%></th>
 				</tr>
 				<tr>
 						<%
@@ -612,7 +613,7 @@ for(Object[] temp : invitedlist){
 						%>
 					
 					<td style="text-align: left;">
-					<div align="left" style="padding-left: 30px"><%=speclist[1]%></div>
+					<div align="left" style="padding-left: 30px"><%=speclist[1]!=null?speclist[1].toString(): " - "%></div>
 					</td>
 
 					<%	break;		
@@ -666,18 +667,18 @@ for(Object[] temp : invitedlist){
 								
 								<% if(tempagenda!=Long.parseLong(speclists.get(i)[6].toString())){%>
 								<tr>
-									<td class="std" style="text-align :center;border:1px solid black;"  colspan="4"><%=speclists.get(i)[10]%></td>
+									<td class="std" style="text-align :center;border:1px solid black;"  colspan="4"><%=speclists.get(i)[10]!=null?speclists.get(i)[10].toString(): " - "%></td>
 								</tr>
 							<%tempagenda=Long.parseLong(speclists.get(i)[6].toString());
 							} %>
 							<tr>
 								<td class="std" style="text-align :center !important;border:1px solid black;vertical-align: top;"  ><p  style="text-align :center !important; "> <%=countcm%> </p></td>
 								<td class="std" style="text-align :center !important;border:1px solid black; padding: 5px 5px 5px 5px ; vertical-align: top;" >							
-								<p  style="text-align :center !important; ">	<%=speclists.get(i)[7]%> 
+								<p  style="text-align :center !important; ">	<%=speclists.get(i)[7]!=null?speclists.get(i)[7].toString(): " - "%> 
 								</p> 				
 								</td>
 								<td  class="std" style="border:1px solid black;padding:  5px 5px 5px 5px ;width: 600px;text-align: justify;"><%=speclists.get(i)[1]%></td>
-								<td class="std" style="text-align :center;border:1px solid black;padding:  5px 5px 5px 5px;"  > <%if( speclists.get(i)[8]!=null && !speclists.get(i)[8].toString().equalsIgnoreCase("nil")){ %> <%= speclists.get(i)[8]%> <%}else{ %> - <%} %></td>
+								<td class="std" style="text-align :center;border:1px solid black;padding:  5px 5px 5px 5px;"  > <%if( speclists.get(i)[8]!=null && !speclists.get(i)[8].toString().equalsIgnoreCase("nil")){ %> <%= speclists.get(i)[8].toString()%> <%}else{ %> - <%} %></td>
 							</tr>
 							<%} 
 							}%>
@@ -691,7 +692,7 @@ for(Object[] temp : invitedlist){
 						 
 							<table style="margin-top: 0px; margin-left: 10px; width: 975px; font-size: 16px; border-collapse: collapse;">
 								<tr>
-									<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]%> (b)&nbsp;<%=committeemin[1]%></th>
+									<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?committeemin[0].toString(): " - "%> (b)&nbsp;<%=committeemin[1]!=null?committeemin[1].toString(): " - "%></th>
 								</tr>
 							</table>	
    				
@@ -735,7 +736,7 @@ for(Object[] temp : invitedlist){
 									for(Object[] obj:lastpmrcactions){ %>
 										<tr>
 											<td class="std"  align="center"><%=i %></td>
-											<td class="std" style="text-align: left;"><%=obj[2] %></td>
+											<td class="std" style="text-align: left;"><%=obj[2]!=null?obj[2].toString(): " - " %></td>
 											<td class="std" align="center">
 												<%if(obj[8]!= null){ %><%=sdf.format(sdf1.parse(obj[8].toString()))%><%} %>
 												<%if(obj[7]!= null){ %><br><%=sdf.format(sdf1.parse(obj[7].toString()))%><%} %>
@@ -752,7 +753,7 @@ for(Object[] temp : invitedlist){
 											</td> 
 											<td class="std" style="text-align: left !important" >
 												<%if(obj[4]!= null){ %>  
-													<%=obj[12] %>  <%-- (<%=obj[13] %>) --%>
+													<%=obj[12].toString()%>  <%-- (<%=obj[13] %>) --%>
 												<%}else { %><span class="notassign">NA</span><%} %> 
 											</td>
 											<td class="std"  align="center"> 
@@ -790,7 +791,7 @@ for(Object[] temp : invitedlist){
 				
 					<table style="margin-top: -15px; margin-left: 10px; width: 975px; font-size: 16px; border-collapse: collapse;">
 						<tr>
-							<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%></th>
+							<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?committeemin[0].toString(): " - "%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]!=null?committeemin[1].toString(): " - "%></th>
 						</tr>
 					</table>	
 					<table style="margin-top: 00px; margin-bottom: 0px; margin-left: 10px; width: 975px; font-size: 16px; border-collapse: collapse;border: 1px solid black" >
@@ -840,7 +841,7 @@ for(Object[] temp : invitedlist){
 										if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid) ){
 										%>
 										<tr>
-											<td class="std"  style="max-width: 50px;text-align: center;">M<%=obj[0] %></td>
+											<td class="std"  style="max-width: 50px;text-align: center;">M<%=obj[0]!=null?obj[0].toString(): " - " %></td>
 											<td class="std"  style="max-width: 50px;text-align: center;" >
 												<%
 												
@@ -882,22 +883,22 @@ for(Object[] temp : invitedlist){
 
 											<td class="std"  style="max-width: 150px;text-align: left; <%if(obj[21].toString().equals("0")) {%>font-weight: bold;<%}%>">
 												<%if(obj[21].toString().equals("0")) {%>
-													<%=obj[10] %>
+													<%=obj[10]!=null?obj[10].toString(): " - " %>
 												<%}else if(obj[21].toString().equals("1")) { %>
-													&nbsp;&nbsp;<%=obj[11] %>
+													&nbsp;&nbsp;<%=obj[11]!=null?obj[11].toString(): " - " %>
 												<%}else if(obj[21].toString().equals("2")) { %>
-													&nbsp;&nbsp;<%=obj[12] %>
+													&nbsp;&nbsp;<%=obj[12]!=null?obj[12].toString(): " - " %>
 												<%}else if(obj[21].toString().equals("3")) { %>
-													&nbsp;&nbsp;<%=obj[13] %>
+													&nbsp;&nbsp;<%=obj[13]!=null?obj[13].toString(): " - " %>
 												<%}else if(obj[21].toString().equals("4")) { %>
-													&nbsp;&nbsp;<%=obj[14] %>
+													&nbsp;&nbsp;<%=obj[14]!=null?obj[14].toString(): " - " %>
 												<%}else if(obj[21].toString().equals("5")) { %>
-													&nbsp;&nbsp;<%=obj[15] %>
+													&nbsp;&nbsp;<%=obj[15]!=null?obj[15].toString(): " - " %>
 												<%} %>
 											</td>
-											<td class="std"  style="max-width: 110px;text-align: center;"><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
-											<td class="std"  style="max-width: 110px;text-align: center;"><%=sdf.format(sdf1.parse(obj[9].toString())) %></td>
-											<td class="std"  style="max-width: 100px;text-align: center;"><%=obj[17] %>%</td>											
+											<td class="std"  style="max-width: 110px;text-align: center;"><%=obj[8]!=null?sdf.format(sdf1.parse(obj[8].toString())): " - "  %></td>
+											<td class="std"  style="max-width: 110px;text-align: center;"><%=obj[9]!=null?sdf.format(sdf1.parse(obj[9].toString())): " - "  %></td>
+											<td class="std"  style="max-width: 100px;text-align: center;"><%=obj[17]!=null?obj[17].toString(): " - " %>%</td>											
 											<td class="std"  style="max-width: 70px;text-align: center;">
 											<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
 														<%}else if(obj[19].toString().equalsIgnoreCase("1")) {%> notyet
@@ -910,7 +911,7 @@ for(Object[] temp : invitedlist){
 											</span>
 											
 											</td>
-											<td class="std"  style="max-width: 100px;text-align: left;"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
+											<td class="std"  style="max-width: 100px;text-align: left;"><%if(obj[23]!=null){%><%=obj[23].toString()%><%} %></td>
 										</tr>
 									<%milcount1++;}} %>
 								<%} else{ %>
@@ -931,7 +932,7 @@ for(Object[] temp : invitedlist){
 			
 					<table style="margin-top: 0px; margin-left: 10px; width: 975px; font-size: 16px; border-collapse: collapse;">
 						<tr>
-							<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%></th>
+							<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?committeemin[0].toString(): " - "%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]!=null?committeemin[1].toString(): " - "%></th>
 						</tr>
 					</table>	
 					<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 10px; width: 975px;  border-collapse:collapse;" >
@@ -958,12 +959,12 @@ for(Object[] temp : invitedlist){
 										    	k++; %>
 											<tr>
 												<td class="std" ><%=k%></td>
-												<td class="std" ><%=obj[1]%></td>
-												<td class="std" ><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
-												<td class="std" colspan="2" ><%=obj[8]%></td>
-												<td class="std" style=" text-align:right;"> <%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
-												<td class="std" > <%=obj[10]%> </td>
-												<td class="std" ><%=obj[11]%> </td>		
+												<td class="std" ><%=obj[1]!=null?obj[1].toString(): " - "%></td>
+												<td class="std" ><%=obj[3]!=null?sdf.format(sdf1.parse(obj[3].toString())): " - " %></td>
+												<td class="std" colspan="2" ><%=obj[8]!=null?obj[8].toString(): " - "%></td>
+												<td class="std" style=" text-align:right;"> <%=obj[5]!=null?format.format(new BigDecimal(obj[5].toString())).substring(1): " - " %></td>
+												<td class="std" > <%=obj[10]!=null?obj[10].toString(): " - "%> </td>
+												<td class="std" ><%=obj[11]!=null?obj[11].toString(): " - "%> </td>		
 											</tr>		
 											<%
 											estcost += Double.parseDouble(obj[5].toString());
@@ -971,7 +972,7 @@ for(Object[] temp : invitedlist){
 										    
 										    <tr>
 										    	<td class="std" colspan="5" style="text-align: right;"><b>Total</b></td>
-										    	<td class="std" style="text-align: right;"><b><%=df.format(estcost)%></b></td>
+										    	<td class="std" style="text-align: right;"><b><%=estcost!=null?df.format(estcost): " - " %></b></td>
 										    	
 										    	<td class="std" colspan="2" style="text-align: right;"></td>
 
@@ -1018,20 +1019,20 @@ for(Object[] temp : invitedlist){
 
 												<tr>
 													<td class="std" rowspan="2" ><%=k%></td>
-													<td class="std" ><%=obj[1]%> </td>
-													<td class="std"><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
-													<td class="std"  colspan="2"><%=obj[8]%></td>
-													<td class="std" style=" text-align:right;"> <%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
-												    <td  class="std"> <%=obj[10]%> </td>
-													<td  class="std"><%=obj[11]%> </td>	
+													<td class="std" ><%=obj[1]!=null?obj[1].toString(): " - "%> </td>
+													<td class="std"><%=obj[3]!=null?sdf.format(sdf1.parse(obj[3].toString())): " - " %></td>
+													<td class="std"  colspan="2"><%=obj[8]!=null?obj[8].toString(): " - "%></td>
+													<td class="std" style=" text-align:right;"> <%=obj[5]!=null?format.format(new BigDecimal(obj[5].toString())).substring(1): " - " %></td>
+												    <td  class="std"> <%=obj[10]!=null?obj[10].toString(): " - "%> </td>
+													<td  class="std"><%=obj[11]!=null?obj[11].toString(): " - "%> </td>	
 												</tr>
 												<%demand=obj[1].toString();
 												} %>
 												<tr>
 													
-													<td class="std" ><% if(obj[2]!=null){%> <%=obj[2]%> <%}else{ %>-<%} %> </td>
+													<td class="std" ><% if(obj[2]!=null){%> <%=obj[2].toString()%> <%}else{ %>-<%} %> </td>
 													<td class="std" ><%if(obj[4]!=null){%> <%=sdf.format(sdf1.parse(obj[4].toString()))%> <%}else{ %> - <%} %></td>
-													<td class="std" colspan="2"> <%=obj[12] %> </td>
+													<td class="std" colspan="2"> <%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()):"" %> </td>
 													<td class="std"><%if(obj[7]!=null){if(!obj[7].toString().equals("null")){%> <%=sdf.format(sdf1.parse(obj[7].toString()))%><%}}else{ %>-<%} %></td>
 				                                    <td class="std" colspan="3" style=" text-align: right;"><%if(obj[6]!=null){%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%> <%} else{ %> - <%} %></td>												
 				
@@ -1051,7 +1052,7 @@ for(Object[] temp : invitedlist){
 										   	 
 										    <tr>
 										    	<td colspan="6" class="std" style="text-align: right;"><b>Total</b></td>
-										    	<td colspan="2" class="std" style="text-align: right;"><b><%=df.format(socost)%></b></td>
+										    	<td colspan="2" class="std" style="text-align: right;"><b><%=socost!=null?df.format(socost): " - " %></b></td>
 										    	
 										    </tr>
 										     <% }else{%>
@@ -1079,11 +1080,11 @@ for(Object[] temp : invitedlist){
 											 if(obj.getProjectId().equalsIgnoreCase(projectid)){
 										 %>
 										   <tr>
-										      <td class="std" style="text-align: center;"><%=obj.getDemandCount() %></td>
-										      <td class="std" style="text-align: center;"><%=obj.getEstimatedCost() %></td>
-										      <td class="std" style="text-align: center;"><%=obj.getSupplyOrderCount()%></td>
-										      <td class="std" style="text-align: center;"><%=obj.getTotalOrderCost() %></td>
-										      <td class="std" style="text-align: center;"><%=obj.getTotalExpenditure()%></td>
+										      <td class="std" style="text-align: center;"><%=obj.getDemandCount()!=null?obj.getDemandCount(): " - " %></td>
+										      <td class="std" style="text-align: center;"><%=obj.getEstimatedCost()!=null?obj.getEstimatedCost(): " - " %></td>
+										      <td class="std" style="text-align: center;"><%=obj.getSupplyOrderCount()!=null?obj.getSupplyOrderCount(): " - "%></td>
+										      <td class="std" style="text-align: center;"><%=obj.getTotalOrderCost()!=null?obj.getTotalOrderCost(): " - " %></td>
+										      <td class="std" style="text-align: center;"><%=obj.getTotalExpenditure()!=null?obj.getTotalExpenditure(): " - "%></td>
 										   </tr>
 										   <%}}}else{%>
 										   <tr>
@@ -1098,7 +1099,7 @@ for(Object[] temp : invitedlist){
 			
 					<table style="margin-top: 0px; margin-left: 10px; width: 975px; font-size: 16px; border-collapse: collapse;">
 						<tr>
-							<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%></th>
+							<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?committeemin[0].toString(): " - "%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]!=null?committeemin[1].toString(): " - "%></th>
 						</tr>
 						<tr >
 							<td colspan="8" align="right">(Amount in Crores)</td>
@@ -1146,30 +1147,30 @@ for(Object[] temp : invitedlist){
 									 
 									    	<tr>
 												<td class="std"  align="center"><%=count++ %></td>
-												<td class="std"  style="text-align: left;"><%=projectFinancialDetail.getBudgetHeadDescription()%></td>
-												<td class="std"  align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReSanction()) %></td>
+												<td class="std"  style="text-align: left;"><%=projectFinancialDetail.getBudgetHeadDescription()!=null?projectFinancialDetail.getBudgetHeadDescription(): " - "%></td>
+												<td class="std"  align="right" style="text-align: right;"><%=projectFinancialDetail.getReSanction()!=null?df.format(projectFinancialDetail.getReSanction()): " - "  %></td>
 												<%totReSanctionCost+=(projectFinancialDetail.getReSanction());%>
-													<td class="std"  align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeSanction())%></td>
+													<td class="std"  align="right" style="text-align: right;"><%=projectFinancialDetail.getFeSanction()!=null?df.format(projectFinancialDetail.getFeSanction()): " - " %></td>
 												<%totFESanctionCost+=(projectFinancialDetail.getFeSanction());%>
-													<td class="std"  align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReExpenditure()) %></td>
+													<td class="std"  align="right" style="text-align: right;"><%=projectFinancialDetail.getReExpenditure()!=null?df.format(projectFinancialDetail.getReExpenditure()): " - "  %></td>
 												<%totREExpenditure+=(projectFinancialDetail.getReExpenditure());%>
-												    <td class="std"  align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeExpenditure())%></td>
+												    <td class="std"  align="right" style="text-align: right;"><%=projectFinancialDetail.getFeExpenditure()!=null?df.format(projectFinancialDetail.getFeExpenditure()): " - " %></td>
 												<%totFEExpenditure+=(projectFinancialDetail.getFeExpenditure());%>
-												    <td class="std"  align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReOutCommitment())%></td>
+												    <td class="std"  align="right" style="text-align: right;"><%=projectFinancialDetail.getReOutCommitment()!=null?df.format(projectFinancialDetail.getReOutCommitment()): " - " %></td>
 												<%totRECommitment+=(projectFinancialDetail.getReOutCommitment());%>
-												    <td class="std"  align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeOutCommitment())%></td>
+												    <td class="std"  align="right" style="text-align: right;"><%=projectFinancialDetail.getFeOutCommitment()!=null?df.format(projectFinancialDetail.getFeOutCommitment()): " - " %></td>
 												<%totFECommitment+=(projectFinancialDetail.getFeOutCommitment());%>
-													<td class="std"  align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl())%></td>
+													<td class="std"  align="right" style="text-align: right;"><%=projectFinancialDetail.getReBalance()!=null && projectFinancialDetail.getReDipl()!=null?df.format(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl()): " - " %></td>
 												<%btotalRe+=(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl());%>
-													<td class="std"  align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl())%></td>
+													<td class="std"  align="right" style="text-align: right;"><%=projectFinancialDetail.getFeBalance()!=null && projectFinancialDetail.getFeDipl()!=null?df.format(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl()): " - " %></td>
 												<%btotalFe+=(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl());%>
-													 <td class="std"  align="right"style="text-align: right;"><%=df.format(projectFinancialDetail.getReDipl())%></td>
+													 <td class="std"  align="right"style="text-align: right;"><%=projectFinancialDetail.getReDipl()!=null?df.format(projectFinancialDetail.getReDipl()): " - " %></td>
 												<%totalREDIPL+=(projectFinancialDetail.getReDipl());%>
-													 <td class="std"  align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeDipl())%></td>
+													 <td class="std"  align="right" style="text-align: right;"><%=projectFinancialDetail.getFeDipl()!=null?df.format(projectFinancialDetail.getFeDipl()): " - " %></td>
 												<%totalFEDIPL+=(projectFinancialDetail.getFeDipl());%>
-													<td class="std"  align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance())%></td>
+													<td class="std"  align="right" style="text-align: right;"><%=projectFinancialDetail.getReBalance()!=null?df.format(projectFinancialDetail.getReBalance()): " - " %></td>
 												<%totReBalance+=(projectFinancialDetail.getReBalance());%>
-													<td class="std"  align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance())%></td>
+													<td class="std"  align="right" style="text-align: right;"><%=projectFinancialDetail.getFeBalance()!=null?df.format(projectFinancialDetail.getFeBalance()): " - " %></td>
 												<%totFeBalance+=(projectFinancialDetail.getFeBalance());%>
 											</tr>
 										<%} }%>
@@ -1219,7 +1220,7 @@ for(Object[] temp : invitedlist){
 			
 					<table style="margin-top: 0px; margin-left: 10px; width: 975px; font-size: 16px; border-collapse: collapse;">
 						<tr>
-							<th colspan="8" style="text-align: left; font-weight: 700; text-align: justify;padding-left: 15px;" ><br><%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%></th>
+							<th colspan="8" style="text-align: left; font-weight: 700; text-align: justify;padding-left: 15px;" ><br><%=committeemin[0]!=null?committeemin[0].toString(): " - "%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]!=null?committeemin[1].toString(): " - "%></th>
 						</tr>
 					</table>	
 					<table style="margin-top: 5px; margin-bottom: 0px; margin-left: 10px; width: 975px; font-size: 16px; border-collapse: collapse;border: 1px solid black" >
@@ -1271,7 +1272,7 @@ for(Object[] temp : invitedlist){
 										<tr>
 											<td class="std"  style="text-align: center"><%=count1 %></td>
 											<%-- <td>M <%=obj[22] %> <% if(!obj[26].toString().equals("0")) {%> L<%=obj[26] %> <%} %></td> --%>
-											<td class="std"  style="text-align: center">M<%=obj[22] %></td>
+											<td class="std"  style="text-align: center">M<%=obj[22]!=null?obj[22].toString(): " - " %></td>
 											
 											<!-- Old Code -->
 											<%-- <td><% if(!obj[26].toString().equals("0")) {%> L<%=obj[26] %> <%} else {%> L <%} %></td>
@@ -1332,22 +1333,22 @@ for(Object[] temp : invitedlist){
 											
 											<td class="std" style="<%if(obj[26].toString().equals("0")) {%>font-weight: bold;<%}%> text-align:left" >
 												<%if(obj[26].toString().equals("0")) {%>
-													<%=obj[9] %>
+													<%=obj[9] !=null?obj[9].toString(): " - "%>
 												<%}else if(obj[26].toString().equals("1")) { %>
-													&nbsp;&nbsp;<%=obj[10] %>
+													&nbsp;&nbsp;<%=obj[10]!=null?obj[10].toString(): " - " %>
 												<%}else if(obj[26].toString().equals("2")) { %>
-													&nbsp;&nbsp;<%=obj[11] %>
+													&nbsp;&nbsp;<%=obj[11] !=null?obj[11].toString(): " - "%>
 												<%}else if(obj[26].toString().equals("3")) { %>
-													&nbsp;&nbsp;<%=obj[12] %>
+													&nbsp;&nbsp;<%=obj[12]!=null?obj[12].toString(): " - " %>
 												<%}else if(obj[26].toString().equals("4")) { %>
-													&nbsp;&nbsp;<%=obj[13] %>
+													&nbsp;&nbsp;<%=obj[13]!=null?obj[13].toString(): " - " %>
 												<%}else if(obj[26].toString().equals("5")) { %>
-													&nbsp;&nbsp;<%=obj[14] %>
+													&nbsp;&nbsp;<%=obj[14]!=null?obj[14].toString(): " - " %>
 												<%} %>
 											</td>
-											<td class="std" style="text-align: left ! important" ><%=obj[24] %><%-- (<%=obj[25] %>) --%></td>
-											<td class="std" ><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
-											<td class="std"  style="text-align: center"><%=obj[16] %>%</td>											
+											<td class="std" style="text-align: left ! important" ><%=obj[24]!=null?obj[24].toString(): " - " %><%-- (<%=obj[25] %>) --%></td>
+											<td class="std" ><%=obj[8]!=null?sdf.format(sdf1.parse(obj[8].toString())): " - "  %></td>
+											<td class="std"  style="text-align: center"><%=obj[16]!=null?obj[16].toString(): " - " %>%</td>											
 											<td class="std"  style="text-align: center">
 											<span class="<%if(obj[20].toString().equalsIgnoreCase("0")){%>assigned
 														<%}else if(obj[20].toString().equalsIgnoreCase("1")) {%> notyet
@@ -1356,13 +1357,13 @@ for(Object[] temp : invitedlist){
 														<%}else if(obj[20].toString().equalsIgnoreCase("4")) {%> delay 
 														<%}else if(obj[20].toString().equalsIgnoreCase("5")) {%> completeddelay
 														<%}else if(obj[20].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
-												<%=obj[27] %>	
+												<%=obj[27]!=null?obj[27].toString(): " - " %>	
 											</span>
 											
 											</td>
 											<td  class="std"  style="max-width: 80px;">
 												<%if(obj[28]!=null){ %>
-												<%=obj[28] %>
+												<%=obj[28].toString() %>
 												<%} %>
 												</td>
 										</tr>
@@ -1383,7 +1384,7 @@ for(Object[] temp : invitedlist){
 				<table style="margin-top:0px; margin-left: 10px; width: 975px; font-size: 16px; border-collapse: collapse;">
 					<tbody>
 						<tr>
-							<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%></th>
+							<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?committeemin[0].toString(): " - "%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]!=null?committeemin[1].toString(): " - "%></th>
 						</tr>
 				
 						<%
@@ -1405,11 +1406,11 @@ for(Object[] temp : invitedlist){
 									 %>
 									<%if(speclist[7].toString().equalsIgnoreCase("R")){ count++; %>
 									<tr>
-										<th  style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=committeemin[0]+"."+count%>.&nbsp;&nbsp;&nbsp;<%=speclist[9]%></th>
+										<th  style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?committeemin[0].toString(): " - "%><%="."+count%>.&nbsp;&nbsp;&nbsp;<%=speclist[9]!=null?speclist[9].toString(): " - "%></th>
 									</tr>
 									<tr>
 										<td style="text-align: justify;padding-left: 30px">
-											<%=speclist[1]%> 
+											<%=speclist[1]!=null?speclist[1].toString(): " - "%> 
 										</td>
 									</tr>
 									
@@ -1419,7 +1420,7 @@ for(Object[] temp : invitedlist){
 									count++;%>
 									<tr>
 										<td style="text-align: justify;padding-left: 30px">
-											<%=speclist[1]%> 
+											<%=speclist[1]!=null?speclist[1].toString(): " - "%> 
 										</td>	
 									</tr>					
 								<%}
@@ -1499,19 +1500,19 @@ for(Object[] temp : invitedlist){
 								for(Object obj[]:values){
 									 count1++; %>
 									<%if(count1==1 ){ %>
-										<%if(obj[3]!=null){ %> <%= obj[3]%><%}else{ %> - <%} %>
+										<%if(obj[3]!=null){ %> <%=obj[3].toString()%><%}else{ %> - <%} %>
 									<%}else if(count1==values.size() ){ %>
-										<%if(obj[3]!=null){ %> <br> - <br> <%= obj[3]%> <%}else{ %> - <%} %>
+										<%if(obj[3]!=null){ %> <br> - <br> <%= obj[3].toString()%> <%}else{ %> - <%} %>
 									<%} %>
 							<%} %>
 							
 						</td>
 						
-						<td  class="std" style="padding-left: 5px;padding-right: 5px;text-align: justify;"><%= values.get(0)[1]  %></td>
+						<td  class="std" style="padding-left: 5px;padding-right: 5px;text-align: justify;"><%= values.get(0)[1]!=null?values.get(0)[1].toString(): " - "  %></td>
 						<td  class="std" style="text-align: left;" >
 							<%	int count2=0;
 							for(Object obj[]:values){ %>
-							<%if(obj[13]!=null){ %> <%= obj[13]%><%-- ,&nbsp;<%=obj[14] %> --%>
+							<%if(obj[13]!=null){ %> <%= obj[13].toString()%><%-- ,&nbsp;<%=obj[14] %> --%>
 								<%if(count2>=0 && count2<values.size()-1){ %>
 								,&nbsp;
 								<%} %>

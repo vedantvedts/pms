@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalTime"%>
@@ -95,21 +96,22 @@
 	
 	
 	
-	<%String ses=(String)request.getParameter("result"); 
-	 String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-		%>
-		<center>
-		<div class="alert alert-danger" role="alert" >
-	                     <%=ses1 %>
-	                    </div>
-		<%}if(ses!=null){ %>
-		</center><center>
-		<div class="alert alert-success" role="alert" >
-	                     <%=ses %>
-	                   </div>
-	                    <%} %>
-	</center>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
 	
 	
 	<div class="container-fluid">
@@ -121,10 +123,10 @@
 					<div class="card-header">
 						 <div class="row" >
 							<div class="col-md-3">
-							 	<h4> <%=CommitteeName %> Meeting </h4> 	
+							 	<h4> <%=CommitteeName!=null?StringEscapeUtils.escapeHtml4(CommitteeName): " - " %> Meeting </h4> 	
 							 </div>
 							 <div class="col-md-9" >
-							 	<h5 style="color:white!important;float: right;margin-top: 6px;">(Meeting Id : <%=scheduledata[11] %>) &nbsp;&nbsp; - &nbsp;&nbsp;(Meeting Date and Time : <%= sdf.format(sdf1.parse( scheduledata[2].toString()))%>  &  <%=scheduledata[3] %>)</h5> 	
+							 	<h5 style="color:white!important;float: right;margin-top: 6px;">(Meeting Id : <%=scheduledata[11]!=null?StringEscapeUtils.escapeHtml4(scheduledata[11].toString()): " - "  %>) &nbsp;&nbsp; - &nbsp;&nbsp;(Meeting Date and Time : <%= sdf.format(sdf1.parse( scheduledata[2].toString()))%>  &  <%=scheduledata[3]!=null?StringEscapeUtils.escapeHtml4(scheduledata[3].toString()): " - " %>)</h5> 	
 							 </div>
 						 </div>
 					 </div>
@@ -140,7 +142,7 @@
 			         	<table  class="table table-bordered table-hover table-striped table-condensed ">
 			            	<thead>
 			               		<tr>
-			                    	<th>Sn</th>
+			                    	<th>SN</th>
 			                       	<th>Agenda Item</th> 
 			                       	<th>Project</th>
 			                       	<th>Remarks</th>
@@ -149,37 +151,32 @@
 			                       	<th>Attachment</th>
 			                    </tr>
 			              	</thead> 
+			              	<tbody>
 			              		<%	int count=0;
-							for(Object[] 	obj:agendalist){ count++;%>  
-							                     
-				    		<tbody>
-							
-								<tr>
-										
-									<td><%=count%></td>
-									<td><%=obj[3] %></td>
-									<td><%=obj[4] %>  </td>									
-									<td><%=obj[6] %></td>									
-									<td><%=obj[10]%>(<%=obj[11] %>)  </td>
-									<td><%=obj[12] %></td>
-									<td>
-										<table>
-											<%for(Object[] doc : AgendaDocList) { 
-											if(obj[0].toString().equalsIgnoreCase(doc[1].toString())){%>
-												<tr>
-													<td><%=doc[3] %></td>
-													<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
-												<tr>													
-											<%} }%>
-										</table>
-						
-									</td>
-									
-								</tr>
-									
+								for(Object[] obj:agendalist){ count++;%>  
+									<tr>
+										<td><%=count%></td>
+										<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
+										<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %>  </td>									
+										<td><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %></td>									
+										<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - "%>(<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>)  </td>
+										<td><%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %></td>
+										<td>
+											<table>
+												<%for(Object[] doc : AgendaDocList) { 
+												if(obj[0].toString().equalsIgnoreCase(doc[1].toString())){%>
+													<tr>
+														<td><%=doc[3]!=null?StringEscapeUtils.escapeHtml4(doc[3].toString()): " - " %></td>
+														<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
+													<tr>													
+												<%} }%>
+											</table>
+										</td>
+									</tr>
+								<%} %>	
 							</tbody>
 				    		</table>
-								<%}} else if(agendaList!=null && agendaList.size()>0) {%>
+								<%} else if(agendaList!=null && agendaList.size()>0) {%>
 									<table class="table table-bordered table-hover table-condensed " style="margin-top:10px;width:100% ">
 						     	      	<thead>
 						            		<tr>
@@ -208,11 +205,11 @@
 													</td>
 													<td class="center" style="width: 5%;"><%=count %></td>
 													
-													<td style="width: 35%;"><%=level1[4] %></td>
+													<td style="width: 35%;"><%=level1[4]!=null?StringEscapeUtils.escapeHtml4(level1[4].toString()): " - " %></td>
 													
 													<td style="width: 25%;">
 														<%if(level1[6]!=null && !level1[6].toString().equalsIgnoreCase("0")) {%>
-															<%=level1[9] %>
+															<%=level1[9]!=null?StringEscapeUtils.escapeHtml4(level1[9].toString()): " - " %>
 														<%} else {%>
 															-
 														<%} %>
@@ -225,7 +222,7 @@
 													<td class="center">
 														<%if(level1[8]!=null && !level1[8].toString().isEmpty()) {%>
 															<a class="btn btn-sm" href="CCMScheduleAgendaFileDownload.htm?scheduleAgendaId=<%=level1[0] %>&count=<%=count %>&subCount=0" target="_blank">
-																Annex-<%=level1[3] %>
+																Annex-<%=level1[3]!=null?StringEscapeUtils.escapeHtml4(level1[3].toString()): " - " %>
 								               				</a>
 														<%} else{%>	
 															-
@@ -253,11 +250,11 @@
 																		<tr>
 																			<%-- <td class="center"><%=level2[3] %></td> --%>
 																			<td class="center" style="width: 5%;"><%=count+"."+countA %></td>
-																			<td style="width: 38%;"><%=level2[4] %></td>
+																			<td style="width: 38%;"><%=level2[4]!=null?StringEscapeUtils.escapeHtml4(level2[4].toString()): " - " %></td>
 																			
 																			<td style="width: 27%;">
 																				<%if(level2[6]!=null && !level2[6].toString().equalsIgnoreCase("0")) {%>
-																					<%=level2[9] %>
+																					<%=level2[9]!=null?StringEscapeUtils.escapeHtml4(level2[9].toString()): " - " %>
 																				<%} else {%>
 																					-
 																				<%} %>
@@ -348,17 +345,17 @@
 													else if(obj[3].toString().equalsIgnoreCase("CS") ){	 %> Member Secretary<%}
 													else if(obj[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary (Proxy) <%}
 													else if(obj[3].toString().equalsIgnoreCase("CI")){   %> Internal<%}
-													else if(obj[3].toString().equalsIgnoreCase("CW")){	 %> External(<%=obj[11] %>)<%}
-													else if(obj[3].toString().equalsIgnoreCase("CO")){	 %> External(<%=obj[11]%>)<%}
+													else if(obj[3].toString().equalsIgnoreCase("CW")){	 %> External(<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>)<%}
+													else if(obj[3].toString().equalsIgnoreCase("CO")){	 %> External(<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "%>)<%}
 													else if(obj[3].toString().equalsIgnoreCase("P") ){	 %>Presenter <%}
 													else if(obj[3].toString().equalsIgnoreCase("I")){	 %> Addl. Internal<%}
-													else if(obj[3].toString().equalsIgnoreCase("W") ){	 %> Addl. External(<%=obj[11] %>)<%}
-													else if(obj[3].toString().equalsIgnoreCase("E") )    {%> Addl. External(<%=obj[11] %>)<%}
-													else {%> <%=obj[3].toString()%> (<%=obj[11] %>)  <%}
+													else if(obj[3].toString().equalsIgnoreCase("W") ){	 %> Addl. External(<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>)<%}
+													else if(obj[3].toString().equalsIgnoreCase("E") )    {%> Addl. External(<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>)<%}
+													else {%> <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> (<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>)  <%}
 												%>
 												
 											</td>
-											<td><%=obj[6] %> (<%=obj[7]%>)</td>  
+											<td><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %> (<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%>)</td>  
 										</tr>
 										<%}	%>
 									
@@ -389,22 +386,22 @@
 											count++;%>
 										<tr>
 											<td><%=count %></td>
-											<td><%=obj[1] %></td>
+											<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
 											<td> 
 												<%  if(obj[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
 													else if(obj[3].toString().equalsIgnoreCase("CS") ){	 %> Member Secretary<%}
 													else if(obj[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary (Proxy) <%}
 													else if(obj[3].toString().equalsIgnoreCase("CI")){   %> Internal<%}
-													else if(obj[3].toString().equalsIgnoreCase("CW")){	 %> External(<%=obj[11] %>)<%}
-													else if(obj[3].toString().equalsIgnoreCase("CO")){	 %> External(<%=obj[11]%>)<%}
+													else if(obj[3].toString().equalsIgnoreCase("CW")){	 %> External(<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>)<%}
+													else if(obj[3].toString().equalsIgnoreCase("CO")){	 %> External(<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "%>)<%}
 													else if(obj[3].toString().equalsIgnoreCase("P") ){	 %>Presenter <%}
 													else if(obj[3].toString().equalsIgnoreCase("I")){	 %> Addl. Internal<%}
-													else if(obj[3].toString().equalsIgnoreCase("W") ){	 %> Addl. External(<%=obj[11] %>)<%}
-													else if(obj[3].toString().equalsIgnoreCase("E") )    {%> Addl. External(<%=obj[11] %>)<%}
-													else {%> <%=obj[3].toString()%> (<%=obj[11] %>)  <%}
+													else if(obj[3].toString().equalsIgnoreCase("W") ){	 %> Addl. External(<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>)<%}
+													else if(obj[3].toString().equalsIgnoreCase("E") )    {%> Addl. External(<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "%>)<%}
+													else {%> <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> (<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>)  <%}
 												%>
 											</td>
-											<td><%=obj[5] %></td>
+											<td><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></td>
 										</tr>
 										<%}	%>
 									

@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.committee.dao.ActionDao;
 import com.vts.pfms.committee.dao.ActionSelfDao;
+import com.vts.pfms.committee.dao.CommitteeDao;
 import com.vts.pfms.committee.dto.ActionAssignDto;
 import com.vts.pfms.committee.dto.ActionMainDto;
 import com.vts.pfms.committee.dto.ActionSubDto;
@@ -42,6 +43,7 @@ import com.vts.pfms.committee.model.ActionSub;
 import com.vts.pfms.committee.model.FavouriteList;
 import com.vts.pfms.committee.model.OldRfaUpload;
 import com.vts.pfms.committee.model.PfmsNotification;
+import com.vts.pfms.committee.model.ProgrammeMaster;
 import com.vts.pfms.committee.model.RfaAction;
 import com.vts.pfms.committee.model.RfaAssign;
 import com.vts.pfms.committee.model.RfaAttachment;
@@ -62,6 +64,9 @@ public class ActionServiceImpl implements ActionService {
 	
 	@Autowired
 	ActionDao dao;
+	
+	@Autowired
+	CommitteeDao committeeDao;
 	
 	private static final Logger logger=LogManager.getLogger(ActionServiceImpl.class);
 	
@@ -424,7 +429,6 @@ public class ActionServiceImpl implements ActionService {
 		try {
 			logger.info(new Date() +"Inside SERVICE ActionMainInsert ");
 			System.out.println("Action Type -->"+main.getActionType());
-			long success=1;
 			long unsuccess=0;
 			Object[] lab=null;
 			int count=0;
@@ -432,18 +436,19 @@ public class ActionServiceImpl implements ActionService {
 			String ProjectCode=null;
 			long mainid=0l;
 			Object[] comishortname= null;
+			Object[] schedule = null;
 			try
 			{
 				lab=dao.LabDetails();
-				System.out.println(main.toString());
-				System.out.println(assign.toString());
 				
-				
+				if(main.getScheduleId()!=null && !main.getScheduleId().equalsIgnoreCase("0") && !main.getActionType().equalsIgnoreCase("R")) {
+					schedule = committeeDao.CommitteeScheduleEditData(main.getScheduleId());
+				}				
 				if(main.getActionType().toString().equalsIgnoreCase("S")) {
 				comishortname = dao.CommitteeShortName(main.getScheduleMinutesId());
 				}
 				
-				if(!main.getScheduleMinutesId().equalsIgnoreCase("0") && main.getActionType().equalsIgnoreCase("S")) {
+				if(!main.getScheduleMinutesId().equalsIgnoreCase("0") && main.getActionType().equalsIgnoreCase("S") || main.getActionType().equalsIgnoreCase("R")) {
 					List<Object[]>mainIds = dao.getMainIds(main.getScheduleMinutesId());
 					
 					if(mainIds.size()>0) {
@@ -459,6 +464,8 @@ public class ActionServiceImpl implements ActionService {
 							count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
 						}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname[1].toString().equalsIgnoreCase("DMC")) {
 							count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
+						}else if(main.getProjectId().equalsIgnoreCase("0") && schedule!=null && !schedule[26].toString().equalsIgnoreCase("0")) {
+							count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
 						}else {
 							count=dao.ActionGenCount(main.getProjectId(),main.getType())+1;
 						}
@@ -467,12 +474,16 @@ public class ActionServiceImpl implements ActionService {
 						count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
 					}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname[1].toString().equalsIgnoreCase("DMC")) {
 						count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
+					}else if(main.getProjectId().equalsIgnoreCase("0") && schedule!=null && !schedule[26].toString().equalsIgnoreCase("0")) {
+						count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
 					}else {
 						count=dao.ActionGenCount(main.getProjectId(),main.getType())+1;
 					}
 				}else if(main.getProjectId().equalsIgnoreCase("0")&& comishortname!=null  && comishortname[1].toString().equalsIgnoreCase("CCM")) {
 					count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
 				}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname!=null && comishortname[1].toString().equalsIgnoreCase("DMC")) {
+					count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
+				}else if(main.getProjectId().equalsIgnoreCase("0") && schedule!=null && !schedule[26].toString().equalsIgnoreCase("0")) {
 					count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
 				}else {
 					count=dao.ActionGenCount(main.getProjectId(),main.getType())+1;
@@ -513,6 +524,9 @@ public class ActionServiceImpl implements ActionService {
 				Project="/"+comishortname[1]+"/";
 			}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname!=null && comishortname[1].toString().equalsIgnoreCase("DMC")) {
 				Project="/"+comishortname[1]+"/";
+			}else if(main.getProjectId().equalsIgnoreCase("0") && schedule!=null && !schedule[26].toString().equalsIgnoreCase("0")) {
+				ProgrammeMaster programmeMaster = committeeDao.getProgrammeMasterById(schedule[26].toString());
+				Project= "/"+programmeMaster.getPrgmCode()+"/"+comishortname[1]+"/";
 			}else{
 				Project="/GEN/";
 			}

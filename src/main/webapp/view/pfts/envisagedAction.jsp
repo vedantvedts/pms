@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -53,22 +54,22 @@ String fileId=(String)request.getAttribute("fileId");
 String value=(String)request.getAttribute("value");
 
 %>
-<%
-	String ses=(String)request.getParameter("result"); 
-	String ses1=(String)request.getParameter("resultfail");
-%>
-	<%if(ses1!=null){ %>
-	<div align="center">
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></div>
-	<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-	        	<%=ses %>
-	        </div>
-	    </div>
-    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 <div class="container" >
@@ -96,7 +97,7 @@ String value=(String)request.getAttribute("value");
 		                      <span class="mandatory" style="color: #cd0a0a;">*</span></label>
 		                  </div>
 		                  <div class="col-md-10" style="max-width: 75%">
-		                      <input class="form-control alphanum-no-leading-space"  placeholder="Max 150 Characters" name="itemNomenclature" id="itemNomenclature" maxlength="150" type="text" <%if(itemN!=null){ %>value="<%=itemN %>" <%}%>>
+		                      <input class="form-control alphanum-no-leading-space"  placeholder="Max 150 Characters" name="itemNomenclature" id="itemNomenclature" maxlength="150" type="text" <%if(itemN!=null){ %>value="<%=itemN!=null?StringEscapeUtils.escapeHtml4(itemN):"" %>" <%}%>>
 		                  </div>
 		                  </div><br>
 		                  <div class="row">
@@ -105,7 +106,7 @@ String value=(String)request.getAttribute("value");
 		                      <span class="mandatory" style="color: #cd0a0a;">*</span></label>
 		                  </div>
 		                  <div class="col-md-10" style="max-width: 75%">
-		                      <input class="form-control numeric-only"  placeholder="Max 13 Characters" name="estimatedCost" id="estimatedCost" type="number" onKeyPress="if(this.value.length==13) return false;" <%if(estimatedCost!=null){ %>value="<%=estimatedCost %>" <%} %>>
+		                      <input class="form-control numeric-only"  placeholder="Max 13 Characters" name="estimatedCost" id="estimatedCost" type="number" onKeyPress="if(this.value.length==13) return false;" <%if(estimatedCost!=null){ %>value="<%=estimatedCost!=null?StringEscapeUtils.escapeHtml4(estimatedCost):"" %>" <%} %>>
 		                  </div>
 		            </div>
 		            
@@ -117,7 +118,7 @@ String value=(String)request.getAttribute("value");
 		                      <span class="mandatory" style="color: #cd0a0a;">*</span></label>
 		                  </div>
 		                  <div class="col-md-10" style="max-width: 75%">
-		                    <input class="form-control"   name="intiDate" id="intiDate"  type="text" <%if(PDOfInitiation!=null){ %> value="<%=PDOfInitiation %>" <%} %>>
+		                    <input class="form-control"   name="intiDate" id="intiDate"  type="text" <%if(PDOfInitiation!=null){ %> value="<%=PDOfInitiation!=null?StringEscapeUtils.escapeHtml4(PDOfInitiation):"" %>" <%} %>>
 		                  </div>
 		                  </div><br>
 		 <%--                  <div class="row">
@@ -138,7 +139,7 @@ String value=(String)request.getAttribute("value");
 		                      <span class="mandatory" style="color: #cd0a0a;">*</span></label>
 		                  </div>
 		                  <div class="col-md-10" style="max-width: 75%">
-		                   <textarea class="form-control" rows="2" cols="30" placeholder="Max 150 Characters" name="remarks" id="remarks" maxlength="150" ><%if(remarks!=null){ %> <%=remarks %> <%} %></textarea>
+		                   <textarea class="form-control" rows="2" cols="30" placeholder="Max 150 Characters" name="remarks" id="remarks" maxlength="150" ><%if(remarks!=null){ %> <%=remarks!=null?remarks:"" %> <%} %></textarea>
 		                     <!--  <input class="form-control" placeholder="Max 100 Characters" name="reference" id="reference" maxlength="100"> -->
 		                  </div>
 		            </div>
@@ -175,7 +176,7 @@ String value=(String)request.getAttribute("value");
 	  var estimatedCost=$('#estimatedCost').val();
 	  /* var status=$('#status').val(); */
 	  
-	  var Value='<%=value%>';
+	  var Value='<%=value!=null?StringEscapeUtils.escapeHtml4(value):""%>';
 	  console.log(Value);
 	  var remarks=$('#remarks').val();
 	  

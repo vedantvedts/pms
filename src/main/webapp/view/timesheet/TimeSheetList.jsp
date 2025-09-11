@@ -1,4 +1,5 @@
 
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.master.model.MilestoneActivityType"%>
 <%@page import="java.util.Comparator"%>
 <%@page import="java.util.Optional"%>
@@ -339,22 +340,22 @@ statusMap.put("ABS", "#2B7A0B");
 statusMap.put("RBS", "#fe4e4e");
 
 %>
-<% String ses=(String)request.getParameter("result");
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 	<div class="container-fluid">
 		<div class="row">
@@ -368,7 +369,7 @@ statusMap.put("RBS", "#fe4e4e");
 						<div id="calendar" class="div-container more-than-half-width"></div>
 						<div id="timesheet" class="div-container half-width">
 							<div  style="font-size: 22px;font-weight: 600;color: white;text-align: center;background-color: #216583;height: 40px;">
-								Time Sheet Details - (<%=activityDate %>)
+								Time Sheet Details - (<%=activityDate!=null?StringEscapeUtils.escapeHtml4(activityDate):"-" %>)
 							</div>
 							
 							<!-- Time Sheet Details View -->
@@ -395,7 +396,7 @@ statusMap.put("RBS", "#fe4e4e");
  										</label>
 				                	</div>
 				                	<div class="col-md-3 left">
-				                		<%if(timeSheet!=null && timeSheet.getPunchInTime()!=null) {%><%=fc.sdtfTordtf(timeSheet.getPunchInTime()) %><%} %>
+				                		<%if(timeSheet!=null && timeSheet.getPunchInTime()!=null) {%><%=fc.sdtfTordtf(StringEscapeUtils.escapeHtml4(timeSheet.getPunchInTime())) %><%} %>
 				                	</div>
 				                </div>   
 				                
@@ -429,7 +430,7 @@ statusMap.put("RBS", "#fe4e4e");
 															<%if(act.getActivityId()==Long.parseLong("0")) {%>
 																NIL
 															<%} else {%>
-																<%=activity!=null&&activity[9]!=null?activity[9]:"-" %>			
+																<%=activity!=null&&activity[9]!=null?StringEscapeUtils.escapeHtml4(activity[9].toString()):"-" %>			
 															<%} %>
 														</td>
 														<td>
@@ -467,14 +468,14 @@ statusMap.put("RBS", "#fe4e4e");
 																%> --%>
 																
 															<%} else{%>
-																<%=activity!=null&&activity[5]!=null?activity[5]:"-" %>	
+																<%=activity!=null&&activity[5]!=null?StringEscapeUtils.escapeHtml4(activity[5].toString()):"-" %>	
 															<%} %>
 														</td>
 														<td class="center">
-															<%if(act.getActivityDuration()!=null) {%><%=act.getActivityDuration()%><%} %>
+															<%if(act.getActivityDuration()!=null) {%><%=StringEscapeUtils.escapeHtml4(act.getActivityDuration())%><%} %>
 														</td>
 														<td>
-															<%if(act.getRemarks()!=null && !act.getRemarks().isEmpty()) {%><%=act.getRemarks()%><%} else{%>-<%} %>
+															<%if(act.getRemarks()!=null && !act.getRemarks().isEmpty()) {%><%=StringEscapeUtils.escapeHtml4(act.getRemarks())%><%} else{%>-<%} %>
 														</td>
 													</tr>
 												<%} }else {%>
@@ -485,7 +486,7 @@ statusMap.put("RBS", "#fe4e4e");
 												<tr>
 													<td class="right" colspan="3" style="font-weight: bold;">Work Duration</td>
 													<td colspan="1" class="center">
-														<%if(timeSheet!=null && timeSheet.getTotalDuration()!=null) {%><%=timeSheet.getTotalDuration() %><%} else{%>00:00<%} %>
+														<%if(timeSheet!=null && timeSheet.getTotalDuration()!=null) {%><%=StringEscapeUtils.escapeHtml4(timeSheet.getTotalDuration()) %><%} else{%>00:00<%} %>
 													</td>
 													<td colspan="1"></td>
 												</tr>
@@ -500,7 +501,7 @@ statusMap.put("RBS", "#fe4e4e");
 												<tr>
 													<td class="right" colspan="1" style="font-weight: bold;">Remarks</td>
 													<td colspan="4">
-						        						<%=latestRemarks %>
+						        						<%=latestRemarks!=null?StringEscapeUtils.escapeHtml4(latestRemarks):"-" %>
 													</td>
 												</tr>
 												<%} %>
@@ -538,7 +539,7 @@ statusMap.put("RBS", "#fe4e4e");
 												<label class="form-label">Punch In <span class="mandatory">*</span></label>
 											</div>
 											<div class="col-md-3 left" style="">
-												<input type="text" class="form-control punch" name="punchInTime" id="punchInTime" <%if(timeSheet!=null && timeSheet.getPunchInTime()!=null) {%>value="<%=fc.sdtfTordtf(timeSheet.getPunchInTime()) %>"<%} %> readonly style="background: #fff;">
+												<input type="text" class="form-control punch" name="punchInTime" id="punchInTime" <%if(timeSheet!=null && timeSheet.getPunchInTime()!=null) {%>value="<%=fc.sdtfTordtf(StringEscapeUtils.escapeHtml4(timeSheet.getPunchInTime())) %>"<%} %> readonly style="background: #fff;">
 											</div>
 											<div class="col-md-7"></div>
 										</div>	
@@ -578,7 +579,7 @@ statusMap.put("RBS", "#fe4e4e");
 																			data-actionno="<%=activity[9]%>"
 																			<%if(act.getActivityId()==Long.parseLong(activity[10].toString())) {%>selected<%} %>
 																			>
-																			<%=activity[9]%>
+																			<%=activity[9]!=null?StringEscapeUtils.escapeHtml4(activity[9].toString()):"-"%>
 																			</option>
 																		<%} }%>
 																	</select>
@@ -591,7 +592,7 @@ statusMap.put("RBS", "#fe4e4e");
 											                				for(Object[] pro: projectList ){
 											                					String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
 											                			 %>
-																			<option value="<%=pro[0]%>" <%if(act.getProjectId()==Long.parseLong(pro[0].toString())) {%>selected<%} %>  ><%=pro[4]+projectshortName %></option>
+																			<option value="<%=pro[0]%>" <%if(act.getProjectId()==Long.parseLong(pro[0].toString())) {%>selected<%} %>  ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[4].toString()):"-"%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):"-" %></option>
 																		<%} %>
 																	</select>
 																</td>
@@ -609,10 +610,10 @@ statusMap.put("RBS", "#fe4e4e");
 																</td>
 																
 																<td class="center">
-																	<input type="text" class="form-control duration center" name="duration" id="duration" <%if(act.getActivityDuration()!=null) {%>value="<%=act.getActivityDuration()%>"<%} %> maxlength="5" onchange="calculateTotalDuration()">
+																	<input type="text" class="form-control duration center" name="duration" id="duration" <%if(act.getActivityDuration()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(act.getActivityDuration()) %>"<%} %> maxlength="5" onchange="calculateTotalDuration()">
 																</td>
 																<td>
-																	<input type="text" class="form-control" name="remarks" <%if(act.getRemarks()!=null) {%>value="<%=act.getRemarks()%>"<%} %> placeholder="Enter maximum 255 characters" maxlength="255">
+																	<input type="text" class="form-control" name="remarks" <%if(act.getRemarks()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(act.getRemarks()) %>"<%} %> placeholder="Enter maximum 255 characters" maxlength="255">
 																</td>
 															</tr>
 														<%} }else {%>
@@ -635,7 +636,7 @@ statusMap.put("RBS", "#fe4e4e");
 																			data-projectid="<%=activity[14]%>" 
 																			data-actionno="<%=activity[9]%>"
 																			>
-																			<%=activity[9]%>
+																			<%=activity[9]!=null?StringEscapeUtils.escapeHtml4(activity[9].toString()):"-"%>
 																			</option>
 																		<%} }%>
 																	</select>
@@ -648,7 +649,7 @@ statusMap.put("RBS", "#fe4e4e");
 											                				for(Object[] pro: projectList ){
 											                					String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
 											                			 %>
-																			<option value="<%=pro[0]%>" ><%=pro[4]+projectshortName %></option>
+																			<option value="<%=pro[0]%>" ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[4].toString()):" - "%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>
 																		<%} %>
 																	</select>
 																</td>
@@ -659,7 +660,7 @@ statusMap.put("RBS", "#fe4e4e");
 																		<%if(milestoneActivityTypeList!=null && milestoneActivityTypeList.size()>0) {
 																			for(MilestoneActivityType mil : milestoneActivityTypeList) {
 																		%>
-																			<option value="<%=mil.getActivityTypeId()%>"><%=mil.getActivityType() %></option>
+																			<option value="<%=mil.getActivityTypeId()%>"><%=mil.getActivityType()!=null?StringEscapeUtils.escapeHtml4(mil.getActivityType()):"-" %></option>
 																		<%} }%>
 																	</select>
 																	<!-- <input type="text" class="form-control" name="activityName" id="activityName-select-1" placeholder="Enter maximum 255 characters" maxlength="255"> -->
@@ -675,7 +676,7 @@ statusMap.put("RBS", "#fe4e4e");
 															<tr>
 																<td class="right" colspan="3" style="font-weight: bold;">Work Duration</td>
 																<td colspan="1">
-																	<input type="text" class="form-control totalduration center" name="totalduration" id="totalduration" value="<%if(timeSheet!=null && timeSheet.getTotalDuration()!=null) {%><%=timeSheet.getTotalDuration() %><%} else{%>01:00<%} %>" maxlength="5" readonly>
+																	<input type="text" class="form-control totalduration center" name="totalduration" id="totalduration" value="<%if(timeSheet!=null && timeSheet.getTotalDuration()!=null) {%><%=StringEscapeUtils.escapeHtml4(timeSheet.getTotalDuration()) %><%} else{%>01:00<%} %>" maxlength="5" readonly>
 																</td>
 																<td colspan="1"></td>
 															</tr>
@@ -956,7 +957,7 @@ function toggleDiv(divId) {
 								        			  .replaceAll("\r", "");
         	 
         %>
-		newRow+='<option value="<%=activity[10]%>" data-activity="<%=activity5%>" data-projectid="<%=activity[14]%>" data-actionno="<%=activity[9]%>"><%=activity[9]%></option>';
+		newRow+='<option value="<%=activity[10]%>" data-activity="<%=activity5%>" data-projectid="<%=activity[14]%>" data-actionno="<%=activity[9]%>"><%=activity[9]!=null?StringEscapeUtils.escapeHtml4(activity[9].toString()):"-"%></option>';
 		<%} }%>
 		newRow+='</select></td>';
 		newRow+='<td><span id="activityName-project-'+newId+'"></span><select class="form-control selectdee" name="projectId" id="projectId-select-'+newId+'"><option value="0" >General</option>';
@@ -964,7 +965,7 @@ function toggleDiv(divId) {
     				for(Object[] pro: projectList ){
     					String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
     			 %>
-    			 newRow+='<option value="<%=pro[0]%>" ><%=pro[4]+projectshortName %></option>';
+    			 newRow+='<option value="<%=pro[0]%>" ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[4].toString()):" - "%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>';
 				<%} %>
 		newRow+='</select></td>';
 		newRow+='<td><span id="activityName-'+newId+'"></span>';

@@ -1,4 +1,5 @@
-	<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	<%@page import="org.apache.commons.text.StringEscapeUtils"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
 <html>
@@ -42,19 +43,22 @@ List<Object[]> projectlist=(List<Object[]>)request.getAttribute("projectlist");
 String projectid=(String) request.getAttribute("projectid");
 %>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%><center>
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -72,13 +76,13 @@ String projectid=(String) request.getAttribute("projectid");
 					  &nbsp;&nbsp;&nbsp;&nbsp; Chairperson : &nbsp;<%=ProjectTccData[3]%>&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp; Secretary :&nbsp;<%=ProjectTccData[4]%>
 					  </b> --%>
 					<table>	<tr>	
-						<td>    <h4><%=committeemaineditdata[6]%> (<%=committeemaineditdata[7]%>) </h4></td><td>
+						<td>    <h4><%=committeemaineditdata[6]!=null?StringEscapeUtils.escapeHtml4(committeemaineditdata[6].toString()): " - "%> (<%=committeemaineditdata[7]!=null?StringEscapeUtils.escapeHtml4(committeemaineditdata[7].toString()): " - "%>) </h4></td><td>
 					  
 					  <form action="ProjectCommitteeMainEdit.htm" method="post" name="projectidselect" id ="projectidselect">
 		    			<select class="form-control" id="projectid" required="required" name="projectid" onchange='submitForm("projectidselect");' >	
 							<option disabled="true"  selected value="">Choose...</option>
 							<% for (Object[] obj : projectlist) {%>						    				 	
-								<option value="<%=obj[0]%>" <%if(projectid.equals(obj[0].toString())) {%>selected<%} %>><%=obj[3]%> (<%=obj[2] %>)</option>
+								<option value="<%=obj[0]%>" <%if(projectid.equals(obj[0].toString())) {%>selected<%} %>><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> (<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>)</option>
 							<%} %>					
 						</select>
 							
@@ -107,14 +111,14 @@ String projectid=(String) request.getAttribute("projectid");
                 <div class="col-md-6 ">
                         <div class="form-group">
                             <label class="control-label">Chairperson : </label>
-                              <b> <%=committeemaineditdata[4]%> (<%=committeemaineditdata[9]%>) </b>
+                              <b> <%=committeemaineditdata[4]!=null?StringEscapeUtils.escapeHtml4(committeemaineditdata[4].toString()): " - "%> (<%=committeemaineditdata[9]!=null?StringEscapeUtils.escapeHtml4(committeemaineditdata[9].toString()): " - "%>) </b>
                         </div>
                     </div>
                     
                 <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Member Secretary : </label>
-                              <b> <%=committeemaineditdata[5]%> (<%=committeemaineditdata[11]%>)</b>
+                              <b> <%=committeemaineditdata[5]!=null?StringEscapeUtils.escapeHtml4(committeemaineditdata[5].toString()): " - "%> (<%=committeemaineditdata[11]!=null?StringEscapeUtils.escapeHtml4(committeemaineditdata[11].toString()): " - "%>)</b>
                         </div>
                     </div>
                  
@@ -127,7 +131,7 @@ String projectid=(String) request.getAttribute("projectid");
               	<div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Valid From: </label>
-                             <b> <%=sdf.format(committeemaineditdata[2])%></b> 
+                             <b> <%=committeemaineditdata[2]!=null?sdf.format(committeemaineditdata[2]):" - " %></b> 
                         </div>
                     </div>
                 
@@ -163,7 +167,7 @@ String projectid=(String) request.getAttribute("projectid");
                              <select class="custom-select" id="chairperson" required="required" name="chairperson" style="margin-top: -5px"> 
 									    <option disabled="true"  selected value="">Choose...</option>
 									    	<% for (Object[] obj : EmployeeList1) {%>
-										<option value="<%=obj[0]%>" <%if(committeemaineditdata[8].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]%> (<%=obj[2] %>) </option>
+										<option value="<%=obj[0]%>" <%if(committeemaineditdata[8].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> (<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>) </option>
 												<%} %>
 	  							   </select></td></tr>
 	  					</table>
@@ -181,7 +185,7 @@ String projectid=(String) request.getAttribute("projectid");
                            	<select class="custom-select" id="secretary" required="required" name="Secretary" style="margin-top: -5px">
 				    			<option disabled="true"  selected value="" >Choose...</option>
 				    				<% for (Object[] obj : EmployeeList1) {%>
-									<option value="<%=obj[0]%>" <%if(committeemaineditdata[10].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]%> (<%=obj[2] %>)</option>
+									<option value="<%=obj[0]%>" <%if(committeemaineditdata[10].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> (<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>)</option>
 									<%} %>
 				  			</select></td>
 				  			</tr>
@@ -197,7 +201,7 @@ String projectid=(String) request.getAttribute("projectid");
                <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Valid From: </label>
-                             <b> <%=sdf.format(committeemaineditdata[2])%></b> 
+                             <b> <%=committeemaineditdata[2]!=null?sdf.format(committeemaineditdata[2]):" - "%></b> 
                         </div>
                     </div>
                     
@@ -288,7 +292,7 @@ String projectid=(String) request.getAttribute("projectid");
 										<select class="form-control "name="Member" id="Member0" required="required" style=" font-weight: bold; text-align-last: left; width: 500px;" data-live-search="true" data-container="body">										
 				          					<option disabled="true"  selected value="">Choose...</option>
 						    					<% for (Object[] obj : EmployeeList) {%>
-			       									<option value="<%=obj[0]%>"><%=obj[1]%> ( <%=obj[2] %> ) </option>
+			       									<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> (<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>) </option>
 			    								<%} %>					
 										</select>
 									</td>									

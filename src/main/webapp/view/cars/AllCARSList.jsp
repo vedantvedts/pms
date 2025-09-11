@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -16,7 +17,7 @@
 	text-align: justify;
 	
 }
-
+m
 .card-body{
 	padding: 0rem !important;
 }
@@ -271,22 +272,22 @@ String carsfromdate = (String)request.getAttribute("carsfromdate");
 String carstodate   = (String)request.getAttribute("carstodate");
 %>
 
-<% String ses=(String)request.getParameter("result");
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 <div class="container-fluid">
 	<div class="row">
@@ -369,13 +370,13 @@ String carstodate   = (String)request.getAttribute("carstodate");
 														<td> From Date :&nbsp; </td>
 												        <td> 
 															<input type="text" class="form-control input-sm mydate" onchange="this.form.submit()"  readonly="readonly"  <%if(rsqrfromdate!=null){%>
-													        	value="<%=fc.SqlToRegularDate(rsqrfromdate)%>" <%}%> value=""  id="rsqrfromdate" name="rsqrfromdate"  required="required"   > 
+													        	value="<%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(rsqrfromdate))%>" <%}%> value=""  id="rsqrfromdate" name="rsqrfromdate"  required="required"   > 
 														</td>
 														<td></td>
 														<td >To Date :&nbsp;</td>
 														<td>					
 															<input type="text"  class="form-control input-sm mydate" onchange="this.form.submit()"  readonly="readonly" <%if(rsqrtodate!=null){%>
-													        	 value="<%=fc.SqlToRegularDate(rsqrtodate)%>" <%}%>  value=""  id="rsqrtodate" name="rsqrtodate"  required="required"  > 							
+													        	 value="<%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(rsqrtodate))%>" <%}%>  value=""  id="rsqrtodate" name="rsqrtodate"  required="required"  > 							
 														</td>
 													</tr>
 												</table>
@@ -408,12 +409,12 @@ String carstodate   = (String)request.getAttribute("carstodate");
 					                       				%>
 					                        			<tr>
 					                            			<td style="text-align: center;width: 5%;"><%=++SNA%></td>
-					                            			<td style="text-align: left;width: 20%;"><%=form[2]+" ("+form[1]+"), "+form[3]%></td>
-					                            			<td style="text-align: center;width: 15%;"><%=form[6] %> </td>
-					                            			<td style="text-align: right;width: 10%;"><%=form[11] %> </td>
+					                            			<td style="text-align: left;width: 20%;"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%> (<%=form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "%>), <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
+					                            			<td style="text-align: center;width: 15%;"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - " %> </td>
+					                            			<td style="text-align: right;width: 10%;"><%=form[11]!=null?StringEscapeUtils.escapeHtml4(form[11].toString()): " - " %> </td>
 					                            			<td style="text-align: center;width: 28%;">
 																<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSRSQRTransStatus.htm" value="<%=form[4] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
-													    			<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+													    			<%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 													    		</button>
 											 				</td>
 											 				<td style="text-align: center;width: 20%;">
@@ -546,13 +547,13 @@ String carstodate   = (String)request.getAttribute("carstodate");
 														<td> From Date :&nbsp; </td>
 												        <td> 
 															<input type="text" class="form-control input-sm mydate" onchange="this.form.submit()"  readonly="readonly"  <%if(socfromdate!=null){%>
-													        	value="<%=fc.SqlToRegularDate(socfromdate)%>" <%}%> value=""  id="socfromdate" name="socfromdate"  required="required"   > 
+													        	value="<%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(socfromdate))%>" <%}%> value=""  id="socfromdate" name="socfromdate"  required="required"   > 
 														</td>
 														<td></td>
 														<td >To Date :&nbsp;</td>
 														<td>					
 															<input type="text"  class="form-control input-sm mydate" onchange="this.form.submit()"  readonly="readonly" <%if(soctodate!=null){%>
-													        	 value="<%=fc.SqlToRegularDate(soctodate)%>" <%}%>  value=""  id="soctodate" name="soctodate"  required="required"  > 							
+													        	 value="<%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(soctodate))%>" <%}%>  value=""  id="soctodate" name="soctodate"  required="required"  > 							
 														</td>
 													</tr>
 												</table>
@@ -584,12 +585,12 @@ String carstodate   = (String)request.getAttribute("carstodate");
 						                       				%>
 						                        			<tr>
 						                            			<td style="text-align: center;width: 5%;"><%=++SNA%></td>
-						                            			<td style="text-align: left;width: 20%;"><%=form[9]+" ("+form[13]+"), "+form[14]%></td>
-						                            			<td style="text-align: center;width: 15%;"><%=form[2] %> </td>
-						                            			<td style="text-align: right;width: 10%;"><%=form[15] %> </td>
+						                            			<td style="text-align: left;width: 20%;"><%=form[9]!=null?StringEscapeUtils.escapeHtml4(form[9].toString()): " - "%> (<%=form[13]!=null?StringEscapeUtils.escapeHtml4(form[13].toString()): " - "%>), <%=form[14]!=null?StringEscapeUtils.escapeHtml4(form[14].toString()): " - "%></td>
+						                            			<td style="text-align: center;width: 15%;"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - " %> </td>
+						                            			<td style="text-align: right;width: 10%;"><%=form[15]!=null?StringEscapeUtils.escapeHtml4(form[15].toString()): " - " %> </td>
 						                            			<td style="text-align: center;width: 33%;">
-																	<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSTransStatus.htm" value="<%=form[0] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[11] %>; font-weight: 600;" formtarget="_blank">
-														    			<%=form[10] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+																	<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSTransStatus.htm" value="<%=form[0]%>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[11] %>; font-weight: 600;" formtarget="_blank">
+														    			<%=form[10]!=null?StringEscapeUtils.escapeHtml4(form[10].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 														    		</button>
 												 				</td>
 												 				<td style="text-align: center;width: 15%;">
@@ -655,13 +656,13 @@ String carstodate   = (String)request.getAttribute("carstodate");
 														<td> From Date :&nbsp; </td>
 												        <td> 
 															<input type="text" class="form-control input-sm mydate" onchange="this.form.submit()"  readonly="readonly"  <%if(carsfromdate!=null){%>
-													        	value="<%=fc.SqlToRegularDate(carsfromdate)%>" <%}%> value=""  id="carsfromdate" name="carsfromdate"  required="required"   > 
+													        	value="<%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(carsfromdate))%>" <%}%> value=""  id="carsfromdate" name="carsfromdate"  required="required"   > 
 														</td>
 														<td></td>
 														<td >To Date :&nbsp;</td>
 														<td>					
 															<input type="text"  class="form-control input-sm mydate" onchange="this.form.submit()"  readonly="readonly" <%if(carstodate!=null){%>
-													        	 value="<%=fc.SqlToRegularDate(carstodate)%>" <%}%>  value=""  id="carstodate" name="carstodate"  required="required"  > 							
+													        	 value="<%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(carstodate))%>" <%}%>  value=""  id="carstodate" name="carstodate"  required="required"  > 							
 														</td>
 													</tr>
 												</table>
@@ -693,12 +694,12 @@ String carstodate   = (String)request.getAttribute("carstodate");
 						                       				%>
 						                        			<tr>
 						                            			<td style="text-align: center;width: 5%;"><%=++SNA%></td>
-						                            			<td style="text-align: left;width: 20%;"><%=form[9]+" ("+form[13]+"), "+form[14]%></td>
-						                            			<td style="text-align: center;width: 15%;"><%=form[2] %> </td>
-						                            			<td style="text-align: right;width: 10%;"><%=form[15] %> </td>
+						                            			<td style="text-align: left;width: 20%;"><%=form[9]!=null?StringEscapeUtils.escapeHtml4(form[9].toString()): " - "%> (<%=form[13]!=null?StringEscapeUtils.escapeHtml4(form[13].toString()): " - "%>), <%=form[14]!=null?StringEscapeUtils.escapeHtml4(form[14].toString()): " - "%></td>
+						                            			<td style="text-align: center;width: 15%;"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - " %> </td>
+						                            			<td style="text-align: right;width: 10%;"><%=form[15]!=null?StringEscapeUtils.escapeHtml4(form[15].toString()): " - " %> </td>
 						                            			<td style="text-align: center;width: 33%;">
-																	<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSTransStatus.htm" value="<%=form[0] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[11] %>; font-weight: 600;" formtarget="_blank">
-														    			<%=form[10] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+																	<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSTransStatus.htm" value="<%=form[0]%>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[11] %>; font-weight: 600;" formtarget="_blank">
+														    			<%=form[10]!=null?StringEscapeUtils.escapeHtml4(form[10].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 														    		</button>
 												 				</td>
 												 				<td style="text-align: center;width: 15%;">

@@ -48,6 +48,7 @@ import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.model.PfmsIGITransaction;
 import com.vts.pfms.documents.model.PfmsIRSDocument;
 import com.vts.pfms.documents.model.StandardDocuments;
+import com.vts.pfms.documents.model.UnitMaster;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -770,7 +771,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 
-	private static final String FIELDMASTER="SELECT a.FieldMasterId, a.FieldName, a.FieldShortName, a.FieldCode, a.FieldDesc, a.DataTypeMasterId, a.TypicalValue, a.FieldMinValue, a.FieldMaxValue, a.InitValue, a.FieldOffSet, a.Quantum, a.FieldUnit, a.Remarks, b.DataTypePrefix, b.DataLength, b.AliasName, b.DataStandardName, (SELECT GROUP_CONCAT(c.FieldGroupId SEPARATOR ',') FROM pfms_field_group_linked c WHERE c.FieldMasterId = a.FieldMasterId AND c.IsActive=1) AS FieldGroupIds FROM pfms_field_master a, pfms_data_type_master b WHERE a.IsActive = 1 AND a.DataTypeMasterId=b.DataTypeMasterId ORDER BY a.FieldMasterId, a.FieldName ASC";
+	private static final String FIELDMASTER="SELECT a.FieldMasterId, a.FieldName, a.FieldShortName, a.FieldCode, a.FieldDesc, a.DataTypeMasterId, a.TypicalValue, a.FieldMinValue, a.FieldMaxValue, a.InitValue, a.FieldOffSet, a.Quantum, c.Unit, a.Remarks, b.DataTypePrefix, b.DataLength, b.AliasName, b.DataStandardName, (SELECT GROUP_CONCAT(c.FieldGroupId SEPARATOR ',') FROM pfms_field_group_linked c WHERE c.FieldMasterId = a.FieldMasterId AND c.IsActive=1) AS FieldGroupIds  FROM pfms_field_master a, pfms_data_type_master b, pfms_unit_master c WHERE a.IsActive = 1 AND a.DataTypeMasterId=b.DataTypeMasterId AND a.UnitMasterId = c.UnitMasterId ORDER BY a.FieldMasterId, a.FieldName ASC";
 	@Override
 	public List<Object[]> fieldMasterList() throws Exception {
 		try {
@@ -1094,6 +1095,54 @@ public class DocumentsDaoImpl implements DocumentsDao{
 			return attach.getConnectorAttachId();
 		}catch (Exception e) {
 			logger.error(new Date() +"Inside DocumentsDaoImpl addIGIConnectorAttach "+ e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+	
+	public static final String DUPLICATEFIELDNAMECOUNT = "SELECT IFNULL(COUNT(FieldMasterId), 0) AS 'Count' FROM pfms_field_master WHERE FieldName=:FieldName AND FieldMasterId<>:FieldMasterId AND IsActive=1";
+	@Override
+	public Long getDuplicateFieldNameCount(String fieldName,String fieldMasterId) throws Exception {
+
+		try {
+			Query query = manager.createNativeQuery(DUPLICATEFIELDNAMECOUNT);
+			query.setParameter("FieldName", fieldName);
+			query.setParameter("FieldMasterId", fieldMasterId);
+			return (Long)query.getSingleResult();
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside DocumentsDAOImpl getDuplicateFieldNameCount "+ e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static final String DUPLICATEGROUPNAMECOUNT = "SELECT IFNULL(COUNT(FieldGroupId), 0) AS 'Count' FROM pfms_field_group WHERE GroupName=:GroupName AND FieldGroupId<>:FieldGroupId AND IsActive=1";
+	@Override
+	public Long getDuplicateGroupNameCount(String groupName,String fieldGroupId) throws Exception {
+		
+		try {
+			Query query = manager.createNativeQuery(DUPLICATEGROUPNAMECOUNT);
+			query.setParameter("GroupName", groupName);
+			query.setParameter("FieldGroupId", fieldGroupId);
+			return (Long)query.getSingleResult();
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside DocumentsDAOImpl getDuplicateGroupNameCount "+ e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+	
+	public static final String DUPLICATEGROUPCODECOUNT = "SELECT IFNULL(COUNT(FieldGroupId), 0) AS 'Count' FROM pfms_field_group WHERE GroupCode=:GroupCode AND FieldGroupId<>:FieldGroupId AND IsActive=1";
+	@Override
+	public Long getDuplicateGroupCodeCount(String groupCode,String fieldGroupId) throws Exception {
+		
+		try {
+			Query query = manager.createNativeQuery(DUPLICATEGROUPCODECOUNT);
+			query.setParameter("GroupCode", groupCode);
+			query.setParameter("FieldGroupId", fieldGroupId);
+			return (Long)query.getSingleResult();
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside DocumentsDAOImpl getDuplicateGroupCodeCount "+ e);
 			e.printStackTrace();
 			return 0L;
 		}
@@ -1889,9 +1938,13 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 
-	private static final String GETIRSFIELDDESCRIPTIONLIST = "SELECT a.IRSFieldDescId, a.LogicalInterfaceId, a.FieldMasterId, a.DataTypeMasterId, c.DataLength, a.FieldDesc, a.Quantum, a.Remarks, a.FieldName, a.FieldShortName, a.FieldCode, c.DataTypePrefix, a.FieldGroupId, a.TypicalValue, a.FieldMinValue, a.FieldMaxValue, a.InitValue, a.FieldOffSet, a.FieldUnit, a.IRSSpecificationId, a.ArrayMasterId, d.ArrayName, d.ArrayValue, e.GroupName, e.GroupCode, e.GroupType, a.GroupVariable, c.AliasName, c.DataStandardName, a.FieldSlNo \r\n"
-			+ "FROM pfms_irs_field_desc a JOIN pfms_irs_document_specifications b ON a.IRSSpecificationId = b.IRSSpecificationId AND b.IsActive=1 JOIN pfms_data_type_master c ON a.DataTypeMasterId = c.DataTypeMasterId LEFT JOIN pfms_irs_array_master d ON a.ArrayMasterId = d.ArrayMasterId LEFT JOIN pfms_field_group e ON a.FieldGroupId = e.FieldGroupId \r\n"
-			+ "WHERE a.IsActive=1 AND b.IRSDocId=:IRSDocId ORDER BY CASE WHEN a.FieldGroupId = 0 THEN 1 ELSE 0 END, a.FieldGroupId, a.FieldName, a.FieldMasterId";
+	private static final String GETIRSFIELDDESCRIPTIONLIST = "SELECT a.IRSFieldDescId, a.LogicalInterfaceId, a.FieldMasterId, a.DataTypeMasterId, c.DataLength, a.FieldDesc, a.Quantum, a.Remarks, a.FieldName, a.FieldShortName, a.FieldCode, c.DataTypePrefix, a.FieldGroupId, a.TypicalValue, a.FieldMinValue, a.FieldMaxValue, a.InitValue, a.FieldOffSet, a.FieldUnit, a.IRSSpecificationId, a.ArrayMasterId, d.ArrayName, d.ArrayValue, e.GroupName, e.GroupCode, e.GroupType, a.GroupVariable, c.AliasName, c.DataStandardName, a.FieldSlNo\r\n"
+			+ "FROM pfms_irs_field_desc a JOIN pfms_irs_document_specifications b ON a.IRSSpecificationId = b.IRSSpecificationId AND b.IsActive=1\r\n"
+			+ "JOIN pfms_data_type_master c ON a.DataTypeMasterId = c.DataTypeMasterId\r\n"
+			+ "LEFT JOIN pfms_irs_array_master d ON a.ArrayMasterId = d.ArrayMasterId\r\n"
+			+ "LEFT JOIN pfms_field_group e ON a.FieldGroupId = e.FieldGroupId\r\n"
+			+ "JOIN ( SELECT FieldGroupId, MIN(IRSFieldDescId) AS first_id FROM pfms_irs_field_desc WHERE IsActive = 1 GROUP BY FieldGroupId) g ON a.FieldGroupId = g.FieldGroupId\r\n"
+			+ "WHERE a.IsActive = 1 AND b.IRSDocId =:IRSDocId ORDER BY CASE WHEN a.FieldGroupId = 0 THEN a.IRSFieldDescId ELSE g.first_id END, a.IRSFieldDescId";
 	@Override
 	public List<Object[]> getIRSFieldDescriptionList(String irsDocId)throws Exception {
 		try {
@@ -2177,7 +2230,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 
-	private static final String GETFIELDDESCRIPTIONLIST = "SELECT a.FieldDescId, a.LogicalInterfaceId, a.FieldMasterId, b.DataTypeMasterId, c.DataLength, b.FieldDesc, b.Quantum, b.Remarks, b.FieldName, b.FieldShortName, b.FieldCode, c.DataTypePrefix, a.FieldGroupId, b.TypicalValue, b.FieldMinValue, b.FieldMaxValue, b.InitValue, b.FieldOffSet, b.FieldUnit, c.AliasName, c.DataStandardName FROM pfms_igi_field_desc a, pfms_field_master b, pfms_data_type_master c WHERE a.IsActive=1 AND a.FieldMasterId = b.FieldMasterId AND b.DataTypeMasterId=c.DataTypeMasterId ORDER BY CASE WHEN a.FieldGroupId = 0 THEN 1 ELSE 0 END, a.FieldGroupId, b.FieldName, a.FieldMasterId";
+	private static final String GETFIELDDESCRIPTIONLIST = "SELECT a.FieldDescId, a.LogicalInterfaceId, a.FieldMasterId, b.DataTypeMasterId, c.DataLength, b.FieldDesc, b.Quantum, b.Remarks, b.FieldName, b.FieldShortName, b.FieldCode, c.DataTypePrefix, a.FieldGroupId, b.TypicalValue, b.FieldMinValue, b.FieldMaxValue, b.InitValue, b.FieldOffSet, b.FieldUnit, c.AliasName, c.DataStandardName FROM pfms_igi_field_desc a, pfms_field_master b, pfms_data_type_master c WHERE a.IsActive=1 AND a.FieldMasterId = b.FieldMasterId AND b.DataTypeMasterId=c.DataTypeMasterId";
 	@Override
 	public List<Object[]> getIGIFieldDescriptionList()throws Exception {
 		try {
@@ -2201,6 +2254,47 @@ public class DocumentsDaoImpl implements DocumentsDao{
 			logger.error(new Date() +" Inside DocumentsDAOImpl getMechanicalInterfaceCount "+ e);
 			e.printStackTrace();
 			return 0;
+		}
+	}
+
+	/*********************************************** Naveen 4/9/25 **************************************************/
+	
+	@Override
+	public UnitMaster getUnitMasterById(long unitMasterId) throws Exception {
+		try{
+			return manager.find(UnitMaster.class, unitMasterId);
+		}catch (Exception e){
+			logger.error(new Date()  + "Inside DAO getUnitMasterById " + e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+
+	@Override
+	public long addUnitMaster(UnitMaster unitmaster) throws Exception{
+		try {
+		    manager.persist(unitmaster);
+		    manager.flush();
+			return unitmaster.getUnitMasterId();
+		}
+		catch (Exception e) {
+			logger.error(new Date()  + " Inside DocumentsDAOImpl addUnitMaster " + e);
+			e.printStackTrace();
+			return 0 ;
+		}
+	}
+
+
+	@Override
+	public List<Object[]> unitMasterList() throws Exception{
+		try {
+			Query query = manager.createNativeQuery("SELECT * FROM pfms_unit_master");
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside DocumentsDAOImpl unitMasterList "+ e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
 		}
 	}
 }

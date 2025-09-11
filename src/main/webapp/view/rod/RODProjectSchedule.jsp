@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.LocalTime"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -148,22 +149,22 @@ SimpleDateFormat sdf3=fc.getSqlDateFormat();
 
 %>
 
-<% String ses=(String)request.getParameter("result"); 
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 <form method="post" action="RecordofDiscussion.htm" id="myformtype" style="">
 <div class="row">
@@ -219,7 +220,7 @@ Project Type:
 														<% for (Object[] obj : ProjectsList) {
 															String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";			 
 														%>
-															<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectId)){ %>selected<%} %> ><%=obj[4]+projectshortName%></option>
+															<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectId)){ %>selected<%} %> ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%><%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%></option>
 														<%} %>
 														
 													</select>
@@ -228,7 +229,7 @@ Project Type:
 														<% for (Object[] obj : ProjectsList) {
 																	 
 														%>
-															<option value="<%=obj[0]%>" <%if(initiationId!=null && initiationId.equalsIgnoreCase(obj[0].toString())) {%> selected <%} %>><%=obj[4]%></option>
+															<option value="<%=obj[0]%>" <%if(initiationId!=null && initiationId.equalsIgnoreCase(obj[0].toString())) {%> selected <%} %>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%></option>
 														<%} %>
 														
 													</select>
@@ -244,7 +245,7 @@ Project Type:
 												   		<option value="addNew">Add New</option>
 												   		<option value="all"  <%if(rodNameId.equals("all")){ %>selected <%} %> >All</option>
 												   		<% for (Object[] obj : RODNameslist) {%>
-															<option value="<%=obj[0]%>"  <%if(obj[0].toString().equals(rodNameId)){ %>selected<%} %> ><%=obj[1]%></option>
+															<option value="<%=obj[0]%>"  <%if(obj[0].toString().equals(rodNameId)){ %>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
 														<%} %>   
 											  		</select>
 								  				</td>
@@ -316,8 +317,8 @@ Project Type:
 								int i=0;
 								for(Object[]obj:PreviousmeetingList){
 							%>
-					 			<a class="tag meetingsp" style="text-decoration: none;" href="RODScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[8].toString()%>
-									&nbsp;&nbsp;Date: <%= sdf2.format(sdf3.parse(obj[3].toString())) %>
+					 			<a class="tag meetingsp" style="text-decoration: none;" href="RODScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - "%>
+									&nbsp;&nbsp;Date: <%= obj[3]!=null?sdf2.format(sdf3.parse(obj[3].toString())) :" - " %>
 								</a>
 							<%}}else{ %>
 								<p class="meetingsp ml-3 mr-3"> No Previous Meetings held !</p>
@@ -459,10 +460,10 @@ myEvents = [
 	 { 
 	    id: "required-id-1",
 	    name: "Meeting Details",
-	    scheduleid: "<%if(obj[0]!=null){%><%=obj[0].toString()%><%}%>",
-	    time: "<%=obj[4].toString()%>",
-	    ComCode : "<%=obj[8]%>" ,
-	    date: "<%=obj[3].toString()%>", 
+	    scheduleid: "<%if(obj[0]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[0].toString())%><%}%>",
+	    time: "<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): ""%>",
+	    ComCode : "<%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): ""%>" ,
+	    date: "<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%>", 
 	    url: "RODScheduleView.htm",
 	    type: "event",  
 	    color: "#0383F3",

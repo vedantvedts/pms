@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.model.LabMaster"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"
  import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -73,7 +74,7 @@ String reviewDate="";
 						<div align="center">
 							<h1 style="color: #145374 !important;margin: 5px 5px 5px 5px">
 								
-								<%if(labInfo!=null && labInfo.getLabCode() !=null){ %><%=labInfo.getLabCode()%>
+								<%if(labInfo!=null && labInfo.getLabCode() !=null){ %><%=StringEscapeUtils.escapeHtml4(labInfo.getLabCode())%>
 								<%}%> Projects
 							</h1>
 						</div>
@@ -112,8 +113,8 @@ String reviewDate="";
 							
 						}
 					%>
-						<h3 style="color: #145374 !important;text-align: center;margin: 25px 0px 0px 0px;"><%if( reviewedby!="" ) {%> Review By - <%=reviewedby %>  <%} %></h3>
-						<h3 style="color: #145374 !important;text-align: center;margin: 0px 0px 25px 0px;"><%if( reviewDate!="" ) {%> Review Date - <%=reviewDate %> <%} %></h3>
+						<h3 style="color: #145374 !important;text-align: center;margin: 25px 0px 0px 0px;"><%if( reviewedby!="" ) {%> Review By - <%=StringEscapeUtils.escapeHtml4(reviewedby) %>  <%} %></h3>
+						<h3 style="color: #145374 !important;text-align: center;margin: 0px 0px 25px 0px;"><%if( reviewDate!="" ) {%> Review Date - <%=StringEscapeUtils.escapeHtml4(reviewDate) %> <%} %></h3>
 						<div align="center">
 
 							<table style="margin-top: 35px;" class="executive home-table"
@@ -125,7 +126,7 @@ String reviewDate="";
 								<tr>
 									<th colspan="8"
 										style="color: #145374 !important;text-align: center; font-weight: 700; font-size: 24px;margin: 0px 5px 5px 5px">
-										<%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %>
+										<%if(labInfo.getLabName()!=null){ %><%=StringEscapeUtils.escapeHtml4(labInfo.getLabName())  %>
 										<%}else{ %>LAB NAME<%} %>
 									</th>
 								</tr>
@@ -153,8 +154,8 @@ String reviewDate="";
 								<tr>
 									<th colspan="8"
 										style="color: #145374 !important;text-align: center; font-weight: 700; font-size: 18px;margin: 5px 5px 5px 5px">
-										<%if(labInfo.getLabAddress() !=null){ %><%=labInfo.getLabAddress()%>
-										, <%=labInfo.getLabCity()%>
+										<%if(labInfo.getLabAddress() !=null){ %><%=StringEscapeUtils.escapeHtml4(labInfo.getLabAddress())%>
+										, <%=labInfo.getLabCity()!=null?StringEscapeUtils.escapeHtml4(labInfo.getLabCity()): " - "%>
 										<%}else{ %>LAB ADDRESS<%} %>
 									</th>
 								</tr>

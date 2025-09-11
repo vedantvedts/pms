@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Stream"%>
 <%@page import="com.vts.pfms.documents.model.IGIConnector"%>
 <%@page import="com.vts.pfms.documents.dto.ICDPinMapDTO"%>
@@ -128,21 +129,22 @@
 		int tabNo = Integer.parseInt(tab);
 		
 	%>
-	<% String ses = (String) request.getParameter("result"); 
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-        <div align="center">
-            <div class="alert alert-danger" role="alert">
-                <%= ses1 %>
-            </div>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
         </div>
-    <% } if (ses != null) { %>
-        <div align="center">
-            <div class="alert alert-success" role="alert">
-                <%= ses %>
-            </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
         </div>
-    <% } %>
+    </div>
+<% } %>
     
     <div class="container-fluid">
     	<div class="card shadow-nohover" style="margin-top: -0.6pc">
@@ -150,7 +152,7 @@
             	<div class="row">
                		<div class="col-md-5" class="left">
 	                    <h5 id="text" style="margin-left: 1%; font-weight: 600">
-	                      Pin Details - <%=documentNo %>
+	                      Pin Details - <%=documentNo!=null?StringEscapeUtils.escapeHtml4(documentNo): " - " %>
 	                    </h5>
                 	</div>
                 	
@@ -227,8 +229,8 @@
 				      						%>
 												<tr>
 										      		<td class="center"><%=++slno %></td>
-										      		<td class="center">J<%=obj[2] %></td>
-										      		<td class="center"><%=obj[5] %> (<%=obj[6] %>)</td>
+										      		<td class="center">J<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+										      		<td class="center"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %> (<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %>)</td>
 										      		<td class="center">
 										      			 <form action="#" method="POST" id="inlinee1form<%=slno%>">
 													        <button type="submit" class="editable-clicko" formaction="ICDConnectionPinDetails.htm" formmethod="post" data-toggle="tooltip" title="Edit">
@@ -308,7 +310,7 @@
 														<div class=" d-flex align-items-center">
 														    <span class="fw-bold" style="margin-right: 4px;font-size: larger;">J</span>
 															<input type="number" class="form-control connectorNo" name="connectorNo" id="connectorNo_E1" min="1" oninput="generatePinDetails('E1')"
-															<%if(e1Data!=null && e1Data[2]!=null) {%>value="<%=e1Data[2]%>" readonly<%} %> required>
+															<%if(e1Data!=null && e1Data[2]!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(e1Data[2].toString())%>" readonly<%} %> required>
 														</div>
 													</div>
 													<div class="col-md-4">
@@ -318,7 +320,7 @@
 														    <option value="" disabled selected>Choose...</option>
 														    <% for(Object[] obj : productTreeS1List){ %>
 														      <option value="<%=obj[0] %>"  <%if(e1Data!=null && e1Data[4]!=null && e1Data[4].toString().equalsIgnoreCase(obj[0].toString())) {%>selected<%} %>>
-														        <%=obj[2]+" ("+obj[7]+")" %>
+														        <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%=" ("+(obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - ")+")" %>
 														      </option>
 														    <% } %>
 														</select>
@@ -332,7 +334,7 @@
 														    	<option value="<%=con.getConnectorId() %>"
 														    	data-pincount="<%=con.getPinCount() %>"
 														    	<%if(e1Data!=null && e1Data[15]!=null && con.getConnectorId() == Long.parseLong(e1Data[15].toString())) {%>selected<%} %>>
-														      		<%=con.getPartNo() %> (<%=con.getConnectorMake() %>)
+														      		<%=con.getPartNo()!=null?StringEscapeUtils.escapeHtml4(con.getPartNo()): " - " %> (<%=con.getConnectorMake()!=null?StringEscapeUtils.escapeHtml4(con.getConnectorMake()): " - " %>)
 														    	</option>
 														    <% }%>
 														</select>
@@ -376,7 +378,7 @@
    			        														<option value="0" <%if(0==Long.parseLong(obj[9].toString())) {%>selected<%} %>>Ground</option>
 															    			<% for(IGIInterface iface : igiInterfaceList){ %>
 															    				<option value="<%=iface.getInterfaceId() %>" <%if(iface.getInterfaceId()==Long.parseLong(obj[9].toString())) {%>selected<%} %> >
-															    					<%=iface.getInterfaceName()%>
+															    					<%=iface.getInterfaceName()!=null?StringEscapeUtils.escapeHtml4(iface.getInterfaceName()): " - "%>
 															    			    </option>
 															    			<% } %>
 															    		</select>
@@ -464,8 +466,8 @@
 				      						%>
 												<tr>
 										      		<td class="center"><%=++slno %></td>
-										      		<td class="center">J<%=obj[2] %></td>
-										      		<td class="center"><%=obj[5] %> (<%=obj[6] %>)</td>
+										      		<td class="center">J<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+										      		<td class="center"><%=obj[5] !=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%> (<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %>)</td>
 										      		<td class="center">
 										      			 <form action="#" method="POST" id="inlinee2form<%=slno%>">
 													        <button type="submit" class="editable-clicko" formaction="ICDConnectionPinDetails.htm" formmethod="post" data-toggle="tooltip" title="Edit">
@@ -545,7 +547,7 @@
 														<div class="d-flex align-items-center">
 														    <span class="fw-bold" style="margin-right: 4px;font-size: larger;">J</span>
 														    <input type="number" class="form-control connectorNo" name="connectorNo" id="connectorNo_E2" min="1" oninput="generatePinDetails('E2')"
-														        <%if(e2Data!=null && e2Data[2]!=null) {%>value="<%=e2Data[2]%>" readonly<%} %> required>
+														        <%if(e2Data!=null && e2Data[2]!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(e2Data[2].toString())%>" readonly<%} %> required>
 														</div>
 													</div>	
 													<div class="col-md-4">
@@ -555,7 +557,7 @@
 														    <option value="" disabled selected>Choose...</option>
 														    <% for(Object[] obj : productTreeS2List){ %>
 														      <option value="<%=obj[0] %>"  <%if(e2Data!=null && e2Data[4]!=null && e2Data[4].toString().equalsIgnoreCase(obj[0].toString())) {%>selected<%} %>>
-														        <%=obj[2]+" ("+obj[7]+")" %>
+														        <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%=" ("+(obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - ")+")" %>
 														      </option>
 														    <% } %>
 														</select>
@@ -569,7 +571,7 @@
 														    	<option value="<%=con.getConnectorId() %>"
 														    	data-pincount="<%=con.getPinCount() %>"
 														    	<%if(e2Data!=null && e2Data[15]!=null && con.getConnectorId() == Long.parseLong(e2Data[15].toString())) {%>selected<%} %>>
-														      		<%=con.getPartNo() %> (<%=con.getConnectorMake() %>)
+														      		<%=con.getPartNo()!=null?StringEscapeUtils.escapeHtml4(con.getPartNo()): " - " %> (<%=con.getConnectorMake()!=null?StringEscapeUtils.escapeHtml4(con.getConnectorMake()): " - " %>)
 														    	</option>
 														    <% }%>
 														</select>
@@ -577,7 +579,7 @@
 													<div class="col-md-2">
 														<label class="form-label">Pins<span class="mandatory">*</span></label>
 														<input type="number" class="form-control pinCount" name="pinCount" id="pinCount_E2" min="1" oninput="generatePinDetails('E2')" 
-														<%if(e2Data!=null && e2Data[22]!=null) { %>value="<%=e2Data[22]%>"<%} %> required readonly>
+														<%if(e2Data!=null && e2Data[22]!=null) { %>value="<%=StringEscapeUtils.escapeHtml4(e2Data[22].toString())%>"<%} %> required readonly>
 													</div>
 												</div>
 										      	<!-- <button type="button" class="btn btn-primary generate-pins mb-3">Generate Pins</button> -->
@@ -600,7 +602,7 @@
 																%>
 																<tr>
 																	<td class="center">
-																		<span class="pinNoText_E2"><%=obj[8] %></span>
+																		<span class="pinNoText_E2"><%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - " %></span>
 																		<input type="hidden" class="pinNo_E2" id="pinNo_E2_<%=slno %>" name="pinNo" value="<%=obj[8] %>">
 																	</td>
 																	<%-- <td>
@@ -664,12 +666,12 @@
 										<div class="col-md-2">
 											<label class="fw-bold">Function<span class="mandatory">*</span></label>
 											<input type="text" class="form-control" name="pinFunction" maxlength="255" placeholder="Enter Function" 
-											<%if(mapping!=null && mapping.getPinFunction()!=null) {%>value="<%=mapping.getPinFunction()%>"<%} %> required>
+											<%if(mapping!=null && mapping.getPinFunction()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(mapping.getPinFunction())%>"<%} %> required>
 										</div>
 										<div class="col-md-2">
 											<label class="fw-bold">Signal Name<span class="mandatory">*</span></label>
 											<input type="text" class="form-control" name="signalName" maxlength="255" placeholder="Enter Signal Name"
-											<%if(mapping!=null && mapping.getSignalName()!=null) {%>value="<%=mapping.getSignalName()%>"<%} %> required>
+											<%if(mapping!=null && mapping.getSignalName()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(mapping.getSignalName())%>"<%} %> required>
 										</div>
 										<div class="col-md-2">
 											<label class="fw-bold">From<span class="mandatory">*</span></label>
@@ -685,7 +687,7 @@
 											    	data-systemtype="<%=obj[3] %>"
 											    	data-subsystemid="<%=obj[4] %>"
 											    	<%if(mapping!=null && mapping.getConnectorPinIdFrom()!=null && mapping.getConnectorPinIdFrom()== Long.parseLong(obj[7].toString())) {%>selected<%} %>>
-											      		<%=obj[5] %> (<%=obj[6] %>) - <%=obj[8] %>
+											      		<%=obj[5] !=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%> (<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %>) - <%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - " %>
 											    	</option>
 											    <% } //} %>
 											</select>
@@ -704,7 +706,7 @@
 											    	data-systemtype="<%=obj[3] %>"
 											    	data-subsystemid="<%=obj[4] %>"
 											    	<%if(mapping!=null && mapping.getConnectorPinIdTo()!=null && mapping.getConnectorPinIdTo()== Long.parseLong(obj[7].toString())) {%>selected<%} %>>
-											      		<%=obj[5] %> (<%=obj[6] %>) - <%=obj[8] %>
+											      		<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %> (<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %>) - <%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - " %>
 											    	</option>
 											    <% } //} %>
 											</select>
@@ -722,25 +724,25 @@
 										<div class="col-md-2">
 	       									<label class="fw-bold">Cable Max Length (In Meters)<span class="mandatory">*</span></label>
 	       									<input type="number" step="1" class="form-control " name="cableMaxLength" id="cableMaxLengthAdd" placeholder="Enter Maximum Length of Cable" min="0"
-	       									<%if(mapping!=null && mapping.getCableMaxLength()!=null) {%>value="<%=mapping.getCableMaxLength()%>"<%} %> required>
+	       									<%if(mapping!=null && mapping.getCableMaxLength()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(mapping.getCableMaxLength().toString())%>"<%} %> required>
 	       									<span class="mandatory" id="cablelengthwarning"></span>
 	       								</div>
 	       								<div class="col-md-2">
 	       									<label class="fw-bold">Interface Loss per Meter<span class="mandatory">*</span></label>
 	       									<input type="number" step="1" class="form-control " name="interfaceLoss" id="interfaceLossAdd" placeholder="Enter Interface Loss per Meter" min="0" 
-	       									<%if(mapping!=null && mapping.getInterfaceLoss()!=null) {%>value="<%=mapping.getInterfaceLoss()%>"<%} %> required>
+	       									<%if(mapping!=null && mapping.getInterfaceLoss()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(mapping.getInterfaceLoss().toString())%>"<%} %> required>
 	       									<span class="mandatory" id="interfacelosswarning"></span>
 	       								</div>
 	       								<div class="col-md-2">
 	       									<label class="fw-bold">Cable Bending Radius<span class="mandatory">*</span></label>
 	       									<input type="number" step="any" class="form-control " name="cableBendingRadius" id="cableBendingRadiusAdd" placeholder="Enter Cable Bending Radius" min="0" 
-	       									<%if(mapping!=null && mapping.getCableBendingRadius()!=null) {%>value="<%=mapping.getCableBendingRadius()%>"<%} %> required>
+	       									<%if(mapping!=null && mapping.getCableBendingRadius()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(mapping.getCableBendingRadius().toString())%>"<%} %> required>
 	       									<span class="mandatory" id="cableradiuswarning"></span>
 	       								</div>
 										<div class="col-md-2">
 											<label class="fw-bold">Remarks</label>
 											<input type="text" class="form-control " name="remarks" maxlength="255" placeholder="Enter Remarks"
-											<%if(mapping!=null && mapping.getRemarks()!=null) {%>value="<%=mapping.getRemarks()%>"<%} %>>
+											<%if(mapping!=null && mapping.getRemarks()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(mapping.getRemarks())%>"<%} %>>
 										</div>
 										<div class="col-md-1 left" style="margin-top: auto;">
 											<%if(mapping!=null) {%>
@@ -777,21 +779,21 @@
 		      						%>
 										<tr>
 								      		<td class="center"><%=++slno %></td>
-								      		<td class="center"><%=map.getConnectionCode() %></td>
-								      		<td><%=map.getPinFunction() %></td>
-								      		<td><%=map.getSignalName() %></td>
+								      		<td class="center"><%=map.getConnectionCode()!=null?StringEscapeUtils.escapeHtml4(map.getConnectionCode()): " - " %></td>
+								      		<td><%=map.getPinFunction()!=null?StringEscapeUtils.escapeHtml4(map.getPinFunction()): " - " %></td>
+								      		<td><%=map.getSignalName()!=null?StringEscapeUtils.escapeHtml4(map.getSignalName()): " - " %></td>
 								      		<td>
 								      			<%if(map.getInterfaceId()==-1) { %> 
 								      				Not Connected
 								      			<%} else if(map.getInterfaceId()==0){ %>
 								      				Ground
 								      			<%} else{ %>
-								      				<%=map.getInterfaceContent()!=null?map.getInterfaceContent():"-" %>
+								      				<%=map.getInterfaceContent()!=null?StringEscapeUtils.escapeHtml4(map.getInterfaceContent()): " - " %>
 								      			<%} %>
 								      		</td>
-								      		<td class="center"><%=map.getCableMaxLength() %> Meters</td>
-								      		<td ><%=map.getLevelNameE1() %> (<%=map.getLevelCodeE1() %>) - <%=map.getPinNoE1() %></td>
-								      		<td ><%=map.getLevelNameE2() %> (<%=map.getLevelCodeE2() %>) - <%=map.getPinNoE2() %></td>
+								      		<td class="center"><%=map.getCableMaxLength()!=null?StringEscapeUtils.escapeHtml4(map.getCableMaxLength().toString()): " - " %> Meters</td>
+								      		<td ><%=map.getLevelNameE1()!=null?StringEscapeUtils.escapeHtml4(map.getLevelNameE1()): " - " %> (<%=map.getLevelCodeE1()!=null?StringEscapeUtils.escapeHtml4(map.getLevelCodeE1()): " - " %>) - <%=map.getPinNoE1()!=null?StringEscapeUtils.escapeHtml4(map.getPinNoE1()): " - " %></td>
+								      		<td ><%=map.getLevelNameE2()!=null?StringEscapeUtils.escapeHtml4(map.getLevelNameE2()): " - " %> (<%=map.getLevelCodeE2()!=null?StringEscapeUtils.escapeHtml4(map.getLevelCodeE2()): " - " %>) - <%=map.getPinNoE2()!=null?StringEscapeUtils.escapeHtml4(map.getPinNoE2()): " - " %></td>
 								      		<td class="center"><%=map.getRemarks()!=null && !map.getRemarks().isEmpty()?map.getRemarks():"-" %></td>
 								      		<td class="center">
 								      			 <form action="ICDConnectionPinDetails.htm" method="POST" id="inlinemapform<%=slno%>">

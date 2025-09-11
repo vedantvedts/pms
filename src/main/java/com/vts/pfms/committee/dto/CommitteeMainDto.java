@@ -24,6 +24,7 @@ public class CommitteeMainDto {
 	private String DivisionId;
 	private String InitiationId;
 	private String CARSInitiationId;
+	private String ProgrammeId;
 	private String[] reps;
 	private String CreatedByEmpid;
 	private String CreatedByEmpidLabid;

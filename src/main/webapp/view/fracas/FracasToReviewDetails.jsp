@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -44,20 +45,22 @@ h6{
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br />
     
@@ -69,8 +72,8 @@ h6{
 	<div class="container" style="margin-bottom:20px;">
    		<div class="card" style=" ">
    	   		<div class="card-header" style="background-color: #055C9D;">
-   				<h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Action : <%=fracasassigndata[12] %> 
-				<span style="float: right;font-size: 17px;margin-top: 5px">Assignee : <%=fracasassigndata[10] %>(<%=fracasassigndata[11] %>)</span>
+   				<h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Action : <%=fracasassigndata[12]!=null?StringEscapeUtils.escapeHtml4(fracasassigndata[12].toString()): " - " %> 
+				<span style="float: right;font-size: 17px;margin-top: 5px">Assignee : <%=fracasassigndata[10]!=null?StringEscapeUtils.escapeHtml4(fracasassigndata[10].toString()): " - " %>(<%=fracasassigndata[11]!=null?StringEscapeUtils.escapeHtml4(fracasassigndata[11].toString()): " - " %>)</span>
    				 </h6>
   
       			</div>
@@ -167,13 +170,13 @@ h6{
 							<% int i=0;
 							for(Object[] obj:fracassublist){ %>		
 								<tr>
-									<td><%=sdf.format(sdf1.parse(obj[3].toString()) )%></td>
-									<td><%=obj[4] %></td>
+									<td><%=obj[3]!=null?sdf.format(sdf1.parse(obj[3].toString()) ):" - " %></td>
+									<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
 									<td style="width:15%;">									
 											<%if(!obj[2].toString().equals("0")){ %>
 									           <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 										            <div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[2]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-											            <%=obj[2]%>
+											            <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>
 											        </div> 
 											   </div> 
 											<%}else{ %>

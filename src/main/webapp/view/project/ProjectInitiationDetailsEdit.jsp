@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
     <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -97,7 +98,7 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	Requirements
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
@@ -109,7 +110,7 @@ small{
 		                   					
 										<div class="col-md-11" >
 		                                     <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Brief" name="ReqBrief" maxlength="250" value="<%if(obj[13]!=null && !obj[13].equals("-")){%><%=obj[13]%><%}else{%><%}%> "placeholde="maximum 250 characters" >  
+		                                        <input style="margin-top:25px;"  type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Brief" name="ReqBrief" maxlength="250" value="<%if(obj[13]!=null && !obj[13].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString())%><%}else{%><%}%> "placeholde="maximum 250 characters" >  
 		                        			 </div>
 		                   				</div> 
 		                   							
@@ -150,7 +151,7 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	Objective
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
@@ -161,7 +162,7 @@ small{
 		                   					 
 									<div class="col-md-11">
 		                                 <div class="form-group">
-		                                   <input style="margin-top:25px;"  type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Brief" name="ObjBrief" maxlength="250" value="<%if(obj[14]!=null && !obj[14].equals("-")){%><%=obj[14]%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                                   <input style="margin-top:25px;"  type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Brief" name="ObjBrief" maxlength="250" value="<%if(obj[14]!=null && !obj[14].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[14].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
 		                        		</div>
 		                   			</div>
 		                   		</div>
@@ -173,7 +174,7 @@ small{
 								<div class="row"  style="margin-bottom:10px; margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%if(obj[1]!=null && !obj[1].equals("-")){%><%=obj[1]%><%}else{%><%}%></div>
+										<div  id="summernote" class="center"><%if(obj[1]!=null && !obj[1].equals("-")){%><%=obj[1].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									 
@@ -211,7 +212,7 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	Scope
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
@@ -223,7 +224,7 @@ small{
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="ScopeBrief" maxlength="250" value="<%if(obj[15]!=null && !obj[15].equals("-")){%><%=obj[15]%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="ScopeBrief" maxlength="250" value="<%if(obj[15]!=null && !obj[15].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[15].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   	</div>
@@ -236,7 +237,7 @@ small{
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%if(obj[2]!=null && !obj[2].equals("-")){%><%=obj[2]%><%}else{%><%}%></div>
+										<div  id="summernote" class="center"><%if(obj[2]!=null && !obj[2].equals("-")){%><%=obj[2].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -272,7 +273,7 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	Multi-Lab Work Share
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
@@ -283,7 +284,7 @@ small{
 		                   					 
 									<div class="col-md-11">
 		                                   <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="MultiLabBrief" maxlength="250" value="<%if(obj[16]!=null && !obj[16].equals("-")){%><%=obj[16]%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="MultiLabBrief" maxlength="250" value="<%if(obj[16]!=null && !obj[16].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[16].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
 		                        			</div>
 		                   			</div> 
 		                   	</div>
@@ -296,7 +297,7 @@ small{
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%if(obj[3]!=null && !obj[3].equals("-")){%><%=obj[3]%><%}else{%><%}%></div>
+										<div  id="summernote" class="center"><%if(obj[3]!=null && !obj[3].equals("-")){%><%=obj[3].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -331,7 +332,7 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	Earlier Work
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
@@ -343,7 +344,7 @@ small{
 		                   					 
 									<div class="col-md-11">
 		                                <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" name="EarlierWorkBrief" maxlength="250" value="<%if(obj[17]!=null && !obj[17].equals("-") ){%><%=obj[17]%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" name="EarlierWorkBrief" maxlength="250" value="<%if(obj[17]!=null && !obj[17].equals("-") ){%><%=StringEscapeUtils.escapeHtml4(obj[17].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
 		                        		</div>
 		                   			</div> 
 		                   					  
@@ -357,7 +358,7 @@ small{
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%if(obj[4]!=null && !obj[4].equals("-")){%><%=obj[4]%><%}else{%><%}%></div>
+										<div  id="summernote" class="center"><%if(obj[4]!=null && !obj[4].equals("-")){%><%=obj[4].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -391,7 +392,7 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	Competency Established
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
@@ -404,7 +405,7 @@ small{
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="CompentencyBrief" maxlength="250" value="<%if(obj[18]!=null && !obj[18].equals("-")){%><%=obj[18]%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="CompentencyBrief" maxlength="250" value="<%if(obj[18]!=null && !obj[18].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[18].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   					  
@@ -418,7 +419,7 @@ small{
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%if(obj[5]!=null&& !obj[5].equals("-")){%><%=obj[5]%><%}else{%><%}%></div>
+										<div  id="summernote" class="center"><%if(obj[5]!=null&& !obj[5].equals("-")){%><%=obj[5].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -452,7 +453,7 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	Need Of Project
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
@@ -465,7 +466,7 @@ small{
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="NeedOfProjectBrief" maxlength="250" value="<%if(obj[19]!=null && !obj[19].equals("-")){%><%=obj[19]%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="NeedOfProjectBrief" maxlength="250" value="<%if(obj[19]!=null && !obj[19].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[19].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   					   
@@ -479,7 +480,7 @@ small{
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%if(obj[6]!=null&& !obj[6].equals("-")){%><%=obj[6]%><%}else{%><%}%></div>
+										<div  id="summernote" class="center"><%if(obj[6]!=null&& !obj[6].equals("-")){%><%=obj[6].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -514,7 +515,7 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	Technology Challenges
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
@@ -527,7 +528,7 @@ small{
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" name="TechnologyBrief" id="Brief" maxlength="250" value="<%if(obj[20]!=null&& !obj[20].equals("-")){%><%=obj[20]%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" name="TechnologyBrief" id="Brief" maxlength="250" value="<%if(obj[20]!=null&& !obj[20].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[20].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   					 
@@ -541,7 +542,7 @@ small{
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%if(obj[7]!=null&& !obj[7].equals("-")){%><%=obj[7]%><%}else{%><%}%></div>
+										<div  id="summernote" class="center"><%if(obj[7]!=null&& !obj[7].equals("-")){%><%=obj[7].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -575,7 +576,7 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	Risk Mitigation
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
@@ -588,7 +589,7 @@ small{
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="RiskMitigationBrief" maxlength="250" value="<%if(obj[21]!=null&& !obj[21].equals("-")){%><%=obj[21]%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="RiskMitigationBrief" maxlength="250" value="<%if(obj[21]!=null&& !obj[21].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[21].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   					   </div>
@@ -601,7 +602,7 @@ small{
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%if(obj[8]!=null&& !obj[8].equals("-")){%><%=obj[8]%><%}else{%><%}%></div>
+										<div  id="summernote" class="center"><%if(obj[8]!=null&& !obj[8].equals("-")){%><%=obj[8].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -635,7 +636,7 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	Proposal
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
@@ -647,7 +648,7 @@ small{
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="ProposalBrief" maxlength="250" value="<%if(obj[22]!=null&& !obj[22].equals("-")){%><%=obj[22]%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="ProposalBrief" maxlength="250" value="<%if(obj[22]!=null&& !obj[22].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[22].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   					   </div>
@@ -660,7 +661,7 @@ small{
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%if(obj[9]!=null&& !obj[9].equals("-")){%><%=obj[9]%><%}else{%><%}%></div>
+										<div  id="summernote" class="center"><%if(obj[9]!=null&& !obj[9].equals("-")){%><%=obj[9].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -695,7 +696,7 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	Realization Plan
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
@@ -706,7 +707,7 @@ small{
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="RealizationBrief" maxlength="250" value="<%if(obj[23]!=null&& !obj[23].equals("-")){%><%=obj[23]%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="RealizationBrief" maxlength="250" value="<%if(obj[23]!=null&& !obj[23].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[23].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   					   
@@ -720,7 +721,7 @@ small{
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%if(obj[10]!=null&& !obj[10].equals("-")){%><%=obj[10]%><%}else{%><%}%></div>
+										<div  id="summernote" class="center"><%if(obj[10]!=null&& !obj[10].equals("-")){%><%=obj[10].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -756,7 +757,7 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	World Scenario
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
@@ -769,7 +770,7 @@ small{
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="WorldScenarioBrief" maxlength="250" value="<%if(obj[24]!=null&& !obj[24].equals("-")){%><%=obj[24]%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="WorldScenarioBrief" maxlength="250" value="<%if(obj[24]!=null&& !obj[24].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[24].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   					   </div>
@@ -784,7 +785,7 @@ small{
 									
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%if(obj[12]!=null&& !obj[12].equals("-")){%><%=obj[12]%><%}else{%><%}%></div>
+										<div  id="summernote" class="center"><%if(obj[12]!=null&& !obj[12].equals("-")){%><%=obj[12].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  

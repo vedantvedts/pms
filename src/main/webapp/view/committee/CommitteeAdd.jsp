@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
 
@@ -47,20 +48,22 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 String projectappliacble=(String)request.getAttribute("projectappliacble");
 %>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></div>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
     <br />
     
     
@@ -75,7 +78,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 							</div>
 							<div class="col-md-6">
 								<%if(Long.parseLong(projectid)>0){ %>
-								<div align="right"><b class="text-white"  >Project : <%=projectdetails[4] %></b></div>
+								<div align="right"><b class="text-white"  >Project : <%=projectdetails[4]!=null?StringEscapeUtils.escapeHtml4(projectdetails[4].toString()): " - " %></b></div>
 								<%} %>
 							</div>
 						</div>
@@ -118,7 +121,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 						</div>
 						
 						<div class="row">
-						 <div class="col-md-3">
+						 <div class="col-md-2">
 								<div class="form-group">
 									<label class="control-label">Project Applicable<span class="mandatory" style="color: red;">*</span></label>
 									<select class="custom-select" id="proapplicable" required="required" name="projectapplicable" style="margin-top: -5px">
@@ -134,7 +137,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 							</div> 
 							
 							
-							<div class="col-md-3">
+							<div class="col-md-2">
 								<div class="form-group">
 									<label class="control-label">Tech / Non-Tech<span class="mandatory" style="color: red;">*</span></label>
 									<select class="custom-select" id="technontech" required="required" name="technontech" style="margin-top: -5px">
@@ -145,7 +148,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 								</div>
 							</div>
 							
-							<div class="col-md-3">
+							<div class="col-md-2">
 								<div class="form-group">
 									<label class="control-label">Periodic / Non-Periodic<span class="mandatory" style="color: red;">*</span></label>
 									<select class="custom-select" id="periodic" required="required" name="periodic" style="margin-top: -5px" >
@@ -155,14 +158,23 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 									</select>
 								</div>
 							</div>
-							
-							<div class="col-md-3" style="display: none" id="periodicduration">
+													
+							<div class="col-md-2" style="display: none" id="periodicduration">
 								<div class="form-group">
-									<label class="control-label">Periodic Duration (Days)<span class="mandatory" style="color: red;">*</span></label>
-									<input class="form-control" type="number" min="1" name="periodicduration" id="periodicdurationfield" placeholder="Days">
+									<label class="control-label" >Periodic Duration (Days)<span class="mandatory" style="color: red;">*</span></label>
+									<input class="form-control" type="number" min="1" name="periodicduration" id="periodicdurationfield" style="margin-top: -5px"  placeholder="Days">
 								</div>
 							</div>
-							
+							<div class="col-md-2">
+								<div class="form-group">
+									<label class="control-label">Is Briefing<span class="mandatory" style="color: red;">*</span></label>
+									<select class="custom-select" id="IsBriefing" required="required" name=IsBriefing style="margin-top: -5px" >
+										<option disabled  value="">Choose...</option>
+										<option  value="N" selected>No</option>
+										<option  value="Y">Yes</option>
+									</select>
+								</div>
+							</div>
 						</div>	
 						
 						<div class="row">

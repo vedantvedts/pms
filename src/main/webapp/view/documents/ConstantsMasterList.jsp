@@ -1,3 +1,6 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.stream.Collectors"%>
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.documents.model.IGIConstants"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -16,23 +19,26 @@
 <body>
 
 	<%
-	List<IGIConstants> constantsMasterList = (List<IGIConstants>) request.getAttribute("constantsMasterList");
+		List<Object[]> unitMasterList = (List<Object[]>)request.getAttribute("unitMasterList");
+		List<IGIConstants> constantsMasterList = (List<IGIConstants>) request.getAttribute("constantsMasterList");
+		
 	%>
-	<% String ses = (String) request.getParameter("result"); 
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-        <div align="center">
-            <div class="alert alert-danger" role="alert">
-                <%= ses1 %>
-            </div>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
         </div>
-    <% } if (ses != null) { %>
-        <div align="center">
-            <div class="alert alert-success" role="alert">
-                <%= ses %>
-            </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
         </div>
-    <% } %>
+    </div>
+<% } %>
     
 	<div class="container-fluid">
 		<div class="col-md-12">
@@ -54,9 +60,10 @@
 								<thead class="center">
 									<tr>
 										<th width="10%">Select</th>
-										<th width="30%">Group Name</th>
-										<th width="30%">Constant Name</th>
-										<th width="30%">Constant Value</th>
+										<th width="25%">Group Name</th>
+										<th width="25%">Constant Name</th>
+										<th width="25%">Constant Value</th>
+										<th width="15%">Unit</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -69,10 +76,22 @@
 											<input type="hidden" id="groupName_<%=con.getConstantId()%>" value="<%=con.getGroupName()%>"> 
 											<input type="hidden" id="constantName_<%=con.getConstantId()%>" value="<%=con.getConstantName()%>"> 
 											<input type="hidden" id="constantValue_<%=con.getConstantId()%>" value="<%=con.getConstantValue()%>"> 
+											<input type="hidden" id="unitMasterID_<%=con.getConstantId()%>" value="<%=con.getUnitMasterId()%>"> 
+											<input type="hidden" id="remarks_<%=con.getConstantId()%>" value="<%=con.getRemarks()%>"> 
+											<input type="hidden" id="description_<%=con.getConstantId()%>" value="<%=con.getDescription()%>"> 
 										</td>
-										<td><%=con.getGroupName()%></td>
-										<td><%=con.getConstantName()%></td>
-										<td class="center"><%=con.getConstantValue()%></td>
+										<td><%=con.getGroupName()!=null?StringEscapeUtils.escapeHtml4(con.getGroupName()): " - "%></td>
+										<td><%=con.getConstantName()!=null?StringEscapeUtils.escapeHtml4(con.getConstantName()): " - "%></td>
+										<td class="center"><%=con.getConstantValue()!=null?StringEscapeUtils.escapeHtml4(con.getConstantValue()): " - "%></td>
+										<td ><%
+										if(unitMasterList!=null && !unitMasterList.isEmpty()){
+											for(Object[] obj : unitMasterList){
+												if(con.getUnitMasterId()!=null && con.getUnitMasterId().equals(Long.parseLong(obj[0].toString()))){
+											%>
+												<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %>
+											<%}	}}else{
+											%> - <%} %>
+										</td>
 									</tr>
 									<% } %>
 								</tbody>
@@ -118,11 +137,32 @@
 										<label class="form-label">Constant Name<span class="mandatory">*</span></label> 
 										<input type="text" class="form-control field" name="constantName" id="constantName" placeholder="Enter Constant Name" required="required" maxlength="255" >
 									</div>
-									<div class="col-md-3">
+									<div class="col-md-4">
 										<label class="form-label">Constant Value<span class="mandatory">*</span></label> 
 										<input type="text" class="form-control field" name="constantValue" id="constantValue" placeholder="Enter Constant Value" required="required" maxlength="255" >
 									</div>
-									<div class="col-md-1" style="margin-top: auto;">
+								</div>
+								<div class="row" style="margin-top:15px;">
+									<div class="col-md-4">
+										<label class="form-label">Unit<span class="mandatory" style="color: red;">*</span></label>
+										<select class="form-control selectdee" style="width:100%;" name="unitMasterId" id="unitMasterId" required  >
+											<option disabled selected value="">Choose...</option>
+											 <%if(unitMasterList!=null &&  !unitMasterList.isEmpty()){
+												for(Object[] obj:unitMasterList){
+											%>
+												<option value="<%=obj[0]%>" ><%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %> </option>
+											<%}} %>
+										</select>
+									</div>
+									<div class="col-md-4">
+										<label class="form-label">Remarks</label> 
+										<input type="text" class="form-control field" name="Remarks" id="Remarks" placeholder="Enter Remarks" >
+									</div>
+									<div class="col-md-4">
+										<label class="form-label">Description</label> 
+										<input type="text" class="form-control field" name="Description" id="Description" placeholder="Enter Description" >
+									</div>
+									<div class="col-md-1" style="margin: auto; margin-top:25px;">
 										<button type="submit" class="btn btn-sm submit" name="action" id="action" value="Add" onclick="return confirm('Are you sure to Submit?')">SUBMIT</button>
 									</div>
 									<input type="hidden" name="constantId" id="constantId" value="0">
@@ -151,6 +191,7 @@
 	function openAddModal() {
 		$('.field').val('');
 		$('#constantId').val('0');
+		$('#unitMasterId').prop('selectedIndex', 0).trigger('change');
 		
 		$('#action').removeClass('edit').addClass('submit');
 		$('#action').val('Add');
@@ -175,7 +216,13 @@
 		$('#groupName').val($('#groupName_'+rowId).val());
 		$('#constantName').val($('#constantName_'+rowId).val());
 		$('#constantValue').val($('#constantValue_'+rowId).val());
+		$('#Remarks').val($('#remarks_'+rowId).val());
+		$('#Description').val($('#description_'+rowId).val());
 		$('#constantId').val(rowId);
+		
+		let unitId = $('#unitMasterID_'+rowId).val(); 
+		$('#unitMasterId').val(unitId).trigger('change'); 
+
 		
 		$('#action').removeClass('submit').addClass('edit');
 		$('#action').val('Edit');

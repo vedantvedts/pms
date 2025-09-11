@@ -135,7 +135,7 @@ List<Object[]> workingHrsList = (List<Object[]>)request.getAttribute("workingHrs
 
 	<div style="width: 98.5%;display: block;">
 		<span class="left" style="width: 58.5%;margin-left: 10px;font-weight: bold;"></span>
-		<span class="right" style="width: 40%;float: right;font-weight: bold;">Period : <%=fromDate %> to <%=toDate %></span>
+		<span class="right" style="width: 40%;float: right;font-weight: bold;">Period : <%=fromDate!=null?fromDate: " - " %> to <%=toDate!=null?toDate: " - " %></span>
 	</div>
 	<table id="tabledata">
 		<thead class="center">
@@ -163,12 +163,12 @@ List<Object[]> workingHrsList = (List<Object[]>)request.getAttribute("workingHrs
 			%>
 				<tr>
 					<td class="center"><%=++slno %></td>
-					<td class="left"><%=(obj[1]!=null?obj[1].toString():"-")+", "+(obj[2]!=null?obj[2].toString():"-") %></td>
-					<td class="center"><%=obj[4] %></td>
+					<td class="left"><%=(obj[1]!=null?obj[1].toString():"-")%> <%=", "%> <%=(obj[2]!=null?obj[2].toString():"-") %></td>
+					<td class="center"><%=obj[4]!=null?obj[4].toString(): " - " %></td>
 					<td class="center" style="<%if(deficitcount>0) {%>font-weight: bold;color: red<%}%>"><%=deficitcount %></td>
-					<td class="center" style="<%if(deficitcount>0) {%>font-weight: bold;color: red<%}%>"><%=obj[6] %></td>
+					<td class="center" style="<%if(deficitcount>0) {%>font-weight: bold;color: red<%}%>"><%=obj[6]!=null?obj[6].toString(): " - " %></td>
 					<td class="center" style="<%if(extracount>0) {%>font-weight: bold;color: green<%}%>"><%=extracount %></td>
-					<td class="center" style="<%if(extracount>0) {%>font-weight: bold;color: green<%}%>"><%=obj[8] %></td>
+					<td class="center" style="<%if(extracount>0) {%>font-weight: bold;color: green<%}%>"><%=obj[8]!=null?obj[8].toString(): " - " %></td>
 					<%
 					Duration duration = Duration.between(LocalTime.parse(obj[6].toString()), LocalTime.parse(obj[8].toString()));
 				    

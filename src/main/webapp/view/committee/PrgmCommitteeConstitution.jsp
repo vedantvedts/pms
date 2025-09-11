@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.committee.model.ProgrammeMaster"%>
 <%@page import="com.vts.pfms.cars.model.CARSInitiation"%>
 <%@page import="java.util.stream.Collectors"%>
@@ -16,7 +17,9 @@
 .input-group-text {
 	font-weight: bold;
 }
-
+	.select2-container{
+		width:100% !important;
+		}
 label {
 	font-weight: 800;
 	font-size: 16px;
@@ -69,7 +72,7 @@ sp::before {
 		List<Object[]> allLabList=(List<Object[]>) request.getAttribute("allLabList");
 		List<Object[]> expertList=(List<Object[]>) request.getAttribute("expertList");
 		List<ProgrammeMaster> programmeList=(List<ProgrammeMaster>) request.getAttribute("programmeList");
-		
+		List<Object[]> DesignationList=(List<Object[]>)request.getAttribute("designationlist");
 		
 		List<Object[]> committeeMembersAll=(List<Object[]>)request.getAttribute("committeeMembersAll");
 		Object[] chairperson=null;
@@ -128,22 +131,22 @@ sp::before {
 		String labcode = (String)session.getAttribute("labcode");
 		Long EmpId = (Long) session.getAttribute("EmpId");
 	%>
-	<% String ses=(String)request.getParameter("result");
-	 	String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-		%>
-		<div align="center">
-			<div class="alert alert-danger" role="alert">
-		    <%=ses1 %>
-		    </div>
-		</div>
-		<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-		    	<%=ses %>
-			</div>
-		</div>
-	<%} %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
    
 	<div class="container-fluid">
 		<div class="row">
@@ -169,7 +172,7 @@ sp::before {
 											}
 											for(ProgrammeMaster prgm : programmeList) {
 										%>
-											<option value="<%=prgm.getProgrammeId()%>" <%if(prgm.getProgrammeId()==Long.parseLong(programmeId)) {%>selected<%} %> ><%=prgm.getPrgmName() %> (<%=prgm.getPrgmCode() %>)</option>
+											<option value="<%=prgm.getProgrammeId()%>" <%if(prgm.getProgrammeId()==Long.parseLong(programmeId)) {%>selected<%} %> ><%=prgm.getPrgmName()!=null?StringEscapeUtils.escapeHtml4(prgm.getPrgmName()): " - " %> (<%=prgm.getPrgmCode()!=null?StringEscapeUtils.escapeHtml4(prgm.getPrgmCode()): " - " %>)</option>
 										<%} } %>
 									</select>
 								</form>
@@ -204,7 +207,7 @@ sp::before {
 													<select class="form-control selectdee" name="CpLabCode" tabindex="-1" required="required" style="width: 200px" id="CpLabCode" onchange="chairpersonfetch('1')">
 														<option disabled="disabled"  selected value="">Lab Name</option>
 													    <% for (Object[] obj : allLabList) {%>
-														    <option <%if(chairperson!=null && chairperson[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]%></option>
+														    <option <%if(chairperson!=null && chairperson[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 													    <%} %>
 													    <option <%if(chairperson!=null && chairperson[9].toString().equalsIgnoreCase("@EXP")){ %>selected <%} %>value="@EXP">Expert</option>
 													</select>
@@ -232,7 +235,7 @@ sp::before {
 													<select class="form-control selectdee" name="msLabCode" tabindex="-1" required="required" style="width: 200px" id="mSLabCode" onchange="msfetch('1')">
 														<option disabled="disabled"  selected value="">Lab Name</option>
 													    <% for (Object[] obj : allLabList) {%>
-														    <option <%if(secretary!=null&& secretary[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]%></option>
+														    <option <%if(secretary!=null&& secretary[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 													    <%} %>
 													    <option <%if(secretary!=null && secretary[9].toString().equalsIgnoreCase("@EXP")){ %>selected <%} %>value="@EXP">Expert</option>
 													</select>
@@ -257,7 +260,7 @@ sp::before {
 										<select class="form-control selectdee" id="proxysecretary" required="required" name="proxysecretary"style="margin-top: -5px">
 				    						<option value="0"  selected >None</option>
 				    						<% for (Object[] obj : employeeList1) {%>
-												<option value="<%=obj[0]%>" <%if(proxysecretary!=null && proxysecretary[5].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]%>, <%=obj[3] %></option>
+												<option value="<%=obj[0]%>" <%if(proxysecretary!=null && proxysecretary[5].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></option>
 											<%} %>
 				  						</select>
 				  						<%if(proxysecretary!=null){ %>
@@ -380,25 +383,25 @@ sp::before {
 			              							for(Object[]obj:tempcommitteemembersall){%>
 			              								<tr>
 			              									<td style="display: flex;justify-content: center;align-items: center;">
-			            										<input type="number" class="form-control" name="newslno" value="<%=obj[11] %>" min="1" max="<%=tempcommitteemembersall.size()%>" style="width:50%"> 
+			            										<input type="number" class="form-control" name="newslno" value="<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): "" %>" min="1" max="<%=tempcommitteemembersall.size()%>" style="width:50%"> 
 			              										<input type="hidden" name="memberId" value="<%=obj[0].toString() %>">
 			              									</td>
-			              									<td><%=obj[2].toString() %>,<%=obj[4].toString() %></td>
+			              									<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>,<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
 			              									<td> 
 																<%  if(obj[8].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
 																	else if(obj[8].toString().equalsIgnoreCase("CS") ){	 %> Member Secretary<%}
 																	else if(obj[8].toString().equalsIgnoreCase("CH") ){	 %> Co-Chairperson<%}
 																	else if(obj[8].toString().equalsIgnoreCase("PS") ) { %>Member Secretary (Proxy) <%}
 																	else if(obj[8].toString().equalsIgnoreCase("CI")){   %> Internal<%}
-																	else if(obj[8].toString().equalsIgnoreCase("CW")){	 %> External(<%=obj[12] %>)<%}
-																	else if(obj[8].toString().equalsIgnoreCase("CO")){	 %> External(<%=obj[12]%>)<%}
+																	else if(obj[8].toString().equalsIgnoreCase("CW")){	 %> External(<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %>)<%}
+																	else if(obj[8].toString().equalsIgnoreCase("CO")){	 %> External(<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - "%>)<%}
 																	else if(obj[8].toString().equalsIgnoreCase("P") ){	 %>Presenter <%}
 																	else if(obj[8].toString().equalsIgnoreCase("I")){	 %> Addl. Internal<%}
-																	else if(obj[8].toString().equalsIgnoreCase("W") ){	 %> Addl. External(<%=obj[12] %>)<%}
-																	else if(obj[8].toString().equalsIgnoreCase("E") )    {%> Addl. External(<%=obj[12] %>)<%}
+																	else if(obj[8].toString().equalsIgnoreCase("W") ){	 %> Addl. External(<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %>)<%}
+																	else if(obj[8].toString().equalsIgnoreCase("E") )    {%> Addl. External(<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %>)<%}
 																    // Prudhvi - 27/03/2024 start
-																	else if(obj[8].toString().equalsIgnoreCase("CIP") )    {%> Industry Partner(<%=obj[12] %>)<%}
-																	else if(obj[8].toString().equalsIgnoreCase("IP") )    {%> Addl. Industry Partner(<%=obj[12] %>)<%}
+																	else if(obj[8].toString().equalsIgnoreCase("CIP") )    {%> Industry Partner(<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %>)<%}
+																	else if(obj[8].toString().equalsIgnoreCase("IP") )    {%> Addl. Industry Partner(<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %>)<%}
 																%>
 										
 															</td>
@@ -501,7 +504,7 @@ sp::before {
 															<div class="input select">
 																<select class="form-control selectdee " name="InternalMemberIds" data-live-search="true" required  data-placeholder="Select Members" multiple style="width:400px">
 												                <%for(Object[] obj:employeeList){ %>																							
-																	<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>																				
+																	<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></option>																				
 																<%} %>
 																</select>
 															<input type="hidden" name="InternalLabCode" value="<%=labcode%>"> 	
@@ -532,7 +535,8 @@ sp::before {
 											<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="" style="margin-top: 10px;width:100%">
 												<thead>  
 													<tr >
-														<th colspan="2">External Members (Within DRDO)</th>
+														<th colspan="2">External Members (Within DRDO)
+														<button class="btn bg-primary" type="button" id="externalAdd" style="float: right;color:White;">ADD NEW </button> </th>
 													</tr>
 												</thead>								
 												<tbody>
@@ -543,7 +547,7 @@ sp::before {
 																	<option disabled="true"  selected value="">Lab Name</option>
 																	    <% for (Object[] obj : allLabList) {
 																	    if(!labcode.equals(obj[3].toString())){%>
-																	    <option value="<%=obj[3]%>"><%=obj[3]%></option>
+																	    <option value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 																	    <%}
 																	    }%>
 																</select>
@@ -579,16 +583,16 @@ sp::before {
 											<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="" style="margin-top: 10px;width:100%">
 												<thead>  
 													<tr>
-														<th>Expert Member (Outside DRDO)</th>
+														<th colspan="2">Expert Member (Outside DRDO)<button class="btn bg-primary" type="button" id="expertAdd" style="float: right;color:White;">ADD EXPERT </button> </th>
 													</tr>
 												</thead>								
 												<tbody>
 													<tr class="tr_clone2">
 														<td >
 															<div class="input select ">
-																<select class="selectdee" name="ExpertMemberIds"   data-live-search="true" style="width: 350px"  data-placeholder="Select Members" required multiple>
+																<select class="selectdee" name="ExpertMemberIds"  id="ExpertMemberIds"  data-live-search="true" style="width: 350px"  data-placeholder="Select Members" required multiple>
 													            	<%for(Object[] obj:expertList){ %>																									
-																		<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>	
+																		<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></option>	
 																														
 																	<%} %>
 																						
@@ -626,15 +630,16 @@ sp::before {
 													<td style="width:30%">							
 														<div class="input select">
 															<select class="form-control selectdee" name="industryPartnerId" tabindex="-1"  style="" id="industryPartnerId" onchange="industrypartnerrepname()" required>
-																<option disabled="true"  selected value="">Industry Partner</option>
-																	<% for (IndustryPartner partner : industryPartnerList) {
-																	%>
-																		<option value="<%=partner.getIndustryPartnerId()%>"
-																		data-subtext="(<%=partner.getIndustryCity()+" - "+partner.getIndustryPinCode() %>)"
-																		><%=partner.getIndustryName()%> (<%=partner.getIndustryCity()+" - "+partner.getIndustryPinCode() %>)</option>
-																		
-																	<%}%>
-															</select>
+												<option disabled="true"  selected value="">Industry Partner</option>
+													<% for (IndustryPartner partner : industryPartnerList) {
+													%>
+														<option value="<%=partner.getIndustryPartnerId()%>"
+														data-subtext="(<%=partner.getIndustryCity()+" - "+partner.getIndustryPinCode() %>)"
+														><%=partner.getIndustryName()!=null?StringEscapeUtils.escapeHtml4(partner.getIndustryName()): " - "%> (<%=partner.getIndustryCity()!=null?StringEscapeUtils.escapeHtml4(partner.getIndustryCity()): " - "%>-<%=partner.getIndustryPinCode()!=null?StringEscapeUtils.escapeHtml4(partner.getIndustryPinCode()): " - " %>)</option>
+														
+													<%}%>
+													<option value="0">ADD NEW</option>
+											</select>
 															<input type="hidden" name="industrypartnerlabid" value="@IP" />
 														</div>
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
@@ -642,7 +647,7 @@ sp::before {
 													</td>
 													<td style="width:70%">
 														<div class="input select ">
-															<select class="form-control selectdee" name="industryPartnerRep" id="industryPartnerRep" data-live-search="true"   data-placeholder="Select Members" multiple>
+															<select class="form-control selectdee" name="industryPartnerRep" id="industryPartnerRep" data-live-search="true"   data-placeholder="Select Members" onchange ="addIndusRep()" multiple>
 															</select>
 														</div>
 													</td>						
@@ -678,7 +683,7 @@ sp::before {
 											  			<select class="form-control selectdee" id="repids" name="repids" style="" data-placeholder="Select Rep Types" multiple="multiple" >
 															<option  disabled="disabled" value="0">Choose...</option>
 															<%	for (Object[] obj  : committeerepnotaddedlist) {%>
-														     	<option value="<%=obj[0]%>" ><%=obj[2]%>  </option>
+														     	<option value="<%=obj[0]%>" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>  </option>
 															<% } %>
 														</select>
 													</td>
@@ -706,7 +711,7 @@ sp::before {
 													int count = 1;
 													for (Object[] obj : committeeMemberreplist) { %>
 														<tr id="repmem<%=obj[0] %>">
-															<td><sp> <%=obj[3]%> </sp></td>
+															<td><sp> <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> </sp></td>
 															<td>
 																<button class="fa fa-trash btn btn-danger " type="button"  style="background-color: white;border-color: white;" onclick="memberrepdelete('<%=obj[0] %>');" ></button>
 															</td>
@@ -728,6 +733,351 @@ sp::before {
 				
 	</div>
 
+
+
+
+		<div class="modal fade bd-example-modal-lg" id="externalAddModal"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content" style="width: 140%; margin-left: -15%;">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">External Add
+							Member</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+
+						<div class="row">
+
+							<div class="col-md-4">
+								
+									<label>Lab Name:<span class="mandatory"
+										style="color: red;">*</span></label>
+										
+									
+								<div class="form-group">
+										
+										<select
+										class="form-control selectdee" id="labModal" name="labModal"
+										data-container="body" 
+										required="required" style="font-size: 5px;">
+										<option value="" disabled="disabled" selected="selected"
+											hidden="true">--Select--</option>
+										<%
+										for (Object[] obj : allLabList) {
+										    if(!labcode.equals(obj[3].toString())){%>
+										    <option value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
+										    <%}
+										    }%>
+									</select>
+								</div>
+								</div>
+							
+
+
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>Rank/Salutation</label><br> <select
+										class="form-control selectdee" id="title" name="title"
+										data-container="body" data-live-search="true"
+										style="font-size: 5px;">
+										<option value="" selected="selected" hidden="true">--Select--</option>
+										<option value="Prof.">Prof.</option>
+										<option value="Lt.">Lt.</option>
+										<option value="Dr.">Dr.</option>
+
+									</select>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>Title</label><br> <select
+										class="form-control selectdee" id="salutation"
+										name="salutation" data-container="body"
+										data-live-search="true" style="font-size: 5px;">
+										<option value="" selected="selected" hidden="true">--Select--</option>
+										<option value="Mr.">Mr.</option>
+										<option value="Ms.">Ms.</option>
+									</select>
+								</div>
+							</div>
+						
+						</div>
+
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>Employee No:<span class="mandatory"
+										style="color: red;">*</span></label> <input
+										class="form-control form-control" type="text" id="EmpNo"
+										name="EmpNo" required="required" maxlength="255"
+										style="font-size: 15px; width: 100%; text-transform: uppercase;">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>Employee Name:<span class="mandatory"
+										style="color: red;">*</span></label> <input
+										class="form-control form-control" type="text" id="EmpName"
+										name="EmpName" required="required" maxlength="255"
+										style="font-size: 15px; width: 100%; text-transform: capitalize;">
+								</div>
+							</div>
+
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>Designation:<span class="mandatory"
+										style="color: red;">*</span></label> <select
+										class="form-control selectdee" id="Designation"
+										name="Designation" data-container="body"
+										data-live-search="true" required="required"
+										style="font-size: 5px;">
+										<option value="" disabled="disabled" selected="selected"
+											hidden="true">--Select--</option>
+										 <%  for ( Object[]  obj :DesignationList) {%>
+										<option value="<%=obj[0] %>">
+											<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
+										<%} %>
+									</select>
+								</div>
+							</div>
+
+						</div>
+						
+						<div class="mt-2" align="center">
+						<button class="btn submit" onclick="empNoCheck()">SUBMIT</button>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade bd-example-modal-lg" id="expertAddModal"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content" style="width: 140%; margin-left: -15%;">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel"> Add  Expert
+							Member Details</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+
+						<div class="row">
+	<div class="col-md-4">
+								<div class="form-group">
+									<label>Expert Name:<span class="mandatory"
+										style="color: red;">*</span></label> <input
+										class="form-control form-control" type="text" id="ExtEmpName"
+										name="EmpName" required="required" maxlength="255"
+										style="font-size: 15px; width: 100%; text-transform: capitalize;">
+								</div>
+							</div>
+							
+							
+
+
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>Rank/Salutation</label><br> <select
+										class="form-control selectdee" id="Exttitle" name="title"
+										data-container="body" data-live-search="true"
+										style="font-size: 5px;">
+										<option value="" selected="selected" hidden="true">--Select--</option>
+										<option value="Prof.">Prof.</option>
+										<option value="Lt.">Lt.</option>
+										<option value="Dr.">Dr.</option>
+
+									</select>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>Title</label><br> <select
+										class="form-control selectdee" id="Extsalutation"
+										name="salutation" data-container="body"
+										data-live-search="true" style="font-size: 5px;">
+										<option value="" selected="selected" hidden="true">--Select--</option>
+										<option value="Mr.">Mr.</option>
+										<option value="Ms.">Ms.</option>
+									</select>
+								</div>
+							</div>
+						
+						</div>
+
+						<div class="row">
+							
+						
+
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>Designation:<span class="mandatory"
+										style="color: red;">*</span></label> <select
+										class="form-control selectdee" id="ExtDesignation"
+										name="Designation" data-container="body"
+										data-live-search="true" required="required"
+										style="font-size: 5px;">
+										<option value="" disabled="disabled" selected="selected"
+											hidden="true">--Select--</option>
+										 <%  for ( Object[]  obj :DesignationList) {%>
+										<option value="<%=obj[0] %>">
+											<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
+										<%} %>
+									</select>
+								</div>
+							</div>
+							
+							<div class="col-md-4">
+									<div class="form-group">
+										<label class="control-label">Organization</label><span class="mandatory" style="color: red;">*</span>
+										<input class="form-control" type="text" name="organization" id="organization" placeholder="Max 255 Characters" maxlength="255">
+									</div>
+								</div>
+
+						</div>
+						
+						<div class="mt-2" align="center">
+						<button class="btn submit" onclick="formCheck()">SUBMIT</button>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div class="modal fade bd-example-modal-lg" id="industryPartnerModal"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content" style="width: 140%; margin-left: -15%;">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel"> Add  Industry 
+							Partner Details</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+
+		
+
+						<div class="row">						
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="control-label">Industry Name</label><span class="mandatory" style="color: red;">*</span>
+									<input class="form-control" type="text" id="industryPartnerName2" name="industryPartnerName2" maxlength="255" placeholder="Enter Industry Partner" required="">		
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label"> Address</label><span class="mandatory" style="color: red;">*</span>
+									<input class="form-control" type="text" id="industryPartnerAddress2" name="industryPartnerAddress2" maxlength="1000" placeholder="Enter Street, village/ town" required="">	
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label"> City</label><span class="mandatory" style="color: red;">*</span>
+									<input class="form-control" type="text" id="industryPartnerCity2" name="industryPartnerCity2" maxlength="500" placeholder="Enter City" required="">	
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="form-group">
+									<label class="control-label"> Pin Code</label><span class="mandatory" style="color: red;">*</span>
+									<input class="form-control" type="text" id="industryPartnerPinCode2" name="industryPartnerPinCode2" maxlength="6" placeholder="Enter Pincode" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required="">	
+								</div>
+							
+						</div>
+						
+
+					
+
+						</div>
+				
+						
+						
+						
+						<div class="mt-2" align="center">
+						<button class="btn submit" onclick="industryPartenerAdd()">SUBMIT</button>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div class="modal fade bd-example-modal-lg" id="industryPartnerEmpModal"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content" style="width: 140%; margin-left: -15%;">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel"> Add  Industry 
+							Partner Employee Details</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+
+		
+
+				
+			
+					<div class="row ml-1 mr-1" >
+						<table style="width:100% ; " id="repdetails">
+										<thead style="background-color: #055C9D; color: white;text-align: center;">
+											<tr>
+										    	<th style="padding: 5px 5px 5px 5px;">Name</th>
+										    	<th style="padding: 5px 5px 5px 5px;">Designation</th>
+										    	<th style="padding: 5px 5px 5px 5px;">Mobile No</th>
+										    	<th style="padding: 5px 5px 5px 5px;">Email</th>
+												
+											</tr>
+										</thead>
+								 		<tbody>
+									 		<tr class="tr_clone_repdetails">
+												<td style="padding: 10px 5px 0px 5px;">
+													<input class="form-control" type="text" id="repName" name="repName" maxlength="255" placeholder="Enter Rep Name" required="">
+												</td>	
+												<td style="padding: 10px 5px 0px 5px;">
+													<input class="form-control" type="text" id="repDesignation" name="repDesignation" placeholder="Enter Rep Designation" maxlength="255" required="">
+												</td>	
+												<td style="padding: 10px 5px 0px 5px;">
+													<input class="form-control" type="text" id="repMobileNo" maxlength="10" name="repMobileNo" placeholder="Enter Rep Mobile No" required="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+												</td>
+												<td style="padding: 10px 5px 0px 5px;">
+													<input class="form-control" type="email" id="repEmail" name="repEmail" maxlength="255" placeholder="Enter Rep Email" required="">
+												</td>
+																					
+											</tr>
+										</tbody>
+									</table>
+						</div> 
+						
+						
+						
+						<div class="mt-2" align="center">
+						<button class="btn submit" onclick="industryPartenerEmpAdd()">SUBMIT</button>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
 <script type="text/javascript">
 
 
@@ -902,8 +1252,8 @@ function replacerepdd(){
 								} 
 								 
 								$('#chairperson').html(s);
-								if(hint=='0' && $CpLabCode =='<%=chairperson!=null?chairperson[9]:"-"%>'){
-									$('#chairperson').val('<%=chairperson!=null?chairperson[5]:"-"%>');
+								if(hint=='0' && $CpLabCode =='<%=chairperson!=null?StringEscapeUtils.escapeHtml4(chairperson[9].toString()):"-"%>'){
+									$('#chairperson').val('<%=chairperson!=null?StringEscapeUtils.escapeHtml4(chairperson[5].toString()):"-"%>');
 								}
 															
 							}
@@ -1101,10 +1451,23 @@ function Add(myfrm){
 </script>	
 <!-- Prudhvi 27/03/2024 start -->
 <script type="text/javascript">
+
+function addIndustryPartener(){
+	$('#industryPartnerModal').modal('show');
+}
+
 function industrypartnerrepname(){
 
 	$('#industryPartnerRep').val("");
 	
+	
+	var $industryPartnerId = $('#industryPartnerId').val();
+	
+	if($industryPartnerId==="0"){
+		addIndustryPartener();
+		$('#industryPartnerRep').html('')
+		return ;
+	}
 		var $industryPartnerId = $('#industryPartnerId').val();
 	
 		
@@ -1138,7 +1501,7 @@ function industrypartnerrepname(){
 									+values[i][1] + " (" +values[i][3]+")" 
 									+ '</option>';
 						} 
-						 
+						 s=s+'<option value="0">ADD NEW </option>'
 						$('#industryPartnerRep').html(s);
 						
 				
@@ -1173,7 +1536,321 @@ function slnocheck(formid) {
    	 return confirm('Are You Sure to Update?');
     }
   }
+  
+  
+$("#externalAdd").click(function(){
+	$('#externalAddModal').modal('show');
+	});
+$("#expertAdd").click(function(){
+	$('#expertAddModal').modal('show');
+	});
 
+
+
+function empNoCheck(frmid)
+{
+	var ExternalMember = $('#ExternalMember').val();
+	
+	var labId=$('#labModal').val();
+	var EmpName=$('#EmpName').val().trim();
+	var Designation=$('#Designation').val();
+
+	var title=$('#title').val();
+	var salutation=$('#salutation').val();
+	var $empno=$('#EmpNo').val().trim();
+	
+	if(labId=== "" || $empno==="" ||EmpName==="" ||Designation===""  ) /* ExtNo===null || DronaEmail==="" || InternetEmail==="" || */ 
+	{
+		alert('Please Fill All Mandatory Fields.');
+		
+	}
+	 else if((title==="" && salutation==="")||(title!=="" && salutation!=="")){
+		alert('Please select either Title or Rank');
+	} 
+	else
+	{
+			$.ajax({
+				
+				type : "GET",
+				url : "ExpEmpNoCheck.htm",
+				data : {
+					
+					empno : $empno
+					
+				},
+				datatype : 'json',
+				success : function(result) {
+					console.log(result);
+					var count=0;
+					
+					if(Number(result) >= 1 ){
+						
+						alert('Employee No Already Exists');
+						count++;
+						return false;
+					}
+					if(count==0)
+					{
+						if(confirm('Are you Sure To Save ?'))
+						{
+							
+							$.ajax({
+								
+								type:'get',
+								url:'OfficerExternalAjaxAdd.htm',
+								datatype:'json',
+								data:{
+									labId:labId,
+									EmpName:EmpName,
+									Designation:Designation,
+									title:title,
+									salutation:salutation,
+									EmpNo:$empno
+								},
+								success:function(result){
+									var ajaxresult = JSON.parse(result);
+									
+									if(Number(ajaxresult)>0){
+										alert("Employee added successfully!")
+										$('#labModal').val('');
+										$('#EmpName').val('');
+										$('#Designation').val('');
+										$('#EmpNo').val('');
+										$('#Ext_LabCode').val(labId).trigger('change');
+										console.log(ExternalMember)
+										$('#externalAddModal').modal('hide');
+										ExternalMember.push(ajaxresult+"");
+										$('#ExternalMember').val(ExternalMember).trigger('change');
+									}else{
+										alert("Something went wrong . Please add it from Master")
+									}
+								}
+								
+							})
+							
+						}
+						else
+						{
+							return false;
+						}
+					}
+				}
+			});
+		}
+}
+
+
+
+function formCheck(frmid)
+{
+	var ExpertMemberIdshtm = $('#ExpertMemberIds').html();
+	
+	var value = $('#ExpertMemberIds').val();
+	
+	console.log(ExpertMemberIdshtm)
+	console.log(value)
+	
+
+	var title=$('#Exttitle').val();
+	var salutation=$('#Extsalutation').val();
+	var expertname=$('#ExtEmpName').val();
+	var selectDesig=$('#ExtDesignation').val();
+	
+	var organization=$('#organization').val();
+	
+	//console.log(title+salutation+expertname+selectDesig+mobile+email+organization);
+	if(expertname===""||selectDesig===""||organization===""||selectDesig===null){
+		alert('Please Fill All the Fields ');
+	}
+	
+	else if((title==="" && salutation==="")||(title!=="" && salutation!=="")){
+		window.alert('please select either Title or Rank');
+		event.preventDefault();
+		return false;
+	}
+ 	else{
+		if(window.confirm('Are you sure to save?')){
+			
+			$.ajax({
+				type:'GET',
+				url:'ExperAddAjax.htm',
+				datatype:'json',
+				data:{
+					
+					title:title,
+					salutation:salutation,
+					expertname:expertname,
+					designationId:selectDesig,
+					organization:organization,
+				},
+				success:function (result){
+					var ajaxresult = JSON.parse(result);
+					console.log(ajaxresult)
+					var html="";
+					for(var i=0;i<ajaxresult.length;i++){
+						html = html+"<option value='"+ajaxresult[i][0]+"'> "+  ajaxresult[i][2]+ ", "+ajaxresult[i][3]+"</option>"
+						value.push(ajaxresult[i][0]);
+					}
+					ExpertMemberIdshtm =ExpertMemberIdshtm+html
+					$('#ExpertMemberIds').html(ExpertMemberIdshtm)
+					$('#ExpertMemberIds').val(value).trigger('change');
+					
+					if(ajaxresult.length>0){
+						$('#Exttitle').val('');
+						$('#Extsalutation').val('');
+						$('#ExtEmpName').val('');
+						$('#ExtDesignation').val('');
+						$('#organization').val('');
+						$('#expertAddModal').modal('hide');
+					}
+				}
+			})
+			
+		}
+		else{
+			event.preventDefault();
+			return false;
+		}
+	}
+	
+}
+
+function industryPartenerAdd(){
+	
+	var industryPartnerId = $('#industryPartnerId').html();
+	
+
+	
+	var industryPartnerName2 = 	  $('#industryPartnerName2').val().trim();
+	
+	var industryPartnerAddress2 = $('#industryPartnerAddress2').val().trim();
+	
+	var industryPartnerCity2 =    $('#industryPartnerCity2').val().trim();
+	var industryPartnerPinCode2 = $('#industryPartnerPinCode2').val().trim();
+	
+	if(industryPartnerPinCode2===''||industryPartnerCity2===''||industryPartnerAddress2===''||industryPartnerName2===''){
+		alert("Please fill all the fields")
+		event.preventDefault();
+		return false;
+	}
+	
+	if(confirm('Are you sure to submit?')){
+		
+		$.ajax({
+			type:'GET',
+			url:'industryPartnerAdd.htm',
+			datatype:'json',
+			data:{
+				industryPartnerName2:industryPartnerName2,
+				industryPartnerAddress2:industryPartnerAddress2,
+				industryPartnerCity2:industryPartnerCity2,
+				industryPartnerPinCode2:industryPartnerPinCode2,
+			},
+			success: function(result) {
+			    var ajaxresult = JSON.parse(result);
+
+			    if (ajaxresult.IndustryPartnerId != null) {
+			        alert('Industry Partner Added!');
+
+			        // Create new option element
+			        var newOption = $("<option>", {
+			            value: ajaxresult.IndustryPartnerId,
+			            text: ajaxresult.IndustryName+"( " + ajaxresult.IndustryCity  +" )"
+			        });
+
+			        // Remove ADD NEW temporarily
+			        var $addNew = $('#industryPartnerId option[value="0"]').detach();
+
+			        // Add new option
+			        $('#industryPartnerId').append(newOption);
+
+			        // Append ADD NEW back to end
+			        $('#industryPartnerId').append($addNew);
+
+			        // Set selected value to new partner
+			        $('#industryPartnerId').val(ajaxresult.IndustryPartnerId);
+
+			        // If using Select2, trigger update
+			        $('#industryPartnerId').trigger('change');
+
+			        // Clear modal inputs
+			        $('#industryPartnerName2').val('');
+			        $('#industryPartnerAddress2').val('');
+			        $('#industryPartnerCity2').val('');
+			        $('#industryPartnerPinCode2').val('');
+
+			        // Hide modal
+			        $('#industryPartnerModal').modal('hide');
+			    }
+			}
+		})
+		
+	}else{
+		event.preventDefault();
+		return false;
+	}
+	
+	
+
+	
+}
+
+
+function addIndusRep(){
+	var value = $('#industryPartnerRep').val();
+	
+	console.log(value)
+	if(value.includes('0')){
+		$('#industryPartnerEmpModal').modal('show');
+	}
+}
+
+
+function industryPartenerEmpAdd(){
+	
+	var repName = $("#repName").val().trim();
+	var repDesignation = $('#repDesignation').val().trim();
+	var repEmail = $('#repEmail').val().trim();
+	var repMobileNo = $('#repMobileNo').val().trim();
+	
+	var industryPartnerId = $('#industryPartnerId').val();
+	
+	if(repEmail==='' ||repMobileNo===''|| repDesignation==='' ||repName===''){
+		alert("Please fill all the fields" +industryPartnerId)
+		 event.preventDefault();
+		 return false;
+	}
+	
+	if(confirm('Are you sure to submit?')){
+		$.ajax({
+			type:'GET',
+			url:'industryPartnerEmpAdd.htm',
+			data:{
+				repName:repName,
+				repDesignation:repDesignation,
+				repEmail:repEmail,
+				repMobileNo:repMobileNo,
+				industryPartnerId:industryPartnerId,
+			},
+			success:function (result){
+				var ajaxresult = JSON.parse(result);
+				if(Number(ajaxresult)>0){
+					alert('Industry Partener added successfully !');
+					$("#repName,#repDesignation,#repEmail,#repMobileNo").val('');
+					$('#industryPartnerEmpModal').modal('hide');
+					$('#industryPartnerId').val(industryPartnerId).trigger('change');
+				}
+			}
+		})
+		
+	}else{
+		 event.preventDefault();
+		 return false;
+	}
+	
+	
+	
+}
 </script>
 <!-- Prudhvi 27/03/2024 end -->	
 </body>

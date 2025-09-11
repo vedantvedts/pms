@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"
 import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -32,7 +33,7 @@ List<Object[]> projectslidelist=(List<Object[]>)request.getAttribute("ProjectSli
 										<td>
 											<select class="form-control items selectdee" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="this.form.submit();">
 												<%for(Object[] obj : projectslist){ %>
-													<option <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value=<%=obj[0]%> ><%=obj[4] %></option>
+													<option <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%> ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></option>
 												<%} %>
 											</select>
 										</td>
@@ -59,7 +60,7 @@ List<Object[]> projectslidelist=(List<Object[]>)request.getAttribute("ProjectSli
 												<% int sn=0;for(Object[] 	obj:projectslidelist){ %>
 												<tr>
 													 <td style="text-align: center;"><%=++sn%></td>
-													 <td class="wrap"><%=obj[1]%></td>
+													 <td class="wrap"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></td>
 													 <td  style="text-align: center;"><%=sdf.format(obj[2]) %></td>
 													 <%-- <td><%=obj[3] %></td> --%>
 													 <td>

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.documents.model.FieldGroupLinked"%>
@@ -23,6 +24,7 @@
 <body>
 
 	<%
+		List<Object[]> unitMasterList = (List<Object[]>)request.getAttribute("unitMasterList");
 		List<Object[]> dataTypeMasterList = (List<Object[]>) request.getAttribute("dataTypeMasterList");
 		List<FieldGroupMaster> fieldGroupList = (List<FieldGroupMaster>) request.getAttribute("fieldGroupList");
 		List<FieldGroupLinked> fieldGroupLinkedList = (List<FieldGroupLinked>) request.getAttribute("fieldGroupLinkedList");
@@ -47,7 +49,7 @@
 						<div class="row">
 							<div class="col-md-3">
 								<label class="form-label">Field Name:<span class="mandatory">*</span></label> 
-								<input class="form-control" type="text" name="fieldName" <%if(fieldMaster!=null && fieldMaster.getFieldName()!=null) {%>value="<%=fieldMaster.getFieldName()%>" <%}%> placeholder="Enter Field Name" maxlength="255" required>
+								<input class="form-control" type="text" name="fieldName" id="fieldName" <%if(fieldMaster!=null && fieldMaster.getFieldName()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(fieldMaster.getFieldName())%>" <%}%> placeholder="Enter Field Name" maxlength="255" required>
 							</div>
 							<%-- <div class="col-md-3">
 								<label class="form-label">Field Short Name:<span class="mandatory">*</span></label> 
@@ -63,7 +65,7 @@
 		               				<option value="" disabled selected>Choose...</option>
 		               				<%for(Object[] obj : dataTypeMasterList ){
 		                			 %>
-										<option value="<%=obj[0]%>" <%if(fieldMaster!=null && fieldMaster.getDataTypeMasterId()!=null && fieldMaster.getDataTypeMasterId()==Long.parseLong(obj[0].toString())) {%>selected<%} %> ><%=obj[1] %><%=obj[3] %></option>
+										<option value="<%=obj[0]%>" <%if(fieldMaster!=null && fieldMaster.getDataTypeMasterId()!=null && fieldMaster.getDataTypeMasterId()==Long.parseLong(obj[0].toString())) {%>selected<%} %> ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></option>
 									<%} %>
 								</select>
 							</div>
@@ -74,19 +76,19 @@
 						<div class="row">
 							<div class="col-md-3">
 								<label class="form-label">Typical Value:<span class="mandatory">*</span></label> 
-								<input class="form-control" type="text" name="typicalValue" <%if(fieldMaster!=null && fieldMaster.getTypicalValue()!=null) {%>value="<%=fieldMaster.getTypicalValue()%>" <%}%> placeholder="Enter Typical Value" maxlength="255" required>
+								<input class="form-control" type="text" name="typicalValue" <%if(fieldMaster!=null && fieldMaster.getTypicalValue()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(fieldMaster.getTypicalValue())%>" <%}%> placeholder="Enter Typical Value" maxlength="255" required>
 							</div>
 							<div class="col-md-3">
 								<label class="form-label">Min Value:<span class="mandatory">*</span></label> 
-								<input class="form-control" type="text" name="minValue" <%if(fieldMaster!=null && fieldMaster.getFieldMinValue()!=null) {%>value="<%=fieldMaster.getFieldMinValue()%>" <%}%> placeholder="Enter Min Value" maxlength="255" required>
+								<input class="form-control" type="text" name="minValue" <%if(fieldMaster!=null && fieldMaster.getFieldMinValue()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(fieldMaster.getFieldMinValue())%>" <%}%> placeholder="Enter Min Value" maxlength="255" required>
 							</div>
 							<div class="col-md-3">
 								<label class="form-label">Max Value:<span class="mandatory">*</span></label> 
-								<input class="form-control" type="text" name="maxValue" <%if(fieldMaster!=null && fieldMaster.getFieldMaxValue()!=null) {%>value="<%=fieldMaster.getFieldMaxValue()%>" <%}%> placeholder="Enter Max Value" maxlength="255" required>
+								<input class="form-control" type="text" name="maxValue" <%if(fieldMaster!=null && fieldMaster.getFieldMaxValue()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(fieldMaster.getFieldMaxValue())%>" <%}%> placeholder="Enter Max Value" maxlength="255" required>
 							</div>
 							<div class="col-md-3">
 								<label class="form-label">Init Value:<span class="mandatory">*</span></label> 
-								<input class="form-control" type="text" name="initValue" <%if(fieldMaster!=null && fieldMaster.getInitValue()!=null) {%>value="<%=fieldMaster.getInitValue()%>" <%}%> placeholder="Enter Init Value" maxlength="255" required>
+								<input class="form-control" type="text" name="initValue" <%if(fieldMaster!=null && fieldMaster.getInitValue()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(fieldMaster.getInitValue())%>" <%}%> placeholder="Enter Init Value" maxlength="255" required>
 							</div>
 						</div>
 					</div>
@@ -95,19 +97,28 @@
 						<div class="row">
 							<div class="col-md-3">
 								<label class="form-label">Quantum:<span class="mandatory">*</span></label> 
-								<input class="form-control" type="text" name="quantum" <%if(fieldMaster!=null && fieldMaster.getQuantum()!=null) {%>value="<%=fieldMaster.getQuantum()%>" <%}%> placeholder="Enter Quantum" maxlength="255" required>
+								<input class="form-control" type="text" name="quantum" <%if(fieldMaster!=null && fieldMaster.getQuantum()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(fieldMaster.getQuantum())%>" <%}%> placeholder="Enter Quantum" maxlength="255" required>
 							</div>
 							<div class="col-md-3">
-								<label class="form-label">Unit:<span class="mandatory">*</span></label> 
-								<input class="form-control" type="text" name="unit" <%if(fieldMaster!=null && fieldMaster.getFieldUnit()!=null) {%>value="<%=fieldMaster.getFieldUnit()%>" <%}%> placeholder="Enter Unit" maxlength="255" required>
+								<div class="form-group">
+									<label class="form-label">Unit<span class="mandatory" style="color: red;">*</span></label>
+									<select class="form-control selectdee" name="unitMasterId" id="unitMasterId" data-live-search="true" data-container="body" required  >
+										<option disabled selected value="">Choose...</option>
+										<%
+											for(Object[] obj:unitMasterList){
+										%>
+											<option value="<%=obj[0] %>"  <%if(fieldMaster!=null && fieldMaster.getUnitMasterId()!=null && fieldMaster.getUnitMasterId()==Long.parseLong(obj[0].toString())) {%>selected<%} %>><%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %> </option>
+										<%} %>
+									</select>
+								</div>
 							</div>
 							<div class="col-md-3">
 								<label class="form-label">Description:</label> 
-								<input class="form-control" type="text" name="fieldDesc" <%if(fieldMaster!=null && fieldMaster.getFieldDesc()!=null) {%>value="<%=fieldMaster.getFieldDesc()%>" <%}%> placeholder="Enter Field Description" maxlength="255" >
+								<input class="form-control" type="text" name="fieldDesc" <%if(fieldMaster!=null && fieldMaster.getFieldDesc()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(fieldMaster.getFieldDesc())%>" <%}%> placeholder="Enter Field Description" maxlength="255" >
 							</div>
 							<div class="col-md-3">
 								<label class="form-label">Remarks:</label> 
-								<input class="form-control" type="text" name="remarks" <%if(fieldMaster!=null && fieldMaster.getRemarks()!=null) {%>value="<%=fieldMaster.getRemarks()%>" <%}%> placeholder="Enter Remarks" maxlength="255" >
+								<input class="form-control" type="text" name="remarks" <%if(fieldMaster!=null && fieldMaster.getRemarks()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(fieldMaster.getRemarks())%>" <%}%> placeholder="Enter Remarks" maxlength="255" >
 							</div>
 						</div>
 					</div>
@@ -120,7 +131,7 @@
 									<option value="0">Add New Group</option>
 							        <% for(FieldGroupMaster group : fieldGroupList){ %>
 							        	<option value="<%=group.getFieldGroupId() %>" <%if(likedGroupIds!=null && likedGroupIds.contains(group.getFieldGroupId())) {%>selected<%} %> >
-							        		<%=group.getGroupName()+" ("+group.getGroupCode()+")" %>
+							        		<%=group.getGroupName()!=null?StringEscapeUtils.escapeHtml4(group.getGroupName()): " - "%> <%=" ("+(group.getGroupCode()!=null?StringEscapeUtils.escapeHtml4(group.getGroupCode()): " - ")+")" %>
 							        	</option>
 							        <%} %>
 								</select>
@@ -131,10 +142,10 @@
 					<div class="center">
 						<%if (fieldMaster!= null) { %>
 							<button type="submit" class="btn btn-sm btn-warning edit" name="action" value="Edit" onclick="return confirm('Are you sure to Update?')" >UPDATE</button>
-							<input type="hidden" name="fieldMasterId" value="<%=fieldMaster.getFieldMasterId()%>" />
+							<input type="hidden" name="fieldMasterId" id="fieldMasterId" value="<%=fieldMaster.getFieldMasterId()%>" />
 						<% } else { %>
 							<button type="submit" class="btn btn-sm submit" name="action" value="Add" onclick="return confirm('Are you sure to Submit?')" >SUBMIT</button>
-							<input type="hidden" name="fieldMasterId" value="0" />
+							<input type="hidden" name="fieldMasterId" id="fieldMasterId" value="0" />
 						<% } %>
 						
 						<a class="btn  btn-sm  back" href="FieldMaster.htm">BACK</a>
@@ -262,6 +273,86 @@
 			return false;
 		}
 	}
+	
+	// Field Name Duplicate Check
+	$('#fieldName').on('change', function(){
+		var fieldMasterId = $('#fieldMasterId').val();
+		var fieldName = $(this).val();
+		$.ajax({
+            type: "GET",
+            url: "FieldNameDuplicateCheck.htm",
+            data: {
+            	fieldName: fieldName,
+            	fieldMasterId: fieldMasterId
+            },
+            datatype: 'json',
+            success: function(result) {
+                var ajaxresult = JSON.parse(result); 
+
+                // Check if the Field Name already exists
+                if (ajaxresult > 0) {
+                	$('#fieldName').val(''); 
+                    alert('Field Name Already Exists');
+                }
+            },
+            error: function() {
+                alert('An error occurred while checking the Field Name.');
+            }
+        });
+	});
+	
+	// Group Name Duplicate Check
+	$('#groupName').on('change', function(){
+		var groupName = $(this).val();
+		$.ajax({
+            type: "GET",
+            url: "GroupNameDuplicateCheck.htm",
+            data: {
+            	groupName: groupName,
+            	fieldGroupId: '0'
+            },
+            datatype: 'json',
+            success: function(result) {
+                var ajaxresult = JSON.parse(result); 
+
+                // Check if the Group Name already exists
+                if (ajaxresult > 0) {
+                	$('#groupName').val('');
+                    alert('Group Name Already Exists');
+                }
+            },
+            error: function() {
+                alert('An error occurred while checking the Group Name.');
+            }
+        });
+	});
+	
+	// Group Code Duplicate Check
+	$('#groupCode').on('change', function(){
+		var groupCode = $(this).val();
+		$.ajax({
+            type: "GET",
+            url: "GroupCodeDuplicateCheck.htm",
+            data: {
+            	groupCode: groupCode,
+            	fieldGroupId: '0'
+            },
+            datatype: 'json',
+            success: function(result) {
+                var ajaxresult = JSON.parse(result); 
+
+                // Check if the Group Code already exists
+                if (ajaxresult > 0) {
+                	$('#groupCode').val('');
+                    alert('Group Code Already Exists');
+                }
+            },
+            error: function() {
+                alert('An error occurred while checking the Group Code.');
+            }
+        });
+	});
+
 </script>
 </body>
 

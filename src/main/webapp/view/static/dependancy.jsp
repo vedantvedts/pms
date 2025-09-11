@@ -245,7 +245,8 @@
 <spring:url value="/resources/js/variable-pie.js" var="VariablePieJs" />  
 <script src="${VariablePieJs}"></script>      
 
-
+<spring:url value="/resources/js/crypto-js.min.js" var="cryptoexportjs" />
+<script src="${cryptoexportjs}"></script>
  
 
 

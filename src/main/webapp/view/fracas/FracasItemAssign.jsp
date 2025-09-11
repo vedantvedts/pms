@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
@@ -173,20 +174,22 @@ a:hover {
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-			<div class="alert alert-danger" role="alert" >
-            <%=ses1 %>
-            </div></center>
-			<%}if(ses!=null){ %>
-			<center>
-			<div class="alert alert-success" role="alert"  >
-		    <%=ses %>
-            </div></center>
-             <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
   
     
     
@@ -207,7 +210,7 @@ a:hover {
 										<label class="control-label">Assignee</label>
 										<select class="form-control"  name="employeeid" id="employeeid"  data-live-search="true" required  data-placeholder="Select Members" multiple style="width:100%;">
 											<%for(Object[] obj:employeelist){ %>																							
-											<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>																				
+											<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></option>																				
 											<%} %>
 										</select>
 									</div>
@@ -278,14 +281,14 @@ a:hover {
 													<%for(int i=0;i<fracasassignedlist.size();i++){ %>
 														<tr>
 															<td><%=i+1 %></td>
-															<td><%=fracasassignedlist.get(i)[10] %>(<%=fracasassignedlist.get(i)[11] %>)</td>
-															<td><%=fracasassignedlist.get(i)[2] %></td>
+															<td><%=fracasassignedlist.get(i)[10]!=null?StringEscapeUtils.escapeHtml4(fracasassignedlist.get(i)[10].toString()): " - " %>(<%=fracasassignedlist.get(i)[11]!=null?StringEscapeUtils.escapeHtml4(fracasassignedlist.get(i)[11].toString()): " - " %>)</td>
+															<td><%=fracasassignedlist.get(i)[2]!=null?StringEscapeUtils.escapeHtml4(fracasassignedlist.get(i)[2].toString()): " - " %></td>
 															<td><%= sdf.format(sdf1.parse( fracasassignedlist.get(i)[3].toString() ))%></td>
 															<td style="width:15%;">									
 																	<%if(fracasassignedlist.get(i)[13]!=null){ %>
 															           <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 																            <div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=fracasassignedlist.get(i)[13]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																	            <%=fracasassignedlist.get(i)[13]%>
+																	            <%=StringEscapeUtils.escapeHtml4(fracasassignedlist.get(i)[13].toString())%>
 																	        </div> 
 																	   </div> 
 																	<%}else{ %>

@@ -14,6 +14,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -201,48 +202,8 @@ public class PrintServiceImpl implements PrintService {
 	}
 
 	@Override
-	public Object[] ProjectCommitteeMeetingsCount(String projectid, String CommitteeCode) throws Exception {
-		return dao.ProjectCommitteeMeetingsCount(projectid, CommitteeCode);
-	}
-
-	@Override
-	public List<Object[]> Milestones(String projectid, String committeeid) throws Exception {
-		List<Object[]> milestones = dao.Milestones(projectid, committeeid);
-		List<Object[]> newList = new ArrayList<>();
-		if (milestones.size() != 0) {
-			newList = milestones.stream().filter(i -> (i[21].toString().equalsIgnoreCase("0")
-					&& Integer.parseInt(i[17].toString()) > 0 && i[26] != null
-					&& (LocalDate.parse(todayDate).isEqual(LocalDate.parse(i[26].toString()))
-							|| LocalDate.parse(i[26].toString()).isBefore(LocalDate.parse(todayDate)))
-					&& LocalDate.parse(i[26].toString())
-							.isAfter(LocalDate.parse(i[27] != null ? i[27].toString() : i[7].toString()))) // get the
-																											// object
-																											// with
-																											// levelid 0
-																											// and have
-																											// some
-																											// progress
-																											// // for
-																											// first
-																											// meeting
-																											// checking
-																											// the last
-																											// meeting
-																											// date is
-																											// null or
-																											// not
-					|| (!i[21].toString().equalsIgnoreCase("0") && Integer.parseInt(i[17].toString()) == 100
-							&& i[26] != null
-							&& (LocalDate.parse(todayDate).isEqual(LocalDate.parse(i[26].toString()))
-									|| LocalDate.parse(i[26].toString()).isBefore(LocalDate.parse(todayDate)))
-							&& LocalDate.parse(i[26].toString())
-									.isAfter(LocalDate.parse(i[27] != null ? i[27].toString() : i[7].toString())))
-							&& i[28].toString().equalsIgnoreCase("Y")) // get all the level id except 0 and progress =
-																		// 100
-					.collect(Collectors.toList());
-		}
-		return newList;
-		/* return dao.Milestones(projectid,committeeid); */
+	public Object[] ProjectCommitteeMeetingsCount(String projectId, String divisionId, String initiationId, String carsInitiationId, String programmeId, String committeeCode) throws Exception {
+		return dao.ProjectCommitteeMeetingsCount(projectId, divisionId, initiationId, carsInitiationId, programmeId, committeeCode);
 	}
 
 	@Override
@@ -304,33 +265,13 @@ public class PrintServiceImpl implements PrintService {
 	}
 
 	@Override
-	public List<Object[]> ActionPlanSixMonths(String projectid, String CommitteeCode) throws Exception {
+	public List<Object[]> ActionPlanSixMonths(String projectid, String committeeid) throws Exception {
 		logger.info(new Date() + "Inside SERVICE ActionPlanThreeMonths ");
-		if (CommitteeCode.equalsIgnoreCase("1"))
-
-		{
-			List<Object[]> mainList = dao.ActionPlanSixMonths(projectid, 90);
-			List<Object[]> subList = new ArrayList<>();
-
-			if (mainList.size() != 0) {
-				subList = mainList.stream().filter(i -> i[33].toString().equalsIgnoreCase("Y"))
-						.collect(Collectors.toList());
-			}
-			return subList;
-		}
-		if (CommitteeCode.equalsIgnoreCase("2")) {
-
-			/* return dao.ActionPlanSixMonths(projectid,180); */
-			List<Object[]> mainList = dao.ActionPlanSixMonths(projectid, 180);
-			List<Object[]> subList = new ArrayList<>();
-			if (mainList.size() != 0) {
-				subList = mainList.stream().filter(i -> i[33].toString().equalsIgnoreCase("Y"))
-						.collect(Collectors.toList());
-			}
-			return subList;
-		}
-		List<Object[]> mainList = dao.ActionPlanSixMonths(projectid, 90);
+		
+		Committee committee = dao.getCommitteeData(committeeid);
+		List<Object[]> mainList = dao.ActionPlanSixMonths(projectid, committee.getPeriodicDuration());
 		List<Object[]> subList = new ArrayList<>();
+
 		if (mainList.size() != 0) {
 			subList = mainList.stream().filter(i -> i[33].toString().equalsIgnoreCase("Y"))
 					.collect(Collectors.toList());
@@ -355,8 +296,7 @@ public class PrintServiceImpl implements PrintService {
 
 	@Override
 	public Object[] TechWorkData(String projectid) throws Exception {
-		Object[] data = dao.TechWorkData(projectid);
-		return data;
+		return dao.TechWorkData(projectid);
 	}
 
 	@Override
@@ -515,25 +455,42 @@ public class PrintServiceImpl implements PrintService {
 	}
 
 	@Override
-	public List<Object[]> BreifingMilestoneDetails(String Projectid, String CommitteeCode) throws Exception {
-		List<Object[]> milestones = dao.Milestones(Projectid, CommitteeCode);
-		List<Object[]> newList = new ArrayList<>();
+	public List<Object[]> Milestones(String projectId, String committeeId) throws Exception {
+	    return filterMilestones(projectId, committeeId, true);
+	}
 
-		newList = milestones.stream().filter(i -> (i[21].toString().equalsIgnoreCase("0")
-				&& Integer.parseInt(i[17].toString()) > 0 && i[26] != null
-				&& (LocalDate.parse(todayDate).isEqual(LocalDate.parse(i[26].toString()))
-						|| LocalDate.parse(i[26].toString()).isBefore(LocalDate.parse(todayDate)))
-				&& LocalDate.parse(i[26].toString())
-						.isAfter(LocalDate.parse(i[27] != null ? i[27].toString() : i[7].toString())))
-				|| (!i[21].toString().equalsIgnoreCase("0") && Integer.parseInt(i[17].toString()) > 0 && i[26] != null
-						&& (LocalDate.parse(todayDate).isEqual(LocalDate.parse(i[26].toString()))
-								|| LocalDate.parse(i[26].toString()).isBefore(LocalDate.parse(todayDate)))
-						&& LocalDate.parse(i[26].toString())
-								.isAfter(LocalDate.parse(i[27] != null ? i[27].toString() : i[7].toString())))
-						&& i[29].toString().equalsIgnoreCase("Y")) // for 6.(a)
-				.collect(Collectors.toList());
+	@Override
+	public List<Object[]> BreifingMilestoneDetails(String projectId, String committeeId) throws Exception {
+	    return filterMilestones(projectId, committeeId, false);
+	}
 
-		return newList;
+	private List<Object[]> filterMilestones(String projectId, String committeeId, boolean isMilestone) throws Exception {
+	    List<Object[]> milestones = dao.Milestones(projectId, committeeId);
+	    if (milestones.isEmpty()) return Collections.emptyList();
+
+	    LocalDate today = LocalDate.parse(todayDate); // Parse only once
+
+	    return milestones.stream().filter(i -> {
+	        String levelId = String.valueOf(i[21]);
+	        int progress = Integer.parseInt(String.valueOf(i[17]));
+	        String dateStr = i[26]!=null?i[26].toString():null;
+	        LocalDate date = dateStr != null ? LocalDate.parse(dateStr) : null;
+	        LocalDate compareDate = LocalDate.parse(i[27] != null ? i[27].toString() : i[7].toString());
+
+	        if (date == null || !date.isAfter(compareDate)) return false;
+	        if (!(date.isEqual(today) || date.isBefore(today))) return false;
+
+	        if (isMilestone) {
+	            // For Milestones() method
+	            if (levelId.equals("0") && progress > 0 && "Y".equalsIgnoreCase(String.valueOf(i[28]))) {
+	                return true;
+	            } else return !levelId.equals("0") && progress == 100 && "Y".equalsIgnoreCase(String.valueOf(i[28]));
+	        } else {
+	            // For BreifingMilestoneDetails() method
+	            if (levelId.equals("0") && progress > 0) return true;
+	            else return !levelId.equals("0") && progress > 0 && "Y".equalsIgnoreCase(String.valueOf(i[29]));
+	        }
+	    }).collect(Collectors.toList());
 	}
 
 	@Override
@@ -1251,6 +1208,10 @@ public List<Object[]> otherMeetingList(String projectid) throws Exception {
 	return dao.otherMeetingList(projectid);
 }
 
-
+@Override
+public List<Object[]> getMilestoneOpenActionListByProjectId(String projectId) throws Exception {
+	
+	return dao.getMilestoneOpenActionListByProjectId(projectId);
+}
 
 }

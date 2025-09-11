@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.stream.Collectors"%>
@@ -107,7 +108,7 @@
 					            <th width="3%">SN</th>
 					            <th width="10%">Sub-System</th>
 					            <% for (Object[] subsystem : softwareList) { %>
-					                <th><%= subsystem[2] + " (" + subsystem[7] + ")" %></th>
+					                <th><%= subsystem[2]!=null?subsystem[2].toString(): " - " %> <%= " (" + (subsystem[7]!=null?subsystem[7].toString(): " - ") + ")" %></th>
 					            <% } %>
 					        </tr>
 					    </thead>
@@ -119,7 +120,7 @@
 					        %>
 					            <tr>
 					                <td class="center"><%= ++slnoSS %></td>
-					                <td><%= rowSubsystem[2] + " (" + rowSubsystem[7] + ")" %></td>
+					                <td><%= rowSubsystem[2]!=null?rowSubsystem[2].toString(): " - " %> <%= " (" + (rowSubsystem[7] !=null?rowSubsystem[7].toString(): " - ")+ ")" %></td>
 					                <% for (Object[] colSubsystem : softwareList) { %>
 					                    <td>
 					                        <% 
@@ -128,7 +129,7 @@
 					                        //} else {
 					                            String key = rowSubsystem[7] + "_" + colSubsystem[7];
 					                            String connections = connectionMap.getOrDefault(key, "-");
-					                            out.print(connections);
+					                            out.print(StringEscapeUtils.escapeHtml4(connections));
 					                        //}
 					                        %>
 					                    </td>

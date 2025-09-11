@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.cars.model.CARSSoC"%>
 <%@page import="com.vts.pfms.IndianRupeeFormat"%>
 <%@page import="com.vts.pfms.cars.model.CARSContract"%>
@@ -315,22 +316,22 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 
 %>
 
-<% String ses=(String)request.getParameter("result"); 
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 <div class="container-fluid">
 	<div class="row">
@@ -347,7 +348,7 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 					        			<span class="cssideheading">Title:</span>
 					                </div>
 					            	<div class="col-md-11" style="margin-left: -5%;">
-					                	<span class="cssideheadingdata"><%if(carsIni!=null && carsIni.getInitiationTitle()!=null) {%><%=carsIni.getInitiationTitle() %> <%} else{%>-<%} %></span>
+					                	<span class="cssideheadingdata"><%if(carsIni!=null && carsIni.getInitiationTitle()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsIni.getInitiationTitle()) %> <%} else{%>-<%} %></span>
 					                </div>
 					                
 					            </div>
@@ -355,7 +356,7 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 					            <div class="row">
 					            	<div class="col-md-4">
 					                	<span class="cssideheading">CARS. No:</span>
-					                	&emsp;<span class="cssideheadingdata"><%if(carsIni!=null && carsIni.getCARSNo()!=null) {%><%=carsIni.getCARSNo() %> <%} else{%>-<%} %></span>
+					                	&emsp;<span class="cssideheadingdata"><%if(carsIni!=null && carsIni.getCARSNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsIni.getCARSNo()) %> <%} else{%>-<%} %></span>
 					            	</div>
 					            <div class="col-md-1"></div>
 					            <div class="col-md-3">
@@ -364,7 +365,7 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 					                	<%if(carsIni!=null && carsIni.getFundsFrom()!=null && carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>
 					                		Buildup
 					                	<%} else{%>
-					                		<%if(PDs!=null && PDs[3]!=null) {%><%=PDs[3]+" ("+PDs[0]+")" %><%} %>
+					                		<%if(PDs!=null && PDs[3]!=null) {%><%=StringEscapeUtils.escapeHtml4(PDs[3].toString())%> (<%=PDs[0]!=null?StringEscapeUtils.escapeHtml4(PDs[0].toString()): " - "%>)<%} %>
 					                	<%} %>
 					                	</span>
 					            </div>
@@ -373,7 +374,7 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 					                	<span class="cssideheading">Amount:</span>
 					                		&emsp;<span class="cssideheadingdata">
 					                		<%if(carsSoC!=null && carsSoC.getSoCAmount()!=null) {%>
-					                			<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(carsSoC.getSoCAmount())) %>
+					                			<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(carsSoC.getSoCAmount()))) %>
 					                		<%} else{%>-<%} %>
 					                	</span>
 					                </div>
@@ -460,7 +461,7 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 														        		<div class="form-group">
 														                	<label class="control-label">Date:</label><span class="mandatory">*</span>
 														                    <input  class="form-control form-control" type="text" name="mpOtherDocDate" id="mpOtherDocDate"
-														                     value="<%if(mpdetails!=null && mpdetails.getOtherDocDate()!=null) {%><%=fc.SqlToRegularDate(mpdetails.getOtherDocDate()) %><%} %>" required readonly> 
+														                     value="<%if(mpdetails!=null && mpdetails.getOtherDocDate()!=null) {%><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(mpdetails.getOtherDocDate())) %><%} %>" required readonly> 
 														                </div>
 														            </div>
 														        	
@@ -509,14 +510,14 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 														        		<div class="form-group">
 														                	<label class="control-label">Invoice No:</label><span class="mandatory">*</span>
 														                    <input  class="form-control form-control" type="text" name="invoiceNo" id="invoiceNo" maxlength="50" placeholder="Enter Inovice No"
-														                     value="<%if(mpdetails!=null) {%><%=mpdetails.getInvoiceNo() %><%} %>" required> 
+														                     value="<%if(mpdetails!=null) {%><%=StringEscapeUtils.escapeHtml4(mpdetails.getInvoiceNo()) %><%} %>" required> 
 														                </div>
 														            </div>
 														        	<div class="col-md-3" style="">
 														        		<div class="form-group">
 														                	<label class="control-label">Invoice Date:</label><span class="mandatory">*</span>
 														                    <input  class="form-control form-control" type="text" name="invoiceDate" id="invoiceDate"
-														                     value="<%if(mpdetails!=null) {%><%=fc.SqlToRegularDate(mpdetails.getInvoiceDate()) %><%} %>" required readonly> 
+														                     value="<%if(mpdetails!=null) {%><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(mpdetails.getInvoiceDate())) %><%} %>" required readonly> 
 														                </div>
 														            </div>
 														        	<%-- <div class="col-md-3" style="">
@@ -601,12 +602,12 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
                										
                										<div class="row">
 					               		   				<div class="col-md-3">
-					               		   					<span>No:</span> <span><%=carsContract.getContractNo() %> </span>
+					               		   					<span>No:</span> <span><%=carsContract.getContractNo()!=null?StringEscapeUtils.escapeHtml4(carsContract.getContractNo()): " - " %> </span>
 					               		   				</div>
 					               		   				<div class="col-md-6">
 					               		   				</div>
 					               		   				<div class="col-md-3">
-					               		   					<span>Date:</span> <span><%if(mpdetails.getOtherDocDate()!=null) {%> <%=fc.SqlToRegularDate(mpdetails.getOtherDocDate()) %><%} else{%><%=rdf.format(new Date()) %><%} %> </span>
+					               		   					<span>Date:</span> <span><%if(mpdetails.getOtherDocDate()!=null) {%> <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(mpdetails.getOtherDocDate())) %><%} else{%><%=rdf.format(new Date()) %><%} %> </span>
 					               		   				</div>
 			               		   					</div>
 			               		   					<hr>
@@ -614,7 +615,7 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 					               		   				<div class="col-md-12 mt-2" align="center">
 		               										<h5 style="font-weight: bold;margin-top: 1.5rem;">Approval for <%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-0")) {%>Milestone<%} else{%>Initial Advance<%} %> Payment </h5>
 		               											
-		               										<span style="font-size: large;"><%=carsIni.getInitiationTitle() %> </span>
+		               										<span style="font-size: large;"><%=carsIni.getInitiationTitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getInitiationTitle()): " - " %> </span>
 		               									</div>
 					               		   			</div>
 			               		   					<br>
@@ -623,8 +624,8 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 					               		   				<div class="col-md-12" style="text-align: left;">
 					               		   					<span>
 					               		   						<%=++paymentslno %>) Reference is made to the CARS Contract No. 
-					               		   						<%if(carsContract!=null) {%><%=carsContract.getContractNo() %> <%} %>
-					               		   						dt. <%if(carsContract!=null && carsContract.getContractDate()!=null) {%><%=fc.SqlToRegularDate(carsContract.getContractDate()) %> <%} %>
+					               		   						<%if(carsContract!=null) {%><%=StringEscapeUtils.escapeHtml4(carsContract.getContractNo()) %> <%} %>
+					               		   						dt. <%if(carsContract!=null && carsContract.getContractDate()!=null) {%><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(carsContract.getContractDate())) %> <%} %>
 					               		   						. (Flag-A)
 					               		   					</span>
 					               		   					<span>
@@ -642,19 +643,19 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 					               		   				<div class="col-md-12" style="text-align: left;">
 					               		   					<%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-0")) {%>
 					               		   						<span>
-					               		   							<%=++paymentslno %>) <%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> <%} %> has submitted
-						               		   						 invoice No. <%if(mpdetails!=null && mpdetails.getInvoiceNo()!=null) {%><%=mpdetails.getInvoiceNo() %> <%} %>
-						               		   						 dt. <%if(mpdetails!=null && mpdetails.getInvoiceDate()!=null) {%><%=fc.SqlToRegularDate(mpdetails.getInvoiceDate()) %> <%} %>
-						               		   						 for Payment towards Milestone No <%=MilestoneNo %>
-						               		   						 for an amount of Rs. <%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestonedetails.getActualAmount())) %>
+					               		   							<%=++paymentslno %>) <%if(carsIni!=null) {%><%=StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute())+", "+StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()) %> <%} %> has submitted
+						               		   						 invoice No. <%if(mpdetails!=null && mpdetails.getInvoiceNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(mpdetails.getInvoiceNo()) %> <%} %>
+						               		   						 dt. <%if(mpdetails!=null && mpdetails.getInvoiceDate()!=null) {%><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(mpdetails.getInvoiceDate())) %> <%} %>
+						               		   						 for Payment towards Milestone No <%=MilestoneNo!=null?StringEscapeUtils.escapeHtml4(MilestoneNo): " - " %>
+						               		   						 for an amount of Rs. <%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(milestonedetails.getActualAmount()))) %>
 						               		   						 and the invoice is placed opposite (Flag-B).
 					               		   						</span>
 					               		   					<%} else{%>
 						               		   					<span>
-						               		   						<%=++paymentslno %>) <%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> <%} %> has submitted
-						               		   						 invoice No. <%if(mpdetails!=null && mpdetails.getInvoiceNo()!=null) {%><%=mpdetails.getInvoiceNo() %> <%} %>
-						               		   						 dt. <%if(mpdetails!=null && mpdetails.getInvoiceDate()!=null) {%><%=fc.SqlToRegularDate(mpdetails.getInvoiceDate()) %> <%} %>
-						               		   						 for Initial Advance Payment of Rs. <%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestonedetails.getActualAmount())) %>
+						               		   						<%=++paymentslno %>) <%if(carsIni!=null) {%><%=StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute())+", "+StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()) %> <%} %> has submitted
+						               		   						 invoice No. <%if(mpdetails!=null && mpdetails.getInvoiceNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(mpdetails.getInvoiceNo()) %> <%} %>
+						               		   						 dt. <%if(mpdetails!=null && mpdetails.getInvoiceDate()!=null) {%><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(mpdetails.getInvoiceDate())) %> <%} %>
+						               		   						 for Initial Advance Payment of Rs. <%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(milestonedetails.getActualAmount()))) %>
 						               		   						 and the invoice is placed opposite (Flag-B).
 						               		   					</span>
 					               		   					<%} %>
@@ -703,9 +704,9 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 				               							<div style="font-size: 15px;"> Signature of GD-DP&C</div>
 								               			<%for(Object[] apprInfo : othersMPApprovalEmpData){ %>
 								   			   				<%if(apprInfo[8].toString().equalsIgnoreCase("MFW")){ %>
-								   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-								   								<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+								   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+								   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+								   								<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%= apprInfo[4] !=null? (fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString().substring(0, 10)))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString().substring(11,19))):" - " %>]</label>
 								   			    		<%break;}} %>  
 									            	</div>
 							            	
@@ -714,19 +715,19 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 										            			 		
 										            		<%if(apprInfo[8].toString().equalsIgnoreCase("MFA")){ %>
 									            				<div style="font-size: 15px;"> Signature of AD-P&C</div>
-										   						<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
-										   						<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-										   						<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+										   						<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+										   						<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+										   						<label style="font-size: 12px; ">[Recommended On:&nbsp; <%= apprInfo[4] !=null? (fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString().substring(0, 10)))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString().substring(11,19))):" - " %>]</label>
 										   					<%} else if(apprInfo[8].toString().equalsIgnoreCase("MFC")) {%> 
 									   			    			<div style="font-size: 15px;"> Signature of Chairperson (CARS Committee)</div>
-									   			    			<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
-										   						<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-										   						<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+									   			    			<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+										   						<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+										   						<label style="font-size: 12px; ">[Approved On:&nbsp; <%= apprInfo[4] !=null? (fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString().substring(0, 10)))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString().substring(11,19))):" - "%>]</label>
 										   					<%} else if(apprInfo[8].toString().equalsIgnoreCase("MAD")) {%> 
 									   			    			<div style="font-size: 15px;"> Signature of Director</div>
-									   			    			<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
-										   						<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-										   						<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+									   			    			<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+										   						<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+										   						<label style="font-size: 12px; ">[Approved On:&nbsp; <%= apprInfo[4] !=null? (fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString().substring(0, 10)))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString().substring(11,19))):" - " %>]</label>
 									   			    					
 									   			    		<%} %>
 									   			    	</div>
@@ -746,8 +747,8 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 																		<%for(Object[] obj : othersMPRemarksHistory){%>
 																			<tr>
 																				<td style="border:none;width: 80%;overflow-wrap: anywhere;padding: 0px">
-																					<%=obj[3]%>&nbsp; :
-																					<span style="border:none; color: blue;">	<%=obj[1] %></span>
+																					<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%>&nbsp; :
+																					<span style="border:none; color: blue;">	<%=obj[1] !=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></span>
 																				</td>
 																			</tr>
 																		<%} %>
@@ -815,7 +816,7 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 			              					<table align="center"  >
 			               						<tr>
 			               							<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
-			                							GD-DP&C - <%if(GDDPandC!=null) {%> <%=GDDPandC[1] %> <%} else {%> GD-DP&C <%} %>
+			                							GD-DP&C - <%if(GDDPandC!=null) {%> <%=StringEscapeUtils.escapeHtml4(GDDPandC[1].toString()) %> <%} else {%> GD-DP&C <%} %>
 			                						</td>
 			                		
 		                        					<td rowspan="2">
@@ -823,7 +824,7 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 			                						</td>
 			                						
 			                						<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
-			                							AD-D&C - <%if(ADDPandC!=null) {%> <%=ADDPandC[1] %> <%} else {%> AD-P&C <%} %>
+			                							AD-D&C - <%if(ADDPandC!=null) {%> <%=StringEscapeUtils.escapeHtml4(ADDPandC[1].toString()) %> <%} else {%> AD-P&C <%} %>
 			                	    				</td>
 			                		
 		                        					<td rowspan="2">
@@ -831,7 +832,7 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 			                						</td>
 			                						
 			                						<td class="trup" style="background: linear-gradient(to top, #00c7e4 10%, transparent 115%);">
-			                							Chairperson (CARS Committee) - <%if(Chairperson!=null) {%> <%=Chairperson[1] %> <%} else {%> Chairperson (CARS Committee) <%} %>
+			                							Chairperson (CARS Committee) - <%if(Chairperson!=null) {%> <%=StringEscapeUtils.escapeHtml4(Chairperson[1].toString()) %> <%} else {%> Chairperson (CARS Committee) <%} %>
 			                	    				</td>
 			                	    				
 			                	    				<td rowspan="2">
@@ -839,7 +840,7 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 			                						</td>
 			                						
 			                						<td class="trup" style="background: linear-gradient(to top, #09f21b 10%, transparent 115%);">
-			                							Director - <%if(Director!=null) {%> <%=Director[1] %> <%} else {%> Director <%} %>
+			                							Director - <%if(Director!=null) {%> <%=StringEscapeUtils.escapeHtml4(Director[1].toString()) %> <%} else {%> Director <%} %>
 			                	    				</td>
 			               						</tr> 	
 			               	    			</table>			             
@@ -899,8 +900,8 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 			               										<td>
 			               											<span>
 						               		   							Reference is made to the CARS Contract No. 
-						               		   							<%if(carsContract!=null) {%><%=carsContract.getContractNo() %> <%} %>
-						               		   							dt. <%if(carsContract!=null && carsContract.getContractDate()!=null) {%><%=fc.SqlToRegularDate(carsContract.getContractDate()) %> <%} %>
+						               		   							<%if(carsContract!=null) {%><%=StringEscapeUtils.escapeHtml4(carsContract.getContractNo()) %> <%} %>
+						               		   							dt. <%if(carsContract!=null && carsContract.getContractDate()!=null) {%><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(carsContract.getContractDate())) %> <%} %>
 						               		   							. (Flag-A)
 					               		   							</span>
 			               										</td>
@@ -920,19 +921,19 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 			               										<td>
 			               											<%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-0")) {%>
 							               		   						<span>
-							               		   							 <%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> <%} %> has submitted
-								               		   						 invoice No. <%if(mpdetails!=null && mpdetails.getInvoiceNo()!=null) {%><%=mpdetails.getInvoiceNo() %> <%} %>
-								               		   						 dt. <%if(mpdetails!=null && mpdetails.getInvoiceDate()!=null) {%><%=fc.SqlToRegularDate(mpdetails.getInvoiceDate()) %> <%} %>
-								               		   						 for Payment towards Milestone No <%=MilestoneNo %>
-								               		   						 for an amount of Rs. <%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestonedetails.getActualAmount())) %>
+							               		   							 <%if(carsIni!=null) {%><%=StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute())+", "+StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()) %> <%} %> has submitted
+								               		   						 invoice No. <%if(mpdetails!=null && mpdetails.getInvoiceNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(mpdetails.getInvoiceNo()) %> <%} %>
+								               		   						 dt. <%if(mpdetails!=null && mpdetails.getInvoiceDate()!=null) {%><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(mpdetails.getInvoiceDate())) %> <%} %>
+								               		   						 for Payment towards Milestone No <%=MilestoneNo!=null?StringEscapeUtils.escapeHtml4(MilestoneNo): " - " %>
+								               		   						 for an amount of Rs. <%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(milestonedetails.getActualAmount()))) %>
 								               		   						 and the invoice is placed opposite (Flag-B).
 							               		   						</span>
 							               		   					<%} else{%>
 								               		   					<span>
-								               		   						 <%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> <%} %> has submitted
-								               		   						 invoice No. <%if(mpdetails!=null && mpdetails.getInvoiceNo()!=null) {%><%=mpdetails.getInvoiceNo() %> <%} %>
-								               		   						 dt. <%if(mpdetails!=null && mpdetails.getInvoiceDate()!=null) {%><%=fc.SqlToRegularDate(mpdetails.getInvoiceDate()) %> <%} %>
-								               		   						 for Initial Advance Payment of Rs. <%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestonedetails.getActualAmount())) %>
+								               		   						 <%if(carsIni!=null) {%><%=StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute())+", "+StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()) %> <%} %> has submitted
+								               		   						 invoice No. <%if(mpdetails!=null && mpdetails.getInvoiceNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(mpdetails.getInvoiceNo()) %> <%} %>
+								               		   						 dt. <%if(mpdetails!=null && mpdetails.getInvoiceDate()!=null) {%><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(mpdetails.getInvoiceDate())) %> <%} %>
+								               		   						 for Initial Advance Payment of Rs. <%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(milestonedetails.getActualAmount()))) %>
 								               		   						 and the invoice is placed opposite (Flag-B).
 								               		   					</span>
 							               		   					<%} %>

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -45,20 +46,22 @@ h6{
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br />
     
@@ -72,8 +75,8 @@ h6{
 		
     		<div class="card" style=" ">
       				<div class="card-header" style="background-color: #055C9D;display: table;">
-      				  <h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Issue : <%if(Assignee!=null && Assignee[5]!=null){%> <%=Assignee[5] %> (<%=Assignee[10] %>)<%}%>
-                     	<span style="float: right;font-size: 17px;margin-top: 5px">Assigner :<%if(Assignee!=null && Assignee[1]!=null){%> <%=Assignee[1] %><%}%> </span>
+      				  <h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Issue : <%if(Assignee!=null && Assignee[5]!=null){%> <%=StringEscapeUtils.escapeHtml4(Assignee[5].toString()) %> (<%=Assignee[10]!=null?StringEscapeUtils.escapeHtml4(Assignee[10].toString()):" - " %>)<%}%>
+                     	<span style="float: right;font-size: 17px;margin-top: 5px">Assigner :<%if(Assignee!=null && Assignee[1]!=null){%> <%=StringEscapeUtils.escapeHtml4(Assignee[1].toString()) %><%}%> </span>
                       </h6>
       		</div>
       		<div class="card-body">
@@ -156,19 +159,19 @@ h6{
 										<tr>
 										
 												<td width="12%">
-													<%=sdf.format(obj[3])%>
+													<%=obj[3]!=null?sdf.format(obj[3]):""%>
 												</td>
 												
 												<td width="6%">
 													
 													<div class="progress" style="background-color:#cdd0cb !important">
-				  										<div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%=obj[2]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]%></div>
+				  										<div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%=obj[2]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></div>
 													</div>
 								
 														</td>
 												
 												<td style="text-align: left; width: 10%;"> 
-													<%=obj[4]%>
+													<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%>
 												</td>
 												
 												<td style="text-align: left; width: 3%;">
@@ -178,7 +181,7 @@ h6{
 										        %>
 										        <div  align="center">
 														<a  
-														 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[5]%>" 
+														 href="ActionDataAttachDownload.htm?ActionSubId=<%=StringEscapeUtils.escapeHtml4(obj[5].toString())%>" 
 														 target="_blank"><i class="fa fa-download"></i></a>
 													</div>
 												

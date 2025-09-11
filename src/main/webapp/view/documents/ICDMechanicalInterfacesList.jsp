@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.documents.model.ICDMechanicalInterfaces"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -92,21 +93,22 @@ label {
 
 	%>
 	
-	<% String ses = (String) request.getParameter("result"); 
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-        <div align="center">
-            <div class="alert alert-danger" role="alert">
-                <%= ses1 %>
-            </div>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
         </div>
-    <% } if (ses != null) { %>
-        <div align="center">
-            <div class="alert alert-success" role="alert">
-                <%= ses %>
-            </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
         </div>
-    <% } %>
+    </div>
+<% } %>
 	
 	<div class="container-fluid mb-3">
 		<div class="card shadow-nohover">
@@ -114,7 +116,7 @@ label {
             	<div class="row">
                		<div class="col-md-9" align="left">
 	                    <h5 id="text" style="margin-left: 1%; font-weight: 600">
-	                      Mechanical Interfaces - <%=documentNo %>
+	                      Mechanical Interfaces - <%=documentNo!=null?StringEscapeUtils.escapeHtml4(documentNo): " - "  %>
 	                    </h5>
                 	</div>
                 	<div class="col-md-2"  align="right">
@@ -163,7 +165,7 @@ label {
 								                        <% if (iface.getMechInterfaceId().equals(Long.parseLong(mechInterfaceId))) { %>
 								                        style="background-color: green; color: white; border-color: green; width: 86%;" 
 								                        <% } else { %> style="width: 86%;" <% } %>>
-								                        <%=(++interfaceCount) + ". " + iface.getInterfaceSeqId()%>
+								                        <%=(++interfaceCount) + ". " + iface.getInterfaceSeqId()!=null?StringEscapeUtils.escapeHtml4(iface.getInterfaceSeqId()): " - " %>
 								                    </button>
 								                </form>
 								            </div>
@@ -177,7 +179,7 @@ label {
 					<div style="width: 82%;">
        					<div class="card ml-3 mr-3">
        						<div class="card-header">
-       							<h4 class="text-dark">Interface Details <%if(mechanicalInterface!=null) {%>- <%=mechanicalInterface.getInterfaceCode() %><%} else{%>Add<%} %> </h4>
+       							<h4 class="text-dark">Interface Details <%if(mechanicalInterface!=null) {%>- <%=StringEscapeUtils.escapeHtml4(mechanicalInterface.getInterfaceCode()) %><%} else{%>Add<%} %> </h4>
        						</div>
        						<div class="card-body m-2">
        							<form action="ICDMechanicalInterfaceDetailsSubmit.htm" method="post" id="myform" enctype="multipart/form-data">
@@ -196,7 +198,7 @@ label {
 											        <%
 											        for(Object[] obj : productTreeAllList){ %>
 											        	<option value="<%=obj[0]+"/"+obj[7] %>" <%if(mechanicalInterface!=null && mechanicalInterface.getSubSystemMainIdOne()==Long.parseLong(obj[0].toString())) {%>selected<%} %> >
-											        		<%=obj[2]+" ("+obj[7]+")" %>
+											        		<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%=" ("+(obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - ")+")" %>
 											        	</option>
 											        <%} %>
 												</select>
@@ -208,23 +210,23 @@ label {
 													<option value="" disabled selected>Choose...</option>
 											        <% for(Object[] obj : productTreeAllList){ %>
 											        	<option value="<%=obj[0]+"/"+obj[7] %>" <%if(mechanicalInterface!=null && mechanicalInterface.getSubSystemMainIdTwo()==Long.parseLong(obj[0].toString())) {%>selected<%} %> >
-											        		<%=obj[2]+" ("+obj[7]+")" %>
+											        		<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%=" ("+(obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - ")+")" %>
 											        	</option>
 											        <%} %>
 												</select>
 		        							</div>
 		        							<div class="col-md-2">
        											<label class="form-lable">Interface Code <span class="mandatory">*</span></label>
-		       									<input type="text" class="form-control" name="interfaceCode" <%if(mechanicalInterface!=null && mechanicalInterface.getInterfaceCode()!=null) {%>value="<%=mechanicalInterface.getInterfaceCode() %>" readonly <%} %> placeholder="Enter Interface Code" maxlength="4" required>
+		       									<input type="text" class="form-control" name="interfaceCode" <%if(mechanicalInterface!=null && mechanicalInterface.getInterfaceCode()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(mechanicalInterface.getInterfaceCode()) %>" readonly <%} %> placeholder="Enter Interface Code" maxlength="4" required>
        										</div>
        										<div class="col-md-2">
        											<label class="form-lable">Interface Name <span class="mandatory">*</span></label>
-		       									<input type="text" class="form-control" name="interfaceName" <%if(mechanicalInterface!=null && mechanicalInterface.getInterfaceName()!=null) {%>value="<%=mechanicalInterface.getInterfaceName() %>"<%} %> placeholder="Enter Interface Name" maxlength="500" required>
+		       									<input type="text" class="form-control" name="interfaceName" <%if(mechanicalInterface!=null && mechanicalInterface.getInterfaceName()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(mechanicalInterface.getInterfaceName()) %>"<%} %> placeholder="Enter Interface Name" maxlength="500" required>
        										</div>
        										<div class="col-md-2">
        											<label class="form-lable">Drawing-1  <%if(mechanicalInterface==null) {%><span class="mandatory">*</span><%} %></label>
        											<%if(mechanicalInterface!=null && mechanicalInterface.getDrawingOne()!=null) {%>
-													<button type="submit" class="btn btn-sm attachments" name="drawingAttach" value="<%=mechanicalInterface.getDrawingOne() %>" formaction="ICDMechanicalDrawingAttachDownload.htm" formmethod="get" formnovalidate="formnovalidate" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Download">
+													<button type="submit" class="btn btn-sm attachments" name="drawingAttach" value="<%=StringEscapeUtils.escapeHtml4(mechanicalInterface.getDrawingOne()) %>" formaction="ICDMechanicalDrawingAttachDownload.htm" formmethod="get" formnovalidate="formnovalidate" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Download">
 					                      				<i class="fa fa-download"></i>
 					                      			</button>
 				                      			<%} %>
@@ -233,7 +235,7 @@ label {
        										<div class="col-md-2">
        											<label class="form-lable">Drawing-2 <%if(mechanicalInterface==null) {%><span class="mandatory">*</span><%} %></label>
        											<%if(mechanicalInterface!=null && mechanicalInterface.getDrawingTwo()!=null) {%>
-			       									<button type="submit" class="btn btn-sm attachments" name="drawingAttach" value="<%=mechanicalInterface.getDrawingTwo() %>" formaction="ICDMechanicalDrawingAttachDownload.htm" formmethod="get" formnovalidate="formnovalidate" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Download">
+			       									<button type="submit" class="btn btn-sm attachments" name="drawingAttach" value="<%=StringEscapeUtils.escapeHtml4(mechanicalInterface.getDrawingTwo()) %>" formaction="ICDMechanicalDrawingAttachDownload.htm" formmethod="get" formnovalidate="formnovalidate" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Download">
 					                      				<i class="fa fa-download"></i>
 					                      			</button>
 				                      			<%} %>

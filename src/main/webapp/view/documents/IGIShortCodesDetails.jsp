@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.documents.model.IGIDocumentShortCodes"%>
 <%@page import="java.util.List"%>
@@ -81,21 +82,22 @@
 	String shortCodeTypeFullName = shortCodeType.equalsIgnoreCase("A")?"Abbreviation":"Acronym";
 %>
 	
-	<% String ses = (String) request.getParameter("result"); 
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-        <div align="center">
-            <div class="alert alert-danger" role="alert">
-                <%= ses1 %>
-            </div>
-        </div>
-    <% } if (ses != null) { %>
-        <div align="center">
-            <div class="alert alert-success" role="alert">
-                <%= ses %>
-            </div>
-        </div>
-    <% } %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
     
     
     <div class="container-fluid">
@@ -105,12 +107,12 @@
             	<div class="row">
                		<div class="col-md-9" align="left">
 	                    <h5 id="text" style="margin-left: 1%; font-weight: 600">
-	                      <%=shortCodeTypeFullName %> Details - <%=documentNo %>
+	                      <%=shortCodeTypeFullName %> Details - <%=documentNo!=null?StringEscapeUtils.escapeHtml4(documentNo): " - " %>
 	                    </h5>
                 	</div>
                 	<div class="col-md-2"  align="right">
                			<button type="button" class="btn btn-sm submit" data-toggle="modal" data-target="#addNewShortCodesModal">
-               				ADD NEW <%=shortCodeTypeFullName %>S
+               				ADD NEW <%=shortCodeTypeFullName!=null?StringEscapeUtils.escapeHtml4(shortCodeTypeFullName): " - " %>S
                			</button>
                 	</div>
                     <div class="col-md-1" align="right">
@@ -138,7 +140,7 @@
 	        					<thead class="center">
 		        					<tr>
 		        						<th>SN</th>	
-		        						<th><%=shortCodeTypeFullName %></th>	
+		        						<th><%=shortCodeTypeFullName!=null?StringEscapeUtils.escapeHtml4(shortCodeTypeFullName): " - " %></th>	
 		        						<th>Action</th>	
 		        					</tr>
 	        					</thead>
@@ -149,7 +151,7 @@
 	        						%>
 	        							<tr>
 	        								<td class="center"><%=++slno %></td>
-	        								<td><%=obj[2]+" ("+obj[1]+")" %></td>
+	        								<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%=" ("+(obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - ")+")" %></td>
 	        								<td class="center">
 	        									<form action="IGIShortCodesLinkedDelete.htm" method="POST" id="inlineapprform<%=slno%>">
 											        <button type="submit" class="btn btn-sm" onclick="return confirm('Are you sure to delete?')">
@@ -192,7 +194,7 @@
 										            	<input type="checkbox" class="" id="selectAll1" onclick="selectAllShortCodes('1')" >
 										            	Select 
 										            </th>
-										            <th><%=shortCodeTypeFullName %></th>
+										            <th><%=shortCodeTypeFullName!=null?StringEscapeUtils.escapeHtml4(shortCodeTypeFullName): " - " %></th>
 										            <th style="border: 0px;background-color: transparent;">&nbsp;</th>
 										           
 										            <%if(shortCodesListFiltered.size()>1) {%>
@@ -200,7 +202,7 @@
 											            	<input type="checkbox" class="" id="selectAll2" onclick="selectAllShortCodes('2')">
 											            	Select 
 											            </th>
-											            <th><%=shortCodeTypeFullName %></th>
+											            <th><%=shortCodeTypeFullName!=null?StringEscapeUtils.escapeHtml4(shortCodeTypeFullName): " - " %></th>
 											            <th style="border: 0px;background-color: transparent;">&nbsp;</th>
 										            <%} %>
 										            
@@ -209,7 +211,7 @@
 											            	<input type="checkbox" class="" id="selectAll3" onclick="selectAllShortCodes('3')" >
 											            	Select 
 											            </th>
-											            <th><%=shortCodeTypeFullName %></th>
+											            <th><%=shortCodeTypeFullName!=null?StringEscapeUtils.escapeHtml4(shortCodeTypeFullName): " - " %></th>
 											            <th style="border: 0px;background-color: transparent;">&nbsp;</th>
 										            <%} %>
 										            
@@ -234,7 +236,7 @@
 										        		<input type="checkbox" class="shortcode_<%=rowcount %>" name="shortCodeId" value="<%=shortCodes.getShortCodeId()%>">
 										        	</td>
 									            	<td>
-									            		<%=shortCodes.getFullName()+" ("+shortCodes.getShortCode()+")" %>
+									            		<%=shortCodes.getFullName()!=null?StringEscapeUtils.escapeHtml4(shortCodes.getFullName()): " - "%> <%=" ("+(shortCodes.getShortCode()!=null?StringEscapeUtils.escapeHtml4(shortCodes.getShortCode()): " - ")+")" %>
 									            	</td>
 									            	<td style="border: 0px;">&nbsp;</td>
 									        		<%if ((i + 1) % 3 == 0) { %>
@@ -302,7 +304,7 @@
 		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
 			<div class="modal-content" style="width:100%;">
 				<div class="modal-header" style="background: #055C9D;color: white;">
-		        	<h5 class="modal-title ">Add New <%=shortCodeTypeFullName %>s</h5>
+		        	<h5 class="modal-title ">Add New <%=shortCodeTypeFullName!=null?StringEscapeUtils.escapeHtml4(shortCodeTypeFullName): " - " %>s</h5>
 			        <button type="button" class="close" style="text-shadow: none !important" data-dismiss="modal" aria-label="Close">
 			          <span class="text-light" aria-hidden="true">&times;</span>
 			        </button>
@@ -315,7 +317,7 @@
 									<table id="shortcodestable" class="table table-bordered shortcodestable" style="width: 100%;" >
 										<thead class="center" style="background: #055C9D;color: white;">
 											<tr>
-												<th width="20%"><%=shortCodeTypeFullName %></th>
+												<th width="20%"><%=shortCodeTypeFullName!=null?StringEscapeUtils.escapeHtml4(shortCodeTypeFullName): " - " %></th>
 												<th width="70%">Full form</th>
 												<td width="10%">
 													<button type="button" class=" btn btn_add_shortcodes "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
@@ -464,7 +466,7 @@ const excel_file = document.getElementById('excel_file');
  if(excel_file!=null && excel_file!="") {
 	excel_file.addEventListener('change', (event) => {
 	   
-		var shortCodeTypeFull = '<%=shortCodeTypeFullName%>';
+		var shortCodeTypeFull = '<%=shortCodeTypeFullName!=null?StringEscapeUtils.escapeHtml4(shortCodeTypeFullName): ""%>';
 		
 		console.log('shortCodeTypeFull: ', shortCodeTypeFull);
 		$('#ExistingAbb').hide();	
@@ -542,7 +544,7 @@ const excel_file = document.getElementById('excel_file');
 	     			document.getElementById('myTable1').innerHTML = "";
 	    		}
 	    		else{
-	    			var shortCodesList = [<%int i=0; for (Object[] obj: shortCodesLinkedListByType) {%> "<%=obj[1] %>"<%= i+1 < shortCodesLinkedListByType.size() ? ",":""%><%}%>];	
+	    			var shortCodesList = [<%int i=0; for (Object[] obj: shortCodesLinkedListByType) {%> "<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>"<%= i+1 < shortCodesLinkedListByType.size() ? ",":""%><%}%>];	
 	    		
 			
 			var AbbreDetails = [];

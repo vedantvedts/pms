@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
@@ -39,19 +40,22 @@ List<Object[]> ProjectListForCommeet=(List<Object[]>) request.getAttribute("Proj
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%><center>
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -76,7 +80,7 @@ List<Object[]> ProjectListForCommeet=(List<Object[]>) request.getAttribute("Proj
                             <select class="custom-select" id="IntiationId" required="required" name="IntiationId" >
     <option disabled="true"  selected value="">Choose...</option>
     <% for (Object[] obj : ProjectListForCommeet) {%>
-<option value="<%=obj[0]%>"><%=obj[2]%>(<%=obj[1]%>)</option>
+<option value="<%=obj[0]%>"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>(<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>)</option>
 <%} %>
    
   </select>
@@ -91,7 +95,7 @@ List<Object[]> ProjectListForCommeet=(List<Object[]>) request.getAttribute("Proj
                               <select class="custom-select" id="ChairMain" required="required" name="ChairMain">
     <option disabled="true"  selected value="">Choose...</option>
     <% for (Object[] obj : EmployeeList) {%>
-<option value="<%=obj[0]%>"><%=obj[1]%></option>
+<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
 <%} %>
   </select>
                         </div>
@@ -103,7 +107,7 @@ List<Object[]> ProjectListForCommeet=(List<Object[]>) request.getAttribute("Proj
     <select class="custom-select" id="secretary" required="required" name="Secretary">
     <option disabled="true"  selected value="">Choose...</option>
     <% for (Object[] obj : EmployeeList) {%>
-<option value="<%=obj[0]%>"><%=obj[1]%> ( <%=obj[2] %> )</option>
+<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> ( <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> )</option>
 <%} %>
   </select>
                         </div>
@@ -131,7 +135,7 @@ List<Object[]> ProjectListForCommeet=(List<Object[]>) request.getAttribute("Proj
 																
 	          <option disabled="true"  selected value="">Choose...</option>
 			    <% for (Object[] obj : EmployeeList) {%>
-     <option value="<%=obj[0]%>"><%=obj[1]%></option>
+     <option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
     <%} %>					
 </select>
 </td>									

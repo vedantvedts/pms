@@ -123,6 +123,7 @@ import com.vts.pfms.committee.dto.EmpAccessCheckDto;
 import com.vts.pfms.committee.dto.MeetingCheckDto;
 import com.vts.pfms.committee.model.CommitteScheduleMinutesDraft;
 import com.vts.pfms.committee.model.Committee;
+import com.vts.pfms.committee.model.CommitteeCARS;
 import com.vts.pfms.committee.model.CommitteeDefaultAgenda;
 import com.vts.pfms.committee.model.CommitteeDivision;
 import com.vts.pfms.committee.model.CommitteeInitiation;
@@ -214,9 +215,6 @@ public class CommitteeController {
 	@Value("${File_Size}")
 	String file_size;
 
-	@Value("#{${CommitteeCodes}}")
-	private List<String> SplCommitteeCodes;
-
 	@Autowired
 	PrintController pt;
 
@@ -244,6 +242,7 @@ public class CommitteeController {
 	private SimpleDateFormat rdf=new SimpleDateFormat("dd-MM-yyyy");
 	private static final Logger logger=LogManager.getLogger(CommitteeController.class);
 	private SimpleDateFormat sdtf = fc.getSqlDateAndTimeFormat();
+	
 	@RequestMapping(value = "CommitteeAdd.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String CommitteeAddPage(HttpServletRequest req, HttpSession ses) throws Exception
 	{	
@@ -310,6 +309,8 @@ public class CommitteeController {
 			committeeDto.setTermsOfReference(req.getParameter("TOR").trim());
 			committeeDto.setIsGlobal(projectid);
 			committeeDto.setReferenceNo(req.getParameter("refno"));
+			committeeDto.setIsBriefing(req.getParameter("IsBriefing"));
+			
 			if(req.getParameter("periodic").equalsIgnoreCase("P"))
 			{
 				String PeriodicDuration=req.getParameter("periodicduration");
@@ -485,11 +486,12 @@ public class CommitteeController {
 			committeeDto.setTermsOfReference(req.getParameter("TOR"));
 			committeeDto.setIsGlobal(req.getParameter("projectid"));
 			committeeDto.setLabCode(LabCode);
+			committeeDto.setIsBriefing(req.getParameter("IsBriefing"));
 			if(req.getParameter("periodic").equalsIgnoreCase("P"))
 			{
 				committeeDto.setPeriodicDuration(PeriodicDuration);
 			}
-			else
+			else 
 			{
 				committeeDto.setPeriodicDuration("0");
 			}				
@@ -652,6 +654,7 @@ public class CommitteeController {
 			committeemaindto.setProjectId(req.getParameter("projectid"));
 			committeemaindto.setInitiationId(req.getParameter("initiationid"));
 			committeemaindto.setCARSInitiationId(carsInitiationId);
+			committeemaindto.setProgrammeId("0");
 			committeemaindto.setReps(req.getParameterValues("repids"));
 			committeemaindto.setCreatedByEmpid(EmpId);	
 			committeemaindto.setCreatedByEmpidLabid(LabId);
@@ -737,7 +740,7 @@ public class CommitteeController {
 //				if(carsInitiationId==null) {
 //					carsInitiationId=(String)md.get("carsInitiationId");
 //				}					
-				committeemainid=String.valueOf(service.LastCommitteeId(CommitteeId, projectid, divisionid, initiationid, carsInitiationId));
+				committeemainid=String.valueOf(service.LastCommitteeId(CommitteeId, projectid, divisionid, initiationid, carsInitiationId, "0"));
 			}
 
 		
@@ -1933,10 +1936,10 @@ public class CommitteeController {
 
 			Long committeemainid=null;
 			if(Long.parseLong(initiationid)>0) {
-				committeemainid=service.LastCommitteeId(committeeid, projectid, divisionid, initiationid, carsInitiationId);
+				committeemainid=service.LastCommitteeId(committeeid, projectid, divisionid, initiationid, carsInitiationId, programmeId);
 			}else
 			{
-				committeemainid=service.LastCommitteeId(committeeid, projectid, divisionid, initiationid, carsInitiationId);
+				committeemainid=service.LastCommitteeId(committeeid, projectid, divisionid, initiationid, carsInitiationId, programmeId);
 			}
 
 			if(committeemainid==null || committeemainid==0)
@@ -1986,7 +1989,8 @@ public class CommitteeController {
 			req.setAttribute("logintype", Logintype);
 			req.setAttribute("committeecons", committeecons); 
 			req.setAttribute("AgendaDocList",service.AgendaLinkedDocList(CommitteeScheduleId));
-			req.setAttribute("SplCommitteeCodes",SplCommitteeCodes);
+			List<Object[]> specialCommitteesList = printservice.SpecialCommitteesList(LabCode);
+			req.setAttribute("SplCommitteeCodes", specialCommitteesList.stream().map(e -> e[1].toString()).collect(Collectors.toList()));
 
 			int useraccess=service.ScheduleCommitteeEmpCheck
 					(new EmpAccessCheckDto(Logintype,CommitteeScheduleId,EmpId,
@@ -2346,6 +2350,7 @@ public class CommitteeController {
 	public String CommitteeScheduleMinutes(Model model,HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception
 	{
 		String UserId=(String)ses.getAttribute("Username");
+		String labcode=(String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside CommitteeScheduleMinutes.htm "+UserId);
 		try
 		{
@@ -2379,7 +2384,8 @@ public class CommitteeController {
 			}
 
 
-			req.setAttribute("SplCommitteeCodes", SplCommitteeCodes);
+			List<Object[]> specialCommitteesList = printservice.SpecialCommitteesList(labcode);
+			req.setAttribute("SplCommitteeCodes", specialCommitteesList.stream().map(e -> e[1].toString()).collect(Collectors.toList()));
 			req.setAttribute("unit1", unit1);
 			req.setAttribute("formname", formname);
 			req.setAttribute("membertype",MemberType);
@@ -2781,6 +2787,7 @@ public class CommitteeController {
 			String divisionid=committeescheduledata[13].toString();
 			String initiationid=committeescheduledata[14].toString();
 			String carsInitiationId=committeescheduledata[16].toString();
+			String programmeId=committeescheduledata[17].toString();
 			
 			List<Object[]> committeeinvitedlist = service.CommitteeAtendance(committeescheduleid);
 			// Prudhvi - 27/03/2024
@@ -2790,9 +2797,9 @@ public class CommitteeController {
 
 			String committeemainid="0";
 			if(Long.parseLong(initiationid)>0) {
-				committeemainid=String.valueOf(service.LastCommitteeId(committeeid, projectid, divisionid, initiationid, carsInitiationId));
+				committeemainid=String.valueOf(service.LastCommitteeId(committeeid, projectid, divisionid, initiationid, carsInitiationId, programmeId));
 			}else {
-				committeemainid=String.valueOf(service.LastCommitteeId(committeeid, projectid, divisionid, "0", carsInitiationId));
+				committeemainid=String.valueOf(service.LastCommitteeId(committeeid, projectid, divisionid, "0", carsInitiationId, programmeId));
 			}
 
 			if(committeeinvitedlist.size()==0) 
@@ -2936,7 +2943,7 @@ public class CommitteeController {
 			committeeinvitationdto.setEmpIdList(emplist);
 			committeeinvitationdto.setLabCodeList(labCodelist);
 			committeeinvitationdto.setReptype(reptype);
-
+			committeeinvitationdto.setInviteFlag(req.getParameter("inviteFlag"));
 
 			long count =  service.CommitteeInvitationCreate(committeeinvitationdto);
 
@@ -3473,7 +3480,7 @@ public class CommitteeController {
 		
 			System.out.println(projectid);
 			
-			String committeemainid=String.valueOf(service.LastCommitteeId(committeeid, projectid, "0", "0", "0"));
+			String committeemainid=String.valueOf(service.LastCommitteeId(committeeid, projectid, "0", "0", "0", "0"));
 
 			req.setAttribute("projectid",projectid);
 			req.setAttribute("committeeid",committeeid);
@@ -3605,6 +3612,16 @@ public class CommitteeController {
 			{
 				req.setAttribute("initiationdetails", service.Initiationdetails(initiationid));
 			}
+			String carsInitiationId= scheduleeditdata[25].toString();
+			if(Long.parseLong(carsInitiationId)>0)
+			{
+				req.setAttribute("carsInitiationDetails", carsservice.getCARSInitiationById(Long.parseLong(carsInitiationId)));
+			}
+			String programmeId= scheduleeditdata[26].toString();
+			if(Long.parseLong(programmeId)>0)
+			{
+				req.setAttribute("prgmMasterDetails", service.getProgrammeMasterById(programmeId));
+			}
 			List<String>list = Arrays.asList("A","I","K");
 			
 			
@@ -3644,10 +3661,13 @@ public class CommitteeController {
 			List<Object[]>ActionDetails=service.actionDetailsForNonProject(committeeId,scheduledate);
 			List<Object[]>actionSubDetails=new ArrayList();
 			if(ActionDetails.size()>0) {
-		    actionSubDetails=ActionDetails.stream().filter(i -> LocalDate.parse(i[9].toString()).isBefore(LocalDate.parse(scheduledate))).collect(Collectors.toList());
-		    if(actionSubDetails.size()>0) {
-			actionSubDetails=actionSubDetails.stream().filter(i -> i[15].toString().equalsIgnoreCase(projectid) && i[16].toString().equalsIgnoreCase(initiationid) && i[17].toString().equalsIgnoreCase(divisionid)).collect(Collectors.toList());
-			}
+				actionSubDetails=ActionDetails.stream().filter(i -> LocalDate.parse(i[9].toString()).isBefore(LocalDate.parse(scheduledate))).collect(Collectors.toList());
+				if(actionSubDetails.size()>0) {
+					actionSubDetails=actionSubDetails.stream().filter(i -> i[15].toString().equalsIgnoreCase(projectid) && i[16].toString().equalsIgnoreCase(initiationid) 
+																		&& i[17].toString().equalsIgnoreCase(divisionid) && i[18].toString().equalsIgnoreCase(carsInitiationId)
+																		&& i[19].toString().equalsIgnoreCase(programmeId))
+																		.collect(Collectors.toList());
+				}
 			}
 			Set<Integer>committeeCount=new TreeSet<>();
 			for(Object[]obj:ActionDetails) {
@@ -4397,7 +4417,9 @@ public class CommitteeController {
 			String userId = (String) req.getSession().getAttribute("Username");
 			String EmpName = (String) req.getSession().getAttribute("EmpName");
 			String EmpNo = (String) req.getSession().getAttribute("EmpNo");
+
 			String LabCode = (String) ses.getAttribute("labcode");
+
 			CommitteeMinutesAttachment attachment = service.MinutesAttachDownload(attachmentId);
 
 			// String inputFilePath = uploadpath + attachment.getFilePath() + File.separator + attachment.getAttachmentName();
@@ -4409,6 +4431,7 @@ public class CommitteeController {
 			Path filepath2 = Paths.get(uploadpath, fileParts[0], fileParts[1], ("Encrypted_" +attachment.getAttachmentName()));
 
 			String password = LabCode+"123";
+
 			PdfReader pdfReader = new PdfReader(filepath.toString());
 
 			pdfReader.setUnethicalReading(true);
@@ -5418,12 +5441,12 @@ public class CommitteeController {
 			ArrayList<String> dronaemails= new ArrayList<String>();	
 			for(Object[] obj : committeeallmemberslist ) 
 			{				
-				if(obj[6]!=null && (obj[8].toString().equals("CC") || obj[8].toString().equals("CS") || obj[8].toString().equals("CI") || obj[8].toString().equals("CW"))) 
+				if(obj[6]!=null && (obj[8].toString().equals("CC") || obj[8].toString().equals("CS") || obj[8].toString().equals("CI") || obj[8].toString().equals("CW") || obj[8].toString().equals("CH"))) 
 				{				 
 					emails.add(obj[6].toString());				 
 				}
 
-				if(obj[10]!=null && (obj[8].toString().equals("CC") || obj[8].toString().equals("CS") || obj[8].toString().equals("CI") || obj[8].toString().equals("CW"))) 
+				if(obj[10]!=null && (obj[8].toString().equals("CC") || obj[8].toString().equals("CS") || obj[8].toString().equals("CI") || obj[8].toString().equals("CW") || obj[8].toString().equals("CH"))) 
 				{				 
 					dronaemails.add(obj[10].toString());				 
 				}
@@ -5577,7 +5600,7 @@ public class CommitteeController {
 			SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 			ArrayList<String> emails= new ArrayList<String>();
 			ArrayList<String> dronaemails= new ArrayList<String>();
-			ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","I","P"));
+			ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","I","P", "CH"));
 
 			for(Object[] obj : committeeinvitedlist) 
 			{	 
@@ -6015,7 +6038,7 @@ public class CommitteeController {
 			String projectid=committeemaindata[2].toString() ;
 			String divisionid=committeemaindata[3].toString() ;
 			String initiationid=committeemaindata[4].toString() ;
-
+			String carsInitiationId=committeemaindata[13]!=null?committeemaindata[13].toString(): "0" ;
 
 			if(projectid!=null && Long.parseLong(projectid)>0)
 			{
@@ -6024,19 +6047,24 @@ public class CommitteeController {
 			else if(divisionid!=null && Long.parseLong(divisionid)>0)
 			{
 				ProjectCommitteeDescriptionTOR=service.DivisionCommitteeDescriptionTOR(divisionid, committeeid);
-			}
-			if(Long.parseLong(initiationid)>0)
+			}else if(Long.parseLong(initiationid)>0)
 			{					
 				ProjectCommitteeDescriptionTOR = service.InitiationCommitteeDescriptionTOR(initiationid,committeeid);
+			}else if(Long.parseLong(carsInitiationId)>0)
+			{
+				ProjectCommitteeDescriptionTOR = service.carsCommitteeDescriptionTOR(carsInitiationId, committeeid);
 			}
-			req.setAttribute("committeeprojectdata",ProjectCommitteeDescriptionTOR);
-			req.setAttribute("committeemaindata",committeemaindata);
+			req.setAttribute("committeeprojectdata", ProjectCommitteeDescriptionTOR);
+			req.setAttribute("committeemaindata", committeemaindata);
+			
+			return "committee/CommitteeProjectDescriptionTOREdit";
+		
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside ProjectCommitteeDescriptionTOREdit.htm "+UserId, e);
+			return "static/Error";
 		}
-		return "committee/CommitteeProjectDescriptionTOREdit";
 	}
 
 
@@ -6052,7 +6080,8 @@ public class CommitteeController {
 			String projectid=committeemaindata[2].toString() ;
 			String divisionid=committeemaindata[3].toString() ;
 			String initiationid=committeemaindata[4].toString() ;
-			int count=0;
+			String carsInitiationId=committeemaindata[13]!=null?committeemaindata[13].toString(): "0" ;
+			long count=0;
 			if(Long.parseLong(projectid)>0)
 			{
 				CommitteeProject  committeeproject = new CommitteeProject();
@@ -6078,6 +6107,26 @@ public class CommitteeController {
 				committeeinitiation.setTermsOfReference(req.getParameter("TOR"));
 				committeeinitiation.setModifiedBy(UserId);
 				count= service.InitiationCommitteeDescriptionTOREdit(committeeinitiation);
+			}else if(Long.parseLong(carsInitiationId)>0)
+			{
+				String committeeprojectid = req.getParameter("committeeprojectid");
+				Long comCARSInitiationId = committeeprojectid!=null?Long.parseLong(committeeprojectid): 0;
+				CommitteeCARS committeeCARS = comCARSInitiationId>0? service.getCommitteeCARSById(comCARSInitiationId+"") : new CommitteeCARS(); 
+				if(comCARSInitiationId==0) {
+					committeeCARS.setCARSInitiationId(Long.parseLong(carsInitiationId));
+					committeeCARS.setCommitteeId(Long.parseLong(committeeid));
+					committeeCARS.setAutoSchedule("N");
+					committeeCARS.setCreatedBy(UserId);
+					committeeCARS.setCreatedDate(LocalDate.now().toString());
+				}else {
+					committeeCARS.setModifiedBy(UserId);
+					committeeCARS.setModifiedDate(LocalDate.now().toString());
+				}
+				
+				committeeCARS.setDescription(req.getParameter("description"));
+				committeeCARS.setTermsOfReference(req.getParameter("TOR"));
+				
+				count= service.addCommitteeCARS(committeeCARS);
 			}
 
 			if (count > 0) {
@@ -6085,13 +6134,16 @@ public class CommitteeController {
 			} else {
 				redir.addAttribute("resultfail", "Description and Terms of Reference Edit unSuccessfull");
 			}
-			redir.addFlashAttribute("committeemainid",committeemainid);
+			redir.addAttribute("committeemainid",committeemainid);
+			
+			return "redirect:/ProjectCommitteeDescriptionTOREdit.htm";
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside ProjectCommitteeDescriptionTOREditSubmit.htm "+UserId, e);
+			return "static/Error";
 		}
-		return "redirect:/ProjectCommitteeDescriptionTOREdit.htm";
+		
 	}
 
 	@RequestMapping(value = "AgendasFromPreviousMeetingsAdd.htm")
@@ -6635,6 +6687,7 @@ public class CommitteeController {
 
 			}	
 			
+			if(EmpNo!=null)
 			service.InvitationRoleoUpdate(Role,EmpNo,LabCode,UserId,invitationid);
 			
 			redir.addAttribute("committeescheduleid", committeescheduleid);
@@ -7378,6 +7431,7 @@ public class CommitteeController {
 				if(PROTECTED_MINUTES == null) {
 					pdfw=new PdfWriter(path +File.separator+ "mergedb.pdf");
 				}else {
+
 					String password = LabCode+"123";
 					pdfw = new PdfWriter(path +File.separator+ "mergedb.pdf",
 							new WriterProperties().setStandardEncryption(password.getBytes(), password.getBytes(),
@@ -7740,8 +7794,8 @@ public class CommitteeController {
 				converterProperties.setFontProvider(dfp);
 				HtmlConverter.convertToPdf(fis1, pdfDoc, converterProperties);
 
-
 				String password = LabCode+"123";
+
 				PdfWriter pdfw= new PdfWriter(path +File.separator+ "mergedb.pdf",
 						new WriterProperties().setStandardEncryption(password.getBytes(), password.getBytes(),
 								EncryptionConstants.ALLOW_PRINTING, EncryptionConstants.ENCRYPTION_AES_128));
@@ -9787,7 +9841,9 @@ public class CommitteeController {
 				if(PROTECTED_MINUTES == null) {
 					pdfw=new PdfWriter(path +File.separator+ "MoM.pdf");
 				}else {
+
 					String password = LabCode+"123";
+
 					pdfw = new PdfWriter(path +File.separator+ "MoM.pdf",
 							new WriterProperties().setStandardEncryption(password.getBytes(), password.getBytes(),
 									EncryptionConstants.ALLOW_PRINTING, EncryptionConstants.ENCRYPTION_AES_128));
@@ -9867,7 +9923,7 @@ public class CommitteeController {
 
 
 				ArrayList<String> emails= new ArrayList<String>();
-				ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","I","P"));
+				ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","I","P","CH"));
 
 				List<Object[]>committeeinvitedlist=service.CommitteeAtendance(committeescheduleid);
 
@@ -10095,7 +10151,7 @@ public class CommitteeController {
 			res.setHeader("Content-disposition","inline;filename="+filename+".pdf");
 			File f=new File(path +File.separator+ "Mom.pdf");
 			ArrayList<String> emails= new ArrayList<String>();
-			ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","I","P"));
+			ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","I","P","CH"));
 			List<Object[]>committeeinvitedlist=service.CommitteeAtendance(committeescheduleid);
 			String MainEmail="";
 			for(Object[] obj : committeeinvitedlist) 
@@ -10515,6 +10571,7 @@ public class CommitteeController {
 			req.setAttribute("committeeMainId", committeeMainId);
 			req.setAttribute("committeeId", committeeId);
 			req.setAttribute("programmeId", programmeId);
+			req.setAttribute("designationlist", adminservice.DesignationList());
 			
 			return "committee/PrgmCommitteeConstitution";
 		}catch (Exception e) {
@@ -10622,9 +10679,6 @@ public class CommitteeController {
 	@RequestMapping(value="PrgmScheduleAgenda.htm", method= {RequestMethod.GET, RequestMethod.POST})
 	public String prgmScheduleAgenda(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");
-		String labcode = (String)ses.getAttribute("labcode");
-		String LoginType = (String)ses.getAttribute("LoginType");
-		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +" Inside PrgmScheduleAgenda.htm "+UserId);
 		try {
 			String scheduleid = req.getParameter("scheduleid");
@@ -10635,8 +10689,8 @@ public class CommitteeController {
 			req.setAttribute("committeeAgendaList", service.AgendaList(scheduleid));
 			req.setAttribute("agendaDocList",service.AgendaLinkedDocList(scheduleid));
 			req.setAttribute("filesize",file_size);
-			req.setAttribute("labcode",labcode);
-			req.setAttribute("labEmpList",service.PreseneterForCommitteSchedule(labcode));
+			req.setAttribute("labEmpList",service.PreseneterForCommitteSchedule("A"));
+			req.setAttribute("allLabList", service.AllLabList());
 
 			return "committee/PrgmScheduleAgenda";
 		}catch (Exception e) {
@@ -10844,6 +10898,116 @@ public class CommitteeController {
 
 		}
 
+	}
+	
+//	------------------------------------ Naveen R 3/9/25 MOM TabularMinutesDownload.htm -------------------------------------------
+	@RequestMapping(value = "MOMTabularMinutesDownload.htm")
+	public void getMomCheck(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res) throws Exception
+	{
+
+		String UserId=(String)ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside MOMTabularMinutesDownload.htm "+UserId);
+		try
+		{
+			String committeescheduleid = req.getParameter("committeescheduleid");
+			Object[] committeescheduleeditdata=service.CommitteeScheduleEditData(committeescheduleid);
+			String projectid= committeescheduleeditdata[9].toString();
+			if(projectid!=null && Integer.parseInt(projectid)>0)
+			{
+				req.setAttribute("projectdetails", service.projectdetails(projectid));
+			}
+			String divisionid= committeescheduleeditdata[16].toString();
+			if(divisionid!=null && Integer.parseInt(divisionid)>0)
+			{
+				req.setAttribute("divisiondetails", service.DivisionData(divisionid));
+			}
+			String initiationid= committeescheduleeditdata[17].toString();
+			if(initiationid!=null && Integer.parseInt(initiationid)>0)
+			{
+				req.setAttribute("initiationdetails", service.Initiationdetails(initiationid));
+			}
+
+			List<Object[]> actionlist= service.MinutesViewAllActionList(committeescheduleid);
+			HashMap< String, ArrayList<Object[]>> actionsdata=new LinkedHashMap<String, ArrayList<Object[]>>();
+
+			for(Object obj[] : actionlist) {
+
+				ArrayList<Object[]> values=new ArrayList<Object[]>(); 
+				for(Object obj1[] : actionlist ) {
+					if(obj1[0].equals(obj[0])) {
+						values.add(obj1);
+					}
+				}
+				if(!actionsdata.containsKey(obj[0].toString())) {
+					actionsdata.put(obj[0].toString(), values);
+				}
+			} 
+
+			req.setAttribute("actionsdata",actionsdata );
+
+			req.setAttribute("committeeminutesspeclist",service.CommitteeScheduleMinutesforAction(committeescheduleid) );
+			req.setAttribute("committeescheduleeditdata", committeescheduleeditdata);
+			//req.setAttribute("CommitteeAgendaList", service.CommitteeAgendaList(committeescheduleid));
+			req.setAttribute("committeeminutes",service.CommitteeMinutesSpecdetails());
+			//req.setAttribute("committeeminutessub",service.CommitteeMinutesSub());
+			List<Object[]> invitedlists= service.CommitteeAtendance(committeescheduleid);
+			
+			Map<Object,List<Object[]>> invitedlist = invitedlists.stream().filter(row->row[4].toString().equalsIgnoreCase("P")).collect(Collectors.groupingBy(row -> row[3]));
+			List<Map.Entry<Object, List<Object[]>>> entries = new ArrayList<>(invitedlist.entrySet());
+			
+			req.setAttribute("committeeinvitedlist", invitedlists);
+			req.setAttribute("projectid", projectid);				
+			req.setAttribute("actionlist", service.MinutesViewAllActionList(committeescheduleid));
+			req.setAttribute("labdetails", service.LabDetails(committeescheduleeditdata[24].toString()));
+			req.setAttribute("isprint", "Y");
+			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
+			req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
+			req.setAttribute("labInfo", service.LabDetailes(LabCode));
+			req.setAttribute("ActionPlanSixMonths", service.ActionPlanSixMonths(projectid));
+			String filename=committeescheduleeditdata[11].toString().replace("/", "-");
+
+			req.setAttribute("flagforView", "M");			
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path);
+
+			req.setAttribute("ccmFlag", req.getParameter("ccmFlag"));
+
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/committee/MoMTabularMinutes.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
+			req.setAttribute("tableactionlist",  actionsdata);
+
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+
+			PdfDocument pdfDocument = new PdfDocument(pdf1);
+
+			pdfDocument.close();
+			pdf1.close();	       
+
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition","inline;filename="+filename+".pdf");
+
+			File f = new File(path + File.separator + filename + ".pdf");
+			try (OutputStream out = res.getOutputStream();
+			     FileInputStream in = new FileInputStream(f)) {
+
+			    byte[] buffer = new byte[4096];
+			    int length;
+			    while ((length = in.read(buffer)) > 0) {
+			        out.write(buffer, 0, length);
+			    }
+			    out.flush(); 
+			}
+
+			Files.deleteIfExists(Paths.get(path + File.separator + filename + ".pdf"));
+
+		}
+		catch (Exception e) {
+			e.printStackTrace(); logger.error(new Date() +"Inside MOMTabularMinutesDownload.htm "+UserId,e);
+		}
 	}
 	
 }

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.math.BigDecimal"%> 
@@ -101,24 +102,22 @@ List<String> riskdatapresentlist=(List<String>)request.getAttribute("riskdatapre
 
 
 
-<%String ses=(String)request.getParameter("result"); 
-String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){
-%>
-	<div align="center">
-	
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</div>
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 <div class="container-fluid">
 		<div class="row">
@@ -148,7 +147,7 @@ if(ses1!=null){
 													
 													String projectShortName=(obj[17]!=null)?"( "+obj[17].toString()+" )":"";
 													%>
-													<option <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value="<%=obj[0]%>" ><%=obj[4] +projectShortName%></option>
+													<option <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value="<%=obj[0]%>" ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> <%=projectShortName!=null?StringEscapeUtils.escapeHtml4(projectShortName): " - "%></option>
 													<%} %>
 													<option <%if(projectid!=null && projectid.equals("0")) { %>selected <%} %>value="0" >General</option>
 												</select>
@@ -182,10 +181,10 @@ if(ses1!=null){
 					%>
 							<tr>
 								<td class="center"><%=i+1 %></td>
-								<td class="left"><%=riskdatalist.get(i)[7]%></td>
-								<td class="left"><%=riskdatalist.get(i)[1] %></td>
+								<td class="left"><%=riskdatalist.get(i)[7]!=null?StringEscapeUtils.escapeHtml4(riskdatalist.get(i)[7].toString()): " - "%></td>
+								<td class="left"><%=riskdatalist.get(i)[1]!=null?StringEscapeUtils.escapeHtml4(riskdatalist.get(i)[1].toString()): " - " %></td>
 								<td class="center"><%=sdf.format(riskdatalist.get(i)[8])%></td>
-								<td class="center"><%=riskdatalist.get(i)[9]%>, <%=riskdatalist.get(i)[10]%></td>
+								<td class="center"><%=riskdatalist.get(i)[9]!=null?StringEscapeUtils.escapeHtml4(riskdatalist.get(i)[9].toString()): " - "%>, <%=riskdatalist.get(i)[10]!=null?StringEscapeUtils.escapeHtml4(riskdatalist.get(i)[10].toString()): " - "%></td>
 								<td class="center">
 									<%if(riskdatalist.get(i)[3].toString().equals("I") || riskdatalist.get(i)[3].toString().equals("B")){ %>
 										In Progress

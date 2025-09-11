@@ -53,6 +53,7 @@ import com.vts.pfms.committee.dto.EmpAccessCheckDto;
 import com.vts.pfms.committee.dto.MeetingCheckDto;
 import com.vts.pfms.committee.model.CommitteScheduleMinutesDraft;
 import com.vts.pfms.committee.model.Committee;
+import com.vts.pfms.committee.model.CommitteeCARS;
 import com.vts.pfms.committee.model.CommitteeConstitutionApproval;
 import com.vts.pfms.committee.model.CommitteeConstitutionHistory;
 import com.vts.pfms.committee.model.CommitteeDefaultAgenda;
@@ -78,8 +79,8 @@ import com.vts.pfms.committee.model.PfmsEmpRoles;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.committee.model.PmsEnote;
 import com.vts.pfms.committee.model.PmsEnoteTransaction;
-import com.vts.pfms.committee.model.ProgrammeProjects;
 import com.vts.pfms.committee.model.ProgrammeMaster;
+import com.vts.pfms.committee.model.ProgrammeProjects;
 import com.vts.pfms.mail.CustomJavaMailSender;
 import com.vts.pfms.master.dao.MasterDao;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
@@ -155,6 +156,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		committeeModel.setCreatedBy(committeeDto.getCreatedBy());
 		committeeModel.setCreatedDate(sdf1.format(new Date()));
 		committeeModel.setIsActive(1);
+		committeeModel.setIsBriefing(committeeDto.getIsBriefing());
 		count = dao.CommitteeNewAdd(committeeModel);
 		
 		return count;
@@ -228,7 +230,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		committeemodel.setIsGlobal(Long.parseLong(committeeDto.getIsGlobal()));
 		committeemodel.setModifiedBy(committeeDto.getModifiedBy());
 		committeemodel.setModifiedDate(sdf1.format(new Date()));
-		
+		committeemodel.setIsBriefing(committeeDto.getIsBriefing());
 		return dao.CommitteeEditSubmit(committeemodel);	
 	}	
 	
@@ -265,6 +267,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		committeemain.setInitiationId(Long.parseLong(committeemaindto.getInitiationId()));
 		committeemain.setDivisionId(Long.parseLong(committeemaindto.getDivisionId()));
 		committeemain.setCARSInitiationId(Long.parseLong(committeemaindto.getCARSInitiationId()));
+		committeemain.setProgrammeId(Long.parseLong(committeemaindto.getProgrammeId()));
 		committeemain.setPreApproved(committeemaindto.getPreApproved());
 		committeemain.setReferenceNo(committeemaindto.getReferenceNo());
 		committeemain.setFormationDate(java.sql.Date.valueOf(formationDate));;
@@ -277,7 +280,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			committeemain.setIsActive(1);
 		}
 		if( committeemaindto.getPreApproved().equalsIgnoreCase("Y")) {
-			long lastcommitteeid=dao.LastCommitteeId(committeemaindto.getCommitteeId(),committeemaindto.getProjectId(),committeemaindto.getDivisionId(),committeemaindto.getInitiationId(), committeemaindto.getCARSInitiationId());		
+			long lastcommitteeid=dao.LastCommitteeId(committeemaindto.getCommitteeId(),committeemaindto.getProjectId(),committeemaindto.getDivisionId(),committeemaindto.getInitiationId(), committeemaindto.getCARSInitiationId(), committeemaindto.getProgrammeId());		
 			if(lastcommitteeid!=0 )
 			{
 				CommitteeMain committeemain1= new CommitteeMain();
@@ -393,8 +396,8 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 
 	@Override
-	public Long LastCommitteeId(String CommitteeId,String projectid,String divisionid,String initiationid, String carsInitiationId) throws Exception {
-		return dao.LastCommitteeId(CommitteeId, projectid, divisionid,initiationid, carsInitiationId );
+	public Long LastCommitteeId(String CommitteeId,String projectid,String divisionid,String initiationid, String carsInitiationId, String programmeId) throws Exception {
+		return dao.LastCommitteeId(CommitteeId, projectid, divisionid,initiationid, carsInitiationId, programmeId);
 	}
 	
 	@Override
@@ -1230,8 +1233,18 @@ public class CommitteeServiceImpl implements CommitteeService{
 			}
 			else
 			{
-				committeeinvitation.setSerialNo(slno);
-				
+				if(committeeinvitationdto.getInviteFlag()!=null && committeeinvitationdto.getInviteFlag().equalsIgnoreCase("Y")) {
+					if(MemberType[1].equalsIgnoreCase("CC")) {
+						committeeinvitation.setSerialNo(1);
+					}else if(MemberType[1].equalsIgnoreCase("CS")) {
+						committeeinvitation.setSerialNo(committeeinvitationdto.getEmpIdList().size());
+					}else {
+						committeeinvitation.setSerialNo(MemberType.length>3?Integer.parseInt(MemberType[3]):slno);
+					}
+				}else {
+					committeeinvitation.setSerialNo(slno);
+				}
+
 				slno++;
 				ret=dao.CommitteeInvitationCreate(committeeinvitation);
 			}
@@ -2841,7 +2854,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 			LocalDate fromDate = LocalDate.parse(committeemaindata[6].toString());
 			
-			long lastcommitteeid=dao.LastCommitteeId(committeemaindata[1].toString(),committeemaindata[2].toString(),committeemaindata[3].toString(),committeemaindata[4].toString(),committeemaindata[13].toString());	
+			long lastcommitteeid=dao.LastCommitteeId(committeemaindata[1].toString(),committeemaindata[2].toString(),committeemaindata[3].toString(),committeemaindata[4].toString(),committeemaindata[13].toString(),committeemaindata[14].toString());	
 			if(lastcommitteeid!=0)
 			{
 				CommitteeMain committeemain1= new CommitteeMain();
@@ -4076,4 +4089,30 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 		
 		return dao.getPreProjectAgendaDocById(filerepid);
 	}
+	
+	@Override
+	public Object[] carsCommitteeDescriptionTOR(String carsInitiationId, String committeeId) throws Exception {
+		
+		return dao.carsCommitteeDescriptionTOR(carsInitiationId, committeeId);
+	}
+	
+	@Override
+	public CommitteeCARS getCommitteeCARSById(String comCARSInitiationId) throws Exception {
+		
+		return dao.getCommitteeCARSById(comCARSInitiationId);
+	}
+	
+	@Override
+	public Long addCommitteeCARS(CommitteeCARS committeeCARS) throws Exception {
+		
+		return dao.addCommitteeCARS(committeeCARS);
+	}
+
+//	---------------------------------- Naveen R 3/9/25 MOM Check ------------------------------------------
+	
+	@Override
+	public List<Object[]> CommitteeScheduleMinutesforAction(String committeescheduleid) {
+		return dao.CommitteeScheduleMinutesforAction(committeescheduleid);
+	}
+	
 }

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
 	import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
@@ -278,22 +279,22 @@ float: right;
 			<button class="btn btn-info btn-sm  back ml-2 mt-1" formaction="ProjectSpecificationDetails.htm" formmethod="get" formnovalidate="formnovalidate" style="float: right;">BACK</button>
 			</form>
 		</nav>
-		<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center" class="mt-2">
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center" class="mt-2">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-	</div>
-	<%}%>
+		<% 
+		    String ses = (String) request.getParameter("result");
+		    String ses1 = (String) request.getParameter("resultfail");
+		    if (ses1 != null) { %>
+		    <div align="center">
+		        <div class="alert alert-danger" role="alert">
+		            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+		        </div>
+		    </div>
+		<% }if (ses != null) { %>
+		    <div align="center">
+		        <div class="alert alert-success" role="alert">
+		            <%=StringEscapeUtils.escapeHtml4(ses) %>
+		        </div>
+		    </div>
+		<% } %>
 		<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-5">

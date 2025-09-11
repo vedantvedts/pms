@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.List"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -53,20 +54,20 @@ display:none;
 		List<Object[]> EnoteApprovedList=(List<Object[]>)request.getAttribute("eNoteApprovalList");
 	//29-04-2025
 	%>
-	<%
-
-	if(ses1!=null){
-	%>
-	<div align="center">
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-	</div></div>
-                    <%} %>
+	<% 
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 <div class="container-fluid" >
 	<div class="row">
 		<div class="col-md-12">	
@@ -140,8 +141,8 @@ display:none;
 							for(Object[] obj: EnoteApprovalPendingList) {%>
 							<tr>
 							<td style="text-align: center;"> <%=++firstCount %></td>
-							<td style="text-align: center;"><%=obj[8].toString() %></td>
-							<td style="text-align: center;"><%=obj[9].toString() %></td>
+							<td style="text-align: center;"><%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - " %></td>
+							<td style="text-align: center;"><%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - " %></td>
 		
 							<td style="text-align: right;"> 
 							<%=
@@ -149,7 +150,7 @@ display:none;
 							%>
 							
 							</td>
-				<td style="text-align: center;"> <%=obj[13].toString() %></td>
+				<td style="text-align: center;"> <%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
 				<td>
 				<div align="center" style="margin-top:1%;">
 				<form action="#">
@@ -242,10 +243,10 @@ display:none;
 						%>
 						<tr>
 						<td style="text-align: center;width:20px;"><%=++count %></td>
-						<td style="text-align: center;"><%=obj[13].toString() %></td>
-						<td style="text-align: center;"><%=obj[10].toString() %></td>
+						<td style="text-align: center;"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - "%></td>
+						<td style="text-align: center;"><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %></td>
 						<td style="text-align: center;"> 
-						<%=obj[11].toString() %>, <%=obj[12].toString() %>
+						<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>, <%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - "%>
 							
 							</td>
 						
@@ -253,7 +254,7 @@ display:none;
 							
 							<div align="center" style="margin-top:1%;">
 							<form action="#">
-							<button type ="submit"  class="btn btn-sm btn-link w-100 btn-status" formaction="EnoteStatusTrack.htm" value="<%=obj[0]%>" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="Transaction History" name="EnoteTrackId" style=" color: <%=obj[8].toString()%>; font-weight: 600;display: contents" > <%=obj[7].toString() %> 
+							<button type ="submit"  class="btn btn-sm btn-link w-100 btn-status" formaction="EnoteStatusTrack.htm" value="<%=obj[0]%>" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="Transaction History" name="EnoteTrackId" style=" color: <%=obj[8].toString()%>; font-weight: 600;display: contents" > <%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %> 
 							<i class="fa fa-external-link" aria-hidden="true"></i></button>
 							</form>
 							</div>

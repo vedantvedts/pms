@@ -19,6 +19,7 @@ import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
 import com.vts.pfms.master.model.PfmsFeedbackTrans;
+import com.vts.pfms.master.model.RoleMaster;
 
 public interface MasterService {
 	
@@ -108,6 +109,14 @@ public interface MasterService {
 	public int removeProjectsLinked(String programmeId) throws Exception;
 	public long addProgrammeProjects(ProgrammeProjects linked) throws Exception;
 	public Long ProgramCodeCheck(String programmeCode, String prgrammeId) throws Exception ;
+	public List<Object[]> getProjectList(String labcode) throws Exception;
+	public List<Object[]> getProjectList(String labcode, String programmeId) throws Exception;
 	/* **************************** Programme Master - Naveen R  - 16/07/2025 End**************************************** */
 
+	public Long addRoleMaster(RoleMaster roleMaster)throws Exception;
+	
+	// 22/8/2025  Naveen R RoleName and RoleCode Duplicate Check start
+	public Long getRoleNameDuplicateCount(String roleName) throws Exception;
+	public Long getRoleCodeDuplicateCount(String roleCode) throws Exception;
+	// 22/8/2025  Naveen R RoleName and RoleCode Duplicate Check End
 }

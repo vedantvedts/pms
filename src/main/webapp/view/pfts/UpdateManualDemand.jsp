@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.text.Format"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -73,28 +74,28 @@ font-weight: bold;
   String projectid = fileView[11].toString();
   int fileViewValue = Integer.parseInt(fileView[7].toString()); 
  %>
-<%
-	String ses=(String)request.getParameter("result"); 
-	String ses1=(String)request.getParameter("resultfail");
-%>
-	<%if(ses1!=null){ %>
-	<div align="center">
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></div>
-	<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-	        	<%=ses %>
-	        </div>
-	    </div>
-    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 <div class="container-fluid">
 	<div class="card shadow-nohover" style="margin-top:0px;">		
 		<div class="row card-header">
 			<div class="col-md-6">
-				<h4>Demand No : <%=fileView[1].toString() %></h4>
+				<h4>Demand No : <%=fileView[1]!=null?StringEscapeUtils.escapeHtml4(fileView[1].toString()):"-" %></h4>
 			</div>
         </div>
         <div class="card-body">
@@ -104,7 +105,7 @@ font-weight: bold;
 								<label> Item Nomenclature : </label> 
 						  </div>
 						  <div class="col-md-9" style="margin-left: -13%;">
-								<input type="text" class="form-control" value="<%=fileView[4].toString() %>" style="width: 118%"
+								<input type="text" class="form-control" value="<%=fileView[4]!=null?StringEscapeUtils.escapeHtml4(fileView[4].toString()):"-" %>" style="width: 118%"
 									name="procitems" id="procitems" readonly="readonly">
 						  </div>
 				     </div>
@@ -120,18 +121,18 @@ font-weight: bold;
 									<% if (fileViewValue < 10) {  %>
 								       <% for (Object[] obj : pftsStageList1) {%>
 								          <% if(obj[0].toString().equalsIgnoreCase("10")){ %>
-								           <option value="<%=obj[0]%>"<%if(obj[0].toString().equalsIgnoreCase(fileView[7].toString())){ %> selected <%} %>><%=obj[2].toString()%></option>
+								           <option value="<%=obj[0]%>"<%if(obj[0].toString().equalsIgnoreCase(fileView[7].toString())){ %> selected <%} %>><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%></option>
 									      <% }else{%>
-									       <option value="<%=obj[0]%>"<%if(obj[0].toString().equalsIgnoreCase(fileView[7].toString())){ %> selected <%} %>><%=obj[2].toString()%></option>
+									       <option value="<%=obj[0]%>"<%if(obj[0].toString().equalsIgnoreCase(fileView[7].toString())){ %> selected <%} %>><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%></option>
 									      <%} %>
 									   <%} %>
 									<%}else if(fileViewValue == 10){ %>
 									   <% for (Object[] obj : pftsStageList2) {%>
-								       <option value="<%=obj[0]%>"<%if(obj[0].toString().equalsIgnoreCase(fileView[7].toString())){ %> selected <%} %>><%=obj[2].toString()%></option>
+								       <option value="<%=obj[0]%>"<%if(obj[0].toString().equalsIgnoreCase(fileView[7].toString())){ %> selected <%} %>><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%></option>
 									   <%} %>
 									<%}else{ %>
 									   <% for (Object[] obj : pftsStageList3) {%>
-								       <option value="<%=obj[0]%>"<%if(obj[0].toString().equalsIgnoreCase(fileView[7].toString())){ %> selected <%} %>><%=obj[2].toString()%></option>
+								       <option value="<%=obj[0]%>"<%if(obj[0].toString().equalsIgnoreCase(fileView[7].toString())){ %> selected <%} %>><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%></option>
 									   <%} %>
 									<%} %>
 								</select>
@@ -148,7 +149,7 @@ font-weight: bold;
 								<label> Remarks : </label> 
 								</div>
 								<div class="col-md-3">
-								<input type="text" class="form-control" value="<%=fileView[9].toString() %>"
+								<input type="text" class="form-control" value="<%=fileView[9]!=null?StringEscapeUtils.escapeHtml4(fileView[9].toString()):"" %>"
 									name="procRemarks" id="procRemarks" required="required"
 									style="margin-left: -11%;width: 133%">
 							</div>
@@ -248,7 +249,7 @@ font-weight: bold;
 									if (i == 9)
 										break;
 								%>
-								<p class="pstatus" id="<%=obj1[0].toString()%>"><%=obj1[0].toString()%>. <%=obj1[2].toString()%>
+								<p class="pstatus" id="<%=obj1[0].toString()%>"><%=obj1[0]!=null?StringEscapeUtils.escapeHtml4(obj1[0].toString()):"-"%>. <%=obj1[2]!=null?StringEscapeUtils.escapeHtml4(obj1[2].toString()):"-"%>
 								</p>
 								<%
 								i++;
@@ -262,7 +263,7 @@ font-weight: bold;
 									if (j == 9)
 										break;
 								%>
-								<p class="pstatus" id="<%=obj1[0].toString()%>"><%=obj1[0].toString()%>. <%=obj1[2].toString()%>
+								<p class="pstatus" id="<%=obj1[0].toString()%>"><%=obj1[0]!=null?StringEscapeUtils.escapeHtml4(obj1[0].toString()):"-"%>. <%=obj1[2]!=null?StringEscapeUtils.escapeHtml4(obj1[2].toString()):"-"%>
 								</p>
 								<%
 								j++;
@@ -276,7 +277,7 @@ font-weight: bold;
 									if (k == 9)
 										break;
 								%>
-								<p class="pstatus" id="<%=obj1[0].toString()%>"><%=obj1[0].toString()%>. <%=obj1[2].toString() %>
+								<p class="pstatus" id="<%=obj1[0].toString()%>"><%=obj1[0]!=null?StringEscapeUtils.escapeHtml4(obj1[0].toString()):"-"%>. <%=obj1[2]!=null?StringEscapeUtils.escapeHtml4(obj1[2].toString()):"-" %>
 								</p>
 								<%
 		                        k++;

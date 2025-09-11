@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.text.Format"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -37,22 +38,22 @@ font-weight: bold;
   List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("projectslist");
   String ProjectId=(String)request.getAttribute("projectId");
  %>
-<%
-	String ses=(String)request.getParameter("result"); 
-	String ses1=(String)request.getParameter("resultfail");
-%>
-	<%if(ses1!=null){ %>
-	<div align="center">
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></div>
-	<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-	        	<%=ses %>
-	        </div>
-	    </div>
-    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 <div class="container-fluid">
 	<div class="card shadow-nohover" style="margin-top:0px;width: 70%;margin-left: 14%;">		
@@ -74,7 +75,7 @@ font-weight: bold;
 											String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
 											%>
 											<%if(ProjectId!=null && ProjectId.equalsIgnoreCase(obj[0].toString())){ %>
-											<option value="<%=obj[0]%>"><%=obj[4]+projectshortName%></option>
+											<option value="<%=obj[0]%>"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"-" %> <%= projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):"-"%></option>
 											<%}} %> 
   								  </select>
 		                   </div>

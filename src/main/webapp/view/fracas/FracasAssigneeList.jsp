@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -101,20 +102,22 @@ a:hover {
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br />
     
@@ -150,16 +153,17 @@ a:hover {
 								%>
 								<tr>
 									<td class="center"><%=count %></td>
-									<td><%=obj[13]%></td>
-									<td><%=obj[12] %></td>
-									<td><%=sdf.format(obj[3])%></td>
-									<td><%=sdf.format(obj[6])%></td>
-									<td><%=obj[10]%>, <%=obj[11]%></td>
+									<td><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - "%></td>
+									<td><%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %></td>
+									<td><%=obj[3]!=null?sdf.format(obj[3]):" - " %></td>
+									<td><%=obj[6]!=null?sdf.format(obj[6]):" - " %></td>
+									<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - "%>, <%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "%></td>
 									<td><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></td>
 									<td>
 										<%if(obj[14]!=null){ %>
 											<form action="FracasAttachDownload.htm" method="post" target="_blank" >
-												<button class="btn" style="align: center;"><i class="fa fa-download"></i></button>																			<input type="hidden" name="fracasattachid" value="<%= obj[14] %>">
+												<button class="btn" style="align: center;"><i class="fa fa-download"></i></button>																			
+												<input type="hidden" name="fracasattachid" value="<%= obj[14] %>">
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 											</form>
 										<%}else{ %>

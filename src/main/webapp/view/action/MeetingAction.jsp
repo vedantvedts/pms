@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -135,20 +136,22 @@ String committeeid=(String)request.getAttribute("committeeid");
 String scheduleid =(String)request.getAttribute("scheduleid");
 %>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
- if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br/>
 </body>
@@ -172,7 +175,7 @@ String scheduleid =(String)request.getAttribute("scheduleid");
 										 for (Object[] obj : ProjectsList) {
 											 String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";			 
 										 %>
-												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectid)){ %>selected<%} %> ><%=obj[4]+projectshortName%></option>
+												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectid)){ %>selected<%} %> ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%> <%= projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>
 										<%}} %>
 								             </select>       
 											</td>
@@ -183,7 +186,7 @@ String scheduleid =(String)request.getAttribute("scheduleid");
                                               <select class="form-control selectdee" id="committeeid" required="required" name="committeeid" onchange='submitForm();' >
 							   			        	<%if(projapplicommitteelist!=null && projapplicommitteelist.size()>0){
 							   			        	  for (Object[] obj : projapplicommitteelist) {%>
-											     <option value="<%=obj[0]%>"  <%if(obj[0].toString().equals(committeeid)){ %>selected<%} %> ><%=obj[3]%></option>
+											     <option value="<%=obj[0]%>"  <%if(obj[0].toString().equals(committeeid)){ %>selected<%} %> ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - "%></option>
 											        <%}} %>   
 							  	             </select>
 											</td>
@@ -194,7 +197,8 @@ String scheduleid =(String)request.getAttribute("scheduleid");
                                                    <select class="form-control selectdee" id="meettingid" required="required" name="meettingid" onchange='submitForm();'>
 							   			        	<% if(meetingcount!=null && meetingcount.size()>0){
 							   			        	 for (Object[] obj : meetingcount) {%>
-											         <option value="<%=obj[0]%>" <%if(obj[0].toString().equals(scheduleid)){ %>selected<%} %>><%=obj[3]+"-"+meettingcount%></option>
+											         <option value="<%=obj[0]%>" <%if(obj[0].toString().equals(scheduleid)){ %>selected<%} %>><%= (obj[3] != null ? StringEscapeUtils.escapeHtml4(obj[3].toString())  : " - ") + " - " + (meetingcount != null ? StringEscapeUtils.escapeHtml4(meetingcount.toString()) : " - ")%>
+</option>
 											        <%meettingcount++;} }%>   
 							  	                  </select>				   						
 											</td> 	   									
@@ -244,7 +248,7 @@ String scheduleid =(String)request.getAttribute("scheduleid");
 																		<td><%=count++ %></td>
 																		<td>
 																		    <form action="ActionDetails.htm" method="POST" >
-																				<button  type="submit" class="btn btn-outline-info"   ><%=obj[0] %></button>
+																				<button  type="submit" class="btn btn-outline-info"   ><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):" - " %></button>
 																			   <input type="hidden" name="ActionLinkId" value="<%=obj[13]%>"/>
 																	           <input type="hidden" name="Assignee" value="<%=obj[1]%>,<%=obj[2]%>"/>
 																	           <input type="hidden" name="ActionMainId" value="<%=obj[10]%>"/>
@@ -259,21 +263,21 @@ String scheduleid =(String)request.getAttribute("scheduleid");
 																			
 																			</form> 
 																		</td>
-																		<td><%=sdf1.format(obj[6])%></td>
+																		<td><%=obj[6]!=null?sdf1.format(obj[6]):""%></td>
 																		<td>
-															               <%if(obj[7].toString().length()>100){ %>
-															               <%=obj[7].toString().substring(0, 100) %>
+															               <%if(obj[7]!=null && obj[7].toString().length()>100){ %>
+															               <%=StringEscapeUtils.escapeHtml4(obj[7].toString().substring(0, 100)) %>
 														                   <input type="hidden" value='"<%=obj[7].toString()%>"' id="td<%=obj[10].toString()%>">
 														                   <span style="text-decoration: underline;font-size:13px;color: #145374;cursor: pointer;font-weight: bolder" onclick="showAction('<%=obj[10].toString()%>','<%=obj[0].toString()%>')">show more..</span>
 															               <%}else{ %>
-															               <%=obj[7].toString() %>
+															               <%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()):" - " %>
 															               <%} %>
 															            </td>																		
-																	  	<td><%=obj[3]%>, <%=obj[4]%></td>
+																	  	<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - "%>, <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%></td>
 																		<td style="width:8% !important; "><%if(obj[11]!=null){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important; width: 140px;">
 															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[11]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															<%=obj[11]%>
+															<%=StringEscapeUtils.escapeHtml4(obj[11].toString())%>
 															</div> 
 															</div> <%}else{ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;width: 140px;">

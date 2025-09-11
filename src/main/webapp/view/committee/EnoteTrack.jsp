@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.regex.Matcher"%>
 <%@page import="java.util.regex.Pattern"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -164,9 +165,9 @@ List<Object[]> EnoteTransactionList = (List<Object[]>)request.getAttribute("Enot
 	      <article>
 		  	<div class="inner">
 				<span class="date">
-					<span class="day"><%=day.format(object[4]) %></span>
-					<span class="month"><%=month.format(object[4]) %></span>
-					<span class="year"><%=year.format(object[4]) %></span>
+					<span class="day"><%=object[4]!=null?day.format(object[4]):" - " %></span>
+					<span class="month"><%=object[4]!=null?month.format(object[4]) :" - "%></span>
+					<span class="year"><%=object[4]!=null?year.format(object[4]):" - " %></span>
 				</span>
 				<%
 				String extractedWord=null;
@@ -179,13 +180,13 @@ List<Object[]> EnoteTransactionList = (List<Object[]>)request.getAttribute("Enot
 				}
 				%>
 				
-				<h2 style="background-color: <%=object[7]%>;--my-color-var: <%=object[7]%>;" ><%=extractedWord%> at <%=time.format(object[4]) %></h2> 
+				<h2 style="background-color: <%=object[7]%>;--my-color-var: <%=object[7]%>;" ><%=extractedWord!=null?StringEscapeUtils.escapeHtml4(extractedWord):" - "%> at <%=object[4]!=null?time.format(object[4]):" - " %></h2> 
 				<p style="background-color:  #f0f2f5;">
 					<span class="remarks_title">Action By : </span>
-					<%=object[2] %>, <%=object[3] %><br>
+					<%=object[2]!=null?StringEscapeUtils.escapeHtml4(object[2].toString()): " - " %>, <%=object[3]!=null?StringEscapeUtils.escapeHtml4(object[3].toString()): " - " %><br>
 					<%if(object[5]!= null) { %>
 						<span class="remarks_title">Remarks : </span>
-							<%=object[5] %>
+							<%=StringEscapeUtils.escapeHtml4(object[5].toString()) %>
 					<%}else{ %> 
 						<span class="remarks_title">No Remarks </span> 
 					<%} %>

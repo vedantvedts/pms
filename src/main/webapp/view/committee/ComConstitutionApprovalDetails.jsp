@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
@@ -147,21 +148,22 @@ for(int i=0;i<committeemembersall.size();i++){
 
 }%>
 
-<%
-String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></div>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br />
    
@@ -174,11 +176,11 @@ String ses=(String)request.getParameter("result");
 					<div class="card-header">						
 						<div class="row">										
 							<div class="col-md-12">
-							<h4 style="color:  #055C9D" ><%=committeedata[8] %>
+							<h4 style="color:  #055C9D" ><%=committeedata[8]!=null?StringEscapeUtils.escapeHtml4(committeedata[8].toString()): " - " %>
 							
 								<p style="float: right;">
 									
-										<%if(Long.parseLong(projectid)>0){ %> Project : <%=projectdata[4] %><%}else if (Long.parseLong(divisionid)>0){ %>  Division : <%=divisiondata[1] %> <%}else if(Long.parseLong(initiationid)>0){ %>Pre-Project : <%=initiationdata[1]%> <%} %> (Approval Pending)
+										<%if(Long.parseLong(projectid)>0){ %> Project : <%=projectdata[4]!=null?StringEscapeUtils.escapeHtml4(projectdata[4].toString()): " - " %><%}else if (Long.parseLong(divisionid)>0){ %>  Division : <%=divisiondata[1]!=null?StringEscapeUtils.escapeHtml4(divisiondata[1].toString()): " - " %> <%}else if(Long.parseLong(initiationid)>0){ %>Pre-Project : <%=initiationdata[1]!=null?StringEscapeUtils.escapeHtml4(initiationdata[1].toString()): " - "%> <%} %> (Approval Pending)
 									
 								</p>
 							</h4>
@@ -196,7 +198,7 @@ String ses=(String)request.getParameter("result");
 					                        <tr >
 												<td style="width:25%; border:0:">
 													 <div class="input select">
-														<%=chairperson[2] %>(<%=chairperson[4]%>)(<%=chairperson[9]%>)
+														<%=chairperson[2]!=null?StringEscapeUtils.escapeHtml4(chairperson[2].toString()): " - " %>(<%=chairperson[4]!=null?StringEscapeUtils.escapeHtml4(chairperson[4].toString()): " - "%>)(<%=chairperson[9]!=null?StringEscapeUtils.escapeHtml4(chairperson[9].toString()): " - "%>)
 													</div>
 												</td>										
 																		
@@ -212,7 +214,7 @@ String ses=(String)request.getParameter("result");
 					                        <tr >
 												<td style="width:25%; border:0:">
 													 <div class="input select">
-														<%=secretary[2] %>(<%=secretary[4]%>)(<%=secretary[9]%>)
+														<%=secretary[2]!=null?StringEscapeUtils.escapeHtml4(secretary[2].toString()): " - " %>(<%=secretary[4]!=null?StringEscapeUtils.escapeHtml4(secretary[4].toString()): " - "%>)(<%=secretary[9]!=null?StringEscapeUtils.escapeHtml4(secretary[9].toString()): " - "%>)
 													</div>
 												</td>										
 											</tr>
@@ -230,7 +232,7 @@ String ses=(String)request.getParameter("result");
 					                        <tr >
 												<td style="width:25%; border:0:">
 													 <div class="input select">
-														<%=proxysecretary[2] %>(<%=proxysecretary[4]%>)(<%=proxysecretary[9]%>)
+														<%=proxysecretary[2]!=null?StringEscapeUtils.escapeHtml4(proxysecretary[2].toString()): " - " %>(<%=proxysecretary[4]!=null?StringEscapeUtils.escapeHtml4(proxysecretary[4].toString()): " - "%>)(<%=proxysecretary[9]!=null?StringEscapeUtils.escapeHtml4(proxysecretary[9].toString()): " - "%>)
 													</div>
 												</td>										
 											</tr>
@@ -261,7 +263,7 @@ String ses=(String)request.getParameter("result");
 											%>
 											
 											<tr>
-												<td class="tdclass"><%=count%> )</td> <td> <%=obj[2]%> (<%=obj[4]%>)</td>
+												<td class="tdclass"><%=count%> )</td> <td> <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> (<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>)</td>
 											</tr>
 											<%	count++;
 												
@@ -289,7 +291,7 @@ String ses=(String)request.getParameter("result");
 									%>
 									
 									<tr>
-										<td class="tdclass"><%=count%> )</td> <td> <%=obj[2]%> (<%=obj[4]%>) (<%=obj[9] %>)</td>
+										<td class="tdclass"><%=count%> )</td> <td> <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> (<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>) (<%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - " %>)</td>
 										
 									</tr>
 									<%	count++; 
@@ -318,7 +320,7 @@ String ses=(String)request.getParameter("result");
 											if(Long.parseLong(obj[7].toString())==0){
 									%>
 								<tr>
-									<td class="tdclass"> <%=count%> )</td> <td> <%=obj[2]%> (<%=obj[4]%>) (<%=obj[9] %>)</td>
+									<td class="tdclass"> <%=count%> )</td> <td> <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> (<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>) (<%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - " %>)</td>
 								</tr>
 								<%	count++; 
 										
@@ -342,7 +344,7 @@ String ses=(String)request.getParameter("result");
 											for (Object[] obj : committeeMemberreplist) {
 										%>
 											<tr id="repmem<%=obj[0] %>">
-												<td><sp> <%=obj[3]%> </sp></td>
+												<td><sp> <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> </sp></td>
 											</tr>
 										<%	count++; 	
 											}
@@ -354,9 +356,9 @@ String ses=(String)request.getParameter("result");
 							</div>
 							<div  class="col-md-6">
 								<br>
-								<h4 align="center"><%=approvaldata[7] %></h4>
+								<h4 align="center"><%=approvaldata[7]!=null?StringEscapeUtils.escapeHtml4(approvaldata[7].toString()): " - " %></h4>
 								<%if(approvaldata[4]!=null){ %>  <!-- approvaldata[5].toString().equals("RTSC") || approvaldata[5].toString().equals("RTDG") ||approvaldata[5].toString().equals("RTDR") || approvaldata[5].toString().equals("RTR") || approvaldata[5].toString().equals("RTDO") || -->
-								<div class="col-md-row"><h4><%=approvaldata[4] %></h4></div>
+								<div class="col-md-row"><h4><%=StringEscapeUtils.escapeHtml4(approvaldata[4].toString())%></h4></div>
 								<%} %>
 								<form  method="post" action="CommitteeMainApproval.htm" id="approveform">					
 									<table border='0' style="width: 100%;" >									
@@ -483,7 +485,7 @@ String ses=(String)request.getParameter("result");
 				                			<%if(constitutionapprovalflow.size()>0){ %>
 								                     <%for(Object[] obj : constitutionapprovalflow){ %>
 								                     	<%if(obj[3].toString().equals("Constituted By") ){ %>
-								                     		<%=obj[1] %>,<%=obj[2] %>
+								                     		<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>,<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>
 								                     	<%} %>
 								                     <%} %>
 								               <%} %>
@@ -492,7 +494,7 @@ String ses=(String)request.getParameter("result");
 				                			 <%if(constitutionapprovalflow.size()>0){ %>
 								                     <%for(Object[] obj : constitutionapprovalflow){ %>
 								                     	<%if(obj[3].toString().equals("Group Head") ){ %>
-								                     		<%=obj[1] %>,<%=obj[2] %>
+								                     		<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>,<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>
 								                     	<%} %>
 								                     <%} %>
 								               <%} %>   
@@ -501,7 +503,7 @@ String ses=(String)request.getParameter("result");
 				                			<%if(constitutionapprovalflow.size()>0){ %>
 								                     <%for(Object[] obj : constitutionapprovalflow){ %>
 								                     	<%if(obj[3].toString().equals("DO-RTMD") ){ %>
-								                     		<%=obj[1] %>,<%=obj[2] %>
+								                     		<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>,<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>
 								                     	<%} %>
 								                     <%} %>
 								               <%} %>    
@@ -510,7 +512,7 @@ String ses=(String)request.getParameter("result");
 				                			 <%if(constitutionapprovalflow.size()>0){ %>
 								                     <%for(Object[] obj : constitutionapprovalflow){ %>
 								                     	<%if(obj[3].toString().equals("Director") ){ %>
-								                     		<%=obj[1] %>,<%=obj[2] %>
+								                     		<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>,<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>
 								                     	<%} %>
 								                     <%} %>
 								               <%} %>

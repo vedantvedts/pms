@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.math.BigDecimal"%>
 <%@ page import="java.time.LocalDate"%>
@@ -555,7 +556,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 		      <hr>
 		      <div class="row">
 		      	<div class="col-md-6 circular-progress">
-		      		 <div class="progress " data-value='<%=ProjectHealthTotalData[29]%>'>
+		      		 <div class="progress " data-value='<%=ProjectHealthTotalData[29]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[29].toString()): " - "%>'>
 			         <span class="progress-left">
 			          		<span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[29].toString())<=25){%> border-danger<%}%>
 														<%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=50)){%> border-orange<%}%>
@@ -571,7 +572,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 														"></span>   
 			          </span>
 			          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-			            <div class="h4 font-weight-bold" id="pmrcprogress" ><%=(ProjectHealthTotalData[29] )%>%</div>
+			            <div class="h4 font-weight-bold" id="pmrcprogress" ><%=(ProjectHealthTotalData[29]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[29].toString()): " - " )%>%</div>
 			          </div>
 			        </div>
 			        <!-- <div><h6 style="margin-bottom: 5px">PMRC</h6></div> -->
@@ -583,14 +584,14 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 				        <tr>
 			        		<td style="font-size: 14px;cursor: pointer;" id="meetingsvaluepmrc"  data-toggle="tooltip" title="Held / To be Held / Total to be Held" >
 			        			<%if(ProjectHealthTotalData !=null){%>
-			        				<span><%=ProjectHealthTotalData[0] %> / <%=ProjectHealthTotalData[2] %> / <%=ProjectHealthTotalData[46] %></span>
+			        				<span><%=ProjectHealthTotalData[0]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[0].toString()): " - " %> / <%=ProjectHealthTotalData[2]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[2].toString()): " - " %> / <%=ProjectHealthTotalData[46]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[46].toString()): " - " %></span>
 			        			<%}%>
 			        		</td>
 			        	</tr>
 			        </table>
 		      	</div>
 		      	<div class="col-md-6 circular-progress">
-		      		 <div class="progress "  data-value='<%=(ProjectHealthTotalData[31] )%>'>
+		      		 <div class="progress "  data-value='<%=(ProjectHealthTotalData[31]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[31].toString()): " - " )%>'>
 			          <span class="progress-left">
 			          		<span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[31].toString())<=25){%> border-danger<%}%>
 																								   <%if( (Integer.parseInt(ProjectHealthTotalData[31].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[31].toString())<=50)){%> border-orange<%}%>
@@ -606,7 +607,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 																"></span>   
 			          </span>
 			          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-			            <div class="h4 font-weight-bold" ><%=(ProjectHealthTotalData[31] )%>%</div>
+			            <div class="h4 font-weight-bold" ><%=(ProjectHealthTotalData[31]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[31].toString()): " - " )%>%</div>
 			          </div>
 			        </div>
 			       <!--  <div><h6 style="margin-bottom: 5px">EB</h6></div> -->
@@ -616,7 +617,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 				        		<th style="font-size: 14px">EB </th>
 				        	</tr>
 				        	<tr>
-				        		<td style="font-size: 14px" id="meetingsvalueeb"  data-toggle="tooltip" title="Held / To be Held / Total to be Held"  ><%if(ProjectHealthTotalData !=null){%><%=ProjectHealthTotalData[3] %> / <%=ProjectHealthTotalData[5] %> / <%=ProjectHealthTotalData[47] %><%}%></td>
+				        		<td style="font-size: 14px" id="meetingsvalueeb"  data-toggle="tooltip" title="Held / To be Held / Total to be Held"  ><%if(ProjectHealthTotalData !=null){%><%=ProjectHealthTotalData[3]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[3].toString()): " - " %> / <%=ProjectHealthTotalData[5]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[5].toString()): " - " %> / <%=ProjectHealthTotalData[47] !=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[47].toString()): " - "%><%}%></td>
 				        	</tr>
 				     </table>
 		      	</div>
@@ -630,7 +631,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 		      <hr>
 		      <div class="row">
 		      	<div class="col-md-6 circular-progress">
-		      		<div class="progress " data-value='<%if(ProjectHealthTotalData[10] !=null){%><%=ProjectHealthTotalData[10] %><%} %>'>
+		      		<div class="progress " data-value='<%if(ProjectHealthTotalData[10] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[10].toString()) %><%} %>'>
 			          <span class="progress-left">
 			                        <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[10].toString())<=25){%> border-danger<%}%>
 																<%if( (Integer.parseInt(ProjectHealthTotalData[10].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[10].toString())<=50)){%> border-orange<%}%>
@@ -646,18 +647,18 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 																"></span>   
 			          </span>
 			          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-			            <div class="h4 font-weight-bold"><span id="milestonepercentage"><%if(ProjectHealthTotalData[10] !=null){%><%=ProjectHealthTotalData[10] %><%} %>%</span></div>
+			            <div class="h4 font-weight-bold"><span id="milestonepercentage"><%if(ProjectHealthTotalData[10] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[10].toString()) %><%} %>%</span></div>
 			          </div>
 			     	</div>
 		      	</div>
 		      	<div class="col-md-6">
 		      		<div class="bigcount">
-		      			<h1><%if(ProjectHealthTotalData[8] !=null){%><%=ProjectHealthTotalData[8] %><%} %></h1>
+		      			<h1><%if(ProjectHealthTotalData[8] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[8].toString())%><%} %></h1>
 		      			<p class="textfont" style="margin-bottom: 5px !important"><span class="green legend-shadow">&#x220E;</span> &nbsp;Completed</p>
 		      		</div>
 		      		
 		      		<div class="bigcount">
-		      			<h4><%if(ProjectHealthTotalData[9] !=null){%><%=ProjectHealthTotalData[9] %><%} %></h4>
+		      			<h4><%if(ProjectHealthTotalData[9] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[9].toString())%><%} %></h4>
 		      			<p class="textfont">Total</p>
 		      		</div>
 		      	</div>
@@ -669,12 +670,12 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" >
 				  			<span class="yellow">&#x220E;</span>
 				  			<span style="font-size: 11px !important;text-shadow: none !important; ">Delayed&nbsp;</span>
-				  			<%if(ProjectHealthTotalData[7] !=null){%><%=ProjectHealthTotalData[7] %><%} %>
+				  			<%if(ProjectHealthTotalData[7] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[7].toString())%><%} %>
 				  		</td>
 				  		<td data-toggle="tooltip" title="Pending"  >
 				  			<span class="red">&#x220E;</span>
 				  			<span style="font-size: 11px !important;text-shadow: none !important; ">Pending&nbsp;</span>
-				  			<%if(ProjectHealthTotalData[6] !=null){%><%=ProjectHealthTotalData[6] %><%} %>
+				  			<%if(ProjectHealthTotalData[6] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[6].toString())%><%} %>
 				  		</td>
 				  	</tr>
 				  </thead>
@@ -692,7 +693,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 		      <hr>
 		      <div class="row">
 		      	<div class="col-md-6 circular-progress">
-		      		<div class="progress " data-value='<%if(ProjectHealthTotalData[37] !=null){%><%=ProjectHealthTotalData[37] %><%} %>'>
+		      		<div class="progress " data-value='<%if(ProjectHealthTotalData[37] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[37].toString()) %><%} %>'>
 			          <span class="progress-left">
 			                        <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[37].toString())<=25){%> border-danger<%}%>
 																<%if( (Integer.parseInt(ProjectHealthTotalData[37].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[37].toString())<=50)){%> border-orange<%}%>
@@ -708,17 +709,17 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 																"></span>
 			          </span>
 			          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-			            <div class="h4 font-weight-bold"><%if(ProjectHealthTotalData[37] !=null){%><%=ProjectHealthTotalData[37] %><%} %>%</div>
+			            <div class="h4 font-weight-bold"><%if(ProjectHealthTotalData[37] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[37].toString()) %><%} %>%</div>
 			          </div>
 			     	</div>
 		      	</div>
 		      	<div class="col-md-6">
 		      		<div class="bigcount">
-		      			<h1><%if(ProjectHealthTotalData[14] !=null){%><%=ProjectHealthTotalData[14] %><%} %></h1>
+		      			<h1><%if(ProjectHealthTotalData[14] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[14].toString())%><%} %></h1>
 		      			<p class="textfont" style="margin-bottom: 5px !important"><span class="green legend-shadow">&#x220E;</span> &nbsp;Completed</p>
 		      		</div>
 		      		<div class="bigcount">
-		      			<h4><%if(ProjectHealthTotalData[15] !=null){%><%=ProjectHealthTotalData[15] %><%} %></h4>
+		      			<h4><%if(ProjectHealthTotalData[15] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[15].toString()) %><%} %></h4>
 		      			<p class="textfont">Total</p>
 		      		</div>
 		      	</div>
@@ -730,17 +731,17 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" >
 				  			<span class="yellow">&#x220E;</span>
 				  			<span style="font-size: 11px !important;text-shadow: none !important; ">Delayed&nbsp;</span>
-				  			<%if(ProjectHealthTotalData[13] !=null){%>&nbsp;<%=ProjectHealthTotalData[13] %><%} %>
+				  			<%if(ProjectHealthTotalData[13] !=null){%>&nbsp;<%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[13].toString()) %><%} %>
 				  		</td>
 				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Forwarded" >
 				  			<span class="blue">&#x220E;</span>
 				  			<span style="font-size: 11px !important;text-shadow: none !important; ">Forward &nbsp;</span>
-				  			<%if(ProjectHealthTotalData[12] !=null){%> &nbsp;<%=ProjectHealthTotalData[12] %><%} %>
+				  			<%if(ProjectHealthTotalData[12] !=null){%> &nbsp;<%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[12].toString()) %><%} %>
 				  		</td>
 				  		<td data-toggle="tooltip" title="Pending" >
 				  			<span class="red">&#x220E;</span>
 				  			<span style="font-size: 11px !important;text-shadow: none !important; ">Pending&nbsp;</span>
-				  			<%if(ProjectHealthTotalData[11] !=null){%>&nbsp;<%=ProjectHealthTotalData[11] %><%} %>
+				  			<%if(ProjectHealthTotalData[11] !=null){%>&nbsp;<%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[11].toString()) %><%} %>
 				  		</td>
 				  	</tr>
 				  </thead>
@@ -759,7 +760,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 		      <hr>
 		      <div class="row">
 		      	<div class="col-md-6 circular-progress">
-		      		<div class="progress " data-value='<%if(ProjectHealthTotalData[39] !=null){%><%=ProjectHealthTotalData[39] %><%} %>'>
+		      		<div class="progress " data-value='<%if(ProjectHealthTotalData[39] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[39].toString()) %><%} %>'>
 			          <span class="progress-left">
 			                         <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[39].toString())<=25){%> border-danger<%}%>
 																								   <%if( (Integer.parseInt(ProjectHealthTotalData[39].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[39].toString())<=50)){%> border-orange<%}%>
@@ -775,17 +776,17 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 																"></span>  
 			          </span>
 			          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-			            <div class="h4 font-weight-bold"><%if(ProjectHealthTotalData[39] !=null){%><%=ProjectHealthTotalData[39] %><%} %>%</div>
+			            <div class="h4 font-weight-bold"><%if(ProjectHealthTotalData[39] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[39].toString()) %><%} %>%</div>
 			          </div>
 			     	</div>
 		      	</div>
 		      	<div class="col-md-6">
 		      		<div class="bigcount">
-		      			<h1><%if(ProjectHealthTotalData[16] !=null){%><%=ProjectHealthTotalData[16] %><%} %></h1>
+		      			<h1><%if(ProjectHealthTotalData[16] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[16].toString()) %><%} %></h1>
 		      			<p class="textfont" style="margin-bottom: 5px !important"><span class="green legend-shadow">&#x220E;</span> &nbsp;Completed</p>
 		      		</div>
 		      		<div class="bigcount">
-		      			<h4><%if(ProjectHealthTotalData[18] !=null){%><%=ProjectHealthTotalData[18] %><%} %></h4>
+		      			<h4><%if(ProjectHealthTotalData[18] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[18].toString()) %><%} %></h4>
 		      			<p class="textfont">Total</p>
 		      		</div>
 		      	</div>
@@ -802,7 +803,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 				  		<td data-toggle="tooltip" title="Pending" >
 				  			<span class="red">&#x220E;</span>
 				  			<span style="font-size: 11px !important;text-shadow: none !important; ">Pending&nbsp;</span>
-				  			<%if(ProjectHealthTotalData[17] !=null){%>&nbsp;<%=ProjectHealthTotalData[17] %><%} %>
+				  			<%if(ProjectHealthTotalData[17] !=null){%>&nbsp;<%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[17].toString()) %><%} %>
 				  		</td>
 				  	</tr>
 				  </thead>
@@ -844,8 +845,8 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 				  <tbody>
 				  	<tr>
 				      <th scope="row">Revenue</th>
-				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(0)[3] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(0)[4] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(0)[3]!=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(0)[3].toString()): " - " %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(0)[4]!=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(0)[4].toString()): " - "  %></td>
 				      <% BigDecimal revBal = new BigDecimal(DashboardFinance.get(0)[3].toString()).subtract(new BigDecimal(DashboardFinance.get(0)[4].toString())) ; %>
 				      <td><span style="color:green">&#8377;</span> <%=revBal%></td>
 				    </tr>
@@ -854,8 +855,8 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 				     <% balance	= balance.add(revBal); %>
 				     <tr>
 				      <th scope="row">Capital</th>
-				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(1)[3] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(1)[4] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(1)[3] !=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(1)[3].toString()): " - " %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(1)[4]!=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(1)[3].toString()): " - "  %></td>
 				      <% BigDecimal capBal = new BigDecimal(DashboardFinance.get(1)[3].toString()).subtract(new BigDecimal(DashboardFinance.get(1)[4].toString())) ; %>
 				      <td><span style="color:green">&#8377;</span> <%=capBal %></td>
 				    </tr>
@@ -865,8 +866,8 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 				    
 				    <tr>
 				      <th scope="row">Others</th>
-				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(2)[3] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(2)[4] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(2)[3]!=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(2)[3].toString()): " - "  %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(2)[4]!=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(2)[3].toString()): " - "  %></td>
 				      <% BigDecimal othBal = new BigDecimal(DashboardFinance.get(2)[3].toString()).subtract(new BigDecimal(DashboardFinance.get(2)[4].toString())) ; %>
 				      <td><span style="color:green">&#8377;</span> <%=othBal %></td>
 				    </tr> 
@@ -1233,9 +1234,9 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 														else {%> -  <%} }else{ %>-<%}%>">
 													
 															  &#11044;&nbsp; <span class="tableprojectname" style="color:black !important;font-size: 13px"> 
-															  	<%if(obj[46]!=null){%><%=obj[46] %><%}else {%>-<%} %> /
-															  	<%if(obj[3]!=null){%><%=obj[3] %><%}else {%>-<%} %> /
-															  	<%if(obj[44]!=null){%><%=obj[44] %><%}else {%>-<%} %>
+															  	<%if(obj[46]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[46].toString()) %><%}else {%>-<%} %> /
+															  	<%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %><%}else {%>-<%} %> /
+															  	<%if(obj[44]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[44].toString()) %><%}else {%>-<%} %>
 															  	</span> 	
 													
 														</div>
@@ -1259,7 +1260,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 																									   <%if( (Integer.parseInt(obj[5].toString())>25) && (Integer.parseInt(obj[5].toString())<=50)){%> background-color: #EE5007; <%}%>
 																									   <%if( (Integer.parseInt(obj[5].toString())>50) && (Integer.parseInt(obj[5].toString())<=75)){%> background-color:  #F8CB2E;color:black;  <%}%>
 																									   <%if( (Integer.parseInt(obj[5].toString())>75) && (Integer.parseInt(obj[5].toString())<=100)){%> background-color:green <%}%>
-																	"><%=obj[5] %></span>
+																	"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></span>
 																</div>
 															</div>
 							
@@ -1285,7 +1286,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 																									   <%if( (Integer.parseInt(obj[10].toString())>25) && (Integer.parseInt(obj[10].toString())<=50)){%> background-color:#EE5007; <%}%>
 																									   <%if( (Integer.parseInt(obj[10].toString())>50) && (Integer.parseInt(obj[10].toString())<=75)){%> background-color:#F8CB2E;color:black; <%}%>
 																									   <%if( (Integer.parseInt(obj[10].toString())>75) && (Integer.parseInt(obj[10].toString())<=100)){%> background-color:green<%}%>
-																	"><%=obj[10] %></span>
+																	"><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %></span>
 																</div>
 															</div>
 														<%}else{ %>
@@ -1311,7 +1312,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 																									   <%if( (Integer.parseInt(obj[19].toString())>25) && (Integer.parseInt(obj[19].toString())<=50)){%> background-color: #EE5007;<%}%>
 																									   <%if( (Integer.parseInt(obj[19].toString())>50) && (Integer.parseInt(obj[19].toString())<=75)){%> background-color:#F8CB2E;color:black;<%}%>
 																									   <%if( (Integer.parseInt(obj[19].toString())>75) && (Integer.parseInt(obj[19].toString())<=100)){%> background-color:green <%}%>
-																	"><%=obj[19] %></span>
+																	"><%=obj[19]!=null?StringEscapeUtils.escapeHtml4(obj[19].toString()): " - " %></span>
 															</div>
 														</div>
 														<%}else{ %>
@@ -1338,7 +1339,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 																										   <%if( (Integer.parseInt(obj[28].toString())>25) && (Integer.parseInt(obj[28].toString())<=50)){%> background-color: #EE5007; <%}%>
 																										   <%if( (Integer.parseInt(obj[28].toString())>50) && (Integer.parseInt(obj[28].toString())<=75)){%> background-color: #F8CB2E;color:black <%}%>
 																										   <%if( (Integer.parseInt(obj[28].toString())>75) && (Integer.parseInt(obj[28].toString())<=100)){%> background-color:green <%}%>
-																"><%=obj[28] %></span>
+																"><%=obj[28]!=null?StringEscapeUtils.escapeHtml4(obj[28].toString()): " - " %></span>
 															</div>
 														</div>
 														<%}else{ %>
@@ -1363,7 +1364,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 																											   <%if( (Integer.parseInt(obj[31].toString())>25) && (Integer.parseInt(obj[31].toString())<=50)){%> background-color: #EE5007; <%}%>
 																											   <%if( (Integer.parseInt(obj[31].toString())>50) && (Integer.parseInt(obj[31].toString())<=75)){%> background-color: #F8CB2E;color:black <%}%>
 																											   <%if( (Integer.parseInt(obj[31].toString())>75) && (Integer.parseInt(obj[31].toString())<=100)){%> background-color:green <%}%>
-																	"><%=obj[31] %></span>
+																	"><%=obj[31]!=null?StringEscapeUtils.escapeHtml4(obj[31].toString()): " - " %></span>
 															</div>
 														</div>
 														<%}else{ %>
@@ -1404,7 +1405,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 																												   <%if( (Integer.parseInt(obj[42].toString())>25) && (Integer.parseInt(obj[42].toString())<=50)){%> background-color: #EE5007; <%}%>
 																												   <%if( (Integer.parseInt(obj[42].toString())>50) && (Integer.parseInt(obj[42].toString())<=75)){%> background-color: #F8CB2E;color:black <%}%>
 																												   <%if( (Integer.parseInt(obj[42].toString())>75) && (Integer.parseInt(obj[42].toString())<=100)){%> background-color:green <%}%>"
-																		><%=obj[42] %></span>
+																		><%=obj[42]!=null?StringEscapeUtils.escapeHtml4(obj[42].toString()): " - " %></span>
 															</div>
 															<div class="col-md-1" style="padding-left: 0px !important">
 															</div>
@@ -1444,7 +1445,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 			<div id="overalldivdg"  class="card" style="background: transparent;display:none" >
 			
 			<div class="card-header">
-						<h3><%=ProjectHealthTotalData[45] %> - Cluster Details</h3>
+						<h3><%=ProjectHealthTotalData[45]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[45].toString()): " - " %> - Cluster Details</h3>
 						<a class="btn btn-info btn-sm back"   href="MainDashBoard.htm" style="float: right">Back</a>
 				</div>
 		
@@ -1473,7 +1474,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 											<tr>
 											
 												<td><a href="javascript:LabDetails('<%=obj[45] %>')"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
-												<td   style="font-weight: 800; font-size:0.75rem;text-align:left;"><%=obj[45] %>	</td>
+												<td   style="font-weight: 800; font-size:0.75rem;text-align:left;"><%=obj[45]!=null?StringEscapeUtils.escapeHtml4(obj[45].toString()): " - " %>	</td>
 												<td class="custom-td">
 													<%if(Integer.parseInt(obj[2].toString())>0){ %>
 														
@@ -1489,7 +1490,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 																								   <%if( (Integer.parseInt(obj[30].toString())>25) && (Integer.parseInt(obj[30].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
 																								   <%if( (Integer.parseInt(obj[30].toString())>50) && (Integer.parseInt(obj[30].toString())<=75)){%> background-color: #EE5007 <%}%>
 																								   <%if( (Integer.parseInt(obj[30].toString())>75) && (Integer.parseInt(obj[30].toString())<=100)){%> background-color:red <%}%>
-																"><%=obj[30] %></span>
+																"><%=obj[30]!=null?StringEscapeUtils.escapeHtml4(obj[30].toString()): " - " %></span>
 															</div>
 											
 														</div>
@@ -1517,7 +1518,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 																								   <%if( (Integer.parseInt(obj[32].toString())>25) && (Integer.parseInt(obj[32].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
 																								   <%if( (Integer.parseInt(obj[32].toString())>50) && (Integer.parseInt(obj[32].toString())<=75)){%> background-color: #EE5007 <%}%>
 																								   <%if( (Integer.parseInt(obj[32].toString())>75) && (Integer.parseInt(obj[32].toString())<=100)){%> background-color:red <%}%>
-																"><%=obj[32] %></span>
+																"><%=obj[32]!=null?StringEscapeUtils.escapeHtml4(obj[32].toString()): " - " %></span>
 															</div>
 														</div>
 						
@@ -1544,7 +1545,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 																								   <%if( (Integer.parseInt(obj[44].toString())>25) && (Integer.parseInt(obj[44].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
 																								   <%if( (Integer.parseInt(obj[44].toString())>50) && (Integer.parseInt(obj[44].toString())<=75)){%> background-color: #EE5007 <%}%>
 																								   <%if( (Integer.parseInt(obj[44].toString())>75) && (Integer.parseInt(obj[44].toString())<=100)){%> background-color:red <%}%>
-																"><%=obj[44] %></span>
+																"><%=obj[44]!=null?StringEscapeUtils.escapeHtml4(obj[44].toString()): " - " %></span>
 														</div>
 													</div>
 													<%}else{ %>
@@ -1571,7 +1572,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 																									   <%if( (Integer.parseInt(obj[34].toString())>25) && (Integer.parseInt(obj[34].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
 																									   <%if( (Integer.parseInt(obj[34].toString())>50) && (Integer.parseInt(obj[34].toString())<=75)){%> background-color: #EE5007 <%}%>
 																									   <%if( (Integer.parseInt(obj[34].toString())>75) && (Integer.parseInt(obj[34].toString())<=100)){%> background-color:red <%}%>
-															"><%=obj[34] %></span>
+															"><%=obj[34]!=null?StringEscapeUtils.escapeHtml4(obj[34].toString()): " - " %></span>
 														</div>
 													</div>
 													<%}else{ %>
@@ -1596,7 +1597,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 																										   <%if( (Integer.parseInt(obj[38].toString())>25) && (Integer.parseInt(obj[38].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
 																										   <%if( (Integer.parseInt(obj[38].toString())>50) && (Integer.parseInt(obj[38].toString())<=75)){%> background-color: #EE5007 <%}%>
 																										   <%if( (Integer.parseInt(obj[38].toString())>75) && (Integer.parseInt(obj[38].toString())<=100)){%> background-color:red <%}%>
-																"><%=obj[38] %></span>
+																"><%=obj[38]!=null?StringEscapeUtils.escapeHtml4(obj[38].toString()): " - " %></span>
 														</div>
 													</div>
 													<%}else{ %>
@@ -1625,7 +1626,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 																											   <%if( (Integer.parseInt(obj[40].toString())>25) && (Integer.parseInt(obj[40].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
 																											   <%if( (Integer.parseInt(obj[40].toString())>50) && (Integer.parseInt(obj[40].toString())<=75)){%> background-color: #EE5007 <%}%>
 																											   <%if( (Integer.parseInt(obj[40].toString())>75) && (Integer.parseInt(obj[40].toString())<=100)){%> background-color:red <%}%>
-																	"><%=obj[40] %></span>
+																	"><%=obj[40]!=null?StringEscapeUtils.escapeHtml4(obj[40].toString()): " - " %></span>
 														</div>
 														<div class="col-md-1" style="padding-left: 0px !important">
 														</div>

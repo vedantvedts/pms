@@ -138,8 +138,8 @@ FormatConverter fc = new FormatConverter();
 %>
 
 	<div style="width: 98.5%;display: block;">
-		<span class="left" style="width: 58.5%;margin-left: 10px;font-weight: bold;">Employee : <%=employeeName %></span>
-		<span class="right" style="width: 40%;float: right;font-weight: bold;">Period : <%=fromDate %> to <%=toDate %></span>
+		<span class="left" style="width: 58.5%;margin-left: 10px;font-weight: bold;">Employee : <%=employeeName!=null?employeeName: " - " %></span>
+		<span class="right" style="width: 40%;float: right;font-weight: bold;">Period : <%=fromDate!=null?fromDate: " - " %> to <%=toDate!=null?toDate: " - " %></span>
 	</div>
 	<table id="tabledata">
 		<thead class="center">
@@ -166,7 +166,7 @@ FormatConverter fc = new FormatConverter();
 					<td class="center"><%=++slno %></td>
 					<td class="center"><%=obj[4]!=null?fc.sdfTordf(obj[4].toString()):"-" %></td>
 					<td class="left"><%=obj[4]!=null?LocalDate.parse(obj[4].toString()).getDayOfWeek()+""+(holidayName!=null?" ("+holidayName+") ":""):"-" %></td>
-					<td class="center"><%=obj[5]!=null?obj[5]+":00":"-" %></td>
+					<td class="center"><%=obj[5]!=null?obj[5].toString()+":00":"-" %></td>
 				</tr>
 			<%} }else{%>
 				<tr>
@@ -196,8 +196,8 @@ FormatConverter fc = new FormatConverter();
 			%>
 				<tr>
 					<td class="center"><%=++slno %></td>
-					<td class="center"><%=obj[2]!=null?obj[2]:"-" %></td>
-					<td class="center"><%=obj[3]!=null?obj[3]:"-" %></td>
+					<td class="center"><%=obj[2]!=null?obj[2].toString():"-" %></td>
+					<td class="center"><%=obj[3]!=null?obj[3].toString():"-" %></td>
 				</tr>
 			<%} }else{%>
 				<tr>

@@ -1,4 +1,5 @@
 
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.stream.Collectors, java.util.*"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -133,7 +134,7 @@
 	                                               <%for(Object[] obj:projectslist){
 	                                            	   String projectshortName=(obj[12]!=null)?" ( "+obj[12].toString()+" ) ":"";
 	                                            	   %>
-														<option value="<%=obj[0] %>" <%if(projectid.equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1]+projectshortName %></option>	
+														<option value="<%=obj[0] %>" <%if(projectid.equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%> <%= projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>	
 													<%}%>
 											</select>	
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.util.List"%>
@@ -136,8 +137,8 @@ List<Object[]> workingHrsList = (List<Object[]>)request.getAttribute("workingHrs
 %>
 
 	<div style="width: 98.5%;display: block;">
-		<span class="left" style="width: 58.5%;margin-left: 10px;font-weight: bold;">Project : <%=projectName %></span>
-		<span class="right" style="width: 40%;float: right;font-weight: bold;">Period : <%=fromDate %> to <%=toDate %></span>
+		<span class="left" style="width: 58.5%;margin-left: 10px;font-weight: bold;">Project : <%=projectName!=null?StringEscapeUtils.escapeHtml4(projectName): " - " %></span>
+		<span class="right" style="width: 40%;float: right;font-weight: bold;">Period : <%=fromDate!=null?StringEscapeUtils.escapeHtml4(fromDate): " - " %> to <%=toDate!=null?StringEscapeUtils.escapeHtml4(toDate): " - " %></span>
 	</div>
 	<table id="tabledata">
 		<thead class="center" >
@@ -164,9 +165,9 @@ List<Object[]> workingHrsList = (List<Object[]>)request.getAttribute("workingHrs
 			%>
 				<tr>
 					<td class="center"><%=++slno %></td>
-					<td><%=(obj[1]!=null?obj[1].toString():"-")+", "+(obj[2]!=null?obj[2].toString():"-") %></td>
-					<td class="center"><%=obj[3] %></td>
-					<td class="center"><%=obj[4] %></td>
+					<td><%=(obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-")%> <%=", "%> <%=(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-") %></td>
+					<td class="center"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
+					<td class="center"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
 				</tr>
 			<%} %>
 				<tr>

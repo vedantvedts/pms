@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -123,25 +124,22 @@ List<Object[]> labmasterdata=(List<Object[]>)request.getAttribute("labmasterdata
 
 %>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	
-	
-	<center>
-	
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-            </div>
-            
-    </center>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 	
@@ -176,7 +174,7 @@ List<Object[]> labmasterdata=(List<Object[]>)request.getAttribute("labmasterdata
 </th>
  <td colspan="5" >
  
-<input value=<%=obj[1]%>  readonly class="form-control form-control" type="text" name="LabCode" required="required" maxlength="10" style="font-size: 15px; "  id="LabCode" >
+<input value=<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%>  readonly class="form-control form-control" type="text" name="LabCode" required="required" maxlength="10" style="font-size: 15px; "  id="LabCode" >
 
  
 </td>
@@ -192,7 +190,7 @@ List<Object[]> labmasterdata=(List<Object[]>)request.getAttribute("labmasterdata
 </th>
  <td colspan="5">
  
-  	<input  class="form-control form-control" type="text" name="LabName" required="required" maxlength="255" style="font-size: 15px;text-transform:capitalize;" value="<%=obj[2]%>" readonly >
+  	<input  class="form-control form-control" type="text" name="LabName" required="required" maxlength="255" style="font-size: 15px;text-transform:capitalize;" value="<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):""%>" readonly >
  
 
 </td>
@@ -209,7 +207,7 @@ List<Object[]> labmasterdata=(List<Object[]>)request.getAttribute("labmasterdata
 </th>
  <td colspan="5">
  
- <input  value=<%=obj[3]%> readonly class="form-control form-control" type="text" name="" required="required" maxlength="100" style="font-size: 15px;text-transform:capitalize;"  id="LabAddress">
+ <input  value=<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):""%> readonly class="form-control form-control" type="text" name="" required="required" maxlength="100" style="font-size: 15px;text-transform:capitalize;"  id="LabAddress">
 
 </td>
 </tr>
@@ -223,7 +221,7 @@ List<Object[]> labmasterdata=(List<Object[]>)request.getAttribute("labmasterdata
 </th>
  <td colspan="5" >
  
- <input  value="<%=obj[4]%>"  readonly class="form-control form-control"  type="text" name="LabAddress" required="required" min='1'   maxlength="255" style="font-size: 15px;"  id="LabAddress">
+ <input  value="<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):""%>"  readonly class="form-control form-control"  type="text" name="LabAddress" required="required" min='1'   maxlength="255" style="font-size: 15px;"  id="LabAddress">
 
 </td>
 
@@ -240,7 +238,7 @@ List<Object[]> labmasterdata=(List<Object[]>)request.getAttribute("labmasterdata
 </th>
  <td colspan="5">
  
-<input  value=<%=obj[5]%>  readonly class="form-control form-control"  type="text" name="LabCity" required="required" maxlength="255" style="font-size: 15px;"  id="">
+<input  value=<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):""%>  readonly class="form-control form-control"  type="text" name="LabCity" required="required" maxlength="255" style="font-size: 15px;"  id="">
 
 </td>
 
@@ -255,7 +253,7 @@ List<Object[]> labmasterdata=(List<Object[]>)request.getAttribute("labmasterdata
 </th>
  <td colspan="5" >
  
-<input  value=<%=obj[6]%>  readonly class="form-control form-control" type="number" name="LabPin" required="required" maxlength="255" style="font-size: 15px;"  id="">
+<input  value=<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):""%>  readonly class="form-control form-control" type="number" name="LabPin" required="required" maxlength="255" style="font-size: 15px;"  id="">
 <input type="hidden" name="Did" value=<%=obj[0]%>  >
  <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}"  />
 	 

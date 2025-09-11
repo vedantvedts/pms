@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -104,20 +105,22 @@ a:hover {
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-	<div class="alert alert-danger" role="alert" >
-               <%=ses1 %>
-                    </div></div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-	<div class="alert alert-success" role="alert"  >
-        <%=ses %>
-        </div></div>
-        <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
     <br />
     
 
@@ -176,25 +179,25 @@ a:hover {
 										   			   %>
 														<tr>
 															<td class="center"><%=count %></td>
-															<td><%=obj[9] %></td>
+															<td><%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()):" - " %></td>
 															<td>
-															<%if(obj[5].toString().length()>100){ %>
-															<%=obj[5].toString().substring(0, 100) %>
-															<input type="hidden" value='"<%=obj[5].toString()%>"' id="td<%=obj[0].toString()%>">
-														 <span style="text-decoration: underline;font-size:13px;color: #145374;cursor: pointer;font-weight: bolder" onclick="showAction('<%=obj[0].toString()%>','<%=obj[9].toString()%>')">show more..</span>
-															<%}else{ %>
-															<%=obj[5].toString() %>
+															<%if(obj[5]!=null && obj[5].toString().length()>100){ %>
+																<%=StringEscapeUtils.escapeHtml4(obj[5].toString()).substring(0, 100) %>
+																<input type="hidden" value='"<%=obj[5].toString()%>"' id="td<%=obj[0].toString()%>">
+																 <span style="text-decoration: underline;font-size:13px;color: #145374;cursor: pointer;font-weight: bolder" onclick="showAction('<%=obj[0].toString()%>','<%=obj[9].toString()%>')">show more..</span>
+															<%}else { %>
+																<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):" - " %>
 															<%} %>
 															</td>
 															<td><span <%if(LocalDate.now().toString().equalsIgnoreCase(obj[4].toString())) {%>class="text-primary spans"<%} %>
 															<%if(LocalDate.now().isAfter(LocalDate.parse(obj[4].toString()))){ %>class="text-danger spans"<%} %>
 															<%if(LocalDate.now().isBefore(LocalDate.parse(obj[4].toString()))){ %>class="text-success spans"<%} %>
 															>
-															<%=sdf.format(obj[4])%></span>
+															<%=obj[4]!=null?sdf.format(obj[4]):""%></span>
 															</td>
-															<td><%=sdf.format(obj[3])%></td>
-															<td><%=obj[1]%>, <%=obj[2]%></td>
-															<td><%if(obj[7]!=null){%><%=obj[7] %><%}else{ %>-<%} %></td>
+															<td><%=obj[3]!=null?sdf.format(obj[3]):""%></td>
+															<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></td>
+															<td><%if(obj[7]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[7].toString()) %><%}else{ %>-<%} %></td>
 															
 															
 															<td class="left width">		

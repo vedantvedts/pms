@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.requirements.model.RequirementInitiation"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
@@ -249,7 +250,7 @@ float: right;
 		<a class="navbar-brand"> 
 			<b style="color: #585858; font-size: 19px; font-weight: bold; text-align: left; float: left">
 				<span style="color: #31708f">Requirement Introduction for Project </span>
-				<span style="color: #31708f; font-size: 19px">  <%=project.split("/")[1].toString() %></span>
+				<span style="color: #31708f; font-size: 19px">  <%=project!=null?StringEscapeUtils.escapeHtml4(project).split("/")[1].toString():" - " %></span>
 			</b>
 		</a>
 		<form action="#">
@@ -262,22 +263,22 @@ float: right;
 		</form>
 	</nav>
 		
-	<%String ses=(String)request.getParameter("result"); 
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center" class="mt-2">
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center" class="mt-2">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-	</div>
-	<%}%>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 	<div class="container-fluid">
 		<div class="row">

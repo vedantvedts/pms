@@ -1,4 +1,5 @@
 
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -81,7 +82,7 @@ h6{
                             	<select class="form-control selectdee" id="ProjectId" required="required" name="ProjectId" style="width:220px !important">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : ProjectList) {%>
-										<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>><%=obj[1]%> </option>
+										<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> </option>
 											<%} %>
   								</select>
                             	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
@@ -173,7 +174,7 @@ $('#ProjectId').on('change',function(){
 								    		  
 								    		 
 								    		    id: "<%=obj[0]%>",
-								    		    name: "<%=obj[2]%>",
+								    		    name: "<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): ""%>",
 								    		    <%if(!obj[8].toString().equalsIgnoreCase("0") && !obj[8].toString().equalsIgnoreCase("1")){%>
 								    		    baselineStart: "<%=obj[3]%>",
 								    		    baselineEnd: "<%=obj[4]%>",
@@ -202,7 +203,7 @@ $('#ProjectId').on('change',function(){
 								    		   		<% if(obj[0].toString().equalsIgnoreCase(objA[1].toString()) ) {%>	
 								    		   			{
 											    		    id: "<%=obj[0]%>_<%=objA[0]%>",
-											    		    name: "<%=objA[2]%>",
+											    		    name: "<%=objA[2]!=null?StringEscapeUtils.escapeHtml4(objA[2].toString()): ""%>",
 											    		    <%if(!objA[8].toString().equalsIgnoreCase("0") && !objA[8].toString().equalsIgnoreCase("1")){%>
 											    		    baselineStart: "<%=objA[3]%>",
 											    		    baselineEnd: "<%=objA[4]%>",
@@ -230,7 +231,7 @@ $('#ProjectId').on('change',function(){
 												    		   		<% if(objA[0].toString().equalsIgnoreCase(objB[1].toString()) ) {%>	
 												    		   			{
 															    		    id: "<%=objA[0]%>_<%=objB[0]%>",
-															    		    name: "<%=objB[2]%>",
+															    		    name: "<%=objB[2]!=null?StringEscapeUtils.escapeHtml4(objB[2].toString()): ""%>",
 															    		    <%if(!objB[8].toString().equalsIgnoreCase("0") && !objB[8].toString().equalsIgnoreCase("1")){%>
 															    		    actualStart: "<%=objB[5]%>",
 															    		    actualEnd: "<%=objB[6]%>",
@@ -261,7 +262,7 @@ $('#ProjectId').on('change',function(){
 																    		   		<% if(objB[0].toString().equalsIgnoreCase(objC[1].toString()) ) {%>	
 																    		   			{
 																			    		    id: "<%=objB[0]%>_<%=objC[0]%>",
-																			    		    name: "<%=objC[2]%>",
+																			    		    name: "<%=objC[2]!=null?StringEscapeUtils.escapeHtml4(objC[2].toString()): ""%>",
 																			    		    <%if(!objC[8].toString().equalsIgnoreCase("0") && !objC[8].toString().equalsIgnoreCase("1")){%>
 																			    		    actualStart: "<%=objC[5]%>",
 																			    		    actualEnd: "<%=objC[6]%>",
@@ -291,7 +292,7 @@ $('#ProjectId').on('change',function(){
 																				    		   		<% if(objC[0].toString().equalsIgnoreCase(objD[1].toString()) ) {%>	
 																				    		   			{
 																							    		    id: "<%=objC[0]%>_<%=objD[0]%>",
-																							    		    name: "<%=objD[2]%>",
+																							    		    name: "<%=objD[2]!=null?StringEscapeUtils.escapeHtml4(objD[2].toString()): ""%>",
 																							    		    <%if(!objD[8].toString().equalsIgnoreCase("0") && !objD[8].toString().equalsIgnoreCase("1")){%>
 																							    		    actualStart: "<%=objD[5]%>",
 																							    		    actualEnd: "<%=objD[6]%>",
@@ -320,7 +321,7 @@ $('#ProjectId').on('change',function(){
 																								    		   		<% if(objD[0].toString().equalsIgnoreCase(objE[1].toString()) ) {%>	
 																								    		   			{
 																											    		    id: "<%=objD[0]%>_<%=objE[0]%>",
-																											    		    name: "<%=objE[2]%>",
+																											    		    name: "<%=objE[2]!=null?StringEscapeUtils.escapeHtml4(objE[2].toString()): ""%>",
 																											    		    <%if(!objE[8].toString().equalsIgnoreCase("0") && !objE[8].toString().equalsIgnoreCase("1")){%>
 																											    		    actualStart: "<%=objE[5]%>",
 																											    		    actualEnd: "<%=objE[6]%>",

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.util.List"%>
@@ -201,12 +202,12 @@ System.out.println(projectIds.toString()+"----");
 				                   <% } %>
 			                       <div class="col-3">
 			                           <div style="text-align: left;">
-			                               <input <%if(projectIds.contains(obj[2].toString())) {%>  checked<%} %> class="mainprojectlist" name="projectlist" style="text-align: left;margin: 8px;width: 20px; height: 20px;" value="<%=obj[2]%>" type='checkbox'/>
+			                               <input <%if(projectIds.contains(obj[2].toString())) {%>  checked<%} %> class="mainprojectlist" name="projectlist" style="text-align: left;margin: 8px;width: 20px; height: 20px;" value="<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): ""%>" type='checkbox'/>
 			                               <label for="<%=obj[2]%>">
 			                                   <span class="tableprojectname" style="color:black !important;font-size: 13px"> 
-			                                       <% if (obj[46] != null) { %><%= obj[46] %><% } else { %>-<% } %> /
-			                                       <% if (obj[3] != null) { %><%= obj[3] %><% } else { %>-<% } %> /
-			                                       <% if (obj[44] != null) { %><%= obj[44] %><% } else { %>-<% } %>
+			                                       <% if (obj[46] != null) { %><%= StringEscapeUtils.escapeHtml4(obj[46].toString()) %><% } else { %>-<% } %> /
+			                                       <% if (obj[3] != null) { %><%= StringEscapeUtils.escapeHtml4(obj[3].toString()) %><% } else { %>-<% } %> /
+			                                       <% if (obj[44] != null) { %><%= StringEscapeUtils.escapeHtml4(obj[44].toString()) %><% } else { %>-<% } %>
 			                                   </span> 	
 			                               </label>
 			                           </div>
@@ -238,12 +239,12 @@ System.out.println(projectIds.toString()+"----");
 			        	<%} %>
 							<div class="col-3" >
 								<div style="text-align: left;">
-									<input <%if(projectIds.contains(obj[2].toString())) {%>  checked<%} %> class="subprojectlist" name="projectlist" style="text-align: left;margin: 8px;width: 20px; height: 20px;" value="<%=obj[2]%>" type='checkbox'/>
+									<input <%if(projectIds.contains(obj[2].toString())) {%>  checked<%} %> class="subprojectlist" name="projectlist" style="text-align: left;margin: 8px;width: 20px; height: 20px;" value="<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): ""%>" type='checkbox'/>
 									<label for="<%=obj[2]%>">
 										<span class="tableprojectname" style="color:black !important;font-size: 13px"> 
-										  	<%if(obj[46]!=null){%><%=obj[46] %><%}else {%>-<%} %> /
-										  	<%if(obj[3]!=null){%><%=obj[3] %><%}else {%>-<%} %> /
-										  	<%if(obj[44]!=null){%><%=obj[44] %><%}else {%>-<%} %>
+										  	<%if(obj[46]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[46].toString()) %><%}else {%>-<%} %> /
+										  	<%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %><%}else {%>-<%} %> /
+										  	<%if(obj[44]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[44].toString()) %><%}else {%>-<%} %>
 									  	</span> 	
 									</label>
 								</div>
@@ -315,11 +316,11 @@ System.out.println(projectIds.toString()+"----");
 											<div style="text-align: left;">
 												<input checked class="mainprojectlis" name="projectlist"
 													style="text-align: left; margin: 8px; width: 20px; height: 20px;"
-													value="<%=obj[2]%>" type='checkbox' /> <label
+													value="<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): ""%>" type='checkbox' /> <label
 													for="<%=obj[2]%>"> <span class="tableprojectname"
-													style="color: black !important; font-size: 13px"> <% if (obj[46] != null) { %><%= obj[46] %>
-														<% } else { %>-<% } %> / <% if (obj[3] != null) { %><%= obj[3] %>
-														<% } else { %>-<% } %> / <% if (obj[44] != null) { %><%= obj[44] %>
+													style="color: black !important; font-size: 13px"> <% if (obj[46] != null) { %><%= StringEscapeUtils.escapeHtml4(obj[46].toString()) %>
+														<% } else { %>-<% } %> / <% if (obj[3] != null) { %><%= StringEscapeUtils.escapeHtml4(obj[3].toString()) %>
+														<% } else { %>-<% } %> / <% if (obj[44] != null) { %><%= StringEscapeUtils.escapeHtml4(obj[44].toString())%>
 														<% } else { %>-<% } %>
 												</span>
 												</label>
@@ -353,11 +354,11 @@ System.out.println(projectIds.toString()+"----");
 											<div style="text-align: left;">
 												<input checked class="subprojectlis" name="projectlist"
 													style="text-align: left; margin: 8px; width: 20px; height: 20px;"
-													value="<%=obj[2]%>" type='checkbox' /> <label
+													value="<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): ""%>" type='checkbox' /> <label
 													for="<%=obj[2]%>"> <span class="tableprojectname"
-													style="color: black !important; font-size: 13px"> <%if(obj[46]!=null){%><%=obj[46] %>
-														<%}else {%>-<%} %> / <%if(obj[3]!=null){%><%=obj[3] %>
-														<%}else {%>-<%} %> / <%if(obj[44]!=null){%><%=obj[44] %>
+													style="color: black !important; font-size: 13px"> <%if(obj[46]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[46].toString()) %>
+														<%}else {%>-<%} %> / <%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %>
+														<%}else {%>-<%} %> / <%if(obj[44]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[44].toString()) %>
 														<%}else {%>-<%} %>
 												</span>
 												</label>

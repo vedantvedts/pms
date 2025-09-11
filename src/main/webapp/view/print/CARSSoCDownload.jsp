@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.cars.model.CARSSoC"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -74,7 +75,7 @@ CARSInitiation carsIni =(CARSInitiation)request.getAttribute("CARSInitiationData
             margin-bottom: 30px;
           }
            @top-right {
-             content: "<%=carsIni.getCARSNo()%>";
+             content: "<%=carsIni.getCARSNo()!=null?carsIni.getCARSNo(): " - "%>";
              margin-top: 30px;
              font-size: 13px;
           }
@@ -164,22 +165,22 @@ int socforwardslno=0;
 	<tr>
 		<td style="width: 5%;text-align: center;"><%=++socforwardslno %>.</td>
 		<td style="width: 20.5%;">Title</td>
-		<td style="width: 73%;"><%=carsIni.getInitiationTitle() %></td>
+		<td style="width: 73%;"><%=carsIni.getInitiationTitle()!=null?carsIni.getInitiationTitle(): " - " %></td>
 	</tr>
 	<tr>
 		<td style="width: 5%;text-align: center;"><%=++socforwardslno %>.</td>
 		<td style="width: 20.5%;">Aim</td>
-		<td style="width: 73%;"><%=carsIni.getInitiationAim() %></td>
+		<td style="width: 73%;"><%=carsIni.getInitiationAim()!=null?carsIni.getInitiationAim(): " - " %></td>
 	</tr>
   	<tr>
 		<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 		<td style="width: 20.5%;" >Scope</td>
-		<td style="width: 73%;"><%if(rsqrDetails[6]!=null) {%> <%=rsqrDetails[6] %><%} else{%>-<%} %></td>
+		<td style="width: 73%;"><%if(rsqrDetails[6]!=null) {%> <%=rsqrDetails[6].toString() %><%} else{%>-<%} %></td>
 	</tr>
 	<tr>
 	    <td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 	    <td style="width: 20.5%;">Duration (Months)</td>
-	    <td style="width: 73%;"><%=carsSoC.getSoCDuration() %> </td>
+	    <td style="width: 73%;"><%=carsSoC.getSoCDuration()!=null?carsSoC.getSoCDuration(): " - " %> </td>
 	</tr>
 	<tr>
 		<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
@@ -188,7 +189,7 @@ int socforwardslno=0;
 			<%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>
 				Build-up
 			<%} else {%>
-				<%if(PDs!=null) {%><%=PDs[4]+" ("+PDs[0]+")" %> <%} %>
+				<%if(PDs!=null) {%><%=PDs[4].toString()+" ("+(PDs[0]!=null?PDs[0].toString(): " - ")+")" %> <%} %>
 			<%} %>
 		</td>
 	</tr>
@@ -220,39 +221,39 @@ int socforwardslno=0;
 	<tr>
 		<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 		<td style="width: 20.5%;">Justification for raising CARS</td>
-		<td style="width: 73%;"><%=carsIni.getJustification() %> </td>
+		<td style="width: 73%;"><%=carsIni.getJustification()!=null?carsIni.getJustification(): " - " %> </td>
 	</tr>
 	<tr>
 		<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 		<td style="width: 20.5%;">Justification for time reasonability</td>
-		<td style="width: 73%;"><%=carsSoC.getTimeReasonability() %> </td>
+		<td style="width: 73%;"><%=carsSoC.getTimeReasonability()!=null?carsSoC.getTimeReasonability(): " - " %> </td>
 	</tr>
 	<tr>
 		<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 		<td style="width: 20.5%;">Justification for cost reasonability</td>
-		<td style="width: 73%;"><%=carsSoC.getCostReasonability() %> </td>
+		<td style="width: 73%;"><%=carsSoC.getCostReasonability()!=null?carsSoC.getCostReasonability(): " - " %> </td>
 	</tr>
 	<tr>
 		<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 		<td style="width: 20.5%;">Justification for selection of RSP</td>
-		<td style="width: 73%;"><%=carsSoC.getRSPSelection() %> </td>
+		<td style="width: 73%;"><%=carsSoC.getRSPSelection()!=null?carsSoC.getRSPSelection(): " - " %> </td>
 	</tr>
 	<tr>
 		<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 		<td style="width: 20.5%;">Research Service Provider</td>
 		<td style="width: 73%;">
-			<%=carsIni.getPITitle()+". "+carsIni.getPIName() %>,
-			<%=carsIni.getPIDesig() %> <br>
-			<%=carsIni.getPIDept() %> <br>
-			<%=carsIni.getPIMobileNo() %> <br>
-			<%=carsIni.getPIEmail() %> <br>
+			<%=carsIni.getPITitle()!=null?carsIni.getPITitle(): " - "%> <%=". "%> <%=carsIni.getPIName()!=null?carsIni.getPIName(): " - " %>,
+			<%=carsIni.getPIDesig()!=null?carsIni.getPIDesig(): " - " %> <br>
+			<%=carsIni.getPIDept()!=null?carsIni.getPIDept(): " - " %> <br>
+			<%=carsIni.getPIMobileNo()!=null?carsIni.getPIMobileNo(): " - " %> <br>
+			<%=carsIni.getPIEmail()!=null?carsIni.getPIEmail(): " - " %> <br>
 			<%if(carsIni.getPIFaxNo()!=null && !carsIni.getPIFaxNo().isEmpty()){ %>
 				<br> <%=carsIni.getPIFaxNo() %>
 			<%} %>
 			
 			<span style="color: black;">From</span> <br>
-			<%=carsIni.getRSPInstitute() %> <br>
-  			<%=carsIni.getRSPAddress()+", "+carsIni.getRSPCity()+", "+carsIni.getRSPState()+" - "+carsIni.getRSPPinCode() %>.
+			<%=carsIni.getRSPInstitute()!=null?carsIni.getRSPInstitute(): " - " %> <br>
+  			<%=carsIni.getRSPAddress()!=null?carsIni.getRSPAddress(): " - "%> <%=", "%> <%=carsIni.getRSPCity()!=null?carsIni.getRSPCity(): " - "%> <%=", "%> <%=carsIni.getRSPState()!=null?carsIni.getRSPState(): " - "%> <%=" - "%> <%=carsIni.getRSPPinCode()!=null?carsIni.getRSPPinCode(): " - " %>.
 		</td>
 	</tr>
 	<tr>
@@ -265,7 +266,7 @@ int socforwardslno=0;
 	<tr>
 		<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 		<td style="width: 20.5%;">Success / Acceptance Criterion</td>
-		<td style="width: 73%;"><%=carsSoC.getSoCCriterion() %> </td>
+		<td style="width: 73%;"><%=carsSoC.getSoCCriterion()!=null?carsSoC.getSoCCriterion(): " - " %> </td>
 	</tr>
 	<tr>
 		<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
@@ -291,10 +292,10 @@ int socforwardslno=0;
 			<div style="line-height: 17px;">
     			<div style="font-size: 15px;margin-bottom: 10px;">Signature of the initiating officer</div>
 				<label style="text-transform: capitalize;">
-					<%if(emp!=null && emp[1]!=null){%> <%=emp[1]%><%} %>,
+					<%if(emp!=null && emp[1]!=null){%> <%=emp[1].toString()%><%} %>,
 				</label><!-- <br> -->
 				<label style="text-transform: capitalize;">
-					<%if(emp!=null && emp[2]!=null){%> <%=emp[2]%><%} %>
+					<%if(emp!=null && emp[2]!=null){%> <%=emp[2].toString()%><%} %>
 				</label><br>
 				<label style="font-size: 12px;">
 					Date&nbsp;:&nbsp;<%if(carsSoC.getSoCDate()!=null) {%> <%=fc.SqlToRegularDate(carsSoC.getSoCDate()) %><%} else{%><%=rdf.format(new Date()) %> <%} %>
@@ -306,9 +307,9 @@ int socforwardslno=0;
     			<div style="font-size: 15px;margin-bottom: 10px;"> Signature of the <%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>GD<%} else{%>PD<%} %></div>
 				<%for(Object[] apprInfo : socApprovalEmpData){ %>
 					<%if(apprInfo[8].toString().equalsIgnoreCase("SFG") || apprInfo[8].toString().equalsIgnoreCase("SFP")){ %>
-						<label style="text-transform: capitalize;"><%=apprInfo[2]%></label>,<!-- <br> -->
-						<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-						<label style="font-size: 12px;">[Forwarded On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+						<label style="text-transform: capitalize;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+						<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+						<label style="font-size: 12px;">[Forwarded On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString()).substring(0, 10) +" "+apprInfo[4].toString().substring(11,19) %>]</label>
 				<%break;}} %>  
 			</div>	
 		</td>

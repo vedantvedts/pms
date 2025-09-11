@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
 <!DOCTYPE html>
@@ -195,6 +196,23 @@ div {
   String ProjectId=(String)request.getAttribute("ProjectId");
   String ProjectName=(String)request.getAttribute("ProjectName");
  %>
+ 
+ <% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
   <nav class="navbar navbar-light bg-light" style="margin-top: -1%;">
   <a class="navbar-brand"></a>
@@ -204,7 +222,7 @@ div {
                               		<select class="form-control selectdee" id="ProjectId" required="required" name="ProjectId">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : ProjectList) {%>
-										<option value="<%=obj[0]%>"  <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>><%=obj[2]%>( <%=obj[1]%> ) </option>
+										<option value="<%=obj[0]%>"  <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> (<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>) </option>
 											<%} %>
   									</select>
 <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
@@ -226,7 +244,7 @@ div {
          
       		<div class="panel-heading ">
         		<h4 class="panel-title">
-          			<span  style="font-size:14px"><%=ProjectName%></span>  
+          			<span  style="font-size:14px"><%=ProjectName!=null?StringEscapeUtils.escapeHtml4(ProjectName): " - "%></span>  
         		</h4>
          	<div   style="float: right !important; margin-top:-23px; ">
 		 		
@@ -258,7 +276,7 @@ div {
 					        	<div>
 						          
 						 
-									<span  style="font-size:14px"><%=ProjectSubCount %>...../L<%=obj[4]%>/<%=obj[5]%>/<%=obj[3]%> Ver.<%=obj[6]%></span>
+									<span  style="font-size:14px"><%=ProjectSubCount %>...../L<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>/<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%>/<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> Ver.<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%></span>
 						          		
 						          		
 						          		

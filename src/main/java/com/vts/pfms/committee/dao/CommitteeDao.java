@@ -9,6 +9,7 @@ import com.vts.pfms.committee.dto.CommitteeScheduleDto;
 import com.vts.pfms.committee.dto.MeetingCheckDto;
 import com.vts.pfms.committee.model.CommitteScheduleMinutesDraft;
 import com.vts.pfms.committee.model.Committee;
+import com.vts.pfms.committee.model.CommitteeCARS;
 import com.vts.pfms.committee.model.CommitteeConstitutionApproval;
 import com.vts.pfms.committee.model.CommitteeConstitutionHistory;
 import com.vts.pfms.committee.model.CommitteeDefaultAgenda;
@@ -33,9 +34,9 @@ import com.vts.pfms.committee.model.CommitteeSubSchedule;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.committee.model.PmsEnote;
 import com.vts.pfms.committee.model.PmsEnoteTransaction;
+import com.vts.pfms.committee.model.ProgrammeMaster;
 import com.vts.pfms.committee.model.ProgrammeProjects;
 import com.vts.pfms.milestone.model.FileRepUploadPreProject;
-import com.vts.pfms.committee.model.ProgrammeMaster;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.MinutesFinanceList;
@@ -45,7 +46,7 @@ public interface CommitteeDao {
 	public List<Object[]> EmployeeList(String LabCode) throws Exception;
 	public Object[] CommitteeName(String CommitteeMainId)throws Exception;
 	public long CommitteeDetailsSubmit(CommitteeMain committeemain) throws Exception;
-	public Long LastCommitteeId(String CommitteeId,String projectid,String divisionid,String initiationid, String carsInitiationId) throws Exception;
+	public Long LastCommitteeId(String CommitteeId,String projectid,String divisionid,String initiationid, String carsInitiationId, String programmeId) throws Exception;
 	public Long UpdateCommitteemainValidto(CommitteeMain committeemain) throws Exception;
 	public long CommitteeNewAdd(Committee committeeModel) throws Exception;
 	public List<Object[]> CommitteeNamesCheck(String name, String sname,String projectid,String LabCode) throws Exception;
@@ -354,4 +355,11 @@ public interface CommitteeDao {
 	public List<Object[]> getCommitteeSchedulesMomDraftRemarks(Long scheduleId)throws Exception;
 	public List<Object[]> preProjectlist(String labCode)throws Exception;
 	public FileRepUploadPreProject getPreProjectAgendaDocById(String filerepid)throws Exception;
+	
+	public Object[] carsCommitteeDescriptionTOR(String carsInitiationId, String committeeId) throws Exception;
+	public CommitteeCARS getCommitteeCARSById(String comCARSInitiationId) throws Exception;
+	public Long addCommitteeCARS(CommitteeCARS committeeCARS) throws Exception;
+//	---------------------------------- Naveen R 3/9/25 MOM Check ------------------------------------------
+	public List<Object[]> CommitteeScheduleMinutesforAction(String committeescheduleid);
+
 }

@@ -18,6 +18,7 @@ import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
 import com.vts.pfms.master.model.PfmsFeedbackTrans;
+import com.vts.pfms.master.model.RoleMaster;
 import com.vts.pfms.model.LabMaster;
 
 public interface MasterDao  {
@@ -113,5 +114,14 @@ public interface MasterDao  {
 	public int removeProjectLinked(String programmeId) throws Exception;
 	public long addProgrammeProjects(ProgrammeProjects programmeprojects) throws Exception;
 	public Long ProgramCodeCheck(String programmeCode, String prgrammeId) throws Exception;
+	public List<Object[]> getProjectList(String labcode) throws Exception;
+	public List<Object[]> getProjectList(String labcode, String programmeId) throws Exception;
 	/* **************************** Programme Master - Naveen R  - 16/07/2025 End**************************************** */
+	
+	public Long addRoleMaster(RoleMaster roleMaster)throws Exception;
+	
+	// 22/8/2025  Naveen R RoleName and RoleCode Duplicate Check start
+	public Long getRoleNameDulicateCount(String roleName) throws Exception;
+	public Long getRoleCodeDuplicateCount(String roleCode) throws Exception;
+	// 22/8/2025  Naveen R RoleName and RoleCode Duplicate Check end
 }

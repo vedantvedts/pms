@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -123,10 +124,10 @@ h6{
 																			
 																			</form>  
                                                                         </td> --%>
-																		<td><%=obj[1]%></td>																		
-																		<td><%=sdf.format(obj[2])%></td>
-																	  	<td> <%=obj[3] %></td>
-																		<td><%=obj[10] %></td>				
+																		<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></td>																		
+																		<td><%=obj[2]!=null?sdf.format(obj[2]): " - " %></td>
+																	  	<td> <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
+																		<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %></td>				
 																	</tr>
 																<% count++;
 																	}									   					

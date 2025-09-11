@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.net.URL"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
@@ -118,7 +119,7 @@ td {
 	border: 2px solid black;
 	
 	@bottom-left{
-		content :"<%=DocumentSummary!=null && DocumentSummary.get(0)[11]!=null?"1901-SRD-"+"DDMMYYYY"+"-"+session.getAttribute("labcode") +projectShortName+"-V.1.0":"" %>";
+		content :"<%=DocumentSummary!=null && DocumentSummary.get(0)[11]!=null?"1901-SRD-"+"DDMMYYYY"+"-"+session.getAttribute("labcode") +StringEscapeUtils.escapeHtml4(projectShortName)+"-V.1.0":"" %>";
 		margin-bottom: 50px;
 	width:300px;;
 	font-size:9px;
@@ -146,13 +147,13 @@ top-right {
 top-center {
 	font-size: 10px;
 	margin-top: 30px;
-	content:"<%if(Classification!=null){%> <%=Classification.toUpperCase()%> <%}else{%>RESTRICTED <%}%>"
+	content:"<%if(Classification!=null){%> <%=StringEscapeUtils.escapeHtml4(Classification).toUpperCase()%> <%}else{%>RESTRICTED <%}%>"
 }
 @
 bottom-center {
 	font-size: 10px;
 	margin-right:20px;
-	content:"<%if(Classification!=null){%> <%=Classification.toUpperCase()%> <%}else{%>RESTRICTED <%}%>";
+	content:"<%if(Classification!=null){%> <%=StringEscapeUtils.escapeHtml4(Classification).toUpperCase()%> <%}else{%>RESTRICTED <%}%>";
 	width:300px;;
 }
 }
@@ -209,7 +210,7 @@ margin-left:15x;
 	<div id="headerdiv">
 	<div style="position: absolute; top: 450px; left:-400px;  transform: rotate(-90deg); font-size: 10px; color: #000; width:900px;opacity:0.5; ">
 
-				<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString() %> <%} %>
+				<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=StringEscapeUtils.escapeHtml4(DocTempAtrr[12].toString()) %> <%} %>
 				
 				</div>
    </div>
@@ -253,7 +254,7 @@ margin-left:15x;
 <br><br><br><br><br><br><br><br><br><br><br><br>
 			<div align="center"></div>
 			<div style="text-align: center; margin-top: 75px;">
-				<h4 style="font-size: 18pt;;font-family:<%= FontFamily %>;" class="heading-color ">SYSTEM REQUIREMENTS <br><br> FOR  <br><br>PROJECT <%=projectShortName %> </h4>
+				<h4 style="font-size: 18pt;;font-family:<%= FontFamily %>;" class="heading-color ">SYSTEM REQUIREMENTS <br><br> FOR  <br><br>PROJECT <%=projectShortName!=null?StringEscapeUtils.escapeHtml4(projectShortName): " - " %> </h4>
 					<div align="center" >
 						<img class="logo" style="width: 80px; height: 80px; margin-bottom: 5px"
 							<%if (lablogo != null) {%> src="data:image/png;base64,<%=lablogo%>" alt="Configuration"
@@ -265,7 +266,7 @@ margin-left:15x;
 				<%
 				if(LabList!=null && LabList[1] != null) {
 				%>
-				<%=LabList[1].toString()+"("+LabList[0].toString()+")"%>
+				<%=StringEscapeUtils.escapeHtml4(LabList[1].toString())+"("+(LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()):" - ")+")"%>
 				<%
 				}else {
 				%>-<%
@@ -279,7 +280,7 @@ margin-left:15x;
 				</div>
 				<h4 style="font-family: <%= FontFamily %>;">
 					<%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %>
-					<%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %>
+					<%=StringEscapeUtils.escapeHtml4(LabList[2].toString())+" , "+StringEscapeUtils.escapeHtml4(LabList[3].toString())+", PIN-"+StringEscapeUtils.escapeHtml4(LabList[5].toString()) %>
 					<%}else{ %>
 					-
 					<%} %>
@@ -374,13 +375,13 @@ margin-left:15x;
 			</table> -->
 	<table style="width: 635px; margin-left:10px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;font-family: <%= FontFamily %>;border-collapse: collapse;padding:5px;">
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;text-align:left">1.&nbsp; Title: <span class="text-darks" style="padding:2px;">System Requirements Document for <%=projectShortName %></span></td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;text-align:left">1.&nbsp; Title: <span class="text-darks" style="padding:2px;">System Requirements Document for <%=projectShortName!=null?StringEscapeUtils.escapeHtml4(projectShortName): " - " %></span></td>
 					</tr>
 					<tr >
 					<td class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">2.&nbsp; Type of Document:<span class="text-darks" style="padding:2px;">System Requirement Document</span></td>
 					</tr>
 					<tr>
-					<td class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">3.&nbsp; Classification: <span class="text-darks" style="padding:2px;"><%=Classification %></span></td>
+					<td class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">3.&nbsp; Classification: <span class="text-darks" style="padding:2px;"><%=Classification!=null?StringEscapeUtils.escapeHtml4(Classification): " - " %></span></td>
 					
 					</tr>
 				    <tr >
@@ -400,23 +401,23 @@ margin-left:15x;
 					
 					</tr>
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">8.&nbsp; Additional Information:<span class="text-darks" style="padding:2px;"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[0] %><%} %></span>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">8.&nbsp; Additional Information:<span class="text-darks" style="padding:2px;"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[0]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[0].toString()): " - " %><%} %></span>
 				</td>
 					</tr>
 				     <tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">9.&nbsp; Project Name: <%=projectShortName %><span class="text-darks" style="padding:2px;"> </span></td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">9.&nbsp; Project Name: <%=projectShortName!=null?StringEscapeUtils.escapeHtml4(projectShortName): " - " %><span class="text-darks" style="padding:2px;"> </span></td>
 					</tr>
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">10.&nbsp; Abstract:<span class="text-darks" style="padding:2px;"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[1] %><%} %></span>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">10.&nbsp; Abstract:<span class="text-darks" style="padding:2px;"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[1]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[1].toString()): " - " %><%} %></span>
 					</tr>
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">11.&nbsp; Keywords:<span class="text-darks" style="padding:2px;"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[2] %><%} %></span> </td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">11.&nbsp; Keywords:<span class="text-darks" style="padding:2px;"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[2]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[2].toString()): " - " %><%} %></span> </td>
 					</tr>
 					<tr>
 					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">12.&nbsp; Organization and address:
 						<span class="text-darks" style="font-family: <%= FontFamily %>;">		<%
 										if (LabList!=null && LabList[1] != null) {
-										%><%=LabList[1].toString() + "(" + LabList[0].toString() + ")"%>
+										%><%=StringEscapeUtils.escapeHtml4(LabList[1].toString()) + "(" + (LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()):" - ") + ")"%>
 										<%
 										} else {
 										%>-<%
@@ -427,7 +428,7 @@ margin-left:15x;
 										<%
 									if (LabList!=null && LabList[2] != null && LabList[3] != null && LabList[5] != null) {
 									%>
-									<%=LabList[2] + " , " + LabList[3].toString() + ", PIN-" + LabList[5].toString()+"."%>
+									<%=StringEscapeUtils.escapeHtml4(LabList[2].toString()) + " , " + StringEscapeUtils.escapeHtml4(LabList[3].toString()) + ", PIN-" + StringEscapeUtils.escapeHtml4(LabList[5].toString())+"."%>
 									<%}else{ %>
 									-
 									<%} %>
@@ -435,20 +436,20 @@ margin-left:15x;
 							</td>
 					</tr>
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">13.&nbsp; Distribution:<span class="text-darks" style="padding:2px;"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[3] %><%} %></span>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">13.&nbsp; Distribution:<span class="text-darks" style="padding:2px;"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[3]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[3].toString()): " - " %><%} %></span>
 					</td>
 					</tr>
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">14.&nbsp; Revision: <%=version!=null ?version:"-" %></td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">14.&nbsp; Revision: <%=version!=null ?StringEscapeUtils.escapeHtml4(version):"-" %></td>
 					</tr>
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">15.&nbsp; Prepared by:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[10] %><%} %></span></td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">15.&nbsp; Prepared by:<span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[10]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[10].toString()): " - " %><%} %></span></td>
 					</tr>
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">16.&nbsp; Reviewed by: <span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[7] %><%} %></span> </td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">16.&nbsp; Reviewed by: <span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[7]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[7].toString()): " - " %><%} %></span> </td>
 					</tr>
 					<tr>
-					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">17.&nbsp; Approved by: <span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[6] %><%} %></span> </td>
+					<td  class="text-darks" colspan="2" style="border:1px solid black;font-family: <%= FontFamily %>;">17.&nbsp; Approved by: <span class="text-darks"><% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[6]!=null?StringEscapeUtils.escapeHtml4(DocumentSummary.get(0)[6].toString()): " - " %><%} %></span> </td>
 					</tr>
 										</table>
 							<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>	
@@ -469,8 +470,8 @@ margin-left:15x;
 %>
               <tr>
                 <td class="text-dark" style="text-align: center;border: 1px solid black;font-family: <%= FontFamily %>;"><%=  i+++"."%></td>
-                <td class="text-dark" style="text-align: center;border: 1px solid black;font-family: <%= FontFamily %>;"><%= alist[1] %></td>
-                <td  class="text-dark" style="border: 1px solid black; padding-left: 10px;font-family: <%= FontFamily %>;"><%= alist[2] %></td>
+                <td class="text-dark" style="text-align: center;border: 1px solid black;font-family: <%= FontFamily %>;"><%= alist[1] !=null?StringEscapeUtils.escapeHtml4(alist[1].toString()): " - "%></td>
+                <td  class="text-dark" style="border: 1px solid black; padding-left: 10px;font-family: <%= FontFamily %>;"><%= alist[2]!=null?StringEscapeUtils.escapeHtml4(alist[2].toString()): " - " %></td>
             </tr>
             <% 
    }} 
@@ -489,7 +490,7 @@ margin-left:15x;
 				</h2>
 				<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify;font-weight:<%=ParaFontWeight%>" >
 				 
-					<%if(ReqIntro!=null && ReqIntro[1]!=null) {%><%=ReqIntro[1]%>
+					<%if(ReqIntro!=null && ReqIntro[1]!=null) {%><%=StringEscapeUtils.escapeHtml4(ReqIntro[1].toString())%>
 					<%}else {%><div style="text-align: justify;font-family: <%= FontFamily %>;font-weight:200;">
 					Guidance: 
 					This paragraph should contain a full identification of the system to which this document applies.  
@@ -504,7 +505,7 @@ margin-left:15x;
 					&nbsp;System Overview
 				</h2>
 				<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size: <%=ParaFontSize%>pt;text-align: justify; font-weight:<%=ParaFontWeight%>">
-					<%if(ReqIntro!=null && ReqIntro[3]!=null) {%><%=ReqIntro[3]%>
+					<%if(ReqIntro!=null && ReqIntro[3]!=null) {%><%=StringEscapeUtils.escapeHtml4(ReqIntro[3].toString())%>
 					<%}else {%>
 					<div style="text-align:justify;font-family: <%= FontFamily %>;font-weight:200;">
 					Guidance:  
@@ -518,7 +519,7 @@ margin-left:15x;
 					&nbsp;Document Overview
 				</h2>
 				<div style="margin-left: 10px;font-family: <%= FontFamily %>;font-size: <%=ParaFontSize%>pt;text-align: justify;  font-weight:<%=ParaFontWeight%>">
-					<%if(ReqIntro!=null && ReqIntro[4]!=null) {%><%=ReqIntro[4]%>
+					<%if(ReqIntro!=null && ReqIntro[4]!=null) {%><%=StringEscapeUtils.escapeHtml4(ReqIntro[4].toString())%>
 					<%}else {%>
 					<div style="font-family: <%= FontFamily %>;text-align: justify;ffont-weight:200;">
 					This document brings out the system requirements of the radar system. The document gives a brief overview of the system, states the modes of operation of the radar (operational, maintenance, training and so on..) along with types of operational modes. All requirements are classified under various categories and stated in a brief unambiguous manner after resolving all conflicts and identifying derived requirements. The various design and construction constraints imposed on the system either by the User or by the designer are clearly brought out. This document also brings out the precedence and criticality of the requirements. Verification methodologies such as Demonstration /Test / Analysis / Inspection / Special verification methods employed to validate the system requirements are clearly listed. This document also contains a tabularized verification matrix for every system requirement, Requirements Traceability matrix and states the key performance parameters/key system attributes. 
@@ -543,7 +544,7 @@ margin-left:15x;
     int snCOunt=0;
     	for(Object[]obj:ApplicableTotalDocumentList){
     %>
-    <div class="heading-colors" style="font-size: 12pt;"> <%=++snCOunt %>.<%=obj[1].toString() %></div>
+    <div class="heading-colors" style="font-size: 12pt;"> <%=++snCOunt %>.<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></div>
     
     
     <%}} %>		
@@ -558,8 +559,8 @@ List<Object[]>mainReqList=RequirementList.stream().filter(e->e[15]!=null && e[15
 int mainReqCount=0;
 for(Object[]obj:mainReqList){
 %>
-<div style="padding:none;"><h2 style="font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt" class="heading-colors"><%=maincount+"."+(++mainReqCount) %>  &nbsp;<%=obj[3].toString() %></h2></div>
-<%if(obj[4]!=null) {%><div style="padding:0px;" class="heading-colors"><%=obj[4].toString()%></div><%}else{ %><span></span><%} %>
+<div style="padding:none;"><h2 style="font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt" class="heading-colors"><%=maincount+"."+(++mainReqCount) %>  &nbsp;<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></h2></div>
+<%if(obj[4]!=null) {%><div style="padding:0px;" class="heading-colors"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%></div><%}else{ %><span></span><%} %>
 <%List<Object[]>subMainReqList =  RequirementList.stream().filter(e->e[15]!=null&&e[15].toString().equalsIgnoreCase(obj[0].toString()))
 .sorted(Comparator.comparing(e -> Integer.parseInt(e[14].toString())))
 .collect(Collectors.toList());%>
@@ -570,10 +571,10 @@ for(Object[]obj1:subMainReqList) {
 int snCount=0;
 %>
  <%if(!ReqName.equalsIgnoreCase(obj1[3].toString()) && !obj1[3].toString().equalsIgnoreCase(obj[3].toString())) { %>
-<h3 class="heading-colors" style="font-weight:500;padding:0px;font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt ;" ><%=maincount+"."+(mainReqCount)+"."+(++subReqCount)%>&nbsp;<%=obj1[3].toString() %></h3>
+<h3 class="heading-colors" style="font-weight:500;padding:0px;font-weight:<%=SubHeaderFontweight%>;font-size: <%= SubHeaderFontsize%>pt ;" ><%=maincount+"."+(mainReqCount)+"."+(++subReqCount)%>&nbsp;<%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): " - " %></h3>
 <%} %> 
 
-<div align="left" style="margin-left:10px;font-weight: bold">REQ ID - <%=obj1[1].toString() %></div>
+<div align="left" style="margin-left:10px;font-weight: bold">REQ ID - <%=obj1[1]!=null?StringEscapeUtils.escapeHtml4(obj1[1].toString()): " - " %></div>
 <table class="border-black"
 					style="margin-left: 10px;margin-top:7px;width: 635px;margin-right:20px; margin-bottom: 5px;font-family: <%= FontFamily %>;font-size: <%= ParaFontSize%>pt">
 					<thead>
@@ -593,7 +594,7 @@ int snCount=0;
 							<td class="border-black"
 								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;">ID</td>
 							<td class="border-black"
-								style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%=obj1[1].toString() %></td>
+								style=" text-align: left; border: 1px solid black; border-collapse: collapse;"><%=obj1[1]!=null?StringEscapeUtils.escapeHtml4(obj1[1].toString()): " - " %></td>
 						</tr>
 						
 						
@@ -625,7 +626,7 @@ int snCount=0;
 								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;">Priority</td>
 							<td class="border-black"
 								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
-								<%if(obj1[5]!=null) {%> <%=obj1[5].toString() %>
+								<%if(obj1[5]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[5].toString()) %>
 								<%}else{%>-<%} %>
 							</td>
 						</tr>
@@ -637,7 +638,7 @@ int snCount=0;
 								style=" text-align: left; border: 1px solid black; border-collapse: collapse; font-weight: 600;">Criticality</td>
 							<td class="border-black"
 								style=" text-align: left; border: 1px solid black; border-collapse: collapse;">
-								<%if(obj1[21]!=null) {%> <%=obj1[21].toString() %>
+								<%if(obj1[21]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[21].toString()) %>
 								<%}else{%>-<%} %>
 							</td>
 						</tr>
@@ -657,7 +658,7 @@ int snCount=0;
 							<td class="border-black" colspan="3"
 								style="border: 1px solid black; border-collapse: collapse;  text-align: left; vertical-align: top;font-weight: 600;"><div align="left" style=""><%=++snCount %>. Description<hr></div><br>
 								<div style="font-weight: 400;">
-														<%if(obj1[4]!=null){ %> <%=obj1[4].toString() %> <%}else{ %>-<%} %>
+														<%if(obj1[4]!=null){ %> <%=StringEscapeUtils.escapeHtml4(obj1[4].toString()) %> <%}else{ %>-<%} %>
 						
 								</div>
 						</td>
@@ -669,7 +670,7 @@ int snCount=0;
 								style="border: 1px solid black; border-collapse: collapse;  text-align: left; vertical-align: top;font-weight: 600;">Remarks</td>
 							<td class="border-black"
 								style="text-align: justify; border: 1px solid black; border-collapse: collapse; vertical-align: top;">
-								<%if(obj1[7]!=null){ %> <%=obj1[7].toString() %> <%}else{ %>-<%} %>
+								<%if(obj1[7]!=null){ %> <%=StringEscapeUtils.escapeHtml4(obj1[7].toString()) %> <%}else{ %>-<%} %>
 							</td>
 						</tr>
 						<tr>
@@ -679,7 +680,7 @@ int snCount=0;
 								style="border: 1px solid black; border-collapse: collapse;  text-align: left; vertical-align: top;font-weight: 600;">Constraints</td>
 							<td class="border-black"
 								style="text-align: justify; border: 1px solid black; border-collapse: collapse; vertical-align: top;">
-								<%if(obj1[9]!=null){ %> <%=obj1[9].toString() %> <%}else{ %>-<%} %>
+								<%if(obj1[9]!=null){ %> <%=StringEscapeUtils.escapeHtml4(obj1[9].toString()) %> <%}else{ %>-<%} %>
 							</td>
 						</tr>
 						
@@ -698,7 +699,7 @@ int snCount=0;
 								for(int i=0;i<a.length;i++){
 								%>
 								
-								<%=	a[i] +" . "+ DemonList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
+								<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i].toString()): " - " +" . "+ DemonList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
 								<%} %>
 								<%}else{%>-<%} %>
 							   
@@ -718,7 +719,7 @@ int snCount=0;
 									for(int i=0;i<a.length;i++){
 										%>
 										
-										<%=	a[i] +" . "+ TestList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
+										<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i].toString()): " - " +" . "+ TestList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
 										<%} %>
 										<%}else{%>-<%} %>
 							</td>
@@ -737,7 +738,7 @@ int snCount=0;
 									for(int i=0;i<a.length;i++){
 										%>
 										
-										<%=	a[i] +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
+										<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i].toString()): " - " +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
 										<%} %>
 										<%}else{%>-<%} %>
 							</td>
@@ -756,7 +757,7 @@ int snCount=0;
 								for(int i=0;i<a.length;i++){
 										%>
 										
-										<%=	a[i] +" . "+ InspectionList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
+										<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i].toString()): " - " +" . "+ InspectionList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
 										<%} %>
 										<%}else{%>-<%} %>
 							</td>
@@ -776,7 +777,7 @@ int snCount=0;
 									for(int i=0;i<a.length;i++){
 										%>
 										
-										<%=	a[i] +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
+										<%=	a[i]!=null?StringEscapeUtils.escapeHtml4(a[i].toString()): " - " +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>
 										<%} %>
 										<%}else{%>-<%} %>
 							</td>
@@ -813,9 +814,9 @@ List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null&&!e[
 						%>
 						<tr>
 						<td style="text-align:center;border: 1px solid black; border-collapse: collapse;"><%=++rcount %></td>
-							<td class="border-black" style="text-align:justify;border: 1px solid black; border-collapse: collapse;"><%=obj[1].toString() %></td>
-							<td class="border-black" style="text-align:center;border: 1px solid black; border-collapse: collapse;"><%if(obj[5]!=null) {%><%=obj[5].toString()%><%}else{ %>-<%} %></td>
-							<td class="border-black" style="text-align:center;border: 1px solid black; border-collapse: collapse;"><%if(obj[21]!=null) {%> <%=obj[21].toString() %>
+							<td class="border-black" style="text-align:justify;border: 1px solid black; border-collapse: collapse;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
+							<td class="border-black" style="text-align:center;border: 1px solid black; border-collapse: collapse;"><%if(obj[5]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[5].toString())%><%}else{ %>-<%} %></td>
+							<td class="border-black" style="text-align:center;border: 1px solid black; border-collapse: collapse;"><%if(obj[21]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj[21].toString())%>
 								<%}else{%>-<%} %></td>
 						</tr>
 						<%}} %>
@@ -841,10 +842,10 @@ List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null&&!e[
 				%>
 			<h3 class="heading-colors" style="font-family: <%= FontFamily %>;margin-left: 20px; font-weight:<%=SuperHeaderFontWeight%>;margin-top: 20px; font-size: <%= SuperHeaderFontsize%>pt;">
 		   <span><%=maincount+"."+(verificationCount)%>.<%=++j %>
-			<%=obj[1].toString() %></span>
+			<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span>
 				</h3>
 				<div  style="margin-left: 20px;font-family: <%= FontFamily %>;font-size:<%=ParaFontSize%>pt; text-align: justify; font-weight:<%=ParaFontWeight%>">
-				<%if(obj[3]!=null){ %><%=obj[3].toString()%>
+				<%if(obj[3]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[3].toString())%>
 				<%}else{ %><p style="text-align: center;">-&nbsp;&nbsp;No
 					details filled&nbsp;&nbsp;-</p>
 						<%}%>
@@ -885,16 +886,16 @@ List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null&&!e[
 							<%if(SN==VerificationDataList.size()) {%>style="padding: 5px; text-align: center; border: 1px solid black;border-top:none; border-collapse: collapse;"<%} %>
 							  <%if(!data.equalsIgnoreCase(obj[2].toString())){ %> style="padding: 5px; text-align: center; border: 1px solid black;   border-bottom:none;    border-collapse: collapse;"<%}else{ %>
 							    style="padding: 5px; text-align: center; border-right:1px solid black;   border-left:1px solid black;    border-collapse: collapse;" <%} %>>
-							   <%if(!data.equalsIgnoreCase(obj[2].toString())){ %> <%=obj[2] %><%} %>
+							   <%if(!data.equalsIgnoreCase(obj[2].toString())){ %> <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %><%} %>
 							 </td>
 							<%if(!data.equalsIgnoreCase(obj[2].toString())){
 								subcount=0;
 							} %> 
-							<td class="border-black"style="padding: 5px; text-align: justify; border: 1px solid black; border-collapse: collapse;">  <%=obj[2].toString().substring(0,1)+(++subcount)+". "+obj[3] %></td>
-							<td class="border-black"style="padding: 5px; text-align: justify; border: 1px solid black; border-collapse: collapse;"><%=obj[4]%></td>
+							<td class="border-black"style="padding: 5px; text-align: justify; border: 1px solid black; border-collapse: collapse;">  <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()).substring(0,1)+(++subcount):" - "%> . <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
+							<td class="border-black"style="padding: 5px; text-align: justify; border: 1px solid black; border-collapse: collapse;"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%></td>
 						</tr>
 					 <%
-					 data = obj[2].toString();
+					 data = obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ";
 	                 } %>
 					</tbody>
 				</table>				
@@ -935,12 +936,12 @@ List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null&&!e[
 					%>
 					<tr>
 					<td  class="border-black"style="width: 20px; border: 1px solid black;text-align:center; border-collapse: collapse;" ><%=++slCount %></td>
-					<td  class="border-black"style="width: 20px; border: 1px solid black;text-align:center; border-collapse: collapse;"><%=obj1[3].toString() %></td>
+					<td  class="border-black"style="width: 20px; border: 1px solid black;text-align:center; border-collapse: collapse;"><%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): " - " %></td>
 					<td class="border-black"style="width: 20px; border: 1px solid black;text-align:center; border-collapse: collapse;">
 						<%if(ReqId.size()>0) {
 						for(Object[]obj2:ReqId){
 						%>
-						<div ><%=obj2[1] %></div>
+						<div ><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - " %></div>
 						
 						<%}}else{ %>
 						---
@@ -983,7 +984,7 @@ List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null&&!e[
 					<%if(objs[12]!=null) {%>
 					<tr>
 					<td  class="border-black"style="width: 20px; border: 1px solid black;text-align:center; border-collapse: collapse;" ><%=++snCount %></td>
-					<td  class="border-black"style="width: 20px; border: 1px solid black;text-align:center; border-collapse: collapse;"><%=objs[1].toString() %></td>
+					<td  class="border-black"style="width: 20px; border: 1px solid black;text-align:center; border-collapse: collapse;"><%=objs[1]!=null?StringEscapeUtils.escapeHtml4(objs[1].toString()): " - " %></td>
 					 <td style="width: 20px; border: 1px solid black;text-align:center; border-collapse: collapse;padding:10px;" >
 					
 					
@@ -1039,8 +1040,8 @@ List<Object[]>nonMainReqList=RequirementList.stream().filter(e->e[15]!=null&&!e[
 %>
       <tr>
                 <td style="text-align: center;border: 1px solid black;"><%=  i+++"."%></td>
-                <td style="border: 1px solid black;padding-left: 10px;"><%= alist[1] %></td>
-                <td style="border: 1px solid black; padding-left: 10px;"><%= alist[2] %></td>
+                <td style="border: 1px solid black;padding-left: 10px;"><%= alist[1]!=null?StringEscapeUtils.escapeHtml4(alist[1].toString()): " - " %></td>
+                <td style="border: 1px solid black; padding-left: 10px;"><%= alist[2]!=null?StringEscapeUtils.escapeHtml4(alist[1].toString()): " - " %></td>
             </tr>
             <% 
    }} 
@@ -1068,8 +1069,8 @@ This appendix contains acronyms and provides standard definitions for terminolog
 %>
              <tr>
                 <td class="border-black" style="width:10px;text-align: center;border: 1px solid black;"><%=  i+++"."%></td>
-                <td class="border-black"style="border: 1px solid black;padding-left: 10px;"><%= plist[1] %></td>
-                <td class="border-black" style="border: 1px solid black; padding-left: 10px;text-align:center"><%= "-"+plist[2] +"-"%></td>
+                <td class="border-black"style="border: 1px solid black;padding-left: 10px;"><%= plist[1]!=null?StringEscapeUtils.escapeHtml4(plist[1].toString()): " - " %></td>
+                <td class="border-black" style="border: 1px solid black; padding-left: 10px;text-align:center"><%= "-"+(plist[2]!=null?StringEscapeUtils.escapeHtml4(plist[2].toString()): " - " )+"-"%></td>
             </tr>
             <% 
    }}%> 
@@ -1111,7 +1112,7 @@ This appendix contains acronyms and provides standard definitions for terminolog
         %>
         <%if(submainReqList.size()>0){%>
            <tr class="text-dark">
-           <td class="text-dark" style="border: 1px solid black; width: 120px; text-align: left;" colspan="6"><%=obj[3].toString() %>:-</td>
+           <td class="text-dark" style="border: 1px solid black; width: 120px; text-align: left;" colspan="6"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %>:-</td>
            
            </tr>
            <%
@@ -1119,19 +1120,19 @@ This appendix contains acronyms and provides standard definitions for terminolog
            for(Object[]obj1:submainReqList){ %>
            <%if(!ReqName.equalsIgnoreCase(obj1[3].toString()) && !obj1[3].toString().equalsIgnoreCase(obj[3].toString())) {%>
 				<tr class="text-dark">
-				<td class="text-dark"style="border: 1px solid black; width: 120px; text-align: left;" colspan="6"><%=obj1[3].toString() %></td>			</tr>	
+				<td class="text-dark"style="border: 1px solid black; width: 120px; text-align: left;" colspan="6"><%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): " - "%></td>			</tr>	
 				<%} %>
            
            <tr>
-           <td class="text-dark" style="border: 1px solid black; width: 120px; text-align: left;" ><%=obj1[1].toString() %></td>
-           <td class="text-dark" style="border: 1px solid black; width: 120px; text-align: left;"><%if(obj1[16]!=null) {%><%=obj1[16].toString() %> <%}else{ %>-<%} %></td>
-           <td class="text-dark" style="border: 1px solid black; width: 120px; text-align: left;"> <%if(obj1[17]!=null) {%><%=obj1[17].toString() %> <%}else{ %>-<%} %></td>
-           <td  class="text-dark" style="border: 1px solid black; width: 120px; text-align: left;"> <%if(obj1[18]!=null) {%><%=obj1[18].toString() %> <%}else{ %>-<%} %></td>
-           <td class="text-dark" style="border: 1px solid black; width: 120px; text-align: left;"> <%if(obj1[19]!=null) {%><%=obj1[19].toString() %> <%}else{ %>-<%} %></td>
-           <td class="text-dark" style="border: 1px solid black; width: 120px; text-align: left;"> <%if(obj1[20]!=null) {%><%=obj1[20].toString() %> <%}else{ %>-<%} %></td>
+           <td class="text-dark" style="border: 1px solid black; width: 120px; text-align: left;" ><%=obj1[1]!=null?StringEscapeUtils.escapeHtml4(obj1[1].toString()): " - " %></td>
+           <td class="text-dark" style="border: 1px solid black; width: 120px; text-align: left;"><%if(obj1[16]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj1[16].toString()) %> <%}else{ %>-<%} %></td>
+           <td class="text-dark" style="border: 1px solid black; width: 120px; text-align: left;"> <%if(obj1[17]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj1[17].toString()) %> <%}else{ %>-<%} %></td>
+           <td  class="text-dark" style="border: 1px solid black; width: 120px; text-align: left;"> <%if(obj1[18]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj1[18].toString()) %> <%}else{ %>-<%} %></td>
+           <td class="text-dark" style="border: 1px solid black; width: 120px; text-align: left;"> <%if(obj1[19]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj1[19].toString()) %> <%}else{ %>-<%} %></td>
+           <td class="text-dark" style="border: 1px solid black; width: 120px; text-align: left;"> <%if(obj1[20]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj1[20].toString()) %> <%}else{ %>-<%} %></td>
            </tr>
            <%
-           ReqName=obj1[3].toString();
+           ReqName=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): " - ";
            } %>
            <%} %>
            <%}} %>

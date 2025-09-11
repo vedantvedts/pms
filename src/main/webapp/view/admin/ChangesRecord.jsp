@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.model.FinanceChanges"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
@@ -164,23 +165,22 @@ String labcode = (String)request.getAttribute("labcode");
  <!-- ----------------------------------message ------------------------- -->
 
 	
-<%String ses=(String)request.getParameter("result"); 
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-	</div>
-<%} %>
-
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 <!-- ----------------------------------message ------------------------- -->
 
 <div class="container-fluid">
@@ -226,7 +226,7 @@ String labcode = (String)request.getAttribute("labcode");
 									<option value="A" <%if("A".equalsIgnoreCase(projectid)){ %> selected="selected" <%} %> selected="selected" hidden="true">All</option>
 											<%	for (Object[] obj2 : ProjectList) { %>
 											
-													<option value="<%=obj2[0]%>" <%if(obj2[0].toString().equalsIgnoreCase(projectid)){ %> selected="selected" <%} %> style="text-align: left !important" ><%=obj2[4]%></option>
+													<option value="<%=obj2[0]%>" <%if(obj2[0].toString().equalsIgnoreCase(projectid)){ %> selected="selected" <%} %> style="text-align: left !important" ><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "%></option>
 													
 											<%} %>
 					</select>
@@ -240,7 +240,7 @@ String labcode = (String)request.getAttribute("labcode");
 									<option value="A" <%if("A".equalsIgnoreCase(projectid)){ %> selected="selected" <%} %> selected="selected" hidden="true">All</option>
 											<%	for (Object[] obj : labmasterlist) { %>
 											
-													<option value="<%=obj[1]%>" <%if(obj[1].toString().equalsIgnoreCase(labcode)){ %> selected="selected" <%} %> style="text-align: left !important" ><%=obj[1]%></option>
+													<option value="<%=obj[1]%>" <%if(obj[1].toString().equalsIgnoreCase(labcode)){ %> selected="selected" <%} %> style="text-align: left !important" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
 													
 											<%} %>
 					</select>
@@ -320,16 +320,16 @@ String labcode = (String)request.getAttribute("labcode");
 			                	 <%int n=1;for (Object[] obj : alldatacombinedlist){  %>
 								<tr>
 									<td><%=n %>.</td>
-									<td><%=obj[5] %></td>
-									<td><%=obj[0]%></td>
-									<td><%=obj[1]%></td>
-									<td><%=obj[2]%> (<%=obj[3] %>)</td>
+									<td><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></td>
+									<td><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%></td>
+									<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></td>
+									<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> (<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %>)</td>
 									<%-- <%if(obj[0].toString().equalsIgnoreCase("Finance") ){ %>
 										<td style="text-align: center"><%= sdf1.format(sdf2.parse(obj[4].toString()))%></td>
 									<%}else{ %>
 										<td style="text-align: center"><%=sdf1.format(obj[4])%></td>
 									<%} %> --%>
-									<td><%=obj[4]%></td>
+									<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%></td>
 								</tr>
 								<% n++;} %>	 			  
 							</tbody>
@@ -374,12 +374,12 @@ String labcode = (String)request.getAttribute("labcode");
 			                	<%int i=1;for (Object[] obj : meetingchangesdata){ %>
 								<tr>
 									<td><%=i %>.</td>
-									<td><%=obj[13] %></td>
-									<td><%=obj[12] %></td>
-									<td><%=sdf1.format(obj[4]) %> &nbsp;-&nbsp; <%=obj[5] %></td>
-									<td><%=obj[7] %></td>
-									<td><%=obj[8] %> (<%=obj[9] %>)</td>
-									<td style="text-align: center"  ><%if(obj[6].toString().equalsIgnoreCase("MSC")){%> <%=sdf1.format(obj[10])%> <%}else{ %><%=sdf1.format(obj[11]) %> <%} %></td>
+									<td><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
+									<td><%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %></td>
+									<td><%=obj[4]!=null?sdf1.format(obj[4]):" - " %> &nbsp;-&nbsp; <%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></td>
+									<td><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %></td>
+									<td><%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - " %> (<%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - " %>)</td>
+									<td style="text-align: center"  ><%if(obj[6].toString().equalsIgnoreCase("MSC")){%> <%=obj[10]!=null?sdf1.format(obj[10]):" - "%> <%}else{ %><%=obj[11]!=null?sdf1.format(obj[11]) :" - "%> <%} %></td>
 								</tr>
 								<% i++;} %>				  
 							</tbody>
@@ -420,13 +420,13 @@ String labcode = (String)request.getAttribute("labcode");
 			                	<%int j=1;for (Object[] obj : milestonechangesdata){ %>
 								<tr>
 									<td><%=j %>.</td>
-									<td><%=obj[10] %></td>
-									<td><%=obj[0] %></td>
-									<td><%=obj[1] %></td>
-									<td style="text-align: center" ><%=obj[2] %>%</td>
-									<td><%=obj[5] %></td>
-									<td><%=obj[7] %> (<%=obj[8] %>)</td>
-									<td style="text-align: center" ><%=sdf1.format(obj[9]) %></td>
+									<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %></td>
+									<td><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %></td>
+									<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
+									<td style="text-align: center" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>%</td>
+									<td><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></td>
+									<td><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %> (<%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - " %>)</td>
+									<td style="text-align: center" ><%=obj[9]!=null?sdf1.format(obj[9]):" - " %></td>
 								</tr>
 								<% j++;} %>				  
 							</tbody>
@@ -464,13 +464,13 @@ String labcode = (String)request.getAttribute("labcode");
 			                	<%int k=1;for (Object[] obj : actionchangesdata){ %>
 								<tr>
 									<td><%=k %>.</td>
-									<td><%=obj[10] %></td>
-									<td><%=obj[2] %></td>
-									<td style="width: 320px"><%=obj[3] %></td>
-									<td style="text-align: center" ><%=obj[4] %>%</td>
-									<td><%=obj[6] %></td>
-									<td><%=obj[7]%> (<%=obj[9] %>)</td>
-									<td style="text-align: center" ><%=sdf1.format(obj[8])%></td>
+									<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %></td>
+									<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+									<td style="width: 320px"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
+									<td style="text-align: center" ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %>%</td>
+									<td><%=obj[6] !=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%></td>
+									<td><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%> (<%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - " %>)</td>
+									<td style="text-align: center" ><%=obj[8]!=null?sdf1.format(obj[8]):" - "%></td>
 								</tr>
 								<% k++;} %>				  
 							</tbody>
@@ -512,15 +512,15 @@ String labcode = (String)request.getAttribute("labcode");
 			                	<%int l=1;for (Object[] obj : riskchangesdata){ %>
 								<tr>
 									<td><%=l %>.</td>
-									<td><%=obj[11] %></td>
-									<td><%=obj[1] %></td>
-									<td><%=obj[2] %></td>
-									<td><%=obj[3] %></td>
-									<td><%=obj[4] %></td>
-									<td><%=obj[5] %></td>
-									<td style="text-align: center" ><%=obj[6] %></td>
-									<td><%=obj[9] %> (<%=obj[10] %>)</td>
-									<td style="text-align: center" ><%=sdf1.format(obj[8]) %></td>
+									<td><%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %></td>
+									<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
+									<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+									<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
+									<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
+									<td><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></td>
+									<td style="text-align: center" ><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %></td>
+									<td><%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - " %> (<%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %>)</td>
+									<td style="text-align: center" ><%=obj[8]!=null?sdf1.format(obj[8]):" - " %></td>
 								</tr>
 								<% l++;} %>				  
 							</tbody>
@@ -610,16 +610,16 @@ String labcode = (String)request.getAttribute("labcode");
 			                	<%int m=1;for (FinanceChanges obj : financechangesdata){ %>
 								<tr>
 									<td><%=m %>.</td>
-									<td><%=obj.getType() %></td>
-									<td><%=obj.getRefNo() %></td>
-									<td><%=obj.getItemFor() %></td>
+									<td><%=obj.getType()!=null?StringEscapeUtils.escapeHtml4(obj.getType()): " - " %></td>
+									<td><%=obj.getRefNo()!=null?StringEscapeUtils.escapeHtml4(obj.getRefNo()): " - " %></td>
+									<td><%=obj.getItemFor()!=null?StringEscapeUtils.escapeHtml4(obj.getItemFor()): " - " %></td>
 									<td style="text-align: right;">
 									<%if(obj.getCost()!=null) {%>
 									<%=format.format(new BigDecimal(obj.getCost().toString())).substring(1)%>
 									<%}else{ %>--<%} %>
 									</td>
-                                     <td><%=obj.getFirstName() %> <%=obj.getLastName() %></td>
-									<td style="text-align: center"><%= sdf1.format(sdf2.parse(obj.getCreatedDate().toString()))%></td>
+                                     <td><%=obj.getFirstName()!=null?StringEscapeUtils.escapeHtml4(obj.getFirstName()): " - " %> <%=obj.getLastName()!=null?StringEscapeUtils.escapeHtml4(obj.getLastName()): " - " %></td>
+									<td style="text-align: center"><%= obj.getCreatedDate()!=null?sdf1.format(sdf2.parse(obj.getCreatedDate().toString())):" - "%></td>
 								</tr>
 								<% m++;} %>				  
 							</tbody>

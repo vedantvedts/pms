@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -93,22 +94,23 @@ a:hover {
 		String todate = (String)request.getAttribute("todate");
 		String feedbacktype = (String)request.getAttribute("feedbacktype");
 	%>
-	<%String ses=(String)request.getParameter("result"); 
-	 	String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-	%>
-		<div align="center">
-			<div class="alert alert-danger" role="alert">
-				<%=ses1 %>
-			</div>
-		</div>
-		<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert">
-				<%=ses %>
-			</div>
-		</div>
-	<%} %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
+    
 	
 	<div class="container-fluid">	
 		<div class="row">
@@ -172,16 +174,16 @@ a:hover {
 										%>
 										<tr>
 											<td class="center"><%=++count%></td>
-											<td><%=obj[1]%></td>  
-											<td class="center"><%=obj[4]%></td>
-											<td class="center"><%=sdf.format(inputFormatter.parse(obj[2].toString()) ) %></td>
+											<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%></td>  
+											<td class="center"><%=obj[4]!=null? StringEscapeUtils.escapeHtml4(obj[4].toString()):"-"%></td>
+											<td class="center"><%=obj[2]!=null?sdf.format(inputFormatter.parse(obj[2].toString()) ):"-" %></td>
 											<td>
 												<span <%if(obj[5]!=null && obj[5].toString().equalsIgnoreCase("C")){%> style="color:#649d1a;" <%}%>>
 													<%if(feedback.length()<90){ %> 
-														<%=feedback%> 
+														<%=feedback!=null?StringEscapeUtils.escapeHtml4(feedback):"-"%> 
 													<%}else{ %>
-														<%=feedback.substring(0,90)%> 
-														 <button type="button" class="editable-click" name="sub" value="Modify" onclick="feedbackmodal('<%=obj[0]%>' , '<%=sdf1.format(inputFormatter.parse(obj[2].toString()) )%>')">
+														<%=feedback!=null?StringEscapeUtils.escapeHtml4(feedback.substring(0,90)):"-" %> 
+														 <button type="button" class="editable-click" name="sub" value="Modify" onclick="feedbackmodal('<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):"-"%>' , '<%=obj[2]!=null?sdf1.format(inputFormatter.parse(obj[2].toString())):"" %>')">
 															<b><span style="color:#1176ab;font-size: 14px;">......(View More)</span></b>
 														</button> 
 													<% }%>
@@ -242,7 +244,7 @@ a:hover {
 													<%} %>
 													<% List<Object[]> list = attachment.stream().filter(e-> e[0].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
 													if(list!=null && list.size()>0){ %>
-														<button type="submit" class="editable-click" name="attachid" value="<%=list.get(0)[1]%>" formaction="FeedbackAttachDownload.htm" formmethod="get" formnovalidate="formnovalidate" title="Download">
+														<button type="submit" class="editable-click" name="attachid" value="<%=list.get(0)[1]!=null?StringEscapeUtils.escapeHtml4(list.get(0)[1].toString()):""%>" formaction="FeedbackAttachDownload.htm" formmethod="get" formnovalidate="formnovalidate" title="Download">
 															<div class="cc-rockmenu">
 																<div class="rolling">
 																	<figure class="rolling_icon">

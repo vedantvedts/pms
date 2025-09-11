@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
         <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -338,24 +339,22 @@ List<Object[]>PerformanceList= (List<Object[]>)request.getAttribute("Performance
      	<button class="btn btn-info btn-sm  back ml-2 mt-1" formaction="ProjectOverAllRequirement.htm" formmethod="get" formnovalidate="formnovalidate" style="float:right;">BACK</button>
 		</form>
 </nav>
- <%String ses=(String)request.getParameter("result"); 
- 	  String ses1=(String)request.getParameter("resultfail");
-	  if(ses1!=null){
-	%>
-	<div align="center">
-
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</div>
-	<%} %>
+ <% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 <div class="container-fluid">
 <div class="row">
 <div class="col-md-6">
@@ -478,8 +477,8 @@ int row=0;
 	%>
 <tr>
 <td style="text-align: center"><%=++row  %> </td>
-<td style="text-align: center"><%=obj[1].toString() %></td>
-<td style="text-align: justify;padding-left: 5px;"><%=obj[2].toString() %></td>
+<td style="text-align: center"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
+<td style="text-align: justify;padding-left: 5px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 </tr>
 <%}} %>
 </tbody>
@@ -504,8 +503,8 @@ int row=0;
 	%>
 <tr>
 <td style="text-align: center"><%=++row  %> </td>
-<td style="text-align: center"><%=obj[1].toString() %></td>
-<td style="text-align: justify;padding-left: 5px;"><%=obj[2].toString() %></td>
+<td style="text-align: center"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
+<td style="text-align: justify;padding-left: 5px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 </tr>
 <%}} %>
 </tbody>

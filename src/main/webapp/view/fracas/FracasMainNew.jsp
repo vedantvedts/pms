@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
@@ -119,21 +120,22 @@ h6{
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
-  
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
     
     
 <div class="container">
@@ -153,7 +155,7 @@ h6{
 											<select class="form-control selectdee" id="projectid" name="projectid" required >
 												<option value="0">General</option>											
 												<%for(Object[] obj:projectslist){ %>	
-													<option value="<%=obj[0]%>"><%=obj[1]%></option>	
+													<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>	
 												<%} %>
 											</select>
 										<%}else if(Long.parseLong(projectid)>=0){%>
@@ -162,7 +164,7 @@ h6{
 													<%if(projectid.equals(obj[0].toString())){
 														String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
 														%>
-														<option value="<%=obj[0]%>" selected><%=obj[4]+projectshortName%></option>	
+														<option value="<%=obj[0]%>" selected><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%></option>	
 													<%} %>
 												<%} %>
 											</select>
@@ -177,7 +179,7 @@ h6{
 										<select class="form-control" id="fracastypeid" name="fracastypeid" required>
 											<option selected disabled="disabled"> Choose...</option>
 											<%for(Object[] obj:fracastypelist){ %>	
-												<option value="<%=obj[0]%>"><%=obj[1]%></option>	
+												<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>	
 											<%} %>
 										</select>
 									</div>

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
@@ -226,34 +227,34 @@ div {
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	Object[] getMA = (Object[]) request.getAttribute("MilestoneActivity");
 	List<Object[]> ActivityTypeList = (List<Object[]>) request.getAttribute("ActivityTypeList");
+	List<Object[]> allLabList=(List<Object[]>)request.getAttribute("allLabList");
 	List<Object[]> EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
 	String projectId=(String)request.getAttribute("ProjectId");
 	String Logintype=(String)session.getAttribute("LoginType");
 	String projectDirector=(String)request.getAttribute("projectDirector");
 	
 	Long EmpId =  (Long)session.getAttribute("EmpId") ;
+	String labcode =  (String)session.getAttribute("labcode") ;
 	
 	%>
 	
 
-	
-	<% String ses=(String)request.getParameter("result");
-	 	String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-		%>
-		<div align="center">
-			<div class="alert alert-danger" role="alert">
-		    <%=ses1 %>
-		    </div>
-		</div>
-		<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-		    	<%=ses %>
-			</div>
-		</div>
-	<%} %>
-
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
 
 	<div class="container-fluid">
 	
@@ -265,7 +266,7 @@ div {
 					<div align="right" class="m-1" >
 					<form action="#">
 					<input type="submit" class="btn btn-primary btn-sm back " id="sub" value="Back" name="sub" formaction="MilestoneActivityList.htm" formnovalidate="formnovalidate">
-					<input type="hidden" name="ProjectId" value="<%=getMA[10]%>" />
+					<input type="hidden" name="ProjectId" id="ProjectId" value="<%=getMA[10]%>" />
 					</form>
 					</div>
 					 
@@ -273,7 +274,7 @@ div {
 						<div class="panel panel-info m-1" style="margin-top: 0px;">
 							<div class="panel-heading ">
 								<h4 class="panel-title">
-									<span style="font-size: 14px"><%=getMA[1]%> : MIL-<%=getMA[5]%>
+									<span style="font-size: 14px"><%=getMA[1]!=null?StringEscapeUtils.escapeHtml4(getMA[1].toString()): " - "%> : MIL-<%=getMA[5]!=null?StringEscapeUtils.escapeHtml4(getMA[5].toString()): " - "%>
 										<i class="fa fa-calendar" aria-hidden="true"
 										style="margin-left: 20px;"></i> <%=sdf.format(getMA[2])%> To
 										<%=sdf.format(getMA[3])%></span>
@@ -290,17 +291,17 @@ div {
 									<div class="col-md-6 ">
 										<label class="control-label"
 											style="margin-left: 10px; text-align: justify;">Activity:
-											<%=getMA[4]%>
+											<%=getMA[4]!=null?StringEscapeUtils.escapeHtml4(getMA[4].toString()): " - "%>
 										</label>
 									</div>
 									<div class="col-md-2 ">
-										<label class="control-label">Type: <%=getMA[17]%></label>
+										<label class="control-label">Type: <%=getMA[17]!=null?StringEscapeUtils.escapeHtml4(getMA[17].toString()): " - "%></label>
 									</div>
 									<div class="col-md-2 ">
-										<label class="control-label">First OIC: <%=getMA[6]%></label>
+										<label class="control-label">First OIC: <%=getMA[6]!=null?StringEscapeUtils.escapeHtml4(getMA[6].toString()): " - "%></label>
 									</div>
 									<div class="col-md-2 ">
-										<label class="control-label">Second OIC: <%=getMA[7]%></label>
+										<label class="control-label">Second OIC: <%=getMA[7]!=null?StringEscapeUtils.escapeHtml4(getMA[7].toString()): " - "%></label>
 
 									</div>
 								</div>
@@ -336,17 +337,17 @@ div {
 													<div class="col-md-6 ">
 														<label class="control-label"
 															style="margin-left: 25px; text-align: justify;">Activity:
-															<%=obj[4]%>
+															<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>
 														</label>
 													</div>
 													<div class="col-md-2">
-														<label class="control-label">Type: <%=obj[12]%></label>
+														<label class="control-label">Type: <%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - "%></label>
 													</div>
 													<div class="col-md-2">
-														<label class="control-label">Weightage: <%=obj[6]%></label>
+														<label class="control-label">Weightage: <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%></label>
 													</div>
 													<div class="col-md-2">
-														<label class="control-label">First OIC: <%=obj[14]%></label>
+														<label class="control-label">First OIC: <%=obj[14]!=null?StringEscapeUtils.escapeHtml4(obj[14].toString()): " - "%></label>
 													</div>
 												</div>
 												<%
@@ -383,17 +384,17 @@ div {
 																	<div class="col-md-6 ">
 																		<label class="control-label"
 																			style="margin-left: 25px; text-align: justify;">Activity:
-																			<%=obj1[4]%>
+																			<%=obj1[4]!=null?StringEscapeUtils.escapeHtml4(obj1[4].toString()): " - "%>
 																		</label>
 																	</div>
 																	<div class="col-md-2">
-																		<label class="control-label">Type: <%=obj1[12]%></label>
+																		<label class="control-label">Type: <%=obj1[12]!=null?StringEscapeUtils.escapeHtml4(obj1[12].toString()): " - "%></label>
 																	</div>
 																	<div class="col-md-2">
-																		<label class="control-label">Weightage: <%=obj1[6]%></label>
+																		<label class="control-label">Weightage: <%=obj1[6]!=null?StringEscapeUtils.escapeHtml4(obj1[6].toString()): " - "%></label>
 																	</div>
 																	<div class="col-md-2">
-																		<label class="control-label">First OIC: <%=obj1[14]%></label>
+																		<label class="control-label">First OIC: <%=obj1[14]!=null?StringEscapeUtils.escapeHtml4(obj1[14].toString()): " - "%></label>
 																	</div>
 																</div>
 																<%
@@ -427,17 +428,17 @@ div {
 																				<div class="row">
 																					<div class="col-md-6 ">
 																						<label class="control-label" style="margin-left: 25px; text-align: justify;">
-																							Activity: <%=obj2[4]%>
+																							Activity: <%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "%>
 																						</label>
 																					</div>
 																					<div class="col-md-2">
-																						<label class="control-label">Type: <%=obj2[12]%></label>
+																						<label class="control-label">Type: <%=obj2[12]!=null?StringEscapeUtils.escapeHtml4(obj2[12].toString()): " - "%></label>
 																					</div>
 																					<div class="col-md-2">
-																						<label class="control-label">Weightage: <%=obj2[6]%></label>
+																						<label class="control-label">Weightage: <%=obj2[6]!=null?StringEscapeUtils.escapeHtml4(obj2[6].toString()): " - "%></label>
 																					</div>
 																					<div class="col-md-2">
-																						<label class="control-label">First OIC: <%=obj2[14]%></label>
+																						<label class="control-label">First OIC: <%=obj2[14]!=null?StringEscapeUtils.escapeHtml4(obj2[14].toString()): " - "%></label>
 																					</div>
 																				</div>
 																				<%
@@ -476,19 +477,19 @@ div {
 																									<div class="col-md-6 ">
 																										<label class="control-label"
 																											style="margin-left: 25px; text-align: justify;">Activity:
-																											<%=obj3[4]%>
+																											<%=obj3[4]!=null?StringEscapeUtils.escapeHtml4(obj3[4].toString()): " - "%>
 																										</label>
 																									</div>
 																									<div class="col-md-2">
-																										<label class="control-label">Type: <%=obj3[12]%></label>
+																										<label class="control-label">Type: <%=obj3[12]!=null?StringEscapeUtils.escapeHtml4(obj3[12].toString()): " - "%></label>
 																									</div>
 																									<div class="col-md-2">
 																										<label class="control-label">Weightage:
-																											<%=obj3[6]%></label>
+																											<%=obj3[6]!=null?StringEscapeUtils.escapeHtml4(obj3[6].toString()): " - "%></label>
 																									</div>
 																									<div class="col-md-2">
 																										<label class="control-label">First
-																											OIC: <%=obj3[14]%></label>
+																											OIC: <%=obj3[14]!=null?StringEscapeUtils.escapeHtml4(obj3[14].toString()): " - "%></label>
 																									</div>
 																								</div>
 																								<%
@@ -530,20 +531,20 @@ div {
 																													<div class="col-md-6 ">
 																														<label class="control-label"
 																															style="margin-left: 25px; text-align: justify;">Activity:
-																															<%=obj4[4]%>
+																															<%=obj4[4]!=null?StringEscapeUtils.escapeHtml4(obj4[4].toString()): " - "%>
 																														</label>
 																													</div>
 																													<div class="col-md-2">
 																														<label class="control-label">Type:
-																															<%=obj4[12]%></label>
+																															<%=obj4[12]!=null?StringEscapeUtils.escapeHtml4(obj4[12].toString()): " - "%></label>
 																													</div>
 																													<div class="col-md-2">
 																														<label class="control-label">Weightage:
-																															<%=obj4[6]%></label>
+																															<%=obj4[6]!=null?StringEscapeUtils.escapeHtml4(obj4[6].toString()): " - "%></label>
 																													</div>
 																													<div class="col-md-2">
 																														<label class="control-label">First
-																															OIC: <%=obj4[14]%></label>
+																															OIC: <%=obj4[14]!=null?StringEscapeUtils.escapeHtml4(obj4[14].toString()): " - "%></label>
 																													</div>
 																												</div>
 																											</div>
@@ -595,7 +596,7 @@ div {
 																																	<%
 																																	for (Object[] actobj : ActivityTypeList) {
 																																	%>
-																																	<option value="<%=actobj[0]%>"><%=actobj[1]%>
+																																	<option value="<%=actobj[0]%>"><%=actobj[1]!=null?StringEscapeUtils.escapeHtml4(actobj[1].toString()): " - "%>
 																																	</option>
 																																	<%
 																																	}
@@ -634,6 +635,15 @@ div {
 																													</div>
 
 																													<div class="row container-fluid">
+																														<div class="col-md-2">
+																															<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																															<select class="form-control selectdee" name="labCode1" id="labCode1E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>" required 
+																															onchange="renderEmployeeList('1','E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>')" data-placeholder= "Lab Name">
+																															    <% for (Object[] lab : allLabList) { %>
+																															    	<option value="<%=lab[3]%>" <%if(labcode.equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
+																															    <%}%>
+																															</select>
+																														</div>
 																														<div class="col-md-4">
 																							                        		<div class="form-group">
 																							                            		<label class="control-label">First OIC  </label>
@@ -644,11 +654,20 @@ div {
 																							                              		<select class="form-control selectdee" id="EmpIdE<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>" required="required" name="EmpId">
 																							    									<option disabled="true"  selected value="">Choose...</option>
 																							    										<% for (Object[] objE : EmployeeList) {%>
-																																	<option value="<%=objE[0]%>"><%=objE[1]%>, <%=objE[2]%> </option>
+																																	<option value="<%=objE[0]%>"><%=objE[1]!=null?StringEscapeUtils.escapeHtml4(objE[1].toString()): " - "%>, <%=objE[2]!=null?StringEscapeUtils.escapeHtml4(objE[2].toString()): " - "%> </option>
 																																		<%} %>
 																							  									</select>
 																							                        		</div>
 																							                    		</div>
+																							                    		<div class="col-md-2">
+																															<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																															<select class="form-control selectdee" name="labCode2" id="labCode2E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>" required 
+																															onchange="renderEmployeeList('2','E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>')" data-placeholder= "Lab Name">
+																															    <% for (Object[] lab : allLabList) { %>
+																															    	<option value="<%=lab[3]%>" <%if(labcode.equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
+																															    <%}%>
+																															</select>
+																														</div>
 																							                    		<div class="col-md-4 ">
 																							                        		<div class="form-group">
 																							                            		<label class="control-label">Second OIC </label>
@@ -659,7 +678,7 @@ div {
 																							                              		<select class="form-control selectdee" id="EmpId1E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>" name="EmpId1" required="required">
 																							    									<option disabled="true" selected value="">Choose...</option>
 																							    										<% for (Object[] objE : EmployeeList) {%>
-																																		<option value="<%=objE[0]%>"><%=objE[1]%>, <%=objE[2]%> </option>
+																																		<option value="<%=objE[0]%>"><%=objE[1]!=null?StringEscapeUtils.escapeHtml4(objE[1].toString()): " - "%>, <%=objE[2]!=null?StringEscapeUtils.escapeHtml4(objE[2].toString()): " - "%> </option>
 																																		<%} %>
 																							  									</select>
 																							                        		</div>
@@ -804,7 +823,7 @@ $( document ).ready(function() {
 																													<%
 																													for (Object[] actobj : ActivityTypeList) {
 																													%>
-																													<option value="<%=actobj[0]%>"><%=actobj[1]%>
+																													<option value="<%=actobj[0]%>"><%=actobj[1]!=null?StringEscapeUtils.escapeHtml4(actobj[1].toString()): " - "%>
 																													</option>
 																													<%
 																													}
@@ -839,6 +858,15 @@ $( document ).ready(function() {
 																									</div>
 
 																									<div class="row container-fluid">
+																										<div class="col-md-2">
+																											<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																											<select class="form-control selectdee" name="labCode1" id="labCode1D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>" required 
+																											onchange="renderEmployeeList('1','D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>')" data-placeholder= "Lab Name">
+																											    <% for (Object[] lab : allLabList) { %>
+																											    	<option value="<%=lab[3]%>" <%if(labcode.equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
+																											    <%}%>
+																											</select>
+																										</div>
 																										<div class="col-md-4">
 																			                        		<div class="form-group">
 																			                            		<label class="control-label">First OIC  </label>
@@ -849,11 +877,20 @@ $( document ).ready(function() {
 																			                              		<select class="form-control selectdee" id="EmpIdD<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>" required="required" name="EmpId">
 																			    									<option disabled="true"  selected value="">Choose...</option>
 																			    										<% for (Object[] objD : EmployeeList) {%>
-																													<option value="<%=objD[0]%>"><%=objD[1]%>, <%=objD[2]%> </option>
+																													<option value="<%=objD[0]%>"><%=objD[1]!=null?StringEscapeUtils.escapeHtml4(objD[1].toString()): " - "%>, <%=objD[2]!=null?StringEscapeUtils.escapeHtml4(objD[2].toString()): " - "%> </option>
 																														<%} %>
 																			  									</select>
 																			                        		</div>
 																			                    		</div>
+																			                    		<div class="col-md-2">
+																			                    			<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																				                    		<select class="form-control selectdee" name="labCode2" id="labCode2D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>" required 
+																											onchange="renderEmployeeList('2','D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>')" data-placeholder= "Lab Name">
+																											    <% for (Object[] lab : allLabList) { %>
+																											    	<option value="<%=lab[3]%>" <%if(labcode.equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
+																											    <%}%>
+																											</select>
+																										</div>
 																			                    		<div class="col-md-4 ">
 																			                        		<div class="form-group">
 																			                            		<label class="control-label">Second OIC </label>
@@ -864,7 +901,7 @@ $( document ).ready(function() {
 																			                              		<select class="form-control selectdee" id="EmpId1D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>" name="EmpId1" required="required">
 																			    									<option disabled="true" selected value="">Choose...</option>
 																			    										<% for (Object[] objD : EmployeeList) {%>
-																														<option value="<%=objD[0]%>"><%=objD[1]%>, <%=objD[2]%> </option>
+																														<option value="<%=objD[0]%>"><%=objD[1]!=null?StringEscapeUtils.escapeHtml4(objD[1].toString()): " - "%>, <%=objD[2]!=null?StringEscapeUtils.escapeHtml4(objD[2].toString()): " - "%> </option>
 																														<%} %>
 																			  									</select>
 																			                        		</div>
@@ -1010,7 +1047,7 @@ $( document ).ready(function() {
 																									<%
 																									for (Object[] actobj : ActivityTypeList) {
 																									%>
-																									<option value="<%=actobj[0]%>"><%=actobj[1]%>
+																									<option value="<%=actobj[0]%>"><%=actobj[1]!=null?StringEscapeUtils.escapeHtml4(actobj[1].toString()): " - "%>
 																									</option>
 																									<%
 																									}
@@ -1045,6 +1082,15 @@ $( document ).ready(function() {
 																					</div>
 
 																					<div class="row container-fluid">
+																						<div class="col-md-2">
+																							<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																							<select class="form-control selectdee" name="labCode1" id="labCode1C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>" required 
+																							onchange="renderEmployeeList('1','C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>')" data-placeholder= "Lab Name">
+																							    <% for (Object[] lab : allLabList) { %>
+																							    	<option value="<%=lab[3]%>" <%if(labcode.equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
+																							    <%}%>
+																							</select>
+																						</div>
 																						<div class="col-md-4">
 															                        		<div class="form-group">
 															                            		<label class="control-label">First OIC  </label>
@@ -1055,11 +1101,20 @@ $( document ).ready(function() {
 															                              		<select class="form-control selectdee" id="EmpIdC<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>" required="required" name="EmpId">
 															    									<option disabled="true"  selected value="">Choose...</option>
 															    										<% for (Object[] objC : EmployeeList) {%>
-																									<option value="<%=objC[0]%>"><%=objC[1]%>, <%=objC[2]%> </option>
+																									<option value="<%=objC[0]%>"><%=objC[1]!=null?StringEscapeUtils.escapeHtml4(objC[1].toString()): " - "%>, <%=objC[2]!=null?StringEscapeUtils.escapeHtml4(objC[2].toString()): " - "%> </option>
 																										<%} %>
 															  									</select>
 															                        		</div>
 															                    		</div>
+															                    		<div class="col-md-2">
+																							<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																							<select class="form-control selectdee" name="labCode2" id="labCode2C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>" required 
+																							onchange="renderEmployeeList('2','C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>')" data-placeholder= "Lab Name">
+																							    <% for (Object[] lab : allLabList) { %>
+																							    	<option value="<%=lab[3]%>" <%if(labcode.equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
+																							    <%}%>
+																							</select>
+																						</div>
 															                    		<div class="col-md-4 ">
 															                        		<div class="form-group">
 															                            		<label class="control-label">Second OIC </label>
@@ -1070,7 +1125,7 @@ $( document ).ready(function() {
 															                              		<select class="form-control selectdee" id="EmpId1C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>" name="EmpId1" required="required">
 															    									<option disabled="true" selected value="">Choose...</option>
 															    										<% for (Object[] objC : EmployeeList) {%>
-																										<option value="<%=objC[0]%>"><%=objC[1]%>, <%=objC[2]%> </option>
+																										<option value="<%=objC[0]%>"><%=objC[1]!=null?StringEscapeUtils.escapeHtml4(objC[1].toString()): " - "%>, <%=objC[2]!=null?StringEscapeUtils.escapeHtml4(objC[2].toString()): " - "%> </option>
 																										<%} %>
 															  									</select>
 															                        		</div>
@@ -1214,7 +1269,7 @@ $( document ).ready(function() {
 																					<%
 																					for (Object[] actobj : ActivityTypeList) {
 																					%>
-																					<option value="<%=actobj[0]%>"><%=actobj[1]%>
+																					<option value="<%=actobj[0]%>"><%=actobj[1]!=null?StringEscapeUtils.escapeHtml4(actobj[1].toString()): " - "%>
 																					</option>
 																					<%
 																					}
@@ -1249,6 +1304,15 @@ $( document ).ready(function() {
 																	</div>
 
 																	<div class="row container-fluid">
+																		<div class="col-md-2">
+																			<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																			<select class="form-control selectdee" name="labCode1" id="labCode1B<%=ProjectSubCount%><%=Sub1Count%>" required 
+																			onchange="renderEmployeeList('1','B<%=ProjectSubCount%><%=Sub1Count%>')" data-placeholder= "Lab Name">
+																			    <% for (Object[] lab : allLabList) { %>
+																			    	<option value="<%=lab[3]%>" <%if(labcode.equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
+																			    <%}%>
+																			</select>
+																		</div>
 																		<div class="col-md-4">
 											                        		<div class="form-group">
 											                            		<label class="control-label">First OIC  </label>
@@ -1259,11 +1323,20 @@ $( document ).ready(function() {
 											                              		<select class="form-control selectdee" id="EmpIdB<%=ProjectSubCount%><%=Sub1Count%>" required="required" name="EmpId">
 											    									<option disabled="true"  selected value="">Choose...</option>
 											    										<% for (Object[] objB : EmployeeList) {%>
-																					<option value="<%=objB[0]%>"><%=objB[1]%>, <%=objB[2]%> </option>
+																					<option value="<%=objB[0]%>"><%=objB[1]!=null?StringEscapeUtils.escapeHtml4(objB[1].toString()): " - "%>, <%=objB[2]!=null?StringEscapeUtils.escapeHtml4(objB[2].toString()): " - "%> </option>
 																						<%} %>
 											  									</select>
 											                        		</div>
 											                    		</div>
+											                    		<div class="col-md-2">
+																			<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																			<select class="form-control selectdee" name="labCode2" id="labCode2B<%=ProjectSubCount%><%=Sub1Count%>" required 
+																			onchange="renderEmployeeList('2','B<%=ProjectSubCount%><%=Sub1Count%>')" data-placeholder= "Lab Name">
+																			    <% for (Object[] lab : allLabList) { %>
+																			    	<option value="<%=lab[3]%>" <%if(labcode.equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
+																			    <%}%>
+																			</select>
+																		</div>
 											                    		<div class="col-md-4 ">
 											                        		<div class="form-group">
 											                            		<label class="control-label">Second OIC </label>
@@ -1274,7 +1347,7 @@ $( document ).ready(function() {
 											                              		<select class="form-control selectdee" id="EmpId1B<%=ProjectSubCount%><%=Sub1Count%>" name="EmpId1" required="required">
 											    									<option disabled="true" selected value="">Choose...</option>
 											    										<% for (Object[] objB : EmployeeList) {%>
-																						<option value="<%=objB[0]%>"><%=objB[1]%>, <%=objB[2]%> </option>
+																						<option value="<%=objB[0]%>"><%=objB[1]!=null?StringEscapeUtils.escapeHtml4(objB[1].toString()): " - "%>, <%=objB[2]!=null?StringEscapeUtils.escapeHtml4(objB[2].toString()): " - "%> </option>
 																						<%} %>
 											  									</select>
 											                        		</div>
@@ -1422,7 +1495,7 @@ $( document ).ready(function() {
 																	<%
 																	for (Object[] obj : ActivityTypeList) {
 																	%>
-																	<option value="<%=obj[0]%>"><%=obj[1]%>
+																	<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>
 																	</option>
 																	<%
 																	}
@@ -1455,6 +1528,15 @@ $( document ).ready(function() {
 													</div>
 
 													<div class="row container-fluid">
+														<div class="col-md-2">
+															<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+															<select class="form-control selectdee" name="labCode1" id="labCode1A<%=ProjectSubCount%>" required 
+															onchange="renderEmployeeList('1','A<%=ProjectSubCount%>')" data-placeholder= "Lab Name">
+															    <% for (Object[] lab : allLabList) { %>
+															    	<option value="<%=lab[3]%>" <%if(labcode.equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
+															    <%}%>
+															</select>
+														</div>
 														<div class="col-md-4">
 							                        		<div class="form-group">
 							                            		<label class="control-label">First OIC  </label>
@@ -1465,11 +1547,20 @@ $( document ).ready(function() {
 							                              		<select class="form-control selectdee" id="EmpIdA<%=ProjectSubCount %>" required="required" name="EmpId">
 							    									<option disabled="true"  selected value="">Choose...</option>
 							    										<% for (Object[] objA : EmployeeList) {%>
-																	<option value="<%=objA[0]%>"><%=objA[1]%>, <%=objA[2]%> </option>
+																	<option value="<%=objA[0]%>"><%=objA[1]!=null?StringEscapeUtils.escapeHtml4(objA[1].toString()): " - "%>, <%=objA[2]!=null?StringEscapeUtils.escapeHtml4(objA[2].toString()): " - "%> </option>
 																		<%} %>
 							  									</select>
 							                        		</div>
 							                    		</div>
+							                    		<div class="col-md-2">
+															<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+															<select class="form-control selectdee" name="labCode2" id="labCode2A<%=ProjectSubCount%>" required 
+															onchange="renderEmployeeList('2','A<%=ProjectSubCount%>')" data-placeholder= "Lab Name">
+															    <% for (Object[] lab : allLabList) { %>
+															    	<option value="<%=lab[3]%>" <%if(labcode.equalsIgnoreCase(lab[3].toString())) {%>selected<%} %> ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
+															    <%}%>
+															</select>
+														</div>
 							                    		<div class="col-md-4 ">
 							                        		<div class="form-group">
 							                            		<label class="control-label">Second OIC </label>
@@ -1480,7 +1571,7 @@ $( document ).ready(function() {
 							                              		<select class="form-control selectdee" id="EmpId1A<%=ProjectSubCount %>" name="EmpId1" required="required">
 							    									<option disabled="true" selected value="">Choose...</option>
 							    										<% for (Object[] objA : EmployeeList) {%>
-																		<option value="<%=objA[0]%>"><%=objA[1]%>, <%=objA[2]%> </option>
+																		<option value="<%=objA[0]%>"><%=objA[1]!=null?StringEscapeUtils.escapeHtml4(objA[1].toString()): " - "%>, <%=objA[2]!=null?StringEscapeUtils.escapeHtml4(objA[2].toString()): " - "%> </option>
 																		<%} %>
 							  									</select>
 							                        		</div>
@@ -1503,6 +1594,7 @@ $( document ).ready(function() {
 													<input type="hidden" name="ActivityId" value="<%=getMA[0]%>" />
 													<input type="hidden" name="OicEmpId" value="<%=getMA[8]%>" />
 													<input type="hidden" name="OicEmpId1" value="<%=getMA[9]%>" />
+													<input type="hidden" id="currLabCode" value="<%=labcode%>" />
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 												</form>
 											</div>
@@ -1586,61 +1678,54 @@ $( document ).ready(function() {
     	});
   });
 
-
-
-function changeempoic1(level) {
-  if (document.getElementById('allempcheckbox1'+level).checked) 
-  {
-    employeefetch(0,'EmpId'+level);
-  } else {
-	  employeefetch(<%=projectId%>,'EmpId'+level);
-  }
-}
-
-
-function changeempoic2(level) {
-  if (document.getElementById('allempcheckbox2'+level).checked) 
-  {
-    employeefetch(0,'EmpId1'+level);
-  } else {
-	  employeefetch(<%=projectId%>,'EmpId1'+level);
-  }
-}
-
-
+	var ProjectId = $('#ProjectId').val();
 	
-	function employeefetch(ProID,dropdownid){
-			
+	function changeempoic1(level) {
+		var labCode  = $('#labCode1'+level).val();
+		if (document.getElementById('allempcheckbox1'+level).checked) {
+			employeefetch(0,'EmpId'+level, labCode);
+	  	} else {
+			employeefetch(ProjectId,'EmpId'+level, labCode);
+		}
+	}
+	
+	
+	function changeempoic2(level) {
+		var labCode  = $('#labCode2'+level).val();
+		if (document.getElementById('allempcheckbox2'+level).checked) {
+			employeefetch(0,'EmpId1'+level, labCode);
+		} else {
+			employeefetch(ProjectId,'EmpId1'+level, labCode);
+	  	}
+	}
+	
+	function employeefetch(ProID,dropdownid, labCode){
 				
-						$.ajax({		
-							type : "GET",
-							url : "ProjectEmpListFetch.htm",
-							data : {
-								projectid : ProID
-								   },
-							datatype : 'json',
-							success : function(result) {
+		$.ajax({		
+			type : "GET",
+			url : "ProjectEmpListFetch.htm",
+			data : {
+				projectid : ProID,
+				labCode : labCode
+			},
+			datatype : 'json',
+			success : function(result) {
 		
-							var result = JSON.parse(result);
-								
-							var values = Object.keys(result).map(function(e) {
-										 return result[e]
-									  
+				var result = JSON.parse(result);
+									
+				var values = Object.keys(result).map(function(e) {
+								return result[e]
 							});
+									
+				var s = '<option value="">'+"--Select--"+ '</option>';
+				for (i = 0; i < values.length; i++) {									
+					s += '<option value="'+values[i][0]+'">'+values[i][1] + ", " +values[i][2] + '</option>';
+				} 
+									 
+				$('#'+dropdownid).html(s);
 								
-					var s = '';
-						s += '<option value="">'+"--Select--"+ '</option>';
-								 for (i = 0; i < values.length; i++) {									
-									s += '<option value="'+values[i][0]+'">'
-											+values[i][1] + ", " +values[i][2] 
-											+ '</option>';
-								} 
-								 
-								$('#'+dropdownid).html(s);
-								
-							}
-						});
-		
+			}
+		});
 		
 	}
 		
@@ -1672,7 +1757,52 @@ if(FormName!=null){
 <%}}%>
 </script>
 
-
+<script type="text/javascript">
+	function renderEmployeeList(rowId, level) {
+		var labCode  = $('#labCode'+rowId+level).val();
+		/* var currLabCode  = $('#currLabCode').val(); */
+		
+		var rowIdShort = rowId==1?"":(rowId-1);
+		
+		employeefetch(ProjectId, 'EmpId'+rowIdShort+level, labCode);
+		
+		$('#allempcheckbox'+rowId+level).prop('checked', false);
+		
+		/* if(currLabCode!=labCode) {
+			$('#allempcheckbox'+rowId+level).hide();
+		}else {
+			$('#allempcheckbox'+rowId+level).show();
+			$('#allempcheckbox'+rowId+level).prop('checked', true);
+		} */
+	}
+	
+	/* function employeeListByLabCode(rowId, level, labcode) {
+	
+		var rowIdShort = rowId==1?"":(rowId-1);
+		$('#EmpId'+rowIdShort+level).empty(); 
+		$.ajax({
+		       type: "GET",
+		       url: "GetLabcodeEmpList.htm",
+		       data: {
+		       	LabCode: labcode
+		       },
+		       dataType: 'json',
+		       success: function(result) {
+		    	   if (result != null) {
+		    		   $('#EmpId'+rowIdShort+level).append('<option disabled="disabled" selected value="">Choose...</option>');
+		                for (var i = 0; i < result.length; i++) {
+		                    var data = result[i];
+		                    var optionValue = data[0];
+		                    var optionText = data[1].trim() + ", " + data[3]; 
+		                    var option = $("<option></option>").attr("value", optionValue).text(optionText);
+		                    $('#EmpId'+rowIdShort+level).append(option); 
+		                }
+		                //$('#EmpId'+(rowId==1?"":rowId)).select2('refresh');
+		           }
+		       }
+		});
+	} */
+</script>
 
 </body>
 </html>

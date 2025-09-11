@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.committee.model.ProgrammeMaster"%>
 <%@page import="com.vts.pfms.cars.model.CARSInitiation"%>
 <%@page import="org.apache.logging.log4j.core.pattern.IntegerPatternConverter"%>
@@ -114,23 +115,23 @@
 	
 %>
 	
-<%String ses=(String)request.getParameter("result"); 
-	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null)
-	{ %>
-		<div align="center">
-			<div class="alert alert-danger" role="alert" >
-	        	<%=ses1 %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
 	        </div>
 	    </div>
-	<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-	        	<%=ses %>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
 	        </div>
 	    </div>
-	<%} %>
-	
+	<% } %>
+		
 	<div class="container-fluid">
 			<div class="row" style="">
 			
@@ -141,21 +142,21 @@
 						 <div class="row" >
 							<div class="col-md-8 ">
 							  <h4>
-							  		<%=committeescheduleeditdata[8] %> Meeting 
+							  		<%=committeescheduleeditdata[8]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[8].toString()): " - " %> Meeting 
 									<%if(Long.parseLong(projectid)>0){ %>							  
-										(Project : <%=projectdetails[4] %>)
+										(Project : <%=projectdetails[4]!=null?StringEscapeUtils.escapeHtml4(projectdetails[4].toString()): " - " %>)
 									<%} %>
 									<%if(Long.parseLong(divisionid)>0){ %>							  
-									  (Division : <%=divisiondetails[1] %>)
+									  (Division : <%=divisiondetails[1]!=null?StringEscapeUtils.escapeHtml4(divisiondetails[1].toString()): " - "  %>)
 									<%} %>
 									<%if(Long.parseLong(initiationid)>0){ %>							  
-									  (Initiated Project : <%=initiationdetails[1] %>)
+									  (Initiated Project : <%=initiationdetails[1]!=null?StringEscapeUtils.escapeHtml4(initiationdetails[1].toString()): " - "  %>)
 									<%} %>
 									<%if(Long.parseLong(carsInitiationId)>0){ %>							  
-									  (CARS : <%=carsInitiationDetails.getCARSNo() %>)
+									  (CARS : <%=carsInitiationDetails.getCARSNo()!=null?StringEscapeUtils.escapeHtml4(carsInitiationDetails.getCARSNo()): " - "  %>)
 									<%} %>
 									<%if(Long.parseLong(programmeId)>0){ %>							  
-									  (Programme : <%=prgmMasterDetails.getPrgmName() %> (<%=prgmMasterDetails.getPrgmCode() %>) )
+									  (Programme : <%=prgmMasterDetails.getPrgmName()!=null?StringEscapeUtils.escapeHtml4(prgmMasterDetails.getPrgmName()): " - "  %> (<%=prgmMasterDetails.getPrgmCode()!=null?StringEscapeUtils.escapeHtml4(prgmMasterDetails.getPrgmCode()): " - "  %>) )
 									<%} %>
 							  </h4>
 							 </div>
@@ -247,7 +248,7 @@
 					   						
 					   					</td>
 		                            	<td style="padding-left: 20px"><label class="control-label">Meeting Time : &nbsp;</label></td>
-		       							<td><input  class="form-control" type="text" id="starttime" name="committeetime"  readonly="readonly" required="required"  value="<%=committeescheduleeditdata[3] %>"></td>
+		       							<td><input  class="form-control" type="text" id="starttime" name="committeetime"  readonly="readonly" required="required"  value="<%=committeescheduleeditdata[3]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[3].toString()): "" %>"></td>
 		                        	
 										<th style="padding-left: 40px;">
 											 <%if(useraccess>=1){ %>
@@ -273,7 +274,7 @@
 									<table style="margin-top: 10px; width: 95%" >
 										<tr>
 											<td style="width:100px"> 	<label class="control-label" style="padding-right: 10px;">Venue : &nbsp;</label></td>
-											<td >	<input class="form-control" type="text" name="venue" id="venue" required="required"  placeholder="Enter the Venue" <%if(committeescheduleeditdata[12]!=null){ %> value="<%=committeescheduleeditdata[12] %>" <%} %> ></td>
+											<td >	<input class="form-control" type="text" name="venue" id="venue" required="required"  placeholder="Enter the Venue" <%if(committeescheduleeditdata[12]!=null){ %> value="<%=StringEscapeUtils.escapeHtml4(committeescheduleeditdata[12].toString()) %>" <%} %> ></td>
 		       							 
 		             			
 				                       
@@ -282,7 +283,7 @@
 											    <select class="custom-select " id="isconfidential" required="required" name="isconfidential">
 													<option disabled="true"  selected value="">Choose...</option>
 													<% for (Object[] obj : pfmscategorylist) {%>
-														<option value="<%=obj[0]%>" <% if(committeescheduleeditdata[13].toString().equals(obj[0].toString())) {%>selected <%} %>  ><%=obj[1]%></option>													
+														<option value="<%=obj[0]%>" <% if(committeescheduleeditdata[13].toString().equals(obj[0].toString())) {%>selected <%} %>  ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>													
 													<%} %>
 											  </select>
 					                        </td>
@@ -294,12 +295,12 @@
 			                  					</td>
 			                  				<tr>
 			                  					<td colspan="4" >
-							       					<textarea class="form-control" name="decisions" id="decisions" cols="50" rows="5"  placeholder="Decisions sought from Meeting" maxlength="1000"><%if(committeescheduleeditdata[18]!=null ){ %> <%=committeescheduleeditdata[18] %> <%} %></textarea>
+							       					<textarea class="form-control" name="decisions" id="decisions" cols="50" rows="5"  placeholder="Decisions sought from Meeting" maxlength="1000"><%if(committeescheduleeditdata[18]!=null ){ %> <%=committeescheduleeditdata[18].toString() %> <%} %></textarea>
 							       				</td>
 			                  				</tr>
 			                  				<tr >  
 			                  					<td> <label style="margin-top: 25px;margin-bottom:-20px;  ">Reference : &nbsp;</label></td>
-							       				<td colspan="3"><input class="form-control" type="text" name="reference" id="reference"   placeholder="Reference for this Meeting" <%if(committeescheduleeditdata[14]!=null){ %> value="<%=committeescheduleeditdata[14] %>" <%} %> ></td>
+							       				<td colspan="3"><input class="form-control" type="text" name="reference" id="reference"   placeholder="Reference for this Meeting" <%if(committeescheduleeditdata[14]!=null){ %> value="<%=StringEscapeUtils.escapeHtml4(committeescheduleeditdata[14].toString()) %>" <%} %> ></td>
 			                  				</tr>
 		                  				<%} %>
 		                  				<tr >
@@ -363,18 +364,18 @@
 								<tr>
 										
 									<td style="text-align: center;"><%=count%></td>
-									<td><%=obj[3] %></td>
-									<td><%=obj[4] %>  </td>									
-									<td><%=obj[6] %></td>									
-									<td><%=obj[10]%>, <%=obj[11] %>  </td>
-									<td><%=obj[12] %></td>
+									<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>
+									<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %>  </td>									
+									<td><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %></td>									
+									<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - "%>, <%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>  </td>
+									<td><%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %></td>
 									<td>
 								
 							 			<table>
 											<%for(Object[] doc : AgendaDocList) { 
 											if(obj[0].toString().equalsIgnoreCase(doc[1].toString())){%>
 												<tr>
-													<td><%= doc[3] + " <span class='text-muted'> Ver " + doc[4] + "." + doc[5] + "</span>" %></td>
+													<td><%= doc[3]!=null?StringEscapeUtils.escapeHtml4(doc[3].toString()): " - " %> <%= " <span class='text-muted'> Ver " %> <%= doc[4]!=null?StringEscapeUtils.escapeHtml4(doc[4].toString()): " - " %> . <%= doc[5]!=null?StringEscapeUtils.escapeHtml4(doc[5].toString()): " - " %> <%="</span>" %></td>
 												     <%if(Long.parseLong(initiationid) > 0){ %>
 													   <td style="width:1% ;white-space: nowrap;" ><a href="PrePRojectAgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
 													 <%}else{ %>
@@ -433,7 +434,7 @@
 						
 						<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase(obj[2].toString())) {%>
 						
-							<b> &bull; <%=obj[0] %></b>
+							<b> &bull; <%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %></b>
 							
 						<%} %>	
 
@@ -470,8 +471,8 @@
 							<%}else{ %>
 								<div class="row">
 									
-									<h5> <span style="margin-left: 30px; font-size: 20px">Note : &nbsp;</span><span style="color: red"><%=committeescheduleeditdata[7] %>  <%if(Integer.parseInt(projectid)>0){ %>							  
-									 		For  <%=projectdetails[4] %> 
+									<h5> <span style="margin-left: 30px; font-size: 20px">Note : &nbsp;</span><span style="color: red"><%=committeescheduleeditdata[7]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[7].toString()): " - " %>  <%if(Integer.parseInt(projectid)>0){ %>							  
+									 		For  <%=projectdetails[4]!=null?StringEscapeUtils.escapeHtml4(projectdetails[4].toString()): " - "  %> 
 									 	<%} %> is Not Constituted
 									</span></h5>
 								</div>
@@ -591,7 +592,7 @@
 														
 											<div style="margin-left:1%;display: -webkit-box;">
 												<span style="font-weight: 600">Enter OTP : </span>
-												<input  class="form-control" type="password" id="otp" name="otpvalue" maxlength="4" <%if(otp!=null){ %>value="<%=otp %>" <%} %> required="required"  value="" style="padding: .15rem .75rem !important;margin: 0px 15px;width:40% !important">
+												<input  class="form-control" type="password" id="otp" name="otpvalue" maxlength="4" <%if(otp!=null){ %>value="<%=StringEscapeUtils.escapeHtml4(otp) %>" <%} %> required="required"  value="" style="padding: .15rem .75rem !important;margin: 0px 15px;width:40% !important">
 												<input type="submit" id="submit" name="sub"  class="btn  btn-sm submit" value="Validate"  onclick="" style="color:white" /> 
 												<input type="submit" id="submit" name="sub"  class="btn  btn-sm view" value="Resend OTP" onclick="resendotp()"   style="color:white;margin: 0px 5px" /> 
 												
@@ -684,7 +685,7 @@ function char_count(str, letter)
 
 	function kickoff(){
 		<%if(committeescheduleeditdata[12]!=null){%>
-		var venue='<%=committeescheduleeditdata[12]%>';
+		var venue='<%=StringEscapeUtils.escapeHtml4(committeescheduleeditdata[12].toString())%>';
 		<%}else{%>
 		var venue='';
 		<%}%>
@@ -703,7 +704,7 @@ function char_count(str, letter)
 	
 	function invite(){
 		<%if(committeescheduleeditdata[12]!=null){%>
-		var venue='<%=committeescheduleeditdata[12]%>';
+		var venue='<%=StringEscapeUtils.escapeHtml4(committeescheduleeditdata[12].toString())%>';
 		<%}else{%>
 		var venue='';
 		<%}%>

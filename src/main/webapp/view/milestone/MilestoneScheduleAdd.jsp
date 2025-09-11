@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -45,20 +46,22 @@ h6{
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br />
     
@@ -71,7 +74,7 @@ h6{
 				
 				<div class="card-header" style=" background-color: #055C9D;font-size: 18px">
                     <span class="text-white" style="font-weight: 600">Milestone Schedule Add </span> 
-                    <span class="text-white" style="float:right;font-weight: 600">( <%=ProjectDetail[2] %> ( <%=ProjectDetail[1] %> ) )</span>
+                    <span class="text-white" style="float:right;font-weight: 600">( <%=ProjectDetail[2]!=null?StringEscapeUtils.escapeHtml4(ProjectDetail[2].toString()):" - " %> ( <%=ProjectDetail[1]!=null?StringEscapeUtils.escapeHtml4(ProjectDetail[1].toString()):" - " %> ) )</span>
         		</div>
         
         		<div class="card-body">
@@ -94,7 +97,7 @@ h6{
                               		<select class="form-control selectdee" id="ActivityType" required="required" name="ActivityType">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : ActivityTypeList) {%>
-										<option value="<%=obj[0]%>"><%=obj[1]%> </option>
+										<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%> </option>
 											<%} %>
   									</select>
                         		</div>

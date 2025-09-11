@@ -69,6 +69,7 @@ import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.model.PfmsIGITransaction;
 import com.vts.pfms.documents.model.PfmsIRSDocument;
 import com.vts.pfms.documents.model.StandardDocuments;
+import com.vts.pfms.documents.model.UnitMaster;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -917,6 +918,24 @@ public class DocumentsServiceImpl implements DocumentsService{
 		
 	}
 
+	@Override
+	public Long getDuplicateFieldNameCount(String fieldName, String fieldMasterId) throws Exception {
+		
+		return dao.getDuplicateFieldNameCount(fieldName, fieldMasterId);
+	}
+	
+	@Override
+	public Long getDuplicateGroupNameCount(String groupName, String fieldGroupId) throws Exception {
+		
+		return dao.getDuplicateGroupNameCount(groupName, fieldGroupId);
+	}
+	
+	@Override
+	public Long getDuplicateGroupCodeCount(String groupCode, String fieldGroupId) throws Exception {
+		
+		return dao.getDuplicateGroupCodeCount(groupCode, fieldGroupId);
+	}
+	
 	/* ************************************************ IGI Document End ***************************************************** */
 	
 	/* ************************************************ ICD Document ***************************************************** */
@@ -1730,6 +1749,22 @@ public class DocumentsServiceImpl implements DocumentsService{
 	public long getMechanicalInterfaceCount() throws Exception {
 	
 		return dao.getMechanicalInterfaceCount();
+	}
+
+	/*********************************************** Naveen 4/9/25 **************************************************/
+	@Override
+	public UnitMaster getUnitMasterById(long unitMasterId)throws Exception {
+		return dao.getUnitMasterById(unitMasterId);
+	}
+
+	@Override
+	public long addUnitMaster(UnitMaster unitmaster)throws Exception {
+		return dao.addUnitMaster(unitmaster);
+	}
+
+	@Override
+	public List<Object[]> unitMasterList()throws Exception {
+		return dao.unitMasterList();
 	}
 	
 }

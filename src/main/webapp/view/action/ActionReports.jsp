@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -56,20 +57,22 @@ h6{
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
- if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br/>
 
@@ -96,7 +99,7 @@ h6{
  --%>                                                    <%for(Object[] obj:ProjectList){
                                                     String projectShortName=(obj[17]!=null)?"("+obj[17].toString()+")":"";
                                                     %>
-													<option value="<%=obj[0] %>" <%if(Project.equalsIgnoreCase(obj[0].toString())){%> selected="selected" <%}%>><%=obj[4]+projectShortName%></option>	
+													<option value="<%=obj[0] %>" <%if(Project.equalsIgnoreCase(obj[0].toString())){%> selected="selected" <%}%>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%> <%= projectShortName!=null?StringEscapeUtils.escapeHtml4(projectShortName):" - " %></option>	
 													<%}%>
 												</select>	        
 											</td>
@@ -172,7 +175,7 @@ h6{
 																		<td><%=count %></td>
 																		<td>
 																		<form action="ActionDetails.htm" method="POST" >
-																				<button  type="submit" class="btn btn-outline-info"   ><%=obj[0] %></button>
+																				<button  type="submit" class="btn btn-outline-info"   ><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):" - " %></button>
 																			   <input type="hidden" name="ActionLinkId" value="<%=obj[11]%>"/>
 																	           <input type="hidden" name="Assignee" value="<%=obj[1]%>,<%=obj[2]%>"/>
 																	           <input type="hidden" name="ActionMainId" value="<%=obj[10]%>"/>
@@ -183,13 +186,13 @@ h6{
 																			
 																			</form> 
                                                                         </td>
-																		<td><%=sdf.format(obj[6])%></td>																		
-																		<td><%=obj[1]%>, <%=obj[2]%></td>
-																	  	<td>Ext: <%=obj[3]%>, Mob: <%=obj[4]%></td>
+																		<td><%= obj[6]!=null?sdf.format(obj[6]):""%></td>																		
+																		<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></td>
+																	  	<td>Ext: <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - "%>, Mob: <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%></td>
 																		<td style="width:8% !important; "><%if(obj[12]!=null && !obj[12].toString().equalsIgnoreCase("0")){ %>
 															            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															            <div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[12]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															            <%=obj[12]%>
+															            <%=StringEscapeUtils.escapeHtml4(obj[12].toString()) %>
 															            </div> 
 															            </div> <%}else{ %>
 															            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">

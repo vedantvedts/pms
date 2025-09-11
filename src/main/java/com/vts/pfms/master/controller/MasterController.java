@@ -46,6 +46,7 @@ import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
 import com.vts.pfms.master.model.PfmsFeedbackTrans;
+import com.vts.pfms.master.model.RoleMaster;
 import com.vts.pfms.master.service.MasterService;
 import com.vts.pfms.utils.InputValidator;
 
@@ -2136,7 +2137,8 @@ public class MasterController {
 			return 0;
 		}
 	}
-
+	
+	@RequestMapping(value = "industryPartnerAdd.htm" , method = {RequestMethod.GET})
 	public @ResponseBody String industryPartnerAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() + "Inside industryPartnerAdd.htm " + UserId);
@@ -2277,7 +2279,7 @@ public class MasterController {
 			if(action!=null && "Add".equalsIgnoreCase(action)) {
 				
 				req.setAttribute("directorsList", service.OfficerList());
-				req.setAttribute("projectsList", committeeservice.ProjectList(labcode));
+				req.setAttribute("projectsList", service.getProjectList(labcode));
 				return "master/ProgramMasterAddEdit";
 			}else if(action!=null && "Edit".equalsIgnoreCase(action)) {
 				
@@ -2285,7 +2287,7 @@ public class MasterController {
 				req.setAttribute("prgmMaster", committeeservice.getProgrammeMasterById(ProgrammeId));
 				req.setAttribute("prgmprojectsList", committeeservice.getProgrammeProjectsList(ProgrammeId));
 				req.setAttribute("directorsList", service.OfficerList());
-				req.setAttribute("projectsList", committeeservice.ProjectList(labcode));
+				req.setAttribute("projectsList", service.getProjectList(labcode,ProgrammeId));
 				
 				return "master/ProgramMasterAddEdit";
 			}else {
@@ -2331,14 +2333,11 @@ public class MasterController {
 			Long result = service.addProgrammeMaster(master);
 			
 			String[] prgmProjectsIds = req.getParameterValues("prgmprojectids");
-//			System.out.println(Arrays.toString(prgmProjectsIds));
-
+			
 			if(prgmProjectsIds!=null && prgmProjectsIds.length>0) {
 				for(int i=0; i<prgmProjectsIds.length; i++) {
-//					System.out.println("Inside loop");
 
 					if(prgmProjectsIds[i]!=null && !prgmProjectsIds[i].equalsIgnoreCase("0")) {
-//						System.out.println("Inside condition"+prgmProjectsIds[i]);
 
 						ProgrammeProjects linked = new ProgrammeProjects();
 						linked.setProgrammeId(result);
@@ -2385,5 +2384,68 @@ public class MasterController {
 	}
 	/* **************************** Programme Master - Naveen R - 16/07/2025 End **************************************** */
 
-
+	@RequestMapping(value = "RoleMasterDetailsSubmit.htm", method = {RequestMethod.GET})
+	public @ResponseBody String roleMasterDetailsSubmit(HttpServletRequest req, HttpSession ses) throws Exception{
+		String Username=(String)ses.getAttribute("Username");
+		logger.info(new Date() + " Inside RoleMasterDetailsSubmit.htm "+Username);
+		Gson json = new Gson();
+		Object[] data = new Object[3];
+		try {
+			String roleName = req.getParameter("roleName");
+			String roleCode = req.getParameter("roleCode");
+			
+			RoleMaster roleMaster = new RoleMaster();
+			roleMaster.setRoleName(roleName);
+			roleMaster.setRoleCode(roleCode);
+			roleMaster.setCreatedBy(Username);
+			roleMaster.setCreatedDate(sdtf.format(new Date()));
+			roleMaster.setIsActive(1);
+			
+			Long roleMasterId = service.addRoleMaster(roleMaster);
+			data[0] = roleMasterId;
+			data[1] = roleName;
+			data[2] = roleCode;
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside RoleMasterDetailsSubmit.htm "+Username, e);
+		}
+		return json.toJson(data);
+	}
+	
+	// 22/8/2025  Naveen R RoleName and RoleCode Duplicate Check start
+	
+	@RequestMapping(value = "RoleNameDuplicateCheck.htm", method = RequestMethod.GET)
+	public @ResponseBody String roleNameDuplicateCheck(HttpSession ses,HttpServletRequest req) {
+		String UserId = (String)ses.getAttribute("Username");
+		String roleName = req.getParameter("roleName");
+		Long count = null;
+		logger.info(new Date() + " Inside RoleNameDuplicateCheck.htm "+ UserId );
+		try {
+			count = service.getRoleNameDuplicateCount(roleName);
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside RoleNameDuplicateCheck.htm " + UserId);
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
+	
+	@RequestMapping(value = "RoleCodeDuplicateCheck.htm", method = RequestMethod.GET)
+	public @ResponseBody String roleCodeDuplicateCheck(HttpSession ses,HttpServletRequest req) {
+		String UserId = (String)ses.getAttribute("Username");
+		String roleCode =req.getParameter("roleCode");
+		Long count = null;
+		logger.info(new Date() + " Inside RoleCodeDuplicateCheck.htm "+ UserId );
+		try {
+			count = service.getRoleCodeDuplicateCount(roleCode);
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside RoleCodeDuplicateCheck.htm " + UserId);
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
+	// 22/8/2025  Naveen R RoleName and RoleCode Duplicate Check End
+	
 }

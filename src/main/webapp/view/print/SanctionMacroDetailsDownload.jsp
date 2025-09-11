@@ -1,4 +1,5 @@
-	<%@page import="java.time.LocalDate"%>
+	<%@page import="org.apache.commons.text.StringEscapeUtils"%>
+<%@page import="java.time.LocalDate"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.math.BigDecimal,java.util.stream.Collectors"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
@@ -118,7 +119,7 @@ text-align:justify !important;
              margin-right: 10px;
           }
           @top-right {
-          	 content : "Project : <%=ProjectTitle %>";
+          	 content : "Project : <%=ProjectTitle!=null?ProjectTitle: " - " %>";
              margin-top: 30px;
              margin-right: 10px;
           }
@@ -178,15 +179,15 @@ td>table{
     <table class="border-black" style="margin-left:20px; margin-top:15px;border:1px solid black;border-collapse:collapse;font-family:FontAwesome; width:650px;">
 	<tr >
 	<td  style="width:300px;text-align: left;padding: 1px !important; border:1px solid plack;"><h4 class="mainTD">&nbsp;1.&nbsp;&nbsp;a.&nbsp;&nbsp; Title of the Project:</h4></td>
-	<td align="left" style="border:1px solid plack;"><%=ProjectDetailes[7].toString() %></td>
+	<td align="left" style="border:1px solid plack;"><%=ProjectDetailes[7]!=null?ProjectDetailes[7].toString(): " - " %></td>
 	</tr>
 	<tr style="">
 	<td  style="width:300px;text-align: left;padding: 1px !important;border:1px solid plack;"><h4 class="mainTD">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b.&nbsp;&nbsp; Short Name or Acronym :</h4></td>
-	<td align="left"style="border:1px solid plack;"><%=ProjectDetailes[6].toString() %></td>
+	<td align="left"style="border:1px solid plack;"><%=ProjectDetailes[6]!=null?ProjectDetailes[6].toString(): " - "  %></td>
 	</tr>
 	<tr>
 	<td class="mainTD" class="border-black" style="width:300px;padding: 1px !important;text-align: left;"><h4 class="mainTD">&nbsp;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Title of the Programme:<br>(If the Project is part of a Programme) </h4></td>
-	<td class="border-black" align="left"><%=MacroDetails!=null && MacroDetails.length>0 && MacroDetails[13]!=null? MacroDetails[13].toString():"-" %></td>
+	<td class="border-black" align="left"><%=MacroDetails!=null && MacroDetails.length>0 && MacroDetails[13]!=null?MacroDetails[13].toString():"-" %></td>
 	</tr>
 	</table>
 	<h1 class="break"></h1>
@@ -205,7 +206,7 @@ td>table{
 													<p align="center"> Not Mentioned</p>
 													<%}else {
 												%>
-												<%=obj[1].toString()%>
+												<%=obj[1]!=null?obj[1].toString(): " - "%>
 												<%}}}}else{ %>
 												<p align="center">Not Mentioned</p>
 												<%} %>
@@ -220,7 +221,7 @@ td>table{
 	<td style="width:650px;text-align:left;">
      <%	if(!DetailsList.isEmpty()){for (Object[] obj : DetailsList) {
 		if (obj[2] != null) {%><% if(obj[2].toString().trim().length()==0){%>
-		<p align="center"> Not Mentioned</p><%}else {%><%=obj[2].toString()%><%}}}}else{ %>
+		<p align="center"> Not Mentioned</p><%}else {%><%=obj[2]!=null?obj[2].toString(): " - "%><%}}}}else{ %>
 		<p align="center">Not Mentioned</p><%} %>
     </td>
 	</tr>
@@ -257,7 +258,7 @@ td>table{
  	if (!ProjectInitiationLabList.isEmpty()) {
 	for (Object[] obj : ProjectInitiationLabList) {
 	count++;%>
-	<%=obj[2]+"("+obj[3]+")" %><%if(count<ProjectInitiationLabList.size()){ %>,<%} %>
+	<%=obj[2]!=null?obj[2].toString(): " - "%> <%="("%> <%=obj[3]!=null?obj[3].toString(): " - "%> <%=")" %><%if(count<ProjectInitiationLabList.size()){ %>,<%} %>
 	<%}} %>					
  </h5></td></tr>
 	</table>
@@ -266,7 +267,7 @@ td>table{
 	<td style="width:300px;text-align: left;"><h4 class="mainTD">7.&nbsp;&nbsp;&nbsp;&nbsp;Specify the User  </h4></td>
 	<td>
 	<%if(ProjectDetailes[22]!=null){%>
-		<%=ProjectDetailes[22] %>
+		<%=ProjectDetailes[22].toString()%>
 	<%}else{ %>Not Specified<%}%>
 	</td>
 	</tr>
@@ -286,7 +287,7 @@ td>table{
 	</td>
 	</tr>
 	<tr>
-	<td style="width:300px;text-align: left;"><span class="mainTD">9. PDC of Main Project -</span> 	<%if(MacroDetails.length != 0 && MacroDetails[12]!= null) { String[]temp = MacroDetails[12].toString().split("-");String datetemp = temp[2]+"-"+temp[1]+"-"+temp[0];%><%=datetemp%><%}else{%>Not Specified <%}%>
+	<td style="width:300px;text-align: left;"><span class="mainTD">9. PDC of Main Project -</span> 	<%if(MacroDetails.length != 0 && MacroDetails[12]!= null) { String[]temp = MacroDetails[12].toString().split("-");String datetemp = temp[2]+"-"+temp[1]+"-"+temp[0];%><%=datetemp!=null?datetemp: " - "%><%}else{%>Not Specified <%}%>
 	</td>
 	
 	</tr>
@@ -779,7 +780,7 @@ td>table{
 								<%}else if(case5 &&case4){%>
 								<%=obj[1].toString() %><br>
 								<%} %> --%>
-								<div><%=obj[1].toString() %></div>
+								<div><%=obj[1]!=null?obj[1].toString(): " - " %></div>
 								
 								<%}}%>
 							</h5>	</td>
@@ -827,13 +828,13 @@ td>table{
 							for(Object[]obj:ProcurementList){
 							%><tr style="font-size: 13px;">
 							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=(++i) %></td>
-							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[2] %></td>
-							<td class="border-black" style="width:2%;text-align: center; padding:10px;" ><%=obj[3].toString() %></td>
-							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[4].toString() %></td>
-							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[5].toString() %></td>
+							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[2]!=null?obj[2].toString(): " - " %></td>
+							<td class="border-black" style="width:2%;text-align: center; padding:10px;" ><%=obj[3]!=null?obj[3].toString(): " - "%></td>
+							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[4]!=null?obj[4].toString(): " - "%></td>
+							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[5]!=null?obj[5].toString(): " - " %></td>
 							<td class="border-black" style="width:2%;text-align: right;padding: 5px;"><%=nfc.convert(Double.parseDouble(obj[6].toString())/10000000)%></td>
-							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[8].toString() %></td>
-							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[9].toString() %></td>
+							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[8]!=null?obj[8].toString(): " - " %></td>
+							<td class="border-black" style="width:2%;text-align: center;padding: 5px;"><%=obj[9]!=null?obj[9].toString(): " - " %></td>
 							</tr>
 							<%}} %>
 							</tbody>
@@ -873,9 +874,9 @@ td>table{
 							%>	
 							<tr>
 							<td class="border-black" style="padding:px;"><%=j %></td>
-							<td class="border-black"style="padding:px;"><%=obj[2] %></td>
-							<td class="border-black"style="padding:px;"><%=obj[4] %></td>
-							<td class="border-black"style="padding:px;"><%=obj[5] %></td>
+							<td class="border-black"style="padding:px;"><%=obj[2]!=null?obj[2].toString(): " - " %></td>
+							<td class="border-black"style="padding:px;"><%=obj[4]!=null?obj[4].toString(): " - " %></td>
+							<td class="border-black"style="padding:px;"><%=obj[5]!=null?obj[5].toString(): " - " %></td>
 							<td class="border-black"style="padding:px;"><%=nfc.convert(Double.parseDouble(obj[6].toString())/10000000)%></td>
 							</tr>
 							<%
@@ -938,7 +939,7 @@ td>table{
 			</table>
 			<div style="margin-left: 50px;"> 	<%if(MacroDetails!=null && MacroDetails.length>0 && MacroDetails[15]!=null){ %> <%=MacroDetails[15].toString() %> <%} %></div>
 			<br></br>	
-			<h4 style="width:35%;margin-left:10px;"><%=ProjectDetailes[1] %><hr style="padding-bottom: 0px;">
+			<h4 style="width:35%;margin-left:10px;"><%=ProjectDetailes[1]!=null?ProjectDetailes[1].toString(): " - "  %><hr style="padding-bottom: 0px;">
 			</h4><h4 style="text-align:left;margin-left: 80px;margin-top:0px;"> Project Director </h4>
 
 

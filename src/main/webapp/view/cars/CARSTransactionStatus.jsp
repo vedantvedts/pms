@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"  import="java.util.*,java.text.SimpleDateFormat"%>
  
@@ -172,17 +173,17 @@ String carsInitiationId = (String)request.getAttribute("carsInitiationId");
 	      <article>
 		  	<div class="inner">
 				<span class="date">
-					<span class="day"><%=day.format(object[4]) %></span>
-					<span class="month"><%=month.format(object[4]) %></span>
-					<span class="year"><%=year.format(object[4]) %></span>
+					<span class="day"><%=object[4]!=null?day.format(object[4]) :" - "%></span>
+					<span class="month"><%=object[4]!=null?month.format(object[4]):" - " %></span>
+					<span class="year"><%=object[4]!=null?year.format(object[4]):" - " %></span>
 				</span>
-				<h2 style="background-color: <%=object[7]%>;--my-color-var: <%=object[7]%>;" ><%=object[6] %> at <%=time.format(object[4]) %></h2> 
+				<h2 style="background-color: <%=object[7]%>;--my-color-var: <%=object[7]%>;" ><%=object[6]!=null?StringEscapeUtils.escapeHtml4(object[6].toString()): " - " %> at <%=object[4]!=null?time.format(object[4]):" - " %></h2> 
 				<p style="background-color:  #f0f2f5;">
 					<span class="remarks_title">Action By : </span>
-					<%if(object[2]!=null) {%> <%=object[2] %><%} else{%><%=object[9] %><%} %> , <%if(object[3]!=null) {%> <%=object[3] %><%} else{%>Expert<%} %><br>
+					<%if(object[2]!=null) {%> <%=StringEscapeUtils.escapeHtml4(object[2].toString()) %><%} else{%><%=object[9]!=null?StringEscapeUtils.escapeHtml4(object[9].toString()): " - " %><%} %> , <%if(object[3]!=null) {%> <%=StringEscapeUtils.escapeHtml4(object[3].toString()) %><%} else{%>Expert<%} %><br>
 					<%if(object[5]!= null) { %>
 						<span class="remarks_title">Remarks : </span>
-							<%=object[5] %>
+							<%=StringEscapeUtils.escapeHtml4(object[5].toString()) %>
 					<%}else{ %> 
 						<span class="remarks_title">No Remarks </span> 
 					<%} %>

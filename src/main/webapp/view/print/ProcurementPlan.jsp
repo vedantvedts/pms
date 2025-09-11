@@ -1,4 +1,5 @@
-	<%@page import="java.text.SimpleDateFormat"%>
+	<%@page import="org.apache.commons.text.StringEscapeUtils"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.math.BigDecimal,java.util.stream.Collectors"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
@@ -56,7 +57,7 @@ text-align:justify !important;
           
           @top-right {
           	 
-          	 content : "Project : <%=ProjectTitle %>";
+          	 content : "Project : <%=ProjectTitle!=null?StringEscapeUtils.escapeHtml4(ProjectTitle): " - " %>";
              margin-top: 30px;
              margin-right: 10px;
           }
@@ -118,13 +119,13 @@ background:black;
 							for(Object[]obj:ProcurementList){
 							%><tr>
 							<td class="border-black" style="width:2%;text-align: center;"><%=(++i) %></td>
-							<td class="border-black" style="width:2%;text-align: center;"><%=obj[2] %></td>
-							<td class="border-black" style="width:2%;text-align: center; padding:10px;" ><%=obj[3].toString() %></td>
-							<td class="border-black" style="width:2%;text-align: center;"><%=obj[4].toString() %></td>
-							<td class="border-black" style="width:2%;text-align: center;"><%=obj[5].toString() %></td>
+							<td class="border-black" style="width:2%;text-align: center;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+							<td class="border-black" style="width:2%;text-align: center; padding:10px;" ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>
+							<td class="border-black" style="width:2%;text-align: center;"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
+							<td class="border-black" style="width:2%;text-align: center;"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></td>
 							<td class="border-black" style="width:2%;text-align: right;"><%=nfc.convert(Double.parseDouble(obj[6].toString())/10000000)%></td>
-							<td class="border-black" style="width:2%;text-align: center;"><%=obj[8].toString() %></td>
-							<td class="border-black" style="width:2%;text-align: center;"><%=obj[9].toString() %></td>
+							<td class="border-black" style="width:2%;text-align: center;"><%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - " %></td>
+							<td class="border-black" style="width:2%;text-align: center;"><%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - " %></td>
 							</tr>
 							<%}} %>
 							</tbody>

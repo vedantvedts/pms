@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"  pageEncoding="ISO-8859-1"%>
 <%@page import="java.util.List"%>
 <!DOCTYPE html>
@@ -33,7 +34,7 @@ List<Object[]> projectslist=(List<Object[]>)request.getAttribute("projectslist")
 												<select class="form-control selectdee"  data-container="body" data-live-search="true"  name="projectinitiationid"  required="required" style="width:200px;"  onchange="this.form.submit()">
 													<option disabled  selected value="">Choose...</option>
 													<%if(projectslist!=null){ for(Object[] obj : projectslist){ %>
-													<option value="<%=obj[0]%>" ><%=obj[1] %></option>
+													<option value="<%=obj[0]%>" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></option>
 													<%}} %> 
 												</select>
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.vts.pfms.cars.model.CARSContract"%>
 <%@page import="com.vts.pfms.cars.model.CARSInitiation"%>
@@ -39,22 +40,22 @@ CARSContract carsContract = (CARSContract)request.getAttribute("CARSContractData
 FormatConverter fc = new FormatConverter();
 %>
 
-<% String ses=(String)request.getParameter("result"); 
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 	<div class="container">
 		<div class="row" style="">
@@ -90,7 +91,7 @@ FormatConverter fc = new FormatConverter();
 					        		<div class="form-group">
 					                	<label class="control-label">T0 Remarks</label><span class="mandatory">*</span>
 					                    <input  class="form-control form-control" type="text" name="t0Remarks" id="t0Remarks"
-					                     value="<%if(carsContract!=null && carsContract.getT0Remarks()!=null){ %><%=carsContract.getT0Remarks()%><%} %>" required> 
+					                     value="<%if(carsContract!=null && carsContract.getT0Remarks()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsContract.getT0Remarks())%><%} %>" required> 
 					                </div>
 					            </div>
 					        </div>

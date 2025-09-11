@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.vts.pfms.roadmap.model.RoadMapAnnualTargets"%>
@@ -216,9 +217,9 @@ FormatConverter fc = new FormatConverter();
 					<td>
 						<%int count=1; for(String targets : targetssList) {%>
 							<%if(count==1) {%>
-								<%=targets %>
+								<%=targets!=null?targets: " - " %>
 							<%} else{%>
-								<%=", "+targets %>
+								<%=", "+(targets!=null?targets: " - ") %>
 							<%} %>
 						<%count++;} %>
 					</td>
@@ -233,9 +234,9 @@ FormatConverter fc = new FormatConverter();
      	<div style="font-size: 15px;"> Signature of Initiator</div>
          <%for(Object[] apprInfo : roadMapApprovalEmpData){ %>
 			<%if(apprInfo[8].toString().equalsIgnoreCase("RFW")){ %>
-				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
-				<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-				<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+				<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+				<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString()).substring(0, 10)  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
  		<%break;}} %>  
  	</div>
 							            
@@ -244,9 +245,9 @@ FormatConverter fc = new FormatConverter();
 							            			 		
 			<%if(apprInfo[8].toString().equalsIgnoreCase("RAD")){ %>
 				<div style="font-size: 15px;"> Signature of Director</div>
-				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
-				<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-				<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+				<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+				<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+				<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString()).substring(0, 10)  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
 			<%} %>
 		</div>	
 	<%} %>

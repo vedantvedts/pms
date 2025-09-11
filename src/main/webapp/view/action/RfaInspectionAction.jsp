@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -116,22 +117,22 @@ List<String> forwardAllow = Arrays.asList("RP","RR","RE","AAA","REK","RFR");
 List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 %>
 
-	<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</center>
-	<%}if(ses!=null){ %>
-	<center>
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-	</center>
-	<%} %>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 	<div class="container-fluid">
@@ -171,15 +172,15 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 										for(Object[] obj:RfaInspectionList) {%>
 										<tr>
 											<td style="text-align: center;"><%=++count%></td>
-											<td><%=obj[3] %></td>
-											<td style="text-align: center;"><%=sdf.format(obj[4])%></td>
-											<td style="text-align: center;"><%=obj[2] %></td>
-											<td style="text-align: center;"><%=obj[5] %></td>
-											<td><%=obj[11] %></td>
+											<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - " %></td>
+											<td style="text-align: center;"><%=obj[4]!=null?sdf.format(obj[4]):" - "%></td>
+											<td style="text-align: center;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - " %></td>
+											<td style="text-align: center;"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):" - " %></td>
+											<td><%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()):" - " %></td>
 											<td style="text-align: center;">
 	                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	                                       	  	<button type="submit" class="btn btn-sm btn-link btn-status" formaction="RfaTransStatus.htm" value="<%=obj[0] %>" name="rfaTransId"  data-toggle="tooltip" data-placement="top" title="Transaction History" 
-	                                       	  	style=" color: #E65100; font-weight: 600;" formtarget="_blank"><%=obj[15] %> 
+	                                       	  	style=" color: #E65100; font-weight: 600;" formtarget="_blank"><%=obj[15]!=null?StringEscapeUtils.escapeHtml4(obj[15].toString()):" - " %> 
 								    			</button>
 	                                        </td>
 											<td style="text-align: center;">

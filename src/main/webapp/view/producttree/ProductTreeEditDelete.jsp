@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -104,24 +105,22 @@ input[type=checkbox] {
 
 
 
-
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert" >
-	    <%=ses1 %>
-	     <br />
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert"  >
-	    	<%=ses %>
-	    	 <br />
-	    </div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
    
    <div class="container-fluid">
@@ -136,7 +135,7 @@ if(ses1!=null){	%>
 					<h5 ><%if(ProjectId!=null){
 						Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");
 						%>
-						<%=ProjectDetail[2] %> ( <%=ProjectDetail[1] %> ) 
+						<%=ProjectDetail[2]!=null?StringEscapeUtils.escapeHtml4(ProjectDetail[2].toString()):"-" %> ( <%=ProjectDetail[1]!=null?StringEscapeUtils.escapeHtml4(ProjectDetail[1].toString()):"-" %> ) 
 					<%} %>
 					</h5>
 					</div>
@@ -176,10 +175,10 @@ if(ses1!=null){	%>
 															
 															 <td style=""><%=count %></td>
 															
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level1[3] %></td>
+															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level1[3]!=null?StringEscapeUtils.escapeHtml4(level1[3].toString()):"-" %></td>
 															
-															<td><% if(level1[6]!=null){%><%=level1[6] %><%}else { %> -- <%} %></td>
-															<td><% if(level1[7]!=null){%><%=level1[7] %><%}else { %> -- <%} %></td>
+															<td><% if(level1[6]!=null){%><%=StringEscapeUtils.escapeHtml4(level1[6].toString())%><%}else { %> -- <%} %></td>
+															<td><% if(level1[7]!=null){%><%=StringEscapeUtils.escapeHtml4(level1[7].toString()) %><%}else { %> -- <%} %></td>
 															
 															<td  style="width:20% !important; text-align: center;">		
 																	
@@ -236,9 +235,9 @@ if(ses1!=null){	%>
 															<td style="width:2% !important; " class="center"> </td>
 															<td style="text-align: left;width: 5%;"> <%=count %>.<%=countA%></td>
 															
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level2[3] %></td>
-															<td><% if(level2[6]!=null){%><%=level2[6] %><%}else { %> -- <%} %></td>
-															<td><% if(level2[7]!=null){%><%=level2[7] %><%}else { %> -- <%} %></td>
+															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level2[3]!=null?StringEscapeUtils.escapeHtml4(level2[3].toString()):"-" %></td>
+															<td><% if(level2[6]!=null){%><%=StringEscapeUtils.escapeHtml4(level2[6].toString()) %><%}else { %> -- <%} %></td>
+															<td><% if(level2[7]!=null){%><%=StringEscapeUtils.escapeHtml4(level2[7].toString()) %><%}else { %> -- <%} %></td>
 														 	<td class="width-30px" style="text-align: center;">
 														 	
 														 	
@@ -281,9 +280,9 @@ if(ses1!=null){	%>
 															<td style="width:2% !important; " class="center"> </td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;<%=count %>.<%=countA%>.<%=countB%></td>
 															
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level3[3] %></td>
-															<td><% if(level3[6]!=null){%><%=level3[6] %><%} else { %> -- <%} %></td>
-															<td><% if(level3[7]!=null){%><%=level3[7] %><%} else { %> -- <%} %></td>
+															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level3[3]!=null?StringEscapeUtils.escapeHtml4(level3[3].toString()):"-" %></td>
+															<td><% if(level3[6]!=null){%><%=StringEscapeUtils.escapeHtml4(level3[6].toString()) %><%} else { %> -- <%} %></td>
+															<td><% if(level3[7]!=null){%><%=StringEscapeUtils.escapeHtml4(level3[7].toString()) %><%} else { %> -- <%} %></td>
 															
 															<td class="width-30px"  style="text-align: center;">
 															
@@ -326,9 +325,9 @@ if(ses1!=null){	%>
 															<td style="width:2% !important; " class="center"> </td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=count %>.<%=countA%>.<%=countB%>.<%=countC%></td>
 															
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level4[3] %></td>
-															<td><% if(level4[6]!=null){%><%=level4[6] %><%} else { %> -- <%} %></td>
-															<td><% if(level4[7]!=null){%><%=level4[7] %><%} else { %> -- <%} %></td>
+															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level4[3]!=null?StringEscapeUtils.escapeHtml4(level4[3].toString()):"-" %></td>
+															<td><% if(level4[6]!=null){%><%=StringEscapeUtils.escapeHtml4(level4[6].toString()) %><%} else { %> -- <%} %></td>
+															<td><% if(level4[7]!=null){%><%=StringEscapeUtils.escapeHtml4(level4[7].toString()) %><%} else { %> -- <%} %></td>
 															
 															<td class="width-30px"  style="text-align: center;">
 															
@@ -374,9 +373,9 @@ if(ses1!=null){	%>
 														
 														
 														  
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level5[3] %></td>
-															 <td><% if(level5[6]!=null){%><%=level5[6] %><%} else { %> -- <%} %></td>
-															<td><% if(level5[7]!=null){%><%=level5[7] %><%} else { %> -- <%} %></td>
+															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level5[3]!=null?StringEscapeUtils.escapeHtml4(level5[3].toString()):"-" %></td>
+															 <td><% if(level5[6]!=null){%><%=StringEscapeUtils.escapeHtml4(level5[6].toString()) %><%} else { %> -- <%} %></td>
+															<td><% if(level5[7]!=null){%><%=StringEscapeUtils.escapeHtml4(level5[7].toString()) %><%} else { %> -- <%} %></td>
 															
 																<td class="width-30px" style="text-align: center;">
 															
@@ -423,9 +422,9 @@ if(ses1!=null){	%>
 															<td style="width:2% !important; " class="center"> </td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=count %>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%></td>
 															
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level6[3] %></td>
-															<td><% if(level6[6]!=null){%><%=level6[6] %><%} else { %> -- <%} %></td>
-															<td><% if(level6[7]!=null){%><%=level6[7] %><%} else { %> -- <%} %></td>
+															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level6[3]!=null?StringEscapeUtils.escapeHtml4(level6[3].toString()):"-" %></td>
+															<td><% if(level6[6]!=null){%><%=StringEscapeUtils.escapeHtml4(level6[6].toString()) %><%} else { %> -- <%} %></td>
+															<td><% if(level6[7]!=null){%><%=StringEscapeUtils.escapeHtml4(level6[7].toString()) %><%} else { %> -- <%} %></td>
 															 
 														    <td class="width-30px" style="text-align: center;">
 															
@@ -473,9 +472,9 @@ if(ses1!=null){	%>
 															<td style="width:2% !important; " class="center"> </td>
 															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=count %>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%>.<%=countF%></td>
 															
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level7[3] %></td>
-															<td><% if(level7[6]!=null){%><%=level7[6] %><%} else { %> -- <%} %></td>
-															<td><% if(level7[7]!=null){%><%=level7[7] %><%} else { %> -- <%} %></td>
+															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level7[3]!=null?StringEscapeUtils.escapeHtml4(level7[3].toString()):"-" %></td>
+															<td><% if(level7[6]!=null){%><%=StringEscapeUtils.escapeHtml4(level7[6].toString()) %><%} else { %> -- <%} %></td>
+															<td><% if(level7[7]!=null){%><%=StringEscapeUtils.escapeHtml4(level7[7].toString()) %><%} else { %> -- <%} %></td>
 															 
 														    <td class="width-30px" style="text-align: center;">
 															

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat ,  java.util.stream.Collectors"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -392,7 +393,7 @@ strong {
 					%>
 											<option value="<%=obj[0] + "/" + obj[4] + "/" + obj[5]%>"
 												<%if (obj[4].toString().equalsIgnoreCase(projectshortName)) {%>
-												selected <%}else{%>disabled<%} %>><%=obj[4]%></option>
+												selected <%}else{%>disabled<%} %>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%></option>
 											<%
 					}
 					}
@@ -420,27 +421,27 @@ strong {
 										<tr>
 											<td style="width: 60%"><h5>1. Name of laboratory:</h5></td>
 											<td>
-												<h5><%=session.getAttribute("labcode") %></h5>
+												<h5><%=session.getAttribute("labcode")!=null?StringEscapeUtils.escapeHtml4(session.getAttribute("labcode").toString()): " - " %></h5>
 											</td>
 										</tr>
 										<tr>
 											<td><h5>2. Title of the Project/Programme:</h5></td>
-											<td><h5><%=ProjectDetailes[7] + "(" + ProjectDetailes[6] + ")"%></h5></td>
+											<td><h5><%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - "%> (<%= ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</h5></td>
 										</tr>
 										<tr>
 											<td><h5>3. Category of Project:</h5></td>
 											<td><h5>
-													<%=ProjectDetailes[4]%></h5></td>
+													<%=ProjectDetailes[4]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[4].toString()): " - "%></h5></td>
 										</tr>
 										<tr>
 											<td><h5>4. Security classification of
 													Project/Programme:</h5></td>
-											<td><h5><%=ProjectDetailes[5]%></h5></td>
+											<td><h5><%=ProjectDetailes[5]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[5].toString()): " - "%></h5></td>
 										</tr>
 										<tr>
 											<td><h5>5. Name of the Project Director/Programme
 													Director (for approval of Competent Authority) :</h5></td>
-											<td><h5><%=ProjectDetailes[1]%></h5></td>
+											<td><h5><%=ProjectDetailes[1]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[1].toString()): " - "%></h5></td>
 										</tr>
 										<tr>
 											<td><h5>6. Cost( &#8377; in Cr):</h5></td>
@@ -465,10 +466,10 @@ strong {
 												<h5>
 													<%
 													if (ProjectDetailes[9] != null && Integer.parseInt(ProjectDetailes[9].toString()) > 0) {
-													%><%=ProjectDetailes[9]%>
+													%><%=StringEscapeUtils.escapeHtml4(ProjectDetailes[9].toString())%>
 													<%
 													} else if (ProjectDetailes[18] != null) {
-													%><%=ProjectDetailes[18]%>
+													%><%=StringEscapeUtils.escapeHtml4(ProjectDetailes[18].toString())%>
 													<%
 													} else {
 													%>-<%
@@ -483,7 +484,7 @@ strong {
 													<%
 													if (ProjectDetailes[12] != null && !ProjectDetailes[12].toString().equalsIgnoreCase("")) {
 													%>
-													<%=ProjectDetailes[12]%>
+													<%=StringEscapeUtils.escapeHtml4(ProjectDetailes[12].toString())%>
 													<%
 													} else {
 													%>-<%
@@ -606,7 +607,7 @@ strong {
 											for (Object[] obj : sanctionlistdetails) {
 											%>
 											<tr>
-												<td><h5><%=Integer.parseInt(obj[0].toString()) + 10 + "." + " " + obj[1]%></h5></td>
+												<td><h5><%=Integer.parseInt(obj[0].toString()) + 10 + "." + " " + (obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - ")%></h5></td>
 												<%
 												if (i == 5 && !projectTypeId.equalsIgnoreCase("1")) {
 												%>
@@ -637,7 +638,7 @@ strong {
 												%>
 											
 											<tr>
-												<td><h5><%=Integer.parseInt(obj[0].toString()) + 10 + "." + " " + obj[1]%></h5></td>
+												<td><h5><%=Integer.parseInt(obj[0].toString()) + 10 + "." + " " + (obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - ")%></h5></td>
 												<%
 													if (i == 5 && !projectTypeId.equalsIgnoreCase("1")) {
 													%>
@@ -711,7 +712,7 @@ strong {
 										<h5 class="ml-1">
 											1.&nbsp;&nbsp;a.&nbsp;&nbsp;Title of the Project
 											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;
-											<p><%=ProjectDetailes[7].toString()%></p>
+											<p><%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[1].toString()): " - "%></p>
 										</h5>
 									</div>
 								</div>
@@ -720,7 +721,7 @@ strong {
 										<h5 class="ml-1">
 											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b.&nbsp;&nbsp;Short Name or
 											Acronym &nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;
-											<p><%=ProjectDetailes[6]%></p>
+											<p><%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - "%></p>
 										</h5>
 									</div>
 								</div>
@@ -744,7 +745,7 @@ strong {
 													if (obj[1] != null) {
 														if (obj[1].toString().length() > 60) {
 												%>
-											<%=obj[1].toString().substring(0,60)%>
+											<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()).substring(0,60):" - "%>
 											<button class="btn" style="background: transparent;"
 												type="button" onclick="showModal('Objective')">
 												<span
@@ -756,7 +757,7 @@ strong {
 											<p>Not Mentioned</p>
 											<%}else {
 												%>
-											<%=obj[1]%>
+											<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>
 											<%
 												}
 												}else{%>
@@ -779,7 +780,7 @@ strong {
 													if (obj[2] != null) {
 														if (obj[2].toString().length() > 60) {
 												%>
-											<%=obj[2].toString().substring(0, 60)%>
+											<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ".substring(0, 60)%>
 
 											<button class="btn" style="background: transparent;"
 												type="button" onclick="showModal('Scope')">
@@ -792,7 +793,7 @@ strong {
 											<p>Not Mentioned</p>
 											<%}else {
 												%>
-											<%=obj[2]%>
+											<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>
 											<%
 												}
 												}else{%>
@@ -881,7 +882,7 @@ strong {
 										<h5 class="mt-1" style="font-weight: 600">
 											PD / LabDirector Remarks on Technology<br> </h5> 
 											<div id="PDRemarks" class="center">
-											<%if(MacroDetails.length>0 && MacroDetails[15]!=null  ){ %> <%=MacroDetails[15].toString() %> <%} %>
+											<%if(MacroDetails.length>0 && MacroDetails[15]!=null  ){ %> <%=StringEscapeUtils.escapeHtml4(MacroDetails[15].toString()) %> <%} %>
 											</div>
 											
 											<span class="text-center" id="protospan"> 
@@ -1361,7 +1362,7 @@ strong {
 										style="margin-left: 0px; width: 100%; display: none;" id="">
 										<div id="subpointdiv8Editor" class="center">
 											<%if(BriefList.length!=0 &&BriefList[5]!=null){ %>
-											<%=BriefList[5].toString() %>
+											<%=BriefList[5].toString()%>
 											<%}else{%>
 											<%}%>
 
@@ -2035,7 +2036,7 @@ strong {
 								<div class="row mt-1 information3" style="display: none;">
 									<div class="col-md-12">
 										<textarea id="information3" class="form-control"
-											maxlength="255 characters"><%=macrodetailsTwo[4].toString() %></textarea>
+											maxlength="255 characters"><%=macrodetailsTwo[4].toString()%></textarea>
 									</div>
 									<div class="col-md-12 mt-1 submit3" align="center">
 										<button type="button" class="btn btn-sm btn-warning"
@@ -2059,7 +2060,8 @@ strong {
 										<h5 class="mt-1" id="">
 											13.Details need to be certified by Lab Director<br> </h5> 
 											<div id="LabdirectorDetails" class="center">
-												<%if(MacroDetails.length>0 && MacroDetails[16]!=null){ %><%=MacroDetails[16].toString()%>
+												<%if(MacroDetails.length>0 && MacroDetails[16]!=null){ %>
+												<%=MacroDetails[16].toString()%>
 											<%} %>
 											</div>
 											<textarea name="" style="display: none;"></textarea>
@@ -2161,8 +2163,8 @@ strong {
 								boolean case5=Integer.parseInt(obj[5].toString())>=monthDivision;
 								boolean case6 = Integer.parseInt(obj[5].toString())>i && Integer.parseInt(obj[6].toString())>=((i*6)+6);
 								if((case1)&&(case2||case3)){
-								%> <%="MIL -"+obj[0].toString() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-											<%}else if(case5 &&case4){%> <%="MIL -"+obj[0].toString() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								%> <%="MIL -"+(obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - ")%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											<%}else if(case5 &&case4){%> <%="MIL -"+(obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - ") %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 											<%}else if(case6){%> 
 											<% }}%>
 										</td>

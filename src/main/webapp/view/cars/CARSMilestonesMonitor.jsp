@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.time.LocalDate"%>
@@ -312,23 +313,22 @@ FormatConverter fc = new FormatConverter();
 long carsInitiationId = carsIni.getCARSInitiationId();
 %>
 
-<% String ses=(String)request.getParameter("result"); 
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-		
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 <br>
 <div class="container-fluid">
 	<div class="row">
@@ -368,14 +368,14 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 					              		<div class="row">
 					                		<div class="col-md-12">
 					                			<span class="cssideheading">Title:</span>
-					                			&emsp;<span class="cssideheadingdata"><%if(carsIni!=null && carsIni.getInitiationTitle()!=null) {%><%=carsIni.getInitiationTitle() %> <%} else{%>-<%} %></span>
+					                			&emsp;<span class="cssideheadingdata"><%if(carsIni!=null && carsIni.getInitiationTitle()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsIni.getInitiationTitle()) %> <%} else{%>-<%} %></span>
 					                		</div>
 					                	</div>
 					                	<br>
 					                	<div class="row">
 					                		<div class="col-md-4">
 					                			<span class="cssideheading">CARS. No:</span>
-					                			&emsp;<span class="cssideheadingdata"><%if(carsIni!=null && carsIni.getCARSNo()!=null) {%><%=carsIni.getCARSNo() %> <%} else{%>-<%} %></span>
+					                			&emsp;<span class="cssideheadingdata"><%if(carsIni!=null && carsIni.getCARSNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsIni.getCARSNo()) %> <%} else{%>-<%} %></span>
 					                		</div>
 					                		<div class="col-md-4">
 					                			<span class="cssideheading">Funds from:</span>
@@ -383,14 +383,14 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 					                			<%if(carsIni!=null && carsIni.getFundsFrom()!=null && carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>
 					                				Buildup
 					                			 <%} else{%>
-					                			 	 <%if(PDs!=null && PDs[4]!=null) {%><%=PDs[4] %><%} %>
+					                			 	 <%if(PDs!=null && PDs[4]!=null) {%><%=StringEscapeUtils.escapeHtml4(PDs[4].toString()) %><%} %>
 					                			 <%} %></span>
 					                		</div>
 					                		<div class="col-md-4">
 					                			<span class="cssideheading">Amount:</span>
 					                			&emsp;<span class="cssideheadingdata">
 					                				<%if(carsSoC!=null && carsSoC.getSoCAmount()!=null) {%>
-					                					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(carsSoC.getSoCAmount())) %>
+					                					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(carsSoC.getSoCAmount()))) %>
 					                				<%} else{%>-<%} %></span>
 					                		</div>
 					                	</div>
@@ -422,14 +422,14 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 					            	
 					               	<%if(milestones!=null && milestones.size()>0) { char a='a'; Object[] progressData = null;%>
 							    		<tr>
-							    			<td style="text-align : left;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;(a) Initial Advance &nbsp;&nbsp;(<%=milestones.get(0).getPaymentPercentage() %>%) </td>
+							    			<td style="text-align : left;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;(a) Initial Advance &nbsp;&nbsp;(<%=milestones.get(0).getPaymentPercentage()!=null?StringEscapeUtils.escapeHtml4(milestones.get(0).getPaymentPercentage()): " - " %>%) </td>
 							    			<td style="text-align : center;vertical-align: top;">T0*</td>
 							    			<td style="text-align : center;vertical-align: top;">
-							    				<%if(carsContract.getT0Date()!=null) {%><%=fc.SqlToRegularDate(carsContract.getT0Date()) %><%} %> 
+							    				<%if(carsContract.getT0Date()!=null) {%><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(carsContract.getT0Date())) %><%} %> 
 							    			</td>
 							    			<td style="text-align : right;vertical-align: top;">
 							    				<%if(milestones.get(0).getActualAmount()!=null) {%>
-							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestones.get(0).getActualAmount())) %>
+							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(milestones.get(0).getActualAmount()))) %>
 							    				<%} else{%>
 							    					-
 							    				<%} %>
@@ -451,10 +451,10 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 													        <%
 													        progressData = milestoneProgressList!=null && milestoneProgressList.size()>0?milestoneProgressList.stream().filter(e -> e[5].toString().equalsIgnoreCase(milestones.get(0).getMilestoneNo())).findFirst().orElse(null): null;
 													        %>
-													        <%if(progressData!=null) {%>
+													        <%if(progressData[2]!=null) {%>
 																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 																	<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=progressData[2] %>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																		<%=progressData[2] %>
+																		<%=StringEscapeUtils.escapeHtml4(progressData[2].toString()) %>
 																	</div> 
 																</div>	
 															<%}else{ %>
@@ -489,7 +489,7 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 							    			</td>
 							    			<td style="text-align : right;vertical-align: top;">
 							    				<%if(milestones.get(i).getActualAmount()!=null) {%>
-							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestones.get(i).getActualAmount())) %>
+							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(milestones.get(i).getActualAmount()))) %>
 							    				<%} else{%>
 							    					-
 							    				<%} %>
@@ -511,10 +511,10 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 													        <%
 													        progressData = milestoneProgressList!=null && milestoneProgressList.size()>0?milestoneProgressList.stream().filter(e -> e[5].toString().equalsIgnoreCase(milestoneNo)).findFirst().orElse(null): null;
 													        %>
-													        <%if(progressData!=null) {%>
+													        <%if(progressData[2]!=null) {%>
 																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 																	<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=progressData[2] %>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																		<%=progressData[2] %>
+																		<%=StringEscapeUtils.escapeHtml4(progressData[2].toString()) %>
 																	</div> 
 																</div>	
 															<%}else{ %>
@@ -547,7 +547,7 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 							    			</td>
 							    			<td style="text-align : right;vertical-align: top;">
 							    				<%if(milestones.get(milestones.size()-1).getActualAmount()!=null) {%>
-							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestones.get(milestones.size()-1).getActualAmount())) %>
+							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(milestones.get(milestones.size()-1).getActualAmount()))) %>
 							    				<%} else{%>
 							    					-
 							    				<%} %>
@@ -569,10 +569,10 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 													        <%
 													        progressData = milestoneProgressList!=null && milestoneProgressList.size()>0?milestoneProgressList.stream().filter(e -> e[5].toString().equalsIgnoreCase(milestones.get(milestones.size()-1).getMilestoneNo())).findFirst().orElse(null): null;
 													        %>
-													        <%if(progressData!=null) {%>
+													        <%if(progressData[2]!=null) {%>
 																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 																	<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=progressData[2] %>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																		<%=progressData[2] %>
+																		<%=StringEscapeUtils.escapeHtml4(progressData[2].toString()) %>
 																	</div> 
 																</div>	
 															<%}else{ %>

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.util.Arrays"%>
@@ -251,22 +252,22 @@ List<String> roadmapforward = Arrays.asList("RIN","RRD","RRA","RRV");
 FormatConverter fc = new FormatConverter();
 %>
 
-<% String ses=(String)request.getParameter("result");
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 <br>
 <div class="container-fluid">
@@ -326,7 +327,7 @@ FormatConverter fc = new FormatConverter();
 					  							<div class="col-lg">
 													<h4 class="card-title" >
 														
-														<%=obj[6] %>
+														<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %>
 													</h4>
 												</div>
 												<div class="col-">
@@ -347,10 +348,10 @@ FormatConverter fc = new FormatConverter();
 										<div class="container">
 					  						<div class="row">
 					  							<div class="col-xl" style="text-align: left;">
-													Duration : <%if(obj[10]!=null) {%><%=obj[10] %><%} else {%>0<%} %> Months
+													Duration : <%if(obj[10]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[10].toString()) %><%} else {%>0<%} %> Months
 												</div>
 												<div class="col-">
-													Ref : <%if(obj[11]!=null) {%><%=obj[11] %><%} else {%>-<%} %>
+													Ref : <%if(obj[11]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[11].toString()) %><%} else {%>-<%} %>
 												</div>
 												
 											</div>
@@ -377,7 +378,7 @@ FormatConverter fc = new FormatConverter();
 				                                        	<%-- <input type="hidden" name="roadMapId" value="<%=obj[0] %>"> --%>
 				                                       	  	
 										    				<button type="submit" class="btn btn-sm btn-link w-100 btn-status" formaction=RoadMapTransStatus.htm value="<%=obj[0] %>" name="roadMapId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[16] %>; font-weight: 600;" formtarget="_blank">
-										    					<%=obj[15] %> <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
+										    					<%=obj[15]!=null?StringEscapeUtils.escapeHtml4(obj[15].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
 										    				</button>
 											    			
 	                                        			</form>
@@ -491,7 +492,7 @@ FormatConverter fc = new FormatConverter();
            			<table align="center"  >
         				<tr>
         					<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
-         						Initiator - <%=emp[1] %> 
+         						Initiator - <%=emp[1]!=null?StringEscapeUtils.escapeHtml4(emp[1].toString()): " - " %> 
          					</td>
              		
                     		<td rowspan="2">
@@ -499,7 +500,7 @@ FormatConverter fc = new FormatConverter();
              				</td>
              						
         					<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
-        						Director - <%if(Director!=null) {%><%=Director[1] %> <%} else{%>DIRECTOR<%} %>
+        						Director - <%if(Director!=null) {%><%=StringEscapeUtils.escapeHtml4(Director[1].toString()) %> <%} else{%>DIRECTOR<%} %>
         	    			</td>
              	    				
                     		<!-- <td rowspan="2">
@@ -586,8 +587,8 @@ FormatConverter fc = new FormatConverter();
 									                               <input checked class="existingprojectlist" name="projectId" style="text-align: left;margin: 8px;transform: scale(1.5);" value="<%=obj[0]%>" type='checkbox'/>
 									                               <label for="<%=obj[0]%>">
 									                                   <span class="tableprojectname" style="color:black !important;font-size: 13px"> 
-									                                       <% if (obj[2] != null) { %><%=obj[2] %><% } else { %>-<% } %>
-									                                       (<% if (obj[1] != null) { %><%=obj[1] %><% } else { %>-<% } %>)
+									                                       <% if (obj[2] != null) { %><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><% } else { %>-<% } %>
+									                                       (<% if (obj[1] != null) { %><%=StringEscapeUtils.escapeHtml4(obj[1].toString())%><% } else { %>-<% } %>)
 									                                   </span> 	
 									                               </label>
 									                           </div>
@@ -622,7 +623,7 @@ FormatConverter fc = new FormatConverter();
 																	<input checked class="preprojectlist" name="initiationId" style="text-align: left;margin: 8px;transform: scale(1.5);" value="<%=obj[0]%>" type='checkbox'/>
 																	<label for="<%=obj[0]%>">
 																		<span class="tableprojectname" style="color:black !important;font-size: 13px"> 
-																		  	<% if (obj[2] != null) { %><%= obj[2] %><% } else { %>-<% } %>
+																		  	<% if (obj[2] != null) { %><%= StringEscapeUtils.escapeHtml4(obj[2].toString()) %><% } else { %>-<% } %>
 																	  	</span> 	
 																	</label>
 																</div>

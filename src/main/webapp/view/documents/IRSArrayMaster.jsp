@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.documents.model.IRSArrayMaster"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -76,21 +77,22 @@ label {
 		IRSArrayMaster arrayMaster = arrayMasterList.stream().filter(e -> e.getArrayMasterId()==Long.parseLong(arrayMasterId)).findAny().orElse(null);
 	%>
 	
-	<% String ses = (String) request.getParameter("result"); 
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-        <div align="center">
-            <div class="alert alert-danger" role="alert">
-                <%= ses1 %>
-            </div>
-        </div>
-    <% } if (ses != null) { %>
-        <div align="center">
-            <div class="alert alert-success" role="alert">
-                <%= ses %>
-            </div>
-        </div>
-    <% } %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
     
     <div class="container-fluid">
        
@@ -99,7 +101,7 @@ label {
             	<div class="row">
                		<div class="col-md-9" align="left">
 	                    <h5 id="text" style="margin-left: 1%; font-weight: 600">
-	                      Array Master - <%=documentNo %>
+	                      Array Master - <%=documentNo!=null?StringEscapeUtils.escapeHtml4(documentNo): " - " %>
 	                    </h5>
                 	</div>
                 	<div class="col-md-2"  align="right">
@@ -142,8 +144,8 @@ label {
 		      						%>
 										<tr>
 								      		<td class="center"><%=++slno %></td>
-								      		<td><%=arr.getArrayName() %></td>
-								      		<td class="center"><%=arr.getArrayValue() %></td>
+								      		<td><%=arr.getArrayName()!=null?StringEscapeUtils.escapeHtml4(arr.getArrayName()): " - " %></td>
+								      		<td class="center"><%=arr.getArrayValue()!=null?StringEscapeUtils.escapeHtml4(arr.getArrayValue().toString()): " - " %></td>
 								      		<td class="center">
 								      			 <form action="IRSArrayMaster.htm" method="POST" id="inlineapprform<%=slno%>">
 											        <button type="submit" class="editable-clicko" formmethod="post" data-toggle="tooltip" title="Edit">
@@ -200,12 +202,12 @@ label {
         								<div class="col-md-5">
         									<label class="form-label">Array Name: <span class="mandatory">*</span></label>
         									<input type="text" class="form-control" name="arrayName" placeholder="Enter Array Name" maxlength="255"
-        									<%if(arrayMaster!=null && arrayMaster.getArrayName()!=null) {%> value="<%=arrayMaster.getArrayName() %>" <%} %> required>
+        									<%if(arrayMaster!=null && arrayMaster.getArrayName()!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(arrayMaster.getArrayName()) %>" <%} %> required>
         								</div>
         								<div class="col-md-4">
         									<label class="form-label">Array Value: <span class="mandatory">*</span></label>
         									<input type="number" class="form-control" name="arrayValue" placeholder="Enter Array Value" min="0" max="9999999999"
-        									<%if(arrayMaster!=null && arrayMaster.getArrayValue()!=null) {%> value="<%=arrayMaster.getArrayValue() %>" <%} %> required>
+        									<%if(arrayMaster!=null && arrayMaster.getArrayValue()!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(arrayMaster.getArrayValue().toString()) %>" <%} %> required>
         								</div>
         								<div class="col-md-2 center" style="margin-top: auto;">
         									<%if(arrayMaster!=null) {%>

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Calendar"%>
 <%@page import="java.util.List"%>
@@ -47,7 +48,7 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
        <div class="card-body">
        <div style="display: flex;justify-content: space-between;">
 	      <div>
-	        <h4>Procurement Milestone For Demand Number : <%=demandNumber %></h4>
+	        <h4>Procurement Milestone For Demand Number : <%=demandNumber!=null?StringEscapeUtils.escapeHtml4(demandNumber): " - " %></h4>
 	      </div>
 	      <div >
 	        <span class="badge" style=" background-color: green;color: white;font-size: 15px;">Probable Date</span>
@@ -128,7 +129,7 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 			%>
 			<tr>
 			<td style="text-align: center;font-size: 17px;font-weight: 600;"><%= count + " . " %></td>
-			<td style="font-size: 17px;font-weight: 600;"><%= obj[1].toString() %></td>
+			<td style="font-size: 17px;font-weight: 600;"><%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-" %></td>
 			<%
 			startCal.setTime(startDate);
 			while (startCal.get(Calendar.YEAR) <= endCal.get(Calendar.YEAR)) {

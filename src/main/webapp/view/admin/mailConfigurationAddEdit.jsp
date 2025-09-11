@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -69,7 +70,7 @@ String pass=(String)request.getAttribute("pass");
                    <td  colspan="4" >
                    <input  class="form-control form-control" placeholder="UserName" type="text"
                     name="UserNameData"  id="UserNameVal" required="required" maxlength="50" style="font-size: 15px;"
-                    <%if( Action.equalsIgnoreCase("Edit") && EditObject!=null){%>value="<%=EditObject[1] %>"<%} %>
+                    <%if( Action.equalsIgnoreCase("Edit") && EditObject!=null){%>value="<%=StringEscapeUtils.escapeHtml4(EditObject[1].toString()) %>"<%} %>
                      >
                    </td>
                    </tr> 
@@ -93,7 +94,7 @@ String pass=(String)request.getAttribute("pass");
                    <td >
                    <input  class="form-control form-control" placeholder="Host" type="text"
                     name="Host"  id="Host" required="required" maxlength="50" style="font-size: 15px;"
-                    <%if( Action.equalsIgnoreCase("Edit") && EditObject!=null){%>value="<%=EditObject[2] %>"<%} %>
+                    <%if( Action.equalsIgnoreCase("Edit") && EditObject!=null){%>value="<%=StringEscapeUtils.escapeHtml4(EditObject[2].toString()) %>"<%} %>
                      >
                   </td>
                  </tr>
@@ -104,7 +105,7 @@ String pass=(String)request.getAttribute("pass");
                    <td >
                    <input  class="form-control form-control" placeholder="Port" type="text"
                     name="Port"  id="Port" required="required" maxlength="50" style="font-size: 15px;"
-                    <%if( Action.equalsIgnoreCase("Edit") && EditObject!=null){%>value="<%=EditObject[4] %>"<%} %>
+                    <%if( Action.equalsIgnoreCase("Edit") && EditObject!=null){%>value="<%=StringEscapeUtils.escapeHtml4(EditObject[4].toString()) %>"<%} %>
                      >
                   </td>
                  </tr>
@@ -115,7 +116,7 @@ String pass=(String)request.getAttribute("pass");
                    <div class="password-container">
                 <input class="form-control" placeholder="Password" type="password"
                 name="PasswordData" id="PasswordVal" required="required" maxlength="50" style="font-size: 15px;"
-                <%if( Action.equalsIgnoreCase("Edit") && pass!=null){%>value="<%=pass %>" <%} %>>
+                <%if( Action.equalsIgnoreCase("Edit") && pass!=null){%>value="<%=StringEscapeUtils.escapeHtml4(pass) %>" <%} %>>
                <%if( Action.equalsIgnoreCase("Add") && EditObject==null){%>
              <i class="toggle-password fa fa-fw fa-eye-slash"></i>
                <%}  %>
@@ -130,7 +131,7 @@ String pass=(String)request.getAttribute("pass");
                    <div class="password-container">
                 <input class="form-control" placeholder="Password" type="password"
                 name="NewPasswordVal" id="NewPasswordVal" required="required" maxlength="50" style="font-size: 15px;"
-                <%if( Action.equalsIgnoreCase("Edit") && pass!=null){%>value="<%=pass %>"  <%} %>>
+                <%if( Action.equalsIgnoreCase("Edit") && pass!=null){%>value="<%=StringEscapeUtils.escapeHtml4(pass) %>"  <%} %>>
                <%if( Action.equalsIgnoreCase("Add") && EditObject==null){%>
              <i class="toggle-password fa fa-fw fa-eye-slash"></i>
                <%}  %>

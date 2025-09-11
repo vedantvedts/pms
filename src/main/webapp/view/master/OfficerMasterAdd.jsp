@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -22,27 +23,22 @@ List<Object[]> OfficerList = (List<Object[]>)request.getAttribute("OfficerList")
 %>
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	
-	
-	<center>
-	
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-            </div>
-            
-    </center>
-    
-    
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 	
@@ -110,7 +106,7 @@ List<Object[]> OfficerList = (List<Object[]>)request.getAttribute("OfficerList")
 					<select class="form-control selectdee" id="Designation" name="Designation" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
 								<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>					
 										<%  for ( Object[]  obj :DesignationList) {%>			
-										<option value="<%=obj[0] %>"> <%=obj[2] %></option>			
+										<option value="<%=obj[0] %>"> <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %></option>			
 										<%} %>
 					</select> 
 			</div>
@@ -161,7 +157,7 @@ List<Object[]> OfficerList = (List<Object[]>)request.getAttribute("OfficerList")
 					<select class="form-control selectdee" id="Division" name="Division" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
 									<option value="0" selected="selected"	hidden="true">--Select--</option>
 											<%  for ( Object[]  obj :DivisionList) {%>			
-											<option value="<%=obj[0] %>"> <%=obj[1] %></option>			
+											<option value="<%=obj[0] %>"> <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-" %></option>			
 											<%} %>
 					
 					</select> 
@@ -174,7 +170,7 @@ List<Object[]> OfficerList = (List<Object[]>)request.getAttribute("OfficerList")
 		<select class="form-control selectdee" id="superiorOfficer" name="superiorOfficer" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
 			<option value="0" selected="selected" hidden="true">--Select--</option>
 			<%  for ( Object[]  obj :OfficerList) {%>			
-				<option value="<%=obj[0] %>"> <%=obj[2]+", "+obj[3] %></option>			
+				<option value="<%=obj[0] %>"> <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%>, <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):"-" %></option>			
 			<%} %>
 		</select> 
 	</div>

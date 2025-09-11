@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -97,20 +98,22 @@ h6{
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br />
     
@@ -174,21 +177,21 @@ h6{
 														<tr>
 															<td style="width:1% !important; " class="center"><%=count %></td>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:10% !important;min-width:10% !important;">
-															<%if(obj[5].toString().length()>75) {%>
+															<%if(obj[5]!=null && obj[5].toString().length()>75) {%>
 															<%=obj[5].toString().substring(0,75) %>
 															 <span style="text-decoration: underline;font-size:13px;color: #145374;cursor: pointer;font-weight: bolder" onclick="showAction('<%=obj[5].toString()%>')">show more..</span>
-															<%}else{ %>
-															<%=obj[5].toString() %>
-															<%} %>
+															<%}else if(obj[5].toString().length()<=75){ %>
+															<%= StringEscapeUtils.escapeHtml4(obj[5].toString()) %>
+															<%}else{ %> -- <%} %>
 															</td>
 															
-															<td class="width-30px"><%=sdf.format(obj[4])%></td>
-															<td style="width:12% !important; "><%=sdf.format(obj[3])%></td>
-															<td style="width:20% !important; "><%=obj[1]%>, <%=obj[2]%></td>
+															<td class="width-30px"><%=obj[4]!=null?sdf.format(obj[4]):""%></td>
+															<td style="width:12% !important; "><%=obj[4]!=null?sdf.format(obj[3]):""%></td>
+															<td style="width:20% !important; "><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></td>
 															<td style="width:8% !important; "><%if(obj[10]!=null){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[10]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															<%=obj[10]%>
+															<%=StringEscapeUtils.escapeHtml4(obj[10].toString())%>
 															</div> 
 															</div> <%}else{ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">

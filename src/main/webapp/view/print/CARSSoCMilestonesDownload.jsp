@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.cars.model.CARSSoC"%>
 <%@page import="com.vts.pfms.IndianRupeeFormat"%>
 <%@page import="com.vts.pfms.cars.model.CARSSoCMilestones"%>
@@ -87,7 +88,7 @@ CARSInitiation carsIni =(CARSInitiation)request.getAttribute("CARSInitiationData
           
           @top-left {
           	margin-top: 30px;
-            content: "<%=carsIni.getCARSNo()%>";
+            content: "<%=carsIni.getCARSNo()!=null?carsIni.getCARSNo(): " - "%>";
             font-size: 13px;
           }               
           
@@ -209,7 +210,7 @@ CARSSoC carsSoC =(CARSSoC)request.getAttribute("CARSSoCData");
    						<tr>
    							<td style="text-align: center;width: 5%;"><%if(mil.getMilestoneNo()!=null) {%><%=mil.getMilestoneNo() %><%} else{%>-<%} %></td>
    							<td style="width: 20%;"><%if(mil.getTaskDesc()!=null) {%><%=mil.getTaskDesc() %><%} else{%>-<%} %></td>
-   							<td style="text-align: center;width: 10%;"><%if(mil.getMonths()!=null) {%><%="T0 + "+mil.getMonths() %><%} else{%>-<%} %></td>
+   							<td style="text-align: center;width: 10%;"><%if(mil.getMonths()!=null) {%><%="T0 + "%> <%=mil.getMonths() %><%} else{%>-<%} %></td>
    							<td style=""><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} else{%>-<%} %></td>
    							<%if(carsSoC!=null) {%>
    							<td style="text-align: center;width: 5%;"><%if(mil.getPaymentPercentage()!=null) {%><%=mil.getPaymentPercentage() %><%} else{%>-<%} %></td>
@@ -231,10 +232,10 @@ CARSSoC carsSoC =(CARSSoC)request.getAttribute("CARSSoCData");
 			<div style="line-height: 17px;">
     			<div style="font-size: 15px;margin-bottom: 10px;">Signature of the initiating officer</div>
 				<label style="text-transform: capitalize;">
-					<%if(emp!=null && emp[1]!=null){%> <%=emp[1]%><%} %>,
+					<%if(emp!=null && emp[1]!=null){%> <%=emp[1].toString()%><%} %>,
 				</label><!-- <br> -->
 				<label style="text-transform: capitalize;">
-					<%if(emp!=null && emp[2]!=null){%> <%=emp[2]%><%} %>
+					<%if(emp!=null && emp[2]!=null){%> <%=emp[2].toString()%><%} %>
 				</label><br>
 			</div>
 		</td>

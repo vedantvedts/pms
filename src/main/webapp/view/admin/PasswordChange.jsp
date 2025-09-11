@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
 <!DOCTYPE html>
@@ -25,21 +26,22 @@ String ForceResetPwd = (String)request.getAttribute("ForcePwd");
 </head>
 <body>
 
-	<% String ses = (String) request.getParameter("result"); 
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-        <div align="center">
-            <div class="alert alert-danger" role="alert">
-                <%= ses1 %>
-            </div>
-        </div>
-    <% } if (ses != null) { %>
-        <div align="center">
-            <div class="alert alert-success" role="alert">
-                <%= ses %>
-            </div>
-        </div>
-    <% } %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
 
 	<div class="container-fluid">
        
@@ -69,6 +71,8 @@ String ForceResetPwd = (String)request.getAttribute("ForcePwd");
 					
 				<form action="PasswordChanges.htm" method="POST" name="myfrm" id="myfrm">
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					<input type="hidden" id="sessionKey" name="encKey" value="<%=(String)request.getAttribute("sessionKey")%>" />
+					<input type="hidden" id="sessionIv"  name="encIv"  value="<%=(String)request.getAttribute("sessionIv")%>" />
 					<input type="text" name="username" id="username" value="${sessionScope.Username}" autocomplete="username" style="display: none;" aria-hidden="true">
 					
                 	<div class="row"> 
@@ -127,7 +131,7 @@ String ForceResetPwd = (String)request.getAttribute("ForcePwd");
                     <div align="center"> 
                     	<input type="hidden" name="type" value="AD"/>
                     	<input type="hidden" name="ForcePwd" value="<%=ForceResetPwd%>"/>
-                      <input type="button" class="btn btn-sm submit" id="sub" value="SUBMIT" name="sub"  onclick="return checkoldPassword()"  > 
+   						<input type="submit" class="btn btn-sm submit" id="sub" value="SUBMIT" name="sub" onclick="return checkoldPassword(event)">
                     </div>
 	                          
 				</form>      
@@ -139,72 +143,69 @@ String ForceResetPwd = (String)request.getAttribute("ForcePwd");
 
 <script type="text/javascript">
 $(document).ready(function () {
-	var $password = $('#password');
-	var $confirmPassword = $('#confirm_password');
-	var $submitBtn = $('#sub');
-	var $message = $('#message');
-	var $passwordHelp = $('#passwordHelp');
-	var $strengthIndicator = $('#strengthIndicator');
+    var $password = $('#password');
+    var $confirmPassword = $('#confirm_password');
+    var $submitBtn = $('#sub');
+    var $message = $('#message');
+    var $passwordHelp = $('#passwordHelp');
+    var $strengthIndicator = $('#strengthIndicator');
 
-	var strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    var strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-	$submitBtn.prop('disabled', true);
+    $submitBtn.prop('disabled', true);
 
-	$password.on('input', function () {
-		var value = $password.val();
-		var strength = 0;
+    function validatePasswords() {
+        var pwd = $password.val();
+        var cpwd = $confirmPassword.val();
 
-		// Visual strength calculation
-		if (value.length >= 8) strength += 1;
-		if (/[A-Z]/.test(value)) strength += 1;
-		if (/[a-z]/.test(value)) strength += 1;
-		if (/\d/.test(value)) strength += 1;
-		if (/[@$!%*?&]/.test(value)) strength += 1;
+        // Strength calculation
+        var strength = 0;
+        if (pwd.length >= 8) strength++;
+        if (/[A-Z]/.test(pwd)) strength++;
+        if (/[a-z]/.test(pwd)) strength++;
+        if (/\d/.test(pwd)) strength++;
+        if (/[@$!%*?&]/.test(pwd)) strength++;
 
-		var strengthPercent = (strength / 5) * 100;
-		var color = 'red';
-		if (strengthPercent >= 80) color = 'green';
-		else if (strengthPercent >= 60) color = 'orange';
+        var strengthPercent = (strength / 5) * 100;
+        var color = 'red';
+        if (strengthPercent >= 80) color = 'green';
+        else if (strengthPercent >= 60) color = 'orange';
 
-		$strengthIndicator.css({
-			width: strengthPercent + '%',
-			backgroundColor: color
-		});
+        $strengthIndicator.css({
+            width: strengthPercent + '%',
+            backgroundColor: color
+        });
 
-		var allValid = updateChecklist(value);
+        updateChecklist(pwd);
 
-		if (!strongPasswordRegex.test(value)) {
-			$passwordHelp.text('Must include uppercase, lowercase, number & special character').css('color', 'orange');
-			$submitBtn.prop('disabled', true);
-		} else {
-			$passwordHelp.text('Strong password').css('color', 'green');
-			if (value === $confirmPassword.val()) {
-				$submitBtn.prop('disabled', false);
-				$message.text('');
-			}
-		}
-	});
+        // Password strength
+        if (!strongPasswordRegex.test(pwd)) {
+            $passwordHelp.text('Must include uppercase, lowercase, number & special character')
+                         .css('color', 'orange');
+            $submitBtn.prop('disabled', true);
+            $message.text('');
+            return;
+        } else {
+            $passwordHelp.text('Strong password').css('color', 'green');
+        }
 
-	$password.on('paste copy cut', function (e) {
-		e.preventDefault();
-	});
-	
-	$confirmPassword.on('input', function () {
-		if ($password.val() !== $confirmPassword.val()) {
-			$message.text('Passwords do not match ❌').css('color', 'red');
-			$submitBtn.prop('disabled', true);
-		} else {
-			$message.text('Passwords match ✔').css('color', 'green');
-			if (strongPasswordRegex.test($password.val())) {
-				$submitBtn.prop('disabled', false);
-			}
-		}
-	});
-	
-	$confirmPassword.on('paste copy cut', function (e) {
-	    e.preventDefault();
-	});
+        // Match check
+        if (pwd !== cpwd || !cpwd) {
+            $message.text('Passwords do not match ❌').css('color', 'red');
+            $submitBtn.prop('disabled', true);
+        } else {
+            $message.text('Passwords match ✔').css('color', 'green');
+            $submitBtn.prop('disabled', false);
+        }
+    }
+
+    $password.on('input', validatePasswords);
+    $confirmPassword.on('input', validatePasswords);
+
+    $password.on('paste copy cut', function (e) { e.preventDefault(); });
+    $confirmPassword.on('paste copy cut', function (e) { e.preventDefault(); });
 });
+
 
 function updateChecklist(password) {
 	var rules = {
@@ -243,38 +244,82 @@ function togglePassword(fieldId, icon) {
 	}
 }
 
-function checkoldPassword() {
-	var Npwd = $('#password').val();
-	var cpwd = $('#confirm_password').val();
-	var Opwd = $('#Oldpassword').val();
+function checkoldPassword(event) {
+    event.preventDefault(); 
 
-	if (Npwd && cpwd && Opwd) {
-		$.ajax({
-			type: "GET",
-			url: "NewPasswordChangeCheck.htm",
-			data: { oldpass: Opwd },
-			datatype: 'json',
-			success: function (result) {
-				if (result === '1') {
-					if (Npwd === Opwd) {
-						alert('Your New Password Should Not Be Same as Your Old Password');
-					} else if (Npwd === '123' || Npwd === '1234') {
-						alert('Default or Weak Passwords are not Allowed');
-					} else if (confirm("Are You Sure To Submit?")) {
-						$('#myfrm').submit();
-					}
-				} else {
-					alert('Please Enter Correct Old Password.');
-				}
-			}
-		});
-	} else {
-		alert("Please Enter All Fields!");
-		return false;
-	}
+    var Npwd = $('#password').val();
+    var cpwd = $('#confirm_password').val();
+    var Opwd = $('#Oldpassword').val();
+
+    if (!(Npwd && cpwd && Opwd)) {
+        alert("Please Enter All Fields!");
+        return false;
+    }
+
+    $.ajax({
+        type: "GET",
+        url: "NewPasswordChangeCheck.htm",
+        data: { oldpass: Opwd },
+        datatype: 'json',
+        success: function (result) {
+            if (result === '1') {
+                if (Npwd === Opwd) {
+                    alert('Your New Password Should Not Be Same as Your Old Password');
+                    return false; // stop here, no submission
+                } else if (Npwd === '123' || Npwd === '1234') {
+                    alert('Default or Weak Passwords are not Allowed');
+                    return false;
+                } else if (confirm("Are You Sure To Submit?")) {
+                	document.getElementById("myfrm").requestSubmit();
+                }
+            } else {
+                alert('Please Enter Correct Old Password.');
+            }
+        }
+    });
+
+    return false;
 }
+
 </script>
 
+<script type="text/javascript">
+	document.addEventListener("DOMContentLoaded", function () {
+	  const form = document.getElementById("myfrm");
+	  if (!form) return;
 
+	  form.addEventListener("submit", function(e) {
+	    const oldPwdField = document.getElementById("Oldpassword");
+	    const newPwdField = document.getElementById("password");
+	    const cnfPwdField = document.getElementById("confirm_password");
+
+	    const oldPwd = oldPwdField.value;
+	    const newPwd = newPwdField.value;
+
+	    var keyBase64 = (document.getElementById("sessionKey") || {}).value || "";
+	    var ivBase64  = (document.getElementById("sessionIv")  || {}).value || "";
+
+	    const key = CryptoJS.enc.Base64.parse(keyBase64);
+	    const iv  = CryptoJS.enc.Base64.parse(ivBase64);
+
+	    function encryptAES(plain) {
+	      if (!plain) return "";
+	      const encrypted = CryptoJS.AES.encrypt(
+	        CryptoJS.enc.Utf8.parse(plain),
+	        key,
+	        { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 }
+	      );
+	      return encrypted.ciphertext.toString(CryptoJS.enc.Base64);
+	    }
+
+	    if (oldPwd) oldPwdField.value = encryptAES(oldPwd);
+	    if (newPwd){
+	    	newPwdField.value = encryptAES(newPwd);
+	    	cnfPwdField.value = newPwdField.value;
+	    }
+	    
+	  });
+	});
+</script>
 </body>
 </html>

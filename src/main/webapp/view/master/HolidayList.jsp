@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.List"%>
 <%@page import="com.ibm.icu.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -133,27 +134,23 @@ System.out.println("year in jsp--"+year);
 %>
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	
-	
-	<center>
-	
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-            </div>
-            
-    </center>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
     
-    
-                    <%} %>
 
 
 <div class="container-fluid">	
@@ -169,7 +166,7 @@ System.out.println("year in jsp--"+year);
 <table>
 	<tr>
 	  <td>
- <input class="form-control  form-control" type="text" id="year"  name="Year" style="width: 70px" <%if(year!=null){%> value="<%=year%>" <%}%> >
+ <input class="form-control  form-control" type="text" id="year"  name="Year" style="width: 70px" <%if(year!=null){%> value="<%=StringEscapeUtils.escapeHtml4(year)%>" <%}%> >
         </td>
 	       <td>
            <input type="submit" value="Submit" class="btn btn-primary btn-sm submit" > </td>
@@ -200,10 +197,10 @@ System.out.println("year in jsp--"+year);
         <%if(HolidayList.size()>0){ %>
 	       <%for(Object[] obj:HolidayList){ %>
 	         <tr>
-	             <td align="center"><input type="radio" name="HolidayId" value=<%=obj[0]%>  ></td> 
+	             <td align="center"><input type="radio" name="HolidayId" value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):""%>  ></td> 
 	             
-	             <td style="text-align: left"><%if(obj[1]!=null){%><%=sdf.format(obj[1]) %><%}else{ %>-<%} %></td>
-	             <td style="text-align: left"> <%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></td>
+	             <td style="text-align: left"><%if(obj[1]!=null){%><%=StringEscapeUtils.escapeHtml4(sdf.format(obj[1])) %><%}else{ %>-<%} %></td>
+	             <td style="text-align: left"> <%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%}else{ %>-<%} %></td>
 	              <td style="text-align: left;width: 30%;"><%if(obj[3].toString().equals("G")){ %>General<%} %><%if(obj[3].toString().equals("R")){ %>Restricted<%} %>
 					  <%if(obj[3].toString().equals("W")){ %>Working Saturday/Sunday<%} %><%if(obj[3].toString().equals("H")){ %>Holiday For Working Saturday/Sunday<%} %>
 					  </td>

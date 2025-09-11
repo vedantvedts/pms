@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -166,28 +167,22 @@ String committeemainid=committeedata[0].toString();
 
  <!-- ----------------------------------message ------------------------- -->
 
-	<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-
-
-	<center>
-
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</center>
-	<%}if(ses!=null){ %>
-	<center>
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-
-	</center>
-
-
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 <!-- ----------------------------------message ------------------------- -->
 
@@ -205,11 +200,11 @@ String committeemainid=committeedata[0].toString();
 					<div class="card-header">
 						<div class="row">
 							<div class="col-md-10">
-							<h3 style="color:  #055C9D" ><%=committeedata[8] %>
+							<h3 style="color:  #055C9D" ><%=committeedata[8]!=null?StringEscapeUtils.escapeHtml4(committeedata[8].toString()): " - " %>
 							
 								<p style="float: right;">
 									
-										<%if(Long.parseLong(projectid)>0){ %> Project : <%=projectdata[4] %><%}else if (Long.parseLong(divisionid)>0){ %>  Division : <%=divisiondata[1] %> <%}else if(Long.parseLong(initiationid)>0){ %>Initiated Project : <%=initiationdata[1]%> <%} %> (Approval Pending)
+										<%if(Long.parseLong(projectid)>0){ %> Project : <%=projectdata[4]!=null?StringEscapeUtils.escapeHtml4(projectdata[4].toString()): " - " %><%}else if (Long.parseLong(divisionid)>0){ %>  Division : <%=divisiondata[1]!=null?StringEscapeUtils.escapeHtml4(divisiondata[1].toString()): " - " %> <%}else if(Long.parseLong(initiationid)>0){ %>Initiated Project : <%=initiationdata[1]!=null?StringEscapeUtils.escapeHtml4(initiationdata[1].toString()): " - "%> <%} %> (Approval Pending)
 									
 								</p>
 							</h3>
@@ -248,10 +243,10 @@ String committeemainid=committeedata[0].toString();
 														   	for (Object[] obj :historydata) {   %>
 																<tr>
 																	<td><%=count %></td>
-																	<td><%=obj[3] %></td>
-																	<td><%=obj[7] %></td>
-																	<td><%=obj[8] %>(<%=obj[9] %>)</td>
-																	<td> <%= sdf.format(sdf1.parse( obj[6].toString()))%> </td>															
+																	<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
+																	<td><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %></td>
+																	<td><%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - " %>(<%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - " %>)</td>
+																	<td><%=obj[6]!=null? sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[6].toString()))):" - "%> </td>															
 																</tr>
 														<% count++; } %>
 												</tbody>

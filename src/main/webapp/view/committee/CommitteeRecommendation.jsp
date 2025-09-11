@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.master.model.IndustryPartner"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -93,23 +94,23 @@ String type=(String)request.getAttribute("type");
 					<tbody>
 					<tr>
 					<td class="text-primary" style="width:22%"> Reference No. &nbsp;:</td>
-					<td><%=CommitteMainEnoteList[1].toString() %></td>
+					<td><%=CommitteMainEnoteList[1]!=null?StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[1].toString()): " - " %></td>
 					<td class="text-primary" style="width:15%"> Reference Date.&nbsp; :</td>
-					<td ><%=sdf.format(sdf1.parse(CommitteMainEnoteList[2].toString()))%></td>
+					<td ><%=sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[2].toString())))%></td>
 					</tr>
 					
 					<tr>
 					<td class="text-primary"> Subject :</td>
-					<td colspan="3" > <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[3]!=null){%><%=CommitteMainEnoteList[3].toString() %><%} %></td>
+					<td colspan="3" > <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[3]!=null){%><%=StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[3].toString()) %><%} %></td>
 					</tr>
 					<tr>
 					<td class="text-primary"> Comment :</td>
-					<td colspan="3"> <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[4]!=null){%><%=CommitteMainEnoteList[4].toString() %><%} %></td>
+					<td colspan="3"> <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[4]!=null){%><%=StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[4].toString()) %><%} %></td>
 					</tr>
 					
 					<tr>
 					<td class="text-primary"> Initiated By -</td>
-					<td colspan="3"> <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[18]!=null){%><%=CommitteMainEnoteList[18].toString() %>, <%=CommitteMainEnoteList[19].toString()%><%} %></td>
+					<td colspan="3"> <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[18]!=null){%><%=StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[18].toString()) %>, <%=CommitteMainEnoteList[19]!=null?StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[19].toString()): ""%><%} %></td>
 					</tr>
 					
 					<tr>
@@ -119,7 +120,7 @@ String type=(String)request.getAttribute("type");
 					for(Object[] obj:employeelist){
 					if(obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[7].toString())){
 					%>
-					<%=obj[1].toString() %>, <%=CommitteMainEnoteList[8].toString() %> 
+					<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>, <%=CommitteMainEnoteList[8]!=null?StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[8].toString()): " - " %> 
 					<%}}} %>
 					</td>
 					</tr>
@@ -132,7 +133,7 @@ String type=(String)request.getAttribute("type");
 					<%for(Object[] obj:employeelist){
 					if(obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[9].toString())){
 					%>
-					<%=obj[1].toString() %>, <%=CommitteMainEnoteList[10].toString() %> 
+					<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>, <%=CommitteMainEnoteList[10]!=null?StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[10].toString()): " - "  %> 
 					<%}} %>
 					</td>
 					</tr>
@@ -147,7 +148,7 @@ String type=(String)request.getAttribute("type");
 					<%for(Object[] obj:employeelist){
 					if(obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[11].toString())){
 					%>
-					<%=obj[1].toString() %>, <%=CommitteMainEnoteList[12].toString() %> 
+					<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>, <%=CommitteMainEnoteList[12]!=null?StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[12].toString()): " - "  %> 
 					<%}} %>
 					</td>
 					</tr>
@@ -161,7 +162,7 @@ String type=(String)request.getAttribute("type");
 					<%for(Object[] obj:employeelist){
 					if(obj[0].toString().equalsIgnoreCase(CommitteMainEnoteList[13].toString())){
 					%>
-					<%=obj[1].toString() %>, <%=CommitteMainEnoteList[14].toString() %> 
+					<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>, <%=CommitteMainEnoteList[14]!=null?StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[14].toString()): " - "  %> 
 					<%}} %>
 					</td>
 					</tr>
@@ -226,7 +227,7 @@ String type=(String)request.getAttribute("type");
 				                		<%} %><br>
 				                			Constituted By 
 				                			<br>
-				                			<%=NewApprovalList[0].toString() %>
+				                			<%=NewApprovalList[0]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[0].toString()): " - "  %>
 				                		</td>
 				                		<%if(NewApprovalList!=null && NewApprovalList[2]!=null){ %>
 				                		<td rowspan="2">
@@ -240,7 +241,7 @@ String type=(String)request.getAttribute("type");
 				                			Recommended Officer 1
 				                		
 				                			<br>
-				                			<%=NewApprovalList[1].toString() %>
+				                			<%=NewApprovalList[1]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[1].toString()): " - "%>
 				                		</td>
 				                		
 				                		<%} %>
@@ -257,7 +258,7 @@ String type=(String)request.getAttribute("type");
 				                		Recommended Officer 2
 				                	
 				                		<br>
-				                			<%=NewApprovalList[3].toString() %>
+				                			<%=NewApprovalList[3]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[3].toString()): " - "%>
 				                		</td>
 				                		<%} %>
 				                		<%if(NewApprovalList!=null && NewApprovalList[6]!=null){ %>
@@ -273,7 +274,7 @@ String type=(String)request.getAttribute("type");
 				                			Recommended Officer 3
 				                		
 				                			<br>
-				                			<%=NewApprovalList[5].toString() %>
+				                			<%=NewApprovalList[5]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[5].toString()): " - " %>
 				                		</td>
 				                		<%} %>
 				                		<%if(NewApprovalList!=null && NewApprovalList[8]!=null){ %>
@@ -284,7 +285,7 @@ String type=(String)request.getAttribute("type");
 				                		<td class="trup" style="background: #F4A261;" >
 				                			Approving Officer
 				                			<br>
-				                			<%=NewApprovalList[7].toString() %>
+				                			<%=NewApprovalList[7]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[7].toString()): " - " %>
 				                		</td>
 				                		<%} %>
 				                			                		
@@ -295,11 +296,11 @@ String type=(String)request.getAttribute("type");
 				           <br><div class="col-md-12" >
 				                <%if(CommitteMainEnoteList[22]!=null && !CommitteMainEnoteList[22].toString().equalsIgnoreCase((String)session.getAttribute("labcode"))){ %>
 				                	<%if(NewApprovalList[5]!=null) {%>
-				                <h6 style="color:red">Note : This committee will be approved once it receives a recommendation from <%=NewApprovalList[5] %>.</h6>
+				                <h6 style="color:red">Note : This committee will be approved once it receives a recommendation from <%=NewApprovalList[5]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[5].toString()): " - " %>.</h6>
 				                <%}else if(NewApprovalList[3]!=null){ %>
-				             <h6 style="color:red">Note : This committee will be approved once it receives a recommendation from <%=NewApprovalList[3] %>.</h6>
+				             <h6 style="color:red">Note : This committee will be approved once it receives a recommendation from <%=StringEscapeUtils.escapeHtml4(NewApprovalList[3].toString()) %>.</h6>
 				                <%}else if(NewApprovalList[1]!=null){ %>
-				             <h6 style="color:red">Note : This committee will be approved once it receives a recommendation from <%=NewApprovalList[1] %>.</h6>
+				             <h6 style="color:red">Note : This committee will be approved once it receives a recommendation from <%=StringEscapeUtils.escapeHtml4(NewApprovalList[1].toString()) %>.</h6>
 				                <%}} %>
 				                </div>	
 				                	</div>

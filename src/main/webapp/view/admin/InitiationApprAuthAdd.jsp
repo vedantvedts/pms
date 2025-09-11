@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.vts.pfms.admin.model.PfmsRtmddo"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
@@ -51,22 +52,22 @@ String action = (String)request.getAttribute("action");
 List<String> apprTypes = Arrays.asList("AD","DO-RTMD","GH-DP&C","AD-P&C","Chairman RPB","MMFD AG","GD DF&MM","Chairperson (CARS Committee)","Lab Accounts Officer");
 %>
 
-<% String ses=(String)request.getParameter("result"); 
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 <br>
 	
@@ -75,7 +76,7 @@ List<String> apprTypes = Arrays.asList("AD","DO-RTMD","GH-DP&C","AD-P&C","Chairm
 		<div class="col-md-12">
 			<div class="card shadow-nohover" >
 				<div class="card-header" style=" background-color: #055C9D;margin-top: ">
-                    <b class="text-white">Approval Authority <%if(action!=null) {%><%=action %><%} %> </b>
+                    <b class="text-white">Approval Authority <%if(action!=null) {%><%=StringEscapeUtils.escapeHtml4(action)%><%} %> </b>
         		</div>
         		<div class="card-body">
         			<%-- <div class="row " style=" background-color: #e4f9f5;margin-bottom: 10px; ">
@@ -98,7 +99,7 @@ List<String> apprTypes = Arrays.asList("AD","DO-RTMD","GH-DP&C","AD-P&C","Chairm
                               		<select class="form-control selectdee" id="EmpId" required="required" name="empId">
     									<option disabled="disabled" selected value="">Choose...</option>
     										<% for (Object[] obj : EmployeeList) {%>
-										<option value="<%=obj[0]%>" <%if(appr!=null && appr.getEmpId()!=null && appr.getEmpId()==Long.parseLong(obj[0].toString())) {%>selected<%} %> ><%=obj[1]%>,  <%=obj[2] %> </option>
+										<option value="<%=obj[0]%>" <%if(appr!=null && appr.getEmpId()!=null && appr.getEmpId()==Long.parseLong(obj[0].toString())) {%>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>,  <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> </option>
 											<%} %>
   									</select>
                         		</div>
@@ -110,7 +111,7 @@ List<String> apprTypes = Arrays.asList("AD","DO-RTMD","GH-DP&C","AD-P&C","Chairm
                               		<select class="form-control selectdee" required="required" name="adminRole">
     									<option disabled="disabled" selected value="">Choose...</option>
     										<% for (String role : apprTypes) {%>
-										<option value="<%=role%>" <%if(appr!=null && appr.getType()!=null && appr.getType().equalsIgnoreCase(role)) {%>selected<%} %> ><%=role%> </option>
+										<option value="<%=role%>" <%if(appr!=null && appr.getType()!=null && appr.getType().equalsIgnoreCase(role)) {%>selected<%} %> ><%=role!=null?StringEscapeUtils.escapeHtml4(role): " - "%> </option>
 											<%} %>
   									</select>
                         		</div>

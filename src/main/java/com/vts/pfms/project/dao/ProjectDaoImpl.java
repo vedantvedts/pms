@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.vts.pfms.committee.model.ActionAssign;
 import com.vts.pfms.committee.model.CommitteeInitiation;
 import com.vts.pfms.committee.model.PfmsNotification;
+import com.vts.pfms.master.model.RoleMaster;
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
 import com.vts.pfms.project.dto.PfmsRiskDto;
 import com.vts.pfms.project.model.InitiationAbbreviations;
@@ -177,7 +178,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTRISKDATA ="SELECT DISTINCT am.actionmainid, am.actionitem, am.projectid, aas.actionstatus,am.type,aas.pdcorg,aas.enddate,aas.actionno,aas.actionassignid FROM action_main am ,action_assign aas WHERE aas.actionmainid=am.actionmainid AND  am.type='K' AND aas.ActionAssignId=:actionassignid";
 	private static final String AUTHORITYATTACHMENT="SELECT a.authorityid,a.initiationid,a.authorityname,a.letterdate,a.letterno,c.attachmentname,b.empname,c.initiationauthorityfileid FROM pfms_initiation_authority a,employee b,pfms_initiation_authority_file c WHERE a.initiationid=:initiationid AND a.authorityname=b.empid AND a.authorityid=c.authorityid";
 	private static final String AUTHORITYUPDATE="UPDATE pfms_initiation_authority SET authorityname=:authorityname, letterdate=:letterdate,letterno=:letterno, modifiedby=:modifiedby,modifieddate=:modifieddate WHERE initiationid=:initiationid";
-	private static final String PROJECTMAINLIST="SELECT a.projectmainid,b.projecttypeid,b.projecttype,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.totalsanctioncost, a.pdc, a.revisionno,a.objective,a.deliverable FROM project_main a, project_type b WHERE a.projecttypeid=b.projecttypeid AND a.isactive='1' AND b.isactive='1' ORDER BY a.sanctiondate DESC";
+	private static final String PROJECTMAINLIST="SELECT a.projectmainid,b.projecttypeid,b.projecttype,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.totalsanctioncost, a.pdc, a.revisionno,a.objective,a.deliverable, a.ProjectDirector FROM project_main a, project_type b WHERE a.projecttypeid=b.projecttypeid AND a.isactive='1' AND b.isactive='1' ORDER BY a.sanctiondate DESC";
 	private static final String OFFICERLIST="SELECT a.empid, a.empno, a.empname, b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid,a.labcode FROM employee a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid AND a.isactive='1' ORDER BY a.srno=0,a.srno ASC ";
 	private static final String PROJECTMAINEDITDATA="SELECT a.projectmainid,b.projecttypeid,b.projecttype,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.sanctioncostre, a.sanctioncostfe, a.totalsanctioncost, a.pdc,a.projectdirector,a.projsancauthority,a.boardreference,a.ismainwc,a.workcenter, a.revisionno,a.objective,a.deliverable, a.LabParticipating,a.CategoryId,a.scope ,a.enduser  ,a.application , a.projectshortname, a.PlatformId FROM project_main a, project_type b WHERE a.projecttypeid=b.projecttypeid and a.projectmainid=:promainid and a.isactive='1' and b.isactive='1' ORDER BY a.projecttypeid, a.projectmainid"; 
 	private static final String PROJECTLIST1="SELECT a.projectid,b.projectmainid,b.projectcode AS id,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.totalsanctioncost, a.pdc, a.revisionno,a.objective,a.deliverable,a.labcode FROM project_main b, project_master a, project_type c WHERE c.projecttypeid=b.projecttypeid AND a.projectmainid=b.projectmainid AND a.isactive='1' AND b.isactive='1' ORDER BY a.sanctiondate DESC";
@@ -185,7 +186,9 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTCATEGORY="select classificationid, classification from pfms_security_classification";
 	private static final String PROJECTEDITDATA="SELECT a.projectid,b.projectmainid,c.projecttype as id,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.sanctioncostre, a.sanctioncostfe, a.totalsanctioncost, a.pdc,a.projectdirector,a.projsancauthority,a.boardreference,a.ismainwc,a.workcenter, a.revisionno,a.objective,a.deliverable,a.projectcategory, a.ProjectType ,a.ProjectShortName ,a.EndUser , a.scope ,a.application ,a.LabParticipating, CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',d.designation,e.MobileNo,e.Email,(SELECT MAX(remarks) FROM project_master_rev WHERE projectid=:proid) AS 'Remarks', a.PlatformId  FROM project_main b, project_master a, project_type c,employee e,employee_desig d WHERE c.projecttypeid=b.projecttypeid and a.projectid=:proid and a.projectmainid=b.projectmainid and a.isactive='1' and b.isactive='1'AND a.projectdirector=e.empid AND e.desigid=d.desigid  ORDER BY a.projectid, a.projectmainid"; 
 	private static final String PROJECTITEMLIST11="SELECT a.projectid, a.projectcode,a.projectname FROM project_master a WHERE isactive='1'";
-	private static final String PROJECTASSIGNLIST="SELECT a.projectemployeeid, c.empid, a.projectid, CONCAT(IFNULL(CONCAT(c.title,' '),''), c.empname) AS 'empname' , d.designation, e.divisioncode,c.MobileNo,c.Email FROM project_employee a, employee c, employee_desig d, division_master e WHERE a.empid=c.empid AND c.desigid=d.desigid AND c.divisionid=e.divisionid AND  a.isactive='1' AND c.isactive='1' AND e.isactive='1'  AND a.projectid= :proid "; 
+	private static final String PROJECTASSIGNLIST="SELECT a.ProjectEmployeeId, a.EmpId, a.ProjectId, CONCAT(IFNULL(CONCAT(b.Title,' '),(IFNULL(CONCAT(b.Salutation, ' '), ''))), b.EmpName) AS 'EmpName', c.Designation, d.Divisioncode, b.MobileNo, b.Email, a.RoleMasterId, b.LabCode, d.DivisionName, e.RoleCode, e.RoleName \r\n"
+			+ "FROM project_employee a LEFT JOIN employee b ON a.EmpId=b.EmpId LEFT JOIN employee_desig c ON b.DesigId=c.DesigId LEFT JOIN division_master d ON b.DivisionId=d.DivisionId LEFT JOIN pfms_role_master e ON a.RoleMasterId=e.RoleMasterId\r\n"
+			+ "WHERE a.IsActive=1 AND a.ProjectId=:proid ORDER BY (a.RoleMasterId = 0), a.RoleMasterId"; 
 	private static final String USERLIST="SELECT  b.empid, CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname',b.labcode,c.designation FROM employee b, employee_desig c  WHERE  b.isactive=1 AND b.desigid=c.desigid AND b.EmpId NOT IN( SELECT EmpId FROM project_employee WHERE ProjectId=:projectid AND IsActive='1')";
 	private static final String PROJECTDATA="SELECT a.projectid, a.projectcode FROM project_master a WHERE a.projectid=:proid";
 	private static final String PROJECTRISKMATRIXDATA="SELECT riskid,projectid,actionmainid,description, severity,probability,mitigationplans,revisionno,LabCode,RPN,Impact,Category,RiskTypeId , status , remarks FROM pfms_risk WHERE actionmainid=:actionmainid";
@@ -4529,5 +4532,53 @@ public class ProjectDaoImpl implements ProjectDao {
 		return (List<Object[]>)query.getResultList();
 	}
 
+	private static final String PROJECTTEAMLISTBYLABCODE="SELECT a.EmpId, CONCAT(IFNULL(CONCAT(a.Title,' '),(IFNULL(CONCAT(a.Salutation, ' '), ''))), a.EmpName) AS 'EmpName', b.Designation FROM employee a LEFT JOIN employee_desig b ON a.DesigId=b.DesigId WHERE a.IsActive=1 AND a.LabCode=:LabCode AND a.EmpId NOT IN (SELECT c.EmpId FROM project_employee c WHERE c.ProjectId=:ProjectId AND c.IsActive=1)"; 
+	@Override
+	public List<Object[]> getProjectTeamListByLabCode(String labCode, String projectId) {
+		try {
+			Query query = manager.createNativeQuery(PROJECTTEAMLISTBYLABCODE);
+			query.setParameter("LabCode", labCode);
+			query.setParameter("ProjectId", projectId);
+			return (List<Object[]>)query.getResultList();	
+		}catch (Exception e) {
+			e.printStackTrace();	
+			return new ArrayList<>();
+		}
+	}
+	
+	@Override
+	public List<RoleMaster> getRoleMasterList() throws Exception {
+		try {
+			Query query = manager.createQuery("FROM RoleMaster");
+			return (List<RoleMaster>)query.getResultList();	
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<RoleMaster>();
+		}
+	}
+	
+	@Override
+	public ProjectAssign getProjectAssignById(String projectEmployeeId) throws Exception{
+		try {
+			return manager.find(ProjectAssign.class, Long.parseLong(projectEmployeeId));
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	private static final String GETPROJECTEMPLOYEEIDBYPROJECTID = "SELECT COALESCE((SELECT ProjectEmployeeId FROM project_employee WHERE ProjectId =:ProjectId AND RoleMasterId =:RoleMasterId LIMIT 1), 0) AS ProjectEmployeeId";
+	@Override
+	public Long getProjectEmployeeIdByProjectId(String projectId, String roleMasterId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETPROJECTEMPLOYEEIDBYPROJECTID);
+			query.setParameter("ProjectId", projectId);
+			query.setParameter("RoleMasterId", roleMasterId);
+			return (Long)query.getSingleResult();	
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		}
+	}
 }
 

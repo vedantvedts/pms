@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -44,22 +45,23 @@ Object[] initiationdata= (Object[])request.getAttribute("initiationdata");
 %>
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-%>
-		<div align="center">
-			<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-            </div>
+
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
         </div>
-	<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-             </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
         </div>
-   <%} %>
+    </div>
+<% } %>
 
 
 
@@ -69,7 +71,7 @@ Object[] initiationdata= (Object[])request.getAttribute("initiationdata");
 				<div class="row">
 					<div class="col-6"><h4>CHECKLIST</h4></div>
 					<div class="col-6">
-						<h4 style="float: right;">Project &nbsp;&nbsp;:&nbsp;&nbsp;<%=initiationdata[9] %> &nbsp;&nbsp;&nbsp;
+						<h4 style="float: right;">Project &nbsp;&nbsp;:&nbsp;&nbsp;<%=initiationdata[9]!=null?StringEscapeUtils.escapeHtml4(initiationdata[9].toString()): " - " %> &nbsp;&nbsp;&nbsp;
 							<a class="btn btn-info btn-sm  shadow-nohover back" href="ProjectIntiationList.htm" style="color: white!important; float: right;">BACK</a>
 						</h4>
 					</div>
@@ -119,7 +121,7 @@ Object[] initiationdata= (Object[])request.getAttribute("initiationdata");
 				  						<%if(!clsn1.contains(item[2].toString() ))
 				  						{
 				  							clsn1.add(item[2].toString() );%>
-				  							<%=item[2] %>
+				  							<%=item[2]!=null?StringEscapeUtils.escapeHtml4(item[2].toString()): " - " %>
 				  							  
 				  						<%} %>
 				  						
@@ -128,9 +130,9 @@ Object[] initiationdata= (Object[])request.getAttribute("initiationdata");
 				  					
 				  					<td colspan="4"  style=" overflow-wrap: break-word; width: 60%">
 				  						<%if(Integer.parseInt(item[3].toString())>0) { %>	
-				  							<%=item[4] %>
+				  							<%=item[4]!=null?StringEscapeUtils.escapeHtml4(item[4].toString()): " - " %>
 				  						<%}else if(Integer.parseInt(item[3].toString())==0){ %>
-				  							<b><%=item[4] %></b>
+				  							<b><%=item[4]!=null?StringEscapeUtils.escapeHtml4(item[4].toString()): " - " %></b>
 				  						<%} %>
 				  					</td>
 				  					<td style="width: 20%" >
@@ -162,7 +164,7 @@ Object[] initiationdata= (Object[])request.getAttribute("initiationdata");
 				  						<%if(!clsn2.contains(item[2].toString() ))
 				  						{
 				  							clsn2.add(item[2].toString() );%>
-				  							<%=item[2] %>
+				  							<%=item[2]!=null?StringEscapeUtils.escapeHtml4(item[2].toString()): " - " %>
 				  							  
 				  						<%} %>
 				  						
@@ -171,9 +173,9 @@ Object[] initiationdata= (Object[])request.getAttribute("initiationdata");
 				  					
 				  					<td colspan="4"  style=" overflow-wrap: break-word; width: 60%">
 				  						<%if(Integer.parseInt(item[3].toString())>0) { %>	
-				  							<%=item[4] %>
+				  							<%=item[4]!=null?StringEscapeUtils.escapeHtml4(item[4].toString()): " - " %>
 				  						<%}else if(Integer.parseInt(item[3].toString())==0){ %>
-				  							<b><%=item[4] %></b>
+				  							<b><%=item[4]!=null?StringEscapeUtils.escapeHtml4(item[4].toString()): " - " %></b>
 				  						<%} %>
 				  					</td>
 				  					<td style="width: 20%" >
@@ -205,7 +207,7 @@ Object[] initiationdata= (Object[])request.getAttribute("initiationdata");
 				  						<%if(!clsn3.contains(item[2].toString() ))
 				  						{
 				  							clsn3.add(item[2].toString() );%>
-				  							<%=item[2] %>
+				  							<%=item[2]!=null?StringEscapeUtils.escapeHtml4(item[2].toString()): " - " %>
 				  							  
 				  						<%} %>
 				  						
@@ -214,9 +216,9 @@ Object[] initiationdata= (Object[])request.getAttribute("initiationdata");
 				  					
 				  					<td colspan="4"  style=" overflow-wrap: break-word; width: 60%">
 				  						<%if(Integer.parseInt(item[3].toString())>0) { %>	
-				  							<%=item[4] %>
+				  							<%=item[4]!=null?StringEscapeUtils.escapeHtml4(item[4].toString()): " - " %>
 				  						<%}else if(Integer.parseInt(item[3].toString())==0){ %>
-				  							<b><%=item[4] %></b>
+				  							<b><%=item[4]!=null?StringEscapeUtils.escapeHtml4(item[4].toString()): " - " %></b>
 				  						<%} %>
 				  					</td>
 				  					<td style="width: 20%" >

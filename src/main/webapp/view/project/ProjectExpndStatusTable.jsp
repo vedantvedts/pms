@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.master.dto.ProjectFinancialDetails"%>
 <%@page import="java.util.List"%>
@@ -283,7 +284,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 							 		REVENUE
 							 	</td>
 							<%} %> --%>
-							<td style=""><b><%=projectFinancialDetail.getBudgetHeadDescription()%></b></td>
+							<td style=""><b><%=projectFinancialDetail.getBudgetHeadDescription()!=null?StringEscapeUtils.escapeHtml4(projectFinancialDetail.getBudgetHeadDescription()): " - "%></b></td>
 							<!-- Sanction Cost -->
 							<!-- IC -->
 							<td align="right" style="text-align: right !important;"><%=df.format(projectFinancialDetail.getReSanction())%></td>
@@ -367,7 +368,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 							 		CAPITAL
 							 	</td>
 							<%} %> --%>
-							<td><b><%=projectFinancialDetail.getBudgetHeadDescription()%></b></td>
+							<td><b><%=projectFinancialDetail.getBudgetHeadDescription()!=null?StringEscapeUtils.escapeHtml4(projectFinancialDetail.getBudgetHeadDescription()): " - "%></b></td>
 							<!-- Sanction Cost -->
 							<!-- IC -->
 							<td align="right" style="text-align: right !important;"><%=df.format(projectFinancialDetail.getReSanction())%></td>

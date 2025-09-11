@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -14,7 +15,7 @@
 label {
 	font-weight: bold;
 	font-size: 14px;
-}
+}f
 
 .table thead tr, tbody tr {
 	font-size: 14px;
@@ -324,25 +325,22 @@ List<Object[]>ParaDetails=(List<Object[]>)request.getAttribute("ParaDetails");
 
 String InitiationReqId=(String)request.getAttribute("InitiationReqId");
 %>
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	
-
-	<div align="center">
-
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-	</div>
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	<div id="reqmain" class="card-slider">
 
 		<div class="container-fluid" style="" id="main">
@@ -386,7 +384,7 @@ String InitiationReqId=(String)request.getAttribute("InitiationReqId");
 			<%int count=1;
 			for(Object []obj:RequirementList) {%>
 			<button type="button" class="btn btn-secondary viewbtn mt-2"
-				id="<%=obj[0] %>" value="<%=obj[0]%>"  onclick="showDetails(<%=obj[0].toString()%>)"><%=obj[1] %></button>
+				id="<%=obj[0] %>" value="<%=obj[0]%>"  onclick="showDetails(<%=obj[0].toString()%>)"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></button>
 			<%count++;} %>
 		</div>	
 			<div class="container" id="container">
@@ -546,7 +544,7 @@ String InitiationReqId=(String)request.getAttribute("InitiationReqId");
 												<option disabled="disabled" value="" selected="selected">Choose..</option>
 												<%if(!RequirementTypeList.isEmpty()){
 												for(Object[] obj:RequirementTypeList){ %>
-												<option value="<%=obj[0]+" "+obj[1]+" "+obj[3]%>"><%=obj[3]+"-"+obj[2]%></option>
+												<option value="<%=obj[0]+" "+obj[1]+" "+obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> <%="-"+(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ")%></option>
 												<%}}%>
 												<option class="bg-success text-light" value="1">ADD NEW</option>
 											</select>
@@ -620,7 +618,7 @@ String InitiationReqId=(String)request.getAttribute("InitiationReqId");
 														onchange="showSelectValue()">
 														<option value="" disabled="disabled">---Choose----</option>
 														<%for(Object[] obj:RequirementList){ %>
-														<option value="<%=obj[0]%>" title=<%=obj[3] %>><%=obj[1]%></option>
+														<option value="<%=obj[0]%>" title=<%=obj[3] %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
 														<%}%>
 													</select>
 													<%}else{%>
@@ -651,7 +649,7 @@ String InitiationReqId=(String)request.getAttribute("InitiationReqId");
 														<%
 														for (Object[] obj : ParaDetails) {
 														%>
-														<option value="<%=obj[0]%>"><%=obj[3]%></option>
+														<option value="<%=obj[0]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 														<%
 														}
 														%>

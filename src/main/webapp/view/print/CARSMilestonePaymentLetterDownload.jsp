@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.IndianRupeeFormat"%>
 <%@page import="com.vts.pfms.cars.model.CARSContract"%>
 <%@page import="java.util.Date"%>
@@ -19,7 +20,7 @@
 CARSInitiation carsIni =(CARSInitiation)request.getAttribute("CARSInitiationData");
 String MilestoneNo = (String)request.getAttribute("MilestoneNo");
 %>
-<title>Payment towards <%=MilestoneNo %> </title>
+<title>Payment towards <%=MilestoneNo!=null?MilestoneNo: " - " %> </title>
 <style>
 
 .break{
@@ -214,7 +215,7 @@ Object[] dPandC = (Object[])request.getAttribute("DPandC");
     <table style="border-collapse: collapse;width: 98%;margin-top: 10px;">
      	<tr>
      		<td>
-     			<span>No:</span> <span><%=carsContract.getContractNo() %> </span>
+     			<span>No:</span> <span><%=carsContract.getContractNo()!=null?carsContract.getContractNo(): " - " %> </span>
      		</td>
      		<td style="text-align: right;" >
      			<span>Date:</span> <span><%if(ptcdetails.getOtherDocDate()!=null) {%> <%=fc.SqlToRegularDate(ptcdetails.getOtherDocDate()) %><%} else{%><%=rdf.format(new Date()) %><%} %> </span>
@@ -235,7 +236,7 @@ Object[] dPandC = (Object[])request.getAttribute("DPandC");
 		<tr>
 			<td>1.</td>
 			<td>
-				&nbsp;&nbsp;Reference is made to CARS Contract No. <%if(carsContract!=null) {%><%=carsContract.getContractNo() %> <%} %> 
+				&nbsp;&nbsp;Reference is made to CARS Contract No. <%if(carsContract!=null) {%><%=carsContract.getContractNo()!=null?carsContract.getContractNo(): " - " %> <%} %> 
 				dt. <%if(carsContract!=null && carsContract.getContractDate()!=null) {%>
 					<%=fc.SqlToRegularDate(carsContract.getContractDate()) %>.
 					<%} %>
@@ -245,7 +246,7 @@ Object[] dPandC = (Object[])request.getAttribute("DPandC");
 		<tr>
 			<td style="vertical-align: top;">2.</td>
 			<td>
-				&nbsp;&nbsp;Invoice received from <%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> <%} %>,
+				&nbsp;&nbsp;Invoice received from <%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()!=null?carsIni.getRSPInstitute(): " - "%> <%=", "%> <%=carsIni.getRSPCity()!=null?carsIni.getRSPCity(): " - " %> <%} %>,
 				 for the subject CARS is enclosed for release of
 				 <%if(MilestoneNo!=null && !MilestoneNo.equalsIgnoreCase("MIL-0")) {%><%=MilestoneNo %> <%} else{%>Initial Advance<%} %>
 				 payment and further necessary action please.
@@ -259,10 +260,10 @@ Object[] dPandC = (Object[])request.getAttribute("DPandC");
 	<table style="width: 98%;margin-top: 10px;">
 		<tr>
 			<td style="text-align: right;">
-			<%if(dPandC[4]!=null) {%><%=dPandC[4] %>
-			<%} else if(dPandC[5]!=null){%><%=dPandC[5] %>
+			<%if(dPandC[4]!=null) {%><%=dPandC[4].toString() %>
+			<%} else if(dPandC[5]!=null){%><%=dPandC[5].toString() %>
 			<%} else{%><%} %>
-			<%=dPandC[1]+", "+dPandC[2] %>
+			<%=dPandC[1]!=null?dPandC[1].toString(): " - "%> <%=", "%> <%=dPandC[2]!=null?dPandC[2].toString(): " - " %>
 			</td>
 		</tr>
 		<tr>
@@ -287,7 +288,7 @@ Object[] dPandC = (Object[])request.getAttribute("DPandC");
 			<td>Encl:</td>
 		</tr>
 		<tr>
-			<td>i. &nbsp;&nbsp;&nbsp;Original invoice no. <%if(mpdetails!=null) {%><%=mpdetails.getInvoiceNo() %><%} %> 
+			<td>i. &nbsp;&nbsp;&nbsp;Original invoice no. <%if(mpdetails!=null) {%><%=mpdetails.getInvoiceNo()!=null?mpdetails.getInvoiceNo(): " - " %><%} %> 
 			dated <%if(mpdetails!=null && mpdetails.getInvoiceDate()!=null) {%>
 					<%=fc.SqlToRegularDate(mpdetails.getInvoiceDate()) %>
 					<%} %>

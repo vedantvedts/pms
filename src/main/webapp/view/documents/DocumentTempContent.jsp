@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%-- <%@page import="com.vts.pfms.docs.model.PfmsDoc"%>
@@ -208,26 +209,22 @@ ul, #myUL {
 
  <!-- ----------------------------------message ------------------------- -->
 
-	<%		
-		String ses=(String)request.getParameter("result"); 
-	 	String ses1=(String)request.getParameter("resultfail");
-	 	
-		if(ses1!=null)
-		{ %>
-			<div align = "center">
-				<div class="alert alert-danger" role="alert">
-					<%=ses1 %>
-				</div>
-			</div>
-		<% }
-		if(ses!=null)
-		{ %>
-		<div align = "center">
-			<div class="alert alert-success" role="alert">
-				<%=ses %>
-			</div>
-		</div>
-		<%} %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
 
 <!-- ----------------------------------message ------------------------- -->
 
@@ -283,8 +280,8 @@ ul, #myUL {
 				<div style="padding: 5px 0px 5px 0px; margin:-20px 0px 5px 0px; width: 100%; border: 1px solid black;" align="center">				
 					<form action="DocVersionDownload.htm" method="post" target="_blank">
 						<span style="color: black;font-weight: 500;">
-							<%=headertext2 %> 
-							(Ver :&nbsp;&nbsp;<%=docversionnos.get(0)[0] %>)&nbsp;&nbsp;
+							<%=headertext2!=null?StringEscapeUtils.escapeHtml4(headertext2): " - " %> 
+							(Ver :&nbsp;&nbsp;<%=docversionnos.get(0)[0]!=null?StringEscapeUtils.escapeHtml4(docversionnos.get(0)[0].toString()): " - " %>)&nbsp;&nbsp;
 							
 							&nbsp;&nbsp;
 							<%if(tempitemlist.size()>0 ){ %>
@@ -308,13 +305,13 @@ ul, #myUL {
 					<div class="col-6">
 						<div class="col-12" style="margin-left: -10px;" >		
 							<div class="col-12" style="text-align: ;">
-								<b><%=headertext1 %> </b>
+								<b><%=headertext1!=null?StringEscapeUtils.escapeHtml4(headertext1): " - " %> </b>
 							</div>																
 						    <div class="panel panel-info" >
 						    	<div class="panel-heading " >
 						    		<form action="" method="post" target="_blank">
 							        	<h3 class="panel-title" style="font-size: 15px; margin: -3px;color: #4FBD45"> 
-							        		<%=headertext2%> <%-- (Ver &nbsp;: <%=pfmsdocdata[4]%>) --%>
+							        		<%=headertext2!=null?StringEscapeUtils.escapeHtml4(headertext2): " - "%> <%-- (Ver &nbsp;: <%=pfmsdocdata[4]%>) --%>
 							        		<%if(tempitemlist.size()>0 && isfrozen.equalsIgnoreCase("N") ){ %>
 							        			( Draft )
 							        			&nbsp;<button type="submit" class="btn btn-sm" data-toggle="tooltip" data-placement="top" title="Download file"  formaction="DocDraftDownload.htm" ><i class="fa fa-download" aria-hidden="true" style="color: green"></i></button>
@@ -338,7 +335,7 @@ ul, #myUL {
 						         			if(count==1){ temp = item[0].toString(); } %>
 							      		<div class="panel-heading ">
 							        		<h4 class="panel-title">
-							        			<span  style="font-size:14px"><%=count %> ) <%=item[4] %>&nbsp;&nbsp;</span>
+							        			<span  style="font-size:14px"><%=count %> ) <%=item[4]!=null?StringEscapeUtils.escapeHtml4(item[4].toString()): " - " %>&nbsp;&nbsp;</span>
 							        			<%if( isfrozen.equalsIgnoreCase("N")){%>
 								        			<%if(item[5]!=null ){ 	splcount++; %> 
 								        			<button type="button" class="btn btn-warning btn-sm" id="btn-clk-<%=item[0] %>" style="width:40px; height: 20px; padding-top : 2px; font-size:10px; font-weight: bold; text-align: justify;"  onclick="getItemData('<%=item[0]%>',0,'','','<%=item[0]%>',1);">EDIT</button>
@@ -364,7 +361,7 @@ ul, #myUL {
 												<div class="panel panel-info">
 													<div class="panel-heading">
 														<h4 class="panel-title">
-															<span>	<%=count %>.<%=count1 %>. <%=item1[4] %>&nbsp;&nbsp;</span>
+															<span>	<%=count %>.<%=count1 %>. <%=item1[4]!=null?StringEscapeUtils.escapeHtml4(item1[4].toString()): " - " %>&nbsp;&nbsp;</span>
 															<%if( isfrozen.equalsIgnoreCase("N")){%>
 																<%if(item1[5]!=null ){ 	splcount++; %>
 											        			<button type="button" class="btn btn-warning btn-sm" id="btn-clk-<%=item1[0] %>" style="width:40px; height: 20px; padding-top : 2px; font-size:10px; font-weight: bold; text-align: justify;"  onclick="getItemData('<%=item1[0]%>',1,'<%=item[4]%>','','<%=item[0]%>-<%=item1[0]%>',1);">EDIT</button>
@@ -390,7 +387,7 @@ ul, #myUL {
 																<div class="panel panel-info">
 																	<div class="panel-heading">
 																		<h4 class="panel-title">
-																			<span ><%=count %>.<%=count1 %>.<%=count2 %>. <%=item2[4] %>&nbsp;&nbsp; </span>
+																			<span ><%=count %>.<%=count1 %>.<%=count2 %>. <%=item2[4]!=null?StringEscapeUtils.escapeHtml4(item2[4].toString()): " - " %>&nbsp;&nbsp; </span>
 																			<%if( isfrozen.equalsIgnoreCase("N")){%>
 																				<%if(item2[5]!=null ){ 	splcount++; %>
 															        			<button type="button" class="btn btn-warning btn-sm" id="btn-clk-<%=item2[0] %>" style="width:40px; height: 20px; padding-top : 2px; font-size:10px; font-weight: bold; text-align: justify;"  onclick="getItemData('<%=item2[0]%>',2,'<%=item[4]%>','<%=item1[4]%>','<%=item[0]%>-<%=item1[0]%>-<%=item2[0]%>',1);">EDIT</button>
@@ -529,8 +526,8 @@ ul, #myUL {
 	         			for(Object[] obj :docversionnos){ %>
 		         		<tr>
 		         			<td><%=count1 %></td>
-		         			<td><%=obj[0] %></td>
-		         			<td><%=sdf1.format(sdf.parse(obj[1].toString())) %> </td>
+		         			<td><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %></td>
+		         			<td><%=obj[1]!=null?sdf1.format(sdf.parse(obj[1].toString())):" - " %> </td>
 		         			<td>
 		         				<button type="submit" class="btn btn-sm" name="versionno" value="<%=obj[0] %>">
 									<i class="fa fa-download" aria-hidden="true" style="color: green"></i>

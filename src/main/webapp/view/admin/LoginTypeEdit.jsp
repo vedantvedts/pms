@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -91,28 +92,22 @@ Object[] LoginTypeEditData=(Object[]) request.getAttribute("LoginTypeEditData");
 
 
 
-<%
-String ses=(String)request.getParameter("result"); 
-String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){
-%>
-	
-	
-<div align="center">	
-
-	<div class="alert alert-danger" role="alert">
-           <%=ses1 %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
     </div>
-    
-	<%}if(ses!=null){ %>
-	
-	<div class="alert alert-success" role="alert" >
-          <%=ses %>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
     </div>
-            
-</div>
-    
-  <%} %>
+<% } %>
 	
 <!-- <div class="container" >
 <div class="row">
@@ -151,7 +146,7 @@ if(ses1!=null){
                     		<div class="col-md-4 ">
                         		<div class="form-group">
                             		<label class="control-label">Username (Employee)</label>
-                              		 <input  class="form-control form-control"  type="text"   readonly   value="<%=(LoginTypeEditData[0]) %> (<%=(LoginTypeEditData[1]) %>)">
+                              		 <input  class="form-control form-control"  type="text"   readonly   value="<%=(LoginTypeEditData[0]) %> (<%=(LoginTypeEditData[1]!=null?StringEscapeUtils.escapeHtml4(LoginTypeEditData[1].toString()): " - ") %>)">
                         		</div>
                     		</div> 
                
@@ -161,7 +156,7 @@ if(ses1!=null){
     								<select class="custom-select" id="RoleId" required="required" name="RoleId">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : RoleList) {%>
-												<option value="<%=obj[0]%>" <%if(LoginTypeEditData[3].toString().equalsIgnoreCase(obj[1].toString())){ %> selected="selected" <%} %>><%=obj[1]%></option>
+												<option value="<%=obj[0]%>" <%if(LoginTypeEditData[3].toString().equalsIgnoreCase(obj[1].toString())){ %> selected="selected" <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
 											<%} %>
   									</select>
                         		</div>

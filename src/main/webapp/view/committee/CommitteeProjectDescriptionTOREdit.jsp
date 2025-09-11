@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
     <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -14,7 +15,6 @@
 	<link href="${contentCss}" rel="stylesheet" />
 
 
-	<title> ADD COMMITTEE</title>
 	<style type="text/css">
 		.input-group-text {
 			font-weight: bold;
@@ -45,20 +45,22 @@ Object[] committeeprojectdata=(Object[])request.getAttribute("committeeprojectda
 Object[] committeemaindata=(Object[])request.getAttribute("committeemaindata");
 String committeemainid=committeemaindata[0].toString();
 %>
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br />
     
@@ -89,7 +91,9 @@ String committeemainid=committeemaindata[0].toString();
 									<%-- <textarea class="form-control"  name="description" required placeholder="Enter Description" rows="5" cols="50" maxlength="1000"><%if(committeeprojectdata[1]!=null){ %><%=committeeprojectdata[1] %>   <% }%></textarea> --%>
 								
 												<div id="Editordescription" class="center">
-												<%if(committeeprojectdata[1]!=null){ %><%=committeeprojectdata[1] %>   <% }%>
+
+												<%if(committeeprojectdata!=null && committeeprojectdata[1]!=null){ %><%=committeeprojectdata[1].toString() %>   <% }%>
+
 															<textarea name="description"  id="description" >
 															</textarea>
 														</div>
@@ -102,7 +106,9 @@ String committeemainid=committeemaindata[0].toString();
 									<label class="control-label">Terms Of Reference </label>
 									<%-- <textarea class="form-control"  name="TOR" required placeholder="Enter Terms Of Reference" rows="5" cols="50" maxlength="1000"><%if(committeeprojectdata[2]!=null){ %><%=committeeprojectdata[2] %>   <% }%></textarea> --%>
 									<div id="EditorReference" class="center">
-						<%if(committeeprojectdata[2]!=null){ %><%=committeeprojectdata[2] %>   <% }%>
+
+						<%if(committeeprojectdata!=null && committeeprojectdata[2]!=null){ %><%=committeeprojectdata[2].toString() %>   <% }%>
+
 									
 															<textarea name="TOR"  id="TOR" >
 															</textarea>
@@ -118,7 +124,7 @@ String committeemainid=committeemaindata[0].toString();
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								
 								
-								<input type="hidden" name="committeeprojectid" value="<%=committeeprojectdata[0] %>" />
+								<input type="hidden" name="committeeprojectid" value="<%=committeeprojectdata!=null?committeeprojectdata[0]:"0" %>" />
 								<input type="hidden" name="committeemainid" value="<%=committeemainid %>" />
 								
 							

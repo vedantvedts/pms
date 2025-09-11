@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -236,27 +237,21 @@
     FormatConverter fc = new FormatConverter();
 %>
 	<% 
-	    String ses = (String) request.getParameter("result");
-	    String ses1 = (String) request.getParameter("resultfail");
-	    if (ses1 != null) {
-	%>
-	    <div align="center">
-	        <div class="alert alert-danger" role="alert">
-	            <%= ses1 %>
-	        </div>
-	    </div>
-	<% 
-	    }
-	    if (ses != null) { 
-	%>
-	    <div align="center">
-	        <div class="alert alert-success" role="alert">
-	            <%= ses %>
-	        </div>
-	    </div>
-	<% 
-	    } 
-	%>
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 	<div class="container-fluid mainDiv">        
 	    <div class="col-md-12">
@@ -290,7 +285,7 @@
 											for (Object[] obj : projectList) {
 												String projectshortName1 = (obj[17] != null) ? " ( " + obj[17].toString() + " ) " : ""; %>
 												<option value="<%=obj[0]%>"  <%if(obj[0].toString().equalsIgnoreCase(projectId)){ %> selected <%} %>>
-													<%=obj[4]+projectshortName1 %>
+													<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> <%=projectshortName1!=null?StringEscapeUtils.escapeHtml4(projectshortName1): " - " %>
 												</option>
 										<%} }%>
 									</select>
@@ -300,7 +295,7 @@
 										<%if(preProjectList!=null && preProjectList.size()>0){
 											for (Object[] obj : preProjectList) {%>
 												<option value="<%=obj[0]%>"  <%if(obj[0].toString().equalsIgnoreCase(initiationId)){ %> selected <%} %>>
-													<%=obj[3]+"( "+obj[2]+" )" %>
+													<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> <%="( "+(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ")+" )" %>
 												</option>
 										<%} }%>
 									</select>	
@@ -318,7 +313,7 @@
 									<%if(productTreeList!=null && productTreeList.size()>0){
 										for (Object[] obj : productTreeList) { %>
 											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(productTreeMainId)){ %> selected <%} %>>
-												<%=obj[1]+" "+obj[2] %>
+												<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> <%=" "+(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - ") %>
 											</option>
 										<%} }%>
 								</select>
@@ -348,16 +343,16 @@
 	                                %>
 	                                <tr>
 	                                    <td class="center" ><%= count %></td>
-	                                    <td ><%= obj[10]+", "+obj[11] %></td>
-	                                    <td class="center"><%= fc.sdfTordf(obj[4].toString()) %></td>
-	                                    <td class="center" >v<%= obj[1] %></td>
+	                                    <td ><%= obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - "%> <%=", "+(obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - ") %></td>
+	                                    <td class="center"><%= obj[4]!=null?fc.sdfTordf(obj[4].toString()):" - " %></td>
+	                                    <td class="center" >v<%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
 	                                    <td align="center" >
 	                      					<form action="#">
 				                            	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				                            	<input type="hidden" name="docId" value="<%=obj[0] %>">
 				                            	<input type="hidden" name="docType" value="C">
 				                            	<button type="submit" class="btn btn-sm btn-link w-70 btn-status" formaction="IGIDocTransStatus.htm" data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[15] %>; font-weight: 600;" formtarget="_blank">
-											    	<%=obj[14] %>&emsp;<i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+											    	<%=obj[14]!=null?StringEscapeUtils.escapeHtml4(obj[14].toString()): " - " %>&emsp;<i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 												</button>
 	                                        </form>
 		                      			</td>
@@ -470,7 +465,7 @@
 	           			<table align="center"  >
 	        				<tr>
 	        					<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
-	         						Prepared By - <%if(irsApproval!=null) {%><%=irsApproval[10] %> <%} else{%>Prepared By<%} %>
+	         						Prepared By - <%if(irsApproval!=null) {%><%=StringEscapeUtils.escapeHtml4(irsApproval[10].toString()) %> <%} else{%>Prepared By<%} %>
 	         					</td>
 	             		
 	                    		<td rowspan="2">
@@ -478,7 +473,7 @@
 	             				</td>
 	             						
 	        					<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
-	        						Reviewer - <%if(irsApproval!=null) {%><%=irsApproval[9] %> <%} else{%>Reviewer<%} %>
+	        						Reviewer - <%if(irsApproval!=null) {%><%=StringEscapeUtils.escapeHtml4(irsApproval[9].toString()) %> <%} else{%>Reviewer<%} %>
 	        	    			</td>
 	             	    				
 	                    		<td rowspan="2">
@@ -486,7 +481,7 @@
 	             				</td>
 	             						
 	             				<td class="trup" style="background: linear-gradient(to top, #9b999a 10%, transparent 115%);">
-	             					Approver - <%if(irsApproval!=null) {%><%=irsApproval[8] %> <%} else{%>Approver<%} %>
+	             					Approver - <%if(irsApproval!=null) {%><%=StringEscapeUtils.escapeHtml4(irsApproval[8].toString()) %> <%} else{%>Approver<%} %>
 	             	    		</td>
 	            			</tr> 	
 	            	    </table>			             

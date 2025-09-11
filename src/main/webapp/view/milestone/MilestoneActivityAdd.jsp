@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -85,6 +86,7 @@ h6{
 <body>
   <%
   
+  List<Object[]> allLabList=(List<Object[]>)request.getAttribute("allLabList");
   List<Object[]> EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
   List<Object[]> ActivityTypeList=(List<Object[]>)request.getAttribute("ActivityTypeList");
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
@@ -93,26 +95,27 @@ h6{
   String projectDirector=(String)request.getAttribute("projectDirector");
   Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");
 
-  
+  String labcode = (String)session.getAttribute("labcode");
  %>
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
-
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
     <br />
     
   <div class="container">
@@ -123,11 +126,11 @@ h6{
  			<div class="card shadow-nohover" >
 				
 				<div class="card-header" style=" background-color: #055C9D;margin-top: ">
-                    <b class="text-white"><%=ProjectDetail[2] %>(<%=ProjectDetail[1] %>) Milestone Activity Add</b>
+                    <b class="text-white"><%=ProjectDetail[2]!=null?StringEscapeUtils.escapeHtml4(ProjectDetail[2].toString()): " - " %>(<%=ProjectDetail[1]!=null?StringEscapeUtils.escapeHtml4(ProjectDetail[1].toString()): " - " %>) Milestone Activity Add</b>
         		</div>
         
         		<div class="card-body">
-        	     			<form action="MilestoneActivityAddSubmit.htm" method="POST" name="myfrm" id="myfrm">
+        	     	<form action="MilestoneActivityAddSubmit.htm" method="POST" name="myfrm" id="myfrm">
                 		<div class="row">
                    
          					 		<!-- <div class="col-md-2">
@@ -136,13 +139,12 @@ h6{
     					            <input class="form-control " name="MilestoneNo" required="required"  type="number" min="0" max="9999999" >
                         		</div>
                     		</div> -->
-                          <div class="col-sm-10" align="left"  >
-                          <div class="form-group">
-                           <label  >Activity Name: <span class="mandatory" style="color: red;" >*</span>
-                           </label><br>
-                             <input class="form-control " type="text"name="ActivityName" id="ActivityName"  style="width:100% " maxlength="1000" required="required">
-                           </div>
-                           </div>
+                       		<div class="col-sm-10" align="left"  >
+                          		<div class="form-group">
+                           			<label  >Activity Name: <span class="mandatory" style="color: red;" >*</span></label><br>
+                             		<input class="form-control " type="text"name="ActivityName" id="ActivityName"  style="width:100% " maxlength="1000" required="required">
+                           		</div>
+                           	</div>
                            
                     		<div class="col-md-2">
                         		<div class="form-group">
@@ -150,15 +152,22 @@ h6{
                               		<select class="form-control selectdee" id="ActivityType" required="required" name="ActivityType">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : ActivityTypeList) {%>
-										<option value="<%=obj[0]%>"><%=obj[1]%> </option>
+										<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> </option>
 											<%} %>
   									</select>
                         		</div>
                     		</div>
                     
-                </div>
+                		</div>
                 		<div class="row">
-
+							<div class="col-md-2">
+								<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+								<select class="form-control selectdee" name="labCode" id="labCode1" required onchange="renderEmployeeList('1')" data-placeholder= "Lab Name">
+								    <% for (Object[] obj : allLabList) { %>
+								    	<option value="<%=obj[3]%>" <%if(labcode.equalsIgnoreCase(obj[3].toString())) {%>selected<%} %> ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
+								    <%}%>
+								</select>
+							</div>
                     		<div class="col-md-4">
                         		<div class="form-group">
                             		<label class="control-label">First OIC  </label>
@@ -168,11 +177,19 @@ h6{
                               		<select class="form-control selectdee" id="EmpId" required="required" name="EmpId">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : EmployeeList) {%>
-										<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%> </option>
+										<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> </option>
 											<%} %>
   									</select>
                         		</div>
                     		</div>
+                    		<div class="col-md-2">
+                    			<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+								<select class="form-control selectdee" name="labCode1" id="labCode2" required onchange="renderEmployeeList('2')" data-placeholder= "Lab Name">
+								    <% for (Object[] obj : allLabList) { %>
+								    	<option value="<%=obj[3]%>" <%if(labcode.equalsIgnoreCase(obj[3].toString())) {%>selected<%} %> ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
+								    <%}%>
+								</select>
+							</div>
                     		<div class="col-md-4 ">
                         		<div class="form-group">
                             		<label class="control-label">Second OIC </label>
@@ -182,12 +199,15 @@ h6{
                               		<select class="form-control selectdee" id="EmpId1" required="required" name="EmpId1">
     									<option disabled="true" selected value="">Choose...</option>
     										<% for (Object[] obj : EmployeeList) {%>
-											<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%> </option>
+											<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> </option>
 											<%} %>
   									</select>
                         		</div>
                     		</div>
-                    		<div class="col-md-2">
+                    	</div>
+                    		
+						<div class="row">
+							<div class="col-md-2">
                         		<div class="form-group">
                             		<label class="control-label">From</label>
     					            <input class="form-control " name="ValidFrom" id="DateCompletion" required="required"  >
@@ -199,12 +219,9 @@ h6{
     					            <input class="form-control " name="ValidTo" id="DateCompletion2" required="required"  disabled="disabled">
                         		</div>
                     		</div>
-                   
-                    		</div>
-                    		
-
+						</div>
             
-      	
+      					<input type="hidden" id="currLabCode" value="<%=labcode%>">
          
         <div class="form-group" align="center" >
 			
@@ -214,7 +231,7 @@ h6{
 			   <input type="hidden" name="projectDirector" value="<%=projectDirector%>">  
 		
 		</div>
-      <input type="hidden" name="ProjectId"	value="<%=ProjectId %>" /> 
+      <input type="hidden" name="ProjectId" id="ProjectId" value="<%=ProjectId %>" /> 
 
 	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
  	</form>
@@ -238,72 +255,61 @@ h6{
 
 <script type="text/javascript">
 
+	var ProjectId = $('#ProjectId').val();
 
-
-function changeempoic1()
-{
-  if (document.getElementById('allempcheckbox1').checked) 
-  {
-    employeefetch(0,'EmpId');
-  } else {
-	  employeefetch(<%=ProjectId%>,'EmpId');
-  }
-}
-
-
-function changeempoic2()
-{
-  if (document.getElementById('allempcheckbox2').checked) 
-  {
-    employeefetch(0,'EmpId1');
-  } else {
-	  employeefetch(<%=ProjectId%>,'EmpId1');
-  }
-}
-
-
+	function changeempoic1() {
+		var labCode  = $('#labCode1').val();
+		if (document.getElementById('allempcheckbox1').checked)  {
+	    	employeefetch(0,'EmpId', labCode);
+	  	} else {
+			employeefetch(ProjectId,'EmpId', labCode);
+	  	}
+	}
 	
-	function employeefetch(ProID,dropdownid){
-			
+	
+	function changeempoic2() {
+		var labCode  = $('#labCode2').val();
+		if (document.getElementById('allempcheckbox2').checked) {
+	    	employeefetch(0,'EmpId1', labCode);
+	  	} else {
+			employeefetch(ProjectId,'EmpId1', labCode);
+	  	}
+	}
+
+	function employeefetch(ProID, dropdownid, labCode){
+
+		$.ajax({		
+			type : "GET",
+			url : "ProjectEmpListFetch.htm",
+			data : {
+				projectid : ProID,
+				labCode : labCode
+				   },
+			datatype : 'json',
+			success : function(result) {
+	
+				var result = JSON.parse(result);
+					
+				var values = Object.keys(result).map(function(e) {
+							 return result[e]
+						  
+				});
+					
+				var s = '<option value="">'+"--Select--"+ '</option>';
+				 for (i = 0; i < values.length; i++) {									
+					s += '<option value="'+values[i][0]+'">'
+							+values[i][1] + ", " +values[i][2] 
+							+ '</option>';
+				} 
+					 
+				$('#'+dropdownid).html(s);
 				
-						$.ajax({		
-							type : "GET",
-							url : "ProjectEmpListFetch.htm",
-							data : {
-								projectid : ProID
-								   },
-							datatype : 'json',
-							success : function(result) {
-		
-							var result = JSON.parse(result);
-								
-							var values = Object.keys(result).map(function(e) {
-										 return result[e]
-									  
-							});
-								
-					var s = '';
-						s += '<option value="">'+"--Select--"+ '</option>';
-								 for (i = 0; i < values.length; i++) {									
-									s += '<option value="'+values[i][0]+'">'
-											+values[i][1] + ", " +values[i][2] 
-											+ '</option>';
-								} 
-								 
-								$('#'+dropdownid).html(s);
-								
-							}
-						});
-		
+			}
+		});
 		
 	}
 		
 </script>
-   
-   
-
-   
-
   
 <script>
 
@@ -315,29 +321,20 @@ function SubmitBack(){
 	
 }
 
-	 
-
-
-
 </script>
-
-
-
 
 <script>
 	$('#DateCompletion').daterangepicker({
-			"singleDatePicker" : true,
-			"linkedCalendars" : false,
-			"showCustomRangeLabel" : true,
-			/* "minDate" : new Date(), */
-			"cancelClass" : "btn-default",
-			showDropdowns : true,
-			locale : {
-				format : 'DD-MM-YYYY'
-			}
-		});
-
-
+		"singleDatePicker" : true,
+		"linkedCalendars" : false,
+		"showCustomRangeLabel" : true,
+		/* "minDate" : new Date(), */
+		"cancelClass" : "btn-default",
+		showDropdowns : true,
+		locale : {
+			format : 'DD-MM-YYYY'
+		}
+	});
 	
 	var mindate;
 	$('#DateCompletion').on('change', function() {
@@ -371,10 +368,57 @@ function SubmitBack(){
 	    		format : 'DD-MM-YYYY'
 	    	}
 	    	});
-	  });
+	});
 	
-	</script>  
+</script>  
 
+<script type="text/javascript">
+	function renderEmployeeList(rowId) {
+		var labCode  = $('#labCode'+rowId).val();
+		/* var currLabCode  = $('#currLabCode').val(); */
+		
+		var rowIdShort = rowId==1?"":(rowId-1);
+		
+		employeefetch(ProjectId, 'EmpId'+rowIdShort, labCode);
+		
+		$('#allempcheckbox'+rowId).prop('checked', false);
+		/* employeeListByLabCode(rowId, labCode);
+		
+		if(currLabCode!=labCode) {
+			$('#allempcheckbox'+rowId).hide();
+		}else {
+			$('#allempcheckbox'+rowId).show();
+			$('#allempcheckbox'+rowId).prop('checked', true);
+		} */
+	}
+	
+	/* function employeeListByLabCode(rowId, labcode) {
+
+		var rowIdShort = rowId==1?"":(rowId-1);
+		$('#EmpId'+rowIdShort).empty(); 
+		$.ajax({
+		       type: "GET",
+		       url: "GetLabcodeEmpList.htm",
+		       data: {
+		       	LabCode: labcode
+		       },
+		       dataType: 'json',
+		       success: function(result) {
+		    	   if (result != null) {
+		    		   $('#EmpId'+rowIdShort).append('<option disabled="disabled" selected value="">Choose...</option>');
+		                for (var i = 0; i < result.length; i++) {
+		                    var data = result[i];
+		                    var optionValue = data[0];
+		                    var optionText = data[1].trim() + ", " + data[3]; 
+		                    var option = $("<option></option>").attr("value", optionValue).text(optionText);
+		                    $('#EmpId'+rowIdShort).append(option); 
+		                }
+		                //$('#EmpId'+(rowId==1?"":rowId)).select2('refresh');
+		           }
+		       }
+		   });
+	} */
+</script>
 
 </body>
 </html>

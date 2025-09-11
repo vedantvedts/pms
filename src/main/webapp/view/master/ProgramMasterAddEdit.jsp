@@ -1,3 +1,5 @@
+<%@page import="com.vts.pfms.FormatConverter"%>
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.committee.model.ProgrammeProjects"%>
@@ -21,13 +23,32 @@
 <body>
 
 	<%
+		FormatConverter fc = new FormatConverter();
 		ProgrammeMaster programmeMaster = (ProgrammeMaster)request.getAttribute("prgmMaster");
 		List<ProgrammeProjects> prgmprojectsList = (List<ProgrammeProjects>) request.getAttribute("prgmprojectsList");
 		List<Object[]> directorsList = (List<Object[]>) request.getAttribute("directorsList");
 		List<Object[]> projectsList = (List<Object[]>) request.getAttribute("projectsList");
 	
-		List<Long> linkedProjectIds = prgmprojectsList!=null?prgmprojectsList.stream().map(e -> e.getProjectId()).collect(Collectors.toList()):new ArrayList();
+		List<Long> linkedProjectIds = prgmprojectsList!=null?prgmprojectsList.stream().map(e -> e.getProjectId()).collect(Collectors.toList()):new ArrayList<Long>();
 	%>
+	
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
+    
 
 	<div class="container-fluid">
 		<div class="row">
@@ -45,8 +66,8 @@
 										<label class="form-label"><b class="heading">Programme Code:</b><span class="mandatory" style="color:red;">*</span></label>
 										<input type="text" class="form-control" onchange="handleInputChange(this.value,0)" placeholder="Enter Programme Code" name="ProgrammeCode" id="ProgrammeCode" required="required"
 										<%if(programmeMaster!=null){%>
-										 value="<%=programmeMaster.getPrgmCode()%>" 
-										<%} %>
+										 value="<%=programmeMaster.getPrgmCode()!=null?StringEscapeUtils.escapeHtml4(programmeMaster.getPrgmCode()):""%>" 
+										<% } %>
 										  style="font-size: 15px; text-transform: uppercase;"/> 
 									</div>
 								</div>
@@ -55,7 +76,7 @@
 										<label class="form-label"><b class="heading">Programme Name:</b><span class="mandatory" style="color:red;">*</span></label>
 										<input type="text" class="form-control" placeholder="Enter Programme Name" name="ProgrammeName" id="ProgrammeName" required="required" 
 										<%if(programmeMaster!=null){%>
-										 value="<%=programmeMaster.getPrgmName()%>" 
+										 value="<%=programmeMaster.getPrgmName()!=null?StringEscapeUtils.escapeHtml4(programmeMaster.getPrgmName()):""%>" 
 										<%} %>
 										 />
 									</div>
@@ -70,7 +91,7 @@
 											<% if(directorsList!=null && directorsList.size()>0){for(Object[] protype : directorsList){%>
 												<option value="<%= protype[0] %>" 
 												<%if(programmeMaster!=null && programmeMaster.getPrgmDirector()==Long.parseLong(protype[0].toString())){%> selected="selected" <%} %>
-												><%= protype[2] %></option>
+												><%= protype[2]!=null ? StringEscapeUtils.escapeHtml4(protype[2].toString()):"-" %></option>
 											<%}} %>
 										</select>
 									</div>
@@ -78,9 +99,9 @@
 								<div class="col-md-3">
 									<div class="form-group">
 										<label class="form-label"><b class="heading">Sanctioned On:</b><span class="mandatory" style="color:red;">*</span></label>
-										<input type="text" data-date-format="dd/mm/yyyy" id="sanc-date" name="sanctionDate" value=""class="form-control" required="required"
-										<%if(programmeMaster!=null){%>
-										 value="<%=programmeMaster.getSanctionedOn() %>" 
+										<input type="text"  id="sanc-date" name="sanctionDate" class="form-control" required="required"
+										<%if(programmeMaster!=null && programmeMaster.getSanctionedOn()!=null){%>
+											value="<%=fc.sdfTordf(programmeMaster.getSanctionedOn()) %>"
 										<%} %> readonly="readonly">
 									</div>
 								</div>
@@ -92,7 +113,7 @@
 										<select class="form-control selectdee" multiple="multiple"  name="prgmprojectids" id="prgmprojectids" data-placeholder="Choose..."	>
 											<% for (Object[] obj : projectsList){ %>
 												<option value="<%= obj[0] %>" <%if(programmeMaster!=null && linkedProjectIds!=null && linkedProjectIds.contains(Long.parseLong(obj[0].toString()))) {%> selected="selected" <%} %> >
-													<%=obj[2]%> ( <%=obj[4]%> )
+													<%=obj[2]!=null? StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%> (<%=obj[4]!=null? StringEscapeUtils.escapeHtml4(obj[4].toString()):"-"%>)
 												</option>
 											<%} %>
 										</select>
@@ -106,7 +127,7 @@
 								<% } else {%>
 									<button type="submit" class="btn btn-sm edit" value="Edit" name="action">UPDATE</button>&nbsp;&nbsp;
 									<input type="hidden" name="programmeMasterId" value="<%=programmeMaster.getProgrammeId() %>" />
-								 <%}%>
+								 <% }%>
 							 
 								<a class="btn btn-sm back" href="ProgrammeMaster.htm">BACK</a>&nbsp;&nbsp;
 							</div>
@@ -119,24 +140,22 @@
 	</div>
 	
 	<script type="text/javascript">			
+
+	$('#sanc-date').daterangepicker({
 		
-		$('#sanc-date').daterangepicker({
-			
-			"singleDatePicker": true,
-			"showDropdowns": true,
-			"cancelClass": "btn-default",
-			"maxDate":moment(), 
-			"startDate":moment(),
-			locale: {
-		    	format: 'DD-MM-YYYY'
-				}
-		});
+		"singleDatePicker": true,
+		"showDropdowns": true,
+		"cancelClass": "btn-default",
+		"maxDate":new Date() ,
+		locale: {
+	    	format: 'DD-MM-YYYY'
+			}
+	});
+	
 		function handleInputChange(value,prgmId) {
 		    var uppercasedValue = value.trim().toUpperCase();
 		    $('#ProgrammeCode').val(uppercasedValue);
-		    console.log(uppercasedValue);
 		    if (uppercasedValue.length >=2) {
-		    	  console.log("inside Condition");
 		        $.ajax({
 		            type: "GET",
 		            url: "ProgrammeCodeCheck.htm",
@@ -147,8 +166,7 @@
 		            datatype: 'json',
 		            success: function(result) {
 		                var ajaxresult = JSON.parse(result); 
-		                //console.log(ajaxresult);
-		                //Check if the group code already exists
+		                //Check if the Programme code already exists
 		                if (ajaxresult >= 1) {
 		                	 $('#ProgrammeCode').val('');
 		                    alert('Programme Code Already Exists');

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -80,22 +81,22 @@ FormatConverter fc = new FormatConverter();
 SimpleDateFormat rdf = fc.getRegularDateFormat();
 %>
 
-<% String ses=(String)request.getParameter("result"); 
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 	
@@ -133,11 +134,11 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 						                                 if(InitiationApprAuthList!=null && InitiationApprAuthList.size()>0) {
 						                                 for(Object[] obj:InitiationApprAuthList){ %>
 						                                     <tr>
-							                                     <td style="text-align: center;"><input type="radio" name="RtmddoId" value=<%=obj[0]%>  ></td> 
-							                                     <td style="text-align: left;"><%=obj[6] +" ("+obj[7]+"), "+obj[8] %></td>
-							                                     <td style="text-align: center;"><%=obj[5] %></td>
-																 <td style="text-align: center;"><%if(obj[3]!=null){%><%=rdf.format(obj[3]) %><%}else{ %>-<%} %></td>
-																 <td style="text-align: center;"><%if(obj[4]!=null){%><%=rdf.format(obj[4]) %><%}else{ %>-<%} %></td>
+							                                     <td style="text-align: center;"><input type="radio" name="RtmddoId" value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):""%>  ></td> 
+							                                     <td style="text-align: left;"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %> (<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%>), <%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - " %></td>
+							                                     <td style="text-align: center;"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></td>
+																 <td style="text-align: center;"><%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(rdf.format(obj[3])) %><%}else{ %>-<%} %></td>
+																 <td style="text-align: center;"><%if(obj[4]!=null){%><%=StringEscapeUtils.escapeHtml4(rdf.format(obj[4])) %><%}else{ %>-<%} %></td>
 						                                     </tr>
 						                                  <%} }%>
 						                             </tbody>

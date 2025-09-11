@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -44,20 +45,22 @@ h6 span{
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></div>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br/>
     
@@ -74,10 +77,10 @@ h6 span{
     	
     		<form action="RODScheduleAgenda.htm" name="myfrm" id="myfrm" method="post">    	
 	    		<div class="card-header" style="background-color: #055C9D;">
-      				<h6 style="color: orange;font-weight: bold;font-size: 1.2rem !important " align="left"><%=committeescheduleeditdata[7] %> <span> (Meeting Date and Time :      				
-	      				 &nbsp;<%=sdf.format(sdf1.parse(committeescheduleeditdata[2].toString()))%> - <%=committeescheduleeditdata[3] %>) </span> 					 
+      				<h6 style="color: orange;font-weight: bold;font-size: 1.2rem !important " align="left"><%=committeescheduleeditdata[7]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[7].toString()): " - " %> <span> (Meeting Date and Time :      				
+	      				 &nbsp;<%=sdf.format(sdf1.parse(committeescheduleeditdata[2].toString()))%> - <%=committeescheduleeditdata[3]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[3].toString()): " - " %>) </span> 					 
 	      				<input type="submit" class="btn  btn-sm back" value="BACK" style="float:right;" />
-	      				<span  style="float:right;margin: 5px 12px;" > (Meeting Id : <%=committeescheduleeditdata[11] %>) </span> 
+	      				<span  style="float:right;margin: 5px 12px;" > (Meeting Id : <%=committeescheduleeditdata[11]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[11].toString()): " - " %>) </span> 
 	      				<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6] %>">
 	      				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />      				
       				 </h6>  
@@ -98,8 +101,8 @@ h6 span{
 	      						<input type="hidden" name="scheduleidto" value="<%=scheduleidto %>"  />			
 	      					</form>	      				
 	      				</div>
-	      				<div class="col-md-5"><%if(committeescheduledata1!=null){ %> Agendas From Meeting Id : &nbsp;<%=committeescheduledata1[11] %> <%} %> </div>
-	      				<div class="col-md-3"><%if(committeescheduledata1!=null){ %>Date : &nbsp;<%=sdf.format(sdf1.parse(committeescheduledata1[2].toString())) %> &nbsp;&nbsp;&nbsp; Time :&nbsp;<%=committeescheduledata1[3] %> <%} %></div>	      				
+	      				<div class="col-md-5"><%if(committeescheduledata1!=null){ %> Agendas From Meeting Id : &nbsp;<%=committeescheduledata1[11]!=null?StringEscapeUtils.escapeHtml4(committeescheduledata1[11].toString()): " - " %> <%} %> </div>
+	      				<div class="col-md-3"><%if(committeescheduledata1!=null){ %>Date : &nbsp;<%=sdf.format(sdf1.parse(committeescheduledata1[2].toString())) %> &nbsp;&nbsp;&nbsp; Time :&nbsp;<%=committeescheduledata1[3]!=null?StringEscapeUtils.escapeHtml4(committeescheduledata1[3].toString()): " - " %> <%} %></div>	      				
 	      			</div>
 <!--   --------------------------------------------------------------------------------------------------- -->	
 				<% if(meetingsearch!=null&&meetingsearch.size()>0)	{      			%>
@@ -124,11 +127,11 @@ h6 span{
 								<% 	for (Object[] obj :meetingsearch) { %>
 										<tr>
 											<td align="center"><input type="radio" name="scheduleidfrom" value="<%=obj[2] %>" / ></td>
-											<td><%=obj[7] %></td>
-											<td><%=sdf.format(obj[3])%> </td>
-											<td> <%=obj[4] %></td>
-											<td> <%=obj[9]%></td>
-											<td><%if(obj[10]!=null){%> <%=obj[10]%> <%}else{ %> &nbsp;&nbsp;&nbsp;&nbsp;- <%} %></td>																	
+											<td><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %></td>
+											<td><%=obj[3]!=null?sdf.format(obj[3]):" - " %> </td>
+											<td> <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
+											<td> <%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - "%></td>
+											<td><%if(obj[10]!=null){%> <%=StringEscapeUtils.escapeHtml4(obj[10].toString())%> <%}else{ %> &nbsp;&nbsp;&nbsp;&nbsp;- <%} %></td>																	
 										</tr>
 							   <% }%>
 	 					</tbody>
@@ -172,12 +175,12 @@ h6 span{
 										<input type="checkbox" name="fromagendaid" id="fromagendaid" value="<%=agenda[0] %>" / >
 										
 										 </td>
-										<td ><%=agenda[3] %> </td>														
-						         		<td ><%=agenda[4] %> </td>						         		                                      
-						         		<td ><%=agenda[6] %> </td>
-						         		<td ><%=agenda[14] %> </td>		
-										<td ><%=agenda[10] %> (<%=agenda[11] %> )</td>						         		                                      
-										<td ><%=agenda[12] %> </td>
+										<td ><%=agenda[3]!=null?StringEscapeUtils.escapeHtml4(agenda[3].toString()): " - " %> </td>														
+						         		<td ><%=agenda[4]!=null?StringEscapeUtils.escapeHtml4(agenda[4].toString()): " - " %> </td>						         		                                      
+						         		<td ><%=agenda[6]!=null?StringEscapeUtils.escapeHtml4(agenda[6].toString()): " - " %> </td>
+						         		<td ><%=agenda[14]!=null?StringEscapeUtils.escapeHtml4(agenda[14].toString()): " - " %> </td>		
+										<td ><%=agenda[10]!=null?StringEscapeUtils.escapeHtml4(agenda[10].toString()): " - " %> (<%=agenda[11]!=null?StringEscapeUtils.escapeHtml4(agenda[11].toString()): " - " %> )</td>						         		                                      
+										<td ><%=agenda[12]!=null?StringEscapeUtils.escapeHtml4(agenda[12].toString()): " - " %> </td>
 																	
 									</tr>
 									<%} %>

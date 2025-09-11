@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.util.List"%>
@@ -36,22 +37,22 @@
 		String projectId = (String)request.getParameter("ProjectId");
 		FormatConverter fc = new FormatConverter();
 	%>
-	<% String ses=(String)request.getParameter("result");
-	 	String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-		%>
-		<div align="center">
-			<div class="alert alert-danger" role="alert">
-		    <%=ses1 %>
-		    </div>
-		</div>
-		<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-		    	<%=ses %>
-			</div>
-		</div>
-	<%} %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
 	
 	<div class="container-fluid mb-3">
 		<div class="card shadow-nohover">
@@ -59,7 +60,7 @@
 			<div class="card-header" style="background-color: transparent;height: 3rem;">
  				<div class="row">
  					<div class="col-md-7">
- 						<h3 class="text-dark" style="font-weight: bold;">Procurement List - <%=projectDetails!=null?(projectDetails[3]+" ("+projectDetails[1]+")"):"" %> </h3>
+ 						<h3 class="text-dark" style="font-weight: bold;">Procurement List - <%=projectDetails!=null?((projectDetails[3]!=null?StringEscapeUtils.escapeHtml4(projectDetails[3].toString()):" - ")+" ("+(projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()):" - ")+")"):"" %> </h3>
  					</div>
  					<div class="col-md-3"></div>
  					<div class="col-md-2 right">
@@ -124,12 +125,12 @@
 												<%} %>
 											</td> 
 											<td class="center"><%=++count %></td>
-											<td><%=level1[9]!=null?level1[9]:"-" %></td>
-											<td><%=level1[10]!=null?level1[10]:"-" %></td>
-											<td><%=level1[4]!=null?level1[4]:"-" %>, <%=level1[5]!=null?level1[5]:"-" %></td>
+											<td><%=level1[9]!=null?StringEscapeUtils.escapeHtml4(level1[9].toString()):"-" %></td>
+											<td><%=level1[10]!=null?StringEscapeUtils.escapeHtml4(level1[10].toString()):"-" %></td>
+											<td><%=level1[4]!=null?StringEscapeUtils.escapeHtml4(level1[4].toString()):"-" %>, <%=level1[5]!=null?StringEscapeUtils.escapeHtml4(level1[5].toString()):"-" %></td>
 											<td class="center"><%=level1[11]!=null?fc.sdfTordf(level1[11].toString()):"-" %></td>
 											<td class="center"><%=level1[12]!=null?fc.sdfTordf(level1[12].toString()):"-" %></td>
-											<td><%=level1[19]!=null?level1[19]:"-" %></td>
+											<td><%=level1[19]!=null?StringEscapeUtils.escapeHtml4(level1[19].toString()):"-" %></td>
 							 				<td>
 							 
 							 					<%if(Integer.parseInt(level1[15].toString())>0){ %>
@@ -145,7 +146,7 @@
 																bg-danger
 															<%}  %>
 															" role="progressbar" style=" width: <%=level1[15].toString() %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															<%=level1[15].toString() %>
+															<%=level1[15]!=null?StringEscapeUtils.escapeHtml4(level1[15].toString()):" - " %>
 														</div> 
 													</div> 
 												<%}else{ %>

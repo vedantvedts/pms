@@ -306,6 +306,7 @@ function Prints(myfrm){
 </body>
 </html> --%>
 
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -384,20 +385,22 @@ h6{
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
- if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br/>
 
@@ -426,7 +429,7 @@ h6{
 													%>
 													<option value="<%=obj[0]%>"
 														<%if (projectid.equalsIgnoreCase(obj[0].toString())) {%>
-														selected="selected" <%}%>><%=obj[4] + projectShortName%></option>
+														selected="selected" <%}%>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %> <%= projectShortName!=null?StringEscapeUtils.escapeHtml4(projectShortName): " - "%></option>
 													<%
 													}
 													%>       
@@ -442,7 +445,7 @@ h6{
 														selected="selected" <%}%>>ALL</option>
                                               
                                                    <% for (Object[] obj : projapplicommitteelist) {%>
-		                                        	     <option value="<%=obj[0]%>" <%if(obj[0].toString().equals(committeeid)){%>selected<%} %> ><%=obj[3]%></option>
+		                                        	     <option value="<%=obj[0]%>" <%if(obj[0].toString().equals(committeeid)){%>selected<%} %> ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
 		                                        	      <%} %>  
 							  	             </select>
 											</td> 
@@ -501,10 +504,10 @@ h6{
 																				<input type="hidden" name="committeescheduleid" value="<%=obj[0] %>" />
 																			</form> 
 																		</td>
-																		<td><%=sdf.format(obj[2])%> - <%=obj[3]%></td>																		
-																		<td><%=obj[5]%></td>
-																	  	<td><%if(obj[4]!=null){%><%=obj[4]%><%}else{ %>-<%} %></td>
-																	  	<td><%if(obj[6]!=null){%><%=obj[6]%><%}else{%>-<%} %></td>
+																		<td><%=obj[2]!=null?sdf.format(obj[2]): " - " %> - <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>																		
+																		<td><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%></td>
+																	  	<td><%if(obj[4]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString())%><%}else{ %>-<%} %></td>
+																	  	<td><%if(obj[6]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[6].toString())%><%}else{%>-<%} %></td>
 				
 																	</tr>
 																	<%count++;%>
@@ -525,10 +528,10 @@ h6{
 																				<input type="hidden" name="committeescheduleid" value="<%=obj[0] %>" />
 																			</form> 
 																		</td>
-																		<td><%=sdf.format(obj[2])%> - <%=obj[3]%></td>																		
-																		<td><%=obj[5]%></td>
-																	  	<td><%if(obj[4]!=null){%><%=obj[4]%><%}else{ %>-<%} %></td>
-				                                                        <td><%if(obj[6]!=null){%><%=obj[6]%><%}else{%>-<%} %></td>
+																		<td><%=obj[2]!=null?sdf.format(obj[2]): " - " %> - <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>																		
+																		<td><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%></td>
+																	  	<td><%if(obj[4]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString())%><%}else{ %>-<%} %></td>
+				                                                        <td><%if(obj[6]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[6].toString())%><%}else{%>-<%} %></td>
 																	</tr>
 																<%count++;%>
 																<%}}}%>										   					

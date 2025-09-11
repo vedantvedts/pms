@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -338,22 +339,22 @@ String MainId=(String)request.getAttribute("MainId");
  -->		<button class="btn btn-info btn-sm  back ml-2 mt-1" formaction="Requirements.htm" formmethod="get" formnovalidate="formnovalidate" style="float:right;">BACK</button>
 		</form>
 </nav>
-		<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-		<div class="mt-2" align="center">
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div class="mt-2" align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-	</div>
-	<%} %>
+		<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 <%if(!RequirementList.isEmpty()){ %>
 <div class="container-fluid">          
 <div class="row"> 
@@ -366,7 +367,7 @@ String MainId=(String)request.getAttribute("MainId");
       <div class="panel panel-info" style="margin-top: 10px;" id="<%="div"+obj[0].toString()%>">
       	<div class="panel-heading ">
         <h4 class="panel-title">
-        <span class="ml-2" style="font-size:14px"> <%=++i+" . "+obj[1].toString()%></span>  
+        <span class="ml-2" style="font-size:14px"> <%=++i+" . "+(obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - ")%></span>  
         </h4>
          	<div   style="float: right !important; margin-top:-32px; ;" id="tablediv<%=obj[0]%>" >
 		 		<table style="text-align: right;" >
@@ -476,9 +477,9 @@ String MainId=(String)request.getAttribute("MainId");
       <%if(!Otherrequirements.isEmpty()){ %>
        <div class="modal-body" style="display:flex;justify-content: center;align-items:center;"><div>
     <%for(Object[]obj:Otherrequirements){ %>
-       <input name="ReqValue" type="checkbox" value="<%=obj[0].toString()+"/"+obj[1].toString()%>">
+       <input name="ReqValue" type="checkbox" value="<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%> <%="/"+(obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - ")%>">
        <input name="ReqNames" type="hidden" value="<%=obj[1].toString()%>">
-       <span class="ml-1 mt-2 text-primary" style="font-weight: 600"><%=obj[1].toString() %></span><br>
+       <span class="ml-1 mt-2 text-primary" style="font-weight: 600"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span><br>
        <%}%>
        
        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">

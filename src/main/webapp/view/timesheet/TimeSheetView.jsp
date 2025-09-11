@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.google.gson.GsonBuilder"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="com.vts.pfms.timesheet.model.TimesheetKeywords"%>
@@ -335,22 +336,22 @@ String fromDateR = fc.sdfTordf(fromDate);
 String toDateR = fc.sdfTordf(toDate);
 %>
 
-	<% String ses=(String)request.getParameter("result");
-	 	String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-		%>
-		<div align="center">
-			<div class="alert alert-danger" role="alert">
-		    <%=ses1 %>
-		    </div>
-		</div>
-		<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-		    	<%=ses %>
-			</div>
-		</div>
-	<%} %>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 	<div class="container-fluid">
 		<!-- <div id="spinner" class="spinner">
@@ -423,7 +424,7 @@ String toDateR = fc.sdfTordf(toDate);
 															<%if(employeeList!=null && employeeList.size()>0) {
 																for(Object[] obj : employeeList) {%>
 																	<option value="<%=obj[0]%>" <%if(empIdW.equalsIgnoreCase(obj[0]+"")) {%>selected<%} %> >
-																		<%=(obj[1]!=null?obj[1]:(obj[2]!=null?obj[2]:""))+""+obj[5]+", "+obj[6] %>
+																		<%=(obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):""))%> <%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):""%>, <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"" %>
 																	</option>
 															<%} }%>
 														</select>
@@ -432,19 +433,19 @@ String toDateR = fc.sdfTordf(toDate);
 														<label class="form-label mt-2">Date: </label>
 													</td>
 													<td width="12%">
-														<input type="text" class="form-control " name="activityWeekDate" id="activityWeekDate" value="<%=activityWeekDate%>" onchange="this.form.submit()">
+														<input type="text" class="form-control " name="activityWeekDate" id="activityWeekDate" value="<%=activityWeekDate!=null?StringEscapeUtils.escapeHtml4(activityWeekDate):""%>" onchange="this.form.submit()">
 													</td>
 													<td width="10%" class="right">
 														<label class="form-label mt-2">Start Date: </label>
 													</td>
 													<td width="12%">
-														<input type="text" class="form-control " id="activityWeekStartDate" value="<%=fc.SqlToRegularDate(startOfWeek.toString()) %>" readonly>
+														<input type="text" class="form-control " id="activityWeekStartDate" value="<%=startOfWeek!=null?fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(startOfWeek.toString())):"" %>" readonly>
 													</td>
 													<td width="10%" class="right">
 														<label class="form-label mt-2">End Date: </label>
 													</td>
 													<td width="12%">
-														<input type="text" class="form-control " id="activityWeekEndDate" value="<%=fc.SqlToRegularDate(endOfWeek.toString()) %>" readonly>
+														<input type="text" class="form-control " id="activityWeekEndDate" value="<%=endOfWeek!=null?fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(endOfWeek.toString())):"" %>" readonly>
 													</td>
 												</tr>
 											</table>
@@ -461,13 +462,13 @@ String toDateR = fc.sdfTordf(toDate);
 			                            		<th>Expand</th>
 			                            		<th>SN</th>
 			                            		<th>Employee</th>
-												<th>Sunday <br> <span class="datecolor"><%=fc.SqlToRegularDate(startOfWeek.toString()) %></span></th>
-												<th>Monday <br> <span class="datecolor"><%=fc.SqlToRegularDate(startOfWeek.plusDays(1).toString()) %></span></th>
-												<th>Tuesday <br> <span class="datecolor"><%=fc.SqlToRegularDate(startOfWeek.plusDays(2).toString()) %></span></th>
-												<th>Wednesday <br> <span class="datecolor"><%=fc.SqlToRegularDate(startOfWeek.plusDays(3).toString()) %></span></th>
-												<th>Thursday <br> <span class="datecolor"><%=fc.SqlToRegularDate(startOfWeek.plusDays(4).toString()) %></span></th>
-												<th>Friday <br> <span class="datecolor"><%=fc.SqlToRegularDate(startOfWeek.plusDays(5).toString()) %></span></th>
-												<th>Saturday <br> <span class="datecolor"><%=fc.SqlToRegularDate(endOfWeek.toString()) %></span></th>
+												<th>Sunday <br> <span class="datecolor"><%=startOfWeek!=null?fc.SqlToRegularDate(startOfWeek.toString()):"" %></span></th>
+												<th>Monday <br> <span class="datecolor"><%=startOfWeek!=null?fc.SqlToRegularDate(startOfWeek.plusDays(1).toString()):"" %></span></th>
+												<th>Tuesday <br> <span class="datecolor"><%=startOfWeek!=null?fc.SqlToRegularDate(startOfWeek.plusDays(2).toString()):"" %></span></th>
+												<th>Wednesday <br> <span class="datecolor"><%=startOfWeek!=null?fc.SqlToRegularDate(startOfWeek.plusDays(3).toString()):"" %></span></th>
+												<th>Thursday <br> <span class="datecolor"><%=startOfWeek!=null?fc.SqlToRegularDate(startOfWeek.plusDays(4).toString()):"" %></span></th>
+												<th>Friday <br> <span class="datecolor"><%=startOfWeek!=null?fc.SqlToRegularDate(startOfWeek.plusDays(5).toString()):"" %></span></th>
+												<th>Saturday <br> <span class="datecolor"><%=endOfWeek!=null?fc.SqlToRegularDate(endOfWeek.toString()):"" %></span></th>
 											</tr>
 										</thead>
 										<tbody>
@@ -486,7 +487,7 @@ String toDateR = fc.sdfTordf(toDate);
 														<span class="clickable" data-toggle="collapse" id="row<%=count %>" data-target=".row<%=count %>"><button class="btn btn-sm btn-success" id="btn<%=count %>"  onclick="ChangeButton('<%=count %>')"><i class="fa fa-plus"  id="fa<%=count%>"></i> </button></span>
 													</td>
 													<td class="center"><%=count %></td>
-													<td><%=(obj[1]!=null?obj[1]:(obj[2]!=null?obj[2]:""))+""+obj[5]+", "+obj[6] %></td>
+													<td><%=(obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):""))%> <%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):""%>, <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"" %></td>
 													<%for (LocalDate date = startOfWeek; !date.isAfter(endOfWeek); date = date.plusDays(1)) { 
 														TimeSheet timeSheet = employeeTimesheet.get(date);
 													%>
@@ -573,7 +574,7 @@ String toDateR = fc.sdfTordf(toDate);
 																			<td>
 																				<%
 																					String activityName = milestoneActivityTypeList.stream().filter(e -> act.getActivityTypeId().equals(e.getActivityTypeId())).map(MilestoneActivityType::getActivityType).findFirst().orElse(null);
-																					out.println(activityName);
+																					out.println(StringEscapeUtils.escapeHtml4(activityName));
 																				%>
 																			</td>
 																			<td class="center">
@@ -582,7 +583,7 @@ String toDateR = fc.sdfTordf(toDate);
 																				            .filter(e -> Long.parseLong(e[0].toString()) == act.getProjectId())
 																				            .map(e ->  e[4]+" ("+e[17]+")")
 																				            .findFirst().orElse("General"): "-";
-																					out.println(project);
+																					out.println(StringEscapeUtils.escapeHtml4(project));
 																				%>
 																			</td>
 																			<td>
@@ -594,11 +595,11 @@ String toDateR = fc.sdfTordf(toDate);
 																				            .filter(e -> e.getKeywordId().equals(act.getKeywordId()))
 																				            .map(e ->  e.getKeyword())
 																				            .findFirst().orElse("-"): "-";
-																					out.println(keyword);
+																					out.println(StringEscapeUtils.escapeHtml4(keyword));
 																				%>
 																			</td>
 																			<td>
-																				<%if(act.getWorkDone()!=null && !act.getWorkDone().isEmpty()) {%><%=act.getWorkDone()%><%} else{%>-<%} %>
+																				<%if(act.getWorkDone()!=null && !act.getWorkDone().isEmpty()) {%><%=act.getWorkDone()!=null?StringEscapeUtils.escapeHtml4(act.getWorkDone()):"-"%><%} else{%>-<%} %>
 																			</td>
 																			<td class="center">
 																				<%=act.getWorkDoneon()!=null?(act.getWorkDoneon().equalsIgnoreCase("A")?"AN":(act.getWorkDoneon().equalsIgnoreCase("F")?"FN":"Full day")):"-" %>
@@ -676,7 +677,7 @@ String toDateR = fc.sdfTordf(toDate);
 															<%if(employeeList!=null && employeeList.size()>0) {
 																for(Object[] obj : employeeList) {%>
 																	<option value="<%=obj[0]%>" <%if(empId.equalsIgnoreCase(obj[0]+"")) {%>selected<%} %> >
-																		<%=(obj[1]!=null?obj[1]:(obj[2]!=null?obj[2]:""))+""+obj[5]+", "+obj[6] %>
+																		<%=(obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):""))%> <%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-"%>, <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"-" %>
 																	</option>
 															<%} }%>
 														</select>
@@ -725,15 +726,15 @@ String toDateR = fc.sdfTordf(toDate);
 												<tr>
 													<%if(i==0) {%>
 														<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=++slno%></td>
-											    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=fc.sdfTordf(obj[2].toString()) %></td>
+											    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=obj[2]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[2].toString())):"" %></td>
 			         								<%} %>
-			         								<td class="center"><%=obj[16]!=null?obj[16]:"-" %></td>
-			    									<td ><%=obj[5]!=null?obj[5]:"-" %></td>
-			    									<td class="center"><%=obj[8]!=null?obj[8]:"-" %></td>
-			    									<td><%=obj[10]!=null?obj[10]+", "+(obj[11]!=null?obj[11]:"-"):"Not Available" %></td>
-			    									<td class="center"><%=obj[13]!=null?obj[13].toString():"-" %></td>
-			    									<td><%=obj[14]!=null?obj[14]:"-" %></td>
-			    									<td class="center"><%=obj[15]!=null?(obj[15].toString().equalsIgnoreCase("A")?"AN":(obj[15].toString().equalsIgnoreCase("F")?"FN":"Full day")):"-" %></td>
+			         								<td class="center"><%=obj[16]!=null?StringEscapeUtils.escapeHtml4(obj[16].toString()):"-" %></td>
+			    									<td ><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %></td>
+			    									<td class="center"><%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()):"-" %></td>
+			    									<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString())+", "+(obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()):"-"):"Not Available" %></td>
+			    									<td class="center"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()):"-" %></td>
+			    									<td><%=obj[14]!=null?StringEscapeUtils.escapeHtml4(obj[14].toString()):"-" %></td>
+			    									<td class="center"><%=obj[15]!=null?(StringEscapeUtils.escapeHtml4(obj[15].toString()).equalsIgnoreCase("A")?"AN":(StringEscapeUtils.escapeHtml4(obj[15].toString()).equalsIgnoreCase("F")?"FN":"Full day")):"-" %></td>
 												</tr>
 											<% ++i; } } } else{%>
 												<tr>
@@ -752,7 +753,7 @@ String toDateR = fc.sdfTordf(toDate);
 										<div class="col-md-5">
 											<%Object[] emp2 = employeeList!=null && employeeList.size()>0?employeeList.stream()
 															.filter(e -> empIdP.equalsIgnoreCase(e[0]+"")).findFirst().orElse(null):null; %>
-											<b class="ml-2">Report</b> of <b><%=emp2!=null?((emp2[1]!=null?emp2[1]:(emp2[2]!=null?emp2[2]:""))+""+emp2[5]+", "+emp2[6]):"-" %></b>
+											<b class="ml-2">Report</b> of <b><%= emp2 != null ? ((emp2[1] != null ? StringEscapeUtils.escapeHtml4(emp2[1].toString()): (emp2[2] != null ? StringEscapeUtils.escapeHtml4(emp2[2].toString())  : "") )+ (emp2[5] != null ? StringEscapeUtils.escapeHtml4(emp2[5].toString())  : "") + ", " + (emp2[6] != null  ? StringEscapeUtils.escapeHtml4(emp2[6].toString())  : "")  ): "-"%></b>
 										</div>
 										<div class="col-md-7">
 											<form action="TimeSheetView.htm" method="get">
@@ -771,24 +772,24 @@ String toDateR = fc.sdfTordf(toDate);
 															<%if(employeeList!=null && employeeList.size()>0) {
 																for(Object[] obj : employeeList) {%>
 																	<option value="<%=obj[0]%>" <%if(empIdP.equalsIgnoreCase(obj[0]+"")) {%>selected<%} %> >
-																		<%=(obj[1]!=null?obj[1]:(obj[2]!=null?obj[2]:""))+""+obj[5]+", "+obj[6] %>
+																		<%=(obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):""))%> <%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):""%>, <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"" %>
 																	</option>
 															<%} }%>
 														</select>
 													</div>
 													<input type="hidden" name="activityDate" value="<%=activityDate%>">
-													<input type="hidden" name="empName" value="<%=emp2!=null?((emp2[1]!=null?emp2[1]:(emp2[2]!=null?emp2[2]:""))+""+emp2[5]+", "+emp2[6]):"-" %>">
+													<input type="hidden" name="empName" value="<%=emp2 != null ? ((emp2[1] != null ? StringEscapeUtils.escapeHtml4(emp2[1].toString()): (emp2[2] != null ? StringEscapeUtils.escapeHtml4(emp2[2].toString())  : "") )+ (emp2[5] != null ? StringEscapeUtils.escapeHtml4(emp2[5].toString())  : "") + ", " + (emp2[6] != null  ? StringEscapeUtils.escapeHtml4(emp2[6].toString())  : "")  ): "-" %>">
 													<div class="col-md-1 right">
 														<label class="form-label mt-2">From: </label>
 													</div>
 													<div class="col-md-2">
-														<input type="text" class="form-control " name="fromDate" id="fromDate" value="<%=fromDateR %>" onchange="this.form.submit()" >
+														<input type="text" class="form-control " name="fromDate" id="fromDate" value="<%=fromDateR!=null?StringEscapeUtils.escapeHtml4(fromDateR):"" %>" onchange="this.form.submit()" >
 													</div>
 													<div class="col-md-1 right">
 														<label class="form-label mt-2">To: </label>
 													</div>
 													<div class="col-md-2">
-														<input type="text" class="form-control " name="toDate" id="toDate" value="<%=toDateR %>" onchange="this.form.submit()">
+														<input type="text" class="form-control " name="toDate" id="toDate" value="<%=toDateR!=null?StringEscapeUtils.escapeHtml4(toDateR):"" %>" onchange="this.form.submit()">
 													</div>
 													<div class="col-md-2 left">
 														<button type="button" class="btn btn-sm" formnovalidate="formnovalidate" onclick="downloadPeriodicReport()" data-toggle="tooltip" data-placement="top" title="PDF Report" style="background-color: #fff">
@@ -833,15 +834,15 @@ String toDateR = fc.sdfTordf(toDate);
 												<tr>
 													<%if(i==0) {%>
 														<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=++slno%></td>
-											    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=fc.sdfTordf(obj[2].toString()) %></td>
+											    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=obj[2]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[2].toString())):"" %></td>
 			         								<%} %>
-			         								<td class="center"><%=obj[16]!=null?obj[16]:"-" %></td>
-			    									<td ><%=obj[5]!=null?obj[5]:"-" %></td>
-			    									<td class="center"><%=obj[8]!=null?obj[8]:"-" %></td>
-			    									<td><%=obj[10]!=null?obj[10]+", "+(obj[11]!=null?obj[11]:"-"):"Not Available" %></td>
-			    									<td class="center"><%=obj[13]!=null?obj[13].toString():"-" %></td>
-			    									<td><%=obj[14]!=null?obj[14]:"-" %></td>
-			    									<td class="center"><%=obj[15]!=null?(obj[15].toString().equalsIgnoreCase("A")?"AN":(obj[15].toString().equalsIgnoreCase("F")?"FN":"Full day")):"-" %></td>
+			         								<td class="center"><%=obj[16]!=null?StringEscapeUtils.escapeHtml4(obj[16].toString()):"-" %></td>
+			    									<td ><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %></td>
+			    									<td class="center"><%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()):"-" %></td>
+			    									<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString())+", "+(obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()):"-"):"Not Available" %></td>
+			    									<td class="center"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()):"-" %></td>
+			    									<td><%=obj[14]!=null?StringEscapeUtils.escapeHtml4(obj[14].toString()):"-" %></td>
+			    									<td class="center"><%=obj[15]!=null?(StringEscapeUtils.escapeHtml4(obj[15].toString()).equalsIgnoreCase("A")?"AN":(StringEscapeUtils.escapeHtml4(obj[15].toString()).equalsIgnoreCase("F")?"FN":"Full day")):"-" %></td>
 												</tr>
 											<% ++i; } } } else{%>
 												<tr>
@@ -1050,7 +1051,7 @@ function downloadMonthlyReport() {
                             // Table header
                             [
                                 { text: 'Employee: ',bold: true,  },
-                                { text: '<%=emp!=null?((emp[1]!=null?emp[1]:(emp[2]!=null?emp[2]:""))+""+emp[5]+", "+emp[6]):"-" %>',  },
+                                { text: '<%=emp!=null?((emp[1]!=null?StringEscapeUtils.escapeHtml4(emp[1].toString()):(emp[2]!=null?StringEscapeUtils.escapeHtml4(emp[2].toString()):""))+""+emp[5]!=null?StringEscapeUtils.escapeHtml4(emp[5].toString()):"-"+", "+emp[6]!=null?StringEscapeUtils.escapeHtml4(emp[6].toString()):"-"):"-" %>',  },
                                 { text: '', },
                                 
                                 { text: 'Month:',bold: true, }, 
@@ -1115,13 +1116,13 @@ function downloadMonthlyReport() {
 									  {},
 									  {},
 									<%} %>
-	                                { text: '<%=obj[16]!=null?obj[16]:"-" %>', style: 'tableData',alignment: 'center' },
-	                                { text: '<%=obj[5]!=null?obj[5]:"-" %>', style: 'tableData',alignment: 'center' },
-	                                { text: '<%=obj[8]!=null?obj[8]:"-" %>', style: 'tableData',alignment: 'center' },
-	                                { text: '<%=obj[10]!=null?obj[10]+", "+(obj[11]!=null?obj[11]:"-"):"Not Available" %>', style: 'tableData' },
-	                                { text: '<%=obj[13]!=null?obj[13]:"-" %>', style: 'tableData',alignment: 'center' },
-	                                { text: htmlToPdfmake('<%=obj[14]!=null?obj[14].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") :"-" %>'), style: 'tableData',alignment: 'left' },
-	                                { text: '<%=obj[15]!=null?(obj[15].toString().equalsIgnoreCase("A")?"AN":(obj[15].toString().equalsIgnoreCase("F")?"FN":"Full day")):"-" %>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%=obj[16]!=null?StringEscapeUtils.escapeHtml4(obj[16].toString()):"-" %>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()):"-" %>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString())+", "+(obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()):"-"):"Not Available" %>', style: 'tableData' },
+	                                { text: '<%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()):"-" %>', style: 'tableData',alignment: 'center' },
+	                                { text: htmlToPdfmake('<%=obj[14]!=null?StringEscapeUtils.escapeHtml4(obj[14].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") :"-" %>'), style: 'tableData',alignment: 'left' },
+	                                { text: '<%=obj[15]!=null?(StringEscapeUtils.escapeHtml4(obj[15].toString()).equalsIgnoreCase("A")?"AN":(obj[15].toString().equalsIgnoreCase("F")?"FN":"Full day")):"-" %>', style: 'tableData',alignment: 'center' },
 	                            ],
 	                        <% ++i; } } } else{%>
                             	[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 9 },]
@@ -1227,7 +1228,7 @@ function downloadPeriodicReport() {
                             // Table header
                             [
                                 { text: 'Employee: ',bold: true,  },
-                                { text: '<%=emp2!=null?((emp2[1]!=null?emp2[1]:(emp2[2]!=null?emp2[2]:""))+""+emp2[5]+", "+emp2[6]):"-" %>',  },
+                                { text: '<%=emp2!=null?((emp2[1]!=null?StringEscapeUtils.escapeHtml4(emp2[1].toString()):(emp2[2]!=null?StringEscapeUtils.escapeHtml4(emp2[2].toString()):""))+""+emp2[5]!=null?StringEscapeUtils.escapeHtml4(emp2[5].toString()):"-"+", "+emp2[6]!=null?StringEscapeUtils.escapeHtml4(emp2[6].toString()):"-"):"-" %>',  },
                                 { text: '', },
                                 
                                 { text: 'From:',bold: true, }, 
@@ -1297,13 +1298,13 @@ function downloadPeriodicReport() {
 									  {},
 									  {},
 									<%} %>
-	                                { text: '<%=obj[16]!=null?obj[16]:"-" %>', style: 'tableData',alignment: 'center' },
-	                                { text: '<%=obj[5]!=null?obj[5]:"-" %>', style: 'tableData',alignment: 'center' },
-	                                { text: '<%=obj[8]!=null?obj[8]:"-" %>', style: 'tableData',alignment: 'center' },
-	                                { text: '<%=obj[10]!=null?obj[10]+", "+(obj[11]!=null?obj[11]:"-"):"Not Available" %>', style: 'tableData' },
-	                                { text: '<%=obj[13]!=null?obj[13]:"-" %>', style: 'tableData',alignment: 'center' },
-	                                { text: htmlToPdfmake('<%=obj[14]!=null?obj[14].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):"-" %>'), style: 'tableData',alignment: 'left' },
-	                                { text: '<%=obj[15]!=null?(obj[15].toString().equalsIgnoreCase("A")?"AN":(obj[15].toString().equalsIgnoreCase("F")?"FN":"Full day")):"-" %>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%=obj[16]!=null?StringEscapeUtils.escapeHtml4(obj[16].toString()):"-" %>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()):"-" %>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString())+", "+(obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()):"-"):"Not Available" %>', style: 'tableData' },
+	                                { text: '<%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()):"-" %>', style: 'tableData',alignment: 'center' },
+	                                { text: htmlToPdfmake('<%=obj[14]!=null?StringEscapeUtils.escapeHtml4(obj[14].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):"-" %>'), style: 'tableData',alignment: 'left' },
+	                                { text: '<%=obj[15]!=null?(StringEscapeUtils.escapeHtml4(obj[15].toString()).equalsIgnoreCase("A")?"AN":(obj[15].toString().equalsIgnoreCase("F")?"FN":"Full day")):"-" %>', style: 'tableData',alignment: 'center' },
 	                            ],
 	                        <% ++i; } } } else{%>
                             	[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 9 },]

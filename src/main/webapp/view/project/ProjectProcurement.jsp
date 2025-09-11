@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat ,  java.util.stream.Collectors"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -93,23 +94,22 @@ margin-left: -6%;
     DecimalFormat df=new DecimalFormat("0.00");
     NFormatConvertion nfc=new NFormatConvertion();
     %>
-    	<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-	</div>
-	<%} %>
+  <% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	<%if(ProjectIntiationList.size()==0 ||ProcurementList==null) {%>
 		<div style="display: flex; justify-content: center; align-items: center;"><h3  class="text-animation">No Data Available!</h3></div>
 	<%}else{ %>
@@ -121,7 +121,7 @@ margin-left: -6%;
 							style="background: #C4DDFF; box-shadow: 2px 2px 2px grey;">
 							<div class="col-md-6" id="projecthead">
 								<h5>
-									<%="Procurement Plan for  Project "+projectshortName %>
+									<%="Procurement Plan for  Project "+(projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - ") %>
 								</h5>
 							</div>
 							<div class="col-md-6">
@@ -142,7 +142,7 @@ margin-left: -6%;
 					%>
 					<option value="<%=obj[0] + "/" + obj[4] + "/" + obj[5]%>"
 						<%if (obj[4].toString().equalsIgnoreCase(projectshortName)) {%>
-						selected <%}%>><%=obj[4]%></option>
+						selected <%}%>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%></option>
 					<%
 					}
 					}
@@ -183,9 +183,9 @@ margin-left: -6%;
 	   						<tr align="center">
 <%-- 	   						<td ><input type="radio" id="Planid" name="Planid" value="<%=obj[0]%>" onchange="radioValue(<%=obj[0]%>)"></td>
  --%>	   						<td><%=count++ %></td>
-	   						<td align="left"><%=obj[2] %></td>
-	   						<td align="left"><%if(obj[3].toString().length()>100){%><%=obj[3].toString().substring(0, 100) %><%} else{%><%=obj[3]%><%} %></td>
-	   						<td align="left"><%=obj[4] %></td>
+	   						<td align="left"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+	   						<td align="left"><%if(obj[3]!=null && obj[3].toString().length()>100){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString()).substring(0, 100) %><%} else{%><%=StringEscapeUtils.escapeHtml4(obj[3].toString())%><%} %></td>
+	   						<td align="left"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
 	   						<td><%=obj[5] %></td>
 	   					<%-- 	<%DecimalFormat df1 = new DecimalFormat( "################.00"); 
 							String v = df1.format((Double.valueOf(obj[6].toString()).doubleValue()/10000000 )); 
@@ -194,7 +194,7 @@ margin-left: -6%;
 							%> --%>
 							
 	   						<td align="right"><%=nfc.convert(Double.parseDouble(obj[6].toString())/10000000)%></td>
-	   						<td><%=obj[10] %></td>
+	   						<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %></td>
 	   						<td><%if(obj[11].toString().equalsIgnoreCase("Y")) {%>YES<%}else{ %>NO<%} %></td>		
 	   						</tr>
 	   						<%} }%>
@@ -277,7 +277,7 @@ margin-left: -6%;
 											<%
 											for (Object[] obj : DemandList) {
 											%>
-											<option value="<%=obj[1]%>"><%=obj[2]%></option>
+											<option value="<%=obj[1]%>"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></option>
 											<%
 											}
 											%>
@@ -424,7 +424,7 @@ margin-left: -6%;
 											<%
 											for (Object[] obj : DemandList) {
 											%>
-											<option value="<%=obj[1]%>"><%=obj[2]%></option>
+											<option value="<%=obj[1]%>"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></option>
 											<%
 											}
 											%>

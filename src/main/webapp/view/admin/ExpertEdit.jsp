@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="jakarta.persistence.criteria.CriteriaBuilder.In"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
@@ -60,20 +61,22 @@ if(details!=null){
 }
 %>
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br />
     
@@ -98,7 +101,7 @@ if(details!=null){
 								<div class="col-md-2">
 									<div class="form-group">
 										<label class="control-label">Expert No.</label>
-										<input class="form-control" id="ExpertNo" type="text" readonly="readonly"  value="<%=detail[8]%>" name="expertno" required maxlength="50">
+										<input class="form-control" id="ExpertNo" type="text" readonly="readonly"  value="<%=detail[8]!=null?StringEscapeUtils.escapeHtml4(detail[8].toString()): ""%>" name="expertno" required maxlength="50">
 									</div>
 								</div>
 									<div class="col-md-3">
@@ -127,7 +130,7 @@ if(details!=null){
 								<div class="col-md-4">
 									<div class="form-group">
 										<label class="control-label">Expert Name</label>
-										<input class="form-control" id="expertname" type="text" value="<%=detail[3]%>" name="expertname" required>
+										<input class="form-control" id="expertname" type="text" value="<%=detail[3]!=null?StringEscapeUtils.escapeHtml4(detail[3].toString()): ""%>" name="expertname" required>
 									</div>
 								</div>
 							<%-- 	<%int i = Integer.parseInt((detail[4].toString()).replaceAll(" ", "")); %> --%>
@@ -152,7 +155,7 @@ if(details!=null){
 									<select class="custom-select" id="selectDesig" required="required" name="designationId">
 										<option value="" disabled="true"  selected value="">Choose...</option>
 										<%for(Object[] desig:desigList){ %>
-										<option  value="<%=desig[0]%>" <%if(detail[4].equals(desig[0])){ %> selected="selected" <%} %>><%=desig[2]%></option>
+										<option  value="<%=desig[0]%>" <%if(detail[4].equals(desig[0])){ %> selected="selected" <%} %>><%=desig[2]!=null?StringEscapeUtils.escapeHtml4(desig[2].toString()): " - "%></option>
 										<%}%>
 									
 									</select>
@@ -161,7 +164,7 @@ if(details!=null){
 							<div class="col-md-3">
 									<div class="form-group">
 										<label class="control-label" id="mobile">Mobile No.</label>
-										<input class="form-control" type="number" id="mobileno" value="<%=detail[5]%>" name="mobilenumber" required  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+										<input class="form-control" type="number" id="mobileno" value="<%=detail[5]!=null?StringEscapeUtils.escapeHtml4(detail[5].toString()): ""%>" name="mobilenumber" required  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 									</div>
 								</div>
 								
@@ -169,7 +172,7 @@ if(details!=null){
 								<div class="col-md-3">
 									<div class="form-group">
 										<label class="control-label">Email</label>
-										<input class="form-control" id="email" type="email" value="<%=detail[6]%>" name="email" required>
+										<input class="form-control" id="email" type="email" value="<%=detail[6]!=null?StringEscapeUtils.escapeHtml4(detail[6].toString()): ""%>" name="email" required>
 									</div>
 								</div>
 
@@ -177,7 +180,7 @@ if(details!=null){
 					     	<div class="col-md-3">
 									<div class="form-group">
 										<label class="control-label">Organization</label>
-										<input class="form-control" type="text" value="<%=detail[7]%>" id="organization" name="organization" required>
+										<input class="form-control" type="text" value="<%=detail[7]!=null?StringEscapeUtils.escapeHtml4(detail[7].toString()): ""%>" id="organization" name="organization" required>
 									</div>
 								</div>
 						</div>	

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
@@ -106,22 +107,22 @@ th{
 
 %>
 
-<% String ses=(String)request.getParameter("result"); 
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 <div class="container-fluid">
 		<div class="row">
@@ -194,11 +195,11 @@ th{
                       							 			%>
                         									<tr>
                             									<td style="text-align: center;width: 5%;"><%=++SN%></td>
-                            									<td style="width: 30%;"><%=form[2]+", "+form[3]%></td>
+                            									<td style="width: 30%;"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
                             									<%-- <td style="text-align: center;width: 10%;"><%=form[1]%></td>
                             									<td style="text-align: center;width: 15%;"><%=form[6]%></td> --%>
-                            									<td style="text-align: center;width: 10%;"><%=fc.SqlToRegularDate(form[5].toString())%></td>
-                            									<td style="text-align: center;width: 10%;"><%=form[6]%></td>
+                            									<td style="text-align: center;width: 10%;"><%=form[5]!=null?fc.SqlToRegularDate(form[5].toString()):" - " %></td>
+                            									<td style="text-align: center;width: 10%;"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - "%></td>
                             									<td style="text-align: center;width: 20%;">
                             										<button type="submit" class="btn btn-sm view-icon" formaction="RoadMapDetailsPreview.htm" name="roadMapId" value="<%=form[4]%>" data-toggle="tooltip" data-placement="top" title="Road Map Preview" style="font-weight: 600;" >
 								   										<div class="cc-rockmenu">
@@ -283,13 +284,13 @@ th{
                        													    %>
                         													<tr>
                             													<td style="text-align: center;width: 5%;"><%=++SNA%></td>
-                            													<td style="text-align: left;width: 22%;"><%=form[2]+", "+form[3]%></td>
+                            													<td style="text-align: left;width: 22%;"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%></td>
                             													<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td>
                             													<td style="text-align: center;width: 15%;"><%=form[6] %> </td> --%>
-                            													<td style="text-align: center;width: 8%;"><%=form[6] %> </td>
+                            													<td style="text-align: center;width: 8%;"><%=form[6]!=null?StringEscapeUtils.escapeHtml4(form[6].toString()): " - " %> </td>
                             													<td style="text-align: center;width: 25%;">
 																					<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="RoadMapTransStatus.htm" value="<%=form[4] %>" name="roadMapId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
-								    													<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    													<%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 								    												</button>
 								    												
 						 														</td>

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -161,34 +162,23 @@ label {
 	%>
 
 
-	<%
-	String ses = (String) request.getParameter("result");
-	String ses1 = (String) request.getParameter("resultfail");
-	if (ses1 != null) {
-	%>
-
-
-	<center>
-
-		<div class="alert alert-danger" role="alert">
-			<%=ses1%>
-		</div>
-	</center>
-	<%
-	}
-	if (ses != null) {
-	%>
-	<center>
-		<div class="alert alert-success" role="alert">
-			<%=ses%>
-		</div>
-
-	</center>
-
-
-	<%
-	}
-	%>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
+	
 <div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white; font-size: 20px; font-weight: bold;">
     <div class="spinner" style="border: 4px solid rgba(255, 255, 255, 0.3); border-top: 4px solid #021B79; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px;"></div>
     Please wait while we are generating the PDF...
@@ -219,7 +209,7 @@ label {
 				
 		<div class="row ml-2 mr-2" style="display: flex; justify-content: space-between;">
 			<%for(Object[]obj:StagesApplicable) {%>
-			<button class="tab mt-2" onclick="createTestStagePDF('<%=obj[3].toString()%>')"><%=obj[3].toString() %></button>
+			<button class="tab mt-2" onclick="createTestStagePDF('<%=obj[3].toString()%>')"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></button>
 			<%} %>
 			</div>
 				
@@ -245,11 +235,11 @@ label {
 									%>
 									<tr>
 										<td align="center"><input type="radio" name="Did"
-											value=<%=obj[0]%>></td>
-										<td><%=obj[1]%></td>
-										<td><%=obj[2]%></td>
-										<td> <%=obj[4] %></td>
-										<%-- <td><%=obj[7]%></td> --%>
+											value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): ""%>></td>
+										<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></td>
+										<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></td>
+										<td> <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
+										<%-- <td><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%></td> --%>
 									</tr>
 									<%
 									}
@@ -364,7 +354,7 @@ label {
 		                <% } %>
 		                
 		                {
-		                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + ")" %> <% } else { %> '-' <% } %></h5>'),
+		                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" +( LabList[0]!=null?LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") :" - ")+ ")" %> <% } else { %> '-' <% } %></h5>'),
 		                    alignment: 'center',
 		                    fontSize: 16,
 		                    bold: true,
@@ -378,7 +368,7 @@ label {
 		                    margin: [0, 10, 0, 10]
 		                },
 		                {
-		                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %><%}else{ %>-<%} %></h6>'),
+		                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=LabList[2].toString()+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString()%><%}else{ %>-<%} %></h6>'),
 		                    alignment: 'center',
 		                    fontSize: 14,
 		                    bold: true,
@@ -406,7 +396,7 @@ label {
 			            	{
 		            		    text: [
 		            		        {
-		            		            text: '<%=++speccount %>. <%=obj[1].toString()  %> ',
+		            		            text: '<%=++speccount %>. <%=obj[1]!=null?obj[1].toString(): " - " %> ',
 		            		            tocItem: true ,// Only this text goes to TOC
 		            		        },
 		            		       
@@ -432,12 +422,12 @@ label {
 	    	                            [
 	    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
 	    	                                { text: 'Test Name', style: 'tableData' },
-	    	                                { text: '<%=obj[1]!=null?obj[1]:"-" %>', style: 'tableData' },
+	    	                                { text: '<%=obj[1]!=null?obj[1].toString():"-" %>', style: 'tableData' },
 	    	                            ],
 	    	                            [
 	    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
 	    	                                { text: 'Objective', style: 'tableData' },
-	    	                                { text: '<%=obj[2]!=null?obj[2]:"-" %>', style: 'tableData' },
+	    	                                { text: '<%=obj[2]!=null?obj[2].toString():"-" %>', style: 'tableData' },
 	    	                            ],
 	    	                            
 	    	                            [
@@ -470,7 +460,7 @@ label {
 	    	                            [
 	    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
 	    	                                { text: 'Remarks', style: 'tableData' },
-	    	                                { text: '<%=obj[13]!=null? obj[13].toString().trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):"-" %>', style: 'tableData' },
+	    	                                { text: '<%=obj[13]!=null?obj[13].toString().trim().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):"-" %>', style: 'tableData' },
 	    	                            ],
 	    	                        ],
 	    	                    },
@@ -807,7 +797,7 @@ label {
 						            	{
 					            		    text: [
 					            		        {
-					            		            text: '<%=++speccount %>. <%=obj[1].toString()  %> ',
+					            		            text: '<%=++speccount %>. <%=obj[1]!=null?obj[1].toString(): " - "  %> ',
 					            		            tocItem: true ,// Only this text goes to TOC
 					            		        },
 					            		       
@@ -833,12 +823,12 @@ label {
 				    	                            [
 				    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
 				    	                                { text: 'Test Name', style: 'tableData' },
-				    	                                { text: '<%=obj[1]!=null?obj[1]:"-" %>', style: 'tableData' },
+				    	                                { text: '<%=obj[1]!=null?obj[1].toString():"-" %>', style: 'tableData' },
 				    	                            ],
 				    	                            [
 				    	                                { text: '<%=++snCount %>.', style: 'tableData', alignment: 'center' },
 				    	                                { text: 'Objective', style: 'tableData' },
-				    	                                { text: '<%=obj[2]!=null?obj[2]:"-" %>', style: 'tableData' },
+				    	                                { text: '<%=obj[2]!=null?obj[2].toString():"-" %>', style: 'tableData' },
 				    	                            ],
 				    	                            
 				    	                            [

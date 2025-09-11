@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
@@ -309,25 +310,27 @@ td
   List<Object[]> LinkList=(List<Object[]> ) request.getAttribute("LinkList");
   String actionno= (String) request.getAttribute("actionno");
   String flag = (String) request.getAttribute("flag");
-  
+  Object[] AttachmentList=(Object[]) request.getAttribute("AttachmentList");
  %>
 
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center" >
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></div>
-	<%}if(ses!=null){ %>
-	<div align="center" >
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></div>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br />
     
@@ -345,15 +348,27 @@ td
     	
 	    		<div class="card-header" style="background-color: #055C9D;">
 	    		<%if(Assignee!=null && Assignee[21]!=null && "I".equalsIgnoreCase( Assignee[21].toString())){%>
-      				<h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Issue  Id : <%=Assignee[9] %>
+      				<h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Issue  Id : <%=Assignee[9]!=null?StringEscapeUtils.escapeHtml4(Assignee[9].toString()): " - " %>
 				<%}else{%>
-					<h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Action  Id : <%=Assignee[9] %>
+					<h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Action  Id : <%=Assignee[9]!=null?StringEscapeUtils.escapeHtml4(Assignee[9].toString()): " - " %>
 				<%}%>	
-					<span style="float: right;font-size: 17px;margin-top: 5px">Assignee : <%=Assignee[11] %> &nbsp;(<%=Assignee[17] %>)</span>
+					<span style="float: right;font-size: 17px;margin-top: 5px">Assignee : <%=Assignee[11]!=null?StringEscapeUtils.escapeHtml4(Assignee[11].toString()): " - " %> &nbsp;(<%=Assignee[17]!=null?StringEscapeUtils.escapeHtml4(Assignee[17].toString()): " - " %>)</span>
       				 </h6>
+      				
+      				 
+      				
       			</div>
       		
-      		
+      			<div style="background-color: #055C9D;">
+      			<%if(AttachmentList!=null){ %>
+      				<form>
+      				 <h6 style="color: white;font-weight: bold;font-size: 1.1rem !important ; margin-left: 20px" align="left"> Attachment: 
+      				&nbsp;&nbsp;<button formaction="ActionMainAttachDownload.htm" formmethod="get" class="btn" type="submit" name="MainId" value="<%=Assignee[0]!=null?StringEscapeUtils.escapeHtml4(Assignee[0].toString()): "" %>"><i class="fa fa-download"></i></button>
+      				</h6>
+      				</form>
+      			   <%} %>
+      			
+      			</div>
 	      		<div class="card-body">
 	      			
 	        		<div class="row">
@@ -368,7 +383,7 @@ td
 		      								<%}%>
 	      								</td>
 	      								<td ><span>
-	      									 <%=Assignee[5] %></span>
+	      									 <%=Assignee[5]!=null?StringEscapeUtils.escapeHtml4(Assignee[5].toString()): " - " %></span>
 	      								</td>							
 	      							</tr>
 	      						</table>
@@ -378,19 +393,19 @@ td
 	      									<label style="font-size: medium; padding-top: 10px;  "> Assignee  :</label>
 	      								</td>	      	
 	      								<td><span>
-	      									<%=Assignee[11] %>&nbsp;(<%=Assignee[17] %>)</span>
+	      									<%=Assignee[11]!=null?StringEscapeUtils.escapeHtml4(Assignee[11].toString()): " - " %>&nbsp;(<%=Assignee[17]!=null?StringEscapeUtils.escapeHtml4(Assignee[17].toString()): " - " %>)</span>
 	      								</td>
 	      								<td style="padding-left: 50px;" >
 	      									<label style="font-size: medium; padding-top: 10px;  "> Assigner :</label>
 	      								</td>	      	
 	      								<td>&nbsp;&nbsp;&nbsp;&nbsp;
-	      									<%=Assignee[1]%> &nbsp;(<%=Assignee[16] %>)
+	      									<%=Assignee[1]!=null?StringEscapeUtils.escapeHtml4(Assignee[1].toString()): " - "%> &nbsp;(<%=Assignee[16]!=null?StringEscapeUtils.escapeHtml4(Assignee[16].toString()): " - " %>)
 	      								</td>	
 	      								<td style="padding-left: 50px;" >
 	      									<label style="font-size: medium; padding-top: 10px;  "> PDC (Current) :</label>
 	      								</td>	      	
 	      								<td>&nbsp;&nbsp;&nbsp;&nbsp;
-	      									<%=sdf.format(Assignee[4])%>
+	      									<%=Assignee[4]!=null?sdf.format(Assignee[4]):" - "%>
 	      								</td>	
 	      							</tr>
 	      							<tr>
@@ -398,7 +413,7 @@ td
 	      									<label style="font-size: medium; padding-top: 10px;  ">  Original PDC :</label>
 	      								</td>	      	
 	      								<td>&nbsp;&nbsp;&nbsp;&nbsp;
-	      									<%=sdf.format(Assignee[13])%>
+	      									<%=Assignee[13]!=null?sdf.format(Assignee[13]):" - "%>
 	      								</td>	
 	      								     
 	      							<% int revision=Integer.parseInt(Assignee[10].toString());
@@ -410,7 +425,7 @@ td
 	      									<label style="font-size: medium; padding-top: 10px;  "> Revised - <%=i%> PDC:</label>
 	      								</td>	      	
 	      								<td>&nbsp;&nbsp;&nbsp;&nbsp;
-	      									<%=sdf.format(Assignee[14+i-1])%>
+	      									<%=Assignee[14+i-1]!=null?sdf.format(Assignee[14+i-1]):" - "%>
 	      								</td>	
 	      							
 	      							<%} %>
@@ -534,19 +549,19 @@ td
 														
 							<tr>
 								<td width="12%">
-									<%=sdf.format(obj[3])%>
+									<%=obj[3]!=null?sdf.format(obj[3]):" - "%>
 								</td>
 								
 								<td width="6%">
 									
 									<div class="progress" style="background-color:#cdd0cb !important">
-  										<div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%=obj[2]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]%></div>
+  										<div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%=obj[2]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></div>
 									</div>
 				
 										</td>
 								
 								<td style="text-align: left; width: 10%;"> 
-									<%=obj[4]%>
+									<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>
 								</td>
 								
 								<td style="text-align: left; width: 3%;">
@@ -610,19 +625,19 @@ td
 							
 		
 								<td width="12%">
-									<%=sdf.format(obj[3])%>
+									<%=obj[3]!=null?sdf.format(obj[3]):" - "%>
 								</td>
 								
 								<td width="6%">
 								
 									<div class="progress" style="background-color:#cdd0cb !important">
-  										<div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%=obj[2]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]%></div>
+  										<div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%=obj[2]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></div>
 									</div>
 				
 										</td>
 								
 								<td style="text-align: left; width: 10%;"> 
-									<%=obj[4]%>
+									<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>
 								</td>
 								
 								<td style="text-align: left; width: 3%;">
@@ -726,7 +741,7 @@ td
 			                          									'<%=action[23].toString().trim()%>', <!-- assignee -->
 			                          									'<%=action[6]%>' <!-- action type -->
 			                          									);" >
-			                          				<%=action[11] %>
+			                          				<%=action[11]!=null?StringEscapeUtils.escapeHtml4(action[11].toString()): " - " %>
 			                          		</span >           
 			                          		
 			                          	</div>
@@ -734,11 +749,11 @@ td
 			                          		<table class="card-body-table">
 			                          			<tr>
 			                          				<th style="width: 40%;">Assignee :</th>
-			                          				<td  >&emsp;<%=action[23] %></td>
+			                          				<td  >&emsp;<%=action[23]!=null?StringEscapeUtils.escapeHtml4(action[23].toString()): " - " %></td>
 			                          			</tr>
 			                          			<tr>
 			                          				<th style="">PDC :</th>
-			                          				<td >&emsp;<%=sdf.format(action[24]) %></td>
+			                          				<td >&emsp;<%=action[24]!=null?sdf.format(action[24]):" - " %></td>
 			                          			</tr>
 			                          			<tr>
 			                          				<th style="">Progress (%) :</th>
@@ -747,7 +762,7 @@ td
 			                          					<%if(action[25]!=null){ %>
 					                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
 																<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																	<%=action[25]%>
+																	<%=action[25]!=null?StringEscapeUtils.escapeHtml4(action[25].toString()): " - "%>
 																</div> 
 															</div> 
 														<%}else{ %>
@@ -804,18 +819,18 @@ td
 							                          									'<%=action_L1[6]%>' <!-- action type -->
 							                          									);" >                      		
 														
-														<%=action_L1[11] %></span >    
+														<%=action_L1[11]!=null?StringEscapeUtils.escapeHtml4(action_L1[11].toString()): " - " %></span >    
 														       
 													</div>
 													<div class="action-box-body" align="center" style="cursor: pointer ;">
 														<table class="card-body-table">
 															<tr>
 						                          				<th style="width: 40%;">Assignee :</th>
-						                          				<td  >&emsp;<%=action_L1[23] %></td>
+						                          				<td  >&emsp;<%=action_L1[23]!=null?StringEscapeUtils.escapeHtml4(action_L1[23].toString()): " - " %></td>
 						                          			</tr>
 						                          			<tr>
 						                          				<th style="">PDC :</th>
-						                          				<td >&emsp;<%=sdf.format(action_L1[24]) %></td>
+						                          				<td >&emsp;<%=action_L1[23]!=null?sdf.format(action_L1[24]):" - " %></td>
 						                          			</tr>
 						                          			<tr>
 						                          				<th style="">Progress (%) :</th>
@@ -824,7 +839,7 @@ td
 						                          					<%if(action_L1[25]!=null){ %>
 								                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
 																			<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L1[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																				<%=action_L1[25]%>
+																				<%=action_L1[25]!=null?StringEscapeUtils.escapeHtml4(action_L1[25].toString()): " - "%>
 																			</div> 
 																		</div> 
 																	<%}else{ %>
@@ -885,17 +900,17 @@ td
 									                          									);" >              
 																	
 																	
-																	<%=action_L2[11] %></span >           
+																	<%=action_L2[11]!=null?StringEscapeUtils.escapeHtml4(action_L2[11].toString()): " - " %></span >           
 																</div>
 																<div class="action-box-body" align="center" style="cursor: pointer ;" style="cursor: pointer ;">
 																	<table class="card-body-table">
 																		<tr>
 									                          				<th style="width: 40%;">Assignee :</th>
-									                          				<td  >&emsp;<%=action_L2[23] %></td>
+									                          				<td  >&emsp;<%=action_L2[23]!=null?StringEscapeUtils.escapeHtml4(action_L2[23].toString()): " - " %></td>
 									                          			</tr>
 									                          			<tr>
 									                          				<th style="">PDC :</th>
-									                          				<td >&emsp;<%=sdf.format(action_L2[24]) %></td>
+									                          				<td >&emsp;<%=action_L2[24]!=null?sdf.format(action_L2[24]):" - " %></td>
 									                          			</tr>
 									                          			<tr>
 									                          				<th style="">Progress (%) :</th>
@@ -904,7 +919,7 @@ td
 									                          					<%if(action_L2[25]!=null){ %>
 											                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
 																						<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L2[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																							<%=action_L2[25]%>
+																							<%=action_L2[25]!=null?StringEscapeUtils.escapeHtml4(action_L2[25].toString()): " - "%>
 																						</div> 
 																					</div> 
 																				<%}else{ %>
@@ -961,18 +976,18 @@ td
 							                          															'<%=action_L3[6]%>' <!-- action type -->
 													                          									);" >      
 																									
-																					<%=action_L3[11] %></span >           
+																					<%=action_L3[11]!=null?StringEscapeUtils.escapeHtml4(action_L3[11].toString()): " - " %></span >           
 																				      
 																				</div>
 																				<div class="action-box-body" align="center" style="cursor: pointer ;">
 																					<table class="card-body-table">
 																						<tr>
 													                          				<th style="width: 40%;">Assignee :</th>
-													                          				<td  >&emsp;<%=action_L3[23] %></td>
+													                          				<td  >&emsp;<%=action_L3[23]!=null?StringEscapeUtils.escapeHtml4(action_L3[23].toString()): " - " %></td>
 													                          			</tr>
 													                          			<tr>
 													                          				<th style="">PDC :</th>
-													                          				<td >&emsp;<%=sdf.format(action_L3[24]) %></td>
+													                          				<td >&emsp;<%=action_L3[24]!=null?sdf.format(action_L3[24]):" - " %></td>
 													                          			</tr>
 													                          			<tr>
 													                          				<th style="">Progress (%) :</th>
@@ -981,7 +996,7 @@ td
 													                          					<%if(action_L3[25]!=null){ %>
 															                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
 																										<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L3[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																											<%=action_L3[25]%>
+																											<%=action_L3[25]!=null?StringEscapeUtils.escapeHtml4(action_L3[25].toString()): " - "%>
 																										</div> 
 																									</div> 
 																								<%}else{ %>
@@ -1039,18 +1054,18 @@ td
 																		                          									);" >
 																										
 																										
-																										<%=action_L4[11] %></span >           
+																										<%=action_L4[11]!=null?StringEscapeUtils.escapeHtml4(action_L4[11].toString()): " - " %></span >           
 																									     
 																									</div>
 																									<div class="action-box-body"  style="cursor: pointer ;">
 																										<table class="card-body-table">
 																											<tr>
 																		                          				<th style="width: 40%;">Assignee :</th>
-																		                          				<td  >&emsp;<%=action_L4[23] %></td>
+																		                          				<td  >&emsp;<%=action_L4[23]!=null?StringEscapeUtils.escapeHtml4(action_L4[23].toString()): " - " %></td>
 																		                          			</tr>
 																		                          			<tr>
 																		                          				<th style="">PDC :</th>
-																		                          				<td >&emsp;<%=sdf.format(action_L4[24]) %></td>
+																		                          				<td >&emsp;<%=action_L4[24]!=null?sdf.format(action_L4[24]):" - " %></td>
 																		                          			</tr>
 																		                          			<tr>
 																		                          				<th style="">Progress (%) :</th>
@@ -1059,7 +1074,7 @@ td
 																		                          					<%if(action_L4[25]!=null){ %>
 																				                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
 																															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L4[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																																<%=action_L4[25]%>
+																																<%=action_L4[25]!=null?StringEscapeUtils.escapeHtml4(action_L4[25].toString()): " - "%>
 																															</div> 
 																														</div> 
 																													<%}else{ %>

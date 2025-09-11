@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalTime"%>
 <%@page import="java.time.format.TextStyle"%>
@@ -187,23 +188,22 @@ top: 6px;
  %>
 
 
-	<%
-	String ses=(String)request.getParameter("result"); 
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-	</div>
-	<%} %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
 
 	<div class="container-fluid">
 		<div class="row">
@@ -225,7 +225,7 @@ top: 6px;
 												<%for(Object[] obj : projectslist){ 
 											     String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
 												%>
-													<option <%if(revProjectId!=null && revProjectId!="null" && revProjectId.equals(obj[0].toString())) { %>selected <%} else if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value="<%=obj[0]%>" ><%=obj[4]+projectshortName %></option>
+													<option <%if(revProjectId!=null && revProjectId!="null" && revProjectId.equals(obj[0].toString())) { %>selected <%} else if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value="<%=obj[0]%>" ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - " %></option>
 												<%} %>
 											</select>
 										</td>
@@ -236,7 +236,6 @@ top: 6px;
 											<select class="form-control items" name="committeecode" id="committeecode"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="this.form.submit();" >
 												<%if(commiteeName!=null ){
 												if(commiteeName.equalsIgnoreCase("EB")){
-													System.out.println("commiteeName--------- "+commiteeName);
 													%>
 													<option value="PMRC" >PMRC</option>
 												<option selected value="EB" >EB</option>
@@ -336,15 +335,15 @@ top: 6px;
 													<tbody>
 														<%for(Object[] schedule : BriefingScheduleList){%>
 															<tr>
-																<td><%=schedule[2] %></td>
-																<td><b><%=schedule[9] %></b></td>
+																<td><%=schedule[2]!=null?StringEscapeUtils.escapeHtml4(schedule[2].toString()): " - " %></td>
+																<td><b><%=schedule[9]!=null?StringEscapeUtils.escapeHtml4(schedule[9].toString()): " - " %></b></td>
 																<td>
 																	<%LocalTime starttime = LocalTime.parse(LocalTime.parse(schedule[5].toString(),DateTimeFormatter.ofPattern("HH:mm:ss")).format( DateTimeFormatter.ofPattern("HH:mm") ));   %>
 																	<%=rdf.format(sdf.parse(schedule[4].toString()))  %> - <%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %>
 																</td>
-																<td><%=schedule[6] %></td>
+																<td><%=schedule[6]!=null?StringEscapeUtils.escapeHtml4(schedule[6].toString()): " - " %></td>
 																<td><button type="button" class="btn btn-sm" formaction="IntimationTransactionStatus.htm" value="" name="briefingStatus" id="briefingStatusBtn"  data-toggle="tooltip" data-placement="top" title="briefing Status" style=" color:<%if(schedule[15].toString().equalsIgnoreCase("APD")){ %>green<%}else{ %> purple<%} %>; font-weight: 600;" formtarget="_blank">
-									    							&nbsp;<%=schedule[14] %></button></td>
+									    							&nbsp;<%=schedule[14]!=null?StringEscapeUtils.escapeHtml4(schedule[14].toString()): " - " %></button></td>
 																<td>
 																<% if(schedule[15].toString().equalsIgnoreCase("APD")){%>
 														<button type="button" class="btn btn-sm " style="color:white;margin:5px; " 
@@ -492,15 +491,15 @@ top: 6px;
 														<%if(BriefingScheduleFwdList!=null && BriefingScheduleFwdList.size()>0){
 														for(Object[] schedule : BriefingScheduleFwdList){%>
 															<tr>
-																<td><%=schedule[2] %></td>
-																<td><b><%=schedule[9] %></b></td>
+																<td><%=schedule[2]!=null?StringEscapeUtils.escapeHtml4(schedule[2].toString()): " - " %></td>
+																<td><b><%=schedule[9]!=null?StringEscapeUtils.escapeHtml4(schedule[9].toString()): " - " %></b></td>
 																<td>
 																	<%LocalTime starttime = LocalTime.parse(LocalTime.parse(schedule[5].toString(),DateTimeFormatter.ofPattern("HH:mm:ss")).format( DateTimeFormatter.ofPattern("HH:mm") ));   %>
 																	<%=rdf.format(sdf.parse(schedule[4].toString()))  %> - <%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %>
 																</td>
-																<td><%=schedule[6] %></td>
+																<td><%=schedule[6]!=null?StringEscapeUtils.escapeHtml4(schedule[6].toString()): " - " %></td>
 																<td><button type="button" class="btn btn-sm" formaction="IntimationTransactionStatus.htm" value="" name="briefingStatus" id="briefingStatusBtn"  data-toggle="tooltip" data-placement="top" title="briefing Status" style=" color:<%if(schedule[15].toString().equalsIgnoreCase("APD")){ %>green<%}else{ %> purple<%} %>; font-weight: 600;" formtarget="_blank">
-									    							&nbsp;<%=schedule[14] %></button></td>
+									    							&nbsp;<%=schedule[14]!=null?StringEscapeUtils.escapeHtml4(schedule[14].toString()): " - " %></button></td>
 																<td>
 																	<%if(schedule[7].toString().equalsIgnoreCase("Y")  ){ %>
 																		<button type="button" class="btn btn-sm " style="color:white;margin:5px; " 
@@ -620,15 +619,15 @@ top: 6px;
 														<%if(BriefingScheduleFwdApprovedList!=null && BriefingScheduleFwdApprovedList.size()>0){
 														for(Object[] schedule : BriefingScheduleFwdApprovedList){%>
 															<tr>
-																<td><%=schedule[2] %></td>
-																<td><b><%=schedule[9] %></b></td>
+																<td><%=schedule[2]!=null?StringEscapeUtils.escapeHtml4(schedule[2].toString()): " - " %></td>
+																<td><b><%=schedule[9]!=null?StringEscapeUtils.escapeHtml4(schedule[9].toString()): " - " %></b></td>
 																<td>
 																	<%LocalTime starttime = LocalTime.parse(LocalTime.parse(schedule[5].toString(),DateTimeFormatter.ofPattern("HH:mm:ss")).format( DateTimeFormatter.ofPattern("HH:mm") ));   %>
 																	<%=rdf.format(sdf.parse(schedule[4].toString()))  %> - <%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %>
 																</td>
-																<td><%=schedule[6] %></td>
+																<td><%=schedule[6]!=null?StringEscapeUtils.escapeHtml4(schedule[6].toString()): " - " %></td>
 																<td><button type="button" class="btn btn-sm" formaction="IntimationTransactionStatus.htm" value="" name="briefingStatus" id="briefingStatusBtn"  data-toggle="tooltip" data-placement="top" title="briefing Status" style=" color:<%if(schedule[15].toString().equalsIgnoreCase("APD")){ %>green<%}else{ %> purple<%} %>; font-weight: 600;" formtarget="_blank">
-									    							&nbsp;<%=schedule[14] %></button></td>
+									    							&nbsp;<%=schedule[14]!=null?StringEscapeUtils.escapeHtml4(schedule[14].toString()): " - " %></button></td>
 																<td>
 
 																		<button class="btn btn-sm" style="margin:5px;" formaction="MeetingBriefingPaper.htm" name="scheduleid" value="<%=schedule[0]%>" formmethod="get" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="View">
@@ -707,11 +706,11 @@ top: 6px;
 
 								</td>
 								<td class="trdown" style="background: #C6B4CE;">
-							<%if(DoRtmdAdEmpData!=null && DoRtmdAdEmpData.length>0 ){ %><%=DoRtmdAdEmpData[1] %>,<%=DoRtmdAdEmpData[2] %><%} %>
+							<%if(DoRtmdAdEmpData!=null && DoRtmdAdEmpData.length>0 ){ %><%=DoRtmdAdEmpData[1]!=null?StringEscapeUtils.escapeHtml4(DoRtmdAdEmpData[1].toString()): " - " %>,<%=DoRtmdAdEmpData[2]!=null?StringEscapeUtils.escapeHtml4(DoRtmdAdEmpData[2].toString()): " - " %><%} %>
 									
 								</td>
 								<td class="trdown" style="background: #E8E46E;">
-								<%if(directorDetails!=null && directorDetails.length>0 ){ %><%=directorDetails[1] %><%} %>
+								<%if(directorDetails!=null && directorDetails.length>0 ){ %><%=directorDetails[1]!=null?StringEscapeUtils.escapeHtml4(directorDetails[1].toString()): " - " %><%} %>
 					
 								
 								</td>

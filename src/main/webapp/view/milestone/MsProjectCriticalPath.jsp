@@ -1,4 +1,5 @@
 
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -64,7 +65,7 @@ h6{
 			<div class="card-header" style="background-color: transparent;height: 3rem;">
  				<div class="row">
  					<div class="col-md-7">
- 						<h3 class="text-dark" style="font-weight: bold;">Critical Paths - <%=projectDetails!=null?(projectDetails[3]+" ("+projectDetails[1]+")"):"" %> </h3>
+ 						<h3 class="text-dark" style="font-weight: bold;">Critical Paths - <%=projectDetails!=null?((projectDetails[3]!=null?StringEscapeUtils.escapeHtml4(projectDetails[3].toString()):" - ")+" ("+(projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()):" - ")+")"):"" %> </h3>
  					</div>
  					<div class="col-md-3"></div>
  					<div class="col-md-2 right">
@@ -118,7 +119,7 @@ h6{
 								    		  
 						{
 							id: "<%=++count%>",
-							name: "<%=level1[10]%>",
+							name: "<%=level1[10]!=null?StringEscapeUtils.escapeHtml4(level1[10].toString()):" - "%>",
 							<%if(level1[24]!=null &&  Integer.parseInt(level1[24].toString())!=0){ %>
 								baselineStart: "<%=level1[11]%>",
 								baselineEnd: "<%=level1[12]%>", 
@@ -149,7 +150,7 @@ h6{
 								
 									{
 										id: "<%=count+"."+(++countA)%>",
-										name: "<%=level2[10]%>",
+										name: "<%=level2[10]!=null?StringEscapeUtils.escapeHtml4(level2[10].toString()):" - "%>",
 										<%if(level2[24]!=null &&  Integer.parseInt(level2[24].toString())!=0){ %>
 											baselineStart: "<%=level2[11]%>",
 											baselineEnd: "<%=level2[12]%>", 
@@ -157,16 +158,16 @@ h6{
 											actualStart: "<%=level2[22]%>",
 											actualEnd: "<%=level2[23]%>",
 							    		    actual: {fill: "#29465B", stroke: "0.8 #29465B"},
-							    		    baselineProgressValue: "<%=level2[15].toString()%>%",
+							    		    baselineProgressValue: "<%=Math.round(Integer.parseInt(level2[15].toString()))%>%",
 							    		    progress: {fill: "#FF7F3E 0.0", stroke: "0.0 #FF7F3E"},
-							    		    progressValue: "<%=level2[15].toString()%>% ", 
+							    		    progressValue: "<%=Math.round(Integer.parseInt(level2[15].toString()))%>% ", 
 										<%} else{%>
 											baselineStart: "<%=level2[22]%>",
 							    		    baselineEnd: "<%=level2[23]%>", 
 							    		    baseline: {fill: "#29465B", stroke: "0.8 #29465B"},
-							    		    baselineProgressValue: "<%=level2[15].toString()%>%",
+							    		    baselineProgressValue: "<%=Math.round(Integer.parseInt(level2[15].toString()))%>%",
 							    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
-							    		    progressValue: "<%=level2[15].toString()%>% ",
+							    		    progressValue: "<%=Math.round(Integer.parseInt(level2[15].toString()))%>% ",
 										<%}%> 
 										rowHeight: "55",
 										
@@ -180,7 +181,7 @@ h6{
 											%>
 												{
 													id: "<%=count+"."+countA+"."+(++countB)%>",
-													name: "<%=level3[10]%>",
+													name: "<%=level3[10]!=null?StringEscapeUtils.escapeHtml4(level3[10].toString()):" - "%>",
 													<%if(level3[24]!=null &&  Integer.parseInt(level3[24].toString())!=0){ %>
 														baselineStart: "<%=level3[11]%>",
 														baselineEnd: "<%=level3[12]%>", 
@@ -188,16 +189,16 @@ h6{
 														actualStart: "<%=level3[22]%>",
 														actualEnd: "<%=level3[23]%>",
 										    		    actual: {fill: "#29465B", stroke: "0.8 #29465B"},
-										    		    baselineProgressValue: "<%=level3[15].toString()%>%",
+										    		    baselineProgressValue: "<%=Math.round(Integer.parseInt(level3[15].toString()))%>%",
 										    		    progress: {fill: "#FF7F3E 0.0", stroke: "0.0 #FF7F3E"},
-										    		    progressValue: "<%=level3[15].toString()%>% ", 
+										    		    progressValue: "<%=Math.round(Integer.parseInt(level3[15].toString()))%>% ", 
 													<%} else{%>
 														baselineStart: "<%=level3[22]%>",
 										    		    baselineEnd: "<%=level3[23]%>", 
 										    		    baseline: {fill: "#29465B", stroke: "0.8 #29465B"},
-										    		    baselineProgressValue: "<%=level3[15].toString()%>%",
+										    		    baselineProgressValue: "<%=Math.round(Integer.parseInt(level3[15].toString()))%>%",
 										    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
-										    		    progressValue: "<%=level3[15].toString()%>% ",
+										    		    progressValue: "<%=Math.round(Integer.parseInt(level3[15].toString()))%>% ",
 													<%}%>  
 													rowHeight: "55",
 													
@@ -211,7 +212,7 @@ h6{
 														%>
 															{
 																id: "<%=count+"."+countA+"."+countB+"."+(++countC)%>",
-																name: "<%=level4[10]%>",
+																name: "<%=level4[10]!=null?StringEscapeUtils.escapeHtml4(level4[10].toString()):" - "%>",
 																<%if(level4[24]!=null &&  Integer.parseInt(level4[24].toString())!=0){ %>
 																	baselineStart: "<%=level4[11]%>",
 																	baselineEnd: "<%=level4[12]%>", 
@@ -219,16 +220,16 @@ h6{
 																	actualStart: "<%=level4[22]%>",
 																	actualEnd: "<%=level4[23]%>",
 													    		    actual: {fill: "#29465B", stroke: "0.8 #29465B"},
-													    		    baselineProgressValue: "<%=level4[15].toString()%>%",
+													    		    baselineProgressValue: "<%=Math.round(Integer.parseInt(level4[15].toString()))%>%",
 													    		    progress: {fill: "#FF7F3E 0.0", stroke: "0.0 #FF7F3E"},
 													    		    progressValue: "<%=level4[15].toString()%>% ", 
 																<%} else{%>
 																	baselineStart: "<%=level4[22]%>",
 													    		    baselineEnd: "<%=level4[23]%>", 
 													    		    baseline: {fill: "#29465B", stroke: "0.8 #29465B"},
-													    		    baselineProgressValue: "<%=level4[15].toString()%>%",
+													    		    baselineProgressValue: "<%=Math.round(Integer.parseInt(level4[15].toString()))%>%",
 													    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
-													    		    progressValue: "<%=level4[15].toString()%>% ",
+													    		    progressValue: "<%=Math.round(Integer.parseInt(level4[15].toString()))%>% ",
 																<%}%>  
 																rowHeight: "55",
 																
@@ -242,7 +243,7 @@ h6{
 																	%>
 																		{
 																			id: "<%=count+"."+countA+"."+countB+"."+countC+"."+(++countD)%>",
-																			name: "<%=level5[10]%>",
+																			name: "<%=level5[10]!=null?StringEscapeUtils.escapeHtml4(level5[10].toString()):" - "%>",
 																			<%if(level5[24]!=null &&  Integer.parseInt(level5[24].toString())!=0){ %>
 																				baselineStart: "<%=level5[11]%>",
 																				baselineEnd: "<%=level5[12]%>", 
@@ -250,16 +251,16 @@ h6{
 																				actualStart: "<%=level5[22]%>",
 																				actualEnd: "<%=level5[23]%>",
 																    		    actual: {fill: "#29465B", stroke: "0.8 #29465B"},
-																    		    baselineProgressValue: "<%=level5[15].toString()%>%",
+																    		    baselineProgressValue: "<%=Math.round(Integer.parseInt(level5[15].toString()))%>%",
 																    		    progress: {fill: "#FF7F3E 0.0", stroke: "0.0 #FF7F3E"},
-																    		    progressValue: "<%=level5[15].toString()%>% ", 
+																    		    progressValue: "<%=Math.round(Integer.parseInt(level5[15].toString()))%>% ", 
 																			<%} else{ %>
 																				baselineStart: "<%=level5[22]%>",
 																    		    baselineEnd: "<%=level5[23]%>", 
 																    		    baseline: {fill: "#29465B", stroke: "0.8 #29465B"},
-																    		    baselineProgressValue: "<%=level5[15].toString()%>%",
+																    		    baselineProgressValue: "<%=Math.round(Integer.parseInt(level5[15].toString()))%>%",
 																    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
-																    		    progressValue: "<%=level5[15].toString()%>% ",
+																    		    progressValue: "<%=Math.round(Integer.parseInt(level5[15].toString()))%>% ",
 																			<% }%>   
 																			rowHeight: "55",
 																		

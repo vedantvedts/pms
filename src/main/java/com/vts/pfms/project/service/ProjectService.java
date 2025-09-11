@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.vts.pfms.master.model.RoleMaster;
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
 import com.vts.pfms.project.dto.PfmsInitiationAttachmentDto;
 import com.vts.pfms.project.dto.PfmsInitiationAttachmentFileDto;
@@ -393,5 +394,8 @@ public interface ProjectService {
 	public List<Object[]> EnoteTransactionList(String enoteTrackId)throws Exception;
 	public List<Object[]> initiationApprovalList(long empId, String fromDate, String toDate)throws Exception;
 	public List<Object[]> InitiationAprrovalPrintDetails(long enoteid)throws Exception;
-
+	public List<Object[]> getProjectTeamListByLabCode(String labCode, String projectId);
+	public List<RoleMaster> getRoleMasterList() throws Exception;
+	public ProjectAssign getProjectAssignById(String projectEmployeeId) throws Exception;
+	public Long getProjectEmployeeIdByProjectId(String projectId, String roleMasterId) throws Exception;
 }

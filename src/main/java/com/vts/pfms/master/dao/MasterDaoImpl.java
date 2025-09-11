@@ -2,6 +2,7 @@ package com.vts.pfms.master.dao;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -22,6 +23,7 @@ import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
 import com.vts.pfms.master.model.PfmsFeedbackTrans;
+import com.vts.pfms.master.model.RoleMaster;
 import com.vts.pfms.model.LabMaster;
 
 import jakarta.persistence.EntityManager;
@@ -43,7 +45,7 @@ public class MasterDaoImpl implements MasterDao {
 	private static final String EMPNOCHECK="SELECT empno FROM employee";
 	private static final String EMPEXTNOCHECK="SELECT empno FROM employee_external";
 	private static final String CLUSTERLAB="SELECT LabId, ClusterId, LabCode FROM cluster_lab";
-	private static final String EXTERNALOFFICERLIST="SELECT a.empid, a.empno, CONCAT(IFNULL(CONCAT(a.title, ' '), ''), a.empname) AS 'empname', b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid, 'active', a.isactive FROM employee a JOIN employee_desig b ON a.desigid = b.desigid LEFT JOIN division_master c ON a.divisionid = c.divisionid WHERE a.Labcode <>:labcode ORDER BY a.empid DESC";
+	private static final String EXTERNALOFFICERLIST="SELECT a.empid, a.empno, CONCAT(IFNULL(CONCAT(a.Title,' '),(IFNULL(CONCAT(a.Salutation, ' '), ''))), a.EmpName) AS 'EmpName', b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid, 'active', a.isactive, a.labcode FROM employee a JOIN employee_desig b ON a.desigid = b.desigid LEFT JOIN division_master c ON a.divisionid = c.divisionid WHERE a.Labcode <>:labcode ORDER BY a.empid DESC";
 	private static final String EXTERNALOFFICEREDITDATA="select empid,empno,empname,desigid,extno,email,divisionid,DronaEmail,InternetEmail,MobileNo,Labcode,title , salutation from employee  where empid=:empid";
 	private static final String EXTERNALOFFICERMASTERUPDATE="UPDATE employee SET salutation=:salutation ,title=:title, labcode=:labcode,empno=:empno, empname=:empname, desigid=:desigid, extno=:extno, MobileNo=:mobileno, email=:email,DronaEmail=:dronaemail, InternetEmail=:internalemail , divisionid=:divisionid, modifiedby=:modifiedby, modifieddate=:modifieddate WHERE empid=:empid" ;
 
@@ -339,6 +341,7 @@ public class MasterDaoImpl implements MasterDao {
 		try {
 			dvEmp.setModifiedBy(dto.getModifiedBy());
 			dvEmp.setModifiedDate(dto.getModifiedDate());
+			dvEmp.setIsActive(0);
 			return 1;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1042,11 +1045,11 @@ public class MasterDaoImpl implements MasterDao {
 		}
 		
 		/* **************************** Programme Master - Naveen R  - 16/07/2025 **************************************** */
-		private static final String ProgramMasterList = "SELECT a.ProgrammeId, a.PrgmCode, a.PrgmName, a.PrgmDirector, a.SanctionedOn, CONCAT(IFNULL(CONCAT(b.Title,' '),(IFNULL(CONCAT(b.Salutation, ' '), ''))), b.EmpName) AS 'EmpName', c.Designation FROM pfms_programme_master a, employee b, employee_desig c WHERE a.IsActive = 1 AND a.PrgmDirector = b.EmpId AND b.DesigId= c.DesigId ORDER BY a.ProgrammeId DESC";
+		private static final String PROGRAMMASTERLIST = "SELECT a.ProgrammeId, a.PrgmCode, a.PrgmName, a.PrgmDirector, a.SanctionedOn, CONCAT(IFNULL(CONCAT(b.Title,' '),(IFNULL(CONCAT(b.Salutation, ' '), ''))), b.EmpName) AS 'EmpName', c.Designation FROM pfms_programme_master a, employee b, employee_desig c WHERE a.IsActive = 1 AND a.PrgmDirector = b.EmpId AND b.DesigId= c.DesigId ORDER BY a.ProgrammeId DESC";
 		@Override
 		public List<Object[]> getProgramMasterList() throws Exception {
 			try {
-				Query query = manager.createNativeQuery(ProgramMasterList);
+				Query query = manager.createNativeQuery(PROGRAMMASTERLIST);
 				return (List<Object[]>)query.getResultList();
 			}catch (Exception e) {
 				e.printStackTrace();
@@ -1067,7 +1070,7 @@ public class MasterDaoImpl implements MasterDao {
 			}
 		}
 
-		private static String PPROGRAMPROJECTLINKEDDELETE = "UPDATE pfms_programme_projects SET IsActive='0' WHERE ProgrammeId=:ProgrammeId ";
+		private static final String PPROGRAMPROJECTLINKEDDELETE = "UPDATE pfms_programme_projects SET IsActive='0' WHERE ProgrammeId=:ProgrammeId ";
 		@Override
 		public int removeProjectLinked(String programmeId) throws Exception {
 			try {
@@ -1105,7 +1108,76 @@ public class MasterDaoImpl implements MasterDao {
 				return 0L;
 			}
 		}
+		
+		private static final String PROJECTLIST = "SELECT DISTINCT projectid, projectmainid, projectcode, projectname, ProjectShortName FROM project_master WHERE isactive=1 AND labcode=:labCode AND projectid NOT IN (SELECT projectid FROM pfms_programme_projects WHERE isActive=1)";
+		@Override
+		public List<Object[]> getProjectList(String labcode) throws Exception {
+			try {
+				Query query = manager.createNativeQuery(PROJECTLIST);
+				query.setParameter("labCode", labcode);
+				return (List<Object[]>)query.getResultList();
+			}catch (Exception e) {
+				e.printStackTrace(); 
+				return new ArrayList<Object[]>();	
+			}
+		} 
+		
+		private static final String PROJECTLISTFORPROGRAMMEID = "SELECT a.projectid, a.projectmainid, a.projectcode, a.projectname, a.ProjectShortName FROM project_master a LEFT JOIN pfms_programme_projects b ON a.projectid = b.projectId AND b.isActive = 1 LEFT JOIN pfms_programme_master c ON b.programmeId = c.programmeId AND c.isActive = 1 WHERE a.isActive = 1 AND a.labcode = :labCode AND ( b.projectId IS NULL OR ( c.programmeId =:programmeId AND a.projectid IN ( SELECT projectId FROM pfms_programme_projects WHERE isActive = 1 GROUP BY projectId HAVING COUNT(DISTINCT programmeId) = 1 ))) ORDER BY a.projectid ASC;";
+		@Override
+		public List<Object[]> getProjectList(String labcode, String programmeId) throws Exception {
+			try {
+				Query query = manager.createNativeQuery(PROJECTLISTFORPROGRAMMEID);
+				query.setParameter("labCode", labcode);
+				query.setParameter("programmeId", programmeId);
+				return (List<Object[]>)query.getResultList();
+			}catch (Exception e) {
+				e.printStackTrace();
+				return new ArrayList<Object[]>();	
+			}
+		}
+				
 		/* **************************** Programme Master - Naveen R  - 16/07/2025 End**************************************** */
 
+		@Override
+		public Long addRoleMaster(RoleMaster roleMaster)throws Exception {
+			try {
+				manager.persist(roleMaster);
+				manager.flush();
+				return roleMaster.getRoleMasterId();
+			}catch (Exception e) {
+				e.printStackTrace();
+				return 0L;
+			}
+		}
 
+		// 22/8/2025  Naveen R RoleName and RoleCode Duplicate Check start
+		private static final String DUPLICATEROLENAMECOUNT = "SELECT COUNT(RoleName) FROM pfms_role_master WHERE RoleName=:RoleName AND IsActive=1";
+		@Override
+		public Long getRoleNameDulicateCount(String roleName) throws Exception {
+			try {
+				Query query = manager.createNativeQuery(DUPLICATEROLENAMECOUNT);
+				query.setParameter("RoleName", roleName);
+				return (Long)query.getSingleResult();
+			}catch (Exception e) {
+				e.printStackTrace();
+				return 0L;
+			}
+		}
+
+		private static final String DUPLICATEROLECODECOUNT = "SELECT COUNT(RoleCode) FROM pfms_role_master WHERE RoleCode=:RoleCode AND IsActive=1";
+		@Override
+		public Long getRoleCodeDuplicateCount(String roleCode) throws Exception {
+			try {
+				Query query = manager.createNativeQuery(DUPLICATEROLECODECOUNT);
+				query.setParameter("RoleCode", roleCode);
+				return (Long)query.getSingleResult();
+			}catch (Exception e) {
+				e.printStackTrace();
+				return 0L;
+			}
+		}
+
+		
+		// 22/8/2025  Naveen R RoleName and RoleCode Duplicate Check End
+		
 }

@@ -111,7 +111,7 @@ specsList=specsList.stream().filter(e->!e[7].toString().equalsIgnoreCase("0")).c
 						for(Object[]obj:specsList) {%>
 						<tr>
 						<td style="text-align: center;"> <%=++rowCOunt %>. </td>
-						<td > <%=obj[1].toString() %> </td>
+						<td > <%=obj[1]!=null?obj[1].toString(): " - "%> </td>
 						<td > 
 							<%
 							List<Object[]>linkedReq= new ArrayList<>();
@@ -129,7 +129,7 @@ specsList=specsList.stream().filter(e->!e[7].toString().equalsIgnoreCase("0")).c
 							<%if(linkedReq.size()>0) {
 							for(Object[]obj2:linkedReq){
 							%>
-							<div class="RDiv" id ='' style="" onclick="showReqDiv()"><%=obj2[1] %></div>
+							<div class="RDiv" id ='' style="" onclick="showReqDiv()"><%=obj2[1]!=null?obj2[1].toString(): " - " %></div>
 							<% %>
 						
 							<%}}else{ %>
@@ -165,7 +165,7 @@ specsList=specsList.stream().filter(e->!e[7].toString().equalsIgnoreCase("0")).c
 					}%><%} %>
 					<tr>
 					<td style="text-align: center;"> <%=++rowCOunt %>. </td>
-					<td> <%=obj[1].toString() %> </td>
+					<td> <%=obj[1]!=null?obj[1].toString(): " - " %> </td>
 					<td> 
 					<%if(specid.size()>0){
 					for(Object[]spec:specid){%>

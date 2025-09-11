@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -119,16 +120,16 @@ h6{
 																		<td><%=count %></td>
 																		<td>
 																		
-																				<button  type="submit" class="btn btn-outline-info"  formtarget="_blank" ><%=obj[0] %></button>
+																				<button  type="submit" class="btn btn-outline-info"  formtarget="_blank" ><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):"" %></button>
 																			 
                                                                         </td>
-																		<td><%=sdf.format(obj[6])%></td>																		
-																		<td><%=obj[1]%>, <%=obj[2]%></td>
-																	  	<td>Ext: <%=obj[3]%>, Mob: <%=obj[4]%></td>
+																		<td><%=obj[6]!=null?sdf.format(obj[6]):""%></td>																		
+																		<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></td>
+																	  	<td>Ext: <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - "%>, Mob: <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%></td>
 																		<td style="width:8% !important; "><%if(obj[12]!=null){ %>
 															            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															            <div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[12]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															            <%=obj[12]%>
+															            <%= StringEscapeUtils.escapeHtml4(obj[12].toString())%>
 															            </div> 
 															            </div> <%}else{ %>
 															            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">

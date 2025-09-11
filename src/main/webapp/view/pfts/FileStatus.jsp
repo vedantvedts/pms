@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.text.Format"%>
@@ -234,22 +235,22 @@ milestoneStatus.add(new Object[]{11, "Delivery at Stores"});
 milestoneStatus.add(new Object[]{12, "SAT / SoFT"});
 milestoneStatus.add(new Object[]{13, "Available for Integration"});
 %>
-<%
-	String ses=(String)request.getParameter("result"); 
-	String ses1=(String)request.getParameter("resultfail");
-%>
-	<%if(ses1!=null){ %>
-	<div align="center">
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></div>
-	<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-	        	<%=ses %>
-	        </div>
-	    </div>
-    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 <br>
 <div class="container-fluid">
 		<div class="row">
@@ -317,9 +318,9 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 											<form method="post" action="ProcurementStatus.htm" id="projectchange" >
 											<select class="form-control selectdee" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
 											<% for (Object[] obj : projectslist) {
-    										String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+    										String projectshortName=(obj[17]!=null)?" ( "+StringEscapeUtils.escapeHtml4(obj[17].toString()) +" ) ":"";
     										%>
-											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(projectId)){ %>selected="selected" <%} %>> <%=obj[4]+projectshortName%>  </option>
+											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(projectId)){ %>selected="selected" <%} %>> <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%> <%= projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - "%>  </option>
 											<%} %>
 											</select>
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -350,8 +351,8 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 	                                      <%for(Object[] fileStatus:fileStatusList){ %>
 	                                      <tr>
                                             <td style="text-align: center;"><%=SN++%></td>
-                                            <td><% if(fileStatus[1]!=null){ %> <%=fileStatus[1]%><%}else %>--</td>
-                                            <td><%=fileStatus[4]%></td>
+                                            <td><% if(fileStatus[1]!=null){ %> <%=fileStatus[1]!=null?StringEscapeUtils.escapeHtml4(fileStatus[1].toString()):"-" %><%}else %>--</td>
+                                            <td><%=fileStatus[4]!=null?StringEscapeUtils.escapeHtml4(fileStatus[4].toString()):"-"%></td>
                                             <td style="text-align: right;">
                                             <%if(fileStatus[3]!=null) {%>
                                             <%=format.format(new BigDecimal(fileStatus[3].toString())).substring(1)%>
@@ -382,7 +383,7 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
                                               
                                                <tr>
                                                <% if(fileStatus[7] !=null){ %>
-                                                <td><%=fileStatus[6]%></td>
+                                                <td><%=fileStatus[6]!=null?StringEscapeUtils.escapeHtml4(fileStatus[6].toString()):"-"%></td>
                                                <%--  <%if(!fileStatus[7].toString().equals("19")){ %> --%>
                                                     <td style="text-align: center;">
                                                      <%if(fileStatus[10]!=null && fileStatus[10].toString().equalsIgnoreCase("M")){ %>
@@ -600,7 +601,7 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 									if (i == 9)
 										break;
 								%>
-								<p class="pstatus" id="<%=obj1[0].toString()%>"><%=obj1[0].toString()%>. <%=obj1[2].toString()%>
+								<p class="pstatus" id="<%=obj1[0].toString()%>"><%=obj1[0]!=null?StringEscapeUtils.escapeHtml4(obj1[0].toString()):"-"%>. <%=obj1[2]!=null?StringEscapeUtils.escapeHtml4(obj1[2].toString()):"-"%>
 								</p>
 								<%
 								i++;
@@ -614,7 +615,7 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 									if (j == 9)
 										break;
 								%>
-								<p class="pstatus" id="<%=obj1[0].toString()%>"><%=obj1[0].toString()%>. <%=obj1[2].toString()%>
+								<p class="pstatus" id="<%=obj1[0].toString()%>"><%=obj1[0]!=null?StringEscapeUtils.escapeHtml4(obj1[0].toString()):"-"%>. <%=obj1[2]!=null?StringEscapeUtils.escapeHtml4(obj1[2].toString()):"-"%>
 								</p>
 								<%
 								j++;
@@ -628,7 +629,7 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 									if (k == 9)
 										break;
 								%>
-								<p class="pstatus" id="<%=obj1[0].toString()%>"><%=obj1[0].toString()%>. <%=obj1[2].toString() %>
+								<p class="pstatus" id="<%=obj1[0].toString()%>"><%=obj1[0]!=null?StringEscapeUtils.escapeHtml4(obj1[0].toString()):"-"%>. <%=obj1[2]!=null?StringEscapeUtils.escapeHtml4(obj1[2].toString()):"-" %>
 								</p>
 								<%
 		                        k++;
@@ -729,10 +730,10 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 		                    <div class="col-md-4">
 			                      <select class="form-control selectdee" id="ProjectId" name="ProjectId" style="width: 100%;">
 											<% for (Object[] obj : projectslist) {
-											String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+											String projectshortName=(obj[17]!=null)?" ( "+StringEscapeUtils.escapeHtml4(obj[17].toString())+" ) ":"";
 											%>
 											<%if(projectId!=null && projectId.equalsIgnoreCase(obj[0].toString())){ %>
-											<option value="<%=obj[0]%>"><%=obj[4]+projectshortName%></option>
+											<option value="<%=obj[0]%>"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"-"%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):"-"%></option>
 											<%}} %> 
   								  </select>
 		                   </div>
@@ -1168,8 +1169,8 @@ function openEditform(fileId,demandid,pstatusid,itemname,demandtype){
 				        $('#procstatus').empty();
 				        if(pstatusid<10){
 				        <%for(Object[] obj3:pftsStageList1){%>
-				        var optionValue = <%=obj3[0]%>;
-		     		    var optionText = '<%=obj3[2]%>';
+				        var optionValue = <%=obj3[0]!=null?StringEscapeUtils.escapeHtml4(obj3[0].toString()):""%>;
+		     		    var optionText = '<%=obj3[2]!=null?StringEscapeUtils.escapeHtml4(obj3[2].toString()):""%>';
 		     	        var option = $("<option></option>").attr("value", optionValue).text(optionText);
 		                  if(pstatusid==optionValue){
 		                  option.prop('selected', true);
@@ -1178,8 +1179,8 @@ function openEditform(fileId,demandid,pstatusid,itemname,demandtype){
 				        <%}%>
 				        }else if(pstatusid===10){
 				        	 <%for(Object[] obj4:pftsStageList2){%>
-						        var optionValue = <%=obj4[0]%>;
-				     		    var optionText = '<%=obj4[2]%>';
+						        var optionValue = <%=obj4[0]!=null?StringEscapeUtils.escapeHtml4(obj4[0].toString()):""%>;
+				     		    var optionText = '<%=obj4[2]!=null?StringEscapeUtils.escapeHtml4(obj4[2].toString()):""%>';
 				     	        var option = $("<option></option>").attr("value", optionValue).text(optionText);
 				                  if(pstatusid==optionValue){
 				                  option.prop('selected', true);
@@ -1189,8 +1190,8 @@ function openEditform(fileId,demandid,pstatusid,itemname,demandtype){
 				        }
 				        else{
 				            <%for(Object[] obj4:pftsStageList3){%>
-					        var optionValue = <%=obj4[0]%>;
-			     		    var optionText = '<%=obj4[2]%>';
+					        var optionValue = <%=obj4[0]!=null?StringEscapeUtils.escapeHtml4(obj4[0].toString()):""%>;
+			     		    var optionText = '<%=obj4[2]!=null?StringEscapeUtils.escapeHtml4(obj4[2].toString()):""%>';
 			     	        var option = $("<option></option>").attr("value", optionValue).text(optionText);
 			                  if(pstatusid==optionValue){
 			                  option.prop('selected', true);
@@ -1570,7 +1571,7 @@ var DemandNumbers = [];
 for(Object[]obj:fileStatusList){
 if(obj[1]!=null){
 %>
-var val  = "<%=obj[1].toString()%>"
+var val  = "<%=StringEscapeUtils.escapeHtml4(obj[1].toString()) %>"
 	DemandNumbers.push(val)
 <%}}}%>
 

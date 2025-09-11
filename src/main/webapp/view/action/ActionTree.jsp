@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.LinkedHashMap"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -318,7 +319,7 @@ td
 			                          		
 			                          		<span style="cursor:pointer;font-weight: 600;" 
 			                          			onclick="ActionDetails(	'<%=action[10] %>' );" >
-			                          				&nbsp;&nbsp;&nbsp;&nbsp; <%=action[11]%> &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action[11]%>" aria-hidden="true"></i></span>
+			                          				&nbsp;&nbsp;&nbsp;&nbsp; <%=action[11]!=null?StringEscapeUtils.escapeHtml4(action[11].toString()):" - "%> &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action[11]%>" aria-hidden="true"></i></span>
 			                          	</div>
 			                          	<%List<Object[]> level0 =actionslist.stream().filter(e->  Long.parseLong(action[19].toString()) == Long.parseLong(e[17].toString())).collect(Collectors.toList());
 			                          	System.out.println("level0  "+ level0.size());
@@ -327,11 +328,11 @@ td
 											<table class="card-body-table">
 			                          			<tr>
 			                          				<th style="width: 40%;">Assignee :</th>
-			                          				<td  >&emsp;<%=action[23] %></td>
+			                          				<td  >&emsp;<%=action[23]!=null?StringEscapeUtils.escapeHtml4(action[23].toString()):" - " %></td>
 			                          			</tr>
 			                          			<tr>
 			                          				<th style="">PDC :</th>
-			                          				<td >&emsp;<%=sdf.format(action[24]) %></td>
+			                          				<td >&emsp;<%=action[24]!=null?sdf.format(action[24]):" - " %></td>
 			                          			</tr>
 			                          			<tr>
 			                          				<th style="">Progress (%) :</th>
@@ -340,7 +341,7 @@ td
 			                          					<%if(action[25]!=null && Integer.parseInt(action[25].toString())>0){ %>
 					                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
 																<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																	<%=action[25]%>
+																	<%=StringEscapeUtils.escapeHtml4(action[25].toString())%>
 																</div> 
 															</div> 
 														<%}else{ %>
@@ -388,7 +389,7 @@ td
 													    <span style="cursor:pointer;font-weight: 600;" 
 							                          			onclick="ActionDetails('<%=action_L1[10] %>' );" >                      		
 														
-														 &nbsp;&nbsp;&nbsp;&nbsp;<%=action_L1[11] %>  &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action_L1[11]%>" aria-hidden="true"></i></span >    
+														 &nbsp;&nbsp;&nbsp;&nbsp;<%=action_L1[11]!=null?StringEscapeUtils.escapeHtml4(action_L1[11].toString()):" - " %>  &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action_L1[11]%>" aria-hidden="true"></i></span >    
 														       
 													</div>
 													<%List<Object[]> level1 =actionslist.stream().filter(e->  Long.parseLong(action_L1[19].toString()) == Long.parseLong(e[17].toString())).collect(Collectors.toList());%>
@@ -396,11 +397,11 @@ td
 														<table class="card-body-table">
 															<tr>
 						                          				<th style="width: 40%;">Assignee :</th>
-						                          				<td  >&emsp;<%=action_L1[23] %></td>
+						                          				<td  >&emsp;<%=action_L1[23]!=null?StringEscapeUtils.escapeHtml4(action_L1[23].toString()):" - " %></td>
 						                          			</tr>
 						                          			<tr>
 						                          				<th style="">PDC :</th>
-						                          				<td >&emsp;<%=sdf.format(action_L1[24]) %></td>
+						                          				<td >&emsp;<%=action_L1[24]!=null?sdf.format(action_L1[24]):" - " %></td>
 						                          			</tr>
 						                          			<tr>
 						                          				<th style="">Progress (%) :</th>
@@ -409,7 +410,7 @@ td
 						                          					<%if(action_L1[25]!=null && Integer.parseInt(action_L1[25].toString())>0){ %>
 								                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
 																			<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L1[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																				<%=action_L1[25]%>
+																				<%=StringEscapeUtils.escapeHtml4(action_L1[25].toString())%>
 																			</div> 
 																		</div> 
 																	<%}else{ %>
@@ -461,18 +462,18 @@ td
 																	
 																	<span style="cursor:pointer;font-weight: 600;" 
 									                          			onclick="ActionDetails('<%=action_L2[10] %>');" > 
-																	 &nbsp;&nbsp;&nbsp;&nbsp;<%=action_L2[11] %>  &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action_L2[11]%>" aria-hidden="true"></i></span >           
+																	 &nbsp;&nbsp;&nbsp;&nbsp;<%=action_L2[11]!=null?StringEscapeUtils.escapeHtml4(action_L2[11].toString()):" - " %>  &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action_L2[11]%>" aria-hidden="true"></i></span >           
 																</div>
 																<%List<Object[]> level2 =actionslist.stream().filter(e->  Long.parseLong(action_L2[19].toString()) == Long.parseLong(e[17].toString())).collect(Collectors.toList());%>
 																	<div <%if(level2!=null && level2.size()>0){%>class="action-box-body" <%}else{%> class="action-box-body1"<%}%> align="center" style="cursor: pointer ;">
 																	<table class="card-body-table">
 																		<tr>
 									                          				<th style="width: 40%;">Assignee :</th>
-									                          				<td  >&emsp;<%=action_L2[23] %></td>
+									                          				<td  >&emsp;<%=action_L2[23]!=null?StringEscapeUtils.escapeHtml4(action_L2[23].toString()):" - " %></td>
 									                          			</tr>
 									                          			<tr>
 									                          				<th style="">PDC :</th>
-									                          				<td >&emsp;<%=sdf.format(action_L2[24]) %></td>
+									                          				<td >&emsp;<%=action_L2[24]!=null?sdf.format(action_L2[24]):"" %></td>
 									                          			</tr>
 									                          			<tr>
 									                          				<th style="">Progress (%) :</th>
@@ -481,7 +482,7 @@ td
 									                          					<%if(action_L2[25]!=null && Integer.parseInt(action_L2[25].toString())>0){ %>
 											                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
 																						<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L2[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																							<%=action_L2[25]%>
+																							<%=StringEscapeUtils.escapeHtml4(action_L2[25].toString())%>
 																						</div> 
 																					</div> 
 																				<%}else{ %>
@@ -530,18 +531,18 @@ td
 																				                          		
 																					<span style="cursor:pointer;font-weight: 600;" 
 													                          			onclick="ActionDetails('<%=action_L3[10] %>');" >      
-																									&nbsp;&nbsp;&nbsp;&nbsp;<%=action_L3[11] %>  &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action_L3[11]%>" aria-hidden="true"></i></span >     
+																									&nbsp;&nbsp;&nbsp;&nbsp;<%=action_L3[11]!=null?StringEscapeUtils.escapeHtml4(action_L3[11].toString()):" - " %>  &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action_L3[11]%>" aria-hidden="true"></i></span >     
 																				</div>
 																					<%List<Object[]> level3 =actionslist.stream().filter(e->  Long.parseLong(action_L3[19].toString()) == Long.parseLong(e[17].toString())).collect(Collectors.toList());%>
 																				<div <%if(level3!=null && level3.size()>0){%>class="action-box-body" <%}else{%> class="action-box-body1"<%}%> align="center" style="cursor: pointer ;">
 																					<table class="card-body-table">
 																						<tr>
 													                          				<th style="width: 40%;">Assignee :</th>
-													                          				<td  >&emsp;<%=action_L3[23] %></td>
+													                          				<td  >&emsp;<%=action_L3[23]!=null?StringEscapeUtils.escapeHtml4(action_L3[23].toString()):" - " %></td>
 													                          			</tr>
 													                          			<tr>
 													                          				<th style="">PDC :</th>
-													                          				<td >&emsp;<%=sdf.format(action_L3[24]) %></td>
+													                          				<td >&emsp;<%=action_L3[24]!=null?sdf.format(action_L3[24]):"" %></td>
 													                          			</tr>
 													                          			<tr>
 													                          				<th style="">Progress (%) :</th>
@@ -550,7 +551,7 @@ td
 													                          					<%if(action_L3[25]!=null && Integer.parseInt(action_L3[25].toString())>0){ %>
 															                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
 																										<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L3[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																											<%=action_L3[25]%>
+																											<%=StringEscapeUtils.escapeHtml4(action_L3[25].toString()) %>
 																										</div> 
 																									</div> 
 																								<%}else{ %>
@@ -606,11 +607,11 @@ td
 																										<table class="card-body-table">
 																											<tr>
 																		                          				<th style="width: 40%;">Assignee :</th>
-																		                          				<td  >&emsp;<%=action_L4[23] %></td>
+																		                          				<td  >&emsp;<%=action_L4[23]!=null?StringEscapeUtils.escapeHtml4(action_L4[23].toString()):" - " %></td>
 																		                          			</tr>
 																		                          			<tr>
 																		                          				<th style="">PDC :</th>
-																		                          				<td >&emsp;<%=sdf.format(action_L4[24]) %></td>
+																		                          				<td >&emsp;<%=action_L4[24]!=null?sdf.format(action_L4[24]):" - " %></td>
 																		                          			</tr>
 																		                          			<tr>
 																		                          				<th style="">Progress (%) :</th>
@@ -619,7 +620,7 @@ td
 																		                          					<%if(action_L4[25]!=null && Integer.parseInt(action_L4[25].toString())>0) { %>
 																				                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
 																															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L4[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																																<%=action_L4[25]%>
+																																<%=StringEscapeUtils.escapeHtml4(action_L4[25].toString())%>
 																															</div> 
 																														</div> 
 																													<%}else{ %>

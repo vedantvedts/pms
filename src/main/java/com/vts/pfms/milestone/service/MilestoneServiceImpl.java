@@ -52,6 +52,8 @@ import com.vts.pfms.milestone.model.FileRepUploadNew;
 import com.vts.pfms.milestone.model.FileRepUploadPreProject;
 import com.vts.pfms.milestone.model.MilestoneActivity;
 import com.vts.pfms.milestone.model.MilestoneActivityLevel;
+import com.vts.pfms.milestone.model.MilestoneActivityLevelRemarks;
+import com.vts.pfms.milestone.model.MilestoneActivityPredecessor;
 import com.vts.pfms.milestone.model.MilestoneActivityRev;
 import com.vts.pfms.milestone.model.MilestoneActivitySub;
 import com.vts.pfms.milestone.model.MilestoneActivitySubRev;
@@ -963,9 +965,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 		 
 		if(dto.getActivityType().equalsIgnoreCase("Accept")) {
 			int tot=MileActivityAssignCheck(dto);
-			if(tot==0) {
 		  result=dao.MilestoneActivityAccept(dto, dt);	
-		  if(result>0) {
 			  
 			  long count=1;
 			  MilestoneActivity getMA=dao.MileActivityDetails(Long.parseLong(dto.getActivityId()));
@@ -1100,10 +1100,6 @@ public class MilestoneServiceImpl implements MilestoneService {
 				Trans.setIsActive(1);
 				dao.ActivityTransactionInsert(Trans);
 				
-		  }
-			}else {
-				result=4;
-			}
 		}else if(dto.getActivityType().equalsIgnoreCase("Back")) 
 		{
 			result=dao.MilestoneActivityBack(dto);
@@ -2405,6 +2401,20 @@ public class MilestoneServiceImpl implements MilestoneService {
 		return 0;
 	}
 	
+
+	
+	@Override
+	public int deleteMilsetone(String activityId) throws Exception {
+		try {
+	
+		return dao.deleteMilsetone(activityId);
+		
+		}catch (Exception e) {
+			e.getMessage();
+		}
+		return 0;
+	}
+
 	@Override
 	public List<Object[]> getMilestoneActivityProgressList() throws Exception {
 		
@@ -2740,4 +2750,44 @@ public class MilestoneServiceImpl implements MilestoneService {
     public List<Object[]> getPreProjectFileRepMasterListAll(String initiationId, String labCode) throws Exception {
     	return dao.getPreProjectFileRepMasterListAll(initiationId,labCode);
     }
+
+	@Override
+	public int saveMilestoneActivityLevelRemarks(MilestoneActivityLevelRemarks cmd) throws Exception {
+		return dao.saveMilestoneActivityLevelRemarks(cmd);
+	}
+
+	
+	@Override
+	public List<Object[]> getMilestoneDraftRemarks(Long activityId) throws Exception {
+	
+		return dao.getMilestoneDraftRemarks(activityId);
+	}
+
+	@Override
+	public Long saveMilestoneActivityPredecessor(MilestoneActivityPredecessor mp) throws Exception {
+		
+		return dao.saveMilestoneActivityPredecessor(mp);
+	}
+	
+	@Override
+	public List<Object[]> predecessorList(String successor) throws Exception {
+		
+		return dao.predecessorList(successor);
+	}
+	
+	@Override
+	public List<Object[]> getsuccessorList(String activityId) throws Exception {
+		return dao.getsuccessorList(activityId);
+	}
+	
+	@Override
+	public int deleteMilestoneActivityPredecessor(String successor) throws Exception {
+		
+		return dao.deleteMilestoneActivityPredecessor(successor);
+	}
+	
+	@Override
+	public long  saveMilestoneSub(MilestoneActivitySub attach) throws Exception {
+		return dao.MilestoneActivitySubInsert(attach);
+	}
 }

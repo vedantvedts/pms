@@ -51,18 +51,18 @@ String rodflag = (String)request.getAttribute("rodflag");
 <div id="container" align="center"  class="cent">
 <div class="cent">
 <div style="text-align: left;">
-	<div style="text-align: center;" ><h3 style="margin-bottom: 2px;"><%=labdetails[2] %></h3></div>	
-	<div style="text-align: center;" ><h3 style="margin-bottom: 2px;"> ( <%=labdetails[1] %> 	) </h3></div>		
+	<div style="text-align: center;" ><h3 style="margin-bottom: 2px;"><%=labdetails[2] !=null?labdetails[2].toString(): " - "%></h3></div>	
+	<div style="text-align: center;" ><h3 style="margin-bottom: 2px;"> ( <%=labdetails[1]!=null?labdetails[1].toString(): " - " %> 	) </h3></div>		
 			
 		<br>
 		
 		<table style=" text-align: left; 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;" >
 			<tr><td><span style="font-weight: bold; font-size: 17px">To,</span></td></tr>
-			<tr><td><span style=" font-size: 17px"><%=tomember[6] %>, <%=tomember[7] %>,</span></td></tr>
+			<tr><td><span style=" font-size: 17px"><%=tomember[6]!=null?tomember[6].toString(): " - " %>, <%=tomember[7]!=null?tomember[7].toString(): " - "  %>,</span></td></tr>
 			<%if(tomember[3].toString().equalsIgnoreCase("E") || tomember[3].toString().equalsIgnoreCase("W") ){ %>
-			<tr><td><span style=" font-size: 17px">External : <%=tomember[11] %></span></td></tr>
+			<tr><td><span style=" font-size: 17px">External : <%=tomember[11]!=null?tomember[11].toString(): " - "  %></span></td></tr>
 			<%} %>
-			<tr><td><span style=" font-size: 17px">Email : <%=tomember[8] %></span></td></tr>
+			<tr><td><span style=" font-size: 17px">Email : <%=tomember[8]!=null?tomember[8].toString(): " - "  %></span></td></tr>
 			<tr><td><br></td></tr>
 		</table> 
 		
@@ -75,24 +75,24 @@ String rodflag = (String)request.getAttribute("rodflag");
 			<tr><td><span style="font-weight: bold; font-size: 17px">Dear Sir/Madam,</span></td></tr>
 			<tr><td><p style=" font-size: 17px ;text-align: justify;  text-justify: inter-word; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<!-- Prudhvi - 05/03/2024 -->
-			This is to inform you that Meeting is Scheduled <%-- on <b><u>"<%=sdf.format(sdf1.parse(scheduledata[2].toString())) %>"</u></b>  at  &nbsp;<b><u><%=scheduledata[3] %></u></b> held at <b><u><%=scheduledata[12] %></u></b> --%> for the <b><%=scheduledata[7] %> <%if(rodflag!=null && rodflag.equalsIgnoreCase("Y")) {%><%} else{%> (<%=scheduledata[8] %>)</b>&nbsp; committee <%} %> <%if(projectid!=null && Long.parseLong(projectid)>0){ %> of <b><%=projectdata[1] %> (<%=projectdata[4] %>)</b><%} %> and further details about the meeting is mentioned below. </p></td></tr>
+			This is to inform you that Meeting is Scheduled <%-- on <b><u>"<%=sdf.format(sdf1.parse(scheduledata[2].toString())) %>"</u></b>  at  &nbsp;<b><u><%=scheduledata[3] %></u></b> held at <b><u><%=scheduledata[12] %></u></b> --%> for the <b><%=scheduledata[7]!=null?scheduledata[7].toString(): " - "  %> <%if(rodflag!=null && rodflag.equalsIgnoreCase("Y")) {%><%} else{%> (<%=scheduledata[8]!=null?scheduledata[8].toString(): " - "  %>)</b>&nbsp; committee <%} %> <%if(projectid!=null && Long.parseLong(projectid)>0){ %> of <b><%=projectdata[1]!=null?projectdata[1].toString(): " - "  %> (<%=projectdata[4]!=null?projectdata[4].toString(): " - "  %>)</b><%} %> and further details about the meeting is mentioned below. </p></td></tr>
 		</table>
 		
 		<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; min-width: 100px; font-size: 16px; border-collapse:collapse;" >	
 		 <tr>
 			<td style="text-align: left; font-weight: 700; min-width: 100px; padding: 5px; padding-left: 15px">Date :</td>
 			
-			<td style="text-align: left; font-weight: 700; min-width: 200px; padding: 5px; padding-left: 5px"><%=sdf.format(sdf1.parse(scheduledata[2].toString())) %></td>			
+			<td style="text-align: left; font-weight: 700; min-width: 200px; padding: 5px; padding-left: 5px"><%=scheduledata[2]!=null?sdf.format(sdf1.parse(scheduledata[2].toString())): " - "  %></td>			
 		 </tr>
 		 <tr>
 			<td style="text-align: left; font-weight: 700; min-width :100px; padding: 5px; padding-left: 15px">Time :</td>
 			
-			<td style="text-align: left; font-weight: 700; min-width: 200px; padding: 5px; padding-left: 5px"><%=scheduledata[3] %></td>			
+			<td style="text-align: left; font-weight: 700; min-width: 200px; padding: 5px; padding-left: 5px"><%=scheduledata[3]!=null?scheduledata[3].toString(): " - " %></td>			
 		 </tr>
 		 <tr>
 			<td style="text-align: left; font-weight: 700; min-width: 100px; padding: 5px; padding-left: 15px">Venue :</td>
 			
-			<td style="text-align: left; font-weight: 700; min-width: 200px; padding: 5px; padding-left: 5px"><%=scheduledata[12] %></td>			
+			<td style="text-align: left; font-weight: 700; min-width: 200px; padding: 5px; padding-left: 5px"><%=scheduledata[12]!=null?scheduledata[12].toString(): " - " %></td>			
 		 </tr>
 		</table>
 		

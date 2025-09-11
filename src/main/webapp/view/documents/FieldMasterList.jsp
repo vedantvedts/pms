@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.stream.Collectors"%>
@@ -17,6 +18,9 @@
 	font-weight: bold;
 }
 
+html, body {
+  overflow-x: hidden;
+}
 
 /* Container for the tabs */
 
@@ -156,21 +160,22 @@
 		}
 		//fieldMasterList.stream().filter(e -> e[18].toString().split(","))
 	%>
-	<% String ses = (String) request.getParameter("result"); 
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-        <div align="center">
-            <div class="alert alert-danger" role="alert">
-                <%= ses1 %>
-            </div>
-        </div>
-    <% } if (ses != null) { %>
-        <div align="center">
-            <div class="alert alert-success" role="alert">
-                <%= ses %>
-            </div>
-        </div>
-    <% } %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
     
 	<div class="container-fluid">
 		<div class="col-md-12">
@@ -200,7 +205,7 @@
 				                %>
 				                	<div class="tab <%if(Long.parseLong(fieldGroupId)==fieldGroup.getFieldGroupId()) {%> active <%} %> " data-target="<%=fieldGroup.getFieldGroupId() %>" 
 				                	 data-fieldgroupid="<%=fieldGroup.getFieldGroupId()%>">
-				                		<%=fieldGroup.getGroupName()+" ("+fieldGroup.getGroupCode()+")" %>
+				                		<%=fieldGroup.getGroupName()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupName()): " - "%> <%=" ("+(fieldGroup.getGroupCode()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupCode()): " - ")+")" %>
 				                	</div>
 				                <%} }%>
 				            </div>
@@ -221,7 +226,7 @@
 					    		<div class="border rounded shadow-sm mb-3 bg-light" style="border-color: #007bff !important;margin-top: -1rem;border-width: 0.15rem !important;">
 							    	<form action="IGIFieldGroupEditSubmit.htm" method="post" id="editform_<%=fieldGroupIdKey%>">
 							    		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-							    		<input type="hidden" name="fieldGroupId" value="<%=fieldGroupIdKey%>">
+							    		<input type="hidden" name="fieldGroupId" id="fieldGroupId_<%=fieldGroupIdKey%>" value="<%=fieldGroupIdKey%>">
 							    		<div class="form-group mt-4">
 				       						<div class="row">
 				       							<div class="col-md-1"></div>
@@ -229,14 +234,16 @@
 				       								<label class="form-label">Group Name<span class="mandatory">*</span></label>
 				       							</div>
 				                    		    <div class="col-md-2">
-			       									<input type="text" class="form-control field" name="groupName" <%if(fieldGroup!=null && fieldGroup.getGroupName()!=null) {%>value="<%=fieldGroup.getGroupName() %>"<%} %> placeholder="Enter Group Name" maxlength="255" required>
+			       									<input type="text" class="form-control field" name="groupName" id="groupName_<%=fieldGroupIdKey%>" <%if(fieldGroup!=null && fieldGroup.getGroupName()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(fieldGroup.getGroupName()) %>"<%} %> 
+													onchange="return checkDuplicateGroupName('<%=fieldGroupIdKey%>')" placeholder="Enter Group Name" maxlength="255" required>
 			       								</div>
 			       								
 			       								<div class="col-md-1 right">
 			       									<label class="form-label">Group Code<span class="mandatory">*</span></label>
 			       								</div>
 				                    		    <div class="col-md-2">
-			       									<input type="text" class="form-control field" name="groupCode" <%if(fieldGroup!=null && fieldGroup.getGroupCode()!=null) {%>value="<%=fieldGroup.getGroupCode() %>"<%} %> placeholder="Enter Group Code" maxlength="5" required>
+			       									<input type="text" class="form-control field" name="groupCode" id="groupCode_<%=fieldGroupIdKey%>" <%if(fieldGroup!=null && fieldGroup.getGroupCode()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(fieldGroup.getGroupCode()) %>"<%} %> 
+													onchange="return checkDuplicateGroupCode('<%=fieldGroupIdKey%>')" placeholder="Enter Group Code" maxlength="5" required>
 			       								</div>
 			       								
 			       								<div class="col-md-1 right">
@@ -288,16 +295,16 @@
 											for (Object[] obj : fieldList) { %>
 											<tr>
 												<td class="center">
-													<input type="radio" name="fieldMasterId" value="<%=obj[0]%>">
+													<input type="radio" name="fieldMasterId" value="<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): ""%>">
 												</td>
 												<%-- <td class="center"><%=obj[3]%></td> --%>
 												<%-- <td><%=obj[2]%></td> --%>
-												<td><%=obj[1]%></td>
-												<td class="center"><%=obj[6]%></td>
-												<td class="center"><%=obj[7]%></td>
-												<td class="center"><%=obj[8]%></td>
-												<td class="center"><%=obj[9]%></td>
-												<td><%=obj[12]%></td>
+												<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></td>
+												<td class="center"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%></td>
+												<td class="center"><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%></td>
+												<td class="center"><%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - "%></td>
+												<td class="center"><%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - "%></td>
+												<td><%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - "%></td>
 											</tr>
 											<%} %>
 										</tbody>
@@ -373,6 +380,64 @@
 	    $('#' + datatarget).addClass('active');
 	});
 	
+	// Group Name Duplicate Check
+	function checkDuplicateGroupName(rowId){
+		
+		var groupName = $('#groupName_'+rowId).val();
+		var fieldGroupId = $('#fieldGroupId_'+rowId).val();
+		
+		$.ajax({
+            type: "GET",
+            url: "GroupNameDuplicateCheck.htm",
+            data: {
+            	groupName: groupName,
+            	fieldGroupId: fieldGroupId
+            },
+            datatype: 'json',
+            success: function(result) {
+                var ajaxresult = JSON.parse(result); 
+
+                // Check if the Group Name already exists
+                if (ajaxresult > 0) {
+                	$('#groupName_'+rowId).val('');
+                    alert('Group Name Already Exists');
+                }
+            },
+            error: function() {
+                alert('An error occurred while checking the Group Name.');
+            }
+        });
+	}
+	
+	// Group Code Duplicate Check
+	function checkDuplicateGroupCode(rowId){
+		
+		var groupCode = $('#groupCode_'+rowId).val();
+		var fieldGroupId = $('#fieldGroupId_'+rowId).val();
+		
+		$.ajax({
+            type: "GET",
+            url: "GroupCodeDuplicateCheck.htm",
+            data: {
+            	groupCode: groupCode,
+            	fieldGroupId: fieldGroupId
+            },
+            datatype: 'json',
+            success: function(result) {
+                var ajaxresult = JSON.parse(result); 
+
+                // Check if the Group Code already exists
+                if (ajaxresult > 0) {
+                	$('#groupCode_'+rowId).val('');
+                    alert('Group Code Already Exists');
+                }
+            },
+            error: function() {
+                alert('An error occurred while checking the Group Code.');
+            }
+        });
+	}
+
 </script>
 </body>
 </html>

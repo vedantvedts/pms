@@ -1,4 +1,5 @@
- <%@page import="com.vts.pfms.requirements.model.RequirementInitiation"%>
+ <%@page import="org.apache.commons.text.StringEscapeUtils"%>
+<%@page import="com.vts.pfms.requirements.model.RequirementInitiation"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.time.LocalDate"%>
@@ -155,7 +156,7 @@ function openModal() {
 	function getFunctionalRequirements(){
 		   var chapterCount = 0;
 	       var mainContentCount = 0;
-	        var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
+	        var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=StringEscapeUtils.escapeHtml4(DocTempAtrr[12].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
 
 			<% List<Object[]> subMainReqList =RequirementList!=null?  RequirementList.stream()
 			.filter(e->e[15]!=null&&e[14].toString().equalsIgnoreCase("3"))
@@ -191,7 +192,7 @@ function openModal() {
 	                <% } %>
 	                
 	                {
-	                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + ")" %> <% } else { %> '-' <% } %></h5>'),
+	                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + (LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - ") + ")" %> <% } else { %> '-' <% } %></h5>'),
 	                    alignment: 'center',
 	                    fontSize: 16,
 	                    bold: true,
@@ -205,7 +206,7 @@ function openModal() {
 	                    margin: [0, 10, 0, 10]
 	                },
 	                {
-	                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %><%}else{ %>-<%} %></h6>'),
+	                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(LabList[2].toString())+" , "+StringEscapeUtils.escapeHtml4(LabList[3].toString())+", PIN-"+StringEscapeUtils.escapeHtml4(LabList[5].toString()) %><%}else{ %>-<%} %></h6>'),
 	                    alignment: 'center',
 	                    fontSize: 14,
 	                    bold: true,
@@ -235,7 +236,7 @@ function openModal() {
 	    				%>
 	    				<%if(obj1[1]!=null) {%>
 						{
-		                	text: htmlToPdfmake('<%if(obj1[1]!=null){ %><%=++subReqCount %> .  <%=obj1[1].toString()%> <%}else{ %>-<%} %>'),	
+		                	text: htmlToPdfmake('<%if(obj1[1]!=null){ %><%=++subReqCount %> .  <%=StringEscapeUtils.escapeHtml4(obj1[1].toString())%> <%}else{ %>-<%} %>'),	
 		                    margin: [5, 5, 5, 5],
 		                    tocItem: true,
 		                },
@@ -258,7 +259,7 @@ function openModal() {
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'ID', style: 'tableData' },
-	    	                                { text: '<%=obj1[1] %>', style: 'tableData' },
+	    	                                { text: '<%=obj1[1]!=null?StringEscapeUtils.escapeHtml4(obj1[1].toString()): " - " %>', style: 'tableData' },
 	    	                            ],
 
 	    	                            [
@@ -270,13 +271,13 @@ function openModal() {
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'Priority', style: 'tableData' },
-	    	                                { text: '<%if(obj1[5]!=null) {%> <%=obj1[5] %> <%}else{%>-<%} %>', style: 'tableData' },
+	    	                                { text: '<%if(obj1[5]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[5].toString()) %> <%}else{%>-<%} %>', style: 'tableData' },
 	    	                            ],
 	    	                            
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'Criticality', style: 'tableData' },
-	    	                                { text: '<%if(obj1[21]!=null) {%> <%=obj1[21] %> <%}else{%>-<%} %>', style: 'tableData' },
+	    	                                { text: '<%if(obj1[21]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[21].toString()) %> <%}else{%>-<%} %>', style: 'tableData' },
 	    	                            ],
 	    	                            
 	    	                            [
@@ -290,19 +291,19 @@ function openModal() {
 	    	                            ], --%>
 	    	                            
 	    	                           	[
-	    	                                { stack: [htmlToPdfmake(setImagesWidth('<%=++snCount %>.Description: <%if(obj1[4]!=null){ %> <%=obj1[4].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 3 }
+	    	                                { stack: [htmlToPdfmake(setImagesWidth('<%=++snCount %>.Description: <%if(obj1[4]!=null){ %> <%=StringEscapeUtils.escapeHtml4(obj1[4].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 3 }
 	    	                            ],
 	    	                            
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'Remarks', style: 'tableData' },
-	    	                                { text: '<%if(obj1[7]!=null) {%> <%=obj1[7] %> <%}else{%>-<%} %>', style: 'tableData' },
+	    	                                { text: '<%if(obj1[7]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[7].toString()) %> <%}else{%>-<%} %>', style: 'tableData' },
 	    	                            ],
 
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'Constraints', style: 'tableData' },
-	    	                                { text: '<%if(obj1[9]!=null) {%> <%=obj1[9] %> <%}else{%>-<%} %>', style: 'tableData' },
+	    	                                { text: '<%if(obj1[9]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[9].toString())%> <%}else{%>-<%} %>', style: 'tableData' },
 	    	                            ],
 
 	    	                           [
@@ -312,7 +313,7 @@ function openModal() {
 	    	                                	    + '<% List<Object[]> DemonList = VerificationMethodList.stream().filter(e -> e[1].toString().equalsIgnoreCase("1")).collect(Collectors.toList()); %>'
 	    	                                	    + '<% String[] a = obj1[16].toString().split(", "); %>'
 	    	                                	    + '<% for (int i = 0; i < a.length; i++) { %>'
-	    	                                	    + '<%= a[i] %> . <%= DemonList.get(Integer.parseInt(a[i].substring(1)) - 1)[3].toString() %><br>'
+	    	                                	    + '<%= a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - " %> . <%= DemonList.get(Integer.parseInt(a[i].substring(1)) - 1)[3].toString() %><br>'
 	    	                                	    + '<% } %>'
 	    	                                	    + '<% } else { %>-<% } %>'), style: 'tableData' },
 	    	                            ],
@@ -325,14 +326,14 @@ function openModal() {
 	    	                                		+ '<%String [] a=obj1[17].toString().split(", "); %>'
 	    	                                		+ '<%for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		 + '<%=	a[i] +" . "+ TestList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		 + '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ TestList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'Test Stage', style: 'tableData' },
-	    	                                { text: '<%if(obj1[24]!=null) {%> <%=obj1[24] %> <%}else{%>-<%} %>', style: 'tableData' },
+	    	                                { text: '<%if(obj1[24]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[24].toString()) %> <%}else{%>-<%} %>', style: 'tableData' },
 	    	                            ],
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
@@ -342,7 +343,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[18].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                			+ '<%=	a[i] +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                			+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    											+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -355,7 +356,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[19].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		+ '<%=	a[i] +" . "+ InspectionList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ InspectionList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -368,7 +369,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[20].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		+ '<%=	a[i] +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -495,7 +496,7 @@ function openModal() {
 	function getOperationalRequirements(){
 		   var chapterCount = 0;
 	       var mainContentCount = 0;
-	        var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
+	        var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=StringEscapeUtils.escapeHtml4(DocTempAtrr[12].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
 	   	<% List<Object[]> OperationalReqList = RequirementList!=null? RequirementList.stream()
 		.filter(e->e[15]!=null&&e[14].toString().equalsIgnoreCase("6"))
 		.sorted(Comparator.comparing(e -> Integer.parseInt(e[14].toString())))
@@ -528,7 +529,6 @@ function openModal() {
 	                <% } %>
 	                
 	                {
-	                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + ")" %> <% } else { %> '-' <% } %></h5>'),
 	                    alignment: 'center',
 	                    fontSize: 16,
 	                    bold: true,
@@ -542,7 +542,7 @@ function openModal() {
 	                    margin: [0, 10, 0, 10]
 	                },
 	                {
-	                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %><%}else{ %>-<%} %></h6>'),
+	                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(LabList[2].toString())+" , "+StringEscapeUtils.escapeHtml4(LabList[3].toString())+", PIN-"+StringEscapeUtils.escapeHtml4(LabList[5].toString())%><%}else{ %>-<%} %></h6>'),
 	                    alignment: 'center',
 	                    fontSize: 14,
 	                    bold: true,
@@ -572,7 +572,7 @@ function openModal() {
 	    				%>
 	    				<%if(obj1[1]!=null) {%>
 						{
-		                	text: '<%if(obj1[1]!=null){ %><%=++subReqCount %> .  <%=obj1[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>',	
+		                	text: '<%if(obj1[1]!=null){ %><%=++subReqCount %> .  <%=StringEscapeUtils.escapeHtml4(obj1[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>',	
 		                    margin: [5, 5, 5, 5],
 		                    tocItem: true,
 		                },
@@ -595,7 +595,7 @@ function openModal() {
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'ID', style: 'tableData' },
-	    	                                { text: '<%=obj1[1] %>', style: 'tableData' },
+	    	                                { text: '<%=obj1[1]!=null?StringEscapeUtils.escapeHtml4(obj1[1].toString()): " - " %>', style: 'tableData' },
 	    	                            ],
 
 	    	                            [
@@ -607,13 +607,13 @@ function openModal() {
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'Priority', style: 'tableData' },
-	    	                                { text: '<%if(obj1[5]!=null) {%> <%=obj1[5] %> <%}else{%>-<%} %>', style: 'tableData' },
+	    	                                { text: '<%if(obj1[5]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[5].toString()) %> <%}else{%>-<%} %>', style: 'tableData' },
 	    	                            ],
 	    	                            
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'Criticality', style: 'tableData' },
-	    	                                { text: '<%if(obj1[21]!=null) {%> <%=obj1[21] %> <%}else{%>-<%} %>', style: 'tableData' },
+	    	                                { text: '<%if(obj1[21]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[21].toString()) %> <%}else{%>-<%} %>', style: 'tableData' },
 	    	                            ],
 	    	                            
 	    	                            [
@@ -627,19 +627,19 @@ function openModal() {
 	    	                            ], --%>
 	    	                            
 	    	                           	[
-	    	                                { stack: [htmlToPdfmake(setImagesWidth('<%=++snCount %>.Description: <%if(obj1[4]!=null){ %> <%=obj1[4].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 3 }
+	    	                                { stack: [htmlToPdfmake(setImagesWidth('<%=++snCount %>.Description: <%if(obj1[4]!=null){ %> <%=StringEscapeUtils.escapeHtml4(obj1[4].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 3 }
 	    	                            ],
 	    	                            
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'Remarks', style: 'tableData' },
-	    	                                { text: '<%if(obj1[7]!=null) {%> <%=obj1[7] %> <%}else{%>-<%} %>', style: 'tableData' },
+	    	                                { text: '<%if(obj1[7]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[7].toString()) %> <%}else{%>-<%} %>', style: 'tableData' },
 	    	                            ],
 
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'Constraints', style: 'tableData' },
-	    	                                { text: '<%if(obj1[9]!=null) {%> <%=obj1[9] %> <%}else{%>-<%} %>', style: 'tableData' },
+	    	                                { text: '<%if(obj1[9]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[9].toString()) %> <%}else{%>-<%} %>', style: 'tableData' },
 	    	                            ],
 
 	    	                           [
@@ -649,7 +649,7 @@ function openModal() {
 	    	                                	    + '<% List<Object[]> DemonList = VerificationMethodList.stream().filter(e -> e[1].toString().equalsIgnoreCase("1")).collect(Collectors.toList()); %>'
 	    	                                	    + '<% String[] a = obj1[16].toString().split(", "); %>'
 	    	                                	    + '<% for (int i = 0; i < a.length; i++) { %>'
-	    	                                	    + '<%= a[i] %> . <%= DemonList.get(Integer.parseInt(a[i].substring(1)) - 1)[3].toString() %><br>'
+	    	                                	    + '<%= a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - " %> . <%= DemonList.get(Integer.parseInt(a[i].substring(1)) - 1)[3].toString() %><br>'
 	    	                                	    + '<% } %>'
 	    	                                	    + '<% } else { %>-<% } %>'), style: 'tableData' },
 	    	                            ],
@@ -662,14 +662,14 @@ function openModal() {
 	    	                                		+ '<%String [] a=obj1[17].toString().split(", "); %>'
 	    	                                		+ '<%for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		 + '<%=	a[i] +" . "+ TestList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		 + '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ TestList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'Test Stage', style: 'tableData' },
-	    	                                { text: '<%if(obj1[24]!=null) {%> <%=obj1[24] %> <%}else{%>-<%} %>', style: 'tableData' },
+	    	                                { text: '<%if(obj1[24]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[24].toString()) %> <%}else{%>-<%} %>', style: 'tableData' },
 	    	                            ],
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
@@ -679,7 +679,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[18].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                			+ '<%=	a[i] +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                			+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    											+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -692,7 +692,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[19].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		+ '<%=	a[i] +" . "+ InspectionList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ InspectionList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -705,7 +705,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[20].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		+ '<%=	a[i] +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - " )+" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -829,7 +829,7 @@ function openModal() {
 	function getPerformanceRequirements(){
 		   var chapterCount = 0;
 	       var mainContentCount = 0;
-	        var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
+	        var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=StringEscapeUtils.escapeHtml4(DocTempAtrr[12].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
 	   	<% List<Object[]> PerformanceList =RequirementList!=null?  RequirementList.stream()
 		.filter(e->e[15]!=null&&e[14].toString().equalsIgnoreCase("4"))
 		.sorted(Comparator.comparing(e -> Integer.parseInt(e[14].toString())))
@@ -863,7 +863,7 @@ function openModal() {
 	                <% } %>
 	                
 	                {
-	                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + ")" %> <% } else { %> '-' <% } %></h5>'),
+	                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" +( LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - ") + ")" %> <% } else { %> '-' <% } %></h5>'),
 	                    alignment: 'center',
 	                    fontSize: 16,
 	                    bold: true,
@@ -877,7 +877,7 @@ function openModal() {
 	                    margin: [0, 10, 0, 10]
 	                },
 	                {
-	                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %><%}else{ %>-<%} %></h6>'),
+	                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(LabList[2].toString())+" , "+StringEscapeUtils.escapeHtml4(LabList[3].toString())+", PIN-"+StringEscapeUtils.escapeHtml4(LabList[5].toString()) %><%}else{ %>-<%} %></h6>'),
 	                    alignment: 'center',
 	                    fontSize: 14,
 	                    bold: true,
@@ -907,7 +907,7 @@ function openModal() {
 	    				%>
 	    				<%if(obj1[1]!=null) {%>
 						{
-		                	text: '<%if(obj1[1]!=null){ %><%=++subReqCount %> .  <%=obj1[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>',	
+		                	text: '<%if(obj1[1]!=null){ %><%=++subReqCount %> .  <%=StringEscapeUtils.escapeHtml4(obj1[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>',	
 		                    margin: [5, 5, 5, 5],
 		                    tocItem: true,
 		                },
@@ -930,7 +930,7 @@ function openModal() {
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'ID', style: 'tableData' },
-	    	                                { text: '<%=obj1[1] %>', style: 'tableData' },
+	    	                                { text: '<%=obj1[1]!=null?StringEscapeUtils.escapeHtml4(obj1[1].toString()): " - " %>', style: 'tableData' },
 	    	                            ],
 
 	    	                            [
@@ -942,13 +942,13 @@ function openModal() {
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'Priority', style: 'tableData' },
-	    	                                { text: '<%if(obj1[5]!=null) {%> <%=obj1[5] %> <%}else{%>-<%} %>', style: 'tableData' },
+	    	                                { text: '<%if(obj1[5]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[5].toString()) %> <%}else{%>-<%} %>', style: 'tableData' },
 	    	                            ],
 	    	                            
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'Criticality', style: 'tableData' },
-	    	                                { text: '<%if(obj1[21]!=null) {%> <%=obj1[21] %> <%}else{%>-<%} %>', style: 'tableData' },
+	    	                                { text: '<%if(obj1[21]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[21].toString())%> <%}else{%>-<%} %>', style: 'tableData' },
 	    	                            ],
 	    	                            
 	    	                            [
@@ -968,13 +968,13 @@ function openModal() {
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'Remarks', style: 'tableData' },
-	    	                                { text: '<%if(obj1[7]!=null) {%> <%=obj1[7] %> <%}else{%>-<%} %>', style: 'tableData' },
+	    	                                { text: '<%if(obj1[7]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[7].toString()) %> <%}else{%>-<%} %>', style: 'tableData' },
 	    	                            ],
 
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'Constraints', style: 'tableData' },
-	    	                                { text: '<%if(obj1[9]!=null) {%> <%=obj1[9] %> <%}else{%>-<%} %>', style: 'tableData' },
+	    	                                { text: '<%if(obj1[9]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[9].toString())%> <%}else{%>-<%} %>', style: 'tableData' },
 	    	                            ],
 
 	    	                           [
@@ -984,7 +984,7 @@ function openModal() {
 	    	                                	    + '<% List<Object[]> DemonList = VerificationMethodList.stream().filter(e -> e[1].toString().equalsIgnoreCase("1")).collect(Collectors.toList()); %>'
 	    	                                	    + '<% String[] a = obj1[16].toString().split(", "); %>'
 	    	                                	    + '<% for (int i = 0; i < a.length; i++) { %>'
-	    	                                	    + '<%= a[i] %> . <%= DemonList.get(Integer.parseInt(a[i].substring(1)) - 1)[3].toString() %><br>'
+	    	                                	    + '<%= a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - " %> . <%= DemonList.get(Integer.parseInt(a[i].substring(1)) - 1)[3].toString() %><br>'
 	    	                                	    + '<% } %>'
 	    	                                	    + '<% } else { %>-<% } %>'), style: 'tableData' },
 	    	                            ],
@@ -997,14 +997,14 @@ function openModal() {
 	    	                                		+ '<%String [] a=obj1[17].toString().split(", "); %>'
 	    	                                		+ '<%for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		 + '<%=	a[i] +" . "+ TestList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		 + '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ TestList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'Test Stage', style: 'tableData' },
-	    	                                { text: '<%if(obj1[24]!=null) {%> <%=obj1[24] %> <%}else{%>-<%} %>', style: 'tableData' },
+	    	                                { text: '<%if(obj1[24]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[24].toString()) %> <%}else{%>-<%} %>', style: 'tableData' },
 	    	                            ],
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
@@ -1014,7 +1014,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[18].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                			+ '<%=	a[i] +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                			+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    											+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -1027,7 +1027,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[19].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		+ '<%=	a[i] +" . "+ InspectionList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ InspectionList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -1040,7 +1040,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[20].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		+ '<%=	a[i] +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -1166,7 +1166,7 @@ function openModal() {
 	function getSubSystemRequirements(){
 		   var chapterCount = 0;
 	       var mainContentCount = 0;
-	        var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=DocTempAtrr[12].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
+	        var leftSideNote = '<%if(DocTempAtrr!=null && DocTempAtrr[12]!=null) {%><%=StringEscapeUtils.escapeHtml4(DocTempAtrr[12].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%} else{%>-<%}%>';
 	   	<% List<Object[]> ReqSubSystemList = RequirementList!=null? RequirementList.stream()
 		.filter(e->e[23]!=null&& Arrays.asList(e[23].toString().split(", ")).contains(productTreeMainId))
 		.sorted(Comparator.comparing(e -> Integer.parseInt(e[14].toString())))
@@ -1198,7 +1198,7 @@ function openModal() {
 	                <% } %>
 	                
 	                {
-	                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + ")" %> <% } else { %> '-' <% } %></h5>'),
+	                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= StringEscapeUtils.escapeHtml4(LabList[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" +( LabList[0]!=null?StringEscapeUtils.escapeHtml4(LabList[0].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - ") + ")" %> <% } else { %> '-' <% } %></h5>'),
 	                    alignment: 'center',
 	                    fontSize: 16,
 	                    bold: true,
@@ -1212,7 +1212,7 @@ function openModal() {
 	                    margin: [0, 10, 0, 10]
 	                },
 	                {
-	                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %><%}else{ %>-<%} %></h6>'),
+	                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(LabList[2].toString())+" , "+StringEscapeUtils.escapeHtml4(LabList[3].toString())+", PIN-"+StringEscapeUtils.escapeHtml4(LabList[5].toString())%><%}else{ %>-<%} %></h6>'),
 	                    alignment: 'center',
 	                    fontSize: 14,
 	                    bold: true,
@@ -1242,7 +1242,7 @@ function openModal() {
 	    				%>
 	    				<%if(obj1[1]!=null) {%>
 						{
-		                	text: '<%if(obj1[1]!=null){ %><%=++subReqCount %> .  <%=obj1[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>',	
+		                	text: '<%if(obj1[1]!=null){ %><%=++subReqCount %> .  <%=StringEscapeUtils.escapeHtml4(obj1[1].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>',	
 		                    margin: [5, 5, 5, 5],
 		                    tocItem: true,
 		                },
@@ -1265,7 +1265,7 @@ function openModal() {
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'ID', style: 'tableData' },
-	    	                                { text: '<%=obj1[1] %>', style: 'tableData' },
+	    	                                { text: '<%=obj1[1]!=null?StringEscapeUtils.escapeHtml4(obj1[1].toString()): " - " %>', style: 'tableData' },
 	    	                            ],
 
 	    	                            [
@@ -1277,13 +1277,13 @@ function openModal() {
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'Priority', style: 'tableData' },
-	    	                                { text: '<%if(obj1[5]!=null) {%> <%=obj1[5] %> <%}else{%>-<%} %>', style: 'tableData' },
+	    	                                { text: '<%if(obj1[5]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[5].toString()) %> <%}else{%>-<%} %>', style: 'tableData' },
 	    	                            ],
 	    	                            
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'Criticality', style: 'tableData' },
-	    	                                { text: '<%if(obj1[21]!=null) {%> <%=obj1[21] %> <%}else{%>-<%} %>', style: 'tableData' },
+	    	                                { text: '<%if(obj1[21]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[21].toString()) %> <%}else{%>-<%} %>', style: 'tableData' },
 	    	                            ],
 	    	                            
 	    	                            [
@@ -1297,19 +1297,19 @@ function openModal() {
 	    	                            ], --%>
 	    	                            
 	    	                           	[
-	    	                                { stack: [htmlToPdfmake(setImagesWidth('<%=++snCount %>.Description: <%if(obj1[4]!=null){ %> <%=obj1[4].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 3 }
+	    	                                { stack: [htmlToPdfmake(setImagesWidth('<%=++snCount %>.Description: <%if(obj1[4]!=null){ %> <%=StringEscapeUtils.escapeHtml4(obj1[4].toString()).replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") %> <%}else{ %>-<%} %>', 500))], colSpan: 3 }
 	    	                            ],
 	    	                            
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'Remarks', style: 'tableData' },
-	    	                                { text: '<%if(obj1[7]!=null) {%> <%=obj1[7] %> <%}else{%>-<%} %>', style: 'tableData' },
+	    	                                { text: '<%if(obj1[7]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[7].toString()) %> <%}else{%>-<%} %>', style: 'tableData' },
 	    	                            ],
 
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'Constraints', style: 'tableData' },
-	    	                                { text: '<%if(obj1[9]!=null) {%> <%=obj1[9] %> <%}else{%>-<%} %>', style: 'tableData' },
+	    	                                { text: '<%if(obj1[9]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[9].toString()) %> <%}else{%>-<%} %>', style: 'tableData' },
 	    	                            ],
 
 	    	                           [
@@ -1319,7 +1319,7 @@ function openModal() {
 	    	                                	    + '<% List<Object[]> DemonList = VerificationMethodList.stream().filter(e -> e[1].toString().equalsIgnoreCase("1")).collect(Collectors.toList()); %>'
 	    	                                	    + '<% String[] a = obj1[16].toString().split(", "); %>'
 	    	                                	    + '<% for (int i = 0; i < a.length; i++) { %>'
-	    	                                	    + '<%= a[i] %> . <%= DemonList.get(Integer.parseInt(a[i].substring(1)) - 1)[3].toString() %><br>'
+	    	                                	    + '<%= a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - " %> . <%= DemonList.get(Integer.parseInt(a[i].substring(1)) - 1)[3].toString() %><br>'
 	    	                                	    + '<% } %>'
 	    	                                	    + '<% } else { %>-<% } %>'), style: 'tableData' },
 	    	                            ],
@@ -1332,14 +1332,14 @@ function openModal() {
 	    	                                		+ '<%String [] a=obj1[17].toString().split(", "); %>'
 	    	                                		+ '<%for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		 + '<%=	a[i] +" . "+ TestList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		 + '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ TestList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
 	    	                                { text: 'Test Stage', style: 'tableData' },
-	    	                                { text: '<%if(obj1[24]!=null) {%> <%=obj1[24] %> <%}else{%>-<%} %>', style: 'tableData' },
+	    	                                { text: '<%if(obj1[24]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj1[24].toString()) %> <%}else{%>-<%} %>', style: 'tableData' },
 	    	                            ],
 	    	                            [
 	    	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
@@ -1349,7 +1349,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[18].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                			+ '<%=	a[i] +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                			+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    											+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -1362,7 +1362,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[19].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		+ '<%=	a[i] +" . "+ InspectionList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ InspectionList1.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],
@@ -1375,7 +1375,7 @@ function openModal() {
 	    	                                		+ '<% String [] a=obj1[20].toString().split(", "); %>'
 	    	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
 	    												
-	    	                                		+ '<%=	a[i] +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+	    	                                		+ '<%=	(a[i]!=null?StringEscapeUtils.escapeHtml4(a[i]): " - ") +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
 	    	                                		+ '<%} %>'
 	    	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
 	    	                            ],

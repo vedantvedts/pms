@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.util.stream.Collectors"%>
@@ -73,21 +74,22 @@ String aspFlag = (String)request.getAttribute("aspFlag");
 
 FormatConverter fc = new FormatConverter();
 %>
-<%	String ses=(String)request.getParameter("result");
-   	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){%>
-		<div align="center">
-			<div class="alert alert-danger" role="alert">
-		    <%=ses1 %>
-		    </div>
-		</div>
-<%}	if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-		    	<%=ses %>
-			</div>
-		</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 	<div class="container-fluid">
 		<div class="row">
@@ -131,7 +133,7 @@ FormatConverter fc = new FormatConverter();
 												<th style="width: 20%;">Title</th>
 												<td style="width: 78%;">
 													<%if(roadMap.getProjectTitle()!=null) {%>
-														<%=roadMap.getProjectTitle() %>
+														<%=StringEscapeUtils.escapeHtml4(roadMap.getProjectTitle()) %>
 													<%} else{%>-<%} %>
 												</td>
 											</tr>
@@ -159,7 +161,7 @@ FormatConverter fc = new FormatConverter();
 												<th>Aim & Objectives</th>
 												<td>
 													<%if(roadMap.getAimObjectives()!=null) {%>
-														<%=roadMap.getAimObjectives() %>
+														<%=StringEscapeUtils.escapeHtml4(roadMap.getAimObjectives()) %>
 													<%} else{%>-<%} %>
 												</td>
 											</tr>
@@ -167,7 +169,7 @@ FormatConverter fc = new FormatConverter();
 												<th>Scope</th>
 												<td>
 													<%if(roadMap.getScope()!=null) {%>
-														<%=roadMap.getScope() %>
+														<%=StringEscapeUtils.escapeHtml4(roadMap.getScope()) %>
 													<%} else{%>-<%} %>
 												</td>
 											</tr>
@@ -175,7 +177,7 @@ FormatConverter fc = new FormatConverter();
 												<th>Reference</th>
 												<td>
 													<%if(roadMap.getReference()!=null) {%>
-														<%=roadMap.getReference() %>
+														<%=StringEscapeUtils.escapeHtml4(roadMap.getReference()) %>
 													<%} else{%>-<%} %>
 												</td>
 											</tr>
@@ -223,9 +225,9 @@ FormatConverter fc = new FormatConverter();
               								<div style="font-size: 15px;"> Signature of Initiator</div>
 			               					<%for(Object[] apprInfo : roadMapApprovalEmpData){ %>
 			   			   					<%if(apprInfo[8].toString().equalsIgnoreCase("RFW")){ %>
-				   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
-				   								<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-				   								<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+				   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+				   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+				   								<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%= apprInfo[4]!=null? (fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19)):" - "  %>]</label>
 			   			    				<%break;}} %>  
 				            			 </div>
 							            
@@ -236,7 +238,7 @@ FormatConverter fc = new FormatConverter();
 							            			<div style="font-size: 15px;"> Signature of Director</div>
 							   						<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
 							   						<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-							   						<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+							   						<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=apprInfo[4]!=null? (fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19)):" - " %>]</label>
 								   				<%} %>
 							            	</div>	
 							            <%} %>
@@ -256,8 +258,8 @@ FormatConverter fc = new FormatConverter();
 															<%for(Object[] obj : roadMapRemarksHistory){%>
 															<tr>
 																<td style="border:none;width: 80%;overflow-wrap: anywhere;padding: 0px">
-																	<%if(obj[3]!=null) {%> <%=obj[3]%> <%} else{%><%=obj[5] %> <%} %> &nbsp; :
-																	<span style="border:none; color: blue;"><%=obj[1] %></span>
+																	<%if(obj[3]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj[3].toString())%> <%} else{%><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %> <%} %> &nbsp; :
+																	<span style="border:none; color: blue;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span>
 																</td>
 															</tr>
 															<%} %>

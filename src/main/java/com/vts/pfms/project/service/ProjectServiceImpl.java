@@ -30,6 +30,7 @@ import com.vts.pfms.FormatConverter;
 import com.vts.pfms.admin.dao.AdminDao;
 import com.vts.pfms.cars.dao.CARSDao;
 import com.vts.pfms.committee.model.PfmsNotification;
+import com.vts.pfms.master.model.RoleMaster;
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
 import com.vts.pfms.project.dao.ProjectDao;
 import com.vts.pfms.project.dto.PfmsInitiationAttachmentDto;
@@ -1628,17 +1629,29 @@ public class ProjectServiceImpl implements ProjectService {
 	public Long ProjectAssignAdd(ProjectAssignDto dto) throws Exception {
 		logger.info(new Date() + "Inside SERVICE ProjectAssignAdd ");
 		long count = 0;
-		for (int i = 0; i < dto.getEmpId().length; i++) {
-			ProjectAssign proAssign = new ProjectAssign();
-			proAssign.setProjectId(Long.parseLong(dto.getProjectId()));
-			proAssign.setCreatedBy(dto.getCreatedBy());
-			proAssign.setCreatedDate(sdf1.format(new Date()));
-			proAssign.setEmpId(Long.parseLong(dto.getEmpId()[i]));
-			proAssign.setIsActive(1);
-
-			count = dao.ProjectAssignAdd(proAssign);
+		if(dto.getProjectEmployeeId()==0) {
+			for (int i = 0; i < dto.getEmpId().length; i++) {
+				ProjectAssign proAssign = new ProjectAssign();
+				proAssign.setProjectId(Long.parseLong(dto.getProjectId()));
+				proAssign.setRoleMasterId(Long.parseLong(dto.getRoleMasterId()));
+				proAssign.setCreatedBy(dto.getCreatedBy());
+				proAssign.setCreatedDate(sdf1.format(new Date()));
+				proAssign.setEmpId(Long.parseLong(dto.getEmpId()[i]));
+				proAssign.setIsActive(1);
+	
+				count = dao.ProjectAssignAdd(proAssign);
+			}
+		}else {
+			ProjectAssign projectAssign = dao.getProjectAssignById(dto.getProjectEmployeeId()+"");
+			projectAssign.setRoleMasterId(Long.parseLong(dto.getRoleMasterId()));
+			if(dto.getEmpId()!=null && dto.getEmpId().length>0) {
+				projectAssign.setEmpId(Long.parseLong(dto.getEmpId()[0]));
+			}
+			projectAssign.setModifiedBy(dto.getCreatedBy());
+			projectAssign.setModifiedDate(sdf1.format(new Date()));
+			
+			count = dao.ProjectAssignAdd(projectAssign);
 		}
-
 		return count;
 	}
 
@@ -3865,4 +3878,29 @@ public long AddreqMembers(RequirementMembers rm) throws Exception {
 			return epdetails;
 			
 		}
+
+	@Override
+	public List<Object[]> getProjectTeamListByLabCode(String labCode, String projectId) {
+
+		return dao.getProjectTeamListByLabCode(labCode, projectId);
+	}
+
+	@Override
+	public List<RoleMaster> getRoleMasterList() throws Exception {
+		
+		return dao.getRoleMasterList();
+	}
+	
+	@Override
+	public ProjectAssign getProjectAssignById(String projectEmployeeId) throws Exception {
+		
+		return dao.getProjectAssignById(projectEmployeeId);
+	}
+	
+	@Override
+	public Long getProjectEmployeeIdByProjectId(String projectId, String roleMasterId) throws Exception {
+		
+		return dao.getProjectEmployeeIdByProjectId(projectId, roleMasterId);
+	}
+	
 }

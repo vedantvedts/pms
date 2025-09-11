@@ -951,6 +951,7 @@ int pageCOunt=1;
 </body>
 </html> --%>
 
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.util.stream.Collectors"%>
@@ -1079,7 +1080,7 @@ int pageCOunt=1;
 					<div align="center" ><h2 style="color: #145374 !important;">of</h2></div>
 							
 					<div align="center" >
-						<h2 style="color: #145374 !important;" >  <%if(labInfo!=null && labInfo.getLabCode() !=null){ %><%=labInfo.getLabCode()%><%} %> Projects</h2>
+						<h2 style="color: #145374 !important;" >  <%if(labInfo!=null && labInfo.getLabCode() !=null){ %><%=StringEscapeUtils.escapeHtml4(labInfo.getLabCode())%><%} %> Projects</h2>
 			   		</div>
 					
 					<div align="center" ><h2 style=" color: #145374 !important;"></h2></div>
@@ -1115,7 +1116,7 @@ int pageCOunt=1;
 					<table class="executive home-table" style="align: center;margin-bottom:5px; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;font-weight: bold; background-color: rgb(249, 242, 223);"  >
 						<% if(labInfo!=null){ %>
 							<tr>
-								<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: 700;font-size: 22px"> <h2 style="color: #145374 !important; font-weight: bold;"> <%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %> ( <%=labInfo.getLabCode()%> ) </h2> </th>
+								<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: 700;font-size: 22px"> <h2 style="color: #145374 !important; font-weight: bold;"> <%if(labInfo.getLabName()!=null){ %><%=StringEscapeUtils.escapeHtml4(labInfo.getLabName())  %><%}else{ %>LAB NAME<%} %> ( <%=labInfo.getLabCode()!=null?StringEscapeUtils.escapeHtml4(labInfo.getLabCode()): " - "%> ) </h2> </th>
 							</tr>
 						<%}%>
 						<tr>
@@ -1125,7 +1126,7 @@ int pageCOunt=1;
 							<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: 700;font-size:20px">Defence Research & Development Organization</th>
 						</tr>
 						<tr>
-							<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: 700;font-size:20px"><%if(labInfo.getLabAddress() !=null){ %><%=labInfo.getLabAddress()  %> , <%=labInfo.getLabCity() %><%}else{ %>LAB ADDRESS<%} %> </th>
+							<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: 700;font-size:20px"><%if(labInfo.getLabAddress() !=null){ %><%=StringEscapeUtils.escapeHtml4(labInfo.getLabAddress())  %> , <%=labInfo.getLabCity()!=null?StringEscapeUtils.escapeHtml4(labInfo.getLabCity()): " - " %><%}else{ %>LAB ADDRESS<%} %> </th>
 						</tr>
 					</table>
 				</div>
@@ -1172,18 +1173,18 @@ int pageCOunt=1;
 										<tr class="clickable " data-target="#presentation-slides" data-slide-to="<%=(++pageCOunt)%>" data-toggle="tooltip" data-placement="top" title="" style="cursor: pointer;">
 											<td class="border-black" style="text-align: center;font-weight: bold;"><%=1+i %> </td>
 											<td class="border-black" style="text-align: center;font-weight: bold;">
-												<%=mainProjectList.get(i)[12]!=null?mainProjectList.get(i)[12]:"-" %>
+												<%=mainProjectList.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(mainProjectList.get(i)[12].toString()):"-" %>
 											</td>
 											<td class="border-black" style="font-weight: bold;"  >
 														<div >
 															<%if (mainProjectList.get(i) != null )
-																if(mainProjectList.get(i)[1] != null) { %><%=mainProjectList.get(i)[1]%> - <%=mainProjectList.get(i)[13]!=null?mainProjectList.get(i)[13]:"-"%> 
+																if(mainProjectList.get(i)[1] != null) { %><%=StringEscapeUtils.escapeHtml4(mainProjectList.get(i)[1].toString())%> - <%=mainProjectList.get(i)[13]!=null?StringEscapeUtils.escapeHtml4(mainProjectList.get(i)[13].toString()):"-"%> 
 															<%}%>
 														</div>
 											</td>
 											
 											<td class="border-black" style="font-weight: bold;text-align: center;">
-												<%if(mainProjectList.get(i)[32]!=null){%><%=mainProjectList.get(i)[32] %><%}else {%>-<%} %>
+												<%if(mainProjectList.get(i)[32]!=null){%><%=StringEscapeUtils.escapeHtml4(mainProjectList.get(i)[32].toString()) %><%}else {%>-<%} %>
 											</td>
 											
 											
@@ -1191,7 +1192,7 @@ int pageCOunt=1;
 												<%if (mainProjectList.get(i) != null )
 													
 													if(mainProjectList.get(i)[5]!= null) {	%>
-													<%=fc.SqlToRegularDate(mainProjectList.get(i)[5].toString())%>
+													<%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(mainProjectList.get(i)[5].toString()))%>
 												<%}%>
 											</td>
 											<td class="border-black" style="font-weight: bold;text-align: center;<%
@@ -1205,7 +1206,7 @@ int pageCOunt=1;
 													 formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 														 regularDate = LocalDate.parse(fc.SqlToRegularDate(mainProjectList.get(i)[4].toString()), formatter);
 														%>
-													<%=fc.SqlToRegularDate(mainProjectList.get(i)[4].toString())%>
+													<%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(mainProjectList.get(i)[4].toString()))%>
 												<%}%>
 											</td>
 											<td class="border-black" style="font-weight: bold;text-align: right;">
@@ -1272,19 +1273,19 @@ int pageCOunt=1;
 											<tr class="clickable " data-target="#presentation-slides" data-slide-to="<%=(++pageCOunt)%>" data-toggle="tooltip" data-placement="top" title="" style="cursor: pointer;">
 												<td class="border-black" style="text-align: center;font-weight: bold;"><%=1+i %> </td>
 												<td class="border-black" style="text-align: center;font-weight: bold;">
-													<%=subProjectList.get(i)[12]!=null?subProjectList.get(i)[12]:"-" %>
+													<%=subProjectList.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(subProjectList.get(i)[12].toString()):"-" %>
 												</td>
 												<td class="border-black" style="font-weight: bold;"  >
 													
 															<div class="col">
 																<%if (subProjectList.get(i) != null )
-																	if(subProjectList.get(i)[1] != null) { %><%=subProjectList.get(i)[1]%> - <%=subProjectList.get(i)[13]!=null?subProjectList.get(i)[13]:"-"%>
+																	if(subProjectList.get(i)[1] != null) { %><%=StringEscapeUtils.escapeHtml4(subProjectList.get(i)[1].toString())%> - <%=subProjectList.get(i)[13]!=null?StringEscapeUtils.escapeHtml4(subProjectList.get(i)[13].toString()):"-"%>
 																<%}%>
 															</div>
 														
 												</td>
 												<td class="border-black" style="font-weight: bold;text-align: center;">
-													<%if(subProjectList.get(i)[32]!=null){%><%=subProjectList.get(i)[32] %><%}else {%>-<%} %>
+													<%if(subProjectList.get(i)[32]!=null){%><%=StringEscapeUtils.escapeHtml4(subProjectList.get(i)[32].toString()) %><%}else {%>-<%} %>
 												</td>
 												
 												<td class="border-black" style="font-weight: bold;text-align: center;">
@@ -1377,7 +1378,7 @@ int pageCOunt=1;
 													<span style="margin-top:10px;"><img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></span>	
 													<h2 style="display: inline-block; margin-left:200px;font-size: 1.25rem!important;margin-top:-10px;">
 															<%if (projects.get(i) != null )if(projects.get(i)[1] != null) {
-															%><%=projects.get(i)[1]%> - <%=projects.get(i)[13]!=null?projects.get(i)[13]:"-"%> (<%=projects.get(i)[12]!=null?projects.get(i)[12]:"-" %>)
+															%><%=StringEscapeUtils.escapeHtml4(projects.get(i)[1].toString())%> - <%=projects.get(i)[13]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[13].toString()):"-"%> (<%=projects.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[12].toString()):"-" %>)
 															<%}%>
 													</h2>
 													<%-- <h6 class="col" style="display: inline-block;">
@@ -1408,7 +1409,7 @@ int pageCOunt=1;
 																	
 																</tr>
 																<tr class="border-black">
-																	<td class="border-black" colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[12]!=null?projects.get(i)[12]:"--"%></td>
+																	<td class="border-black" colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[12].toString()):"--"%></td>
 																	<td class="border-black" colspan="1" style="width: 12%;color:#002CCD;text-align:center"><%=sdf.format(projects.get(i)[5])%></td>
 																	<td class="border-black" colspan="1" style="color:#002CCD;text-align:center">
 																	<span style="font-size: 14px !important;
@@ -1420,19 +1421,19 @@ int pageCOunt=1;
 																<%}%>
 																	"><%=sdf.format(projects.get(i)[4])%></span>
 																	</td>
-																	<td class="border-black" colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[6]!=null?projects.get(i)[6]:"--"%></td>
-																	<td class="border-black" colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[32]!=null?projects.get(i)[32]:"--"%></td>
+																	<td class="border-black" colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[6].toString()):"--"%></td>
+																	<td class="border-black" colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[32]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[32].toString()):"--"%></td>
 																	<td class="border-black" colspan="1" style="color:#002CCD;text-align:right"><%=nfc.convert(cost / 10000000)%> / <div><%=nfc.convert(exp / 10000000)%></div></td>
-																	<td class="border-black" colspan="1" style="color:#002CCD;"> <%if (projects.get(i) != null && projects.get(i)[33] != null) {%> <%=projects.get(i)[33]%>,  <%if(projects.get(i)[34]!=null) {%> <%=projects.get(i)[34].toString() %> <%} %>
+																	<td class="border-black" colspan="1" style="color:#002CCD;"> <%if (projects.get(i) != null && projects.get(i)[33] != null) {%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[33].toString())%>,  <%if(projects.get(i)[34]!=null) {%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[34].toString()) %> <%} %>
 																		<%} else {%> -- <%}%></td>
-																	<td class="border-black" colspan="1" style="color:#002CCD;"> <%if(projects.get(i)[14]!=null){%> <%=projects.get(i)[14]%>
+																	<td class="border-black" colspan="1" style="color:#002CCD;"> <%if(projects.get(i)[14]!=null){%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[14].toString())%>
 																		<%} else {%> -- <%}%></td>
 																</tr>
 																<tr class="border-black" style="margin-left:10px;">
 																	<td class="border-black" colspan="1" style="font-size: 14px; font-weight: bold; color: #021B79;vertical-align: top;">Brief :</td>
 																	<td class="border-black" colspan="7" style="font-size: 14px;color: black;">
 																		<%if(projects.get(i)[28]!=null){%>
-																			<%=projects.get(i)[28]%>
+																			<%=StringEscapeUtils.escapeHtml4(projects.get(i)[28].toString())%>
 																		<%}else{%>
 																			--
 																		<%}%>
@@ -1442,7 +1443,7 @@ int pageCOunt=1;
 																	<td class="border-black" colspan="1"><b style="font-size: 14px; font-weight: bold; color: #021B79;">Objectives : </b></td>
 																	<td class="border-black" colspan="7"style="color: black;">
 																			<%if(projects.get(i)[7]!=null) {%>
-																				<%=projects.get(i)[7]%> 
+																				<%=StringEscapeUtils.escapeHtml4(projects.get(i)[7].toString())%> 
 																			<%} else{%>
 																				--
 																			<%} %>
@@ -1463,7 +1464,7 @@ int pageCOunt=1;
 																	<td class="border-black" colspan="1"><b style="font-size: 14px; font-weight: bold; color: #021B79;">Deliverables : </b> </td>
 																	<td class="border-black" colspan="7"style="color: black;">
 																			<%if(projects.get(i)[8]!=null) {%>
-																				<%=projects.get(i)[8]%> 
+																				<%=StringEscapeUtils.escapeHtml4(projects.get(i)[8].toString())%> 
 																			<%} else{%>
 																				--
 																			<%} %>
@@ -1481,7 +1482,7 @@ int pageCOunt=1;
 																				<u>Current Status</u> :</span> 
 																				<%if(projects.get(i)!=null && projects.get(i)[20]!=null && projects.get(i)[20].toString().length()>0) {%>
 																				<%-- 	<%=projects.get(i)[20].toString().substring(3,projects.get(i)[20].toString().length()-1 )%> --%>
-																				<div class="ml-3" style="text-align: left; margin-left:10px"><%=projects.get(i)[20]%></div>
+																				<div class="ml-3" style="text-align: left; margin-left:10px"><%=StringEscapeUtils.escapeHtml4(projects.get(i)[20].toString())%></div>
 																				<%} else{%><div align="center">No Data</div><%} %>
 																	</div>
 														
@@ -1496,7 +1497,7 @@ int pageCOunt=1;
 																			</span>
 																	<%-- 	<%=projects.get(i)[31].toString().substring(3,projects.get(i)[31].toString().length()-1 )%> --%>
 																		<div class="ml-4">
-																				<%=projects.get(i)[31].toString() %>
+																				<%=StringEscapeUtils.escapeHtml4(projects.get(i)[31].toString()) %>
 																				</div>
 																	</div>
 																		
@@ -1595,7 +1596,7 @@ int pageCOunt=1;
 													<span style="margin-top:10px;"><img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></span>	
 													<h2 style="display: inline-block; margin-left:200px;font-size: 1.25rem!important;margin-top:-10px;">
 															<%if (projects.get(i) != null )if(projects.get(i)[1] != null) {
-															%><%=projects.get(i)[1]%> - <%=projects.get(i)[13]!=null?projects.get(i)[13]:"-"%> (<%=projects.get(i)[12]!=null?projects.get(i)[12]:"-" %>)
+															%><%=StringEscapeUtils.escapeHtml4(projects.get(i)[1].toString())%> - <%=projects.get(i)[13]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[13].toString()):"-"%> (<%=projects.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[12].toString()):"-" %>)
 															<%}%>
 													</h2>
 	<%-- 												<h6 class="col" style="display: inline-block;">
@@ -1621,7 +1622,7 @@ int pageCOunt=1;
 															<td class="border-black" colspan="1" style="text-align:center;font-size: 14px; font-weight: bold; color: maroon;">Current Stage </td>
 														</tr>
 														<tr>
-															<td class="border-black" colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[12]!=null?projects.get(i)[12]:"--"%></td>
+															<td class="border-black" colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[12].toString()):"--"%></td>
 															<td class="border-black" colspan="1" style="width: 12%;color:#002CCD;text-align:center"><%=sdf.format(projects.get(i)[5])%></td>
 															<td class="border-black" colspan="1" style="color:#002CCD;text-align:center">
 														<span style="font-size:  14px !important;;
@@ -1633,12 +1634,12 @@ int pageCOunt=1;
 																<%}%>
 																	"><%=sdf.format(projects.get(i)[4])%></span>
 															</td>
-															<td class="border-black" colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[6]!=null?projects.get(i)[6]:"--"%></td>
-															<td class="border-black" colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[32]!=null?projects.get(i)[32]:"--"%></td>
+															<td class="border-black" colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[6].toString()):"--"%></td>
+															<td class="border-black" colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[32]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[32].toString()):"--"%></td>
 															<td class="border-black" colspan="1" style="color:#002CCD;text-align:right"><%=nfc.convert(cost / 10000000)%> / <%=nfc.convert(exp / 10000000)%></td>
-															<td class="border-black" colspan="1" style="color:#002CCD;"> <%if (projects.get(i) != null && projects.get(i)[33] != null) {%> <%=projects.get(i)[33]%>,  <%if(projects.get(i)[34]!=null) {%> <%=projects.get(i)[34].toString() %> <%} %>
+															<td class="border-black" colspan="1" style="color:#002CCD;"> <%if (projects.get(i) != null && projects.get(i)[33] != null) {%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[33].toString())%>,  <%if(projects.get(i)[34]!=null) {%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[34].toString())%> <%} %>
 																<%} else {%> -- <%}%></td>
-															<td class="border-black" colspan="1" style="color:#002CCD;"> <%if(projects.get(i)[14]!=null){%> <%=projects.get(i)[14]%>
+															<td class="border-black" colspan="1" style="color:#002CCD;"> <%if(projects.get(i)[14]!=null){%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[14].toString())%>
 																<%} else {%> -- <%}%></td>
 														</tr>
 													</table>
@@ -1653,7 +1654,7 @@ int pageCOunt=1;
 																			</td>
 																			<td class="border-black" colspan="3" style="font-size: 14px;border-top: none;vertical-align: top;color: black;">
 																				<%if(projects.get(i)[28]!=null){%>
-																					<%=projects.get(i)[28]%>
+																					<%=StringEscapeUtils.escapeHtml4(projects.get(i)[28].toString())%>
 																				<%}else{%>
 																					--
 																				<%}%>
@@ -1664,7 +1665,7 @@ int pageCOunt=1;
 																				<b style="font-size: 14px;font-weight: bold;color: #021B79;vertical-align: top;">Objectives : </b>
 																			</td>
 																			<td class="border-black" colspan="3" style="color: black;"> 
-																					<%=projects.get(i)[7]==null?"--":projects.get(i)[7]%> 
+																					<%=projects.get(i)[7]==null?"--":StringEscapeUtils.escapeHtml4(projects.get(i)[7].toString())%> 
 																			</td>
 																		</tr>
 																		<%-- <tr>
@@ -1681,7 +1682,7 @@ int pageCOunt=1;
 																				<b style="font-size: 14px;font-weight: bold;color: #021B79;vertical-align: top;">Deliverables : </b>
 																			</td >
 																			<td class="border-black" colspan="3" style="color: black;"> 
-																					<%=projects.get(i)[8]==null?"--":projects.get(i)[8]%> 
+																					<%=projects.get(i)[8]==null?"--":StringEscapeUtils.escapeHtml4(projects.get(i)[8].toString())%> 
 																			</td>
 																		</tr>
 																					
@@ -1695,7 +1696,7 @@ int pageCOunt=1;
 																			</span>
 																			<%if(projects.get(i)!=null && projects.get(i)[20]!=null) {%>
 																				<%-- <%=projects.get(i)[20].toString().substring(3, projects.get(i)[20].toString().length())%> --%>
-																					<div class="ml-3" style="text-align: left;margin-left:10px"><%=projects.get(i)[20]%></div>
+																					<div class="ml-3" style="text-align: left;margin-left:10px"><%=StringEscapeUtils.escapeHtml4(projects.get(i)[20].toString())%></div>
 																			<%} else{%><div align="center">No Data</div><%} %> 
 																		</div>
 																	</div>
@@ -1705,7 +1706,7 @@ int pageCOunt=1;
 																				<span style="text-align: left;font-size: 14px; font-weight: bold; color: maroon;">
 																					<u>Way Forward</u> :</span> 
 																				<div class="ml-3">
-																				<%=projects.get(i)[31].toString() %>
+																				<%=StringEscapeUtils.escapeHtml4(projects.get(i)[31].toString()) %>
 																				</div>
 																			</div>
 																		</div>
@@ -1784,7 +1785,7 @@ int pageCOunt=1;
 													<span style="margin-top:10px;"><img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></span>	
 													<h2 style="display: inline-block; margin-left:200px;font-size: 1.25rem!important;margin-top:-10px;">
 															<%if (projects.get(i) != null )if(projects.get(i)[1] != null) {
-															%><%=projects.get(i)[1]%> - <%=projects.get(i)[13]!=null?projects.get(i)[13]:"-"%> (<%=projects.get(i)[12]!=null?projects.get(i)[12]:"-" %>)
+															%><%=StringEscapeUtils.escapeHtml4(projects.get(i)[1].toString())%> - <%=projects.get(i)[13]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[13].toString()):"-"%> (<%=projects.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[12].toString()):"-" %>)
 															<%}%>
 													</h2>
 												<%-- 	<h6 class="col" style="display: inline-block;">
@@ -1812,7 +1813,7 @@ int pageCOunt=1;
 																	<td class="border-black" colspan="1" style="text-align:center;font-size: 14px; font-weight: bold;color: maroon;">Current Stage </td>
 																</tr>
 																<tr>
-																	<td class="border-black" colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[12]!=null?projects.get(i)[12]:"--"%></td>
+																	<td class="border-black" colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[12].toString()):"--"%></td>
 																	<td class="border-black" colspan="1" style="width: 12%;color:#002CCD;text-align:center"><%=sdf.format(projects.get(i)[5])%></td>
 																	<td class="border-black" colspan="1" style="color:#002CCD;text-align:center">
 																<span style="font-size:  14px !important;
@@ -1824,12 +1825,12 @@ int pageCOunt=1;
 																<%}%>
 																	"><%=sdf.format(projects.get(i)[4])%></span>
 																	</td>
-																	<td class="border-black" colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[6]!=null?projects.get(i)[6]:"--"%></td>
-																	<td class="border-black" colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[32]!=null?projects.get(i)[32]:"--"%></td>
+																	<td class="border-black" colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[6].toString()):"--"%></td>
+																	<td class="border-black" colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[32]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[32].toString()):"--"%></td>
 																	<td class="border-black" colspan="1" style="color:#002CCD;text-align:right;"><%=nfc.convert(cost / 10000000)%> / <%=nfc.convert(exp / 10000000)%> </td>
-																	<td class="border-black" colspan="1" style="color:#002CCD;"> <%if (projects.get(i) != null && projects.get(i)[33] != null) {%> <%=projects.get(i)[33]%>,  <%if(projects.get(i)[34]!=null) {%> <%=projects.get(i)[34].toString() %> <%} %>
+																	<td class="border-black" colspan="1" style="color:#002CCD;"> <%if (projects.get(i) != null && projects.get(i)[33] != null) {%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[33].toString())%>,  <%if(projects.get(i)[34]!=null) {%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[34].toString())%> <%} %>
 																		<%} else {%> -- <%}%></td>
-																	<td class="border-black" colspan="1" style="color:#007bff"> <%if(projects.get(i)[14]!=null){%> <%=projects.get(i)[14]%>
+																	<td class="border-black" colspan="1" style="color:#007bff"> <%if(projects.get(i)[14]!=null){%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[14].toString())%>
 																		<%} else {%> -- <%}%></td>
 																</tr>
 																<tr>
@@ -1842,9 +1843,9 @@ int pageCOunt=1;
 																	<td class="border-black" colspan="1"><b style="font-size: 14px; font-weight: bold; color: #021B79;">Objectives : </b></td>
 																	<td class="border-black" colspan="7" style="color: black;">
 																	 <%if(projects.get(i)[7] != null && projects.get(i)[7].toString().length() > 320) {%>
-																		<%=projects.get(i)[7].toString().substring(0, 280)%>
+																		<%=StringEscapeUtils.escapeHtml4(projects.get(i)[7].toString()).substring(0, 280)%>
 																	<%} else {%> 
-																		<%=projects.get(i)[7]!=null?projects.get(i)[7]:"--"%> 
+																		<%=projects.get(i)[7]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[7].toString()):"--"%> 
 																	<%}%>
 																	</td>
 																</tr>
@@ -1865,9 +1866,9 @@ int pageCOunt=1;
 																	<td class="border-black" colspan="1"><b style="font-size: 14px; font-weight: bold; color: #021B79;">Deliverables : </b> </td>
 																	<td class="border-black" colspan="7" style="color: black;">
 																		<% if (projects.get(i)[8] != null && projects.get(i)[8].toString().length() > 320) {%>
-																			<%=projects.get(i)[8].toString().substring(0, 280)%>
+																			<%=StringEscapeUtils.escapeHtml4(projects.get(i)[8].toString()).substring(0, 280)%>
 																		<%} else {%> 
-																			<%=projects.get(i)[8]!=null?projects.get(i)[8]:"--"%> 
+																			<%=projects.get(i)[8]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[8].toString()):"--"%> 
 																		<% } %>
 																	</td>
 																</tr>
@@ -1884,7 +1885,7 @@ int pageCOunt=1;
 															<div class="col" style="margin-left:10px">
 															
 																	<%if(projects.get(i)!=null && projects.get(i)[20]!=null) {%>
-																				<div class="ml-3" style="text-align: left;"><%=projects.get(i)[20]%></div>
+																				<div class="ml-3" style="text-align: left;"><%=StringEscapeUtils.escapeHtml4(projects.get(i)[20].toString())%></div>
 																		<%} else{%><div align="center">No Data</div> <%} %> 
 						
 															</div>

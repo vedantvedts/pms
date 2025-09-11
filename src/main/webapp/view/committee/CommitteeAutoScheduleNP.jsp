@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.format.TextStyle"%>
 <%@page import="java.time.LocalDate"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -186,20 +187,22 @@ List<Object[]> committeelist=(List<Object[]>)request.getAttribute("committeelist
 String committeeid=(String)request.getAttribute("committeeid");
 %>
 
-<%String ses=(String)request.getAttribute("result"); 
- String ses1=(String)request.getAttribute("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
     <br />
     
@@ -217,7 +220,7 @@ String committeeid=(String)request.getAttribute("committeeid");
 					<div class="row">
 					
 						<div class="col-md-4">	
-							<h3 class="control-label" > <%=committeedata[1] %> Auto Schedule </h3> 
+							<h3 class="control-label" > <%=committeedata[1]!=null?StringEscapeUtils.escapeHtml4(committeedata[1].toString()): " - " %> Auto Schedule </h3> 
 						</div>
 						
 						<div class="col-md-5">	</div>
@@ -242,7 +245,7 @@ String committeeid=(String)request.getAttribute("committeeid");
 									<div class="col-md-2">
 										<div class="form-group">
 											<label class="control-label">From </label>
-											 <input  class="form-control"  data-date-format="dd/mm/yyyy" readonly="readonly" id="fdate" name="fromdate"  required="required" value="<%=startdate[0]%>">
+											 <input  class="form-control"  data-date-format="dd/mm/yyyy" readonly="readonly" id="fdate" name="fromdate"  required="required" value="<%=startdate[0]!=null?StringEscapeUtils.escapeHtml4(startdate[0].toString()): ""%>">
 										</div>
 									</div>
 
@@ -309,7 +312,7 @@ String committeeid=(String)request.getAttribute("committeeid");
 						
 						<%if(!Dashboard.equalsIgnoreCase("nondashboard")){ %>	
 						
-						<h3 class="col-md-7">General Schedules List <%if(!committeeid.equals("A")){ %> (<%=committeedata[1] %> )  <%} %></h3>
+						<h3 class="col-md-7">General Schedules List <%if(!committeeid.equals("A")){ %> (<%=committeedata[1]!=null?StringEscapeUtils.escapeHtml4(committeedata[1].toString()): " - " %> )  <%} %></h3>
 					
 						<%} %>
 					
@@ -323,7 +326,7 @@ String committeeid=(String)request.getAttribute("committeeid");
 									 <select class="form-control selectdee"  id="committeeid" required="required" name="committeeid" onchange='submitdropdown();' >
 					   						 <option value="all" <%if(committeeid.equals("A")){ %>selected<% } %> >All</option> 
 					   						<% for (Object[] obj : committeelist) {%>					   						
-											<option value="<%=obj[1]%>" <%if(obj[1].toString().equals(committeeid)){ %>selected<% } %> ><%=obj[4]%>(<%=obj[5] %>)</option>												
+											<option value="<%=obj[1]%>" <%if(obj[1].toString().equals(committeeid)){ %>selected<% } %> ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>(<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %>)</option>												
 											<%} %>											
 					  				</select>
 					  				
@@ -380,11 +383,11 @@ String committeeid=(String)request.getAttribute("committeeid");
 															
 																<%String day=LocalDate.parse(obj[0].toString()).getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.US);%>														
 															<td   >	
-																	<span<%if(day.equalsIgnoreCase("sunday") || day.equalsIgnoreCase("saturday")){ %> style="color: red" <%} %> > <%=day%> </span>&nbsp; 
+																	<span<%if(day.equalsIgnoreCase("sunday") || day.equalsIgnoreCase("saturday")){ %> style="color: red" <%} %> > <%=StringEscapeUtils.escapeHtml4(day)%> </span>&nbsp; 
 																	- &nbsp;<%=LocalDate.parse(obj[0].toString()).getMonth().getDisplayName(TextStyle.FULL, Locale.US)%> &nbsp; 
 																	- &nbsp; <%= sdf1.format(sdf.parse( obj[0].toString()))%>  
 															</td>
-															<td><%=obj[1] %></td>
+															<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
 															<td class="editable-click"><%if(obj[6]!=null){%>
 																<a class="font" href="CommitteeScheduleView.htm?scheduleid=<%=obj[4]%>" target="_blank" 
 																
@@ -393,7 +396,7 @@ String committeeid=(String)request.getAttribute("committeeid");
 																<%if(obj[5].toString().equalsIgnoreCase("MAR") || obj[5].toString().equalsIgnoreCase("MMR") ){ %> style="color:red"<%} %>
 																<%if(obj[5].toString().equalsIgnoreCase("MAS") || obj[5].toString().equalsIgnoreCase("MMS") ){ %> style="color:orange"<%} %>
 																
-																 ><%=obj[6] %><%}else{ %>-<%} %></a>
+																 ><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %><%}else{ %>-<%} %></a>
 															</td>
 															
 															<td class="left width" style="text-align: left">

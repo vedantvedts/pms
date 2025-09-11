@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.LocalDate"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
@@ -61,27 +62,22 @@ h5{
 	Object[] tccscheduledata=(Object[])request.getAttribute("tccscheduledata");
 	%>
 
-	<%
-		String ses = (String) request.getParameter("result");
-	String ses1 = (String) request.getParameter("resultfail");
-	if (ses1 != null) {
-	%><center>
-		<div class="alert alert-danger" role="alert">
-			<%=ses1%>
-		</div>
-	</center>
-	<%
-		}
-	if (ses != null) {
-	%>
-	<center>
-		<div class="alert alert-success" role="alert">
-			<%=ses%>
-		</div>
-	</center>
-	<%
-		}
-	%>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 	<div class="container-fluid">
 		<div class="row">
@@ -126,7 +122,7 @@ h5{
 										
 										<%if(tccinvited[3].toString().equals("CC"))
 										{%>
-											<%=tccinvited[6]%> (<%= tccinvited[7]%>)
+											<%=tccinvited[6]!=null?StringEscapeUtils.escapeHtml4(tccinvited[6].toString()):" - "%> (<%= tccinvited[7]!=null?StringEscapeUtils.escapeHtml4(tccinvited[7].toString()):" - "%>)
 										<%} 
 									}%>
 									</td>
@@ -146,7 +142,7 @@ h5{
 										
 										<%if(tccinvited[3].toString().equals("CS"))
 										{%>
-											<%=tccinvited[6]%> (<%= tccinvited[7]%>)
+											<%=tccinvited[6]!=null?StringEscapeUtils.escapeHtml4(tccinvited[6].toString()):" - "%> (<%= tccinvited[7]!=null?StringEscapeUtils.escapeHtml4(tccinvited[7].toString()):" - "%>)
 										<%} 
 									}%>
 									
@@ -165,7 +161,7 @@ h5{
 
 								<tr>
 
-									<td><label class="control-label">Member <%=count%></label></td><td>&emsp; :&emsp;</td> <td> <%=obj[6]%> (<%=obj[7]%>)</td>
+									<td><label class="control-label">Member <%=count%></label></td><td>&emsp; :&emsp;</td> <td> <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%> (<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%>)</td>
 									
 
 								</tr>
@@ -198,7 +194,7 @@ h5{
 									{%>								
 										<tr >
 										<td><label class="control-label">Internal <%=intcount%></label></td><td>&emsp; :&emsp;</td>
-										<td><%=tccinvitedlist.get(i)[6]%> (<%=tccinvitedlist.get(i)[7]%>)</td>
+										<td><%=tccinvitedlist.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(tccinvitedlist.get(i)[6].toString()):" - "%> (<%=tccinvitedlist.get(i)[7]!=null?StringEscapeUtils.escapeHtml4(tccinvitedlist.get(i)[7].toString()):" - "%>)</td>
 										<td style="padding-left: 30px">
 											<form action="TccInvitationDelete.htm" method="post">
 												<input type="hidden" name="tccscheduleid" value="<%=tccscheduleid%>">
@@ -232,7 +228,7 @@ h5{
 								{%>
 										<tr>
 										<td><label class="control-label">External &nbsp; <%=extcount%></label></td><td>&emsp; :&emsp;</td>
-										<td><%=tccinvitedlist.get(i)[6]%> (<%=tccinvitedlist.get(i)[7]%>)</td>
+										<td><%=tccinvitedlist.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(tccinvitedlist.get(i)[6].toString()):" - "%> (<%=tccinvitedlist.get(i)[7]!=null?StringEscapeUtils.escapeHtml4(tccinvitedlist.get(i)[7].toString()):" - "%>)</td>
 										<td style="padding-left: 30px">
 											<form action="TccInvitationDelete.htm" method="get">
 												<input type="hidden" name="tccscheduleid" value="<%=tccscheduleid%>">
@@ -321,7 +317,7 @@ h5{
 																						
 							          			<option disabled="true"  selected value="">Choose...</option>
 									    				<% for (Object[] obj : EmployeeList) {%>
-						     								<option value="<%=obj[0]%>,I"><%=obj[1]%> (<%=obj[2] %>)</option>
+						     								<option value="<%=obj[0]%>,I"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> (<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>)</option>
 						    							<%} %>					
 											</select>
 										</td>
@@ -352,7 +348,7 @@ h5{
 																						
 							          			<option disabled="true"  selected value="">Choose...</option>
 									    				<% for (Object[] obj : ExpertList) {%>
-						     								<option value="<%=obj[0]%>,E"><%=obj[1]%> (<%=obj[2] %>)</option>
+						     								<option value="<%=obj[0]%>,E"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> (<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>)</option>
 						    							<%} %>					
 											</select>
 										</td>								

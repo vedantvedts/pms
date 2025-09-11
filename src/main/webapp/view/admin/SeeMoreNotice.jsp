@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -131,27 +132,22 @@ Integer noticeElib= Integer.parseInt(request.getAttribute("noticeEligibility").t
 %>
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	
-	
-	<center>
-	
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-            </div>
-            
-    </center>
-    
-    
-                    <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 	
@@ -220,10 +216,10 @@ Integer noticeElib= Integer.parseInt(request.getAttribute("noticeEligibility").t
 			                                            <%for(Object[] notiec:notiecList){ %>
 			                                            <tr>
 			                                                <td><%=srno++%></td>
-			                                               <td><%=sdf.format(notiec[2])%></td>
-			                                               <td><%=sdf.format(notiec[3])%></td>
-			                                               <td><%=notiec[1]%></td>
-			                                               <td><%=notiec[8]%></td>
+			                                               <td><%=notiec[2]!=null?sdf.format(notiec[2]):" - "%></td>
+			                                               <td><%=notiec[3]!=null?sdf.format(notiec[3]):" - "%></td>
+			                                               <td><%=notiec[1]!=null?StringEscapeUtils.escapeHtml4(notiec[1].toString()): " - "%></td>
+			                                               <td><%=notiec[8]!=null?StringEscapeUtils.escapeHtml4(notiec[8].toString()): " - "%></td>
 			                                              			<td  class="left width">
 												
 													 <form action="ExpertEditRevoke.htm" method="POST" name="myfrm"  style="display: inline" onsubmit="return confirm('Do you really want to Edit or Revoke');">

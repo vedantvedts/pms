@@ -1,4 +1,5 @@
 <%-- <%@page import="com.vts.pfms.docs.model.PfmsDocTemplate"%> --%>
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -94,20 +95,22 @@ padding: 6px;
 
 	List<String> fontList = Arrays.asList("Normal","Bold","Bolder","Lighter","100","200","300","400","500","600","700","800","900");
 %>
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-	<div class="alert alert-danger" role="alert" >
-               <%=ses1 %>
-                    </div></div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-	<div class="alert alert-success" role="alert"  >
-        <%=ses %>
-        </div></div>
-        <%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 <div class="card" style="/* min-height: 850px; max-height: 1200px; */">
 <div class="card-body"
 						style="background: white; box-shadow: 2px 2px 2px gray;">
@@ -156,7 +159,7 @@ padding: 6px;
 				<select class="form-control form-control selectdee" name="HeaderFontWeight" required id="HeaderFontWeight">
 					<option disabled="disabled" selected="selected" value="">Select...</option>
 					<%for(String font : fontList) {%>
-						<option value="<%=font %>" <% if(edit!=null && edit[1]!=null && edit[1].toString().equalsIgnoreCase(font)) { %>selected="selected"<% } %>><%=font %></option>
+						<option value="<%=font %>" <% if(edit!=null && edit[1]!=null && edit[1].toString().equalsIgnoreCase(font)) { %>selected="selected"<% } %>><%=font!=null?StringEscapeUtils.escapeHtml4(font): " - " %></option>
 					<%} %>
 				</select>
             </td>
@@ -178,7 +181,7 @@ padding: 6px;
 		 	<select class="form-control form-control selectdee" name="subHeaderFontWeight" required id="subHeaderFontWeight">
 					<option disabled="disabled" selected="selected" value="">Select...</option>
 					<%for(String font : fontList) {%>
-						<option value="<%=font %>" <% if(edit!=null && edit[3]!=null && edit[3].toString().equalsIgnoreCase(font)) { %>selected="selected"<% } %>><%=font %></option>
+						<option value="<%=font %>" <% if(edit!=null && edit[3]!=null && edit[3].toString().equalsIgnoreCase(font)) { %>selected="selected"<% } %>><%=font!=null?StringEscapeUtils.escapeHtml4(font): " - " %></option>
 					<%} %>
 				</select>
 		 </td>
@@ -199,7 +202,7 @@ padding: 6px;
 				<select class="form-control form-control selectdee" name="SuperHeaderFontWeight" required id="SuperHeaderFontWeight">
 					<option disabled="disabled" selected="selected" value="" >Select...</option>
 					<%for(String font : fontList) {%>
-						<option value="<%=font %>" <% if(edit!=null && edit[10]!=null && edit[10].toString().equalsIgnoreCase(font)) { %>selected="selected"<% } %>><%=font %></option>
+						<option value="<%=font %>" <% if(edit!=null && edit[10]!=null && edit[10].toString().equalsIgnoreCase(font)) { %>selected="selected"<% } %>><%=font!=null?StringEscapeUtils.escapeHtml4(font): " - " %></option>
 					<%} %>
 				</select>
 			</td>
@@ -220,7 +223,7 @@ padding: 6px;
 				<select class="form-control form-control selectdee" name="paraFontWeight" required id="paraFontWeight">
 					<option disabled="disabled" selected="selected" value="" >Select...</option>
 					<%for(String font : fontList) {%>
-						<option value="<%=font %>" <% if(edit!=null && edit[5]!=null && edit[5].toString().equalsIgnoreCase(font)) { %>selected="selected"<% } %>><%=font %></option>
+						<option value="<%=font %>" <% if(edit!=null && edit[5]!=null && edit[5].toString().equalsIgnoreCase(font)) { %>selected="selected"<% } %>><%=font!=null?StringEscapeUtils.escapeHtml4(font): " - " %></option>
 					<%} %>
 				</select>
 			</td>
@@ -243,7 +246,7 @@ padding: 6px;
 				<label class="control-label">Restriction On Use:</label><span class="mandatory" style="color: red;">*</span>
 			</td>
 			<td colspan="3">
-			<textarea rows="3" cols="40" class="form-control" name="RestictionOnUse" placeholder="Max 1000 characters" maxlength="1000"><%if( edit != null && edit[12]!=null) {%> <%=edit[12].toString() %> <%} %></textarea>
+			<textarea rows="3" cols="40" class="form-control" name="RestictionOnUse" placeholder="Max 1000 characters" maxlength="1000"><%if( edit != null && edit[12]!=null) {%> <%=edit[12]!=null?edit[12].toString(): " - " %> <%} %></textarea>
 			
 			</td>
 	</tbody>

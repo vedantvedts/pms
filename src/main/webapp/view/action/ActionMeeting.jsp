@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -149,7 +150,7 @@ String MeetingNumbr =(String)request.getAttribute("MeetingNumbr");
 				<div class="card shadow-nohover">
            <div class="card-header ">  
 					<div class="row">
-						<h4 class="col-md-8">Meeting Action List (MeetingId-<%=MeetingNumbr %> )</h4>  
+						<h4 class="col-md-8">Meeting Action List (MeetingId-<%=MeetingNumbr!=null?StringEscapeUtils.escapeHtml4(MeetingNumbr):" - " %> )</h4>  
 							<!-- <table>
 							<tr>
 							<td style="width: 85%;"></td>
@@ -199,7 +200,7 @@ String MeetingNumbr =(String)request.getAttribute("MeetingNumbr");
 																		<td><%=count++ %></td>
 																		<td>
 																		    <form action="ActionDetails.htm" method="POST" >
-																				<button  type="submit" class="btn btn-outline-info"   ><%=obj[0] %></button>
+																				<button  type="submit" class="btn btn-outline-info"   ><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):"" %></button>
 																			   <input type="hidden" name="ActionLinkId" value="<%=obj[13]%>"/>
 																	           <input type="hidden" name="Assignee" value="<%=obj[1]%>,<%=obj[2]%>"/>
 																	           <input type="hidden" name="ActionMainId" value="<%=obj[10]%>"/>
@@ -217,19 +218,19 @@ String MeetingNumbr =(String)request.getAttribute("MeetingNumbr");
 																		</td>
 																		<td><%=sdf1.format(obj[6])%></td>
 																		<td>
-															               <%if(obj[7].toString().length()>100){ %>
-															               <%=obj[7].toString().substring(0, 100) %>
-														                   <input type="hidden" value='"<%=obj[7].toString()%>"' id="td<%=obj[10].toString()%>">
+															               <%if(obj[7]!=null && obj[7].toString().length()>100){ %>
+															               <%=StringEscapeUtils.escapeHtml4(obj[7].toString()).substring(0, 100) %>
+														                   <input type="hidden" value="<%=obj[7].toString()%>" id="td<%=obj[10].toString()%>">
 														                   <span style="text-decoration: underline;font-size:13px;color: #145374;cursor: pointer;font-weight: bolder" onclick="showAction('<%=obj[10].toString()%>','<%=obj[0].toString()%>')">show more..</span>
-															               <%}else{ %>
-															               <%=obj[7].toString() %>
+															               <%} else{ %>
+															               <%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()):" - " %>
 															               <%} %>
 															            </td>																		
-																	  	<td><%=obj[3]%>, <%=obj[4]%></td>
+																	  	<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - "%>, <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%></td>
 																		<td style="width:8% !important; "><%if(obj[11]!=null){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important; width: 140px;">
 															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[11]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															<%=obj[11]%>
+															<%=StringEscapeUtils.escapeHtml4(obj[11].toString())%>
 															</div> 
 															</div> <%}else{ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;width: 140px;">

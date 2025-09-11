@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.util.List"%>
@@ -226,25 +227,19 @@
 <% 
     String ses = (String) request.getParameter("result");
     String ses1 = (String) request.getParameter("resultfail");
-    if (ses1 != null) {
-%>
+    if (ses1 != null) { %>
     <div align="center">
         <div class="alert alert-danger" role="alert">
-            <%= ses1 %>
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
         </div>
     </div>
-<% 
-    }
-    if (ses != null) { 
-%>
+<% }if (ses != null) { %>
     <div align="center">
         <div class="alert alert-success" role="alert">
-            <%= ses %>
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
         </div>
     </div>
-<% 
-    } 
-%>
+<% } %>
 
 <div class="container-fluid mainDiv">        
     <div class="col-md-12">
@@ -281,9 +276,9 @@
                                 %>
                                 <tr>
                                     <td class="center" ><%= count %></td>
-                                    <td ><%= obj[10]+", "+obj[11] %></td>
-                                    <td class="center"><%= fc.sdfTordf(obj[4].toString()) %></td>
-                                    <td class="center" >v<%= obj[1] %></td>
+                                    <td ><%= obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - "%> <%=", "+(obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - ") %></td>
+                                    <td class="center"><%= obj[4]!=null?fc.sdfTordf(obj[4].toString()):" - " %></td>
+                                    <td class="center" >v<%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
                                     <td align="center" >
                       					<form action="#">
 			                            	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -394,7 +389,7 @@
            			<table align="center"  >
         				<tr>
         					<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
-         						Prepared By - <%if(igiApproval!=null) {%><%=igiApproval[10] %> <%} else{%>Prepared By<%} %>
+         						Prepared By - <%if(igiApproval!=null) {%><%=StringEscapeUtils.escapeHtml4(igiApproval[10].toString()) %> <%} else{%>Prepared By<%} %>
          					</td>
              		
                     		<td rowspan="2">
@@ -402,7 +397,7 @@
              				</td>
              						
         					<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
-        						Reviewer - <%if(igiApproval!=null) {%><%=igiApproval[9] %> <%} else{%>Reviewer<%} %>
+        						Reviewer - <%if(igiApproval!=null) {%><%=StringEscapeUtils.escapeHtml4(igiApproval[9].toString()) %> <%} else{%>Reviewer<%} %>
         	    			</td>
              	    				
                     		<td rowspan="2">
@@ -410,7 +405,7 @@
              				</td>
              						
              				<td class="trup" style="background: linear-gradient(to top, #9b999a 10%, transparent 115%);">
-             					Approver - <%if(igiApproval!=null) {%><%=igiApproval[8] %> <%} else{%>Approver<%} %>
+             					Approver - <%if(igiApproval!=null) {%><%=StringEscapeUtils.escapeHtml4(igiApproval[8].toString()) %> <%} else{%>Approver<%} %>
              	    		</td>
             			</tr> 	
             	    </table>			             

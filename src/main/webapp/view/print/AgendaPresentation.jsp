@@ -1,3 +1,5 @@
+<%@page import="com.vts.pfms.committee.model.ProgrammeMaster"%>
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalTime"%>
 <%@page import="java.net.Inet4Address"%>
@@ -89,6 +91,15 @@
 			closeActionDetails = ActionDetails.stream().filter(e->e[3].toString().equalsIgnoreCase("C")).collect(Collectors.toList());
 		}
 		
+		ProgrammeMaster programmeMaster = (ProgrammeMaster) request.getAttribute("programmeMaster");
+		String programmeId = (String)request.getAttribute("programmeId");
+		if(programmeMaster!=null) {
+			ProjectCode = programmeMaster.getPrgmCode();
+		}
+		
+		Map<Long, List<Object[]>> openActionsMap = OpenActionDetails.stream().collect(Collectors.groupingBy(row -> Long.parseLong(row[20].toString()) ));
+		Map<Long, List<Object[]>> closeActionsMap = closeActionDetails.stream().collect(Collectors.groupingBy(row -> Long.parseLong(row[20].toString()) ));
+
 	%>
 
 
@@ -114,7 +125,7 @@
 						</div>
 
 						<div align="center">
-							<h3 style="color: #4C9100 !important"><%=CommitteeName %>
+							<h3 style="color: #4C9100 !important"><%=CommitteeName!=null?StringEscapeUtils.escapeHtml4(CommitteeName): " - " %>
 								#<%=Long.parseLong(committeeMetingsCount[1].toString())+1 %>
 								Meeting
 							</h3>
@@ -123,8 +134,8 @@
 						<div align="center">
 							<h3 style="color: #4C9100 !important">
 								<%if(projectattributes!=null){%>
-								<%= projectattributes[1] %>
-								(<%= projectattributes[0] %>)
+								<%= projectattributes[1]!=null?StringEscapeUtils.escapeHtml4(projectattributes[1].toString()): " - " %>
+								(<%= projectattributes[0]!=null?StringEscapeUtils.escapeHtml4(projectattributes[0].toString()): " - "%>)
 								<%}%>
 							</h3>
 						</div>
@@ -151,7 +162,7 @@
 							<tr>
 								<th
 									style="text-align: center; font-size: 18px; border: 0px !important;">
-									<%=scheduledata[11] %>
+									<%=scheduledata[11]!=null?StringEscapeUtils.escapeHtml4(scheduledata[11].toString()): " - " %>
 								</th>
 							</tr>
 						</table>
@@ -169,11 +180,11 @@
 								<%-- <%LocalTime starttime = LocalTime.parse(LocalTime.parse(nextMeetVenue[3].toString(),DateTimeFormatter.ofPattern("HH:mm:ss")).format( DateTimeFormatter.ofPattern("HH:mm") ));   %> --%>
 								<td
 									style="text-align: center; width: 50%; font-size: 18px; padding-top: 5px; border: 0px !important;">
-									<b><%=sdf.format(sdf1.parse(scheduledata[2].toString()))%></b>
+									<b><%=sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(scheduledata[2].toString())))%></b>
 								</td>
 								<td
 									style="text-align: center; width: 50%; font-size: 18px; padding-top: 5px; border: 0px !important;">
-									<b><%=scheduledata[3]/* starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) */%></b>
+									<b><%=scheduledata[3]!=null?StringEscapeUtils.escapeHtml4(scheduledata[3].toString()): " - "/* starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) */%></b>
 								</td>
 							</tr>
 						</table>
@@ -187,7 +198,7 @@
 							<tr>
 								<th
 									style="text-align: center;; font-size: 18px; border: 0px !important;">
-									<% if(scheduledata[12]!=null){ %><%=scheduledata[12] %> <%}else{ %>
+									<% if(scheduledata[12]!=null){ %><%=StringEscapeUtils.escapeHtml4(scheduledata[12].toString()) %> <%}else{ %>
 									- <%} %>
 								</th>
 							</tr>
@@ -199,7 +210,7 @@
 							<tr>
 								<th colspan="8"
 									style="text-align: center; font-weight: 700; font-size: 22px">
-									<%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %>
+									<%if(labInfo.getLabName()!=null){ %><%=StringEscapeUtils.escapeHtml4(labInfo.getLabName())  %>
 									<%}else{ %>LAB NAME<%} %>
 								</th>
 							</tr>
@@ -217,8 +228,8 @@
 							<tr>
 								<th colspan="8"
 									style="text-align: center; font-weight: 700; font-size: 15px">
-									<%if(labInfo.getLabAddress() !=null){ %><%=labInfo.getLabAddress()  %>
-									, <%=labInfo.getLabCity() %>
+									<%if(labInfo.getLabAddress() !=null){ %><%=StringEscapeUtils.escapeHtml4(labInfo.getLabAddress())  %>
+									, <%=labInfo.getLabCity()!=null?StringEscapeUtils.escapeHtml4(labInfo.getLabCity()): " - " %>
 									<%}else{ %>LAB ADDRESS<%} %>
 								</th>
 							</tr>
@@ -246,13 +257,13 @@
 							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
 					</div>
 					<div class="col-md-1" align="left" style="padding-top: 19px;">
-						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<b style="margin-left: -35px;"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
 					</div>
 					<div class="col-md-8">
 						<h3>Agenda</h3>
 					</div>
 					<div class="col-md-1" align="right" style="padding-top: 19px;">
-						<b style="margin-right: -35px;"><%=MeetingNo %></b>
+						<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
 					</div>
 					<div class="col-md-1">
 						<img class="logo"
@@ -322,10 +333,10 @@
 							<tr>
 
 								<td style="text-align: center;"><%=count%></td>
-								<td><%=obj[3] %></td>
+								<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
 								<%-- <td><%=obj[4] %>  </td>									
 									<td><%=obj[6] %></td> --%>
-								<td><%=obj[10]%>,  <%=obj[11] %></td>
+								<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - "%>,  <%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %></td>
 								<td style="text-align: center;"><%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %>
 									- <%=starttime.plusMinutes(Long.parseLong(obj[12].toString())).format( DateTimeFormatter.ofPattern("hh:mm a") )  %>
 									<%starttime=starttime.plusMinutes(Long.parseLong(obj[12].toString()) /* + 1 */); %>
@@ -336,7 +347,7 @@
 											<%for(Object[] doc : AgendaDocList) { 
 											if(obj[0].toString().equalsIgnoreCase(doc[1].toString())){%>
 												<tr>
-													<td><%=doc[3] %></td>
+													<td><%=doc[3]!=null?StringEscapeUtils.escapeHtml4(doc[3].toString()): " - " %></td>
 												    <%if(Long.parseLong(initiationid) > 0){ %>
 														   <td style="width:1% ;white-space: nowrap;" ><a href="PrePRojectAgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
 													<%}else{ %>
@@ -358,7 +369,7 @@
 											<%}%>
 				
 											<button type="submit" class="btn btn-sm " style="background-color: #96D500;"
-												formaction="BriefingPresentation.htm" formmethod="post" formtarget="_blank" data-toggle="tooltip"
+												formaction="PrgmBriefingPresentation.htm" formmethod="post" formtarget="_blank" data-toggle="tooltip"
 												data-placement="bottom" title="Presentation">
 												<img src="view/images/presentation.png" style="width: 19px !important">
 											</button>
@@ -389,13 +400,13 @@
 							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
 					</div>
 					<div class="col-md-1" align="left" style="padding-top: 19px;">
-						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<b style="margin-left: -35px;"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
 					</div>
 					<div class="col-md-8">
 						<h3>Previous Meetings</h3>
 					</div>
 					<div class="col-md-1" align="right" style="padding-top: 19px;">
-						<b style="margin-right: -35px;"><%=MeetingNo %></b>
+						<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
 					</div>
 					<div class="col-md-1">
 						<img class="logo"
@@ -427,13 +438,13 @@
 						<tr>
 						<td> 
 						<%if(!obj[3].toString().equalsIgnoreCase("0")){ %>
-						 <a target="blank" href="CommitteeMinutesNewDownload.htm?committeescheduleid=<%=obj[0].toString() %>"><%=obj[7].toString()+"#"+(++meetingCount) %> </a> 
+						 <a target="blank" href="CommitteeMinutesNewDownload.htm?committeescheduleid=<%=obj[0].toString() %>"><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%> <%="#"+(++meetingCount) %> </a> 
 						<%}else{ %>
-				<a target="blank" href="CommitteeMinutesViewAllDownload.htm?committeescheduleid=<%=obj[0].toString() %>"><%=obj[7].toString()+"#"+(++meetingCount) %> </a> 
+				<a target="blank" href="CommitteeMinutesViewAllDownload.htm?committeescheduleid=<%=obj[0].toString() %>"><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%> <%="#"+(++meetingCount) %> </a> 
 						
 						<%} %>
 						</td>
-						<td style="text-align: center;"> <%= sdf.format(sdf1.parse(obj[2].toString()))%> </td>
+						<td style="text-align: center;"> <%= sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[2].toString())))%> </td>
 						</tr>
 						<%} %>
 						<%}else{ %>
@@ -465,14 +476,14 @@
 											if (!obj[3].toString().equalsIgnoreCase("0")) {
 											%> <a
 											target="blank"
-											href="CommitteeMinutesNewDownload.htm?committeescheduleid=<%=obj[0].toString()%>"><%=obj[7].toString() + "#" + (++meetingCount)%>
+											href="CommitteeMinutesNewDownload.htm?committeescheduleid=<%=obj[0].toString()%>"><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %> <%= "#" + (++meetingCount)%>
 										</a> <%
 											 } else {
 											 %> <a target="blank"
-											href="CommitteeMinutesViewAllDownload.htm?committeescheduleid=<%=obj[0].toString()%>"><%=obj[7].toString() + "#" + (++meetingCount)%>
+											href="CommitteeMinutesViewAllDownload.htm?committeescheduleid=<%=obj[0].toString()%>"><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%> <%= "#" + (++meetingCount)%>
 										</a> <%} %>
 										</td>
-						<td style="text-align: center;"> <%= sdf.format(sdf1.parse(obj[2].toString()))%> </td>
+						<td style="text-align: center;"> <%= sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[2].toString())))%> </td>
 						</tr>
 						<%} %>
 						
@@ -500,13 +511,13 @@
 							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
 					</div>
 					<div class="col-md-1" align="left" style="padding-top: 19px;">
-						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<b style="margin-left: -35px;"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
 					</div>
 					<div class="col-md-8">
 						<h3>Open Action Points From Previous Meetings</h3>
 					</div>
 					<div class="col-md-1" align="right" style="padding-top: 19px;">
-						<b style="margin-right: -35px;"><%=MeetingNo %></b>
+						<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
 					</div>
 					<div class="col-md-1">
 						<img class="logo"
@@ -556,14 +567,14 @@
 								</td>
 								<td class="std"
 									style="text-align: center; padding: 2px; font-weight: 600">
-							<button class="btn btn-sm" style="text-align: justify; padding: 4px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1] %> </button>		
+							<button class="btn btn-sm" style="text-align: justify; padding: 4px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
 								</td>
 								<td class="std" style="text-align: justify; padding: 2px">
-									<%=obj[5].toString() %>
+									<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%>
 								</td>
-								<td class="std" style="text-align: center;"><%=sdf.format(sdf1.parse(obj[10].toString())) %></td>
-								<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13].toString() %></td>
-								<td class="std" style="font-size: 14px;"><%=obj[2].toString() %></td>
+								<td class="std" style="text-align: center;"><%=sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[10].toString()))) %></td>
+								<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
+								<td class="std" style="font-size: 14px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 								<td class="std">
 									<%if(obj[4]!= null){ %> <%	String actionstatus = obj[3].toString();
 														int progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
@@ -585,24 +596,436 @@
 							<% }%>
 							<%}else{ %>
 							<tr>
-								<td colspan="6" style="text-align: center;">No Data
-									Available</td>
+								<td colspan="7" style="text-align: center;">No Data Available</td>
 							</tr>
 							<%} %>
 						</tbody>
 
 					</table>
 
-
-
-
-
-
 				</div>
 
 			</div>
 
+			<%if(programmeId!=null && !programmeId.isEmpty() && Long.parseLong(programmeId)>0 && !AgendaList.isEmpty()) {
+				int sn = 0;
+				for(Object[] agenda : AgendaList) { %>
+				
+					<div class="carousel-item">
+						<div class="content-header row ">
 
+							<div class="col-md-1">
+								<img class="logo"
+									style="width: 45px; margin-left: 5px; margin-top: -2px;"
+									<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
+									alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+							</div>
+							<div class="col-md-1" align="left" style="padding-top: 19px;">
+								<b style="margin-left: -35px;"><%=agenda[7]!=null?StringEscapeUtils.escapeHtml4(agenda[7].toString()): " - " %></b>
+							</div>
+							<div class="col-md-8">
+								<h3>Open Action Points From Previous Meetings - <%=agenda[7]!=null?StringEscapeUtils.escapeHtml4(agenda[7].toString()): " - " %></h3>
+							</div>
+							<div class="col-md-1" align="right" style="padding-top: 19px;">
+								<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
+							</div>
+							<div class="col-md-1">
+								<img class="logo"
+									style="width: 45px; margin-left: 5px; margin-top: -2px;"
+									<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
+									alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+							</div>
+		
+						</div>
+
+						<div class="content">
+
+							<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+								<thead>
+									<tr>
+										<td colspan="10" style="">
+											<p style="font-size: 12px; text-align: center">
+												<span class="assigned">AA</span> : Activity Assigned
+												&nbsp;&nbsp; <span class="ongoing">OG</span> : On Going
+												&nbsp;&nbsp; <span class="delay">DO</span> : Delay - On Going
+												&nbsp;&nbsp; <span class="delay">FD</span> : Forwarded With
+												Delay &nbsp;&nbsp;<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
+											</p>
+										</td>
+									</tr>
+									<tr>
+										<th class="std" style="width: 20px;">SN</th>
+										<th class="std" style="width: 60px;">Action No</th>
+										<th class="std" style="width: 300px;">Action Point</th>
+										<th class="std" style="width: 100px;">PDC</th>
+										<th class="std" style="width: 80px;">Progress</th>
+										<th class="std" style="width: 100px;">Responsibility</th>
+										<th class="std" style="width: 70px;">Status<!-- (DD) --></th>
+									</tr>
+								</thead>
+
+								<tbody>
+									<%
+									List<Object[]> projectOpenAction = openActionsMap.get(Long.parseLong(agenda[5].toString()));
+									
+									if(projectOpenAction!=null && projectOpenAction.size()>0) { 
+										int count1=0;
+										for(Object[] obj : projectOpenAction){ %>
+											<tr>
+												<td class="std" align="center"
+													style="padding: 5px; text-align: center;"><%=++count1 %>.
+												</td>
+												<td class="std" style="text-align: center; padding: 2px; font-weight: 600">
+													<button class="btn btn-sm" style="text-align: justify; padding: 4px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
+												</td>
+												<td class="std" style="text-align: justify; padding: 2px">
+													<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%>
+												</td>
+												<td class="std" style="text-align: center;"><%=sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[10].toString()))) %></td>
+												<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
+												<td class="std" style="font-size: 14px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+												<td class="std">
+													<%if(obj[4]!= null){ %> <%	String actionstatus = obj[3].toString();
+																		int progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
+																		LocalDate pdcorg = LocalDate.parse(obj[10].toString());
+																		LocalDate lastdate = obj[14]!=null ? LocalDate.parse(obj[14].toString()): null;
+																		LocalDate today = LocalDate.now();
+																	%> <%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
+													<span class="ongoing">RC</span> <%}else if(actionstatus.equals("F")  && pdcorg.isBefore(lastdate)) { %>
+													<span class="delay">FD</span> <%}else if((pdcorg.isAfter(today) || pdcorg.isEqual(today)) && progress>0){  %>
+													<span class="ongoing">OG</span> <%}else if(pdcorg.isBefore(today) && progress>0){  %>
+													<span class="delay">DO <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  --%>
+													</span> <%}else if( progress==0) {%> <span class="assigned">AA</span> <%} %>
+													<%}else { %> <span class="notassign">NA</span> <%} %>
+												</td>
+											</tr>
+										<% }%>
+									<%}else{ %>
+										<tr>
+											<td colspan="7" style="text-align: center;">No Data Available</td>
+										</tr>
+									<%} %>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					
+					<div class="carousel-item">
+
+						<div class="content-header row ">
+
+							<div class="col-md-1">
+								<img class="logo"
+									style="width: 45px; margin-left: 5px; margin-top: -2px;"
+									<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
+									alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+							</div>
+							<div class="col-md-1" align="left" style="padding-top: 19px;">
+								<b style="margin-left: -35px;"><%=agenda[7]!=null?StringEscapeUtils.escapeHtml4(agenda[7].toString()): " - " %></b>
+							</div>
+							<div class="col-md-8">
+								<h3>Close Action Points From Previous Meetings - <%=agenda[7]!=null?StringEscapeUtils.escapeHtml4(agenda[7].toString()): " - " %></h3>
+							</div>
+							<div class="col-md-1" align="right" style="padding-top: 19px;">
+								<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
+							</div>
+							<div class="col-md-1">
+								<img class="logo"
+									style="width: 45px; margin-left: 5px; margin-top: -2px;"
+									<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
+									alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+							</div>
+		
+						</div>
+
+						<div class="content">
+
+							<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+								<thead>
+									<tr>
+										<td colspan="10" style="">
+											<p style="font-size: 12px; text-align: center">
+												<span class="completed">CO</span> :Completed &nbsp;&nbsp; <span
+													class="completeddelay">CD</span> : Completed with Delay
+												&nbsp;&nbsp;
+											</p>
+										</td>
+		
+									</tr>
+									<tr>
+										<th class="std" style="width: 20px;">SN</th>
+										<th class="std" style="width: 60px;">Action No</th>
+										<th class="std" style="width: 300px;">Action Point</th>
+										<th class="std" style="width: 100px;">PDC</th>
+										<th class="std" style="width: 80px;">Progress</th>
+										<th class="std" style="width: 100px;">Responsibility</th>
+										<th class="std" style="width: 70px;">Status<!-- (DD) --></th>
+									</tr>
+								</thead>
+
+								<tbody>
+									<%
+									List<Object[]> projectCloseAction = closeActionsMap.get(Long.parseLong(agenda[5].toString()));
+									
+									if(projectCloseAction!=null && projectCloseAction.size()>0) { 
+										int count1=0;
+										for(Object[] obj : projectCloseAction){ %>
+											<tr>
+												<td class="std" align="center"
+													style="padding: 5px; text-align: center;"><%=++count1 %>.
+												</td>
+												<td class="std" style="text-align: center; padding: 2px; font-weight: 600">
+													<button class="btn btn-sm" style="text-align: justify; padding: 2px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
+												</td>
+												<td class="std" style="text-align: justify; padding: 2px">
+													<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %>
+												</td>
+												<td class="std"><%=sdf.format(sdf1.parse(obj[10].toString())) %></td>
+												<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
+												<td class="std" style="font-size: 14px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+												<td class="std">
+													<%if(obj[4]!= null){ %> <%	String actionstatus = obj[3].toString();
+																		int progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
+																		LocalDate pdcorg = LocalDate.parse(obj[10].toString());
+																		LocalDate lastdate = obj[14]!=null ? LocalDate.parse(obj[14].toString()): null;
+																		LocalDate today = LocalDate.now();
+																	%> <% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
+													<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
+													<span class="completed">CO</span> <%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>
+													<span class="completeddelay">CD <%-- (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>)  --%></span>
+													<%} %> <%}else{ %> <%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
+													<span class="ongoing">RC</span> <%}else if(actionstatus.equals("F")  && pdcorg.isBefore(lastdate)) { %>
+													<span class="delay">FD</span> <%}else if((pdcorg.isAfter(today) || pdcorg.isEqual(today)) && progress>0){  %>
+													<span class="ongoing">OG</span> <%}else if(pdcorg.isBefore(today) && progress>0){  %>
+													<span class="delay">DO <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  --%>
+													</span> <%}else if( progress==0) {%> <span class="assigned">AA</span> <%} %>
+													<%} %> <%}else { %> <span class="notassign">NA</span> <%} %>
+
+												</td>
+											</tr>
+										<% }%>
+									<%}else{ %>
+										<tr>
+											<td colspan="7" style="text-align: center;">No Data Available</td>
+										</tr>
+									<%} %>
+								</tbody>
+
+							</table>
+
+						</div>
+
+					</div>
+					
+				<% }%>
+				
+				<div class="carousel-item">
+					<div class="content-header row ">
+
+						<div class="col-md-1">
+							<img class="logo"
+								style="width: 45px; margin-left: 5px; margin-top: -2px;"
+								<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
+								alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+						</div>
+						<div class="col-md-1" align="left" style="padding-top: 19px;">
+							<b style="margin-left: -35px;">Others</b>
+						</div>
+						<div class="col-md-8">
+							<h3>Open Action Points From Previous Meetings - Others</h3>
+						</div>
+						<div class="col-md-1" align="right" style="padding-top: 19px;">
+							<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
+						</div>
+						<div class="col-md-1">
+							<img class="logo"
+								style="width: 45px; margin-left: 5px; margin-top: -2px;"
+								<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
+								alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+						</div>
+	
+					</div>
+
+					<div class="content">
+
+						<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+							<thead>
+								<tr>
+									<td colspan="10" style="">
+										<p style="font-size: 12px; text-align: center">
+											<span class="assigned">AA</span> : Activity Assigned
+											&nbsp;&nbsp; <span class="ongoing">OG</span> : On Going
+											&nbsp;&nbsp; <span class="delay">DO</span> : Delay - On Going
+											&nbsp;&nbsp; <span class="delay">FD</span> : Forwarded With
+											Delay &nbsp;&nbsp;<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
+										</p>
+									</td>
+								</tr>
+								<tr>
+									<th class="std" style="width: 20px;">SN</th>
+									<th class="std" style="width: 60px;">Action No</th>
+									<th class="std" style="width: 300px;">Action Point</th>
+									<th class="std" style="width: 100px;">PDC</th>
+									<th class="std" style="width: 80px;">Progress</th>
+									<th class="std" style="width: 100px;">Responsibility</th>
+									<th class="std" style="width: 70px;">Status<!-- (DD) --></th>
+								</tr>
+							</thead>
+
+							<tbody>
+								<%
+								List<Object[]> projectOpenAction = openActionsMap.get(0L);
+								
+								if(projectOpenAction!=null && projectOpenAction.size()>0) { 
+									int count1=0;
+									for(Object[] obj : projectOpenAction){ %>
+										<tr>
+											<td class="std" align="center"
+												style="padding: 5px; text-align: center;"><%=++count1 %>.
+											</td>
+											<td class="std" style="text-align: center; padding: 2px; font-weight: 600">
+												<button class="btn btn-sm" style="text-align: justify; padding: 4px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
+											</td>
+											<td class="std" style="text-align: justify; padding: 2px">
+												<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%>
+											</td>
+											<td class="std" style="text-align: center;"><%=sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[10].toString()))) %></td>
+											<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
+											<td class="std" style="font-size: 14px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+											<td class="std">
+												<%if(obj[4]!= null){ %> <%	String actionstatus = obj[3].toString();
+																	int progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
+																	LocalDate pdcorg = LocalDate.parse(obj[10].toString());
+																	LocalDate lastdate = obj[14]!=null ? LocalDate.parse(obj[14].toString()): null;
+																	LocalDate today = LocalDate.now();
+																%> <%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
+												<span class="ongoing">RC</span> <%}else if(actionstatus.equals("F")  && pdcorg.isBefore(lastdate)) { %>
+												<span class="delay">FD</span> <%}else if((pdcorg.isAfter(today) || pdcorg.isEqual(today)) && progress>0){  %>
+												<span class="ongoing">OG</span> <%}else if(pdcorg.isBefore(today) && progress>0){  %>
+												<span class="delay">DO <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  --%>
+												</span> <%}else if( progress==0) {%> <span class="assigned">AA</span> <%} %>
+												<%}else { %> <span class="notassign">NA</span> <%} %>
+											</td>
+										</tr>
+									<% }%>
+								<%}else{ %>
+									<tr>
+										<td colspan="7" style="text-align: center;">No Data Available</td>
+									</tr>
+								<%} %>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				
+				<div class="carousel-item">
+
+					<div class="content-header row ">
+
+						<div class="col-md-1">
+							<img class="logo"
+								style="width: 45px; margin-left: 5px; margin-top: -2px;"
+								<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
+								alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+						</div>
+						<div class="col-md-1" align="left" style="padding-top: 19px;">
+							<b style="margin-left: -35px;">Others</b>
+						</div>
+						<div class="col-md-8">
+							<h3>Close Action Points From Previous Meetings - Others</h3>
+						</div>
+						<div class="col-md-1" align="right" style="padding-top: 19px;">
+							<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
+						</div>
+						<div class="col-md-1">
+							<img class="logo"
+								style="width: 45px; margin-left: 5px; margin-top: -2px;"
+								<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
+								alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+						</div>
+	
+					</div>
+
+					<div class="content">
+
+						<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+							<thead>
+								<tr>
+									<td colspan="10" style="">
+										<p style="font-size: 12px; text-align: center">
+											<span class="completed">CO</span> :Completed &nbsp;&nbsp; <span
+												class="completeddelay">CD</span> : Completed with Delay
+											&nbsp;&nbsp;
+										</p>
+									</td>
+	
+								</tr>
+								<tr>
+									<th class="std" style="width: 20px;">SN</th>
+									<th class="std" style="width: 60px;">Action No</th>
+									<th class="std" style="width: 300px;">Action Point</th>
+									<th class="std" style="width: 100px;">PDC</th>
+									<th class="std" style="width: 80px;">Progress</th>
+									<th class="std" style="width: 100px;">Responsibility</th>
+									<th class="std" style="width: 70px;">Status<!-- (DD) --></th>
+								</tr>
+							</thead>
+
+							<tbody>
+								<%
+								List<Object[]> projectCloseAction = closeActionsMap.get(0L);
+								
+								if(projectCloseAction!=null && projectCloseAction.size()>0) { 
+									int count1=0;
+									for(Object[] obj : projectCloseAction){ %>
+										<tr>
+											<td class="std" align="center"
+												style="padding: 5px; text-align: center;"><%=++count1 %>.
+											</td>
+											<td class="std" style="text-align: center; padding: 2px; font-weight: 600">
+												<button class="btn btn-sm" style="text-align: justify; padding: 2px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
+											</td>
+											<td class="std" style="text-align: justify; padding: 2px">
+												<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %>
+											</td>
+											<td class="std"><%=sdf.format(sdf1.parse(obj[10].toString())) %></td>
+											<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
+											<td class="std" style="font-size: 14px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+											<td class="std">
+												<%if(obj[4]!= null){ %> <%	String actionstatus = obj[3].toString();
+																	int progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
+																	LocalDate pdcorg = LocalDate.parse(obj[10].toString());
+																	LocalDate lastdate = obj[14]!=null ? LocalDate.parse(obj[14].toString()): null;
+																	LocalDate today = LocalDate.now();
+																%> <% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
+												<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
+												<span class="completed">CO</span> <%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>
+												<span class="completeddelay">CD <%-- (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>)  --%></span>
+												<%} %> <%}else{ %> <%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
+												<span class="ongoing">RC</span> <%}else if(actionstatus.equals("F")  && pdcorg.isBefore(lastdate)) { %>
+												<span class="delay">FD</span> <%}else if((pdcorg.isAfter(today) || pdcorg.isEqual(today)) && progress>0){  %>
+												<span class="ongoing">OG</span> <%}else if(pdcorg.isBefore(today) && progress>0){  %>
+												<span class="delay">DO <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  --%>
+												</span> <%}else if( progress==0) {%> <span class="assigned">AA</span> <%} %>
+												<%} %> <%}else { %> <span class="notassign">NA</span> <%} %>
+
+											</td>
+										</tr>
+									<% }%>
+								<%}else{ %>
+									<tr>
+										<td colspan="7" style="text-align: center;">No Data Available</td>
+									</tr>
+								<%} %>
+							</tbody>
+
+						</table>
+
+					</div>
+
+				</div>	
+			<% }%>
+			
 
 			<div class="carousel-item">
 
@@ -615,13 +1038,13 @@
 							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
 					</div>
 					<div class="col-md-1" align="left" style="padding-top: 19px;">
-						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<b style="margin-left: -35px;"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
 					</div>
 					<div class="col-md-8">
 						<h3>Close Action Points From Previous Meetings</h3>
 					</div>
 					<div class="col-md-1" align="right" style="padding-top: 19px;">
-						<b style="margin-right: -35px;"><%=MeetingNo %></b>
+						<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
 					</div>
 					<div class="col-md-1">
 						<img class="logo"
@@ -668,14 +1091,14 @@
 								</td>
 									<td class="std"
 									style="text-align: center; padding: 2px; font-weight: 600">
-							<button class="btn btn-sm" style="text-align: justify; padding: 2px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1] %> </button>		
+							<button class="btn btn-sm" style="text-align: justify; padding: 2px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
 								</td>
 								<td class="std" style="text-align: justify; padding: 2px">
-									<%=obj[5].toString() %>
+									<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %>
 								</td>
 								<td class="std"><%=sdf.format(sdf1.parse(obj[10].toString())) %></td>
-								<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13].toString() %></td>
-								<td class="std" style="font-size: 14px;"><%=obj[2].toString() %></td>
+								<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
+								<td class="std" style="font-size: 14px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 								<td class="std">
 									<%if(obj[4]!= null){ %> <%	String actionstatus = obj[3].toString();
 														int progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
@@ -701,18 +1124,12 @@
 							<% }%>
 							<%}else{ %>
 							<tr>
-								<td colspan="6" style="text-align: center;">No Data
-									Available</td>
+								<td colspan="7" style="text-align: center;">No Data Available</td>
 							</tr>
 							<%} %>
 						</tbody>
 
 					</table>
-
-
-
-
-
 
 				</div>
 
@@ -730,13 +1147,13 @@
 							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
 					</div>
 					<div class="col-md-1" align="left" style="padding-top: 19px;">
-						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<b style="margin-left: -35px;"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
 					</div>
 					<div class="col-md-8">
 						<h3>All Action Points From Previous Meetings</h3>
 					</div>
 					<div class="col-md-1" align="right" style="padding-top: 19px;">
-						<b style="margin-right: -35px;"><%=MeetingNo %></b>
+						<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
 					</div>
 					<div class="col-md-1">
 						<img class="logo"
@@ -788,14 +1205,14 @@
 								</td>
 								<td class="std"
 									style="text-align: center; padding: 2px; font-weight: 600">
-							<button class="btn btn-sm" style="text-align: justify; padding: 2px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1] %> </button>		
+							<button class="btn btn-sm" style="text-align: justify; padding: 2px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
 								</td>
 								<td class="std" style="text-align: justify; padding: 2px">
-									<%=obj[5].toString() %>
+									<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %>
 								</td>
 								<td class="std"><%=sdf.format(sdf1.parse(obj[10].toString())) %></td>
-								<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13].toString() %></td>
-								<td class="std" style="font-size: 14px;"><%=obj[2].toString() %></td>
+								<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
+								<td class="std" style="font-size: 14px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 								<td class="std">
 									<%if(obj[4]!= null){ %> <%	String actionstatus = obj[3].toString();
 														int progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
@@ -821,8 +1238,7 @@
 							<% }%>
 							<%}else{ %>
 							<tr>
-								<td colspan="6" style="text-align: center;">No Data
-									Available</td>
+								<td colspan="7" style="text-align: center;">No Data Available</td>
 							</tr>
 							<%} %>
 						</tbody>
@@ -850,13 +1266,13 @@
 							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
 					</div>
 					<div class="col-md-1" align="left" style="padding-top: 19px;">
-						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<b style="margin-left: -35px;"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
 					</div>
 					<div class="col-md-8">
 						<h3>All  Recommendation  Points From Previous Meetings</h3>
 					</div>
 					<div class="col-md-1" align="right" style="padding-top: 19px;">
-						<b style="margin-right: -35px;"><%=MeetingNo %></b>
+						<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
 					</div>
 					<div class="col-md-1">
 						<img class="logo"
@@ -908,14 +1324,14 @@
 								</td>
 								<td class="std"
 									style="text-align: center; padding: 2px; font-weight: 600">
-							<button class="btn btn-sm" style="text-align: justify; padding: 2px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1] %> </button>		
+							<button class="btn btn-sm" style="text-align: justify; padding: 2px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
 								</td>
 								<td class="std" style="text-align: justify; padding: 2px">
-									<%=obj[5].toString() %>
+									<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %>
 								</td>
 								<td class="std"><%=sdf.format(sdf1.parse(obj[10].toString())) %></td>
-								<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13].toString() %></td>
-								<td class="std" style="font-size: 14px;"><%=obj[2].toString() %></td>
+								<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
+								<td class="std" style="font-size: 14px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 								<td class="std">
 									<%if(obj[4]!= null){ %> <%	String actionstatus = obj[3].toString();
 														int progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
@@ -941,8 +1357,7 @@
 							<% }%>
 							<%}else{ %>
 							<tr>
-								<td colspan="6" style="text-align: center;">No Data
-									Available</td>
+								<td colspan="7" style="text-align: center;">No Data Available</td>
 							</tr>
 							<%} %>
 						</tbody>
@@ -970,13 +1385,13 @@
 							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
 					</div>
 					<div class="col-md-1" align="left" style="padding-top: 19px;">
-						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<b style="margin-left: -35px;"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
 					</div>
 					<div class="col-md-8">
 						<h3>All  Decision  Points From Previous Meetings</h3>
 					</div>
 					<div class="col-md-1" align="right" style="padding-top: 19px;">
-						<b style="margin-right: -35px;"><%=MeetingNo %></b>
+						<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
 					</div>
 					<div class="col-md-1">
 						<img class="logo"
@@ -1019,7 +1434,7 @@
 						%>
 						<tr>
 						<td style="text-align: center;"><%=++decCount %>.</td>
-						<td><%=obj[1].toString() %></td>
+						<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
 						</tr>
 						<%}}else{ %>
 						<tr>
@@ -1059,30 +1474,59 @@
 		</span> <span class="sr-only">Next</span>
 		</a>
 
+		<%int slidecount = 0; %>
 		<ol class="carousel-indicators">
 			<li data-target="#presentation-slides" data-slide-to="0"
 				class="carousel-indicator active" data-toggle="tooltip"
 				data-placement="top" title="Start"><b><i class="fa fa-home"
 					aria-hidden="true"></i></b></li>
-			<li data-target="#presentation-slides" data-slide-to="1"
+			<li data-target="#presentation-slides" data-slide-to="<%=++slidecount %>"
 				class="carousel-indicator" data-toggle="tooltip"
 				data-placement="top" title="Agenda"><b>1</b></li>
-			<li data-target="#presentation-slides" data-slide-to="2"
+			<li data-target="#presentation-slides" data-slide-to="<%=++slidecount %>"
 				class="carousel-indicator" data-toggle="tooltip"
 				data-placement="top" title="Previous Meetings"><b>2</b></li>
-			<li data-target="#presentation-slides" data-slide-to="3"
+			<li data-target="#presentation-slides" data-slide-to="<%=++slidecount %>"
 				class="carousel-indicator" data-toggle="tooltip"
 				data-placement="top" title="Open Action Points"><b>3</b></li>
-			<li data-target="#presentation-slides" data-slide-to="4"
+			<%int sn = 0;
+			if(programmeId!=null && !programmeId.isEmpty() && Long.parseLong(programmeId)>0 && !AgendaList.isEmpty()) {
+				for(Object[] obj : AgendaList) {%>
+					<li data-target="#presentation-slides" data-slide-to="<%=++slidecount %>"
+					class="carousel-indicator" data-toggle="tooltip"
+					data-placement="top" title="OPA <%=obj[7]%>"><b>3.<%=++sn %> (a)</b></li>
+					
+					<li data-target="#presentation-slides" data-slide-to="<%=++slidecount %>"
+					class="carousel-indicator" data-toggle="tooltip"
+					data-placement="top" title="CAP <%=obj[7]%>"><b>3.<%=sn %> (b)</b></li>
+			<% }%>
+			<li data-target="#presentation-slides" data-slide-to="<%=++slidecount %>"
+			class="carousel-indicator" data-toggle="tooltip"
+			data-placement="top" title="OPA Others"><b>3.<%=++sn %> (a)</b></li>
+			
+			<li data-target="#presentation-slides" data-slide-to="<%=++slidecount %>"
+			class="carousel-indicator" data-toggle="tooltip"
+			data-placement="top" title="CAP Others"><b>3.<%=sn %> (b)</b></li>
+			
+			<% }%>		
+			<li data-target="#presentation-slides" data-slide-to="<%=++slidecount %>"
 				class="carousel-indicator" data-toggle="tooltip"
 				data-placement="top" title="Close Action Points"><b>4</b></li>
-			<li data-target="#presentation-slides" data-slide-to="5"
+			<%-- <%
+			if(programmeId!=null && !programmeId.isEmpty() && Long.parseLong(programmeId)>0 && !AgendaList.isEmpty()) {
+				int sn = 0;
+				for(Object[] obj : AgendaList) {%>
+					<li data-target="#presentation-slides" data-slide-to="<%=++slidecount %>"
+					class="carousel-indicator" data-toggle="tooltip"
+					data-placement="top" title="CAP <%=obj[7]%>"><b>4.<%=++sn %></b></li>
+			<%} }%> --%>
+			<li data-target="#presentation-slides" data-slide-to="<%=++slidecount %>"
 				class="carousel-indicator" data-toggle="tooltip"
 				data-placement="top" title="All Action Points"><b>5</b></li>
-					<li data-target="#presentation-slides" data-slide-to="6"
+			<li data-target="#presentation-slides" data-slide-to="<%=++slidecount %>"
 				class="carousel-indicator" data-toggle="tooltip"
 				data-placement="top" title="All Recommendation Points"><b>6</b></li>
-					<li data-target="#presentation-slides" data-slide-to="7"
+			<li data-target="#presentation-slides" data-slide-to="<%=++slidecount %>"
 				class="carousel-indicator" data-toggle="tooltip"
 				data-placement="top" title="All Decesions"><b>7</b></li>
 		</ol>

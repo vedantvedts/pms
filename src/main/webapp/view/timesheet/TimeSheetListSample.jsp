@@ -1,4 +1,5 @@
 
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.timesheet.model.TimesheetKeywords"%>
 <%@page import="java.util.LinkedHashMap"%>
 <%@page import="java.util.Arrays"%>
@@ -496,22 +497,22 @@ String jsonempAllTimeSheetList = gson.toJson(empAllTimeSheetList);
 
 List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activityLD.plusDays(1).equals(LocalDate.parse(e[3].toString()))).collect(Collectors.toList());
 %>
-<% String ses=(String)request.getParameter("result");
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 	<div class="container-fluid">
 		<div class="row">
@@ -602,13 +603,13 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 												%>
 													<tr>
 														<td class="center"><%=++slno%></td>
-				    									<td class="center"><%=obj[16]!=null?obj[16]:"-" %></td>
-				    									<td ><%=obj[5]!=null?obj[5]:"-" %></td>
-				    									<td class="center"><%=obj[8]!=null?obj[8]:"-" %></td>
-				    									<td><%=obj[10]!=null?obj[10]+", "+(obj[11]!=null?obj[11]:"-"):"Not Available" %></td>
-				    									<td class="center"><%=obj[13]!=null?obj[13].toString():"-" %></td>
-				    									<td><%=obj[14]!=null?obj[14]:"-" %></td>
-				    									<td class="center"><%=obj[15]!=null?(obj[15].toString().equalsIgnoreCase("A")?"AN":(obj[15].toString().equalsIgnoreCase("F")?"FN":"Full day")):"-" %></td>
+				    									<td class="center"><%=obj[16]!=null?StringEscapeUtils.escapeHtml4(obj[16].toString()):"-" %></td>
+				    									<td ><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %></td>
+				    									<td class="center"><%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()):"-" %></td>
+				    									<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString())+", "+(obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()):"-"):"Not Available" %></td>
+				    									<td class="center"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()):"-" %></td>
+				    									<td><%=obj[14]!=null?StringEscapeUtils.escapeHtml4(obj[14].toString()):"-" %></td>
+				    									<td class="center"><%=obj[15]!=null?(StringEscapeUtils.escapeHtml4(obj[15].toString()).equalsIgnoreCase("A")?"AN":(StringEscapeUtils.escapeHtml4(obj[15].toString()).equalsIgnoreCase("F")?"FN":"Full day")):"-" %></td>
 													</tr>
 												<% } } else{%>
 													<tr>
@@ -705,7 +706,7 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 																				
 																				<div class="d-flex flex-direction-column ">
 																					<input type="radio" class=" activityName" name="activityName_<%=clonecount %>" id="activityName_<%=clonecount %>" value="<%=mil.getActivityTypeId() %>" <%if(mil.getActivityTypeId()==act.getActivityTypeId()) {%>checked<%} %> > 
-																					<span class="ml-1"><%=mil.getActivityCode() %></span>
+																					<span class="ml-1"><%=mil.getActivityCode()!=null?StringEscapeUtils.escapeHtml4(mil.getActivityCode().toString()):"-" %></span>
 																				</div>
 																				
 																			<% } }%>
@@ -717,7 +718,7 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 												               				<%for(Object[] pro: projectList ){
 												                				String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
 												                			 %>
-																				<option value="<%=pro[0]%>" <%if(act.getProjectId()==Long.parseLong(pro[0].toString())) {%>selected<%} %> ><%=pro[4]+projectshortName %></option>
+																				<option value="<%=pro[0]%>" <%if(act.getProjectId()==Long.parseLong(pro[0].toString())) {%>selected<%} %> ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[1].toString()):" - "%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>
 																			<%} %>
 																		</select>
 																	</td>
@@ -725,7 +726,7 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 																		<select class="form-control selectitem assignedBy" name="assignedBy" id="assignedBy_<%=clonecount %>" onchange="validateFields('<%=clonecount %>')" data-live-search="true" data-container="body">
 																			<option value="-1" disabled selected>Choose...</option>
 																	        <% for(Object[] emp : labEmpList){ %>
-																	        	<option value="<%=emp[0] %>" <%if(act.getAssignedBy()==Long.parseLong(emp[0].toString())) {%>selected<%} %> ><%=emp[1] %>, <%=emp[2] %></option>
+																	        	<option value="<%=emp[0] %>" <%if(act.getAssignedBy()==Long.parseLong(emp[0].toString())) {%>selected<%} %> ><%=emp[1]!=null?StringEscapeUtils.escapeHtml4(emp[1].toString()):"-" %>, <%=emp[2]!=null?StringEscapeUtils.escapeHtml4(emp[2].toString()):"-" %></option>
 																	        <%} %>
 																	        <option value="0" <%if(act.getAssignedBy()==0) {%>selected<%} %>>Not Available</option>
 																		</select>
@@ -735,7 +736,7 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 																			<option value="" disabled selected>Choose...</option>
 																			<option value="0">Add New Keyword</option>
 																	        <% for(TimesheetKeywords keywords : keywordsList){ %>
-																	        	<option value="<%=keywords.getKeywordId() %>" <%if(act.getKeywordId().equals(keywords.getKeywordId())) {%>selected<%} %> ><%=keywords.getKeyword() %></option>
+																	        	<option value="<%=keywords.getKeywordId() %>" <%if(act.getKeywordId().equals(keywords.getKeywordId())) {%>selected<%} %> ><%=keywords.getKeyword()!=null?StringEscapeUtils.escapeHtml4(keywords.getKeyword()):"-" %></option>
 																	        <%} %>
 																		</select>
 																	</td>
@@ -767,7 +768,7 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 																			%>
 																				<div class="d-flex flex-direction-column ">
 																					<input type="radio" class=" activityName" name="activityName_1" id="activityName_1" value="<%=mil.getActivityTypeId() %>" <%if(milslno==1) {  activityNamemil = mil.getActivityTypeId();%>checked<%} %>  > 
-																					<span class="ml-1"><%=mil.getActivityCode() %></span>
+																					<span class="ml-1"><%=mil.getActivityCode()!=null?StringEscapeUtils.escapeHtml4(mil.getActivityCode()):"-" %></span>
 																				</div>
 																			<% } }%>
 																		</div>
@@ -778,7 +779,7 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 												               				<%for(Object[] pro: projectList ){
 												                				String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
 												                			 %>
-																				<option value="<%=pro[0]%>" ><%=pro[4]+projectshortName %></option>
+																				<option value="<%=pro[0]%>" ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[4].toString()):"-"%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):"-" %></option>
 																			<%} %>
 																		</select>
 																	</td>
@@ -786,7 +787,7 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 																		<select class="form-control selectitem assignedBy" name="assignedBy" id="assignedBy_1" onchange="validateFields(1)" data-live-search="true" data-container="body">
 																			<option value="-1" disabled selected>Choose...</option>
 																	        <% for(Object[] emp : labEmpList){ %>
-																	        	<option value="<%=emp[0] %>"><%=emp[1] %>, <%=emp[2] %></option>
+																	        	<option value="<%=emp[0] %>"><%=emp[1]!=null?StringEscapeUtils.escapeHtml4(emp[1].toString()):"-" %>, <%=emp[2]!=null?StringEscapeUtils.escapeHtml4(emp[2].toString()):"-" %></option>
 																	        <%} %>
 																	        <option value="0">Not Available</option>
 																		</select>
@@ -796,7 +797,7 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 																			<option value="" disabled selected>Choose...</option>
 																			<option value="0">Add New Keyword</option>
 																	        <% for(TimesheetKeywords keywords : keywordsList){ %>
-																	        	<option value="<%=keywords.getKeywordId() %>"><%=keywords.getKeyword() %></option>
+																	        	<option value="<%=keywords.getKeywordId() %>"><%=keywords.getKeyword()!=null?StringEscapeUtils.escapeHtml4(keywords.getKeyword()):"-" %></option>
 																	        <%} %>
 																		</select>
 																	</td>
@@ -931,13 +932,13 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 											<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=++slno%></td>
 								    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=fc.sdfTordf(obj[2].toString()) %></td>
          								<%} %>
-         								<td class="center"><%=obj[16]!=null?obj[16]:"-" %></td>
-    									<td ><%=obj[5]!=null?obj[5]:"-" %></td>
-    									<td class="center"><%=obj[8]!=null?obj[8]:"-" %></td>
-    									<td><%=obj[10]!=null?obj[10]+", "+(obj[11]!=null?obj[11]:"-"):"Not Available" %></td>
+         								<td class="center"><%=obj[16]!=null?StringEscapeUtils.escapeHtml4(obj[16].toString()):"-" %></td>
+    									<td ><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %></td>
+    									<td class="center"><%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()):"-" %></td>
+    									<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString())+", "+(obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()):"-"):"Not Available" %></td>
     									<td class="center"><%=obj[13]!=null?obj[13].toString():"-" %></td>
-    									<td><%=obj[14]!=null?obj[14]:"-" %></td>
-    									<td class="center"><%=obj[15]!=null?(obj[15].toString().equalsIgnoreCase("A")?"AN":(obj[15].toString().equalsIgnoreCase("F")?"FN":"Full day")):"-" %></td>
+    									<td><%=obj[14]!=null?StringEscapeUtils.escapeHtml4(obj[14].toString()):"-" %></td>
+    									<td class="center"><%=obj[15]!=null?(StringEscapeUtils.escapeHtml4(obj[15].toString()).equalsIgnoreCase("A")?"AN":(StringEscapeUtils.escapeHtml4(obj[15].toString()).equalsIgnoreCase("F")?"FN":"Full day")):"-" %></td>
 									</tr>
 								<% ++i; } } } else{%>
 									<tr>

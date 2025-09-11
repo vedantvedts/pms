@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.List"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -167,14 +168,14 @@ List<Object[]> MilestoneActivityList=(List<Object[]>)request.getAttribute("Miles
 										<tr>
 											
 											 <td style="width: 150px;padding: 5px; padding-left: 10px"><b>Project Name</b></td>
-											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"><%=ProjectEditData[1] %></td>
+											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"><%=ProjectEditData[1]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[1].toString()): " - " %></td>
 											
 										</tr>
 										
 										<tr>
 											 
 											 <td  style="width: 150px;padding: 5px; padding-left: 10px"><b>Category</b></td>
-											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"><%=ProjectEditData[14] %></td>
+											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"><%=ProjectEditData[14]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[14].toString()): " - " %></td>
 										</tr>
 										<tr>
 											
@@ -184,7 +185,7 @@ List<Object[]> MilestoneActivityList=(List<Object[]>)request.getAttribute("Miles
 										<tr>
 											 
 											 <td  style="width: 150px;padding: 5px; padding-left: 10px"><b>User</b></td>
-											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"><%=ProjectEditData[16] %></td>
+											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"><%=ProjectEditData[16]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[16].toString()): " - " %></td>
 										</tr>
 </table>
 </div>
@@ -192,49 +193,40 @@ List<Object[]> MilestoneActivityList=(List<Object[]>)request.getAttribute("Miles
 <div style="font-size: 20px;background-color: purple;color: white;padding: 5px">
 2. Project Team 
 </div>
-<div class="content">
-								
-								
+						<div class="content">
 									
 					      <table class="subtables projectattributetable" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;margin-right:10px;   border-collapse:collapse;" >
-					                  <tr>
-											 <td style="width: 85px !important; padding: 5px; padding-left: 10px"></td>
-											 <td style="width: 120px;padding: 5px; padding-left: 10px"><b> Name, Designation</b></td>
-											  <!-- <td style="width:90px;padding: 5px; padding-left: 10px"><b> Department</b></td> -->
-											   <td style="width: 100px;padding: 5px; padding-left: 10px"><b> Telephone</b></td>
-											    <td style="width: 90px;padding: 5px; padding-left: 10px"><b> Email</b></td>
-											
-										</tr>
+					      	<tr>
+								<td style="width: 85px !important; padding: 5px; padding-left: 10px">Role</td>
+								<td style="width: 120px;padding: 5px; padding-left: 10px"><b>Member</b></td>
+								<td style="width:90px;padding: 5px; padding-left: 10px"><b> Lab</b></td>
+								<td style="width: 100px;padding: 5px; padding-left: 10px"><b> Telephone</b></td>
+								<td style="width: 90px;padding: 5px; padding-left: 10px"><b> Email</b></td>
+							</tr>
 										
 										
-										<tr>
+										<%-- <tr>
 										<td   style="width: 125px !important; padding: 5px; padding-left: 10px">	Project Director</td>
 										 <td style="width: 130px;padding: 5px; padding-left: 10px"><b><%=ProjectEditData1[28] %>, <%=ProjectEditData1[29] %></b></td>
-											  <%-- <td style="width: 90px;padding: 5px; padding-left: 10px"><b> <%=ProjectEditData1[29] %></b></td> --%>
+											  <td style="width: 90px;padding: 5px; padding-left: 10px"><b> <%=ProjectEditData1[29] %></b></td>
 											   <td style="width: 100px;padding: 5px; padding-left: 10px"><b> <%=ProjectEditData1[30] %></b></td>
 											    <td style="width: 90px;padding: 5px; padding-left: 10px"><b><%=ProjectEditData1[31] %> </b></td>
-										</tr>
+										</tr> --%>
 										
-										<tr>
-									 <td  rowspan="<%=ProjectAssignListsize+1 %>" style="width: 85px !important; padding: 5px; padding-left: 10px">Team Members</td>
-										</tr>
-										<% for(Object[]o:ProjectAssignList){%>
-										<tr>
-										
-											 
-											 
-											 <td style="width: 180px;padding: 5px; padding-left: 10px"><b><%=o[3] %>, <%=o[4] %> </b></td>
-											 <%--  <td style="width: 30px;padding: 5px; padding-left: 10px"><b><%=o[4] %></b></td> --%>
-											   <td style="width: 100px;padding: 5px; padding-left: 10px"><b><%=o[6] %> </b></td>
-											    <td style="width: 90px;padding: 5px; padding-left: 10px"><b><%=o[7] %> </b></td>
-											
-										
-										</tr>
-										<%} %>
-									
-									</table>
-		
-							</div>
+							<%-- <tr>
+								<td  rowspan="<%=ProjectAssignListsize+1 %>" style="width: 85px !important; padding: 5px; padding-left: 10px">Team Members</td>
+							</tr> --%>
+							<% for(Object[]o:ProjectAssignList){%>
+								<tr>
+									<td style="width: 85px !important; padding: 5px; padding-left: 10px"><%=o[12]!=null?StringEscapeUtils.escapeHtml4(o[1].toString()):"-" %></td>
+									<td style="width: 180px;padding: 5px; padding-left: 10px"><b><%=o[3]!=null?StringEscapeUtils.escapeHtml4(o[3].toString()): " - " %>, <%=o[4]!=null?StringEscapeUtils.escapeHtml4(o[4].toString()): " - " %></b></td>
+									<td style="width: 30px;padding: 5px; padding-left: 10px"><b><%=o[9]!=null?StringEscapeUtils.escapeHtml4(o[9].toString()):"-" %></b></td>
+									<td style="width: 100px;padding: 5px; padding-left: 10px"><b><%=o[6]!=null?StringEscapeUtils.escapeHtml4(o[6].toString()): " - " %> </b></td>
+									<td style="width: 90px;padding: 5px; padding-left: 10px"><b><%=o[7]!=null?StringEscapeUtils.escapeHtml4(o[7].toString()): " - " %> </b></td>
+								</tr>
+							<%} %>
+						</table>
+					</div>
 							
 							
 <div style="font-size: 20px;background-color: purple;color: white;padding: 5px">
@@ -253,20 +245,20 @@ List<Object[]> MilestoneActivityList=(List<Object[]>)request.getAttribute("Miles
 					               <tr>
 											 <td style="width: 5px !important; padding: 5px; padding-left: 10px">(a)</td>
 											 <td style="width: 150px;padding: 5px; padding-left: 10px"><b>Project Scope</b></td>
-											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"><%=ProjectEditData[17] %></td>
+											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"><%=ProjectEditData[17]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[17].toString()): " - " %></td>
 											
 										</tr>
 										
 										<tr>
 											 <td  style=" padding: 5px; padding-left: 10px">(b)</td>
 											 <td  style="width: 150px;padding: 5px; padding-left: 10px"><b>Objectives</b></td>
-											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"><%=ProjectEditData[4] %></td>
+											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"><%=ProjectEditData[4]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[4].toString()): " - " %></td>
 										</tr>
 										
 											<tr>
 											 <td  style=" padding: 5px; padding-left: 10px">(c)</td>
 											 <td  style="width: 150px;padding: 5px; padding-left: 10px"><b>Deliverables</b></td>
-											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"><%=ProjectEditData[5] %></td>
+											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;color: black;"><%=ProjectEditData[5]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[5].toString()): " - " %></td>
 										</tr>
 						
 		                      </table>
@@ -281,8 +273,8 @@ List<Object[]> MilestoneActivityList=(List<Object[]>)request.getAttribute("Miles
 										<%if(MilestoneActivityList.size()>0){ %>
 										<%for(Object[]o:MilestoneActivityList){ %>
 										<tr>
-											 <td style="width: 60px !important; padding: 5px; padding-left: 10px">Mil-<%=o[5]%></td>
-											 <td style="width: 400px !important;padding: 5px; padding-left: 10px"><b><%=o[4] %></b></td>
+											 <td style="width: 60px !important; padding: 5px; padding-left: 10px">Mil-<%=o[5]!=null?StringEscapeUtils.escapeHtml4(o[5].toString()): " - "%></td>
+											 <td style="width: 400px !important;padding: 5px; padding-left: 10px"><b><%=o[4]!=null?StringEscapeUtils.escapeHtml4(o[4].toString()): " - " %></b></td>
 									
 										</tr>
 										<%}}else{ %>
@@ -306,7 +298,7 @@ List<Object[]> MilestoneActivityList=(List<Object[]>)request.getAttribute("Miles
 										<%if(riskdatalist.size()>0){ %>
 									<%for(Object[]o:riskdatalist){ %>
 										<tr>
-											 <td style="width: 400px !important; padding: 5px; padding-left: 10px"><%=o[1] %></td>
+											 <td style="width: 400px !important; padding: 5px; padding-left: 10px"><%=o[1]!=null?StringEscapeUtils.escapeHtml4(o[1].toString()): " - " %></td>
 											 <td style="width: 150px;padding: 5px; padding-left: 10px"><b>Risk</b></td>
 										</tr>
 									<%}}else{ %>

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"   pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
@@ -408,27 +409,22 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 
 
 
-<% String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
- String errorMsg=(String)request.getParameter("errorMsg");
- 
-	if(ses1!=null){
-	%>
-	<div align="center">
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-                   </div></div>
-                    <%}if(errorMsg!=null){ %>
-                    	<div align="center">
-	<div class="alert alert-danger" role="alert" >
-                     <%=errorMsg %>
-                   </div></div>
-           <%} %>         
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>       
                     
   
   	
@@ -459,7 +455,7 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
              <div class="panel panel-info" style="margin-top: 10px;" id="">
 		       <div class="panel-heading ">
 		         <h4 class="panel-title">
-                      <span class="ml-2" style="font-size:14px"><%=Sub0Count+" . "+obj[3] %> </span>  
+                      <span class="ml-2" style="font-size:14px"><%=Sub0Count+" . "+(obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " )%> </span>  
                 </h4>
          	       <div style="float: right !important; margin-top:-32px; ;" id="tablediv" >
 		 		       <table style="text-align: right;" >
@@ -503,8 +499,8 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 						           <form  id="myFormB<%=Sub0Count %><%=Sub1Count %>" action="" method="post">
 						 
 										<span  style="font-size:14px" ><%=Sub0Count %>.<%=Sub1Count %></span>
-										<span  style="font-size:14px" id="span_<%=obj1[0]%>"><%=obj1[3]%>  &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj1[0] %>')"></i> </span>	
-							          	<input type="text" name="ChapterName" class="hiddeninput" id="input_<%=obj1[0]%>" value="<%=obj1[3] %>" style="display: none;" maxlength="255">
+										<span  style="font-size:14px" id="span_<%=obj1[0]%>"><%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): " - " %>  &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj1[0] %>')"></i> </span>	
+							          	<input type="text" name="ChapterName" class="hiddeninput" id="input_<%=obj1[0]%>" value="<%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): ""  %>" style="display: none;" maxlength="255">
 							          	<button type="submit" class="btn btn-sm btn-info editbtn" style="display: none;" id="btn_<%=obj1[0]%>" formaction="SubChapterEdit.htm" formmethod="post" onclick="return confirm('Are You Sure To Update ? ');">UPDATE</button>
 							          	<button type="button" class="btnx" style="color: red;display: none;" id="btnx_<%=obj1[0] %>" onclick="moduleeditdisable('<%=obj1[0] %>')"><i class="fa fa-times fa-lg " aria-hidden="true"  ></i></button>
 							          	
@@ -544,8 +540,8 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 									 
 													
 									          		<span  style="font-size:14px"><%=Sub0Count %>.<%=Sub1Count %>.<%=Sub2Count %> </span>
-									          		<span  style="font-size:14px" id="span_<%=obj2[0]%>"> <%=obj2[3] %> &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj2[0] %>')"></i> </span>
-									          		<input type="text" name="ChapterName" class="hiddeninput" id="input_<%=obj2[0]%>" value="<%=obj2[3] %>" style="display: none;" maxlength="255">
+									          		<span  style="font-size:14px" id="span_<%=obj2[0]%>"> <%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - "  %> &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj2[0] %>')"></i> </span>
+									          		<input type="text" name="ChapterName" class="hiddeninput" id="input_<%=obj2[0]%>" value="<%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): ""  %>" style="display: none;" maxlength="255">
 										          	<button type="submit" class="btn btn-sm btn-info editbtn" style="display: none;" id="btn_<%=obj2[0]%>" formaction="SubChapterEdit.htm" formmethod="post" onclick="return confirm('Are You Sure To Update ? ');">UPDATE</button>
 										          	<button type="button" class="btnx" style="color: red;display: none;" id="btnx_<%=obj2[0] %>" onclick="moduleeditdisable('<%=obj2[0]%>')"><i class="fa fa-times fa-lg " aria-hidden="true"  ></i></button>
 										          	
@@ -660,7 +656,7 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 	         	<form action="SubChapterEdit.htm" method="POST" id="myfrm1">
 	      		 <div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
 	      			<h5 class="heading ml-4 mt-3" id="editorHeading" style="font-weight:500;color: #31708f;display:none;"></h5><hr>
-	      			<h5 class="heading ml-4 mt-3" id="editorHeading1" style="font-weight:500;color: #31708f;"><%if(ChapterList != null && ChapterList.size()>0){ %> <%=ChapterList.get(0)[3] %><%} %> </h5><hr>
+	      			<h5 class="heading ml-4 mt-3" id="editorHeading1" style="font-weight:500;color: #31708f;"><%if(ChapterList != null && ChapterList.size()>0){ %> <%=ChapterList.get(0)[3]!=null?StringEscapeUtils.escapeHtml4(ChapterList.get(0)[3].toString()): " - "  %><%} %> </h5><hr>
 					  <div class="card-body" style="margin-top: -8px" >
 					    <div class="row">	
 					        <div class="col-md-12 " align="left" style="margin-left: 0px; width: 100%;">
@@ -731,16 +727,16 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 									for(Object[] obj :AppendicesList) {%>
 									<tr class="tr_clone_trialresults">
 										<td style="width: 20%;padding: 10px 5px 0px 5px;" >
-										    <input type="text" class="form-control item" name="Appendix"  id="appendix" value="<%if(obj[1]!=null) {%><%=obj[1].toString() %><%} %>">
+										    <input type="text" class="form-control item" name="Appendix"  id="appendix" value="<%if(obj[1]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[1].toString()) %><%} %>">
 										</td>	
 										
 										<td style="width: 40%;padding: 10px 5px 0px 5px;" >
-										     <input type="text" class="form-control item" name="DocumentName"  value="<%if(obj[2]!=null) {%><%=obj[2].toString() %><%} %>">
+										     <input type="text" class="form-control item" name="DocumentName"  value="<%if(obj[2]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%} %>">
 										</td>
 										
 										<td style="width: 25%;padding: 10px 5px 0px 5px;">
 											<input type="file" class="form-control item" name="attachment" accept=".pdf">
-											<input type="hidden" name="attatchmentname" value="<%if(obj[3]!=null && !obj[3].toString().isEmpty()) {%><%=obj[3] %><%} %>">
+											<input type="hidden" name="attatchmentname" value="<%if(obj[3]!=null && !obj[3].toString().isEmpty()) {%><%=StringEscapeUtils.escapeHtml4(obj[1].toString()) %><%} %>">
 										</td>
 										<td style="width: 10%;padding: 10px 5px 0px 5px;" id="actiontd">
 											<%if(obj[3]!=null && !obj[3].toString().isEmpty()) {%>
@@ -766,7 +762,7 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 												<select class="form-control" name="DocumentName">
 												    <option value="0"  selected disabled>Select</option>
 													    <%for(Object[] obj:AppndDocList){ %>
-													          <option value="<%=obj[1] %>" ><%=obj[1] %></option>
+													          <option value="<%=obj[1] %>" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></option>
 													     <%}%>
 												</select>
 											</td>

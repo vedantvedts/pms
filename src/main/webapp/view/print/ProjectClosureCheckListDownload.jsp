@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@page import="com.vts.pfms.projectclosure.model.ProjectClosureCheckList"%>
@@ -227,7 +228,7 @@ p,td,th
 
 <div align="center">
 		<h5 style="font-weight: bold;margin-top: -0.5rem;">
-			CHECK-LIST FOR ADMINISTRATIVE CLOSURE REPORT FOR <%=projectMaster.getProjectName()%> & <%=projectMaster.getProjectDescription()%>
+			CHECK-LIST FOR ADMINISTRATIVE CLOSURE REPORT FOR <%=projectMaster.getProjectName()!=null?StringEscapeUtils.escapeHtml4(projectMaster.getProjectName()): " - "%> & <%=projectMaster.getProjectDescription()!=null?StringEscapeUtils.escapeHtml4(projectMaster.getProjectDescription()): " - "%>
 			
 		</h5>
 		
@@ -248,7 +249,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 600;">Name of the Lab</td>
-			<td ><%=labcode%>,&nbsp;<%=labcity[2] %></td>
+			<td ><%=labcode!=null?StringEscapeUtils.escapeHtml4(labcode): " - "%>,&nbsp;<%=labcity[2]!=null?StringEscapeUtils.escapeHtml4(labcity[2].toString()): " - " %></td>
 		</tr>
 		
 		<tr>
@@ -273,7 +274,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii.Objective  of the  Project mentioned in the PAR</td>
-			<td><%if(chlist!=null && chlist.getQARObjective()!=null) {%><%=chlist.getQARObjective() %><%} %></td>
+			<td><%if(chlist!=null && chlist.getQARObjective()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getQARObjective()) %><%} %></td>
 		</tr>
 		
 		<tr>
@@ -340,7 +341,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td  style="width: 35%;text-align: left !important;font-weight: 400;">i.No & Date </td>
-			<td><%if(projectMaster!=null && projectMaster.getSanctionNo()!=null){ %><%=projectMaster.getSanctionNo() %><%} %>
+			<td><%if(projectMaster!=null && projectMaster.getSanctionNo()!=null){ %><%=StringEscapeUtils.escapeHtml4(projectMaster.getSanctionNo()) %><%} %>
 			
 			&nbsp;&nbsp;
 			
@@ -428,7 +429,7 @@ p,td,th
 		     <td style="width: 10%;text-align: center !important;font-weight: 400;"><%=fc.SqlToRegularDate(obj[2].toString())%></td>
 			 <td  style="width: 10%;text-align: center !important;font-weight: 400;"><%=fc.SqlToRegularDate(obj[3].toString())%></td>
 			 <td style="width: 10%;text-align: right !important;font-weight: 400;"><%=df.format(Double.parseDouble(obj[4].toString()))%></td>
-			 <td style="width: 10%;text-align: left !important;font-weight: 400;"><%= obj[6] != null ? obj[6] : "" %></td> 
+			 <td style="width: 10%;text-align: left !important;font-weight: 400;"><%= obj[6] != null ?StringEscapeUtils.escapeHtml4(obj[6].toString()): "" %></td> 
 		
 		
 		</tr>
@@ -478,7 +479,7 @@ p,td,th
 		     <td style="width: 10%;text-align: center !important;font-weight: 400;"><%=fc.SqlToRegularDate(obj[2].toString())%></td>
 			 <td  style="width: 10%;text-align: center !important;font-weight: 400;"><%=fc.SqlToRegularDate(obj[3].toString())%></td>
 			 <td style="width: 10%;text-align: center !important;font-weight: 400;"><%=fc.SqlToRegularDate(obj[5].toString())%></td>
-			 <td style="width: 10%;text-align: left !important;font-weight: 400;"><%= obj[6] != null ? obj[6] : "" %></td> 
+			 <td style="width: 10%;text-align: left !important;font-weight: 400;"><%= obj[6] != null ? StringEscapeUtils.escapeHtml4(obj[6].toString()) : "" %></td> 
 		
 		
 		</tr>
@@ -503,28 +504,28 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.	Maintained in proper format </td>
-			<td><% if(chlist!=null &&  chlist.getPRMaintained() !=null ){%><%=chlist.getPRMaintained() %> <%} %></td>
+			<td><% if(chlist!=null &&  chlist.getPRMaintained() !=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getPRMaintained()) %> <%} %></td>
 		</tr>
 		
 		<% if(chlist!=null &&  chlist.getPRRemark1() !=null  && !chlist.getPRRemark1().isEmpty()){ %>
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
-			<td><% if(chlist!=null &&  chlist.getPRRemark1() !=null ){%><%=chlist.getPRRemark1() %> <%} %></td>
+			<td><% if(chlist!=null &&  chlist.getPRRemark1() !=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getPRRemark1()) %> <%} %></td>
 		</tr>
 		<%} %>
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii.Sanctioned projects entered (including sub-projects) </td>
-			<td><% if(chlist!=null &&  chlist.getPRSanctioned() !=null ){%><%=chlist.getPRSanctioned() %> <%} %> </td>
+			<td><% if(chlist!=null &&  chlist.getPRSanctioned() !=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getPRSanctioned()) %> <%} %> </td>
 		</tr>
 		
 		<% if(chlist!=null &&  chlist.getPRRemark2() !=null && !chlist.getPRRemark2().isEmpty()){ %>
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
-			<td><% if(chlist!=null &&  chlist.getPRRemark2() !=null ){%><%=chlist.getPRRemark2() %> <%} %></td>
+			<td><% if(chlist!=null &&  chlist.getPRRemark2() !=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getPRRemark2()) %> <%} %></td>
 		</tr>
 		<%} %>
 		
@@ -560,7 +561,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. Expenditure verified by Project Director/ In-charge </td>
-			<td><% if(chlist!=null &&  chlist.getPECVerified() !=null ){%><%=chlist.getPECVerified() %><%} %></td>
+			<td><% if(chlist!=null &&  chlist.getPECVerified() !=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getPECVerified()) %><%} %></td>
 		</tr>
 		
 		
@@ -568,7 +569,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
-			<td><% if(chlist!=null &&  chlist.getPECRemark1() !=null ){%><%=chlist.getPECRemark1() %> <%} %></td>
+			<td><% if(chlist!=null &&  chlist.getPECRemark1() !=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getPECRemark1()) %> <%} %></td>
 		</tr>
 		<%} %>
 		
@@ -614,7 +615,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.If required, maintained properly </td>
-			<td><% if(chlist!=null &&  chlist.getSRMaintained()!=null){%><%= chlist.getSRMaintained() %><%} %> </td>
+			<td><% if(chlist!=null &&  chlist.getSRMaintained()!=null){%><%= StringEscapeUtils.escapeHtml4(chlist.getSRMaintained()) %><%} %> </td>
 			
 		</tr>
 		
@@ -622,7 +623,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
-			<td><% if(chlist!=null &&  chlist.getSRRemark1() !=null ){%><%=chlist.getSRRemark1() %> <%} %></td>
+			<td><% if(chlist!=null &&  chlist.getSRRemark1() !=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getSRRemark1()) %> <%} %></td>
 		</tr>
 		<%} %>
 		
@@ -638,27 +639,27 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.Procedure followed (purchased directly or through main stores) </td>
-			<td><%if(chlist!=null && chlist.getCSProcedure()!=null){%><%=chlist.getCSProcedure()%><%} %></td>
+			<td><%if(chlist!=null && chlist.getCSProcedure()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getCSProcedure())%><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii.If through main stores, drawn from main Stock Register through Demand-cum-issue voucher </td>
-			<td><% if(chlist!=null && chlist.getCSDrawn()!=null ){%><%=chlist.getCSDrawn() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getCSDrawn()!=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getCSDrawn()) %><%} %></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. Amount is debited to Project Expenditure card </td>
-			<td><% if(chlist!=null && chlist.getCSamountdebited()!=null){%><%=chlist.getCSamountdebited()  %><%} %></td>
+			<td><% if(chlist!=null && chlist.getCSamountdebited()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getCSamountdebited())  %><%} %></td>
 		</tr>
 		
 		<% if(chlist!=null &&  chlist.getCSRemark1() !=null && !chlist.getCSRemark1().isEmpty()){ %>
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
-			<td><% if(chlist!=null &&  chlist.getCSRemark1() !=null ){%><%=chlist.getCSRemark1() %> <%} %></td>
+			<td><% if(chlist!=null &&  chlist.getCSRemark1() !=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getCSRemark1()) %> <%} %></td>
 		</tr>
 		<%} %>
 		
@@ -666,7 +667,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;"> iv.If not through main stores, reason thereof </td>
-			<td><% if(chlist!=null && chlist.getCSReason()!=null) {%><%=chlist.getCSReason() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getCSReason()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getCSReason()) %><%} %></td>
 		</tr>
 		
 		
@@ -680,60 +681,60 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;"> i.Procedure followed (Purchased directly or through main stores) </td>
-			<td><%if(chlist!=null && chlist.getNCSProcedure()!=null){%><%=chlist.getNCSProcedure()%><%} %></td>
+			<td><%if(chlist!=null && chlist.getNCSProcedure()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getNCSProcedure())%><%} %></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;"> ii. If through main stores, drawn from main Stock Register through nominal Demand-cum-issue voucher</td>
-			<td><% if(chlist!=null && chlist.getNCSDrawn()!=null ){%><%=chlist.getNCSDrawn() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getNCSDrawn()!=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getNCSDrawn()) %><%} %></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;"> iii.	Amount is debited to Project Expenditure  Card </td>
-			<td><% if(chlist!=null && chlist.getNCSamountdebited()!=null){%><%=chlist.getNCSamountdebited()  %><%} %></td>
+			<td><% if(chlist!=null && chlist.getNCSamountdebited()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getNCSamountdebited())  %><%} %></td>
 		</tr>
 		
 		<% if(chlist!=null &&  chlist.getNCSRemark1() !=null && !chlist.getNCSRemark1().isEmpty()){ %>
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
-			<td><% if(chlist!=null &&  chlist.getNCSRemark1() !=null ){%><%=chlist.getNCSRemark1() %> <%} %></td>
+			<td><% if(chlist!=null &&  chlist.getNCSRemark1() !=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getNCSRemark1()) %> <%} %></td>
 		</tr>
 		<%} %>
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;"> iv. If not through main stores, reason thereof </td>
-			<td><% if(chlist!=null && chlist.getNCSReason()!=null) {%><%=chlist.getNCSReason() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getNCSReason()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getNCSReason()) %><%} %></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;"> v. In main stores ledger, item shown as distributed to Project Inventory of non-consumables being maintained in project group</td>
-			<td><% if(chlist!=null && chlist.getNCSDistributed()!=null){%><%=chlist.getNCSDistributed() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getNCSDistributed()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getNCSDistributed()) %><%} %></td>
 		</tr>
 		
 		<% if(chlist!=null &&  chlist.getNCSRemark2() !=null && !chlist.getNCSRemark2().isEmpty()){ %>
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
-			<td><% if(chlist!=null &&  chlist.getNCSRemark2() !=null ){%><%=chlist.getNCSRemark2() %> <%} %></td>
+			<td><% if(chlist!=null &&  chlist.getNCSRemark2() !=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getNCSRemark2()) %> <%} %></td>
 		</tr>
 		<%} %>
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">vi. Any non-consumable item incorporated in any prototype stores are received and SIR is prepared before closure of project</td>
-			<td><% if(chlist!=null && chlist.getNCSIncorporated()!=null){%><%=chlist.getNCSIncorporated() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getNCSIncorporated()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getNCSIncorporated()) %><%} %></td>
 		</tr>
 		
 		<% if(chlist!=null &&  chlist.getNCSRemark3() !=null && !chlist.getNCSRemark3().isEmpty()){ %>
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
-			<td><% if(chlist!=null &&  chlist.getNCSRemark3() !=null ){%><%=chlist.getNCSRemark3() %> <%} %></td>
+			<td><% if(chlist!=null &&  chlist.getNCSRemark3() !=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getNCSRemark3()) %> <%} %></td>
 		</tr>
 		<%} %>
 		
@@ -761,27 +762,27 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. Any major equipment not listed in Q.P.R has been purchased? </td>
-			<td><% if(chlist!=null && chlist.getEquipPurchased()!=null){%><%=chlist.getEquipPurchased() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getEquipPurchased()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getEquipPurchased()) %><%} %></td>
 		</tr>
 		
 		<% if(chlist!=null &&  chlist.getEquipmentRemark1() !=null && !chlist.getEquipmentRemark1().isEmpty()){ %>
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
-			<td><% if(chlist!=null &&  chlist.getEquipmentRemark1() !=null ){%><%=chlist.getEquipmentRemark1() %> <%} %></td>
+			<td><% if(chlist!=null &&  chlist.getEquipmentRemark1() !=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getEquipmentRemark1()) %> <%} %></td>
 		</tr>
 		<%} %>
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. If yes, reason assigned </td>
-			<td><% if(chlist!=null && chlist.getEquipReason()!=null ) {%><%=chlist.getEquipReason() %> <%} %></td>
+			<td><% if(chlist!=null && chlist.getEquipReason()!=null ) {%><%=StringEscapeUtils.escapeHtml4(chlist.getEquipReason()) %> <%} %></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">iv. Any major equipment procured within one month before the PDC (give details and reason thereof) </td>
-			<td><% if(chlist!=null && chlist.getEquipProcuredBeforePDC()!=null){%> <%=chlist.getEquipProcuredBeforePDC() %><%} %>
+			<td><% if(chlist!=null && chlist.getEquipProcuredBeforePDC()!=null){%> <%=StringEscapeUtils.escapeHtml4(chlist.getEquipProcuredBeforePDC()) %><%} %>
 			
 			  <%if(chlist!=null && chlist.getEquipProcuredBeforePDCAttach()!=null){ %>
 			
@@ -797,7 +798,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
-			<td><% if(chlist!=null &&  chlist.getEquipmentRemark2() !=null ){%><%=chlist.getEquipmentRemark2() %> <%} %></td>
+			<td><% if(chlist!=null &&  chlist.getEquipmentRemark2() !=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getEquipmentRemark2()) %> <%} %></td>
 		</tr>
 		<%} %>
 		
@@ -805,9 +806,9 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">v. Any equipment bought on charge within one month before the PDC or after PDC (Give details and reasons thereof) </td>
-			<td><% if(chlist!=null && chlist.getEquipBoughtOnCharge()!=null ){%><%=chlist.getEquipBoughtOnCharge() %><%} %>
+			<td><% if(chlist!=null && chlist.getEquipBoughtOnCharge()!=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getEquipBoughtOnCharge()) %><%} %>
 			
-		 <%if(chlist!=null && chlist.getEquipBoughtOnChargeReason()!=null){ %><%=chlist.getEquipBoughtOnChargeReason() %>
+		 <%if(chlist!=null && chlist.getEquipBoughtOnChargeReason()!=null){ %><%=StringEscapeUtils.escapeHtml4(chlist.getEquipBoughtOnChargeReason()) %>
 		
 		     
 			<%} %>
@@ -820,7 +821,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
-			<td><% if(chlist!=null &&  chlist.getEquipmentRemark3() !=null ){%><%=chlist.getEquipmentRemark3() %> <%} %></td>
+			<td><% if(chlist!=null &&  chlist.getEquipmentRemark3() !=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getEquipmentRemark3()) %> <%} %></td>
 		</tr>
 		<%} %>
 		
@@ -847,7 +848,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. The reviewing officer should  see  the allocation  w.r.t demands  and  also  the  projections  in  the Q.P.R </td>
-			<td><% if(chlist!=null && chlist.getBudgetAllocation()!=null){%><%=chlist.getBudgetAllocation() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getBudgetAllocation()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getBudgetAllocation()) %><%} %></td>
 		</tr>
 		
 		
@@ -855,7 +856,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
-			<td><% if(chlist!=null &&  chlist.getBudgetRemark1() !=null ){%><%=chlist.getBudgetRemark1() %> <%} %></td>
+			<td><% if(chlist!=null &&  chlist.getBudgetRemark1() !=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getBudgetRemark1()) %> <%} %></td>
 		</tr>
 		<%} %>
 		
@@ -863,7 +864,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. What is the mechanism for monitoring/ control of head-wise expenditure? </td>
-			<td><% if(chlist!=null && chlist.getBudgetMechanism()!=null) {%><%=chlist.getBudgetMechanism() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getBudgetMechanism()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getBudgetMechanism()) %><%} %></td>
 		</tr>
 		
 		
@@ -872,7 +873,7 @@ p,td,th
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">iv. Mention, if expenditure under any head exceeded the respective allocation </td>
 			<td>
 			
-			 <%if(chlist!=null && chlist.getBudgetExpenditure()!=null){ %><%=chlist.getBudgetExpenditure() %>
+			 <%if(chlist!=null && chlist.getBudgetExpenditure()!=null){ %><%=StringEscapeUtils.escapeHtml4(chlist.getBudgetExpenditure()) %>
 			 
 			
 			<%} %>
@@ -884,7 +885,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">Comment: Whether financial progress is in consonance with Tech. progress. </td>
-			<td><% if(chlist!=null && chlist.getBudgetFinancialProgress()!=null){%><%=chlist.getBudgetFinancialProgress() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getBudgetFinancialProgress()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getBudgetFinancialProgress()) %><%} %></td>
 		</tr>
 		
 		
@@ -892,7 +893,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
-			<td><% if(chlist!=null &&  chlist.getBudgetRemark2() !=null ){%><%=chlist.getBudgetRemark2() %> <%} %></td>
+			<td><% if(chlist!=null &&  chlist.getBudgetRemark2() !=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getBudgetRemark2()) %> <%} %></td>
 		</tr>
 		<%} %>
 		
@@ -900,7 +901,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"><%=++slno %></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">i. Monthly/ Quarterly expenditure Reports are rendered to R&D HQrs and copy sent to local CDA </td>
-			<td><% if(chlist!=null && chlist.getBudgetexpenditureReports()!=null ){%><%=chlist.getBudgetexpenditureReports() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getBudgetexpenditureReports()!=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getBudgetexpenditureReports()) %><%} %></td>
 		</tr>
 		
 		
@@ -908,21 +909,21 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
-			<td><% if(chlist!=null &&  chlist.getBudgetRemark3() !=null ){%><%=chlist.getBudgetRemark3() %> <%} %></td>
+			<td><% if(chlist!=null &&  chlist.getBudgetRemark3() !=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getBudgetRemark3()) %> <%} %></td>
 		</tr>
 		<%} %>
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. Any expenditure incurred after Project PDC (Give details and reasons thereof)</td>
-			<td><% if(chlist!=null && chlist.getBudgetexpenditureIncurred()!=null ){%><%=chlist.getBudgetexpenditureIncurred() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getBudgetexpenditureIncurred()!=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getBudgetexpenditureIncurred()) %><%} %></td>
 		</tr>
 		
 		<% if(chlist!=null &&  chlist.getBudgetRemark4() !=null && !chlist.getBudgetRemark4().isEmpty()){ %>
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
-			<td><% if(chlist!=null &&  chlist.getBudgetRemark4() !=null ){%><%=chlist.getBudgetRemark4() %> <%} %></td>
+			<td><% if(chlist!=null &&  chlist.getBudgetRemark4() !=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getBudgetRemark4()) %> <%} %></td>
 		</tr>
 		<%} %>
 		
@@ -936,14 +937,14 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">i.	Log book maintained in r/o high cost equipment </td>
-			<td><% if(chlist!=null && chlist.getLogBookMaintained()!=null){%><%=chlist.getLogBookMaintained() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getLogBookMaintained()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getLogBookMaintained()) %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. Job cards maintained </td>
-			<td><% if(chlist!=null && chlist.getJobCardsMaintained()!=null){%><%=chlist.getJobCardsMaintained() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getJobCardsMaintained()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getJobCardsMaintained()) %><%} %></td>
 		</tr>
 		
 		
@@ -951,7 +952,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
-			<td><% if(chlist!=null &&  chlist.getUtilizationRemark1() !=null ){%><%=chlist.getUtilizationRemark1()%><%} %></td>
+			<td><% if(chlist!=null &&  chlist.getUtilizationRemark1() !=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getUtilizationRemark1())%><%} %></td>
 		</tr>
 		<%} %>
 		<tr>
@@ -963,7 +964,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">i. Demanded as per Q.P.R </td>
-			<td><% if(chlist!=null && chlist.getSPdemand()!=null){%><%=chlist.getSPdemand() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getSPdemand()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getSPdemand()) %><%} %></td>
 		</tr>
 		
 		
@@ -971,7 +972,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
-			<td><% if(chlist!=null &&  chlist.getStaffRemark1() !=null ){%><%=chlist.getStaffRemark1()%><%} %></td>
+			<td><% if(chlist!=null &&  chlist.getStaffRemark1() !=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getStaffRemark1())%><%} %></td>
 		</tr>
 		<%} %>
 		
@@ -979,7 +980,7 @@ p,td,th
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. Actual position-held </td>
 			<td>
-			 <%if(chlist!=null && chlist.getSPActualposition()!=null){ %><%=chlist.getSPActualposition() %>
+			 <%if(chlist!=null && chlist.getSPActualposition()!=null){ %><%=StringEscapeUtils.escapeHtml4(chlist.getSPActualposition()) %>
 		
 			
 			<%} %>
@@ -991,7 +992,7 @@ p,td,th
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. General Specific (Category wise) </td>
 			<td>
-			 <%if(chlist!=null && chlist.getSPGeneralSpecific()!=null){ %><%=chlist.getSPGeneralSpecific()%><%} %>
+			 <%if(chlist!=null && chlist.getSPGeneralSpecific()!=null){ %><%=StringEscapeUtils.escapeHtml4(chlist.getSPGeneralSpecific())%><%} %>
 			
 			</td>
 		</tr>
@@ -1008,7 +1009,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
-			<td><% if(chlist!=null &&  chlist.getCWRemark1() !=null ){%><%=chlist.getCWRemark1()%><%} %></td>
+			<td><% if(chlist!=null &&  chlist.getCWRemark1() !=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getCWRemark1())%><%} %></td>
 		</tr>
 		<%} %>
 		
@@ -1016,41 +1017,41 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">i. Civil works are included in the estimated prepared before project sanction.</td>
-			<td><% if(chlist!=null && chlist.getCWIncluded()!=null){%><%=chlist.getCWIncluded() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getCWIncluded()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getCWIncluded()) %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii. Admin approval is accorded for the work.</td>
-			<td><% if(chlist!=null && chlist.getCWAdminApp()!=null ){%><%=chlist.getCWAdminApp() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getCWAdminApp()!=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getCWAdminApp()) %><%} %></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. Minor works are completed within the financial year and not costing more than one lakh.</td>
-			<td><% if(chlist!=null && chlist.getCWMinorWorks()!=null){%><%=chlist.getCWMinorWorks() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getCWMinorWorks()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getCWMinorWorks()) %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">iv. Revenue major works are completed within the financial year and not costing more than two lakhs.</td>
-			<td><% if(chlist!=null && chlist.getCWRevenueWorks()!=null ){%><%=chlist.getCWRevenueWorks() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getCWRevenueWorks()!=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getCWRevenueWorks()) %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">v.	There are no deviations from the  admin   approval</td>
-			<td><% if(chlist!=null && chlist.getCWDeviation()!=null){%> <%=chlist.getCWDeviation() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getCWDeviation()!=null){%> <%=StringEscapeUtils.escapeHtml4(chlist.getCWDeviation()) %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">vi. Expenditure is not incurred just for the sake of exhausting funds at the end of Project.</td>
-			<td><% if(chlist!=null && chlist.getCWExpenditure()!=null){%><%=chlist.getCWExpenditure() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getCWExpenditure()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getCWExpenditure()) %><%} %></td>
 		</tr>
 		
 		
@@ -1064,27 +1065,27 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">i. No. of vehicles sanctioned in the project.</td>
-			<td> <% if(chlist!=null && chlist.getNoOfVehicleSanctioned()!=null){%><%=chlist.getNoOfVehicleSanctioned() %><%} %></td>
+			<td> <% if(chlist!=null && chlist.getNoOfVehicleSanctioned()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getNoOfVehicleSanctioned()) %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">ii.Vehicle Types .</td>
-			<td> <% if(chlist!=null && chlist.getVehicleType()!=null){%><%=chlist.getVehicleType() %><%} %></td>
+			<td> <% if(chlist!=null && chlist.getVehicleType()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getVehicleType()) %><%} %></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. Average  monthly run of each vehicle.</td>
-			<td><% if(chlist!=null && chlist.getVehicleAvgRun()!=null){ %> <%=chlist.getVehicleAvgRun() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getVehicleAvgRun()!=null){ %> <%=StringEscapeUtils.escapeHtml4(chlist.getVehicleAvgRun()) %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">iv. Average monthly fuel consumption of each vehicle.</td>
-			<td><% if(chlist!=null && chlist.getVehicleAvgFuel()!=null){ %> <%=chlist.getVehicleAvgFuel() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getVehicleAvgFuel()!=null){ %> <%=StringEscapeUtils.escapeHtml4(chlist.getVehicleAvgFuel()) %><%} %></td>
 		</tr>
 		
 		
@@ -1111,7 +1112,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">iii. If undue delay in sending the Closure Report, reasons thereof </td>
-			<td><% if(chlist!=null && chlist.getDelayReason()!=null){ %> <%=chlist.getDelayReason() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getDelayReason()!=null){ %> <%=StringEscapeUtils.escapeHtml4(chlist.getDelayReason()) %><%} %></td>
 		</tr>
 		
 		
@@ -1125,48 +1126,48 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">a. Whether  the  stated  objectives achieved </td>
-			<td><% if(chlist!=null && chlist.getCRObjective()!=null){%><%=chlist.getCRObjective() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getCRObjective()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getCRObjective()) %><%} %></td>
 		</tr>
 		
 		<% if(chlist!=null &&  chlist.getProjectRemark1() !=null && !chlist.getProjectRemark1().isEmpty()){ %>
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">Remarks</td>
-			<td><% if(chlist!=null &&  chlist.getProjectRemark1() !=null ){%><%=chlist.getProjectRemark1()%><%} %></td>
+			<td><% if(chlist!=null &&  chlist.getProjectRemark1() !=null ){%><%=StringEscapeUtils.escapeHtml4(chlist.getProjectRemark1())%><%} %></td>
 		</tr>
 		<%} %>
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">b. Any other spin-off achieved </td>
-			<td><% if(chlist!=null && chlist.getCRspinoff()!=null){%><%=chlist.getCRspinoff() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getCRspinoff()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getCRspinoff()) %><%} %></td>
 		</tr>
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">c. Reason, if PDC not  meet (Delay in  convening of TPC or  delayed placement of indent by the user) </td>
-			<td><% if(chlist!=null && chlist.getCRReason()!=null){%><%=chlist.getCRReason() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getCRReason()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getCRReason()) %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">d. Reason, if Cost Over-run </td>
-			<td><% if(chlist!=null && chlist.getCRcostoverin()!=null) {%><%=chlist.getCRcostoverin() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getCRcostoverin()!=null) {%><%=StringEscapeUtils.escapeHtml4(chlist.getCRcostoverin()) %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">v. Non-consumable items returned to main stores on nominal voucher (No credit to be given in Project expenditure  card) </td>
-			<td><% if(chlist!=null && chlist.getNonConsumableItemsReturned()!=null){%><%=chlist.getNonConsumableItemsReturned() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getNonConsumableItemsReturned()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getNonConsumableItemsReturned()) %><%} %></td>
 		</tr>
 		
 		
 		<tr>
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">vi. Consumable (non-consumed) returned to main store on Issue voucher (Credit to be given in Project Expenditure Card) </td>
-			<td><% if(chlist!=null && chlist.getConsumableItemsReturned()!=null){%><%=chlist.getConsumableItemsReturned() %><%} %></td>
+			<td><% if(chlist!=null && chlist.getConsumableItemsReturned()!=null){%><%=StringEscapeUtils.escapeHtml4(chlist.getConsumableItemsReturned()) %><%} %></td>
 		</tr>
 		
 		
@@ -1174,7 +1175,7 @@ p,td,th
 			<td style="width: 5%;"></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 400;">vii. How the manpower sanctioned in the Project has been disposed of (Permanent as well as temporary) </td>
 			<td>
-			  <%if(chlist!=null && chlist.getManPowerSanctioned()!=null){ %><%=chlist.getManPowerSanctioned()%><%}%>
+			  <%if(chlist!=null && chlist.getManPowerSanctioned()!=null){ %><%=StringEscapeUtils.escapeHtml4(chlist.getManPowerSanctioned())%><%}%>
 			
 			</td>
 		</tr>
@@ -1183,7 +1184,7 @@ p,td,th
 		<tr>
 			<td style="width: 5%;"><%=++slno %></td>
 			<td style="width: 35%;text-align: left !important;font-weight: 600;">Overall Review Remarks/Recommendations </td>
-			<td><%if(chlist!=null && chlist.getRemarks()!=null){ %> <%=chlist.getRemarks() %><%} %></td>
+			<td><%if(chlist!=null && chlist.getRemarks()!=null){ %> <%=StringEscapeUtils.escapeHtml4(chlist.getRemarks()) %><%} %></td>
 		</tr>
 		
 		

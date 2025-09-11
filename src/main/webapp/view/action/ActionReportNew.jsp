@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.LinkedHashMap"%>
 <%@page import="java.util.stream.Collectors"%>
@@ -135,7 +136,9 @@
 	  	String projectId = (String)request.getAttribute("projectId");
 	  	String type = (String)request.getAttribute("type");
 	  	String status = (String)request.getAttribute("status");
+	  	String labCode = (String)request.getAttribute("labCode");
 	  	
+	  	List<Object[]> allLabList = (List<Object[]>)request.getAttribute("allLabList");
 	  	List<Object[]> projectList = (List<Object[]>)request.getAttribute("projectList");
 		List<Object[]> roleWiseEmployeeList = (List<Object[]>)request.getAttribute("roleWiseEmployeeList");
 		List<Object[]> allActionsList = (List<Object[]>)request.getAttribute("allActionsList");
@@ -151,22 +154,22 @@
 		String projectName = "", assigneeName = "", typeName = "", statusName = "";
 		
 	%>
-	<% String ses=(String)request.getParameter("result");
-	 	String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-		%>
-		<div align="center">
-			<div class="alert alert-danger" role="alert">
-		    <%=ses1 %>
-		    </div>
-		</div>
-		<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-		    	<%=ses %>
-			</div>
-		</div>
-	<%} %>
+	<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 	
 	<div class="container-fluid">
 		<div class="row">
@@ -191,9 +194,21 @@
 	                                           		<%for(Object[] obj:projectList){
 	                                                    String projectShortName=(obj[17]!=null)?" ("+obj[17].toString()+")":"";
 	                                                %>
-														<option value="<%=obj[0] %>" <%if(projectId.equalsIgnoreCase(obj[0].toString())){ projectName = obj[4]+projectShortName; %> selected="selected" <%}%>><%=obj[4]+projectShortName%></option>	
+														<option value="<%=obj[0] %>" <%if(projectId.equalsIgnoreCase(obj[0].toString())){ projectName = obj[4]+projectShortName; %> selected="selected" <%}%>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%> <%= projectShortName!=null?StringEscapeUtils.escapeHtml4(projectShortName):" - " %></option>	
 													<%}%>
 												</select>	        
+											</td>
+											<td>
+					   							<label class="control-label">Lab: </label>
+					   						</td>
+					   						<td>
+                                            	<select class="form-control selectdee" name="labCode" id="labCode" required="required" onchange="this.form.submit()"  data-live-search="true" data-container="body">
+													<option disabled="disabled"  selected value="">Lab Name</option>
+												    <% for (Object[] lab : allLabList) {%>
+													    <option value="<%=lab[3]%>" <%if(labCode.equalsIgnoreCase(lab[3].toString())){ %>selected <%} %>  ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
+												    <%} %>
+												    <!-- <option value="@EXP">Expert</option> -->
+												</select>  
 											</td>
 											<td>
 					   							<label class="control-label">Assignee: </label>
@@ -208,7 +223,10 @@
 																<%if(empId.equalsIgnoreCase(obj[0]+"")) { assigneeName = (obj[1]!=null?obj[1]:(obj[2]!=null?obj[2]:""))+" "+obj[5]+", "+obj[6];%>
 																	selected
 																<%} %> >
-																<%=(obj[1]!=null?obj[1]:(obj[2]!=null?obj[2]:""))+" "+obj[5]+", "+obj[6] %>
+																<%= (obj[1] != null ? StringEscapeUtils.escapeHtml4(obj[1].toString()): (obj[2] != null ? StringEscapeUtils.escapeHtml4(obj[2].toString()) : ""))
+																+ " " + (obj[5] != null ? StringEscapeUtils.escapeHtml4(obj[5].toString()) : " - ")+ ", "+ (obj[6] != null ? StringEscapeUtils.escapeHtml4(obj[6].toString()) : " - ")
+%>
+
 															</option>
 													<%} }%>
 												</select>	        
@@ -285,16 +303,16 @@
 			         							<%} %> --%>
 			         								
 												<td class="center">
-													<button type="submit" class="btn btn-outline-info" onclick="showSubListDetails('<%=slno %>')" ><%=obj[0] %></button>
+													<button type="submit" class="btn btn-outline-info" onclick="showSubListDetails('<%=slno %>')" ><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):"" %></button>
                                                 </td>
 												<td class="center"><%=obj[6]!=null?fc.sdfTordf(obj[6].toString()):"-"%></td>																		
-											  	<td><%=obj[1]%>, <%=obj[2]%></td>
-											  	<td><%=obj[19]%>, <%=obj[20]%></td>
+											  	<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></td>
+											  	<td><%=obj[19]!=null?StringEscapeUtils.escapeHtml4(obj[19].toString()):" - "%>, <%=obj[20]!=null?StringEscapeUtils.escapeHtml4(obj[20].toString()):" - "%></td>
 												<td class="center">
 													<%if(obj[12]!=null && !obj[12].toString().equalsIgnoreCase("0")){ %>
 										            	<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 										            		<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[12]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-										            			<%=obj[12]%>
+										            			<%=StringEscapeUtils.escapeHtml4(obj[12].toString()) %>
 										            		</div> 
 										            	</div> 
 										            <%}else{ %>
@@ -315,7 +333,7 @@
 											           	<input type="hidden" name="ActionAssignId" id="actionAssignId_<%=slno %>" value="<%=obj[14]%>"/>
 											           	<input type="hidden" name="ActionAssignid" id="actionAssignId_<%=slno %>" value="<%=obj[14]%>"/>
 											           	<input type="hidden" name="ActionNo" id="actionNo_<%=slno %>" value="<%=obj[0]%>"/>
-											           	<textarea name="ActionName" id="actionName_<%=slno %>" style="display: none;"><%=actionName%></textarea>
+											           	<textarea name="ActionName" id="actionName_<%=slno %>" style="display: none;"><%=actionName!=null?actionName:""%></textarea>
 											           	<input type="hidden" name="ProjectId" value="<%=obj[18]%>"/>
 											           	<input type="hidden" name="projectid" value="<%=projectId%>"/>
 											           	<input type="hidden" name="empId" value="<%=empId%>"/>

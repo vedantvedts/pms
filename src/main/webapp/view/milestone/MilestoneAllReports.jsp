@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -60,21 +61,22 @@ h6{
  %>
 
 
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
- if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
-
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
     <br/>
 
 
@@ -98,7 +100,7 @@ h6{
                                                            <option value="0"  <%if(Project.equalsIgnoreCase("0")){ %> selected="selected" <%} %>>General</option>	
                                                            <%
                                                            for(Object[] obj:ProjectList){ %>
-														   <option value="<%=obj[0] %>" <%if(Project.equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[2] %></option>	
+														   <option value="<%=obj[0] %>" <%if(Project.equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - " %></option>	
 														<%} %>
 																</select>	        
 											</td>
@@ -112,7 +114,7 @@ h6{
                                                            
                                                            <%
                                                            for(Object[] obj:EmployeeList){ %>
-														   <option value="<%=obj[0] %>" <%if(Employee.equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1] %>, <%=obj[2] %></option>	
+														   <option value="<%=obj[0] %>" <%if(Employee.equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - " %></option>	
 														<%} %>
 																</select>	        
 											</td>
@@ -123,13 +125,13 @@ h6{
 					   							<label class="control-label" style="font-size: 14px; margin-bottom: .0rem;"> From Date:</label>
 					   						</td>
 					   						<td style="max-width: 160px; padding-right: 50px">
-					   							<input  class="form-control"  data-date-format="dd/mm/yyyy" id="fdate" name="fdate"  required="required"  value="<%=fdate%>">
+					   							<input  class="form-control"  data-date-format="dd/mm/yyyy" id="fdate" name="fdate"  required="required"  value="<%=fdate!=null?StringEscapeUtils.escapeHtml4(fdate):" - "%>">
 					   						</td>
 					   						<td>
 					   							<label class="control-label" style="font-size: 14px; margin-bottom: .0rem;"> To Date:</label>
 					   						</td>
 					   						<td style="width: 160px; padding-right: 50px">
-					   							<input  class="form-control "  data-date-format="dd/mm/yyyy" id="tdate" name="tdate"  required="required"  value="<%=tdate%>">
+					   							<input  class="form-control "  data-date-format="dd/mm/yyyy" id="tdate" name="tdate"  required="required"  value="<%=tdate!=null?StringEscapeUtils.escapeHtml4(tdate):" - "%>">
 					   						</td>
 					   						<td>
 					   							<input type="submit" value="SUBMIT" class="btn  btn-sm submit	 "/>

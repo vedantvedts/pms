@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.net.URL"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
@@ -108,49 +109,49 @@ String path=request.getScheme() + "://" + request.getServerName() + ":" + reques
 							                        { text: ++slno + ".", alignment: 'center', margin: [5, 5, 5,5] }, 
 							                        { text: 'Ref to General Staff Policy Statement No.', margin: [5, 5, 5,5],bold:true },
 							                       
-							                        { text: '<%=sqrFile!=null && sqrFile[1]!=null?sqrFile[1]:"-" %>', margin: [5, 5, 5,5] }
+							                        { text: '<%=sqrFile!=null && sqrFile[1]!=null?sqrFile[1].toString():"-" %>', margin: [5, 5, 5,5] }
 							                    ],
 							                    [
 							                        { text: ++slno + ".", alignment: 'center', margin: [5, 5, 5,5] }, 
 							                        { text: 'SQR No.', margin: [5, 5, 5,5],bold:true },
 							                       
-							                        { text: '<%=sqrFile!=null && sqrFile[6]!=null?sqrFile[6]:"-" %>', margin: [5, 5, 5,5] }
+							                        { text: '<%=sqrFile!=null && sqrFile[6]!=null?sqrFile[6].toString():"-" %>', margin: [5, 5, 5,5] }
 							                    ],
 							                    [
 							                        { text: ++slno + ".", alignment: 'center', margin: [5, 5, 5,5] }, 
 							                        { text: 'Other Previous SQR No.', margin: [5, 5, 5,5],bold:true },
 							                       
-							                        { text: '<%=sqrFile!=null && sqrFile[8]!=null?sqrFile[8]:"-" %>' , margin: [5, 5, 5,5]}
+							                        { text: '<%=sqrFile!=null && sqrFile[8]!=null?sqrFile[8].toString():"-" %>' , margin: [5, 5, 5,5]}
 							                    ],
 							                    [
 							                        { text: ++slno + ".", alignment: 'center', margin: [5, 5, 5,5] }, 
 							                        { text: 'Ref of Meeting', margin: [5, 5, 5,5],bold:true },
 							                       
-							                        { text: '<%=sqrFile!=null && sqrFile[9]!=null?sqrFile[9]:"-" %>', margin: [5, 5, 5,5], alignment: 'top' }
+							                        { text: '<%=sqrFile!=null && sqrFile[9]!=null?sqrFile[9].toString():"-" %>', margin: [5, 5, 5,5], alignment: 'top' }
 							                    ],
 							                    [
 							                        { text: ++slno + ".", alignment: 'center' , margin: [5, 5, 5,5]}, 
 							                        { text: 'Line Directorate File No.', margin: [5, 5, 5,5],bold:true },
 							                       
-							                        htmlToPdfmake('<a href="<%=path%>SQRDownload.htm?reqInitiationId=<%=sqrFile[2]%>" target="blank">Download</a>')
+							                        htmlToPdfmake('<a href="<%=path%>SQRDownload.htm?reqInitiationId=<%=sqrFile[2]!=null?sqrFile[2].toString()): " - "%>" target="blank">Download</a>')
 							                    ],
 							                    [
 							                        { text: ++slno + ".", alignment: 'center' , margin: [5, 5, 5,5]}, 
 							                        { text: 'Nomenclature', margin: [5, 5, 5,5],bold:true },
 							                       
-							                        { text:'<%=projectDetails!=null && projectDetails[3]!=null?projectDetails[3]:"-" %> (<%=projectDetails!=null && projectDetails[2]!=null?projectDetails[2]:"-" %>)', margin: [5, 5, 5,5]}
+							                        { text:'<%=projectDetails!=null && projectDetails[3]!=null?projectDetails[3].toString():"-" %> (<%=projectDetails!=null && projectDetails[2]!=null?projectDetails[2].toString():"-" %>)', margin: [5, 5, 5,5]}
 							                    ],
 							                    [
 							                        { text: ++slno + ".", alignment: 'center', margin: [5, 5, 5,5] }, 
 							                        { text: 'Security Classification', margin: [5, 5, 5,5],bold:true },
 							                       
-							                        { text: '<%=projectDetails!=null && projectDetails[12]!=null?projectDetails[12]:"-"%>', margin: [5, 5, 5,5] }
+							                        { text: '<%=projectDetails!=null && projectDetails[12]!=null?projectDetails[12].toString():"-"%>', margin: [5, 5, 5,5] }
 							                    ],
 							                    [
 							                        { text: ++slno + ".", alignment: 'center', margin: [5, 5, 5,5] }, 
 							                        { text: 'Priority for Development', margin: [5, 5, 5,5],bold:true },
 							                       
-							                        { text: '<%=sqrFile!=null && sqrFile[10]!=null?(sqrFile[10].toString().equalsIgnoreCase("E")?"Early":(sqrFile[10].toString().equalsIgnoreCase("I")?"Immediate":"Late")):"-" %>', margin: [5, 5, 5,5] }
+							                        { text: '<%=sqrFile!=null && sqrFile[10]!=null?(sqrFile[10].toString()).equalsIgnoreCase("E")?"Early":(sqrFile[10].toString()).equalsIgnoreCase("I")?"Immediate":"Late":"-" %>', margin: [5, 5, 5,5] }
 							                    ]
 							                ]
 							            }
@@ -171,7 +172,7 @@ String path=request.getScheme() + "://" + request.getServerName() + ":" + reques
 
 						    // Conditionally add the lab details
 						    contentArray.push({
-			                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + ")" %> <% } else { %> '-' <% } %></h5>'),
+			                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0]!=null?LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " + ")" %> <% } else { %> '-' <% } %></h5>'),
 						        alignment: 'center',
 						        fontSize: 16,
 						        bold: true,
@@ -187,7 +188,7 @@ String path=request.getScheme() + "://" + request.getServerName() + ":" + reques
 						    
 						    contentArray.push({
 			               	 text:	<%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %>
-								'<%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %>'
+								'<%=LabList[2].toString()+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString()%>'
 								<%}else{ %>
 								'-'
 								<%} %>,
@@ -204,7 +205,7 @@ String path=request.getScheme() + "://" + request.getServerName() + ":" + reques
 						    });
 
 						    contentArray.push({
-				           	     text:'DRAFT GENERAL STAFF QUALITATIVE REQUIREMENT FOR PROJECT DEVELOPEMNT SYSTEMS (<%=projectDetails != null && projectDetails[2] != null ? projectDetails[2] : "-" %>)',
+				           	     text:'DRAFT GENERAL STAFF QUALITATIVE REQUIREMENT FOR PROJECT DEVELOPEMNT SYSTEMS (<%=projectDetails != null && projectDetails[2] != null ? projectDetails[2].toString(): "-" %>)',
 			           		 	fontSize: 16,
 			           		 	pageBreak: 'before',
 			           			 alignment: 'center',
@@ -258,7 +259,7 @@ String path=request.getScheme() + "://" + request.getServerName() + ":" + reques
 			            	    
 			            	    
 			            	    info: {
-			            	        title: 'QR_PARA_<%=projectDetails!=null && projectDetails[2]!=null?projectDetails[2]:"" %>',  // Set document name here
+			            	        title: 'QR_PARA_<%=projectDetails!=null && projectDetails[2]!=null?projectDetails[2].toString():"" %>',  // Set document name here
 			            	      
 			            	    },
 			            // Styles for headers and text
@@ -307,7 +308,7 @@ String path=request.getScheme() + "://" + request.getServerName() + ":" + reques
 			                },
 			                // Sentence on the next line
 			                {
-			                    text: '<%=projectDetails!=null && projectDetails[12]!=null?projectDetails[12]:"Restricted"%>',
+			                    text: '<%=projectDetails!=null && projectDetails[12]!=null?projectDetails[12].toString():"Restricted"%>',
 			                    alignment: 'center',
 			                    fontSize: 8,
 			                    margin: [0, 5, 0, 0]  // Add some margin above to create space

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
 	import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
@@ -37,27 +38,22 @@ b {
 	Object[] TccData = (Object[]) request.getAttribute("TccData");
 	%>
 
-	<%
-		String ses = (String) request.getParameter("result");
-	String ses1 = (String) request.getParameter("resultfail");
-	if (ses1 != null) {
-	%><center>
-		<div class="alert alert-danger" role="alert">
-			<%=ses1%>
-		</div>
-	</center>
-	<%
-		}
-	if (ses != null) {
-	%>
-	<center>
-		<div class="alert alert-success" role="alert">
-			<%=ses%>
-		</div>
-	</center>
-	<%
-		}
-	%>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 
@@ -84,12 +80,12 @@ b {
 							<tbody>
 								<tr>
 
-									<td><label class="control-label">Chairperson </label></td><td>&emsp; : &emsp;</td><td><%=TccData[3]%> (<%= TccData[5]%>)</td>
+									<td><label class="control-label">Chairperson </label></td><td>&emsp; : &emsp;</td><td><%=TccData[3]!=null?StringEscapeUtils.escapeHtml4(TccData[3].toString()): " - " %> (<%= TccData[5]!=null?StringEscapeUtils.escapeHtml4(TccData[5].toString()): " - " %>)</td>
 
 								</tr>
 								<tr>
 
-									<td><label class="control-label">Member Secretary   </label></td><td>&emsp; : &emsp;</td><td><%=TccData[4]%> (<%=TccData[6]%>)</td>
+									<td><label class="control-label">Member Secretary   </label></td><td>&emsp; : &emsp;</td><td><%=TccData[4]!=null?StringEscapeUtils.escapeHtml4(TccData[4].toString()): " - " %> (<%=TccData[6]!=null?StringEscapeUtils.escapeHtml4(TccData[6].toString()): " - " %>)</td>
 
 								</tr>
 								<%
@@ -101,7 +97,7 @@ b {
 
 								<tr>
 
-									<td><label class="control-label">Member</label></td><td>&emsp; :&emsp;</td> <td><%=obj[1]%> (<%=obj[3]%>)</td>
+									<td><label class="control-label">Member</label></td><td>&emsp; :&emsp;</td> <td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> (<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%>)</td>
 
 								</tr>
 								<%	}	%>

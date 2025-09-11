@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.fasterxml.jackson.databind.ObjectMapper"%>
 <%@page import="java.net.URL"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -118,7 +119,7 @@
             content: [
                 // Cover Page with Project Name and Logo
                 {
-                    text: htmlToPdfmake('<h4 class="heading-color ">SYSTEM REQUIREMENTS <br><br> FOR  <br><br>PROJECT <%=projectShortName %> </h4>'),
+                    text: htmlToPdfmake('<h4 class="heading-color ">SYSTEM REQUIREMENTS <br><br> FOR  <br><br>PROJECT <%=projectShortName!=null?projectShortName: " - " %> </h4>'),
                     style: 'DocumentName',
                     alignment: 'center',
                     fontSize: 18,
@@ -135,7 +136,7 @@
                 <% } %>
                 
                 {
-                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + ")" %> <% } else { %> '-' <% } %></h5>'),
+                    text: htmlToPdfmake('<h5><% if (LabList != null && LabList[1] != null) { %> <%= LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "") + "(" + LabList[0]!=null?LabList[0].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):" - " + ")" %> <% } else { %> '-' <% } %></h5>'),
                     alignment: 'center',
                     fontSize: 16,
                     bold: true,
@@ -149,7 +150,7 @@
                     margin: [0, 10, 0, 10]
                 },
                 {
-                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %><%}else{ %>-<%} %></h6>'),
+                    text: htmlToPdfmake('<h6><%if(LabList!=null && LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %><%=LabList[2].toString()+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %><%}else{ %>-<%} %></h6>'),
                     alignment: 'center',
                     fontSize: 14,
                     bold: true,
@@ -188,9 +189,9 @@
 	                            <% int slno = 0; for (Object[] obj : MemberList) { %>
 	                            [
 	                                { text: '<%= ++slno %>', style: 'tableData',alignment: 'center' },
-	                                { text: '<%= obj[1] %>', style: 'tableData' },
-	                                { text: '<%= obj[2] %>', style: 'tableData' },
-	                                { text: '<%= obj[3] %>', style: 'tableData',alignment: 'center' }
+	                                { text: '<%= obj[1]!=null?obj[1].toString(): " - " %>', style: 'tableData' },
+	                                { text: '<%= obj[2]!=null?obj[2].toString(): " - " %>', style: 'tableData' },
+	                                { text: '<%= obj[3]!=null?obj[3].toString(): " - " %>', style: 'tableData',alignment: 'center' }
 	                            ],
 	                            <% } %>
                             <% } else{%>
@@ -235,7 +236,7 @@
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Title', style: 'tableData' },
-                                { text: 'System Requirements Document for <%=projectShortName %>', style: 'tableData' },
+                                { text: 'System Requirements Document for <%=projectShortName!=null?projectShortName: " - " %>', style: 'tableData' },
                             ],
                             
                             [
@@ -247,7 +248,7 @@
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Classification', style: 'tableData' },
-                                { text: '<%=Classification %>', style: 'tableData' },
+                                { text: '<%=Classification!=null?Classification: " - " %>', style: 'tableData' },
                             ],
                             
                             [
@@ -283,7 +284,7 @@
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Project Name', style: 'tableData' },
-                                { text: '<%=projectShortName %>', style: 'tableData' },
+                                { text: '<%=projectShortName!=null?projectShortName: " - " %>', style: 'tableData' },
                             ],
                             
                             [
@@ -301,10 +302,10 @@
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Organization and address', style: 'tableData' },
-                                { text: '<% if (LabList!=null && LabList[1] != null) {%> <%=LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "").replaceAll("\r", "") + "(" + LabList[0].toString() + ")"%> <%} else {%> - <%}%>'
+                                { text: '<% if (LabList!=null && LabList[1] != null) {%> <%=LabList[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "").replaceAll("\r", "") + "(" + LabList[0]!=null?LabList[0].toString(): " - " + ")"%> <%} else {%> - <%}%>'
 										+'Government of India, Ministry of Defence,Defence Research & Development Organization'
 								+'<% if (LabList!=null && LabList[2] != null && LabList[3] != null && LabList[5] != null) { %>'
-									+'<%=LabList[2] + " , " + LabList[3].toString() + ", PIN-" + LabList[5].toString()+"."%>'
+									+'<%=LabList[2].toString()+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString()+"."%>'
 								+'<%}else{ %> - <%} %>' , style: 'tableData' },
                             ],
                             
@@ -323,19 +324,19 @@
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Prepared by', style: 'tableData' },
-                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[10] %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[10].toString() %><%} %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Reviewed by', style: 'tableData' },
-                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[7] %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[7].toString() %><%} %>', style: 'tableData' },
                             ],
                             
                             [
                                 { text: '<%=++docsn%>', style: 'tableData',alignment: 'center' },
                                 { text: 'Approved by', style: 'tableData' },
-                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[6] %><%} %>', style: 'tableData' },
+                                { text: '<% if(DocumentSummary.size()>0 ){%><%=DocumentSummary.get(0)[6].toString() %><%} %>', style: 'tableData' },
                             ],
 
                         ]
@@ -393,8 +394,8 @@
 		                        <% int slno = 0; for (Object[] obj : AbbreviationDetails) { %>
 		                            [
 		                                { text: '<%= ++slno %>', style: 'tableData',alignment: 'center' },
-		                                { text: '<%= obj[1] %>', style: 'tableData',alignment: 'center' },
-		                                { text: '<%= obj[2] %>', style: 'tableData' },
+		                                { text: '<%= obj[1]!=null?obj[1].toString(): " - " %>', style: 'tableData',alignment: 'center' },
+		                                { text: '<%= obj[2]!=null?obj[2].toString(): " - " %>', style: 'tableData' },
 		                            ],
 		                        <% } %>
                             <% } else{%>
@@ -491,7 +492,7 @@
    					for(Object[]obj:mainReqList){
    				%>
 	   				{
-	                	text: (mainContentCount)+'.<%=++mainReqCount %>. <%=obj[3] %>',	
+	                	text: (mainContentCount)+'.<%=++mainReqCount %>. <%=obj[3]!=null?obj[3].toString(): " - " %>',	
 	                	style: 'chapterSubHeader',
 	                    tocItem: true,
 	                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=mainReqCount %>',
@@ -516,7 +517,7 @@
     				%>
     					<%if(!ReqName.equalsIgnoreCase(obj1[3].toString()) && !obj1[3].toString().equalsIgnoreCase(obj[3].toString())) {%>
 	    					{
-			                	text: (mainContentCount)+'.<%=mainReqCount+"."+(++subReqCount)%>. <%=obj1[3].toString() %>',	
+			                	text: (mainContentCount)+'.<%=mainReqCount+"."+(++subReqCount)%>. <%=obj1[3]!=null?obj1[3].toString(): " - "%>',	
 			                    tocItem: true,
 			                    id: 'chapter'+chapterCount+'.'+mainContentCount+'.<%=mainReqCount+"."+(subReqCount) %>',
 			                    style: 'chapterSubSubHeader',
@@ -540,7 +541,7 @@
     	                            [
     	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
     	                                { text: 'ID', style: 'tableData' },
-    	                                { text: '<%=obj1[1] %><%=obj1[25]!=null&&obj1[25].toString().equalsIgnoreCase("Y") ? "  (D)":"" %>', style: 'tableData' },
+    	                                { text: '<%=obj1[1]!=null?obj1[1].toString(): " - " %><%=obj1[25]!=null&&obj1[25].toString().equalsIgnoreCase("Y") ? "  (D)":"" %>', style: 'tableData' },
     	                            ],
 
     	                            [
@@ -552,13 +553,13 @@
     	                            [
     	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
     	                                { text: 'Priority', style: 'tableData' },
-    	                                { text: '<%if(obj1[5]!=null) {%> <%=obj1[5] %> <%}else{%>-<%} %>', style: 'tableData' },
+    	                                { text: '<%if(obj1[5]!=null) {%> <%=obj1[5].toString() %> <%}else{%>-<%} %>', style: 'tableData' },
     	                            ],
     	                            
     	                            [
     	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
     	                                { text: 'Criticality', style: 'tableData' },
-    	                                { text: '<%if(obj1[21]!=null) {%> <%=obj1[21] %> <%}else{%>-<%} %>', style: 'tableData' },
+    	                                { text: '<%if(obj1[21]!=null) {%> <%=obj1[21].toString() %> <%}else{%>-<%} %>', style: 'tableData' },
     	                            ],
     	                            
     	                            [
@@ -578,13 +579,13 @@
     	                            [
     	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
     	                                { text: 'Remarks', style: 'tableData' },
-    	                                { text: '<%if(obj1[7]!=null) {%> <%=obj1[7] %> <%}else{%>-<%} %>', style: 'tableData' },
+    	                                { text: '<%if(obj1[7]!=null) {%> <%=obj1[7].toString() %> <%}else{%>-<%} %>', style: 'tableData' },
     	                            ],
 
     	                            [
     	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
     	                                { text: 'Constraints', style: 'tableData' },
-    	                                { text: '<%if(obj1[9]!=null) {%> <%=obj1[9] %> <%}else{%>-<%} %>', style: 'tableData' },
+    	                                { text: '<%if(obj1[9]!=null) {%> <%=obj1[9].toString()%> <%}else{%>-<%} %>', style: 'tableData' },
     	                            ],
 
     	                           [
@@ -594,7 +595,7 @@
     	                                	    + '<% List<Object[]> DemonList = VerificationDataList.stream().filter(e -> e[1].toString().equalsIgnoreCase("1")).collect(Collectors.toList()); %>'
     	                                	    + '<% String[] a = obj1[16].toString().split(", "); %>'
     	                                	    + '<% for (int i = 0; i < a.length; i++) { %>'
-    	                                	    + '<%= a[i] %> . <%= DemonList.get(Integer.parseInt(a[i].substring(1)) - 1)[3].toString() %><br>'
+    	                                	    + '<%= a[i]!=null?a[i].toString(): " - " %> . <%= DemonList.get(Integer.parseInt(a[i].substring(1)) - 1)[3].toString() %><br>'
     	                                	    + '<% } %>'
     	                                	    + '<% } else { %>-<% } %>'), style: 'tableData' },
     	                            ],
@@ -607,14 +608,14 @@
     	                                		+ '<%String [] a=obj1[17].toString().split(", "); %>'
     	                                		+ '<%for(int i=0;i<a.length;i++){ %>'
     												
-    	                                		 + '<%=	a[i] +" . "+ TestList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+    	                                		 + '<%=	a[i]!=null?a[i].toString(): " - " +" . "+ TestList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
     	                                		+ '<%} %>'
     	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
     	                            ],
     	                            [
     	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
     	                                { text: 'Test Stage', style: 'tableData' },
-    	                                { text: '<%if(obj1[24]!=null) {%> <%=obj1[24] %> <%}else{%>-<%} %>', style: 'tableData' },
+    	                                { text: '<%if(obj1[24]!=null) {%> <%=obj1[24].toString() %> <%}else{%>-<%} %>', style: 'tableData' },
     	                            ],
     	                            [
     	                                { text: '<%= ++snCount %>', style: 'tableData',alignment: 'center' },
@@ -624,7 +625,7 @@
     	                                		+ '<% String [] a=obj1[18].toString().split(", "); %>'
     	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
     												
-    	                                			+ '<%=	a[i] +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+    	                                			+ '<%=	a[i]!=null?a[i].toString(): " - " +" . "+ AnalysisList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
     	                                		+ '<%} %>'
     											+ '<%}else{%>-<%} %>'), style: 'tableData' },
     	                            ],
@@ -637,7 +638,7 @@
     	                                		+ '<% String [] a=obj1[19].toString().split(", "); %>'
     	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
     												
-    	                                		+ '<%=	a[i] +" . "+ InspectionList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+    	                                		+ '<%=	a[i]!=null?a[i].toString(): " - " +" . "+ InspectionList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
     	                                		+ '<%} %>'
     	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
     	                            ],
@@ -650,7 +651,7 @@
     	                                		+ '<% String [] a=obj1[20].toString().split(", "); %>'
     	                                		+ '<% for(int i=0;i<a.length;i++){ %>'
     												
-    	                                		+ '<%=	a[i] +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
+    	                                		+ '<%=	a[i]!=null?a[i].toString(): " - " +" . "+ specialList.get(Integer.parseInt(a[i].substring(1))-1)[3].toString() %><br>'
     	                                		+ '<%} %>'
     	                                		+ '<%}else{%>-<%} %>'), style: 'tableData' },
     	                            ],
@@ -716,7 +717,7 @@
 	                                <% int rcount = 0; for (Object[] obj : nonMainReqList) { if(obj[21]!=null){ %>
 	                                [
 	                                    { text: '<%= ++rcount %>', style: 'tableData',alignment: 'center' },
-	                                    { text: '<%= obj[1] %>', style: 'tableData' },
+	                                    { text: '<%= obj[1]!=null?obj[1].toString(): " - " %>', style: 'tableData' },
 	                                    { text: '<%if(obj[5]!=null) {%><%=obj[5].toString()%><%}else{ %>-<%} %> ', style: 'tableData',alignment: 'center' },
 	                                    { text: '<%if(obj[21]!=null) {%><%=obj[21].toString()%><%}else{ %>-<%} %> ', style: 'tableData' },
 	                                ],
@@ -816,14 +817,14 @@
 				                            [
 				                                <%if(index ==0) {%>
 				                                	{ text: '<%=++slno %>', style: 'tableData', rowSpan: <%=values.size() %>, alignment: 'center' },
-									    			{ text: '<%=obj[2] %>', style: 'tableData', rowSpan: <%=values.size() %> },
+									    			{ text: '<%=obj[2] !=null?obj[2].toString(): " - "%>', style: 'tableData', rowSpan: <%=values.size() %> },
        											<% } else { %>
        												{},
 					                                {},
 					                            <% } %>
 				                                <%if(!data.equalsIgnoreCase(obj[2].toString())){ subcount=0; } %> 
-				                                { text: '<%=obj[2].toString().substring(0,1)+(++subcount)+". "+obj[3] %>', style: 'tableData' },
-				                                { text: '<%=obj[4].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "").replaceAll("\r", "")%>', style: 'tableData' },
+				                                { text: '<%=obj[2]!=null?obj[2].toString().substring(0,1)+(++subcount):" - "+". "+obj[3]!=null?obj[3].toString(): " - " %>', style: 'tableData' },
+				                                { text: '<%=obj[4]!=null?obj[4].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "").replaceAll("\r", ""):" - "%>', style: 'tableData' },
 				                            ],
                             <% data = obj[2].toString();  ++index;} %>
                             <% } }%>
@@ -892,8 +893,8 @@
         					%>
 	        					[
 	        						{text: '<%=++slCount %>', style:'tableData', alignment: 'center'},
-	        						{text: '<%=obj1[3] %>', style:'tableData',},
-	        						{text: '<%if(ReqId.size()>0) { for(Object[]obj2:ReqId){ %> <%=obj2[1] %>\n <%}}else{ %> --- <%} %>', style:'tableData', alignment: 'center'},
+	        						{text: '<%=obj1[3]!=null?obj1[3].toString(): " - " %>', style:'tableData',},
+	        						{text: '<%if(ReqId.size()>0) { for(Object[]obj2:ReqId){ %> <%=obj2[1]!=null?obj2[1].toString(): " - " %>\n <%}}else{ %> --- <%} %>', style:'tableData', alignment: 'center'},
 	        					],
         					
         					<%}} %>
@@ -938,10 +939,10 @@
                         	<%int snCount=0; for(Object[] objs: subList) { if(objs[12]!=null) {%>
 	        					[
 	        						{text: '<%=++snCount %>', style:'tableData', alignment: 'center'},
-	        						{text: '<%=objs[1].toString() %>', style:'tableData', alignment: 'center'},
+	        						{text: '<%=objs[1]!=null?objs[1].toString(): " - " %>', style:'tableData', alignment: 'center'},
 	        						{text: htmlToPdfmake('<%if(objs[12]!=null) { String [] a=objs[12].toString().split(", "); List<String>paras= new ArrayList<>(); %>'
 	        								+'<%for(String s:a){ for(Object[]obj:ProjectParaDetails){ if(obj[0].toString().equalsIgnoreCase(s)){ paras.add(obj[3].toString()); } } }%>'
-		    								+'<% for(String s:paras){%><%=s %> <br><%} %>'
+		    								+'<% for(String s:paras){%><%=s!=null?s: " - " %> <br><%} %>'
 		    								+'<%}else{ %> - <%} %>'), style:'tableData'},
 	        					],
         					
@@ -1000,8 +1001,8 @@
                         	<% if (AcronymsList != null) { int slno = 0; for (Object[] obj : AcronymsList) { %>
 	        					[
 	        						{text: '<%=++slno %>', style:'tableData', alignment: 'center'},
-	        						{text: '<%=obj[1] %>', style:'tableData', },
-	        						{text: '<%=obj[2] %>', style:'tableData', },
+	        						{text: '<%=obj[1]!=null?obj[1].toString(): " - " %>', style:'tableData', },
+	        						{text: '<%=obj[2]!=null?obj[2].toString(): " - " %>', style:'tableData', },
 	        					],
         					
         					<%}} %>
@@ -1054,8 +1055,8 @@
                         	<% if (PerformanceList != null) { int slno = 0; for (Object[] obj : PerformanceList) { %>
 	        					[
 	        						{text: '<%=++slno %>', style:'tableData', alignment: 'center'},
-	        						{text: '<%=obj[1] %>', style:'tableData', },
-	        						{text: '<%=obj[2]  %>', style:'tableData', },
+	        						{text: '<%=obj[1]!=null?obj[1].toString(): " - " %>', style:'tableData', },
+	        						{text: '<%=obj[2]!=null?obj[2].toString(): " - "  %>', style:'tableData', },
 	        					],
         					
         					<%}} %>
@@ -1117,26 +1118,26 @@
         			        %>
 		        			        <%if(submainReqList.size()>0){%>
 			        			        [
-			        						{text: '<%=obj[3].toString() %>:-', style:'tableData', colSpan: 6},
+			        						{text: '<%=obj[3]!=null?obj[3].toString(): " - " %>:-', style:'tableData', colSpan: 6},
 			        					],
 		        			          
 		        			           <%String ReqName="";
 		        			            	for(Object[]obj1:submainReqList){ %>
 		        			           	<%if(!ReqName.equalsIgnoreCase(obj1[3].toString()) && !obj1[3].toString().equalsIgnoreCase(obj[3].toString())) {%>
 			        			           	[
-				        						{text: '<%=obj1[3].toString() %>', style:'tableData', colSpan: 6},
+				        						{text: '<%=obj1[3]!=null?obj1[3].toString(): " - " %>', style:'tableData', colSpan: 6},
 				        					],
 		        						<%} %>
 		        			           
 		        						[
 			        						{text: '<%=obj1[1] %>', style:'tableData',},
-			        						{text: '<%if(obj1[16]!=null) {%><%=obj1[16] %> <%}else{ %>-<%} %>', style:'tableData',},
-			        						{text: '<%if(obj1[17]!=null) {%><%=obj1[17] %> <%}else{ %>-<%} %>', style:'tableData',},
-			        						{text: '<%if(obj1[18]!=null) {%><%=obj1[18] %> <%}else{ %>-<%} %>', style:'tableData',},
-			        						{text: '<%if(obj1[19]!=null) {%><%=obj1[19] %> <%}else{ %>-<%} %>', style:'tableData',},
-			        						{text: '<%if(obj1[20]!=null) {%><%=obj1[20] %> <%}else{ %>-<%} %>', style:'tableData',},
+			        						{text: '<%if(obj1[16]!=null) {%><%=obj1[16].toString() %> <%}else{ %>-<%} %>', style:'tableData',},
+			        						{text: '<%if(obj1[17]!=null) {%><%=obj1[17].toString() %> <%}else{ %>-<%} %>', style:'tableData',},
+			        						{text: '<%if(obj1[18]!=null) {%><%=obj1[18].toString() %> <%}else{ %>-<%} %>', style:'tableData',},
+			        						{text: '<%if(obj1[19]!=null) {%><%=obj1[19].toString() %> <%}else{ %>-<%} %>', style:'tableData',},
+			        						{text: '<%if(obj1[20]!=null) {%><%=obj1[20].toString() %> <%}else{ %>-<%} %>', style:'tableData',},
 			        					],
-		        			           <% ReqName=obj1[3].toString();
+		        			           <% ReqName=obj1[3]!=null?obj1[3].toString(): " - ";
 		        			           } %>
 		        					<%} %>
         			    	<%}} %>

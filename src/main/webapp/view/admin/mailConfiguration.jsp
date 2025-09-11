@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -127,28 +128,22 @@ label {
 	List<Object[]> MailConfigurationList = (List<Object[]>) request.getAttribute("mailConfigurationList");
 	%>
 
-	<%
-	String ses = (String) request.getParameter("result");
-	String ses1 = (String) request.getParameter("resultfail");
-	if (ses1 != null) {
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-			<%=ses1%>
-		</div>
-	</div>
-	<%
-	}
-	if (ses != null) {
-	%>
-	<div align="center">
-		<div class="alert alert-success" role="alert">
-			<%=ses%>
-		</div>
-	</div>
-	<%
-	}
-	%>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
 	<br>
 
 
@@ -205,7 +200,7 @@ label {
 							<td>
 								<%
 								if (obj[1] != null) {
-								%><%=obj[1].toString()%>
+								%><%=StringEscapeUtils.escapeHtml4(obj[1].toString())%>
 								<%
 								} else {
 								%>-<%
@@ -215,7 +210,7 @@ label {
 							<td>
 								<%
 								if (obj[2] != null) {
-								%><%=obj[2].toString()%>
+								%><%=StringEscapeUtils.escapeHtml4(obj[2].toString())%>
 								<%
 								} else {
 								%>-<%
@@ -225,7 +220,7 @@ label {
 							<td>
 								<%
 								if (obj[4] != null) {
-								%><%=obj[4].toString()%>
+								%><%=StringEscapeUtils.escapeHtml4(obj[4].toString())%>
 								<%
 								} else {
 								%>-<%

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.math.BigDecimal"%>
@@ -128,9 +129,9 @@ p{
  <span style="float: right; font-size:13px;">Date :  <%if(committeemaindata[12]!=null){ %>  <%=sdf.format(sdf1.parse(committeemaindata[12].toString()))%><%} %></span>
  </div>  
 <br>
- 	<div style="text-align: center;" ><h3 style="margin-bottom: 2px;" align="center"><%=labdetails[2]+"("+labdetails[1]+")" %> </h3></div>  
+ 	<div style="text-align: center;" ><h3 style="margin-bottom: 2px;" align="center"><%=labdetails[2]!=null?labdetails[2].toString(): " - "%> (<%=labdetails[1]!=null?labdetails[1].toString(): " - " %>) </h3></div>  
  	
-	<div style="text-align: center;" ><h3 style="margin-bottom: 2px;" align="center">Formation of Committee  <%=committeeedata[2]%> (<%=committeeedata[1].toString()%>) </h3></div>
+	<div style="text-align: center;" ><h3 style="margin-bottom: 2px;" align="center">Formation of Committee  <%=committeeedata[2]!=null?committeeedata[2].toString(): " - "%> (<%=committeeedata[1]!=null?committeeedata[1].toString(): " - "%>) </h3></div>
 	<br>
 	<div  align="center">
 	<table style=" margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;" >
@@ -144,9 +145,9 @@ p{
 				<div style="text-align: center;" >
 					<div style="margin-bottom: 2px; max-width: 650px;text-align: justify;text-justify: inter-word;text-align: justify;text-justify: inter-word;" align="center">
 						<%if(Long.parseLong(projectid)>0 || Long.parseLong(divisionid)>0 || Long.parseLong(initiationid)>0){ %>
-								<%if(committeedescription[1]!=null){ %><%=committeedescription[1] %> <%}else{ %>No Data <%} %>
+								<%if(committeedescription[1]!=null){ %><%=committeeedata[1].toString() %> <%}else{ %>No Data <%} %>
 						<%}else { %>
-								<%if(committeeedata[10]!=null){ %><%=committeeedata[10] %> <%}else{ %>No Data <%} %>
+								<%if(committeeedata[10]!=null){ %><%=committeeedata[10].toString()%> <%}else{ %>No Data <%} %>
 						<%} %>
 					</div>
 				</div>
@@ -178,7 +179,7 @@ p{
 				i++; %>
 			<tr>				
 				<td style="max-width:40px;text-align: center; padding: 5px 0px 5px 0px; border:1px solid black;"><%=i %> .&nbsp;</td>
-				<td style="max-width:300px;text-align: left; padding: 5px 0px 5px 0px;border:1px solid black;">&nbsp;<%=member[2] %><%=member[4].toString().length()>1?", "+member[4].toString():"" %> <%-- <%if(member[8].toString().equals("CW")){ %><%=member[9]%><%}  %> --%>&nbsp;</td>
+				<td style="max-width:300px;text-align: left; padding: 5px 0px 5px 0px;border:1px solid black;">&nbsp;<%=member[2]!=null?member[2].toString(): " - " %><%=member[4]!=null &&  member[4].toString().length()>1?", "+member[2].toString():"" %> <%-- <%if(member[8].toString().equals("CW")){ %><%=member[9]%><%}  %> --%>&nbsp;</td>
 				<td  style="max-width:150px;text-align: center; padding: 5px 0px 5px 0px; border:1px solid black;"><%=member[12].toString()%> </td>
 				<td style="max-width: 200px;text-align: left; padding: 5px 0px 5px 0px;border:1px solid black;">&nbsp; 
 				<%if(member[8].toString().equals("CC")){ %>Chairperson<%}
@@ -208,10 +209,10 @@ p{
 					<p style="margin-bottom: 2px; max-width: 650px;text-align: justify;text-justify: inter-word;text-align: justify;text-justify: inter-word;" align="center">
 						
 					<%if(Long.parseLong(projectid)>0 || Long.parseLong(divisionid)>0 || Long.parseLong(initiationid)>0){ %>
-						<%if(committeedescription[2]!=null){ %><%=committeedescription[2] %> <%}else{ %>No Data <%} %>
+						<%if(committeedescription[2]!=null){ %><%=committeedescription[2].toString()%> <%}else{ %>No Data <%} %>
 														
 					<%}else if(projectid!=null && Long.parseLong(projectid)==0){ %>
-								<%if(committeeedata[11]!=null){ %><%=committeeedata[11] %> <%}else{ %> No Data <%} %>
+								<%if(committeeedata[11]!=null){ %><%=committeeedata[11].toString()%> <%}else{ %> No Data <%} %>
 					<%} %>
 					
 					</p>
@@ -245,7 +246,7 @@ p{
 	</div>
 	<br><br>
 	<div style="text-align: left;font-size: 13px;">
-	Initiated By : <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[18]!=null ){ %> <%=CommitteMainEnoteList[18].toString() %>, <%=CommitteMainEnoteList[19].toString() %>  <%}else{ %>  <%= constitutionapprovalflow.get(0)[0]%>,  <%= constitutionapprovalflow.get(0)[1]%> <%} %>
+	Initiated By : <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[18]!=null ){ %> <%=CommitteMainEnoteList[18].toString() %>, <%=CommitteMainEnoteList[19]!=null?CommitteMainEnoteList[19].toString(): " - " %>  <%}else{ %>  <%= constitutionapprovalflow.get(0)[0]!=null?constitutionapprovalflow.get(0)[0].toString(): " - "%>,  <%= constitutionapprovalflow.get(0)[1]!=null?constitutionapprovalflow.get(0)[1].toString(): " - "%> <%} %>
 	</div>
 <!-- 	<div style="margin-top:30px;margin-left:10px;">Recommended Officer :- </div>
 	<div style="margin-top:10px;margin-left:10px;">Approving Officer :-</div> -->

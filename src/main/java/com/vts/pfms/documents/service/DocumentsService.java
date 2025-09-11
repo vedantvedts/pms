@@ -44,6 +44,7 @@ import com.vts.pfms.documents.model.PfmsIDDDocument;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.model.PfmsIRSDocument;
 import com.vts.pfms.documents.model.StandardDocuments;
+import com.vts.pfms.documents.model.UnitMaster;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -128,7 +129,10 @@ public interface DocumentsService {
 	public List<IGIConnectorAttach> getIGIConnectorAttachList();
 	public IGIConnectorAttach getIGIConnectorAttachById(String connectorAttachId) throws Exception;
 	public long addIGIConnectorAttach(IGIConnectorAttach connectorAttach, MultipartFile attachment, String labcode) throws Exception;
-	
+	public Long getDuplicateFieldNameCount(String fieldName,String fieldMasterId) throws Exception;
+	public Long getDuplicateGroupNameCount(String groupName,String fieldGroupId) throws Exception;
+	public Long getDuplicateGroupCodeCount(String groupCode,String fieldGroupId) throws Exception;
+
 	/* ************************************************ IGI Document End***************************************************** */
 	
 	/* ************************************************ ICD Document ***************************************************** */
@@ -217,5 +221,10 @@ public interface DocumentsService {
 	public int getLogicalChannelCount() throws Exception;
 	public List<Object[]> getIGIFieldDescriptionList() throws Exception;
 	public long getMechanicalInterfaceCount() throws Exception;
+	
+	/*********************************************** Naveen 4/9/25 **************************************************/
+	public UnitMaster getUnitMasterById(long unitMasterId)throws Exception;
+	public long addUnitMaster(UnitMaster unitmaster)throws Exception;
+	public List<Object[]> unitMasterList()throws Exception;
 
 }

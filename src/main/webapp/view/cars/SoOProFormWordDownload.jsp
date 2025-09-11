@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.model.LabMaster"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.vts.pfms.cars.model.CARSInitiation"%>
@@ -86,7 +87,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 		<div id="container pageborder" align="center"  class="firstpage" id="firstpage">
 			<div class="firstpage" id="firstpage"> 	
 				<div style="text-align: right;">
-					<h5 style="font-weight: bold;margin-right: 2rem;"><%=labcode %> : CARS-02</h5>
+					<h5 style="font-weight: bold;margin-right: 2rem;"><%=labcode!=null?StringEscapeUtils.escapeHtml4(labcode): " - " %> : CARS-02</h5>
 				</div>
 				<div class="center">
 			       <h4 style="font-weight: bold;margin-top: 1.5rem;">Summary Offer of Provision of Research Services</h4>
@@ -96,7 +97,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    		<tr>
 			    			<td colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				1. Title of DRDO's Research Service Qualitative Requirement (RSQR):&nbsp;
-			    			 	<%if(carsIni!=null && carsIni.getInitiationTitle()!=null) {%> <%=carsIni.getInitiationTitle() %> <%} else {%>-<%} %> <br><br><br><br>
+			    			 	<%if(carsIni!=null && carsIni.getInitiationTitle()!=null) {%> <%=StringEscapeUtils.escapeHtml4(carsIni.getInitiationTitle()) %> <%} else {%>-<%} %> <br><br><br><br>
 			    			</td>
 			    			<td  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 				    			Offer Number: <br>
@@ -109,7 +110,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    		</tr>
 			    		<tr>
 			    			<td  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> 
-			    				RSQR Document Ref. No. :&nbsp;<%if(rsqr!=null && rsqr[11]!=null) {%><%=rsqr[11] %><%} else{%>-<%} %> <br><br> <!-- <br><br><br><br> --> 
+			    				RSQR Document Ref. No. :&nbsp;<%if(rsqr!=null && rsqr[11]!=null) {%><%=StringEscapeUtils.escapeHtml4(rsqr[11].toString()) %><%} else{%>-<%} %> <br><br> <!-- <br><br><br><br> --> 
 			    			</td>
 			    			<td  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				Date of issue :&nbsp;<%if(carsIni!=null && carsIni.getInitiationApprDate()!=null) {%><%=fc.SqlToRegularDate(carsIni.getInitiationApprDate()) %><%} else{%>-<%} %><br><br>
@@ -134,10 +135,10 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    			<td  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 								Issuing DRDO Estt :&nbsp;
 								<%if(labMaster!=null) {%>
-									<%if(labMaster.getLabCode()!=null) {%><%=labMaster.getLabCode() %><%} else{%>-<%} %>
-									<%if(labMaster.getLabAddress()!=null) {%><%=", "+labMaster.getLabAddress() %><%} else{%>-<%} %>
-									<%if(labMaster.getLabCity()!=null) {%><%=", "+labMaster.getLabCity() %><%} else{%>-<%} %>
-									<%if(labMaster.getLabPin()!=null) {%><%=" - "+labMaster.getLabPin() %><%} else{%>-<%} %>
+									<%if(labMaster.getLabCode()!=null) {%><%=StringEscapeUtils.escapeHtml4(labMaster.getLabCode()) %><%} else{%>-<%} %>
+									<%if(labMaster.getLabAddress()!=null) {%><%=", "+StringEscapeUtils.escapeHtml4(labMaster.getLabAddress()) %><%} else{%>-<%} %>
+									<%if(labMaster.getLabCity()!=null) {%><%=", "+StringEscapeUtils.escapeHtml4(labMaster.getLabCity()) %><%} else{%>-<%} %>
+									<%if(labMaster.getLabPin()!=null) {%><%=" - "+StringEscapeUtils.escapeHtml4(labMaster.getLabPin()) %><%} else{%>-<%} %>
 									
 								<%} %>
 								 <br><br><!-- <br><br><br><br> --> 
@@ -149,13 +150,13 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    		<tr>
 			    			<td rowspan="2" colspan="2"  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				3. Name of Research Service Provider (RSP) making this offer:&nbsp;
-			    					<%if(carsIni!=null) {%><%=carsIni.getPITitle()+". "+carsIni.getPIName()+", "+carsIni.getPIDesig() %> <%} else{%>-<%} %> <br>
+			    					<%if(carsIni!=null) {%><%=carsIni.getPITitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPITitle()): " - "%> . <%=carsIni.getPIName()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIName()): " - "%>, <%=carsIni.getPIDesig()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIDesig()): " - " %> <%} else{%>-<%} %> <br>
 			    				3. (a) RSP's address for correspondence:&nbsp;
-			    				  	<%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> <%} else{%>-<%} %>	<br>
-			    				  	&nbsp;&nbsp;&nbsp;&nbsp;<%if(carsIni!=null) {%><%=carsIni.getRSPAddress()+", "+carsIni.getRSPCity()+", "+carsIni.getRSPState()+" - "+carsIni.getRSPPinCode() %> <%} else{%>-<%} %> <br>
-			    				&nbsp;&nbsp;&nbsp;&nbsp;Phone :&nbsp;<%if(carsIni!=null) {%><%=carsIni.getPIMobileNo() %> <%} else{%>-<%} %> <br>
+			    				  	<%if(carsIni!=null) {%><%=carsIni.getRSPInstitute()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute()): " - "%>, <%=carsIni.getRSPCity()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()): " - " %> <%} else{%>-<%} %>	<br>
+			    				  	&nbsp;&nbsp;&nbsp;&nbsp;<%if(carsIni!=null) {%><%=carsIni.getRSPAddress()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPAddress()): " - "%>, <%=carsIni.getRSPCity()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()): " - "%>, <%=carsIni.getRSPState()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPState()): " - "%> - <%=carsIni.getRSPPinCode()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPPinCode()): " - " %> <%} else{%>-<%} %> <br>
+			    				&nbsp;&nbsp;&nbsp;&nbsp;Phone :&nbsp;<%if(carsIni!=null) {%><%=carsIni.getPIMobileNo()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIMobileNo()): " - " %> <%} else{%>-<%} %> <br>
 			    				&nbsp;&nbsp;&nbsp;&nbsp;Fax :&nbsp;<%if(carsIni!=null && carsIni.getPIFaxNo()!=null) {%><%=carsIni.getPIFaxNo() %> <%} else{%>-<%} %> <br>
-			    				&nbsp;&nbsp;&nbsp;&nbsp;Email :&nbsp;<%if(carsIni!=null) {%><%=carsIni.getPIEmail() %> <%} else{%>-<%} %> <br>
+			    				&nbsp;&nbsp;&nbsp;&nbsp;Email :&nbsp;<%if(carsIni!=null) {%><%=carsIni.getPIEmail()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIEmail()): " - " %> <%} else{%>-<%} %> <br>
 			    				<br><br><br><br>
 			    			</td>
 			    			<td rowspan="1"  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">

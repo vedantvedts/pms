@@ -96,6 +96,7 @@ import com.vts.pfms.documents.model.PfmsICDDocument;
 import com.vts.pfms.documents.model.PfmsIDDDocument;
 import com.vts.pfms.documents.model.PfmsIGIDocument;
 import com.vts.pfms.documents.model.PfmsIRSDocument;
+import com.vts.pfms.documents.model.UnitMaster;
 import com.vts.pfms.documents.service.DocumentsService;
 import com.vts.pfms.producttree.dto.ProductTreeDto;
 import com.vts.pfms.producttree.model.ProductTree;
@@ -1712,6 +1713,7 @@ public class DocumentsController {
 			IGILogicalInterfaces logicalInterface = logicalInterfaceId.equalsIgnoreCase("0")? new IGILogicalInterfaces(): service.getIGILogicalInterfaceById(logicalInterfaceId);
 
 			logicalInterface.setMsgType(req.getParameter("msgType"));
+			logicalInterface.setMsgName(req.getParameter("msgName"));
 			logicalInterface.setLogicalChannelId(logicalChannel!=null?Long.parseLong(logicalChannel[0]):0L);
 			logicalInterface.setDataRate(req.getParameter("dataRate"));
 			logicalInterface.setMsgDescription(req.getParameter("msgDescription"));
@@ -1728,12 +1730,12 @@ public class DocumentsController {
 				String channelCode = logicalChannel!=null?logicalChannel[1]:"-";
 				
 				logicalInterface.setMsgCode(channelCode + "_" + logicalInterface.getMsgType().substring(0,3).toUpperCase() + "_" + seqCount );
-				logicalInterface.setMsgName(logicalInterface.getMsgType().substring(0,3)+" "+req.getParameter("msgName"));
+				//String msgTypeCode = logicalInterface.getMsgType().equalsIgnoreCase("Command")?"Cmd": logicalInterface.getMsgType().substring(0,3);
+				//logicalInterface.setMsgName(msgTypeCode+req.getParameter("msgName"));
 				logicalInterface.setCreatedBy(UserId);
 				logicalInterface.setCreatedDate(sdtf.format(new Date()));
 				logicalInterface.setIsActive(1);
 			}else {
-				logicalInterface.setMsgName(req.getParameter("msgName"));
 				logicalInterface.setModifiedBy(UserId);
 				logicalInterface.setModifiedDate(sdtf.format(new Date()));
 				
@@ -1891,9 +1893,11 @@ public class DocumentsController {
 			
 			if(action!=null && action.equalsIgnoreCase("Add")) {
 				req.setAttribute("dataTypeMasterList", service.dataTypeMasterList());
+				req.setAttribute("unitMasterList", service.unitMasterList());
 				return "documents/FieldMasterAddEdit";
 			}else if(action!=null && action.equalsIgnoreCase("Edit")) {
 				String fieldMasterId = req.getParameter("fieldMasterId");
+				req.setAttribute("unitMasterList", service.unitMasterList());
 				req.setAttribute("dataTypeMasterList", service.dataTypeMasterList());
 				req.setAttribute("fieldMaster", service.getFieldMasterById(fieldMasterId));
 				req.setAttribute("fieldGroupLinkedList", service.getFieldGroupLinkedList(fieldMasterId));
@@ -1920,6 +1924,7 @@ public class DocumentsController {
 			String action =req.getParameter("action");
 			String fieldMasterId =req.getParameter("fieldMasterId");
 			String dataTypeMasterId =req.getParameter("dataTypeMasterId");
+			String unitMasterId = req.getParameter("unitMasterId");
 
 			FieldMaster field = fieldMasterId.equalsIgnoreCase("0") ? new FieldMaster() :  service.getFieldMasterById(fieldMasterId);
 			
@@ -1933,8 +1938,9 @@ public class DocumentsController {
 			field.setFieldMaxValue(req.getParameter("maxValue"));
 			field.setInitValue(req.getParameter("initValue"));
 			field.setQuantum(req.getParameter("quantum"));
-			field.setFieldUnit(req.getParameter("unit"));
+//			field.setFieldUnit(req.getParameter("unit"));
 			field.setRemarks(req.getParameter("remarks"));
+			field.setUnitMasterId(unitMasterId!=null?Long.parseLong(unitMasterId):0L);
 
 			if (fieldMasterId.equalsIgnoreCase("0")) {
 				field.setCreatedBy(UserId);
@@ -1982,6 +1988,24 @@ public class DocumentsController {
 		} 
 	}
 	
+	@RequestMapping(value = "FieldNameDuplicateCheck.htm", method = RequestMethod.GET)
+	public @ResponseBody String fieldNameDuplicateCheck(HttpSession ses, HttpServletRequest req) throws Exception 
+	{
+		String UserId=(String)ses.getAttribute("Username");
+		Long count = null;
+		logger.info(new Date() +"Inside FieldNameDuplicateCheck.htm "+UserId);
+		try
+		{	  
+			count = service.getDuplicateFieldNameCount(req.getParameter("fieldName"),req.getParameter("fieldMasterId"));
+		}
+		catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +"Inside FieldNameDuplicateCheck.htm "+UserId,e);
+		}
+		Gson json = new Gson();
+		return json.toJson(count); 
+	}
+
 	@RequestMapping(value = "DataTypeMaster.htm",method = {RequestMethod.GET,RequestMethod.POST})
 	public String dataTypeMasterList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
@@ -2118,6 +2142,41 @@ public class DocumentsController {
 		}
 	}
 
+	@RequestMapping(value = "GroupNameDuplicateCheck.htm", method = RequestMethod.GET)
+	public @ResponseBody String groupNameDuplicateCheck(HttpSession ses, HttpServletRequest req) throws Exception 
+	{
+		String UserId=(String)ses.getAttribute("Username");
+		Long count = null;
+		logger.info(new Date() +"Inside GroupNameDuplicateCheck.htm "+UserId);
+		try
+		{	  
+			count = service.getDuplicateGroupNameCount(req.getParameter("groupName"),req.getParameter("fieldGroupId"));
+		}
+		catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +"Inside GroupNameDuplicateCheck.htm "+UserId,e);
+		}
+		Gson json = new Gson();
+		return json.toJson(count); 
+	}
+
+	@RequestMapping(value = "GroupCodeDuplicateCheck.htm", method = RequestMethod.GET)
+	public @ResponseBody String groupCodeDuplicateCheck(HttpSession ses, HttpServletRequest req) throws Exception 
+	{
+		String UserId=(String)ses.getAttribute("Username");
+		Long count = null;
+		logger.info(new Date() +"Inside GroupCodeDuplicateCheck.htm "+UserId);
+		try
+		{	  
+			count = service.getDuplicateGroupCodeCount(req.getParameter("groupCode"),req.getParameter("fieldGroupId"));
+		}
+		catch (Exception e) {
+			e.printStackTrace(); logger.error(new Date() +"Inside GroupCodeDuplicateCheck.htm "+UserId,e);
+		}
+		Gson json = new Gson();
+		return json.toJson(count); 
+	}
+	
 	@RequestMapping(value = "ConnectorMaster.htm",method = {RequestMethod.GET,RequestMethod.POST})
 	public String connectorMasterList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
@@ -2183,6 +2242,7 @@ public class DocumentsController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() + "Inside ConstantsMaster.htm" + UserId);
 		try {
+			req.setAttribute("unitMasterList", service.unitMasterList());
 			req.setAttribute("constantsMasterList", service.getIGIConstantsMasterList());
 			return "documents/ConstantsMasterList";
 		} catch (Exception e) {
@@ -2200,12 +2260,16 @@ public class DocumentsController {
 		try {
 			String constantId = req.getParameter("constantId");
 			String action =req.getParameter("action");
+			String unitMasterId = req.getParameter("unitMasterId");
 			
 			IGIConstants constant = constantId.equalsIgnoreCase("0") ? new IGIConstants() :  service.getIGIConstantsById(Long.parseLong(constantId));
 			
 			constant.setGroupName(req.getParameter("groupName"));
 			constant.setConstantName(req.getParameter("constantName"));
 			constant.setConstantValue(req.getParameter("constantValue"));
+			constant.setUnitMasterId(unitMasterId!=null?Long.parseLong(unitMasterId):0L);
+			constant.setRemarks(req.getParameter("Remarks"));
+			constant.setDescription(req.getParameter("Description"));
 			
 			if (constantId.equalsIgnoreCase("0")) {
 				constant.setCreatedBy(UserId);
@@ -5409,4 +5473,55 @@ public class DocumentsController {
 	}
 	/* ************************************************ IDD Document End ***************************************************** */
 	
+	/* ************************************************ Naveen 4/9/25 Unit Master ******************************************** */
+	
+	@RequestMapping(value = "UnitMaster.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	public String UnitMasterList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside UnitMaster.htm" + UserId);
+		try {
+			req.setAttribute("unitMasterList", service.unitMasterList()); 
+			return "documents/UnitMasterList";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside UnitMaster.htm" + UserId, e);
+			return "static/Error";
+		}		
+	}
+	
+	@RequestMapping(value = "UnitMasterDetailsSubmit.htm",method = {RequestMethod.GET,RequestMethod.POST})
+	public String UnitMasterDetailsAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside UnitMasterDetailsSubmit.htm" + UserId);
+		try {
+			String unit = req.getParameter("Unit");
+			String unitMasterid = req.getParameter("UnitMasterId");
+			String action =req.getParameter("action");
+			
+			UnitMaster unitmaster = unitMasterid.equalsIgnoreCase("0") ? new UnitMaster() : service.getUnitMasterById(Long.parseLong(unitMasterid));
+			
+			unitmaster.setUnit(unit);
+			if(unitMasterid.equalsIgnoreCase("0")) {
+				unitmaster.setCreatedBy(UserId);
+				unitmaster.setCreatedDate(sdtf.format(new Date()));
+				unitmaster.setIsActive(1);
+			}else {
+				unitmaster.setModifiedBy(UserId);
+				unitmaster.setModifiedDate(sdtf.format(new Date()));
+			}
+			
+			long result = service.addUnitMaster(unitmaster);
+			
+			if (result!=0) {
+				redir.addAttribute("result", "Unit "+action+"ed Successfully");
+			}else {
+				redir.addAttribute("resultfail", "Unit "+action+" Unsuccessful");	
+			}
+			return "redirect:/UnitMaster.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside UnitMasterDetailsSubmit.htm" + UserId, e);
+			return "static/Error";
+		}
+	}
 }

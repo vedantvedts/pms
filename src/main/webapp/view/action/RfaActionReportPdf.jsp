@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.utils.PMSLogoUtil"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
@@ -95,9 +96,9 @@ String projectCode=projectType.equalsIgnoreCase("P") ?
                 <img style="height: 2.5cm" src="data:image/png;base64,<%=lablogo%>">
              </div>
              <div class="col-md-8" style="display: inline-block;float: none;">
-		     <div style="font-size: 30px;padding: 20px;font-weight: 600;text-decoration: underline;">RFA Reports From &nbsp; <%=sdf.format(sdf1.parse(fdate))%>  &nbsp; To &nbsp; <%=sdf.format(sdf1.parse(tdate))%></div>
+		     <div style="font-size: 30px;padding: 20px;font-weight: 600;text-decoration: underline;">RFA Reports From &nbsp; <%= fdate!=null?sdf.format(sdf1.parse(fdate)):" - "%>  &nbsp; To &nbsp; <%=tdate!=null?sdf.format(sdf1.parse(tdate)):" - "%></div>
 	         <div class="col-md-12">
-				<div class="col-md-6" style="display: inline-block; margin-right: 90px;font-size: 22px;font-weight: 600;">Project : <%=projectCode %></div>
+				<div class="col-md-6" style="display: inline-block; margin-right: 90px;font-size: 22px;font-weight: 600;">Project : <%=projectCode!=null?projectCode:" - " %></div>
                 <div  class="col-md-6" style="display: inline-block; margin-left: 90px;font-size: 22px;font-weight: 600;">RFA Type : <%if(rfatypeid!=null && rfatypeid.equalsIgnoreCase("-")){%><%="All"%><%}else{%><%=rfatypeid %><%} %></div>
              </div>
              </div>
@@ -135,7 +136,7 @@ String projectCode=projectType.equalsIgnoreCase("P") ?
 				for(Object[] obj1 : AssigneeList){
 					if(obj1[0].toString().equalsIgnoreCase(obj[0].toString())){
 					%>
-			      <div style="margin-bottom:0px !important;"> <%=obj1[1].toString()+", "+obj1[2].toString() %> (<%=obj1[4].toString() %>) </div>          
+			      <div style="margin-bottom:0px !important;"> <%= (obj1[1] != null   ? obj1[1].toString() : " - ") + ", " + (obj1[2] != null ? obj1[2].toString()  : " - ")%> (<%=obj1[4]!=null?obj1[4].toString():" - " %>) </div>          
 			<% }}}%>
 		  </td>
           <td><%if(obj[11]!=null){%><%=obj[11].toString()%><%}else{ %>-<%} %></td>

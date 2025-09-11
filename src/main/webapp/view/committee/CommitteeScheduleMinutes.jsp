@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.committee.model.CommitteeSchedule"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
@@ -432,30 +433,32 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 <%String ses=(String)request.getParameter("result"); 
  String ses1=(String)request.getParameter("resultfail");
  String errorMsg=(String)request.getParameter("errorMsg");
- 
-	if(ses1!=null){
+ if(ses1!=null){
 	%>
-	<div align="center">
-	<div class="alert alert-danger" role="alert">
-                     <%=ses1 %>
-                    </div></div>
+	 <div align="center">
+	   <div class="alert alert-danger" role="alert">
+           <%=StringEscapeUtils.escapeHtml4(ses1) %>
+       </div>
+     </div>
 	<%}if(ses!=null){ %>
 	<div align="center">
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-                   </div></div>
-                    <%}if(errorMsg!=null){ %>
-                    	<div align="center">
-	<div class="alert alert-danger" role="alert" >
-                     <%=errorMsg %>
-                   </div></div>
-           <%} %>         
+	  <div class="alert alert-success" role="alert" >
+        <%=StringEscapeUtils.escapeHtml4(ses) %>
+      </div>
+    </div>
+   <%}if(errorMsg!=null){ %>
+  	<div align="center">
+		<div class="alert alert-danger" role="alert" >
+            <%=StringEscapeUtils.escapeHtml4(errorMsg) %>
+        </div>
+    </div>
+<%} %>
                     
   
 <nav class="navbar navbar-light bg-light justify-content-between" id="main1" style="margin-top: -1%">
 	<a class="navbar-brand">
 		
-		<b style="color: #585858; font-size:19px;font-weight: bold;text-align: left; float:left" ><span style="color:#31708f"><%=committeescheduleeditdata[7] %> </span> <span style="color:#31708f;font-size: 15px"> (Meeting Date and Time : <%=sdf.format(sdf1.parse(committeescheduleeditdata[2].toString()))%> - <%=committeescheduleeditdata[3] %>)</span></b>
+		<b style="color: #585858; font-size:19px;font-weight: bold;text-align: left; float:left" ><span style="color:#31708f"><%=committeescheduleeditdata[7]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[7].toString()): " - " %> </span> <span style="color:#31708f;font-size: 15px"> (Meeting Date and Time : <%=committeescheduleeditdata[2]!=null?sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(committeescheduleeditdata[2].toString()))):" - " %> - <%=committeescheduleeditdata[3]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[3].toString()): " - " %>)</span></b>
 
 	</a>
 	<%if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) { %>
@@ -468,7 +471,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 				<%if(dmcScheduleList!=null && dmcScheduleList.size()>0) {
 					for(CommitteeSchedule dmc : dmcScheduleList) {
 				%>
-					<option value="<%=dmc.getScheduleId()%>" <%if(dmc.getScheduleId()==(Long.parseLong(committeescheduleeditdata[6].toString()))) {%>selected<%} %> ><%=dmc.getMeetingId() %></option>
+					<option value="<%=dmc.getScheduleId()%>" <%if(dmc.getScheduleId()==(Long.parseLong(committeescheduleeditdata[6].toString()))) {%>selected<%} %> ><%=dmc.getMeetingId()!=null?StringEscapeUtils.escapeHtml4(dmc.getMeetingId()): " - " %></option>
 				<%} }%>
 			</select>
 		</form>
@@ -498,7 +501,8 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 					<i class="fa fa-paper-plane-o" aria-hidden="true"></i>&nbsp; EMAIL</button> 
 		<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formtarget="_blank"  style="font-size:12px;">MINUTES</button>
 		<%} %>
-		<input type="submit" class="btn  btn-sm view" value="TABULAR MINUTES" formaction="MeetingTabularMinutesDownload.htm" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
+		<input type="hidden" class="btn  btn-sm view" value="TABULAR MINUTES" formaction="MeetingTabularMinutesDownload.htm" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" /> 
+		<input type="submit" class="btn  btn-sm view" value="TABULAR MINUTES" formaction="MOMTabularMinutesDownload.htm" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />		
 		<input type="hidden" name="isFrozen" value="<%=committeescheduleeditdata[22]%>">
 		<input type="hidden" name="membertype" value="<%=membertype%>">
 		<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6]%>">
@@ -766,7 +770,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
       		<div class="panel-heading">
         		
         		<h4 class="panel-title">
-                	<span  style="font-size:14px">3.<%=unitcount %> <%=Unit %></span> 
+                	<span  style="font-size:14px">3.<%=unitcount %> <%=StringEscapeUtils.escapeHtml4(Unit) %></span> 
                 </h4>
        
        			<div style="float: right !important; margin-top:-20px; " >
@@ -826,9 +830,9 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	          						<span  style="font-size:14px">3.<%=unitcount %>.1.<%=unit11 %>. 
 	          						<!-- newly added by sankha 12-10-2023 -->
 	          						<%if(hlod[5].toString().length()>30){ %>
-									<%=hlod[5].toString().substring(0,20)+"...." %>	 <span style="font-size: 11px;color:crimson;cursor: pointer;]" onclick='showModal("<%=hlod[5].toString()%>")'>(<%=hlod[9] %>)</span>         						
+									<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()).substring(0,20)+"....":" - " %>	 <span style="font-size: 11px;color:crimson;cursor: pointer;]" onclick='showModal("<%=hlod[5].toString()%>")'>(<%=hlod[9]!=null?StringEscapeUtils.escapeHtml4(hlod[9].toString()): " - " %>)</span>         						
 	          						<%}else{ %>
-	          						<%=hlod[5].toString() %><span style="font-size: 11px;color:crimson" >(<%=hlod[9] %>)</span>
+	          						<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()): " - " %><span style="font-size: 11px;color:crimson" >(<%=hlod[9]!=null?StringEscapeUtils.escapeHtml4(hlod[9].toString()): " - " %>)</span>
 	          						<%} %></span>
 	          						<!-- end -->
 	          						  </h4>
@@ -958,13 +962,13 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	          						<span  style="font-size:14px">3.<%=unitcount %>.2.<%=unit12 %>. 
 	          						<!-- newly added by sankha 12-10-2023 -->
 	          						<%if(hlod[5].toString().length()>30){ %>
-									<%=hlod[5].toString().substring(0,20)+"...." %>	          						
+									<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()).substring(0,20)+"....":" - " %>	          						
 	          						<%}else{ %>
-	          						<%=hlod[5].toString() %>
+	          						<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()): " - " %>
 	          						<%} %>
 	          						<!-- end -->
 	          						</span>
-	          				<span style="color:crimson;font-size:11px;" onclick="showModal('<%=hlod[5].toString() %>')">(<%=hlod[9] %>)</span>  </h4>
+	          				<span style="color:crimson;font-size:11px;" onclick="showModal('<%=hlod[5].toString() %>')">(<%=hlod[9]!=null?StringEscapeUtils.escapeHtml4(hlod[9].toString()): " - " %>)</span>  </h4>
 	          				
 		       						<div   style="float: right !important; margin-top:-23px; ">
 									 	<table style="text-align: center;" >
@@ -1094,12 +1098,12 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	          						<span  style="font-size:14px">3.<%=unitcount %>.3.<%=unit13 %>.
 	          						<!-- newly added by sankha  on 12/10 -->
 	          						<%if(hlod[5].toString().length()>30) {%>    
-										<%=hlod[5].toString().substring(0,20) +"..."%>
+										<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()).substring(0,20) +"...":" - "%>
 									<%}else{ %>
-										    <%=hlod[5].toString() %>
+										    <%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()): " - " %>
 									<%} %></span>
 									<!-- end -->      						
-	          						<span style="color:crimson;font-size:11px;" onclick="showModal('<%=hlod[5].toString()%>')"> (<%=hlod[8] %>)</span>  </h4>
+	          						<span style="color:crimson;font-size:11px;" onclick="showModal('<%=hlod[5].toString()%>')"> (<%=hlod[8]!=null?StringEscapeUtils.escapeHtml4(hlod[8].toString()): " - " %>)</span>  </h4>
 	       						<div   style="float: right !important; margin-top:-23px; ">
 								 	<table style="text-align: center;" >
 						     			<thead>
@@ -1156,7 +1160,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	          						<div style="margin-top:-22px; margin-left: 55px;">
 	          							<select  name="OutComesId" id="OutComesId" required="required"  data-live-search="true"  style="width: 165px;"  >
 	                                        <%for(Object[] obj:minutesoutcomelist){ %>	
-												<option value="<%=obj[0]%>"><%=obj[1]%></option>	
+												<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>	
 											<%} %>
 										</select>
 	          						
@@ -1382,9 +1386,9 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	          						<span  style="font-size:14px">5.<%=unitcount1 %> 
 	          						<!-- Newly added by sankha 12-10-2023 -->
 	          						<%if(hlo[5].toString().length()>40) {%>
-	          						<%=hlo[5].toString().substring(0, 35)+"...." %><span style="font-size: 11px;color:crimson;cursor: pointer;"onclick='showModal("<%=hlo[5].toString()%>")'>(<%=hlo[8] %> )</span>
+	          						<%=hlo[5]!=null?StringEscapeUtils.escapeHtml4(hlo[5].toString()).substring(0, 35)+"....":" - " %><span style="font-size: 11px;color:crimson;cursor: pointer;"onclick='showModal("<%=hlo[5].toString()%>")'>(<%=hlo[8]!=null?StringEscapeUtils.escapeHtml4(hlo[8].toString()): " - " %> )</span>
 	          						<%}else{ %>
-	          						<%=hlo[5].toString()%>&nbsp;<span style="font-size: 11px;color:crimson;">(<%=hlo[8] %> )</span>
+	          						<%=hlo[5]!=null?StringEscapeUtils.escapeHtml4(hlo[5].toString()): " - "%>&nbsp;<span style="font-size: 11px;color:crimson;">(<%=hlo[8]!=null?StringEscapeUtils.escapeHtml4(hlo[8].toString()): " - " %> )</span>
 	          						<%} %></span>
 	          						<!-- end  -->
 	          						  </h4>
@@ -1441,7 +1445,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	          						<div style="margin-top:-22px; margin-left: 25px;">
 		          						<select  name="OutComesId" id="Assignee" required="required"  data-live-search="true"  style="width: 165px;"  >
 		                                    <%for(Object[] obj:minutesoutcomelist){ %>	
-												<option value="<%=obj[0]%>"><%=obj[1]%></option>	
+												<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>	
 											<%} %>
 										</select>
 	          						</div>
@@ -1649,12 +1653,12 @@ int unitcount=1;  long unit=1; String Unit=null; int countloop=100; int form=145
 	          						<span  style="font-size:14px"><%if(dmcFlag!=null) {%> 1<%} else{%> 3<%} %>.<%=unit13 %>.
 	          						<!-- newly added by sankha  on 12/10 -->
 	          						<%if(hlod[5].toString().length()>30) {%>    
-										<%=hlod[5].toString().substring(0,20) +"..."%>
+										<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()).substring(0,20) +"...":" - "%>
 									<%}else{ %>
-										    <%=hlod[5].toString() %>
+										    <%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()): " - " %>
 									<%} %></span>
 									<!-- end -->      						
-	          						<span style="color:crimson;font-size:11px;" onclick="showModal('<%=hlod[5].toString()%>')"> (<%=hlod[8] %>)</span>  </h4>
+	          						<span style="color:crimson;font-size:11px;" onclick="showModal('<%=hlod[5].toString()%>')"> (<%=hlod[8]!=null?StringEscapeUtils.escapeHtml4(hlod[8].toString()): " - " %>)</span>  </h4>
 	       						<div   style="float: right !important; margin-top:-23px; ">
 								 	<table style="text-align: center;" >
 						     			<thead>
@@ -1711,7 +1715,7 @@ int unitcount=1;  long unit=1; String Unit=null; int countloop=100; int form=145
 	          						<div style="margin-top:-22px; margin-left: 55px;">
 	          							<select  name="OutComesId" id="OutComesId" required="required"  data-live-search="true"  style="width: 165px;"  >
 	                                        <%for(Object[] obj:minutesoutcomelist){ %>	
-												<option value="<%=obj[0]%>"><%=obj[1]%></option>	
+												<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>	
 											<%} %>
 										</select>
 	          						
@@ -2121,7 +2125,7 @@ function showAttachmentModal(){
   	                               <select  class="form-control" name="darc" id="OutComeAir" required="required"  data-live-search="true"  >
                                         <%for(Object[] obj:minutesoutcomelist){ %>	
 																	
-											<option value="<%=obj[0]%>"><%=obj[1]%></option>	
+											<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>	
 															
 										<%} %>
 									</select>
@@ -2206,7 +2210,7 @@ function showAttachmentModal(){
 						<div class="card-body" style="margin-top: -8px" >       	
 							<table class="table table-bordered table-hover table-striped table-condensed" >					
 									<tr>
-										<td><%=minutesattachmentlist.get(0)[2] %></td>
+										<td><%=minutesattachmentlist.get(0)[2]!=null?StringEscapeUtils.escapeHtml4(minutesattachmentlist.get(0)[2].toString()): " - " %></td>
 										<td>
 											
 											<div  align="center">

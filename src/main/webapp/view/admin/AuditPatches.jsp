@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -161,21 +162,22 @@ label {
         List<Object[]> AuditPatchesList = (List<Object[]>) request.getAttribute("AuditPatchesList");
     %>
 
-    <% String ses = (String) request.getParameter("result");
-       String ses1 = (String) request.getParameter("resultfail");
-       if (ses1 != null) { %>
-       <div align="center">
-           <div class="alert alert-danger" role="alert">
-               <%= ses1 %>
-           </div>
-       </div>
-    <% } if (ses != null) { %>
-       <div align="center">
-           <div class="alert alert-success" role="alert">
-               <%= ses %>
-           </div>
-       </div>
-    <% } %>
+    <% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
     
     <br>
     <div class="container-fluid">
@@ -215,14 +217,14 @@ label {
 							        %>
 							        <tr>
 							            <td style="text-align: center; vertical-align: middle;">
-							                <input type="radio" name="ProjectId" value="<%= obj[4].toString() %>" style="display: block; margin: auto;">
+							                <input type="radio" name="ProjectId" value="<%= obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): "" %>" style="display: block; margin: auto;">
 							            </td>
-							            <td style="text-align: center;"><%= obj[0] %></td>
+							            <td style="text-align: center;"><%= obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %></td>
 							            <td>
-										    <span id="short-description-<%= count %>"><%= shortDescription %></span>
+										    <span id="short-description-<%= count %>"><%= shortDescription!=null?StringEscapeUtils.escapeHtml4(shortDescription): " - " %></span>
 										    <% if (longDescription) { %>
 										        <span id="dots-<%= count %>" style="display:inline;">...</span>
-										        <span id="more-<%= count %>" style="display:none; margin: 0; padding: 0;"><%= description.substring(90) %></span>
+										        <span id="more-<%= count %>" style="display:none; margin: 0; padding: 0;"><%= description!=null?StringEscapeUtils.escapeHtml4(description.substring(90)): " - " %></span>
 										        <span class="btn btn-link" id="toggle-link-<%= count %>" style="margin: 0; padding: 0;" onclick="toggleDescription('<%= count %>')">Show More</span>
 										    <% } %>
 										    <span style="display: none;" class="full-description" data-description="<%= description %>"></span> <!-- Added this line -->
@@ -232,7 +234,7 @@ label {
 							                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 							                String formattedDate1 = formatter.format(date);
 							            %>
-							            <td style="text-align: center;"><%= formattedDate1 %></td>
+							            <td style="text-align: center;"><%= formattedDate1!=null?StringEscapeUtils.escapeHtml4(formattedDate1): " - " %></td>
 							            <% } else { %>
 							            <td style="text-align: center;">-</td>
 							            <% } %>
@@ -246,9 +248,9 @@ label {
 							                LocalDate currentDate = LocalDate.now();
 							                if (updatedDate.isEqual(currentDate)) {
 							            %>
-							            <td class="glow-text"><%= formattedDate %></td>
+							            <td class="glow-text"><%= formattedDate!=null?StringEscapeUtils.escapeHtml4(formattedDate): " - " %></td>
 							            <% } else { %>
-							            <td class="glow-text-red"><%= formattedDate %></td>
+							            <td class="glow-text-red"><%= formattedDate!=null?StringEscapeUtils.escapeHtml4(formattedDate): " - " %></td>
 							            <% } %>
 							            <td style="text-align: center;">
 							                <% if(obj[3] != null) { %>

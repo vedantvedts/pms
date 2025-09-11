@@ -1,3 +1,4 @@
+<%@page import="lombok.val"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalDateTime"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -90,13 +91,13 @@ th,td
           
           @top-right {
           		<%if( Long.parseLong(projectid)>0){%>
-             content: "Project:<%=projectdetails[4]%>";
+             content: "Project:<%=projectdetails[4]!=null?projectdetails[4].toString(): " - "%>";
              <%}else if(Long.parseLong(divisionid)>0){%>
-               	content: "Division:<%=divisiondetails[1]%>";
+               	content: "Division:<%=divisiondetails[1]!=null?divisiondetails[1].toString(): " - "%>";
              <%}else if(Long.parseLong(initiationid)>0){ %>
-             	content: "Pre-Project :<%=initiationdetails[1]%>";
+             	content: "Pre-Project :<%=initiationdetails[1]!=null?initiationdetails[1].toString(): " - "%>";
              <%} else{%>
-             	content: "<%=labdetails[1]%>";
+             	content: "<%=labdetails[1]!=null?labdetails[1].toString(): " - "%>";
              <%}%>
              margin-top: 30px;
              margin-right: 10px;
@@ -106,19 +107,19 @@ th,td
             font-size: 13px;
           	margin-top: 30px;
             margin-left: 10px;
-            content: "<%=no[0]+"/"+no[1]+"/"+no[2] %><%if(meetingcount>0){ %>#<%=meetingcount %><%} %><%="/"+no[3]%>";
+            content: "<%=no[0]!=null?no[0].toString(): " - "%>/<%=no[1]!=null?no[1].toString(): " - "%>/<%=no[2]!=null?no[2].toString(): " - " %><%if(meetingcount>0){ %>#<%=meetingcount %><%} %>/<%=no[3]!=null?no[3].toString(): " - "%>";
           }            
           
           @top-center { 
             font-size: 13px;
           margin-top: 30px;
-          content: "<%=committeescheduleeditdata[15]%>"; 
+          content: "<%=committeescheduleeditdata[15]!=null?committeescheduleeditdata[15].toString(): " - "%>"; 
           
           }
          @bottom-center { 
              font-size: 13px;
 	          margin-bottom: 30px;
-	          content: "<%=committeescheduleeditdata[15]%>"; 
+	          content: "<%=committeescheduleeditdata[15]!=null?committeescheduleeditdata[1].toString(): " - "%>"; 
           
           } 
           
@@ -213,7 +214,7 @@ th,td
 }
 </style>
 <meta charset="ISO-8859-1">
-<title><%=committeescheduleeditdata[8]%> Minutes View</title>
+<title><%=committeescheduleeditdata[8]!=null?committeescheduleeditdata[8].toString(): " - " %> Minutes View</title>
 </head>
 <body>
 	<div id="container pageborder" align="center"  class="firstpage" id="firstpage">
@@ -221,16 +222,16 @@ th,td
 			<br>
 			<div style="text-align: center;" ><h1>MINUTES OF MEETING</h1></div>
 			<br>
-			<div style="text-align: center;" ><h2 style="margin-bottom: 2px;"><%=committeescheduleeditdata[7].toString().toUpperCase()%>  (<%=committeescheduleeditdata[8].toString().toUpperCase() %><%if(meetingcount>0){ %>&nbsp;&nbsp;#<%=meetingcount %><%} %>) </h2></div>				
+			<div style="text-align: center;" ><h2 style="margin-bottom: 2px;"><%=committeescheduleeditdata[7]!=null?committeescheduleeditdata[7].toString().toUpperCase():" - "%>  (<%=committeescheduleeditdata[8]!=null?committeescheduleeditdata[8].toString().toUpperCase():" - " %><%if(meetingcount>0){ %>&nbsp;&nbsp;#<%=meetingcount %><%} %>) </h2></div>				
 					<%if(Integer.parseInt(projectid)>0){ %>					
 					<h3 style="margin-top: 5px; margin-bottom: 5px">For</h3>  
-				    <h2 style="margin-top: 3px">Project  : &nbsp;<%=projectdetails[1] %>  (<%=projectdetails[4]%>)</h2>
+				    <h2 style="margin-top: 3px">Project  : &nbsp;<%=projectdetails[1]!=null?projectdetails[1].toString(): " - "  %>  (<%=projectdetails[4]!=null?projectdetails[4].toString(): " - " %>)</h2>
 				<%}else if(Integer.parseInt(divisionid)>0){ %>					
 					<h3 style="margin-top: 5px; margin-bottom: 5px">For</h3>	  
-			 	   	<h2 style="margin-top: 3px">Division :&nbsp;<%=divisiondetails[2] %>  (<%=divisiondetails[1]%>)</h2>
+			 	   	<h2 style="margin-top: 3px">Division :&nbsp;<%=divisiondetails[2]!=null?divisiondetails[2].toString(): " - "  %>  (<%=divisiondetails[1]!=null?divisiondetails[1].toString(): " - " %>)</h2>
 				<%}else if(Integer.parseInt(initiationid)>0){ %>					
 					<h3 style="margin-top: 5px; margin-bottom: 5px">For</h3>	  
-				    <h2 style="margin-top: 3px">Pre-Project  : &nbsp;<%=initiationdetails[2] %>  (<%=initiationdetails[1]%>)</h2>
+				    <h2 style="margin-top: 3px">Pre-Project  : &nbsp;<%=initiationdetails[2]!=null?initiationdetails[2].toString(): " - "  %>  (<%=initiationdetails[1]!=null?initiationdetails[1].toString(): " - " %>)</h2>
 				<%}else{%>
 					<br><br><br><br><br>
 				<%} %>
@@ -238,7 +239,7 @@ th,td
 				<table style="align: center; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px"  border="0">
 					<tr style="margin-top: 10px">
 						 <th  style="text-align: center; width: 650px;font-size: 20px "> <u>Meeting Id </u> </th></tr><tr>
-						 <th  style="text-align: center;  width: 650px;font-size: 20px  "> <%=committeescheduleeditdata[11] %> </th>				
+						 <th  style="text-align: center;  width: 650px;font-size: 20px  "> <%=committeescheduleeditdata[11]!=null?committeescheduleeditdata[11].toString(): " - "  %> </th>				
 					 </tr>
 				</table>
 				
@@ -250,8 +251,8 @@ th,td
 			 </tr>
 			
 			 <tr>
-				 <td  style="text-align: center;  width: 650px;font-size: 20px ;padding-top: 5px"> <b><%=sdf.format(sdf1.parse(committeescheduleeditdata[2].toString()))%></b></td>
-				 <td  style="text-align: center;  width: 650px;font-size: 20px ;padding-top: 5px "> <b><%=committeescheduleeditdata[3]%></b></td>
+				 <td  style="text-align: center;  width: 650px;font-size: 20px ;padding-top: 5px"> <b><%=committeescheduleeditdata[2]!=null?sdf.format(sdf1.parse(committeescheduleeditdata[2].toString())): " - " %></b></td>
+				 <td  style="text-align: center;  width: 650px;font-size: 20px ;padding-top: 5px "> <b><%=committeescheduleeditdata[3]!=null?committeescheduleeditdata[3].toString(): " - " %></b></td>
 			 </tr>
 			 
 		 </table>
@@ -259,7 +260,7 @@ th,td
 		 <table style="align: center; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px"  border="0">
 					<tr style="margin-top: 10px">
 						 <th  style="text-align: center; width: 650px;font-size: 20px "> <u>Meeting Venue</u> </th></tr><tr>
-						 <th  style="text-align: center;  width: 650px;font-size: 20px  "> <% if(committeescheduleeditdata[12]!=null){ %><%=committeescheduleeditdata[12] %> <%}else{ %> - <%} %></th>				
+						 <th  style="text-align: center;  width: 650px;font-size: 20px  "> <% if(committeescheduleeditdata[12]!=null){ %><%=committeescheduleeditdata[12].toString() %> <%}else{ %> - <%} %></th>				
 					 </tr>
 				</table>
 		<br><br><br><br><br>
@@ -267,9 +268,9 @@ th,td
 			<br>				<br><br>
 			
 			
-			<div style="text-align: center;" ><h3><%=labdetails[2] %> (<%=labdetails[1]%>)</h3></div>
+			<div style="text-align: center;" ><h3><%=labdetails[2]!=null?labdetails[2].toString(): " - " %> (<%=labdetails[1]!=null?labdetails[1].toString(): " - "%>)</h3></div>
 			
-			<div align="center" ><h3><%=labdetails[4] %>, &nbsp;<%=labdetails[5] %>, &nbsp;<%=labdetails[6] %></h3></div>
+			<div align="center" ><h3><%=labdetails[4]!=null?labdetails[4].toString(): " - " %>, &nbsp;<%=labdetails[5]!=null?labdetails[5].toString(): " - " %>, &nbsp;<%=labdetails[6]!=null?labdetails[6].toString(): " - " %></h3></div>
 		</div>
 		
  <h1 class="break"></h1> 
@@ -331,11 +332,11 @@ th,td
 		 	 <td style="border: 1px solid black; padding: 5px;text-align: center"><%=j%> </td>
 		 	  	<td style="border: 1px solid black; padding: 5px;text-align: left">  
 		 	  	
-		 			<%= invitedlist.get(i)[6]%>,&nbsp;<%=invitedlist.get(i)[7] %>  
+		 			<%= invitedlist.get(i)[6]!=null?invitedlist.get(i)[6].toString(): " - "%>,&nbsp;<%=invitedlist.get(i)[7]!=null?invitedlist.get(i)[7].toString(): " - " %>  
 			 	</td>
 			 	<td style="border: 1px solid black; padding: 5px;text-align: left;">  
 		 	  	
-		 			<%= invitedlist.get(i)[11]%>  
+		 			<%= invitedlist.get(i)[11]!=null?invitedlist.get(i)[11].toString(): " - "%>  
 			 	</td>	
 			 	<td style="border: 1px solid black;padding: 5px ;text-align: left">
 			 		<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
@@ -353,7 +354,7 @@ th,td
 			 			else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CIP") )    {%>Industry Partner<%}
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("IP") )    {%>Addl. Industry Partner<%}
 						// Prudhvi - 27/03/2024 end
-						else {%> REP_<%=invitedlist.get(i)[3].toString()%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
+						else {%> REP_<%=invitedlist.get(i)[3]!=null?invitedlist.get(i)[3].toString(): " - "%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
 					%>
 		 		</td>	
 		 		</tr>
@@ -377,11 +378,11 @@ th,td
 		 	 <tr > 	
 		 	  <td style="border: 1px solid black; padding: 5px;text-align: center"> <%=j%> </td>
 		 	 <td style="border: 1px solid black ;padding: 5px;text-align: left " >  
-		 		<%= invitedlist.get(i)[6]%>,&nbsp;<%=invitedlist.get(i)[7] %>
+		 		<%= invitedlist.get(i)[6]!=null?invitedlist.get(i)[6].toString(): " - "%>,&nbsp;<%=invitedlist.get(i)[7]!=null?invitedlist.get(i)[7].toString(): " - " %>
 		 		</td>	
 		 		<td style="border: 1px solid black; padding: 5px;text-align: left;">  
 		 	  	
-		 			<%= invitedlist.get(i)[11]%>  
+		 			<%= invitedlist.get(i)[11]!=null?invitedlist.get(i)[11].toString(): " - "%>  
 			 	</td>
 		 		<td style="border: 1px solid black ;padding: 5px ;text-align: left "> 
 		 			<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
@@ -399,7 +400,7 @@ th,td
 			 			else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CIP") )    {%>Industry Partner<%}
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("IP") )    {%>Addl. Industry Partner<%}
 						// Prudhvi - 27/03/2024 end
-						else {%> REP_<%=invitedlist.get(i)[3].toString()%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
+						else {%> REP_<%=invitedlist.get(i)[3]!=null?invitedlist.get(i)[3].toString(): " - "%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
 					%>
 		 		</td>	
 		 	</tr>
@@ -432,11 +433,11 @@ th,td
 		 	 <td style="border: 1px solid black; padding: 5px;text-align: center"> <%=j%> </td>
 		 	  	<td style="border: 1px solid black; padding: 5px;text-align: left">  
 		 	  	
-		 			<%= invitedlist.get(i)[6]%>,&nbsp;<%=invitedlist.get(i)[7] %>
+		 			<%= invitedlist.get(i)[6]!=null?invitedlist.get(i)[6].toString(): " - "%>,&nbsp;<%=invitedlist.get(i)[7]!=null?invitedlist.get(i)[7].toString(): " - " %>
 			 	</td>	
 			 	<td style="border: 1px solid black; padding: 5px;text-align: left;">  
 		 	  	
-		 			<%= invitedlist.get(i)[11]%>  
+		 			<%= invitedlist.get(i)[11]!=null?invitedlist.get(i)[11].toString(): " - "%>  
 			 	</td>
 			 	<td style="border: 1px solid black;padding: 5px ;text-align: left">
 			 		<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
@@ -454,7 +455,7 @@ th,td
 			 			else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CIP") )    {%>Industry Partner<%}
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("IP") )    {%>Addl. Industry Partner<%}
 						// Prudhvi - 27/03/2024 end
-						else {%> REP_<%=invitedlist.get(i)[3].toString()%>&nbsp; (<%=invitedlist.get(i)[11] %>)  <%}
+						else {%> REP_<%=invitedlist.get(i)[3]!=null?invitedlist.get(i)[3].toString(): " - "%>&nbsp; (<%=invitedlist.get(i)[11]!=null?invitedlist.get(i)[11].toString(): " - " %>)  <%}
 					%>
 		 		</td>	
 		 		</tr>
@@ -484,11 +485,11 @@ th,td
 		 	 <tr > 	
 		 	  <td style="border: 1px solid black; padding: 5px;text-align: center"> <%=j%> </td>
 		 	 <td style="border: 1px solid black ;padding: 5px;text-align: left " >  
-		 		<%= invitedlist.get(i)[6]%>,&nbsp;<%=invitedlist.get(i)[7] %>
+		 		<%= invitedlist.get(i)[6]!=null?invitedlist.get(i)[6].toString(): " - "%>,&nbsp;<%=invitedlist.get(i)[7]!=null?invitedlist.get(i)[7].toString(): " - " %>
 		 		</td>	
 		 		<td style="border: 1px solid black; padding: 5px;text-align: left;">  
 		 	  	
-		 			<%= invitedlist.get(i)[11]%>  
+		 			<%= invitedlist.get(i)[11]!=null?invitedlist.get(i)[11].toString(): " - "%>  
 			 	</td>
 		 		
 		 		<td style="border: 1px solid black ;padding: 5px ;text-align: left "> 
@@ -507,7 +508,7 @@ th,td
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CIP") )    {%>Industry Partner<%}
 						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("IP") )    {%>Addl. Industry Partner<%}
 						// Prudhvi - 27/03/2024 end
-						else {%> REP_<%=invitedlist.get(i)[3].toString()%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
+						else {%> REP_<%=invitedlist.get(i)[3]!=null?invitedlist.get(i)[3].toString(): " - "%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
 					%>
 		 		</td>	
 		 	</tr>
@@ -542,7 +543,7 @@ th,td
 		<table style="margin-top: 0px;;width: 650px; font-size: 16px; border-collapse: collapse;">
 			<tbody>
 				<tr>
-					<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%></th>
+					<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?committeemin[0].toString(): " - "%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]!=null?committeemin[1].toString(): " - "%></th>
 				</tr>
 				<tr>
 						<%
@@ -556,7 +557,7 @@ th,td
 						%>
 					
 					<td style="text-align: left;">
-					<div align="left" style="padding-left: 30px"><%=speclist[1]%></div>
+					<div align="left" style="padding-left: 30px"><%=speclist[1]!=null?speclist[1].toString(): " - "%></div>
 					</td>
 
 					<%	break;		
@@ -589,7 +590,7 @@ th,td
 						<div align="center">
 							<table style="margin-top: 0px;; width: 650px; font-size: 16px; border-collapse: collapse;">
 								<tr>
-									<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%></th>
+									<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?committeemin[0].toString(): " - "%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]!=null?committeemin[1].toString(): " - "%></th>
 								</tr>
 							</table>	
 								
@@ -602,7 +603,7 @@ th,td
 						%>
 								    <table style="margin-top: 00px; width: 660px; font-size: 16px; border-collapse: collapse;">
 										<tr>								
-											<td colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]+"."+agendaid%>.&nbsp;&nbsp;&nbsp;<%=agenda[3]%></td>
+											<td colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?committeemin[0].toString(): " - "%><%="."+agendaid%>.&nbsp;&nbsp;&nbsp;<%=agenda[3]!=null?agenda[3].toString(): " - "%></td>
 										</tr>
 								<%
 									int index = 1;
@@ -610,7 +611,7 @@ th,td
 									{
 								%>				
 										<tr >
-											<th colspan="8" style="text-align: left;padding:0px; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]+"."+agendaid+"."+index%>.&nbsp;&nbsp;&nbsp;<%=minssub[1]%></th>
+											<th colspan="8" style="text-align: left;padding:0px; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?committeemin[0].toString(): " - "%><%="."+agendaid+"."+index%>.&nbsp;&nbsp;&nbsp;<%=minssub[1]!=null?minssub[1].toString(): " - "%></th>
 										</tr>								
 								<%
 										int count=0;
@@ -627,31 +628,31 @@ th,td
 												<%	if(speclist[5].toString().equals("7") )
 												{%>	
 												 <tr >
-														<th colspan="8" style="text-align: left;padding:0px; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]+"."+agendaid+"."+index+"."+index1%>.&nbsp;&nbsp;&nbsp;<%=speclist[11]%></th>
+														<th colspan="8" style="text-align: left;padding:0px; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?committeemin[0].toString(): " - "%> <%="."+agendaid+"."+index+"."+index1%>.&nbsp;&nbsp;&nbsp;<%=speclist[11]!=null?speclist[11].toString(): " - "%></th>
 												</tr> 
 												<tr >
 													<td style="text-align: left; padding:0px 0px 0px 30px;">
-														<%=speclist[1]%>
+														<%=speclist[1]!=null?speclist[1].toString(): " - "%>
 													</td>
 												</tr>					
 												<%}else if(speclist[5].toString().equals("8")){
 												%>
 												 <tr >
-														<th colspan="8" style="text-align: left;padding:0px; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]+"."+agendaid+"."+index+"."+index1%>.&nbsp;&nbsp;&nbsp;<%=speclist[11]%></th>
+														<th colspan="8" style="text-align: left;padding:0px; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?committeemin[0].toString(): " - "%> <%="."+agendaid+"."+index+"."+index1%>.&nbsp;&nbsp;&nbsp;<%=speclist[11]!=null?speclist[11].toString(): " - "%></th>
 												</tr> 
 												<tr >
 													<td style="text-align: left;padding:0px 0px 0px 30px;">
-														<%=speclist[1]%>
+														<%=speclist[1]!=null?speclist[1].toString(): " - "%>
 													</td>	
 												</tr>	
 												<%}else if(speclist[5].toString().equals("9")){
 												%>
 													<tr >
-														<th colspan="8" style="text-align: left;padding:0px; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]+"."+agendaid+"."+index+"."+index1%>.&nbsp;&nbsp;&nbsp;<%=speclist[9]%></th>
+														<th colspan="8" style="text-align: left;padding:0px; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?committeemin[0].toString(): " - "%> <%="."+agendaid+"."+index+"."+index1%>.&nbsp;&nbsp;&nbsp;<%=speclist[9]!=null?speclist[9].toString(): " - "%></th>
 													</tr>	
 													<tr >
 														<td style="text-align: left;padding:0px 0px 0px 30px;">
-															<%=speclist[1]%>
+															<%=speclist[1]!=null?speclist[1].toString(): " - "%>
 														</td>	
 													</tr>	
 																						
@@ -696,7 +697,7 @@ th,td
 					<tbody>
 						
 						<tr>
-							<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%></th>
+							<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?committeemin[0].toString(): " - "%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]!=null?committeemin[1].toString(): " - "%></th>
 						</tr>
 				
 						<%
@@ -712,17 +713,17 @@ th,td
 								{%>	
 									<tr>
 										<td style="text-align: justify;padding-left: 30px">
-											<%=speclist[1]%>
+											<%=speclist[1]!=null?speclist[1].toString(): " - "%>
 										</td>
 									</tr>					
 								<%}else if(speclist[3].toString().equals("5")){
 								%>
 								<tr>
-									<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]+"."+count%>.&nbsp;&nbsp;&nbsp;<%=speclist[9]%></th>
+									<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]!=null?committeemin[0].toString(): " - "%> <%="."+count%>.&nbsp;&nbsp;&nbsp;<%=speclist[9]!=null?speclist[9].toString(): " - "%></th>
 								</tr>
 								<tr>
 									<td style="text-align: justify;padding-left: 30px">
-										<%=speclist[1]%>
+										<%=speclist[1]!=null?speclist[1].toString(): " - "%>
 									</td>
 								</tr>	
 									
@@ -731,7 +732,7 @@ th,td
 							
 									<tr>
 										<td style="text-align: justify;padding-left: 30px">
-											<%=speclist[1]%>
+											<%=speclist[1]!=null?speclist[1].toString(): " - "%>
 										</td>
 									</tr>							
 								<%}
@@ -803,19 +804,19 @@ th,td
 								for(Object obj[]:values){
 									 count1++; %>
 									<%if(count1==1 ){ %>
-										<%if(obj[3]!=null){ %> <%= obj[3]%><%}else{ %> - <%} %>
+										<%if(obj[3]!=null){ %> <%= obj[3].toString()%><%}else{ %> - <%} %>
 									<%}else if(count1==values.size() ){ %>
-										<%if(obj[3]!=null){ %> <br> - <br> <%= obj[3]%> <%}else{ %> - <%} %>
+										<%if(obj[3]!=null){ %> <br> - <br> <%= obj[3].toString()%> <%}else{ %> - <%} %>
 									<%} %>
 							<%} %>
 							
 						</td>
 						
-						<td  class="std" style="padding-left: 5px;padding-right: 5px;text-align: justify;"><%= values.get(0)[1]  %></td>
+						<td  class="std" style="padding-left: 5px;padding-right: 5px;text-align: justify;"><%= values.get(0)[1]!=null?values.get(0)[1].toString(): " - "  %></td>
 						<td  class="std" style="text-align: left;" >
 							<%	int count2=0;
 							for(Object obj[]:values){ %>
-							<%if(obj[13]!=null){ %> <%= obj[13]%>,&nbsp;<%=obj[14] %>
+							<%if(obj[13]!=null){ %> <%= obj[13].toString()%>,&nbsp;<%=obj[14]!=null?obj[14].toString(): " - " %>
 								<%if(count2>=0 && count2<values.size()-1){ %>
 								,&nbsp;
 								<%} %>
@@ -872,13 +873,13 @@ th,td
 								if(entry.getValue()==Integer.parseInt(obj[7].toString())){
 								key=entry.getKey().toString();
 								}} %>
-								<b style="font-size: 12px;"><%=committeescheduleeditdata[8].toString()+"/"+key+"/"+obj[1].toString().split("/")[3] %></b>
+								<b style="font-size: 12px;"><%=committeescheduleeditdata[8]!=null?committeescheduleeditdata[8].toString(): " - " %>/<%=key%>/<%=obj[1]!=null?obj[1].toString().split("/")[3]:" - " %></b>
 								</td>
 								<td class="std" style="text-align: justify;padding:2px">
-								<%=obj[5].toString() %>
+								<%=obj[5]!=null?obj[5].toString(): " - " %>
 								</td>
 								<td class="std"><%=sdf.format(sdf1.parse(obj[10].toString())) %></td>
-								<td class="std" style="font-size: 14px;"><%=obj[2].toString() %></td>
+								<td class="std" style="font-size: 14px;"><%=obj[2]!=null?obj[2].toString(): " - " %></td>
 								<td class="std">
 								<%if(obj[4]!= null){ %> 
 													<%	String actionstatus = obj[3].toString();

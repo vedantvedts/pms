@@ -18,6 +18,8 @@ import com.vts.pfms.milestone.model.FileRepUploadNew;
 import com.vts.pfms.milestone.model.FileRepUploadPreProject;
 import com.vts.pfms.milestone.model.MilestoneActivity;
 import com.vts.pfms.milestone.model.MilestoneActivityLevel;
+import com.vts.pfms.milestone.model.MilestoneActivityLevelRemarks;
+import com.vts.pfms.milestone.model.MilestoneActivityPredecessor;
 import com.vts.pfms.milestone.model.MilestoneActivityRev;
 import com.vts.pfms.milestone.model.MilestoneActivitySub;
 import com.vts.pfms.milestone.model.MilestoneActivitySubRev;
@@ -143,6 +145,10 @@ public interface MilestoneDao {
 	public String getProjectIdByMainLevelId(String id)throws Exception;
 	public MilestoneActivity getMilestoneActivityById(String id);
 	public List<Object[]> actionAssigneeList(String EmpId) throws Exception;
+
+	public int deleteMilsetone(String activityId)throws Exception;	
+
+
 	public List<Object[]> getMilestoneActivityProgressList() throws Exception;
 	public List<Object[]> getPreProjectFolderList(String initiationId, String labcode) throws Exception;
 	public List<Object[]> getPreProjectSubFolderList(String initiationId, String mainLevelId, String labcode) throws Exception;
@@ -164,4 +170,11 @@ public interface MilestoneDao {
 	public List<Object[]> preProjectFileRepoDocsList(String fileRepId)throws Exception;
 	public List<Object[]> getPreProjectFileRepMasterListAll(String initiationId, String labCode)throws Exception;
 	
+	public int saveMilestoneActivityLevelRemarks(MilestoneActivityLevelRemarks cmd)throws Exception;
+	public List<Object[]> getMilestoneDraftRemarks(Long activityId)throws Exception;
+	public Long saveMilestoneActivityPredecessor(MilestoneActivityPredecessor mp)throws Exception;
+	public List<Object[]> predecessorList(String successor)throws Exception;
+	public List<Object[]> getsuccessorList(String activityId)throws Exception;
+	public int deleteMilestoneActivityPredecessor(String successor)throws Exception;
+
 }

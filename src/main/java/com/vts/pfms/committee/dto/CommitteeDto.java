@@ -22,7 +22,7 @@ public class CommitteeDto {
 	private String Description;
 	private String TermsOfReference;
 	private String IsGlobal;
-	
+	private String IsBriefing;
 	private String LabCode;
 	private String ReferenceNo;
 	

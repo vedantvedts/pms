@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.IndianRupeeFormat"%>
 <%@page import="com.vts.pfms.cars.model.CARSSoCMilestones"%>
 <%@page import="com.vts.pfms.cars.model.CARSSoC"%>
@@ -106,7 +107,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 		<div id="container pageborder" align="center"  class="firstpage" id="firstpage">
 			<div class="firstpage" id="firstpage"> 	
 				<div style="text-align: right;">
-					<h5 style="font-weight: bold;margin-right: 2rem;"><%=labMaster.getLabCode() %>: CARS-03</h5>
+					<h5 style="font-weight: bold;margin-right: 2rem;"><%=labMaster.getLabCode()!=null?labMaster.getLabCode(): " - " %>: CARS-03</h5>
 				</div>
 				
 		    	<table style="margin-left : 10px;border-collapse : collapse;width : 98.5%; <%if(pdfFlag!=null) {%>margin-top: -20px;<%}%>">
@@ -145,7 +146,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    		<tr>
 			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				2) RSQR Ref: No & Date: <br>
-			    				 <%if(rsqr!=null && rsqr[11]!=null) {%><%=rsqr[11] %><%} else{%>-<%} %> & <%if(carsIni!=null && carsIni.getInitiationApprDate()!=null) {%><%=fc.SqlToRegularDate(carsIni.getInitiationApprDate()) %> <%} %> 
+			    				 <%if(rsqr!=null && rsqr[11]!=null) {%><%=rsqr[11].toString() %><%} else{%>-<%} %> & <%if(carsIni!=null && carsIni.getInitiationApprDate()!=null) {%><%=fc.SqlToRegularDate(carsIni.getInitiationApprDate()) %> <%} %> 
 			    			</td>
 			    			<td  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 								Issuing DRDO Establishment: <br>
@@ -285,7 +286,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    			<td colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;&nbsp;&nbsp;&nbsp;(c) Others (Travel, Contingency, Consultancy, Institution head)</td>
 			    			<td colspan="2" style="text-align : right;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				<%if(carsContract!=null && carsContract.getExpndOthersCost()!=null) {%>
-			    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(carsContract.getExpndOthersCost())) %>
+			    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(carsContract.getExpndOthersCost()))%>
 			    				<%} else{%>
 			    					-
 			    				<%} %>
@@ -362,7 +363,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    			<td colspan="1" style="text-align : center;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">T0+<%=milestones.get(milestones.size()-1).getMonths() %> </td>
 			    			<td colspan="2" style="text-align : right;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				<%if(milestones.get(milestones.size()-1).getActualAmount()!=null) {%>
-			    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestones.get(milestones.size()-1).getActualAmount())) %>
+				    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestones.get(milestones.size()-1).getActualAmount())) %>
 			    				<%} else{%>
 			    					-
 			    				<%} %>
@@ -420,7 +421,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 										<%if(labMaster.getLabAddress()!=null) {%><%=", "+labMaster.getLabAddress() %><%} else{%>-<%} %>
 										<%if(labMaster.getLabCity()!=null) {%><%=", "+labMaster.getLabCity() %><%} else{%>-<%} %>
 										<%if(labMaster.getLabPin()!=null) {%><%=" - "+labMaster.getLabPin() %><%} else{%>-<%} %> <br>
-										<%if(labMaster.getLabTelNo()!=null) {%>Ph: <%=labMaster.getLabTelNo() %><%} else{%>-<%} %>
+										<%if(labMaster.getLabTelNo()!=null) {%>Ph: <%=labMaster.getLabTelNo()%><%} else{%>-<%} %>
 										<%if(labMaster.getLabFaxNo()!=null) {%><%=", Fax: "+labMaster.getLabFaxNo() %><%} else{%>-<%} %>
 								<%} %>
 			    			</td>

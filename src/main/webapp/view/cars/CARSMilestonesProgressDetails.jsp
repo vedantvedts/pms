@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.vts.pfms.cars.model.CARSSoCMilestonesProgress"%>
 <%@page import="java.util.List"%>
@@ -37,29 +38,29 @@ label{
 	FormatConverter fc = new FormatConverter();
 %>
 
-<% String ses=(String)request.getParameter("result"); 
- 	String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert">
-	    <%=ses1 %>
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert" >
-	    	<%=ses %>
-		</div>
-	</div>
-<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 	<div class="container-fluid">
 		<div class="container" style="margin-bottom:20px;">
 			<div class="card" style=" ">
 				<div class="card-header" style="background-color: #055C9D; height: 50px;">
 					<div class="row"> 
-						<h6 class="text-white"><%=carsSoCMilestones.getMilestoneNo() %></h6>
+						<h6 class="text-white"><%=carsSoCMilestones.getMilestoneNo()!=null?StringEscapeUtils.escapeHtml4(carsSoCMilestones.getMilestoneNo()): " - " %></h6>
 					</div>
 				</div>
 				<div class="card-body">
@@ -130,7 +131,7 @@ label{
 								for(CARSSoCMilestonesProgress progress: carsSoCMilestonesProgressList){ %>
 								<tr>
 									<td  ><%=++count %></td>
-									<td  ><%=fc.sdfTordf(progress.getProgressDate()) %></td>
+									<td  ><%=progress.getProgressDate()!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(progress.getProgressDate())):" - " %></td>
 									<td >
 										<%if(progress.getProgress()!=0){ %>
 											<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -146,7 +147,7 @@ label{
 											</div>
 										<%} %>
 									</td>
-									<td class="left"><%=progress.getRemarks() %></td>
+									<td class="left"><%=progress.getRemarks()!=null?StringEscapeUtils.escapeHtml4(progress.getRemarks()): " - " %></td>
 								</tr>
 							<%  } }else{%>
 								<tr>

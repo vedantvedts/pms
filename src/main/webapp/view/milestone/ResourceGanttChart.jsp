@@ -1,3 +1,5 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
+<%@page import="java.util.stream.Collectors"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.util.Map"%>
@@ -129,6 +131,8 @@ h6{
 	
 	FormatConverter fc = new FormatConverter();
 	
+	// Remove Linked Milestones
+	totalAssignedSubList = totalAssignedSubList.stream().filter(e -> e[16]!=null && !e[16].toString().equalsIgnoreCase("L")).collect(Collectors.toList());
 	totalAssignedSubList.sort((o1, o2) -> {
 		
 	    // Null safety, if needed
@@ -185,7 +189,7 @@ h6{
 								<%if(employeeList!=null && employeeList.size()>0) {
 									for(Object[] obj : employeeList) {%>
 										<option value="<%=obj[0]%>" <%if(empId.equalsIgnoreCase(obj[0]+"")) {%>selected<%} %> >
-											<%=(obj[1]!=null?obj[1]:(obj[2]!=null?obj[2]:""))+" "+obj[5]+", "+obj[6] %>
+											<%=(obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):(obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):""))+" "+(obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - ")+", "+(obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - ") %>
 										</option>
 								<%} }%>
 							</select>
@@ -194,21 +198,22 @@ h6{
 				</form>
 			</div>
 		</div>
-		<% String ses = (String) request.getParameter("result"); 
-	       String ses1 = (String) request.getParameter("resultfail");
-	       if (ses1 != null) { %>
-	        <div align="center">
-	            <div class="alert alert-danger" role="alert">
-	                <%= ses1 %>
-	            </div>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
 	        </div>
-	    <% } if (ses != null) { %>
-	        <div align="center">
-	            <div class="alert alert-success" role="alert">
-	                <%= ses %>
-	            </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
 	        </div>
-	    <% } %>
+	    </div>
+	<% } %>
 		<div class="row" style="margin: 0.5rem;">
 			<div class="col-12">
         		<ul class="nav nav-pills" id="pills-tab" role="tablist" style="background-color: #E1E5E8;padding:0px;">
@@ -268,13 +273,13 @@ h6{
 						                            			<td class="center"><%=++slno %></td>
 						                            			<td class="center">
 						                            				<%if(obj[9]!=null && obj[10]!=null) {%>
-						                            					<%=obj[9]+" ("+obj[10]+")"%>
+						                            					<%=StringEscapeUtils.escapeHtml4(obj[9].toString())+" ("+StringEscapeUtils.escapeHtml4(obj[10].toString())+")"%>
 						                            				<%} else if(obj[2]!=null){%>
-						                            					<%=obj[2].toString().split("/")[1]%>
+						                            					<%=StringEscapeUtils.escapeHtml4(obj[2].toString()).split("/")[1]%>
 						                            				<%} %>
 						                            			</td>
-						                            			<td class="center"><%=obj[2]%></td>
-						                            			<td><%=obj[3]%></td>
+						                            			<td class="center"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></td>
+						                            			<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>
 						                            			<td class="center"><%=obj[5]!=null?fc.sdfTordf(obj[5].toString()):"-" %></td>
 						                            			<td class="center"><%=obj[6]!=null?fc.sdfTordf(obj[6].toString()):"-" %></td>
 						                            			<%-- <td class="center"><%=obj[13]%></td> --%>
@@ -322,9 +327,9 @@ h6{
 						                            			%>
 						                            		<tr>
 						                            			<td class="center"><%=++slno %></td>
-						                            			<td class="center"><%=obj[14]+" ("+obj[15]+")"%></td>
-						                            			<td class="center">M<%=obj[2]%></td>
-						                            			<td><%=obj[3]%></td>
+						                            			<td class="center"><%=obj[14]!=null?StringEscapeUtils.escapeHtml4(obj[14].toString()): " - "%> <%=" ("%> <%=obj[15]!=null?StringEscapeUtils.escapeHtml4(obj[15].toString()): " - "%>)</td>
+						                            			<td class="center">M<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></td>
+						                            			<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>
 						                            			<td class="center"><%=obj[6]!=null?fc.sdfTordf(obj[6].toString()):"-" %></td>
 						                            			<td class="center"><%=obj[7]!=null?fc.sdfTordf(obj[7].toString()):"-" %></td>
 						                            			<%-- <td class="center"><%=obj[13]%></td> --%>
@@ -375,13 +380,13 @@ h6{
 						                            		for(Object[] obj : totalAssignedSubList) { 
 						                            			int progress = obj[8]!=null?Integer.parseInt(obj[8].toString()):0;
 						                            			if(progress>99) continue;
-						                    	   				Object[] projectDetails = projectList.stream().filter(e -> Long.parseLong(e[0].toString())== Long.parseLong(obj[obj.length - 2].toString())).findFirst().orElse(null);
+						                    	   				Object[] projectDetails = projectList.stream().filter(e -> Long.parseLong(e[0].toString())== Long.parseLong(obj[obj.length - 1].toString())).findFirst().orElse(null);
 						                            		%>
 						                            		<tr>
-						                            			<td class="center"><%=++slno %></td>
-						                            			<td class="center"><%=projectDetails!=null?(projectDetails[1]+" ("+projectDetails[3]+")"):"-"%></td>
-						                            			<td class="center">M<%=obj[obj.length - 2] %> <%=obj[obj.length - 3] %></td>
-						                            			<td><%=obj[3]%></td>
+						                            			<td class="center"><%=++slno %> </td>
+						                            			<td class="center"><%=projectDetails!=null?((projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()): " - ")+" ("+(projectDetails[3]!=null?StringEscapeUtils.escapeHtml4(projectDetails[3].toString()): " - ")+")"):"-"%></td>
+						                            			<td class="center">M<%=obj[obj.length - 2]!=null?StringEscapeUtils.escapeHtml4(obj[obj.length-2].toString()): " - " %> <%=obj[obj.length - 3]!=null?StringEscapeUtils.escapeHtml4(obj[obj.length-3].toString()): " - " %></td>
+						                            			<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>
 						                            			<td class="center"><%=obj[6]!=null?fc.sdfTordf(obj[6].toString()):"-" %></td>
 						                            			<td class="center"><%=obj[7]!=null?fc.sdfTordf(obj[7].toString()):"-" %></td>
 						                            			<%-- <td class="center"><%=obj[13]%></td> --%>
@@ -594,9 +599,9 @@ h6{
 					if(progress>99) continue;%>
 				
 					{
-						id: "<%=obj[0]%>",
-					    name: "<%=obj[3].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", " ").replaceAll("\r", "")%>",
-					    project: "<%if(obj[9]!=null && obj[10]!=null) {%><%=obj[9]+" ("+obj[10]+")"%><%} else if(obj[2]!=null){%><%=obj[2].toString().split("/")[1]%><%} %>",
+						id: "<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%>",
+					    name: "<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - ".replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", " ").replaceAll("\r", "")%>",
+					    project: "<%if(obj[9]!=null && obj[10]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[9].toString())+" ("+StringEscapeUtils.escapeHtml4(obj[10].toString())+")"%><%} else if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()).split("/")[1]%><%} %>",
 					    baselineStart: new Date("<%=obj[5]%>"),
 					    baselineEnd: new Date("<%=obj[6]%>"),
 						baseline: {fill: "#4A90E2", stroke: "0.8 #4A90E2"},
@@ -614,15 +619,15 @@ h6{
 	   			%>
 	
 					{
-						id: "<%=obj[2]%>",
+						id: "<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>",
 					    name: "<%=obj[3].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", " ").replaceAll("\r", "")%>",
-						project: "<%=obj[14]+" ("+obj[15]+")"%>",
+						project: "<%=obj[14]!=null?StringEscapeUtils.escapeHtml4(obj[14].toString()): " - "%> <%=" ("+(obj[15]!=null?StringEscapeUtils.escapeHtml4(obj[15].toString()): " - ")+")"%>",
 						<%if(!obj[9].toString().equalsIgnoreCase("0") && !obj[9].toString().equalsIgnoreCase("1")){ %>
-							baselineStart: "<%=obj[6]%>",
-							baselineEnd: "<%=obj[7]%>", 
+							baselineStart: "<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%>",
+							baselineEnd: "<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%>", 
 							baseline: {fill: "#F5A623 0.5", stroke: "0.0 #F5A623"},
-							actualStart: "<%=obj[4]%>",
-							actualEnd: "<%=obj[5]%>",
+							actualStart: "<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>",
+							actualEnd: "<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%>",
 							actual: {fill: "#4A90E2", stroke: "0.8 #4A90E2"},
 							baselineProgressValue: "<%= Math.round((int)obj[8])%>%",
 							progress: {fill: "#7ED321 0.0", stroke: "0.0 #150e56"},
@@ -630,8 +635,8 @@ h6{
 						<%} else{%>
 							<%-- baselineStart: "<%=obj[6]%>",
 							baselineEnd: "<%=obj[7]%>",  --%>
-							baselineStart: "<%=obj[4]%>",
-							baselineEnd: "<%=obj[5]%>", 
+							baselineStart: "<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>",
+							baselineEnd: "<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%>", 
 							baseline: {fill: "#4A90E2", stroke: "0.8 #4A90E2"},
 							baselineProgressValue: "<%= Math.round((int)obj[8])%>%",
 							progress: {fill: "#7ED321 0.0", stroke: "0.0 #150e56"},
@@ -643,19 +648,19 @@ h6{
 		   		<%for(Object[] obj : totalAssignedSubList){ 
 		   			int progress = obj[8]!=null?Integer.parseInt(obj[8].toString()):0;
         			if(progress>99) continue;
-	   				Object[] projectDetails = projectList.stream().filter(e -> Long.parseLong(e[0].toString())== Long.parseLong(obj[obj.length - 2].toString())).findFirst().orElse(null);
+	   				Object[] projectDetails = projectList.stream().filter(e -> Long.parseLong(e[0].toString())== Long.parseLong(obj[obj.length - 1].toString())).findFirst().orElse(null);
 		   		  %>
 		
 						{
-							id: "<%=obj[2]%>",
-						    name: "<%=obj[3].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", " ").replaceAll("\r", "")%>",
-						    project: "<%=projectDetails!=null?(projectDetails[1]+" ("+projectDetails[3]+")"):"-"%>",
+							id: "<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>",
+						    name: "<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - ".replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", " ").replaceAll("\r", "")%>",
+						    project: "<%=projectDetails!=null?((projectDetails[1]!=null?StringEscapeUtils.escapeHtml4(projectDetails[1].toString()): " - ")+" ("+(projectDetails[3]!=null?StringEscapeUtils.escapeHtml4(projectDetails[3].toString()): " - ")+")"):"-"%>",
 							<%if(!obj[9].toString().equalsIgnoreCase("0") && !obj[9].toString().equalsIgnoreCase("1")){ %>
-								baselineStart: "<%=obj[6]%>",
-								baselineEnd: "<%=obj[7]%>", 
+								baselineStart: "<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%>",
+								baselineEnd: "<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%>", 
 								baseline: {fill: "#F5A623 0.5", stroke: "0.0 #F5A623"},
-								actualStart: "<%=obj[4]%>",
-								actualEnd: "<%=obj[5]%>",
+								actualStart: "<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>",
+								actualEnd: "<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%>",
 								actual: {fill: "#4A90E2", stroke: "0.8 #4A90E2"},
 								baselineProgressValue: "<%= Math.round((int)obj[8])%>%",
 								progress: {fill: "#7ED321 0.0", stroke: "0.0 #150e56"},
@@ -663,8 +668,8 @@ h6{
 							<%} else{%>
 								<%-- baselineStart: "<%=obj[6]%>",
 								baselineEnd: "<%=obj[7]%>",  --%>
-								baselineStart: "<%=obj[4]%>",
-								baselineEnd: "<%=obj[5]%>", 
+								baselineStart: "<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>",
+								baselineEnd: "<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%>", 
 								baseline: {fill: "#4A90E2", stroke: "0.8 #4A90E2"},
 								baselineProgressValue: "<%= Math.round((int)obj[8])%>%",
 								progress: {fill: "#7ED321 0.0", stroke: "0.0 #150e56"},
@@ -1072,7 +1077,7 @@ $('#empId').on('change',function(){
 	        <% for (Object[] obj : totalAssignedSubList) {
 	        	int progress = obj[8]!=null?Integer.parseInt(obj[8].toString()):0;
     			if(progress>99) continue;
-	            Object[] projectDetails = projectList.stream().filter(e -> Long.parseLong(e[0].toString()) == Long.parseLong(obj[obj.length - 2].toString())).findFirst().orElse(null);
+	            Object[] projectDetails = projectList.stream().filter(e -> Long.parseLong(e[0].toString()) == Long.parseLong(obj[obj.length - 1].toString())).findFirst().orElse(null);
 				String taskshortname = obj[3]!=null && obj[3].toString().length()>90?obj[3].toString().substring(0, 90)+"....":obj[3].toString();
 	        %>
 		        {

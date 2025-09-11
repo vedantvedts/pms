@@ -43,6 +43,7 @@ import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
 import com.vts.pfms.master.model.PfmsFeedbackTrans;
+import com.vts.pfms.master.model.RoleMaster;
 import com.vts.pfms.model.LabMaster;
 
 @Service
@@ -828,7 +829,42 @@ public class MasterServiceImpl implements MasterService {
 			
 			return dao.ProgramCodeCheck(programmeCode,prgrammeId);
 		}
+		
+		@Override
+		public List<Object[]> getProjectList(String labcode) throws Exception {
+			return dao.getProjectList(labcode);
+		}
+		
+		@Override
+		public List<Object[]> getProjectList(String labcode, String programmeId) throws Exception {
+			return dao.getProjectList(labcode,programmeId);
+		}
 		/* **************************** Programme Master - Naveen R  - 16/07/2025 End**************************************** */
 
+		@Override
+		public Long addRoleMaster(RoleMaster roleMaster) throws Exception {
+			
+			return dao.addRoleMaster(roleMaster);
+		}
+
+		// 22/8/2025  Naveen R RoleName and RoleCode Duplicate Check start
+		
+		@Override
+		public Long getRoleNameDuplicateCount(String roleName) throws Exception {
+			
+			return dao.getRoleNameDulicateCount(roleName);
+		}
+
+		@Override
+		public Long getRoleCodeDuplicateCount(String roleCode) throws Exception {
+			
+			return dao.getRoleCodeDuplicateCount(roleCode);
+		}
+
+		
+
+		
+		
+		// 22/8/2025  Naveen R RoleName and RoleCode Duplicate Check End
 }
 

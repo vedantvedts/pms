@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -171,13 +172,13 @@
 		    if(Status!=null){%>
 		   <div align="center">
 		<div  class="text-center alert alert-success col-md-8 col-md-offset-2" style="margin-top: 1rem" role="alert">
-		<%=Status %>
+		<%=StringEscapeUtils.escapeHtml4(Status) %>
 		</div>
 		</div>
 		<%}else if(result1!=null){%>
 		<div align="center">
 		<div class="text-center alert alert-danger col-md-8 col-md-offset-2" style="margin-top: 1rem" role="alert" >
-		<%=result1 %>
+		<%=StringEscapeUtils.escapeHtml4(result1) %>
 		        </div>
 		</div><%} %>
 		 <div class="page card dashboard-card">
@@ -212,13 +213,13 @@
 		                   %>
 		                       <tr> 
 		                       <td align="center"><%=sn++%></td>
-		                       <td align="center"><%if(obj[0]!=null){%><%=obj[0]%><%}else{ %>--<%} %></td>
-		                       <td align="left"><%if(obj[1]!=null){%><%=obj[1].toString()%><%}else{ %>--<%} %></td> 
-		                       <td align="left"><%if(obj[2]!=null){%><%=obj[2].toString()%><%}else{ %>--<%} %></td> 
+		                       <td align="center"><%if(obj[0]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[0].toString())%><%}else{ %>--<%} %></td>
+		                       <td align="left"><%if(obj[1]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[1].toString())%><%}else{ %>--<%} %></td> 
+		                       <td align="left"><%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString())%><%}else{ %>--<%} %></td> 
 		                       <td bgcolor="#c4ebf0" style="border-color: #c4ebf0 !important;">&nbsp;&nbsp;&nbsp;</td>
-		                       <td align="center" <%if(obj[2]!=null && obj[6]!=null && !obj[2].toString().equalsIgnoreCase(obj[6].toString())){%> bgcolor="#ffc7c7" style="color:black;" <%}else{ %> style="color:#086408;" <%} %>><%if(obj[4]!=null){ %><%=obj[4].toString()%><%}else{ %>--<%} %></td> 
-		                       <td align="left" <%if(obj[2]!=null && obj[6]!=null && !obj[2].toString().equalsIgnoreCase(obj[6].toString())){%> bgcolor="#ffc7c7" style="color:black;" <%}else{ %> style="color:#086408;" <%} %>><%if(obj[5]!=null){ %><%=obj[5].toString()%><%}else{ %>--<%} %></td> 
-		                       <td align="left" <%if(obj[2]!=null && obj[6]!=null && !obj[2].toString().equalsIgnoreCase(obj[6].toString())){%> bgcolor="#ffc7c7" style="color:black;" <%}else{ %> style="color:#086408;" <%} %>><%if(obj[6]!=null){ %><%=obj[6].toString()%><%}else{ %>--<%} %></td> 
+		                       <td align="center" <%if(obj[2]!=null && obj[6]!=null && !obj[2].toString().equalsIgnoreCase(obj[6].toString())){%> bgcolor="#ffc7c7" style="color:black;" <%}else{ %> style="color:#086408;" <%} %>><%if(obj[4]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[4].toString())%><%}else{ %>--<%} %></td> 
+		                       <td align="left" <%if(obj[2]!=null && obj[6]!=null && !obj[2].toString().equalsIgnoreCase(obj[6].toString())){%> bgcolor="#ffc7c7" style="color:black;" <%}else{ %> style="color:#086408;" <%} %>><%if(obj[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[5].toString())%><%}else{ %>--<%} %></td> 
+		                       <td align="left" <%if(obj[2]!=null && obj[6]!=null && !obj[2].toString().equalsIgnoreCase(obj[6].toString())){%> bgcolor="#ffc7c7" style="color:black;" <%}else{ %> style="color:#086408;" <%} %>><%if(obj[6]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[6].toString())%><%}else{ %>--<%} %></td> 
 		                       </tr> 
 		                       <%}} %>
 	                    </tbody>
@@ -281,14 +282,14 @@
 		                     for(Object[] obj:labPmsEmployeeList){
 		                    	 if((obj[4]==null && obj[5]==null && obj[6]==null) || (obj[2]!=null && obj[6]!=null && !obj[2].toString().equalsIgnoreCase(obj[6].toString()))){count++;%>
 		                       <tr> 
-		                       <td align="center" style="background: #ffffff;border-left: none;border-top: none;border-bottom: none;"><input type="checkbox" class="checkbox" id="LabPmsEmpId" name="LabPmsEmpId" value="<%=obj[8]%>#<%=obj[9]!=null?obj[9]:" "%>#<%=obj[4]!=null?obj[4]:" "%>"></td>
-		                       <td align="center"><%if(obj[0]!=null){%><%=obj[0]%><%}else{ %>--<%} %></td>
-		                       <td align="left"><%if(obj[1]!=null){%><%=obj[1].toString()%><%}else{ %>--<%} %></td> 
-		                       <td align="left"><%if(obj[2]!=null){%><%=obj[2].toString()%><%}else{ %>--<%} %></td> 
+		                       <td align="center" style="background: #ffffff;border-left: none;border-top: none;border-bottom: none;"><input type="checkbox" class="checkbox" id="LabPmsEmpId" name="LabPmsEmpId" value="<%=obj[8]%>#<%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()):" "%>#<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" "%>"></td>
+		                       <td align="center"><%if(obj[0]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[0].toString())%><%}else{ %>--<%} %></td>
+		                       <td align="left"><%if(obj[1]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[1].toString())%><%}else{ %>--<%} %></td> 
+		                       <td align="left"><%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString())%><%}else{ %>--<%} %></td> 
 		                       <td style="background: #ffffff;border-top: none;border-bottom: none;">&nbsp;&nbsp;&nbsp;</td>
-		                       <td align="center" style="background-color:#ffc7c7;"><%if(obj[4]!=null){ %><%=obj[4].toString()%><%}else{ %>--<%} %></td> 
-		                       <td align="left" style="background-color:#ffc7c7;"><%if(obj[5]!=null){ %><%=obj[5].toString()%><%}else{ %>--<%} %></td> 
-		                       <td align="left" style="background-color:#ffc7c7;"><%if(obj[6]!=null){ %><%=obj[6].toString()%><%}else{ %>--<%} %></td> 
+		                       <td align="center" style="background-color:#ffc7c7;"><%if(obj[4]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[4].toString())%><%}else{ %>--<%} %></td> 
+		                       <td align="left" style="background-color:#ffc7c7;"><%if(obj[5]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[5].toString())%><%}else{ %>--<%} %></td> 
+		                       <td align="left" style="background-color:#ffc7c7;"><%if(obj[6]!=null){ %><%=StringEscapeUtils.escapeHtml4(obj[6].toString())%><%}else{ %>--<%} %></td> 
 		                       </tr> 
 		                       <%}} if(count==0){%>
 		                       

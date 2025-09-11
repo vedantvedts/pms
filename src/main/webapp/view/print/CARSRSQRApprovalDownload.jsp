@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
@@ -73,7 +74,7 @@ CARSInitiation carsIni =(CARSInitiation)request.getAttribute("CARSInitiationData
             margin-bottom: 30px;
           }
            @top-right {
-             content: "<%=carsIni.getCARSNo()%>";
+             content: "<%=carsIni.getCARSNo()!=null?carsIni.getCARSNo(): " - "%>";
              margin-top: 30px;
              font-size: 13px;
           }
@@ -150,26 +151,26 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
     	<td style="width: 5%;text-align: center;">1.</td>
         <td style="width: 40%;">RSQR Title</td>
         <td style="width: 53%;color: blue;">
-        	Research Service Qualitative Requirement (RSQR) for <%=carsIni.getInitiationTitle() %>
+        	Research Service Qualitative Requirement (RSQR) for <%=carsIni.getInitiationTitle()!=null?carsIni.getInitiationTitle(): " - " %>
         </td>
     </tr>
     <tr>
         <td style="width: 3%;text-align: center;">2.</td>
         <td style="width: 40%;">Name and address of the Academic Institution</td>
         <td style="width: 53%;color: blue;">
-        	<%=carsIni.getRSPInstitute() %> <br>
-            <%=carsIni.getRSPAddress()+", "+carsIni.getRSPCity()+", "+carsIni.getRSPState()+" - "+carsIni.getRSPPinCode() %>.
+        	<%=carsIni.getRSPInstitute()!=null?carsIni.getRSPInstitute(): " - " %> <br>
+            <%=carsIni.getRSPAddress()!=null?carsIni.getRSPAddress(): " - "%> <%=", "%> <%=carsIni.getRSPCity()!=null?carsIni.getRSPCity(): " - "%> <%=", "%> <%=carsIni.getRSPState()!=null?carsIni.getRSPState(): " - "%> <%=" - "%> <%=carsIni.getRSPPinCode()!=null?carsIni.getRSPPinCode(): " - " %>.
         </td>
     </tr>
     <tr>
 		<td style="width: 5%;text-align: center;" >3.</td>
 		<td style="width: 40%;" >Name of the Principal Investigator</td>
 		<td style="width: 53%;color: blue;" >
-			<%=carsIni.getPITitle()+". "+carsIni.getPIName() %>,
-			<%=carsIni.getPIDesig() %> <br>
-			<%=carsIni.getPIDept() %> <br>
-			<%=carsIni.getPIMobileNo() %> <br>
-			<%=carsIni.getPIEmail() %>
+			<%=carsIni.getPITitle()!=null?carsIni.getPITitle(): " - "%> <%=". "%> <%=carsIni.getPIName()!=null?carsIni.getPIName(): " - " %>,
+			<%=carsIni.getPIDesig()!=null?carsIni.getPIDesig(): " - " %> <br>
+			<%=carsIni.getPIDept()!=null?carsIni.getPIDept(): " - " %> <br>
+			<%=carsIni.getPIMobileNo()!=null?carsIni.getPIMobileNo(): " - " %> <br>
+			<%=carsIni.getPIEmail()!=null?carsIni.getPIEmail(): " - " %>
 			<%if(carsIni.getPIFaxNo()!=null && !carsIni.getPIFaxNo().isEmpty()){ %>
 				<br> <%=carsIni.getPIFaxNo() %>
 			<%} %>
@@ -178,7 +179,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 	<tr>
 		<td style="width: 5%;text-align: center;" >4.</td>
 		<td style="width: 40%;">Duration of the Contract (Months)</td>
-		<td style="width: 53%;color: blue;"><%=carsIni.getDuration() %> </td>
+		<td style="width: 53%;color: blue;"><%=carsIni.getDuration()!=null?carsIni.getDuration(): " - " %> </td>
 	</tr>
 	<tr>
 		<td colspan="3" style="font-size: 14px;">
@@ -195,10 +196,10 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 			<div style="line-height: 17px;">
     			<div style="font-size: 15px;margin-bottom: 10px;">Signature of the initiating officer</div>
 				<label style="text-transform: capitalize;">
-					<%if(emp!=null && emp[1]!=null){%> <%=emp[1]%><%} %>,
+					<%if(emp!=null && emp[1]!=null){%> <%=emp[1].toString()%><%} %>,
 				</label><!-- <br> -->
 				<label style="text-transform: capitalize;">
-					<%if(emp!=null && emp[2]!=null){%> <%=emp[2]%><%} %>
+					<%if(emp!=null && emp[2]!=null){%> <%=emp[2].toString()%><%} %>
 				</label><br>
 				<label style="font-size: 12px;">
 					Date&nbsp;:&nbsp;<%if(carsIni.getInitiationDate()!=null) {%> <%=fc.SqlToRegularDate(carsIni.getInitiationDate()) %><%} else{%><%=rdf.format(new Date()) %> <%} %>
@@ -210,9 +211,9 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
     			<div style="font-size: 15px;margin-bottom: 10px;"> Signature of the <%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>GD<%} else{%>PD<%} %></div>
 				<%for(Object[] apprInfo : rsqrApprovalEmpData){ %>
 					<%if(apprInfo[8].toString().equalsIgnoreCase("AGD") || apprInfo[8].toString().equalsIgnoreCase("APD")){ %>
-						<label style="text-transform: capitalize;"><%=apprInfo[2]%></label>,<!-- <br> -->
-						<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-						<label style="font-size: 12px;">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+						<label style="text-transform: capitalize;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+						<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+						<label style="font-size: 12px;">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString()).substring(0, 10)  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
 				<%break;}} %>  
 			</div>	
 		</td>

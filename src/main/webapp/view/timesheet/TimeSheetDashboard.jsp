@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.fasterxml.jackson.databind.ObjectMapper"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.util.stream.Collectors"%>
@@ -214,22 +215,22 @@
 		
 		FormatConverter fc = new FormatConverter();
 	%>
-	<% String ses=(String)request.getParameter("result");
-	 	String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-		%>
-		<div align="center">
-			<div class="alert alert-danger" role="alert">
-		    <%=ses1 %>
-		    </div>
-		</div>
-		<%}if(ses!=null){ %>
-		<div align="center">
-			<div class="alert alert-success" role="alert" >
-		    	<%=ses %>
-			</div>
-		</div>
-	<%} %>
+	<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
 
 	<div class="container-fluid mb-3">
 		<div class="row">
@@ -265,9 +266,9 @@
 													<tr>
 														<td style="width: 24%;"></td>
 														<th class="right" style="width: 5%;">From :</th>
-														<td style="width: 8%;"><input type="text" class="form-control" name="fromDate" id="aapFromDate" value="<%=fc.sdfTordf(fromDate)%>"></td>
+														<td style="width: 8%;"><input type="text" class="form-control" name="fromDate" id="aapFromDate" value="<%=fromDate!=null?fc.sdfTordf(fromDate):"-"%>"></td>
 														<th class="right" style="width: 5%;">To :</th>
-														<td style="width: 8%;"><input type="text" class="form-control" name="toDate" id="aapToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
+														<td style="width: 8%;"><input type="text" class="form-control" name="toDate" id="aapToDate" value="<%=toDate!=null ? fc.sdfTordf(toDate):"-"%>"></td>
 														<th class="right" style="width: 5%;">Project : </th>
 														<td style="width: 20%;">
 															<select class="form-control selectdee" name="projectId" id="aapProjectId">
@@ -275,7 +276,7 @@
 													            <%for(Object[] pro: projectList ){
 													            	String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
 													            %>
-																	<option value="<%=pro[0]%>" ><%=pro[4]+projectshortName %></option>
+																	<option value="<%=pro[0]%>" ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[4].toString()):" - "%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>
 																<%} %>
 															</select>
 														</td>
@@ -287,7 +288,7 @@
 																<%
 																if(empList!=null && empList.size()>0){
 																for(Object[] obj : empList) {%>
-																	<option value="<%=obj[0]%>" <%if(sesEmpId.equalsIgnoreCase(obj[0].toString())) {%>selected<%} %> ><%=obj[1]+", "+obj[2] %></option>
+																	<option value="<%=obj[0]%>" <%if(sesEmpId.equalsIgnoreCase(obj[0].toString())) {%>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %></option>
 																<%} }%>
 															</select>
 														</td>
@@ -341,9 +342,9 @@
 													<tr>
 														<td style="width: 24%;"></td>
 														<th class="right" style="width: 5%;">From :</th>
-														<td style="width: 8%;"><input type="text" class="form-control" name="fromDate" id="aaiFromDate" value="<%=fc.sdfTordf(fromDate)%>"></td>
+														<td style="width: 8%;"><input type="text" class="form-control" name="fromDate" id="aaiFromDate" value="<%=fromDate!=null?fc.sdfTordf(fromDate):"-"%>"></td>
 														<th class="right" style="width: 5%;">To :</th>
-														<td style="width: 8%;"><input type="text" class="form-control" name="toDate" id="aaiToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
+														<td style="width: 8%;"><input type="text" class="form-control" name="toDate" id="aaiToDate" value="<%=toDate!=null ? fc.sdfTordf(toDate):"-"%>"></td>
 														<th class="right" style="width: 5%;">Employee : </th>
 														<td style="width: 20%;">
 															<select class="form-control selectdee" name="empId" id="aaiEmpId">
@@ -351,7 +352,7 @@
 																<%
 																if(empList!=null && empList.size()>0){
 																for(Object[] obj : empList) {%>
-																	<option value="<%=obj[0]%>" <%if(sesEmpId.equalsIgnoreCase(obj[0].toString())) {%>selected<%} %> ><%=obj[1]+", "+obj[2] %></option>
+																	<option value="<%=obj[0]%>" <%if(sesEmpId.equalsIgnoreCase(obj[0].toString())) {%>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %></option>
 																<%} }%>
 															</select>
 														</td>
@@ -363,7 +364,7 @@
 													            <%for(Object[] pro: projectList ){
 													            	String projectshortName=(pro[17]!=null)?" ("+pro[17].toString()+") ":"";
 													            %>
-																	<option value="<%=pro[0]%>" ><%=pro[4]+projectshortName %></option>
+																	<option value="<%=pro[0]%>" ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[4].toString()):"-"%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):"-" %></option>
 																<%} %>
 															</select>
 														</td>
@@ -429,14 +430,14 @@
 																	<option value="<%=pro[0]%>"
 																	data-sancdate="<%=pro[12] %>"
 																	data-projectname="<%=pro[4]+projectshortName %>"
-																	 ><%=pro[4]+projectshortName %></option>
+																	 ><%=pro[4]!=null?StringEscapeUtils.escapeHtml4(pro[4].toString()):"-"%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):"-" %></option>
 																<%} %>
 															</select>
 														</td>
 														<th class="right" style="width: 5%;">From :</th>
-														<td style="width: 10%;"><input type="text" class="form-control" name="fromDate" id="ptsFromDate" value="<%=fc.sdfTordf(fromDate)%>"></td>
+														<td style="width: 10%;"><input type="text" class="form-control" name="fromDate" id="ptsFromDate" value="<%=fromDate!=null?fc.sdfTordf(fromDate):"-"%>"></td>
 														<th class="right" style="width: 5%;">To :</th>
-														<td style="width: 10%;"><input type="text" class="form-control" name="toDate" id="ptsToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
+														<td style="width: 10%;"><input type="text" class="form-control" name="toDate" id="ptsToDate" value="<%=toDate!=null ? fc.sdfTordf(toDate):"-"%>"></td>
 														<td style="width: 5%;" class="center">
 															<button type="submit" class="btn btn-sm" name="" formaction="ProjectTimeSheetPdfReport.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="PDF Report" style="background-color: #fff">
 																<i style="color: #cc0000;font-size: 24px;" class="fa fa-file-pdf-o" aria-hidden="true"></i>
@@ -513,9 +514,9 @@
 													<tr>
 														<td style="width: 65%;"></td>
 														<th class="right" style="width: 5%;">From :</th>
-														<td style="width: 10%;"><input type="text" class="form-control" name="fromDate" id="tslFromDate" value="<%=fc.sdfTordf(fromDate)%>"></td>
+														<td style="width: 10%;"><input type="text" class="form-control" name="fromDate" id="tslFromDate" value="<%=fromDate!=null?fc.sdfTordf(fromDate):"-"%>"></td>
 														<th class="right" style="width: 5%;">To :</th>
-														<td style="width: 10%;"><input type="text" class="form-control" name="toDate" id="tslToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
+														<td style="width: 10%;"><input type="text" class="form-control" name="toDate" id="tslToDate" value="<%=toDate!=null ? fc.sdfTordf(toDate):"-"%>"></td>
 														<td style="width: 5%;" class="center">
 															<button type="submit" class="btn btn-sm" name="" formaction="TimeSheetListPdfReport.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="PDF Report" style="background-color: #fff">
 																<i style="color: #cc0000;font-size: 24px;" class="fa fa-file-pdf-o" aria-hidden="true"></i>
@@ -584,9 +585,9 @@
 													<tr>
 														<td style="width: 35%;"></td>
 														<th class="right" style="width: 5%;">From :</th>
-														<td style="width: 10%;"><input type="text" class="form-control" name="fromDate" id="tsl2FromDate" value="<%=fc.sdfTordf(fromDate3)%>"></td>
+														<td style="width: 10%;"><input type="text" class="form-control" name="fromDate" id="tsl2FromDate" value="<%=fromDate3!=null?fc.sdfTordf(fromDate3):"-"%>"></td>
 														<th class="right" style="width: 5%;">To :</th>
-														<td style="width: 10%;"><input type="text" class="form-control" name="toDate" id="tsl2ToDate" value="<%=fc.sdfTordf(toDate)%>"></td>
+														<td style="width: 10%;"><input type="text" class="form-control" name="toDate" id="tsl2ToDate" value="<%=toDate!=null ? fc.sdfTordf(toDate):"-"%>"></td>
 														<th class="right" style="width: 5%;">Employee : </th>
 														<td style="width: 25%;">
 															<select class="form-control selectdee" name="empId" id="tsl2EmpId">
@@ -595,7 +596,7 @@
 																for(Object[] obj : empList) {%>
 																	<option value="<%=obj[0]%>" 
 																	data-employee="<%=obj[1]+", "+obj[2] %>"
-																	<%if(sesEmpId.equalsIgnoreCase(obj[0].toString())) {%>selected<%} %> ><%=obj[1]+", "+obj[2] %></option>
+																	<%if(sesEmpId.equalsIgnoreCase(obj[0].toString())) {%>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %></option>
 																<%} }%>
 															</select>
 														</td>

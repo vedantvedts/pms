@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -126,22 +127,22 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 
 %>
 
-	<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-		<div class="alert alert-danger" role="alert">
-			<%=ses1 %>
-		</div>
-	</center>
-	<%}if(ses!=null){ %>
-	<center>
-		<div class="alert alert-success" role="alert">
-			<%=ses %>
-		</div>
-	</center>
-	<%} %>
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
 
 
 	<div class="container-fluid">
@@ -173,7 +174,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 					                    <% for(Object[] obj : ProjectList) {
 					                        String projectshortName = (obj[17] != null) ? " ( " + obj[17].toString() + " ) " : "";
 					                    %>
-					                        <option value="<%=obj[0]%>" <%if(projectId.equalsIgnoreCase(obj[0].toString())){ %> selected <% } %>><%=obj[4] + projectshortName %></option>
+					                        <option value="<%=obj[0]%>" <%if(projectId.equalsIgnoreCase(obj[0].toString())){ %> selected <% } %>><%=(obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - ")%> <%= projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>
 					                    <% } %>
 					                </select>
 					            <% } else { %>
@@ -181,7 +182,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 					                    <option value="A" <%if(initiationId.equalsIgnoreCase("A")){%> selected <%}%>>ALL</option>
 					                    <% if(preProjectList != null && preProjectList.size() > 0) {
 					                        for(Object[] obj : preProjectList) { %>
-					                            <option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(initiationId)) { %> selected <% } %>><%=obj[3] + " ( " + obj[2] + " )" %></option>
+					                            <option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(initiationId)) { %> selected <% } %>><%= (obj[3] != null ? StringEscapeUtils.escapeHtml4(obj[3].toString()) : " - ") + " ( " + (obj[2] != null ? StringEscapeUtils.escapeHtml4(obj[2].toString())  : " - ") + " )"%></option>
 					                    <% } } %>
 					                </select>
 					            <% } %>
@@ -243,22 +244,22 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 										for(Object[] obj:RfaActionList) { %>
 										<tr>
 										
-											<td style="text-align: center;"><%=++i %> <input type="hidden" name="createdBy" value="<%= obj[11]%>"> </td>
-											<td><%=obj[3] %></td>
-											<td style="text-align: center;"><%=sdf.format(obj[4])%></td>
-											<td style="text-align: center;"><%=obj[2] %></td>
-											<td style="text-align: center;"><%=obj[5] %></td>
+											<td style="text-align: center;"><%=++i %> <input type="hidden" name="createdBy" value="<%= obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):""%>"> </td>
+											<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - " %></td>
+											<td style="text-align: center;"><%=obj[4]!=null?sdf.format(obj[4]):" - "%></td>
+											<td style="text-align: center;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - " %></td>
+											<td style="text-align: center;"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):" - " %></td>
 											<td>
 											<%if(AssigneeList!=null ){ 
 												for(Object[] obj1 : AssigneeList){
 													if(obj1[0].toString().equalsIgnoreCase(obj[0].toString())){
 													%>
-											      <p style="margin-bottom:0px !important;"> <%=obj1[1].toString()+","+obj1[2].toString() %> (<%=obj1[4].toString() %>) </p>          
+											      <p style="margin-bottom:0px !important;"> <%=  (obj1[1] != null ? StringEscapeUtils.escapeHtml4(obj1[1].toString())  : " - ") + ","+ (obj1[2] != null ? StringEscapeUtils.escapeHtml4(obj1[2].toString())  : " - ")%> (<%=obj1[4]!=null?StringEscapeUtils.escapeHtml4(obj1[4].toString()):" - " %>) </p>          
 											<% }}}%>
 											</td>
 											<td style="text-align: center;">
 	                                       	  	<button type="submit" class="btn btn-sm btn-link btn-status" formaction="RfaTransStatus.htm" value="<%=obj[0] %>" name="rfaTransId"  data-toggle="tooltip" data-placement="top" title="Transaction History" 
-	                                       	  	style=" color: #E65100; font-weight: 600;" formtarget="_blank"><%=obj[17] %> 
+	                                       	  	style=" color: #E65100; font-weight: 600;" formtarget="_blank"><%=obj[17]!=null?StringEscapeUtils.escapeHtml4(obj[17].toString()):" - " %> 
 								    			</button>
 	                                        </td>
 											<td class="left width">

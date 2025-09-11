@@ -5,7 +5,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name="project_employee")
 public class ProjectAssign {
@@ -15,59 +17,9 @@ public class ProjectAssign {
 	private long EmpId;
 	private long ProjectId;
 	private int isActive;
+	private Long RoleMasterId;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;
-
-	public long getProjectEmployeeId() {
-		return ProjectEmployeeId;
-	}
-	public void setProjectEmployeeId(long projectEmployeeId) {
-		ProjectEmployeeId = projectEmployeeId;
-	}
-
-	public long getEmpId() {
-		return EmpId;
-	}
-	public void setEmpId(long empId) {
-		EmpId = empId;
-	}
-	public long getProjectId() {
-		return ProjectId;
-	}
-	public void setProjectId(long projectId) {
-		ProjectId = projectId;
-	}
-	public int getIsActive() {
-		return isActive;
-	}
-	public void setIsActive(int isActive) {
-		this.isActive = isActive;
-	}
-	public String getCreatedBy() {
-		return CreatedBy;
-	}
-	public void setCreatedBy(String createdBy) {
-		CreatedBy = createdBy;
-	}
-	public String getCreatedDate() {
-		return CreatedDate;
-	}
-	public void setCreatedDate(String createdDate) {
-		CreatedDate = createdDate;
-	}
-	public String getModifiedBy() {
-		return ModifiedBy;
-	}
-	public void setModifiedBy(String modifiedBy) {
-		ModifiedBy = modifiedBy;
-	}
-	public String getModifiedDate() {
-		return ModifiedDate;
-	}
-	public void setModifiedDate(String modifiedDate) {
-		ModifiedDate = modifiedDate;
-	}
-	
 }

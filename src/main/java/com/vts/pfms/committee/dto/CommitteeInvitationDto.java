@@ -20,6 +20,7 @@ public class CommitteeInvitationDto {
 	private ArrayList<String> LabCodeList;
 	private ArrayList<String> desigids;
 	private String reptype;
+	private String inviteFlag;
 	
 	
 }

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -177,7 +178,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 							<option disabled="disabled" value="" selected="selected">Choose..</option>
 							<%if(!RequirementTypeList.isEmpty()){
 							for(Object[] obj:RequirementTypeList){ %>
-							<option value="<%=obj[0]+" "+obj[1]+" "+obj[3]%>"><%=obj[3]+"-"+obj[2]%></option>
+							<option value="<%=obj[0]+" "+obj[1]+" "+obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%>-<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></option>
 							<%}} %>
 							</select>
 									</div>
@@ -214,7 +215,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 					
 							<%if(!RequirementList.isEmpty()){
 							for(Object[] obj:RequirementList){ %>
-							<option value="<%=obj[1]%>"><%=obj[1]%></option>
+							<option value="<%=obj[1]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
 							<%}} %>
 							</select>
 									</div>
