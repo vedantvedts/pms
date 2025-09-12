@@ -1,0 +1,169 @@
+h6 {
+	color: black;
+	font-family: 'Lato', sans-serif;
+	font-weight: 800;
+}
+
+.card-header {
+	background-color: #07689f;
+	color: white;
+}
+
+.card {
+	/* border: 1px solid black; */
+	box-shadow: 2px 2px 2px gray;
+}
+
+.input-group-text {
+	font-weight: bold;
+}
+
+label {
+	font-weight: 800;
+	font-size: 16px;
+	color: #07689f;
+	/* padding-top: 10px;
+		padding-bottom:-5px;
+		padding-right: -50px; */
+}
+
+hr {
+	margin-top: -2px;
+	margin-bottom: 12px;
+}
+
+.form-group {
+	margin-top: 0.5rem;
+	margin-bottom: 1rem;
+}
+
+.mandatory {
+	font-weight: 800;
+}
+
+b {
+	font-family: 'Lato', sans-serif;
+}
+
+.form-block form {
+	display: inline-block;
+}
+
+.fa-input {
+	font-family: FontAwesome, 'Lato', sans-serif;
+}
+
+td {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.custom-back {
+	margin-left: 50px;
+	font-size: 15px;
+	font-weight: bold;
+	margin-top: -2px;
+	float: right
+}
+
+.custom-h5 {
+	color: #07689f;
+}
+
+.custom-trash {
+	background-color: white;
+	border-color: white;
+}
+
+.custom-table {
+	margin-top: 10px;
+}
+
+.td-pl-20 {
+	padding-left: 20px;
+}
+
+.th-pl-40 {
+	padding-left: 40px;
+}
+
+.td-w-100 {
+	width: 100px;
+}
+
+.label-pl-10 {
+	padding-right: 10px;
+}
+
+.td-width {
+	width: 1%;
+	white-space: nowrap;
+}
+
+.mt-25 {
+	margin-top: 25px;
+}
+
+.custom-edit {
+	padding: 2px 13px !important;
+	margin-right: 5%;
+}
+
+.custom-add {
+	padding: 2px 13px !important;
+}
+
+.custom-hr {
+	margin: 0.5rem 0rem !important;
+}
+
+.custom-kickoff {
+	background-color: #81b214;
+	color: white;
+	border-color: #81b214;
+}
+
+.custom-check {
+	font-size: 1.0rem;
+}
+
+.custom-part {
+	background-color: #0e49b5;
+	color: white
+}
+
+.custom-attend {
+	background-color: #16697a;
+	color: white;
+	border-color: #16697a;
+}
+
+.custom-minute {
+	background-color: #24a0ed;
+	color: white;
+	border-color: #24a0ed;
+}
+
+.custom-kickoff {
+	background-color: #06623b;
+	color: white;
+}
+
+.table-venue{
+	margin-top: 10px; 
+	width: 95%;
+}
+
+.label-reference{
+	margin-top: 25px;
+	margin-bottom:-20px;
+}
+
+
+
+
+
+
+
+
+

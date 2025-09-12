@@ -1,0 +1,160 @@
+.card-body{
+	padding: 0px !important;
+}
+.control-label{
+	font-weight: bold !important;
+}
+#scrollclass::-webkit-scrollbar {
+	width: 7px;
+}
+
+#scrollclass::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+}
+
+#scrollclass::-webkit-scrollbar-thumb {
+	border-radius: 5px; 
+	/*   -webkit-box-shadow: inset 0 0 6px black;  */
+	background-color: #fff;
+} 
+
+#scrollclass::-webkit-scrollbar-thumb:hover {
+	-webkit-box-shadow: inset 0 0 6px black;
+	transition: 0.5s;
+}
+
+#scrollclass::-webkit-scrollbar {
+	width: 7px;
+}
+
+#scrollclass::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+}
+
+#scrollclass::-webkit-scrollbar-thumb {
+	border-radius: 5px;
+	/*   -webkit-box-shadow: inset 0 0 6px black;  */
+	background-color: #fff;
+}
+
+#scrollclass::-webkit-scrollbar-thumb:hover {
+	-webkit-box-shadow: inset 0 0 6px black;
+	transition: 0.5s;
+}
+
+
+.meetingsp{
+  width:75%;
+  transition: background-color 3s ease;
+  background-image: linear-gradient(to right, green 50%, #f8f9fa 50%);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  transition: background-position 0.5s ease;
+  color:black;
+  padding:10px;
+  border-radius: 8px;
+  display: block;
+  font-weight: 600;
+  margin:1%;
+  margin-left:12%;
+}
+.meetingsp:hover{
+ 	/*  background-color: green;
+	 background-image: linear-gradient(to right, green, blue); */
+	 color:white;
+ background-position: 0 0;
+ box-shadow: 3px 3px 3px gray;
+	/* background-color:red; */
+color:white;
+font-weight: 600;	
+}
+#span{
+background: blue;
+}
+#span1{
+font-size: 10px;
+margin-left:10px
+}
+
+#span2{
+float:right;
+font-size: 10px;
+margin-right:10px
+}
+
+.project-type{
+	display: flex;
+	justify-content: flex-end;
+}
+
+.div-col{
+	margin-top: -8px;
+}
+
+.table-width{
+	width: 100%;
+}
+
+.td-width{
+	width: 50%;
+}
+
+.table-ml{
+	margin-left: 20%;
+}
+
+.input-right{
+	float: right;
+}
+
+.custom-card{
+	display: flex;
+	justify-content: space-around;
+}
+
+.custom-calender{
+	width:79%;
+	float:left;
+}
+
+.custom-meetings{
+	background-color: #216583;
+	width:20%;
+	margin:5px;
+}
+
+.custom-earlier{
+	font-size: 22px;
+	font-weight: 600;
+	color: white;
+	text-align: center;
+}
+
+.custom-scroll{
+	height:520px;
+	overflow: auto;
+}
+
+.custom-anchor{
+	text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
