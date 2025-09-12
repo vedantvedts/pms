@@ -12,115 +12,8 @@
 <spring:url value="/resources/js/excel.js" var="excel" />
 <script src="${excel}"></script>
 <title>LOGIN LIST</title>
-<style type="text/css">
-label {
-	font-weight: bold;
-	font-size: 13px;
-}
-
-.table .font {
-	font-family: 'Muli', sans-serif !important;
-	font-style: normal;
-	font-size: 13px;
-	font-weight: 400 !important;
-}
-
-.table button {
-	background-color: Transparent !important;
-	background-repeat: no-repeat;
-	border: none;
-	cursor: pointer;
-	overflow: hidden;
-	outline: none;
-	text-align: left !important;
-}
-
-.table td {
-	padding: 5px !important;
-	
-}
-
-.resubmitted {
-	color: green;
-}
-
-.fa {
-	font-size: 1.20rem;
-}
-
-.datatable-dashv1-list table tbody tr td {
-	padding: 8px 10px !important;
-}
-
-.table-project-n {
-	color: #005086;
-}
-
-#table thead tr th {
-	padding: 0px 0px !important;
-}
-
-#table tbody tr td {
-	padding: 2px 3px !important;
-}
-
-/* icon styles */
-.cc-rockmenu {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-}
-
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor: pointer;
-	width: 34px;
-	height: 30px;
-	text-align: left;
-	overflow: hidden;
-	transition: all 0.3s ease-out;
-	white-space: nowrap;
-}
-
-.cc-rockmenu .rolling:hover {
-	width: 108px;
-}
-
-.cc-rockmenu .rolling .rolling_icon {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 28px;
-	height: 52px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-.cc-rockmenu .rolling span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 14px;
-	font-family: 'Muli', sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin: 0;
-}
-
-.width {
-	width: 270px !important;
-}
-</style>
+<spring:url value="/resources/css/admin/UserManagerList.css" var="userManagerList" />
+<link href="${userManagerList}" rel="stylesheet" />
 </head>
 <body>
 
@@ -166,7 +59,7 @@ label {
 							  <form action="LoginExcelUpload.htm" method="post" enctype="multipart/form-data">
 								  		<table>
 									  		<tr>
-											  	<td align="left"><h6>Download Excel : &nbsp;<button formaction="LoginExcelUpload.htm" formmethod="post" formnovalidate="formnovalidate" name="Action" value="GenerateExcel"><i class="fa fa-file-excel-o" aria-hidden="true" style="color: green;"></i></button></h6></td>
+											  	<td align="left"><h6>Download Excel : &nbsp;<button formaction="LoginExcelUpload.htm" formmethod="post" formnovalidate="formnovalidate" name="Action" value="GenerateExcel"><i class="fa fa-file-excel-o text-success" aria-hidden="true" ></i></button></h6></td>
 												<td align="right"><h6>&nbsp;&nbsp;&nbsp;&nbsp;	Upload Excel :&nbsp;&nbsp;&nbsp;&nbsp;
 												  <input type="file" id="excel_file" name="filename" required="required"  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"></h6></td>						
 										  		<td align="right"> </td>
@@ -182,11 +75,11 @@ label {
 								          <span aria-hidden="true">&times;</span>
 								        </button>
 								      </div>
-								      <div class="modal-body" align="left" style="max-height: 25rem; overflow-y:auto;">
-								             <table class="table table-bordered table-hover table-striped table-condensed " id="myTable1" style="overflow: scroll;"> </table>
+								      <div class="modal-body hei-over" align="left">
+								             <table class="table table-bordered table-hover table-striped table-condensed " id="myTable1" > </table>
 								      </div>
 								      <div class="modal-footer" align="center">
-								        			<button type="submit" onclick="return confirm('Are you sure to submit?')" style="margin-left: -70px;" class="btn btn-sm add" name="Action" value="UploadExcel"> Upload</button>
+								        			<button type="submit" onclick="return confirm('Are you sure to submit?')" class="btn btn-sm add m-minus" name="Action" value="UploadExcel"> Upload</button>
 								       </div>
 								    </div>
 								  </div>
@@ -210,19 +103,19 @@ label {
 											<th>Employee</th>
 											<th>User Name</th>
 											<th>Division Name</th>
-											<th style="width: 10%;">PMS Login</th>
+											<th class="w-10">PMS Login</th>
 											<th>Login type</th>
 										</tr>
 									</thead>
 									<tbody>
 										<%for(Object[] obj:UserManagerList){ %>
 										<tr>
-											<td style="text-align: center; " ><input type="radio" name="Lid" value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%>></td>
+											<td class="text-center" ><input type="radio" name="Lid" value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%>></td>
 											<td><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %>, <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %></td>
 											<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
 											<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 											<%-- <td><%=obj[3] %></td> --%>
-											<td style="text-align: center;">
+											<td class="text-center">
 												<%if(obj[4].equals("N")){%><span class="badge badge-warning">No</span>
 												<%}else{ %><span class="badge badge-success">Yes</span>
 												<%} %>
@@ -244,7 +137,7 @@ label {
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								<button type="submit" class="btn btn-danger btn-sm delete" name="sub" value="delete" onclick="Delete(frm1)">DELETE</button>
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<button type="submit" class="btn btn-danger btn-sm" style="font-weight: 800;font-family: 'Montserrat', sans-serif;" formaction="Resetpassword.htm" Onclick="return ResetPwd(frm1)">RESET PASSWORD </button>
+								<button type="submit" class="btn btn-danger btn-sm btn-font"  formaction="Resetpassword.htm" Onclick="return ResetPwd(frm1)">RESET PASSWORD </button>
 								<%}%>
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								 <%if(Onboarding!=null && "Yes".equalsIgnoreCase(Onboarding)){%>
@@ -372,7 +265,7 @@ excel_file.addEventListener('change', (event) => {
         {          
         	var table_output = ' <table class="table table-bordered table-hover table-striped table-condensed " id="myTable1" > ';
             
-        	table_output+='<thead> <tr > <th style=" text-align: center;">SNo</th> <th style=" text-align: center;">User Name</th> <th style=" text-align: center;">Employee Number</th> <th style=" text-align: center;">Login Type</th> </tr> </thead><tbody>'
+        	table_output+='<thead> <tr > <th class="text-center">SNo</th> <th class="text-center">User Name</th> <th class="text-center">Employee Number</th> <th class="text-center">Login Type</th> </tr> </thead><tbody>'
         	var index=0;
         	var checkExcel=0;
             

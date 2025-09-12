@@ -12,131 +12,8 @@
 <link href="${sweetalertCss}" rel="stylesheet" />
 <script src="${sweetalertJs}"></script>
 <title>File Master</title>
-
-  <style>
-.subfolder-group {
-    display: none;
-    flex-direction: column;
-    gap: 20px;
-    width: 100%;
-}
-
-.breadcrumb-header {
-    font-size: 16px;
-    font-weight: 500;
-    margin-bottom: 10px;
-    color: #555;
-}
-
-.breadcrumb-link {
-    color: #007bff;
-    cursor: pointer;
-    text-decoration: underline;
-}
-
-.subfolder-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.folder-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.folder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100px;
-    cursor: pointer;
-    text-align: center;
-}
-
-.mainicon {
-    font-size: 65px;
-    color: #f0ad4e;
-}
-
-.fileicon {
-    font-size: 48px;
-    color: red;
-}
-.fa-pencil-square-o {
-    font-size: 18px !important;
-    color: #9f0dff !important;
-}
-.folder .edit-form {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 5px;
-}
-
-.folder .edit-form input[type="text"] {
-	text-align: center;
-}
-textarea {
-	font-family: inherit;
-	font-size: 14px;
-	line-height: 1.2;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	padding: 4px;
-}
-
-/* .upload-tooltip {
-    background: #333;
-    color: #fff;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 14px;
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-}
-
-.upload-tooltip i {
-    font-size: 16px;
-} */
-
-.folder-icon-wrapper {
-    position: relative;
-}
-
-.control-label {
-	font-weight: bold !important;
-}
-
-.file-icon-wrapper {
-    font-size: 43px;
-}
-
-.pdf-item {
-    width: 120px;
-    word-wrap: break-word;
-}
-
-.file-download-span {
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.file-download-span:hover {
-    text-decoration: underline;
-    color: #007bff;
-}
-
-.modal-xl{
-	max-width: 1200px;
-}
-
-</style>
+<spring:url value="/resources/css/fileRepo/FileRepMaster.css" var="filerepmaster" />
+<link href="${filerepmaster}" rel="stylesheet" />
 </head>
 <body>
   <%
@@ -179,14 +56,14 @@ textarea {
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header">
-						<div class="row" style="margin-top: -10px;">
+						<div class="row mt-minus" >
 							<div class="col-md-6">
 								<h4>Project Document Rep-Master</h4>
 							</div>
 							<div class="col-md-6">
 								<form action="FileRepMaster.htm" method="post"
 									id="myprojectform">
-									<table style="float: right;">
+									<table class="f-right">
 										<tr>
 											<td><label class="control-label">Project Name :&nbsp;&nbsp; </label></td>
 											<td><select class="form-control selectdee"
@@ -218,10 +95,9 @@ textarea {
 							</div>
 						</div>
 					</div>
-					<div class="card-body"
-						style="margin-top: -8px; border-color: #00DADA;">
+					<div class="card-body mt-bor-minus">
                         <div class="d-flex justify-content-left align-items-center flex-wrap mb-3">
-						    <div class="breadcrumb-header" style="margin-right: 20px" id="breadcumb-span">
+						    <div class="breadcrumb-header mr-3"  id="breadcumb-span">
 						        <span class="breadcrumb-link" onclick="goBackToMain()">Home</span>
 						        <span> &gt; </span>
 						        <span id="spanValue"></span>
@@ -250,12 +126,11 @@ textarea {
 											<span id="span_<%=obj[0]%>"> <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> 
 											    <br/>
 											    <%if(empId!=null && empId.equals(projectDirectorId) || logintype!=null && logintype.equalsIgnoreCase("A") ){ %>
-												<i class="fa fa-pencil-square-o"
-													style="margin-left: 5px; cursor: pointer;" aria-hidden="true"
+												<i class="fa fa-pencil-square-o cursor ml-1"
+													aria-hidden="true"
 													onclick="event.stopPropagation(); enableInlineEdit('<%=obj[0]%>')">
 												</i>
-												<i class="fa fa-upload"
-													style="margin-left: 5px; cursor: pointer; color: #0a5dff;"
+												<i class="fa fa-upload cursor ml-1 i-col"
 													aria-hidden="true"
 													onclick="event.stopPropagation(); showUpload('mainLevel','<%=obj[3]%>','<%= obj[0] %>')">
 												</i>
@@ -264,17 +139,16 @@ textarea {
 	
 											<!-- Edit Mode -->
 											<textarea name="levelname" id="input_<%=obj[0]%>"
-												maxlength="255"
-												style="display: none; width: 90px; resize: none; overflow-wrap: break-word; height: auto;"
+												maxlength="255" class="edit-text"
 												rows="2"><%=obj[3]!=null?obj[3].toString(): ""%></textarea>
 												
 											<div class="row">
 												<button type="button" id="btn_<%=obj[0]%>"
-													style="display: none;" class="btn btn-sm btn-success" onclick="submitLevelEdit('mainlevel', '<%=obj[0]%>','0','<%=obj[3]%>')">
+													class="btn btn-sm btn-success dis-none" onclick="submitLevelEdit('mainlevel', '<%=obj[0]%>','0','<%=obj[3]%>')">
 													<i class="fa fa-check" aria-hidden="true"></i>
 												</button>&nbsp;
 												<button type="button" id="btnx_<%=obj[0]%>"
-													class="btn btn-sm btn-danger" style="display: none;"
+													class="btn btn-sm btn-danger dis-none" 
 													onclick="event.stopPropagation(); disableInlineEdit('<%=obj[0]%>')">
 													<i class="fa fa-times" aria-hidden="true"></i>
 												</button>
@@ -297,7 +171,7 @@ textarea {
 							        if ("1".equalsIgnoreCase(main[2].toString())) {
 							            String parentId = main[0].toString();
 							%>
-							<div class="subfolder-group" data-parent="<%= parentId %>" style="width: auto;" id="subFolderId">
+							<div class="subfolder-group w-auto" data-parent="<%= parentId %>" id="subFolderId">
 							    <!-- Right: Subfolders list -->
 							    <div class="subfolder-list">
 							        <%
@@ -313,13 +187,11 @@ textarea {
 											<span id="span_<%=sub[0]%>"> <%=sub[3]!=null?StringEscapeUtils.escapeHtml4(sub[3].toString()): " - "%>
 											    <br/>
 											    <%if(empId!=null && empId.equals(projectDirectorId) || logintype!=null && logintype.equalsIgnoreCase("A") ){ %>
-											    <i class="fa fa-pencil-square-o"
-													style="margin-left: 5px; cursor: pointer;"
+											    <i class="fa fa-pencil-square-o cursor ml-1"
 													aria-hidden="true"
 													onclick="event.stopPropagation(); enableInlineEdit('<%=sub[0]%>')">
 												</i>
-												<i class="fa fa-upload"
-													style="margin-left: 5px; cursor: pointer; color: #0a5dff;"
+												<i class="fa fa-upload i-col cursor ml-1"
 													aria-hidden="true"
 													onclick="event.stopPropagation(); showUpload('subLevel','<%=sub[3]%>','<%= sub[0] %>')">
 												</i>
@@ -328,17 +200,15 @@ textarea {
 
 											<!-- Edit Mode -->
 											<textarea name="levelname" id="input_<%=sub[0]%>"
-												maxlength="255"
-												style="display: none; width: 90px; resize: none; overflow-wrap: break-word; height: auto;"
+												maxlength="255" class="edit-text"
 												rows="2"><%=sub[3]!=null?sub[3].toString(): " - "%></textarea>
 											<div class="row">
-												<button type="button" id="btn_<%=sub[0]%>"
-													style="display: none;" class="btn btn-sm btn-success" onclick="submitLevelEdit('sublevel', '<%=sub[0]%>', '<%=parentId%>', '<%=sub[3]%>')">
+												<button type="button" id="btn_<%=sub[0]%>" class="btn btn-sm btn-success dis-none" onclick="submitLevelEdit('sublevel', '<%=sub[0]%>', '<%=parentId%>', '<%=sub[3]%>')">
 													<i class="fa fa-check" aria-hidden="true"></i>
 												</button>
 												&nbsp;
 												<button type="button" id="btnx_<%=sub[0]%>"
-													class="btn btn-sm btn-danger" style="display: none;"
+													class="btn btn-sm btn-danger dis-none"
 													onclick="event.stopPropagation(); disableInlineEdit('<%=sub[0]%>')">
 													<i class="fa fa-times" aria-hidden="true"></i>
 												</button>
@@ -393,9 +263,8 @@ textarea {
 							<input type="hidden" name="formname" value="rm" /> 
 							<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" /> 
 							<div>
-								<input class="form-control" type="text" name="MasterName" id="masterName"
-									required="required" maxlength="255" onchange="checkDuplicateFolderName()"
-									style="width: 100%;">
+								<input class="form-control w-100" type="text" name="MasterName" id="masterName"
+									required="required" maxlength="255" onchange="checkDuplicateFolderName()">
 							</div>
 							<div class="text-center mt-4">
 								<button type="submit" class="btn btn-success" onclick="return submitMainFile()">Submit</button>
@@ -422,9 +291,8 @@ textarea {
 					<div>
 						<form id="myFormB" action="FileRepMasterSubAdd.htm" method="post">
 							<div>
-								<input class="form-control" type="text" name="MasterSubName" id="masterSubName"
-									required="required" maxlength="255" onchange="checkDuplicateFolderName()"
-									style="width: 100%;">
+								<input class="form-control w-100" type="text" name="MasterSubName" id="masterSubName"
+									required="required" maxlength="255" onchange="checkDuplicateFolderName()">
 							</div>
 						<div class="text-center mt-4">
 							<button type="submit" class="btn btn-success" onclick="return submitSubFile()">Submit</button>
@@ -444,8 +312,7 @@ textarea {
 	
 	
 	<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog">
-	<div class="modal-dialog modal-lg" role="document"
-			style="max-width: 60% !important;">
+	<div class="modal-dialog modal-lg w-60" role="document">
 	      <div class="modal-content">
 	        <div class="modal-header">
 	          <h5 class="modal-title" id="modalTitle"></h5>
@@ -454,12 +321,12 @@ textarea {
 	        <div class="modal-body">
      		  <div class="row">
 					<div class="col-md-12 d-flex align-items-center mb-2">
-					    <label class="control-label mr-3 mb-0" style="white-space: nowrap;">Upload Type</label>
+					    <label class="control-label mr-3 mb-0 no-wrap" >Upload Type</label>
 					    <div class="btn-group btn-group-toggle flex-grow-1" data-toggle="buttons">
-					        <label class="btn btn-outline-success flex-fill" style="font-weight: 700">
+					        <label class="btn btn-outline-success flex-fill f-700" >
 					            <input type="radio" name="isNewUpload" id="isNewUploadY" value="Y" autocomplete="off" checked onchange="toggleUploadType(this.value)"> New Upload
 					        </label>
-					        <label class="btn btn-outline-danger flex-fill" style="font-weight: 700">
+					        <label class="btn btn-outline-danger flex-fill f-700" >
 					            <input type="radio" name="isNewUpload" id="isNewUploadN" value="N" autocomplete="off" onchange="toggleUploadType(this.value)"> Existing Upload
 					        </label>
 					    </div>
@@ -470,11 +337,11 @@ textarea {
 					        <label class="control-label">Document Name</label>
 					
 					        <!-- Text input shown by default -->
-					        <input type="text" class="form-control" id="FileNameInput"
-					            onchange="checkDuplicateFileName()" name="FileName" required="required" style="height: 2.7rem"/>
+					        <input type="text" class="form-control hei-2-7" id="FileNameInput"
+					            onchange="checkDuplicateFileName()" name="FileName" required="required" />
 					
 					        <!-- Dropdown hidden by default -->
-					        <select class="form-control d-none" id="FileNameSelect" name="FileName"  style="height: 2.7rem">
+					        <select class="form-control dis-none hei-2-7" id="FileNameSelect" name="FileName"  >
 					            <option value="">-- Select Document --</option>
 					        </select>
 					    </div>
@@ -500,7 +367,7 @@ textarea {
 	            <input type="hidden" name="fileType" id="fileType" value="">
 	        </div>
 			 <div align="center">
-					<input type="button" class="btn btn-primary btn-sm submit" style="margin-bottom: 15px;" id="submitversion" onclick="submitUpload()"/>
+					<input type="button" class="btn btn-primary btn-sm submit mb-3"  id="submitversion" onclick="submitUpload()"/>
 			</div>
 		  </div>
 	  </div>
@@ -517,7 +384,7 @@ textarea {
 	      </div>
 	      <div class="modal-body">
 	        <table class="table table-bordered table-hover">
-	          <thead style="background-color: bisque">
+	          <thead class="bg-bis">
 	            <tr>
 	              <th>SN</th>
 	              <th>File Name</th>
@@ -605,7 +472,7 @@ textarea {
 			                                    '<i class="fa fa-file-pdf-o fileicon" aria-hidden="true"></i>'+
 			                                '</div>'+
 			                                '<span class="file-download-span" onclick="fileDownload(' + file[7] + ', \'mainLevel\')">' + file[6] + '</span><br/>'+
-			                                '<span class="text-muted">Ver '+file[4]+'.'+file[5]+' <i class="fa fa-info-circle" aria-hidden="true" style="cursor: pointer;" onclick="showVersionModal(' + file[0] + ',\'' + file[6] + '\', \'mainLevel\')"></i></span>'+
+			                                '<span class="text-muted">Ver '+file[4]+'.'+file[5]+' <i class="fa fa-info-circle cursor" aria-hidden="true" onclick="showVersionModal(' + file[0] + ',\'' + file[6] + '\', \'mainLevel\')"></i></span>'+
 			                            '</div>';
                         container.append(pdfItem);
                     });
@@ -667,7 +534,7 @@ textarea {
 			                                    '<i class="fa fa-file-pdf-o fileicon" aria-hidden="true"></i>'+
 			                                '</div>'+
 			                                '<span class="file-download-span" onclick="fileDownload(' + file[7] + ', \'subLevel\')">' + file[6] + '</span><br/>'+
-			                                '<span class="text-muted">Ver '+file[4]+'.'+file[5]+' <i class="fa fa-info-circle" aria-hidden="true" style="cursor: pointer;" onclick="showVersionModal(' + file[0] + ',\'' + file[6] + '\',\'subLevel\')"></i></span>'+
+			                                '<span class="text-muted">Ver '+file[4]+'.'+file[5]+' <i class="fa fa-info-circle cursor" aria-hidden="true" onclick="showVersionModal(' + file[0] + ',\'' + file[6] + '\',\'subLevel\')"></i></span>'+
 			                            '</div>';
                         container.append(pdfItem);
                     });
@@ -1245,7 +1112,7 @@ function showVersionModal(fileRepId,fileName,fileType) {
 	                  '<td>v' + version[4] + '.' + version[5] + '</td>' +
 	                  '<td>' + RegularDateFormat(version[6]) + '</td>' +
 	                  '<td>' + version[7] + ', ' + version[8] + '</td>' +
-	                  '<td><i class="fa fa-download" style="cursor: pointer;" onclick="fileDownload(' + version[0] + ', \'' + fileType + '\')"></i></td>' +
+	                  '<td><i class="fa fa-download cursor" onclick="fileDownload(' + version[0] + ', \'' + fileType + '\')"></i></td>' +
 	                '</tr>';
 	      }
 	      $('#versionTableBody').html(rows);

@@ -1,0 +1,56 @@
+@charset "UTF-8";
+
+
+label{
+font-weight: bold;
+  font-size: 13px;
+}
+
+.table .font{
+	  font-family:'Muli', sans-serif !important;
+	  font-style: normal;
+	  font-size: 13px;
+	  font-weight: 400 !important;
+	 
+}
+
+.table button {
+    background-color: Transparent !important;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    text-align: left !important;
+}
+.table td{
+	padding:5px !important;
+}
+ .resubmitted{
+	color:green;
+}
+
+	.fa{
+		font-size: 1.20rem;
+	}
+	
+.datatable-dashv1-list table tbody tr td{
+	padding: 8px 10px !important;
+}
+
+.table-project-n{
+	color: #005086;
+}
+
+#table thead tr th{
+	padding: 0px 0px !important;
+}
+
+#table tbody tr td{
+	padding:2px 3px !important;
+}
+
+
+.width{
+	width:270px !important;
+}

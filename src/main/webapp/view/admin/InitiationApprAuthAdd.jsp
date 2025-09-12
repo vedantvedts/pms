@@ -5,33 +5,15 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<style type="text/css">
+<spring:url value="/resources/css/admin/InitiationApprAuthAdd.css" var="initiationApprAuthAdd" />
+<link href="${initiationApprAuthAdd}" rel="stylesheet" />
 
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-.card b{
-	font-size: 20px;
-}
-
-
-</style>
 </head>
 <body>
 
@@ -72,25 +54,13 @@ List<String> apprTypes = Arrays.asList("AD","DO-RTMD","GH-DP&C","AD-P&C","Chairm
 <br>
 	
 <div class="container">
-	<div class="row" style="">
+	<div class="row" >
 		<div class="col-md-12">
 			<div class="card shadow-nohover" >
-				<div class="card-header" style=" background-color: #055C9D;margin-top: ">
+				<div class="card-header bg-header">
                     <b class="text-white">Approval Authority <%if(action!=null) {%><%=StringEscapeUtils.escapeHtml4(action)%><%} %> </b>
         		</div>
         		<div class="card-body">
-        			<%-- <div class="row " style=" background-color: #e4f9f5;margin-bottom: 10px; ">
-						<div class="col-md-6 " ><br>
-                    		<label class="control-label">Active RTMDDO : <%if(Rtmddo!=null){%> <%=Rtmddo[2] %>, <%=Rtmddo[3] %><%} %></label>
-                        </div>
-                        <div class="col-md-3 "><br>
-                        	<label class="control-label">Valid From : <%if(Rtmddo!=null){%> <%=sdf.format(Rtmddo[4]) %><%} %></label>
-                        </div>
-                        <div class="col-md-3 "><br>
-                        	<label class="control-label">Valid To : <%if(Rtmddo!=null){%> <%=sdf.format(Rtmddo[5]) %><%} %></label>
-                        	<br><br>
-                        </div>
-                    </div> --%>
         			<form action="RtmddoSubmit.htm" method="POST" name="myfrm" id="myfrm">
                 		<div class="row">
 							<div class="col-md-4">

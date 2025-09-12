@@ -1,5 +1,6 @@
 <%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
@@ -11,150 +12,9 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/admin/AuditPatches.css" var="auditpatches" />
+<link href="${auditpatches}" rel="stylesheet" />
 <title>Audit Patches</title>
-
-<style type="text/css">
-label {
-	font-weight: bold;
-	font-size: 13px;
-}
-
-.table .font {
-	font-family: 'Muli', sans-serif !important;
-	font-style: normal;
-	font-size: 13px;
-	font-weight: 400 !important;
-}
-
-
-
-.table td {
-	padding: 5px !important;
-}
-
-.resubmitted {
-	color: green;
-}
-
-.fa {
-	font-size: 1.20rem;
-}
-
-.datatable-dashv1-list table tbody tr td {
-	padding: 8px 10px !important;
-}
-
-.table-project-n {
-	color: #005086;
-}
-
-#table thead tr th {
-	padding: 0px 0px !important;
-}
-
-#table tbody tr td {
-	padding: 2px 3px !important;
-}
-
-/* icon styles */
-.cc-rockmenu {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-}
-
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor: pointer;
-	width: 34px;
-	height: 30px;
-	text-align: left;
-	overflow: hidden;
-	transition: all 0.3s ease-out;
-	white-space: nowrap;
-}
-
-.cc-rockmenu .rolling:hover {
-	width: 108px;
-}
-
-.cc-rockmenu .rolling .rolling_icon {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 28px;
-	height: 52px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-.cc-rockmenu .rolling span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 14px;
-	font-family: 'Muli', sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin: 0;
-}
-
-.width {
-	width: 270px !important;
-}
-.glow-text {
-            color: green;
-            text-shadow: 0 0 10px green, 0 0 25px green, 0 0 25px green;
-            text-align: center;
-        }
-.glow-text-red {
-            color: red;
-            text-shadow: 0 0 10px red, 0 0 25px red, 0 0 25px red;
-            text-align: center;
-        }
-
-        /* Customizing the modal animation */
-        .modal-dialog {
-            transform: translateY(-50px); /* Start with modal above view */
-            transition: transform 0.3s ease-out; /* Smooth transition */
-        }
-
-        .modal.show .modal-dialog {
-            transform: translateY(0); /* Bring modal to center */
-        }
-        .btn-custom {
-            padding: 4px 16px; /* Same padding */
-            height :30px;
-            font-size: 14px; 
-              /* Same font size */
-        }
-        .btn-back {
-            background-color: #17a2b8;
-            border-color: #17a2b8;
-            color: white;
-        }
-        .btn-back:hover {
-            background-color: #138496;
-            border-color: #117a8b;
-        }
-        .form-info p {
-            margin: 5px 0; /* Adjust this value as needed */
-            color: red;
-            font-size: 14px;
-        }
-        
-    </style>
 </head>
 <body>
     <% 
@@ -193,14 +53,14 @@ label {
                     </div>
 
                     <div class="card-body">
-                        <form action="AuditPatchEdit.htm" method="post" style="display: inline">
+                        <form action="AuditPatchEdit.htm" method="post" class="form-display" >
                             <div class="table-responsive">
                                 <table class="table table-bordered table-hover table-striped table-condensed" id="myTable">
-							    <thead style="text-align: center;">
+							    <thead class="text-center">
 							        <tr>
 							            <th>Select</th>
 							            <th>Version No</th>
-							            <th style="width: 610px">Description</th>
+							            <th class="w-610">Description</th>
 							            <th>Patch Date</th>
 							            <th>Updated Date</th>
 							            <th>Attachment</th>
@@ -216,27 +76,27 @@ label {
 							                String shortDescription = description.substring(0, Math.min(description.length(), 90));
 							        %>
 							        <tr>
-							            <td style="text-align: center; vertical-align: middle;">
-							                <input type="radio" name="ProjectId" value="<%= obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): "" %>" style="display: block; margin: auto;">
+							            <td class="text-center v-align">
+							                <input type="radio" name="ProjectId" value="<%= obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): "" %>" class="d-block m-auto">
 							            </td>
-							            <td style="text-align: center;"><%= obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %></td>
+							            <td class="text-center"><%= obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %></td>
 							            <td>
 										    <span id="short-description-<%= count %>"><%= shortDescription!=null?StringEscapeUtils.escapeHtml4(shortDescription): " - " %></span>
 										    <% if (longDescription) { %>
-										        <span id="dots-<%= count %>" style="display:inline;">...</span>
-										        <span id="more-<%= count %>" style="display:none; margin: 0; padding: 0;"><%= description!=null?StringEscapeUtils.escapeHtml4(description.substring(90)): " - " %></span>
-										        <span class="btn btn-link" id="toggle-link-<%= count %>" style="margin: 0; padding: 0;" onclick="toggleDescription('<%= count %>')">Show More</span>
+										        <span id="dots-<%= count %>" class="d-inline" >...</span>
+										        <span id="more-<%= count %>" class="dis-none m-0 p-0" ><%= description!=null?StringEscapeUtils.escapeHtml4(description.substring(90)): " - " %></span>
+										        <span class="btn btn-link m-0 p-0" id="toggle-link-<%= count %>"  onclick="toggleDescription('<%= count %>')">Show More</span>
 										    <% } %>
-										    <span style="display: none;" class="full-description" data-description="<%= description %>"></span> <!-- Added this line -->
+										    <span class="full-description dis-none" data-description="<%= description %>"></span> <!-- Added this line -->
 										</td>
 							            <% if(obj[5] != null) {
 							                java.util.Date date = (java.util.Date) obj[5];
 							                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 							                String formattedDate1 = formatter.format(date);
 							            %>
-							            <td style="text-align: center;"><%= formattedDate1!=null?StringEscapeUtils.escapeHtml4(formattedDate1): " - " %></td>
+							            <td class="text-center" ><%= formattedDate1!=null?StringEscapeUtils.escapeHtml4(formattedDate1): " - " %></td>
 							            <% } else { %>
-							            <td style="text-align: center;">-</td>
+							            <td class="text-center" >-</td>
 							            <% } %>
 							            <%
 							                String sqlDate = obj[2].toString().split("\\.")[0];
@@ -252,10 +112,10 @@ label {
 							            <% } else { %>
 							            <td class="glow-text-red"><%= formattedDate!=null?StringEscapeUtils.escapeHtml4(formattedDate): " - " %></td>
 							            <% } %>
-							            <td style="text-align: center;">
+							            <td class="text-center">
 							                <% if(obj[3] != null) { %>
 							                    <a href="PatchesAttachDownload.htm?attachid=<%= obj[4] %>" title="Download">
-							                        <i class="fa fa-download fa-2x" aria-hidden="true" style="width: 15px;"></i>
+							                        <i class="fa fa-download fa-2x" aria-hidden="true" class="w-15"></i>
 							                    </a>
 							                <% } else { %>
 							                    --
@@ -308,8 +168,8 @@ label {
                         <div class="text-center">
                             <button type="submit" class="btn btn-success">Submit</button>
                         </div>
-                        <p style="margin-bottom: 5px; color: red">*Please attach .sql or .txt file only</p>
-						<p style="margin-bottom: 5px; color: red">*Attachment size should be less than 100KB</p>
+                        <p class="c-red" >*Please attach .sql or .txt file only</p>
+						<p class="c-red" >*Attachment size should be less than 100KB</p>
 
                     </form>
                 </div>

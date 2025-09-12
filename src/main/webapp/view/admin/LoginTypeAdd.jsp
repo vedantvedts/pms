@@ -3,35 +3,16 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/css/admin/LoginTypeAdd.css" var="loginTypeAdd" />
+<link href="${loginTypeAdd}" rel="stylesheet" />
 
 <title>LOGIN TYPE ADD</title>
-<style type="text/css">
-
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-                                       
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-.card b{
-	font-size: 20px;
-}
-
-
-</style>
 </head>
 <body>
 
@@ -66,13 +47,13 @@ NFormatConvertion nfc=new NFormatConvertion();
 <br>
 	
 <div class="container">
-	<div class="row" style="">
+	<div class="row">
 
 		<div class="col-md-12">
 
  			<div class="card shadow-nohover" >
 				
-				<div class="card-header" style=" background-color: #055C9D;margin-top: ">
+				<div class="card-header bg-header" >
                     <b class="text-white">Login Type Add</b>
         		</div>
         
@@ -127,7 +108,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 
 
 
-<div class="card-footer" style=" background: linear-gradient(to right, #334d50, #cbcaa5);padding: 25px ">
+<div class="card-footer bg-footer">
          
        
         </div>

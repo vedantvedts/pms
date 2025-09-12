@@ -1,0 +1,39 @@
+@charset "UTF-8";
+
+
+.toggle-password {
+      float: right;
+      cursor: pointer;
+      margin-top: -30px;
+      font-size: 23px;
+      position: relative; /* Add this line */
+      z-index: 2;
+    }
+
+.disabled-password{
+float: right;
+      cursor: pointer;
+      margin-top: -30px;
+      font-size: 23px;
+      position: relative; /* Add this line */
+      z-index: 2;
+      color:grey;
+}
+
+    .password-container {
+      position: relative; /* Add this line */
+    }
+
+    .form-control {
+      padding-right: 40px; /* Adjust as needed based on your icon size */
+    }
+    
+    .h5-font{
+    	font-weight: 700 !important;
+    }
+    .bg-alice{
+    	background-color: aliceblue!important;
+    }
+    .input-font{
+    	font-size: 15px!important;
+    }

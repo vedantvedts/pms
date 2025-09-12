@@ -4,35 +4,15 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 <title>P&C DO ADD</title>
-<style type="text/css">
-
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-.card b{
-	font-size: 20px;
-}
- <!-- #submit {
-    width: 5em;  height:3em;
-}   -->
-</style>
+<spring:url value="/resources/css/admin/Rtmddo2.css" var="rtmddo2" />
+<link href="${rtmddo2}" rel="stylesheet" />
 </head>
 <body>
       
@@ -70,7 +50,7 @@ map = pdomtrt.stream().collect(Collectors.groupingBy(c -> c[4]));
 
  			<div class="card shadow-nohover" >
 				
-				<div class="card-header" style=" background-color: #055C9D; ">
+				<div class="card-header bg-header" >
                     <b class="text-white">P&C DO/AD</b>
         		</div>
                                    
@@ -109,7 +89,7 @@ map = pdomtrt.stream().collect(Collectors.groupingBy(c -> c[4]));
                         		<div class="form-group">
                             		<label class="control-label"></label>
                             		     		<input type="hidden" name="type" value="DO-RTMD"/>
-                                         <button class="btn submit" type="submit" style="margin-top: 2.15rem;">Submit</button> 
+                                         <button class="btn submit m-top" type="submit">Submit</button> 
                         		</div>
                     		</div>
           
@@ -148,7 +128,7 @@ map = pdomtrt.stream().collect(Collectors.groupingBy(c -> c[4]));
                         		<div class="form-group">
                             		<label class="control-label"></label>
                             		<input type="hidden" name="type" value="AD"/>
-                                         <button class="btn submit" type="submit" style="margin-top: 2.15rem;">Submit</button> 
+                                         <button class="btn submit m-top" type="submit" >Submit</button> 
                         		</div>
                     		</div>        		
                         </div>  
@@ -157,12 +137,12 @@ map = pdomtrt.stream().collect(Collectors.groupingBy(c -> c[4]));
 	  </div>
 	
  		
-		<div class="card-footer" style=" background: linear-gradient(to right, #334d50, #cbcaa5);padding: 25px ">
+		<div class="card-footer bg-footer" >
   </div>             
 </div>        
 </div>
 </div>
-	
+</div>
 	
 	
 <script type="text/javascript">

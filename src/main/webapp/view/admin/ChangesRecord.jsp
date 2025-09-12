@@ -13,129 +13,9 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/admin/ChangesRecord.css" var="changesRecord" />
+<link href="${changesRecord.css}" rel="stylesheet" />
 <title>Changes</title>
-<style type="text/css">
-label {
-	font-weight: bold;
-	font-size: 13px;
-}
-
-body {
-	background-color: #f2edfa;
-}
-
-.table .font {
-	font-family: 'Muli', sans-serif !important;
-	font-style: normal;
-	font-size: 13px;
-	font-weight: 400 !important;
-}
-
-.table button {
-	background-color: Transparent !important;
-	background-repeat: no-repeat;
-	border: none;
-	cursor: pointer;
-	overflow: hidden;
-	outline: none;
-	text-align: left !important;
-}
-
-.table td {
-	padding: 5px !important;
-}
-
-.resubmitted {
-	color: green;
-}
-
-.fa {
-	font-size: 1.20rem;
-}
-
-.datatable-dashv1-list table tbody tr td {
-	padding: 8px 10px !important;
-}
-
-.fa-exclamation-triangle {
-	font-size: 2.5rem !important;
-}
-
-.table-project-n {
-	color: #005086;
-}
-
-.right {
-	text-align: right;
-} 
- 
-.center {
-	text-align: center;
-}
-
-#table thead tr th {
-	padding: 0px 0px !important;
-	text-align:center;
-}
-
-#table tbody tr td {
-	padding: 2px 3px !important;
-	text-align:center;
-}
-
-/* Tab css */
-
-.nav-link{
-	    padding: 10px 20px;
-}
-
-
-.nav-pills .nav-link.active{
-	background-color: #0078AA !important;
-}
-
-.with-arrow .nav-link.active {
-  position: relative;
-}
-
-.with-arrow .nav-link.active::after {
-  content: '';
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: 6px solid #0078AA;
-  position: absolute;
-  bottom: -6px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: block;
-}
-
-
-
-
-
-.info-box{
-	color: #004085;
-    background-color: #cce5ff;
-    border-color: #b8daff;
-    border: 1px solid transparent;
-    border-radius: 0.25rem;
-}
-
-#radioBtn .notActive{
-    color: #3276b1;
-    background-color: #fff;
-}
-
-#radioBtn a{
-	font-family: 'Lato';
-    font-weight: 700;
-}
-
-
-
-</style>
 </head>
 <body>
 
@@ -192,41 +72,30 @@ String labcode = (String)request.getAttribute("labcode");
 				<div class="col-md-6">
 					<h4>
 						Changes Record &nbsp;&nbsp;&nbsp;	 
-						<%-- <span class="badge badge-primary" style="font-size: small">Today <span class="badge badge-danger">
-						<%= ((Number)ChangesTotalData[0]).intValue() + ((Number)ChangesTotalData[3]).intValue() + ((Number)ChangesTotalData[6]).intValue() + ((Number)ChangesTotalData[9]).intValue()  %>
-						</span></span>
-						<span class="badge badge-primary" style="font-size: small">Week <span class="badge badge-danger">
-						<%= ((Number)ChangesTotalData[1]).intValue() + ((Number)ChangesTotalData[4]).intValue() + ((Number)ChangesTotalData[7]).intValue() + ((Number)ChangesTotalData[10]).intValue()  %>
-						</span></span>
-						<span class="badge badge-primary" style="font-size: small">Month <span class="badge badge-danger">
-						<%= ((Number)ChangesTotalData[2]).intValue() + ((Number)ChangesTotalData[5]).intValue() + ((Number)ChangesTotalData[8]).intValue() + ((Number)ChangesTotalData[11]).intValue()  %>
-						</span></span>
-						 --%>
-					
 						
 					</h4>
 				</div>
 				 
-				<div class="col-md-3  " style="float:right;margin-top: -0.5rem; ">
+				<div class="col-md-3  nav-term" >
 					<label>Term : </label>
-					<select class="form-control selectdee" id="interval" required="required" name="interval" onchange="submitform()"  style="width:150px !important">
-						<option value="T"  <%if("T".equalsIgnoreCase(Interval)){ %> selected="selected" <%} %> style="text-align: left !important" >Today</option>
-						<option value="W"  <%if("W".equalsIgnoreCase(Interval)){ %> selected="selected" <%} %>  style="text-align: left !important" >Weekly</option>
-						<option value="M"  <%if("M".equalsIgnoreCase(Interval)){ %> selected="selected" <%} %>  style="text-align: left !important" >Monthly</option>
+					<select class="form-control selectdee w-150" id="interval" required="required" name="interval" onchange="submitform()" >
+						<option value="T"  <%if("T".equalsIgnoreCase(Interval)){ %> selected="selected" <%} %> class="text-left" >Today</option>
+						<option value="W"  <%if("W".equalsIgnoreCase(Interval)){ %> selected="selected" <%} %> class="text-left" >Weekly</option>
+						<option value="M"  <%if("M".equalsIgnoreCase(Interval)){ %> selected="selected" <%} %> class="text-left" >Monthly</option>
 					</select>
 				</div>
 				
-				<div class="col-md-3 " style="float:right;margin-top: -0.5rem; ">
+				<div class="col-md-3 nav-term" >
 				
 				<%if(IsDG.equalsIgnoreCase("No")) {%>
 
 					<label>Project : </label>
-					<select class="form-control selectdee" id="projectid" required="required" name="projectid" onchange="submitform()"  style="width:200px !important" >
+					<select class="form-control selectdee w-200" id="projectid" required="required" name="projectid" onchange="submitform()" >
 																
 									<option value="A" <%if("A".equalsIgnoreCase(projectid)){ %> selected="selected" <%} %> selected="selected" hidden="true">All</option>
 											<%	for (Object[] obj2 : ProjectList) { %>
 											
-													<option value="<%=obj2[0]%>" <%if(obj2[0].toString().equalsIgnoreCase(projectid)){ %> selected="selected" <%} %> style="text-align: left !important" ><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "%></option>
+													<option value="<%=obj2[0]%>" <%if(obj2[0].toString().equalsIgnoreCase(projectid)){ %> selected="selected" <%} %> class="text-left" ><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "%></option>
 													
 											<%} %>
 					</select>
@@ -235,12 +104,12 @@ String labcode = (String)request.getAttribute("labcode");
 				
 				
 					<label>LabCode : </label>
-					<select class="form-control selectdee" id="labcode" required="required" name="labcode" onchange="submitform()"  style="width:200px !important" >
+					<select class="form-control selectdee w-200" id="labcode" required="required" name="labcode" onchange="submitform()"   >
 																
 									<option value="A" <%if("A".equalsIgnoreCase(projectid)){ %> selected="selected" <%} %> selected="selected" hidden="true">All</option>
 											<%	for (Object[] obj : labmasterlist) { %>
 											
-													<option value="<%=obj[1]%>" <%if(obj[1].toString().equalsIgnoreCase(labcode)){ %> selected="selected" <%} %> style="text-align: left !important" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
+													<option value="<%=obj[1]%>" <%if(obj[1].toString().equalsIgnoreCase(labcode)){ %> selected="selected" <%} %> class="text-left"  ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
 													
 											<%} %>
 					</select>
@@ -308,7 +177,7 @@ String labcode = (String)request.getAttribute("labcode");
 				      	<table class="table table-bordered table-hover table-striped table-condensed dataTable "  id="myTable6"> 
 			            	<thead>
 			                	<tr>
-			                		<th style="width:18px !important">SN</th>
+			                		<th class="w-18" >SN</th>
 			                		<th>Lab</th>
 			                    	<th>Type</th>
 			                        <th>Identity</th>
@@ -324,11 +193,7 @@ String labcode = (String)request.getAttribute("labcode");
 									<td><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%></td>
 									<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></td>
 									<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> (<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %>)</td>
-									<%-- <%if(obj[0].toString().equalsIgnoreCase("Finance") ){ %>
-										<td style="text-align: center"><%= sdf1.format(sdf2.parse(obj[4].toString()))%></td>
-									<%}else{ %>
-										<td style="text-align: center"><%=sdf1.format(obj[4])%></td>
-									<%} %> --%>
+									
 									<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%></td>
 								</tr>
 								<% n++;} %>	 			  
@@ -366,7 +231,7 @@ String labcode = (String)request.getAttribute("labcode");
 			                    	<th >Meeting Id</th>
 			                        <th>Schedule</th>
 			                        <th>Status</th>
-			                        <th style="width:170px !important">Done By</th>
+			                        <th class="w-170" >Done By</th>
 			                        <th>Created Date</th>
 			                  	</tr>
 			                </thead>
@@ -379,7 +244,7 @@ String labcode = (String)request.getAttribute("labcode");
 									<td><%=obj[4]!=null?sdf1.format(obj[4]):" - " %> &nbsp;-&nbsp; <%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></td>
 									<td><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %></td>
 									<td><%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - " %> (<%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - " %>)</td>
-									<td style="text-align: center"  ><%if(obj[6].toString().equalsIgnoreCase("MSC")){%> <%=obj[10]!=null?sdf1.format(obj[10]):" - "%> <%}else{ %><%=obj[11]!=null?sdf1.format(obj[11]) :" - "%> <%} %></td>
+									<td class="text-center"  ><%if(obj[6].toString().equalsIgnoreCase("MSC")){%> <%=obj[10]!=null?sdf1.format(obj[10]):" - "%> <%}else{ %><%=obj[11]!=null?sdf1.format(obj[11]) :" - "%> <%} %></td>
 								</tr>
 								<% i++;} %>				  
 							</tbody>
@@ -408,11 +273,11 @@ String labcode = (String)request.getAttribute("labcode");
 			                	<tr>
 			                		<th >SN</th>
 			                		<th>Lab</th>
-			                    	<th  style="width:100px	">Main Activity</th>
+			                    	<th class="w-100" >Main Activity</th>
 			                        <th>Sub Activity</th>
 			                        <th>Progress</th>
 			                        <th>Remarks</th>
-			                        <th  style="width:100px	">Done By</th>
+			                        <th class="w-100">Done By</th>
 			                        <th>Created Date</th>
 			                  	</tr>
 			                </thead>
@@ -423,10 +288,10 @@ String labcode = (String)request.getAttribute("labcode");
 									<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %></td>
 									<td><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %></td>
 									<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
-									<td style="text-align: center" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>%</td>
+									<td class="text-center" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>%</td>
 									<td><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></td>
 									<td><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %> (<%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - " %>)</td>
-									<td style="text-align: center" ><%=obj[9]!=null?sdf1.format(obj[9]):" - " %></td>
+									<td class="text-center" ><%=obj[9]!=null?sdf1.format(obj[9]):" - " %></td>
 								</tr>
 								<% j++;} %>				  
 							</tbody>
@@ -456,7 +321,7 @@ String labcode = (String)request.getAttribute("labcode");
 			                        <th>Action Item</th>
 			                        <th>Progress</th>
 			                        <th>Remarks</th>
-			                        <th  style="width:120px	">Done By</th>
+			                        <th class="w-120">Done By</th>
 			                        <th>Created Date</th>
 			                  	</tr>
 			                </thead>
@@ -466,11 +331,11 @@ String labcode = (String)request.getAttribute("labcode");
 									<td><%=k %>.</td>
 									<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %></td>
 									<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
-									<td style="width: 320px"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
-									<td style="text-align: center" ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %>%</td>
+									<td class="w-320"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
+									<td class="text-center" ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %>%</td>
 									<td><%=obj[6] !=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%></td>
 									<td><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%> (<%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - " %>)</td>
-									<td style="text-align: center" ><%=obj[8]!=null?sdf1.format(obj[8]):" - "%></td>
+									<td class="text-center" ><%=obj[8]!=null?sdf1.format(obj[8]):" - "%></td>
 								</tr>
 								<% k++;} %>				  
 							</tbody>
@@ -498,14 +363,14 @@ String labcode = (String)request.getAttribute("labcode");
 			                	<tr>
 			                		<th>SN</th>
 			                		<th>Lab</th>
-			                    	<th style="width:170px	">Action No</th>
-			                        <th style="width:340px!important">Description</th>
+			                    	<th class="w-170">Action No</th>
+			                        <th class="w-340">Description</th>
 			                        <th>Severity</th>
 			                        <th>Probability</th>
 			                        <th>Mitigation </th>
-			                        <th  style="width:50px	">Rev No</th>
-			                        <th  style="width:120px	">Done By</th>
-			                        <th style="width:80px	">Created Date</th>
+			                        <th class="w-50" >Rev No</th>
+			                        <th class="w-120">Done By</th>
+			                        <th class="w-80" >Created Date</th>
 			                  	</tr>
 			                </thead>
 			                <tbody>
@@ -518,9 +383,9 @@ String labcode = (String)request.getAttribute("labcode");
 									<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
 									<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
 									<td><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></td>
-									<td style="text-align: center" ><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %></td>
+									<td class="text-center" ><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %></td>
 									<td><%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - " %> (<%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %>)</td>
-									<td style="text-align: center" ><%=obj[8]!=null?sdf1.format(obj[8]):" - " %></td>
+									<td class="text-center" ><%=obj[8]!=null?sdf1.format(obj[8]):" - " %></td>
 								</tr>
 								<% l++;} %>				  
 							</tbody>
@@ -542,55 +407,6 @@ String labcode = (String)request.getAttribute("labcode");
 				      </div>
 				      <div id="financetab" role="tabpanel"  class="tab-pane fade px-4 py-2">
 				      			
-				      		<!-- 	<div align="center">
-				          			<div class="form-group">
-							    		<div class="col-md-2">
-							    			<div class="input-group">
-							    				<div id="radioBtn" class="btn-group">
-							    					<a class="btn btn-primary btn-sm active" data-toggle="fun" data-title="Y">Part A</a>
-							                        <a class="btn btn-primary btn-sm notActive" data-toggle="fun" data-title="X">Part B</a>
-							    				</div>
-							    			</div>
-							    		</div>
-							    	</div>
-							 </div> -->
-				          			
-				          	<%-- <%if(financedataparta.size()>0){ %>
-				      	
-				      		<table class="table table-bordered table-hover table-striped table-condensed dataTable "  id="myTable5"> 
-			            	<thead>
-			                	<tr>
-			                		<th>SN</th>
-			                    	<th >Demand No</th>
-			                        <th>Demand Date</th>
-			                        <th>Estimated Cost</th>
-			                        <th style="width:230px	">Item Nomenclature</th>
-			                  	</tr>
-			                </thead>
-			                <tbody>
-			                	<%int m=1;for (Object[] obj : financedataparta){ %>
-								<tr>
-									<td><%=m %>.</td>
-									<td><%=obj[2] %></td>
-									<td style="text-align: center"><%= sdf1.format(obj[3]) %></td>
-									<td style="text-align: right" ><%=obj[4] %></td>
-									<td><%=obj[5] %></td>
-								</tr>
-								<% m++;} %>				  
-							</tbody>
-							
-							</table>
-							
-							<%}else{ %>
-			          		
-			          		<div align="center">
-			          			<br>
-			          			<h4>No Changes in Finance Part-A...!!!</h4>
-			          		</div>
-			          		
-			          	<%} %> --%>
-			          	
-			          	
 			          	<% if(financechangesdata != null) { if(financechangesdata.size()>0){ %>
 				      	
 				      		<table class="table table-bordered table-hover table-striped table-condensed dataTable "  id="myTable5"> 
@@ -599,7 +415,7 @@ String labcode = (String)request.getAttribute("labcode");
 			                		<th>SN</th>
 			                    	<th >Type</th>
 			                        <th>Ref-No</th>
-			                        <th style="width:230px">Item</th>
+			                        <th class="w-230" >Item</th>
 			                        <th>Cost</th>
 			                        <th>CreatedBy</th>
 			                        <th>Created Date</th>
@@ -613,13 +429,13 @@ String labcode = (String)request.getAttribute("labcode");
 									<td><%=obj.getType()!=null?StringEscapeUtils.escapeHtml4(obj.getType()): " - " %></td>
 									<td><%=obj.getRefNo()!=null?StringEscapeUtils.escapeHtml4(obj.getRefNo()): " - " %></td>
 									<td><%=obj.getItemFor()!=null?StringEscapeUtils.escapeHtml4(obj.getItemFor()): " - " %></td>
-									<td style="text-align: right;">
+									<td class="text-right" >
 									<%if(obj.getCost()!=null) {%>
 									<%=format.format(new BigDecimal(obj.getCost().toString())).substring(1)%>
 									<%}else{ %>--<%} %>
 									</td>
                                      <td><%=obj.getFirstName()!=null?StringEscapeUtils.escapeHtml4(obj.getFirstName()): " - " %> <%=obj.getLastName()!=null?StringEscapeUtils.escapeHtml4(obj.getLastName()): " - " %></td>
-									<td style="text-align: center"><%= obj.getCreatedDate()!=null?sdf1.format(sdf2.parse(obj.getCreatedDate().toString())):" - "%></td>
+									<td class="text-center" ><%= obj.getCreatedDate()!=null?sdf1.format(sdf2.parse(obj.getCreatedDate().toString())):" - "%></td>
 								</tr>
 								<% m++;} %>				  
 							</tbody>

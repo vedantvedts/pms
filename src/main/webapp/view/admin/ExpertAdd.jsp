@@ -1,48 +1,16 @@
 <%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 
 <head>
 	<meta charset="ISO-8859-1">
 	<jsp:include page="../static/header.jsp"></jsp:include>
-
-
-
+<spring:url value="/resources/css/admin/ExpertAdd.css" var="expertAdd" />
+<link href="${expertAdd}" rel="stylesheet" />
 	<title> ADD COMMITTEE</title>
-	<style type="text/css">
-		.input-group-text {
-			font-weight: bold;
-		}
-
-		label {
-			font-weight: 800;
-			font-size: 16px;
-			color: #07689f;
-		}
-
-		hr {
-			margin-top: -2px;
-			margin-bottom: 12px;
-		}
-
-		.card b {
-			font-size: 20px;
-		}
-		
-		input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
-}
-
-input[type=number] {
-    -moz-appearance:textfield; /* Firefox */
-}
-		
-	</style>
 </head>
 
 <body>
@@ -79,8 +47,7 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
-					<div class="card-header"
-						style=" background-color: #055C9D;margin-top: ">
+					<div class="card-header bg-header">
 
 						<h3 class="text-white">Add New Expert</h3>
 
@@ -98,7 +65,7 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 							<div class="col-md-3">
 											 <div class="form-group">
 									                <label>Title</label><br>
-									                 <select class="form-control selectdee" id="titleExp" name="title" data-container="body" data-live-search="true"  style="font-size: 5px;">
+									                 <select class="form-control selectdee input-font" id="titleExp" name="title" data-container="body" data-live-search="true"  >
 														<option value=""  selected="selected"	hidden="true">--Select--</option>
 														<option value="Prof.">Prof.</option>
 														<option value="Lt.">Lt.</option>
@@ -109,7 +76,7 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 							<div class="col-md-3">
 												 <div class="form-group">
 										                <label>Rank/Salutation</label><br>
-										                 <select class="form-control selectdee" id="salutaionExp"  name="salutation" data-container="body" data-live-search="true"   style="font-size: 5px;">
+										                 <select class="form-control selectdee input-font" id="salutaionExp"  name="salutation" data-container="body" data-live-search="true"  >
 															<option value=""  selected="selected"	hidden="true">--Select--</option>
 															<option value="Mr.">Mr.</option>
 															<option value="Ms.">Ms.</option>
@@ -119,7 +86,7 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 							
 								<div class="col-md-4">
 									<div class="form-group">
-										<label class="control-label">Expert Name</label><span class="mandatory" style="color: red;">*</span>
+										<label class="control-label">Expert Name</label><span class="mandatory" >*</span>
 										<input class="form-control" type="text" id="expertname" name="expertname" required>
 									</div>
 								</div>
@@ -137,7 +104,7 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 						
 						<div class="col-md-3">
 								<div class="form-group">
-									<label class="control-label">Designation</label><span class="mandatory" style="color: red;">*</span>
+									<label class="control-label">Designation</label><span class="mandatory" >*</span>
 									<select class="custom-select" id="selectDesig" required="required" name="designationId">
 										<option disabled="true"  selected value="">Choose...</option>
 										<%for(Object[] desig:desigList){ %>
@@ -150,7 +117,7 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 						
 							<div class="col-md-3">
 									<div class="form-group">
-										<label class="control-label">Mobile No.</label><span class="mandatory" style="color: red;">*</span>
+										<label class="control-label">Mobile No.</label><span class="mandatory" >*</span>
 										<input class="form-control" type="text" id="mobile"  maxlength="10"  name="mobilenumber" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 									</div>
 								</div>
@@ -158,7 +125,7 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 							
 								<div class="col-md-3">
 									<div class="form-group">
-										<label class="control-label">Email</label><span class="mandatory" style="color: red;">*</span>
+										<label class="control-label">Email</label><span class="mandatory" >*</span>
 										<input class="form-control" type="email" id="email"name="email" required>
 									</div>
 								</div>
@@ -166,7 +133,7 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 							
 					     	<div class="col-md-3">
 									<div class="form-group">
-										<label class="control-label">Organization</label><span class="mandatory" style="color: red;">*</span>
+										<label class="control-label">Organization</label><span class="mandatory" >*</span>
 										<input class="form-control" type="text" name="organization" id="organization" required>
 									</div>
 								</div>
@@ -187,7 +154,7 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 			
 			
 					</div>
-					<div class="card-footer" style=" background: linear-gradient(to right, #334d50, #cbcaa5);padding: 25px ">
+					<div class="card-footer bg-footer" >
 					</div>
 				</div>
 			</div>

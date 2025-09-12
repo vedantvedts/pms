@@ -9,21 +9,11 @@
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 
+<spring:url value="/resources/css/admin/StatisticsList.css" var="statisticsList" />
+<link href="${statisticsList}" rel="stylesheet" />
  
 
 <title>Statistics List</title>
-<style type="text/css">
-.auditnavbar{
-    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
-    padding: 5px 68px 3px 45px;
-    background: #fff;
-    /* margin: -83px 0px 0px 0px; */
-    line-height: 15px;
-    font-size: 14px;
-    width: 100%;
-}
-
-</style>
 </head>
 <body>
 <%
@@ -54,36 +44,27 @@ Long EmployeeId=(Long)request.getAttribute("EmployeeId");
 <% } %>
  
 		<div class="container-fluid">	
-			<div class="nav navbar auditnavbar" style="background-color: white; padding: 10px;">		
+			<div class="nav navbar auditnavbar nav-form" >		
 					<form class="form-inline " method="POST" action="StatisticsList.htm">
 						
-						<label style="margin-left: 100px; margin-right: 10px;font-weight: 800">User Name: <span class="mandatory" style="color: red;">*</span></label>
-					<select class="form-control form-control selectdee" id="SelectedEmpId" required="required" data-live-search="true" name="SelectedEmpId"style="margin-left: 12px;"  >
+						<label class="label">User Name: <span class="mandatory" >*</span></label>
+					<select class="form-control form-control selectdee ml-3" id="SelectedEmpId" required="required" data-live-search="true" name="SelectedEmpId" >
 					<%if (StatsEmployeeList != null && StatsEmployeeList.size() > 0) {
 					for (Object[] obj : StatsEmployeeList) {%>
 					<option value=<%=obj[0]%> <%if(EmployeeId.toString().equalsIgnoreCase(obj[0].toString())) {%>selected="selected"<%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
 						<%}}%>
 						</select> 
-		
-						<%-- <label style="margin-left: 80px; margin-right: 20px; font-weight: 800">From Date:</label>
-						<input  class="form-control form-control date"  data-date-format="dd-mm-yyyy" id="datepicker1" name="Fromdate"  required="required"  style="width: 120px;"
-						<%if(Fromdate!=null){%> value="<%=(Fromdate) %>" <%} %> >
-							  
-			
-						<label style="margin-left: 20px; margin-right: 20px;font-weight: 800">To Date:</label>
-						<input  class="form-control form-control" data-date-format="dd-mm-yyyy" id="datepicker3" name="Todate"  style="width: 120px;"
-					 	<%if(Todate!=null){%> value="<%=(Todate) %>" <%} %>  --%> 
-				   <label style="margin-left: 80px; margin-right: 20px; font-weight: 800">From Date:</label>
-                   <input type="text" style="width:113px;  " class="form-control input-sm mydate" readonly="readonly" value="" id="fromdate" name="FromDate" required="required"> 
+				   <label class="from-label">From Date:</label>
+                   <input type="text" class="form-control input-sm mydate w-113" readonly="readonly" value="" id="fromdate" name="FromDate" required="required"> 
                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                   <label style="margin-left: 20px; margin-right: 20px;font-weight: 800">To Date:</label>
-                   <input type="text" style="width:113px; " class="form-control input-sm mydate" readonly="readonly" value="" id="todate" name="ToDate" required="required"> 
-				   <button type="submit" class="btn btn-primary btn-sm submit" style="margin-left: 12px;padding: 5px;" id="submit">SUBMIT</button>
+                   <label class="to-label">To Date:</label>
+                   <input type="text" class="form-control input-sm mydate w-113" readonly="readonly" value="" id="todate" name="ToDate" required="required"> 
+				   <button type="submit" class="btn btn-primary btn-sm submit ml-3 p-1" id="submit">SUBMIT</button>
 			
 						<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 			
-						<button type="submit" class="btn btn4" data-toggle="tooltip" title="" style="background-color: white; color: green;margin-left: 10rem;8" data-original-title="Refresh" formaction="UpdatetheEmployeedata.htm" formmethod="POST">
-						<i class="fa fa-refresh" style="font-size: 21px" aria-hidden="true"></i>
+						<button type="submit" class="btn btn4 btn-ref" data-toggle="tooltip" title="" data-original-title="Refresh" formaction="UpdatetheEmployeedata.htm" formmethod="POST">
+						<i class="fa fa-refresh i-font" aria-hidden="true"></i>
 						</button>
 					
 					</form>
@@ -91,7 +72,7 @@ Long EmployeeId=(Long)request.getAttribute("EmployeeId");
 		
 				<div class="row mb-2 mt-2">
 					<div class="col-md-12" align="center">
-						<div class="badge badge-info" style="padding: 8px; ">
+						<div class="badge badge-info p-2">
 						<h6 id="text"></h6>
 						</div>
 					</div>
@@ -103,13 +84,13 @@ Long EmployeeId=(Long)request.getAttribute("EmployeeId");
 							class="table table-bordered table-hover table-striped table-condensed " id="myTable1">
 							<thead>
 								<tr >
-									<th style="text-align: center;">SN</th>
-									<th style="text-align: center;">Log Date</th>
-									<th style="text-align: center;">Login Count</th>
-									<th style="text-align: center;">ActionCreated</th>
-									<th style="text-align: center;">Action Assigned</th>
-									<th style="text-align: center;">MilestoneCount</th>
-									<th style="text-align: center;">Meeting Created</th>
+									<th class="text-center">SN</th>
+									<th class="text-center">Log Date</th>
+									<th class="text-center">Login Count</th>
+									<th class="text-center">ActionCreated</th>
+									<th class="text-center">Action Assigned</th>
+									<th class="text-center">MilestoneCount</th>
+									<th class="text-center">Meeting Created</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -118,13 +99,13 @@ Long EmployeeId=(Long)request.getAttribute("EmployeeId");
 								for(Object[]obj:employeelist){
 								%>
 								<tr>
-								<td style="text-align: center;"><%=++count %></td>
-								<td style="text-align: center;"><%if(obj[6]!=null) {%><%=sdf.format(obj[6])%><%}else {%>-<%} %></td>
-								<td style="text-align: center;"><%if(obj[5]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[5].toString())%><%}else {%>-<%} %></td>
-								<td style="text-align: center;"><%if(obj[7]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[7].toString())%><%}else {%>-<%} %></td>
-								<td style="text-align: center;"><%if(obj[10]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[10].toString())%><%}else {%>-<%} %></td>
-								<td style="text-align: center;"><%if(obj[8]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[8].toString())%><%}else {%>-<%} %></td>
-								<td style="text-align: center;"><%if(obj[9]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[9].toString())%><%}else {%>-<%} %></td>
+								<td class="text-center"><%=++count %></td>
+								<td class="text-center"><%if(obj[6]!=null) {%><%=sdf.format(obj[6])%><%}else {%>-<%} %></td>
+								<td class="text-center"><%if(obj[5]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[5].toString())%><%}else {%>-<%} %></td>
+								<td class="text-center"><%if(obj[7]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[7].toString())%><%}else {%>-<%} %></td>
+								<td class="text-center"><%if(obj[10]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[10].toString())%><%}else {%>-<%} %></td>
+								<td class="text-center"><%if(obj[8]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[8].toString())%><%}else {%>-<%} %></td>
+								<td class="text-center"><%if(obj[9]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[9].toString())%><%}else {%>-<%} %></td>
 								</tr>
 								<%} }%>
 							</tbody>

@@ -3,35 +3,16 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 
+<spring:url value="/resources/css/admin/UserManagerAdd.css" var="userManagerAdd" />
+<link href="${userManagerAdd}" rel="stylesheet" />
 <title>LOGIN TYPE ADD</title>
-<style type="text/css">
-
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-.card b{
-	font-size: 20px;
-}
-
-
-</style>
 </head>
 <body>
 
@@ -64,13 +45,13 @@ List<Object[]> LoginTypeList=(List<Object[]>)request.getAttribute("LoginTypeList
 
 	
 <div class="container">
-	<div class="row" style="">
+	<div class="row" >
 
 		<div class="col-md-12">
 
  			<div class="card shadow-nohover" >
 				
-				<div class="card-header" style=" background-color: #055C9D;margin-top: ">
+				<div class="card-header" >
                     <b class="text-white">User Credentials Add</b>
         		</div>
         
@@ -85,13 +66,13 @@ List<Object[]> LoginTypeList=(List<Object[]>)request.getAttribute("LoginTypeList
    <tr>
   <th>
 <label >User Name:
-<span class="mandatory" style="color: red;">*</span>
+<span class="mandatory" >*</span>
 </label>
 </th>
  <td >
-<input  class="form-control form-control alphanum-no-leading-space" placeholder="UserName" type="text" name="UserName" required="required" maxlength="255" style="font-size: 15px;"  id="UserNameCheck">
-<div id="UserNameMsg" style="color: red;"></div>
-<div id="UserNameSuccessMsg" style="color: green;"></div>
+<input  class="form-control form-control alphanum-no-leading-space input-font" placeholder="UserName" type="text" name="UserName" required="required" maxlength="255"  id="UserNameCheck">
+<div id="UserNameMsg" class="mandatory"></div>
+<div id="UserNameSuccessMsg" class="text-green"></div>
 
 </td>
 <td><input type="submit"  class="btn btn-primary btn-sm" value="CHECK" id="check"/></td>
@@ -105,69 +86,31 @@ List<Object[]> LoginTypeList=(List<Object[]>)request.getAttribute("LoginTypeList
 <form name="myfrm" action="UserManagerAddSubmit.htm" method="POST" >
   <div class="form-group">
   <div class="table-responsive">
-	  <table class="table table-bordered table-hover table-striped table-condensed "  style="width: 70%;">
+	  <table class="table table-bordered table-hover table-striped table-condensed w-70" >
   <thead>
    <tr>
   <th>
 <label >User Name:
-<span class="mandatory" style="color: red;">*</span>
+<span class="mandatory" >*</span>
 </label>
 </th>
  <td >
-<input  class="form-control form-control alphanum-no-leading-space" placeholder="UserName" type="text" name="UserName" required="required" maxlength="255" style="font-size: 15px;"  id="UserName" readonly="readonly">
+<input  class="form-control form-control alphanum-no-leading-space input-font" placeholder="UserName" type="text" name="UserName" required="required" maxlength="255"   id="UserName" readonly="readonly">
 
 	 
 </td>
 
- <!--  <th >
-<label >DIVISION:
-<span class="mandatory" style="color: red;">*</span>
-</label>
-</th>
- <td >
- <select class="form-control selectdee" name="Division" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
-				<option value="" disabled="disabled" selected="selected"
-					hidden="true">--Select--</option>
-				<%
-					for (Object[] obj : DivisionList) {
-				%>
-				<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
-				<%
-					}
-				%>
 
-			</select> 
- 
-</td> -->
- <%-- <th>
-<label >ROLE:
-<span class="mandatory" style="color: red;">*</span>
-</label>
-</th>
- <td >
- <select class="form-control selectdee" name="Role" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
-				<option value="" disabled="disabled" selected="selected"
-					hidden="true">--Select--</option>
-				<%
-					for (Object[] obj : RoleList) {
-				%>
-				<option value="<%=obj[0]%>"><%=obj[1]%></option>
-				<%
-					}
-				%>
-
-			</select> 
-</td> --%>
 </tr>
 
 <tr>
   <th>
 <label >Login Type:
-<span class="mandatory" style="color: red;">*</span>
+<span class="mandatory" >*</span>
 </label>
 </th>
  <td >
- <select class="form-control selectdee" name="LoginType" id="LoginType" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
+ <select class="form-control selectdee font-5" name="LoginType" id="LoginType" data-container="body" data-live-search="true"  required="required">
 				<option value="" disabled="disabled" selected="selected"
 					hidden="true">--Select--</option>
 				<%
@@ -184,11 +127,11 @@ List<Object[]> LoginTypeList=(List<Object[]>)request.getAttribute("LoginTypeList
 <tr>
  <th>
 <label >Employee:
-<span class="mandatory" style="color: red;">*</span>
+<span class="mandatory">*</span>
 </label>
 </th>
  <td >
- <select class="form-control selectdee" name="Employee" id="Employee" data-container="body" data-live-search="true"   style="font-size: 5px;">
+ <select class="form-control selectdee font-5" name="Employee" id="Employee" data-container="body" data-live-search="true"  >
 				<option value="" disabled="disabled" selected="selected"
 					hidden="true">--Select--</option>
 				<%
@@ -211,9 +154,9 @@ List<Object[]> LoginTypeList=(List<Object[]>)request.getAttribute("LoginTypeList
 </div>
 </div>
 
-	  <div class="row" style="margin-left: 47%;" align="center"> 
+	  <div class="row ml-47"  align="center"> 
 	  <div id="UsernameSubmit" ><button type="submit"  class="btn btn-primary btn-sm submit"   onclick="return confirm('Are You Sure To Submit?');" >SUBMIT</button></div>
-	  <a class="btn btn-info btn-sm shadow-nohover back" style="margin-left: 0.5rem;"  href="UserManagerList.htm">Back</a>
+	  <a class="btn btn-info btn-sm shadow-nohover back ml-2"   href="UserManagerList.htm">Back</a>
 	  </div> 
 		 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
 	 

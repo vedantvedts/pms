@@ -1,0 +1,157 @@
+@charset "UTF-8";
+
+
+label {
+	font-weight: bold;
+	font-size: 13px;
+}
+
+body {
+	background-color: #f2edfa;
+}
+
+.table .font {
+	font-family: 'Muli', sans-serif !important;
+	font-style: normal;
+	font-size: 13px;
+	font-weight: 400 !important;
+}
+
+.table button {
+	background-color: Transparent !important;
+	background-repeat: no-repeat;
+	border: none;
+	cursor: pointer;
+	overflow: hidden;
+	outline: none;
+	text-align: left !important;
+}
+
+.table td {
+	padding: 5px !important;
+}
+
+.resubmitted {
+	color: green;
+}
+
+.fa {
+	font-size: 1.20rem;
+}
+
+.datatable-dashv1-list table tbody tr td {
+	padding: 8px 10px !important;
+}
+
+.fa-exclamation-triangle {
+	font-size: 2.5rem !important;
+}
+
+.table-project-n {
+	color: #005086;
+}
+
+.right {
+	text-align: right;
+} 
+ 
+.center {
+	text-align: center;
+}
+
+#table thead tr th {
+	padding: 0px 0px !important;
+	text-align:center;
+}
+
+#table tbody tr td {
+	padding: 2px 3px !important;
+	text-align:center;
+}
+
+/* Tab css */
+
+.nav-link{
+	    padding: 10px 20px;
+}
+
+
+.nav-pills .nav-link.active{
+	background-color: #0078AA !important;
+}
+
+.with-arrow .nav-link.active {
+  position: relative;
+}
+
+.with-arrow .nav-link.active::after {
+  content: '';
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #0078AA;
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: block;
+}
+
+
+
+
+
+.info-box{
+	color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+}
+
+#radioBtn .notActive{
+    color: #3276b1;
+    background-color: #fff;
+}
+
+#radioBtn a{
+	font-family: 'Lato';
+    font-weight: 700;
+}
+
+.nav-term{
+	float:right!important;
+	margin-top: -0.5rem!important;
+}
+.w-50{
+	width: 50px!important;
+}
+.w-80{
+	width: 80px!important;
+}
+.w-100{
+	width: 100px!important;
+}
+.w-120{
+	width: 120px!important;
+}
+.w-150{
+	width: 150px!important;
+}
+.w-170{
+	width: 170px!important;
+}
+.w-200{
+	width: 200px!important;
+}
+.w-18{
+	width: 18px!important;
+}
+.w-230{
+	width: 230px!important;
+}
+.w-320{
+	width: 320px!important;
+}
+.w-340{
+	width: 340px!important;
+}

@@ -12,35 +12,9 @@
 
 <jsp:include page="../static/header.jsp"></jsp:include>
 
+<spring:url value="/resources/css/admin/RoleFormAccess.css" var="roleFormAccess" />
+<link href="${roleFormAccess}" rel="stylesheet" />
 
-<style>
-
-.control-label{
-	font-weight: bold !important;
-}
-
-
-.table thead th{
-	
-	vertical-align: middle !important;
-}
-
-.header{
-        position:sticky;
-        top: 0 ;
-        background-color: #346691;
-    }
-    
-    .table button{
-    	background-color: background !important;
-    	font-size: 12px;
-    }
-    
- label{
- 	font-size: 15px !important;
- }
- 
-</style>
 
 </head>
 <body>
@@ -112,7 +86,7 @@ if(!logintype.equalsIgnoreCase("A")) {
 							</div>		
 								
 							<div class="col-sm-2">			
-										 <select class="form-control" id="logintype" required="required" name="logintype" style="margin-top: -9px;" onchange='submitForm();' >
+										 <select class="form-control m-minus" id="logintype" required="required" name="logintype"  onchange='submitForm();' >
 						   						<% for (Object[] obj : LoginTypeRoles) {%>
 												<option value="<%=obj[1]%>" <%if(obj[1].toString().equalsIgnoreCase(logintype)){ %>selected<% } %> ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></option>
 												<%} %>
@@ -127,7 +101,7 @@ if(!logintype.equalsIgnoreCase("A")) {
 							
 							<div class="col-sm-2">	
 	
-										 <select class="form-control" id="moduleid" required="required" name="moduleid" style="margin-top: -9px;" onchange='submitForm();' >
+										 <select class="form-control m-minus" id="moduleid" required="required" name="moduleid" onchange='submitForm();' >
 										 		<option value="A" >All </option>
 						   						<% for (Object[] obj : FormModulesList) {%>
 												<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(moduleid)){ %>selected<% } %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
@@ -149,9 +123,9 @@ if(!logintype.equalsIgnoreCase("A")) {
 				<div class="card-body"> 
 
 			           
-			         <div class="table-responsive-sm" style="height: 31rem;overflow: auto;">
+			         <div class="table-responsive-sm hei-over" >
 						<table	class=" scrolltable datatablex table table-bordered table-hover table-striped table-condensed table-sm ">
-					        <thead style="background-color: #055C9D;color: white">
+					        <thead >
 					          <tr>
 			                	<th >SN</th>
 			                    <th >Form Name</th>
@@ -194,7 +168,7 @@ if(!logintype.equalsIgnoreCase("A")) {
  								<%count++;}}else{ %>
  												
  								<tr>
- 									<td colspan="3" style="text-align: center">No Forms Assigned</td>
+ 									<td colspan="3" class="text-center">No Forms Assigned</td>
  																						
  								</tr>
  												

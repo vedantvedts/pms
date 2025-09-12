@@ -13,114 +13,8 @@
 <link href="${sweetalertCss}" rel="stylesheet" />
 <script src="${sweetalertJs}"></script>
 <title>PreProject Doc Rep</title>
-
-<style type="text/css">
-.subfolder-group {
-	display: none;
-	flex-direction: column;
-	gap: 20px;
-}
-
-.breadcrumb-header {
-	font-size: 16px;
-	font-weight: 500;
-	margin-bottom: 10px;
-	color: #555;
-}
-
-.breadcrumb-link {
-	color: #007bff;
-	cursor: pointer;
-	text-decoration: underline;
-}
-
-.subfolder-list {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 20px;
-}
-
-.folder-container {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 20px;
-}
-
-.folder {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	width: 100px;
-	cursor: pointer;
-	text-align: center;
-}
-
-.mainicon {
-	font-size: 65px;
-	color: #f0ad4e;
-}
-
-.fileicon {
-	font-size: 48px;
-	color: red;
-}
-
-.fa-pencil-square-o {
-	font-size: 18px !important;
-	color: #9f0dff !important;
-}
-
-.folder .edit-form {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 5px;
-}
-
-.folder .edit-form input[type="text"] {
-	text-align: center;
-}
-
-textarea {
-	font-family: inherit;
-	font-size: 14px;
-	line-height: 1.2;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	padding: 4px;
-}
-
-.folder-icon-wrapper {
-	position: relative;
-}
-
-.control-label {
-	font-weight: bold !important;
-}
-
-.file-icon-wrapper {
-	font-size: 43px;
-}
-
-.pdf-item {
-	width: 120px;
-	word-wrap: break-word;
-}
-
-.file-download-span {
-	cursor: pointer;
-	text-decoration: none;
-}
-
-.file-download-span:hover {
-	text-decoration: underline;
-	color: #007bff;
-}
-
-.modal-xl {
-	max-width: 1200px;
-}
-</style>
+<spring:url value="/resources/css/fileRepo/PreProjectRepMaster.css" var="preProjectRepMaster" />
+<link href="${preProjectRepMaster}" rel="stylesheet" />
 </head>
 <body>
 	<%
@@ -156,18 +50,18 @@ textarea {
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header">
-						<div class="row" style="margin-top: -10px;">
+						<div class="row m-minus" >
 							<div class="col-md-6">
 								<h4>Pre Project Document Rep Master</h4>
 							</div>
 							<div class="col-md-6">
 								<form>
-									<table style="float: right;">
+									<table class="f-right">
 										<tr>
 											<td><label class="control-label">Project Name
 													:&nbsp;&nbsp; </label></td>
 											<td>
-											<select class="form-control selectdee" style="width: 360px"
+											<select class="form-control selectdee w-360"
 												id="initiationId" required="required" name="initiationId">
 													<option value="" disabled="disabled">Choose...</option>
 													<%
@@ -189,9 +83,9 @@ textarea {
 						</div>
 					</div>
 					
-					<div class="card-body" style="margin-top: -8px; border-color: #00DADA;">
+					<div class="card-body m-minus8">
 						  <div class="d-flex justify-content-left align-items-center flex-wrap mb-3">
-						    <div class="breadcrumb-header" style="margin-right: 20px" id="breadcumb-span">
+						    <div class="breadcrumb-header mr-4" id="breadcumb-span">
 						        <span class="breadcrumb-link" onclick="goBackToMain()">Home</span>
 						        <span> &gt; </span>
 						        <span id="spanValue"></span>
@@ -209,7 +103,7 @@ textarea {
 						     <div id="main-folders" class="folder-container">
 						     
 						     </div>
-						     <div class="subfolder-group" style="width: auto;" id="subFolderId">
+						     <div class="subfolder-group w-auto" id="subFolderId">
 						     
 						     </div>
 						     
@@ -240,9 +134,8 @@ textarea {
 					<div>
 							<input type="hidden" name="initiationId" id="prjMainId" value="">
 							<div>
-								<input class="form-control" type="text" name="MasterName" id="masterName"
-									required="required" maxlength="255" onchange="checkDuplicateFolderName()"
-									style="width: 100%;">
+								<input class="form-control w-100" type="text" name="MasterName" id="masterName"
+									required="required" maxlength="255" onchange="checkDuplicateFolderName()">
 							</div>
 							<div class="text-center mt-4">
 								<button type="button" class="btn btn-success" onclick="submitMainFile()">Submit</button>
@@ -267,9 +160,8 @@ textarea {
 				<div class="modal-body">
 					<div>
 							<div>
-								<input class="form-control" type="text" name="MasterSubName" id="masterSubName"
-									required="required" maxlength="255" onchange="checkDuplicateFolderName()"
-									style="width: 100%;">
+								<input class="form-control w-100" type="text" name="MasterSubName" id="masterSubName"
+									required="required" maxlength="255" onchange="checkDuplicateFolderName()">
 							</div>
 						<div class="text-center mt-4">
 							<button type="button" class="btn btn-success" onclick="submitSubFile()">Submit</button>
@@ -284,8 +176,7 @@ textarea {
 	</div>
 	
  <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog">
-	<div class="modal-dialog modal-lg" role="document"
-			style="max-width: 60% !important;">
+	<div class="modal-dialog modal-lg mw-60" role="document">
 	      <div class="modal-content">
 	        <div class="modal-header">
 	          <h5 class="modal-title" id="modalTitle"></h5>
@@ -294,12 +185,12 @@ textarea {
 	        <div class="modal-body">
      		  <div class="row">
 					<div class="col-md-12 d-flex align-items-center mb-2">
-					    <label class="control-label mr-3 mb-0" style="white-space: nowrap;">Upload Type</label>
+					    <label class="control-label mr-3 mb-0 ws-wrap" >Upload Type</label>
 					    <div class="btn-group btn-group-toggle flex-grow-1" data-toggle="buttons">
-					        <label class="btn btn-outline-success flex-fill" style="font-weight: 700">
+					        <label class="btn btn-outline-success flex-fill font-w" >
 					            <input type="radio" name="isNewUpload" id="isNewUploadY" value="Y" autocomplete="off" checked onchange="toggleUploadType(this.value)"> New Upload
 					        </label>
-					        <label class="btn btn-outline-danger flex-fill" style="font-weight: 700">
+					        <label class="btn btn-outline-danger flex-fill font-w" >
 					            <input type="radio" name="isNewUpload" id="isNewUploadN" value="N" autocomplete="off" onchange="toggleUploadType(this.value)"> Existing Upload
 					        </label>
 					    </div>
@@ -310,11 +201,11 @@ textarea {
 					        <label class="control-label">Document Name</label>
 					
 					        <!-- Text input shown by default -->
-					        <input type="text" class="form-control" id="FileNameInput"
-					            onchange="checkDuplicateFileName()" name="FileName" required="required" style="height: 2.7rem"/>
+					        <input type="text" class="form-control input-height" id="FileNameInput"
+					            onchange="checkDuplicateFileName()" name="FileName" required="required" />
 					
 					        <!-- Dropdown hidden by default -->
-					        <select class="form-control d-none" id="FileNameSelect" name="FileName"  style="height: 2.7rem">
+					        <select class="form-control dis-none input-height" id="FileNameSelect" name="FileName" >
 					            <option value="">-- Select Document --</option>
 					        </select>
 					    </div>
@@ -340,7 +231,7 @@ textarea {
 	            <input type="hidden" name="fileType" id="fileType" value="">
 	        </div>
 			 <div align="center">
-					<input type="button" class="btn btn-primary btn-sm submit" style="margin-bottom: 15px;" id="submitversion" onclick="submitUpload()"/>
+					<input type="button" class="btn btn-primary btn-sm submit mb-3"  id="submitversion" onclick="submitUpload()"/>
 			</div>
 		  </div>
 	  </div>
@@ -357,7 +248,7 @@ textarea {
 	      </div>
 	      <div class="modal-body">
 	        <table class="table table-bordered table-hover">
-	          <thead style="background-color: bisque">
+	          <thead class="bg-bis">
 	            <tr>
 	              <th>SN</th>
 	              <th>File Name</th>
@@ -440,24 +331,23 @@ function folderList(pid,mainFolder){
 									      ' <div>'+
 									      '<span id="span_'+ data[0] +'">'+data[3]+'<br/>'+
 											 '<%if(empId!=null && empId.equals(projectDirectorId) || logintype!=null && logintype.equalsIgnoreCase("A") ){ %>'+
-												'<i class="fa fa-pencil-square-o" style="margin-left: 5px; cursor: pointer;" aria-hidden="true"'+
+												'<i class="fa fa-pencil-square-o ml-1 cursor" aria-hidden="true"'+
 												    'onclick="event.stopPropagation(); enableInlineEdit(' + data[0] +')">'+
 												 '</i>'+
-												'<i class="fa fa-upload" style="margin-left: 5px; cursor: pointer; color: #0a5dff;" aria-hidden="true"'+
+												'<i class="fa fa-upload ml-2 cursor col" aria-hidden="true"'+
 													'onclick="event.stopPropagation(); showUpload(\'mainLevel\',\''+data[3] +'\','+data[0]+')">'+
 												'</i>'+
 											   '<% }%>'+
 									      '</span>'+
-									      '<textarea name="levelname" id="input_'+ data[0] +'" maxlength="255"'+
-									           'style="display: none; width: 90px; resize: none; overflow-wrap: break-word; height: auto;"'+
+									      '<textarea name="levelname" class="textarea-height" id="input_'+ data[0] +'" maxlength="255"'+
 												'rows="2">'+ data[3] +'</textarea>'+
 											'<div class="row ml-2">'+
 												'<button type="button" id="btn_'+ data[0] +'"'+
-													'style="display: none;" class="btn btn-sm btn-success" onclick="submitLevelEdit(\'mainLevel\', '+data[0] +', \'0\', \''+data[3] +'\')">'+
+													'class="btn btn-sm btn-success dis-none" onclick="submitLevelEdit(\'mainLevel\', '+data[0] +', \'0\', \''+data[3] +'\')">'+
 													'<i class="fa fa-check" aria-hidden="true"></i>'+
 												'</button>&nbsp;'+
 												'<button type="button" id="btnx_'+ data[0] +'"'+
-													'class="btn btn-sm btn-danger" style="display: none;"'+
+													'class="btn btn-sm btn-danger dis-none"'+
 													'onclick="event.stopPropagation(); disableInlineEdit('+ data[0] +')">'+
 													'<i class="fa fa-times" aria-hidden="true"></i>'+
 												'</button>'+
@@ -528,24 +418,23 @@ function showSubfolders(pid,parentId) {
 									      ' <div>'+
 									      '<span id="span_'+ sub[0] +'">'+sub[3]+'<br/>'+
 											 '<%if(empId!=null && empId.equals(projectDirectorId) || logintype!=null && logintype.equalsIgnoreCase("A") ){ %>'+
-												'<i class="fa fa-pencil-square-o" style="margin-left: 5px; cursor: pointer;" aria-hidden="true"'+
+												'<i class="fa fa-pencil-square-o ml-2 cursor" aria-hidden="true"'+
 												    'onclick="event.stopPropagation(); enableInlineEdit('+ sub[0] +')">'+
 												 '</i>'+
-												'<i class="fa fa-upload" style="margin-left: 5px; cursor: pointer; color: #0a5dff;" aria-hidden="true"'+
+												'<i class="fa fa-upload ml-2 cursor col-1"  aria-hidden="true"'+
 													'onclick="event.stopPropagation(); showUpload(\'subLevel\',\''+sub[3] +'\','+sub[0]+')">'+
 												'</i>'+
 											   '<% }%>'+
 									      '</span>'+
-									      '<textarea name="levelname" id="input_'+ sub[0] +'" maxlength="255"'+
-									           'style="display: none; width: 90px; resize: none; overflow-wrap: break-word; height: auto;"'+
+									      '<textarea name="levelname" class="textarea-height" id="input_'+ sub[0] +'" maxlength="255"'+
 												'rows="2">'+ sub[3] +'</textarea>'+
 											'<div class="row ml-2">'+
 												'<button type="button" id="btn_'+ sub[0] +'"'+
-													'style="display: none;" class="btn btn-sm btn-success" onclick="submitLevelEdit(\'subLevel\','+sub[0]+','+parentId+',\''+sub[3] +'\')">'+
+													' class="btn btn-sm btn-success dis-none" onclick="submitLevelEdit(\'subLevel\','+sub[0]+','+parentId+',\''+sub[3] +'\')">'+
 													'<i class="fa fa-check" aria-hidden="true"></i>'+
 												'</button>&nbsp;'+
 												'<button type="button" id="btnx_'+ sub[0] +'"'+
-													'class="btn btn-sm btn-danger" style="display: none;"'+
+													'class="btn btn-sm btn-danger dis-none" '+
 													'onclick="event.stopPropagation(); disableInlineEdit('+ sub[0] +')">'+
 													'<i class="fa fa-times" aria-hidden="true"></i>'+
 												'</button>'+
@@ -599,7 +488,7 @@ function showSubfolders(pid,parentId) {
 		                                    '<i class="fa fa-file-pdf-o fileicon" aria-hidden="true"></i>'+
 		                                '</div>'+
 		                                '<span class="file-download-span" onclick="fileDownload(' + file[7] + ', \'mainLevel\')">' + file[6] + '</span><br/>'+
-		                                '<span class="text-muted">Ver '+file[4]+'.'+file[5]+' <i class="fa fa-info-circle" aria-hidden="true" style="cursor: pointer;" onclick="showVersionModal(' + file[0] + ',\'' + file[6] + '\', \'mainLevel\')"></i></span>'+
+		                                '<span class="text-muted">Ver '+file[4]+'.'+file[5]+' <i class="fa fa-info-circle cursor" aria-hidden="true"  onclick="showVersionModal(' + file[0] + ',\'' + file[6] + '\', \'mainLevel\')"></i></span>'+
 		                            '</div>';
                     container.append(pdfItem);
                 });
@@ -1119,7 +1008,7 @@ function showSubFileDocs(mainId,subId,subName) {
 		                                    '<i class="fa fa-file-pdf-o fileicon" aria-hidden="true"></i>'+
 		                                '</div>'+
 		                                '<span class="file-download-span" onclick="fileDownload(' + file[7] + ', \'subLevel\')">' + file[6] + '</span><br/>'+
-		                                '<span class="text-muted">Ver '+file[4]+'.'+file[5]+' <i class="fa fa-info-circle" aria-hidden="true" style="cursor: pointer;" onclick="showVersionModal(' + file[0] + ',\'' + file[6] + '\',\'subLevel\')"></i></span>'+
+		                                '<span class="text-muted">Ver '+file[4]+'.'+file[5]+' <i class="fa fa-info-circle cursor" aria-hidden="true" onclick="showVersionModal(' + file[0] + ',\'' + file[6] + '\',\'subLevel\')"></i></span>'+
 		                            '</div>';
                     container.append(pdfItem);
                 });
@@ -1343,7 +1232,7 @@ function showVersionModal(fileRepId,fileName,fileType) {
 	                  '<td>v' + version[4] + '.' + version[5] + '</td>' +
 	                  '<td>' + RegularDateFormat(version[6]) + '</td>' +
 	                  '<td>' + version[7] + ', ' + version[8] + '</td>' +
-	                  '<td><i class="fa fa-download" style="cursor: pointer;" onclick="fileDownload(' + version[0] + ', \'' + fileType + '\')"></i></td>' +
+	                  '<td><i class="fa fa-download cursor" onclick="fileDownload(' + version[0] + ', \'' + fileType + '\')"></i></td>' +
 	                '</tr>';
 	      }
 	      $('#versionTableBody').html(rows);

@@ -1,6 +1,7 @@
 <%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
 	import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
@@ -10,7 +11,11 @@
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 <%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
+<spring:url value="/resources/css/admin/DesignationAdd.css" var="designationAdd" />
+<link href="${designationAdd}" rel="stylesheet" />
+
 <title>OFFICER MASTER EDIT</title>
+
 
 </head>
 <body>
@@ -40,10 +45,9 @@
 	<div class="container-fluid">
 		<div class="row">
 
-			<div class="col-sm-12" style="top: 10px;">
+			<div class="col-sm-12 mt-3" >
 				<div class="card shadow-nohover">
-					<div class="card-header"
-						style="background-color: #055C9D; margin-top:">
+					<div class="card-header bg-header">
 						<b class="text-white">Designation Add </b>
 					</div>
 					<div class="card-body">
@@ -56,36 +60,33 @@
 								<div class="col-md-2"></div>
 								<div class="col-md-2">
 									<div class="form-group">
-										<label>Designation Code: <span class="mandatory"
-											style="color: red;">*</span></label> <input
-											class="form-control form-control description-input" type="text"
+										<label>Designation Code: <span class="mandatory">*</span></label> <input
+											class="form-control form-control field-w80 description-input" type="text"
 											name="desigcode" id="desigcode" required="required"
-											maxlength="10" style="font-size: 15px;width: 80%;">
+											maxlength="10" >
 									</div>
 								</div>
 
 								<div class="col-md-2">
 									<div class="form-group">
-										<label>Designation :<span class="mandatory"
-											style="color: red;">*</span>
-										</label> <input class="form-control description-input" type="text" name="designation"
+										<label>Designation :<span class="mandatory">*</span>
+										</label> <input class="form-control field-w80 description-input" type="text" name="designation"
 											id="designation" required="required" maxlength="100"
-											style="font-size: 15px; width: 80%;">
+											>
 									</div>
 								</div>
 
 								<div class="col-md-2">
 									<div class="form-group">
-										<label>Limit :<span class="mandatory"
-											style="color: red;">*</span></label> <input
-											class="form-control form-control numeric-only" type="number" name="limit"
-											required="required" style="font-size: 15px; width: 100%;">
+										<label>Limit :<span class="mandatory">*</span></label> <input
+											class="form-control field-w100 form-control numeric-only" type="number" name="limit"
+											required="required" >
 									</div>
 								</div>
 
 								<div class="col-md-2">
 									<div class="form-group">
-										<label>Desig Cadre :<span class="mandatory"style="color: red;">*</span></label> 
+										<label>Desig Cadre :<span class="mandatory">*</span></label> 
 										<select class="form-control" name="desigCadre">
 											<option value="DRDS">DRDS</option>
 											<option value="DRTC">DRTC</option>
@@ -97,9 +98,7 @@
 								<div class="col-md-2"></div>
 							</div>
 							<div align="center">
-								<button type="button" class="btn btn-sm submit"
-									style="align-self: center;"
-									onclick="Designationcheck('addfrm');">SUBMIT</button>
+								<button type="button" class="btn btn-sm submit" onclick="Designationcheck('addfrm');">SUBMIT</button>
 								<a class="btn  btn-sm  back" href="DesignationMaster.htm">BACK</a>
 							</div>
 

@@ -3,6 +3,7 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,28 +11,8 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 
 <title>RTMDDO ADD</title>
-<style type="text/css">
-
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-.card b{
-	font-size: 20px;
-}
-
-
-</style>
+<spring:url value="/resources/css/admin/Rtmddo.css" var="rtmddo" />
+<link href="${rtmddo}" rel="stylesheet" />
 </head>
 <body>
 
@@ -64,18 +45,18 @@ NFormatConvertion nfc=new NFormatConvertion();
 <br>
 	
 <div class="container">
-	<div class="row" style="">
+	<div class="row">
 
 		<div class="col-md-12">
 
  			<div class="card shadow-nohover" >
 				
-				<div class="card-header" style=" background-color: #055C9D;margin-top: ">
+				<div class="card-header bg-header" >
                     <b class="text-white">RTMDDO Add</b>
         		</div>
         
         		<div class="card-body">
-        		<div class="row " style=" background-color: #e4f9f5;margin-bottom: 10px; ">
+        		<div class="row mb-2 bg-lg">
 
                     		<div class="col-md-6 " ><br>
                     		<label class="control-label">Active RTMDDO : <%if(Rtmddo!=null){%> <%=Rtmddo[2]!=null?StringEscapeUtils.escapeHtml4(Rtmddo[2].toString()): " - " %>, <%=Rtmddo[3]!=null?StringEscapeUtils.escapeHtml4(Rtmddo[3].toString()): " - " %><%} %></label>
@@ -139,7 +120,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 
 
 
-<div class="card-footer" style=" background: linear-gradient(to right, #334d50, #cbcaa5);padding: 25px ">
+<div class="card-footer bg-footer" >
          
        
         </div>

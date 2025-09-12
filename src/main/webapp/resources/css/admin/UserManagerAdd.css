@@ -1,0 +1,35 @@
+@charset "UTF-8";
+
+.input-group-text{
+font-weight: bold;
+}
+
+label{
+	font-weight: 800;
+	font-size: 16px;
+	color:#07689f;
+} 
+
+hr{
+	margin-top: -2px;
+	margin-bottom: 12px;
+}
+.card b{
+	font-size: 20px;
+}
+
+.card-header{
+	background-color: #055C9D;
+}
+.input-font{
+	font-size: 15px;
+}
+.font-5{
+	font-size: 5px;
+}
+.w-70{
+	width: 70%;
+}
+.ml-47{
+	margin-left: 47%;
+}

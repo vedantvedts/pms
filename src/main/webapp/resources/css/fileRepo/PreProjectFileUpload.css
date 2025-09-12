@@ -1,0 +1,267 @@
+@charset "UTF-8";
+
+
+label {
+	font-weight: bold;
+	font-size: 14px;
+}
+
+.table thead tr, tbody tr {
+	font-size: 14px;
+}
+
+body {
+	background-color: #f2edfa;
+	overflow-x: hidden !important;
+}
+
+h6 {
+	text-decoration: none !important;
+}
+
+.multiselect-container>li>a>label {
+	padding: 4px 20px 3px 20px;
+}
+
+.width {
+	width: 210px !important;
+}
+
+.bootstrap-select {
+	width: 400px !important;
+}
+
+#projectname {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+#div1 {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+}
+
+.caret {
+	cursor: pointer;
+	-webkit-user-select: none; /* Safari 3.1+ */
+	-moz-user-select: none; /* Firefox 2+ */
+	-ms-user-select: none; /* IE 10+ */
+	user-select: none;
+}
+
+.caret::before {
+	content: "  \25B7";
+	color: black;
+	display: inline-block;
+	margin-right: 6px;
+}
+
+.caret-down::before {
+	content: "\25B6  ";
+	-ms-transform: rotate(90deg); /* IE 9 */
+	-webkit-transform: rotate(90deg); /* Safari */ 
+	transform: rotate(90deg);
+}
+
+.caret-last {
+	cursor: pointer;
+	-webkit-user-select: none; /* Safari 3.1+ */
+	-moz-user-select: none; /* Firefox 2+ */
+	-ms-user-select: none; /* IE 10+ */
+	user-select: none;
+}
+
+.caret-last::before {
+	content: "\25B7";
+	color: black;
+	display: inline-block;
+	margin-right: 6px;
+}
+
+.caret-last {
+	cursor: pointer;
+	-webkit-user-select: none; /* Safari 3.1+ */
+	-moz-user-select: none; /* Firefox 2+ */
+	-ms-user-select: none; /* IE 10+ */
+	user-select: none;
+}
+
+.caret-last::before {
+	content: "\25B7";
+	color: black;
+	display: inline-block;
+	margin-right: 6px;
+}
+
+.nested {
+	display: none;
+}
+
+.active {
+	display: block;
+}
+
+#download, .verupload {
+	background-color: transparent;
+}
+
+/* <!-- ---------------- tree ----------------- -->
+<!-- -------------- model  tree   ------------------- -->
+ */
+.caret-1 {
+	cursor: pointer;
+	-webkit-user-select: none; /* Safari 3.1+ */
+	-moz-user-select: none; /* Firefox 2+ */
+	-ms-user-select: none; /* IE 10+ */
+	user-select: none;
+}
+
+.caret-last-1 {
+	cursor: pointer;
+	-webkit-user-select: none; /* Safari 3.1+ */
+	-moz-user-select: none; /* Firefox 2+ */
+	-ms-user-select: none; /* IE 10+ */
+	user-select: none;
+}
+
+.caret-last-1::before {
+	content: "\25B7";
+	color: black;
+	display: inline-block;
+	margin-right: 6px;
+}
+
+.level2 {
+	cursor: pointer;
+	-webkit-user-select: none; /* Safari 3.1+ */
+	-moz-user-select: none; /* Firefox 2+ */
+	-ms-user-select: none; /* IE 10+ */
+	user-select: none;
+}
+
+.level2::before {
+	content: "\25B7";
+	color: black;
+	display: inline-block;
+	margin-right: 6px;
+}
+
+.caret-1::before {
+	content: "  \25B7";
+	color: black;
+	display: inline-block;
+	margin-right: 6px;
+}
+
+.caret-down-1::before {
+	content: "\25B6  ";
+	-ms-transform: rotate(90deg); /* IE 9 */
+	-webkit-transform: rotate(90deg); /* Safari */ 
+	transform: rotate(90deg);
+}
+
+#modalreqheader {
+	background: #145374;
+	height: 44px;
+	display: flex;
+	font-family: 'Muli';
+	align-items: center;
+	color: white;
+}
+
+#filedesc, #file, #fileName {
+	margin: 0px;
+	font-size: 17px;
+	color: #07689f;
+	text-align: center;
+}
+
+.modal-dialog-jump {
+  animation: jumpIn 1.5s ease;
+}
+
+@keyframes jumpIn {
+  0% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.w-80{
+	width: 80%;
+}
+
+.m-t-5{
+	margin-top:-0.5%;
+}
+
+.main-bg{
+	background: #C4DDFF; 
+	box-shadow: 2px 2px 2px grey;
+}
+
+.project-font{
+	font-size: 15px; 
+	color: #07689f;
+}
+
+.bg-shadow{
+	background: white; 
+	box-shadow: 2px 2px 2px gray;
+}
+
+.m-l-4{
+	margin-left: -4%;
+}
+.filestable-padding{
+	font-size: 17px; 
+	padding-top: 10px !important; 
+	padding-bottom: 25px !important;
+}
+#tablehead{
+	display: inline; 
+	color: black; 
+	font-style: italic;
+}
+.form-width{
+	overflow-y: auto; 
+	width: 100%; 
+	max-height: 35rem;
+}
+.w-0{
+	width: 0%;
+}
+.w-40{
+	width:40%; 
+}
+.w-22{
+	width:22%; 
+}
+.w-5{
+	width:5%; 
+}
+.mt-16{
+	margin-top:16%;
+}
+.line-height{
+	line-height: 3rem;
+}
+.btn-transparent{
+	margin-left:5px;
+	background:transparent;
+}
+.icon-col{
+	color: #007bff;
+}
+
+
+

@@ -2,6 +2,7 @@
 <%@page import="jakarta.persistence.criteria.CriteriaBuilder.In"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 
@@ -9,41 +10,11 @@
 	<meta charset="ISO-8859-1">
 	<jsp:include page="../static/header.jsp"></jsp:include>
 
+<spring:url value="/resources/css/admin/ExpertEdit.css" var="expertEdit" />
+<link href="${expertEdit}" rel="stylesheet" />
 
 
 	<title>EDIT EXPERT</title>
-	<style type="text/css">
-		.input-group-text {
-			font-weight: bold;
-		}
-
-		label {
-			font-weight: 800;
-			font-size: 16px;
-			color: #07689f;
-		}
-
-		hr {
-			margin-top: -2px;
-			margin-bottom: 12px;
-		}
-
-		.card b {
-			font-size: 20px;
-		}
-		
-		input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
-}
-
-input[type=number] {
-    -moz-appearance:textfield; /* Firefox */
-}
-		
-	</style>
 </head>
 
 <body>
@@ -88,8 +59,7 @@ if(details!=null){
 			<div class="col-md-12">
 
 				<div class="card shadow-nohover">
-					<div class="card-header"
-						style=" background-color: #055C9D;margin-top: ">
+					<div class="card-header bg-header">
 
 						<h3 class="text-white">Edit Expert</h3>
 
@@ -107,7 +77,7 @@ if(details!=null){
 									<div class="col-md-3">
 											 <div class="form-group">
 									                <label>Title</label><br>
-									                 <select class="form-control selectdee" id="titleExp"  name="title" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
+									                 <select class="form-control selectdee input-font" id="titleExp"  name="title" data-container="body" data-live-search="true"  required="required" >
 														<option value="" selected="selected"	hidden="true">--Select--</option>
 															<option value="Prof." 	<%if(detail[1]!=null && detail[1].toString().equalsIgnoreCase("Prof.")){%> selected="selected" <%}%>>  Prof.</option>
 															<option value="Lt."  	<%if(detail[1]!=null && detail[1].toString().equalsIgnoreCase("Lt.")){%>  selected="selected" <%}%>>  Lt.</option>
@@ -119,7 +89,7 @@ if(details!=null){
 								<div class="col-md-3">
 													 <div class="form-group">
 											                <label>Rank/Salutation</label><br>
-											                 <select class="form-control selectdee" id="salutationExp" name="salutation" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
+											                 <select class="form-control selectdee input-font" id="salutationExp" name="salutation" data-container="body" data-live-search="true"  required="required" >
 																<option value=""  selected="selected"	hidden="true">--Select--</option>
 																<option value="Mr."    <%if(detail[2]!=null && detail[2].toString().equalsIgnoreCase("Mr.")){%>    selected="selected" <%}%>> Mr.</option>
 																<option value="Ms."   <%if(detail[2]!=null && detail[2].toString().equalsIgnoreCase("Ms.")){%>   selected="selected" <%}%>> Ms.</option>
@@ -201,7 +171,7 @@ if(details!=null){
 			
 			
 					</div>
-					<div class="card-footer" style=" background: linear-gradient(to right, #334d50, #cbcaa5);padding: 25px ">
+					<div class="card-footer bg-footer" >
 					</div>
 				</div>
 			</div>

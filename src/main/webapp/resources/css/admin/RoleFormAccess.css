@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+
+
+
+.control-label{
+	font-weight: bold !important;
+}
+
+
+.table thead th{
+	
+	vertical-align: middle !important;
+}
+
+.header{
+        position:sticky;
+        top: 0 ;
+        background-color: #346691;
+    }
+    
+    .table button{
+    	background-color: background !important;
+    	font-size: 12px;
+    }
+    
+ label{
+ 	font-size: 15px !important;
+ }
+ 
+ .m-minus{
+ 	margin-top: -9px;
+ }
+ 
+ .hei-over{
+ 	height: 31rem;
+ 	overflow: auto;
+ }
+thead{
+ 	background-color: #055C9D;
+ 	color: white;
+ }
