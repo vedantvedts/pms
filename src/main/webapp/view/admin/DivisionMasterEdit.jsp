@@ -46,7 +46,7 @@ Object[] DivisionMasterEditData=(Object[])request.getAttribute("DivisionMasterEd
     </div>
 <% } %>
 
-<div id="ajaxError" class="d-none">
+<div id="ajaxError" class="dis-none">
     <div align="center">
         <div class="alert-danger axios-err" id="ajaxErrorMessage" >
             <!-- Error message will appear here -->

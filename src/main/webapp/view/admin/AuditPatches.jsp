@@ -84,10 +84,10 @@
 										    <span id="short-description-<%= count %>"><%= shortDescription!=null?StringEscapeUtils.escapeHtml4(shortDescription): " - " %></span>
 										    <% if (longDescription) { %>
 										        <span id="dots-<%= count %>" class="d-inline" >...</span>
-										        <span id="more-<%= count %>" class="d-none m-0 p-0" ><%= description!=null?StringEscapeUtils.escapeHtml4(description.substring(90)): " - " %></span>
+										        <span id="more-<%= count %>" class="dis-none m-0 p-0" ><%= description!=null?StringEscapeUtils.escapeHtml4(description.substring(90)): " - " %></span>
 										        <span class="btn btn-link m-0 p-0" id="toggle-link-<%= count %>"  onclick="toggleDescription('<%= count %>')">Show More</span>
 										    <% } %>
-										    <span class="full-description d-none" data-description="<%= description %>"></span> <!-- Added this line -->
+										    <span class="full-description dis-none" data-description="<%= description %>"></span> <!-- Added this line -->
 										</td>
 							            <% if(obj[5] != null) {
 							                java.util.Date date = (java.util.Date) obj[5];

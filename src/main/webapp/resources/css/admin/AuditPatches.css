@@ -156,3 +156,6 @@ label {
 		.v-align{
 			vertical-align: middle!important;
 		}
+		.dis-none{
+			display: none;
+		}

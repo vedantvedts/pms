@@ -54,7 +54,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 					</div>
 				</div>
 			</div>
-			<div class="card d-none bg-transparent" id="projectdetailsview"  >
+			<div class="card dis-none bg-transparent" id="projectdetailsview"  >
 				
 				<div class="card-body"> 
 					

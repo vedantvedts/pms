@@ -75,7 +75,7 @@ String ForceResetPwd = (String)request.getAttribute("ForcePwd");
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					<input type="hidden" id="sessionKey" name="encKey" value="<%=(String)request.getAttribute("sessionKey")%>" />
 					<input type="hidden" id="sessionIv"  name="encIv"  value="<%=(String)request.getAttribute("sessionIv")%>" />
-					<input type="text" name="username" id="username" value="${sessionScope.Username}" autocomplete="username" class="d-none" aria-hidden="true">
+					<input type="text" name="username" id="username" value="${sessionScope.Username}" autocomplete="username" class="dis-none" aria-hidden="true">
 					
                 	<div class="row"> 
                 		<div class="col-md-1"></div>

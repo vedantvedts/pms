@@ -528,3 +528,6 @@
 	color: purple!important;
 	font-size: 1.3rem!important;
 }
+.dis-none{
+	display: none;
+}
