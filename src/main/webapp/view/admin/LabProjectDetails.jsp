@@ -22,489 +22,11 @@
 <spring:url value="/resources/css/masterdashboard.css" var="masterdashboardCss" />
 <link href="${masterdashboardCss}" rel="stylesheet" />
 
-<style type="text/css">
-
- 	#wrapper{
-		background-image: url("view/images/pfmsbg.png") !important;
-		background-repeat: no-repeat;
-		background-size: auto 100%;
-		width: 100%;
-	}
-	
-	.myschedule{
-		background-image: url("view/images/myschedule.png") !important;
-		background-repeat: no-repeat;
-		background-position: left;
-		background-position-x: 5px;
-    	padding-left: 16px;
-	}
-	
-	.gantt{
-	background-image: url("view/images/gantt.png");
-	background-repeat: no-repeat;
-	background-position: left;
-	background-position-x: 5px;
-    padding-left: 16px;
-}
-
-.approval{
-	margin-left: -0.75rem !important;
-    margin-top: -.15rem !important;
-}
-
-.badge-today{
-	font-size: 65% !important;
-}
-
-.btn1{
-	border-top-left-radius: 5px !important;
-	border-bottom-left-radius: 5px !important;
-}
-
-.btn2{
-	
-    border-left: 1px solid black;
-}
-
-.btn3{
-	border-left: 1px solid black;
-}
-.btn4{
-	margin: 0px 10px;
-	color:green !important;
-}
-.meeting thead tr td{
-	font-family: 'Muli',sans-serif;
-	font-size: 16px !important
-}
-
-
-.overall-card{
-	box-shadow: 5px 10px 11px -3px rgb(0 0 0 / 20%);
-    border: none;
-}
-
-.yellow{
-	color: #ffc107;
-}
-
-.red{
-	color:#dc3545!important;
-}
-
-.green{
-	color:#28a745!important;
-}
-
-.blue{
-	color:#007bff!important;
-}
-
-.legend-shadow{
-	text-shadow:
-    -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-    1px 1px 0 #000;
-}
-
-.overall-card{
-	background: #005C97;  /* fallback for old browsers */
-	background: -webkit-linear-gradient(to left, #363795, #005C97);  /* Chrome 10-25, Safari 5.1-6 */
-	background: linear-gradient(to left, #363795, #005C97); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-	color:white;
-}
-
-
-.overall-card h3{
-	line-height: inherit;
-}
-
-@media  screen and (max-width: 1565px){
-	
-	.health-title{
-		    margin-bottom: 12px !important;
-    		font-size: 20px !important;
-	}
-}
-
-/* Project Details Graph Css */
-
-.highcharts-figure,
-.highcharts-data-table table {
-    min-width: 310px;
-    max-width: 800px;
-    margin: 1em auto;
-}
-
-.highcharts-data-table table {
-    font-family: Verdana, sans-serif;
-    border-collapse: collapse;
-    border: 1px solid #ebebeb;
-    margin: 10px auto;
-    text-align: center;
-    width: 100%;
-    max-width: 500px;
-}
-
-.highcharts-data-table caption {
-    padding: 1em 0;
-    font-size: 1.2em;
-    color: #555;
-}
-
-.highcharts-data-table th {
-    font-weight: 600;
-    padding: 0.5em;
-}
-
-.highcharts-data-table td,
-.highcharts-data-table th,
-.highcharts-data-table caption {
-    padding: 0.5em;
-}
-
-.highcharts-data-table thead tr,
-.highcharts-data-table tr:nth-child(even) {
-    background: #f8f8f8;
-}
-
-.highcharts-data-table tr:hover {
-    background: #f1f7ff;
-}
-
-.fixed-table tbody .custom-td{
-	padding-left : 1rem !important;
-}
-
-.fixed-table tbody .custom-td .col-md-11, .fixed-table tbody .custom-td .col-md-10 {
-	padding-left : 25px !important;
-}
-
-.overall-card .card-body{
-	padding: 0.8rem 1rem !important;
-}
-
-.tableFixHead          { overflow: auto;  }
-.tableFixHead thead td { position: sticky; top: 0; z-index: 1; }
-.tableFixHead thead td {background-color: #1363DF}
-
-.progress {
-	height : 1.3rem !important;
-	cursor:pointer;
-}
-
-
-.flex-container-new {
-    display: flex;
-}
-
-.flex-child {
-    flex: 1;
-}  
-
-.health-circle {
-    display: inline-block;
-    height: 22px;
-    width: 22px;
-    line-height: 22px;
-    border-radius: 50px;
-    color: white;
-    text-align: center;
-    font-size: 10px;
-    font-weight: 800;
-}
-
-.modal-hr{
-	margin: 0px 10px -10px 10px !important;
-}
-
-.modal-list{
-	font-size: 14px;
-	text-align: left;
-	padding: 0px !important;
-	margin-bottom: 5px;
-}
-
-.modal-list li{
-	display: inline-block;
-}
-
-.modal-list li .modal-span{
-	font-size: 2rem;
-	padding: 0px 7px;
-}
-
-.modal-list li .modal-text{
-	font-size: 1rem;
-	vertical-align: text-bottom;
-	font-family: Lato;
-}
-
-
-@media screen and (max-width:1380px){
-	.tableprojectname{
-		font-size: 12px !important;
-	}
-	.tableprojectnametd{
-		width:13% !important;
-	}
-
-}
-
-.changes-btn:hover{
-	background-color: #A6D1E6 !important;
-}
-
-.changes-btn{
-	background-color: rgba(255, 255, 255, 0.08888) !important;
-	border: 1px solid rgba(0,0,0,.125);
-	padding: 0px 7px !important;
-}
-
-.changes-font{
-	font-size: 0.7rem !important;
-}
-
-.changes-badge{
-	top:-8px !important;
-}
-
-/* DG Dashboard */
-
-
-.circular-progress .progress {
-  width: 110px;
-  height: 110px !important ;
-  background: none;
-  position: relative;
-  margin-bottom: 10px
-}
-
-.circular-progress .progress::after {
-  content: "";
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: 15px solid #eee;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.circular-progress .progress>span {
-  width: 50%;
-  height: 100%;
-  overflow: hidden;
-  position: absolute;
-  top: 0;
-  z-index: 1;
-}
-
-.circular-progress .progress .progress-left {
-  left: 0;
-}
-
-.circular-progress .progress .progress-bar {
-  width: 100%;
-  height: 100%;
-  background: none;
-  border-width: 15px;
-  border-style: solid;
-  position: absolute;
-  top: 0;
-}
-
-.circular-progress .progress .progress-left .progress-bar {
-  left: 100%;
-  border-top-right-radius: 80px;
-  border-bottom-right-radius: 80px;
-  border-left: 0;
-  -webkit-transform-origin: center left;
-  transform-origin: center left;
-}
-
-.circular-progress .progress .progress-right {
-  right: 0;
-}
-
-.circular-progress .progress .progress-right .progress-bar {
-  left: -100%;
-  border-top-left-radius: 80px;
-  border-bottom-left-radius: 80px;
-  border-right: 0;
-  -webkit-transform-origin: center right;
-  transform-origin: center right;
-}
-
-.circular-progress .progress .progress-value {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-
-.detailscard{
-	background-color: rgba(0,0,0,.08) !important;
-	border: none !important;
-}
-
-.detailscard .card-body{
-	padding:0.5rem !important;	
-}
-	
-.detailscard hr{
-	margin: 10px !important;
-}
-
-.detailscard h5{
-	margin: 0px !important;
-}
-.countstable , .normalfont{
-	font-family: 'Lato';
-	font-weight: 700;
-}
-
-.card-deck-table tr td{
-	padding: 0px 0px !important;
-}
-
-.border-orange{
-	border-color: #EE5007 !important;
-}
-
-@media screen and (min-width:1100px) and (max-width:1500px){
-	.circular-progress .progress{
-		width:75px !important;
-		height:75px !important;
-	} 
-	
-	.circular-progress .progress-value .h4{
-		font-size: 16px;
-	}
-	
-	.circular-progress .progress .progress-bar {
-		border-width:7px;
-	}
-	
-	.circular-progress .progress::after {
-		border-width: 7px;	
-	}
-	
-	.bigcount h1{
-		font-size: 2rem !important;
-	}
-	
-	.normalfont{
-		font-size: 12px !important;
-	}
-	
-	.bigcount h3{
-		font-size: 20px !important;
-	}
-	
-	.bigcount h4{
-		font-size: 1.2rem !important;
-	}
-	
-	.detailscard h5{
-		font-size: 16px !important;
-	}
-	
-	.bigcount p{
-		margin-bottom: 0rem !important;
-	}
-	
-	.countstable tbody {
-		font-size: 14px !important;
-	}
-	
-	
-}
-
-	.bigcount h1{
-		margin-bottom: -7px;
-	}
-		
-	.bigcount h4{
-		margin-bottom: -4px;
-	}
-	
-	.cashoutgotable, .financetable{
-		margin-bottom: 0rem !important
-	}
-	
-	.financetable tr td{
-		font-size: 13px !important;
-		font-weight: 600 !important;
-	}
-	
-	.financetable tr th{
-		font-size: 13px !important;
-		padding: 0.5rem !important;
-		text-align: left;
-	}
-	
-	.cashoutgotable > tbody > tr >td, .financetable > tbody > tr >td{
-		 border-top:1px solid grey !important;
-	}
-	
-	.cashoutgotable > tbody > tr >th, .financetable > tbody > tr >th{
-		 border-top:1px solid grey !important;
-	}
-	
-	.cashoutgotable > thead > tr >th , .financetable > thead > tr >th{
-		 border-top:1px solid transparent !important;
-		 border-bottom:1px solid grey !important;
-		 text-align: center;
-	}
-
-	.textfont{
-		font-size: 12px !important;
-	}
-	
-	.nil-bar{
-		margin: 0px 10px !important;
-	}
-	
-	.cashoutgotable tr {
-		font-size: 13px !important;
-		font-weight: 600 !important;
-	}
-	.cashoutgotable tr th{
-		font-size: 13px !important;
-		padding: 0.1rem !important;
-		text-align: left;
-	}
-	
-	.cashoutgotable thead{
-		height: auto !important;
-	}
-	
-	.bigcount p{
-		margin-bottom: 0rem !important;
-	}
-	
-	label{
-	font-weight: bold;
-	  font-size: 13px;
-	}
-
-	.cashoutgo .primary{
-			background-color: #5C192F !important; 
-		}
-		
-	.cashoutgo .bg-success{
-			background-color:#466136 !important; 
-		}
-		
-	.cashoutgo .bg-info{
-			background-color:#591A69 !important;
-			 
-		}
-	
-
-</style>
+<spring:url value="/resources/css/admin/LabProjectDetails.css" var="labProjectDetails" />
+<link href="${labProjectDetails}" rel="stylesheet" />
+
+<spring:url value="/resources/css/admin/adminCommon.css" var="adminCommon" />
+<link href="${adminCommon}" rel="stylesheet" />
 
 </head>
 
@@ -526,20 +48,20 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 		<div class="col-md-12">
 			<div class="row">
 				<div class="col-md-12">
-					<div class="">
-						<h3>Lab  Details <a class="btn btn-info btn-sm back"   href="MainDashBoard.htm" style="float: right">Back</a></h3>
+					<div >
+						<h3>Lab  Details <a class="btn btn-info btn-sm back f-right"   href="MainDashBoard.htm" >Back</a></h3>
 						
 					</div>
 				</div>
 			</div>
-			<div class="card " style="background: transparent;display:none" id="projectdetailsview"  >
+			<div class="card d-none bg-transparent" id="projectdetailsview"  >
 				
 				<div class="card-body"> 
 					
 					<%if(ProjectHealthData.size()>0){ %>
 								
 						
-							<div class="card-deck" style="margin-top: 10px;margin-bottom: 5px;" >
+							<div class="card-deck mt-3 mb-2" >
 							  <div class="card detailscard">
 							    <div class="card-body">
 							      <h5 class="card-title"><img src="view/images/discuss.png" /> Meeting</h5>
@@ -565,11 +87,11 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 								            <div class="h4 font-weight-bold" id="pmrcprogress" ><%=(ProjectHealthTotalData[29]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[29].toString()): " - " )%>%</div>
 								          </div>
 								        </div>
-								        <div><h6 style="margin-bottom: 5px">PMRC</h6></div>
-								        <hr style="margin: 5px !important">
-								        <table class="countstable" style="margin: 0px auto">
+								        <div><h6 class="mb-2" >PMRC</h6></div>
+								        <hr class="m-2" >
+								        <table class="countstable mx-auto"  >
 								        	<tr>
-								        		<td style="font-size: 14px" id="meetingsvaluepmrc" data-toggle="tooltip" title="Held / To be Held / Total to be Held" >
+								        		<td class="td-font" id="meetingsvaluepmrc" data-toggle="tooltip" title="Held / To be Held / Total to be Held" >
 								        			<%if(ProjectHealthTotalData !=null){%> <span><%=ProjectHealthTotalData[0]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[0].toString()): " - " %> / <%=ProjectHealthTotalData[2]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[2].toString()): " - " %> / <%=ProjectHealthTotalData[46]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[46].toString()): " - " %></span> <%}%>
 								        		</td>
 								        	</tr>
@@ -595,11 +117,11 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 								            <div class="h4 font-weight-bold" ><%=(ProjectHealthTotalData[31]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[31].toString()): " - " )%>%</div>
 								          </div>
 								        </div>
-								        <div><h6 style="margin-bottom: 5px">EB</h6></div>
-								        <hr style="margin: 5px !important">
-								        <table class="countstable" style="margin: 0px auto">
+								        <div><h6 class="mb-2">EB</h6></div>
+								        <hr class="m-2">
+								        <table class="countstable mx-auto">
 									        	<tr>
-									        		<td style="font-size: 14px" id="meetingsvalueeb"  data-toggle="tooltip" title="Held / To be Held / Total to be Held"  >
+									        		<td class="td-font" id="meetingsvalueeb"  data-toggle="tooltip" title="Held / To be Held / Total to be Held"  >
 									        		<%if(ProjectHealthTotalData !=null){%> <span><%=ProjectHealthTotalData[3]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[3].toString()): " - " %> / <%=ProjectHealthTotalData[5]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[5].toString()): " - " %> / <%=ProjectHealthTotalData[47]!=null?StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[47].toString()): " - " %></span> <%}%>
 									        		</td>
 									        	</tr>
@@ -648,16 +170,16 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 							      	</div>
 							      </div>
 							    </div>
-							    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
+							    <table class="countstable card-deck-table mb-0 border-top" >
 									  <thead>
 									  	<tr>
-									  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" >&nbsp;<%if(ProjectHealthTotalData[7] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[7].toString()) %><%} %></td>
+									  		<td class="border-right" data-toggle="tooltip" title="Delayed" >&nbsp;<%if(ProjectHealthTotalData[7] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[7].toString()) %><%} %></td>
 									  		<td data-toggle="tooltip" title="Pending"  >&nbsp;<%if(ProjectHealthTotalData[6] !=null){%><%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[6].toString()) %><%} %></td>
 									  	</tr>
 									  </thead>
 									  <tbody>
 									  	<tr>
-									  		<th scope="col" class="textfont" style="border-right:1px solid darkgrey;" ><span class="yellow">&#x220E;</span> &nbsp;Delayed</th>
+									  		<th scope="col" class="textfont border-right" ><span class="yellow">&#x220E;</span> &nbsp;Delayed</th>
 									      	<th scope="col" class="textfont"><span class="red">&#x220E;</span> &nbsp;Pending</th>
 									    </tr>
 									  </tbody> 
@@ -701,18 +223,18 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 							      	</div>
 							      </div>
 							    </div>
-							    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
+							    <table class="countstable card-deck-table mb-0 border-top" >
 									  <thead>
 									  	<tr>
-									  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" ><%if(ProjectHealthTotalData[13] !=null){%>&nbsp;<%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[13].toString()) %><%} %></td>
-									  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Forwarded" ><%if(ProjectHealthTotalData[12] !=null){%> &nbsp;<%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[12].toString()) %><%} %></td>
+									  		<td class="border-right" data-toggle="tooltip" title="Delayed" ><%if(ProjectHealthTotalData[13] !=null){%>&nbsp;<%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[13].toString()) %><%} %></td>
+									  		<td class="border-right" data-toggle="tooltip" title="Forwarded" ><%if(ProjectHealthTotalData[12] !=null){%> &nbsp;<%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[12].toString()) %><%} %></td>
 									  		<td data-toggle="tooltip" title="Pending" ><%if(ProjectHealthTotalData[11] !=null){%>&nbsp;<%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[11].toString()) %><%} %></td>
 									  	</tr>
 									  </thead>
 									  <tbody>
 									  	<tr>
-									      <th scope="col" class="textfont" style="border-right:1px solid darkgrey;"><span class="yellow">&#x220E;</span> &nbsp;Delayed</th>
-									      <th scope="col" class="textfont" style="border-right:1px solid darkgrey;"><span class="blue">&#x220E;</span> &nbsp;Forwarded</th>
+									      <th scope="col" class="textfont border-right"><span class="yellow">&#x220E;</span> &nbsp;Delayed</th>
+									      <th scope="col" class="textfont border-right"><span class="blue">&#x220E;</span> &nbsp;Forwarded</th>
 									      <th scope="col" class="textfont"><span class="red">&#x220E;</span> &nbsp;Pending</th>
 									    </tr>
 									  </tbody>
@@ -756,16 +278,16 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 							      	</div>
 							      </div>
 							    </div>
-							    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
+							    <table class="countstable card-deck-table mb-0 border-top" >
 									  <thead>
 									  	<tr>
-									  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" >&nbsp;0</td>
+									  		<td class="border-right" data-toggle="tooltip" title="Delayed" >&nbsp;0</td>
 									  		<td data-toggle="tooltip" title="Pending" ><%if(ProjectHealthTotalData[17] !=null){%>&nbsp;<%=StringEscapeUtils.escapeHtml4(ProjectHealthTotalData[17].toString()) %><%} %></td>
 									  	</tr>
 									  </thead>
 									 <tbody>
 									  	<tr>
-									      <th scope="col" class="textfont"style="border-right:1px solid darkgrey;"><span class="yellow">&#x220E;</span> &nbsp;Delayed</th>
+									      <th scope="col" class="textfont border-right"><span class="yellow">&#x220E;</span> &nbsp;Delayed</th>
 									      <th scope="col" class="textfont"><span class="red">&#x220E;</span> &nbsp;Pending</th>
 									    </tr>
 									  </tbody> 
@@ -773,12 +295,12 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 							  </div>
 							   <div class="card detailscard">
 							    <div class="card-body">
-							    	<div style="display: inline-flex">
-								      <h5 class="card-title" style="margin-bottom: 8px !important">
+							    	<div class="d-in-fl">
+								      <h5 class="card-title mb-2" >
 										<img src="view/images/rupee.png" /> Finance<!--  <span style="font-size: 14px !important">(&#8377;Cr)</span> -->
 									  </h5>
 								   </div>
-							      <hr style="margin:3px 10px !important">
+							      <hr class="margin-x-y">
 									<table class="table  financetable" >
 									  <thead>
 									    <tr>
@@ -803,20 +325,20 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 									  <tbody>
 									  	<tr>
 									      <th scope="row">Revenue</th>
-									      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(0)[3]!=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(0)[3].toString()): " - " %></td>
-									      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(0)[4]!=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(0)[4].toString()): " - " %></td>
+									      <td><span class="text-success">&#8377;</span> <%=DashboardFinance.get(0)[3]!=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(0)[3].toString()): " - " %></td>
+									      <td><span class="text-success">&#8377;</span> <%=DashboardFinance.get(0)[4]!=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(0)[4].toString()): " - " %></td>
 									      <%  revBal = new BigDecimal(DashboardFinance.get(0)[3].toString()).subtract(new BigDecimal(DashboardFinance.get(0)[4].toString())) ; %>
-									      <td><span style="color:green">&#8377;</span> <%=revBal%></td>
+									      <td><span class="text-success">&#8377;</span> <%=revBal%></td>
 									    </tr>
 									     <% sanction	= sanction.add(new BigDecimal(DashboardFinance.get(0)[3].toString())); %>
 									     <% expenditure	= expenditure.add(new BigDecimal(DashboardFinance.get(0)[4].toString())); %>
 									     <% balance	= balance.add(revBal); %>
 									     <tr>
 									      <th scope="row">Capital</th>
-									      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(1)[3]!=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(1)[3].toString()): " - " %></td>
-									      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(1)[4]!=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(1)[4].toString()): " - " %></td>
+									      <td><span class="text-success">&#8377;</span> <%=DashboardFinance.get(1)[3]!=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(1)[3].toString()): " - " %></td>
+									      <td><span class="text-success">&#8377;</span> <%=DashboardFinance.get(1)[4]!=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(1)[4].toString()): " - " %></td>
 									      <%  capBal = new BigDecimal(DashboardFinance.get(1)[3].toString()).subtract(new BigDecimal(DashboardFinance.get(1)[4].toString())) ; %>
-									      <td><span style="color:green">&#8377;</span> <%=capBal %></td>
+									      <td><span class="text-success">&#8377;</span> <%=capBal %></td>
 									    </tr>
 									     <% sanction	= sanction.add(new BigDecimal(DashboardFinance.get(1)[3].toString())); %>
 									     <% expenditure	= expenditure.add(new BigDecimal(DashboardFinance.get(1)[4].toString())); %>
@@ -824,19 +346,19 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 									    
 									    <tr>
 									      <th scope="row">Others</th>
-									      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(2)[3]!=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(2)[3].toString()): " - " %></td>
-									      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(2)[4]!=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(2)[4].toString()): " - " %></td>
+									      <td><span class="text-success">&#8377;</span> <%=DashboardFinance.get(2)[3]!=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(2)[3].toString()): " - " %></td>
+									      <td><span class="text-success">&#8377;</span> <%=DashboardFinance.get(2)[4]!=null?StringEscapeUtils.escapeHtml4(DashboardFinance.get(2)[4].toString()): " - " %></td>
 									      <%  othBal = new BigDecimal(DashboardFinance.get(2)[3].toString()).subtract(new BigDecimal(DashboardFinance.get(2)[4].toString())) ; %>
-									      <td><span style="color:green">&#8377;</span> <%=othBal %></td>
+									      <td><span class="text-success">&#8377;</span> <%=othBal %></td>
 									    </tr> 
 									     <% sanction	= sanction.add(new BigDecimal(DashboardFinance.get(2)[3].toString())); %>
 									     <% expenditure	= expenditure.add(new BigDecimal(DashboardFinance.get(2)[4].toString())); %>
 									     <% balance	= balance.add(othBal); %>
 									    <tr>
 									      <th scope="row">Total</th>
-									      <td><span style="color:green">&#8377;</span> <%=sanction%></td>
-									      <td><span style="color:green">&#8377;</span> <%=expenditure %></td>
-									      <td><span style="color:green">&#8377;</span> <%=balance %></td>
+									      <td><span class="text-success">&#8377;</span> <%=sanction%></td>
+									      <td><span class="text-success">&#8377;</span> <%=expenditure %></td>
+									      <td><span class="text-success">&#8377;</span> <%=balance %></td>
 									    </tr>
 									  </tbody>
 									</table>
@@ -848,21 +370,21 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 							<br>
 				
 			            					            		
-								<div style="background-color: rgba(255, 255, 255, 0.39999) !important ;border-radius: 4px ;  ">
+								<div class="project-health-table">
 								
-									<table class="table meeting tableFixHead fixed-table "  style="table-layout: fixed;overflow-y:auto;overflow-x:hidden "  id="overalldiv"> 
-										<thead style=" background: #1363DF; color: white;">												
+									<table class="table meeting tableFixHead fixed-table tab-fix"    id="overalldiv"> 
+										<thead class="table-style-white">												
 											<tr>
-												<td style="width:4%">
-													<a  data-toggle="modal"  class="fa faa-pulse animated " data-target="#exampleModal1" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" ><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a>
+												<td class="w-4">
+													<a  data-toggle="modal"  class="fa faa-pulse animated cursor-pointer px-4" data-target="#exampleModal1" data-whatever="@mdo" ><i class="fa fa-info-circle f-rem"  aria-hidden="true"></i> </a>
 												</td>
-												<td style="width:15%"><span style="font-size :15px;font-weight: bold; ">Project</span></td>
-												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">PMRC </span></td>
-												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">EB </span></td>
-												<td ><span style="font-size :15px;font-weight: bold;  ">Milestone </span></td>
-												<td ><span style="font-size :15px;font-weight: bold;  ">Action</span></td>
-												<td ><span style="font-size :15px;font-weight: bold;  ">Risk</span></td>
-												<td ><span style="font-size :15px;font-weight: bold;  ">Finance</span></td>
+												<td class="w-15"><span class="span-font">Project</span></td>
+												<td class="p-0"><span class="span-font">PMRC </span></td>
+												<td class="p-0"><span class="span-font">EB </span></td>
+												<td ><span class="span-font">Milestone </span></td>
+												<td ><span class="span-font">Action</span></td>
+												<td ><span class="span-font">Risk</span></td>
+												<td ><span class="span-font">Finance</span></td>
 											</tr>
 										</thead>
 										
@@ -874,7 +396,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 												%>
 										
 											<tr>
-												<td><a href="javascript:ProjectDetails('<%=obj[2]%>')"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
+												<td><a href="javascript:ProjectDetails('<%=obj[2]%>')"> <i class="fa fa-hand-o-right f-rem" aria-hidden="true"></i></a></td>
 												<td   style="font-weight: 800; font-size:1rem;text-align:left;
 												
 														<% if(obj[45]!=null) {if(obj[45].toString().equalsIgnoreCase("IA")){%>color: green<%} 
@@ -1160,12 +682,12 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 													<a  data-toggle="modal"  class="fa faa-pulse animated " data-target="#exampleModal1" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" ><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a>
 												</td>
 												<td style="width:5%"><span style="font-size :15px;font-weight: bold; ">Lab</span></td>
-												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">PMRC </span></td>
-												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">EB </span></td>
-												<td ><span style="font-size :15px;font-weight: bold;  ">Milestone </span></td>
-												<td ><span style="font-size :15px;font-weight: bold;  ">Action</span></td>
-												<td ><span style="font-size :15px;font-weight: bold;  ">Risk</span></td>
-												<td ><span style="font-size :15px;font-weight: bold;  ">Finance</span></td>
+												<td class="p-0"><span class="span-font">PMRC </span></td>
+												<td class="p-0"><span class="span-font">EB </span></td>
+												<td ><span class="span-font">Milestone </span></td>
+												<td ><span class="span-font">Action</span></td>
+												<td ><span class="span-font">Risk</span></td>
+												<td ><span class="span-font">Finance</span></td>
 											</tr>
 										</thead>
 										
@@ -1390,7 +912,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 								<p style="margin-bottom: 0px !important;margin-left:10px">Project </p>
 								<hr class="modal-hr">
 								<ul class="modal-list">
-						          	<li><span class="modal-span" style="color:green">&#8226;</span><span class="modal-text">Indian Army</span></li>
+						          	<li><span class="modal-span" class="text-success">&#8226;</span><span class="modal-text">Indian Army</span></li>
 						           	<li><span class="modal-span" style="color:#007bff">&#8226;</span><span class="modal-text">Indian Navy</span></li>
 						           	<li><span class="modal-span" style="color:#1F4690">&#8226;</span><span class="modal-text">Indian Air Forces</span></li>
 						           	<li><span class="modal-span" style="color:#8E3200">&#8226;</span><span class="modal-text">Home Land Security</span></li>
@@ -1404,7 +926,7 @@ List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("Dashboard
 								<p style="margin-bottom: 0px !important;margin-left:10px">Project Health (Pending %)</p>
 								<hr class="modal-hr">
 								<ul class="modal-list">
-						          	<li><span class="modal-span" style="color:green">&#8226;</span><span class="modal-text">0-25%</span></li>
+						          	<li><span class="modal-span" class="text-success">&#8226;</span><span class="modal-text">0-25%</span></li>
 						           	<li><span class="modal-span" style="color:#F8CB2E;">&#8226;</span><span class="modal-text">25-50%</span></li>
 						           	<li><span class="modal-span" style="color:#EE5007">&#8226;</span><span class="modal-text">50-75%</span></li>
 						           	<li><span class="modal-span" style="color:red">&#8226;</span><span class="modal-text">75-100%</span></li>

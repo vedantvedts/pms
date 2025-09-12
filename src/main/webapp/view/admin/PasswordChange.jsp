@@ -1,6 +1,7 @@
 <%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +14,8 @@ String ForceResetPwd = (String)request.getAttribute("ForcePwd");
 
 <meta charset="UTF-8">
 
+<spring:url value="/resources/css/admin/PasswordChange.css" var="passwordChange" />
+<link href="${passwordChange}" rel="stylesheet" />
      
 
 <%if(ForceResetPwd!=null && ForceResetPwd.equals("N")){ %>
@@ -21,7 +24,6 @@ String ForceResetPwd = (String)request.getAttribute("ForcePwd");
 	<jsp:include page="../static/dependancy.jsp"></jsp:include>
 	<title>Reset Password</title>
 <%} %>
-
 
 </head>
 <body>
@@ -46,7 +48,7 @@ String ForceResetPwd = (String)request.getAttribute("ForcePwd");
 	<div class="container-fluid">
        
     	<div class="card shadow-nohover">
-        	<div class="card-header" style="background-color: #055C9D;">
+        	<div class="card-header bg-header" >
         		<div class="row">
 					<div class="col-md-3">
 						<h5 class="text-white">Password Change</h5>
@@ -61,8 +63,8 @@ String ForceResetPwd = (String)request.getAttribute("ForcePwd");
 	            	<div class="col-md-1"></div>
 	            	<div class="col-md-11">
 						<%if(ForceResetPwd!=null && ForceResetPwd.equals("Y")){ %>
-							<span style="font-weight: bold;color:#EB1D36;font-size:20px;">Note : </span> 
-							<span style="font-size:20px; ">Please reset Your default Password to continue.</span>
+							<span class="font" >Note : </span> 
+							<span class="font-size">Please reset Your default Password to continue.</span>
 							<br><br>
 						<%} %>
 					</div>
@@ -73,7 +75,7 @@ String ForceResetPwd = (String)request.getAttribute("ForcePwd");
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					<input type="hidden" id="sessionKey" name="encKey" value="<%=(String)request.getAttribute("sessionKey")%>" />
 					<input type="hidden" id="sessionIv"  name="encIv"  value="<%=(String)request.getAttribute("sessionIv")%>" />
-					<input type="text" name="username" id="username" value="${sessionScope.Username}" autocomplete="username" style="display: none;" aria-hidden="true">
+					<input type="text" name="username" id="username" value="${sessionScope.Username}" autocomplete="username" class="d-none" aria-hidden="true">
 					
                 	<div class="row"> 
                 		<div class="col-md-1"></div>
@@ -89,15 +91,15 @@ String ForceResetPwd = (String)request.getAttribute("ForcePwd");
 								<label class="control-label">New Password</label><span class="mandatory">*</span>
 								<div class="input-group">
 									<input class="form-control" type="password" placeholder="New Password" required name="NewPassword" id="password" autocomplete="new-password">
-									<div class="input-group-append">
-										<span class="input-group-text" onclick="togglePassword('password', this)" style="cursor:pointer;">
+									<div class="input-group-append cursor">
+										<span class="input-group-text " onclick="togglePassword('password', this)" >
 											<i class="fa fa-eye"></i>
 										</span>
 									</div>
 								</div>
 								<small id="passwordHelp" class="form-text text-muted"></small>
-								<div id="strengthBar" style="height: 5px; background-color: #e0e0e0; margin-top: 5px;">
-									<div id="strengthIndicator" style="height: 100%; width: 0%; background-color: red;"></div>
+								<div id="strengthBar" >
+									<div id="strengthIndicator" ></div>
 								</div>
 							</div>
                    		</div>
@@ -107,19 +109,19 @@ String ForceResetPwd = (String)request.getAttribute("ForcePwd");
 								<label class="control-label">Confirm New Password</label><span class="mandatory">*</span>
 								<div class="input-group">
 									<input class="form-control" type="password" placeholder="Confirm New Password" required name="NewPassword" id="confirm_password" autocomplete="new-password">
-									<div class="input-group-append">
-										<span class="input-group-text" onclick="togglePassword('confirm_password', this)" style="cursor:pointer;">
+									<div class="input-group-append cursor">
+										<span class="input-group-text " onclick="togglePassword('confirm_password', this)" >
 											<i class="fa fa-eye"></i>
 										</span>
 									</div>
 								</div>
 								<small id="pwd-rules" class="text-muted">
-								  <ul style="list-style-type: none; padding-left: 0; margin-top: 5px;">
-								    <li id="rule-length" style="color:red;">❌ At least 8 characters</li>
-								    <li id="rule-uppercase" style="color:red;">❌ At least 1 uppercase letter</li>
-								    <li id="rule-lowercase" style="color:red;">❌ At least 1 lowercase letter</li>
-								    <li id="rule-number" style="color:red;">❌ At least 1 number</li>
-								    <li id="rule-special" style="color:red;">❌ At least 1 special character</li>
+								  <ul class="ul-list">
+								    <li id="rule-length" class="text-danger">❌ At least 8 characters</li>
+								    <li id="rule-uppercase" class="text-danger">❌ At least 1 uppercase letter</li>
+								    <li id="rule-lowercase" class="text-danger">❌ At least 1 lowercase letter</li>
+								    <li id="rule-number" class="text-danger">❌ At least 1 number</li>
+								    <li id="rule-special" class="text-danger">❌ At least 1 special character</li>
 								  </ul>
 								</small>
 								<span id='message'></span>
