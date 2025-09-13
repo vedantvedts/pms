@@ -287,23 +287,16 @@ $(document).ready(function() {
 <%@page import="java.util.Calendar"%>
 <%@page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Activity Table</title>
 <jsp:include page="../static/header.jsp"></jsp:include>
-    <style>
-        .quarter-header {
-            text-align: center;
-            background-color: #a9c1f1;
-        }
-        .year-header, .align-middle {
-            text-align: center;
-            border-bottom: 2px solid #dee2e6;
-            background-color: #f1a9ce;
-        }
-    </style>
+<spring:url value="/resources/css/pfts/NewFile.css" var="fromExternalCSS" />     
+<link href="${fromExternalCSS}" rel="stylesheet" />
 </head>
 <body>
 <%
@@ -316,14 +309,14 @@ List<Object[]> pftsMileDemandList = (List<Object[]>)request.getAttribute("pftsMi
     <div class="container-fluid">
        <div class="card">
        <div class="card-body">
-       <div style="display: flex;justify-content: space-between;">
+       <div class="style1">
 	      <div>
 	        <h4>Procurement Milestone For Demand Number : <%=demandNumber!=null?StringEscapeUtils.escapeHtml4(demandNumber):" - " %></h4>
 	      </div>
 	      <div >
-	        <span class="badge" style=" background-color: green;color: white;font-size: 15px;">Probable Date</span>
-	        <span class="badge" style="background-color: #ffae00; color: black;font-size: 15px;">Actual Date</span>
-	        <span class="badge" style="background-color: #462fb7; color: white;font-size: 15px;">Both are same quarter</span>
+	        <span class="badge style2" >Probable Date</span>
+	        <span class="badge style3" >Actual Date</span>
+	        <span class="badge style4" >Both are same quarter</span>
 	      </div >
        </div>
        <div class="table-responsive">
@@ -350,7 +343,7 @@ List<Object[]> pftsMileDemandList = (List<Object[]>)request.getAttribute("pftsMi
 			<th colspan="4" class="year-header"><%= year %></th>
 			<%startCal.add(Calendar.YEAR, 1);}%>
 			</tr>
-			<tr style="border-bottom: 3px solid #6252528a;">
+			<tr class="style5">
 			<% 
 			startCal.setTime(startDate);
 			while (startCal.get(Calendar.YEAR) <= endCal.get(Calendar.YEAR)) {
@@ -387,8 +380,8 @@ List<Object[]> pftsMileDemandList = (List<Object[]>)request.getAttribute("pftsMi
 			        }
 			%>
 			<tr>
-			<td style="text-align: center;font-size: 17px;font-weight: 600;"><%= count + " . " %></td>
-			<td style="font-size: 17px;font-weight: 600;"><%= obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()):" - " %></td>
+			<td class="style6"><%= count + " . " %></td>
+			<td class="style7"><%= obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()):" - " %></td>
 			<%
 			startCal.setTime(startDate);
 			while (startCal.get(Calendar.YEAR) <= endCal.get(Calendar.YEAR)) {
@@ -396,7 +389,7 @@ List<Object[]> pftsMileDemandList = (List<Object[]>)request.getAttribute("pftsMi
 			    for (int q = 1; q <= 4; q++) { 
 			        if (year == objYear && q == quarter) { 
 			%>
-			<td id="tdid_<%= obj[7] %>_<%= year %>_Q<%= q %>" style="background-color: green;"></td>
+			<td id="tdid_<%= obj[7] %>_<%= year %>_Q<%= q %>" class="style8"></td>
 			<% } else {%>
 			<td id="tdid_<%= obj[7] %>_<%= year %>_Q<%= q %>"></td>
 			<%}}startCal.add(Calendar.YEAR, 1); } %>
@@ -405,7 +398,7 @@ List<Object[]> pftsMileDemandList = (List<Object[]>)request.getAttribute("pftsMi
 			</tbody>
         </table>
         </div>
-         <span style="color: red;font-size: large;font-weight: 500;">Note : All The Quarters Are Based on Financial Year</span>
+         <span class="style9">Note : All The Quarters Are Based on Financial Year</span>
     </div>
     <div class="form-group" align="center">
 		 <a class="btn btn-info btn-sm  shadow-nohover back" href="ProcurementStatus.htm?projectid=<%=ProjectId%>">Back</a>
