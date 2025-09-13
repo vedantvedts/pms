@@ -12,98 +12,14 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 <script src="./resources/js/multiselect.js"></script>
 <link href="./resources/css/multiselect.css" rel="stylesheet"/>
- 
+
+   <spring:url value="/resources/css/fracasModule/fracasMainNew.css" var="fracasMainNew" />     
+<link href="${fracasMainNew}" rel="stylesheet" /> 
 
 <title>FRACAS</title>
 
 <title> ADD COMMITTEE</title>
-	<style type="text/css">
-		.input-group-text {
-			font-weight: bold;
-		}
-
-		label {
-			font-weight: 800;
-			font-size: 16px;
-			color: #07689f;
-		}
-
-		hr {
-			margin-top: -2px;
-			margin-bottom: 12px;
-		}
-
-		.card b {
-			font-size: 20px;
-		}
-	</style>
-<style type="text/css">
-
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
-.multiselect-container>li>a>label {
-  padding: 4px 20px 3px 20px;
-}
-.cc-rockmenu {
-	color:fff;
-	padding:0px 5px;
-	font-family: 'Lato',sans-serif;
-}
-
-.cc-rockmenu .rolling {
-  display: inline-block;
-  cursor:pointer;
-  width: 34px;
-  height: 30px;
-  text-align:left;
-  overflow: hidden;
-  transition: all 0.3s ease-out;
-  white-space: nowrap;
-  
-}
-
-
-.cc-rockmenu .rolling:hover {
-  width: 120px;
-}
-.cc-rockmenu .rolling .rolling_icon {
-  float:left;
-  z-index: 9;
-  display: inline-block;
-  width: 28px;
-  height: 52px;
-  box-sizing: border-box;
-  margin: 0 5px 0 0;
-}
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-  width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-    font-size: 20px;
-    padding: 6px;
-}
-.cc-rockmenu .rolling span {
-    display: block;
-    font-weight: bold;
-    padding: 2px 0;
-    font-size: 14px;
-    font-family: 'Muli',sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin:0;
-}
-
-.width{
-	width:150px !important;
-}
-</style>
+	
 </head>
  
 <body>

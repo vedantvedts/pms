@@ -1,0 +1,31 @@
+@charset "ISO-8859-1";
+
+.input-group-text{
+font-weight: bold;
+}
+
+.backbtn{
+	margin-left: 1rem;
+}
+
+label{
+	font-weight: 800;
+	font-size: 16px;
+	color:#07689f;
+} 
+
+hr{
+	margin-top: -2px;
+	margin-bottom: 12px;
+}
+.card b{
+	font-size: 20px;
+}
+
+.holidayHeader{
+	background-color: #055C9D;
+}
+
+.BackBtn{
+	margin-left: 1rem;
+}

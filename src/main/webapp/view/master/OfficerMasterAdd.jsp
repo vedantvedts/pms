@@ -3,6 +3,7 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+            <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +11,8 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 <%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
 <title>OFFICER MASTER ADD</title>
-
+<spring:url value="/resources/css/master/officerMasterAdd.css" var="officerMasterAdd" />     
+<link href="${officerMasterAdd}" rel="stylesheet" />
 </head>
 <body>
 
@@ -49,9 +51,9 @@ List<Object[]> OfficerList = (List<Object[]>)request.getAttribute("OfficerList")
 
 <div class="col-sm-2"></div> 
 	
- <div class="col-sm-8"  style="top:0px;">
+ <div class="col-sm-8"  >
 <div class="card shadow-nohover"  >
-<div class="card-header" style=" background-color: #055C9D;margin-top: "> <h4><b class="text-white">Officer Add</b></h4> </div>
+<div class="card-header headerCard" > <h4><b class="text-white">Officer Add</b></h4> </div>
 <div class="card-body">
 
 
@@ -63,15 +65,15 @@ List<Object[]> OfficerList = (List<Object[]>)request.getAttribute("OfficerList")
  
 <div class="col-md-3">
               <div class="form-group">
-					<label >Employee No:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control alphanum-only"  type="text" id="EmpNo"  name="EmpNo" required="required" maxlength="20" style="font-size: 15px;width:100%;text-transform: uppercase;"
+					<label >Employee No:<span class="mandatory" >*</span></label>
+					<input  class="form-control alphanum-only"  type="text" id="EmpNo"  name="EmpNo" required="required" maxlength="20" 
 					 placeholder="Employee No"/>
 				</div>
 </div>
 <div class="col-md-3">
 					 <div class="form-group">
 			                <label>Rank/Salutation</label><br>
-			                 <select class="form-control selectdee" id="title"  name="title" data-container="body" data-live-search="true"  style="font-size: 5px;">
+			                 <select class="form-control selectdee" id="title"  name="title" data-container="body" data-live-search="true"  >
 								<option value=""  selected="selected"	hidden="true">--Select--</option>
 								<option value="Prof.">Prof.</option>
 								<option value="Lt.">Lt.</option>
@@ -83,7 +85,7 @@ List<Object[]> OfficerList = (List<Object[]>)request.getAttribute("OfficerList")
 		<div class="col-md-3">
 					 <div class="form-group">
 			                <label>Title</label><br>
-			                 <select class="form-control selectdee"  id="salutation" name="salutation" data-container="body" data-live-search="true"   style="font-size: 5px;">
+			                 <select class="form-control selectdee"  id="salutation" name="salutation" data-container="body" data-live-search="true"   >
 								<option value=""  selected="selected"	hidden="true">--Select--</option>
 								<option value="Mr.">Mr.</option>
 								<option value="Ms.">Ms.</option>
@@ -92,8 +94,8 @@ List<Object[]> OfficerList = (List<Object[]>)request.getAttribute("OfficerList")
 	</div>
 <div class="col-md-3">
               <div class="form-group">
-					<label >Employee Name:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control alpha-no-leading-space"  type="text" name="EmpName"  id="EmpName"  required="required" maxlength="50" style="font-size: 15px;width:100%;text-transform: capitalize;" 
+					<label >Employee Name:<span class="mandatory" >*</span></label>
+					<input  class="form-control alpha-no-leading-space"  type="text" name="EmpName"  id="EmpName"  required="required" maxlength="50"  
 					 placeholder="Employee Name" >
 			  </div>
 </div>
@@ -102,8 +104,8 @@ List<Object[]> OfficerList = (List<Object[]>)request.getAttribute("OfficerList")
 <div class="row">
 <div class="col-md-3">
               <div class="form-group">
-					<label >Designation:<span class="mandatory" style="color: red;">*</span></label>
-					<select class="form-control selectdee" id="Designation" name="Designation" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
+					<label >Designation:<span class="mandatory" >*</span></label>
+					<select class="form-control selectdee" id="Designation" name="Designation" data-container="body" data-live-search="true"  required="required" >
 								<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>					
 										<%  for ( Object[]  obj :DesignationList) {%>			
 										<option value="<%=obj[0] %>"> <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %></option>			
@@ -114,24 +116,24 @@ List<Object[]> OfficerList = (List<Object[]>)request.getAttribute("OfficerList")
 
 <div class="col-md-3">
               <div class="form-group">
-					<label >Extension No:<span class="mandatory" style="color: red;">*</span></label>
-	<input  class="form-control alphanum-only" type="text" id="ExtNo" name="ExtNo" required="required" maxlength="10" style="font-size: 15px;width:100%" 
+					<label >Extension No:<span class="mandatory" >*</span></label>
+	<input  class="form-control alphanum-only" type="text" id="ExtNo" name="ExtNo" required="required" maxlength="10"  
 					 placeholder="Extension Number(Max 10 char)">
 			 </div>
 </div>
 
 <div class="col-md-3">
               <div class="form-group">
-					<label >Mobile No:<span class="mandatory" style="color: red;">*</span></label>
+					<label >Mobile No:<span class="mandatory" >*</span></label>
 					<input  class="form-control indian-mobile" type="text" id="mobilenumber"  name="mobilenumber" maxlength="10" placeholder="Phone No"
-					 style="font-size: 15px;width:100%">
+					 >
 				</div>
 </div>
 
 <div class="col-md-3">
               <div class="form-group">
-					<label >Lab Email:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control email-input"  type="email" name="Email" id="Email" required="required" maxlength="40" style="font-size: 15px;width:100%" placeholder="Lab Email">
+					<label >Lab Email:<span class="mandatory" >*</span></label>
+					<input  class="form-control email-input"  type="email" name="Email" id="Email" required="required" maxlength="40"  placeholder="Lab Email">
 			 </div>
 </div>
 </div>
@@ -140,21 +142,21 @@ List<Object[]> OfficerList = (List<Object[]>)request.getAttribute("OfficerList")
 <div class="col-md-3">
               <div class="form-group">
 					<label >Drona Email:</label>
-					<input  class="form-control email-input"  type="email" name="DronaEmail" id="DronaEmail" required="required" maxlength="40" style="font-size: 15px;width:100%" placeholder="Drona Email">
+					<input  class="form-control email-input"  type="email" name="DronaEmail" id="DronaEmail" required="required" maxlength="40"  placeholder="Drona Email">
 			  </div>
 </div>
 
 <div class="col-md-3">
               <div class="form-group">
 					<label >Internet Email:</label>
-                    <input  class="form-control email-input"  type="email"id="InternetEmail" name="InternetEmail" required="required" maxlength="40" style="font-size: 15px;width:100%" placeholder="Internet Email">
+                    <input  class="form-control email-input"  type="email"id="InternetEmail" name="InternetEmail" required="required" maxlength="40"  placeholder="Internet Email">
 			   </div>
 </div>
 
 <div class="col-md-3">
               <div class="form-group">
-					<label >Division:<span class="mandatory" style="color: red;">*</span></label>
-					<select class="form-control selectdee" id="Division" name="Division" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
+					<label >Division:<span class="mandatory" >*</span></label>
+					<select class="form-control selectdee" id="Division" name="Division" data-container="body" data-live-search="true"  required="required" >
 									<option value="0" selected="selected"	hidden="true">--Select--</option>
 											<%  for ( Object[]  obj :DivisionList) {%>			
 											<option value="<%=obj[0] %>"> <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-" %></option>			
@@ -166,8 +168,8 @@ List<Object[]> OfficerList = (List<Object[]>)request.getAttribute("OfficerList")
 
 <div class="col-md-3">
 	<div class="form-group">
-		<label >Superior Officer:<span class="mandatory" style="color: red;">*</span></label>
-		<select class="form-control selectdee" id="superiorOfficer" name="superiorOfficer" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
+		<label >Superior Officer:<span class="mandatory" >*</span></label>
+		<select class="form-control selectdee" id="superiorOfficer" name="superiorOfficer" data-container="body" data-live-search="true"  required="required" >
 			<option value="0" selected="selected" hidden="true">--Select--</option>
 			<%  for ( Object[]  obj :OfficerList) {%>			
 				<option value="<%=obj[0] %>"> <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%>, <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):"-" %></option>			
@@ -181,7 +183,7 @@ List<Object[]> OfficerList = (List<Object[]>)request.getAttribute("OfficerList")
 <div class="row">
 <div class="col-sm-5" ></div>
 	<input type="button" value="SUBMIT"  class="btn btn-primary btn-sm submit" onclick="return empNoCheck('myfrm');" />
-	<button type="submit" class="btn btn-info btn-sm shadow-nohover back" style="margin-left: 1rem;" formaction="Officer.htm" formmethod="get" formnovalidate="formnovalidate" >BACK</button>
+	<button type="submit" class="btn btn-info btn-sm shadow-nohover back backbtn"  formaction="Officer.htm" formmethod="get" formnovalidate="formnovalidate" >BACK</button>
 </div>
 	<input type="hidden" id="empStatus" name="empStatus" value="P"><!-- srikant -->
 	 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />

@@ -8,83 +8,12 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/fracasModule/fracasAssigneeList.css" var="fracasAssigneeList" />     
+<link href="${fracasAssigneeList}" rel="stylesheet" />
  
 
 <title>Assignee List</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
-.cc-rockmenu {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-}
 
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor: pointer;
-	width: 34px;
-	height: 30px;
-	text-align: left;
-	overflow: hidden;
-	transition: all 0.3s ease-out;
-	white-space: nowrap;
-}
-
-.cc-rockmenu .rolling:hover {
-	width: 108px;
-}
-
-.cc-rockmenu .rolling .rolling_icon {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 28px;
-	height: 52px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-.cc-rockmenu .rolling span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 14px;
-	font-family: 'Muli', sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin: 0;
-}
-
-.width {
-	width: 270px !important;
-}
-
-a:hover {
-	color: white;
-}
-
-</style>
 </head>
  
 <body>
@@ -140,7 +69,7 @@ a:hover {
 										<th>FRACAS Item</th                                                               >
 										<th class="width-110px">PDC</th>
 										<th class="width-110px">Assigned Date</th>								
-									 	<th style="">Assigner</th>	
+									 	<th >Assigner</th>	
 									 	<th>Remarks</th>
 									 	<th>Attachment</th>
 									 	<th>Action</th>
@@ -162,7 +91,7 @@ a:hover {
 									<td>
 										<%if(obj[14]!=null){ %>
 											<form action="FracasAttachDownload.htm" method="post" target="_blank" >
-												<button class="btn" style="align: center;"><i class="fa fa-download"></i></button>																			
+												<button class="btn" ><i class="fa fa-download"></i></button>																			
 												<input type="hidden" name="fracasattachid" value="<%= obj[14] %>">
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 											</form>
@@ -171,7 +100,7 @@ a:hover {
 										<%} %>
 									</td>
 									<td>		
-										<form name="myForm1" id="myForm1" action="FracasAssignDetails.htm" method="POST" style="display: inline">
+										<form name="myForm1" id="myForm1" action="FracasAssignDetails.htm" method="POST" >
 											<button class="editable-click" name="sub" value="Details" 	>
 												<div class="cc-rockmenu">
 													<div class="rolling">
@@ -189,7 +118,7 @@ a:hover {
 								</tr>
 							<% count++; } }else{%>
 								<tr>
-									<td colspan="8" style="text-align: center">No List Found</td>
+									<td colspan="8"  class="no-lIST">No List Found</td>
 								</tr>
 							<%} %>
 							</tbody>

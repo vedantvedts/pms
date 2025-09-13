@@ -1,0 +1,58 @@
+@charset "ISO-8859-1";
+
+label{
+font-weight: bold;
+  font-size: 13px;
+}
+
+#ajaxError{
+	display: none;
+}
+
+.table thead tr th {
+	background-color: aliceblue;
+	text-align: left;
+	width:30%;
+}
+
+.table thead tr td {
+
+	text-align: left;
+}
+
+label{
+	font-size: 15px;
+}
+
+#ajaxErrorMessage{
+	width: 65%; padding: 10px; margin: 5px 0; 
+              border-radius: 4px;
+}
+
+.submitbtn{
+	align-self: center;
+}
+
+.isActiveSelect{
+	font-size: 18px;
+}
+
+#tdempid{
+	font-size: 18px;
+}
+
+#tdName{
+	font-size: 15px;text-transform: capitalize; width: 80%;
+}
+
+#tdCode{
+	font-size: 15px;
+}
+
+.headerDiv{
+	background-color: #055C9D;
+}
+
+.topdiv{
+	top: 10px;
+}
