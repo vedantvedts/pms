@@ -1,0 +1,321 @@
+@charset "UTF-8";
+
+
+label{
+font-weight: bold;
+  font-size: 15px !important;
+}
+
+.table .font{
+	  font-family:'Muli', sans-serif !important;
+	  font-style: normal;
+	  font-size: 13px;
+	  font-weight: 400 !important;
+	 
+}
+
+.table button {
+    background-color: Transparent !important;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    text-align: left !important;
+}
+.table td{
+	padding:5px !important;
+}
+ .resubmitted{
+	color:green;
+}
+
+	.fa{
+		font-size: 1.20rem;
+	}
+	
+.datatable-dashv1-list table tbody tr td{
+	padding: 8px 10px !important;
+}
+
+.table-project-n{
+	color: #005086;
+}
+
+#table thead tr th{
+	padding: 0px 0px !important;
+}
+
+#table tbody tr td{
+	padding:2px 3px !important;
+}
+
+
+/* icon styles */
+
+.cc-rockmenu {
+	color:fff;
+	padding:0px 5px;
+	font-family: 'Lato',sans-serif;
+}
+
+.cc-rockmenu .rolling {
+  display: inline-block;
+  cursor:pointer;
+  width: 34px;
+  height: 30px;
+  text-align:left;
+  overflow: hidden;
+  transition: all 0.3s ease-out;
+  white-space: nowrap;
+  
+}
+.cc-rockmenu .rolling:hover {
+  width: 108px;
+}
+.cc-rockmenu .rolling .rolling_icon {
+  float:left;
+  z-index: 9;
+  display: inline-block;
+  width: 28px;
+  height: 52px;
+  box-sizing: border-box;
+  margin: 0 5px 0 0;
+}
+.cc-rockmenu .rolling .rolling_icon:hover .rolling {
+  width: 312px;
+}
+
+.cc-rockmenu .rolling i.fa {
+    font-size: 20px;
+    padding: 6px;
+}
+.cc-rockmenu .rolling span {
+    display: block;
+    font-weight: bold;
+    padding: 2px 0;
+    font-size: 14px;
+    font-family: 'Muli',sans-serif;
+}
+
+.cc-rockmenu .rolling p {
+	margin:0;
+}
+
+.width{
+	width:270px !important;
+}
+
+.left {
+	text-align: left;
+}
+.center{
+	text-align: center;
+}
+.right{
+	text-align: right;
+}
+.mandatory{
+	color: red;
+}
+
+.card-body{
+	padding: 0px !important;
+}
+.control-label{
+	font-weight: bold !important;
+}
+#scrollclass::-webkit-scrollbar {
+	width: 7px;
+}
+
+#scrollclass::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+}
+
+#scrollclass::-webkit-scrollbar-thumb {
+	border-radius: 5px; 
+	/*   -webkit-box-shadow: inset 0 0 6px black;  */
+	background-color: #fff;
+} 
+
+#scrollclass::-webkit-scrollbar-thumb:hover {
+	-webkit-box-shadow: inset 0 0 6px black;
+	transition: 0.5s;
+}
+
+#scrollclass::-webkit-scrollbar {
+	width: 7px;
+}
+
+#scrollclass::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+}
+
+#scrollclass::-webkit-scrollbar-thumb {
+	border-radius: 5px;
+	/*   -webkit-box-shadow: inset 0 0 6px black;  */
+	background-color: #fff;
+}
+
+#scrollclass::-webkit-scrollbar-thumb:hover {
+	-webkit-box-shadow: inset 0 0 6px black;
+	transition: 0.5s;
+}
+
+
+#span{
+background: blue;
+}
+#span1{
+font-size: 10px;
+margin-left:10px
+}
+
+#span2{
+float:right;
+font-size: 10px;
+margin-right:10px
+}
+.activitytable{
+	border-collapse: collapse;
+	width: 100%;
+	border: 1px solid #216583;
+}
+.activitytable th, .activitytable td{
+	border: 2px solid #216583;
+	padding: 7px;
+}
+
+input {
+	font-family: sans-serif;
+	font-size: 18px;
+}
+
+#activityviewtable{
+	border-collapse: collapse;
+	width: 100%;
+	border: 2px solid #216583;
+	padding: 10px;
+}
+
+#activityviewtable th, #activityviewtable td{
+	border: 2px solid #216583;
+	padding: 7px;
+}
+
+.calendar-inner {
+	padding: 40px 10px;
+}
+.div-container {
+	position: relative;
+	margin: 0.5rem;
+    border: 3px solid #216583;
+    border-radius: 5px;
+    transition: all 0.5s;
+}
+.full-width {
+    width: 100% !important;
+}
+.half-width {
+    width: 48% !important;
+}
+.more-than-half-width {
+    width: 51% !important;
+}
+.toggle-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    z-index: 10;
+}
+
+/* Ensure select picker adjusts width */
+.select2-container {
+    width: 100% !important; /* Force full width */
+}
+
+.timesheetform{
+	max-height: 500px;
+    min-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Firefox */
+.timesheetform {
+  scrollbar-width: thin;
+  scrollbar-color: #216583 #f8f9fa;
+}
+
+/* Chrome, Edge, and Safari */
+.timesheetform::-webkit-scrollbar {
+  width: 12px;
+}
+
+.timesheetform::-webkit-scrollbar-track {
+  background: #f8f9fa;
+  border-radius: 5px;
+}
+
+.timesheetform::-webkit-scrollbar-thumb {
+  background-color: #007bff;
+  border-radius: 5px;
+  border: 2px solid #f8f9fa;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #0056b3;
+}
+
+.Style1{
+	font-size: 22px;font-weight: 600;color: white;text-align: center;background-color: #216583;height: 40px;
+}
+
+.Style2{
+	margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;font-size: 20px; color:#07689f;
+}
+
+.Style3{
+	font-family: 'Lato',sans-serif;font-size: large;
+}
+
+.Style4{
+	width:100%;
+}
+
+.Style5{
+	font-weight: bold;
+}
+
+.Style6{
+	font-size: 17px;
+}
+
+.Style7{
+	font-size: 15px;
+}
+
+.Style8{
+	background: #fff;
+}
+
+.Style9{
+	cursor: pointer;
+}
+
+.Style10{
+	font-size: 16px;
+}
+
+.Style11{
+	border: none;font-size:13px;margin-left: 1%;padding: 7px 10px 7px 10px;
+}
+
+.Style12{
+	color: red;
+}

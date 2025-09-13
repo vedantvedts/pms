@@ -1,0 +1,340 @@
+@charset "UTF-8";
+.btn1{
+	border-top-left-radius: 5px !important;
+	border-bottom-left-radius: 5px !important;
+}
+
+.btn2, .btn3, .btn4, .btn5{
+    border-left: 1px solid black;
+}
+
+.left {
+	text-align: left;
+}
+.center{
+	text-align: center;
+}
+.right{
+	text-align: right;
+}
+.highcharts-figure,	.highcharts-data-table table {
+	min-width: 310px;
+	max-width: 800px;
+}
+
+.highcharts-data-table table {
+    font-family: Verdana, sans-serif;
+    border-collapse: collapse;
+    border: 1px solid #ebebeb;
+    margin: 10px auto;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+.highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: #555;
+}
+
+.highcharts-data-table th {
+    font-weight: 600;
+    padding: 0.5em;
+}
+
+.highcharts-data-table td,
+.highcharts-data-table th,
+.highcharts-data-table caption {
+    padding: 0.5em;
+}
+
+.highcharts-data-table thead tr,
+.highcharts-data-table tr:nth-child(even) {
+    background: #f8f8f8;
+}
+
+.highcharts-data-table tr:hover {
+    background: #f1f7ff;
+}
+.view-table{
+	border-collapse: collapse;
+	width: 100%;
+	/* border: 2px solid #216583; */
+	padding: 10px;
+    margin-top: 1.2rem;
+	overflow-y: auto; 
+	margin-left: 10px;
+	margin-right: 10px;
+	/* margin-top: -2rem; */
+}
+
+.view-table thead {
+    position: sticky;
+    top: 0; /* Stick the thead to the top */
+    z-index: 1; /* Ensure thead is above tbody */
+    background-color: #007bff;
+    color: white;
+}
+
+.view-table th, .view-table td{
+	/* border: 2px solid #216583; */
+	padding: 7px;
+}
+
+.table-wrapper{
+    max-height: 400px; /* Set the max height for the table wrapper */
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; 
+	padding: 0px;
+	background-color: #f8f9fa;
+	border: 1px solid #dee2e6;
+	border-radius: 5px;
+}
+.table-wrapper2 {
+    max-height: 630px; /* Set the max height for the table wrapper */
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; 
+	padding: 0px;
+	background-color: #f8f9fa;
+	border: 1px solid #dee2e6;
+	border-radius: 5px;
+	margin-bottom: 10px;
+}
+.table-wrapper3 {
+    max-height: 400px; /* Set the max height for the table wrapper */
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; 
+	padding: 0px;
+	background-color: #f8f9fa;
+	border: 1px solid #dee2e6;
+	border-radius: 5px;
+}
+
+
+/* Firefox */
+.table-wrapper, .table-wrapper2, .table-wrapper3 {
+  scrollbar-width: thin;
+  scrollbar-color: #007bff #f8f9fa;
+}
+
+/* Chrome, Edge, and Safari */
+.table-wrapper::-webkit-scrollbar, .table-wrapper2::-webkit-scrollbar, .table-wrapper3::-webkit-scrollbar {
+  width: 12px;
+}
+
+.table-wrapper::-webkit-scrollbar-track, .table-wrapper2::-webkit-scrollbar-track, .table-wrapper3::-webkit-scrollbar-track {
+  background: #f8f9fa;
+  border-radius: 5px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb, .table-wrapper2::-webkit-scrollbar-thumb, .table-wrapper3::-webkit-scrollbar-thumb {
+  background-color: #007bff;
+  border-radius: 5px;
+  border: 2px solid #f8f9fa;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #0056b3;
+}
+
+/* Style for the filter dropdown */
+.filter-dropdown {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.filter-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.filter-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.filter-content a:hover {background-color: #f1f1f1}
+
+.filter-dropdown:hover .filter-content {
+    display: block;
+}
+.divstyle1{
+	float: right;
+	padding:5px;
+	margin-top:-10px;
+}
+
+.divstyle2{
+	margin: 0px 0px 5px;
+	background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.card-bodyStyle1{
+	padding: 0px !important;
+}
+
+.tablestyle1{
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.tdstyle1{
+	width: 24%;
+}
+
+.thstyle1{
+	width: 5%;
+}
+
+.tdstyle2{
+	width: 8%;
+}
+
+.thstyle2{
+	width: 5%;
+}
+
+.tdstyle3{
+	width: 8%;
+}
+
+.thstyle3{
+	width: 5%;
+}
+
+.tdstyle4{
+	width: 20%;
+}
+
+.thstyle4{
+	width: 5%;
+}
+
+.tdstyle5{
+	width: 20%;
+}
+
+.aapcontainer{
+	display:block;
+}
+
+.aapcontainer2{
+	display:block;
+}
+
+.awapcontainer{
+	display:block;
+}
+.awapcontainer2{
+	display:block;
+}
+.divstyle3{
+	margin: 0px 0px 5px;
+	background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.card-bodyStyle1{
+	padding: 0px !important;
+}
+
+.tableStyle2{
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.td1{
+	width: 24%;
+}
+
+.th123{
+	width: 5%;
+}
+
+.td23{
+	width: 8%;
+}
+
+.td4{
+	width: 20%;
+}
+
+.divcard1{
+	margin: 0px 0px 5px;
+	background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.card-body11{
+	padding: 0px !important;
+}
+
+.tablestyle5{
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.tableTd1{
+	width: 35%;
+}
+
+.tableTh1{
+	width: 5%;
+}
+
+.tableTd2{
+	width: 25%;
+}
+
+.tableTd3{
+	width: 10%;
+}
+
+.btnbackcolor{
+	background-color: #fff;
+}
+
+.file-pdf-style{
+	color: #cc0000;font-size: 24px;
+}
+
+.file-excel-style{
+	color: #009900;font-size: 24px;
+}
+
+.div-card-style2{
+	margin: 0px 0px 5px;
+	background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.tabletdstyle1{
+	width: 65%;
+}
+
+.tablethstyle1{
+	width: 5%;
+}
+
+.tabletdstyle2{
+	width: 10%;
+}
+
+.thstyle11{
+	font-size: 16px;
+	color: white;
+}
+.jsstyle1{
+	color: red;
+	font-weight: 600;
+}
+
+.jsstyle2{
+	color: green;
+	font-weight: 600;
+}

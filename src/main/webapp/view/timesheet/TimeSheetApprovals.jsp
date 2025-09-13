@@ -13,68 +13,16 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+ <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 15px !important;
-}
+<spring:url value="/resources/css/Timesheet/TimeSheetApprovals.css" var="holidayAddEdit" />     
+<link href="${holidayAddEdit}" rel="stylesheet" />
 
-.left {
-	text-align: left;
-}
-.center{
-	text-align: center;
-}
-.right{
-	text-align: right;
-}
-#activitytable{
-	border-collapse: collapse;
-	width: 100%;
-	border: 1px solid #0000002b;  
-}
-#activitytable th, #activitytable td{
-	border: 1px solid #0000002b; 
-	padding: 20px;
-}
-#activitytable th{
-
-	vertical-align: middle;
-}
-#activitytable thead {
-	text-align: center;
-	background-color: #2883c0;
-	color: white;
-}
-
-
-#activityviewtable{
-	border-collapse: collapse;
-	width: 100%;
-	border: 1px solid #0000002b; 
-	padding: 10px;
-}
-
-#activityviewtable th, #activityviewtable td{
-	border: 1px solid #0000002b; 
-	padding: 7px;
-}
-#activityviewtable thead {
-	text-align: center;
-	background-color: #60707a;
-	color: white;
-}
-
-.highlight-week {
-	background-color: #2883c0 !important;
-	color: white;
-}
-</style>
 </head>
 <body>
 
@@ -128,7 +76,7 @@ FormatConverter fc = new FormatConverter();
 							<div class="col-md-6">
 								<form action="TimeSheetApprovals.htm" method="get">
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-									<div class="row right" style="margin-top: -0.5rem;">
+									<div class="row right style1">
 										<div class="col-md-1"></div>
 										<div class="col-md-1">
 											<label class="form-label mt-2">Date: </label>
@@ -157,7 +105,7 @@ FormatConverter fc = new FormatConverter();
 						<div class="card-body">
 							<div class="table-responsive">
 								<table class="table" id="activitytable"> 
-		                        	<thead style="">
+		                        	<thead>
 		                            	<tr>
 		                            		<th>Expand</th>
 		                            		<th>Employee</th>
@@ -195,23 +143,33 @@ FormatConverter fc = new FormatConverter();
 															<div class="row">
 																<div class="col-md-4 right">
 																	<%if(timeSheet!=null && timeSheet.getTimeSheetStatus().equalsIgnoreCase("FWD")) {%>
-																		<input form="inlineapprform<%=count%>" type="checkbox" class="form-control mt-1" name="timeSheetId" value="<%=timeSheet.getTimeSheetId()!=null?StringEscapeUtils.escapeHtml4(timeSheet.getTimeSheetId().toString()):"-" %>" style="transform: scale(1.5);margin-left: 100%;" checked>
+																		<input form="inlineapprform<%=count%>" type="checkbox" class="form-control mt-1 style2" name="timeSheetId" value="<%=timeSheet.getTimeSheetId()!=null?StringEscapeUtils.escapeHtml4(timeSheet.getTimeSheetId().toString()):"-" %>" checked>
 																	<%} else if(timeSheet!=null && timeSheet.getTimeSheetStatus().equalsIgnoreCase("ABS")){%>
-																		<span style="margin-left: 100%;">
-																			<i class="fa fa-check" aria-hidden="true" style="color: green;font-size: 20px;"></i>
+																		<span class="spanStyle1">
+																			<i class="fa fa-check" aria-hidden="true" class="istyle1"></i>
 																		</span>
 																	<%} else if(timeSheet!=null && timeSheet.getTimeSheetStatus().equalsIgnoreCase("RBS")){%>
-																		<span style="margin-left: 100%;">
-																			<i class="fa fa-times" aria-hidden="true" style="color: red;font-size: 20px;"></i>
+																		<span class="spanStyle2">
+																			<i class="fa fa-times" aria-hidden="true" class="istyle2"></i>
 																		</span>
 																	<%} %>
 																</div>
-																<div class="col-md-7 left ml-2">
-																	<span style="color: <%if(some.before(time)){%>red<%}else{%>green<%}%>"><%=timeSheet.getTotalDuration()!=null?StringEscapeUtils.escapeHtml4(timeSheet.getTotalDuration().toString()):"-" %></span>
-																</div>
+															<div class="col-md-7 left ml-2">
+															    <% if (some.before(time)) { %>
+															        <span class="spancolorRed">
+															            <%= timeSheet.getTotalDuration() != null 
+															                    ? StringEscapeUtils.escapeHtml4(timeSheet.getTotalDuration().toString()) : "-" %>
+															        </span>
+															    <% } else { %>
+															        <span class="spancolorGreen">
+															            <%= timeSheet.getTotalDuration() != null 
+															                    ? StringEscapeUtils.escapeHtml4(timeSheet.getTotalDuration().toString()) : "-" %>
+															        </span>
+															    <% } %>
+															</div>
 															</div>
 														<%} else{%>
-															<button style="padding: 2px 30px;">
+															<button class="buttonstyle1">
 																--:--
 															</button>
 														<%} %>
@@ -220,14 +178,14 @@ FormatConverter fc = new FormatConverter();
 												<td class="left">
 													<form action="TimeSheetDetailsForward.htm" method="post" id="inlineapprform<%=count%>">
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-														<input form="inlineapprform<%=count%>" type="text" name="remarks" maxlength="255" placeholder="Enter Remarks" style="border-left: 0;border-top: 0;border-right: 0;width: 70%;">
+														<input form="inlineapprform<%=count%>" type="text" name="remarks" maxlength="255" placeholder="Enter Remarks" class="inputstyle1">
 														&emsp;
-														<button type="submit" class="btn btn-sm btn-success" name="action" value="A" data-toggle="tooltip" data-placement="top" title="Approve" onclick="return approvalcheck('A', 'inlineapprform<%=count %>')" style="border-radius: 2rem;">
+														<button type="submit" class="btn btn-sm btn-success buttonstyle2" name="action" value="A" data-toggle="tooltip" data-placement="top" title="Approve" onclick="return approvalcheck('A', 'inlineapprform<%=count %>')">
 															<i class="fa fa-check" aria-hidden="true"></i> 
 														</button>
 														&nbsp;
-														<button type="submit" class="btn btn-sm btn-danger" name="action" value="R" data-toggle="tooltip" data-placement="top" title="Return" onclick="return approvalcheck('R', 'inlineapprform<%=count %>')" style="border-radius: 2rem;">
-															<i class="fa fa-times" aria-hidden="true" style="font-size: 16px;"></i>
+														<button type="submit" class="btn btn-sm btn-danger buttonstyle3" name="action" value="R" data-toggle="tooltip" data-placement="top" title="Return" onclick="return approvalcheck('R', 'inlineapprform<%=count %>')" >
+															<i class="fa fa-times istyle3" aria-hidden="true"></i>
 														</button>	
 													</form>
 												</td>
@@ -242,7 +200,7 @@ FormatConverter fc = new FormatConverter();
 												<td></td>
 												<td colspan="9">
 													
-													<table id="activityviewtable" style="width:100%;" >
+													<table id="activityviewtable tablestyle1">
 														<thead class="center">
 															<tr>
 																<th width="5%">SN</th>
@@ -265,23 +223,34 @@ FormatConverter fc = new FormatConverter();
 																	<td class="center">
 																		
 																		<%if(timeSheet.getTimeSheetStatus().equalsIgnoreCase("FWD")) {%>
-																			<input form="apprform<%=count %>" type="checkbox" class="form-control" name="timeSheetId" value="<%=timeSheet.getTimeSheetId()!=null?StringEscapeUtils.escapeHtml4(timeSheet.getTimeSheetId().toString()):"-" %>" style="transform: scale(1.5);" checked>
+																			<input form="apprform<%=count %>" type="checkbox" class="form-control inputtag1" name="timeSheetId" value="<%=timeSheet.getTimeSheetId()!=null?StringEscapeUtils.escapeHtml4(timeSheet.getTimeSheetId().toString()):"-" %>" checked>
 																		<%} else if(timeSheet.getTimeSheetStatus().equalsIgnoreCase("ABS")){%>
 																			<span>
-																				<i class="fa fa-check" aria-hidden="true" style="color: green;font-size: 20px;"></i>
+																				<i class="fa fa-check istyle4" aria-hidden="true"></i>
 																			</span>
 																		<%} else if(timeSheet.getTimeSheetStatus().equalsIgnoreCase("RBS")){%>
 																			<span>
-																				<i class="fa fa-times" aria-hidden="true" style="color: red;font-size: 20px;"></i>
+																				<i class="fa fa-times istyle5" aria-hidden="true"></i>
 																			</span>
 																		<%} %>
 																		
 																	</td>
 																	<td colspan="4">
-																		<span style="font-weight: bold;font-size: 16px;color: <%if(timeSheet.getTimeSheetStatus().equalsIgnoreCase("ABS")) {%>green<%}else if(timeSheet.getTimeSheetStatus().equalsIgnoreCase("RBS")){%>red<%}%> ">
-																		<%=date!=null?fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(date.toString())):"-" %>
-																		</span>
-																	</td>
+    <% if (timeSheet.getTimeSheetStatus().equalsIgnoreCase("ABS")) { %>
+       
+        <span class="spanStyle3">
+            <%= date != null 
+                    ? fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(date.toString())) : "-" %>
+        </span>
+    <% } else if (timeSheet.getTimeSheetStatus().equalsIgnoreCase("RBS")) { %>
+       
+        <span class="spanStyle4">
+            <%= date != null 
+                    ? fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(date.toString())) : "-" %>
+        </span>
+    <% } %>
+</td>
+
 																</tr>
 															<%} %>
 															<%
@@ -335,7 +304,7 @@ FormatConverter fc = new FormatConverter();
 																</tr>
 																<%} %>
 																<tr>
-																	<td class="right" colspan="3" style="font-weight: bold;">Work Duration</td>
+																	<td class="right tdstyle1" colspan="3" >Work Duration</td>
 																	<td colspan="1" class="center">
 																		<%if(timeSheet!=null && timeSheet.getTotalDuration()!=null) {%><%=StringEscapeUtils.escapeHtml4(timeSheet.getTotalDuration()) %><%} else{%>00:00<%} %>
 																	</td>
@@ -350,19 +319,19 @@ FormatConverter fc = new FormatConverter();
 															<%} %>
 															<%if(activitycount>0) {%>
 																<tr>
-																	<td colspan="1" style="border: 0;"><label class="form-label">Remarks</label></td>
-																	<td colspan="2" style="border: 0;">
-																		<input form="apprform<%=count %>" type="text"class="w-100" name="remarks" maxlength="255" placeholder="Enter Maximum of 255 characters" style="border-left: 0;border-top: 0;border-right: 0;">
+																	<td colspan="1" class="tdstyle2"><label class="form-label">Remarks</label></td>
+																	<td colspan="2" class="tdstyle3">
+																		<input form="apprform<%=count %>" type="text" class="w-100 inputtag2" name="remarks" maxlength="255" placeholder="Enter Maximum of 255 characters">
 																	</td>
-																	<td colspan="2" style="border: 0;">
+																	<td colspan="2" class="tdstyle4" >
 																		<form action="TimeSheetDetailsForward.htm" id="apprform<%=count %>">
 																			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-																			<button type="submit" class="btn btn-sm btn-success mt-1" name="action" value="A" formmethod="post" formnovalidate="formnovalidate"
-																				style="font-weight: 500" onclick="return approvalcheck('A', 'apprform<%=count %>')">
+																			<button type="submit" class="btn btn-sm btn-success mt-1 btnstyle1" name="action" value="A" formmethod="post" formnovalidate="formnovalidate"
+																				 onclick="return approvalcheck('A', 'apprform<%=count %>')">
 																				Approve
 																			</button>
 																			&nbsp;
-																			<button type="submit" class="btn btn-sm btn-danger mt-1" name="action" value="R" formmethod="GET" style="font-weight: 500" onclick="return approvalcheck('R', 'apprform<%=count %>')">
+																			<button type="submit" class="btn btn-sm btn-danger mt-1 btnstyle2" name="action" value="R" formmethod="GET" onclick="return approvalcheck('R', 'apprform<%=count %>')">
 																				Return
 																			</button>
 																		</form>

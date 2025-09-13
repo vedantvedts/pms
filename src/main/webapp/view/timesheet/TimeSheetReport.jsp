@@ -10,237 +10,15 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>  
+    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 15px !important;
-}
-
-.left {
-	text-align: left;
-}
-.center{
-	text-align: center;
-}
-.right{
-	text-align: right;
-}
-.activitytable{
-	border-collapse: collapse;
-	width: 100%;
-	border: 1px solid #0000002b; 
-	margin-top: 1.2rem;
-	overflow-y: auto; 
-	overflow-x: auto;  
-}
-.activitytable th, .activitytable td{
-	border: 1px solid #0000002b; 
-	padding: 20px;
-}
-.activitytable th{
-
-	vertical-align: middle;
-}
-.activitytable thead {
-	text-align: center;
-	background-color: #2883c0;
-	color: white;
-	position: sticky;
-	top: 0; /* Keeps the header at the top */
-	z-index: 10; /* Ensure the header stays on top of the body */
-	/* background-color: white; */ /* For visibility */
-}
-
-
-#activityviewtable{
-	border-collapse: collapse;
-	width: 100%;
-	border: 1px solid #0000002b; 
-	padding: 10px;
-}
-
-#activityviewtable th, #activityviewtable td{
-	border: 1px solid #0000002b; 
-	padding: 7px;
-}
-#activityviewtable thead {
-	text-align: center;
-	background-color: #60707a;
-	color: white;
-}
-
-.highlight-week {
-	background-color: #2883c0 !important;
-	color: white;
-}
-
-.table-wrapper {
-    max-height: 800px; /* Set the max height for the table wrapper */
-    overflow-y: auto; /* Enable vertical scrolling */
-    overflow-x: hidden; /* Enable vertical scrolling */
-}
-
-.select2-container {
-    text-align: left !important;
-    width: 100% !important;
-}
-</style>
-
-<style type="text/css">
-
-/* General Calendar Styles */
-.calendar-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    background: linear-gradient(145deg, #ffffff, #f0f0f0);
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border: 1px solid #ddd;
-    gap: 10px;
-    overflow-x: auto;
-}
-
-/* Navigation Buttons */
-.nav-btn {
-    background-color: transparent;
-    border: none;
-    color: #007bff;
-    font-size: 16px;
-    cursor: pointer;
-    transition: transform 0.3s ease, color 0.3s ease;
-}
-
-.nav-btn:hover {
-    color: #0056b3;
-    transform: scale(1.2);
-}
-
-.fa {
-    font-size: 20px;
-}
-
-/* Month Display */
-.month-display {
-    font-size: 16px;
-    font-weight: bold;
-    color: #fff;
-    padding: 3px 5px;
-    background-color: #7e7e7e;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    text-transform: uppercase;
-    text-align: center;
-    min-width: 50px;
-    /* transform: rotate(270deg); */
-}
-
-/* Year Container */
-.year-container {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-#current-year {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-}
-
-/* Days Container */
-.days-container {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 10px;
-    justify-content: flex-start;
-    overflow: hidden;
-    width: 100%; /* Ensure it adjusts according to the width of the calendar */
-}
-
-.day {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    text-align: center;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #fdfdfd;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-.day-name {
-    font-size: 10px;
-    color: #0f0f0f8a;
-    font-weight: 400;
-}
-
-.day-number {
-    font-size: 14px;
-    font-weight: bold; 
-}
-
-.day:hover {
-    background-color: #007bff;
-    transform: scale(1.1);
-}
-
-.day:hover .day-name,
-.day:hover .day-number {
-    color: #fff !important; /* Change to desired hover color */
-}
-
-.day.active {
-    background-color: #28a745;
-    font-weight: bold;
-}
-
-.day.active .day-name,
-.day.active .day-number {
-    color: #fff !important; /* Ensure active state color is applied */
-}
-
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .day {
-        width: 35px;
-        height: 35px;
-        line-height: 35px;
-        font-size: 12px;
-    }
-}
-
-@media (max-width: 480px) {
-    .day {
-        width: 30px;
-        height: 30px;
-        line-height: 30px;
-        font-size: 10px;
-    }
-}
-
-.highlighted-date {
-    background-color: #007bff; /* Yellow background for highlighting */
-    font-weight: bold;
-}
-
-.day.highlighted-date .day-name,
-.day.highlighted-date .day-number {
-    color: #fff !important; /* Ensure active state color is applied */
-}
-</style> 
+<spring:url value="/resources/css/Timesheet/TimeSheetReport.css" var="holidayAddEdit" />     
+<link href="${holidayAddEdit}" rel="stylesheet" />
 </head>
 <body>
 
@@ -315,13 +93,13 @@ FormatConverter fc = new FormatConverter();
 					    </button>
 					</div>
 								
-					<div class="row" style="margin: 0.5rem;">
+					<div class="row style1">
 						<div class="col-12">
-		         			<ul class="nav nav-pills" id="pills-tab" role="tablist" style="background-color: #E1E5E8;padding:0px;">
-				  				<li class="nav-item" style="width: 50%;"  >
-				    				<div class="nav-link active" style="text-align: center;" id="pills-tab-1" data-toggle="pill" data-target="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">
+		         			<ul class="nav nav-pills" id="pills-tab" role="tablist">
+				  				<li class="nav-item style3" >
+				    				<div class="nav-link active style4" id="pills-tab-1" data-toggle="pill" data-target="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">
 					   					<span>Submitted Employees</span> 
-					   					<span class="badge badge-danger count-badge" style="margin-left: 0px;">
+					   					<span class="badge badge-danger count-badge style5">
 				   		 					<%-- <%if(timeSheetToListMap.size()>99){ %>
 				   								99+
 				   							<%}else{ %> --%>
@@ -330,10 +108,10 @@ FormatConverter fc = new FormatConverter();
 				  						</span>
 				    				</div>
 				  				</li>
-				  				<li class="nav-item"  style="width: 50%;">
-				    				<div class="nav-link" style="text-align: center;" id="pills-tab-2" data-toggle="pill" data-target="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">
+				  				<li class="nav-item style3">
+				    				<div class="nav-link style4" id="pills-tab-2" data-toggle="pill" data-target="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">
 				    	 				<span>Not Submitted Employees</span> 
-				    	 				<span class="badge badge-danger count-badge" style="margin-left: 0px;">
+				    	 				<span class="badge badge-danger count-badge style5">
 				   		 					<%-- <%if(notSubmittedEmployees.size()>99){ %>
 				   								99+
 				   							<%}else{ %> --%>
@@ -350,10 +128,10 @@ FormatConverter fc = new FormatConverter();
        			
             				<div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="pills-tab-1">
             					<div class="table-wrapper table-responsive">
-            						<input type="text" id="searchBar" class="search-bar form-control" placeholder="Search..." style="float: right;width: auto;" />
+            						<input type="text" id="searchBar" class="search-bar form-control style6" placeholder="Search..." />
        								<br>
 									<table class="table activitytable" id="dataTable"> 
-			                        	<thead style="">
+			                        	<thead>
 			                        		<tr>
 												<th width="3%">SN</th>
 												<th width="13%">Employee</th>
@@ -377,8 +155,8 @@ FormatConverter fc = new FormatConverter();
 											%>
 												<tr>
 													<%if(i==0) {%>
-														<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=++slno%></td>
-											    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;">
+														<td rowspan="<%=values.size() %>" class="center style7"><%=++slno%></td>
+											    		<td rowspan="<%=values.size() %>" class="style7">
 											    			<%=obj[17]!=null?StringEscapeUtils.escapeHtml4(obj[17].toString())+", "+(obj[18]!=null?StringEscapeUtils.escapeHtml4(obj[18].toString()):"-"):"-" %>
 											    		</td>
 			         								<%} %>
@@ -392,7 +170,7 @@ FormatConverter fc = new FormatConverter();
 												</tr>
 											<% ++i; } } } else{%>
 												<tr>
-													<td colspan="9" style="text-align: center;">No Data Available</td>
+													<td colspan="9" class="style4">No Data Available</td>
 												</tr>
 											<%} %>
 										</tbody>
@@ -401,10 +179,10 @@ FormatConverter fc = new FormatConverter();
 							</div>
 							<div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="pills-tab-2">
 								<div class="table-wrapper table-responsive">
-									<input type="text" id="searchBar2" class="search-bar form-control" placeholder="Search..." style="float: right;width: auto;" />
+									<input type="text" id="searchBar2" class="search-bar form-control style6"  placeholder="Search..." />
        								<br>
 									<table class="table activitytable" id="dataTable2"> 
-			                        	<thead style="">
+			                        	<thead>
 			                        		<tr>
 												<th width="3%">SN</th>
 												<th width="13%">Employee</th>
@@ -424,7 +202,7 @@ FormatConverter fc = new FormatConverter();
 											%>
 												<tr>
 													<td class="center"><%=++slno%></td>
-										    		<td style="vertical-align: middle;">
+										    		<td class="style7">
 										    			<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):StringEscapeUtils.escapeHtml4(obj[2].toString())%>
 										    			<%=obj[5]!=null?(StringEscapeUtils.escapeHtml4(obj[5].toString())+", "+(obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"-")):"-" %>
 										    		</td>
@@ -432,7 +210,7 @@ FormatConverter fc = new FormatConverter();
 												</tr>
 											<% } }  else{%>
 												<tr>
-													<td colspan="9" style="text-align: center;">No Data Available</td>
+													<td colspan="9" class="style4">No Data Available</td>
 												</tr>
 											<%} %>
 										</tbody>

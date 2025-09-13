@@ -1,0 +1,62 @@
+@charset "UTF-8";
+
+
+.downloadbtn{
+	color: green;
+}
+
+.theadalign{
+	text-align: center;
+}
+
+.modal1{
+	min-width: 55% !important;
+}
+
+.modal-content1{
+	height: 400px;
+}
+
+.modal-header1{
+	background-color: #114A86;
+	max-height:55px;
+}
+
+.modal-title1{
+	color: white;
+}
+
+.modal-close{
+	color: white;
+}
+.mandatory-1{
+	color: red;
+	 font-weight: normal;
+}
+
+.DocumentName-1{
+	font-size: 15px;
+}
+
+.control-label1{
+	display: inline-block;
+}
+
+.Attachmentfile-1{
+	font-size: 15px;
+}
+
+.Attachmentmandatory-1{
+	color: red;
+	 font-weight: normal;
+}
+
+.Description-1{
+	color: red;
+	 font-weight: normal;
+}
+
+.SelectedDocument1{
+	display: inline-block;
+}
+

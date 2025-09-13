@@ -21,432 +21,16 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>    
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>  
+  
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
-<%-- <spring:url value="/resources/css/projectdetails.css" var="projetdetailscss" />
-<link href="${projetdetailscss}" rel="stylesheet" /> --%>
-
-<style type="text/css">
-
-label{
-font-weight: bold;
-  font-size: 15px !important;
-}
-
-.table .font{
-	  font-family:'Muli', sans-serif !important;
-	  font-style: normal;
-	  font-size: 13px;
-	  font-weight: 400 !important;
-	 
-}
-
-.table button {
-    background-color: Transparent !important;
-    background-repeat:no-repeat;
-    border: none;
-    cursor:pointer;
-    overflow: hidden;
-    outline:none;
-    text-align: left !important;
-}
-.table td{
-	padding:5px !important;
-}
- .resubmitted{
-	color:green;
-}
-
-	.fa{
-		font-size: 1.20rem;
-	}
-	
-.datatable-dashv1-list table tbody tr td{
-	padding: 8px 10px !important;
-}
-
-.table-project-n{
-	color: #005086;
-}
-
-#table thead tr th{
-	padding: 0px 0px !important;
-}
-
-#table tbody tr td{
-	padding:2px 3px !important;
-}
-
-.left {
-	text-align: left;
-}
-.center{
-	text-align: center;
-}
-.right{
-	text-align: right;
-}
-.mandatory{
-	color: red;
-}
-</style>
-<style>
-.card-body{
-	padding: 0px !important;
-}
-.control-label{
-	font-weight: bold !important;
-}
-#scrollclass::-webkit-scrollbar {
-	width: 7px;
-}
-
-#scrollclass::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	border-radius: 5px;
-}
-
-#scrollclass::-webkit-scrollbar-thumb {
-	border-radius: 5px; 
-	/*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: #fff;
-} 
-
-#scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
-	transition: 0.5s;
-}
-
-#scrollclass::-webkit-scrollbar {
-	width: 7px;
-}
-
-#scrollclass::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	border-radius: 5px;
-}
-
-#scrollclass::-webkit-scrollbar-thumb {
-	border-radius: 5px;
-	/*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: #fff;
-}
-
-#scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
-	transition: 0.5s;
-}
-
-
-#span{
-background: blue;
-}
-#span1{
-font-size: 10px;
-margin-left:10px
-}
-
-#span2{
-float:right;
-font-size: 10px;
-margin-right:10px
-}
-
-</style>
-<style type="text/css">
-.activitytable{
-	border-collapse: collapse;
-	width: 100%;
-	border: 1px solid #216583;
-}
-.activitytable th, .activitytable td{
-	border: 2px solid #216583;
-	padding: 7px;
-}
-
-input {
-	font-family: sans-serif;
-	font-size: 18px;
-}
-
-#activityviewtable{
-	border-collapse: collapse;
-	width: 100%;
-	border: 2px solid #216583;
-	padding: 10px;
-}
-
-#activityviewtable th, #activityviewtable td{
-	border: 2px solid #216583;
-	padding: 7px;
-}
-
-.calendar-inner {
-	padding: 40px 10px;
-}
-</style>
-
-<style>
-.div-container {
-	position: relative;
-	margin: 0.5rem;
-    border: 3px solid #216583;
-    border-radius: 5px;
-    transition: all 0.5s;
-}
-.full-width {
-    width: 100% !important;
-}
-.more-than-half-width {
-    width: 65% !important;
-}
-.less-than-half-width {
-    width: 35% !important;
-}
-.toggle-icon {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    font-size: 1.5rem;
-    z-index: 10;
-}
-
-/* Ensure select picker adjusts width */
-.select2-container {
-    width: 100% !important; /* Force full width */
-    text-align: left;
-}
-
-.timesheetform{
-	max-height: 500px;
-    min-height: 300px;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-/* Firefox */
-.timesheetform {
-  scrollbar-width: thin;
-  scrollbar-color: #216583 #f8f9fa;
-}
-
-/* Chrome, Edge, and Safari */
-.timesheetform::-webkit-scrollbar {
-  width: 12px;
-}
-
-.timesheetform::-webkit-scrollbar-track {
-  background: #f8f9fa;
-  border-radius: 5px;
-}
-
-.timesheetform::-webkit-scrollbar-thumb {
-  background-color: #007bff;
-  border-radius: 5px;
-  border: 2px solid #f8f9fa;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #0056b3;
-}
-
-/* .toggle-switch .label {
-	position: relative;
-	margin-left: 20px;
-	font-weight: bold;
-	font-size: 14px;
-} */
-</style>
-
-<style type="text/css">
-
-/* General Calendar Styles */
-.calendar-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    background: linear-gradient(145deg, #ffffff, #f0f0f0);
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border: 1px solid #ddd;
-    gap: 10px;
-    overflow-x: auto;
-}
-
-/* Navigation Buttons */
-.nav-btn {
-    background-color: transparent;
-    border: none;
-    color: #007bff;
-    font-size: 16px;
-    cursor: pointer;
-    transition: transform 0.3s ease, color 0.3s ease;
-}
-
-.nav-btn:hover {
-    color: #0056b3;
-    transform: scale(1.2);
-}
-
-.fa {
-    font-size: 20px;
-}
-
-/* Month Display */
-.month-display {
-    font-size: 16px;
-    font-weight: bold;
-    color: #fff;
-    padding: 3px 5px;
-    background-color: #7e7e7e;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    text-transform: uppercase;
-    text-align: center;
-    min-width: 50px;
-    /* transform: rotate(270deg); */
-}
-
-/* Year Container */
-.year-container {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-#current-year {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-}
-
-/* Days Container */
-.days-container {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 10px;
-    justify-content: flex-start;
-    overflow: hidden;
-    width: 100%; /* Ensure it adjusts according to the width of the calendar */
-}
-
-.day {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    text-align: center;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #fdfdfd;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-.day-name {
-    font-size: 10px;
-    color: #0f0f0f8a;
-    font-weight: 400;
-}
-
-.day-number {
-    font-size: 14px;
-    font-weight: bold; 
-}
-
-.day:hover {
-    background-color: #007bff;
-    transform: scale(1.1);
-}
-
-.day:hover .day-name,
-.day:hover .day-number {
-    color: #fff !important; /* Change to desired hover color */
-}
-
-.day.active {
-    background-color: #28a745;
-    font-weight: bold;
-}
-
-.day.active .day-name,
-.day.active .day-number {
-    color: #fff !important; /* Ensure active state color is applied */
-}
-
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .day {
-        width: 35px;
-        height: 35px;
-        line-height: 35px;
-        font-size: 12px;
-    }
-}
-
-@media (max-width: 480px) {
-    .day {
-        width: 30px;
-        height: 30px;
-        line-height: 30px;
-        font-size: 10px;
-    }
-}
-
-.highlighted-date {
-    background-color: #007bff; /* Yellow background for highlighting */
-    font-weight: bold;
-}
-
-.day.highlighted-date .day-name,
-.day.highlighted-date .day-number {
-    color: #fff !important; /* Ensure active state color is applied */
-}
-</style> 
-
-<style type="text/css">
-.activitytableview{
-	border-collapse: collapse;
-	width: 99%;
-	border: 1px solid #0000002b; 
-	margin: 1.5rem 0.5rem 0.5rem 0.5rem;
-	overflow-y: auto; 
-	overflow-x: auto;  
-}
-.activitytableview th, .activitytableview td{
-	border: 1px solid #0000002b; 
-	padding: 20px;
-}
-.activitytableview th{
-	vertical-align: middle;
-}
-.activitytableview thead {
-	text-align: center;
-	background-color: #2883c0;
-	color: white;
-	position: sticky;
-	top: 0; /* Keeps the header at the top */
-	z-index: 10; /* Ensure the header stays on top of the body */
-	/* background-color: white; */ /* For visibility */
-}
-
-.table-wrapper {
-    max-height: 300px; /* Set the max height for the table wrapper */
-    overflow-y: auto; /* Enable vertical scrolling */
-    overflow-x: hidden; /* Enable vertical scrolling */
-}
-</style>   
+<spring:url value="/resources/css/Timesheet/TimeSheetListSample.css" var="holidayAddEdit" />     
+<link href="${holidayAddEdit}" rel="stylesheet" />
+ 
 </head>
 <body>
 
@@ -549,7 +133,7 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 
 
 						<div id="timesheet" class="div-container">
-							<div  style="font-size: 22px;font-weight: 600;color: white;text-align: center;background-color: #216583;height: 40px;">
+							<div class="style1">
 								Work Register Details - (<%=activityLD.getDayOfMonth()+"th "+activityLD.getMonth()+" "+activityLD.getYear() %>)
 							</div>
 							
@@ -583,7 +167,7 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 				                
 				                <div class="row mt-3 ml-2 mr-2">
 				                	<div class="col-md-12">
-				                		<table id="activityviewtable" style="width:100%;" >
+				                		<table id="activityviewtable" class="style2" >
 											<thead class="center">
 												<tr>
 													<th width="3%">SN</th>
@@ -613,7 +197,7 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 													</tr>
 												<% } } else{%>
 													<tr>
-														<td colspan="7" style="text-align: center;">No Data Available</td>
+														<td colspan="7" class="style3">No Data Available</td>
 													</tr>
 												<%} %>
 											</tbody>
@@ -647,7 +231,7 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 							        		%>
 							        		<%if(now.isBefore(afterFiveDays) || now.isEqual(afterFiveDays)) {%>
 								        		<button type="button" class="btn btn-sm edit" onclick="AllowEdit('Y')" formnovalidate="formnovalidate" >
-									  				EDIT &nbsp;<i class="fa fa-pencil " aria-hidden="true" style="font-size: 17px;"></i>
+									  				EDIT &nbsp;<i class="fa fa-pencil style4" aria-hidden="true"></i>
 												</button>
 											<%} %>
 						        		</form>
@@ -696,7 +280,7 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 														%>
 															<tr class="tr_clone_activity">
 																	<td class="center">
-																		<div class="d-flex flex-direction-column " style="gap: 15px;">
+																		<div class="d-flex flex-direction-column style5">
 																			<%if(milestoneActivityTypeList!=null && milestoneActivityTypeList.size()>0) {
 																				int milslno = 0;
 																				for(MilestoneActivityType mil : milestoneActivityTypeList) {
@@ -744,7 +328,7 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 																		<textarea class="form-control workDone" rows="2" name="workDone" id="workDone_<%=clonecount %>" placeholder="Enter Maximum of 255 Characters" maxlength="255"><%if(act.getWorkDone()!=null) {%> <%=act.getWorkDone() %> <%} %></textarea>
 																	</td>
 																	<td>
-																		<div class="d-flex " style="gap: 15px;">
+																		<div class="d-flex style5">
 																			<div class="d-flex flex-direction-column ">
 																				<input type="radio" class=" workDoneon" name="workDoneon_<%=clonecount %>" id="workDoneon_<%=clonecount %>" value="L" <%if(act.getWorkDoneon().equalsIgnoreCase("L")) {%>checked<%} %> > 
 																				<span class="ml-1">Full Day</span>
@@ -760,7 +344,7 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 															<%-- <%for(int i=1;i<=5;i++) {%> --%>
 																<tr class="tr_clone_activity">
 																	<td class="center">
-																		<div class="d-flex flex-direction-column " style="gap: 15px;">
+																		<div class="d-flex flex-direction-column style5">
 																			<%if(milestoneActivityTypeList!=null && milestoneActivityTypeList.size()>0) {
 																				int milslno = 0;
 																				for(MilestoneActivityType mil : milestoneActivityTypeList) {
@@ -813,7 +397,7 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 																		<textarea class="form-control workDone" rows="2" name="workDone" id="workDone_1" placeholder="Enter Maximum of 255 Characters" maxlength="255"></textarea>
 																	</td>
 																	<td>
-																		<div class="d-flex " style="gap: 15px;">
+																		<div class="d-flex style5" >
 																			<div class="d-flex flex-direction-column ">
 																				<input type="radio" class=" workDoneon" name="workDoneon_1" id="workDoneon_1" value="L" checked > 
 																				<span class="ml-1">Full Day</span>
@@ -835,8 +419,8 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 									<div class="form-group">
 										<div class="row ml-2 mr-2 mt-2">
 											<div class="col-md-4">
-												<span class="text-primary" id="addnewaction" style="cursor: pointer;">
-													<i class="fa fa-plus" aria-hidden="true" style="font-size: 16px;"></i> 
+												<span class="text-primary style6" id="addnewaction">
+													<i class="fa fa-plus" aria-hidden="true"></i> 
 													Add New Activity Row 
 												</span>
 											</div>
@@ -859,13 +443,13 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 													<input type="number" class="form-control" name="sameTaskDays" min="0" max="100" value="0">
 												<%} %>
 											</div>
-											<div class="col-md-4 mt-1" style="margin-left: 5rem !important">
+											<div class="col-md-4 mt-1 style8">
 												<%if(timeSheet!=null){ %>
 								    				<input type="hidden" name="timeSheetId" value="<%=timeSheet.getTimeSheetId()%>">
 													<button type="submit" class="btn btn-sm btn-warning edit" name="Action" value="Edit" onclick="return confirm('Are you sure to update?')" >UPDATE</button>
-													<button type="button" class="btn btn-sm" style="border: none;font-size:13px;margin-left: 1%;padding: 7px 10px 7px 10px;" onclick="AllowEdit('N')"
+													<button type="button" class="btn btn-sm style9" onclick="AllowEdit('N')"
 														formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="Close">
-														<i class="fa fa-times fa-lg" aria-hidden="true" style="color: red;"></i>
+														<i class="fa fa-times fa-lg style10" aria-hidden="true" ></i>
 													</button>
 												<%}else{ %>
 													<button type="submit" class="btn btn-sm btn-success submit" name="Action" value="Add" onclick="return confirm('Are you sure to submit?')" >SUBMIT</button>
@@ -905,7 +489,7 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
         			
         			<div class="table-wrapper table-responsive">
 						<table class="table activitytableview"> 
-                        	<thead style="">
+                        	<thead>
                         		<tr>
 									<th width="5%">SN</th>
 									<th width="7%">Date</th>
@@ -929,8 +513,8 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 								%>
 									<tr>
 										<%if(i==0) {%>
-											<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=++slno%></td>
-								    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=fc.sdfTordf(obj[2].toString()) %></td>
+											<td rowspan="<%=values.size() %>" class="center style11"><%=++slno%></td>
+								    		<td rowspan="<%=values.size() %>" class="center style11"><%=fc.sdfTordf(obj[2].toString()) %></td>
          								<%} %>
          								<td class="center"><%=obj[16]!=null?StringEscapeUtils.escapeHtml4(obj[16].toString()):"-" %></td>
     									<td ><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %></td>
@@ -942,7 +526,7 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 									</tr>
 								<% ++i; } } } else{%>
 									<tr>
-										<td colspan="10" style="text-align: center;">No Data Available</td>
+										<td colspan="10" class="style3">No Data Available</td>
 									</tr>
 								<%} %>
 							</tbody>
@@ -954,12 +538,12 @@ List<Object[]> nextDayTimeSheet = empAllTimeSheetList.stream().filter(e -> activ
 	</div>
 
 	<!-- ----------------------------------------------- Add New Keyword Modal --------------------------------------------------------------- -->
-	<div class="modal fade bd-example-modal-lg center" id="addNewKeywordModal" tabindex="-1" role="dialog" aria-labelledby="addNewKeywordModal" aria-hidden="true" style="margin-top: 10%;">
+	<div class="modal fade bd-example-modal-lg center style12" id="addNewKeywordModal" tabindex="-1" role="dialog" aria-labelledby="addNewKeywordModal" aria-hidden="true">
 		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
-			<div class="modal-content" style="width: 90%;margin-left: 10%;">
-				<div class="modal-header" style="background: #055C9D;color: white;">
+			<div class="modal-content style13" >
+				<div class="modal-header style14">
 		        	<h5 class="modal-title ">Add New Keyword</h5>
-			        <button type="button" class="close" style="text-shadow: none !important" data-dismiss="modal" aria-label="Close">
+			        <button type="button" class="close style15" data-dismiss="modal" aria-label="Close">
 			          <span class="text-light" aria-hidden="true">&times;</span>
 			        </button>
 		      	</div>

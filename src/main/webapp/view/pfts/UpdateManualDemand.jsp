@@ -8,6 +8,7 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.time.LocalDate"%>
+ <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
     
    
 <!DOCTYPE html>
@@ -15,54 +16,10 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/css/pfts/UpdateManualDemand.css" var="fromExternalCSS" />     
+<link href="${fromExternalCSS}" rel="stylesheet" />
 <title>Update Manual Demand</title>
-<style type="text/css">
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
 
-.form-group {
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
-}
-.input-group-text{
-font-weight: bold;
-}
-.blinking-element {
-            animation: blinker 1.5s linear infinite;
-            color: #D81B60;
-            font-size: 1.5em;
-            font-weight:600;
-            margin-bottom: 20px;
-            text-shadow: 5px 5px 10px  #D81B60;
-}
-
-@keyframes blinker { 
-   0%{opacity: 0;}
-  50%{opacity: 1;}
-  100%{opacity: 1;}
-}
-
-.modal-dialog-jump {
-  animation: jumpIn 0.5s ease;
-}
-
-@keyframes jumpIn {
-  0% {
-    transform: scale(0.1);
-    opacity: 0;
-  }
-  70% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-</style>
 </head>
 <body>
   <%
@@ -92,7 +49,7 @@ font-weight: bold;
 <% } %>
 
 <div class="container-fluid">
-	<div class="card shadow-nohover" style="margin-top:0px;">		
+	<div class="card shadow-nohover style1">		
 		<div class="row card-header">
 			<div class="col-md-6">
 				<h4>Demand No : <%=fileView[1]!=null?StringEscapeUtils.escapeHtml4(fileView[1].toString()):"-" %></h4>
@@ -104,8 +61,8 @@ font-weight: bold;
 				           <div class="col-md-3">
 								<label> Item Nomenclature : </label> 
 						  </div>
-						  <div class="col-md-9" style="margin-left: -13%;">
-								<input type="text" class="form-control" value="<%=fileView[4]!=null?StringEscapeUtils.escapeHtml4(fileView[4].toString()):"-" %>" style="width: 118%"
+						  <div class="col-md-9 style2">
+								<input type="text" class="form-control style3" value="<%=fileView[4]!=null?StringEscapeUtils.escapeHtml4(fileView[4].toString()):"-" %>" 
 									name="procitems" id="procitems" readonly="readonly">
 						  </div>
 				     </div>
@@ -113,7 +70,7 @@ font-weight: bold;
 						  	<div class="col-md-2">
 								<label class="control-label" > Procurement Status :</label>
 						   </div>
-							<div class="col-md-3" style="margin-left: -5%;">
+							<div class="col-md-3 style4">
 								 <select onchange="modalOpen()"
 									class="form-control selectdee"
 									id="procstatus" required="required" name="procstatus">
@@ -149,9 +106,8 @@ font-weight: bold;
 								<label> Remarks : </label> 
 								</div>
 								<div class="col-md-3">
-								<input type="text" class="form-control" value="<%=fileView[9]!=null?StringEscapeUtils.escapeHtml4(fileView[9].toString()):"" %>"
-									name="procRemarks" id="procRemarks" required="required"
-									style="margin-left: -11%;width: 133%">
+								<input type="text" class="form-control style5" value="<%=fileView[9]!=null?StringEscapeUtils.escapeHtml4(fileView[9].toString()):"" %>"
+									name="procRemarks" id="procRemarks" required="required">
 							</div>
 					 </div>
 					 <br>
@@ -164,16 +120,16 @@ font-weight: bold;
 					    <a class="btn btn-info btn-sm  shadow-nohover back" href="ProcurementStatus.htm?projectid=<%=projectid%>">Back</a>
 				     </div>
 					 </form>
-					 <div id="btnplus"style="display:none;">
-					    <button type="button" class=" btn btn_add" onclick="copyDiv()"> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+					 <div id="btnplus" class="style6">
+					    <button type="button" class=" btn btn_add style7" onclick="copyDiv()"> <i class="btn btn-sm fa fa-plus"></i></button>
 					 </div> 
 					 <form action="updateManualDemandSubmit.htm" method="post">
-					 <div class="divHidden mt-3" id="divHidden" style="display:none;padding: 5px">
+					 <div class="divHidden mt-3 style8" id="divHidden">
 						<div class="row mt-2">
 							<div class="col-sm-1">
 								<label class="control-label">Order No :</label>
 							</div>
-							<div class="col-sm-2" style="margin-left: -2%;">
+							<div class="col-sm-2 style9">
 								<input type="text" class="form-control" name="orderno"
 									id="orderno" required="required" placeholder="Enter Order No">
 							</div>
@@ -181,11 +137,11 @@ font-weight: bold;
 								<label class="control-label">Order Date :</label>
 							</div>
 							<div class="col-sm-2">
-								<input class="form-control form-control date datepicker2"
+								<input class="form-control form-control date datepicker2 style10"
 									data-date-format="dd-mm-yyyy" id="" name="orderdate"
-									required="required" style="margin-left: -8%;">
+									required="required">
 							</div>
-							<div class="col-sm-1" style="margin-left: -1%;">
+							<div class="col-sm-1 style11">
 								<label class="control-label">Order Cost :</label>
 							</div>
 							<div class="col-sm-2">
@@ -196,7 +152,7 @@ font-weight: bold;
 							<div class="col-sm-1">
 								<label class="control-label">DP Date :</label>
 							</div>
-							<div class="col-sm-2" style="margin-left: -2%;">
+							<div class="col-sm-2 style9">
 								<input class="form-control form-control date datepicker3"
 									data-date-format="dd-mm-yyyy" id="" name="dpdate"
 									required="required">
@@ -207,25 +163,25 @@ font-weight: bold;
 							<div class="col-md-1">
 								<label> Item For : </label>
 							</div>
-							<div class="col-md-5" style="margin-left: -2%;">
-								<input type="text" class="form-control"
+							<div class="col-md-5 style9" >
+								<input type="text" class="form-control style12"
 									placeholder="Enter Item Details" name="itemfor" id="itemfor"
-									required="required" style="width: 97%;">
+									required="required">
 							</div>
 								<div class="col-md-1">
 								<label> Vendor : </label>
 							</div>
-							<div class="col-md-5" style="margin-left: -1%;">
-								<input type="text" class="form-control"
+							<div class="col-md-5 style11">
+								<input type="text" class="form-control style13"
 									placeholder="Enter Vendor Name" name="vendor" id="vendor"
-									required="required" style="width: 95%;">
+									required="required">
 							</div>
-							<span style="margin-left: -1%"><button type="button" id="btnminus" class=" btn btn_rem" onclick="RemoveDiv(this)"> <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button></span>
+							<span class="style11"><button type="button" id="btnminus" class=" btn btn_rem" onclick="RemoveDiv(this)"> <i class="btn btn-sm fa fa-minus style14"></i></button></span>
 						</div>
 						<br>
-						<div style="height: 2px; background-color: black;"></div>
+						<div class="style15"></div>
 					</div>
-					 <div class="form-group" align="center" id="btnSubmit2" style="display:none;">
+					 <div class="form-group style16" align="center" id="btnSubmit2">
 					       <button type="submit" class="btn btn-primary btn-sm submit"  value="SUBMIT" id="manualAddBtn" onclick ="return confirm('Are you sure to submit?')">SUBMIT </button>
 					 	   <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 					 	   <input type="hidden" id="pstatusid" value="<%=fileView[7]%>"> 
@@ -240,8 +196,7 @@ font-weight: bold;
 				 </form>
 		              <br>
 		            
-				<div class="col-md-12"
-							style="border: 1px solid #055C9D; display: flex; justify-content: space-around;">
+				<div class="col-md-12 style17">
 							<div>
 								<%
 								int i = 0;

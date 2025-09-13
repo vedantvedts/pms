@@ -26,7 +26,8 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/Timesheet/TimeSheetView.css" var="holidayAddEdit" />     
+<link href="${holidayAddEdit}" rel="stylesheet" />
 <!-- Pdfmake  -->
 	<spring:url value="/resources/pdfmake/pdfmake.min.js" var="pdfmake" />
 	<script src="${pdfmake}"></script>
@@ -35,255 +36,6 @@
 	<spring:url value="/resources/pdfmake/htmltopdf.js" var="htmltopdf" />
 	<script src="${htmltopdf}"></script>
 	
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 15px !important;
-}
-
-.left {
-	text-align: left;
-}
-.center{
-	text-align: center;
-}
-.right{
-	text-align: right;
-}
-.activitytable{
-	border-collapse: collapse;
-	width: 100%;
-	border: 1px solid #0000002b; 
-	margin-top: 1.2rem;
-	overflow-y: auto; 
-	overflow-x: auto;  
-}
-.activitytable th, .activitytable td{
-	border: 1px solid #0000002b; 
-	padding: 20px;
-}
-.activitytable th{
-
-	vertical-align: middle;
-}
-.activitytable thead {
-	text-align: center;
-	background-color: #2883c0;
-	color: white;
-	position: sticky;
-	top: 0; /* Keeps the header at the top */
-	z-index: 10; /* Ensure the header stays on top of the body */
-	/* background-color: white; */ /* For visibility */
-}
-
-
-#activityviewtable{
-	border-collapse: collapse;
-	width: 100%;
-	border: 1px solid #0000002b; 
-	padding: 10px;
-}
-
-#activityviewtable th, #activityviewtable td{
-	border: 1px solid #0000002b; 
-	padding: 7px;
-}
-#activityviewtable thead {
-	text-align: center;
-	background-color: #60707a;
-	color: white;
-}
-
-.highlight-week {
-	background-color: #2883c0 !important;
-	color: white;
-}
-
-.table-wrapper {
-    max-height: 580px; /* Set the max height for the table wrapper */
-    overflow-y: auto; /* Enable vertical scrolling */
-    overflow-x: hidden; /* Enable vertical scrolling */
-}
-
-.select2-container {
-    text-align: left !important;
-    width: 100% !important;
-}
-</style>
-
-<style type="text/css">
-
-/* General Calendar Styles */
-.calendar-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    background: linear-gradient(145deg, #ffffff, #f0f0f0);
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border: 1px solid #ddd;
-    gap: 10px;
-    overflow-x: auto;
-}
-
-/* Navigation Buttons */
-.nav-btn {
-    background-color: transparent;
-    border: none;
-    color: #007bff;
-    font-size: 16px;
-    cursor: pointer;
-    transition: transform 0.3s ease, color 0.3s ease;
-}
-
-.nav-btn:hover {
-    color: #0056b3;
-    transform: scale(1.2);
-}
-
-.fa {
-    font-size: 20px;
-}
-
-/* Month Display */
-.month-display {
-    font-size: 16px;
-    font-weight: bold;
-    color: #fff;
-    padding: 3px 5px;
-    background-color: #7e7e7e;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    text-transform: uppercase;
-    text-align: center;
-    min-width: 50px;
-    /* transform: rotate(270deg); */
-}
-
-/* Year Container */
-.year-container {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-#current-year {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-}
-
-/* Days Container */
-.days-container {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 10px;
-    justify-content: flex-start;
-    overflow: hidden;
-    width: 100%; /* Ensure it adjusts according to the width of the calendar */
-}
-
-.day {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    text-align: center;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #fdfdfd;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-.day-name {
-    font-size: 10px;
-    color: #0f0f0f8a;
-    font-weight: 400;
-}
-
-.day-number {
-    font-size: 14px;
-    font-weight: bold; 
-}
-
-.day:hover {
-    background-color: #007bff;
-    transform: scale(1.1);
-}
-
-.day:hover .day-name,
-.day:hover .day-number {
-    color: #fff !important; /* Change to desired hover color */
-}
-
-.day.active {
-    background-color: #28a745;
-    font-weight: bold;
-}
-
-.day.active .day-name,
-.day.active .day-number {
-    color: #fff !important; /* Ensure active state color is applied */
-}
-
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .day {
-        width: 35px;
-        height: 35px;
-        line-height: 35px;
-        font-size: 12px;
-    }
-}
-
-@media (max-width: 480px) {
-    .day {
-        width: 30px;
-        height: 30px;
-        line-height: 30px;
-        font-size: 10px;
-    }
-}
-
-.highlighted-date {
-    background-color: #007bff; /* Yellow background for highlighting */
-    font-weight: bold;
-}
-
-.day.highlighted-date .day-name,
-.day.highlighted-date .day-number {
-    color: #fff !important; /* Ensure active state color is applied */
-}
-
-.spinner {
-    position: fixed;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 9999; /* Ensures it is above other elements */
-    text-align: center;
-    display: none; /* Initially hidden */
-}
-
-.spinner img {
-    width: 200px;
-    height: 200px;
-}
-
-.select2-container {
-	width: 100% !important;
-}
-
-.empIdPdiv > .select2-container {
-	width: 110% !important;
-}
-</style> 
 </head>
 <body>
 
@@ -373,23 +125,23 @@ String toDateR = fc.sdfTordf(toDate);
 						</div>
 					</div>
 					
-					<div class="row" style="margin: 0.5rem;">
+					<div class="row style1" >
 						<div class="col-12">
-		         			<ul class="nav nav-pills" id="pills-tab" role="tablist" style="background-color: #E1E5E8;padding:0px;">
-				  				<li class="nav-item" style="width: 33%;"  >
-				    				<div class="nav-link <% if(viewFlag!=null && viewFlag.equalsIgnoreCase("W")){%>active<%} %>" style="text-align: center;" id="pills-tab-1" data-toggle="pill" data-target="#tab-1" role="tab" aria-controls="tab-1" 
+		         			<ul class="nav nav-pills style2" id="pills-tab" role="tablist">
+				  				<li class="nav-item style3">
+				    				<div class="nav-link <% if(viewFlag!=null && viewFlag.equalsIgnoreCase("W")){%>active<%} %> style4" id="pills-tab-1" data-toggle="pill" data-target="#tab-1" role="tab" aria-controls="tab-1" 
 				    				aria-selected="<% if(viewFlag!=null && viewFlag.equalsIgnoreCase("W")){%>true<%} else{%>false<%}%>">
 					   					<span>Weekly View</span> 
 				    				</div>
 				  				</li>
-				  				<li class="nav-item"  style="width: 34%;">
-				    				<div class="nav-link <% if(viewFlag!=null && viewFlag.equalsIgnoreCase("M")){%>active<%} %>" style="text-align: center;" id="pills-tab-2" data-toggle="pill" data-target="#tab-2" role="tab" aria-controls="tab-2" 
+				  				<li class="nav-item style5">
+				    				<div class="nav-link <% if(viewFlag!=null && viewFlag.equalsIgnoreCase("M")){%>active<%} %> style4" id="pills-tab-2" data-toggle="pill" data-target="#tab-2" role="tab" aria-controls="tab-2" 
 				    				aria-selected="<% if(viewFlag!=null && viewFlag.equalsIgnoreCase("M")){%>true<%} else{%>false<%}%>">
 				    	 				<span>Monthly View</span> 
 				    				</div>
 				  				</li>
-				  				<li class="nav-item"  style="width: 33%;">
-				    				<div class="nav-link <% if(viewFlag!=null && viewFlag.equalsIgnoreCase("P")){%>active<%} %>" style="text-align: center;" id="pills-tab-3" data-toggle="pill" data-target="#tab-3" role="tab" aria-controls="tab-3" 
+				  				<li class="nav-item style3">
+				    				<div class="nav-link <% if(viewFlag!=null && viewFlag.equalsIgnoreCase("P")){%>active<%} %> style4" id="pills-tab-3" data-toggle="pill" data-target="#tab-3" role="tab" aria-controls="tab-3" 
 				    				aria-selected="<% if(viewFlag!=null && viewFlag.equalsIgnoreCase("P")){%>true<%} else{%>false<%}%>">
 				    	 				<span>Periodic View</span> 
 				    				</div>
@@ -413,7 +165,7 @@ String toDateR = fc.sdfTordf(toDate);
 											<input type="hidden" name="empIdP" value="<%=empIdP%>">
 											<input type="hidden" name="fromDate" value="<%=fromDateR%>">
 											<input type="hidden" name="toDate" value="<%=toDateR%>">
-											<table style="width: 100%;padding: 3px;">
+											<table class="style6">
 												<tr>
 													<td width="10%" class="right">
 														<label class="form-label mt-2">Employee: </label>
@@ -457,7 +209,7 @@ String toDateR = fc.sdfTordf(toDate);
 									<!-- <input type="text" id="searchBar" class="search-bar form-control" placeholder="Search..." style="float: right;width: auto;" />
        								<br> -->
 									<table class="table activitytable" id="dataTable"> 
-			                        	<thead style="">
+			                        	<thead>
 			                            	<tr>
 			                            		<th>Expand</th>
 			                            		<th>SN</th>
@@ -497,24 +249,24 @@ String toDateR = fc.sdfTordf(toDate);
 																<div class="row">
 																	<div class="col-md-4 right">
 																		<%if(timeSheet!=null && timeSheet.getTimeSheetStatus().equalsIgnoreCase("ABS")){%>
-																			<span style="margin-left: 100%;">
-																				<i class="fa fa-check" aria-hidden="true" style="color: green;font-size: 20px;"></i>
+																			<span class="style7">
+																				<i class="fa fa-check style8"  aria-hidden="true"></i>
 																			</span>
 																		<%} %>
 																	</div>
 																	<div class="col-md-7 left ml-2">
-																		<span style="color: green">Submitted</span>
+																		<span class="style9">Submitted</span>
 																	</div>
 																</div>
 															<%} else{%>
 																<div class="row">
 																	<div class="col-md-4 right">
-																		<span style="margin-left: 100%;">
-																			<i class="fa fa-times" aria-hidden="true" style="color: red;font-size: 20px;"></i>
+																		<span class="style7">
+																			<i class="fa fa-times style10" aria-hidden="true"></i>
 																		</span>
 																	</div>
 																	<div class="col-md-7 left ml-2">
-																		<span style="color: red">Not Submitted</span>
+																		<span class="style11">Not Submitted</span>
 																	</div>
 																</div>
 															<%} %>
@@ -531,7 +283,7 @@ String toDateR = fc.sdfTordf(toDate);
 													<td></td>
 													<td colspan="10">
 														
-														<table id="activityviewtable" style="width:100%;" >
+														<table id="activityviewtable" class="style12" >
 															<thead class="center">
 																<tr>
 																	<th width="3%">SN</th>
@@ -554,10 +306,19 @@ String toDateR = fc.sdfTordf(toDate);
 																<%if(timeSheetActivityList!=null && timeSheetActivityList.size()>0 ) { ++activitycount;%>
 																	<tr>
 																		<td colspan="8">
-																			<span style="font-weight: bold;font-size: 16px;color: <%if(timeSheet.getTimeSheetStatus().equalsIgnoreCase("ABS")) {%>green<%}else if(timeSheet.getTimeSheetStatus().equalsIgnoreCase("RBS")){%>red<%}%> ">
-																			<%=fc.SqlToRegularDate(date.toString()) %>
-																			</span>
-																		</td>
+																	    <% if (timeSheet.getTimeSheetStatus().equalsIgnoreCase("ABS")) { %>
+																	       
+																	        <span class="style13">
+																	            <%= fc.SqlToRegularDate(date.toString()) %>
+																	        </span>
+																	    <% } else if (timeSheet.getTimeSheetStatus().equalsIgnoreCase("RBS")) { %>
+																	       
+																	        <span class="style14">
+																	            <%= fc.SqlToRegularDate(date.toString()) %>
+																	        </span>
+																	    <% } %>
+																	</td>
+
 																	</tr>
 																<%} %>
 																<%if(timeSheetActivityList!=null && timeSheetActivityList.size()>0) {
@@ -666,7 +427,7 @@ String toDateR = fc.sdfTordf(toDate);
 												<input type="hidden" name="empIdP" value="<%=empIdP%>">
 												<input type="hidden" name="fromDate" value="<%=fromDateR%>">
 												<input type="hidden" name="toDate" value="<%=toDateR%>">
-												<div class="row right" style="margin-top: -0.5rem;">
+												<div class="row right" class="style15">
 													<div class="col-md-3"></div>
 													<div class="col-md-2">
 														<label class="form-label mt-2">Employee: </label>
@@ -683,11 +444,11 @@ String toDateR = fc.sdfTordf(toDate);
 														</select>
 													</div>
 													<div class="col-md-2 left">
-														<button type="button" class="btn btn-sm" formnovalidate="formnovalidate" onclick="downloadMonthlyReport()" data-toggle="tooltip" data-placement="top" title="PDF Report" style="background-color: #fff">
-															<i style="color: #cc0000;font-size: 24px;" class="fa fa-file-pdf-o" aria-hidden="true"></i>
+														<button type="button" class="btn btn-sm style16" formnovalidate="formnovalidate" onclick="downloadMonthlyReport()" data-toggle="tooltip" data-placement="top" title="PDF Report">
+															<i class="fa fa-file-pdf-o style17" aria-hidden="true"></i>
 													  	</button>
-													  	<button type="submit" class="btn btn-sm" name="Action" value="GenerateExcel" formaction="WorkRegisterMonthlyViewExcel.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="Excel Report" style="background-color: #fff">
-															<i style="color: #009900;font-size: 24px;" class="fa fa-file-excel-o" aria-hidden="true"></i>
+													  	<button type="submit" class="btn btn-sm style16" name="Action" value="GenerateExcel" formaction="WorkRegisterMonthlyViewExcel.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="Excel Report">
+															<i class="fa fa-file-excel-o style18" aria-hidden="true"></i>
 													  	</button>
 													</div>
 													<input type="hidden" name="activityDate" id ="activityDate" value="<%=activityDate%>">
@@ -701,7 +462,7 @@ String toDateR = fc.sdfTordf(toDate);
 									<!-- <input type="text" id="searchBar2" class="search-bar form-control" placeholder="Search..." style="float: right;width: auto;" />
        								<br> -->
 									<table class="table activitytable" id="dataTable2"> 
-			                        	<thead style="">
+			                        	<thead>
 			                        		<tr>
 												<th width="5%">SN</th>
 												<th width="7%">Date</th>
@@ -725,8 +486,8 @@ String toDateR = fc.sdfTordf(toDate);
 											%>
 												<tr>
 													<%if(i==0) {%>
-														<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=++slno%></td>
-											    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=obj[2]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[2].toString())):"" %></td>
+														<td rowspan="<%=values.size() %>" class="center style19"><%=++slno%></td>
+											    		<td rowspan="<%=values.size() %>" class="center style19"><%=obj[2]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[2].toString())):"" %></td>
 			         								<%} %>
 			         								<td class="center"><%=obj[16]!=null?StringEscapeUtils.escapeHtml4(obj[16].toString()):"-" %></td>
 			    									<td ><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %></td>
@@ -738,7 +499,7 @@ String toDateR = fc.sdfTordf(toDate);
 												</tr>
 											<% ++i; } } } else{%>
 												<tr>
-													<td colspan="9" style="text-align: center;">No Data Available</td>
+													<td colspan="9" class="style4">No Data Available</td>
 												</tr>
 											<%} %>
 										</tbody>
@@ -762,7 +523,7 @@ String toDateR = fc.sdfTordf(toDate);
 												<input type="hidden" name="empId" value="<%=empId%>">
 												<input type="hidden" name="empIdW" value="<%=empIdW%>">
 												<input type="hidden" name="activityWeekDate" value="<%=activityWeekDate%>">
-												<div class="row" style="margin-top: -0.5rem;">
+												<div class="row style15">
 													<div class="col-md-1">
 														<label class="form-label mt-2">Employee: </label>
 													</div>
@@ -792,11 +553,11 @@ String toDateR = fc.sdfTordf(toDate);
 														<input type="text" class="form-control " name="toDate" id="toDate" value="<%=toDateR!=null?StringEscapeUtils.escapeHtml4(toDateR):"" %>" onchange="this.form.submit()">
 													</div>
 													<div class="col-md-2 left">
-														<button type="button" class="btn btn-sm" formnovalidate="formnovalidate" onclick="downloadPeriodicReport()" data-toggle="tooltip" data-placement="top" title="PDF Report" style="background-color: #fff">
-															<i style="color: #cc0000;font-size: 24px;" class="fa fa-file-pdf-o" aria-hidden="true"></i>
+														<button type="button" class="btn btn-sm style16" formnovalidate="formnovalidate" onclick="downloadPeriodicReport()" data-toggle="tooltip" data-placement="top" title="PDF Report">
+															<i class="fa fa-file-pdf-o style17" aria-hidden="true"></i>
 													  	</button>
-													  	<button type="submit" class="btn btn-sm" name="Action" value="GenerateExcel" formaction="WorkRegisterMonthlyViewExcel.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="Excel Report" style="background-color: #fff">
-															<i style="color: #009900;font-size: 24px;" class="fa fa-file-excel-o" aria-hidden="true"></i>
+													  	<button type="submit" class="btn btn-sm style16" name="Action" value="GenerateExcel" formaction="WorkRegisterMonthlyViewExcel.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="Excel Report" >
+															<i class="fa fa-file-excel-o style18" aria-hidden="true"></i>
 													  	</button>
 													</div>
 												</div>
@@ -809,7 +570,7 @@ String toDateR = fc.sdfTordf(toDate);
 									<!-- <input type="text" id="searchBar2" class="search-bar form-control" placeholder="Search..." style="float: right;width: auto;" />
        								<br> -->
 									<table class="table activitytable" id="dataTable3"> 
-			                        	<thead style="">
+			                        	<thead>
 			                        		<tr>
 												<th width="5%">SN</th>
 												<th width="7%">Date</th>
@@ -833,8 +594,8 @@ String toDateR = fc.sdfTordf(toDate);
 											%>
 												<tr>
 													<%if(i==0) {%>
-														<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=++slno%></td>
-											    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;" class="center"><%=obj[2]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[2].toString())):"" %></td>
+														<td rowspan="<%=values.size() %>" class="center style19"><%=++slno%></td>
+											    		<td rowspan="<%=values.size() %>"  class="center style19"><%=obj[2]!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(obj[2].toString())):"" %></td>
 			         								<%} %>
 			         								<td class="center"><%=obj[16]!=null?StringEscapeUtils.escapeHtml4(obj[16].toString()):"-" %></td>
 			    									<td ><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %></td>
@@ -846,7 +607,7 @@ String toDateR = fc.sdfTordf(toDate);
 												</tr>
 											<% ++i; } } } else{%>
 												<tr>
-													<td colspan="9" style="text-align: center;">No Data Available</td>
+													<td colspan="9" class="style4">No Data Available</td>
 												</tr>
 											<%} %>
 										</tbody>

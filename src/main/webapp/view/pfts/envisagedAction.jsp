@@ -9,32 +9,10 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/pfts/envisagedAction.css" var="StylesFromCSS" />     
+<link href="${StylesFromCSS}" rel="stylesheet" />
 <title>Envisaged Action Add</title>
 
-<style type="text/css">
-
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-.form-group {
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-</style>
 
 </head>
 <body>
@@ -75,9 +53,9 @@ String value=(String)request.getAttribute("value");
 <div class="container" >
 	<form action="#" method="POST" name="myfrm" id="myfrm" autocomplete="off">
 	
-	<div class="row" style="" id="mainrow">
+	<div class="row" id="mainrow">
 		<div class="col-md-12" >
- 			<div class="card shadow-nohover" style="margin-top: 10px">		
+ 			<div class="card shadow-nohover style1">		
 				<div class="row card-header">
 			   			<div class="col-md-6">
 							<h4>ENVISAGED ADD</h4>
@@ -92,20 +70,20 @@ String value=(String)request.getAttribute("value");
 
 		      
 		            <div class="row">
-		                  <div class="col-md-3" style="max-width: 25%">
+		                  <div class="col-md-3 style2" >
 		                      <label class="control-label">Item Nomenclature
-		                      <span class="mandatory" style="color: #cd0a0a;">*</span></label>
+		                      <span class="mandatory style3">*</span></label>
 		                  </div>
-		                  <div class="col-md-10" style="max-width: 75%">
+		                  <div class="col-md-10 style4" >
 		                      <input class="form-control alphanum-no-leading-space"  placeholder="Max 150 Characters" name="itemNomenclature" id="itemNomenclature" maxlength="150" type="text" <%if(itemN!=null){ %>value="<%=itemN!=null?StringEscapeUtils.escapeHtml4(itemN):"" %>" <%}%>>
 		                  </div>
 		                  </div><br>
 		                  <div class="row">
-		                    <div class="col-md-3" style="max-width: 25%">
+		                    <div class="col-md-3 style2">
 		                      <label class="control-label">Estimated Cost
-		                      <span class="mandatory" style="color: #cd0a0a;">*</span></label>
+		                      <span class="mandatory style3">*</span></label>
 		                  </div>
-		                  <div class="col-md-10" style="max-width: 75%">
+		                  <div class="col-md-10 style4">
 		                      <input class="form-control numeric-only"  placeholder="Max 13 Characters" name="estimatedCost" id="estimatedCost" type="number" onKeyPress="if(this.value.length==13) return false;" <%if(estimatedCost!=null){ %>value="<%=estimatedCost!=null?StringEscapeUtils.escapeHtml4(estimatedCost):"" %>" <%} %>>
 		                  </div>
 		            </div>
@@ -113,11 +91,11 @@ String value=(String)request.getAttribute("value");
 		            <br>
 		            
 		            <div class="row">
-		                  <div class="col-md-3" style="max-width: 25%">
+		                  <div class="col-md-3 style2">
 		                      <label class="control-label">Probable Date of Initiation
-		                      <span class="mandatory" style="color: #cd0a0a;">*</span></label>
+		                      <span class="mandatory style3" >*</span></label>
 		                  </div>
-		                  <div class="col-md-10" style="max-width: 75%">
+		                  <div class="col-md-10 style4">
 		                    <input class="form-control"   name="intiDate" id="intiDate"  type="text" <%if(PDOfInitiation!=null){ %> value="<%=PDOfInitiation!=null?StringEscapeUtils.escapeHtml4(PDOfInitiation):"" %>" <%} %>>
 		                  </div>
 		                  </div><br>
@@ -134,11 +112,11 @@ String value=(String)request.getAttribute("value");
 		            <br> --%>
 		            
 		            <div class="row">
-		                  <div class="col-md-3" style="max-width: 25%">
+		                  <div class="col-md-3 style2">
 		                      <label class="control-label">Remarks
-		                      <span class="mandatory" style="color: #cd0a0a;">*</span></label>
+		                      <span class="mandatory style3">*</span></label>
 		                  </div>
-		                  <div class="col-md-10" style="max-width: 75%">
+		                  <div class="col-md-10 style4">
 		                   <textarea class="form-control" rows="2" cols="30" placeholder="Max 150 Characters" name="remarks" id="remarks" maxlength="150" ><%if(remarks!=null){ %> <%=remarks!=null?remarks:"" %> <%} %></textarea>
 		                     <!--  <input class="form-control" placeholder="Max 100 Characters" name="reference" id="reference" maxlength="100"> -->
 		                  </div>

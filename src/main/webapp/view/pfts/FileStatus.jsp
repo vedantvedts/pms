@@ -10,7 +10,7 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.time.LocalDate"%>
-    <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
    
 <!DOCTYPE html>
 <html>
@@ -18,186 +18,10 @@
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 <spring:url value="/resources/js/excel.js" var="excel" />
+<spring:url value="/resources/css/pfts/FileStatus.css" var="fromExternalCSS" />     
+<link href="${fromExternalCSS}" rel="stylesheet" />
 <script src="${excel}"></script>
 <title>Procurement Status</title>
-
-
- <style type="text/css">
- 
- p{
-  text-align: justify;
-  text-justify: inter-word;
-}
-
-  
- th
- {
- 	border: 1px solid black;
- 	text-align: center;
- 	padding: 5px;
- }
- 
- td
- {
- 	border: 1px solid black;
- 	text-align: left;
- 	padding: 5px;
- }
- 
-  }
- .textcenter{
- 	
- 	text-align: center;
- }
- .border
- {
- 	border: 1px solid black;
- }
- .textleft{
- 	text-align: left;
- }
- 
- #containers {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-.anychart-credits {
-   display: none;
-}
-
-.flex-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-summary[role=button] {
-  background-color: white;
-  color: black;
-  border: 1px solid black ;
-  border-radius:5px;
-  padding: 0.5rem;
-  cursor: pointer;
-  
-}
-summary[role=button]:hover
- {
-color: white;
-border-radius:15px;
-background-color: #4a47a3;
-
-}
- summary[role=button]:focus
-{
-color: white;
-border-radius:5px;
-background-color: #4a47a3;
-border: 0px ;
-
-}
-summary::marker{
-	
-}
-details { 
-  margin-bottom: 5px;  
-}
-details  .content {
-background-color:white;
-padding: 0 1rem ;
-align: center;
-border: 1px solid black;
-}
-
-}
-.input-group-text {
-	font-weight: bold;
-}
-
-label {
-	font-weight: 800;
-	font-size: 16px;
-	color: #07689f;
-}
-
-hr {
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-.card b {
-	font-size: 20px;
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
-}
-
-input[type=number] {
-    -moz-appearance:textfield; /* Firefox */
-}
-
-.blinking-element {
-     animation: blinker 1.5s linear infinite;
-     color: #D81B60;
-     font-size: 1.5em;
-     font-weight:600;
-     margin-bottom: 20px;
-     text-shadow: 5px 5px 10px  #D81B60;
-}
-
-@keyframes blinker { 
-   0%{opacity: 0;}
-  50%{opacity: 1;}
-  100%{opacity: 1;}
-}
-
-.modal-dialog-jump {
-  animation: jumpIn 0.5s ease;
-}
-
-@keyframes jumpIn {
-  0% {
-    transform: scale(0.1);
-    opacity: 0;
-  }
-  70% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.custom-style {
-    background-color: #fff3ab; 
-    color: #333; 
-    border: 1px solid #ddc67b;
-    pointer-events: none; 
-    user-select: none; 
-}
-
-.custom-sn-style {
-    background-color: #5d7cf4; 
-    color: white; 
-    border: 1px solid #497bd9;
-    pointer-events: none; 
-    user-select: none; 
-}
-
-.form-row{
-   height: 36px;
-}
-
-
-</style>
-
 
 <meta charset="ISO-8859-1">
 
@@ -295,14 +119,14 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 						   </form>
 						   </div>
 						 </div>	 -->	
-						<div class="col-md-3 justify-content-end" style="float: right;margin-top: -0.75rem;">
-						   <div class="form-inline" style="justify-content: end;margin-bottom:2rem;">
+						<div class="col-md-3 justify-content-end style1">
+						   <div class="form-inline style2">
 						  <table >
 					   					<tbody><tr>
-					   						<td style="border: 0 ">
-					   							<label class="control-label" style="font-size: 17px;font-weight:bold; margin-bottom: .0rem;">Project : </label>
+					   						<td>
+					   							<label class="control-label style4">Project : </label>
 					   						</td>
-									<td  style="border: 0 ">
+									<td class="style3">
 								<%-- 		<form method="post" action="ProcurementStatus.htm" id="projectchange" >
 											
 											<select class="form-control selectdee select2-hidden-accessible" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
@@ -316,7 +140,7 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 										</form> --%>
 										
 											<form method="post" action="ProcurementStatus.htm" id="projectchange" >
-											<select class="form-control selectdee" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
+											<select class="form-control selectdee style5" name="projectid"  required="required" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
 											<% for (Object[] obj : projectslist) {
     										String projectshortName=(obj[17]!=null)?" ( "+StringEscapeUtils.escapeHtml4(obj[17].toString()) +" ) ":"";
     										%>
@@ -350,16 +174,16 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 	                                      <%if(fileStatusList!=null){ int SN=1;%>
 	                                      <%for(Object[] fileStatus:fileStatusList){ %>
 	                                      <tr>
-                                            <td style="text-align: center;"><%=SN++%></td>
+                                            <td class="style6"><%=SN++%></td>
                                             <td><% if(fileStatus[1]!=null){ %> <%=fileStatus[1]!=null?StringEscapeUtils.escapeHtml4(fileStatus[1].toString()):"-" %><%}else %>--</td>
                                             <td><%=fileStatus[4]!=null?StringEscapeUtils.escapeHtml4(fileStatus[4].toString()):"-"%></td>
-                                            <td style="text-align: right;">
+                                            <td class="style7">
                                             <%if(fileStatus[3]!=null) {%>
                                             <%=format.format(new BigDecimal(fileStatus[3].toString())).substring(1)%>
                                             <%}else{ %>--<%} %>
                                             </td>
                                             <td >
-                                              <table style="margin-left:4rem;">
+                                              <table class="style8">
                                               
                                                 <%if(fileStatus[8]!=null ){
                                             	  if(fileStatus[8].toString().equalsIgnoreCase("Y")){
@@ -385,7 +209,7 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
                                                <% if(fileStatus[7] !=null){ %>
                                                 <td><%=fileStatus[6]!=null?StringEscapeUtils.escapeHtml4(fileStatus[6].toString()):"-"%></td>
                                                <%--  <%if(!fileStatus[7].toString().equals("19")){ %> --%>
-                                                    <td style="text-align: center;">
+                                                    <td class="style6">
                                                      <%if(fileStatus[10]!=null && fileStatus[10].toString().equalsIgnoreCase("M")){ %>
                                                      <button class="btn btn-sm"  data-toggle="tooltip" data-placement="top" title="Edit Demand" onclick="manualDemandEdit('<%=fileStatus[0]%>','<%=fileStatus[1]%>','<%=fileStatus[2]%>','<%=fileStatus[3]%>','<%=fileStatus[4]%>')">
                                                      <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
@@ -406,7 +230,7 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
                                                    </form>
                                                    <%} }%>
                                                     </td>
-                                                   <td style="margin-left:5px;">  
+                                                   <td class="style9">  
                                                    <form action="FileInActive.htm" method="post">
 	                                                   <input type="hidden" name="fileId" value="<%=fileStatus[0]%>" />
 	                                                   <input type="hidden" name="projectId" value=<%=projectId%> />
@@ -427,11 +251,11 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
                                                </tr>
                                               </table>
                                             </td>
-                                            <td  style="text-align: center;">
+                                            <td class="style6">
                                             <%if(fileStatus[10]!=null){ %>
-                                            <button class="btn btn" type="button" style="background: #5d22ed;" onclick="openMilestoneModal('<%=fileStatus[0]%>','<%=fileStatus[1]%>','<%=fileStatus[4]%>','<%=fileStatus[2]%>')"
+                                            <button class="btn btn style10" type="button" onclick="openMilestoneModal('<%=fileStatus[0]%>','<%=fileStatus[1]%>','<%=fileStatus[4]%>','<%=fileStatus[2]%>')"
                                              data-toggle="tooltip"  data-toggle="tooltip" data-placement="top"  title="Add Procurement Milestone">
-                                            <i class="fa fa-list" aria-hidden="true" style="color: white;font-size: 17px;"></i>
+                                            <i class="fa fa-list style11" aria-hidden="true"></i>
                                             </button>
                                             <%}else{ %> -- <%} %>
                                            <%
@@ -439,14 +263,14 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 											    boolean matchFound = pftsMilestoneList.stream().anyMatch(milestone -> milestone[1] != null && milestone[1].equals(fileStatus[0]));
 											    if (matchFound) {
 											%>
-                                           <form action="pftsMilestoneView.htm" method="get" style="display: inline;">
-                                              <button class="btn btn" type="submit" id="viewBtn" style="background: #5d22ed; color: white;" name="PftsFileId" value="<%=fileStatus[0]%>">View</button>
+                                           <form action="pftsMilestoneView.htm" method="get" class="style12">
+                                              <button class="btn btn style13" type="submit" id="viewBtn" name="PftsFileId" value="<%=fileStatus[0]%>">View</button>
                                               <input type="hidden" name="ProjectId" value="<%=fileStatus[19]%>">
                                               <input type="hidden" name="demandNumber" value="<%=fileStatus[1]%>">
                                            </form>
                                            <%} }%>
                                             </td>
-                                            <td style="text-align: center;">
+                                            <td class="style6">
                                             <%if(fileStatus[1]!=null && Long.parseLong(fileStatus[7].toString())>=10){ %>
                                             <%if(fileStatus[10]!=null && fileStatus[10].toString().equalsIgnoreCase("M")){ %>
                                             <button type="button" id="orderstatus" onclick="manualOrderStatus('<%=fileStatus[0]%>','<%=fileStatus[1]%>')" class="btn btn-sm submit" >Order View</button>
@@ -466,9 +290,9 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 	                        		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	                        		
 	                        		<button  class="btn add" type="button" formaction="AddNewDemandFile.htm" id="ibasAddBtn" onclick="addIbis()">Add Demand From IBAS</button>
- 	                        		<button  class="btn btn-info" style="font-weight:600" type="button" id="manualAddBtn" onclick="addManual()" formaction="AddManualDemand.htm">MANUAL DEMAND</button>
-	                        		<button  class="btn btn-success" style="font-weight:600"  type="button" id="enviBtn" onclick="addEnvi()" formaction="envisagedAction.htm">ENVISAGED DEMAND</button>
-	                        		<button type="button" class="btn btn-warning" style="font-weight:600"  type="button" id="" onclick="showManualDemand()" data-toggle="tooltip"  data-toggle="tooltip" data-placement="top"  title="Excel Upload" ><i class="fa fa-file-excel-o" aria-hidden="true" style="color: green;"></i> &nbsp;UPLOAD</button>
+ 	                        		<button  class="btn btn-info style14" type="button" id="manualAddBtn" onclick="addManual()" formaction="AddManualDemand.htm">MANUAL DEMAND</button>
+	                        		<button  class="btn btn-success style14" type="button" id="enviBtn" onclick="addEnvi()" formaction="envisagedAction.htm">ENVISAGED DEMAND</button>
+	                        		<button type="button" class="btn btn-warning style15"  type="button" id="" onclick="showManualDemand()" data-toggle="tooltip"  data-toggle="tooltip" data-placement="top"  title="Excel Upload" ><i class="fa fa-file-excel-o" aria-hidden="true"></i> &nbsp;UPLOAD</button>
 	                        		
 	                           </form>
 	                        
@@ -489,7 +313,7 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 		<!-- Excel Upload-->
 <div class="modal fade bd-example-modal-lg" id="MANUALDEMANDS" >
   <div class="modal-dialog modal-lg">
-    <div class="modal-content" style="width: 150%;margin-left: -25%;">
+    <div class="modal-content style16">
       <div class="modal-header bg-primary text-light"  >
         <h5 class="modal-title" id="exampleModalLabel">MANUAL DEMANDS (<%=projectcode %>)</h5>
 		<form action="ManualDemandExcel.htm" method="post">
@@ -507,16 +331,16 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
       <table class="table table-bordered table-hover">
       <thead>
       <tr>
-  	  <th colspan="1" style="color: #001253 !important;">SN</th>
-      <th colspan="2" style="width:120px;color: #001253 !important;">Demand No</th>
-      <th colspan="2" style="width:150px;color: #001253 !important;">Demand Date</th>
-      <th colspan="2" style="width:150px;color: #001253 !important;">Estimated Cost</th>
-      <th colspan="2" style="width:200px;color: #001253 !important;">Item Name</th>
+  	  <th colspan="1" class="style17">SN</th>
+      <th colspan="2" class="style18" >Demand No</th>
+      <th colspan="2" class="style19">Demand Date</th>
+      <th colspan="2" class="style19">Estimated Cost</th>
+      <th colspan="2" class="style20">Item Name</th>
       </tr>
       </thead>
       <tbody id="overalltbody">
       <tr>
-      <td colspan="9" style="color: #001253 !important;text-align: center;font-weight: 700;">No Data Available!</td>
+      <td colspan="9" class="style21">No Data Available!</td>
       </tr>
       </tbody>
       </table>
@@ -526,7 +350,7 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 		<input type="hidden" name="ProjectId" value="<%=projectId%>">
       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
       <button type="submit" class="btn btn-sm submit" onclick="return confirm('Are you sure to submit?')">Submit</button>
-      <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" style="font-weight: 600;text-transform: uppercase;">Close</button>
+      <button type="button" class="btn btn-sm btn-secondary style22" data-dismiss="modal">Close</button>
       </div>
       </form>
     </div>
@@ -537,9 +361,9 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 	
 <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
-		   <div class="modal-content" style="width: 125%; margin-left:-12%">
+		   <div class="modal-content style23">
 			<form action="upadteDemandFile.htm" id="form1" method="post" >
-					<div class="modal-header" style="background-color: #ECEFF1">
+					<div class="modal-header style24">
 						<h5 class="modal-title" id="statusModalLabel"></h5>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
@@ -551,9 +375,9 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 							<div class="col-md-3">
 								<label class="control-label" > Procurement Status :</label>
 								</div>
-								<div class="col-md-4" style="margin-left: -6%;">
+								<div class="col-md-4 style25">
 								 <select
-									class="form-control selectdee" style="width: 100%"
+									class="form-control selectdee style26"
 									id="procstatus" required="required" name="procstatus">
 								</select>
 								</div>
@@ -562,7 +386,7 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 							   <label class="control-label" >Event Date :</label>
 							   </div>
 							   <div class="col-md-3" >
-							   <input style="margin-left: -23%;"
+							   <input class="style27"
 								type="text" class="form-control" name="eventDate" id="eventDate"
 								required="required" readonly="readonly">
 						    </div>
@@ -571,10 +395,9 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 						<div class="col-md-3" >
 								<label> Remarks : </label> 
 								</div>
-								<div class="col-md-8" style=" margin-left: -6%;" >
-								<input type="text" class="form-control"
-									name="procRemarks" id="procRemarks" required="required"
-									style="width: 122%">
+								<div class="col-md-8 style28">
+								<input type="text" class="form-control style29"
+									name="procRemarks" id="procRemarks" required="required">
 							</div>
 							</div>
 					        <br>
@@ -592,8 +415,7 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 							  
 						</div>
 						<br>
-						<div class="col-md-12 "
-							style="border: 1px solid #055C9D; display: flex; justify-content: space-around;">
+						<div class="col-md-12 style30">
 							<div>
 								<%
 								int i = 0;
@@ -664,7 +486,7 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 
 						<div class="col-md-8">
 							<label class="control-label">Available for Integration by</label> 
-							<input type="text" class="form-control" name="IntegrationDate" id="IntegrationDate" required="required" readonly="readonly" style="width: 50%;">
+							<input type="text" class="form-control" name="IntegrationDate" id="IntegrationDate" required="required" readonly="readonly" >
 						</div>
 					</div>
 				</div>
@@ -681,9 +503,9 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 </div>
 <div class="modal fade bd-example-modal-lg" id ="exampleModalOrder" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-jump">
-    <div class="modal-content" style="width: 197%; margin-left: -50%; margin-top: 10%">
+    <div class="modal-content style32">
 				<div class="modal-header">
-					<h5  class="modal-title" style="font-size: x-large; font-weight: 700;margin-inline-start: auto;"></h5>
+					<h5  class="modal-title style33"></h5>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -697,9 +519,9 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 	
 <div class="modal fade bd-example-modal-lg" id ="exampleIbasOrder" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-jump">
-    <div class="modal-content" style="width: 197%; margin-left: -50%; margin-top: 15%">
+    <div class="modal-content style34">
 				<div class="modal-header">
-					<h5  class="modal-title" style="font-size: x-large; font-weight: 700;margin-inline-start: auto;"></h5>
+					<h5  class="modal-title style35"></h5>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -713,9 +535,9 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 	
 <div class="modal fade bd-example-modal-lg" id ="manualDemandEditModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-jump">
-    <div class="modal-content" style="margin-top: 20%; width: 110%; margin-left: -5%;">
+    <div class="modal-content style36">
 				<div class="modal-header">
-					<h5 class="modal-title" style="font-size: x-large; font-weight: 700;margin-inline-start: auto; color: #AD1457">Edit Demand Details</h5>
+					<h5 class="modal-title style37">Edit Demand Details</h5>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -728,7 +550,7 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 		                      <label class="control-label">Project</label>
 		                   </div>
 		                    <div class="col-md-4">
-			                      <select class="form-control selectdee" id="ProjectId" name="ProjectId" style="width: 100%;">
+			                      <select class="form-control selectdee style26" id="ProjectId" name="ProjectId">
 											<% for (Object[] obj : projectslist) {
 											String projectshortName=(obj[17]!=null)?" ( "+StringEscapeUtils.escapeHtml4(obj[17].toString())+" ) ":"";
 											%>
@@ -752,16 +574,14 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 		                      <label class="control-label">Demand Date</label>
 		                   </div>
 		                    <div class="col-md-3">
-			                     <input  class="form-control form-control date"  data-date-format="dd-mm-yyyy" id="demanddate" name="demanddate" 
-			                     style="margin-left: -39%;width: 139%" >
+			                     <input  class="form-control form-control date style38"  data-date-format="dd-mm-yyyy" id="demanddate" name="demanddate" >
 		                    </div>
 		                    
 		                    <div class="col-md-3">
 		                      <label class="control-label">Estimated Cost (&#8377;)</label>
 		                   </div>
 		                    <div class="col-md-3">
-			                    <input type="number" class="form-control"  name="estimatedcost" id="estimatedcost" 
-			                    style="margin-left: -18%; width: 117%" >		
+			                    <input type="number" class="form-control style39"  name="estimatedcost" id="estimatedcost" >		
 		                    </div>
 		             </div>
 		             <br>
@@ -769,8 +589,8 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 		                 <div class="col-md-3">
 		                      <label class="control-label">Item Name</label>
 		                   </div>
-		                    <div class="col-md-9" style="margin-left: -9%;">
-			                    <input type="text" class="form-control"  name="itemname" id="itemname" style="width: 113%">		
+		                    <div class="col-md-9 style40">
+			                    <input type="text" class="form-control style41"  name="itemname" id="itemname">		
 		                   </div>
 		             </div>
 		             
@@ -966,7 +786,7 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="milestoneModalLabel">
-        <span style="color: #FF3D00;font-weight: 600"></span>
+        <span class="style42"></span>
         </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -976,17 +796,17 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 		 <div class="container">
 		     <form id="milestoneForm" action="addProcurementMilestone.htm" method="post" autocomplete="off">
 			    <div class="form-row">
-			        <div class="form-group col-md-1" align="center" style="margin-left: -15px;">
-			            <label for="sn" style="font-size: medium;">SN</label>
+			        <div class="form-group col-md-1 style43" align="center">
+			            <label for="sn" class="style44">SN</label>
 			        </div>
 			        <div class="form-group col-md-5" align="center">
-			            <label for="name" style="font-size: medium;">Status Name</label>
+			            <label for="name" class="style44">Status Name</label>
 			        </div>
 			        <div class="form-group col-md-3 probable-date-header" align="center">
-			            <label for="date" style="font-size: medium;">Probable Date</label>
+			            <label for="date" class="style44">Probable Date</label>
 			        </div>
 			        <div class="form-group col-md-3 actual-date-header" align="center">
-			            <label for="date" style="font-size: medium;">Actual Date</label>
+			            <label for="date" class="style44">Actual Date</label>
 			        </div>
 			    </div>
 			
@@ -994,11 +814,11 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 			    
 			    </div>
 			    <div align="center">
-				   <button type="button" id="submitButton"  name="action" value="add" class="btn btn-success" onclick="addSubmit('add')" style="font-weight: 500">ADD</button>
+				   <button type="button" id="submitButton"  name="action" value="add" class="btn btn-success style45" onclick="addSubmit('add')">ADD</button>
 				   <input type="hidden" name="action" value="" id="actiontype">
-				   <button type="button" name="action" value="edit" class="btn btn-warning" onclick="addSubmit('edit')" style="font-weight: 500; display:none;">EDIT</button>
-				   <button type="button" name="action" value="baseline" class="btn btn-primary" onclick="addSubmit('baseline')" style="font-weight: 500; display:none;">SET BASELINE</button>
-				   <button type="button" name="action" value="revise" class="btn btn-primary" onclick="addSubmit('revise')" style="font-weight: 500; display:none;">REVISE</button>
+				   <button type="button" name="action" value="edit" class="btn btn-warning style46" onclick="addSubmit('edit')">EDIT</button>
+				   <button type="button" name="action" value="baseline" class="btn btn-primary style46" onclick="addSubmit('baseline')">SET BASELINE</button>
+				   <button type="button" name="action" value="revise" class="btn btn-primary style46" onclick="addSubmit('revise')" >REVISE</button>
 			       <input type="hidden" name="pftsfile" id="pftsfile" value="" />
 			       <input type="hidden" name="demandNumber" id="demandNumber" value="" />
 			       <input type="hidden" name="project"  value="<%=projectId %>" />
@@ -1149,7 +969,7 @@ function openEditform(fileId,demandid,pstatusid,itemname,demandtype){
 	  $('#updateprocFileId').val(fileId);
 	  $('#demandtype').val(demandtype);
 	
-	  $('#exampleModal .modal-title').html('<span style="color: #FF3D00;">Demand No : ' + demandid + '<br> <span style="color: #039BE5;">Item : ' + itemname);
+	  $('#exampleModal .modal-title').html('<span class="style47">Demand No : ' + demandid + '<br> <span class="style48">Item : ' + itemname);
 	  $('#exampleModal').modal('show');
 	  $(".pstatus").removeClass("blinking-element"); // Remove blink class from all elements
       $("#" + pstatusid).addClass("blinking-element"); //add blink class on specific id
@@ -1322,7 +1142,7 @@ function openPDCform(fileId){
 
 function manualOrderStatus(fileId,demandno){
 	
-	$('#exampleModalOrder .modal-title').html('<span style="color: #FF3D00;">Order Details of Demand No : ' + demandno);
+	$('#exampleModalOrder .modal-title').html('<span class="style47">Order Details of Demand No : ' + demandno);
 	$('#exampleModalOrder').modal('show');
 	 $('#containermodal').empty();
 	 
@@ -1362,21 +1182,21 @@ function manualOrderStatus(fileId,demandno){
 		                orderHtml += '<div class="col-md-2"><input type="text" class="form-control" name="orderno" id="orderno'+resultData[i][0]+'" value="' + resultData[i][6] + '"></div>';
 		                orderHtml += '<div class="col-md-1"><label class="control-label">Order Date :</label></div>';
 		                orderHtml += '<div class="col-md-2"><input class="form-control form-control date datepicker2" id="datepicker2'+resultData[i][0]+'" data-date-format="dd-mm-yyyy" name="orderdate" value="' + orderDateFormat + '"></div>';
-		                orderHtml += '<div class="col-md-1"><label class="control-label" style="width:118%;">Order Cost (&#8377;):</label></div>';
+		                orderHtml += '<div class="col-md-1"><label class="control-label style49">Order Cost (&#8377;):</label></div>';
 		                orderHtml += '<div class="col-md-2"><input type="number" step="0.01" class="form-control" name="ordercost" id="ordercost'+resultData[i][0]+'" value="' +resultData[i][10]  + '"></div>';
 		                orderHtml += '<div class="col-md-1"><label class="control-label">DP Date :</label></div>';
-		                orderHtml += '<div class="col-md-2" style="margin-left: -23px;"><input class="form-control form-control date datepicker3" id="datepicker3'+resultData[i][0]+'" data-date-format="dd-mm-yyyy" name="dpdate" value="' + dpDateFormat + '"></div>';
+		                orderHtml += '<div class="col-md-2 style50"><input class="form-control form-control date datepicker3" id="datepicker3'+resultData[i][0]+'" data-date-format="dd-mm-yyyy" name="dpdate" value="' + dpDateFormat + '"></div>';
 		                orderHtml += '</div>';
 
 		                // Add another row
-		                orderHtml += '<div class="row" style="margin-top:5px;">';
+		                orderHtml += '<div class="row style51">';
 		                orderHtml += '<div class="col-md-1"><label class="control-label">Item For :</label></div>';
 		                orderHtml += '<div class="col-md-5"><input type="text" class="form-control" name="itemfor" id="itemfor'+resultData[i][0]+'" value="' + resultData[i][9] + '"></div>';
 		                orderHtml += '<div class="col-md-1"><label class="control-label">Vendor :</label></div>';
 		                orderHtml += '<div class="col-md-4"><input type="text" class="form-control" name="vendor" id="vendor'+resultData[i][0]+'" value="' + resultData[i][11] + '"></div>';
 		                orderHtml += '<div class="col-md-1"><button type="button" class="btn btn-primary" id="orderSubmit'+resultData[i][0]+'" onclick="updateOrder('+resultData[i][0]+')">Update</button><input type="hidden" name="orderid" id="orderid" value="'+resultData[i][0]+'"><input type="hidden" name="projectId" id="projectId" value="'+resultData[i][5]+'"></div>';
 		                orderHtml += '</div><br>';
-		                orderHtml += '<div style="height: 2px; background-color: #0575E6;"></div><br>'
+		                orderHtml += '<div class="style52"></div><br>'
 		                orderHtml += '</form>'; // Close the form element
 		                // Append the generated HTML to the modal body
 		                $('#containermodal').append(orderHtml);
@@ -1430,7 +1250,7 @@ function updateOrder(orderId){
 <script type="text/javascript">
 function ibasOrderStatus(fileId,demandno){
 	
-	$('#exampleIbasOrder .modal-title').html('<span style="color: #FF3D00;">Order Details of Demand No : ' + demandno);
+	$('#exampleIbasOrder .modal-title').html('<span class="style53">Order Details of Demand No : ' + demandno);
 	$('#exampleIbasOrder').modal('show');
 	 $('#ibasordermodal').empty();
 	 
@@ -1469,20 +1289,20 @@ function ibasOrderStatus(fileId,demandno){
 		                orderHtml += '<div class="col-md-2"><input type="text" class="form-control" readonly="readonly" name="orderno" id="orderno'+resultData[i][0]+'" value="' + resultData[i][6] + '"></div>';
 		                orderHtml += '<div class="col-md-1"><label class="control-label">Order Date :</label></div>';
 		                orderHtml += '<div class="col-md-2"><input class="form-control form-control date datepicker2" id="datepicker2'+resultData[i][0]+'" data-date-format="dd-mm-yyyy" readonly="readonly" name="orderdate" value="' + orderDateFormat + '"></div>';
-		                orderHtml += '<div class="col-md-1"><label class="control-label" style="width:118%;">Order Cost (&#8377;):</label></div>';
+		                orderHtml += '<div class="col-md-1"><label class="control-label style54">Order Cost (&#8377;):</label></div>';
 		                orderHtml += '<div class="col-md-2"><input type="number" step="0.01" class="form-control" readonly="readonly" name="ordercost" id="ordercost'+resultData[i][0]+'" value="' +resultData[i][10]  + '"></div>';
 		                orderHtml += '<div class="col-md-1"><label class="control-label">DP Date :</label></div>';
-		                orderHtml += '<div class="col-md-2" style="margin-left: -23px;"><input class="form-control form-control date datepicker3" id="datepicker3'+resultData[i][0]+'" data-date-format="dd-mm-yyyy" readonly="readonly" name="dpdate" value="' + dpDateFormat + '"></div>';
+		                orderHtml += '<div class="col-md-2 style55"><input class="form-control form-control date datepicker3" id="datepicker3'+resultData[i][0]+'" data-date-format="dd-mm-yyyy" readonly="readonly" name="dpdate" value="' + dpDateFormat + '"></div>';
 		                orderHtml += '</div>';
 
 		                // Add another row
-		                orderHtml += '<div class="row" style="margin-top:5px;">';
+		                orderHtml += '<div class="row style51">';
 		                orderHtml += '<div class="col-md-1"><label class="control-label">Item For :</label></div>';
 		                orderHtml += '<div class="col-md-5"><input type="text" class="form-control" readonly="readonly" name="itemfor" id="itemfor'+resultData[i][0]+'" value="' + resultData[i][9] + '"></div>';
 		                orderHtml += '<div class="col-md-1"><label class="control-label">Vendor :</label></div>';
-		                orderHtml += '<div class="col-md-4"><input type="text" style="width: 122%;" readonly="readonly" class="form-control" name="vendor" id="vendor'+resultData[i][0]+'" value="' + resultData[i][11] + '"></div>';
+		                orderHtml += '<div class="col-md-4"><input type="text" readonly="readonly" class="form-control style56" name="vendor" id="vendor'+resultData[i][0]+'" value="' + resultData[i][11] + '"></div>';
 		                orderHtml += '</div><br>';
-		                orderHtml += '<div style="height: 2px; background-color: #0575E6;"></div><br>'
+		                orderHtml += '<div class="style57"></div><br>'
 		                // Append the generated HTML to the modal body
 		                $('#ibasordermodal').append(orderHtml);
 		            };
@@ -1626,7 +1446,7 @@ excel_file.addEventListener('change', (event) => {
     					
     					if(row>0){
     						if(cell==0){
-    	    					html=html+'<td colspan="1" style="text-align:center">'+sheet_data[row][cell]+'</td>'	
+    	    					html=html+'<td colspan="1" class="style6">'+sheet_data[row][cell]+'</td>'	
     	    					}else if(cell==1){
     	    						var demandNos = sheet_data[row][cell];
     	    						
@@ -1636,7 +1456,7 @@ excel_file.addEventListener('change', (event) => {
     	    						if((demandNos+"").length>15){
     	    							alert("Demand No length should be of 15 Chareacters. Demand No's length is too much for "+demandNos);
     	    							excel_file.value = '';
-    	    			    			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data Available</td></tr>');
+    	    			    			$('#overalltbody').html('<tr><td colspan="9" class="style6">No Data Available</td></tr>');
     	    			    			return;
     	    						}
     	    						if(DemandNumbers.includes(demandNos+"")){
@@ -1644,11 +1464,11 @@ excel_file.addEventListener('change', (event) => {
     	    						
     	    							alert("The same Demand No. already exists with "+demandNos+". Please check the Excel sheet once.");
     	    							excel_file.value = '';
-    	    			    			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data Available</td></tr>');
+    	    			    			$('#overalltbody').html('<tr><td colspan="9" class="style6">No Data Available</td></tr>');
     	    			    			return;
     	    						}
     	    						
-    	    						html=html+'<td colspan="2" style="text-align:center">'+sheet_data[row][cell]+'</td>'	
+    	    						html=html+'<td colspan="2" class="style6">'+sheet_data[row][cell]+'</td>'	
     	    					}else if(cell==2){
     	    						var dates = sheet_data[row][cell];
     	    						console.log(sheet_data[row][cell]+"---dates--"+typeof dates)
@@ -1672,7 +1492,7 @@ excel_file.addEventListener('change', (event) => {
     	    						if(dates===undefined ||  dates.length==0 ){
     	    							alert("Dates can not be blank for Demand  "+ sheet_data[row][1]);
     	    							excel_file.value = '';
-    	    			    			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data Available</td></tr>');
+    	    			    			$('#overalltbody').html('<tr><td colspan="9" class="style6">No Data Available</td></tr>');
     	    			    			return;
     	    						}
     	    						if((dates+"").split("").includes("-")){
@@ -1682,13 +1502,13 @@ excel_file.addEventListener('change', (event) => {
     	    					  if (isNaN(date.getTime()) && row!=0) {
     	    								alert("Please give a proper date  for Demand  "+ sheet_data[row][1]);
     	        							excel_file.value = '';
-    	        			    			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data Available</td></tr>');
+    	        			    			$('#overalltbody').html('<tr><td colspan="9" class="style6">No Data Available</td></tr>');
     	        			    			return;
     	    						 } 
     	    						}
     	    					
     	    						/* demandDate */
-    	    						html=html+'<td colspan="2" style="text-align:center">'+formattedDate+'</td>'	
+    	    						html=html+'<td colspan="2" class="style6">'+formattedDate+'</td>'	
     	    					}
     							else if(cell==3){
     								var x=parseFloat(sheet_data[row][cell]).toFixed(2);
@@ -1696,32 +1516,32 @@ excel_file.addEventListener('change', (event) => {
     									estimatedCost.push(sheet_data[row][1]);
     								}
     								
-    	    						html=html+'<td colspan="2" style="text-align:right;">'+parseFloat(sheet_data[row][cell]).toFixed(2)+'</td>'
+    	    						html=html+'<td colspan="2" class="style7">'+parseFloat(sheet_data[row][cell]).toFixed(2)+'</td>'
     	    					}
     							else{
     								var itemName=sheet_data[row][cell];
     								if(itemName==undefined || itemName.length==0){
     									alert("Item is empty for Demand No. "+ sheet_data[row][1]);
 	        							excel_file.value = '';
-	        			    			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data Available</td></tr>');
+	        			    			$('#overalltbody').html('<tr><td colspan="9" class="style6">No Data Available</td></tr>');
 	        			    			return;
     								}
     								
     								if(itemName!=undefined && itemName.length>255){
     									alert("Item should be of 255 characters for Demand No. "+ sheet_data[row][1]);
 	        							excel_file.value = '';
-	        			    			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data Available</td></tr>');
+	        			    			$('#overalltbody').html('<tr><td colspan="9" class="style6">No Data Available</td></tr>');
 	        			    			return;
     								}
     							
-    	    						html=html+'<td colspan="2" style="text-align:justify;padding:3px!important;">'+sheet_data[row][cell]+'</td>'	
+    	    						html=html+'<td colspan="2" class="style58">'+sheet_data[row][cell]+'</td>'	
     	    					}
     	    			
     					}
     					
     					if(checkExcel>0){
     		    			alert("Please Download the Manual Demands format and upload it.");
-    		    			$('#overalltbody').html('<td colspan="9" style="color: #001253 !important;text-align: center;font-weight: 700;">No Data Available!</td>');
+    		    			$('#overalltbody').html('<td colspan="9" class="style59">No Data Available!</td>');
     		     			excel_file.value = '';
     		  				return;
     		    		}
@@ -1735,14 +1555,14 @@ excel_file.addEventListener('change', (event) => {
     		if(demandNo.length>0){
     			alert("Demand Numbers are blank at row "+demandNo)
     			excel_file.value = '';
-    			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data Available</td></tr>');
+    			$('#overalltbody').html('<tr><td colspan="9" class="style6">No Data Available</td></tr>');
     			return;
     		}
     		
     		if(estimatedCost.length>0){
     			alert("Please provide proper cost for Demand Numbers with "+estimatedCost)
     			excel_file.value = '';
-    			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data Available</td></tr>');
+    			$('#overalltbody').html('<tr><td colspan="9" class="style6">No Data Available</td></tr>');
     			return;
     		}
     		
@@ -1760,14 +1580,14 @@ excel_file.addEventListener('change', (event) => {
     	 	if(duplicates.length>0){
     			alert("Duplicate Demand numbers are there in Excel ("+duplicates+ ")");
     			excel_file.value = '';
-    			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data Available</td></tr>');
+    			$('#overalltbody').html('<tr><td colspan="9" class="style6">No Data Available</td></tr>');
     			return;
     		} 
     	  	if(table_output.length>0){
     			$('#overalltbody').html(table_output)
     		} else{
     			alert("No Data available in this Excel Sheet!")
-    			$('#overalltbody').html('<tr><td colspan="9" style="text-align:center">No Data is their in Excel Sheet</td></tr>');
+    			$('#overalltbody').html('<tr><td colspan="9" class="style6">No Data is their in Excel Sheet</td></tr>');
     			excel_file.value = '';
     		} 
     	}
@@ -1792,7 +1612,7 @@ function openMilestoneModal(pftsid,demandNo,item,demanddate){
 	        milestoneBody(pftsid,statusid,statusname,demanddate);
 	 });
 	 
-	 $('#milestoneModal .modal-title').html('<span style="color: #FF3D00;">Demand No. : ' + demandNo + '</span><br><span style="color: #FF3D00;">Item : '+ item +'</span>');
+	 $('#milestoneModal .modal-title').html('<span class="style60">Demand No. : ' + demandNo + '</span><br><span class="style60">Item : '+ item +'</span>');
 	 $('#pftsfile').val(pftsid);
 	 $('#demandNumber').val(demandNo);
 
@@ -1845,12 +1665,12 @@ function milestoneBody(pftsid,statusid,statusname,demanddate){
                  $('button[name="action"][value="add"]').show();
 
                  var rowHtml = 
-                     '<div class="form-group col-md-1" style="padding-left: 3px !important;">' +
-                         '<input class="form-control custom-sn-style" type="text" value="' + statusid + '" style="font-size: 16px;font-weight: 500; text-align: center;">' +
+                     '<div class="form-group col-md-1 style61" >' +
+                         '<input class="form-control custom-sn-style style62" type="text" value="' + statusid + '" >' +
                          '<input type="hidden" name="statusId" value="' + statusid + '">'+
                      '</div>' +
                      '<div class="form-group col-md-6">' +
-                         '<input type="text" class="form-control custom-style" id="statusname_' + pftsid + '" name="statusName" value="' + statusname + '" style="font-size: 16px;font-weight: 500;">' +
+                         '<input type="text" class="form-control custom-style style63" id="statusname_' + pftsid + '" name="statusName" value="' + statusname + '">' +
                      '</div>' ;
 		             if(statusid==1){
 	               	   rowHtml +=
@@ -1894,13 +1714,13 @@ function milestoneBody(pftsid,statusid,statusname,demanddate){
                          $('#milestonepkId').val(milestoneId);
           		
                              var rowHtml = 
-                                 '<div class="form-group col-md-1" style="padding-left: 3px !important;">' +
-                                     '<input class="form-control custom-sn-style" type="text" value="' + statusid + '" style="font-size: 16px;font-weight: 500; text-align: center;">' +
+                                 '<div class="form-group col-md-1 style64>' +
+                                     '<input class="form-control custom-sn-style style62" type="text" value="' + statusid + '" >' +
                                      '<input type="hidden" name="pftsMilestoneId" value="' + milestoneId + '">'+
                                      '<input type="hidden" name="statusId" value="' + statusid + '">'+
                                  '</div>' +
                                  '<div class="form-group col-md-5">' +
-                                     '<input type="text" class="form-control custom-style" id="statusname_' + pftsid + '" name="statusName" value="' + statusname + '" style="font-size: 16px;font-weight: 500;">' +
+                                     '<input type="text" class="form-control custom-style style63" id="statusname_' + pftsid + '" name="statusName" value="' + statusname + '">' +
                                  '</div>';
 
                           if (showActualDate) {

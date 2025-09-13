@@ -1,0 +1,113 @@
+@charset "UTF-8";
+
+label{
+	font-weight: 800;
+	font-size: 16px;
+	color:#07689f;
+} 
+
+.form-group {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+.input-group-text{
+font-weight: bold;
+}
+.blinking-element {
+            animation: blinker 1.5s linear infinite;
+            color: #D81B60;
+            font-size: 1.5em;
+            font-weight:600;
+            margin-bottom: 20px;
+            text-shadow: 5px 5px 10px  #D81B60;
+}
+
+@keyframes blinker { 
+   0%{opacity: 0;}
+  50%{opacity: 1;}
+  100%{opacity: 1;}
+}
+
+.modal-dialog-jump {
+  animation: jumpIn 0.5s ease;
+}
+
+@keyframes jumpIn {
+  0% {
+    transform: scale(0.1);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.style1{
+	margin-top:0px;
+}
+
+.style2{
+	margin-left: -13%;
+}
+
+.style3{
+	width: 118%
+}
+
+.style4{
+	margin-left: -5%;
+}
+.style5{
+	margin-left: -11%;width: 133%;
+}
+
+.style6{
+	display:none;
+}
+
+.style7{
+	color: green; padding: 0px  0px  0px  0px;
+}
+
+.style8{
+	display:none;padding: 5px;
+}
+
+.style9{
+	margin-left: -2%;
+}
+
+.style10{
+	margin-left: -8%;
+}
+
+.style11{
+	margin-left: -1%;
+}
+
+.style12{
+	width: 97%;
+}
+
+.style13{
+	width: 95%;
+}
+
+.style14{
+	color: red; padding: 0px  0px  0px  0px;
+}
+
+.style15{
+	height: 2px; background-color: black;
+}
+.style16{
+	display:none;
+}
+
+.style17{
+	border: 1px solid #055C9D; display: flex; justify-content: space-around;
+}

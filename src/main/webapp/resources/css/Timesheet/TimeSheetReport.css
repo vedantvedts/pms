@@ -1,0 +1,249 @@
+@charset "UTF-8";
+label{
+font-weight: bold;
+  font-size: 15px !important;
+}
+
+.left {
+	text-align: left;
+}
+.center{
+	text-align: center;
+}
+.right{
+	text-align: right;
+}
+.activitytable{
+	border-collapse: collapse;
+	width: 100%;
+	border: 1px solid #0000002b; 
+	margin-top: 1.2rem;
+	overflow-y: auto; 
+	overflow-x: auto;  
+}
+.activitytable th, .activitytable td{
+	border: 1px solid #0000002b; 
+	padding: 20px;
+}
+.activitytable th{
+
+	vertical-align: middle;
+}
+.activitytable thead {
+	text-align: center;
+	background-color: #2883c0;
+	color: white;
+	position: sticky;
+	top: 0; /* Keeps the header at the top */
+	z-index: 10; /* Ensure the header stays on top of the body */
+	/* background-color: white; */ /* For visibility */
+}
+
+
+#activityviewtable{
+	border-collapse: collapse;
+	width: 100%;
+	border: 1px solid #0000002b; 
+	padding: 10px;
+}
+
+#activityviewtable th, #activityviewtable td{
+	border: 1px solid #0000002b; 
+	padding: 7px;
+}
+#activityviewtable thead {
+	text-align: center;
+	background-color: #60707a;
+	color: white;
+}
+
+.highlight-week {
+	background-color: #2883c0 !important;
+	color: white;
+}
+
+.table-wrapper {
+    max-height: 800px; /* Set the max height for the table wrapper */
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; /* Enable vertical scrolling */
+}
+
+.select2-container {
+    text-align: left !important;
+    width: 100% !important;
+}
+/* General Calendar Styles */
+.calendar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    gap: 10px;
+    overflow-x: auto;
+}
+
+/* Navigation Buttons */
+.nav-btn {
+    background-color: transparent;
+    border: none;
+    color: #007bff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.nav-btn:hover {
+    color: #0056b3;
+    transform: scale(1.2);
+}
+
+.fa {
+    font-size: 20px;
+}
+
+/* Month Display */
+.month-display {
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    padding: 3px 5px;
+    background-color: #7e7e7e;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 50px;
+    /* transform: rotate(270deg); */
+}
+
+/* Year Container */
+.year-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#current-year {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Days Container */
+.days-container {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    justify-content: flex-start;
+    overflow: hidden;
+    width: 100%; /* Ensure it adjusts according to the width of the calendar */
+}
+
+.day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fdfdfd;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.day-name {
+    font-size: 10px;
+    color: #0f0f0f8a;
+    font-weight: 400;
+}
+
+.day-number {
+    font-size: 14px;
+    font-weight: bold; 
+}
+
+.day:hover {
+    background-color: #007bff;
+    transform: scale(1.1);
+}
+
+.day:hover .day-name,
+.day:hover .day-number {
+    color: #fff !important; /* Change to desired hover color */
+}
+
+.day.active {
+    background-color: #28a745;
+    font-weight: bold;
+}
+
+.day.active .day-name,
+.day.active .day-number {
+    color: #fff !important; /* Ensure active state color is applied */
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .day {
+        width: 35px;
+        height: 35px;
+        line-height: 35px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .day {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 10px;
+    }
+}
+
+.highlighted-date {
+    background-color: #007bff; /* Yellow background for highlighting */
+    font-weight: bold;
+}
+
+.day.highlighted-date .day-name,
+.day.highlighted-date .day-number {
+    color: #fff !important; /* Ensure active state color is applied */
+}
+
+.style1{
+	margin: 0.5rem;
+}
+
+.style2{
+	background-color: #E1E5E8;padding:0px;
+}
+
+.style3{
+	width: 50%;
+}
+
+.style4{
+	text-align: center;
+}
+
+.style5{
+	margin-left: 0px;
+}
+
+.style6{
+	float: right;width: auto;
+}
+
+.style7{
+	vertical-align: middle;
+}

@@ -14,298 +14,18 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>    
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%> 
+   
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/Timesheet/TimeSheetList.css" var="holidayAddEdit" />     
+<link href="${holidayAddEdit}" rel="stylesheet" />
 <%-- <spring:url value="/resources/css/projectdetails.css" var="projetdetailscss" />
 <link href="${projetdetailscss}" rel="stylesheet" /> --%>
 
-<style type="text/css">
-
-label{
-font-weight: bold;
-  font-size: 15px !important;
-}
-
-.table .font{
-	  font-family:'Muli', sans-serif !important;
-	  font-style: normal;
-	  font-size: 13px;
-	  font-weight: 400 !important;
-	 
-}
-
-.table button {
-    background-color: Transparent !important;
-    background-repeat:no-repeat;
-    border: none;
-    cursor:pointer;
-    overflow: hidden;
-    outline:none;
-    text-align: left !important;
-}
-.table td{
-	padding:5px !important;
-}
- .resubmitted{
-	color:green;
-}
-
-	.fa{
-		font-size: 1.20rem;
-	}
-	
-.datatable-dashv1-list table tbody tr td{
-	padding: 8px 10px !important;
-}
-
-.table-project-n{
-	color: #005086;
-}
-
-#table thead tr th{
-	padding: 0px 0px !important;
-}
-
-#table tbody tr td{
-	padding:2px 3px !important;
-}
-
-
-/* icon styles */
-
-.cc-rockmenu {
-	color:fff;
-	padding:0px 5px;
-	font-family: 'Lato',sans-serif;
-}
-
-.cc-rockmenu .rolling {
-  display: inline-block;
-  cursor:pointer;
-  width: 34px;
-  height: 30px;
-  text-align:left;
-  overflow: hidden;
-  transition: all 0.3s ease-out;
-  white-space: nowrap;
-  
-}
-.cc-rockmenu .rolling:hover {
-  width: 108px;
-}
-.cc-rockmenu .rolling .rolling_icon {
-  float:left;
-  z-index: 9;
-  display: inline-block;
-  width: 28px;
-  height: 52px;
-  box-sizing: border-box;
-  margin: 0 5px 0 0;
-}
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-  width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-    font-size: 20px;
-    padding: 6px;
-}
-.cc-rockmenu .rolling span {
-    display: block;
-    font-weight: bold;
-    padding: 2px 0;
-    font-size: 14px;
-    font-family: 'Muli',sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin:0;
-}
-
-.width{
-	width:270px !important;
-}
-
-.left {
-	text-align: left;
-}
-.center{
-	text-align: center;
-}
-.right{
-	text-align: right;
-}
-.mandatory{
-	color: red;
-}
-</style>
-<style>
-.card-body{
-	padding: 0px !important;
-}
-.control-label{
-	font-weight: bold !important;
-}
-#scrollclass::-webkit-scrollbar {
-	width: 7px;
-}
-
-#scrollclass::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	border-radius: 5px;
-}
-
-#scrollclass::-webkit-scrollbar-thumb {
-	border-radius: 5px; 
-	/*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: #fff;
-} 
-
-#scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
-	transition: 0.5s;
-}
-
-#scrollclass::-webkit-scrollbar {
-	width: 7px;
-}
-
-#scrollclass::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	border-radius: 5px;
-}
-
-#scrollclass::-webkit-scrollbar-thumb {
-	border-radius: 5px;
-	/*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: #fff;
-}
-
-#scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
-	transition: 0.5s;
-}
-
-
-#span{
-background: blue;
-}
-#span1{
-font-size: 10px;
-margin-left:10px
-}
-
-#span2{
-float:right;
-font-size: 10px;
-margin-right:10px
-}
-
-</style>
-<style type="text/css">
-.activitytable{
-	border-collapse: collapse;
-	width: 100%;
-	border: 1px solid #216583;
-}
-.activitytable th, .activitytable td{
-	border: 2px solid #216583;
-	padding: 7px;
-}
-
-input {
-	font-family: sans-serif;
-	font-size: 18px;
-}
-
-#activityviewtable{
-	border-collapse: collapse;
-	width: 100%;
-	border: 2px solid #216583;
-	padding: 10px;
-}
-
-#activityviewtable th, #activityviewtable td{
-	border: 2px solid #216583;
-	padding: 7px;
-}
-
-.calendar-inner {
-	padding: 40px 10px;
-}
-</style>
-
-<style>
-.div-container {
-	position: relative;
-	margin: 0.5rem;
-    border: 3px solid #216583;
-    border-radius: 5px;
-    transition: all 0.5s;
-}
-.full-width {
-    width: 100% !important;
-}
-.half-width {
-    width: 48% !important;
-}
-.more-than-half-width {
-    width: 51% !important;
-}
-.toggle-icon {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    font-size: 1.5rem;
-    z-index: 10;
-}
-
-/* Ensure select picker adjusts width */
-.select2-container {
-    width: 100% !important; /* Force full width */
-}
-
-.timesheetform{
-	max-height: 500px;
-    min-height: 300px;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-/* Firefox */
-.timesheetform {
-  scrollbar-width: thin;
-  scrollbar-color: #216583 #f8f9fa;
-}
-
-/* Chrome, Edge, and Safari */
-.timesheetform::-webkit-scrollbar {
-  width: 12px;
-}
-
-.timesheetform::-webkit-scrollbar-track {
-  background: #f8f9fa;
-  border-radius: 5px;
-}
-
-.timesheetform::-webkit-scrollbar-thumb {
-  background-color: #007bff;
-  border-radius: 5px;
-  border: 2px solid #f8f9fa;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #0056b3;
-}
-
-</style>
-    
 </head>
 <body>
 
@@ -368,7 +88,7 @@ statusMap.put("RBS", "#fe4e4e");
 					<div class="card-body d-flex justify-content-around">
 						<div id="calendar" class="div-container more-than-half-width"></div>
 						<div id="timesheet" class="div-container half-width">
-							<div  style="font-size: 22px;font-weight: 600;color: white;text-align: center;background-color: #216583;height: 40px;">
+							<div class="Style1">
 								Time Sheet Details - (<%=activityDate!=null?StringEscapeUtils.escapeHtml4(activityDate):"-" %>)
 							</div>
 							
@@ -391,8 +111,8 @@ statusMap.put("RBS", "#fe4e4e");
 				                
 				                <div class="row mt-3">
 				                	<div class="col-md-2 right">
-				                		<label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
- 											<b style="font-family: 'Lato',sans-serif;font-size: large;">Punch In &emsp;: </b>
+				                		<label class="Style2">
+ 											<b class="Style3">Punch In &emsp;: </b>
  										</label>
 				                	</div>
 				                	<div class="col-md-3 left">
@@ -402,7 +122,7 @@ statusMap.put("RBS", "#fe4e4e");
 				                
 				                <div class="row mt-3 ml-2 mr-2">
 				                	<div class="col-md-12">
-				                		<table id="activityviewtable" style="width:100%;" >
+				                		<table id="activityviewtable" class="Style4">
 											<thead class="center">
 												<tr>
 													<th width="5%">SN</th>
@@ -484,7 +204,7 @@ statusMap.put("RBS", "#fe4e4e");
 													</tr>
 												<%} %>	
 												<tr>
-													<td class="right" colspan="3" style="font-weight: bold;">Work Duration</td>
+													<td class="right" colspan="3" class="Style5">Work Duration</td>
 													<td colspan="1" class="center">
 														<%if(timeSheet!=null && timeSheet.getTotalDuration()!=null) {%><%=StringEscapeUtils.escapeHtml4(timeSheet.getTotalDuration()) %><%} else{%>00:00<%} %>
 													</td>
@@ -499,7 +219,7 @@ statusMap.put("RBS", "#fe4e4e");
 						        				%>
 						        				<%if(!latestRemarks.isEmpty()) {%>
 												<tr>
-													<td class="right" colspan="1" style="font-weight: bold;">Remarks</td>
+													<td class="right" colspan="1" class="Style5">Remarks</td>
 													<td colspan="4">
 						        						<%=latestRemarks!=null?StringEscapeUtils.escapeHtml4(latestRemarks):"-" %>
 													</td>
@@ -518,10 +238,10 @@ statusMap.put("RBS", "#fe4e4e");
 						        			<input type="hidden" name="activityDate" value="<%=activityDate%>">
 							        		
 							        		<button type="button" class="btn btn-sm edit" onclick="AllowEdit('Y')" formnovalidate="formnovalidate" >
-								  				EDIT &nbsp;<i class="fa fa-pencil " aria-hidden="true" style="font-size: 17px;"></i>
+								  				EDIT &nbsp;<i class="fa fa-pencil Style6" aria-hidden="true"></i>
 											</button>
 											<button type="submit" class="btn-sm btn submit" formaction="TimeSheetDetailsForward.htm" name="action" value="A" onclick="return confirm('Are you sure to Forward?')">
-												Forward &nbsp;<i class="fa fa-forward" aria-hidden="true" style="font-size: 15px;"></i>
+												Forward &nbsp;<i class="fa fa-forward Style7" aria-hidden="true" ></i>
 											</button>
 						        		</form>
 										<%} %>
@@ -538,8 +258,8 @@ statusMap.put("RBS", "#fe4e4e");
 											<div class="col-md-2">
 												<label class="form-label">Punch In <span class="mandatory">*</span></label>
 											</div>
-											<div class="col-md-3 left" style="">
-												<input type="text" class="form-control punch" name="punchInTime" id="punchInTime" <%if(timeSheet!=null && timeSheet.getPunchInTime()!=null) {%>value="<%=fc.sdtfTordtf(StringEscapeUtils.escapeHtml4(timeSheet.getPunchInTime())) %>"<%} %> readonly style="background: #fff;">
+											<div class="col-md-3 left">
+												<input type="text" class="form-control punch Style8" name="punchInTime" id="punchInTime" <%if(timeSheet!=null && timeSheet.getPunchInTime()!=null) {%>value="<%=fc.sdtfTordtf(StringEscapeUtils.escapeHtml4(timeSheet.getPunchInTime())) %>"<%} %> readonly>
 											</div>
 											<div class="col-md-7"></div>
 										</div>	
@@ -674,7 +394,7 @@ statusMap.put("RBS", "#fe4e4e");
 															</tr>
 														<%} %>
 															<tr>
-																<td class="right" colspan="3" style="font-weight: bold;">Work Duration</td>
+																<td class="right Style5" colspan="3">Work Duration</td>
 																<td colspan="1">
 																	<input type="text" class="form-control totalduration center" name="totalduration" id="totalduration" value="<%if(timeSheet!=null && timeSheet.getTotalDuration()!=null) {%><%=StringEscapeUtils.escapeHtml4(timeSheet.getTotalDuration()) %><%} else{%>01:00<%} %>" maxlength="5" readonly>
 																</td>
@@ -688,8 +408,8 @@ statusMap.put("RBS", "#fe4e4e");
 									<div class="form-group">
 										<div class="row ml-2 mr-2 mt-2">
 											<div class="col-md-4">
-												<span class="text-primary" id="addnewaction" style="cursor: pointer;">
-													<i class="fa fa-plus" aria-hidden="true" style="font-size: 16px;"></i> 
+												<span class="text-primary Style9" id="addnewaction" >
+													<i class="fa fa-plus Style10" aria-hidden="true"></i> 
 													Add New Activity Row 
 												</span>
 											</div>
@@ -697,9 +417,9 @@ statusMap.put("RBS", "#fe4e4e");
 												<%if(timeSheet!=null){ %>
 								    				<input type="hidden" name="timeSheetId" value="<%=timeSheet.getTimeSheetId()%>">
 													<button type="submit" class="btn btn-sm btn-warning edit" name="Action" value="Edit" onclick="return confirm('Are you sure to update?')" >UPDATE</button>
-													<button type="button" class="btn btn-sm" style="border: none;font-size:13px;margin-left: 1%;padding: 7px 10px 7px 10px;" onclick="AllowEdit('N')"
+													<button type="button" class="btn btn-sm Style11" onclick="AllowEdit('N')"
 														formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="Close">
-														<i class="fa fa-times fa-lg" aria-hidden="true" style="color: red;"></i>
+														<i class="fa fa-times fa-lg Style12" aria-hidden="true" ></i>
 													</button>
 												<%}else{ %>
 													<button type="submit" class="btn btn-sm btn-success submit" name="Action" value="Add" onclick="return confirm('Are you sure to submit?')" >SUBMIT</button>

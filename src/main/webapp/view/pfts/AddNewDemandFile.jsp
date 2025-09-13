@@ -11,6 +11,7 @@
 <%@page import="java.text.Format"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.time.LocalDate"%>
+ <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%> 
     
    
 <!DOCTYPE html>
@@ -18,134 +19,9 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/pfts/AddNewDemandFile.css" var="FromExternalCSS" />     
+<link href="${FromExternalCSS}" rel="stylesheet" />
 <title>Procurement Status</title>
-
-
- <style type="text/css">
- 
- p{
-  text-align: justify;
-  text-justify: inter-word;
-}
-
-  
- th
- {
- 	border: 1px solid black;
- 	text-align: center;
- 	padding: 5px;
- }
- 
- td
- {
- 	border: 1px solid black;
- 	text-align: left;
- 	padding: 5px;
- }
- 
-  }
- .textcenter{
- 	
- 	text-align: center;
- }
- .border
- {
- 	border: 1px solid black;
- }
- .textleft{
- 	text-align: left;
- }
- 
- #containers {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-.anychart-credits {
-   display: none;
-}
-
-.flex-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-summary[role=button] {
-  background-color: white;
-  color: black;
-  border: 1px solid black ;
-  border-radius:5px;
-  padding: 0.5rem;
-  cursor: pointer;
-  
-}
-summary[role=button]:hover
- {
-color: white;
-border-radius:15px;
-background-color: #4a47a3;
-
-}
- summary[role=button]:focus
-{
-color: white;
-border-radius:5px;
-background-color: #4a47a3;
-border: 0px ;
-
-}
-summary::marker{
-	
-}
-details { 
-  margin-bottom: 5px;  
-}
-details  .content {
-background-color:white;
-padding: 0 1rem ;
-align: center;
-border: 1px solid black;
-}
-
-}
-
-
-		.input-group-text {
-			font-weight: bold;
-		}
-
-		label {
-			font-weight: 800;
-			font-size: 16px;
-			color: #07689f;
-		}
-
-		hr {
-			margin-top: -2px;
-			margin-bottom: 12px;
-		}
-
-		.card b {
-			font-size: 20px;
-		}
-		
-		input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
-}
-
-input[type=number] {
-    -moz-appearance:textfield; /* Firefox */
-}
-		
-	</style>
-
 
 <meta charset="ISO-8859-1">
 
@@ -170,13 +46,13 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
 
-					<div class="card-header" style="background-color: #055C9D; margin-top:">
+					<div class="card-header style1">
 
 						<form action="ProcurementStatus.htm" method="post">
 							<b class="text-white">Add Demand File</b>
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 							<input type="hidden" name="projectid" <%if(projectId!=null){%> value="<%=projectId%>" <%}%>>
-							<button type="submit" class="btn btn-info btn-sm shadow-nohover back" name="back" style="float: right;" > BACK </button>
+							<button type="submit" class="btn btn-info btn-sm shadow-nohover back style2" name="back" > BACK </button>
 						</form>
 					</div>
 					<div class="card-body">
@@ -200,7 +76,7 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 												<td><%=demand.getDemandNo()!=null?StringEscapeUtils.escapeHtml4(demand.getDemandNo()):"-" %></td>
 												<td><%=demand.getDemandDate()!=null?sdf.format(sdf1.parse(demand.getDemandDate())):"-" %></td>
 												<td><%=demand.getItemFor()!=null?StringEscapeUtils.escapeHtml4(demand.getItemFor()):"-" %></td>
-												<td style="text-align: right;">
+												<td class="style3">
 									               <%if(demand.getEstimatedCost()!=null) {%>
 									                 <%=format.format(new BigDecimal(demand.getEstimatedCost().toString())).substring(1)%>
 									                <%}else{ %>--<%} %>
