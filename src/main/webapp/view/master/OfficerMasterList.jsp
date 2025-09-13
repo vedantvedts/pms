@@ -11,119 +11,12 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 <spring:url value="/resources/js/excel.js" var="excel" />
 <script src="${excel}"></script>
+
+<spring:url value="/resources/css/master/officerMasterList.css" var="officerMasterList" />     
+<link href="${officerMasterList}" rel="stylesheet" />
+
 <title>OFFICER DETAILS</title>
-<style type="text/css">
 
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-
-.table .font{
-	  font-family:'Muli', sans-serif !important;
-	  font-style: normal;
-	  font-size: 13px;
-	  font-weight: 400 !important;
-	 
-}
-
-.table button {
-    background-color: Transparent !important;
-    background-repeat:no-repeat;
-    border: none;
-    cursor:pointer;
-    overflow: hidden;
-    outline:none;
-    text-align: left !important;
-}
-.table td{
-	padding:5px !important;
-}
- .resubmitted{
-	color:green;
-}
-
-	.fa{
-		font-size: 1.20rem;
-	}
-	
-.datatable-dashv1-list table tbody tr td{
-	padding: 8px 10px !important;
-}
-
-.table-project-n{
-	color: #005086;
-}
-
-#table thead tr th{
-	padding: 0px 0px !important;
-}
-
-#table tbody tr td{
-	padding:2px 3px !important;
-}
-
-
-/* icon styles */
-
-.cc-rockmenu {
-	color:fff;
-	padding:0px 5px;
-	font-family: 'Lato',sans-serif;
-}
-
-.cc-rockmenu .rolling {
-  display: inline-block;
-  cursor:pointer;
-  width: 34px;
-  height: 30px;
-  text-align:left;
-  overflow: hidden;
-  transition: all 0.3s ease-out;
-  white-space: nowrap;
-  
-}
-.cc-rockmenu .rolling:hover {
-  width: 108px;
-}
-.cc-rockmenu .rolling .rolling_icon {
-  float:left;
-  z-index: 9;
-  display: inline-block;
-  width: 28px;
-  height: 52px;
-  box-sizing: border-box;
-  margin: 0 5px 0 0;
-}
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-  width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-    font-size: 20px;
-    padding: 6px;
-}
-.cc-rockmenu .rolling span {
-    display: block;
-    font-weight: bold;
-    padding: 2px 0;
-    font-size: 14px;
-    font-family: 'Muli',sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin:0;
-}
-
-.width{
-	width:270px !important;
-}
-
-
-
-
-
-</style>
 </head>
 <body>
 
@@ -169,23 +62,23 @@ List<Object[]> AllOfficerlist =(List<Object[]>)request.getAttribute("AllOfficerL
 				  <form action="EmployeeMasterExcelUpload.htm" method="post" enctype="multipart/form-data">
 					  		<table>
 						  		<tr>
-								  	<td align="left"><h6>Download Excel : &nbsp;<button formaction="EmployeeMasterExcelUpload.htm" formmethod="post" formnovalidate="formnovalidate" name="Action" value="GenerateExcel"><i class="fa fa-file-excel-o" aria-hidden="true" style="color: green;"></i></button></h6></td>
+								  	<td align="left"><h6>Download Excel : &nbsp;<button formaction="EmployeeMasterExcelUpload.htm" formmethod="post" formnovalidate="formnovalidate" name="Action" value="GenerateExcel"><i class="fa fa-file-excel-o exelbtn" aria-hidden="true" ></i></button></h6></td>
 									<td align="right"><h6>&nbsp;&nbsp;&nbsp;&nbsp;	Upload Excel :&nbsp;&nbsp;&nbsp;&nbsp;
 									  <input type="file" id="excel_file" name="filename" required="required"  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"></h6></td>						
 							  		<td align="right"></td>
 							    </tr>
 					  		</table>	
 					     <input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" />
-					<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true" style="width: 100%; padding-right: 320px; ">
+					<div class="modal fade modalOfiicer" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true" >
 					  <div class="modal-dialog modal-lg" role="document">
-					    <div class="modal-content" style="width: 145%;">
+					    <div class="modal-content modalContent" >
 					      <div class="modal-header">
 					        <h5 class="modal-title" id="exampleModalLongTitle">Employee Master Details</h5>
 					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					          <span aria-hidden="true">&times;</span>
 					        </button>
 					      </div>
-					      <div class="modal-body" align="center" style="max-height: 25rem; overflow-y:auto;">
+					      <div class="modal-body bodydiv" align="center" >
 					             <table class="table table-bordered table-hover table-striped table-condensed" id="myTable1"> </table>
 					      </div>
 					      <div class="modal-footer" align="center">
@@ -206,7 +99,7 @@ List<Object[]> AllOfficerlist =(List<Object[]>)request.getAttribute("AllOfficerL
 
  <div class="table-responsive">
 	   <table class="table table-bordered table-hover table-striped table-condensed "  id="myTable"> 
-	   <thead style=" text-align: center;">
+	   <thead class="tableHeader" >
 	   <tr>
 		  <th>Select</th>
 		  <th>SrNo</th>
@@ -225,12 +118,12 @@ List<Object[]> AllOfficerlist =(List<Object[]>)request.getAttribute("AllOfficerL
 	             <td align="center"><input type="radio" name="Did" value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):""%>  ></td> 
 	             <td><%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()):"-"%></td> 
 	             <td ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-" %></td>
-	             <td style="text-align: left"><%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString())%><%}else{ %>-<%} %></td>
-	             <td style="text-align: left"> <%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %><%}else{ %>-<%} %></td>
-	             <td style="text-align: left"><%if(obj[4]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString()) %><%}else{ %>-<%} %></td>
+	             <td class="tData"><%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString())%><%}else{ %>-<%} %></td>
+	             <td class="tData"> <%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %><%}else{ %>-<%} %></td>
+	             <td class="tData"><%if(obj[4]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString()) %><%}else{ %>-<%} %></td>
 	             <td><%if(obj[5]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[5].toString()) %><%}else{ %>-<%} %></td>
 	   	         <td><%if(obj[6]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[6].toString()) %><%}else{ %>-<%} %></td>
-	   			 <td><%if(Integer.parseInt(obj[10].toString())==1){%>Active<%}else{ %><span style="color: red;">InActive</span><%} %></td>
+	   			 <td><%if(Integer.parseInt(obj[10].toString())==1){%>Active<%}else{ %><span class="status">InActive</span><%} %></td>
 	      </tr>
 	    <%} %>
 	    </tbody>

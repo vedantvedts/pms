@@ -6,37 +6,10 @@
 <head>
 <meta charset="ISO-8859-1">
  <jsp:include page="../static/header.jsp"></jsp:include>
+   <spring:url value="/resources/css/issue/decision.css" var="decision" />     
+<link href="${decision}" rel="stylesheet" />
 <title>Decision</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
 
-.table button{
-	
-	background-color: white !important;
-	border: 3px solid #17a2b8;
-	padding: .275rem .5rem !important;
-}
-
-.table button:hover {
-	color: black !important;
-	
-}
-#table tbody tr td {
-
-	    padding: 4px 3px !important;
-
-}
-</style>
 </head>
 <body>
 <%
@@ -77,19 +50,19 @@ Map<String,List<List<Object[]>>> actualdecisionsought = (Map<String,List<List<Ob
 					<div class="col-md-12">
 						<form class="form-inline " method="post" action="Decision.htm" id="myform" >
 						  
-						<div class="row card-header" style="margin-left: -13px;width: 102%; ">
+						<div class="row card-header recomendationList" >
 				   			<div class="col-md-3">
 				   			<%if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("R")){%>
-								<h4 style="font-size: 1.65rem;">Recommendation List</h4>
+								<h4  class="recomendationHeading">Recommendation List</h4>
 								<%}else if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("D")){%> <h4>Decision List </h4><%}else if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("S")){%> 
-								<h4>Decision Sought </h4><%}else if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("RS")){%> <h4 style="font-size: 1.4rem;">Recommendation Sought </h4><%}%>
+								<h4>Decision Sought </h4><%}else if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("RS")){%> <h4 >Recommendation Sought </h4><%}%>
 							</div>		
-							<div class="col-md-3 justify-content-end" style="margin-top: -8px;">
+							<div class="col-md-3 justify-content-end prjDropdown" >
 								<table  >
 									<tr>
 										<td><h5>Proj :</h5></td>
 										<td>
-												<select class="form-control items" name="projectid" id="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange='submitForm1();' >
+												<select class="form-control items" name="projectid" id="projectid"  required="required"  data-live-search="true" data-container="body" onchange='submitForm1();' >
 													<option disabled  selected value="">Choose...</option>
 													<option <%if(projectid!=null && projectid.equals("0")) { %>selected <%} %>value="0" >General</option>
 													<%for(Object[] obj : projectlist){ 
@@ -103,12 +76,12 @@ Map<String,List<List<Object[]>>> actualdecisionsought = (Map<String,List<List<Ob
 								</table>							
 							</div>
 							
-							<div class="col-md-3 justify-content-end" style="margin-top: -8px;">
+							<div class="col-md-3 justify-content-end prjDropdown" >
 								<table >
 							        <tr>
 										<td><h5>Type:</h5></td>
 										<td>
-											<select class="form-control items" name="recOrDecision"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange='submitForm();' >
+											<select class="form-control items" name="recOrDecision"  required="required" id="desc" data-live-search="true" data-container="body" onchange='submitForm();' >
 													<option disabled  selected value="">Choose...</option>
 													<option value="D"  <%if(RecOrDecision!=null && RecOrDecision.equals("D")){ %>selected <%}%> >Decision</option>
 									   				<option value="R"  <%if(RecOrDecision!=null && RecOrDecision.equals("R")){ %>selected <%}%> >Recommendation</option>
@@ -120,12 +93,12 @@ Map<String,List<List<Object[]>>> actualdecisionsought = (Map<String,List<List<Ob
 								</table>	
 							</div>
 							
-							<div class="col-md-3 justify-content-end" style="margin-top: -8px;">
+							<div class="col-md-3 justify-content-end prjDropdown" >
 								<table >
 							        <tr>
 										<td><h5>Comm:</h5></td>
 										<td>
-											<select class="form-control items" name="committeeid" id="committeeid" required="required" style="width:200px;" data-live-search="true" data-container="body" onchange='submitForm();' >
+											<select class="form-control items" name="committeeid" id="committeeid" required="required"  data-live-search="true" data-container="body" onchange='submitForm();' >
 													<option disabled  selected value="">Choose...</option>
 													<option value="A"  <%if(committeeid!=null && committeeid.equals("A")){ %>selected <%} %> >All</option>
 									   				<% for (Object[] obj : projapplicommitteelist) {%>
@@ -184,7 +157,7 @@ Map<String,List<List<Object[]>>> actualdecisionsought = (Map<String,List<List<Ob
 														<tbody>	
 																<%if(recomlist!=null && recomlist.size()>0){for(Object[] obj :recomlist){%>
 														<tr>
-																<td style="text-align: center;"><%=++count %></td>
+																<td  class="sn"><%=++count %></td>
 																<td>
 																	<form action="CommitteeMinutesNewDownload.htm" method="get" >
 																					<button  type="submit" class="btn btn-outline-info" formtarget="_blank" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"" %></button>
@@ -216,7 +189,7 @@ Map<String,List<List<Object[]>>> actualdecisionsought = (Map<String,List<List<Ob
 																		  List<Object[]> sought = value.get(1);
 															%>
 															<tr>
-																	<td style="text-align: center;"><%=++count %></td>
+																	<td class="sn"><%=++count %></td>
 																	<td>
 																		<form action="CommitteeMinutesNewDownload.htm" method="get" >
 																						<button  type="submit" class="btn btn-outline-info" formtarget="_blank" > <%=key[0]!=null?StringEscapeUtils.escapeHtml4(key[0].toString()):" - "%></button>
@@ -225,21 +198,21 @@ Map<String,List<List<Object[]>>> actualdecisionsought = (Map<String,List<List<Ob
 																		</form>
 																	</td>
 																	<td> 
-																		<table style="border: 1px solid black; border-collapse: collapse;">
+																		<table class="actualSoughttable" >
 																		<% int i=0;for(Object[] obj : actualsought){%>
-																			<tr style="border: 1px solid black; border-collapse: collapse;">
-																				<td style="border: 1px solid black; border-collapse: collapse;"><%=++i %></td>
-																				<td style="border: 1px solid black; border-collapse: collapse;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %></td>
+																			<tr class="actualSoughttable">
+																				<td class="actualSoughttable"><%=++i %></td>
+																				<td class="actualSoughttable"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %></td>
 																			</tr>
 																			<%}%>
 																		</table>
 																	</td>
 																	<td> 
-																		<table style="border: 1px solid black; border-collapse: collapse;">
+																		<table class="actualSoughttable">
 																		<% int j=0;for(Object[] obj : sought){%>
-																		<tr style="border: 1px solid black; border-collapse: collapse;">
-																			<td style="border: 1px solid black; border-collapse: collapse;"><%=++j %></td>
-																			<td style="border: 1px solid black; border-collapse: collapse;"><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):" - " %></td>
+																		<tr class="actualSoughttable">
+																			<td class="actualSoughttable"><%=++j %></td>
+																			<td class="actualSoughttable"><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):" - " %></td>
 																		</tr>
 																		<%}%>
 																		</table>

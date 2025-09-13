@@ -1,0 +1,170 @@
+@charset "ISO-8859-1";
+
+
+.cc-rockmenu {
+	color: fff;
+	padding: 0px 5px;
+	font-family: 'Lato', sans-serif;
+}
+
+.cc-rockmenu .rolling {
+	display: inline-block;
+	cursor: pointer;
+	width: 33px;
+	height: 30px;
+	text-align: left;
+	overflow: hidden;
+	transition: all 0.3s ease-out;
+	white-space: nowrap;
+}
+
+.cc-rockmenu .rolling:hover {
+	width: 120px;
+}
+
+.cc-rockmenu .viewcommittees:hover {
+	width: 157px;
+}
+
+
+
+.cc-rockmenu .rolling .rolling_icon {
+	float: left;
+	z-index: 9;
+	display: inline-block;
+	width: 28px;
+	height: 52px;
+	box-sizing: border-box;
+	margin: 0 5px 0 0;
+}
+
+.cc-rockmenu .rolling .rolling_icon:hover .rolling {
+	width: 312px;
+}
+
+.cc-rockmenu .rolling i.fa {
+	font-size: 20px;
+	padding: 6px;
+}
+
+.cc-rockmenu .rolling span {
+	display: block;
+	font-weight: bold;
+	padding: 2px 0;
+	font-size: 14px;
+	font-family: 'Muli', sans-serif;
+}
+
+.cc-rockmenu .rolling p {
+	margin: 0;
+}
+
+.width {
+	width: 270px !important;
+}
+
+a:hover {
+	color: white;
+}
+
+
+.typetd{
+	width: 150px;
+}
+
+#ftype{
+	font-size: 5px;
+}
+
+.date{
+	width: 120px;
+}
+
+.backButton{
+	margin-top: -6px;
+}
+
+
+.comments,.download{
+	margin-top: 0.3rem;
+}
+
+
+
+.close{
+	margin-top: 0.3rem;
+}
+
+.noteSpan{
+	float: left;
+}
+
+.noteBold{
+	color: red;
+}
+
+.contentModal{
+	min-height: 90%;
+}
+
+.headerModal{
+	background-color: rgba(0,0,0,.03);
+}
+
+.feedbackBy{
+	color: #145374
+}
+
+.bodyModal{
+	padding: 0.5rem !important;
+}
+
+.bodyC{
+	min-height:30% ;max-height: 93% !important;overflow-y: auto;
+}
+
+.dialogModal{
+	max-width: 93% !important;height: 90%;
+}
+
+.dialogModal1{
+	max-width: 53% !important;height: 45%;
+}
+
+.closefeedbackmodal{
+	min-height: 45%;
+}
+
+#Remarks{
+	display:block;
+}
+
+
+.remarksBody{
+	min-height:30% ;max-height: 93% !important;overflow-y: auto;
+}
+
+
+.md8col{
+	margin-top: -10px;
+}
+
+.backbtn{
+	float: right;
+}
+
+.iconCircle{
+	color: red;
+}
+
+.modalC{
+	min-height: 45%;
+}
+
+.spanClss{
+	color:#649d1a;
+}
+
+.readMoreSpan{
+	color:#1176ab;font-size: 14px;
+}

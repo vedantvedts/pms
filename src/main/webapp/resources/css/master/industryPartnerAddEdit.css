@@ -1,0 +1,137 @@
+@charset "ISO-8859-1";
+
+.input-group-text {
+	font-weight: bold;
+}
+
+label {
+	font-weight: 800;
+	font-size: 16px;
+	color: #07689f;
+}
+
+hr {
+	margin-top: -2px;
+	margin-bottom: 12px;
+}
+
+.card b {
+	font-size: 20px;
+}
+
+#repdetails{
+	width:100% ;
+}
+
+.col12JS{
+	text-align: left;
+}
+
+.existrep{
+	color: #FF5733;text-indent: 20px;
+}
+
+.existingRepInfoContent{
+	text-indent: 40px;
+}
+
+
+#existingRepInfo{
+	padding: 0px 5px 0px 5px;border: none;
+}
+
+.hrRule{
+	width: 50%;
+}
+.spanClass{
+	line-height: 1.5;word-spacing: 2px;
+}
+		
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance: textfield; /* Firefox */
+}
+		.headerCard{
+			 background-color: #055C9D;
+		}
+		
+		.ipDetailsdiv{
+			text-align: left;
+		}
+		
+		.ipDetailsLabel{
+			color: black;
+		}
+		
+		#industrypartnerinputfield{
+			display: flex;
+		}
+		
+		.closeButton{
+			padding: 0px 5px 0px 7px;
+		}
+		
+		.closeIcon{
+			color: red;
+		}
+		
+		#industrypartnerselectfield{
+			display: flex;
+		}
+		
+		.editButton{
+			background: linear-gradient(135deg, #FDC830, #F37335);padding: 0px 5px 0px 7px;
+		}
+		
+		.editIcon{
+			padding: 0px;
+		}
+		
+		.personDetails{
+			text-align: left;
+		}
+		
+		.personDetailslabel{
+			color: black;
+		}
+		
+		.theader{
+			background-color: #055C9D; color: white;text-align: center;
+		}
+		
+		.thClass{
+			padding: 0px 5px 0px 5px;
+		}
+		.btn_add_repdetails{
+			padding: 3px 7px 3px 7px;
+		}
+		
+		.plusicon{
+			color: green; padding: 0px  0px  0px  0px;
+		}
+		
+		.tdinput{
+			padding: 10px 5px 0px 5px;
+		}
+		
+		.btntd{
+			width: 5% ;
+		}
+		
+		.btn_rem_repdetails{
+			padding: 3px 7px 3px 7px;
+		}
+		
+		.minusicon{
+			color: red; padding: 0px  0px  0px  0px;
+		}
+		
+		.footercard{
+			background: linear-gradient(to right, #334d50, #cbcaa5);padding: 25px 
+		}

@@ -1,0 +1,19 @@
+@charset "ISO-8859-1";
+
+.heading{
+	font-weight: 800;
+	font-size: 16px;
+	color: #07689f;
+}
+
+.cardHead{
+	background-color: #055C9D;
+}
+
+.progrmMasterInput{
+	font-size: 15px; text-transform: uppercase;
+}
+
+.submitdiv{
+	margin-top:20px;
+}

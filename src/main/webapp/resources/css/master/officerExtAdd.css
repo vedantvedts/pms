@@ -1,0 +1,30 @@
+@charset "ISO-8859-1";
+
+label{
+font-weight: bold;
+  font-size: 13px;
+}
+
+.headerCard{
+	background-color: #055C9D;
+}
+
+.selectdee{
+	font-size: 5px;
+}
+
+.inputType{
+	font-size: 15px;width:100%;text-transform: uppercase;
+}
+
+#EmpName{
+	font-size: 15px;width:100%;text-transform: capitalize;
+}
+
+#ExtNo,#mobilenumber,#Email,#DronaEmail,#InternetEmail{
+	font-size: 15px;width:100%
+}
+
+.backbtn{
+	margin-left: 1rem;
+}

@@ -1,0 +1,26 @@
+@charset "ISO-8859-1";
+
+
+.headerCard{
+	 background-color: #055C9D;
+}
+
+#EmpNo{
+	font-size: 15px;width:100%;text-transform: uppercase;
+}
+
+.selectdee{
+	font-size: 5px;
+}
+
+#EmpName{
+	font-size: 15px;width:100%;text-transform: capitalize;
+}
+
+#ExtNo,.indian-mobile,.email-input{
+	font-size: 15px;width:100%;
+}
+
+.backbtn{
+	margin-left: 1rem;
+}

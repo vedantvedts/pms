@@ -4,7 +4,7 @@
     
     <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
-
+    <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,44 +12,10 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 
 <title>GROUP MASTER ADD</title>
-<style type="text/css">
 
-label{
-font-weight: bold;
-  font-size: 13px;
-}
+<spring:url value="/resources/css/master/groupMasterAdd.css" var="groupMasterAdd" />     
+<link href="${groupMasterAdd}" rel="stylesheet" />
 
-.table thead tr th {
-	/* background-color: aliceblue; */
-	text-align: left;
-	width:30%;
-}
-
-.table thead tr td {
-
-	text-align: left;
-}
-
-label{
-	font-size: 15px;
-}
-
-
-table{
-	box-shadow: 0 4px 6px -2px gray;
-}
-
-
- .resubmitted{
-	color:green;
-}
-
-	.fa{
-		font-size: 1.20rem;
-	}
-
-
-</style>
 </head>
 <body>
 
@@ -86,9 +52,9 @@ List<Object[]> tdaddlist=(List<Object[]>)request.getAttribute("tdaddlist");
 
 <div class="col-sm-2"></div> 
 	
- <div class="col-sm-8"  style="top: 10px;">
+ <div class="col-sm-8 main-div"  >
 <div class="card shadow-nohover"  >
-<div class="card-header" style=" background-color: #055C9D;margin-top: ">
+<div class="card-header headerdiv" >
                     <h3 class="text-white">Group Add </h3>
         		</div>
         		
@@ -101,13 +67,13 @@ List<Object[]> tdaddlist=(List<Object[]>)request.getAttribute("tdaddlist");
                     		<div class="col-md-2">
                         		<div class="form-group">
                             		<label class="control-label">Group Code</label><span class="mandatory">*</span>
-                              		<input  class="form-control alphanum-only"  type="text" name="gCode" id="groupCode"  required="required" maxlength="3" style="font-size: 15px;"> 
+                              		<input  class="form-control alphanum-only"  type="text" name="gCode" id="groupCode"  required="required" maxlength="3"> 
                         		</div>
                     		</div>
          					<div class="col-md-3">
                         		<div class="form-group">
                             		<label class="control-label">Group Name</label><span class="mandatory">*</span>
-                            		<input  class="form-control alphanum-no-leading-space"  type="text" name="gName" id="groupName"  required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize; width: 95%;" > 
+                            		<input  class="form-control alphanum-no-leading-space"  type="text" name="gName" id="groupName"  required="required" maxlength="100"  > 
                         		</div>
                     		</div>
                     		<div class="col-md-4">
@@ -142,7 +108,7 @@ List<Object[]> tdaddlist=(List<Object[]>)request.getAttribute("tdaddlist");
                         </div>   
                         
                         <div align="center">
-							<button type="button" class="btn btn-sm submit" style="align-self: center;" onclick="return groupcheck('groupAdd');">SUBMIT</button>
+							<button type="button" class="btn btn-sm submit backBtn"  onclick="return groupcheck('groupAdd');">SUBMIT</button>
 							<a class="btn  btn-sm  back"    href="GroupMaster.htm">BACK</a>
 						</div>
                         

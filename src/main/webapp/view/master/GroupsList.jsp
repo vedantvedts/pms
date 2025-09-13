@@ -13,122 +13,12 @@
 <spring:url value="/resources/js/excel.js" var="excel" />
 <script src="${excel}"></script>
 
+<spring:url value="/resources/css/master/groupsList.css" var="groupLists" />     
+<link href="${groupLists}" rel="stylesheet" />
+
 <%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
 <title>GROUPS LIST</title>
-<style type="text/css">
 
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-
-.table .font{
-	  font-family:'Muli', sans-serif !important;
-	  font-style: normal;
-	  font-size: 13px;
-	  font-weight: 400 !important;
-	 
-}
-
-.table button {
-    background-color: Transparent !important;
-    background-repeat:no-repeat;
-    border: none;
-    cursor:pointer;
-    overflow: hidden;
-    outline:none;
-    text-align: left !important;
-}
-.table td{
-	padding:5px !important;
-}
- .resubmitted{
-	color:green;
-}
-
-	.fa{
-		font-size: 1.20rem;
-	}
-	
-.datatable-dashv1-list table tbody tr td{
-	padding: 8px 10px !important;
-}
-
-.table-project-n{
-	color: #005086;
-}
-
-#table thead tr th{
-	padding: 0px 0px !important;
-}
-
-#table tbody tr td{
-	padding:2px 3px !important;
-}
-
-
-/* icon styles */
-
-.cc-rockmenu {
-	color:fff;
-	padding:0px 5px;
-	font-family: 'Lato',sans-serif;
-}
-
-.cc-rockmenu .rolling {
-  display: inline-block;
-  cursor:pointer;
-  width: 34px;
-  height: 30px;
-  text-align:left;
-  overflow: hidden;
-  transition: all 0.3s ease-out;
-  white-space: nowrap;
-  
-}
-.cc-rockmenu .rolling:hover {
-  width: 108px;
-}
-.cc-rockmenu .rolling .rolling_icon {
-  float:left;
-  z-index: 9;
-  display: inline-block;
-  width: 28px;
-  height: 52px;
-  box-sizing: border-box;
-  margin: 0 5px 0 0;
-}
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-  width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-    font-size: 20px;
-    padding: 6px;
-}
-.cc-rockmenu .rolling span {
-    display: block;
-    font-weight: bold;
-    padding: 2px 0;
-    font-size: 14px;
-    font-family: 'Muli',sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin:0;
-}
-
-.width{
-	width:270px !important;
-}
-.table tbody tr td  {
-    vertical-align: middle;
-    text-align: center;
-    
-    white-space: nowrap;
-}
-
-</style>
 </head>
 <body>
 <%
@@ -165,7 +55,7 @@ String ses=(String)request.getParameter("result");
 				  <form action="GroupMasterExcelUpload.htm" method="post" enctype="multipart/form-data">
 					  		<table>
 						  		<tr>
-								  	<td align="left"><h6>Download Excel: &nbsp;<button formaction="GroupMasterExcelUpload.htm" formmethod="post" formnovalidate="formnovalidate" name="Action" value="GenerateExcel"><i class="fa fa-file-excel-o" aria-hidden="true" style="color: green;"></i></button></h6></td>
+								  	<td align="left"><h6>Download Excel: &nbsp;<button formaction="GroupMasterExcelUpload.htm" formmethod="post" formnovalidate="formnovalidate" name="Action" value="GenerateExcel"><i class="fa fa-file-excel-o excelbtn" aria-hidden="true" ></i></button></h6></td>
 									<td align="right"><h6>&nbsp;&nbsp;&nbsp;&nbsp;	Upload Excel:&nbsp;&nbsp;&nbsp;&nbsp;
 									  <input type="file" id="excel_file" name="filename" required="required"  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"></h6></td>						
 							  		<td align="right"> </td>
@@ -181,12 +71,12 @@ String ses=(String)request.getParameter("result");
 					          <span aria-hidden="true">&times;</span>
 					        </button>
 					      </div>
-					      <div class="modal-body" align="left" style="max-height: 25rem; overflow-y:auto;">
+					      <div class="modal-body bodyModal" align="left" >
 					             <table class="table table-bordered table-hover table-striped table-condensed " id="myTable1" > </table>
 					      </div>
 					       <div class="modal-footer" align="center">
 					       	    <div align="center">
-					        			<button type="submit" onclick="return confirm('Are you sure to submit?')" style="margin-left: -70px;" class="btn btn-sm add" name="Action" value="UploadExcel"> Upload</button>
+					        			<button type="submit" onclick="return confirm('Are you sure to submit?')"  class="btn btn-sm add upload" name="Action" value="UploadExcel"> Upload</button>
 					      		</div>
 					       </div>
 					    </div>
@@ -210,12 +100,12 @@ String ses=(String)request.getParameter("result");
 			                      <thead>
 			                                         
 			                           	<tr >
-				                            <th style=" text-align: center;" >Select</th>
-				                            <th style=" text-align: center;" >Lab Code  </th>
-		                                    <th style=" text-align: center;" >Group Code</th>
-		                                    <th style=" text-align: center;" >Group Name</th>
-		                                    <th style=" text-align: center;" >Group Head Name</th>
-		                                    <th style=" text-align: center;" >TD Name</th>
+				                            <th  class="thclass" >Select</th>
+				                            <th class="thclass" >Lab Code  </th>
+		                                    <th class="thclass" >Group Code</th>
+		                                    <th class="thclass" >Group Name</th>
+		                                    <th class="thclass" >Group Head Name</th>
+		                                    <th class="thclass" >TD Name</th>
 		                                    
 	                                    </tr>      
 			        
@@ -226,8 +116,8 @@ String ses=(String)request.getParameter("result");
 	                                         <td><input type="radio" name="groupid" value=<%=obj[0]%>  ></td> 
 	                                         <td><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"-"%></td>
 	                                         <td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%></td>
-	                                         <td style="text-align: left;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%></td>
-	                                         <td style="text-align: left;"> <%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString())%>, <%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):""%><%}else{ %>-<%} %></td>
+	                                         <td  class="tdData"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%></td>
+	                                         <td  class="tdData"> <%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString())%>, <%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):""%><%}else{ %>-<%} %></td>
 	                                         <td ><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()):"-"%></td>
 	                                     </tr>
 	                                 <%} %>
@@ -286,6 +176,7 @@ function Edit(myfrm){
 <script type="text/javascript">
 const excel_file = document.getElementById('excel_file');
 
+
 excel_file.addEventListener('change', (event) => {
     var reader = new FileReader();
 
@@ -308,7 +199,7 @@ excel_file.addEventListener('change', (event) => {
         {          
         	var table_output = ' <table class="table table-bordered table-hover table-striped table-condensed " id="myTable1" > ';
            
-        	table_output+='<thead> <tr > <th style=" text-align: center;">SNo</th> <th style=" text-align: center;">LabCode</th> <th style=" text-align: center;">Group Code</th> <th style=" text-align: center;">Group Name</th> <th style=" text-align: center;">Group HeadId</th></tr> </thead><tbody>'
+        	table_output+='<thead> <tr > <th  class="jsTableth" >SNo</th> <th >LabCode</th> <th >Group Code</th> <th >Group Name</th> <th >Group HeadId</th></tr> </thead><tbody>'
         	
         	var checkExcel=0;
         	for(var row = 0; row < sheet_data.length; row++)

@@ -3,83 +3,15 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1" import="java.util.* , java.text.DateFormat"%>
+	<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 <title>FEEDBACK LIST</title>
-<style type="text/css">
-
-.cc-rockmenu {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-}
-
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor: pointer;
-	width: 33px;
-	height: 30px;
-	text-align: left;
-	overflow: hidden;
-	transition: all 0.3s ease-out;
-	white-space: nowrap;
-}
-
-.cc-rockmenu .rolling:hover {
-	width: 120px;
-}
-
-.cc-rockmenu .viewcommittees:hover {
-	width: 157px;
-}
-
-
-
-.cc-rockmenu .rolling .rolling_icon {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 28px;
-	height: 52px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-.cc-rockmenu .rolling span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 14px;
-	font-family: 'Muli', sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin: 0;
-}
-
-.width {
-	width: 270px !important;
-}
-
-a:hover {
-	color: white;
-}
-
-</style>
-
-
+<spring:url value="/resources/css/master/feedbackList.css" var="feedbackList" />     
+<link href="${feedbackList}" rel="stylesheet" />
 </head>
 <body>
 
@@ -121,12 +53,12 @@ a:hover {
 						<form action="FeedbackList.htm" method="post">
 							<div class="row">
 								<div class="col-md-3"><h4>Feedback List</h4></div>
-								<div class="col-md-8" style="margin-top: -10px;">
+								<div class="col-md-8 md8col" >
 									<table> 
 										<tr>
 											<th> Type: </th>
-											<td style="width: 150px;">
-												<select class="form-control selectdee" id="ftype" name="feedbacktype" data-container="body" data-live-search="true"   style="font-size: 5px;" onchange="this.form.submit()">
+											<td  class="typetd">
+												<select class="form-control selectdee" id="ftype" name="feedbacktype" data-container="body" data-live-search="true"    onchange="this.form.submit()">
 													<option value=""  selected="selected"	hidden="true">--Select--</option>
 													<option value="A" <%if(feedbacktype!=null && "A".equalsIgnoreCase(feedbacktype)){%> selected="selected" <%}%> >All</option>
 													<option value="B" <%if(feedbacktype!=null && "B".equalsIgnoreCase(feedbacktype)){%> selected="selected" <%}%>>Bug</option>
@@ -137,18 +69,18 @@ a:hover {
 											</td>
 											<th>From Date:</th>
 											<td>
-												<input  class="form-control form-control date"  data-date-format="dd-mm-yyyy" id="datepicker1" name="Fromdate"  required="required"  style="width: 120px;"
+												<input  class="form-control form-control date"  data-date-format="dd-mm-yyyy" id="datepicker1" name="Fromdate"  required="required"  
 												<%if(fromdate!=null){%> value="<%=(fromdate) %>" <%} %> onchange="this.form.submit()">
 											</td>
 											<th>To Date:</th>
 											<td>
-												<input  class="form-control form-control" data-date-format="dd-mm-yyyy" id="datepicker3" name="Todate"  style="width: 120px;"
+												<input  class="form-control form-control date" data-date-format="dd-mm-yyyy" id="datepicker3" name="Todate"  
 												<%if(todate!=null){%> value="<%=(todate) %>" <%} %>	onchange="this.form.submit()">
 											</td>
 										</tr>
 									</table>
 								</div>
-								<div class="col-md-1" style="margin-top: -6px;"><a class="btn btn-sm back" href="MainDashBoard.htm" style="float: right;">BACK</a></div>
+								<div class="col-md-1 backButton" ><a class="btn btn-sm back backbtn" href="MainDashBoard.htm" >BACK</a></div>
 							</div>
 							<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 						</form>
@@ -178,13 +110,13 @@ a:hover {
 											<td class="center"><%=obj[4]!=null? StringEscapeUtils.escapeHtml4(obj[4].toString()):"-"%></td>
 											<td class="center"><%=obj[2]!=null?sdf.format(inputFormatter.parse(obj[2].toString()) ):"-" %></td>
 											<td>
-												<span <%if(obj[5]!=null && obj[5].toString().equalsIgnoreCase("C")){%> style="color:#649d1a;" <%}%>>
+												<span <%if(obj[5]!=null && obj[5].toString().equalsIgnoreCase("C")){%>   class="spanClss"<%}%>>
 													<%if(feedback.length()<90){ %> 
 														<%=feedback!=null?StringEscapeUtils.escapeHtml4(feedback):"-"%> 
 													<%}else{ %>
 														<%=feedback!=null?StringEscapeUtils.escapeHtml4(feedback.substring(0,90)):"-" %> 
 														 <button type="button" class="editable-click" name="sub" value="Modify" onclick="feedbackmodal('<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):"-"%>' , '<%=obj[2]!=null?sdf1.format(inputFormatter.parse(obj[2].toString())):"" %>')">
-															<b><span style="color:#1176ab;font-size: 14px;">......(View More)</span></b>
+															<b><span  class="readMoreSpan">......(View More)</span></b>
 														</button> 
 													<% }%>
 												</span>
@@ -192,32 +124,7 @@ a:hover {
 											<td class="center">
 												<form action="#" id="feedbackaction_<%=count%>">
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-													<%-- <%if(obj[5]!=null && obj[5].toString().equalsIgnoreCase("C") ){ %>
-														<input id="remarks<%=obj[0]%>" value="<%=obj[6]%>" type="hidden">
-														<button class="editable-click" type="button" name="sub" value="Details" onclick="ClosefeedbackmodalRemarks( '<%=obj[0]%>')">
-															<div class="cc-rockmenu">
-																<div class="rolling">
-																	<figure class="rolling_icon">
-																		<i class="fa fa-eye fa-3x" aria-hidden="true" style="color: blue;"></i>
-																	</figure>
-																	<span>Remarks</span>
-																</div>
-															</div>
-														</button> 
-												  
-													<%}else if(logintype.equalsIgnoreCase("A")){ %>
-														<button class="editable-click" type="button" name="sub" value="Details" onclick="Closefeedbackmodal( '<%=obj[0]%>','<%=obj[1]%>' , '<%=sdf1.format(inputFormatter.parse(obj[2].toString()) )%>')">
-															<div class="cc-rockmenu">
-																<div class="rolling">
-																	<figure class="rolling_icon">
-																		<i class="fa fa-times-circle" aria-hidden="true"></i>
-																	</figure>
-																	<span style="margin-top: 0.3rem;">Comment</span>
-																</div>
-															</div>
-														</button> 
-														
-													<%}%> --%>
+													
 													<input type="hidden"  name="feedbackId" value="<%=obj[0] %>">
 													<button class="editable-click" type="submit" formaction="FeedbackTransaction.htm" formmethod="post" formnovalidate="formnovalidate" >
 														<div class="cc-rockmenu">
@@ -225,7 +132,7 @@ a:hover {
 																<figure class="rolling_icon">
 																	<i class="fa fa-comments" aria-hidden="true"></i>
 																</figure>
-																<span style="margin-top: 0.3rem;">Comments</span>
+																<span  class="comments">Comments</span>
 															</div>
 														</div>
 													</button>
@@ -235,9 +142,9 @@ a:hover {
 															<div class="cc-rockmenu">
 																<div class="rolling">
 																	<figure class="rolling_icon">
-																		<i class="fa fa-times-circle" aria-hidden="true" style="color: red;"></i>
+																		<i class="fa fa-times-circle iconCircle" aria-hidden="true" ></i>
 																	</figure>
-																	<span style="margin-top: 0.3rem;">Close</span>
+																	<span  class="close">Close</span>
 																</div>
 															</div>
 														</button>
@@ -250,7 +157,7 @@ a:hover {
 																	<figure class="rolling_icon">
 																		<i class="fa fa-download" aria-hidden="true"></i>
 																	</figure>
-																	<span style="margin-top: 0.3rem;">Download</span>
+																	<span  class="download">Download</span>
 																</div>
 															</div>
 														</button>
@@ -269,7 +176,7 @@ a:hover {
 						 		</div>
 					 		</form>
 					 		<div align="center">
-					 			<span style="float: left;"> <b style="color: red; ">Note: </b> B=Bug, C=Content Change , N=New Requirement, U=User Interface   </span>
+					 			<span  class="noteSpan"> <b  class="noteBold">Note: </b> B=Bug, C=Content Change , N=New Requirement, U=User Interface   </span>
 					 		</div>	
 					</div>
 				</div>
@@ -281,17 +188,17 @@ a:hover {
 	
 	
 	<div class="modal fade" id="feedbackdata" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 93% !important;height: 90%;">
-			<div class="modal-content" style="min-height: 90%;" >
-				<div class="modal-header" style="background-color: rgba(0,0,0,.03);">
-			    	<h4 class="modal-title" id="model-card-header" style="color: #145374">Feedback By <span id="feedby"></span></h4>
+		<div class="modal-dialog modal-dialog-centered dialogModal" role="document" >
+			<div class="modal-content contentModal"  >
+				<div class="modal-header headerModal" >
+			    	<h4 class="modal-title feedbackBy" id="model-card-header" >Feedback By <span id="feedby"></span></h4>
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
 			          <span aria-hidden="true">&times;</span>
 			        </button>
 				</div>
 				    
-				<div class="modal-body"  style="padding: 0.5rem !important;">
-					<div class="card-body" style="min-height:30% ;max-height: 93% !important;overflow-y: auto;">
+				<div class="modal-body bodyModal"  >
+					<div class="card-body bodyC" >
 						<div class="row" id="feedbackdiv"></div>
 					</div>
 				</div>
@@ -301,10 +208,10 @@ a:hover {
 	</div>
 	
 	<div class="modal fade" id="Closefeedback" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 53% !important;height: 45%;">
-			<div class="modal-content" style="min-height: 45%;" >
-				<div class="modal-header" style="background-color: rgba(0,0,0,.03);">
-					<h4 class="modal-title" id="model-card-header" style="color: #145374">Comment <!-- By <span id="feedby1"></span> --></h4>
+		<div class="modal-dialog modal-dialog-centered dialogModal1 " role="document" >
+			<div class="modal-content closefeedbackmodal" >
+				<div class="modal-header headerModal" >
+					<h4 class="modal-title feedbackBy" id="model-card-header" >Comment <!-- By <span id="feedby1"></span> --></h4>
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
 			          <span aria-hidden="true">&times;</span>
 			        </button>
@@ -314,7 +221,7 @@ a:hover {
 		  	      	<form action="CloseFeedBack.htm" method="POST">
 		  	      		<div class="row">
 							<div class="col-md-12" > <b>Comment : </b><br>
-		  	      		    		<textarea rows="2" style="display:block; " class="form-control"  id="Remarks" name="Remarks"  placeholder="Enter Comments"  required="required"></textarea>
+		  	      		    		<textarea rows="2"  class="form-control"  id="Remarks" name="Remarks"  placeholder="Enter Comments"  required="required"></textarea>
 		  	      		    </div>
 		  	      		</div>
 		  	      		<br>
@@ -330,18 +237,18 @@ a:hover {
 	</div>
 	
 	<div class="modal fade" id="ClosefeedbackRemarks" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 53% !important;height: 45%;">
-			<div class="modal-content" style="min-height: 45%;" >
-				<div class="modal-header" style="background-color: rgba(0,0,0,.03);">
-			    	<h4 class="modal-title" id="model-card-header" style="color: #145374"> Feedback Remarks<!-- By <span id="feedby1"></span> --></h4>
+		<div class="modal-dialog modal-dialog-centered dialogModal1" role="document" >
+			<div class="modal-content modalC"  >
+				<div class="modal-header headerModal" >
+			    	<h4 class="modal-title feedbackBy" id="model-card-header" > Feedback Remarks<!-- By <span id="feedby1"></span> --></h4>
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
 			          <span aria-hidden="true">&times;</span>
 			         
 			        </button>
 				</div>
 				   
-			    <div class="modal-body"  style="padding: 0.5rem !important;">
-					<div class="card-body" style="min-height:30% ;max-height: 93% !important;overflow-y: auto;">
+			    <div class="modal-body bodyModal"  >
+					<div class="card-body remarksBody" >
 						<span id="REMARKS"></span>
 					</div>
 				</div>

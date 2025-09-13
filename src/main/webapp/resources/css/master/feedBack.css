@@ -1,0 +1,48 @@
+@charset "ISO-8859-1";
+
+.table thead tr th {
+	background-color: aliceblue;
+	
+}
+
+.table thead tr td {
+	background-color: #f9fae1;
+	text-align: left;
+}
+
+.backbtn{
+	margin-top: -8px;
+}
+
+
+.backbtntop{
+	float: right;
+}
+
+#myTable16{
+	width: 90%;
+}
+
+.feedbackTypeTh{
+	text-align: left;
+}
+
+.fileLabel{
+	text-align: left;
+}
+
+#ftype{
+	font-size: 5px;
+}
+
+.fileAttach{
+	margin-right: -110px;
+}
+
+.mandateClass{
+	color: red;
+}
+
+#summernote1{
+	display:block; margin-top: 10px;
+}

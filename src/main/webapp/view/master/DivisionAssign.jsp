@@ -3,44 +3,16 @@
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+         <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/master/divisionAssign.css" var="divisionAssign" />     
+<link href="${divisionAssign}" rel="stylesheet" />
 <title>Division Employee</title>
-<style type="text/css">
 
-.table-responsive{
-  overflow-x: hidden;
-}
-
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-b{
-	font-family: 'Lato',sans-serif;
-}
-
-#myTable thead tr{
-	background-color: #055C9D;
-    color: white;
-}
-
-</style>
 </head>
 <body>
 <%SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
@@ -83,18 +55,18 @@ String divisionid=divisiondata[0].toString();
 			<div class="row">
 				<div class="col-md-10"><h4>Division Assign</h4></div>
 				<div class="col-md-2">		      
-					<a class="btn btn-info btn-sm  back"  style="margin-left: 4.2rem; "   href="MainDashBoard.htm">Back</a>
+					<a class="btn btn-info btn-sm  back backbtn"     href="MainDashBoard.htm">Back</a>
 				</div>
 			</div>
 		</div>
 		
 		
-<div class="nav navbar auditnavbar" style="background-color: #f4f5f0;">
+<div class="nav navbar auditnavbar" >
 
 			<form class="form-inline " method="POST" action="DivisionEmployee.htm">
 				<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-				<label style="margin-left: 450px; margin-right: 10px;font-weight: 800">Division: <span class="mandatory" style="color: red;">*</span></label>
-					<select class="form-control form-control selectpicker" name="divisionid" style="margin-left: 12px;" data-width="300"  id="name">
+				<label class="divisonLabel" >Division: <span class="mandatory mandate" >*</span></label>
+					<select class="form-control form-control selectpicker selectDiv" name="divisionid"  data-width="300"  id="name">
 		        <option value="" disabled="disabled" selected="selected">Select Division </option>
 			                <%
 			                for(Object[] obj:DivisionList){
@@ -115,24 +87,24 @@ String divisionid=divisiondata[0].toString();
 
                     
                     
- <div class="row" style="margin-top: 10px;">
+ <div class="row revokeMainDiv" >
       <div class="col-md-8">
-<div style="margin-top: 0px;">
+<div class="subdiv" >
 
 <div class="card   " >
 		  	
      <div class="card-body  shadow-nohover" >
   <form action="DivsionEmployeeRevoke.htm" method="POST" name="frm1" >
-    <div class="row" style="margin-top: 20px;">
+    <div class="row rowdiv" >
       <div class="col-md-12">
  <div class="table-responsive">
 	   <table class="table table-bordered table-hover table-striped table-condensed" id="myTable"> 
-	   <thead style=" text-align: center;">
-	   <tr style="background-color: white;color: black">
+	   <thead  class="theader">
+	   <tr   class="trtable" >
 	   <th colspan="5">List Of User Assigned for <%if(divisiondata!=null){ %><%=divisiondata[1]!=null?StringEscapeUtils.escapeHtml4(divisiondata[1].toString()):"-"%><%} %></th>
 	  </tr>
 	   <tr>
-	   <th style="width:5%; ">Select</th>
+	   <th  class="selecttd">Select</th>
 	  
 	   <th >Employee Name</th>
 	  <th>Designation</th>
@@ -148,8 +120,8 @@ String divisionid=divisiondata[0].toString();
 	    <tr>
 	  <td><input type="radio" name="divisionempid" value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):" - "%>></td>
 	    
-        <td style="text-align: left;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%> </td>
-        <td style="text-align: left;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%> </td>
+        <td class="tdData" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%> </td>
+        <td class="tdData"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%> </td>
 	    </tr>
 	    <%} } else if(divisionemplist == null) {%>
 	     <tr class="center">     
@@ -164,7 +136,7 @@ String divisionid=divisiondata[0].toString();
 </table>
  	
 </div>
-<div style="text-align: center;">
+<div class="btnDiv" >
  <button type="submit" class="btn btn-danger btn-sm delete"  formaction="DivsionEmployeeRevoke.htm" onclick="return Edit('frm1');"  >REVOKE</button>&nbsp;&nbsp;
 
 </div>
@@ -182,13 +154,13 @@ String divisionid=divisiondata[0].toString();
 </div>
 </div>
 <div class="col-md-4">
-<div style="margin-top: 0px;">
+<div class="topdIV" >
 
 <div class="card  " >
 		  	
      <div class="card-body  shadow-nohover" >
   <form action="DivisionAssignSubmit.htm" method="POST" name="frm2" >
-    <div class="row" style="margin-top: 20px;">
+    <div class="row rowDiv" >
       <div class="col-md-12">
     <div class="table-responsive" >
 	   <table class="table table-bordered table-hover table-striped table-condensed"  > 
@@ -201,7 +173,7 @@ String divisionid=divisiondata[0].toString();
 	    <tr>
 	    
 	     <td colspan="4">
-					<select class="form-control form-control" name="employeeid" style="margin-left: 12px;" data-placeholder="Select Employees"  required="required" id= "LogInId" multiple="multiple" >
+					<select class="form-control form-control" name="employeeid"  data-placeholder="Select Employees"  required="required" id= "LogInId" multiple="multiple" >
 			        <%if(empoyeelist != null){ 
 			             for(Object[] obj:empoyeelist){ %> 
 			           
@@ -214,7 +186,7 @@ String divisionid=divisiondata[0].toString();
 	    </tbody>
 </table>
 </div>
-<div style="text-align: center;">
+<div  class="btnClass">
 
  <button type="submit" class="btn btn-success btn-sm submit" name="sub" value="edit" onclick="return confirm('Are you Sure To Assign ?');" >ASSIGN</button>&nbsp;&nbsp;
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

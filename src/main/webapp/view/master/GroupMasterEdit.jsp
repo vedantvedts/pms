@@ -3,6 +3,7 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+    <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,32 +11,10 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 <%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
 <title>GROUP MASTER EDIT</title>
-<style type="text/css">
 
-label{
-font-weight: bold;
-  font-size: 13px;
-}
+<spring:url value="/resources/css/master/groupMasterEdit.css" var="groupMasterEdit" />     
+<link href="${groupMasterEdit}" rel="stylesheet" />
 
-.table thead tr th {
-	background-color: aliceblue;
-	text-align: left;
-	width:30%;
-}
-
-.table thead tr td {
-
-	text-align: left;
-}
-
-label{
-	font-size: 15px;
-}
-
-
-
-
-</style>
 </head>
 <body>
 
@@ -65,10 +44,9 @@ Object[] groupsdata=(Object[])request.getAttribute("groupsdata");
  </div>
 <% } %>
 
-<div id="ajaxError" style="display: none;">
+<div id="ajaxError" >
     <div align="center">
-        <div class="alert-danger" id="ajaxErrorMessage" style="width: 65%; padding: 10px; margin: 5px 0; 
-              border-radius: 4px;">
+        <div class="alert-danger" id="ajaxErrorMessage" >
             <!-- Error message will appear here -->
         </div>
     </div>
@@ -82,9 +60,9 @@ Object[] groupsdata=(Object[])request.getAttribute("groupsdata");
 
 <div class="col-sm-2"></div> 
 	
- <div class="col-sm-8"  style="top: 10px;">
+ <div class="col-sm-8 coldiv"  >
 <div class="card shadow-nohover"  >
-<div class="card-header" style=" background-color: #055C9D;margin-top: ">
+<div class="card-header headDiv" >
                     <b class="text-white">Group Master Edit</b>
         		</div>
 <div class="card-body">
@@ -97,19 +75,19 @@ Object[] groupsdata=(Object[])request.getAttribute("groupsdata");
                     		<div class="col-md-3">
                         		<div class="form-group">
                             		<label class="control-label">Group Code</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control "  type="text" name="groupcode" readonly="readonly" id="groupCode" value="<%=groupsdata[1]!=null? StringEscapeUtils.escapeHtml4(groupsdata[1].toString()):""%>" required="required" maxlength="3" style="font-size: 15px;"> 
+                              		<input  class="form-control form-control "  type="text" name="groupcode" readonly="readonly" id="groupCode" value="<%=groupsdata[1]!=null? StringEscapeUtils.escapeHtml4(groupsdata[1].toString()):""%>" required="required" maxlength="3" > 
                         		</div>
                     		</div>
          					<div class="col-md-3">
                         		<div class="form-group">
                             		<label class="control-label">Group Name</label><span class="mandatory">*</span>
-                            		<input  class="form-control form-control " value="<%=groupsdata[2]!=null? StringEscapeUtils.escapeHtml4(groupsdata[2].toString()):"" %>"  type="text" name="groupname" id="groupName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize; width: 90%;" > 
+                            		<input  class="form-control form-control " value="<%=groupsdata[2]!=null? StringEscapeUtils.escapeHtml4(groupsdata[2].toString()):"" %>"  type="text" name="groupname" id="groupName" required="required" maxlength="100"  > 
                         		</div>
                     		</div>
                     		<div class="col-md-4">
                         		<div class="form-group">
                             		<label class="control-label">Group Head Name</label><span class="mandatory">*</span>
-                              		<select class="custom-select" name="ghempid"  required="required" id ="ghempid" style="font-size: 18px;">
+                              		<select class="custom-select" name="ghempid"  required="required" id ="ghempid" >
 													<option disabled="true"  selected value="">---Select---</option>
 													
 													<% for (  Object[] obj : groupheadlist){ %>
@@ -123,7 +101,7 @@ Object[] groupsdata=(Object[])request.getAttribute("groupsdata");
                     		<div class="col-md-4">
                         		<div class="form-group">
                             		<label class="control-label">TD Name</label><span class="mandatory">*</span>
-                              		<select class="custom-select" name="tdId"  required="required" id ="tdId" style="font-size: 18px;">
+                              		<select class="custom-select" name="tdId"  required="required" id ="tdId" >
 													<option disabled="true"  selected value="">---Select---</option>
 													
 													<% for (  Object[] obj : tdaddlist){ %>
@@ -138,7 +116,7 @@ Object[] groupsdata=(Object[])request.getAttribute("groupsdata");
                         		<div class="form-group">
                             		<label class="control-label">isActive:</label><span class="mandatory">*</span>
                               		 
-								<select  class="custom-select"  name="isActive" required="required" maxlength="255" style="font-size: 18px;" >
+								<select  class="custom-select isActiveSel"  name="isActive" required="required" maxlength="255"  >
                        
                        
                      <option value="1" <%if(groupsdata[6].toString().equalsIgnoreCase("1")) {%> selected="selected" <%} %> >YES</option>
@@ -153,7 +131,7 @@ Object[] groupsdata=(Object[])request.getAttribute("groupsdata");
     
 
 	<div align="center">
-		<button type="submit" class="btn btn-sm submit" style="align-self: center;" onclick="return confirm('Are you Sure To Submit ?');" >SUBMIT</button>&nbsp;&nbsp;
+		<button type="submit" class="btn btn-sm submit SubmitBtn"  onclick="return confirm('Are you Sure To Submit ?');" >SUBMIT</button>&nbsp;&nbsp;
 		<a class="btn  btn-sm  back"    href="GroupMaster.htm">BACK</a>
 	</div>
 

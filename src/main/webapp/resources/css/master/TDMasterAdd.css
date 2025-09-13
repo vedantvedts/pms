@@ -1,0 +1,54 @@
+@charset "ISO-8859-1";
+
+label{
+font-weight: bold;
+  font-size: 13px;
+}
+
+.table thead tr th {
+	/* background-color: aliceblue; */
+	text-align: left;
+	width:30%;
+}
+
+.table thead tr td {
+
+	text-align: left;
+}
+
+label{
+	font-size: 15px;
+}
+
+
+table{
+	box-shadow: 0 4px 6px -2px gray;
+}
+
+
+ .resubmitted{
+	color:green;
+}
+
+	.fa{
+		font-size: 1.20rem;
+	}
+
+	.topdiv{
+		top: 10px;
+	}
+	
+	.headerDiv{
+		background-color: #055C9D;
+	}
+	
+	#tdCode{
+		font-size: 15px;
+	}
+	#tdName{
+		font-size: 15px;text-transform: capitalize; width: 80%;
+	}
+	
+	.btnSubmit{
+		align-self: center;
+	}

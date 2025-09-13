@@ -9,18 +9,9 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 
 <title>FEED BACK</title>
-<style type="text/css">
-.table thead tr th {
-	background-color: aliceblue;
-	
-}
+<spring:url value="/resources/css/master/feedBack.css" var="feedbackList" />     
+<link href="${feedbackList}" rel="stylesheet" />
 
-.table thead tr td {
-	background-color: #f9fae1;
-	text-align: left;
-}
-
-</style>
 </head>
 <body>
 
@@ -51,18 +42,18 @@
 				<div class="card-header" >
 					<div class="row">
 						<div class="col-md-6"><h4>FEEDBACK</h4></div>
-						<div class="col-md-6" style="margin-top: -8px;"><a class="btn btn-sm back" <%if(fblist!=null && fblist.size()>0){%> href="FeedBack.htm" <%}else{%> href="MainDashBoard.htm"<%}%> style="float: right;">BACK</a></div>
+						<div class="col-md-6 backbtn" ><a class="btn btn-sm back" <%if(fblist!=null && fblist.size()>0){%> href="FeedBack.htm" <%}else{%> href="MainDashBoard.htm"<%}%>  class="backbtntop">BACK</a></div>
 					</div>
 				</div>
 				<div class="card-body">
 					<form action="FeedBackAdd.htm" method="POST" id="Feedbackadd" enctype="multipart/form-data">
 						<div class="table-responsive">
-							<table class="table table-bordered table-hover table-striped table-condensed " id="myTable16" style="width: 90%;">
+							<table class="table table-bordered table-hover table-striped table-condensed " id="myTable16" >
 								<thead>
 									    <tr>
-											<th style="text-align: left;"><label>Feedback Type: <span class="mandatory" style="color: red;">*</span></label></th>
+											<th  class="feedbackTypeTh"><label>Feedback Type: <span class="mandatory" >*</span></label></th>
 											<td>
-												<select class="form-control selectdee" id="ftype" name="feedbacktype" data-container="body" data-live-search="true"   style="font-size: 5px;">
+												<select class="form-control selectdee" id="ftype" name="feedbacktype" data-container="body" data-live-search="true"   >
 													<option value=""  selected="selected"	hidden="true">--Select--</option>
 													<option value="B">Bug</option>
 													<option value="C">Content Change</option>
@@ -70,13 +61,13 @@
 													<option value="U">User Interface</option>
 												</select>
 											</td>
-											<th style="text-align: left;"> <label>File :</label> </th>
-											<td> <input type="file" name="FileAttach" style="margin-right: -110px;"> </td>
+											<th  class="fileLabel"> <label>File :</label> </th>
+											<td> <input type="file" name="FileAttach" class="fileAttach" > </td>
 										</tr>
 										<tr>
-											<th style="text-align: left;"><label>Feedback: <span class="mandatory" style="color: red;">*</span></label></th>
+											<th class="feedbackTypeTh"><label>Feedback: <span class="mandatory mandateClass" >*</span></label></th>
 											<td colspan="3">
-											    <textarea rows="4" style="display:block; margin-top: 10px;" class="form-control"  id="summernote1" name="Feedback"  placeholder="Enter Feedback..!!"  ></textarea>
+											    <textarea rows="4"  class="form-control"  id="summernote1" name="Feedback"  placeholder="Enter Feedback..!!"  ></textarea>
 											</td>
 										</tr>
 								</thead>
