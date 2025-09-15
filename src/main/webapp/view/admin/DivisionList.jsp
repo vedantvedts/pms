@@ -120,9 +120,18 @@ font-weight: bold;
 	width:270px !important;
 }
 
+.modal-height{
+	max-height: 25rem!important;
+	overflow-y:auto!important;
+}
 
+.t-overflow{
+	overflow: scroll!important;
+}
 
-
+.modal-btn{
+	margin-left: -70px!important;
+}
 
 </style>
 </head>
@@ -167,7 +176,7 @@ String Onboarding = (String)request.getAttribute("Onboarding");
 				  <form action="DivisionMasterExcelUpload.htm" method="post" enctype="multipart/form-data">
 					  		<table>
 						  		<tr>
-								  	<td align="left"><h6>Download Excel : &nbsp;<button formaction="DivisionMasterExcelUpload.htm" formmethod="post" formnovalidate="formnovalidate" name="Action" value="GenerateExcel"><i class="fa fa-file-excel-o" aria-hidden="true" style="color: green;"></i></button></h6></td>
+								  	<td align="left"><h6>Download Excel : &nbsp;<button formaction="DivisionMasterExcelUpload.htm" formmethod="post" formnovalidate="formnovalidate" name="Action" value="GenerateExcel"><i class="fa fa-file-excel-o text-success" aria-hidden="true" ></i></button></h6></td>
 									<td align="right"><h6>&nbsp;&nbsp;&nbsp;&nbsp;	Upload Excel :&nbsp;&nbsp;&nbsp;&nbsp;
 									  <input type="file" id="excel_file" name="filename" required="required"  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"></h6></td>						
 							  		
@@ -183,11 +192,11 @@ String Onboarding = (String)request.getAttribute("Onboarding");
 					          <span aria-hidden="true">&times;</span>
 					        </button>
 					      </div>
-					      <div class="modal-body" align="left" style="max-height: 25rem; overflow-y:auto;">
-					             <table class="table table-bordered table-hover table-striped table-condensed " id="myTable1" style="overflow: scroll;"> </table>
+					      <div class="modal-body modal-height" align="left">
+					             <table class="table table-bordered table-hover table-striped table-condensed t-overflow" id="myTable1"> </table>
 					      </div>
 					      <div class="modal-footer" align="center">
-					        			<button type="submit" onclick="return confirm('Are you sure to submit?')" style="margin-left: -70px;" class="btn btn-sm add" name="Action" value="UploadExcel"> Upload</button>
+					        			<button type="submit" onclick="return confirm('Are you sure to submit?')" class="btn btn-sm add modal-btn" name="Action" value="UploadExcel"> Upload</button>
 					       </div>
 					    </div>
 					  </div>
@@ -209,7 +218,7 @@ String Onboarding = (String)request.getAttribute("Onboarding");
 			                                <div class="datatable-dashv1-list custom-datatable-overright">
 			                    
 			                <table class="table table-bordered table-hover table-striped table-condensed " id="myTable" > 
-			                      <thead style=" text-align: center;">
+			                      <thead class="text-center">
 			                                         
 			                              <tr> 
 			                              		<th>Select</th>
@@ -228,10 +237,10 @@ String Onboarding = (String)request.getAttribute("Onboarding");
 	                                         	 <td align="center"><input type="radio" name="Did" value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): ""%>  ></td> 
 	                                             <td><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></td>
 	                                             <td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
-												 <td style="text-align: left"><%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%}else{ %>-<%} %></td>
-												 <td style="text-align: left"><%if(obj[7]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[7].toString()) %><%}else{ %>-<%} %></td> <!--srikant  -->
-	                                             <td style="text-align: left"><%if(obj[3]!=null && obj[6]!= null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString())%>, <%=StringEscapeUtils.escapeHtml4(obj[6].toString())%><%}else{ %>-<%} %></td>
-	                                             <td style="text-align: left"><%if(obj[4]!=null ){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString())  %><%}else{ %>-<%} %></td>
+												 <td class="text-left"><%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%}else{ %>-<%} %></td>
+												 <td class="text-left"><%if(obj[7]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[7].toString()) %><%}else{ %>-<%} %></td> <!--srikant  -->
+	                                             <td class="text-left"><%if(obj[3]!=null && obj[6]!= null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString())%>, <%=StringEscapeUtils.escapeHtml4(obj[6].toString())%><%}else{ %>-<%} %></td>
+	                                             <td class="text-left"><%if(obj[4]!=null ){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString())  %><%}else{ %>-<%} %></td>
 	                                      </tr>
 	                                   <%}%>
 	                             </tbody>
@@ -309,7 +318,7 @@ excel_file.addEventListener('change', (event) => {
         {          
         	var table_output = ' <table class="table table-bordered table-hover table-striped table-condensed " id="myTable1" > ';
             
-        	table_output+='<thead> <tr > <th style=" text-align: center;">SNo</th> <th style=" text-align: center;">LabCode</th> <th style=" text-align: center;">Division Code</th> <th style=" text-align: center;">Division Name</th> <th style=" text-align: center;">Group HeadId</th></tr> </thead><tbody>'
+        	table_output+='<thead> <tr > <th class="text-center">SNo</th> <th class="text-center">LabCode</th> <th class="text-center">Division Code</th> <th class="text-center">Division Name</th> <th class="text-center">Group HeadId</th></tr> </thead><tbody>'
         	
             for(var row = 0; row < sheet_data.length; row++)
             {            	

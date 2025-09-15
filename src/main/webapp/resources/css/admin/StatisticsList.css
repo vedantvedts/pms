@@ -1,0 +1,44 @@
+@charset "UTF-8";
+
+
+
+.auditnavbar{
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+    padding: 5px 68px 3px 45px;
+    background: #fff;
+    /* margin: -83px 0px 0px 0px; */
+    line-height: 15px;
+    font-size: 14px;
+    width: 100%;
+}
+
+.nav-form{
+	background-color: white; 
+	padding: 10px;
+}
+.label{
+	margin-left: 100px; 
+	margin-right: 10px;
+	font-weight: 800;
+}
+.from-label{
+	margin-left: 80px; 
+	margin-right: 20px; 
+	font-weight: 800;
+}
+.to-label{
+	margin-left: 20px; 
+	margin-right: 20px;
+	font-weight: 800;
+}
+.w-113{
+	width:113px;
+}
+.i-font{
+	font-size: 21px;
+}
+.btn-ref{
+	background-color: white; 
+	color: green;
+	margin-left: 10rem;
+}

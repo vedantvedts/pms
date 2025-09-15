@@ -3,6 +3,7 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,118 +11,8 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 <%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
 <title>PROJECT INT  LIST</title>
-<style type="text/css">
-
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-
-.table .font{
-	  font-family:'Muli', sans-serif !important;
-	  font-style: normal;
-	  font-size: 13px;
-	  font-weight: 400 !important;
-	 
-}
-
-.table button {
-    background-color: Transparent !important;
-    background-repeat:no-repeat;
-    border: none;
-    cursor:pointer;
-    overflow: hidden;
-    outline:none;
-    text-align: left !important;
-}
-.table td{
-	padding:5px !important;
-}
- .resubmitted{
-	color:green;
-}
-
-	.fa{
-		font-size: 1.20rem;
-	}
-	
-.datatable-dashv1-list table tbody tr td{
-	padding: 8px 10px !important;
-}
-
-.table-project-n{
-	color: #005086;
-}
-
-#table thead tr th{
-	padding: 0px 0px !important;
-}
-
-#table tbody tr td{
-	padding:2px 3px !important;
-}
-
-
-/* icon styles */
-
-.cc-rockmenu {
-	color:fff;
-	padding:0px 5px;
-	font-family: 'Lato',sans-serif;
-}
-
-.cc-rockmenu .rolling {
-  display: inline-block;
-  cursor:pointer;
-  width: 34px;
-  height: 30px;
-  text-align:left;
-  overflow: hidden;
-  transition: all 0.3s ease-out;
-  white-space: nowrap;
-  
-}
-.cc-rockmenu .rolling:hover {
-  width: 108px;
-}
-.cc-rockmenu .rolling .rolling_icon {
-  float:left;
-  z-index: 9;
-  display: inline-block;
-  width: 28px;
-  height: 52px;
-  box-sizing: border-box;
-  margin: 0 5px 0 0;
-}
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-  width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-    font-size: 20px;
-    padding: 6px;
-}
-.cc-rockmenu .rolling span {
-    display: block;
-    font-weight: bold;
-    padding: 2px 0;
-    font-size: 14px;
-    font-family: 'Muli',sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin:0;
-}
-
-.width{
-	width:270px !important;
-}
-
-
-
-
-
-</style>
+<spring:url value="/resources/css/admin/SeeMoreNotice.css" var="seeMoreNotice" />
+<link href="${seeMoreNotice}" rel="stylesheet" />
 </head>
 <body>
 <%
@@ -167,7 +58,7 @@ Integer noticeElib= Integer.parseInt(request.getAttribute("noticeEligibility").t
 				
 				 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9"></div>
 			 	 <%if(noticeElib>0){%> 	
-				<form method="GET" style="margin-left: 4.2rem; " action="IndividualNoticeList.htm" >
+				<form method="GET" class="margin-left" action="IndividualNoticeList.htm" >
 									<button type="submit"  class="btn btn-sm add" >ADD NOTICE</button>						
 								</form>	
 								<%} %>
@@ -222,7 +113,7 @@ Integer noticeElib= Integer.parseInt(request.getAttribute("noticeEligibility").t
 			                                               <td><%=notiec[8]!=null?StringEscapeUtils.escapeHtml4(notiec[8].toString()): " - "%></td>
 			                                              			<td  class="left width">
 												
-													 <form action="ExpertEditRevoke.htm" method="POST" name="myfrm"  style="display: inline" onsubmit="return confirm('Do you really want to Edit or Revoke');">
+													 <form action="ExpertEditRevoke.htm" method="POST" name="myfrm"  class="d-inline" onsubmit="return confirm('Do you really want to Edit or Revoke');">
 											        		<button  class="editable-click" name="sub" value="revoke" >
 																<div class="cc-rockmenu">
 																 <div class="rolling">	

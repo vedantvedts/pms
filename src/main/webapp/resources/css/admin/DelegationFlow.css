@@ -1,0 +1,151 @@
+@charset "UTF-8";
+
+
+label{
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.panel-body .badge{
+    padding: 7px 15px;
+    font-family: Muli,sans-serif;
+        margin: 1% 0%;
+}
+
+.card-header{
+
+	font-weight: bold;
+	text-transform: uppercase;
+	font-size: 20px;
+}
+
+.card-accent-info{
+	    border-top: 2px solid #0063a7!important;
+}
+
+.card{
+	margin-bottom: 15px;
+} 
+
+h6 {
+		color: black;
+		font-family: 'Lato', sans-serif;
+		font-weight: 800;
+	}
+	
+	.card-header {
+		background-color: #07689f;
+		color: white;
+	}
+	
+	.card {
+		border: 1px solid black;
+	}
+	
+	.input-group-text {
+		font-weight: bold;
+	}
+	
+	label {
+		font-weight: 800;
+		font-size: 16px;
+		color: #07689f;
+		padding-top: 10px;
+		padding-bottom:-5px;
+		padding-right: -50px;
+	}
+	
+	hr {
+		margin-top: -2px;
+		margin-bottom: 12px;
+	}
+	
+	.form-group {
+		margin-top: 0.5rem;
+		margin-bottom: 1rem;
+	}
+	
+	.mandatory {
+		font-weight: 800;
+	}
+	
+	b{
+	font-family: 'Lato', sans-serif;
+	}
+	
+	.form-block form{
+		display: inline-block;
+	}
+	
+	.fa-input {
+  	font-family: FontAwesome, 'Lato', sans-serif;
+		}
+		td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+body{
+	overflow-x: hidden; 
+}
+
+.f-title{
+	font-size: 18px!important;
+	font-family: 'Muli',sans-serif!important;
+}
+.do-pdc{
+	background-color: #527318!important; 
+	color: white!important;
+}
+.ad{
+	background-color: #93329e!important; 
+	color: white!important;
+}
+.director{
+	background-color: #394989!important;
+	color: white!important;
+}
+.cec{
+	background-color: #e7d9ea!important;
+	color: black!important;
+}
+.ifa{
+	background-color: #F96302!important;
+	color: white!important;
+}
+.director-general{
+	background-color: #206a5d!important;
+	color: white!important;
+}
+.dp-c{
+	background-color: #0c3c78!important;
+	color: white!important;
+}
+.dg{
+	background-color: #c6ebc9!important;
+	color: black!important;
+}
+.jsa{
+	background-color: #95389e!important;
+	color: white!important;
+}
+.secy{
+	background-color: #206a5d!important;
+	color: white!important;
+}
+.under-secy{
+	background-color: #65d6ce!important;
+	color: black!important;
+}
+.ccm{
+	background-color: #84142d!important;
+	color: white!important;
+}
+.prc{
+	background-color: #6a492b!important; 
+	color: white!important;
+}
+.dmc{
+	background-color: #0c3c78!important;
+	color: white!important;
+}

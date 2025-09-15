@@ -4,6 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
 	import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,6 +12,8 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 <%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
 <title>OFFICER MASTER EDIT</title>
+<spring:url value="/resources/css/admin/DesignationEdit.css" var="designationEdit" />
+<link href="${designationEdit}" rel="stylesheet" />
 
 </head>
 <body>
@@ -42,10 +45,9 @@
 	<div class="container-fluid">
 		<div class="row">
 
-			<div class="col-sm-12" style="top: 10px;">
+			<div class="col-sm-12 mt-3" >
 				<div class="card shadow-nohover">
-					<div class="card-header"
-						style="background-color: #055C9D; margin-top:">
+					<div class="card-header bg-header">
 						<b class="text-white">Designation Edit </b>
 					</div>
 					<div class="card-body">
@@ -58,11 +60,10 @@
 								<div class="col-md-1"></div>
 								<div class="col-md-2">
 									<div class="form-group">
-										<label>Designation Code:<span class="mandatory"
-											style="color: red;">*</span></label> <input
-											class="form-control form-control description-input" type="text"
+										<label>Designation Code:<span class="mandatory">*</span></label> <input
+											class="form-control field-w80 form-control description-input" type="text"
 											name="desigcode" id="desigcode" required="required"
-											maxlength="10" style="font-size: 15px; width: 80%;"
+											maxlength="10"
 											value="<%=designationdata[1]!=null?StringEscapeUtils.escapeHtml4(designationdata[1].toString()): ""%>">
 									</div>
 								</div>
@@ -70,39 +71,35 @@
 
 								<div class="col-md-2">
 									<div class="form-group">
-										<label>Designation :<span class="mandatory"
-											style="color: red;">*</span></label> <input
-											class="form-control form-control description-input" type="text"
+										<label>Designation :<span class="mandatory">*</span></label> <input
+											class="form-control field-w100 form-control description-input" type="text"
 											name="designation" id="designation" required="required"
-											maxlength="100" style="font-size: 15px; width: 100%;"
+											maxlength="100" 
 											value="<%=designationdata[2]!=null?StringEscapeUtils.escapeHtml4(designationdata[2].toString()): ""%>">
 									</div>
 								</div>
 
 								<div class="col-md-2">
 									<div class="form-group">
-										<label>Limit :<span class="mandatory"
-											style="color: red;">*</span></label> <input
-											class="form-control form-control numeric-only" type="number" name="limit"
-											required="required" style="font-size: 15px; width: 80%;"
+										<label>Limit :<span class="mandatory">*</span></label> <input
+											class="form-control field-w80 form-control numeric-only" type="number" name="limit"
+											required="required"
 											value="<%=designationdata[3]!=null?StringEscapeUtils.escapeHtml4(designationdata[3].toString()): ""%>">
 									</div>
 								</div>
 
 								<div class="col-md-2">
 									<div class="form-group">
-										<label>SrNo :<span class="mandatory"
-											style="color: red;">*</span></label> <input
-											class="form-control numeric-only " type="number"
+										<label>SrNo :<span class="mandatory">*</span></label> <input
+											class="form-control field-w80 numeric-only " type="number"
 											name="desigsr" required="required"
-											style="font-size: 15px; width: 80%;"
 											value="<%=designationdata[4]!=null?StringEscapeUtils.escapeHtml4(designationdata[4].toString()): ""%>">
 									</div>
 								</div>
 								
 								<div class="col-md-2">
 									<div class="form-group">
-										<label>Desig Cadre :<span class="mandatory"style="color: red;">*</span></label> 
+										<label>Desig Cadre :<span class="mandatory">*</span></label> 
 										<select class="form-control" name="desigCadre">
 											<option value="DRDS" <%if(designationdata[5]!=null && designationdata[5].toString().equalsIgnoreCase("DRDS")) {%>selected<%} %> >DRDS</option>
 											<option value="DRTC" <%if(designationdata[5]!=null && designationdata[5].toString().equalsIgnoreCase("DRTC")) {%>selected<%} %>>DRTC</option>
@@ -119,7 +116,6 @@
 
 							<div align="center">
 								<button type="button" class="btn btn-sm submit"
-									style="align-self: center;"
 									onclick="return Designationcheck('editfrm');">SUBMIT</button>
 								<a class="btn  btn-sm  back" href="DesignationMaster.htm">BACK</a>
 							</div>

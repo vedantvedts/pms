@@ -1,0 +1,14 @@
+@charset "UTF-8";
+
+
+.bg-header{
+	background-color: #055C9D;
+}
+.field-w80{
+	font-size: 15px;
+	width: 80%;
+}
+.field-w100{
+	font-size: 15px;
+	width: 100%;
+}

@@ -1,0 +1,160 @@
+@charset "UTF-8";
+
+
+
+.subfolder-group {
+	display: none;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.breadcrumb-header {
+	font-size: 16px;
+	font-weight: 500;
+	margin-bottom: 10px;
+	color: #555;
+}
+
+.breadcrumb-link {
+	color: #007bff;
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.subfolder-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+}
+
+.folder-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+}
+
+.folder {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100px;
+	cursor: pointer;
+	text-align: center;
+}
+
+.mainicon {
+	font-size: 65px;
+	color: #f0ad4e;
+}
+
+.fileicon {
+	font-size: 48px;
+	color: red;
+}
+
+.fa-pencil-square-o {
+	font-size: 18px !important;
+	color: #9f0dff !important;
+}
+
+.folder .edit-form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 5px;
+}
+
+.folder .edit-form input[type="text"] {
+	text-align: center;
+}
+
+textarea {
+	font-family: inherit;
+	font-size: 14px;
+	line-height: 1.2;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	padding: 4px;
+}
+
+.folder-icon-wrapper {
+	position: relative;
+}
+
+.control-label {
+	font-weight: bold !important;
+}
+
+.file-icon-wrapper {
+	font-size: 43px;
+}
+
+.pdf-item {
+	width: 120px;
+	word-wrap: break-word;
+}
+
+.file-download-span {
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.file-download-span:hover {
+	text-decoration: underline;
+	color: #007bff;
+}
+
+.modal-xl {
+	max-width: 1200px;
+}
+
+.m-minus{
+	margin-top: -10px;
+}
+
+.f-right{
+	float: right;
+}
+.w-360{
+	width: 360px
+}
+.m-minus8{
+	margin-top: -8px; 
+	border-color: #00DADA;
+}
+.mw-60{
+	max-width: 60% !important;
+}
+.ws-wrap{
+	white-space: nowrap;
+}
+.font-w{
+	font-weight: 700
+}
+.input-height{
+	height: 2.7rem;
+}
+.bg-bis{
+	background-color: bisque;
+}
+.cursor{
+	cursor: pointer;
+}
+.col{
+	color: #0a5dff;
+	width: 2px;
+	padding: 0;
+}
+.textarea-height{
+	display: none; 
+	width: 90px; 
+	resize: none; 
+	overflow-wrap: break-word; 
+	height: auto;
+}
+.col-1{
+	color: #0a5dff;
+}
+.dis-none{
+	display: none;
+}

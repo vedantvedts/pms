@@ -1,0 +1,187 @@
+@charset "UTF-8";
+
+
+
+.subfolder-group {
+    display: none;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.breadcrumb-header {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.breadcrumb-link {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.subfolder-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.folder-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.folder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.mainicon {
+    font-size: 65px;
+    color: #f0ad4e;
+}
+
+.fileicon {
+    font-size: 48px;
+    color: red;
+}
+.fa-pencil-square-o {
+    font-size: 18px !important;
+    color: #9f0dff !important;
+}
+.folder .edit-form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 5px;
+}
+
+.folder .edit-form input[type="text"] {
+	text-align: center;
+}
+textarea {
+	font-family: inherit;
+	font-size: 14px;
+	line-height: 1.2;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	padding: 4px;
+}
+
+/* .upload-tooltip {
+    background: #333;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.upload-tooltip i {
+    font-size: 16px;
+} */
+
+.folder-icon-wrapper {
+    position: relative;
+}
+
+.control-label {
+	font-weight: bold !important;
+}
+
+.file-icon-wrapper {
+    font-size: 43px;
+}
+
+.pdf-item {
+    width: 120px;
+    word-wrap: break-word;
+}
+
+.file-download-span {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.file-download-span:hover {
+    text-decoration: underline;
+    color: #007bff;
+}
+
+.modal-xl{
+	max-width: 1200px;
+}
+
+.mt-minus{
+	margin-top: -10px;
+}
+
+.dis-none{
+	display: none;
+}
+
+.w-60{
+	max-width: 60%!important;
+}
+
+.no-wrap{
+	white-space: nowrap;
+}
+
+.f-700{
+	font-weight: 700;
+}
+
+.hei-2-7{
+	height: 2.7rem;
+}
+
+.bg-bis{
+	background-color: bisque;
+}
+
+.cursor{
+	cursor: pointer;
+}
+
+.i-col{
+	color: #0a5dff;
+}
+
+.edit-text{
+	display: none; 
+	width: 90px; 
+	resize: none; 
+	overflow-wrap: break-word; 
+	height: auto;
+}
+
+.f-right{
+	float: right;
+}
+
+.mt-bor-minus{
+	margin-top: -8px; 
+	border-color: #00DADA;
+}
+
+
+
+
+
+
+
+
+
