@@ -11,7 +11,8 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 <spring:url value="/resources/js/excel.js" var="excel" />
 <script src="${excel}"></script>
-
+<spring:url value="/resources/css/master/employeeRoleList.css" var="employeeRoleList" />     
+<link href="${employeeRoleList}" rel="stylesheet" />
 </head>
 <body>
 <%
@@ -47,12 +48,12 @@ String labcode = (String)request.getAttribute("labcode");
 	<div class="col-md-2"><h4><b>Employee List</b></h4></div>
 	<div class="col-md-2"></div>
 	<div class="col-md-2" >
-	<h6 style="text-align: right"><b>Lab Name</b></h6>
+	<h6 class="labName"><b>Lab Name</b></h6>
 	</div>
 	
-	<div class="col-md-3" style="margin-top:-8px;">
+	<div class="col-md-3 formDiv" >
 	<form method="POST" action="EmployeeRoleList.htm">
-	<select class="form-control selectdee" id="labcode" name="labcode" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
+	<select class="form-control selectdee" id="labcode" name="labcode" data-container="body" data-live-search="true"  required="required" >
 				<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
 										<% for ( Object[]  obj :LabList) {%>
 								<option value="<%=obj[2] %>"  <%if(labcode.equalsIgnoreCase(obj[2].toString())){ %>  selected <%} %> > <%=obj[2]!=null? StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %></option><%} %>
@@ -73,7 +74,7 @@ String labcode = (String)request.getAttribute("labcode");
 	
 	 <div class="table-responsive">
 	   <table class="table table-bordered table-hover table-striped table-condensed "  id="myTable"> 
-	   <thead style=" text-align: center;">
+	   <thead  class="tblthead">
 	   <tr>
 		  <th>SN</th>
 		  <th>Employee No</th>
@@ -89,10 +90,10 @@ String labcode = (String)request.getAttribute("labcode");
 	   	for(Object[]obj:empList){
 	   %>
 	   <tr>
-	   <td style="text-align: center;"><%=++sn %></td>
-	   <td style=""><%=obj[5]!=null? StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %></td>
-	   <td style=""><%=obj[3]!=null? StringEscapeUtils.escapeHtml4(obj[3].toString()):"-" %> <%if(labcode.equalsIgnoreCase("@EXP")) {%> ( <%=obj[2]!=null? StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %> )  <%} %></td>
-	   <td style=""><%=obj[4]!=null? StringEscapeUtils.escapeHtml4(obj[4].toString()):"-" %></td>
+	   <td class="tblthead"><%=++sn %></td>
+	   <td ><%=obj[5]!=null? StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %></td>
+	   <td><%=obj[3]!=null? StringEscapeUtils.escapeHtml4(obj[3].toString()):"-" %> <%if(labcode.equalsIgnoreCase("@EXP")) {%> ( <%=obj[2]!=null? StringEscapeUtils.escapeHtml4(obj[2].toString()):"-" %> )  <%} %></td>
+	   <td ><%=obj[4]!=null? StringEscapeUtils.escapeHtml4(obj[4].toString()):"-" %></td>
 	   <td>
 	   
 	   <button class="btn bg-transparent" onclick="showRole('<%=obj[5]!=null? StringEscapeUtils.escapeHtml4(obj[5].toString()):"-"%>','<%=obj[1]!=null? StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%>','<%=obj[2]!=null? StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%>','<%=obj[4]!=null? StringEscapeUtils.escapeHtml4(obj[4].toString()):"-"%>')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
@@ -118,7 +119,7 @@ String labcode = (String)request.getAttribute("labcode");
     <div class="modal-content">
       <div class="modal-body">
       	<form action="EmployeeRoleAdd.htm" method="post">
-         <div class="col-md-10" style="font-weight: 600">Employee Role </div> <br>
+         <div class="col-md-10 modelhead" >Employee Role </div> <br>
          <div class="col-md-10">
          <input class="form-control" name="role" id="role" required>
          </div>

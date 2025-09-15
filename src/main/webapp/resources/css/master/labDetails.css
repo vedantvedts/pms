@@ -1,0 +1,123 @@
+@charset "ISO-8859-1";
+
+
+label{
+font-weight: bold;
+  font-size: 13px;
+}
+
+.table thead tr th {
+	background-color: aliceblue;
+	text-align: left;
+	width:30%;
+}
+
+.table thead tr td {
+
+	text-align: left;
+}
+
+label{
+	font-size: 15px;
+}
+
+
+table{
+	box-shadow: 0 4px 6px -2px gray;
+}
+
+
+ .resubmitted{
+	color:green;
+}
+
+	.fa{
+		font-size: 1.20rem;
+	}
+
+
+
+
+
+/* icon styles */
+
+.cc-rockmenu {
+	color:fff;
+	padding:0px 5px;
+	font-family: 'Lato',sans-serif;
+}
+
+.cc-rockmenu .rolling {
+  display: inline-block;
+  cursor:pointer;
+  width: 34px;
+  height: 30px;
+  text-align:left;
+  overflow: hidden;
+  transition: all 0.3s ease-out;
+  white-space: nowrap;
+  
+}
+.cc-rockmenu .rolling:hover {
+  width: 108px;
+}
+.cc-rockmenu .rolling .rolling_icon {
+  float:left;
+  z-index: 9;
+  display: inline-block;
+  width: 28px;
+  height: 52px;
+  box-sizing: border-box;
+  margin: 0 5px 0 0;
+}
+.cc-rockmenu .rolling .rolling_icon:hover .rolling {
+  width: 312px;
+}
+
+.cc-rockmenu .rolling i.fa {
+    font-size: 20px;
+    padding: 6px;
+}
+.cc-rockmenu .rolling span {
+    display: block;
+    font-weight: bold;
+    padding: 2px 0;
+    font-size: 14px;
+    font-family: 'Muli',sans-serif;
+}
+
+.cc-rockmenu .rolling p {
+	margin:0;
+}
+
+.width{
+	width:270px !important;
+}
+
+.headerCard{
+	 background-color: #055C9D;
+}
+
+.thClass{
+	width:20%
+}
+
+#LabCode{
+	font-size: 15px;
+}
+
+.labNameinput{
+	font-size: 15px;text-transform:capitalize;
+}
+
+#LabAddress{
+	font-size: 15px;text-transform:capitalize;
+}
+
+.labCity{
+	font-size: 15px;
+}
+
+.editbtn{
+	display: block; margin: auto;
+}

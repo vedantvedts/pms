@@ -3,125 +3,18 @@
 <%@page import="com.ibm.icu.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+      <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 <title>Holiday List</title>
+
+<spring:url value="/resources/css/master/holidayList.css" var="holidayList" />     
+<link href="${holidayList}" rel="stylesheet" />
 </head>
-<style type="text/css">
 
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-
-.table .font{
-	  font-family:'Muli', sans-serif !important;
-	  font-style: normal;
-	  font-size: 13px;
-	  font-weight: 400 !important;
-	 
-}
-
-.table button {
-    background-color: Transparent !important;
-    background-repeat:no-repeat;
-    border: none;
-    cursor:pointer;
-    overflow: hidden;
-    outline:none;
-    text-align: left !important;
-}
-.table td{
-	padding:5px !important;
-}
- .resubmitted{
-	color:green;
-}
-
-	.fa{
-		font-size: 1.20rem;
-	}
-	
-.datatable-dashv1-list table tbody tr td{
-	padding: 8px 10px !important;
-}
-
-.table-project-n{
-	color: #005086;
-}
-
-#table thead tr th{
-	padding: 0px 0px !important;
-}
-
-#table tbody tr td{
-	padding:2px 3px !important;
-}
-
-
-/* icon styles */
-
-.cc-rockmenu {
-	color:fff;
-	padding:0px 5px;
-	font-family: 'Lato',sans-serif;
-}
-
-.cc-rockmenu .rolling {
-  display: inline-block;
-  cursor:pointer;
-  width: 34px;
-  height: 30px;
-  text-align:left;
-  overflow: hidden;
-  transition: all 0.3s ease-out;
-  white-space: nowrap;
-  
-}
-.cc-rockmenu .rolling:hover {
-  width: 108px;
-}
-.cc-rockmenu .rolling .rolling_icon {
-  float:left;
-  z-index: 9;
-  display: inline-block;
-  width: 28px;
-  height: 52px;
-  box-sizing: border-box;
-  margin: 0 5px 0 0;
-}
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-  width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-    font-size: 20px;
-    padding: 6px;
-}
-.cc-rockmenu .rolling span {
-    display: block;
-    font-weight: bold;
-    padding: 2px 0;
-    font-size: 14px;
-    font-family: 'Muli',sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin:0;
-}
-
-.width{
-	width:270px !important;
-}
-
-
-
-
-
-</style>
 </head>
 <body>
 
@@ -129,7 +22,7 @@ font-weight: bold;
 
 List<Object[]> HolidayList=(List<Object[]>) request.getAttribute("HolidayList");
 String year = (String)request.getAttribute("yr");
-System.out.println("year in jsp--"+year);
+
 
 %>
 
@@ -161,12 +54,12 @@ System.out.println("year in jsp--"+year);
   <div class="card-header">
    <div class="row">
 <h4 class="col-md-10">Holiday List</h4> 
-	<div  style="float: right; margin-top: -10px;">
+	<div class="formDiv" >
 	<form action="HolidayList.htm" method="POST" name="myfrm">
 <table>
 	<tr>
 	  <td>
- <input class="form-control  form-control" type="text" id="year"  name="Year" style="width: 70px" <%if(year!=null){%> value="<%=StringEscapeUtils.escapeHtml4(year)%>" <%}%> >
+ <input class="form-control  form-control" type="text" id="year"  name="Year"  <%if(year!=null){%> value="<%=StringEscapeUtils.escapeHtml4(year)%>" <%}%> >
         </td>
 	       <td>
            <input type="submit" value="Submit" class="btn btn-primary btn-sm submit" > </td>
@@ -184,9 +77,9 @@ System.out.println("year in jsp--"+year);
 <form action="HolidayAddEdit.htm" name="myfrm">
  <div class="table-responsive">
 	   <table class="table table-bordered table-hover table-striped table-condensed "  id="myTable"> 
-	   <thead style = "text-align:center">
+	   <thead  class="myTableHead">
 	   <tr>
-	   <th style="width: 5%;">Select</th>
+	   <th class="selectTh" >Select</th>
 	  <th>Holiday Date</th>
 	  <th>Holiday  Name</th>
 	  <th>Holiday Type</th>
@@ -199,15 +92,15 @@ System.out.println("year in jsp--"+year);
 	         <tr>
 	             <td align="center"><input type="radio" name="HolidayId" value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):""%>  ></td> 
 	             
-	             <td style="text-align: left"><%if(obj[1]!=null){%><%=StringEscapeUtils.escapeHtml4(sdf.format(obj[1])) %><%}else{ %>-<%} %></td>
-	             <td style="text-align: left"> <%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%}else{ %>-<%} %></td>
-	              <td style="text-align: left;width: 30%;"><%if(obj[3].toString().equals("G")){ %>General<%} %><%if(obj[3].toString().equals("R")){ %>Restricted<%} %>
+	             <td  class="tdData"><%if(obj[1]!=null){%><%=StringEscapeUtils.escapeHtml4(sdf.format(obj[1])) %><%}else{ %>-<%} %></td>
+	             <td class="tdData"> <%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%}else{ %>-<%} %></td>
+	              <td class="holidayData" ><%if(obj[3].toString().equals("G")){ %>General<%} %><%if(obj[3].toString().equals("R")){ %>Restricted<%} %>
 					  <%if(obj[3].toString().equals("W")){ %>Working Saturday/Sunday<%} %><%if(obj[3].toString().equals("H")){ %>Holiday For Working Saturday/Sunday<%} %>
 					  </td>
 	             
 	      </tr>
 	    <%}}else{ %>
-	    <td colspan="4" style="text-align: center;">No Records found</td><%} %>
+	    <td colspan="4" class="noData" >No Records found</td><%} %>
 	    </tbody>
 </table>
  	
@@ -218,7 +111,7 @@ System.out.println("year in jsp--"+year);
 		
 			<button type="submit" class="btn btn-danger btn-sm delete" name="HolidayId" value="<%=HolidayList.get(0) %>" formaction="HolidayDelete.htm" formmethod="get" onclick="Delete(myfrm)">DELETE</button>&nbsp; &nbsp; 	
 		
-		<!-- <button type="submit" class="btn btn-info btn-sm shadow-nohover back" style="margin-left: 1rem;" formaction="MainDashBoard.htm" formmethod="get" formnovalidate="formnovalidate"  >BACK</button>   -->
+		
 	</div> 
 
  </form>

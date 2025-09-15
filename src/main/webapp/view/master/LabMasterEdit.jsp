@@ -3,112 +3,16 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+           <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 <title>LAB MASTER EDIT</title>
-<style type="text/css">
+<spring:url value="/resources/css/master/labMasterEdit.css" var="labMasterEdit" />     
+<link href="${labMasterEdit}" rel="stylesheet" />
 
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-
-.table thead tr th {
-	background-color: aliceblue;
-	text-align: left;
-	width:30%;
-}
-
-.table thead tr td {
-
-	text-align: left;
-}
-
-label{
-	font-size: 15px;
-}
-
-
-table{
-	box-shadow: 0 4px 6px -2px gray;
-}
-
-
- .resubmitted{
-	color:green;
-}
-
-	.fa{
-		font-size: 1.20rem;
-	}
-
-
-
-
-
-/* icon styles */
-
-.cc-rockmenu {
-	color:fff;
-	padding:0px 5px;
-	font-family: 'Lato',sans-serif;
-}
-
-.cc-rockmenu .rolling {
-  display: inline-block;
-  cursor:pointer;
-  width: 34px;
-  height: 30px;
-  text-align:left;
-  overflow: hidden;
-  transition: all 0.3s ease-out;
-  white-space: nowrap;
-  
-}
-.cc-rockmenu .rolling:hover {
-  width: 108px;
-}
-.cc-rockmenu .rolling .rolling_icon {
-  float:left;
-  z-index: 9;
-  display: inline-block;
-  width: 28px;
-  height: 52px;
-  box-sizing: border-box;
-  margin: 0 5px 0 0;
-}
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-  width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-    font-size: 20px;
-    padding: 6px;
-}
-.cc-rockmenu .rolling span {
-    display: block;
-    font-weight: bold;
-    padding: 2px 0;
-    font-size: 14px;
-    font-family: 'Muli',sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin:0;
-}
-
-.width{
-	width:270px !important;
-}
-
-
-
-
-
-</style>
 </head>
 <body>
 
@@ -124,9 +28,9 @@ List<Object[]> lablist=(List<Object[]>)request.getAttribute("lablist");
 <div class="row"> 
 <div class="col-sm-1"></div>
 
- <div class="col-sm-10"  style="top: 10px;">
+ <div class="col-sm-10 maindiv"  >
 <div class="card shadow-nohover" >
-<div class="card-header" style=" background-color: #055C9D;margin-top: ">
+<div class="card-header headingcard" >
                     <h5 class="text-white" ><b>Lab Details Edit</b></h5>
 </div>
 <div class="card-body">
@@ -143,14 +47,14 @@ List<Object[]> lablist=(List<Object[]>)request.getAttribute("lablist");
 <tr>
   <th>
 <label >Lab Code:
-<span class="mandatory" style="color: red;">*</span>
+<span class="mandatory" >*</span>
 </label>
 </th>
  <td width="">
 
 	<%if(LabMasterEditData[1]!=null){ %> 
  
- 	<input  class="form-control" type="text" name="LabCode" required="required" maxlength="255" style="font-size: 15px;"  id="LabCode" 
+ 	<input  class="form-control" type="text" name="LabCode" required="required" maxlength="255"   id="LabCode" 
  	 value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[1].toString()) %> " >
  
 	<%}else{ %>-<%} %>
@@ -170,7 +74,7 @@ List<Object[]> lablist=(List<Object[]>)request.getAttribute("lablist");
 <tr>
  <th >
 <label >Lab Name:
-<span class="mandatory" style="color: red;">*</span>
+<span class="mandatory" >*</span>
 </label>
 </th>
  <td width="">
@@ -179,7 +83,7 @@ List<Object[]> lablist=(List<Object[]>)request.getAttribute("lablist");
 			
 		<%if(LabMasterEditData[2]!=null){ %>			
 					
- 	<input  class="form-control form-control" type="text" name="LabName" required="required" maxlength="255" style="font-size: 15px;text-transform:capitalize;"  
+ 	<input  class="form-control form-control labName" type="text" name="LabName" required="required" maxlength="255"  
  	 value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[2].toString()) %>" > 
 			
 	
@@ -198,7 +102,7 @@ List<Object[]> lablist=(List<Object[]>)request.getAttribute("lablist");
 
   <th>
 <label >Lab Address:
-<span class="mandatory" style="color: red;">*</span>
+<span class="mandatory" >*</span>
 </label>
 </th>
  <td colspan="3">
@@ -206,7 +110,7 @@ List<Object[]> lablist=(List<Object[]>)request.getAttribute("lablist");
  
 		<%if(LabMasterEditData[4]!=null){ %>			
 					
- 	<input  class="form-control form-control" type="text" name="LabAddress" required="required" maxlength="255" style="font-size: 15px;text-transform:capitalize;width:88%" 
+ 	<input  class="form-control form-control labAddress" type="text" name="LabAddress" required="required" maxlength="255"  
  	  value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[4].toString())%>" >
 			
 		<%}else{ %>-<%} %>
@@ -226,7 +130,7 @@ List<Object[]> lablist=(List<Object[]>)request.getAttribute("lablist");
 
 <th>
 <label >Lab City:
-<span class="mandatory" style="color: red;">*</span>
+<span class="mandatory">*</span>
 </label>
 </th>
  <td >
@@ -234,7 +138,7 @@ List<Object[]> lablist=(List<Object[]>)request.getAttribute("lablist");
 
 		<%if(LabMasterEditData[5]!=null){ %>			
 					
- 	<input  class="form-control form-control" type="text" name="LabCity" required="required" maxlength="255" style="font-size: 15px;text-transform:capitalize;"  
+ 	<input  class="form-control form-control LabCity" type="text" name="LabCity" required="required" maxlength="255"   
  	 value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[5].toString()) %>" >  
 			
 	<%}else{ %>-<%} %>
@@ -243,7 +147,7 @@ List<Object[]> lablist=(List<Object[]>)request.getAttribute("lablist");
 
  <th>
 <label >Lab Email:
-<span class="mandatory" style="color: red;">*</span>
+<span class="mandatory" >*</span>
 </label>
 </th>
  <td >
@@ -251,7 +155,7 @@ List<Object[]> lablist=(List<Object[]>)request.getAttribute("lablist");
 
 		<%if(LabMasterEditData[9]!=null){ %>			
 					
- 	<input  class="form-control form-control" type="text" name="LabEmail" required="required" maxlength="30" style="font-size: 15px;" 
+ 	<input  class="form-control form-control labEmail" type="text" name="LabEmail" required="required" maxlength="30" 
  	  value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[9].toString()) %>" >
 			
 		<%}else{ %>-<%} %>	
@@ -268,7 +172,7 @@ List<Object[]> lablist=(List<Object[]>)request.getAttribute("lablist");
 
  <th>
 <label >Lab Pin:
-<span class="mandatory" style="color: red;">*</span>
+<span class="mandatory" >*</span>
 </label>
 </th>
  <td >
@@ -276,7 +180,7 @@ List<Object[]> lablist=(List<Object[]>)request.getAttribute("lablist");
 
 		<%if(LabMasterEditData[6]!=null){ %>			
 					
- 	<input  class="form-control form-control" type="text" name="LabPin" required="required" maxlength="6" style="font-size: 15px;"  
+ 	<input  class="form-control form-control LabPin" type="text" name="LabPin" required="required" maxlength="6"  
 value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[6].toString()) %>" > 
 			
 		<%}else{ %>-<%} %>
@@ -288,7 +192,7 @@ value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[6].toString()) %>" >
 
 <th>
 <label >Lab Unit Code:
-<span class="mandatory" style="color: red;">*</span>
+<span class="mandatory" >*</span>
 </label>
 </th>
  <td >
@@ -296,7 +200,7 @@ value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[6].toString()) %>" >
 
 <%if(LabMasterEditData[3]!=null){ %>		
 					
- 	<input  class="form-control form-control" type="number" name="LabUnitCode" required="required" maxlength="255" style="font-size: 15px;"  id="LabCode" 
+ 	<input  class="form-control form-control" type="number" name="LabUnitCode" required="required" maxlength="255"   id="LabCode" 
  	 value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[3].toString()) %>" >  
 			
 <%}else{ %>-<%} %>
@@ -313,7 +217,7 @@ value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[6].toString()) %>" >
 
  <th>
 <label >Lab Telephone:
-<span class="mandatory" style="color: red;">*</span>
+<span class="mandatory" >*</span>
 </label>
 </th>
  <td >
@@ -321,7 +225,7 @@ value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[6].toString()) %>" >
 
 		<%if(LabMasterEditData[7]!=null){ %>			
 					
- 	<input  class="form-control form-control" type="text" name="LabTelephone" required="required" maxlength="15" style="font-size: 15px;"  
+ 	<input  class="form-control form-control LabTelephone" type="text" name="LabTelephone" required="required" maxlength="15"   
  	 value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[7].toString()) %>" >
 			
 		<%}else{ %>-<%} %>
@@ -333,7 +237,7 @@ value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[6].toString()) %>" >
 
 <th>
 <label >Lab Fax No:
-<span class="mandatory" style="color: red;">*</span>
+<span class="mandatory" >*</span>
 </label>
 </th>
  <td >
@@ -341,7 +245,7 @@ value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[6].toString()) %>" >
 
 			<%if(LabMasterEditData[8]!=null){ %>		
 					
- 	<input  class="form-control form-control" type="number" name="LabFaxNo" required="required" maxlength="255" style="font-size: 15px;"  id="" 
+ 	<input  class="form-control form-control LabFaxNo" type="number" name="LabFaxNo" required="required" maxlength="255"   id="" 
   value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[8].toString()) %>" >
 			
 	<%}else{ %>-<%} %>
@@ -362,15 +266,15 @@ value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[6].toString()) %>" >
 
  <th>
 <label >Lab Authority:
-<span class="mandatory" style="color: red;">*</span>
+<span class="mandatory" >*</span>
 </label>
 </th>
- <td style="width:20%">
+ <td  class="inputtd">
  
 
 					
 					
- 	<input  class="form-control form-control" type="text" name="LabAuthority" required="required" maxlength="30" style="font-size: 15px;"  
+ 	<input  class="form-control form-control LabAuthority" type="text" name="LabAuthority" required="required" maxlength="30"   
  <%if(LabMasterEditData[10]!=null){ %> value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[10].toString()) %>" <%}else{ %>value=""<%} %> >
 			
 		
@@ -382,13 +286,13 @@ value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[6].toString()) %>" >
 
 <th>
 <label >Lab Authority Name:
-<span class="mandatory" style="color: red;">*</span>
+<span class="mandatory">*</span>
 </label>
 </th>
  <td >
 			
 			
- 	 <select class="form-control selectdee" name="LabAuthorityName" data-container="body" data-live-search="true"  required="required" style="width: 100%">
+ 	 <select class="form-control selectdee LabAuthorityName" name="LabAuthorityName" data-container="body" data-live-search="true"  required="required" >
 				<option value="" disabled="disabled" selected="selected"
 					hidden="true">--Select--</option>
 				
@@ -415,13 +319,13 @@ value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[6].toString()) %>" >
   <thead>
 <tr>
 
- <th style="width:20%">
+ <th  class="thClass">
 <label >Lab :
-<span class="mandatory" style="color: red;">*</span>
+<span class="mandatory" >*</span>
 </label>
 </th>
  <td >
- <select class="form-control selectdee" name="labid" data-container="body" data-live-search="true"  required="required" style="width: 100%">
+ <select class="form-control selectdee labidselect" name="labid" data-container="body" data-live-search="true"  required="required" >
 				<option value="" disabled="disabled" selected="selected"
 					hidden="true">--Select--</option>
 				
@@ -447,9 +351,9 @@ value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[6].toString()) %>" >
   <thead>
 <tr>
 
- <th style="width:20%">
+ <th  class="labRFP">
 <label >Lab RFP Website:
-<span class="mandatory" style="color: red;">*</span>
+<span class="mandatory" >*</span>
 </label>
 </th>
  <td >
@@ -457,7 +361,7 @@ value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[6].toString()) %>" >
 
 		<%if(LabMasterEditData[12]!=null){ %>			
 					
- 	<input  class="form-control form-control" type="text" name="LabRFPEmail" required="required" maxlength="30" style="font-size: 15px;"  
+ 	<input  class="form-control form-control LabRFPEmail" type="text" name="LabRFPEmail" required="required" maxlength="30"   
  	 value="<%=StringEscapeUtils.escapeHtml4(LabMasterEditData[12].toString()) %>" >
 			
 		<%}else{ %>-<%} %>

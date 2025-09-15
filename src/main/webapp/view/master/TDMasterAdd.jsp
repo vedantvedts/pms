@@ -1,7 +1,7 @@
 <%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
-    
+        <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
     <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 
@@ -12,44 +12,11 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 
 <title>TD MASTER ADD</title>
-<style type="text/css">
 
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-
-.table thead tr th {
-	/* background-color: aliceblue; */
-	text-align: left;
-	width:30%;
-}
-
-.table thead tr td {
-
-	text-align: left;
-}
-
-label{
-	font-size: 15px;
-}
+<spring:url value="/resources/css/master/TDMasterAdd.css" var="TDMasterAdd" />     
+<link href="${TDMasterAdd}" rel="stylesheet" />
 
 
-table{
-	box-shadow: 0 4px 6px -2px gray;
-}
-
-
- .resubmitted{
-	color:green;
-}
-
-	.fa{
-		font-size: 1.20rem;
-	}
-
-
-</style>
 </head>
 <body>
 
@@ -87,9 +54,9 @@ List<Object[]> tdheadlist=(List<Object[]>)request.getAttribute("tdheadlist");
 
 <div class="col-sm-2"></div> 
 	
- <div class="col-sm-8"  style="top: 10px;">
+ <div class="col-sm-8 topdiv"  >
 <div class="card shadow-nohover"  >
-<div class="card-header" style=" background-color: #055C9D;margin-top: ">
+<div class="card-header headerDiv" >
                     <h3 class="text-white">TD Add </h3>
         		</div>
         		
@@ -102,13 +69,13 @@ List<Object[]> tdheadlist=(List<Object[]>)request.getAttribute("tdheadlist");
                     		<div class="col-md-3">
                         		<div class="form-group">
                             		<label class="control-label">TD Code</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control alphanum-only"  type="text" name="tCode" id="tdCode" required="required" maxlength="3" style="font-size: 15px;"> 
+                              		<input  class="form-control form-control alphanum-only"  type="text" name="tCode" id="tdCode" required="required" maxlength="3" > 
                         		</div>
                     		</div>
          					<div class="col-md-3">
                         		<div class="form-group">
                             		<label class="control-label">TD Name</label><span class="mandatory">*</span>
-                            		<input  class="form-control form-control alphanum-no-leading-space"  type="text" name="tName" id="tdName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize; width: 80%;" > 
+                            		<input  class="form-control form-control alphanum-no-leading-space"  type="text" name="tName" id="tdName" required="required" maxlength="100"  > 
                         		</div>
                     		</div>
                     		<div class="col-md-5">
@@ -130,7 +97,7 @@ List<Object[]> tdheadlist=(List<Object[]>)request.getAttribute("tdheadlist");
                         </div>   
                         
                         <div align="center">
-							<button type="button" class="btn btn-sm submit" style="align-self: center;" onclick="return tdcheck('tdAdd');">SUBMIT</button>
+							<button type="button" class="btn btn-sm submit btnSubmit" onclick="return tdcheck('tdAdd');">SUBMIT</button>
 							<a class="btn  btn-sm  back"    href="TDMaster.htm">BACK</a>
 						</div>
                         
