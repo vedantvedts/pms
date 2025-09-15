@@ -2,12 +2,15 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+      <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 <title>Standard Document List</title>
+<spring:url value="/resources/css/standardDocument/standardDocumentsList.css" var="holidayAddEdit" />     
+<link href="${holidayAddEdit}" rel="stylesheet" />
 </head>
 <body>
 <%
@@ -42,7 +45,7 @@ List<Object[]> stnadardDocumentsList=(List<Object[]>)request.getAttribute("stnad
 		   <form action="#" method="POST" name="frm1">
 			<div class="table-responsive">
 			   <table class="table table-bordered table-hover table-striped table-condensed "  id="myTable"> 
-				    <thead style=" text-align: center;">
+				    <thead class="theadalign">
 						   <tr>
 							  <th>Select</th>
 							  <th>Name</th>
@@ -64,7 +67,7 @@ List<Object[]> stnadardDocumentsList=(List<Object[]>)request.getAttribute("stnad
  							     </button> --%>
 					             <button type="submit" class="btn btn-sm icon-btn" name="StandardDocumentId" id=<%="StandardDocumentId"+obj[0]%> value="<%=obj[0]%>"  formaction="StandardDocumentsDownload.htm" formmethod="post" formtarget="_blank"
 									 data-toggle="tooltip" data-placement="top" title="Download"> 
-											<i class="fa fa-download" style="color: green;" aria-hidden="true"></i>
+											<i class="fa fa-download downloadbtn"  aria-hidden="true"></i>
  								 </button>
 					             </td>
 	     					 </tr>
@@ -84,11 +87,11 @@ List<Object[]> stnadardDocumentsList=(List<Object[]>)request.getAttribute("stnad
 					
 
    <div class="modal fade my-modal" id="exampleModalStandardDocuments"  tabindex="-1" role="dialog" aria-labelledby="exampleModalAssignTitle" aria-hidden="true" >
- 	  <div class="modal-dialog  modal-lg modal-dialog-centered modal-dialog-jump" role="document" style="min-width: 55% !important;">
- 	    <div class="modal-content" style="height: 400px;">
- 	      <div class="modal-header" style="background-color: #114A86;max-height:55px;">
- 	      <div class="center-div" align="center"><h5 class="modal-title" id="exampleModalLongTitle" style="color: white;"></h5></div>
-  	        <button type="button" class="close" data-dismiss="modal" style="color: white;" aria-label="Close">
+ 	  <div class="modal-dialog  modal-lg modal-dialog-centered modal-dialog-jump modal1" role="document">
+ 	    <div class="modal-content modal-content1">
+ 	      <div class="modal-header modal-header1">
+ 	      <div class="center-div" align="center"><h5 class="modal-title modal-title1" id="exampleModalLongTitle"></h5></div>
+  	        <button type="button" class="close modal-close" data-dismiss="modal" aria-label="Close">
   	          <span aria-hidden="true">&times;</span>
   	        </button>
   	      </div>
@@ -98,21 +101,21 @@ List<Object[]> stnadardDocumentsList=(List<Object[]>)request.getAttribute("stnad
   	      		<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<label class="control-label">Name <span class="mandatory" style="color: red; font-weight: normal;">*</span></label>
-								<input type="text" class="form-control form-control alphanum-no-leading-space" name="DocumentName" style="font-size: 15px;" id="DocumentName" required="required">
+								<label class="control-label">Name <span class="mandatory mandatory-1" >*</span></label>
+								<input type="text" class="form-control form-control alphanum-no-leading-space" name="DocumentName DocumentName-1" id="DocumentName" required="required">
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								<label class="control-label" style="display: inline-block;">Attachment<span class="mandatory" id="Mandatory" style="color: red; font-weight: normal;"></span></label>&nbsp;&nbsp;&nbsp;&nbsp;<span style="display: inline-block;" id="SelectedDocument"></span>
-								<input type="file" class="form-control form-control" name="Attachment" style="font-size: 15px;" id="Attachment" required="required">
+								<label class="control-label control-label1">Attachment<span class="mandatory Attachmentmandatory-1" id="Mandatory"></span></label>&nbsp;&nbsp;&nbsp;&nbsp;<span class="SelectedDocument1" id="SelectedDocument"></span>
+								<input type="file" class="form-control form-control Attachmentfile-1" name="Attachment" id="Attachment" required="required">
 							</div>
 						</div>
 						</div>
 						<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
-								<label class="control-label">Description<span class="mandatory" style="color: red; font-weight: normal;">*</span></label>
+								<label class="control-label">Description<span class="mandatory Description-1">*</span></label>
 								<textarea class="form-control form-control description-input" rows="3" cols="50" id="Description" name="Description" required="required" maxlength="2000"></textarea>
 								<!-- <input type="text" class="form-control form-control" type="text" id="Description" name="Description" style="font-size: 15px;" required="required" /> -->
 							</div>
