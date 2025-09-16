@@ -13,91 +13,12 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 <script src="./resources/js/multiselect.js"></script>
 <link href="./resources/css/multiselect.css" rel="stylesheet" />
-
+<spring:url value="/resources/css/milestone/MileActivityUpdate.css" var="MileActivityUpdate" />     
+<link href="${MileActivityUpdate}" rel="stylesheet" />
 
 <title>Milestone Update</title>
 <style type="text/css">
-label {
-	font-weight: bold;
-	font-size: 13px;
-}
 
-body {
-	background-color: #f2edfa;
-	overflow-x: hidden !important;
-}
-
-h6 {
-	text-decoration: none !important;
-}
-
-.multiselect-container>li>a>label {
-	padding: 4px 20px 3px 20px;
-}
-
-.cc-rockmenu {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-}
-
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor: pointer;
-	width: 34px;
-	height: 30px;
-	text-align: left;
-	overflow: hidden;
-	transition: all 0.3s ease-out;
-	white-space: nowrap;
-}
-
-.cc-rockmenu .rolling:hover {
-	width: 108px;
-}
-
-.cc-rockmenu .rolling .rolling_icon {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 28px;
-	height: 52px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-.cc-rockmenu .rolling span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 14px;
-	font-family: 'Muli', sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin: 0;
-}
-
-.width {
-	width: 150px !important;
-}
-
-input[type="file"] {
-	height: 39px;
-}
-
-input[type="file"]::-webkit-file-upload-button {
-	height: 28px;
-}
 </style>
 </head>
 
@@ -142,16 +63,16 @@ input[type="file"]::-webkit-file-upload-button {
 <% } %>
 
 	<div class="container-fluid">
-		<div class="row" style="margin-top: -0px; margin-bottom: 5px;">
+		<div class="row rowHeader" >
 
 			<div class="col-md-6">
 
 				<div class="card shadow-nohover">
 
-					<div class="card-header"
-						style="background-color: #055C9D; margin-top:">
+					<div class="card-header cardHeader"
+						>
 						<b class="text-white"> Activity Update: <%=EditData[3]!=null?StringEscapeUtils.escapeHtml4(EditData[3].toString()): " - " %></b><b
-							class="text-white" style="float: right;"><%=projectdetails[1]!=null?StringEscapeUtils.escapeHtml4(projectdetails[1].toString()): " - "%></b>
+							class="text-white" ><%=projectdetails[1]!=null?StringEscapeUtils.escapeHtml4(projectdetails[1].toString()): " - "%></b>
 					</div>
 
 					<div class="card-body">
@@ -171,7 +92,7 @@ input[type="file"]::-webkit-file-upload-button {
 								<div class="col-md-3">
 									<div class="form-group">
 										<label>Progress Date: <span class="mandatory"
-											style="color: red;">* </span></label> <input class="form-control "
+											>* </span></label> <input class="form-control "
 											name="progressDate" id="progressDate" required="required"
 											placeholder="">
 
@@ -198,8 +119,8 @@ input[type="file"]::-webkit-file-upload-button {
 						
 							</div>
 
-							<div class="form-group" align="center"
-								style="padding-bottom: 25px;">
+							<div class="form-group formgroup" align="center"
+								>
 								<input type="submit" class="btn btn-primary btn-sm submit "
 									id="sub" value="SUBMIT" name="sub"
 									onclick="return editcheck('FileAttach');">
@@ -223,21 +144,21 @@ input[type="file"]::-webkit-file-upload-button {
 
 
 					<div class="card-footer"
-						style="background: linear-gradient(to right, #334d50, #cbcaa5); padding: 2px; margin-top: -40px;">
+						>
 
 
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6" style="">
+			<div class="col-md-6" >
 				<div class="card shadow-nohover">
 
-					<div class="card-header"
-						style="background-color: #055C9D; margin-top:">
+					<div class="card-header cardHeader"
+						>
 						<b class="text-white"> Action Item: <%=EditData[3] %></b>
 					</div>
 
-					<div class="card-body" style="margin-top: -8px">
+					<div class="card-body cardBody" >
 						<form name="specadd" id="specadd" action="MilActionSubmit.htm"
 							method="post">
 
@@ -255,7 +176,7 @@ input[type="file"]::-webkit-file-upload-button {
 								<div class="col-sm-3" align="left">
 									<div class="form-group">
 										<label>PDC: <span class="mandatory"
-											style="color: red;">* </span></label> <input class="form-control "
+											>* </span></label> <input class="form-control "
 											name="DateCompletion" id="DateCompletion" required="required"
 											placeholder="">
 
@@ -287,14 +208,14 @@ input[type="file"]::-webkit-file-upload-button {
 							</div>
 
 
-							<div class="row" style="margin-bottom: 10px;">
+							<div class="row rowmb">
 								<div class="col-sm-2" align="left"></div>
 								<div class="col-sm-3" align="left">
 									<div class="form-group">
 										<label> Lab : <span class="mandatory"
-											style="color: red;">* </span></label> <br> <select
+											>* </span></label> <br> <select
 											class=" form-control selectdee" name="AssigneeLabCode"
-											id="LabCode" required="required" style="margin-top: -5px"
+											id="LabCode" required="required" 
 											onchange="AssigneeEmpList()">
 											<option disabled="disabled" selected value="">Choose...</option>
 											<%if(AllLabsList!=null && AllLabsList.size()>0){	for (Object[] obj  : AllLabsList) {
@@ -341,8 +262,8 @@ input[type="file"]::-webkit-file-upload-button {
 
 							</div>
 							<div align="center">
-								<input type="submit" name="sub" style="margin-top: -10px;"
-									class="btn  btn-sm submit" form="specadd" id="adding"
+								<input type="submit" name="sub" 
+									class="btn  btn-sm submit cardBody" form="specadd" id="adding"
 									value="SUBMIT"
 									onclick="return confirm('Are you sure To Submit?')" /> <input
 									type="hidden" name="ProjectId"
@@ -351,8 +272,8 @@ input[type="file"]::-webkit-file-upload-button {
 									value="<%=EditMain.getMilestoneActivityId() %>" /> <input
 									type="hidden" name="ActivityId"
 									value="<%=EditMain.getActivityId() %>" /> <input type="hidden"
-									name="ActivityType" value="A" /> <input type="hidden"
-									name="Item" value="<%=EditData[3] %>" style="width: 100%"
+									name="ActivityType" value="A" /> <input class="width100" type="hidden"
+									name="Item" value="<%=EditData[3] %>"
 									maxlength="1000"> <input type="hidden"
 									name="${_csrf.parameterName}" value="${_csrf.token}" />
 
@@ -363,8 +284,8 @@ input[type="file"]::-webkit-file-upload-button {
 
 						</form>
 					</div>
-					<div class="card-footer"
-						style="background: linear-gradient(to right, #334d50, #cbcaa5); padding: 2px; margin-top: 0px;"></div>
+					<div class="card-footer card-footer1"
+						></div>
 				</div>
 
 			</div>
@@ -375,25 +296,25 @@ input[type="file"]::-webkit-file-upload-button {
 			<% if(SubList.size()>0){ %>
 
 
-			<div class="col-md-6" style="padding-left: 10px">
+			<div class="col-md-6 p-1" >
 
 
 
 				<div class="table-responsive">
 					<table
 						class="table table-bordered table-hover table-striped table-condensed"
-						id="myTable3" style="margin-top: 20px;">
+						id="myTable3" >
 						<thead>
 							<tr>
-								<th colspan="7" style="background-color: #346691; color: white; text-align: center; font-size: 18px !important; border-left: 0px solid; text-transform: capitalize;">
+								<th colspan="7" class="details">
 									Activity Updated Details
 								</th>
 							</tr>
 							<tr>
-								<th style="text-align: left;">As On Date</th>
-								<th style="">Progress %</th>
-								<th style="">Remarks</th>
-								<th style="">Attachment</th>
+								<th align="left">As On Date</th>
+								<th >Progress %</th>
+								<th >Remarks</th>
+								<th >Attachment</th>
 								<!-- <th style="">Upload</th> -->
 								<!-- <th style="">Action</th> -->
 							</tr>
@@ -407,25 +328,25 @@ input[type="file"]::-webkit-file-upload-button {
 
 
 
-								<td style="width: 15%;"><%=sdf.format(obj[2])%></td>
+								<td class="width15" ><%=sdf.format(obj[2])%></td>
 
-								<td style="width: 15%;">
+								<td class="width15">
 
-									<div class="progress"
-										style="background-color: #cdd0cb !important">
-										<div class="progress-bar progress-bar-striped"
-											role="progressbar" style="width: <%=obj[1]%>%;"
+									<div class="progress id12"
+										>
+										<div class="progress-bar progress-bar-striped width-<%=obj[1]%>"
+											role="progressbar" 
 											aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></div>
 									</div>
 
 								</td>
 
-								<td
-									style="word-wrap: break-word !important; min-width: 10%; max-width: 15%; white-space: normal !important; text-align: justify; word-break: break-all;">
+								<td class="tddetails"
+									>
 									<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%>
 								</td>
 
-								<td style="text-align: left; width: 3%;">
+								<td class="tdDownload">
 									<% 
 						        if(obj[4].toString().length()!=0 && obj[4]!=null){
 						        %>
@@ -457,34 +378,32 @@ input[type="file"]::-webkit-file-upload-button {
 
 
 			<%}else{ %>
-			<div class="col-md-6" style="padding-left: 10px"></div>
+			<div class="col-md-6 p-2"> </div>
 			<% }if(ActionList.size()>0){ %>
 
 
-			<div class="col-md-6" style="padding-left: 10px">
+			<div class="col-md-6 p-2">
 
 
 
 				<div class="table-responsive">
 					<table
-						class="table table-bordered table-hover table-striped table-condensed"
-						id="myTable3" style="margin-top: 20px;">
+						class="table table-bordered table-hover table-striped table-condensed mt-2"
+						id="myTable3">
 						<thead>
 							<tr>
-								<th colspan="7"
-									style="background-color: #346691; color: white; text-align: center; font-size: 18px !important; border-left: 0px solid; text-transform: capitalize;">Action
+								<th colspan="7" class="tdActionAssigned"
+									>Action
 									Assigned</th>
 							</tr>
 							<tr>
-								<th style="">Assignee</th>
-								<th style="">Date of Assigned</th>
-								<th style="text-align: left;">PDC</th>
+								<th >Assignee</th>
+								<th >Date of Assigned</th>
+								<th >PDC</th>
 
-								<th style="">Progress %</th>
+								<th >Progress %</th>
 
 
-								<!-- <th style="">Upload</th> -->
-								<!-- <th style="">Action</th> -->
 							</tr>
 						</thead>
 						<tbody>
@@ -495,23 +414,23 @@ input[type="file"]::-webkit-file-upload-button {
 
 
 
-								<td style="width: 18% !important;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></td>
+								<td class="width18"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></td>
 								<td width="12%"><%=sdf.format(obj[3])%></td>
 								<td width="12%"><%=sdf.format(obj[4])%></td>
-								<td style="width: 8% !important;">
+								<td class="width8">
 									<%if(obj[11]!=null){ %>
-									<div class="progress"
-										style="background-color: #cdd0cb !important; height: 1.4rem !important;">
-										<div class="progress-bar progress-bar-striped"
-											role="progressbar" style=" width: <%=obj[11]%>%;  "
+									<div class="progress Isprogress"
+										>
+										<div class="progress-bar progress-bar-striped width-<%=obj[11]%>"
+											role="progressbar" 
 											aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
 											<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "%>
 										</div>
 									</div> <%}else{ %>
-									<div class="progress"
-										style="background-color: #cdd0cb !important; height: 1.4rem !important;">
-										<div class="progress-bar" role="progressbar"
-											style="width: 100%; background-color: #cdd0cb !important; color: black; font-weight: bold;">
+									<div class="progress Isprogress"
+										>
+										<div class="progress-bar NoProgress" role="progressbar"
+											>
 											Not Yet Started .</div>
 									</div> <%} %>
 								</td>

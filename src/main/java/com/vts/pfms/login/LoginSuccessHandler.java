@@ -23,6 +23,14 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 	@Autowired
 	Environment env;
 	
+	
+	
+	 private final LoginAttemptService loginAttemptService;
+	    public LoginSuccessHandler(AuditFailedStampingRepository auditRepo,LoginAttemptService loginAttemptService) {
+	       
+	        this.loginAttemptService = loginAttemptService;
+	    }
+	
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,   HttpServletResponse response, Authentication authentication ) throws IOException  {
 
@@ -50,8 +58,21 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         Date issuedAt = new Date(iat * 1000); // Convert seconds to milliseconds
         Date expiresAt = new Date(exp * 1000);
     	
+        String Issuer = payload.getString("Issuer");
+        
+        
+        String username = request.getParameter("username"); // matches your login form
+        // Check if user is already blocked
+        if (loginAttemptService.isBlocked(username)) {
+        	System.out.println("Inside Login handlere");
+        	response.sendRedirect(request.getContextPath() +"/login?error=Too Many Attempt, Try After One min");
+
+            return;
+        }
+        
         System.out.println(expiresAt);
         System.out.println(now);
+        System.out.println(Issuer);
         
 //        if (expiresAt.before(now)) {
 //        	response.sendRedirect(request.getContextPath()+"/accessdenied");

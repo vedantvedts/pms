@@ -3,222 +3,16 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
 	import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+	<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <title>Milestone Activity Details</title>
 <jsp:include page="../static/header.jsp"></jsp:include>
-<style>
-.bs-example {
-	margin: 20px;
-}
+  <spring:url value="/resources/css/milestone/milestoneActivityDetails.css" var="milestoneActivityDetails" />     
+<link href="${milestoneActivityDetails}" rel="stylesheet" />
 
-.accordion .fa {
-	margin-right: 0.5rem;
-}
-</style>
-
-<style type="text/css">
-label {
-	font-weight: bold;
-	font-size: 13px;
-}
-
-.note-editable {
-	line-height: 1.0;
-}
-
-.panel-info {
-	border-color: #bce8f1;
-}
-
-.panel {
-	margin-bottom: 10px;
-	background-color: #fff;
-	border: 1px solid transparent;
-	border-radius: 4px;
-	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-	box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-}
-
-.panel-heading {
-	background-color: #FFF !important;
-	border-color: #bce8f1 !important;
-	border-bottom: 2px solid #466BA2 !important;
-	color: #1d5987;
-}
-
-.panel-title {
-	margin-top: 0;
-	margin-bottom: 0;
-	font-size: 13px;
-	color: inherit;
-	font-weight: bold;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-div {
-	display: block;
-}
-
-element.style {
-	
-}
-
-.olre-body .panel-info .panel-heading {
-	background-color: #FFF !important;
-	border-color: #bce8f1 !important;
-	border-bottom: 2px solid #466BA2 !important;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-.panel-heading {
-	padding: 3px 10px;
-	border-bottom: 1px solid transparent;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-}
-
-.panel-heading {
-	padding: 3px 10px;
-	border-bottom: 1px solid transparent;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-}
-
-.panel-heading {
-	padding: 3px 10px;
-	border-bottom: 1px solid transparent;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-}
-
-.panel-heading {
-	padding: 3px 10px;
-	border-bottom: 1px solid transparent;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-}
-
-.panel-heading {
-	padding: 3px 10px;
-	border-bottom: 1px solid transparent;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-}
-
-.p-5 {
-	padding: 5px;
-}
-
-.panel-heading {
-	padding: 10px 15px;
-	border-bottom: 1px solid transparent;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-user agent stylesheet
-div {
-	display: block;
-}
-
-.panel-info {
-	border-color: #bce8f1;
-	
-}
-
-.form-check {
-	margin: 0px 4%;
-}
-
-.select2-container {
-    width: 100% !important; /* Force full width */
-}
-</style>
 </head>
 <body>
 
@@ -260,7 +54,7 @@ div {
 	
 		<div class="row">
 			<div class="col-md-12">
-				<div class="card" style="border-color: #00DADA; margin-top: -1%; margin-bottom: 50px;">
+				<div class="card card1" >
 					
 					
 					<div align="right" class="m-1" >
@@ -270,27 +64,27 @@ div {
 					</form>
 					</div>
 					 
-					 <div class="card-body" style="margin-top: -18px">
-						<div class="panel panel-info m-1" style="margin-top: 0px;">
+					 <div class="card-body cardBody1" >
+						<div class="panel panel-info m-1" >
 							<div class="panel-heading ">
 								<h4 class="panel-title">
-									<span style="font-size: 14px"><%=getMA[1]!=null?StringEscapeUtils.escapeHtml4(getMA[1].toString()): " - "%> : MIL-<%=getMA[5]!=null?StringEscapeUtils.escapeHtml4(getMA[5].toString()): " - "%>
-										<i class="fa fa-calendar" aria-hidden="true"
-										style="margin-left: 20px;"></i> <%=sdf.format(getMA[2])%> To
+									<span class="font14"><%=getMA[1]!=null?StringEscapeUtils.escapeHtml4(getMA[1].toString()): " - "%> : MIL-<%=getMA[5]!=null?StringEscapeUtils.escapeHtml4(getMA[5].toString()): " - "%>
+										<i class="fa fa-calendar ml-2" aria-hidden="true"
+										></i> <%=sdf.format(getMA[2])%> To
 										<%=sdf.format(getMA[3])%></span>
 								</h4>
-								<div style="float: right !important; margin-top: -23px;"></div>
-								<div style="float: right !important; margin-top: -20px;">
+								<div class="divFloat1" ></div>
+								<div class="divFloat1">
 									<a data-toggle="collapse" data-parent="#accordion" href="#collapse1"> <i class="fa fa-plus" id="Clk" onclick="faChange('#Clk')"></i></a>
 								</div>
 							</div>
 							<!-- panel-heading end -->
 
 							<div id="collapse1" class="panel-collapse collapse in">
-								<div class="row" style="margin-bottom: 20px;">
+								<div class="row mb-3 " >
 									<div class="col-md-6 ">
-										<label class="control-label"
-											style="margin-left: 10px; text-align: justify;">Activity:
+										<label class="control-label ml-2 text-center"
+											>Activity:
 											<%=getMA[4]!=null?StringEscapeUtils.escapeHtml4(getMA[4].toString()): " - "%>
 										</label>
 									</div>
@@ -313,20 +107,20 @@ div {
 									for (Object[] obj : MilestoneActivityA) {
 								%>
 								<div class="row">
-									<div class="col-md-11" align="left" style="margin-left: 20px;">
+									<div class="col-md-11 ml-3" align="left" >
 
 										<div class="panel panel-info m-1">
 											<div class="panel-heading">
 												<h4 class="panel-title">
 
-													<span style="font-size: 14px">
+													<span class="font14" >
 														Activity A<%=ProjectSubCount%> 
-														<i class="fa fa-calendar" aria-hidden="true" style="margin-left: 20px;"></i> 
+														<i class="fa fa-calendar ml-4" aria-hidden="true" ></i> 
 														<%=sdf.format(obj[2])%> To <%=sdf.format(obj[3])%>
 													</span>
 
 												</h4>
-												<div style="float: right !important; margin-top: -20px;">
+												<div class="divFloat1">
 													<a data-toggle="collapse" data-parent="#accordion" href="#collapse55A<%=ProjectSubCount%>"> 
 														<i class="fa fa-plus" id="ClkA<%=ProjectSubCount%>" onclick="faChange('#ClkA<%=ProjectSubCount%>')"></i>
 													</a>
@@ -335,8 +129,8 @@ div {
 											<div id="collapse55A<%=ProjectSubCount%>" class="panel-collapse collapse in">
 												<div class="row">
 													<div class="col-md-6 ">
-														<label class="control-label"
-															style="margin-left: 25px; text-align: justify;">Activity:
+														<label class="control-label ml-4 text-center"
+															>Activity:
 															<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>
 														</label>
 													</div>
@@ -359,20 +153,19 @@ div {
 
 
 												<div class="row">
-													<div class="col-md-12" align="left"
-														style="margin-left: 0px;">
+													<div class="col-md-12" >
 
 														<div class="panel panel-info m-1">
 															<div class="panel-heading">
 																<h4 class="panel-title">
-																	<span style="font-size: 14px">
+																	<span class="font14">
 																		Activity B<%=Sub1Count%>
-																		<i class="fa fa-calendar" aria-hidden="true" style="margin-left: 20px;"></i> 
+																		<i class="fa fa-calendar ml-3" aria-hidden="true" ></i> 
 																		<%=sdf.format(obj1[2])%> To <%=sdf.format(obj1[3])%>
 																	</span>
 
 																</h4>
-																<div style="float: right !important; margin-top: -20px;">
+																<div class="divFloat1">
 																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse55B<%=ProjectSubCount%><%=Sub1Count%>">
 																		<i class="fa fa-plus" id="ClkA<%=ProjectSubCount%>B<%=Sub1Count%>" onclick="faChange('#ClkA<%=ProjectSubCount%>B<%=Sub1Count%>')"></i>
 																	</a>
@@ -382,8 +175,8 @@ div {
 																class="panel-collapse collapse in">
 																<div class="row">
 																	<div class="col-md-6 ">
-																		<label class="control-label"
-																			style="margin-left: 25px; text-align: justify;">Activity:
+																		<label class="control-label ml-4 text-center"
+																			>Activity:
 																			<%=obj1[4]!=null?StringEscapeUtils.escapeHtml4(obj1[4].toString()): " - "%>
 																		</label>
 																	</div>
@@ -405,20 +198,19 @@ div {
 																%>
 
 																<div class="row">
-																	<div class="col-md-12" align="left"
-																		style="margin-left: 0px;">
+																	<div class="col-md-12" >
 
 																		<div class="panel panel-info m-1">
 																			<div class="panel-heading">
 																				<h4 class="panel-title">
-																					<span style="font-size: 14px">
+																					<span class="font14">
 																						Activity C<%=Sub2Count%>
-																						<i class="fa fa-calendar" aria-hidden="true" style="margin-left: 20px;"></i> 
+																						<i class="fa fa-calendar ml-3" aria-hidden="true" ></i> 
 																						<%=sdf.format(obj2[2])%> To <%=sdf.format(obj2[3])%>
 																					</span>
 
 																				</h4>
-																				<div style="float: right !important; margin-top: -20px;">
+																				<div class="divFloat1" >
 																					<a data-toggle="collapse" data-parent="#accordion" href="#collapse55C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>">
 																						<i class="fa fa-plus" id="ClkA<%=ProjectSubCount%>B<%=Sub1Count%>C<%=Sub2Count%>" onclick="faChange('#ClkA<%=ProjectSubCount%>B<%=Sub1Count%>C<%=Sub2Count%>')"></i>
 																					</a>
@@ -427,7 +219,7 @@ div {
 																			<div id="collapse55C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>" class="panel-collapse collapse in">
 																				<div class="row">
 																					<div class="col-md-6 ">
-																						<label class="control-label" style="margin-left: 25px; text-align: justify;">
+																						<label class="control-label ml-4 text-center" >
 																							Activity: <%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "%>
 																						</label>
 																					</div>
@@ -449,18 +241,18 @@ div {
 																				%>
 
 																				<div class="row">
-																					<div class="col-md-12" align="left" style="margin-left: 0px;">
+																					<div class="col-md-12" align="left" >
 
 																						<div class="panel panel-info m-1">
 																							<div class="panel-heading">
 																								<h4 class="panel-title">
-																									<span style="font-size: 14px">
+																									<span class="font14">
 																										Activity D<%=Sub3Count%>
-																										<i class="fa fa-calendar" aria-hidden="true" style="margin-left: 20px;"></i>
+																										<i class="fa fa-calendar ml-4" aria-hidden="true" ></i>
 																										<%=sdf.format(obj3[2])%> To <%=sdf.format(obj3[3])%></span>
 
 																								</h4>
-																								<div style="float: right !important; margin-top: -20px;">
+																								<div class="divFloat1">
 																									<a data-toggle="collapse" data-parent="#accordion"
 																										href="#collapse55D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>">
 																										<i class="fa fa-plus"
@@ -475,8 +267,8 @@ div {
 
 																								<div class="row">
 																									<div class="col-md-6 ">
-																										<label class="control-label"
-																											style="margin-left: 25px; text-align: justify;">Activity:
+																										<label class="control-label ml-5 text-center"
+																											>Activity:
 																											<%=obj3[4]!=null?StringEscapeUtils.escapeHtml4(obj3[4].toString()): " - "%>
 																										</label>
 																									</div>
@@ -501,20 +293,20 @@ div {
 
 																								<div class="row">
 																									<div class="col-md-12" align="left"
-																										style="margin-left: 0px;">
+																										>
 
 																										<div class="panel panel-info m-1">
 																											<div class="panel-heading">
 																												<h4 class="panel-title">
-																													<span style="font-size: 14px">Activity
-																														E<%=Sub4Count%> <i class="fa fa-calendar"
+																													<span class="font14">Activity
+																														E<%=Sub4Count%> <i class="fa fa-calendar ml-4"
 																														aria-hidden="true"
-																														style="margin-left: 20px;"></i> <%=sdf.format(obj4[2])%>
+																														></i> <%=sdf.format(obj4[2])%>
 																														To <%=sdf.format(obj4[3])%></span>
 
 																												</h4>
 																												<div
-																													style="float: right !important; margin-top: -20px;">
+																													class="divFloat1">
 																													<a data-toggle="collapse"
 																														data-parent="#accordion"
 																														href="#collapse55E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>">
@@ -529,8 +321,8 @@ div {
 																												class="panel-collapse collapse in">
 																												<div class="row">
 																													<div class="col-md-6 ">
-																														<label class="control-label"
-																															style="margin-left: 25px; text-align: justify;">Activity:
+																														<label class="control-label ml-5 text-center"
+																															>Activity:
 																															<%=obj4[4]!=null?StringEscapeUtils.escapeHtml4(obj4[4].toString()): " - "%>
 																														</label>
 																													</div>
@@ -560,7 +352,7 @@ div {
 																								
 					                                     <%if( Arrays.asList(getMA[8].toString(),getMA[9].toString(),obj[13].toString(),obj[15].toString(),obj1[13].toString(),obj1[15].toString(),obj2[13].toString(),obj2[15].toString(),obj3[13].toString(),obj3[15].toString(),projectDirector   ).contains(EmpId.toString()) || Logintype.equalsIgnoreCase("A") ){ %>						
 																								<div class="row">
-																									<div class="col-md-12" align="left" style="margin-left: 0px;">
+																									<div class="col-md-12" align="left" >
 																										<div class="panel panel-info m-1">
 																											<div class="panel-heading">
 																												<h4 class="panel-title">
@@ -573,12 +365,12 @@ div {
 																														<div class="col-sm-6" align="left">
 																															<div class="form-group">
 																																<label>
-																																	Activity E Name: <span class="mandatory" style="color: red;">*</span>
+																																	Activity E Name: <span class="mandatory" >*</span>
 																																</label>
 																																<br> 
-																																<input class="form-control " type="text" name="ActivityName"
+																																<input class="form-control width-100" type="text" name="ActivityName"
 																																	id="ActivityName<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>"
-																																	style="width: 100%" maxlength="1000" required="required">
+																																	 maxlength="1000" required="required">
 																															</div>
 																														</div>
 
@@ -609,7 +401,7 @@ div {
 																															<div class="form-group">
 																																<label class="control-label">From
 																																	<span class="mandatory"
-																																	style="color: red;">*</span>
+																																	>*</span>
 																																</label> <input class="form-control "
 																																	name="ValidFrom" required="required"
 																																	id="DateCompletionA<%=obj[0]%><%=obj1[0]%><%=obj2[0]%><%=obj3[0]%>"
@@ -621,7 +413,7 @@ div {
 																															<div class="form-group">
 																																<label class="control-label">To
 																																	<span class="mandatory"
-																																	style="color: red;">*</span>
+																																	>*</span>
 																																</label> <input class="form-control "
 																																	name="ValidTo" required="required"
 																																	id="DateCompletionA2<%=obj[0]%><%=obj1[0]%><%=obj2[0]%><%=obj3[0]%>"
@@ -636,7 +428,7 @@ div {
 
 																													<div class="row container-fluid">
 																														<div class="col-md-2">
-																															<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																															<label  >Lab: <span class="mandatory" >*</span></label><br>
 																															<select class="form-control selectdee" name="labCode1" id="labCode1E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>" required 
 																															onchange="renderEmployeeList('1','E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>')" data-placeholder= "Lab Name">
 																															    <% for (Object[] lab : allLabList) { %>
@@ -647,8 +439,8 @@ div {
 																														<div class="col-md-4">
 																							                        		<div class="form-group">
 																							                            		<label class="control-label">First OIC  </label>
-																							                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
-																																	<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox1E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>" 
+																							                            		<div class="float-right"  > <label>All : &nbsp;&nbsp;</label>
+																																	<input class="floatXp" type="checkbox"  id="allempcheckbox1E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>" 
 																																	onchange="changeempoic1('E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>')" >
 																																</div>
 																							                              		<select class="form-control selectdee" id="EmpIdE<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>" required="required" name="EmpId">
@@ -660,7 +452,7 @@ div {
 																							                        		</div>
 																							                    		</div>
 																							                    		<div class="col-md-2">
-																															<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																															<label  >Lab: <span class="mandatory" >*</span></label><br>
 																															<select class="form-control selectdee" name="labCode2" id="labCode2E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>" required 
 																															onchange="renderEmployeeList('2','E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>')" data-placeholder= "Lab Name">
 																															    <% for (Object[] lab : allLabList) { %>
@@ -671,8 +463,8 @@ div {
 																							                    		<div class="col-md-4 ">
 																							                        		<div class="form-group">
 																							                            		<label class="control-label">Second OIC </label>
-																							                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
-																																	<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>" 
+																							                            		<div class="float-right"  > <label>All : &nbsp;&nbsp;</label>
+																																	<input class="floatXp" type="checkbox"  id="allempcheckbox2E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>" 
 																																	onchange="changeempoic2('E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>')" >
 																																</div>
 																							                              		<select class="form-control selectdee" id="EmpId1E<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%><%=Sub4Count%>" name="EmpId1" required="required">
@@ -788,7 +580,7 @@ $( document ).ready(function() {
 										<%if( Arrays.asList(getMA[8].toString(),projectDirector,getMA[9].toString(),obj[13].toString(),obj[15].toString(),obj1[13].toString(),obj1[15].toString(),obj2[13].toString(),obj2[15].toString()   ).contains(EmpId.toString()) || Logintype.equalsIgnoreCase("A")  ){ %>						
 																				<div class="row">
 																					<div class="col-md-12" align="left"
-																						style="margin-left: 0px;">
+																						>
 
 																						<div class="panel panel-info m-1">
 																							<div class="panel-heading">
@@ -803,11 +595,11 @@ $( document ).ready(function() {
 																										<div class="col-sm-6" align="left">
 																											<div class="form-group">
 																												<label>Activity D Name: <span
-																													class="mandatory" style="color: red;">*</span>
-																												</label><br> <input class="form-control "
+																													class="mandatory" >*</span>
+																												</label><br> <input class="form-control width-100"
 																													type="text" name="ActivityName"
 																													id="ActivityName<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>"
-																													style="width: 100%" maxlength="1000"
+																													 maxlength="1000"
 																													required="required">
 																											</div>
 																										</div>
@@ -835,7 +627,7 @@ $( document ).ready(function() {
 																										<div class="col-md-2" align="left">
 																											<div class="form-group">
 																												<label class="control-label">From <span
-																													class="mandatory" style="color: red;">*</span></label>
+																													class="mandatory" >*</span></label>
 																												<input class="form-control "
 																													name="ValidFrom" required="required"
 																													id="DateCompletionA<%=obj[0]%><%=obj1[0]%><%=obj2[0]%>"
@@ -845,7 +637,7 @@ $( document ).ready(function() {
 																										<div class="col-md-2" align="left">
 																											<div class="form-group">
 																												<label class="control-label">To <span
-																													class="mandatory" style="color: red;">*</span></label>
+																													class="mandatory">*</span></label>
 																												<input class="form-control " name="ValidTo"
 																													required="required"
 																													id="DateCompletionA2<%=obj[0]%><%=obj1[0]%><%=obj2[0]%>"
@@ -859,7 +651,7 @@ $( document ).ready(function() {
 
 																									<div class="row container-fluid">
 																										<div class="col-md-2">
-																											<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																											<label  >Lab: <span class="mandatory"  >*</span></label><br>
 																											<select class="form-control selectdee" name="labCode1" id="labCode1D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>" required 
 																											onchange="renderEmployeeList('1','D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>')" data-placeholder= "Lab Name">
 																											    <% for (Object[] lab : allLabList) { %>
@@ -870,8 +662,8 @@ $( document ).ready(function() {
 																										<div class="col-md-4">
 																			                        		<div class="form-group">
 																			                            		<label class="control-label">First OIC  </label>
-																			                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
-																													<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox1D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>" 
+																			                            		<div class="float-right"  > <label>All : &nbsp;&nbsp;</label>
+																													<input type="checkbox" class="floatXp" id="allempcheckbox1D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>" 
 																													onchange="changeempoic1('D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>')" >
 																												</div>
 																			                              		<select class="form-control selectdee" id="EmpIdD<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>" required="required" name="EmpId">
@@ -883,7 +675,7 @@ $( document ).ready(function() {
 																			                        		</div>
 																			                    		</div>
 																			                    		<div class="col-md-2">
-																			                    			<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																			                    			<label  >Lab: <span class="mandatory" >*</span></label><br>
 																				                    		<select class="form-control selectdee" name="labCode2" id="labCode2D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>" required 
 																											onchange="renderEmployeeList('2','D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>')" data-placeholder= "Lab Name">
 																											    <% for (Object[] lab : allLabList) { %>
@@ -894,8 +686,8 @@ $( document ).ready(function() {
 																			                    		<div class="col-md-4 ">
 																			                        		<div class="form-group">
 																			                            		<label class="control-label">Second OIC </label>
-																			                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
-																													<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>" 
+																			                            		<div class="float-right"  > <label>All : &nbsp;&nbsp;</label>
+																													<input type="checkbox" class="floatXp" id="allempcheckbox2D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>" 
 																													onchange="changeempoic2('D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>')" >
 																												</div>
 																			                              		<select class="form-control selectdee" id="EmpId1D<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%><%=Sub3Count%>" name="EmpId1" required="required">
@@ -1012,7 +804,7 @@ $( document ).ready(function() {
 																
 																<div class="row">
 																	<div class="col-md-12" align="left"
-																		style="margin-left: 0px;">
+																		>
 
 																		<div class="panel panel-info m-1">
 																			<div class="panel-heading">
@@ -1027,11 +819,11 @@ $( document ).ready(function() {
 																						<div class="col-sm-6" align="left">
 																							<div class="form-group">
 																								<label>Activity C Name: <span
-																									class="mandatory" style="color: red;">*</span>
-																								</label><br> <input class="form-control "
+																									class="mandatory" >*</span>
+																								</label><br> <input class="form-control width-100"
 																									type="text" name="ActivityName"
 																									id="ActivityName<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>"
-																									style="width: 100%" maxlength="1000"
+																									 maxlength="1000"
 																									required="required">
 																							</div>
 																						</div>
@@ -1059,7 +851,7 @@ $( document ).ready(function() {
 																						<div class="col-md-2" align="left">
 																							<div class="form-group">
 																								<label class="control-label">From <span
-																									class="mandatory" style="color: red;">*</span></label>
+																									class="mandatory" >*</span></label>
 																								<input class="form-control " name="ValidFrom"
 																									required="required"
 																									id="DateCompletionA<%=obj[0]%><%=obj1[0]%>"
@@ -1069,7 +861,7 @@ $( document ).ready(function() {
 																						<div class="col-md-2" align="left">
 																							<div class="form-group">
 																								<label class="control-label">To <span
-																									class="mandatory" style="color: red;">*</span></label>
+																									class="mandatory" >*</span></label>
 																								<input class="form-control " name="ValidTo"
 																									required="required"
 																									id="DateCompletionA2<%=obj[0]%><%=obj1[0]%>"
@@ -1083,7 +875,7 @@ $( document ).ready(function() {
 
 																					<div class="row container-fluid">
 																						<div class="col-md-2">
-																							<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																							<label  >Lab: <span class="mandatory"  >*</span></label><br>
 																							<select class="form-control selectdee" name="labCode1" id="labCode1C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>" required 
 																							onchange="renderEmployeeList('1','C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>')" data-placeholder= "Lab Name">
 																							    <% for (Object[] lab : allLabList) { %>
@@ -1094,8 +886,8 @@ $( document ).ready(function() {
 																						<div class="col-md-4">
 															                        		<div class="form-group">
 															                            		<label class="control-label">First OIC  </label>
-															                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
-																									<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox1C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>" 
+															                            		<div class="float-right"  > <label>All : &nbsp;&nbsp;</label>
+																									<input type="checkbox" class="floatXp" id="allempcheckbox1C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>" 
 																									onchange="changeempoic1('C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>')" >
 																								</div>
 															                              		<select class="form-control selectdee" id="EmpIdC<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>" required="required" name="EmpId">
@@ -1107,7 +899,7 @@ $( document ).ready(function() {
 															                        		</div>
 															                    		</div>
 															                    		<div class="col-md-2">
-																							<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																							<label  >Lab: <span class="mandatory"  >*</span></label><br>
 																							<select class="form-control selectdee" name="labCode2" id="labCode2C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>" required 
 																							onchange="renderEmployeeList('2','C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>')" data-placeholder= "Lab Name">
 																							    <% for (Object[] lab : allLabList) { %>
@@ -1118,8 +910,8 @@ $( document ).ready(function() {
 															                    		<div class="col-md-4 ">
 															                        		<div class="form-group">
 															                            		<label class="control-label">Second OIC </label>
-															                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
-																									<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>" 
+															                            		<div class="float-right"  > <label>All : &nbsp;&nbsp;</label>
+																									<input type="checkbox" class="floatXp" id="allempcheckbox2C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>" 
 																									onchange="changeempoic2('C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>')" >
 																								</div>
 															                              		<select class="form-control selectdee" id="EmpId1C<%=ProjectSubCount%><%=Sub1Count%><%=Sub2Count%>" name="EmpId1" required="required">
@@ -1234,7 +1026,7 @@ $( document ).ready(function() {
 						<%if( Arrays.asList(getMA[8].toString(),projectDirector,getMA[9].toString(),obj[13].toString(),obj[15].toString() ).contains(EmpId.toString()) || Logintype.equalsIgnoreCase("A")  ){ %>						
 												<div class="row">
 													<div class="col-md-12" align="left"
-														style="margin-left: 0px;">
+														>
 
 														<div class="panel panel-info m-1">
 															<div class="panel-heading">
@@ -1249,11 +1041,11 @@ $( document ).ready(function() {
 																		<div class="col-sm-6" align="left">
 																			<div class="form-group">
 																				<label>Activity B Name: <span
-																					class="mandatory" style="color: red;">*</span>
-																				</label><br> <input class="form-control " type="text"
+																					class="mandatory" >*</span>
+																				</label><br> <input class="form-control width-100" type="text"
 																					name="ActivityName"
 																					id="ActivityName<%=ProjectSubCount%><%=Sub1Count%>"
-																					style="width: 100%" maxlength="1000"
+																					 maxlength="1000"
 																					required="required">
 																			</div>
 																		</div>
@@ -1281,7 +1073,7 @@ $( document ).ready(function() {
 																		<div class="col-md-2" align="left">
 																			<div class="form-group">
 																				<label class="control-label">From <span
-																					class="mandatory" style="color: red;">*</span></label> <input
+																					class="mandatory" >*</span></label> <input
 																					class="form-control " name="ValidFrom"
 																					required="required"
 																					id="DateCompletionA<%=obj[0]%>"
@@ -1291,7 +1083,7 @@ $( document ).ready(function() {
 																		<div class="col-md-2" align="left">
 																			<div class="form-group">
 																				<label class="control-label">To <span
-																					class="mandatory" style="color: red;">*</span></label> <input
+																					class="mandatory" >*</span></label> <input
 																					class="form-control " name="ValidTo"
 																					required="required"
 																					id="DateCompletionA2<%=obj[0]%>"
@@ -1305,7 +1097,7 @@ $( document ).ready(function() {
 
 																	<div class="row container-fluid">
 																		<div class="col-md-2">
-																			<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																			<label  >Lab: <span class="mandatory"  >*</span></label><br>
 																			<select class="form-control selectdee" name="labCode1" id="labCode1B<%=ProjectSubCount%><%=Sub1Count%>" required 
 																			onchange="renderEmployeeList('1','B<%=ProjectSubCount%><%=Sub1Count%>')" data-placeholder= "Lab Name">
 																			    <% for (Object[] lab : allLabList) { %>
@@ -1316,8 +1108,8 @@ $( document ).ready(function() {
 																		<div class="col-md-4">
 											                        		<div class="form-group">
 											                            		<label class="control-label">First OIC  </label>
-											                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
-																					<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox1B<%=ProjectSubCount%><%=Sub1Count%>" 
+											                            		<div class="float-right"  > <label>All : &nbsp;&nbsp;</label>
+																					<input type="checkbox" class="floatXp" id="allempcheckbox1B<%=ProjectSubCount%><%=Sub1Count%>" 
 																					onchange="changeempoic1('B<%=ProjectSubCount%><%=Sub1Count%>')" >
 																				</div>
 											                              		<select class="form-control selectdee" id="EmpIdB<%=ProjectSubCount%><%=Sub1Count%>" required="required" name="EmpId">
@@ -1329,7 +1121,7 @@ $( document ).ready(function() {
 											                        		</div>
 											                    		</div>
 											                    		<div class="col-md-2">
-																			<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+																			<label  >Lab: <span class="mandatory"  >*</span></label><br>
 																			<select class="form-control selectdee" name="labCode2" id="labCode2B<%=ProjectSubCount%><%=Sub1Count%>" required 
 																			onchange="renderEmployeeList('2','B<%=ProjectSubCount%><%=Sub1Count%>')" data-placeholder= "Lab Name">
 																			    <% for (Object[] lab : allLabList) { %>
@@ -1340,8 +1132,8 @@ $( document ).ready(function() {
 											                    		<div class="col-md-4 ">
 											                        		<div class="form-group">
 											                            		<label class="control-label">Second OIC </label>
-											                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
-																					<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2B<%=ProjectSubCount%><%=Sub1Count%>" 
+											                            		<div class="float-right"  > <label>All : &nbsp;&nbsp;</label>
+																					<input type="checkbox" class="floatXp" id="allempcheckbox2B<%=ProjectSubCount%><%=Sub1Count%>" 
 																					onchange="changeempoic2('B<%=ProjectSubCount%><%=Sub1Count%>')" >
 																				</div>
 											                              		<select class="form-control selectdee" id="EmpId1B<%=ProjectSubCount%><%=Sub1Count%>" name="EmpId1" required="required">
@@ -1455,8 +1247,8 @@ $( document ).ready(function() {
 
 				<%if( Arrays.asList(getMA[8].toString(),projectDirector,getMA[9].toString()).contains(EmpId.toString()) || Logintype.equalsIgnoreCase("A")  ){ %>
 								<div class="row">
-									<div class="col-md-11" align="left"
-										style="margin-left: 20px; margin-bottom: 20px;">
+									<div class="col-md-11 ml-4 mb-4" align="left"
+										>
 
 										<div class="panel panel-info m-1">
 											<div class="panel-heading">
@@ -1471,19 +1263,14 @@ $( document ).ready(function() {
 														<div class="col-sm-6" align="left">
 															<div class="form-group">
 																<label>
-																	Activity A Name: <span class="mandatory" style="color: red;">*</span>
+																	Activity A Name: <span class="mandatory" >*</span>
 																</label>
 																<br> 
-																<input class="form-control " type="text" name="ActivityName" id="ActivityName<%=ProjectSubCount %>" style="width: 100%" maxlength="1000" required="required">
+																<input class="form-control width-100" type="text" name="ActivityName" id="ActivityName<%=ProjectSubCount %>"  maxlength="1000" required="required">
 															</div>
 														</div>
 
-														<%--  <div class="col-md-2" align="left" >
-                        		<div class="form-group">
-                            		<label class="control-label">Weightage <span class="mandatory" style="color: red;" >*</span></label>
-    					            <input type="number" class="form-control " name="Weightage" id="Weightage" required="required" min="0" max=<%=100 %>  >
-                        		</div>
-                    		</div> --%>
+								
 
 														<div class="col-md-2" align="left">
 															<div class="form-group">
@@ -1507,7 +1294,7 @@ $( document ).ready(function() {
 														<div class="col-md-2" align="left">
 															<div class="form-group">
 																<label class="control-label">From <span
-																	class="mandatory" style="color: red;">*</span></label> <input
+																	class="mandatory" >*</span></label> <input
 																	class="form-control " name="ValidFrom"
 																	id="DateCompletion" required="required"
 																	value="<%=sdf.format(getMA[2])%>" readonly>
@@ -1516,7 +1303,7 @@ $( document ).ready(function() {
 														<div class="col-md-2" align="left">
 															<div class="form-group">
 																<label class="control-label">To <span
-																	class="mandatory" style="color: red;">*</span></label> <input
+																	class="mandatory" s>*</span></label> <input
 																	class="form-control " name="ValidTo"
 																	id="DateCompletion2" required="required"
 																	disabled="disabled" value="<%=sdf.format(getMA[3])%>"
@@ -1529,7 +1316,7 @@ $( document ).ready(function() {
 
 													<div class="row container-fluid">
 														<div class="col-md-2">
-															<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+															<label  >Lab: <span class="mandatory">*</span></label><br>
 															<select class="form-control selectdee" name="labCode1" id="labCode1A<%=ProjectSubCount%>" required 
 															onchange="renderEmployeeList('1','A<%=ProjectSubCount%>')" data-placeholder= "Lab Name">
 															    <% for (Object[] lab : allLabList) { %>
@@ -1540,8 +1327,8 @@ $( document ).ready(function() {
 														<div class="col-md-4">
 							                        		<div class="form-group">
 							                            		<label class="control-label">First OIC  </label>
-							                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
-																	<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox1A<%=ProjectSubCount %>" 
+							                            		<div class="float-right" > <label>All : &nbsp;&nbsp;</label>
+																	<input type="checkbox" class="floatXp" id="allempcheckbox1A<%=ProjectSubCount %>" 
 																	onchange="changeempoic1('A<%=ProjectSubCount %>')" >
 																</div>
 							                              		<select class="form-control selectdee" id="EmpIdA<%=ProjectSubCount %>" required="required" name="EmpId">
@@ -1553,7 +1340,7 @@ $( document ).ready(function() {
 							                        		</div>
 							                    		</div>
 							                    		<div class="col-md-2">
-															<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+															<label  >Lab: <span class="mandatory" >*</span></label><br>
 															<select class="form-control selectdee" name="labCode2" id="labCode2A<%=ProjectSubCount%>" required 
 															onchange="renderEmployeeList('2','A<%=ProjectSubCount%>')" data-placeholder= "Lab Name">
 															    <% for (Object[] lab : allLabList) { %>
@@ -1564,8 +1351,8 @@ $( document ).ready(function() {
 							                    		<div class="col-md-4 ">
 							                        		<div class="form-group">
 							                            		<label class="control-label">Second OIC </label>
-							                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
-																	<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2A<%=ProjectSubCount %>" 
+							                            		<div class="float-right"  > <label>All : &nbsp;&nbsp;</label>
+																	<input type="checkbox" class="floatXp" id="allempcheckbox2A<%=ProjectSubCount %>" 
 																	onchange="changeempoic2('A<%=ProjectSubCount %>')" >
 																</div>
 							                              		<select class="form-control selectdee" id="EmpId1A<%=ProjectSubCount %>" name="EmpId1" required="required">
@@ -1609,7 +1396,7 @@ $( document ).ready(function() {
 
 
 
-<div class="row text-danger m-3" style="font-weight: 600; font-size: 14px; "> 
+<div class="row text-danger m-3 fontStr" > 
 Kindly note that only the Project Director, the Admin, and the OICs of the Parent Milestone are authorized to add and edit milestones. Please ensure all details are accurate before adding a new milestone.
 </div>
 							</div>

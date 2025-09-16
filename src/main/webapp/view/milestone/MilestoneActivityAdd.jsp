@@ -10,77 +10,11 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 <script src="./resources/js/multiselect.js"></script>
 <link href="./resources/css/multiselect.css" rel="stylesheet"/>
- 
+<spring:url value="/resources/css/milestone/milestoneActivityAdd.css" var="milestoneActivityAdd" />     
+<link href="${milestoneActivityAdd}" rel="stylesheet" />
 
 <title>Milestone List</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
-.multiselect-container>li>a>label {
-  padding: 4px 20px 3px 20px;
-}
-.cc-rockmenu {
-	color:fff;
-	padding:0px 5px;
-	font-family: 'Lato',sans-serif;
-}
 
-.cc-rockmenu .rolling {
-  display: inline-block;
-  cursor:pointer;
-  width: 34px;
-  height: 30px;
-  text-align:left;
-  overflow: hidden;
-  transition: all 0.3s ease-out;
-  white-space: nowrap;
-  
-}
-.cc-rockmenu .rolling:hover {
-  width: 108px;
-}
-.cc-rockmenu .rolling .rolling_icon {
-  float:left;
-  z-index: 9;
-  display: inline-block;
-  width: 28px;
-  height: 52px;
-  box-sizing: border-box;
-  margin: 0 5px 0 0;
-}
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-  width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-    font-size: 20px;
-    padding: 6px;
-}
-.cc-rockmenu .rolling span {
-    display: block;
-    font-weight: bold;
-    padding: 2px 0;
-    font-size: 14px;
-    font-family: 'Muli',sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin:0;
-}
-
-.width{
-	width:150px !important;
-}
-</style>
 </head>
  
 <body>
@@ -119,13 +53,13 @@ h6{
     <br />
     
   <div class="container">
-	<div class="row" style="margin-top: -25px; margin-bottom: 5px;">
+	<div class="row" >
 
 		<div class="col-md-12">
 
  			<div class="card shadow-nohover" >
 				
-				<div class="card-header" style=" background-color: #055C9D;margin-top: ">
+				<div class="card-header cardHeader">
                     <b class="text-white"><%=ProjectDetail[2]!=null?StringEscapeUtils.escapeHtml4(ProjectDetail[2].toString()): " - " %>(<%=ProjectDetail[1]!=null?StringEscapeUtils.escapeHtml4(ProjectDetail[1].toString()): " - " %>) Milestone Activity Add</b>
         		</div>
         
@@ -141,8 +75,8 @@ h6{
                     		</div> -->
                        		<div class="col-sm-10" align="left"  >
                           		<div class="form-group">
-                           			<label  >Activity Name: <span class="mandatory" style="color: red;" >*</span></label><br>
-                             		<input class="form-control " type="text"name="ActivityName" id="ActivityName"  style="width:100% " maxlength="1000" required="required">
+                           			<label  >Activity Name: <span class="mandatory" >*</span></label><br>
+                             		<input class="form-control width-100" type="text"name="ActivityName" id="ActivityName"   maxlength="1000" required="required">
                            		</div>
                            	</div>
                            
@@ -161,7 +95,7 @@ h6{
                 		</div>
                 		<div class="row">
 							<div class="col-md-2">
-								<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+								<label  >Lab: <span class="mandatory"  >*</span></label><br>
 								<select class="form-control selectdee" name="labCode" id="labCode1" required onchange="renderEmployeeList('1')" data-placeholder= "Lab Name">
 								    <% for (Object[] obj : allLabList) { %>
 								    	<option value="<%=obj[3]%>" <%if(labcode.equalsIgnoreCase(obj[3].toString())) {%>selected<%} %> ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
@@ -171,8 +105,8 @@ h6{
                     		<div class="col-md-4">
                         		<div class="form-group">
                             		<label class="control-label">First OIC  </label>
-                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
-										<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox1" onchange="changeempoic1()" >
+                            		<div class="float-right"  > <label>All : &nbsp;&nbsp;</label>
+										<input type="checkbox"  id="allempcheckbox1" onchange="changeempoic1()" >
 									</div>
                               		<select class="form-control selectdee" id="EmpId" required="required" name="EmpId">
     									<option disabled="true"  selected value="">Choose...</option>
@@ -183,7 +117,7 @@ h6{
                         		</div>
                     		</div>
                     		<div class="col-md-2">
-                    			<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                    			<label  >Lab: <span class="mandatory"  >*</span></label><br>
 								<select class="form-control selectdee" name="labCode1" id="labCode2" required onchange="renderEmployeeList('2')" data-placeholder= "Lab Name">
 								    <% for (Object[] obj : allLabList) { %>
 								    	<option value="<%=obj[3]%>" <%if(labcode.equalsIgnoreCase(obj[3].toString())) {%>selected<%} %> ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
@@ -193,8 +127,8 @@ h6{
                     		<div class="col-md-4 ">
                         		<div class="form-group">
                             		<label class="control-label">Second OIC </label>
-                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
-										<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2" onchange="changeempoic2()" >
+                            		<div class="float-right" > <label>All : &nbsp;&nbsp;</label>
+										<input type="checkbox" id="allempcheckbox2" onchange="changeempoic2()" >
 									</div>
                               		<select class="form-control selectdee" id="EmpId1" required="required" name="EmpId1">
     									<option disabled="true" selected value="">Choose...</option>
@@ -242,7 +176,7 @@ h6{
 
 
 
-<div class="card-footer" style=" background: linear-gradient(to right, #334d50, #cbcaa5);padding: 25px ;margin-top: -40px;">
+<div class="card-footer cardFooter" >
          
        
         </div>

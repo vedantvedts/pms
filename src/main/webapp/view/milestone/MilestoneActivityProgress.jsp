@@ -17,34 +17,9 @@
 <link href="${sweetalertCss}" rel="stylesheet" />
 <script src="${sweetalertJs}"></script>
 <jsp:include page="../static/header.jsp"></jsp:include>
+  <spring:url value="/resources/css/milestone/milestoneActivityProgress.css" var="milestoneActivityProgress" />     
+<link href="${milestoneActivityProgress}" rel="stylesheet" />
 
-<style type="text/css">
-.form-label {
-	font-weight: bold;
-	font-size: medium;
-}
-.center {
-	text-align: center !important;
-}
-.right {
-	text-align: right !important;
-}
-.left {
-	text-align: left !important;
-}
-.select2-container {
-	width: 100% !important;
-}
-
-#headertable {
-	width: 100%;
-	padding: 5px;
-	margin-top: -0.8rem;
-}
-#headertable td, #headertable th{
-	padding: 5px;
-}
-</style>
 </head>
 <body>
 	<%
@@ -140,8 +115,8 @@
                     					<input type="text" class="form-control " name="toDate" id="toDate" value="<%=toDateR %>" onchange="this.form.submit()">
                     				</td>
                     				<td width="18%">
-                    					<button type="button" class="btn btn-sm" name="action" value="GenerateExcel" onclick="exportMultipleTablesToExcel()" formtarget="blank" data-toggle="tooltip" data-placement="top" title="Excel Report" style="background-color: #fff">
-											<i style="color: #009900;font-size: 24px;" class="fa fa-file-excel-o" aria-hidden="true"></i>
+                    					<button type="button" class="btn btn-sm bg1" name="action" value="GenerateExcel" onclick="exportMultipleTablesToExcel()" formtarget="blank" data-toggle="tooltip" data-placement="top" title="Excel Report" >
+											<i  class="fa fa-file-excel-o fw-1" aria-hidden="true"></i>
 									  	</button>
                     				</td>
                     			</tr>
@@ -226,15 +201,15 @@
 		                            			<td class="center"><%=prog[3]!=null?fc.sdfTordf(prog[3].toString()):"-" %></td>
 		                            			<td>
 		                            				<%if(!prog[2].toString().equalsIgnoreCase("0")){ %>
-														<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped
-																" role="progressbar" style=" width: <%=prog[2] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+														<div class="progress progressClass " >
+															<div class="progress-bar progress-bar-striped width-<%=prog[2]!=null?StringEscapeUtils.escapeHtml4(prog[2].toString()): "0" %>
+																" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																<%=prog[2]!=null?StringEscapeUtils.escapeHtml4(prog[2].toString()): " - " %>
 															</div> 
 														</div> 
 													<%}else{ %>
-														<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+														<div class="progress progressClass" >
+															<div class="progress-bar noProgress" role="progressbar"   >
 																Not Started
 															</div>
 														</div> 

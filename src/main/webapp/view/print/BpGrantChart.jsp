@@ -10,36 +10,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
 
- #containers {
-    width: 100%;
-    height: 50vh;
-    margin: 0;
-    padding: 0;
-}
 
-.anychart-credits {
-   display: none;
-}
 
-.flex-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-</style>
+
+ 
 </head>
 <body>
   <%
@@ -74,13 +49,13 @@ String lastEnddate = MilestoneActivityMain!=null && !MilestoneActivityMain.isEmp
 			   		</div>	   							
 
 					</div>
-						<div class="card-body " style="padding: 10px;"> 
+						<div class="card-body p-1"> 
 							<div  class="row mb-2">
-							<div class="col-md-2" style="text-align: right">
+							<div class="col-md-2 text-right" >
 								<label>Interval : &nbsp;&nbsp;&nbsp; </label>
 							</div>
 							<div align="left" class="col-md-3 justify-content-end">
-							<select class="form-control selectdee " name="interval" id="interval" required="required"  data-live-search="true"  style="width:150px !important" >
+							<select class="form-control selectdee width150" name="interval" id="interval" required="required"  data-live-search="true"   >
                                 <option value="quarter"> Quarterly </option>
                                 <option value="half" >Half-Yearly</option>
                                 <option value="year" >Yearly</option>
@@ -90,20 +65,20 @@ String lastEnddate = MilestoneActivityMain!=null && !MilestoneActivityMain.isEmp
 							</div>
 						
 							
-								<div class="row" style="margin-bottom: 5px;font-weight: bold;"   >
+								<div class="row mb-1 font-weight-bold"    >
 										<div class="col-md-4"></div>
 										<div class="col-md-4"></div>
 										<div class="col-md-4">
-											<div style="font-weight: bold; " >
-												<span style="margin:0px 0px 10px  10px;">Original :&ensp; <span style=" background-color: #455a64;;  padding: 0px 15px; border-radius: 3px;"></span></span>
-												<span style="margin:0px 0px 10px  15px;">Ongoing :&ensp; <span style=" background-color: #059212;  padding: 0px 15px;border-radius: 3px;"></span></span>
-												<span style="margin:0px 0px 10px  15px;">Revised :&ensp; <span style=" background-color: #F5A623; opacity: 0.5; padding: 0px 15px;border-radius: 3px;"></span></span>
+											<div class="font-weight-bold" >
+												<span class="mar-1">Original :&ensp; <span class="span-bg1"></span></span>
+												<span class="mar-2">Ongoing :&ensp; <span class="span-bg2"></span></span>
+												<span class="mar-2">Revised :&ensp; <span class="span-bg3"></span></span>
 											</div>
 										</div>
 									</div>
 							<div class="row" >
 								
-								<div class="col-md-12" style="float: right;" align="center">
+								<div class="col-md-12 bp-51" align="center">
 							
 					   				<div class="flex-container" id="containers" ></div>
 
@@ -431,16 +406,16 @@ $('#interval').on('change',function(){
 								        		        var html="";
 								        		        if(reDate===undefined){
 								        		        	html="";
-								        		        	html= "<span style='font-weight:600;font-size:10pt'> Actual : " +
+								        		        	html= "<span class='mar3'> Actual : " +
 								        		               anychart.format.dateTime(actualStart, 'dd MMM yyyy') + " - " +
 								        		               anychart.format.dateTime(actualEnd, 'dd MMM yyyy') + "</span><br>" +
 								        		               "Progress: " + this.getData("baselineProgressValue") + "<br>"
 								        		        }else{
 								        		        	html="";
-								        		        html="<span style='font-weight:600;font-size:10pt'> Actual : " +
+								        		        html="<span class='mar3'> Actual : " +
 								        		               anychart.format.dateTime(actualStart, 'dd MMM yyyy') + " - " +
 								        		               anychart.format.dateTime(actualEnd, 'dd MMM yyyy') + "</span><br>" +
-								        		               "<span style='font-weight:600;font-size:10pt'> Revised : " +
+								        		               "<span class='mar3'> Revised : " +
 								        		               anychart.format.dateTime(this.getData("baselineStart"), 'dd MMM yyyy') + " - " +
 								        		               anychart.format.dateTime(this.getData("baselineEnd"), 'dd MMM yyyy') + "</span><br>" +
 								        		               "Progress: " + this.getData("baselineProgressValue") + "<br>"
@@ -607,9 +582,9 @@ $('#interval').on('change',function(){
 								     	timeline.tasks().labels().useHtml(true);
 								     	timeline.tasks().labels().format(function() {
 								     	  if (this.progress == 1) {
-								     	    return "<span style='color:orange;font-weight:bold;font-family:'Lato';'></span>";
+								     	    return "<span class='font-weight-bold'></span>";
 								     	  } else {
-								     	    return "<span style='color:black;font-weight:bold'></span>";
+								     	    return "<span class='font-weight-bold'></span>";
 								     	  }
 								     	});
 								     	

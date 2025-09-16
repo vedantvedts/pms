@@ -980,7 +980,6 @@ public class MilestoneController {
 		
 		return null;
 	}
-	
 	@RequestMapping(value = "MilestoneActivityCompare.htm")
 	public String MilestoneActivityCompare(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 	{
@@ -994,25 +993,40 @@ public class MilestoneController {
 			if(rev>1) {
 				rev2=rev-1;
 			}
+			
+			String FirstNo = req.getParameter("FirstNo");
+			
+			String SecondNo = req.getParameter("SecondNo");
+			
+			System.out.println(FirstNo+"####"+SecondNo);
+			
+			if(FirstNo==null) {
+				FirstNo= "1";	
+			}
+			if(SecondNo!=null) {
+				rev2 = Integer.parseInt(SecondNo);
+			}
+			
+			
 			int countA=1;
 			int count1A=1;
-			req.setAttribute("MilestoneActivity", service.ActivityCompareMAin(req.getParameter("MilestoneActivityId"),"1","1").get(0));
-			List<Object[]>  MilestoneActivityA=service.ActivityLevelCompare(req.getParameter("MilestoneActivityId"),"1","1","1");
+			req.setAttribute("MilestoneActivity", service.ActivityCompareMAin(req.getParameter("MilestoneActivityId"),FirstNo,"1").get(0));
+			List<Object[]>  MilestoneActivityA=service.ActivityLevelCompare(req.getParameter("MilestoneActivityId"),FirstNo,"1","1");
 			req.setAttribute("MilestoneActivityA", MilestoneActivityA);
 			for(Object[] obj:MilestoneActivityA) {
-				List<Object[]>  MilestoneActivityB=service.ActivityLevelCompare(obj[0].toString(),"1","1","2");
+				List<Object[]>  MilestoneActivityB=service.ActivityLevelCompare(obj[0].toString(),FirstNo,"1","2");
 				req.setAttribute("MilestoneActivityB"+countA, MilestoneActivityB);
 				int countB=1;
 				for(Object[] obj1:MilestoneActivityB) {
-					List<Object[]>  MilestoneActivityC=service.ActivityLevelCompare(obj1[0].toString(),"1","1","3");
+					List<Object[]>  MilestoneActivityC=service.ActivityLevelCompare(obj1[0].toString(),FirstNo,"1","3");
 					req.setAttribute("MilestoneActivityC"+countA+countB, MilestoneActivityC);
 					int countC=1;
 					for(Object[] obj2:MilestoneActivityC) {
-						List<Object[]>  MilestoneActivityD=service.ActivityLevelCompare(obj2[0].toString(),"1","1","4");
+						List<Object[]>  MilestoneActivityD=service.ActivityLevelCompare(obj2[0].toString(),FirstNo,"1","4");
 						req.setAttribute("MilestoneActivityD"+countA+countB+countC, MilestoneActivityD);
 						int countD=1;
 						for(Object[] obj3:MilestoneActivityD) {
-							List<Object[]>  MilestoneActivityE=service.ActivityLevelCompare(obj3[0].toString(),"1","1","5");
+							List<Object[]>  MilestoneActivityE=service.ActivityLevelCompare(obj3[0].toString(),FirstNo,"1","5");
 							req.setAttribute("MilestoneActivityE"+countA+countB+countC+countD, MilestoneActivityE);
 							countD++;
 						}
@@ -1022,7 +1036,6 @@ public class MilestoneController {
 				}
 				countA++;
 			}	
-
 			req.setAttribute("MilestoneActivity1", service.ActivityCompareMAin(req.getParameter("MilestoneActivityId"),String.valueOf(rev2),"1").get(0));
 			List<Object[]>  MilestoneActivity1A=service.ActivityLevelCompare(req.getParameter("MilestoneActivityId"),String.valueOf(rev2),"1","1");
 			req.setAttribute("MilestoneActivity1A", MilestoneActivity1A);
@@ -1064,6 +1077,7 @@ public class MilestoneController {
 		return "milestone/MilestoneActivityCompare";
 
 	}
+
 
 	@RequestMapping(value = "MilestoneActivityCompareSubmit.htm")
 	public String MilestoneActivityCompareSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
@@ -1847,94 +1861,94 @@ public class MilestoneController {
 
 
 
-	@RequestMapping(value = "MilestoneSchedulesList.htm")
-	public String MilestoneSchedulesList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
-	{
-		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside MilestoneSchedulesList.htm "+UserId);		
-		try {
-
-			List<Object[] > ProjectList= service.ProjectList();
-			String ProjectId=req.getParameter("ProjectId");
-
-			if(ProjectId==null) {
-				Object[] FirstProjectId=  ProjectList.get(0);
-				ProjectId= FirstProjectId[0].toString();
-
-			}
-
-			req.setAttribute("ProjectDetails", service.ProjectDetails(ProjectId).get(0));
-			req.setAttribute("MilestoneScheduleList", service.MilestoneScheduleList(ProjectId));
-			req.setAttribute("ProjectList", ProjectList);
-			req.setAttribute("ProjectId", ProjectId);
-
-		}catch (Exception e) {
-			e.printStackTrace(); 
-			logger.error(new Date() +" Inside MilestoneSchedulesList.htm "+UserId, e); 
-			return "static/Error";
-		}
-
-		return "milestone/MilestoneScheduleList";
-	}
-
-	@RequestMapping(value = "MilestoneScheduleAdd.htm")
-	public String MilestoneScheduleAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
-	{
-		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside MilestoneScheduleAdd.htm "+UserId);
-		try {
-			req.setAttribute("ActivityTypeList", service.ActivityTypeList());
-			req.setAttribute("ProjectDetails", service.ProjectDetails(req.getParameter("ProjectId")).get(0));
-			req.setAttribute("ProjectId", req.getParameter("ProjectId"));
-		}
-		catch (Exception e) {
-			e.printStackTrace();  
-			logger.error(new Date() +" Inside MilestoneScheduleAdd.htm "+UserId, e); 
-			return "static/Error";
-		}
-		return "milestone/MilestoneScheduleAdd";
-	}
-
-	@RequestMapping(value = "MilestoneScheduleAddSubmit.htm", method = RequestMethod.POST)
-	public String MilestoneScheduleAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
-	{			
-		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside MilestoneScheduleAddSubmit.htm "+UserId);		
-		try {
-			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-
-			MilestoneScheduleDto mainDto=new MilestoneScheduleDto();
-			mainDto.setProjectId(req.getParameter("ProjectId"));
-			mainDto.setMilestoneNo(req.getParameter("MilestoneNo"));
-			mainDto.setActivityType(req.getParameter("ActivityType"));
-			mainDto.setActivityName(req.getParameter("ActivityName"));
-			mainDto.setStartDate(req.getParameter("ValidFrom"));
-			mainDto.setEndDate(req.getParameter("ValidTo"));
-			mainDto.setCreatedBy(UserId);
-			long count =service.MilestoneScheduleInsert(mainDto);
-
-			if (count > 0)
-			{ 
-				redir.addAttribute("result", "Milestone Schedule Added Successfully");
-
-			} 
-			else {
-				redir.addAttribute("resultfail", "Milestone Schedule Add Unsuccessful");
-
-				return "redirect:/MilestoneSchedulesList.htm"; }
-
-		}
-
-		catch (Exception e) {
-			e.printStackTrace();  
-			logger.error(new Date() +" Inside MilestoneScheduleAddSubmit.htm "+UserId, e); 
-			return "static/Error";
-
-		}
-
-		return "redirect:/MilestoneSchedulesList.htm";
-
-	}
+//	@RequestMapping(value = "MilestoneSchedulesList.htm")
+//	public String MilestoneSchedulesList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+//	{
+//		String UserId = (String) ses.getAttribute("Username");
+//		logger.info(new Date() +"Inside MilestoneSchedulesList.htm "+UserId);		
+//		try {
+//
+//			List<Object[] > ProjectList= service.ProjectList();
+//			String ProjectId=req.getParameter("ProjectId");
+//
+//			if(ProjectId==null) {
+//				Object[] FirstProjectId=  ProjectList.get(0);
+//				ProjectId= FirstProjectId[0].toString();
+//
+//			}
+//
+//			req.setAttribute("ProjectDetails", service.ProjectDetails(ProjectId).get(0));
+//			req.setAttribute("MilestoneScheduleList", service.MilestoneScheduleList(ProjectId));
+//			req.setAttribute("ProjectList", ProjectList);
+//			req.setAttribute("ProjectId", ProjectId);
+//
+//		}catch (Exception e) {
+//			e.printStackTrace(); 
+//			logger.error(new Date() +" Inside MilestoneSchedulesList.htm "+UserId, e); 
+//			return "static/Error";
+//		}
+//
+//		return "milestone/MilestoneScheduleList";
+//	}
+//
+//	@RequestMapping(value = "MilestoneScheduleAdd.htm")
+//	public String MilestoneScheduleAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+//	{
+//		String UserId = (String) ses.getAttribute("Username");
+//		logger.info(new Date() +"Inside MilestoneScheduleAdd.htm "+UserId);
+//		try {
+//			req.setAttribute("ActivityTypeList", service.ActivityTypeList());
+//			req.setAttribute("ProjectDetails", service.ProjectDetails(req.getParameter("ProjectId")).get(0));
+//			req.setAttribute("ProjectId", req.getParameter("ProjectId"));
+//		}
+//		catch (Exception e) {
+//			e.printStackTrace();  
+//			logger.error(new Date() +" Inside MilestoneScheduleAdd.htm "+UserId, e); 
+//			return "static/Error";
+//		}
+//		return "milestone/MilestoneScheduleAdd";
+//	}
+//
+//	@RequestMapping(value = "MilestoneScheduleAddSubmit.htm", method = RequestMethod.POST)
+//	public String MilestoneScheduleAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+//	{			
+//		String UserId = (String) ses.getAttribute("Username");
+//		logger.info(new Date() +"Inside MilestoneScheduleAddSubmit.htm "+UserId);		
+//		try {
+//			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+//
+//			MilestoneScheduleDto mainDto=new MilestoneScheduleDto();
+//			mainDto.setProjectId(req.getParameter("ProjectId"));
+//			mainDto.setMilestoneNo(req.getParameter("MilestoneNo"));
+//			mainDto.setActivityType(req.getParameter("ActivityType"));
+//			mainDto.setActivityName(req.getParameter("ActivityName"));
+//			mainDto.setStartDate(req.getParameter("ValidFrom"));
+//			mainDto.setEndDate(req.getParameter("ValidTo"));
+//			mainDto.setCreatedBy(UserId);
+//			long count =service.MilestoneScheduleInsert(mainDto);
+//
+//			if (count > 0)
+//			{ 
+//				redir.addAttribute("result", "Milestone Schedule Added Successfully");
+//
+//			} 
+//			else {
+//				redir.addAttribute("resultfail", "Milestone Schedule Add Unsuccessful");
+//
+//				return "redirect:/MilestoneSchedulesList.htm"; }
+//
+//		}
+//
+//		catch (Exception e) {
+//			e.printStackTrace();  
+//			logger.error(new Date() +" Inside MilestoneScheduleAddSubmit.htm "+UserId, e); 
+//			return "static/Error";
+//
+//		}
+//
+//		return "redirect:/MilestoneSchedulesList.htm";
+//
+//	}
 
 	@RequestMapping(value = "MilestoneExcelFile.htm", method = {RequestMethod.POST, RequestMethod.GET})
 	public void MilestoneExcelFile(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception 
@@ -3951,8 +3965,9 @@ public class MilestoneController {
 			String isMasterData = req.getParameter("isMasterData");
 			
 			MilestoneActivityLevel level1= service.getMilestoneActivityLevelById(milesMainId);
-			
-			System.out.println(level1.getLinkedMilestonId());
+			MilestoneActivityLevel level2= service.getMilestoneActivityLevelById(mileIdLink);
+
+			System.out.println(milesMainId+"-----"+mileIdLink+"%%%%%%%%"+isMasterData);
 			if (!level1.getLinkedMilestonId().toString().equalsIgnoreCase("0")  ) {
 				MilestoneActivityLevel level3= service.getMilestoneActivityLevelById(level1.getLinkedMilestonId().toString());
 				level3.setLinkedMilestonId(0l);
@@ -3961,13 +3976,17 @@ public class MilestoneController {
 			}
 			
 			level1.setLinkedMilestonId(Long.parseLong(mileIdLink));
-			level1.setIsMasterData(isMasterData);
-			
+			level1.setIsMasterData(isMasterData.equalsIgnoreCase("Y")?"Y":"L");
+			level1.setProgressStatus(isMasterData.equalsIgnoreCase("Y")?level1.getProgressStatus():level2.getProgressStatus());			
 			long count =service.MilestoneActivityLevelSave(level1);
 			
-			MilestoneActivityLevel level2= service.getMilestoneActivityLevelById(mileIdLink);
 			level2.setLinkedMilestonId(Long.parseLong(milesMainId));
-			level2.setIsMasterData(isMasterData.equalsIgnoreCase("Y")?"L":"Y");
+			level2.setIsMasterData(isMasterData.equalsIgnoreCase("N")?"Y":"L");
+			level2.setProgressStatus(isMasterData.equalsIgnoreCase("N")?level2.getProgressStatus():level1.getProgressStatus());			
+
+		
+			
+			long count1= service.MilestoneActivityLevelSave(level2);
 			
 			if(isMasterData.equalsIgnoreCase("Y")) {
 				updateMilestoneRemarks(milesMainId,mileIdLink,UserId);
@@ -3975,11 +3994,7 @@ public class MilestoneController {
 				updateMilestoneRemarks(mileIdLink,milesMainId,UserId);
 			}
 			
-			long count1= service.MilestoneActivityLevelSave(level2);
-			
-			
-			
-			return json.toJson(count+count1);
+			return json.toJson(5);
 			
 		} catch (Exception e) {
 			e.printStackTrace(); 
@@ -3988,6 +4003,7 @@ public class MilestoneController {
 		}
 	
 	}
+	
 	
 	// 18-08
 	@Async
@@ -4017,7 +4033,11 @@ public class MilestoneController {
 			
 				service.saveMilestoneSub(attach);
 			}
-			
+			String mainId = service.getMainLevelId(Long.parseLong(id2));
+			mainDto.setMilestoneActivityId(mainId);
+//			mainDto.setFlag("Y");
+			mainDto.setActivityId(id2);
+			service.updateMilestoneLevelProgress(mainDto);
 			
 		} catch (Exception e) {
 
