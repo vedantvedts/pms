@@ -1,0 +1,63 @@
+@charset "ISO-8859-1";
+
+label {
+	font-weight: bold;
+	font-size: 13px;
+}
+
+body {
+	background-color: #f2edfa;
+	overflow-x: hidden !important;
+}
+
+h6 {
+	text-decoration: none !important;
+}
+
+.table button {
+	background-color: white !important;
+	border: 3px solid #17a2b8;
+	padding: .275rem .5rem !important;
+}
+
+.table button:hover {
+	color: black !important;
+}
+
+#table tbody tr td {
+	padding: 4px 3px !important;
+}
+
+.cardh{
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.updateRptForm{
+	float: right; 
+	margin-top: -8px;
+}
+
+.selectPrj{
+	max-width: 300px;
+	 padding-right: 50px
+}
+
+#projectid{
+	max-width: 250px
+}
+
+.weekelyStatusDiv{
+	width: 95%; margin: auto;
+}
+
+.weekelyStatusHeading{
+	text-align: center;padding: 35px;
+}
+
+.tableThead{
+	text-align: center;
+}
+
+.data-div{
+	text-align: center;
+}

@@ -7,29 +7,14 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
+<title>Issue Update</title>
+   <spring:url value="/resources/css/issue/issueUpdate.css" var="issueUpdate" />     
+<link href="${issueUpdate}" rel="stylesheet" />
+
+
 <jsp:include page="../static/header.jsp"></jsp:include>
 
- 
 
-<title>Issue Update</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden; 
-}
-h6{
-	text-decoration: none !important;
-}
-
-
-</style>
 </head>
  
 <body>
@@ -70,13 +55,13 @@ h6{
 
 <div class="container-fluid">
 
-	<div class="container" style="margin-bottom:20px;">
+	<div class="container containerDiv" >
 
 		
-    		<div class="card" style=" ">
-      				<div class="card-header" style="background-color: #055C9D;display: table;">
-      				  <h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Issue : <%if(Assignee!=null && Assignee[5]!=null){%> <%=StringEscapeUtils.escapeHtml4(Assignee[5].toString()) %> (<%=Assignee[10]!=null?StringEscapeUtils.escapeHtml4(Assignee[10].toString()):" - " %>)<%}%>
-                     	<span style="float: right;font-size: 17px;margin-top: 5px">Assigner :<%if(Assignee!=null && Assignee[1]!=null){%> <%=StringEscapeUtils.escapeHtml4(Assignee[1].toString()) %><%}%> </span>
+    		<div class="card" >
+      				<div class="card-header cardheader" >
+      				  <h6  class="assigneeHeading" align="left"> Issue : <%if(Assignee!=null && Assignee[5]!=null){%> <%=StringEscapeUtils.escapeHtml4(Assignee[5].toString()) %> (<%=Assignee[10]!=null?StringEscapeUtils.escapeHtml4(Assignee[10].toString()):" - " %>)<%}%>
+                     	<span  class="assignorSpan">Assigner :<%if(Assignee!=null && Assignee[1]!=null){%> <%=StringEscapeUtils.escapeHtml4(Assignee[1].toString()) %><%}%> </span>
                       </h6>
       		</div>
       		<div class="card-body">
@@ -84,7 +69,7 @@ h6{
 	        
 	        			<div>
 	          			 	
-	          				<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="myTable20" style="margin-top: 30px;">
+	          				<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="myTable20" >
 								<thead>  
 									<tr id="">
 										<th>As On Date</th>
@@ -131,25 +116,25 @@ h6{
     
  <div class="row">
 	<div class="col-md-12">
-    	<div class="card" style="">
+    	<div class="card" >
       		<div class="card-body" >
       		 <div class="row">
 				<div class="col-md-1"></div>
-				   <div class="col-md-10" style="padding-left: 0px">
+				   <div class="col-md-10" >
 								<% if(SubList!=null && SubList.size()>0){ %>  
 											
 											<div class="table-responsive">
-				    				<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" style="margin-top: 20px;">
+				    				<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" >
 										<thead>
 											<tr>
-												<th colspan="7" style="background-color: #346691; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;text-transform: capitalize;" >Action Updated Details </th>									
+												<th colspan="7"  class="actionUpdateDetails">Action Updated Details </th>									
 											</tr>	
 											<tr>					
-												<th style="text-align: left;">As On Date</th>
-												<th style="">Progress %</th>
-												<th style="">Remarks</th>								
-											 	<th style="">Attachment</th>
-												<th style="">Action</th>
+												<th class="asOnDate">As On Date</th>
+												<th >Progress %</th>
+												<th >Remarks</th>								
+											 	<th >Attachment</th>
+												<th >Action</th>
 											</tr>
 										</thead>
 										<tbody>					
@@ -158,23 +143,23 @@ h6{
 																		
 										<tr>
 										
-												<td width="12%">
+												<td  class="asOnDateData">
 													<%=obj[3]!=null?sdf.format(obj[3]):""%>
 												</td>
 												
 												<td width="6%">
 													
-													<div class="progress" style="background-color:#cdd0cb !important">
-				  										<div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%=obj[2]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></div>
+													<div class="progress"  class="issueUpdateDiv">
+				  										<div class="progress-bar progress-bar-striped width<%=obj[2]%>" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></div>
 													</div>
 								
 														</td>
 												
-												<td style="text-align: left; width: 10%;"> 
+												<td  class="remarkstd" > 
 													<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%>
 												</td>
 												
-												<td style="text-align: left; width: 3%;">
+												<td  class="attachementtd">
 												
 											 <% 
 										        if( obj[5]!=null){
@@ -195,12 +180,12 @@ h6{
 												</td>
 												
 																		
-												<td style="text-align: left; width: 6%;">
+												<td  class="subSubmitTd">
 												<form method="post" action="SubSubmit.htm" enctype="multipart/form-data">
 													
 					                                <input type="hidden" name="${_csrf.parameterName}"   value="${_csrf.token}" />
 						
-													<button type="submit" class="btn  btn-sm" name="action" value="delete" onclick="return confirm('Are you sure To Delete?')" formaction="ActionSubDelete.htm" style="background-color:  #D3D3D3;"> <i class="fa fa-trash" aria-hidden="true" ></i></button>
+													<button type="submit" class="btn  btn-sm" name="action" value="delete" onclick="return confirm('Are you sure To Delete?')" formaction="ActionSubDelete.htm"  class="dltBtn"> <i class="fa fa-trash" aria-hidden="true" ></i></button>
 													<input type="hidden" name="ActionSubId" value="<%=obj[0]%>"/>
 									                <input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />
 									                <input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" /> 

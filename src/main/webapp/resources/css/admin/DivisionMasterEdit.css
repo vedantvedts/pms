@@ -1,0 +1,29 @@
+@charset "UTF-8";
+
+
+label{
+font-weight: bold;
+  font-size: 13px;
+}
+
+
+
+label{
+	font-size: 15px;
+}
+
+.axios-err{
+	width: 65%!important;
+	padding: 10px!important; 
+	margin: 5px 0!important; 
+    border-radius: 4px!important;
+}
+.bg-header{
+ 	background-color: #055C9D!important;
+ }
+ .input-font{
+ 	font-size: 18px!important;
+ }
+ .dis-none{
+	display: none;
+}

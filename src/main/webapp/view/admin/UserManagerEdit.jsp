@@ -4,35 +4,16 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 
+<spring:url value="/resources/css/admin/UserManagerEdit.css" var="userManagerEdit" />
+<link href="${userManagerEdit}" rel="stylesheet" />
 <title>User Credentials Update</title>
-<style type="text/css">
-
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-.card b{
-	font-size: 20px;
-}
-
-
-</style>
 </head>
 <body>
 <%List<Object[]> DivisionList=(List<Object[]>)request.getAttribute("DivisionList");
@@ -66,14 +47,14 @@ List<Object[]> LoginTypeList=(List<Object[]>)request.getAttribute("LoginTypeList
 <br>
 	
 <div class="container">
-	<div class="row" style="">
+	<div class="row" >
 
 		<div class="col-md-12">
 		<div align="center">
 		<div class="badge badge-success" >LoginType:<%=login.getLoginType()!=null?StringEscapeUtils.escapeHtml4(login.getLoginType()): " - " %>&nbsp;&nbsp;||&nbsp;Username:<%=login.getUsername()!=null?StringEscapeUtils.escapeHtml4(login.getUsername()): " - " %> </div></div>
  			<div class="card shadow-nohover" >
 				
-				<div class="card-header" style=" background-color: #055C9D;margin-top: ">
+				<div class="card-header" >
                     <b class="text-white">User Credentials Update</b>
         		</div>
         
@@ -88,13 +69,11 @@ List<Object[]> LoginTypeList=(List<Object[]>)request.getAttribute("LoginTypeList
 
 
 											<tr>
-												<th><label>Division: <span class="mandatory"
-														style="color: red;">*</span>
+												<th><label>Division: <span class="mandatory">*</span>
 												</label></th>
-												<td><select class="form-control selectdee"
+												<td><select class="form-control selectdee font-5"
 													name="Division" data-container="body"
-													data-live-search="true" required="required"
-													style="font-size: 5px;">
+													data-live-search="true" required="required">
 														<option value="" disabled="disabled" selected="selected"
 															hidden="true">--Select--</option>
 														<% for (Object[] obj : DivisionList) { %>
@@ -103,15 +82,13 @@ List<Object[]> LoginTypeList=(List<Object[]>)request.getAttribute("LoginTypeList
 
 												</select></td>
 
-												<th><label>Login Type: <span class="mandatory"
-														style="color: red;">*</span>
+												<th><label>Login Type: <span class="mandatory">*</span>
 												</label></th>
-												<td style="width: 300px;"><input type="hidden"
+												<td class="w-300"><input type="hidden"
 													name="Role" value="1"> <select
-													class="form-control selectdee" name="LoginType"
+													class="form-control selectdee w-100 font-5" name="LoginType"
 													id="LoginType" data-container="body"
-													data-live-search="true" required="required"
-													style="width: 100%; font-size: 5px;">
+													data-live-search="true" required="required">
 														<option value="" disabled="disabled" selected="selected"
 															hidden="true">--Select--</option>
 														<%
@@ -126,13 +103,11 @@ List<Object[]> LoginTypeList=(List<Object[]>)request.getAttribute("LoginTypeList
 												</select></td>
 											</tr>
 											<tr>
-												<th><label>Employee: <span class="mandatory"
-														style="color: red;">*</span>
+												<th><label>Employee: <span class="mandatory">*</span>
 												</label></th>
-												<td><select class="form-control selectdee"
+												<td><select class="form-control selectdee font-5"
 													name="Employee" id="Employee" data-container="body"
-													data-live-search="true" required="required"
-													style="font-size: 5px;">
+													data-live-search="true" required="required">
 
 														<%
 														for (Object[] obj : EmpList) {
@@ -145,11 +120,10 @@ List<Object[]> LoginTypeList=(List<Object[]>)request.getAttribute("LoginTypeList
 														%>
 
 												</select></td>
-												<th><label>PMS Login: <span class="mandatory"
-														style="color: red;">*</span>
+												<th><label>PMS Login: <span class="mandatory">*</span>
 												</label></th>
-												<td colspan="3"><select class="form-control"
-													name="pfmsLogin" style="width: 50%;" required="required">
+												<td colspan="3"><select class="form-control w-50"
+													name="pfmsLogin" required="required">
 														<option value="N" <%if (login.getPfms().equals("N")) {%>
 															selected="selected" <%} %>>No</option>
 														<option value="Y" <%if(login.getPfms().equals("Y")){ %>
@@ -161,9 +135,9 @@ List<Object[]> LoginTypeList=(List<Object[]>)request.getAttribute("LoginTypeList
 
 								</div>
 							</div>
-							<div class="row" style="margin-left: 40%;" align="center">
+							<div class="row ml-40"  align="center">
                                <button type="submit" class="btn btn-primary btn-sm submit">SUBMIT</button>
-                               <a class="btn btn-info btn-sm shadow-nohover back" style="margin-left: 0.5rem;" 
+                               <a class="btn btn-info btn-sm shadow-nohover back ml-2"  
                                href="UserManagerList.htm">Back</a>
                            </div>
 							<input type="hidden" name="LoginId"

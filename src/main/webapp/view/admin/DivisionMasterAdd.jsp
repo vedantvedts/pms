@@ -4,114 +4,17 @@
     
     <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/css/admin/DivisionMasterAdd.css" var="divisionMasterAdd" />
+<link href="${divisionMasterAdd}" rel="stylesheet" />
 
 <title>DIVISION MASTER ADD</title>
-<style type="text/css">
-
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-
-.table thead tr th {
-	background-color: aliceblue;
-	text-align: left;
-	width:30%;
-}
-
-.table thead tr td {
-
-	text-align: left;
-}
-
-label{
-	font-size: 15px;
-}
-
-
-table{
-	box-shadow: 0 4px 6px -2px gray;
-}
-
-
- .resubmitted{
-	color:green;
-}
-
-	.fa{
-		font-size: 1.20rem;
-	}
-
-
-
-
-
-/* icon styles */
-
-.cc-rockmenu {
-	color:fff;
-	padding:0px 5px;
-	font-family: 'Lato',sans-serif;
-}
-
-.cc-rockmenu .rolling {
-  display: inline-block;
-  cursor:pointer;
-  width: 34px;
-  height: 30px;
-  text-align:left;
-  overflow: hidden;
-  transition: all 0.3s ease-out;
-  white-space: nowrap;
-  
-}
-.cc-rockmenu .rolling:hover {
-  width: 108px;
-}
-.cc-rockmenu .rolling .rolling_icon {
-  float:left;
-  z-index: 9;
-  display: inline-block;
-  width: 28px;
-  height: 52px;
-  box-sizing: border-box;
-  margin: 0 5px 0 0;
-}
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-  width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-    font-size: 20px;
-    padding: 6px;
-}
-.cc-rockmenu .rolling span {
-    display: block;
-    font-weight: bold;
-    padding: 2px 0;
-    font-size: 14px;
-    font-family: 'Muli',sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin:0;
-}
-
-.width{
-	width:270px !important;
-}
-
-
-
-
-
-</style>
 </head>
 <body>
 
@@ -150,9 +53,9 @@ List<Object[]> DivisionHeadListAdd=(List<Object[]>)request.getAttribute("Divisio
 
 <div class="col-sm-2"></div> 
 	
-<div class="col-sm-8"  style="top: 10px;">
+<div class="col-sm-8 mt-3"  >
 <div class="card shadow-nohover" >
-<div class="card-header" style=" background-color: #055C9D;margin-top: "> <b class="text-white">Division Add </b></div>
+<div class="card-header bg-header" > <b class="text-white">Division Add </b></div>
 
 <div class="card-body">
 
@@ -162,21 +65,21 @@ List<Object[]> DivisionHeadListAdd=(List<Object[]>)request.getAttribute("Divisio
 
 <div class="col-md-3">
          <div class="form-group">
-				<label >Division Code:<span class="mandatory" style="color: red;">*</span></label>
-				<input  class="form-control form-control alphanum-only"  type="text" name="dCode" id="divisionCode" required="required" maxlength="3" style="font-size: 15px;"> 
+				<label >Division Code:<span class="mandatory">*</span></label>
+				<input  class="form-control form-control alphanum-only input-font"  type="text" name="dCode" id="divisionCode" required="required" maxlength="3"> 
 	     </div>
 </div>		
 
 <div class="col-md-3">
 		<div class="form-group">
-                 <label>Division Name:<span class="mandatory" style="color: red;">*</span></label>
-                  <input  class="form-control form-control alphanum-no-leading-space"  type="text" name="dName" id="divisionName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize; width: 80%;" > 
+                 <label>Division Name:<span class="mandatory">*</span></label>
+                  <input  class="form-control form-control alphanum-no-leading-space text-uppercase input-font w-80"  type="text" name="dName" id="divisionName" required="required" maxlength="100"  > 
 		</div>
 </div>
 
 <div class="col-md-3">
 		<div class="form-group">
-				<label >Group Name:<span class="mandatory" style="color: red;">*</span></label>
+				<label >Group Name:<span class="mandatory" >*</span></label>
 				<select class="custom-select" id="grpId" required="required" name="grpId">
 								<option selected value="">Choose...</option>
 								
@@ -191,7 +94,7 @@ List<Object[]> DivisionHeadListAdd=(List<Object[]>)request.getAttribute("Divisio
    
 <div class="col-md-3">
 		<div class="form-group">
-				<label >Division Head Name:<span class="mandatory" style="color: red;">*</span></label>
+				<label >Division Head Name:<span class="mandatory" >*</span></label>
 				<select class="custom-select" id="dHName" required="required" name="dHName">
 								<option  selected value="">---Select---</option>
 								
@@ -210,15 +113,15 @@ List<Object[]> DivisionHeadListAdd=(List<Object[]>)request.getAttribute("Divisio
 <div class="row">
 <div class="col-md-3">
 		<div class="form-group">
-                 <label>Division Short Name:<span class="mandatory" style="color: red;">*</span></label>
-                  <input  class="form-control form-control alphanum-no-leading-space"  type="text" name="divisionShortName" id="divisionShortName" placeholder="Division Short Name" id="divisionShortName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize;" > 
+                 <label>Division Short Name:<span class="mandatory" >*</span></label>
+                  <input  class="form-control form-control alphanum-no-leading-space text-uppercase input-font"  type="text" name="divisionShortName" id="divisionShortName" placeholder="Division Short Name" id="divisionShortName" required="required" maxlength="100" > 
 		</div>
 </div>
 </div>
 <!-- srikant code end -->
    
 	<div align="center">
-		<button type="button" class="btn btn-sm submit" style="align-self: center;" onclick="Divisioncheck('divisionAdd');" >SUBMIT</button>
+		<button type="button" class="btn btn-sm submit" onclick="Divisioncheck('divisionAdd');" >SUBMIT</button>
 		<a class="btn  btn-sm  back"    href="DivisionMaster.htm">BACK</a>
 	</div>
 

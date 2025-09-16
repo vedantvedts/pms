@@ -13,176 +13,8 @@
 
 
 <jsp:include page="../static/header.jsp"></jsp:include>
-
-
-<style>
-.control-label {
-	font-weight: bold !important;
-}
-
-.table thead th {
-	vertical-align: middle !important;
-}
-
-.header {
-	position: sticky;
-	top: 0;
-	background-color: #346691;
-}
-.modal-dialog-jump {
-  animation: jumpIn 1.5s ease;
-}
-
-@keyframes jumpIn {
-  0% {
-    transform: scale(0.1);
-    opacity: 0;
-  }
-  70% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-.table button {
-	font-size: 12px;
-}
-
-label {
-	font-size: 15px !important;
-}
-
-td {
-	text-align: center;
-	vertical-align: middle;
-}
-</style>
-<!-- --------------  tree   ------------------- -->
-<style>
-ul, #myUL {
-	list-style-type: none;
-}
-
-#myUL {
-	margin: 0;
-	padding: 0;
-}
-
-.caret {
-	cursor: pointer;
-	-webkit-user-select: none; /* Safari 3.1+ */
-	-moz-user-select: none; /* Firefox 2+ */
-	-ms-user-select: none; /* IE 10+ */
-	user-select: none;
-}
-
-.caret::before {
-	content: "  \25B7";
-	color: black;
-	display: inline-block;
-	margin-right: 6px;
-}
-
-.caret-down::before {
-	content: "\25B6  ";
-	-ms-transform: rotate(90deg); /* IE 9 */
-	-webkit-transform: rotate(90deg); /* Safari */ '
-	transform: rotate(90deg);
-}
-
-.caret-last {
-	cursor: pointer;
-	-webkit-user-select: none; /* Safari 3.1+ */
-	-moz-user-select: none; /* Firefox 2+ */
-	-ms-user-select: none; /* IE 10+ */
-	user-select: none;
-}
-
-.caret-last::before {
-	content: "\25B7";
-	color: black;
-	display: inline-block;
-	margin-right: 6px;
-}
-
-.nested {
-	display: none;
-}
-
-.active {
-	display: block;
-}
-</style>
-
-<!-- ---------------- tree ----------------- -->
-<!-- -------------- model  tree   ------------------- -->
-<style>
-.caret-1 {
-	cursor: pointer;
-	-webkit-user-select: none; /* Safari 3.1+ */
-	-moz-user-select: none; /* Firefox 2+ */
-	-ms-user-select: none; /* IE 10+ */
-	user-select: none;
-}
-
-.caret-last-1 {
-	cursor: pointer;
-	-webkit-user-select: none; /* Safari 3.1+ */
-	-moz-user-select: none; /* Firefox 2+ */
-	-ms-user-select: none; /* IE 10+ */
-	user-select: none;
-}
-
-.caret-last-1::before {
-	content: "\25B7";
-	color: black;
-	display: inline-block;
-	margin-right: 6px;
-}
-
-.level2 {
-	cursor: pointer;
-	-webkit-user-select: none; /* Safari 3.1+ */
-	-moz-user-select: none; /* Firefox 2+ */
-	-ms-user-select: none; /* IE 10+ */
-	user-select: none;
-}
-
-.level2::before {
-	content: "\25B7";
-	color: black;
-	display: inline-block;
-	margin-right: 6px;
-}
-
-.caret-1::before {
-	content: "  \25B7";
-	color: black;
-	display: inline-block;
-	margin-right: 6px;
-}
-
-.caret-down-1::before {
-	content: "\25B6  ";
-	-ms-transform: rotate(90deg); /* IE 9 */
-	-webkit-transform: rotate(90deg); /* Safari */ '
-	transform: rotate(90deg);
-}
-
-.nested-1 {
-	display: none;
-}
-
-.active-1 {
-	display: block;
-}
-</style>
-
-<!-- ---------------- model tree ----------------- -->
-
-
+<spring:url value="/resources/css/fileRepo/FileRepoUpload.css" var="filerepoupload" />
+<link href="${filerepoupload}" rel="stylesheet" />
 
 </head>
 <body>
@@ -233,15 +65,15 @@ List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filer
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="card shadow-nohover" style="min-height: 34rem;">
+				<div class="card shadow-nohover mh-34">
 					<form method="post" action="TestingFileRepo.htm" id="myform">
 						<div class="card-header">
 							<div class="row">
 								<div class="col-md-6">
 									<h4 class="control-label">Document Upload</h4>
 								</div>
-								<div class="col-md-6" style="margin-top: -8px;">
-									<table style="float: right;">
+								<div class="col-md-6 mt-minus-2" >
+									<table class="f-right">
 										<tr>
 											<td><label class="control-label">Project
 													:&nbsp;&nbsp; </label></td>
@@ -278,9 +110,8 @@ List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filer
 							<!-- --------------------------------------------left page ----------------------------------------------------->
 							<div class="col-md-7">
 								<!-- -------------------------------- tree ----------------------------- -->
-								<div class="row"
-									style="height: 28rem; overflow-y: auto; verflow-x: auto;">
-									<ul style=" margin-left: -4%;">
+								<div class="row card-div">
+									<ul class="ml-minus-1">
 										<%for(Object[] obj :filerepmasterlistall)
 							{ 
 								if(Long.parseLong(obj[1].toString())==0)
@@ -289,8 +120,7 @@ List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filer
 											onclick="doclist('<%=obj[0]%>','<%=obj[3] %>','-','','-','','-','','-','',0,this)">
 												<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %>
 										</span> <span>
-												<button type="button" class="btn"
-													style="background-color: transparent; margin: -5px 0px"
+												<button type="button" class="btn btn-transparent"
 													onclick="batchdownload('<%=obj[0]%>')">
 													<i class="fa fa-download" aria-hidden="true"></i>
 												</button>
@@ -308,14 +138,12 @@ List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filer
 														<%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): " - " %>
 												</span> <span>
 														<button type="button" id="upbutton<%=obj1[0]%>"
-															class="btn" data-target="#exampleModalCenter"
-															style="background-color: transparent; margin: -5px 0px;"
+															class="btn btn-transparent" data-target="#exampleModalCenter"
 															onclick="modalbox('<%=obj[0]%>','<%=obj[3] %>','<%=obj1[0]%>','<%=obj1[3] %>','-','','-','','-','',1)">
-															<i class="fa fa-upload" style="color: #007bff"
+															<i class="fa fa-upload i-bg-col" 
 																aria-hidden="true"></i>
 														</button>
-														<button type="button" class="btn"
-															style="background-color: transparent; margin: -5px -10px"
+														<button type="button" class="btn btn-transparent-2" 
 															onclick="batchdownload('<%=obj1[0]%>')">
 															<i class="fa fa-download" aria-hidden="true"></i>
 														</button>
@@ -333,14 +161,12 @@ List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filer
 																<%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - " %>
 														</span> <span>
 																<button type="button" id="upbutton<%=obj2[0]%>"
-																	class="btn" data-target="#exampleModalCenter"
-																	style="background-color: transparent; margin: -5px 0px;"
+																	class="btn btn-transparent" data-target="#exampleModalCenter" 
 																	onclick="modalbox('<%=obj[0]%>','<%=obj[3] %>','<%=obj1[0]%>','<%=obj1[3] %>','<%=obj2[0]%>','<%=obj2[3] %>','-','','-','',2)">
-																	<i class="fa fa-upload" style="color: #007bff"
+																	<i class="fa fa-upload i-bg-col"  
 																		aria-hidden="true"></i>
 																</button>
-																<button type="button" class="btn"
-																	style="background-color: transparent; margin: -5px -10px"
+																<button type="button" class="btn btn-transparent-2" 
 																	onclick="batchdownload('<%=obj2[0]%>')">
 																	<i class="fa fa-download" aria-hidden="true"></i>
 																</button>
@@ -359,14 +185,12 @@ List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filer
 																		<%=obj3[3]!=null?StringEscapeUtils.escapeHtml4(obj3[3].toString()): " - " %>
 																</span> <span>
 																		<button type="button" id="upbutton<%=obj3[0]%>"
-																			class="btn" data-target="#exampleModalCenter"
-																			style="background-color: transparent; margin: -5px 0px;"
+																			class="btn btn-transparent" data-target="#exampleModalCenter" 
 																			onclick="modalbox('<%=obj[0]%>','<%=obj[3] %>','<%=obj1[0]%>','<%=obj1[3] %>','<%=obj2[0]%>','<%=obj2[3] %>','<%=obj3[0]%>','<%=obj3[3] %>','-','',3)">
-																			<i class="fa fa-upload" style="color: #007bff;"
+																			<i class="fa fa-upload i-bg-col" 
 																				aria-hidden="true"></i>
 																		</button>
-																		<button type="button" class="btn"
-																			style="background-color: transparent; margin: -5px -10px"
+																		<button type="button" class="btn btn-transparent-2" 
 																			onclick="batchdownload('<%=obj3[0]%>')">
 																			<i class="fa fa-download" aria-hidden="true"></i>
 																		</button>
@@ -385,15 +209,13 @@ List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filer
 																				<%=obj4[3]!=null?StringEscapeUtils.escapeHtml4(obj4[3].toString()): " - " %>
 																		</span> <span>
 																				<button type="button" id="upbutton<%=obj4[0]%>"
-																					class="btn" data-target="#exampleModalCenter"
-																					style="background-color: transparent; margin: -5px 0px;"
+																					class="btn btn-transparent" data-target="#exampleModalCenter" 
 																					onclick="modalbox('<%=obj[0]%>','<%=obj[3] %>','<%=obj1[0]%>','<%=obj1[3] %>','<%=obj2[0]%>','<%=obj2[3] %>','<%=obj3[0]%>','<%=obj3[3] %>','<%=obj4[0]%>','<%=obj4[3] %>',4)">
-																					<i class="fa fa-upload" style="color: #007bff"
+																					<i class="fa fa-upload i-bg-col" 
 																						aria-hidden="true"></i>
 																				</button>
 
-																				<button type="button" class="btn"
-																					style="background-color: transparent; margin: -5px -10px"
+																				<button type="button" class="btn btn-transparent-2" 
 																					onclick="batchdownload('<%=obj4[0]%>')">
 																					<i class="fa fa-download" aria-hidden="true"></i>
 																				</button>
@@ -435,24 +257,23 @@ List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filer
 
 							<div class="col-md-5 border">
 								<div
-									style="font-size: 17px; padding-top: 10px !important; padding-bottom: 25px !important;"
+									class="div-font"
 									align="center">
-									<span id="tablehead"
-										style="display: inline; color: black; font-style: italic;"></span>
+									<span id="tablehead"></span>
 								</div>
-								<div style="overflow-y: auto; width: 100%; max-height: 35rem;">
+								<div class="div-over-flow">
 									<div class="table-responsive ">
-										<table class="table table-bordered " style="width: 100%;"
+										<table class="table table-bordered w-100"
 											id="MyTable1">
 											<thead>
 												<tr>
-													<th style="width: 4%; text-align: center;">SN</th>
-													<th style="width: 10%; text-align: center;">DocId</th>
-													<th style="width: 60%; text-align: center;">Name</th>
-													<th style="width: 15%; text-align: center;">UpdateOn</th>
-													<th style="width: 5%; text-align: center;">Ver</th>
-													<th><i class="fa fa-download" aria-hidden="true"></th>
-													<th><i class="fa fa-history" aria-hidden="true"></th>
+													<th class="text-center w-4" >SN</th>
+													<th class="text-center w-10">DocId</th>
+													<th class="text-center w-60" >Name</th>
+													<th class="text-center w-15" >UpdateOn</th>
+													<th class="text-center w-5" >Ver</th>
+													<th><i class="fa fa-download" aria-hidden="true"></i></th>
+													<th><i class="fa fa-history" aria-hidden="true"></i> </th>
 												</tr>
 											</thead>
 											<tbody id="flisttbody">
@@ -474,23 +295,19 @@ List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filer
 	<div class="modal fade" id="exampleModalCenter" tabindex="-1"
 		role="dialog" aria-labelledby="exampleModalCenterTitle"
 		aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="document"
-			style="max-width: 1000px !important">
+		<div class="modal-dialog modal-dialog-centered max-wid" role="document">
 			<div class="modal-content">
-				<div class="modal-header"
-					style="background-color: rgba(0, 0, 0, .03);">
-					<h4 class="modal-title" id="exampleModalLongTitle"
-						style="color: #145374">Document History</h4>
+				<div class="modal-header modal-bg" >
+					<h4 class="modal-title modal-title-col" id="exampleModalLongTitle" >Document History</h4>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<div class="modal-body" style="padding: 0.5rem !important">
+				<div class="modal-body p-2">
 					<div class="card shadow-nohover">
 						<div class="card-body">
-							<h5 style="display: inline; color: black; font-style: italic;"
-								align="center">
+							<h5 class="card-h5" align="center">
 								<span id="modelhead"></span>
 							</h5>
 						</div>
@@ -499,7 +316,7 @@ List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filer
 						<div class="col-md-12">
 							<div class="card shadow-nohover">
 								<div class="card-body">
-									<table class="table table-bordered " style="width: 100%;"
+									<table class="table table-bordered w-100"
 										id="MyTable">
 										<thead>
 											<tr>
@@ -532,16 +349,13 @@ List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filer
 	<div class="modal fade" id="exampleModalCenter1" tabindex="-1"
 		role="dialog" aria-labelledby="exampleModalCenterTitle"
 		aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-jump" role="document"
-			style="max-width: 93% !important;">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-jump mac-wid-93" role="document">
 
 			<div class="modal-content">
 
-				<div class="modal-header"
-					style="background-color: rgba(0, 0, 0, .03);">
+				<div class="modal-header modal-bg">
 
-					<h4 class="modal-title" id="model-card-header"
-						style="color: #145374"></h4>
+					<h4 class="modal-title modal-title-col" id="model-card-header"></h4>
 
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
@@ -549,29 +363,27 @@ List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filer
 					</button>
 
 				</div>
-				<div class="modal-body" style="padding: 0.5rem !important;">
+				<div class="modal-body p-2">
 
-					<div class="card-body"
-						style="min-height: 30%; max-height: 93% !important; overflow-y: auto;">
+					<div class="card-body card-pad">
 						<!-- --------------------------------------- upload box -------------------------- -->
 						<div class="row">
 
 							<form autocomplete="off" method="POST" action="FileSubAddNew.htm"
-								name="modelform" id="modelform" enctype="multipart/form-data"
-								style="width: 100%">
-								<div id="uploadbox" style="display: none;">
-									<div class="card shadow-nohover" style="margin-top: -20px;">
+								name="modelform" id="modelform" class="w-100" enctype="multipart/form-data">
+								<div id="uploadbox" class="dis-none">
+									<div class="card shadow-nohover mt-minus-20" >
 										<div class="col-md-12">
 											<div class="row">
 												<div class="col-md-9">
-													<h4 id="upload-card-header" style="color: #3DB2FF"></h4>
+													<h4 id="upload-card-header" class="card-h4-col"></h4>
 												</div>
 												<div class="col-md-3" align="right">
-													<h4 style="color: #3DB2FF" style="float: right;">(Document)</h4>
+													<h4 class="card-h4-col f-right" >(Document)</h4>
 												</div>
 											</div>
-											<hr style="width: 100%">
-											<div class="row" style="">
+											<hr class="w-100">
+											<div class="row" >
 												<div class="col-md-4 ">
 													<div class="form-group">
 														<label class="control-label">Document Name</label> <input
@@ -592,9 +404,8 @@ List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filer
 														<label class="control-label">Upload</label> <input
 															type="file" name="FileAttach" id="FileAttach"
 															onchange="Filevalidation('FileAttach');"
-															class="form-control "
-															aria-describedby="inputGroup-sizing-sm" maxlength="255"
-															style="width: 260px;" />
+															class="form-control w-260"
+															aria-describedby="inputGroup-sizing-sm" maxlength="255" />
 													</div>
 												</div>
 												<div class="col-md-2 ">
@@ -608,7 +419,7 @@ List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filer
 													</div>
 												</div>
 											</div>
-											<div class="row" style="margin-top: -15px;">
+											<div class="row mt-minus-15" >
 
 												<div class="col-md-12 ">
 													<div id="showdesc">
@@ -627,8 +438,7 @@ List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filer
 											</div>
 
 											<div align="center">
-												<input type="submit" class="btn btn-primary btn-sm submit"
-													style="margin-bottom: 5px;" id="submitversion"
+												<input type="submit" class="btn btn-primary btn-sm submit mb-2" id="submitversion"
 													onclick="return submitFileSizeCheck('modelform','FileSubAddNew.htm','FileAttach');" />
 											</div>
 										</div>
@@ -636,29 +446,27 @@ List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filer
 									</div>
 								</div>
 								<!-- --------------------------------------- ammend upload box -------------------------- -->
-								<div id="ammendmentbox"
-									style="display: none; margin-top: -20px;">
-									<div class="card shadow-nohover" style="padding: 10px;">
+								<div id="ammendmentbox">
+									<div class="card shadow-nohover p-2">
 
 										<div class="row">
 											<div class="col-md-9">
-												<h4 id="upload-card-header1" style="color: #3DB2FF"></h4>
+												<h4 id="upload-card-header1 card-h4-col" ></h4>
 											</div>
 											<div class="col-md-3" align="right">
-												<h4 style="color: #3DB2FF" style="float: right;">(Amendment)</h4>
+												<h4 class="card-h4-col f-right">(Amendment)</h4>
 											</div>
 										</div>
-										<hr style="width: 100%">
+										<hr class="w-100">
 
 										<div class="row">
 											<div class="col-md-4">
 												<div class="form-group">
 													<label class="control-label">Amendment File</label> <input
 														type="file" name="AmendFileAttach" id="AmendFileAttach"
-														class="form-control"
+														class="form-control w-100"
 														onchange="Filevalidation('AmendFileAttach');"
-														aria-describedby="inputGroup-sizing-sm" maxlength="255"
-														style="width: 100%;" required="required" />
+														aria-describedby="inputGroup-sizing-sm " maxlength="255" required="required" />
 												</div>
 											</div>
 											<div class="col-md-8">
@@ -676,8 +484,8 @@ List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filer
 										<div align="center">
 											<button type="submit"
 												onclick="return submitFileSizeCheck('modelform','AddDocAmendment.htm','AmendFileAttach');"
-												class="btn btn-primary btn-sm submit"
-												formaction="AddDocAmendment.htm" style="margin-bottom: 5px;">
+												class="btn btn-primary btn-sm submit mb-2"
+												formaction="AddDocAmendment.htm">
 												Upload <span id="amendsubversion"></span>
 											</button>
 										</div>
@@ -706,16 +514,14 @@ List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filer
 						<!-- --------------------------------------- upload box -------------------------- -->
 						<div class="row">
 							<div class="col-md-8">
-								<div style="margin-top: 5px;" id="fileuploadlist"></div>
+								<div class="mt-2" id="fileuploadlist"></div>
 							</div>
 							<div class="col-md-4">
 								<div
-									style="margin-top: 5px; display: none; border: 1px solid black; border-radius: 5px;"
 									id="amendmentbox">
 									<div align="center">
 										<h4>
-											Amendment(s) <span id="docno"></span> <img
-												style="height: 30px; width: 30px;"
+											Amendment(s) <span id="docno"></span> <img class="img-height"
 												src="view/images/amendment-icon.png"> <span
 												id="amendzipdownbtn"></span>
 										</h4>
@@ -723,7 +529,7 @@ List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filer
 									<hr>
 									<div>
 										<table id="amendmentlist"
-											style="width: 100%; margin-bottom: 3px;">
+											class="w-100 mb-1" >
 
 										</table>
 									</div>
@@ -1225,7 +1031,7 @@ function showamuploadbox(a,b,c,ver,rev,documenttitle,docid,desc,doclev1,doclev2,
 				{
 				
 					amdstr	+=	'<tr>';
-					amdstr	+=		'<td style="width:70%;" >';
+					amdstr	+=		'<td class="w-70" >';
 					amdstr	+=			'Amendment : '+Amendvalue[i][4];		
 					amdstr	+=		'</td>';
 					amdstr	+=		'<td>';
@@ -1449,19 +1255,19 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 																				{
 																					str +='<li> <span class="caret-last-1" id="docsysl3'+values[v3][0]+'" onclick="onclickchange(this);">'+values[v3][3]+'('+values[v3][9]+')</span>';
 																						
-																					str +='<span><button type="button" class="btn"  style="background-color: transparent;margin: -3px 0px;" onclick="showuploadbox(\''+values1[v1][3]+'\',\''+values2[v2][3]+'\',\''+values[v3][3]+'\',\''+values[v3][8]+'\',\''+values[v3][6]+'\',\''+values[v3][0]+'\',\''+values[v3][9]+'\',\''+values[v3][10]+'\',\''+values1[v1][0]+'\',\''+values2[v2][0] +'\')" >';
+																					str +='<span><button type="button" class="btn btn-style-2" onclick="showuploadbox(\''+values1[v1][3]+'\',\''+values2[v2][3]+'\',\''+values[v3][3]+'\',\''+values[v3][8]+'\',\''+values[v3][6]+'\',\''+values[v3][0]+'\',\''+values[v3][9]+'\',\''+values[v3][10]+'\',\''+values1[v1][0]+'\',\''+values2[v2][0] +'\')" >';
 																					
-																					str +=		'<i class="fa fa-upload" style="color: #007bff" aria-hidden="true"></i>';
+																					str +=		'<i class="fa fa-upload i-col" aria-hidden="true"></i>';
 																					str +=		'</button>';
 																					if(values[v3][4]!=0)
 																					{ 
 																						str +=' <span class="version">Ver '+values[v3][8]+'.'+values[v3][6];
-																						str +=		' <button type="button" class="btn"  style="background-color: transparent;margin: -5px 0px;" onclick="FileDownload(\''+values[v3][4]+'\')">';                                     
+																						str +=		' <button type="button" class="btn btn-style-2" onclick="FileDownload(\''+values[v3][4]+'\')">';                                     
 																						str += 			'<i class="fa fa-download" aria-hidden="true"></i>';
 																						str +=		'</button> ';
 																				
-																						str +=		'  <button type="button" class="btn"  style="background-color: #CFFFFE;padding : 0px 5px 3px;margin: 0px -10px;border: 0.1px solid grey;" onclick="showamuploadbox(\''+values1[v1][3]+'\',\''+values2[v2][3]+'\',\''+values[v3][3]+'\',\''+values[v3][8]+'\',\''+values[v3][6]+'\',\''+values[v3][0]+'\',\''+values[v3][9]+'\',\''+values[v3][10]+'\',\''+values1[v1][0]+'\',\''+values2[v2][0] +'\',\''+values[v3][4]+'\')" >';                                     
-																						str += 			' Amendment <img style="height:20px; width: 20px; " src="view/images/amendment-icon-2.png"> ';   /* <i class="fa fa-plus" style="color: #3DB2FF" aria-hidden="true"></i> <i class="fa fa-upload" style="color: #007bff" aria-hidden="true"></i> */
+																						str +=		'  <button type="button" class="btn btn-style-4"  onclick="showamuploadbox(\''+values1[v1][3]+'\',\''+values2[v2][3]+'\',\''+values[v3][3]+'\',\''+values[v3][8]+'\',\''+values[v3][6]+'\',\''+values[v3][0]+'\',\''+values[v3][9]+'\',\''+values[v3][10]+'\',\''+values1[v1][0]+'\',\''+values2[v2][0] +'\',\''+values[v3][4]+'\')" >';                                     
+																						str += 			' Amendment <img class="img-hei-2" src="view/images/amendment-icon-2.png"> ';   
 																						str +=		'</button> </span>';
 																					} 
 																							

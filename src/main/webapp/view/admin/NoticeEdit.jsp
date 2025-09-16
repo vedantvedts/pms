@@ -2,6 +2,7 @@
 <%@page import="jakarta.persistence.criteria.CriteriaBuilder.In"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
   
@@ -9,41 +10,11 @@
 	<meta charset="ISO-8859-1">
 	<jsp:include page="../static/header.jsp"></jsp:include>
 
+<spring:url value="/resources/css/admin/NoticeEdit.css" var="noticeEdit" />
+<link href="${noticeEdit}" rel="stylesheet" />
 
 
 	<title>EDIT NOTICE</title>
-	<style type="text/css">
-		.input-group-text {
-			font-weight: bold;
-		}
-
-		label {
-			font-weight: 800;
-			font-size: 16px;
-			color: #07689f;
-		}
-
-		hr {
-			margin-top: -2px;
-			margin-bottom: 12px;
-		}
-
-		.card b {
-			font-size: 20px;
-		}
-		
-		input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
-}
-
-input[type=number] {
-    -moz-appearance:textfield; /* Firefox */
-}
-		
-	</style>
 </head>
 
 <body>
@@ -68,8 +39,7 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 			<div class="col-md-12">
 
 				<div class="card shadow-nohover">
-					<div class="card-header"
-						style=" background-color: #055C9D;margin-top: ">
+					<div class="card-header bg-header">
 
 						<h3 class="text-white">Edit Notice</h3>
 
@@ -99,7 +69,7 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
                                      <div class="col-md-8">
 										<div class="form-group">
 											<label class="control-label">Notice</label> 
-										    <textarea class="form-control" name="noticeFiled" style="height: 9rem;" maxlength="255" required="required" placeholder="Enter Notice here with max 255 characters" ><%=notice[2]!=null?notice[2].toString(): ""%></textarea>
+										    <textarea class="form-control height" name="noticeFiled" maxlength="255" required="required" placeholder="Enter Notice here with max 255 characters" ><%=notice[2]!=null?notice[2].toString(): ""%></textarea>
 										</div>
 									</div>     
 									      <input type="hidden"  id="noticeId" name="noticeId" value="<%=notice[0]%>"/>  
@@ -121,7 +91,7 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 			
 			
 					</div>
-					<div class="card-footer" style=" background: linear-gradient(to right, #334d50, #cbcaa5);padding: 25px ">
+					<div class="card-footer bg-footer">
 					</div>
 				</div>
 			</div>
