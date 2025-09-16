@@ -1,0 +1,307 @@
+@charset "UTF-8";
+
+
+
+label{
+font-weight: bold;
+  font-size: 14px;
+}
+
+body{
+background-color: #f2edfa;
+overflow-x:hidden !important; 
+}
+
+.genealogy-body{
+    white-space: nowrap;
+    overflow-y: hidden;
+    padding: 50px;
+     min-height: 800px; 
+    padding-top: 10px;
+    text-align: center;
+}
+.genealogy-tree{
+  display: inline-block;
+} 
+.genealogy-tree ul {
+    padding-top: 20px; 
+    position: relative;
+    padding-left: 0px;
+    display: flex;
+    justify-content: center;
+}
+.genealogy-tree li {
+    float: left; text-align: center;
+    list-style-type: none;
+    position: relative;
+    padding: 20px 26px 0 12px;
+}
+.genealogy-tree li::before, .genealogy-tree li::after{
+    content: '';
+    position: absolute; 
+    top: 0; 
+    right: 50%;
+    border-top: 2px solid #ccc;
+    width: 50%; 
+    height: 18px;
+}
+.genealogy-tree li::after{
+    right: auto; left: 50%;
+    border-left: 2px solid #ccc;
+}
+.genealogy-tree li:only-child::after, .genealogy-tree li:only-child::before {
+    display: none;
+}
+.genealogy-tree li:only-child{ 
+    padding-top: 0;
+}
+.genealogy-tree li:first-child::before, .genealogy-tree li:last-child::after{
+    border: 0 none;
+}
+.genealogy-tree li:last-child::before{
+     border-right: 2px solid #ccc;
+     border-radius: 0 5px 0 0;
+    -webkit-border-radius: 0 5px 0 0;
+    -moz-border-radius: 0 5px 0 0;
+}
+.genealogy-tree li:first-child::after{
+    border-radius: 5px 0 0 0;
+    -webkit-border-radius: 5px 0 0 0;
+    -moz-border-radius: 5px 0 0 0;
+}
+.genealogy-tree ul ul::before{
+    content: '';
+    position: absolute; top: 0; left: 50%;
+    border-left: 2px solid #ccc;
+    width: 0; height: 20px;
+}
+.genealogy-tree li .action-view-box{
+     text-decoration: none;
+     /* font-family: arial, verdana, tahoma; */
+     font-size: 11px;
+     display: inline-block;
+     border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+
+.genealogy-tree li a:hover+ul li::after, 
+.genealogy-tree li a:hover+ul li::before, 
+.genealogy-tree li a:hover+ul::before, 
+.genealogy-tree li a:hover+ul ul::before{
+    border-color:  #fbba00;
+}
+
+/*--------------memeber-card-design----------*/
+.member-view-box{
+    padding:0px 15px;
+    text-align: center;
+    border-radius: 4px;
+    position: relative;
+}
+.member-image{
+    width: 60px;
+    position: relative;
+}
+.member-image img{
+    width: 60px;
+    height: 60px;
+    border-radius: 6px;
+    background-color :#000;
+    z-index: 1;
+}
+.F{
+ background: #FF69B4;
+    color: white;   
+}
+.S{
+background: #72cd23;
+    color: white;
+}
+
+
+.H{
+background: #FF8C00;
+    color: white;
+}
+ /* <!-- ------------------------------- tree css ------------------------------- --> */
+
+
+.action-box
+{
+     width: fit-content ; 
+     height: fit-content;
+     /* min-width:190px; */
+   /*   min-width:190px; */
+    border: 1px solid black;
+}
+
+.action-box-header
+{
+	
+ 	padding:3px;
+ 	text-align: center;
+ 	
+	
+}
+
+.action-box-body
+{
+	padding:0px;
+	text-align: center;
+	background-color:#FFFFFF ;
+	display: block;
+    flex-wrap: wrap;
+    border-bottom-right-radius : 9px;
+	border-bottom-left-radius: 7px;
+}
+
+th
+{
+
+  text-align: left;
+ 	
+}
+
+
+.action-view-box {
+    position: relative;
+}
+
+.actions {
+    position: absolute;
+    top: 0;
+    right: -20px; /* initially hide the actions */
+    visibility: hidden;
+    transition: right 0.3s;
+}
+
+.action-view-box:hover .actions {
+    right: 0; /* show the actions on hover */
+    visibility: visible;
+}
+
+.update,
+.delet {
+    display: block; /* Change display to block to stack the icons and text */
+    padding: 5px 5px;
+    margin-right: -18px;
+    text-align: left; /* Align text to the left */
+    border: none; /* This line removes the border */
+    cursor:pointer;
+}
+
+img{
+width:18px;
+height:18px;
+
+}
+/* .update i,
+.delet i {
+    margin-right: 20px; /* Add some space between the icon and text 
+} */
+
+/* .edit:hover,
+.delete:hover {
+    background-color: #ccc;
+} */
+
+
+.bottom-div {
+
+            display: flex;
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            margin: 10px;  /* Ensures the div stretches across the entire width of the page */
+}
+
+.mt-minus-7{
+	margin-top: -7px;
+}
+
+.software{
+	background-color: #72cd23;
+	padding: 0px 15px;
+	border-radius: 3px;
+}
+.hardware{
+	background-color: #FF8C00;
+	padding: 0px 15px;
+	border-radius: 3px;
+}
+.firmware{
+	background-color: #FF69B4;
+	padding: 0px 15px;
+	border-radius: 3px;
+}
+
+.btn-add-pro{
+	background-color: green;
+	color: white; 
+	border: 0;
+}
+
+.cursor{
+	cursor:pointer;
+}
+
+.span-font{
+	font-weight: 600;
+	font-size: 1.7em;
+}
+
+.mt-minus-2{
+	margin-top:-2px;
+}
+.mt-minus-5{
+	margin-top:-5px;
+}
+
+.i-col{
+	font-size: 1.2rem;
+	color:black;
+	padding-top:0px;
+	padding-bottom:2px;
+}
+
+.gradient-box {
+    background: linear-gradient(
+        to bottom right,
+        var(--top-color, white) 0%,
+        var(--top-color, white) 10%,
+        white 10%,
+        white 90%,
+        var(--bottom-color, white) 90%,
+        var(--bottom-color, white) 100%
+    );
+}
+
+/* Top (status) color */
+.status-design      { --top-color: #D24545; }
+.status-realisation { --top-color: #E9B824; }
+.status-testing     { --top-color: #0B60B0; }
+.status-ready       { --top-color: green; }
+.status-default     { --top-color: white; }
+
+/* Bottom (type) color */
+.type-inhouse  { --bottom-color: #FF8911; }
+.type-btp      { --bottom-color: #FDE767; }
+.type-bts      { --bottom-color: #B67352; }
+.type-cots     { --bottom-color: #492E87; }
+.type-default  { --bottom-color: white; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

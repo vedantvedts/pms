@@ -1,0 +1,259 @@
+@charset "UTF-8";
+
+
+
+label {
+	font-weight: 800;
+	font-size: 16px;
+	color: #07689f;
+}
+
+.center {
+	text-align: center !important;
+}
+
+.right {
+	text-align: right !important;
+}
+
+.left {
+	text-align: left !important;
+}
+
+.fw-bold {
+	font-weight: bold;
+}
+
+.tabpanes1 {
+	min-height: 690px;
+    max-height: 690px;
+    overflow-y: auto; /* Vertical scrollbar */
+  	overflow-x: hidden; /* Optional if no horizontal scroll */
+    scrollbar-width: thin;
+    scrollbar-height: thin;
+  	scrollbar-color: #007bff #f8f9fa;
+}
+
+/* Chrome, Edge, and Safari */
+.tabpanes1::-webkit-scrollbar{
+  width: 12px;
+}
+
+.tabpanes1::-webkit-scrollbar-track{
+  background: #f8f9fa;
+  border-radius: 5px;
+}
+
+.tabpanes1::-webkit-scrollbar-thum{
+  background-color: #007bff;
+  border-radius: 5px;
+  border: 2px solid #f8f9fa;
+}
+
+ .trackingTable {
+	width: 100%;
+	border-collapse: collapse;
+	border: 1px solid #ced4da;
+	padding: 1rem;
+	overflow-y: auto; 
+	overflow-x: auto; 
+	font-family: 'Muli' !important;
+}
+
+.trackingTable thead {
+	position: sticky;
+	top: 0; /* Keeps the header at the top */
+	z-index: 10; /* Ensure the header stays on top of the body */
+	background-color: white; /* For visibility */
+}
+
+.trackingTable tbody{
+	font-size: 1rem !important;
+}
+
+.trackingTable th {
+	text-align: center;
+	font-size: 1.2rem !important;
+	border: 1px solid #ced4da;
+	padding: 10px;
+}
+
+.trackingTable td {
+	border: 1px solid #ced4da;
+	padding: 0.2rem;
+}
+
+.link-button {
+	margin-right: 0.25rem;
+	margin-left: 0.25rem;
+	/* margin-top: 0.5rem; */
+	width: 97%;
+	border-radius: 0.75rem;
+	border: 3px solid #007bff; 
+}
+
+/* Tracking Line */
+.tracking-container {
+  /* position: relative; */
+  width: 90%;
+  height: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  margin-left: 3%;
+  margin-top: 1.5%;
+
+}
+
+.tracking-line {
+  /* position: absolute; */
+  top: 50%;
+  left: 0;
+  width: 15%;
+  height: 6px;
+  background-color: #ced4da;
+  z-index: 0;
+}
+
+.tracking-line.active {
+  background-color: #28a745;
+}
+
+.track-btn {
+  /* position: relative; */
+  z-index: 1;
+  background-color: #ced4da;
+  border: 2px solid #ced4da;
+  border-radius: 2rem;
+  width: 2.5rem;
+  height: 2.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.track-btn.active {
+  background-color: #28a745;
+  border: 2px solid #28a745;
+  color: #fff;
+}
+
+.minus {
+  font-size: 1rem;
+  color: #007bff;
+  margin: 0 0.5rem;
+}
+
+/* @media (max-width: 768px) {
+  .tracking-container {
+    flex-direction: column;
+    height: auto;
+  }
+  .tracking-line {
+    width: 2px;
+    height: 100%;
+  }
+}  */
+
+/* Tracking Header */
+.tracking-header-container {
+  position: relative;
+  width: 98%;
+  height: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* margin-bottom: 2rem; */
+  margin-left: 1%;
+  margin-right: 1%; 
+}
+.custom-tooltip {
+    position: absolute;
+    background-color: #fff7e3;
+    color: black;
+    padding: 5px;
+    border-radius: 3px;
+    z-index: 9999;
+    box-shadow: 0px 0px 9px black;
+}
+
+ .message-blue:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: 15px solid black;
+    border-left: 15px solid transparent;
+    top: 0;
+    left: -15px;
+} 
+
+ .blueBottom:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: 15px solid black;
+    border-left: 15px solid transparent;
+    bottom: 0;
+    left: -15px;
+    
+    transform: rotate(90deg);
+    
+}
+
+#TooltipStyle {
+	margin: 0.3rem;
+}
+ 
+#TooltipStyle td {
+	font-size: 1rem;
+	border-collapse: collapse;
+    border-color: white; 
+    font-family: 'Muli' !important;
+    font-weight: 900;
+}
+
+.card-header-bg{
+	background-color: transparent;
+	height: 3rem;
+}
+
+.w-19{
+	width: 19px!important;
+}
+.w-15{
+	width: 15%;
+}
+.w-85{
+	width: 85%;
+}
+
+.cars-no{
+	background-color: #4B70F5;
+	color: #ffff;
+}
+
+.track-bg{
+	background: linear-gradient(to right, #28a745 25%, #ced4da 25%);
+}
+.progress-bar {
+  background: linear-gradient(
+    to right, 
+    #28a745 var(--progress), 
+    #ced4da var(--progress)
+  );
+}
+
+
+
+
+
+
+
+
+
+

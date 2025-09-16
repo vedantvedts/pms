@@ -1,0 +1,243 @@
+@charset "UTF-8";
+
+
+
+
+
+  
+/*  th
+ {
+ 	border: 0;
+ 	text-align: center;
+ 	padding: 5px;
+ }
+ 
+ td
+ {
+ 	border: 0;
+ 	padding: 5px;
+ }
+ 
+  }
+
+ .border
+ {
+ 	border: 1px solid black;
+ } */
+
+  
+  .genealogy-body{
+    white-space: nowrap;
+    overflow-y: hidden;
+    padding: 50px;
+    min-height: 500px;
+    padding-top: 0px;
+    text-align: center;
+}
+
+
+.genealogy-tree{
+  display: inline-block;
+} 
+.genealogy-tree ul {
+    padding-top: 20px; 
+    position: relative;
+    padding-left: 0px;
+    display: flex;
+    justify-content: center;
+}
+.genealogy-tree li {
+    float: left; text-align: center;
+    list-style-type: none;
+    position: relative;
+    padding: 17px 0px 0 0px;
+}
+
+.genealogy-tree li::before, .genealogy-tree li::after{
+    content: '';
+    position: absolute; 
+    top: 0; 
+    right: 50%;
+    border-top: 2px solid black;
+    width: 50%; 
+    height: 18px;
+}
+.genealogy-tree li::after{
+    right: auto; 
+    left: 50%;
+    border-left: 2px solid black;
+}
+ .genealogy-tree li:only-child::after, .genealogy-tree li:only-child::before {
+    display: none;
+}
+.genealogy-tree li:only-child{ 
+    padding-top: 0;
+}
+.genealogy-tree li:first-child::before, .genealogy-tree li:last-child::after{
+    border: 0 none;
+} 
+.genealogy-tree li:last-child::before{
+     border-right: 2px solid black;
+     border-radius: 0 5px 0 0;
+    -webkit-border-radius: 0 5px 0 0;
+    -moz-border-radius: 0 5px 0 0;
+}
+.genealogy-tree li:first-child::after{
+    border-radius: 5px 0 0 0;
+    -webkit-border-radius: 5px 0 0 0;
+    -moz-border-radius: 5px 0 0 0;
+}
+.genealogy-tree ul ul::before{
+    content: '';
+    position: absolute;
+     top: 0; 
+     left: 50%;
+    border-left: 2px solid black;
+    width: 0;
+     height: 20px;
+}
+.genealogy-tree li .action-view-box{
+     text-decoration: none;
+     /* font-family: arial, verdana, tahoma; */
+     font-size: 11px;
+     display: inline-block;
+     border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+
+
+/*--------------memeber-card-design----------*/
+.member-view-box{
+    padding:0px 15px;
+    text-align: center;
+    border-radius: 4px;
+    position: relative;
+}
+
+
+
+
+ /* <!-- ------------------------------- tree css ------------------------------- --> */
+
+
+.action-box
+{
+    /*  width: fit-content ; 
+     height: fit-content; */
+     /* min-width:190px; */
+   /*   min-width:190px; */
+  
+    border: 1px solid black;
+    
+    max-width:100px;
+    /* max-height:110px; */
+/*     display: block; */
+    
+   
+    /* background: linear-gradient(to bottom right, #0B60B0 5%, #0B60B0 10%, white 10%, white 90%, #D24545 0%, #D24545 0%); */
+    
+}
+
+
+.action-box-header
+{
+
+
+/*  max-width:120px; */
+	padding:2px;
+ 	text-align: center;
+ 	 
+   
+ 	/* color: #3468C0; */
+	 /* background: linear-gradient(to bottom right, #0B60B0 5%, #0B60B0 10%, white 10%, white 90%, #D24545 0%, #D24545 0%);  */
+}
+
+
+
+
+.action-box-body
+{
+   padding:0px;
+	text-align: center;
+	background-color:#FFFFFF ;
+	display: block;
+    flex-wrap: wrap;
+    border-bottom-right-radius : 9px;
+	border-bottom-left-radius: 7px;
+}
+  
+.mt-minus-7{
+	margin-top: -7px;
+}  
+.mt-minus-2{
+	margin-top: -2px;
+}  
+  
+.w-220{
+	width:220px;
+}
+ .ml-130{
+ 	margin-left:130px;
+ }
+  
+.p-15{
+	padding:0px 15px;
+}
+.cursor{
+	cursor:pointer;
+}
+ .span-font{
+ 	font-weight: bold;
+ 	font-size: 1.0em;
+ }
+ .span-font-1{
+ 	font-weight: bold;
+ 	font-size: 1.0em;
+ 	white-space:normal;
+ }
+ .i-font{
+ 	font-size: 0.8rem;
+ 	color:black;
+ 	padding-top:0px;
+ 	padding-bottom:0px;
+ }
+ 
+ 
+ 
+ .gradient-box {
+    background: linear-gradient(
+        to bottom right,
+        var(--top-color, white) 5%,
+        var(--top-color, white) 10%,
+        white 10%,
+        white 90%,
+        var(--bottom-color, white) 90%,
+        var(--bottom-color, white) 100%
+    );
+}
+
+/* Status colors (top strip) */
+.status-design      { --top-color: #D24545; }
+.status-realisation { --top-color: #E9B824; }
+.status-testing     { --top-color: #0B60B0; }
+.status-ready       { --top-color: green; }
+.status-default     { --top-color: white; }
+
+/* Type colors (bottom strip) */
+.type-inhouse  { --bottom-color: #FF8911; }
+.type-btp      { --bottom-color: #FDE767; }
+.type-bts      { --bottom-color: #B67352; }
+.type-cots     { --bottom-color: #492E87; }
+.type-default  { --bottom-color: white; }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+  
